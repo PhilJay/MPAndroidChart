@@ -9,13 +9,14 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.LineChart;
+import com.github.mikephil.charting.BarChart;
+import com.github.mikephil.charting.ColorTemplate;
 
 import java.util.ArrayList;
 
-public class LineChartActivity extends Activity implements OnSeekBarChangeListener {
+public class BarChartActivity extends Activity implements OnSeekBarChangeListener {
 
-    private LineChart mChart; 
+    private BarChart mChart; 
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
 
@@ -24,7 +25,7 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_linechart);
+        setContentView(R.layout.activity_barchart);
         
         tvX = (TextView) findViewById(R.id.tvXMax);
         tvY = (TextView) findViewById(R.id.tvYMax);
@@ -36,18 +37,17 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
         mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
         mSeekBarY.setOnSeekBarChangeListener(this);
         
-        mChart = (LineChart) findViewById(R.id.chart1);
-//        mChart.setColorTemplate(new ColorTemplate(ColorTemplate.getColors(this, ColorTemplate.LIBERTY_COLORS)));
+        mChart = (BarChart) findViewById(R.id.chart1);
+        mChart.setColorTemplate(new ColorTemplate(ColorTemplate.getColors(this, ColorTemplate.FRESH_COLORS)));
         
 //        mChart.setDrawFilled(true);
 //        mChart.setRoundedYLegend(false);
 //        mChart.setStartAtZero(true);
         mChart.setDrawValues(false);
-        mChart.setLineWidth(5f);
-        mChart.setCircleSize(5f);
+        mChart.set3DEnabled(false);
         mChart.setDrawAdditional(true);
 //        mChart.setSpacePercent(20, 10);
-        mChart.setYLegendCount(6);
+        mChart.setYLegendCount(5);
         mChart.setTouchEnabled(true);
         
         ArrayList<String> xVals = new ArrayList<String>();
@@ -70,7 +70,7 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.line, menu);
+        getMenuInflater().inflate(R.menu.bar, menu);
         return true;
     }
     
@@ -94,19 +94,11 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
                 mChart.invalidate();
                 break;
             }
-            case R.id.actionToggleFilled: {
-                if (mChart.isDrawFilledEnabled())
-                    mChart.setDrawFilled(false);
+            case R.id.actionToggle3D: {
+                if (mChart.is3DEnabled())
+                    mChart.set3DEnabled(false);
                 else
-                    mChart.setDrawFilled(true);
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleCircles: {
-                if (mChart.isDrawAdditionalEnabled())
-                    mChart.setDrawAdditional(false);
-                else
-                    mChart.setDrawAdditional(true);
+                    mChart.set3DEnabled(true);
                 mChart.invalidate();
                 break;
             }

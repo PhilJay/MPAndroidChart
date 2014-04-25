@@ -9,7 +9,6 @@ import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -140,9 +139,6 @@ public class BarChart extends BarLineChartBase {
          ArrayList<Path> sidePaths = new ArrayList<Path>();
 
          float depth = Math.abs(pts[3] - pts[1]) * mDepth;
-         float skewHeight = pts[3] - pts[1];
-         
-         Log.i("skewheight", ""+skewHeight);
 
          for (int i = 0; i < mYVals.size(); i++) {
 
@@ -165,8 +161,6 @@ public class BarChart extends BarLineChartBase {
 
                  topPaths.add(topPath);
 
-                 
-              
                  Path sidePath = new Path();
                  sidePath.moveTo(right, top);
                  sidePath.lineTo(right + mSkew, top + depth);

@@ -7,6 +7,7 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="18" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -24,6 +25,8 @@
         </activity>
         <activity android:name="LineChartActivity"></activity>
         <activity android:screenOrientation="landscape" android:name="MultipleChartsActivity"></activity>
+        <activity android:name="BarChartActivity"></activity>
+        <activity android:name="PieChartActivity"></activity>
     </application>
 
 </manifest>

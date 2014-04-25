@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/actionToggleRound" android:title="Toggle Round"></item>
+    <item android:id="@+id/actionToggleValues" android:title="Toggle Values"></item>
+    <item android:id="@+id/actionToggleFilled" android:title="Toggle Filled"></item>
+    <item android:id="@+id/actionToggle3D" android:title="Toggle 3D"></item>
+    <item android:id="@+id/actionToggleStartzero" android:title="Toggle StartZero"></item>
+ <item android:id="@+id/actionToggleAdjustXLegend" android:title="Toggle AdjustXLegend"></item>
+ <item android:id="@+id/actionSave" android:title="Save to Gallery"></item>
+</menu>

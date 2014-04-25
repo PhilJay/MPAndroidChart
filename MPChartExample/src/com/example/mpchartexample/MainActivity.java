@@ -20,8 +20,12 @@ public class MainActivity extends Activity implements OnClickListener {
         
         Button btn1 = (Button) findViewById(R.id.button1);
         Button btn2 = (Button) findViewById(R.id.button2);
+        Button btn3 = (Button) findViewById(R.id.button3);
+        Button btn4 = (Button) findViewById(R.id.button4);
         btn1.setOnClickListener(this);
         btn2.setOnClickListener(this);
+        btn3.setOnClickListener(this);
+        btn4.setOnClickListener(this);
     }
     
     @Override
@@ -35,6 +39,14 @@ public class MainActivity extends Activity implements OnClickListener {
                 startActivity(i);
                 break;
             case R.id.button2:
+                i = new Intent(this, BarChartActivity.class);
+                startActivity(i);
+                break;
+            case R.id.button3:
+                i = new Intent(this, PieChartActivity.class);
+                startActivity(i);
+                break;
+            case R.id.button4:
                 i = new Intent(this, MultipleChartsActivity.class);
                 startActivity(i);
                 break;
