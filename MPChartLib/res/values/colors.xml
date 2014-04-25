@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <color name="fresh_1">#FFFFB3</color>
+    <color name="fresh_2">#94FF85</color>
+    <color name="fresh_3">#75FFC2</color>
+    <color name="fresh_4">#8FDEFF</color>
+    <color name="fresh_5">#B3B3FF</color>
+    
+    <color name="mono_1">#042D42</color>
+    <color name="mono_2">#0B84C2</color>
+    <color name="mono_3">#075075</color>
+    <color name="mono_4">#57BEF2</color>
+    <color name="mono_5">#326E8C</color>
+    
+    <color name="liberty_1">#CFF8F6</color>
+    <color name="liberty_2">#94D4D4</color>
+    <color name="liberty_3">#88B4BB</color>
+    <color name="liberty_4">#76AEAF</color>
+    <color name="liberty_5">#2A6D82</color>
+    
+</resources>
