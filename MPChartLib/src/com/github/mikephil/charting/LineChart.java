@@ -68,6 +68,8 @@ public class LineChart extends BarLineChartBase {
     @Override
     protected void prepareDataPaints(ColorTemplate ct) {
         
+        if(ct == null) return;
+        
         mDrawPaints = new Paint[ct.getColors().size()];
         
         for(int i = 0; i < ct.getColors().size(); i++) {
@@ -210,5 +212,7 @@ public class LineChart extends BarLineChartBase {
         if (width > 10.0f)
             width = 10.0f;
         mLineWidth = width;
+        
+        mLinePaint.setStrokeWidth(mLineWidth);
     }
 }

@@ -63,6 +63,7 @@ public class MultipleChartsActivity extends Activity {
         mBarChart.set3DEnabled(false);
         mBarChart.setMaxVisibleValueCount(10);
         mBarChart.setRoundedYLegend(true);
+        mBarChart.setDescription("");
         
         mPieChart.setData(xvalsSmall, small);
         mPieChart.setColorTemplate(new ColorTemplate(ColorTemplate.getColors(this, ColorTemplate.FRESH_COLORS)));
@@ -71,5 +72,7 @@ public class MultipleChartsActivity extends Activity {
         
         mBarChart3D.setData(xvalsLarge, large);
         mBarChart3D.setColorTemplate(new ColorTemplate(ColorTemplate.getColors(this, ColorTemplate.LIBERTY_COLORS)));
+        mBarChart3D.setRoundedYLegend(true);
+        mBarChart3D.setDescription("Description.");
     }
 }

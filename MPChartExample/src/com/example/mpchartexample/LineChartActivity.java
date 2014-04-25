@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.Chart;
+import com.github.mikephil.charting.ColorTemplate;
 import com.github.mikephil.charting.LineChart;
 
 import java.util.ArrayList;
@@ -22,6 +24,8 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_linechart);
         
         tvX = (TextView) findViewById(R.id.tvXMax);
@@ -35,13 +39,17 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
         mSeekBarY.setOnSeekBarChangeListener(this);
         
         mChart = (LineChart) findViewById(R.id.chart1);
+//        mChart.setColorTemplate(new ColorTemplate(ColorTemplate.getColors(this, ColorTemplate.LIBERTY_COLORS)));
+        
 //        mChart.setDrawFilled(true);
 //        mChart.setRoundedYLegend(false);
 //        mChart.setStartAtZero(true);
         mChart.setDrawValues(false);
+        mChart.setLineWidth(5f);
+        mChart.setCircleSize(5f);
         mChart.setDrawAdditional(true);
 //        mChart.setSpacePercent(20, 10);
-//        mChart.setYLegendCount(10);
+        mChart.setYLegendCount(5);
         mChart.setTouchEnabled(true);
         
         ArrayList<String> xVals = new ArrayList<String>();
@@ -136,7 +144,7 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
        
         ArrayList<String> xVals = new ArrayList<String>();
         for (int i = 1; i <= mSeekBarX.getProgress()+1; i++) {
-            xVals.add((i - 1)+"a");
+            xVals.add((i - 1)+"");
         }
 
         ArrayList<Float> yVals = new ArrayList<Float>();
