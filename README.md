@@ -19,4 +19,4 @@ Remember: *It's all about the looks.*
 
 **PieChart**
 
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/piechart.png)
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/piechart_selected.png)
