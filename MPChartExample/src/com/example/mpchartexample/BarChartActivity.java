@@ -45,7 +45,6 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
 //        mChart.setStartAtZero(true);
         mChart.setDrawValues(false);
         mChart.set3DEnabled(false);
-        mChart.setDrawAdditional(true);
 //        mChart.setSpacePercent(20, 10);
         mChart.setYLegendCount(5);
         mChart.setTouchEnabled(true);

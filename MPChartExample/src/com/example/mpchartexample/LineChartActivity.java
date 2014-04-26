@@ -44,7 +44,6 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
         mChart.setDrawValues(false);
         mChart.setLineWidth(5f);
         mChart.setCircleSize(5f);
-        mChart.setDrawAdditional(true);
 //        mChart.setSpacePercent(20, 10);
         mChart.setYLegendCount(6);
         mChart.setTouchEnabled(true);
@@ -88,10 +87,10 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
                 break;
             }
             case R.id.actionToggleCircles: {
-                if (mChart.isDrawAdditionalEnabled())
-                    mChart.setDrawAdditional(false);
+                if (mChart.isDrawCirclesEnabled())
+                    mChart.setDrawCircles(false);
                 else
-                    mChart.setDrawAdditional(true);
+                    mChart.setDrawCircles(true);
                 mChart.invalidate();
                 break;
             }

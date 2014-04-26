@@ -112,9 +112,6 @@ public abstract class Chart extends View {
 
     /** the default draw color (some kind of light blue) */
     protected int mDrawColor = Color.rgb(56, 199, 240);
-
-    /** if true, circles are drawn at the values position */
-    protected boolean mDrawAdditional = true;
     
     /** if true, touch gestures are enabled on the chart */
     protected boolean mTouchEnabled = true;
@@ -727,15 +724,6 @@ public abstract class Chart extends View {
 //        this.mFitXLegend = enabled;
 //        prepare();
 //    }
-
-    /**
-     * set this to true to enable drawing additional values
-     * 
-     * @param enabled
-     */
-    public void setDrawAdditional(boolean enabled) {
-        this.mDrawAdditional = enabled;
-    }
     
     /**
      * sets the y- starting and ending value
@@ -824,16 +812,6 @@ public abstract class Chart extends View {
      */
     public boolean isDrawValuesEnabled() {
         return mDrawValues;
-    }
-
-    /**
-     * returns true if drawing additional stuff is enabled, false if not
-     * if not
-     * 
-     * @return
-     */
-    public boolean isDrawAdditionalEnabled() {
-        return mDrawAdditional;
     }
 
     /**

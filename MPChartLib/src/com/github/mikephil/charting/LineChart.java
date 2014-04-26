@@ -127,8 +127,6 @@ public class LineChart extends BarLineChartBase {
     @Override
     protected void drawAdditional() {
         
-        if(!mDrawAdditional) return;
-        
      // if drawing circles is enabled
         if (mDrawCircles) {
 
