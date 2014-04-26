@@ -60,7 +60,6 @@ public class PieChart extends Chart {
 
     @Override
     protected void init() {
-        // TODO Auto-generated method stub
         super.init();
 
         mOffsetTop = 0;
@@ -88,6 +87,8 @@ public class PieChart extends Chart {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        if(mDataNotSet) return;
+        
         long starttime = System.currentTimeMillis();
 
         drawData();
@@ -123,7 +124,7 @@ public class PieChart extends Chart {
         // calculate how many digits are needed
         calcFormats();
 
-        prepareMatrixAndContent();
+        prepareMatrix();
 
         Log.i(LOG_TAG, "xVals: " + mXVals.size() + ", yVals: " + mYVals.size());
     }
@@ -197,11 +198,9 @@ public class PieChart extends Chart {
     }
 
     @Override
-    protected void prepareMatrixAndContent() {
-        super.prepareMatrixAndContent();
-
-        // float diameter = getDiameter();
-
+    protected void prepareContentRect() {
+        super.prepareContentRect();
+        
         int width = mContentRect.width() + mOffsetLeft + mOffsetRight;
         int height = mContentRect.height() + mOffsetTop + mOffsetBottom;
 
@@ -253,8 +252,6 @@ public class PieChart extends Chart {
 
     @Override
     protected void drawData() {
-
-        Log.i(LOG_TAG, "chartangle: " + mChartAngle);
 
         float angle = mChartAngle;
 
@@ -526,7 +523,8 @@ public class PieChart extends Chart {
      * @return
      */
     public float getRadius() {
-        return mCircleBox.width() / 2f;
+        if(mCircleBox == null) return 0;
+        else return mCircleBox.width() / 2f;
     }
 
     /**
@@ -535,7 +533,8 @@ public class PieChart extends Chart {
      * @return
      */
     public float getDiameter() {
-        return Math.min(mContentRect.width(), mContentRect.height());
+        if(mContentRect == null) return 0;
+        else return Math.min(mContentRect.width(), mContentRect.height());
     }
 
     /**

@@ -116,6 +116,8 @@ public abstract class BarLineChartBase extends Chart {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        
+        if(mDataNotSet) return;
 
         long starttime = System.currentTimeMillis();
 
@@ -172,7 +174,7 @@ public abstract class BarLineChartBase extends Chart {
         // calculate how many digits are needed
         calcFormats();
 
-        prepareMatrixAndContent();
+        prepareMatrix();
 
         Log.i(LOG_TAG, "xVals: " + mXVals.size() + ", yVals: " + mYVals.size());
     }
@@ -532,7 +534,7 @@ public abstract class BarLineChartBase extends Chart {
         mYChartMax = maxY;
         mDeltaY = mYChartMax - mYChartMin;
         
-        prepareMatrixAndContent();
+        prepareMatrix();
         prepareYLegend();
     }
 

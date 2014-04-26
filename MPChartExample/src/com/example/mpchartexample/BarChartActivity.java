@@ -50,22 +50,8 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
         mChart.setYLegendCount(5);
         mChart.setTouchEnabled(true);
         
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 1; i <= 50; i++) {
-            xVals.add(Integer.toString(i - 1)); 
-        }
-
-        ArrayList<Float> yVals = new ArrayList<Float>();
-
-        for (int i = 1; i <= 50; i++) {
-            float val = (float) (Math.random() * 10);
-            yVals.add(val);
-        }
-        
-        mSeekBarX.setProgress(50);
+        mSeekBarX.setProgress(45);
         mSeekBarY.setProgress(100);
-
-        mChart.setData(xVals, yVals);
     }
 
     @Override
@@ -133,13 +119,13 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
        
         ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 1; i <= mSeekBarX.getProgress()+1; i++) {
-            xVals.add((i - 1)+"");
+        for (int i = 0; i < mSeekBarX.getProgress(); i++) {
+            xVals.add((i)+"");
         }
 
         ArrayList<Float> yVals = new ArrayList<Float>();
 
-        for (int i = 1; i <= mSeekBarX.getProgress()+1; i++) {
+        for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             float mult = (mSeekBarY.getProgress()+1);
             float val = (float) (Math.random() * mult * 0.1) + 3;// + (float) ((mult * 0.1) / 10);
             yVals.add(val);

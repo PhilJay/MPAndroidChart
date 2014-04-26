@@ -251,16 +251,24 @@ public abstract class Chart extends View {
      */
     private void calcYValueSum() {
         
+        mYValueSum = 0;
+        
         for(int i = 0; i < mYVals.size(); i++) {
             mYValueSum += Math.abs(mYVals.get(i));
         }
     }
 
     private boolean mFirstDraw = true;
+    private boolean mContentRectSetup = false;
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        
+        if(!mContentRectSetup) {
+            mContentRectSetup = true;
+            prepareContentRect();
+        }
 
         if (mDataNotSet) { // check if there is data
 
@@ -271,10 +279,10 @@ public abstract class Chart extends View {
 
         if (mFirstDraw) {
             mFirstDraw = false;
-            prepareMatrixAndContent();
+            prepareMatrix();
         }
 
-        if (mDrawBitmap == null) {
+        if (mDrawBitmap == null || mDrawCanvas == null) {
 
             // use RGB_565 for best performance
             mDrawBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.RGB_565);
@@ -288,7 +296,7 @@ public abstract class Chart extends View {
      * setup all the matrices that will be used for scaling the coordinates to
      * the display
      */
-    protected void prepareMatrixAndContent() {
+    protected void prepareMatrix() {
 
         float scaleX = (float) ((getWidth() - mOffsetLeft - mOffsetRight) / mDeltaX);
         float scaleY = (float) ((getHeight() - mOffsetBottom - mOffsetTop) / mDeltaY);
@@ -300,14 +308,18 @@ public abstract class Chart extends View {
         mMatrixValueToPx.postScale(scaleX, -scaleY);
         mMatrixOffset = new Matrix();
         mMatrixOffset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
-
-        // create the content rect
-        mContentRect = new Rect(mOffsetLeft, mOffsetTop, getWidth() - mOffsetRight,
-                getHeight() - mOffsetBottom);
-        
 //        mXLegendRect = new Rect(mOffsetLeft-20, 0, getWidth() - mOffsetRight + 20, mOffsetTop);
         
 //        calcModulus();
+    }
+    
+    /**
+     * sets up the content rect that restricts the chart surface
+     */
+    protected void prepareContentRect() {
+        // create the content rect
+        mContentRect = new Rect(mOffsetLeft, mOffsetTop, getWidth() - mOffsetRight,
+                getHeight() - mOffsetBottom);
     }
 
     /**
@@ -425,6 +437,7 @@ public abstract class Chart extends View {
      * draws the description text in the bottom right corner of the chart
      */
     protected void drawDescription() {
+
         mDrawCanvas.drawText(mDescription, getWidth() - mOffsetRight - 10, getHeight()
                 - mOffsetBottom - 10, mDescPaint);
     }
