@@ -102,89 +102,88 @@ public class BarChart extends BarLineChartBase {
         // increase deltax by 1 because the bars have a width of 1
         mDeltaX++;
     }
+    
+    private RectF mBarRect = new RectF();
 
     @Override
     protected void drawData() {
-
-         float[] pts = new float[] {
-         0f, 0f, 1f, 0f
-         };
-        
-         // calculate the depth depending on scale
-         
-         transformPointArray(pts);  
-         
-//         Log.i("map 1", pts[0] +  "/"  +pts[1] + " - " + pts[2] + "/"  + pts[3]);
        
-         pts[3] = pts[2] - pts[0];
-         pts[2] = 0f;
-         pts[1] = 0f;
-         pts[0] = 0f;
-         
-         Matrix invert = new Matrix();
-         
-         mMatrixOffset.invert(invert);
-         invert.mapPoints(pts);
-         
-         mMatrixTouch.invert(invert);
-         invert.mapPoints(pts);
-         
-         mMatrixValueToPx.invert(invert);
-         invert.mapPoints(pts);
-         
-//         Log.i("map 2", pts[0] +  "/"  +pts[1] + " - " + pts[2] + "/"  + pts[3]);
-        
-         ArrayList<RectF> rects = new ArrayList<RectF>();
-         ArrayList<Path> topPaths = new ArrayList<Path>();
-         ArrayList<Path> sidePaths = new ArrayList<Path>();
+        ArrayList<Path> topPaths = new ArrayList<Path>();
+        ArrayList<Path> sidePaths = new ArrayList<Path>();
 
-         float depth = Math.abs(pts[3] - pts[1]) * mDepth;
+        if (m3DEnabled) {
 
-         for (int i = 0; i < mYVals.size(); i++) {
+            float[] pts = new float[] {
+                    0f, 0f, 1f, 0f
+            };
 
-             float y = mYVals.get(i);
-             float left = i + mBarSpace / 2f;
-             float right = i + 1f - mBarSpace / 2f;
-             float top = y >= 0 ? y : 0;
-             float bottom = y <= 0 ? y : 0;
-             
-             rects.add(new RectF(left, top, right, bottom));
+            // calculate the depth depending on scale
 
-             if(m3DEnabled) {             
+            transformPointArray(pts);
 
-                 // create the 3D effect paths for the top and side
-                 Path topPath = new Path();
-                 topPath.moveTo(left, top);
-                 topPath.lineTo(left + mSkew, top + depth);
-                 topPath.lineTo(right + mSkew, top + depth);
-                 topPath.lineTo(right, top);
+            pts[3] = pts[2] - pts[0];
+            pts[2] = 0f;
+            pts[1] = 0f;
+            pts[0] = 0f;
 
-                 topPaths.add(topPath);
+            Matrix invert = new Matrix();
 
-                 Path sidePath = new Path();
-                 sidePath.moveTo(right, top);
-                 sidePath.lineTo(right + mSkew, top + depth);
-                 sidePath.lineTo(right + mSkew, depth);
-                 sidePath.lineTo(right, 0);
+            mMatrixOffset.invert(invert);
+            invert.mapPoints(pts);
 
-                 sidePaths.add(sidePath);
-             }
-         }
-        
-        // transform
-        transformRects(rects);
-        
-        if(m3DEnabled) {
+            mMatrixTouch.invert(invert);
+            invert.mapPoints(pts);
+
+            mMatrixValueToPx.invert(invert);
+            invert.mapPoints(pts);
+
+            float depth = Math.abs(pts[3] - pts[1]) * mDepth;
+
+            for (int i = 0; i < mYVals.size(); i++) {
+
+                float y = mYVals.get(i);
+                float left = i + mBarSpace / 2f;
+                float right = i + 1f - mBarSpace / 2f;
+                float top = y >= 0 ? y : 0;
+
+                // create the 3D effect paths for the top and side
+                Path topPath = new Path();
+                topPath.moveTo(left, top);
+                topPath.lineTo(left + mSkew, top + depth);
+                topPath.lineTo(right + mSkew, top + depth);
+                topPath.lineTo(right, top);
+
+                topPaths.add(topPath);
+
+                Path sidePath = new Path();
+                sidePath.moveTo(right, top);
+                sidePath.lineTo(right + mSkew, top + depth);
+                sidePath.lineTo(right + mSkew, depth);
+                sidePath.lineTo(right, 0);
+
+                sidePaths.add(sidePath);
+            }
+
             transformPaths(topPaths);
-            transformPaths(sidePaths);   
+            transformPaths(sidePaths);
         }
 
         // do the drawing
-        for (int i = 0; i < rects.size(); i++) {
+        for (int i = 0; i < mYVals.size(); i++) {
 
             Paint paint = mDrawPaints[i % mDrawPaints.length];
 
-            mDrawCanvas.drawRect(rects.get(i), paint);
+            float y = mYVals.get(i);
+            float left = i + mBarSpace / 2f;
+            float right = i + 1f - mBarSpace / 2f;
+            float top = y >= 0 ? y : 0;
+            float bottom = y <= 0 ? y : 0;
+
+            mBarRect.set(left, top, right, bottom);
+
+            transformRect(mBarRect);
+
+            mDrawCanvas.drawRect(mBarRect, paint);
 
             if (m3DEnabled) {
 

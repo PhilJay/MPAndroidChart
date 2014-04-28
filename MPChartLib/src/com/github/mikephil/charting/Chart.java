@@ -34,10 +34,10 @@ import java.util.ArrayList;
 public abstract class Chart extends View {
 
     protected static final String LOG_TAG = "MPChart";
-    
+
     protected int mColorDarkBlue = Color.rgb(41, 128, 186);
     protected int mColorDarkRed = Color.rgb(232, 76, 59);
-    
+
     /** the total sum of all y-values */
     protected float mYValueSum = 0f;
 
@@ -67,7 +67,7 @@ public abstract class Chart extends View {
 
     /** the lowest value the chart can display */
     protected float mYChartMin = 0.0f;
-    
+
     /** the highest value the chart can display */
     protected float mYChartMax = 0.0f;
 
@@ -76,19 +76,19 @@ public abstract class Chart extends View {
 
     /** the minimum y-value in the y-value array */
     protected float mYMin = 0.0f;
-    
+
     protected ColorTemplate mColorTemplate;
 
     protected Paint mDrawPaint;
     protected Paint mDescPaint;
     protected Paint mInfoPaint;
     protected Paint mValuePaint;
-    
+
     protected Paint[] mDrawPaints;
 
     /** description text that appears in the bottom right corner of the chart */
     protected String mDescription = "Description.";
-    
+
     /** flag that indicates if the chart has been fed with data yet */
     protected boolean mDataNotSet = true;
 
@@ -97,7 +97,7 @@ public abstract class Chart extends View {
 
     /** the number of x-values the chart displays */
     protected float mDeltaX = 1f;
-    
+
     /** contains the current scale factor of the x-axis */
     protected float mScaleX = 1f;
 
@@ -112,7 +112,7 @@ public abstract class Chart extends View {
 
     /** the default draw color (some kind of light blue) */
     protected int mDrawColor = Color.rgb(56, 199, 240);
-    
+
     /** if true, touch gestures are enabled on the chart */
     protected boolean mTouchEnabled = true;
 
@@ -144,7 +144,7 @@ public abstract class Chart extends View {
      * initialize all paints and stuff
      */
     protected void init() {
-        
+
         // initialize the utils
         Utils.init(getContext().getResources());
 
@@ -201,13 +201,14 @@ public abstract class Chart extends View {
 
         prepare();
     }
-    
+
     /**
      * prepares all the paint objects that are used for drawing
+     * 
      * @param ct
      */
     protected abstract void prepareDataPaints(ColorTemplate ct);
-    
+
     /**
      * does needed preparations for drawing
      */
@@ -233,24 +234,24 @@ public abstract class Chart extends View {
         }
 
         mYChartMin = mYMin;
-        
+
         // calc delta
         mDeltaY = mYMax - mYChartMin;
         mYChartMax = mYChartMin + mDeltaY;
 
         mDeltaX = mXVals.size() - 1;
-        
+
         calcYValueSum();
     }
-    
+
     /**
      * calculates the sum of all y-values
      */
     private void calcYValueSum() {
-        
+
         mYValueSum = 0;
-        
-        for(int i = 0; i < mYVals.size(); i++) {
+
+        for (int i = 0; i < mYVals.size(); i++) {
             mYValueSum += Math.abs(mYVals.get(i));
         }
     }
@@ -261,8 +262,8 @@ public abstract class Chart extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        
-        if(!mContentRectSetup) {
+
+        if (!mContentRectSetup) {
             mContentRectSetup = true;
             prepareContentRect();
         }
@@ -305,11 +306,12 @@ public abstract class Chart extends View {
         mMatrixValueToPx.postScale(scaleX, -scaleY);
         mMatrixOffset = new Matrix();
         mMatrixOffset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
-//        mXLegendRect = new Rect(mOffsetLeft-20, 0, getWidth() - mOffsetRight + 20, mOffsetTop);
-        
-//        calcModulus();
+        // mXLegendRect = new Rect(mOffsetLeft-20, 0, getWidth() - mOffsetRight
+        // + 20, mOffsetTop);
+
+        // calcModulus();
     }
-    
+
     /**
      * sets up the content rect that restricts the chart surface
      */
@@ -331,14 +333,15 @@ public abstract class Chart extends View {
         path.transform(mMatrixTouch);
         path.transform(mMatrixOffset);
     }
-    
+
     /**
      * transforms multiple paths will all matrices
+     * 
      * @param paths
      */
     protected void transformPaths(ArrayList<Path> paths) {
-        
-        for(int i = 0; i < paths.size(); i++) {
+
+        for (int i = 0; i < paths.size(); i++) {
             transformPath(paths.get(i));
         }
     }
@@ -355,9 +358,10 @@ public abstract class Chart extends View {
         mMatrixTouch.mapPoints(pts);
         mMatrixOffset.mapPoints(pts);
     }
-    
+
     /**
      * transform a rectangle with all matrices
+     * 
      * @param r
      */
     protected void transformRect(RectF r) {
@@ -366,32 +370,36 @@ public abstract class Chart extends View {
         mMatrixTouch.mapRect(r);
         mMatrixOffset.mapRect(r);
     }
-    
+
     /**
      * transforms multiple rects with all matrices
+     * 
      * @param rects
      */
     protected void transformRects(ArrayList<RectF> rects) {
 
-        for(int i = 0; i < rects.size(); i++) transformRect(rects.get(i));
+        for (int i = 0; i < rects.size(); i++)
+            transformRect(rects.get(i));
     }
-    
+
     /**
      * transforms the given rect objects with the touch matrix only
+     * 
      * @param paths
      */
     protected void transformRectsTouch(ArrayList<RectF> rects) {
-        for(int i = 0; i < rects.size(); i++) {
+        for (int i = 0; i < rects.size(); i++) {
             mMatrixTouch.mapRect(rects.get(i));
         }
-    }     
-    
+    }
+
     /**
      * transforms the given path objects with the touch matrix only
+     * 
      * @param paths
      */
     protected void transformPathsTouch(ArrayList<Path> paths) {
-        for(int i = 0; i < paths.size(); i++) {
+        for (int i = 0; i < paths.size(); i++) {
             paths.get(i).transform(mMatrixTouch);
         }
     }
@@ -408,23 +416,24 @@ public abstract class Chart extends View {
         // mMatrixTouch.mapPoints(pts);
         mMatrixOffset.mapPoints(pts);
     }
-    
+
     /** the x-position the marker appears on */
     protected int mMarkerPosX = 100;
-    
+
     /** the y-postion the marker appears on */
     protected int mMarkerPosY = 100;
-    
+
     /** the view that represents the marker */
     protected RelativeLayout mMarkerView;
-    
+
     /**
      * draws the view that is displayed when the chart is clicked
      */
     protected void drawMarkerView() {
-        
-        if(mMarkerView == null) return;
-        
+
+        if (mMarkerView == null)
+            return;
+
         mDrawCanvas.translate(mMarkerPosX, mMarkerPosY);
         mMarkerView.draw(mDrawCanvas);
         mDrawCanvas.translate(-mMarkerPosX, -mMarkerPosY);
@@ -438,15 +447,16 @@ public abstract class Chart extends View {
         mDrawCanvas.drawText(mDescription, getWidth() - mOffsetRight - 10, getHeight()
                 - mOffsetBottom - 10, mDescPaint);
     }
-    
+
     /**
      * calculates the approximate width of a text, depending on a demo text
+     * 
      * @param paint
      * @param demoText
      * @return
      */
     protected int calcTextWidth(Paint paint, String demoText) {
-        
+
         Rect r = new Rect();
         paint.getTextBounds(demoText, 0, demoText.length(), r);
         return r.width();
@@ -456,19 +466,20 @@ public abstract class Chart extends View {
      * draws all the text-values to the chart
      */
     protected abstract void drawValues();
-    
+
     /**
      * draws the actual data
      */
     protected abstract void drawData();
-    
+
     /**
      * draws additional stuff, whatever that might be
      */
     protected abstract void drawAdditional();
-   
+
     /**
      * highlights the value at the given index of the values list
+     * 
      * @param indices
      */
     public abstract void highlightValues(int[] indices);
@@ -483,12 +494,15 @@ public abstract class Chart extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        
-        if(mListener == null) return false;
-        
+
+        if (mListener == null)
+            return false;
+
         // check if touch gestures are enabled
-        if(!mTouchEnabled) return false;
-        else return mListener.onTouch(this, event);
+        if (!mTouchEnabled)
+            return false;
+        else
+            return mListener.onTouch(this, event);
     }
 
     public void disableScroll() {
@@ -503,6 +517,7 @@ public abstract class Chart extends View {
 
     /**
      * call this method to refresh the graph with a given touch matrix
+     * 
      * @param newTouchMatrix
      * @return
      */
@@ -511,7 +526,7 @@ public abstract class Chart extends View {
 
         // make sure scale and translation are within their bounds
         limitTransAndScale(mMatrixTouch);
-        
+
         // redraw
         invalidate();
 
@@ -521,22 +536,23 @@ public abstract class Chart extends View {
 
     /**
      * limits the maximum scale and X translation of the given matrix
+     * 
      * @param matrix
      */
     protected void limitTransAndScale(Matrix matrix) {
-        
+
         float[] vals = new float[9];
         matrix.getValues(vals);
-        
+
         float curTransX = vals[Matrix.MTRANS_X];
         float curScaleX = vals[Matrix.MSCALE_X];
-        
+
         // minimum scale is 1f
-        mScaleX = Math.max(1f, Math.min(getMaxScale(), curScaleX)); 
-        
+        mScaleX = Math.max(1f, Math.min(getMaxScale(), curScaleX));
+
         float maxTransX = -(float) mContentRect.width() * (mScaleX - 1f);
         float newTransX = Math.min(Math.max(curTransX, maxTransX), 0);
-        
+
         vals[Matrix.MTRANS_X] = newTransX;
         vals[Matrix.MSCALE_X] = mScaleX;
 
@@ -549,39 +565,41 @@ public abstract class Chart extends View {
     /** BELOW THIS ONLY GETTERS AND SETTERS */
 
     /**
-     * set a new (e.g. custom) charttouchlistener
-     * NOTE: make sure to setTouchEnabled(true); if you need touch gestures on the chart
+     * set a new (e.g. custom) charttouchlistener NOTE: make sure to
+     * setTouchEnabled(true); if you need touch gestures on the chart
      * 
      * @param l
      */
     public void setOnTouchListener(OnTouchListener l) {
         this.mListener = l;
     }
-        
+
     /**
      * returns the total value (sum) of all y-values
+     * 
      * @return
      */
     public float getYValueSum() {
         return mYValueSum;
     }
-    
+
     /**
      * returns the current x-scale value
      */
     public float getScaleX() {
         return mScaleX;
     }
-    
+
     /**
      * calcualtes the maximum scale value depending on the number of x-values,
      * maximum scale is numberOfXvals / 2
+     * 
      * @return
      */
     public float getMaxScale() {
         return mDeltaX / 2f;
     }
-    
+
     /**
      * returns the current y-max value in the y-values array
      * 
@@ -600,9 +618,11 @@ public abstract class Chart extends View {
     public float getYChartMin() {
         return mYChartMin;
     }
-    
+
     /**
-     * returns the current maximum y-value that is visible on the chart - can be displayed by the chart
+     * returns the current maximum y-value that is visible on the chart - can be
+     * displayed by the chart
+     * 
      * @return
      */
     public float getYChartMax() {
@@ -617,9 +637,10 @@ public abstract class Chart extends View {
     public float getYMin() {
         return mYMin;
     }
-        
+
     /**
      * returns the center point of the chart
+     * 
      * @return
      */
     public PointF getCenter() {
@@ -686,9 +707,10 @@ public abstract class Chart extends View {
         mOffsetRight = (int) Utils.convertDpToPixel(right);
         mOffsetTop = (int) Utils.convertDpToPixel(top);
     }
-    
+
     /**
      * set this to false to disable gestures on the chart, default: true
+     * 
      * @param enabled
      */
     public void setTouchEnabled(boolean enabled) {
@@ -705,28 +727,31 @@ public abstract class Chart extends View {
         this.mDrawValues = enabled;
     }
 
-//    /**
-//     * set this to true to make the x-legend exactly fill the whole chart with
-//     * all values being exacly correct, if the x-legend fits, it means that all
-//     * values use exactly the whole chart width, this can however lead to an
-//     * increased or decreased number of x-legend grid lines -> e.g. if the
-//     * number of x-values is a prime number only the first and last x-legend
-//     * grid line will be created. Nevertheless, the chart will always try to get
-//     * as close as possible to the actually specified number of x-legend grid
-//     * lines. if set to false, the chart will use exactly the specified number
-//     * of x-legend grid lines. This can however lead to small incorrectness of
-//     * the gridlines if the number of x-entries cannot be divided through the
-//     * number of X-legend entries. default: enabled true
-//     * 
-//     * @param enabled
-//     */
-//    public void setFitXLegend(boolean enabled) {
-//        this.mFitXLegend = enabled;
-//        prepare();
-//    }
-    
+    // /**
+    // * set this to true to make the x-legend exactly fill the whole chart with
+    // * all values being exacly correct, if the x-legend fits, it means that
+    // all
+    // * values use exactly the whole chart width, this can however lead to an
+    // * increased or decreased number of x-legend grid lines -> e.g. if the
+    // * number of x-values is a prime number only the first and last x-legend
+    // * grid line will be created. Nevertheless, the chart will always try to
+    // get
+    // * as close as possible to the actually specified number of x-legend grid
+    // * lines. if set to false, the chart will use exactly the specified number
+    // * of x-legend grid lines. This can however lead to small incorrectness of
+    // * the gridlines if the number of x-entries cannot be divided through the
+    // * number of X-legend entries. default: enabled true
+    // *
+    // * @param enabled
+    // */
+    // public void setFitXLegend(boolean enabled) {
+    // this.mFitXLegend = enabled;
+    // prepare();
+    // }
+
     /**
      * sets the y- starting and ending value
+     * 
      * @param start
      * @param end
      */
@@ -734,23 +759,25 @@ public abstract class Chart extends View {
         mYChartMin = start;
         mDeltaY = end - start;
     }
-    
+
     /**
      * sets a colortemplate for the chart
+     * 
      * @param ct
      */
     public void setColorTemplate(ColorTemplate ct) {
         this.mColorTemplate = ct;
-        
+
         prepareDataPaints(ct);
     }
-    
+
     /**
      * sets the view that is displayed when a value is clicked on the chart
+     * 
      * @param v
      */
     public void setMarkerView(View v) {
-        
+
         mMarkerView = new RelativeLayout(getContext());
         mMarkerView.addView(v);
 
@@ -758,19 +785,43 @@ public abstract class Chart extends View {
         mMarkerView.layout(0, 0, mDrawCanvas.getWidth(), mDrawCanvas.getHeight());
     }
 
-    /** static fields as identifiers for all the available paint objects */
-
+    /** paint for the lines of the linechart */
     public static final int PAINT_LINE = 1;
+
+    /** paint for the filled surface / area of the linechart */
     public static final int PAINT_LINE_FILLED = 2;
+
+    /** paint for the grid lines */
     public static final int PAINT_GRID = 3;
+
+    /** paint for the grid background */
     public static final int PAINT_GRID_BACKGROUND = 4;
+
+    /** paint for the y-legend values */
     public static final int PAINT_YLEGEND = 5;
+
+    /** paint for the x-legend values */
     public static final int PAINT_XLEGEND = 6;
+
+    /**
+     * paint for the info text that is displayed when there are no values in the
+     * chart
+     */
     public static final int PAINT_INFO = 7;
+
+    /** paint for the value text that is displayed above each value */
     public static final int PAINT_VALUES = 8;
+
+    /** paint for the outer circle */
     public static final int PAINT_CIRCLES_OUTER = 9;
+
+    /** paint for the inner circle */
     public static final int PAINT_CIRCLES_INNER = 10;
+
+    /** paint for the description text in the bottom right corner */
     public static final int PAINT_DESCRIPTION = 11;
+
+    /** paint for the line surrounding the chart */
     public static final int PAINT_OUTLINE = 12;
 
     /**
@@ -794,16 +845,18 @@ public abstract class Chart extends View {
                 break;
         }
     }
-//
-//    /**
-//     * returns true if fitting x legend is enabled, false if not if the x-legend
-//     * fits, it means that all values use exactly the whole chart width
-//     * 
-//     * @return
-//     */
-//    public boolean isFitXLegendEnabled() {
-//        return mFitXLegend;
-//    }
+
+    //
+    // /**
+    // * returns true if fitting x legend is enabled, false if not if the
+    // x-legend
+    // * fits, it means that all values use exactly the whole chart width
+    // *
+    // * @return
+    // */
+    // public boolean isFitXLegendEnabled() {
+    // return mFitXLegend;
+    // }
 
     /**
      * returns true if value drawing is enabled, false if not
@@ -838,7 +891,8 @@ public abstract class Chart extends View {
 
         OutputStream stream = null;
         try {
-            stream = new FileOutputStream(Environment.getExternalStorageDirectory().getPath() + pathOnSD + "/" + title + ".png");
+            stream = new FileOutputStream(Environment.getExternalStorageDirectory().getPath()
+                    + pathOnSD + "/" + title + ".png");
 
             /*
              * Write bitmap to file using JPEG or PNG and 40% quality hint for

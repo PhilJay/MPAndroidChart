@@ -15,20 +15,35 @@ import android.view.MotionEvent;
 
 import java.text.DecimalFormat;
 
+/**
+ * View that represents a pie chart.
+ * 
+ * @author Philipp Jahoda
+ */
 public class PieChart extends Chart {
 
+    /**
+     * rect object that represents the bounds of the piechart, needed for
+     * drawing the circle
+     */
     private RectF mCircleBox;
 
+    /** holds the current rotation angle of the chart */
     private float mChartAngle = 0f;
 
+    /** array that holds the width of each pie-slice in degrees */
     private float[] mDrawAngles;
+
+    /** array that holds the absolute angle in degrees of each slice */
     private float[] mAbsoluteAngles;
 
+    /** if true, the white hole inside the chart will be drawn */
     private boolean mDrawHole = true;
 
     private String mCenterTextLine1 = "Total Value";
     private String mCenterTextLine2 = "";
 
+    /** indicates the selection distance of a pie slice */
     private float mShift = 20f;
 
     /** if enabled, centertext is drawn */
@@ -44,6 +59,10 @@ public class PieChart extends Chart {
      */
     private Paint mHolePaint;
 
+    /**
+     * paint object for the text that can be displayed in the center of the
+     * chart
+     */
     private Paint mCenterTextPaint;
 
     public PieChart(Context context) {
@@ -62,6 +81,7 @@ public class PieChart extends Chart {
     protected void init() {
         super.init();
 
+        // piechart has no offsets
         mOffsetTop = 0;
         mOffsetBottom = 0;
         mOffsetLeft = 0;
@@ -87,14 +107,15 @@ public class PieChart extends Chart {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if(mDataNotSet) return;
-        
+        if (mDataNotSet)
+            return;
+
         long starttime = System.currentTimeMillis();
 
         drawData();
-        
+
         drawAdditional();
-        
+
         drawValues();
 
         drawDescription();
@@ -166,7 +187,7 @@ public class PieChart extends Chart {
 
     /**
      * sets the starting angle of the rotation, this is only used by the touch
-     * listener
+     * listener, x and y is the touch position
      * 
      * @param x
      * @param y
@@ -200,13 +221,14 @@ public class PieChart extends Chart {
     @Override
     protected void prepareContentRect() {
         super.prepareContentRect();
-        
+
         int width = mContentRect.width() + mOffsetLeft + mOffsetRight;
         int height = mContentRect.height() + mOffsetTop + mOffsetBottom;
 
         float diameter = getDiameter();
 
-        // create the circle box that will contain the pie-chart (the bounds of the pie-chart)
+        // create the circle box that will contain the pie-chart (the bounds of
+        // the pie-chart)
         mCircleBox = new RectF(width / 2 - diameter / 2 + mShift, height / 2 - diameter / 2
                 + mShift + mOffsetTop, width / 2 + diameter / 2 - mShift, height / 2 + diameter / 2
                 - mOffsetBottom - mShift);
@@ -294,8 +316,8 @@ public class PieChart extends Chart {
      */
     private void drawCenterText() {
 
-        if(mDrawCenterText) {
-         
+        if (mDrawCenterText) {
+
             PointF c = getCenter();
 
             mDrawCanvas.drawText(mCenterTextLine1, c.x, c.y, mCenterTextPaint);
@@ -372,43 +394,15 @@ public class PieChart extends Chart {
     }
 
     /**
-     * returns the chart value index for the given angle (returns the correct
-     * "slice"-index)
-     * 
-     * @param angle
-     * @param x
-     * @param y
-     * @return
-     */
-    public int getIndexForAngle(float angle, float x, float y) {
-
-        // Log.i(LOG_TAG, "rawangle: " + angle);
-        PointF c = getCenter();
-
-        if (y < c.y) { // if we are above the center on the y-axis
-            angle = 360f - angle;
-        }
-
-        angle = Math.abs(angle - mChartAngle) % 360f;
-        // Log.i(LOG_TAG, "angle: " + angle + ", chartangle: " + mChartAngle);
-
-        for (int i = 0; i < mAbsoluteAngles.length; i++) {
-            if (mAbsoluteAngles[i] > angle)
-                return i;
-        }
-
-        return -1; // return -1 if no index found
-    }
-
-    /**
      * returns the pie index for the pie at the given angle
+     * 
      * @param angle
      * @return
      */
     public int getIndexForAngle(float angle) {
 
+        // take the current angle of the chart into consideration
         float a = (angle - mChartAngle + 360) % 360f;
-        Log.i("getindex", "" + a);
 
         for (int i = 0; i < mAbsoluteAngles.length; i++) {
             if (mAbsoluteAngles[i] > a)
@@ -441,7 +435,7 @@ public class PieChart extends Chart {
 
     /**
      * set a new starting angle for the pie chart (0-360) default is 0° -->
-     * right side
+     * right side (EAST)
      * 
      * @param angle
      */
@@ -459,7 +453,7 @@ public class PieChart extends Chart {
     }
 
     /**
-     * sets the distance of the highlighted value to the piechart
+     * sets the distance of the highlighted value to the piechart default 20f
      * 
      * @param shift
      */
@@ -523,8 +517,10 @@ public class PieChart extends Chart {
      * @return
      */
     public float getRadius() {
-        if(mCircleBox == null) return 0;
-        else return mCircleBox.width() / 2f;
+        if (mCircleBox == null)
+            return 0;
+        else
+            return mCircleBox.width() / 2f;
     }
 
     /**
@@ -533,13 +529,15 @@ public class PieChart extends Chart {
      * @return
      */
     public float getDiameter() {
-        if(mContentRect == null) return 0;
-        else return Math.min(mContentRect.width(), mContentRect.height());
+        if (mContentRect == null)
+            return 0;
+        else
+            return Math.min(mContentRect.width(), mContentRect.height());
     }
 
     /**
      * returns the angle relative to the chart center for the given point on the
-     * chart in degrees
+     * chart in degrees. The angle is always between 0 and 360°, 0° is EAST
      * 
      * @param x
      * @param y
@@ -548,9 +546,10 @@ public class PieChart extends Chart {
     public float getAngleForPoint(float x, float y) {
 
         PointF c = getCenter();
+
         double tx = x - c.x, ty = y - c.y;
-        double t_length = Math.sqrt(tx * tx + ty * ty);
-        double r = Math.acos(ty / t_length);
+        double length = Math.sqrt(tx * tx + ty * ty);
+        double r = Math.acos(ty / length);
 
         float angle = (float) Math.toDegrees(r);
 

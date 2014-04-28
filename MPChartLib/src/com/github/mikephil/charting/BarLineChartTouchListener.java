@@ -223,26 +223,26 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
         return matrix;
     }
 
-    // @Override
-    // public boolean onDoubleTap(MotionEvent e) {
-    //
-    // float[] values = new float[9];
-    // matrix.getValues(values);
-    // float sX = values[Matrix.MSCALE_X];
-    // float minScale = minScale();
-    //
-    // if (sX > minScale * 1.5f) {
-    // matrix.postScale(0.5f, 0.5f, e.getX(), e.getY());
-    // } else {
-    // matrix.postScale(2, 2, e.getX(), e.getY());
-    // }
-    // limitScale();
-    // limitPan();
-    // ctx.update();
-    //
-    // return true;
-    // }
-
+//     @Override
+//     public boolean onDoubleTap(MotionEvent e) {
+//    
+//     float[] values = new float[9];
+//     matrix.getValues(values);
+//     float sX = values[Matrix.MSCALE_X];
+//     float minScale = minScale();
+//    
+//     if (sX > minScale * 1.5f) {
+//     matrix.postScale(0.5f, 0.5f, e.getX(), e.getY());
+//     } else {
+//     matrix.postScale(2, 2, e.getX(), e.getY());
+//     }
+//     limitScale();
+//     limitPan();
+//     ctx.update();
+//    
+//     return true;
+//     }
+    
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
 
