@@ -102,12 +102,12 @@ public class BarChart extends BarLineChartBase {
         // increase deltax by 1 because the bars have a width of 1
         mDeltaX++;
     }
-    
+
     private RectF mBarRect = new RectF();
 
     @Override
     protected void drawData() {
-       
+
         ArrayList<Path> topPaths = new ArrayList<Path>();
         ArrayList<Path> sidePaths = new ArrayList<Path>();
 
@@ -201,8 +201,80 @@ public class BarChart extends BarLineChartBase {
     }
 
     @Override
+    protected void drawValues() {
+
+        // if values are drawn
+        if (mDrawYValues && mYVals.size() < mMaxVisibleCount * mScaleX) {
+
+            float[] valuePoints = new float[mYVals.size() * 2];
+
+            for (int i = 0; i < valuePoints.length; i += 2) {
+                valuePoints[i] = i / 2 + 0.5f; // add 0.5f too keep the values
+                                               // centered on top of the bars
+                valuePoints[i + 1] = mYVals.get(i / 2);
+            }
+
+            transformPointArray(valuePoints);
+
+            for (int i = 0; i < valuePoints.length; i += 2) {
+                mDrawCanvas.drawText(
+                        mFormatValue.format(mYVals.get(i / 2)),
+                        valuePoints[i], valuePoints[i + 1] - 12, mValuePaint);
+            }
+        }
+    }
+
+    @Override
     public void highlightValues(int[] indices) {
         super.highlightValues(indices);
+    }
+
+    /**
+     * sets the skew (default 0.3f), the skew indicates how much the 3D effect
+     * of the chart is turned to the right
+     * 
+     * @param skew
+     */
+    public void setSkew(float skew) {
+        this.mSkew = skew;
+    }
+
+    /**
+     * returns the skew value that indicates how much the 3D effect is turned to
+     * the right
+     * 
+     * @return
+     */
+    public float getSkew() {
+        return mSkew;
+    }
+
+    /**
+     * set the depth of the chart (default 0.3f), the depth indicates how much
+     * the 3D effect of the chart goes back
+     * 
+     * @param depth
+     */
+    public void setDepth(float depth) {
+        this.mDepth = depth;
+    }
+
+    /**
+     * returhs the depth, which indicates how much the 3D effect goes back
+     * 
+     * @return
+     */
+    public float getDepth() {
+        return mDepth;
+    }
+
+    /**
+     * returns the space between bars in percent of the whole width of one value
+     * 
+     * @return
+     */
+    public float getBarSpace() {
+        return mBarSpace * 100f;
     }
 
     /**
@@ -232,8 +304,22 @@ public class BarChart extends BarLineChartBase {
         return m3DEnabled;
     }
 
-    @Override
-    protected void drawValues() {
+    /**
+     * returns the top colors that define the color of the top 3D effect path
+     * 
+     * @return
+     */
+    public int[] getTopColors() {
+        return mTopColors;
+    }
+
+    /**
+     * returns the side colors that define the color of the side 3D effect path
+     * 
+     * @return
+     */
+    public int[] getSideColors() {
+        return mSideColors;
     }
 
     @Override

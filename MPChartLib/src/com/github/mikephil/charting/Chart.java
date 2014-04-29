@@ -116,8 +116,8 @@ public abstract class Chart extends View {
     /** if true, touch gestures are enabled on the chart */
     protected boolean mTouchEnabled = true;
 
-    /** if true, values are drawn on the chart */
-    protected boolean mDrawValues = true;
+    /** if true, y-values are drawn on the chart */
+    protected boolean mDrawYValues = true;
 
     /** this rectangle defines the area in which graph values can be drawn */
     protected Rect mContentRect;
@@ -486,16 +486,18 @@ public abstract class Chart extends View {
      * @param indices
      */
     protected void highlightValues(int[] indices) {
-        
-        if(mSelectionListener != null) {
-            
-            if(indices[0] == -1) mSelectionListener.onNothingSelected();
-            else {             
-                
+
+        if (mSelectionListener != null) {
+
+            if (indices[0] == -1)
+                mSelectionListener.onNothingSelected();
+            else {
+
                 float[] values = new float[indices.length];
-                
-                for(int i = 0; i < values.length; i++) values[i] = getYValue(indices[i]);
-                
+
+                for (int i = 0; i < values.length; i++)
+                    values[i] = getYValue(indices[i]);
+
                 // notify the listener
                 mSelectionListener.onValuesSelected(values, indices);
             }
@@ -736,13 +738,14 @@ public abstract class Chart extends View {
     }
 
     /**
-     * set this to true to draw values on the chart NOTE: if more than 100
-     * values are on the screen, values will not be drawn, even if enabled
+     * set this to true to draw y-values on the chart NOTE (for bar and
+     * linechart): if "maxvisiblecount" is reached, no values will be drawn even
+     * if this is enabled
      * 
      * @param enabled
      */
-    public void setDrawValues(boolean enabled) {
-        this.mDrawValues = enabled;
+    public void setDrawYValues(boolean enabled) {
+        this.mDrawYValues = enabled;
     }
 
     // /**
@@ -803,22 +806,31 @@ public abstract class Chart extends View {
         mMarkerView.layout(0, 0, mDrawCanvas.getWidth(), mDrawCanvas.getHeight());
     }
 
+    /**
+     * returns the view that is set as a marker view for the chartv
+     * 
+     * @return
+     */
+    public View getMarkerView() {
+        return mMarkerView;
+    }
+
     /** paint for the lines of the linechart */
     public static final int PAINT_LINE = 1;
 
     /** paint for the filled surface / area of the linechart */
-    public static final int PAINT_LINE_FILLED = 2;
+    public static final int PAINT_FILLED = 2;
 
-    /** paint for the grid lines */
+    /** paint for the grid lines (only line and barchart) */
     public static final int PAINT_GRID = 3;
 
-    /** paint for the grid background */
+    /** paint for the grid background (only line and barchart) */
     public static final int PAINT_GRID_BACKGROUND = 4;
 
-    /** paint for the y-legend values */
+    /** paint for the y-legend values (only line and barchart) */
     public static final int PAINT_YLEGEND = 5;
 
-    /** paint for the x-legend values */
+    /** paint for the x-legend values (only line and barchart) */
     public static final int PAINT_XLEGEND = 6;
 
     /**
@@ -827,20 +839,26 @@ public abstract class Chart extends View {
      */
     public static final int PAINT_INFO = 7;
 
-    /** paint for the value text that is displayed above each value */
+    /** paint for the value text */
     public static final int PAINT_VALUES = 8;
 
-    /** paint for the outer circle */
+    /** paint for the outer circle (linechart) */
     public static final int PAINT_CIRCLES_OUTER = 9;
 
-    /** paint for the inner circle */
+    /** paint for the inner circle (linechart) */
     public static final int PAINT_CIRCLES_INNER = 10;
 
     /** paint for the description text in the bottom right corner */
     public static final int PAINT_DESCRIPTION = 11;
 
-    /** paint for the line surrounding the chart */
+    /** paint for the line surrounding the chart (only line and barchart) */
     public static final int PAINT_OUTLINE = 12;
+
+    /** paint for the hole in the middle of the pie chart */
+    public static final int PAINT_HOLE = 13;
+
+    /** paint for the text in the middle of the pie chart */
+    public static final int PAINT_CENTER_TEXT = 14;
 
     /**
      * set a new paint object for the specified parameter in the chart e.g.
@@ -877,12 +895,12 @@ public abstract class Chart extends View {
     // }
 
     /**
-     * returns true if value drawing is enabled, false if not
+     * returns true if y-value drawing is enabled, false if not
      * 
      * @return
      */
-    public boolean isDrawValuesEnabled() {
-        return mDrawValues;
+    public boolean isDrawYValuesEnabled() {
+        return mDrawYValues;
     }
 
     /**
@@ -917,9 +935,10 @@ public abstract class Chart extends View {
     public float getPercentOfTotal(float val) {
         return val / mYValueSum * 100f;
     }
-    
+
     /**
      * set a selection listener for the chart
+     * 
      * @param l
      */
     public void setOnChartValueSelectedListener(OnChartValueSelectedListener l) {

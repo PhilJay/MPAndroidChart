@@ -68,8 +68,8 @@ public class MultipleChartsActivity extends Activity {
         mPieChart.setData(xvalsSmall, small);
         mPieChart.setColorTemplate(new ColorTemplate(ColorTemplate.getColors(this, ColorTemplate.FRESH_COLORS)));
 //        mChart3.highlightValues(new int[] {0, 1, 2, 3, 4} );
-        mPieChart.setDrawValues(true);
-        mPieChart.setDrawXVals(false);
+        mPieChart.setDrawYValues(true);
+        mPieChart.setDrawXValues(false);
         
         mBarChart3D.setData(xvalsLarge, large);
         mBarChart3D.setColorTemplate(new ColorTemplate(ColorTemplate.getColors(this, ColorTemplate.LIBERTY_COLORS)));

@@ -43,7 +43,7 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
 //        mChart.setDrawFilled(true);
 //        mChart.setRoundedYLegend(false);
 //        mChart.setStartAtZero(true);
-        mChart.setDrawValues(false);
+        mChart.setDrawYValues(false);
         mChart.set3DEnabled(false);
 //        mChart.setSpacePercent(20, 10);
         mChart.setYLegendCount(5);
@@ -72,10 +72,10 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
                 break;
             }
             case R.id.actionToggleValues: {
-                if (mChart.isDrawValuesEnabled())
-                    mChart.setDrawValues(false);
+                if (mChart.isDrawYValuesEnabled())
+                    mChart.setDrawYValues(false);
                 else
-                    mChart.setDrawValues(true);
+                    mChart.setDrawYValues(true);
                 mChart.invalidate();
                 break;
             }

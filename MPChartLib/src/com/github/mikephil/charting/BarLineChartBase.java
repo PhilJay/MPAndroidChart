@@ -61,10 +61,19 @@ public abstract class BarLineChartBase extends Chart {
     /** if true, the y-legend will always start at zero */
     protected boolean mStartAtZero = true;
 
+    /** paint object for the grid lines */
     protected Paint mGridPaint;
+
+    /** paint object for the (by default) lightgrey background of the grid */
     protected Paint mGridBackgroundPaint;
+
+    /** paint for the line surrounding the chart */
     protected Paint mOutLinePaint;
+
+    /** paint for the x-legend values */
     protected Paint mXLegendPaint;
+
+    /** paint for the y-legend values */
     protected Paint mYLegendPaint;
 
     public BarLineChartBase(Context context, AttributeSet attrs, int defStyle) {
@@ -116,8 +125,9 @@ public abstract class BarLineChartBase extends Chart {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        
-        if(mDataNotSet) return;
+
+        if (mDataNotSet)
+            return;
 
         long starttime = System.currentTimeMillis();
 
@@ -244,7 +254,7 @@ public abstract class BarLineChartBase extends Chart {
     @Override
     protected void calcMinMax() {
         super.calcMinMax(); // calc min and max in the super class
-        
+
         // additional handling for space (default 10% space)
 
         float spaceTop = (mYMax - mYChartMin) / 100f * 10f;
@@ -486,29 +496,6 @@ public abstract class BarLineChartBase extends Chart {
         }
     }
 
-    @Override
-    protected void drawValues() {
-
-        // if values are drawn
-        if (mDrawValues && mYVals.size() < mMaxVisibleCount * mScaleX) {
-
-            float[] valuePoints = new float[mYVals.size() * 2];
-
-            for (int i = 0; i < valuePoints.length; i += 2) {
-                valuePoints[i] = i / 2;
-                valuePoints[i + 1] = mYVals.get(i / 2);
-            }
-
-            transformPointArray(valuePoints);
-
-            for (int i = 0; i < valuePoints.length; i += 2) {
-                mDrawCanvas.drawText(
-                        mFormatValue.format(mYVals.get(i / 2)),
-                        valuePoints[i], valuePoints[i + 1] - 12, mValuePaint);
-            }
-        }
-    }
-
     /**
      * determines how much space (in percent of the total range) is left between
      * the loweset value of the chart and its bottom (bottomSpace) and the
@@ -518,22 +505,23 @@ public abstract class BarLineChartBase extends Chart {
      * @param bottomSpace
      * @param topSpace
      */
-//    public void setSpacePercent(int bottomSpace, int topSpace) {
-//        mYSpacePercentBottom = bottomSpace;
-//        mYSpacePercentTop = topSpace;
-//    }
-    
+    // public void setSpacePercent(int bottomSpace, int topSpace) {
+    // mYSpacePercentBottom = bottomSpace;
+    // mYSpacePercentTop = topSpace;
+    // }
+
     /**
      * sets the effective range of y-values the chart can display
+     * 
      * @param minY
      * @param maxY
      */
     public void setYRange(float minY, float maxY) {
-        
+
         mYChartMin = minY;
         mYChartMax = maxY;
         mDeltaY = mYChartMax - mYChartMin;
-        
+
         prepareMatrix();
         prepareYLegend();
     }
@@ -694,9 +682,32 @@ public abstract class BarLineChartBase extends Chart {
             width = 3.0f;
         mGridWidth = width;
     }
-    
+
     @Override
     protected void highlightValues(int[] indices) {
         super.highlightValues(indices);
+    }
+
+    @Override
+    public void setPaint(Paint p, int which) {
+        super.setPaint(p, which);
+
+        switch (which) {
+            case PAINT_GRID:
+                mGridPaint = p;
+                break;
+            case PAINT_GRID_BACKGROUND:
+                mGridBackgroundPaint = p;
+                break;
+            case PAINT_OUTLINE:
+                mOutLinePaint = p;
+                break;
+            case PAINT_XLEGEND:
+                mXLegendPaint = p;
+                break;
+            case PAINT_YLEGEND:
+                mYLegendPaint = p;
+                break;
+        }
     }
 }

@@ -41,7 +41,7 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 //        mChart.setDrawFilled(true);
 //        mChart.setRoundedYLegend(false);
 //        mChart.setStartAtZero(true);
-        mChart.setDrawValues(false);
+        mChart.setDrawYValues(false);
         mChart.setLineWidth(5f);
         mChart.setCircleSize(5f);
 //        mChart.setSpacePercent(20, 10);
@@ -71,10 +71,10 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
                 break;
             }
             case R.id.actionToggleValues: {
-                if (mChart.isDrawValuesEnabled())
-                    mChart.setDrawValues(false);
+                if (mChart.isDrawYValuesEnabled())
+                    mChart.setDrawYValues(false);
                 else
-                    mChart.setDrawValues(true);
+                    mChart.setDrawYValues(true);
                 mChart.invalidate();
                 break;
             }

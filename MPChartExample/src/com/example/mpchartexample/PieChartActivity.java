@@ -41,12 +41,12 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
         mChart = (PieChart) findViewById(R.id.chart1);
         mChart.setColorTemplate(new ColorTemplate(ColorTemplate.getColors(this, ColorTemplate.COLORFUL_COLORS)));
         
-        mChart.setDrawValues(true);
+        mChart.setDrawYValues(true);
         mChart.setDrawCenterText(true);
 
         mChart.setDescription("This is a description."); 
         mChart.setDrawHoleEnabled(true);
-        mChart.setDrawXVals(true);
+        mChart.setDrawXValues(true);
         mChart.setTouchEnabled(true);
         mChart.setUsePercentValues(false);
         mChart.setOnChartValueSelectedListener(this);
@@ -71,10 +71,10 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
         
         switch (item.getItemId()) {
             case R.id.actionToggleValues: {
-                if (mChart.isDrawValuesEnabled())
-                    mChart.setDrawValues(false);
+                if (mChart.isDrawYValuesEnabled())
+                    mChart.setDrawYValues(false);
                 else
-                    mChart.setDrawValues(true);
+                    mChart.setDrawYValues(true);
                 mChart.invalidate();
                 break;
             }
@@ -103,10 +103,10 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
                 break;
             }
             case R.id.actionToggleXVals: {
-                if (mChart.isDrawXValsEnabled())
-                    mChart.setDrawXVals(false);
+                if (mChart.isDrawXValuesEnabled())
+                    mChart.setDrawXValues(false);
                 else
-                    mChart.setDrawXVals(true);
+                    mChart.setDrawXValues(true);
                 mChart.invalidate();
                 break;
             }
