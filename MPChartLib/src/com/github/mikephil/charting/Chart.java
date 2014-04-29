@@ -122,6 +122,9 @@ public abstract class Chart extends View {
     /** this rectangle defines the area in which graph values can be drawn */
     protected Rect mContentRect;
 
+    /** listener that is called when a value on the chart is selected */
+    protected OnChartValueSelectedListener mSelectionListener;
+
     /** default constructor for initialization in code */
     public Chart(Context context) {
         super(context);
@@ -482,7 +485,22 @@ public abstract class Chart extends View {
      * 
      * @param indices
      */
-    public abstract void highlightValues(int[] indices);
+    protected void highlightValues(int[] indices) {
+        
+        if(mSelectionListener != null) {
+            
+            if(indices[0] == -1) mSelectionListener.onNothingSelected();
+            else {             
+                
+                float[] values = new float[indices.length];
+                
+                for(int i = 0; i < values.length; i++) values[i] = getYValue(indices[i]);
+                
+                // notify the listener
+                mSelectionListener.onValuesSelected(values, indices);
+            }
+        }
+    }
 
     /**
      * ################ ################ ################ ################
@@ -865,6 +883,47 @@ public abstract class Chart extends View {
      */
     public boolean isDrawValuesEnabled() {
         return mDrawValues;
+    }
+
+    /**
+     * returns the y-value at the given index
+     * 
+     * @param index
+     * @return
+     */
+    public float getYValue(int index) {
+        return mYVals.get(index);
+    }
+
+    /**
+     * returns the x-value at the given index
+     * 
+     * @param index
+     * @return
+     */
+    public String getXValue(int index) {
+        if (mXVals == null || mXVals.size() >= index)
+            return null;
+        else
+            return mXVals.get(index);
+    }
+
+    /**
+     * returns the percentage the given value has of the total y-values
+     * 
+     * @param val
+     * @return
+     */
+    public float getPercentOfTotal(float val) {
+        return val / mYValueSum * 100f;
+    }
+    
+    /**
+     * set a selection listener for the chart
+     * @param l
+     */
+    public void setOnChartValueSelectedListener(OnChartValueSelectedListener l) {
+        this.mSelectionListener = l;
     }
 
     /**

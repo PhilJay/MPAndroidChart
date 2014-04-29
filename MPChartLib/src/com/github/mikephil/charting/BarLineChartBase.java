@@ -694,4 +694,9 @@ public abstract class BarLineChartBase extends Chart {
             width = 3.0f;
         mGridWidth = width;
     }
+    
+    @Override
+    protected void highlightValues(int[] indices) {
+        super.highlightValues(indices);
+    }
 }

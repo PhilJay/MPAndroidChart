@@ -2,7 +2,6 @@ package com.example.mpchartexample;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,11 +11,12 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.ColorTemplate;
+import com.github.mikephil.charting.OnChartValueSelectedListener;
 import com.github.mikephil.charting.PieChart;
 
 import java.util.ArrayList;
 
-public class PieChartActivity extends Activity implements OnSeekBarChangeListener {
+public class PieChartActivity extends Activity implements OnSeekBarChangeListener, OnChartValueSelectedListener {
 
     private PieChart mChart; 
     private SeekBar mSeekBarX, mSeekBarY;
@@ -41,15 +41,17 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
         mChart = (PieChart) findViewById(R.id.chart1);
         mChart.setColorTemplate(new ColorTemplate(ColorTemplate.getColors(this, ColorTemplate.COLORFUL_COLORS)));
         
-        mChart.setDrawValues(false);
+        mChart.setDrawValues(true);
         mChart.setDrawCenterText(true);
 
         mChart.setDescription("This is a description."); 
         mChart.setDrawHoleEnabled(true);
-        
+        mChart.setDrawXVals(true);
         mChart.setTouchEnabled(true);
+        mChart.setUsePercentValues(false);
+        mChart.setOnChartValueSelectedListener(this);
         
-        mSeekBarX.setProgress(10);
+        mSeekBarX.setProgress(5);
         mSeekBarY.setProgress(100);
         
 //        float diameter = mChart.getDiameter();
@@ -76,6 +78,14 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
                 mChart.invalidate();
                 break;
             }
+            case R.id.actionTogglePercent: {
+                if (mChart.isUsePercentValuesEnabled())
+                    mChart.setUsePercentValues(false);
+                else
+                    mChart.setUsePercentValues(true);
+                mChart.invalidate();
+                break;
+            }
             case R.id.actionToggleHole: {
                 if (mChart.isDrawHoleEnabled())
                     mChart.setDrawHoleEnabled(false);
@@ -89,6 +99,14 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
                     mChart.setDrawCenterText(false);
                 else
                     mChart.setDrawCenterText(true);
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleXVals: {
+                if (mChart.isDrawXValsEnabled())
+                    mChart.setDrawXVals(false);
+                else
+                    mChart.setDrawXVals(true);
                 mChart.invalidate();
                 break;
             }
@@ -117,12 +135,27 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
 
         ArrayList<String> xVals = new ArrayList<String>();
         
-        for(int i = 0; i < yVals.size(); i++) xVals.add(""+i);
+        for(int i = 0; i < yVals.size(); i++) xVals.add("Text"+(i+1));
         
         mChart.setData(xVals, yVals);
+        mChart.setCenterText("Total Value\n" + (int) mChart.getYValueSum() + "\n(all slices)");
         mChart.invalidate();
     }
+    
+    @Override
+    public void onValuesSelected(float[] values, int[] indices) {
+        StringBuffer a = new StringBuffer();
+        
+        for(int i = 0; i < values.length; i++) a.append("val: " + values[i] + ", ind: " + indices[i] + "\n");
+        
+        Log.i("PieChart", "Selected: " + a.toString());
+    }
 
+    @Override
+    public void onNothingSelected() {
+        Log.i("PieChart", "nothing selected");
+    }
+    
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
         // TODO Auto-generated method stub

@@ -41,14 +41,14 @@ public class MultipleChartsActivity extends Activity {
         small.add(6f);
         
         for(int i = 0; i < small.size(); i++) {
-            xvalsSmall.add(""+i);
+            xvalsSmall.add("Val"+i);
         }
         
         ArrayList<Float> large = new ArrayList<Float>();
         
         for(int i = 0; i < 1000; i++) {
             large.add((float) (Math.random() * 50));
-            xvalsLarge.add(""+i);
+            xvalsLarge.add("Val"+i);
         }
         
         mLineChart.setData(xvalsLarge, large);
@@ -69,6 +69,7 @@ public class MultipleChartsActivity extends Activity {
         mPieChart.setColorTemplate(new ColorTemplate(ColorTemplate.getColors(this, ColorTemplate.FRESH_COLORS)));
 //        mChart3.highlightValues(new int[] {0, 1, 2, 3, 4} );
         mPieChart.setDrawValues(true);
+        mPieChart.setDrawXVals(false);
         
         mBarChart3D.setData(xvalsLarge, large);
         mBarChart3D.setColorTemplate(new ColorTemplate(ColorTemplate.getColors(this, ColorTemplate.LIBERTY_COLORS)));

@@ -202,7 +202,7 @@ public class BarChart extends BarLineChartBase {
 
     @Override
     public void highlightValues(int[] indices) {
-
+        super.highlightValues(indices);
     }
 
     /**

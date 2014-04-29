@@ -40,14 +40,28 @@ public class PieChart extends Chart {
     /** if true, the white hole inside the chart will be drawn */
     private boolean mDrawHole = true;
 
-    private String mCenterTextLine1 = "Total Value";
-    private String mCenterTextLine2 = "";
+    /**
+     * variable for the text that is drawn in the center of the pie-chart. If
+     * this value is null, the default is "Total Value\n + getYValueSum()"
+     */
+    private String mCenterText = null;
 
     /** indicates the selection distance of a pie slice */
     private float mShift = 20f;
 
     /** if enabled, centertext is drawn */
     private boolean mDrawCenterText = true;
+
+    /**
+     * set this to true to draw the x-values next to the values in the pie
+     * slices
+     */
+    private boolean mDrawXVals = true;
+    
+    /**
+     * if set to true, all values show up in percent instead of their real value
+     */
+    private boolean mUsePercentValues = false;
 
     /**
      * array of integers that reference the highlighted slices in the pie chart
@@ -99,8 +113,12 @@ public class PieChart extends Chart {
 
         mValuePaint.setTextSize(Utils.convertDpToPixel(13f));
         mValuePaint.setColor(Color.WHITE);
+        mValuePaint.setTextAlign(Align.CENTER);
 
         mListener = new PieChartTouchListener(this);
+
+        // for the piechart, drawing values is enabled
+        mDrawValues = true;
     }
 
     @Override
@@ -140,7 +158,9 @@ public class PieChart extends Chart {
             return;
 
         calcMinMax();
-        mCenterTextLine2 = "" + (int) getYValueSum();
+
+        if (mCenterText == null)
+            mCenterText = "Total Value\n" + (int) getYValueSum();
 
         // calculate how many digits are needed
         calcFormats();
@@ -302,6 +322,12 @@ public class PieChart extends Chart {
             }
             angle += newanlge;
         }
+    }
+
+    /**
+     * draws the hole in the center of the chart
+     */
+    private void drawHole() {
 
         if (mDrawHole) {
 
@@ -320,14 +346,28 @@ public class PieChart extends Chart {
 
             PointF c = getCenter();
 
-            mDrawCanvas.drawText(mCenterTextLine1, c.x, c.y, mCenterTextPaint);
-            mDrawCanvas.drawText(mCenterTextLine2, c.x, c.y + mCenterTextPaint.getTextSize() + 3,
-                    mCenterTextPaint);
+            // get all lines from the text
+            String[] lines = mCenterText.split("\n");
+
+            // calculate the height for each line
+            float lineHeight = (mValuePaint.ascent() + mValuePaint.descent()) * 1.6f;
+
+            // calculate the height of the whole text
+            float textheight = lines.length * lineHeight;
+
+            for (int i = 0; i < lines.length; i++) {
+                mDrawCanvas.drawText(lines[lines.length - i - 1], c.x, c.y - textheight/2 + lineHeight * i,
+                        mCenterTextPaint);
+            }
         }
     }
 
     @Override
     protected void drawValues() {
+
+        // if neither xvals nor yvals are drawn, return
+        if (!mDrawXVals && !mDrawValues)
+            return;
 
         PointF center = getCenter();
 
@@ -352,13 +392,41 @@ public class PieChart extends Chart {
             float y = (float) (r
                     * Math.sin(Math.toRadians(mChartAngle + mAbsoluteAngles[i] - offset)) + center.y);
 
-            if (y > center.y) {
-                y += 10;
-                x += 3;
-            }
+            // if (y > center.y) {
+            // y += 10;
+            // x += 3;
+            // }
+                        
+            String val = "";
+            
+            if(mUsePercentValues) val = mFormatValue.format(getPercentOfTotal(mYVals.get(i))) + " %";
+            else val = mFormatValue.format(mYVals.get(i));
 
-            mDrawCanvas.drawText(mFormatValue.format(mYVals.get(i)), x, y, mValuePaint);
+            // draw everything, depending on settings
+            if (mDrawXVals && mDrawValues) {
+
+                // use ascent and descent to calculate the new line position,
+                // 1.6f is the line spacing
+                float lineHeight = (mValuePaint.ascent() + mValuePaint.descent()) * 1.6f;
+                y -= lineHeight / 2;
+
+                mDrawCanvas.drawText(val, x,
+                        y, mValuePaint);
+                mDrawCanvas.drawText(mXVals.get(i), x,
+                        y + lineHeight, mValuePaint);
+
+            } else if (mDrawXVals && !mDrawValues) {
+                mDrawCanvas.drawText(mXVals.get(i), x, y, mValuePaint);
+            } else if (!mDrawXVals && mDrawValues) {
+                
+                mDrawCanvas.drawText(val, x, y, mValuePaint);
+            }
         }
+    }
+
+    @Override
+    protected void drawAdditional() {
+        drawHole();
     }
 
     /**
@@ -388,7 +456,8 @@ public class PieChart extends Chart {
 
     @Override
     public void highlightValues(int[] indices) {
-
+        super.highlightValues(indices);
+        
         mIndicesToHightlight = indices;
         invalidate();
     }
@@ -481,15 +550,21 @@ public class PieChart extends Chart {
     }
 
     /**
-     * sets the text that is displayed in the center of the pie-chart (2 lines
-     * available)
+     * sets the text that is displayed in the center of the pie-chart. By
+     * default, the text is "Total Value + sumofallvalues"
      * 
-     * @param line1
-     * @param line2
+     * @param text
      */
-    public void setCenterText(String line1, String line2) {
-        mCenterTextLine1 = line1;
-        mCenterTextLine2 = line2;
+    public void setCenterText(String text) {
+        mCenterText = text;
+    }
+    
+    /**
+     * returns the text that is drawn in the center of the pie-chart
+     * @return
+     */
+    public String getCenterText() {
+        return mCenterText;
     }
 
     /**
@@ -509,6 +584,40 @@ public class PieChart extends Chart {
      */
     public boolean isDrawCenterTextEnabled() {
         return mDrawCenterText;
+    }
+    
+    /**
+     * set this to true to draw percent values instead of the actual values
+     * @param enabled
+     */
+    public void setUsePercentValues(boolean enabled) {
+        mUsePercentValues = enabled;
+    }
+    
+    /**
+     * returns true if drawing percent values is enabled
+     * @return
+     */
+    public boolean isUsePercentValuesEnabled() {
+        return mUsePercentValues;
+    }
+
+    /**
+     * set this to true to draw the x-value text into the pie slices
+     * 
+     * @param enabled
+     */
+    public void setDrawXVals(boolean enabled) {
+        mDrawXVals = enabled;
+    }
+
+    /**
+     * returns true if drawing x-values is enabled, false if not
+     * 
+     * @return
+     */
+    public boolean isDrawXValsEnabled() {
+        return mDrawXVals;
     }
 
     /**
@@ -556,6 +665,7 @@ public class PieChart extends Chart {
         if (x > getCenter().x)
             angle = 360f - angle;
 
+        // add 90° because chart starts EAST
         angle = angle + 90f;
 
         // neutralize overflow
@@ -598,9 +708,5 @@ public class PieChart extends Chart {
         dist = (float) Math.sqrt(Math.pow(xDist, 2.0) + Math.pow(yDist, 2.0));
 
         return dist;
-    }
-
-    @Override
-    protected void drawAdditional() {
     }
 }

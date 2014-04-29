@@ -148,7 +148,7 @@ public class LineChart extends BarLineChartBase {
     
     @Override
     public void highlightValues(int[] indices) {
-        
+        super.highlightValues(indices);
     }
     
     /**
