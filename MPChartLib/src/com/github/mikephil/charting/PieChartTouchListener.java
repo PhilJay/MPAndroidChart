@@ -121,27 +121,15 @@ public class PieChartTouchListener extends SimpleOnGestureListener implements On
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
         
-        PointF chartCenter = mChart.getCenter();
-        PointF touchPoint = new PointF(e.getX(), e.getY());
-        
-        PointF v = new PointF(touchPoint.x - chartCenter.x, touchPoint.y - chartCenter.y);    
-        
-        Vector3 vector = new Vector3(v.x, v.y, 0f);
-        
-        vector.normalize();
-        Vector3 one = new Vector3(1, 0, 0);
-        
         float distance = mChart.distanceToCenter(e.getX(), e.getY());
 
         // check if a slice was touched
         if(distance < mChart.getRadius() / 2 || distance > mChart.getRadius()) {
             
             // if no slice was touched, highlight nothing
-            mChart.highlightValues(new int[] {-1});
+            mChart.highlightValues(null);
         } else {
-            
-            float f = one.dot(vector);
-            
+
             int index = mChart.getIndexForAngle(mChart.getAngleForPoint(e.getX(), e.getY()));
 
             mChart.highlightValues(new int[] {index});

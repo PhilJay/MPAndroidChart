@@ -118,6 +118,9 @@ public abstract class Chart extends View {
 
     /** if true, y-values are drawn on the chart */
     protected boolean mDrawYValues = true;
+    
+    /** if true, value highlightning is enabled */
+    protected boolean mHighlightEnabled = true;
 
     /** this rectangle defines the area in which graph values can be drawn */
     protected Rect mContentRect;
@@ -240,7 +243,7 @@ public abstract class Chart extends View {
 
         // calc delta
         mDeltaY = mYMax - mYChartMin;
-        mYChartMax = mYChartMin + mDeltaY;
+        mYChartMax = mYChartMin + mYMax;
 
         mDeltaX = mXVals.size() - 1;
 
@@ -420,28 +423,6 @@ public abstract class Chart extends View {
         mMatrixOffset.mapPoints(pts);
     }
 
-    /** the x-position the marker appears on */
-    protected int mMarkerPosX = 100;
-
-    /** the y-postion the marker appears on */
-    protected int mMarkerPosY = 100;
-
-    /** the view that represents the marker */
-    protected RelativeLayout mMarkerView;
-
-    /**
-     * draws the view that is displayed when the chart is clicked
-     */
-    protected void drawMarkerView() {
-
-        if (mMarkerView == null)
-            return;
-
-        mDrawCanvas.translate(mMarkerPosX, mMarkerPosY);
-        mMarkerView.draw(mDrawCanvas);
-        mDrawCanvas.translate(-mMarkerPosX, -mMarkerPosY);
-    }
-
     /**
      * draws the description text in the bottom right corner of the chart
      */
@@ -479,30 +460,11 @@ public abstract class Chart extends View {
      * draws additional stuff, whatever that might be
      */
     protected abstract void drawAdditional();
-
+    
     /**
-     * highlights the value at the given index of the values list
-     * 
-     * @param indices
+     * draws the values of the chart that need highlightning
      */
-    protected void highlightValues(int[] indices) {
-
-        if (mSelectionListener != null) {
-
-            if (indices[0] == -1)
-                mSelectionListener.onNothingSelected();
-            else {
-
-                float[] values = new float[indices.length];
-
-                for (int i = 0; i < values.length; i++)
-                    values[i] = getYValue(indices[i]);
-
-                // notify the listener
-                mSelectionListener.onValuesSelected(values, indices);
-            }
-        }
-    }
+    protected abstract void drawHighlights();
 
     /**
      * ################ ################ ################ ################
@@ -578,6 +540,102 @@ public abstract class Chart extends View {
 
         matrix.setValues(vals);
     }
+    
+    /**
+     * ################ ################ ################ ################
+     */
+    /** BELOW THIS CODE FOR HIGHLIGHTING */
+    
+
+    /**
+     * array of integers that reference the highlighted slices in the pie chart
+     */
+    protected int[] mIndicesToHightlight = new int[0];
+
+    /**
+     * checks if the given index is set for highlighting or not
+     * 
+     * @param index
+     * @return
+     */
+    public boolean needsHighlight(int index) {
+        
+        // no highlight
+        if(!valuesToHighlight()) return false;
+
+        for (int i = 0; i < mIndicesToHightlight.length; i++)
+            if (mIndicesToHightlight[i] == index)
+                return true;
+
+        return false;
+    }
+    
+    /**
+     * returns true if there are values to highlight, false if there are not
+     * @return
+     */
+    public boolean valuesToHighlight() {
+        return mIndicesToHightlight == null || mIndicesToHightlight.length == 0 ? false : true;
+    }
+    
+    /**
+     * highlights the value at the given index of the values list
+     * 
+     * @param indices
+     */
+    public void highlightValues(int[] indices) {
+       
+        // set the indices to highlight
+        mIndicesToHightlight = indices;
+        
+        // redraw the chart
+        invalidate();
+        
+        if (mSelectionListener != null) {
+            
+            if(indices == null) return;
+
+            if (indices[0] == -1)
+                mSelectionListener.onNothingSelected();
+            else {
+
+                float[] values = new float[indices.length];
+
+                for (int i = 0; i < values.length; i++)
+                    values[i] = getYValue(indices[i]);
+
+                // notify the listener
+                mSelectionListener.onValuesSelected(values, indices);
+            }
+        }
+    }
+    
+    /**
+     * ################ ################ ################ ################
+     */
+    /** BELOW CODE IS FOR THE MARKER VIEW */
+    
+    /** the x-position the marker appears on */
+    protected int mMarkerPosX = 100;
+
+    /** the y-postion the marker appears on */
+    protected int mMarkerPosY = 100;
+
+    /** the view that represents the marker */
+    protected RelativeLayout mMarkerView;
+
+    /**
+     * draws the view that is displayed when the chart is clicked
+     */
+    protected void drawMarkerView() {
+
+        if (mMarkerView == null)
+            return;
+
+        mDrawCanvas.translate(mMarkerPosX, mMarkerPosY);
+        mMarkerView.draw(mDrawCanvas);
+        mDrawCanvas.translate(-mMarkerPosX, -mMarkerPosY);
+    }
 
     /**
      * ################ ################ ################ ################
@@ -592,6 +650,21 @@ public abstract class Chart extends View {
      */
     public void setOnTouchListener(OnTouchListener l) {
         this.mListener = l;
+    }
+    /**
+     * if set to true, value highlightning is enabled 
+     * @param enabled
+     */
+    public void setHighlightEnabled(boolean enabled) {
+       mHighlightEnabled = enabled;
+    }
+    
+    /**
+     * returns true if highlightning of values is enabled, false if not
+     * @return
+     */
+    public boolean isHighlightEnabled() {
+        return mHighlightEnabled;
     }
 
     /**
@@ -748,28 +821,6 @@ public abstract class Chart extends View {
         this.mDrawYValues = enabled;
     }
 
-    // /**
-    // * set this to true to make the x-legend exactly fill the whole chart with
-    // * all values being exacly correct, if the x-legend fits, it means that
-    // all
-    // * values use exactly the whole chart width, this can however lead to an
-    // * increased or decreased number of x-legend grid lines -> e.g. if the
-    // * number of x-values is a prime number only the first and last x-legend
-    // * grid line will be created. Nevertheless, the chart will always try to
-    // get
-    // * as close as possible to the actually specified number of x-legend grid
-    // * lines. if set to false, the chart will use exactly the specified number
-    // * of x-legend grid lines. This can however lead to small incorrectness of
-    // * the gridlines if the number of x-entries cannot be divided through the
-    // * number of X-legend entries. default: enabled true
-    // *
-    // * @param enabled
-    // */
-    // public void setFitXLegend(boolean enabled) {
-    // this.mFitXLegend = enabled;
-    // prepare();
-    // }
-
     /**
      * sets the y- starting and ending value
      * 
@@ -813,6 +864,24 @@ public abstract class Chart extends View {
      */
     public View getMarkerView() {
         return mMarkerView;
+    }
+
+    /**
+     * returns the x-position of the marker view
+     * 
+     * @return
+     */
+    public int getMarkerPosX() {
+        return mMarkerPosX;
+    }
+
+    /**
+     * returns the y-position of the marker view
+     * 
+     * @return
+     */
+    public int getMarkerPosY() {
+        return mMarkerPosY;
     }
 
     /** paint for the lines of the linechart */
@@ -859,6 +928,9 @@ public abstract class Chart extends View {
 
     /** paint for the text in the middle of the pie chart */
     public static final int PAINT_CENTER_TEXT = 14;
+    
+    /** paint for highlightning the values of a linechart */
+    public static final int PAINT_HIGHLIGHT_LINE = 15;
 
     /**
      * set a new paint object for the specified parameter in the chart e.g.
@@ -881,18 +953,6 @@ public abstract class Chart extends View {
                 break;
         }
     }
-
-    //
-    // /**
-    // * returns true if fitting x legend is enabled, false if not if the
-    // x-legend
-    // * fits, it means that all values use exactly the whole chart width
-    // *
-    // * @return
-    // */
-    // public boolean isFitXLegendEnabled() {
-    // return mFitXLegend;
-    // }
 
     /**
      * returns true if y-value drawing is enabled, false if not

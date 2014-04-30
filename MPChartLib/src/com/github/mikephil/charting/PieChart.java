@@ -64,11 +64,6 @@ public class PieChart extends Chart {
     private boolean mUsePercentValues = false;
 
     /**
-     * array of integers that reference the highlighted slices in the pie chart
-     */
-    private int[] mIndicesToHightlight = new int[0];
-
-    /**
      * paint for the hole in the center of the pie chart
      */
     private Paint mHolePaint;
@@ -129,6 +124,8 @@ public class PieChart extends Chart {
             return;
 
         long starttime = System.currentTimeMillis();
+
+        drawHighlights();
 
         drawData();
 
@@ -293,16 +290,26 @@ public class PieChart extends Chart {
     }
 
     @Override
-    protected void drawData() {
+    protected void drawHighlights() {
 
-        float angle = mChartAngle;
+        // if there are values to highlight and highlighnting is enabled, do it
+        if (mHighlightEnabled && valuesToHighlight()) {
 
-        for (int i = 0; i < mYVals.size(); i++) {
+            float angle = 0f;
 
-            float newanlge = mDrawAngles[i];
+            for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
-            if (needsHighlight(i)) { // if true, highlight the slice
-                float shiftangle = (float) Math.toRadians(angle + newanlge / 2f);
+                // get the index to highlight
+                int index = mIndicesToHightlight[i];
+
+                if (index == 0)
+                    angle = mChartAngle;
+                else
+                    angle = mChartAngle + mAbsoluteAngles[index - 1];
+
+                float sliceDegrees = mDrawAngles[index];
+
+                float shiftangle = (float) Math.toRadians(angle + sliceDegrees / 2f);
 
                 float xShift = mShift * (float) Math.cos(shiftangle);
                 float yShift = mShift * (float) Math.sin(shiftangle);
@@ -312,15 +319,28 @@ public class PieChart extends Chart {
 
                 // redefine the rect that contains the arc so that the
                 // highlighted pie is not cut off
-                mDrawCanvas.drawArc(highlighted, angle, newanlge, true, mDrawPaints[i
-                        % mDrawPaints.length]);
-
-            } else {
-
-                mDrawCanvas.drawArc(mCircleBox, angle, newanlge, true, mDrawPaints[i
+                mDrawCanvas.drawArc(highlighted, angle, sliceDegrees, true, mDrawPaints[index
                         % mDrawPaints.length]);
             }
-            angle += newanlge;
+        }
+    }
+
+    @Override
+    protected void drawData() {
+
+        float angle = mChartAngle;
+
+        for (int i = 0; i < mYVals.size(); i++) {
+
+            float newangle = mDrawAngles[i];
+
+            if (!needsHighlight(i)) {
+
+                mDrawCanvas.drawArc(mCircleBox, angle, newangle, true, mDrawPaints[i
+                        % mDrawPaints.length]);
+            }
+
+            angle += newangle;
         }
     }
 
@@ -433,21 +453,6 @@ public class PieChart extends Chart {
     }
 
     /**
-     * checks if the given index is set for highlighting or not
-     * 
-     * @param index
-     * @return
-     */
-    private boolean needsHighlight(int index) {
-
-        for (int i = 0; i < mIndicesToHightlight.length; i++)
-            if (mIndicesToHightlight[i] == index)
-                return true;
-
-        return false;
-    }
-
-    /**
      * calculates the needed angle for a given value
      * 
      * @param value
@@ -455,14 +460,6 @@ public class PieChart extends Chart {
      */
     private float calcAngle(float value) {
         return value / mYValueSum * 360f;
-    }
-
-    @Override
-    public void highlightValues(int[] indices) {
-        super.highlightValues(indices);
-
-        mIndicesToHightlight = indices;
-        invalidate();
     }
 
     /**

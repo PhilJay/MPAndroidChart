@@ -42,11 +42,13 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 //        mChart.setRoundedYLegend(false);
 //        mChart.setStartAtZero(true);
         mChart.setDrawYValues(false);
-        mChart.setLineWidth(5f);
-        mChart.setCircleSize(5f);
+        mChart.setLineWidth(4f);
+        mChart.setCircleSize(4f);
 //        mChart.setSpacePercent(20, 10);
         mChart.setYLegendCount(6);
         mChart.setTouchEnabled(true);
+        mChart.setHighlightEnabled(true);
+//        mChart.highlightValues(new int[] {2, 6});
         
         mSeekBarX.setProgress(45);
         mSeekBarY.setProgress(100);

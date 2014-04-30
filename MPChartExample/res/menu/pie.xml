@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/actionToggleValues" android:title="Toggle Values"></item>
+    <item android:id="@+id/actionToggleValues" android:title="Toggle Y-Values"></item>
     <item android:id="@+id/actionToggleXVals" android:title="Toggle X-Values"></item>
     <item android:id="@+id/actionTogglePercent" android:title="Toggle Percent"></item>
     <item android:id="@+id/actionToggleHole" android:title="Toggle Hole"></item>

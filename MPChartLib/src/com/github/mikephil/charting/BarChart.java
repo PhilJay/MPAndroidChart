@@ -102,6 +102,19 @@ public class BarChart extends BarLineChartBase {
         // increase deltax by 1 because the bars have a width of 1
         mDeltaX++;
     }
+    
+    @Override
+    protected void drawHighlights() {
+        
+        // if there are values to highlight and highlighnting is enabled, do it
+        if(mHighlightEnabled && valuesToHighlight()) {
+            
+            for(int i = 0; i < mIndicesToHightlight.length; i++) {
+                
+                
+            }
+        }
+    }
 
     private RectF mBarRect = new RectF();
 
@@ -222,11 +235,6 @@ public class BarChart extends BarLineChartBase {
                         valuePoints[i], valuePoints[i + 1] - 12, mValuePaint);
             }
         }
-    }
-
-    @Override
-    public void highlightValues(int[] indices) {
-        super.highlightValues(indices);
     }
 
     /**

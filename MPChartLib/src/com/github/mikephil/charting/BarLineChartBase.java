@@ -145,6 +145,7 @@ public abstract class BarLineChartBase extends Chart {
 
         drawHorizontalGrid();
         drawVerticalGrid();
+        drawHighlights();
         drawData();
         drawAdditional();
         drawValues();
@@ -682,10 +683,26 @@ public abstract class BarLineChartBase extends Chart {
             width = 3.0f;
         mGridWidth = width;
     }
-
-    @Override
-    protected void highlightValues(int[] indices) {
-        super.highlightValues(indices);
+    
+    /**
+     * returns the index of the value at the given touch point
+     * @param x
+     * @param y
+     * @return
+     */
+    public int getIndexByTouchPoint(float x, float y) {
+        
+        return -1;
+    }
+    
+    /**
+     * returns the value displayed at the touched position of the chart
+     * @param x
+     * @param y
+     * @return
+     */
+    public float getValueByTouchPoint(float x, float y) {
+        return mYVals.get(getIndexByTouchPoint(x, y));
     }
 
     @Override

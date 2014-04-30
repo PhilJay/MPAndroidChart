@@ -245,8 +245,6 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
     
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
-
-        PointF pointF = calcImagePosition(start);
         
         mChart.highlightValues(new int[] {1});
 
