@@ -226,15 +226,12 @@ public abstract class Chart extends View {
     protected void calcMinMax() {
 
         mYMin = mYVals.get(0);
+        mYMax = mYVals.get(0);
 
         for (int i = 0; i < mYVals.size(); i++) {
             if (mYVals.get(i) < mYMin)
                 mYMin = mYVals.get(i);
-        }
-
-        mYMax = mYVals.get(0);
-
-        for (int i = 0; i < mYVals.size(); i++) {
+            
             if (mYVals.get(i) > mYMax)
                 mYMax = mYVals.get(i);
         }
@@ -931,6 +928,9 @@ public abstract class Chart extends View {
     
     /** paint for highlightning the values of a linechart */
     public static final int PAINT_HIGHLIGHT_LINE = 15;
+    
+    /** paint for highlightning the values of a linechart */
+    public static final int PAINT_HIGHLIGHT_BAR = 16;
 
     /**
      * set a new paint object for the specified parameter in the chart e.g.

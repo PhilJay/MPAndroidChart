@@ -49,6 +49,8 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
         mChart.setTouchEnabled(true);
         mChart.setHighlightEnabled(true);
 //        mChart.highlightValues(new int[] {2, 6});
+        mChart.setDragEnabled(true);
+        mChart.setTouchEnabled(true);
         
         mSeekBarX.setProgress(45);
         mSeekBarY.setProgress(100);

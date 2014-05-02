@@ -149,6 +149,9 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
         for(int i = 0; i < values.length; i++) a.append("val: " + values[i] + ", ind: " + indices[i] + "\n");
         
         Log.i("PieChart", "Selected: " + a.toString());
+        
+        // immediately unselect
+//        mChart.highlightValues(null);
     }
 
     @Override

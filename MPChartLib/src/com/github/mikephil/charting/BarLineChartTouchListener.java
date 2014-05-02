@@ -32,11 +32,11 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 
     private int mode = NONE;
     private float oldDist = 1f;
-    private Chart mChart;
+    private BarLineChartBase mChart;
     
     private GestureDetector mGestureDetector;
 
-    public BarLineChartTouchListener(Chart ctx, Matrix start) {
+    public BarLineChartTouchListener(BarLineChartBase ctx, Matrix start) {
         this.mChart = ctx;
         this.matrix = start;
         
@@ -49,6 +49,8 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
         if(mode == NONE) {
             mGestureDetector.onTouchEvent(event);
         }
+        
+        if(!mChart.isDragEnabled()) return true;
 
         // Handle touch events here...
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
@@ -245,11 +247,15 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
     
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
+
+        int highlightindex = mChart.getIndexByTouchPoint(e.getX(), e.getY());
         
-        mChart.highlightValues(new int[] {1});
+        mChart.highlightValues(new int[] {highlightindex});
 
         return super.onSingleTapConfirmed(e);
     }
+    
+    
 
     @Override
     public void onLongPress(MotionEvent arg0) {

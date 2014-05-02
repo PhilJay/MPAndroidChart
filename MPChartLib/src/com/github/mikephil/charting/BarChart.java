@@ -37,6 +37,16 @@ public class BarChart extends BarLineChartBase {
     public BarChart(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
+    
+    @Override
+    protected void init() {
+        super.init();
+        
+        mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mHighlightPaint.setStyle(Paint.Style.STROKE);
+        mHighlightPaint.setStrokeWidth(2f);
+        mHighlightPaint.setColor(Color.rgb(255, 187, 115));
+    }
 
     /** array that holds all the colors for the top 3D effect */
     private int[] mTopColors;
@@ -111,7 +121,20 @@ public class BarChart extends BarLineChartBase {
             
             for(int i = 0; i < mIndicesToHightlight.length; i++) {
                 
-                
+                int index = mIndicesToHightlight[i];
+
+                // check outofbounds
+                if (index < mYVals.size()) {
+
+                    float[] pts = new float[] {
+                            index + 0.5f, mYChartMax, index + 0.5f, mYChartMin,
+                            0, mYVals.get(index), mDeltaX, mYVals.get(index)
+                    };
+                    
+                    transformPointArray(pts);
+                    // draw the highlight lines
+                    mDrawCanvas.drawLines(pts, mHighlightPaint);
+                }
             }
         }
     }
@@ -328,6 +351,17 @@ public class BarChart extends BarLineChartBase {
      */
     public int[] getSideColors() {
         return mSideColors;
+    }
+    
+    @Override
+    public void setPaint(Paint p, int which) {
+        super.setPaint(p, which);
+        
+        switch(which) {
+            case PAINT_HIGHLIGHT_BAR:
+                mHighlightPaint = p;
+                break;
+        }
     }
 
     @Override

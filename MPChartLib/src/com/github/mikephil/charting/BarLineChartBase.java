@@ -52,6 +52,9 @@ public abstract class BarLineChartBase extends Chart {
     /** if true, the grid will be drawn, otherwise not, default true */
     protected boolean mDrawGrid = true;
 
+    /** if true, dragging / scaling is enabled for the chart */
+    protected boolean mDragEnabled = true;
+    
     /**
      * if true, the y-legend values will be rounded - the legend entry count
      * will only be approximated
@@ -75,6 +78,9 @@ public abstract class BarLineChartBase extends Chart {
 
     /** paint for the y-legend values */
     protected Paint mYLegendPaint;
+    
+    /** paint used for highlighting values */
+    protected Paint mHighlightPaint;
 
     public BarLineChartBase(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -120,6 +126,11 @@ public abstract class BarLineChartBase extends Chart {
         // mGridBackgroundPaint.setColor(Color.WHITE);
         mGridBackgroundPaint.setColor(Color.rgb(240, 240, 240)); // light
         // grey
+        
+        mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mHighlightPaint.setStyle(Paint.Style.STROKE);
+        mHighlightPaint.setStrokeWidth(2f);
+        mHighlightPaint.setColor(Color.rgb(255, 187, 115));
     }
 
     @Override
@@ -269,6 +280,7 @@ public abstract class BarLineChartBase extends Chart {
 
         // calc delta
         mDeltaY = (mYMax + spaceTop) - mYChartMin;
+        mYChartMax = mYChartMin + mDeltaY;
 
         Log.i(LOG_TAG, "DeltaX: " + mDeltaX + ", DeltaY: " + mDeltaY);
     }
@@ -358,6 +370,7 @@ public abstract class BarLineChartBase extends Chart {
 
             // set the new delta adequate to the last y-legend value
             mDeltaY = val - step - mYChartMin;
+            mYChartMax = yLegend.get(yLegend.size() - 1);
 
         } else {
 
@@ -685,18 +698,66 @@ public abstract class BarLineChartBase extends Chart {
     }
     
     /**
+     * set this to true to enable dragging / scaling for the chart
+     * @param enabled
+     */
+    public void setDragEnabled(boolean enabled) {
+        this.mDragEnabled = enabled;
+    }
+    
+    /**
+     * returns true if dragging / scaling is enabled for the chart, false if not
+     * @return
+     */
+    public boolean isDragEnabled() {
+        return mDragEnabled;
+    }
+
+    /**
      * returns the index of the value at the given touch point
+     * 
      * @param x
      * @param y
      * @return
      */
     public int getIndexByTouchPoint(float x, float y) {
         
-        return -1;
+        // create an array of the touch-point
+        float[] pts = new float[2];
+        pts[0] = x;
+        pts[1] = y;
+        
+        Matrix tmp = new Matrix();
+        
+        // invert all matrixes to convert back to the original value
+        mMatrixOffset.invert(tmp);
+        tmp.mapPoints(pts);
+
+        mMatrixTouch.invert(tmp);
+        tmp.mapPoints(pts);
+
+        mMatrixValueToPx.invert(tmp);
+        tmp.mapPoints(pts);
+
+        double touchPointIndex = pts[0];
+        double base = Math.floor(touchPointIndex);
+
+        int index = (int) base;
+        
+        if(this instanceof LineChart) {
+                     
+            // check if we are more than half of a x-value or not
+            if (touchPointIndex - base > 0.5) {
+                index = (int) base + 1;
+            }
+        } 
+
+        return index;
     }
-    
+
     /**
      * returns the value displayed at the touched position of the chart
+     * 
      * @param x
      * @param y
      * @return

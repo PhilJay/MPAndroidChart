@@ -17,8 +17,8 @@ public class LineChart extends BarLineChartBase {
     /** the width of the drawn data lines */
     protected float mLineWidth = 1f;
 
-    /** the width of the highlighning rectangle */
-    protected float mHighlightWidth = 0.6f;
+    /** the width of the highlighning line */
+    protected float mHighlightWidth = 3f;
 
     /** if true, the data will also be drawn filled */
     protected boolean mDrawFilled = false;
@@ -37,9 +37,6 @@ public class LineChart extends BarLineChartBase {
 
     /** paint for the inner circle of the value indicators */
     protected Paint mCirclePaintInner;
-
-    /** paint used for highlighting values */
-    protected Paint mHighlightPaint;
 
     public LineChart(Context context) {
         super(context);
@@ -80,7 +77,8 @@ public class LineChart extends BarLineChartBase {
         mCirclePaintInner.setColor(Color.WHITE);
 
         mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mHighlightPaint.setStyle(Paint.Style.FILL);
+        mHighlightPaint.setStyle(Paint.Style.STROKE);
+        mHighlightPaint.setStrokeWidth(2f);
         mHighlightPaint.setColor(Color.rgb(255, 187, 115));
     }
 
@@ -108,10 +106,25 @@ public class LineChart extends BarLineChartBase {
 
             for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
-                RectF highlight = new RectF(mIndicesToHightlight[i] - mHighlightWidth / 2,
-                        mYChartMax, mIndicesToHightlight[i] + mHighlightWidth / 2, mYChartMin);
-                transformRect(highlight);
-                mDrawCanvas.drawRect(highlight, mHighlightPaint);
+//                RectF highlight = new RectF(mIndicesToHightlight[i] - mHighlightWidth / 2,
+//                        mYChartMax, mIndicesToHightlight[i] + mHighlightWidth / 2, mYChartMin);
+//                transformRect(highlight);
+//                mDrawCanvas.drawRect(highlight, mHighlightPaint);
+                
+                int index = mIndicesToHightlight[i];
+
+                // check outofbounds
+                if (index < mYVals.size()) {
+
+                    float[] pts = new float[] {
+                            index, mYChartMax, index, mYChartMin,
+                            0, mYVals.get(index), mDeltaX, mYVals.get(index)
+                    };
+                    
+                    transformPointArray(pts);
+                    // draw the highlight lines
+                    mDrawCanvas.drawLines(pts, mHighlightPaint);
+                }
             }
         }
     }
@@ -291,22 +304,20 @@ public class LineChart extends BarLineChartBase {
     }
 
     /**
-     * set the width of the highlightning rectangle 1.0f == 100% width of the
-     * cell, 0f = 0%, default 0.6f
+     * set the width of the highlightning lines, default 3f
      * 
      * @param width
      */
-    public void setHighlightRectWidth(float width) {
+    public void setHighlightLineWidth(float width) {
         mHighlightWidth = width;
     }
 
     /**
-     * returns the width of the highlightning rectanlge, 1f == 100%, 0f = 0% of
-     * the highlighted cell
+     * returns the width of the highlightning line, default 3f
      * 
      * @return
      */
-    public float getHighlightRectWidth() {
+    public float getHighlightLineWidth() {
         return mHighlightWidth;
     }
 
