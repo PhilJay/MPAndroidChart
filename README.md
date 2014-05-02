@@ -13,9 +13,10 @@ Features
  - Dragging (with touch-gesture)
  - Highlighting values 
  - Save chart to SD-Card
- - Predefined color-templates
- - Fully customizeable (paints, legends (rounded, not rounded), colors, background, gestures, ...)
-
+ - Predefined color templates
+ - Fully customizeable (paints, legends, colors, background, gestures, ...)
+ 
+**Chart types:**
  - **LineChart**
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart.png)
