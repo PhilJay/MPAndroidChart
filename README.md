@@ -9,6 +9,12 @@ Features
 =======
 
 **Core features:**
+ - Scaling (with touch-gesture)
+ - Dragging (with touch-gesture)
+ - Highlighting values 
+ - Save chart to SD-Card
+ - Predefined color-templates
+ - Fully customizeable (paints, legends (rounded, not rounded), colors, background, gestures, ...)
 
  - **LineChart**
 
@@ -27,11 +33,6 @@ Features
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/piechart_selected.png)
 
 
-**Additional features:**
- - Scaling
- - Dragging
- - Highlighting values
- - Fully customizeable (paints, legends (rounded, not rounded), colors, background, gestures, ...)
 
 Usage
 =======
