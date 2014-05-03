@@ -1,9 +1,11 @@
 package com.example.mpchartexample;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -51,6 +53,15 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 //        mChart.highlightValues(new int[] {2, 6});
         mChart.setDragEnabled(true);
         mChart.setTouchEnabled(true);
+
+        TextView textView = new TextView(this); 
+        textView.setVisibility(View.VISIBLE);
+        textView.setBackgroundColor(Color.WHITE);
+        textView.setPadding(15, 15, 15, 15);
+        textView.setText("Marker View");
+
+        mChart.setDrawMarkerView(true);
+        mChart.setMarkerView(textView);
         
         mSeekBarX.setProgress(45);
         mSeekBarY.setProgress(100);

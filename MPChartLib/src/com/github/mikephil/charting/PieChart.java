@@ -137,8 +137,6 @@ public class PieChart extends Chart {
 
         drawCenterText();
 
-        drawMarkerView();
-
         canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
 
         Log.i(LOG_TAG, "DrawTime: " + (System.currentTimeMillis() - starttime) + " ms");

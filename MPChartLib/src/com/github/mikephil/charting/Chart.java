@@ -118,7 +118,7 @@ public abstract class Chart extends View {
 
     /** if true, y-values are drawn on the chart */
     protected boolean mDrawYValues = true;
-    
+
     /** if true, value highlightning is enabled */
     protected boolean mHighlightEnabled = true;
 
@@ -231,7 +231,7 @@ public abstract class Chart extends View {
         for (int i = 0; i < mYVals.size(); i++) {
             if (mYVals.get(i) < mYMin)
                 mYMin = mYVals.get(i);
-            
+
             if (mYVals.get(i) > mYMax)
                 mYMax = mYVals.get(i);
         }
@@ -457,7 +457,7 @@ public abstract class Chart extends View {
      * draws additional stuff, whatever that might be
      */
     protected abstract void drawAdditional();
-    
+
     /**
      * draws the values of the chart that need highlightning
      */
@@ -537,12 +537,11 @@ public abstract class Chart extends View {
 
         matrix.setValues(vals);
     }
-    
+
     /**
      * ################ ################ ################ ################
      */
     /** BELOW THIS CODE FOR HIGHLIGHTING */
-    
 
     /**
      * array of integers that reference the highlighted slices in the pie chart
@@ -556,9 +555,10 @@ public abstract class Chart extends View {
      * @return
      */
     public boolean needsHighlight(int index) {
-        
+
         // no highlight
-        if(!valuesToHighlight()) return false;
+        if (!valuesToHighlight())
+            return false;
 
         for (int i = 0; i < mIndicesToHightlight.length; i++)
             if (mIndicesToHightlight[i] == index)
@@ -566,31 +566,33 @@ public abstract class Chart extends View {
 
         return false;
     }
-    
+
     /**
      * returns true if there are values to highlight, false if there are not
+     * 
      * @return
      */
     public boolean valuesToHighlight() {
         return mIndicesToHightlight == null || mIndicesToHightlight.length == 0 ? false : true;
     }
-    
+
     /**
      * highlights the value at the given index of the values list
      * 
      * @param indices
      */
     public void highlightValues(int[] indices) {
-       
+
         // set the indices to highlight
         mIndicesToHightlight = indices;
-        
+
         // redraw the chart
         invalidate();
-        
+
         if (mSelectionListener != null) {
-            
-            if(indices == null) return;
+
+            if (indices == null)
+                return;
 
             if (indices[0] == -1)
                 mSelectionListener.onNothingSelected();
@@ -606,17 +608,20 @@ public abstract class Chart extends View {
             }
         }
     }
-    
+
     /**
      * ################ ################ ################ ################
      */
     /** BELOW CODE IS FOR THE MARKER VIEW */
-    
+
     /** the x-position the marker appears on */
-    protected int mMarkerPosX = 100;
+    protected float mMarkerPosX = 0f;
 
     /** the y-postion the marker appears on */
-    protected int mMarkerPosY = 100;
+    protected float mMarkerPosY = 0f;
+
+    /** if set to true, the marker view is drawn when a value is clicked */
+    protected boolean mDrawMarkerView = true;
 
     /** the view that represents the marker */
     protected RelativeLayout mMarkerView;
@@ -626,8 +631,23 @@ public abstract class Chart extends View {
      */
     protected void drawMarkerView() {
 
-        if (mMarkerView == null)
+        // if there is no marker view or no values are to highlight, return
+        if (mMarkerView == null || !mDrawMarkerView || !valuesToHighlight()
+                || mIndicesToHightlight[0] < 0 || mIndicesToHightlight[0] >= mYVals.size())
             return;
+
+        int index = mIndicesToHightlight[0];
+        float value = mYVals.get(index);
+
+        float[] pts = new float[] {
+                index, value
+        };
+        transformPointArray(pts);
+        
+        mMarkerPosX = pts[0] -  mMarkerView.getWidth() / 2f;
+        mMarkerPosY = pts[1] - mMarkerView.getHeight();
+        
+        Log.i("abc", "h: " + mMarkerView.getHeight() + ", w: " + mMarkerView.getWidth());
 
         mDrawCanvas.translate(mMarkerPosX, mMarkerPosY);
         mMarkerView.draw(mDrawCanvas);
@@ -648,16 +668,19 @@ public abstract class Chart extends View {
     public void setOnTouchListener(OnTouchListener l) {
         this.mListener = l;
     }
+
     /**
-     * if set to true, value highlightning is enabled 
+     * if set to true, value highlightning is enabled
+     * 
      * @param enabled
      */
     public void setHighlightEnabled(boolean enabled) {
-       mHighlightEnabled = enabled;
+        mHighlightEnabled = enabled;
     }
-    
+
     /**
      * returns true if highlightning of values is enabled, false if not
+     * 
      * @return
      */
     public boolean isHighlightEnabled() {
@@ -848,10 +871,12 @@ public abstract class Chart extends View {
     public void setMarkerView(View v) {
 
         mMarkerView = new RelativeLayout(getContext());
+        mMarkerView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT));
         mMarkerView.addView(v);
 
-        mMarkerView.measure(mDrawCanvas.getWidth(), mDrawCanvas.getHeight());
-        mMarkerView.layout(0, 0, mDrawCanvas.getWidth(), mDrawCanvas.getHeight());
+        mMarkerView.measure(getWidth(), getHeight());
+        mMarkerView.layout(0, 0, getWidth(), getHeight());
     }
 
     /**
@@ -868,7 +893,7 @@ public abstract class Chart extends View {
      * 
      * @return
      */
-    public int getMarkerPosX() {
+    public float getMarkerPosX() {
         return mMarkerPosX;
     }
 
@@ -877,7 +902,7 @@ public abstract class Chart extends View {
      * 
      * @return
      */
-    public int getMarkerPosY() {
+    public float getMarkerPosY() {
         return mMarkerPosY;
     }
 
@@ -925,10 +950,10 @@ public abstract class Chart extends View {
 
     /** paint for the text in the middle of the pie chart */
     public static final int PAINT_CENTER_TEXT = 14;
-    
+
     /** paint for highlightning the values of a linechart */
     public static final int PAINT_HIGHLIGHT_LINE = 15;
-    
+
     /** paint for highlightning the values of a linechart */
     public static final int PAINT_HIGHLIGHT_BAR = 16;
 
@@ -952,6 +977,27 @@ public abstract class Chart extends View {
                 mValuePaint = p;
                 break;
         }
+    }
+
+    /**
+     * returns true if drawing the marker-view is enabled when tapping on values
+     * (use the setMarkerView(View v) method to specify a marker view)
+     * 
+     * @return
+     */
+    public boolean isDrawMarkerViewEnabled() {
+        return mDrawMarkerView;
+    }
+
+    /**
+     * set this to true to draw a user specified marker-view when tapping on
+     * chart values (use the setMarkerView(View v) method to specify a marker
+     * view)
+     * 
+     * @param enabled
+     */
+    public void setDrawMarkerView(boolean enabled) {
+        mDrawMarkerView = enabled;
     }
 
     /**

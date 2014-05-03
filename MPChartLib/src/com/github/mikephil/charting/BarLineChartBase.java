@@ -167,10 +167,10 @@ public abstract class BarLineChartBase extends Chart {
         drawXLegend();
 
         drawYLegend();
+        
+        drawMarkerView();
 
         drawDescription();
-
-        drawMarkerView();
 
         canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
 
@@ -714,7 +714,7 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * returns the index of the value at the given touch point
+     * returns the index of the value (on the x-axis) for the given touch point
      * 
      * @param x
      * @param y
