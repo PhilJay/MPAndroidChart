@@ -87,6 +87,22 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
                 mChart.invalidate();
                 break;
             }
+            case R.id.actionToggleHighlight: {
+                if (mChart.isHighlightEnabled())
+                    mChart.setHighlightEnabled(false);
+                else
+                    mChart.setHighlightEnabled(true);
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleHighlightArrow: {
+                if (mChart.isDrawHighlightArrowEnabled())
+                    mChart.setDrawHighlightArrow(false);
+                else
+                    mChart.setDrawHighlightArrow(true);
+                mChart.invalidate();
+                break;
+            }
             case R.id.actionToggleStartzero: { 
                 if (mChart.isStartAtZeroEnabled())
                     mChart.setStartAtZero(false);

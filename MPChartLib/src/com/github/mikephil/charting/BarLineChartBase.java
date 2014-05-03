@@ -156,8 +156,8 @@ public abstract class BarLineChartBase extends Chart {
 
         drawHorizontalGrid();
         drawVerticalGrid();
-        drawHighlights();
         drawData();
+        drawHighlights();
         drawAdditional();
         drawValues();
 

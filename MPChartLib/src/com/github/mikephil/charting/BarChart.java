@@ -25,6 +25,9 @@ public class BarChart extends BarLineChartBase {
 
     /** flag the enables or disables 3d bars */
     private boolean m3DEnabled = true;
+    
+    /** flag that enables or disables the highlighting arrow */
+    private boolean mDrawHighlightArrow = true;
 
     public BarChart(Context context) {
         super(context);
@@ -37,15 +40,16 @@ public class BarChart extends BarLineChartBase {
     public BarChart(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
-    
+
     @Override
     protected void init() {
         super.init();
-        
+
         mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mHighlightPaint.setStyle(Paint.Style.STROKE);
-        mHighlightPaint.setStrokeWidth(2f);
-        mHighlightPaint.setColor(Color.rgb(255, 187, 115));
+        mHighlightPaint.setStyle(Paint.Style.FILL);
+        mHighlightPaint.setColor(Color.rgb(0, 0, 0));
+        // set alpha after color
+        mHighlightPaint.setAlpha(120);
     }
 
     /** array that holds all the colors for the top 3D effect */
@@ -112,28 +116,57 @@ public class BarChart extends BarLineChartBase {
         // increase deltax by 1 because the bars have a width of 1
         mDeltaX++;
     }
-    
+
     @Override
     protected void drawHighlights() {
-        
+
         // if there are values to highlight and highlighnting is enabled, do it
-        if(mHighlightEnabled && valuesToHighlight()) {
-            
-            for(int i = 0; i < mIndicesToHightlight.length; i++) {
-                
+        if (mHighlightEnabled && valuesToHighlight()) {
+                                
+            // distance between highlight arrow and bar
+            float offsetY = mDeltaY * 0.04f;
+
+            for (int i = 0; i < mIndicesToHightlight.length; i++) {
+
                 int index = mIndicesToHightlight[i];
 
                 // check outofbounds
                 if (index < mYVals.size()) {
-
-                    float[] pts = new float[] {
-                            index + 0.5f, mYChartMax, index + 0.5f, mYChartMin,
-                            0, mYVals.get(index), mDeltaX, mYVals.get(index)
-                    };
                     
-                    transformPointArray(pts);
-                    // draw the highlight lines
-                    mDrawCanvas.drawLines(pts, mHighlightPaint);
+                    mHighlightPaint.setAlpha(120);
+                    
+                    float y = mYVals.get(index);
+                    float left = index + mBarSpace / 2f;
+                    float right = index + 1f - mBarSpace / 2f;
+                    float top = y >= 0 ? y : 0;
+                    float bottom = y <= 0 ? y : 0;
+
+                    RectF highlight = new RectF(left, top, right, bottom);
+                    transformRect(highlight);
+                    
+                    mDrawCanvas.drawRect(highlight, mHighlightPaint);
+                    
+                    if(mDrawHighlightArrow) {
+                     
+                        mHighlightPaint.setAlpha(200);
+                        
+                        Path arrow = new Path();
+                        arrow.moveTo(index + 0.5f, y + offsetY * 0.3f);
+                        arrow.lineTo(index + 0.2f, y + offsetY);
+                        arrow.lineTo(index + 0.8f, y + offsetY);
+                        
+                        transformPath(arrow);
+                        mDrawCanvas.drawPath(arrow, mHighlightPaint);
+                    }
+
+                    // float[] pts = new float[] {
+                    // index + 0.5f, mYChartMax, index + 0.5f, mYChartMin,
+                    // 0, mYVals.get(index), mDeltaX, mYVals.get(index)
+                    // };
+                    //
+                    // transformPointArray(pts);
+                    // // draw the highlight lines
+                    // mDrawCanvas.drawLines(pts, mHighlightPaint);
                 }
             }
         }
@@ -353,11 +386,27 @@ public class BarChart extends BarLineChartBase {
         return mSideColors;
     }
     
+    /**
+     * set this to true to draw the highlightning arrow
+     * @param enabled
+     */
+    public void setDrawHighlightArrow(boolean enabled) {
+        mDrawHighlightArrow = enabled;
+    }
+    
+    /**
+     * returns true if drawing the highlighting arrow is enabled, false if not
+     * @return
+     */
+    public boolean isDrawHighlightArrowEnabled() {
+        return mDrawHighlightArrow;
+    }
+
     @Override
     public void setPaint(Paint p, int which) {
         super.setPaint(p, which);
-        
-        switch(which) {
+
+        switch (which) {
             case PAINT_HIGHLIGHT_BAR:
                 mHighlightPaint = p;
                 break;

@@ -25,4 +25,16 @@
     <color name="colorful_4">#6A961F</color>
     <color name="colorful_5">#008885</color>
     
+    <color name="greens_1">#55FC70</color>
+    <color name="greens_2">#62E24C</color>
+    <color name="greens_3">#ACF960</color>
+    <color name="greens_4">#CBE24C</color>
+    <color name="greens_5">#FCF355</color>
+    
+    <color name="joyful_1">#D9508A</color>
+    <color name="joyful_2">#FE9507</color>
+    <color name="joyful_3">#FEF778</color>
+    <color name="joyful_4">#6AA786</color>
+    <color name="joyful_5">#35C2D1</color>
+    
 </resources>

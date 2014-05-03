@@ -82,6 +82,14 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
                 mChart.invalidate();
                 break;
             }
+            case R.id.actionToggleHighlight: {
+                if (mChart.isHighlightEnabled())
+                    mChart.setHighlightEnabled(false);
+                else
+                    mChart.setHighlightEnabled(true);
+                mChart.invalidate();
+                break;
+            }
             case R.id.actionToggleFilled: {
                 if (mChart.isDrawFilledEnabled())
                     mChart.setDrawFilled(false);
