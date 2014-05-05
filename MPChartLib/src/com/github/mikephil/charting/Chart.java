@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.Paint.Align;
 import android.graphics.Path;
 import android.graphics.PointF;
@@ -37,6 +38,17 @@ public abstract class Chart extends View {
 
     protected int mColorDarkBlue = Color.rgb(41, 128, 186);
     protected int mColorDarkRed = Color.rgb(232, 76, 59);
+    
+    /**
+     * defines the number of digits to use for all printed values, -1 means
+     * automatically determine
+     */
+    protected int mValueDigitsToUse = -1;
+
+    /**
+     * defines the number of digits all printed values
+     */
+    protected int mValueFormatDigits = -1;
 
     /** the total sum of all y-values */
     protected float mYValueSum = 0f;
@@ -77,13 +89,38 @@ public abstract class Chart extends View {
     /** the minimum y-value in the y-value array */
     protected float mYMin = 0.0f;
 
+    /**
+     * colortemplate containing all the colors used by the chart
+     */
     protected ColorTemplate mColorTemplate;
 
+    /**
+     * paint object used for darwing the bitmap to the screen
+     */
     protected Paint mDrawPaint;
+
+    /**
+     * paint object used for drawing the description text in the bottom right
+     * corner of the chart
+     */
     protected Paint mDescPaint;
+
+    /**
+     * paint object for drawing the information text when there are no values in
+     * the chart
+     */
     protected Paint mInfoPaint;
+
+    /**
+     * paint object for drawing values (text representing values of chart
+     * entries)
+     */
     protected Paint mValuePaint;
 
+    /**
+     * paint objects used for drawing (e.g. the bars of a chart) usually, each
+     * paint object has a different color
+     */
     protected Paint[] mDrawPaints;
 
     /** description text that appears in the bottom right corner of the chart */
@@ -165,7 +202,7 @@ public abstract class Chart extends View {
         mXVals = new ArrayList<String>();
         mYVals = new ArrayList<Float>();
 
-        mDrawPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mDrawPaint = new Paint();
 
         mDescPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mDescPaint.setColor(Color.BLACK);
@@ -431,6 +468,7 @@ public abstract class Chart extends View {
 
     /**
      * calculates the approximate width of a text, depending on a demo text
+     * avoid repeated calls (e.g. inside drawing methods)
      * 
      * @param paint
      * @param demoText
@@ -484,11 +522,17 @@ public abstract class Chart extends View {
             return mListener.onTouch(this, event);
     }
 
+    /**
+     * disables intercept touchevents
+     */
     public void disableScroll() {
         ViewParent parent = getParent();
         parent.requestDisallowInterceptTouchEvent(true);
     }
 
+    /**
+     * enables intercept touchevents
+     */
     public void enableScroll() {
         ViewParent parent = getParent();
         parent.requestDisallowInterceptTouchEvent(false);
@@ -569,11 +613,14 @@ public abstract class Chart extends View {
 
     /**
      * returns true if there are values to highlight, false if there are not
+     * checks if the highlight array is null, has a length of zero or contains
+     * -1
      * 
      * @return
      */
     public boolean valuesToHighlight() {
-        return mIndicesToHightlight == null || mIndicesToHightlight.length == 0 ? false : true;
+        return mIndicesToHightlight == null || mIndicesToHightlight.length == 0
+                || mIndicesToHightlight[0] == -1 ? false : true;
     }
 
     /**
@@ -591,10 +638,7 @@ public abstract class Chart extends View {
 
         if (mSelectionListener != null) {
 
-            if (indices == null)
-                return;
-
-            if (indices[0] == -1)
+            if (!valuesToHighlight())
                 mSelectionListener.onNothingSelected();
             else {
 
@@ -639,18 +683,22 @@ public abstract class Chart extends View {
         int index = mIndicesToHightlight[0];
         float value = mYVals.get(index);
 
+        // position of the marker depends on selected value index and value
         float[] pts = new float[] {
                 index, value
         };
         transformPointArray(pts);
-        
-        mMarkerPosX = pts[0] -  mMarkerView.getWidth() / 2f;
-        mMarkerPosY = pts[1] - mMarkerView.getHeight();
-        
-        Log.i("abc", "h: " + mMarkerView.getHeight() + ", w: " + mMarkerView.getWidth());
 
+        mMarkerPosX = pts[0] - mMarkerView.getWidth() / 2f;
+        mMarkerPosY = pts[1] - mMarkerView.getHeight();
+
+        Log.i("", "h: " + mMarkerView.getHeight() + ", w: " + mMarkerView.getWidth());
+
+        // translate to marker position
         mDrawCanvas.translate(mMarkerPosX, mMarkerPosY);
         mMarkerView.draw(mDrawCanvas);
+
+        // translate back
         mDrawCanvas.translate(-mMarkerPosX, -mMarkerPosY);
     }
 
@@ -667,6 +715,15 @@ public abstract class Chart extends View {
      */
     public void setOnTouchListener(OnTouchListener l) {
         this.mListener = l;
+    }
+
+    /**
+     * set a selection listener for the chart
+     * 
+     * @param l
+     */
+    public void setOnChartValueSelectedListener(OnChartValueSelectedListener l) {
+        this.mSelectionListener = l;
     }
 
     /**
@@ -871,7 +928,8 @@ public abstract class Chart extends View {
     public void setMarkerView(View v) {
 
         mMarkerView = new RelativeLayout(getContext());
-        mMarkerView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+        mMarkerView.setLayoutParams(new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT));
         mMarkerView.addView(v);
 
@@ -1043,12 +1101,41 @@ public abstract class Chart extends View {
     }
 
     /**
-     * set a selection listener for the chart
+     * sets a typeface for the value-paint
      * 
-     * @param l
+     * @param t
      */
-    public void setOnChartValueSelectedListener(OnChartValueSelectedListener l) {
-        this.mSelectionListener = l;
+    public void setValueTypeface(Typeface t) {
+        mValuePaint.setTypeface(t);
+    }
+
+    /**
+     * sets the typeface for the description paint
+     * 
+     * @param t
+     */
+    public void setDescriptionTypeface(Typeface t) {
+        mDescPaint.setTypeface(t);
+    }
+
+    /**
+     * sets the number of digits that should be used for all printed values (if
+     * this is set to -1, digits will be calculated automatically), default -1
+     * 
+     * @param digits
+     */
+    public void setValueDigits(int digits) {
+        mValueDigitsToUse = digits;
+    }
+
+    /**
+     * returns the number of digits used to format the prited values of the
+     * chart (-1 means digits are calculated automatically)
+     * 
+     * @return
+     */
+    public int getValueDigits() {
+        return mValueDigitsToUse;
     }
 
     /**

@@ -9,6 +9,7 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -169,18 +170,16 @@ public class PieChart extends Chart {
     protected DecimalFormat mFormatValue = null;
 
     /**
-     * the number of digits values that are drawn in the chart are formatted
-     * with
-     */
-    protected int mValueFormatDigits = 1;
-
-    /**
      * calculates the required number of digits for the y-legend and for the
      * values that might be drawn in the chart (if enabled)
      */
     protected void calcFormats() {
 
-        mValueFormatDigits = Utils.getPieFormatDigits(mDeltaY);
+        // -1 means calculate digits
+        if (mValueDigitsToUse == -1)
+            mValueFormatDigits = Utils.getPieFormatDigits(mDeltaY);
+        else
+            mValueFormatDigits = mValueDigitsToUse;
 
         StringBuffer b = new StringBuffer();
         for (int i = 0; i < mValueFormatDigits; i++) {
@@ -718,6 +717,15 @@ public class PieChart extends Chart {
         dist = (float) Math.sqrt(Math.pow(xDist, 2.0) + Math.pow(yDist, 2.0));
 
         return dist;
+    }
+
+    /**
+     * sets the typeface for the center-text paint
+     * 
+     * @param t
+     */
+    public void setCenterTextTypeface(Typeface t) {
+        mCenterTextPaint.setTypeface(t);
     }
 
     @Override

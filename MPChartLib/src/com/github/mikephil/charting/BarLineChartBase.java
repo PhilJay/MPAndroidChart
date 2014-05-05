@@ -10,6 +10,7 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -34,6 +35,12 @@ public abstract class BarLineChartBase extends Chart {
      */
     protected int mLegendGridModulus = 1;
 
+    /**
+     * indicates how many digits should be used for the y-legend, -1 means
+     * automatically calculate
+     */
+    protected int mYLegendDigitsToUse = -1;
+
     /** the number of y-legend entries the chart has */
     protected int mYLegendCount = 9;
 
@@ -54,7 +61,7 @@ public abstract class BarLineChartBase extends Chart {
 
     /** if true, dragging / scaling is enabled for the chart */
     protected boolean mDragEnabled = true;
-    
+
     /**
      * if true, the y-legend values will be rounded - the legend entry count
      * will only be approximated
@@ -78,7 +85,7 @@ public abstract class BarLineChartBase extends Chart {
 
     /** paint for the y-legend values */
     protected Paint mYLegendPaint;
-    
+
     /** paint used for highlighting values */
     protected Paint mHighlightPaint;
 
@@ -126,7 +133,7 @@ public abstract class BarLineChartBase extends Chart {
         // mGridBackgroundPaint.setColor(Color.WHITE);
         mGridBackgroundPaint.setColor(Color.rgb(240, 240, 240)); // light
         // grey
-        
+
         mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mHighlightPaint.setStyle(Paint.Style.STROKE);
         mHighlightPaint.setStrokeWidth(2f);
@@ -167,7 +174,7 @@ public abstract class BarLineChartBase extends Chart {
         drawXLegend();
 
         drawYLegend();
-        
+
         drawMarkerView();
 
         drawDescription();
@@ -220,13 +227,7 @@ public abstract class BarLineChartBase extends Chart {
     protected DecimalFormat mFormatValue = null;
 
     /** the number of digits the y-legend is formatted with */
-    protected int mYLegendFormatDigits = 1;
-
-    /**
-     * the number of digits values that are drawn in the chart are formatted
-     * with
-     */
-    protected int mValueFormatDigits = 1;
+    protected int mYLegendFormatDigits = -1;
 
     /**
      * calculates the required number of digits for the y-legend and for the
@@ -239,10 +240,16 @@ public abstract class BarLineChartBase extends Chart {
             bonus++;
 
         // calcualte the step between the legend entries and get the needed
-        // digits
-        mYLegendFormatDigits = Utils.getLegendFormatDigits(mYLegend[2] - mYLegend[1], bonus);
+        // digits, -1 means calculate automatically, else the set value is used
+        if (mYLegendDigitsToUse == -1)
+            mYLegendFormatDigits = Utils.getLegendFormatDigits(mYLegend[2] - mYLegend[1], bonus);
+        else
+            mYLegendFormatDigits = mYLegendDigitsToUse;
 
-        mValueFormatDigits = Utils.getFormatDigits(mDeltaY);
+        if (mValueDigitsToUse == -1)
+            mValueFormatDigits = Utils.getFormatDigits(mDeltaY);
+        else
+            mValueFormatDigits = mValueDigitsToUse;
 
         StringBuffer a = new StringBuffer();
         for (int i = 0; i < mYLegendFormatDigits; i++) {
@@ -393,6 +400,7 @@ public abstract class BarLineChartBase extends Chart {
      */
     protected void drawXLegend() {
 
+        // pre allocate to save performance (dont allocate in loop)
         float[] position = new float[] {
                 0f, 0f
         };
@@ -407,6 +415,15 @@ public abstract class BarLineChartBase extends Chart {
 
                 if (position[0] >= mOffsetLeft && position[0] <= getWidth() - mOffsetRight + 10) {
 
+                    // Rect rect = new Rect();
+                    // mXLegendPaint.getTextBounds(mXVals.get(i), 0,
+                    // mXVals.get(i).length(), rect);
+                    //
+                    // float toRight = rect.width() / 2;
+                    //
+                    // // make sure
+                    // if(i == 0) toRight = rect.width();
+
                     mDrawCanvas.drawText(mXVals.get(i), position[0], mOffsetTop - 5,
                             mXLegendPaint);
                 }
@@ -419,20 +436,30 @@ public abstract class BarLineChartBase extends Chart {
      */
     protected void drawYLegend() {
 
-        float[] yPoints = new float[mYLegend.length * 2];
+        float[] positions = new float[mYLegend.length * 2];
 
-        for (int i = 0; i < yPoints.length; i += 2) {
-            yPoints[i] = 0;
-            yPoints[i + 1] = mYLegend[i / 2];
+        for (int i = 0; i < positions.length; i += 2) {
+            positions[i] = 0;
+            positions[i + 1] = mYLegend[i / 2];
         }
 
-        transformPointArrayNoTouch(yPoints);
+        // y-axis cannot be scaled, therefore transform without the touch matrix
+        transformPointArrayNoTouch(positions);
 
-        for (int i = 0; i < yPoints.length; i += 2) {
-            if (mYLegend[i / 2] != null)
+        for (int i = 0; i < positions.length; i += 2) {
+            if (mYLegend[i / 2] != null) {
+
+                float yPos = positions[i + 1] + 8;
+
+                // lower the position of the top y-legend entry so that it does
+                // not interfear with the x-legend
+                if (i >= positions.length - 2)
+                    yPos = positions[i + 1] + 14;
+
                 mDrawCanvas.drawText(mFormatYLegend.format(mYLegend[i / 2]),
-                        yPoints[i] - 10,
-                        yPoints[i + 1] + 8, mYLegendPaint);
+                        positions[i] - 10,
+                        yPos, mYLegendPaint);
+            }
         }
     }
 
@@ -696,17 +723,19 @@ public abstract class BarLineChartBase extends Chart {
             width = 3.0f;
         mGridWidth = width;
     }
-    
+
     /**
      * set this to true to enable dragging / scaling for the chart
+     * 
      * @param enabled
      */
     public void setDragEnabled(boolean enabled) {
         this.mDragEnabled = enabled;
     }
-    
+
     /**
      * returns true if dragging / scaling is enabled for the chart, false if not
+     * 
      * @return
      */
     public boolean isDragEnabled() {
@@ -721,14 +750,14 @@ public abstract class BarLineChartBase extends Chart {
      * @return
      */
     public int getIndexByTouchPoint(float x, float y) {
-        
+
         // create an array of the touch-point
         float[] pts = new float[2];
         pts[0] = x;
         pts[1] = y;
-        
+
         Matrix tmp = new Matrix();
-        
+
         // invert all matrixes to convert back to the original value
         mMatrixOffset.invert(tmp);
         tmp.mapPoints(pts);
@@ -743,14 +772,14 @@ public abstract class BarLineChartBase extends Chart {
         double base = Math.floor(touchPointIndex);
 
         int index = (int) base;
-        
-        if(this instanceof LineChart) {
-                     
+
+        if (this instanceof LineChart) {
+
             // check if we are more than half of a x-value or not
             if (touchPointIndex - base > 0.5) {
                 index = (int) base + 1;
             }
-        } 
+        }
 
         return index;
     }
@@ -764,6 +793,54 @@ public abstract class BarLineChartBase extends Chart {
      */
     public float getValueByTouchPoint(float x, float y) {
         return mYVals.get(getIndexByTouchPoint(x, y));
+    }
+
+    /**
+     * sets a typeface for the paint object of the x-legend
+     * 
+     * @param t
+     */
+    public void setXLegendTypeface(Typeface t) {
+        mXLegendPaint.setTypeface(t);
+    }
+
+    /**
+     * sets a typeface for the paint object of the y-legend
+     * 
+     * @param t
+     */
+    public void setYLegendTypeface(Typeface t) {
+        mYLegendPaint.setTypeface(t);
+    }
+
+    /**
+     * sets a typeface for both x and y-legend paints
+     * 
+     * @param t
+     */
+    public void setLegendTypeface(Typeface t) {
+        setXLegendTypeface(t);
+        setYLegendTypeface(t);
+    }
+
+    /**
+     * sets the number of y-legend digits to use, if set to -1, digits will be
+     * automatically calculated
+     * 
+     * @param digits
+     */
+    public void setLegendDigits(int digits) {
+        mYLegendDigitsToUse = digits;
+    }
+
+    /**
+     * returns the number of y-legend digits that is set to use, -1 means auto
+     * calculate
+     * 
+     * @return
+     */
+    public int getLegendDigits() {
+        return mYLegendDigitsToUse;
     }
 
     @Override

@@ -32,13 +32,14 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
         
         mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
         mSeekBarX.setOnSeekBarChangeListener(this);
-        
-        
+               
         mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
         mSeekBarY.setOnSeekBarChangeListener(this);
         
         mChart = (BarChart) findViewById(R.id.chart1);
         mChart.setColorTemplate(new ColorTemplate(ColorTemplate.getColors(this, ColorTemplate.FRESH_COLORS)));
+//        mChart.setLegendDigits(2);
+//        mChart.setValueDigits(2);
         
 //        mChart.setDrawFilled(true);
 //        mChart.setRoundedYLegend(false);
