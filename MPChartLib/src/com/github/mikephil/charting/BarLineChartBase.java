@@ -17,6 +17,11 @@ import android.util.Log;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+/**
+ * Baseclass of all LineChart and BarChart.
+ * 
+ * @author Philipp Jahoda
+ */
 public abstract class BarLineChartBase extends Chart {
 
     /** the maximum number of entried to which values will be drawn */

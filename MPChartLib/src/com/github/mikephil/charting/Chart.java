@@ -28,7 +28,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 /**
- * A simple Chart-View. Standalone.
+ * Baseclass of all Chart-Views.
  * 
  * @author Philipp Jahoda
  */
@@ -38,7 +38,7 @@ public abstract class Chart extends View {
 
     protected int mColorDarkBlue = Color.rgb(41, 128, 186);
     protected int mColorDarkRed = Color.rgb(232, 76, 59);
-    
+
     /**
      * defines the number of digits to use for all printed values, -1 means
      * automatically determine
@@ -246,7 +246,10 @@ public abstract class Chart extends View {
     }
 
     /**
-     * prepares all the paint objects that are used for drawing
+     * Prepares all the paint objects that are used for drawing the lines, bars
+     * or pie-slices. The number of paint objects used depends on the number of
+     * colors in the colortemplate. If more values than colors need to be drawn,
+     * colors are repeated.
      * 
      * @param ct
      */
@@ -910,7 +913,9 @@ public abstract class Chart extends View {
     }
 
     /**
-     * sets a colortemplate for the chart
+     * Sets a colortemplate for the chart that defindes the colors used for
+     * drawing. If more values need to be drawn than provided colors available
+     * in the colortemplate, colors are repeated.
      * 
      * @param ct
      */
