@@ -24,6 +24,12 @@ import java.util.ArrayList;
  */
 public abstract class BarLineChartBase extends Chart {
 
+    /**
+     * string that is drawn next to the values in the chart, indicating their
+     * unit
+     */
+    protected String mUnit = "";
+
     /** the maximum number of entried to which values will be drawn */
     protected int mMaxVisibleCount = 100;
 
@@ -54,6 +60,17 @@ public abstract class BarLineChartBase extends Chart {
 
     /** array that contains all values of the y-axis legend */
     protected Float[] mYLegend = new Float[mYLegendCount];
+
+    /** if true, units are drawn next to the values in the chart */
+    protected boolean mDrawUnitInChart = false;
+
+    /**
+     * if true, units are drawn next to the values in the legend
+     */
+    protected boolean mDrawUnitInLegend = true;
+
+    /** if true, x-legend text is centered */
+    protected boolean mCenterXLegendText = false;
 
     /**
      * if set to true, the x-legend entries will adjust themselves when scaling
@@ -416,6 +433,10 @@ public abstract class BarLineChartBase extends Chart {
 
                 position[0] = i;
 
+                // center the text
+                if (mCenterXLegendText)
+                    position[0] += 0.5f;
+
                 transformPointArray(position);
 
                 if (position[0] >= mOffsetLeft && position[0] <= getWidth() - mOffsetRight + 10) {
@@ -461,11 +482,34 @@ public abstract class BarLineChartBase extends Chart {
                 if (i >= positions.length - 2)
                     yPos = positions[i + 1] + 14;
 
-                mDrawCanvas.drawText(mFormatYLegend.format(mYLegend[i / 2]),
-                        positions[i] - 10,
-                        yPos, mYLegendPaint);
+                if (!mDrawTopYLegendEntry && i >= positions.length - 2)
+                    return;
+
+                if(mDrawUnitInLegend) {
+                    mDrawCanvas.drawText(mFormatYLegend.format(mYLegend[i / 2]) + mUnit,
+                            positions[i] - 10,
+                            yPos, mYLegendPaint);
+                } else {
+                    mDrawCanvas.drawText(mFormatYLegend.format(mYLegend[i / 2]),
+                            positions[i] - 10,
+                            yPos, mYLegendPaint);
+                }
             }
         }
+    }
+
+    /** indicates if the top y-legend entry is drawn or not */
+    private boolean mDrawTopYLegendEntry = true;
+
+    /**
+     * set this to true to enable drawing the top y-legend entry. Disabling this
+     * can be helpful when the y-legend and x-legend interfear with each other.
+     * default: true
+     * 
+     * @param enabled
+     */
+    public void setDrawTopYLegendEntry(boolean enabled) {
+        mDrawTopYLegendEntry = enabled;
     }
 
     /**
@@ -698,6 +742,15 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
+     * sets the unit that is drawn next to the values in the chart, e.g. %
+     * 
+     * @param unit
+     */
+    public void setUnit(String unit) {
+        mUnit = unit;
+    }
+
+    /**
      * returns true if the chart is set to start at zero, false otherwise
      * 
      * @return
@@ -707,12 +760,49 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
+     * if set to true, units are drawn next to values in the chart, default:
+     * false
+     * 
+     * @param enabled
+     */
+    public void setDrawUnitsInChart(boolean enabled) {
+        mDrawUnitInChart = enabled;
+    }
+
+    /**
+     * if set to true, units are drawn next to y-legend values, default: true
+     * 
+     * @param enabled
+     */
+    public void setDrawUnitsInLegend(boolean enabled) {
+        mDrawUnitInLegend = enabled;
+    }
+
+    /**
      * returns true if the y-legend is set to be rounded, false if not
      * 
      * @return
      */
     public boolean isYLegendRounded() {
         return mRoundedYLegend;
+    }
+
+    /**
+     * set this to true to center the x-legend text, default: false
+     * 
+     * @param enabled
+     */
+    public void setCenterXLegend(boolean enabled) {
+        mCenterXLegendText = enabled;
+    }
+
+    /**
+     * returns true if the x-legend text is centered
+     * 
+     * @return
+     */
+    public boolean isXLegendCentered() {
+        return mCenterXLegendText;
     }
 
     /**
@@ -796,7 +886,7 @@ public abstract class BarLineChartBase extends Chart {
      * @param y
      * @return
      */
-    public float getValueByTouchPoint(float x, float y) {
+    public Series getSeriesByTouchPoint(float x, float y) {
         return mYVals.get(getIndexByTouchPoint(x, y));
     }
 

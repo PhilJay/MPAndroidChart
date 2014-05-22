@@ -10,7 +10,9 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.BarChart;
+import com.github.mikephil.charting.BarSeries;
 import com.github.mikephil.charting.ColorTemplate;
+import com.github.mikephil.charting.Series;
 
 import java.util.ArrayList;
 
@@ -139,12 +141,12 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
             xVals.add((i)+"");
         }
 
-        ArrayList<Float> yVals = new ArrayList<Float>();
+        ArrayList<Series> yVals = new ArrayList<Series>();
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             float mult = (mSeekBarY.getProgress()+1);
             float val = (float) (Math.random() * mult * 0.1) + 3;// + (float) ((mult * 0.1) / 10);
-            yVals.add(val);
+            yVals.add(new BarSeries(val));
         }
         
         tvX.setText(""+ (mSeekBarX.getProgress() + 1));

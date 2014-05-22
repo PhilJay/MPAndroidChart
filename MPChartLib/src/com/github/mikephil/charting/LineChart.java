@@ -6,8 +6,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
-import android.graphics.RectF;
 import android.util.AttributeSet;
+
+import java.util.ArrayList;
 
 public class LineChart extends BarLineChartBase {
 
@@ -106,11 +107,13 @@ public class LineChart extends BarLineChartBase {
 
             for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
-//                RectF highlight = new RectF(mIndicesToHightlight[i] - mHighlightWidth / 2,
-//                        mYChartMax, mIndicesToHightlight[i] + mHighlightWidth / 2, mYChartMin);
-//                transformRect(highlight);
-//                mDrawCanvas.drawRect(highlight, mHighlightPaint);
-                
+                // RectF highlight = new RectF(mIndicesToHightlight[i] -
+                // mHighlightWidth / 2,
+                // mYChartMax, mIndicesToHightlight[i] + mHighlightWidth / 2,
+                // mYChartMin);
+                // transformRect(highlight);
+                // mDrawCanvas.drawRect(highlight, mHighlightPaint);
+
                 int index = mIndicesToHightlight[i];
 
                 // check outofbounds
@@ -118,9 +121,9 @@ public class LineChart extends BarLineChartBase {
 
                     float[] pts = new float[] {
                             index, mYChartMax, index, mYChartMin,
-                            0, mYVals.get(index), mDeltaX, mYVals.get(index)
+                            0, mYVals.get(index).getVal(), mDeltaX, mYVals.get(index).getVal()
                     };
-                    
+
                     transformPointArray(pts);
                     // draw the highlight lines
                     mDrawCanvas.drawLines(pts, mHighlightPaint);
@@ -136,11 +139,11 @@ public class LineChart extends BarLineChartBase {
     protected void drawData() {
 
         Path p = new Path();
-        p.moveTo(0, mYVals.get(0));
+        p.moveTo(0, mYVals.get(0).getVal());
 
         for (int x = 1; x < mYVals.size(); x++) {
 
-            p.lineTo(x, mYVals.get(x));
+            p.lineTo(x, mYVals.get(x).getVal());
         }
 
         transformPath(p);
@@ -151,12 +154,12 @@ public class LineChart extends BarLineChartBase {
         if (mDrawFilled) {
 
             Path filled = new Path();
-            filled.moveTo(0, mYVals.get(0));
+            filled.moveTo(0, mYVals.get(0).getVal());
 
             // create a new path
             for (int x = 1; x < mYVals.size(); x++) {
 
-                filled.lineTo(x, mYVals.get(x));
+                filled.lineTo(x, mYVals.get(x).getVal());
             }
 
             // close up
@@ -180,15 +183,24 @@ public class LineChart extends BarLineChartBase {
 
             for (int i = 0; i < valuePoints.length; i += 2) {
                 valuePoints[i] = i / 2;
-                valuePoints[i + 1] = mYVals.get(i / 2);
+                valuePoints[i + 1] = mYVals.get(i / 2).getVal();
             }
 
             transformPointArray(valuePoints);
 
             for (int i = 0; i < valuePoints.length; i += 2) {
-                mDrawCanvas.drawText(
-                        mFormatValue.format(mYVals.get(i / 2)),
-                        valuePoints[i], valuePoints[i + 1] - 12, mValuePaint);
+
+                if (mDrawUnitInChart) {
+
+                    mDrawCanvas.drawText(
+                            mFormatValue.format(mYVals.get(i / 2).getVal()) + mUnit,
+                            valuePoints[i], valuePoints[i + 1] - 12, mValuePaint);
+                } else {
+
+                    mDrawCanvas.drawText(
+                            mFormatValue.format(mYVals.get(i / 2).getVal()),
+                            valuePoints[i], valuePoints[i + 1] - 12, mValuePaint);
+                }
             }
         }
     }
@@ -206,7 +218,7 @@ public class LineChart extends BarLineChartBase {
 
             for (int i = 0; i < positions.length; i += 2) {
                 positions[i] = i / 2;
-                positions[i + 1] = mYVals.get(i / 2);
+                positions[i + 1] = mYVals.get(i / 2).getVal();
             }
 
             transformPointArray(positions);
@@ -301,6 +313,32 @@ public class LineChart extends BarLineChartBase {
      */
     public float getLineWidth() {
         return mLineWidth;
+    }
+
+    /**
+     * sets the color for the line paint
+     * 
+     * @param color
+     */
+    public void setLineColor(int color) {
+        mLinePaint.setColor(color);
+    }
+    
+    /**
+     * sets the color for the outer circle paint
+     * @param color
+     */
+    public void setCircleColor(int color) {
+        mCirclePaintOuter.setColor(color);
+    }
+
+    /**
+     * sets the color for the fill-paint
+     * 
+     * @param color
+     */
+    public void setFillColor(int color) {
+        mFilledPaint.setColor(color);
     }
 
     /**

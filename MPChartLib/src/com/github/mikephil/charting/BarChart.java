@@ -135,7 +135,7 @@ public class BarChart extends BarLineChartBase {
                     
                     mHighlightPaint.setAlpha(120);
                     
-                    float y = mYVals.get(index);
+                    float y = mYVals.get(index).getVal();
                     float left = index + mBarSpace / 2f;
                     float right = index + 1f - mBarSpace / 2f;
                     float top = y >= 0 ? y : 0;
@@ -210,7 +210,7 @@ public class BarChart extends BarLineChartBase {
 
             for (int i = 0; i < mYVals.size(); i++) {
 
-                float y = mYVals.get(i);
+                float y = mYVals.get(i).getVal();
                 float left = i + mBarSpace / 2f;
                 float right = i + 1f - mBarSpace / 2f;
                 float top = y >= 0 ? y : 0;
@@ -242,7 +242,7 @@ public class BarChart extends BarLineChartBase {
 
             Paint paint = mDrawPaints[i % mDrawPaints.length];
 
-            float y = mYVals.get(i);
+            float y = mYVals.get(i).getVal();
             float left = i + mBarSpace / 2f;
             float right = i + 1f - mBarSpace / 2f;
             float top = y >= 0 ? y : 0;
@@ -280,15 +280,25 @@ public class BarChart extends BarLineChartBase {
             for (int i = 0; i < valuePoints.length; i += 2) {
                 valuePoints[i] = i / 2 + 0.5f; // add 0.5f too keep the values
                                                // centered on top of the bars
-                valuePoints[i + 1] = mYVals.get(i / 2);
+                valuePoints[i + 1] = mYVals.get(i / 2).getVal();
             }
 
             transformPointArray(valuePoints);
 
             for (int i = 0; i < valuePoints.length; i += 2) {
-                mDrawCanvas.drawText(
-                        mFormatValue.format(mYVals.get(i / 2)),
-                        valuePoints[i], valuePoints[i + 1] - 12, mValuePaint);
+                
+                if(mDrawUnitInChart) {
+                    
+                    mDrawCanvas.drawText(
+                            mFormatValue.format(mYVals.get(i / 2).getVal()) + mUnit,
+                            valuePoints[i], valuePoints[i + 1] - 12, mValuePaint);
+                } else {
+                 
+                    
+                    mDrawCanvas.drawText(
+                            mFormatValue.format(mYVals.get(i / 2).getVal()),
+                            valuePoints[i], valuePoints[i + 1] - 12, mValuePaint);
+                }
             }
         }
     }

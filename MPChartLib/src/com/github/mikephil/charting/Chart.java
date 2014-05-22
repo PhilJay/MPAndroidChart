@@ -69,7 +69,7 @@ public abstract class Chart extends View {
     protected ArrayList<String> mXVals;
 
     /** list that holds all values of the y-axis */
-    protected ArrayList<Float> mYVals;
+    protected ArrayList<Series> mYVals;
 
     /** final bitmap that contains all information and is drawn to the screen */
     protected Bitmap mDrawBitmap;
@@ -200,7 +200,7 @@ public abstract class Chart extends View {
         mOffsetTop = (int) Utils.convertDpToPixel(mOffsetTop);
 
         mXVals = new ArrayList<String>();
-        mYVals = new ArrayList<Float>();
+        mYVals = new ArrayList<Series>();
 
         mDrawPaint = new Paint();
 
@@ -227,7 +227,7 @@ public abstract class Chart extends View {
      * @param xVals
      * @param yVals
      */
-    public void setData(ArrayList<String> xVals, ArrayList<Float> yVals) {
+    public void setData(ArrayList<String> xVals, ArrayList<Series> yVals) {
 
         if (xVals == null || xVals.size() <= 1 || yVals == null || yVals.size() <= 1) {
             Log.e(LOG_TAG,
@@ -265,15 +265,15 @@ public abstract class Chart extends View {
      */
     protected void calcMinMax() {
 
-        mYMin = mYVals.get(0);
-        mYMax = mYVals.get(0);
+        mYMin = mYVals.get(0).getVal();
+        mYMax = mYVals.get(0).getVal();
 
         for (int i = 0; i < mYVals.size(); i++) {
-            if (mYVals.get(i) < mYMin)
-                mYMin = mYVals.get(i);
+            if (mYVals.get(i).getVal() < mYMin)
+                mYMin = mYVals.get(i).getVal();
 
-            if (mYVals.get(i) > mYMax)
-                mYMax = mYVals.get(i);
+            if (mYVals.get(i).getVal() > mYMax)
+                mYMax = mYVals.get(i).getVal();
         }
 
         mYChartMin = mYMin;
@@ -295,7 +295,7 @@ public abstract class Chart extends View {
         mYValueSum = 0;
 
         for (int i = 0; i < mYVals.size(); i++) {
-            mYValueSum += Math.abs(mYVals.get(i));
+            mYValueSum += Math.abs(mYVals.get(i).getVal());
         }
     }
 
@@ -648,7 +648,7 @@ public abstract class Chart extends View {
                 float[] values = new float[indices.length];
 
                 for (int i = 0; i < values.length; i++)
-                    values[i] = getYValue(indices[i]);
+                    values[i] = getSeries(indices[i]).getVal();
 
                 // notify the listener
                 mSelectionListener.onValuesSelected(values, indices);
@@ -684,7 +684,7 @@ public abstract class Chart extends View {
             return;
 
         int index = mIndicesToHightlight[0];
-        float value = mYVals.get(index);
+        float value = mYVals.get(index).getVal();
 
         // position of the marker depends on selected value index and value
         float[] pts = new float[] {
@@ -1064,6 +1064,15 @@ public abstract class Chart extends View {
     }
 
     /**
+     * sets the draw color for the value paint object
+     * 
+     * @param color
+     */
+    public void setValuePaintColor(int color) {
+        mValuePaint.setColor(color);
+    }
+
+    /**
      * returns true if y-value drawing is enabled, false if not
      * 
      * @return
@@ -1078,7 +1087,7 @@ public abstract class Chart extends View {
      * @param index
      * @return
      */
-    public float getYValue(int index) {
+    public Series getSeries(int index) {
         return mYVals.get(index);
     }
 

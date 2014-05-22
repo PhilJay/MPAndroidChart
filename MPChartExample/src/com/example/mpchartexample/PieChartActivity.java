@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.github.mikephil.charting.ColorTemplate;
 import com.github.mikephil.charting.OnChartValueSelectedListener;
 import com.github.mikephil.charting.PieChart;
+import com.github.mikephil.charting.PieSeries;
+import com.github.mikephil.charting.Series;
 
 import java.util.ArrayList;
 
@@ -122,12 +124,12 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
        
-        ArrayList<Float> yVals = new ArrayList<Float>();
+        ArrayList<Series> yVals = new ArrayList<Series>();
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             float mult = (mSeekBarY.getProgress());
             float val = (float) (Math.random() * mult) + mult / 5;// + (float) ((mult * 0.1) / 10);
-            yVals.add(val);
+            yVals.add(new PieSeries(val));
         }
         
         tvX.setText(""+ (mSeekBarX.getProgress()));

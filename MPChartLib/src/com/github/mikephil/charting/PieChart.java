@@ -277,7 +277,7 @@ public class PieChart extends Chart {
         mAbsoluteAngles = new float[mYVals.size()];
 
         for (int i = 0; i < mYVals.size(); i++) {
-            mDrawAngles[i] = calcAngle(mYVals.get(i));
+            mDrawAngles[i] = calcAngle(mYVals.get(i).getVal());
 
             if (i > 0)
                 mAbsoluteAngles[i] = mAbsoluteAngles[i - 1] + mDrawAngles[i];
@@ -418,9 +418,9 @@ public class PieChart extends Chart {
             String val = "";
 
             if (mUsePercentValues)
-                val = mFormatValue.format(getPercentOfTotal(mYVals.get(i))) + " %";
+                val = mFormatValue.format(getPercentOfTotal(mYVals.get(i).getVal())) + " %";
             else
-                val = mFormatValue.format(mYVals.get(i));
+                val = mFormatValue.format(mYVals.get(i).getVal());
 
             // draw everything, depending on settings
             if (mDrawXVals && mDrawYValues) {

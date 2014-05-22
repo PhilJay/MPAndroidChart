@@ -27,6 +27,7 @@
         <activity android:screenOrientation="landscape" android:name="MultipleChartsActivity"></activity>
         <activity android:name="BarChartActivity"></activity>
         <activity android:name="PieChartActivity"></activity>
+        <activity android:name="MultiLineChartActivity"></activity>
     </application>
 
 </manifest>

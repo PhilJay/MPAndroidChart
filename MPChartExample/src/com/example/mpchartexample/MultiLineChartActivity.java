@@ -17,7 +17,7 @@ import com.github.mikephil.charting.Series;
 
 import java.util.ArrayList;
 
-public class LineChartActivity extends Activity implements OnSeekBarChangeListener {
+public class MultiLineChartActivity extends Activity implements OnSeekBarChangeListener {
 
     private LineChart mChart; 
     private SeekBar mSeekBarX, mSeekBarY;
