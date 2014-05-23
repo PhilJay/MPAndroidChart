@@ -623,7 +623,7 @@ public abstract class Chart extends View {
      */
     public boolean valuesToHighlight() {
         return mIndicesToHightlight == null || mIndicesToHightlight.length == 0
-                || mIndicesToHightlight[0] == -1 ? false : true;
+                || mIndicesToHightlight[0] < 0 ? false : true;
     }
 
     /**
@@ -809,6 +809,24 @@ public abstract class Chart extends View {
      */
     public float getYMin() {
         return mYMin;
+    }
+
+    /**
+     * returns the average value of all values the chart holds
+     * 
+     * @return
+     */
+    public float getAverage() {
+        return getYValueSum() / mYVals.size();
+    }
+
+    /**
+     * returns the number of values the chart holds
+     * 
+     * @return
+     */
+    public int getValueCount() {
+        return mYVals.size();
     }
 
     /**
@@ -1098,7 +1116,7 @@ public abstract class Chart extends View {
      * @return
      */
     public String getXValue(int index) {
-        if (mXVals == null || mXVals.size() >= index)
+        if (mXVals == null || mXVals.size() <= index)
             return null;
         else
             return mXVals.get(index);

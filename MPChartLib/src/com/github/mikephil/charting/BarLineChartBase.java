@@ -865,6 +865,9 @@ public abstract class BarLineChartBase extends Chart {
 
         double touchPointIndex = pts[0];
         double base = Math.floor(touchPointIndex);
+        
+        // touch out of chart
+        if(touchPointIndex < 0 || touchPointIndex > getValueCount()-1) return -1;
 
         int index = (int) base;
 
@@ -875,7 +878,7 @@ public abstract class BarLineChartBase extends Chart {
                 index = (int) base + 1;
             }
         }
-
+        
         return index;
     }
 

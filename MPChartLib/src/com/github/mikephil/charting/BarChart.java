@@ -131,7 +131,7 @@ public class BarChart extends BarLineChartBase {
                 int index = mIndicesToHightlight[i];
 
                 // check outofbounds
-                if (index < mYVals.size()) {
+                if (index < mYVals.size() && index >= 0) {
                     
                     mHighlightPaint.setAlpha(120);
                     

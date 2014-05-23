@@ -117,7 +117,7 @@ public class LineChart extends BarLineChartBase {
                 int index = mIndicesToHightlight[i];
 
                 // check outofbounds
-                if (index < mYVals.size()) {
+                if (index < mYVals.size() && index >= 0) {
 
                     float[] pts = new float[] {
                             index, mYChartMax, index, mYChartMin,
