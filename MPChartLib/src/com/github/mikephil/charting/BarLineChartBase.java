@@ -187,11 +187,12 @@ public abstract class BarLineChartBase extends Chart {
         drawVerticalGrid();
         drawData();
         drawHighlights();
-        drawAdditional();
-        drawValues();
-
+        
         // Removes clipping rectangle
         mDrawCanvas.restoreToCount(clipRestoreCount);
+        
+        drawAdditional();
+        drawValues();
 
         drawXLegend();
 
@@ -365,7 +366,6 @@ public abstract class BarLineChartBase extends Chart {
             int exp = (int) Math.floor(log10);
             double tenPowExp = POW_10[exp + 5]; // +5 because the POW array has
                                                 // its "1" at index 5
-
             double multi = Math.round(interval / tenPowExp);
 
             if (multi >= 1) {
@@ -614,6 +614,7 @@ public abstract class BarLineChartBase extends Chart {
 
         prepareMatrix();
         prepareYLegend();
+        invalidate();
     }
 
     /**
@@ -866,8 +867,11 @@ public abstract class BarLineChartBase extends Chart {
         double touchPointIndex = pts[0];
         double base = Math.floor(touchPointIndex);
         
+        Log.i(LOG_TAG, "touchindex: " + touchPointIndex);
+        
         // touch out of chart
-        if(touchPointIndex < 0 || touchPointIndex > getValueCount()-1) return -1;
+        if(this instanceof LineChart && (touchPointIndex < 0 || touchPointIndex > getValueCount()-1)) return -1;
+        if(this instanceof BarChart && (touchPointIndex < 0 || touchPointIndex > getValueCount())) return -1;
 
         int index = (int) base;
 

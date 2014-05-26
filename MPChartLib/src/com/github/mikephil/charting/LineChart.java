@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -224,6 +225,11 @@ public class LineChart extends BarLineChartBase {
             transformPointArray(positions);
 
             for (int i = 0; i < positions.length; i += 2) {
+
+                // make sure the circles don't do shitty things outside bounds
+                if (positions[i] < mContentRect.left || positions[i] > mContentRect.right)
+                    continue;
+
                 mDrawCanvas.drawCircle(positions[i], positions[i + 1], mCircleSize,
                         mCirclePaintOuter);
                 mDrawCanvas.drawCircle(positions[i], positions[i + 1], mCircleSize / 2,
@@ -323,9 +329,10 @@ public class LineChart extends BarLineChartBase {
     public void setLineColor(int color) {
         mLinePaint.setColor(color);
     }
-    
+
     /**
      * sets the color for the outer circle paint
+     * 
      * @param color
      */
     public void setCircleColor(int color) {

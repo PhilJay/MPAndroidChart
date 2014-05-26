@@ -1121,6 +1121,18 @@ public abstract class Chart extends View {
         else
             return mXVals.get(index);
     }
+    
+    /**
+     * returns the y-value for the given index
+     * @param index
+     * @return
+     */
+    public float getYValue(int index) {
+        if (mYVals == null || mYVals.size() <= index)
+            return 0f;
+        else
+            return mYVals.get(index).getVal();
+    }
 
     /**
      * returns the percentage the given value has of the total y-values
