@@ -1,4 +1,4 @@
-MPChart
+MPAndroidChart
 =======
 
 A simple charting library for Android, supporting line- bar- and piecharts, scaling, dragging and selecting.
