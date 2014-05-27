@@ -17,9 +17,10 @@ Features
  - Fully customizeable (paints, typefaces, legends, colors, background, gestures, ...)
  
 **Chart types:**
- - **LineChart**
-
+ - **LineChart (single line)**
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart.png)
+ - **LineChart (multi line / experimental branch)**
+![alt tag](https://raw.github.com/PhilJay/MPChart/experimental/screenshots/linechart_multiline.png)
 
  - **BarChart2D**
 
