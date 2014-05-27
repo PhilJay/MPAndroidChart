@@ -585,7 +585,8 @@ public abstract class Chart extends View {
      * @return
      */
     public boolean valuesToHighlight() {
-        return mIndicesToHightlight == null || mIndicesToHightlight.length == 0 ? false
+        return mIndicesToHightlight == null || mIndicesToHightlight.length == 0
+                || mIndicesToHightlight[0] == null ? false
                 : true;
     }
 
@@ -611,7 +612,8 @@ public abstract class Chart extends View {
                 float[] values = new float[highs.length];
 
                 for (int i = 0; i < values.length; i++)
-                    values[i] = getYValueByDataSetIndex(highs[i].getXIndex(), highs[i].getDataSetIndex());
+                    values[i] = getYValueByDataSetIndex(highs[i].getXIndex(),
+                            highs[i].getDataSetIndex());
 
                 // notify the listener
                 mSelectionListener.onValuesSelected(values, highs);
@@ -645,26 +647,27 @@ public abstract class Chart extends View {
         if (mMarkerView == null || !mDrawMarkerView || !valuesToHighlight())
             return;
 
-//        int index = mIndicesToHightlight[0];
-//        float value = getYValue(index);
-//
-//        // position of the marker depends on selected value index and value
-//        float[] pts = new float[] {
-//                index, value
-//        };
-//        transformPointArray(pts);
-//
-//        mMarkerPosX = pts[0] - mMarkerView.getWidth() / 2f;
-//        mMarkerPosY = pts[1] - mMarkerView.getHeight();
-//
-//        Log.i("", "h: " + mMarkerView.getHeight() + ", w: " + mMarkerView.getWidth());
-//
-//        // translate to marker position
-//        mDrawCanvas.translate(mMarkerPosX, mMarkerPosY);
-//        mMarkerView.draw(mDrawCanvas);
-//
-//        // translate back
-//        mDrawCanvas.translate(-mMarkerPosX, -mMarkerPosY);
+        // int index = mIndicesToHightlight[0];
+        // float value = getYValue(index);
+        //
+        // // position of the marker depends on selected value index and value
+        // float[] pts = new float[] {
+        // index, value
+        // };
+        // transformPointArray(pts);
+        //
+        // mMarkerPosX = pts[0] - mMarkerView.getWidth() / 2f;
+        // mMarkerPosY = pts[1] - mMarkerView.getHeight();
+        //
+        // Log.i("", "h: " + mMarkerView.getHeight() + ", w: " +
+        // mMarkerView.getWidth());
+        //
+        // // translate to marker position
+        // mDrawCanvas.translate(mMarkerPosX, mMarkerPosY);
+        // mMarkerView.draw(mDrawCanvas);
+        //
+        // // translate back
+        // mDrawCanvas.translate(-mMarkerPosX, -mMarkerPosY);
     }
 
     /**
@@ -1108,9 +1111,10 @@ public abstract class Chart extends View {
         DataSet set = mData.getDataSetByType(type);
         return set.getYVals().get(index).getVal();
     }
-    
+
     /**
      * returns the y-value for the given x-index and DataSet index
+     * 
      * @param index
      * @param dataSet
      * @return

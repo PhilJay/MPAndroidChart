@@ -1,11 +1,9 @@
 package com.github.mikephil.charting;
 
-import java.util.ArrayList;
 
 public class Series {
 
 	private float mVal = 0f;
-	private int mType = 0;
 	private int mXIndex = 0;
 
 	/**
@@ -13,24 +11,12 @@ public class Series {
 	 * 
 	 * @param val
 	 *            the y value
-	 * @param type
-	 *            the type (e.g. different lines in the line chart are of different types). The type can be seen as an
-	 *            id and can be chosen freely.
 	 * @param xIndex
 	 *            the corresponding index in the x value array
 	 */
-	public Series(float val, int type, int xIndex) {
+	public Series(float val, int xIndex) {
 		mVal = val;
-		mType = type;
 		mXIndex = xIndex;
-	}
-
-	public void setType(int type) {
-		this.mType = type;
-	}
-
-	public int getType() {
-		return mType;
 	}
 
 	public int getXIndex() {

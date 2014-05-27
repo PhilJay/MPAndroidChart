@@ -53,7 +53,7 @@ public class Approximator {
 		for (int i = 0; i < series.size(); i++) {
 			if (keep[i]) {
 				Series curSeries = series.get(i);
-				reducedSeries.add(new Series(curSeries.getVal(), curSeries.getType(), curSeries.getXIndex()));
+				reducedSeries.add(new Series(curSeries.getVal(), curSeries.getXIndex()));
 			}
 		}
 		return reducedSeries;

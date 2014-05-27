@@ -162,8 +162,6 @@ public class MultiLineChartActivity extends Activity implements OnSeekBarChangeL
 		}
 
 		ArrayList<Double[]> values = new ArrayList<Double[]>();
-		
-		Approximator approximator = new Approximator(ApproximatorType.DOUGLAS_PEUCKER);
 
 		for (int z = 0; z < 3; z++) {
 		    

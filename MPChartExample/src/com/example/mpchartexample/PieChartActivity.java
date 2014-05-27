@@ -130,7 +130,7 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
 		for (int i = 0; i < mSeekBarX.getProgress(); i++) {
 			float mult = (mSeekBarY.getProgress());
 			float val = (float) (Math.random() * mult) + mult / 5;// + (float) ((mult * 0.1) / 10);
-			yVals.add(new Series(val, i, 0));
+			yVals.add(new Series(val, i));
 		}
 
 		tvX.setText("" + (mSeekBarX.getProgress()));

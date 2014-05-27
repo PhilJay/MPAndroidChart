@@ -151,7 +151,7 @@ public class DataSet {
             ArrayList<Series> series = new ArrayList<Series>();
 
             for (int j = 0; j < curValues.length; j++) {
-                series.add(new Series(curValues[j].floatValue(), i, j));
+                series.add(new Series(curValues[j].floatValue(), j));
             }
 
             dataSets.add(new DataSet(series, i));

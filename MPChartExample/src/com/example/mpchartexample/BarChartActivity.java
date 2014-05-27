@@ -9,11 +9,13 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.Approximator;
 import com.github.mikephil.charting.BarChart;
 import com.github.mikephil.charting.ChartData;
 import com.github.mikephil.charting.ColorTemplate;
 import com.github.mikephil.charting.DataSet;
 import com.github.mikephil.charting.Series;
+import com.github.mikephil.charting.Approximator.ApproximatorType;
 
 import java.util.ArrayList;
 
@@ -146,11 +148,14 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
 		for (int i = 0; i < mSeekBarX.getProgress(); i++) {
 			float mult = (mSeekBarY.getProgress() + 1);
 			float val = (float) (Math.random() * mult * 0.1) + 3;// + (float) ((mult * 0.1) / 10);
-			yVals.add(new Series(val, i, 0));
+			yVals.add(new Series(val, i));
 		}
 
 		tvX.setText("" + (mSeekBarX.getProgress() + 1));
 		tvY.setText("" + (mSeekBarY.getProgress() / 10));
+		
+//		Approximator approximator = new Approximator(ApproximatorType.DOUGLAS_PEUCKER);
+//		ArrayList<Series> filtered = approximator.filter(yVals);
 
 		DataSet set = new DataSet(yVals, 0);
         ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
