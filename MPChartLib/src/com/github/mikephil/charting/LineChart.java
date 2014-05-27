@@ -84,7 +84,7 @@ public class LineChart extends BarLineChartBase {
 		for (int i = 0; i < ct.getColors().size(); i++) {
 			mDrawPaints[i] = new Paint(Paint.ANTI_ALIAS_FLAG);
 			mDrawPaints[i].setStrokeWidth(mLineWidth);
-			mDrawPaints[i].setStyle(Style.STROKE);
+			mDrawPaints[i].setStyle(Style.FILL);
 			mDrawPaints[i].setColor(ct.getColors().get(i));
 		}
 	}
@@ -241,7 +241,7 @@ public class LineChart extends BarLineChartBase {
 					if (positions[j] < mContentRect.left || positions[j] > mContentRect.right)
 						continue;
 
-					mDrawCanvas.drawCircle(positions[j], positions[j + 1], mCircleSize, mCirclePaintOuter);
+					mDrawCanvas.drawCircle(positions[j], positions[j + 1], mCircleSize, mDrawPaints[i % mDrawPaints.length]);
 					mDrawCanvas.drawCircle(positions[j], positions[j + 1], mCircleSize / 2, mCirclePaintInner);
 				}
 			}
@@ -329,15 +329,6 @@ public class LineChart extends BarLineChartBase {
 	 */
 	public float getLineWidth() {
 		return mLineWidth;
-	}
-
-	/**
-	 * sets the color for the outer circle paint
-	 * 
-	 * @param color
-	 */
-	public void setCircleColor(int color) {
-		mCirclePaintOuter.setColor(color);
 	}
 
 	/**

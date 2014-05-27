@@ -1,7 +1,5 @@
 package com.example.mpchartexample;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,12 +12,13 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.Approximator;
+import com.github.mikephil.charting.Approximator.ApproximatorType;
 import com.github.mikephil.charting.ChartData;
+import com.github.mikephil.charting.ColorTemplate;
 import com.github.mikephil.charting.DataSet;
 import com.github.mikephil.charting.LineChart;
-import com.github.mikephil.charting.Point;
-import com.github.mikephil.charting.Series;
-import com.github.mikephil.charting.Approximator.ApproximatorType;
+
+import java.util.ArrayList;
 
 public class MultiLineChartActivity extends Activity implements OnSeekBarChangeListener {
 
@@ -43,14 +42,15 @@ public class MultiLineChartActivity extends Activity implements OnSeekBarChangeL
 		mSeekBarY.setOnSeekBarChangeListener(this);
 
 		mChart = (LineChart) findViewById(R.id.chart1);
-		// mChart.setColorTemplate(new ColorTemplate(ColorTemplate.getColors(this, ColorTemplate.LIBERTY_COLORS)));
+		mChart.setColorTemplate(new ColorTemplate(ColorTemplate.getColors(this, ColorTemplate.JOYFUL_COLORS)));
+		mChart.setDrawTopYLegendEntry(false);
 
 		// mChart.setDrawFilled(true);
 		// mChart.setRoundedYLegend(false);
 		// mChart.setStartAtZero(true);
 		mChart.setDrawYValues(false);
-		mChart.setLineWidth(4f);
-		mChart.setCircleSize(4f);
+		mChart.setLineWidth(5f);
+		mChart.setCircleSize(5f);
 		// mChart.setSpacePercent(20, 10);
 		mChart.setYLegendCount(6);
 		mChart.setTouchEnabled(true);
