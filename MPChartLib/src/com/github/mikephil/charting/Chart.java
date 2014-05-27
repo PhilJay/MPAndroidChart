@@ -208,7 +208,7 @@ public abstract class Chart extends View {
     }
 
     /**
-     * sets the data for the chart
+     * Sets a new ChartData object for the chart.
      * 
      * @param data
      */
@@ -226,6 +226,32 @@ public abstract class Chart extends View {
         mData = data;
 
         prepare();
+    }
+
+    /**
+     * Sets primitive data for the chart. Internally, this is converted into a
+     * ChartData object with one DataSet (type 0). If you have more specific
+     * requirements for your data, use the setData(ChartData data) method and
+     * create your own ChartData object with as many DataSets as you like.
+     * 
+     * @param xVals
+     * @param yVals
+     */
+    public void setData(ArrayList<String> xVals, ArrayList<Float> yVals) {
+
+        ArrayList<Series> series = new ArrayList<Series>();
+
+        for (int i = 0; i < yVals.size(); i++) {
+            series.add(new Series(yVals.get(i), i));
+        }
+
+        DataSet set = new DataSet(series, 0);
+        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+        dataSets.add(set);
+
+        ChartData data = new ChartData(xVals, dataSets);
+
+        setData(data);
     }
 
     /**
@@ -320,6 +346,29 @@ public abstract class Chart extends View {
         // create the content rect
         mContentRect = new Rect(mOffsetLeft, mOffsetTop, getWidth() - mOffsetRight, getHeight()
                 - mOffsetBottom);
+    }
+
+    /**
+     * transforms an arraylist of Series into a float array containing the x and
+     * y values transformed with all matrices
+     * 
+     * @param series
+     * @param xoffset offset the chart values should have on the x-axis (0.5f)
+     *            to center for barchart
+     * @return
+     */
+    protected float[] generateTransformedValues(ArrayList<Series> series, float xOffset) {
+
+        float[] valuePoints = new float[series.size() * 2];
+
+        for (int j = 0; j < valuePoints.length; j += 2) {
+            valuePoints[j] = series.get(j / 2).getXIndex() + xOffset;
+            valuePoints[j + 1] = series.get(j / 2).getVal();
+        }
+
+        transformPointArray(valuePoints);
+
+        return valuePoints;
     }
 
     /**
@@ -793,7 +842,7 @@ public abstract class Chart extends View {
      */
     public float getAverage(int type) {
         return mData.getDataSetByType(type).getYValueSum()
-                / mData.getDataSetByType(type).getYValCount();
+                / mData.getDataSetByType(type).getSeriesCount();
     }
 
     /**
@@ -963,12 +1012,6 @@ public abstract class Chart extends View {
         return mMarkerPosY;
     }
 
-    /** paint for the lines of the linechart */
-    public static final int PAINT_LINE = 1;
-
-    /** paint for the filled surface / area of the linechart */
-    public static final int PAINT_FILLED = 2;
-
     /** paint for the grid lines (only line and barchart) */
     public static final int PAINT_GRID = 3;
 
@@ -989,9 +1032,6 @@ public abstract class Chart extends View {
 
     /** paint for the value text */
     public static final int PAINT_VALUES = 8;
-
-    /** paint for the outer circle (linechart) */
-    public static final int PAINT_CIRCLES_OUTER = 9;
 
     /** paint for the inner circle (linechart) */
     public static final int PAINT_CIRCLES_INNER = 10;
@@ -1016,10 +1056,11 @@ public abstract class Chart extends View {
 
     /**
      * set a new paint object for the specified parameter in the chart e.g.
-     * Chart.PAINT_LINE
+     * Chart.PAINT_VALUES
      * 
-     * @param p --> Chart.PAINT_LINE, Chart.PAINT_GRID, Chart.PAINT_VALUES, ...
-     * @param which
+     * @param p the new paint object
+     * @param which Chart.PAINT_VALUES, Chart.PAINT_GRID, Chart.PAINT_VALUES,
+     *            ...
      */
     public void setPaint(Paint p, int which) {
 

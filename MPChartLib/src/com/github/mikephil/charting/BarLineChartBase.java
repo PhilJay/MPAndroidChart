@@ -506,7 +506,7 @@ public abstract class BarLineChartBase extends Chart {
      * @param v
      * @return
      */
-    protected boolean isOffCanvasRight(float p) {
+    protected boolean isOffContentRight(float p) {
         if (p > mContentRect.right)
             return true;
         else
@@ -520,7 +520,7 @@ public abstract class BarLineChartBase extends Chart {
      * @param v
      * @return
      */
-    protected boolean isOffCanvasLeft(float p) {
+    protected boolean isOffContentLeft(float p) {
         if (p < mContentRect.left)
             return true;
         else
@@ -927,7 +927,7 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * returns the index of the closest value
+     * returns the index DataSet that contains the closest value    
      * 
      * @param valsAtIndex
      * @return

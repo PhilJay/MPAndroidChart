@@ -4,6 +4,7 @@ package com.github.mikephil.charting;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Canvas.VertexMode;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
@@ -94,7 +95,7 @@ public class LineChart extends BarLineChartBase {
                 DataSet set = getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
 
                 // check outofbounds
-                if (xIndex < set.getYValCount() && xIndex >= 0) {
+                if (xIndex < set.getSeriesCount() && xIndex >= 0) {
 
                     float[] pts = new float[] {
                             xIndex, mYChartMax, xIndex, mYChartMin, 0,
@@ -122,50 +123,54 @@ public class LineChart extends BarLineChartBase {
             DataSet dataSet = dataSets.get(i);
             ArrayList<Series> series = dataSet.getYVals();
 
-            float[] valuePoints = new float[series.size() * 2];
+            float[] valuePoints = generateTransformedValues(series, 0f);
 
-            for (int j = 0; j < valuePoints.length; j += 2) {
-                valuePoints[j] = series.get(j / 2).getXIndex();
-                valuePoints[j + 1] = series.get(j / 2).getVal();
-            }
-
-            transformPointArray(valuePoints);
+            Paint paint = mDrawPaints[i % mDrawPaints.length];
 
             for (int j = 0; j < valuePoints.length - 2; j += 2) {
 
-                if (isOffCanvasRight(valuePoints[j]))
+                if (isOffContentRight(valuePoints[j]))
                     break;
 
                 // make sure the lines don't do shitty things outside bounds
-                if (j != 0 && isOffCanvasLeft(valuePoints[j - 1]))
+                if (j != 0 && isOffContentLeft(valuePoints[j - 1]))
                     continue;
 
                 mDrawCanvas.drawLine(valuePoints[j], valuePoints[j + 1], valuePoints[j + 2],
-                        valuePoints[j + 3],
-                        mDrawPaints[i % mDrawPaints.length]);
-            }
-        }
-
-        // if data is drawn filled
-        if (mDrawFilled) {
-
-            Path filled = new Path();
-            filled.moveTo(0, getYValue(0));
-
-            // create a new path
-            for (int x = 1; x < mData.getYValCount(); x++) {
-
-                filled.lineTo(x, getYValue(x));
+                        valuePoints[j + 3], paint);
             }
 
-            // close up
-            filled.lineTo(mData.getXValCount() - 1, mYChartMin);
-            filled.lineTo(0f, mYChartMin);
-            filled.close();
 
-            transformPath(filled);
+            // if drawing filled is enabled
+            if (mDrawFilled) {
+                // mDrawCanvas.drawVertices(VertexMode.TRIANGLE_STRIP,
+                // valuePoints.length, valuePoints, 0,
+                // null, 0, null, 0, null, 0, 0, paint);
+                                
+                // filled is drawn with less alpha
+                paint.setAlpha(85);
 
-            mDrawCanvas.drawPath(filled, mFilledPaint);
+                Path filled = new Path();
+                filled.moveTo(0, series.get(0).getVal());
+
+                // create a new path
+                for (int x = 1; x < series.size(); x++) {
+
+                    filled.lineTo(x, series.get(x).getVal());
+                }
+
+                // close up
+                filled.lineTo(series.size() - 1, mYChartMin);
+                filled.lineTo(0f, mYChartMin);
+                filled.close();
+
+                transformPath(filled);
+
+                mDrawCanvas.drawPath(filled, paint);
+                
+                // restore alpha
+                paint.setAlpha(255);
+            }
         }
     }
 
@@ -188,21 +193,14 @@ public class LineChart extends BarLineChartBase {
                 DataSet dataSet = dataSets.get(i);
                 ArrayList<Series> series = dataSet.getYVals();
 
-                float[] positions = new float[dataSet.getYValCount() * 2];
-
-                for (int j = 0; j < positions.length; j += 2) {
-                    positions[j] = series.get(j / 2).getXIndex();
-                    positions[j + 1] = series.get(j / 2).getVal();
-                }
-
-                transformPointArray(positions);
+                float[] positions = generateTransformedValues(series, 0f);
 
                 for (int j = 0; j < positions.length; j += 2) {
 
-                    if (isOffCanvasRight(positions[j]))
+                    if (isOffContentRight(positions[j]))
                         break;
 
-                    if (isOffCanvasLeft(positions[j]))
+                    if (isOffContentLeft(positions[j]))
                         continue;
 
                     float val = series.get(j / 2).getVal();
@@ -236,23 +234,16 @@ public class LineChart extends BarLineChartBase {
                 DataSet dataSet = dataSets.get(i);
                 ArrayList<Series> series = dataSet.getYVals();
 
-                float[] positions = new float[dataSet.getYValCount() * 2];
-
-                for (int j = 0; j < positions.length; j += 2) {
-                    positions[j] = series.get(j / 2).getXIndex();
-                    positions[j + 1] = series.get(j / 2).getVal();
-                }
-
-                transformPointArray(positions);
+                float[] positions = generateTransformedValues(series, 0f);
 
                 for (int j = 0; j < positions.length; j += 2) {
 
-                    if (isOffCanvasRight(positions[j]))
+                    if (isOffContentRight(positions[j]))
                         break;
 
                     // make sure the circles don't do shitty things outside
                     // bounds
-                    if (isOffCanvasLeft(positions[j]))
+                    if (isOffContentLeft(positions[j]))
                         continue;
 
                     mDrawCanvas.drawCircle(positions[j], positions[j + 1], mCircleSize,
@@ -381,9 +372,6 @@ public class LineChart extends BarLineChartBase {
         super.setPaint(p, which);
 
         switch (which) {
-            case PAINT_FILLED:
-                mFilledPaint = p;
-                break;
             case PAINT_CIRCLES_INNER:
                 mCirclePaintInner = p;
                 break;

@@ -77,7 +77,7 @@ public class DataSet {
      * 
      * @return
      */
-    public int getYValCount() {
+    public int getSeriesCount() {
         return mYVals.size();
     }
 

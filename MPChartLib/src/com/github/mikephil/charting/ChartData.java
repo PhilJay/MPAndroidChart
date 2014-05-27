@@ -215,7 +215,7 @@ public class ChartData {
     public int getYValCount() {
         int count = 0;
         for (int i = 0; i < mDataSets.size(); i++) {
-            count += mDataSets.get(i).getYValCount();
+            count += mDataSets.get(i).getSeriesCount();
         }
 
         return count;

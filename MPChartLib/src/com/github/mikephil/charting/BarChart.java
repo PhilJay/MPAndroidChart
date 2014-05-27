@@ -27,7 +27,7 @@ public class BarChart extends BarLineChartBase {
     private boolean m3DEnabled = true;
 
     /** flag that enables or disables the highlighting arrow */
-    private boolean mDrawHighlightArrow = true;
+    private boolean mDrawHighlightArrow = false;
 
     public BarChart(Context context) {
         super(context);
@@ -245,7 +245,7 @@ public class BarChart extends BarLineChartBase {
             ArrayList<Series> series = dataSet.getYVals();
 
             // do the drawing
-            for (int j = 0; j < dataSet.getYValCount(); j++) {
+            for (int j = 0; j < dataSet.getSeriesCount(); j++) {
 
                 Paint paint = mDrawPaints[j % mDrawPaints.length];
 
@@ -284,26 +284,34 @@ public class BarChart extends BarLineChartBase {
         // if values are drawn
         if (mDrawYValues && mData.getYValCount() < mMaxVisibleCount * mScaleX) {
 
-            float[] valuePoints = new float[mData.getYValCount() * 2];
+            ArrayList<DataSet> dataSets = mData.getDataSets();
 
-            for (int i = 0; i < valuePoints.length; i += 2) {
-                valuePoints[i] = i / 2 + 0.5f; // add 0.5f too keep the values
-                                               // centered on top of the bars
-                valuePoints[i + 1] = getYValue(i / 2);
-            }
+            for (int i = 0; i < mData.getDataSetCount(); i++) {
 
-            transformPointArray(valuePoints);
+                DataSet dataSet = dataSets.get(i);
+                ArrayList<Series> series = dataSet.getYVals();
 
-            for (int i = 0; i < valuePoints.length; i += 2) {
+                float[] valuePoints = generateTransformedValues(series, 0.5f);
 
-                if (mDrawUnitInChart) {
+                for (int j = 0; j < valuePoints.length; j += 2) {
 
-                    mDrawCanvas.drawText(mFormatValue.format(getYValue(i / 2)) + mUnit,
-                            valuePoints[i], valuePoints[i + 1] - 12, mValuePaint);
-                } else {
+                    if (isOffContentRight(valuePoints[j]))
+                        break;
 
-                    mDrawCanvas.drawText(mFormatValue.format(getYValue(i / 2)), valuePoints[i],
-                            valuePoints[i + 1] - 12, mValuePaint);
+                    if (isOffContentLeft(valuePoints[j]))
+                        continue;
+
+                    float val = series.get(j / 2).getVal();
+
+                    if (mDrawUnitInChart) {
+
+                        mDrawCanvas.drawText(mFormatValue.format(val) + mUnit,
+                                valuePoints[j], valuePoints[j + 1] - 12, mValuePaint);
+                    } else {
+
+                        mDrawCanvas.drawText(mFormatValue.format(val), valuePoints[j],
+                                valuePoints[j + 1] - 12, mValuePaint);
+                    }
                 }
             }
         }
