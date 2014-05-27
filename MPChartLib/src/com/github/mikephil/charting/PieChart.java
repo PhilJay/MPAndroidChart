@@ -289,7 +289,7 @@ public class PieChart extends Chart {
 			for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
 				// get the index to highlight
-				int index = mIndicesToHightlight[i];
+				int index = mIndicesToHightlight[i].getXIndex();
 
 				if (index == 0)
 					angle = mChartAngle;
@@ -322,7 +322,7 @@ public class PieChart extends Chart {
 
 			float newangle = mDrawAngles[i];
 
-			if (!needsHighlight(i)) {
+			if (!needsHighlight(i, 0)) {
 
 				mDrawCanvas.drawArc(mCircleBox, angle, newangle, true, mDrawPaints[i % mDrawPaints.length]);
 			}

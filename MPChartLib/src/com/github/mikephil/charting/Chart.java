@@ -8,12 +8,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.graphics.Paint.Align;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.AttributeSet;
@@ -200,7 +200,7 @@ public abstract class Chart extends View {
         mInfoPaint.setTextSize(Utils.convertDpToPixel(12f));
 
         mValuePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mValuePaint.setColor(Color.rgb(186, 89, 248)); // orange
+        mValuePaint.setColor(Color.rgb(63, 63, 63));
         mValuePaint.setTextAlign(Align.CENTER);
         mValuePaint.setTextSize(Utils.convertDpToPixel(9f));
 
@@ -550,9 +550,10 @@ public abstract class Chart extends View {
     /** BELOW THIS CODE FOR HIGHLIGHTING */
 
     /**
-     * array of integers that reference the highlighted slices in the pie chart
+     * array of Highlight objects that reference the highlighted slices in the
+     * pie chart
      */
-    protected int[] mIndicesToHightlight = new int[0];
+    protected Highlight[] mIndicesToHightlight = new Highlight[0];
 
     /**
      * checks if the given index is set for highlighting or not
@@ -560,14 +561,17 @@ public abstract class Chart extends View {
      * @param index
      * @return
      */
-    public boolean needsHighlight(int index) {
+    public boolean needsHighlight(int index, int dataSet) {
 
         // no highlight
         if (!valuesToHighlight())
             return false;
 
         for (int i = 0; i < mIndicesToHightlight.length; i++)
-            if (mIndicesToHightlight[i] == index)
+
+            // check if the xvalue for the given dataset needs highlight
+            if (mIndicesToHightlight[i].getXIndex() == index
+                    && mIndicesToHightlight[i].getDataSetIndex() == dataSet)
                 return true;
 
         return false;
@@ -581,20 +585,19 @@ public abstract class Chart extends View {
      * @return
      */
     public boolean valuesToHighlight() {
-        return mIndicesToHightlight == null || mIndicesToHightlight.length == 0
-                || mIndicesToHightlight[0] < 0 ? false
+        return mIndicesToHightlight == null || mIndicesToHightlight.length == 0 ? false
                 : true;
     }
 
     /**
      * highlights the value at the given index of the values list
      * 
-     * @param indices
+     * @param highs
      */
-    public void highlightValues(int[] indices) {
+    public void highlightValues(Highlight[] highs) {
 
         // set the indices to highlight
-        mIndicesToHightlight = indices;
+        mIndicesToHightlight = highs;
 
         // redraw the chart
         invalidate();
@@ -605,13 +608,13 @@ public abstract class Chart extends View {
                 mSelectionListener.onNothingSelected();
             else {
 
-                float[] values = new float[indices.length];
+                float[] values = new float[highs.length];
 
                 for (int i = 0; i < values.length; i++)
-                    values[i] = getYValue(indices[i]);
+                    values[i] = getYValueByDataSetIndex(highs[i].getXIndex(), highs[i].getDataSetIndex());
 
                 // notify the listener
-                mSelectionListener.onValuesSelected(values, indices);
+                mSelectionListener.onValuesSelected(values, highs);
             }
         }
     }
@@ -639,31 +642,29 @@ public abstract class Chart extends View {
     protected void drawMarkerView() {
 
         // if there is no marker view or no values are to highlight, return
-        if (mMarkerView == null || !mDrawMarkerView || !valuesToHighlight()
-                || mIndicesToHightlight[0] < 0
-                || mIndicesToHightlight[0] >= mData.getYValCount())
+        if (mMarkerView == null || !mDrawMarkerView || !valuesToHighlight())
             return;
 
-        int index = mIndicesToHightlight[0];
-        float value = getYValue(index);
-
-        // position of the marker depends on selected value index and value
-        float[] pts = new float[] {
-                index, value
-        };
-        transformPointArray(pts);
-
-        mMarkerPosX = pts[0] - mMarkerView.getWidth() / 2f;
-        mMarkerPosY = pts[1] - mMarkerView.getHeight();
-
-        Log.i("", "h: " + mMarkerView.getHeight() + ", w: " + mMarkerView.getWidth());
-
-        // translate to marker position
-        mDrawCanvas.translate(mMarkerPosX, mMarkerPosY);
-        mMarkerView.draw(mDrawCanvas);
-
-        // translate back
-        mDrawCanvas.translate(-mMarkerPosX, -mMarkerPosY);
+//        int index = mIndicesToHightlight[0];
+//        float value = getYValue(index);
+//
+//        // position of the marker depends on selected value index and value
+//        float[] pts = new float[] {
+//                index, value
+//        };
+//        transformPointArray(pts);
+//
+//        mMarkerPosX = pts[0] - mMarkerView.getWidth() / 2f;
+//        mMarkerPosY = pts[1] - mMarkerView.getHeight();
+//
+//        Log.i("", "h: " + mMarkerView.getHeight() + ", w: " + mMarkerView.getWidth());
+//
+//        // translate to marker position
+//        mDrawCanvas.translate(mMarkerPosX, mMarkerPosY);
+//        mMarkerView.draw(mDrawCanvas);
+//
+//        // translate back
+//        mDrawCanvas.translate(-mMarkerPosX, -mMarkerPosY);
     }
 
     /**
@@ -1107,6 +1108,17 @@ public abstract class Chart extends View {
         DataSet set = mData.getDataSetByType(type);
         return set.getYVals().get(index).getVal();
     }
+    
+    /**
+     * returns the y-value for the given x-index and DataSet index
+     * @param index
+     * @param dataSet
+     * @return
+     */
+    public float getYValueByDataSetIndex(int index, int dataSet) {
+        DataSet set = mData.getDataSetByIndex(dataSet);
+        return set.getYVals().get(index).getVal();
+    }
 
     /**
      * returns the DataSet with the given index in the DataSet array held by the
@@ -1151,6 +1163,29 @@ public abstract class Chart extends View {
      */
     public Series getSeries(int index, int type) {
         return mData.getDataSetByType(type).getYVals().get(index);
+    }
+
+    /**
+     * get the y-values from the Series object at the given index across all
+     * DataSets
+     * 
+     * @param xIndex
+     * @return
+     */
+    public ArrayList<Float> getYValsAtIndex(int xIndex) {
+
+        ArrayList<Float> vals = new ArrayList<Float>();
+
+        for (int i = 0; i < mData.getDataSetCount(); i++) {
+
+            // extract all y-values from all DataSets at the given x-index
+            float yVal = mData.getDataSetByIndex(i).getYValForXIndex(xIndex);
+
+            if (!Float.isNaN(yVal))
+                vals.add(yVal);
+        }
+
+        return vals;
     }
 
     /**

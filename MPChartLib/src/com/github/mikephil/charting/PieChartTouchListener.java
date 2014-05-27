@@ -132,7 +132,7 @@ public class PieChartTouchListener extends SimpleOnGestureListener implements On
 
             int index = mChart.getIndexForAngle(mChart.getAngleForPoint(e.getX(), e.getY()));
 
-            mChart.highlightValues(new int[] {index});
+            mChart.highlightValues(new Highlight[] { new Highlight(index, 0) });
         }
         
         return true;

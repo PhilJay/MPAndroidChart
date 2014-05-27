@@ -81,6 +81,36 @@ public class DataSet {
         return mYVals.size();
     }
 
+    /**
+     * returns the value of the Series object at the given xIndex
+     * 
+     * @param xIndex
+     * @return
+     */
+    public float getYValForXIndex(int xIndex) {
+
+        Series s = getSeriesForXIndex(xIndex);
+        
+        if(s != null) return s.getVal();
+        else return Float.NaN;
+    }
+    
+    /**
+     * returns the Series object at the given xIndex
+     * 
+     * @param xIndex
+     * @return
+     */
+    public Series getSeriesForXIndex(int xIndex) {
+
+        for (int i = 0; i < mYVals.size(); i++) {
+            if (xIndex == mYVals.get(i).getXIndex())
+                return mYVals.get(i);
+        }
+
+        return null;
+    }
+
     public ArrayList<Series> getYVals() {
         return mYVals;
     }
@@ -115,7 +145,7 @@ public class DataSet {
         ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
 
         for (int i = 0; i < yValues.size(); i++) {
-            
+
             Double[] curValues = yValues.get(i);
 
             ArrayList<Series> series = new ArrayList<Series>();

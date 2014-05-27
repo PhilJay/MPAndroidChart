@@ -1,7 +1,5 @@
 package com.example.mpchartexample;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,9 +13,12 @@ import android.widget.TextView;
 import com.github.mikephil.charting.ChartData;
 import com.github.mikephil.charting.ColorTemplate;
 import com.github.mikephil.charting.DataSet;
+import com.github.mikephil.charting.Highlight;
 import com.github.mikephil.charting.OnChartValueSelectedListener;
 import com.github.mikephil.charting.PieChart;
 import com.github.mikephil.charting.Series;
+
+import java.util.ArrayList;
 
 public class PieChartActivity extends Activity implements OnSeekBarChangeListener, OnChartValueSelectedListener {
 
@@ -151,16 +152,14 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
 	}
 
 	@Override
-	public void onValuesSelected(float[] values, int[] indices) {
-		StringBuffer a = new StringBuffer();
+	public void onValuesSelected(float[] values, Highlight[] highs) {
+	    
+	    StringBuffer a = new StringBuffer();
 
-		for (int i = 0; i < values.length; i++)
-			a.append("val: " + values[i] + ", ind: " + indices[i] + "\n");
+        for (int i = 0; i < values.length; i++)
+            a.append("val: " + values[i] + ", x-ind: " + highs[i].getXIndex() + ", dataset-ind: " + highs[i].getDataSetIndex() + "\n");
 
-		Log.i("PieChart", "Selected: " + a.toString());
-
-		// immediately unselect
-		// mChart.highlightValues(null);
+        Log.i("PieChart", "Selected: " + a.toString());
 	}
 
 	@Override

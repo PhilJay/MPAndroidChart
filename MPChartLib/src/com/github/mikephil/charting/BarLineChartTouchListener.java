@@ -248,9 +248,9 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
 
-        int highlightindex = mChart.getIndexByTouchPoint(e.getX(), e.getY());
+        Highlight h = mChart.getIndexByTouchPoint(e.getX(), e.getY());
         
-        mChart.highlightValues(new int[] {highlightindex});
+        mChart.highlightValues(new Highlight[] { h });
 
         return super.onSingleTapConfirmed(e);
     }

@@ -127,7 +127,7 @@ public class BarChart extends BarLineChartBase {
 
 			for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
-				int index = mIndicesToHightlight[i];
+				int index = mIndicesToHightlight[i].getXIndex();
 
 				// check outofbounds
 				if (index < mData.getYValCount() && index >= 0) {

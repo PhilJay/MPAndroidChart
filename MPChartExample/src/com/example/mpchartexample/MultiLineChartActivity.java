@@ -3,6 +3,7 @@ package com.example.mpchartexample;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,11 +17,13 @@ import com.github.mikephil.charting.Approximator.ApproximatorType;
 import com.github.mikephil.charting.ChartData;
 import com.github.mikephil.charting.ColorTemplate;
 import com.github.mikephil.charting.DataSet;
+import com.github.mikephil.charting.Highlight;
 import com.github.mikephil.charting.LineChart;
+import com.github.mikephil.charting.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
 
-public class MultiLineChartActivity extends Activity implements OnSeekBarChangeListener {
+public class MultiLineChartActivity extends Activity implements OnSeekBarChangeListener, OnChartValueSelectedListener {
 
 	private LineChart mChart;
 	private SeekBar mSeekBarX, mSeekBarY;
@@ -44,6 +47,7 @@ public class MultiLineChartActivity extends Activity implements OnSeekBarChangeL
 		mChart = (LineChart) findViewById(R.id.chart1);
 		mChart.setColorTemplate(new ColorTemplate(ColorTemplate.getColors(this, ColorTemplate.JOYFUL_COLORS)));
 		mChart.setDrawTopYLegendEntry(false);
+		mChart.setOnChartValueSelectedListener(this);
 
 		// mChart.setDrawFilled(true);
 		// mChart.setRoundedYLegend(false);
@@ -190,6 +194,17 @@ public class MultiLineChartActivity extends Activity implements OnSeekBarChangeL
 
 		mChart.setData(data);
 		mChart.invalidate();
+	}
+	
+	@Override
+	public void onValuesSelected(float[] values, Highlight[] highlights) {
+	    Log.i("VALS SELECTED", "Value: " + values[0] + ", xIndex: " + highlights[0].getXIndex() + ", DataSet index: " + highlights[0].getDataSetIndex());
+	}
+	
+	@Override
+	public void onNothingSelected() {
+	    // TODO Auto-generated method stub
+	    
 	}
 
 	@Override
