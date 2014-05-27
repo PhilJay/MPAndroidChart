@@ -265,11 +265,11 @@ public class PieChart extends Chart {
 	 */
 	private void calcAngles() {
 
-		mDrawAngles = new float[mData.getYValSize()];
-		mAbsoluteAngles = new float[mData.getYValSize()];
+		mDrawAngles = new float[mData.getYValCount()];
+		mAbsoluteAngles = new float[mData.getYValCount()];
 
-		for (int i = 0; i < mData.getYValSize(); i++) {
-			mDrawAngles[i] = calcAngle(mData.getYVals().get(i).getVal());
+		for (int i = 0; i < mData.getYValCount(); i++) {
+			mDrawAngles[i] = calcAngle(getYValue(i));
 
 			if (i > 0)
 				mAbsoluteAngles[i] = mAbsoluteAngles[i - 1] + mDrawAngles[i];
@@ -318,7 +318,7 @@ public class PieChart extends Chart {
 
 		float angle = mChartAngle;
 
-		for (int i = 0; i < mData.getYValSize(); i++) {
+		for (int i = 0; i < mData.getYValCount(); i++) {
 
 			float newangle = mDrawAngles[i];
 
@@ -386,7 +386,7 @@ public class PieChart extends Chart {
 		float r = mCircleBox.width() / 2 - off; // offset to keep things inside
 												// the chart
 
-		for (int i = 0; i < mData.getYValSize(); i++) {
+		for (int i = 0; i < mData.getYValCount(); i++) {
 
 			// offset needed to center the drawn text in the slice
 			float offset = mDrawAngles[i] / 2;
@@ -401,11 +401,12 @@ public class PieChart extends Chart {
 			// }
 
 			String val = "";
+			float value = getYValue(i);
 
 			if (mUsePercentValues)
-				val = mFormatValue.format(getPercentOfTotal(mData.getYVals().get(i).getVal())) + " %";
+				val = mFormatValue.format(getPercentOfTotal(value)) + " %";
 			else
-				val = mFormatValue.format(mData.getYVals().get(i).getVal());
+				val = mFormatValue.format(value);
 
 			// draw everything, depending on settings
 			if (mDrawXVals && mDrawYValues) {

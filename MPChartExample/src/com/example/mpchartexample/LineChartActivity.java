@@ -1,7 +1,5 @@
 package com.example.mpchartexample;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,8 +12,11 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.ChartData;
+import com.github.mikephil.charting.DataSet;
 import com.github.mikephil.charting.LineChart;
 import com.github.mikephil.charting.Series;
+
+import java.util.ArrayList;
 
 public class LineChartActivity extends Activity implements OnSeekBarChangeListener {
 
@@ -163,8 +164,12 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 
 		tvX.setText("" + (mSeekBarX.getProgress() + 1));
 		tvY.setText("" + (mSeekBarY.getProgress() / 10));
+		
+		DataSet set = new DataSet(yVals, 0);
+		ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+		dataSets.add(set);
 
-		ChartData data = new ChartData(xVals, yVals);
+		ChartData data = new ChartData(xVals, dataSets);
 
 		mChart.setData(data);
 		mChart.invalidate();

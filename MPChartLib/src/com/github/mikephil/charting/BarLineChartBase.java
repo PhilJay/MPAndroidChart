@@ -231,7 +231,7 @@ public abstract class BarLineChartBase extends Chart {
 		float[] values = new float[9];
 		mMatrixTouch.getValues(values);
 
-		mLegendGridModulus = (int) Math.ceil((mData.getXValSize() * mXLegendWidth)
+		mLegendGridModulus = (int) Math.ceil((mData.getXValCount() * mXLegendWidth)
 				/ (mContentRect.width() * values[Matrix.MSCALE_X]));
 	}
 
@@ -314,7 +314,7 @@ public abstract class BarLineChartBase extends Chart {
 
 		StringBuffer a = new StringBuffer();
 
-		int length = (int) (((float) (mData.getXVals().get(0).length() + mData.getXVals().get(mData.getXValSize() - 1)
+		int length = (int) (((float) (mData.getXVals().get(0).length() + mData.getXVals().get(mData.getXValCount() - 1)
 				.length())));
 
 		if (mData.getXVals().get(0).length() <= 3)
@@ -414,7 +414,7 @@ public abstract class BarLineChartBase extends Chart {
 		// pre allocate to save performance (dont allocate in loop)
 		float[] position = new float[] { 0f, 0f };
 
-		for (int i = 0; i < mData.getXValSize(); i++) {
+		for (int i = 0; i < mData.getXValCount(); i++) {
 
 			if (i % mLegendGridModulus == 0) {
 
@@ -549,7 +549,7 @@ public abstract class BarLineChartBase extends Chart {
 
 		float[] position = new float[] { 0f, 0f };
 
-		for (int i = 0; i < mData.getXValSize(); i++) {
+		for (int i = 0; i < mData.getXValCount(); i++) {
 
 			if (i % mLegendGridModulus == 0) {
 
@@ -869,7 +869,7 @@ public abstract class BarLineChartBase extends Chart {
 	 * @return
 	 */
 	public Series getSeriesByTouchPoint(float x, float y) {
-		return mData.getYVals().get(getIndexByTouchPoint(x, y));
+		return getSeries(getIndexByTouchPoint(x, y));
 	}
 
 	/**

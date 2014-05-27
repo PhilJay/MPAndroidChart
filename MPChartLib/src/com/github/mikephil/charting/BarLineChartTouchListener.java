@@ -36,11 +36,11 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
     
     private GestureDetector mGestureDetector;
 
-    public BarLineChartTouchListener(BarLineChartBase ctx, Matrix start) {
-        this.mChart = ctx;
+    public BarLineChartTouchListener(BarLineChartBase chart, Matrix start) {
+        this.mChart = chart;
         this.matrix = start;
         
-        mGestureDetector = new GestureDetector(this);
+        mGestureDetector = new GestureDetector(chart.getContext(), this);
     }
 
     @Override

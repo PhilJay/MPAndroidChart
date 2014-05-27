@@ -107,10 +107,10 @@ public class LineChart extends BarLineChartBase {
 				int index = mIndicesToHightlight[i];
 
 				// check outofbounds
-				if (index < mData.getYValSize() && index >= 0) {
+				if (index < mData.getYValCount() && index >= 0) {
 
 					float[] pts = new float[] { index, mYChartMax, index, mYChartMin, 0,
-							mData.getYVals().get(index).getVal(), mDeltaX, mData.getYVals().get(index).getVal() };
+							getYValue(index), mDeltaX, getYValue(index) };
 
 					transformPointArray(pts);
 					// draw the highlight lines
@@ -126,11 +126,12 @@ public class LineChart extends BarLineChartBase {
 	@Override
 	protected void drawData() {
 
-		ArrayList<ArrayList<Series>> typeSeries = mData.getTypeSeries();
+		ArrayList<DataSet> dataSets = mData.getDataSets();
 
-		for (int i = 0; i < mData.getTypeCount(); i++) {
+		for (int i = 0; i < mData.getDataSetCount(); i++) {
 
-			ArrayList<Series> series = typeSeries.get(i);
+		    DataSet dataSet = dataSets.get(i);
+			ArrayList<Series> series = dataSet.getYVals();
 
 			float[] valuePoints = new float[series.size() * 2];
 
@@ -159,16 +160,16 @@ public class LineChart extends BarLineChartBase {
 		if (mDrawFilled) {
 
 			Path filled = new Path();
-			filled.moveTo(0, mData.getYVals().get(0).getVal());
+			filled.moveTo(0, getYValue(0));
 
 			// create a new path
-			for (int x = 1; x < mData.getYValSize(); x++) {
+			for (int x = 1; x < mData.getYValCount(); x++) {
 
-				filled.lineTo(x, mData.getYVals().get(x).getVal());
+				filled.lineTo(x, getYValue(x));
 			}
 
 			// close up
-			filled.lineTo(mData.getXValSize() - 1, mYChartMin);
+			filled.lineTo(mData.getXValCount() - 1, mYChartMin);
 			filled.lineTo(0f, mYChartMin);
 			filled.close();
 
@@ -182,26 +183,28 @@ public class LineChart extends BarLineChartBase {
 	protected void drawValues() {
 
 		// if values are drawn
-		if (mDrawYValues && mData.getYValSize() < mMaxVisibleCount * mScaleX) {
+		if (mDrawYValues && mData.getYValCount() < mMaxVisibleCount * mScaleX) {
 
-			float[] valuePoints = new float[mData.getYValSize() * 2];
+			float[] valuePoints = new float[mData.getYValCount() * 2];
 
 			for (int i = 0; i < valuePoints.length; i += 2) {
 				valuePoints[i] = i / 2;
-				valuePoints[i + 1] = mData.getYVals().get(i / 2).getVal();
+				valuePoints[i + 1] = getYValue(i / 2);
 			}
 
 			transformPointArray(valuePoints);
 
 			for (int i = 0; i < valuePoints.length; i += 2) {
+			    
+			    float val = getYValue(i / 2);
 
 				if (mDrawUnitInChart) {
 
-					mDrawCanvas.drawText(mFormatValue.format(mData.getYVals().get(i / 2).getVal()) + mUnit,
+					mDrawCanvas.drawText(mFormatValue.format(val) + mUnit,
 							valuePoints[i], valuePoints[i + 1] - 12, mValuePaint);
 				} else {
 
-					mDrawCanvas.drawText(mFormatValue.format(mData.getYVals().get(i / 2).getVal()), valuePoints[i],
+					mDrawCanvas.drawText(mFormatValue.format(val), valuePoints[i],
 							valuePoints[i + 1] - 12, mValuePaint);
 				}
 			}
@@ -216,13 +219,14 @@ public class LineChart extends BarLineChartBase {
 		// if drawing circles is enabled
 		if (mDrawCircles) {
 
-			ArrayList<ArrayList<Series>> typeSeries = mData.getTypeSeries();
+		    ArrayList<DataSet> dataSets = mData.getDataSets();
 
-			for (int i = 0; i < mData.getTypeCount(); i++) {
+	        for (int i = 0; i < mData.getDataSetCount(); i++) {
 
-				ArrayList<Series> series = typeSeries.get(i);
+	            DataSet dataSet = dataSets.get(i);
+	            ArrayList<Series> series = dataSet.getYVals();
 
-				float[] positions = new float[mData.getYValSize() * 2];
+				float[] positions = new float[dataSet.getYValCount() * 2];
 
 				for (int j = 0; j < positions.length; j += 2) {
 					positions[j] = series.get(j / 2).getXIndex();

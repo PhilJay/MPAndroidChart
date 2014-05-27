@@ -1,7 +1,5 @@
 package com.example.mpchartexample;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,7 +12,10 @@ import android.widget.TextView;
 import com.github.mikephil.charting.BarChart;
 import com.github.mikephil.charting.ChartData;
 import com.github.mikephil.charting.ColorTemplate;
+import com.github.mikephil.charting.DataSet;
 import com.github.mikephil.charting.Series;
+
+import java.util.ArrayList;
 
 public class BarChartActivity extends Activity implements OnSeekBarChangeListener {
 
@@ -151,7 +152,11 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
 		tvX.setText("" + (mSeekBarX.getProgress() + 1));
 		tvY.setText("" + (mSeekBarY.getProgress() / 10));
 
-		ChartData data = new ChartData(xVals, yVals);
+		DataSet set = new DataSet(yVals, 0);
+        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+        dataSets.add(set);
+
+        ChartData data = new ChartData(xVals, dataSets);
 
 		mChart.setData(data);
 		mChart.invalidate();

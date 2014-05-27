@@ -130,11 +130,11 @@ public class BarChart extends BarLineChartBase {
 				int index = mIndicesToHightlight[i];
 
 				// check outofbounds
-				if (index < mData.getYValSize() && index >= 0) {
+				if (index < mData.getYValCount() && index >= 0) {
 
 					mHighlightPaint.setAlpha(120);
 
-					float y = mData.getYVals().get(index).getVal();
+					float y = getYValue(index);
 					float left = index + mBarSpace / 2f;
 					float right = index + 1f - mBarSpace / 2f;
 					float top = y >= 0 ? y : 0;
@@ -205,9 +205,9 @@ public class BarChart extends BarLineChartBase {
 
 			float depth = Math.abs(pts[3] - pts[1]) * mDepth;
 
-			for (int i = 0; i < mData.getYValSize(); i++) {
+			for (int i = 0; i < mData.getYValCount(); i++) {
 
-				float y = mData.getYVals().get(i).getVal();
+				float y = getYValue(i);
 				float left = i + mBarSpace / 2f;
 				float right = i + 1f - mBarSpace / 2f;
 				float top = y >= 0 ? y : 0;
@@ -235,11 +235,11 @@ public class BarChart extends BarLineChartBase {
 		}
 
 		// do the drawing
-		for (int i = 0; i < mData.getYValSize(); i++) {
+		for (int i = 0; i < mData.getYValCount(); i++) {
 
 			Paint paint = mDrawPaints[i % mDrawPaints.length];
 
-			float y = mData.getYVals().get(i).getVal();
+			float y = getYValue(i);
 			float left = i + mBarSpace / 2f;
 			float right = i + 1f - mBarSpace / 2f;
 			float top = y >= 0 ? y : 0;
@@ -270,14 +270,14 @@ public class BarChart extends BarLineChartBase {
 	protected void drawValues() {
 
 		// if values are drawn
-		if (mDrawYValues && mData.getYValSize() < mMaxVisibleCount * mScaleX) {
+		if (mDrawYValues && mData.getYValCount() < mMaxVisibleCount * mScaleX) {
 
-			float[] valuePoints = new float[mData.getYValSize() * 2];
+			float[] valuePoints = new float[mData.getYValCount() * 2];
 
 			for (int i = 0; i < valuePoints.length; i += 2) {
 				valuePoints[i] = i / 2 + 0.5f; // add 0.5f too keep the values
 												// centered on top of the bars
-				valuePoints[i + 1] = mData.getYVals().get(i / 2).getVal();
+				valuePoints[i + 1] = getYValue(i / 2);
 			}
 
 			transformPointArray(valuePoints);
@@ -286,11 +286,11 @@ public class BarChart extends BarLineChartBase {
 
 				if (mDrawUnitInChart) {
 
-					mDrawCanvas.drawText(mFormatValue.format(mData.getYVals().get(i / 2).getVal()) + mUnit,
+					mDrawCanvas.drawText(mFormatValue.format(getYValue(i / 2)) + mUnit,
 							valuePoints[i], valuePoints[i + 1] - 12, mValuePaint);
 				} else {
 
-					mDrawCanvas.drawText(mFormatValue.format(mData.getYVals().get(i / 2).getVal()), valuePoints[i],
+					mDrawCanvas.drawText(mFormatValue.format(getYValue(i / 2)), valuePoints[i],
 							valuePoints[i + 1] - 12, mValuePaint);
 				}
 			}

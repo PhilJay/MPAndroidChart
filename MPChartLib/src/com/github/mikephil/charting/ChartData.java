@@ -1,3 +1,4 @@
+
 package com.github.mikephil.charting;
 
 import java.util.ArrayList;
@@ -6,172 +7,217 @@ import java.util.ArrayList;
  * Class that holds all relevant data that represents the chart
  * 
  * @author Philipp
- * 
  */
 public class ChartData {
 
-	/** maximum y-value in the y-value array */
-	private float mYMax = 0.0f;
+    /** maximum y-value in the y-value array */
+    private float mYMax = 0.0f;
 
-	/** the minimum y-value in the y-value array */
-	private float mYMin = 0.0f;
+    /** the minimum y-value in the y-value array */
+    private float mYMin = 0.0f;
 
-	/** the total sum of all y-values */
-	private float mYValueSum = 0f;
+    /** the total sum of all y-values */
+    private float mYValueSum = 0f;
 
-	private ArrayList<String> mXVals;
-	private ArrayList<Series> mYVals;
+    /** holds all x-values the chart represents */
+    private ArrayList<String> mXVals;
 
-	/** array that holds all the different type ids that are in the series array */
-	private ArrayList<Integer> mDiffTypes;
+    /** holds all the datasets (e.g. different lines) the chart represents */
+    private ArrayList<DataSet> mDataSets;
 
-	/** field that holds all the series split into their different types */
-	private ArrayList<ArrayList<Series>> typeSeries;
+    /** array that holds all the different type ids that are in the series array */
+    private ArrayList<Integer> mDiffTypes;
 
-	/**
-	 * constructor for chart data
-	 * 
-	 * @param xVals
-	 *            must be at least as long as the longest series array of one type
-	 * @param yVals
-	 *            all y series values
-	 */
-	public ChartData(ArrayList<String> xVals, ArrayList<Series> yVals) {
-		this.mXVals = xVals;
-		this.mYVals = yVals;
+    /**
+     * constructor for chart data
+     * 
+     * @param xVals must be at least as long as the longest series array of one
+     *            type
+     * @param dataSets all DataSet objects the chart needs to represent
+     */
+    public ChartData(ArrayList<String> xVals, ArrayList<DataSet> dataSets) {
+        this.mXVals = xVals;
+        this.mDataSets = dataSets;
 
-		calcTypes();
-		calcMinMax();
-		calcYValueSum();
-		calcTypeSeries();
+        calcTypes();
+        calcMinMax();
+        calcYValueSum();
 
-		for (int i = 0; i < typeSeries.size(); i++) {
-			if (typeSeries.get(i).size() > xVals.size()) {
-				throw new IllegalArgumentException("x values are smaller than the largest y series array of one type");
-			}
-		}
-	}
+        for (int i = 0; i < mDataSets.size(); i++) {
+            if (mDataSets.get(i).getYVals().size() > xVals.size()) {
+                throw new IllegalArgumentException(
+                        "x values are smaller than the largest y series array of one type");
+            }
+        }
+    }
 
-	/**
-	 * calculates all different types that occur in the series and stores them for fast access
-	 */
-	private void calcTypes() {
-		mDiffTypes = new ArrayList<Integer>();
+    /**
+     * calculates all different types that occur in the datasets and stores them
+     * for fast access
+     */
+    private void calcTypes() {
+        mDiffTypes = new ArrayList<Integer>();
 
-		for (int i = 0; i < mYVals.size(); i++) {
+        for (int i = 0; i < mDataSets.size(); i++) {
 
-			int type = mYVals.get(i).getType();
+            int type = mDataSets.get(i).getType();
 
-			if (!alreadyCounted(mDiffTypes, type)) {
-				mDiffTypes.add(type);
-			}
-		}
-	}
+            if (!alreadyCounted(mDiffTypes, type)) {
+                mDiffTypes.add(type);
+            }
+        }
+    }
 
-	/**
-	 * calc minimum and maximum y value
-	 */
-	private void calcMinMax() {
+    /**
+     * calc minimum and maximum y value over all datasets
+     */
+    private void calcMinMax() {
 
-		mYMin = mYVals.get(0).getVal();
-		mYMax = mYVals.get(0).getVal();
+        mYMin = mDataSets.get(0).getYMin();
+        mYMax = mDataSets.get(0).getYMax();
 
-		for (int i = 0; i < mYVals.size(); i++) {
-			if (mYVals.get(i).getVal() < mYMin)
-				mYMin = mYVals.get(i).getVal();
+        for (int i = 0; i < mDataSets.size(); i++) {
+            if (mDataSets.get(i).getYMin() < mYMin)
+                mYMin = mDataSets.get(i).getYMin();
 
-			if (mYVals.get(i).getVal() > mYMax)
-				mYMax = mYVals.get(i).getVal();
-		}
-	}
+            if (mDataSets.get(i).getYMax() > mYMax)
+                mYMax = mDataSets.get(i).getYMax();
+        }
+    }
 
-	/**
-	 * calculates the sum of all y-values
-	 */
-	private void calcYValueSum() {
+    /**
+     * calculates the sum of all y-values in all datasets
+     */
+    private void calcYValueSum() {
 
-		mYValueSum = 0;
+        mYValueSum = 0;
 
-		for (int i = 0; i < getYValSize(); i++) {
-			mYValueSum += Math.abs(getYVals().get(i).getVal());
-		}
-	}
+        for (int i = 0; i < mDataSets.size(); i++) {
+            mYValueSum += Math.abs(mDataSets.get(i).getYValueSum());
+        }
+    }
 
-	/**
-	 * extract all different types of series and store them in seperate arrays
-	 */
-	private void calcTypeSeries() {
-		typeSeries = new ArrayList<ArrayList<Series>>();
+    private boolean alreadyCounted(ArrayList<Integer> countedTypes, int type) {
+        for (int i = 0; i < countedTypes.size(); i++) {
+            if (countedTypes.get(i) == type)
+                return true;
+        }
 
-		for (int i = 0; i < getTypeCount(); i++) {
-			ArrayList<Series> series = new ArrayList<Series>();
+        return false;
+    }
 
-			for (int j = 0; j < mYVals.size(); j++) {
-				Series s = mYVals.get(j);
-				if (s.getType() == mDiffTypes.get(i)) {
-					series.add(s);
-				}
-			}
+    public int getDataSetCount() {
+        return mDataSets.size();
+    }
 
-			typeSeries.add(series);
-		}
-	}
+    public float getYMin() {
+        return mYMin;
+    }
 
-	private boolean alreadyCounted(ArrayList<Integer> countedTypes, int type) {
-		for (int i = 0; i < countedTypes.size(); i++) {
-			if (countedTypes.get(i) == type)
-				return true;
-		}
+    public float getYMax() {
+        return mYMax;
+    }
 
-		return false;
-	}
+    public float getYValueSum() {
+        return mYValueSum;
+    }
 
-	public int getTypeCount() {
-		return mDiffTypes.size();
-	}
+    /**
+     * Checks if the ChartData object contains valid data
+     * 
+     * @return
+     */
+    public boolean isValid() {
 
-	public float getYMin() {
-		return mYMin;
-	}
+        if (mXVals == null || mXVals.size() <= 1 || mDataSets == null || mDataSets.size() < 1
+                || mDataSets.get(0).getYVals().size() <= 1)
+            return false;
+        else
+            return true;
+    }
 
-	public float getYMax() {
-		return mYMax;
-	}
+    /**
+     * returns the x-values the chart represents
+     * 
+     * @return
+     */
+    public ArrayList<String> getXVals() {
+        return mXVals;
+    }
 
-	public float getYValueSum() {
-		return mYValueSum;
-	}
+    /**
+     * returns the series object at the given dataset index
+     * 
+     * @param index
+     * @return
+     */
+    public ArrayList<Series> getYVals(int index) {
+        return mDataSets.get(index).getYVals();
+    }
 
-	/**
-	 * Checks if the ChartData object contains valid data
-	 * 
-	 * @return
-	 */
-	public boolean isValid() {
+    /**
+     * returns the dataset at the given index
+     * 
+     * @param index
+     * @return
+     */
+    public DataSet getDataSetByIndex(int index) {
+        return mDataSets.get(index);
+    }
 
-		if (mXVals == null || mXVals.size() <= 1 || mYVals == null || mYVals.size() <= 1)
-			return false;
-		else
-			return true;
-	}
+    /**
+     * retrieve a dataset with a specific type from the chartdata
+     * 
+     * @param type
+     * @return
+     */
+    public DataSet getDataSetByType(int type) {
+        for (int i = 0; i < mDataSets.size(); i++)
+            if (type == mDataSets.get(i).getType())
+                return mDataSets.get(i);
 
-	public ArrayList<String> getXVals() {
-		return mXVals;
-	}
+        return null;
+    }
+    
+    /**
+     * returns all DataSet objects the ChartData represents.
+     * @return
+     */
+    public ArrayList<DataSet> getDataSets() {
+        return mDataSets;
+    }
 
-	public ArrayList<Series> getYVals() {
-		return mYVals;
-	}
+    /**
+     * returns all the different DataSet types the chartdata represents
+     * 
+     * @return
+     */
+    public ArrayList<Integer> getTypes() {
+        return mDiffTypes;
+    }
 
-	public ArrayList<ArrayList<Series>> getTypeSeries() {
-		return typeSeries;
-	}
+    /**
+     * returns the total number of x-values this chartdata represents (the size
+     * of the xvals array)
+     * 
+     * @return
+     */
+    public int getXValCount() {
+        return mXVals.size();
+    }
 
-	public int getXValSize() {
-		return mXVals.size();
-	}
+    /**
+     * returns the total number of y-values across all DataSets the chartdata
+     * represents
+     * 
+     * @return
+     */
+    public int getYValCount() {
+        int count = 0;
+        for (int i = 0; i < mDataSets.size(); i++) {
+            count += mDataSets.get(i).getYValCount();
+        }
 
-	public int getYValSize() {
-		return mYVals.size();
-	}
+        return count;
+    }
 }

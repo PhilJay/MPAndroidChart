@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.ChartData;
 import com.github.mikephil.charting.ColorTemplate;
+import com.github.mikephil.charting.DataSet;
 import com.github.mikephil.charting.OnChartValueSelectedListener;
 import com.github.mikephil.charting.PieChart;
 import com.github.mikephil.charting.Series;
@@ -139,7 +140,11 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
 		for (int i = 0; i < yVals.size(); i++)
 			xVals.add("Text" + (i + 1));
 
-		ChartData data = new ChartData(xVals, yVals);
+		DataSet set = new DataSet(yVals, 0);
+        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+        dataSets.add(set);
+
+        ChartData data = new ChartData(xVals, dataSets);
 		mChart.setData(data);
 		mChart.setCenterText("Total Value\n" + (int) mChart.getYValueSum() + "\n(all slices)");
 		mChart.invalidate();

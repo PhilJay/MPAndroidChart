@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.Approximator;
 import com.github.mikephil.charting.ChartData;
+import com.github.mikephil.charting.DataSet;
 import com.github.mikephil.charting.LineChart;
 import com.github.mikephil.charting.Point;
 import com.github.mikephil.charting.Series;
@@ -156,36 +157,36 @@ public class MultiLineChartActivity extends Activity implements OnSeekBarChangeL
 			xVals.add((i) + "");
 		}
 
-		ArrayList<Series> yVals = new ArrayList<Series>();
+		ArrayList<Double[]> values = new ArrayList<Double[]>();
+		
 		Approximator approximator = new Approximator(ApproximatorType.DOUGLAS_PEUCKER);
 
-		for (int z = 0; z < 1; z++) {
+		for (int z = 0; z < 3; z++) {
+		    
+		    Double[] vals = new Double[mSeekBarX.getProgress()];
+		    
 			for (int i = 0; i < mSeekBarX.getProgress(); i++) {
 				float mult = (mSeekBarY.getProgress() + 1);
-				float val = (float) (Math.random() * mult * 0.1) + 3;// + (float) ((mult * 0.1) / 10);
-				yVals.add(new Series(val, z, i));
+				double val = (Math.random() * mult * 0.1) + 3;// + (float) ((mult * 0.1) / 10);
+				vals[i] = val;
 			}
+			
+			values.add(vals);
 		}
 
-		ArrayList<Series> filtered = approximator.filter(yVals);
-
-		for (int i = 0; i < filtered.size(); i++) {
-			filtered.get(i).setType(1);
-		}
-		// yVals.addAll(filtered);
-
-		// for (int z = 0; z < 5; z++) {
-		// for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-		// float mult = (mSeekBarY.getProgress() + 1);
-		// float val = (float) (Math.random() * mult * 0.1) + 3;// + (float) ((mult * 0.1) / 10);
-		// yVals.add(new Series(val, z, i));
-		// }
-		// }
+//		ArrayList<Series> filtered = approximator.filter(yVals1);
+//
+//		for (int i = 0; i < filtered.size(); i++) {
+//			filtered.get(i).setType(1);
+//		}
 
 		tvX.setText("" + (mSeekBarX.getProgress() + 1));
 		tvY.setText("" + (mSeekBarY.getProgress() / 10));
+		
+        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+        dataSets.addAll(DataSet.makeDataSets(values));
 
-		ChartData data = new ChartData(xVals, filtered);
+        ChartData data = new ChartData(xVals, dataSets);
 
 		mChart.setData(data);
 		mChart.invalidate();

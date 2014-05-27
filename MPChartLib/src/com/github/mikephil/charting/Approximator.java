@@ -3,7 +3,7 @@ package com.github.mikephil.charting;
 import java.util.ArrayList;
 
 /**
- * Implemented according to Wiki-Pseudocode {@link} http://en.wikipedia.org/wiki/RamerÐDouglasÐPeucker_algorithm
+ * Implemented according to Wiki-Pseudocode {@link} http://en.wikipedia.org/wiki/Ramerï¿½Douglasï¿½Peucker_algorithm
  * 
  * @author Philipp Baldauf & Phliipp Jahoda
  */
@@ -118,25 +118,4 @@ public class Approximator {
 				* (endSeries.getXIndex() - startSeries.getXIndex()))
 				/ normalLength;
 	}
-
-	// /**
-	// * calculate the distance between a line between two series and a series (point)
-	// *
-	// * @param seriesToInspect
-	// * @param startSeries
-	// * @param endSeries
-	// * @return
-	// */
-	// private static double shortestDistToSegment(Series seriesToInspect, Series startSeries, Series endSeries) {
-	// double area = Math.abs((startSeries.getVal() * endSeries.getXIndex() + endSeries.getVal()
-	// * seriesToInspect.getXIndex() + seriesToInspect.getVal() * startSeries.getXIndex() - endSeries.getVal()
-	// * startSeries.getXIndex() - seriesToInspect.getVal() * endSeries.getXIndex() - startSeries.getVal()
-	// * seriesToInspect.getXIndex()) / 2.0);
-	//
-	// double bottom = Math.hypot(startSeries.getVal() - endSeries.getVal(),
-	// startSeries.getXIndex() - endSeries.getXIndex());
-	//
-	// return (area / bottom * 2.0);
-	// }
-
 }
