@@ -252,19 +252,6 @@ public class PieChart extends Chart {
     }
 
     @Override
-    protected void prepareDataPaints(ColorTemplate ct) {
-
-        // mDrawPaints = new Paint[ct.getColors().size()];
-        //
-        // // setup all paint objects
-        // for (int i = 0; i < ct.getColors().size(); i++) {
-        // mDrawPaints[i] = new Paint(Paint.ANTI_ALIAS_FLAG);
-        // mDrawPaints[i].setStyle(Style.FILL);
-        // // mDrawPaints[i].setColor(ct.getColors().get(i));
-        // }
-    }
-
-    @Override
     protected void calcMinMax() {
         super.calcMinMax();
 

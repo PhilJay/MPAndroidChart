@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
@@ -51,62 +50,74 @@ public class BarChart extends BarLineChartBase {
         // set alpha after color
         mHighlightPaint.setAlpha(120);
     }
+    
+    @Override
+    public void setColorTemplate(ColorTemplate ct) {
+        super.setColorTemplate(ct);
+        
+        calculate3DColors();
+    }
 
     /** array that holds all the colors for the top 3D effect */
-    private int[] mTopColors;
+    private ArrayList<ArrayList<Integer>> mTopColors;
 
     /** array that holds all the colors for the side 3D effect */
-    private int[] mSideColors;
+    private ArrayList<ArrayList<Integer>> mSideColors;
 
-    @Override
-    protected void prepareDataPaints(ColorTemplate ct) {
+    /**
+     * calculates the 3D color arrays
+     */
+    protected void calculate3DColors() {
 
-        // // prepare the paints
-        // mDrawPaints = new Paint[ct.getColors().size()];
-        //
-        // for (int i = 0; i < ct.getColors().size(); i++) {
-        // mDrawPaints[i] = new Paint(Paint.ANTI_ALIAS_FLAG);
-        // mDrawPaints[i].setStyle(Style.FILL);
-        // mDrawPaints[i].setColor(Color.BLACK);
-        // }
+        // generate the colors for the 3D effect
+        mTopColors = new ArrayList<ArrayList<Integer>>();
+        mSideColors = new ArrayList<ArrayList<Integer>>();
 
-        // // generate the colors for the 3D effect
-        // mTopColors = new int[mDrawPaints.length];
-        // mSideColors = new int[mDrawPaints.length];
-        //
-        // float[] hsv = new float[3];
-        //
-        // for (int i = 0; i < mSideColors.length; i++) {
-        //
-        // // extract the color
-        // int c = mDrawPaints[i].getColor();
-        // Color.colorToHSV(c, hsv); // convert to hsv
-        //
-        // // make brighter
-        // hsv[1] = hsv[1] - 0.1f; // less saturation
-        // hsv[2] = hsv[2] + 0.1f; // more brightness
-        //
-        // // convert back
-        // c = Color.HSVToColor(hsv);
-        //
-        // // assign
-        // mTopColors[i] = c;
-        //
-        // // get color again
-        // c = mDrawPaints[i].getColor();
-        //
-        // // convert
-        // Color.colorToHSV(c, hsv);
-        //
-        // // make darker
-        // hsv[1] = hsv[1] + 0.1f; // more saturation
-        // hsv[2] = hsv[2] - 0.1f; // less brightness
-        //
-        // // reassing
-        // c = Color.HSVToColor(hsv);
-        //
-        // mSideColors[i] = c;
-        // }
+        float[] hsv = new float[3];
+
+        for (int i = 0; i < mCt.getColors().size(); i++) {
+
+            // Get the colors for the DataSet at the current index. If the index
+            // is out of bounds, reuse DataSet colors.
+            ArrayList<Integer> colors = mCt.getDataSetColors(i);
+            ArrayList<Integer> topColors = new ArrayList<Integer>();
+            ArrayList<Integer> sideColors = new ArrayList<Integer>();
+
+            for (int j = 0; j < colors.size(); j++) {
+
+                // extract the color
+                int c = colors.get(j);
+                Color.colorToHSV(c, hsv); // convert to hsv
+
+                // make brighter
+                hsv[1] = hsv[1] - 0.1f; // less saturation
+                hsv[2] = hsv[2] + 0.1f; // more brightness
+
+                // convert back
+                c = Color.HSVToColor(hsv);
+
+                // assign
+                topColors.add(c);
+
+                // get color again
+                c = colors.get(j);
+
+                // convert
+                Color.colorToHSV(c, hsv);
+
+                // make darker
+                hsv[1] = hsv[1] + 0.1f; // more saturation
+                hsv[2] = hsv[2] - 0.1f; // less brightness
+
+                // reassing
+                c = Color.HSVToColor(hsv);
+
+                sideColors.add(c);
+            }
+            
+            mTopColors.add(topColors);
+            mSideColors.add(sideColors);
+        }
     }
 
     @Override
@@ -159,15 +170,6 @@ public class BarChart extends BarLineChartBase {
                         transformPath(arrow);
                         mDrawCanvas.drawPath(arrow, mHighlightPaint);
                     }
-
-                    // float[] pts = new float[] {
-                    // index + 0.5f, mYChartMax, index + 0.5f, mYChartMin,
-                    // 0, mYVals.get(index), mDeltaX, mYVals.get(index)
-                    // };
-                    //
-                    // transformPointArray(pts);
-                    // // draw the highlight lines
-                    // mDrawCanvas.drawLines(pts, mHighlightPaint);
                 }
             }
         }
@@ -181,6 +183,9 @@ public class BarChart extends BarLineChartBase {
         ArrayList<Path> topPaths = new ArrayList<Path>();
         ArrayList<Path> sidePaths = new ArrayList<Path>();
 
+        ArrayList<DataSet> dataSets = mData.getDataSets();
+
+        // 3D drawing
         if (m3DEnabled) {
 
             float[] pts = new float[] {
@@ -209,37 +214,45 @@ public class BarChart extends BarLineChartBase {
 
             float depth = Math.abs(pts[3] - pts[1]) * mDepth;
 
-            for (int i = 0; i < mData.getYValCount(); i++) {
+            for (int i = 0; i < mData.getDataSetCount(); i++) {
 
-                float y = getYValue(i);
-                float left = i + mBarSpace / 2f;
-                float right = i + 1f - mBarSpace / 2f;
-                float top = y >= 0 ? y : 0;
+                DataSet dataSet = dataSets.get(i);
+                ArrayList<Series> series = dataSet.getYVals();
 
-                // create the 3D effect paths for the top and side
-                Path topPath = new Path();
-                topPath.moveTo(left, top);
-                topPath.lineTo(left + mSkew, top + depth);
-                topPath.lineTo(right + mSkew, top + depth);
-                topPath.lineTo(right, top);
+                for (int j = 0; j < series.size(); j++) {
 
-                topPaths.add(topPath);
+                    float x = series.get(j).getXIndex();
+                    float y = series.get(j).getVal();
+                    float left = x + mBarSpace / 2f;
+                    float right = x + 1f - mBarSpace / 2f;
+                    float top = y >= 0 ? y : 0;
 
-                Path sidePath = new Path();
-                sidePath.moveTo(right, top);
-                sidePath.lineTo(right + mSkew, top + depth);
-                sidePath.lineTo(right + mSkew, depth);
-                sidePath.lineTo(right, 0);
+                    // create the 3D effect paths for the top and side
+                    Path topPath = new Path();
+                    topPath.moveTo(left, top);
+                    topPath.lineTo(left + mSkew, top + depth);
+                    topPath.lineTo(right + mSkew, top + depth);
+                    topPath.lineTo(right, top);
 
-                sidePaths.add(sidePath);
+                    topPaths.add(topPath);
+
+                    Path sidePath = new Path();
+                    sidePath.moveTo(right, top);
+                    sidePath.lineTo(right + mSkew, top + depth);
+                    sidePath.lineTo(right + mSkew, depth);
+                    sidePath.lineTo(right, 0);
+
+                    sidePaths.add(sidePath);
+                }
             }
 
             transformPaths(topPaths);
             transformPaths(sidePaths);
         }
+        
+        int cnt = 0;
 
-        ArrayList<DataSet> dataSets = mData.getDataSets();
-
+        // 2D drawing
         for (int i = 0; i < mData.getDataSetCount(); i++) {
 
             DataSet dataSet = dataSets.get(i);
@@ -248,6 +261,8 @@ public class BarChart extends BarLineChartBase {
             // Get the colors for the DataSet at the current index. If the index
             // is out of bounds, reuse DataSet colors.
             ArrayList<Integer> colors = mCt.getDataSetColors(i % mCt.getColors().size());
+            ArrayList<Integer> colors3DTop = mTopColors.get(i % mCt.getColors().size());
+            ArrayList<Integer> colors3DSide = mSideColors.get(i % mCt.getColors().size());
 
             // do the drawing
             for (int j = 0; j < dataSet.getSeriesCount(); j++) {
@@ -266,21 +281,27 @@ public class BarChart extends BarLineChartBase {
                 mBarRect.set(left, top, right, bottom);
 
                 transformRect(mBarRect);
+                
+                // avoid drawing outofbounds values
+                if(isOffContentRight(mBarRect.left)) break;
+                
+                if(isOffContentLeft(mBarRect.right)) {
+                    cnt++;
+                    continue;
+                }
 
                 mDrawCanvas.drawRect(mBarRect, mRenderPaint);
 
                 if (m3DEnabled) {
 
-                    int c = mRenderPaint.getColor();
+                    mRenderPaint.setColor(colors3DTop.get(j % colors3DTop.size()));
+                    mDrawCanvas.drawPath(topPaths.get(cnt), mRenderPaint);
 
-                    mRenderPaint.setColor(mTopColors[j % mTopColors.length]);
-                    mDrawCanvas.drawPath(topPaths.get(j), mRenderPaint);
-
-                    mRenderPaint.setColor(mSideColors[j % mSideColors.length]);
-                    mDrawCanvas.drawPath(sidePaths.get(j), mRenderPaint);
-
-                    mRenderPaint.setColor(c);
+                    mRenderPaint.setColor(colors3DSide.get(j % colors3DSide.size()));
+                    mDrawCanvas.drawPath(sidePaths.get(cnt), mRenderPaint);
                 }
+                
+                cnt++;
             }
         }
     }
@@ -397,24 +418,6 @@ public class BarChart extends BarLineChartBase {
      */
     public boolean is3DEnabled() {
         return m3DEnabled;
-    }
-
-    /**
-     * returns the top colors that define the color of the top 3D effect path
-     * 
-     * @return
-     */
-    public int[] getTopColors() {
-        return mTopColors;
-    }
-
-    /**
-     * returns the side colors that define the color of the side 3D effect path
-     * 
-     * @return
-     */
-    public int[] getSideColors() {
-        return mSideColors;
     }
 
     /**

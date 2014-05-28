@@ -61,6 +61,7 @@ public class BarChartActivityMultiDataset extends Activity implements OnSeekBarC
 		// mChart.setSpacePercent(20, 10);
 		mChart.setYLegendCount(5);
 		mChart.setTouchEnabled(true);
+		mChart.setDescription("");
 
 		mSeekBarX.setProgress(45);
 		mSeekBarY.setProgress(100);

@@ -66,22 +66,6 @@ public class LineChart extends BarLineChartBase {
     }
 
     @Override
-    protected void prepareDataPaints(ColorTemplate ct) {
-        //
-        // if (ct == null)
-        // return;
-        //
-        // mDrawPaints = new Paint[ct.getColors().size()];
-        //
-        // for (int i = 0; i < ct.getColors().size(); i++) {
-        // mDrawPaints[i] = new Paint(Paint.ANTI_ALIAS_FLAG);
-        // mDrawPaints[i].setStrokeWidth(mLineWidth);
-        // mDrawPaints[i].setStyle(Style.FILL);
-        // // mDrawPaints[i].setColor(ct.getColors().get(i));
-        // }
-    }
-
-    @Override
     protected void drawHighlights() {
 
         // if there are values to highlight and highlighnting is enabled, do it

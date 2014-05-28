@@ -255,16 +255,6 @@ public abstract class Chart extends View {
     }
 
     /**
-     * Prepares all the paint objects that are used for drawing the lines, bars
-     * or pie-slices. The number of paint objects used depends on the number of
-     * colors in the colortemplate. If more values than colors need to be drawn,
-     * colors are repeated.
-     * 
-     * @param ct
-     */
-    protected abstract void prepareDataPaints(ColorTemplate ct);
-
-    /**
      * does needed preparations for drawing
      */
     protected abstract void prepare();
@@ -965,8 +955,6 @@ public abstract class Chart extends View {
      */
     public void setColorTemplate(ColorTemplate ct) {
         this.mCt = ct;
-
-        prepareDataPaints(ct);
     }
     
     /**

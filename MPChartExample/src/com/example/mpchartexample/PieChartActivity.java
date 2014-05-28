@@ -47,7 +47,7 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
 		
 		ColorTemplate ct = new ColorTemplate();
 		ct.addDataSetColors(ColorTemplate.COLORFUL_COLORS, this);
-		ct.addDataSetColors(ColorTemplate.LIBERTY_COLORS, this);
+		ct.addDataSetColors(ColorTemplate.FRESH_COLORS, this);
 		mChart.setColorTemplate(ct);
 
 		mChart.setDrawYValues(true);
@@ -148,7 +148,7 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
         }
 
 		tvX.setText("" + (mSeekBarX.getProgress()));
-		tvY.setText("" + (mSeekBarY.getProgress()));
+		tvY.setText("" + (mSeekBarY.getProgress())); 
 
 		ArrayList<String> xVals = new ArrayList<String>();
 
