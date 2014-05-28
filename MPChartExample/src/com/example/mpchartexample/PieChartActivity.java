@@ -154,7 +154,7 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
 
 		for (int i = 0; i < mSeekBarX.getProgress(); i++)
 			xVals.add("Text" + (i + 1));
-		
+		 
 		DataSet set1 = new DataSet(yVals1, 0);
 		DataSet set2 = new DataSet(yVals2, 1);
 		
