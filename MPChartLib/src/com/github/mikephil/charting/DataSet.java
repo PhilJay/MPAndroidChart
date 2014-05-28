@@ -39,6 +39,9 @@ public class DataSet {
         this.mType = type;
         this.mYVals = yVals;
 
+        if (yVals == null || yVals.size() <= 0)
+            return;
+
         calcMinMax();
         calcYValueSum();
     }

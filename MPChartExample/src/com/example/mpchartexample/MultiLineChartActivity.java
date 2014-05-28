@@ -44,7 +44,11 @@ public class MultiLineChartActivity extends Activity implements OnSeekBarChangeL
 		mSeekBarY.setOnSeekBarChangeListener(this);
 
 		mChart = (LineChart) findViewById(R.id.chart1);
-		mChart.setColorTemplate(new ColorTemplate(ColorTemplate.getColors(this, ColorTemplate.JOYFUL_COLORS)));
+		
+		ColorTemplate ct = new ColorTemplate();
+		ct.addColorsForDataSets(ColorTemplate.COLORFUL_COLORS, this);
+		
+		mChart.setColorTemplate(ct);
 		mChart.setDrawTopYLegendEntry(false);
 		mChart.setOnChartValueSelectedListener(this);
 

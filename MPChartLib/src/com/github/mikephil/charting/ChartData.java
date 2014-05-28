@@ -31,8 +31,8 @@ public class ChartData {
     /**
      * constructor for chart data
      * 
-     * @param xVals must be at least as long as the longest series array of one
-     *            type
+     * @param xVals must be at least as long as the highest xIndex in the Series
+     *            objects across all DataSets
      * @param dataSets all DataSet objects the chart needs to represent
      */
     public ChartData(ArrayList<String> xVals, ArrayList<DataSet> dataSets) {
@@ -178,9 +178,10 @@ public class ChartData {
 
         return null;
     }
-    
+
     /**
      * returns all DataSet objects the ChartData represents.
+     * 
      * @return
      */
     public ArrayList<DataSet> getDataSets() {

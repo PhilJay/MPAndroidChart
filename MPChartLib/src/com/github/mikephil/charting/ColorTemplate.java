@@ -8,8 +8,8 @@ import java.util.ArrayList;
 public class ColorTemplate {
 
     /**
-     * THE COLOR THEMES BELOW ARE PREDEFINED, FEEL FREE TO CREATE YOUR OWN WITH
-     * AS MANY DIFFERENT COLORS AS YOU WANT
+     * THE COLOR THEMES ARE PREDEFINED, FEEL FREE TO CREATE YOUR OWN WITH AS
+     * MANY DIFFERENT COLORS AS YOU WANT
      */
 
     public static final int[] FRESH_COLORS = {
@@ -35,33 +35,116 @@ public class ColorTemplate {
             R.color.joyful_5
     };
 
-    /** the array of colors the template represents */
-    private ArrayList<Integer> mColors;
+    /** an arraylist of color arrays (one color array per dataset) */
+    private ArrayList<ArrayList<Integer>> mDataSetColors;
+
+    /** the total amount of different colors in the template */
+    private int mColorCount = 0;
 
     /**
      * constructor
-     * @param colors
      */
-    public ColorTemplate(ArrayList<Integer> colors) {
-        this.mColors = colors;
+    public ColorTemplate() {
+        mDataSetColors = new ArrayList<ArrayList<Integer>>();
     }
 
     /**
-     * constructor
-     * @param colors
-     * @param c
-     */
-    public ColorTemplate(int[] colors, Context c) {
-        this.mColors = getColors(c, colors);
-    }
-
-    /**
-     * returns an array of colors this template represents
+     * returns the total amount of different colors in the template
      * 
      * @return
      */
-    public ArrayList<Integer> getColors() {
-        return mColors;
+    public int getColorCount() {
+        return mColorCount;
+    }
+
+    /**
+     * Adds a new array of colors for one DataSet to the template. Make sure to
+     * use getResources().getColor(R.color.yourcolor) for the colors. Use
+     * ColorTemplate.createColors(...) to make a color arraylist.
+     * 
+     * @param colors
+     */
+    public void addDataSetColors(ArrayList<Integer> colors) {
+        mDataSetColors.add(colors);
+        mColorCount += colors.size();
+    }
+
+    /**
+     * Adds a new array of colors for one DataSet to the template. You can use
+     * R.color.yourcolor for the integer values. Conversion is done internally.
+     * 
+     * @param colors
+     * @param c
+     */
+    public void addDataSetColors(int[] colors, Context c) {
+        mDataSetColors.add(createColors(c, colors));
+        mColorCount += colors.length;
+    }
+
+    /**
+     * Adds colors to the ColorTemplate. Each of the colors will create a new
+     * dataset color array in the template with just one color. This is
+     * especially useful when you want each of your DataSets only to be
+     * represented by one color and not multiple.
+     * 
+     * @param colors
+     * @param c
+     */
+    public void addColorsForDataSets(ArrayList<Integer> colors) {
+        for (int i = 0; i < colors.size(); i++) {
+
+            ArrayList<Integer> clrs = new ArrayList<Integer>();
+            clrs.add(colors.get(i));
+            addDataSetColors(clrs);
+        }
+    }
+
+    /**
+     * Adds colors to the ColorTemplate. Each of the colors will create a new
+     * dataset color array in the template with just one color. This is
+     * especially useful when you want each of your DataSets only to be
+     * represented by one color and not multiple.
+     * 
+     * @param colors
+     * @param c
+     */
+    public void addColorsForDataSets(int[] colors, Context c) {
+        for (int i = 0; i < colors.length; i++) {
+            addDataSetColors(new int[] {
+                    colors[i]
+            }, c);
+        }
+    }
+
+    /**
+     * Returns all color arrays the template represents.
+     * 
+     * @return
+     */
+    public ArrayList<ArrayList<Integer>> getColors() {
+        return mDataSetColors;
+    }
+
+    /**
+     * returns the dataset color array at the given index
+     * 
+     * @param dataSetIndex
+     * @return
+     */
+    public ArrayList<Integer> getDataSetColors(int dataSetIndex) {
+        return mDataSetColors.get(dataSetIndex);
+    }
+
+    /**
+     * returns the color value at the given index from the DataSet at the given
+     * index
+     * 
+     * @param dataSetIndex
+     * @param colorIndex
+     * @return
+     */
+    public int getDataSetColor(int dataSetIndex, int colorIndex) {
+        return mDataSetColors.get(dataSetIndex).get(colorIndex);
     }
 
     /**
@@ -71,7 +154,7 @@ public class ColorTemplate {
      * @param colors e.g. ColorTemplate.MONO_COLORS
      * @return
      */
-    public static ArrayList<Integer> getColors(Context c, int[] colors) {
+    public static ArrayList<Integer> createColors(Context c, int[] colors) {
 
         ArrayList<Integer> result = new ArrayList<Integer>();
 

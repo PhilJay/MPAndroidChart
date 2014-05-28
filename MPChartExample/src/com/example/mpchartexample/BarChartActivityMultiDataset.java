@@ -9,17 +9,15 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.Approximator;
 import com.github.mikephil.charting.BarChart;
 import com.github.mikephil.charting.ChartData;
 import com.github.mikephil.charting.ColorTemplate;
 import com.github.mikephil.charting.DataSet;
 import com.github.mikephil.charting.Series;
-import com.github.mikephil.charting.Approximator.ApproximatorType;
 
 import java.util.ArrayList;
 
-public class BarChartActivity extends Activity implements OnSeekBarChangeListener {
+public class BarChartActivityMultiDataset extends Activity implements OnSeekBarChangeListener {
 
 	private BarChart mChart;
 	private SeekBar mSeekBarX, mSeekBarY;
@@ -44,8 +42,12 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
 		
 		ColorTemplate ct = new ColorTemplate();
 		
-		// add colors for one dataset
+		// add colors for the datasets
 		ct.addDataSetColors(ColorTemplate.FRESH_COLORS, this);
+		
+		// the second dataset only has one color
+		ct.addDataSetColors(new int[] {R.color.liberty_2}, this);
+		ct.addDataSetColors(ColorTemplate.COLORFUL_COLORS, this);
 		
 		mChart.setColorTemplate(ct);
 		// mChart.setLegendDigits(2);
@@ -150,19 +152,38 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
 		}
 
 		ArrayList<Series> yVals1 = new ArrayList<Series>();
+		ArrayList<Series> yVals2 = new ArrayList<Series>();
+		ArrayList<Series> yVals3 = new ArrayList<Series>();
 
-		for (int i = 0; i < mSeekBarX.getProgress(); i++) {
+		for (int i = 0; i < mSeekBarX.getProgress() / 3; i++) {
 			float mult = (mSeekBarY.getProgress() + 1);
 			float val = (float) (Math.random() * mult * 0.1) + 3;// + (float) ((mult * 0.1) / 10);
 			yVals1.add(new Series(val, i));
 		}
+		
+		for (int i = mSeekBarX.getProgress() / 3; i < mSeekBarX.getProgress() / 3 * 2; i++) {
+            float mult = (mSeekBarY.getProgress() + 1);
+            float val = (float) (Math.random() * mult * 0.1) + 3;// + (float) ((mult * 0.1) / 10);
+            yVals2.add(new Series(val, i));
+        }
+		
+		for (int i = mSeekBarX.getProgress() / 3 * 2; i < mSeekBarX.getProgress(); i++) {
+            float mult = (mSeekBarY.getProgress() + 1);
+            float val = (float) (Math.random() * mult * 0.1) + 3;// + (float) ((mult * 0.1) / 10);
+            yVals3.add(new Series(val, i));
+        }
 
 		tvX.setText("" + (mSeekBarX.getProgress() + 1));
 		tvY.setText("" + (mSeekBarY.getProgress() / 10));
-
+	
+		// create 3 datasets with different types
 		DataSet set1 = new DataSet(yVals1, 0);
+		DataSet set2 = new DataSet(yVals2, 1);
+		DataSet set3 = new DataSet(yVals3, 2);
         ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
         dataSets.add(set1);
+        dataSets.add(set2);
+        dataSets.add(set3);
 
         ChartData data = new ChartData(xVals, dataSets);
 

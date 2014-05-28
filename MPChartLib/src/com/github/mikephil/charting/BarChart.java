@@ -61,52 +61,52 @@ public class BarChart extends BarLineChartBase {
     @Override
     protected void prepareDataPaints(ColorTemplate ct) {
 
-        // prepare the paints
-        mDrawPaints = new Paint[ct.getColors().size()];
+        // // prepare the paints
+        // mDrawPaints = new Paint[ct.getColors().size()];
+        //
+        // for (int i = 0; i < ct.getColors().size(); i++) {
+        // mDrawPaints[i] = new Paint(Paint.ANTI_ALIAS_FLAG);
+        // mDrawPaints[i].setStyle(Style.FILL);
+        // mDrawPaints[i].setColor(Color.BLACK);
+        // }
 
-        for (int i = 0; i < ct.getColors().size(); i++) {
-            mDrawPaints[i] = new Paint(Paint.ANTI_ALIAS_FLAG);
-            mDrawPaints[i].setStyle(Style.FILL);
-            mDrawPaints[i].setColor(ct.getColors().get(i));
-        }
-
-        // generate the colors for the 3D effect
-        mTopColors = new int[mDrawPaints.length];
-        mSideColors = new int[mDrawPaints.length];
-
-        float[] hsv = new float[3];
-
-        for (int i = 0; i < mSideColors.length; i++) {
-
-            // extract the color
-            int c = mDrawPaints[i].getColor();
-            Color.colorToHSV(c, hsv); // convert to hsv
-
-            // make brighter
-            hsv[1] = hsv[1] - 0.1f; // less saturation
-            hsv[2] = hsv[2] + 0.1f; // more brightness
-
-            // convert back
-            c = Color.HSVToColor(hsv);
-
-            // assign
-            mTopColors[i] = c;
-
-            // get color again
-            c = mDrawPaints[i].getColor();
-
-            // convert
-            Color.colorToHSV(c, hsv);
-
-            // make darker
-            hsv[1] = hsv[1] + 0.1f; // more saturation
-            hsv[2] = hsv[2] - 0.1f; // less brightness
-
-            // reassing
-            c = Color.HSVToColor(hsv);
-
-            mSideColors[i] = c;
-        }
+        // // generate the colors for the 3D effect
+        // mTopColors = new int[mDrawPaints.length];
+        // mSideColors = new int[mDrawPaints.length];
+        //
+        // float[] hsv = new float[3];
+        //
+        // for (int i = 0; i < mSideColors.length; i++) {
+        //
+        // // extract the color
+        // int c = mDrawPaints[i].getColor();
+        // Color.colorToHSV(c, hsv); // convert to hsv
+        //
+        // // make brighter
+        // hsv[1] = hsv[1] - 0.1f; // less saturation
+        // hsv[2] = hsv[2] + 0.1f; // more brightness
+        //
+        // // convert back
+        // c = Color.HSVToColor(hsv);
+        //
+        // // assign
+        // mTopColors[i] = c;
+        //
+        // // get color again
+        // c = mDrawPaints[i].getColor();
+        //
+        // // convert
+        // Color.colorToHSV(c, hsv);
+        //
+        // // make darker
+        // hsv[1] = hsv[1] + 0.1f; // more saturation
+        // hsv[2] = hsv[2] - 0.1f; // less brightness
+        //
+        // // reassing
+        // c = Color.HSVToColor(hsv);
+        //
+        // mSideColors[i] = c;
+        // }
     }
 
     @Override
@@ -135,7 +135,8 @@ public class BarChart extends BarLineChartBase {
 
                     mHighlightPaint.setAlpha(120);
 
-                    float y = getYValueByDataSetIndex(index, mIndicesToHightlight[i].getDataSetIndex());
+                    float y = getYValueByDataSetIndex(index,
+                            mIndicesToHightlight[i].getDataSetIndex());
                     float left = index + mBarSpace / 2f;
                     float right = index + 1f - mBarSpace / 2f;
                     float top = y >= 0 ? y : 0;
@@ -243,15 +244,17 @@ public class BarChart extends BarLineChartBase {
 
             DataSet dataSet = dataSets.get(i);
             ArrayList<Series> series = dataSet.getYVals();
-            
-            // get the color for the dataset
-            Paint paint = mDrawPaints[i % mDrawPaints.length];
+
+            // Get the colors for the DataSet at the current index. If the index
+            // is out of bounds, reuse DataSet colors.
+            ArrayList<Integer> colors = mCt.getDataSetColors(i % mCt.getColors().size());
 
             // do the drawing
             for (int j = 0; j < dataSet.getSeriesCount(); j++) {
-                
-                // if only one DataSet exists, switch colors inside dataset
-                if(mData.getDataSetCount() == 1) paint = mDrawPaints[j % mDrawPaints.length];
+
+                // Set the color for the currently drawn value. If the index is
+                // out of bounds, reuse colors.
+                mRenderPaint.setColor(colors.get(j % colors.size()));
 
                 int x = series.get(j).getXIndex();
                 float y = series.get(j).getVal();
@@ -264,19 +267,19 @@ public class BarChart extends BarLineChartBase {
 
                 transformRect(mBarRect);
 
-                mDrawCanvas.drawRect(mBarRect, paint);
+                mDrawCanvas.drawRect(mBarRect, mRenderPaint);
 
                 if (m3DEnabled) {
 
-                    int c = paint.getColor();
+                    int c = mRenderPaint.getColor();
 
-                    paint.setColor(mTopColors[j % mTopColors.length]);
-                    mDrawCanvas.drawPath(topPaths.get(j), paint);
+                    mRenderPaint.setColor(mTopColors[j % mTopColors.length]);
+                    mDrawCanvas.drawPath(topPaths.get(j), mRenderPaint);
 
-                    paint.setColor(mSideColors[j % mSideColors.length]);
-                    mDrawCanvas.drawPath(sidePaths.get(j), paint);
+                    mRenderPaint.setColor(mSideColors[j % mSideColors.length]);
+                    mDrawCanvas.drawPath(sidePaths.get(j), mRenderPaint);
 
-                    paint.setColor(c);
+                    mRenderPaint.setColor(c);
                 }
             }
         }

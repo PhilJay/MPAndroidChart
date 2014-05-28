@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.Approximator;
 import com.github.mikephil.charting.ChartData;
+import com.github.mikephil.charting.ColorTemplate;
 import com.github.mikephil.charting.DataSet;
 import com.github.mikephil.charting.Highlight;
 import com.github.mikephil.charting.LineChart;
@@ -47,11 +48,15 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
         mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
         mSeekBarY.setOnSeekBarChangeListener(this);
 
+        // create a color template for one dataset with only one color
+        ColorTemplate ct = new ColorTemplate();
+        ct.addColorsForDataSets(new int[] {
+            R.color.colorful_1
+        }, this);
+
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
-        // mChart.setColorTemplate(new
-        // ColorTemplate(ColorTemplate.getColors(this,
-        // ColorTemplate.LIBERTY_COLORS)));
+        mChart.setColorTemplate(ct);
 
         // mChart.setDrawFilled(true);
         // mChart.setRoundedYLegend(false);
@@ -63,7 +68,10 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
         mChart.setYLegendCount(6);
         mChart.setTouchEnabled(true);
         mChart.setHighlightEnabled(true);
-        // mChart.highlightValues(new int[] {2, 6});
+
+        // highlight index 2 and 6 in dataset 0
+        // mChart.highlightValues(new Highlight[] {new Highlight(2, 0), new
+        // Highlight(6, 0)});
         mChart.setDragEnabled(true);
         mChart.setTouchEnabled(true);
 
@@ -178,15 +186,13 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
         tvX.setText("" + (mSeekBarX.getProgress() + 1));
         tvY.setText("" + (mSeekBarY.getProgress() / 10));
 
-//        Approximator a = new Approximator(ApproximatorType.DOUGLAS_PEUCKER);
-//        ArrayList<Series> filtered = a.filter(yVals, 1.0);
-
+        // create a dataset and give it a type (0)
         DataSet set1 = new DataSet(yVals, 0);
-//        DataSet set2 = new DataSet(filtered, 1);
+
         ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
-        dataSets.add(set1);
-//        dataSets.add(set2);
-        
+        dataSets.add(set1); // add the datasets
+
+        // create a data object with the datasets
         ChartData data = new ChartData(xVals, dataSets);
 
         mChart.setData(data);

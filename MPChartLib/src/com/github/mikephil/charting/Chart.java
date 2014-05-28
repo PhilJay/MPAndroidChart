@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
+import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.Rect;
@@ -78,11 +79,6 @@ public abstract class Chart extends View {
     protected float mYChartMax = 0.0f;
 
     /**
-     * colortemplate containing all the colors used by the chart
-     */
-    protected ColorTemplate mColorTemplate;
-
-    /**
      * paint object used for darwing the bitmap to the screen
      */
     protected Paint mDrawPaint;
@@ -105,11 +101,11 @@ public abstract class Chart extends View {
      */
     protected Paint mValuePaint;
 
-    /**
-     * paint objects used for drawing (e.g. the bars of a chart) usually, each
-     * paint object has a different color
-     */
-    protected Paint[] mDrawPaints;
+    /** this is the paint object used for drawing the data onto the chart */
+    protected Paint mRenderPaint;
+
+    /** the colortemplate the chart uses */
+    protected ColorTemplate mCt;
 
     /** description text that appears in the bottom right corner of the chart */
     protected String mDescription = "Description.";
@@ -186,6 +182,9 @@ public abstract class Chart extends View {
         mOffsetLeft = (int) Utils.convertDpToPixel(mOffsetLeft);
         mOffsetRight = (int) Utils.convertDpToPixel(mOffsetRight);
         mOffsetTop = (int) Utils.convertDpToPixel(mOffsetTop);
+        
+        mRenderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mRenderPaint.setStyle(Style.FILL);
 
         mDrawPaint = new Paint();
 
@@ -204,7 +203,8 @@ public abstract class Chart extends View {
         mValuePaint.setTextAlign(Align.CENTER);
         mValuePaint.setTextSize(Utils.convertDpToPixel(9f));
 
-        setColorTemplate(new ColorTemplate(ColorTemplate.COLORFUL_COLORS, getContext()));
+        mCt = new ColorTemplate();
+        mCt.addDataSetColors(ColorTemplate.LIBERTY_COLORS, getContext());
     }
 
     /**
@@ -607,10 +607,11 @@ public abstract class Chart extends View {
     /**
      * checks if the given index is set for highlighting or not
      * 
-     * @param index
+     * @param xIndex
+     * @param dataSetIndex
      * @return
      */
-    public boolean needsHighlight(int index, int dataSet) {
+    public boolean needsHighlight(int xIndex, int dataSetIndex) {
 
         // no highlight
         if (!valuesToHighlight())
@@ -619,8 +620,8 @@ public abstract class Chart extends View {
         for (int i = 0; i < mIndicesToHightlight.length; i++)
 
             // check if the xvalue for the given dataset needs highlight
-            if (mIndicesToHightlight[i].getXIndex() == index
-                    && mIndicesToHightlight[i].getDataSetIndex() == dataSet)
+            if (mIndicesToHightlight[i].getXIndex() == xIndex
+                    && mIndicesToHightlight[i].getDataSetIndex() == dataSetIndex && xIndex <= mDeltaX)
                 return true;
 
         return false;
@@ -963,9 +964,17 @@ public abstract class Chart extends View {
      * @param ct
      */
     public void setColorTemplate(ColorTemplate ct) {
-        this.mColorTemplate = ct;
+        this.mCt = ct;
 
         prepareDataPaints(ct);
+    }
+    
+    /**
+     * returns the colortemplate used by the chart
+     * @return
+     */
+    public ColorTemplate getColorTemplate() {
+        return mCt;
     }
 
     /**

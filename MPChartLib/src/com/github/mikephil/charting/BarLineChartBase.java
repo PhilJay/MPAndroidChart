@@ -929,9 +929,9 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * returns the index DataSet that contains the closest value    
+     * returns the index of the DataSet that contains the closest value    
      * 
-     * @param valsAtIndex
+     * @param valsAtIndex all the values at a specific index
      * @return
      */
     private int getClosestDataSetIndex(ArrayList<SelInfo> valsAtIndex, float val) {

@@ -44,7 +44,11 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
 		mSeekBarY.setOnSeekBarChangeListener(this);
 
 		mChart = (PieChart) findViewById(R.id.chart1);
-		mChart.setColorTemplate(new ColorTemplate(ColorTemplate.getColors(this, ColorTemplate.COLORFUL_COLORS)));
+		
+		ColorTemplate ct = new ColorTemplate();
+		ct.addDataSetColors(ColorTemplate.COLORFUL_COLORS, this);
+		ct.addDataSetColors(ColorTemplate.LIBERTY_COLORS, this);
+		mChart.setColorTemplate(ct);
 
 		mChart.setDrawYValues(true);
 		mChart.setDrawCenterText(true);
@@ -56,7 +60,7 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
 		mChart.setUsePercentValues(false);
 		mChart.setOnChartValueSelectedListener(this);
 
-		mSeekBarX.setProgress(5);
+		mSeekBarX.setProgress(10);
 		mSeekBarY.setProgress(100);
 
 		// float diameter = mChart.getDiameter();
@@ -127,30 +131,40 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-		ArrayList<Series> yVals = new ArrayList<Series>();
+		ArrayList<Series> yVals1 = new ArrayList<Series>();
+		ArrayList<Series> yVals2 = new ArrayList<Series>();
 
-		for (int i = 0; i < mSeekBarX.getProgress(); i++) {
+		// IMPORTANT: In a PieChart, no values (Series) should have the same xIndex, since no values can be drawn above each other.
+		for (int i = 0; i < mSeekBarX.getProgress() / 2; i++) {
 			float mult = (mSeekBarY.getProgress());
 			float val = (float) (Math.random() * mult) + mult / 5;// + (float) ((mult * 0.1) / 10);
-			yVals.add(new Series(val, i));
+			yVals1.add(new Series(val, i));
 		}
+		
+		for (int i = mSeekBarX.getProgress() / 2; i < mSeekBarX.getProgress(); i++) {
+            float mult = (mSeekBarY.getProgress());
+            float val = (float) (Math.random() * mult) + mult / 5;// + (float) ((mult * 0.1) / 10);
+            yVals2.add(new Series(val, i));
+        }
 
 		tvX.setText("" + (mSeekBarX.getProgress()));
 		tvY.setText("" + (mSeekBarY.getProgress()));
 
 		ArrayList<String> xVals = new ArrayList<String>();
 
-		for (int i = 0; i < yVals.size(); i++)
+		for (int i = 0; i < mSeekBarX.getProgress(); i++)
 			xVals.add("Text" + (i + 1));
 		
-		DataSet set = new DataSet(yVals, 0);
+		DataSet set1 = new DataSet(yVals1, 0);
+		DataSet set2 = new DataSet(yVals2, 1);
 		
         ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
-        
-        dataSets.add(set);
+        dataSets.add(set1);
+        dataSets.add(set2);
 
         ChartData data = new ChartData(xVals, dataSets);
 		mChart.setData(data);
+		mChart.highlightValues(null);
 		mChart.setCenterText("Total Value\n" + (int) mChart.getYValueSum() + "\n(all slices)");
 		mChart.invalidate();
 	}

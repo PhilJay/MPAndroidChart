@@ -4,7 +4,6 @@ package com.github.mikephil.charting;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.util.AttributeSet;
 
@@ -68,18 +67,18 @@ public class LineChart extends BarLineChartBase {
 
     @Override
     protected void prepareDataPaints(ColorTemplate ct) {
-
-        if (ct == null)
-            return;
-
-        mDrawPaints = new Paint[ct.getColors().size()];
-
-        for (int i = 0; i < ct.getColors().size(); i++) {
-            mDrawPaints[i] = new Paint(Paint.ANTI_ALIAS_FLAG);
-            mDrawPaints[i].setStrokeWidth(mLineWidth);
-            mDrawPaints[i].setStyle(Style.FILL);
-            mDrawPaints[i].setColor(ct.getColors().get(i));
-        }
+        //
+        // if (ct == null)
+        // return;
+        //
+        // mDrawPaints = new Paint[ct.getColors().size()];
+        //
+        // for (int i = 0; i < ct.getColors().size(); i++) {
+        // mDrawPaints[i] = new Paint(Paint.ANTI_ALIAS_FLAG);
+        // mDrawPaints[i].setStrokeWidth(mLineWidth);
+        // mDrawPaints[i].setStyle(Style.FILL);
+        // // mDrawPaints[i].setColor(ct.getColors().get(i));
+        // }
     }
 
     @Override
@@ -89,10 +88,11 @@ public class LineChart extends BarLineChartBase {
         if (mHighlightEnabled && valuesToHighlight()) {
 
             for (int i = 0; i < mIndicesToHightlight.length; i++) {
-                
+
                 DataSet set = getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
-                
-                int xIndex = mIndicesToHightlight[i].getXIndex(); // get the x-position
+
+                int xIndex = mIndicesToHightlight[i].getXIndex(); // get the
+                                                                  // x-position
                 float y = set.getYValForXIndex(xIndex); // get the y-position
 
                 float[] pts = new float[] {
@@ -122,9 +122,17 @@ public class LineChart extends BarLineChartBase {
 
             float[] valuePoints = generateTransformedValues(series, 0f);
 
-            Paint paint = mDrawPaints[i % mDrawPaints.length];
+            // Get the colors for the DataSet at the current index. If the index
+            // is out of bounds, reuse DataSet colors.
+            ArrayList<Integer> colors = mCt.getDataSetColors(i % mCt.getColors().size());
+
+            Paint paint = mRenderPaint;
 
             for (int j = 0; j < valuePoints.length - 2; j += 2) {
+
+                // Set the color for the currently drawn value. If the index is
+                // out of bounds, reuse colors.
+                paint.setColor(colors.get(j % colors.size()));
 
                 if (isOffContentRight(valuePoints[j]))
                     break;
@@ -137,13 +145,12 @@ public class LineChart extends BarLineChartBase {
                         valuePoints[j + 3], paint);
             }
 
-
             // if drawing filled is enabled
             if (mDrawFilled) {
                 // mDrawCanvas.drawVertices(VertexMode.TRIANGLE_STRIP,
                 // valuePoints.length, valuePoints, 0,
                 // null, 0, null, 0, null, 0, 0, paint);
-                                
+
                 // filled is drawn with less alpha
                 paint.setAlpha(85);
 
@@ -164,7 +171,7 @@ public class LineChart extends BarLineChartBase {
                 transformPath(filled);
 
                 mDrawCanvas.drawPath(filled, paint);
-                
+
                 // restore alpha
                 paint.setAlpha(255);
             }
@@ -230,10 +237,19 @@ public class LineChart extends BarLineChartBase {
 
                 DataSet dataSet = dataSets.get(i);
                 ArrayList<Series> series = dataSet.getYVals();
+                
+                // Get the colors for the DataSet at the current index. If the
+                // index
+                // is out of bounds, reuse DataSet colors.
+                ArrayList<Integer> colors = mCt.getDataSetColors(i % mCt.getColors().size());
 
                 float[] positions = generateTransformedValues(series, 0f);
 
                 for (int j = 0; j < positions.length; j += 2) {
+                    
+                    // Set the color for the currently drawn value. If the index is
+                    // out of bounds, reuse colors.
+                    mRenderPaint.setColor(colors.get(j % colors.size()));
 
                     if (isOffContentRight(positions[j]))
                         break;
@@ -244,7 +260,7 @@ public class LineChart extends BarLineChartBase {
                         continue;
 
                     mDrawCanvas.drawCircle(positions[j], positions[j + 1], mCircleSize,
-                            mDrawPaints[i % mDrawPaints.length]);
+                            mRenderPaint);
                     mDrawCanvas.drawCircle(positions[j], positions[j + 1], mCircleSize / 2,
                             mCirclePaintInner);
                 }
@@ -323,9 +339,7 @@ public class LineChart extends BarLineChartBase {
             width = 10.0f;
         mLineWidth = width;
 
-        for (int i = 0; i < mDrawPaints.length; i++) {
-            mDrawPaints[i].setStrokeWidth(mLineWidth);
-        }
+        mRenderPaint.setStrokeWidth(width);
     }
 
     /**
