@@ -83,7 +83,9 @@ public class DataSet {
 
     /**
      * Returns the value of the Series object at the given xIndex. Returns
-     * Float.NaN if no value is at the given x-index. INFORMATION: This method does calculations at runtime. Do not over-use in performance critical situations.
+     * Float.NaN if no value is at the given x-index. INFORMATION: This method
+     * does calculations at runtime. Do not over-use in performance critical
+     * situations.
      * 
      * @param xIndex
      * @return
@@ -99,7 +101,9 @@ public class DataSet {
     }
 
     /**
-     * Returns the Series object at the given xIndex. INFORMATION: This method does calculations at runtime. Do not over-use in performance critical situations.
+     * Returns the Series object at the given xIndex. Returns null if no Series
+     * object at that index. INFORMATION: This method does calculations at
+     * runtime. Do not over-use in performance critical situations.
      * 
      * @param xIndex
      * @return
@@ -114,22 +118,47 @@ public class DataSet {
         return null;
     }
 
+    /**
+     * returns the DataSets Series array
+     * 
+     * @return
+     */
     public ArrayList<Series> getYVals() {
         return mYVals;
     }
 
+    /**
+     * gets the sum of all y-values
+     * 
+     * @return
+     */
     public float getYValueSum() {
         return mYValueSum;
     }
 
+    /**
+     * returns the minimum y-value this DataSet holds
+     * 
+     * @return
+     */
     public float getYMin() {
         return mYMin;
     }
 
+    /**
+     * returns the maximum y-value this DataSet holds
+     * 
+     * @return
+     */
     public float getYMax() {
         return mYMax;
     }
 
+    /**
+     * returns the type of the DataSet, specified via constructor
+     * 
+     * @return
+     */
     public int getType() {
         return mType;
     }

@@ -1160,9 +1160,9 @@ public abstract class Chart extends View {
      * @param dataSet
      * @return
      */
-    public float getYValueByDataSetIndex(int index, int dataSet) {
+    public float getYValueByDataSetIndex(int xIndex, int dataSet) {
         DataSet set = mData.getDataSetByIndex(dataSet);
-        return set.getYVals().get(index).getVal();
+        return set.getYValForXIndex(xIndex);
     }
 
     /**
@@ -1225,24 +1225,52 @@ public abstract class Chart extends View {
     }
 
     /**
-     * Get the y-values from the Series object at the given index across all
-     * DataSets. INFORMATION: This method does calculations at runtime. Do not
-     * over-use in performance critical situations.
+     * Returns an array of SelInfo objects for the given x-index. The SelInfo
+     * objects give information about the value at the selected index and the
+     * DataSet it belongs to. INFORMATION: This method does calculations at
+     * runtime. Do not over-use in performance critical situations.
      * 
      * @param xIndex
      * @return
      */
-    public ArrayList<Float> getYValsAtIndex(int xIndex) {
+    protected ArrayList<SelInfo> getYValsAtIndex(int xIndex) {
 
-        ArrayList<Float> vals = new ArrayList<Float>();
+        ArrayList<SelInfo> vals = new ArrayList<SelInfo>();
 
         for (int i = 0; i < mData.getDataSetCount(); i++) {
 
             // extract all y-values from all DataSets at the given x-index
             float yVal = mData.getDataSetByIndex(i).getYValForXIndex(xIndex);
 
-            if (!Float.isNaN(yVal))
-                vals.add(yVal);
+            if (!Float.isNaN(yVal)) {
+                vals.add(new SelInfo(yVal, i));
+            }
+        }
+
+        return vals;
+    }
+
+    /**
+     * Get all Series objects at the given index across all DataSets.
+     * INFORMATION: This method does calculations at runtime. Do not over-use in
+     * performance critical situations.
+     * 
+     * @param xIndex
+     * @return
+     */
+    public ArrayList<Series> getSeriesAtIndex(int xIndex) {
+
+        ArrayList<Series> vals = new ArrayList<Series>();
+
+        for (int i = 0; i < mData.getDataSetCount(); i++) {
+
+            DataSet set = mData.getDataSetByIndex(i);
+
+            Series s = set.getSeriesForXIndex(xIndex);
+
+            if (s != null) {
+                vals.add(s);
+            }
         }
 
         return vals;

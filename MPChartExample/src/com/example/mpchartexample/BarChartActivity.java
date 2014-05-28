@@ -143,13 +143,20 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
 			xVals.add((i) + "");
 		}
 
-		ArrayList<Series> yVals = new ArrayList<Series>();
+		ArrayList<Series> yVals1 = new ArrayList<Series>();
+//		ArrayList<Series> yVals2 = new ArrayList<Series>();
 
 		for (int i = 0; i < mSeekBarX.getProgress(); i++) {
 			float mult = (mSeekBarY.getProgress() + 1);
 			float val = (float) (Math.random() * mult * 0.1) + 3;// + (float) ((mult * 0.1) / 10);
-			yVals.add(new Series(val, i));
+			yVals1.add(new Series(val, i));
 		}
+		
+//		for (int i = mSeekBarX.getProgress() / 2; i < mSeekBarX.getProgress(); i++) {
+//            float mult = (mSeekBarY.getProgress() + 1);
+//            float val = (float) (Math.random() * mult * 0.1) + 3;// + (float) ((mult * 0.1) / 10);
+//            yVals2.add(new Series(val, i));
+//        }
 
 		tvX.setText("" + (mSeekBarX.getProgress() + 1));
 		tvY.setText("" + (mSeekBarY.getProgress() / 10));
@@ -157,9 +164,11 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
 //		Approximator approximator = new Approximator(ApproximatorType.DOUGLAS_PEUCKER);
 //		ArrayList<Series> filtered = approximator.filter(yVals);
 
-		DataSet set = new DataSet(yVals, 0);
+		DataSet set1 = new DataSet(yVals1, 0);
+//		DataSet set2 = new DataSet(yVals2, 1);
         ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
-        dataSets.add(set);
+        dataSets.add(set1);
+//        dataSets.add(set2);
 
         ChartData data = new ChartData(xVals, dataSets);
 

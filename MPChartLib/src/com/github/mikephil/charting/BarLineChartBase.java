@@ -919,7 +919,7 @@ public abstract class BarLineChartBase extends Chart {
             }
         }
 
-        ArrayList<Float> valsAtIndex = getYValsAtIndex(xIndex);
+        ArrayList<SelInfo> valsAtIndex = getYValsAtIndex(xIndex);
 
         yIndex = getClosestDataSetIndex(valsAtIndex, (float) yTouchVal);
         
@@ -934,21 +934,21 @@ public abstract class BarLineChartBase extends Chart {
      * @param valsAtIndex
      * @return
      */
-    private int getClosestDataSetIndex(ArrayList<Float> valsAtIndex, float val) {
+    private int getClosestDataSetIndex(ArrayList<SelInfo> valsAtIndex, float val) {
 
         int index = -1;
         float distance = Float.MAX_VALUE;
 
-        for (int c = 0; c < valsAtIndex.size(); c++) {
+        for (int i = 0; i < valsAtIndex.size(); i++) {
 
-            float cdistance = Math.abs((float) valsAtIndex.get(c) - val);
+            float cdistance = Math.abs((float) valsAtIndex.get(i).val - val);
             if (cdistance < distance) {
-                index = c;
+                index = valsAtIndex.get(i).dataSetIndex;
                 distance = cdistance;
             }
         }
         
-        Log.i(LOG_TAG, "Closest select index: " + index);
+        Log.i(LOG_TAG, "Closest DataSet index: " + index);
 
         return index;
     }

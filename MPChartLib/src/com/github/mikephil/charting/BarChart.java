@@ -135,7 +135,7 @@ public class BarChart extends BarLineChartBase {
 
                     mHighlightPaint.setAlpha(120);
 
-                    float y = getYValue(index);
+                    float y = getYValueByDataSetIndex(index, mIndicesToHightlight[i].getDataSetIndex());
                     float left = index + mBarSpace / 2f;
                     float right = index + 1f - mBarSpace / 2f;
                     float top = y >= 0 ? y : 0;
@@ -243,11 +243,15 @@ public class BarChart extends BarLineChartBase {
 
             DataSet dataSet = dataSets.get(i);
             ArrayList<Series> series = dataSet.getYVals();
+            
+            // get the color for the dataset
+            Paint paint = mDrawPaints[i % mDrawPaints.length];
 
             // do the drawing
             for (int j = 0; j < dataSet.getSeriesCount(); j++) {
-
-                Paint paint = mDrawPaints[j % mDrawPaints.length];
+                
+                // if only one DataSet exists, switch colors inside dataset
+                if(mData.getDataSetCount() == 1) paint = mDrawPaints[j % mDrawPaints.length];
 
                 int x = series.get(j).getXIndex();
                 float y = series.get(j).getVal();
