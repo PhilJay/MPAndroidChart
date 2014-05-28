@@ -903,9 +903,9 @@ public abstract class BarLineChartBase extends Chart {
 
         // touch out of chart
         if (this instanceof LineChart
-                && (xTouchVal < 0 || xTouchVal > getValueCount() - 1))
+                && (xTouchVal < 0 || xTouchVal > mDeltaX))
             return null;
-        if (this instanceof BarChart && (xTouchVal < 0 || xTouchVal > getValueCount()))
+        if (this instanceof BarChart && (xTouchVal < 0 || xTouchVal > mDeltaX+1))
             return null;
 
         int xIndex = (int) base;
@@ -922,6 +922,8 @@ public abstract class BarLineChartBase extends Chart {
         ArrayList<Float> valsAtIndex = getYValsAtIndex(xIndex);
 
         yIndex = getClosestDataSetIndex(valsAtIndex, (float) yTouchVal);
+        
+        if(yIndex == -1) return null;
 
         return new Highlight(xIndex, yIndex);
     }
@@ -934,7 +936,7 @@ public abstract class BarLineChartBase extends Chart {
      */
     private int getClosestDataSetIndex(ArrayList<Float> valsAtIndex, float val) {
 
-        int index = 0;
+        int index = -1;
         float distance = Float.MAX_VALUE;
 
         for (int c = 0; c < valsAtIndex.size(); c++) {
@@ -945,6 +947,8 @@ public abstract class BarLineChartBase extends Chart {
                 distance = cdistance;
             }
         }
+        
+        Log.i(LOG_TAG, "Closest select index: " + index);
 
         return index;
     }

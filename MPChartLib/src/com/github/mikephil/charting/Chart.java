@@ -634,7 +634,7 @@ public abstract class Chart extends View {
      * @return
      */
     public boolean valuesToHighlight() {
-        return mIndicesToHightlight == null || mIndicesToHightlight.length == 0
+        return mIndicesToHightlight == null || mIndicesToHightlight.length <= 0
                 || mIndicesToHightlight[0] == null ? false
                 : true;
     }
@@ -658,10 +658,10 @@ public abstract class Chart extends View {
                 mSelectionListener.onNothingSelected();
             else {
 
-                float[] values = new float[highs.length];
+                Series[] values = new Series[highs.length];
 
                 for (int i = 0; i < values.length; i++)
-                    values[i] = getYValueByDataSetIndex(highs[i].getXIndex(),
+                    values[i] = getSeriesByDataSetIndex(highs[i].getXIndex(),
                             highs[i].getDataSetIndex());
 
                 // notify the listener
@@ -1189,7 +1189,8 @@ public abstract class Chart extends View {
 
     /**
      * returns the Series object from the first DataSet stored in the ChartData
-     * object. If multiple DataSets are used, use getSeries(index, type);
+     * object. If multiple DataSets are used, use getSeries(index, type) or
+     * getSeriesByDataSetIndex(xIndex, dataSetIndex);
      * 
      * @param index
      * @return
@@ -1211,8 +1212,22 @@ public abstract class Chart extends View {
     }
 
     /**
-     * get the y-values from the Series object at the given index across all
-     * DataSets
+     * Returns the corresponding Seires object at the given xIndex from the
+     * given DataSet. INFORMATION: This method does calculations at runtime. Do
+     * not over-use in performance critical situations.
+     * 
+     * @param xIndex
+     * @param dataSetIndex
+     * @return
+     */
+    public Series getSeriesByDataSetIndex(int xIndex, int dataSetIndex) {
+        return mData.getDataSetByIndex(dataSetIndex).getSeriesForXIndex(xIndex);
+    }
+
+    /**
+     * Get the y-values from the Series object at the given index across all
+     * DataSets. INFORMATION: This method does calculations at runtime. Do not
+     * over-use in performance critical situations.
      * 
      * @param xIndex
      * @return

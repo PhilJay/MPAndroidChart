@@ -1,15 +1,14 @@
 
 package com.github.mikephil.charting;
 
-import java.util.ArrayList;
-
 import android.content.Context;
-import android.graphics.Canvas.VertexMode;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.util.AttributeSet;
+
+import java.util.ArrayList;
 
 public class LineChart extends BarLineChartBase {
 
@@ -90,22 +89,20 @@ public class LineChart extends BarLineChartBase {
         if (mHighlightEnabled && valuesToHighlight()) {
 
             for (int i = 0; i < mIndicesToHightlight.length; i++) {
-
-                int xIndex = mIndicesToHightlight[i].getXIndex();
+                
                 DataSet set = getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
+                
+                int xIndex = mIndicesToHightlight[i].getXIndex(); // get the x-position
+                float y = set.getYValForXIndex(xIndex); // get the y-position
 
-                // check outofbounds
-                if (xIndex < set.getSeriesCount() && xIndex >= 0) {
+                float[] pts = new float[] {
+                        xIndex, mYChartMax, xIndex, mYChartMin, 0,
+                        y, mDeltaX, y
+                };
 
-                    float[] pts = new float[] {
-                            xIndex, mYChartMax, xIndex, mYChartMin, 0,
-                            set.getYValForXIndex(xIndex), mDeltaX, set.getYValForXIndex(xIndex)
-                    };
-
-                    transformPointArray(pts);
-                    // draw the highlight lines
-                    mDrawCanvas.drawLines(pts, mHighlightPaint);
-                }
+                transformPointArray(pts);
+                // draw the highlight lines
+                mDrawCanvas.drawLines(pts, mHighlightPaint);
             }
         }
     }

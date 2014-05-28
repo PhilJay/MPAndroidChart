@@ -21,12 +21,12 @@ public class Approximator {
 		this.type = type;
 	}
 
-	public ArrayList<Series> filter(ArrayList<Series> points) {
+	public ArrayList<Series> filter(ArrayList<Series> points, double tolerance) {
 		keep = new boolean[points.size()];
 
 		switch (type) {
 		case DOUGLAS_PEUCKER:
-			return reduceWithDouglasPeuker(points, 1);
+			return reduceWithDouglasPeuker(points, tolerance);
 		case NONE:
 			return null;
 		default:

@@ -10,6 +10,8 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.Approximator;
+import com.github.mikephil.charting.Approximator.ApproximatorType;
 import com.github.mikephil.charting.ChartData;
 import com.github.mikephil.charting.ColorTemplate;
 import com.github.mikephil.charting.DataSet;
@@ -140,9 +142,11 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
 
 		for (int i = 0; i < yVals.size(); i++)
 			xVals.add("Text" + (i + 1));
-
+		
 		DataSet set = new DataSet(yVals, 0);
+		
         ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+        
         dataSets.add(set);
 
         ChartData data = new ChartData(xVals, dataSets);
@@ -152,12 +156,12 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
 	}
 
 	@Override
-	public void onValuesSelected(float[] values, Highlight[] highs) {
+	public void onValuesSelected(Series[] values, Highlight[] highs) {
 	    
 	    StringBuffer a = new StringBuffer();
 
         for (int i = 0; i < values.length; i++)
-            a.append("val: " + values[i] + ", x-ind: " + highs[i].getXIndex() + ", dataset-ind: " + highs[i].getDataSetIndex() + "\n");
+            a.append("val: " + values[i].getVal() + ", x-ind: " + highs[i].getXIndex() + ", dataset-ind: " + highs[i].getDataSetIndex() + "\n");
 
         Log.i("PieChart", "Selected: " + a.toString());
 	}

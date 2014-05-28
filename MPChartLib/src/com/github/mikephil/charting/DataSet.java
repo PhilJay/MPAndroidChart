@@ -82,7 +82,8 @@ public class DataSet {
     }
 
     /**
-     * returns the value of the Series object at the given xIndex
+     * Returns the value of the Series object at the given xIndex. Returns
+     * Float.NaN if no value is at the given x-index. INFORMATION: This method does calculations at runtime. Do not over-use in performance critical situations.
      * 
      * @param xIndex
      * @return
@@ -90,13 +91,15 @@ public class DataSet {
     public float getYValForXIndex(int xIndex) {
 
         Series s = getSeriesForXIndex(xIndex);
-        
-        if(s != null) return s.getVal();
-        else return Float.NaN;
+
+        if (s != null)
+            return s.getVal();
+        else
+            return Float.NaN;
     }
-    
+
     /**
-     * returns the Series object at the given xIndex
+     * Returns the Series object at the given xIndex. INFORMATION: This method does calculations at runtime. Do not over-use in performance critical situations.
      * 
      * @param xIndex
      * @return

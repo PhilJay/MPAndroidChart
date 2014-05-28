@@ -12,14 +12,13 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.Approximator;
-import com.github.mikephil.charting.Approximator.ApproximatorType;
 import com.github.mikephil.charting.ChartData;
 import com.github.mikephil.charting.ColorTemplate;
 import com.github.mikephil.charting.DataSet;
 import com.github.mikephil.charting.Highlight;
 import com.github.mikephil.charting.LineChart;
 import com.github.mikephil.charting.OnChartValueSelectedListener;
+import com.github.mikephil.charting.Series;
 
 import java.util.ArrayList;
 
@@ -195,8 +194,8 @@ public class MultiLineChartActivity extends Activity implements OnSeekBarChangeL
 	}
 	
 	@Override
-	public void onValuesSelected(float[] values, Highlight[] highlights) {
-	    Log.i("VALS SELECTED", "Value: " + values[0] + ", xIndex: " + highlights[0].getXIndex() + ", DataSet index: " + highlights[0].getDataSetIndex());
+	public void onValuesSelected(Series[] values, Highlight[] highlights) {
+	    Log.i("VALS SELECTED", "Value: " + values[0].getVal() + ", xIndex: " + highlights[0].getXIndex() + ", DataSet index: " + highlights[0].getDataSetIndex());
 	}
 	
 	@Override
