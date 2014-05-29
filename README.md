@@ -148,7 +148,7 @@ Explaination: The <code>ColorTemplate</code> basically has two methods for setti
  
  - <code>addColorsForDataSets(int[] colors, Context c)</code>: This method will spread the provided color values over an equal amount of <code>DataSet</code> objects, using only one color per <code>DataSet</code>.
 
-In our example case, we want one color for each <code>DataSet</code> (red and green):
+In our example case, we want one color for each <code>DataSet</code> (red and green), which will mean, that all entries belonging to the same <code>DataSet</code> will have the same color:
 ```java
     ColorTemplate ct = new ColorTemplate();
     ct.addColorsForDataSets(new int[] { R.color.red, R.color.green }, this);
