@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
-import android.graphics.Paint.Style;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.Typeface;
@@ -302,16 +301,16 @@ public class PieChart extends Chart {
             for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
                 // get the index to highlight
-                int index = mIndicesToHightlight[i].getXIndex();
-                if (index >= mDrawAngles.length || index > mDeltaX)
+                int xIndex = mIndicesToHightlight[i].getXIndex();
+                if (xIndex >= mDrawAngles.length || xIndex > mDeltaX)
                     continue;
 
-                if (index == 0)
+                if (xIndex == 0)
                     angle = mChartAngle;
                 else
-                    angle = mChartAngle + mAbsoluteAngles[index - 1];
+                    angle = mChartAngle + mAbsoluteAngles[xIndex - 1];
 
-                float sliceDegrees = mDrawAngles[index];
+                float sliceDegrees = mDrawAngles[xIndex];
 
                 float shiftangle = (float) Math.toRadians(angle + sliceDegrees / 2f);
 
@@ -321,11 +320,14 @@ public class PieChart extends Chart {
                 RectF highlighted = new RectF(mCircleBox.left + xShift, mCircleBox.top + yShift,
                         mCircleBox.right
                                 + xShift, mCircleBox.bottom + yShift);
-
-                ArrayList<Integer> colors = mCt.getDataSetColors(mIndicesToHightlight[i]
+                
+                DataSet set = mData.getDataSetByIndex(mIndicesToHightlight[i]
                         .getDataSetIndex());
+                
+                int color = mCt.getDataSetColor(mIndicesToHightlight[i]
+                        .getDataSetIndex(), set.getIndexInSeries(xIndex));
 
-                mRenderPaint.setColor(colors.get(index % colors.size()));
+                mRenderPaint.setColor(color);
 
                 // redefine the rect that contains the arc so that the
                 // highlighted pie is not cut off
@@ -354,12 +356,11 @@ public class PieChart extends Chart {
 
             for (int j = 0; j < series.size(); j++) {
 
-                mRenderPaint.setColor(colors.get(j % colors.size()));
-
                 float newangle = mDrawAngles[cnt];
 
                 if (!needsHighlight(series.get(j).getXIndex(), i)) {
 
+                    mRenderPaint.setColor(colors.get(j % colors.size()));
                     mDrawCanvas.drawArc(mCircleBox, angle, newangle, true, mRenderPaint);
                 }
 

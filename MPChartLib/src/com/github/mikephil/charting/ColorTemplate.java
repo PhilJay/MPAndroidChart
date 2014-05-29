@@ -83,7 +83,7 @@ public class ColorTemplate {
 
     /**
      * Adds colors to the ColorTemplate. Each of the colors will create a new
-     * dataset color array in the template with just one color. This is
+     * DataSet color array in the template with just one color. This is
      * especially useful when you want each of your DataSets only to be
      * represented by one color and not multiple.
      * 
@@ -136,15 +136,15 @@ public class ColorTemplate {
     }
 
     /**
-     * returns the color value at the given index from the DataSet at the given
-     * index
+     * Returns the color value at the given index from the DataSet at the given
+     * index. If index is outofbounds, it restart at lower indices.
      * 
      * @param dataSetIndex
      * @param colorIndex
      * @return
      */
     public int getDataSetColor(int dataSetIndex, int colorIndex) {
-        return mDataSetColors.get(dataSetIndex).get(colorIndex);
+        return mDataSetColors.get(dataSetIndex).get(colorIndex % mDataSetColors.get(dataSetIndex).size());
     }
 
     /**

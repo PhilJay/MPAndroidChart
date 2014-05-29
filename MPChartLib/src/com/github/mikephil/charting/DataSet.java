@@ -167,6 +167,23 @@ public class DataSet {
     }
 
     /**
+     * Returns the index of the Series object with the given x-index in the
+     * Series array of the DataSet. IMPORTANT: This method does calculations at
+     * runtime, do not over-use in performance critical situations.
+     * 
+     * @param xIndex
+     * @return
+     */
+    public int getIndexInSeries(int xIndex) {
+        
+        for(int i = 0; i < mYVals.size(); i++) {
+            if(xIndex == mYVals.get(i).getXIndex()) return i;
+        }
+        
+        return -1;
+    }
+
+    /**
      * Convenience method to create multiple DataSets of different types with
      * various double value arrays. Each double array represents the data of one
      * DataSet with a type created by this method, starting at 0 (and
