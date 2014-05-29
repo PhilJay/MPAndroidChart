@@ -77,7 +77,7 @@ method. The <code>ChartData</code> class encapsulates all data and information t
     public ChartData(ArrayList<String> xVals, ArrayList<DataSet> dataSets) { ... }
 ```
 
-So, what is a <code>DataSet</code> and why do you need it? That is actually pretty simple. One <code>DataSet</code> objects represents a group or type of entries (values) inside the chart that belong together. It is designed to logically separate different groups of values in the chart. As an example, you might want to display the quarterly revenue of two different companys over one year. In that case, it would be recommended to create two different <code>DataSet</code> objects, each containing four values (one for each quarter). As an <code>ArrayList<String></code> to describe the legend on the x-axis, you would simply provide the four Strings "1.Q", "2.Q", "3.Q", "4.Q".
+So, what is a <code>DataSet</code> and why do you need it? That is actually pretty simple. One <code>DataSet</code> objects represents a group or type of entries (values) inside the chart that belong together. It is designed to logically separate different groups of values in the chart. As an example, you might want to display the quarterly revenue of two different companies over one year. In that case, it would be recommended to create two different <code>DataSet</code> objects, each containing four values (one for each quarter). As an <code>ArrayList<String></code> to describe the legend on the x-axis, you would simply provide the four Strings "1.Q", "2.Q", "3.Q", "4.Q".
 
 Of course, it is also possible to provide just one <code>DataSet</code> object containing all 8 values for the two companys. 
 
@@ -93,7 +93,7 @@ The <code>ArrayList</code> of type <code>Entry</code> encapsulates all values of
     public Entry(float val, int xIndex) { ... }
 ```
 
-Putting it all together (example of two comanies with quarterly revenue over one year):
+Putting it all together (example of two companies with quarterly revenue over one year):
 
 At first, create the lists of type <code>Entry</code> that will hold your values:
 
@@ -104,15 +104,15 @@ At first, create the lists of type <code>Entry</code> that will hold your values
 Then, fill the lists with <code>Entry</code> objects. Make sure the entry objects contain the correct indices to the x-axis. (of course, a loop can be used here, in that case, the counter variable of the loop could be the index on the x-axis.
 
 ```java
-    Entry c1e1 = new Entry(10.000f, 0); // 0 == quarter 1
+    Entry c1e1 = new Entry(100.000f, 0); // 0 == quarter 1
     valsComp1.add(c1e1);
-    Entry c1e2 = new Entry(5.000f, 1; // 1 == quarter 2 ...
+    Entry c1e2 = new Entry(50.000f, 1; // 1 == quarter 2 ...
     valsComp1.add(c1e2);
     //...
     
-    Entry c2e1 = new Entry(12.000f, 0); // 0 == quarter 1
+    Entry c2e1 = new Entry(120.000f, 0); // 0 == quarter 1
     valsComp2.add(c2e1);
-    Entry c2e2 = new Entry(11.000f, 1; // 1 == quarter 2 ...
+    Entry c2e2 = new Entry(110.000f, 1; // 1 == quarter 2 ...
     valsComp2.add(c2e2);
     //...
 ```
@@ -135,7 +135,12 @@ Last but not least, we create a list of <code>DataSets</code> and a list of x le
     ChartData data = new ChartData(xVals, dataSets);
 ```
 
-Now, our <code>ChartData</code> object can be set to the chart. But before that, **colors need to be specified**. This can be done via the <code>ColorTemplate</code> class that already comes with some predefined colors (constants of the template). In our example case, we want one color for each <code>DataSet</code> (red and green).
+Now, our <code>ChartData</code> object can be set to the chart. But before that, **colors need to be specified**. 
+
+
+**Setting colors:**
+
+Setting colors can be done via the <code>ColorTemplate</code> class that already comes with some predefined colors (constants of the template). In our example case, we want one color for each <code>DataSet</code> (red and green).
 ```java
     ColorTemplate ct = new ColorTemplate();
     ct.addColorsForDataSets(new int[] { R.color.red, R.color.green }, this);
