@@ -13,7 +13,7 @@ import com.github.mikephil.charting.BarChart;
 import com.github.mikephil.charting.ChartData;
 import com.github.mikephil.charting.ColorTemplate;
 import com.github.mikephil.charting.DataSet;
-import com.github.mikephil.charting.Series;
+import com.github.mikephil.charting.Entry;
 
 import java.util.ArrayList;
 
@@ -152,26 +152,26 @@ public class BarChartActivityMultiDataset extends Activity implements OnSeekBarC
 			xVals.add((i) + "");
 		}
 
-		ArrayList<Series> yVals1 = new ArrayList<Series>();
-		ArrayList<Series> yVals2 = new ArrayList<Series>();
-		ArrayList<Series> yVals3 = new ArrayList<Series>();
+		ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+		ArrayList<Entry> yVals2 = new ArrayList<Entry>();
+		ArrayList<Entry> yVals3 = new ArrayList<Entry>();
 
 		for (int i = 0; i < mSeekBarX.getProgress() / 3; i++) {
 			float mult = (mSeekBarY.getProgress() + 1);
 			float val = (float) (Math.random() * mult * 0.1) + 3;// + (float) ((mult * 0.1) / 10);
-			yVals1.add(new Series(val, i));
+			yVals1.add(new Entry(val, i));
 		}
 		
 		for (int i = mSeekBarX.getProgress() / 3; i < mSeekBarX.getProgress() / 3 * 2; i++) {
             float mult = (mSeekBarY.getProgress() + 1);
             float val = (float) (Math.random() * mult * 0.1) + 3;// + (float) ((mult * 0.1) / 10);
-            yVals2.add(new Series(val, i));
+            yVals2.add(new Entry(val, i));
         }
 		
 		for (int i = mSeekBarX.getProgress() / 3 * 2; i < mSeekBarX.getProgress(); i++) {
             float mult = (mSeekBarY.getProgress() + 1);
             float val = (float) (Math.random() * mult * 0.1) + 3;// + (float) ((mult * 0.1) / 10);
-            yVals3.add(new Series(val, i));
+            yVals3.add(new Entry(val, i));
         }
 
 		tvX.setText("" + (mSeekBarX.getProgress() + 1));

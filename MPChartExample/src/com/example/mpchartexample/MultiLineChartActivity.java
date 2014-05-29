@@ -18,7 +18,7 @@ import com.github.mikephil.charting.DataSet;
 import com.github.mikephil.charting.Highlight;
 import com.github.mikephil.charting.LineChart;
 import com.github.mikephil.charting.OnChartValueSelectedListener;
-import com.github.mikephil.charting.Series;
+import com.github.mikephil.charting.Entry;
 
 import java.util.ArrayList;
 
@@ -186,7 +186,7 @@ public class MultiLineChartActivity extends Activity implements OnSeekBarChangeL
 			values.add(vals);
 		}
 
-//		ArrayList<Series> filtered = approximator.filter(yVals1);
+//		ArrayList<Entry> filtered = approximator.filter(yVals1);
 //
 //		for (int i = 0; i < filtered.size(); i++) {
 //			filtered.get(i).setType(1);
@@ -205,7 +205,7 @@ public class MultiLineChartActivity extends Activity implements OnSeekBarChangeL
 	}
 	
 	@Override
-	public void onValuesSelected(Series[] values, Highlight[] highlights) {
+	public void onValuesSelected(Entry[] values, Highlight[] highlights) {
 	    Log.i("VALS SELECTED", "Value: " + values[0].getVal() + ", xIndex: " + highlights[0].getXIndex() + ", DataSet index: " + highlights[0].getDataSetIndex());
 	}
 	

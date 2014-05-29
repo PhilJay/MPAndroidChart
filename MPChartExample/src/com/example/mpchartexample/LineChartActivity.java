@@ -20,7 +20,7 @@ import com.github.mikephil.charting.DataSet;
 import com.github.mikephil.charting.Highlight;
 import com.github.mikephil.charting.LineChart;
 import com.github.mikephil.charting.OnChartValueSelectedListener;
-import com.github.mikephil.charting.Series;
+import com.github.mikephil.charting.Entry;
 import com.github.mikephil.charting.Approximator.ApproximatorType;
 
 import java.util.ArrayList;
@@ -173,14 +173,14 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
             xVals.add((i) + "");
         }
 
-        ArrayList<Series> yVals = new ArrayList<Series>();
+        ArrayList<Entry> yVals = new ArrayList<Entry>();
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             float mult = (mSeekBarY.getProgress() + 1);
             float val = (float) (Math.random() * mult * 0.1) + 3;// + (float)
                                                                  // ((mult *
                                                                  // 0.1) / 10);
-            yVals.add(new Series(val, i));
+            yVals.add(new Entry(val, i));
         }
 
         tvX.setText("" + (mSeekBarX.getProgress() + 1));
@@ -200,7 +200,7 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
     }
 
     @Override
-    public void onValuesSelected(Series[] values, Highlight[] highlights) {
+    public void onValuesSelected(Entry[] values, Highlight[] highlights) {
         Log.i("VALS SELECTED",
                 "Value: " + values[0].getVal() + ", xIndex: " + highlights[0].getXIndex()
                         + ", DataSet index: " + highlights[0].getDataSetIndex());

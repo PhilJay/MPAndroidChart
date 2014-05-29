@@ -954,15 +954,15 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * returns the value displayed at the touched position of the chart
+     * returns the Entry object displayed at the touched position of the chart
      * 
      * @param x
      * @param y
      * @return
      */
-    public Series getSeriesByTouchPoint(float x, float y) {
+    public Entry getEntryByTouchPoint(float x, float y) {
         Highlight h = getIndexByTouchPoint(x, y);
-        return getSeries(h.getXIndex(), mData.getDataSetByIndex(h.getDataSetIndex()).getType());
+        return getEntry(h.getXIndex(), mData.getDataSetByIndex(h.getDataSetIndex()).getType());
     }
 
     /**

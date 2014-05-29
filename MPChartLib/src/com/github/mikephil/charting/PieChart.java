@@ -272,11 +272,11 @@ public class PieChart extends Chart {
         for (int i = 0; i < mData.getDataSetCount(); i++) {
 
             DataSet set = dataSets.get(i);
-            ArrayList<Series> series = set.getYVals();
+            ArrayList<Entry> entries = set.getYVals();
 
-            for (int j = 0; j < series.size(); j++) {
+            for (int j = 0; j < entries.size(); j++) {
 
-                mDrawAngles[cnt] = calcAngle(series.get(j).getVal());
+                mDrawAngles[cnt] = calcAngle(entries.get(j).getVal());
                 
                 if(cnt == 0) {
                     mAbsoluteAngles[cnt] = mDrawAngles[cnt];
@@ -325,7 +325,7 @@ public class PieChart extends Chart {
                         .getDataSetIndex());
                 
                 int color = mCt.getDataSetColor(mIndicesToHightlight[i]
-                        .getDataSetIndex(), set.getIndexInSeries(xIndex));
+                        .getDataSetIndex(), set.getIndexInEntries(xIndex));
 
                 mRenderPaint.setColor(color);
 
@@ -348,17 +348,17 @@ public class PieChart extends Chart {
         for (int i = 0; i < mData.getDataSetCount(); i++) {
 
             DataSet dataSet = dataSets.get(i);
-            ArrayList<Series> series = dataSet.getYVals();
+            ArrayList<Entry> entries = dataSet.getYVals();
 
             // Get the colors for the DataSet at the current index. If the index
             // is out of bounds, reuse DataSet colors.
             ArrayList<Integer> colors = mCt.getDataSetColors(i % mCt.getColors().size());
 
-            for (int j = 0; j < series.size(); j++) {
+            for (int j = 0; j < entries.size(); j++) {
 
                 float newangle = mDrawAngles[cnt];
 
-                if (!needsHighlight(series.get(j).getXIndex(), i)) {
+                if (!needsHighlight(entries.get(j).getXIndex(), i)) {
 
                     mRenderPaint.setColor(colors.get(j % colors.size()));
                     mDrawCanvas.drawArc(mCircleBox, angle, newangle, true, mRenderPaint);
@@ -435,9 +435,9 @@ public class PieChart extends Chart {
         for (int i = 0; i < mData.getDataSetCount(); i++) {
 
             DataSet dataSet = dataSets.get(i);
-            ArrayList<Series> series = dataSet.getYVals();
+            ArrayList<Entry> entries = dataSet.getYVals();
 
-            for (int j = 0; j < series.size(); j++) {
+            for (int j = 0; j < entries.size(); j++) {
 
                 // offset needed to center the drawn text in the slice
                 float offset = mDrawAngles[cnt] / 2;
@@ -454,7 +454,7 @@ public class PieChart extends Chart {
                 // }
 
                 String val = "";
-                float value = series.get(j).getVal();
+                float value = entries.get(j).getVal();
 
                 if (mUsePercentValues)
                     val = mFormatValue.format(getPercentOfTotal(value)) + " %";
@@ -529,7 +529,7 @@ public class PieChart extends Chart {
         ArrayList<DataSet> sets = mData.getDataSets();
         
         for(int i = 0; i < sets.size(); i++) {
-            if(sets.get(i).getSeriesForXIndex(xIndex) != null) return i;
+            if(sets.get(i).getEntryForXIndex(xIndex) != null) return i;
         }
         
         return -1;

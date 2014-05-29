@@ -239,10 +239,10 @@ public abstract class Chart extends View {
      */
     public void setData(ArrayList<String> xVals, ArrayList<Float> yVals) {
 
-        ArrayList<Series> series = new ArrayList<Series>();
+        ArrayList<Entry> series = new ArrayList<Entry>();
 
         for (int i = 0; i < yVals.size(); i++) {
-            series.add(new Series(yVals.get(i), i));
+            series.add(new Entry(yVals.get(i), i));
         }
 
         DataSet set = new DataSet(series, 0);
@@ -339,21 +339,21 @@ public abstract class Chart extends View {
     }
 
     /**
-     * transforms an arraylist of Series into a float array containing the x and
+     * transforms an arraylist of Entry into a float array containing the x and
      * y values transformed with all matrices
      * 
-     * @param series
+     * @param entries
      * @param xoffset offset the chart values should have on the x-axis (0.5f)
      *            to center for barchart
      * @return
      */
-    protected float[] generateTransformedValues(ArrayList<Series> series, float xOffset) {
+    protected float[] generateTransformedValues(ArrayList<Entry> entries, float xOffset) {
 
-        float[] valuePoints = new float[series.size() * 2];
+        float[] valuePoints = new float[entries.size() * 2];
 
         for (int j = 0; j < valuePoints.length; j += 2) {
-            valuePoints[j] = series.get(j / 2).getXIndex() + xOffset;
-            valuePoints[j + 1] = series.get(j / 2).getVal();
+            valuePoints[j] = entries.get(j / 2).getXIndex() + xOffset;
+            valuePoints[j + 1] = entries.get(j / 2).getVal();
         }
 
         transformPointArray(valuePoints);
@@ -649,10 +649,10 @@ public abstract class Chart extends View {
                 mSelectionListener.onNothingSelected();
             else {
 
-                Series[] values = new Series[highs.length];
+                Entry[] values = new Entry[highs.length];
 
                 for (int i = 0; i < values.length; i++)
-                    values[i] = getSeriesByDataSetIndex(highs[i].getXIndex(),
+                    values[i] = getEntryByDataSetIndex(highs[i].getXIndex(),
                             highs[i].getDataSetIndex());
 
                 // notify the listener
@@ -833,7 +833,7 @@ public abstract class Chart extends View {
      */
     public float getAverage(int type) {
         return mData.getDataSetByType(type).getYValueSum()
-                / mData.getDataSetByType(type).getSeriesCount();
+                / mData.getDataSetByType(type).getEntryCount();
     }
 
     /**
@@ -1185,31 +1185,31 @@ public abstract class Chart extends View {
     }
 
     /**
-     * returns the Series object from the first DataSet stored in the ChartData
-     * object. If multiple DataSets are used, use getSeries(index, type) or
-     * getSeriesByDataSetIndex(xIndex, dataSetIndex);
+     * returns the Entry object from the first DataSet stored in the ChartData
+     * object. If multiple DataSets are used, use getEntry(index, type) or
+     * getEntryByDataSetIndex(xIndex, dataSetIndex);
      * 
      * @param index
      * @return
      */
-    public Series getSeries(int index) {
+    public Entry getEntry(int index) {
         return mData.getDataSetByIndex(0).getYVals().get(index);
     }
 
     /**
-     * returns the Series object at the given index from the DataSet with the
+     * returns the Entry object at the given index from the DataSet with the
      * given type.
      * 
      * @param index
      * @param type
      * @return
      */
-    public Series getSeries(int index, int type) {
+    public Entry getEntry(int index, int type) {
         return mData.getDataSetByType(type).getYVals().get(index);
     }
 
     /**
-     * Returns the corresponding Seires object at the given xIndex from the
+     * Returns the corresponding Entry object at the given xIndex from the
      * given DataSet. INFORMATION: This method does calculations at runtime. Do
      * not over-use in performance critical situations.
      * 
@@ -1217,8 +1217,8 @@ public abstract class Chart extends View {
      * @param dataSetIndex
      * @return
      */
-    public Series getSeriesByDataSetIndex(int xIndex, int dataSetIndex) {
-        return mData.getDataSetByIndex(dataSetIndex).getSeriesForXIndex(xIndex);
+    public Entry getEntryByDataSetIndex(int xIndex, int dataSetIndex) {
+        return mData.getDataSetByIndex(dataSetIndex).getEntryForXIndex(xIndex);
     }
 
     /**
@@ -1248,25 +1248,25 @@ public abstract class Chart extends View {
     }
 
     /**
-     * Get all Series objects at the given index across all DataSets.
+     * Get all Entry objects at the given index across all DataSets.
      * INFORMATION: This method does calculations at runtime. Do not over-use in
      * performance critical situations.
      * 
      * @param xIndex
      * @return
      */
-    public ArrayList<Series> getSeriesAtIndex(int xIndex) {
+    public ArrayList<Entry> getEntriesAtIndex(int xIndex) {
 
-        ArrayList<Series> vals = new ArrayList<Series>();
+        ArrayList<Entry> vals = new ArrayList<Entry>();
 
         for (int i = 0; i < mData.getDataSetCount(); i++) {
 
             DataSet set = mData.getDataSetByIndex(i);
 
-            Series s = set.getSeriesForXIndex(xIndex);
+            Entry e = set.getEntryForXIndex(xIndex);
 
-            if (s != null) {
-                vals.add(s);
+            if (e != null) {
+                vals.add(e);
             }
         }
 

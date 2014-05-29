@@ -4,7 +4,7 @@ package com.github.mikephil.charting;
 import java.util.ArrayList;
 
 /**
- * The DataSet class represents one group or type of entries (Series) in the
+ * The DataSet class represents one group or type of entries (Entry) in the
  * Chart that belong together. It is designed to logically separate different
  * groups of values inside the Chart (e.g. the values for a specific line in the
  * LineChart, or the values of a specific group of bars in the BarChart).
@@ -13,8 +13,8 @@ import java.util.ArrayList;
  */
 public class DataSet {
 
-    /** the series that this dataset represents / holds together */
-    private ArrayList<Series> mYVals;
+    /** the entries that this dataset represents / holds together */
+    private ArrayList<Entry> mYVals;
 
     /** maximum y-value in the y-value array */
     private float mYMax = 0.0f;
@@ -30,14 +30,14 @@ public class DataSet {
 
     /**
      * Creates a new DataSet object with the given values it represents and a
-     * type for indentification amongst other DataSet objects (the type can be
+     * type for identification amongst other DataSet objects (the type can be
      * chosen freely and must not be equal to another type in the ChartData
      * object).
      * 
      * @param yVals
      * @param type
      */
-    public DataSet(ArrayList<Series> yVals, int type) {
+    public DataSet(ArrayList<Entry> yVals, int type) {
         this.mType = type;
         this.mYVals = yVals;
 
@@ -82,12 +82,12 @@ public class DataSet {
      * 
      * @return
      */
-    public int getSeriesCount() {
+    public int getEntryCount() {
         return mYVals.size();
     }
 
     /**
-     * Returns the value of the Series object at the given xIndex. Returns
+     * Returns the value of the Entry object at the given xIndex. Returns
      * Float.NaN if no value is at the given x-index. INFORMATION: This method
      * does calculations at runtime. Do not over-use in performance critical
      * situations.
@@ -97,7 +97,7 @@ public class DataSet {
      */
     public float getYValForXIndex(int xIndex) {
 
-        Series s = getSeriesForXIndex(xIndex);
+        Entry s = getEntryForXIndex(xIndex);
 
         if (s != null)
             return s.getVal();
@@ -106,14 +106,14 @@ public class DataSet {
     }
 
     /**
-     * Returns the Series object at the given xIndex. Returns null if no Series
+     * Returns the Entry object at the given xIndex. Returns null if no Entry
      * object at that index. INFORMATION: This method does calculations at
      * runtime. Do not over-use in performance critical situations.
      * 
      * @param xIndex
      * @return
      */
-    public Series getSeriesForXIndex(int xIndex) {
+    public Entry getEntryForXIndex(int xIndex) {
 
         for (int i = 0; i < mYVals.size(); i++) {
             if (xIndex == mYVals.get(i).getXIndex())
@@ -124,11 +124,11 @@ public class DataSet {
     }
 
     /**
-     * returns the DataSets Series array
+     * returns the DataSets Entry array
      * 
      * @return
      */
-    public ArrayList<Series> getYVals() {
+    public ArrayList<Entry> getYVals() {
         return mYVals;
     }
 
@@ -169,14 +169,15 @@ public class DataSet {
     }
 
     /**
-     * Returns the index of the Series object with the given x-index in the
-     * Series array of the DataSet. IMPORTANT: This method does calculations at
-     * runtime, do not over-use in performance critical situations.
+     * The xIndex of an Entry object is provided. This method returns the actual
+     * index in the Entry array of the DataSet. IMPORTANT: This method does
+     * calculations at runtime, do not over-use in performance critical
+     * situations.
      * 
      * @param xIndex
      * @return
      */
-    public int getIndexInSeries(int xIndex) {
+    public int getIndexInEntries(int xIndex) {
 
         for (int i = 0; i < mYVals.size(); i++) {
             if (xIndex == mYVals.get(i).getXIndex())
@@ -203,13 +204,13 @@ public class DataSet {
 
             Double[] curValues = yValues.get(i);
 
-            ArrayList<Series> series = new ArrayList<Series>();
+            ArrayList<Entry> entries = new ArrayList<Entry>();
 
             for (int j = 0; j < curValues.length; j++) {
-                series.add(new Series(curValues[j].floatValue(), j));
+                entries.add(new Entry(curValues[j].floatValue(), j));
             }
 
-            dataSets.add(new DataSet(series, i));
+            dataSets.add(new DataSet(entries, i));
         }
 
         return dataSets;

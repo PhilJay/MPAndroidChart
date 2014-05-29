@@ -18,7 +18,7 @@ import com.github.mikephil.charting.DataSet;
 import com.github.mikephil.charting.Highlight;
 import com.github.mikephil.charting.OnChartValueSelectedListener;
 import com.github.mikephil.charting.PieChart;
-import com.github.mikephil.charting.Series;
+import com.github.mikephil.charting.Entry;
 
 import java.util.ArrayList;
 
@@ -132,20 +132,20 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-		ArrayList<Series> yVals1 = new ArrayList<Series>();
-		ArrayList<Series> yVals2 = new ArrayList<Series>();
+		ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+		ArrayList<Entry> yVals2 = new ArrayList<Entry>();
 
-		// IMPORTANT: In a PieChart, no values (Series) should have the same xIndex, since no values can be drawn above each other.
+		// IMPORTANT: In a PieChart, no values (Entry) should have the same xIndex, since no values can be drawn above each other.
 		for (int i = 0; i < mSeekBarX.getProgress() / 2; i++) {
 			float mult = (mSeekBarY.getProgress());
 			float val = (float) (Math.random() * mult) + mult / 5;// + (float) ((mult * 0.1) / 10);
-			yVals1.add(new Series(val, i));
+			yVals1.add(new Entry(val, i));
 		}
 		
 		for (int i = mSeekBarX.getProgress() / 2; i < mSeekBarX.getProgress(); i++) {
             float mult = (mSeekBarY.getProgress());
             float val = (float) (Math.random() * mult) + mult / 5;// + (float) ((mult * 0.1) / 10);
-            yVals2.add(new Series(val, i));
+            yVals2.add(new Entry(val, i));
         }
 
 		tvX.setText("" + (mSeekBarX.getProgress()));
@@ -171,7 +171,7 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
 	}
 
 	@Override
-	public void onValuesSelected(Series[] values, Highlight[] highs) {
+	public void onValuesSelected(Entry[] values, Highlight[] highs) {
 	    
 	    StringBuffer a = new StringBuffer();
 

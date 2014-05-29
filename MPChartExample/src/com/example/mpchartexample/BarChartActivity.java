@@ -14,7 +14,7 @@ import com.github.mikephil.charting.BarChart;
 import com.github.mikephil.charting.ChartData;
 import com.github.mikephil.charting.ColorTemplate;
 import com.github.mikephil.charting.DataSet;
-import com.github.mikephil.charting.Series;
+import com.github.mikephil.charting.Entry;
 import com.github.mikephil.charting.Approximator.ApproximatorType;
 
 import java.util.ArrayList;
@@ -149,12 +149,12 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
 			xVals.add((i) + "");
 		}
 
-		ArrayList<Series> yVals1 = new ArrayList<Series>();
+		ArrayList<Entry> yVals1 = new ArrayList<Entry>();
 
 		for (int i = 0; i < mSeekBarX.getProgress(); i++) {
 			float mult = (mSeekBarY.getProgress() + 1);
 			float val = (float) (Math.random() * mult * 0.1) + 3;// + (float) ((mult * 0.1) / 10);
-			yVals1.add(new Series(val, i));
+			yVals1.add(new Entry(val, i));
 		}
 
 		tvX.setText("" + (mSeekBarX.getProgress() + 1));

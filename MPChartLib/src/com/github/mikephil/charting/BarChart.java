@@ -217,7 +217,7 @@ public class BarChart extends BarLineChartBase {
             for (int i = 0; i < mData.getDataSetCount(); i++) {
 
                 DataSet dataSet = dataSets.get(i);
-                ArrayList<Series> series = dataSet.getYVals();
+                ArrayList<Entry> series = dataSet.getYVals();
 
                 for (int j = 0; j < series.size(); j++) {
 
@@ -256,7 +256,7 @@ public class BarChart extends BarLineChartBase {
         for (int i = 0; i < mData.getDataSetCount(); i++) {
 
             DataSet dataSet = dataSets.get(i);
-            ArrayList<Series> series = dataSet.getYVals();
+            ArrayList<Entry> series = dataSet.getYVals();
 
             // Get the colors for the DataSet at the current index. If the index
             // is out of bounds, reuse DataSet colors.
@@ -265,7 +265,7 @@ public class BarChart extends BarLineChartBase {
             ArrayList<Integer> colors3DSide = mSideColors.get(i % mCt.getColors().size());
 
             // do the drawing
-            for (int j = 0; j < dataSet.getSeriesCount(); j++) {
+            for (int j = 0; j < dataSet.getEntryCount(); j++) {
 
                 // Set the color for the currently drawn value. If the index is
                 // out of bounds, reuse colors.
@@ -317,7 +317,7 @@ public class BarChart extends BarLineChartBase {
             for (int i = 0; i < mData.getDataSetCount(); i++) {
 
                 DataSet dataSet = dataSets.get(i);
-                ArrayList<Series> series = dataSet.getYVals();
+                ArrayList<Entry> series = dataSet.getYVals();
 
                 float[] valuePoints = generateTransformedValues(series, 0.5f);
 

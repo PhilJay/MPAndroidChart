@@ -21,7 +21,7 @@ public class Approximator {
 		this.type = type;
 	}
 
-	public ArrayList<Series> filter(ArrayList<Series> points, double tolerance) {
+	public ArrayList<Entry> filter(ArrayList<Entry> points, double tolerance) {
 		keep = new boolean[points.size()];
 
 		switch (type) {
@@ -35,28 +35,28 @@ public class Approximator {
 
 	}
 
-	private ArrayList<Series> reduceWithDouglasPeuker(ArrayList<Series> series, double epsilon) {
+	private ArrayList<Entry> reduceWithDouglasPeuker(ArrayList<Entry> entries, double epsilon) {
 		// if a shape has 2 or less points it cannot be reduced
-		if (epsilon <= 0 || series.size() < 3) {
+		if (epsilon <= 0 || entries.size() < 3) {
 			return null;
 		}
 
 		// first and last always stay
 		keep[0] = true;
-		keep[series.size() - 1] = true;
+		keep[entries.size() - 1] = true;
 
-		// first and last series are entry point to recursion
-		algorithmDouglasPeucker(series, epsilon, 0, series.size() - 1);
+		// first and last entry are entry point to recursion
+		algorithmDouglasPeucker(entries, epsilon, 0, entries.size() - 1);
 
 		// create a new array with series, only take the kept ones
-		ArrayList<Series> reducedSeries = new ArrayList<Series>();
-		for (int i = 0; i < series.size(); i++) {
+		ArrayList<Entry> reducedEntries = new ArrayList<Entry>();
+		for (int i = 0; i < entries.size(); i++) {
 			if (keep[i]) {
-				Series curSeries = series.get(i);
-				reducedSeries.add(new Series(curSeries.getVal(), curSeries.getXIndex()));
+				Entry curEntry = entries.get(i);
+				reducedEntries.add(new Entry(curEntry.getVal(), curEntry.getXIndex()));
 			}
 		}
-		return reducedSeries;
+		return reducedEntries;
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class Approximator {
 	 * @param start
 	 * @param end
 	 */
-	private void algorithmDouglasPeucker(ArrayList<Series> series, double epsilon, int start, int end) {
+	private void algorithmDouglasPeucker(ArrayList<Entry> series, double epsilon, int start, int end) {
 		if (end <= start + 1) {
 			// recursion finished
 			return;
@@ -78,8 +78,8 @@ public class Approximator {
 		int maxDistIndex = 0;
 		double distMax = 0;
 
-		Series firstSeries = series.get(start);
-		Series lastSeries = series.get(end);
+		Entry firstSeries = series.get(start);
+		Entry lastSeries = series.get(end);
 
 		for (int i = start + 1; i < end; i++) {
 			double dist = pointToLineDistance(firstSeries, lastSeries, series.get(i));
@@ -109,7 +109,7 @@ public class Approximator {
 	 * @param seriesToInspect
 	 * @return
 	 */
-	public double pointToLineDistance(Series startSeries, Series endSeries, Series seriesToInspect) {
+	public double pointToLineDistance(Entry startSeries, Entry endSeries, Entry seriesToInspect) {
 		double normalLength = Math.sqrt((endSeries.getXIndex() - startSeries.getXIndex())
 				* (endSeries.getXIndex() - startSeries.getXIndex()) + (endSeries.getVal() - startSeries.getVal())
 				* (endSeries.getVal() - startSeries.getVal()));

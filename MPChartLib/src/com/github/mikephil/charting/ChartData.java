@@ -146,12 +146,12 @@ public class ChartData {
     }
 
     /**
-     * returns the series object at the given dataset index
+     * returns the Entries array from the DataSet at the given index
      * 
      * @param index
      * @return
      */
-    public ArrayList<Series> getYVals(int index) {
+    public ArrayList<Entry> getYVals(int index) {
         return mDataSets.get(index).getYVals();
     }
 
@@ -216,7 +216,7 @@ public class ChartData {
     public int getYValCount() {
         int count = 0;
         for (int i = 0; i < mDataSets.size(); i++) {
-            count += mDataSets.get(i).getSeriesCount();
+            count += mDataSets.get(i).getEntryCount();
         }
 
         return count;

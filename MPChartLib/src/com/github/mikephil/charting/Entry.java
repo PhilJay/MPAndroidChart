@@ -1,24 +1,28 @@
 package com.github.mikephil.charting;
 
 
-public class Series {
+public class Entry {
 
 	private float mVal = 0f;
 	private int mXIndex = 0;
 
 	/**
-	 * A series represents one single entry in the chart
+	 * A Entry represents one single entry in the chart
 	 * 
 	 * @param val
 	 *            the y value
 	 * @param xIndex
 	 *            the corresponding index in the x value array
 	 */
-	public Series(float val, int xIndex) {
+	public Entry(float val, int xIndex) {
 		mVal = val;
 		mXIndex = xIndex;
 	}
 
+	/**
+	 * returns the x-index the value of this object is mapped to
+	 * @return
+	 */
 	public int getXIndex() {
 		return mXIndex;
 	}

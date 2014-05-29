@@ -102,9 +102,9 @@ public class LineChart extends BarLineChartBase {
         for (int i = 0; i < mData.getDataSetCount(); i++) {
 
             DataSet dataSet = dataSets.get(i);
-            ArrayList<Series> series = dataSet.getYVals();
+            ArrayList<Entry> entries = dataSet.getYVals();
 
-            float[] valuePoints = generateTransformedValues(series, 0f);
+            float[] valuePoints = generateTransformedValues(entries, 0f);
 
             // Get the colors for the DataSet at the current index. If the index
             // is out of bounds, reuse DataSet colors.
@@ -139,16 +139,16 @@ public class LineChart extends BarLineChartBase {
                 paint.setAlpha(85);
 
                 Path filled = new Path();
-                filled.moveTo(0, series.get(0).getVal());
+                filled.moveTo(0, entries.get(0).getVal());
 
                 // create a new path
-                for (int x = 1; x < series.size(); x++) {
+                for (int x = 1; x < entries.size(); x++) {
 
-                    filled.lineTo(x, series.get(x).getVal());
+                    filled.lineTo(x, entries.get(x).getVal());
                 }
 
                 // close up
-                filled.lineTo(series.size() - 1, mYChartMin);
+                filled.lineTo(entries.size() - 1, mYChartMin);
                 filled.lineTo(0f, mYChartMin);
                 filled.close();
 
@@ -179,9 +179,9 @@ public class LineChart extends BarLineChartBase {
             for (int i = 0; i < mData.getDataSetCount(); i++) {
 
                 DataSet dataSet = dataSets.get(i);
-                ArrayList<Series> series = dataSet.getYVals();
+                ArrayList<Entry> entries = dataSet.getYVals();
 
-                float[] positions = generateTransformedValues(series, 0f);
+                float[] positions = generateTransformedValues(entries, 0f);
 
                 for (int j = 0; j < positions.length; j += 2) {
 
@@ -191,7 +191,7 @@ public class LineChart extends BarLineChartBase {
                     if (isOffContentLeft(positions[j]))
                         continue;
 
-                    float val = series.get(j / 2).getVal();
+                    float val = entries.get(j / 2).getVal();
 
                     if (mDrawUnitInChart) {
 
@@ -220,14 +220,14 @@ public class LineChart extends BarLineChartBase {
             for (int i = 0; i < mData.getDataSetCount(); i++) {
 
                 DataSet dataSet = dataSets.get(i);
-                ArrayList<Series> series = dataSet.getYVals();
+                ArrayList<Entry> entries = dataSet.getYVals();
                 
                 // Get the colors for the DataSet at the current index. If the
                 // index
                 // is out of bounds, reuse DataSet colors.
                 ArrayList<Integer> colors = mCt.getDataSetColors(i % mCt.getColors().size());
 
-                float[] positions = generateTransformedValues(series, 0f);
+                float[] positions = generateTransformedValues(entries, 0f);
 
                 for (int j = 0; j < positions.length; j += 2) {
                     
