@@ -60,15 +60,15 @@ public class Approximator {
 	}
 
 	/**
-	 * apply the Douglas-Peucker-Reduction to an ArrayList of Series with a given epsilon (tolerance)
+	 * apply the Douglas-Peucker-Reduction to an ArrayList of Entry with a given epsilon (tolerance)
 	 * 
-	 * @param series
+	 * @param entries
 	 * @param epsilon
 	 *            as y-value
 	 * @param start
 	 * @param end
 	 */
-	private void algorithmDouglasPeucker(ArrayList<Entry> series, double epsilon, int start, int end) {
+	private void algorithmDouglasPeucker(ArrayList<Entry> entries, double epsilon, int start, int end) {
 		if (end <= start + 1) {
 			// recursion finished
 			return;
@@ -78,11 +78,11 @@ public class Approximator {
 		int maxDistIndex = 0;
 		double distMax = 0;
 
-		Entry firstSeries = series.get(start);
-		Entry lastSeries = series.get(end);
+		Entry firstEntry = entries.get(start);
+		Entry lastEntry = entries.get(end);
 
 		for (int i = start + 1; i < end; i++) {
-			double dist = pointToLineDistance(firstSeries, lastSeries, series.get(i));
+			double dist = pointToLineDistance(firstEntry, lastEntry, entries.get(i));
 
 			// keep the point with the greatest distance
 			if (dist > distMax) {
@@ -96,26 +96,26 @@ public class Approximator {
 			keep[maxDistIndex] = true;
 
 			// recursive call
-			algorithmDouglasPeucker(series, epsilon, start, maxDistIndex);
-			algorithmDouglasPeucker(series, epsilon, maxDistIndex, end);
+			algorithmDouglasPeucker(entries, epsilon, start, maxDistIndex);
+			algorithmDouglasPeucker(entries, epsilon, maxDistIndex, end);
 		}
 	}
 
 	/**
-	 * calculate the distance between a line between two series and a series (point)
+	 * calculate the distance between a line between two entries and an entry (point)
 	 * 
-	 * @param startSeries
-	 * @param endSeries
-	 * @param seriesToInspect
+	 * @param startEntry
+	 * @param endEntry
+	 * @param entryPoint
 	 * @return
 	 */
-	public double pointToLineDistance(Entry startSeries, Entry endSeries, Entry seriesToInspect) {
-		double normalLength = Math.sqrt((endSeries.getXIndex() - startSeries.getXIndex())
-				* (endSeries.getXIndex() - startSeries.getXIndex()) + (endSeries.getVal() - startSeries.getVal())
-				* (endSeries.getVal() - startSeries.getVal()));
-		return Math.abs((seriesToInspect.getXIndex() - startSeries.getXIndex())
-				* (endSeries.getVal() - startSeries.getVal()) - (seriesToInspect.getVal() - startSeries.getVal())
-				* (endSeries.getXIndex() - startSeries.getXIndex()))
+	public double pointToLineDistance(Entry startEntry, Entry endEntry, Entry entryPoint) {
+		double normalLength = Math.sqrt((endEntry.getXIndex() - startEntry.getXIndex())
+				* (endEntry.getXIndex() - startEntry.getXIndex()) + (endEntry.getVal() - startEntry.getVal())
+				* (endEntry.getVal() - startEntry.getVal()));
+		return Math.abs((entryPoint.getXIndex() - startEntry.getXIndex())
+				* (endEntry.getVal() - startEntry.getVal()) - (entryPoint.getVal() - startEntry.getVal())
+				* (endEntry.getXIndex() - startEntry.getXIndex()))
 				/ normalLength;
 	}
 }
