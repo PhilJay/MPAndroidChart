@@ -140,7 +140,15 @@ Now, our <code>ChartData</code> object can be set to the chart. But before that,
 
 **Setting colors:**
 
-Setting colors can be done via the <code>ColorTemplate</code> class that already comes with some predefined colors (constants of the template e.g. <code>ColorTemplate.LIBERTY_COLORS</code>). In our example case, we want one color for each <code>DataSet</code> (red and green):
+Setting colors can be done via the <code>ColorTemplate</code> class that already comes with some predefined colors (constants of the template e.g. <code>ColorTemplate.LIBERTY_COLORS</code>). 
+
+Explaination: The <code>ColorTemplate</code> basically has two methods for setting colors:
+
+ - <code>addDataSetColors(int[] colors, Context c)</code>: This method will add a new array of colors for the <code>DataSet</code> at the current index. The current index starts at 0 and depends counts up per call of this method. If no calls of this method have been done before, the colors set in this call will be used for the <code>DataSet</code> at index 0 in the <code>ChartData</code> object. Upon calling this method again on the same <code>ColorTemplate</code> object, the provided color values will be used for the <code>DataSet</code> at index 1.
+ 
+ - <code>addColorsForDataSets(int[] colors, Context c)</code>: This method will spread the provided color values over an equal amount of <code>DataSet</code> objects, using only one color per <code>DataSet</code>.
+
+In our example case, we want one color for each <code>DataSet</code> (red and green):
 ```java
     ColorTemplate ct = new ColorTemplate();
     ct.addColorsForDataSets(new int[] { R.color.red, R.color.green }, this);
@@ -154,12 +162,6 @@ It would also be possible to let each <code>DataSet</code> have variations of a 
     ct.addDataSetColors(greenColors, this);
     chart.setColorTemplate(ct);
 ```
-
-Explaination: The <code>ColorTemplate</code> basically has two methods for setting colors:
-
- - <code>addDataSetColors(int[] colors, Context c)</code>: This method will add a new array of colors for the <code>DataSet</code> at the current index. The current index starts at 0 and depends counts up per call of this method. If no calls of this method have been done before, the colors set in this call will be used for the <code>DataSet</code> at index 0 in the <code>ChartData</code> object. Upon calling this method again on the same <code>ColorTemplate</code> object, the provided color values will be used for the <code>DataSet</code> at index 1.
- 
- - <code>addColorsForDataSets(int[] colors, Context c)</code>: This method will spread the provided color values over an equal amount of <code>DataSet</code> objects, using only one color per <code>DataSet</code>.
 
 More documentation and example code coming soon.
 
