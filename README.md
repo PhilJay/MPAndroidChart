@@ -65,6 +65,7 @@ or create it in code (and then add it to a layout):
 ```   
 
 **Adding Data:**
+
 If you want to add values (data) to the chart, it has to be done via the 
 
 ```java
