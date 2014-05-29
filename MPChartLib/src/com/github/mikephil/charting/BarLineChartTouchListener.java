@@ -1,4 +1,3 @@
-
 package com.github.mikephil.charting;
 
 import android.graphics.Matrix;
@@ -14,261 +13,307 @@ import android.widget.ImageView;
 
 public class BarLineChartTouchListener extends SimpleOnGestureListener implements OnTouchListener {
 
-    private static final float MAX_SCALE = Float.MAX_VALUE; // 10f;
-    private static final float MIN_SCALE = 0.5f;
+	private static final float MAX_SCALE = Float.MAX_VALUE; // 10f;
+	private static final float MIN_SCALE = 0.5f;
 
-    Matrix matrix = new Matrix();
-    Matrix savedMatrix = new Matrix();
+	Matrix matrix = new Matrix();
+	Matrix savedMatrix = new Matrix();
 
-    PointF start = new PointF();
-    PointF mid = new PointF();
+	PointF start = new PointF();
+	PointF mid = new PointF();
 
-    // We can be in one of these 3 states
-    private static final int NONE = 0;
-    private static final int DRAG = 1;
-    private static final int ZOOM = 2;
-    private static final int POSTZOOM = 3;
-    private static final int LONGPRESS = 4;
+	// We can be in one of these 3 states
+	private static final int NONE = 0;
+	private static final int DRAG = 1;
+	private static final int ZOOM = 2;
+	private static final int POSTZOOM = 3;
+	private static final int LONGPRESS = 4;
+	private static final int DRAWING = 5;
 
-    private int mode = NONE;
-    private float oldDist = 1f;
-    private BarLineChartBase mChart;
-    
-    private GestureDetector mGestureDetector;
+	/** if ture, user can draw on the chart */
+	private boolean mDrawingEnabled = false;
 
-    public BarLineChartTouchListener(BarLineChartBase chart, Matrix start) {
-        this.mChart = chart;
-        this.matrix = start;
-        
-        mGestureDetector = new GestureDetector(chart.getContext(), this);
-    }
+	private int mode = NONE;
+	private float oldDist = 1f;
+	private BarLineChartBase mChart;
 
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        
-        if(mode == NONE) {
-            mGestureDetector.onTouchEvent(event);
-        }
-        
-        if(!mChart.isDragEnabled()) return true;
+	private GestureDetector mGestureDetector;
 
-        // Handle touch events here...
-        switch (event.getAction() & MotionEvent.ACTION_MASK) {
-            case MotionEvent.ACTION_DOWN:
-                savedMatrix.set(matrix);
-                start.set(event.getX(), event.getY());
-                break;
-            case MotionEvent.ACTION_POINTER_DOWN:
-                oldDist = spacing(event);
-                Log.d("TouchListener", "oldDist=" + oldDist);
-                if (oldDist > 10f) { 
-                    savedMatrix.set(matrix);
-                    midPoint(mid, event);
-                    mode = ZOOM;
-                    mChart.disableScroll();
-                    Log.d("TouchListener","mode=ZOOM");
-                }
-                break;
+	public BarLineChartTouchListener(BarLineChartBase chart, Matrix start) {
+		this.mChart = chart;
+		this.matrix = start;
 
-            case MotionEvent.ACTION_UP:
-                if (mode == NONE) {
-                }
-                Log.d("TouchListener","mode=NONE");
-                mode = NONE;
-                mChart.enableScroll();
-                break;
-            case MotionEvent.ACTION_POINTER_UP:
-                Log.d("TouchListener","mode=POSTZOOM");
-                mode = POSTZOOM;
-                break;
-            case MotionEvent.ACTION_MOVE:
-                if (mode == NONE && distance(event.getX(), start.x, event.getY(), start.y) > 25f) {
-                    savedMatrix.set(matrix);
-                    start.set(event.getX(), event.getY());
-                    Log.d("TouchListener","mode=DRAG");
-                    mode = DRAG;
-                    mChart.disableScroll();
-                } else if (mode == DRAG) {
-                    matrix.set(savedMatrix);
-                    matrix.postTranslate(event.getX() - start.x, 0);
-                } else if (mode == ZOOM) {
-                    float newDist = spacing(event);
-                    Log.d("TouchListener","newDist=" + newDist);
-                    if (newDist > 10f) {
-                        float scale = newDist / oldDist;
-                        float[] values = new float[9];
-                        matrix.getValues(values);
-                        float oldScale = values[0];
-                        if ((scale < 1 || oldScale < mChart.getMaxScale())
-                                && (scale > 1 || oldScale > MIN_SCALE)) {
-                            matrix.set(savedMatrix);
-                            matrix.postScale(scale, 1, mid.x, mid.y);
-                        }
-                    }
-                }
-                else if (mode == LONGPRESS) {
-                    mChart.disableScroll();
-                }
-                break;
-        }
+		mGestureDetector = new GestureDetector(chart.getContext(), this);
+	}
 
-        // Perform the transformation
-        matrix = mChart.refreshTouch(matrix);
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
 
-        return true; // indicate event was handled
-    }
+		if (mode == NONE) {
+			mGestureDetector.onTouchEvent(event);
+		}
 
-    private PointF calcImagePosition(PointF klick) {
-        PointF point = new PointF();
-        Matrix inverse = new Matrix();
-        matrix.invert(inverse);
-        float[] pts = new float[2];
-        float[] values = new float[9];
-        pts[0] = klick.x;
-        pts[1] = klick.y;
-        inverse.mapPoints(pts);
-        matrix.getValues(values);
-        Log.d("TouchListener","Pts 0: " + pts[0] + ", Pts 1: " + pts[1]);
-        point.x = (klick.x - values[Matrix.MTRANS_X]) / values[Matrix.MSCALE_X];
-        point.y = (klick.y - values[Matrix.MTRANS_Y]) / values[Matrix.MSCALE_Y];
-        Log.d("TouchListener","Pts X: " + point.x + ", Pts 1: " + point.y);
-        return point;
-    }
+		if (mDrawingEnabled) {
+			if (mChart instanceof LineChart) {
+				ChartData data = mChart.getData();
+				switch (event.getAction() & MotionEvent.ACTION_MASK) {
+				case MotionEvent.ACTION_DOWN:
+					if (mode == NONE) {
+						mode = DRAWING;
+						data.createNewDrawingDataSet(1);
+						Log.i("Drawing", "New drawing data set created");
+					}
+					break;
 
-    public void resetMatrix(ImageView view) {
-        matrix.reset();
-        view.setImageMatrix(matrix);
-    }
+				case MotionEvent.ACTION_MOVE:
+					if (mode == DRAWING) {
+						int xIndex = ((LineChart) mChart).getXIndexByTouchPoint(event.getX(), event.getY());
+						// TODO feed the right y value
+						Entry entry = new Entry(event.getY(), xIndex);
+						boolean added = data.addNewDrawingEntry(entry);
+						if (added) {
+							Log.i("Drawing", "Added entry " + entry.toString());
+							// TODO it is bad to call prepare all the time
+							mChart.prepare();
+							mChart.invalidate();
+						}
+					}
+					break;
+				case MotionEvent.ACTION_UP:
+				case MotionEvent.ACTION_CANCEL:
+					if (mode == DRAWING) {
+						data.finishNewDrawingEntry();
+						mode = NONE;
+						mChart.prepare();
+						mChart.invalidate();
+						Log.i("Drawing", "Drawing finished");
+					}
+					break;
 
-    private void limitScale() {
-        // float[] values = new float[9];
-        // matrix.getValues(values);
-        // float sX = values[Matrix.MSCALE_X];
-        //
-        // float minScale = Math.max(minScale(), sX);
-        // values[Matrix.MSCALE_X] = minScale;
-        // values[Matrix.MSCALE_Y] = minScale;
-        // matrix.setValues(values);
-    }
+				default:
+					break;
+				}
+				// currently no dragging when drawing
+				return true;
+			}
+		} else {
 
-    // public void moveTo(float x, float y) {
-    // matrix.postTranslate(x, y);
-    // limitPan();
-    // view.setImageMatrix(matrix);
-    // view.invalidate();
-    // }
-    //
-    // private float minScale() {
-    // return Math.max(view.getWidth() / PlanModel.imageWidth, view.getHeight()
-    // / PlanModel.imageHeight);
-    // }
+			if (!mChart.isDragEnabled())
+				return true;
 
-    // public void setMatrixMinScale() {
-    // DisplayMetrics metrics = new DisplayMetrics();
-    // ctx.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-    //
-    // float minScale = Math.max(metrics.widthPixels / PlanModel.imageWidth,
-    // (metrics.heightPixels - (50 + 25) * metrics.density)
-    // / PlanModel.imageHeight);
-    // matrix.setScale(minScale, minScale);
-    // view.setImageMatrix(matrix);
-    // }
+			// Handle touch events here...
+			switch (event.getAction() & MotionEvent.ACTION_MASK) {
+			case MotionEvent.ACTION_DOWN:
+				savedMatrix.set(matrix);
+				start.set(event.getX(), event.getY());
+				break;
+			case MotionEvent.ACTION_POINTER_DOWN:
+				oldDist = spacing(event);
+				Log.d("TouchListener", "oldDist=" + oldDist);
+				if (oldDist > 10f) {
+					savedMatrix.set(matrix);
+					midPoint(mid, event);
+					mode = ZOOM;
+					mChart.disableScroll();
+					Log.d("TouchListener", "mode=ZOOM");
+				}
+				break;
 
-    private static float distance(float eventX, float startX, float eventY, float startY) {
-        float dx = eventX - startX;
-        float dy = eventY - startY;
-        return (float) Math.sqrt(dx * dx + dy * dy);
-    }
+			case MotionEvent.ACTION_UP:
+				if (mode == NONE) {
+				}
+				Log.d("TouchListener", "mode=NONE");
+				mode = NONE;
+				mChart.enableScroll();
+				break;
+			case MotionEvent.ACTION_POINTER_UP:
+				Log.d("TouchListener", "mode=POSTZOOM");
+				mode = POSTZOOM;
+				break;
+			case MotionEvent.ACTION_MOVE:
+				if (mode == NONE && distance(event.getX(), start.x, event.getY(), start.y) > 25f) {
+					savedMatrix.set(matrix);
+					start.set(event.getX(), event.getY());
+					Log.d("TouchListener", "mode=DRAG");
+					mode = DRAG;
+					mChart.disableScroll();
+				} else if (mode == DRAG) {
+					matrix.set(savedMatrix);
+					matrix.postTranslate(event.getX() - start.x, 0);
+				} else if (mode == ZOOM) {
+					float newDist = spacing(event);
+					Log.d("TouchListener", "newDist=" + newDist);
+					if (newDist > 10f) {
+						float scale = newDist / oldDist;
+						float[] values = new float[9];
+						matrix.getValues(values);
+						float oldScale = values[0];
+						if ((scale < 1 || oldScale < mChart.getMaxScale()) && (scale > 1 || oldScale > MIN_SCALE)) {
+							matrix.set(savedMatrix);
+							matrix.postScale(scale, 1, mid.x, mid.y);
+						}
+					}
+				} else if (mode == LONGPRESS) {
+					mChart.disableScroll();
+				}
+				break;
+			}
+		}
 
-    private static void midPoint(PointF point, MotionEvent event) {
-        float x = event.getX(0) + event.getX(1);
-        float y = event.getY(0) + event.getY(1);
-        point.set(x / 2, y / 2);
-    }
+		// Perform the transformation
+		matrix = mChart.refreshTouch(matrix);
 
-    private static float spacing(MotionEvent event) {
-        float x = event.getX(0) - event.getX(1);
-        float y = event.getY(0) - event.getY(1);
-        return FloatMath.sqrt(x * x + y * y);
-    }
+		return true; // indicate event was handled
+	}
 
-    /** Show an event in the LogCat view, for debugging */
-    private void dumpEvent(MotionEvent event) {
-        String names[] = {
-                "DOWN", "UP", "MOVE", "CANCEL", "OUTSIDE",
-                "POINTER_DOWN", "POINTER_UP", "7?", "8?", "9?"
-        };
-        StringBuilder sb = new StringBuilder();
-        int action = event.getAction();
-        int actionCode = action & MotionEvent.ACTION_MASK;
-        sb.append("event ACTION_").append(names[actionCode]);
-        if (actionCode == MotionEvent.ACTION_POINTER_DOWN
-                || actionCode == MotionEvent.ACTION_POINTER_UP) {
-            sb.append("(pid ").append(
-                    action >> MotionEvent.ACTION_POINTER_ID_SHIFT);
-            sb.append(")");
-        }
-        sb.append("[");
-        for (int i = 0; i < event.getPointerCount(); i++) {
-            sb.append("#").append(i);
-            sb.append("(pid ").append(event.getPointerId(i));
-            sb.append(")=").append((int) event.getX(i));
-            sb.append(",").append((int) event.getY(i));
-            if (i + 1 < event.getPointerCount())
-                sb.append(";");
-        }
-        sb.append(", dist: " + distance(event.getX(), start.x, event.getY(), start.y) + "]");
-        Log.d("TouchListener",sb.toString());
-    }
+	public void setDrawingEnabled(boolean mDrawingEnabled) {
+		this.mDrawingEnabled = mDrawingEnabled;
+	}
 
-    public Matrix getMatrix() {
-        return matrix;
-    }
+	private PointF calcImagePosition(PointF klick) {
+		PointF point = new PointF();
+		Matrix inverse = new Matrix();
+		matrix.invert(inverse);
+		float[] pts = new float[2];
+		float[] values = new float[9];
+		pts[0] = klick.x;
+		pts[1] = klick.y;
+		inverse.mapPoints(pts);
+		matrix.getValues(values);
+		Log.d("TouchListener", "Pts 0: " + pts[0] + ", Pts 1: " + pts[1]);
+		point.x = (klick.x - values[Matrix.MTRANS_X]) / values[Matrix.MSCALE_X];
+		point.y = (klick.y - values[Matrix.MTRANS_Y]) / values[Matrix.MSCALE_Y];
+		Log.d("TouchListener", "Pts X: " + point.x + ", Pts 1: " + point.y);
+		return point;
+	}
 
-//     @Override
-//     public boolean onDoubleTap(MotionEvent e) {
-//    
-//     float[] values = new float[9];
-//     matrix.getValues(values);
-//     float sX = values[Matrix.MSCALE_X];
-//     float minScale = minScale();
-//    
-//     if (sX > minScale * 1.5f) {
-//     matrix.postScale(0.5f, 0.5f, e.getX(), e.getY());
-//     } else {
-//     matrix.postScale(2, 2, e.getX(), e.getY());
-//     }
-//     limitScale();
-//     limitPan();
-//     ctx.update();
-//    
-//     return true;
-//     }
-    
-    @Override
-    public boolean onSingleTapConfirmed(MotionEvent e) {
+	public void resetMatrix(ImageView view) {
+		matrix.reset();
+		view.setImageMatrix(matrix);
+	}
 
-        Highlight h = mChart.getIndexByTouchPoint(e.getX(), e.getY());
-        
-        mChart.highlightValues(new Highlight[] { h });
+	private void limitScale() {
+		// float[] values = new float[9];
+		// matrix.getValues(values);
+		// float sX = values[Matrix.MSCALE_X];
+		//
+		// float minScale = Math.max(minScale(), sX);
+		// values[Matrix.MSCALE_X] = minScale;
+		// values[Matrix.MSCALE_Y] = minScale;
+		// matrix.setValues(values);
+	}
 
-        return super.onSingleTapConfirmed(e);
-    }
-    
-    
+	// public void moveTo(float x, float y) {
+	// matrix.postTranslate(x, y);
+	// limitPan();
+	// view.setImageMatrix(matrix);
+	// view.invalidate();
+	// }
+	//
+	// private float minScale() {
+	// return Math.max(view.getWidth() / PlanModel.imageWidth, view.getHeight()
+	// / PlanModel.imageHeight);
+	// }
 
-    @Override
-    public void onLongPress(MotionEvent arg0) {
-        if (mode == NONE) {
-            mode = LONGPRESS;
-//            ctx.showValue(arg0, matrix);
-        }
-    };
+	// public void setMatrixMinScale() {
+	// DisplayMetrics metrics = new DisplayMetrics();
+	// ctx.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+	//
+	// float minScale = Math.max(metrics.widthPixels / PlanModel.imageWidth,
+	// (metrics.heightPixels - (50 + 25) * metrics.density)
+	// / PlanModel.imageHeight);
+	// matrix.setScale(minScale, minScale);
+	// view.setImageMatrix(matrix);
+	// }
 
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-//        ctx.showValue(e, matrix);
-        return true;
-    }
+	private static float distance(float eventX, float startX, float eventY, float startY) {
+		float dx = eventX - startX;
+		float dy = eventY - startY;
+		return (float) Math.sqrt(dx * dx + dy * dy);
+	}
+
+	private static void midPoint(PointF point, MotionEvent event) {
+		float x = event.getX(0) + event.getX(1);
+		float y = event.getY(0) + event.getY(1);
+		point.set(x / 2, y / 2);
+	}
+
+	private static float spacing(MotionEvent event) {
+		float x = event.getX(0) - event.getX(1);
+		float y = event.getY(0) - event.getY(1);
+		return FloatMath.sqrt(x * x + y * y);
+	}
+
+	/** Show an event in the LogCat view, for debugging */
+	private void dumpEvent(MotionEvent event) {
+		String names[] = { "DOWN", "UP", "MOVE", "CANCEL", "OUTSIDE", "POINTER_DOWN", "POINTER_UP", "7?", "8?", "9?" };
+		StringBuilder sb = new StringBuilder();
+		int action = event.getAction();
+		int actionCode = action & MotionEvent.ACTION_MASK;
+		sb.append("event ACTION_").append(names[actionCode]);
+		if (actionCode == MotionEvent.ACTION_POINTER_DOWN || actionCode == MotionEvent.ACTION_POINTER_UP) {
+			sb.append("(pid ").append(action >> MotionEvent.ACTION_POINTER_ID_SHIFT);
+			sb.append(")");
+		}
+		sb.append("[");
+		for (int i = 0; i < event.getPointerCount(); i++) {
+			sb.append("#").append(i);
+			sb.append("(pid ").append(event.getPointerId(i));
+			sb.append(")=").append((int) event.getX(i));
+			sb.append(",").append((int) event.getY(i));
+			if (i + 1 < event.getPointerCount())
+				sb.append(";");
+		}
+		sb.append(", dist: " + distance(event.getX(), start.x, event.getY(), start.y) + "]");
+		Log.d("TouchListener", sb.toString());
+	}
+
+	public Matrix getMatrix() {
+		return matrix;
+	}
+
+	// @Override
+	// public boolean onDoubleTap(MotionEvent e) {
+	//
+	// float[] values = new float[9];
+	// matrix.getValues(values);
+	// float sX = values[Matrix.MSCALE_X];
+	// float minScale = minScale();
+	//
+	// if (sX > minScale * 1.5f) {
+	// matrix.postScale(0.5f, 0.5f, e.getX(), e.getY());
+	// } else {
+	// matrix.postScale(2, 2, e.getX(), e.getY());
+	// }
+	// limitScale();
+	// limitPan();
+	// ctx.update();
+	//
+	// return true;
+	// }
+
+	@Override
+	public boolean onSingleTapConfirmed(MotionEvent e) {
+
+		Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
+
+		mChart.highlightValues(new Highlight[] { h });
+
+		return super.onSingleTapConfirmed(e);
+	}
+
+	@Override
+	public void onLongPress(MotionEvent arg0) {
+		if (mode == NONE) {
+			mode = LONGPRESS;
+			// ctx.showValue(arg0, matrix);
+		}
+	};
+
+	@Override
+	public boolean onSingleTapUp(MotionEvent e) {
+		// ctx.showValue(e, matrix);
+		return true;
+	}
 
 }

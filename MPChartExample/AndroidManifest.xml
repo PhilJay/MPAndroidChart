@@ -29,6 +29,7 @@
         <activity android:name="PieChartActivity"></activity>
         <activity android:name="MultiLineChartActivity"></activity>
         <activity android:name="BarChartActivityMultiDataset"></activity>
+        <activity android:name="DrawChartActivity"></activity>
     </application>
 
 </manifest>

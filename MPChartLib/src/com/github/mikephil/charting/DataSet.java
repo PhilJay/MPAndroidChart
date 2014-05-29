@@ -1,218 +1,215 @@
-
 package com.github.mikephil.charting;
 
 import java.util.ArrayList;
 
 /**
- * The DataSet class represents one group or type of entries (Entry) in the
- * Chart that belong together. It is designed to logically separate different
- * groups of values inside the Chart (e.g. the values for a specific line in the
+ * The DataSet class represents one group or type of entries (Entry) in the Chart that belong together. It is designed
+ * to logically separate different groups of values inside the Chart (e.g. the values for a specific line in the
  * LineChart, or the values of a specific group of bars in the BarChart).
  * 
  * @author Philipp Jahoda
  */
 public class DataSet {
 
-    /** the entries that this dataset represents / holds together */
-    private ArrayList<Entry> mYVals;
+	/** the entries that this dataset represents / holds together */
+	private ArrayList<Entry> mYVals;
 
-    /** maximum y-value in the y-value array */
-    private float mYMax = 0.0f;
+	/** maximum y-value in the y-value array */
+	private float mYMax = 0.0f;
 
-    /** the minimum y-value in the y-value array */
-    private float mYMin = 0.0f;
+	/** the minimum y-value in the y-value array */
+	private float mYMin = 0.0f;
 
-    /** the total sum of all y-values */
-    private float mYValueSum = 0f;
+	/** the total sum of all y-values */
+	private float mYValueSum = 0f;
 
-    /** type, used for identification amongst other DataSets */
-    private int mType = 0;
+	/** type, used for identification amongst other DataSets */
+	private int mType = 0;
 
-    /**
-     * Creates a new DataSet object with the given values it represents and a
-     * type for identification amongst other DataSet objects (the type can be
-     * chosen freely and must not be equal to another type in the ChartData
-     * object).
-     * 
-     * @param yVals
-     * @param type
-     */
-    public DataSet(ArrayList<Entry> yVals, int type) {
-        this.mType = type;
-        this.mYVals = yVals;
+	/**
+	 * Creates a new DataSet object with the given values it represents and a type for identification amongst other
+	 * DataSet objects (the type can be chosen freely and must not be equal to another type in the ChartData object).
+	 * 
+	 * @param yVals
+	 * @param type
+	 */
+	public DataSet(ArrayList<Entry> yVals, int type) {
+		this.mType = type;
+		this.mYVals = yVals;
 
-        if (yVals == null || yVals.size() <= 0)
-            return;
+		if (yVals == null || yVals.size() <= 0)
+			return;
 
-        calcMinMax();
-        calcYValueSum();
-    }
+		calcMinMax();
+		calcYValueSum();
+	}
 
-    /**
-     * calc minimum and maximum y value
-     */
-    private void calcMinMax() {
+	/**
+	 * Use this method to tell the data set that the underlying data has changed
+	 */
+	public void notifyDataSetChanged() {
+		calcMinMax();
+		calcYValueSum();
+	}
 
-        mYMin = mYVals.get(0).getVal();
-        mYMax = mYVals.get(0).getVal();
+	/**
+	 * calc minimum and maximum y value
+	 */
+	private void calcMinMax() {
 
-        for (int i = 0; i < mYVals.size(); i++) {
-            if (mYVals.get(i).getVal() < mYMin)
-                mYMin = mYVals.get(i).getVal();
+		mYMin = mYVals.get(0).getVal();
+		mYMax = mYVals.get(0).getVal();
 
-            if (mYVals.get(i).getVal() > mYMax)
-                mYMax = mYVals.get(i).getVal();
-        }
-    }
+		for (int i = 0; i < mYVals.size(); i++) {
+			if (mYVals.get(i).getVal() < mYMin)
+				mYMin = mYVals.get(i).getVal();
 
-    /**
-     * calculates the sum of all y-values
-     */
-    private void calcYValueSum() {
+			if (mYVals.get(i).getVal() > mYMax)
+				mYMax = mYVals.get(i).getVal();
+		}
+	}
 
-        mYValueSum = 0;
+	/**
+	 * calculates the sum of all y-values
+	 */
+	private void calcYValueSum() {
 
-        for (int i = 0; i < mYVals.size(); i++) {
-            mYValueSum += Math.abs(mYVals.get(i).getVal());
-        }
-    }
+		mYValueSum = 0;
 
-    /**
-     * returns the number of y-values this DataSet represents
-     * 
-     * @return
-     */
-    public int getEntryCount() {
-        return mYVals.size();
-    }
+		for (int i = 0; i < mYVals.size(); i++) {
+			mYValueSum += Math.abs(mYVals.get(i).getVal());
+		}
+	}
 
-    /**
-     * Returns the value of the Entry object at the given xIndex. Returns
-     * Float.NaN if no value is at the given x-index. INFORMATION: This method
-     * does calculations at runtime. Do not over-use in performance critical
-     * situations.
-     * 
-     * @param xIndex
-     * @return
-     */
-    public float getYValForXIndex(int xIndex) {
+	/**
+	 * returns the number of y-values this DataSet represents
+	 * 
+	 * @return
+	 */
+	public int getEntryCount() {
+		return mYVals.size();
+	}
 
-        Entry s = getEntryForXIndex(xIndex);
+	/**
+	 * Returns the value of the Entry object at the given xIndex. Returns Float.NaN if no value is at the given x-index.
+	 * INFORMATION: This method does calculations at runtime. Do not over-use in performance critical situations.
+	 * 
+	 * @param xIndex
+	 * @return
+	 */
+	public float getYValForXIndex(int xIndex) {
 
-        if (s != null)
-            return s.getVal();
-        else
-            return Float.NaN;
-    }
+		Entry s = getEntryForXIndex(xIndex);
 
-    /**
-     * Returns the Entry object at the given xIndex. Returns null if no Entry
-     * object at that index. INFORMATION: This method does calculations at
-     * runtime. Do not over-use in performance critical situations.
-     * 
-     * @param xIndex
-     * @return
-     */
-    public Entry getEntryForXIndex(int xIndex) {
+		if (s != null)
+			return s.getVal();
+		else
+			return Float.NaN;
+	}
 
-        for (int i = 0; i < mYVals.size(); i++) {
-            if (xIndex == mYVals.get(i).getXIndex())
-                return mYVals.get(i);
-        }
+	/**
+	 * Returns the Entry object at the given xIndex. Returns null if no Entry object at that index. INFORMATION: This
+	 * method does calculations at runtime. Do not over-use in performance critical situations.
+	 * 
+	 * @param xIndex
+	 * @return
+	 */
+	public Entry getEntryForXIndex(int xIndex) {
 
-        return null;
-    }
+		for (int i = 0; i < mYVals.size(); i++) {
+			if (xIndex == mYVals.get(i).getXIndex())
+				return mYVals.get(i);
+		}
 
-    /**
-     * returns the DataSets Entry array
-     * 
-     * @return
-     */
-    public ArrayList<Entry> getYVals() {
-        return mYVals;
-    }
+		return null;
+	}
 
-    /**
-     * gets the sum of all y-values
-     * 
-     * @return
-     */
-    public float getYValueSum() {
-        return mYValueSum;
-    }
+	/**
+	 * returns the DataSets Entry array
+	 * 
+	 * @return
+	 */
+	public ArrayList<Entry> getYVals() {
+		return mYVals;
+	}
 
-    /**
-     * returns the minimum y-value this DataSet holds
-     * 
-     * @return
-     */
-    public float getYMin() {
-        return mYMin;
-    }
+	/**
+	 * gets the sum of all y-values
+	 * 
+	 * @return
+	 */
+	public float getYValueSum() {
+		return mYValueSum;
+	}
 
-    /**
-     * returns the maximum y-value this DataSet holds
-     * 
-     * @return
-     */
-    public float getYMax() {
-        return mYMax;
-    }
+	/**
+	 * returns the minimum y-value this DataSet holds
+	 * 
+	 * @return
+	 */
+	public float getYMin() {
+		return mYMin;
+	}
 
-    /**
-     * returns the type of the DataSet, specified via constructor
-     * 
-     * @return
-     */
-    public int getType() {
-        return mType;
-    }
+	/**
+	 * returns the maximum y-value this DataSet holds
+	 * 
+	 * @return
+	 */
+	public float getYMax() {
+		return mYMax;
+	}
 
-    /**
-     * The xIndex of an Entry object is provided. This method returns the actual
-     * index in the Entry array of the DataSet. IMPORTANT: This method does
-     * calculations at runtime, do not over-use in performance critical
-     * situations.
-     * 
-     * @param xIndex
-     * @return
-     */
-    public int getIndexInEntries(int xIndex) {
+	/**
+	 * returns the type of the DataSet, specified via constructor
+	 * 
+	 * @return
+	 */
+	public int getType() {
+		return mType;
+	}
 
-        for (int i = 0; i < mYVals.size(); i++) {
-            if (xIndex == mYVals.get(i).getXIndex())
-                return i;
-        }
+	/**
+	 * The xIndex of an Entry object is provided. This method returns the actual index in the Entry array of the
+	 * DataSet. IMPORTANT: This method does calculations at runtime, do not over-use in performance critical situations.
+	 * 
+	 * @param xIndex
+	 * @return
+	 */
+	public int getIndexInEntries(int xIndex) {
 
-        return -1;
-    }
+		for (int i = 0; i < mYVals.size(); i++) {
+			if (xIndex == mYVals.get(i).getXIndex())
+				return i;
+		}
 
-    /**
-     * Convenience method to create multiple DataSets of different types with
-     * various double value arrays. Each double array represents the data of one
-     * DataSet with a type created by this method, starting at 0 (and
-     * incremented).
-     * 
-     * @param yValues
-     * @return
-     */
-    public static ArrayList<DataSet> makeDataSets(ArrayList<Double[]> yValues) {
+		return -1;
+	}
 
-        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+	/**
+	 * Convenience method to create multiple DataSets of different types with various double value arrays. Each double
+	 * array represents the data of one DataSet with a type created by this method, starting at 0 (and incremented).
+	 * 
+	 * @param yValues
+	 * @return
+	 */
+	public static ArrayList<DataSet> makeDataSets(ArrayList<Double[]> yValues) {
 
-        for (int i = 0; i < yValues.size(); i++) {
+		ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
 
-            Double[] curValues = yValues.get(i);
+		for (int i = 0; i < yValues.size(); i++) {
 
-            ArrayList<Entry> entries = new ArrayList<Entry>();
+			Double[] curValues = yValues.get(i);
 
-            for (int j = 0; j < curValues.length; j++) {
-                entries.add(new Entry(curValues[j].floatValue(), j));
-            }
+			ArrayList<Entry> entries = new ArrayList<Entry>();
 
-            dataSets.add(new DataSet(entries, i));
-        }
+			for (int j = 0; j < curValues.length; j++) {
+				entries.add(new Entry(curValues[j].floatValue(), j));
+			}
 
-        return dataSets;
-    }
+			dataSets.add(new DataSet(entries, i));
+		}
+
+		return dataSets;
+	}
 }
