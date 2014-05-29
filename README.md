@@ -28,6 +28,7 @@ Features
 
  - **BarChart2D (multiple DataSets)**
 
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart2d_multi_dataset_date1.png)
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart2d_multi_dataset.png)
 
  - **BarChart3D**
@@ -43,8 +44,115 @@ Features
 Usage
 =======
 
-Example usage code coming soon.
-Rely on the **"MPChartExample"** folder for now and check out the examples in that project.
+Rely on the **"MPChartExample"** folder check out the examples in that project. Furthermore, here is some code to get started.
+
+**Setup:**
+
+For using a <code>LineChart, BarChart or PieChart </code>, define it in .xml:
+```xml
+    <com.github.mikephil.charting.LineChart
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+``` 
+```java
+    LineChart chart = (LineChart) findViewById(R.id.chart);
+``` 
+
+or create it in code (and then add it to a layout):
+```java
+    LineChart chart = new LineChart(Context);
+```   
+
+**Adding Data:**
+
+If you want to add values (data) to the chart, it has to be done via the 
+
+```java
+    setData(ChartData data);
+```
+method. The <code>ChartData</code> class encapsulates all data and information that is needed for the chart during rendering. In the constructor, you can hand over an <code>ArrayList</code> of type <code>DataSet</code> as the values to display, and an additional <code>ArrayList</code> of <code>String</code> that will describe the legend on the x-axis.
+
+```java
+    public ChartData(ArrayList<String> xVals, ArrayList<DataSet> dataSets) { ... }
+```
+
+So, what is a <code>DataSet</code> and why do you need it? That is actually pretty simple. One <code>DataSet</code> objects represents a group or type of entries (values) inside the chart that belong together. It is designed to logically separate different groups of values in the chart. As an example, you might want to display the quarterly revenue of two different companys over one year. In that case, it would be recommended to create two different <code>DataSet</code> objects, each containing four values (one for each quarter). As an <code>ArrayList<String></code> to describe the legend on the x-axis, you would simply provide the four Strings "1.Q", "2.Q", "3.Q", "4.Q".
+
+Of course, it is also possible to provide just one <code>DataSet</code> object containing all 8 values for the two companys. 
+
+So how to setup a <code>DataSet</code> object?
+```java
+    public DataSet(ArrayList<Entry> yVals, int type) { ... }
+```
+
+When looking at the constructor, it is visible that the <code>DataSet</code> needs an <code>ArrayList</code> of type <code>Entry</code> and a type int. The type integer value can be chosen freely and can be used to identify the <code>DataSet</code>. A possible type in this scenario could be a constant COMPANY_1.
+
+The <code>ArrayList</code> of type <code>Entry</code> encapsulates all values of the chart. A <code>Entry</code> object is an additional wrapper around a value and holds the value itself, and it's position on the x-axis (the index inside the <code>ArrayList</code> of <code>String</code> of the <code>CharData</code> object the value is mapped to):
+```java
+    public Entry(float val, int xIndex) { ... }
+```
+
+Putting it all together (example of two comanies with quarterly revenue over one year):
+
+At first, create the lists of type <code>Entry</code> that will hold your values:
+
+```java
+    ArrayList<Entry> valsComp1 = new ArrayList<Entry>();
+    ArrayList<Entry> valsComp2 = new ArrayList<Entry>();
+```
+Then, fill the lists with <code>Entry</code> objects. Make sure the entry objects contain the correct indices to the x-axis. (of course, a loop can be used here, in that case, the counter variable of the loop could be the index on the x-axis.
+
+```java
+    Entry c1e1 = new Entry(10.000f, 0); // 0 == quarter 1
+    valsComp1.add(c1e1);
+    Entry c1e2 = new Entry(5.000f, 1; // 1 == quarter 2 ...
+    valsComp1.add(c1e2);
+    //...
+    
+    Entry c2e1 = new Entry(12.000f, 0); // 0 == quarter 1
+    valsComp2.add(c2e1);
+    Entry c2e2 = new Entry(11.000f, 1; // 1 == quarter 2 ...
+    valsComp2.add(c2e2);
+    //...
+```
+
+Now that we have our lists of <code>Entry</code> objects, the <code>DataSet</code> objects can be created:
+```java
+    DataSet setComp1 = new DataSet(valsComp1, COMPANY_1); // COMPANY_1 is a constant integer and can be chosen freely
+    DataSet setComp2 = new DataSet(valsComp2, COMPANY_2);
+```
+Last but not least, we create a list of <code>DataSets</code> and a list of x legend entries and build our <code>ChartData</code> object:
+
+```java
+    ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+    dataSets.add(setComp1);
+    dataSets.add(setComp2);
+    
+    ArrayList<String> xVals = new ArrayList<String>();
+    xVals.add("1.Q"); xVals.add("2.Q"); xVals.add("3.Q"); xVals.add("4.Q"); 
+    
+    ChartData data = new ChartData(xVals, dataSets);
+```
+
+Now, our <code>ChartData</code> object can be set to the chart. But before that, **colors need to be specified**. This can be done via the <code>ColorTemplate</code> class that already comes with some predefined colors (constants of the template). In our example case, we want one color for each <code>DataSet</code> (red and green).
+```java
+    ColorTemplate ct = new ColorTemplate();
+    ct.addColorsForDataSets(new int[] { R.color.red, R.color.green }, this);
+    chart.setColorTemplate(ct);
+```
+
+It would also be possible to let each <code>DataSet</code> have variations of a specific color. For example company 1 should have 4 colors from light to dark red, and company 2 should have 4 colors from light to dark green. In that case, we specify a color array for each <code>DataSet</code>:
+```java
+    ColorTemplate ct = new ColorTemplate();
+    ct.addDataSetColors(redColors, this); // redColors is an array containing 4 colors
+    ct.addDataSetColors(greenColors, this);
+    chart.setColorTemplate(ct);
+```
+
+More documentation and example code coming soon.
+
+
 
 License
 =======
