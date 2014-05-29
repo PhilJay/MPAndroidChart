@@ -1,5 +1,7 @@
 package com.example.mpchartexample;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,15 +14,13 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.ChartData;
-import com.github.mikephil.charting.ColorTemplate;
-import com.github.mikephil.charting.DataSet;
-import com.github.mikephil.charting.Highlight;
-import com.github.mikephil.charting.LineChart;
-import com.github.mikephil.charting.OnChartValueSelectedListener;
-import com.github.mikephil.charting.Entry;
-
-import java.util.ArrayList;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.Highlight;
 
 public class MultiLineChartActivity extends Activity implements OnSeekBarChangeListener, OnChartValueSelectedListener {
 

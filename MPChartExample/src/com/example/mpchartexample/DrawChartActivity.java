@@ -12,13 +12,13 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.ChartData;
-import com.github.mikephil.charting.ColorTemplate;
-import com.github.mikephil.charting.DataSet;
-import com.github.mikephil.charting.Entry;
-import com.github.mikephil.charting.Highlight;
-import com.github.mikephil.charting.LineChart;
-import com.github.mikephil.charting.OnChartValueSelectedListener;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.Highlight;
 
 public class DrawChartActivity extends Activity implements OnChartValueSelectedListener {
 

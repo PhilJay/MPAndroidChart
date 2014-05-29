@@ -210,7 +210,7 @@ public abstract class BarLineChartBase extends Chart {
 	 * does all necessary preparations, needed when data is changed or flags that effect the data are changed
 	 */
 	@Override
-	protected void prepare() {
+	public void prepare() {
 
 		if (mDataNotSet)
 			return;

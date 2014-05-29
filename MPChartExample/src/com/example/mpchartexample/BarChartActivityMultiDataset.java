@@ -1,5 +1,7 @@
 package com.example.mpchartexample;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,13 +11,11 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.BarChart;
-import com.github.mikephil.charting.ChartData;
-import com.github.mikephil.charting.ColorTemplate;
-import com.github.mikephil.charting.DataSet;
-import com.github.mikephil.charting.Entry;
-
-import java.util.ArrayList;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 public class BarChartActivityMultiDataset extends Activity implements OnSeekBarChangeListener {
 

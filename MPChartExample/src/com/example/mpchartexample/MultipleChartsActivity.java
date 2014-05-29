@@ -4,12 +4,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.WindowManager;
 
-import com.github.mikephil.charting.BarChart;
-import com.github.mikephil.charting.ColorTemplate;
-import com.github.mikephil.charting.LineChart;
-import com.github.mikephil.charting.PieChart;
-
-import java.util.ArrayList;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
 
 public class MultipleChartsActivity extends Activity {
 

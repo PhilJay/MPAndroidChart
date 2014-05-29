@@ -1,5 +1,7 @@
 package com.example.mpchartexample;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,17 +12,13 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.Approximator;
-import com.github.mikephil.charting.Approximator.ApproximatorType;
-import com.github.mikephil.charting.ChartData;
-import com.github.mikephil.charting.ColorTemplate;
-import com.github.mikephil.charting.DataSet;
-import com.github.mikephil.charting.Highlight;
-import com.github.mikephil.charting.OnChartValueSelectedListener;
-import com.github.mikephil.charting.PieChart;
-import com.github.mikephil.charting.Entry;
-
-import java.util.ArrayList;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.Highlight;
 
 public class PieChartActivity extends Activity implements OnSeekBarChangeListener, OnChartValueSelectedListener {
 
