@@ -1,5 +1,8 @@
 
-package com.github.mikephil.charting;
+package com.github.mikephil.charting.listener;
+
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.utils.Highlight;
 
 import android.graphics.Matrix;
 import android.graphics.PointF;

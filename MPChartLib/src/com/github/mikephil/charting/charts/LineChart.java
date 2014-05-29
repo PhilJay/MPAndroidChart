@@ -1,6 +1,11 @@
-package com.github.mikephil.charting;
+package com.github.mikephil.charting.charts;
 
 import java.util.ArrayList;
+
+import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.listener.BarLineChartTouchListener;
+import com.github.mikephil.charting.utils.Utils;
 
 import android.content.Context;
 import android.graphics.Color;

@@ -1,5 +1,5 @@
 
-package com.github.mikephil.charting;
+package com.github.mikephil.charting.charts;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -10,6 +10,10 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 
 import java.util.ArrayList;
+
+import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 public class BarChart extends BarLineChartBase {
 

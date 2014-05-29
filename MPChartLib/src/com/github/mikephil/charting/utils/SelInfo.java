@@ -1,5 +1,5 @@
 
-package com.github.mikephil.charting;
+package com.github.mikephil.charting.utils;
 
 /**
  * Class that encapsulates information of a value that has been

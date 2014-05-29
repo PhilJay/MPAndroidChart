@@ -1,4 +1,10 @@
-package com.github.mikephil.charting;
+package com.github.mikephil.charting.listener;
+
+import com.github.mikephil.charting.charts.BarLineChartBase;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.utils.Highlight;
 
 import android.graphics.Matrix;
 import android.graphics.PointF;

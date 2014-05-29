@@ -1,5 +1,5 @@
 
-package com.github.mikephil.charting;
+package com.github.mikephil.charting.charts;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -27,6 +27,15 @@ import android.widget.RelativeLayout;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+
+import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.SelInfo;
+import com.github.mikephil.charting.utils.Utils;
 
 /**
  * Baseclass of all Chart-Views.

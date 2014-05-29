@@ -11,13 +11,13 @@
         android:layout_weight="1"
         android:orientation="vertical" >
 
-        <com.github.mikephil.charting.LineChart
+        <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/barChart1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <com.github.mikephil.charting.BarChart
+        <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/barChart2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,13 +31,13 @@
         android:layout_weight="1"
         android:orientation="vertical" >
 
-        <com.github.mikephil.charting.PieChart
+  com.github.mikephil.charting.charts.PieChartieChart
             android:id="@+id/pieChart1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <com.github.mikephil.charting.BarChart
+        <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/barChart4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

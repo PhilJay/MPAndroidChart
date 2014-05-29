@@ -1,4 +1,4 @@
-package com.github.mikephil.charting;
+package com.github.mikephil.charting.charts;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -15,6 +15,12 @@ import android.util.Log;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.listener.BarLineChartTouchListener;
+import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.SelInfo;
+import com.github.mikephil.charting.utils.Utils;
 
 /**
  * Baseclass of all LineChart and BarChart.

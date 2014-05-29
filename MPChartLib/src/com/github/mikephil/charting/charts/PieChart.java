@@ -1,5 +1,5 @@
 
-package com.github.mikephil.charting;
+package com.github.mikephil.charting.charts;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -15,6 +15,11 @@ import android.view.MotionEvent;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+
+import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.listener.PieChartTouchListener;
+import com.github.mikephil.charting.utils.Utils;
 
 /**
  * View that represents a pie chart.

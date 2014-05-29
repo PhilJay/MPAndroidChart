@@ -1,5 +1,5 @@
 
-package com.github.mikephil.charting;
+package com.github.mikephil.charting.utils;
 
 /**
  * Point encapsulating two double values.

@@ -1,4 +1,4 @@
-package com.github.mikephil.charting;
+package com.github.mikephil.charting.listener;
 
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;

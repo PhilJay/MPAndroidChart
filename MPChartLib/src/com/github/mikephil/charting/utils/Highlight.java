@@ -1,5 +1,5 @@
 
-package com.github.mikephil.charting;
+package com.github.mikephil.charting.utils;
 
 /**
  * Contains information needed to determine the highlighted value.

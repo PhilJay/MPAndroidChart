@@ -1,6 +1,8 @@
-package com.github.mikephil.charting;
+package com.github.mikephil.charting.data.filter;
 
 import java.util.ArrayList;
+
+import com.github.mikephil.charting.data.Entry;
 
 /**
  * Implemented according to Wiki-Pseudocode {@link} http://en.wikipedia.org/wiki/Ramer�Douglas�Peucker_algorithm

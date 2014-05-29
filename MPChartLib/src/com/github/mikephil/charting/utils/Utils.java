@@ -1,4 +1,4 @@
-package com.github.mikephil.charting;
+package com.github.mikephil.charting.utils;
 
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
