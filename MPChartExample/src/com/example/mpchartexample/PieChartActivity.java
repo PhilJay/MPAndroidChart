@@ -46,8 +46,9 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
 		mChart = (PieChart) findViewById(R.id.chart1);
 		
 		ColorTemplate ct = new ColorTemplate();
+	    ct.addDataSetColors(ColorTemplate.GREEN_COLORS, this);
 		ct.addDataSetColors(ColorTemplate.COLORFUL_COLORS, this);
-		ct.addDataSetColors(ColorTemplate.FRESH_COLORS, this);
+		
 		mChart.setColorTemplate(ct);
 
 		mChart.setDrawYValues(true);

@@ -5,7 +5,9 @@ import java.util.ArrayList;
 
 /**
  * The DataSet class represents one group or type of entries (Series) in the
- * Chart that belong together.
+ * Chart that belong together. It is designed to logically separate different
+ * groups of values inside the Chart (e.g. the values for a specific line in the
+ * LineChart, or the values of a specific group of bars in the BarChart).
  * 
  * @author Philipp Jahoda
  */
@@ -175,11 +177,12 @@ public class DataSet {
      * @return
      */
     public int getIndexInSeries(int xIndex) {
-        
-        for(int i = 0; i < mYVals.size(); i++) {
-            if(xIndex == mYVals.get(i).getXIndex()) return i;
+
+        for (int i = 0; i < mYVals.size(); i++) {
+            if (xIndex == mYVals.get(i).getXIndex())
+                return i;
         }
-        
+
         return -1;
     }
 
