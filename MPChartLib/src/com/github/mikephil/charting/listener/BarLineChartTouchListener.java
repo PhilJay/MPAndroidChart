@@ -16,6 +16,7 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.PointD;
 
 public class BarLineChartTouchListener extends SimpleOnGestureListener implements OnTouchListener {
 
@@ -73,10 +74,19 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 
 				case MotionEvent.ACTION_MOVE:
 					if (mode == DRAWING) {
-						int xIndex = ((LineChart) mChart).getXIndexByTouchPoint(event.getX(), event.getY());
-						// TODO feed the right y value
-						double yValue = ((LineChart) mChart).getYValueByTouchPoint(event.getX(), event.getY());
-						Entry entry = new Entry((float) yValue, xIndex);
+					    
+					    PointD p = mChart.getValuesByTouchPoint(event.getX(), event.getY());
+					    
+					    int xIndex = (int) p.x;
+					    float yVal = (float) p.y;
+					    
+					    if (xIndex < 0)
+				            xIndex = 0;
+				        if (xIndex >= data.getXValCount()) {
+				            xIndex = data.getXValCount() - 1;
+				        }
+
+						Entry entry = new Entry((float) yVal, xIndex);
 						boolean added = data.addNewDrawingEntry(entry);
 						if (added) {
 							Log.i("Drawing", "Added entry " + entry.toString());

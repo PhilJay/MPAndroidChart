@@ -13,14 +13,15 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 /**
  * Baseclass of all LineChart and BarChart.
@@ -222,12 +223,12 @@ public abstract class BarLineChartBase extends Chart {
 
 		prepareXLegend();
 
-		prepareYLegend();
+		if(!mFixedYValues) prepareYLegend();
 
 		// calculate how many digits are needed
 		calcFormats();
 
-		prepareMatrix();
+		if(!mFixedYValues) prepareMatrix();
 
 		// Log.i(LOG_TAG, "xVals: " + mXVals.size() + ", yVals: " +
 		// mYVals.size());
@@ -947,6 +948,39 @@ public abstract class BarLineChartBase extends Chart {
 
 		return index;
 	}
+	
+    /**
+     * Returns the x and y values at the given touch point (encapsulated in a
+     * PointD).
+     * 
+     * @param x
+     * @param y
+     * @return
+     */
+    public PointD getValuesByTouchPoint(float x, float y) {
+
+        // create an array of the touch-point
+        float[] pts = new float[2];
+        pts[0] = x;
+        pts[1] = y;
+
+        Matrix tmp = new Matrix();
+
+        // invert all matrixes to convert back to the original value
+        mMatrixOffset.invert(tmp);
+        tmp.mapPoints(pts);
+
+        mMatrixTouch.invert(tmp);
+        tmp.mapPoints(pts);
+
+        mMatrixValueToPx.invert(tmp);
+        tmp.mapPoints(pts);
+
+        double xTouchVal = pts[0];
+        double yTouchVal = pts[1];
+
+        return new PointD(xTouchVal, yTouchVal);
+    }
 
 	/**
 	 * returns the Entry object displayed at the touched position of the chart

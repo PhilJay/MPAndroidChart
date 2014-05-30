@@ -253,70 +253,70 @@ public class LineChart extends BarLineChartBase {
 		}
 	}
 
-	/**
-	 * Returns the x index of the touch. If touch is out of the chart, the first or last index will be returned
-	 * 
-	 * @param x
-	 * @param y
-	 * @return
-	 */
-	public int getXIndexByTouchPoint(float x, float y) {
-		// create an array of the touch-point
-		float[] pts = new float[2];
-		pts[0] = x;
-		pts[1] = y;
-
-		Matrix tmp = new Matrix();
-
-		// invert all matrixes to convert back to the original value
-		mMatrixOffset.invert(tmp);
-		tmp.mapPoints(pts);
-
-		mMatrixTouch.invert(tmp);
-		tmp.mapPoints(pts);
-
-		mMatrixValueToPx.invert(tmp);
-		tmp.mapPoints(pts);
-
-		double xTouchVal = pts[0];
-		double yTouchVal = pts[1];
-		double base = Math.floor(xTouchVal);
-
-		Log.i(LOG_TAG, "touchindex x: " + xTouchVal + ", touchindex y: " + yTouchVal);
-
-		// touch out of chart
-		if (xTouchVal < 0)
-			return 0;
-		if (xTouchVal > mDeltaX) {
-			return mData.getXValCount() - 1;
-		}
-
-		return (int) base;
-	}
-
-	public double getYValueByTouchPoint(float x, float y) {
-		// create an array of the touch-point
-		float[] pts = new float[2];
-		pts[0] = x;
-		pts[1] = y;
-
-		Matrix tmp = new Matrix();
-
-		// invert all matrixes to convert back to the original value
-		mMatrixOffset.invert(tmp);
-		tmp.mapPoints(pts);
-
-		mMatrixTouch.invert(tmp);
-		tmp.mapPoints(pts);
-
-		mMatrixValueToPx.invert(tmp);
-		tmp.mapPoints(pts);
-
-		double xTouchVal = pts[0];
-		double yTouchVal = pts[1];
-
-		return yTouchVal;
-	}
+//	/**
+//	 * Returns the x index of the touch. If touch is out of the chart, the first or last index will be returned
+//	 * 
+//	 * @param x
+//	 * @param y
+//	 * @return
+//	 */
+//	public int getXIndexByTouchPoint(float x, float y) {
+//		// create an array of the touch-point
+//		float[] pts = new float[2];
+//		pts[0] = x;
+//		pts[1] = y;
+//
+//		Matrix tmp = new Matrix();
+//
+//		// invert all matrixes to convert back to the original value
+//		mMatrixOffset.invert(tmp);
+//		tmp.mapPoints(pts);
+//
+//		mMatrixTouch.invert(tmp);
+//		tmp.mapPoints(pts);
+//
+//		mMatrixValueToPx.invert(tmp);
+//		tmp.mapPoints(pts);
+//
+//		double xTouchVal = pts[0];
+//		double yTouchVal = pts[1];
+//		double base = Math.floor(xTouchVal);
+//
+//		Log.i(LOG_TAG, "touchindex x: " + xTouchVal + ", touchindex y: " + yTouchVal);
+//
+//		// touch out of chart
+//		if (xTouchVal < 0)
+//			return 0;
+//		if (xTouchVal > mDeltaX) {
+//			return mData.getXValCount() - 1;
+//		}
+//
+//		return (int) base;
+//	}
+//
+//	public double getYValueByTouchPoint(float x, float y) {
+//		// create an array of the touch-point
+//		float[] pts = new float[2];
+//		pts[0] = x;
+//		pts[1] = y;
+//
+//		Matrix tmp = new Matrix();
+//
+//		// invert all matrixes to convert back to the original value
+//		mMatrixOffset.invert(tmp);
+//		tmp.mapPoints(pts);
+//
+//		mMatrixTouch.invert(tmp);
+//		tmp.mapPoints(pts);
+//
+//		mMatrixValueToPx.invert(tmp);
+//		tmp.mapPoints(pts);
+//
+//		double xTouchVal = pts[0];
+//		double yTouchVal = pts[1];
+//
+//		return yTouchVal;
+//	}
 
 	/**
 	 * set this to true to enable the drawing of circle indicators
