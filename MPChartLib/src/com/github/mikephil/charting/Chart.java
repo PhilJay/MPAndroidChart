@@ -131,9 +131,6 @@ public abstract class Chart extends View {
     /** matrix used for touch events */
     protected Matrix mMatrixTouch = new Matrix();
 
-    /** the default draw color (some kind of light blue) */
-    protected int mDrawColor = Color.rgb(56, 199, 240);
-
     /** if true, touch gestures are enabled on the chart */
     protected boolean mTouchEnabled = true;
 
@@ -879,16 +876,6 @@ public abstract class Chart extends View {
     }
 
     /**
-     * set a new draw color for the chart values (line and filled) default is
-     * Color.rgb(56, 199, 240)
-     * 
-     * @param color
-     */
-    public void setDrawColor(int color) {
-        mDrawColor = color;
-    }
-
-    /**
      * set a description text that appears in the bottom right corner of the
      * chart, size = Y-legend text size
      * 
@@ -933,17 +920,6 @@ public abstract class Chart extends View {
      */
     public void setDrawYValues(boolean enabled) {
         this.mDrawYValues = enabled;
-    }
-
-    /**
-     * sets the y- starting and ending value
-     * 
-     * @param start
-     * @param end
-     */
-    public void setYStartEnd(float start, float end) {
-        mYChartMin = start;
-        mDeltaY = end - start;
     }
 
     /**

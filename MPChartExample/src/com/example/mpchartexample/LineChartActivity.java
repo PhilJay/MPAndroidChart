@@ -50,9 +50,10 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 
         // create a color template for one dataset with only one color
         ColorTemplate ct = new ColorTemplate();
-        ct.addColorsForDataSets(new int[] {
-            R.color.colorful_1
-        }, this);
+//        ct.addColorsForDataSets(new int[] {
+//            R.color.colorful_1
+//        }, this);
+        ct.addDataSetColors(new int[] {R.color.colorful_1}, this);
 
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
