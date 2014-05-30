@@ -64,7 +64,39 @@ or create it in code (and then add it to a layout):
     LineChart chart = new LineChart(Context);
 ```   
 
-**Adding Data:**
+**Styling:**
+
+ - <code>setDescription(String desc)</code>: Set a description text that appears in the bottom right corner of the chart.
+ - <code>setDescriptionTypeface(Typeface t)</code>: Sets the <code>Typeface</code> used for drawing the description text.
+ - <code>setGraphOffsets(int left, int right, int top, int bottom)</code>: Sets the offsets of the graph in every direction, provide density pixels.
+ - <code>setDrawYValues(boolean enabled)</code>: If set to true, the actual drawn values will be drawn next to the points, bars, or pie slices of the chart.
+ - <code>setValuePaintColor(int color)</code>: Sets the color used for drawing the values if <code>setDrawYValues(...)</code> is enabled.
+ - <code>setValueTypeface(Typeface t)</code>: Sets the <code>Typeface</code> used for drawing the values if <code>setDrawYValues(...)</code> is enabled.
+ - <code>setValueDigits(int digits)</code>: Sets the number of digits to use for all printed values.
+ - <code>setColorTemplate(ColorTemplate ct)</code>: Sets a <code>ColorTemplate</code> for the chart containing all colors. More information below.
+ - <code>setPaint(Paint p, int which)</code>: Replaces the specified default <code>Paint</code> object with a new one. This method can be used to replace any predefined <code>Paint</code> object with an own <code>Paint</code> object and develop a completely personalized design.
+
+**Getters and convenience:**
+- <code>public ChartData getData()</code>: Returns the <code>ChartData</code> object the chart currently displays. It contains all information concerning the displayed values such as minimum and maximum values, value counts, value sums, ...
+- <code>public float getScaleX()</code>: Returns the current scale factor on the x-axis.
+- <code>public float getYChartMin()</code>: Returns the current minimum y-value that can be displayed by the chart - bottom line.
+- <code>public float getYChartMax()</code>: Returns the current maximum y-value that can be displayed by the chart - top line.
+- <code>public float getAverage()</code>: Returns the average value across all values the chart holds.
+- <code>public float getAverage(int type)</code>: Returns the average value for a specific DataSet type in the chart. This type is the type provided in the <code>DataSet</code> constructor.
+- <code>public PointF getCenter()</code>: Returns the center point of the chart in pixels.
+
+ 
+**Gestures & Selecting:**
+
+ - <code>setTouchEnabled(boolean enabled)</code>: If set to ture, touch gestures (such as scaling and dragging) will be possible on the chart. NOTE: If touch-gestures are disabled, highlighting on touch is disabled as well. Default: true.
+ - <code>setOnChartValueSelectedListener(OnChartValueSelectedListener l)</code>: Sets a selection-listener to the chart that will generate callbacks when values are selected or unselected. The callback contains the selected values and their indices.
+ - <code>setHighlightEnabled(boolean enabled)</code>: If set to true, highlighting/selecting values is possible on the chart. Default: true.
+ 
+**Other:**
+ - <code>saveToGallery(String title)</code>: Saves the current chart state as an image to the gallery.
+ - <code>saveToPath(String title, String pathOnSD)</code>: Saves the current chart state as an image to the specified path.
+
+**Adding data:**
 
 If you want to add values (data) to the chart, it has to be done via the 
 
@@ -133,9 +165,10 @@ Last but not least, we create a list of <code>DataSets</code> and a list of x le
     xVals.add("1.Q"); xVals.add("2.Q"); xVals.add("3.Q"); xVals.add("4.Q"); 
     
     ChartData data = new ChartData(xVals, dataSets);
+    chart.setData(data);
 ```
 
-Now, our <code>ChartData</code> object can be set to the chart. But before that, **colors need to be specified**. 
+Now, our <code>ChartData</code> object can be set to the chart. But before drawing it, **colors need to be specified**. If no colors are specified when the data is drawn, the default <code>ColorTemplate</code> will be used.
 
 
 **Setting colors:**
