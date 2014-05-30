@@ -109,7 +109,7 @@ method. The <code>ChartData</code> class encapsulates all data and information t
     public ChartData(ArrayList<String> xVals, ArrayList<DataSet> dataSets) { ... }
 ```
 
-So, what is a <code>DataSet</code> and why do you need it? That is actually pretty simple. One <code>DataSet</code> objects represents a group or type of entries (values) inside the chart that belong together. It is designed to logically separate different groups of values in the chart. As an example, you might want to display the quarterly revenue of two different companies over one year. In that case, it would be recommended to create two different <code>DataSet</code> objects, each containing four values (one for each quarter). As an <code>ArrayList<String></code> to describe the legend on the x-axis, you would simply provide the four Strings "1.Q", "2.Q", "3.Q", "4.Q".
+So, what is a <code>DataSet</code> and why do you need it? That is actually pretty simple. One <code>DataSet</code> object represents a group of entries (datatype <code>Entry</code>) inside the chart that belong together. It is designed to logically separate different groups of values in the chart. As an example, you might want to display the quarterly revenue of two different companies over one year. In that case, it would be recommended to create two different <code>DataSet</code> objects, each containing four values (one for each quarter). As an <code>ArrayList<String></code> to describe the legend on the x-axis, you would simply provide the four Strings "1.Q", "2.Q", "3.Q", "4.Q".
 
 Of course, it is also possible to provide just one <code>DataSet</code> object containing all 8 values for the two companys. 
 
