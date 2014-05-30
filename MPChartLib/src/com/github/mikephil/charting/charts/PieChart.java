@@ -153,7 +153,7 @@ public class PieChart extends Chart {
 		if (mDataNotSet)
 			return;
 
-		calcMinMax();
+		calcMinMax(false);
 
 		if (mCenterText == null)
 			mCenterText = "Total Value\n" + (int) getYValueSum();
@@ -247,8 +247,8 @@ public class PieChart extends Chart {
 	}
 
 	@Override
-	protected void calcMinMax() {
-		super.calcMinMax();
+	protected void calcMinMax(boolean fixedValues) {
+		super.calcMinMax(fixedValues);
 
 		calcAngles();
 	}

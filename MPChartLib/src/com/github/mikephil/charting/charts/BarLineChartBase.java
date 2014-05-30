@@ -84,6 +84,9 @@ public abstract class BarLineChartBase extends Chart {
 	/** if true, dragging / scaling is enabled for the chart */
 	protected boolean mDragEnabled = true;
 
+	/** if true, the y scale is predefined */
+	protected boolean mFixedYValues = false;
+
 	/**
 	 * if true, the y-legend values will be rounded - the legend entry count will only be approximated
 	 */
@@ -215,7 +218,7 @@ public abstract class BarLineChartBase extends Chart {
 		if (mDataNotSet)
 			return;
 
-		calcMinMax();
+		calcMinMax(mFixedYValues);
 
 		prepareXLegend();
 
@@ -293,8 +296,8 @@ public abstract class BarLineChartBase extends Chart {
 	}
 
 	@Override
-	protected void calcMinMax() {
-		super.calcMinMax(); // calc min and max in the super class
+	protected void calcMinMax(boolean fixedValues) {
+		super.calcMinMax(fixedValues); // calc min and max in the super class
 
 		// additional handling for space (default 10% space)
 
@@ -617,11 +620,27 @@ public abstract class BarLineChartBase extends Chart {
 	 * @param minY
 	 * @param maxY
 	 */
-	public void setYRange(float minY, float maxY) {
+	public void setYRange(float minY, float maxY, int decimals) {
+		mFixedYValues = true;
+		mYLegendDigitsToUse = decimals;
 
 		mYChartMin = minY;
 		mYChartMax = maxY;
 		mDeltaY = mYChartMax - mYChartMin;
+
+		calcFormats();
+		prepareMatrix();
+		prepareYLegend();
+		invalidate();
+	}
+
+	/**
+	 * Resets the previously set y range
+	 */
+	public void resetYRange() {
+		mFixedYValues = false;
+		mYLegendDigitsToUse = -1;
+		calcMinMax(mFixedYValues);
 
 		prepareMatrix();
 		prepareYLegend();

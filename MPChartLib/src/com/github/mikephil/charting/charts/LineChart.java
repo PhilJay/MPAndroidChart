@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
+import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Utils;
 
 import android.content.Context;
@@ -291,6 +292,30 @@ public class LineChart extends BarLineChartBase {
 		}
 
 		return (int) base;
+	}
+
+	public double getYValueByTouchPoint(float x, float y) {
+		// create an array of the touch-point
+		float[] pts = new float[2];
+		pts[0] = x;
+		pts[1] = y;
+
+		Matrix tmp = new Matrix();
+
+		// invert all matrixes to convert back to the original value
+		mMatrixOffset.invert(tmp);
+		tmp.mapPoints(pts);
+
+		mMatrixTouch.invert(tmp);
+		tmp.mapPoints(pts);
+
+		mMatrixValueToPx.invert(tmp);
+		tmp.mapPoints(pts);
+
+		double xTouchVal = pts[0];
+		double yTouchVal = pts[1];
+
+		return yTouchVal;
 	}
 
 	/**

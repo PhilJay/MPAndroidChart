@@ -52,7 +52,7 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
 		mChart.setDrawYValues(true);
 		mChart.setDrawCenterText(true);
 
-		mChart.setDescription("This is a description.");
+		mChart.setDescription("This is a description."); 
 		mChart.setDrawHoleEnabled(true);
 		mChart.setDrawXValues(true);
 		mChart.setTouchEnabled(true);

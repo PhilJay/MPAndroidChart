@@ -1,11 +1,5 @@
 package com.github.mikephil.charting.listener;
 
-import com.github.mikephil.charting.charts.BarLineChartBase;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.utils.Highlight;
-
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.util.FloatMath;
@@ -16,6 +10,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
+
+import com.github.mikephil.charting.charts.BarLineChartBase;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.utils.Highlight;
 
 public class BarLineChartTouchListener extends SimpleOnGestureListener implements OnTouchListener {
 
@@ -64,7 +64,7 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 				ChartData data = mChart.getData();
 				switch (event.getAction() & MotionEvent.ACTION_MASK) {
 				case MotionEvent.ACTION_DOWN:
-					if (mode == NONE) {
+					if (mode == NONE || mode == LONGPRESS) {
 						mode = DRAWING;
 						data.createNewDrawingDataSet(1);
 						Log.i("Drawing", "New drawing data set created");
@@ -75,7 +75,8 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 					if (mode == DRAWING) {
 						int xIndex = ((LineChart) mChart).getXIndexByTouchPoint(event.getX(), event.getY());
 						// TODO feed the right y value
-						Entry entry = new Entry(event.getY(), xIndex);
+						double yValue = ((LineChart) mChart).getYValueByTouchPoint(event.getX(), event.getY());
+						Entry entry = new Entry((float) yValue, xIndex);
 						boolean added = data.addNewDrawingEntry(entry);
 						if (added) {
 							Log.i("Drawing", "Added entry " + entry.toString());
@@ -97,6 +98,7 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 					break;
 
 				default:
+					Log.i("Drawing", "Other action " + event.toString());
 					break;
 				}
 				// currently no dragging when drawing

@@ -264,14 +264,15 @@ public abstract class Chart extends View {
 	/**
 	 * calcualtes the y-min and y-max value and the y-delta and x-delta value
 	 */
-	protected void calcMinMax() {
-
-		mYChartMin = mData.getYMin();
+	protected void calcMinMax(boolean fixedValues) {
+		// only calculate values if not fixed values
+		if (fixedValues) {
+			mYChartMin = mData.getYMin();
+			mYChartMax = mYChartMin + mData.getYMax();
+		}
 
 		// calc delta
 		mDeltaY = mData.getYMax() - mYChartMin;
-		mYChartMax = mYChartMin + mData.getYMax();
-
 		mDeltaX = mData.getXVals().size() - 1;
 	}
 
