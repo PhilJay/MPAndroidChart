@@ -178,25 +178,25 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 						float oldScaleX = values[Matrix.MSCALE_X];
 						float oldScaleY = values[Matrix.MSCALE_Y];
 						
-						if ((scaleX < 1 || oldScaleX < mChart.getMaxScaleX())
-                                && (scaleX > 1 || oldScaleX > MIN_SCALE)) {
-                            matrix.set(savedMatrix);
-                            matrix.postScale(scaleX, oldScaleY, mid.x, mid.y);
-                        }
+//						if ((scaleX < 1 || oldScaleX < mChart.getMaxScaleX())
+//                                && (scaleX > 1 || oldScaleX > MIN_SCALE)) {
+//                            matrix.set(savedMatrix);
+//                            matrix.postScale(scaleX, oldScaleY, mid.x, mid.y);
+//                        }
 						
-//                            if (xDist > yDist) {
-//                                if ((scaleX < 1 || oldScaleX < mChart.getMaxScaleX())
-//                                        && (scaleX > 1 || oldScaleX > MIN_SCALE)) {
-//                                    matrix.set(savedMatrix);
-//                                    matrix.postScale(scaleX, oldScaleY, mid.x, mid.y);
-//                                }
-//                            } else {
-//                                if ((scaleY < 1 || oldScaleY < mChart.getMaxScaleY())
-//                                        && (scaleY > 1 || oldScaleY > MIN_SCALE)) {
-//                                    matrix.set(savedMatrix);
-//                                    matrix.postScale(oldScaleX, scaleY, mid.x, mid.y);
-//                                }
-//                            }
+                            if (xDist > yDist) {
+                                if ((scaleX < 1 || oldScaleX < mChart.getMaxScaleX())
+                                        && (scaleX > 1 || oldScaleX > MIN_SCALE)) {
+                                    matrix.set(savedMatrix);
+                                    matrix.postScale(scaleX, oldScaleY, mid.x, mid.y);
+                                }
+                            } else {
+                                if ((scaleY < 1 || oldScaleY < mChart.getMaxScaleY())
+                                        && (scaleY > 1 || oldScaleY > MIN_SCALE)) {
+                                    matrix.set(savedMatrix);
+                                    matrix.postScale(oldScaleX, scaleY, mid.x, mid.y);
+                                }
+                            }
 						
 //						Log.i("scale", "scale-x: " + scaleX + ", scale-y: " + scaleY + ", oldDistX: " + oldDistX  + ", oldDistY: " + oldDistY);
 //						Log.i("scale", "xDist: " + xDist + ", yDist: " + yDist);
@@ -204,6 +204,7 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 				} else if (mode == LONGPRESS) {
 					mChart.disableScroll();
 				}
+			
 				break;
 			}
 		}

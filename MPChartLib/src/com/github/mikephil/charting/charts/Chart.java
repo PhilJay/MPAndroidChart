@@ -328,7 +328,7 @@ public abstract class Chart extends View {
 		mMatrixValueToPx.postScale(scaleX, -scaleY);
 		mMatrixOffset = new Matrix();
 		mMatrixOffset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
-		// mXLegendRect = new Rect(mOffsetLeft-20, 0, getWidth() - mOffsetRight
+		// mXLegendRect = new Rect(mOffsetLeft-20, 0, getWidth() - mOffsetRight 
 		// + 20, mOffsetTop);
 
 		// calcModulus();
@@ -574,7 +574,8 @@ public abstract class Chart extends View {
 		float curTransY = vals[Matrix.MTRANS_Y];
 		float curScaleY = vals[Matrix.MSCALE_Y];
 		
-		Log.i(LOG_TAG, "curTransX: " + curTransX + ", curTransY: " + curTransY);
+		Log.i(LOG_TAG, "curTransX: " + curTransX + ", curScaleX: " + curScaleX);
+		Log.i(LOG_TAG, "curTransY: " + curTransY + ", curScaleY: " + curScaleY);
 
 		// min scale-x is 1f
 		mScaleX = Math.max(1f, Math.min(getMaxScaleX(), curScaleX));
@@ -585,14 +586,15 @@ public abstract class Chart extends View {
 		float maxTransX = -(float) mContentRect.width() * (mScaleX - 1f);
 		float newTransX = Math.min(Math.max(curTransX, maxTransX), 0);
 		
-		float maxTransY = -(float) mContentRect.height() *0f;
-        float newTransY = Math.min(Math.max(curTransY, maxTransY), 0);
+		float maxTransY = -(float) mContentRect.height() * (mScaleY - 1f);
+		float newTransY = Math.min(Math.max(curTransY, maxTransY), 0);
         
-//        Log.i(LOG_TAG, "maxTransY: " + maxTransX);
+        Log.i(LOG_TAG, "scale-X: " + mScaleX + ", maxTransX: " + maxTransX + ", newTransX: " + newTransX);
+        Log.i(LOG_TAG, "scale-Y: " + mScaleY + ", maxTransY: " + maxTransY + ", newTransY: " + newTransY);
 
 		vals[Matrix.MTRANS_X] = newTransX;
 		vals[Matrix.MSCALE_X] = mScaleX;
-		vals[Matrix.MTRANS_Y] = newTransY;
+		vals[Matrix.MTRANS_Y] = -newTransY;
         vals[Matrix.MSCALE_Y] = mScaleY;
 
 		matrix.setValues(vals);
