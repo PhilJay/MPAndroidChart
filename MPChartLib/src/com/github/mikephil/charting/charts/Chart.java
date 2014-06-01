@@ -43,7 +43,7 @@ import com.github.mikephil.charting.utils.Utils;
  */
 public abstract class Chart extends View {
 
-	protected static final String LOG_TAG = "MPChart";
+	public static final String LOG_TAG = "MPChart";
 
 	protected int mColorDarkBlue = Color.rgb(41, 128, 186);
 	protected int mColorDarkRed = Color.rgb(232, 76, 59);

@@ -27,6 +27,11 @@ public class Entry {
 		return mXIndex;
 	}
 
+	protected Entry cloneEntry() {
+		Entry entry = new Entry(mVal, mXIndex);
+		return entry;
+	}
+
 	//
 	// /**
 	// * Convenience method to create a series of double values

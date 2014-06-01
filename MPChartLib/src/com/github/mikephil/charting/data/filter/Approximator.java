@@ -11,7 +11,8 @@ import com.github.mikephil.charting.data.Entry;
  */
 public class Approximator {
 
-	private ApproximatorType type = ApproximatorType.NONE;
+	private ApproximatorType mType = ApproximatorType.NONE;
+	private double mTolerance = 0;
 
 	public enum ApproximatorType {
 		NONE, DOUGLAS_PEUCKER
@@ -19,14 +20,51 @@ public class Approximator {
 
 	private boolean[] keep;
 
-	public Approximator(ApproximatorType type) {
-		this.type = type;
+	/**
+	 * Initializes the approximator with type NONE
+	 */
+	public Approximator() {
+		this.mType = ApproximatorType.NONE;
 	}
 
+	/**
+	 * Initializes the approximator with the given type
+	 * 
+	 * @param type
+	 */
+	public Approximator(ApproximatorType type, double tolerance) {
+		setTypeAndTolerance(type, tolerance);
+	}
+
+	public void setTypeAndTolerance(ApproximatorType type, double tolerance) {
+		this.mType = type;
+		mTolerance = tolerance;
+	}
+
+	/**
+	 * Filters according to type. Uses the pre set set tolerance
+	 * 
+	 * @param points
+	 *            the points to filter
+	 * @return
+	 */
+	public ArrayList<Entry> filter(ArrayList<Entry> points) {
+		return filter(points, mTolerance);
+	}
+
+	/**
+	 * Filters according to type.
+	 * 
+	 * @param points
+	 *            the points to filter
+	 * @param tolerance
+	 *            a separate tolerance can be specified
+	 * @return
+	 */
 	public ArrayList<Entry> filter(ArrayList<Entry> points, double tolerance) {
 		keep = new boolean[points.size()];
 
-		switch (type) {
+		switch (mType) {
 		case DOUGLAS_PEUCKER:
 			return reduceWithDouglasPeuker(points, tolerance);
 		case NONE:
@@ -115,9 +153,8 @@ public class Approximator {
 		double normalLength = Math.sqrt((endEntry.getXIndex() - startEntry.getXIndex())
 				* (endEntry.getXIndex() - startEntry.getXIndex()) + (endEntry.getVal() - startEntry.getVal())
 				* (endEntry.getVal() - startEntry.getVal()));
-		return Math.abs((entryPoint.getXIndex() - startEntry.getXIndex())
-				* (endEntry.getVal() - startEntry.getVal()) - (entryPoint.getVal() - startEntry.getVal())
-				* (endEntry.getXIndex() - startEntry.getXIndex()))
+		return Math.abs((entryPoint.getXIndex() - startEntry.getXIndex()) * (endEntry.getVal() - startEntry.getVal())
+				- (entryPoint.getVal() - startEntry.getVal()) * (endEntry.getXIndex() - startEntry.getXIndex()))
 				/ normalLength;
 	}
 }
