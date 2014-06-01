@@ -52,6 +52,16 @@ public class DataSet {
 		calcYValueSum();
 	}
 
+	public DataSet cloneDataSet() {
+		ArrayList<Entry> duplicatedEntries = new ArrayList<Entry>();
+		for (int i = 0; i < mYVals.size(); i++) {
+			Entry entry = mYVals.get(i).cloneEntry();
+			duplicatedEntries.add(entry);
+		}
+		DataSet dataSet = new DataSet(duplicatedEntries, mType);
+		return dataSet;
+	}
+
 	/**
 	 * calc minimum and maximum y value
 	 */

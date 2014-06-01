@@ -43,7 +43,7 @@ import com.github.mikephil.charting.utils.Utils;
  */
 public abstract class Chart extends View {
 
-	protected static final String LOG_TAG = "MPChart";
+	public static final String LOG_TAG = "MPChart";
 
 	protected int mColorDarkBlue = Color.rgb(41, 128, 186);
 	protected int mColorDarkRed = Color.rgb(232, 76, 59);
@@ -571,29 +571,29 @@ public abstract class Chart extends View {
 		float curTransX = vals[Matrix.MTRANS_X];
 		float curScaleX = vals[Matrix.MSCALE_X];
 		
-//		float curTransY = vals[Matrix.MTRANS_Y];
-//		float curScaleY = vals[Matrix.MSCALE_Y];
+		float curTransY = vals[Matrix.MTRANS_Y];
+		float curScaleY = vals[Matrix.MSCALE_Y];
 		
-//		Log.i(LOG_TAG, "curTransY: " + curTransY);
+		Log.i(LOG_TAG, "curTransX: " + curTransX + ", curTransY: " + curTransY);
 
 		// min scale-x is 1f
 		mScaleX = Math.max(1f, Math.min(getMaxScaleX(), curScaleX));
 		
 		// min scale-y is 1f
-//		mScaleY = Math.max(1f, Math.min(getMaxScaleY(), curScaleY));
+		mScaleY = Math.max(1f, Math.min(getMaxScaleY(), curScaleY));
 
 		float maxTransX = -(float) mContentRect.width() * (mScaleX - 1f);
 		float newTransX = Math.min(Math.max(curTransX, maxTransX), 0);
 		
-//		float maxTransY = -(float) mContentRect.height();
-//        float newTransY = Math.min(Math.max(curTransY, maxTransY), 0);
+		float maxTransY = -(float) mContentRect.height() *0f;
+        float newTransY = Math.min(Math.max(curTransY, maxTransY), 0);
         
 //        Log.i(LOG_TAG, "maxTransY: " + maxTransX);
 
 		vals[Matrix.MTRANS_X] = newTransX;
 		vals[Matrix.MSCALE_X] = mScaleX;
-//		vals[Matrix.MTRANS_Y] = newTransY;
-//        vals[Matrix.MSCALE_Y] = mScaleY;
+		vals[Matrix.MTRANS_Y] = newTransY;
+        vals[Matrix.MSCALE_Y] = mScaleY;
 
 		matrix.setValues(vals);
 	}

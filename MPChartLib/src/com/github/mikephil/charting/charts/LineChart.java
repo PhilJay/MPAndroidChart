@@ -2,19 +2,18 @@ package com.github.mikephil.charting.charts;
 
 import java.util.ArrayList;
 
-import com.github.mikephil.charting.data.DataSet;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.listener.BarLineChartTouchListener;
-import com.github.mikephil.charting.utils.Highlight;
-import com.github.mikephil.charting.utils.Utils;
-
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
-import android.util.Log;
+
+import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
+import com.github.mikephil.charting.listener.BarLineChartTouchListener;
+import com.github.mikephil.charting.utils.Utils;
 
 public class LineChart extends BarLineChartBase {
 
@@ -70,6 +69,15 @@ public class LineChart extends BarLineChartBase {
 		mHighlightPaint.setStyle(Paint.Style.STROKE);
 		mHighlightPaint.setStrokeWidth(2f);
 		mHighlightPaint.setColor(Color.rgb(255, 187, 115));
+	}
+
+	@Override
+	public void setData(ChartData data) {
+		super.setData(data);
+		ArrayList<DataSet> dataSets = data.getDataSets();
+		for (int i = 0; i < dataSets.size(); i++) {
+			// mApproximator.filter(points)
+		}
 	}
 
 	@Override
@@ -253,70 +261,89 @@ public class LineChart extends BarLineChartBase {
 		}
 	}
 
-//	/**
-//	 * Returns the x index of the touch. If touch is out of the chart, the first or last index will be returned
-//	 * 
-//	 * @param x
-//	 * @param y
-//	 * @return
-//	 */
-//	public int getXIndexByTouchPoint(float x, float y) {
-//		// create an array of the touch-point
-//		float[] pts = new float[2];
-//		pts[0] = x;
-//		pts[1] = y;
-//
-//		Matrix tmp = new Matrix();
-//
-//		// invert all matrixes to convert back to the original value
-//		mMatrixOffset.invert(tmp);
-//		tmp.mapPoints(pts);
-//
-//		mMatrixTouch.invert(tmp);
-//		tmp.mapPoints(pts);
-//
-//		mMatrixValueToPx.invert(tmp);
-//		tmp.mapPoints(pts);
-//
-//		double xTouchVal = pts[0];
-//		double yTouchVal = pts[1];
-//		double base = Math.floor(xTouchVal);
-//
-//		Log.i(LOG_TAG, "touchindex x: " + xTouchVal + ", touchindex y: " + yTouchVal);
-//
-//		// touch out of chart
-//		if (xTouchVal < 0)
-//			return 0;
-//		if (xTouchVal > mDeltaX) {
-//			return mData.getXValCount() - 1;
-//		}
-//
-//		return (int) base;
-//	}
-//
-//	public double getYValueByTouchPoint(float x, float y) {
-//		// create an array of the touch-point
-//		float[] pts = new float[2];
-//		pts[0] = x;
-//		pts[1] = y;
-//
-//		Matrix tmp = new Matrix();
-//
-//		// invert all matrixes to convert back to the original value
-//		mMatrixOffset.invert(tmp);
-//		tmp.mapPoints(pts);
-//
-//		mMatrixTouch.invert(tmp);
-//		tmp.mapPoints(pts);
-//
-//		mMatrixValueToPx.invert(tmp);
-//		tmp.mapPoints(pts);
-//
-//		double xTouchVal = pts[0];
-//		double yTouchVal = pts[1];
-//
-//		return yTouchVal;
-//	}
+	// /**
+	// * Returns the x index of the touch. If touch is out of the chart, the first or last index will be returned
+	// *
+	// * @param x
+	// * @param y
+	// * @return
+	// */
+	// public int getXIndexByTouchPoint(float x, float y) {
+	// // create an array of the touch-point
+	// float[] pts = new float[2];
+	// pts[0] = x;
+	// pts[1] = y;
+	//
+	// Matrix tmp = new Matrix();
+	//
+	// // invert all matrixes to convert back to the original value
+	// mMatrixOffset.invert(tmp);
+	// tmp.mapPoints(pts);
+	//
+	// mMatrixTouch.invert(tmp);
+	// tmp.mapPoints(pts);
+	//
+	// mMatrixValueToPx.invert(tmp);
+	// tmp.mapPoints(pts);
+	//
+	// double xTouchVal = pts[0];
+	// double yTouchVal = pts[1];
+	// double base = Math.floor(xTouchVal);
+	//
+	// Log.i(LOG_TAG, "touchindex x: " + xTouchVal + ", touchindex y: " + yTouchVal);
+	//
+	// // touch out of chart
+	// if (xTouchVal < 0)
+	// return 0;
+	// if (xTouchVal > mDeltaX) {
+	// return mData.getXValCount() - 1;
+	// }
+	//
+	// return (int) base;
+	// }
+	//
+	// public double getYValueByTouchPoint(float x, float y) {
+	// // create an array of the touch-point
+	// float[] pts = new float[2];
+	// pts[0] = x;
+	// pts[1] = y;
+	//
+	// Matrix tmp = new Matrix();
+	//
+	// // invert all matrixes to convert back to the original value
+	// mMatrixOffset.invert(tmp);
+	// tmp.mapPoints(pts);
+	//
+	// mMatrixTouch.invert(tmp);
+	// tmp.mapPoints(pts);
+	//
+	// mMatrixValueToPx.invert(tmp);
+	// tmp.mapPoints(pts);
+	//
+	// double xTouchVal = pts[0];
+	// double yTouchVal = pts[1];
+	//
+	// return yTouchVal;
+	// }
+
+	/**
+	 * Sets a filter on the whole ChartData. If the type is NONE, the filtering is reset. Be aware that the original
+	 * DataSets are not modified. Instead there are modified copies of the data. All methods return the filtered values
+	 * if a filter is set. To receive the original values despite a set filter, call getOriginalDataSets() of the class
+	 * ChartData. The ChartData can be received by calling getData().
+	 * 
+	 * @param type
+	 *            the filter type. NONE to reset filtering
+	 * @param tolerance
+	 *            the tolerance
+	 */
+	public void setFilter(ApproximatorType type, double tolerance) {
+		mData.setFilter(type, tolerance);
+	}
+
+	public boolean isFilterSet() {
+		return mData.isApproximatedData();
+	}
 
 	/**
 	 * set this to true to enable the drawing of circle indicators

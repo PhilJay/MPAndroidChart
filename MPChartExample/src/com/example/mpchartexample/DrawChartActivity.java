@@ -70,8 +70,8 @@ public class DrawChartActivity extends Activity implements OnChartValueSelectedL
 
 	private void initWithDummyData() {
 		ArrayList<String> xVals = new ArrayList<String>();
-		for (int i = 0; i < 25; i++) {
-			xVals.add((i) + ":00");
+		for (int i = 0; i < 48; i++) {
+			xVals.add((i) + "h");
 		}
 
 		ArrayList<Entry> yVals = new ArrayList<Entry>();
