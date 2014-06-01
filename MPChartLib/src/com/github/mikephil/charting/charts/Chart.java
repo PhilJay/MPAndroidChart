@@ -269,7 +269,7 @@ public abstract class Chart extends View {
 	 */
 	protected void calcMinMax(boolean fixedValues) {
 		// only calculate values if not fixed values
-		if (fixedValues) {
+		if (!fixedValues) {
 			mYChartMin = mData.getYMin();
 			mYChartMax = mYChartMin + mData.getYMax();
 		}
