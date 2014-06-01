@@ -14,6 +14,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.PointD;
@@ -1039,6 +1040,29 @@ public abstract class BarLineChartBase extends Chart {
 	public int getLegendDigits() {
 		return mYLegendDigitsToUse;
 	}
+	
+    /**
+     * Sets a filter on the whole ChartData. If the type is NONE, the filtering is reset. Be aware that the original
+     * DataSets are not modified. Instead there are modified copies of the data. All methods return the filtered values
+     * if a filter is set. To receive the original values despite a set filter, call getOriginalDataSets() of the class
+     * ChartData. The ChartData can be received by calling getData().
+     * 
+     * @param type
+     *            the filter type. NONE to reset filtering
+     * @param tolerance
+     *            the tolerance
+     */
+    public void setFilter(ApproximatorType type, double tolerance) {
+        mData.setFilter(type, tolerance);
+    }
+
+    /**
+     * returns true if a filter has been set, flase if not
+     * @return
+     */
+    public boolean isFilterSet() {
+        return mData.isApproximatedData();
+    }
 
 	@Override
 	public void setPaint(Paint p, int which) {

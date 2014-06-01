@@ -15,6 +15,7 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 
@@ -131,6 +132,14 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
 			mChart.invalidate();
 			break;
 		}
+		case R.id.actionToggleFilter:
+            if (mChart.isFilterSet()) {
+                mChart.setFilter(ApproximatorType.NONE, 0);
+            } else {
+                mChart.setFilter(ApproximatorType.DOUGLAS_PEUCKER, 2);
+            }
+            mChart.invalidate();
+            break;
 		case R.id.actionSave: {
 			// mChart.saveToGallery("title"+System.currentTimeMillis());
 			mChart.saveToPath("title" + System.currentTimeMillis(), "");
