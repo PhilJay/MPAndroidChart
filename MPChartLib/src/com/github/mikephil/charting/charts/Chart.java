@@ -125,6 +125,9 @@ public abstract class Chart extends View {
 
 	/** contains the current scale factor of the x-axis */
 	protected float mScaleX = 1f;
+	
+	/** contains the current scale factor of the y-axis */
+	protected float mScaleY = 1f;
 
 	/** matrix to map the values to the screen pixels */
 	protected Matrix mMatrixValueToPx;
@@ -567,15 +570,30 @@ public abstract class Chart extends View {
 
 		float curTransX = vals[Matrix.MTRANS_X];
 		float curScaleX = vals[Matrix.MSCALE_X];
+		
+//		float curTransY = vals[Matrix.MTRANS_Y];
+//		float curScaleY = vals[Matrix.MSCALE_Y];
+		
+//		Log.i(LOG_TAG, "curTransY: " + curTransY);
 
-		// minimum scale is 1f
-		mScaleX = Math.max(1f, Math.min(getMaxScale(), curScaleX));
+		// min scale-x is 1f
+		mScaleX = Math.max(1f, Math.min(getMaxScaleX(), curScaleX));
+		
+		// min scale-y is 1f
+//		mScaleY = Math.max(1f, Math.min(getMaxScaleY(), curScaleY));
 
 		float maxTransX = -(float) mContentRect.width() * (mScaleX - 1f);
 		float newTransX = Math.min(Math.max(curTransX, maxTransX), 0);
+		
+//		float maxTransY = -(float) mContentRect.height();
+//        float newTransY = Math.min(Math.max(curTransY, maxTransY), 0);
+        
+//        Log.i(LOG_TAG, "maxTransY: " + maxTransX);
 
 		vals[Matrix.MTRANS_X] = newTransX;
 		vals[Matrix.MSCALE_X] = mScaleX;
+//		vals[Matrix.MTRANS_Y] = newTransY;
+//        vals[Matrix.MSCALE_Y] = mScaleY;
 
 		matrix.setValues(vals);
 	}
@@ -755,20 +773,36 @@ public abstract class Chart extends View {
 	}
 
 	/**
-	 * returns the current x-scale value
+	 * returns the current x-scale factor
 	 */
 	public float getScaleX() {
 		return mScaleX;
 	}
+	
+	/**
+	 * returns the current y-scale factor
+	 */
+	public float getScaleY() {
+	    return mScaleY;
+	}
 
 	/**
-	 * calcualtes the maximum scale value depending on the number of x-values, maximum scale is numberOfXvals / 2
+	 * calcualtes the maximum x-scale value depending on the number of x-values, maximum scale is numberOfXvals / 2
 	 * 
 	 * @return
 	 */
-	public float getMaxScale() {
+	public float getMaxScaleX() {
 		return mDeltaX / 2f;
 	}
+	
+	/**
+     * calcualtes the maximum y-scale value depending on the y delta value
+     * 
+     * @return
+     */
+    public float getMaxScaleY() {
+        return mDeltaY;
+    }
 
 	/**
 	 * returns the current y-max value in the y-values array
