@@ -1,3 +1,4 @@
+
 package com.github.mikephil.charting.utils;
 
 import android.content.res.Resources;
@@ -11,11 +12,12 @@ import java.text.DecimalFormat;
  * @author Philipp Jahoda
  */
 public abstract class Utils {
-    
+
     private static Resources mRes;
-    
+
     /**
      * initialize method, called inside the Char.init() method.
+     * 
      * @param res
      */
     public static void init(Resources res) {
@@ -33,7 +35,7 @@ public abstract class Utils {
 
         StringBuffer a = new StringBuffer();
         for (int i = 0; i < digits; i++) {
-            if (i == 0) 
+            if (i == 0)
                 a.append(".");
             a.append("0");
         }
@@ -45,11 +47,11 @@ public abstract class Utils {
     }
 
     /**
-     * This method converts dp unit to equivalent pixels, depending on
-     * device density.
+     * This method converts dp unit to equivalent pixels, depending on device
+     * density.
      * 
-     * @param dp A value in dp (density independent pixels) unit. Which we
-     *            need to convert into pixels
+     * @param dp A value in dp (density independent pixels) unit. Which we need
+     *            to convert into pixels
      * @return A float value to represent px equivalent to dp depending on
      *         device density
      */
@@ -63,12 +65,11 @@ public abstract class Utils {
      * This method converts device specific pixels to density independent
      * pixels.
      * 
-     * @param px A value in px (pixels) unit. Which we need to convert into
-     *            db
+     * @param px A value in px (pixels) unit. Which we need to convert into db
      * @return A float value to represent dp equivalent to px value
      */
     public static float convertPixelsToDp(float px) {
-        DisplayMetrics metrics = mRes.getDisplayMetrics(); 
+        DisplayMetrics metrics = mRes.getDisplayMetrics();
         float dp = px / (metrics.densityDpi / 160f);
         return dp;
     }
@@ -93,7 +94,7 @@ public abstract class Utils {
             return 0;
         }
     }
-    
+
     public static int getPieFormatDigits(float delta) {
         if (delta < 0.01) {
             return 4;
@@ -132,5 +133,73 @@ public abstract class Utils {
         } else {
             return 0 + bonus;
         }
+    }
+
+    /**
+     * Math.pow(...) is very expensive, so avoid calling it and create it
+     * yourself.
+     */
+    private static final int POW_10[] = {
+            1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000
+    };
+
+    /**
+     * formats the given number to the given number of decimals, and returns the
+     * number as a string
+     * 
+     * @param number
+     * @param digitCount
+     * @return
+     */
+    public static String formatNumber(float number, int digitCount) {
+
+        char[] out = new char[100];
+
+        boolean neg = false;
+        if (number == 0) {
+            return "0";
+        }
+        if (number < 0) {
+            neg = true;
+            number = -number;
+        }
+        if (digitCount > POW_10.length) {
+            digitCount = POW_10.length - 1;
+        }
+        number *= POW_10[digitCount];
+        long lval = Math.round(number);
+        int ind = out.length - 1;
+        int charCount = 0;
+        
+        while (lval != 0 || charCount < (digitCount + 1)) {
+            int digit = (int) (lval % 10);
+            lval = lval / 10;
+            out[ind--] = (char) (digit + '0');
+            charCount++;
+            if (charCount == digitCount) {
+                out[ind--] = '.';
+                charCount++;
+            }
+        }
+        if (neg) {
+            out[ind--] = '-';
+            charCount++;
+        }
+
+        return new String(out);
+    }
+
+    /**
+     * rounds the given number to the next significant number
+     * 
+     * @param number
+     * @return
+     */
+    public static float roundToNextSignificant(double number) {
+        final float d = (float) Math.ceil((float) Math.log10(number < 0 ? -number : number));
+        final int pw = 1 - (int) d;
+        final float magnitude = (float) Math.pow(10, pw);
+        final long shifted = Math.round(number * magnitude);
+        return shifted / magnitude;
     }
 }

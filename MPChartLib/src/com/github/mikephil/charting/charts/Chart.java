@@ -445,18 +445,18 @@ public abstract class Chart extends View {
 		}
 	}
 
-	/**
-	 * transform an array of points with all matrixes except the touch matrix --> use this if the transformed values are
-	 * not effected by touch gestures
-	 * 
-	 * @param pts
-	 */
-	protected void transformPointArrayNoTouch(float[] pts) {
-
-		mMatrixValueToPx.mapPoints(pts);
-		// mMatrixTouch.mapPoints(pts);
-		mMatrixOffset.mapPoints(pts);
-	}
+//	/**
+//	 * transform an array of points with all matrixes except the touch matrix --> use this if the transformed values are
+//	 * not effected by touch gestures
+//	 * 
+//	 * @param pts
+//	 */
+//	protected void transformPointArrayTouch(float[] pts) {
+//
+//		mMatrixValueToPx.mapPoints(pts);
+////		mMatrixTouch.mapPoints(pts);
+//		mMatrixOffset.mapPoints(pts);
+//	}
 
 	/**
 	 * draws the description text in the bottom right corner of the chart
@@ -582,6 +582,8 @@ public abstract class Chart extends View {
 		
 		// min scale-y is 1f
 		mScaleY = Math.max(1f, Math.min(getMaxScaleY(), curScaleY));
+		
+		if(mContentRect == null) return;
 
 		float maxTransX = -(float) mContentRect.width() * (mScaleX - 1f);
 		float newTransX = Math.min(Math.max(curTransX, maxTransX), 0);
@@ -803,7 +805,7 @@ public abstract class Chart extends View {
      * @return
      */
     public float getMaxScaleY() {
-        return 5f;
+        return 7f;
     }
 
 	/**

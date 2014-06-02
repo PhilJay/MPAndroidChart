@@ -96,14 +96,6 @@ public class MultiLineChartActivity extends Activity implements OnSeekBarChangeL
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		switch (item.getItemId()) {
-		case R.id.actionToggleRound: {
-			if (mChart.isYLegendRounded())
-				mChart.setRoundedYLegend(false);
-			else
-				mChart.setRoundedYLegend(true);
-			mChart.invalidate();
-			break;
-		}
 		case R.id.actionToggleValues: {
 			if (mChart.isDrawYValuesEnabled())
 				mChart.setDrawYValues(false);

@@ -86,7 +86,7 @@ public class DrawChartActivity extends Activity implements OnChartValueSelectedL
 		ChartData data = new ChartData(xVals, dataSets);
 
 		mChart.setData(data);
-		mChart.setYRange(10, 40, 0);
+		mChart.setYRange(10f, 40f);
 		mChart.invalidate();
 	}
 
@@ -100,14 +100,6 @@ public class DrawChartActivity extends Activity implements OnChartValueSelectedL
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		switch (item.getItemId()) {
-		case R.id.actionToggleRound: {
-			if (mChart.isYLegendRounded())
-				mChart.setRoundedYLegend(false);
-			else
-				mChart.setRoundedYLegend(true);
-			mChart.invalidate();
-			break;
-		}
 		case R.id.actionToggleValues: {
 			if (mChart.isDrawYValuesEnabled())
 				mChart.setDrawYValues(false);

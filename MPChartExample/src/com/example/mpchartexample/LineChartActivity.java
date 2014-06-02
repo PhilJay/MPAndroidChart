@@ -77,7 +77,7 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 
 		mChart.setDrawMarkerView(true);
 		mChart.setMarkerView(textView);
-
+		
 		mSeekBarX.setProgress(45);
 		mSeekBarY.setProgress(100);
 	}
@@ -92,14 +92,6 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		switch (item.getItemId()) {
-		case R.id.actionToggleRound: {
-			if (mChart.isYLegendRounded())
-				mChart.setRoundedYLegend(false);
-			else
-				mChart.setRoundedYLegend(true);
-			mChart.invalidate();
-			break;
-		}
 		case R.id.actionToggleValues: {
 			if (mChart.isDrawYValuesEnabled())
 				mChart.setDrawYValues(false);
