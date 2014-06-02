@@ -66,6 +66,9 @@ public abstract class BarLineChartBase extends Chart {
 
 	/** if true, units are drawn next to the values in the chart */
 	protected boolean mDrawUnitInChart = false;
+	
+	/** flag that indicates if pinch-zoom is enabled. if true, both x and y axis can be scaled with 2 fingers, if false, x and y axis can be scaled separately */
+	protected boolean mPinchZoomEnabled = false;
 
 	/**
 	 * if true, units are drawn next to the values in the legend
@@ -532,6 +535,28 @@ public abstract class BarLineChartBase extends Chart {
 		else
 			return false;
 	}
+	
+	/**
+     * returns true if the specified point (y-axis) exceeds the limits of what is visible on the top
+     * 
+     * @param v
+     * @return
+     */
+	protected boolean isOffContentTop(float p) {
+	    if(p < mContentRect.top) return true;
+	    else return false;
+	}
+	
+	/**
+     * returns true if the specified point (y-axis) exceeds the limits of what is visible on the bottom
+     * 
+     * @param v
+     * @return
+     */
+	protected boolean isOffContentBottom(float p) {
+        if(p > mContentRect.bottom) return true;
+        else return false;
+    }
 
 	/** indicates if the top y-legend entry is drawn or not */
 	private boolean mDrawTopYLegendEntry = true;
@@ -1075,6 +1100,22 @@ public abstract class BarLineChartBase extends Chart {
      */
     public boolean isFilterSet() {
         return mData.isApproximatedData();
+    }
+    
+    /**
+     * if set to true, both x and y axis can be scaled with 2 fingers, if false, x and y axis can be scaled separately. default: false
+     * @param enabled
+     */
+    public void setPinchZoom(boolean enabled) {
+        mPinchZoomEnabled = enabled;
+    }
+    
+    /**
+     * returns true if pinch-zoom is enabled, false if not
+     * @return
+     */
+    public boolean isPinchZoomEnabled() {
+        return mPinchZoomEnabled;
     }
 
 	@Override

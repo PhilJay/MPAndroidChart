@@ -134,7 +134,7 @@ public class LineChart extends BarLineChartBase {
 					break;
 
 				// make sure the lines don't do shitty things outside bounds
-				if (j != 0 && isOffContentLeft(valuePoints[j - 1]))
+				if (j != 0 && isOffContentLeft(valuePoints[j - 1]) && isOffContentTop(valuePoints[j+1]) && isOffContentBottom(valuePoints[j+1]))
 					continue;
 
 				mDrawCanvas.drawLine(valuePoints[j], valuePoints[j + 1], valuePoints[j + 2], valuePoints[j + 3], paint);
@@ -199,7 +199,7 @@ public class LineChart extends BarLineChartBase {
 					if (isOffContentRight(positions[j]))
 						break;
 
-					if (isOffContentLeft(positions[j]))
+					if (isOffContentLeft(positions[j]) && isOffContentTop(positions[j+1]) && isOffContentBottom(positions[j+1]))
 						continue;
 
 					float val = entries.get(j / 2).getVal();

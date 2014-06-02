@@ -586,15 +586,15 @@ public abstract class Chart extends View {
 		float maxTransX = -(float) mContentRect.width() * (mScaleX - 1f);
 		float newTransX = Math.min(Math.max(curTransX, maxTransX), 0);
 		
-		float maxTransY = -(float) mContentRect.height() * (mScaleY - 1f);
-		float newTransY = Math.min(Math.max(curTransY, maxTransY), 0);
+		float maxTransY = (float) mContentRect.height() * (mScaleY - 1f);
+		float newTransY = Math.max(Math.min(curTransY, maxTransY), 0f);
         
         Log.i(LOG_TAG, "scale-X: " + mScaleX + ", maxTransX: " + maxTransX + ", newTransX: " + newTransX);
         Log.i(LOG_TAG, "scale-Y: " + mScaleY + ", maxTransY: " + maxTransY + ", newTransY: " + newTransY);
 
 		vals[Matrix.MTRANS_X] = newTransX;
 		vals[Matrix.MSCALE_X] = mScaleX;
-		vals[Matrix.MTRANS_Y] = -newTransY;
+		vals[Matrix.MTRANS_Y] = newTransY;
         vals[Matrix.MSCALE_Y] = mScaleY;
 
 		matrix.setValues(vals);
@@ -803,7 +803,7 @@ public abstract class Chart extends View {
      * @return
      */
     public float getMaxScaleY() {
-        return mDeltaY;
+        return 5f;
     }
 
 	/**

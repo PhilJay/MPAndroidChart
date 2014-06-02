@@ -41,6 +41,7 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 	private int mode = NONE;
 	private float oldDistX = 1f;
 	private float oldDistY = 1f;
+	private float oldDist = 1f;
 	private BarLineChartBase mChart;
 
 	private GestureDetector mGestureDetector;
@@ -129,6 +130,7 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 				
 				oldDistX = getXDist(event);
 				oldDistY = getYDist(event);
+				oldDist = spacing(event);
 				
 				Log.d("TouchListener", "oldDist=" + dist);
 				if (dist > 10f) {
@@ -136,26 +138,25 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 					midPoint(mid, event);
 					mode = ZOOM;
 					mChart.disableScroll();
-					Log.d("TouchListener", "mode=ZOOM");
 				}
 				break;
 
 			case MotionEvent.ACTION_UP:
 				if (mode == NONE) {
 				}
-				Log.d("TouchListener", "mode=NONE");
+
 				mode = NONE;
 				mChart.enableScroll();
 				break;
 			case MotionEvent.ACTION_POINTER_UP:
-				Log.d("TouchListener", "mode=POSTZOOM");
+
 				mode = POSTZOOM;
 				break;
 			case MotionEvent.ACTION_MOVE:
 				if (mode == NONE && distance(event.getX(), start.x, event.getY(), start.y) > 25f) {
 					savedMatrix.set(matrix);
 					start.set(event.getX(), event.getY());
-					Log.d("TouchListener", "mode=DRAG");
+
 					mode = DRAG;
 					mChart.disableScroll();
 				} else if (mode == DRAG) {
@@ -163,7 +164,7 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 					matrix.postTranslate(event.getX() - start.x, event.getY() - start.y);
 				} else if (mode == ZOOM) {
 					float newDist = spacing(event);
-					Log.d("TouchListener", "newDist=" + newDist);
+
 					if (newDist > 10f) {
 					    
 					    float xDist = getXDist(event);
@@ -171,6 +172,7 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 					    
 						float scaleX = xDist / oldDistX;
 						float scaleY = yDist / oldDistY;
+						float scale = newDist / oldDist;
 						
 						float[] values = new float[9];
 						matrix.getValues(values);
@@ -178,25 +180,27 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 						float oldScaleX = values[Matrix.MSCALE_X];
 						float oldScaleY = values[Matrix.MSCALE_Y];
 						
-//						if ((scaleX < 1 || oldScaleX < mChart.getMaxScaleX())
-//                                && (scaleX > 1 || oldScaleX > MIN_SCALE)) {
-//                            matrix.set(savedMatrix);
-//                            matrix.postScale(scaleX, oldScaleY, mid.x, mid.y);
-//                        }
+						if(mChart.isPinchZoomEnabled()) {
 						
-                            if (xDist > yDist) {
+		                      matrix.set(savedMatrix);
+		                      matrix.postScale(scale, scale, mid.x, -mid.y);
+						} else {
+						    if (xDist > yDist) {
                                 if ((scaleX < 1 || oldScaleX < mChart.getMaxScaleX())
                                         && (scaleX > 1 || oldScaleX > MIN_SCALE)) {
                                     matrix.set(savedMatrix);
-                                    matrix.postScale(scaleX, oldScaleY, mid.x, mid.y);
+                                    matrix.postScale(scaleX, 1f, mid.x, mid.y);
                                 }
                             } else {
                                 if ((scaleY < 1 || oldScaleY < mChart.getMaxScaleY())
                                         && (scaleY > 1 || oldScaleY > MIN_SCALE)) {
                                     matrix.set(savedMatrix);
-                                    matrix.postScale(oldScaleX, scaleY, mid.x, mid.y);
+                                    
+                                    // y-axis comes from top to bottom, revert y
+                                    matrix.postScale(1f, scaleY, mid.x, -mid.y);
                                 }
                             }
+						}
 						
 //						Log.i("scale", "scale-x: " + scaleX + ", scale-y: " + scaleY + ", oldDistX: " + oldDistX  + ", oldDistY: " + oldDistY);
 //						Log.i("scale", "xDist: " + xDist + ", yDist: " + yDist);

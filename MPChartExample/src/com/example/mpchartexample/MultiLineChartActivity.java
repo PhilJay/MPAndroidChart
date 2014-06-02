@@ -56,7 +56,7 @@ public class MultiLineChartActivity extends Activity implements OnSeekBarChangeL
 		ct.addColorsForDataSets(ColorTemplate.COLORFUL_COLORS, this);
 		
 		mChart.setColorTemplate(ct);
-		mChart.setDrawTopYLegendEntry(false);
+//		mChart.setDrawTopYLegendEntry(false);
 		mChart.setOnChartValueSelectedListener(this);
 
 		// mChart.setDrawFilled(true);
