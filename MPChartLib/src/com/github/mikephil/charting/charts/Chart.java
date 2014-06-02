@@ -271,11 +271,11 @@ public abstract class Chart extends View {
 		// only calculate values if not fixed values
 		if (!fixedValues) {
 			mYChartMin = mData.getYMin();
-			mYChartMax = mYChartMin + mData.getYMax();
+			mYChartMax = mData.getYMax();
 		}
 
 		// calc delta
-		mDeltaY = mData.getYMax() - mYChartMin;
+		mDeltaY = Math.abs(mData.getYMax() - mData.getYMin());
 		mDeltaX = mData.getXVals().size() - 1;
 	}
 

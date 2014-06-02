@@ -126,6 +126,11 @@ public class BarChart extends BarLineChartBase {
 	@Override
 	protected void calcMinMax(boolean fixedValues) {
 		super.calcMinMax(fixedValues);
+		
+		if(!mStartAtZero && getYMin() >= 0f) {
+		    mYChartMin = getYMin();
+		    mDeltaY = Math.abs(mYChartMax - mYChartMin);
+		}
 
 		// increase deltax by 1 because the bars have a width of 1
 		mDeltaX++;

@@ -301,22 +301,18 @@ public abstract class BarLineChartBase extends Chart {
 	protected void calcMinMax(boolean fixedValues) {
 		super.calcMinMax(fixedValues); // calc min and max in the super class
 
-		// additional handling for space (default 10% space)
-
-		float spaceTop = (mData.getYMax() - mYChartMin) / 100f * 10f;
+	    // additional handling for space (default 10% space), spacing only applies with non-rounded y-legend
+		float space = mDeltaY / 100f * 10f;
 
 		if (mStartAtZero) {
 			mYChartMin = 0;
 		} else {
-			float spaceBottom = (mData.getYMax() - mYChartMin) / 100f * 10f;
-			mYChartMin = mYChartMin - spaceBottom;
+			mYChartMin = mYChartMin - space;
 		}
 
 		// calc delta
-		mDeltaY = (mData.getYMax() + spaceTop) - mYChartMin;
-		mYChartMax = mYChartMin + mDeltaY;
-
-		Log.i(LOG_TAG, "DeltaX: " + mDeltaX + ", DeltaY: " + mDeltaY);
+		mYChartMax = mYChartMax + space;
+		mDeltaY = Math.abs(mYChartMax - mYChartMin);
 	}
 
 	/**
@@ -378,29 +374,39 @@ public abstract class BarLineChartBase extends Chart {
 			}
 
 			float step = (float) (multi * tenPowExp);
+			float min = mYChartMin;
 
 			float val = 0;
 
-			if (step >= 1f)
-				val = (int) (mYChartMin / step) * step;
-			else {
+			if (step >= 1f) {
+				
+			    val = (int) (mYChartMin / step) - step;
+			    mYChartMin = val;
+			} else {
 				val = mYChartMin;
+			}
+			
+			if(mStartAtZero) {
+			    val = 0;		
+			    mYChartMin = 0;
+			} else {
+			 
+	            if(getYMin() >= 0 && this instanceof BarChart) {
+	                val = 0;       
+	                mYChartMin = 0;
+	            }
 			}
 
 			// float val = mYMin % step * (int) (mYMin / step);
 
 			// create the y-legend values in the calculated step size
-			while (val <= mDeltaY + step + mYChartMin) {
+			while (val <= mDeltaY + step + min) {
 				yLegend.add(val);
 				val = val + step;
 			}
 
-			if (step >= 1f)
-				mYChartMin = (int) (mYChartMin / step) * step;
-
 			// set the new delta adequate to the last y-legend value
-			mDeltaY = val - step - mYChartMin;
-			mYChartMax = yLegend.get(yLegend.size() - 1);
+			mDeltaY = val - step - mYChartMin;			
 
 		} else {
 
@@ -414,8 +420,15 @@ public abstract class BarLineChartBase extends Chart {
 
 			yLegend.add(mDeltaY + mYChartMin);
 		}
+		
+		mYChartMax = yLegend.get(yLegend.size() - 1);
+		
 		// convert the list to an array
 		mYLegend = yLegend.toArray(new Float[0]);
+		
+        Log.i(LOG_TAG, "DeltaX: " + mDeltaX + ", DeltaY: " + mDeltaY);
+        Log.i(LOG_TAG, "mYCMax: " + mYChartMax + ", mYCMin: " + mYChartMin);
+        Log.i(LOG_TAG, "yMax: " + getYMax() + ", yMin: " + getYMin());
 	}
 
 	/**
