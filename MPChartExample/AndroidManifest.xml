@@ -30,6 +30,7 @@
         <activity android:name="MultiLineChartActivity"></activity>
         <activity android:name="BarChartActivityMultiDataset"></activity>
         <activity android:name="DrawChartActivity"></activity>
+        <activity android:name="ScatterChartActivity"></activity>
     </application>
 
 </manifest>

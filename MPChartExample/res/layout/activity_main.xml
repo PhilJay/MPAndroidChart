@@ -72,6 +72,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:text="View on GitHub" />
+            
+            <Button
+                android:id="@+id/button9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="ScatterChart" />
         </LinearLayout>
     </ScrollView>
 
