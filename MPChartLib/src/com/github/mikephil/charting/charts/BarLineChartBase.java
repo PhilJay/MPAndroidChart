@@ -14,6 +14,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.ViewParent;
 
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
@@ -22,12 +23,13 @@ import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.YLegend;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
- * Baseclass of all LineChart and BarChart.
+ * Baseclass of LineChart and BarChart.
  * 
  * @author Philipp Jahoda
  */
@@ -41,6 +43,15 @@ public abstract class BarLineChartBase extends Chart {
 
     /** the maximum number of entried to which values will be drawn */
     protected int mMaxVisibleCount = 100;
+
+    /** contains the current scale factor of the x-axis */
+    protected float mScaleX = 1f;
+
+    /** contains the current scale factor of the y-axis */
+    protected float mScaleY = 1f;
+
+    /** holds the maximum scale factor of the y-axis, default 7f */
+    protected float mMaxScaleY = 7f;
 
     /**
      * width of the x-legend in pixels - this is calculated by the
@@ -63,6 +74,9 @@ public abstract class BarLineChartBase extends Chart {
 
     /** if true, units are drawn next to the values in the chart */
     protected boolean mDrawUnitInChart = false;
+
+    /** indicates if the top y-legend entry is drawn or not */
+    private boolean mDrawTopYLegendEntry = true;
 
     /**
      * flag that indicates if pinch-zoom is enabled. if true, both x and y axis
@@ -392,12 +406,6 @@ public abstract class BarLineChartBase extends Chart {
         }
     }
 
-    private static class YLegend {
-        float[] mEntries = new float[] {};
-        int mEntryCount;
-        int mDecimals;
-    }
-
     /**
      * draws the x legend to the screen
      */
@@ -471,76 +479,6 @@ public abstract class BarLineChartBase extends Chart {
                                 positions[i * 2 + 1], mYLegendPaint);
             }
         }
-    }
-
-    /**
-     * returns true if the specified point (x-axis) exceeds the limits of what
-     * is visible to the right side
-     * 
-     * @param v
-     * @return
-     */
-    protected boolean isOffContentRight(float p) {
-        if (p > mContentRect.right)
-            return true;
-        else
-            return false;
-    }
-
-    /**
-     * returns true if the specified point (x-axis) exceeds the limits of what
-     * is visible to the left side
-     * 
-     * @param v
-     * @return
-     */
-    protected boolean isOffContentLeft(float p) {
-        if (p < mContentRect.left)
-            return true;
-        else
-            return false;
-    }
-
-    /**
-     * returns true if the specified point (y-axis) exceeds the limits of what
-     * is visible on the top
-     * 
-     * @param v
-     * @return
-     */
-    protected boolean isOffContentTop(float p) {
-        if (p < mContentRect.top)
-            return true;
-        else
-            return false;
-    }
-
-    /**
-     * returns true if the specified point (y-axis) exceeds the limits of what
-     * is visible on the bottom
-     * 
-     * @param v
-     * @return
-     */
-    protected boolean isOffContentBottom(float p) {
-        if (p > mContentRect.bottom)
-            return true;
-        else
-            return false;
-    }
-
-    /** indicates if the top y-legend entry is drawn or not */
-    private boolean mDrawTopYLegendEntry = true;
-
-    /**
-     * set this to true to enable drawing the top y-legend entry. Disabling this
-     * can be helpful when the y-legend and x-legend interfear with each other.
-     * default: true
-     * 
-     * @param enabled
-     */
-    public void setDrawTopYLegendEntry(boolean enabled) {
-        mDrawTopYLegendEntry = enabled;
     }
 
     /**
@@ -619,18 +557,163 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * determines how much space (in percent of the total range) is left between
-     * the loweset value of the chart and its bottom (bottomSpace) and the
-     * highest value of the chart and its top (topSpace) recommended: 3-25 %
-     * NOTE: the bottomSpace will only apply if "startAtZero" is set to false
+     * returns true if the specified point (x-axis) exceeds the limits of what
+     * is visible to the right side
      * 
-     * @param bottomSpace
-     * @param topSpace
+     * @param v
+     * @return
      */
-    // public void setSpacePercent(int bottomSpace, int topSpace) {
-    // mYSpacePercentBottom = bottomSpace;
-    // mYSpacePercentTop = topSpace;
-    // }
+    protected boolean isOffContentRight(float p) {
+        if (p > mContentRect.right)
+            return true;
+        else
+            return false;
+    }
+
+    /**
+     * returns true if the specified point (x-axis) exceeds the limits of what
+     * is visible to the left side
+     * 
+     * @param v
+     * @return
+     */
+    protected boolean isOffContentLeft(float p) {
+        if (p < mContentRect.left)
+            return true;
+        else
+            return false;
+    }
+
+    /**
+     * returns true if the specified point (y-axis) exceeds the limits of what
+     * is visible on the top
+     * 
+     * @param v
+     * @return
+     */
+    protected boolean isOffContentTop(float p) {
+        if (p < mContentRect.top)
+            return true;
+        else
+            return false;
+    }
+
+    /**
+     * returns true if the specified point (y-axis) exceeds the limits of what
+     * is visible on the bottom
+     * 
+     * @param v
+     * @return
+     */
+    protected boolean isOffContentBottom(float p) {
+        if (p > mContentRect.bottom)
+            return true;
+        else
+            return false;
+    }
+
+    /**
+     * ################ ################ ################ ################
+     */
+    /** CODE BELOW THIS RELATED TO SCALING AND GESTURES */
+
+    /**
+     * disables intercept touchevents
+     */
+    public void disableScroll() {
+        ViewParent parent = getParent();
+        parent.requestDisallowInterceptTouchEvent(true);
+    }
+
+    /**
+     * enables intercept touchevents
+     */
+    public void enableScroll() {
+        ViewParent parent = getParent();
+        parent.requestDisallowInterceptTouchEvent(false);
+    }
+
+    /**
+     * call this method to refresh the graph with a given touch matrix
+     * 
+     * @param newTouchMatrix
+     * @return
+     */
+    public Matrix refreshTouch(Matrix newTouchMatrix) {
+        mMatrixTouch.set(newTouchMatrix);
+
+        // make sure scale and translation are within their bounds
+        limitTransAndScale(mMatrixTouch);
+
+        // redraw
+        invalidate();
+
+        newTouchMatrix.set(mMatrixTouch);
+        return newTouchMatrix;
+    }
+
+    /**
+     * limits the maximum scale and X translation of the given matrix
+     * 
+     * @param matrix
+     */
+    protected void limitTransAndScale(Matrix matrix) {
+
+        float[] vals = new float[9];
+        matrix.getValues(vals);
+
+        float curTransX = vals[Matrix.MTRANS_X];
+        float curScaleX = vals[Matrix.MSCALE_X];
+
+        float curTransY = vals[Matrix.MTRANS_Y];
+        float curScaleY = vals[Matrix.MSCALE_Y];
+
+//        Log.i(LOG_TAG, "curTransX: " + curTransX + ", curScaleX: " + curScaleX);
+//        Log.i(LOG_TAG, "curTransY: " + curTransY + ", curScaleY: " + curScaleY);
+
+        // min scale-x is 1f
+        mScaleX = Math.max(1f, Math.min(getMaxScaleX(), curScaleX));
+
+        // min scale-y is 1f
+        mScaleY = Math.max(1f, Math.min(getMaxScaleY(), curScaleY));
+
+        if (mContentRect == null)
+            return;
+
+        float maxTransX = -(float) mContentRect.width() * (mScaleX - 1f);
+        float newTransX = Math.min(Math.max(curTransX, maxTransX), 0);
+
+        float maxTransY = (float) mContentRect.height() * (mScaleY - 1f);
+        float newTransY = Math.max(Math.min(curTransY, maxTransY), 0f);
+
+//        Log.i(LOG_TAG, "scale-X: " + mScaleX + ", maxTransX: " + maxTransX + ", newTransX: "
+//                + newTransX);
+//        Log.i(LOG_TAG, "scale-Y: " + mScaleY + ", maxTransY: " + maxTransY + ", newTransY: "
+//                + newTransY);
+
+        vals[Matrix.MTRANS_X] = newTransX;
+        vals[Matrix.MSCALE_X] = mScaleX;
+        vals[Matrix.MTRANS_Y] = newTransY;
+        vals[Matrix.MSCALE_Y] = mScaleY;
+
+        matrix.setValues(vals);
+    }
+
+    /**
+     * ################ ################ ################ ################
+     */
+    /** CODE BELOW IS GETTERS AND SETTERS */
+
+    /**
+     * set this to true to enable drawing the top y-legend entry. Disabling this
+     * can be helpful when the y-legend and x-legend interfear with each other.
+     * default: true
+     * 
+     * @param enabled
+     */
+    public void setDrawTopYLegendEntry(boolean enabled) {
+        mDrawTopYLegendEntry = enabled;
+    }
 
     /**
      * sets the effective range of y-values the chart can display
@@ -860,8 +943,8 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * returns the Highlight object (x index and DataSet index) of the selected
-     * value at the given touch point
+     * returns the Highlight object (contains x-index and DataSet index) of the
+     * selected value at the given touch point.
      * 
      * @param x
      * @param y
@@ -899,7 +982,8 @@ public abstract class BarLineChartBase extends Chart {
             return null;
 
         int xIndex = (int) base;
-        int yIndex = 0; // index of the DataSet inside the ChartData object
+        int dataSetIndex = 0; // index of the DataSet inside the ChartData
+                              // object
 
         if (this instanceof LineChart) {
 
@@ -911,12 +995,12 @@ public abstract class BarLineChartBase extends Chart {
 
         ArrayList<SelInfo> valsAtIndex = getYValsAtIndex(xIndex);
 
-        yIndex = getClosestDataSetIndex(valsAtIndex, (float) yTouchVal);
+        dataSetIndex = getClosestDataSetIndex(valsAtIndex, (float) yTouchVal);
 
-        if (yIndex == -1)
+        if (dataSetIndex == -1)
             return null;
 
-        return new Highlight(xIndex, yIndex);
+        return new Highlight(xIndex, dataSetIndex);
     }
 
     /**
@@ -978,6 +1062,18 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
+     * returns the y-value at the given touch position (must not necessarily be
+     * a value contained in one of the datasets)
+     * 
+     * @param x
+     * @param y
+     * @return
+     */
+    public float getYValueByTouchPoint(float x, float y) {
+        return (float) getValuesByTouchPoint(x, y).y;
+    }
+
+    /**
      * returns the Entry object displayed at the touched position of the chart
      * 
      * @param x
@@ -987,6 +1083,54 @@ public abstract class BarLineChartBase extends Chart {
     public Entry getEntryByTouchPoint(float x, float y) {
         Highlight h = getHighlightByTouchPoint(x, y);
         return getEntry(h.getXIndex(), mData.getDataSetByIndex(h.getDataSetIndex()).getType());
+    }
+
+    /**
+     * returns the current x-scale factor
+     */
+    public float getScaleX() {
+        return mScaleX;
+    }
+
+    /**
+     * returns the current y-scale factor
+     */
+    public float getScaleY() {
+        return mScaleY;
+    }
+
+    /**
+     * calcualtes the maximum x-scale value depending on the number of x-values,
+     * maximum scale is numberOfXvals / 2
+     * 
+     * @return
+     */
+    public float getMaxScaleX() {
+        return mDeltaX / 2f;
+    }
+
+    /**
+     * Returns the maximum y-scale factor. Default 7f
+     * 
+     * @return
+     */
+    public float getMaxScaleY() {
+        return mMaxScaleY;
+    }
+
+    /**
+     * sets the maximum scale factor for the y-axis. Default 7f, min 1f, max 20f
+     * 
+     * @param factor
+     */
+    public void setMaxScaleY(float factor) {
+
+        if (factor < 1f)
+            factor = 1f;
+        if (factor > 20f)
+            factor = 20f;
+
+        mMaxScaleY = factor;
     }
 
     /**

@@ -77,7 +77,7 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 
 		mChart.setDrawMarkerView(true);
 		mChart.setMarkerView(textView);
-		
+
 		mSeekBarX.setProgress(45);
 		mSeekBarY.setProgress(100);
 	}

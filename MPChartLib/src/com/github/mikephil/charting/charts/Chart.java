@@ -123,12 +123,6 @@ public abstract class Chart extends View {
 	/** the number of x-values the chart displays */
 	protected float mDeltaX = 1f;
 
-	/** contains the current scale factor of the x-axis */
-	protected float mScaleX = 1f;
-	
-	/** contains the current scale factor of the y-axis */
-	protected float mScaleY = 1f;
-
 	/** matrix to map the values to the screen pixels */
 	protected Matrix mMatrixValueToPx;
 
@@ -502,11 +496,6 @@ public abstract class Chart extends View {
 	 */
 	protected abstract void drawHighlights();
 
-	/**
-	 * ################ ################ ################ ################
-	 */
-	/** CODE BELOW THIS RELATED TO SCALING AND GESTURES */
-
 	/** touchlistener that handles touches and gestures on the chart */
 	protected OnTouchListener mListener;
 
@@ -521,85 +510,6 @@ public abstract class Chart extends View {
 			return false;
 		else
 			return mListener.onTouch(this, event);
-	}
-
-	/**
-	 * disables intercept touchevents
-	 */
-	public void disableScroll() {
-		ViewParent parent = getParent();
-		parent.requestDisallowInterceptTouchEvent(true);
-	}
-
-	/**
-	 * enables intercept touchevents
-	 */
-	public void enableScroll() {
-		ViewParent parent = getParent();
-		parent.requestDisallowInterceptTouchEvent(false);
-	}
-
-	/**
-	 * call this method to refresh the graph with a given touch matrix
-	 * 
-	 * @param newTouchMatrix
-	 * @return
-	 */
-	public Matrix refreshTouch(Matrix newTouchMatrix) {
-		mMatrixTouch.set(newTouchMatrix);
-
-		// make sure scale and translation are within their bounds
-		limitTransAndScale(mMatrixTouch);
-
-		// redraw
-		invalidate();
-
-		newTouchMatrix.set(mMatrixTouch);
-		return newTouchMatrix;
-	}
-
-	/**
-	 * limits the maximum scale and X translation of the given matrix
-	 * 
-	 * @param matrix
-	 */
-	protected void limitTransAndScale(Matrix matrix) {
-
-		float[] vals = new float[9];
-		matrix.getValues(vals);
-
-		float curTransX = vals[Matrix.MTRANS_X];
-		float curScaleX = vals[Matrix.MSCALE_X];
-		
-		float curTransY = vals[Matrix.MTRANS_Y];
-		float curScaleY = vals[Matrix.MSCALE_Y];
-		
-		Log.i(LOG_TAG, "curTransX: " + curTransX + ", curScaleX: " + curScaleX);
-		Log.i(LOG_TAG, "curTransY: " + curTransY + ", curScaleY: " + curScaleY);
-
-		// min scale-x is 1f
-		mScaleX = Math.max(1f, Math.min(getMaxScaleX(), curScaleX));
-		
-		// min scale-y is 1f
-		mScaleY = Math.max(1f, Math.min(getMaxScaleY(), curScaleY));
-		
-		if(mContentRect == null) return;
-
-		float maxTransX = -(float) mContentRect.width() * (mScaleX - 1f);
-		float newTransX = Math.min(Math.max(curTransX, maxTransX), 0);
-		
-		float maxTransY = (float) mContentRect.height() * (mScaleY - 1f);
-		float newTransY = Math.max(Math.min(curTransY, maxTransY), 0f);
-        
-        Log.i(LOG_TAG, "scale-X: " + mScaleX + ", maxTransX: " + maxTransX + ", newTransX: " + newTransX);
-        Log.i(LOG_TAG, "scale-Y: " + mScaleY + ", maxTransY: " + maxTransY + ", newTransY: " + newTransY);
-
-		vals[Matrix.MTRANS_X] = newTransX;
-		vals[Matrix.MSCALE_X] = mScaleX;
-		vals[Matrix.MTRANS_Y] = newTransY;
-        vals[Matrix.MSCALE_Y] = mScaleY;
-
-		matrix.setValues(vals);
 	}
 
 	/**
@@ -777,38 +687,6 @@ public abstract class Chart extends View {
 	}
 
 	/**
-	 * returns the current x-scale factor
-	 */
-	public float getScaleX() {
-		return mScaleX;
-	}
-	
-	/**
-	 * returns the current y-scale factor
-	 */
-	public float getScaleY() {
-	    return mScaleY;
-	}
-
-	/**
-	 * calcualtes the maximum x-scale value depending on the number of x-values, maximum scale is numberOfXvals / 2
-	 * 
-	 * @return
-	 */
-	public float getMaxScaleX() {
-		return mDeltaX / 2f;
-	}
-	
-	/**
-     * calcualtes the maximum y-scale value depending on the y delta value
-     * 
-     * @return
-     */
-    public float getMaxScaleY() {
-        return 7f;
-    }
-
-	/**
 	 * returns the current y-max value in the y-values array
 	 * 
 	 * @return
@@ -856,11 +734,11 @@ public abstract class Chart extends View {
 	/**
 	 * returns the average value for a specific DataSet type in the chart
 	 * 
-	 * @param type
+	 * @param dataSetType
 	 * @return
 	 */
-	public float getAverage(int type) {
-		return mData.getDataSetByType(type).getYValueSum() / mData.getDataSetByType(type).getEntryCount();
+	public float getAverage(int dataSetType) {
+		return mData.getDataSetByType(dataSetType).getYValueSum() / mData.getDataSetByType(dataSetType).getEntryCount();
 	}
 
 	/**

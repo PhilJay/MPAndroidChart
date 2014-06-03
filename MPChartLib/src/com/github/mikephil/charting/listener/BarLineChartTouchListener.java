@@ -1,3 +1,4 @@
+
 package com.github.mikephil.charting.listener;
 
 import android.graphics.Matrix;
@@ -18,383 +19,352 @@ import com.github.mikephil.charting.utils.PointD;
 
 public class BarLineChartTouchListener extends SimpleOnGestureListener implements OnTouchListener {
 
-	private static final float MAX_SCALE = Float.MAX_VALUE; // 10f;
-	private static final float MIN_SCALE = 0.5f;
+    private static final float MIN_SCALE = 0.5f;
 
-	Matrix matrix = new Matrix();
-	Matrix savedMatrix = new Matrix();
+    private Matrix mMatrix = new Matrix();
+    private Matrix mSavedMatrix = new Matrix();
 
-	PointF start = new PointF();
-	PointF mid = new PointF();
+    /** point where the touch action started */
+    private PointF mTouchStartPoint = new PointF();
+    
+    /** center between two pointers (fingers on the display) */
+    private PointF mTouchPointCenter = new PointF();
 
-	// We can be in one of these 3 states
-	private static final int NONE = 0;
-	private static final int DRAG = 1;
-	private static final int ZOOM = 2;
-	private static final int POSTZOOM = 3;
-	private static final int LONGPRESS = 4;
-	private static final int DRAWING = 5;
+    private static final int NONE = 0;
+    private static final int DRAG = 1;
+    private static final int POSTZOOM = 3;
+    private static final int LONGPRESS = 4;
+    private static final int DRAWING = 5;
 
-	/** if ture, user can draw on the chart */
-	private boolean mDrawingEnabled = false;
+    private static final int X_ZOOM = 6;
+    private static final int Y_ZOOM = 7;
+    private static final int PINCH_ZOOM = 8;
 
-	private int mode = NONE;
-	private float oldDistX = 1f;
-	private float oldDistY = 1f;
-	private float oldDist = 1f;
-	private BarLineChartBase mChart;
+    /** if ture, user can draw on the chart */
+    private boolean mDrawingEnabled = false;
 
-	private GestureDetector mGestureDetector;
+    private int mTouchMode = NONE;
 
-	public BarLineChartTouchListener(BarLineChartBase chart, Matrix start) {
-		this.mChart = chart;
-		this.matrix = start;
+    private float mSavedXDist = 1f;
+    private float mSavedYDist = 1f;
+    private float mSavedDist = 1f;
+    
+    private BarLineChartBase mChart;
 
-		mGestureDetector = new GestureDetector(chart.getContext(), this);
-	}
+    private GestureDetector mGestureDetector;
 
-	@Override
-	public boolean onTouch(View v, MotionEvent event) {
+    public BarLineChartTouchListener(BarLineChartBase chart, Matrix start) {
+        this.mChart = chart;
+        this.mMatrix = start;
 
-		if (mode == NONE) {
-			mGestureDetector.onTouchEvent(event);
-		}
+        mGestureDetector = new GestureDetector(chart.getContext(), this);
+    }
 
-		if (mDrawingEnabled) {
-			if (mChart instanceof LineChart) {
-				ChartData data = mChart.getData();
-				switch (event.getAction() & MotionEvent.ACTION_MASK) {
-				case MotionEvent.ACTION_DOWN:
-					if (mode == NONE || mode == LONGPRESS) {
-						mode = DRAWING;
-						data.createNewDrawingDataSet(1);
-						Log.i("Drawing", "New drawing data set created");
-					}
-					break;
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
 
-				case MotionEvent.ACTION_MOVE:
-					if (mode == DRAWING) {
-					    
-					    PointD p = mChart.getValuesByTouchPoint(event.getX(), event.getY());
-					    
-					    int xIndex = (int) p.x;
-					    float yVal = (float) p.y;
-					    
-					    if (xIndex < 0)
-				            xIndex = 0;
-				        if (xIndex >= data.getXValCount()) {
-				            xIndex = data.getXValCount() - 1;
-				        }
+        if (mTouchMode == NONE) {
+            mGestureDetector.onTouchEvent(event);
+        }
 
-						Entry entry = new Entry((float) yVal, xIndex);
-						boolean added = data.addNewDrawingEntry(entry);
-						if (added) {
-							Log.i("Drawing", "Added entry " + entry.toString());
-							// TODO it is bad to call prepare all the time
-							mChart.prepare();
-							mChart.invalidate();
-						}
-					}
-					break;
-				case MotionEvent.ACTION_UP:
-				case MotionEvent.ACTION_CANCEL:
-					if (mode == DRAWING) {
-						data.finishNewDrawingEntry();
-						mode = NONE;
-						mChart.prepare();
-						mChart.invalidate();
-						Log.i("Drawing", "Drawing finished");
-					}
-					break;
+        if (mDrawingEnabled) {
+            if (mChart instanceof LineChart) {
+                ChartData data = mChart.getData();
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                    case MotionEvent.ACTION_DOWN:
+                        if (mTouchMode == NONE || mTouchMode == LONGPRESS) {
+                            mTouchMode = DRAWING;
+                            data.createNewDrawingDataSet(1);
+                            Log.i("Drawing", "New drawing data set created");
+                        }
+                        break;
 
-				default:
-					Log.i("Drawing", "Other action " + event.toString());
-					break;
-				}
-				// currently no dragging when drawing
-				return true;
-			}
-		} else {
+                    case MotionEvent.ACTION_MOVE:
+                        if (mTouchMode == DRAWING) {
 
-			if (!mChart.isDragEnabled())
-				return true;
+                            PointD p = mChart.getValuesByTouchPoint(event.getX(), event.getY());
 
-			// Handle touch events here...
-			switch (event.getAction() & MotionEvent.ACTION_MASK) {
-			case MotionEvent.ACTION_DOWN:
-				savedMatrix.set(matrix);
-				start.set(event.getX(), event.getY());
-				break;
-			case MotionEvent.ACTION_POINTER_DOWN:
-				float dist = spacing(event);
-				
-				oldDistX = getXDist(event);
-				oldDistY = getYDist(event);
-				oldDist = spacing(event);
-				
-				Log.d("TouchListener", "oldDist=" + dist);
-				if (dist > 10f) {
-					savedMatrix.set(matrix);
-					midPoint(mid, event);
-					mode = ZOOM;
-					mChart.disableScroll();
-				}
-				break;
+                            int xIndex = (int) p.x;
+                            float yVal = (float) p.y;
 
-			case MotionEvent.ACTION_UP:
-				if (mode == NONE) {
-				}
+                            if (xIndex < 0)
+                                xIndex = 0;
+                            if (xIndex >= data.getXValCount()) {
+                                xIndex = data.getXValCount() - 1;
+                            }
 
-				mode = NONE;
-				mChart.enableScroll();
-				break;
-			case MotionEvent.ACTION_POINTER_UP:
+                            Entry entry = new Entry((float) yVal, xIndex);
+                            boolean added = data.addNewDrawingEntry(entry);
+                            if (added) {
+                                Log.i("Drawing", "Added entry " + entry.toString());
+                                // TODO it is bad to call prepare all the time
+                                mChart.prepare();
+                                mChart.invalidate();
+                            }
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
+                        if (mTouchMode == DRAWING) {
+                            data.finishNewDrawingEntry();
+                            mTouchMode = NONE;
+                            mChart.prepare();
+                            mChart.invalidate();
+                            Log.i("Drawing", "Drawing finished");
+                        }
+                        break;
 
-				mode = POSTZOOM;
-				break;
-			case MotionEvent.ACTION_MOVE:
-				if (mode == NONE && distance(event.getX(), start.x, event.getY(), start.y) > 25f) {
-					savedMatrix.set(matrix);
-					start.set(event.getX(), event.getY());
+                    default:
+                        Log.i("Drawing", "Other action " + event.toString());
+                        break;
+                }
+                // currently no dragging when drawing
+                return true;
+            }
+        } else {
 
-					mode = DRAG;
-					mChart.disableScroll();
-				} else if (mode == DRAG) {
-					matrix.set(savedMatrix);
-					matrix.postTranslate(event.getX() - start.x, event.getY() - start.y);
-				} else if (mode == ZOOM) {
-					float newDist = spacing(event);
+            if (!mChart.isDragEnabled())
+                return true;
 
-					if (newDist > 10f) {
-					    
-					    float xDist = getXDist(event);
-					    float yDist = getYDist(event);
-					    
-						float scaleX = xDist / oldDistX;
-						float scaleY = yDist / oldDistY;
-						float scale = newDist / oldDist;
-						
-						float[] values = new float[9];
-						matrix.getValues(values);
-						
-						float oldScaleX = values[Matrix.MSCALE_X];
-						float oldScaleY = values[Matrix.MSCALE_Y];
-						
-						if(mChart.isPinchZoomEnabled()) {
-						
-		                      matrix.set(savedMatrix);
-		                      matrix.postScale(scale, scale, mid.x, -mid.y);
-						} else {
-						    if (xDist > yDist) {
+            // Handle touch events here...
+            switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                case MotionEvent.ACTION_DOWN:
+                    mSavedMatrix.set(mMatrix);
+                    mTouchStartPoint.set(event.getX(), event.getY());
+                    break;
+                case MotionEvent.ACTION_POINTER_DOWN:
+
+                    // get the distance between the pointers on the x-axis
+                    mSavedXDist = getXDist(event);
+
+                    // get the distance between the pointers on the y-axis
+                    mSavedYDist = getYDist(event);
+
+                    // get the total distance between the pointers
+                    mSavedDist = spacing(event);
+
+                    if (mSavedDist > 10f) {
+
+                        if (mChart.isPinchZoomEnabled()) {
+                            mTouchMode = PINCH_ZOOM;
+                        } else {
+                            if (mSavedXDist > mSavedYDist)
+                                mTouchMode = X_ZOOM;
+                            else
+                                mTouchMode = Y_ZOOM;
+                        }
+
+                        mSavedMatrix.set(mMatrix);
+                        midPoint(mTouchPointCenter, event);
+                        mChart.disableScroll();
+                    }
+                    break;
+
+                case MotionEvent.ACTION_UP:
+                    mTouchMode = NONE;
+                    mChart.enableScroll();
+                    break;
+                case MotionEvent.ACTION_POINTER_UP:
+                    mTouchMode = POSTZOOM;
+                    break;
+                case MotionEvent.ACTION_MOVE:
+
+                    if (mTouchMode == NONE
+                            && distance(event.getX(), mTouchStartPoint.x, event.getY(), mTouchStartPoint.y) > 25f) {
+                        mSavedMatrix.set(mMatrix);
+                        mTouchStartPoint.set(event.getX(), event.getY());
+
+                        mTouchMode = DRAG;
+                        mChart.disableScroll();
+
+                    } else if (mTouchMode == DRAG) {
+
+                        mMatrix.set(mSavedMatrix);
+                        mMatrix.postTranslate(event.getX() - mTouchStartPoint.x, event.getY() - mTouchStartPoint.y);
+
+                    } else if (mTouchMode == X_ZOOM || mTouchMode == Y_ZOOM
+                            || mTouchMode == PINCH_ZOOM) {
+
+                        // get the distance between the pointers of the touch
+                        // event
+                        float totalDist = spacing(event);
+
+                        if (totalDist > 10f) {
+
+                            float[] values = new float[9];
+                            mMatrix.getValues(values);
+
+                            // get the previous scale factors
+                            float oldScaleX = values[Matrix.MSCALE_X];
+                            float oldScaleY = values[Matrix.MSCALE_Y];
+
+                            // take actions depending on the activated touch
+                            // mode
+                            if (mTouchMode == PINCH_ZOOM) {
+
+                                float scale = totalDist / mSavedDist; // total
+                                                                      // scale
+
+                                mMatrix.set(mSavedMatrix);
+                                mMatrix.postScale(scale, scale, mTouchPointCenter.x, -mTouchPointCenter.y);
+
+                            } else if (mTouchMode == X_ZOOM) {
+
+                                float xDist = getXDist(event);
+                                float scaleX = xDist / mSavedXDist; // x-axis
+                                                                    // scale
+
                                 if ((scaleX < 1 || oldScaleX < mChart.getMaxScaleX())
                                         && (scaleX > 1 || oldScaleX > MIN_SCALE)) {
-                                    matrix.set(savedMatrix);
-                                    matrix.postScale(scaleX, 1f, mid.x, mid.y);
+
+                                    mMatrix.set(mSavedMatrix);
+                                    mMatrix.postScale(scaleX, 1f, mTouchPointCenter.x, mTouchPointCenter.y);
                                 }
-                            } else {
+
+                            } else if (mTouchMode == Y_ZOOM) {
+
+                                float yDist = getYDist(event);
+                                float scaleY = yDist / mSavedYDist; // y-axis
+                                                                    // scale
+
                                 if ((scaleY < 1 || oldScaleY < mChart.getMaxScaleY())
                                         && (scaleY > 1 || oldScaleY > MIN_SCALE)) {
-                                    matrix.set(savedMatrix);
-                                    
+
+                                    mMatrix.set(mSavedMatrix);
+
                                     // y-axis comes from top to bottom, revert y
-                                    matrix.postScale(1f, scaleY, mid.x, -mid.y);
+                                    mMatrix.postScale(1f, scaleY, mTouchPointCenter.x, -mTouchPointCenter.y);
                                 }
                             }
-						}
-						
-//						Log.i("scale", "scale-x: " + scaleX + ", scale-y: " + scaleY + ", oldDistX: " + oldDistX  + ", oldDistY: " + oldDistY);
-//						Log.i("scale", "xDist: " + xDist + ", yDist: " + yDist);
-					}
-				} else if (mode == LONGPRESS) {
-					mChart.disableScroll();
-				}
-			
-				break;
-			}
-		}
+                        }
+                    } else if (mTouchMode == LONGPRESS) {
+                        mChart.disableScroll();
+                    }
 
-		// Perform the transformation
-		matrix = mChart.refreshTouch(matrix);
+                    break;
+            }
+        }
 
-		return true; // indicate event was handled
-	}
+        // Perform the transformation
+        mMatrix = mChart.refreshTouch(mMatrix);
 
-	public void setDrawingEnabled(boolean mDrawingEnabled) {
-		this.mDrawingEnabled = mDrawingEnabled;
-	}
+        return true; // indicate event was handled
+    }
 
-//	private PointF calcImagePosition(PointF klick) {
-//		PointF point = new PointF();
-//		Matrix inverse = new Matrix();
-//		matrix.invert(inverse);
-//		float[] pts = new float[2];
-//		float[] values = new float[9];
-//		pts[0] = klick.x;
-//		pts[1] = klick.y;
-//		inverse.mapPoints(pts);
-//		matrix.getValues(values);
-//		Log.d("TouchListener", "Pts 0: " + pts[0] + ", Pts 1: " + pts[1]);
-//		point.x = (klick.x - values[Matrix.MTRANS_X]) / values[Matrix.MSCALE_X];
-//		point.y = (klick.y - values[Matrix.MTRANS_Y]) / values[Matrix.MSCALE_Y];
-//		Log.d("TouchListener", "Pts X: " + point.x + ", Pts 1: " + point.y);
-//		return point;
-//	}
+    /**
+     * returns the touch mode the listener is currently in
+     * 
+     * @return
+     */
+    public int getTouchMode() {
+        return mTouchMode;
+    }
 
-//	public void resetMatrix(ImageView view) {
-//		matrix.reset();
-//		view.setImageMatrix(matrix);
-//	}
+    /**
+     * enables drawing by finger on the listener
+     * 
+     * @param mDrawingEnabled
+     */
+    public void setDrawingEnabled(boolean mDrawingEnabled) {
+        this.mDrawingEnabled = mDrawingEnabled;
+    }
 
-//	private void limitScale() {
-//		// float[] values = new float[9];
-//		// matrix.getValues(values);
-//		// float sX = values[Matrix.MSCALE_X];
-//		//
-//		// float minScale = Math.max(minScale(), sX);
-//		// values[Matrix.MSCALE_X] = minScale;
-//		// values[Matrix.MSCALE_Y] = minScale;
-//		// matrix.setValues(values);
-//	}
+    /**
+     * returns the distance between two points
+     * 
+     * @param eventX
+     * @param startX
+     * @param eventY
+     * @param startY
+     * @return
+     */
+    private static float distance(float eventX, float startX, float eventY, float startY) {
+        float dx = eventX - startX;
+        float dy = eventY - startY;
+        return (float) Math.sqrt(dx * dx + dy * dy);
+    }
 
-	// public void moveTo(float x, float y) {
-	// matrix.postTranslate(x, y);
-	// limitPan();
-	// view.setImageMatrix(matrix);
-	// view.invalidate();
-	// }
-	//
-	// private float minScale() {
-	// return Math.max(view.getWidth() / PlanModel.imageWidth, view.getHeight()
-	// / PlanModel.imageHeight);
-	// }
+    /**
+     * returns the center point between two pointer touch points
+     * 
+     * @param point
+     * @param event
+     */
+    private static void midPoint(PointF point, MotionEvent event) {
+        float x = event.getX(0) + event.getX(1);
+        float y = event.getY(0) + event.getY(1);
+        point.set(x / 2f, y / 2f);
+    }
 
-	// public void setMatrixMinScale() {
-	// DisplayMetrics metrics = new DisplayMetrics();
-	// ctx.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-	//
-	// float minScale = Math.max(metrics.widthPixels / PlanModel.imageWidth,
-	// (metrics.heightPixels - (50 + 25) * metrics.density)
-	// / PlanModel.imageHeight);
-	// matrix.setScale(minScale, minScale);
-	// view.setImageMatrix(matrix);
-	// }
+    /**
+     * returns the distance between two pointer touch points
+     * 
+     * @param event
+     * @return
+     */
+    private static float spacing(MotionEvent event) {
+        float x = event.getX(0) - event.getX(1);
+        float y = event.getY(0) - event.getY(1);
+        return (float) Math.sqrt(x * x + y * y);
+    }
 
-	/**
-	 * returns the distance between two points
-	 * @param eventX
-	 * @param startX
-	 * @param eventY
-	 * @param startY
-	 * @return
-	 */
-	private static float distance(float eventX, float startX, float eventY, float startY) {
-		float dx = eventX - startX;
-		float dy = eventY - startY;
-		return (float) Math.sqrt(dx * dx + dy * dy);
-	}
+    /**
+     * calculates the distance on the x-axis between two pointers (fingers on
+     * the display)
+     * 
+     * @param e
+     * @return
+     */
+    private static float getXDist(MotionEvent e) {
+        float x = Math.abs(e.getX(0) - e.getX(1));
+        return x;
+    }
 
-	/**
-	 * returns the center point between two pointer touch points
-	 * @param point
-	 * @param event
-	 */
-	private static void midPoint(PointF point, MotionEvent event) {
-		float x = event.getX(0) + event.getX(1);
-		float y = event.getY(0) + event.getY(1);
-		point.set(x / 2f, y / 2f);
-	}
-
-	/**
-	 * returns the distance between two pointer touch points
-	 * @param event
-	 * @return
-	 */
-	private static float spacing(MotionEvent event) {
-		float x = event.getX(0) - event.getX(1);
-		float y = event.getY(0) - event.getY(1);
-		return (float) Math.sqrt(x * x + y * y);
-	}
-	
-	private static float getXDist(MotionEvent e) {
-	    float x = Math.abs(e.getX(0) - e.getX(1));
-	    return x;
-	}
-	
-	private static float getYDist(MotionEvent e) {
+    /**
+     * calculates the distance on the y-axis between two pointers (fingers on
+     * the display)
+     * 
+     * @param e
+     * @return
+     */
+    private static float getYDist(MotionEvent e) {
         float y = Math.abs(e.getY(0) - e.getY(1));
         return y;
     }
 
-//	/** Show an event in the LogCat view, for debugging */
-//	private void dumpEvent(MotionEvent event) {
-//		String names[] = { "DOWN", "UP", "MOVE", "CANCEL", "OUTSIDE", "POINTER_DOWN", "POINTER_UP", "7?", "8?", "9?" };
-//		StringBuilder sb = new StringBuilder();
-//		int action = event.getAction();
-//		int actionCode = action & MotionEvent.ACTION_MASK;
-//		sb.append("event ACTION_").append(names[actionCode]);
-//		if (actionCode == MotionEvent.ACTION_POINTER_DOWN || actionCode == MotionEvent.ACTION_POINTER_UP) {
-//			sb.append("(pid ").append(action >> MotionEvent.ACTION_POINTER_ID_SHIFT);
-//			sb.append(")");
-//		}
-//		sb.append("[");
-//		for (int i = 0; i < event.getPointerCount(); i++) {
-//			sb.append("#").append(i);
-//			sb.append("(pid ").append(event.getPointerId(i));
-//			sb.append(")=").append((int) event.getX(i));
-//			sb.append(",").append((int) event.getY(i));
-//			if (i + 1 < event.getPointerCount())
-//				sb.append(";");
-//		}
-//		sb.append(", dist: " + distance(event.getX(), start.x, event.getY(), start.y) + "]");
-//		Log.d("TouchListener", sb.toString());
-//	}
+    /**
+     * returns the matrix object the listener holds
+     * 
+     * @return
+     */
+    public Matrix getMatrix() {
+        return mMatrix;
+    }
 
-	public Matrix getMatrix() {
-		return matrix;
-	}
+    @Override
+    public boolean onSingleTapConfirmed(MotionEvent e) {
 
-	// @Override
-	// public boolean onDoubleTap(MotionEvent e) {
-	//
-	// float[] values = new float[9];
-	// matrix.getValues(values);
-	// float sX = values[Matrix.MSCALE_X];
-	// float minScale = minScale();
-	//
-	// if (sX > minScale * 1.5f) {
-	// matrix.postScale(0.5f, 0.5f, e.getX(), e.getY());
-	// } else {
-	// matrix.postScale(2, 2, e.getX(), e.getY());
-	// }
-	// limitScale();
-	// limitPan();
-	// ctx.update();
-	//
-	// return true;
-	// }
+        Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
 
-	@Override
-	public boolean onSingleTapConfirmed(MotionEvent e) {
+        mChart.highlightValues(new Highlight[] {
+                h
+        });
 
-		Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
+        return super.onSingleTapConfirmed(e);
+    }
 
-		mChart.highlightValues(new Highlight[] { h });
+    @Override
+    public void onLongPress(MotionEvent arg0) {
+        if (mTouchMode == NONE) {
+            mTouchMode = LONGPRESS;
+            // ctx.showValue(arg0, matrix);
+        }
+    };
 
-		return super.onSingleTapConfirmed(e);
-	}
-
-	@Override
-	public void onLongPress(MotionEvent arg0) {
-		if (mode == NONE) {
-			mode = LONGPRESS;
-			// ctx.showValue(arg0, matrix);
-		}
-	};
-
-	@Override
-	public boolean onSingleTapUp(MotionEvent e) {
-		// ctx.showValue(e, matrix);
-		return true;
-	}
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        // ctx.showValue(e, matrix);
+        return true;
+    }
 
 }
