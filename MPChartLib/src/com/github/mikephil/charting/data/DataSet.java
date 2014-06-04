@@ -118,7 +118,7 @@ public class DataSet {
 	}
 
 	/**
-	 * Returns the Entry object at the given xIndex. Returns null if no Entry object at that index. INFORMATION: This
+	 * Returns the first Entry object found at the given xIndex. Returns null if no Entry object at that index. INFORMATION: This
 	 * method does calculations at runtime. Do not over-use in performance critical situations.
 	 * 
 	 * @param xIndex
@@ -132,6 +132,24 @@ public class DataSet {
 		}
 
 		return null;
+	}
+	
+	/**
+	 * Returns all Entry objects at the given xIndex. INFORMATION: This
+     * method does calculations at runtime. Do not over-use in performance critical situations.
+	 * @param xIndex
+	 * @return
+	 */
+	public ArrayList<Entry> getEntriesForXIndex(int xIndex) {
+	    
+	    ArrayList<Entry> entries = new ArrayList<Entry>();
+	    
+	    for (int i = 0; i < mYVals.size(); i++) {
+            if (xIndex == mYVals.get(i).getXIndex())
+                entries.add(mYVals.get(i));
+        }
+	    
+	    return entries;
 	}
 
 	/**

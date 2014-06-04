@@ -1,3 +1,4 @@
+
 package com.github.mikephil.charting.charts;
 
 import android.content.Context;
@@ -16,443 +17,471 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 public class BarChart extends BarLineChartBase {
 
-	/** space indicator between the bars 0.1f == 10 % */
-	private float mBarSpace = 0.1f;
+    /** space indicator between the bars 0.1f == 10 % */
+    private float mBarSpace = 0.1f;
 
-	/** indicates the angle of the 3d effect */
-	private float mSkew = 0.3f;
+    /** indicates the angle of the 3d effect */
+    private float mSkew = 0.3f;
 
-	/** indicates how much the 3d effect goes back */
-	private float mDepth = 0.3f;
+    /** indicates how much the 3d effect goes back */
+    private float mDepth = 0.3f;
 
-	/** flag the enables or disables 3d bars */
-	private boolean m3DEnabled = true;
+    /** flag the enables or disables 3d bars */
+    private boolean m3DEnabled = true;
 
-	/** flag that enables or disables the highlighting arrow */
-	private boolean mDrawHighlightArrow = false;
+    /** flag that enables or disables the highlighting arrow */
+    private boolean mDrawHighlightArrow = false;
 
-	public BarChart(Context context) {
-		super(context);
-	}
+//    /**
+//     * if true, bars representing values of different DataSets on the same
+//     * x-index are stacked (instead of being aligned behind each other)
+//     */
+//    private boolean mStackEnabled = false;
 
-	public BarChart(Context context, AttributeSet attrs) {
-		super(context, attrs);
-	}
+    public BarChart(Context context) {
+        super(context);
+    }
 
-	public BarChart(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-	}
+    public BarChart(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
 
-	@Override
-	protected void init() {
-		super.init();
+    public BarChart(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
 
-		mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		mHighlightPaint.setStyle(Paint.Style.FILL);
-		mHighlightPaint.setColor(Color.rgb(0, 0, 0));
-		// set alpha after color
-		mHighlightPaint.setAlpha(120);
-	}
+    @Override
+    protected void init() {
+        super.init();
 
-	@Override
-	public void setColorTemplate(ColorTemplate ct) {
-		super.setColorTemplate(ct);
+        mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mHighlightPaint.setStyle(Paint.Style.FILL);
+        mHighlightPaint.setColor(Color.rgb(0, 0, 0));
+        // set alpha after color
+        mHighlightPaint.setAlpha(120);
+    }
 
-		calculate3DColors();
-	}
+    @Override
+    public void setColorTemplate(ColorTemplate ct) {
+        super.setColorTemplate(ct);
 
-	/** array that holds all the colors for the top 3D effect */
-	private ArrayList<ArrayList<Integer>> mTopColors;
+        calculate3DColors();
+    }
 
-	/** array that holds all the colors for the side 3D effect */
-	private ArrayList<ArrayList<Integer>> mSideColors;
+    /** array that holds all the colors for the top 3D effect */
+    private ArrayList<ArrayList<Integer>> mTopColors;
 
-	/**
-	 * calculates the 3D color arrays
-	 */
-	protected void calculate3DColors() {
+    /** array that holds all the colors for the side 3D effect */
+    private ArrayList<ArrayList<Integer>> mSideColors;
 
-		// generate the colors for the 3D effect
-		mTopColors = new ArrayList<ArrayList<Integer>>();
-		mSideColors = new ArrayList<ArrayList<Integer>>();
+    /**
+     * calculates the 3D color arrays
+     */
+    protected void calculate3DColors() {
 
-		float[] hsv = new float[3];
+        // generate the colors for the 3D effect
+        mTopColors = new ArrayList<ArrayList<Integer>>();
+        mSideColors = new ArrayList<ArrayList<Integer>>();
 
-		for (int i = 0; i < mCt.getColors().size(); i++) {
+        float[] hsv = new float[3];
 
-			// Get the colors for the DataSet at the current index. If the index
-			// is out of bounds, reuse DataSet colors.
-			ArrayList<Integer> colors = mCt.getDataSetColors(i);
-			ArrayList<Integer> topColors = new ArrayList<Integer>();
-			ArrayList<Integer> sideColors = new ArrayList<Integer>();
+        for (int i = 0; i < mCt.getColors().size(); i++) {
 
-			for (int j = 0; j < colors.size(); j++) {
+            // Get the colors for the DataSet at the current index. If the index
+            // is out of bounds, reuse DataSet colors.
+            ArrayList<Integer> colors = mCt.getDataSetColors(i);
+            ArrayList<Integer> topColors = new ArrayList<Integer>();
+            ArrayList<Integer> sideColors = new ArrayList<Integer>();
 
-				// extract the color
-				int c = colors.get(j);
-				Color.colorToHSV(c, hsv); // convert to hsv
+            for (int j = 0; j < colors.size(); j++) {
 
-				// make brighter
-				hsv[1] = hsv[1] - 0.1f; // less saturation
-				hsv[2] = hsv[2] + 0.1f; // more brightness
+                // extract the color
+                int c = colors.get(j);
+                Color.colorToHSV(c, hsv); // convert to hsv
 
-				// convert back
-				c = Color.HSVToColor(hsv);
+                // make brighter
+                hsv[1] = hsv[1] - 0.1f; // less saturation
+                hsv[2] = hsv[2] + 0.1f; // more brightness
 
-				// assign
-				topColors.add(c);
+                // convert back
+                c = Color.HSVToColor(hsv);
 
-				// get color again
-				c = colors.get(j);
+                // assign
+                topColors.add(c);
 
-				// convert
-				Color.colorToHSV(c, hsv);
+                // get color again
+                c = colors.get(j);
 
-				// make darker
-				hsv[1] = hsv[1] + 0.1f; // more saturation
-				hsv[2] = hsv[2] - 0.1f; // less brightness
+                // convert
+                Color.colorToHSV(c, hsv);
 
-				// reassing
-				c = Color.HSVToColor(hsv);
+                // make darker
+                hsv[1] = hsv[1] + 0.1f; // more saturation
+                hsv[2] = hsv[2] - 0.1f; // less brightness
 
-				sideColors.add(c);
-			}
+                // reassing
+                c = Color.HSVToColor(hsv);
 
-			mTopColors.add(topColors);
-			mSideColors.add(sideColors);
-		}
-	}
+                sideColors.add(c);
+            }
 
-	@Override
-	protected void calcMinMax(boolean fixedValues) {
-		super.calcMinMax(fixedValues);
-		
-		if(!mStartAtZero && getYMin() >= 0f) {
-		    mYChartMin = getYMin();
-		    mDeltaY = Math.abs(mYChartMax - mYChartMin);
-		}
+            mTopColors.add(topColors);
+            mSideColors.add(sideColors);
+        }
+    }
 
-		// increase deltax by 1 because the bars have a width of 1
-		mDeltaX++;
-	}
+    @Override
+    protected void calcMinMax(boolean fixedValues) {
+        super.calcMinMax(fixedValues);
 
-	@Override
-	protected void drawHighlights() {
+        if (!mStartAtZero && getYMin() >= 0f) {
+            mYChartMin = getYMin();
+            mDeltaY = Math.abs(mYChartMax - mYChartMin);
+        }
 
-		// if there are values to highlight and highlighnting is enabled, do it
-		if (mHighlightEnabled && valuesToHighlight()) {
+        // increase deltax by 1 because the bars have a width of 1
+        mDeltaX++;
+    }
 
-			// distance between highlight arrow and bar
-			float offsetY = mDeltaY * 0.04f;
+    @Override
+    protected void drawHighlights() {
 
-			for (int i = 0; i < mIndicesToHightlight.length; i++) {
+        // if there are values to highlight and highlighnting is enabled, do it
+        if (mHighlightEnabled && valuesToHighlight()) {
 
-				int index = mIndicesToHightlight[i].getXIndex();
+            // distance between highlight arrow and bar
+            float offsetY = mDeltaY * 0.04f;
 
-				// check outofbounds
-				if (index < mData.getYValCount() && index >= 0) {
+            for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
-					mHighlightPaint.setAlpha(120);
+                int index = mIndicesToHightlight[i].getXIndex();
 
-					float y = getYValueByDataSetIndex(index, mIndicesToHightlight[i].getDataSetIndex());
-					float left = index + mBarSpace / 2f;
-					float right = index + 1f - mBarSpace / 2f;
-					float top = y >= 0 ? y : 0;
-					float bottom = y <= 0 ? y : 0;
+                // check outofbounds
+                if (index < mData.getYValCount() && index >= 0) {
 
-					RectF highlight = new RectF(left, top, right, bottom);
-					transformRect(highlight);
+                    mHighlightPaint.setAlpha(120);
 
-					mDrawCanvas.drawRect(highlight, mHighlightPaint);
+                    float y = getYValueByDataSetIndex(index,
+                            mIndicesToHightlight[i].getDataSetIndex());
+                    float left = index + mBarSpace / 2f;
+                    float right = index + 1f - mBarSpace / 2f;
+                    float top = y >= 0 ? y : 0;
+                    float bottom = y <= 0 ? y : 0;
 
-					if (mDrawHighlightArrow) {
+                    RectF highlight = new RectF(left, top, right, bottom);
+                    transformRect(highlight);
 
-						mHighlightPaint.setAlpha(200);
+                    mDrawCanvas.drawRect(highlight, mHighlightPaint);
 
-						Path arrow = new Path();
-						arrow.moveTo(index + 0.5f, y + offsetY * 0.3f);
-						arrow.lineTo(index + 0.2f, y + offsetY);
-						arrow.lineTo(index + 0.8f, y + offsetY);
+                    if (mDrawHighlightArrow) {
 
-						transformPath(arrow);
-						mDrawCanvas.drawPath(arrow, mHighlightPaint);
-					}
-				}
-			}
-		}
-	}
+                        mHighlightPaint.setAlpha(200);
 
-	private RectF mBarRect = new RectF();
+                        Path arrow = new Path();
+                        arrow.moveTo(index + 0.5f, y + offsetY * 0.3f);
+                        arrow.lineTo(index + 0.2f, y + offsetY);
+                        arrow.lineTo(index + 0.8f, y + offsetY);
 
-	@Override
-	protected void drawData() {
+                        transformPath(arrow);
+                        mDrawCanvas.drawPath(arrow, mHighlightPaint);
+                    }
+                }
+            }
+        }
+    }
 
-		ArrayList<Path> topPaths = new ArrayList<Path>();
-		ArrayList<Path> sidePaths = new ArrayList<Path>();
+    private RectF mBarRect = new RectF();
 
-		ArrayList<DataSet> dataSets = mData.getDataSets();
+    @Override
+    protected void drawData() {
 
-		// 3D drawing
-		if (m3DEnabled) {
+        ArrayList<Path> topPaths = new ArrayList<Path>();
+        ArrayList<Path> sidePaths = new ArrayList<Path>();
 
-			float[] pts = new float[] { 0f, 0f, 1f, 0f };
+        ArrayList<DataSet> dataSets = mData.getDataSets();
 
-			// calculate the depth depending on scale
+        // preparations for 3D bars
+        if (m3DEnabled) {
 
-			transformPointArray(pts);
+            float[] pts = new float[] {
+                    0f, 0f, 1f, 0f
+            };
 
-			pts[3] = pts[2] - pts[0];
-			pts[2] = 0f;
-			pts[1] = 0f;
-			pts[0] = 0f;
+            // calculate the depth depending on scale
 
-			Matrix invert = new Matrix();
+            transformPointArray(pts);
 
-			mMatrixOffset.invert(invert);
-			invert.mapPoints(pts);
+            pts[3] = pts[2] - pts[0];
+            pts[2] = 0f;
+            pts[1] = 0f;
+            pts[0] = 0f;
 
-			mMatrixTouch.invert(invert);
-			invert.mapPoints(pts);
+            Matrix invert = new Matrix();
 
-			mMatrixValueToPx.invert(invert);
-			invert.mapPoints(pts);
+            mMatrixOffset.invert(invert);
+            invert.mapPoints(pts);
 
-			float depth = Math.abs(pts[3] - pts[1]) * mDepth;
+            mMatrixTouch.invert(invert);
+            invert.mapPoints(pts);
 
-			for (int i = 0; i < mData.getDataSetCount(); i++) {
+            mMatrixValueToPx.invert(invert);
+            invert.mapPoints(pts);
 
-				DataSet dataSet = dataSets.get(i);
-				ArrayList<Entry> series = dataSet.getYVals();
+            float depth = Math.abs(pts[3] - pts[1]) * mDepth;
 
-				for (int j = 0; j < series.size(); j++) {
+            for (int i = 0; i < mData.getDataSetCount(); i++) {
 
-					float x = series.get(j).getXIndex();
-					float y = series.get(j).getVal();
-					float left = x + mBarSpace / 2f;
-					float right = x + 1f - mBarSpace / 2f;
-					float top = y >= 0 ? y : 0;
+                DataSet dataSet = dataSets.get(i);
+                ArrayList<Entry> series = dataSet.getYVals();
 
-					// create the 3D effect paths for the top and side
-					Path topPath = new Path();
-					topPath.moveTo(left, top);
-					topPath.lineTo(left + mSkew, top + depth);
-					topPath.lineTo(right + mSkew, top + depth);
-					topPath.lineTo(right, top);
+                for (int j = 0; j < series.size(); j++) {
 
-					topPaths.add(topPath);
+                    float x = series.get(j).getXIndex();
+                    float y = series.get(j).getVal();
+                    float left = x + mBarSpace / 2f;
+                    float right = x + 1f - mBarSpace / 2f;
+                    float top = y >= 0 ? y : 0;
 
-					Path sidePath = new Path();
-					sidePath.moveTo(right, top);
-					sidePath.lineTo(right + mSkew, top + depth);
-					sidePath.lineTo(right + mSkew, depth);
-					sidePath.lineTo(right, 0);
+                    // create the 3D effect paths for the top and side
+                    Path topPath = new Path();
+                    topPath.moveTo(left, top);
+                    topPath.lineTo(left + mSkew, top + depth);
+                    topPath.lineTo(right + mSkew, top + depth);
+                    topPath.lineTo(right, top);
 
-					sidePaths.add(sidePath);
-				}
-			}
+                    topPaths.add(topPath);
 
-			transformPaths(topPaths);
-			transformPaths(sidePaths);
-		}
+                    Path sidePath = new Path();
+                    sidePath.moveTo(right, top);
+                    sidePath.lineTo(right + mSkew, top + depth);
+                    sidePath.lineTo(right + mSkew, depth);
+                    sidePath.lineTo(right, 0);
 
-		int cnt = 0;
+                    sidePaths.add(sidePath);
+                }
+            }
 
-		// 2D drawing
-		for (int i = 0; i < mData.getDataSetCount(); i++) {
+            transformPaths(topPaths);
+            transformPaths(sidePaths);
+        }
 
-			DataSet dataSet = dataSets.get(i);
-			ArrayList<Entry> series = dataSet.getYVals();
+        int cnt = 0;
 
-			// Get the colors for the DataSet at the current index. If the index
-			// is out of bounds, reuse DataSet colors.
-			ArrayList<Integer> colors = mCt.getDataSetColors(i % mCt.getColors().size());
-			ArrayList<Integer> colors3DTop = mTopColors.get(i % mCt.getColors().size());
-			ArrayList<Integer> colors3DSide = mSideColors.get(i % mCt.getColors().size());
+        // 2D drawing
+        for (int i = 0; i < mData.getDataSetCount(); i++) {
 
-			// do the drawing
-			for (int j = 0; j < dataSet.getEntryCount(); j++) {
+            DataSet dataSet = dataSets.get(i);
+            ArrayList<Entry> series = dataSet.getYVals();
 
-				// Set the color for the currently drawn value. If the index is
-				// out of bounds, reuse colors.
-				mRenderPaint.setColor(colors.get(j % colors.size()));
+            // Get the colors for the DataSet at the current index. If the
+            // index
+            // is out of bounds, reuse DataSet colors.
+            ArrayList<Integer> colors = mCt.getDataSetColors(i % mCt.getColors().size());
+            ArrayList<Integer> colors3DTop = mTopColors.get(i % mCt.getColors().size());
+            ArrayList<Integer> colors3DSide = mSideColors.get(i % mCt.getColors().size());
 
-				int x = series.get(j).getXIndex();
-				float y = series.get(j).getVal();
-				float left = x + mBarSpace / 2f;
-				float right = x + 1f - mBarSpace / 2f;
-				float top = y >= 0 ? y : 0;
-				float bottom = y <= 0 ? y : 0;
+            // do the drawing
+            for (int j = 0; j < dataSet.getEntryCount(); j++) {
 
-				mBarRect.set(left, top, right, bottom);
+                // Set the color for the currently drawn value. If the index
+                // is
+                // out of bounds, reuse colors.
+                mRenderPaint.setColor(colors.get(j % colors.size()));
 
-				transformRect(mBarRect);
+                int x = series.get(j).getXIndex();
+                float y = series.get(j).getVal();
+                float left = x + mBarSpace / 2f;
+                float right = x + 1f - mBarSpace / 2f;
+                float top = y >= 0 ? y : 0;
+                float bottom = y <= 0 ? y : 0;
 
-				// avoid drawing outofbounds values
-				if (isOffContentRight(mBarRect.left))
-					break;
+                mBarRect.set(left, top, right, bottom);
 
-				if (isOffContentLeft(mBarRect.right)) {
-					cnt++;
-					continue;
-				}
+                transformRect(mBarRect);
 
-				mDrawCanvas.drawRect(mBarRect, mRenderPaint);
+                // avoid drawing outofbounds values
+                if (isOffContentRight(mBarRect.left))
+                    break;
 
-				if (m3DEnabled) {
+                if (isOffContentLeft(mBarRect.right)) {
+                    cnt++;
+                    continue;
+                }
 
-					mRenderPaint.setColor(colors3DTop.get(j % colors3DTop.size()));
-					mDrawCanvas.drawPath(topPaths.get(cnt), mRenderPaint);
+                mDrawCanvas.drawRect(mBarRect, mRenderPaint);
 
-					mRenderPaint.setColor(colors3DSide.get(j % colors3DSide.size()));
-					mDrawCanvas.drawPath(sidePaths.get(cnt), mRenderPaint);
-				}
+                // 3D drawing
+                if (m3DEnabled) {
 
-				cnt++;
-			}
-		}
-	}
+                    mRenderPaint.setColor(colors3DTop.get(j % colors3DTop.size()));
+                    mDrawCanvas.drawPath(topPaths.get(cnt), mRenderPaint);
 
-	@Override
-	protected void drawValues() {
+                    mRenderPaint.setColor(colors3DSide.get(j % colors3DSide.size()));
+                    mDrawCanvas.drawPath(sidePaths.get(cnt), mRenderPaint);
+                }
 
-		// if values are drawn
-		if (mDrawYValues && mData.getYValCount() < mMaxVisibleCount * mScaleX) {
+                cnt++;
+            }
+        }
+    }
 
-			ArrayList<DataSet> dataSets = mData.getDataSets();
+    @Override
+    protected void drawValues() {
 
-			for (int i = 0; i < mData.getDataSetCount(); i++) {
+        // if values are drawn
+        if (mDrawYValues && mData.getYValCount() < mMaxVisibleCount * mScaleX) {
 
-				DataSet dataSet = dataSets.get(i);
-				ArrayList<Entry> series = dataSet.getYVals();
+            ArrayList<DataSet> dataSets = mData.getDataSets();
 
-				float[] valuePoints = generateTransformedValues(series, 0.5f);
+            for (int i = 0; i < mData.getDataSetCount(); i++) {
 
-				for (int j = 0; j < valuePoints.length; j += 2) {
+                DataSet dataSet = dataSets.get(i);
+                ArrayList<Entry> series = dataSet.getYVals();
 
-					if (isOffContentRight(valuePoints[j]))
-						break;
-
-					if (isOffContentLeft(valuePoints[j]))
-						continue;
-
-					float val = series.get(j / 2).getVal();
-
-					if (mDrawUnitInChart) {
-
-						mDrawCanvas.drawText(mFormatValue.format(val) + mUnit, valuePoints[j], valuePoints[j + 1] - 12,
-								mValuePaint);
-					} else {
-
-						mDrawCanvas.drawText(mFormatValue.format(val), valuePoints[j], valuePoints[j + 1] - 12,
-								mValuePaint);
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * sets the skew (default 0.3f), the skew indicates how much the 3D effect of the chart is turned to the right
-	 * 
-	 * @param skew
-	 */
-	public void setSkew(float skew) {
-		this.mSkew = skew;
-	}
-
-	/**
-	 * returns the skew value that indicates how much the 3D effect is turned to the right
-	 * 
-	 * @return
-	 */
-	public float getSkew() {
-		return mSkew;
-	}
-
-	/**
-	 * set the depth of the chart (default 0.3f), the depth indicates how much the 3D effect of the chart goes back
-	 * 
-	 * @param depth
-	 */
-	public void setDepth(float depth) {
-		this.mDepth = depth;
-	}
-
-	/**
-	 * returhs the depth, which indicates how much the 3D effect goes back
-	 * 
-	 * @return
-	 */
-	public float getDepth() {
-		return mDepth;
-	}
-
-	/**
-	 * returns the space between bars in percent of the whole width of one value
-	 * 
-	 * @return
-	 */
-	public float getBarSpace() {
-		return mBarSpace * 100f;
-	}
-
-	/**
-	 * sets the space between the bars in percent of the total bar width
-	 * 
-	 * @param percent
-	 */
-	public void setBarSpace(float percent) {
-		mBarSpace = percent / 100f;
-	}
-
-	/**
-	 * if enabled, chart will be drawn in 3d
-	 * 
-	 * @param enabled
-	 */
-	public void set3DEnabled(boolean enabled) {
-		this.m3DEnabled = enabled;
-	}
-
-	/**
-	 * returns true if 3d bars is enabled, false if not
-	 * 
-	 * @return
-	 */
-	public boolean is3DEnabled() {
-		return m3DEnabled;
-	}
-
-	/**
-	 * set this to true to draw the highlightning arrow
-	 * 
-	 * @param enabled
-	 */
-	public void setDrawHighlightArrow(boolean enabled) {
-		mDrawHighlightArrow = enabled;
-	}
-
-	/**
-	 * returns true if drawing the highlighting arrow is enabled, false if not
-	 * 
-	 * @return
-	 */
-	public boolean isDrawHighlightArrowEnabled() {
-		return mDrawHighlightArrow;
-	}
-
-	@Override
-	public void setPaint(Paint p, int which) {
-		super.setPaint(p, which);
-
-		switch (which) {
-		case PAINT_HIGHLIGHT_BAR:
-			mHighlightPaint = p;
-			break;
-		}
-	}
-
-	@Override
-	protected void drawAdditional() {
-	}
+                float[] valuePoints = generateTransformedValues(series, 0.5f);
+
+                for (int j = 0; j < valuePoints.length; j += 2) {
+
+                    if (isOffContentRight(valuePoints[j]))
+                        break;
+
+                    if (isOffContentLeft(valuePoints[j]))
+                        continue;
+
+                    float val = series.get(j / 2).getVal();
+
+                    if (mDrawUnitInChart) {
+
+                        mDrawCanvas.drawText(mFormatValue.format(val) + mUnit, valuePoints[j],
+                                valuePoints[j + 1] - 12,
+                                mValuePaint);
+                    } else {
+
+                        mDrawCanvas.drawText(mFormatValue.format(val), valuePoints[j],
+                                valuePoints[j + 1] - 12,
+                                mValuePaint);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * sets the skew (default 0.3f), the skew indicates how much the 3D effect
+     * of the chart is turned to the right
+     * 
+     * @param skew
+     */
+    public void setSkew(float skew) {
+        this.mSkew = skew;
+    }
+
+    /**
+     * returns the skew value that indicates how much the 3D effect is turned to
+     * the right
+     * 
+     * @return
+     */
+    public float getSkew() {
+        return mSkew;
+    }
+
+    /**
+     * set the depth of the chart (default 0.3f), the depth indicates how much
+     * the 3D effect of the chart goes back
+     * 
+     * @param depth
+     */
+    public void setDepth(float depth) {
+        this.mDepth = depth;
+    }
+
+    /**
+     * returhs the depth, which indicates how much the 3D effect goes back
+     * 
+     * @return
+     */
+    public float getDepth() {
+        return mDepth;
+    }
+
+    /**
+     * returns the space between bars in percent of the whole width of one value
+     * 
+     * @return
+     */
+    public float getBarSpace() {
+        return mBarSpace * 100f;
+    }
+
+    /**
+     * sets the space between the bars in percent of the total bar width
+     * 
+     * @param percent
+     */
+    public void setBarSpace(float percent) {
+        mBarSpace = percent / 100f;
+    }
+
+    /**
+     * if enabled, chart will be drawn in 3d
+     * 
+     * @param enabled
+     */
+    public void set3DEnabled(boolean enabled) {
+        this.m3DEnabled = enabled;
+    }
+
+    /**
+     * returns true if 3d bars is enabled, false if not
+     * 
+     * @return
+     */
+    public boolean is3DEnabled() {
+        return m3DEnabled;
+    }
+
+    /**
+     * set this to true to draw the highlightning arrow
+     * 
+     * @param enabled
+     */
+    public void setDrawHighlightArrow(boolean enabled) {
+        mDrawHighlightArrow = enabled;
+    }
+
+    /**
+     * returns true if drawing the highlighting arrow is enabled, false if not
+     * 
+     * @return
+     */
+    public boolean isDrawHighlightArrowEnabled() {
+        return mDrawHighlightArrow;
+    }
+
+//    /**
+//     * If true, bars representing values of different DataSets on the same
+//     * x-index are stacked (instead of being aligned behind each other). This
+//     * only makes sense when multiple DataSets are used.
+//     * 
+//     * @param enabled
+//     */
+//    public void setStackEnabled(boolean enabled) {
+//        mStackEnabled = true;
+//    }
+
+    @Override
+    public void setPaint(Paint p, int which) {
+        super.setPaint(p, which);
+
+        switch (which) {
+            case PAINT_HIGHLIGHT_BAR:
+                mHighlightPaint = p;
+                break;
+        }
+    }
+
+    @Override
+    protected void drawAdditional() {
+    }
 }

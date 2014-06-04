@@ -464,7 +464,7 @@ public abstract class BarLineChartBase extends Chart {
         for (int i = 0; i < mYLegend.mEntryCount; i++) {
 
             String text = Utils
-                    .formatNumber(mYLegend.mEntries[i], mYLegend.mDecimals);
+                    .formatNumber(mYLegend.mEntries[i], mYLegend.mDecimals, mSeparateTousands);
 
             if (!mDrawTopYLegendEntry && i >= mYLegend.mEntryCount - 1)
                 return;
@@ -668,8 +668,10 @@ public abstract class BarLineChartBase extends Chart {
         float curTransY = vals[Matrix.MTRANS_Y];
         float curScaleY = vals[Matrix.MSCALE_Y];
 
-//        Log.i(LOG_TAG, "curTransX: " + curTransX + ", curScaleX: " + curScaleX);
-//        Log.i(LOG_TAG, "curTransY: " + curTransY + ", curScaleY: " + curScaleY);
+        // Log.i(LOG_TAG, "curTransX: " + curTransX + ", curScaleX: " +
+        // curScaleX);
+        // Log.i(LOG_TAG, "curTransY: " + curTransY + ", curScaleY: " +
+        // curScaleY);
 
         // min scale-x is 1f
         mScaleX = Math.max(1f, Math.min(getMaxScaleX(), curScaleX));
@@ -686,10 +688,12 @@ public abstract class BarLineChartBase extends Chart {
         float maxTransY = (float) mContentRect.height() * (mScaleY - 1f);
         float newTransY = Math.max(Math.min(curTransY, maxTransY), 0f);
 
-//        Log.i(LOG_TAG, "scale-X: " + mScaleX + ", maxTransX: " + maxTransX + ", newTransX: "
-//                + newTransX);
-//        Log.i(LOG_TAG, "scale-Y: " + mScaleY + ", maxTransY: " + maxTransY + ", newTransY: "
-//                + newTransY);
+        // Log.i(LOG_TAG, "scale-X: " + mScaleX + ", maxTransX: " + maxTransX +
+        // ", newTransX: "
+        // + newTransX);
+        // Log.i(LOG_TAG, "scale-Y: " + mScaleY + ", maxTransY: " + maxTransY +
+        // ", newTransY: "
+        // + newTransY);
 
         vals[Matrix.MTRANS_X] = newTransX;
         vals[Matrix.MSCALE_X] = mScaleX;
@@ -976,7 +980,8 @@ public abstract class BarLineChartBase extends Chart {
         Log.i(LOG_TAG, "touchindex x: " + xTouchVal + ", touchindex y: " + yTouchVal);
 
         // touch out of chart
-        if ((this instanceof LineChart || this instanceof ScatterChart) && (xTouchVal < 0 || xTouchVal > mDeltaX))
+        if ((this instanceof LineChart || this instanceof ScatterChart)
+                && (xTouchVal < 0 || xTouchVal > mDeltaX))
             return null;
         if (this instanceof BarChart && (xTouchVal < 0 || xTouchVal > mDeltaX + 1))
             return null;
@@ -1029,8 +1034,10 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * Returns the x and y values at the given touch point (encapsulated in a
-     * PointD).
+     * Returns the x and y values in the chart at the given touch point
+     * (encapsulated in a PointD). This method transforms pixel coordinates to
+     * coordinates / values in the chart. This is the opposite method to
+     * getPixelsForValues(...).
      * 
      * @param x
      * @param y
@@ -1059,6 +1066,25 @@ public abstract class BarLineChartBase extends Chart {
         double yTouchVal = pts[1];
 
         return new PointD(xTouchVal, yTouchVal);
+    }
+
+    /**
+     * Transforms the given chart values into pixels. This is the opposite
+     * method to getValuesByTouchPoint(...).
+     * 
+     * @param x
+     * @param y
+     * @return
+     */
+    public PointD getPixelsForValues(float x, float y) {
+
+        float[] pts = new float[] {
+                x, y
+        };
+
+        transformPointArray(pts);
+
+        return new PointD(pts[0], pts[1]);
     }
 
     /**

@@ -77,6 +77,8 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 
 		mChart.setDrawMarkerView(true);
 		mChart.setMarkerView(textView);
+		
+//		mChart.setOffsets(60, 25, 15, 15);
 
 		mSeekBarX.setProgress(45);
 		mSeekBarY.setProgress(100);
@@ -171,7 +173,7 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 
 		for (int i = 0; i < mSeekBarX.getProgress(); i++) {
 			float mult = (mSeekBarY.getProgress() + 1);
-			float val = (float) (Math.random() * mult * 0.1) +3;// + (float)
+			float val = (float) (Math.random() * mult * 1) +3;// + (float)
 																	// ((mult *
 																	// 0.1) / 10);
 			yVals.add(new Entry(val, i));
@@ -191,6 +193,9 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 
 		mChart.setData(data);
 		mChart.invalidate();
+		
+//		Log.i("pixel for value", mChart.getPixelsForValues(10, 10).toString());
+//		Log.i("value for touch", mChart.getValuesByTouchPoint(300, 300).toString());
 	}
 
 	@Override

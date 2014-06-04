@@ -140,7 +140,7 @@ public abstract class Utils {
      * yourself.
      */
     private static final int POW_10[] = {
-            1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000
+            1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000
     };
 
     /**
@@ -149,42 +149,61 @@ public abstract class Utils {
      * 
      * @param number
      * @param digitCount
+     * @param separateTousands set this to true to separate thousands values
      * @return
      */
-    public static String formatNumber(float number, int digitCount) {
+    public static String formatNumber(float number, int digitCount, boolean separateThousands) {
 
-        char[] out = new char[100];
+        char[] out = new char[50];
 
         boolean neg = false;
         if (number == 0) {
             return "0";
         }
+
+        boolean zero = false;
+        if (number < 1 && number > -1) {
+            zero = true;
+        }
+
         if (number < 0) {
             neg = true;
             number = -number;
         }
+
         if (digitCount > POW_10.length) {
             digitCount = POW_10.length - 1;
         }
+
         number *= POW_10[digitCount];
         long lval = Math.round(number);
         int ind = out.length - 1;
         int charCount = 0;
-        
+
         while (lval != 0 || charCount < (digitCount + 1)) {
             int digit = (int) (lval % 10);
             lval = lval / 10;
             out[ind--] = (char) (digit + '0');
             charCount++;
+
             if (charCount == digitCount) {
                 out[ind--] = '.';
                 charCount++;
             }
+
+            // add thousand separators
+            if (separateThousands && lval != 0 && charCount > digitCount
+                    && (charCount - digitCount) % 4 == 3) {
+                out[ind--] = '.';
+                charCount++;
+            }
         }
-        if (neg) {
+
+        if (zero)
+            out[ind--] = '0';
+
+        if (neg)
             out[ind--] = '-';
-            charCount++;
-        }
 
         return new String(out);
     }
