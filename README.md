@@ -5,7 +5,7 @@ A simple charting library for Android, supporting line- bar- and piecharts, scal
 
 Remember: *It's all about the looks.*
 
-For immediate access to our latest updates, please checkout the **experimental** branch. Beware that the experimental branch is not finished for release yet and might be incomplete or contain bugs.
+For immediate access to our latest updates, please checkout the **experimental** branch. Beware that code on the experimental branch is not finished for release yet and might be incomplete or contain bugs.
 
 Features
 =======
