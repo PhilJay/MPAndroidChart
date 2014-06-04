@@ -10,6 +10,11 @@ import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
 
+/**
+ * The ScatterChart.
+ * 
+ * @author Philipp Jahoda
+ */
 public class ScatterChart extends BarLineChartBase {
 
     /** enum that defines the shape that is drawn where the values are */
@@ -18,13 +23,18 @@ public class ScatterChart extends BarLineChartBase {
     }
 
     /**
-     * custom path object the user can provide that is drawn where the values
-     * are at
+     * Custom path object the user can provide that is drawn where the values
+     * are at. This is used when ScatterShape.CUSTOM is set for a DataSet.
      */
     private Path mCustomScatterPath = null;
 
-    /** the shape that is drawn onto the chart where the values are at */
-    private ScatterShape mScatterShape = ScatterShape.SQUARE;
+    /**
+     * array that holds all the scattershapes that this chart uses, each shape
+     * represents one dataset in the chart
+     */
+    private ScatterShape[] mScatterShapes = new ScatterShape[] {
+            ScatterShape.SQUARE, ScatterShape.TRIANGLE
+    };
 
     /** the size the scattershape will have, in screen pixels */
     private float mShapeSize = 12f;
@@ -56,6 +66,8 @@ public class ScatterChart extends BarLineChartBase {
             // is out of bounds, reuse DataSet colors.
             ArrayList<Integer> colors = mCt.getDataSetColors(i % mCt.getColors().size());
 
+            ScatterShape shape = mScatterShapes[i % mScatterShapes.length];
+
             for (int j = 0; j < pos.length; j += 2) {
 
                 // Set the color for the currently drawn value. If the index is
@@ -64,7 +76,7 @@ public class ScatterChart extends BarLineChartBase {
 
                 if (isOffContentRight(pos[j]))
                     break;
-                
+
                 float shapeHalf = mShapeSize / 2f;
 
                 // make sure the lines don't do shitty things outside bounds
@@ -73,24 +85,26 @@ public class ScatterChart extends BarLineChartBase {
                         && isOffContentBottom(pos[j + 1]))
                     continue;
 
-                if (mScatterShape == ScatterShape.SQUARE) {
+                if (shape == ScatterShape.SQUARE) {
 
-                    mDrawCanvas.drawRect(pos[j] - shapeHalf, pos[j + 1] - shapeHalf, pos[j] + shapeHalf, pos[j + 1]
+                    mDrawCanvas.drawRect(pos[j] - shapeHalf, pos[j + 1] - shapeHalf, pos[j]
+                            + shapeHalf, pos[j + 1]
                             + shapeHalf, mRenderPaint);
 
-                } else if (mScatterShape == ScatterShape.CIRCLE) {
+                } else if (shape == ScatterShape.CIRCLE) {
 
                     mDrawCanvas.drawCircle(pos[j], pos[j + 1], mShapeSize / 2f, mRenderPaint);
 
-                } else if (mScatterShape == ScatterShape.CROSS) {
-                    
+                } else if (shape == ScatterShape.CROSS) {
+
                     mDrawCanvas.drawLine(pos[j] - shapeHalf, pos[j + 1], pos[j] + shapeHalf,
                             pos[j + 1], mRenderPaint);
                     mDrawCanvas.drawLine(pos[j], pos[j + 1] - shapeHalf, pos[j], pos[j + 1]
                             + shapeHalf, mRenderPaint);
 
-                } else if (mScatterShape == ScatterShape.TRIANGLE) {
+                } else if (shape == ScatterShape.TRIANGLE) {
 
+                    // create a triangle path
                     Path tri = new Path();
                     tri.moveTo(pos[j], pos[j + 1] - shapeHalf);
                     tri.lineTo(pos[j] + shapeHalf, pos[j + 1] + shapeHalf);
@@ -99,7 +113,7 @@ public class ScatterChart extends BarLineChartBase {
 
                     mDrawCanvas.drawPath(tri, mRenderPaint);
 
-                } else if (mScatterShape == ScatterShape.CUSTOM) {
+                } else if (shape == ScatterShape.CUSTOM) {
 
                     if (mCustomScatterPath == null)
                         return;
@@ -108,7 +122,6 @@ public class ScatterChart extends BarLineChartBase {
                     transformPath(mCustomScatterPath);
                     mDrawCanvas.drawPath(mCustomScatterPath, mRenderPaint);
                 }
-
             }
         }
     }
@@ -180,13 +193,12 @@ public class ScatterChart extends BarLineChartBase {
 
     @Override
     protected void drawAdditional() {
-        // TODO Auto-generated method stub
 
     }
 
     /**
      * Sets the size the drawn scattershape will have. This only applies for non
-     * cusom shapes. Default 12f
+     * custom shapes. Default 12f
      * 
      * @param size
      */
@@ -204,28 +216,31 @@ public class ScatterChart extends BarLineChartBase {
     }
 
     /**
-     * Set the shape that is drawn on the position where the values are at. If
-     * "CUSTOM" is chosen, you need to call setCustomScatterShape(...) and
-     * provide a path object that is drawn.
+     * Sets the shapes that are drawn on the position where the values are at.
+     * One shape per DataSet. If "CUSTOM" is chosen for a DataSet, you need to
+     * call setCustomScatterShape(...) and provide a path object that is drawn
+     * as the custom scattershape. If more DataSets are drawn than ScatterShapes
+     * exist, shapes are reused.
      * 
-     * @param shape
+     * @param shapes
      */
-    public void setScatterShape(ScatterShape shape) {
-        mScatterShape = shape;
+    public void setScatterShapes(ScatterShape[] shapes) {
+        mScatterShapes = shapes;
     }
 
     /**
-     * returns the currently set scatter shape
+     * returns all the different scattershapes the chart uses
      * 
      * @return
      */
-    public ScatterShape getScatterShape() {
-        return mScatterShape;
+    public ScatterShape[] getScatterShapes() {
+        return mScatterShapes;
     }
 
     /**
      * Sets a path object as the shape to be drawn where the values are at. Do
-     * not forget to call setScatterShape(ScatterShape.CUSTOM).
+     * not forget to call setScatterShapes(...) and set the shape for one
+     * DataSet to ScatterShape.CUSTOM.
      * 
      * @param shape
      */

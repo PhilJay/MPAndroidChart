@@ -12,6 +12,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.ScatterChart;
+import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -50,10 +51,13 @@ public class ScatterChartActivity extends Activity implements OnSeekBarChangeLis
         ct.addColorsForDataSets(new int[] {
                 R.color.colorful_1, R.color.colorful_2, R.color.colorful_3
         }, this);
-
+        
         mChart = (ScatterChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
         mChart.setColorTemplate(ct);
+        
+        // one shape per dataset
+        mChart.setScatterShapes(new ScatterShape[] { ScatterShape.SQUARE, ScatterShape.TRIANGLE, ScatterShape.CIRCLE });
 
         // mChart.setDrawFilled(true);
         // mChart.setRoundedYLegend(false);
@@ -62,6 +66,7 @@ public class ScatterChartActivity extends Activity implements OnSeekBarChangeLis
         mChart.setYLegendCount(6);
         mChart.setTouchEnabled(true);
         mChart.setHighlightEnabled(true);
+        mChart.setDrawYValues(false);
 
         // highlight index 2 and 6 in dataset 0
         // mChart.highlightValues(new Highlight[] {new Highlight(2, 0), new
