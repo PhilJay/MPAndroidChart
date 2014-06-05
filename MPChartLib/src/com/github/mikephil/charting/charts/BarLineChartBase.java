@@ -258,7 +258,11 @@ public abstract class BarLineChartBase extends Chart {
 
 	@Override
 	public void notifyDataSetChanged() {
-		calcMinMax(mFixedYValues);
+		if (!mFixedYValues) {
+			prepare();
+		} else {
+			calcMinMax(mFixedYValues);
+		}
 	}
 
 	/**
@@ -701,7 +705,6 @@ public abstract class BarLineChartBase extends Chart {
 	public void setOnDrawListener(OnDrawListener drawListener) {
 		this.mDrawListener = drawListener;
 	}
-	
 
 	/**
 	 * set if the user should be allowed to draw onto the chart
@@ -713,7 +716,6 @@ public abstract class BarLineChartBase extends Chart {
 			((BarLineChartTouchListener) mListener).setDrawingEnabled(drawingEnabled);
 		}
 	}
-
 
 	/**
 	 * Set to true to auto finish user drawing
@@ -759,15 +761,25 @@ public abstract class BarLineChartBase extends Chart {
 	 * @param maxY
 	 */
 	public void setYRange(float minY, float maxY) {
-		mFixedYValues = true;
-
 		mYChartMin = minY;
 		mYChartMax = maxY;
+		if (minY < 0) {
+			mStartAtZero = false;
+		}
 		mDeltaY = mYChartMax - mYChartMin;
 
 		calcFormats();
 		prepareMatrix();
 		invalidate();
+	}
+
+	/**
+	 * Sets the y range fixed.
+	 * 
+	 * @param fixed
+	 */
+	public void setYRangeFixed(boolean fixed) {
+		mFixedYValues = fixed;
 	}
 
 	/**

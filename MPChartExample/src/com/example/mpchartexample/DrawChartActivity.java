@@ -89,7 +89,8 @@ public class DrawChartActivity extends Activity implements OnChartValueSelectedL
 		ChartData data = new ChartData(xVals, dataSets);
 
 		mChart.setData(data);
-		mChart.setYRange(10f, 40f);
+		mChart.setYRangeFixed(false);
+		mChart.setYRange(-40f, 40f);
 		mChart.invalidate();
 	}
 

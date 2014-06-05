@@ -132,6 +132,12 @@ public class DrawingContext {
 		mCurrentDrawingEntries = null;
 	}
 
+	public void deleteLastDrawingEntry(ChartData data) {
+		data.getDataSets().remove(mCurrentDrawingDataSet);
+		mCurrentDrawingDataSet = null;
+		mCurrentDrawingEntries = null;
+	}
+
 	public void init(OnDrawListener mListener, boolean autoFinish) {
 		this.mListener = mListener;
 		this.mAutoFinishDrawing = autoFinish;

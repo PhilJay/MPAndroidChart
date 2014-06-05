@@ -48,7 +48,7 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 	private float mSavedYDist = 1f;
 	private float mSavedDist = 1f;
 
-	private float mLastX = 0;
+	private long mStartTimestamp = 0;
 
 	private BarLineChartBase mChart;
 
@@ -70,180 +70,168 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 			mGestureDetector.onTouchEvent(event);
 		}
 
-		if (mDrawingEnabled) {
-			mDrawingContext.init(mChart.getDrawListener(), mChart.isAutoFinishEnabled());
-			ChartData data = mChart.getData();
-			switch (event.getAction() & MotionEvent.ACTION_MASK) {
-			case MotionEvent.ACTION_DOWN:
-				if (mTouchMode == NONE || mTouchMode == LONGPRESS) {
-					mTouchMode = DRAWING;
-					mLastX = event.getX();
-					mDrawingContext.createNewDrawingDataSet(data);
-					Log.i("Drawing", "New drawing data set created");
-				}
-				break;
-
-			case MotionEvent.ACTION_MOVE:
-				if (mTouchMode == DRAWING) {
-					mLastX = event.getX();
-					PointD p = mChart.getValuesByTouchPoint(event.getX(), event.getY());
-
-					int xIndex = (int) p.x;
-					float yVal = (float) p.y;
-
-					if (xIndex < 0)
-						xIndex = 0;
-					if (xIndex >= data.getXValCount()) {
-						xIndex = data.getXValCount() - 1;
-					}
-
-					Entry entry = new Entry((float) yVal, xIndex);
-					boolean added = mDrawingContext.addNewDrawingEntry(entry, data);
-					if (added) {
-						Log.i("Drawing", "Added entry " + entry.toString());
-						mChart.notifyDataSetChanged();
-						mChart.invalidate();
-					}
-				}
-				break;
-			case MotionEvent.ACTION_UP:
-			case MotionEvent.ACTION_CANCEL:
-				if (mTouchMode == DRAWING) {
-					mDrawingContext.finishNewDrawingEntry(data);
-					mTouchMode = NONE;
-					mChart.notifyDataSetChanged();
-					mChart.invalidate();
-					Log.i("Drawing", "Drawing finished");
-				}
-				break;
-
-			default:
-				Log.i("Drawing", "Other action " + event.toString());
-				break;
-			}
-			// currently no dragging when drawing
+		if (!mChart.isDragEnabled() && !mDrawingEnabled)
 			return true;
-		} else {
 
-			if (!mChart.isDragEnabled())
-				return true;
-
-			// Handle touch events here...
-			switch (event.getAction() & MotionEvent.ACTION_MASK) {
-			case MotionEvent.ACTION_DOWN:
+		mDrawingContext.init(mChart.getDrawListener(), mChart.isAutoFinishEnabled());
+		ChartData data = mChart.getData();
+		// Handle touch events here...
+		switch (event.getAction() & MotionEvent.ACTION_MASK) {
+		case MotionEvent.ACTION_DOWN:
+			if (event.getPointerCount() == 1 && mDrawingEnabled) {
+				mTouchMode = DRAWING;
+				// TODO not always create new drawing sets
+				mStartTimestamp = System.currentTimeMillis();
+				mDrawingContext.createNewDrawingDataSet(data);
+				Log.i("Drawing", "New drawing data set created");
+			} else {
 				mSavedMatrix.set(mMatrix);
 				mTouchStartPoint.set(event.getX(), event.getY());
-				break;
-			case MotionEvent.ACTION_POINTER_DOWN:
+			}
 
-				// get the distance between the pointers on the x-axis
-				mSavedXDist = getXDist(event);
+			break;
+		case MotionEvent.ACTION_POINTER_DOWN:
+			if (event.getPointerCount() == 2) {
+				long deltaT = System.currentTimeMillis() - mStartTimestamp;
+				if ((mTouchMode == DRAWING && deltaT < 1000) || !mDrawingEnabled) {
+					mDrawingContext.deleteLastDrawingEntry(data);
 
-				// get the distance between the pointers on the y-axis
-				mSavedYDist = getYDist(event);
+					// get the distance between the pointers on the x-axis
+					mSavedXDist = getXDist(event);
 
-				// get the total distance between the pointers
-				mSavedDist = spacing(event);
+					// get the distance between the pointers on the y-axis
+					mSavedYDist = getYDist(event);
 
-				if (mSavedDist > 10f) {
+					// get the total distance between the pointers
+					mSavedDist = spacing(event);
 
-					if (mChart.isPinchZoomEnabled()) {
-						mTouchMode = PINCH_ZOOM;
-					} else {
-						if (mSavedXDist > mSavedYDist)
-							mTouchMode = X_ZOOM;
-						else
-							mTouchMode = Y_ZOOM;
+					if (mSavedDist > 10f) {
+
+						if (mChart.isPinchZoomEnabled()) {
+							mTouchMode = PINCH_ZOOM;
+						} else {
+							if (mSavedXDist > mSavedYDist)
+								mTouchMode = X_ZOOM;
+							else
+								mTouchMode = Y_ZOOM;
+						}
+
+						mSavedMatrix.set(mMatrix);
+						midPoint(mTouchPointCenter, event);
+						mChart.disableScroll();
 					}
-
-					mSavedMatrix.set(mMatrix);
-					midPoint(mTouchPointCenter, event);
-					mChart.disableScroll();
 				}
-				break;
+			}
+			break;
 
-			case MotionEvent.ACTION_UP:
-				mTouchMode = NONE;
+		case MotionEvent.ACTION_CANCEL:
+		case MotionEvent.ACTION_UP:
+			mTouchMode = NONE;
+			if (mTouchMode == DRAWING) {
+				mDrawingContext.finishNewDrawingEntry(data);
+				mChart.notifyDataSetChanged();
+				mChart.invalidate();
+				Log.i("Drawing", "Drawing finished");
+			} else {
 				mChart.enableScroll();
-				break;
-			case MotionEvent.ACTION_POINTER_UP:
-				mTouchMode = POSTZOOM;
-				break;
-			case MotionEvent.ACTION_MOVE:
+			}
+			break;
+		case MotionEvent.ACTION_POINTER_UP:
+			mTouchMode = POSTZOOM;
+			break;
+		case MotionEvent.ACTION_MOVE:
+			if (mTouchMode == DRAWING) {
+				PointD p = mChart.getValuesByTouchPoint(event.getX(), event.getY());
 
-				if (mTouchMode == NONE
-						&& distance(event.getX(), mTouchStartPoint.x, event.getY(), mTouchStartPoint.y) > 25f) {
-					mSavedMatrix.set(mMatrix);
-					mTouchStartPoint.set(event.getX(), event.getY());
+				int xIndex = (int) p.x;
+				float yVal = (float) p.y;
 
-					mTouchMode = DRAG;
-					mChart.disableScroll();
+				if (xIndex < 0)
+					xIndex = 0;
+				if (xIndex >= data.getXValCount()) {
+					xIndex = data.getXValCount() - 1;
+				}
 
-				} else if (mTouchMode == DRAG) {
+				Entry entry = new Entry((float) yVal, xIndex);
+				boolean added = mDrawingContext.addNewDrawingEntry(entry, data);
+				if (added) {
+					Log.i("Drawing", "Added entry " + entry.toString());
+					mChart.notifyDataSetChanged();
+					mChart.invalidate();
+				}
+			}
+			if (((mTouchMode == NONE && !mDrawingEnabled) || (mTouchMode != DRAG && event.getPointerCount() == 3))
+					&& distance(event.getX(), mTouchStartPoint.x, event.getY(), mTouchStartPoint.y) > 25f) {
+				// has to be in no mode, when drawing not enabled, or 3 fingers
+				mSavedMatrix.set(mMatrix);
+				mTouchStartPoint.set(event.getX(), event.getY());
 
-					mMatrix.set(mSavedMatrix);
-					mMatrix.postTranslate(event.getX() - mTouchStartPoint.x, event.getY() - mTouchStartPoint.y);
+				mTouchMode = DRAG;
+				mChart.disableScroll();
 
-				} else if (mTouchMode == X_ZOOM || mTouchMode == Y_ZOOM || mTouchMode == PINCH_ZOOM) {
+			} else if (mTouchMode == DRAG) {
 
-					// get the distance between the pointers of the touch
-					// event
-					float totalDist = spacing(event);
+				mMatrix.set(mSavedMatrix);
+				PointF dragPoint = new PointF(event.getX(), event.getY());
+				mMatrix.postTranslate(dragPoint.x - mTouchStartPoint.x, dragPoint.y - mTouchStartPoint.y);
 
-					if (totalDist > 10f) {
+			} else if (mTouchMode == X_ZOOM || mTouchMode == Y_ZOOM || mTouchMode == PINCH_ZOOM) {
 
-						float[] values = new float[9];
-						mMatrix.getValues(values);
+				// get the distance between the pointers of the touch
+				// event
+				float totalDist = spacing(event);
 
-						// get the previous scale factors
-						float oldScaleX = values[Matrix.MSCALE_X];
-						float oldScaleY = values[Matrix.MSCALE_Y];
+				if (totalDist > 10f) {
 
-						// take actions depending on the activated touch
-						// mode
-						if (mTouchMode == PINCH_ZOOM) {
+					float[] values = new float[9];
+					mMatrix.getValues(values);
 
-							float scale = totalDist / mSavedDist; // total
-																	// scale
+					// get the previous scale factors
+					float oldScaleX = values[Matrix.MSCALE_X];
+					float oldScaleY = values[Matrix.MSCALE_Y];
+
+					// take actions depending on the activated touch
+					// mode
+					if (mTouchMode == PINCH_ZOOM) {
+
+						float scale = totalDist / mSavedDist; // total
+																// scale
+
+						mMatrix.set(mSavedMatrix);
+						mMatrix.postScale(scale, scale, mTouchPointCenter.x, -mTouchPointCenter.y);
+
+					} else if (mTouchMode == X_ZOOM) {
+
+						float xDist = getXDist(event);
+						float scaleX = xDist / mSavedXDist; // x-axis
+															// scale
+
+						if ((scaleX < 1 || oldScaleX < mChart.getMaxScaleX()) && (scaleX > 1 || oldScaleX > MIN_SCALE)) {
 
 							mMatrix.set(mSavedMatrix);
-							mMatrix.postScale(scale, scale, mTouchPointCenter.x, -mTouchPointCenter.y);
+							mMatrix.postScale(scaleX, 1f, mTouchPointCenter.x, mTouchPointCenter.y);
+						}
 
-						} else if (mTouchMode == X_ZOOM) {
+					} else if (mTouchMode == Y_ZOOM) {
 
-							float xDist = getXDist(event);
-							float scaleX = xDist / mSavedXDist; // x-axis
-																// scale
+						float yDist = getYDist(event);
+						float scaleY = yDist / mSavedYDist; // y-axis
+															// scale
 
-							if ((scaleX < 1 || oldScaleX < mChart.getMaxScaleX())
-									&& (scaleX > 1 || oldScaleX > MIN_SCALE)) {
+						if ((scaleY < 1 || oldScaleY < mChart.getMaxScaleY()) && (scaleY > 1 || oldScaleY > MIN_SCALE)) {
 
-								mMatrix.set(mSavedMatrix);
-								mMatrix.postScale(scaleX, 1f, mTouchPointCenter.x, mTouchPointCenter.y);
-							}
+							mMatrix.set(mSavedMatrix);
 
-						} else if (mTouchMode == Y_ZOOM) {
-
-							float yDist = getYDist(event);
-							float scaleY = yDist / mSavedYDist; // y-axis
-																// scale
-
-							if ((scaleY < 1 || oldScaleY < mChart.getMaxScaleY())
-									&& (scaleY > 1 || oldScaleY > MIN_SCALE)) {
-
-								mMatrix.set(mSavedMatrix);
-
-								// y-axis comes from top to bottom, revert y
-								mMatrix.postScale(1f, scaleY, mTouchPointCenter.x, -mTouchPointCenter.y);
-							}
+							// y-axis comes from top to bottom, revert y
+							mMatrix.postScale(1f, scaleY, mTouchPointCenter.x, -mTouchPointCenter.y);
 						}
 					}
-				} else if (mTouchMode == LONGPRESS) {
-					mChart.disableScroll();
 				}
-
-				break;
+			} else if (mTouchMode == LONGPRESS) {
+				mChart.disableScroll();
 			}
+
+			break;
 		}
 
 		// Perform the transformation
@@ -295,6 +283,18 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 		float x = event.getX(0) + event.getX(1);
 		float y = event.getY(0) + event.getY(1);
 		point.set(x / 2f, y / 2f);
+	}
+
+	/**
+	 * returns the center point between three pointer touch points
+	 * 
+	 * @param point
+	 * @param event
+	 */
+	private static void midPointForThree(PointF point, MotionEvent event) {
+		float x = event.getX(0) + event.getX(1) + event.getX(2);
+		float y = event.getY(0) + event.getY(1) + event.getY(2);
+		point.set(x / 3f, y / 3f);
 	}
 
 	/**
