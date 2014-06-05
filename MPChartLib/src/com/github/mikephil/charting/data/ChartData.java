@@ -8,6 +8,7 @@ import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.exception.DrawingDataSetNotCreatedException;
+import com.github.mikephil.charting.interfaces.OnDrawListener;
 
 /**
  * Class that holds all relevant data that represents the chart
@@ -40,11 +41,6 @@ public class ChartData {
 	/** the filtered values, stored separately to not change the data set by the user */
 	private ArrayList<DataSet> mApproximatedDataSets;
 
-	/** holds a DataSet that can be manipulated on the go, to allow users to draw into the chart */
-	private DataSet mCurrentDrawingDataSet;
-
-	private ArrayList<Entry> mCurrentDrawingEntries;
-
 	/** array that holds all the different type ids that are in the series array */
 	private ArrayList<Integer> mDiffTypes;
 
@@ -57,9 +53,20 @@ public class ChartData {
 	 *            all DataSet objects the chart needs to represent
 	 */
 	public ChartData(ArrayList<String> xVals, ArrayList<DataSet> dataSets) {
+		init(xVals, dataSets);
+	}
+
+	public ChartData(String[] xVals, ArrayList<DataSet> dataSets) {
+		ArrayList<String> newXVals = new ArrayList<String>();
+		for (int i = 0; i < xVals.length; i++) {
+			newXVals.add(xVals[i]);
+		}
+		init(newXVals, dataSets);
+	}
+
+	private void init(ArrayList<String> xVals, ArrayList<DataSet> dataSets) {
 		this.mXVals = xVals;
 		this.mDataSets = dataSets;
-
 		mApproximator = new Approximator();
 
 		calcTypes();
@@ -145,75 +152,6 @@ public class ChartData {
 		}
 	}
 
-	/**
-	 * Call this method to create a new drawing DataSet
-	 * 
-	 * @param type
-	 *            the type of the new DataSet
-	 */
-	public void createNewDrawingDataSet(int type) {
-		if (mCurrentDrawingDataSet != null && mCurrentDrawingEntries != null) {
-			// if an old one exist, finish the other one first
-			finishNewDrawingEntry();
-		}
-		// keep type count correct
-		if (!mDiffTypes.contains(type)) {
-			mDiffTypes.add(type);
-		}
-		mCurrentDrawingEntries = new ArrayList<Entry>();
-		this.mCurrentDrawingDataSet = new DataSet(mCurrentDrawingEntries, type);
-		mDataSets.add(mCurrentDrawingDataSet);
-	}
-
-	/**
-	 * Add a new entry.
-	 * 
-	 * @param entry
-	 * @return true if entry added, false if an entry on this x index already existed
-	 */
-	public boolean addNewDrawingEntry(Entry entry) {
-		if (mCurrentDrawingDataSet != null && mCurrentDrawingEntries != null) {
-			// only add if no value for this x already exist
-			for (int i = 0; i < mCurrentDrawingEntries.size(); i++) {
-				if (mCurrentDrawingEntries.get(i).getXIndex() == entry.getXIndex()) {
-					return false;
-				}
-			}
-			mCurrentDrawingEntries.add(entry);
-			correctDataForNewEntry(entry);
-			mCurrentDrawingDataSet.notifyDataSetChanged();
-			return true;
-		} else {
-			// new data set has to be created first
-			throw new DrawingDataSetNotCreatedException();
-		}
-	}
-
-	/**
-	 * Finishes a drawing entry and adds values at the beginning and the end to fill up the line
-	 */
-	public void finishNewDrawingEntry() {
-		Entry firstEntry = mCurrentDrawingEntries.get(0);
-		int xIndex = 0;
-		while (xIndex < firstEntry.getXIndex()) {
-			Entry entry = new Entry(firstEntry.getVal(), xIndex);
-			mCurrentDrawingEntries.add(xIndex, entry);
-			correctDataForNewEntry(entry);
-			xIndex++;
-		}
-		Entry lastEntry = mCurrentDrawingEntries.get(mCurrentDrawingEntries.size() - 1);
-		xIndex = lastEntry.getXIndex();
-		while (xIndex < getXValCount()) {
-			Entry entry = new Entry(lastEntry.getVal(), xIndex);
-			mCurrentDrawingEntries.add(entry);
-			correctDataForNewEntry(entry);
-			xIndex++;
-		}
-		mCurrentDrawingDataSet.notifyDataSetChanged();
-		mCurrentDrawingDataSet = null;
-		mCurrentDrawingEntries = null;
-	}
-
 	private boolean alreadyCounted(ArrayList<Integer> countedTypes, int type) {
 		for (int i = 0; i < countedTypes.size(); i++) {
 			if (countedTypes.get(i) == type)
@@ -230,7 +168,7 @@ public class ChartData {
 	 * @param entry
 	 *            the new entry
 	 */
-	private void correctDataForNewEntry(Entry entry) {
+	public void notifyDataForNewEntry(Entry entry) {
 		mYValueSum += Math.abs(entry.getVal());
 		if (mYMin > entry.getVal()) {
 			mYMin = entry.getVal();

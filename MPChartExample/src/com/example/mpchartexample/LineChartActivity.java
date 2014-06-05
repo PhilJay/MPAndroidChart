@@ -3,12 +3,10 @@ package com.example.mpchartexample;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -19,7 +17,7 @@ import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
 
@@ -62,6 +60,7 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 		mChart.setYLegendCount(6);
 		mChart.setTouchEnabled(true);
 		mChart.setHighlightEnabled(true);
+		mChart.setPinchZoom(true);
 
 		// highlight index 2 and 6 in dataset 0
 		// mChart.highlightValues(new Highlight[] {new Highlight(2, 0), new
@@ -69,16 +68,8 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 		mChart.setDragEnabled(true);
 		mChart.setTouchEnabled(true);
 
-		TextView textView = new TextView(this);
-		textView.setVisibility(View.VISIBLE);
-		textView.setBackgroundColor(Color.WHITE);
-		textView.setPadding(15, 15, 15, 15);
-		textView.setText("Marker View");
 
-		mChart.setDrawMarkerView(true);
-		mChart.setMarkerView(textView);
-		
-//		mChart.setOffsets(60, 25, 15, 15);
+		// mChart.setOffsets(60, 25, 15, 15);
 
 		mSeekBarX.setProgress(45);
 		mSeekBarY.setProgress(100);
@@ -173,9 +164,9 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 
 		for (int i = 0; i < mSeekBarX.getProgress(); i++) {
 			float mult = (mSeekBarY.getProgress() + 1);
-			float val = (float) (Math.random() * mult * 1) +3;// + (float)
-																	// ((mult *
-																	// 0.1) / 10);
+			float val = (float) (Math.random() * mult * 1) + 3;// + (float)
+																// ((mult *
+																// 0.1) / 10);
 			yVals.add(new Entry(val, i));
 		}
 
@@ -193,9 +184,9 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 
 		mChart.setData(data);
 		mChart.invalidate();
-		
-//		Log.i("pixel for value", mChart.getPixelsForValues(10, 10).toString());
-//		Log.i("value for touch", mChart.getValuesByTouchPoint(300, 300).toString());
+
+		// Log.i("pixel for value", mChart.getPixelsForValues(10, 10).toString());
+		// Log.i("value for touch", mChart.getValuesByTouchPoint(300, 300).toString());
 	}
 
 	@Override

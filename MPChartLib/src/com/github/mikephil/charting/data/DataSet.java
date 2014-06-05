@@ -66,7 +66,9 @@ public class DataSet {
 	 * calc minimum and maximum y value
 	 */
 	private void calcMinMax() {
-
+		if (mYVals.size() == 0) {
+			return;
+		}
 		mYMin = mYVals.get(0).getVal();
 		mYMax = mYVals.get(0).getVal();
 
@@ -118,8 +120,8 @@ public class DataSet {
 	}
 
 	/**
-	 * Returns the first Entry object found at the given xIndex. Returns null if no Entry object at that index. INFORMATION: This
-	 * method does calculations at runtime. Do not over-use in performance critical situations.
+	 * Returns the first Entry object found at the given xIndex. Returns null if no Entry object at that index.
+	 * INFORMATION: This method does calculations at runtime. Do not over-use in performance critical situations.
 	 * 
 	 * @param xIndex
 	 * @return
@@ -133,23 +135,24 @@ public class DataSet {
 
 		return null;
 	}
-	
+
 	/**
-	 * Returns all Entry objects at the given xIndex. INFORMATION: This
-     * method does calculations at runtime. Do not over-use in performance critical situations.
+	 * Returns all Entry objects at the given xIndex. INFORMATION: This method does calculations at runtime. Do not
+	 * over-use in performance critical situations.
+	 * 
 	 * @param xIndex
 	 * @return
 	 */
 	public ArrayList<Entry> getEntriesForXIndex(int xIndex) {
-	    
-	    ArrayList<Entry> entries = new ArrayList<Entry>();
-	    
-	    for (int i = 0; i < mYVals.size(); i++) {
-            if (xIndex == mYVals.get(i).getXIndex())
-                entries.add(mYVals.get(i));
-        }
-	    
-	    return entries;
+
+		ArrayList<Entry> entries = new ArrayList<Entry>();
+
+		for (int i = 0; i < mYVals.size(); i++) {
+			if (xIndex == mYVals.get(i).getXIndex())
+				entries.add(mYVals.get(i));
+		}
+
+		return entries;
 	}
 
 	/**
@@ -239,5 +242,15 @@ public class DataSet {
 		}
 
 		return dataSets;
+	}
+
+	@Override
+	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("DataSet " + mType + "\n");
+		for (int i = 0; i < mYVals.size(); i++) {
+			buffer.append(mYVals.get(i).toString() + " ");
+		}
+		return buffer.toString();
 	}
 }

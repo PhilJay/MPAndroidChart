@@ -167,6 +167,11 @@ public class PieChart extends Chart {
 		// mYVals.size());
 	}
 
+	@Override
+	public void notifyDataSetChanged() {
+		// TODO
+	}
+
 	/** the decimalformat responsible for formatting the values in the chart */
 	protected DecimalFormat mFormatValue = null;
 

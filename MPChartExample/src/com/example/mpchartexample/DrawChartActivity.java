@@ -12,15 +12,17 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
+import com.github.mikephil.charting.interfaces.OnDrawListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
 
-public class DrawChartActivity extends Activity implements OnChartValueSelectedListener {
+public class DrawChartActivity extends Activity implements OnChartValueSelectedListener, OnDrawListener {
 
 	private LineChart mChart;
 
@@ -28,17 +30,18 @@ public class DrawChartActivity extends Activity implements OnChartValueSelectedL
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.activity_linechart);
+		setContentView(R.layout.activity_draw_chart);
 
 		// create a color template for one dataset with only one color
 		ColorTemplate ct = new ColorTemplate();
-		ct.addColorsForDataSets(new int[] { R.color.colorful_1 }, this);
+		ct.addColorsForDataSets(ColorTemplate.COLORFUL_COLORS, this);
 
 		mChart = (LineChart) findViewById(R.id.chart1);
 		mChart.setOnChartValueSelectedListener(this);
 		mChart.setColorTemplate(ct);
 		mChart.setDrawingEnabled(true);
 
+		mChart.setOnDrawListener(this);
 		// mChart.setDrawFilled(true);
 		// mChart.setRoundedYLegend(false);
 		// mChart.setStartAtZero(true);
@@ -70,7 +73,7 @@ public class DrawChartActivity extends Activity implements OnChartValueSelectedL
 
 	private void initWithDummyData() {
 		ArrayList<String> xVals = new ArrayList<String>();
-		for (int i = 0; i < 48; i++) {
+		for (int i = 0; i < 148; i++) {
 			xVals.add((i) + "h");
 		}
 
@@ -167,7 +170,15 @@ public class DrawChartActivity extends Activity implements OnChartValueSelectedL
 
 	@Override
 	public void onNothingSelected() {
-		// TODO Auto-generated method stub
+	}
 
+	@Override
+	public void onEntryAdded(Entry entry) {
+		Log.i(Chart.LOG_TAG, entry.toString());
+	}
+
+	@Override
+	public void onDrawFinished(DataSet dataSet) {
+		Log.i(Chart.LOG_TAG, dataSet.toString());
 	}
 }
