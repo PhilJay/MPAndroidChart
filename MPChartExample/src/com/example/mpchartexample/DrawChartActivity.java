@@ -21,6 +21,7 @@ import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.interfaces.OnDrawListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.Utils;
 
 public class DrawChartActivity extends Activity implements OnChartValueSelectedListener, OnDrawListener {
 

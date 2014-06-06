@@ -332,6 +332,20 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 	}
 
 	/**
+	 * returns the correct translation depending on the provided x and y touch points
+	 * 
+	 * @param e
+	 * @return
+	 */
+	private PointF getTrans(float x, float y) {
+
+		float xTrans = x - mChart.getOffsetLeft();
+		float yTrans = -(mChart.getHeight() - y - mChart.getOffsetBottom());
+
+		return new PointF(xTrans, yTrans);
+	}
+
+	/**
 	 * returns the matrix object the listener holds
 	 * 
 	 * @return
@@ -351,11 +365,25 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 	}
 
 	@Override
-	public void onLongPress(MotionEvent arg0) {
-		if (mTouchMode == NONE) {
-			mTouchMode = LONGPRESS;
-			// ctx.showValue(arg0, matrix);
-		}
+	public boolean onDoubleTap(MotionEvent e) {
+
+		PointF trans = getTrans(e.getX(), e.getY());
+
+		// double tap --> zoom in
+		mMatrix.postScale(1.4f, 1.4f, trans.x, trans.y);
+
+		mChart.refreshTouch(mMatrix);
+		return super.onDoubleTap(e);
+	}
+
+	@Override
+	public void onLongPress(MotionEvent e) {
+
+		PointF trans = getTrans(e.getX(), e.getY());
+
+		// zoom out
+		mMatrix.postScale(0.7f, 0.7f, trans.x, trans.y);
+		mChart.refreshTouch(mMatrix);
 	};
 
 	@Override

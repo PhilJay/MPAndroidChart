@@ -1,11 +1,5 @@
 package com.github.mikephil.charting.charts;
 
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -36,6 +30,12 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
+
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Baseclass of all Chart-Views.
@@ -808,15 +808,6 @@ public abstract class Chart extends View {
 	}
 
 	/**
-	 * returns the left offset of the chart in pixels
-	 * 
-	 * @return
-	 */
-	public float getOffsetLeft() {
-		return mOffsetLeft;
-	}
-
-	/**
 	 * sets the size of the description text in pixels, min 7f, max 14f
 	 * 
 	 * @param size
@@ -865,6 +856,22 @@ public abstract class Chart extends View {
 		mOffsetRight = (int) Utils.convertDpToPixel(right);
 		mOffsetTop = (int) Utils.convertDpToPixel(top);
 	}
+	
+	public int getOffsetLeft() {
+        return mOffsetLeft;
+    }
+	
+	public int getOffsetBottom() {
+        return mOffsetBottom;
+    }
+	
+	public int getOffsetRight() {
+        return mOffsetRight;
+    }
+	
+	public int getOffsetTop() {
+        return mOffsetTop;
+    }
 
 	/**
 	 * set this to false to disable gestures on the chart, default: true
