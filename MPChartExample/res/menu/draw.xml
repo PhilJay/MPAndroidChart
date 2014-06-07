@@ -33,7 +33,7 @@
         android:id="@+id/actionSave"
         android:title="Save to Gallery">
     </item>
-<item
+	<item
         android:id="@+id/actionTogglePinch"
         android:title="Toggle PinchZoom">
     </item>

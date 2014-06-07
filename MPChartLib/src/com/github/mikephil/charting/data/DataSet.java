@@ -247,7 +247,7 @@ public class DataSet {
 	@Override
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("DataSet " + mType + "\n");
+		buffer.append("DataSet, type: " + mType + ", entries: + " + mYVals.size() + "\n");
 		for (int i = 0; i < mYVals.size(); i++) {
 			buffer.append(mYVals.get(i).toString() + " ");
 		}

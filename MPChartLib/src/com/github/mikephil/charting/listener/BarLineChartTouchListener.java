@@ -76,6 +76,7 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 
         mDrawingContext.init(mChart.getDrawListener(), mChart.isAutoFinishEnabled());
         ChartData data = mChart.getData();
+        
         // Handle touch events here...
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:

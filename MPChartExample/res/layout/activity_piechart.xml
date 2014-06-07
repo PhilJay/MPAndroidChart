@@ -18,7 +18,7 @@
         android:layout_margin="8dp"
         android:layout_toLeftOf="@+id/tvYMax"
         android:layout_marginRight="5dp"
-        android:max="300"
+        android:max="200"
         android:paddingBottom="12dp" />
 
     <SeekBar

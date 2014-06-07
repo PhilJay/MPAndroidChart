@@ -44,7 +44,7 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
 		mChart = (PieChart) findViewById(R.id.chart1);
 		
 		ColorTemplate ct = new ColorTemplate();
-	    ct.addDataSetColors(ColorTemplate.GREEN_COLORS, this);
+	    
 		ct.addDataSetColors(ColorTemplate.COLORFUL_COLORS, this);
 		
 		mChart.setColorTemplate(ct);
@@ -54,18 +54,19 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
 
 		mChart.setDescription("This is a description."); 
 		mChart.setDrawHoleEnabled(true);
+		
+		// draws the corresponding description value into the slice
 		mChart.setDrawXValues(true);
 		mChart.setTouchEnabled(true);
-		mChart.setUsePercentValues(false);
+		
+		// display percentage values
+		mChart.setUsePercentValues(true);
+		
+		// add a selection listener
 		mChart.setOnChartValueSelectedListener(this);
 
-		mSeekBarX.setProgress(10);
+		mSeekBarX.setProgress(5);
 		mSeekBarY.setProgress(100);
-
-		// float diameter = mChart.getDiameter();
-		// float radius = mChart.getRadius();
-		//
-		// Log.i("Piechart", "diameter: " + diameter + ", radius: " + radius);
 	}
 
 	@Override
@@ -128,26 +129,19 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
 	}
 
 	@Override
-	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {	    
+
+        tvX.setText("" + (mSeekBarX.getProgress()));
+        tvY.setText("" + (mSeekBarY.getProgress())); 
 
 		ArrayList<Entry> yVals1 = new ArrayList<Entry>();
-		ArrayList<Entry> yVals2 = new ArrayList<Entry>();
-
-		// IMPORTANT: In a PieChart, no values (Entry) should have the same xIndex, since no values can be drawn above each other.
-		for (int i = 0; i < mSeekBarX.getProgress() / 2; i++) {
+		
+		// IMPORTANT: In a PieChart, no values (Entry) should have the same xIndex (even if from different DataSets), since no values can be drawn above each other.
+		for (int i = 0; i < mSeekBarX.getProgress(); i++) {
 			float mult = (mSeekBarY.getProgress());
 			float val = (float) (Math.random() * mult) + mult / 5;// + (float) ((mult * 0.1) / 10);
 			yVals1.add(new Entry(val, i));
 		}
-		
-		for (int i = mSeekBarX.getProgress() / 2; i < mSeekBarX.getProgress(); i++) {
-            float mult = (mSeekBarY.getProgress());
-            float val = (float) (Math.random() * mult) + mult / 5;// + (float) ((mult * 0.1) / 10);
-            yVals2.add(new Entry(val, i));
-        }
-
-		tvX.setText("" + (mSeekBarX.getProgress()));
-		tvY.setText("" + (mSeekBarY.getProgress())); 
 
 		ArrayList<String> xVals = new ArrayList<String>();
 
@@ -155,15 +149,17 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
 			xVals.add("Text" + (i + 1));
 		 
 		DataSet set1 = new DataSet(yVals1, 0);
-		DataSet set2 = new DataSet(yVals2, 1);
 		
         ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
         dataSets.add(set1);
-        dataSets.add(set2);
 
         ChartData data = new ChartData(xVals, dataSets);
 		mChart.setData(data);
+		
+		// undo all highlights
 		mChart.highlightValues(null);
+		
+		// set a text for the chart center
 		mChart.setCenterText("Total Value\n" + (int) mChart.getYValueSum() + "\n(all slices)");
 		mChart.invalidate();
 	}

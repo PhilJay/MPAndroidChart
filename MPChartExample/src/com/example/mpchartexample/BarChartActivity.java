@@ -1,3 +1,4 @@
+
 package com.example.mpchartexample;
 
 import java.util.ArrayList;
@@ -18,167 +19,181 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
-
 public class BarChartActivity extends Activity implements OnSeekBarChangeListener {
 
-	private BarChart mChart;
-	private SeekBar mSeekBarX, mSeekBarY;
-	private TextView tvX, tvY;
+    private BarChart mChart;
+    private SeekBar mSeekBarX, mSeekBarY;
+    private TextView tvX, tvY;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.activity_barchart);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_barchart);
 
-		tvX = (TextView) findViewById(R.id.tvXMax);
-		tvY = (TextView) findViewById(R.id.tvYMax);
+        tvX = (TextView) findViewById(R.id.tvXMax);
+        tvY = (TextView) findViewById(R.id.tvYMax);
 
-		mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
-		mSeekBarX.setOnSeekBarChangeListener(this);
+        mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
+        mSeekBarX.setOnSeekBarChangeListener(this);
 
-		mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
-		mSeekBarY.setOnSeekBarChangeListener(this);
+        mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
+        mSeekBarY.setOnSeekBarChangeListener(this);
 
-		mChart = (BarChart) findViewById(R.id.chart1);
-		
-		ColorTemplate ct = new ColorTemplate();
-		
-		// add colors for one dataset
-		ct.addDataSetColors(ColorTemplate.FRESH_COLORS, this);
-		
-		mChart.setColorTemplate(ct);
-		// mChart.setLegendDigits(2);
-		// mChart.setValueDigits(2);
+        mChart = (BarChart) findViewById(R.id.chart1);
 
-		// mChart.setDrawFilled(true);
-		// mChart.setRoundedYLegend(false);
-		// mChart.setStartAtZero(true);
-		mChart.setDrawYValues(false);
-		mChart.set3DEnabled(false);
-		// mChart.setSpacePercent(20, 10);
-		mChart.setYLegendCount(5);
-		mChart.setTouchEnabled(true);
+        ColorTemplate ct = new ColorTemplate();
 
-		mSeekBarX.setProgress(45);
-		mSeekBarY.setProgress(100);
-	}
+        // add colors for one dataset
+        ct.addDataSetColors(ColorTemplate.FRESH_COLORS, this);
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.bar, menu);
-		return true;
-	}
+        mChart.setColorTemplate(ct);
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+        // enable the drawing of values
+        mChart.setDrawYValues(true);
 
-		switch (item.getItemId()) {
-		case R.id.actionToggleValues: {
-			if (mChart.isDrawYValuesEnabled())
-				mChart.setDrawYValues(false);
-			else
-				mChart.setDrawYValues(true);
-			mChart.invalidate();
-			break;
-		}
-		case R.id.actionToggle3D: {
-			if (mChart.is3DEnabled())
-				mChart.set3DEnabled(false);
-			else
-				mChart.set3DEnabled(true);
-			mChart.invalidate();
-			break;
-		}
-		case R.id.actionToggleHighlight: {
-			if (mChart.isHighlightEnabled())
-				mChart.setHighlightEnabled(false);
-			else
-				mChart.setHighlightEnabled(true);
-			mChart.invalidate();
-			break;
-		}
-		case R.id.actionToggleHighlightArrow: {
-			if (mChart.isDrawHighlightArrowEnabled())
-				mChart.setDrawHighlightArrow(false);
-			else
-				mChart.setDrawHighlightArrow(true);
-			mChart.invalidate();
-			break;
-		}
-		case R.id.actionToggleStartzero: {
-			if (mChart.isStartAtZeroEnabled())
-				mChart.setStartAtZero(false);
-			else
-				mChart.setStartAtZero(true);
+        // if more than 60 entries are displayed in the chart, no values will be
+        // drawn
+        mChart.setMaxVisibleValueCount(60);
 
-			mChart.invalidate();
-			break;
-		}
-		case R.id.actionToggleAdjustXLegend: {
-			if (mChart.isAdjustXLegendEnabled())
-				mChart.setAdjustXLegend(false);
-			else
-				mChart.setAdjustXLegend(true);
+        // sets the number of digits for values inside the chart
+        mChart.setValueDigits(2);
 
-			mChart.invalidate();
-			break;
-		}
-		case R.id.actionToggleFilter:
-            if (mChart.isFilterSet()) {
-                mChart.setFilter(ApproximatorType.NONE, 0);
-            } else {
-                mChart.setFilter(ApproximatorType.DOUGLAS_PEUCKER, 2);
+        // disable 3D
+        mChart.set3DEnabled(false);
+        mChart.setYLegendCount(5);
+
+        // scaling can now only be done on x- and y-axis separately
+        mChart.setPinchZoom(false);
+
+        mSeekBarX.setProgress(45);
+        mSeekBarY.setProgress(100);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.bar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.actionToggleValues: {
+                if (mChart.isDrawYValuesEnabled())
+                    mChart.setDrawYValues(false);
+                else
+                    mChart.setDrawYValues(true);
+                mChart.invalidate();
+                break;
             }
-            mChart.invalidate();
-            break;
-		case R.id.actionSave: {
-			// mChart.saveToGallery("title"+System.currentTimeMillis());
-			mChart.saveToPath("title" + System.currentTimeMillis(), "");
-			break;
-		}
-		}
-		return true;
-	}
+            case R.id.actionToggle3D: {
+                if (mChart.is3DEnabled())
+                    mChart.set3DEnabled(false);
+                else
+                    mChart.set3DEnabled(true);
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleHighlight: {
+                if (mChart.isHighlightEnabled())
+                    mChart.setHighlightEnabled(false);
+                else
+                    mChart.setHighlightEnabled(true);
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionTogglePinch: {
+                if (mChart.isPinchZoomEnabled())
+                    mChart.setPinchZoom(false);
+                else
+                    mChart.setPinchZoom(true);
 
-	@Override
-	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleHighlightArrow: {
+                if (mChart.isDrawHighlightArrowEnabled())
+                    mChart.setDrawHighlightArrow(false);
+                else
+                    mChart.setDrawHighlightArrow(true);
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleStartzero: {
+                if (mChart.isStartAtZeroEnabled())
+                    mChart.setStartAtZero(false);
+                else
+                    mChart.setStartAtZero(true);
 
-		ArrayList<String> xVals = new ArrayList<String>();
-		for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-			xVals.add((i) + "");
-		}
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleAdjustXLegend: {
+                if (mChart.isAdjustXLegendEnabled())
+                    mChart.setAdjustXLegend(false);
+                else
+                    mChart.setAdjustXLegend(true);
 
-		ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleFilter:
+                if (mChart.isFilterSet()) {
+                    mChart.setFilter(ApproximatorType.NONE, 0);
+                } else {
+                    mChart.setFilter(ApproximatorType.DOUGLAS_PEUCKER, 5);
+                }
+                mChart.invalidate();
+                break;
+            case R.id.actionSave: {
+                // mChart.saveToGallery("title"+System.currentTimeMillis());
+                mChart.saveToPath("title" + System.currentTimeMillis(), "");
+                break;
+            }
+        }
+        return true;
+    }
 
-		for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-			float mult = (mSeekBarY.getProgress() + 1);
-			float val = (float) (Math.random() * mult * 0.1) + 3;// + (float) ((mult * 0.1) / 10);
-			yVals1.add(new Entry(val, i));
-		}
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-		tvX.setText("" + (mSeekBarX.getProgress() + 1));
-		tvY.setText("" + (mSeekBarY.getProgress() / 10));
+        tvX.setText("" + (mSeekBarX.getProgress() + 1));
+        tvY.setText("" + (mSeekBarY.getProgress()));
 
-		DataSet set1 = new DataSet(yVals1, 0);
+        ArrayList<String> xVals = new ArrayList<String>();
+        for (int i = 0; i < mSeekBarX.getProgress(); i++) {
+            xVals.add((i) + "");
+        }
+
+        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+
+        for (int i = 0; i < mSeekBarX.getProgress(); i++) {
+            float val = (float) (Math.random() * mSeekBarY.getProgress()) + 3;
+            yVals1.add(new Entry(val, i));
+        }
+
+        DataSet set1 = new DataSet(yVals1, 0);
         ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
         dataSets.add(set1);
 
         ChartData data = new ChartData(xVals, dataSets);
 
-		mChart.setData(data);
-		mChart.invalidate();
-	}
+        mChart.setData(data);
+        mChart.invalidate();
+    }
 
-	@Override
-	public void onStartTrackingTouch(SeekBar seekBar) {
-		// TODO Auto-generated method stub
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+        // TODO Auto-generated method stub
 
-	}
+    }
 
-	@Override
-	public void onStopTrackingTouch(SeekBar seekBar) {
-		// TODO Auto-generated method stub
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        // TODO Auto-generated method stub
 
-	}
+    }
 }

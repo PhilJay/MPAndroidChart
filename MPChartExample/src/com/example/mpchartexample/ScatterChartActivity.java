@@ -53,27 +53,22 @@ public class ScatterChartActivity extends Activity implements OnSeekBarChangeLis
         }, this);
         
         mChart = (ScatterChart) findViewById(R.id.chart1);
-        mChart.setOnChartValueSelectedListener(this);
         mChart.setColorTemplate(ct);
         
-        // one shape per dataset
+        // specify the shapes for the datasets, one shape per dataset
         mChart.setScatterShapes(new ScatterShape[] { ScatterShape.SQUARE, ScatterShape.TRIANGLE, ScatterShape.CIRCLE });
+        
+        mChart.setOnChartValueSelectedListener(this);
 
-        // mChart.setDrawFilled(true);
-        // mChart.setRoundedYLegend(false);
-        // mChart.setStartAtZero(true);
-        // mChart.setSpacePercent(20, 10);
         mChart.setYLegendCount(6);
         mChart.setTouchEnabled(true);
         mChart.setHighlightEnabled(true);
         mChart.setDrawYValues(false);
 
-        // highlight index 2 and 6 in dataset 0
-        // mChart.highlightValues(new Highlight[] {new Highlight(2, 0), new
-        // Highlight(6, 0)});
         mChart.setDragEnabled(true);
 
-        mChart.setMaxVisibleValueCount(300);
+        mChart.setMaxVisibleValueCount(200);
+        mChart.setPinchZoom(true);
 
         mSeekBarX.setProgress(45);
         mSeekBarY.setProgress(100);
@@ -102,6 +97,15 @@ public class ScatterChartActivity extends Activity implements OnSeekBarChangeLis
                     mChart.setHighlightEnabled(false);
                 else
                     mChart.setHighlightEnabled(true);
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionTogglePinch: {
+                if (mChart.isPinchZoomEnabled())
+                    mChart.setPinchZoom(false);
+                else
+                    mChart.setPinchZoom(true);
+
                 mChart.invalidate();
                 break;
             }
@@ -142,6 +146,9 @@ public class ScatterChartActivity extends Activity implements OnSeekBarChangeLis
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        
+        tvX.setText("" + (mSeekBarX.getProgress() + 1));
+        tvY.setText("" + (mSeekBarY.getProgress()));
 
         ArrayList<String> xVals = new ArrayList<String>();
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
@@ -153,33 +160,21 @@ public class ScatterChartActivity extends Activity implements OnSeekBarChangeLis
         ArrayList<Entry> yVals3 = new ArrayList<Entry>();
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-            float mult = (mSeekBarY.getProgress() + 1);
-            float val = (float) (Math.random() * mult * 0.1) + 3;// + (float)
-                                                                 // ((mult *
-                                                                 // 0.1) / 10);
+            float val = (float) (Math.random() * mSeekBarY.getProgress()) + 3;
             yVals1.add(new Entry(val, i));
         }
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-            float mult = (mSeekBarY.getProgress() + 1);
-            float val = (float) (Math.random() * mult * 0.1) + 3;// + (float)
-                                                                 // ((mult *
-                                                                 // 0.1) / 10);
+            float val = (float) (Math.random() * mSeekBarY.getProgress()) + 3;
             yVals2.add(new Entry(val, i));
         }
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-            float mult = (mSeekBarY.getProgress() + 1);
-            float val = (float) (Math.random() * mult * 0.1) + 3;// + (float)
-                                                                 // ((mult *
-                                                                 // 0.1) / 10);
+            float val = (float) (Math.random() * mSeekBarY.getProgress()) + 3;
             yVals3.add(new Entry(val, i));
         }
 
-        tvX.setText("" + (mSeekBarX.getProgress() + 1));
-        tvY.setText("" + (mSeekBarY.getProgress() / 10));
-
-        // create a dataset and give it a type (0)
+        // create a dataset and give it a type
         DataSet set1 = new DataSet(yVals1, 0);
         DataSet set2 = new DataSet(yVals2, 1);
         DataSet set3 = new DataSet(yVals3, 2);

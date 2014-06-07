@@ -24,8 +24,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		Button btn5 = (Button) findViewById(R.id.button5);
 		Button btn6 = (Button) findViewById(R.id.button6);
 		Button btn7 = (Button) findViewById(R.id.button7);
-		Button btn8 = (Button) findViewById(R.id.button8);
-		Button btn9 = (Button) findViewById(R.id.button9);
 		btn1.setOnClickListener(this);
 		btn2.setOnClickListener(this);
 		btn3.setOnClickListener(this);
@@ -33,8 +31,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		btn5.setOnClickListener(this);
 		btn6.setOnClickListener(this);
 		btn7.setOnClickListener(this);
-		btn8.setOnClickListener(this);
-		btn9.setOnClickListener(this);
 	}
 
 	@Override
@@ -64,21 +60,13 @@ public class MainActivity extends Activity implements OnClickListener {
 			startActivity(i);
 			break;
 		case R.id.button6:
-			i = new Intent(this, MultipleChartsActivity.class);
-			startActivity(i);
+		    i = new Intent(this, ScatterChartActivity.class);
+            startActivity(i);
 			break;
 		case R.id.button7:
 			i = new Intent(this, DrawChartActivity.class);
 			startActivity(i);
 			break;
-		case R.id.button8:
-			i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/PhilJay/MPAndroidChart"));
-			startActivity(i);
-			break;
-		case R.id.button9:
-            i = new Intent(this, ScatterChartActivity.class);
-            startActivity(i);
-            break;
 		}
 	}
 }

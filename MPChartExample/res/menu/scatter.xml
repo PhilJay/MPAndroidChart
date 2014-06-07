@@ -2,10 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/actionToggleRound"
-        android:title="Toggle Round">
-    </item>
-    <item
         android:id="@+id/actionToggleValues"
         android:title="Toggle Values">
     </item>
@@ -29,5 +25,8 @@
         android:id="@+id/actionSave"
         android:title="Save to Gallery">
     </item>
-
+<item
+        android:id="@+id/actionTogglePinch"
+        android:title="Toggle PinchZoom">
+    </item>
 </menu>

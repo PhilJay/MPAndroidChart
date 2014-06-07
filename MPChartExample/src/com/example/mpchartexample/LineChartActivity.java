@@ -49,27 +49,28 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 		mChart = (LineChart) findViewById(R.id.chart1);
 		mChart.setOnChartValueSelectedListener(this);
 		mChart.setColorTemplate(ct);
-
-		// mChart.setDrawFilled(true);
-		// mChart.setRoundedYLegend(false);
-		// mChart.setStartAtZero(true);
+		
+		// if enabled, the chart will always start at zero on the y-axis
+		mChart.setStartAtZero(false);
+		
+		// disable the drawing of values into the chart
 		mChart.setDrawYValues(false);
+		
 		mChart.setLineWidth(5f);
 		mChart.setCircleSize(5f);
-		// mChart.setSpacePercent(20, 10);
 		mChart.setYLegendCount(6);
+		
+		// enable value highlighting
+	    mChart.setHighlightEnabled(true);
+	      
+        // enable touch gestures
 		mChart.setTouchEnabled(true);
-		mChart.setHighlightEnabled(true);
+		
+	    // enable scaling and dragging
+        mChart.setDragEnabled(true);
+		
+		// if disabled, scaling can be done on x- and y-axis separately
 		mChart.setPinchZoom(true);
-
-		// highlight index 2 and 6 in dataset 0
-		// mChart.highlightValues(new Highlight[] {new Highlight(2, 0), new
-		// Highlight(6, 0)});
-		mChart.setDragEnabled(true);
-		mChart.setTouchEnabled(true);
-
-
-		// mChart.setOffsets(60, 25, 15, 15);
 
 		mSeekBarX.setProgress(45);
 		mSeekBarY.setProgress(100);
@@ -126,6 +127,15 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 			mChart.invalidate();
 			break;
 		}
+		case R.id.actionTogglePinch: {
+            if (mChart.isPinchZoomEnabled())
+                mChart.setPinchZoom(false);
+            else
+                mChart.setPinchZoom(true);
+
+            mChart.invalidate();
+            break;
+        }
 		case R.id.actionToggleAdjustXLegend: {
 			if (mChart.isAdjustXLegendEnabled())
 				mChart.setAdjustXLegend(false);
@@ -139,7 +149,7 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 			if (mChart.isFilterSet()) {
 				mChart.setFilter(ApproximatorType.NONE, 0);
 			} else {
-				mChart.setFilter(ApproximatorType.DOUGLAS_PEUCKER, 2);
+				mChart.setFilter(ApproximatorType.DOUGLAS_PEUCKER, 5);
 			}
 			mChart.invalidate();
 			break;
@@ -154,6 +164,9 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+	    
+        tvX.setText("" + (mSeekBarX.getProgress() + 1));
+        tvY.setText("" + (mSeekBarY.getProgress()));
 
 		ArrayList<String> xVals = new ArrayList<String>();
 		for (int i = 0; i < mSeekBarX.getProgress(); i++) {
@@ -170,10 +183,7 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 			yVals.add(new Entry(val, i));
 		}
 
-		tvX.setText("" + (mSeekBarX.getProgress() + 1));
-		tvY.setText("" + (mSeekBarY.getProgress() / 10));
-
-		// create a dataset and give it a type (0)
+		// create a dataset and give it a type 
 		DataSet set1 = new DataSet(yVals, 0);
 
 		ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
@@ -182,11 +192,11 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 		// create a data object with the datasets
 		ChartData data = new ChartData(xVals, dataSets);
 
+		// set data
 		mChart.setData(data);
+		
+		// redraw
 		mChart.invalidate();
-
-		// Log.i("pixel for value", mChart.getPixelsForValues(10, 10).toString());
-		// Log.i("value for touch", mChart.getValuesByTouchPoint(300, 300).toString());
 	}
 
 	@Override
