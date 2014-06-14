@@ -9,7 +9,6 @@ import android.util.AttributeSet;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
@@ -108,7 +107,12 @@ public class LineChart extends BarLineChartBase {
 	@Override
 	protected void drawData() {
 
-		ArrayList<DataSet> dataSets = mData.getDataSets();
+		ArrayList<DataSet> dataSets;
+		
+//		if(mFilterData) dataSets = mZoomHandler.getFiltered(mData, mScaleX, mScaleY).getDataSets();
+//		else dataSets = mData.getDataSets();
+		
+		dataSets = mData.getDataSets();
 
 		for (int i = 0; i < mData.getDataSetCount(); i++) {
 

@@ -1,6 +1,11 @@
 
 package com.github.mikephil.charting.data;
 
+/**
+ * Class representing one entry in the chart.
+ * 
+ * @author Philipp Jahoda
+ */
 public class Entry {
 
     /** the actual value */
@@ -12,7 +17,7 @@ public class Entry {
     /**
      * A Entry represents one single entry in the chart
      * 
-     * @param val the y value
+     * @param val the y value (the actual value of the entry)
      * @param xIndex the corresponding index in the x value array (index on the
      *            x-axis of the chart)
      */
@@ -30,9 +35,31 @@ public class Entry {
         return mXIndex;
     }
 
-    protected Entry cloneEntry() {
-        Entry entry = new Entry(mVal, mXIndex);
-        return entry;
+    /**
+     * sets the x-index for the entry
+     * 
+     * @param x
+     */
+    public void setXIndex(int x) {
+        this.mXIndex = x;
+    }
+
+    /**
+     * returns the value the entry represents
+     * 
+     * @return
+     */
+    public float getVal() {
+        return mVal;
+    }
+
+    /**
+     * sets the value for the entry
+     * 
+     * @param val
+     */
+    public void setVal(float val) {
+        this.mVal = val;
     }
 
     //
@@ -94,12 +121,20 @@ public class Entry {
     // }
     // }
 
-    public float getVal() {
-        return mVal;
+    /**
+     * returns an exact copy of the entry
+     * 
+     * @return
+     */
+    public Entry copy() {
+        return new Entry(mVal, mXIndex);
     }
 
+    /**
+     * returns a string representation of the entry containing x-index and value
+     */
     @Override
     public String toString() {
-        return "xIndex: " + mXIndex + " yVal: " + mVal;
+        return "Entry, xIndex: " + mXIndex + " val: " + mVal;
     }
 }

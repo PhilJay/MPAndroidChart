@@ -70,11 +70,11 @@ public abstract class Chart extends View {
     /** chart offset to the right */
     protected int mOffsetRight = 20;
 
-    /** chart offset to the bottom */
+    /** chart offset to the bottom */ 
     protected int mOffsetBottom = 15;
 
-    /** object that holds all data relevant for the chart (x-vals, y-vals, ...) */
-    protected ChartData mData = null;
+    /** object that holds all data relevant for the chart (x-vals, y-vals, ...) that are currently displayed */
+    protected ChartData mData= null;
 
     /** final bitmap that contains all information and is drawn to the screen */
     protected Bitmap mDrawBitmap;

@@ -1,9 +1,6 @@
 
 package com.github.mikephil.charting.charts;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -20,7 +17,8 @@ import android.util.Log;
 import android.view.ViewParent;
 
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
+import com.github.mikephil.charting.data.filter.Approximator;
+import com.github.mikephil.charting.data.filter.ZoomHandler;
 import com.github.mikephil.charting.interfaces.OnDrawListener;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.utils.Highlight;
@@ -28,6 +26,9 @@ import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.YLegend;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 /**
  * Baseclass of LineChart and BarChart.
@@ -44,6 +45,12 @@ public abstract class BarLineChartBase extends Chart {
 
     /** the maximum number of entried to which values will be drawn */
     protected int mMaxVisibleCount = 100;
+
+    /** minimum scale value on the y-axis */
+    private float mMinScaleY = 1f;
+
+    /** minimum scale value on the x-axis */
+    private float mMinScaleX = 1f;
 
     /** contains the current scale factor of the x-axis */
     protected float mScaleX = 1f;
@@ -112,6 +119,9 @@ public abstract class BarLineChartBase extends Chart {
     /** if true, the y-legend will always start at zero */
     protected boolean mStartAtZero = true;
 
+    /** if true, data filterin is enabled */
+    protected boolean mFilterData = true;
+
     /** paint object for the grid lines */
     protected Paint mGridPaint;
 
@@ -144,6 +154,8 @@ public abstract class BarLineChartBase extends Chart {
      * prepareYLegend() method
      */
     protected YLegend mYLegend = new YLegend();
+
+    protected ZoomHandler mZoomHandler = new ZoomHandler();
 
     public BarLineChartBase(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -650,6 +662,37 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
+     * Zooms in by 1.4f, x and y are the coordinates (in pixels) of the zoom
+     * center.
+     * 
+     * @param x
+     * @param y
+     */
+    public void zoomIn(float x, float y) {
+
+        Matrix save = new Matrix();
+        save.set(mMatrixTouch);
+
+        save.postScale(1.4f, 1.4f, x, y);
+
+        refreshTouch(save);
+    }
+
+    /**
+     * Zooms out by 0.7f, x and y are the coordinates (in pixels) of the zoom
+     * center.
+     */
+    public void zoomOut(float x, float y) {
+
+        Matrix save = new Matrix();
+        save.set(mMatrixTouch);
+
+        save.postScale(0.7f, 0.7f, x, y);
+
+        refreshTouch(save);
+    }
+
+    /**
      * call this method to refresh the graph with a given touch matrix
      * 
      * @param newTouchMatrix
@@ -690,16 +733,16 @@ public abstract class BarLineChartBase extends Chart {
         // curScaleY);
 
         // min scale-x is 1f
-        mScaleX = Math.max(1f, Math.min(getMaxScaleX(), curScaleX));
+        mScaleX = Math.max(mMinScaleX, Math.min(getMaxScaleX(), curScaleX));
 
         // min scale-y is 1f
-        mScaleY = Math.max(1f, Math.min(getMaxScaleY(), curScaleY));
+        mScaleY = Math.max(mMinScaleY, Math.min(getMaxScaleY(), curScaleY));
 
         if (mContentRect == null)
             return;
 
         float maxTransX = -(float) mContentRect.width() * (mScaleX - 1f);
-        float newTransX = Math.min(Math.max(curTransX, maxTransX), 0);
+        float newTransX = Math.min(Math.max(curTransX, maxTransX), 0f);
 
         float maxTransY = (float) mContentRect.height() * (mScaleY - 1f);
         float newTransY = Math.max(Math.min(curTransY, maxTransY), 0f);
@@ -713,6 +756,7 @@ public abstract class BarLineChartBase extends Chart {
 
         vals[Matrix.MTRANS_X] = newTransX;
         vals[Matrix.MSCALE_X] = mScaleX;
+
         vals[Matrix.MTRANS_Y] = newTransY;
         vals[Matrix.MSCALE_Y] = mScaleY;
 
@@ -772,6 +816,20 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
+     * Sets the minimum scale values for both axes. Scale 0.5f means 0.5x zoom
+     * (zoomed out by factor 2), scale 0.1f means maximum zoomed out by factor
+     * 10, scale 2f means the user cannot zoom out further than 2x zoom, ...
+     * 
+     * @param scaleXmin
+     * @param scaleYmin
+     */
+    public void setScaleMinima(float scaleXmin, float scaleYmin) {
+
+        mMinScaleX = scaleXmin;
+        mMinScaleY = scaleYmin;
+    }
+
+    /**
      * set this to true to enable drawing the top y-legend entry. Disabling this
      * can be helpful when the y-legend and x-legend interfear with each other.
      * default: true
@@ -783,12 +841,26 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * sets the effective range of y-values the chart can display
+     * Sets the effective range of y-values the chart can display. If this is
+     * set, the y-range is fixed and cannot be changed. This means, no
+     * recalculation of the bounds of the chart concerning the y-axis will be
+     * done when adding new data. To disable this, provide Float.NaN as a
+     * parameter or call resetYRange();
      * 
      * @param minY
      * @param maxY
+     * @param invalidate if set to true, the chart will redraw itself after
+     *            calling this method
      */
-    public void setYRange(float minY, float maxY) {
+    public void setYRange(float minY, float maxY, boolean invalidate) {
+
+        if (Float.isNaN(minY) || Float.isNaN(maxY)) {
+            resetYRange(invalidate);
+            return;
+        }
+
+        mFixedYValues = true;
+
         mYChartMin = minY;
         mYChartMax = maxY;
         if (minY < 0) {
@@ -798,28 +870,24 @@ public abstract class BarLineChartBase extends Chart {
 
         calcFormats();
         prepareMatrix();
-        invalidate();
+        if (invalidate)
+            invalidate();
     }
 
     /**
-     * Sets the y range fixed. This means, no recalculation of the bounds of the
-     * chart concerning the y-axis will be done when adding new data.
+     * Resets the previously set y range. If new data is added, the y-range will
+     * be recalculated.
      * 
-     * @param fixed
+     * @param invalidate if set to true, the chart will redraw itself after
+     *            calling this method
      */
-    public void setYRangeFixed(boolean fixed) {
-        mFixedYValues = fixed;
-    }
-
-    /**
-     * Resets the previously set y range
-     */
-    public void resetYRange() {
+    public void resetYRange(boolean invalidate) {
         mFixedYValues = false;
         calcMinMax(mFixedYValues);
 
         prepareMatrix();
-        invalidate();
+        if (invalidate)
+            invalidate();
     }
 
     /**
@@ -1186,6 +1254,15 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
+     * returns the zoomhandler of the chart
+     * 
+     * @return
+     */
+    public ZoomHandler getZoomHandler() {
+        return mZoomHandler;
+    }
+
+    /**
      * returns the current x-scale factor
      */
     public float getScaleX() {
@@ -1261,28 +1338,70 @@ public abstract class BarLineChartBase extends Chart {
         setYLegendTypeface(t);
     }
 
+    // /**
+    // * Sets a filter on the whole ChartData. If the type is NONE, the
+    // filtering
+    // * is reset. What the filter does is remove certain values which's
+    // distance
+    // * to the next value in the chart is below the tolerance. The space left
+    // in
+    // * between is then approximated. This will increase performance whith
+    // large
+    // * amounts of data.
+    // *
+    // * @param type the filter type. NONE to reset filtering
+    // * @param tolerance the tolerance
+    // */
+    // public void setFilter(ApproximatorType type, double tolerance) {
+    // mData.setFilter(type, tolerance);
+    // }
+
     /**
-     * Sets a filter on the whole ChartData. If the type is NONE, the filtering
-     * is reset. What the filter does is remove certain values which's distance
-     * to the next value in the chart is below the tolerance. The space left in
-     * between is then approximated. This will increase performance whith large
-     * amounts of data.
-     * 
-     * @param type the filter type. NONE to reset filtering
-     * @param tolerance the tolerance
+     * Enables data filtering for the chart data, filtering will use the default
+     * Approximator. What filtering does is reduce the data displayed in the
+     * chart with a certain tolerance. This can especially be important
+     * concerning performance when displaying large datasets.
      */
-    public void setFilter(ApproximatorType type, double tolerance) {
-        mData.setFilter(type, tolerance);
+    public void enableFiltering() {
+        mFilterData = true;
+        mZoomHandler.setCustomApproximator(null);
     }
 
     /**
-     * returns true if a filter has been set, flase if not
+     * Enables data filtering for the chart data, filtering will use the user
+     * customized Approximator handed over to this method.
+     * 
+     * @param a
+     */
+    public void enableFiltering(Approximator a) {
+        mFilterData = true;
+        mZoomHandler.setCustomApproximator(a);
+    }
+
+    /**
+     * Disables data filtering for the chart.
+     */
+    public void disableFiltering() {
+        mFilterData = false;
+    }
+
+    /**
+     * returns true if data filtering is enabled, false if not
      * 
      * @return
      */
-    public boolean isFilterSet() {
-        return mData.isApproximatedData();
+    public boolean isFilteringEnabled() {
+        return mFilterData;
     }
+
+    // /**
+    // * returns true if a filter has been set, flase if not
+    // *
+    // * @return
+    // */
+    // public boolean isFilterSet() {
+    // return mData.isApproximatedData();
+    // }
 
     /**
      * if set to true, both x and y axis can be scaled with 2 fingers, if false,

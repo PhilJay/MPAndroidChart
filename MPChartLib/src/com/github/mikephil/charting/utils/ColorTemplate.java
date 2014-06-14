@@ -167,4 +167,20 @@ public class ColorTemplate {
 
         return result;
     }
+    
+    /**
+     * tuns an array of colors (already converted with getResources().getColor(...) int an arraylist of colors
+     * @param colors
+     * @return
+     */
+    public static ArrayList<Integer> createColors(int[] colors) {
+
+        ArrayList<Integer> result = new ArrayList<Integer>();
+
+        for (int i : colors) {
+            result.add(i);
+        }
+
+        return result;
+    }
 }

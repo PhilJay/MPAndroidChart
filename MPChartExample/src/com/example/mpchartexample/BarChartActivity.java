@@ -141,10 +141,10 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
                 break;
             }
             case R.id.actionToggleFilter:
-                if (mChart.isFilterSet()) {
-                    mChart.setFilter(ApproximatorType.NONE, 0);
+                if (mChart.isFilteringEnabled()) {
+                    mChart.enableFiltering();
                 } else {
-                    mChart.setFilter(ApproximatorType.DOUGLAS_PEUCKER, 5);
+                    mChart.disableFiltering();
                 }
                 mChart.invalidate();
                 break;

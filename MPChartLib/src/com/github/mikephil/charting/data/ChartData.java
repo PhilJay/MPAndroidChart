@@ -1,18 +1,13 @@
 
 package com.github.mikephil.charting.data;
 
-import android.util.Log;
-
-import com.github.mikephil.charting.charts.Chart;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
-
 import java.util.ArrayList;
 
 /**
- * Class that holds all relevant data that represents the chart
+ * Class that holds all relevant data that represents the chart. That
+ * involves at least one (or more) DataSets, and an array of x-values.
  * 
- * @author Philipp
+ * @author Philipp Jahoda
  */
 public class ChartData {
 
@@ -31,18 +26,6 @@ public class ChartData {
     /** holds all the datasets (e.g. different lines) the chart represents */
     private ArrayList<DataSet> mDataSets;
 
-    /** if true, there are approximated DataSets */
-    private boolean mApproximatedData = false;
-
-    /** the approximator, used to filter values */
-    private Approximator mApproximator;
-
-    /**
-     * the filtered values, stored separately to not change the data set by the
-     * user
-     */
-    private ArrayList<DataSet> mApproximatedDataSets;
-
     /** array that holds all the different type ids that are in the series array */
     private ArrayList<Integer> mDiffTypes;
 
@@ -58,6 +41,13 @@ public class ChartData {
         init(xVals, dataSets);
     }
 
+    /**
+     * constructor that takes string array instead of arraylist string
+     * @param xVals The values describing the x-axis. Must be at least as long
+     *            as the highest xIndex in the Entry objects across all
+     *            DataSets.
+     * @param dataSets all DataSet objects the chart needs to represent
+     */
     public ChartData(String[] xVals, ArrayList<DataSet> dataSets) {
         ArrayList<String> newXVals = new ArrayList<String>();
         for (int i = 0; i < xVals.length; i++) {
@@ -65,18 +55,30 @@ public class ChartData {
         }
         init(newXVals, dataSets);
     }
+    
+    /**
+     * Constructor that takes only one DataSet
+     * @param xVals
+     * @param data
+     */
+    public ChartData(ArrayList<String> xVals, DataSet data) {
+        
+        ArrayList<DataSet> sets = new ArrayList<DataSet>();
+        sets.add(data);
+        init(xVals, sets);
+    }
 
     private void init(ArrayList<String> xVals, ArrayList<DataSet> dataSets) {
         this.mXVals = xVals;
         this.mDataSets = dataSets;
-        mApproximator = new Approximator();
 
         calcTypes();
         calcMinMax();
         calcYValueSum();
 
         for (int i = 0; i < mDataSets.size(); i++) {
-            if (mDataSets.get(i).getYVals().size() > xVals.size()) {
+            if (mDataSets.get(i).getYVals().size()
+            > xVals.size()) {
                 throw new IllegalArgumentException(
                         "x values are smaller than the largest y series array of one type");
             }
@@ -88,11 +90,7 @@ public class ChartData {
      * changed.
      */
     public void notifyDataChanged() {
-        if (mApproximatedData) {
-            filter();
-        } else {
-            doCalculations();
-        }
+        doCalculations();
     }
 
     /**
@@ -112,7 +110,7 @@ public class ChartData {
         mDiffTypes = new ArrayList<Integer>();
 
         // check which dataset to use
-        ArrayList<DataSet> dataSets = mApproximatedData ? mApproximatedDataSets : mDataSets;
+        ArrayList<DataSet> dataSets = mDataSets;
 
         for (int i = 0; i < dataSets.size(); i++) {
 
@@ -129,7 +127,7 @@ public class ChartData {
      */
     private void calcMinMax() {
         // check which dataset to use
-        ArrayList<DataSet> dataSets = mApproximatedData ? mApproximatedDataSets : mDataSets;
+        ArrayList<DataSet> dataSets = mDataSets;
 
         mYMin = dataSets.get(0).getYMin();
         mYMax = dataSets.get(0).getYMax();
@@ -151,7 +149,7 @@ public class ChartData {
         mYValueSum = 0;
 
         // check which dataset to use
-        ArrayList<DataSet> dataSets = mApproximatedData ? mApproximatedDataSets : mDataSets;
+        ArrayList<DataSet> dataSets = mDataSets;
         for (int i = 0; i < dataSets.size(); i++) {
             mYValueSum += Math.abs(dataSets.get(i).getYValueSum());
         }
@@ -182,70 +180,7 @@ public class ChartData {
         }
     }
 
-    /**
-     * Sets a filter on the whole ChartData. If the type is NONE, the filtering
-     * is reset. Be aware that the original DataSets are not modified. Instead
-     * there are modified copies of the data. All methods return the filtered
-     * values if a filter is set. To receive the original values despite a set
-     * filter, call getOriginalDataSets().
-     * 
-     * @param type the filter type. NONE to reset filtering
-     * @param tolerance the tolerance
-     */
-    public void setFilter(ApproximatorType type, double tolerance) {
-        mApproximator.setTypeAndTolerance(type, tolerance);
-
-        if (type != ApproximatorType.NONE) {
-            mApproximatedData = true;
-            // filter values
-            filter();
-        } else {
-            mApproximatedData = false;
-            // do calculations, because original values are used now
-            doCalculations();
-        }
-    }
-
-    /**
-     * Call this method to filter the data. This is private, because if a user
-     * of this library wants to filter again, he should use
-     * notifyDataSetChanged() or setFilter() instead.
-     */
-    private void filter() {
-        if (mApproximatedData) {
-            mApproximatedDataSets = new ArrayList<DataSet>();
-            for (int i = 0; i < mDataSets.size(); i++) {
-                DataSet dataSet = mDataSets.get(i);
-                ArrayList<Entry> filteredEntries = mApproximator.filter(dataSet.getYVals());
-                if (filteredEntries != null) {
-                    DataSet approximatedDataSet = new DataSet(filteredEntries, dataSet.getType());
-                    mApproximatedDataSets.add(approximatedDataSet);
-                } else {
-                    // if filtering failed, copy data set
-                    DataSet approximatedDataSet = dataSet.cloneDataSet();
-                    mApproximatedDataSets.add(approximatedDataSet);
-                }
-            }
-            doCalculations();
-        } else {
-            Log.e(Chart.LOG_TAG, "No filter set. Call setFilter() first");
-        }
-    }
-
-    /**
-     * if true, the DataSets are approximated. Use getOriginalDataSet() to
-     * receive original values, even if filter apply.
-     * 
-     * @return
-     */
-    public boolean isApproximatedData() {
-        return mApproximatedData;
-    }
-
     public int getDataSetCount() {
-        if (mApproximatedData) {
-            return mApproximatedDataSets.size();
-        }
         return mDataSets.size();
     }
 
@@ -270,13 +205,9 @@ public class ChartData {
         if (mXVals == null || mXVals.size() <= 1)
             return false;
 
-        if (mApproximatedData) {
-            if (mApproximatedDataSets == null || mApproximatedDataSets.size() < 1)
-                return false;
-        } else {
-            if (mDataSets == null || mDataSets.size() < 1)
-                return false;
-        }
+        if (mDataSets == null || mDataSets.size() < 1)
+            return false;
+
         return true;
     }
 
@@ -297,9 +228,6 @@ public class ChartData {
      * @return
      */
     public ArrayList<Entry> getYVals(int index) {
-        if (mApproximatedData) {
-            return mApproximatedDataSets.get(index).getYVals();
-        }
         return mDataSets.get(index).getYVals();
     }
 
@@ -311,9 +239,6 @@ public class ChartData {
      * @return
      */
     public DataSet getDataSetByIndex(int index) {
-        if (mApproximatedData) {
-            return mApproximatedDataSets.get(index);
-        }
         return mDataSets.get(index);
     }
 
@@ -326,7 +251,7 @@ public class ChartData {
      */
     public DataSet getDataSetByType(int type) {
         // check which dataset to use
-        ArrayList<DataSet> dataSets = mApproximatedData ? mApproximatedDataSets : mDataSets;
+        ArrayList<DataSet> dataSets = mDataSets;
 
         for (int i = 0; i < dataSets.size(); i++)
             if (type == dataSets.get(i).getType())
@@ -342,9 +267,6 @@ public class ChartData {
      * @return
      */
     public ArrayList<DataSet> getDataSets() {
-        if (mApproximatedData) {
-            return mApproximatedDataSets;
-        }
         return mDataSets;
     }
 
@@ -385,7 +307,7 @@ public class ChartData {
     public int getYValCount() {
         int count = 0;
         // check which dataset to use
-        ArrayList<DataSet> dataSets = mApproximatedData ? mApproximatedDataSets : mDataSets;
+        ArrayList<DataSet> dataSets = mDataSets;
 
         for (int i = 0; i < dataSets.size(); i++) {
             count += dataSets.get(i).getEntryCount();

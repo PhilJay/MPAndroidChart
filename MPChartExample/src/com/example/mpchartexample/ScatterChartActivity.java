@@ -128,10 +128,10 @@ public class ScatterChartActivity extends Activity implements OnSeekBarChangeLis
                 break;
             }
             case R.id.actionToggleFilter:
-                if (mChart.isFilterSet()) {
-                    mChart.setFilter(ApproximatorType.NONE, 0);
+                if (mChart.isFilteringEnabled()) {
+                    mChart.enableFiltering();
                 } else {
-                    mChart.setFilter(ApproximatorType.DOUGLAS_PEUCKER, 2);
+                    mChart.disableFiltering();
                 }
                 mChart.invalidate();
                 break;

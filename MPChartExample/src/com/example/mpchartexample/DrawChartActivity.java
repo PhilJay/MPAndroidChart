@@ -67,9 +67,9 @@ public class DrawChartActivity extends Activity implements OnChartValueSelectedL
         // add data to the chart
         initWithDummyData();
         
-        mChart.setYRangeFixed(true);
-        mChart.setYRange(-40f, 40f);
-        mChart.invalidate();
+        mChart.setYRange(-40f, 40f, true);
+//        call this to reset the changed y-range
+//        mChart.resetYRange(true);
     }
 
     private void initWithDummyData() {
@@ -190,6 +190,6 @@ public class DrawChartActivity extends Activity implements OnChartValueSelectedL
     /** callback when a DataSet has been drawn (when lifting the finger) */
     @Override
     public void onDrawFinished(DataSet dataSet) {
-        Log.i(Chart.LOG_TAG, "DataSet drawn.");
+        Log.i(Chart.LOG_TAG, "DataSet drawn. " + dataSet.toSimpleString());
     }
 }

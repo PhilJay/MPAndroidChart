@@ -19,8 +19,6 @@ import com.github.mikephil.charting.utils.PointD;
 
 public class BarLineChartTouchListener extends SimpleOnGestureListener implements OnTouchListener {
 
-    private static final float MIN_SCALE = 0.5f;
-
     private Matrix mMatrix = new Matrix();
     private Matrix mSavedMatrix = new Matrix();
 
@@ -76,7 +74,7 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 
         mDrawingContext.init(mChart.getDrawListener(), mChart.isAutoFinishEnabled());
         ChartData data = mChart.getData();
-        
+
         // Handle touch events here...
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
@@ -128,15 +126,14 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
-                mTouchMode = NONE;
                 if (mTouchMode == DRAWING) {
                     mDrawingContext.finishNewDrawingEntry(data);
                     mChart.notifyDataSetChanged();
-                    mChart.invalidate();
                     Log.i("Drawing", "Drawing finished");
                 } else {
                     mChart.enableScroll();
                 }
+                mTouchMode = NONE;
                 break;
             case MotionEvent.ACTION_POINTER_UP:
                 mTouchMode = POSTZOOM;
@@ -157,12 +154,10 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
                     Entry entry = new Entry((float) yVal, xIndex);
                     boolean added = mDrawingContext.addNewDrawingEntry(entry, data);
                     if (added) {
-                        Log.i("Drawing", "Added entry " + entry.toString());
                         mChart.notifyDataSetChanged();
-                        mChart.invalidate();
                     }
                 }
-                if (((mTouchMode == NONE && !mDrawingEnabled) || (mTouchMode != DRAG && event
+                else if (((mTouchMode == NONE && !mDrawingEnabled) || (mTouchMode != DRAG && event
                         .getPointerCount() == 3))
                         && distance(event.getX(), mTouchStartPoint.x, event.getY(),
                                 mTouchStartPoint.y) > 25f) {
@@ -193,8 +188,8 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
                         mMatrix.getValues(values);
 
                         // get the previous scale factors
-                        float oldScaleX = values[Matrix.MSCALE_X];
-                        float oldScaleY = values[Matrix.MSCALE_Y];
+//                        float oldScaleX = values[Matrix.MSCALE_X];
+//                        float oldScaleY = values[Matrix.MSCALE_Y];
 
                         // get the translation
                         PointF t = getTrans(mTouchPointCenter.x, mTouchPointCenter.y);
@@ -216,13 +211,9 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
                             float scaleX = xDist / mSavedXDist; // x-axis
                                                                 // scale
 
-                            if ((scaleX < 1 || oldScaleX < mChart.getMaxScaleX())
-                                    && (scaleX > 1 || oldScaleX > MIN_SCALE)) {
-
-                                mMatrix.set(mSavedMatrix);
-                                mMatrix.postScale(scaleX, 1f, t.x,
-                                        t.y);
-                            }
+                            mMatrix.set(mSavedMatrix);
+                            mMatrix.postScale(scaleX, 1f, t.x,
+                                    t.y);
 
                         } else if (mTouchMode == Y_ZOOM) {
 
@@ -230,15 +221,12 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
                             float scaleY = yDist / mSavedYDist; // y-axis
                                                                 // scale
 
-                            if ((scaleY < 1 || oldScaleY < mChart.getMaxScaleY())
-                                    && (scaleY > 1 || oldScaleY > MIN_SCALE)) {
+                            mMatrix.set(mSavedMatrix);
 
-                                mMatrix.set(mSavedMatrix);
+                            // y-axis comes from top to bottom, revert y
+                            mMatrix.postScale(1f, scaleY, t.x,
+                                    t.y);
 
-                                // y-axis comes from top to bottom, revert y
-                                mMatrix.postScale(1f, scaleY, t.x,
-                                        t.y);
-                            }
                         }
                     }
                 } else if (mTouchMode == LONGPRESS) {
@@ -297,18 +285,6 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
         float x = event.getX(0) + event.getX(1);
         float y = event.getY(0) + event.getY(1);
         point.set(x / 2f, y / 2f);
-    }
-
-    /**
-     * returns the center point between three pointer touch points
-     * 
-     * @param point
-     * @param event
-     */
-    private static void midPointForThree(PointF point, MotionEvent event) {
-        float x = event.getX(0) + event.getX(1) + event.getX(2);
-        float y = event.getY(0) + event.getY(1) + event.getY(2);
-        point.set(x / 3f, y / 3f);
     }
 
     /**
@@ -377,7 +353,7 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
         Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
 
         mChart.highlightValues(new Highlight[] {
-            h
+                h
         });
 
         return super.onSingleTapConfirmed(e);
@@ -388,10 +364,7 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 
         PointF trans = getTrans(e.getX(), e.getY());
 
-        // double tap --> zoom in
-        mMatrix.postScale(1.4f, 1.4f, trans.x, trans.y);
-
-        mChart.refreshTouch(mMatrix);
+        mChart.zoomIn(trans.x, trans.y);
         return super.onDoubleTap(e);
     }
 
@@ -400,9 +373,7 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 
         PointF trans = getTrans(e.getX(), e.getY());
 
-        // zoom out
-        mMatrix.postScale(0.7f, 0.7f, trans.x, trans.y);
-        mChart.refreshTouch(mMatrix);
+        mChart.zoomOut(trans.x, trans.y);
     };
 
     @Override
