@@ -21,7 +21,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.RelativeLayout;
 
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
@@ -29,6 +28,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.MarkerView;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
 
@@ -649,48 +649,51 @@ public abstract class Chart extends View {
      */
     /** BELOW CODE IS FOR THE MARKER VIEW */
 
-    /** the x-position the marker appears on */
-    protected float mMarkerPosX = 0f;
-
-    /** the y-postion the marker appears on */
-    protected float mMarkerPosY = 0f;
-
     /** if set to true, the marker view is drawn when a value is clicked */
-    protected boolean mDrawMarkerView = true;
+    protected boolean mDrawMarkerViews = true;
 
     /** the view that represents the marker */
-    protected RelativeLayout mMarkerView;
+    protected MarkerView mMarkerView;
+    
+    /**
+     * draws all MarkerViews on the highlighted positions
+     */
+    protected void drawMarkers() {
+     
+        // if there is no marker view or drawing marker is disabled
+        if (mMarkerView == null || !mDrawMarkerViews || !valuesToHighlight())
+            return;
+        
+        for(int i = 0; i < mIndicesToHightlight.length; i++) {
+            
+            int xIndex = mIndicesToHightlight[i].getXIndex();
+            
+            drawMarkerView(xIndex, getYValueByDataSetIndex(xIndex, mIndicesToHightlight[i].getDataSetIndex()));
+        }
+    }
 
     /**
-     * draws the view that is displayed when the chart is clicked
+     * Draws the view that is displayed when a value is highlighted.
+     * @param xIndex the selected x-index
+     * @param value the selected value
      */
-    protected void drawMarkerView() {
-
-        // if there is no marker view or no values are to highlight, return
-        if (mMarkerView == null || !mDrawMarkerView || !valuesToHighlight())
-            return;
-
-        // int index = mIndicesToHightlight[0];
-        // float value = getYValue(index);
-        //
-        // // position of the marker depends on selected value index and value
-        // float[] pts = new float[] {
-        // index, value
-        // };
-        // transformPointArray(pts);
-        //
-        // mMarkerPosX = pts[0] - mMarkerView.getWidth() / 2f;
-        // mMarkerPosY = pts[1] - mMarkerView.getHeight();
-        //
-        // Log.i("", "h: " + mMarkerView.getHeight() + ", w: " +
-        // mMarkerView.getWidth());
-        //
-        // // translate to marker position
-        // mDrawCanvas.translate(mMarkerPosX, mMarkerPosY);
-        // mMarkerView.draw(mDrawCanvas);
-        //
-        // // translate back
-        // mDrawCanvas.translate(-mMarkerPosX, -mMarkerPosY);
+    private void drawMarkerView(int xIndex, float value) {
+        
+         // position of the marker depends on selected value index and value
+         float[] pts = new float[] {
+         xIndex, value
+         };
+         transformPointArray(pts);
+        
+         float posX = pts[0] - mMarkerView.getWidth() / 2f;
+         float posY = pts[1] - mMarkerView.getHeight();
+        
+         // translate to marker position
+//         mDrawCanvas.translate(posX, posY);
+//         mMarkerView.draw(mDrawCanvas);
+        mMarkerView.draw(mDrawCanvas, posX, posY);
+         // translate back
+//         mDrawCanvas.translate(-posX, -posY);
     }
 
     /**
@@ -953,16 +956,8 @@ public abstract class Chart extends View {
      * 
      * @param v
      */
-    public void setMarkerView(View v) {
-
-        mMarkerView = new RelativeLayout(getContext());
-        mMarkerView.setLayoutParams(new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT));
-        mMarkerView.addView(v);
-
-        mMarkerView.measure(getWidth(), getHeight());
-        mMarkerView.layout(0, 0, getWidth(), getHeight());
+    public void setMarkerView(MarkerView v) {
+        mMarkerView = v;
     }
 
     /**
@@ -970,26 +965,8 @@ public abstract class Chart extends View {
      * 
      * @return
      */
-    public View getMarkerView() {
+    public MarkerView getMarkerView() {
         return mMarkerView;
-    }
-
-    /**
-     * returns the x-position of the marker view
-     * 
-     * @return
-     */
-    public float getMarkerPosX() {
-        return mMarkerPosX;
-    }
-
-    /**
-     * returns the y-position of the marker view
-     * 
-     * @return
-     */
-    public float getMarkerPosY() {
-        return mMarkerPosY;
     }
 
     /** paint for the grid lines (only line and barchart) */
@@ -1064,18 +1041,18 @@ public abstract class Chart extends View {
      * @return
      */
     public boolean isDrawMarkerViewEnabled() {
-        return mDrawMarkerView;
+        return mDrawMarkerViews;
     }
 
     /**
-     * set this to true to draw a user specified marker-view when tapping on
-     * chart values (use the setMarkerView(View v) method to specify a marker
-     * view)
+     * Set this to true to draw a user specified marker-view when tapping on
+     * chart values (use the setMarkerView(MarkerView mv) method to specify a marker
+     * view). Default: true
      * 
      * @param enabled
      */
-    public void setDrawMarkerView(boolean enabled) {
-        mDrawMarkerView = enabled;
+    public void setDrawMarkerViews(boolean enabled) {
+        mDrawMarkerViews = enabled;
     }
 
     /**

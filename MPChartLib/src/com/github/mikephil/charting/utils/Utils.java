@@ -144,8 +144,8 @@ public abstract class Utils {
     };
 
     /**
-     * formats the given number to the given number of decimals, and returns the
-     * number as a string
+     * Formats the given number to the given number of decimals, and returns the
+     * number as a string, maximum 35 characters.
      * 
      * @param number
      * @param digitCount
@@ -154,7 +154,7 @@ public abstract class Utils {
      */
     public static String formatNumber(float number, int digitCount, boolean separateThousands) {
 
-        char[] out = new char[50];
+        char[] out = new char[35];
 
         boolean neg = false;
         if (number == 0) {
@@ -179,6 +179,7 @@ public abstract class Utils {
         long lval = Math.round(number);
         int ind = out.length - 1;
         int charCount = 0;
+        boolean decimalPointAdded = false;
 
         while (lval != 0 || charCount < (digitCount + 1)) {
             int digit = (int) (lval % 10);
@@ -186,22 +187,37 @@ public abstract class Utils {
             out[ind--] = (char) (digit + '0');
             charCount++;
 
+            // add decimal point
             if (charCount == digitCount) {
-                out[ind--] = '.';
+                out[ind--] = ',';
                 charCount++;
-            }
-
+                decimalPointAdded = true;
+                
             // add thousand separators
-            if (separateThousands && lval != 0 && charCount > digitCount
-                    && (charCount - digitCount) % 4 == 3) {
-                out[ind--] = '.';
-                charCount++;
+            } else if (separateThousands && lval != 0 && charCount > digitCount) {
+                
+                if(decimalPointAdded) {
+                    
+                    if((charCount - digitCount) % 4 == 0) {
+                        out[ind--] = '.';
+                        charCount++;
+                    }
+                    
+                } else {
+                 
+                    if((charCount - digitCount) % 4 == 3) {
+                        out[ind--] = '.';
+                        charCount++;
+                    }
+                }
             }
         }
 
+        // if number around zero (between 1 and -1)
         if (zero)
             out[ind--] = '0';
 
+        // if the number is negative
         if (neg)
             out[ind--] = '-';
 

@@ -1,7 +1,6 @@
 
 package com.github.mikephil.charting.charts;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -141,6 +140,12 @@ public abstract class BarLineChartBase extends Chart {
     protected Paint mHighlightPaint;
 
     /**
+     * if set to true, the highlight indicator (lines for linechart, dark bar
+     * for barchart) will be drawn upon selecting values.
+     */
+    protected boolean mHighLightIndicatorEnabled = true;
+
+    /**
      * boolean to indicate if user drawing on chart should automatically be
      * finished
      */
@@ -240,13 +245,14 @@ public abstract class BarLineChartBase extends Chart {
         mDrawCanvas.restoreToCount(clipRestoreCount);
 
         drawAdditional();
+
+        drawMarkers();
+
         drawValues();
 
         drawXLegend();
 
         drawYLegend();
-
-        drawMarkerView();
 
         drawDescription();
 
@@ -359,10 +365,6 @@ public abstract class BarLineChartBase extends Chart {
 
         if (mData.getXVals().get(0).length() <= 3)
             length *= 2;
-        // else if(mXVals.get(0).length() <= 5) length *= 1;
-        // else if(mXVals.get(0).length() <= 7) length = (int) (length / 1.5f);
-        // else if(mXVals.get(0).length() <= 9) length = (int) (length / 2.5f);
-        // else if(mXVals.get(0).length() > 9) length = (int) (length / 4f);
 
         for (int i = 0; i < length; i++) {
             a.append("h");
@@ -378,7 +380,6 @@ public abstract class BarLineChartBase extends Chart {
      * 
      * @return
      */
-    @SuppressLint("NewApi")
     private void prepareYLegend() {
 
         // calculate the currently visible extremes
@@ -460,15 +461,6 @@ public abstract class BarLineChartBase extends Chart {
                 transformPointArray(position);
 
                 if (position[0] >= mOffsetLeft && position[0] <= getWidth() - mOffsetRight + 10) {
-
-                    // Rect rect = new Rect();
-                    // mXLegendPaint.getTextBounds(mXVals.get(i), 0,
-                    // mXVals.get(i).length(), rect);
-                    //
-                    // float toRight = rect.width() / 2;
-                    //
-                    // // make sure
-                    // if(i == 0) toRight = rect.width();
 
                     mDrawCanvas.drawText(mData.getXVals().get(i), position[0], mOffsetTop - 5,
                             mXLegendPaint);
@@ -989,6 +981,16 @@ public abstract class BarLineChartBase extends Chart {
      */
     public void setDrawGrid(boolean enabled) {
         this.mDrawGrid = enabled;
+    }
+
+    /**
+     * If set to true, the highlight indicators (two lines for linechart, dark
+     * bar for barchart) will be drawn upon selecting values. Default: true
+     * 
+     * @param enabled
+     */
+    public void setHighlightIndicatorEnabled(boolean enabled) {
+        mHighLightIndicatorEnabled = enabled;
     }
 
     /**

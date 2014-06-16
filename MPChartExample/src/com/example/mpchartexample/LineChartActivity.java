@@ -17,6 +17,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.MarkerView;
 
 import java.util.ArrayList;
 
@@ -70,6 +71,21 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 		
 		// if disabled, scaling can be done on x- and y-axis separately
 		mChart.setPinchZoom(true);
+				
+		// create a MarkerView
+		MarkerView mv = new MarkerView(this);
+
+		// set a custom markerview
+		mv.setCustomViewResource(R.layout.custom_marker_view);
+		
+		// define an offset to change the original position of the marker
+		mv.setOffsets(0, -mv.getMeasuredHeight());
+		
+		// set the marker to the chart
+		mChart.setMarkerView(mv);
+		
+		// enable/disable highlight indicators
+//		mChart.setHighlightIndicatorEnabled(false);
 
 		mSeekBarX.setProgress(45);
 		mSeekBarY.setProgress(100);

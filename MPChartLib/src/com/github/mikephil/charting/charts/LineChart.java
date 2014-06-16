@@ -82,7 +82,7 @@ public class LineChart extends BarLineChartBase {
 	protected void drawHighlights() {
 
 		// if there are values to highlight and highlighnting is enabled, do it
-		if (mHighlightEnabled && valuesToHighlight()) {
+		if (mHighlightEnabled && mHighLightIndicatorEnabled && valuesToHighlight()) {
 
 			for (int i = 0; i < mIndicesToHightlight.length; i++) {
 

@@ -147,7 +147,7 @@ public class BarChart extends BarLineChartBase {
     protected void drawHighlights() {
 
         // if there are values to highlight and highlighnting is enabled, do it
-        if (mHighlightEnabled && valuesToHighlight()) {
+        if (mHighlightEnabled && mHighLightIndicatorEnabled && valuesToHighlight()) {
 
             // distance between highlight arrow and bar
             float offsetY = mDeltaY * 0.04f;
