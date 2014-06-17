@@ -221,6 +221,12 @@ public abstract class BarLineChartBase extends Chart {
             return;
 
         long starttime = System.currentTimeMillis();
+        
+//        if(mFilterData) mData = mZoomHandler.getFiltered(mOriginalData, mScaleX, mScaleY);
+//        else mData = mOriginalData;
+//        
+//        Log.i(LOG_TAG, "FilterTime: " + (System.currentTimeMillis() - starttime) + " ms");
+//        starttime = System.currentTimeMillis();
 
         if (mAdjustXLegend)
             calcModulus();
@@ -280,9 +286,6 @@ public abstract class BarLineChartBase extends Chart {
 
         if (!mFixedYValues)
             prepareMatrix();
-
-        // Log.i(LOG_TAG, "xVals: " + mXVals.size() + ", yVals: " +
-        // mYVals.size());
     }
 
     @Override
@@ -680,6 +683,25 @@ public abstract class BarLineChartBase extends Chart {
         save.set(mMatrixTouch);
 
         save.postScale(0.7f, 0.7f, x, y);
+
+        refreshTouch(save);
+    }
+
+    /**
+     * Zooms in or out by the given scale factor. x and y are the coordinates
+     * (in pixels) of the zoom center.
+     * 
+     * @param scaleX if < 1f --> zoom out, if > 1f --> zoom in
+     * @param scaleY if < 1f --> zoom out, if > 1f --> zoom in
+     * @param x
+     * @param y
+     */
+    public void zoom(float scaleX, float scaleY, float x, float y) {
+
+        Matrix save = new Matrix();
+        save.set(mMatrixTouch);
+
+        save.postScale(scaleX, scaleY, x, y);
 
         refreshTouch(save);
     }

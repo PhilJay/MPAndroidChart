@@ -70,11 +70,14 @@ public abstract class Chart extends View {
     /** chart offset to the right */
     protected int mOffsetRight = 20;
 
-    /** chart offset to the bottom */ 
+    /** chart offset to the bottom */
     protected int mOffsetBottom = 15;
 
-    /** object that holds all data relevant for the chart (x-vals, y-vals, ...) that are currently displayed */
-    protected ChartData mData= null;
+    /**
+     * object that holds all data relevant for the chart (x-vals, y-vals, ...)
+     * that are currently displayed
+     */
+    protected ChartData mData = null;
 
     /** final bitmap that contains all information and is drawn to the screen */
     protected Bitmap mDrawBitmap;
@@ -137,9 +140,6 @@ public abstract class Chart extends View {
 
     /** matrix used for touch events */
     protected Matrix mMatrixTouch = new Matrix();
-
-    /** the default draw color (some kind of light blue) */
-    protected int mDrawColor = Color.rgb(56, 199, 240);
 
     /** if true, touch gestures are enabled on the chart */
     protected boolean mTouchEnabled = true;
@@ -301,6 +301,7 @@ public abstract class Chart extends View {
      */
     public abstract void prepare();
 
+    /** lets the chart know its unterlying data has changed */
     public abstract void notifyDataSetChanged();
 
     /**
@@ -318,7 +319,13 @@ public abstract class Chart extends View {
         mDeltaX = mData.getXVals().size() - 1;
     }
 
+    /** flag that indicates if this is the first time the chart is refreshed */
     private boolean mFirstDraw = true;
+
+    /**
+     * flag that indicates if the content rect (container/bounds of the chart)
+     * has been setup
+     */
     private boolean mContentRectSetup = false;
 
     @Override
@@ -489,20 +496,6 @@ public abstract class Chart extends View {
         }
     }
 
-    // /**
-    // * transform an array of points with all matrixes except the touch matrix
-    // --> use this if the transformed values are
-    // * not effected by touch gestures
-    // *
-    // * @param pts
-    // */
-    // protected void transformPointArrayTouch(float[] pts) {
-    //
-    // mMatrixValueToPx.mapPoints(pts);
-    // // mMatrixTouch.mapPoints(pts);
-    // mMatrixOffset.mapPoints(pts);
-    // }
-
     /**
      * draws the description text in the bottom right corner of the chart
      */
@@ -571,12 +564,13 @@ public abstract class Chart extends View {
 
     /**
      * array of Highlight objects that reference the highlighted slices in the
-     * pie chart
+     * chart
      */
     protected Highlight[] mIndicesToHightlight = new Highlight[0];
 
     /**
-     * checks if the given index is set for highlighting or not
+     * checks if the given index in the given DataSet is set for highlighting or
+     * not
      * 
      * @param xIndex
      * @param dataSetIndex
@@ -600,9 +594,9 @@ public abstract class Chart extends View {
     }
 
     /**
-     * returns true if there are values to highlight, false if there are not
-     * checks if the highlight array is null, has a length of zero or contains
-     * -1
+     * Returns true if there are values to highlight, false if there are no
+     * values to highlight. Checks if the highlight array is null, has a length
+     * of zero or if the first object is null.
      * 
      * @return
      */
@@ -613,8 +607,8 @@ public abstract class Chart extends View {
     }
 
     /**
-     * Highlights the value at the given index of the values list. Provide null
-     * or an empty array to undo all highlighting.
+     * Highlights the values at the given indices in the given DataSets. Provide
+     * null or an empty array to undo all highlighting.
      * 
      * @param highs
      */
@@ -654,46 +648,45 @@ public abstract class Chart extends View {
 
     /** the view that represents the marker */
     protected MarkerView mMarkerView;
-    
+
     /**
      * draws all MarkerViews on the highlighted positions
      */
     protected void drawMarkers() {
-     
+
         // if there is no marker view or drawing marker is disabled
         if (mMarkerView == null || !mDrawMarkerViews || !valuesToHighlight())
             return;
-        
-        for(int i = 0; i < mIndicesToHightlight.length; i++) {
-            
+
+        for (int i = 0; i < mIndicesToHightlight.length; i++) {
+
             int xIndex = mIndicesToHightlight[i].getXIndex();
-            
-            drawMarkerView(xIndex, getYValueByDataSetIndex(xIndex, mIndicesToHightlight[i].getDataSetIndex()));
+
+            drawMarkerView(xIndex,
+                    getYValueByDataSetIndex(xIndex, mIndicesToHightlight[i].getDataSetIndex()));
         }
     }
 
     /**
      * Draws the view that is displayed when a value is highlighted.
+     * 
      * @param xIndex the selected x-index
      * @param value the selected value
      */
     private void drawMarkerView(int xIndex, float value) {
-        
-         // position of the marker depends on selected value index and value
-         float[] pts = new float[] {
-         xIndex, value
-         };
-         transformPointArray(pts);
-        
-         float posX = pts[0] - mMarkerView.getWidth() / 2f;
-         float posY = pts[1] - mMarkerView.getHeight();
-        
-         // translate to marker position
-//         mDrawCanvas.translate(posX, posY);
-//         mMarkerView.draw(mDrawCanvas);
+
+        // position of the marker depends on selected value index and value
+        float[] pts = new float[] {
+                xIndex, value
+        };
+        transformPointArray(pts);
+
+        float posX = pts[0] - mMarkerView.getWidth() / 2f;
+        float posY = pts[1] - mMarkerView.getHeight();
+
+        // call the draw method of the markerview that will translate to the
+        // given position and draw the view
         mMarkerView.draw(mDrawCanvas, posX, posY);
-         // translate back
-//         mDrawCanvas.translate(-posX, -posY);
     }
 
     /**
@@ -739,7 +732,7 @@ public abstract class Chart extends View {
     }
 
     /**
-     * returns the total value (sum) of all y-values
+     * returns the total value (sum) of all y-values across all DataSets
      * 
      * @return
      */
@@ -748,7 +741,7 @@ public abstract class Chart extends View {
     }
 
     /**
-     * returns the current y-max value in the y-values array
+     * returns the current y-max value across all DataSets
      * 
      * @return
      */
@@ -757,8 +750,7 @@ public abstract class Chart extends View {
     }
 
     /**
-     * returns the current minimum y-value that is visible on the chart - bottom
-     * line
+     * returns the lowest value the chart can display
      * 
      * @return
      */
@@ -767,8 +759,7 @@ public abstract class Chart extends View {
     }
 
     /**
-     * returns the current maximum y-value that is visible on the chart - can be
-     * displayed by the chart
+     * returns the highest value the chart can display
      * 
      * @return
      */
@@ -777,7 +768,7 @@ public abstract class Chart extends View {
     }
 
     /**
-     * returns the current y-min value in the y-values array
+     * returns the current y-min value across all DataSets
      * 
      * @return
      */
@@ -786,7 +777,7 @@ public abstract class Chart extends View {
     }
 
     /**
-     * Get the maximum number of X-values
+     * Get the total number of X-values.
      * 
      * @return
      */
@@ -815,7 +806,7 @@ public abstract class Chart extends View {
     }
 
     /**
-     * returns the number of values the chart holds
+     * returns the total number of values the chart holds (across all DataSets)
      * 
      * @return
      */
@@ -824,7 +815,7 @@ public abstract class Chart extends View {
     }
 
     /**
-     * returns the center point of the chart
+     * returns the center point of the chart in pixels
      * 
      * @return
      */
@@ -845,16 +836,6 @@ public abstract class Chart extends View {
             size = 7f;
 
         mInfoPaint.setTextSize(Utils.convertDpToPixel(size));
-    }
-
-    /**
-     * set a new draw color for the chart values (line and filled) default is
-     * Color.rgb(56, 199, 240)
-     * 
-     * @param color
-     */
-    public void setDrawColor(int color) {
-        mDrawColor = color;
     }
 
     /**
@@ -918,17 +899,6 @@ public abstract class Chart extends View {
      */
     public void setDrawYValues(boolean enabled) {
         this.mDrawYValues = enabled;
-    }
-
-    /**
-     * sets the y- starting and ending value
-     * 
-     * @param start
-     * @param end
-     */
-    public void setYStartEnd(float start, float end) {
-        mYChartMin = start;
-        mDeltaY = end - start;
     }
 
     /**
@@ -1046,8 +1016,8 @@ public abstract class Chart extends View {
 
     /**
      * Set this to true to draw a user specified marker-view when tapping on
-     * chart values (use the setMarkerView(MarkerView mv) method to specify a marker
-     * view). Default: true
+     * chart values (use the setMarkerView(MarkerView mv) method to specify a
+     * marker view). Default: true
      * 
      * @param enabled
      */
@@ -1243,7 +1213,8 @@ public abstract class Chart extends View {
     }
 
     /**
-     * returns the chartdata object the chart represents
+     * Returns the ChartData object the chart represents. It contains all values
+     * and information the chart displays.
      * 
      * @return
      */
@@ -1252,7 +1223,7 @@ public abstract class Chart extends View {
     }
 
     /**
-     * returns the percentage the given value has of the total y-values
+     * returns the percentage the given value has of the total y-value sum
      * 
      * @param val
      * @return
@@ -1290,7 +1261,7 @@ public abstract class Chart extends View {
     }
 
     /**
-     * returns the number of digits used to format the prited values of the
+     * returns the number of digits used to format the printed values of the
      * chart (-1 means digits are calculated automatically)
      * 
      * @return

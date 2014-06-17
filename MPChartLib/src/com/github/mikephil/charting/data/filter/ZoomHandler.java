@@ -52,7 +52,7 @@ public class ZoomHandler {
         tolerance = (yTolerance * weightY + xTolerance * weightX) / 2f;
         
         
-        Log.i("ZoomHandler", "Tolerance: " + tolerance + ", Zoomlevel: " + mZoomLevelX);
+//        Log.i("ZoomHandler", "Tolerance: " + tolerance + ", Zoomlevel: " + mZoomLevelX);
         
         // if there is no tolerance, or less than 50 vals
         if(tolerance == 0) {

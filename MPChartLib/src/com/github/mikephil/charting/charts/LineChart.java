@@ -6,7 +6,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
 
-import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.Utils;
@@ -70,15 +69,6 @@ public class LineChart extends BarLineChartBase {
 	}
 
 	@Override
-	public void setData(ChartData data) {
-		super.setData(data);
-		ArrayList<DataSet> dataSets = data.getDataSets();
-		for (int i = 0; i < dataSets.size(); i++) {
-			// mApproximator.filter(points)
-		}
-	}
-
-	@Override
 	protected void drawHighlights() {
 
 		// if there are values to highlight and highlighnting is enabled, do it
@@ -108,9 +98,6 @@ public class LineChart extends BarLineChartBase {
 	protected void drawData() {
 
 		ArrayList<DataSet> dataSets;
-		
-//		if(mFilterData) dataSets = mZoomHandler.getFiltered(mData, mScaleX, mScaleY).getDataSets();
-//		else dataSets = mData.getDataSets();
 		
 		dataSets = mData.getDataSets();
 
