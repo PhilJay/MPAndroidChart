@@ -21,6 +21,13 @@ public interface OnDrawListener {
 	public void onEntryAdded(Entry entry);
 
 	/**
+	 * Called whenever an entry is moved by the user after beeing highlighted
+	 * 
+	 * @param entry
+	 */
+	public void onEntryMoved(Entry entry);
+
+	/**
 	 * Called when drawing finger is lifted and the draw is finished.
 	 * 
 	 * @param dataSet

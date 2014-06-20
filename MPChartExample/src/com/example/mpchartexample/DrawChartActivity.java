@@ -1,4 +1,3 @@
-
 package com.example.mpchartexample;
 
 import android.app.Activity;
@@ -21,175 +20,177 @@ import com.github.mikephil.charting.utils.Highlight;
 import java.util.ArrayList;
 
 /**
- * This Activity demonstrates drawing into the Chart with the finger. Both line,
- * bar and scatter charts can be used for drawing.
+ * This Activity demonstrates drawing into the Chart with the finger. Both line, bar and scatter charts can be used for
+ * drawing.
  * 
  * @author Philipp Jahoda
  */
-public class DrawChartActivity extends Activity implements OnChartValueSelectedListener,
-        OnDrawListener {
+public class DrawChartActivity extends Activity implements OnChartValueSelectedListener, OnDrawListener {
 
-    private LineChart mChart;
+	private LineChart mChart;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_draw_chart);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		setContentView(R.layout.activity_draw_chart);
 
-        mChart = (LineChart) findViewById(R.id.chart1);
-        
-        // create a color template, one color per dataset
-        ColorTemplate ct = new ColorTemplate();
-        ct.addColorsForDataSets(ColorTemplate.COLORFUL_COLORS, this);
-        mChart.setColorTemplate(ct);
-        
-        // listener for selecting and drawing
-        mChart.setOnChartValueSelectedListener(this);
-        mChart.setOnDrawListener(this);
-               
-        // enable drawing with the finger
-        mChart.setDrawingEnabled(true);
-        
-        // enable dragging and scaling
-        mChart.setDragEnabled(true);
+		mChart = (LineChart) findViewById(R.id.chart1);
 
-        mChart.setDrawYValues(false);
-        mChart.setLineWidth(5f);
-        mChart.setCircleSize(5f);
-        mChart.setYLegendCount(6);
-        mChart.setHighlightEnabled(true);
-        
-        // if disabled, drawn datasets with the finger will not be automatically finished
-        mChart.setAutoFinish(false);
+		// create a color template, one color per dataset
+		ColorTemplate ct = new ColorTemplate();
+		ct.addColorsForDataSets(ColorTemplate.COLORFUL_COLORS, this);
+		mChart.setColorTemplate(ct);
 
-        // add data to the chart
-        initWithDummyData();
-        
-        mChart.setYRange(-40f, 40f, true);
-//        call this to reset the changed y-range
-//        mChart.resetYRange(true);
-    }
+		// listener for selecting and drawing
+		mChart.setOnChartValueSelectedListener(this);
+		mChart.setOnDrawListener(this);
 
-    private void initWithDummyData() {
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < 24; i++) {
-            xVals.add((i) + "h");
-        }
+		// enable drawing with the finger
+		mChart.setDrawingEnabled(true);
 
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
+		// enable dragging and scaling
+		mChart.setDragEnabled(true);
 
-        // create a dataset and give it a type (0)
-        DataSet set1 = new DataSet(yVals, 0);
+		mChart.setDrawYValues(false);
+		mChart.setLineWidth(5f);
+		mChart.setCircleSize(5f);
+		mChart.setYLegendCount(6);
+		mChart.setHighlightEnabled(true);
 
-        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
-        dataSets.add(set1); // add the datasets
+		// if disabled, drawn datasets with the finger will not be automatically finished
+		mChart.setAutoFinish(false);
 
-        // create a data object with the datasets
-        ChartData data = new ChartData(xVals, dataSets);
+		// add data to the chart
+		initWithDummyData();
 
-        mChart.setData(data);
-    }
+		mChart.setYRange(-40f, 40f, true);
+		// call this to reset the changed y-range
+		// mChart.resetYRange(true);
+	}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.draw, menu);
-        return true;
-    }
+	private void initWithDummyData() {
+		ArrayList<String> xVals = new ArrayList<String>();
+		for (int i = 0; i < 24; i++) {
+			xVals.add((i) + "h");
+		}
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+		ArrayList<Entry> yVals = new ArrayList<Entry>();
 
-        switch (item.getItemId()) {
-            case R.id.actionToggleValues: {
-                if (mChart.isDrawYValuesEnabled())
-                    mChart.setDrawYValues(false);
-                else
-                    mChart.setDrawYValues(true);
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleHighlight: {
-                if (mChart.isHighlightEnabled())
-                    mChart.setHighlightEnabled(false);
-                else
-                    mChart.setHighlightEnabled(true);
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleFilled: {
-                if (mChart.isDrawFilledEnabled())
-                    mChart.setDrawFilled(false);
-                else
-                    mChart.setDrawFilled(true);
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleCircles: {
-                if (mChart.isDrawCirclesEnabled())
-                    mChart.setDrawCircles(false);
-                else
-                    mChart.setDrawCircles(true);
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleStartzero: {
-                if (mChart.isStartAtZeroEnabled())
-                    mChart.setStartAtZero(false);
-                else
-                    mChart.setStartAtZero(true);
+		// create a dataset and give it a type (0)
+		DataSet set1 = new DataSet(yVals, 0);
 
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleAdjustXLegend: {
-                if (mChart.isAdjustXLegendEnabled())
-                    mChart.setAdjustXLegend(false);
-                else
-                    mChart.setAdjustXLegend(true);
+		ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+		dataSets.add(set1); // add the datasets
 
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionTogglePinch: {
-                if (mChart.isPinchZoomEnabled())
-                    mChart.setPinchZoom(false);
-                else
-                    mChart.setPinchZoom(true);
+		// create a data object with the datasets
+		ChartData data = new ChartData(xVals, dataSets);
 
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionSave: {
-                // mChart.saveToGallery("title"+System.currentTimeMillis());
-                mChart.saveToPath("title" + System.currentTimeMillis(), "");
-                break;
-            }
-        }
-        return true;
-    }
+		mChart.setData(data);
+	}
 
-    @Override
-    public void onValuesSelected(Entry[] values, Highlight[] highlights) {
-        Log.i("VALS SELECTED",
-                "Value: " + values[0].getVal() + ", xIndex: " + highlights[0].getXIndex()
-                        + ", DataSet index: " + highlights[0].getDataSetIndex());
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.draw, menu);
+		return true;
+	}
 
-    @Override
-    public void onNothingSelected() {
-    }
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
 
-    /** callback for each new entry drawn with the finger */
-    @Override
-    public void onEntryAdded(Entry entry) {
-        Log.i(Chart.LOG_TAG, entry.toString());
-    }
+		switch (item.getItemId()) {
+		case R.id.actionToggleValues: {
+			if (mChart.isDrawYValuesEnabled())
+				mChart.setDrawYValues(false);
+			else
+				mChart.setDrawYValues(true);
+			mChart.invalidate();
+			break;
+		}
+		case R.id.actionToggleHighlight: {
+			if (mChart.isHighlightEnabled())
+				mChart.setHighlightEnabled(false);
+			else
+				mChart.setHighlightEnabled(true);
+			mChart.invalidate();
+			break;
+		}
+		case R.id.actionToggleFilled: {
+			if (mChart.isDrawFilledEnabled())
+				mChart.setDrawFilled(false);
+			else
+				mChart.setDrawFilled(true);
+			mChart.invalidate();
+			break;
+		}
+		case R.id.actionToggleCircles: {
+			if (mChart.isDrawCirclesEnabled())
+				mChart.setDrawCircles(false);
+			else
+				mChart.setDrawCircles(true);
+			mChart.invalidate();
+			break;
+		}
+		case R.id.actionToggleStartzero: {
+			if (mChart.isStartAtZeroEnabled())
+				mChart.setStartAtZero(false);
+			else
+				mChart.setStartAtZero(true);
 
-    /** callback when a DataSet has been drawn (when lifting the finger) */
-    @Override
-    public void onDrawFinished(DataSet dataSet) {
-        Log.i(Chart.LOG_TAG, "DataSet drawn. " + dataSet.toSimpleString());
-    }
+			mChart.invalidate();
+			break;
+		}
+		case R.id.actionToggleAdjustXLegend: {
+			if (mChart.isAdjustXLegendEnabled())
+				mChart.setAdjustXLegend(false);
+			else
+				mChart.setAdjustXLegend(true);
+
+			mChart.invalidate();
+			break;
+		}
+		case R.id.actionTogglePinch: {
+			if (mChart.isPinchZoomEnabled())
+				mChart.setPinchZoom(false);
+			else
+				mChart.setPinchZoom(true);
+
+			mChart.invalidate();
+			break;
+		}
+		case R.id.actionSave: {
+			// mChart.saveToGallery("title"+System.currentTimeMillis());
+			mChart.saveToPath("title" + System.currentTimeMillis(), "");
+			break;
+		}
+		}
+		return true;
+	}
+
+	@Override
+	public void onValuesSelected(Entry[] values, Highlight[] highlights) {
+		Log.i("VALS SELECTED", "Value: " + values[0].getVal() + ", xIndex: " + highlights[0].getXIndex()
+				+ ", DataSet index: " + highlights[0].getDataSetIndex());
+	}
+
+	@Override
+	public void onNothingSelected() {
+	}
+
+	/** callback for each new entry drawn with the finger */
+	@Override
+	public void onEntryAdded(Entry entry) {
+		Log.i(Chart.LOG_TAG, entry.toString());
+	}
+
+	/** callback when a DataSet has been drawn (when lifting the finger) */
+	@Override
+	public void onDrawFinished(DataSet dataSet) {
+		Log.i(Chart.LOG_TAG, "DataSet drawn. " + dataSet.toSimpleString());
+	}
+
+	@Override
+	public void onEntryMoved(Entry entry) {
+		Log.i(Chart.LOG_TAG, "Point moved " + entry.toString());
+	}
 }
