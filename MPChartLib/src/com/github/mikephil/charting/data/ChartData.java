@@ -1,318 +1,326 @@
-
 package com.github.mikephil.charting.data;
 
 import java.util.ArrayList;
 
+import com.github.mikephil.charting.utils.Highlight;
+
 /**
- * Class that holds all relevant data that represents the chart. That
- * involves at least one (or more) DataSets, and an array of x-values.
+ * Class that holds all relevant data that represents the chart. That involves at least one (or more) DataSets, and an
+ * array of x-values.
  * 
  * @author Philipp Jahoda
  */
 public class ChartData {
 
-    /** maximum y-value in the y-value array */
-    private float mYMax = 0.0f;
+	/** maximum y-value in the y-value array */
+	private float mYMax = 0.0f;
 
-    /** the minimum y-value in the y-value array */
-    private float mYMin = 0.0f;
+	/** the minimum y-value in the y-value array */
+	private float mYMin = 0.0f;
 
-    /** the total sum of all y-values */
-    private float mYValueSum = 0f;
+	/** the total sum of all y-values */
+	private float mYValueSum = 0f;
 
-    /** holds all x-values the chart represents */
-    private ArrayList<String> mXVals;
+	/** holds all x-values the chart represents */
+	private ArrayList<String> mXVals;
 
-    /** holds all the datasets (e.g. different lines) the chart represents */
-    private ArrayList<DataSet> mDataSets;
+	/** holds all the datasets (e.g. different lines) the chart represents */
+	private ArrayList<DataSet> mDataSets;
 
-    /** array that holds all the different type ids that are in the series array */
-    private ArrayList<Integer> mDiffTypes;
+	/** array that holds all the different type ids that are in the series array */
+	private ArrayList<Integer> mDiffTypes;
 
-    /**
-     * constructor for chart data
-     * 
-     * @param xVals The values describing the x-axis. Must be at least as long
-     *            as the highest xIndex in the Entry objects across all
-     *            DataSets.
-     * @param dataSets all DataSet objects the chart needs to represent
-     */
-    public ChartData(ArrayList<String> xVals, ArrayList<DataSet> dataSets) {
-        init(xVals, dataSets);
-    }
+	/**
+	 * constructor for chart data
+	 * 
+	 * @param xVals
+	 *            The values describing the x-axis. Must be at least as long as the highest xIndex in the Entry objects
+	 *            across all DataSets.
+	 * @param dataSets
+	 *            all DataSet objects the chart needs to represent
+	 */
+	public ChartData(ArrayList<String> xVals, ArrayList<DataSet> dataSets) {
+		init(xVals, dataSets);
+	}
 
-    /**
-     * constructor that takes string array instead of arraylist string
-     * @param xVals The values describing the x-axis. Must be at least as long
-     *            as the highest xIndex in the Entry objects across all
-     *            DataSets.
-     * @param dataSets all DataSet objects the chart needs to represent
-     */
-    public ChartData(String[] xVals, ArrayList<DataSet> dataSets) {
-        ArrayList<String> newXVals = new ArrayList<String>();
-        for (int i = 0; i < xVals.length; i++) {
-            newXVals.add(xVals[i]);
-        }
-        init(newXVals, dataSets);
-    }
-    
-    /**
-     * Constructor that takes only one DataSet
-     * @param xVals
-     * @param data
-     */
-    public ChartData(ArrayList<String> xVals, DataSet data) {
-        
-        ArrayList<DataSet> sets = new ArrayList<DataSet>();
-        sets.add(data);
-        init(xVals, sets);
-    }
+	/**
+	 * constructor that takes string array instead of arraylist string
+	 * 
+	 * @param xVals
+	 *            The values describing the x-axis. Must be at least as long as the highest xIndex in the Entry objects
+	 *            across all DataSets.
+	 * @param dataSets
+	 *            all DataSet objects the chart needs to represent
+	 */
+	public ChartData(String[] xVals, ArrayList<DataSet> dataSets) {
+		ArrayList<String> newXVals = new ArrayList<String>();
+		for (int i = 0; i < xVals.length; i++) {
+			newXVals.add(xVals[i]);
+		}
+		init(newXVals, dataSets);
+	}
 
-    private void init(ArrayList<String> xVals, ArrayList<DataSet> dataSets) {
-        this.mXVals = xVals;
-        this.mDataSets = dataSets;
+	/**
+	 * Constructor that takes only one DataSet
+	 * 
+	 * @param xVals
+	 * @param data
+	 */
+	public ChartData(ArrayList<String> xVals, DataSet data) {
 
-        calcTypes();
-        calcMinMax();
-        calcYValueSum();
+		ArrayList<DataSet> sets = new ArrayList<DataSet>();
+		sets.add(data);
+		init(xVals, sets);
+	}
 
-        for (int i = 0; i < mDataSets.size(); i++) {
-            if (mDataSets.get(i).getYVals().size()
-            > xVals.size()) {
-                throw new IllegalArgumentException(
-                        "x values are smaller than the largest y series array of one type");
-            }
-        }
-    }
+	private void init(ArrayList<String> xVals, ArrayList<DataSet> dataSets) {
+		this.mXVals = xVals;
+		this.mDataSets = dataSets;
 
-    /**
-     * Call this method to let the CartData know that the underlying data has
-     * changed.
-     */
-    public void notifyDataChanged() {
-        doCalculations();
-    }
+		calcTypes();
+		calcMinMax();
+		calcYValueSum();
 
-    /**
-     * Does all necessary calculations, if the underlying data has changed
-     */
-    private void doCalculations() {
-        calcTypes();
-        calcMinMax();
-        calcYValueSum();
-    }
+		for (int i = 0; i < mDataSets.size(); i++) {
+			if (mDataSets.get(i).getYVals().size() > xVals.size()) {
+				throw new IllegalArgumentException("x values are smaller than the largest y series array of one type");
+			}
+		}
+	}
 
-    /**
-     * calculates all different types that occur in the datasets and stores them
-     * for fast access
-     */
-    private void calcTypes() {
-        mDiffTypes = new ArrayList<Integer>();
+	/**
+	 * Call this method to let the CartData know that the underlying data has changed.
+	 */
+	public void notifyDataChanged() {
+		doCalculations();
+	}
 
-        // check which dataset to use
-        ArrayList<DataSet> dataSets = mDataSets;
+	/**
+	 * Does all necessary calculations, if the underlying data has changed
+	 */
+	private void doCalculations() {
+		calcTypes();
+		calcMinMax();
+		calcYValueSum();
+	}
 
-        for (int i = 0; i < dataSets.size(); i++) {
+	/**
+	 * calculates all different types that occur in the datasets and stores them for fast access
+	 */
+	private void calcTypes() {
+		mDiffTypes = new ArrayList<Integer>();
 
-            int type = dataSets.get(i).getType();
+		// check which dataset to use
+		ArrayList<DataSet> dataSets = mDataSets;
 
-            if (!alreadyCounted(mDiffTypes, type)) {
-                mDiffTypes.add(type);
-            }
-        }
-    }
+		for (int i = 0; i < dataSets.size(); i++) {
 
-    /**
-     * calc minimum and maximum y value over all datasets
-     */
-    private void calcMinMax() {
-        // check which dataset to use
-        ArrayList<DataSet> dataSets = mDataSets;
+			int type = dataSets.get(i).getType();
 
-        mYMin = dataSets.get(0).getYMin();
-        mYMax = dataSets.get(0).getYMax();
+			if (!alreadyCounted(mDiffTypes, type)) {
+				mDiffTypes.add(type);
+			}
+		}
+	}
 
-        for (int i = 0; i < dataSets.size(); i++) {
-            if (dataSets.get(i).getYMin() < mYMin)
-                mYMin = dataSets.get(i).getYMin();
+	/**
+	 * calc minimum and maximum y value over all datasets
+	 */
+	private void calcMinMax() {
+		// check which dataset to use
+		ArrayList<DataSet> dataSets = mDataSets;
 
-            if (dataSets.get(i).getYMax() > mYMax)
-                mYMax = dataSets.get(i).getYMax();
-        }
-    }
+		mYMin = dataSets.get(0).getYMin();
+		mYMax = dataSets.get(0).getYMax();
 
-    /**
-     * calculates the sum of all y-values in all datasets
-     */
-    private void calcYValueSum() {
+		for (int i = 0; i < dataSets.size(); i++) {
+			if (dataSets.get(i).getYMin() < mYMin)
+				mYMin = dataSets.get(i).getYMin();
 
-        mYValueSum = 0;
+			if (dataSets.get(i).getYMax() > mYMax)
+				mYMax = dataSets.get(i).getYMax();
+		}
+	}
 
-        // check which dataset to use
-        ArrayList<DataSet> dataSets = mDataSets;
-        for (int i = 0; i < dataSets.size(); i++) {
-            mYValueSum += Math.abs(dataSets.get(i).getYValueSum());
-        }
-    }
+	/**
+	 * calculates the sum of all y-values in all datasets
+	 */
+	private void calcYValueSum() {
 
-    private boolean alreadyCounted(ArrayList<Integer> countedTypes, int type) {
-        for (int i = 0; i < countedTypes.size(); i++) {
-            if (countedTypes.get(i) == type)
-                return true;
-        }
+		mYValueSum = 0;
 
-        return false;
-    }
+		// check which dataset to use
+		ArrayList<DataSet> dataSets = mDataSets;
+		for (int i = 0; i < dataSets.size(); i++) {
+			mYValueSum += Math.abs(dataSets.get(i).getYValueSum());
+		}
+	}
 
-    /**
-     * Corrects all values that are kept as member variables after a new entry
-     * was added. This saves recalculating all values.
-     * 
-     * @param entry the new entry
-     */
-    public void notifyDataForNewEntry(Entry entry) {
-        mYValueSum += Math.abs(entry.getVal());
-        if (mYMin > entry.getVal()) {
-            mYMin = entry.getVal();
-        }
-        if (mYMax < entry.getVal()) {
-            mYMax = entry.getVal();
-        }
-    }
+	private boolean alreadyCounted(ArrayList<Integer> countedTypes, int type) {
+		for (int i = 0; i < countedTypes.size(); i++) {
+			if (countedTypes.get(i) == type)
+				return true;
+		}
 
-    public int getDataSetCount() {
-        return mDataSets.size();
-    }
+		return false;
+	}
 
-    public float getYMin() {
-        return mYMin;
-    }
+	/**
+	 * Corrects all values that are kept as member variables after a new entry was added. This saves recalculating all
+	 * values.
+	 * 
+	 * @param entry
+	 *            the new entry
+	 */
+	public void notifyDataForNewEntry(Entry entry) {
+		mYValueSum += Math.abs(entry.getVal());
+		if (mYMin > entry.getVal()) {
+			mYMin = entry.getVal();
+		}
+		if (mYMax < entry.getVal()) {
+			mYMax = entry.getVal();
+		}
+	}
 
-    public float getYMax() {
-        return mYMax;
-    }
+	public int getDataSetCount() {
+		return mDataSets.size();
+	}
 
-    public float getYValueSum() {
-        return mYValueSum;
-    }
+	public float getYMin() {
+		return mYMin;
+	}
 
-    /**
-     * Checks if the ChartData object contains valid data
-     * 
-     * @return
-     */
-    public boolean isValid() {
-        if (mXVals == null || mXVals.size() <= 1)
-            return false;
+	public float getYMax() {
+		return mYMax;
+	}
 
-        if (mDataSets == null || mDataSets.size() < 1)
-            return false;
+	public float getYValueSum() {
+		return mYValueSum;
+	}
 
-        return true;
-    }
+	/**
+	 * Checks if the ChartData object contains valid data
+	 * 
+	 * @return
+	 */
+	public boolean isValid() {
+		if (mXVals == null || mXVals.size() <= 1)
+			return false;
 
-    /**
-     * returns the x-values the chart represents
-     * 
-     * @return
-     */
-    public ArrayList<String> getXVals() {
-        return mXVals;
-    }
+		if (mDataSets == null || mDataSets.size() < 1)
+			return false;
 
-    /**
-     * returns the Entries array from the DataSet at the given index. If a
-     * filter is set, the filtered Entries are returned
-     * 
-     * @param index
-     * @return
-     */
-    public ArrayList<Entry> getYVals(int index) {
-        return mDataSets.get(index).getYVals();
-    }
+		return true;
+	}
 
-    /**
-     * returns the dataset at the given index. If a filter is set, the filtered
-     * DataSet is returned.
-     * 
-     * @param index
-     * @return
-     */
-    public DataSet getDataSetByIndex(int index) {
-        return mDataSets.get(index);
-    }
+	/**
+	 * returns the x-values the chart represents
+	 * 
+	 * @return
+	 */
+	public ArrayList<String> getXVals() {
+		return mXVals;
+	}
 
-    /**
-     * retrieve a dataset with a specific type from the chartdata. If a filter
-     * is set, the filtered DataSet is returned.
-     * 
-     * @param type
-     * @return
-     */
-    public DataSet getDataSetByType(int type) {
-        // check which dataset to use
-        ArrayList<DataSet> dataSets = mDataSets;
+	/**
+	 * returns the Entries array from the DataSet at the given index. If a filter is set, the filtered Entries are
+	 * returned
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public ArrayList<Entry> getYVals(int index) {
+		return mDataSets.get(index).getYVals();
+	}
 
-        for (int i = 0; i < dataSets.size(); i++)
-            if (type == dataSets.get(i).getType())
-                return dataSets.get(i);
+	/**
+	 * Get the entry for a corresponding highlight object
+	 * 
+	 * @param highlight
+	 * @return the entry that is highlighted
+	 */
+	public Entry getEntryForHighlight(Highlight highlight) {
+		return getDataSetByIndex(highlight.getDataSetIndex()).getEntryForXIndex(highlight.getXIndex());
+	}
 
-        return null;
-    }
+	/**
+	 * returns the dataset at the given index. If a filter is set, the filtered DataSet is returned.
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public DataSet getDataSetByIndex(int index) {
+		return mDataSets.get(index);
+	}
 
-    /**
-     * returns all DataSet objects the ChartData represents. If a filter is set,
-     * the filtered DataSets are returned
-     * 
-     * @return
-     */
-    public ArrayList<DataSet> getDataSets() {
-        return mDataSets;
-    }
+	/**
+	 * retrieve a dataset with a specific type from the chartdata. If a filter is set, the filtered DataSet is returned.
+	 * 
+	 * @param type
+	 * @return
+	 */
+	public DataSet getDataSetByType(int type) {
+		// check which dataset to use
+		ArrayList<DataSet> dataSets = mDataSets;
 
-    /**
-     * This returns the original data set, regardless of any filter options.
-     * 
-     * @return
-     */
-    public ArrayList<DataSet> getOriginalDataSets() {
-        return mDataSets;
-    }
+		for (int i = 0; i < dataSets.size(); i++)
+			if (type == dataSets.get(i).getType())
+				return dataSets.get(i);
 
-    /**
-     * returns all the different DataSet types the chartdata represents
-     * 
-     * @return
-     */
-    public ArrayList<Integer> getTypes() {
-        return mDiffTypes;
-    }
+		return null;
+	}
 
-    /**
-     * returns the total number of x-values this chartdata represents (the size
-     * of the xvals array)
-     * 
-     * @return
-     */
-    public int getXValCount() {
-        return mXVals.size();
-    }
+	/**
+	 * returns all DataSet objects the ChartData represents. If a filter is set, the filtered DataSets are returned
+	 * 
+	 * @return
+	 */
+	public ArrayList<DataSet> getDataSets() {
+		return mDataSets;
+	}
 
-    /**
-     * returns the total number of y-values across all DataSets the chartdata
-     * represents. If a filter is set, the filtered count is returned
-     * 
-     * @return
-     */
-    public int getYValCount() {
-        int count = 0;
-        // check which dataset to use
-        ArrayList<DataSet> dataSets = mDataSets;
+	/**
+	 * This returns the original data set, regardless of any filter options.
+	 * 
+	 * @return
+	 */
+	public ArrayList<DataSet> getOriginalDataSets() {
+		return mDataSets;
+	}
 
-        for (int i = 0; i < dataSets.size(); i++) {
-            count += dataSets.get(i).getEntryCount();
-        }
+	/**
+	 * returns all the different DataSet types the chartdata represents
+	 * 
+	 * @return
+	 */
+	public ArrayList<Integer> getTypes() {
+		return mDiffTypes;
+	}
 
-        return count;
-    }
+	/**
+	 * returns the total number of x-values this chartdata represents (the size of the xvals array)
+	 * 
+	 * @return
+	 */
+	public int getXValCount() {
+		return mXVals.size();
+	}
+
+	/**
+	 * returns the total number of y-values across all DataSets the chartdata represents. If a filter is set, the
+	 * filtered count is returned
+	 * 
+	 * @return
+	 */
+	public int getYValCount() {
+		int count = 0;
+		// check which dataset to use
+		ArrayList<DataSet> dataSets = mDataSets;
+
+		for (int i = 0; i < dataSets.size(); i++) {
+			count += dataSets.get(i).getEntryCount();
+		}
+
+		return count;
+	}
 }

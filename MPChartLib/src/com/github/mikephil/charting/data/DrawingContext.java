@@ -15,6 +15,7 @@ public class DrawingContext {
 	private boolean mAutoFinishDrawing = false;
 
 	private ArrayList<Entry> mCurrentDrawingEntries;
+	private Entry mMovingEntry;
 
 	private OnDrawListener mListener;
 
@@ -66,6 +67,19 @@ public class DrawingContext {
 		} else {
 			// new data set has to be created first
 			throw new DrawingDataSetNotCreatedException();
+		}
+	}
+
+	/**
+	 * Call this method to notify the drawing context about the entry being moved
+	 * 
+	 * @param data
+	 */
+	public void notifyEntryMoved(ChartData data) {
+		data.notifyDataForNewEntry(mMovingEntry);
+
+		if (mListener != null) {
+			mListener.onEntryMoved(mMovingEntry);
 		}
 	}
 
@@ -122,6 +136,10 @@ public class DrawingContext {
 				data.notifyDataForNewEntry(entry);
 				xIndex++;
 			}
+		} else if (mCurrentDrawingEntries.size() == 0) {
+			// do not save a dataset with no entries
+			deleteLastDrawingEntry(data);
+			return;
 		}
 		mLastDrawedType++;
 		mCurrentDrawingDataSet.notifyDataSetChanged();
@@ -141,5 +159,18 @@ public class DrawingContext {
 	public void init(OnDrawListener mListener, boolean autoFinish) {
 		this.mListener = mListener;
 		this.mAutoFinishDrawing = autoFinish;
+	}
+
+	/**
+	 * Sets an entry that can be moved later by calling moveEntry()
+	 * 
+	 * @param entry
+	 */
+	public void setMovingEntry(Entry entry) {
+		mMovingEntry = entry;
+	}
+
+	public Entry getMovingEntry() {
+		return mMovingEntry;
 	}
 }
