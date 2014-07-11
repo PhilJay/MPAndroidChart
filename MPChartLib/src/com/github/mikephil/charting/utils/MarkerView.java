@@ -7,13 +7,12 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 /**
- * RelativeLayout that is displayed when selecting values. Use the
- * setCustomViewResource(int res) method to set a custom layout for the marker
- * view.
+ * View that can be displayed when selecting values in the chart. Extend this
+ * class to provide custom layouts for your markers.
  * 
  * @author Philipp Jahoda
  */
-public class MarkerView extends RelativeLayout {
+public abstract class MarkerView extends RelativeLayout {
 
     /** draw offset on the x-axis */
     private float mXOffset = 0f;
@@ -25,9 +24,11 @@ public class MarkerView extends RelativeLayout {
      * Constructor.
      * 
      * @param context
+     * @param layoutResource the layout resource to use for the MarkerView
      */
-    public MarkerView(Context context) {
+    public MarkerView(Context context, int layoutResource) {
         super(context);
+        setupLayoutResource(layoutResource);
     }
 
     /**
@@ -35,11 +36,14 @@ public class MarkerView extends RelativeLayout {
      * 
      * @param layoutResource
      */
-    public void setCustomViewResource(int layoutResource) {
+    private void setupLayoutResource(int layoutResource) {
 
         View.inflate(getContext(), layoutResource, this);
 
-        measure(getWidth(), getHeight());
+        measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
+                MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+
+        // measure(getWidth(), getHeight());
         layout(0, 0, getWidth(), getHeight());
     }
 
@@ -63,6 +67,16 @@ public class MarkerView extends RelativeLayout {
     }
 
     /**
+     * this method enables a specified custom marker view to update it's content
+     * everytime the marker is redrawn
+     * 
+     * @param xIndex the index on the x-axis
+     * @param value the actual selected value
+     * @param dataSetIndex the index of the DataSet the selected value is in
+     */
+    public abstract void refreshContent(int xIndex, float value, int dataSetIndex);
+
+    /**
      * Set the position offset of the MarkerView. By default, the top left edge
      * of the MarkerView is drawn directly where the selected value is at. In
      * order to change that, offsets in pixels can be defined.
@@ -81,23 +95,5 @@ public class MarkerView extends RelativeLayout {
 
     public float getYOffset() {
         return mYOffset;
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        //
-        // int width = getMeasuredWidth();
-        // int height = getMeasuredHeight();
-        // int widthWithoutPadding = width - getPaddingLeft() -
-        // getPaddingRight();
-        // int heigthWithoutPadding = height - getPaddingTop() -
-        // getPaddingBottom();
-        //
-        // setMeasuredDimension(widthWithoutPadding + getPaddingLeft() +
-        // getPaddingRight(),
-        // heigthWithoutPadding + getPaddingTop() + getPaddingBottom());
-        //
-        // setMeasuredDimension(100, 100);
     }
 }

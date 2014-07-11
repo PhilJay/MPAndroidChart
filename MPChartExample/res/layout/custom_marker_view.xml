@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="60dp"
+    android:layout_width="68dp"
     android:layout_height="50dp"
     android:background="@drawable/marker" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/tvContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="Selected."
-        android:textSize="10dp"
+        android:textSize="9dp"
         android:textColor="@android:color/white"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

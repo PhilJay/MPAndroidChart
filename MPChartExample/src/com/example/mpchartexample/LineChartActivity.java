@@ -72,13 +72,10 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 		// if disabled, scaling can be done on x- and y-axis separately
 		mChart.setPinchZoom(true);
 				
-		// create a MarkerView
-		MarkerView mv = new MarkerView(this);
-
-		// set a custom markerview
-		mv.setCustomViewResource(R.layout.custom_marker_view);
+		// create a custom MarkerView (extend MarkerView) and specify the layout to use for it
+		MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
 		
-		// define an offset to change the original position of the marker
+		// define an offset to change the original position of the marker (optional)
 		mv.setOffsets(0, -mv.getMeasuredHeight());
 		
 		// set the marker to the chart

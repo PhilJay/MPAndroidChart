@@ -662,8 +662,7 @@ public abstract class Chart extends View {
 
             int xIndex = mIndicesToHightlight[i].getXIndex();
 
-            drawMarkerView(xIndex,
-                    getYValueByDataSetIndex(xIndex, mIndicesToHightlight[i].getDataSetIndex()));
+            drawMarkerView(xIndex, mIndicesToHightlight[i].getDataSetIndex());
         }
     }
 
@@ -671,10 +670,12 @@ public abstract class Chart extends View {
      * Draws the view that is displayed when a value is highlighted.
      * 
      * @param xIndex the selected x-index
-     * @param value the selected value
+     * @param dataSetIndex the index of the selected DataSet
      */
-    private void drawMarkerView(int xIndex, float value) {
+    private void drawMarkerView(int xIndex, int dataSetIndex) {
 
+        float value = getYValueByDataSetIndex(xIndex, dataSetIndex);
+        
         // position of the marker depends on selected value index and value
         float[] pts = new float[] {
                 xIndex, value
@@ -684,6 +685,9 @@ public abstract class Chart extends View {
         float posX = pts[0] - mMarkerView.getWidth() / 2f;
         float posY = pts[1] - mMarkerView.getHeight();
 
+        // callbacks to update the content
+        mMarkerView.refreshContent(xIndex, value, dataSetIndex);
+        
         // call the draw method of the markerview that will translate to the
         // given position and draw the view
         mMarkerView.draw(mDrawCanvas, posX, posY);
