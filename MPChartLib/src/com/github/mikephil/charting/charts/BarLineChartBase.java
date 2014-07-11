@@ -1143,7 +1143,7 @@ public abstract class BarLineChartBase extends Chart {
         double yTouchVal = pts[1];
         double base = Math.floor(xTouchVal);
 
-        Log.i(LOG_TAG, "touchindex x: " + xTouchVal + ", touchindex y: " + yTouchVal);
+//        Log.i(LOG_TAG, "touchindex x: " + xTouchVal + ", touchindex y: " + yTouchVal);
 
         // touch out of chart
         if ((this instanceof LineChart || this instanceof ScatterChart)
@@ -1194,7 +1194,7 @@ public abstract class BarLineChartBase extends Chart {
             }
         }
 
-        Log.i(LOG_TAG, "Closest DataSet index: " + index);
+//        Log.i(LOG_TAG, "Closest DataSet index: " + index);
 
         return index;
     }
