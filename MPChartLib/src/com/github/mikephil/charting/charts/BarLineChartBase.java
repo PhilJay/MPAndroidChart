@@ -222,13 +222,12 @@ public abstract class BarLineChartBase extends Chart {
 
         long starttime = System.currentTimeMillis();
 
-        // if(mFilterData) mData = mZoomHandler.getFiltered(mOriginalData,
-        // mScaleX, mScaleY);
-        // else mData = mOriginalData;
-        //
-        // Log.i(LOG_TAG, "FilterTime: " + (System.currentTimeMillis() -
-        // starttime) + " ms");
-        // starttime = System.currentTimeMillis();
+//         if(mFilterData) mData = mZoomHandler.getFiltered(mData,
+//         mScaleX, mScaleY);
+//        
+//         Log.i(LOG_TAG, "FilterTime: " + (System.currentTimeMillis() -
+//         starttime) + " ms");
+//         starttime = System.currentTimeMillis();
 
         if (mAdjustXLegend)
             calcModulus();

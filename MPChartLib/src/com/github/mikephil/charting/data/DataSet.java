@@ -268,7 +268,7 @@ public class DataSet {
 
     /**
      * Returns a simple string representation of the DataSet with the type and
-     * the number of Entrys.
+     * the number of Entries.
      * 
      * @return
      */

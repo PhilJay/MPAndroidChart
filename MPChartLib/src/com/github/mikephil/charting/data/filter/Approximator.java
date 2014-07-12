@@ -1,9 +1,11 @@
 
 package com.github.mikephil.charting.data.filter;
 
-import java.util.ArrayList;
+import android.util.Log;
 
 import com.github.mikephil.charting.data.Entry;
+
+import java.util.ArrayList;
 
 /**
  * Implemented according to Wiki-Pseudocode {@link}
@@ -27,7 +29,7 @@ public class Approximator {
 
     /** enums for the different types of filtering algorithms */
     public enum ApproximatorType {
-        NONE, DOUGLAS_PEUCKER
+        NONE, DOUGLAS_PEUCKER, ANGLE
     }
 
     /**
@@ -58,19 +60,23 @@ public class Approximator {
         mTolerance = tolerance;
     }
 
-    /** sets the tolerance for the approximator, if tolerance <= 0, no filtering will be done */
+    /**
+     * sets the tolerance for the approximator, if tolerance <= 0, no filtering
+     * will be done
+     */
     public void setTolerance(double tolerance) {
         mTolerance = tolerance;
     }
-    
+
     /**
      * sets the type of approximation (the algorithm) to use
+     * 
      * @param type
      */
     public void setType(ApproximatorType type) {
         mType = type;
     }
-    
+
     /**
      * Filters according to type. Uses the pre set set tolerance
      * 
@@ -98,12 +104,13 @@ public class Approximator {
         switch (mType) {
             case DOUGLAS_PEUCKER:
                 return reduceWithDouglasPeuker(points, tolerance);
+            case ANGLE:
+                return reduceWithAngle(points, tolerance);
             case NONE:
                 return points;
             default:
                 return points;
         }
-
     }
 
     /**
@@ -162,7 +169,7 @@ public class Approximator {
         Entry lastEntry = entries.get(end);
 
         for (int i = start + 1; i < end; i++) {
-            double dist = pointToLineDistance(firstEntry, lastEntry, entries.get(i));
+            double dist = calcPointToLineDistance(firstEntry, lastEntry, entries.get(i));
 
             // keep the point with the greatest distance
             if (dist > distMax) {
@@ -178,19 +185,45 @@ public class Approximator {
             // recursive call
             algorithmDouglasPeucker(entries, epsilon, start, maxDistIndex);
             algorithmDouglasPeucker(entries, epsilon, maxDistIndex, end);
+        } // else don't keep the point...
+    }
+    
+    private ArrayList<Entry> reduceWithAngle(ArrayList<Entry> entries, double toleranceAngle) {
+        
+        for (int i = 0; i < entries.size()-1; i++) {
+            
+            // if the angle is below the tolerance, it will not be removed
+            if(calcAngle(entries.get(i), entries.get(i+1)) < toleranceAngle) {
+                keep[i+1] = true;
+            }
         }
+        
+        // first and last always stay
+        keep[0] = true;
+        keep[entries.size() - 1] = true;
+     
+        // create a new array with series, only take the kept ones
+        ArrayList<Entry> reducedEntries = new ArrayList<Entry>();
+        for (int i = 0; i < entries.size(); i++) {
+            if (keep[i]) {
+                Entry curEntry = entries.get(i);
+                reducedEntries.add(new Entry(curEntry.getVal(), curEntry.getXIndex()));
+            }
+        }
+        return reducedEntries;
     }
 
     /**
      * calculate the distance between a line between two entries and an entry
      * (point)
      * 
-     * @param startEntry
-     * @param endEntry
-     * @param entryPoint
+     * @param startEntry line startpoint
+     * @param endEntry line endpoint
+     * @param entryPoint the point to which the distance is measured from the
+     *            line
      * @return
      */
-    public double pointToLineDistance(Entry startEntry, Entry endEntry, Entry entryPoint) {
+    public double calcPointToLineDistance(Entry startEntry, Entry endEntry, Entry entryPoint) {
         double normalLength = Math.sqrt((endEntry.getXIndex() - startEntry.getXIndex())
                 * (endEntry.getXIndex() - startEntry.getXIndex())
                 + (endEntry.getVal() - startEntry.getVal())
@@ -200,5 +233,21 @@ public class Approximator {
                 - (entryPoint.getVal() - startEntry.getVal())
                 * (endEntry.getXIndex() - startEntry.getXIndex()))
                 / normalLength;
+    }
+
+    /**
+     * calculates the angle between two Entries (points) in the chart
+     * 
+     * @param p1
+     * @param p2
+     * @return
+     */
+    public double calcAngle(Entry p1, Entry p2) {
+
+        float dx = p2.getXIndex() - p1.getXIndex();
+        float dy = p2.getVal() - p1.getVal();
+        double angle = Math.atan2(Math.abs(dx), Math.abs(dy)) * 180.0 / Math.PI;
+
+        return angle;
     }
 }

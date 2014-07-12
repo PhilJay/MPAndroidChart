@@ -61,13 +61,14 @@ public abstract class MarkerView extends RelativeLayout {
         posx += mXOffset;
         posy += mYOffset;
 
+        // translate to the correct position and draw
         canvas.translate(posx, posy);
         draw(canvas);
         canvas.translate(-posx, -posy);
     }
 
     /**
-     * this method enables a specified custom marker view to update it's content
+     * this method enables a specified custom MarkerView to update it's content
      * everytime the marker is redrawn
      * 
      * @param xIndex the index on the x-axis
@@ -79,7 +80,8 @@ public abstract class MarkerView extends RelativeLayout {
     /**
      * Set the position offset of the MarkerView. By default, the top left edge
      * of the MarkerView is drawn directly where the selected value is at. In
-     * order to change that, offsets in pixels can be defined.
+     * order to change that, offsets in pixels can be defined. Default offset is
+     * zero (0f) on both axes.
      * 
      * @param x
      * @param y
@@ -89,10 +91,20 @@ public abstract class MarkerView extends RelativeLayout {
         this.mYOffset = y;
     }
 
+    /**
+     * returns the x-offset that is set for the MarkerView
+     * 
+     * @return
+     */
     public float getXOffset() {
         return mXOffset;
     }
 
+    /**
+     * returns the y-offset that is set for the MarkerView
+     * 
+     * @return
+     */
     public float getYOffset() {
         return mYOffset;
     }
