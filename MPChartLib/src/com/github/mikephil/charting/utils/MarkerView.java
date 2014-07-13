@@ -21,7 +21,7 @@ public abstract class MarkerView extends RelativeLayout {
     private float mYOffset = 0f;
 
     /**
-     * Constructor.
+     * Constructor. Sets up the MarkerView with a custom layout resource.
      * 
      * @param context
      * @param layoutResource the layout resource to use for the MarkerView
@@ -69,7 +69,7 @@ public abstract class MarkerView extends RelativeLayout {
 
     /**
      * this method enables a specified custom MarkerView to update it's content
-     * everytime the marker is redrawn
+     * everytime the MarkerView is redrawn
      * 
      * @param xIndex the index on the x-axis
      * @param value the actual selected value
@@ -81,7 +81,8 @@ public abstract class MarkerView extends RelativeLayout {
      * Set the position offset of the MarkerView. By default, the top left edge
      * of the MarkerView is drawn directly where the selected value is at. In
      * order to change that, offsets in pixels can be defined. Default offset is
-     * zero (0f) on both axes.
+     * zero (0f) on both axes. For offsets dependent on the MarkerViews width
+     * and height, use getMeasuredWidth() / getMeasuredHeight().
      * 
      * @param x
      * @param y

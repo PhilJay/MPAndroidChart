@@ -256,6 +256,23 @@ public class DataSet {
         return dataSets;
     }
 
+    /**
+     * provides an exact copy of the DataSet this method is used on
+     * 
+     * @return
+     */
+    public DataSet copy() {
+
+        ArrayList<Entry> yVals = new ArrayList<Entry>();
+
+        for (int i = 0; i < mYVals.size(); i++) {
+            yVals.add(mYVals.get(i).copy());
+        }
+
+        DataSet copied = new DataSet(yVals, mType);
+        return copied;
+    }
+
     @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer();

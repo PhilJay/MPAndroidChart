@@ -29,6 +29,10 @@
         android:id="@+id/actionToggleFilter"
         android:title="Toggle filter">
     </item>
+        <item
+        android:id="@+id/actionDashedLine"
+        android:title="Toggle dashed Line">
+    </item>
     <item
         android:id="@+id/actionSave"
         android:title="Save to Gallery">

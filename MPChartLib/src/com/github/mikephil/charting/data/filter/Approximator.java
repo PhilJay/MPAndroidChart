@@ -1,8 +1,6 @@
 
 package com.github.mikephil.charting.data.filter;
 
-import android.util.Log;
-
 import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
@@ -29,7 +27,7 @@ public class Approximator {
 
     /** enums for the different types of filtering algorithms */
     public enum ApproximatorType {
-        NONE, DOUGLAS_PEUCKER, ANGLE
+        NONE, DOUGLAS_PEUCKER
     }
 
     /**
@@ -46,7 +44,7 @@ public class Approximator {
      * @param type
      */
     public Approximator(ApproximatorType type, double tolerance) {
-        setTypeAndTolerance(type, tolerance);
+        setup(type, tolerance);
     }
 
     /**
@@ -55,8 +53,8 @@ public class Approximator {
      * @param type
      * @param tolerance
      */
-    public void setTypeAndTolerance(ApproximatorType type, double tolerance) {
-        this.mType = type;
+    public void setup(ApproximatorType type, double tolerance) {
+        mType = type;
         mTolerance = tolerance;
     }
 
@@ -68,13 +66,8 @@ public class Approximator {
         mTolerance = tolerance;
     }
 
-    /**
-     * sets the type of approximation (the algorithm) to use
-     * 
-     * @param type
-     */
     public void setType(ApproximatorType type) {
-        mType = type;
+        this.mType = type;
     }
 
     /**
@@ -104,8 +97,6 @@ public class Approximator {
         switch (mType) {
             case DOUGLAS_PEUCKER:
                 return reduceWithDouglasPeuker(points, tolerance);
-            case ANGLE:
-                return reduceWithAngle(points, tolerance);
             case NONE:
                 return points;
             default:
@@ -187,21 +178,21 @@ public class Approximator {
             algorithmDouglasPeucker(entries, epsilon, maxDistIndex, end);
         } // else don't keep the point...
     }
-    
+
     private ArrayList<Entry> reduceWithAngle(ArrayList<Entry> entries, double toleranceAngle) {
-        
-        for (int i = 0; i < entries.size()-1; i++) {
-            
+
+        for (int i = 0; i < entries.size() - 1; i++) {
+
             // if the angle is below the tolerance, it will not be removed
-            if(calcAngle(entries.get(i), entries.get(i+1)) < toleranceAngle) {
-                keep[i+1] = true;
+            if (calcAngle(entries.get(i), entries.get(i + 1)) < toleranceAngle) {
+                keep[i + 1] = true;
             }
         }
-        
+
         // first and last always stay
         keep[0] = true;
         keep[entries.size() - 1] = true;
-     
+
         // create a new array with series, only take the kept ones
         ArrayList<Entry> reducedEntries = new ArrayList<Entry>();
         for (int i = 0; i < entries.size(); i++) {
@@ -224,15 +215,36 @@ public class Approximator {
      * @return
      */
     public double calcPointToLineDistance(Entry startEntry, Entry endEntry, Entry entryPoint) {
-        double normalLength = Math.sqrt((endEntry.getXIndex() - startEntry.getXIndex())
-                * (endEntry.getXIndex() - startEntry.getXIndex())
+                
+        float xDiffEndStart = (float) endEntry.getXIndex() - (float) startEntry.getXIndex();
+        float xDiffEntryStart = (float) entryPoint.getXIndex() - (float) startEntry.getXIndex();
+        
+        double normalLength = Math.sqrt((xDiffEndStart)
+                * (xDiffEndStart)
                 + (endEntry.getVal() - startEntry.getVal())
-                * (endEntry.getVal() - startEntry.getVal()));
-        return Math.abs((entryPoint.getXIndex() - startEntry.getXIndex())
+                * (endEntry.getVal() - startEntry.getVal())); 
+        return Math.abs((xDiffEntryStart)
                 * (endEntry.getVal() - startEntry.getVal())
                 - (entryPoint.getVal() - startEntry.getVal())
-                * (endEntry.getXIndex() - startEntry.getXIndex()))
+                * (xDiffEndStart))
                 / normalLength;
+    }
+
+    /**
+     * Calculates the angle between two given lines. The provided Entry objects
+     * mark the starting and end points of the lines.
+     * 
+     * @param start1
+     * @param end1
+     * @param start2
+     * @param end2
+     * @return
+     */
+    public double calcAngleBetweenLines(Entry start1, Entry end1, Entry start2, Entry end2) {
+
+        double angle1 = calcAngle(start1, end1);
+        double angle2 = calcAngle(start2, end2);
+        return angle1 - angle2;
     }
 
     /**
@@ -246,7 +258,7 @@ public class Approximator {
 
         float dx = p2.getXIndex() - p1.getXIndex();
         float dy = p2.getVal() - p1.getVal();
-        double angle = Math.atan2(Math.abs(dx), Math.abs(dy)) * 180.0 / Math.PI;
+        double angle = Math.atan2(dy, dx) * 180.0 / Math.PI;
 
         return angle;
     }

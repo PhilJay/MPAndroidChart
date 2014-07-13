@@ -222,12 +222,13 @@ public abstract class BarLineChartBase extends Chart {
 
         long starttime = System.currentTimeMillis();
 
-//         if(mFilterData) mData = mZoomHandler.getFiltered(mData,
-//         mScaleX, mScaleY);
-//        
-//         Log.i(LOG_TAG, "FilterTime: " + (System.currentTimeMillis() -
-//         starttime) + " ms");
-//         starttime = System.currentTimeMillis();
+//        if (mFilterData)
+//            mData = mZoomHandler.getFiltered(mData,
+//                    mScaleX, mScaleY);
+//
+//        Log.i(LOG_TAG, "FilterTime: " + (System.currentTimeMillis() -
+//                starttime) + " ms");
+//        starttime = System.currentTimeMillis();
 
         if (mAdjustXLegend)
             calcModulus();
@@ -1007,8 +1008,10 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * If set to true, the highlight indicators (two lines for linechart, dark
-     * bar for barchart) will be drawn upon selecting values. Default: true
+     * If set to true, the highlight indicators (cross of two lines for
+     * LineChart and ScatterChart, dark bar overlay for BarChart) that give
+     * visual indication that an Entry has been selected will be drawn upon
+     * selecting values. This does not depend on the MarkerView. Default: true
      * 
      * @param enabled
      */

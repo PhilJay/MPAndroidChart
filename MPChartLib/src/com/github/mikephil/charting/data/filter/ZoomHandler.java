@@ -35,6 +35,9 @@ public class ZoomHandler {
         mZoomLevelY = getZoomLevel(scaleY);
         
         float deltaY = original.getYMax() - original.getYMin();
+        float deltaX = original.getXValCount();
+        float ratio = deltaY / deltaX;
+        
         float scaleSum = scaleX + scaleY;
         
         float weightX = scaleX / scaleSum;
@@ -58,15 +61,6 @@ public class ZoomHandler {
         if(tolerance == 0) {
             return original;
         }
-        
-        Approximator approx;
-        
-        if(usesCustomApprox()) approx = mCustomApprox;
-        else {
-            
-            approx = new Approximator();
-            approx.setTypeAndTolerance(ApproximatorType.DOUGLAS_PEUCKER, tolerance);
-        }
                
         ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
         
@@ -74,7 +68,7 @@ public class ZoomHandler {
             
             DataSet old = original.getDataSetByIndex(j);
             
-            ArrayList<Entry> approximated = approx.filter(old.getYVals());
+            ArrayList<Entry> approximated = mCustomApprox.filter(old.getYVals(), ratio);
             
             DataSet set = new DataSet(approximated, old.getType());
             dataSets.add(set);

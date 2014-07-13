@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="68dp"
-    android:layout_height="50dp"
-    android:background="@drawable/marker" >
+    android:layout_width="50dp"
+    android:layout_height="35dp"
+    android:background="@drawable/marker2" >
 
     <TextView
         android:id="@+id/tvContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="7dp"
         android:text="Selected."
         android:textSize="9dp"
         android:textColor="@android:color/white"
