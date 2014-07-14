@@ -1,8 +1,6 @@
 
 package com.example.mpchartexample;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,8 +14,9 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.util.ArrayList;
 
 public class BarChartActivity extends Activity implements OnSeekBarChangeListener {
 

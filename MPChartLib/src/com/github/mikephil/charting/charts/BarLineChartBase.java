@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
@@ -222,13 +223,13 @@ public abstract class BarLineChartBase extends Chart {
 
         long starttime = System.currentTimeMillis();
 
-//        if (mFilterData)
-//            mData = mZoomHandler.getFiltered(mData,
-//                    mScaleX, mScaleY);
-//
-//        Log.i(LOG_TAG, "FilterTime: " + (System.currentTimeMillis() -
-//                starttime) + " ms");
-//        starttime = System.currentTimeMillis();
+        // if (mFilterData)
+        // mData = mZoomHandler.getFiltered(mData,
+        // mScaleX, mScaleY);
+        //
+        // Log.i(LOG_TAG, "FilterTime: " + (System.currentTimeMillis() -
+        // starttime) + " ms");
+        // starttime = System.currentTimeMillis();
 
         if (mAdjustXLegend)
             calcModulus();
@@ -258,9 +259,9 @@ public abstract class BarLineChartBase extends Chart {
 
         drawYLegend();
 
-        drawMarkers();
-
         drawValues();
+
+        drawMarkers();
 
         drawDescription();
 
@@ -832,9 +833,10 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * Sets the minimum scale values for both axes. Scale 0.5f means 0.5x zoom
-     * (zoomed out by factor 2), scale 0.1f means maximum zoomed out by factor
-     * 10, scale 2f means the user cannot zoom out further than 2x zoom, ...
+     * Sets the minimum scale values for both axes. This limits the extent to
+     * which the user can zoom-out. Scale 0.5f means 0.5x zoom (zoomed out by
+     * factor 2), scale 0.1f means maximum zoomed out by factor 10, scale 2f
+     * means the user cannot zoom out further than 2x zoom, ...
      * 
      * @param scaleXmin
      * @param scaleYmin
@@ -843,6 +845,8 @@ public abstract class BarLineChartBase extends Chart {
 
         mMinScaleX = scaleXmin;
         mMinScaleY = scaleYmin;
+
+        zoom(mMinScaleX, mMinScaleY, 0f, 0f);
     }
 
     /**

@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.charts;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -10,11 +11,15 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
+import android.graphics.PorterDuff.Mode;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.AttributeSet;
@@ -184,9 +189,7 @@ public abstract class Chart extends View {
 
         // initialize the utils
         Utils.init(getContext().getResources());
-
-        setBackgroundColor(Color.WHITE);
-
+        
         // do screen density conversions
         mOffsetBottom = (int) Utils.convertDpToPixel(mOffsetBottom);
         mOffsetLeft = (int) Utils.convertDpToPixel(mOffsetLeft);
@@ -328,6 +331,7 @@ public abstract class Chart extends View {
      */
     private boolean mContentRectSetup = false;
 
+    @SuppressLint("NewApi")
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -675,15 +679,19 @@ public abstract class Chart extends View {
     private void drawMarkerView(int xIndex, int dataSetIndex) {
 
         float value = getYValueByDataSetIndex(xIndex, dataSetIndex);
+        float xPos = (float) xIndex;
         
+        // make sure the marker is in the center of the bars in BarChart
+        if(this instanceof BarChart) xPos += 0.5f;
+               
         // position of the marker depends on selected value index and value
         float[] pts = new float[] {
-                xIndex, value
+                xPos, value
         };
         transformPointArray(pts);
 
-        float posX = pts[0] - mMarkerView.getWidth() / 2f;
-        float posY = pts[1] - mMarkerView.getHeight();
+        float posX = pts[0];
+        float posY = pts[1];
 
         // callbacks to update the content
         mMarkerView.refreshContent(xIndex, value, dataSetIndex);

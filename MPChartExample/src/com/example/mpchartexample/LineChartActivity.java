@@ -60,8 +60,8 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
         // disable the drawing of values into the chart
         mChart.setDrawYValues(false);
 
-        mChart.setLineWidth(5f);
-        mChart.setCircleSize(5f);
+        mChart.setLineWidth(4f);
+        mChart.setCircleSize(4f);
 
         // set the number of y-legend entries the chart should have
         mChart.setYLegendCount(6);
@@ -77,7 +77,7 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 
         // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(true);
-
+        
         // create a custom MarkerView (extend MarkerView) and specify the layout
         // to use for it
         MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);

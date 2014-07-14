@@ -3,6 +3,7 @@ package com.github.mikephil.charting.utils;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -38,13 +39,14 @@ public abstract class MarkerView extends RelativeLayout {
      */
     private void setupLayoutResource(int layoutResource) {
 
-        View.inflate(getContext(), layoutResource, this);
+        View inflated = LayoutInflater.from(getContext()).inflate(layoutResource, this);
 
-        measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
+        inflated.setLayoutParams(new LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        inflated.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
                 MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
 
         // measure(getWidth(), getHeight());
-        layout(0, 0, getWidth(), getHeight());
+        inflated.layout(0, 0, inflated.getMeasuredWidth(), inflated.getMeasuredHeight());
     }
 
     /**
