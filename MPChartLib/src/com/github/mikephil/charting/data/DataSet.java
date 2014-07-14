@@ -1,5 +1,5 @@
 
-package com.github.mikephil.charting;
+package com.github.mikephil.charting.data;
 
 import java.util.ArrayList;
 
@@ -49,10 +49,30 @@ public class DataSet {
     }
 
     /**
+     * Use this method to tell the data set that the underlying data has changed
+     */
+    public void notifyDataSetChanged() {
+        calcMinMax();
+        calcYValueSum();
+    }
+
+    public DataSet cloneDataSet() {
+        ArrayList<Entry> duplicatedEntries = new ArrayList<Entry>();
+        for (int i = 0; i < mYVals.size(); i++) {
+            Entry entry = mYVals.get(i).copy();
+            duplicatedEntries.add(entry);
+        }
+        DataSet dataSet = new DataSet(duplicatedEntries, mType);
+        return dataSet;
+    }
+
+    /**
      * calc minimum and maximum y value
      */
     private void calcMinMax() {
-
+        if (mYVals.size() == 0) {
+            return;
+        }
         mYMin = mYVals.get(0).getVal();
         mYMax = mYVals.get(0).getVal();
 
@@ -106,9 +126,9 @@ public class DataSet {
     }
 
     /**
-     * Returns the Entry object at the given xIndex. Returns null if no Entry
-     * object at that index. INFORMATION: This method does calculations at
-     * runtime. Do not over-use in performance critical situations.
+     * Returns the first Entry object found at the given xIndex. Returns null if
+     * no Entry object at that index. INFORMATION: This method does calculations
+     * at runtime. Do not over-use in performance critical situations.
      * 
      * @param xIndex
      * @return
@@ -121,6 +141,26 @@ public class DataSet {
         }
 
         return null;
+    }
+
+    /**
+     * Returns all Entry objects at the given xIndex. INFORMATION: This method
+     * does calculations at runtime. Do not over-use in performance critical
+     * situations.
+     * 
+     * @param xIndex
+     * @return
+     */
+    public ArrayList<Entry> getEntriesForXIndex(int xIndex) {
+
+        ArrayList<Entry> entries = new ArrayList<Entry>();
+
+        for (int i = 0; i < mYVals.size(); i++) {
+            if (xIndex == mYVals.get(i).getXIndex())
+                entries.add(mYVals.get(i));
+        }
+
+        return entries;
     }
 
     /**
@@ -214,5 +254,44 @@ public class DataSet {
         }
 
         return dataSets;
+    }
+
+    /**
+     * provides an exact copy of the DataSet this method is used on
+     * 
+     * @return
+     */
+    public DataSet copy() {
+
+        ArrayList<Entry> yVals = new ArrayList<Entry>();
+
+        for (int i = 0; i < mYVals.size(); i++) {
+            yVals.add(mYVals.get(i).copy());
+        }
+
+        DataSet copied = new DataSet(yVals, mType);
+        return copied;
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(toSimpleString());
+        for (int i = 0; i < mYVals.size(); i++) {
+            buffer.append(mYVals.get(i).toString() + " ");
+        }
+        return buffer.toString();
+    }
+
+    /**
+     * Returns a simple string representation of the DataSet with the type and
+     * the number of Entries.
+     * 
+     * @return
+     */
+    public String toSimpleString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("DataSet, type: " + mType + ", entries: " + mYVals.size() + "\n");
+        return buffer.toString();
     }
 }

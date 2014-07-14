@@ -6,14 +6,6 @@
         android:title="Toggle Values">
     </item>
     <item
-        android:id="@+id/actionToggleFilled"
-        android:title="Toggle Filled">
-    </item>
-    <item
-        android:id="@+id/actionToggleCircles"
-        android:title="Toggle Circles">
-    </item>
-    <item
         android:id="@+id/actionToggleHighlight"
         android:title="Toggle Highlight">
     </item>
@@ -28,10 +20,6 @@
     <item
         android:id="@+id/actionToggleFilter"
         android:title="Toggle filter">
-    </item>
-        <item
-        android:id="@+id/actionDashedLine"
-        android:title="Toggle dashed Line">
     </item>
     <item
         android:id="@+id/actionSave"

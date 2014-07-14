@@ -1,5 +1,5 @@
 
-package com.github.mikephil.charting;
+package com.github.mikephil.charting.matrix;
 
 /**
  * Simple 3D vector class. Handles basic vector math for 3D vectors.

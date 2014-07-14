@@ -2,26 +2,24 @@
 package com.example.mpchartexample;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.Approximator;
-import com.github.mikephil.charting.ChartData;
-import com.github.mikephil.charting.ColorTemplate;
-import com.github.mikephil.charting.DataSet;
-import com.github.mikephil.charting.Highlight;
-import com.github.mikephil.charting.LineChart;
-import com.github.mikephil.charting.OnChartValueSelectedListener;
-import com.github.mikephil.charting.Entry;
-import com.github.mikephil.charting.Approximator.ApproximatorType;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.filter.Approximator;
+import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
+import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.Highlight;
 
 import java.util.ArrayList;
 
@@ -59,31 +57,47 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
         mChart.setOnChartValueSelectedListener(this);
         mChart.setColorTemplate(ct);
 
-        // mChart.setDrawFilled(true);
-        // mChart.setRoundedYLegend(false);
-        // mChart.setStartAtZero(true);
+        // if enabled, the chart will always start at zero on the y-axis
+        mChart.setStartAtZero(false);
+
+        // disable the drawing of values into the chart
         mChart.setDrawYValues(false);
-        mChart.setLineWidth(5f);
-        mChart.setCircleSize(5f);
-        // mChart.setSpacePercent(20, 10);
+
+        mChart.setLineWidth(4f);
+        mChart.setCircleSize(4f);
+
+        // set the number of y-legend entries the chart should have
         mChart.setYLegendCount(6);
-        mChart.setTouchEnabled(true);
+
+        // enable value highlighting
         mChart.setHighlightEnabled(true);
 
-        // highlight index 2 and 6 in dataset 0
-        // mChart.highlightValues(new Highlight[] {new Highlight(2, 0), new
-        // Highlight(6, 0)});
-        mChart.setDragEnabled(true);
+        // enable touch gestures
         mChart.setTouchEnabled(true);
 
-        TextView textView = new TextView(this);
-        textView.setVisibility(View.VISIBLE);
-        textView.setBackgroundColor(Color.WHITE);
-        textView.setPadding(15, 15, 15, 15);
-        textView.setText("Marker View");
+        // enable scaling and dragging
+        mChart.setDragEnabled(true);
 
-        mChart.setDrawMarkerView(true);
-        mChart.setMarkerView(textView);
+        // if disabled, scaling can be done on x- and y-axis separately
+        mChart.setPinchZoom(true);
+        
+        // create a custom MarkerView (extend MarkerView) and specify the layout
+        // to use for it
+        MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
+
+        // define an offset to change the original position of the marker
+        // (optional)
+        mv.setOffsets(-mv.getMeasuredWidth() / 2, -mv.getMeasuredHeight());
+
+        // set the marker to the chart
+        mChart.setMarkerView(mv);
+
+        // enable/disable highlight indicators (the lines that indicate the
+        // highlighted Entry)
+        mChart.setHighlightIndicatorEnabled(false);
+
+        // set the line to be drawn like this "- - - - - -"
+        mChart.enableDashedLine(10f, 5f, 0f);
 
         mSeekBarX.setProgress(45);
         mSeekBarY.setProgress(100);
@@ -99,14 +113,6 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.actionToggleRound: {
-                if (mChart.isYLegendRounded())
-                    mChart.setRoundedYLegend(false);
-                else
-                    mChart.setRoundedYLegend(true);
-                mChart.invalidate();
-                break;
-            }
             case R.id.actionToggleValues: {
                 if (mChart.isDrawYValuesEnabled())
                     mChart.setDrawYValues(false);
@@ -148,12 +154,43 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
                 mChart.invalidate();
                 break;
             }
+            case R.id.actionTogglePinch: {
+                if (mChart.isPinchZoomEnabled())
+                    mChart.setPinchZoom(false);
+                else
+                    mChart.setPinchZoom(true);
+
+                mChart.invalidate();
+                break;
+            }
             case R.id.actionToggleAdjustXLegend: {
                 if (mChart.isAdjustXLegendEnabled())
                     mChart.setAdjustXLegend(false);
                 else
                     mChart.setAdjustXLegend(true);
 
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleFilter: {
+                
+                // the angle of filtering is 35°
+                Approximator a = new Approximator(ApproximatorType.DOUGLAS_PEUCKER, 35);
+                
+                if (!mChart.isFilteringEnabled()) {
+                    mChart.enableFiltering(a);
+                } else {
+                    mChart.disableFiltering();
+                }
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionDashedLine: {
+                if (!mChart.isDashedLineEnabled()) {
+                    mChart.enableDashedLine(10f, 5f, 0f);
+                } else {
+                    mChart.disableDashedLine();
+                }
                 mChart.invalidate();
                 break;
             }
@@ -169,6 +206,9 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
+        tvX.setText("" + (mSeekBarX.getProgress() + 1));
+        tvY.setText("" + (mSeekBarY.getProgress()));
+
         ArrayList<String> xVals = new ArrayList<String>();
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             xVals.add((i) + "");
@@ -178,16 +218,13 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             float mult = (mSeekBarY.getProgress() + 1);
-            float val = (float) (Math.random() * mult * 0.1) + 3;// + (float)
-                                                                 // ((mult *
-                                                                 // 0.1) / 10);
+            float val = (float) (Math.random() * mult * 1) + 3;// + (float)
+                                                               // ((mult *
+                                                               // 0.1) / 10);
             yVals.add(new Entry(val, i));
         }
 
-        tvX.setText("" + (mSeekBarX.getProgress() + 1));
-        tvY.setText("" + (mSeekBarY.getProgress() / 10));
-
-        // create a dataset and give it a type (0)
+        // create a dataset and give it a type
         DataSet set1 = new DataSet(yVals, 0);
 
         ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
@@ -196,7 +233,10 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
         // create a data object with the datasets
         ChartData data = new ChartData(xVals, dataSets);
 
+        // set data
         mChart.setData(data);
+
+        // redraw
         mChart.invalidate();
     }
 

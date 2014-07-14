@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <com.github.mikephil.charting.BarChart
+    <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/chart1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,7 +18,7 @@
         android:layout_margin="8dp"
         android:layout_toLeftOf="@+id/tvYMax"
         android:layout_marginRight="5dp"
-        android:max="2000"
+        android:max="200"
         android:paddingBottom="12dp" />
 
     <SeekBar

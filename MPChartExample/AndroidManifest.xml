@@ -5,8 +5,8 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="18" />
+        android:minSdkVersion="9"
+        android:targetSdkVersion="19" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
@@ -29,6 +29,8 @@
         <activity android:name="PieChartActivity"></activity>
         <activity android:name="MultiLineChartActivity"></activity>
         <activity android:name="BarChartActivityMultiDataset"></activity>
+        <activity android:name="DrawChartActivity"></activity>
+        <activity android:name="ScatterChartActivity"></activity>
     </application>
 
 </manifest>

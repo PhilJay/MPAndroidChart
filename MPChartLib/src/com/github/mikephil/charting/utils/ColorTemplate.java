@@ -1,9 +1,12 @@
 
-package com.github.mikephil.charting;
+package com.github.mikephil.charting.utils;
 
 import android.content.Context;
 
 import java.util.ArrayList;
+
+import com.github.mikephil.charting.R;
+import com.github.mikephil.charting.R.color;
 
 public class ColorTemplate {
 
@@ -160,6 +163,22 @@ public class ColorTemplate {
 
         for (int i : colors) {
             result.add(c.getResources().getColor(i));
+        }
+
+        return result;
+    }
+    
+    /**
+     * tuns an array of colors (already converted with getResources().getColor(...) int an arraylist of colors
+     * @param colors
+     * @return
+     */
+    public static ArrayList<Integer> createColors(int[] colors) {
+
+        ArrayList<Integer> result = new ArrayList<Integer>();
+
+        for (int i : colors) {
+            result.add(i);
         }
 
         return result;

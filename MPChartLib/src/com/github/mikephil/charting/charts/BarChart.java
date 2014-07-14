@@ -1,5 +1,5 @@
 
-package com.github.mikephil.charting;
+package com.github.mikephil.charting.charts;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -10,6 +10,10 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 
 import java.util.ArrayList;
+
+import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 public class BarChart extends BarLineChartBase {
 
@@ -27,6 +31,12 @@ public class BarChart extends BarLineChartBase {
 
     /** flag that enables or disables the highlighting arrow */
     private boolean mDrawHighlightArrow = false;
+
+//    /**
+//     * if true, bars representing values of different DataSets on the same
+//     * x-index are stacked (instead of being aligned behind each other)
+//     */
+//    private boolean mStackEnabled = false;
 
     public BarChart(Context context) {
         super(context);
@@ -50,11 +60,11 @@ public class BarChart extends BarLineChartBase {
         // set alpha after color
         mHighlightPaint.setAlpha(120);
     }
-    
+
     @Override
     public void setColorTemplate(ColorTemplate ct) {
         super.setColorTemplate(ct);
-        
+
         calculate3DColors();
     }
 
@@ -114,15 +124,20 @@ public class BarChart extends BarLineChartBase {
 
                 sideColors.add(c);
             }
-            
+
             mTopColors.add(topColors);
             mSideColors.add(sideColors);
         }
     }
 
     @Override
-    protected void calcMinMax() {
-        super.calcMinMax();
+    protected void calcMinMax(boolean fixedValues) {
+        super.calcMinMax(fixedValues);
+
+        if (!mStartAtZero && getYMin() >= 0f) {
+            mYChartMin = getYMin();
+            mDeltaY = Math.abs(mYChartMax - mYChartMin);
+        }
 
         // increase deltax by 1 because the bars have a width of 1
         mDeltaX++;
@@ -132,7 +147,7 @@ public class BarChart extends BarLineChartBase {
     protected void drawHighlights() {
 
         // if there are values to highlight and highlighnting is enabled, do it
-        if (mHighlightEnabled && valuesToHighlight()) {
+        if (mHighlightEnabled && mHighLightIndicatorEnabled && valuesToHighlight()) {
 
             // distance between highlight arrow and bar
             float offsetY = mDeltaY * 0.04f;
@@ -142,7 +157,7 @@ public class BarChart extends BarLineChartBase {
                 int index = mIndicesToHightlight[i].getXIndex();
 
                 // check outofbounds
-                if (index < mData.getYValCount() && index >= 0) {
+                if (index < mCurrentData.getYValCount() && index >= 0) {
 
                     mHighlightPaint.setAlpha(120);
 
@@ -183,9 +198,9 @@ public class BarChart extends BarLineChartBase {
         ArrayList<Path> topPaths = new ArrayList<Path>();
         ArrayList<Path> sidePaths = new ArrayList<Path>();
 
-        ArrayList<DataSet> dataSets = mData.getDataSets();
+        ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
 
-        // 3D drawing
+        // preparations for 3D bars
         if (m3DEnabled) {
 
             float[] pts = new float[] {
@@ -214,7 +229,7 @@ public class BarChart extends BarLineChartBase {
 
             float depth = Math.abs(pts[3] - pts[1]) * mDepth;
 
-            for (int i = 0; i < mData.getDataSetCount(); i++) {
+            for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
                 DataSet dataSet = dataSets.get(i);
                 ArrayList<Entry> series = dataSet.getYVals();
@@ -249,16 +264,17 @@ public class BarChart extends BarLineChartBase {
             transformPaths(topPaths);
             transformPaths(sidePaths);
         }
-        
+
         int cnt = 0;
 
         // 2D drawing
-        for (int i = 0; i < mData.getDataSetCount(); i++) {
+        for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
             DataSet dataSet = dataSets.get(i);
             ArrayList<Entry> series = dataSet.getYVals();
 
-            // Get the colors for the DataSet at the current index. If the index
+            // Get the colors for the DataSet at the current index. If the
+            // index
             // is out of bounds, reuse DataSet colors.
             ArrayList<Integer> colors = mCt.getDataSetColors(i % mCt.getColors().size());
             ArrayList<Integer> colors3DTop = mTopColors.get(i % mCt.getColors().size());
@@ -267,7 +283,8 @@ public class BarChart extends BarLineChartBase {
             // do the drawing
             for (int j = 0; j < dataSet.getEntryCount(); j++) {
 
-                // Set the color for the currently drawn value. If the index is
+                // Set the color for the currently drawn value. If the index
+                // is
                 // out of bounds, reuse colors.
                 mRenderPaint.setColor(colors.get(j % colors.size()));
 
@@ -281,17 +298,19 @@ public class BarChart extends BarLineChartBase {
                 mBarRect.set(left, top, right, bottom);
 
                 transformRect(mBarRect);
-                
+
                 // avoid drawing outofbounds values
-                if(isOffContentRight(mBarRect.left)) break;
-                
-                if(isOffContentLeft(mBarRect.right)) {
+                if (isOffContentRight(mBarRect.left))
+                    break;
+
+                if (isOffContentLeft(mBarRect.right)) {
                     cnt++;
                     continue;
                 }
 
                 mDrawCanvas.drawRect(mBarRect, mRenderPaint);
 
+                // 3D drawing
                 if (m3DEnabled) {
 
                     mRenderPaint.setColor(colors3DTop.get(j % colors3DTop.size()));
@@ -300,7 +319,7 @@ public class BarChart extends BarLineChartBase {
                     mRenderPaint.setColor(colors3DSide.get(j % colors3DSide.size()));
                     mDrawCanvas.drawPath(sidePaths.get(cnt), mRenderPaint);
                 }
-                
+
                 cnt++;
             }
         }
@@ -310,11 +329,11 @@ public class BarChart extends BarLineChartBase {
     protected void drawValues() {
 
         // if values are drawn
-        if (mDrawYValues && mData.getYValCount() < mMaxVisibleCount * mScaleX) {
+        if (mDrawYValues && mCurrentData.getYValCount() < mMaxVisibleCount * mScaleX) {
 
-            ArrayList<DataSet> dataSets = mData.getDataSets();
+            ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
 
-            for (int i = 0; i < mData.getDataSetCount(); i++) {
+            for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
                 DataSet dataSet = dataSets.get(i);
                 ArrayList<Entry> series = dataSet.getYVals();
@@ -333,12 +352,14 @@ public class BarChart extends BarLineChartBase {
 
                     if (mDrawUnitInChart) {
 
-                        mDrawCanvas.drawText(mFormatValue.format(val) + mUnit,
-                                valuePoints[j], valuePoints[j + 1] - 12, mValuePaint);
+                        mDrawCanvas.drawText(mFormatValue.format(val) + mUnit, valuePoints[j],
+                                valuePoints[j + 1] - 12,
+                                mValuePaint);
                     } else {
 
                         mDrawCanvas.drawText(mFormatValue.format(val), valuePoints[j],
-                                valuePoints[j + 1] - 12, mValuePaint);
+                                valuePoints[j + 1] - 12,
+                                mValuePaint);
                     }
                 }
             }
@@ -437,6 +458,17 @@ public class BarChart extends BarLineChartBase {
     public boolean isDrawHighlightArrowEnabled() {
         return mDrawHighlightArrow;
     }
+
+//    /**
+//     * If true, bars representing values of different DataSets on the same
+//     * x-index are stacked (instead of being aligned behind each other). This
+//     * only makes sense when multiple DataSets are used.
+//     * 
+//     * @param enabled
+//     */
+//    public void setStackEnabled(boolean enabled) {
+//        mStackEnabled = true;
+//    }
 
     @Override
     public void setPaint(Paint p, int which) {

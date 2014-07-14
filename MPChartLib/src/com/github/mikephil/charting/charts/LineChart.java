@@ -1,11 +1,17 @@
 
-package com.github.mikephil.charting;
+package com.github.mikephil.charting.charts;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Log;
+
+import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -69,7 +75,7 @@ public class LineChart extends BarLineChartBase {
     protected void drawHighlights() {
 
         // if there are values to highlight and highlighnting is enabled, do it
-        if (mHighlightEnabled && valuesToHighlight()) {
+        if (mHighlightEnabled && mHighLightIndicatorEnabled && valuesToHighlight()) {
 
             for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
@@ -80,8 +86,7 @@ public class LineChart extends BarLineChartBase {
                 float y = set.getYValForXIndex(xIndex); // get the y-position
 
                 float[] pts = new float[] {
-                        xIndex, mYChartMax, xIndex, mYChartMin, 0,
-                        y, mDeltaX, y
+                        xIndex, mYChartMax, xIndex, mYChartMin, 0, y, mDeltaX, y
                 };
 
                 transformPointArray(pts);
@@ -97,9 +102,11 @@ public class LineChart extends BarLineChartBase {
     @Override
     protected void drawData() {
 
-        ArrayList<DataSet> dataSets = mData.getDataSets();
+        ArrayList<DataSet> dataSets;
 
-        for (int i = 0; i < mData.getDataSetCount(); i++) {
+        dataSets = mCurrentData.getDataSets();
+
+        for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
             DataSet dataSet = dataSets.get(i);
             ArrayList<Entry> entries = dataSet.getYVals();
@@ -122,7 +129,9 @@ public class LineChart extends BarLineChartBase {
                     break;
 
                 // make sure the lines don't do shitty things outside bounds
-                if (j != 0 && isOffContentLeft(valuePoints[j - 1]))
+                if (j != 0 && isOffContentLeft(valuePoints[j - 1])
+                        && isOffContentTop(valuePoints[j + 1])
+                        && isOffContentBottom(valuePoints[j + 1]))
                     continue;
 
                 mDrawCanvas.drawLine(valuePoints[j], valuePoints[j + 1], valuePoints[j + 2],
@@ -130,7 +139,7 @@ public class LineChart extends BarLineChartBase {
             }
 
             // if drawing filled is enabled
-            if (mDrawFilled) {
+            if (mDrawFilled && entries.size() > 0) {
                 // mDrawCanvas.drawVertices(VertexMode.TRIANGLE_STRIP,
                 // valuePoints.length, valuePoints, 0,
                 // null, 0, null, 0, null, 0, 0, paint);
@@ -139,17 +148,17 @@ public class LineChart extends BarLineChartBase {
                 paint.setAlpha(85);
 
                 Path filled = new Path();
-                filled.moveTo(0, entries.get(0).getVal());
+                filled.moveTo(entries.get(0).getXIndex(), entries.get(0).getVal());
 
                 // create a new path
                 for (int x = 1; x < entries.size(); x++) {
 
-                    filled.lineTo(x, entries.get(x).getVal());
+                    filled.lineTo(entries.get(x).getXIndex(), entries.get(x).getVal());
                 }
 
                 // close up
-                filled.lineTo(entries.size() - 1, mYChartMin);
-                filled.lineTo(0f, mYChartMin);
+                filled.lineTo(entries.get(entries.size() - 1).getXIndex(), mYChartMin);
+                filled.lineTo(entries.get(0).getXIndex(), mYChartMin);
                 filled.close();
 
                 transformPath(filled);
@@ -166,7 +175,7 @@ public class LineChart extends BarLineChartBase {
     protected void drawValues() {
 
         // if values are drawn
-        if (mDrawYValues && mData.getYValCount() < mMaxVisibleCount * mScaleX) {
+        if (mDrawYValues && mCurrentData.getYValCount() < mMaxVisibleCount * mScaleX) {
 
             // make sure the values do not interfear with the circles
             int valOffset = (int) (mCircleSize * 1.7f);
@@ -174,9 +183,9 @@ public class LineChart extends BarLineChartBase {
             if (!mDrawCircles)
                 valOffset = valOffset / 2;
 
-            ArrayList<DataSet> dataSets = mData.getDataSets();
+            ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
 
-            for (int i = 0; i < mData.getDataSetCount(); i++) {
+            for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
                 DataSet dataSet = dataSets.get(i);
                 ArrayList<Entry> entries = dataSet.getYVals();
@@ -188,19 +197,22 @@ public class LineChart extends BarLineChartBase {
                     if (isOffContentRight(positions[j]))
                         break;
 
-                    if (isOffContentLeft(positions[j]))
+                    if (isOffContentLeft(positions[j]) || isOffContentTop(positions[j + 1])
+                            || isOffContentBottom(positions[j + 1]))
                         continue;
 
                     float val = entries.get(j / 2).getVal();
 
                     if (mDrawUnitInChart) {
 
-                        mDrawCanvas.drawText(mFormatValue.format(val) + mUnit,
-                                positions[j], positions[j + 1] - valOffset, mValuePaint);
+                        mDrawCanvas.drawText(mFormatValue.format(val) + mUnit, positions[j],
+                                positions[j + 1]
+                                        - valOffset, mValuePaint);
                     } else {
 
                         mDrawCanvas.drawText(mFormatValue.format(val), positions[j],
-                                positions[j + 1] - valOffset, mValuePaint);
+                                positions[j + 1] - valOffset,
+                                mValuePaint);
                     }
                 }
             }
@@ -215,13 +227,15 @@ public class LineChart extends BarLineChartBase {
         // if drawing circles is enabled
         if (mDrawCircles) {
 
-            ArrayList<DataSet> dataSets = mData.getDataSets();
+            ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
+            
+            Log.i(LOG_TAG, "DrawnPoints: " + mCurrentData.getYValCount());
 
-            for (int i = 0; i < mData.getDataSetCount(); i++) {
+            for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
                 DataSet dataSet = dataSets.get(i);
                 ArrayList<Entry> entries = dataSet.getYVals();
-                
+
                 // Get the colors for the DataSet at the current index. If the
                 // index
                 // is out of bounds, reuse DataSet colors.
@@ -230,8 +244,9 @@ public class LineChart extends BarLineChartBase {
                 float[] positions = generateTransformedValues(entries, 0f);
 
                 for (int j = 0; j < positions.length; j += 2) {
-                    
-                    // Set the color for the currently drawn value. If the index is
+
+                    // Set the color for the currently drawn value. If the index
+                    // is
                     // out of bounds, reuse colors.
                     mRenderPaint.setColor(colors.get(j % colors.size()));
 
@@ -240,7 +255,8 @@ public class LineChart extends BarLineChartBase {
 
                     // make sure the circles don't do shitty things outside
                     // bounds
-                    if (isOffContentLeft(positions[j]))
+                    if (isOffContentLeft(positions[j]) || isOffContentTop(positions[j + 1])
+                            || isOffContentBottom(positions[j + 1]))
                         continue;
 
                     mDrawCanvas.drawCircle(positions[j], positions[j + 1], mCircleSize,
@@ -360,6 +376,35 @@ public class LineChart extends BarLineChartBase {
      */
     public float getHighlightLineWidth() {
         return mHighlightWidth;
+    }
+
+    /**
+     * Enables the line to be drawn in dashed mode, e.g. like this "- - - - - -"
+     * 
+     * @param lineLength the length of the line pieces
+     * @param spaceLength the length of space inbetween the pieces
+     * @param phase offset, in degrees (normally, use 0)
+     */
+    public void enableDashedLine(float lineLength, float spaceLength, float phase) {
+        mRenderPaint.setPathEffect(new DashPathEffect(new float[] {
+                lineLength, spaceLength
+        }, phase));
+    }
+
+    /**
+     * Disables the line to be drawn in dashed mode.
+     */
+    public void disableDashedLine() {
+        mRenderPaint.setPathEffect(null);
+    }
+
+    /**
+     * Returns true if the dashed-line effect is enabled, false if not.
+     * 
+     * @return
+     */
+    public boolean isDashedLineEnabled() {
+        return mRenderPaint.getPathEffect() == null ? false : true;
     }
 
     @Override
