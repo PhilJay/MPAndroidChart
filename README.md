@@ -11,7 +11,7 @@ Features
 =======
 
 **Core features:**
- - Scaling (with touch-gesture)
+ - Scaling on both axes (with touch-gesture, axes separately or pinch-zoom)
  - Dragging (with touch-gesture)
  - Finger drawing (draw values into the chart with touch-gesture)
  - Highlighting values (with customizeable popup-views)
