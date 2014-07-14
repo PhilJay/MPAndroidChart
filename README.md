@@ -13,7 +13,8 @@ Features
 **Core features:**
  - Scaling (with touch-gesture)
  - Dragging (with touch-gesture)
- - Highlighting values 
+ - Finger drawing (draw values into the chart with touch-gesture)
+ - Highlighting values (with customizeable popup-views)
  - Save chart to SD-Card
  - Predefined color templates
  - Fully customizeable (paints, typefaces, legends, colors, background, gestures, ...)
