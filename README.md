@@ -42,6 +42,10 @@ Features
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/piechart_selected.png)
 
+ - **ScatterChart** (with squares, triangles, circles, ...)
+
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/scatterchart.png)
+
 
 
 Usage
