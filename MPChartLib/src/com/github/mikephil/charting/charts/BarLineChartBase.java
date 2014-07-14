@@ -9,16 +9,16 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
-import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ViewParent;
 
+import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.ZoomHandler;
 import com.github.mikephil.charting.interfaces.OnDrawListener;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.utils.Highlight;
@@ -119,8 +119,8 @@ public abstract class BarLineChartBase extends Chart {
     /** if true, the y-legend will always start at zero */
     protected boolean mStartAtZero = true;
 
-    /** if true, data filterin is enabled */
-    protected boolean mFilterData = true;
+    /** if true, data filtering is enabled */
+    protected boolean mFilterData = false;
 
     /** paint object for the grid lines */
     protected Paint mGridPaint;
@@ -161,7 +161,8 @@ public abstract class BarLineChartBase extends Chart {
      */
     protected YLegend mYLegend = new YLegend();
 
-    protected ZoomHandler mZoomHandler = new ZoomHandler();
+    /** the approximator object used for data filtering */
+    private Approximator mApproximator;
 
     public BarLineChartBase(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -223,13 +224,16 @@ public abstract class BarLineChartBase extends Chart {
 
         long starttime = System.currentTimeMillis();
 
-        // if (mFilterData)
-        // mData = mZoomHandler.getFiltered(mData,
-        // mScaleX, mScaleY);
-        //
-        // Log.i(LOG_TAG, "FilterTime: " + (System.currentTimeMillis() -
-        // starttime) + " ms");
-        // starttime = System.currentTimeMillis();
+        if (mFilterData) {
+            mCurrentData = getFilteredData();
+
+            Log.i(LOG_TAG, "FilterTime: " + (System.currentTimeMillis() -
+                    starttime) + " ms");
+            starttime = System.currentTimeMillis();
+        } else {
+            mCurrentData = getDataOriginal();
+            Log.i(LOG_TAG, "Filtering disabled.");
+        }
 
         if (mAdjustXLegend)
             calcModulus();
@@ -308,7 +312,7 @@ public abstract class BarLineChartBase extends Chart {
         float[] values = new float[9];
         mMatrixTouch.getValues(values);
 
-        mXLegendGridModulus = (int) Math.ceil((mData.getXValCount() * mXLegendWidth)
+        mXLegendGridModulus = (int) Math.ceil((mCurrentData.getXValCount() * mXLegendWidth)
                 / (mContentRect.width() * values[Matrix.MSCALE_X]));
     }
 
@@ -365,11 +369,12 @@ public abstract class BarLineChartBase extends Chart {
 
         StringBuffer a = new StringBuffer();
 
-        int length = (int) (((float) (mData.getXVals().get(0).length() + mData.getXVals()
-                .get(mData.getXValCount() - 1)
+        int length = (int) (((float) (mCurrentData.getXVals().get(0).length() + mCurrentData
+                .getXVals()
+                .get(mCurrentData.getXValCount() - 1)
                 .length())));
 
-        if (mData.getXVals().get(0).length() <= 3)
+        if (mCurrentData.getXVals().get(0).length() <= 3)
             length *= 2;
 
         for (int i = 0; i < length; i++) {
@@ -454,7 +459,7 @@ public abstract class BarLineChartBase extends Chart {
                 0f, 0f
         };
 
-        for (int i = 0; i < mData.getXValCount(); i++) {
+        for (int i = 0; i < mCurrentData.getXValCount(); i++) {
 
             if (i % mXLegendGridModulus == 0) {
 
@@ -468,7 +473,8 @@ public abstract class BarLineChartBase extends Chart {
 
                 if (position[0] >= mOffsetLeft && position[0] <= getWidth() - mOffsetRight + 10) {
 
-                    mDrawCanvas.drawText(mData.getXVals().get(i), position[0], mOffsetTop - 5,
+                    mDrawCanvas.drawText(mCurrentData.getXVals().get(i), position[0],
+                            mOffsetTop - 5,
                             mXLegendPaint);
                 }
             }
@@ -565,7 +571,7 @@ public abstract class BarLineChartBase extends Chart {
                 0f, 0f
         };
 
-        for (int i = 0; i < mData.getXValCount(); i++) {
+        for (int i = 0; i < mCurrentData.getXValCount(); i++) {
 
             if (i % mXLegendGridModulus == 0) {
 
@@ -1283,18 +1289,9 @@ public abstract class BarLineChartBase extends Chart {
     public Entry getEntryByTouchPoint(float x, float y) {
         Highlight h = getHighlightByTouchPoint(x, y);
         if (h != null) {
-            return mData.getEntryForHighlight(h);
+            return mCurrentData.getEntryForHighlight(h);
         }
         return null;
-    }
-
-    /**
-     * returns the zoomhandler of the chart
-     * 
-     * @return
-     */
-    public ZoomHandler getZoomHandler() {
-        return mZoomHandler;
     }
 
     /**
@@ -1392,17 +1389,6 @@ public abstract class BarLineChartBase extends Chart {
     // }
 
     /**
-     * Enables data filtering for the chart data, filtering will use the default
-     * Approximator. What filtering does is reduce the data displayed in the
-     * chart with a certain tolerance. This can especially be important
-     * concerning performance when displaying large datasets.
-     */
-    public void enableFiltering() {
-        mFilterData = true;
-        mZoomHandler.setCustomApproximator(null);
-    }
-
-    /**
      * Enables data filtering for the chart data, filtering will use the user
      * customized Approximator handed over to this method.
      * 
@@ -1410,7 +1396,7 @@ public abstract class BarLineChartBase extends Chart {
      */
     public void enableFiltering(Approximator a) {
         mFilterData = true;
-        mZoomHandler.setCustomApproximator(a);
+        mApproximator = a;
     }
 
     /**
@@ -1455,6 +1441,43 @@ public abstract class BarLineChartBase extends Chart {
      */
     public boolean isPinchZoomEnabled() {
         return mPinchZoomEnabled;
+    }
+
+    /**
+     * returns the filtered ChartData object depending on approximator settings,
+     * current scale level and x- and y-axis ratio
+     * 
+     * @return
+     */
+    private ChartData getFilteredData() {
+
+        float deltaY = mOriginalData.getYMax() - mOriginalData.getYMin();
+        float deltaX = mOriginalData.getXValCount();
+        
+        float deltaRatio = deltaY / deltaX;
+        float scaleRatio = mScaleY / mScaleX;
+
+        // set the determined ratios
+        mApproximator.setRatios(deltaRatio, scaleRatio);
+
+        // Log.i("Approximator", "DeltaRatio: " + deltaRatio + ", ScaleRatio: "
+        // + scaleRatio);
+
+        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+
+        for (int j = 0; j < mOriginalData.getDataSetCount(); j++) {
+
+            DataSet old = mOriginalData.getDataSetByIndex(j);
+
+            // do the filtering
+            ArrayList<Entry> approximated = mApproximator.filter(old.getYVals());
+
+            DataSet set = new DataSet(approximated, old.getType());
+            dataSets.add(set);
+        }
+
+        ChartData d = new ChartData(mOriginalData.getXVals(), dataSets);
+        return d;
     }
 
     @Override

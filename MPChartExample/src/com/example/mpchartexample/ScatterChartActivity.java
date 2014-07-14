@@ -18,6 +18,7 @@ import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -127,14 +128,18 @@ public class ScatterChartActivity extends Activity implements OnSeekBarChangeLis
                 mChart.invalidate();
                 break;
             }
-            case R.id.actionToggleFilter:
-                if (mChart.isFilteringEnabled()) {
-                    mChart.enableFiltering();
+            case R.id.actionToggleFilter: {
+                
+                Approximator a = new Approximator(ApproximatorType.DOUGLAS_PEUCKER, 25);
+                
+                if (!mChart.isFilteringEnabled()) {
+                    mChart.enableFiltering(a);
                 } else {
                     mChart.disableFiltering();
                 }
                 mChart.invalidate();
                 break;
+            }
             case R.id.actionSave: {
                 // mChart.saveToGallery("title"+System.currentTimeMillis());
                 mChart.saveToPath("title" + System.currentTimeMillis(), "");

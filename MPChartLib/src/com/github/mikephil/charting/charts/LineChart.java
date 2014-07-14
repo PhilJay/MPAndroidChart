@@ -7,6 +7,7 @@ import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -103,9 +104,9 @@ public class LineChart extends BarLineChartBase {
 
         ArrayList<DataSet> dataSets;
 
-        dataSets = mData.getDataSets();
+        dataSets = mCurrentData.getDataSets();
 
-        for (int i = 0; i < mData.getDataSetCount(); i++) {
+        for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
             DataSet dataSet = dataSets.get(i);
             ArrayList<Entry> entries = dataSet.getYVals();
@@ -174,7 +175,7 @@ public class LineChart extends BarLineChartBase {
     protected void drawValues() {
 
         // if values are drawn
-        if (mDrawYValues && mData.getYValCount() < mMaxVisibleCount * mScaleX) {
+        if (mDrawYValues && mCurrentData.getYValCount() < mMaxVisibleCount * mScaleX) {
 
             // make sure the values do not interfear with the circles
             int valOffset = (int) (mCircleSize * 1.7f);
@@ -182,9 +183,9 @@ public class LineChart extends BarLineChartBase {
             if (!mDrawCircles)
                 valOffset = valOffset / 2;
 
-            ArrayList<DataSet> dataSets = mData.getDataSets();
+            ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
 
-            for (int i = 0; i < mData.getDataSetCount(); i++) {
+            for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
                 DataSet dataSet = dataSets.get(i);
                 ArrayList<Entry> entries = dataSet.getYVals();
@@ -226,9 +227,11 @@ public class LineChart extends BarLineChartBase {
         // if drawing circles is enabled
         if (mDrawCircles) {
 
-            ArrayList<DataSet> dataSets = mData.getDataSets();
+            ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
+            
+            Log.i(LOG_TAG, "DrawnPoints: " + mCurrentData.getYValCount());
 
-            for (int i = 0; i < mData.getDataSetCount(); i++) {
+            for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
                 DataSet dataSet = dataSets.get(i);
                 ArrayList<Entry> entries = dataSet.getYVals();

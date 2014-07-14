@@ -53,9 +53,9 @@ public class ScatterChart extends BarLineChartBase {
 
     @Override
     protected void drawData() {
-        ArrayList<DataSet> dataSets = mData.getDataSets();
+        ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
 
-        for (int i = 0; i < mData.getDataSetCount(); i++) {
+        for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
             DataSet dataSet = dataSets.get(i);
             ArrayList<Entry> entries = dataSet.getYVals();
@@ -129,11 +129,11 @@ public class ScatterChart extends BarLineChartBase {
     @Override
     protected void drawValues() {
         // if values are drawn
-        if (mDrawYValues && mData.getYValCount() < mMaxVisibleCount * mScaleX) {
+        if (mDrawYValues && mCurrentData.getYValCount() < mMaxVisibleCount * mScaleX) {
 
-            ArrayList<DataSet> dataSets = mData.getDataSets();
+            ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
 
-            for (int i = 0; i < mData.getDataSetCount(); i++) {
+            for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
                 DataSet dataSet = dataSets.get(i);
                 ArrayList<Entry> entries = dataSet.getYVals();

@@ -157,7 +157,7 @@ public class BarChart extends BarLineChartBase {
                 int index = mIndicesToHightlight[i].getXIndex();
 
                 // check outofbounds
-                if (index < mData.getYValCount() && index >= 0) {
+                if (index < mCurrentData.getYValCount() && index >= 0) {
 
                     mHighlightPaint.setAlpha(120);
 
@@ -198,7 +198,7 @@ public class BarChart extends BarLineChartBase {
         ArrayList<Path> topPaths = new ArrayList<Path>();
         ArrayList<Path> sidePaths = new ArrayList<Path>();
 
-        ArrayList<DataSet> dataSets = mData.getDataSets();
+        ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
 
         // preparations for 3D bars
         if (m3DEnabled) {
@@ -229,7 +229,7 @@ public class BarChart extends BarLineChartBase {
 
             float depth = Math.abs(pts[3] - pts[1]) * mDepth;
 
-            for (int i = 0; i < mData.getDataSetCount(); i++) {
+            for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
                 DataSet dataSet = dataSets.get(i);
                 ArrayList<Entry> series = dataSet.getYVals();
@@ -268,7 +268,7 @@ public class BarChart extends BarLineChartBase {
         int cnt = 0;
 
         // 2D drawing
-        for (int i = 0; i < mData.getDataSetCount(); i++) {
+        for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
             DataSet dataSet = dataSets.get(i);
             ArrayList<Entry> series = dataSet.getYVals();
@@ -329,11 +329,11 @@ public class BarChart extends BarLineChartBase {
     protected void drawValues() {
 
         // if values are drawn
-        if (mDrawYValues && mData.getYValCount() < mMaxVisibleCount * mScaleX) {
+        if (mDrawYValues && mCurrentData.getYValCount() < mMaxVisibleCount * mScaleX) {
 
-            ArrayList<DataSet> dataSets = mData.getDataSets();
+            ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
 
-            for (int i = 0; i < mData.getDataSetCount(); i++) {
+            for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
                 DataSet dataSet = dataSets.get(i);
                 ArrayList<Entry> series = dataSet.getYVals();

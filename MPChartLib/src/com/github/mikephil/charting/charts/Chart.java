@@ -11,15 +11,11 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
-import android.graphics.PorterDuff.Mode;
 import android.graphics.Path;
 import android.graphics.PointF;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.AttributeSet;
@@ -82,7 +78,13 @@ public abstract class Chart extends View {
      * object that holds all data relevant for the chart (x-vals, y-vals, ...)
      * that are currently displayed
      */
-    protected ChartData mData = null;
+    protected ChartData mCurrentData = null;
+
+    /**
+     * object that holds all data that was originally set for the chart, before
+     * it was modified or any filtering algorithms had been applied
+     */
+    protected ChartData mOriginalData = null;
 
     /** final bitmap that contains all information and is drawn to the screen */
     protected Bitmap mDrawBitmap;
@@ -189,7 +191,7 @@ public abstract class Chart extends View {
 
         // initialize the utils
         Utils.init(getContext().getResources());
-        
+
         // do screen density conversions
         mOffsetBottom = (int) Utils.convertDpToPixel(mOffsetBottom);
         mOffsetLeft = (int) Utils.convertDpToPixel(mOffsetLeft);
@@ -268,7 +270,8 @@ public abstract class Chart extends View {
 
         // LET THE CHART KNOW THERE IS DATA
         mDataNotSet = false;
-        mData = data;
+        mCurrentData = data;
+        mOriginalData = data;
 
         prepare();
     }
@@ -313,13 +316,13 @@ public abstract class Chart extends View {
     protected void calcMinMax(boolean fixedValues) {
         // only calculate values if not fixed values
         if (!fixedValues) {
-            mYChartMin = mData.getYMin();
-            mYChartMax = mData.getYMax();
+            mYChartMin = mCurrentData.getYMin();
+            mYChartMax = mCurrentData.getYMax();
         }
 
         // calc delta
-        mDeltaY = Math.abs(mData.getYMax() - mData.getYMin());
-        mDeltaX = mData.getXVals().size() - 1;
+        mDeltaY = Math.abs(mCurrentData.getYMax() - mCurrentData.getYMin());
+        mDeltaX = mCurrentData.getXVals().size() - 1;
     }
 
     /** flag that indicates if this is the first time the chart is refreshed */
@@ -680,10 +683,11 @@ public abstract class Chart extends View {
 
         float value = getYValueByDataSetIndex(xIndex, dataSetIndex);
         float xPos = (float) xIndex;
-        
+
         // make sure the marker is in the center of the bars in BarChart
-        if(this instanceof BarChart) xPos += 0.5f;
-               
+        if (this instanceof BarChart)
+            xPos += 0.5f;
+
         // position of the marker depends on selected value index and value
         float[] pts = new float[] {
                 xPos, value
@@ -695,7 +699,7 @@ public abstract class Chart extends View {
 
         // callbacks to update the content
         mMarkerView.refreshContent(xIndex, value, dataSetIndex);
-        
+
         // call the draw method of the markerview that will translate to the
         // given position and draw the view
         mMarkerView.draw(mDrawCanvas, posX, posY);
@@ -749,7 +753,7 @@ public abstract class Chart extends View {
      * @return
      */
     public float getYValueSum() {
-        return mData.getYValueSum();
+        return mCurrentData.getYValueSum();
     }
 
     /**
@@ -758,7 +762,7 @@ public abstract class Chart extends View {
      * @return
      */
     public float getYMax() {
-        return mData.getYMax();
+        return mCurrentData.getYMax();
     }
 
     /**
@@ -785,7 +789,7 @@ public abstract class Chart extends View {
      * @return
      */
     public float getYMin() {
-        return mData.getYMin();
+        return mCurrentData.getYMin();
     }
 
     /**
@@ -803,7 +807,7 @@ public abstract class Chart extends View {
      * @return
      */
     public float getAverage() {
-        return getYValueSum() / mData.getYValCount();
+        return getYValueSum() / mCurrentData.getYValCount();
     }
 
     /**
@@ -813,8 +817,8 @@ public abstract class Chart extends View {
      * @return
      */
     public float getAverage(int dataSetType) {
-        return mData.getDataSetByType(dataSetType).getYValueSum()
-                / mData.getDataSetByType(dataSetType).getEntryCount();
+        return mCurrentData.getDataSetByType(dataSetType).getYValueSum()
+                / mCurrentData.getDataSetByType(dataSetType).getEntryCount();
     }
 
     /**
@@ -823,7 +827,7 @@ public abstract class Chart extends View {
      * @return
      */
     public int getValueCount() {
-        return mData.getYValCount();
+        return mCurrentData.getYValCount();
     }
 
     /**
@@ -943,7 +947,7 @@ public abstract class Chart extends View {
     }
 
     /**
-     * returns the view that is set as a marker view for the chartv
+     * returns the view that is set as a marker view for the chart
      * 
      * @return
      */
@@ -992,6 +996,9 @@ public abstract class Chart extends View {
 
     /** paint for highlightning the values of a linechart */
     public static final int PAINT_HIGHLIGHT_BAR = 16;
+    
+    /** paint used for all rendering processes */
+    public static final int PAINT_RENDER = 17;
 
     /**
      * set a new paint object for the specified parameter in the chart e.g.
@@ -1012,6 +1019,9 @@ public abstract class Chart extends View {
                 break;
             case PAINT_VALUES:
                 mValuePaint = p;
+                break;
+            case PAINT_RENDER:
+                mRenderPaint = p;
                 break;
         }
     }
@@ -1071,10 +1081,10 @@ public abstract class Chart extends View {
      * @return
      */
     public String getXValue(int index) {
-        if (mData == null || mData.getXValCount() <= index)
+        if (mCurrentData == null || mCurrentData.getXValCount() <= index)
             return null;
         else
-            return mData.getXVals().get(index);
+            return mCurrentData.getXVals().get(index);
     }
 
     /**
@@ -1085,7 +1095,7 @@ public abstract class Chart extends View {
      * @return
      */
     public float getYValue(int index) {
-        return mData.getDataSetByIndex(0).getYVals().get(index).getVal();
+        return mCurrentData.getDataSetByIndex(0).getYVals().get(index).getVal();
     }
 
     /**
@@ -1097,7 +1107,7 @@ public abstract class Chart extends View {
      * @return
      */
     public float getYValue(int index, int type) {
-        DataSet set = mData.getDataSetByType(type);
+        DataSet set = mCurrentData.getDataSetByType(type);
         return set.getYVals().get(index).getVal();
     }
 
@@ -1109,7 +1119,7 @@ public abstract class Chart extends View {
      * @return
      */
     public float getYValueByDataSetIndex(int xIndex, int dataSet) {
-        DataSet set = mData.getDataSetByIndex(dataSet);
+        DataSet set = mCurrentData.getDataSetByIndex(dataSet);
         return set.getYValForXIndex(xIndex);
     }
 
@@ -1121,7 +1131,7 @@ public abstract class Chart extends View {
      * @return
      */
     public DataSet getDataSetByIndex(int index) {
-        return mData.getDataSetByIndex(index);
+        return mCurrentData.getDataSetByIndex(index);
     }
 
     /**
@@ -1132,7 +1142,7 @@ public abstract class Chart extends View {
      * @return
      */
     public DataSet getDataSetByType(int type) {
-        return mData.getDataSetByType(type);
+        return mCurrentData.getDataSetByType(type);
     }
 
     /**
@@ -1144,7 +1154,7 @@ public abstract class Chart extends View {
      * @return
      */
     public Entry getEntry(int index) {
-        return mData.getDataSetByIndex(0).getYVals().get(index);
+        return mCurrentData.getDataSetByIndex(0).getYVals().get(index);
     }
 
     /**
@@ -1156,7 +1166,7 @@ public abstract class Chart extends View {
      * @return
      */
     public Entry getEntry(int index, int type) {
-        return mData.getDataSetByType(type).getYVals().get(index);
+        return mCurrentData.getDataSetByType(type).getYVals().get(index);
     }
 
     /**
@@ -1169,7 +1179,7 @@ public abstract class Chart extends View {
      * @return
      */
     public Entry getEntryByDataSetIndex(int xIndex, int dataSetIndex) {
-        return mData.getDataSetByIndex(dataSetIndex).getEntryForXIndex(xIndex);
+        return mCurrentData.getDataSetByIndex(dataSetIndex).getEntryForXIndex(xIndex);
     }
 
     /**
@@ -1185,10 +1195,10 @@ public abstract class Chart extends View {
 
         ArrayList<SelInfo> vals = new ArrayList<SelInfo>();
 
-        for (int i = 0; i < mData.getDataSetCount(); i++) {
+        for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
             // extract all y-values from all DataSets at the given x-index
-            float yVal = mData.getDataSetByIndex(i).getYValForXIndex(xIndex);
+            float yVal = mCurrentData.getDataSetByIndex(i).getYValForXIndex(xIndex);
 
             if (!Float.isNaN(yVal)) {
                 vals.add(new SelInfo(yVal, i));
@@ -1210,9 +1220,9 @@ public abstract class Chart extends View {
 
         ArrayList<Entry> vals = new ArrayList<Entry>();
 
-        for (int i = 0; i < mData.getDataSetCount(); i++) {
+        for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
-            DataSet set = mData.getDataSetByIndex(i);
+            DataSet set = mCurrentData.getDataSetByIndex(i);
 
             Entry e = set.getEntryForXIndex(xIndex);
 
@@ -1225,13 +1235,25 @@ public abstract class Chart extends View {
     }
 
     /**
-     * Returns the ChartData object the chart represents. It contains all values
-     * and information the chart displays.
+     * Returns the ChartData object the chart CURRENTLY represents. It contains
+     * all values and information the chart displays. If filtering algorithms
+     * have been applied, this returns the filtered state of data.
      * 
      * @return
      */
-    public ChartData getData() {
-        return mData;
+    public ChartData getDataCurrent() {
+        return mCurrentData;
+    }
+
+    /**
+     * Returns the ChartData object that ORIGINALLY has been set for the chart.
+     * It contains all data in an unaltered state, before any filtering
+     * algorithms have been applied.
+     * 
+     * @return
+     */
+    public ChartData getDataOriginal() {
+        return mOriginalData;
     }
 
     /**
@@ -1241,7 +1263,7 @@ public abstract class Chart extends View {
      * @return
      */
     public float getPercentOfTotal(float val) {
-        return val / mData.getYValueSum() * 100f;
+        return val / mCurrentData.getYValueSum() * 100f;
     }
 
     /**

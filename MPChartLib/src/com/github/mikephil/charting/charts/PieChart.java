@@ -263,14 +263,14 @@ public class PieChart extends Chart {
 	 */
 	private void calcAngles() {
 
-		mDrawAngles = new float[mData.getYValCount()];
-		mAbsoluteAngles = new float[mData.getYValCount()];
+		mDrawAngles = new float[mCurrentData.getYValCount()];
+		mAbsoluteAngles = new float[mCurrentData.getYValCount()];
 
-		ArrayList<DataSet> dataSets = mData.getDataSets();
+		ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
 
 		int cnt = 0;
 
-		for (int i = 0; i < mData.getDataSetCount(); i++) {
+		for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
 			DataSet set = dataSets.get(i);
 			ArrayList<Entry> entries = set.getYVals();
@@ -321,7 +321,7 @@ public class PieChart extends Chart {
 				RectF highlighted = new RectF(mCircleBox.left + xShift, mCircleBox.top + yShift, mCircleBox.right
 						+ xShift, mCircleBox.bottom + yShift);
 
-				DataSet set = mData.getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
+				DataSet set = mCurrentData.getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
 
 				int color = mCt.getDataSetColor(mIndicesToHightlight[i].getDataSetIndex(),
 						set.getIndexInEntries(xIndex));
@@ -340,11 +340,11 @@ public class PieChart extends Chart {
 
 		float angle = mChartAngle;
 
-		ArrayList<DataSet> dataSets = mData.getDataSets();
+		ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
 
 		int cnt = 0;
 
-		for (int i = 0; i < mData.getDataSetCount(); i++) {
+		for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
 			DataSet dataSet = dataSets.get(i);
 			ArrayList<Entry> entries = dataSet.getYVals();
@@ -424,11 +424,11 @@ public class PieChart extends Chart {
 		float r = mCircleBox.width() / 2 - off; // offset to keep things inside
 												// the chart
 
-		ArrayList<DataSet> dataSets = mData.getDataSets();
+		ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
 
 		int cnt = 0;
 
-		for (int i = 0; i < mData.getDataSetCount(); i++) {
+		for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
 			DataSet dataSet = dataSets.get(i);
 			ArrayList<Entry> entries = dataSet.getYVals();
@@ -465,10 +465,10 @@ public class PieChart extends Chart {
 					y -= lineHeight / 2;
 
 					mDrawCanvas.drawText(val, x, y, mValuePaint);
-					mDrawCanvas.drawText(mData.getXVals().get(j), x, y + lineHeight, mValuePaint);
+					mDrawCanvas.drawText(mCurrentData.getXVals().get(j), x, y + lineHeight, mValuePaint);
 
 				} else if (mDrawXVals && !mDrawYValues) {
-					mDrawCanvas.drawText(mData.getXVals().get(j), x, y, mValuePaint);
+					mDrawCanvas.drawText(mCurrentData.getXVals().get(j), x, y, mValuePaint);
 				} else if (!mDrawXVals && mDrawYValues) {
 
 					mDrawCanvas.drawText(val, x, y, mValuePaint);
@@ -491,7 +491,7 @@ public class PieChart extends Chart {
 	 * @return
 	 */
 	private float calcAngle(float value) {
-		return value / mData.getYValueSum() * 360f;
+		return value / mCurrentData.getYValueSum() * 360f;
 	}
 
 	/**
@@ -521,7 +521,7 @@ public class PieChart extends Chart {
 	 */
 	public int getDataSetIndexForIndex(int xIndex) {
 
-		ArrayList<DataSet> sets = mData.getDataSets();
+		ArrayList<DataSet> sets = mCurrentData.getDataSets();
 
 		for (int i = 0; i < sets.size(); i++) {
 			if (sets.get(i).getEntryForXIndex(xIndex) != null)
