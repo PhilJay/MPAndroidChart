@@ -5,6 +5,8 @@ A simple charting library for Android, supporting line- bar- and piecharts, scal
 
 Remember: *It's all about the looks.*
 
+For immediate access to our latest updates, please checkout the **experimental** branch. Beware that code on the experimental branch is not finished for release yet and might be incomplete or contain bugs.
+
 Features
 =======
 
@@ -109,7 +111,7 @@ method. The <code>ChartData</code> class encapsulates all data and information t
     public ChartData(ArrayList<String> xVals, ArrayList<DataSet> dataSets) { ... }
 ```
 
-So, what is a <code>DataSet</code> and why do you need it? That is actually pretty simple. One <code>DataSet</code> objects represents a group or type of entries (values) inside the chart that belong together. It is designed to logically separate different groups of values in the chart. As an example, you might want to display the quarterly revenue of two different companies over one year. In that case, it would be recommended to create two different <code>DataSet</code> objects, each containing four values (one for each quarter). As an <code>ArrayList<String></code> to describe the legend on the x-axis, you would simply provide the four Strings "1.Q", "2.Q", "3.Q", "4.Q".
+So, what is a <code>DataSet</code> and why do you need it? That is actually pretty simple. One <code>DataSet</code> object represents a group of entries (datatype <code>Entry</code>) inside the chart that belong together. It is designed to logically separate different groups of values in the chart. As an example, you might want to display the quarterly revenue of two different companies over one year. In that case, it would be recommended to create two different <code>DataSet</code> objects, each containing four values (one for each quarter). As an <code>ArrayList<String></code> to describe the legend on the x-axis, you would simply provide the four Strings "1.Q", "2.Q", "3.Q", "4.Q".
 
 Of course, it is also possible to provide just one <code>DataSet</code> object containing all 8 values for the two companys. 
 
@@ -118,7 +120,7 @@ So how to setup a <code>DataSet</code> object?
     public DataSet(ArrayList<Entry> yVals, int type) { ... }
 ```
 
-When looking at the constructor, it is visible that the <code>DataSet</code> needs an <code>ArrayList</code> of type <code>Entry</code> and a type int. The type integer value can be chosen freely and can be used to identify the <code>DataSet</code>. A possible type in this scenario could be a constant COMPANY_1.
+When looking at the constructor, it is visible that the <code>DataSet</code> needs an <code>ArrayList</code> of type <code>Entry</code> and an integer value for the type. The type integer value can be chosen freely and can be used to identify the <code>DataSet</code> amongst other <code>DataSet</code> objects in the <code>ChartData</code> object. A possible type in this scenario could be a integer constant COMPANY_1.
 
 The <code>ArrayList</code> of type <code>Entry</code> encapsulates all values of the chart. A <code>Entry</code> object is an additional wrapper around a value and holds the value itself, and it's position on the x-axis (the index inside the <code>ArrayList</code> of <code>String</code> of the <code>CharData</code> object the value is mapped to):
 ```java
