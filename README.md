@@ -57,7 +57,7 @@ Rely on the **"MPChartExample"** folder check out the examples in that project. 
 
 For using a <code>LineChart, BarChart or PieChart </code>, define it in .xml:
 ```xml
-    <com.github.mikephil.charting.LineChart
+    <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
