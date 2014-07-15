@@ -983,7 +983,7 @@ public abstract class Chart extends View {
     public static final int PAINT_DESCRIPTION = 11;
 
     /** paint for the line surrounding the chart (only line and barchart) */
-    public static final int PAINT_OUTLINE = 12;
+    public static final int PAINT_BORDER = 12;
 
     /** paint for the hole in the middle of the pie chart */
     public static final int PAINT_HOLE = 13;

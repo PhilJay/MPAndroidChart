@@ -7,7 +7,6 @@ import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -228,8 +227,6 @@ public class LineChart extends BarLineChartBase {
         if (mDrawCircles) {
 
             ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
-            
-            Log.i(LOG_TAG, "DrawnPoints: " + mCurrentData.getYValCount());
 
             for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 

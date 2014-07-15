@@ -12,6 +12,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.BarLineChartBase.BorderStyle;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -48,10 +49,12 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 
         // create a color template for one dataset with only one color
         ColorTemplate ct = new ColorTemplate();
-//        ct.addColorsForDataSets(new int[] {
-//            R.color.colorful_1
-//        }, this);
-        ct.addDataSetColors(new int[] {R.color.colorful_1}, this);
+        // ct.addColorsForDataSets(new int[] {
+        // R.color.colorful_1
+        // }, this);
+        ct.addDataSetColors(new int[] {
+            R.color.colorful_1
+        }, this);
 
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
@@ -62,9 +65,25 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 
         // disable the drawing of values into the chart
         mChart.setDrawYValues(false);
-
+ 
         mChart.setLineWidth(4f);
         mChart.setCircleSize(4f);
+        
+        mChart.setDrawBorder(true);
+        mChart.setBorderStyles(new BorderStyle[] { BorderStyle.BOTTOM });
+
+        // no description text
+        mChart.setDescription("");
+
+        // // enable / disable grid lines
+        // mChart.setDrawVerticalGrid(false);
+        // mChart.setDrawHorizontalGrid(false);
+        //
+        // // enable / disable grid background
+        // mChart.setDrawGridBackground(false);
+        //
+        // mChart.setDrawXLegend(false);
+        // mChart.setDrawYLegend(false);
 
         // set the number of y-legend entries the chart should have
         mChart.setYLegendCount(6);
@@ -80,7 +99,7 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 
         // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(true);
-        
+
         // create a custom MarkerView (extend MarkerView) and specify the layout
         // to use for it
         MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
@@ -173,10 +192,10 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
                 break;
             }
             case R.id.actionToggleFilter: {
-                
+
                 // the angle of filtering is 35°
                 Approximator a = new Approximator(ApproximatorType.DOUGLAS_PEUCKER, 35);
-                
+
                 if (!mChart.isFilteringEnabled()) {
                     mChart.enableFiltering(a);
                 } else {

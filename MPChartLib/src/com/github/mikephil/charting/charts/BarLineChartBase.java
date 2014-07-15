@@ -107,9 +107,6 @@ public abstract class BarLineChartBase extends Chart {
      */
     protected boolean mAdjustXLegend = true;
 
-    /** if true, the grid will be drawn, otherwise not, default true */
-    protected boolean mDrawGrid = true;
-
     /** if true, dragging / scaling is enabled for the chart */
     protected boolean mDragEnabled = true;
 
@@ -129,7 +126,7 @@ public abstract class BarLineChartBase extends Chart {
     protected Paint mGridBackgroundPaint;
 
     /** paint for the line surrounding the chart */
-    protected Paint mOutLinePaint;
+    protected Paint mBorderPaint;
 
     /** paint for the x-legend values */
     protected Paint mXLegendPaint;
@@ -151,6 +148,24 @@ public abstract class BarLineChartBase extends Chart {
      * finished
      */
     protected boolean mAutoFinishDrawing;
+
+    /** flag indicating if the vertical grid should be drawn or not */
+    protected boolean mDrawVerticalGrid = true;
+
+    /** flag indicating if the horizontal grid should be drawn or not */
+    protected boolean mDrawHorizontalGrid = true;
+
+    /** flag indicating if the y-legend should be drawn or not */
+    protected boolean mDrawYLegend = true;
+
+    /** flag indicating if the x-legend should be drawn or not */
+    protected boolean mDrawXLegend = true;
+
+    /** flag indicating if the chart border rectangle should be drawn or not */
+    protected boolean mDrawBorder = true;
+
+    /** flag indicating if the grid background should be drawn or not */
+    protected boolean mDrawGridBackground = true;
 
     /** the listener for user drawing on the chart */
     protected OnDrawListener mDrawListener;
@@ -198,10 +213,10 @@ public abstract class BarLineChartBase extends Chart {
         mGridPaint.setStyle(Style.STROKE);
         mGridPaint.setAlpha(90);
 
-        mOutLinePaint = new Paint();
-        mOutLinePaint.setColor(Color.BLACK);
-        mOutLinePaint.setStrokeWidth(mGridWidth * 2f);
-        mOutLinePaint.setStyle(Style.STROKE);
+        mBorderPaint = new Paint();
+        mBorderPaint.setColor(Color.BLACK);
+        mBorderPaint.setStrokeWidth(mGridWidth * 2f);
+        mBorderPaint.setStyle(Style.STROKE);
 
         mGridBackgroundPaint = new Paint();
         mGridBackgroundPaint.setStyle(Style.FILL);
@@ -224,6 +239,7 @@ public abstract class BarLineChartBase extends Chart {
 
         long starttime = System.currentTimeMillis();
 
+        // if data filtering is enabled
         if (mFilterData) {
             mCurrentData = getFilteredData();
 
@@ -232,15 +248,15 @@ public abstract class BarLineChartBase extends Chart {
             starttime = System.currentTimeMillis();
         } else {
             mCurrentData = getDataOriginal();
-            Log.i(LOG_TAG, "Filtering disabled.");
+//            Log.i(LOG_TAG, "Filtering disabled.");
         }
 
         if (mAdjustXLegend)
             calcModulus();
 
         // execute all drawing commands
-        drawOutline();
         drawGridBackground();
+        drawBorder();
 
         prepareYLegend();
 
@@ -251,6 +267,7 @@ public abstract class BarLineChartBase extends Chart {
 
         drawHorizontalGrid();
         drawVerticalGrid();
+
         drawData();
         drawHighlights();
 
@@ -454,6 +471,9 @@ public abstract class BarLineChartBase extends Chart {
      */
     protected void drawXLegend() {
 
+        if (!mDrawXLegend)
+            return;
+
         // pre allocate to save performance (dont allocate in loop)
         float[] position = new float[] {
                 0f, 0f
@@ -486,6 +506,9 @@ public abstract class BarLineChartBase extends Chart {
      */
     protected void drawYLegend() {
 
+        if (!mDrawYLegend)
+            return;
+
         float[] positions = new float[mYLegend.mEntryCount * 2];
 
         for (int i = 0; i < positions.length; i += 2) {
@@ -496,6 +519,8 @@ public abstract class BarLineChartBase extends Chart {
 
         transformPointArray(positions);
 
+        float xPos = mOffsetLeft - 10;
+
         for (int i = 0; i < mYLegend.mEntryCount; i++) {
 
             String text = Utils.formatNumber(mYLegend.mEntries[i], mYLegend.mDecimals,
@@ -505,29 +530,68 @@ public abstract class BarLineChartBase extends Chart {
                 return;
 
             if (mDrawUnitInLegend) {
-                mDrawCanvas.drawText(text + mUnit, mOffsetLeft - 10, positions[i * 2 + 1],
+                mDrawCanvas.drawText(text + mUnit, xPos, positions[i * 2 + 1],
                         mYLegendPaint);
             } else {
-                mDrawCanvas.drawText(text, mOffsetLeft - 10, positions[i * 2 + 1], mYLegendPaint);
+                mDrawCanvas.drawText(text, xPos, positions[i * 2 + 1], mYLegendPaint);
             }
         }
     }
 
+    /** enums for all different border styles */
+    public enum BorderStyle {
+        LEFT, RIGHT, TOP, BOTTOM
+    }
+
+    /**
+     * array that holds positions where to draw the chart border lines
+     */
+    private BorderStyle[] mBorderStyles = new BorderStyle[] {
+            BorderStyle.BOTTOM
+    };
+
     /**
      * draws a line that surrounds the chart
      */
-    protected void drawOutline() {
+    protected void drawBorder() {
 
-        mDrawCanvas.drawRect(mOffsetLeft, mOffsetTop, getWidth() - mOffsetRight, getHeight()
-                - mOffsetBottom,
-                mOutLinePaint);
+        if (!mDrawBorder || mBorderStyles == null)
+            return;
+
+        for (int i = 0; i < mBorderStyles.length; i++) {
+
+            switch (mBorderStyles[i]) {
+                case LEFT:
+                    mDrawCanvas.drawLine(mOffsetLeft, mOffsetTop, mOffsetLeft, getHeight()
+                            - mOffsetBottom, mBorderPaint);
+                    break;
+                case RIGHT:
+                    mDrawCanvas.drawLine(getWidth() - mOffsetRight, mOffsetTop, getWidth()
+                            - mOffsetRight, getHeight()
+                            - mOffsetBottom, mBorderPaint);
+                    break;
+                case TOP:
+                    mDrawCanvas.drawLine(mOffsetLeft, mOffsetTop, getWidth() - mOffsetRight,
+                            mOffsetTop, mBorderPaint);
+                    break;
+                case BOTTOM:
+                    mDrawCanvas.drawLine(mOffsetLeft, getHeight()
+                            - mOffsetBottom, getWidth() - mOffsetRight, getHeight()
+                            - mOffsetBottom, mBorderPaint);
+                    break;
+            }
+        }
     }
 
     /**
      * draws the grid background
      */
     protected void drawGridBackground() {
-        Rect gridBackground = new Rect(mOffsetLeft, mOffsetTop, getWidth() - mOffsetRight,
+
+        if (!mDrawGridBackground)
+            return;
+
+        Rect gridBackground = new Rect(mOffsetLeft + 1, mOffsetTop + 1, getWidth() - mOffsetRight,
                 getHeight() - mOffsetBottom);
 
         // draw the grid background
@@ -539,7 +603,7 @@ public abstract class BarLineChartBase extends Chart {
      */
     protected void drawHorizontalGrid() {
 
-        if (!mDrawGrid)
+        if (!mDrawHorizontalGrid)
             return;
 
         // create a new path object only once and use reset() instead of
@@ -564,7 +628,7 @@ public abstract class BarLineChartBase extends Chart {
      */
     protected void drawVerticalGrid() {
 
-        if (!mDrawGrid)
+        if (!mDrawVerticalGrid)
             return;
 
         float[] position = new float[] {
@@ -1000,24 +1064,6 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * returns true if drawing the grid is enabled, false if not
-     * 
-     * @return
-     */
-    public boolean isDrawGridEnabled() {
-        return mDrawGrid;
-    }
-
-    /**
-     * set to true if the grid should be drawn, false if not
-     * 
-     * @param enabled
-     */
-    public void setDrawGrid(boolean enabled) {
-        this.mDrawGrid = enabled;
-    }
-
-    /**
      * If set to true, the highlight indicators (cross of two lines for
      * LineChart and ScatterChart, dark bar overlay for BarChart) that give
      * visual indication that an Entry has been selected will be drawn upon
@@ -1124,6 +1170,88 @@ public abstract class BarLineChartBase extends Chart {
      */
     public boolean isDragEnabled() {
         return mDragEnabled;
+    }
+
+    /**
+     * if set to true, the vertical grid will be drawn, default: true
+     * 
+     * @param enabled
+     */
+    public void setDrawVerticalGrid(boolean enabled) {
+        mDrawVerticalGrid = enabled;
+    }
+
+    /**
+     * if set to true, the horizontal grid will be drawn, default: true
+     * 
+     * @param enabled
+     */
+    public void setDrawHorizontalGrid(boolean enabled) {
+        mDrawHorizontalGrid = enabled;
+    }
+
+    /**
+     * returns true if drawing the vertical grid is enabled, false if not
+     * 
+     * @return
+     */
+    public boolean isDrawVerticalGridEnabled() {
+        return mDrawVerticalGrid;
+    }
+
+    /**
+     * returns true if drawing the horizontal grid is enabled, false if not
+     * 
+     * @return
+     */
+    public boolean isDrawHorizontalGridEnabled() {
+        return mDrawHorizontalGrid;
+    }
+
+    /**
+     * set this to true to draw the border surrounding the chart, default: true
+     * 
+     * @param enabled
+     */
+    public void setDrawBorder(boolean enabled) {
+        mDrawBorder = enabled;
+    }
+
+    /**
+     * set this to true to draw the grid background, false if not
+     * 
+     * @param enabled
+     */
+    public void setDrawGridBackground(boolean enabled) {
+        mDrawGridBackground = enabled;
+    }
+
+    /**
+     * set this to true to enable drawing the x-legend, false if not
+     * 
+     * @param enabled
+     */
+    public void setDrawXLegend(boolean enabled) {
+        mDrawXLegend = enabled;
+    }
+
+    /**
+     * set this to true to enable drawing the y-legend, false if not
+     * 
+     * @param enabled
+     */
+    public void setDrawYLegend(boolean enabled) {
+        mDrawYLegend = enabled;
+    }
+
+    /**
+     * Sets an array of positions where to draw the chart border lines (e.g. new
+     * BorderStyle[] { BorderStyle.BOTTOM })
+     * 
+     * @param styles
+     */
+    public void setBorderStyles(BorderStyle[] styles) {
+        mBorderStyles = styles;
     }
 
     /**
@@ -1370,24 +1498,6 @@ public abstract class BarLineChartBase extends Chart {
         setYLegendTypeface(t);
     }
 
-    // /**
-    // * Sets a filter on the whole ChartData. If the type is NONE, the
-    // filtering
-    // * is reset. What the filter does is remove certain values which's
-    // distance
-    // * to the next value in the chart is below the tolerance. The space left
-    // in
-    // * between is then approximated. This will increase performance whith
-    // large
-    // * amounts of data.
-    // *
-    // * @param type the filter type. NONE to reset filtering
-    // * @param tolerance the tolerance
-    // */
-    // public void setFilter(ApproximatorType type, double tolerance) {
-    // mData.setFilter(type, tolerance);
-    // }
-
     /**
      * Enables data filtering for the chart data, filtering will use the user
      * customized Approximator handed over to this method.
@@ -1414,15 +1524,6 @@ public abstract class BarLineChartBase extends Chart {
     public boolean isFilteringEnabled() {
         return mFilterData;
     }
-
-    // /**
-    // * returns true if a filter has been set, flase if not
-    // *
-    // * @return
-    // */
-    // public boolean isFilterSet() {
-    // return mData.isApproximatedData();
-    // }
 
     /**
      * if set to true, both x and y axis can be scaled with 2 fingers, if false,
@@ -1451,10 +1552,7 @@ public abstract class BarLineChartBase extends Chart {
      */
     private ChartData getFilteredData() {
 
-        float deltaY = mOriginalData.getYMax() - mOriginalData.getYMin();
-        float deltaX = mOriginalData.getXValCount();
-        
-        float deltaRatio = deltaY / deltaX;
+        float deltaRatio = mDeltaY / mDeltaX;
         float scaleRatio = mScaleY / mScaleX;
 
         // set the determined ratios
@@ -1491,8 +1589,8 @@ public abstract class BarLineChartBase extends Chart {
             case PAINT_GRID_BACKGROUND:
                 mGridBackgroundPaint = p;
                 break;
-            case PAINT_OUTLINE:
-                mOutLinePaint = p;
+            case PAINT_BORDER:
+                mBorderPaint = p;
                 break;
             case PAINT_XLEGEND:
                 mXLegendPaint = p;

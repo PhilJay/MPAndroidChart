@@ -16,4 +16,8 @@ public class YLegend {
 
     /** the number of decimal digits to use */
     public int mDecimals;
+    
+    public enum YLegendPosition {
+        LEFT, RIGHT, BOTH_SIDED
+    }
 }
