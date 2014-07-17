@@ -22,10 +22,11 @@ import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.interfaces.OnDrawListener;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
-import com.github.mikephil.charting.utils.YLegend;
+import com.github.mikephil.charting.utils.YLabels;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -62,20 +63,20 @@ public abstract class BarLineChartBase extends Chart {
     protected float mMaxScaleY = 7f;
 
     /**
-     * width of the x-legend in pixels - this is calculated by the
+     * width of the x-axis labels in pixels - this is calculated by the
      * calcTextWidth() method
      */
-    protected int mXLegendWidth = 1;
+    protected int mXLabelWidth = 1;
 
     /**
      * the modulus that indicates if a value at a specified index in an
-     * array(list) for the x-legend is drawn or not. If index % modulus == 0
-     * DRAW, else dont draw.
+     * array(list) for the x-axis-labels is drawn or not. If index % modulus ==
+     * 0 DRAW, else dont draw.
      */
-    protected int mXLegendGridModulus = 1;
+    protected int mXAxisLabelModulus = 1;
 
-    /** the number of y-legend entries the chart has */
-    protected int mYLegendCount = 9;
+    /** the number of y-label entries the chart has */
+    protected int mYLabelCount = 9;
 
     /** the width of the grid lines */
     protected float mGridWidth = 1f;
@@ -83,8 +84,8 @@ public abstract class BarLineChartBase extends Chart {
     /** if true, units are drawn next to the values in the chart */
     protected boolean mDrawUnitInChart = false;
 
-    /** indicates if the top y-legend entry is drawn or not */
-    private boolean mDrawTopYLegendEntry = true;
+    /** indicates if the top y-label entry is drawn or not */
+    private boolean mDrawTopYLabelEntry = true;
 
     /**
      * flag that indicates if pinch-zoom is enabled. if true, both x and y axis
@@ -94,18 +95,18 @@ public abstract class BarLineChartBase extends Chart {
     protected boolean mPinchZoomEnabled = false;
 
     /**
-     * if true, units are drawn next to the values in the legend
+     * if true, units are drawn next to the values of the axis labels
      */
-    protected boolean mDrawUnitInLegend = true;
+    protected boolean mDrawUnitsInLabels = true;
 
-    /** if true, x-legend text is centered */
-    protected boolean mCenterXLegendText = false;
+    /** if true, x-axis label text is centered */
+    protected boolean mCenterXAxisLabels = false;
 
     /**
-     * if set to true, the x-legend entries will adjust themselves when scaling
-     * the graph
+     * if set to true, the x-axis label entries will adjust themselves when
+     * scaling the graph
      */
-    protected boolean mAdjustXLegend = true;
+    protected boolean mAdjustXAxisLabels = true;
 
     /** if true, dragging / scaling is enabled for the chart */
     protected boolean mDragEnabled = true;
@@ -113,7 +114,7 @@ public abstract class BarLineChartBase extends Chart {
     /** if true, the y range is predefined */
     protected boolean mFixedYValues = false;
 
-    /** if true, the y-legend will always start at zero */
+    /** if true, the y-label entries will always start at zero */
     protected boolean mStartAtZero = true;
 
     /** if true, data filtering is enabled */
@@ -128,14 +129,20 @@ public abstract class BarLineChartBase extends Chart {
     /** paint for the line surrounding the chart */
     protected Paint mBorderPaint;
 
-    /** paint for the x-legend values */
-    protected Paint mXLegendPaint;
+    /** paint for the x-label values */
+    protected Paint mXLabelPaint;
 
-    /** paint for the y-legend values */
-    protected Paint mYLegendPaint;
+    /** paint for the y-label values */
+    protected Paint mYLabelPaint;
 
     /** paint used for highlighting values */
     protected Paint mHighlightPaint;
+    
+    /** paint for the legend labels */
+    protected Paint mLegendLabelPaint;
+
+    /** paint used for the legend forms */
+    protected Paint mLegendFormPaint;
 
     /**
      * if set to true, the highlight indicator (lines for linechart, dark bar
@@ -155,11 +162,11 @@ public abstract class BarLineChartBase extends Chart {
     /** flag indicating if the horizontal grid should be drawn or not */
     protected boolean mDrawHorizontalGrid = true;
 
-    /** flag indicating if the y-legend should be drawn or not */
-    protected boolean mDrawYLegend = true;
+    /** flag indicating if the y-labels should be drawn or not */
+    protected boolean mDrawYLabels = true;
 
-    /** flag indicating if the x-legend should be drawn or not */
-    protected boolean mDrawXLegend = true;
+    /** flag indicating if the x-labels should be drawn or not */
+    protected boolean mDrawXLabels = true;
 
     /** flag indicating if the chart border rectangle should be drawn or not */
     protected boolean mDrawBorder = true;
@@ -167,18 +174,24 @@ public abstract class BarLineChartBase extends Chart {
     /** flag indicating if the grid background should be drawn or not */
     protected boolean mDrawGridBackground = true;
 
+    /** flag indicating if the legend is drawn of not */
+    protected boolean mDrawLegend = true;
+    
     /** the listener for user drawing on the chart */
     protected OnDrawListener mDrawListener;
 
     /**
-     * the object representing the y-legend, this object is prepared in the
-     * prepareYLegend() method
+     * the object representing the labels on the y-axis, this object is prepared
+     * in the pepareYLabels() method
      */
-    protected YLegend mYLegend = new YLegend();
+    protected YLabels mYLabels = new YLabels();
 
     /** the approximator object used for data filtering */
     private Approximator mApproximator;
-
+   
+    /** the legend object containing all data associated with the legend */
+    protected Legend mLegend;
+    
     public BarLineChartBase(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
@@ -197,15 +210,15 @@ public abstract class BarLineChartBase extends Chart {
 
         mListener = new BarLineChartTouchListener(this, mMatrixTouch);
 
-        mXLegendPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mXLegendPaint.setColor(Color.BLACK);
-        mXLegendPaint.setTextAlign(Align.CENTER);
-        mXLegendPaint.setTextSize(Utils.convertDpToPixel(10f));
+        mXLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mXLabelPaint.setColor(Color.BLACK);
+        mXLabelPaint.setTextAlign(Align.CENTER);
+        mXLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
 
-        mYLegendPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mYLegendPaint.setColor(Color.BLACK);
-        mYLegendPaint.setTextAlign(Align.RIGHT);
-        mYLegendPaint.setTextSize(Utils.convertDpToPixel(10f));
+        mYLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mYLabelPaint.setColor(Color.BLACK);
+        mYLabelPaint.setTextAlign(Align.RIGHT);
+        mYLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
 
         mGridPaint = new Paint();
         mGridPaint.setColor(Color.GRAY);
@@ -228,6 +241,12 @@ public abstract class BarLineChartBase extends Chart {
         mHighlightPaint.setStyle(Paint.Style.STROKE);
         mHighlightPaint.setStrokeWidth(2f);
         mHighlightPaint.setColor(Color.rgb(255, 187, 115));
+               
+        mLegendFormPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mLegendFormPaint.setStyle(Paint.Style.FILL);
+
+        mLegendLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mLegendLabelPaint.setTextSize(Utils.convertDpToPixel(9f));
     }
 
     @Override
@@ -248,17 +267,17 @@ public abstract class BarLineChartBase extends Chart {
             starttime = System.currentTimeMillis();
         } else {
             mCurrentData = getDataOriginal();
-//            Log.i(LOG_TAG, "Filtering disabled.");
+            // Log.i(LOG_TAG, "Filtering disabled.");
         }
 
-        if (mAdjustXLegend)
+        if (mAdjustXAxisLabels)
             calcModulus();
 
         // execute all drawing commands
         drawGridBackground();
         drawBorder();
 
-        prepareYLegend();
+        prepareYLabels();
 
         // make sure the graph values and grid cannot be drawn outside the
         // content-rect
@@ -276,11 +295,13 @@ public abstract class BarLineChartBase extends Chart {
 
         drawAdditional();
 
-        drawXLegend();
+        drawXLabels();
 
-        drawYLegend();
+        drawYLabels();
 
         drawValues();
+
+        drawLegend();
 
         drawMarkers();
 
@@ -303,13 +324,15 @@ public abstract class BarLineChartBase extends Chart {
 
         calcMinMax(mFixedYValues);
 
-        prepareXLegend();
+        prepareXLabels();
 
         // calculate how many digits are needed
         calcFormats();
 
         if (!mFixedYValues)
             prepareMatrix();
+
+         prepareLegend();
     }
 
     @Override
@@ -322,25 +345,25 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * calculates the modulus for legend and grid
+     * calculates the modulus for x-labels and grid
      */
     protected void calcModulus() {
 
         float[] values = new float[9];
         mMatrixTouch.getValues(values);
 
-        mXLegendGridModulus = (int) Math.ceil((mCurrentData.getXValCount() * mXLegendWidth)
+        mXAxisLabelModulus = (int) Math.ceil((mCurrentData.getXValCount() * mXLabelWidth)
                 / (mContentRect.width() * values[Matrix.MSCALE_X]));
     }
 
     /** the decimalformat responsible for formatting the values in the chart */
     protected DecimalFormat mFormatValue = null;
 
-    /** the number of digits the y-legend is formatted with */
-    protected int mYLegendFormatDigits = -1;
+    /** the number of digits the y-labels are formatted with */
+    protected int mYLabelFormatDigits = -1;
 
     /**
-     * calculates the required number of digits for the y-legend and for the
+     * calculates the required number of digits for the y-labels and for the
      * values that might be drawn in the chart (if enabled)
      */
     protected void calcFormats() {
@@ -365,7 +388,7 @@ public abstract class BarLineChartBase extends Chart {
         super.calcMinMax(fixedValues); // calc min and max in the super class
 
         // additional handling for space (default 10% space), spacing only
-        // applies with non-rounded y-legend
+        // applies with non-rounded y-label
         float space = mDeltaY / 100f * 10f;
 
         if (mStartAtZero) {
@@ -378,11 +401,106 @@ public abstract class BarLineChartBase extends Chart {
         mYChartMax = mYChartMax + space;
         mDeltaY = Math.abs(mYChartMax - mYChartMin);
     }
+    
 
     /**
-     * setup the X legend
+     * generates an automatically prepared legend depending on the DataSets in
+     * the chart
      */
-    protected void prepareXLegend() {
+    protected void prepareLegend() {
+        
+        String[] labels = new String[mCt.getColorCount()];
+        int cnt = 0;
+        
+        for(int i = 0; i < mCt.getColors().size(); i++) {
+            for(int j = 0; j < mCt.getColors().get(i).size(); j++) {
+                
+                if(i < mOriginalData.getDataSetCount()) {
+                 
+                    labels[cnt] = mOriginalData.getDataSetByIndex(i).getLabel();
+                    cnt++;
+                }                
+            }
+        }
+
+        mLegend = new Legend(mCt.getColorsAsArray(), labels);
+    }
+
+    /**
+     * draws the legend
+     */
+    protected void drawLegend() {
+
+        if (!mDrawLegend || mLegend == null)
+            return;
+
+        String[] labels = mLegend.getLegendLabels();
+        int[] colors = mLegend.getColors();
+        Typeface tf = mLegend.getTypeface();
+
+        if (tf != null)
+            mLegendLabelPaint.setTypeface(tf);
+
+        float xOffset = 0f;
+        float topOffset = 0f;
+        float formSize = mLegend.getFormSize();
+
+        switch (mLegend.getPosition()) {
+            case BELOW_CHART:
+
+                topOffset = mLegendLabelPaint.getTextSize();
+
+                for (int i = 0; i < labels.length; i++) {
+                    
+                    if(labels[i] == null) break;
+
+                    mLegendFormPaint.setColor(colors[i]);
+
+                    mDrawCanvas.drawRect(mOffsetLeft + xOffset, getHeight() - mOffsetBottom
+                            + topOffset,
+                            mOffsetLeft + xOffset + formSize, getHeight() - mOffsetBottom
+                                    + topOffset
+                                    + formSize, mLegendFormPaint);
+                    xOffset += formSize * 2;
+
+                    mDrawCanvas.drawText(labels[i], mOffsetLeft + xOffset, getHeight()
+                            - mOffsetBottom + topOffset / 5 * 8,
+                            mLegendLabelPaint);
+
+                    xOffset += calcTextWidth(mLegendLabelPaint, labels[i]) + formSize * 2;
+                }
+
+                break;
+            case LEFT_OF_CHART:
+
+                xOffset = formSize;
+
+                for (int i = 0; i < labels.length; i++) {
+                    
+                    if(labels[i] == null) break;
+
+                    mLegendFormPaint.setColor(colors[i]);
+
+                    mDrawCanvas.drawRect(xOffset + getWidth() - mOffsetRight, mOffsetTop
+                            + topOffset,
+                            xOffset + getWidth() - mOffsetRight + formSize, mOffsetTop + topOffset
+                                    + formSize, mLegendFormPaint);
+
+                    mDrawCanvas.drawText(labels[i], xOffset + getWidth() - mOffsetRight + formSize
+                            * 2, mOffsetTop + topOffset + formSize,
+                            mLegendLabelPaint);
+
+                    topOffset += formSize * 2;
+                }
+
+                break;
+        }
+    }
+
+    /**
+     * setup the x-axis labels
+     */
+    protected void prepareXLabels() {
 
         StringBuffer a = new StringBuffer();
 
@@ -398,17 +516,17 @@ public abstract class BarLineChartBase extends Chart {
             a.append("h");
         }
 
-        mXLegendWidth = calcTextWidth(mXLegendPaint, a.toString());
+        mXLabelWidth = calcTextWidth(mXLabelPaint, a.toString());
     }
 
     /**
-     * Sets up the y-legend. Computes the desired number of labels between the
-     * two given extremes. Unlike the prepareXLegend() method, this method needs
-     * to be called upon every refresh of the view.
+     * Sets up the y-axis labels. Computes the desired number of labels between
+     * the two given extremes. Unlike the papareXLabels() method, this method
+     * needs to be called upon every refresh of the view.
      * 
      * @return
      */
-    private void prepareYLegend() {
+    private void prepareYLabels() {
 
         // calculate the currently visible extremes
         PointD p1 = getValuesByTouchPoint(mContentRect.left, mContentRect.top);
@@ -422,13 +540,13 @@ public abstract class BarLineChartBase extends Chart {
         float yMax = mYChartMax;
 
         double range = yMax - yMin;
-        if (mYLegendCount == 0 || range <= 0) {
-            mYLegend.mEntries = new float[] {};
-            mYLegend.mEntryCount = 0;
+        if (mYLabelCount == 0 || range <= 0) {
+            mYLabels.mEntries = new float[] {};
+            mYLabels.mEntryCount = 0;
             return;
         }
 
-        double rawInterval = range / mYLegendCount;
+        double rawInterval = range / mYLabelCount;
         double interval = Utils.roundToNextSignificant(rawInterval);
         double intervalMagnitude = Math.pow(10, (int) Math.log10(interval));
         int intervalSigDigit = (int) (interval / intervalMagnitude);
@@ -448,30 +566,30 @@ public abstract class BarLineChartBase extends Chart {
             ++n;
         }
 
-        mYLegend.mEntryCount = n;
+        mYLabels.mEntryCount = n;
 
-        if (mYLegend.mEntries.length < n) {
+        if (mYLabels.mEntries.length < n) {
             // Ensure stops contains at least numStops elements.
-            mYLegend.mEntries = new float[n];
+            mYLabels.mEntries = new float[n];
         }
 
         for (f = first, i = 0; i < n; f += interval, ++i) {
-            mYLegend.mEntries[i] = (float) f;
+            mYLabels.mEntries[i] = (float) f;
         }
 
         if (interval < 1) {
-            mYLegend.mDecimals = (int) Math.ceil(-Math.log10(interval));
+            mYLabels.mDecimals = (int) Math.ceil(-Math.log10(interval));
         } else {
-            mYLegend.mDecimals = 0;
+            mYLabels.mDecimals = 0;
         }
     }
 
     /**
-     * draws the x legend to the screen
+     * draws the x-axis labels to the screen
      */
-    protected void drawXLegend() {
+    protected void drawXLabels() {
 
-        if (!mDrawXLegend)
+        if (!mDrawXLabels)
             return;
 
         // pre allocate to save performance (dont allocate in loop)
@@ -481,12 +599,12 @@ public abstract class BarLineChartBase extends Chart {
 
         for (int i = 0; i < mCurrentData.getXValCount(); i++) {
 
-            if (i % mXLegendGridModulus == 0) {
+            if (i % mXAxisLabelModulus == 0) {
 
                 position[0] = i;
 
                 // center the text
-                if (mCenterXLegendText)
+                if (mCenterXAxisLabels)
                     position[0] += 0.5f;
 
                 transformPointArray(position);
@@ -495,45 +613,46 @@ public abstract class BarLineChartBase extends Chart {
 
                     mDrawCanvas.drawText(mCurrentData.getXVals().get(i), position[0],
                             mOffsetTop - 5,
-                            mXLegendPaint);
+                            mXLabelPaint);
                 }
             }
         }
     }
 
     /**
-     * draws the y legend to the screen
+     * draws the y-axis labels to the screen
      */
-    protected void drawYLegend() {
+    protected void drawYLabels() {
 
-        if (!mDrawYLegend)
+        if (!mDrawYLabels)
             return;
 
-        float[] positions = new float[mYLegend.mEntryCount * 2];
+        float[] positions = new float[mYLabels.mEntryCount * 2];
 
         for (int i = 0; i < positions.length; i += 2) {
-            // only fill y values, x values are not needed since the y-legend is
+            // only fill y values, x values are not needed since the y-labels
+            // are
             // static on the x-axis
-            positions[i + 1] = mYLegend.mEntries[i / 2];
+            positions[i + 1] = mYLabels.mEntries[i / 2];
         }
 
         transformPointArray(positions);
 
         float xPos = mOffsetLeft - 10;
 
-        for (int i = 0; i < mYLegend.mEntryCount; i++) {
+        for (int i = 0; i < mYLabels.mEntryCount; i++) {
 
-            String text = Utils.formatNumber(mYLegend.mEntries[i], mYLegend.mDecimals,
+            String text = Utils.formatNumber(mYLabels.mEntries[i], mYLabels.mDecimals,
                     mSeparateTousands);
 
-            if (!mDrawTopYLegendEntry && i >= mYLegend.mEntryCount - 1)
+            if (!mDrawTopYLabelEntry && i >= mYLabels.mEntryCount - 1)
                 return;
 
-            if (mDrawUnitInLegend) {
+            if (mDrawUnitsInLabels) {
                 mDrawCanvas.drawText(text + mUnit, xPos, positions[i * 2 + 1],
-                        mYLegendPaint);
+                        mYLabelPaint);
             } else {
-                mDrawCanvas.drawText(text, xPos, positions[i * 2 + 1], mYLegendPaint);
+                mDrawCanvas.drawText(text, xPos, positions[i * 2 + 1], mYLabelPaint);
             }
         }
     }
@@ -611,11 +730,11 @@ public abstract class BarLineChartBase extends Chart {
         Path p = new Path();
 
         // draw the horizontal grid
-        for (int i = 0; i < mYLegend.mEntryCount; i++) {
+        for (int i = 0; i < mYLabels.mEntryCount; i++) {
 
             p.reset();
-            p.moveTo(0, mYLegend.mEntries[i]);
-            p.lineTo(mDeltaX, mYLegend.mEntries[i]);
+            p.moveTo(0, mYLabels.mEntries[i]);
+            p.lineTo(mDeltaX, mYLabels.mEntries[i]);
 
             transformPath(p);
 
@@ -637,7 +756,7 @@ public abstract class BarLineChartBase extends Chart {
 
         for (int i = 0; i < mCurrentData.getXValCount(); i++) {
 
-            if (i % mXLegendGridModulus == 0) {
+            if (i % mXAxisLabelModulus == 0) {
 
                 position[0] = i;
 
@@ -920,14 +1039,14 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * set this to true to enable drawing the top y-legend entry. Disabling this
-     * can be helpful when the y-legend and x-legend interfear with each other.
-     * default: true
+     * set this to true to enable drawing the top y-label entry. Disabling this
+     * can be helpful when the top y-label and left x-label interfere with each
+     * other. default: true
      * 
      * @param enabled
      */
-    public void setDrawTopYLegendEntry(boolean enabled) {
-        mDrawTopYLegendEntry = enabled;
+    public void setDrawTopYLabelEntry(boolean enabled) {
+        mDrawTopYLabelEntry = enabled;
     }
 
     /**
@@ -981,38 +1100,38 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * sets the number of legend entries for the y-legend max = 15, min = 3
+     * sets the number of label entries for the y-axis max = 15, min = 3
      * 
      * @param yCount
      */
-    public void setYLegendCount(int yCount) {
+    public void setYLabelCount(int yCount) {
 
         if (yCount > 15)
             yCount = 15;
         if (yCount < 3)
             yCount = 3;
 
-        mYLegendCount = yCount;
+        mYLabelCount = yCount;
     }
 
     /**
-     * if set to true, the x-legend entries will adjust themselves when scaling
+     * if set to true, the x-label entries will adjust themselves when scaling
      * the graph default: true
      * 
      * @param enabled
      */
-    public void setAdjustXLegend(boolean enabled) {
-        mAdjustXLegend = enabled;
+    public void setAdjustXLabels(boolean enabled) {
+        mAdjustXAxisLabels = enabled;
     }
 
     /**
-     * returns true if the x-legend adjusts itself when scaling the graph, false
-     * if not
+     * returns true if the x-labels adjust themselves when scaling the graph,
+     * false if not
      * 
      * @return
      */
-    public boolean isAdjustXLegendEnabled() {
-        return mAdjustXLegend;
+    public boolean isAdjustXLabelsEnabled() {
+        return mAdjustXAxisLabels;
     }
 
     /**
@@ -1035,32 +1154,32 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * sets the size of the y-legend text in pixels min = 7f, max = 14f
+     * sets the size of the y-label text in pixels min = 7f, max = 14f
      * 
      * @param size
      */
-    public void setYLegendTextSize(float size) {
+    public void setYLabelTextSize(float size) {
 
         if (size > 14f)
             size = 14f;
         if (size < 7f)
             size = 7f;
-        mYLegendPaint.setTextSize(Utils.convertDpToPixel(size));
+        mYLabelPaint.setTextSize(Utils.convertDpToPixel(size));
     }
 
     /**
-     * sets the size of the x-legend text in pixels min = 7f, max = 14f
+     * sets the size of the x-label text in pixels min = 7f, max = 14f
      * 
      * @param size
      */
-    public void setXLegendTextSize(float size) {
+    public void setXLabelTextSize(float size) {
 
         if (size > 14f)
             size = 14f;
         if (size < 7f)
             size = 7f;
 
-        mXLegendPaint.setTextSize(Utils.convertDpToPixel(size));
+        mXLabelPaint.setTextSize(Utils.convertDpToPixel(size));
     }
 
     /**
@@ -1076,7 +1195,7 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * enable this to force the y-legend to always start at zero
+     * enable this to force the y-axis labels to always start at zero
      * 
      * @param enabled
      */
@@ -1114,31 +1233,68 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * if set to true, units are drawn next to y-legend values, default: true
+     * if set to true, units are drawn next to y-label values, default: true
      * 
      * @param enabled
      */
-    public void setDrawUnitsInLegend(boolean enabled) {
-        mDrawUnitInLegend = enabled;
+    public void setDrawUnitsInYLabel(boolean enabled) {
+        mDrawUnitsInLabels = enabled;
     }
 
     /**
-     * set this to true to center the x-legend text, default: false
+     * set this to true to center the x-label text, default: false
      * 
      * @param enabled
      */
-    public void setCenterXLegend(boolean enabled) {
-        mCenterXLegendText = enabled;
+    public void setCenterXLabelText(boolean enabled) {
+        mCenterXAxisLabels = enabled;
     }
 
     /**
-     * returns true if the x-legend text is centered
+     * returns true if the x-label text is centered
      * 
      * @return
      */
-    public boolean isXLegendCentered() {
-        return mCenterXLegendText;
+    public boolean isXLabelTextCentered() {
+        return mCenterXAxisLabels;
     }
+
+    /**
+     * set this to true to draw the legend, false if not
+     * 
+     * @param enabled
+     */
+    public void setDrawLegend(boolean enabled) {
+        mDrawLegend = enabled;
+    }
+
+    /**
+     * returns true if drawing the legend is enabled, false if not
+     * 
+     * @return
+     */
+    public boolean isDrawLegendEnabled() {
+        return mDrawLegend;
+    }
+
+    /**
+     * sets a custom legend for the chart
+     * 
+     * @param l
+     */
+    public void setLegend(Legend l) {
+        this.mLegend = l;
+    }
+
+    /**
+     * returns the legend object of the chart
+     * 
+     * @return
+     */
+    public Legend getLegend() {
+        return mLegend;
+    }
+
 
     /**
      * sets the width of the grid lines (min 0.1f, max = 3f)
@@ -1227,21 +1383,21 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * set this to true to enable drawing the x-legend, false if not
+     * set this to true to enable drawing the x-labels, false if not
      * 
      * @param enabled
      */
-    public void setDrawXLegend(boolean enabled) {
-        mDrawXLegend = enabled;
+    public void setDrawXLabels(boolean enabled) {
+        mDrawXLabels = enabled;
     }
 
     /**
-     * set this to true to enable drawing the y-legend, false if not
+     * set this to true to enable drawing the y-labels, false if not
      * 
      * @param enabled
      */
-    public void setDrawYLegend(boolean enabled) {
-        mDrawYLegend = enabled;
+    public void setDrawYLabels(boolean enabled) {
+        mDrawYLabels = enabled;
     }
 
     /**
@@ -1471,31 +1627,31 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * sets a typeface for the paint object of the x-legend
+     * sets a typeface for the paint object of the x-labels
      * 
      * @param t
      */
-    public void setXLegendTypeface(Typeface t) {
-        mXLegendPaint.setTypeface(t);
+    public void setXLabelTypeface(Typeface t) {
+        mXLabelPaint.setTypeface(t);
     }
 
     /**
-     * sets a typeface for the paint object of the y-legend
+     * sets a typeface for the paint object of the y-labels
      * 
      * @param t
      */
-    public void setYLegendTypeface(Typeface t) {
-        mYLegendPaint.setTypeface(t);
+    public void setYLabelTypeface(Typeface t) {
+        mYLabelPaint.setTypeface(t);
     }
 
     /**
-     * sets a typeface for both x and y-legend paints
+     * sets a typeface for both x and y-label paints
      * 
      * @param t
      */
-    public void setLegendTypeface(Typeface t) {
-        setXLegendTypeface(t);
-        setYLegendTypeface(t);
+    public void setLabelTypeface(Typeface t) {
+        setXLabelTypeface(t);
+        setYLabelTypeface(t);
     }
 
     /**
@@ -1592,11 +1748,14 @@ public abstract class BarLineChartBase extends Chart {
             case PAINT_BORDER:
                 mBorderPaint = p;
                 break;
-            case PAINT_XLEGEND:
-                mXLegendPaint = p;
+            case PAINT_XLABEL:
+                mXLabelPaint = p;
                 break;
-            case PAINT_YLEGEND:
-                mYLegendPaint = p;
+            case PAINT_YLABEL:
+                mYLabelPaint = p;
+                break;
+            case PAINT_LEGEND_LABEL:
+                mLegendLabelPaint = p;
                 break;
         }
     }

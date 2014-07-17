@@ -60,7 +60,7 @@ public class MultiLineChartActivity extends Activity implements OnSeekBarChangeL
 
         mChart.setLineWidth(5f);
         mChart.setCircleSize(5f);
-        mChart.setYLegendCount(6);
+        mChart.setYLabelCount(6);
 
         // enable value highlighting
         mChart.setHighlightEnabled(true);
@@ -139,10 +139,10 @@ public class MultiLineChartActivity extends Activity implements OnSeekBarChangeL
                 break;
             }
             case R.id.actionToggleAdjustXLegend: {
-                if (mChart.isAdjustXLegendEnabled())
-                    mChart.setAdjustXLegend(false);
+                if (mChart.isAdjustXLabelsEnabled())
+                    mChart.setAdjustXLabels(false);
                 else
-                    mChart.setAdjustXLegend(true);
+                    mChart.setAdjustXLabels(true);
 
                 mChart.invalidate();
                 break;

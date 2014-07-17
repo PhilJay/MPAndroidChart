@@ -29,6 +29,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.MarkerView;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
@@ -72,7 +73,7 @@ public abstract class Chart extends View {
     protected int mOffsetRight = 20;
 
     /** chart offset to the bottom */
-    protected int mOffsetBottom = 15;
+    protected int mOffsetBottom = 25;
 
     /**
      * object that holds all data relevant for the chart (x-vals, y-vals, ...)
@@ -962,10 +963,10 @@ public abstract class Chart extends View {
     public static final int PAINT_GRID_BACKGROUND = 4;
 
     /** paint for the y-legend values (only line and barchart) */
-    public static final int PAINT_YLEGEND = 5;
+    public static final int PAINT_YLABEL = 5;
 
     /** paint for the x-legend values (only line and barchart) */
-    public static final int PAINT_XLEGEND = 6;
+    public static final int PAINT_XLABEL = 6;
 
     /**
      * paint for the info text that is displayed when there are no values in the
@@ -999,6 +1000,9 @@ public abstract class Chart extends View {
     
     /** paint used for all rendering processes */
     public static final int PAINT_RENDER = 17;
+    
+    /** paint used for the legend */
+    public static final int PAINT_LEGEND_LABEL = 18;
 
     /**
      * set a new paint object for the specified parameter in the chart e.g.
@@ -1025,7 +1029,7 @@ public abstract class Chart extends View {
                 break;
         }
     }
-
+    
     /**
      * returns true if drawing the marker-view is enabled when tapping on values
      * (use the setMarkerView(View v) method to specify a marker view)

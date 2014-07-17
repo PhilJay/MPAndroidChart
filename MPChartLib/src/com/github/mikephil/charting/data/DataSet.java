@@ -28,6 +28,9 @@ public class DataSet {
     /** type, used for identification amongst other DataSets */
     private int mType = 0;
 
+    /** label that describes the DataSet */
+    private String mLabel = "";
+
     /**
      * Creates a new DataSet object with the given values it represents and a
      * type for identification amongst other DataSet objects (the type can be
@@ -46,6 +49,24 @@ public class DataSet {
 
         calcMinMax();
         calcYValueSum();
+
+        mLabel = "DS " + type;
+    }
+
+    /**
+     * Creates a new DataSet object with the given values it represents and a
+     * type for identification amongst other DataSet objects (the type can be
+     * chosen freely and must not be equal to another type in the ChartData
+     * object). Also, a label that describes the DataSet can be specified.
+     * 
+     * @param yVals
+     * @param type
+     * @param label
+     */
+    public DataSet(ArrayList<Entry> yVals, int type, String label) {
+        this(yVals, type);
+
+        this.mLabel = label;
     }
 
     /**
@@ -293,5 +314,14 @@ public class DataSet {
         StringBuffer buffer = new StringBuffer();
         buffer.append("DataSet, type: " + mType + ", entries: " + mYVals.size() + "\n");
         return buffer.toString();
+    }
+
+    /**
+     * Returns the label string that describes the DataSet.
+     * 
+     * @return
+     */
+    public String getLabel() {
+        return mLabel;
     }
 }

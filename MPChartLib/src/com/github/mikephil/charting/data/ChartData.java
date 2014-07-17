@@ -323,4 +323,19 @@ public class ChartData {
 
 		return count;
 	}
+	
+	/**
+	 * Returns the labels of all DataSets as a string array.
+	 * @return
+	 */
+	public String[] getDataSetLabels() {
+	    
+	    String [] types = new String[mDataSets.size()];
+	    
+	    for(int i = 0; i < mDataSets.size(); i++) {
+	        types[i] = mDataSets.get(i).getLabel();
+	    }
+	    
+	    return types;
+	}
 }

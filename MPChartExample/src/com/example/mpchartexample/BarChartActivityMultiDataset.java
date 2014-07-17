@@ -62,10 +62,12 @@ public class BarChartActivityMultiDataset extends Activity implements OnSeekBarC
 
         // disable 3D
         mChart.set3DEnabled(false);
-        mChart.setYLegendCount(5);
+        mChart.setYLabelCount(5);
 
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
+        
+        mChart.setDrawLegend(false);
 
         mSeekBarX.setProgress(45);
         mSeekBarY.setProgress(100);
@@ -132,10 +134,10 @@ public class BarChartActivityMultiDataset extends Activity implements OnSeekBarC
                 break;
             }
             case R.id.actionToggleAdjustXLegend: {
-                if (mChart.isAdjustXLegendEnabled())
-                    mChart.setAdjustXLegend(false);
+                if (mChart.isAdjustXLabelsEnabled())
+                    mChart.setAdjustXLabels(false);
                 else
-                    mChart.setAdjustXLegend(true);
+                    mChart.setAdjustXLabels(true);
 
                 mChart.invalidate();
                 break;

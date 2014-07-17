@@ -63,7 +63,7 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
 
         // disable 3D
         mChart.set3DEnabled(false);
-        mChart.setYLegendCount(5);
+        mChart.setYLabelCount(5);
 
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
@@ -133,10 +133,10 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
                 break;
             }
             case R.id.actionToggleAdjustXLegend: {
-                if (mChart.isAdjustXLegendEnabled())
-                    mChart.setAdjustXLegend(false);
+                if (mChart.isAdjustXLabelsEnabled())
+                    mChart.setAdjustXLabels(false);
                 else
-                    mChart.setAdjustXLegend(true);
+                    mChart.setAdjustXLabels(true);
 
                 mChart.invalidate();
                 break;

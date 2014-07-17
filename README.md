@@ -11,9 +11,10 @@ Features
 =======
 
 **Core features:**
- - Scaling (with touch-gesture)
+ - Scaling on both axes (with touch-gesture, axes separately or pinch-zoom)
  - Dragging (with touch-gesture)
- - Highlighting values 
+ - Finger drawing (draw values into the chart with touch-gesture)
+ - Highlighting values (with customizeable popup-views)
  - Save chart to SD-Card
  - Predefined color templates
  - Fully customizeable (paints, typefaces, legends, colors, background, gestures, ...)
@@ -41,6 +42,10 @@ Features
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/piechart_selected.png)
 
+ - **ScatterChart** (with squares, triangles, circles, ...)
+
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/scatterchart.png)
+
 
 
 Usage
@@ -52,7 +57,7 @@ Rely on the **"MPChartExample"** folder check out the examples in that project. 
 
 For using a <code>LineChart, BarChart or PieChart </code>, define it in .xml:
 ```xml
-    <com.github.mikephil.charting.LineChart
+    <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

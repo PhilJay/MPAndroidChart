@@ -55,7 +55,7 @@ public class DrawChartActivity extends Activity implements OnChartValueSelectedL
 		mChart.setDrawYValues(false);
 		mChart.setLineWidth(5f);
 		mChart.setCircleSize(5f);
-		mChart.setYLegendCount(6);
+		mChart.setYLabelCount(6);
 		mChart.setHighlightEnabled(true);
 
 		// if disabled, drawn datasets with the finger will not be automatically finished
@@ -141,13 +141,13 @@ public class DrawChartActivity extends Activity implements OnChartValueSelectedL
 			break;
 		}
 		case R.id.actionToggleAdjustXLegend: {
-			if (mChart.isAdjustXLegendEnabled())
-				mChart.setAdjustXLegend(false);
-			else
-				mChart.setAdjustXLegend(true);
+            if (mChart.isAdjustXLabelsEnabled())
+                mChart.setAdjustXLabels(false);
+            else
+                mChart.setAdjustXLabels(true);
 
-			mChart.invalidate();
-			break;
+            mChart.invalidate();
+            break;
 		}
 		case R.id.actionTogglePinch: {
 			if (mChart.isPinchZoomEnabled())

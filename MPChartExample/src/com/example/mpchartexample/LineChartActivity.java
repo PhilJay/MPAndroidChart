@@ -2,6 +2,7 @@
 package com.example.mpchartexample;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -11,8 +12,8 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.BarLineChartBase.BorderStyle;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -21,6 +22,7 @@ import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.Legend;
 
 import java.util.ArrayList;
 
@@ -86,7 +88,7 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
         // mChart.setDrawYLegend(false);
 
         // set the number of y-legend entries the chart should have
-        mChart.setYLegendCount(6);
+        mChart.setYLabelCount(6);
 
         // enable value highlighting
         mChart.setHighlightEnabled(true);
@@ -117,6 +119,12 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 
         // set the line to be drawn like this "- - - - - -"
         mChart.enableDashedLine(10f, 5f, 0f);
+        
+        int[] clrs = new int[] { Color.BLACK, Color.RED, Color.GREEN };
+        String[] labels = new String[] { "black", "red", "green" };
+        
+        Legend l = new Legend(clrs, labels);
+        mChart.setLegend(l);
 
         mSeekBarX.setProgress(45);
         mSeekBarY.setProgress(100);
@@ -183,10 +191,10 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
                 break;
             }
             case R.id.actionToggleAdjustXLegend: {
-                if (mChart.isAdjustXLegendEnabled())
-                    mChart.setAdjustXLegend(false);
+                if (mChart.isAdjustXLabelsEnabled())
+                    mChart.setAdjustXLabels(false);
                 else
-                    mChart.setAdjustXLegend(true);
+                    mChart.setAdjustXLabels(true);
 
                 mChart.invalidate();
                 break;

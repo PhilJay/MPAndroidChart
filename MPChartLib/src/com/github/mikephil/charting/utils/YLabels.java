@@ -6,7 +6,7 @@ package com.github.mikephil.charting.utils;
  * 
  * @author Philipp Jahoda
  */
-public class YLegend {
+public class YLabels {
 
     /** the actual array of entries */
     public float[] mEntries = new float[] {};

@@ -61,7 +61,7 @@ public class ScatterChartActivity extends Activity implements OnSeekBarChangeLis
         
         mChart.setOnChartValueSelectedListener(this);
 
-        mChart.setYLegendCount(6);
+        mChart.setYLabelCount(6);
         mChart.setTouchEnabled(true);
         mChart.setHighlightEnabled(true);
         mChart.setDrawYValues(false);
@@ -120,10 +120,10 @@ public class ScatterChartActivity extends Activity implements OnSeekBarChangeLis
                 break;
             }
             case R.id.actionToggleAdjustXLegend: {
-                if (mChart.isAdjustXLegendEnabled())
-                    mChart.setAdjustXLegend(false);
+                if (mChart.isAdjustXLabelsEnabled())
+                    mChart.setAdjustXLabels(false);
                 else
-                    mChart.setAdjustXLegend(true);
+                    mChart.setAdjustXLabels(true);
 
                 mChart.invalidate();
                 break;
