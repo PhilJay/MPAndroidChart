@@ -137,7 +137,7 @@ public abstract class BarLineChartBase extends Chart {
 
     /** paint used for highlighting values */
     protected Paint mHighlightPaint;
-    
+
     /** paint for the legend labels */
     protected Paint mLegendLabelPaint;
 
@@ -176,7 +176,7 @@ public abstract class BarLineChartBase extends Chart {
 
     /** flag indicating if the legend is drawn of not */
     protected boolean mDrawLegend = true;
-    
+
     /** the listener for user drawing on the chart */
     protected OnDrawListener mDrawListener;
 
@@ -188,10 +188,10 @@ public abstract class BarLineChartBase extends Chart {
 
     /** the approximator object used for data filtering */
     private Approximator mApproximator;
-   
+
     /** the legend object containing all data associated with the legend */
     protected Legend mLegend;
-    
+
     public BarLineChartBase(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
@@ -241,7 +241,7 @@ public abstract class BarLineChartBase extends Chart {
         mHighlightPaint.setStyle(Paint.Style.STROKE);
         mHighlightPaint.setStrokeWidth(2f);
         mHighlightPaint.setColor(Color.rgb(255, 187, 115));
-               
+
         mLegendFormPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mLegendFormPaint.setStyle(Paint.Style.FILL);
 
@@ -332,7 +332,7 @@ public abstract class BarLineChartBase extends Chart {
         if (!mFixedYValues)
             prepareMatrix();
 
-         prepareLegend();
+        prepareLegend();
     }
 
     @Override
@@ -342,6 +342,11 @@ public abstract class BarLineChartBase extends Chart {
         } else {
             calcMinMax(mFixedYValues);
         }
+    }
+
+    @Override
+    public void calculateOffsets() {
+
     }
 
     /**
@@ -401,25 +406,24 @@ public abstract class BarLineChartBase extends Chart {
         mYChartMax = mYChartMax + space;
         mDeltaY = Math.abs(mYChartMax - mYChartMin);
     }
-    
 
     /**
      * generates an automatically prepared legend depending on the DataSets in
      * the chart
      */
     protected void prepareLegend() {
-        
+
         String[] labels = new String[mCt.getColorCount()];
         int cnt = 0;
-        
-        for(int i = 0; i < mCt.getColors().size(); i++) {
-            for(int j = 0; j < mCt.getColors().get(i).size(); j++) {
-                
-                if(i < mOriginalData.getDataSetCount()) {
-                 
+
+        for (int i = 0; i < mCt.getColors().size(); i++) {
+            for (int j = 0; j < mCt.getColors().get(i).size(); j++) {
+
+                if (i < mOriginalData.getDataSetCount()) {
+
                     labels[cnt] = mOriginalData.getDataSetByIndex(i).getLabel();
                     cnt++;
-                }                
+                }
             }
         }
 
@@ -445,14 +449,22 @@ public abstract class BarLineChartBase extends Chart {
         float topOffset = 0f;
         float formSize = mLegend.getFormSize();
 
+        // space between text and shape/form of entry
+        float formToTextSpace = mLegend.getFormToTextSpace();
+
+        // space between the entries
+        float entrySpace = mLegend.getEntrySpace();
+
         switch (mLegend.getPosition()) {
             case BELOW_CHART:
 
-                topOffset = mLegendLabelPaint.getTextSize();
+                float textSize = Utils.convertDpToPixel(mLegendLabelPaint.getTextSize());
+                topOffset = textSize;
 
                 for (int i = 0; i < labels.length; i++) {
-                    
-                    if(labels[i] == null) break;
+
+                    if (labels[i] == null)
+                        break;
 
                     mLegendFormPaint.setColor(colors[i]);
 
@@ -461,13 +473,15 @@ public abstract class BarLineChartBase extends Chart {
                             mOffsetLeft + xOffset + formSize, getHeight() - mOffsetBottom
                                     + topOffset
                                     + formSize, mLegendFormPaint);
-                    xOffset += formSize * 2;
+
+                    // make a step to the left
+                    xOffset += formToTextSpace;
 
                     mDrawCanvas.drawText(labels[i], mOffsetLeft + xOffset, getHeight()
-                            - mOffsetBottom + topOffset / 5 * 8,
+                            - mOffsetBottom + topOffset + (textSize + formSize) / 2f,
                             mLegendLabelPaint);
 
-                    xOffset += calcTextWidth(mLegendLabelPaint, labels[i]) + formSize * 2;
+                    xOffset += Utils.calcTextWidth(mLegendLabelPaint, labels[i]) + entrySpace;
                 }
 
                 break;
@@ -476,8 +490,9 @@ public abstract class BarLineChartBase extends Chart {
                 xOffset = formSize;
 
                 for (int i = 0; i < labels.length; i++) {
-                    
-                    if(labels[i] == null) break;
+
+                    if (labels[i] == null)
+                        break;
 
                     mLegendFormPaint.setColor(colors[i]);
 
@@ -486,11 +501,12 @@ public abstract class BarLineChartBase extends Chart {
                             xOffset + getWidth() - mOffsetRight + formSize, mOffsetTop + topOffset
                                     + formSize, mLegendFormPaint);
 
-                    mDrawCanvas.drawText(labels[i], xOffset + getWidth() - mOffsetRight + formSize
-                            * 2, mOffsetTop + topOffset + formSize,
+                    mDrawCanvas.drawText(labels[i], xOffset + getWidth() - mOffsetRight
+                            + formToTextSpace, mOffsetTop + topOffset + formSize,
                             mLegendLabelPaint);
 
-                    topOffset += formSize * 2;
+                    // make a step down
+                    topOffset += entrySpace;
                 }
 
                 break;
@@ -516,7 +532,7 @@ public abstract class BarLineChartBase extends Chart {
             a.append("h");
         }
 
-        mXLabelWidth = calcTextWidth(mXLabelPaint, a.toString());
+        mXLabelWidth = Utils.calcTextWidth(mXLabelPaint, a.toString());
     }
 
     /**
@@ -1278,23 +1294,15 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * sets a custom legend for the chart
-     * 
-     * @param l
-     */
-    public void setLegend(Legend l) {
-        this.mLegend = l;
-    }
-
-    /**
-     * returns the legend object of the chart
+     * Returns the legend object of the chart. This method can be used to
+     * customize the automatically generated legend. IMPORTANT: this will return
+     * null if no data has been set for the chart when calling this method
      * 
      * @return
      */
     public Legend getLegend() {
         return mLegend;
     }
-
 
     /**
      * sets the width of the grid lines (min 0.1f, max = 3f)

@@ -171,6 +171,12 @@ public class PieChart extends Chart {
 	public void notifyDataSetChanged() {
 		// TODO
 	}
+	
+	@Override
+	public void calculateOffsets() {
+	    // TODO Auto-generated method stub
+	    
+	}
 
 	/** the decimalformat responsible for formatting the values in the chart */
 	protected DecimalFormat mFormatValue = null;

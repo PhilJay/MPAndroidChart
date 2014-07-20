@@ -2,6 +2,8 @@
 package com.github.mikephil.charting.utils;
 
 import android.content.res.Resources;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.DisplayMetrics;
 
 import java.text.DecimalFormat;
@@ -72,6 +74,21 @@ public abstract class Utils {
         DisplayMetrics metrics = mRes.getDisplayMetrics();
         float dp = px / (metrics.densityDpi / 160f);
         return dp;
+    }
+    
+    /**
+     * calculates the approximate width of a text, depending on a demo text
+     * avoid repeated calls (e.g. inside drawing methods)
+     * 
+     * @param paint
+     * @param demoText
+     * @return
+     */
+    public static int calcTextWidth(Paint paint, String demoText) {
+
+        Rect r = new Rect();
+        paint.getTextBounds(demoText, 0, demoText.length(), r);
+        return r.width();
     }
 
     /**

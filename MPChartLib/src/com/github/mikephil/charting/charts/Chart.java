@@ -310,6 +310,9 @@ public abstract class Chart extends View {
 
     /** lets the chart know its unterlying data has changed */
     public abstract void notifyDataSetChanged();
+    
+    /** calculates the offsets of the chart to the border */
+    public abstract void calculateOffsets();
 
     /**
      * calcualtes the y-min and y-max value and the y-delta and x-delta value
@@ -512,21 +515,6 @@ public abstract class Chart extends View {
         mDrawCanvas
                 .drawText(mDescription, getWidth() - mOffsetRight - 10, getHeight() - mOffsetBottom
                         - 10, mDescPaint);
-    }
-
-    /**
-     * calculates the approximate width of a text, depending on a demo text
-     * avoid repeated calls (e.g. inside drawing methods)
-     * 
-     * @param paint
-     * @param demoText
-     * @return
-     */
-    protected int calcTextWidth(Paint paint, String demoText) {
-
-        Rect r = new Rect();
-        paint.getTextBounds(demoText, 0, demoText.length(), r);
-        return r.width();
     }
 
     /**

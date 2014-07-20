@@ -68,7 +68,7 @@ public class LineChart extends BarLineChartBase {
         mHighlightPaint.setStyle(Paint.Style.STROKE);
         mHighlightPaint.setStrokeWidth(2f);
         mHighlightPaint.setColor(Color.rgb(255, 187, 115));
-    }
+    }    
 
     @Override
     protected void drawHighlights() {

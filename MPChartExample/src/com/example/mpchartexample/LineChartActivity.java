@@ -23,6 +23,7 @@ import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend;
+import com.github.mikephil.charting.utils.Legend.LegendPosition;
 
 import java.util.ArrayList;
 
@@ -119,15 +120,16 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 
         // set the line to be drawn like this "- - - - - -"
         mChart.enableDashedLine(10f, 5f, 0f);
-        
-        int[] clrs = new int[] { Color.BLACK, Color.RED, Color.GREEN };
-        String[] labels = new String[] { "black", "red", "green" };
-        
-        Legend l = new Legend(clrs, labels);
-        mChart.setLegend(l);
 
+        // add data to the chart
         mSeekBarX.setProgress(45);
         mSeekBarY.setProgress(100);
+                
+        // get the legend
+        Legend l = mChart.getLegend();
+        
+        // modify it
+//        l.setPosition(LegendPosition.LEFT_OF_CHART);
     }
 
     @Override
