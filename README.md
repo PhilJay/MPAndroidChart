@@ -24,7 +24,12 @@ Features
  - **LineChart (single DataSet)**
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart.png)
  - **LineChart (multiple DataSets)**
-![alt tag](https://raw.github.com/PhilJay/MPChart/experimental/screenshots/linechart_multiline.png)
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart_multiline.png)
+ - **LineChart (multiple DataSets)**
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart_multiline_color_variations.png)
+ - **LineChart (with legend)**
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart_legend.png)
+
 
  - **BarChart2D (single DataSet)**
 
