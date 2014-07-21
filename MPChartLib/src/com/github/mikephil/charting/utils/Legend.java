@@ -1,12 +1,14 @@
 
 package com.github.mikephil.charting.utils;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 
 /**
  * Class representing the legend of the chart.
  * 
- * @author PHilipp Jahoda
+ * @author Philipp Jahoda
  */
 public class Legend {
 
@@ -14,8 +16,8 @@ public class Legend {
         LEFT_OF_CHART, BELOW_CHART
     }
 
-    public enum LegendShape {
-        SQUARE, CIRCLE
+    public enum LegendForm {
+        SQUARE, CIRCLE, LINE
     }
 
     /** the legend colors */
@@ -27,8 +29,8 @@ public class Legend {
     /** the position relative to the chart the legend is drawn on */
     private LegendPosition mPosition = LegendPosition.BELOW_CHART;
 
-    /** the shape the legend colors are drawn in */
-    private LegendShape mShape = LegendShape.SQUARE;
+    /** the shape/form the legend colors are drawn in */
+    private LegendForm mShape = LegendForm.SQUARE;
 
     /** the typeface used for the legend labels */
     private Typeface mTypeface = null;
@@ -38,10 +40,9 @@ public class Legend {
 
     /** the space between the legend entries on a vertical or horizontal axis */
     private float mEntrySpace;
-    
+
     /** the space between the form and the actual label/text */
     private float mFormToTextSpace;
-    
 
     /** default constructor */
     public Legend() {
@@ -73,12 +74,61 @@ public class Legend {
         this.mLegendLabels = labels;
     }
 
+    /**
+     * returns the maximum length in pixels over all legend labels + their forms
+     * 
+     * @param p the paint object used for rendering the text
+     * @return
+     */
+    public int getMaximumEntryLength(Paint p) {
+
+        int max = 0;
+
+        for (int i = 0; i < mLegendLabels.length; i++) {
+            
+            if(mLegendLabels[i] != null) {
+                
+                int length = Utils.calcTextWidth(p, mLegendLabels[i]);
+
+                if (length > max)
+                    max = length;
+            }
+        }
+
+        return max + (int) mFormSize * 4;
+    }
+
+    /**
+     * returns all the colors the legend uses
+     * 
+     * @return
+     */
     public int[] getColors() {
         return mColors;
     }
 
+    /**
+     * returns all the labels the legend uses
+     * 
+     * @return
+     */
     public String[] getLegendLabels() {
         return mLegendLabels;
+    }
+
+    /**
+     * Sets a custom array of labels for the legend. Make sure the labels array
+     * has the same length as the colors array.
+     * @param labels
+     */
+    public void setLegendLabels(String[] labels) {
+
+        if (mColors.length != labels.length) {
+            throw new IllegalArgumentException(
+                    "colors array and labels array need to be of same size");
+        }
+
+        this.mLegendLabels = labels;
     }
 
     /**
@@ -100,23 +150,29 @@ public class Legend {
     }
 
     /**
-     * returns the current shape that is set for the legend
+     * returns the current form/shape that is set for the legend
      * 
      * @return
      */
-    public LegendShape getShape() {
+    public LegendForm getForm() {
         return mShape;
     }
 
     /**
-     * sets the shape of the legend forms
+     * sets the form/shape of the legend forms
      * 
      * @param shape
      */
-    public void setShape(LegendShape shape) {
+    public void setForm(LegendForm shape) {
         mShape = shape;
     }
 
+    /**
+     * returns the typeface used for the legend labels, returns null if none is
+     * set
+     * 
+     * @return
+     */
     public Typeface getTypeface() {
         return mTypeface;
     }
@@ -150,6 +206,9 @@ public class Legend {
     }
 
     /**
+     * returns the space between the legend entries on a vertical or horizontal
+     * axis in pixels
+     * 
      * @return
      */
     public float getEntrySpace() {
@@ -165,21 +224,67 @@ public class Legend {
     public void setEntrySpace(float space) {
         mEntrySpace = Utils.convertDpToPixel(space);
     }
-    
+
     /**
      * returns the space between the form and the actual label/text
+     * 
      * @return
      */
     public float getFormToTextSpace() {
         return mFormToTextSpace;
     }
-    
+
     /**
-     * sets the space between the form and the actual label/text, converts to dp internally
+     * sets the space between the form and the actual label/text, converts to dp
+     * internally
+     * 
      * @param mFormToTextSpace
      */
     public void setFormToTextSpace(float space) {
-        this.mFormToTextSpace = Utils.convertDpToPixel(space);;
+        this.mFormToTextSpace = Utils.convertDpToPixel(space);
+    }
+
+    /**
+     * draws the form at the given position with the color at the given index
+     * 
+     * @param c canvas to draw with
+     * @param x
+     * @param y
+     * @param p paint to use for drawing
+     * @param index the index of the color to use (in the colors array)
+     */
+    public void drawForm(Canvas c, float x, float y, Paint p, int index) {
+
+        p.setColor(mColors[index]);
+
+        float half = mFormSize / 2f;
+
+        switch (getForm()) {
+            case CIRCLE:
+                c.drawCircle(x + half, y + half, half, p);
+                break;
+            case SQUARE:
+                c.drawRect(x, y, x + mFormSize, y + mFormSize, p);
+                break;
+            case LINE:
+                c.drawLine(x - half, y + half, x + half, y + half, p);
+                break;
+        }
+    }
+
+    /**
+     * draws the label at the given index in the labels array at the given
+     * position
+     * 
+     * @param c canvas to draw with
+     * @param x
+     * @param y
+     * @param p paint to use for drawing
+     * @param index index in the labels-array
+     */
+    public void drawLabel(Canvas c, float x, float y, Paint p, int index) {
+
+        c.drawText(mLegendLabels[index], x, y, p);
     }
 
     // /**

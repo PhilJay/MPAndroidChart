@@ -23,6 +23,7 @@ import com.github.mikephil.charting.interfaces.OnDrawListener;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend;
+import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
@@ -244,6 +245,7 @@ public abstract class BarLineChartBase extends Chart {
 
         mLegendFormPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mLegendFormPaint.setStyle(Paint.Style.FILL);
+        mLegendFormPaint.setStrokeWidth(3f);
 
         mLegendLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mLegendLabelPaint.setTextSize(Utils.convertDpToPixel(9f));
@@ -333,6 +335,8 @@ public abstract class BarLineChartBase extends Chart {
             prepareMatrix();
 
         prepareLegend();
+        
+        calculateOffsets();
     }
 
     @Override
@@ -346,7 +350,22 @@ public abstract class BarLineChartBase extends Chart {
 
     @Override
     public void calculateOffsets() {
+        
+        if(mDrawLegend) {         
 
+            if(mLegend.getPosition() == LegendPosition.LEFT_OF_CHART) {
+                
+                mOffsetRight = mLegend.getMaximumEntryLength(mLegendLabelPaint);
+                
+            } else if(mLegend.getPosition() == LegendPosition.BELOW_CHART) {
+                mOffsetBottom = (int) mLegendLabelPaint.getTextSize() * 3;
+            }
+        }
+        
+        mOffsetLeft = Utils.calcTextWidth(mYLabelPaint, (int) mDeltaY + ".0000");
+        
+        prepareContentRect();
+        prepareMatrix();
     }
 
     /**
@@ -439,14 +458,11 @@ public abstract class BarLineChartBase extends Chart {
             return;
 
         String[] labels = mLegend.getLegendLabels();
-        int[] colors = mLegend.getColors();
         Typeface tf = mLegend.getTypeface();
 
         if (tf != null)
             mLegendLabelPaint.setTypeface(tf);
 
-        float xOffset = 0f;
-        float topOffset = 0f;
         float formSize = mLegend.getFormSize();
 
         // space between text and shape/form of entry
@@ -454,59 +470,50 @@ public abstract class BarLineChartBase extends Chart {
 
         // space between the entries
         float entrySpace = mLegend.getEntrySpace();
+        
+        float textSize = Utils.convertPixelsToDp(mLegendLabelPaint.getTextSize());
+        
+        // the amount of pixels the text needs to be set down to be on the same height as the form
+        float textDrop = (textSize + formSize) / 2f;
+
+        float posX, posY;
 
         switch (mLegend.getPosition()) {
             case BELOW_CHART:
 
-                float textSize = Utils.convertDpToPixel(mLegendLabelPaint.getTextSize());
-                topOffset = textSize;
+                posX = mOffsetLeft;
+                posY = getHeight() - mOffsetBottom + textSize * 2;
 
                 for (int i = 0; i < labels.length; i++) {
+                    
+                    if(labels[i] == null) break;
 
-                    if (labels[i] == null)
-                        break;
-
-                    mLegendFormPaint.setColor(colors[i]);
-
-                    mDrawCanvas.drawRect(mOffsetLeft + xOffset, getHeight() - mOffsetBottom
-                            + topOffset,
-                            mOffsetLeft + xOffset + formSize, getHeight() - mOffsetBottom
-                                    + topOffset
-                                    + formSize, mLegendFormPaint);
+                    mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
 
                     // make a step to the left
-                    xOffset += formToTextSpace;
+                    posX += formToTextSpace;
 
-                    mDrawCanvas.drawText(labels[i], mOffsetLeft + xOffset, getHeight()
-                            - mOffsetBottom + topOffset + (textSize + formSize) / 2f,
-                            mLegendLabelPaint);
+                    mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
 
-                    xOffset += Utils.calcTextWidth(mLegendLabelPaint, labels[i]) + entrySpace;
+                    posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i]) + entrySpace;
                 }
 
                 break;
             case LEFT_OF_CHART:
 
-                xOffset = formSize;
+                posX = getWidth() - mOffsetRight + formSize;
+                posY = mOffsetTop;
 
                 for (int i = 0; i < labels.length; i++) {
+                    
+                    if(labels[i] == null) break;
 
-                    if (labels[i] == null)
-                        break;
+                    mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
 
-                    mLegendFormPaint.setColor(colors[i]);
-
-                    mDrawCanvas.drawRect(xOffset + getWidth() - mOffsetRight, mOffsetTop
-                            + topOffset,
-                            xOffset + getWidth() - mOffsetRight + formSize, mOffsetTop + topOffset
-                                    + formSize, mLegendFormPaint);
-
-                    mDrawCanvas.drawText(labels[i], xOffset + getWidth() - mOffsetRight
-                            + formToTextSpace, mOffsetTop + topOffset + formSize,
-                            mLegendLabelPaint);
+                    mLegend.drawLabel(mDrawCanvas, posX + formToTextSpace, posY + textDrop, mLegendLabelPaint, i);
 
                     // make a step down
-                    topOffset += entrySpace;
+                    posY += entrySpace;
                 }
 
                 break;
@@ -597,7 +604,7 @@ public abstract class BarLineChartBase extends Chart {
             mYLabels.mDecimals = (int) Math.ceil(-Math.log10(interval));
         } else {
             mYLabels.mDecimals = 0;
-        }
+        }            
     }
 
     /**

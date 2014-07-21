@@ -176,7 +176,8 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-            float val = (float) (Math.random() * mSeekBarY.getProgress()) + 3;
+            float mult = (mSeekBarY.getProgress() + 1);
+            float val = (float) (Math.random() * mult) + 3;
             yVals1.add(new Entry(val, i));
         }
 

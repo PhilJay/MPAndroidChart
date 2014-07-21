@@ -67,7 +67,7 @@ public class BarChartActivityMultiDataset extends Activity implements OnSeekBarC
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
         
-        mChart.setDrawLegend(false);
+//        mChart.setDrawLegend(false);
 
         mSeekBarX.setProgress(45);
         mSeekBarY.setProgress(100);

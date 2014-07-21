@@ -43,14 +43,14 @@ public class DataSet {
     public DataSet(ArrayList<Entry> yVals, int type) {
         this.mType = type;
         this.mYVals = yVals;
-
+        
+        mLabel = "DS " + type;
+        
         if (yVals == null || yVals.size() <= 0)
             return;
 
         calcMinMax();
         calcYValueSum();
-
-        mLabel = "DS " + type;
     }
 
     /**

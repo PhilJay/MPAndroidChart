@@ -247,7 +247,7 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             float mult = (mSeekBarY.getProgress() + 1);
-            float val = (float) (Math.random() * mult * 1) + 3;// + (float)
+            float val = (float) (Math.random() * mult) + 3;// + (float)
                                                                // ((mult *
                                                                // 0.1) / 10);
             yVals.add(new Entry(val, i));

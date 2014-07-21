@@ -64,16 +64,16 @@ public abstract class Chart extends View {
     protected int mValueFormatDigits = -1;
 
     /** chart offset to the left */
-    protected int mOffsetLeft = 35;
+    protected int mOffsetLeft = 15;
 
     /** chart toffset to the top */
-    protected int mOffsetTop = 25;
+    protected int mOffsetTop = 22;
 
     /** chart offset to the right */
-    protected int mOffsetRight = 20;
+    protected int mOffsetRight = 15;
 
     /** chart offset to the bottom */
-    protected int mOffsetBottom = 25;
+    protected int mOffsetBottom = 15;
 
     /**
      * object that holds all data relevant for the chart (x-vals, y-vals, ...)
@@ -310,8 +310,12 @@ public abstract class Chart extends View {
 
     /** lets the chart know its unterlying data has changed */
     public abstract void notifyDataSetChanged();
-    
-    /** calculates the offsets of the chart to the border */
+
+    /**
+     * calculates the offsets of the chart to the border depending on the
+     * position of an eventual legend or depending on the length of the y-axis
+     * labels
+     */
     public abstract void calculateOffsets();
 
     /**
@@ -985,10 +989,10 @@ public abstract class Chart extends View {
 
     /** paint for highlightning the values of a linechart */
     public static final int PAINT_HIGHLIGHT_BAR = 16;
-    
+
     /** paint used for all rendering processes */
     public static final int PAINT_RENDER = 17;
-    
+
     /** paint used for the legend */
     public static final int PAINT_LEGEND_LABEL = 18;
 
@@ -1017,7 +1021,7 @@ public abstract class Chart extends View {
                 break;
         }
     }
-    
+
     /**
      * returns true if drawing the marker-view is enabled when tapping on values
      * (use the setMarkerView(View v) method to specify a marker view)
