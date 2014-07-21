@@ -18,7 +18,7 @@ Features
  - Save chart to SD-Card
  - Predefined color templates
  - Legends (generated automatically, customizeable)
- - Fully customizeable (paints, typefaces, legends, colors, background, gestures, ...)
+ - Fully customizeable (paints, typefaces, legends, colors, background, gestures, dashed lines, ...)
  
 **Chart types:**
  - **LineChart (single DataSet)**
