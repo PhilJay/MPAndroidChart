@@ -17,6 +17,7 @@ Features
  - Highlighting values (with customizeable popup-views)
  - Save chart to SD-Card
  - Predefined color templates
+ - Legends (generated automatically, customizeable)
  - Fully customizeable (paints, typefaces, legends, colors, background, gestures, ...)
  
 **Chart types:**
@@ -122,10 +123,10 @@ Of course, it is also possible to provide just one <code>DataSet</code> object c
 
 So how to setup a <code>DataSet</code> object?
 ```java
-    public DataSet(ArrayList<Entry> yVals, int type) { ... }
+    public DataSet(ArrayList<Entry> yVals, int type, String label) { ... }
 ```
 
-When looking at the constructor, it is visible that the <code>DataSet</code> needs an <code>ArrayList</code> of type <code>Entry</code> and an integer value for the type. The type integer value can be chosen freely and can be used to identify the <code>DataSet</code> amongst other <code>DataSet</code> objects in the <code>ChartData</code> object. A possible type in this scenario could be a integer constant COMPANY_1.
+When looking at the constructor, it is visible that the <code>DataSet</code> needs an <code>ArrayList</code> of type <code>Entry</code> and an integer value for the type. The type integer value can be chosen freely and can be used to identify the <code>DataSet</code> amongst other <code>DataSet</code> objects in the <code>ChartData</code> object. A possible type in this scenario could be a integer constant COMPANY_1. As an additional option, a label `String` can be specified for the `DataSet` which will be used in a `Legend`.
 
 The <code>ArrayList</code> of type <code>Entry</code> encapsulates all values of the chart. A <code>Entry</code> object is an additional wrapper around a value and holds the value itself, and it's position on the x-axis (the index inside the <code>ArrayList</code> of <code>String</code> of the <code>CharData</code> object the value is mapped to):
 ```java
@@ -158,8 +159,8 @@ Then, fill the lists with <code>Entry</code> objects. Make sure the entry object
 
 Now that we have our lists of <code>Entry</code> objects, the <code>DataSet</code> objects can be created:
 ```java
-    DataSet setComp1 = new DataSet(valsComp1, COMPANY_1); // COMPANY_1 is a constant integer and can be chosen freely
-    DataSet setComp2 = new DataSet(valsComp2, COMPANY_2);
+    DataSet setComp1 = new DataSet(valsComp1, COMPANY_1, "company 1"); // COMPANY_1 is a constant integer and can be chosen freely
+    DataSet setComp2 = new DataSet(valsComp2, COMPANY_2, "company 2");
 ```
 Last but not least, we create a list of <code>DataSets</code> and a list of x legend entries and build our <code>ChartData</code> object:
 
@@ -201,6 +202,26 @@ It would also be possible to let each <code>DataSet</code> have variations of a 
     ct.addDataSetColors(redColors, this); // redColors is an array containing 4 colors
     ct.addDataSetColors(greenColors, this);
     chart.setColorTemplate(ct);
+```
+
+**Displaying legends:**
+
+By default, all subclasses of `BarLineChartBase` **support legends** and will automatically generate and draw a legend after setting data for the chart.
+
+The number of entries the automatically generated legend contains depends on the number of used colors as well as on the number of `DataSets` used in the chart. The labels of the `Legend` depend on the labels set for the used `DataSet` objects in the chart. If no labels for the `DataSet` objects have been specified, the chart will automatically generate them.
+
+For customizeing the `Legend`, use you can retreive the `Legend` object from the chart **after setting data**.
+
+```java
+    // setting data...
+    chart.setData(....);
+    
+    Legend l = chart.getLegend();
+    l.setFormSize(10f);
+    l.setForm(LegendForm.CIRCLE);
+    l.setPosition(LegendPosition.LEFT_OF_CHART);
+    l.setTypeface(...);
+    // and many more...
 ```
 
 More documentation and example code coming soon.
