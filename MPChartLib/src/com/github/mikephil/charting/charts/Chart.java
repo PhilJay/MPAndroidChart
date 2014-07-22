@@ -246,7 +246,7 @@ public abstract class Chart extends View {
                 yVals.add(new Entry(val, j));
             }
 
-            DataSet set = new DataSet(yVals, i);
+            DataSet set = new DataSet(yVals, "DS " + i);
             dataSets.add(set); // add the datasets
         }
         // create a data object with the datasets
@@ -294,7 +294,7 @@ public abstract class Chart extends View {
             series.add(new Entry(yVals.get(i), i));
         }
 
-        DataSet set = new DataSet(series, 0);
+        DataSet set = new DataSet(series, "DataSet");
         ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
         dataSets.add(set);
 
@@ -804,14 +804,17 @@ public abstract class Chart extends View {
     }
 
     /**
-     * returns the average value for a specific DataSet type in the chart
+     * returns the average value for a specific DataSet (with a specific label) in the chart
      * 
-     * @param dataSetType
+     * @param dataSetLabel
      * @return
      */
-    public float getAverage(int dataSetType) {
-        return mCurrentData.getDataSetByType(dataSetType).getYValueSum()
-                / mCurrentData.getDataSetByType(dataSetType).getEntryCount();
+    public float getAverage(String dataSetLabel) {
+        
+        DataSet ds = mCurrentData.getDataSetByLabel(dataSetLabel, true);
+        
+        return ds.getYValueSum()
+                / ds.getEntryCount();
     }
 
     /**
@@ -1095,15 +1098,14 @@ public abstract class Chart extends View {
     }
 
     /**
-     * returns the y-value for the given index from the DataSet with the given
-     * type.
+     * returns the y-value for the given index from the DataSet with the given label
      * 
      * @param index
-     * @param type
+     * @param dataSetLabel
      * @return
      */
-    public float getYValue(int index, int type) {
-        DataSet set = mCurrentData.getDataSetByType(type);
+    public float getYValue(int index, String dataSetLabel) {
+        DataSet set = mCurrentData.getDataSetByLabel(dataSetLabel, true);
         return set.getYVals().get(index).getVal();
     }
 
@@ -1131,14 +1133,14 @@ public abstract class Chart extends View {
     }
 
     /**
-     * returns the DataSet with the given type that is stored in the ChartData
+     * returns the DataSet with the given label that is stored in the ChartData
      * object.
      * 
      * @param type
      * @return
      */
-    public DataSet getDataSetByType(int type) {
-        return mCurrentData.getDataSetByType(type);
+    public DataSet getDataSetByLabel(String dataSetLabel) {
+        return mCurrentData.getDataSetByLabel(dataSetLabel, true);
     }
 
     /**
@@ -1155,14 +1157,14 @@ public abstract class Chart extends View {
 
     /**
      * returns the Entry object at the given index from the DataSet with the
-     * given type.
+     * given label.
      * 
      * @param index
-     * @param type
+     * @param dataSetLabel
      * @return
      */
-    public Entry getEntry(int index, int type) {
-        return mCurrentData.getDataSetByType(type).getYVals().get(index);
+    public Entry getEntry(int index, String dataSetLabel) {
+        return mCurrentData.getDataSetByLabel(dataSetLabel, true).getYVals().get(index);
     }
 
     /**

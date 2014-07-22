@@ -180,9 +180,9 @@ public class ScatterChartActivity extends Activity implements OnSeekBarChangeLis
         }
 
         // create a dataset and give it a type
-        DataSet set1 = new DataSet(yVals1, 0);
-        DataSet set2 = new DataSet(yVals2, 1);
-        DataSet set3 = new DataSet(yVals3, 2);
+        DataSet set1 = new DataSet(yVals1, "DS 1");
+        DataSet set2 = new DataSet(yVals2, "DS 2");
+        DataSet set3 = new DataSet(yVals3, "DS 3");
 
         ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
         dataSets.add(set1); // add the datasets

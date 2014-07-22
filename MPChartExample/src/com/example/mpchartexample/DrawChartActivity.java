@@ -78,7 +78,7 @@ public class DrawChartActivity extends Activity implements OnChartValueSelectedL
 		ArrayList<Entry> yVals = new ArrayList<Entry>();
 
 		// create a dataset and give it a type (0)
-		DataSet set1 = new DataSet(yVals, 0);
+		DataSet set1 = new DataSet(yVals, "DataSet");
 
 		ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
 		dataSets.add(set1); // add the datasets

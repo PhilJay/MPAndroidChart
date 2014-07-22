@@ -1741,7 +1741,7 @@ public abstract class BarLineChartBase extends Chart {
             // do the filtering
             ArrayList<Entry> approximated = mApproximator.filter(old.getYVals());
 
-            DataSet set = new DataSet(approximated, old.getType());
+            DataSet set = new DataSet(approximated, old.getLabel());
             dataSets.add(set);
         }
 

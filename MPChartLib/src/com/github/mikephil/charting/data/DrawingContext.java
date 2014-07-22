@@ -10,7 +10,7 @@ public class DrawingContext {
 	/** holds a DataSet that can be manipulated on the go, to allow users to draw into the chart */
 	private DataSet mCurrentDrawingDataSet;
 
-	private int mLastDrawedType = 0;
+	private int mLastDrawnDataSetIndex = 0;
 
 	private boolean mAutoFinishDrawing = false;
 
@@ -31,11 +31,11 @@ public class DrawingContext {
 			finishNewDrawingEntry(chartData);
 		}
 		// keep type count correct
-		if (!chartData.getTypes().contains(mLastDrawedType)) {
-			chartData.getTypes().add(mLastDrawedType);
+		if (!chartData.getLabels().contains(mLastDrawnDataSetIndex)) {
+			chartData.getLabels().add("DS " + mLastDrawnDataSetIndex);
 		}
 		mCurrentDrawingEntries = new ArrayList<Entry>();
-		this.mCurrentDrawingDataSet = new DataSet(mCurrentDrawingEntries, mLastDrawedType);
+		this.mCurrentDrawingDataSet = new DataSet(mCurrentDrawingEntries, "DS " + mLastDrawnDataSetIndex);
 		chartData.getDataSets().add(mCurrentDrawingDataSet);
 	}
 
@@ -141,7 +141,7 @@ public class DrawingContext {
 			deleteLastDrawingEntry(data);
 			return;
 		}
-		mLastDrawedType++;
+		mLastDrawnDataSetIndex++;
 		mCurrentDrawingDataSet.notifyDataSetChanged();
 		if (mListener != null) {
 			mListener.onDrawFinished(mCurrentDrawingDataSet);

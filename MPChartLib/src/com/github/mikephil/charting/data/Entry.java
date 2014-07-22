@@ -19,7 +19,8 @@ public class Entry {
      * 
      * @param val the y value (the actual value of the entry)
      * @param xIndex the corresponding index in the x value array (index on the
-     *            x-axis of the chart)
+     *            x-axis of the chart, must NOT be higher than the length of the
+     *            x-values String array)
      */
     public Entry(float val, int xIndex) {
         mVal = val;

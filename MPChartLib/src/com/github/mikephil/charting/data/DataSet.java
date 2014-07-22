@@ -25,48 +25,29 @@ public class DataSet {
     /** the total sum of all y-values */
     private float mYValueSum = 0f;
 
-    /** type, used for identification amongst other DataSets */
-    private int mType = 0;
-
-    /** label that describes the DataSet */
+    /** label that describes the DataSet or the data the DataSet represents */
     private String mLabel = "";
 
+
     /**
-     * Creates a new DataSet object with the given values it represents and a
-     * type for identification amongst other DataSet objects (the type can be
-     * chosen freely and must not be equal to another type in the ChartData
-     * object).
+     * Creates a new DataSet object with the given values it represents. Also, a
+     * label that describes the DataSet can be specified. The label can also be
+     * used to retrieve the DataSet from a ChartData object.
      * 
      * @param yVals
-     * @param type
+     * @param label
      */
-    public DataSet(ArrayList<Entry> yVals, int type) {
-        this.mType = type;
-        this.mYVals = yVals;
-        
-        mLabel = "DS " + type;
-        
+    public DataSet(ArrayList<Entry> yVals, String label) {
+
+        this.mLabel = label;
+
         if (yVals == null || yVals.size() <= 0)
             return;
+        
+        mYVals = yVals;
 
         calcMinMax();
         calcYValueSum();
-    }
-
-    /**
-     * Creates a new DataSet object with the given values it represents and a
-     * type for identification amongst other DataSet objects (the type can be
-     * chosen freely and must not be equal to another type in the ChartData
-     * object). Also, a label that describes the DataSet can be specified.
-     * 
-     * @param yVals
-     * @param type
-     * @param label
-     */
-    public DataSet(ArrayList<Entry> yVals, int type, String label) {
-        this(yVals, type);
-
-        this.mLabel = label;
     }
 
     /**
@@ -83,7 +64,7 @@ public class DataSet {
             Entry entry = mYVals.get(i).copy();
             duplicatedEntries.add(entry);
         }
-        DataSet dataSet = new DataSet(duplicatedEntries, mType);
+        DataSet dataSet = new DataSet(duplicatedEntries, mLabel);
         return dataSet;
     }
 
@@ -225,9 +206,9 @@ public class DataSet {
      * 
      * @return
      */
-    public int getType() {
-        return mType;
-    }
+    // public int getType() {
+    // return mType;
+    // }
 
     /**
      * The xIndex of an Entry object is provided. This method returns the actual
@@ -271,7 +252,7 @@ public class DataSet {
                 entries.add(new Entry(curValues[j].floatValue(), j));
             }
 
-            dataSets.add(new DataSet(entries, i));
+            dataSets.add(new DataSet(entries, "DS " + i));
         }
 
         return dataSets;
@@ -290,7 +271,7 @@ public class DataSet {
             yVals.add(mYVals.get(i).copy());
         }
 
-        DataSet copied = new DataSet(yVals, mType);
+        DataSet copied = new DataSet(yVals, mLabel);
         return copied;
     }
 
@@ -312,7 +293,7 @@ public class DataSet {
      */
     public String toSimpleString() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("DataSet, type: " + mType + ", entries: " + mYVals.size() + "\n");
+        buffer.append("DataSet, label: " + mLabel + ", entries: " + mYVals.size() + "\n");
         return buffer.toString();
     }
 

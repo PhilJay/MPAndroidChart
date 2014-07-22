@@ -181,7 +181,7 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
             yVals1.add(new Entry(val, i));
         }
 
-        DataSet set1 = new DataSet(yVals1, 0);
+        DataSet set1 = new DataSet(yVals1, "DataSet");
         ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
         dataSets.add(set1);
 
