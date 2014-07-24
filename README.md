@@ -108,6 +108,8 @@ or create it in code (and then add it to a layout):
 **Other:**
  - <code>saveToGallery(String title)</code>: Saves the current chart state as an image to the gallery.
  - <code>saveToPath(String title, String pathOnSD)</code>: Saves the current chart state as an image to the specified path.
+ - <code>setScaleMinima(float x, float y)</code>: Sets the minimum scale factors for x- and y-axis. If set for example to 3f, the user will not be able to fully zoom out.
+ - <code>centerViewPort(int xIndex, float val)</code>: This method makes it possible to aim the center of the view (what you can see from the chart) to a specific position inside the chart, described by the index on the x-axis and the value on the y-axis. This also works very well in combination with the `setScaleMinima(...)` method.
 
 **Adding data:**
 
