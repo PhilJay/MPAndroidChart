@@ -18,13 +18,18 @@ Features
  - Save chart to SD-Card
  - Predefined color templates
  - Legends (generated automatically, customizeable)
- - Fully customizeable (paints, typefaces, legends, colors, background, gestures, ...)
+ - Fully customizeable (paints, typefaces, legends, colors, background, gestures, dashed lines, ...)
  
 **Chart types:**
  - **LineChart (single DataSet)**
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart.png)
  - **LineChart (multiple DataSets)**
-![alt tag](https://raw.github.com/PhilJay/MPChart/experimental/screenshots/linechart_multiline.png)
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart_multiline.png)
+ - **LineChart (multiple DataSets)**
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart_multiline_color_variations.png)
+ - **LineChart (with legend)**
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart_legend.png)
+
 
  - **BarChart2D (single DataSet)**
 
@@ -230,7 +235,7 @@ More documentation and example code coming soon.
 
 License
 =======
-Copyright [2014] [Philipp Jahoda]
+Copyright 2014 Philipp Jahoda
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
