@@ -29,7 +29,6 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
-import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.MarkerView;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
@@ -141,13 +140,13 @@ public abstract class Chart extends View {
     protected float mDeltaX = 1f;
 
     /** matrix to map the values to the screen pixels */
-    protected Matrix mMatrixValueToPx;
+    protected Matrix mMatrixValueToPx = new Matrix();
 
     /** matrix for handling the different offsets of the chart */
-    protected Matrix mMatrixOffset;
+    protected Matrix mMatrixOffset = new Matrix();
 
     /** matrix used for touch events */
-    protected Matrix mMatrixTouch = new Matrix();
+    protected final Matrix mMatrixTouch = new Matrix();
 
     /** if true, touch gestures are enabled on the chart */
     protected boolean mTouchEnabled = true;
@@ -162,7 +161,7 @@ public abstract class Chart extends View {
     protected boolean mSeparateTousands = true;
 
     /** this rectangle defines the area in which graph values can be drawn */
-    protected Rect mContentRect;
+    protected Rect mContentRect = new Rect();
 
     /** listener that is called when a value on the chart is selected */
     protected OnChartValueSelectedListener mSelectionListener;
@@ -189,7 +188,7 @@ public abstract class Chart extends View {
      * initialize all paints and stuff
      */
     protected void init() {
-
+        
         // initialize the utils
         Utils.init(getContext().getResources());
 
@@ -254,6 +253,9 @@ public abstract class Chart extends View {
         setData(data);
         invalidate();
     }
+    
+    
+    protected boolean mOffsetsCalculated = false;
 
     /**
      * Sets a new ChartData object for the chart.
@@ -267,14 +269,17 @@ public abstract class Chart extends View {
                     "Cannot set data for chart. Provided chart values are null or contain less than 2 entries.");
             mDataNotSet = true;
             return;
-        }
+        } 
 
         // LET THE CHART KNOW THERE IS DATA
         mDataNotSet = false;
+        mOffsetsCalculated = false;
         mCurrentData = data;
         mOriginalData = data;
 
         prepare();
+                
+        Log.i(LOG_TAG, "Data is set.");
     }
 
     /**
@@ -333,24 +338,12 @@ public abstract class Chart extends View {
         mDeltaX = mCurrentData.getXVals().size() - 1;
     }
 
-    /** flag that indicates if this is the first time the chart is refreshed */
-    private boolean mFirstDraw = true;
-
-    /**
-     * flag that indicates if the content rect (container/bounds of the chart)
-     * has been setup
-     */
-    private boolean mContentRectSetup = false;
-
     @SuppressLint("NewApi")
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        if (!mContentRectSetup) {
-            mContentRectSetup = true;
-            prepareContentRect();
-        }
+        
+        Log.i(LOG_TAG, "DRAW-CALLED");
 
         if (mDataNotSet) { // check if there is data
 
@@ -358,12 +351,7 @@ public abstract class Chart extends View {
             canvas.drawText("No chart data available.", getWidth() / 2, getHeight() / 2, mInfoPaint);
             return;
         }
-
-        if (mFirstDraw) {
-            mFirstDraw = false;
-            prepareMatrix();
-        }
-
+        
         if (mDrawBitmap == null || mDrawCanvas == null) {
 
             // use RGB_565 for best performance
@@ -384,25 +372,25 @@ public abstract class Chart extends View {
         float scaleY = (float) ((getHeight() - mOffsetBottom - mOffsetTop) / mDeltaY);
 
         // setup all matrices
-        mMatrixValueToPx = new Matrix();
         mMatrixValueToPx.reset();
         mMatrixValueToPx.postTranslate(0, -mYChartMin);
         mMatrixValueToPx.postScale(scaleX, -scaleY);
-        mMatrixOffset = new Matrix();
+        
+        mMatrixOffset.reset();
         mMatrixOffset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
-        // mXLegendRect = new Rect(mOffsetLeft-20, 0, getWidth() - mOffsetRight
-        // + 20, mOffsetTop);
-
-        // calcModulus();
+        
+        Log.i(LOG_TAG, "Matrices prepared.");
     }
 
     /**
      * sets up the content rect that restricts the chart surface
      */
     protected void prepareContentRect() {
-        // create the content rect
-        mContentRect = new Rect(mOffsetLeft, mOffsetTop, getWidth() - mOffsetRight, getHeight()
+        
+        mContentRect.set(mOffsetLeft, mOffsetTop, getMeasuredWidth() - mOffsetRight, getMeasuredHeight()
                 - mOffsetBottom);
+        
+        Log.i(LOG_TAG, "Contentrect prepared. Width: " + mContentRect.width() + ", height: " + mContentRect.height());
     }
 
     /**
@@ -804,15 +792,16 @@ public abstract class Chart extends View {
     }
 
     /**
-     * returns the average value for a specific DataSet (with a specific label) in the chart
+     * returns the average value for a specific DataSet (with a specific label)
+     * in the chart
      * 
      * @param dataSetLabel
      * @return
      */
     public float getAverage(String dataSetLabel) {
-        
+
         DataSet ds = mCurrentData.getDataSetByLabel(dataSetLabel, true);
-        
+
         return ds.getYValueSum()
                 / ds.getEntryCount();
     }
@@ -1098,7 +1087,8 @@ public abstract class Chart extends View {
     }
 
     /**
-     * returns the y-value for the given index from the DataSet with the given label
+     * returns the y-value for the given index from the DataSet with the given
+     * label
      * 
      * @param index
      * @param dataSetLabel
@@ -1342,10 +1332,26 @@ public abstract class Chart extends View {
             e.printStackTrace();
         }
     }
+    
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
+                
+        Log.i(LOG_TAG, "onLayout()");
+        prepareContentRect();
+               
+        if(this instanceof BarLineChartBase) {
+         
+            // if y-values are not fixed
+            if(!((BarLineChartBase) this).hasFixedYValues()) prepareMatrix();
+        } else {
+            prepareMatrix();
+        }
     }
 
     @Override

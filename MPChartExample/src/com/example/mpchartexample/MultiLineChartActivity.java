@@ -15,7 +15,6 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
@@ -105,6 +104,15 @@ public class MultiLineChartActivity extends Activity implements OnSeekBarChangeL
                 mChart.invalidate();
                 break;
             }
+            case R.id.actionDashedLine: {
+                if (!mChart.isDashedLineEnabled()) {
+                    mChart.enableDashedLine(10f, 5f, 0f);
+                } else {
+                    mChart.disableDashedLine();
+                }
+                mChart.invalidate();
+                break;
+            }
             case R.id.actionToggleHighlight: {
                 if (mChart.isHighlightEnabled())
                     mChart.setHighlightEnabled(false);
@@ -189,15 +197,6 @@ public class MultiLineChartActivity extends Activity implements OnSeekBarChangeL
         dataSets.addAll(DataSet.makeDataSets(values));
 
         ChartData data = new ChartData(xVals, dataSets);
-        
-//        long bef = System.currentTimeMillis();
-//        
-//        Approximator a = new Approximator();
-//        a.setTolerance(2.0);
-//        ArrayList<Entry> filtered = a.filter(dataSets.get(0).getYVals());
-//        
-//        Log.i("filtertime", (System.currentTimeMillis() - bef) + " ms");
-
         mChart.setData(data);
         mChart.invalidate();
     }

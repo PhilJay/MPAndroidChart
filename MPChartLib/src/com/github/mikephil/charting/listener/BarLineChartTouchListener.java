@@ -357,10 +357,10 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
      * @param e
      * @return
      */
-    private PointF getTrans(float x, float y) {
+    public PointF getTrans(float x, float y) {
 
         float xTrans = x - mChart.getOffsetLeft();
-        float yTrans = -(mChart.getHeight() - y - mChart.getOffsetBottom());
+        float yTrans = -(mChart.getMeasuredHeight() - y - mChart.getOffsetBottom());
 
         return new PointF(xTrans, yTrans);
     }
@@ -397,6 +397,9 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
         PointF trans = getTrans(e.getX(), e.getY());
 
         mChart.zoomIn(trans.x, trans.y);
+        
+        Log.i("BarlineChartTouch", "Zooming In, x: " + trans.x + ", y: " + trans.y);
+        
         return super.onDoubleTap(e);
     }
 

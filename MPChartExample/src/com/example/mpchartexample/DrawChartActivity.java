@@ -187,6 +187,8 @@ public class DrawChartActivity extends Activity implements OnChartValueSelectedL
 	@Override
 	public void onDrawFinished(DataSet dataSet) {
 		Log.i(Chart.LOG_TAG, "DataSet drawn. " + dataSet.toSimpleString());
+		
+		mChart.prepareLegend();
 	}
 
 	@Override

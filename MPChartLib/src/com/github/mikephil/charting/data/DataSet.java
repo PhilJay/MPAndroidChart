@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class DataSet {
 
     /** the entries that this dataset represents / holds together */
-    private ArrayList<Entry> mYVals;
+    private ArrayList<Entry> mYVals = null;
 
     /** maximum y-value in the y-value array */
     private float mYMax = 0.0f;
@@ -39,12 +39,12 @@ public class DataSet {
      */
     public DataSet(ArrayList<Entry> yVals, String label) {
 
-        this.mLabel = label;
+        this.mLabel = label;        
+        this.mYVals = yVals;
 
-        if (yVals == null || yVals.size() <= 0)
+        if (yVals.size() <= 0) {
             return;
-        
-        mYVals = yVals;
+        }
 
         calcMinMax();
         calcYValueSum();

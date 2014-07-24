@@ -286,6 +286,20 @@ public class Legend {
 
         c.drawText(mLegendLabels[index], x, y, p);
     }
+    
+    /**
+     * applies the state from the legend in the parameter to this legend (except colors and labels)
+     * @param l
+     */
+    public void apply(Legend l) {
+        
+        mPosition = l.mPosition;
+        mShape = l.mShape;
+        mTypeface = l.mTypeface;
+        mFormSize = l.mFormSize;
+        mEntrySpace = l.mEntrySpace;
+        mFormToTextSpace = l.mFormToTextSpace;
+    }
 
     // /**
     // * Draws the legend.

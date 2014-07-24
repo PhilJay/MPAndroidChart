@@ -81,7 +81,9 @@ public class ChartData {
         calcYValueSum();
 
         for (int i = 0; i < mDataSets.size(); i++) {
-            if (mDataSets.get(i).getYVals().size() > xVals.size()) {
+            if (mDataSets.get(i)
+                    .getYVals()
+                    .size() > xVals.size()) {
                 throw new IllegalArgumentException(
                         "One or more of the DataSet Entry arrays are longer than the x-values array.");
             }

@@ -2,7 +2,6 @@
 package com.example.mpchartexample;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -23,7 +22,7 @@ import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.Legend.LegendPosition;
+import com.github.mikephil.charting.utils.Legend.LegendForm;
 
 import java.util.ArrayList;
 
@@ -45,10 +44,13 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
         tvY = (TextView) findViewById(R.id.tvYMax);
 
         mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
-        mSeekBarX.setOnSeekBarChangeListener(this);
-
         mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
+        
+        mSeekBarX.setProgress(45);
+        mSeekBarY.setProgress(100);
+        
         mSeekBarY.setOnSeekBarChangeListener(this);
+        mSeekBarX.setOnSeekBarChangeListener(this);
 
         // create a color template for one dataset with only one color
         ColorTemplate ct = new ColorTemplate();
@@ -120,16 +122,25 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 
         // set the line to be drawn like this "- - - - - -"
         mChart.enableDashedLine(10f, 5f, 0f);
-
-        // add data to the chart
-        mSeekBarX.setProgress(45);
-        mSeekBarY.setProgress(100);
+        
+        // add data
+        setData(45, 100);
+        
+        // restrain the maximum scale-out factor
+//        mChart.setScaleMinima(3f, 3f);
+        
+        // center the view to a specific position inside the chart
+//        mChart.centerViewPort(10, 50);
                 
-        // get the legend
+        // get the legend (only possible after setting data)
         Legend l = mChart.getLegend();
         
-        // modify it
-//        l.setPosition(LegendPosition.LEFT_OF_CHART);
+        // modify the legend ...
+//        l.setPosition(LegendPosition.LEFT_OF_CHART);   
+        l.setForm(LegendForm.LINE);
+        
+        // dont forget to refresh the drawing
+        mChart.invalidate();
     }
 
     @Override
@@ -238,33 +249,8 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
         tvX.setText("" + (mSeekBarX.getProgress() + 1));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-            xVals.add((i) + "");
-        }
-
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
-
-        for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-            float mult = (mSeekBarY.getProgress() + 1);
-            float val = (float) (Math.random() * mult) + 3;// + (float)
-                                                               // ((mult *
-                                                               // 0.1) / 10);
-            yVals.add(new Entry(val, i));
-        }
-
-        // create a dataset and give it a type
-        DataSet set1 = new DataSet(yVals, "DataSet 1");
-
-        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
-        dataSets.add(set1); // add the datasets
-
-        // create a data object with the datasets
-        ChartData data = new ChartData(xVals, dataSets);
-
-        // set data
-        mChart.setData(data);
-
+        setData(mSeekBarX.getProgress()+1, mSeekBarY.getProgress());
+        
         // redraw
         mChart.invalidate();
     }
@@ -292,5 +278,35 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
     public void onStopTrackingTouch(SeekBar seekBar) {
         // TODO Auto-generated method stub
 
+    }
+    
+    private void setData(int count, float range) {
+     
+        ArrayList<String> xVals = new ArrayList<String>();
+        for (int i = 0; i < count; i++) {
+            xVals.add((i) + "");
+        }
+
+        ArrayList<Entry> yVals = new ArrayList<Entry>();
+
+        for (int i = 0; i < count; i++) {
+            float mult = (range + 1);
+            float val = (float) (Math.random() * mult) + 3;// + (float)
+                                                               // ((mult *
+                                                               // 0.1) / 10);
+            yVals.add(new Entry(val, i));
+        }
+
+        // create a dataset and give it a type
+        DataSet set1 = new DataSet(yVals, "DataSet 1");
+
+        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+        dataSets.add(set1); // add the datasets
+
+        // create a data object with the datasets
+        ChartData data = new ChartData(xVals, dataSets);
+
+        // set data
+        mChart.setData(data);
     }
 }

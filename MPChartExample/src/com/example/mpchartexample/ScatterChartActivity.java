@@ -1,8 +1,6 @@
 
 package com.example.mpchartexample;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +21,8 @@ import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
+
+import java.util.ArrayList;
 
 public class ScatterChartActivity extends Activity implements OnSeekBarChangeListener,
         OnChartValueSelectedListener {
