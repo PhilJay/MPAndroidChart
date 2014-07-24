@@ -130,10 +130,10 @@ Of course, it is also possible to provide just one <code>DataSet</code> object c
 
 So how to setup a <code>DataSet</code> object?
 ```java
-    public DataSet(ArrayList<Entry> yVals, int type, String label) { ... }
+    public DataSet(ArrayList<Entry> yVals, String label) { ... }
 ```
 
-When looking at the constructor, it is visible that the <code>DataSet</code> needs an <code>ArrayList</code> of type <code>Entry</code> and an integer value for the type. The type integer value can be chosen freely and can be used to identify the <code>DataSet</code> amongst other <code>DataSet</code> objects in the <code>ChartData</code> object. A possible type in this scenario could be a integer constant COMPANY_1. As an additional option, a label `String` can be specified for the `DataSet` which will be used in a `Legend`.
+When looking at the constructor, it is visible that the <code>DataSet</code> needs an <code>ArrayList</code> of type <code>Entry</code> and a `String` used to describe the `DataSet` and as a label for the `Legend`. Furthermore this label can be used to find the `DataSet` amongst other `DataSet` objects in the `Chartdata` object.
 
 The <code>ArrayList</code> of type <code>Entry</code> encapsulates all values of the chart. A <code>Entry</code> object is an additional wrapper around a value and holds the value itself, and it's position on the x-axis (the index inside the <code>ArrayList</code> of <code>String</code> of the <code>CharData</code> object the value is mapped to):
 ```java
@@ -166,8 +166,8 @@ Then, fill the lists with <code>Entry</code> objects. Make sure the entry object
 
 Now that we have our lists of <code>Entry</code> objects, the <code>DataSet</code> objects can be created:
 ```java
-    DataSet setComp1 = new DataSet(valsComp1, COMPANY_1, "company 1"); // COMPANY_1 is a constant integer and can be chosen freely
-    DataSet setComp2 = new DataSet(valsComp2, COMPANY_2, "company 2");
+    DataSet setComp1 = new DataSet(valsComp1, "company 1");
+    DataSet setComp2 = new DataSet(valsComp2, "company 2");
 ```
 Last but not least, we create a list of <code>DataSets</code> and a list of x legend entries and build our <code>ChartData</code> object:
 
