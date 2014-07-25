@@ -7,6 +7,10 @@ Remember: *It's all about the looks.*
 
 For immediate access to our latest updates, please checkout the **experimental** branch. Beware that code on the experimental branch is not finished for release yet and might be incomplete or contain bugs.
 
+If you are having questions or problems, feel free to contact me, **create issues** for this project on GitHub or open questions on [**stackoverflow**](https://stackoverflow.com) with the `mpandroidchart` tag.
+
+Forks, pull-requests or any other forms of contribution are always welcome.
+
 Features
 =======
 
