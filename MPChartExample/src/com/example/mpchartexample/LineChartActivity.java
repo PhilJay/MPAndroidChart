@@ -139,6 +139,8 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 //        l.setPosition(LegendPosition.LEFT_OF_CHART);   
         l.setForm(LegendForm.LINE);
         
+        mChart.setOffsets(100, 100, 200, 200);
+        
         // dont forget to refresh the drawing
         mChart.invalidate();
     }

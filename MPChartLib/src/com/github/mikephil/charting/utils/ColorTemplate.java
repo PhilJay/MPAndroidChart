@@ -38,6 +38,15 @@ public class ColorTemplate {
             R.color.joyful_5
     };
 
+    public static final int[] PASTEL_COLORS = {
+            R.color.pastel_1, R.color.pastel_2, R.color.pastel_3, R.color.pastel_4,
+            R.color.pastel_5
+    };
+    public static final int[] VORDIPLOM_COLORS = {
+            R.color.vordiplom_1, R.color.vordiplom_2, R.color.vordiplom_3, R.color.vordiplom_4,
+            R.color.vordiplom_5
+    };
+
     /** an arraylist of color arrays (one color array per dataset) */
     private ArrayList<ArrayList<Integer>> mDataSetColors;
 
@@ -127,40 +136,42 @@ public class ColorTemplate {
     public ArrayList<ArrayList<Integer>> getColors() {
         return mDataSetColors;
     }
-    
+
     /**
      * Returns all colors the template represents as an int array
+     * 
      * @return
      */
     public int[] getColorsAsArray() {
-        
+
         int[] colors = new int[mColorCount];
         int cnt = 0;
-        
-        for(int i = 0; i < mDataSetColors.size(); i++) {
-            for(int j = 0; j < mDataSetColors.get(i).size(); j++) {
+
+        for (int i = 0; i < mDataSetColors.size(); i++) {
+            for (int j = 0; j < mDataSetColors.get(i).size(); j++) {
                 colors[cnt] = mDataSetColors.get(i).get(j);
                 cnt++;
             }
         }
-        
+
         return colors;
     }
-    
+
     /**
      * Returns all colors the template represents as an ArrayList<Integer>
+     * 
      * @return
      */
     public ArrayList<Integer> getColorsAsArrayList() {
-        
+
         ArrayList<Integer> colors = new ArrayList<Integer>();
-        
-        for(int i = 0; i < mDataSetColors.size(); i++) {
-            for(int j = 0; j < mDataSetColors.get(i).size(); j++) {
+
+        for (int i = 0; i < mDataSetColors.size(); i++) {
+            for (int j = 0; j < mDataSetColors.get(i).size(); j++) {
                 colors.add(mDataSetColors.get(i).get(j));
             }
         }
-        
+
         return colors;
     }
 
@@ -183,7 +194,8 @@ public class ColorTemplate {
      * @return
      */
     public int getDataSetColor(int dataSetIndex, int colorIndex) {
-        return mDataSetColors.get(dataSetIndex).get(colorIndex % mDataSetColors.get(dataSetIndex).size());
+        return mDataSetColors.get(dataSetIndex).get(
+                colorIndex % mDataSetColors.get(dataSetIndex).size());
     }
 
     /**
@@ -203,9 +215,11 @@ public class ColorTemplate {
 
         return result;
     }
-    
+
     /**
-     * tuns an array of colors (already converted with getResources().getColor(...) int an arraylist of colors
+     * tuns an array of colors (already converted with
+     * getResources().getColor(...) int an arraylist of colors
+     * 
      * @param colors
      * @return
      */

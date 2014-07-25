@@ -8,6 +8,8 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import com.example.mpchartexample.simple.SimpleChartDemo;
+
 public class MainActivity extends Activity implements OnClickListener {
 
 	@Override
@@ -23,6 +25,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		Button btn5 = (Button) findViewById(R.id.button5);
 		Button btn6 = (Button) findViewById(R.id.button6);
 		Button btn7 = (Button) findViewById(R.id.button7);
+		Button btn8 = (Button) findViewById(R.id.button8);
 		btn1.setOnClickListener(this);
 		btn2.setOnClickListener(this);
 		btn3.setOnClickListener(this);
@@ -30,6 +33,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		btn5.setOnClickListener(this);
 		btn6.setOnClickListener(this);
 		btn7.setOnClickListener(this);
+		btn8.setOnClickListener(this);
 	}
 
 	@Override
@@ -66,6 +70,10 @@ public class MainActivity extends Activity implements OnClickListener {
 			i = new Intent(this, DrawChartActivity.class);
 			startActivity(i);
 			break;
+		case R.id.button8:
+            i = new Intent(this, SimpleChartDemo.class);
+            startActivity(i);
+            break;
 		}
 	}
 }

@@ -27,7 +27,7 @@ public class BarChart extends BarLineChartBase {
     private float mDepth = 0.3f;
 
     /** flag the enables or disables 3d bars */
-    private boolean m3DEnabled = true;
+    private boolean m3DEnabled = false;
 
     /** flag that enables or disables the highlighting arrow */
     private boolean mDrawHighlightArrow = false;
@@ -59,6 +59,8 @@ public class BarChart extends BarLineChartBase {
         mHighlightPaint.setColor(Color.rgb(0, 0, 0));
         // set alpha after color
         mHighlightPaint.setAlpha(120);
+        
+        calculate3DColors();
     }
 
     @Override

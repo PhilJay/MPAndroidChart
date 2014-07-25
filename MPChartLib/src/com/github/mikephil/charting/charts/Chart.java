@@ -188,7 +188,7 @@ public abstract class Chart extends View {
      * initialize all paints and stuff
      */
     protected void init() {
-        
+
         // initialize the utils
         Utils.init(getContext().getResources());
 
@@ -219,7 +219,7 @@ public abstract class Chart extends View {
         mValuePaint.setTextSize(Utils.convertDpToPixel(9f));
 
         mCt = new ColorTemplate();
-        mCt.addDataSetColors(ColorTemplate.LIBERTY_COLORS, getContext());
+        mCt.addDataSetColors(ColorTemplate.VORDIPLOM_COLORS, getContext());
     }
 
     public void initWithDummyData() {
@@ -253,8 +253,7 @@ public abstract class Chart extends View {
         setData(data);
         invalidate();
     }
-    
-    
+
     protected boolean mOffsetsCalculated = false;
 
     /**
@@ -269,7 +268,7 @@ public abstract class Chart extends View {
                     "Cannot set data for chart. Provided chart values are null or contain less than 2 entries.");
             mDataNotSet = true;
             return;
-        } 
+        }
 
         // LET THE CHART KNOW THERE IS DATA
         mDataNotSet = false;
@@ -278,7 +277,7 @@ public abstract class Chart extends View {
         mOriginalData = data;
 
         prepare();
-                
+
         Log.i(LOG_TAG, "Data is set.");
     }
 
@@ -342,8 +341,8 @@ public abstract class Chart extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        
-        Log.i(LOG_TAG, "DRAW-CALLED");
+
+        // Log.i(LOG_TAG, "DRAW-CALLED");
 
         if (mDataNotSet) { // check if there is data
 
@@ -351,7 +350,7 @@ public abstract class Chart extends View {
             canvas.drawText("No chart data available.", getWidth() / 2, getHeight() / 2, mInfoPaint);
             return;
         }
-        
+
         if (mDrawBitmap == null || mDrawCanvas == null) {
 
             // use RGB_565 for best performance
@@ -375,10 +374,10 @@ public abstract class Chart extends View {
         mMatrixValueToPx.reset();
         mMatrixValueToPx.postTranslate(0, -mYChartMin);
         mMatrixValueToPx.postScale(scaleX, -scaleY);
-        
+
         mMatrixOffset.reset();
         mMatrixOffset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
-        
+
         Log.i(LOG_TAG, "Matrices prepared.");
     }
 
@@ -386,11 +385,13 @@ public abstract class Chart extends View {
      * sets up the content rect that restricts the chart surface
      */
     protected void prepareContentRect() {
-        
-        mContentRect.set(mOffsetLeft, mOffsetTop, getMeasuredWidth() - mOffsetRight, getMeasuredHeight()
-                - mOffsetBottom);
-        
-        Log.i(LOG_TAG, "Contentrect prepared. Width: " + mContentRect.width() + ", height: " + mContentRect.height());
+
+        mContentRect.set(mOffsetLeft, mOffsetTop, getMeasuredWidth() - mOffsetRight,
+                getMeasuredHeight()
+                        - mOffsetBottom);
+
+        Log.i(LOG_TAG, "Contentrect prepared. Width: " + mContentRect.width() + ", height: "
+                + mContentRect.height());
     }
 
     /**
@@ -850,8 +851,9 @@ public abstract class Chart extends View {
     }
 
     /**
-     * sets the offsets of the graph in every direction provide density pixels
-     * -> they are then rendered to pixels inside the chart
+     * Sets the offsets from the border of the view to the actual chart in every
+     * direction manually. Provide density pixels -> they are then rendered to
+     * pixels inside the chart
      * 
      * @param left
      * @param right
@@ -1332,7 +1334,7 @@ public abstract class Chart extends View {
             e.printStackTrace();
         }
     }
-    
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -1341,14 +1343,15 @@ public abstract class Chart extends View {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-                
+
         Log.i(LOG_TAG, "onLayout()");
         prepareContentRect();
-               
-        if(this instanceof BarLineChartBase) {
-         
+
+        if (this instanceof BarLineChartBase) {
+
             // if y-values are not fixed
-            if(!((BarLineChartBase) this).hasFixedYValues()) prepareMatrix();
+            if (!((BarLineChartBase) this).hasFixedYValues())
+                prepareMatrix();
         } else {
             prepareMatrix();
         }

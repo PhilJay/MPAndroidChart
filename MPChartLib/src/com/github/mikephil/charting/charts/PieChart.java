@@ -161,7 +161,7 @@ public class PieChart extends Chart {
 		// calculate how many digits are needed
 		calcFormats();
 
-		prepareMatrix();
+//		prepareMatrix();
 
 		// Log.i(LOG_TAG, "xVals: " + mXVals.size() + ", yVals: " +
 		// mYVals.size());

@@ -6,14 +6,11 @@
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" >
+        android:layout_height="match_parent" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:orientation="vertical"
             android:padding="10dp" >
 
@@ -65,6 +62,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:text="Draw Chart" />
+            
+            <Button
+                android:id="@+id/button8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="Simple Design" />
             
         </LinearLayout>
     </ScrollView>
