@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="50dp"
-    android:layout_height="35dp"
+    android:layout_width="65dp"
+    android:layout_height="40dp"
     android:background="@drawable/marker2" >
 
     <TextView
@@ -11,7 +11,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="7dp"
         android:text="Selected."
-        android:textSize="9dp"
+        android:textSize="12dp"
         android:textColor="@android:color/white"
         android:ellipsize="end"
         android:singleLine="true"

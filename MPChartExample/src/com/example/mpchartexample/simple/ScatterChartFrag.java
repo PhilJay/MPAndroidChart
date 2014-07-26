@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import com.example.mpchartexample.MyMarkerView;
 import com.example.mpchartexample.R;
 import com.github.mikephil.charting.charts.ScatterChart;
-import com.github.mikephil.charting.charts.BarLineChartBase.BorderStyle;
 import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
@@ -31,8 +30,7 @@ public class ScatterChartFrag extends SimpleFragment {
         
         ColorTemplate ct = new ColorTemplate();
         ct.addDataSetColors(ColorTemplate.VORDIPLOM_COLORS, getActivity());
-        ct.addDataSetColors(new int[] { R.color.colorful_1, R.color.colorful_2, R.color.colorful_3 } , getActivity());
-        ct.addDataSetColors(ColorTemplate.PASTEL_COLORS, getActivity());
+        ct.addDataSetColors(new int[] { R.color.pastel_1, R.color.pastel_2, R.color.pastel_4, R.color.pastel_5 } , getActivity());
         
         mChart.setColorTemplate(ct);
         
@@ -41,7 +39,7 @@ public class ScatterChartFrag extends SimpleFragment {
 
         mChart.setMarkerView(mv);
         
-        mChart.setScatterShapes(new ScatterShape[] {ScatterShape.CIRCLE, ScatterShape.SQUARE, ScatterShape.TRIANGLE });
+        mChart.setScatterShapes(new ScatterShape[] {ScatterShape.CIRCLE, ScatterShape.SQUARE });
         mChart.setScatterShapeSize(18f);
         
         mChart.setHighlightIndicatorEnabled(false);
@@ -50,8 +48,9 @@ public class ScatterChartFrag extends SimpleFragment {
         mChart.setDrawGridBackground(false);
         mChart.setDrawVerticalGrid(false);
         mChart.setDrawXLabels(false);
+        mChart.setUnit(" $");
         
-        mChart.setData(generateData(3, 1000));
+        mChart.setData(generateData(2, 10000));
         
         return v;
     }

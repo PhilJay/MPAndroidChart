@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.utils.FileUtils;
 
 import java.util.ArrayList;
 
@@ -61,6 +62,25 @@ public abstract class SimpleFragment extends Fragment {
         DataSet ds1 = new DataSet(entries1, "Quarterly revenues");
         
         ChartData d = new ChartData(xVals, ds1);
+        return d;
+    }
+    
+    protected ChartData getComplexity() {
+        
+//        DataSet ds1 = new DataSet(n, "O(n)");  
+//        DataSet ds2 = new DataSet(nlogn, "O(nlogn)"); 
+//        DataSet ds3 = new DataSet(nsquare, "O(n\u00B2)");
+//        DataSet ds4 = new DataSet(nthree, "O(n\u00B3)");
+        
+        ArrayList<DataSet> sets = new ArrayList<DataSet>();
+        
+        // load DataSets from textfiles in assets folder
+        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "n.txt"));
+        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "nlogn.txt"));
+        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "square.txt"));
+        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "three.txt"));
+        
+        ChartData d = new ChartData(ChartData.generateXVals(0, 101),  sets);
         return d;
     }
     

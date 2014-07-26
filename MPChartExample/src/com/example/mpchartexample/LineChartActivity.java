@@ -20,6 +20,7 @@ import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.FileUtils;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendForm;
@@ -305,7 +306,7 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
 
         // create a data object with the datasets
         ChartData data = new ChartData(xVals, dataSets);
-
+ 
         // set data
         mChart.setData(data);
     }

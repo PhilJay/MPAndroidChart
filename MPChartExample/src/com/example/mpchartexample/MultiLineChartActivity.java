@@ -46,7 +46,7 @@ public class MultiLineChartActivity extends Activity implements OnSeekBarChangeL
 
         // create a color template for one dataset with only one color
         ColorTemplate ct = new ColorTemplate();
-        ct.addColorsForDataSets(ColorTemplate.COLORFUL_COLORS, this);
+        ct.addColorsForDataSets(ColorTemplate.VORDIPLOM_COLORS, this);
 
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);

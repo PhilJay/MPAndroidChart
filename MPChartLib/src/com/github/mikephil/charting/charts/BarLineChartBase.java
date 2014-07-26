@@ -364,7 +364,7 @@ public abstract class BarLineChartBase extends Chart {
             }
         }
 
-        mOffsetLeft = Utils.calcTextWidth(mYLabelPaint, (int) mDeltaY + ".0000");
+        mOffsetLeft = Utils.calcTextWidth(mYLabelPaint, (int) mDeltaY + ".0000" + mUnit);
 
         prepareContentRect();
 

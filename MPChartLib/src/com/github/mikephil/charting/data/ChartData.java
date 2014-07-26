@@ -355,4 +355,21 @@ public class ChartData {
 
         return types;
     }
+
+    /**
+     * Generates an x-values array filled with numbers in range specified by the
+     * parameters. Can be used for convenience.
+     * 
+     * @return
+     */
+    public static ArrayList<String> generateXVals(int from, int to) {
+
+        ArrayList<String> xvals = new ArrayList<String>();
+
+        for (int i = from; i < to; i++) {
+            xvals.add("" + i);
+        }
+
+        return xvals;
+    }
 }

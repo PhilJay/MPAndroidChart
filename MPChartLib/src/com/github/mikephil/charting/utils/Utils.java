@@ -91,6 +91,21 @@ public abstract class Utils {
         paint.getTextBounds(demoText, 0, demoText.length(), r);
         return r.width();
     }
+    
+    /**
+     * calculates the approximate height of a text, depending on a demo text
+     * avoid repeated calls (e.g. inside drawing methods)
+     * 
+     * @param paint
+     * @param demoText
+     * @return
+     */
+    public static int calcTextHeight(Paint paint, String demoText) {
+
+        Rect r = new Rect();
+        paint.getTextBounds(demoText, 0, demoText.length(), r);
+        return r.height();
+    }
 
     /**
      * returns the appropriate number of format digits for a delta value

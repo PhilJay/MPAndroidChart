@@ -1,4 +1,5 @@
 package com.example.mpchartexample.simple;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -6,9 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.mpchartexample.MyMarkerView;
 import com.example.mpchartexample.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.Legend;
 
 
 public class LineChartFrag extends SimpleFragment {
@@ -26,19 +29,33 @@ public class LineChartFrag extends SimpleFragment {
         mChart = (LineChart) v.findViewById(R.id.lineChart1);
         
         ColorTemplate ct = new ColorTemplate();
-        ct.addColorsForDataSets(new int[] { R.color.vordiplom_1, R.color.vordiplom_4 }, getActivity());
-        
-        Log.i("TEST", "size: " + ct.getColors().size());
+        ct.addColorsForDataSets(ColorTemplate.VORDIPLOM_COLORS, getActivity());
         
         mChart.setColorTemplate(ct);
          
         mChart.setDescription("");
-        mChart.setDrawFilled(true);
+        mChart.setDrawFilled(false);
         mChart.setDrawYValues(false);
         mChart.setLineWidth(3.5f);
         mChart.setCircleSize(5f);
+        mChart.setHighlightIndicatorEnabled(false); 
+        mChart.setDrawBorder(false);
+        mChart.setDrawGridBackground(false);
+        mChart.setDrawVerticalGrid(false);
+        mChart.setDrawXLabels(false);
+        mChart.setDrawYValues(false);
+        mChart.setStartAtZero(false);
         
-        mChart.setData(generateData(2, 10000));
+//        mChart.setYRange(-1f, 65f, false);
+        
+        mChart.setData(getComplexity());
+        
+        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"OpenSans-Light.ttf");
+        
+        mChart.setYLabelTypeface(tf);
+        
+        Legend l = mChart.getLegend();
+        l.setTypeface(tf);
         
         return v;
     }
