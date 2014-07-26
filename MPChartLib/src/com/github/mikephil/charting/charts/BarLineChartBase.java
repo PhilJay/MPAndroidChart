@@ -249,7 +249,6 @@ public abstract class BarLineChartBase extends Chart {
 
         mLegendLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mLegendLabelPaint.setTextSize(Utils.convertDpToPixel(9f));
-
     }
 
     @Override
@@ -358,9 +357,11 @@ public abstract class BarLineChartBase extends Chart {
             if (mLegend.getPosition() == LegendPosition.LEFT_OF_CHART) {
 
                 mOffsetRight = mLegend.getMaximumEntryLength(mLegendLabelPaint);
+                mLegendLabelPaint.setTextAlign(Align.LEFT);
 
-            } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART) {
-                mOffsetBottom = (int) mLegendLabelPaint.getTextSize() * 3;
+            } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
+                    || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT) {
+                mOffsetBottom = (int) (mLegendLabelPaint.getTextSize() * 3.5f);
             }
         }
 
@@ -455,18 +456,18 @@ public abstract class BarLineChartBase extends Chart {
             ArrayList<Integer> clrs = mCt.getDataSetColors(i % mCt.getColors().size());
 
             for (int j = 0; j < clrs.size(); j++) {
-                
+
                 // if multiple colors are set for a DataSet, group them
-                if(j < clrs.size()-1) {
-                    
+                if (j < clrs.size() - 1) {
+
                     labels.add(null);
                 } else { // add label to the last entry
-                    
+
                     String label = mOriginalData.getDataSetByIndex(i).getLabel();
                     labels.add(label);
                 }
-                
-                colors.add(clrs.get(j));               
+
+                colors.add(clrs.get(j));
             }
         }
 
@@ -511,7 +512,7 @@ public abstract class BarLineChartBase extends Chart {
         float posX, posY;
 
         switch (mLegend.getPosition()) {
-            case BELOW_CHART:
+            case BELOW_CHART_LEFT:
 
                 posX = mOffsetLeft;
                 posY = getHeight() - mOffsetBottom + textSize * 2;
@@ -523,11 +524,32 @@ public abstract class BarLineChartBase extends Chart {
                     // make a step to the left
                     posX += formToTextSpace;
 
-                    if(labels[i] != null) {
-                        
+                    if (labels[i] != null) {
+
                         mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
                         posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i]) + entrySpace;
                     }
+                }
+
+                break;
+            case BELOW_CHART_RIGHT:
+
+                posX = getWidth() - mOffsetRight;
+                posY = getHeight() - mOffsetBottom + textSize * 2;
+
+                for (int i = labels.length - 1; i >= 0; i--) {
+                    
+                    if (labels[i] != null) {
+
+                        posX -= Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
+                        mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
+                        posX -= formToTextSpace;
+                    }
+
+                    mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
+                    
+                    // make a step to the left
+                    posX -= entrySpace;
                 }
 
                 break;
@@ -541,14 +563,14 @@ public abstract class BarLineChartBase extends Chart {
                 for (int i = 0; i < labels.length; i++) {
 
                     mLegend.drawForm(mDrawCanvas, posX + stack, posY, mLegendFormPaint, i);
-                    
-                    if(labels[i] != null) {
-                        
-                        if(!wasStacked) {
+
+                    if (labels[i] != null) {
+
+                        if (!wasStacked) {
                             mLegend.drawLabel(mDrawCanvas, posX + formToTextSpace, posY + textDrop,
                                     mLegendLabelPaint, i);
                         } else {
-                         
+
                             mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop + entrySpace,
                                     mLegendLabelPaint, i);
                             posY += entrySpace;

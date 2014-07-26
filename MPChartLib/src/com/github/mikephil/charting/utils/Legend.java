@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Legend {
 
     public enum LegendPosition {
-        LEFT_OF_CHART, BELOW_CHART
+        LEFT_OF_CHART, BELOW_CHART_LEFT, BELOW_CHART_RIGHT
     }
 
     public enum LegendForm {
@@ -29,7 +29,7 @@ public class Legend {
     private String[] mLegendLabels;
 
     /** the position relative to the chart the legend is drawn on */
-    private LegendPosition mPosition = LegendPosition.BELOW_CHART;
+    private LegendPosition mPosition = LegendPosition.BELOW_CHART_LEFT;
 
     /** the shape/form the legend colors are drawn in */
     private LegendForm mShape = LegendForm.SQUARE;
