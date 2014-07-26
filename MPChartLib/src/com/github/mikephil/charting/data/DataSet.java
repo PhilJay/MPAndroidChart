@@ -26,7 +26,7 @@ public class DataSet {
     private float mYValueSum = 0f;
 
     /** label that describes the DataSet or the data the DataSet represents */
-    private String mLabel = "";
+    private String mLabel = "DataSet";
 
 
     /**

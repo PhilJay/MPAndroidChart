@@ -22,8 +22,9 @@ public class BarChartFrag extends SimpleFragment {
         View v = inflater.inflate(R.layout.frag_simple_bar, container, false);
         
         mChart = (BarChart) v.findViewById(R.id.barChart1);
+        mChart.setYLabelCount(6);
         
-        mChart.setData(generateData());
+        mChart.setData(generateData(1, 2000000));
         
         return v;
     }

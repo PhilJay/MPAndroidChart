@@ -129,6 +129,19 @@ public class ColorTemplate {
     }
 
     /**
+     * Adds a single color for one DataSet. Each call of this method will add
+     * one more color for one DataSet to the template.
+     * 
+     * @param color
+     * @param c
+     */
+    public void addDataSetColor(int color, Context c) {
+        addDataSetColors(new int[] {
+                color
+        }, c);
+    }
+
+    /**
      * Returns all color arrays the template represents.
      * 
      * @return

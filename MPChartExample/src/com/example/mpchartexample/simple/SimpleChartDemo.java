@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.WindowManager;
 
 /**
  * Demonstrates how to keep your charts straight forward, simple and beautiful with the MPAndroidChart library.
@@ -18,6 +19,8 @@ public class SimpleChartDemo extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         
         ViewPager pager = new ViewPager(this);  
         pager.setId(1000);

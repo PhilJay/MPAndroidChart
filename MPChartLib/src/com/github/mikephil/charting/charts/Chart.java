@@ -245,7 +245,7 @@ public abstract class Chart extends View {
                 yVals.add(new Entry(val, j));
             }
 
-            DataSet set = new DataSet(yVals, "DS " + i);
+            DataSet set = new DataSet(yVals, "DataSet " + i);
             dataSets.add(set); // add the datasets
         }
         // create a data object with the datasets
@@ -913,6 +913,8 @@ public abstract class Chart extends View {
      */
     public void setColorTemplate(ColorTemplate ct) {
         this.mCt = ct;
+        
+        Log.i(LOG_TAG, "ColorTemplate set.");
     }
 
     /**

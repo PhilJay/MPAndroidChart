@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import android.util.DisplayMetrics;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 /**
  * utilities class that has some helper methods
@@ -75,7 +76,7 @@ public abstract class Utils {
         float dp = px / (metrics.densityDpi / 160f);
         return dp;
     }
-    
+
     /**
      * calculates the approximate width of a text, depending on a demo text
      * avoid repeated calls (e.g. inside drawing methods)
@@ -209,20 +210,20 @@ public abstract class Utils {
                 out[ind--] = ',';
                 charCount++;
                 decimalPointAdded = true;
-                
-            // add thousand separators
+
+                // add thousand separators
             } else if (separateThousands && lval != 0 && charCount > digitCount) {
-                
-                if(decimalPointAdded) {
-                    
-                    if((charCount - digitCount) % 4 == 0) {
+
+                if (decimalPointAdded) {
+
+                    if ((charCount - digitCount) % 4 == 0) {
                         out[ind--] = '.';
                         charCount++;
                     }
-                    
+
                 } else {
-                 
-                    if((charCount - digitCount) % 4 == 3) {
+
+                    if ((charCount - digitCount) % 4 == 3) {
                         out[ind--] = '.';
                         charCount++;
                     }
@@ -253,5 +254,39 @@ public abstract class Utils {
         final float magnitude = (float) Math.pow(10, pw);
         final long shifted = Math.round(number * magnitude);
         return shifted / magnitude;
+    }
+
+    /**
+     * Converts the provided Integer ArrayList to an int array.
+     * 
+     * @param integers
+     * @return
+     */
+    public static int[] convertIntegers(ArrayList<Integer> integers) {
+
+        int[] ret = new int[integers.size()];
+
+        for (int i = 0; i < ret.length; i++) {
+            ret[i] = integers.get(i).intValue();
+        }
+
+        return ret;
+    }
+
+    /**
+     * Converts the provided String ArrayList to a String array.
+     * 
+     * @param labels
+     * @return
+     */
+    public static String[] convertStrings(ArrayList<String> strings) {
+
+        String[] ret = new String[strings.size()];
+
+        for (int i = 0; i < ret.length; i++) {
+            ret[i] = strings.get(i);
+        }
+
+        return ret;
     }
 }

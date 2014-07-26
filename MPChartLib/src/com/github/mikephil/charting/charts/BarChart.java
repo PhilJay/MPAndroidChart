@@ -18,7 +18,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 public class BarChart extends BarLineChartBase {
 
     /** space indicator between the bars 0.1f == 10 % */
-    private float mBarSpace = 0.1f;
+    private float mBarSpace = 0.15f;
 
     /** indicates the angle of the 3d effect */
     private float mSkew = 0.3f;

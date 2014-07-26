@@ -11,32 +11,28 @@ import java.util.ArrayList;
 public abstract class SimpleFragment extends Fragment {
 
     /**
-     * generates some random data, (2 DataSets, 2x20 values)
+     * generates some random data
      * @return
      */
-    protected ChartData generateData() {
+    protected ChartData generateData(int dataSets, float range) {
         
-        int count = 20;
-        
-        ArrayList<String> xVals = new ArrayList<String>();
-        ArrayList<Entry> entries1 = new ArrayList<Entry>();
-        ArrayList<Entry> entries2 = new ArrayList<Entry>();
-        
-        for(int i = 0; i < count; i++) {
-            xVals.add("entry" + (i+1));
-    
-            entries1.add(new Entry((float) (Math.random() * 10000), i));
-            entries2.add(new Entry((float) (Math.random() * 10000), i));
-        }
-        
-        DataSet ds1 = new DataSet(entries1, "Company A");
-        DataSet ds2 = new DataSet(entries1, "Company B");
+        int count = 12;
         
         ArrayList<DataSet> sets = new ArrayList<DataSet>();
-        sets.add(ds1);
-        sets.add(ds2);
         
-        ChartData d = new ChartData(xVals, sets);
+        for(int i = 0; i < dataSets; i++) {
+           
+            ArrayList<Entry> entries = new ArrayList<Entry>();
+            
+            for(int j = 0; j < count; j++) {        
+                entries.add(new Entry((float) (Math.random() * range), j));
+            }
+            
+            DataSet ds = new DataSet(entries, getLabel(i));
+            sets.add(ds);
+        }
+        
+        ChartData d = new ChartData(getXVals(), sets);
         return d;
     }
     
@@ -66,5 +62,16 @@ public abstract class SimpleFragment extends Fragment {
         
         ChartData d = new ChartData(xVals, ds1);
         return d;
+    }
+    
+    private String[] mLabels = new String[] { "Company A", "Company B", "Company C", "Company D", "Company E", "Company F" };
+    private String[] mXVals = new String[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec" };
+    
+    private String getLabel(int i) {
+        return mLabels[i];
+    }
+    
+    private String[] getXVals() {
+        return mXVals;
     }
 }

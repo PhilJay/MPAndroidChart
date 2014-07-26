@@ -447,23 +447,33 @@ public abstract class BarLineChartBase extends Chart {
      */
     public void prepareLegend() {
 
-        String[] labels = new String[mCt.getColorCount()];
-        int cnt = 0;
+        ArrayList<String> labels = new ArrayList<String>();
+        ArrayList<Integer> colors = new ArrayList<Integer>();
 
-        for (int i = 0; i < mCt.getColors().size(); i++) {
-            for (int j = 0; j < mCt.getColors().get(i).size(); j++) {
+        for (int i = 0; i < mOriginalData.getDataSetCount(); i++) {
 
-                if (i < mOriginalData.getDataSetCount()) {
+            ArrayList<Integer> clrs = mCt.getDataSetColors(i % mCt.getColors().size());
 
-                    labels[cnt] = mOriginalData.getDataSetByIndex(i).getLabel();
-                    cnt++;
+            for (int j = 0; j < clrs.size(); j++) {
+                
+                // if multiple colors are set for a DataSet, group them
+                if(j < clrs.size()-1) {
+                    
+                    labels.add(null);
+                } else { // add label to the last entry
+                    
+                    String label = mOriginalData.getDataSetByIndex(i).getLabel();
+                    labels.add(label);
                 }
+                
+                colors.add(clrs.get(j));               
             }
         }
 
-        Legend l = new Legend(mCt.getColorsAsArray(), labels);
+        Legend l = new Legend(colors, labels);
 
         if (mLegend != null) {
+            // apply the old legend settings to a potential new legend
             l.apply(mLegend);
         }
 
@@ -508,17 +518,16 @@ public abstract class BarLineChartBase extends Chart {
 
                 for (int i = 0; i < labels.length; i++) {
 
-                    if (labels[i] == null)
-                        break;
-
                     mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
 
                     // make a step to the left
                     posX += formToTextSpace;
 
-                    mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
-
-                    posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i]) + entrySpace;
+                    if(labels[i] != null) {
+                        
+                        mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
+                        posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i]) + entrySpace;
+                    }
                 }
 
                 break;
@@ -526,19 +535,32 @@ public abstract class BarLineChartBase extends Chart {
 
                 posX = getWidth() - mOffsetRight + formSize;
                 posY = mOffsetTop;
+                float stack = 0f;
+                boolean wasStacked = false;
 
                 for (int i = 0; i < labels.length; i++) {
 
-                    if (labels[i] == null)
-                        break;
+                    mLegend.drawForm(mDrawCanvas, posX + stack, posY, mLegendFormPaint, i);
+                    
+                    if(labels[i] != null) {
+                        
+                        if(!wasStacked) {
+                            mLegend.drawLabel(mDrawCanvas, posX + formToTextSpace, posY + textDrop,
+                                    mLegendLabelPaint, i);
+                        } else {
+                         
+                            mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop + entrySpace,
+                                    mLegendLabelPaint, i);
+                            posY += entrySpace;
+                        }
 
-                    mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
-
-                    mLegend.drawLabel(mDrawCanvas, posX + formToTextSpace, posY + textDrop,
-                            mLegendLabelPaint, i);
-
-                    // make a step down
-                    posY += entrySpace;
+                        // make a step down
+                        posY += entrySpace;
+                        stack = 0f;
+                    } else {
+                        stack += formSize + 4f;
+                        wasStacked = true;
+                    }
                 }
 
                 break;
@@ -1249,7 +1271,7 @@ public abstract class BarLineChartBase extends Chart {
     public boolean hasFixedYValues() {
         return mFixedYValues;
     }
-    
+
     /**
      * sets the color for the grid lines
      * 

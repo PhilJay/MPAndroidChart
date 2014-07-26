@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 
+import java.util.ArrayList;
+
 /**
  * Class representing the legend of the chart.
  * 
@@ -75,6 +77,28 @@ public class Legend {
     }
 
     /**
+     * Constructor. Provide colors and labels for the legend.
+     * 
+     * @param colors
+     * @param labels
+     */
+    public Legend(ArrayList<Integer> colors, ArrayList<String> labels) {
+        this();
+
+        if (colors == null || labels == null) {
+            throw new IllegalArgumentException("colors array or labels array is NULL");
+        }
+
+        if (colors.size() != labels.size()) {
+            throw new IllegalArgumentException(
+                    "colors array and labels array need to be of same size");
+        }
+
+        this.mColors = Utils.convertIntegers(colors);
+        this.mLegendLabels = Utils.convertStrings(labels);
+    }
+
+    /**
      * returns the maximum length in pixels over all legend labels + their forms
      * 
      * @param p the paint object used for rendering the text
@@ -85,9 +109,9 @@ public class Legend {
         int max = 0;
 
         for (int i = 0; i < mLegendLabels.length; i++) {
-            
-            if(mLegendLabels[i] != null) {
-                
+
+            if (mLegendLabels[i] != null) {
+
                 int length = Utils.calcTextWidth(p, mLegendLabels[i]);
 
                 if (length > max)
@@ -119,6 +143,7 @@ public class Legend {
     /**
      * Sets a custom array of labels for the legend. Make sure the labels array
      * has the same length as the colors array.
+     * 
      * @param labels
      */
     public void setLegendLabels(String[] labels) {
@@ -286,13 +311,15 @@ public class Legend {
 
         c.drawText(mLegendLabels[index], x, y, p);
     }
-    
+
     /**
-     * applies the state from the legend in the parameter to this legend (except colors and labels)
+     * applies the state from the legend in the parameter to this legend (except
+     * colors and labels)
+     * 
      * @param l
      */
     public void apply(Legend l) {
-        
+
         mPosition = l.mPosition;
         mShape = l.mShape;
         mTypeface = l.mTypeface;
