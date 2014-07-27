@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 
 import com.example.mpchartexample.R;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.utils.Legend;
+import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.Legend.LegendPosition;
 
 
 public class PieChartFrag extends SimpleFragment {
@@ -25,15 +28,21 @@ public class PieChartFrag extends SimpleFragment {
         mChart = (PieChart) v.findViewById(R.id.pieChart1);
         mChart.setDescription("");
         
-        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf");
+        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Regular.ttf");
         
         mChart.setValueTypeface(tf);
-        mChart.setCenterTextTypeface(tf);
+        mChart.setCenterTextTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
         mChart.setUsePercentValues(true);
         mChart.setCenterText("Quarterly\nRevenue");
         mChart.setCenterTextSize(23f);
         
+        // radius in percent
+        mChart.setHoleRadius(25f);
+        
         mChart.setData(generateLessData());
+        
+        Legend l = mChart.getLegend();
+        l.setPosition(LegendPosition.RIGHT_OF_CHART);
         
         return v;
     }

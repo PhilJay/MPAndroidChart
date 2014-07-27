@@ -4,11 +4,13 @@ package com.github.mikephil.charting.charts;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -20,6 +22,7 @@ import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.listener.PieChartTouchListener;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.Legend.LegendPosition;
 
 /**
  * View that represents a pie chart.
@@ -32,7 +35,7 @@ public class PieChart extends Chart {
      * rect object that represents the bounds of the piechart, needed for
      * drawing the circle
      */
-    private RectF mCircleBox;
+    private RectF mCircleBox = new RectF();
 
     /** holds the current rotation angle of the chart */
     private float mChartAngle = 0f;
@@ -54,6 +57,11 @@ public class PieChart extends Chart {
 
     /** indicates the selection distance of a pie slice */
     private float mShift = 20f;
+    
+    /**
+     * indicates the size of the hole in the center of the piechart, default: diameter / 4
+     */
+    private float mHoleRadius = 0f;
 
     /** if enabled, centertext is drawn */
     private boolean mDrawCenterText = true;
@@ -96,11 +104,11 @@ public class PieChart extends Chart {
     protected void init() {
         super.init();
 
-        // piechart has no offsets
-        mOffsetTop = 0;
-        mOffsetBottom = 0;
-        mOffsetLeft = 0;
-        mOffsetRight = 0;
+        // // piechart has no offsets
+//        mOffsetTop = 0;
+        // mOffsetBottom = 0;
+//        mOffsetLeft = 0;
+        // mOffsetRight = 0;
 
         mShift = Utils.convertDpToPixel(mShift);
 
@@ -139,13 +147,15 @@ public class PieChart extends Chart {
 
         drawValues();
 
+        drawLegend();
+
         drawDescription();
 
         drawCenterText();
 
         canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
 
-        Log.i(LOG_TAG, "DrawTime: " + (System.currentTimeMillis() - starttime) + " ms");
+        Log.i(LOG_TAG, "PieChart DrawTime: " + (System.currentTimeMillis() - starttime) + " ms");
     }
 
     /**
@@ -166,10 +176,7 @@ public class PieChart extends Chart {
         // calculate how many digits are needed
         calcFormats();
 
-        // prepareMatrix();
-
-        // Log.i(LOG_TAG, "xVals: " + mXVals.size() + ", yVals: " +
-        // mYVals.size());
+        prepareLegend();
     }
 
     @Override
@@ -179,8 +186,31 @@ public class PieChart extends Chart {
 
     @Override
     public void calculateOffsets() {
-        // TODO Auto-generated method stub
 
+        if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
+
+            mLegendLabelPaint.setTextAlign(Align.LEFT);
+
+        } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
+                || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT) {
+            mOffsetBottom = (int) (mLegendLabelPaint.getTextSize() * 3.5f);
+        }
+
+        prepareContentRect();
+
+        float scaleX = (float) ((getWidth() - mOffsetLeft - mOffsetRight) / mDeltaX);
+        float scaleY = (float) ((getHeight() - mOffsetBottom - mOffsetTop) / mDeltaY);
+
+        Matrix val = new Matrix();
+        val.postTranslate(0, -mYChartMin);
+        val.postScale(scaleX, -scaleY);
+
+        mMatrixValueToPx.set(val);
+
+        Matrix offset = new Matrix();
+        offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
+
+        mMatrixOffset.set(offset);
     }
 
     /** the decimalformat responsible for formatting the values in the chart */
@@ -253,16 +283,18 @@ public class PieChart extends Chart {
     protected void prepareContentRect() {
         super.prepareContentRect();
 
+        if(mHoleRadius <= 0) mHoleRadius = getDiameter() / 4;
+        
         int width = mContentRect.width() + mOffsetLeft + mOffsetRight;
         int height = mContentRect.height() + mOffsetTop + mOffsetBottom;
 
         float diameter = getDiameter();
-
+        
         // create the circle box that will contain the pie-chart (the bounds of
         // the pie-chart)
-        mCircleBox = new RectF(width / 2 - diameter / 2 + mShift, height / 2 - diameter / 2
-                + mShift + mOffsetTop,
-                width / 2 + diameter / 2 - mShift, height / 2 + diameter / 2 - mOffsetBottom
+        mCircleBox.set(width / 2 - diameter / 2 + mShift, height / 2 - diameter / 2
+                + mShift,
+                width / 2 + diameter / 2 - mShift, height / 2 + diameter / 2
                         - mShift);
     }
 
@@ -393,8 +425,9 @@ public class PieChart extends Chart {
 
         if (mDrawHole) {
 
-            mDrawCanvas.drawCircle(mContentRect.width() / 2, mContentRect.height() / 2,
-                    getDiameter() / 4, mHolePaint);
+            PointF c = getCenterCircleBox();
+            mDrawCanvas.drawCircle(c.x, c.y,
+                    mHoleRadius, mHolePaint);
         }
     }
 
@@ -406,21 +439,21 @@ public class PieChart extends Chart {
 
         if (mDrawCenterText) {
 
-            PointF c = getCenter();
+            PointF c = getCenterCircleBox();
 
             // get all lines from the text
             String[] lines = mCenterText.split("\n");
-            
+
             // calculate the height for each line
             float lineHeight = Utils.calcTextHeight(mCenterTextPaint, lines[0]) * 1.2f;
-            
+
             float totalheight = lineHeight * lines.length;
 
             int cnt = lines.length;
             for (int i = 0; i < lines.length; i++) {
-                
+
                 String line = lines[lines.length - i - 1];
-                
+
                 mDrawCanvas.drawText(line, c.x, c.y
                         + lineHeight * cnt - lineHeight / 2 - totalheight * 0.45f,
                         mCenterTextPaint);
@@ -436,7 +469,7 @@ public class PieChart extends Chart {
         if (!mDrawXVals && !mDrawYValues)
             return;
 
-        PointF center = getCenter();
+        PointF center = getCenterCircleBox();
 
         float off = mCircleBox.width() / 8;
 
@@ -734,6 +767,15 @@ public class PieChart extends Chart {
     }
 
     /**
+     * returns the center of the circlebox
+     * 
+     * @return
+     */
+    public PointF getCenterCircleBox() {
+        return new PointF(mCircleBox.centerX(), mCircleBox.centerY());
+    }
+
+    /**
      * returns the angle relative to the chart center for the given point on the
      * chart in degrees. The angle is always between 0 and 360°, 0° is EAST
      * 
@@ -743,7 +785,7 @@ public class PieChart extends Chart {
      */
     public float getAngleForPoint(float x, float y) {
 
-        PointF c = getCenter();
+        PointF c = getCenterCircleBox();
 
         double tx = x - c.x, ty = y - c.y;
         double length = Math.sqrt(tx * tx + ty * ty);
@@ -751,7 +793,7 @@ public class PieChart extends Chart {
 
         float angle = (float) Math.toDegrees(r);
 
-        if (x > getCenter().x)
+        if (x > c.x)
             angle = 360f - angle;
 
         // add 90° because chart starts EAST
@@ -774,7 +816,7 @@ public class PieChart extends Chart {
      */
     public float distanceToCenter(float x, float y) {
 
-        PointF c = getCenter();
+        PointF c = getCenterCircleBox();
 
         float dist = 0f;
 
@@ -815,6 +857,23 @@ public class PieChart extends Chart {
      */
     public void setCenterTextSize(float size) {
         mCenterTextPaint.setTextSize(Utils.convertDpToPixel(size));
+    }
+    
+    /**
+     * sets the radius of the hole in the center of the piechart in percent of the total piechart size, default 25%
+     * @param size
+     */
+    public void setHoleRadius(final float percent) {
+        
+        Handler h = new Handler();
+        h.post(new Runnable() {
+            
+            @Override
+            public void run() {
+                float smaller = Math.min(getWidth(), getHeight());
+                mHoleRadius = smaller / 100f * percent;
+            }
+        });
     }
 
     @Override

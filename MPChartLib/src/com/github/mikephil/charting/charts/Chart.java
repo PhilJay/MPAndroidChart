@@ -29,6 +29,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.MarkerView;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
@@ -123,6 +124,12 @@ public abstract class Chart extends View {
 
     /** this is the paint object used for drawing the data onto the chart */
     protected Paint mRenderPaint;
+    
+    /** paint for the legend labels */
+    protected Paint mLegendLabelPaint;
+
+    /** paint used for the legend forms */
+    protected Paint mLegendFormPaint;
 
     /** the colortemplate the chart uses */
     protected ColorTemplate mCt;
@@ -159,9 +166,15 @@ public abstract class Chart extends View {
 
     /** if true, thousands values are separated by a dot */
     protected boolean mSeparateTousands = true;
+    
+    /** flag indicating if the legend is drawn of not */
+    protected boolean mDrawLegend = true;
 
     /** this rectangle defines the area in which graph values can be drawn */
     protected Rect mContentRect = new Rect();
+
+    /** the legend object containing all data associated with the legend */
+    protected Legend mLegend;
 
     /** listener that is called when a value on the chart is selected */
     protected OnChartValueSelectedListener mSelectionListener;
@@ -217,6 +230,13 @@ public abstract class Chart extends View {
         mValuePaint.setColor(Color.rgb(63, 63, 63));
         mValuePaint.setTextAlign(Align.CENTER);
         mValuePaint.setTextSize(Utils.convertDpToPixel(9f));
+
+        mLegendFormPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mLegendFormPaint.setStyle(Paint.Style.FILL);
+        mLegendFormPaint.setStrokeWidth(3f);
+
+        mLegendLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mLegendLabelPaint.setTextSize(Utils.convertDpToPixel(9f));
 
         mCt = new ColorTemplate();
         mCt.addDataSetColors(ColorTemplate.VORDIPLOM_COLORS, getContext());
@@ -341,8 +361,12 @@ public abstract class Chart extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        
+        if (!mOffsetsCalculated) {
 
-        // Log.i(LOG_TAG, "DRAW-CALLED");
+            calculateOffsets();
+            mOffsetsCalculated = true;
+        }
 
         if (mDataNotSet) { // check if there is data
 
@@ -392,6 +416,47 @@ public abstract class Chart extends View {
 
 //        Log.i(LOG_TAG, "Contentrect prepared. Width: " + mContentRect.width() + ", height: "
 //                + mContentRect.height());
+    }
+    
+
+    /**
+     * Generates an automatically prepared legend depending on the DataSets in
+     * the chart and their colors.
+     */
+    public void prepareLegend() {
+
+        ArrayList<String> labels = new ArrayList<String>();
+        ArrayList<Integer> colors = new ArrayList<Integer>();
+
+        for (int i = 0; i < mOriginalData.getDataSetCount(); i++) {
+
+            ArrayList<Integer> clrs = mCt.getDataSetColors(i % mCt.getColors().size());
+            int dataSetCount = mOriginalData.getDataSetByIndex(i).getEntryCount();
+            
+            for (int j = 0; j < clrs.size() && j < dataSetCount; j++) {
+
+                // if multiple colors are set for a DataSet, group them
+                if (j < clrs.size() - 1 && j < dataSetCount - 1) {
+
+                    labels.add(null);
+                } else { // add label to the last entry
+
+                    String label = mOriginalData.getDataSetByIndex(i).getLabel();
+                    labels.add(label);
+                }
+
+                colors.add(clrs.get(j));
+            }
+        }
+
+        Legend l = new Legend(colors, labels);
+
+        if (mLegend != null) {
+            // apply the old legend settings to a potential new legend
+            l.apply(mLegend);
+        }
+
+        mLegend = l;
     }
 
     /**
@@ -497,6 +562,120 @@ public abstract class Chart extends View {
     protected void transformPathsTouch(ArrayList<Path> paths) {
         for (int i = 0; i < paths.size(); i++) {
             paths.get(i).transform(mMatrixTouch);
+        }
+    }
+    
+    /**
+     * draws the legend
+     */
+    protected void drawLegend() {
+
+        if (!mDrawLegend || mLegend == null)
+            return;
+
+        String[] labels = mLegend.getLegendLabels();
+        Typeface tf = mLegend.getTypeface();
+
+        if (tf != null)
+            mLegendLabelPaint.setTypeface(tf);
+
+        float formSize = mLegend.getFormSize();
+
+        // space between text and shape/form of entry
+        float formToTextSpace = mLegend.getFormToTextSpace();
+
+        // space between the entries
+        float entrySpace = mLegend.getEntrySpace();
+
+        float textSize = Utils.convertPixelsToDp(mLegendLabelPaint.getTextSize());
+
+        // the amount of pixels the text needs to be set down to be on the same
+        // height as the form
+        float textDrop = (textSize + formSize) / 2f;
+
+        float posX, posY;
+
+        switch (mLegend.getPosition()) {
+            case BELOW_CHART_LEFT:
+
+                posX = mOffsetLeft;
+                posY = getHeight() - mOffsetBottom + textSize * 2;
+
+                for (int i = 0; i < labels.length; i++) {
+
+                    mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
+
+                    // make a step to the left
+                    posX += formToTextSpace;
+
+                    // grouped forms have null labels
+                    if (labels[i] != null) {
+
+                        mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
+                        posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i]) + entrySpace;
+                    }
+                }
+
+                break;
+            case BELOW_CHART_RIGHT:
+
+                posX = getWidth() - mOffsetRight;
+                posY = getHeight() - mOffsetBottom + textSize * 2;
+
+                for (int i = labels.length - 1; i >= 0; i--) {
+
+                    if (labels[i] != null) {
+
+                        posX -= Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
+                        mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
+                        posX -= formToTextSpace;
+                    }
+
+                    mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
+
+                    // make a step to the left
+                    posX -= entrySpace;
+                }
+
+                break;
+            case RIGHT_OF_CHART:
+                
+                if(this instanceof BarLineChartBase) {
+                    posX = getWidth() - mOffsetRight + formSize;  
+                } else {
+                    posX = getWidth() - mLegend.getMaximumEntryLength(mLegendLabelPaint);
+                }
+                
+                posY = mOffsetTop;
+                float stack = 0f;
+                boolean wasStacked = false;
+
+                for (int i = 0; i < labels.length; i++) {
+
+                    mLegend.drawForm(mDrawCanvas, posX + stack, posY, mLegendFormPaint, i);
+
+                    if (labels[i] != null) {
+
+                        if (!wasStacked) {
+                            mLegend.drawLabel(mDrawCanvas, posX + formToTextSpace, posY + textDrop,
+                                    mLegendLabelPaint, i);
+                        } else {
+
+                            mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop + entrySpace,
+                                    mLegendLabelPaint, i);
+                            posY += entrySpace;
+                        }
+
+                        // make a step down
+                        posY += entrySpace;
+                        stack = 0f;
+                    } else {
+                        stack += formSize + 4f;
+                        wasStacked = true;
+                    }
+                }
+
+                break;
         }
     }
 
@@ -824,6 +1003,14 @@ public abstract class Chart extends View {
     public PointF getCenter() {
         return new PointF(getWidth() / 2, getHeight() / 2);
     }
+    
+    /**
+     * returns the center of the chart taking offsets under consideration
+     * @return
+     */
+    public PointF getCenterOffsets() {      
+        return new PointF(mContentRect.left + mContentRect.width() / 2 , mContentRect.top + mContentRect.height() / 2);
+    }
 
     /**
      * sets the size of the description text in pixels, min 7f, max 14f
@@ -943,6 +1130,35 @@ public abstract class Chart extends View {
     public MarkerView getMarkerView() {
         return mMarkerView;
     }
+    
+    /**
+     * set this to true to draw the legend, false if not
+     * 
+     * @param enabled
+     */
+    public void setDrawLegend(boolean enabled) {
+        mDrawLegend = enabled;
+    }
+
+    /**
+     * returns true if drawing the legend is enabled, false if not
+     * 
+     * @return
+     */
+    public boolean isDrawLegendEnabled() {
+        return mDrawLegend;
+    }
+
+    /**
+     * Returns the legend object of the chart. This method can be used to
+     * customize the automatically generated legend. IMPORTANT: this will return
+     * null if no data has been set for the chart when calling this method
+     * 
+     * @return
+     */
+    public Legend getLegend() {
+        return mLegend;
+    }
 
     /** paint for the grid lines (only line and barchart) */
     public static final int PAINT_GRID = 3;
@@ -1014,6 +1230,9 @@ public abstract class Chart extends View {
                 break;
             case PAINT_RENDER:
                 mRenderPaint = p;
+                break;
+            case PAINT_LEGEND_LABEL:
+                mLegendLabelPaint = p;
                 break;
         }
     }
@@ -1346,8 +1565,8 @@ public abstract class Chart extends View {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
 
-        Log.i(LOG_TAG, "onLayout()");
         prepareContentRect();
+        Log.i(LOG_TAG, "onLayout(), width: " + mContentRect.width() + ", height: " + mContentRect.height());
 
         if (this instanceof BarLineChartBase) {
 

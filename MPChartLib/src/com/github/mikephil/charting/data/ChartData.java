@@ -248,8 +248,7 @@ public class ChartData {
     }
 
     /**
-     * returns the dataset at the given index. If a filter is set, the filtered
-     * DataSet is returned.
+     * returns the dataset at the given index.
      * 
      * @param index
      * @return

@@ -17,6 +17,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.Legend;
+import com.github.mikephil.charting.utils.Legend.LegendPosition;
 
 import java.util.ArrayList;
 
@@ -67,6 +69,9 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
 
 		mSeekBarX.setProgress(5);
 		mSeekBarY.setProgress(100);
+		
+		Legend l = mChart.getLegend();
+		l.setPosition(LegendPosition.RIGHT_OF_CHART);
 	}
 
 	@Override
@@ -148,7 +153,7 @@ public class PieChartActivity extends Activity implements OnSeekBarChangeListene
 		for (int i = 0; i < mSeekBarX.getProgress(); i++)
 			xVals.add("Text" + (i + 1));
 		 
-		DataSet set1 = new DataSet(yVals1, "DS 1");
+		DataSet set1 = new DataSet(yVals1, "Content");
 		
         ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
         dataSets.add(set1);

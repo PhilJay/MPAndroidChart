@@ -15,9 +15,7 @@ public abstract class SimpleFragment extends Fragment {
      * generates some random data
      * @return
      */
-    protected ChartData generateData(int dataSets, float range) {
-        
-        int count = 12;
+    protected ChartData generateData(int dataSets, float range, int count) {
         
         ArrayList<DataSet> sets = new ArrayList<DataSet>();
         
@@ -26,14 +24,14 @@ public abstract class SimpleFragment extends Fragment {
             ArrayList<Entry> entries = new ArrayList<Entry>();
             
             for(int j = 0; j < count; j++) {        
-                entries.add(new Entry((float) (Math.random() * range), j));
+                entries.add(new Entry((float) (Math.random() * range) + range / 4, j));
             }
             
             DataSet ds = new DataSet(entries, getLabel(i));
             sets.add(ds);
         }
         
-        ChartData d = new ChartData(getXVals(), sets);
+        ChartData d = new ChartData(ChartData.generateXVals(0, count), sets);
         return d;
     }
     

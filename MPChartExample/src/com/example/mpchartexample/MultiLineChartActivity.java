@@ -15,6 +15,8 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.filter.Approximator;
+import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
@@ -134,6 +136,19 @@ public class MultiLineChartActivity extends Activity implements OnSeekBarChangeL
                     mChart.setDrawCircles(false);
                 else
                     mChart.setDrawCircles(true);
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleFilter: {
+
+                // the angle of filtering is 35°
+                Approximator a = new Approximator(ApproximatorType.DOUGLAS_PEUCKER, 35);
+
+                if (!mChart.isFilteringEnabled()) {
+                    mChart.enableFiltering(a);
+                } else {
+                    mChart.disableFiltering();
+                }
                 mChart.invalidate();
                 break;
             }

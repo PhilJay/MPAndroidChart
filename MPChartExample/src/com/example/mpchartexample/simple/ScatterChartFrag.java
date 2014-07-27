@@ -1,4 +1,5 @@
 package com.example.mpchartexample.simple;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,6 +11,8 @@ import com.example.mpchartexample.R;
 import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.Legend;
+import com.github.mikephil.charting.utils.Legend;
 
 
 public class ScatterChartFrag extends SimpleFragment {
@@ -27,12 +30,17 @@ public class ScatterChartFrag extends SimpleFragment {
         mChart = (ScatterChart) v.findViewById(R.id.scatterChart1);
         mChart.setDrawYValues(false);
         mChart.setDescription("");
+        mChart.setYLabelCount(6);
         
         ColorTemplate ct = new ColorTemplate();
         ct.addDataSetColors(ColorTemplate.VORDIPLOM_COLORS, getActivity());
-        ct.addDataSetColors(new int[] { R.color.pastel_1, R.color.pastel_2, R.color.pastel_4, R.color.pastel_5 } , getActivity());
+        ct.addDataSetColors(new int[] { R.color.colorful_1, R.color.colorful_2, R.color.colorful_3, R.color.colorful_4 } , getActivity());
         
         mChart.setColorTemplate(ct);
+        
+        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"OpenSans-Light.ttf");
+        
+        mChart.setYLabelTypeface(tf);
         
         MyMarkerView mv = new MyMarkerView(getActivity(), R.layout.custom_marker_view);
         mv.setOffsets(-mv.getMeasuredWidth() / 2, -mv.getMeasuredHeight());
@@ -50,7 +58,10 @@ public class ScatterChartFrag extends SimpleFragment {
         mChart.setDrawXLabels(false);
         mChart.setUnit(" $");
         
-        mChart.setData(generateData(2, 10000));
+        mChart.setData(generateData(3, 10000, 100));
+        
+        Legend l = mChart.getLegend();
+        l.setTypeface(tf);
         
         return v;
     }

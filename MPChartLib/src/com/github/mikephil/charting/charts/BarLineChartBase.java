@@ -22,7 +22,6 @@ import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.interfaces.OnDrawListener;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.utils.Highlight;
-import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.SelInfo;
@@ -139,12 +138,6 @@ public abstract class BarLineChartBase extends Chart {
     /** paint used for highlighting values */
     protected Paint mHighlightPaint;
 
-    /** paint for the legend labels */
-    protected Paint mLegendLabelPaint;
-
-    /** paint used for the legend forms */
-    protected Paint mLegendFormPaint;
-
     /**
      * if set to true, the highlight indicator (lines for linechart, dark bar
      * for barchart) will be drawn upon selecting values.
@@ -174,10 +167,7 @@ public abstract class BarLineChartBase extends Chart {
 
     /** flag indicating if the grid background should be drawn or not */
     protected boolean mDrawGridBackground = true;
-
-    /** flag indicating if the legend is drawn of not */
-    protected boolean mDrawLegend = true;
-
+    
     /** the listener for user drawing on the chart */
     protected OnDrawListener mDrawListener;
 
@@ -189,9 +179,6 @@ public abstract class BarLineChartBase extends Chart {
 
     /** the approximator object used for data filtering */
     private Approximator mApproximator;
-
-    /** the legend object containing all data associated with the legend */
-    protected Legend mLegend;
 
     public BarLineChartBase(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -242,13 +229,6 @@ public abstract class BarLineChartBase extends Chart {
         mHighlightPaint.setStyle(Paint.Style.STROKE);
         mHighlightPaint.setStrokeWidth(2f);
         mHighlightPaint.setColor(Color.rgb(255, 187, 115));
-
-        mLegendFormPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mLegendFormPaint.setStyle(Paint.Style.FILL);
-        mLegendFormPaint.setStrokeWidth(3f);
-
-        mLegendLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mLegendLabelPaint.setTextSize(Utils.convertDpToPixel(9f));
     }
 
     @Override
@@ -259,12 +239,6 @@ public abstract class BarLineChartBase extends Chart {
             return;
 
         long starttime = System.currentTimeMillis();
-
-        if (!mOffsetsCalculated) {
-
-            calculateOffsets();
-            mOffsetsCalculated = true;
-        }
 
         // if data filtering is enabled
         if (mFilterData) {
@@ -437,154 +411,6 @@ public abstract class BarLineChartBase extends Chart {
         // calc delta
         mYChartMax = mYChartMax + space;
         mDeltaY = Math.abs(mYChartMax - mYChartMin);
-    }
-
-    /**
-     * Generates an automatically prepared legend depending on the DataSets in
-     * the chart and their colors.
-     */
-    public void prepareLegend() {
-
-        ArrayList<String> labels = new ArrayList<String>();
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-
-        for (int i = 0; i < mOriginalData.getDataSetCount(); i++) {
-
-            ArrayList<Integer> clrs = mCt.getDataSetColors(i % mCt.getColors().size());
-
-            for (int j = 0; j < clrs.size(); j++) {
-
-                // if multiple colors are set for a DataSet, group them
-                if (j < clrs.size() - 1) {
-
-                    labels.add(null);
-                } else { // add label to the last entry
-
-                    String label = mOriginalData.getDataSetByIndex(i).getLabel();
-                    labels.add(label);
-                }
-
-                colors.add(clrs.get(j));
-            }
-        }
-
-        Legend l = new Legend(colors, labels);
-
-        if (mLegend != null) {
-            // apply the old legend settings to a potential new legend
-            l.apply(mLegend);
-        }
-
-        mLegend = l;
-    }
-
-    /**
-     * draws the legend
-     */
-    protected void drawLegend() {
-
-        if (!mDrawLegend || mLegend == null)
-            return;
-
-        String[] labels = mLegend.getLegendLabels();
-        Typeface tf = mLegend.getTypeface();
-
-        if (tf != null)
-            mLegendLabelPaint.setTypeface(tf);
-
-        float formSize = mLegend.getFormSize();
-
-        // space between text and shape/form of entry
-        float formToTextSpace = mLegend.getFormToTextSpace();
-
-        // space between the entries
-        float entrySpace = mLegend.getEntrySpace();
-
-        float textSize = Utils.convertPixelsToDp(mLegendLabelPaint.getTextSize());
-
-        // the amount of pixels the text needs to be set down to be on the same
-        // height as the form
-        float textDrop = (textSize + formSize) / 2f;
-
-        float posX, posY;
-
-        switch (mLegend.getPosition()) {
-            case BELOW_CHART_LEFT:
-
-                posX = mOffsetLeft;
-                posY = getHeight() - mOffsetBottom + textSize * 2;
-
-                for (int i = 0; i < labels.length; i++) {
-
-                    mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
-
-                    // make a step to the left
-                    posX += formToTextSpace;
-
-                    // grouped forms have null labels
-                    if (labels[i] != null) {
-
-                        mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
-                        posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i]) + entrySpace;
-                    }
-                }
-
-                break;
-            case BELOW_CHART_RIGHT:
-
-                posX = getWidth() - mOffsetRight;
-                posY = getHeight() - mOffsetBottom + textSize * 2;
-
-                for (int i = labels.length - 1; i >= 0; i--) {
-
-                    if (labels[i] != null) {
-
-                        posX -= Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
-                        mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
-                        posX -= formToTextSpace;
-                    }
-
-                    mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
-
-                    // make a step to the left
-                    posX -= entrySpace;
-                }
-
-                break;
-            case RIGHT_OF_CHART:
-
-                posX = getWidth() - mOffsetRight + formSize;
-                posY = mOffsetTop;
-                float stack = 0f;
-                boolean wasStacked = false;
-
-                for (int i = 0; i < labels.length; i++) {
-
-                    mLegend.drawForm(mDrawCanvas, posX + stack, posY, mLegendFormPaint, i);
-
-                    if (labels[i] != null) {
-
-                        if (!wasStacked) {
-                            mLegend.drawLabel(mDrawCanvas, posX + formToTextSpace, posY + textDrop,
-                                    mLegendLabelPaint, i);
-                        } else {
-
-                            mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop + entrySpace,
-                                    mLegendLabelPaint, i);
-                            posY += entrySpace;
-                        }
-
-                        // make a step down
-                        posY += entrySpace;
-                        stack = 0f;
-                    } else {
-                        stack += formSize + 4f;
-                        wasStacked = true;
-                    }
-                }
-
-                break;
-        }
     }
 
     /**
@@ -1425,35 +1251,6 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * set this to true to draw the legend, false if not
-     * 
-     * @param enabled
-     */
-    public void setDrawLegend(boolean enabled) {
-        mDrawLegend = enabled;
-    }
-
-    /**
-     * returns true if drawing the legend is enabled, false if not
-     * 
-     * @return
-     */
-    public boolean isDrawLegendEnabled() {
-        return mDrawLegend;
-    }
-
-    /**
-     * Returns the legend object of the chart. This method can be used to
-     * customize the automatically generated legend. IMPORTANT: this will return
-     * null if no data has been set for the chart when calling this method
-     * 
-     * @return
-     */
-    public Legend getLegend() {
-        return mLegend;
-    }
-
-    /**
      * sets the width of the grid lines (min 0.1f, max = 3f)
      * 
      * @param width
@@ -1910,9 +1707,6 @@ public abstract class BarLineChartBase extends Chart {
                 break;
             case PAINT_YLABEL:
                 mYLabelPaint = p;
-                break;
-            case PAINT_LEGEND_LABEL:
-                mLegendLabelPaint = p;
                 break;
         }
     }
