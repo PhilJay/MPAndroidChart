@@ -28,11 +28,11 @@ Features
  - **LineChart (single DataSet)**
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart.png)
  - **LineChart (multiple DataSets)**
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart_multiline.png)
- - **LineChart (multiple DataSets)**
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart_multiline_color_variations.png)
- - **LineChart (with legend)**
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart_legend.png)
+ - **LineChart (with legend, simple design)**
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_linechart4.png)
+ - **LineChart (with legend, simple design)**
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_linechart3.png)
 
 
  - **BarChart2D (single DataSet)**
@@ -44,13 +44,21 @@ Features
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart2d_multi_dataset_date1.png)
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart2d_multi_dataset.png)
 
+ - **BarChart2D (with legend, simple design)**
+
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_barchart3.png)
+
  - **BarChart3D**
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart3d.png)
 
- - **PieChart**
+ - **PieChart (selected)**
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/piechart_selected.png)
+
+ - **PieChart**
+
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_piechart1.png)
 
  - **ScatterChart** (with squares, triangles, circles, ...)
 
