@@ -75,12 +75,14 @@ public abstract class SimpleFragment extends Fragment {
         ArrayList<DataSet> sets = new ArrayList<DataSet>();
         
         // load DataSets from textfiles in assets folder
-        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "n.txt"));
-        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "nlogn.txt"));
-        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "square.txt"));
-        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "three.txt"));
+        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "sine.txt"));
+        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "cosine.txt"));
+//        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "n.txt"));
+//        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "nlogn.txt"));
+//        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "square.txt"));
+//        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "three.txt"));
         
-        ChartData d = new ChartData(ChartData.generateXVals(0, 101),  sets);
+        ChartData d = new ChartData(ChartData.generateXVals(0, 752),  sets);
         return d;
     }
     

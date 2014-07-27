@@ -378,7 +378,7 @@ public abstract class Chart extends View {
         mMatrixOffset.reset();
         mMatrixOffset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
 
-        Log.i(LOG_TAG, "Matrices prepared.");
+//        Log.i(LOG_TAG, "Matrices prepared.");
     }
 
     /**
@@ -390,8 +390,8 @@ public abstract class Chart extends View {
                 getMeasuredHeight()
                         - mOffsetBottom);
 
-        Log.i(LOG_TAG, "Contentrect prepared. Width: " + mContentRect.width() + ", height: "
-                + mContentRect.height());
+//        Log.i(LOG_TAG, "Contentrect prepared. Width: " + mContentRect.width() + ", height: "
+//                + mContentRect.height());
     }
 
     /**

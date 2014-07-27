@@ -32,6 +32,7 @@ public class LineChartFrag extends SimpleFragment {
         ct.addColorsForDataSets(ColorTemplate.VORDIPLOM_COLORS, getActivity());
         
         mChart.setColorTemplate(ct);
+        mChart.setDrawCircles(false);
          
         mChart.setDescription("");
         mChart.setDrawFilled(false);
@@ -46,7 +47,7 @@ public class LineChartFrag extends SimpleFragment {
         mChart.setDrawYValues(false);
         mChart.setStartAtZero(false);
         
-//        mChart.setYRange(-1f, 65f, false);
+        mChart.setYRange(-1f, 1f, false);
         
         mChart.setData(getComplexity());
         

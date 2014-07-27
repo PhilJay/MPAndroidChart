@@ -3,6 +3,7 @@ package com.github.mikephil.charting.utils;
 
 import android.content.res.AssetManager;
 import android.os.Environment;
+import android.util.Log;
 
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -16,11 +17,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+/**
+ * Utilities class for interacting with the assets and the devices storage to
+ * load and save DataSet objects from and to .txt files.
+ * 
+ * @author Philipp Jahoda
+ */
 public class FileUtils {
 
+    private static final String LOG = "MPChart-FileUtils";
+
     /**
-     * Loads a DataSet from a textfile from the sd-card. Textfile syntax
-     * is: labelstring<linebreak>500.99#0<linebreak>350.80#1<linebreak>and so on...
+     * Loads a DataSet from a textfile from the sd-card. Textfile syntax is:
+     * labelstring<linebreak>500.99#0<linebreak>350.80#1<linebreak>and so on...
      * 
      * @param path the name of the file on the sd card (path if needed)
      * @return
@@ -48,7 +57,7 @@ public class FileUtils {
                 entries.add(new Entry(Float.valueOf(split[0]), Integer.valueOf(split[1])));
             }
         } catch (IOException e) {
-            // You'll need to add proper error handling here
+            Log.e(LOG, e.toString());
         }
 
         DataSet ds = new DataSet(entries, label);
@@ -57,7 +66,7 @@ public class FileUtils {
 
     /**
      * Loads a DataSet from a textfile from the assets folder. Textfile syntax
-     * is: labelstring<linebreak>500.99#0<linebreak>350.80#1<linebreak>and so on...
+     * is: labelstring|newline|500.99#03|newline|50.80#1|newline|and so on...
      * 
      * @param am
      * @param path the name of the file in the assets folder (path if needed)
@@ -80,17 +89,19 @@ public class FileUtils {
             while (line != null) {
                 // process line
                 String[] split = line.split("#");
-                entries.add(new Entry(Float.valueOf(split[0]), Integer.valueOf(split[1])));
+                entries.add(new Entry(Float.parseFloat(split[0]), Integer.parseInt(split[1])));
                 line = reader.readLine();
             }
         } catch (IOException e) {
-            // log the exception
+            Log.e(LOG, e.toString());
+            
         } finally {
+            
             if (reader != null) {
                 try {
                     reader.close();
                 } catch (IOException e) {
-                    // log the exception
+                    Log.e(LOG, e.toString());
                 }
             }
         }
@@ -101,47 +112,44 @@ public class FileUtils {
 
     /**
      * Saves a DataSet to the specified location on the sdcard
+     * 
      * @param ds
      * @param path
      */
     public static void saveToSdCard(DataSet ds, String path) {
-        
+
         File sdcard = Environment.getExternalStorageDirectory();
-        
+
         File saved = new File(sdcard, path);
         if (!saved.exists())
         {
-           try
-           {
-              saved.createNewFile();
-           } 
-           catch (IOException e)
-           {
-              // TODO Auto-generated catch block
-              e.printStackTrace();
-           }
+            try
+            {
+                saved.createNewFile();
+            } catch (IOException e)
+            {
+                Log.e(LOG, e.toString());
+            }
         }
         try
         {
-           //BufferedWriter for performance, true to set append to file flag
-           BufferedWriter buf = new BufferedWriter(new FileWriter(saved, true)); 
-           buf.append(ds.getLabel());
-           buf.newLine();
-           
-           ArrayList<Entry> entries = ds.getYVals();
-           
-           for(Entry e : entries) {
-               
-               buf.append(e.getVal() + "#" + e.getXIndex());
-               buf.newLine();
-           }
-           
-           buf.close();
-        }
-        catch (IOException e)
+            // BufferedWriter for performance, true to set append to file flag
+            BufferedWriter buf = new BufferedWriter(new FileWriter(saved, true));
+            buf.append(ds.getLabel());
+            buf.newLine();
+
+            ArrayList<Entry> entries = ds.getYVals();
+
+            for (Entry e : entries) {
+
+                buf.append(e.getVal() + "#" + e.getXIndex());
+                buf.newLine();
+            }
+
+            buf.close();
+        } catch (IOException e)
         {
-           // TODO Auto-generated catch block
-           e.printStackTrace();
+            Log.e(LOG, e.toString());
         }
     }
 }

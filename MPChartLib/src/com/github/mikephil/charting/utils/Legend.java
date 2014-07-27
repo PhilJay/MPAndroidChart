@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Legend {
 
     public enum LegendPosition {
-        LEFT_OF_CHART, BELOW_CHART_LEFT, BELOW_CHART_RIGHT
+        RIGHT_OF_CHART, BELOW_CHART_LEFT, BELOW_CHART_RIGHT
     }
 
     public enum LegendForm {

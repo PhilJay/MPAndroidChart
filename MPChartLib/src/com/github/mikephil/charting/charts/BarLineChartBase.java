@@ -352,17 +352,14 @@ public abstract class BarLineChartBase extends Chart {
     @Override
     public void calculateOffsets() {
 
-        if (mDrawLegend) {
+        if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
 
-            if (mLegend.getPosition() == LegendPosition.LEFT_OF_CHART) {
+            mOffsetRight = mLegend.getMaximumEntryLength(mLegendLabelPaint);
+            mLegendLabelPaint.setTextAlign(Align.LEFT);
 
-                mOffsetRight = mLegend.getMaximumEntryLength(mLegendLabelPaint);
-                mLegendLabelPaint.setTextAlign(Align.LEFT);
-
-            } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
-                    || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT) {
-                mOffsetBottom = (int) (mLegendLabelPaint.getTextSize() * 3.5f);
-            }
+        } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
+                || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT) {
+            mOffsetBottom = (int) (mLegendLabelPaint.getTextSize() * 3.5f);
         }
 
         mOffsetLeft = Utils.calcTextWidth(mYLabelPaint, (int) mDeltaY + ".0000" + mUnit);
@@ -443,8 +440,8 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * generates an automatically prepared legend depending on the DataSets in
-     * the chart
+     * Generates an automatically prepared legend depending on the DataSets in
+     * the chart and their colors.
      */
     public void prepareLegend() {
 
@@ -524,6 +521,7 @@ public abstract class BarLineChartBase extends Chart {
                     // make a step to the left
                     posX += formToTextSpace;
 
+                    // grouped forms have null labels
                     if (labels[i] != null) {
 
                         mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
@@ -538,7 +536,7 @@ public abstract class BarLineChartBase extends Chart {
                 posY = getHeight() - mOffsetBottom + textSize * 2;
 
                 for (int i = labels.length - 1; i >= 0; i--) {
-                    
+
                     if (labels[i] != null) {
 
                         posX -= Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
@@ -547,13 +545,13 @@ public abstract class BarLineChartBase extends Chart {
                     }
 
                     mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
-                    
+
                     // make a step to the left
                     posX -= entrySpace;
                 }
 
                 break;
-            case LEFT_OF_CHART:
+            case RIGHT_OF_CHART:
 
                 posX = getWidth() - mOffsetRight + formSize;
                 posY = mOffsetTop;
@@ -1290,6 +1288,12 @@ public abstract class BarLineChartBase extends Chart {
         return mAdjustXAxisLabels;
     }
 
+    /**
+     * if this returns true, the chart has a fixed range on the y-axis that is
+     * not dependant on the actual data in the chart
+     * 
+     * @return
+     */
     public boolean hasFixedYValues() {
         return mFixedYValues;
     }
