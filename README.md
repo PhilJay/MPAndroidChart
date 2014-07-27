@@ -19,7 +19,8 @@ Features
  - Dragging (with touch-gesture)
  - Finger drawing (draw values into the chart with touch-gesture)
  - Highlighting values (with customizeable popup-views)
- - Save chart to SD-Card
+ - Save chart to SD-Card (as image, or as .txt file)
+ - Read .txt file chart-data
  - Predefined color templates
  - Legends (generated automatically, customizeable)
  - Fully customizeable (paints, typefaces, legends, colors, background, gestures, dashed lines, ...)
@@ -35,6 +36,10 @@ Features
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_linechart3.png)
 
 
+ - **BarChart2D (with legend, simple design)**
+
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_barchart3.png)
+
  - **BarChart2D (single DataSet)**
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart2d.png)
@@ -44,9 +49,6 @@ Features
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart2d_multi_dataset_date1.png)
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart2d_multi_dataset.png)
 
- - **BarChart2D (with legend, simple design)**
-
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_barchart3.png)
 
  - **BarChart3D**
 
