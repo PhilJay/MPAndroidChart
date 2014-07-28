@@ -11,6 +11,8 @@ If you are having questions or problems, feel free to contact me, **create issue
 
 Forks, pull-requests or any other forms of contribution are always welcome.
 
+For a brief overview of all features, please download the [**MPAndroidChart Example .apk**](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample) from the **PlayStore**.
+
 Features
 =======
 
@@ -67,7 +69,9 @@ Features
 Usage
 =======
 
-Rely on the **"MPChartExample"** folder check out the examples in that project. Furthermore, here is some code to get started.
+Rely on the **"MPChartExample"** folder and check out the examples in that project. The example project is also  [**available in the Google PlayStore**](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample). 
+
+Furthermore, here is some code to get started.
 
 **Setup:**
 
