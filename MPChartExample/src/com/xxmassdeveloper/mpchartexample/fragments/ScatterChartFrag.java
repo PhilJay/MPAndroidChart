@@ -1,4 +1,4 @@
-package com.example.mpchartexample.simple;
+package com.xxmassdeveloper.mpchartexample.fragments;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,13 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.mpchartexample.MyMarkerView;
-import com.example.mpchartexample.R;
 import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.Legend;
+import com.xxmassdeveloper.mpchartexample.MyMarkerView;
+import com.xxmassdeveloper.mpchartexample.R;
 
 
 public class ScatterChartFrag extends SimpleFragment {

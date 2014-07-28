@@ -1,4 +1,4 @@
-package com.example.mpchartexample.simple;
+package com.xxmassdeveloper.mpchartexample.fragments;
 
 import android.support.v4.app.Fragment;
 

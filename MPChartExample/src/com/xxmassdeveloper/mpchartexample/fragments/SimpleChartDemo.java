@@ -1,5 +1,5 @@
 
-package com.example.mpchartexample.simple;
+package com.xxmassdeveloper.mpchartexample.fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,7 +12,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.WindowManager;
 
-import com.example.mpchartexample.R;
+import com.xxmassdeveloper.mpchartexample.R;
 
 /**
  * Demonstrates how to keep your charts straight forward, simple and beautiful with the MPAndroidChart library.

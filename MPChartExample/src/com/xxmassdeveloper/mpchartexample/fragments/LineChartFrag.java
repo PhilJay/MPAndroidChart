@@ -1,19 +1,15 @@
-package com.example.mpchartexample.simple;
+package com.xxmassdeveloper.mpchartexample.fragments;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.mpchartexample.MyMarkerView;
-import com.example.mpchartexample.R;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Legend;
+import com.xxmassdeveloper.mpchartexample.R;
 
 
 public class LineChartFrag extends SimpleFragment {
@@ -39,8 +35,9 @@ public class LineChartFrag extends SimpleFragment {
         mChart.setDescription("");
         mChart.setDrawFilled(false);
         mChart.setDrawYValues(false);
-        mChart.setLineWidth(3.5f);
-        mChart.setCircleSize(5f);
+        mChart.setLineWidth(4f);
+//        mChart.setCircleSize(5f);
+        mChart.setDrawCircles(false);
         mChart.setHighlightIndicatorEnabled(false); 
         mChart.setDrawBorder(false);
         mChart.setDrawGridBackground(false);
@@ -50,7 +47,6 @@ public class LineChartFrag extends SimpleFragment {
         mChart.setStartAtZero(false);
         
         mChart.setYRange(-1f, 1f, false);
-        mChart.setDrawCircles(true);
         
         mChart.setData(getComplexity());
         

@@ -1,14 +1,17 @@
-package com.example.mpchartexample;
+package com.xxmassdeveloper.mpchartexample;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import com.example.mpchartexample.simple.SimpleChartDemo;
+import com.xxmassdeveloper.mpchartexample.fragments.SimpleChartDemo;
 
 public class MainActivity extends Activity implements OnClickListener {
 
@@ -76,4 +79,39 @@ public class MainActivity extends Activity implements OnClickListener {
             break;
 		}
 	}
+	
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        
+        Intent i = null;       
+        
+        switch(item.getItemId()) {
+            case R.id.viewGithub:
+                i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("https://github.com/PhilJay/MPAndroidChart"));
+                startActivity(i);
+                break;
+            case R.id.report:
+                i = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                        "mailto","philjay.librarysup@gmail.com", null));
+                i.putExtra(Intent.EXTRA_SUBJECT, "MPAndroidChart Issue");
+                i.putExtra(Intent.EXTRA_TEXT, "Your error report here...");
+                startActivity(Intent.createChooser(i, "Report Problem"));
+                break;
+            case R.id.website:
+                i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("http://www.xxmassdeveloper.com"));
+                startActivity(i);
+                break;
+        }
+        
+        return true;
+    }
+
 }

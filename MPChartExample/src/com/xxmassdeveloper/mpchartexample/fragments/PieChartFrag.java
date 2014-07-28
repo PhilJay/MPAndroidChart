@@ -1,4 +1,4 @@
-package com.example.mpchartexample.simple;
+package com.xxmassdeveloper.mpchartexample.fragments;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,11 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.mpchartexample.R;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
+import com.xxmassdeveloper.mpchartexample.R;
 
 
 public class PieChartFrag extends SimpleFragment {
@@ -39,6 +38,10 @@ public class PieChartFrag extends SimpleFragment {
         // radius of the center hole in percent of maximum radius
         mChart.setHoleRadius(45f); 
         mChart.setTransparentCircleRadius(50f);
+        
+        // enable / disable drawing of x- and y-values
+//        mChart.setDrawYValues(false);
+//        mChart.setDrawXValues(false);
         
         mChart.setData(generateLessData());
         

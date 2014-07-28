@@ -1,5 +1,5 @@
 
-package com.example.mpchartexample;
+package com.xxmassdeveloper.mpchartexample;
 
 import android.content.Context;
 import android.widget.TextView;

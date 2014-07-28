@@ -1,4 +1,4 @@
-package com.example.mpchartexample;
+package com.xxmassdeveloper.mpchartexample;
 
 import android.app.Activity;
 import android.os.Bundle;
