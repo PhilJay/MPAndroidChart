@@ -19,7 +19,8 @@ Features
  - Dragging (with touch-gesture)
  - Finger drawing (draw values into the chart with touch-gesture)
  - Highlighting values (with customizeable popup-views)
- - Save chart to SD-Card
+ - Save chart to SD-Card (as image, or as .txt file)
+ - Read .txt file chart-data
  - Predefined color templates
  - Legends (generated automatically, customizeable)
  - Fully customizeable (paints, typefaces, legends, colors, background, gestures, dashed lines, ...)
@@ -28,12 +29,16 @@ Features
  - **LineChart (single DataSet)**
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart.png)
  - **LineChart (multiple DataSets)**
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart_multiline.png)
- - **LineChart (multiple DataSets)**
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart_multiline_color_variations.png)
- - **LineChart (with legend)**
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart_legend.png)
+ - **LineChart (with legend, simple design)**
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_linechart4.png)
+ - **LineChart (with legend, simple design)**
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_linechart3.png)
 
+
+ - **BarChart2D (with legend, simple design)**
+
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_barchart3.png)
 
  - **BarChart2D (single DataSet)**
 
@@ -44,13 +49,18 @@ Features
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart2d_multi_dataset_date1.png)
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart2d_multi_dataset.png)
 
+
  - **BarChart3D**
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart3d.png)
 
- - **PieChart**
+ - **PieChart (selected)**
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/piechart_selected.png)
+
+ - **PieChart**
+
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_piechart1.png)
 
  - **ScatterChart** (with squares, triangles, circles, ...)
 
