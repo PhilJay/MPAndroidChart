@@ -7,22 +7,40 @@ Remember: *It's all about the looks.*
 
 For immediate access to our latest updates, please checkout the **experimental** branch. Beware that code on the experimental branch is not finished for release yet and might be incomplete or contain bugs.
 
+If you are having questions or problems, feel free to contact me, **create issues** for this project on GitHub or open questions on [**stackoverflow**](https://stackoverflow.com) with the `mpandroidchart` tag.
+
+Forks, pull-requests or any other forms of contribution are always welcome.
+
+For a brief overview of all features, please download the [**MPAndroidChart Example .apk**](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample) from the **PlayStore**.
+
 Features
 =======
 
 **Core features:**
- - Scaling (with touch-gesture)
+ - Scaling on both axes (with touch-gesture, axes separately or pinch-zoom)
  - Dragging (with touch-gesture)
- - Highlighting values 
- - Save chart to SD-Card
+ - Finger drawing (draw values into the chart with touch-gesture)
+ - Highlighting values (with customizeable popup-views)
+ - Save chart to SD-Card (as image, or as .txt file)
+ - Read .txt file chart-data
  - Predefined color templates
- - Fully customizeable (paints, typefaces, legends, colors, background, gestures, ...)
+ - Legends (generated automatically, customizeable)
+ - Fully customizeable (paints, typefaces, legends, colors, background, gestures, dashed lines, ...)
  
 **Chart types:**
  - **LineChart (single DataSet)**
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart.png)
  - **LineChart (multiple DataSets)**
-![alt tag](https://raw.github.com/PhilJay/MPChart/experimental/screenshots/linechart_multiline.png)
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart_multiline_color_variations.png)
+ - **LineChart (with legend, simple design)**
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_linechart4.png)
+ - **LineChart (with legend, simple design)**
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_linechart3.png)
+
+
+ - **BarChart2D (with legend, simple design)**
+
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_barchart3.png)
 
  - **BarChart2D (single DataSet)**
 
@@ -33,26 +51,33 @@ Features
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart2d_multi_dataset_date1.png)
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart2d_multi_dataset.png)
 
+
  - **BarChart3D**
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart3d.png)
 
- - **PieChart**
+ - **PieChart (with selection, ...)**
 
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/piechart_selected.png)
+![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/simpledesign_piechart1.png)
+
+ - **ScatterChart** (with squares, triangles, circles, ... and more)
+
+![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/scatterchart.png)
 
 
 
 Usage
 =======
 
-Rely on the **"MPChartExample"** folder check out the examples in that project. Furthermore, here is some code to get started.
+Rely on the **"MPChartExample"** folder and check out the examples in that project. The example project is also  [**available in the Google PlayStore**](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample). 
+
+Furthermore, here is some code to get started.
 
 **Setup:**
 
 For using a <code>LineChart, BarChart or PieChart </code>, define it in .xml:
 ```xml
-    <com.github.mikephil.charting.LineChart
+    <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -97,6 +122,8 @@ or create it in code (and then add it to a layout):
 **Other:**
  - <code>saveToGallery(String title)</code>: Saves the current chart state as an image to the gallery.
  - <code>saveToPath(String title, String pathOnSD)</code>: Saves the current chart state as an image to the specified path.
+ - <code>setScaleMinima(float x, float y)</code>: Sets the minimum scale factors for x- and y-axis. If set for example to 3f, the user will not be able to fully zoom out.
+ - <code>centerViewPort(int xIndex, float val)</code>: This method makes it possible to aim the center of the view (what you can see from the chart) to a specific position inside the chart, described by the index on the x-axis and the value on the y-axis. This also works very well in combination with the `setScaleMinima(...)` method.
 
 **Adding data:**
 
@@ -117,10 +144,10 @@ Of course, it is also possible to provide just one <code>DataSet</code> object c
 
 So how to setup a <code>DataSet</code> object?
 ```java
-    public DataSet(ArrayList<Entry> yVals, int type) { ... }
+    public DataSet(ArrayList<Entry> yVals, String label) { ... }
 ```
 
-When looking at the constructor, it is visible that the <code>DataSet</code> needs an <code>ArrayList</code> of type <code>Entry</code> and an integer value for the type. The type integer value can be chosen freely and can be used to identify the <code>DataSet</code> amongst other <code>DataSet</code> objects in the <code>ChartData</code> object. A possible type in this scenario could be a integer constant COMPANY_1.
+When looking at the constructor, it is visible that the <code>DataSet</code> needs an <code>ArrayList</code> of type <code>Entry</code> and a `String` used to describe the `DataSet` and as a label for the `Legend`. Furthermore this label can be used to find the `DataSet` amongst other `DataSet` objects in the `Chartdata` object.
 
 The <code>ArrayList</code> of type <code>Entry</code> encapsulates all values of the chart. A <code>Entry</code> object is an additional wrapper around a value and holds the value itself, and it's position on the x-axis (the index inside the <code>ArrayList</code> of <code>String</code> of the <code>CharData</code> object the value is mapped to):
 ```java
@@ -153,8 +180,8 @@ Then, fill the lists with <code>Entry</code> objects. Make sure the entry object
 
 Now that we have our lists of <code>Entry</code> objects, the <code>DataSet</code> objects can be created:
 ```java
-    DataSet setComp1 = new DataSet(valsComp1, COMPANY_1); // COMPANY_1 is a constant integer and can be chosen freely
-    DataSet setComp2 = new DataSet(valsComp2, COMPANY_2);
+    DataSet setComp1 = new DataSet(valsComp1, "company 1");
+    DataSet setComp2 = new DataSet(valsComp2, "company 2");
 ```
 Last but not least, we create a list of <code>DataSets</code> and a list of x legend entries and build our <code>ChartData</code> object:
 
@@ -198,13 +225,33 @@ It would also be possible to let each <code>DataSet</code> have variations of a 
     chart.setColorTemplate(ct);
 ```
 
+**Displaying legends:**
+
+By default, all subclasses of `BarLineChartBase` **support legends** and will automatically generate and draw a legend after setting data for the chart.
+
+The number of entries the automatically generated legend contains depends on the number of used colors as well as on the number of `DataSets` used in the chart. The labels of the `Legend` depend on the labels set for the used `DataSet` objects in the chart. If no labels for the `DataSet` objects have been specified, the chart will automatically generate them.
+
+For customizeing the `Legend`, use you can retreive the `Legend` object from the chart **after setting data**.
+
+```java
+    // setting data...
+    chart.setData(....);
+    
+    Legend l = chart.getLegend();
+    l.setFormSize(10f);
+    l.setForm(LegendForm.CIRCLE);
+    l.setPosition(LegendPosition.LEFT_OF_CHART);
+    l.setTypeface(...);
+    // and many more...
+```
+
 More documentation and example code coming soon.
 
 
 
 License
 =======
-Copyright [2014] [Philipp Jahoda]
+Copyright 2014 Philipp Jahoda
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
