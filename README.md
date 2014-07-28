@@ -54,11 +54,7 @@ Features
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart3d.png)
 
- - **PieChart (selected)**
-
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/piechart_selected.png)
-
- - **PieChart**
+ - **PieChart (with selection, ...)**
 
 ![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/simpledesign_piechart1.png)
 
