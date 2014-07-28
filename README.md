@@ -62,7 +62,7 @@ Features
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_piechart1.png)
 
- - **ScatterChart** (with squares, triangles, circles, ...)
+ - **ScatterChart** (with squares, triangles, circles, ... and more)
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/scatterchart.png)
 
