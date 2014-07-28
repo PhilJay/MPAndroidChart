@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import com.example.mpchartexample.MyMarkerView;
 import com.example.mpchartexample.R;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.filter.Approximator;
+import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Legend;
 
@@ -48,6 +50,7 @@ public class LineChartFrag extends SimpleFragment {
         mChart.setStartAtZero(false);
         
         mChart.setYRange(-1f, 1f, false);
+        mChart.setDrawCircles(true);
         
         mChart.setData(getComplexity());
         

@@ -36,6 +36,8 @@ public class LineChart extends BarLineChartBase {
 
     /** paint for the inner circle of the value indicators */
     protected Paint mCirclePaintInner;
+    
+    protected boolean mDrawSpline = false;
 
     public LineChart(Context context) {
         super(context);
@@ -111,30 +113,54 @@ public class LineChart extends BarLineChartBase {
             ArrayList<Entry> entries = dataSet.getYVals();
 
             float[] valuePoints = generateTransformedValues(entries, 0f);
-
+            
             // Get the colors for the DataSet at the current index. If the index
             // is out of bounds, reuse DataSet colors.
             ArrayList<Integer> colors = mCt.getDataSetColors(i % mCt.getColors().size());
 
             Paint paint = mRenderPaint;
+            
+            if(mDrawSpline) {
+                
+                Path spline = new Path();
+                spline.moveTo(entries.get(0).getXIndex(), entries.get(0).getVal());
+                
+                paint.setColor(colors.get(i % colors.size()));
 
-            for (int j = 0; j < valuePoints.length - 2; j += 2) {
+                // create a new path
+                for (int x = 1; x < entries.size()-3; x+=2) {
 
-                // Set the color for the currently drawn value. If the index is
-                // out of bounds, reuse colors.
-                paint.setColor(colors.get(j % colors.size()));
+//                    spline.rQuadTo(entries.get(x).getXIndex(), entries.get(x).getVal(), entries.get(x+1).getXIndex(), entries.get(x+1).getVal());
+                    
+                    spline.cubicTo(entries.get(x).getXIndex(), entries.get(x).getVal(), entries.get(x+1).getXIndex(), entries.get(x+1).getVal(), entries.get(x+2).getXIndex(), entries.get(x+2).getVal());
+                }
+                
+//                spline.close();
 
-                if (isOffContentRight(valuePoints[j]))
-                    break;
+                transformPath(spline);
 
-                // make sure the lines don't do shitty things outside bounds
-                if (j != 0 && isOffContentLeft(valuePoints[j - 1])
-                        && isOffContentTop(valuePoints[j + 1])
-                        && isOffContentBottom(valuePoints[j + 1]))
-                    continue;
+                mDrawCanvas.drawPath(spline, paint);
+                
+            } else {
+                
+                for (int j = 0; j < valuePoints.length - 2; j += 2) {
 
-                mDrawCanvas.drawLine(valuePoints[j], valuePoints[j + 1], valuePoints[j + 2],
-                        valuePoints[j + 3], paint);
+                    // Set the color for the currently drawn value. If the index is
+                    // out of bounds, reuse colors.
+                    paint.setColor(colors.get(j % colors.size()));
+
+                    if (isOffContentRight(valuePoints[j]))
+                        break;
+
+                    // make sure the lines don't do shitty things outside bounds
+                    if (j != 0 && isOffContentLeft(valuePoints[j - 1])
+                            && isOffContentTop(valuePoints[j + 1])
+                            && isOffContentBottom(valuePoints[j + 1]))
+                        continue;
+
+                    mDrawCanvas.drawLine(valuePoints[j], valuePoints[j + 1], valuePoints[j + 2],
+                            valuePoints[j + 3], paint);
+                }
             }
 
             // if drawing filled is enabled

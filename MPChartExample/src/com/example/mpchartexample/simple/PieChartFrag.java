@@ -35,9 +35,10 @@ public class PieChartFrag extends SimpleFragment {
         mChart.setUsePercentValues(true);
         mChart.setCenterText("Quarterly\nRevenue");
         mChart.setCenterTextSize(23f);
-        
-        // radius in percent
-        mChart.setHoleRadius(25f);
+         
+        // radius of the center hole in percent of maximum radius
+        mChart.setHoleRadius(45f); 
+        mChart.setTransparentCircleRadius(50f);
         
         mChart.setData(generateLessData());
         

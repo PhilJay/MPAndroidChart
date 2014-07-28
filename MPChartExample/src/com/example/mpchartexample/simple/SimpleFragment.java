@@ -80,7 +80,9 @@ public abstract class SimpleFragment extends Fragment {
 //        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "square.txt"));
 //        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "three.txt"));
         
-        ChartData d = new ChartData(ChartData.generateXVals(0, 752),  sets);
+        int max = Math.max(sets.get(0).getEntryCount(), sets.get(1).getEntryCount());
+        
+        ChartData d = new ChartData(ChartData.generateXVals(0, max),  sets);
         return d;
     }
     

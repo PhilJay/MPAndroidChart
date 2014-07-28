@@ -57,11 +57,15 @@ public class PieChart extends Chart {
 
     /** indicates the selection distance of a pie slice */
     private float mShift = 20f;
-    
+
     /**
-     * indicates the size of the hole in the center of the piechart, default: diameter / 4
+     * indicates the size of the hole in the center of the piechart, default:
+     * radius / 2
      */
-    private float mHoleRadius = 0f;
+    private float mHoleRadiusPercent = 50f;
+    
+    /** the radius of the transparent circle next to the chart-hole in the center */
+    private float mTransparentCircleRadius = 55f;
 
     /** if enabled, centertext is drawn */
     private boolean mDrawCenterText = true;
@@ -105,9 +109,9 @@ public class PieChart extends Chart {
         super.init();
 
         // // piechart has no offsets
-//        mOffsetTop = 0;
+        // mOffsetTop = 0;
         // mOffsetBottom = 0;
-//        mOffsetLeft = 0;
+        // mOffsetLeft = 0;
         // mOffsetRight = 0;
 
         mShift = Utils.convertDpToPixel(mShift);
@@ -283,13 +287,11 @@ public class PieChart extends Chart {
     protected void prepareContentRect() {
         super.prepareContentRect();
 
-        if(mHoleRadius <= 0) mHoleRadius = getDiameter() / 4;
-        
         int width = mContentRect.width() + mOffsetLeft + mOffsetRight;
         int height = mContentRect.height() + mOffsetTop + mOffsetBottom;
 
         float diameter = getDiameter();
-        
+
         // create the circle box that will contain the pie-chart (the bounds of
         // the pie-chart)
         mCircleBox.set(width / 2 - diameter / 2 + mShift, height / 2 - diameter / 2
@@ -425,9 +427,24 @@ public class PieChart extends Chart {
 
         if (mDrawHole) {
 
+            float radius = getRadius();
+
             PointF c = getCenterCircleBox();
+
+            int color = mHolePaint.getColor();
+
+            // draw the hole-circle
             mDrawCanvas.drawCircle(c.x, c.y,
-                    mHoleRadius, mHolePaint);
+                    radius / 100 * mHoleRadiusPercent, mHolePaint);
+
+            // make transparent
+            mHolePaint.setColor(color & 0x60FFFFFF);
+
+            // draw the transparent-circle
+            mDrawCanvas.drawCircle(c.x, c.y,
+                    radius / 100 * mTransparentCircleRadius, mHolePaint);
+
+            mHolePaint.setColor(color);
         }
     }
 
@@ -471,15 +488,16 @@ public class PieChart extends Chart {
 
         PointF center = getCenterCircleBox();
 
-        float off = mCircleBox.width() / 8;
+        // get whole the radius
+        float r = getRadius();
 
-        // increase offset if there is no hole
-        if (!mDrawHole)
-            off += off / 2;
+        float off = r / 2f;
 
-        // get the radius
-        float r = mCircleBox.width() / 2 - off; // offset to keep things inside
-                                                // the chart
+        if (mDrawHole) {
+            off = (r - (r / 100f * mHoleRadiusPercent)) / 2f;
+        }
+
+        r -= off; // offset to keep things inside the chart
 
         ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
 
@@ -742,7 +760,7 @@ public class PieChart extends Chart {
         if (mCircleBox == null)
             return 0;
         else
-            return mCircleBox.width() / 2f;
+            return Math.min(mCircleBox.width() / 2f, mCircleBox.height() / 2f);
     }
 
     /**
@@ -858,20 +876,40 @@ public class PieChart extends Chart {
     public void setCenterTextSize(float size) {
         mCenterTextPaint.setTextSize(Utils.convertDpToPixel(size));
     }
-    
+
     /**
-     * sets the radius of the hole in the center of the piechart in percent of the total piechart size, default 25%
+     * sets the radius of the hole in the center of the piechart in percent of
+     * the maximum radius (max = the radius of the whole chart), default 50%
+     * 
      * @param size
      */
     public void setHoleRadius(final float percent) {
-        
+
         Handler h = new Handler();
         h.post(new Runnable() {
-            
+
             @Override
             public void run() {
-                float smaller = Math.min(getWidth(), getHeight());
-                mHoleRadius = smaller / 100f * percent;
+                mHoleRadiusPercent = percent;
+            }
+        });
+    }
+
+    /**
+     * sets the radius of the transparent circle that is drawn next to the hole
+     * in the piechart in percent of the maximum radius (max = the radius of the
+     * whole chart), default 55% -> means 5% larger than the center-hole by
+     * default
+     * 
+     * @param percent
+     */
+    public void setTransparentCircleRadius(final float percent) {
+        Handler h = new Handler();
+        h.post(new Runnable() {
+
+            @Override
+            public void run() {
+                mTransparentCircleRadius = percent;
             }
         });
     }

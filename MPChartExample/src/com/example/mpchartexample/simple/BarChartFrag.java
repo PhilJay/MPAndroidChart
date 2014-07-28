@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.example.mpchartexample.MyMarkerView;
 import com.example.mpchartexample.R;
@@ -24,7 +25,8 @@ public class BarChartFrag extends SimpleFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.frag_simple_bar, container, false);
         
-        mChart = (BarChart) v.findViewById(R.id.barChart1);
+        // create a new chart object
+        mChart = new BarChart(getActivity());
         mChart.setYLabelCount(6);
         mChart.setDescription("");
         
@@ -50,6 +52,10 @@ public class BarChartFrag extends SimpleFragment {
         
         Legend l = mChart.getLegend();
         l.setTypeface(tf);
+        
+        // programatically add the chart
+        FrameLayout parent = (FrameLayout) v.findViewById(R.id.parentLayout);
+        parent.addView(mChart);
         
         return v;
     }
