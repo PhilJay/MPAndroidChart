@@ -60,11 +60,11 @@ Features
 
  - **PieChart**
 
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_piechart1.png)
+![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/simpledesign_piechart1.png)
 
  - **ScatterChart** (with squares, triangles, circles, ... and more)
 
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/scatterchart.png)
+![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/scatterchart.png)
 
 
 
