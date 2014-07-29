@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PointF;
 import android.util.AttributeSet;
 
 import com.github.mikephil.charting.data.DataSet;
@@ -14,6 +15,11 @@ import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 
+/**
+ * Chart that draws lines, surfaces, circles, ...
+ * 
+ * @author Philipp Jahoda
+ */
 public class LineChart extends BarLineChartBase {
 
     /** the radius of the circle-shaped value indicators */
@@ -36,8 +42,9 @@ public class LineChart extends BarLineChartBase {
 
     /** paint for the inner circle of the value indicators */
     protected Paint mCirclePaintInner;
-    
-    protected boolean mDrawSpline = false;
+
+    /** flag for cubic curves instead of lines */
+    protected boolean mDrawCubic = false;
 
     public LineChart(Context context) {
         super(context);
@@ -70,7 +77,7 @@ public class LineChart extends BarLineChartBase {
         mHighlightPaint.setStyle(Paint.Style.STROKE);
         mHighlightPaint.setStrokeWidth(2f);
         mHighlightPaint.setColor(Color.rgb(255, 187, 115));
-    }    
+    }
 
     @Override
     protected void drawHighlights() {
@@ -113,39 +120,45 @@ public class LineChart extends BarLineChartBase {
             ArrayList<Entry> entries = dataSet.getYVals();
 
             float[] valuePoints = generateTransformedValues(entries, 0f);
-            
+
             // Get the colors for the DataSet at the current index. If the index
             // is out of bounds, reuse DataSet colors.
             ArrayList<Integer> colors = mCt.getDataSetColors(i % mCt.getColors().size());
 
             Paint paint = mRenderPaint;
-            
-            if(mDrawSpline) {
-                
-                Path spline = new Path();
-                spline.moveTo(entries.get(0).getXIndex(), entries.get(0).getVal());
+
+            if (mDrawCubic) {
                 
                 paint.setColor(colors.get(i % colors.size()));
 
-                // create a new path
-                for (int x = 1; x < entries.size()-3; x+=2) {
+                Path spline = new Path();
 
-//                    spline.rQuadTo(entries.get(x).getXIndex(), entries.get(x).getVal(), entries.get(x+1).getXIndex(), entries.get(x+1).getVal());
-                    
-                    spline.cubicTo(entries.get(x).getXIndex(), entries.get(x).getVal(), entries.get(x+1).getXIndex(), entries.get(x+1).getVal(), entries.get(x+2).getXIndex(), entries.get(x+2).getVal());
+                spline.moveTo(entries.get(0).getXIndex(), entries.get(0).getVal());
+
+                // create a new path
+                for (int x = 1; x < entries.size() - 3; x += 2) {
+
+                    // spline.rQuadTo(entries.get(x).getXIndex(),
+                    // entries.get(x).getVal(), entries.get(x+1).getXIndex(),
+                    // entries.get(x+1).getVal());
+
+                    spline.cubicTo(entries.get(x).getXIndex(), entries.get(x).getVal(), entries
+                            .get(x + 1).getXIndex(), entries.get(x + 1).getVal(), entries
+                            .get(x + 2).getXIndex(), entries.get(x + 2).getVal());
                 }
-                
-//                spline.close();
+
+                // spline.close();
 
                 transformPath(spline);
 
                 mDrawCanvas.drawPath(spline, paint);
-                
+
             } else {
-                
+
                 for (int j = 0; j < valuePoints.length - 2; j += 2) {
 
-                    // Set the color for the currently drawn value. If the index is
+                    // Set the color for the currently drawn value. If the index
+                    // is
                     // out of bounds, reuse colors.
                     paint.setColor(colors.get(j % colors.size()));
 
@@ -194,6 +207,22 @@ public class LineChart extends BarLineChartBase {
                 paint.setAlpha(255);
             }
         }
+    }
+
+    /**
+     * Calculates the middle point between two points and multiplies its
+     * coordinates with the given smoothness _Mulitplier.
+     * 
+     * @param p1 First point
+     * @param p2 Second point
+     * @param _Result Resulting point
+     * @param mult Smoothness multiplier
+     */
+    private void calculatePointDiff(PointF p1, PointF p2, PointF _Result, float mult) {
+        float diffX = p2.x - p1.x;
+        float diffY = p2.y - p1.y;
+        _Result.x = (p1.x + (diffX * mult));
+        _Result.y = (p1.y + (diffY * mult));
     }
 
     @Override
@@ -442,5 +471,19 @@ public class LineChart extends BarLineChartBase {
                 mHighlightPaint = p;
                 break;
         }
+    }
+
+    @Override
+    public Paint getPaint(int which) {
+        super.getPaint(which);
+
+        switch (which) {
+            case PAINT_CIRCLES_INNER:
+                return mCirclePaintInner;
+            case PAINT_HIGHLIGHT_LINE:
+                return mHighlightPaint;
+        }
+
+        return null;
     }
 }

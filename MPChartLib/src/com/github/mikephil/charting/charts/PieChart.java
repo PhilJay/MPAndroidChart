@@ -25,7 +25,7 @@ import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
 
 /**
- * View that represents a pie chart.
+ * View that represents a pie chart. Draws cake like slices.
  * 
  * @author Philipp Jahoda
  */
@@ -194,6 +194,7 @@ public class PieChart extends Chart {
         if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
 
             mLegendLabelPaint.setTextAlign(Align.LEFT);
+            mOffsetTop = (int) (mLegendLabelPaint.getTextSize() * 3.5f);
 
         } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
                 || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT) {
@@ -462,19 +463,24 @@ public class PieChart extends Chart {
             String[] lines = mCenterText.split("\n");
 
             // calculate the height for each line
-            float lineHeight = Utils.calcTextHeight(mCenterTextPaint, lines[0]) * 1.2f;
+            float lineHeight = Utils.calcTextHeight(mCenterTextPaint, lines[0]);
+            float linespacing = lineHeight * 0.2f;
 
-            float totalheight = lineHeight * lines.length;
+            float totalheight = lineHeight * lines.length - linespacing * (lines.length - 1);
 
             int cnt = lines.length;
+            
+            float y = c.y;
+            
             for (int i = 0; i < lines.length; i++) {
 
                 String line = lines[lines.length - i - 1];
 
-                mDrawCanvas.drawText(line, c.x, c.y
-                        + lineHeight * cnt - lineHeight / 2 - totalheight * 0.45f,
+                mDrawCanvas.drawText(line, c.x, y
+                        + lineHeight * cnt - totalheight / 2f,
                         mCenterTextPaint);
                 cnt--;
+                y -= linespacing;
             }
         }
     }
@@ -926,5 +932,19 @@ public class PieChart extends Chart {
                 mCenterTextPaint = p;
                 break;
         }
+    }
+    
+    @Override
+    public Paint getPaint(int which) {
+        super.getPaint(which);
+
+        switch (which) {
+            case PAINT_HOLE:
+                return mHolePaint;
+            case PAINT_CENTER_TEXT:
+                return mCenterTextPaint;
+        }
+        
+        return null;
     }
 }

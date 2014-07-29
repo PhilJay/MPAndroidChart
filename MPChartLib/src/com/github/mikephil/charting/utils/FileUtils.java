@@ -54,7 +54,7 @@ public class FileUtils {
 
             while ((line = br.readLine()) != null) {
                 String[] split = line.split("#");
-                entries.add(new Entry(Float.valueOf(split[0]), Integer.valueOf(split[1])));
+                entries.add(new Entry(Float.parseFloat(split[0]), Integer.parseInt(split[1])));
             }
         } catch (IOException e) {
             Log.e(LOG, e.toString());

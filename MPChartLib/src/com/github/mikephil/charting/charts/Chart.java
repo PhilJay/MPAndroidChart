@@ -591,7 +591,7 @@ public abstract class Chart extends View {
 
         // the amount of pixels the text needs to be set down to be on the same
         // height as the form
-        float textDrop = (textSize + formSize) / 2f;
+        float textDrop = (textSize + formSize) / 2f + textSize / 2f;
 
         float posX, posY;
 
@@ -641,12 +641,13 @@ public abstract class Chart extends View {
             case RIGHT_OF_CHART:
                 
                 if(this instanceof BarLineChartBase) {
-                    posX = getWidth() - mOffsetRight + formSize;  
+                    posX = getWidth() - mOffsetRight + formSize; 
+                    posY = mOffsetTop;
                 } else {
                     posX = getWidth() - mLegend.getMaximumEntryLength(mLegendLabelPaint);
+                    posY = Utils.calcTextHeight(mLegendLabelPaint, "A") * 1.5f;
                 }
                 
-                posY = mOffsetTop;
                 float stack = 0f;
                 boolean wasStacked = false;
 
@@ -1235,6 +1236,28 @@ public abstract class Chart extends View {
                 mLegendLabelPaint = p;
                 break;
         }
+    }
+    
+    /**
+     * Returns the paint object associated with the provided constant.
+     * @param which e.g. Chart.PAINT_LEGEND_LABEL
+     * @return
+     */
+    public Paint getPaint(int which) {
+        switch (which) {
+            case PAINT_INFO:
+                return mInfoPaint;
+            case PAINT_DESCRIPTION:
+                return mDescPaint;
+            case PAINT_VALUES:
+                return mValuePaint;
+            case PAINT_RENDER:
+                return mRenderPaint;
+            case PAINT_LEGEND_LABEL:
+                return mLegendLabelPaint;
+        }
+        
+        return null;
     }
 
     /**

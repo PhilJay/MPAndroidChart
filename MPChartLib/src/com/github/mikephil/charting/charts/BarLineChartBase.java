@@ -1710,4 +1710,24 @@ public abstract class BarLineChartBase extends Chart {
                 break;
         }
     }
+    
+    @Override
+    public Paint getPaint(int which) {
+        super.getPaint(which);
+
+        switch (which) {
+            case PAINT_GRID:
+                return mGridPaint;
+            case PAINT_GRID_BACKGROUND:
+                return mGridBackgroundPaint;
+            case PAINT_BORDER:
+                return mBorderPaint;
+            case PAINT_XLABEL:
+                return mXLabelPaint;
+            case PAINT_YLABEL:
+                return mYLabelPaint;
+        }
+        
+        return null;
+    }
 }
