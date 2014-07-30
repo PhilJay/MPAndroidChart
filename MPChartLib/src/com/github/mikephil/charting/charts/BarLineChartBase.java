@@ -23,6 +23,7 @@ import com.github.mikephil.charting.interfaces.OnDrawListener;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
+import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
@@ -167,7 +168,7 @@ public abstract class BarLineChartBase extends Chart {
 
     /** flag indicating if the grid background should be drawn or not */
     protected boolean mDrawGridBackground = true;
-    
+
     /** the listener for user drawing on the chart */
     protected OnDrawListener mDrawListener;
 
@@ -205,7 +206,6 @@ public abstract class BarLineChartBase extends Chart {
 
         mYLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mYLabelPaint.setColor(Color.BLACK);
-        mYLabelPaint.setTextAlign(Align.RIGHT);
         mYLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
 
         mGridPaint = new Paint();
@@ -336,7 +336,21 @@ public abstract class BarLineChartBase extends Chart {
             mOffsetBottom = (int) (mLegendLabelPaint.getTextSize() * 3.5f);
         }
 
-        mOffsetLeft = Utils.calcTextWidth(mYLabelPaint, (int) mDeltaY + ".0000" + mUnit);
+        if (mYLabels.getPosition() == YLabelPosition.LEFT) {
+
+            mOffsetLeft = Utils.calcTextWidth(mYLabelPaint, (int) mDeltaY + ".0000" + mUnit);
+            mYLabelPaint.setTextAlign(Align.RIGHT);
+
+        } else if (mYLabels.getPosition() == YLabelPosition.RIGHT) {
+
+            mOffsetRight = Utils.calcTextWidth(mYLabelPaint, (int) mDeltaY + ".0000" + mUnit);
+            mYLabelPaint.setTextAlign(Align.LEFT);
+
+        } else if (mYLabels.getPosition() == YLabelPosition.BOTH_SIDED) {
+
+            mOffsetRight = Utils.calcTextWidth(mYLabelPaint, (int) mDeltaY + ".0000" + mUnit);
+            mOffsetLeft = Utils.calcTextWidth(mYLabelPaint, (int) mDeltaY + ".0000" + mUnit);
+        }
 
         prepareContentRect();
 
@@ -554,8 +568,37 @@ public abstract class BarLineChartBase extends Chart {
 
         transformPointArray(positions);
 
-        float xPos = mOffsetLeft - 10;
+        // determine position and draw adequately
+        if (mYLabels.getPosition() == YLabelPosition.LEFT) {
 
+            mYLabelPaint.setTextAlign(Align.RIGHT);
+            drawYLabels(mOffsetLeft - 13, positions);
+
+        } else if (mYLabels.getPosition() == YLabelPosition.RIGHT) {
+
+            mYLabelPaint.setTextAlign(Align.LEFT);
+            drawYLabels(getWidth() - mOffsetRight + 13, positions);
+        } else {
+
+            // draw left legend
+            mYLabelPaint.setTextAlign(Align.RIGHT);
+            drawYLabels(mOffsetLeft - 13, positions);
+
+            // draw right legend
+            mYLabelPaint.setTextAlign(Align.LEFT);
+            drawYLabels(getWidth() - mOffsetRight + 13, positions);
+        }
+    }
+
+    /**
+     * draws the y-labels on the specified x-position
+     * 
+     * @param xPos
+     * @param positions
+     */
+    private void drawYLabels(float xPos, float[] positions) {
+
+        // draw
         for (int i = 0; i < mYLabels.mEntryCount; i++) {
 
             String text = Utils.formatNumber(mYLabels.mEntries[i], mYLabels.mDecimals,
@@ -1609,6 +1652,17 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
+     * retursn the object representing all y-labels, this method can be used to
+     * acquire the YLabels object and modify it (e.g. change the position of the
+     * labels)
+     * 
+     * @return
+     */
+    public YLabels getYLabels() {
+        return mYLabels;
+    }
+
+    /**
      * Enables data filtering for the chart data, filtering will use the user
      * customized Approximator handed over to this method.
      * 
@@ -1710,7 +1764,7 @@ public abstract class BarLineChartBase extends Chart {
                 break;
         }
     }
-    
+
     @Override
     public Paint getPaint(int which) {
         super.getPaint(which);
@@ -1727,7 +1781,7 @@ public abstract class BarLineChartBase extends Chart {
             case PAINT_YLABEL:
                 return mYLabelPaint;
         }
-        
+
         return null;
     }
 }
