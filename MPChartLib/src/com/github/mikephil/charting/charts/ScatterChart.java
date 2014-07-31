@@ -11,7 +11,8 @@ import com.github.mikephil.charting.data.Entry;
 import java.util.ArrayList;
 
 /**
- * The ScatterChart.
+ * The ScatterChart. Draws dots, triangles, squares and custom shapes into the
+ * chartview.
  * 
  * @author Philipp Jahoda
  */
@@ -53,7 +54,10 @@ public class ScatterChart extends BarLineChartBase {
 
     @Override
     protected void drawData() {
-        ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
+        
+        ArrayList<DataSet> dataSets = mCurrentData.getDataSets();        
+        
+        float shapeHalf = mShapeSize / 2f;
 
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
@@ -76,8 +80,6 @@ public class ScatterChart extends BarLineChartBase {
 
                 if (isOffContentRight(pos[j]))
                     break;
-
-                float shapeHalf = mShapeSize / 2f;
 
                 // make sure the lines don't do shitty things outside bounds
                 if (j != 0 && isOffContentLeft(pos[j - 1])

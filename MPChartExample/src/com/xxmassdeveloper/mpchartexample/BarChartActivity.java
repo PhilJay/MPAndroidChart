@@ -17,6 +17,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.YLabels;
+import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
 
 import java.util.ArrayList;
 
@@ -67,6 +69,10 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
 
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
+        
+        // change the position of the y-labels
+        YLabels labels = mChart.getYLabels();
+        labels.setPosition(YLabelPosition.BOTH_SIDED);
 
         mSeekBarX.setProgress(45);
         mSeekBarY.setProgress(100);

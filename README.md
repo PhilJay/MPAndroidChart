@@ -5,7 +5,7 @@ A simple charting library for Android, supporting line- bar- and piecharts, scal
 
 Remember: *It's all about the looks.*
 
-For immediate access to our latest updates, please checkout the **experimental** branch. Beware that code on the experimental branch is not finished for release yet and might be incomplete or contain bugs.
+The **experimental** branch might contain new features that are still buggy. It is recommended to be safe and only make use of the code on the **master** branch.
 
 If you are having questions or problems, feel free to contact me, **create issues** for this project on GitHub or open questions on [**stackoverflow**](https://stackoverflow.com) with the `mpandroidchart` tag.
 
@@ -28,15 +28,14 @@ Features
  - Fully customizeable (paints, typefaces, legends, colors, background, gestures, dashed lines, ...)
  
 **Chart types:**
- - **LineChart (single DataSet)**
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart.png)
- - **LineChart (multiple DataSets)**
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart_multiline_color_variations.png)
+
  - **LineChart (with legend, simple design)**
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_linechart4.png)
  - **LineChart (with legend, simple design)**
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_linechart3.png)
 
+ - **LineChart (single DataSet)**
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart.png)
 
  - **BarChart2D (with legend, simple design)**
 

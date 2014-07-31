@@ -8,7 +8,9 @@ import android.graphics.Typeface;
 import java.util.ArrayList;
 
 /**
- * Class representing the legend of the chart.
+ * Class representing the legend of the chart. The legend will contain one entry
+ * per color and DataSet. Multiple colors in one DataSet are grouped together.
+ * The legend object is NOT available before setting data to the chart.
  * 
  * @author Philipp Jahoda
  */
@@ -50,8 +52,8 @@ public class Legend {
     public Legend() {
 
         mFormSize = Utils.convertDpToPixel(mFormSize);
-        mEntrySpace = mFormSize * 2f;
-        mFormToTextSpace = mFormSize * 2f;
+        mEntrySpace = mFormSize * 1.6f;
+        mFormToTextSpace = mFormSize * 1.5f;
     }
 
     /**

@@ -15,6 +15,10 @@ import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+/**
+ * Chart that draws bars.
+ * @author Philipp Jahoda
+ */
 public class BarChart extends BarLineChartBase {
 
     /** space indicator between the bars 0.1f == 10 % */
@@ -481,6 +485,18 @@ public class BarChart extends BarLineChartBase {
                 mHighlightPaint = p;
                 break;
         }
+    }
+    
+    @Override
+    public Paint getPaint(int which) {
+        super.getPaint(which);
+
+        switch (which) {
+            case PAINT_HIGHLIGHT_BAR:
+                return mHighlightPaint;
+        }
+        
+        return null;
     }
 
     @Override

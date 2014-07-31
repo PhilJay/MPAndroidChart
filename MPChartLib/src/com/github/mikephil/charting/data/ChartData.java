@@ -183,11 +183,6 @@ public class ChartData {
         if (mYMax < entry.getVal()) {
             mYMax = entry.getVal();
         }
-
-        if (mYMin == mYMax) {
-            mYMin--;
-            mYMax++;
-        }
     }
 
     public int getDataSetCount() {

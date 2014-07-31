@@ -33,7 +33,7 @@ public class PieChartFrag extends SimpleFragment {
         mChart.setCenterTextTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
         mChart.setUsePercentValues(true);
         mChart.setCenterText("Quarterly\nRevenue");
-        mChart.setCenterTextSize(23f);
+        mChart.setCenterTextSize(22f);
          
         // radius of the center hole in percent of maximum radius
         mChart.setHoleRadius(45f); 

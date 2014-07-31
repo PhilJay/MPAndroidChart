@@ -398,7 +398,7 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 
         mChart.zoomIn(trans.x, trans.y);
         
-        Log.i("BarlineChartTouch", "Zooming In, x: " + trans.x + ", y: " + trans.y);
+        Log.i("BarlineChartTouch", "Double-Tap, Zooming In, x: " + trans.x + ", y: " + trans.y);
         
         return super.onDoubleTap(e);
     }
@@ -409,6 +409,8 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
         PointF trans = getTrans(e.getX(), e.getY());
 
         mChart.zoomOut(trans.x, trans.y);
+        
+        Log.i("BarlineChartTouch", "Longpress, Zooming Out, x: " + trans.x + ", y: " + trans.y);
     };
 
     @Override
