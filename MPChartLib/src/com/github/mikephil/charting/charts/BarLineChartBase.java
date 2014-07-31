@@ -326,14 +326,16 @@ public abstract class BarLineChartBase extends Chart {
     @Override
     public void calculateOffsets() {
 
-        if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
+        if (mDrawLegend) {
+            if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
 
-            mOffsetRight = mLegend.getMaximumEntryLength(mLegendLabelPaint);
-            mLegendLabelPaint.setTextAlign(Align.LEFT);
+                mOffsetRight = mLegend.getMaximumEntryLength(mLegendLabelPaint);
+                mLegendLabelPaint.setTextAlign(Align.LEFT);
 
-        } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
-                || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT) {
-            mOffsetBottom = (int) (mLegendLabelPaint.getTextSize() * 3.5f);
+            } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
+                    || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT) {
+                mOffsetBottom = (int) (mLegendLabelPaint.getTextSize() * 3.5f);
+            }
         }
 
         mOffsetLeft = Utils.calcTextWidth(mYLabelPaint, (int) mDeltaY + ".0000" + mUnit);
