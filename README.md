@@ -5,11 +5,13 @@ A simple charting library for Android, supporting line- bar- and piecharts, scal
 
 Remember: *It's all about the looks.*
 
-For immediate access to our latest updates, please checkout the **experimental** branch. Beware that code on the experimental branch is not finished for release yet and might be incomplete or contain bugs.
+The **experimental** branch might contain new features that are still buggy. It is recommended to be safe and only make use of the code on the **master** branch.
 
 If you are having questions or problems, feel free to contact me, **create issues** for this project on GitHub or open questions on [**stackoverflow**](https://stackoverflow.com) with the `mpandroidchart` tag.
 
 Forks, pull-requests or any other forms of contribution are always welcome.
+
+For a brief overview of all features, please download the [**MPAndroidChart Example .apk**](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample) from the **PlayStore**.
 
 Features
 =======
@@ -26,15 +28,14 @@ Features
  - Fully customizeable (paints, typefaces, legends, colors, background, gestures, dashed lines, ...)
  
 **Chart types:**
- - **LineChart (single DataSet)**
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart.png)
- - **LineChart (multiple DataSets)**
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart_multiline_color_variations.png)
+
  - **LineChart (with legend, simple design)**
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_linechart4.png)
  - **LineChart (with legend, simple design)**
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_linechart3.png)
 
+ - **LineChart (single DataSet)**
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart.png)
 
  - **BarChart2D (with legend, simple design)**
 
@@ -54,24 +55,22 @@ Features
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart3d.png)
 
- - **PieChart (selected)**
+ - **PieChart (with selection, ...)**
 
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/piechart_selected.png)
+![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/simpledesign_piechart1.png)
 
- - **PieChart**
+ - **ScatterChart** (with squares, triangles, circles, ... and more)
 
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_piechart1.png)
-
- - **ScatterChart** (with squares, triangles, circles, ...)
-
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/scatterchart.png)
+![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/scatterchart.png)
 
 
 
 Usage
 =======
 
-Rely on the **"MPChartExample"** folder check out the examples in that project. Furthermore, here is some code to get started.
+Rely on the **"MPChartExample"** folder and check out the examples in that project. The example project is also  [**available in the Google PlayStore**](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample). 
+
+Furthermore, here is some code to get started.
 
 **Setup:**
 

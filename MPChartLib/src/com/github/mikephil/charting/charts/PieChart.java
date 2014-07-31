@@ -63,8 +63,10 @@ public class PieChart extends Chart {
      * radius / 2
      */
     private float mHoleRadiusPercent = 50f;
-    
-    /** the radius of the transparent circle next to the chart-hole in the center */
+
+    /**
+     * the radius of the transparent circle next to the chart-hole in the center
+     */
     private float mTransparentCircleRadius = 55f;
 
     /** if enabled, centertext is drawn */
@@ -189,16 +191,18 @@ public class PieChart extends Chart {
     }
 
     @Override
-    public void calculateOffsets() {
+    public void calculateOffsets() { 
 
-        if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
+        if (mDrawLegend) {
+            if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
 
-            mLegendLabelPaint.setTextAlign(Align.LEFT);
-            mOffsetTop = (int) (mLegendLabelPaint.getTextSize() * 3.5f);
+                mLegendLabelPaint.setTextAlign(Align.LEFT);
+                mOffsetTop = (int) (mLegendLabelPaint.getTextSize() * 3.5f);
 
-        } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
-                || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT) {
-            mOffsetBottom = (int) (mLegendLabelPaint.getTextSize() * 3.5f);
+            } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
+                    || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT) {
+                mOffsetBottom = (int) (mLegendLabelPaint.getTextSize() * 3.5f);
+            }
         }
 
         prepareContentRect();
@@ -469,9 +473,9 @@ public class PieChart extends Chart {
             float totalheight = lineHeight * lines.length - linespacing * (lines.length - 1);
 
             int cnt = lines.length;
-            
+
             float y = c.y;
-            
+
             for (int i = 0; i < lines.length; i++) {
 
                 String line = lines[lines.length - i - 1];
@@ -933,7 +937,7 @@ public class PieChart extends Chart {
                 break;
         }
     }
-    
+
     @Override
     public Paint getPaint(int which) {
         super.getPaint(which);
@@ -944,7 +948,7 @@ public class PieChart extends Chart {
             case PAINT_CENTER_TEXT:
                 return mCenterTextPaint;
         }
-        
+
         return null;
     }
 }

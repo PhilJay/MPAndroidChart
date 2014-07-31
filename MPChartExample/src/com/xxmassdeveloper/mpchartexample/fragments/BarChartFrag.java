@@ -53,6 +53,9 @@ public class BarChartFrag extends SimpleFragment {
         Legend l = mChart.getLegend();
         l.setTypeface(tf);
         
+//        YLabels labels = mChart.getYLabels();
+//        labels.setPosition(YLabelPosition.BOTH_SIDED);
+        
         // programatically add the chart
         FrameLayout parent = (FrameLayout) v.findViewById(R.id.parentLayout);
         parent.addView(mChart);

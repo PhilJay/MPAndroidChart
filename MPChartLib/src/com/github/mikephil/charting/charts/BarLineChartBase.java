@@ -326,14 +326,16 @@ public abstract class BarLineChartBase extends Chart {
     @Override
     public void calculateOffsets() {
 
-        if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
+        if (mDrawLegend) {
+            if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
 
-            mOffsetRight = mLegend.getMaximumEntryLength(mLegendLabelPaint);
-            mLegendLabelPaint.setTextAlign(Align.LEFT);
+                mOffsetRight = mLegend.getMaximumEntryLength(mLegendLabelPaint);
+                mLegendLabelPaint.setTextAlign(Align.LEFT);
 
-        } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
-                || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT) {
-            mOffsetBottom = (int) (mLegendLabelPaint.getTextSize() * 3.5f);
+            } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
+                    || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT) {
+                mOffsetBottom = (int) (mLegendLabelPaint.getTextSize() * 3.5f);
+            }
         }
 
         if (mYLabels.getPosition() == YLabelPosition.LEFT) {
@@ -578,7 +580,8 @@ public abstract class BarLineChartBase extends Chart {
 
             mYLabelPaint.setTextAlign(Align.LEFT);
             drawYLabels(getWidth() - mOffsetRight + 13, positions);
-        } else {
+            
+        } else { // BOTH SIDED Y-AXIS LABELS
 
             // draw left legend
             mYLabelPaint.setTextAlign(Align.RIGHT);
