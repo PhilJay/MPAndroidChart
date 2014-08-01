@@ -501,14 +501,14 @@ public abstract class BarLineChartBase extends Chart {
 
         // additional handling for space (default 10% space), spacing only
         // applies with non-rounded y-label
-        float space = mDeltaY / 100f * 10f;
+        float space = mDeltaY / 100f * 10f;        
 
         if (mStartAtZero) {
             mYChartMin = 0;
         } else {
             mYChartMin = mYChartMin - space;
         }
-
+        
         // calc delta
         mYChartMax = mYChartMax + space;
         mDeltaY = Math.abs(mYChartMax - mYChartMin);

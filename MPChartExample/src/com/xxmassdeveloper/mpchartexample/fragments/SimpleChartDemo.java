@@ -6,20 +6,20 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.WindowManager;
 
 import com.xxmassdeveloper.mpchartexample.R;
+import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 /**
  * Demonstrates how to keep your charts straight forward, simple and beautiful with the MPAndroidChart library.
  * 
  * @author Philipp Jahoda
  */
-public class SimpleChartDemo extends FragmentActivity {
+public class SimpleChartDemo extends DemoBase {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

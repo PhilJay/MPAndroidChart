@@ -1,7 +1,6 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -22,10 +21,11 @@ import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.XLabels;
+import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 
-public class ScatterChartActivity extends Activity implements OnSeekBarChangeListener,
+public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeListener,
         OnChartValueSelectedListener {
 
     private ScatterChart mChart;

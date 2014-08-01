@@ -1,7 +1,6 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,6 +17,7 @@ import com.github.mikephil.charting.interfaces.OnDrawListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.XLabels;
+import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 
@@ -27,7 +27,7 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public class DrawChartActivity extends Activity implements OnChartValueSelectedListener,
+public class DrawChartActivity extends DemoBase implements OnChartValueSelectedListener,
         OnDrawListener {
 
     private LineChart mChart;

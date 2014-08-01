@@ -1,7 +1,6 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -20,13 +19,12 @@ import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
-import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.XLabels;
-import com.github.mikephil.charting.utils.Legend.LegendPosition;
+import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 
-public class MultiLineChartActivity extends Activity implements OnSeekBarChangeListener,
+public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeListener,
         OnChartValueSelectedListener {
 
     private LineChart mChart;

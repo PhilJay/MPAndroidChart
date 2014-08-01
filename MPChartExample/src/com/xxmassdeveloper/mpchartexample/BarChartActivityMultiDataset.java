@@ -1,7 +1,6 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,15 +15,13 @@ import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
-import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
-import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
-import com.github.mikephil.charting.utils.YLabels;
+import com.github.mikephil.charting.utils.XLabels;
+import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 
-public class BarChartActivityMultiDataset extends Activity implements OnSeekBarChangeListener {
+public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarChangeListener {
 
     private BarChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;

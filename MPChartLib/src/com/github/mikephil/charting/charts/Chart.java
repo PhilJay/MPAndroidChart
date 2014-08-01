@@ -350,15 +350,10 @@ public abstract class Chart extends View {
         if (!fixedValues) {
             mYChartMin = mCurrentData.getYMin();
             mYChartMax = mCurrentData.getYMax();
-            
-            if(mYChartMin == mYChartMax) {
-                mYChartMin--;
-                mYChartMax++;
-            }
         }
 
         // calc delta
-        mDeltaY = Math.abs(mCurrentData.getYMax() - mCurrentData.getYMin());
+        mDeltaY = Math.abs(mYChartMax - mYChartMin);
         mDeltaX = mCurrentData.getXVals().size() - 1;
     }
 

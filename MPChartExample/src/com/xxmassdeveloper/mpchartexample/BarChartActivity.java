@@ -1,7 +1,6 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,10 +22,11 @@ import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
 import com.github.mikephil.charting.utils.YLabels;
 import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
+import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 
-public class BarChartActivity extends Activity implements OnSeekBarChangeListener {
+public class BarChartActivity extends DemoBase implements OnSeekBarChangeListener {
 
     private BarChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;

@@ -1,7 +1,6 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -22,12 +21,13 @@ import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.Legend.LegendForm;
+import com.github.mikephil.charting.utils.XLabels;
+import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 
-public class LineChartActivity extends Activity implements OnSeekBarChangeListener,
+public class LineChartActivity extends DemoBase implements OnSeekBarChangeListener,
         OnChartValueSelectedListener {
 
     private LineChart mChart;
@@ -127,11 +127,11 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
         // add data
         setData(45, 100);
         
-        // restrain the maximum scale-out factor
-        mChart.setScaleMinima(3f, 3f);
-        
-        // center the view to a specific position inside the chart
-        mChart.centerViewPort(10, 50);
+//        // restrain the maximum scale-out factor
+//        mChart.setScaleMinima(3f, 3f);
+//        
+//        // center the view to a specific position inside the chart
+//        mChart.centerViewPort(10, 50);
                 
         // get the legend (only possible after setting data)
         Legend l = mChart.getLegend();

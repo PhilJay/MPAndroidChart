@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xxmassdeveloper.mpchartexample"
-    android:versionCode="2"
-    android:versionName="1.0.2" >
+    android:versionCode="4"
+    android:versionName="1.0.4" >
 
     <uses-sdk
         android:minSdkVersion="9"
@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.xxmassdeveloper.mpchartexample.MainActivity"
+            android:name="com.xxmassdeveloper.mpchartexample.notimportant.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

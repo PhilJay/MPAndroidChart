@@ -1,6 +1,5 @@
 package com.xxmassdeveloper.mpchartexample;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -19,10 +18,11 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
+import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 
-public class PieChartActivity extends Activity implements OnSeekBarChangeListener, OnChartValueSelectedListener {
+public class PieChartActivity extends DemoBase implements OnSeekBarChangeListener, OnChartValueSelectedListener {
 
 	private PieChart mChart;
 	private SeekBar mSeekBarX, mSeekBarY;
