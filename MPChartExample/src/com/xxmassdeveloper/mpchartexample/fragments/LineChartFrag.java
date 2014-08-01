@@ -48,7 +48,7 @@ public class LineChartFrag extends SimpleFragment {
         mChart.setDrawYValues(false);
         mChart.setStartAtZero(false);
         
-        mChart.setYRange(-1f, 1f, false);
+        mChart.setYRange(-1.2f, 1.2f, false);
         
         mChart.setData(getComplexity());
         

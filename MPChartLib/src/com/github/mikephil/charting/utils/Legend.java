@@ -24,6 +24,10 @@ public class Legend {
         SQUARE, CIRCLE, LINE
     }
 
+    /** offsets for the legend */
+    private float mLegendOffsetBottom = 12f, mLegendOffsetRight = 12f, mLegendOffsetLeft = 12f,
+            mLegendOffsetTop = 12f;
+
     /** the legend colors */
     private int[] mColors;
 
@@ -42,18 +46,21 @@ public class Legend {
     /** the size of the legend forms/shapes */
     private float mFormSize = 8f;
 
-    /** the space between the legend entries on a vertical or horizontal axis */
-    private float mEntrySpace;
+    /**
+     * the space between the legend entries on a vertical or horizontal axis,
+     * default 5f
+     */
+    private float mEntrySpace = 5f;
 
     /** the space between the form and the actual label/text */
-    private float mFormToTextSpace;
+    private float mFormToTextSpace = 5f;
 
     /** default constructor */
     public Legend() {
 
         mFormSize = Utils.convertDpToPixel(mFormSize);
-        mEntrySpace = mFormSize * 1.6f;
-        mFormToTextSpace = mFormSize * 1.5f;
+        mEntrySpace = Utils.convertDpToPixel(mEntrySpace);
+        mFormToTextSpace = Utils.convertDpToPixel(mFormToTextSpace);
     }
 
     /**
@@ -316,7 +323,7 @@ public class Legend {
 
     /**
      * applies the state from the legend in the parameter to this legend (except
-     * colors and labels)
+     * colors, labels and offsets)
      * 
      * @param l
      */
@@ -330,30 +337,75 @@ public class Legend {
         mFormToTextSpace = l.mFormToTextSpace;
     }
 
-    // /**
-    // * Draws the legend.
-    // * @param drawCanvas
-    // * @param labelPaint
-    // * @param formPaint
-    // */
-    // public void draw(Canvas drawCanvas, Paint labelPaint, Paint formPaint) {
-    //
-    // if(mTypeface != null) labelPaint.setTypeface(mTypeface);
-    //
-    // switch(mPosition) {
-    // case BELOW_CHART:
-    //
-    // for(int i = 0; i < mLegendLabels.length; i++) {
-    //
-    // formPaint.setColor(mColors[i]);
-    //
-    // drawCanvas.drawRect(left, top, right, bottom, formPaint);
-    // }
-    //
-    //
-    // break;
-    // case LEFT_OF_CHART:
-    // break;
-    // }
-    // }
+    /**
+     * returns the bottom offset
+     * 
+     * @return
+     */
+    public float getOffsetBottom() {
+        return mLegendOffsetBottom;
+    }
+
+    /**
+     * returns the right offset
+     * 
+     * @return
+     */
+    public float getOffsetRight() {
+        return mLegendOffsetRight;
+    }
+
+    /**
+     * sets the bottom offset
+     * 
+     * @param off
+     */
+    public void setOffsetBottom(float off) {
+        mLegendOffsetBottom = off;
+    }
+
+    /**
+     * sets the right offset
+     * 
+     * @param off
+     */
+    public void setOffsetRight(float off) {
+        mLegendOffsetRight = off;
+    }
+
+    /**
+     * returns the bottom offset
+     * 
+     * @return
+     */
+    public float getOffsetTop() {
+        return mLegendOffsetTop;
+    }
+
+    /**
+     * returns the left offset
+     * 
+     * @return
+     */
+    public float getOffsetLeft() {
+        return mLegendOffsetLeft;
+    }
+
+    /**
+     * sets the bottom offset
+     * 
+     * @param off
+     */
+    public void setOffsetTop(float off) {
+        mLegendOffsetTop = off;
+    }
+
+    /**
+     * sets the left offset
+     * 
+     * @param off
+     */
+    public void setOffsetLeft(float off) {
+        mLegendOffsetLeft = off;
+    }
 }

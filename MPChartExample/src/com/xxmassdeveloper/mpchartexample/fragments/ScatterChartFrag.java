@@ -57,7 +57,7 @@ public class ScatterChartFrag extends SimpleFragment {
         mChart.setDrawXLabels(false);
         mChart.setUnit(" $");
         
-        mChart.setData(generateData(3, 10000, 100));
+        mChart.setData(generateData(3, 10000, 150));
         
         Legend l = mChart.getLegend();
         l.setTypeface(tf);

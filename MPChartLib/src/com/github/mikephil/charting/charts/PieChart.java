@@ -191,7 +191,7 @@ public class PieChart extends Chart {
     }
 
     @Override
-    public void calculateOffsets() { 
+    protected void calculateOffsets() { 
 
         if (mDrawLegend) {
             if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
@@ -292,8 +292,8 @@ public class PieChart extends Chart {
     protected void prepareContentRect() {
         super.prepareContentRect();
 
-        int width = mContentRect.width() + mOffsetLeft + mOffsetRight;
-        int height = mContentRect.height() + mOffsetTop + mOffsetBottom;
+        float width = mContentRect.width() + mOffsetLeft + mOffsetRight;
+        float height = mContentRect.height() + mOffsetTop + mOffsetBottom;
 
         float diameter = getDiameter();
 

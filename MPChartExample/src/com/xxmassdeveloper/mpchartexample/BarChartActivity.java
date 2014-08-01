@@ -17,6 +17,10 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.Legend;
+import com.github.mikephil.charting.utils.Legend.LegendPosition;
+import com.github.mikephil.charting.utils.XLabels;
+import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
 import com.github.mikephil.charting.utils.YLabels;
 import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
 
@@ -55,6 +59,8 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
 
         // enable the drawing of values
         mChart.setDrawYValues(true);
+        
+        mChart.setDescription("");
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
@@ -70,12 +76,29 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
         
+        mChart.setUnit(" €");
+        
         // change the position of the y-labels
-        YLabels labels = mChart.getYLabels();
-        labels.setPosition(YLabelPosition.BOTH_SIDED);
-
+        YLabels yLabels = mChart.getYLabels();
+        yLabels.setPosition(YLabelPosition.BOTH_SIDED);
+        
+        XLabels xLabels = mChart.getXLabels();
+        xLabels.setPosition(XLabelPosition.TOP);
+        
+        
+//        mChart.setDrawXLabels(false);
+//        mChart.setDrawYLabels(false);
+        
+        // setting data
         mSeekBarX.setProgress(45);
         mSeekBarY.setProgress(100);
+               
+        Legend l = mChart.getLegend();
+        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
+        l.setFormSize(8f);
+        l.setEntrySpace(4f);
+        
+//        mChart.setDrawLegend(false);
     }
 
     @Override
@@ -139,10 +162,12 @@ public class BarChartActivity extends Activity implements OnSeekBarChangeListene
                 break;
             }
             case R.id.actionToggleAdjustXLegend: {
-                if (mChart.isAdjustXLabelsEnabled())
-                    mChart.setAdjustXLabels(false);
+                XLabels xLabels = mChart.getXLabels();
+                
+                if (xLabels.isAdjustXLabelsEnabled())
+                    xLabels.setAdjustXLabels(false);
                 else
-                    mChart.setAdjustXLabels(true);
+                    xLabels.setAdjustXLabels(true);
 
                 mChart.invalidate();
                 break;

@@ -64,16 +64,16 @@ public abstract class Chart extends View {
     protected int mValueFormatDigits = -1;
 
     /** chart offset to the left */
-    protected int mOffsetLeft = 15;
+    protected float mOffsetLeft = 12;
 
     /** chart toffset to the top */
-    protected int mOffsetTop = 22;
+    protected float mOffsetTop = 12;
 
     /** chart offset to the right */
-    protected int mOffsetRight = 15;
+    protected float mOffsetRight = 12;
 
     /** chart offset to the bottom */
-    protected int mOffsetBottom = 15;
+    protected float mOffsetBottom = 12;
 
     /**
      * object that holds all data relevant for the chart (x-vals, y-vals, ...)
@@ -340,7 +340,7 @@ public abstract class Chart extends View {
      * position of an eventual legend or depending on the length of the y-axis
      * labels
      */
-    public abstract void calculateOffsets();
+    protected abstract void calculateOffsets();
 
     /**
      * calcualtes the y-min and y-max value and the y-delta and x-delta value
@@ -415,9 +415,9 @@ public abstract class Chart extends View {
      */
     protected void prepareContentRect() {
 
-        mContentRect.set(mOffsetLeft, mOffsetTop, getMeasuredWidth() - mOffsetRight,
+        mContentRect.set((int) mOffsetLeft, (int) mOffsetTop, getMeasuredWidth() - (int) mOffsetRight,
                 getMeasuredHeight()
-                        - mOffsetBottom);
+                        - (int) mOffsetBottom);
 
 //        Log.i(LOG_TAG, "Contentrect prepared. Width: " + mContentRect.width() + ", height: "
 //                + mContentRect.height());
@@ -453,6 +453,8 @@ public abstract class Chart extends View {
                 colors.add(clrs.get(j));
             }
         }
+        
+//        Log.i(LOG_TAG, "Preparing legend, colors size: " + colors.size() + ", labels size: " + labels.size());
 
         Legend l = new Legend(colors, labels);
 
@@ -587,45 +589,49 @@ public abstract class Chart extends View {
         float formSize = mLegend.getFormSize();
 
         // space between text and shape/form of entry
-        float formToTextSpace = mLegend.getFormToTextSpace();
+        float formToTextSpace = mLegend.getFormToTextSpace() + formSize;
 
         // space between the entries
-        float entrySpace = mLegend.getEntrySpace();
+        float entrySpace = mLegend.getEntrySpace() + formSize;
 
-        float textSize = Utils.convertPixelsToDp(mLegendLabelPaint.getTextSize());
+        float textSize = mLegendLabelPaint.getTextSize();
 
         // the amount of pixels the text needs to be set down to be on the same
         // height as the form
-        float textDrop = (textSize + formSize) / 2f + textSize / 2f;
+        float textDrop = (Utils.calcTextHeight(mLegendLabelPaint, "AQJ") + formSize) / 2f;
+        
+//        Log.i(LOG_TAG, "OffsetBottom: " + mLegend.getOffsetBottom() + ", Formsize: " + formSize + ", Textsize: " + textSize + ", TextDrop: " + textDrop);
 
         float posX, posY;
 
         switch (mLegend.getPosition()) {
             case BELOW_CHART_LEFT:
 
-                posX = mOffsetLeft;
-                posY = getHeight() - mOffsetBottom + textSize * 2;
+                posX = mLegend.getOffsetLeft();
+                posY = getHeight() - mLegend.getOffsetBottom() / 2f - formSize / 2f;
 
                 for (int i = 0; i < labels.length; i++) {
 
                     mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
 
-                    // make a step to the left
-                    posX += formToTextSpace;
-
                     // grouped forms have null labels
                     if (labels[i] != null) {
+                        
+                        // make a step to the left
+                        posX += formToTextSpace;
 
                         mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
                         posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i]) + entrySpace;
+                    } else {
+                        posX += entrySpace;
                     }
                 }
 
                 break;
             case BELOW_CHART_RIGHT:
 
-                posX = getWidth() - mOffsetRight;
-                posY = getHeight() - mOffsetBottom + textSize * 2;
+                posX = getWidth() - mLegend.getOffsetRight() - getOffsetRight();
+                posY = getHeight() - mLegend.getOffsetBottom() / 2f - formSize / 2f;
 
                 for (int i = labels.length - 1; i >= 0; i--) {
 
@@ -646,8 +652,8 @@ public abstract class Chart extends View {
             case RIGHT_OF_CHART:
                 
                 if(this instanceof BarLineChartBase) {
-                    posX = getWidth() - mOffsetRight + formSize; 
-                    posY = mOffsetTop;
+                    posX = getWidth() - mLegend.getOffsetRight() + Utils.convertDpToPixel(10f); 
+                    posY = mLegend.getOffsetTop();
                 } else {
                     posX = getWidth() - mLegend.getMaximumEntryLength(mLegendLabelPaint);
                     posY = Utils.calcTextHeight(mLegendLabelPaint, "A") * 1.5f;
@@ -667,13 +673,13 @@ public abstract class Chart extends View {
                                     mLegendLabelPaint, i);
                         } else {
 
-                            mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop + entrySpace,
+                            mLegend.drawLabel(mDrawCanvas, posX, posY + textSize + formSize + mLegend.getEntrySpace(),
                                     mLegendLabelPaint, i);
                             posY += entrySpace;
                         }
 
                         // make a step down
-                        posY += entrySpace;
+                        posY += entrySpace + textSize;
                         stack = 0f;
                     } else {
                         stack += formSize + 4f;
@@ -1053,27 +1059,27 @@ public abstract class Chart extends View {
      * @param top
      * @param bottom
      */
-    public void setOffsets(int left, int top, int right, int bottom) {
+    public void setOffsets(float left, float top, float right, float bottom) {
 
-        mOffsetBottom = (int) Utils.convertDpToPixel(bottom);
-        mOffsetLeft = (int) Utils.convertDpToPixel(left);
-        mOffsetRight = (int) Utils.convertDpToPixel(right);
-        mOffsetTop = (int) Utils.convertDpToPixel(top);
+        mOffsetBottom = Utils.convertDpToPixel(bottom);
+        mOffsetLeft = Utils.convertDpToPixel(left);
+        mOffsetRight = Utils.convertDpToPixel(right);
+        mOffsetTop = Utils.convertDpToPixel(top);
     }
 
-    public int getOffsetLeft() {
+    public float getOffsetLeft() {
         return mOffsetLeft;
     }
 
-    public int getOffsetBottom() {
+    public float getOffsetBottom() {
         return mOffsetBottom;
     }
 
-    public int getOffsetRight() {
+    public float getOffsetRight() {
         return mOffsetRight;
     }
 
-    public int getOffsetTop() {
+    public float getOffsetTop() {
         return mOffsetTop;
     }
 

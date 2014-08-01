@@ -22,6 +22,7 @@ import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend;
+import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.Legend.LegendForm;
 
 import java.util.ArrayList;
@@ -71,7 +72,7 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
         // disable the drawing of values into the chart
         mChart.setDrawYValues(false);
  
-        mChart.setLineWidth(4f);
+        mChart.setLineWidth(1f);
         mChart.setCircleSize(4f);
         
         mChart.setDrawBorder(true);
@@ -204,10 +205,12 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
                 break;
             }
             case R.id.actionToggleAdjustXLegend: {
-                if (mChart.isAdjustXLabelsEnabled())
-                    mChart.setAdjustXLabels(false);
+                XLabels xLabels = mChart.getXLabels();
+                
+                if (xLabels.isAdjustXLabelsEnabled())
+                    xLabels.setAdjustXLabels(false);
                 else
-                    mChart.setAdjustXLabels(true);
+                    xLabels.setAdjustXLabels(true);
 
                 mChart.invalidate();
                 break;

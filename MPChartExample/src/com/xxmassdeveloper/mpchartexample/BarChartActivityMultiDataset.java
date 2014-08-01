@@ -16,7 +16,11 @@ import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Legend;
+import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
+import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
+import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
+import com.github.mikephil.charting.utils.YLabels;
 
 import java.util.ArrayList;
 
@@ -77,6 +81,12 @@ public class BarChartActivityMultiDataset extends Activity implements OnSeekBarC
         
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART);
+        
+//        XLabels xl  = mChart.getXLabels();
+//        xl.setPosition(XLabelPosition.TOP);
+//        
+//        YLabels yl = mChart.getYLabels();
+//        yl.setPosition(YLabelPosition.RIGHT);
     }
 
     @Override
@@ -140,10 +150,12 @@ public class BarChartActivityMultiDataset extends Activity implements OnSeekBarC
                 break;
             }
             case R.id.actionToggleAdjustXLegend: {
-                if (mChart.isAdjustXLabelsEnabled())
-                    mChart.setAdjustXLabels(false);
+                XLabels xLabels = mChart.getXLabels();
+                
+                if (xLabels.isAdjustXLabelsEnabled())
+                    xLabels.setAdjustXLabels(false);
                 else
-                    mChart.setAdjustXLabels(true);
+                    xLabels.setAdjustXLabels(true);
 
                 mChart.invalidate();
                 break;
