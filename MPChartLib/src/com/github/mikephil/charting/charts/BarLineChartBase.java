@@ -1007,7 +1007,7 @@ public abstract class BarLineChartBase extends Chart {
                 transformPointArray(pts);
 
                 final float x = -pts[0] + getOffsetLeft();
-                final float y = -pts[1] + getOffsetBottom();
+                final float y = -pts[1] - getOffsetTop();
 
                 save.postTranslate(x, y);
 
@@ -1648,6 +1648,18 @@ public abstract class BarLineChartBase extends Chart {
      */
     public float getScaleY() {
         return mScaleY;
+    }
+    
+    /**
+     * if the chart is fully zoomed out, return true
+     * @return
+     */
+    public boolean isFullyZoomedOut() {
+        
+//        Log.i(LOG_TAG, "MinScaleX: " + mMinScaleX + ", ScaleX: " + mScaleX);
+        
+        if(mScaleX <= mMinScaleX && mScaleY <= mMinScaleY) return true;
+        else return false;
     }
 
     /**

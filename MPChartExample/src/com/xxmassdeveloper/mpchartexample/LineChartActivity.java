@@ -128,10 +128,10 @@ public class LineChartActivity extends Activity implements OnSeekBarChangeListen
         setData(45, 100);
         
         // restrain the maximum scale-out factor
-//        mChart.setScaleMinima(3f, 3f);
+        mChart.setScaleMinima(3f, 3f);
         
         // center the view to a specific position inside the chart
-//        mChart.centerViewPort(10, 50);
+        mChart.centerViewPort(10, 50);
                 
         // get the legend (only possible after setting data)
         Legend l = mChart.getLegend();

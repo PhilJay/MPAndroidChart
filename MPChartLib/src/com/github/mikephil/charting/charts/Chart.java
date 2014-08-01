@@ -407,7 +407,7 @@ public abstract class Chart extends View {
         mMatrixOffset.reset();
         mMatrixOffset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
 
-//        Log.i(LOG_TAG, "Matrices prepared.");
+        Log.i(LOG_TAG, "Matrices prepared.");
     }
 
     /**
@@ -1594,6 +1594,8 @@ public abstract class Chart extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
+    
+    private boolean mMatrixOnLayoutPrepared = false;
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
@@ -1604,9 +1606,14 @@ public abstract class Chart extends View {
 
         if (this instanceof BarLineChartBase) {
 
+            BarLineChartBase b = (BarLineChartBase) this;
+            
             // if y-values are not fixed
-            if (!((BarLineChartBase) this).hasFixedYValues())
+            if (!b.hasFixedYValues() && !mMatrixOnLayoutPrepared) {
                 prepareMatrix();
+                mMatrixOnLayoutPrepared = true;
+            }
+                
         } else {
             prepareMatrix();
         }
