@@ -1,5 +1,6 @@
 package com.xxmassdeveloper.mpchartexample;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -45,11 +46,21 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
 		mChart = (PieChart) findViewById(R.id.chart1);
 		
+		Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+        
+        mChart.setValueTypeface(tf);
+        mChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
+		
 		ColorTemplate ct = new ColorTemplate();
 	    
-		ct.addDataSetColors(ColorTemplate.COLORFUL_COLORS, this);
+		ct.addDataSetColors(ColorTemplate.VORDIPLOM_COLORS, this);
 		
 		mChart.setColorTemplate(ct);
+		
+		// set a space between the slices
+		mChart.setSliceSpace(3f);
+		
+		mChart.setHoleRadius(60f);
 
 		mChart.setDrawYValues(true);
 		mChart.setDrawCenterText(true);

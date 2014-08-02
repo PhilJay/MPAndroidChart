@@ -379,8 +379,9 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 
         Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
         
-        if (h == null || h.equals(mLastHighlighted)) {
+        if (h == null || h.equalTo(mLastHighlighted)) {
             mChart.highlightValues(null);
+            mLastHighlighted = null;
         } else {
             mLastHighlighted = h;
             mChart.highlightValues(new Highlight[] {

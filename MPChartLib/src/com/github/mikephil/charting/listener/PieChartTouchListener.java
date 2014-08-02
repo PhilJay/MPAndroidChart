@@ -1,9 +1,6 @@
 
 package com.github.mikephil.charting.listener;
 
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.utils.Highlight;
-
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.view.GestureDetector;
@@ -11,6 +8,9 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.utils.Highlight;
 
 public class PieChartTouchListener extends SimpleOnGestureListener implements OnTouchListener {
 
@@ -78,36 +78,6 @@ public class PieChartTouchListener extends SimpleOnGestureListener implements On
         return matrix;
     }
 
-    // @Override
-    // public boolean onDoubleTap(MotionEvent e) {
-    //
-    // float[] values = new float[9];
-    // matrix.getValues(values);
-    // float sX = values[Matrix.MSCALE_X];
-    // float minScale = minScale();
-    //
-    // if (sX > minScale * 1.5f) {
-    // matrix.postScale(0.5f, 0.5f, e.getX(), e.getY());
-    // } else {
-    // matrix.postScale(2, 2, e.getX(), e.getY());
-    // }
-    // limitScale();
-    // limitPan();
-    // ctx.update();
-    //
-    // return true;
-    // }
-
-//    @Override
-//    public boolean onSingleTapConfirmed(MotionEvent e) {
-//
-//        PointF pointF = calcImagePosition(start);
-//        
-//
-//
-//        return super.onSingleTapConfirmed(e);
-//    }
-
     @Override
     public void onLongPress(MotionEvent arg0) {
         if (mode == NONE) {
@@ -120,6 +90,9 @@ public class PieChartTouchListener extends SimpleOnGestureListener implements On
     public boolean onSingleTapConfirmed(MotionEvent e) {
         return true;
     }
+    
+    /** reference to the last highlighted object */
+    private Highlight mLastHighlight = null;
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
@@ -130,15 +103,24 @@ public class PieChartTouchListener extends SimpleOnGestureListener implements On
         if(distance < mChart.getRadius() / 2 || distance > mChart.getRadius()) {
             
             // if no slice was touched, highlight nothing
-            mChart.highlightValues(null);
+            mChart.highlightValues(null);   
+            mLastHighlight = null;
         } else {
 
             int index = mChart.getIndexForAngle(mChart.getAngleForPoint(e.getX(), e.getY()));
             int dataSetIndex = mChart.getDataSetIndexForIndex(index);
-            
-            if(dataSetIndex == -1)  mChart.highlightValues(null);
 
-            mChart.highlightValues(new Highlight[] { new Highlight(index, dataSetIndex) });
+            Highlight h = new Highlight(index, dataSetIndex);
+            
+            if(h.equalTo(mLastHighlight)) {
+                
+                mChart.highlightValues(null);
+                mLastHighlight = null;
+            } else {
+             
+                mChart.highlightValues(new Highlight[] { h });
+                mLastHighlight = h;
+            }
         }
         
         return true;

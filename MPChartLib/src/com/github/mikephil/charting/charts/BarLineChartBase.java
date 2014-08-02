@@ -329,18 +329,18 @@ public abstract class BarLineChartBase extends Chart {
         if (mYLabels.getPosition() == YLabelPosition.LEFT) {
 
             if (mYChartMin >= 0)
-                yleft = Utils.calcTextWidth(mYLabelPaint, (int) mDeltaY + ".000" + mUnit);
+                yleft = Utils.calcTextWidth(mYLabelPaint, (int) mDeltaY + ".00" + mUnit);
             else
-                yleft = Utils.calcTextWidth(mYLabelPaint, (int) (mDeltaY * -1) + ".000" + mUnit);
+                yleft = Utils.calcTextWidth(mYLabelPaint, (int) (mDeltaY * -1) + ".00" + mUnit);
 
             mYLabelPaint.setTextAlign(Align.RIGHT);
 
         } else if (mYLabels.getPosition() == YLabelPosition.RIGHT) {
 
             if (mYChartMin >= 0)
-                yright = Utils.calcTextWidth(mYLabelPaint, (int) mDeltaY + ".000" + mUnit);
+                yright = Utils.calcTextWidth(mYLabelPaint, (int) mDeltaY + ".00" + mUnit);
             else
-                yright = Utils.calcTextWidth(mYLabelPaint, (int) (mDeltaY * -1) + ".000" + mUnit);
+                yright = Utils.calcTextWidth(mYLabelPaint, (int) (mDeltaY * -1) + ".00" + mUnit);
 
             mYLabelPaint.setTextAlign(Align.LEFT);
 
@@ -349,9 +349,9 @@ public abstract class BarLineChartBase extends Chart {
             float width = 0f;
 
             if (mYChartMin >= 0)
-                width = Utils.calcTextWidth(mYLabelPaint, (int) mDeltaY + ".000" + mUnit);
+                width = Utils.calcTextWidth(mYLabelPaint, (int) mDeltaY + ".00" + mUnit);
             else
-                width = Utils.calcTextWidth(mYLabelPaint, (int) (mDeltaY * -1) + ".000" + mUnit);
+                width = Utils.calcTextWidth(mYLabelPaint, (int) (mDeltaY * -1) + ".00" + mUnit);
 
             yright = width;
             yleft = width;

@@ -58,6 +58,9 @@ public class PieChart extends Chart {
     /** indicates the selection distance of a pie slice */
     private float mShift = 20f;
 
+    /** the space in degrees between the chart-slices, default 0f */
+    private float mSliceSpace = 0f;
+
     /**
      * indicates the size of the hole in the center of the piechart, default:
      * radius / 2
@@ -191,7 +194,7 @@ public class PieChart extends Chart {
     }
 
     @Override
-    protected void calculateOffsets() { 
+    protected void calculateOffsets() {
 
         if (mDrawLegend) {
             if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
@@ -386,7 +389,8 @@ public class PieChart extends Chart {
 
                 // redefine the rect that contains the arc so that the
                 // highlighted pie is not cut off
-                mDrawCanvas.drawArc(highlighted, angle, sliceDegrees, true, mRenderPaint);
+                mDrawCanvas.drawArc(highlighted, angle + mSliceSpace / 2f, sliceDegrees
+                        - mSliceSpace / 2f, true, mRenderPaint);
             }
         }
     }
@@ -416,7 +420,8 @@ public class PieChart extends Chart {
                 if (!needsHighlight(entries.get(j).getXIndex(), i)) {
 
                     mRenderPaint.setColor(colors.get(j % colors.size()));
-                    mDrawCanvas.drawArc(mCircleBox, angle, newangle, true, mRenderPaint);
+                    mDrawCanvas.drawArc(mCircleBox, angle + mSliceSpace / 2f, newangle
+                            - mSliceSpace / 2f, true, mRenderPaint);
                 }
 
                 angle += newangle;
@@ -885,6 +890,32 @@ public class PieChart extends Chart {
      */
     public void setCenterTextSize(float size) {
         mCenterTextPaint.setTextSize(Utils.convertDpToPixel(size));
+    }
+
+    /**
+     * sets the space that is left out between the piechart-slices, default: 0°
+     * --> no space, maximum 45, minimum 0 (no space)
+     * 
+     * @param degrees
+     */
+    public void setSliceSpace(float degrees) {
+
+        if (degrees > 45)
+            degrees = 45f;
+        if (degrees < 0)
+            degrees = 0f;
+
+        mSliceSpace = degrees;
+    }
+
+    /**
+     * returns the space that is set to be between the piechart-slices, in
+     * degrees
+     * 
+     * @return
+     */
+    public float getSliceSpace() {
+        return mSliceSpace;
     }
 
     /**
