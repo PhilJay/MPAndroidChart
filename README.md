@@ -11,7 +11,10 @@ If you are having questions or problems, feel free to contact me, **create issue
 
 Forks, pull-requests or any other forms of contribution are always welcome.
 
-For a brief overview of all features, please download the [**MPAndroidChart Example .apk**](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample) from the **PlayStore**.
+Demo
+-----
+
+For a brief overview of the most important features, please download the **PlayStore Demo** [**MPAndroidChart Example.apk**](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample) and try it out.
 
 Features
 =======
