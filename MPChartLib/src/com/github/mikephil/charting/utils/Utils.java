@@ -86,10 +86,7 @@ public abstract class Utils {
      * @return
      */
     public static int calcTextWidth(Paint paint, String demoText) {
-
-        Rect r = new Rect();
-        paint.getTextBounds(demoText, 0, demoText.length(), r);
-        return r.width();
+        return (int) paint.measureText(demoText);
     }
     
     /**

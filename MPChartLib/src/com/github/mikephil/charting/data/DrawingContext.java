@@ -30,10 +30,7 @@ public class DrawingContext {
 			// if an old one exist, finish the other one first
 			finishNewDrawingEntry(chartData);
 		}
-		// keep type count correct
-		if (!chartData.getLabels().contains(mLastDrawnDataSetIndex)) {
-			chartData.getLabels().add("DS " + mLastDrawnDataSetIndex);
-		}
+
 		mCurrentDrawingEntries = new ArrayList<Entry>();
 		this.mCurrentDrawingDataSet = new DataSet(mCurrentDrawingEntries, "DS " + mLastDrawnDataSetIndex);
 		chartData.getDataSets().add(mCurrentDrawingDataSet);

@@ -27,10 +27,7 @@ public class ChartData {
 
     /** holds all the datasets (e.g. different lines) the chart represents */
     private ArrayList<DataSet> mDataSets;
-
-    /** array that holds all the different labels that are in the DataSet array */
-    private ArrayList<String> mDiffLabels;
-
+    
     /**
      * constructor for chart data
      * 
@@ -76,7 +73,6 @@ public class ChartData {
         this.mXVals = xVals;
         this.mDataSets = dataSets;
 
-        calcTypes();
         calcMinMax();
         calcYValueSum();
 
@@ -102,29 +98,8 @@ public class ChartData {
      * Does all necessary calculations, if the underlying data has changed
      */
     private void doCalculations() {
-        calcTypes();
         calcMinMax();
         calcYValueSum();
-    }
-
-    /**
-     * calculates all different labels that occur in the DataSets and stores
-     * them for fast access
-     */
-    private void calcTypes() {
-        mDiffLabels = new ArrayList<String>();
-
-        // check which dataset to use
-        ArrayList<DataSet> dataSets = mDataSets;
-
-        for (int i = 0; i < dataSets.size(); i++) {
-
-            String label = dataSets.get(i).getLabel();
-
-            if (!alreadyCounted(mDiffLabels, label)) {
-                mDiffLabels.add(label);
-            }
-        }
     }
 
     /**
@@ -161,6 +136,9 @@ public class ChartData {
     }
 
     private boolean alreadyCounted(ArrayList<String> countedLabels, String label) {
+        
+        if(label == null) return true;
+        
         for (int i = 0; i < countedLabels.size(); i++) {
             if (countedLabels.get(i).equals(label))
                 return true;
@@ -300,15 +278,6 @@ public class ChartData {
      */
     public ArrayList<DataSet> getOriginalDataSets() {
         return mDataSets;
-    }
-
-    /**
-     * returns all the different DataSet labels the chartdata represents
-     * 
-     * @return
-     */
-    public ArrayList<String> getLabels() {
-        return mDiffLabels;
     }
 
     /**

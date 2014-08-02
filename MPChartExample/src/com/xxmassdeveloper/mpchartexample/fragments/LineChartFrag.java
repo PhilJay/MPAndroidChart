@@ -52,6 +52,9 @@ public class LineChartFrag extends SimpleFragment {
         
         mChart.setData(getComplexity());
         
+//        mChart.setScaleMinima(3f, 3f);
+//        mChart.centerViewPort(300, 0);
+        
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"OpenSans-Light.ttf");
         
         mChart.setYLabelTypeface(tf);

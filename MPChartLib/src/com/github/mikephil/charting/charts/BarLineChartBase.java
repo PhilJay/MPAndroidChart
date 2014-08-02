@@ -303,9 +303,9 @@ public abstract class BarLineChartBase extends Chart {
 
         if (mLegend == null)
             return;
-        
+
         Log.i(LOG_TAG, "Offsets calculated.");
-        
+
         // setup offsets for legend
         if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
 
@@ -431,29 +431,29 @@ public abstract class BarLineChartBase extends Chart {
         mMatrixOffset.set(offset);
     }
 
-     /**
+    /**
      * Calculates the offsets that belong to the legend, this method is only
      * relevant when drawing into the chart. It can be used to refresh the
      * legend.
      */
-     public void calculateLegendOffsets() {
-    
-      // setup offsets for legend
-         if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
+    public void calculateLegendOffsets() {
 
-             mLegend.setOffsetRight(mLegend.getMaximumEntryLength(mLegendLabelPaint));
-             mLegendLabelPaint.setTextAlign(Align.LEFT);
+        // setup offsets for legend
+        if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
 
-         } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
-                 || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT) {
+            mLegend.setOffsetRight(mLegend.getMaximumEntryLength(mLegendLabelPaint));
+            mLegendLabelPaint.setTextAlign(Align.LEFT);
 
-             if (mXLabels.getPosition() == XLabelPosition.TOP)
-                 mLegend.setOffsetBottom(mLegendLabelPaint.getTextSize() * 3.5f);
-             else {
-                 mLegend.setOffsetBottom(mLegendLabelPaint.getTextSize() * 2.5f);
-             }
-         }
-     }
+        } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
+                || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT) {
+
+            if (mXLabels.getPosition() == XLabelPosition.TOP)
+                mLegend.setOffsetBottom(mLegendLabelPaint.getTextSize() * 3.5f);
+            else {
+                mLegend.setOffsetBottom(mLegendLabelPaint.getTextSize() * 2.5f);
+            }
+        }
+    }
 
     /**
      * calculates the modulus for x-labels and grid
@@ -501,14 +501,14 @@ public abstract class BarLineChartBase extends Chart {
 
         // additional handling for space (default 10% space), spacing only
         // applies with non-rounded y-label
-        float space = mDeltaY / 100f * 10f;        
+        float space = mDeltaY / 100f * 10f;
 
         if (mStartAtZero) {
             mYChartMin = 0;
         } else {
             mYChartMin = mYChartMin - space;
         }
-        
+
         // calc delta
         mYChartMax = mYChartMax + space;
         mDeltaY = Math.abs(mYChartMax - mYChartMin);
@@ -979,8 +979,8 @@ public abstract class BarLineChartBase extends Chart {
      * Centers the viewport around the specified x-index and the specified
      * y-value in the chart. Centering the viewport outside the bounds of the
      * chart is not possible. Makes most sense in combination with the
-     * setScaleMinima(...) method. SHOULD BE CALLED AFTER setting data for the
-     * chart.
+     * setScaleMinima(...) method. First set the scale minima, then center the
+     * viewport. SHOULD BE CALLED AFTER setting data for the chart.
      * 
      * @param xIndex the index on the x-axis to center to
      * @param yVal the value ont he y-axis to center to
@@ -997,6 +997,9 @@ public abstract class BarLineChartBase extends Chart {
                 float indicesInView = mDeltaX / mScaleX;
                 float valsInView = mDeltaY / mScaleY;
 
+                // Log.i(LOG_TAG, "indices: " + indicesInView + ", vals: " +
+                // valsInView);
+
                 float[] pts = new float[] {
                         xIndex - indicesInView / 2f, yVal + valsInView / 2f
                 };
@@ -1011,7 +1014,7 @@ public abstract class BarLineChartBase extends Chart {
 
                 save.postTranslate(x, y);
 
-                refreshTouchNoInvalidate(save);
+                refreshTouch(save);
 
                 // Log.i(LOG_TAG, "ViewPort centered, xIndex: " + xIndex +
                 // ", yVal: " + yVal
@@ -1649,17 +1652,20 @@ public abstract class BarLineChartBase extends Chart {
     public float getScaleY() {
         return mScaleY;
     }
-    
+
     /**
      * if the chart is fully zoomed out, return true
+     * 
      * @return
      */
     public boolean isFullyZoomedOut() {
-        
-//        Log.i(LOG_TAG, "MinScaleX: " + mMinScaleX + ", ScaleX: " + mScaleX);
-        
-        if(mScaleX <= mMinScaleX && mScaleY <= mMinScaleY) return true;
-        else return false;
+
+        // Log.i(LOG_TAG, "MinScaleX: " + mMinScaleX + ", ScaleX: " + mScaleX);
+
+        if (mScaleX <= mMinScaleX && mScaleY <= mMinScaleY)
+            return true;
+        else
+            return false;
     }
 
     /**
