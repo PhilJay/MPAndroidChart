@@ -61,6 +61,7 @@ Features
  - **PieChart (with selection, ...)**
 
 ![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/simpledesign_piechart1.png)
+![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/piechart_holeradius_space.png)
 
  - **ScatterChart** (with squares, triangles, circles, ... and more)
 
