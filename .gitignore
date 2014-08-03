@@ -29,3 +29,8 @@ proguard/
 .idea/
 
 .directory
+
+# gradle wrapper working directory
+.gradle
+
+build/

@@ -1,0 +1,42 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion '19.1.0'
+    defaultConfig {
+        applicationId 'com.xxmassdeveloper.mpchartexample'
+        minSdkVersion 16
+        targetSdkVersion 19
+        versionCode 4
+        versionName '1.0.4'
+
+        sourceSets {
+            main {
+                java.srcDirs = ['src']
+                res.srcDirs = ['res']
+                assets.srcDirs = ['assets']
+                manifest.srcFile 'AndroidManifest.xml'
+            }
+        }
+    }
+
+    buildTypes {
+
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+}
+
+dependencies {
+    //compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:support-v4:19.+'
+    compile project(':MPChartLib')
+}
