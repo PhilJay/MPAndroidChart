@@ -248,7 +248,6 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
                  } else Toast.makeText(getApplicationContext(), "Saving FAILED!", Toast.LENGTH_SHORT).show();
                  
 //                 mChart.saveToGallery("title"+System.currentTimeMillis())
-//                mChart.saveToPath("title" + System.currentTimeMillis(), "");
                 break;
             }
         }

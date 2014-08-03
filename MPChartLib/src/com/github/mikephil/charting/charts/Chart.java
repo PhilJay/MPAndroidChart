@@ -17,11 +17,8 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
-import android.provider.MediaStore.Images.Media;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -38,7 +35,9 @@ import com.github.mikephil.charting.utils.MarkerView;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
 
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -1493,9 +1492,10 @@ public abstract class Chart extends View {
     }
 
     /**
-     * Returns the ChartData object the chart CURRENTLY represents. It contains
-     * all values and information the chart displays. If filtering algorithms
-     * have been applied, this returns the filtered state of data.
+     * Returns the ChartData object the chart CURRENTLY represents (not
+     * dependant on zoom level). It contains all values and information the
+     * chart displays. If filtering algorithms have been applied, this returns
+     * the filtered state of data.
      * 
      * @return
      */
@@ -1574,37 +1574,9 @@ public abstract class Chart extends View {
     }
 
     /**
-     * saves the current chart state to a bitmap in the gallery NOTE: Needs
-     * permission WRITE_EXTERNAL_STORAGE
-     * 
-     * @param title
-     * @return returns true on success, false on error
-     */
-    public boolean saveToGallery(String title) {
-        String url = MediaStore.Images.Media.insertImage(getContext().getContentResolver(),
-                mDrawBitmap, title,
-                "");
-
-        return url == null ? false : true;
-    }
-
-    public static Uri addImageToGallery(Context context, String filepath, String title,
-            String description) {
-        
-        ContentValues values = new ContentValues();
-        values.put(Media.TITLE, title);
-        values.put(Media.DESCRIPTION, description);
-        values.put(Images.Media.DATE_TAKEN, System.currentTimeMillis());
-        values.put(Images.Media.MIME_TYPE, "image/jpeg");
-        values.put(MediaStore.MediaColumns.DATA, filepath);
-
-        return context.getContentResolver().insert(Media.EXTERNAL_CONTENT_URI, values);
-    }
-
-    /**
-     * saves the chart with the given name to the given path on the sdcard
+     * Saves the chart with the given name to the given path on the sdcard
      * leaving the path empty "" will put the saved file directly on the SD card
-     * chart is saved as .png example: saveToPath("myfilename",
+     * chart is saved as a PNG image, example: saveToPath("myfilename",
      * "foldername1/foldername2");
      * 
      * @param title
@@ -1632,6 +1604,66 @@ public abstract class Chart extends View {
         }
 
         return true;
+    }
+
+    /**
+     * Saves the current state of the chart to the gallery as a JPEG image. The
+     * filename and compression can be set. 0 == maximum compression, 100 = low
+     * compression (high quality). NOTE: Needs permission WRITE_EXTERNAL_STORAGE
+     * 
+     * @param fileName e.g. "my_image"
+     * @param quality e.g. 50, min = 0, max = 100
+     * @return returns true if saving was successfull, false if not
+     */
+    public boolean saveToGallery(String fileName, int quality) {
+
+        // restrain quality
+        if (quality < 0 || quality > 100)
+            quality = 50;
+
+        long currentTime = System.currentTimeMillis();
+
+        File extBaseDir = Environment.getExternalStorageDirectory();
+        File file = new File(extBaseDir.getAbsolutePath() + "/DCIM");
+        if (!file.exists()) {
+            if (!file.mkdirs()) {
+                return false;
+            }
+        }
+
+        String filePath = file.getAbsolutePath() + "/" + fileName;
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(filePath);
+
+            mDrawBitmap.compress(Bitmap.CompressFormat.JPEG, quality, out); // control
+            // the jpeg
+            // quality
+
+            out.flush();
+            out.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return false;
+        }
+
+        long size = new File(filePath).length();
+
+        ContentValues values = new ContentValues(8);
+
+        values.put(Images.Media.TITLE, fileName);
+        values.put(Images.Media.DISPLAY_NAME, fileName);
+        values.put(Images.Media.DATE_ADDED, currentTime);
+        values.put(Images.Media.MIME_TYPE, "image/jpeg");
+        values.put(Images.Media.DESCRIPTION, "MPAndroidChart-Library Save");
+        values.put(Images.Media.ORIENTATION, 0);
+        values.put(Images.Media.DATA, filePath);
+        values.put(Images.Media.SIZE, size);
+
+        return getContext().getContentResolver().insert(Images.Media.EXTERNAL_CONTENT_URI, values) == null
+                ? false : true;
     }
 
     @Override
