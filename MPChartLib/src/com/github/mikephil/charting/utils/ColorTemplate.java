@@ -3,10 +3,9 @@ package com.github.mikephil.charting.utils;
 
 import android.content.Context;
 
-import java.util.ArrayList;
-
 import com.github.mikephil.charting.R;
-import com.github.mikephil.charting.R.color;
+
+import java.util.ArrayList;
 
 public class ColorTemplate {
 

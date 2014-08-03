@@ -1,12 +1,14 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.SeekBar;
+import android.widget.Toast;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
@@ -105,6 +107,9 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
 
         // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(true);
+        
+        // set an alternative background color
+//        mChart.setBackgroundColor(Color.GRAY);
 
         // create a custom MarkerView (extend MarkerView) and specify the layout
         // to use for it
@@ -238,8 +243,12 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
                 break;
             }
             case R.id.actionSave: {
-                // mChart.saveToGallery("title"+System.currentTimeMillis());
-                mChart.saveToPath("title" + System.currentTimeMillis(), "");
+                 if(mChart.saveToPath("title" + System.currentTimeMillis(), "")) {
+                     Toast.makeText(getApplicationContext(), "Saving SUCCESSFUL!", Toast.LENGTH_SHORT).show();
+                 } else Toast.makeText(getApplicationContext(), "Saving FAILED!", Toast.LENGTH_SHORT).show();
+                 
+//                 mChart.saveToGallery("title"+System.currentTimeMillis())
+//                mChart.saveToPath("title" + System.currentTimeMillis(), "");
                 break;
             }
         }

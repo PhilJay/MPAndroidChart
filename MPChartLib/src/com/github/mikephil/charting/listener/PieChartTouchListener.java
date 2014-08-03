@@ -13,10 +13,7 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.utils.Highlight;
 
 public class PieChartTouchListener extends SimpleOnGestureListener implements OnTouchListener {
-
-    private static final float MAX_SCALE = Float.MAX_VALUE; // 10f;
-    private static final float MIN_SCALE = 0.5f;
-
+    
     Matrix matrix = new Matrix();
     Matrix savedMatrix = new Matrix();
 
@@ -24,25 +21,18 @@ public class PieChartTouchListener extends SimpleOnGestureListener implements On
 
     // We can be in one of these 3 states
     private static final int NONE = 0;
-    private static final int ROTATE = 1;
-    private static final int ZOOM = 2;
-    private static final int POSTZOOM = 3;
     private static final int LONGPRESS = 4;
 
     private int mode = NONE;
-    private float oldDist = 1f;
+
     private PieChart mChart;
-    private float mPreviousY = 0f;
-    private float mPreviousX = 0f;
-    
-    private Matrix mInverted = new Matrix();
     
     private GestureDetector mGestureDetector;
 
     public PieChartTouchListener(PieChart ctx) {
         this.mChart = ctx;
         
-        mGestureDetector = new GestureDetector(this);
+        mGestureDetector = new GestureDetector(ctx.getContext(), this);
     }
 
     @Override
@@ -67,10 +57,7 @@ public class PieChartTouchListener extends SimpleOnGestureListener implements On
             case MotionEvent.ACTION_UP:
                 break;
         }
-        
-        mPreviousX = x;
-        mPreviousY = y;
-        
+
         return true;
     }
 

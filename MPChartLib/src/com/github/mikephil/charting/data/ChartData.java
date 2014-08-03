@@ -1,9 +1,9 @@
 
 package com.github.mikephil.charting.data;
 
-import java.util.ArrayList;
-
 import com.github.mikephil.charting.utils.Highlight;
+
+import java.util.ArrayList;
 
 /**
  * Class that holds all relevant data that represents the chart. That involves
@@ -133,18 +133,6 @@ public class ChartData {
         for (int i = 0; i < dataSets.size(); i++) {
             mYValueSum += Math.abs(dataSets.get(i).getYValueSum());
         }
-    }
-
-    private boolean alreadyCounted(ArrayList<String> countedLabels, String label) {
-        
-        if(label == null) return true;
-        
-        for (int i = 0; i < countedLabels.size(); i++) {
-            if (countedLabels.get(i).equals(label))
-                return true;
-        }
-
-        return false;
     }
 
     /**

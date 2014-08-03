@@ -35,7 +35,7 @@
     </item>
     <item
         android:id="@+id/actionSave"
-        android:title="Save to Gallery">
+        android:title="Save to SD-Card">
     </item>
 <item
         android:id="@+id/actionTogglePinch"

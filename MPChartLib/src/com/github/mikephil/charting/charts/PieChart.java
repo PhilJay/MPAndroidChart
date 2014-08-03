@@ -87,7 +87,8 @@ public class PieChart extends Chart {
     private boolean mUsePercentValues = false;
 
     /**
-     * paint for the hole in the center of the pie chart
+     * paint for the hole in the center of the pie chart and the transparent
+     * circle
      */
     private Paint mHolePaint;
 
@@ -252,6 +253,8 @@ public class PieChart extends Chart {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
+        // use the piecharts own listener
         return mListener.onTouch(this, event);
     }
 
@@ -665,12 +668,23 @@ public class PieChart extends Chart {
     }
 
     /**
-     * sets the distance of the highlighted value to the piechart default 20f
+     * sets the distance the highlighted piechart-slice is "shifted" away from
+     * the center of the chart, default 20f
      * 
      * @param shift
      */
-    public void setShift(float shift) {
+    public void setSelectionShift(float shift) {
         mShift = Utils.convertDpToPixel(shift);
+    }
+
+    /**
+     * returns the distance a highlighted piechart slice is "shifted" away from
+     * the chart-center
+     * 
+     * @return
+     */
+    public float getSelectionShift() {
+        return mShift;
     }
 
     /**
@@ -810,7 +824,8 @@ public class PieChart extends Chart {
 
     /**
      * returns the angle relative to the chart center for the given point on the
-     * chart in degrees. The angle is always between 0 and 360°, 0° is EAST
+     * chart in degrees. The angle is always between 0 and 360°, 0° is EAST, 90°
+     * is SOUTH, ...
      * 
      * @param x
      * @param y

@@ -2,6 +2,7 @@
 package com.github.mikephil.charting.charts;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -16,8 +17,11 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.MediaStore.Images;
+import android.provider.MediaStore.Images.Media;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -51,6 +55,12 @@ public abstract class Chart extends View {
 
     protected int mColorDarkBlue = Color.rgb(41, 128, 186);
     protected int mColorDarkRed = Color.rgb(232, 76, 59);
+
+    /**
+     * flag that holds the background color of the view and the color the canvas
+     * is cleared with
+     */
+    private int mBackgroundColor = Color.WHITE;
 
     /**
      * defines the number of digits to use for all printed values, -1 means
@@ -124,7 +134,7 @@ public abstract class Chart extends View {
 
     /** this is the paint object used for drawing the data onto the chart */
     protected Paint mRenderPaint;
-    
+
     /** paint for the legend labels */
     protected Paint mLegendLabelPaint;
 
@@ -166,7 +176,7 @@ public abstract class Chart extends View {
 
     /** if true, thousands values are separated by a dot */
     protected boolean mSeparateTousands = true;
-    
+
     /** flag indicating if the legend is drawn of not */
     protected boolean mDrawLegend = true;
 
@@ -361,7 +371,7 @@ public abstract class Chart extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        
+
         if (!mOffsetsCalculated) {
 
             calculateOffsets();
@@ -382,7 +392,7 @@ public abstract class Chart extends View {
             mDrawCanvas = new Canvas(mDrawBitmap);
         }
 
-        mDrawCanvas.drawColor(Color.WHITE); // clear all
+        mDrawCanvas.drawColor(mBackgroundColor); // clear all
     }
 
     /**
@@ -410,14 +420,15 @@ public abstract class Chart extends View {
      */
     protected void prepareContentRect() {
 
-        mContentRect.set((int) mOffsetLeft, (int) mOffsetTop, getMeasuredWidth() - (int) mOffsetRight,
+        mContentRect.set((int) mOffsetLeft, (int) mOffsetTop, getMeasuredWidth()
+                - (int) mOffsetRight,
                 getMeasuredHeight()
                         - (int) mOffsetBottom);
 
-//        Log.i(LOG_TAG, "Contentrect prepared. Width: " + mContentRect.width() + ", height: "
-//                + mContentRect.height());
+        // Log.i(LOG_TAG, "Contentrect prepared. Width: " + mContentRect.width()
+        // + ", height: "
+        // + mContentRect.height());
     }
-    
 
     /**
      * Generates an automatically prepared legend depending on the DataSets in
@@ -432,7 +443,7 @@ public abstract class Chart extends View {
 
             ArrayList<Integer> clrs = mCt.getDataSetColors(i % mCt.getColors().size());
             int dataSetCount = mOriginalData.getDataSetByIndex(i).getEntryCount();
-            
+
             for (int j = 0; j < clrs.size() && j < dataSetCount; j++) {
 
                 // if multiple colors are set for a DataSet, group them
@@ -448,8 +459,9 @@ public abstract class Chart extends View {
                 colors.add(clrs.get(j));
             }
         }
-        
-//        Log.i(LOG_TAG, "Preparing legend, colors size: " + colors.size() + ", labels size: " + labels.size());
+
+        // Log.i(LOG_TAG, "Preparing legend, colors size: " + colors.size() +
+        // ", labels size: " + labels.size());
 
         Legend l = new Legend(colors, labels);
 
@@ -566,7 +578,7 @@ public abstract class Chart extends View {
             paths.get(i).transform(mMatrixTouch);
         }
     }
-    
+
     /**
      * draws the legend
      */
@@ -594,8 +606,10 @@ public abstract class Chart extends View {
         // the amount of pixels the text needs to be set down to be on the same
         // height as the form
         float textDrop = (Utils.calcTextHeight(mLegendLabelPaint, "AQJ") + formSize) / 2f;
-        
-//        Log.i(LOG_TAG, "OffsetBottom: " + mLegend.getOffsetBottom() + ", Formsize: " + formSize + ", Textsize: " + textSize + ", TextDrop: " + textDrop);
+
+        // Log.i(LOG_TAG, "OffsetBottom: " + mLegend.getOffsetBottom() +
+        // ", Formsize: " + formSize + ", Textsize: " + textSize +
+        // ", TextDrop: " + textDrop);
 
         float posX, posY;
 
@@ -611,7 +625,7 @@ public abstract class Chart extends View {
 
                     // grouped forms have null labels
                     if (labels[i] != null) {
-                        
+
                         // make a step to the left
                         posX += formToTextSpace;
 
@@ -645,15 +659,15 @@ public abstract class Chart extends View {
 
                 break;
             case RIGHT_OF_CHART:
-                
-                if(this instanceof BarLineChartBase) {
-                    posX = getWidth() - mLegend.getOffsetRight() + Utils.convertDpToPixel(10f); 
+
+                if (this instanceof BarLineChartBase) {
+                    posX = getWidth() - mLegend.getOffsetRight() + Utils.convertDpToPixel(10f);
                     posY = mLegend.getOffsetTop();
                 } else {
                     posX = getWidth() - mLegend.getMaximumEntryLength(mLegendLabelPaint);
                     posY = Utils.calcTextHeight(mLegendLabelPaint, "A") * 1.5f;
                 }
-                
+
                 float stack = 0f;
                 boolean wasStacked = false;
 
@@ -668,7 +682,8 @@ public abstract class Chart extends View {
                                     mLegendLabelPaint, i);
                         } else {
 
-                            mLegend.drawLabel(mDrawCanvas, posX, posY + textSize + formSize + mLegend.getEntrySpace(),
+                            mLegend.drawLabel(mDrawCanvas, posX, posY + textSize + formSize
+                                    + mLegend.getEntrySpace(),
                                     mLegendLabelPaint, i);
                             posY += entrySpace;
                         }
@@ -1010,13 +1025,15 @@ public abstract class Chart extends View {
     public PointF getCenter() {
         return new PointF(getWidth() / 2, getHeight() / 2);
     }
-    
+
     /**
      * returns the center of the chart taking offsets under consideration
+     * 
      * @return
      */
-    public PointF getCenterOffsets() {      
-        return new PointF(mContentRect.left + mContentRect.width() / 2 , mContentRect.top + mContentRect.height() / 2);
+    public PointF getCenterOffsets() {
+        return new PointF(mContentRect.left + mContentRect.width() / 2, mContentRect.top
+                + mContentRect.height() / 2);
     }
 
     /**
@@ -1107,7 +1124,7 @@ public abstract class Chart extends View {
      */
     public void setColorTemplate(ColorTemplate ct) {
         this.mCt = ct;
-        
+
         Log.i(LOG_TAG, "ColorTemplate set.");
     }
 
@@ -1137,7 +1154,7 @@ public abstract class Chart extends View {
     public MarkerView getMarkerView() {
         return mMarkerView;
     }
-    
+
     /**
      * set this to true to draw the legend, false if not
      * 
@@ -1243,9 +1260,10 @@ public abstract class Chart extends View {
                 break;
         }
     }
-    
+
     /**
      * Returns the paint object associated with the provided constant.
+     * 
      * @param which e.g. Chart.PAINT_LEGEND_LABEL
      * @return
      */
@@ -1262,7 +1280,7 @@ public abstract class Chart extends View {
             case PAINT_LEGEND_LABEL:
                 return mLegendLabelPaint;
         }
-        
+
         return null;
     }
 
@@ -1545,14 +1563,42 @@ public abstract class Chart extends View {
     }
 
     /**
+     * sets the background color for the chart --> this also sets the color the
+     * canvas is cleared with
+     */
+    @Override
+    public void setBackgroundColor(int color) {
+        super.setBackgroundColor(color);
+
+        mBackgroundColor = color;
+    }
+
+    /**
      * saves the current chart state to a bitmap in the gallery NOTE: Needs
      * permission WRITE_EXTERNAL_STORAGE
      * 
      * @param title
+     * @return returns true on success, false on error
      */
-    public void saveToGallery(String title) {
-        MediaStore.Images.Media.insertImage(getContext().getContentResolver(), mDrawBitmap, title,
+    public boolean saveToGallery(String title) {
+        String url = MediaStore.Images.Media.insertImage(getContext().getContentResolver(),
+                mDrawBitmap, title,
                 "");
+
+        return url == null ? false : true;
+    }
+
+    public static Uri addImageToGallery(Context context, String filepath, String title,
+            String description) {
+        
+        ContentValues values = new ContentValues();
+        values.put(Media.TITLE, title);
+        values.put(Media.DESCRIPTION, description);
+        values.put(Images.Media.DATE_TAKEN, System.currentTimeMillis());
+        values.put(Images.Media.MIME_TYPE, "image/jpeg");
+        values.put(MediaStore.MediaColumns.DATA, filepath);
+
+        return context.getContentResolver().insert(Media.EXTERNAL_CONTENT_URI, values);
     }
 
     /**
@@ -1563,8 +1609,9 @@ public abstract class Chart extends View {
      * 
      * @param title
      * @param pathOnSD e.g. "folder1/folder2/folder3"
+     * @return returns true on success, false on error
      */
-    public void saveToPath(String title, String pathOnSD) {
+    public boolean saveToPath(String title, String pathOnSD) {
 
         OutputStream stream = null;
         try {
@@ -1580,16 +1627,19 @@ public abstract class Chart extends View {
 
             stream.close();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            return false;
         }
+
+        return true;
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
-    
+
+    /** flag indicating if the matrix has alerady been prepared */
     private boolean mMatrixOnLayoutPrepared = false;
 
     @Override
@@ -1597,18 +1647,19 @@ public abstract class Chart extends View {
         super.onLayout(changed, left, top, right, bottom);
 
         prepareContentRect();
-        Log.i(LOG_TAG, "onLayout(), width: " + mContentRect.width() + ", height: " + mContentRect.height());
+        Log.i(LOG_TAG,
+                "onLayout(), width: " + mContentRect.width() + ", height: " + mContentRect.height());
 
         if (this instanceof BarLineChartBase) {
 
             BarLineChartBase b = (BarLineChartBase) this;
-            
+
             // if y-values are not fixed
             if (!b.hasFixedYValues() && !mMatrixOnLayoutPrepared) {
                 prepareMatrix();
                 mMatrixOnLayoutPrepared = true;
             }
-                
+
         } else {
             prepareMatrix();
         }
