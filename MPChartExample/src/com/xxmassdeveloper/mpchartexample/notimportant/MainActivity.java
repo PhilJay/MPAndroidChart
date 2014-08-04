@@ -22,7 +22,8 @@ import com.xxmassdeveloper.mpchartexample.BarChartActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivityMultiDataset;
 import com.xxmassdeveloper.mpchartexample.DrawChartActivity;
 import com.xxmassdeveloper.mpchartexample.LineChartActivity;
-import com.xxmassdeveloper.mpchartexample.ListViewChartActivity;
+import com.xxmassdeveloper.mpchartexample.ListViewBarChartActivity;
+import com.xxmassdeveloper.mpchartexample.ListViewMultiChartActivity;
 import com.xxmassdeveloper.mpchartexample.MultiLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.PieChartActivity;
 import com.xxmassdeveloper.mpchartexample.R;
@@ -57,8 +58,11 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 "Charts in Fragments, awesome design.",
                 "Demonstration of charts inside Fragments. In this example the focus was on the design and look and feel of the chart."));
         objects.add(new ContentItem(
-                "Charts inside a ListView",
-                "Demonstrates the usage of different charts inside a ListView."));
+                "BarChart inside ListView",
+                "Demonstrates the usage of a BarChart inside a ListView item."));       
+        objects.add(new ContentItem(
+                "Multiple charts inside ListView",
+                "Demonstrates the usage of different chart types inside a ListView."));
 
         MyAdapter adapter = new MyAdapter(this, objects);
 
@@ -108,7 +112,11 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 startActivity(i);
                 break;
             case 8:
-                i = new Intent(this, ListViewChartActivity.class);
+                i = new Intent(this, ListViewBarChartActivity.class);
+                startActivity(i);
+                break;
+            case 9:
+                i = new Intent(this, ListViewMultiChartActivity.class);
                 startActivity(i);
                 break;
         }

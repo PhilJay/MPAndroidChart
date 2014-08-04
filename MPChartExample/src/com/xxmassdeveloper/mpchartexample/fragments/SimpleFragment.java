@@ -54,7 +54,7 @@ public abstract class SimpleFragment extends Fragment {
         for(int i = 0; i < count; i++) {
             xVals.add("entry" + (i+1));
     
-            entries1.add(new Entry((float) (Math.random() * 100), i));
+            entries1.add(new Entry((float) (Math.random() * 60) + 40, i));
         }
         
         DataSet ds1 = new DataSet(entries1, "Quarterly Revenues 2014");

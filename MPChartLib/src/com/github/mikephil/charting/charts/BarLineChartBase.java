@@ -501,7 +501,7 @@ public abstract class BarLineChartBase extends Chart {
 
         // additional handling for space (default 10% space), spacing only
         // applies with non-rounded y-label
-        float space = mDeltaY / 100f * 10f;
+        float space = mDeltaY / 100f * 15f;
 
         if (mStartAtZero) {
             mYChartMin = 0;
@@ -521,16 +521,13 @@ public abstract class BarLineChartBase extends Chart {
 
         StringBuffer a = new StringBuffer();
 
-        int length = (int) (((float) (mCurrentData.getXVals().get(0).length() + mCurrentData
+        float length = (int) (((float) (mCurrentData.getXVals().get(0).length() + mCurrentData
                 .getXVals()
                 .get(mCurrentData.getXValCount() - 1)
                 .length())));
 
-        if (mCurrentData.getXVals().get(0).length() <= 3)
-            length *= 2;
-
         for (int i = 0; i < length; i++) {
-            a.append("h");
+            a.append("H");
         }
 
         mXLabels.mXLabelWidth = Utils.calcTextWidth(mXLabelPaint, a.toString());

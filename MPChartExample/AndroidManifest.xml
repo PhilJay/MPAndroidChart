@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xxmassdeveloper.mpchartexample"
-    android:versionCode="7"
-    android:versionName="1.0.7" >
+    android:versionCode="8"
+    android:versionName="1.0.8" >
 
     <uses-sdk
         android:minSdkVersion="9"
@@ -32,7 +32,8 @@
         <activity android:name="DrawChartActivity"></activity>
         <activity android:name="ScatterChartActivity"></activity>
         <activity android:name="com.xxmassdeveloper.mpchartexample.fragments.SimpleChartDemo"></activity>
-        <activity android:name="ListViewChartActivity"></activity>
+        <activity android:name="ListViewBarChartActivity"></activity>
+        <activity android:name="ListViewMultiChartActivity"></activity>
     </application>
 
 </manifest>

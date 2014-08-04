@@ -29,7 +29,7 @@ import java.util.List;
  * 
  * @author Philipp Jahoda
  */
-public class ListViewChartActivity extends DemoBase {
+public class ListViewBarChartActivity extends DemoBase {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +125,7 @@ public class ListViewChartActivity extends DemoBase {
         ArrayList<Entry> entries = new ArrayList<Entry>();
 
         for (int i = 0; i < 12; i++) {
-            entries.add(new Entry((int) (Math.random() * 100), i));
+            entries.add(new Entry((int) (Math.random() * 70) + 30, i));
         }
 
         DataSet d = new DataSet(entries, "New DataSet " + cnt);
