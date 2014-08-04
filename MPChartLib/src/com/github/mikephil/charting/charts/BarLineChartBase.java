@@ -360,7 +360,7 @@ public abstract class BarLineChartBase extends Chart {
         // offsets for x-labels
         if (mXLabels.getPosition() == XLabelPosition.BOTTOM) {
 
-            xbottom = Utils.calcTextHeight(mXLabelPaint, "Q");
+            xbottom = Utils.calcTextHeight(mXLabelPaint, "Q") * 2f;
 
         } else if (mXLabels.getPosition() == XLabelPosition.TOP) {
 
