@@ -6,12 +6,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.SeekBar;
-import android.widget.Toast;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
@@ -34,7 +35,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
     private TextView tvX, tvY;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) { 
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -60,7 +61,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         // enable the drawing of values
         mChart.setDrawYValues(true);
-        
+
         mChart.setDescription("");
 
         // if more than 60 entries are displayed in the chart, no values will be
@@ -76,30 +77,29 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
-        
+
         mChart.setUnit(" €");
-        
+
         // change the position of the y-labels
         YLabels yLabels = mChart.getYLabels();
         yLabels.setPosition(YLabelPosition.BOTH_SIDED);
-        
+
         XLabels xLabels = mChart.getXLabels();
         xLabels.setPosition(XLabelPosition.TOP);
-        
-        
-//        mChart.setDrawXLabels(false);
-//        mChart.setDrawYLabels(false);
-        
+
+        // mChart.setDrawXLabels(false);
+        // mChart.setDrawYLabels(false);
+
         // setting data
         mSeekBarX.setProgress(45);
         mSeekBarY.setProgress(100);
-               
+
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.BELOW_CHART_LEFT);
         l.setFormSize(8f);
         l.setEntrySpace(4f);
-        
-//        mChart.setDrawLegend(false);
+
+        // mChart.setDrawLegend(false);
     }
 
     @Override
@@ -164,7 +164,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
             }
             case R.id.actionToggleAdjustXLegend: {
                 XLabels xLabels = mChart.getXLabels();
-                
+
                 if (xLabels.isAdjustXLabelsEnabled())
                     xLabels.setAdjustXLabels(false);
                 else
@@ -174,9 +174,9 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
                 break;
             }
             case R.id.actionToggleFilter: {
-                
+
                 Approximator a = new Approximator(ApproximatorType.DOUGLAS_PEUCKER, 25);
-                
+
                 if (!mChart.isFilteringEnabled()) {
                     mChart.enableFiltering(a);
                 } else {
@@ -186,9 +186,12 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
                 break;
             }
             case R.id.actionSave: {
-                if(mChart.saveToGallery("title"+System.currentTimeMillis(), 50)) {
-                    Toast.makeText(getApplicationContext(), "Saving SUCCESSFUL!", Toast.LENGTH_SHORT).show();
-                } else Toast.makeText(getApplicationContext(), "Saving FAILED!", Toast.LENGTH_SHORT).show();
+                if (mChart.saveToGallery("title" + System.currentTimeMillis(), 50)) {
+                    Toast.makeText(getApplicationContext(), "Saving SUCCESSFUL!",
+                            Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(getApplicationContext(), "Saving FAILED!", Toast.LENGTH_SHORT)
+                            .show();
                 break;
             }
         }
@@ -214,11 +217,11 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
             yVals1.add(new Entry(val, i));
         }
 
-        DataSet set1 = new DataSet(yVals1, "DataSet");
-        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+        BarDataSet set1 = new BarDataSet(yVals1, "DataSet");
+        ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
         dataSets.add(set1);
 
-        ChartData data = new ChartData(xVals, dataSets);
+        BarData data = new BarData(xVals, dataSets);
 
         mChart.setData(data);
         mChart.invalidate();

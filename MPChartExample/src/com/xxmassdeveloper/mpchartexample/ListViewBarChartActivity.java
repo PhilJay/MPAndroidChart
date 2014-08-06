@@ -12,8 +12,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.XLabels;
@@ -120,7 +121,7 @@ public class ListViewBarChartActivity extends DemoBase {
      * 
      * @return
      */
-    private ChartData generateData(int cnt) {
+    private BarData generateData(int cnt) {
 
         ArrayList<Entry> entries = new ArrayList<Entry>();
 
@@ -128,9 +129,12 @@ public class ListViewBarChartActivity extends DemoBase {
             entries.add(new Entry((int) (Math.random() * 70) + 30, i));
         }
 
-        DataSet d = new DataSet(entries, "New DataSet " + cnt);
+        BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);    
 
-        ChartData cd = new ChartData(getMonths(), d);
+        ArrayList<BarDataSet> sets = new ArrayList<BarDataSet>();
+        sets.add(d);
+        
+        BarData cd = new BarData(getMonths(), sets);
         return cd;
     }
 

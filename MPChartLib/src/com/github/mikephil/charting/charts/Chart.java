@@ -40,8 +40,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
 
 /**
  * Baseclass of all Chart-Views.
@@ -251,37 +249,37 @@ public abstract class Chart extends View {
         mCt.addDataSetColors(ColorTemplate.VORDIPLOM_COLORS, getContext());
     }
 
-    public void initWithDummyData() {
-        ColorTemplate template = new ColorTemplate();
-        template.addColorsForDataSets(ColorTemplate.COLORFUL_COLORS, getContext());
-
-        setColorTemplate(template);
-        setDrawYValues(false);
-
-        ArrayList<String> xVals = new ArrayList<String>();
-        Calendar calendar = Calendar.getInstance();
-        for (int i = 0; i < 12; i++) {
-            xVals.add(calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()));
-        }
-
-        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
-        for (int i = 0; i < 3; i++) {
-
-            ArrayList<Entry> yVals = new ArrayList<Entry>();
-
-            for (int j = 0; j < 12; j++) {
-                float val = (float) (Math.random() * 100);
-                yVals.add(new Entry(val, j));
-            }
-
-            DataSet set = new DataSet(yVals, "DataSet " + i);
-            dataSets.add(set); // add the datasets
-        }
-        // create a data object with the datasets
-        ChartData data = new ChartData(xVals, dataSets);
-        setData(data);
-        invalidate();
-    }
+//    public void initWithDummyData() {
+//        ColorTemplate template = new ColorTemplate();
+//        template.addColorsForDataSets(ColorTemplate.COLORFUL_COLORS, getContext());
+//
+//        setColorTemplate(template);
+//        setDrawYValues(false);
+//
+//        ArrayList<String> xVals = new ArrayList<String>();
+//        Calendar calendar = Calendar.getInstance();
+//        for (int i = 0; i < 12; i++) {
+//            xVals.add(calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()));
+//        }
+//
+//        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+//        for (int i = 0; i < 3; i++) {
+//
+//            ArrayList<Entry> yVals = new ArrayList<Entry>();
+//
+//            for (int j = 0; j < 12; j++) {
+//                float val = (float) (Math.random() * 100);
+//                yVals.add(new Entry(val, j));
+//            }
+//
+//            DataSet set = new DataSet(yVals, "DataSet " + i);
+//            dataSets.add(set); // add the datasets
+//        }
+//        // create a data object with the datasets
+//        ChartData data = new ChartData(xVals, dataSets);
+//        setData(data);
+//        invalidate();
+//    }
 
     protected boolean mOffsetsCalculated = false;
 
@@ -310,31 +308,31 @@ public abstract class Chart extends View {
         Log.i(LOG_TAG, "Data is set.");
     }
 
-    /**
-     * Sets primitive data for the chart. Internally, this is converted into a
-     * ChartData object with one DataSet (type 0). If you have more specific
-     * requirements for your data, use the setData(ChartData data) method and
-     * create your own ChartData object with as many DataSets as you like.
-     * 
-     * @param xVals
-     * @param yVals
-     */
-    public void setData(ArrayList<String> xVals, ArrayList<Float> yVals) {
-
-        ArrayList<Entry> series = new ArrayList<Entry>();
-
-        for (int i = 0; i < yVals.size(); i++) {
-            series.add(new Entry(yVals.get(i), i));
-        }
-
-        DataSet set = new DataSet(series, "DataSet");
-        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
-        dataSets.add(set);
-
-        ChartData data = new ChartData(xVals, dataSets);
-
-        setData(data);
-    }
+//    /**
+//     * Sets primitive data for the chart. Internally, this is converted into a
+//     * ChartData object with one DataSet (type 0). If you have more specific
+//     * requirements for your data, use the setData(ChartData data) method and
+//     * create your own ChartData object with as many DataSets as you like.
+//     * 
+//     * @param xVals
+//     * @param yVals
+//     */
+//    public void setData(ArrayList<String> xVals, ArrayList<Float> yVals) {
+//
+//        ArrayList<Entry> series = new ArrayList<Entry>();
+//
+//        for (int i = 0; i < yVals.size(); i++) {
+//            series.add(new Entry(yVals.get(i), i));
+//        }
+//
+//        DataSet set = new DataSet(series, "DataSet");
+//        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+//        dataSets.add(set);
+//
+//        ChartData data = new ChartData(xVals, dataSets);
+//
+//        setData(data);
+//    }
 
     /**
      * does needed preparations for drawing
@@ -1702,11 +1700,11 @@ public abstract class Chart extends View {
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        if (isInEditMode()) {
-            initWithDummyData();
-        }
-    }
+//    @Override
+//    protected void onAttachedToWindow() {
+//        super.onAttachedToWindow();
+//        if (isInEditMode()) {
+//            initWithDummyData();
+//        }
+//    }
 }

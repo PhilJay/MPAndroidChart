@@ -35,7 +35,6 @@ public class LineChartFrag extends SimpleFragment {
         mChart.setDescription("");
         mChart.setDrawFilled(false);
         mChart.setDrawYValues(false);
-        mChart.setLineWidth(4f);
 //        mChart.setCircleSize(5f);
         mChart.setDrawCircles(false);
         mChart.setHighlightIndicatorEnabled(false); 
@@ -48,7 +47,7 @@ public class LineChartFrag extends SimpleFragment {
         
         mChart.setYRange(-1.2f, 1.2f, false);
         
-        mChart.setData(getComplexity());
+        mChart.setData(generateLineData());
         
 //        mChart.setScaleMinima(3f, 3f);
 //        mChart.centerViewPort(300, 0);

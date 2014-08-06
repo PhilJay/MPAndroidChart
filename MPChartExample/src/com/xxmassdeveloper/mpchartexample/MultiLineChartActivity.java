@@ -11,9 +11,9 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
@@ -60,8 +60,6 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
         // disable the drawing of values into the chart
         mChart.setDrawYValues(false);
 
-        mChart.setLineWidth(5f);
-        mChart.setCircleSize(5f);
         mChart.setYLabelCount(6);
 
         // enable value highlighting
@@ -107,15 +105,6 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
                 else
                     mChart.setPinchZoom(true);
 
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionDashedLine: {
-                if (!mChart.isDashedLineEnabled()) {
-                    mChart.enableDashedLine(10f, 5f, 0f);
-                } else {
-                    mChart.disableDashedLine();
-                }
                 mChart.invalidate();
                 break;
             }
@@ -196,28 +185,27 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
             xVals.add((i) + "");
         }
 
-        ArrayList<Double[]> values = new ArrayList<Double[]>();
+        ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
 
         for (int z = 0; z < 3; z++) {
 
-            Double[] vals = new Double[mSeekBarX.getProgress()];
+            ArrayList<Entry> values = new ArrayList<Entry>();
 
             for (int i = 0; i < mSeekBarX.getProgress(); i++) {
                 double val = (Math.random() * mSeekBarY.getProgress()) + 3;
-                vals[i] = val;
+                values.add(new Entry((float) val, i));
             }
-
-            values.add(vals);
+            
+            LineDataSet d = new LineDataSet(values, "DataSet " + (z+1));
+            d.setLineWidth(2.5f);
+            d.setCircleSize(4f);
+            dataSets.add(d);
         }
+        
+        // make the first DataSet dashed
+        dataSets.get(0).enableDashedLine(10, 10, 0);
 
-        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
-
-        // create DataSets from values
-        // NOTE: DataSet.makeDataSets(...) is just a convenience method. Of
-        // course, three different DataSets could be created separately as well.
-        dataSets.addAll(DataSet.makeDataSets(values));
-
-        ChartData data = new ChartData(xVals, dataSets);
+        LineData data = new LineData(xVals, dataSets);
         mChart.setData(data);
         mChart.invalidate();
     }

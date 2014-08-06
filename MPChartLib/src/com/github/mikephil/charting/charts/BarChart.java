@@ -9,11 +9,13 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 
-import java.util.ArrayList;
-
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.util.ArrayList;
 
 /**
  * Chart that draws bars.
@@ -65,6 +67,14 @@ public class BarChart extends BarLineChartBase {
         mHighlightPaint.setAlpha(120);
         
         calculate3DColors();
+    }
+    
+    /**
+     * Sets a BarData object as a model for the BarChart.
+     * @param data
+     */
+    public void setData(BarData data) {
+        super.setData(data);
     }
 
     @Override
@@ -204,7 +214,7 @@ public class BarChart extends BarLineChartBase {
         ArrayList<Path> topPaths = new ArrayList<Path>();
         ArrayList<Path> sidePaths = new ArrayList<Path>();
 
-        ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
+        ArrayList<BarDataSet> dataSets = (ArrayList<BarDataSet>) mCurrentData.getDataSets();
 
         // preparations for 3D bars
         if (m3DEnabled) {
@@ -337,7 +347,7 @@ public class BarChart extends BarLineChartBase {
         // if values are drawn
         if (mDrawYValues && mCurrentData.getYValCount() < mMaxVisibleCount * mScaleX) {
 
-            ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
+            ArrayList<BarDataSet> dataSets = (ArrayList<BarDataSet>) mCurrentData.getDataSets();
 
             for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 

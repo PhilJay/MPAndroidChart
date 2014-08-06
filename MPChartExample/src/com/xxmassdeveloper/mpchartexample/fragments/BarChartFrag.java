@@ -48,7 +48,7 @@ public class BarChartFrag extends SimpleFragment {
         
         mChart.setYLabelTypeface(tf);
         
-        mChart.setData(generateData(1, 20000, 12));
+        mChart.setData(generateBarData(1, 20000, 12));
         
         Legend l = mChart.getLegend();
         l.setTypeface(tf);

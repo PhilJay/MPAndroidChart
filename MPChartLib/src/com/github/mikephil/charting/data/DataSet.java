@@ -11,10 +11,10 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public class DataSet {
+public abstract class DataSet {
 
     /** the entries that this dataset represents / holds together */
-    private ArrayList<Entry> mYVals = null;
+    protected ArrayList<Entry> mYVals = null;
 
     /** maximum y-value in the y-value array */
     private float mYMax = 0.0f;
@@ -56,16 +56,6 @@ public class DataSet {
     public void notifyDataSetChanged() {
         calcMinMax();
         calcYValueSum();
-    }
-
-    public DataSet cloneDataSet() {
-        ArrayList<Entry> duplicatedEntries = new ArrayList<Entry>();
-        for (int i = 0; i < mYVals.size(); i++) {
-            Entry entry = mYVals.get(i).copy();
-            duplicatedEntries.add(entry);
-        }
-        DataSet dataSet = new DataSet(duplicatedEntries, mLabel);
-        return dataSet;
     }
 
     /**
@@ -229,51 +219,42 @@ public class DataSet {
         return -1;
     }
 
+//    /**
+//     * Convenience method to create multiple DataSets of different types with
+//     * various double value arrays. Each double array represents the data of one
+//     * DataSet with a type created by this method, starting at 0 (and
+//     * incremented).
+//     * 
+//     * @param yValues
+//     * @return
+//     */
+//    public static ArrayList<DataSet> makeDataSets(ArrayList<Double[]> yValues) {
+//
+//        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+//
+//        for (int i = 0; i < yValues.size(); i++) {
+//
+//            Double[] curValues = yValues.get(i);
+//
+//            ArrayList<Entry> entries = new ArrayList<Entry>();
+//
+//            for (int j = 0; j < curValues.length; j++) {
+//                entries.add(new Entry(curValues[j].floatValue(), j));
+//            }
+//
+//            dataSets.add(new DataSet(entries, "DS " + i));
+//        }
+//
+//        return dataSets;
+//    }
+    
+    
     /**
-     * Convenience method to create multiple DataSets of different types with
-     * various double value arrays. Each double array represents the data of one
-     * DataSet with a type created by this method, starting at 0 (and
-     * incremented).
+     * Provides an exact copy of the DataSet this method is used on.
      * 
-     * @param yValues
      * @return
      */
-    public static ArrayList<DataSet> makeDataSets(ArrayList<Double[]> yValues) {
-
-        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
-
-        for (int i = 0; i < yValues.size(); i++) {
-
-            Double[] curValues = yValues.get(i);
-
-            ArrayList<Entry> entries = new ArrayList<Entry>();
-
-            for (int j = 0; j < curValues.length; j++) {
-                entries.add(new Entry(curValues[j].floatValue(), j));
-            }
-
-            dataSets.add(new DataSet(entries, "DS " + i));
-        }
-
-        return dataSets;
-    }
-
-    /**
-     * provides an exact copy of the DataSet this method is used on
-     * 
-     * @return
-     */
-    public DataSet copy() {
-
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
-
-        for (int i = 0; i < mYVals.size(); i++) {
-            yVals.add(mYVals.get(i).copy());
-        }
-
-        DataSet copied = new DataSet(yVals, mLabel);
-        return copied;
-    }
+    public abstract DataSet copy();
 
     @Override
     public String toString() {

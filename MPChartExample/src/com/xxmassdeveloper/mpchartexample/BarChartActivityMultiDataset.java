@@ -10,8 +10,8 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Legend;
@@ -197,16 +197,16 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         }
 
         // create 3 datasets with different types
-        DataSet set1 = new DataSet(yVals1, "Company A");
-        DataSet set2 = new DataSet(yVals2, "Company B");
-        DataSet set3 = new DataSet(yVals3, "Company C");
+        BarDataSet set1 = new BarDataSet(yVals1, "Company A");
+        BarDataSet set2 = new BarDataSet(yVals2, "Company B");
+        BarDataSet set3 = new BarDataSet(yVals3, "Company C");
         
-        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+        ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
         dataSets.add(set1);
         dataSets.add(set2);
         dataSets.add(set3);
 
-        ChartData data = new ChartData(xVals, dataSets);
+        BarData data = new BarData(xVals, dataSets);
 
         mChart.setData(data);
         mChart.invalidate();

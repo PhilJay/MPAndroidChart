@@ -8,7 +8,7 @@ import com.github.mikephil.charting.interfaces.OnDrawListener;
 public class DrawingContext {
 
 	/** holds a DataSet that can be manipulated on the go, to allow users to draw into the chart */
-	private DataSet mCurrentDrawingDataSet;
+	private LineDataSet mCurrentDrawingDataSet;
 
 	private int mLastDrawnDataSetIndex = 0;
 
@@ -25,15 +25,17 @@ public class DrawingContext {
 	 * @param type
 	 *            the type of the new DataSet
 	 */
-	public void createNewDrawingDataSet(ChartData chartData) {
+	public void createNewDrawingDataSet(LineData chartData) {
 		if (mCurrentDrawingDataSet != null && mCurrentDrawingEntries != null) {
 			// if an old one exist, finish the other one first
 			finishNewDrawingEntry(chartData);
 		}
 
 		mCurrentDrawingEntries = new ArrayList<Entry>();
-		this.mCurrentDrawingDataSet = new DataSet(mCurrentDrawingEntries, "DS " + mLastDrawnDataSetIndex);
-		chartData.getDataSets().add(mCurrentDrawingDataSet);
+		this.mCurrentDrawingDataSet = new LineDataSet(mCurrentDrawingEntries, "DS " + mLastDrawnDataSetIndex);
+		
+		ArrayList<LineDataSet> dataSets = (ArrayList<LineDataSet>) chartData.getDataSets();
+		dataSets.add(mCurrentDrawingDataSet);
 	}
 
 	/**
@@ -115,7 +117,7 @@ public class DrawingContext {
 	/**
 	 * Finishes a drawing entry and adds values at the beginning and the end to fill up the line
 	 */
-	public void finishNewDrawingEntry(ChartData data) {
+	public void finishNewDrawingEntry(LineData data) {
 		if (mAutoFinishDrawing && mCurrentDrawingEntries.size() > 0) {
 			Entry firstEntry = mCurrentDrawingEntries.get(0);
 			int xIndex = 0;
@@ -147,7 +149,8 @@ public class DrawingContext {
 		mCurrentDrawingEntries = null;
 	}
 
-	public void deleteLastDrawingEntry(ChartData data) {
+	public void deleteLastDrawingEntry(LineData data) {
+	    if(data == null) return;
 		data.getDataSets().remove(mCurrentDrawingDataSet);
 		mCurrentDrawingDataSet = null;
 		mCurrentDrawingEntries = null;

@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
-import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.ScatterData;
+import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
@@ -183,17 +183,17 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         }
 
         // create a dataset and give it a type
-        DataSet set1 = new DataSet(yVals1, "DS 1");
-        DataSet set2 = new DataSet(yVals2, "DS 2");
-        DataSet set3 = new DataSet(yVals3, "DS 3");
+        ScatterDataSet set1 = new ScatterDataSet(yVals1, "DS 1");
+        ScatterDataSet set2 = new ScatterDataSet(yVals2, "DS 2");
+        ScatterDataSet set3 = new ScatterDataSet(yVals3, "DS 3");
 
-        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+        ArrayList<ScatterDataSet> dataSets = new ArrayList<ScatterDataSet>();
         dataSets.add(set1); // add the datasets
         dataSets.add(set2);
         dataSets.add(set3);
 
         // create a data object with the datasets
-        ChartData data = new ChartData(xVals, dataSets);
+        ScatterData data = new ScatterData(xVals, dataSets);
 
         mChart.setData(data);
         mChart.invalidate();

@@ -1,22 +1,21 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.SeekBar;
-import android.widget.Toast;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarLineChartBase.BorderStyle;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
@@ -74,9 +73,6 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         // disable the drawing of values into the chart
         mChart.setDrawYValues(false);
  
-        mChart.setLineWidth(1f);
-        mChart.setCircleSize(4f);
-        
         mChart.setDrawBorder(true);
         mChart.setBorderStyles(new BorderStyle[] { BorderStyle.BOTTOM });
 
@@ -125,9 +121,6 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         // enable/disable highlight indicators (the lines that indicate the
         // highlighted Entry)
         mChart.setHighlightIndicatorEnabled(false);
-
-        // set the line to be drawn like this "- - - - - -"
-        mChart.enableDashedLine(10f, 5f, 0f);
         
         // add data
         setData(45, 100);
@@ -233,15 +226,6 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
                 mChart.invalidate();
                 break;
             }
-            case R.id.actionDashedLine: {
-                if (!mChart.isDashedLineEnabled()) {
-                    mChart.enableDashedLine(10f, 5f, 0f);
-                } else {
-                    mChart.disableDashedLine();
-                }
-                mChart.invalidate();
-                break;
-            }
             case R.id.actionSave: {
                  if(mChart.saveToPath("title" + System.currentTimeMillis(), "")) {
                      Toast.makeText(getApplicationContext(), "Saving SUCCESSFUL!", Toast.LENGTH_SHORT).show();
@@ -309,13 +293,18 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         }
 
         // create a dataset and give it a type
-        DataSet set1 = new DataSet(yVals, "DataSet 1");
+        LineDataSet set1 = new LineDataSet(yVals, "DataSet 1");
+        
+        // set the line to be drawn like this "- - - - - -"
+        set1.enableDashedLine(10f, 5f, 0f);
+        set1.setLineWidth(1f);
+        set1.setCircleSize(4f);
 
-        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+        ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
         dataSets.add(set1); // add the datasets
 
         // create a data object with the datasets
-        ChartData data = new ChartData(xVals, dataSets);
+        LineData data = new LineData(xVals, dataSets);
  
         // set data
         mChart.setData(data);

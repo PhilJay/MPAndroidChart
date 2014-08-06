@@ -20,6 +20,8 @@ import java.util.ArrayList;
 
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.listener.PieChartTouchListener;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
@@ -138,6 +140,14 @@ public class PieChart extends Chart {
 
         // for the piechart, drawing values is enabled
         mDrawYValues = true;
+    }
+    
+    /**
+     * Sets a PieData object as a model for the PieChart.
+     * @param data
+     */
+    public void setData(PieData data) {
+        super.setData(data);
     }
 
     @Override
@@ -326,7 +336,7 @@ public class PieChart extends Chart {
         mDrawAngles = new float[mCurrentData.getYValCount()];
         mAbsoluteAngles = new float[mCurrentData.getYValCount()];
 
-        ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
+        ArrayList<PieDataSet> dataSets = (ArrayList<PieDataSet>) mCurrentData.getDataSets();
 
         int cnt = 0;
 
@@ -403,7 +413,7 @@ public class PieChart extends Chart {
 
         float angle = mChartAngle;
 
-        ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
+        ArrayList<PieDataSet> dataSets = (ArrayList<PieDataSet>) mCurrentData.getDataSets();
 
         int cnt = 0;
 
@@ -517,7 +527,7 @@ public class PieChart extends Chart {
 
         r -= off; // offset to keep things inside the chart
 
-        ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
+        ArrayList<PieDataSet> dataSets = (ArrayList<PieDataSet>) mCurrentData.getDataSets();
 
         int cnt = 0;
 
@@ -617,10 +627,10 @@ public class PieChart extends Chart {
      */
     public int getDataSetIndexForIndex(int xIndex) {
 
-        ArrayList<DataSet> sets = mCurrentData.getDataSets();
+        ArrayList<PieDataSet> dataSets = (ArrayList<PieDataSet>) mCurrentData.getDataSets();
 
-        for (int i = 0; i < sets.size(); i++) {
-            if (sets.get(i).getEntryForXIndex(xIndex) != null)
+        for (int i = 0; i < dataSets.size(); i++) {
+            if (dataSets.get(i).getEntryForXIndex(xIndex) != null)
                 return i;
         }
 

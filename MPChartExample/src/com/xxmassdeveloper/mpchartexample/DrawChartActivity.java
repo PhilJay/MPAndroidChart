@@ -9,9 +9,10 @@ import android.view.WindowManager;
 
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.interfaces.OnDrawListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -57,8 +58,8 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
         mChart.setDragEnabled(true);
 
         mChart.setDrawYValues(false);
-        mChart.setLineWidth(5f);
-        mChart.setCircleSize(5f);
+//        mChart.setLineWidth(5f);
+//        mChart.setCircleSize(5f);
         mChart.setYLabelCount(6);
         mChart.setHighlightEnabled(true);
 
@@ -85,13 +86,13 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
         ArrayList<Entry> yVals = new ArrayList<Entry>();
 
         // create a dataset and give it a type (0)
-        DataSet set1 = new DataSet(yVals, "DataSet");
+        LineDataSet set1 = new LineDataSet(yVals, "DataSet");
 
-        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+        ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
         dataSets.add(set1); // add the datasets
 
         // create a data object with the datasets
-        ChartData data = new ChartData(xVals, dataSets);
+        LineData data = new LineData(xVals, dataSets);
 
         mChart.setData(data);
     }

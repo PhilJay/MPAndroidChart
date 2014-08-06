@@ -7,6 +7,8 @@ import android.util.AttributeSet;
 
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.ScatterData;
+import com.github.mikephil.charting.data.ScatterDataSet;
 
 import java.util.ArrayList;
 
@@ -51,11 +53,19 @@ public class ScatterChart extends BarLineChartBase {
     public ScatterChart(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
+    
+    /**
+     * Sets a ScatterData object as a model for the ScatterChart.
+     * @param data
+     */
+    public void setData(ScatterData data) {
+        super.setData(data);
+    }
 
     @Override
     protected void drawData() {
         
-        ArrayList<DataSet> dataSets = mCurrentData.getDataSets();        
+        ArrayList<ScatterDataSet> dataSets = (ArrayList<ScatterDataSet>) mCurrentData.getDataSets();        
         
         float shapeHalf = mShapeSize / 2f;
 
@@ -133,7 +143,7 @@ public class ScatterChart extends BarLineChartBase {
         // if values are drawn
         if (mDrawYValues && mCurrentData.getYValCount() < mMaxVisibleCount * mScaleX) {
 
-            ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
+            ArrayList<ScatterDataSet> dataSets = (ArrayList<ScatterDataSet>) mCurrentData.getDataSets();  
 
             for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 

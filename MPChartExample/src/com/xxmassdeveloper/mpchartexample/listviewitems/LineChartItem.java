@@ -52,8 +52,6 @@ public class LineChartItem extends ChartItem {
         // apply styling
         holder.chart.setYLabelCount(5);
         holder.chart.setColorTemplate(mCt);
-        holder.chart.setLineWidth(3f);
-        holder.chart.setCircleSize(5f);
         holder.chart.setYLabelTypeface(mTf);
         holder.chart.setXLabelTypeface(mTf);
         holder.chart.setValueTypeface(mTf);

@@ -245,6 +245,7 @@ public abstract class BarLineChartBase extends Chart {
         drawVerticalGrid();
 
         drawData();
+        
         drawHighlights();
 
         // Removes clipping rectangle
@@ -1802,31 +1803,33 @@ public abstract class BarLineChartBase extends Chart {
      * @return
      */
     private ChartData getFilteredData() {
-
-        float deltaRatio = mDeltaY / mDeltaX;
-        float scaleRatio = mScaleY / mScaleX;
-
-        // set the determined ratios
-        mApproximator.setRatios(deltaRatio, scaleRatio);
-
-        // Log.i("Approximator", "DeltaRatio: " + deltaRatio + ", ScaleRatio: "
-        // + scaleRatio);
-
-        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
-
-        for (int j = 0; j < mOriginalData.getDataSetCount(); j++) {
-
-            DataSet old = mOriginalData.getDataSetByIndex(j);
-
-            // do the filtering
-            ArrayList<Entry> approximated = mApproximator.filter(old.getYVals());
-
-            DataSet set = new DataSet(approximated, old.getLabel());
-            dataSets.add(set);
-        }
-
-        ChartData d = new ChartData(mOriginalData.getXVals(), dataSets);
-        return d;
+//
+//        float deltaRatio = mDeltaY / mDeltaX;
+//        float scaleRatio = mScaleY / mScaleX;
+//
+//        // set the determined ratios
+//        mApproximator.setRatios(deltaRatio, scaleRatio);
+//
+//        // Log.i("Approximator", "DeltaRatio: " + deltaRatio + ", ScaleRatio: "
+//        // + scaleRatio);
+//
+//        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+//
+//        for (int j = 0; j < mOriginalData.getDataSetCount(); j++) {
+//
+//            DataSet old = mOriginalData.getDataSetByIndex(j);
+//
+//            // do the filtering
+//            ArrayList<Entry> approximated = mApproximator.filter(old.getYVals());
+//
+//            DataSet set = new DataSet(approximated, old.getLabel());
+//            dataSets.add(set);
+//        }
+//
+//        ChartData d = new ChartData(mOriginalData.getXVals(), dataSets);
+//        return d;
+        
+        return null;
     }
 
     @Override

@@ -14,6 +14,8 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
@@ -164,12 +166,12 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 		for (int i = 0; i < mSeekBarX.getProgress(); i++)
 			xVals.add("Text" + (i + 1));
 		 
-		DataSet set1 = new DataSet(yVals1, "Content");
+		PieDataSet set1 = new PieDataSet(yVals1, "Content");
 		
-        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+        ArrayList<PieDataSet> dataSets = new ArrayList<PieDataSet>();
         dataSets.add(set1);
 
-        ChartData data = new ChartData(xVals, dataSets);
+        PieData data = new PieData(xVals, dataSets);
 		mChart.setData(data);
 		
 		// undo all highlights

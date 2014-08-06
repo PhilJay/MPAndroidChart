@@ -11,9 +11,9 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 
 import com.github.mikephil.charting.charts.BarLineChartBase;
-import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DrawingContext;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.PointD;
 
@@ -76,7 +76,9 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
             return true;
 
         mDrawingContext.init(mChart.getDrawListener(), mChart.isAutoFinishEnabled());
-        ChartData data = mChart.getDataCurrent();
+        LineData data = null;
+        
+//        data = (LineData) mChart.getDataCurrent();
 
         // Handle touch events here...
         switch (event.getAction() & MotionEvent.ACTION_MASK) {

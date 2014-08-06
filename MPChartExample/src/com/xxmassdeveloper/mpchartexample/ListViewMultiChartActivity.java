@@ -9,9 +9,14 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
 import com.xxmassdeveloper.mpchartexample.listviewitems.BarChartItem;
 import com.xxmassdeveloper.mpchartexample.listviewitems.ChartItem;
 import com.xxmassdeveloper.mpchartexample.listviewitems.LineChartItem;
@@ -44,11 +49,11 @@ public class ListViewMultiChartActivity extends DemoBase {
         for (int i = 0; i < 30; i++) {
             
             if(i % 3 == 0) {
-                list.add(new LineChartItem(generateData(i + 1), getApplicationContext()));
+                list.add(new LineChartItem(generateDataLine(i + 1), getApplicationContext()));
             } else if(i % 3 == 1) {
-                list.add(new BarChartItem(generateData(i + 1), getApplicationContext()));
+                list.add(new BarChartItem(generateDataBar(i + 1), getApplicationContext()));
             } else if(i % 3 == 2) {
-                list.add(new PieChartItem(generatePieChartData(i + 1), getApplicationContext()));
+                list.add(new PieChartItem(generateDataPie(i + 1), getApplicationContext()));
             }
         }
 
@@ -85,7 +90,7 @@ public class ListViewMultiChartActivity extends DemoBase {
      * 
      * @return
      */
-    private ChartData generateData(int cnt) {
+    private ChartData generateDataLine(int cnt) {
 
         ArrayList<Entry> entries = new ArrayList<Entry>();
 
@@ -93,13 +98,39 @@ public class ListViewMultiChartActivity extends DemoBase {
             entries.add(new Entry((int) (Math.random() * 70) + 30, i));
         }
 
-        DataSet d = new DataSet(entries, "New DataSet " + cnt);
+        LineDataSet d = new LineDataSet(entries, "New DataSet " + cnt);
+        d.setLineWidth(3f);
+        d.setCircleSize(5f);
 
-        ChartData cd = new ChartData(getMonths(), d);
+        LineData cd = new LineData(getMonths(), d);
         return cd;
     }
     
-    private ChartData generatePieChartData(int cnt) {
+    /**
+     * generates a random ChartData object with just one DataSet
+     * 
+     * @return
+     */
+    private ChartData generateDataBar(int cnt) {
+
+        ArrayList<Entry> entries = new ArrayList<Entry>();
+
+        for (int i = 0; i < 12; i++) {
+            entries.add(new Entry((int) (Math.random() * 70) + 30, i));
+        }
+
+        BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);
+
+        BarData cd = new BarData(getMonths(), d);
+        return cd;
+    }
+    
+    /**
+     * generates a random ChartData object with just one DataSet
+     * 
+     * @return
+     */
+    private ChartData generateDataPie(int cnt) {
 
         ArrayList<Entry> entries = new ArrayList<Entry>();
 
@@ -107,9 +138,9 @@ public class ListViewMultiChartActivity extends DemoBase {
             entries.add(new Entry((int) (Math.random() * 70) + 30, i));
         }
 
-        DataSet d = new DataSet(entries, "New DataSet " + cnt);
+        PieDataSet d = new PieDataSet(entries, "New DataSet " + cnt);
 
-        ChartData cd = new ChartData(getQuarters(), d);
+        PieData cd = new PieData(getQuarters(), d);
         return cd;
     }
     
