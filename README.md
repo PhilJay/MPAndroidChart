@@ -7,14 +7,22 @@ Remember: *It's all about the looks.*
 
 The **experimental** branch might contain new features that are still buggy. It is recommended to be safe and only make use of the code on the **master** branch.
 
-If you are having questions or problems, feel free to contact me, **create issues** for this project on GitHub or open questions on [**stackoverflow**](https://stackoverflow.com) with the `mpandroidchart` tag.
-
-Forks, pull-requests or any other forms of contribution are always welcome.
+Forks, pull-requests or any other forms of contribution are **always welcome**.
 
 Demo
 -----
 
 For a brief overview of the most important features, please download the **PlayStore Demo** [**MPAndroidChart Example.apk**](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample) and try it out. The corresponding code for the demo-application is also included in this repository inside the **MPChartExample folder**.
+
+Questions & Issues
+-----
+
+If you are having questions or problems, feel free to contact me. Since I would very much like that other users of this library **can also benefit** from your question, I am asking you to be contacted via e-mail **only as a last option**. Instead, you should:
+
+ - Open questions on [**stackoverflow**](https://stackoverflow.com) with the `mpandroidchart` tag
+ - Create Issues here on GitHub
+
+Please let me know via e-mail that you have opened a stackoverflow question so that I can get to answering it right away. Thank you.
 
 Features
 =======
