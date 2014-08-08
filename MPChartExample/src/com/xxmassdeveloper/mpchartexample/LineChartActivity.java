@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarLineChartBase.BorderStyle;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -140,6 +141,16 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         
         // dont forget to refresh the drawing
         mChart.invalidate();
+        
+        
+        ArrayList<Entry> entries = new ArrayList<Entry>();
+        
+        for(int i = 0; i < 15; i++) {
+            entries.add(new Entry(new float[] { 10, 12, 14 }, i));
+        }
+        
+        BarDataSet bds = new BarDataSet(entries, "Set");
+        Toast.makeText(getApplicationContext(), "min: " + bds.getYMin() + ", max: " + bds.getYMax() + ", stacksize: " + bds.getStackSize(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

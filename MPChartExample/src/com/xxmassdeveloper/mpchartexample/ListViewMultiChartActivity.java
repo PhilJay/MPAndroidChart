@@ -120,7 +120,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         }
 
         BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);
-
+        d.setBarSpacePercent(20f);
         BarData cd = new BarData(getMonths(), d);
         return cd;
     }

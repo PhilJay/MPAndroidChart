@@ -2,7 +2,8 @@
 package com.github.mikephil.charting.data;
 
 /**
- * Class representing one entry in the chart.
+ * Class representing one entry in the chart. Might contain multiple values.
+ * Might only contain a single value depending on the used constructor.
  * 
  * @author Philipp Jahoda
  */
@@ -14,8 +15,11 @@ public class Entry {
     /** the index on the x-axis */
     private int mXIndex = 0;
 
+    /** array of values, needed for stacked-barchart only */
+    private float[] mVals;
+
     /**
-     * A Entry represents one single entry in the chart
+     * A Entry represents one single entry in the chart.
      * 
      * @param val the y value (the actual value of the entry)
      * @param xIndex the corresponding index in the x value array (index on the
@@ -24,6 +28,20 @@ public class Entry {
      */
     public Entry(float val, int xIndex) {
         mVal = val;
+        mXIndex = xIndex;
+    }
+
+    /**
+     * A Entry represents one single entry in the chart.
+     * 
+     * @param vals the y values (the actual value of the entry) this entry
+     *            should represent. E.g. multiple values for a stacked BarChart.
+     * @param xIndex the corresponding index in the x value array (index on the
+     *            x-axis of the chart, must NOT be higher than the length of the
+     *            x-values String array)
+     */
+    public Entry(float[] vals, int xIndex) {
+        mVals = vals;
         mXIndex = xIndex;
     }
 
@@ -63,64 +81,44 @@ public class Entry {
         this.mVal = val;
     }
 
-    //
-    // /**
-    // * Convenience method to create a series of double values
-    // *
-    // * @param yValues
-    // * @return
-    // */
-    // public static ArrayList<Series> makeSeries(double[] yValues) {
-    // ArrayList<Series> series = new ArrayList<Series>();
-    // for (int i = 0; i < yValues.length; i++) {
-    // series.add(new Series((float) yValues[i], 0, i));
-    // }
-    // return series;
-    // }
-    //
-    // /**
-    // * Convenience method to create multiple series of different types of
-    // various double value arrays. Each double
-    // array
-    // * represents one type starting at 0.
-    // *
-    // * @param yValues
-    // * @return
-    // */
-    // public static ArrayList<Series> makeMultipleSeries(ArrayList<Double[]>
-    // yValues) {
-    // ArrayList<Series> series = new ArrayList<Series>();
-    //
-    // int sizeOfFirst = yValues.get(0).length;
-    //
-    // for (int i = 0; i < yValues.size(); i++) {
-    // Double[] curValues = yValues.get(i);
-    // if (curValues.length != sizeOfFirst) {
-    // throw new IllegalArgumentException("Array sizes do not match");
-    // }
-    // for (int j = 0; j < curValues.length; j++) {
-    // series.add(new Series(curValues[j].floatValue(), i, j));
-    // }
-    // }
-    //
-    // return series;
-    // }
-    //
-    // /**
-    // * Convenience method to add a series. The new series has to be the same
-    // size as the old. If you want to create a
-    // * different sized series, please add manually.
-    // *
-    // * @param series
-    // * @param yValues
-    // * @param type
-    // */
-    // public static void addSeries(ArrayList<Series> series, double[] yValues,
-    // int type) {
-    // for (int i = 0; i < yValues.length; i++) {
-    // series.add(new Series((float) yValues[i], type, i));
-    // }
-    // }
+    /**
+     * Returns the values this Entry reprsents, might return null if only a
+     * single value is represented. Then, user getVal() instead.
+     * 
+     * @return
+     */
+    public float[] getVals() {
+        return mVals;
+    }
+
+    /**
+     * Set the array of values this Entry should represent.
+     * 
+     * @param vals
+     */
+    public void setVals(float[] vals) {
+        mVals = vals;
+    }
+
+    /**
+     * If this Enry represents mulitple values (e.g. Stacked BarChart), it will
+     * return the sum of them, otherwise just the one value it represents.
+     * 
+     * @return
+     */
+    public float getSum() {
+        if (mVals == null)
+            return mVal;
+        else {
+
+            float sum = 0f;
+
+            for (int i = 0; i < mVals.length; i++)
+                sum += mVals[i];
+
+            return sum;
+        }
+    }
 
     /**
      * returns an exact copy of the entry
@@ -128,7 +126,9 @@ public class Entry {
      * @return
      */
     public Entry copy() {
-        return new Entry(mVal, mXIndex);
+        Entry e = new Entry(mVal, mXIndex);
+        e.setVals(mVals);
+        return e;
     }
 
     /**
@@ -136,6 +136,6 @@ public class Entry {
      */
     @Override
     public String toString() {
-        return "Entry, xIndex: " + mXIndex + " val: " + mVal;
+        return "Entry, xIndex: " + mXIndex + " val (sum): " + getSum();
     }
 }

@@ -34,6 +34,7 @@
         <activity android:name="com.xxmassdeveloper.mpchartexample.fragments.SimpleChartDemo"></activity>
         <activity android:name="ListViewBarChartActivity"></activity>
         <activity android:name="ListViewMultiChartActivity"></activity>
+        <activity android:name="StackedBarActivity"></activity>
     </application>
 
 </manifest>

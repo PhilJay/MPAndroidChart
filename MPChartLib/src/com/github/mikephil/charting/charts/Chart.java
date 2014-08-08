@@ -408,6 +408,9 @@ public abstract class Chart extends View {
 
         mMatrixOffset.reset();
         mMatrixOffset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
+        
+//        mMatrixOffset.setTranslate(mOffsetLeft, 0);       
+//        mMatrixOffset.postScale(1.0f, -1.0f);
 
         Log.i(LOG_TAG, "Matrices prepared.");
     }
@@ -485,7 +488,44 @@ public abstract class Chart extends View {
 
         for (int j = 0; j < valuePoints.length; j += 2) {
             valuePoints[j] = entries.get(j / 2).getXIndex() + xOffset;
-            valuePoints[j + 1] = entries.get(j / 2).getVal();
+            valuePoints[j + 1] = entries.get(j / 2).getSum();
+        }
+
+        transformPointArray(valuePoints);
+
+        return valuePoints;
+    }
+    
+    protected float[] generateTransformedValuesForStacks(ArrayList<Entry> entries, int entryCount, float xOffset) {
+
+        float[] valuePoints = new float[entryCount * 2];
+        int cnt = 0;
+
+        for (int i = 0; i < entries.size(); i++) {
+            
+            Entry e = entries.get(i);
+            
+            float[] vals = e.getVals();
+            
+            // if the current entry has no stack
+            if(vals == null) {
+                
+                valuePoints[cnt] = e.getXIndex() + xOffset;
+                valuePoints[cnt + 1] = e.getVal();
+                cnt+=2;
+            } else {
+                
+                float all = e.getSum();
+                
+                for(int j = 0; j < vals.length; j++) {
+                    
+                    all -= vals[j];
+                    
+                    valuePoints[cnt] = e.getXIndex() + xOffset;
+                    valuePoints[cnt + 1] = vals[j] + all;
+                    cnt+=2;
+                }
+            }          
         }
 
         transformPointArray(valuePoints);

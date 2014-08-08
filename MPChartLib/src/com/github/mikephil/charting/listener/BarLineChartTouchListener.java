@@ -207,6 +207,12 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
                     PointF dragPoint = new PointF(event.getX(), event.getY());
                     mMatrix.postTranslate(dragPoint.x - mTouchStartPoint.x, dragPoint.y
                             - mTouchStartPoint.y);
+                    
+//                    mMatrix.set(mSavedMatrix);
+//                    PointF dragPoint = new PointF(event.getX(), event.getY());
+//                    mMatrix.postTranslate(dragPoint.x - mTouchStartPoint.x, -(dragPoint.y
+//                            - mTouchStartPoint.y));
+
 
                 } else if (mTouchMode == X_ZOOM || mTouchMode == Y_ZOOM || mTouchMode == PINCH_ZOOM) {
 

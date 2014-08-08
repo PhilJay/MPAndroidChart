@@ -89,7 +89,6 @@ public class ListViewBarChartActivity extends DemoBase {
             // apply styling
             holder.chart.setYLabelCount(5);
             holder.chart.setColorTemplate(mCt);
-            holder.chart.setBarSpace(20f);
             holder.chart.setYLabelTypeface(mTf);
             holder.chart.setXLabelTypeface(mTf);
             holder.chart.setValueTypeface(mTf);
@@ -130,7 +129,8 @@ public class ListViewBarChartActivity extends DemoBase {
         }
 
         BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);    
-
+        d.setBarSpacePercent(20f);
+        
         ArrayList<BarDataSet> sets = new ArrayList<BarDataSet>();
         sets.add(d);
         

@@ -16,20 +16,19 @@ import android.util.Log;
 import android.view.ViewParent;
 
 import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.interfaces.OnDrawListener;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
-import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
-import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.XLabels;
+import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
 import com.github.mikephil.charting.utils.YLabels;
+import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -428,7 +427,9 @@ public abstract class BarLineChartBase extends Chart {
 
         Matrix offset = new Matrix();
         offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
-
+//        offset.setTranslate(mOffsetLeft, 0);       
+//        offset.postScale(1.0f, -1.0f);
+        
         mMatrixOffset.set(offset);
     }
 
@@ -549,6 +550,9 @@ public abstract class BarLineChartBase extends Chart {
         PointD p2 = getValuesByTouchPoint(mContentRect.left, mContentRect.bottom);
 
         // update the current chart dimensions on the y-axis
+//        mYChartMin = (float) Math.min(p1.y, p2.y);
+//        mYChartMax = (float) Math.max(p1.y, p2.y);
+        
         mYChartMin = (float) p2.y;
         mYChartMax = (float) p1.y;
 
@@ -716,6 +720,8 @@ public abstract class BarLineChartBase extends Chart {
 
             String text = Utils.formatNumber(mYLabels.mEntries[i], mYLabels.mDecimals,
                     mSeparateTousands);
+            
+            
 
             if (!mYLabels.isDrawTopYLabelEntryEnabled() && i >= mYLabels.mEntryCount - 1)
                 return;

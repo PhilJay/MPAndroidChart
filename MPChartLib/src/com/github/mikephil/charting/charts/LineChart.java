@@ -70,9 +70,10 @@ public class LineChart extends BarLineChartBase {
         mHighlightPaint.setStrokeWidth(2f);
         mHighlightPaint.setColor(Color.rgb(255, 187, 115));
     }
-    
+
     /**
      * Sets a LineData object as a model for the LineChart.
+     * 
      * @param data
      */
     public void setData(LineData data) {
@@ -119,17 +120,14 @@ public class LineChart extends BarLineChartBase {
 
             float[] valuePoints = generateTransformedValues(entries, 0f);
 
-            // Get the colors for the DataSet at the current index. If the index
-            // is out of bounds, reuse DataSet colors.
-            ArrayList<Integer> colors = mCt.getDataSetColors(i % mCt.getColors().size());
+            mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
+            mRenderPaint.setPathEffect(dataSet.getDashPathEffect());
 
-            Paint paint = mRenderPaint;
-            paint.setStrokeWidth(dataSet.getLineWidth());
-            paint.setPathEffect(dataSet.getDashPathEffect());
-            
             if (mDrawCubic) {
-                
-                paint.setColor(colors.get(i % colors.size()));
+
+                // get the color that is specified for this position from the
+                // DataSet
+                mRenderPaint.setColor(dataSet.getColor(i));
 
                 Path spline = new Path();
 
@@ -151,16 +149,16 @@ public class LineChart extends BarLineChartBase {
 
                 transformPath(spline);
 
-                mDrawCanvas.drawPath(spline, paint);
+                mDrawCanvas.drawPath(spline, mRenderPaint);
 
             } else {
 
                 for (int j = 0; j < valuePoints.length - 2; j += 2) {
 
-                    // Set the color for the currently drawn value. If the index
-                    // is
-                    // out of bounds, reuse colors.
-                    paint.setColor(colors.get(j % colors.size()));
+                    // get the color that is specified for this position from
+                    // the DataSet, this will reuse colors, if the index is out
+                    // of bounds
+                    mRenderPaint.setColor(dataSet.getColor(j));
 
                     if (isOffContentRight(valuePoints[j]))
                         break;
@@ -172,7 +170,7 @@ public class LineChart extends BarLineChartBase {
                         continue;
 
                     mDrawCanvas.drawLine(valuePoints[j], valuePoints[j + 1], valuePoints[j + 2],
-                            valuePoints[j + 3], paint);
+                            valuePoints[j + 3], mRenderPaint);
                 }
             }
 
@@ -183,7 +181,7 @@ public class LineChart extends BarLineChartBase {
                 // null, 0, null, 0, null, 0, 0, paint);
 
                 // filled is drawn with less alpha
-                paint.setAlpha(85);
+                mRenderPaint.setAlpha(85);
 
                 Path filled = new Path();
                 filled.moveTo(entries.get(0).getXIndex(), entries.get(0).getVal());
@@ -201,10 +199,10 @@ public class LineChart extends BarLineChartBase {
 
                 transformPath(filled);
 
-                mDrawCanvas.drawPath(filled, paint);
+                mDrawCanvas.drawPath(filled, mRenderPaint);
 
                 // restore alpha
-                paint.setAlpha(255);
+                mRenderPaint.setAlpha(255);
             }
         }
     }
@@ -236,13 +234,13 @@ public class LineChart extends BarLineChartBase {
             for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
                 LineDataSet dataSet = dataSets.get(i);
-                
+
                 // make sure the values do not interfear with the circles
                 int valOffset = (int) (dataSet.getCircleSize() * 1.75f);
 
                 if (!mDrawCircles)
                     valOffset = valOffset / 2;
-                
+
                 ArrayList<Entry> entries = dataSet.getYVals();
 
                 float[] positions = generateTransformedValues(entries, 0f);
@@ -289,11 +287,6 @@ public class LineChart extends BarLineChartBase {
                 LineDataSet dataSet = dataSets.get(i);
                 ArrayList<Entry> entries = dataSet.getYVals();
 
-                // Get the colors for the DataSet at the current index. If the
-                // index
-                // is out of bounds, reuse DataSet colors.
-                ArrayList<Integer> colors = mCt.getDataSetColors(i % mCt.getColors().size());
-
                 float[] positions = generateTransformedValues(entries, 0f);
 
                 for (int j = 0; j < positions.length; j += 2) {
@@ -301,7 +294,7 @@ public class LineChart extends BarLineChartBase {
                     // Set the color for the currently drawn value. If the index
                     // is
                     // out of bounds, reuse colors.
-                    mRenderPaint.setColor(colors.get(j % colors.size()));
+                    mRenderPaint.setColor(dataSet.getCircleColor(j));
 
                     if (isOffContentRight(positions[j]))
                         break;
@@ -314,7 +307,8 @@ public class LineChart extends BarLineChartBase {
 
                     mDrawCanvas.drawCircle(positions[j], positions[j + 1], dataSet.getCircleSize(),
                             mRenderPaint);
-                    mDrawCanvas.drawCircle(positions[j], positions[j + 1], dataSet.getCircleSize() / 2,
+                    mDrawCanvas.drawCircle(positions[j], positions[j + 1],
+                            dataSet.getCircleSize() / 2,
                             mCirclePaintInner);
                 }
             }

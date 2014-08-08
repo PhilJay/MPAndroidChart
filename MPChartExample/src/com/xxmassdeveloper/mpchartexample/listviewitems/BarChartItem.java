@@ -52,7 +52,6 @@ public class BarChartItem extends ChartItem {
         // apply styling
         holder.chart.setYLabelCount(5);
         holder.chart.setColorTemplate(mCt);
-        holder.chart.setBarSpace(20f);
         holder.chart.setYLabelTypeface(mTf);
         holder.chart.setXLabelTypeface(mTf);
         holder.chart.setValueTypeface(mTf);
