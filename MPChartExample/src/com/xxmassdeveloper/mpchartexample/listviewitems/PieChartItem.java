@@ -60,9 +60,6 @@ public class PieChartItem extends ChartItem {
         holder.chart.setCenterTextSize(18f);
         holder.chart.setDrawXValues(false);
         holder.chart.setUsePercentValues(true);
-        
-        // space between slices
-        holder.chart.setSliceSpace(5f);
 
         // set data
         holder.chart.setData(mChartData);

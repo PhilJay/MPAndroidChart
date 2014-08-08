@@ -139,7 +139,10 @@ public class ListViewMultiChartActivity extends DemoBase {
         }
 
         PieDataSet d = new PieDataSet(entries, "New DataSet " + cnt);
-
+        
+        // space between slices
+        d.setSliceSpace(5f);
+        
         PieData cd = new PieData(getQuarters(), d);
         return cd;
     }

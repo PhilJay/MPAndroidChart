@@ -59,9 +59,6 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 		
 		mChart.setColorTemplate(ct);
 		
-		// set a space between the slices
-		mChart.setSliceSpace(3f);
-		
 		mChart.setHoleRadius(60f);
 
 		mChart.setDrawYValues(true);
@@ -152,14 +149,19 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         tvX.setText("" + (mSeekBarX.getProgress()));
         tvY.setText("" + (mSeekBarY.getProgress())); 
 
+        float mult = (float) mSeekBarY.getProgress();
+        
 		ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+//		ArrayList<Entry> yVals2 = new ArrayList<Entry>();
 		
 		// IMPORTANT: In a PieChart, no values (Entry) should have the same xIndex (even if from different DataSets), since no values can be drawn above each other.
 		for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-			float mult = (mSeekBarY.getProgress());
-			float val = (float) (Math.random() * mult) + mult / 5;// + (float) ((mult * 0.1) / 10);
-			yVals1.add(new Entry(val, i));
+			yVals1.add(new Entry((float) (Math.random() * mult) + mult / 5, i));
 		}
+		
+//		for (int i = mSeekBarX.getProgress() / 2; i < mSeekBarX.getProgress(); i++) {
+//            yVals2.add(new Entry((float) (Math.random() * mult) + mult / 5, i));
+//        }
 
 		ArrayList<String> xVals = new ArrayList<String>();
 
@@ -167,9 +169,14 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 			xVals.add("Text" + (i + 1));
 		 
 		PieDataSet set1 = new PieDataSet(yVals1, "Content");
+		set1.setSliceSpace(3f);
+		set1.setColors(ColorTemplate.createColors(getApplicationContext(), ColorTemplate.VORDIPLOM_COLORS));
+//		PieDataSet set2 = new PieDataSet(yVals1, "Content 2");
+//        set2.setSliceSpace(10f);
 		
         ArrayList<PieDataSet> dataSets = new ArrayList<PieDataSet>();
         dataSets.add(set1);
+//        dataSets.add(set2);
 
         PieData data = new PieData(xVals, dataSets);
 		mChart.setData(data);

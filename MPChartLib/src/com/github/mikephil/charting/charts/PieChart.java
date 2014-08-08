@@ -15,16 +15,16 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.listener.PieChartTouchListener;
-import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
+import com.github.mikephil.charting.utils.Utils;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 /**
  * View that represents a pie chart. Draws cake like slices.
@@ -56,13 +56,7 @@ public class PieChart extends Chart {
      * this value is null, the default is "Total Value\n + getYValueSum()"
      */
     private String mCenterText = null;
-
-    /** indicates the selection distance of a pie slice */
-    private float mShift = 20f;
-
-    /** the space in degrees between the chart-slices, default 0f */
-    private float mSliceSpace = 0f;
-
+    
     /**
      * indicates the size of the hole in the center of the piechart, default:
      * radius / 2
@@ -121,8 +115,6 @@ public class PieChart extends Chart {
         // mOffsetBottom = 0;
         // mOffsetLeft = 0;
         // mOffsetRight = 0;
-
-        mShift = Utils.convertDpToPixel(mShift);
 
         mHolePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mHolePaint.setColor(Color.WHITE);
@@ -312,13 +304,14 @@ public class PieChart extends Chart {
         float height = mContentRect.height() + mOffsetTop + mOffsetBottom;
 
         float diameter = getDiameter();
+        float maxShift = ((PieData) mCurrentData).getMaxShift();
 
         // create the circle box that will contain the pie-chart (the bounds of
         // the pie-chart)
-        mCircleBox.set(width / 2 - diameter / 2 + mShift, height / 2 - diameter / 2
-                + mShift,
-                width / 2 + diameter / 2 - mShift, height / 2 + diameter / 2
-                        - mShift);
+        mCircleBox.set(width / 2 - diameter / 2 + maxShift, height / 2 - diameter / 2
+                + maxShift,
+                width / 2 + diameter / 2 - maxShift, height / 2 + diameter / 2
+                        - maxShift);
     }
 
     @Override
@@ -385,25 +378,23 @@ public class PieChart extends Chart {
 
                 float shiftangle = (float) Math.toRadians(angle + sliceDegrees / 2f);
 
-                float xShift = mShift * (float) Math.cos(shiftangle);
-                float yShift = mShift * (float) Math.sin(shiftangle);
+                PieDataSet set = (PieDataSet) mCurrentData.getDataSetByIndex(mIndicesToHightlight[i]
+                        .getDataSetIndex());
+                
+                float shift = set.getSelectionShift();
+                float xShift = shift * (float) Math.cos(shiftangle);
+                float yShift = shift * (float) Math.sin(shiftangle);
 
                 RectF highlighted = new RectF(mCircleBox.left + xShift, mCircleBox.top + yShift,
                         mCircleBox.right
                                 + xShift, mCircleBox.bottom + yShift);
 
-                DataSet set = mCurrentData.getDataSetByIndex(mIndicesToHightlight[i]
-                        .getDataSetIndex());
-
-                int color = mCt.getDataSetColor(mIndicesToHightlight[i].getDataSetIndex(),
-                        set.getIndexInEntries(xIndex));
-
-                mRenderPaint.setColor(color);
+                mRenderPaint.setColor(set.getColor(xIndex));
 
                 // redefine the rect that contains the arc so that the
                 // highlighted pie is not cut off
-                mDrawCanvas.drawArc(highlighted, angle + mSliceSpace / 2f, sliceDegrees
-                        - mSliceSpace / 2f, true, mRenderPaint);
+                mDrawCanvas.drawArc(highlighted, angle + set.getSliceSpace() / 2f, sliceDegrees
+                        - set.getSliceSpace() / 2f, true, mRenderPaint);
             }
         }
     }
@@ -419,22 +410,19 @@ public class PieChart extends Chart {
 
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
-            DataSet dataSet = dataSets.get(i);
+            PieDataSet dataSet = dataSets.get(i);
             ArrayList<Entry> entries = dataSet.getYVals();
-
-            // Get the colors for the DataSet at the current index. If the index
-            // is out of bounds, reuse DataSet colors.
-            ArrayList<Integer> colors = mCt.getDataSetColors(i % mCt.getColors().size());
 
             for (int j = 0; j < entries.size(); j++) {
 
                 float newangle = mDrawAngles[cnt];
+                float sliceSpace = dataSet.getSliceSpace();
 
                 if (!needsHighlight(entries.get(j).getXIndex(), i)) {
 
-                    mRenderPaint.setColor(colors.get(j % colors.size()));
-                    mDrawCanvas.drawArc(mCircleBox, angle + mSliceSpace / 2f, newangle
-                            - mSliceSpace / 2f, true, mRenderPaint);
+                    mRenderPaint.setColor(dataSet.getColor(j));
+                    mDrawCanvas.drawArc(mCircleBox, angle + sliceSpace / 2f, newangle
+                            - sliceSpace / 2f, true, mRenderPaint);
                 }
 
                 angle += newangle;
@@ -444,7 +432,7 @@ public class PieChart extends Chart {
     }
 
     /**
-     * draws the hole in the center of the chart
+     * draws the hole in the center of the chart and the transparent circle / hole
      */
     private void drawHole() {
 
@@ -547,11 +535,6 @@ public class PieChart extends Chart {
                 float y = (float) (r
                         * Math.sin(Math.toRadians(mChartAngle + mAbsoluteAngles[cnt] - offset)) + center.y);
 
-                // if (y > center.y) {
-                // y += 10;
-                // x += 3;
-                // }
-
                 String val = "";
                 float value = entries.get(j).getVal();
 
@@ -627,7 +610,7 @@ public class PieChart extends Chart {
      */
     public int getDataSetIndexForIndex(int xIndex) {
 
-        ArrayList<PieDataSet> dataSets = (ArrayList<PieDataSet>) mCurrentData.getDataSets();
+        ArrayList<? extends DataSet> dataSets = mCurrentData.getDataSets();
 
         for (int i = 0; i < dataSets.size(); i++) {
             if (dataSets.get(i).getEntryForXIndex(xIndex) != null)
@@ -675,26 +658,6 @@ public class PieChart extends Chart {
      */
     public float getCurrentRotation() {
         return mChartAngle;
-    }
-
-    /**
-     * sets the distance the highlighted piechart-slice is "shifted" away from
-     * the center of the chart, default 20f
-     * 
-     * @param shift
-     */
-    public void setSelectionShift(float shift) {
-        mShift = Utils.convertDpToPixel(shift);
-    }
-
-    /**
-     * returns the distance a highlighted piechart slice is "shifted" away from
-     * the chart-center
-     * 
-     * @return
-     */
-    public float getSelectionShift() {
-        return mShift;
     }
 
     /**
@@ -915,32 +878,6 @@ public class PieChart extends Chart {
      */
     public void setCenterTextSize(float size) {
         mCenterTextPaint.setTextSize(Utils.convertDpToPixel(size));
-    }
-
-    /**
-     * sets the space that is left out between the piechart-slices, default: 0°
-     * --> no space, maximum 45, minimum 0 (no space)
-     * 
-     * @param degrees
-     */
-    public void setSliceSpace(float degrees) {
-
-        if (degrees > 45)
-            degrees = 45f;
-        if (degrees < 0)
-            degrees = 0f;
-
-        mSliceSpace = degrees;
-    }
-
-    /**
-     * returns the space that is set to be between the piechart-slices, in
-     * degrees
-     * 
-     * @return
-     */
-    public float getSliceSpace() {
-        return mSliceSpace;
     }
 
     /**

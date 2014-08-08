@@ -1,8 +1,6 @@
 
 package com.github.mikephil.charting.data;
 
-import com.github.mikephil.charting.utils.ColorTemplate;
-
 import java.util.ArrayList;
 
 public class BarDataSet extends DataSet {
@@ -39,6 +37,9 @@ public class BarDataSet extends DataSet {
 
         BarDataSet copied = new BarDataSet(yVals, getLabel());
         copied.mStackSize = mStackSize;
+        copied.mBarSpace = mBarSpace;
+        copied.mEntryCountStacks = mEntryCountStacks;
+        
         return copied;
     }
 

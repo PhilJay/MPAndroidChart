@@ -236,6 +236,7 @@ public class BarChart extends BarLineChartBase {
                 
                 Entry e = entries.get(j);
 
+                // no stacks
                 if (dataSet.getStackSize() == 1) {
 
                     // Set the color for the currently drawn value. If the index
@@ -253,12 +254,12 @@ public class BarChart extends BarLineChartBase {
                     }
 
                     mDrawCanvas.drawRect(mBarRect, mRenderPaint);
-
+ 
                 } else { // stacked bars
 
                     float[] vals = e.getVals();
 
-                    // we still draw stacked bars, but there is one non-stacked
+                    // we still draw stacked bars, but there could be one non-stacked
                     // in between
                     if (vals == null) {
 
@@ -271,7 +272,7 @@ public class BarChart extends BarLineChartBase {
                         float all = e.getSum();
 
                         for (int k = 0; k < vals.length; k++) {
-
+                            
                             all -= vals[k];
 
                             mRenderPaint.setColor(dataSet.getColor(k));
