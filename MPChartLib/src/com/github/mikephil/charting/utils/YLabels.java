@@ -1,6 +1,8 @@
 
 package com.github.mikephil.charting.utils;
 
+import android.graphics.Typeface;
+
 /**
  * Class representing the y-axis labels settings and its entries. Only use the
  * setter methods to modify it. Do not access public variables directly.
@@ -17,6 +19,9 @@ public class YLabels {
 
     /** the number of decimal digits to use */
     public int mDecimals;
+    
+    /** the typeface to use for the labels */
+    private Typeface mTypeface;
 
     /**
      * if true, units are drawn next to the values of the y-axis labels
@@ -86,5 +91,22 @@ public class YLabels {
      */
     public void setDrawTopYLabelEntry(boolean enabled) {
         mDrawTopYLabelEntry = enabled;
+    }
+    
+    /**
+     * sets the typeface that should be used for the y-labels
+     * 
+     * @param t
+     */
+    public void setTypeface(Typeface t) {
+        mTypeface = t;
+    }
+    
+    /**
+     * returns the typeface that is used for the y-labels
+     * @return
+     */
+    public Typeface getTypeface() {
+        return mTypeface;
     }
 }

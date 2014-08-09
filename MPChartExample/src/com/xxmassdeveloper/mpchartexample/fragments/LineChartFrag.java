@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Legend;
+import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.R;
 
 
@@ -54,10 +55,11 @@ public class LineChartFrag extends SimpleFragment {
         
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"OpenSans-Light.ttf");
         
-        mChart.setYLabelTypeface(tf);
-        
         Legend l = mChart.getLegend();
         l.setTypeface(tf);
+        
+        YLabels labels = mChart.getYLabels();
+        labels.setTypeface(tf);
         
         return v;
     }

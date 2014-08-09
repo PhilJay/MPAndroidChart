@@ -288,18 +288,20 @@ public class BarChart extends BarLineChartBase {
                     } else {
 
                         float all = e.getSum();
+                        
+                        // if drawing the bar shadow is enabled
+                        if (mDrawBarShadow) {
+                            
+                            prepareBar(e.getXIndex(), e.getSum(), dataSet.getBarSpace());
+                            mRenderPaint.setColor(dataSet.getBarShadowColor());
+                            mDrawCanvas.drawRect(mBarShadow, mRenderPaint);
+                        }
 
                         for (int k = 0; k < vals.length; k++) {
 
                             all -= vals[k];
 
                             prepareBar(e.getXIndex(), vals[k] + all, dataSet.getBarSpace());
-
-                            // if drawing the bar shadow is enabled
-                            if (mDrawBarShadow) {
-                                mRenderPaint.setColor(dataSet.getBarShadowColor());
-                                mDrawCanvas.drawRect(mBarShadow, mRenderPaint);
-                            }
 
                             mRenderPaint.setColor(dataSet.getColor(k));
                             mDrawCanvas.drawRect(mBarRect, mRenderPaint);

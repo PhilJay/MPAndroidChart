@@ -10,7 +10,6 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ViewParent;
@@ -613,6 +612,8 @@ public abstract class BarLineChartBase extends Chart {
             return;
 
         float yoffset = Utils.convertDpToPixel(3.5f);
+        
+        mXLabelPaint.setTypeface(mXLabels.getTypeface());
 
         if (mXLabels.getPosition() == XLabelPosition.TOP) {
 
@@ -683,6 +684,8 @@ public abstract class BarLineChartBase extends Chart {
         transformPointArray(positions);
 
         float xoffset = Utils.convertDpToPixel(5f);
+        
+        mYLabelPaint.setTypeface(mYLabels.getTypeface());
 
         // determine position and draw adequately
         if (mYLabels.getPosition() == YLabelPosition.LEFT) {
@@ -1711,34 +1714,6 @@ public abstract class BarLineChartBase extends Chart {
             factor = 20f;
 
         mMaxScaleY = factor;
-    }
-
-    /**
-     * sets a typeface for the paint object of the x-labels
-     * 
-     * @param t
-     */
-    public void setXLabelTypeface(Typeface t) {
-        mXLabelPaint.setTypeface(t);
-    }
-
-    /**
-     * sets a typeface for the paint object of the y-labels
-     * 
-     * @param t
-     */
-    public void setYLabelTypeface(Typeface t) {
-        mYLabelPaint.setTypeface(t);
-    }
-
-    /**
-     * sets a typeface for both x and y-label paints
-     * 
-     * @param t
-     */
-    public void setLabelTypeface(Typeface t) {
-        setXLabelTypeface(t);
-        setYLabelTypeface(t);
     }
 
     /**

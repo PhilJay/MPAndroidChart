@@ -10,6 +10,7 @@ import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Legend;
+import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.MyMarkerView;
 import com.xxmassdeveloper.mpchartexample.R;
 
@@ -39,7 +40,8 @@ public class ScatterChartFrag extends SimpleFragment {
         
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"OpenSans-Light.ttf");
         
-        mChart.setYLabelTypeface(tf);
+        YLabels labels = mChart.getYLabels();
+        labels.setTypeface(tf);
         
         MyMarkerView mv = new MyMarkerView(getActivity(), R.layout.custom_marker_view);
         mv.setOffsets(-mv.getMeasuredWidth() / 2, -mv.getMeasuredHeight());

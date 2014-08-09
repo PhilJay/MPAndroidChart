@@ -78,6 +78,8 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         mChart.setPinchZoom(false);
 
         mChart.setUnit(" €");
+        
+        mChart.setDrawBarShadow(false);
 
         // change the position of the y-labels
         YLabels yLabels = mChart.getYLabels();
@@ -85,12 +87,13 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 
         XLabels xLabels = mChart.getXLabels();
         xLabels.setPosition(XLabelPosition.TOP);
+        xLabels.setCenterXLabelText(true);
 
         // mChart.setDrawXLabels(false);
         // mChart.setDrawYLabels(false);
 
         // setting data
-        mSeekBarX.setProgress(45);
+        mSeekBarX.setProgress(12);
         mSeekBarY.setProgress(100);
 
         Legend l = mChart.getLegend();
@@ -205,7 +208,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 
         ArrayList<String> xVals = new ArrayList<String>();
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-            xVals.add((i) + "");
+            xVals.add(mMonths[i % mMonths.length]);
         }
 
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();

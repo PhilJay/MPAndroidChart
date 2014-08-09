@@ -9,6 +9,7 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.XLabels;
+import com.github.mikephil.charting.utils.YLabels;
 import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
 import com.xxmassdeveloper.mpchartexample.R;
 
@@ -52,8 +53,6 @@ public class LineChartItem extends ChartItem {
         // apply styling
         holder.chart.setYLabelCount(5);
         holder.chart.setColorTemplate(mCt);
-        holder.chart.setYLabelTypeface(mTf);
-        holder.chart.setXLabelTypeface(mTf);
         holder.chart.setValueTypeface(mTf);
         holder.chart.setDescription("");
         holder.chart.setDrawVerticalGrid(false);
@@ -62,6 +61,10 @@ public class LineChartItem extends ChartItem {
         XLabels xl = holder.chart.getXLabels();
         xl.setCenterXLabelText(true);
         xl.setPosition(XLabelPosition.BOTTOM);
+        xl.setTypeface(mTf);
+        
+        YLabels yl = holder.chart.getYLabels();
+        yl.setTypeface(mTf);
 
         // set data
         holder.chart.setData(mChartData);

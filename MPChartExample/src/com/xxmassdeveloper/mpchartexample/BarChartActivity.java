@@ -81,7 +81,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         // draw shadows for each bar that show the maximum value
         mChart.setDrawBarShadow(true);
-        
+
         mChart.setUnit(" €");
 
         // change the position of the y-labels
@@ -91,24 +91,28 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         XLabels xLabels = mChart.getXLabels();
         xLabels.setPosition(XLabelPosition.TOP);
 
-//         mChart.setDrawXLabels(false);
-         
-         mChart.setDrawGridBackground(false);
-         mChart.setDrawHorizontalGrid(true);
-         mChart.setDrawVerticalGrid(false);
+        // mChart.setDrawXLabels(false);
+
+        mChart.setDrawGridBackground(false);
+        mChart.setDrawHorizontalGrid(true);
+        mChart.setDrawVerticalGrid(false);
         // mChart.setDrawYLabels(false);
-         
-         mChart.setDrawBorder(false);
-//         mChart.setBorderPositions(new BorderPosition[] {BorderPosition.LEFT, BorderPosition.RIGHT});
-         
-         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-         
-         XLabels xl = mChart.getXLabels();
-         xl.setPosition(XLabelPosition.BOTTOM);
-         xl.setCenterXLabelText(true);
-         
-         YLabels yl = mChart.getYLabels();
-         
+
+        mChart.setDrawBorder(false);
+        // mChart.setBorderPositions(new BorderPosition[] {BorderPosition.LEFT,
+        // BorderPosition.RIGHT});
+
+        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+
+        XLabels xl = mChart.getXLabels();
+        xl.setPosition(XLabelPosition.BOTTOM);
+        xl.setCenterXLabelText(true);
+        xl.setTypeface(tf);
+
+        YLabels yl = mChart.getYLabels();
+        yl.setTypeface(tf);
+        
+        mChart.setValueTypeface(tf);
 
         // setting data
         mSeekBarX.setProgress(12);
@@ -217,8 +221,6 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         }
         return true;
     }
-    
-    private String[] mMonths = new String[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec" };
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
