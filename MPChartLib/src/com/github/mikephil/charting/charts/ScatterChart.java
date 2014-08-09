@@ -25,23 +25,6 @@ public class ScatterChart extends BarLineChartBase {
         CROSS, TRIANGLE, CIRCLE, SQUARE, CUSTOM
     }
 
-    /**
-     * Custom path object the user can provide that is drawn where the values
-     * are at. This is used when ScatterShape.CUSTOM is set for a DataSet.
-     */
-    private Path mCustomScatterPath = null;
-
-    /**
-     * array that holds all the scattershapes that this chart uses, each shape
-     * represents one dataset in the chart
-     */
-    private ScatterShape[] mScatterShapes = new ScatterShape[] {
-            ScatterShape.SQUARE, ScatterShape.TRIANGLE
-    };
-
-    /** the size the scattershape will have, in screen pixels */
-    private float mShapeSize = 12f;
-
     public ScatterChart(Context context) {
         super(context);
     }
@@ -53,9 +36,10 @@ public class ScatterChart extends BarLineChartBase {
     public ScatterChart(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
-    
+
     /**
      * Sets a ScatterData object as a model for the ScatterChart.
+     * 
      * @param data
      */
     public void setData(ScatterData data) {
@@ -64,15 +48,15 @@ public class ScatterChart extends BarLineChartBase {
 
     @Override
     protected void drawData() {
-        
-        ArrayList<ScatterDataSet> dataSets = (ArrayList<ScatterDataSet>) mCurrentData.getDataSets();        
-        
-        float shapeHalf = mShapeSize / 2f;
+
+        ArrayList<ScatterDataSet> dataSets = (ArrayList<ScatterDataSet>) mCurrentData.getDataSets();
 
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
-            DataSet dataSet = dataSets.get(i);
+            ScatterDataSet dataSet = dataSets.get(i);
             ArrayList<Entry> entries = dataSet.getYVals();
+
+            float shapeHalf = dataSet.getScatterShapeSize() / 2f;
 
             float[] pos = generateTransformedValues(entries, 0f);
 
@@ -80,7 +64,7 @@ public class ScatterChart extends BarLineChartBase {
             // is out of bounds, reuse DataSet colors.
             ArrayList<Integer> colors = mCt.getDataSetColors(i % mCt.getColors().size());
 
-            ScatterShape shape = mScatterShapes[i % mScatterShapes.length];
+            ScatterShape shape = dataSet.getScatterShape();
 
             for (int j = 0; j < pos.length; j += 2) {
 
@@ -105,7 +89,7 @@ public class ScatterChart extends BarLineChartBase {
 
                 } else if (shape == ScatterShape.CIRCLE) {
 
-                    mDrawCanvas.drawCircle(pos[j], pos[j + 1], mShapeSize / 2f, mRenderPaint);
+                    mDrawCanvas.drawCircle(pos[j], pos[j + 1], shapeHalf, mRenderPaint);
 
                 } else if (shape == ScatterShape.CROSS) {
 
@@ -127,12 +111,14 @@ public class ScatterChart extends BarLineChartBase {
 
                 } else if (shape == ScatterShape.CUSTOM) {
 
-                    if (mCustomScatterPath == null)
+                    Path customShape = dataSet.getCustomScatterShape();
+
+                    if (customShape == null)
                         return;
 
                     // transform the provided custom path
-                    transformPath(mCustomScatterPath);
-                    mDrawCanvas.drawPath(mCustomScatterPath, mRenderPaint);
+                    transformPath(customShape);
+                    mDrawCanvas.drawPath(customShape, mRenderPaint);
                 }
             }
         }
@@ -143,14 +129,17 @@ public class ScatterChart extends BarLineChartBase {
         // if values are drawn
         if (mDrawYValues && mCurrentData.getYValCount() < mMaxVisibleCount * mScaleX) {
 
-            ArrayList<ScatterDataSet> dataSets = (ArrayList<ScatterDataSet>) mCurrentData.getDataSets();  
+            ArrayList<ScatterDataSet> dataSets = (ArrayList<ScatterDataSet>) mCurrentData
+                    .getDataSets();
 
             for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
-                DataSet dataSet = dataSets.get(i);
+                ScatterDataSet dataSet = dataSets.get(i);
                 ArrayList<Entry> entries = dataSet.getYVals();
 
                 float[] positions = generateTransformedValues(entries, 0f);
+
+                float shapeSize = dataSet.getScatterShapeSize();
 
                 for (int j = 0; j < positions.length; j += 2) {
 
@@ -166,11 +155,11 @@ public class ScatterChart extends BarLineChartBase {
                     if (mDrawUnitInChart) {
 
                         mDrawCanvas.drawText(mFormatValue.format(val) + mUnit, positions[j],
-                                positions[j + 1] - mShapeSize, mValuePaint);
+                                positions[j + 1] - shapeSize, mValuePaint);
                     } else {
 
                         mDrawCanvas.drawText(mFormatValue.format(val), positions[j],
-                                positions[j + 1] - mShapeSize,
+                                positions[j + 1] - shapeSize,
                                 mValuePaint);
                     }
                 }
@@ -209,54 +198,13 @@ public class ScatterChart extends BarLineChartBase {
     }
 
     /**
-     * Sets the size the drawn scattershape will have. This only applies for non
-     * custom shapes. Default 12f
-     * 
-     * @param size
-     */
-    public void setScatterShapeSize(float size) {
-        mShapeSize = size;
-    }
-
-    /**
-     * returns the currently set scatter shape size
+     * Returns all possible predefined scattershapes.
      * 
      * @return
      */
-    public float getScatterShapeSize() {
-        return mShapeSize;
-    }
-
-    /**
-     * Sets the shapes that are drawn on the position where the values are at.
-     * One shape per DataSet. If "CUSTOM" is chosen for a DataSet, you need to
-     * call setCustomScatterShape(...) and provide a path object that is drawn
-     * as the custom scattershape. If more DataSets are drawn than ScatterShapes
-     * exist, shapes are reused.
-     * 
-     * @param shapes
-     */
-    public void setScatterShapes(ScatterShape[] shapes) {
-        mScatterShapes = shapes;
-    }
-
-    /**
-     * returns all the different scattershapes the chart uses
-     * 
-     * @return
-     */
-    public ScatterShape[] getScatterShapes() {
-        return mScatterShapes;
-    }
-
-    /**
-     * Sets a path object as the shape to be drawn where the values are at. Do
-     * not forget to call setScatterShapes(...) and set the shape for one
-     * DataSet to ScatterShape.CUSTOM.
-     * 
-     * @param shape
-     */
-    public void setCustomScatterShape(Path shape) {
-        mCustomScatterPath = shape;
+    public static ScatterShape[] getAllPossibleShapes() {
+        return new ScatterShape[] {
+                ScatterShape.SQUARE, ScatterShape.CIRCLE, ScatterShape.TRIANGLE, ScatterShape.CROSS
+        };
     }
 }

@@ -47,10 +47,7 @@ public class ScatterChartFrag extends SimpleFragment {
         mv.setOffsets(-mv.getMeasuredWidth() / 2, -mv.getMeasuredHeight());
 
         mChart.setMarkerView(mv);
-        
-        mChart.setScatterShapes(new ScatterShape[] {ScatterShape.CIRCLE, ScatterShape.SQUARE });
-        mChart.setScatterShapeSize(18f);
-        
+
         mChart.setHighlightIndicatorEnabled(false);
         mChart.setDrawBorder(false);
 //        mChart.setBorderStyles(new BorderStyle[] { BorderStyle.LEFT });

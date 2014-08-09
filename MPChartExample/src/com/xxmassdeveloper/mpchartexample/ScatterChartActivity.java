@@ -57,9 +57,6 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         mChart = (ScatterChart) findViewById(R.id.chart1);
         mChart.setColorTemplate(ct);
         
-        // specify the shapes for the datasets, one shape per dataset
-        mChart.setScatterShapes(new ScatterShape[] { ScatterShape.SQUARE, ScatterShape.TRIANGLE, ScatterShape.CIRCLE });
-        
         mChart.setOnChartValueSelectedListener(this);
 
         mChart.setYLabelCount(6);
@@ -184,8 +181,11 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
 
         // create a dataset and give it a type
         ScatterDataSet set1 = new ScatterDataSet(yVals1, "DS 1");
+        set1.setScatterShape(ScatterShape.SQUARE);
         ScatterDataSet set2 = new ScatterDataSet(yVals2, "DS 2");
+        set2.setScatterShape(ScatterShape.CIRCLE);
         ScatterDataSet set3 = new ScatterDataSet(yVals3, "DS 3");
+        set3.setScatterShape(ScatterShape.TRIANGLE);
 
         ArrayList<ScatterDataSet> dataSets = new ArrayList<ScatterDataSet>();
         dataSets.add(set1); // add the datasets

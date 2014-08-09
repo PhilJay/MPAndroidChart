@@ -2,10 +2,11 @@ package com.xxmassdeveloper.mpchartexample.fragments;
 
 import android.support.v4.app.Fragment;
 
+import com.github.mikephil.charting.charts.ScatterChart;
+import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -13,7 +14,6 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
-import com.github.mikephil.charting.utils.FileUtils;
 
 import java.util.ArrayList;
 
@@ -43,6 +43,8 @@ public abstract class SimpleFragment extends Fragment {
         
         ArrayList<ScatterDataSet> sets = new ArrayList<ScatterDataSet>();
         
+        ScatterShape[] shapes = ScatterChart.getAllPossibleShapes();
+        
         for(int i = 0; i < dataSets; i++) {
            
             ArrayList<Entry> entries = new ArrayList<Entry>();
@@ -52,6 +54,8 @@ public abstract class SimpleFragment extends Fragment {
             }
             
             ScatterDataSet ds = new ScatterDataSet(entries, getLabel(i));
+            ds.setScatterShapeSize(12f);
+            ds.setScatterShape(shapes[i % shapes.length]);
             sets.add(ds);
         }
         

@@ -507,6 +507,7 @@ public class BarChart extends BarLineChartBase {
 
                 float[] valuePoints = generateTransformedValues(entries, 0.5f);
 
+                // if only single values are drawn (sum)
                 if (!mDrawValuesForWholeStack) {
 
                     for (int j = 0; j < valuePoints.length; j += 2) {
