@@ -1,6 +1,7 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,9 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.BarLineChartBase.BorderPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
@@ -78,6 +79,9 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
 
+        // draw shadows for each bar that show the maximum value
+        mChart.setDrawBarShadow(true);
+        
         mChart.setUnit(" €");
 
         // change the position of the y-labels
@@ -87,12 +91,28 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         XLabels xLabels = mChart.getXLabels();
         xLabels.setPosition(XLabelPosition.TOP);
 
-        // mChart.setDrawXLabels(false);
+//         mChart.setDrawXLabels(false);
+         
+         mChart.setDrawGridBackground(false);
+         mChart.setDrawHorizontalGrid(true);
+         mChart.setDrawVerticalGrid(false);
         // mChart.setDrawYLabels(false);
+         
+         mChart.setDrawBorder(false);
+//         mChart.setBorderPositions(new BorderPosition[] {BorderPosition.LEFT, BorderPosition.RIGHT});
+         
+         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+         
+         XLabels xl = mChart.getXLabels();
+         xl.setPosition(XLabelPosition.BOTTOM);
+         xl.setCenterXLabelText(true);
+         
+         YLabels yl = mChart.getYLabels();
+         
 
         // setting data
-        mSeekBarX.setProgress(45);
-        mSeekBarY.setProgress(100);
+        mSeekBarX.setProgress(12);
+        mSeekBarY.setProgress(50);
 
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.BELOW_CHART_LEFT);
@@ -197,6 +217,8 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         }
         return true;
     }
+    
+    private String[] mMonths = new String[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec" };
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -206,7 +228,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         ArrayList<String> xVals = new ArrayList<String>();
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-            xVals.add((i) + "");
+            xVals.add(mMonths[i % 12]);
         }
 
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
@@ -218,6 +240,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         }
 
         BarDataSet set1 = new BarDataSet(yVals1, "DataSet");
+        set1.setBarSpacePercent(35f);
         ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
         dataSets.add(set1);
 

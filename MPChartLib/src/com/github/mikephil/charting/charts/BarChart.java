@@ -47,11 +47,17 @@ public class BarChart extends BarLineChartBase {
      */
     private boolean mDrawValuesForWholeStack = true;
 
-    // /**
-    // * if true, bars representing values of different DataSets on the same
-    // * x-index are stacked (instead of being aligned behind each other)
-    // */
-    // private boolean mStackEnabled = false;
+    /**
+     * if set to true, a grey area is darawn behind each bar that indicates the
+     * maximum value
+     */
+    private boolean mDrawBarShadow = true;
+
+    /** the rect object that is used for drawing the bar shadow */
+    private RectF mBarShadow = new RectF();
+
+    /** the rect object that is used for drawing the bars */
+    private RectF mBarRect = new RectF();
 
     public BarChart(Context context) {
         super(context);
@@ -184,7 +190,7 @@ public class BarChart extends BarLineChartBase {
 
                 int dataSetIndex = mIndicesToHightlight[i].getDataSetIndex();
                 BarDataSet ds = (BarDataSet) mCurrentData.getDataSetByIndex(dataSetIndex);
-                
+
                 // check outofbounds
                 if (index < mCurrentData.getYValCount() && index >= 0) {
 
@@ -218,8 +224,6 @@ public class BarChart extends BarLineChartBase {
         }
     }
 
-    private RectF mBarRect = new RectF();
-
     @Override
     protected void drawData() {
 
@@ -233,16 +237,12 @@ public class BarChart extends BarLineChartBase {
 
             // do the drawing
             for (int j = 0; j < dataSet.getEntryCount(); j++) {
-                
+
                 Entry e = entries.get(j);
 
                 // no stacks
                 if (dataSet.getStackSize() == 1) {
 
-                    // Set the color for the currently drawn value. If the index
-                    // is
-                    // out of bounds, reuse colors.
-                    mRenderPaint.setColor(dataSet.getColor(j));
                     prepareBar(e.getXIndex(), e.getVal(), dataSet.getBarSpace());
 
                     // avoid drawing outofbounds values
@@ -253,18 +253,36 @@ public class BarChart extends BarLineChartBase {
                         continue;
                     }
 
+                    // if drawing the bar shadow is enabled
+                    if (mDrawBarShadow) {
+                        mRenderPaint.setColor(dataSet.getBarShadowColor());
+                        mDrawCanvas.drawRect(mBarShadow, mRenderPaint);
+                    }
+
+                    // Set the color for the currently drawn value. If the index
+                    // is
+                    // out of bounds, reuse colors.
+                    mRenderPaint.setColor(dataSet.getColor(j));
                     mDrawCanvas.drawRect(mBarRect, mRenderPaint);
- 
+
                 } else { // stacked bars
 
                     float[] vals = e.getVals();
 
-                    // we still draw stacked bars, but there could be one non-stacked
+                    // we still draw stacked bars, but there could be one
+                    // non-stacked
                     // in between
                     if (vals == null) {
 
-                        mRenderPaint.setColor(dataSet.getColor(0));
                         prepareBar(e.getXIndex(), e.getVal(), dataSet.getBarSpace());
+
+                        // if drawing the bar shadow is enabled
+                        if (mDrawBarShadow) {
+                            mRenderPaint.setColor(dataSet.getBarShadowColor());
+                            mDrawCanvas.drawRect(mBarShadow, mRenderPaint);
+                        }
+
+                        mRenderPaint.setColor(dataSet.getColor(0));
                         mDrawCanvas.drawRect(mBarRect, mRenderPaint);
 
                     } else {
@@ -272,11 +290,18 @@ public class BarChart extends BarLineChartBase {
                         float all = e.getSum();
 
                         for (int k = 0; k < vals.length; k++) {
-                            
+
                             all -= vals[k];
 
-                            mRenderPaint.setColor(dataSet.getColor(k));
                             prepareBar(e.getXIndex(), vals[k] + all, dataSet.getBarSpace());
+
+                            // if drawing the bar shadow is enabled
+                            if (mDrawBarShadow) {
+                                mRenderPaint.setColor(dataSet.getBarShadowColor());
+                                mDrawCanvas.drawRect(mBarShadow, mRenderPaint);
+                            }
+
+                            mRenderPaint.setColor(dataSet.getColor(k));
                             mDrawCanvas.drawRect(mBarRect, mRenderPaint);
                         }
                     }
@@ -294,10 +319,12 @@ public class BarChart extends BarLineChartBase {
     }
 
     /**
-     * prepares a bar for drawing on the spiecified x-index and y-position
+     * Prepares a bar for drawing on the specified x-index and y-position. Also
+     * prepares the shadow-bar if enabled.
      * 
-     * @param x the x-index
-     * @param y the value
+     * @param x the x-position
+     * @param y the y-position
+     * @param space the space between bars
      */
     private void prepareBar(float x, float y, float space) {
 
@@ -309,6 +336,11 @@ public class BarChart extends BarLineChartBase {
         mBarRect.set(left, top, right, bottom);
 
         transformRect(mBarRect);
+
+        // if a shadow is drawn, prepare it too
+        if (mDrawBarShadow) {
+            mBarShadow.set(mBarRect.left, mOffsetTop, mBarRect.right, getHeight() - mOffsetBottom);
+        }
     }
 
     // @Override
@@ -450,7 +482,7 @@ public class BarChart extends BarLineChartBase {
 
     @Override
     protected void drawValues() {
-        
+
         long starttime = System.currentTimeMillis();
         // if values are drawn
         if (mDrawYValues && mCurrentData.getYValCount() < mMaxVisibleCount * mScaleX) {
@@ -464,7 +496,7 @@ public class BarChart extends BarLineChartBase {
             if (mDrawValueAboveBar)
                 offset = -Utils.convertDpToPixel(5);
             else
-                offset = Utils.calcTextHeight(mValuePaint, "8") * 1.5f;            
+                offset = Utils.calcTextHeight(mValuePaint, "8") * 1.5f;
 
             for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
@@ -472,9 +504,9 @@ public class BarChart extends BarLineChartBase {
                 ArrayList<Entry> entries = dataSet.getYVals();
 
                 float[] valuePoints = generateTransformedValues(entries, 0.5f);
-               
-                if(!mDrawValuesForWholeStack) {
-                    
+
+                if (!mDrawValuesForWholeStack) {
+
                     for (int j = 0; j < valuePoints.length; j += 2) {
 
                         if (isOffContentRight(valuePoints[j]))
@@ -482,61 +514,62 @@ public class BarChart extends BarLineChartBase {
 
                         if (isOffContentLeft(valuePoints[j]))
                             continue;
-                        
+
                         float val = entries.get(j / 2).getSum();
 
                         drawValue(mFormatValue.format(val), valuePoints[j],
                                 valuePoints[j + 1] + offset);
                     }
-                    
-                 // if each value of a potential stack should be drawn
+
+                    // if each value of a potential stack should be drawn
                 } else {
 
-                    for (int j = 0; j < valuePoints.length-1; j += 2) {
+                    for (int j = 0; j < valuePoints.length - 1; j += 2) {
 
                         if (isOffContentRight(valuePoints[j]))
                             break;
 
                         if (isOffContentLeft(valuePoints[j]))
                             continue;
-                        
+
                         Entry e = entries.get(j / 2);
 
                         float[] vals = e.getVals();
 
-                        // we still draw stacked bars, but there is one non-stacked
+                        // we still draw stacked bars, but there is one
+                        // non-stacked
                         // in between
                         if (vals == null) {
-                            
+
                             drawValue(mFormatValue.format(e.getVal()), valuePoints[j],
                                     valuePoints[j + 1] + offset);
 
                         } else {
-                            
+
                             float[] transformed = new float[vals.length * 2];
                             int cnt = 0;
                             float add = e.getSum();
-                            
-                            for(int k = 0; k < transformed.length; k+=2) {
-                                
+
+                            for (int k = 0; k < transformed.length; k += 2) {
+
                                 add -= vals[cnt];
-                                transformed[k+1] = vals[cnt] + add;
+                                transformed[k + 1] = vals[cnt] + add;
                                 cnt++;
                             }
-                            
+
                             transformPointArray(transformed);
 
-                            for (int k = 0; k < transformed.length; k+=2) {
+                            for (int k = 0; k < transformed.length; k += 2) {
 
                                 drawValue(mFormatValue.format(vals[k / 2]), valuePoints[j],
                                         transformed[k + 1] + offset);
                             }
                         }
-                    }                 
+                    }
                 }
             }
         }
-        
+
         Log.i(LOG_TAG, "DrawValues time: " + (System.currentTimeMillis() - starttime) + "ms");
     }
 
@@ -694,6 +727,26 @@ public class BarChart extends BarLineChartBase {
      */
     public boolean isDrawValuesForWholeStackEnabled() {
         return mDrawValuesForWholeStack;
+    }
+
+    /**
+     * if set to true, a grey area is drawn behind each bar that indicates the
+     * maximum value
+     * 
+     * @param enabled
+     */
+    public void setDrawBarShadow(boolean enabled) {
+        mDrawBarShadow = enabled;
+    }
+
+    /**
+     * returns true if drawing shadows (maxvalue) for each bar is enabled, false
+     * if not
+     * 
+     * @return
+     */
+    public boolean isDrawBarShadowEnabled() {
+        return mDrawBarShadow;
     }
 
     @Override

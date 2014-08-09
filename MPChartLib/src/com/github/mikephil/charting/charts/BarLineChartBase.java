@@ -244,7 +244,7 @@ public abstract class BarLineChartBase extends Chart {
         drawVerticalGrid();
 
         drawData();
-        
+
         drawHighlights();
 
         // Removes clipping rectangle
@@ -427,9 +427,9 @@ public abstract class BarLineChartBase extends Chart {
 
         Matrix offset = new Matrix();
         offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
-//        offset.setTranslate(mOffsetLeft, 0);       
-//        offset.postScale(1.0f, -1.0f);
-        
+        // offset.setTranslate(mOffsetLeft, 0);
+        // offset.postScale(1.0f, -1.0f);
+
         mMatrixOffset.set(offset);
     }
 
@@ -550,9 +550,9 @@ public abstract class BarLineChartBase extends Chart {
         PointD p2 = getValuesByTouchPoint(mContentRect.left, mContentRect.bottom);
 
         // update the current chart dimensions on the y-axis
-//        mYChartMin = (float) Math.min(p1.y, p2.y);
-//        mYChartMax = (float) Math.max(p1.y, p2.y);
-        
+        // mYChartMin = (float) Math.min(p1.y, p2.y);
+        // mYChartMax = (float) Math.max(p1.y, p2.y);
+
         mYChartMin = (float) p2.y;
         mYChartMax = (float) p1.y;
 
@@ -720,8 +720,6 @@ public abstract class BarLineChartBase extends Chart {
 
             String text = Utils.formatNumber(mYLabels.mEntries[i], mYLabels.mDecimals,
                     mSeparateTousands);
-            
-            
 
             if (!mYLabels.isDrawTopYLabelEntryEnabled() && i >= mYLabels.mEntryCount - 1)
                 return;
@@ -736,15 +734,15 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /** enums for all different border styles */
-    public enum BorderStyle {
+    public enum BorderPosition {
         LEFT, RIGHT, TOP, BOTTOM
     }
 
     /**
      * array that holds positions where to draw the chart border lines
      */
-    private BorderStyle[] mBorderStyles = new BorderStyle[] {
-            BorderStyle.BOTTOM
+    private BorderPosition[] mBorderPositions = new BorderPosition[] {
+            BorderPosition.BOTTOM
     };
 
     /**
@@ -752,12 +750,12 @@ public abstract class BarLineChartBase extends Chart {
      */
     protected void drawBorder() {
 
-        if (!mDrawBorder || mBorderStyles == null)
+        if (!mDrawBorder || mBorderPositions == null)
             return;
 
-        for (int i = 0; i < mBorderStyles.length; i++) {
+        for (int i = 0; i < mBorderPositions.length; i++) {
 
-            switch (mBorderStyles[i]) {
+            switch (mBorderPositions[i]) {
                 case LEFT:
                     mDrawCanvas.drawLine(mOffsetLeft, mOffsetTop, mOffsetLeft, getHeight()
                             - mOffsetBottom, mBorderPaint);
@@ -1471,8 +1469,17 @@ public abstract class BarLineChartBase extends Chart {
      * 
      * @param styles
      */
-    public void setBorderStyles(BorderStyle[] styles) {
-        mBorderStyles = styles;
+    public void setBorderPositions(BorderPosition[] styles) {
+        mBorderPositions = styles;
+    }
+
+    /**
+     * Returns the array of positions where the chart-border is drawn.
+     * 
+     * @return
+     */
+    public BorderPosition[] getBorderPositions() {
+        return mBorderPositions;
     }
 
     /**
@@ -1809,32 +1816,33 @@ public abstract class BarLineChartBase extends Chart {
      * @return
      */
     private ChartData getFilteredData() {
-//
-//        float deltaRatio = mDeltaY / mDeltaX;
-//        float scaleRatio = mScaleY / mScaleX;
-//
-//        // set the determined ratios
-//        mApproximator.setRatios(deltaRatio, scaleRatio);
-//
-//        // Log.i("Approximator", "DeltaRatio: " + deltaRatio + ", ScaleRatio: "
-//        // + scaleRatio);
-//
-//        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
-//
-//        for (int j = 0; j < mOriginalData.getDataSetCount(); j++) {
-//
-//            DataSet old = mOriginalData.getDataSetByIndex(j);
-//
-//            // do the filtering
-//            ArrayList<Entry> approximated = mApproximator.filter(old.getYVals());
-//
-//            DataSet set = new DataSet(approximated, old.getLabel());
-//            dataSets.add(set);
-//        }
-//
-//        ChartData d = new ChartData(mOriginalData.getXVals(), dataSets);
-//        return d;
-        
+        //
+        // float deltaRatio = mDeltaY / mDeltaX;
+        // float scaleRatio = mScaleY / mScaleX;
+        //
+        // // set the determined ratios
+        // mApproximator.setRatios(deltaRatio, scaleRatio);
+        //
+        // // Log.i("Approximator", "DeltaRatio: " + deltaRatio +
+        // ", ScaleRatio: "
+        // // + scaleRatio);
+        //
+        // ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+        //
+        // for (int j = 0; j < mOriginalData.getDataSetCount(); j++) {
+        //
+        // DataSet old = mOriginalData.getDataSetByIndex(j);
+        //
+        // // do the filtering
+        // ArrayList<Entry> approximated = mApproximator.filter(old.getYVals());
+        //
+        // DataSet set = new DataSet(approximated, old.getLabel());
+        // dataSets.add(set);
+        // }
+        //
+        // ChartData d = new ChartData(mOriginalData.getXVals(), dataSets);
+        // return d;
+
         return null;
     }
 

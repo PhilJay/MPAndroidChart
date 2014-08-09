@@ -11,7 +11,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.charts.BarLineChartBase.BorderStyle;
+import com.github.mikephil.charting.charts.BarLineChartBase.BorderPosition;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -75,7 +75,7 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         mChart.setDrawYValues(false);
  
         mChart.setDrawBorder(true);
-        mChart.setBorderStyles(new BorderStyle[] { BorderStyle.BOTTOM });
+        mChart.setBorderPositions(new BorderPosition[] { BorderPosition.BOTTOM });
 
         // no description text
         mChart.setDescription("");

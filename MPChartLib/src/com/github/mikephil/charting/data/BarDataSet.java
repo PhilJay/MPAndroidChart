@@ -1,18 +1,23 @@
 
 package com.github.mikephil.charting.data;
 
+import android.graphics.Color;
+
 import java.util.ArrayList;
 
 public class BarDataSet extends DataSet {
 
     /** space indicator between the bars 0.1f == 10 % */
     private float mBarSpace = 0.15f;
-    
+
     /**
      * the number of bars that are stacked upon each other, this value is
      * calculated from the Entries that are added to the DataSet
      */
     private int mStackSize = 1;
+
+    /** the color used for drawing the bar shadows */
+    private int mBarShadowColor = Color.rgb(215, 215, 215);
 
     /**
      * the overall entry count, including counting each stack-value individually
@@ -39,7 +44,7 @@ public class BarDataSet extends DataSet {
         copied.mStackSize = mStackSize;
         copied.mBarSpace = mBarSpace;
         copied.mEntryCountStacks = mEntryCountStacks;
-        
+
         return copied;
     }
 
@@ -95,7 +100,7 @@ public class BarDataSet extends DataSet {
      */
     public int getEntryCountStacks() {
         return mEntryCountStacks;
-    }    
+    }
 
     /**
      * returns the space between bars in percent of the whole width of one value
@@ -105,7 +110,7 @@ public class BarDataSet extends DataSet {
     public float getBarSpacePercent() {
         return mBarSpace * 100f;
     }
-    
+
     /**
      * returns the space between bars as the actual value (0 - 1.0f)
      * 
@@ -122,5 +127,26 @@ public class BarDataSet extends DataSet {
      */
     public void setBarSpacePercent(float percent) {
         mBarSpace = percent / 100f;
+    }
+
+    /**
+     * Sets the color used for drawing the bar-shadows. The bar shadows is a
+     * surface behind the bar that indicates the maximum value. Don't for get to
+     * use getResources().getColor(...) to set this. Or Color.rgb(...).
+     * 
+     * @param color
+     */
+    public void setBarShadowColor(int color) {
+        mBarShadowColor = color;
+    }
+
+    /**
+     * Returns the color used for drawing the bar-shadows. The bar shadows is a
+     * surface behind the bar that indicates the maximum value.
+     * 
+     * @return
+     */
+    public int getBarShadowColor() {
+        return mBarShadowColor;
     }
 }
