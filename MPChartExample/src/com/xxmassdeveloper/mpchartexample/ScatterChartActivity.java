@@ -47,15 +47,8 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
 
         mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
         mSeekBarY.setOnSeekBarChangeListener(this);
-
-        // create a color template for one dataset with only one color
-        ColorTemplate ct = new ColorTemplate();
-        ct.addColorsForDataSets(new int[] {
-                R.color.colorful_1, R.color.colorful_2, R.color.colorful_3
-        }, this);
         
         mChart = (ScatterChart) findViewById(R.id.chart1);
-        mChart.setColorTemplate(ct);
         
         mChart.setOnChartValueSelectedListener(this);
 
@@ -182,10 +175,13 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         // create a dataset and give it a type
         ScatterDataSet set1 = new ScatterDataSet(yVals1, "DS 1");
         set1.setScatterShape(ScatterShape.SQUARE);
+        set1.setColor(getResources().getColor(R.color.colorful_1));
         ScatterDataSet set2 = new ScatterDataSet(yVals2, "DS 2");
         set2.setScatterShape(ScatterShape.CIRCLE);
+        set2.setColor(getResources().getColor(R.color.colorful_2));
         ScatterDataSet set3 = new ScatterDataSet(yVals3, "DS 3");
         set3.setScatterShape(ScatterShape.TRIANGLE);
+        set3.setColor(getResources().getColor(R.color.colorful_3));
 
         ArrayList<ScatterDataSet> dataSets = new ArrayList<ScatterDataSet>();
         dataSets.add(set1); // add the datasets

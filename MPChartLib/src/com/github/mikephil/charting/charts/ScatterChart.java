@@ -58,19 +58,11 @@ public class ScatterChart extends BarLineChartBase {
 
             float shapeHalf = dataSet.getScatterShapeSize() / 2f;
 
-            float[] pos = generateTransformedValues(entries, 0f);
-
-            // Get the colors for the DataSet at the current index. If the index
-            // is out of bounds, reuse DataSet colors.
-            ArrayList<Integer> colors = mCt.getDataSetColors(i % mCt.getColors().size());
+            float[] pos = generateTransformedValues(entries, 0f);   
 
             ScatterShape shape = dataSet.getScatterShape();
 
             for (int j = 0; j < pos.length; j += 2) {
-
-                // Set the color for the currently drawn value. If the index is
-                // out of bounds, reuse colors.
-                mRenderPaint.setColor(colors.get(j % colors.size()));
 
                 if (isOffContentRight(pos[j]))
                     break;
@@ -80,6 +72,10 @@ public class ScatterChart extends BarLineChartBase {
                         && isOffContentTop(pos[j + 1])
                         && isOffContentBottom(pos[j + 1]))
                     continue;
+                
+                // Set the color for the currently drawn value. If the index is
+                // out of bounds, reuse colors.
+                mRenderPaint.setColor(dataSet.getColor(j));
 
                 if (shape == ScatterShape.SQUARE) {
 

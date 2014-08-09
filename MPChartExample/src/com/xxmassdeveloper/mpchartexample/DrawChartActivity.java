@@ -15,7 +15,6 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.interfaces.OnDrawListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.XLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -41,11 +40,6 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
         setContentView(R.layout.activity_draw_chart);
 
         mChart = (LineChart) findViewById(R.id.chart1);
-
-        // create a color template, one color per dataset
-        ColorTemplate ct = new ColorTemplate();
-        ct.addColorsForDataSets(ColorTemplate.COLORFUL_COLORS, this);
-        mChart.setColorTemplate(ct);
 
         // listener for selecting and drawing
         mChart.setOnChartValueSelectedListener(this);

@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.R;
@@ -27,10 +26,6 @@ public class LineChartFrag extends SimpleFragment {
         
         mChart = (LineChart) v.findViewById(R.id.lineChart1);
         
-        ColorTemplate ct = new ColorTemplate();
-        ct.addColorsForDataSets(ColorTemplate.VORDIPLOM_COLORS, getActivity());
-        
-        mChart.setColorTemplate(ct);
         mChart.setDrawCircles(false);
          
         mChart.setDescription("");

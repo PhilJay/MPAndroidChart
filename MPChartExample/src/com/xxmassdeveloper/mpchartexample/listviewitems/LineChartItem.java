@@ -7,22 +7,18 @@ import android.view.View;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.XLabels;
-import com.github.mikephil.charting.utils.YLabels;
 import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
+import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.R;
 
 public class LineChartItem extends ChartItem {
     
-    private ColorTemplate mCt;
     private Typeface mTf;
     
     public LineChartItem(ChartData cd, Context c) {
         super(cd);
-        
-        mCt = new ColorTemplate();
-        mCt.addDataSetColor(R.color.vordiplom_4, c);
+
         mTf = Typeface.createFromAsset(c.getAssets(), "OpenSans-Regular.ttf");
     }
 
@@ -52,7 +48,6 @@ public class LineChartItem extends ChartItem {
 
         // apply styling
         holder.chart.setYLabelCount(5);
-        holder.chart.setColorTemplate(mCt);
         holder.chart.setValueTypeface(mTf);
         holder.chart.setDescription("");
         holder.chart.setDrawVerticalGrid(false);

@@ -16,10 +16,9 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.XLabels;
-import com.github.mikephil.charting.utils.YLabels;
 import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
+import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -55,14 +54,11 @@ public class ListViewBarChartActivity extends DemoBase {
 
     private class ChartDataAdapter extends ArrayAdapter<ChartData> {
 
-        private ColorTemplate mCt;
         private Typeface mTf;
 
         public ChartDataAdapter(Context context, List<ChartData> objects) {
             super(context, 0, objects);
 
-            mCt = new ColorTemplate();
-            mCt.addDataSetColors(ColorTemplate.VORDIPLOM_COLORS, getContext());
             mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
         }
 
@@ -89,7 +85,6 @@ public class ListViewBarChartActivity extends DemoBase {
 
             // apply styling
             holder.chart.setYLabelCount(5);
-            holder.chart.setColorTemplate(mCt);
             holder.chart.setValueTypeface(mTf);
             holder.chart.setDescription("");
             holder.chart.setDrawVerticalGrid(false);

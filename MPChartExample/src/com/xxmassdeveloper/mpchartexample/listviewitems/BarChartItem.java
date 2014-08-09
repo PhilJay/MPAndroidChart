@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
 import com.github.mikephil.charting.utils.YLabels;
@@ -15,14 +14,11 @@ import com.xxmassdeveloper.mpchartexample.R;
 
 public class BarChartItem extends ChartItem {
     
-    private ColorTemplate mCt;
     private Typeface mTf;
     
     public BarChartItem(ChartData cd, Context c) {
         super(cd);
-        
-        mCt = new ColorTemplate();
-        mCt.addDataSetColors(ColorTemplate.VORDIPLOM_COLORS, c);
+
         mTf = Typeface.createFromAsset(c.getAssets(), "OpenSans-Regular.ttf");
     }
 
@@ -52,7 +48,6 @@ public class BarChartItem extends ChartItem {
 
         // apply styling
         holder.chart.setYLabelCount(5);
-        holder.chart.setColorTemplate(mCt);
         holder.chart.setValueTypeface(mTf);
         holder.chart.setDescription("");
         holder.chart.setDrawVerticalGrid(false);

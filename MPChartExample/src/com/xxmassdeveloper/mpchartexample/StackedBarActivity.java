@@ -51,13 +51,6 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 
         mChart = (BarChart) findViewById(R.id.chart1);
 
-        ColorTemplate ct = new ColorTemplate();
-
-        // add colors for one dataset
-        ct.addDataSetColors(ColorTemplate.FRESH_COLORS, this);
-
-        mChart.setColorTemplate(ct);
-
         // enable the drawing of values
         mChart.setDrawYValues(true);
 

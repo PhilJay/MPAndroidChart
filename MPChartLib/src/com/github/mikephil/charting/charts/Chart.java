@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -138,9 +139,6 @@ public abstract class Chart extends View {
     /** paint used for the legend forms */
     protected Paint mLegendFormPaint;
 
-    /** the colortemplate the chart uses */
-    protected ColorTemplate mCt;
-
     /** description text that appears in the bottom right corner of the chart */
     protected String mDescription = "Description.";
 
@@ -244,9 +242,6 @@ public abstract class Chart extends View {
 
         mLegendLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mLegendLabelPaint.setTextSize(Utils.convertDpToPixel(9f));
-
-        mCt = new ColorTemplate();
-        mCt.addDataSetColors(ColorTemplate.VORDIPLOM_COLORS, getContext());
     }
 
 //    public void initWithDummyData() {
@@ -440,23 +435,47 @@ public abstract class Chart extends View {
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
         for (int i = 0; i < mOriginalData.getDataSetCount(); i++) {
+            
+            DataSet dataSet = mOriginalData.getDataSetByIndex(i);
 
-            ArrayList<Integer> clrs = mCt.getDataSetColors(i % mCt.getColors().size());
-            int dataSetCount = mOriginalData.getDataSetByIndex(i).getEntryCount();
+            ArrayList<Integer> clrs = dataSet.getColors();
+            int dataSetCount = dataSet.getEntryCount();
+            
+            if(dataSet instanceof BarDataSet && ((BarDataSet) dataSet).getStackSize() > 1) {
+                
+                BarDataSet bds = (BarDataSet) dataSet;
+                
+                for (int j = 0; j < clrs.size() && j < dataSetCount && j < bds.getStackSize(); j++) {
 
-            for (int j = 0; j < clrs.size() && j < dataSetCount; j++) {
+                    // if multiple colors are set for a DataSet, group them
+                    if (j < clrs.size() - 1 && j < dataSetCount - 1 && j < bds.getStackSize() - 1) {
 
-                // if multiple colors are set for a DataSet, group them
-                if (j < clrs.size() - 1 && j < dataSetCount - 1) {
+                        labels.add(null);
+                    } else { // add label to the last entry
 
-                    labels.add(null);
-                } else { // add label to the last entry
+                        String label = mOriginalData.getDataSetByIndex(i).getLabel();
+                        labels.add(label);
+                    }
 
-                    String label = mOriginalData.getDataSetByIndex(i).getLabel();
-                    labels.add(label);
+                    colors.add(clrs.get(j));
                 }
+                
+            } else {
+                
+                for (int j = 0; j < clrs.size() && j < dataSetCount; j++) {
 
-                colors.add(clrs.get(j));
+                    // if multiple colors are set for a DataSet, group them
+                    if (j < clrs.size() - 1 && j < dataSetCount - 1) {
+
+                        labels.add(null);
+                    } else { // add label to the last entry
+
+                        String label = mOriginalData.getDataSetByIndex(i).getLabel();
+                        labels.add(label);
+                    }
+
+                    colors.add(clrs.get(j));
+                }
             }
         }
 
@@ -1150,28 +1169,6 @@ public abstract class Chart extends View {
      */
     public void setDrawYValues(boolean enabled) {
         this.mDrawYValues = enabled;
-    }
-
-    /**
-     * Sets a colortemplate for the chart that defindes the colors used for
-     * drawing. If more values need to be drawn than provided colors available
-     * in the colortemplate, colors are repeated.
-     * 
-     * @param ct
-     */
-    public void setColorTemplate(ColorTemplate ct) {
-        this.mCt = ct;
-
-        Log.i(LOG_TAG, "ColorTemplate set.");
-    }
-
-    /**
-     * returns the colortemplate used by the chart
-     * 
-     * @return
-     */
-    public ColorTemplate getColorTemplate() {
-        return mCt;
     }
 
     /**

@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.ScatterChart;
-import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.MyMarkerView;
@@ -31,12 +29,6 @@ public class ScatterChartFrag extends SimpleFragment {
         mChart.setDrawYValues(false);
         mChart.setDescription("");
         mChart.setYLabelCount(6);
-        
-        ColorTemplate ct = new ColorTemplate();
-        ct.addDataSetColors(ColorTemplate.VORDIPLOM_COLORS, getActivity());
-        ct.addDataSetColors(new int[] { R.color.colorful_1, R.color.colorful_2, R.color.colorful_3, R.color.colorful_4 } , getActivity());
-        
-        mChart.setColorTemplate(ct);
         
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"OpenSans-Light.ttf");
         

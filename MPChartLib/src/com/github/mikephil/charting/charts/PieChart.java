@@ -329,7 +329,7 @@ public class PieChart extends Chart {
         mDrawAngles = new float[mCurrentData.getYValCount()];
         mAbsoluteAngles = new float[mCurrentData.getYValCount()];
 
-        ArrayList<PieDataSet> dataSets = (ArrayList<PieDataSet>) mCurrentData.getDataSets();
+        ArrayList<? extends DataSet> dataSets = mCurrentData.getDataSets();
 
         int cnt = 0;
 
@@ -515,7 +515,7 @@ public class PieChart extends Chart {
 
         r -= off; // offset to keep things inside the chart
 
-        ArrayList<PieDataSet> dataSets = (ArrayList<PieDataSet>) mCurrentData.getDataSets();
+        ArrayList<? extends DataSet> dataSets = mCurrentData.getDataSets();
 
         int cnt = 0;
 

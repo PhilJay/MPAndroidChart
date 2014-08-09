@@ -11,8 +11,6 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -52,12 +50,6 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         
         mChart.setValueTypeface(tf);
         mChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
-		
-		ColorTemplate ct = new ColorTemplate();
-	    
-		ct.addDataSetColors(ColorTemplate.VORDIPLOM_COLORS, this);
-		
-		mChart.setColorTemplate(ct);
 		
 		mChart.setHoleRadius(60f);
 

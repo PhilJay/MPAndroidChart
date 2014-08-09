@@ -45,22 +45,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
 
         mChart = (BarChart) findViewById(R.id.chart1);
         mChart.setDescription("");
-
-        ColorTemplate ct = new ColorTemplate();
-
-        // add colors for the first dataset
-        ct.addDataSetColors(ColorTemplate.FRESH_COLORS, this);
-
-        // the second dataset only has one color
-        ct.addDataSetColors(new int[] {
-            R.color.liberty_2
-        }, this);
-
-        // add colors for the third dataset
-        ct.addDataSetColors(ColorTemplate.COLORFUL_COLORS, this);
-
-        mChart.setColorTemplate(ct);
-
+        
         // disable the drawing of values
         mChart.setDrawYValues(false);
 
@@ -198,8 +183,11 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
 
         // create 3 datasets with different types
         BarDataSet set1 = new BarDataSet(yVals1, "Company A");
+        set1.setColors(ColorTemplate.createColors(getApplicationContext(), ColorTemplate.FRESH_COLORS));
         BarDataSet set2 = new BarDataSet(yVals2, "Company B");
+        set2.setColor(getResources().getColor(R.color.liberty_2));
         BarDataSet set3 = new BarDataSet(yVals3, "Company C");
+        set3.setColors(ColorTemplate.createColors(getApplicationContext(), ColorTemplate.COLORFUL_COLORS));
         
         ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
         dataSets.add(set1);

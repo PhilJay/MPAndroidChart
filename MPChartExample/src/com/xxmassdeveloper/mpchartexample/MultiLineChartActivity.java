@@ -17,7 +17,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.XLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -47,13 +46,8 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
         mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
         mSeekBarY.setOnSeekBarChangeListener(this);
 
-        // create a color template for one dataset with only one color
-        ColorTemplate ct = new ColorTemplate();
-        ct.addColorsForDataSets(ColorTemplate.VORDIPLOM_COLORS, this);
-
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
-        mChart.setColorTemplate(ct);
 
         // mChart.setStartAtZero(true);
 

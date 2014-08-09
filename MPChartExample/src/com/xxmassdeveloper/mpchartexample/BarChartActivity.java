@@ -12,13 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.BarLineChartBase.BorderPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.github.mikephil.charting.utils.XLabels;
@@ -52,13 +50,6 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         mSeekBarY.setOnSeekBarChangeListener(this);
 
         mChart = (BarChart) findViewById(R.id.chart1);
-
-        ColorTemplate ct = new ColorTemplate();
-
-        // add colors for one dataset
-        ct.addDataSetColors(ColorTemplate.FRESH_COLORS, this);
-
-        mChart.setColorTemplate(ct);
 
         // enable the drawing of values
         mChart.setDrawYValues(true);

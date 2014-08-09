@@ -20,7 +20,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendForm;
@@ -55,18 +54,8 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         mSeekBarY.setOnSeekBarChangeListener(this);
         mSeekBarX.setOnSeekBarChangeListener(this);
 
-        // create a color template for one dataset with only one color
-        ColorTemplate ct = new ColorTemplate();
-        // ct.addColorsForDataSets(new int[] {
-        // R.color.colorful_1
-        // }, this);
-        ct.addDataSetColors(new int[] {
-            R.color.colorful_1
-        }, this);
-
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
-        mChart.setColorTemplate(ct);
 
         // if enabled, the chart will always start at zero on the y-axis
         mChart.setStartAtZero(false);
