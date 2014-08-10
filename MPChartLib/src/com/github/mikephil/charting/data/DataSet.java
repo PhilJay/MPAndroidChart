@@ -131,10 +131,10 @@ public abstract class DataSet {
      */
     public float getYValForXIndex(int xIndex) {
 
-        Entry s = getEntryForXIndex(xIndex);
+        Entry e = getEntryForXIndex(xIndex);
 
-        if (s != null)
-            return s.getVal();
+        if (e != null)
+            return e.getSum();
         else
             return Float.NaN;
     }

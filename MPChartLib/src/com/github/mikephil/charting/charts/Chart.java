@@ -29,7 +29,6 @@ import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.MarkerView;
@@ -439,33 +438,29 @@ public abstract class Chart extends View {
             DataSet dataSet = mOriginalData.getDataSetByIndex(i);
 
             ArrayList<Integer> clrs = dataSet.getColors();
-            int dataSetCount = dataSet.getEntryCount();
+            int entryCount = dataSet.getEntryCount();
             
+            // if we have a barchart with stacked bars
             if(dataSet instanceof BarDataSet && ((BarDataSet) dataSet).getStackSize() > 1) {
                 
                 BarDataSet bds = (BarDataSet) dataSet;
+                String[] sLabels = bds.getStackLabels();
                 
-                for (int j = 0; j < clrs.size() && j < dataSetCount && j < bds.getStackSize(); j++) {
-
-                    // if multiple colors are set for a DataSet, group them
-                    if (j < clrs.size() - 1 && j < dataSetCount - 1 && j < bds.getStackSize() - 1) {
-
-                        labels.add(null);
-                    } else { // add label to the last entry
-
-                        String label = mOriginalData.getDataSetByIndex(i).getLabel();
-                        labels.add(label);
-                    }
-
+                for (int j = 0; j < clrs.size() && j < entryCount && j < bds.getStackSize(); j++) {
+                    
+                    labels.add(sLabels[j % sLabels.length]);
                     colors.add(clrs.get(j));
                 }
                 
-            } else {
+                colors.add(-1);
+                labels.add(bds.getLabel());
                 
-                for (int j = 0; j < clrs.size() && j < dataSetCount; j++) {
+            } else { // all others
+                
+                for (int j = 0; j < clrs.size() && j < entryCount; j++) {
 
                     // if multiple colors are set for a DataSet, group them
-                    if (j < clrs.size() - 1 && j < dataSetCount - 1) {
+                    if (j < clrs.size() - 1 && j < entryCount - 1) {
 
                         labels.add(null);
                     } else { // add label to the last entry
@@ -683,7 +678,7 @@ public abstract class Chart extends View {
                     if (labels[i] != null) {
 
                         // make a step to the left
-                        posX += formToTextSpace;
+                        if(mLegend.getColors()[i] != -1) posX += formToTextSpace;
 
                         mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
                         posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i]) + entrySpace;
@@ -704,7 +699,7 @@ public abstract class Chart extends View {
 
                         posX -= Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
                         mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
-                        posX -= formToTextSpace;
+                        if(mLegend.getColors()[i] != -1) posX -= formToTextSpace;
                     }
 
                     mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
@@ -734,7 +729,13 @@ public abstract class Chart extends View {
                     if (labels[i] != null) {
 
                         if (!wasStacked) {
-                            mLegend.drawLabel(mDrawCanvas, posX + formToTextSpace, posY + textDrop,
+                            
+                            float x = posX;
+                            
+                            if(mLegend.getColors()[i] != -1)  x+= formToTextSpace;
+
+                            
+                            mLegend.drawLabel(mDrawCanvas, x, posY + textDrop,
                                     mLegendLabelPaint, i);
                         } else {
 

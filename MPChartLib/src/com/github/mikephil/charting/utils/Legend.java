@@ -289,6 +289,8 @@ public class Legend {
      */
     public void drawForm(Canvas c, float x, float y, Paint p, int index) {
 
+        if(mColors[index] == -1) return;
+        
         p.setColor(mColors[index]);
 
         float half = mFormSize / 2f;

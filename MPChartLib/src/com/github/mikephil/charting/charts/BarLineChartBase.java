@@ -1544,7 +1544,7 @@ public abstract class BarLineChartBase extends Chart {
         if (dataSetIndex == -1)
             return null;
 
-        return new Highlight(xIndex, dataSetIndex);
+        return new Highlight(xIndex, (float) yTouchVal, dataSetIndex);
     }
 
     /**

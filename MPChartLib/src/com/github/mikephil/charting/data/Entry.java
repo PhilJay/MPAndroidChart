@@ -138,4 +138,33 @@ public class Entry {
     public String toString() {
         return "Entry, xIndex: " + mXIndex + " val (sum): " + getSum();
     }
+
+    /**
+     * Returns the closest value inside the values array (for stacked barchart)
+     * to the value given as a parameter. The closest value must be higher
+     * (above) the provided value.
+     * 
+     * @param val
+     * @return
+     */
+    public int getClosestIndexAbove(float val) {
+
+        if (mVals == null)
+            return 0;
+
+        float dist = 0f;
+        int closestIndex = 0;
+
+        for (int i = 0; i < mVals.length; i++) {
+
+            float newDist = Math.abs((getSum() - mVals[i]) - val);
+
+            if (newDist < dist && mVals[i] > val) {
+                dist = newDist;
+                closestIndex = i;
+            }
+        }
+
+        return closestIndex;
+    }
 }

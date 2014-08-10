@@ -11,8 +11,8 @@ public class BarDataSet extends DataSet {
     private float mBarSpace = 0.15f;
 
     /**
-     * the number of bars that are stacked upon each other, this value is
-     * calculated from the Entries that are added to the DataSet
+     * the maximum number of bars that are stacked upon each other, this value
+     * is calculated from the Entries that are added to the DataSet
      */
     private int mStackSize = 1;
 
@@ -23,6 +23,12 @@ public class BarDataSet extends DataSet {
      * the overall entry count, including counting each stack-value individually
      */
     private int mEntryCountStacks = 0;
+
+    /**
+     * array of labels used to describe the different values of the stacked bars
+     */
+    private String[] mStackLabels = new String[] { "Stack" };
+    
 
     public BarDataSet(ArrayList<Entry> yVals, String label) {
         super(yVals, label);
@@ -148,5 +154,23 @@ public class BarDataSet extends DataSet {
      */
     public int getBarShadowColor() {
         return mBarShadowColor;
+    }
+
+    /**
+     * Sets labels for different values of bar-stacks, in case there are one.
+     * 
+     * @param labels
+     */
+    public void setStackLabels(String[] labels) {
+        mStackLabels = labels;
+    }
+
+    /**
+     * returns the labels used for the different value-stacks
+     * 
+     * @return
+     */
+    public String[] getStackLabels() {
+        return mStackLabels;
     }
 }

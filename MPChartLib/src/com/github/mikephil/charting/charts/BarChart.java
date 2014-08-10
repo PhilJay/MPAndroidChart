@@ -12,6 +12,7 @@ import android.util.Log;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
@@ -186,21 +187,25 @@ public class BarChart extends BarLineChartBase {
 
             for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
-                int index = mIndicesToHightlight[i].getXIndex();
+                Highlight h = mIndicesToHightlight[i];
+                int index = h.getXIndex();
 
-                int dataSetIndex = mIndicesToHightlight[i].getDataSetIndex();
+                int dataSetIndex = h.getDataSetIndex();
                 BarDataSet ds = (BarDataSet) mCurrentData.getDataSetByIndex(dataSetIndex);
 
                 // check outofbounds
                 if (index < mCurrentData.getYValCount() && index >= 0) {
 
                     mHighlightPaint.setAlpha(120);
+                    
+                    Entry e = getEntryByDataSetIndex(index, dataSetIndex);             
 
-                    float y = getYValueByDataSetIndex(index, dataSetIndex);
-                    float left = index + ds.getBarSpace() / 2f;
-                    float right = index + 1f - ds.getBarSpace() / 2f;
+                    float y = e.getSum();
                     float top = y >= 0 ? y : 0;
                     float bottom = y <= 0 ? y : 0;
+                    
+                    float left = index + ds.getBarSpace() / 2f;
+                    float right = index + 1f - ds.getBarSpace() / 2f;
 
                     RectF highlight = new RectF(left, top, right, bottom);
                     transformRect(highlight);
