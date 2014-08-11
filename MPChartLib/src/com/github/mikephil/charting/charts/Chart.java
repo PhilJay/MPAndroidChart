@@ -244,37 +244,39 @@ public abstract class Chart extends View {
         mLegendLabelPaint.setTextSize(Utils.convertDpToPixel(9f));
     }
 
-//    public void initWithDummyData() {
-//        ColorTemplate template = new ColorTemplate();
-//        template.addColorsForDataSets(ColorTemplate.COLORFUL_COLORS, getContext());
-//
-//        setColorTemplate(template);
-//        setDrawYValues(false);
-//
-//        ArrayList<String> xVals = new ArrayList<String>();
-//        Calendar calendar = Calendar.getInstance();
-//        for (int i = 0; i < 12; i++) {
-//            xVals.add(calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()));
-//        }
-//
-//        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
-//        for (int i = 0; i < 3; i++) {
-//
-//            ArrayList<Entry> yVals = new ArrayList<Entry>();
-//
-//            for (int j = 0; j < 12; j++) {
-//                float val = (float) (Math.random() * 100);
-//                yVals.add(new Entry(val, j));
-//            }
-//
-//            DataSet set = new DataSet(yVals, "DataSet " + i);
-//            dataSets.add(set); // add the datasets
-//        }
-//        // create a data object with the datasets
-//        ChartData data = new ChartData(xVals, dataSets);
-//        setData(data);
-//        invalidate();
-//    }
+    // public void initWithDummyData() {
+    // ColorTemplate template = new ColorTemplate();
+    // template.addColorsForDataSets(ColorTemplate.COLORFUL_COLORS,
+    // getContext());
+    //
+    // setColorTemplate(template);
+    // setDrawYValues(false);
+    //
+    // ArrayList<String> xVals = new ArrayList<String>();
+    // Calendar calendar = Calendar.getInstance();
+    // for (int i = 0; i < 12; i++) {
+    // xVals.add(calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT,
+    // Locale.getDefault()));
+    // }
+    //
+    // ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+    // for (int i = 0; i < 3; i++) {
+    //
+    // ArrayList<Entry> yVals = new ArrayList<Entry>();
+    //
+    // for (int j = 0; j < 12; j++) {
+    // float val = (float) (Math.random() * 100);
+    // yVals.add(new Entry(val, j));
+    // }
+    //
+    // DataSet set = new DataSet(yVals, "DataSet " + i);
+    // dataSets.add(set); // add the datasets
+    // }
+    // // create a data object with the datasets
+    // ChartData data = new ChartData(xVals, dataSets);
+    // setData(data);
+    // invalidate();
+    // }
 
     protected boolean mOffsetsCalculated = false;
 
@@ -303,31 +305,31 @@ public abstract class Chart extends View {
         Log.i(LOG_TAG, "Data is set.");
     }
 
-//    /**
-//     * Sets primitive data for the chart. Internally, this is converted into a
-//     * ChartData object with one DataSet (type 0). If you have more specific
-//     * requirements for your data, use the setData(ChartData data) method and
-//     * create your own ChartData object with as many DataSets as you like.
-//     * 
-//     * @param xVals
-//     * @param yVals
-//     */
-//    public void setData(ArrayList<String> xVals, ArrayList<Float> yVals) {
-//
-//        ArrayList<Entry> series = new ArrayList<Entry>();
-//
-//        for (int i = 0; i < yVals.size(); i++) {
-//            series.add(new Entry(yVals.get(i), i));
-//        }
-//
-//        DataSet set = new DataSet(series, "DataSet");
-//        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
-//        dataSets.add(set);
-//
-//        ChartData data = new ChartData(xVals, dataSets);
-//
-//        setData(data);
-//    }
+    // /**
+    // * Sets primitive data for the chart. Internally, this is converted into a
+    // * ChartData object with one DataSet (type 0). If you have more specific
+    // * requirements for your data, use the setData(ChartData data) method and
+    // * create your own ChartData object with as many DataSets as you like.
+    // *
+    // * @param xVals
+    // * @param yVals
+    // */
+    // public void setData(ArrayList<String> xVals, ArrayList<Float> yVals) {
+    //
+    // ArrayList<Entry> series = new ArrayList<Entry>();
+    //
+    // for (int i = 0; i < yVals.size(); i++) {
+    // series.add(new Entry(yVals.get(i), i));
+    // }
+    //
+    // DataSet set = new DataSet(series, "DataSet");
+    // ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+    // dataSets.add(set);
+    //
+    // ChartData data = new ChartData(xVals, dataSets);
+    //
+    // setData(data);
+    // }
 
     /**
      * does needed preparations for drawing
@@ -403,9 +405,9 @@ public abstract class Chart extends View {
 
         mMatrixOffset.reset();
         mMatrixOffset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
-        
-//        mMatrixOffset.setTranslate(mOffsetLeft, 0);       
-//        mMatrixOffset.postScale(1.0f, -1.0f);
+
+        // mMatrixOffset.setTranslate(mOffsetLeft, 0);
+        // mMatrixOffset.postScale(1.0f, -1.0f);
 
         Log.i(LOG_TAG, "Matrices prepared.");
     }
@@ -436,45 +438,45 @@ public abstract class Chart extends View {
 
         // loop for building up the colors and labels used in the legend
         for (int i = 0; i < mOriginalData.getDataSetCount(); i++) {
-            
+
             DataSet dataSet = mOriginalData.getDataSetByIndex(i);
 
             ArrayList<Integer> clrs = dataSet.getColors();
             int entryCount = dataSet.getEntryCount();
-            
+
             // if we have a barchart with stacked bars
-            if(dataSet instanceof BarDataSet && ((BarDataSet) dataSet).getStackSize() > 1) {
-                
+            if (dataSet instanceof BarDataSet && ((BarDataSet) dataSet).getStackSize() > 1) {
+
                 BarDataSet bds = (BarDataSet) dataSet;
                 String[] sLabels = bds.getStackLabels();
-                
+
                 for (int j = 0; j < clrs.size() && j < entryCount && j < bds.getStackSize(); j++) {
-                    
+
                     labels.add(sLabels[j % sLabels.length]);
                     colors.add(clrs.get(j));
                 }
-                
+
                 // add the legend description label
                 colors.add(-1);
                 labels.add(bds.getLabel());
-                
-            } else if(dataSet instanceof PieDataSet) {
-                
+
+            } else if (dataSet instanceof PieDataSet) {
+
                 ArrayList<String> xVals = mOriginalData.getXVals();
                 PieDataSet pds = (PieDataSet) dataSet;
-               
-                for (int j = 0; j < clrs.size() && j < entryCount && j < xVals.size() ; j++) {
-                    
+
+                for (int j = 0; j < clrs.size() && j < entryCount && j < xVals.size(); j++) {
+
                     labels.add(xVals.get(j));
                     colors.add(clrs.get(j));
                 }
-                
+
                 // add the legend description label
                 colors.add(-1);
                 labels.add(pds.getLabel());
-                
+
             } else { // all others
-                
+
                 for (int j = 0; j < clrs.size() && j < entryCount; j++) {
 
                     // if multiple colors are set for a DataSet, group them
@@ -524,37 +526,38 @@ public abstract class Chart extends View {
 
         return valuePoints;
     }
-    
-    protected float[] generateTransformedValuesForStacks(ArrayList<Entry> entries, int entryCount, float xOffset) {
+
+    protected float[] generateTransformedValuesForStacks(ArrayList<Entry> entries, int entryCount,
+            float xOffset) {
 
         float[] valuePoints = new float[entryCount * 2];
         int cnt = 0;
 
         for (int i = 0; i < entries.size(); i++) {
-            
+
             Entry e = entries.get(i);
-            
+
             float[] vals = e.getVals();
-            
+
             // if the current entry has no stack
-            if(vals == null) {
-                
+            if (vals == null) {
+
                 valuePoints[cnt] = e.getXIndex() + xOffset;
                 valuePoints[cnt + 1] = e.getVal();
-                cnt+=2;
+                cnt += 2;
             } else {
-                
+
                 float all = e.getSum();
-                
-                for(int j = 0; j < vals.length; j++) {
-                    
+
+                for (int j = 0; j < vals.length; j++) {
+
                     all -= vals[j];
-                    
+
                     valuePoints[cnt] = e.getXIndex() + xOffset;
                     valuePoints[cnt + 1] = vals[j] + all;
-                    cnt+=2;
+                    cnt += 2;
                 }
-            }          
+            }
         }
 
         transformPointArray(valuePoints);
@@ -694,7 +697,8 @@ public abstract class Chart extends View {
                     if (labels[i] != null) {
 
                         // make a step to the left
-                        if(mLegend.getColors()[i] != -1) posX += formToTextSpace;
+                        if (mLegend.getColors()[i] != -1)
+                            posX += formToTextSpace;
 
                         mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
                         posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i]) + xEntrySpace;
@@ -715,7 +719,8 @@ public abstract class Chart extends View {
 
                         posX -= Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
                         mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
-                        if(mLegend.getColors()[i] != -1) posX -= formToTextSpace;
+                        if (mLegend.getColors()[i] != -1)
+                            posX -= formToTextSpace;
                     }
 
                     mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
@@ -745,21 +750,22 @@ public abstract class Chart extends View {
                     if (labels[i] != null) {
 
                         if (!wasStacked) {
-                            
+
                             float x = posX;
-                            
-                            if(mLegend.getColors()[i] != -1)  x+= formToTextSpace;
-                            
+
+                            if (mLegend.getColors()[i] != -1)
+                                x += formToTextSpace;
+
                             mLegend.drawLabel(mDrawCanvas, x, posY + textDrop,
                                     mLegendLabelPaint, i);
                         } else {
 
                             mLegend.drawLabel(mDrawCanvas, posX, posY + textSize + formSize
                                     + mLegend.getYEntrySpace(),
-                                    mLegendLabelPaint, i);   
-                            
+                                    mLegendLabelPaint, i);
+
                             posY += yEntrySpace;
-                        }                      
+                        }
 
                         // make a step down
                         posY += mLegend.getYEntrySpace() + textSize;
@@ -1366,6 +1372,15 @@ public abstract class Chart extends View {
     }
 
     /**
+     * Sets the font size of the values that are drawn inside the chart.
+     * 
+     * @param size
+     */
+    public void setValueTextSize(float size) {
+        mValuePaint.setTextSize(Utils.convertDpToPixel(size));
+    }
+
+    /**
      * set this to true to separate thousands values by a dot. Default: true
      * 
      * @param enabled
@@ -1754,11 +1769,11 @@ public abstract class Chart extends View {
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
-//    @Override
-//    protected void onAttachedToWindow() {
-//        super.onAttachedToWindow();
-//        if (isInEditMode()) {
-//            initWithDummyData();
-//        }
-//    }
+    // @Override
+    // protected void onAttachedToWindow() {
+    // super.onAttachedToWindow();
+    // if (isInEditMode()) {
+    // initWithDummyData();
+    // }
+    // }
 }

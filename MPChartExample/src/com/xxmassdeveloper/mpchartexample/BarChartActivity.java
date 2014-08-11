@@ -1,6 +1,7 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -81,13 +83,15 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         XLabels xLabels = mChart.getXLabels();
         xLabels.setPosition(XLabelPosition.TOP);
-
         // mChart.setDrawXLabels(false);
 
         mChart.setDrawGridBackground(false);
         mChart.setDrawHorizontalGrid(true);
         mChart.setDrawVerticalGrid(false);
         // mChart.setDrawYLabels(false);
+        
+        // sets the text size of the values inside the chart
+        mChart.setValueTextSize(10f);
 
         mChart.setDrawBorder(false);
         // mChart.setBorderPositions(new BorderPosition[] {BorderPosition.LEFT,

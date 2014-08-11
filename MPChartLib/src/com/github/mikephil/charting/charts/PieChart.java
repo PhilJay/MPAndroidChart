@@ -933,7 +933,8 @@ public class PieChart extends Chart {
 
     @Override
     public Paint getPaint(int which) {
-        super.getPaint(which);
+        Paint p = super.getPaint(which);
+        if(p != null) return p;
 
         switch (which) {
             case PAINT_HOLE:

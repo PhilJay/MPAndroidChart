@@ -614,6 +614,7 @@ public abstract class BarLineChartBase extends Chart {
         float yoffset = Utils.convertDpToPixel(3.5f);
         
         mXLabelPaint.setTypeface(mXLabels.getTypeface());
+        mXLabelPaint.setTextSize(mXLabels.getTextSize());
 
         if (mXLabels.getPosition() == XLabelPosition.TOP) {
 
@@ -686,6 +687,7 @@ public abstract class BarLineChartBase extends Chart {
         float xoffset = Utils.convertDpToPixel(5f);
         
         mYLabelPaint.setTypeface(mYLabels.getTypeface());
+        mYLabelPaint.setTextSize(mYLabels.getTextSize());
 
         // determine position and draw adequately
         if (mYLabels.getPosition() == YLabelPosition.LEFT) {
@@ -1282,35 +1284,6 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * sets the size of the y-label text in pixels min = 7f, max = 14f
-     * 
-     * @param size
-     */
-    public void setYLabelTextSize(float size) {
-
-        if (size > 14f)
-            size = 14f;
-        if (size < 7f)
-            size = 7f;
-        mYLabelPaint.setTextSize(Utils.convertDpToPixel(size));
-    }
-
-    /**
-     * sets the size of the x-label text in pixels min = 7f, max = 14f
-     * 
-     * @param size
-     */
-    public void setXLabelTextSize(float size) {
-
-        if (size > 14f)
-            size = 14f;
-        if (size < 7f)
-            size = 7f;
-
-        mXLabelPaint.setTextSize(Utils.convertDpToPixel(size));
-    }
-
-    /**
      * If set to true, the highlight indicators (cross of two lines for
      * LineChart and ScatterChart, dark bar overlay for BarChart) that give
      * visual indication that an Entry has been selected will be drawn upon
@@ -1846,7 +1819,8 @@ public abstract class BarLineChartBase extends Chart {
 
     @Override
     public Paint getPaint(int which) {
-        super.getPaint(which);
+        Paint p = super.getPaint(which);
+        if(p != null) return p;
 
         switch (which) {
             case PAINT_GRID:

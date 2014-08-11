@@ -396,7 +396,8 @@ public class LineChart extends BarLineChartBase {
 
     @Override
     public Paint getPaint(int which) {
-        super.getPaint(which);
+        Paint p = super.getPaint(which);
+        if(p != null) return p;
 
         switch (which) {
             case PAINT_CIRCLES_INNER:

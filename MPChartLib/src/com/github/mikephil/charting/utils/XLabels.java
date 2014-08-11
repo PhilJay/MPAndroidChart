@@ -1,6 +1,5 @@
 package com.github.mikephil.charting.utils;
 
-import android.graphics.Typeface;
 
 /**
  * Class representing the x-axis labels settings. Only use the setter methods
@@ -8,7 +7,7 @@ import android.graphics.Typeface;
  * 
  * @author Philipp Jahoda
  */
-public class XLabels {
+public class XLabels extends LabelBase {
     
     /**
      * width of the x-axis labels in pixels - this is calculated by the
@@ -21,6 +20,7 @@ public class XLabels {
      * calcTextHeight() method of the utils
      */
     public int mXLabelHeight= 1;
+
     
     /**
      * the modulus that indicates if a value at a specified index in an
@@ -28,9 +28,6 @@ public class XLabels {
      * 0 DRAW, else dont draw.
      */
     public int mXAxisLabelModulus = 1;
-    
-    /** the typeface to use for the labels */
-    private Typeface mTypeface;
     
     /** if true, x-axis label text is centered when using barcharts */
     private boolean mCenterXAxisLabels = false;
@@ -100,22 +97,5 @@ public class XLabels {
      */
     public void setPosition(XLabelPosition pos) {
         mPosition = pos;
-    }
-    
-    /**
-     * sets the typeface that should be used for the x-labels
-     * 
-     * @param t
-     */
-    public void setTypeface(Typeface t) {
-        mTypeface = t;
-    }
-    
-    /**
-     * returns the typeface that is used for the x-labels
-     * @return
-     */
-    public Typeface getTypeface() {
-        return mTypeface;
     }
 }
