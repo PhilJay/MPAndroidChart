@@ -28,6 +28,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend;
@@ -433,6 +434,7 @@ public abstract class Chart extends View {
         ArrayList<String> labels = new ArrayList<String>();
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
+        // loop for building up the colors and labels used in the legend
         for (int i = 0; i < mOriginalData.getDataSetCount(); i++) {
             
             DataSet dataSet = mOriginalData.getDataSetByIndex(i);
@@ -452,8 +454,24 @@ public abstract class Chart extends View {
                     colors.add(clrs.get(j));
                 }
                 
+                // add the legend description label
                 colors.add(-1);
                 labels.add(bds.getLabel());
+                
+            } else if(dataSet instanceof PieDataSet) {
+                
+                ArrayList<String> xVals = mOriginalData.getXVals();
+                PieDataSet pds = (PieDataSet) dataSet;
+               
+                for (int j = 0; j < clrs.size() && j < entryCount && j < xVals.size() ; j++) {
+                    
+                    labels.add(xVals.get(j));
+                    colors.add(clrs.get(j));
+                }
+                
+                // add the legend description label
+                colors.add(-1);
+                labels.add(pds.getLabel());
                 
             } else { // all others
                 
@@ -473,9 +491,6 @@ public abstract class Chart extends View {
                 }
             }
         }
-
-        // Log.i(LOG_TAG, "Preparing legend, colors size: " + colors.size() +
-        // ", labels size: " + labels.size());
 
         Legend l = new Legend(colors, labels);
 
@@ -650,7 +665,8 @@ public abstract class Chart extends View {
         float formToTextSpace = mLegend.getFormToTextSpace() + formSize;
 
         // space between the entries
-        float entrySpace = mLegend.getEntrySpace() + formSize;
+        float xEntrySpace = mLegend.getXEntrySpace() + formSize;
+        float yEntrySpace = mLegend.getYEntrySpace() + formSize;
 
         float textSize = mLegendLabelPaint.getTextSize();
 
@@ -681,9 +697,9 @@ public abstract class Chart extends View {
                         if(mLegend.getColors()[i] != -1) posX += formToTextSpace;
 
                         mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
-                        posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i]) + entrySpace;
+                        posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i]) + xEntrySpace;
                     } else {
-                        posX += entrySpace;
+                        posX += xEntrySpace;
                     }
                 }
 
@@ -705,14 +721,14 @@ public abstract class Chart extends View {
                     mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
 
                     // make a step to the left
-                    posX -= entrySpace;
+                    posX -= xEntrySpace;
                 }
 
                 break;
             case RIGHT_OF_CHART:
 
                 if (this instanceof BarLineChartBase) {
-                    posX = getWidth() - mLegend.getOffsetRight() + Utils.convertDpToPixel(10f);
+                    posX = getWidth() - mLegend.getOffsetRight() + Utils.convertDpToPixel(9f);
                     posY = mLegend.getOffsetTop();
                 } else {
                     posX = getWidth() - mLegend.getMaximumEntryLength(mLegendLabelPaint);
@@ -733,20 +749,20 @@ public abstract class Chart extends View {
                             float x = posX;
                             
                             if(mLegend.getColors()[i] != -1)  x+= formToTextSpace;
-
                             
                             mLegend.drawLabel(mDrawCanvas, x, posY + textDrop,
                                     mLegendLabelPaint, i);
                         } else {
 
                             mLegend.drawLabel(mDrawCanvas, posX, posY + textSize + formSize
-                                    + mLegend.getEntrySpace(),
-                                    mLegendLabelPaint, i);
-                            posY += entrySpace;
-                        }
+                                    + mLegend.getYEntrySpace(),
+                                    mLegendLabelPaint, i);   
+                            
+                            posY += yEntrySpace;
+                        }                      
 
                         // make a step down
-                        posY += entrySpace + textSize;
+                        posY += mLegend.getYEntrySpace() + textSize;
                         stack = 0f;
                     } else {
                         stack += formSize + 4f;

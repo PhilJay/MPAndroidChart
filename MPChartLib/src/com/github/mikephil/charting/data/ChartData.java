@@ -28,7 +28,8 @@ public abstract class ChartData {
     /** holds all x-values the chart represents */
     protected ArrayList<String> mXVals;
     
-    private ArrayList<? extends DataSet> mDataSets;
+    /** array that holds all DataSets the ChartData object represents */
+    protected ArrayList<? extends DataSet> mDataSets;
 
     /**
      * constructor for chart data

@@ -185,7 +185,9 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         BarDataSet set1 = new BarDataSet(yVals1, "Company A");
         set1.setColors(ColorTemplate.createColors(getApplicationContext(), ColorTemplate.FRESH_COLORS));
         BarDataSet set2 = new BarDataSet(yVals2, "Company B");
-        set2.setColor(getResources().getColor(R.color.liberty_2));
+        set2.resetColors();
+        set2.addColor(getResources().getColor(R.color.liberty_2));
+        set2.addColor(getResources().getColor(R.color.liberty_3));
         BarDataSet set3 = new BarDataSet(yVals3, "Company C");
         set3.setColors(ColorTemplate.createColors(getApplicationContext(), ColorTemplate.COLORFUL_COLORS));
         

@@ -47,19 +47,28 @@ public class Legend {
     private float mFormSize = 8f;
 
     /**
-     * the space between the legend entries on a vertical or horizontal axis,
-     * default 5f
+     * the space between the legend entries on a horizontal axis, default 5f
      */
-    private float mEntrySpace = 5f;
+    private float mXEntrySpace = 5f;
 
-    /** the space between the form and the actual label/text */
+    /**
+     * the space between the legend entries on a vertical axis, default 3f
+     */
+    private float mYEntrySpace = 3f;
+
+    /**
+     * the space between the legend entries on a vertical axis, default 2f
+     * private float mYEntrySpace = 2f; /** the space between the form and the
+     * actual label/text
+     */
     private float mFormToTextSpace = 5f;
 
     /** default constructor */
     public Legend() {
 
         mFormSize = Utils.convertDpToPixel(mFormSize);
-        mEntrySpace = Utils.convertDpToPixel(mEntrySpace);
+        mXEntrySpace = Utils.convertDpToPixel(5f);
+        mYEntrySpace = Utils.convertDpToPixel(3f);
         mFormToTextSpace = Utils.convertDpToPixel(mFormToTextSpace);
     }
 
@@ -240,23 +249,42 @@ public class Legend {
     }
 
     /**
-     * returns the space between the legend entries on a vertical or horizontal
-     * axis in pixels
+     * returns the space between the legend entries on a horizontal axis in
+     * pixels
      * 
      * @return
      */
-    public float getEntrySpace() {
-        return mEntrySpace;
+    public float getXEntrySpace() {
+        return mXEntrySpace;
     }
 
     /**
-     * sets the space between the legend entries on a vertical or horizontal
-     * axis in pixels, converts to dp internally
+     * sets the space between the legend entries on a horizontal axis in pixels,
+     * converts to dp internally
      * 
      * @param space
      */
-    public void setEntrySpace(float space) {
-        mEntrySpace = Utils.convertDpToPixel(space);
+    public void setXEntrySpace(float space) {
+        mXEntrySpace = Utils.convertDpToPixel(space);
+    }
+
+    /**
+     * returns the space between the legend entries on a vertical axis in pixels
+     * 
+     * @return
+     */
+    public float getYEntrySpace() {
+        return mYEntrySpace;
+    }
+
+    /**
+     * sets the space between the legend entries on a vertical axis in pixels,
+     * converts to dp internally
+     * 
+     * @param space
+     */
+    public void setYEntrySpace(float space) {
+        mYEntrySpace = Utils.convertDpToPixel(space);
     }
 
     /**
@@ -289,8 +317,9 @@ public class Legend {
      */
     public void drawForm(Canvas c, float x, float y, Paint p, int index) {
 
-        if(mColors[index] == -1) return;
-        
+        if (mColors[index] == -1)
+            return;
+
         p.setColor(mColors[index]);
 
         float half = mFormSize / 2f;
@@ -335,7 +364,8 @@ public class Legend {
         mShape = l.mShape;
         mTypeface = l.mTypeface;
         mFormSize = l.mFormSize;
-        mEntrySpace = l.mEntrySpace;
+        mXEntrySpace = l.mXEntrySpace;
+        mYEntrySpace = l.mYEntrySpace;
         mFormToTextSpace = l.mFormToTextSpace;
     }
 

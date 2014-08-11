@@ -95,7 +95,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.BELOW_CHART_LEFT);
         l.setFormSize(8f);
-        l.setEntrySpace(4f);
+        l.setXEntrySpace(4f);
 
         // mChart.setDrawLegend(false);
     }

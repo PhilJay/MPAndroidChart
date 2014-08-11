@@ -304,14 +304,14 @@ public class PieChart extends Chart {
         float height = mContentRect.height() + mOffsetTop + mOffsetBottom;
 
         float diameter = getDiameter();
-        float maxShift = ((PieData) mCurrentData).getMaxShift();
+        float shift = ((PieData) mCurrentData).getDataSet().getSelectionShift();
 
         // create the circle box that will contain the pie-chart (the bounds of
         // the pie-chart)
-        mCircleBox.set(width / 2 - diameter / 2 + maxShift, height / 2 - diameter / 2
-                + maxShift,
-                width / 2 + diameter / 2 - maxShift, height / 2 + diameter / 2
-                        - maxShift);
+        mCircleBox.set(width / 2 - diameter / 2 + shift, height / 2 - diameter / 2
+                + shift,
+                width / 2 + diameter / 2 - shift, height / 2 + diameter / 2
+                        - shift);
     }
 
     @Override

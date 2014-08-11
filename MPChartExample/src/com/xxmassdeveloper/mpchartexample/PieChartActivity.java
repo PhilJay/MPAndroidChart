@@ -69,11 +69,12 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 		// add a selection listener
 		mChart.setOnChartValueSelectedListener(this);
 
-		mSeekBarX.setProgress(5);
+		mSeekBarX.setProgress(4);
 		mSeekBarY.setProgress(100);
 		
 		Legend l = mChart.getLegend();
 		l.setPosition(LegendPosition.RIGHT_OF_CHART);
+		l.setYEntrySpace(3f);
 	}
 
 	@Override
@@ -134,6 +135,8 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 		}
 		return true;
 	}
+	
+	private String[] mParties = new String[] { "Party A", "Party B", "Party C", "Party D", "Party E" };
 
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {	    
@@ -158,19 +161,13 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 		ArrayList<String> xVals = new ArrayList<String>();
 
 		for (int i = 0; i < mSeekBarX.getProgress(); i++)
-			xVals.add("Text" + (i + 1));
+			xVals.add(mParties[i % mParties.length]);
 		 
-		PieDataSet set1 = new PieDataSet(yVals1, "Content");
+		PieDataSet set1 = new PieDataSet(yVals1, "Election Results");
 		set1.setSliceSpace(3f);
 		set1.setColors(ColorTemplate.createColors(getApplicationContext(), ColorTemplate.VORDIPLOM_COLORS));
-//		PieDataSet set2 = new PieDataSet(yVals1, "Content 2");
-//        set2.setSliceSpace(10f);
-		
-        ArrayList<PieDataSet> dataSets = new ArrayList<PieDataSet>();
-        dataSets.add(set1);
-//        dataSets.add(set2);
 
-        PieData data = new PieData(xVals, dataSets);
+        PieData data = new PieData(xVals, set1);
 		mChart.setData(data);
 		
 		// undo all highlights
