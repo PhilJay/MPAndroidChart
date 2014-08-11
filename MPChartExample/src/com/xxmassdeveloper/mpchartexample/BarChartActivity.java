@@ -67,7 +67,6 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         // disable 3D
         mChart.set3DEnabled(false);
-        mChart.setYLabelCount(5);
 
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
@@ -106,6 +105,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         YLabels yl = mChart.getYLabels();
         yl.setTypeface(tf);
+        yl.setLabelCount(8);
         
         mChart.setValueTypeface(tf);
 

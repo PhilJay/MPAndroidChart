@@ -51,7 +51,6 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
 
         // disable 3D
         mChart.set3DEnabled(false);
-        mChart.setYLabelCount(5);
 
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);

@@ -56,8 +56,6 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
         // disable the drawing of values into the chart
         mChart.setDrawYValues(false);
 
-        mChart.setYLabelCount(6);
-
         // enable value highlighting
         mChart.setHighlightEnabled(true);
 

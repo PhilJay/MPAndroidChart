@@ -52,7 +52,6 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         
         mChart.setOnChartValueSelectedListener(this);
 
-        mChart.setYLabelCount(6);
         mChart.setTouchEnabled(true);
         mChart.setHighlightEnabled(true);
         mChart.setDrawYValues(false);

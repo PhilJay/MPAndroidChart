@@ -28,7 +28,6 @@ public class ScatterChartFrag extends SimpleFragment {
         mChart = (ScatterChart) v.findViewById(R.id.scatterChart1);
         mChart.setDrawYValues(false);
         mChart.setDescription("");
-        mChart.setYLabelCount(6);
         
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"OpenSans-Light.ttf");
         

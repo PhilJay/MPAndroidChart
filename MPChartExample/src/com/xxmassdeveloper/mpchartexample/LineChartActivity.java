@@ -78,10 +78,7 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         //
         // mChart.setDrawXLegend(false);
         // mChart.setDrawYLegend(false);
-
-        // set the number of y-legend entries the chart should have
-        mChart.setYLabelCount(6);
-
+        
         // enable value highlighting
         mChart.setHighlightEnabled(true);
 

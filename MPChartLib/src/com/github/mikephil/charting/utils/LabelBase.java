@@ -15,14 +15,15 @@ public abstract class LabelBase {
 
     /** the size of the label text */
     private float mTextSize = 10f;
-    
+
     /** default constructor */
     public LabelBase() {
         mTextSize = Utils.convertDpToPixel(10f);
     }
 
     /**
-     * sets the size of the label text in pixels min = 6f, max = 16f
+     * sets the size of the label text in pixels min = 6f, max = 16f, default
+     * 10f
      * 
      * @param size
      */
@@ -36,6 +37,11 @@ public abstract class LabelBase {
         mTextSize = Utils.convertDpToPixel(size);
     }
 
+    /**
+     * returns the text size that is currently set for the labels
+     * 
+     * @return
+     */
     public float getTextSize() {
         return mTextSize;
     }

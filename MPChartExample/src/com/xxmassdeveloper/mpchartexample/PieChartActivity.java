@@ -58,7 +58,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
 		mChart.setDescription("This is a description."); 
 		mChart.setDrawHoleEnabled(true);
-		
+
 		// draws the corresponding description value into the slice
 		mChart.setDrawXValues(true);
 		mChart.setTouchEnabled(true);

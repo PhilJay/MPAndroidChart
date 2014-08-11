@@ -70,8 +70,6 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 
         // disable 3D
         mChart.set3DEnabled(false);
-        mChart.setYLabelCount(5);
-
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
 
@@ -80,6 +78,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         // change the position of the y-labels
         YLabels yLabels = mChart.getYLabels();
         yLabels.setPosition(YLabelPosition.BOTH_SIDED);
+        yLabels.setLabelCount(5);
 
         XLabels xLabels = mChart.getXLabels();
         xLabels.setPosition(XLabelPosition.TOP);

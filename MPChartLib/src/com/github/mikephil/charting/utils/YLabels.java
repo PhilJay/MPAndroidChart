@@ -1,7 +1,6 @@
 
 package com.github.mikephil.charting.utils;
 
-
 /**
  * Class representing the y-axis labels settings and its entries. Only use the
  * setter methods to modify it. Do not access public variables directly.
@@ -18,7 +17,10 @@ public class YLabels extends LabelBase {
 
     /** the number of decimal digits to use */
     public int mDecimals;
-    
+
+    /** the number of y-label entries the y-labels should have, default 6 */
+    private int mLabelCount = 6;
+
     /**
      * if true, units are drawn next to the values of the y-axis labels
      */
@@ -87,5 +89,31 @@ public class YLabels extends LabelBase {
      */
     public void setDrawTopYLabelEntry(boolean enabled) {
         mDrawTopYLabelEntry = enabled;
+    }
+
+    /**
+     * sets the number of label entries for the y-axis max = 15, min = 2,
+     * default: 6, be aware that this number is not fixed and can only be
+     * approximated
+     * 
+     * @param yCount
+     */
+    public void setLabelCount(int yCount) {
+
+        if (yCount > 15)
+            yCount = 15;
+        if (yCount < 2)
+            yCount = 2;
+
+        mLabelCount = yCount;
+    }
+
+    /**
+     * Returns the number of label entries the y-axis should have
+     * 
+     * @return
+     */
+    public int getLabelCount() {
+        return mLabelCount;
     }
 }

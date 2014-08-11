@@ -84,7 +84,6 @@ public class ListViewBarChartActivity extends DemoBase {
             }
 
             // apply styling
-            holder.chart.setYLabelCount(5);
             holder.chart.setValueTypeface(mTf);
             holder.chart.setDescription("");
             holder.chart.setDrawVerticalGrid(false);
@@ -97,6 +96,7 @@ public class ListViewBarChartActivity extends DemoBase {
             
             YLabels yl = holder.chart.getYLabels();
             yl.setTypeface(mTf);
+            yl.setLabelCount(5);
 
             // set data
             holder.chart.setData(c);

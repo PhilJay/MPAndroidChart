@@ -47,7 +47,6 @@ public class LineChartItem extends ChartItem {
         }
 
         // apply styling
-        holder.chart.setYLabelCount(5);
         holder.chart.setValueTypeface(mTf);
         holder.chart.setDescription("");
         holder.chart.setDrawVerticalGrid(false);
@@ -60,6 +59,7 @@ public class LineChartItem extends ChartItem {
         
         YLabels yl = holder.chart.getYLabels();
         yl.setTypeface(mTf);
+        yl.setLabelCount(5);
 
         // set data
         holder.chart.setData(mChartData);

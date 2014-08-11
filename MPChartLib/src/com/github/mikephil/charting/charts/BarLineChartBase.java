@@ -63,9 +63,6 @@ public abstract class BarLineChartBase extends Chart {
     /** holds the maximum scale factor of the y-axis, default 7f */
     protected float mMaxScaleY = 7f;
 
-    /** the number of y-label entries the chart has */
-    protected int mYLabelCount = 9;
-
     /** the width of the grid lines */
     protected float mGridWidth = 1f;
 
@@ -558,14 +555,16 @@ public abstract class BarLineChartBase extends Chart {
         float yMin = mYChartMin;
         float yMax = mYChartMax;
 
+        int labelCount = mYLabels.getLabelCount();
         double range = yMax - yMin;
-        if (mYLabelCount == 0 || range <= 0) {
+        
+        if (labelCount == 0 || range <= 0) {
             mYLabels.mEntries = new float[] {};
             mYLabels.mEntryCount = 0;
             return;
         }
 
-        double rawInterval = range / mYLabelCount;
+        double rawInterval = range / labelCount;
         double interval = Utils.roundToNextSignificant(rawInterval);
         double intervalMagnitude = Math.pow(10, (int) Math.log10(interval));
         int intervalSigDigit = (int) (interval / intervalMagnitude);
@@ -1237,21 +1236,6 @@ public abstract class BarLineChartBase extends Chart {
         prepareMatrix();
         if (invalidate)
             invalidate();
-    }
-
-    /**
-     * sets the number of label entries for the y-axis max = 15, min = 3
-     * 
-     * @param yCount
-     */
-    public void setYLabelCount(int yCount) {
-
-        if (yCount > 15)
-            yCount = 15;
-        if (yCount < 3)
-            yCount = 3;
-
-        mYLabelCount = yCount;
     }
 
     /**

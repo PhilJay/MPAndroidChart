@@ -54,7 +54,7 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
         mChart.setDrawYValues(false);
 //        mChart.setLineWidth(5f);
 //        mChart.setCircleSize(5f);
-        mChart.setYLabelCount(6);
+
         mChart.setHighlightEnabled(true);
 
         // if disabled, drawn datasets with the finger will not be automatically
