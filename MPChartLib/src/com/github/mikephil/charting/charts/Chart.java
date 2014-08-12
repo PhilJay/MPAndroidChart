@@ -667,11 +667,10 @@ public abstract class Chart extends View {
         float formSize = mLegend.getFormSize();
 
         // space between text and shape/form of entry
-        float formToTextSpace = mLegend.getFormToTextSpace() + formSize;
+        float formTextSpaceAndForm = mLegend.getFormToTextSpace() + formSize;
 
         // space between the entries
-        float xEntrySpace = mLegend.getXEntrySpace() + formSize;
-        float yEntrySpace = mLegend.getYEntrySpace() + formSize;
+        float stackSpace = Utils.convertDpToPixel(3f);
 
         float textSize = mLegend.getTextSize();
 
@@ -700,47 +699,41 @@ public abstract class Chart extends View {
 
                         // make a step to the left
                         if (mLegend.getColors()[i] != -1)
-                            posX += formToTextSpace;
+                            posX += formTextSpaceAndForm;
 
                         mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
-                        posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i]) + xEntrySpace;
+                        posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i]) + mLegend.getXEntrySpace();
                     } else {
-                        posX += xEntrySpace;
+                        posX += formSize + stackSpace;
                     }
                 }
 
                 break;
             case BELOW_CHART_RIGHT:
 
-                posX = getWidth() - mLegend.getOffsetRight() - getOffsetRight();
+                posX = getWidth() - getOffsetRight();
                 posY = getHeight() - mLegend.getOffsetBottom() / 2f - formSize / 2f;
 
                 for (int i = labels.length - 1; i >= 0; i--) {
 
                     if (labels[i] != null) {
 
-                        posX -= Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
+                        posX -= Utils.calcTextWidth(mLegendLabelPaint, labels[i]) + mLegend.getXEntrySpace();
                         mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
                         if (mLegend.getColors()[i] != -1)
-                            posX -= formToTextSpace;
+                            posX -= formTextSpaceAndForm;
+                    } else {
+                        posX -= stackSpace + formSize;
                     }
 
                     mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
-
-                    // make a step to the left
-                    posX -= xEntrySpace;
                 }
 
                 break;
             case RIGHT_OF_CHART:
 
-                if (this instanceof BarLineChartBase) {
-                    posX = getWidth() - mLegend.getOffsetRight() + Utils.convertDpToPixel(9f);
-                    posY = mLegend.getOffsetTop();
-                } else {
-                    posX = getWidth() - mLegend.getMaximumEntryLength(mLegendLabelPaint);
-                    posY = Utils.calcTextHeight(mLegendLabelPaint, "A") * 1.5f;
-                }
+                posX = getWidth() - mLegend.getMaximumEntryLength(mLegendLabelPaint) - formTextSpaceAndForm;
+                posY = mLegend.getOffsetTop();
 
                 float stack = 0f;
                 boolean wasStacked = false;
@@ -756,24 +749,26 @@ public abstract class Chart extends View {
                             float x = posX;
 
                             if (mLegend.getColors()[i] != -1)
-                                x += formToTextSpace;
+                                x += formTextSpaceAndForm;
+                            
+                            posY += textDrop;
 
-                            mLegend.drawLabel(mDrawCanvas, x, posY + textDrop,
+                            mLegend.drawLabel(mDrawCanvas, x, posY,
                                     mLegendLabelPaint, i);
                         } else {
 
-                            mLegend.drawLabel(mDrawCanvas, posX, posY + textSize + formSize
-                                    + mLegend.getYEntrySpace(),
+                            posY += textSize * 1.2f + formSize;
+                            
+                            mLegend.drawLabel(mDrawCanvas, posX, posY,
                                     mLegendLabelPaint, i);
 
-                            posY += yEntrySpace;
                         }
 
                         // make a step down
-                        posY += mLegend.getYEntrySpace() + textSize;
+                        posY += mLegend.getYEntrySpace();
                         stack = 0f;
                     } else {
-                        stack += formSize + 4f;
+                        stack += formSize + stackSpace;
                         wasStacked = true;
                     }
                 }

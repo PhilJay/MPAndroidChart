@@ -305,7 +305,10 @@ public abstract class BarLineChartBase extends Chart {
         // setup offsets for legend
         if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
 
-            mLegend.setOffsetRight(mLegend.getMaximumEntryLength(mLegendLabelPaint));
+            // this is the space between the legend and the chart
+            float spacing = Utils.convertDpToPixel(7f);
+            mLegend.setOffsetRight(mLegend.getMaximumEntryLength(mLegendLabelPaint)
+                    + mLegend.getFormSize() + mLegend.getFormToTextSpace() + spacing);
             mLegendLabelPaint.setTextAlign(Align.LEFT);
 
         } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
@@ -557,7 +560,7 @@ public abstract class BarLineChartBase extends Chart {
 
         int labelCount = mYLabels.getLabelCount();
         double range = yMax - yMin;
-        
+
         if (labelCount == 0 || range <= 0) {
             mYLabels.mEntries = new float[] {};
             mYLabels.mEntryCount = 0;
@@ -611,7 +614,7 @@ public abstract class BarLineChartBase extends Chart {
             return;
 
         float yoffset = Utils.convertDpToPixel(3.5f);
-        
+
         mXLabelPaint.setTypeface(mXLabels.getTypeface());
         mXLabelPaint.setTextSize(mXLabels.getTextSize());
 
@@ -684,7 +687,7 @@ public abstract class BarLineChartBase extends Chart {
         transformPointArray(positions);
 
         float xoffset = Utils.convertDpToPixel(5f);
-        
+
         mYLabelPaint.setTypeface(mYLabels.getTypeface());
         mYLabelPaint.setTextSize(mYLabels.getTextSize());
 
@@ -1804,7 +1807,8 @@ public abstract class BarLineChartBase extends Chart {
     @Override
     public Paint getPaint(int which) {
         Paint p = super.getPaint(which);
-        if(p != null) return p;
+        if (p != null)
+            return p;
 
         switch (which) {
             case PAINT_GRID:

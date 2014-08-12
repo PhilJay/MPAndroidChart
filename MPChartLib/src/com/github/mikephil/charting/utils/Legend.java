@@ -50,14 +50,14 @@ public class Legend {
     private float mFormSize = 8f;
 
     /**
-     * the space between the legend entries on a horizontal axis, default 5f
+     * the space between the legend entries on a horizontal axis, default 6f
      */
-    private float mXEntrySpace = 5f;
+    private float mXEntrySpace = 6f;
 
     /**
-     * the space between the legend entries on a vertical axis, default 3f
+     * the space between the legend entries on a vertical axis, default 5f
      */
-    private float mYEntrySpace = 3f;
+    private float mYEntrySpace = 5f;
 
     /**
      * the space between the legend entries on a vertical axis, default 2f
@@ -70,8 +70,8 @@ public class Legend {
     public Legend() {
 
         mFormSize = Utils.convertDpToPixel(8f);
-        mXEntrySpace = Utils.convertDpToPixel(5f);
-        mYEntrySpace = Utils.convertDpToPixel(3f);
+        mXEntrySpace = Utils.convertDpToPixel(6f);
+        mYEntrySpace = Utils.convertDpToPixel(5f);
         mFormToTextSpace = Utils.convertDpToPixel(5f);
         mTextSize = Utils.convertDpToPixel(9f);
     }
@@ -141,7 +141,7 @@ public class Legend {
             }
         }
 
-        return max + (int) mFormSize * 4;
+        return max + (int) mFormSize;
     }
 
     /**

@@ -92,9 +92,10 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         mSeekBarY.setProgress(100);
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
+        l.setPosition(LegendPosition.BELOW_CHART_RIGHT);
         l.setFormSize(8f);
-        l.setXEntrySpace(4f);
+        l.setFormToTextSpace(4f);
+        l.setXEntrySpace(6f);
 
         // mChart.setDrawLegend(false);
     }

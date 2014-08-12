@@ -18,8 +18,9 @@ import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.Legend;
+import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.github.mikephil.charting.utils.XLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -63,6 +64,9 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
 
         mSeekBarX.setProgress(45);
         mSeekBarY.setProgress(100);
+        
+        Legend l = mChart.getLegend();
+        l.setPosition(LegendPosition.RIGHT_OF_CHART);
     }
 
     @Override

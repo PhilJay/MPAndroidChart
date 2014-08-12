@@ -52,11 +52,12 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
 		
 		mChart.setHoleRadius(60f);
+		
+		mChart.setDescription("");
 
 		mChart.setDrawYValues(true);
 		mChart.setDrawCenterText(true);
 
-		mChart.setDescription("This is a description."); 
 		mChart.setDrawHoleEnabled(true);
 
 		// draws the corresponding description value into the slice
@@ -73,8 +74,9 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 		mSeekBarY.setProgress(100);
 		
 		Legend l = mChart.getLegend();
-		l.setPosition(LegendPosition.BELOW_CHART_LEFT);
-		l.setYEntrySpace(3f);
+		l.setPosition(LegendPosition.RIGHT_OF_CHART);
+		l.setXEntrySpace(7f);
+		l.setYEntrySpace(5f);
 	}
 
 	@Override
