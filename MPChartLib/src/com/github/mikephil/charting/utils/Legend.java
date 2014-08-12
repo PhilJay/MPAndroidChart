@@ -42,6 +42,9 @@ public class Legend {
 
     /** the typeface used for the legend labels */
     private Typeface mTypeface = null;
+    
+    /** the text size of the legend labels */
+    private float mTextSize = 9f;
 
     /** the size of the legend forms/shapes */
     private float mFormSize = 8f;
@@ -66,10 +69,11 @@ public class Legend {
     /** default constructor */
     public Legend() {
 
-        mFormSize = Utils.convertDpToPixel(mFormSize);
+        mFormSize = Utils.convertDpToPixel(8f);
         mXEntrySpace = Utils.convertDpToPixel(5f);
         mYEntrySpace = Utils.convertDpToPixel(3f);
-        mFormToTextSpace = Utils.convertDpToPixel(mFormToTextSpace);
+        mFormToTextSpace = Utils.convertDpToPixel(5f);
+        mTextSize = Utils.convertDpToPixel(9f);
     }
 
     /**
@@ -367,6 +371,7 @@ public class Legend {
         mXEntrySpace = l.mXEntrySpace;
         mYEntrySpace = l.mYEntrySpace;
         mFormToTextSpace = l.mFormToTextSpace;
+        mTextSize = l.mTextSize;
     }
 
     /**
@@ -439,5 +444,21 @@ public class Legend {
      */
     public void setOffsetLeft(float off) {
         mLegendOffsetLeft = off;
+    }
+    
+    /**
+     * sets the text size of the legend labels, default 9f
+     * @param size
+     */
+    public void setTextSize(float size) {
+        mTextSize = Utils.convertDpToPixel(size);
+    }
+    
+    /**
+     * returns the text size of the legend labels
+     * @return
+     */
+    public float getTextSize() {
+        return mTextSize;
     }
 }

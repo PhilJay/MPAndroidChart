@@ -21,6 +21,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.listener.PieChartTouchListener;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
+import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.text.DecimalFormat;
@@ -56,7 +57,7 @@ public class PieChart extends Chart {
      * this value is null, the default is "Total Value\n + getYValueSum()"
      */
     private String mCenterText = null;
-    
+
     /**
      * indicates the size of the hole in the center of the piechart, default:
      * radius / 2
@@ -133,9 +134,10 @@ public class PieChart extends Chart {
         // for the piechart, drawing values is enabled
         mDrawYValues = true;
     }
-    
+
     /**
      * Sets a PieData object as a model for the PieChart.
+     * 
      * @param data
      */
     public void setData(PieData data) {
@@ -199,17 +201,28 @@ public class PieChart extends Chart {
     @Override
     protected void calculateOffsets() {
 
-        if (mDrawLegend) {
-            if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
+        if (mLegend == null)
+            return;
 
-                mLegendLabelPaint.setTextAlign(Align.LEFT);
-                mOffsetTop = (int) (mLegendLabelPaint.getTextSize() * 3.5f);
+        // setup offsets for legend
+        if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
 
-            } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
-                    || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT) {
-                mOffsetBottom = (int) (mLegendLabelPaint.getTextSize() * 3.5f);
-            }
+            mLegend.setOffsetRight(mLegend.getMaximumEntryLength(mLegendLabelPaint));
+            mLegendLabelPaint.setTextAlign(Align.LEFT);
+
+        } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
+                || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT) {
+
+            mLegend.setOffsetBottom(mLegendLabelPaint.getTextSize() * 3.5f);
         }
+
+        if (mDrawLegend) {
+
+            mOffsetBottom = Math.max(mOffsetBottom, mLegend.getOffsetBottom());
+        }
+
+        mLegend.setOffsetTop(mOffsetTop);
+        mLegend.setOffsetLeft(mOffsetLeft);
 
         prepareContentRect();
 
@@ -378,9 +391,10 @@ public class PieChart extends Chart {
 
                 float shiftangle = (float) Math.toRadians(angle + sliceDegrees / 2f);
 
-                PieDataSet set = (PieDataSet) mCurrentData.getDataSetByIndex(mIndicesToHightlight[i]
-                        .getDataSetIndex());
-                
+                PieDataSet set = (PieDataSet) mCurrentData
+                        .getDataSetByIndex(mIndicesToHightlight[i]
+                                .getDataSetIndex());
+
                 float shift = set.getSelectionShift();
                 float xShift = shift * (float) Math.cos(shiftangle);
                 float yShift = shift * (float) Math.sin(shiftangle);
@@ -432,7 +446,8 @@ public class PieChart extends Chart {
     }
 
     /**
-     * draws the hole in the center of the chart and the transparent circle / hole
+     * draws the hole in the center of the chart and the transparent circle /
+     * hole
      */
     private void drawHole() {
 
@@ -934,7 +949,8 @@ public class PieChart extends Chart {
     @Override
     public Paint getPaint(int which) {
         Paint p = super.getPaint(which);
-        if(p != null) return p;
+        if (p != null)
+            return p;
 
         switch (which) {
             case PAINT_HOLE:

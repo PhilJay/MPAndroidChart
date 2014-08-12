@@ -661,6 +661,8 @@ public abstract class Chart extends View {
 
         if (tf != null)
             mLegendLabelPaint.setTypeface(tf);
+        
+        mLegendLabelPaint.setTextSize(mLegend.getTextSize());
 
         float formSize = mLegend.getFormSize();
 
@@ -671,7 +673,7 @@ public abstract class Chart extends View {
         float xEntrySpace = mLegend.getXEntrySpace() + formSize;
         float yEntrySpace = mLegend.getYEntrySpace() + formSize;
 
-        float textSize = mLegendLabelPaint.getTextSize();
+        float textSize = mLegend.getTextSize();
 
         // the amount of pixels the text needs to be set down to be on the same
         // height as the form
