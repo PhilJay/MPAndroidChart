@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.data;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 
@@ -28,12 +29,11 @@ public class LineDataSet extends DataSet {
 
     /** if true, the data will also be drawn filled */
     private boolean mDrawFilled = false;
-    
 
     public LineDataSet(ArrayList<Entry> yVals, String label) {
         super(yVals, label);
 
-        mCircleSize = Utils.convertDpToPixel(mCircleSize);
+        mCircleSize = Utils.convertDpToPixel(4f);
 
         mCircleColors = new ArrayList<Integer>();
 
@@ -220,6 +220,27 @@ public class LineDataSet extends DataSet {
      */
     public void setCircleColors(int[] colors) {
         this.mCircleColors = ColorTemplate.createColors(colors);
+    }
+
+    /**
+     * ets the colors that should be used for the circles of this DataSet.
+     * Colors are reused as soon as the number of Entries the DataSet represents
+     * is higher than the size of the colors array. You can use
+     * "new String[] { R.color.red, R.color.green, ... }" to provide colors for
+     * this method. Internally, the colors are resolved using
+     * getResources().getColor(...)
+     * 
+     * @param colors
+     */
+    public void setCircleColors(int[] colors, Context c) {
+
+        ArrayList<Integer> clrs = new ArrayList<Integer>();
+
+        for (int color : colors) {
+            clrs.add(c.getResources().getColor(color));
+        }
+
+        mCircleColors = clrs;
     }
 
     /**

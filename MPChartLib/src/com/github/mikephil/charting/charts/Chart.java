@@ -1369,7 +1369,7 @@ public abstract class Chart extends View {
      * 
      * @param color
      */
-    public void setValuePaintColor(int color) {
+    public void setValueTextColor(int color) {
         mValuePaint.setColor(color);
     }
 

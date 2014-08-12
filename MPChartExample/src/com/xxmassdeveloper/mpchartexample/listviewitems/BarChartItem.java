@@ -51,6 +51,7 @@ public class BarChartItem extends ChartItem {
         holder.chart.setDescription("");
         holder.chart.setDrawVerticalGrid(false);
         holder.chart.setDrawGridBackground(false);
+        holder.chart.setDrawBarShadow(false);
 
         XLabels xl = holder.chart.getXLabels();
         xl.setCenterXLabelText(true);

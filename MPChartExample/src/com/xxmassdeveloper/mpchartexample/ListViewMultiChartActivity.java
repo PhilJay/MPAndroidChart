@@ -17,6 +17,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.listviewitems.BarChartItem;
 import com.xxmassdeveloper.mpchartexample.listviewitems.ChartItem;
 import com.xxmassdeveloper.mpchartexample.listviewitems.LineChartItem;
@@ -101,7 +102,8 @@ public class ListViewMultiChartActivity extends DemoBase {
         LineDataSet d = new LineDataSet(entries, "New DataSet " + cnt);
         d.setLineWidth(3f);
         d.setCircleSize(5f);
-
+//        d.setColors(ColorTemplate.VORDIPLOM_COLORS, getApplicationContext());
+        
         LineData cd = new LineData(getMonths(), d);
         return cd;
     }
@@ -121,6 +123,7 @@ public class ListViewMultiChartActivity extends DemoBase {
 
         BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);
         d.setBarSpacePercent(20f);
+        d.setColors(ColorTemplate.VORDIPLOM_COLORS, getApplicationContext());
         BarData cd = new BarData(getMonths(), d);
         return cd;
     }
@@ -142,6 +145,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         
         // space between slices
         d.setSliceSpace(5f);
+        d.setColors(ColorTemplate.VORDIPLOM_COLORS, getApplicationContext());
         
         PieData cd = new PieData(getQuarters(), d);
         return cd;

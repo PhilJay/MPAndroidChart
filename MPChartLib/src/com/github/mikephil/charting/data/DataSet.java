@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.data;
 
+import android.content.Context;
 import android.graphics.Color;
 
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -34,10 +35,10 @@ public abstract class DataSet {
 
     /** label that describes the DataSet or the data the DataSet represents */
     private String mLabel = "DataSet";
-    
+
     /** default constructor */
     protected DataSet() {
-        
+
     }
 
     /**
@@ -60,8 +61,8 @@ public abstract class DataSet {
         mColors = new ArrayList<Integer>();
 
         // default colors
-//        mColors.add(Color.rgb(192, 255, 140));
-//        mColors.add(Color.rgb(255, 247, 140));
+        // mColors.add(Color.rgb(192, 255, 140));
+        // mColors.add(Color.rgb(255, 247, 140));
         mColors.add(Color.rgb(140, 234, 255));
 
         calcMinMax();
@@ -83,14 +84,14 @@ public abstract class DataSet {
         if (mYVals.size() == 0) {
             return;
         }
-        
+
         mYMin = mYVals.get(0).getSum();
         mYMax = mYVals.get(0).getSum();
 
         for (int i = 0; i < mYVals.size(); i++) {
-            
+
             Entry e = mYVals.get(i);
-            
+
             if (e.getSum() < mYMin)
                 mYMin = e.getSum();
 
@@ -308,6 +309,27 @@ public abstract class DataSet {
     }
 
     /**
+     * Sets the colors that should be used fore this DataSet. Colors are reused
+     * as soon as the number of Entries the DataSet represents is higher than
+     * the size of the colors array. You can use
+     * "new String[] { R.color.red, R.color.green, ... }" to provide colors for
+     * this method. Internally, the colors are resolved using
+     * getResources().getColor(...)
+     * 
+     * @param colors
+     */
+    public void setColors(int[] colors, Context c) {
+
+        ArrayList<Integer> clrs = new ArrayList<Integer>();
+
+        for (int color : colors) {
+            clrs.add(c.getResources().getColor(color));
+        }
+
+        mColors = clrs;
+    }
+
+    /**
      * Adds a new color to the colors array of the DataSet.
      * 
      * @param color
@@ -355,7 +377,7 @@ public abstract class DataSet {
     public void resetColors() {
         mColors = new ArrayList<Integer>();
     }
-    
+
     // /**
     // * Convenience method to create multiple DataSets of different types with
     // * various double value arrays. Each double array represents the data of
