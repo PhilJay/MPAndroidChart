@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class Legend {
 
     public enum LegendPosition {
-        RIGHT_OF_CHART, BELOW_CHART_LEFT, BELOW_CHART_RIGHT
+        RIGHT_OF_CHART, BELOW_CHART_LEFT, BELOW_CHART_RIGHT, BELOW_CHART_CENTER
     }
 
     public enum LegendForm {
@@ -42,7 +42,7 @@ public class Legend {
 
     /** the typeface used for the legend labels */
     private Typeface mTypeface = null;
-    
+
     /** the text size of the legend labels */
     private float mTextSize = 9f;
 
@@ -66,6 +66,9 @@ public class Legend {
      */
     private float mFormToTextSpace = 5f;
 
+    /** the space that should be left between stacked forms */
+    private float mStackSpace = 3f;
+
     /** default constructor */
     public Legend() {
 
@@ -74,6 +77,7 @@ public class Legend {
         mYEntrySpace = Utils.convertDpToPixel(5f);
         mFormToTextSpace = Utils.convertDpToPixel(5f);
         mTextSize = Utils.convertDpToPixel(9f);
+        mStackSpace = Utils.convertDpToPixel(3f);
     }
 
     /**
@@ -372,6 +376,7 @@ public class Legend {
         mYEntrySpace = l.mYEntrySpace;
         mFormToTextSpace = l.mFormToTextSpace;
         mTextSize = l.mTextSize;
+        mStackSpace = l.mStackSpace;
     }
 
     /**
@@ -445,20 +450,68 @@ public class Legend {
     public void setOffsetLeft(float off) {
         mLegendOffsetLeft = off;
     }
-    
+
     /**
      * sets the text size of the legend labels, default 9f
+     * 
      * @param size
      */
     public void setTextSize(float size) {
         mTextSize = Utils.convertDpToPixel(size);
     }
-    
+
     /**
      * returns the text size of the legend labels
+     * 
      * @return
      */
     public float getTextSize() {
         return mTextSize;
+    }
+
+    /**
+     * returns the space that is left out between stacked forms (with no label)
+     * 
+     * @return
+     */
+    public float getStackSpace() {
+        return mStackSpace;
+    }
+
+    /**
+     * sets the space that is left out between stacked forms (with no label)
+     * 
+     * @param space
+     */
+    public void setStackSpace(float space) {
+        mStackSpace = space;
+    }
+
+    /**
+     * calculates the full width the fully drawn legend will use in pixels
+     * 
+     * @return
+     */
+    public float getFullWidth(Paint labelpaint) {
+
+        float width = 0f;
+
+        for (int i = 0; i < mLegendLabels.length; i++) {
+
+            // grouped forms have null labels
+            if (mLegendLabels[i] != null) {
+
+                // make a step to the left
+                if (mColors[i] != -1)
+                    width += mFormSize + mFormToTextSpace;
+
+                width += Utils.calcTextWidth(labelpaint, mLegendLabels[i])
+                        + mXEntrySpace;
+            } else {
+                width += mFormSize + mStackSpace;
+            }
+        }
+
+        return width;
     }
 }

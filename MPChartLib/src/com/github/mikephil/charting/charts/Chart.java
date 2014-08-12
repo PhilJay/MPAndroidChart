@@ -342,7 +342,7 @@ public abstract class Chart extends View {
     /**
      * calculates the offsets of the chart to the border depending on the
      * position of an eventual legend or depending on the length of the y-axis
-     * labels
+     * and x-axis labels and their position
      */
     protected abstract void calculateOffsets();
 
@@ -661,7 +661,7 @@ public abstract class Chart extends View {
 
         if (tf != null)
             mLegendLabelPaint.setTypeface(tf);
-        
+
         mLegendLabelPaint.setTextSize(mLegend.getTextSize());
 
         float formSize = mLegend.getFormSize();
@@ -670,7 +670,7 @@ public abstract class Chart extends View {
         float formTextSpaceAndForm = mLegend.getFormToTextSpace() + formSize;
 
         // space between the entries
-        float stackSpace = Utils.convertDpToPixel(3f);
+        float stackSpace = mLegend.getStackSpace();
 
         float textSize = mLegend.getTextSize();
 
@@ -702,7 +702,8 @@ public abstract class Chart extends View {
                             posX += formTextSpaceAndForm;
 
                         mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
-                        posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i]) + mLegend.getXEntrySpace();
+                        posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i])
+                                + mLegend.getXEntrySpace();
                     } else {
                         posX += formSize + stackSpace;
                     }
@@ -718,7 +719,8 @@ public abstract class Chart extends View {
 
                     if (labels[i] != null) {
 
-                        posX -= Utils.calcTextWidth(mLegendLabelPaint, labels[i]) + mLegend.getXEntrySpace();
+                        posX -= Utils.calcTextWidth(mLegendLabelPaint, labels[i])
+                                + mLegend.getXEntrySpace();
                         mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
                         if (mLegend.getColors()[i] != -1)
                             posX -= formTextSpaceAndForm;
@@ -732,7 +734,8 @@ public abstract class Chart extends View {
                 break;
             case RIGHT_OF_CHART:
 
-                posX = getWidth() - mLegend.getMaximumEntryLength(mLegendLabelPaint) - formTextSpaceAndForm;
+                posX = getWidth() - mLegend.getMaximumEntryLength(mLegendLabelPaint)
+                        - formTextSpaceAndForm;
                 posY = mLegend.getOffsetTop();
 
                 float stack = 0f;
@@ -750,7 +753,7 @@ public abstract class Chart extends View {
 
                             if (mLegend.getColors()[i] != -1)
                                 x += formTextSpaceAndForm;
-                            
+
                             posY += textDrop;
 
                             mLegend.drawLabel(mDrawCanvas, x, posY,
@@ -758,7 +761,7 @@ public abstract class Chart extends View {
                         } else {
 
                             posY += textSize * 1.2f + formSize;
-                            
+
                             mLegend.drawLabel(mDrawCanvas, posX, posY,
                                     mLegendLabelPaint, i);
 
@@ -772,7 +775,33 @@ public abstract class Chart extends View {
                         wasStacked = true;
                     }
                 }
+                break;
+            case BELOW_CHART_CENTER:
+                
+                float fullSize = mLegend.getFullWidth(mLegendLabelPaint);
+                
+                posX = getWidth() / 2f - fullSize / 2f;
+                posY = getHeight() - mLegend.getOffsetBottom() / 2f - formSize / 2f;
+                
+                for (int i = 0; i < labels.length; i++) {
 
+                    mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
+
+                    // grouped forms have null labels
+                    if (labels[i] != null) {
+
+                        // make a step to the left
+                        if (mLegend.getColors()[i] != -1)
+                            posX += formTextSpaceAndForm;
+
+                        mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
+                        posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i])
+                                + mLegend.getXEntrySpace();
+                    } else {
+                        posX += formSize + stackSpace;
+                    }
+                }
+                
                 break;
         }
     }

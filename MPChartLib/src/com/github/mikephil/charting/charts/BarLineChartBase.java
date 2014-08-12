@@ -312,7 +312,8 @@ public abstract class BarLineChartBase extends Chart {
             mLegendLabelPaint.setTextAlign(Align.LEFT);
 
         } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
-                || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT) {
+                || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
+                || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
 
             if (mXLabels.getPosition() == XLabelPosition.TOP)
                 mLegend.setOffsetBottom(mLegendLabelPaint.getTextSize() * 3.5f);
