@@ -43,6 +43,7 @@ public class BarChartFrag extends SimpleFragment {
         mChart.setDrawXLabels(false);
         mChart.setDrawYValues(false);
         mChart.setUnit(" €");
+        mChart.setDrawBarShadow(false);
         
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"OpenSans-Light.ttf");
         

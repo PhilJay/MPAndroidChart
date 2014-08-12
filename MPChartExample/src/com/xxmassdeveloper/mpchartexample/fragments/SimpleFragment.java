@@ -14,6 +14,9 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.FileUtils;
+import com.xxmassdeveloper.mpchartexample.R;
 
 import java.util.ArrayList;
 
@@ -27,11 +30,14 @@ public abstract class SimpleFragment extends Fragment {
            
             ArrayList<Entry> entries = new ArrayList<Entry>();
             
+//            entries = FileUtils.loadEntriesFromAssets(getActivity().getAssets(), "stacked_bars.txt");
+            
             for(int j = 0; j < count; j++) {        
                 entries.add(new Entry((float) (Math.random() * range) + range / 4, j));
             }
             
             BarDataSet ds = new BarDataSet(entries, getLabel(i));
+            ds.setColors(ColorTemplate.VORDIPLOM_COLORS, getActivity());
             sets.add(ds);
         }
         
@@ -56,6 +62,8 @@ public abstract class SimpleFragment extends Fragment {
             ScatterDataSet ds = new ScatterDataSet(entries, getLabel(i));
             ds.setScatterShapeSize(12f);
             ds.setScatterShape(shapes[i % shapes.length]);
+            ds.setColors(ColorTemplate.COLORFUL_COLORS, getActivity());
+            ds.setScatterShapeSize(9f);
             sets.add(ds);
         }
         
@@ -86,6 +94,8 @@ public abstract class SimpleFragment extends Fragment {
         }
         
         PieDataSet ds1 = new PieDataSet(entries1, "Quarterly Revenues 2014");
+        ds1.setColors(ColorTemplate.VORDIPLOM_COLORS, getActivity());
+        ds1.setSliceSpace(2f);
         
         PieData d = new PieData(xVals, ds1);
         return d;
@@ -100,10 +110,21 @@ public abstract class SimpleFragment extends Fragment {
         
         ArrayList<LineDataSet> sets = new ArrayList<LineDataSet>();
         
-        // load DataSets from textfiles in assets folder
-//        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "sine.txt"));
-//        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "cosine.txt"));
+        LineDataSet ds1 = new LineDataSet(FileUtils.loadEntriesFromAssets(getActivity().getAssets(), "sine.txt"), "Sine function");
+        LineDataSet ds2 = new LineDataSet(FileUtils.loadEntriesFromAssets(getActivity().getAssets(), "cosine.txt"), "Cosine function");
         
+        ds1.setLineWidth(2f);
+        ds2.setLineWidth(2f);
+        
+        ds1.setDrawCircles(false);
+        ds2.setDrawCircles(false);
+        
+        ds1.setColor(getResources().getColor(R.color.vordiplom_1));
+        ds2.setColor(getResources().getColor(R.color.vordiplom_2));
+        
+        // load DataSets from textfiles in assets folders
+        sets.add(ds1);
+        sets.add(ds2);
         
 //        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "n.txt"));
 //        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "nlogn.txt"));
