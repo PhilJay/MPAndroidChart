@@ -117,22 +117,6 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
                 mChart.invalidate();
                 break;
             }
-            case R.id.actionToggleFilled: {
-                if (mChart.isDrawFilledEnabled())
-                    mChart.setDrawFilled(false);
-                else
-                    mChart.setDrawFilled(true);
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleCircles: {
-                if (mChart.isDrawCirclesEnabled())
-                    mChart.setDrawCircles(false);
-                else
-                    mChart.setDrawCircles(true);
-                mChart.invalidate();
-                break;
-            }
             case R.id.actionToggleStartzero: {
                 if (mChart.isStartAtZeroEnabled())
                     mChart.setStartAtZero(false);

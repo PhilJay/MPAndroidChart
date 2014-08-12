@@ -47,10 +47,10 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
 
         mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
         mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
-        
+
         mSeekBarX.setProgress(45);
         mSeekBarY.setProgress(100);
-        
+
         mSeekBarY.setOnSeekBarChangeListener(this);
         mSeekBarX.setOnSeekBarChangeListener(this);
 
@@ -62,9 +62,11 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
 
         // disable the drawing of values into the chart
         mChart.setDrawYValues(false);
- 
+
         mChart.setDrawBorder(true);
-        mChart.setBorderPositions(new BorderPosition[] { BorderPosition.BOTTOM });
+        mChart.setBorderPositions(new BorderPosition[] {
+            BorderPosition.BOTTOM
+        });
 
         // no description text
         mChart.setDescription("");
@@ -78,7 +80,7 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         //
         // mChart.setDrawXLegend(false);
         // mChart.setDrawYLegend(false);
-        
+
         // enable value highlighting
         mChart.setHighlightEnabled(true);
 
@@ -90,9 +92,9 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
 
         // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(true);
-        
+
         // set an alternative background color
-//        mChart.setBackgroundColor(Color.GRAY);
+        // mChart.setBackgroundColor(Color.GRAY);
 
         // create a custom MarkerView (extend MarkerView) and specify the layout
         // to use for it
@@ -108,23 +110,23 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         // enable/disable highlight indicators (the lines that indicate the
         // highlighted Entry)
         mChart.setHighlightIndicatorEnabled(false);
-        
+
         // add data
         setData(45, 100);
-        
-//        // restrain the maximum scale-out factor
-//        mChart.setScaleMinima(3f, 3f);
-//        
-//        // center the view to a specific position inside the chart
-//        mChart.centerViewPort(10, 50);
-                
+
+        // // restrain the maximum scale-out factor
+        // mChart.setScaleMinima(3f, 3f);
+        //
+        // // center the view to a specific position inside the chart
+        // mChart.centerViewPort(10, 50);
+
         // get the legend (only possible after setting data)
         Legend l = mChart.getLegend();
-        
+
         // modify the legend ...
-//        l.setPosition(LegendPosition.LEFT_OF_CHART);   
+        // l.setPosition(LegendPosition.LEFT_OF_CHART);
         l.setForm(LegendForm.LINE);
-        
+
         // dont forget to refresh the drawing
         mChart.invalidate();
     }
@@ -156,18 +158,29 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
                 break;
             }
             case R.id.actionToggleFilled: {
-                if (mChart.isDrawFilledEnabled())
-                    mChart.setDrawFilled(false);
-                else
-                    mChart.setDrawFilled(true);
+
+                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getDataCurrent()
+                        .getDataSets();
+
+                for (LineDataSet set : sets) {
+                    if (set.isDrawFilledEnabled())
+                        set.setDrawFilled(false);
+                    else
+                        set.setDrawFilled(true);
+                }
                 mChart.invalidate();
                 break;
             }
             case R.id.actionToggleCircles: {
-                if (mChart.isDrawCirclesEnabled())
-                    mChart.setDrawCircles(false);
-                else
-                    mChart.setDrawCircles(true);
+                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getDataCurrent()
+                        .getDataSets();
+
+                for (LineDataSet set : sets) {
+                    if (set.isDrawCirclesEnabled())
+                        set.setDrawCircles(false);
+                    else
+                        set.setDrawCircles(true);
+                }
                 mChart.invalidate();
                 break;
             }
@@ -191,7 +204,7 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
             }
             case R.id.actionToggleAdjustXLegend: {
                 XLabels xLabels = mChart.getXLabels();
-                
+
                 if (xLabels.isAdjustXLabelsEnabled())
                     xLabels.setAdjustXLabels(false);
                 else
@@ -214,11 +227,14 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
                 break;
             }
             case R.id.actionSave: {
-                 if(mChart.saveToPath("title" + System.currentTimeMillis(), "")) {
-                     Toast.makeText(getApplicationContext(), "Saving SUCCESSFUL!", Toast.LENGTH_SHORT).show();
-                 } else Toast.makeText(getApplicationContext(), "Saving FAILED!", Toast.LENGTH_SHORT).show();
-                 
-//                 mChart.saveToGallery("title"+System.currentTimeMillis())
+                if (mChart.saveToPath("title" + System.currentTimeMillis(), "")) {
+                    Toast.makeText(getApplicationContext(), "Saving SUCCESSFUL!",
+                            Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(getApplicationContext(), "Saving FAILED!", Toast.LENGTH_SHORT)
+                            .show();
+
+                // mChart.saveToGallery("title"+System.currentTimeMillis())
                 break;
             }
         }
@@ -231,8 +247,8 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         tvX.setText("" + (mSeekBarX.getProgress() + 1));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
-        setData(mSeekBarX.getProgress()+1, mSeekBarY.getProgress());
-        
+        setData(mSeekBarX.getProgress() + 1, mSeekBarY.getProgress());
+
         // redraw
         mChart.invalidate();
     }
@@ -261,9 +277,9 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         // TODO Auto-generated method stub
 
     }
-    
+
     private void setData(int count, float range) {
-     
+
         ArrayList<String> xVals = new ArrayList<String>();
         for (int i = 0; i < count; i++) {
             xVals.add((i) + "");
@@ -274,14 +290,14 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         for (int i = 0; i < count; i++) {
             float mult = (range + 1);
             float val = (float) (Math.random() * mult) + 3;// + (float)
-                                                               // ((mult *
-                                                               // 0.1) / 10);
+                                                           // ((mult *
+                                                           // 0.1) / 10);
             yVals.add(new Entry(val, i));
         }
 
         // create a dataset and give it a type
         LineDataSet set1 = new LineDataSet(yVals, "DataSet 1");
-        
+
         // set the line to be drawn like this "- - - - - -"
         set1.enableDashedLine(10f, 5f, 0f);
         set1.setLineWidth(1f);
@@ -292,7 +308,7 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
 
         // create a data object with the datasets
         LineData data = new LineData(xVals, dataSets);
- 
+
         // set data
         mChart.setData(data);
     }

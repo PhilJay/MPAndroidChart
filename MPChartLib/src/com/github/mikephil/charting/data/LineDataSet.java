@@ -23,16 +23,23 @@ public class LineDataSet extends DataSet {
     /** the path effect of this DataSet that makes dashed lines possible */
     private DashPathEffect mDashPathEffect = null;
 
+    /** if true, drawing circles is enabled */
+    private boolean mDrawCircles = true;
+
+    /** if true, the data will also be drawn filled */
+    private boolean mDrawFilled = false;
+    
+
     public LineDataSet(ArrayList<Entry> yVals, String label) {
         super(yVals, label);
 
         mCircleSize = Utils.convertDpToPixel(mCircleSize);
-        
+
         mCircleColors = new ArrayList<Integer>();
 
         // default colors
-//        mColors.add(Color.rgb(192, 255, 140));
-//        mColors.add(Color.rgb(255, 247, 140));
+        // mColors.add(Color.rgb(192, 255, 140));
+        // mColors.add(Color.rgb(255, 247, 140));
         mCircleColors.add(Color.rgb(140, 234, 255));
     }
 
@@ -126,6 +133,45 @@ public class LineDataSet extends DataSet {
      */
     public DashPathEffect getDashPathEffect() {
         return mDashPathEffect;
+    }
+
+    /**
+     * set this to true to enable the drawing of circle indicators for this
+     * DataSet, default true
+     * 
+     * @param enabled
+     */
+    public void setDrawCircles(boolean enabled) {
+        this.mDrawCircles = enabled;
+    }
+
+    /**
+     * returns true if drawing circles for this DataSet is enabled, false if not
+     * 
+     * @return
+     */
+    public boolean isDrawCirclesEnabled() {
+        return mDrawCircles;
+    }
+
+    /**
+     * Set to true if the DataSet should be drawn filled (surface), and not just
+     * as a line, disabling this will give up to 20% performance boost on large
+     * datasets, default: false
+     * 
+     * @param filled
+     */
+    public void setDrawFilled(boolean filled) {
+        mDrawFilled = filled;
+    }
+
+    /**
+     * returns true if filled drawing is enabled, false if not
+     * 
+     * @return
+     */
+    public boolean isDrawFilledEnabled() {
+        return mDrawFilled;
     }
 
     /** ALL CODE BELOW RELATED TO CIRCLE-COLORS */

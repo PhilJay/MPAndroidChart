@@ -25,12 +25,6 @@ public class LineChart extends BarLineChartBase {
     /** the width of the highlighning line */
     protected float mHighlightWidth = 3f;
 
-    /** if true, the data will also be drawn filled */
-    protected boolean mDrawFilled = false;
-
-    /** if true, drawing circles is enabled */
-    protected boolean mDrawCircles = true;
-
     /** paint for the filled are (if enabled) below the chart line */
     protected Paint mFilledPaint;
 
@@ -113,6 +107,8 @@ public class LineChart extends BarLineChartBase {
 
         ArrayList<LineDataSet> dataSets = (ArrayList<LineDataSet>) mCurrentData.getDataSets();
 
+        mRenderPaint.setStyle(Paint.Style.STROKE);
+
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
             LineDataSet dataSet = dataSets.get(i);
@@ -174,11 +170,15 @@ public class LineChart extends BarLineChartBase {
                 }
             }
 
+            mRenderPaint.setPathEffect(null);
+
             // if drawing filled is enabled
-            if (mDrawFilled && entries.size() > 0) {
+            if (dataSet.isDrawFilledEnabled() && entries.size() > 0) {
                 // mDrawCanvas.drawVertices(VertexMode.TRIANGLE_STRIP,
                 // valuePoints.length, valuePoints, 0,
                 // null, 0, null, 0, null, 0, 0, paint);
+
+                mRenderPaint.setStyle(Paint.Style.FILL);
 
                 // filled is drawn with less alpha
                 mRenderPaint.setAlpha(85);
@@ -238,7 +238,7 @@ public class LineChart extends BarLineChartBase {
                 // make sure the values do not interfear with the circles
                 int valOffset = (int) (dataSet.getCircleSize() * 1.75f);
 
-                if (!mDrawCircles)
+                if (!dataSet.isDrawCirclesEnabled())
                     valOffset = valOffset / 2;
 
                 ArrayList<Entry> entries = dataSet.getYVals();
@@ -277,14 +277,18 @@ public class LineChart extends BarLineChartBase {
      */
     @Override
     protected void drawAdditional() {
-        // if drawing circles is enabled
-        if (mDrawCircles) {
 
-            ArrayList<LineDataSet> dataSets = (ArrayList<LineDataSet>) mCurrentData.getDataSets();
+        mRenderPaint.setStyle(Paint.Style.FILL);
 
-            for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
+        ArrayList<LineDataSet> dataSets = (ArrayList<LineDataSet>) mCurrentData.getDataSets();
 
-                LineDataSet dataSet = dataSets.get(i);
+        for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
+
+            LineDataSet dataSet = dataSets.get(i);
+
+            // if drawing circles is enabled for this dataset
+            if (dataSet.isDrawCirclesEnabled()) {
+
                 ArrayList<Entry> entries = dataSet.getYVals();
 
                 float[] positions = generateTransformedValues(entries, 0f);
@@ -311,46 +315,9 @@ public class LineChart extends BarLineChartBase {
                             dataSet.getCircleSize() / 2,
                             mCirclePaintInner);
                 }
-            }
+            } // else do nothing 
+
         }
-    }
-
-    /**
-     * set this to true to enable the drawing of circle indicators
-     * 
-     * @param enabled
-     */
-    public void setDrawCircles(boolean enabled) {
-        this.mDrawCircles = enabled;
-    }
-
-    /**
-     * returns true if drawing circles is enabled, false if not
-     * 
-     * @return
-     */
-    public boolean isDrawCirclesEnabled() {
-        return mDrawCircles;
-    }
-
-    /**
-     * set if the chartdata should be drawn as a line or filled default = line /
-     * default = false, disabling this will give up to 20% performance boost on
-     * large datasets
-     * 
-     * @param filled
-     */
-    public void setDrawFilled(boolean filled) {
-        mDrawFilled = filled;
-    }
-
-    /**
-     * returns true if filled drawing is enabled, false if not
-     * 
-     * @return
-     */
-    public boolean isDrawFilledEnabled() {
-        return mDrawFilled;
     }
 
     /**
@@ -397,7 +364,8 @@ public class LineChart extends BarLineChartBase {
     @Override
     public Paint getPaint(int which) {
         Paint p = super.getPaint(which);
-        if(p != null) return p;
+        if (p != null)
+            return p;
 
         switch (which) {
             case PAINT_CIRCLES_INNER:

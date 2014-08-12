@@ -26,13 +26,10 @@ public class LineChartFrag extends SimpleFragment {
         
         mChart = (LineChart) v.findViewById(R.id.lineChart1);
         
-        mChart.setDrawCircles(false);
-         
         mChart.setDescription("");
-        mChart.setDrawFilled(false);
         mChart.setDrawYValues(false);
 //        mChart.setCircleSize(5f);
-        mChart.setDrawCircles(false);
+        
         mChart.setHighlightIndicatorEnabled(false); 
         mChart.setDrawBorder(false);
         mChart.setDrawGridBackground(false);
