@@ -35,6 +35,7 @@
         <activity android:name="ListViewBarChartActivity"></activity>
         <activity android:name="ListViewMultiChartActivity"></activity>
         <activity android:name="StackedBarActivity"></activity>
+        <activity android:name="AnotherBarActivity"></activity>
     </application>
 
 </manifest>

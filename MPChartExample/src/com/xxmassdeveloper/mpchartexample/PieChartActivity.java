@@ -66,6 +66,8 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 		
 		// display percentage values
 		mChart.setUsePercentValues(true);
+//		mChart.setUnit(" €");
+//		mChart.setDrawUnitsInChart(true);
 		
 		// add a selection listener
 		mChart.setOnChartValueSelectedListener(this);

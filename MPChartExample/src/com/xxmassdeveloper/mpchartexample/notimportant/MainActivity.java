@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.utils.Utils;
+import com.xxmassdeveloper.mpchartexample.AnotherBarActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivityMultiDataset;
 import com.xxmassdeveloper.mpchartexample.DrawChartActivity;
@@ -55,6 +56,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
         objects.add(new ContentItem("Scatter Chart", "A simple demonstration of the scatter chart."));
         objects.add(new ContentItem("Stacked Bar Chart",
                 "A simple demonstration of a bar chart with stacked bars."));
+        objects.add(new ContentItem("Another Bar Chart",
+                "Implementation of a BarChart that only shows values at the bottom."));
         objects.add(new ContentItem("Multiple Lines Chart",
                 "A line chart with multiple DataSet objects. One color per DataSet."));
         objects.add(new ContentItem("Multiple Bars Chart",
@@ -106,27 +109,31 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 startActivity(i);
                 break;
             case 5:
+                i = new Intent(this, AnotherBarActivity.class);
+                startActivity(i);
+                break;
+            case 6:
                 i = new Intent(this, MultiLineChartActivity.class);
                 startActivity(i);
 
                 break;
-            case 6:
+            case 7:
                 i = new Intent(this, BarChartActivityMultiDataset.class);
                 startActivity(i);
                 break;
-            case 7:
+            case 8:
                 i = new Intent(this, DrawChartActivity.class);
                 startActivity(i);
                 break;
-            case 8:
+            case 9:
                 i = new Intent(this, SimpleChartDemo.class);
                 startActivity(i);
                 break;
-            case 9:
+            case 10:
                 i = new Intent(this, ListViewBarChartActivity.class);
                 startActivity(i);
                 break;
-            case 10:
+            case 11:
                 i = new Intent(this, ListViewMultiChartActivity.class);
                 startActivity(i);
                 break;

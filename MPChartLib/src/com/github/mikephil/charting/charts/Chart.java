@@ -55,6 +55,12 @@ public abstract class Chart extends View {
     protected int mColorDarkRed = Color.rgb(232, 76, 59);
 
     /**
+     * string that is drawn next to the values in the chart, indicating their
+     * unit
+     */
+    protected String mUnit = "";
+
+    /**
      * flag that holds the background color of the view and the color the canvas
      * is cleared with
      */
@@ -144,6 +150,9 @@ public abstract class Chart extends View {
 
     /** flag that indicates if the chart has been fed with data yet */
     protected boolean mDataNotSet = true;
+
+    /** if true, units are drawn next to the values in the chart */
+    protected boolean mDrawUnitInChart = false;
 
     /** the range of y-values the chart displays */
     protected float mDeltaY = 1f;
@@ -777,12 +786,12 @@ public abstract class Chart extends View {
                 }
                 break;
             case BELOW_CHART_CENTER:
-                
+
                 float fullSize = mLegend.getFullWidth(mLegendLabelPaint);
-                
+
                 posX = getWidth() / 2f - fullSize / 2f;
                 posY = getHeight() - mLegend.getOffsetBottom() / 2f - formSize / 2f;
-                
+
                 for (int i = 0; i < labels.length; i++) {
 
                     mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
@@ -801,7 +810,7 @@ public abstract class Chart extends View {
                         posX += formSize + stackSpace;
                     }
                 }
-                
+
                 break;
         }
     }
@@ -1236,6 +1245,34 @@ public abstract class Chart extends View {
      */
     public MarkerView getMarkerView() {
         return mMarkerView;
+    }
+
+    /**
+     * if set to true, units are drawn next to values in the chart, default:
+     * false
+     * 
+     * @param enabled
+     */
+    public void setDrawUnitsInChart(boolean enabled) {
+        mDrawUnitInChart = enabled;
+    }
+
+    /**
+     * sets the unit that is drawn next to the values in the chart, e.g. %
+     * 
+     * @param unit
+     */
+    public void setUnit(String unit) {
+        mUnit = unit;
+    }
+
+    /**
+     * Returns the unit that is used for the values in the chart
+     * 
+     * @return
+     */
+    public String getUnit() {
+        return mUnit;
     }
 
     /**

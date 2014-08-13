@@ -559,6 +559,9 @@ public class PieChart extends Chart {
                     val = mFormatValue.format(getPercentOfTotal(value)) + " %";
                 else
                     val = mFormatValue.format(value);
+                
+                if(mDrawUnitInChart)
+                    val = val + mUnit;
 
                 // draw everything, depending on settings
                 if (mDrawXVals && mDrawYValues) {

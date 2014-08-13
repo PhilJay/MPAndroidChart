@@ -2,6 +2,7 @@
 package com.github.mikephil.charting.data;
 
 import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -25,9 +26,15 @@ public abstract class ChartData {
     /** total number of y-values across all DataSet objects */
     private int mYValCount = 0;
 
+    /**
+     * contains the average length (in characters) an entry in the x-vals array
+     * has
+     */
+    private int mXValAverageLength = 0;
+
     /** holds all x-values the chart represents */
     protected ArrayList<String> mXVals;
-    
+
     /** array that holds all DataSets the ChartData object represents */
     protected ArrayList<? extends DataSet> mDataSets;
 
@@ -37,12 +44,12 @@ public abstract class ChartData {
      * @param xVals The values describing the x-axis. Must be at least as long
      *            as the highest xIndex in the Entry objects across all
      *            DataSets.
-     * @param sets the dataset array           
+     * @param sets the dataset array
      */
     public ChartData(ArrayList<String> xVals, ArrayList<? extends DataSet> sets) {
         this.mXVals = xVals;
         this.mDataSets = sets;
-        
+
         init();
     }
 
@@ -61,14 +68,13 @@ public abstract class ChartData {
         }
         this.mXVals = newXVals;
         this.mDataSets = sets;
-        
+
         init();
     }
 
     /**
      * performs all kinds of initialization calculations, such as min-max and
      * value count and sum
-     * 
      */
     private void init() {
 
@@ -77,14 +83,29 @@ public abstract class ChartData {
         calcMinMax(mDataSets);
         calcYValueSum(mDataSets);
         calcYValueCount(mDataSets);
-    }   
-    
+
+        calcXValAverageLength();
+    }
+
+    /**
+     * calculates the average length (in characters) across all x-value strings
+     */
+    private void calcXValAverageLength() {
+
+        int sum = 0;
+
+        for (int i = 0; i < mXVals.size(); i++) {
+            sum += mXVals.get(i).length();
+        }
+
+        mXValAverageLength = sum / mXVals.size();
+    }
+
     protected static ArrayList<? extends DataSet> toArrayList(DataSet dataSet) {
         ArrayList<DataSet> sets = new ArrayList<DataSet>();
         sets.add(dataSet);
         return sets;
     }
-
 
     /**
      * Checks if the combination of x-values array and DataSet array is legal or
@@ -172,7 +193,7 @@ public abstract class ChartData {
             mYMax = entry.getVal();
         }
     }
-    
+
     /** ONLY GETTERS AND SETTERS BELOW THIS */
 
     /**
@@ -184,13 +205,22 @@ public abstract class ChartData {
         return mDataSets.size();
     }
 
-
     public float getYMin() {
         return mYMin;
     }
 
     public float getYMax() {
         return mYMax;
+    }
+
+    /**
+     * returns the average length (in characters) across all values in the
+     * x-vals array
+     * 
+     * @return
+     */
+    public int getXValAverageLength() {
+        return mXValAverageLength;
     }
 
     /**
@@ -236,9 +266,10 @@ public abstract class ChartData {
     public ArrayList<String> getXVals() {
         return mXVals;
     }
-    
+
     /**
      * Returns an the array of DataSets this object holds.
+     * 
      * @return
      */
     public ArrayList<? extends DataSet> getDataSets() {
@@ -307,8 +338,8 @@ public abstract class ChartData {
         }
 
         return types;
-    }    
-    
+    }
+
     /**
      * Get the Entry for a corresponding highlight object
      * 
@@ -319,7 +350,7 @@ public abstract class ChartData {
         return mDataSets.get(highlight.getDataSetIndex()).getEntryForXIndex(
                 highlight.getXIndex());
     }
-    
+
     /**
      * Returns the DataSet object with the given label. Search can be case
      * sensitive or not. IMPORTANT: This method does calculations at runtime.
@@ -338,7 +369,7 @@ public abstract class ChartData {
         else
             return mDataSets.get(index);
     }
-    
+
     /**
      * Returns the DataSet object at the given index.
      * 

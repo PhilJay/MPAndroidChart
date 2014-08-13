@@ -40,12 +40,6 @@ import java.util.ArrayList;
  */
 public abstract class BarLineChartBase extends Chart {
 
-    /**
-     * string that is drawn next to the values in the chart, indicating their
-     * unit
-     */
-    protected String mUnit = "";
-
     /** the maximum number of entried to which values will be drawn */
     protected int mMaxVisibleCount = 100;
 
@@ -66,9 +60,6 @@ public abstract class BarLineChartBase extends Chart {
 
     /** the width of the grid lines */
     protected float mGridWidth = 1f;
-
-    /** if true, units are drawn next to the values in the chart */
-    protected boolean mDrawUnitInChart = false;
 
     /**
      * flag that indicates if pinch-zoom is enabled. if true, both x and y axis
@@ -524,13 +515,14 @@ public abstract class BarLineChartBase extends Chart {
 
         StringBuffer a = new StringBuffer();
 
-        float length = (int) (((float) (mCurrentData.getXVals().get(0).length() + mCurrentData
-                .getXVals()
-                .get(mCurrentData.getXValCount() - 1)
-                .length())));
+//        float length = (int) (((float) (mCurrentData.getXVals().get(0).length() + mCurrentData
+//                .getXVals()
+//                .get(mCurrentData.getXValCount() - 1)
+//                .length())));
 
-        for (int i = 0; i < length; i++) {
-            a.append("H");
+        
+        for (int i = 0; i < mCurrentData.getXValAverageLength() + mXLabels.getSpaceBetweenLabels(); i++) {
+            a.append("h");
         }
 
         mXLabels.mXLabelWidth = Utils.calcTextWidth(mXLabelPaint, a.toString());
@@ -1297,31 +1289,12 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * sets the unit that is drawn next to the values in the chart, e.g. %
-     * 
-     * @param unit
-     */
-    public void setUnit(String unit) {
-        mUnit = unit;
-    }
-
-    /**
      * returns true if the chart is set to start at zero, false otherwise
      * 
      * @return
      */
     public boolean isStartAtZeroEnabled() {
         return mStartAtZero;
-    }
-
-    /**
-     * if set to true, units are drawn next to values in the chart, default:
-     * false
-     * 
-     * @param enabled
-     */
-    public void setDrawUnitsInChart(boolean enabled) {
-        mDrawUnitInChart = enabled;
     }
 
     /**
