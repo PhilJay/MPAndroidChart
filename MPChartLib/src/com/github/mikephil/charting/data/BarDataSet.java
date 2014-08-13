@@ -47,9 +47,11 @@ public class BarDataSet extends DataSet {
         }
 
         BarDataSet copied = new BarDataSet(yVals, getLabel());
+        copied.mColors = mColors;
         copied.mStackSize = mStackSize;
         copied.mBarSpace = mBarSpace;
-        copied.mEntryCountStacks = mEntryCountStacks;
+        copied.mBarShadowColor = mBarShadowColor;
+        copied.mStackLabels = mStackLabels;
 
         return copied;
     }

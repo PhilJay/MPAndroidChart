@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class ScatterDataSet extends DataSet {
 
     /** the size the scattershape will have, in screen pixels */
-    private float mShapeSize = 8f;
+    private float mShapeSize = 12f;
 
     /**
      * the type of shape that is set to be drawn where the values are at,
@@ -28,7 +28,7 @@ public class ScatterDataSet extends DataSet {
     public ScatterDataSet(ArrayList<Entry> yVals, String label) {
         super(yVals, label);
 
-        mShapeSize = Utils.convertDpToPixel(8f);
+//        mShapeSize = Utils.convertDpToPixel(8f);
     }
 
     @Override
@@ -41,7 +41,10 @@ public class ScatterDataSet extends DataSet {
         }
 
         ScatterDataSet copied = new ScatterDataSet(yVals, getLabel());
+        copied.mColors = mColors;
         copied.mShapeSize = mShapeSize;
+        copied.mScatterShape = mScatterShape;
+        copied.mCustomScatterPath = mCustomScatterPath;
         return copied;
     }
 

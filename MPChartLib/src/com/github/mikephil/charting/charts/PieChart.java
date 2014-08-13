@@ -220,6 +220,7 @@ public class PieChart extends Chart {
         if (mDrawLegend) {
 
             mOffsetBottom = Math.max(mOffsetBottom, mLegend.getOffsetBottom());
+            mOffsetRight = Math.max(mOffsetRight, mLegend.getOffsetRight() / 3 * 2);
         }
 
         mLegend.setOffsetTop(mOffsetTop);
@@ -903,15 +904,7 @@ public class PieChart extends Chart {
      * @param size
      */
     public void setHoleRadius(final float percent) {
-
-        Handler h = new Handler();
-        h.post(new Runnable() {
-
-            @Override
-            public void run() {
-                mHoleRadiusPercent = percent;
-            }
-        });
+        mHoleRadiusPercent = percent;
     }
 
     /**
@@ -923,14 +916,7 @@ public class PieChart extends Chart {
      * @param percent
      */
     public void setTransparentCircleRadius(final float percent) {
-        Handler h = new Handler();
-        h.post(new Runnable() {
-
-            @Override
-            public void run() {
-                mTransparentCircleRadius = percent;
-            }
-        });
+        mTransparentCircleRadius = percent;
     }
 
     @Override

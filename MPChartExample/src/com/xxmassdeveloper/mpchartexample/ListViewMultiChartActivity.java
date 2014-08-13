@@ -93,18 +93,35 @@ public class ListViewMultiChartActivity extends DemoBase {
      */
     private ChartData generateDataLine(int cnt) {
 
-        ArrayList<Entry> entries = new ArrayList<Entry>();
+        ArrayList<Entry> e1 = new ArrayList<Entry>();
 
         for (int i = 0; i < 12; i++) {
-            entries.add(new Entry((int) (Math.random() * 70) + 30, i));
+            e1.add(new Entry((int) (Math.random() * 65) + 40, i));
         }
 
-        LineDataSet d = new LineDataSet(entries, "New DataSet " + cnt);
-        d.setLineWidth(3f);
-        d.setCircleSize(5f);
+        LineDataSet d1 = new LineDataSet(e1, "New DataSet " + cnt + ", (1)");
+        d1.setLineWidth(3f);
+        d1.setCircleSize(5f);
+        
+        ArrayList<Entry> e2 = new ArrayList<Entry>();
+
+        for (int i = 0; i < 12; i++) {
+            e2.add(new Entry(e1.get(i).getVal() - 30, i));
+        }
+
+        LineDataSet d2 = new LineDataSet(e2, "New DataSet " + cnt + ", (2)");
+        d2.setLineWidth(3f);
+        d2.setCircleSize(5f);
+        d2.setColor(getResources().getColor(R.color.vordiplom_1));
+        d2.setCircleColor(getResources().getColor(R.color.vordiplom_1));
+        
 //        d.setColors(ColorTemplate.VORDIPLOM_COLORS, getApplicationContext());
         
-        LineData cd = new LineData(getMonths(), d);
+        ArrayList<LineDataSet> sets = new ArrayList<LineDataSet>();
+        sets.add(d1);
+        sets.add(d2);
+        
+        LineData cd = new LineData(getMonths(), sets);
         return cd;
     }
     
@@ -141,7 +158,7 @@ public class ListViewMultiChartActivity extends DemoBase {
             entries.add(new Entry((int) (Math.random() * 70) + 30, i));
         }
 
-        PieDataSet d = new PieDataSet(entries, "New DataSet " + cnt);
+        PieDataSet d = new PieDataSet(entries, "");
         
         // space between slices
         d.setSliceSpace(5f);

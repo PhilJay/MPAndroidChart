@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.utils.Utils;
 import com.xxmassdeveloper.mpchartexample.BarChartActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivityMultiDataset;
 import com.xxmassdeveloper.mpchartexample.DrawChartActivity;
@@ -43,6 +44,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
+        // initialize the utilities
+        Utils.init(getResources());
+        
         ArrayList<ContentItem> objects = new ArrayList<ContentItem>();
 
         objects.add(new ContentItem("Line Chart", "A simple demonstration of the linechart."));

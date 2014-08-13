@@ -33,7 +33,8 @@ public class LineDataSet extends DataSet {
     public LineDataSet(ArrayList<Entry> yVals, String label) {
         super(yVals, label);
 
-        mCircleSize = Utils.convertDpToPixel(4f);
+//        mCircleSize = Utils.convertDpToPixel(4f);
+//        mLineWidth = Utils.convertDpToPixel(1f);
 
         mCircleColors = new ArrayList<Integer>();
 
@@ -53,6 +54,13 @@ public class LineDataSet extends DataSet {
         }
 
         LineDataSet copied = new LineDataSet(yVals, getLabel());
+        copied.mColors = mColors;
+        copied.mLineWidth = mLineWidth;
+        copied.mCircleSize = mCircleSize;
+        copied.mCircleColors = mCircleColors;
+        copied.mDashPathEffect = mDashPathEffect;
+        copied.mDrawCircles = mDrawCircles;
+        copied.mDrawFilled = mDrawFilled;
         return copied;
     }
 

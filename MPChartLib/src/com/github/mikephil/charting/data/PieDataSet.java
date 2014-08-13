@@ -11,12 +11,12 @@ public class PieDataSet extends DataSet {
     private float mSliceSpace = 0f;
 
     /** indicates the selection distance of a pie slice */
-    private float mShift = 0f;
+    private float mShift = 18f;
 
     public PieDataSet(ArrayList<Entry> yVals, String label) {
         super(yVals, label);
 
-        mShift = Utils.convertDpToPixel(15f);
+//        mShift = Utils.convertDpToPixel(12f);
     }
 
     @Override
@@ -29,7 +29,9 @@ public class PieDataSet extends DataSet {
         }
 
         PieDataSet copied = new PieDataSet(yVals, getLabel());
+        copied.mColors = mColors;
         copied.mSliceSpace = mSliceSpace;
+        copied.mShift = mShift;
         return copied;
     }
 
@@ -61,7 +63,7 @@ public class PieDataSet extends DataSet {
 
     /**
      * sets the distance the highlighted piechart-slice of this DataSet is
-     * "shifted" away from the center of the chart, default 18f
+     * "shifted" away from the center of the chart, default 12f
      * 
      * @param shift
      */
