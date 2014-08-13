@@ -1,6 +1,9 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,6 +15,7 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.interfaces.DrawEntryCallback;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.interfaces.OnDrawListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -131,10 +135,10 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
                 break;
             }
             case R.id.actionToggleCircles: {
-                if (mChart.isDrawCirclesEnabled())
-                    mChart.setDrawCircles(false);
+                if (mChart.isDrawPointsEnabled())
+                    mChart.setDrawPointsEnabled(false);
                 else
-                    mChart.setDrawCircles(true);
+                    mChart.setDrawPointsEnabled(true);
                 mChart.invalidate();
                 break;
             }
@@ -190,6 +194,17 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
     /** callback for each new entry drawn with the finger */
     @Override
     public void onEntryAdded(Entry entry) {
+        entry.setDrawEntryCallback(new DrawEntryCallback() {
+            @Override
+            public void drawEntry(Canvas canvas, float posX, float posY, Paint paint) {
+                Paint innerCirclePaint = new Paint();
+                innerCirclePaint.setColor(Color.WHITE);
+
+                canvas.drawCircle(posX, posY, 20f, paint);
+                canvas.drawCircle(posX, posY, 10f, innerCirclePaint);
+            }
+        });
+
         Log.i(Chart.LOG_TAG, entry.toString());
     }
 

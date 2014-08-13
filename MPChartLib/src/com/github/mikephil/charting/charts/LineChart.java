@@ -34,8 +34,8 @@ public class LineChart extends BarLineChartBase {
     /** if true, the data will also be drawn filled */
     protected boolean mDrawFilled = false;
 
-    /** if true, drawing circles is enabled */
-    protected boolean mDrawCircles = true;
+    /** if true, custom drawing of points is enabled */
+    protected boolean mDrawPoints = true;
 
     /** paint for the filled are (if enabled) below the chart line */
     protected Paint mFilledPaint;
@@ -234,7 +234,7 @@ public class LineChart extends BarLineChartBase {
             // make sure the values do not interfear with the circles
             int valOffset = (int) (mCircleSize * 1.7f);
 
-            if (!mDrawCircles)
+            if (!mDrawPoints)
                 valOffset = valOffset / 2;
 
             ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
@@ -278,8 +278,8 @@ public class LineChart extends BarLineChartBase {
      */
     @Override
     protected void drawAdditional() {
-        // if drawing circles is enabled
-        if (mDrawCircles) {
+        // if drawing custom points is enabled
+        if (mDrawPoints) {
 
             ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
 
@@ -305,16 +305,13 @@ public class LineChart extends BarLineChartBase {
                     if (isOffContentRight(positions[j]))
                         break;
 
-                    // make sure the circles don't do shitty things outside
-                    // bounds
+                    // make sure points are all in bounds
                     if (isOffContentLeft(positions[j]) || isOffContentTop(positions[j + 1])
                             || isOffContentBottom(positions[j + 1]))
                         continue;
 
-                    mDrawCanvas.drawCircle(positions[j], positions[j + 1], mCircleSize,
-                            mRenderPaint);
-                    mDrawCanvas.drawCircle(positions[j], positions[j + 1], mCircleSize / 2,
-                            mCirclePaintInner);
+                    //Draw Entry on chart
+                    entries.get(j / 2).drawPointOnCanvas(mDrawCanvas, positions[j], positions[j + 1], new Paint(mRenderPaint));
                 }
             }
         }
@@ -325,8 +322,8 @@ public class LineChart extends BarLineChartBase {
      * 
      * @param enabled
      */
-    public void setDrawCircles(boolean enabled) {
-        this.mDrawCircles = enabled;
+    public void setDrawPointsEnabled(boolean enabled) {
+        this.mDrawPoints = enabled;
     }
 
     /**
@@ -334,8 +331,8 @@ public class LineChart extends BarLineChartBase {
      * 
      * @return
      */
-    public boolean isDrawCirclesEnabled() {
-        return mDrawCircles;
+    public boolean isDrawPointsEnabled() {
+        return mDrawPoints;
     }
 
     /**
