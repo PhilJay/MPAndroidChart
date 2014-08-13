@@ -23,6 +23,7 @@ import com.xxmassdeveloper.mpchartexample.AnotherBarActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivityMultiDataset;
 import com.xxmassdeveloper.mpchartexample.DrawChartActivity;
+import com.xxmassdeveloper.mpchartexample.InvertedLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.LineChartActivity;
 import com.xxmassdeveloper.mpchartexample.ListViewBarChartActivity;
 import com.xxmassdeveloper.mpchartexample.ListViewMultiChartActivity;
@@ -73,6 +74,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
         objects.add(new ContentItem(
                 "Multiple charts inside ListView",
                 "Demonstrates the usage of different chart types inside a ListView."));
+//        objects.add(new ContentItem(
+//                "Inverted Line Chart",
+//                "Demonstrates the feature of inverting the y-axis."));
 
         MyAdapter adapter = new MyAdapter(this, objects);
 
@@ -135,6 +139,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 break;
             case 11:
                 i = new Intent(this, ListViewMultiChartActivity.class);
+                startActivity(i);
+                break;
+            case 12:
+                i = new Intent(this, InvertedLineChartActivity.class);
                 startActivity(i);
                 break;
         }

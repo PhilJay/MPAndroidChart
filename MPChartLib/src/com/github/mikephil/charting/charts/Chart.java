@@ -413,6 +413,7 @@ public abstract class Chart extends View {
         mMatrixValueToPx.postScale(scaleX, -scaleY);
 
         mMatrixOffset.reset();
+                
         mMatrixOffset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
 
         // mMatrixOffset.setTranslate(mOffsetLeft, 0);

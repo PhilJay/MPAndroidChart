@@ -36,6 +36,7 @@
         <activity android:name="ListViewMultiChartActivity"></activity>
         <activity android:name="StackedBarActivity"></activity>
         <activity android:name="AnotherBarActivity"></activity>
+        <activity android:name="InvertedLineChartActivity"></activity>
     </application>
 
 </manifest>

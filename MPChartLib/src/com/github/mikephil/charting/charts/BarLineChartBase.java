@@ -13,7 +13,6 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ViewParent;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
@@ -419,8 +418,13 @@ public abstract class BarLineChartBase extends Chart {
 
         Matrix offset = new Matrix();
         offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
-        // offset.setTranslate(mOffsetLeft, 0);
-        // offset.postScale(1.0f, -1.0f);
+        
+//        if (!mInvertYAxis)
+//            offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
+//        else {
+//            offset.setTranslate(mOffsetLeft, 0);
+//            offset.postScale(1.0f, -1.0f);
+//        }
 
         mMatrixOffset.set(offset);
     }
@@ -515,12 +519,12 @@ public abstract class BarLineChartBase extends Chart {
 
         StringBuffer a = new StringBuffer();
 
-//        float length = (int) (((float) (mCurrentData.getXVals().get(0).length() + mCurrentData
-//                .getXVals()
-//                .get(mCurrentData.getXValCount() - 1)
-//                .length())));
+        // float length = (int) (((float)
+        // (mCurrentData.getXVals().get(0).length() + mCurrentData
+        // .getXVals()
+        // .get(mCurrentData.getXValCount() - 1)
+        // .length())));
 
-        
         for (int i = 0; i < mCurrentData.getXValAverageLength() + mXLabels.getSpaceBetweenLabels(); i++) {
             a.append("h");
         }
@@ -542,12 +546,18 @@ public abstract class BarLineChartBase extends Chart {
         PointD p1 = getValuesByTouchPoint(mContentRect.left, mContentRect.top);
         PointD p2 = getValuesByTouchPoint(mContentRect.left, mContentRect.bottom);
 
-        // update the current chart dimensions on the y-axis
-        // mYChartMin = (float) Math.min(p1.y, p2.y);
-        // mYChartMax = (float) Math.max(p1.y, p2.y);
-
         mYChartMin = (float) p2.y;
         mYChartMax = (float) p1.y;
+
+//        if (!mInvertYAxis) {
+//            mYChartMin = (float) p2.y;
+//            mYChartMax = (float) p1.y;
+//        } else {
+//            
+//            if(!mStartAtZero) mYChartMin = (float) Math.min(p1.y, p2.y);
+//            else mYChartMin = 0;
+//            mYChartMax = (float) Math.max(p1.y, p2.y);
+//        }
 
         float yMin = mYChartMin;
         float yMax = mYChartMax;
@@ -977,6 +987,16 @@ public abstract class BarLineChartBase extends Chart {
 
         refreshTouch(save);
     }
+
+//    private boolean mInvertYAxis = false;
+//
+//    public void setInvertYAxisEnabled(boolean enabled) {
+//        mInvertYAxis = enabled;
+//    }
+//
+//    public boolean isInvertYAxisEnabled() {
+//        return mInvertYAxis;
+//    }
 
     /**
      * Centers the viewport around the specified x-index and the specified
@@ -1452,8 +1472,11 @@ public abstract class BarLineChartBase extends Chart {
         double base = Math.floor(xTouchVal);
 
         double touchOffset = mDeltaX * 0.025;
-        Log.i(LOG_TAG, "touchindex x: " + xTouchVal + ", touchindex y: " + yTouchVal + ", offset: " + touchOffset);
-//        Toast.makeText(getContext(), "touchindex x: " + xTouchVal + ", touchindex y: " + yTouchVal + ", offset: " + touchOffset, Toast.LENGTH_SHORT).show();
+        Log.i(LOG_TAG, "touchindex x: " + xTouchVal + ", touchindex y: " + yTouchVal + ", offset: "
+                + touchOffset);
+        // Toast.makeText(getContext(), "touchindex x: " + xTouchVal +
+        // ", touchindex y: " + yTouchVal + ", offset: " + touchOffset,
+        // Toast.LENGTH_SHORT).show();
 
         // touch out of chart
         if ((this instanceof LineChart || this instanceof ScatterChart)
@@ -1461,10 +1484,12 @@ public abstract class BarLineChartBase extends Chart {
             return null;
         if (this instanceof BarChart && (xTouchVal < 0 || xTouchVal > mDeltaX))
             return null;
-        
-        if(base < 0) base = 0;
-        if(base >= mDeltaX) base = mDeltaX - 1;
-        
+
+        if (base < 0)
+            base = 0;
+        if (base >= mDeltaX)
+            base = mDeltaX - 1;
+
         int xIndex = (int) base;
         int dataSetIndex = 0; // index of the DataSet inside the ChartData
                               // object
