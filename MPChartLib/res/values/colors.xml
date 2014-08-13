@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="gradient">#DD2ECCFA</color>
     
     <color name="fresh_1">#FFFFB3</color>
     <color name="fresh_2">#94FF85</color>

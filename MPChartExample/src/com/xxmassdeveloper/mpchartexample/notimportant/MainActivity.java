@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.xxmassdeveloper.mpchartexample.BarChartActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivityMultiDataset;
 import com.xxmassdeveloper.mpchartexample.DrawChartActivity;
+import com.xxmassdeveloper.mpchartexample.DrawableFillableLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.LineChartActivity;
 import com.xxmassdeveloper.mpchartexample.ListViewBarChartActivity;
 import com.xxmassdeveloper.mpchartexample.ListViewMultiChartActivity;
@@ -63,6 +64,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
         objects.add(new ContentItem(
                 "Multiple charts inside ListView",
                 "Demonstrates the usage of different chart types inside a ListView."));
+        objects.add(new ContentItem("Drawable Fillable Line Chart","A line chart with a drawable for a fill"));
 
         MyAdapter adapter = new MyAdapter(this, objects);
 
@@ -117,6 +119,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 break;
             case 9:
                 i = new Intent(this, ListViewMultiChartActivity.class);
+                startActivity(i);
+                break;
+            case 10:
+                i = new Intent(this, DrawableFillableLineChartActivity.class);
                 startActivity(i);
                 break;
         }
