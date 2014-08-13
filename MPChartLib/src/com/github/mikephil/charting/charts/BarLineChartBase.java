@@ -13,6 +13,7 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ViewParent;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
@@ -1477,15 +1478,20 @@ public abstract class BarLineChartBase extends Chart {
         double yTouchVal = pts[1];
         double base = Math.floor(xTouchVal);
 
-        Log.i(LOG_TAG, "touchindex x: " + xTouchVal + ", touchindex y: " + yTouchVal);
+        double touchOffset = mDeltaX * 0.025;
+        Log.i(LOG_TAG, "touchindex x: " + xTouchVal + ", touchindex y: " + yTouchVal + ", offset: " + touchOffset);
+//        Toast.makeText(getContext(), "touchindex x: " + xTouchVal + ", touchindex y: " + yTouchVal + ", offset: " + touchOffset, Toast.LENGTH_SHORT).show();
 
         // touch out of chart
         if ((this instanceof LineChart || this instanceof ScatterChart)
-                && (xTouchVal < 0 || xTouchVal > mDeltaX))
+                && (xTouchVal < -touchOffset || xTouchVal > mDeltaX + touchOffset))
             return null;
-        if (this instanceof BarChart && (xTouchVal < 0 || xTouchVal > mDeltaX + 1))
+        if (this instanceof BarChart && (xTouchVal < 0 || xTouchVal > mDeltaX))
             return null;
-
+        
+        if(base < 0) base = 0;
+        if(base >= mDeltaX) base = mDeltaX - 1;
+        
         int xIndex = (int) base;
         int dataSetIndex = 0; // index of the DataSet inside the ChartData
                               // object
