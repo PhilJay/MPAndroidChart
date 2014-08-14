@@ -38,6 +38,10 @@ import java.util.ArrayList;
  * @author Philipp Jahoda
  */
 public abstract class BarLineChartBase extends Chart {
+    
+
+    /** if set to true, the y-axis is inverted and low values start at the top */
+    private boolean mInvertYAxis = false;
 
     /** the maximum number of entried to which values will be drawn */
     protected int mMaxVisibleCount = 100;
@@ -417,14 +421,14 @@ public abstract class BarLineChartBase extends Chart {
         mMatrixValueToPx.set(val);
 
         Matrix offset = new Matrix();
-        offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
-        
-//        if (!mInvertYAxis)
-//            offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
-//        else {
-//            offset.setTranslate(mOffsetLeft, 0);
-//            offset.postScale(1.0f, -1.0f);
-//        }
+        // offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
+
+        if (!mInvertYAxis)
+            offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
+        else {
+            offset.setTranslate(mOffsetLeft, -getOffsetTop());
+            offset.postScale(1.0f, -1.0f);
+        }
 
         mMatrixOffset.set(offset);
     }
@@ -546,18 +550,20 @@ public abstract class BarLineChartBase extends Chart {
         PointD p1 = getValuesByTouchPoint(mContentRect.left, mContentRect.top);
         PointD p2 = getValuesByTouchPoint(mContentRect.left, mContentRect.bottom);
 
-        mYChartMin = (float) p2.y;
-        mYChartMax = (float) p1.y;
+        // mYChartMin = (float) p2.y;
+        // mYChartMax = (float) p1.y;
 
-//        if (!mInvertYAxis) {
-//            mYChartMin = (float) p2.y;
-//            mYChartMax = (float) p1.y;
-//        } else {
-//            
-//            if(!mStartAtZero) mYChartMin = (float) Math.min(p1.y, p2.y);
-//            else mYChartMin = 0;
-//            mYChartMax = (float) Math.max(p1.y, p2.y);
-//        }
+        if (!mInvertYAxis) {
+            mYChartMin = (float) p2.y;
+            mYChartMax = (float) p1.y;
+        } else {
+
+            if (!mStartAtZero)
+                mYChartMin = (float) Math.min(p1.y, p2.y);
+            else
+                mYChartMin = 0;
+            mYChartMax = (float) Math.max(p1.y, p2.y);
+        }
 
         float yMin = mYChartMin;
         float yMax = mYChartMax;
@@ -988,15 +994,24 @@ public abstract class BarLineChartBase extends Chart {
         refreshTouch(save);
     }
 
-//    private boolean mInvertYAxis = false;
-//
-//    public void setInvertYAxisEnabled(boolean enabled) {
-//        mInvertYAxis = enabled;
-//    }
-//
-//    public boolean isInvertYAxisEnabled() {
-//        return mInvertYAxis;
-//    }
+    /**
+     * If this is set to true, the y-axis is inverted which means that low
+     * values are on top of the chart, high values on bottom.
+     * 
+     * @param enabled
+     */
+    public void setInvertYAxisEnabled(boolean enabled) {
+        mInvertYAxis = enabled;
+    }
+
+    /**
+     * If this returns true, the y-axis is inverted.
+     * 
+     * @return
+     */
+    public boolean isInvertYAxisEnabled() {
+        return mInvertYAxis;
+    }
 
     /**
      * Centers the viewport around the specified x-index and the specified

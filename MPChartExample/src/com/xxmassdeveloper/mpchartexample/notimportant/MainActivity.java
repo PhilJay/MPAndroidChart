@@ -74,9 +74,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
         objects.add(new ContentItem(
                 "Multiple charts inside ListView",
                 "Demonstrates the usage of different chart types inside a ListView."));
-//        objects.add(new ContentItem(
-//                "Inverted Line Chart",
-//                "Demonstrates the feature of inverting the y-axis."));
+        objects.add(new ContentItem(
+                "Inverted Line Chart",
+                "Demonstrates the feature of inverting the y-axis."));
 
         MyAdapter adapter = new MyAdapter(this, objects);
 

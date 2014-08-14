@@ -205,14 +205,15 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 
                     mMatrix.set(mSavedMatrix);
                     PointF dragPoint = new PointF(event.getX(), event.getY());
-                    mMatrix.postTranslate(dragPoint.x - mTouchStartPoint.x, dragPoint.y
-                            - mTouchStartPoint.y);
                     
-//                    mMatrix.set(mSavedMatrix);
-//                    PointF dragPoint = new PointF(event.getX(), event.getY());
-//                    mMatrix.postTranslate(dragPoint.x - mTouchStartPoint.x, -(dragPoint.y
-//                            - mTouchStartPoint.y));
-
+                    // check if axis is inverted
+                    if(!mChart.isInvertYAxisEnabled()) {
+                        mMatrix.postTranslate(dragPoint.x - mTouchStartPoint.x, dragPoint.y
+                                - mTouchStartPoint.y);
+                    } else {
+                        mMatrix.postTranslate(dragPoint.x - mTouchStartPoint.x, -(dragPoint.y
+                              - mTouchStartPoint.y));
+                    }
 
                 } else if (mTouchMode == X_ZOOM || mTouchMode == Y_ZOOM || mTouchMode == PINCH_ZOOM) {
 
@@ -221,13 +222,6 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
                     float totalDist = spacing(event);
 
                     if (totalDist > 10f) {
-
-                        float[] values = new float[9];
-                        mMatrix.getValues(values);
-
-                        // get the previous scale factors
-                        // float oldScaleX = values[Matrix.MSCALE_X];
-                        // float oldScaleY = values[Matrix.MSCALE_Y];
 
                         // get the translation
                         PointF t = getTrans(mTouchPointCenter.x, mTouchPointCenter.y);
@@ -368,7 +362,14 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
     public PointF getTrans(float x, float y) {
 
         float xTrans = x - mChart.getOffsetLeft();
-        float yTrans = -(mChart.getMeasuredHeight() - y - mChart.getOffsetBottom());
+        float yTrans = 0f;
+        
+        // check if axis is inverted
+        if(!mChart.isInvertYAxisEnabled()) {
+            yTrans = -(mChart.getMeasuredHeight() - y - mChart.getOffsetBottom());
+        } else {
+            yTrans = -(y - mChart.getOffsetTop());
+        }
 
         return new PointF(xTrans, yTrans);
     }

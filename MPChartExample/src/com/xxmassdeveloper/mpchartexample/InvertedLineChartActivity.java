@@ -71,7 +71,7 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
         mChart.setDescription("");
 
         // invert the y-axis
-//        mChart.setInvertYAxisEnabled(true);
+        mChart.setInvertYAxisEnabled(true);
 
         // enable value highlighting
         mChart.setHighlightEnabled(true);
