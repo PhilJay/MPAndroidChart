@@ -114,10 +114,10 @@ public class DrawableFillableLineChartActivity extends DemoBase implements SeekB
                 break;
             }
             case R.id.actionToggleCircles: {
-                if (mChart.isDrawCirclesEnabled())
-                    mChart.setDrawCircles(false);
+                if (mChart.isDrawPointsEnabled())
+                    mChart.setDrawPointsEnabled(false);
                 else
-                    mChart.setDrawCircles(true);
+                    mChart.setDrawPointsEnabled(true);
                 mChart.invalidate();
                 break;
             }
