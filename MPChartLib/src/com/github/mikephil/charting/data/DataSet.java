@@ -1,7 +1,14 @@
 
 package com.github.mikephil.charting.data;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+
+import com.github.mikephil.charting.interfaces.DrawEntryCallback;
+
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * The DataSet class represents one group or type of entries (Entry) in the
@@ -248,14 +255,54 @@ public class DataSet {
 
             ArrayList<Entry> entries = new ArrayList<Entry>();
 
+            DrawEntryCallback callback = getDrawCallback(i);
+
             for (int j = 0; j < curValues.length; j++) {
-                entries.add(new Entry(curValues[j].floatValue(), j));
+                entries.add(new Entry(curValues[j].floatValue(), j, callback));
             }
 
             dataSets.add(new DataSet(entries, "DS " + i));
         }
 
         return dataSets;
+    }
+
+    private static DrawEntryCallback getDrawCallback(int val) {
+
+        switch (val) {
+            case 0:
+                return new DrawEntryCallback() {
+                    @Override
+                    public void drawEntry(Canvas canvas, float posX, float posY, Paint paint) {
+                        canvas.drawCircle(posX, posY, 10f, paint);
+                    }
+                };
+            case 1:
+                return new DrawEntryCallback() {
+                    @Override
+                    public void drawEntry(Canvas canvas, float posX, float posY, Paint paint) {
+                        canvas.drawRect(posX - 10, posY + 10, posX + 10, posY - 10, paint);
+                    }
+                };
+            case 2:
+                return new DrawEntryCallback() {
+                    @Override
+                    public void drawEntry(Canvas canvas, float posX, float posY, Paint paint) {
+                        Paint innerCirclePaint = new Paint();
+                        innerCirclePaint.setColor(Color.WHITE);
+
+                        canvas.drawCircle(posX, posY, 20f, paint);
+                        canvas.drawCircle(posX, posY, 10f, innerCirclePaint);
+                    }
+                };
+            default:
+                return new DrawEntryCallback() {
+                    @Override
+                    public void drawEntry(Canvas canvas, float posX, float posY, Paint paint) {
+                        canvas.drawCircle(posX, posY, 50f, paint);
+                    }
+                };
+        }
     }
 
     /**

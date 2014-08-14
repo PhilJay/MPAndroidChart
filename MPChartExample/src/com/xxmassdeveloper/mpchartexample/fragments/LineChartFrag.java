@@ -30,14 +30,14 @@ public class LineChartFrag extends SimpleFragment {
         ct.addColorsForDataSets(ColorTemplate.VORDIPLOM_COLORS, getActivity());
         
         mChart.setColorTemplate(ct);
-        mChart.setDrawCircles(false);
+        mChart.setDrawPointsEnabled(false);
          
         mChart.setDescription("");
         mChart.setDrawFilled(false);
         mChart.setDrawYValues(false);
         mChart.setLineWidth(4f);
 //        mChart.setCircleSize(5f);
-        mChart.setDrawCircles(false);
+        mChart.setDrawPointsEnabled(false);
         mChart.setHighlightIndicatorEnabled(false); 
         mChart.setDrawBorder(false);
         mChart.setDrawGridBackground(false);

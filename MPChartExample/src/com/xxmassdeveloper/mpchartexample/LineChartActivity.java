@@ -1,7 +1,8 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
-import android.graphics.Color;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -19,6 +20,7 @@ import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
+import com.github.mikephil.charting.interfaces.DrawEntryCallback;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
@@ -184,10 +186,10 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
                 break;
             }
             case R.id.actionToggleCircles: {
-                if (mChart.isDrawCirclesEnabled())
-                    mChart.setDrawCircles(false);
+                if (mChart.isDrawPointsEnabled())
+                    mChart.setDrawPointsEnabled(false);
                 else
-                    mChart.setDrawCircles(true);
+                    mChart.setDrawPointsEnabled(true);
                 mChart.invalidate();
                 break;
             }
@@ -302,10 +304,16 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
 
         for (int i = 0; i < count; i++) {
             float mult = (range + 1);
-            float val = (float) (Math.random() * mult) + 3;// + (float)
+            final float val = (float) (Math.random() * mult) + 3;// + (float)
                                                                // ((mult *
                                                                // 0.1) / 10);
-            yVals.add(new Entry(val, i));
+
+            yVals.add(new Entry(val, i, new DrawEntryCallback() {
+                @Override
+                public void drawEntry(Canvas canvas, float posX, float posY, Paint paint) {
+                    canvas.drawCircle(posX, posY, val, paint);
+                }
+            }));
         }
 
         // create a dataset and give it a type

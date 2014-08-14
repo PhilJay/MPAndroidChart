@@ -5,7 +5,7 @@ android {
     buildToolsVersion '19.1.0'
     defaultConfig {
         applicationId 'com.xxmassdeveloper.mpchartexample'
-        minSdkVersion 16
+        minSdkVersion 9
         targetSdkVersion 19
         versionCode 8
         versionName '1.0.8'

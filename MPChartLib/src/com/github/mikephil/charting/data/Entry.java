@@ -1,6 +1,11 @@
 
 package com.github.mikephil.charting.data;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
+
+import com.github.mikephil.charting.interfaces.DrawEntryCallback;
+
 /**
  * Class representing one entry in the chart.
  * 
@@ -14,6 +19,9 @@ public class Entry {
     /** the index on the x-axis */
     private int mXIndex = 0;
 
+    /** the callback for drawing itself on the graph*/
+    private DrawEntryCallback mDrawEntryCallback;
+
     /**
      * A Entry represents one single entry in the chart
      * 
@@ -23,8 +31,13 @@ public class Entry {
      *            x-values String array)
      */
     public Entry(float val, int xIndex) {
+        this(val, xIndex, null);
+    }
+
+    public Entry(float val, int xIndex, DrawEntryCallback drawEntryCallback) {
         mVal = val;
         mXIndex = xIndex;
+        mDrawEntryCallback = drawEntryCallback;
     }
 
     /**
@@ -61,6 +74,16 @@ public class Entry {
      */
     public void setVal(float val) {
         this.mVal = val;
+    }
+
+    public void drawPointOnCanvas(Canvas canvas, float posX, float posY, Paint paint) {
+        if (mDrawEntryCallback != null) {
+            mDrawEntryCallback.drawEntry(canvas, posX, posY, paint);
+        }
+    }
+
+    public void setDrawEntryCallback(DrawEntryCallback drawEntryCallback) {
+        mDrawEntryCallback = drawEntryCallback;
     }
 
     //
