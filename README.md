@@ -86,7 +86,7 @@ Furthermore, here is some code to get started.
 
 **Setup:**
 
-For using a <code>LineChart, BarChart or PieChart </code>, define it in .xml:
+For using a <code>LineChart, BarChart, ScatterChart or PieChart </code>, define it in .xml:
 ```xml
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"
@@ -97,7 +97,7 @@ For using a <code>LineChart, BarChart or PieChart </code>, define it in .xml:
     LineChart chart = (LineChart) findViewById(R.id.chart);
 ``` 
 
-or create it in code (and then add it to a layout):
+or create it in code (and then **add it to a layout**):
 ```java
     LineChart chart = new LineChart(Context);
 ```   
@@ -143,24 +143,26 @@ If you want to add values (data) to the chart, it has to be done via the
 ```java
     setData(ChartData data);
 ```
-method. The <code>ChartData</code> class encapsulates all data and information that is needed for the chart during rendering. In the constructor, you can hand over an <code>ArrayList</code> of type <code>DataSet</code> as the values to display, and an additional <code>ArrayList</code> of <code>String</code> that will describe the legend on the x-axis.
+method. The baseclass <code>ChartData</code> class encapsulates all data and information that is needed for the chart during rendering. For each type of chart, a different subclass of `ChartData` (e.g. `LineData`) exists that should be used for setting data for the chart. In the constructor, you can hand over an <code>ArrayList<? extends DataSet></code> as the values to display, and an additional <code>ArrayList</code> of <code>String</code> that will describe the legend on the x-axis. Example with the class `LineData` (extends `ChartData`):
 
 ```java
-    public ChartData(ArrayList<String> xVals, ArrayList<DataSet> dataSets) { ... }
+    public LineData(ArrayList<String> xVals, ArrayList<LineDataSet> sets) { ... }
 ```
 
-So, what is a <code>DataSet</code> and why do you need it? That is actually pretty simple. One <code>DataSet</code> object represents a group of entries (datatype <code>Entry</code>) inside the chart that belong together. It is designed to logically separate different groups of values in the chart. As an example, you might want to display the quarterly revenue of two different companies over one year. In that case, it would be recommended to create two different <code>DataSet</code> objects, each containing four values (one for each quarter). As an <code>ArrayList<String></code> to describe the legend on the x-axis, you would simply provide the four Strings "1.Q", "2.Q", "3.Q", "4.Q".
+So, what is a <code>DataSet</code> and why do you need it? That is actually pretty simple. One <code>DataSet</code> object represents a group of entries (datatype <code>Entry</code>) inside the chart that belong together. It is designed to **logically separate different groups of values in the chart**. For each type of chart, a differnt object that extends `DataSet` (e.g. `LineDataSet`) exists that allows specific styling. 
+
+As an example, you might want to display the quarterly revenue of two different companies over one year in a `LineChart`. In that case, it would be recommended to create two different <code>LineDataSet</code> objects, each containing four values (one for each quarter). As an <code>ArrayList<String></code> to describe the legend on the x-axis, you would simply provide the four Strings "1.Q", "2.Q", "3.Q", "4.Q".
 
 Of course, it is also possible to provide just one <code>DataSet</code> object containing all 8 values for the two companys. 
 
-So how to setup a <code>DataSet</code> object?
+So how to setup a <code>LineDataSet</code> object?
 ```java
-    public DataSet(ArrayList<Entry> yVals, String label) { ... }
+    public LineDataSet(ArrayList<Entry> yVals, String label) { ... }
 ```
 
-When looking at the constructor, it is visible that the <code>DataSet</code> needs an <code>ArrayList</code> of type <code>Entry</code> and a `String` used to describe the `DataSet` and as a label for the `Legend`. Furthermore this label can be used to find the `DataSet` amongst other `DataSet` objects in the `Chartdata` object.
+When looking at the constructor, it is visible that the <code>LineDataSet</code> needs an <code>ArrayList</code> of type <code>Entry</code> and a `String` used to describe the `DataSet` and as a label used for the `Legend`. Furthermore this label can be used to find the `DataSet` amongst other `DataSet` objects in the `ChartData` object.
 
-The <code>ArrayList</code> of type <code>Entry</code> encapsulates all values of the chart. A <code>Entry</code> object is an additional wrapper around a value and holds the value itself, and it's position on the x-axis (the index inside the <code>ArrayList</code> of <code>String</code> of the <code>CharData</code> object the value is mapped to):
+The <code>ArrayList</code> of type <code>Entry</code> encapsulates all values of the chart. A <code>Entry</code> object is an additional wrapper around a value and holds the value itself, and it's position on the x-axis (the index inside the <code>ArrayList</code> of <code>String</code> of the <code>LineData</code> object the value is mapped to):
 ```java
     public Entry(float val, int xIndex) { ... }
 ```
@@ -189,27 +191,26 @@ Then, fill the lists with <code>Entry</code> objects. Make sure the entry object
     //...
 ```
 
-Now that we have our lists of <code>Entry</code> objects, the <code>DataSet</code> objects can be created:
+Now that we have our lists of <code>Entry</code> objects, the <code>LineDataSet</code> objects can be created:
 ```java
-    DataSet setComp1 = new DataSet(valsComp1, "company 1");
-    DataSet setComp2 = new DataSet(valsComp2, "company 2");
+    LineDataSet setComp1 = new LineDataSet(valsComp1, "company 1");
+    LineDataSet setComp2 = new LineDataSet(valsComp2, "company 2");
 ```
 Last but not least, we create a list of <code>DataSets</code> and a list of x legend entries and build our <code>ChartData</code> object:
 
 ```java
-    ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+    ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
     dataSets.add(setComp1);
     dataSets.add(setComp2);
     
     ArrayList<String> xVals = new ArrayList<String>();
     xVals.add("1.Q"); xVals.add("2.Q"); xVals.add("3.Q"); xVals.add("4.Q"); 
     
-    ChartData data = new ChartData(xVals, dataSets);
-    chart.setData(data);
+    LineData data = new LineData(xVals, dataSets);
+    mLineChart.setData(data);
 ```
 
 Now, our <code>ChartData</code> object can be set to the chart. But before drawing it, **colors need to be specified**. If no colors are specified when the data is drawn, the default <code>ColorTemplate</code> will be used.
-
 
 **Setting colors:**
 
