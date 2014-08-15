@@ -235,25 +235,59 @@ It would also be possible to let each <code>DataSet</code> have variations of a 
     chart.setColorTemplate(ct);
 ```
 
-**Displaying legends:**
+**Displaying / styling legends:**
 
-By default, all subclasses of `BarLineChartBase` **support legends** and will automatically generate and draw a legend after setting data for the chart.
+By default, all chart types support legends and will automatically generate and draw a legend after setting data for the chart.
 
-The number of entries the automatically generated legend contains depends on the number of used colors as well as on the number of `DataSets` used in the chart. The labels of the `Legend` depend on the labels set for the used `DataSet` objects in the chart. If no labels for the `DataSet` objects have been specified, the chart will automatically generate them.
+The number of entries the automatically generated legend contains depends on the number of different colors (across all `DataSet` objects) as well as on the `DataSet` labels. The labels of the `Legend` depend on the labels set for the used `DataSet` objects in the chart. If no labels for the `DataSet` objects have been specified, the chart will automatically generate them. If multiple colors are used for one `DataSet`, those colors are grouped and only described by one label.
 
-For customizeing the `Legend`, use you can retreive the `Legend` object from the chart **after setting data**.
+For customizeing the `Legend`, use you can retreive the `Legend` object from the chart **after setting data** using the `getLegend()` method.
 
 ```java
     // setting data...
     chart.setData(....);
     
     Legend l = chart.getLegend();
-    l.setFormSize(10f);
-    l.setForm(LegendForm.CIRCLE);
-    l.setPosition(LegendPosition.LEFT_OF_CHART);
+    l.setFormSize(10f); // set the size of the legend forms/shapes
+    l.setForm(LegendForm.CIRCLE); // set what type of form/shape should be used
+    l.setPosition(LegendPosition.BELOW_CHART_LEFT);
     l.setTypeface(...);
+    l.setXEntrySpace(5f); // set the space between the legend entries on the x-axis
+    l.setYEntrySpace(5f); // set the space between the legend entries on the y-axis
     // and many more...
 ```
+
+**Displaying / styling labels:**
+
+Labels (classes `XLabel` and `YLabel`) are used to describe the values of the chart on the x- and y-axis. While the x-axis labels display what is handed over to the `ChartData` object as an `ArrayList<String>` ("xVals"), the y-axis labels depend on the actual values that are set for the chart.
+
+Labels can be enabled/disabled, using the methods:
+
+ - `setDrawXLabels(boolean enabled)`
+ - `setDrawYLabels(boolean enabled)`
+
+the chart provides.
+In order to apply a different styling to the labels, the methods `getYLabels()` and `getXLabels()` can be used to acquire the labels object and modify it.
+
+Example:
+
+```java
+XLabels xl = mChart.getXLabels();
+xl.setPosition(XLabelPosition.BOTTOM); // set the position
+xl.setTypeface(...); // set a different font
+xl.setTextSize(12f); // set the textsize
+xl.setSpaceBetweenLabels(3); // set how many characters of space should be between the labels
+//... and more
+
+YLabels yl = mChart.getYLabels();
+yl.setPosition(YLabelPosition.BOTH_SIDED); // set the position
+yl.setTypeface(...); // set a different font
+yl.setTextSize(12f); // set the textsize
+yl.setLabelCount(6); // set how many label entries should be displayed
+//... and more
+
+```
+
 
 More documentation and example code coming soon.
 
