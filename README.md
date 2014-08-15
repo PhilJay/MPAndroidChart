@@ -143,7 +143,7 @@ If you want to add values (data) to the chart, it has to be done via the
 ```java
     setData(ChartData data);
 ```
-method. The baseclass <code>ChartData</code> class encapsulates all data and information that is needed for the chart during rendering. For each type of chart, a different subclass of `ChartData` (e.g. `LineData`) exists that should be used for setting data for the chart. In the constructor, you can hand over an <code>ArrayList<? extends DataSet></code> as the values to display, and an additional <code>ArrayList</code> of <code>String</code> that will describe the legend on the x-axis. Example with the class `LineData` (extends `ChartData`):
+method. The baseclass <code>ChartData</code> class encapsulates all data and information that is needed for the chart during rendering. For each type of chart, a different subclass of `ChartData` (e.g. `LineData`) exists that should be used for setting data for the chart. In the constructor, you can hand over an <code>ArrayList<? extends DataSet></code> as the values to display, and an additional <code>ArrayList</code> of <code>String</code> that will describe the labels on the x-axis. Example with the class `LineData` (extends `ChartData`), which is used for adding data to a `LineChart`:
 
 ```java
     public LineData(ArrayList<String> xVals, ArrayList<LineDataSet> sets) { ... }
