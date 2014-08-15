@@ -1,4 +1,24 @@
 apply plugin: 'com.android.library'
+apply plugin: 'android-maven'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.github.dcendents:android-maven-plugin:1.0'
+    }
+}
+
+group = 'com.xxmassdeveloper.mpchart'
+version = '1.0-SNAPSHOT'
+
 
 android {
     compileSdkVersion 19
