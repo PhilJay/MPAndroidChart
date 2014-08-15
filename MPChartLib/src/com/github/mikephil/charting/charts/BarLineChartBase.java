@@ -1514,6 +1514,11 @@ public abstract class BarLineChartBase extends Chart {
             }
         }
 
+        if(mDataNotSet) {
+            Log.i(LOG_TAG, "no data set");
+            return null;
+        }
+
         ArrayList<SelInfo> valsAtIndex = getYValsAtIndex(xIndex);
 
         dataSetIndex = getClosestDataSetIndex(valsAtIndex, (float) yTouchVal);
