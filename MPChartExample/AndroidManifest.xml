@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xxmassdeveloper.mpchartexample"
-    android:versionCode="8"
-    android:versionName="1.0.8" >
+    android:versionCode="9"
+    android:versionName="1.1.1" >
 
     <uses-sdk
         android:minSdkVersion="9"

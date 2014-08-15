@@ -381,6 +381,36 @@ public abstract class ChartData {
     }
 
     /**
+     * Returns all colors used across all DataSet objects this object
+     * represents.
+     * 
+     * @return
+     */
+    public int[] getColors() {
+
+        int clrcnt = 0;
+
+        for (int i = 0; i < mDataSets.size(); i++) {
+            clrcnt += mDataSets.get(i).getColors().size();
+        }
+
+        int[] colors = new int[clrcnt];
+        int cnt = 0;
+
+        for (int i = 0; i < mDataSets.size(); i++) {
+
+            ArrayList<Integer> clrs = mDataSets.get(i).getColors();
+
+            for (Integer clr : clrs) {
+                colors[cnt] = clr;
+                cnt++;
+            }
+        }
+
+        return colors;
+    }
+
+    /**
      * Generates an x-values array filled with numbers in range specified by the
      * parameters. Can be used for convenience.
      * 
