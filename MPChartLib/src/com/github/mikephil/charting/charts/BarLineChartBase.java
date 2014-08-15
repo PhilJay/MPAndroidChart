@@ -636,24 +636,21 @@ public abstract class BarLineChartBase extends Chart {
                 0f, 0f
         };
 
-        for (int i = 0; i < mCurrentData.getXValCount(); i++) {
+        for (int i = 0; i < mCurrentData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
 
-            if (i % mXLabels.mXAxisLabelModulus == 0) {
+            position[0] = i;
 
-                position[0] = i;
+            // center the text
+            if (mXLabels.isCenterXLabelsEnabled())
+                position[0] += 0.5f;
 
-                // center the text
-                if (mXLabels.isCenterXLabelsEnabled())
-                    position[0] += 0.5f;
+            transformPointArray(position);
 
-                transformPointArray(position);
+            if (position[0] >= mOffsetLeft && position[0] <= getWidth() - mOffsetRight) {
 
-                if (position[0] >= mOffsetLeft && position[0] <= getWidth() - mOffsetRight) {
-
-                    mDrawCanvas.drawText(mCurrentData.getXVals().get(i), position[0],
-                            yPos,
-                            mXLabelPaint);
-                }
+                mDrawCanvas.drawText(mCurrentData.getXVals().get(i), position[0],
+                        yPos,
+                        mXLabelPaint);
             }
         }
     }
@@ -826,19 +823,16 @@ public abstract class BarLineChartBase extends Chart {
                 0f, 0f
         };
 
-        for (int i = 0; i < mCurrentData.getXValCount(); i++) {
+        for (int i = 0; i < mCurrentData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
 
-            if (i % mXLabels.mXAxisLabelModulus == 0) {
+            position[0] = i;
 
-                position[0] = i;
+            transformPointArray(position);
 
-                transformPointArray(position);
+            if (position[0] >= mOffsetLeft && position[0] <= getWidth()) {
 
-                if (position[0] >= mOffsetLeft && position[0] <= getWidth()) {
-
-                    mDrawCanvas.drawLine(position[0], mOffsetTop, position[0], getHeight()
-                            - mOffsetBottom, mGridPaint);
-                }
+                mDrawCanvas.drawLine(position[0], mOffsetTop, position[0], getHeight()
+                        - mOffsetBottom, mGridPaint);
             }
         }
     }
