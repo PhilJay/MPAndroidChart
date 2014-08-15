@@ -237,7 +237,11 @@ It would also be possible to let each <code>DataSet</code> have variations of a 
 
 **Displaying / styling legends:**
 
-By default, all chart types support legends and will automatically generate and draw a legend after setting data for the chart.
+By default, all chart types support legends and will automatically generate and draw a legend after setting data for the chart. If a legend should be drawn or not can be enabled/disabled using the
+
+ - `setDrawLegend(boolean enabled)`
+ 
+method.
 
 The number of entries the automatically generated legend contains depends on the number of different colors (across all `DataSet` objects) as well as on the `DataSet` labels. The labels of the `Legend` depend on the labels set for the used `DataSet` objects in the chart. If no labels for the `DataSet` objects have been specified, the chart will automatically generate them. If multiple colors are used for one `DataSet`, those colors are grouped and only described by one label.
 
