@@ -27,7 +27,7 @@ public abstract class LabelBase {
      * 
      * @param size
      */
-    public void setLabelTextSize(float size) {
+    public void setTextSize(float size) {
 
         if (size > 16f)
             size = 16f;

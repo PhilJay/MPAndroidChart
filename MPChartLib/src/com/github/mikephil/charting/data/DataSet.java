@@ -312,7 +312,7 @@ public abstract class DataSet {
      * Sets the colors that should be used fore this DataSet. Colors are reused
      * as soon as the number of Entries the DataSet represents is higher than
      * the size of the colors array. You can use
-     * "new String[] { R.color.red, R.color.green, ... }" to provide colors for
+     * "new int[] { R.color.red, R.color.green, ... }" to provide colors for
      * this method. Internally, the colors are resolved using
      * getResources().getColor(...)
      * 

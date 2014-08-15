@@ -100,7 +100,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         xl.setPosition(XLabelPosition.BOTTOM);
         xl.setCenterXLabelText(true);
         xl.setTypeface(tf);
-
+        
         YLabels yl = mChart.getYLabels();
         yl.setTypeface(tf);
         yl.setLabelCount(8);
