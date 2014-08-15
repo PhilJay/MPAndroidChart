@@ -19,6 +19,7 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Environment;
 import android.provider.MediaStore.Images;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -187,6 +188,8 @@ public abstract class Chart extends View {
 
     /** listener that is called when a value on the chart is selected */
     protected OnChartValueSelectedListener mSelectionListener;
+    private String mNoDataText = "No chart data available.";
+    private String mNoDataTextDescription;
 
     /** default constructor for initialization in code */
     public Chart(Context context) {
@@ -311,6 +314,23 @@ public abstract class Chart extends View {
     }
 
     /**
+     * Informs the user that there is no data available with which to draw the chart
+     * @param text
+     */
+    public void setNoDataText(String text) {
+        mNoDataText = text;
+    }
+
+    /**
+     * Sets descriptive text to explain to the user why there is no chart available
+     * Defaults to empty if not set
+     * @param text
+     */
+    public void setNoDataTextDescription(String text) {
+        mNoDataTextDescription = text;
+    }
+
+    /**
      * Sets primitive data for the chart. Internally, this is converted into a
      * ChartData object with one DataSet (type 0). If you have more specific
      * requirements for your data, use the setData(ChartData data) method and
@@ -380,7 +400,12 @@ public abstract class Chart extends View {
         if (mDataNotSet) { // check if there is data
 
             // if no data, inform the user
-            canvas.drawText("No chart data available.", getWidth() / 2, getHeight() / 2, mInfoPaint);
+            canvas.drawText(mNoDataText, getWidth() / 2, getHeight() / 2, mInfoPaint);
+
+            if(!TextUtils.isEmpty(mNoDataTextDescription)) {
+                float textOffset = -mInfoPaint.ascent() + mInfoPaint.descent();
+                canvas.drawText(mNoDataTextDescription, getWidth() / 2, (getHeight() / 2) + textOffset, mInfoPaint);
+            }
             return;
         }
 
