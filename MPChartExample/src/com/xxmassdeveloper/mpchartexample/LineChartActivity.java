@@ -69,6 +69,7 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
 
         // no description text
         mChart.setDescription("");
+        mChart.setNoDataTextDescription("You need to provide data for the chart.");
 
         // // enable / disable grid lines
         // mChart.setDrawVerticalGrid(false);

@@ -72,7 +72,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 		// add a selection listener
 		mChart.setOnChartValueSelectedListener(this);
 
-		mSeekBarX.setProgress(4);
+		mSeekBarX.setProgress(3);
 		mSeekBarY.setProgress(100);
 		
 		Legend l = mChart.getLegend();
@@ -145,7 +145,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {	    
 
-        tvX.setText("" + (mSeekBarX.getProgress()));
+        tvX.setText("" + (mSeekBarX.getProgress()+1));
         tvY.setText("" + (mSeekBarY.getProgress())); 
 
         float mult = (float) mSeekBarY.getProgress();
@@ -154,7 +154,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 //		ArrayList<Entry> yVals2 = new ArrayList<Entry>();
 		
 		// IMPORTANT: In a PieChart, no values (Entry) should have the same xIndex (even if from different DataSets), since no values can be drawn above each other.
-		for (int i = 0; i < mSeekBarX.getProgress(); i++) {
+		for (int i = 0; i < mSeekBarX.getProgress()+1; i++) {
 			yVals1.add(new Entry((float) (Math.random() * mult) + mult / 5, i));
 		}
 		
@@ -164,7 +164,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
 		ArrayList<String> xVals = new ArrayList<String>();
 
-		for (int i = 0; i < mSeekBarX.getProgress(); i++)
+		for (int i = 0; i < mSeekBarX.getProgress()+1; i++)
 			xVals.add(mParties[i % mParties.length]);
 		 
 		PieDataSet set1 = new PieDataSet(yVals1, "Election Results");
