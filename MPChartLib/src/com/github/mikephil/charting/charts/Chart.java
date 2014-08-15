@@ -1009,7 +1009,8 @@ public abstract class Chart extends View {
 
             int xIndex = mIndicesToHightlight[i].getXIndex();
 
-            drawMarkerView(xIndex, mIndicesToHightlight[i].getDataSetIndex());
+            if (xIndex < mCurrentData.getXVals().size())
+                drawMarkerView(xIndex, mIndicesToHightlight[i].getDataSetIndex());
         }
     }
 

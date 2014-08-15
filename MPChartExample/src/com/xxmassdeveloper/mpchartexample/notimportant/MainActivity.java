@@ -2,6 +2,7 @@
 package com.xxmassdeveloper.mpchartexample.notimportant;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -22,7 +23,6 @@ import com.github.mikephil.charting.utils.Utils;
 import com.xxmassdeveloper.mpchartexample.AnotherBarActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivityMultiDataset;
-import com.xxmassdeveloper.mpchartexample.DrawChartActivity;
 import com.xxmassdeveloper.mpchartexample.InvertedLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.LineChartActivity;
 import com.xxmassdeveloper.mpchartexample.ListViewBarChartActivity;
@@ -48,7 +48,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
         // initialize the utilities
         Utils.init(getResources());
-        
+
         ArrayList<ContentItem> objects = new ArrayList<ContentItem>();
 
         objects.add(new ContentItem("Line Chart", "A simple demonstration of the linechart."));
@@ -126,8 +126,14 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 startActivity(i);
                 break;
             case 8:
-                i = new Intent(this, DrawChartActivity.class);
-                startActivity(i);
+                // i = new Intent(this, DrawChartActivity.class);
+                // startActivity(i);
+
+                AlertDialog.Builder b = new AlertDialog.Builder(this);
+                b.setTitle("Feature not available");
+                b.setMessage("Due to recent changes to the data model of the library, this feature is temporarily not available.");
+                b.setPositiveButton("OK", null);
+                b.create().show();
                 break;
             case 9:
                 i = new Intent(this, SimpleChartDemo.class);
