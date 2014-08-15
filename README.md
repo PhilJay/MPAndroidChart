@@ -212,28 +212,36 @@ Last but not least, we create a list of <code>DataSets</code> and a list of x le
 
 **Setting colors:**
 
-Setting colors can be done via the <code>ColorTemplate</code> class that already comes with some predefined colors (constants of the template e.g. <code>ColorTemplate.LIBERTY_COLORS</code>). 
+Since release [v1.4.0](https://github.com/PhilJay/MPAndroidChart/releases/tag/v1.4.0), the `ColorTemplate` object that was responsible for setting colors in previous releases is no longer needed. Nevertheless, it still holds all predefined color arrays (e.g. `ColorTemplate.VORDIPLOM_COLORS` and provides convenience methods for transforming colors from the resources (resource integers) into "real" colors.
 
-Explaination: The <code>ColorTemplate</code> basically has two methods for setting colors:
+Instead of the `ColorTemplate`, colors can now be specified directly via `DataSet` object, which allows separate styling for each `DataSet`.
 
- - <code>addDataSetColors(int[] colors, Context c)</code>: This method will add a new array of colors for the <code>DataSet</code> at the current index. The current index starts at 0 and depends counts up per call of this method. If no calls of this method have been done before, the colors set in this call will be used for the <code>DataSet</code> at index 0 in the <code>ChartData</code> object. Upon calling this method again on the same <code>ColorTemplate</code> object, the provided color values will be used for the <code>DataSet</code> at index 1.
- 
- - <code>addColorsForDataSets(int[] colors, Context c)</code>: This method will spread the provided color values over an equal amount of <code>DataSet</code> objects, using only one color per <code>DataSet</code>.
+In this short example, we have our two different `LineDataSet` objects representing the quarterly revenues of two companies (previously mentioned in the **Adding data** tutorial), for which we now want to set different colors.
 
-In our example case, we want one color for each <code>DataSet</code> (red and green), which will mean, that all entries belonging to the same <code>DataSet</code> will have the same color:
+What we want:
+
+ - the values of "Company 1" should be represented by four different variations of the color "red"
+ - the values of "Company 2" should be represented by four different variations of the color "green"
+
+This is what the code looks like:
+
 ```java
-    ColorTemplate ct = new ColorTemplate();
-    ct.addColorsForDataSets(new int[] { R.color.red, R.color.green }, this);
-    chart.setColorTemplate(ct);
+  LineDataSet setComp1 = new LineDataSet(valsComp1, "Company 1");
+  
+  // sets colors for the dataset, resolution of the resource name to a "real" color is done internally
+  setComp1.setColors(new int[] { R.color.red1, R.color.red2, R.color.red3, R.color.red4 }, Context);
+  
+  LineDataSet setComp2 = new LineDataSet(valsComp2, "Company 2");
+  setComp2.setColors(new int[] { R.color.green1, R.color.green2, R.color.green3, R.color.green4 }, Context);
 ```
 
-It would also be possible to let each <code>DataSet</code> have variations of a specific color. For example company 1 should have 4 colors from light to dark red, and company 2 should have 4 colors from light to dark green. In that case, we specify a color array for each <code>DataSet</code>:
-```java
-    ColorTemplate ct = new ColorTemplate();
-    ct.addDataSetColors(redColors, this); // redColors is an array containing 4 colors
-    ct.addDataSetColors(greenColors, this);
-    chart.setColorTemplate(ct);
-```
+Besides that, there are many other ways for setting colors for a `DataSet`. Here is the full documentation:
+
+ - 
+
+
+If no colors are set for a `DataSet`, default colors are used.
+
 
 **Displaying / styling legends:**
 
@@ -245,7 +253,7 @@ method.
 
 The number of entries the automatically generated legend contains depends on the number of different colors (across all `DataSet` objects) as well as on the `DataSet` labels. The labels of the `Legend` depend on the labels set for the used `DataSet` objects in the chart. If no labels for the `DataSet` objects have been specified, the chart will automatically generate them. If multiple colors are used for one `DataSet`, those colors are grouped and only described by one label.
 
-For customizeing the `Legend`, use you can retreive the `Legend` object from the chart **after setting data** using the `getLegend()` method.
+For customizing the `Legend`, use you can retreive the `Legend` object from the chart **after setting data** using the `getLegend()` method.
 
 ```java
     // setting data...
@@ -260,6 +268,7 @@ For customizeing the `Legend`, use you can retreive the `Legend` object from the
     l.setYEntrySpace(5f); // set the space between the legend entries on the y-axis
     // and many more...
 ```
+
 
 **Displaying / styling labels:**
 
