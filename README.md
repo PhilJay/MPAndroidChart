@@ -237,7 +237,10 @@ This is what the code looks like:
 
 Besides that, there are many other ways for setting colors for a `DataSet`. Here is the full documentation:
 
- - 
+ - `setColors(int [] colors, Context c)`: Sets the colors that should be used fore this DataSet. Colors are reused as soon as the number of Entries the DataSet represents is higher than the size of the colors array. You can use "new int[] { R.color.red, R.color.green, ... }" to provide colors for this method. Internally, the colors are resolved using getResources().getColor(...).
+ - `setColors(int [] colors)`: Sets the colors that should be used fore this DataSet. Colors are reused as soon as the number of Entries the DataSet represents is higher than the size of the colors array. Make sure that the colors are already prepared (by calling getResources().getColor(...)) before adding them to the DataSet.
+ - `setColors(ArrayList<Integer> colors)`: Sets the colors that should be used fore this DataSet. Colors are reused as soon as the number of Entries the DataSet represents is higher than the size of the colors array. Make sure that the colors are already prepared (by calling getResources().getColor(...)) before adding them to the DataSet.
+ - `setColor(int color)`: Sets the one and ONLY color that should be used for this DataSet. Internally, this recreates the colors array and adds the specified color.
 
 
 If no colors are set for a `DataSet`, default colors are used.
