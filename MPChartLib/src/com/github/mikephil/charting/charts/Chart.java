@@ -19,6 +19,7 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Environment;
 import android.provider.MediaStore.Images;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -193,6 +194,15 @@ public abstract class Chart extends View {
     /** listener that is called when a value on the chart is selected */
     protected OnChartValueSelectedListener mSelectionListener;
 
+    /** text that is displayed when the chart is empty */
+    private String mNoDataText = "No chart data available.";
+
+    /**
+     * text that is displayed when the chart is empty that describes why the
+     * chart is empty
+     */
+    private String mNoDataTextDescription;
+
     /** default constructor for initialization in code */
     public Chart(Context context) {
         super(context);
@@ -340,6 +350,32 @@ public abstract class Chart extends View {
     // setData(data);
     // }
 
+    // /**
+    // * Sets primitive data for the chart. Internally, this is converted into a
+    // * ChartData object with one DataSet (type 0). If you have more specific
+    // * requirements for your data, use the setData(ChartData data) method and
+    // * create your own ChartData object with as many DataSets as you like.
+    // *
+    // * @param xVals
+    // * @param yVals
+    // */
+    // public void setData(ArrayList<String> xVals, ArrayList<Float> yVals) {
+    //
+    // ArrayList<Entry> series = new ArrayList<Entry>();
+    //
+    // for (int i = 0; i < yVals.size(); i++) {
+    // series.add(new Entry(yVals.get(i), i));
+    // }
+    //
+    // DataSet set = new DataSet(series, "DataSet");
+    // ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+    // dataSets.add(set);
+    //
+    // ChartData data = new ChartData(xVals, dataSets);
+    //
+    // setData(data);
+    // }
+
     /**
      * does needed preparations for drawing
      */
@@ -384,7 +420,13 @@ public abstract class Chart extends View {
         if (mDataNotSet) { // check if there is data
 
             // if no data, inform the user
-            canvas.drawText("No chart data available.", getWidth() / 2, getHeight() / 2, mInfoPaint);
+            canvas.drawText(mNoDataText, getWidth() / 2, getHeight() / 2, mInfoPaint);
+
+            if (!TextUtils.isEmpty(mNoDataTextDescription)) {
+                float textOffset = -mInfoPaint.ascent() + mInfoPaint.descent();
+                canvas.drawText(mNoDataTextDescription, getWidth() / 2, (getHeight() / 2)
+                        + textOffset, mInfoPaint);
+            }
             return;
         }
 
@@ -413,7 +455,7 @@ public abstract class Chart extends View {
         mMatrixValueToPx.postScale(scaleX, -scaleY);
 
         mMatrixOffset.reset();
-                
+
         mMatrixOffset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
 
         // mMatrixOffset.setTranslate(mOffsetLeft, 0);
@@ -852,7 +894,7 @@ public abstract class Chart extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        if (mListener == null)
+        if (mListener == null || mDataNotSet)
             return false;
 
         // check if touch gestures are enabled
@@ -1174,6 +1216,26 @@ public abstract class Chart extends View {
      */
     public void setDescription(String desc) {
         this.mDescription = desc;
+    }
+
+    /**
+     * Sets the text that informs the user that there is no data available with
+     * which to draw the chart.
+     * 
+     * @param text
+     */
+    public void setNoDataText(String text) {
+        mNoDataText = text;
+    }
+
+    /**
+     * Sets descriptive text to explain to the user why there is no chart
+     * available Defaults to empty if not set
+     * 
+     * @param text
+     */
+    public void setNoDataTextDescription(String text) {
+        mNoDataTextDescription = text;
     }
 
     /**
