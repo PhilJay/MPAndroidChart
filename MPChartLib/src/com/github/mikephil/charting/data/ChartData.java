@@ -2,7 +2,7 @@
 package com.github.mikephil.charting.data;
 
 import com.github.mikephil.charting.utils.Highlight;
-import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.LimitLine;
 
 import java.util.ArrayList;
 
@@ -15,10 +15,10 @@ import java.util.ArrayList;
 public abstract class ChartData {
 
     /** maximum y-value in the y-value array */
-    private float mYMax = 0.0f;
+    protected float mYMax = 0.0f;
 
     /** the minimum y-value in the y-value array */
-    private float mYMin = 0.0f;
+    protected float mYMin = 0.0f;
 
     /** the total sum of all y-values */
     private float mYValueSum = 0f;

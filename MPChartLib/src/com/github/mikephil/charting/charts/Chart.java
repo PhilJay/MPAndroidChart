@@ -1415,6 +1415,9 @@ public abstract class Chart extends View {
 
     /** paint used for the legend */
     public static final int PAINT_LEGEND_LABEL = 18;
+    
+    /** paint object used for the limit lines */
+    public static final int PAINT_LIMIT_LINE = 19;
 
     /**
      * set a new paint object for the specified parameter in the chart e.g.

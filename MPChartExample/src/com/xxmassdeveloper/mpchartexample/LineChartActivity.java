@@ -21,6 +21,7 @@ import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend;
+import com.github.mikephil.charting.utils.LimitLine;
 import com.github.mikephil.charting.utils.Legend.LegendForm;
 import com.github.mikephil.charting.utils.XLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -308,6 +309,17 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
 
         // create a data object with the datasets
         LineData data = new LineData(xVals, dataSets);
+        
+//        LimitLine ll = new LimitLine(130f);
+//        ll.setLineWidth(4f);
+//        ll.enableDashedLine(10f, 10f, 0f);
+//        
+//        LimitLine ll1 = new LimitLine(-30f);
+//        ll1.setLineWidth(4f);
+//        ll1.enableDashedLine(10f, 10f, 0f);
+//        
+//        data.addLimitLine(ll);
+//        data.addLimitLine(ll1);
 
         // set data
         mChart.setData(data);

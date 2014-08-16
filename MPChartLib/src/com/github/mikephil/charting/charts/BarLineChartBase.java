@@ -14,6 +14,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ViewParent;
 
+import com.github.mikephil.charting.data.BarLineScatterData;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
@@ -21,6 +22,7 @@ import com.github.mikephil.charting.interfaces.OnDrawListener;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
+import com.github.mikephil.charting.utils.LimitLine;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
@@ -38,7 +40,6 @@ import java.util.ArrayList;
  * @author Philipp Jahoda
  */
 public abstract class BarLineChartBase extends Chart {
-    
 
     /** if set to true, the y-axis is inverted and low values start at the top */
     private boolean mInvertYAxis = false;
@@ -100,6 +101,9 @@ public abstract class BarLineChartBase extends Chart {
 
     /** paint used for highlighting values */
     protected Paint mHighlightPaint;
+
+    /** paint used for the limit lines */
+    protected Paint mLimitLinePaint;
 
     /**
      * if set to true, the highlight indicator (lines for linechart, dark bar
@@ -194,6 +198,9 @@ public abstract class BarLineChartBase extends Chart {
         mHighlightPaint.setStyle(Paint.Style.STROKE);
         mHighlightPaint.setStrokeWidth(2f);
         mHighlightPaint.setColor(Color.rgb(255, 187, 115));
+
+        mLimitLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mLimitLinePaint.setStyle(Paint.Style.STROKE);
     }
 
     @Override
@@ -235,6 +242,8 @@ public abstract class BarLineChartBase extends Chart {
         drawVerticalGrid();
 
         drawData();
+
+        drawLimitLines();
 
         drawHighlights();
 
@@ -857,6 +866,40 @@ public abstract class BarLineChartBase extends Chart {
                         - mOffsetBottom, mGridPaint);
             }
         }
+    }
+
+    /**
+     * Draws the limit lines if there are one.
+     */
+    private void drawLimitLines() {
+
+        ArrayList<LimitLine> limitLines = ((BarLineScatterData) mOriginalData).getLimitLines();
+
+        if (limitLines == null)
+            return;
+        
+        // pre allocate to save performance
+        float[] pts = new float[] {
+                0, 0, 0, 0
+        };
+
+        for (int i = 0; i < limitLines.size(); i++) {
+         
+            LimitLine l = limitLines.get(i);
+
+            pts[0] = 0f;
+            pts[1] = l.getLimit();
+            pts[2] = mDeltaX;
+            pts[3] = l.getLimit();
+
+            transformPointArray(pts);
+
+            mLimitLinePaint.setColor(l.getLineColor());
+            mLimitLinePaint.setPathEffect(l.getDashPathEffect());
+            mLimitLinePaint.setStrokeWidth(l.getLineWidth());
+
+            mDrawCanvas.drawLine(pts[0], pts[1], pts[2], pts[3], mLimitLinePaint);
+        }        
     }
 
     /**
@@ -1511,7 +1554,7 @@ public abstract class BarLineChartBase extends Chart {
             }
         }
 
-        if(mDataNotSet) {
+        if (mDataNotSet) {
             Log.i(LOG_TAG, "no data set");
             return null;
         }
@@ -1820,6 +1863,9 @@ public abstract class BarLineChartBase extends Chart {
             case PAINT_YLABEL:
                 mYLabelPaint = p;
                 break;
+            case PAINT_LIMIT_LINE:
+                mLimitLinePaint = p;
+                break;
         }
     }
 
@@ -1840,6 +1886,8 @@ public abstract class BarLineChartBase extends Chart {
                 return mXLabelPaint;
             case PAINT_YLABEL:
                 return mYLabelPaint;
+            case PAINT_LIMIT_LINE:
+                return mLimitLinePaint;
         }
 
         return null;
