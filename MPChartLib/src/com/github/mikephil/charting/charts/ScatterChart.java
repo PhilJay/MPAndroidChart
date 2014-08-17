@@ -58,19 +58,19 @@ public class ScatterChart extends BarLineChartBase {
 
             float shapeHalf = dataSet.getScatterShapeSize() / 2f;
 
-            float[] pos = generateTransformedValues(entries, 0f);   
+            float[] valuePoints = generateTransformedValues(entries, 0f);   
 
             ScatterShape shape = dataSet.getScatterShape();
 
-            for (int j = 0; j < pos.length; j += 2) {
+            for (int j = 0; j < valuePoints.length * mPhaseX; j += 2) {
 
-                if (isOffContentRight(pos[j]))
+                if (isOffContentRight(valuePoints[j]))
                     break;
 
                 // make sure the lines don't do shitty things outside bounds
-                if (j != 0 && isOffContentLeft(pos[j - 1])
-                        && isOffContentTop(pos[j + 1])
-                        && isOffContentBottom(pos[j + 1]))
+                if (j != 0 && isOffContentLeft(valuePoints[j - 1])
+                        && isOffContentTop(valuePoints[j + 1])
+                        && isOffContentBottom(valuePoints[j + 1]))
                     continue;
                 
                 // Set the color for the currently drawn value. If the index is
@@ -79,28 +79,28 @@ public class ScatterChart extends BarLineChartBase {
 
                 if (shape == ScatterShape.SQUARE) {
 
-                    mDrawCanvas.drawRect(pos[j] - shapeHalf, pos[j + 1] - shapeHalf, pos[j]
-                            + shapeHalf, pos[j + 1]
+                    mDrawCanvas.drawRect(valuePoints[j] - shapeHalf, valuePoints[j + 1] - shapeHalf, valuePoints[j]
+                            + shapeHalf, valuePoints[j + 1]
                             + shapeHalf, mRenderPaint);
 
                 } else if (shape == ScatterShape.CIRCLE) {
 
-                    mDrawCanvas.drawCircle(pos[j], pos[j + 1], shapeHalf, mRenderPaint);
+                    mDrawCanvas.drawCircle(valuePoints[j], valuePoints[j + 1], shapeHalf, mRenderPaint);
 
                 } else if (shape == ScatterShape.CROSS) {
 
-                    mDrawCanvas.drawLine(pos[j] - shapeHalf, pos[j + 1], pos[j] + shapeHalf,
-                            pos[j + 1], mRenderPaint);
-                    mDrawCanvas.drawLine(pos[j], pos[j + 1] - shapeHalf, pos[j], pos[j + 1]
+                    mDrawCanvas.drawLine(valuePoints[j] - shapeHalf, valuePoints[j + 1], valuePoints[j] + shapeHalf,
+                            valuePoints[j + 1], mRenderPaint);
+                    mDrawCanvas.drawLine(valuePoints[j], valuePoints[j + 1] - shapeHalf, valuePoints[j], valuePoints[j + 1]
                             + shapeHalf, mRenderPaint);
 
                 } else if (shape == ScatterShape.TRIANGLE) {
 
                     // create a triangle path
                     Path tri = new Path();
-                    tri.moveTo(pos[j], pos[j + 1] - shapeHalf);
-                    tri.lineTo(pos[j] + shapeHalf, pos[j + 1] + shapeHalf);
-                    tri.lineTo(pos[j] - shapeHalf, pos[j + 1] + shapeHalf);
+                    tri.moveTo(valuePoints[j], valuePoints[j + 1] - shapeHalf);
+                    tri.lineTo(valuePoints[j] + shapeHalf, valuePoints[j + 1] + shapeHalf);
+                    tri.lineTo(valuePoints[j] - shapeHalf, valuePoints[j + 1] + shapeHalf);
                     tri.close();
 
                     mDrawCanvas.drawPath(tri, mRenderPaint);
@@ -175,7 +175,10 @@ public class ScatterChart extends BarLineChartBase {
 
                 int xIndex = mIndicesToHightlight[i].getXIndex(); // get the
                                                                   // x-position
-                float y = set.getYValForXIndex(xIndex); // get the y-position
+                
+                if(xIndex > mDeltaX * mPhaseX) continue;
+                
+                float y = set.getYValForXIndex(xIndex) * mPhaseY; // get the y-position
 
                 float[] pts = new float[] {
                         xIndex, mYChartMax, xIndex, mYChartMin, 0, y, mDeltaX, y

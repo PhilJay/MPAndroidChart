@@ -1,11 +1,15 @@
 
 package com.github.mikephil.charting.charts;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -194,13 +198,13 @@ public class BarChart extends BarLineChartBase {
                 BarDataSet ds = (BarDataSet) mCurrentData.getDataSetByIndex(dataSetIndex);
 
                 // check outofbounds
-                if (index < mCurrentData.getYValCount() && index >= 0) {
+                if (index < mCurrentData.getYValCount() && index >= 0 && index < mDeltaX * mPhaseX) {
 
                     mHighlightPaint.setAlpha(120);
                     
                     Entry e = getEntryByDataSetIndex(index, dataSetIndex);             
 
-                    float y = e.getSum();
+                    float y = e.getSum() * mPhaseY;
                     float top = y >= 0 ? y : 0;
                     float bottom = y <= 0 ? y : 0;
                     
@@ -241,7 +245,7 @@ public class BarChart extends BarLineChartBase {
             ArrayList<Entry> entries = dataSet.getYVals();
 
             // do the drawing
-            for (int j = 0; j < dataSet.getEntryCount(); j++) {
+            for (int j = 0; j < dataSet.getEntryCount() * mPhaseX; j++) {
 
                 Entry e = entries.get(j);
 
@@ -337,8 +341,8 @@ public class BarChart extends BarLineChartBase {
 
         float left = x + space / 2f;
         float right = x + 1f - space / 2f;
-        float top = y >= 0 ? y : 0;
-        float bottom = y <= 0 ? y : 0;
+        float top = (y >= 0 ? y : 0) * mPhaseY;
+        float bottom = (y <= 0 ? y : 0) * mPhaseY;
 
         mBarRect.set(left, top, right, bottom);
 
@@ -515,7 +519,7 @@ public class BarChart extends BarLineChartBase {
                 // if only single values are drawn (sum)
                 if (!mDrawValuesForWholeStack) {
 
-                    for (int j = 0; j < valuePoints.length; j += 2) {
+                    for (int j = 0; j < valuePoints.length * mPhaseX; j += 2) {
 
                         if (isOffContentRight(valuePoints[j]))
                             break;
@@ -532,7 +536,7 @@ public class BarChart extends BarLineChartBase {
                     // if each value of a potential stack should be drawn
                 } else {
 
-                    for (int j = 0; j < valuePoints.length - 1; j += 2) {
+                    for (int j = 0; j < (valuePoints.length - 1) * mPhaseX; j += 2) {
 
                         if (isOffContentRight(valuePoints[j]))
                             break;
@@ -561,7 +565,7 @@ public class BarChart extends BarLineChartBase {
                             for (int k = 0; k < transformed.length; k += 2) {
 
                                 add -= vals[cnt];
-                                transformed[k + 1] = vals[cnt] + add;
+                                transformed[k + 1] = (vals[cnt] + add) * mPhaseY;
                                 cnt++;
                             }
 

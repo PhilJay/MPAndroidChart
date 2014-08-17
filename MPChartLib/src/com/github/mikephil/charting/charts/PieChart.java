@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.charts;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -381,13 +382,15 @@ public class PieChart extends Chart {
 
                 // get the index to highlight
                 int xIndex = mIndicesToHightlight[i].getXIndex();
-                if (xIndex >= mDrawAngles.length || xIndex > mDeltaX)
+                if (xIndex >= mDrawAngles.length || xIndex > mDeltaX * mPhaseX)
                     continue;
 
                 if (xIndex == 0)
                     angle = mChartAngle;
                 else
                     angle = mChartAngle + mAbsoluteAngles[xIndex - 1];
+                
+                angle *= mPhaseY;
 
                 float sliceDegrees = mDrawAngles[xIndex];
 
@@ -437,11 +440,11 @@ public class PieChart extends Chart {
                 if (!needsHighlight(entries.get(j).getXIndex(), i)) {
 
                     mRenderPaint.setColor(dataSet.getColor(j));
-                    mDrawCanvas.drawArc(mCircleBox, angle + sliceSpace / 2f, newangle
+                    mDrawCanvas.drawArc(mCircleBox, angle + sliceSpace / 2f, newangle * mPhaseY
                             - sliceSpace / 2f, true, mRenderPaint);
                 }
 
-                angle += newangle;
+                angle += newangle * mPhaseX;
                 cnt++;
             }
         }
@@ -541,16 +544,16 @@ public class PieChart extends Chart {
             DataSet dataSet = dataSets.get(i);
             ArrayList<Entry> entries = dataSet.getYVals();
 
-            for (int j = 0; j < entries.size(); j++) {
+            for (int j = 0; j < entries.size() * mPhaseX; j++) {
 
                 // offset needed to center the drawn text in the slice
                 float offset = mDrawAngles[cnt] / 2;
 
                 // calculate the text position
                 float x = (float) (r
-                        * Math.cos(Math.toRadians(mChartAngle + mAbsoluteAngles[cnt] - offset)) + center.x);
+                        * Math.cos(Math.toRadians((mChartAngle + mAbsoluteAngles[cnt] - offset) * mPhaseY)) + center.x);
                 float y = (float) (r
-                        * Math.sin(Math.toRadians(mChartAngle + mAbsoluteAngles[cnt] - offset)) + center.y);
+                        * Math.sin(Math.toRadians((mChartAngle + mAbsoluteAngles[cnt] - offset) * mPhaseY)) + center.y);
 
                 String val = "";
                 float value = entries.get(j).getVal();

@@ -171,6 +171,19 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
                 mChart.invalidate();
                 break;
             }
+            case R.id.animateX: {
+                mChart.animateX(3000);
+                break;
+            }
+            case R.id.animateY: {
+                mChart.animateY(3000);
+                break;
+            }
+            case R.id.animateXY: {
+
+                mChart.animateXY(3000, 3000);
+                break;
+            }
             case R.id.actionToggleFilter: {
 
                 Approximator a = new Approximator(ApproximatorType.DOUGLAS_PEUCKER, 25);
@@ -210,17 +223,17 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
 
         for (int i = 0; i < mSeekBarX.getProgress()+1; i++) {
-            float mult = (mSeekBarY.getProgress() + 1) * 1000;
+            float mult = (mSeekBarY.getProgress() + 1);
             float val1 = (float) (Math.random() * mult) + mult / 3;
             float val2 = (float) (Math.random() * mult) + mult / 3;
             float val3 = (float) (Math.random() * mult) + mult / 3;
 
             yVals1.add(new Entry(new float[] {
-                    val1, val2, val3
+                    (int) val1,  (int) val2, (int) val3
             }, i));
         }
 
-        BarDataSet set1 = new BarDataSet(yVals1, "Statistics Europe 2014");
+        BarDataSet set1 = new BarDataSet(yVals1, "Statistics Vienna 2014");
         set1.setColors(ColorTemplate.createColors(getApplicationContext(),
                 ColorTemplate.VORDIPLOM_COLORS));
         set1.setStackLabels(new String[] {

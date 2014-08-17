@@ -1,6 +1,9 @@
 
 package com.github.mikephil.charting.charts;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,6 +13,7 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ViewParent;
@@ -39,6 +43,7 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public abstract class BarLineChartBase extends Chart {
 
     /** if set to true, the y-axis is inverted and low values start at the top */
@@ -59,8 +64,8 @@ public abstract class BarLineChartBase extends Chart {
     /** contains the current scale factor of the y-axis */
     protected float mScaleY = 1f;
 
-    /** holds the maximum scale factor of the y-axis, default 7f */
-    protected float mMaxScaleY = 7f;
+    /** holds the maximum scale factor of the y-axis, default 8f */
+    protected float mMaxScaleY = 8f;
 
     /** the width of the grid lines */
     protected float mGridWidth = 1f;
@@ -847,7 +852,7 @@ public abstract class BarLineChartBase extends Chart {
      */
     protected void drawVerticalGrid() {
 
-        if (!mDrawVerticalGrid)
+        if (!mDrawVerticalGrid || mCurrentData == null)
             return;
 
         float[] position = new float[] {
@@ -877,14 +882,14 @@ public abstract class BarLineChartBase extends Chart {
 
         if (limitLines == null)
             return;
-        
+
         // pre allocate to save performance
         float[] pts = new float[] {
                 0, 0, 0, 0
         };
 
         for (int i = 0; i < limitLines.size(); i++) {
-         
+
             LimitLine l = limitLines.get(i);
 
             pts[0] = 0f;
@@ -899,7 +904,7 @@ public abstract class BarLineChartBase extends Chart {
             mLimitLinePaint.setStrokeWidth(l.getLineWidth());
 
             mDrawCanvas.drawLine(pts[0], pts[1], pts[2], pts[3], mLimitLinePaint);
-        }        
+        }
     }
 
     /**
@@ -1105,6 +1110,7 @@ public abstract class BarLineChartBase extends Chart {
      * @return
      */
     public Matrix refreshTouch(Matrix newTouchMatrix) {
+
         mMatrixTouch.set(newTouchMatrix);
 
         // make sure scale and translation are within their bounds
@@ -1125,6 +1131,7 @@ public abstract class BarLineChartBase extends Chart {
      * @return
      */
     public Matrix refreshTouchNoInvalidate(Matrix newTouchMatrix) {
+
         mMatrixTouch.set(newTouchMatrix);
 
         // make sure scale and translation are within their bounds

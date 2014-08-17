@@ -86,7 +86,10 @@ public class LineChart extends BarLineChartBase {
 
                 int xIndex = mIndicesToHightlight[i].getXIndex(); // get the
                                                                   // x-position
-                float y = set.getYValForXIndex(xIndex); // get the y-position
+                
+                if(xIndex > mDeltaX * mPhaseX) continue;
+                
+                float y = set.getYValForXIndex(xIndex) * mPhaseY; // get the y-position
 
                 float[] pts = new float[] {
                         xIndex, mYChartMax, xIndex, mYChartMin, 0, y, mDeltaX, y
@@ -149,7 +152,7 @@ public class LineChart extends BarLineChartBase {
 
             } else {
 
-                for (int j = 0; j < valuePoints.length - 2; j += 2) {
+                for (int j = 0; j < (valuePoints.length - 2) * mPhaseX; j += 2) {
 
                     // get the color that is specified for this position from
                     // the DataSet, this will reuse colors, if the index is out
@@ -183,19 +186,7 @@ public class LineChart extends BarLineChartBase {
                 // filled is drawn with less alpha
                 mRenderPaint.setAlpha(85);
 
-                Path filled = new Path();
-                filled.moveTo(entries.get(0).getXIndex(), entries.get(0).getVal());
-
-                // create a new path
-                for (int x = 1; x < entries.size(); x++) {
-
-                    filled.lineTo(entries.get(x).getXIndex(), entries.get(x).getVal());
-                }
-
-                // close up
-                filled.lineTo(entries.get(entries.size() - 1).getXIndex(), mYChartMin);
-                filled.lineTo(entries.get(0).getXIndex(), mYChartMin);
-                filled.close();
+                Path filled = generateFilledPath(entries);
 
                 transformPath(filled);
 
@@ -205,6 +196,26 @@ public class LineChart extends BarLineChartBase {
                 mRenderPaint.setAlpha(255);
             }
         }
+    }
+    
+    private Path generateFilledPath(ArrayList<Entry> entries) {
+        
+        Path filled = new Path();
+        filled.moveTo(entries.get(0).getXIndex(), entries.get(0).getVal() * mPhaseY);
+
+        // create a new path
+        for (int x = 1; x < entries.size() * mPhaseX; x++) {
+            
+            Entry e = entries.get(x);
+            filled.lineTo(e.getXIndex(), e.getVal() * mPhaseY);
+        }
+
+        // close up
+        filled.lineTo(entries.get((int) ((entries.size() - 1) * mPhaseX)).getXIndex(), mYChartMin);
+        filled.lineTo(entries.get(0).getXIndex(), mYChartMin);
+        filled.close();
+        
+        return filled;
     }
 
     /**
@@ -245,7 +256,7 @@ public class LineChart extends BarLineChartBase {
 
                 float[] positions = generateTransformedValues(entries, 0f);
 
-                for (int j = 0; j < positions.length; j += 2) {
+                for (int j = 0; j < positions.length * mPhaseX; j += 2) {
 
                     if (isOffContentRight(positions[j]))
                         break;
@@ -293,7 +304,7 @@ public class LineChart extends BarLineChartBase {
 
                 float[] positions = generateTransformedValues(entries, 0f);
 
-                for (int j = 0; j < positions.length; j += 2) {
+                for (int j = 0; j < positions.length * mPhaseX; j += 2) {
 
                     // Set the color for the currently drawn value. If the index
                     // is

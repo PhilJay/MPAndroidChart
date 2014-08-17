@@ -141,6 +141,14 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
                 mChart.saveToPath("title" + System.currentTimeMillis(), "");
                 break;
             }
+            case R.id.animateX: {
+                mChart.animateX(3000);
+                break;
+            }
+            case R.id.animateY: {
+                mChart.animateY(3000);
+                break;
+            }
         }
         return true;
     }

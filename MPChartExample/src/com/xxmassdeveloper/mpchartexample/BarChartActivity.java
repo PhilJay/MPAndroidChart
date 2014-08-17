@@ -179,6 +179,19 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
                 mChart.invalidate();
                 break;
             }
+            case R.id.animateX: {
+                mChart.animateX(3000);
+                break;
+            }
+            case R.id.animateY: {
+                mChart.animateY(3000);
+                break;
+            }
+            case R.id.animateXY: {
+
+                mChart.animateXY(3000, 3000);
+                break;
+            }
             case R.id.actionToggleAdjustXLegend: {
                 XLabels xLabels = mChart.getXLabels();
 

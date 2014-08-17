@@ -232,7 +232,7 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 
                             float scale = totalDist / mSavedDist; // total
                                                                   // scale
-
+                            
                             mMatrix.set(mSavedMatrix);
                             mMatrix.postScale(scale, scale, t.x, t.y);
 

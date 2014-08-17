@@ -1,7 +1,11 @@
 
 package com.github.mikephil.charting.charts;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -17,6 +21,7 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore.Images;
 import android.text.TextUtils;
@@ -48,7 +53,8 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public abstract class Chart extends View {
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+public abstract class Chart extends View implements AnimatorUpdateListener {
 
     public static final String LOG_TAG = "MPChart";
 
@@ -571,7 +577,7 @@ public abstract class Chart extends View {
 
         for (int j = 0; j < valuePoints.length; j += 2) {
             valuePoints[j] = entries.get(j / 2).getXIndex() + xOffset;
-            valuePoints[j + 1] = entries.get(j / 2).getSum();
+            valuePoints[j + 1] = entries.get(j / 2).getSum() * mPhaseY;
         }
 
         transformPointArray(valuePoints);
@@ -1009,7 +1015,7 @@ public abstract class Chart extends View {
 
             int xIndex = mIndicesToHightlight[i].getXIndex();
 
-            if (xIndex < mCurrentData.getXVals().size())
+            if (xIndex < mCurrentData.getXVals().size() && xIndex < mDeltaX * mPhaseX)
                 drawMarkerView(xIndex, mIndicesToHightlight[i].getDataSetIndex());
         }
     }
@@ -1031,7 +1037,7 @@ public abstract class Chart extends View {
 
         // position of the marker depends on selected value index and value
         float[] pts = new float[] {
-                xPos, value
+                xPos, value * mPhaseY
         };
         transformPointArray(pts);
 
@@ -1044,6 +1050,127 @@ public abstract class Chart extends View {
         // call the draw method of the markerview that will translate to the
         // given position and draw the view
         mMarkerView.draw(mDrawCanvas, posX, posY);
+    }
+
+    /**
+     * ################ ################ ################ ################
+     */
+    /** CODE BELOW THIS RELATED TO ANIMATION */
+
+    /** the phase that is animated and influences the drawn values on the y-axis */
+    protected float mPhaseY = 1f;
+
+    /** the phase that is animated and influences the drawn values on the x-axis */
+    protected float mPhaseX = 1f;
+
+    /** objectanimator used for animating values on y-axis */
+    private ObjectAnimator mAnimatorY;
+
+    /** objectanimator used for animating values on x-axis */
+    private ObjectAnimator mAnimatorX;
+
+    /**
+     * Animates the drawing / rendering of the chart on both x- and y-axis with
+     * the specified animation time.
+     * 
+     * @param durationMillisX
+     * @param durationMillisY
+     */
+    public void animateXY(int durationMillisX, int durationMillisY) {
+
+        mPhaseY = 0f;
+        mPhaseX = 0f;
+
+        mAnimatorY = ObjectAnimator.ofFloat(this, "phaseY", mPhaseY, 1f).setDuration(
+                durationMillisY);
+        mAnimatorX = ObjectAnimator.ofFloat(this, "phaseX", mPhaseX, 1f).setDuration(
+                durationMillisX);
+
+        // make sure only one animator produces update-callbacks (which then
+        // call invalidate())
+        if (durationMillisX > durationMillisY) {
+            mAnimatorX.addUpdateListener(this);
+        } else {
+            mAnimatorY.addUpdateListener(this);
+        }
+
+        mAnimatorX.start();
+        mAnimatorY.start();
+    }
+
+    /**
+     * Animates the rendering of the chart on the x-axis with the specified
+     * animation time.
+     * 
+     * @param durationMillis
+     */
+    public void animateX(int durationMillis) {
+
+        mPhaseX = 0f;
+
+        mAnimatorX = ObjectAnimator.ofFloat(this, "phaseX", mPhaseX, 1f)
+                .setDuration(durationMillis);
+        mAnimatorX.addUpdateListener(this);
+        mAnimatorX.start();
+    }
+
+    /**
+     * Animates the rendering of the chart on the y-axis with the specified
+     * animation time.
+     * 
+     * @param durationMillis
+     */
+    public void animateY(int durationMillis) {
+
+        mPhaseY = 0f;
+
+        mAnimatorY = ObjectAnimator.ofFloat(this, "phaseY", mPhaseY, 1f)
+                .setDuration(durationMillis);
+        mAnimatorY.addUpdateListener(this);
+        mAnimatorY.start();
+    }
+
+    @Override
+    public void onAnimationUpdate(ValueAnimator va) {
+
+        // redraw everything after animation value change
+        invalidate();
+    }
+
+    /**
+     * This gets the y-phase that is used to animate the values.
+     * 
+     * @return
+     */
+    protected float getPhaseY() {
+        return mPhaseY;
+    }
+
+    /**
+     * This modifys the y-phase that is used to animate the values.
+     * 
+     * @param phase
+     */
+    protected void setPhaseY(float phase) {
+        mPhaseY = phase;
+    }
+
+    /**
+     * This gets the x-phase that is used to animate the values.
+     * 
+     * @return
+     */
+    protected float getPhaseX() {
+        return mPhaseX;
+    }
+
+    /**
+     * This modifys the x-phase that is used to animate the values.
+     * 
+     * @param phase
+     */
+    protected void setPhaseX(float phase) {
+        mPhaseX = phase;
     }
 
     /**
@@ -1415,7 +1542,7 @@ public abstract class Chart extends View {
 
     /** paint used for the legend */
     public static final int PAINT_LEGEND_LABEL = 18;
-    
+
     /** paint object used for the limit lines */
     public static final int PAINT_LIMIT_LINE = 19;
 
