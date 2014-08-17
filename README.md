@@ -36,6 +36,9 @@ Features
  - Read .txt file chart-data
  - Predefined color templates
  - Legends (generated automatically, customizeable)
+ - Labels (both x- and y-axis, customizeable)
+ - Animations (build up animations, on both x- and y-axis)
+ - Limit lines (providing additional information, maximums, ...)
  - Fully customizeable (paints, typefaces, legends, colors, background, gestures, dashed lines, ...)
  
 **Chart types:**
