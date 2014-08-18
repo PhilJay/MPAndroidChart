@@ -349,6 +349,8 @@ mChart.animateY(3000f); // animate vertical 3000 milliseconds
 mChart.animateXY(3000f, 3000f); // animate horizontal and vertical 3000 milliseconds
 ```
 
+If `animate(...)` (of any kind) is called, no further calling of `invalidate()` is necessary to refresh the chart.
+
 More documentation and example code coming soon.
 
 
