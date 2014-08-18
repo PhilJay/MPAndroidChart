@@ -19,7 +19,7 @@ Questions & Issues
 
 If you are having questions or problems, feel free to contact me. Since I would very much like that other users of this library **can also benefit** from your question, I am asking you to contact me via e-mail **only as a last option**. Instead, you should:
 
- - Open questions on [**stackoverflow**](https://stackoverflow.com) with the `mpandroidchart` tag
+ - Open questions on [**stackoverflow**](https://stackoverflow.com/search?q=mpandroidchart) with the `mpandroidchart` tag
  - Create Issues here on GitHub
 
 Please let me know via e-mail that you have opened a stackoverflow question so that I can get to answering it right away. Thank you.
@@ -332,6 +332,22 @@ ll.setLineWidth(4f);
 // .. and more styling options
 
 ld.addLimitLine(ll);
+```
+
+**Animations:**
+
+All chart types support animations that can be used to create / build up the chart in an awesome looking way. Three different kinds of animation methods exist that animate either both, or x- and y-axis separately:
+
+ - `animateX(int durationMillis)`: Animates the charts values on the horizontal axis, meaning that the chart will build up within the specified time from left to right.
+ - `animateY(int durationMillis)`: Animates the charts values on the vertical axis, meaning that the chart will build up within the specified time from bottom to top.
+ - `animateXY(int xDuration, int yDuration)`: Animates both horizontal and vertical axis, resulting in a left/right bottom/top build-up.
+
+```java
+mChart.animateX(3000f); // animate horizontal 3000 milliseconds
+// or:
+mChart.animateY(3000f); // animate vertical 3000 milliseconds
+// or:
+mChart.animateXY(3000f, 3000f); // animate horizontal and vertical 3000 milliseconds
 ```
 
 More documentation and example code coming soon.
