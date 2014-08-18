@@ -19,7 +19,7 @@ Questions & Issues
 
 If you are having questions or problems, feel free to contact me. Since I would very much like that other users of this library **can also benefit** from your question, I am asking you to contact me via e-mail **only as a last option**. Instead, you should:
 
- - Open questions on [**stackoverflow**](https://stackoverflow.com) with the `mpandroidchart` tag
+ - Open questions on [**stackoverflow**](https://stackoverflow.com/search?q=mpandroidchart) with the `mpandroidchart` tag
  - Create Issues here on GitHub
 
 Please let me know via e-mail that you have opened a stackoverflow question so that I can get to answering it right away. Thank you.
@@ -36,6 +36,9 @@ Features
  - Read .txt file chart-data
  - Predefined color templates
  - Legends (generated automatically, customizeable)
+ - Labels (both x- and y-axis, customizeable)
+ - Animations (build up animations, on both x- and y-axis)
+ - Limit lines (providing additional information, maximums, ...)
  - Fully customizeable (paints, typefaces, legends, colors, background, gestures, dashed lines, ...)
  
 **Chart types:**
@@ -111,11 +114,10 @@ or create it in code (and then **add it to a layout**):
  - <code>setValuePaintColor(int color)</code>: Sets the color used for drawing the values if <code>setDrawYValues(...)</code> is enabled.
  - <code>setValueTypeface(Typeface t)</code>: Sets the <code>Typeface</code> used for drawing the values if <code>setDrawYValues(...)</code> is enabled.
  - <code>setValueDigits(int digits)</code>: Sets the number of digits to use for all printed values.
- - <code>setColorTemplate(ColorTemplate ct)</code>: Sets a <code>ColorTemplate</code> for the chart containing all colors. More information below.
  - <code>setPaint(Paint p, int which)</code>: Replaces the specified default <code>Paint</code> object with a new one. This method can be used to replace any predefined <code>Paint</code> object with an own <code>Paint</code> object and develop a completely personalized design.
 
 **Getters and convenience:**
-- <code>public ChartData getData()</code>: Returns the <code>ChartData</code> object the chart currently displays. It contains all information concerning the displayed values such as minimum and maximum values, value counts, value sums, ...
+- <code>public ChartData getDataCurrent()</code>: Returns the <code>ChartData</code> object the chart currently displays. It contains all information concerning the displayed values such as minimum and maximum values, value counts, value sums, ...
 - <code>public float getScaleX()</code>: Returns the current scale factor on the x-axis.
 - <code>public float getYChartMin()</code>: Returns the current minimum y-value that can be displayed by the chart - bottom line.
 - <code>public float getYChartMax()</code>: Returns the current maximum y-value that can be displayed by the chart - top line.
@@ -313,6 +315,43 @@ yl.setLabelCount(6); // set how many label entries should be displayed
 
 ```
 
+**Limit Lines:**
+
+Limit lines (class `LimitLine`) are (as the name might indicate) plain and simple lines that can be set for all `Line-, Bar- and ScatterData` objects. They can be used to **provide additional information** for the user. 
+
+As an example, your chart might display various blood pressure measurement results the user logged with an application. In order to inform the user that a systolic blood pressure of over 140 mmHg is considered to be a health risk, you could add a `LimitLine` at 140 to provide that information.
+
+```java
+
+LineData ld = new LineData(...);
+
+LimitLine ll = new LimitLine(140f);
+ll.setLineColor(Color.RED);
+ll.setLineWidth(4f);
+// .. and more styling options
+
+ld.addLimitLine(ll);
+```
+
+**Animations:**
+
+All chart types support animations that can be used to create / build up the chart in an awesome looking way. Three different kinds of animation methods exist that animate either both, or x- and y-axis separately:
+
+ - `animateX(int durationMillis)`: Animates the charts values on the horizontal axis, meaning that the chart will build up within the specified time from left to right.
+ - `animateY(int durationMillis)`: Animates the charts values on the vertical axis, meaning that the chart will build up within the specified time from bottom to top.
+ - `animateXY(int xDuration, int yDuration)`: Animates both horizontal and vertical axis, resulting in a left/right bottom/top build-up.
+
+```java
+mChart.animateX(3000f); // animate horizontal 3000 milliseconds
+// or:
+mChart.animateY(3000f); // animate vertical 3000 milliseconds
+// or:
+mChart.animateXY(3000f, 3000f); // animate horizontal and vertical 3000 milliseconds
+```
+
+If `animate(...)` (of any kind) is called, no further calling of `invalidate()` is necessary to refresh the chart.
+
+In order to support animations below Honeycomb, this library makes use of the awesome [**nineoldandroids library**](https://github.com/JakeWharton/NineOldAndroids) developed by Jake Wharton.
 
 More documentation and example code coming soon.
 
