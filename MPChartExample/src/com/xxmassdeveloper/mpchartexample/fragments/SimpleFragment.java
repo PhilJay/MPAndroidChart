@@ -2,6 +2,7 @@ package com.xxmassdeveloper.mpchartexample.fragments;
 
 import android.support.v4.app.Fragment;
 
+import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
 import com.github.mikephil.charting.data.BarData;
@@ -134,6 +135,45 @@ public abstract class SimpleFragment extends Fragment {
         int max = Math.max(sets.get(0).getEntryCount(), sets.get(1).getEntryCount());
         
         LineData d = new LineData(ChartData.generateXVals(0, max),  sets);
+        return d;
+    }
+    
+    protected LineData getComplexity() {
+        
+        ArrayList<LineDataSet> sets = new ArrayList<LineDataSet>();
+        
+        LineDataSet ds1 = new LineDataSet(FileUtils.loadEntriesFromAssets(getActivity().getAssets(), "n.txt"), "O(n)");
+        LineDataSet ds2 = new LineDataSet(FileUtils.loadEntriesFromAssets(getActivity().getAssets(), "nlogn.txt"), "O(nlogn)");
+        LineDataSet ds3 = new LineDataSet(FileUtils.loadEntriesFromAssets(getActivity().getAssets(), "square.txt"), "O(n\u00B2)");
+        LineDataSet ds4 = new LineDataSet(FileUtils.loadEntriesFromAssets(getActivity().getAssets(), "three.txt"), "O(n\u00B3)");
+        
+        ds1.setColor(getResources().getColor(R.color.vordiplom_1));
+        ds2.setColor(getResources().getColor(R.color.vordiplom_2));
+        ds3.setColor(getResources().getColor(R.color.vordiplom_3));
+        ds4.setColor(getResources().getColor(R.color.vordiplom_4));
+        
+        ds1.setCircleColor(getResources().getColor(R.color.vordiplom_1));
+        ds2.setCircleColor(getResources().getColor(R.color.vordiplom_2));
+        ds3.setCircleColor(getResources().getColor(R.color.vordiplom_3));
+        ds4.setCircleColor(getResources().getColor(R.color.vordiplom_4));
+        
+        ds1.setLineWidth(2.5f);
+        ds1.setCircleSize(3f);
+        ds2.setLineWidth(2.5f);
+        ds2.setCircleSize(3f);
+        ds3.setLineWidth(2.5f);
+        ds3.setCircleSize(3f);
+        ds4.setLineWidth(2.5f);
+        ds4.setCircleSize(3f);
+        
+        
+        // load DataSets from textfiles in assets folders
+        sets.add(ds1);        
+        sets.add(ds2);
+        sets.add(ds3);
+        sets.add(ds4);
+        
+        LineData d = new LineData(ChartData.generateXVals(0, ds1.getEntryCount()), sets);
         return d;
     }
     

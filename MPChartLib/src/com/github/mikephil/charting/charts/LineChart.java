@@ -159,7 +159,7 @@ public class LineChart extends BarLineChartBase {
                     // get the color that is specified for this position from
                     // the DataSet, this will reuse colors, if the index is out
                     // of bounds
-                    mRenderPaint.setColor(dataSet.getColor(j));
+                    mRenderPaint.setColor(dataSet.getColor(j / 2));
 
                     if (isOffContentRight(valuePoints[j]))
                         break;

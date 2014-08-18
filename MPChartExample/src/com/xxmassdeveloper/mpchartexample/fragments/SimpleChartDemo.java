@@ -61,15 +61,18 @@ public class SimpleChartDemo extends DemoBase {
             
             switch(pos) {
             case 0:
-                f = LineChartFrag.newInstance();
+                f = SineCosineFragment.newInstance();
                 break;
             case 1:
-                f = BarChartFrag.newInstance();
+                f = ComplexityFragment.newInstance();
                 break;
             case 2:
-                f = ScatterChartFrag.newInstance();
+                f = BarChartFrag.newInstance();
                 break;
             case 3:
+                f = ScatterChartFrag.newInstance();
+                break;
+            case 4:
                 f = PieChartFrag.newInstance();
                 break;
             }
@@ -79,7 +82,7 @@ public class SimpleChartDemo extends DemoBase {
 
         @Override
         public int getCount() {
-            return 4;
+            return 5;
         }       
     }
 }

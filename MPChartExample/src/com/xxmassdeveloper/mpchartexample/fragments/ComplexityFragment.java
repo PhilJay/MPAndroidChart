@@ -12,10 +12,10 @@ import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.R;
 
 
-public class LineChartFrag extends SimpleFragment {
+public class ComplexityFragment extends SimpleFragment {
 
     public static Fragment newInstance() {
-        return new LineChartFrag();
+        return new ComplexityFragment();
     }
 
     private LineChart mChart;
@@ -28,7 +28,6 @@ public class LineChartFrag extends SimpleFragment {
         
         mChart.setDescription("");
         mChart.setDrawYValues(false);
-//        mChart.setCircleSize(5f);
         
         mChart.setHighlightIndicatorEnabled(false); 
         mChart.setDrawBorder(false);
@@ -38,9 +37,8 @@ public class LineChartFrag extends SimpleFragment {
         mChart.setDrawYValues(false);
         mChart.setStartAtZero(false);
         
-        mChart.setYRange(-1.2f, 1.2f, false);
-        
-        mChart.setData(generateLineData());
+        mChart.setData(getComplexity());
+        mChart.animateX(3000);
         
 //        mChart.setScaleMinima(3f, 3f);
 //        mChart.centerViewPort(300, 0);
