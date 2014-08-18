@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public abstract class SimpleFragment extends Fragment {
 
-    protected ChartData generateBarData(int dataSets, float range, int count) {
+    protected BarData generateBarData(int dataSets, float range, int count) {
         
         ArrayList<BarDataSet> sets = new ArrayList<BarDataSet>();
         
@@ -45,7 +45,7 @@ public abstract class SimpleFragment extends Fragment {
         return d;
     }
     
-    protected ChartData generateScatterData(int dataSets, float range, int count) {
+    protected ScatterData generateScatterData(int dataSets, float range, int count) {
         
         ArrayList<ScatterDataSet> sets = new ArrayList<ScatterDataSet>();
         

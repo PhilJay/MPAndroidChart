@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
@@ -63,7 +64,7 @@ public class BarChartItem extends ChartItem {
         yl.setLabelCount(5);
 
         // set data
-        holder.chart.setData(mChartData);
+        holder.chart.setData((BarData) mChartData);
         
         // do not forget to refresh the chart
 //        holder.chart.invalidate();

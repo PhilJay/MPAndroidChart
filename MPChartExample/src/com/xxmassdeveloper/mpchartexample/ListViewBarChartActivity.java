@@ -43,7 +43,7 @@ public class ListViewBarChartActivity extends DemoBase {
         
         ListView lv = (ListView) findViewById(R.id.listView1);
 
-        ArrayList<ChartData> list = new ArrayList<ChartData>();
+        ArrayList<BarData> list = new ArrayList<BarData>();
 
         // 20 items
         for (int i = 0; i < 20; i++) {
@@ -54,11 +54,11 @@ public class ListViewBarChartActivity extends DemoBase {
         lv.setAdapter(cda);
     }
 
-    private class ChartDataAdapter extends ArrayAdapter<ChartData> {
+    private class ChartDataAdapter extends ArrayAdapter<BarData> {
 
         private Typeface mTf;
 
-        public ChartDataAdapter(Context context, List<ChartData> objects) {
+        public ChartDataAdapter(Context context, List<BarData> objects) {
             super(context, 0, objects);
 
             mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
@@ -67,7 +67,7 @@ public class ListViewBarChartActivity extends DemoBase {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            ChartData c = getItem(position);
+            BarData c = getItem(position);
 
             ViewHolder holder = null;
 

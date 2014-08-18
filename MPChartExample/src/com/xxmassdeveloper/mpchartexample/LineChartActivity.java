@@ -114,6 +114,8 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
 
         // add data
         setData(45, 100);
+        
+        mChart.animateX(2500);
 
         // // restrain the maximum scale-out factor
         // mChart.setScaleMinima(3f, 3f);
@@ -237,6 +239,15 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
                     mChart.disableFiltering();
                 }
                 mChart.invalidate();
+                
+//                
+//                for(int i = 0; i < 10; i++) {
+//                    mChart.addEntry(new Entry((float) (Math.random() * 100), i+2), 0);
+//                    mChart.invalidate();
+//                }
+//                
+//                Toast.makeText(getApplicationContext(), "valcount: " + mChart.getDataOriginal().getYValCount() + ", valsum: " + mChart.getDataOriginal().getYValueSum(), Toast.LENGTH_SHORT).show();
+//                
                 break;
             }
             case R.id.actionSave: {
@@ -307,7 +318,7 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
                                                            // 0.1) / 10);
             yVals.add(new Entry(val, i));
         }
-
+        
         // create a dataset and give it a type
         LineDataSet set1 = new LineDataSet(yVals, "DataSet 1");
 
@@ -322,16 +333,16 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         // create a data object with the datasets
         LineData data = new LineData(xVals, dataSets);
         
-//        LimitLine ll = new LimitLine(130f);
-//        ll.setLineWidth(4f);
-//        ll.enableDashedLine(10f, 10f, 0f);
-//        
-//        LimitLine ll1 = new LimitLine(-30f);
-//        ll1.setLineWidth(4f);
-//        ll1.enableDashedLine(10f, 10f, 0f);
-//        
-//        data.addLimitLine(ll);
-//        data.addLimitLine(ll1);
+        LimitLine ll1 = new LimitLine(130f);
+        ll1.setLineWidth(4f);
+        ll1.enableDashedLine(10f, 10f, 0f);
+        
+        LimitLine ll2 = new LimitLine(-30f);
+        ll2.setLineWidth(4f);
+        ll2.enableDashedLine(10f, 10f, 0f);
+        
+        data.addLimitLine(ll1);
+        data.addLimitLine(ll2);
 
         // set data
         mChart.setData(data);

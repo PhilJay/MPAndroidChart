@@ -513,7 +513,8 @@ public class BarChart extends BarLineChartBase {
                         if (isOffContentRight(valuePoints[j]))
                             break;
 
-                        if (isOffContentLeft(valuePoints[j]))
+                        if (isOffContentLeft(valuePoints[j]) || isOffContentTop(valuePoints[j + 1])
+                                || isOffContentBottom(valuePoints[j + 1]))
                             continue;
 
                         float val = entries.get(j / 2).getSum();
@@ -530,7 +531,8 @@ public class BarChart extends BarLineChartBase {
                         if (isOffContentRight(valuePoints[j]))
                             break;
 
-                        if (isOffContentLeft(valuePoints[j]))
+                        if (isOffContentLeft(valuePoints[j]) || isOffContentTop(valuePoints[j + 1])
+                                || isOffContentBottom(valuePoints[j + 1]))
                             continue;
 
                         Entry e = entries.get(j / 2);

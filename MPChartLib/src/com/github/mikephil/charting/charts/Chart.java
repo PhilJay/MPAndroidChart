@@ -309,7 +309,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      * 
      * @param data
      */
-    public void setData(ChartData data) {
+    protected void setData(ChartData data) {
 
         if (data == null || !data.isValid()) {
             Log.e(LOG_TAG,
@@ -1151,7 +1151,39 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     public void setPhaseX(float phase) {
         mPhaseX = phase;
     }
+    
+    /**
+     * ################ ################ ################ ################
+     */
+    /** BELOW THIS FOR DYNAMICALLY ADDING ENTRIES AND DATASETS */
 
+    public void addEntry(Entry e, int dataSetIndex) {
+        mOriginalData.getDataSetByIndex(dataSetIndex).addEntry(e);
+        
+        prepare();
+        calcMinMax(false);
+        prepareMatrix();
+        calculateOffsets();
+    }
+    
+    public void addEntry(Entry e, String label) {
+        mOriginalData.getDataSetByLabel(label, false).addEntry(e);
+        
+        prepare();
+        calcMinMax(false);
+        prepareMatrix();
+        calculateOffsets();
+    }
+    
+    public void addDataSet(DataSet d) {
+        mOriginalData.addDataSet(d);
+        
+        prepare();
+        calcMinMax(false);
+        prepareMatrix();
+        calculateOffsets();
+    }
+    
     /**
      * ################ ################ ################ ################
      */

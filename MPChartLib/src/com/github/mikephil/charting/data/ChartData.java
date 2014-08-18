@@ -120,7 +120,7 @@ public abstract class ChartData {
                     .getYVals()
                     .size() > mXVals.size()) {
                 throw new IllegalArgumentException(
-                        "One or more of the DataSet Entry arrays are longer than the x-values array.");
+                        "One or more of the DataSet Entry arrays are longer than the x-values array of this ChartData object.");
             }
         }
     }
@@ -378,6 +378,25 @@ public abstract class ChartData {
      */
     public DataSet getDataSetByIndex(int index) {
         return mDataSets.get(index);
+    }
+
+    /**
+     * Adds a DataSet dynamically.
+     * 
+     * @param d
+     */
+    public void addDataSet(DataSet d) {
+        if (mDataSets == null)
+            mDataSets = new ArrayList<DataSet>();
+        ((ArrayList<DataSet>) mDataSets).add(d);
+
+        mYValCount += d.getEntryCount();
+        mYValueSum += d.getYValueSum();
+
+        if (mYMax < d.getYMax())
+            mYMax = d.getYMax();
+        if (mYMin > d.getYMin())
+            mYMin = d.getYMin();
     }
 
     /**

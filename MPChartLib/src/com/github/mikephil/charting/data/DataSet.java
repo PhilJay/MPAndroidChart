@@ -54,9 +54,9 @@ public abstract class DataSet {
         this.mLabel = label;
         this.mYVals = yVals;
 
-        if (yVals.size() <= 0) {
-            return;
-        }
+//        if (yVals.size() <= 0) {
+//            return;
+//        }
 
         mColors = new ArrayList<Integer>();
 
@@ -108,7 +108,7 @@ public abstract class DataSet {
         mYValueSum = 0;
 
         for (int i = 0; i < mYVals.size(); i++) {
-            mYValueSum += Math.abs(mYVals.get(i).getVal());
+            mYValueSum += Math.abs(mYVals.get(i).getSum());
         }
     }
 
@@ -278,6 +278,31 @@ public abstract class DataSet {
      */
     public String getLabel() {
         return mLabel;
+    }
+    
+    /**
+     * Adds an Entry dynamically.
+     * 
+     * @param d
+     */
+    public void addEntry(Entry e) {
+               
+        float sum = e.getSum();
+        
+        if(mYVals == null || mYVals.size() <= 0) {
+            
+            mYVals = new ArrayList<Entry>();
+            mYMax = sum;
+            mYMin = sum;
+        } else {
+            
+            if(mYMax < sum) mYMax = sum;
+            if(mYMin > sum) mYMin = sum;
+        }
+        
+        mYVals.add(e);
+        
+        mYValueSum += sum;
     }
 
     /** BELOW THIS COLOR HANDLING */

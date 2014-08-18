@@ -307,8 +307,6 @@ public abstract class BarLineChartBase extends Chart {
         if (mLegend == null)
             return;
 
-        Log.i(LOG_TAG, "Offsets calculated.");
-
         // setup offsets for legend
         if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
 
