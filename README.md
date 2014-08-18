@@ -351,6 +351,8 @@ mChart.animateXY(3000f, 3000f); // animate horizontal and vertical 3000 millisec
 
 If `animate(...)` (of any kind) is called, no further calling of `invalidate()` is necessary to refresh the chart.
 
+In order to support animations below Honeycomb, this library makes use of the awesome [**nineoldandroids library**](https://github.com/JakeWharton/NineOldAndroids) developed by Jake Wharton.
+
 More documentation and example code coming soon.
 
 
