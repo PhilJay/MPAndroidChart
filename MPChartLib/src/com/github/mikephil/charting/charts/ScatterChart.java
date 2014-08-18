@@ -137,7 +137,7 @@ public class ScatterChart extends BarLineChartBase {
 
                 float shapeSize = dataSet.getScatterShapeSize();
 
-                for (int j = 0; j < positions.length; j += 2) {
+                for (int j = 0; j < positions.length * mPhaseX; j += 2) {
 
                     if (isOffContentRight(positions[j]))
                         break;

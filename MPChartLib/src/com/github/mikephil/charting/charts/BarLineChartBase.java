@@ -1,8 +1,6 @@
 
 package com.github.mikephil.charting.charts;
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -517,16 +515,25 @@ public abstract class BarLineChartBase extends Chart {
 
         // additional handling for space (default 10% space), spacing only
         // applies with non-rounded y-label
-        float space = mDeltaY / 100f * 15f;
+        float space = Math.abs(mDeltaY / 100f * 15f);
 
         if (mStartAtZero) {
-            mYChartMin = 0;
+
+            if (mYChartMax < 0) {
+                mYChartMax = 0;
+                // calc delta
+                mYChartMin = mYChartMin - space;
+            } else {
+                mYChartMin = 0;
+                // calc delta
+                mYChartMax = mYChartMax + space;
+            }
         } else {
-            mYChartMin = mYChartMin - space;
+
+            mYChartMin = mYChartMin - space / 2f;
+            mYChartMax = mYChartMax + space / 2f;
         }
 
-        // calc delta
-        mYChartMax = mYChartMax + space;
         mDeltaY = Math.abs(mYChartMax - mYChartMin);
     }
 
@@ -708,6 +715,7 @@ public abstract class BarLineChartBase extends Chart {
         transformPointArray(positions);
 
         float xoffset = Utils.convertDpToPixel(5f);
+        float yoffset = Utils.calcTextHeight(mYLabelPaint, "A") / 2.5f;
 
         mYLabelPaint.setTypeface(mYLabels.getTypeface());
         mYLabelPaint.setTextSize(mYLabels.getTextSize());
@@ -716,22 +724,22 @@ public abstract class BarLineChartBase extends Chart {
         if (mYLabels.getPosition() == YLabelPosition.LEFT) {
 
             mYLabelPaint.setTextAlign(Align.RIGHT);
-            drawYLabels(mOffsetLeft - xoffset, positions);
+            drawYLabels(mOffsetLeft - xoffset, positions, yoffset);
 
         } else if (mYLabels.getPosition() == YLabelPosition.RIGHT) {
 
             mYLabelPaint.setTextAlign(Align.LEFT);
-            drawYLabels(getWidth() - mOffsetRight + xoffset, positions);
+            drawYLabels(getWidth() - mOffsetRight + xoffset, positions, yoffset);
 
         } else { // BOTH SIDED Y-AXIS LABELS
 
             // draw left legend
             mYLabelPaint.setTextAlign(Align.RIGHT);
-            drawYLabels(mOffsetLeft - xoffset, positions);
+            drawYLabels(mOffsetLeft - xoffset, positions, yoffset);
 
             // draw right legend
             mYLabelPaint.setTextAlign(Align.LEFT);
-            drawYLabels(getWidth() - mOffsetRight + xoffset, positions);
+            drawYLabels(getWidth() - mOffsetRight + xoffset, positions, yoffset);
         }
     }
 
@@ -741,7 +749,7 @@ public abstract class BarLineChartBase extends Chart {
      * @param xPos
      * @param positions
      */
-    private void drawYLabels(float xPos, float[] positions) {
+    private void drawYLabels(float xPos, float[] positions, float yOffset) {
 
         // draw
         for (int i = 0; i < mYLabels.mEntryCount; i++) {
@@ -753,10 +761,10 @@ public abstract class BarLineChartBase extends Chart {
                 return;
 
             if (mYLabels.isDrawUnitsInYLabelEnabled()) {
-                mDrawCanvas.drawText(text + mUnit, xPos, positions[i * 2 + 1],
+                mDrawCanvas.drawText(text + mUnit, xPos, positions[i * 2 + 1] + yOffset,
                         mYLabelPaint);
             } else {
-                mDrawCanvas.drawText(text, xPos, positions[i * 2 + 1], mYLabelPaint);
+                mDrawCanvas.drawText(text, xPos, positions[i * 2 + 1] + yOffset, mYLabelPaint);
             }
         }
     }

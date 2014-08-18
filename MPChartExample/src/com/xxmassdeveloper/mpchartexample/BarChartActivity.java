@@ -70,7 +70,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart.setPinchZoom(false);
 
         // draw shadows for each bar that show the maximum value
-        mChart.setDrawBarShadow(true);
+//        mChart.setDrawBarShadow(true);
 
         mChart.setUnit(" €");
 
@@ -243,7 +243,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         for (int i = 0; i < mSeekBarX.getProgress()+1; i++) {
             float mult = (mSeekBarY.getProgress() + 1);
-            float val = (float) (Math.random() * mult) + 3;
+            float val = (float) (Math.random() * mult) - 50;
             yVals1.add(new Entry(val, i));
         }
 

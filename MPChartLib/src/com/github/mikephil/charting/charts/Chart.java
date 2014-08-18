@@ -585,44 +585,6 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
         return valuePoints;
     }
 
-    protected float[] generateTransformedValuesForStacks(ArrayList<Entry> entries, int entryCount,
-            float xOffset) {
-
-        float[] valuePoints = new float[entryCount * 2];
-        int cnt = 0;
-
-        for (int i = 0; i < entries.size(); i++) {
-
-            Entry e = entries.get(i);
-
-            float[] vals = e.getVals();
-
-            // if the current entry has no stack
-            if (vals == null) {
-
-                valuePoints[cnt] = e.getXIndex() + xOffset;
-                valuePoints[cnt + 1] = e.getVal();
-                cnt += 2;
-            } else {
-
-                float all = e.getSum();
-
-                for (int j = 0; j < vals.length; j++) {
-
-                    all -= vals[j];
-
-                    valuePoints[cnt] = e.getXIndex() + xOffset;
-                    valuePoints[cnt + 1] = vals[j] + all;
-                    cnt += 2;
-                }
-            }
-        }
-
-        transformPointArray(valuePoints);
-
-        return valuePoints;
-    }
-
     /**
      * transform a path with all the given matrices VERY IMPORTANT: keep order
      * to value-touch-offset
@@ -667,6 +629,21 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      * @param r
      */
     protected void transformRect(RectF r) {
+
+        mMatrixValueToPx.mapRect(r);
+        mMatrixTouch.mapRect(r);
+        mMatrixOffset.mapRect(r);
+    }
+
+    /**
+     * Transform a rectangle with all matrices with potential animation phases.
+     * 
+     * @param r
+     */
+    protected void transformRectWithPhase(RectF r) {
+
+        // multiply the height of the rect with the phase
+        r.top *= mPhaseY;
 
         mMatrixValueToPx.mapRect(r);
         mMatrixTouch.mapRect(r);

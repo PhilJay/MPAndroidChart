@@ -1,15 +1,10 @@
 
 package com.github.mikephil.charting.charts;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.RectF;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -171,10 +166,10 @@ public class BarChart extends BarLineChartBase {
     protected void calcMinMax(boolean fixedValues) {
         super.calcMinMax(fixedValues);
 
-        if (!mStartAtZero && getYMin() >= 0f) {
-            mYChartMin = getYMin();
-            mDeltaY = Math.abs(mYChartMax - mYChartMin);
-        }
+//        if (!mStartAtZero && getYMin() >= 0f) {
+//            mYChartMin = getYMin();
+//            mDeltaY = Math.abs(mYChartMax - mYChartMin);
+//        }
 
         // increase deltax by 1 because the bars have a width of 1
         mDeltaX++;
@@ -185,9 +180,6 @@ public class BarChart extends BarLineChartBase {
 
         // if there are values to highlight and highlighnting is enabled, do it
         if (mHighlightEnabled && mHighLightIndicatorEnabled && valuesToHighlight()) {
-
-            // distance between highlight arrow and bar
-            float offsetY = mDeltaY * 0.04f;
 
             for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
@@ -204,30 +196,26 @@ public class BarChart extends BarLineChartBase {
                     
                     Entry e = getEntryByDataSetIndex(index, dataSetIndex);             
 
-                    float y = e.getSum() * mPhaseY;
-                    float top = y >= 0 ? y : 0;
-                    float bottom = y <= 0 ? y : 0;
-                    
-                    float left = index + ds.getBarSpace() / 2f;
-                    float right = index + 1f - ds.getBarSpace() / 2f;
+                    prepareBar(e.getXIndex(), e.getSum(), ds.getBarSpace());
 
-                    RectF highlight = new RectF(left, top, right, bottom);
-                    transformRect(highlight);
+                    mDrawCanvas.drawRect(mBarRect, mHighlightPaint);
 
-                    mDrawCanvas.drawRect(highlight, mHighlightPaint);
-
-                    if (mDrawHighlightArrow) {
-
-                        mHighlightPaint.setAlpha(200);
-
-                        Path arrow = new Path();
-                        arrow.moveTo(index + 0.5f, y + offsetY * 0.3f);
-                        arrow.lineTo(index + 0.2f, y + offsetY);
-                        arrow.lineTo(index + 0.8f, y + offsetY);
-
-                        transformPath(arrow);
-                        mDrawCanvas.drawPath(arrow, mHighlightPaint);
-                    }
+//                    if (mDrawHighlightArrow) {
+//                    
+//
+//                    // distance between highlight arrow and bar
+//                    float offsetY = mDeltaY * 0.04f;
+//
+//                        mHighlightPaint.setAlpha(200);
+//                        
+//                        Path arrow = new Path();
+//                        arrow.moveTo(index + 0.5f, y + offsetY * 0.3f);
+//                        arrow.lineTo(index + 0.2f, y + offsetY);
+//                        arrow.lineTo(index + 0.8f, y + offsetY);
+//
+//                        transformPath(arrow);
+//                        mDrawCanvas.drawPath(arrow, mHighlightPaint);
+//                    }
                 }
             }
         }
@@ -339,14 +327,15 @@ public class BarChart extends BarLineChartBase {
      */
     private void prepareBar(float x, float y, float space) {
 
-        float left = x + space / 2f;
-        float right = x + 1f - space / 2f;
-        float top = (y >= 0 ? y : 0) * mPhaseY;
-        float bottom = (y <= 0 ? y : 0) * mPhaseY;
+        float spaceHalf = space / 2f;
+        float left = x + spaceHalf;
+        float right = x + 1f - spaceHalf;
+        float top = y >= 0 ? y : 0;
+        float bottom = y <= 0 ? y : 0;
 
         mBarRect.set(left, top, right, bottom);
 
-        transformRect(mBarRect);
+        transformRectWithPhase(mBarRect);
 
         // if a shadow is drawn, prepare it too
         if (mDrawBarShadow) {
