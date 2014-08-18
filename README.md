@@ -316,6 +316,23 @@ yl.setLabelCount(6); // set how many label entries should be displayed
 
 ```
 
+**Limit Lines:**
+
+Limit lines (class `LimitLine`) are (as the name might indicate) plain and simple lines that can be set for all `Line-, Bar- and ScatterData` objects. They can be used to **provide additional information** for the user. 
+
+As an example, your chart might display various blood pressure measurement results the user logged with an application. In order to inform the user that a systolic blood pressure of over 140 mmHg is considered to be a health risk, you could add a `LimitLine` at 140 to provide that information.
+
+```java
+
+LineData ld = new LineData(...);
+
+LimitLine ll = new LimitLine(140f);
+ll.setLineColor(Color.RED);
+ll.setLineWidth(4f);
+// .. and more styling options
+
+ld.add(ll);
+```
 
 More documentation and example code coming soon.
 
