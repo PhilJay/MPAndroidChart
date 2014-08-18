@@ -114,11 +114,10 @@ or create it in code (and then **add it to a layout**):
  - <code>setValuePaintColor(int color)</code>: Sets the color used for drawing the values if <code>setDrawYValues(...)</code> is enabled.
  - <code>setValueTypeface(Typeface t)</code>: Sets the <code>Typeface</code> used for drawing the values if <code>setDrawYValues(...)</code> is enabled.
  - <code>setValueDigits(int digits)</code>: Sets the number of digits to use for all printed values.
- - <code>setColorTemplate(ColorTemplate ct)</code>: Sets a <code>ColorTemplate</code> for the chart containing all colors. More information below.
  - <code>setPaint(Paint p, int which)</code>: Replaces the specified default <code>Paint</code> object with a new one. This method can be used to replace any predefined <code>Paint</code> object with an own <code>Paint</code> object and develop a completely personalized design.
 
 **Getters and convenience:**
-- <code>public ChartData getData()</code>: Returns the <code>ChartData</code> object the chart currently displays. It contains all information concerning the displayed values such as minimum and maximum values, value counts, value sums, ...
+- <code>public ChartData getDataCurrent()</code>: Returns the <code>ChartData</code> object the chart currently displays. It contains all information concerning the displayed values such as minimum and maximum values, value counts, value sums, ...
 - <code>public float getScaleX()</code>: Returns the current scale factor on the x-axis.
 - <code>public float getYChartMin()</code>: Returns the current minimum y-value that can be displayed by the chart - bottom line.
 - <code>public float getYChartMax()</code>: Returns the current maximum y-value that can be displayed by the chart - top line.
