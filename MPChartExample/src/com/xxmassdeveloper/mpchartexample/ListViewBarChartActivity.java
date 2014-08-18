@@ -105,7 +105,8 @@ public class ListViewBarChartActivity extends DemoBase {
             holder.chart.setData(c);
             
             // do not forget to refresh the chart
-            holder.chart.invalidate();
+//            holder.chart.invalidate();
+            holder.chart.animateY(700);
 
             return convertView;
         }

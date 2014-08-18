@@ -148,6 +148,19 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
                 mChart.saveToPath("title" + System.currentTimeMillis(), "");
                 break;
             }
+            case R.id.animateX: {
+                mChart.animateX(3000);
+                break;
+            }
+            case R.id.animateY: {
+                mChart.animateY(3000);
+                break;
+            }
+            case R.id.animateXY: {
+
+                mChart.animateXY(3000, 3000);
+                break;
+            }
         }
         return true;
     }

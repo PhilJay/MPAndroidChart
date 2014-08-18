@@ -66,7 +66,8 @@ public class BarChartItem extends ChartItem {
         holder.chart.setData(mChartData);
         
         // do not forget to refresh the chart
-        holder.chart.invalidate();
+//        holder.chart.invalidate();
+        holder.chart.animateY(700);
 
         return convertView;
     }

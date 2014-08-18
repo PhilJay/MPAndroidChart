@@ -243,7 +243,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         for (int i = 0; i < mSeekBarX.getProgress()+1; i++) {
             float mult = (mSeekBarY.getProgress() + 1);
-            float val = (float) (Math.random() * mult) - 50;
+            float val = (float) (Math.random() * mult) + 3;
             yVals1.add(new Entry(val, i));
         }
 

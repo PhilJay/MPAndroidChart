@@ -1,9 +1,6 @@
 
 package com.github.mikephil.charting.charts;
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.ContentValues;
@@ -41,6 +38,9 @@ import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.MarkerView;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
+import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.animation.ValueAnimator;
+import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -53,7 +53,6 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public abstract class Chart extends View implements AnimatorUpdateListener {
 
     public static final String LOG_TAG = "MPChart";
@@ -643,7 +642,8 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     protected void transformRectWithPhase(RectF r) {
 
         // multiply the height of the rect with the phase
-        r.top *= mPhaseY;
+        if(r.top > 0) r.top *= mPhaseY;
+        else r.bottom *= mPhaseY;
 
         mMatrixValueToPx.mapRect(r);
         mMatrixTouch.mapRect(r);
@@ -1031,6 +1031,8 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
 
     /**
      * ################ ################ ################ ################
+     * Animation support below Honeycomb thanks to Jake Wharton's awesome
+     * nineoldandroids library: https://github.com/JakeWharton/NineOldAndroids
      */
     /** CODE BELOW THIS RELATED TO ANIMATION */
 
@@ -1048,19 +1050,19 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
 
     /**
      * Animates the drawing / rendering of the chart on both x- and y-axis with
-     * the specified animation time.
+     * the specified animation time. If animate(...) is called, no further
+     * calling of invalidate() is necessary to refresh the chart.
      * 
      * @param durationMillisX
      * @param durationMillisY
      */
     public void animateXY(int durationMillisX, int durationMillisY) {
 
-        mPhaseY = 0f;
-        mPhaseX = 0f;
-
-        mAnimatorY = ObjectAnimator.ofFloat(this, "phaseY", mPhaseY, 1f).setDuration(
+        mAnimatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
+        mAnimatorY.setDuration(
                 durationMillisY);
-        mAnimatorX = ObjectAnimator.ofFloat(this, "phaseX", mPhaseX, 1f).setDuration(
+        mAnimatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
+        mAnimatorX.setDuration(
                 durationMillisX);
 
         // make sure only one animator produces update-callbacks (which then
@@ -1077,32 +1079,30 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
 
     /**
      * Animates the rendering of the chart on the x-axis with the specified
-     * animation time.
+     * animation time. If animate(...) is called, no further calling of
+     * invalidate() is necessary to refresh the chart.
      * 
      * @param durationMillis
      */
     public void animateX(int durationMillis) {
 
-        mPhaseX = 0f;
-
-        mAnimatorX = ObjectAnimator.ofFloat(this, "phaseX", mPhaseX, 1f)
-                .setDuration(durationMillis);
+        mAnimatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
+        mAnimatorX.setDuration(durationMillis);
         mAnimatorX.addUpdateListener(this);
         mAnimatorX.start();
     }
 
     /**
      * Animates the rendering of the chart on the y-axis with the specified
-     * animation time.
+     * animation time. If animate(...) is called, no further calling of
+     * invalidate() is necessary to refresh the chart.
      * 
      * @param durationMillis
      */
     public void animateY(int durationMillis) {
 
-        mPhaseY = 0f;
-
-        mAnimatorY = ObjectAnimator.ofFloat(this, "phaseY", mPhaseY, 1f)
-                .setDuration(durationMillis);
+        mAnimatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
+        mAnimatorY.setDuration(durationMillis);
         mAnimatorY.addUpdateListener(this);
         mAnimatorY.start();
     }
@@ -1112,6 +1112,8 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
 
         // redraw everything after animation value change
         invalidate();
+
+//        Log.i(LOG_TAG, "UPDATING, x: " + mPhaseX + ", y: " + mPhaseY);
     }
 
     /**
@@ -1119,7 +1121,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      * 
      * @return
      */
-    protected float getPhaseY() {
+    public float getPhaseY() {
         return mPhaseY;
     }
 
@@ -1128,7 +1130,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      * 
      * @param phase
      */
-    protected void setPhaseY(float phase) {
+    public void setPhaseY(float phase) {
         mPhaseY = phase;
     }
 
@@ -1137,7 +1139,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      * 
      * @return
      */
-    protected float getPhaseX() {
+    public float getPhaseX() {
         return mPhaseX;
     }
 
@@ -1146,7 +1148,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      * 
      * @param phase
      */
-    protected void setPhaseX(float phase) {
+    public void setPhaseX(float phase) {
         mPhaseX = phase;
     }
 

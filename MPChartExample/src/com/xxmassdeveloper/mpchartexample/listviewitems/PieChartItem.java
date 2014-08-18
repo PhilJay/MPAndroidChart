@@ -63,7 +63,8 @@ public class PieChartItem extends ChartItem {
         l.setPosition(LegendPosition.RIGHT_OF_CHART);
         
         // do not forget to refresh the chart
-        holder.chart.invalidate();
+//        holder.chart.invalidate();
+        holder.chart.animateXY(900, 900);
 
         return convertView;
     }

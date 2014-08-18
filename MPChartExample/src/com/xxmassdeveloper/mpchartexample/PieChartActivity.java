@@ -77,6 +77,8 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         mSeekBarX.setProgress(3);
         mSeekBarY.setProgress(100);
+        
+        mChart.animateXY(1500, 1500);
 
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART);
@@ -140,15 +142,15 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
                 break;
             }
             case R.id.animateX: {
-                mChart.animateX(3000);
+                mChart.animateX(1800);
                 break;
             }
             case R.id.animateY: {
-                mChart.animateY(3000);
+                mChart.animateY(1800);
                 break;
             }
             case R.id.animateXY: {
-                mChart.animateXY(3000, 3000);
+                mChart.animateXY(1800, 1800);
                 break;
             }
         }

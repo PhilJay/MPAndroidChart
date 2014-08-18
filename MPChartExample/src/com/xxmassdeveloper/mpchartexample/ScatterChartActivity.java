@@ -149,6 +149,11 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
                 mChart.animateY(3000);
                 break;
             }
+            case R.id.animateXY: {
+
+                mChart.animateXY(3000, 3000);
+                break;
+            }
         }
         return true;
     }

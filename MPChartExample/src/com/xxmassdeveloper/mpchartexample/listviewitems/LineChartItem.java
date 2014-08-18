@@ -47,7 +47,8 @@ public class LineChartItem extends ChartItem {
         }
 
         // apply styling
-        holder.chart.setValueTypeface(mTf);
+//        holder.chart.setValueTypeface(mTf);
+        holder.chart.setDrawYValues(false);
         holder.chart.setDescription("");
         holder.chart.setDrawVerticalGrid(false);
         holder.chart.setDrawGridBackground(false);
@@ -65,7 +66,8 @@ public class LineChartItem extends ChartItem {
         holder.chart.setData(mChartData);
         
         // do not forget to refresh the chart
-        holder.chart.invalidate();
+//        holder.chart.invalidate();
+        holder.chart.animateX(1000);
 
         return convertView;
     }

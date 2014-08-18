@@ -70,7 +70,7 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
 
         mSeekBarX.setProgress(45);
         mSeekBarY.setProgress(100);
-        
+
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART);
     }
@@ -160,7 +160,7 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
             }
             case R.id.actionToggleAdjustXLegend: {
                 XLabels xLabels = mChart.getXLabels();
-                
+
                 if (xLabels.isAdjustXLabelsEnabled())
                     xLabels.setAdjustXLabels(false);
                 else
@@ -172,6 +172,19 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
             case R.id.actionSave: {
                 // mChart.saveToGallery("title"+System.currentTimeMillis());
                 mChart.saveToPath("title" + System.currentTimeMillis(), "");
+                break;
+            }
+            case R.id.animateX: {
+                mChart.animateX(3000);
+                break;
+            }
+            case R.id.animateY: {
+                mChart.animateY(3000);
+                break;
+            }
+            case R.id.animateXY: {
+
+                mChart.animateXY(3000, 3000);
                 break;
             }
         }
@@ -199,13 +212,13 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
                 double val = (Math.random() * mSeekBarY.getProgress()) + 3;
                 values.add(new Entry((float) val, i));
             }
-            
-            LineDataSet d = new LineDataSet(values, "DataSet " + (z+1));
+
+            LineDataSet d = new LineDataSet(values, "DataSet " + (z + 1));
             d.setLineWidth(2.5f);
             d.setCircleSize(4f);
             dataSets.add(d);
         }
-        
+
         // make the first DataSet dashed
         dataSets.get(0).enableDashedLine(10, 10, 0);
 
