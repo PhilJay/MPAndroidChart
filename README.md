@@ -331,7 +331,7 @@ ll.setLineColor(Color.RED);
 ll.setLineWidth(4f);
 // .. and more styling options
 
-ld.add(ll);
+ld.addLimitLine(ll);
 ```
 
 More documentation and example code coming soon.
