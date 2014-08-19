@@ -188,6 +188,8 @@ public abstract class Chart extends View {
     /** listener that is called when a value on the chart is selected */
     protected OnChartValueSelectedListener mSelectionListener;
 
+    protected String mNoDataAvailableText = "No Chart Data Available";
+
     /** default constructor for initialization in code */
     public Chart(Context context) {
         super(context);
@@ -310,6 +312,14 @@ public abstract class Chart extends View {
         Log.i(LOG_TAG, "Data is set.");
     }
 
+    public void setNoDataText(String text) {
+        mNoDataAvailableText = text;
+    }
+
+    public void setInformationTextColor(int color) {
+        mInfoPaint.setColor(color);
+    }
+
     /**
      * Sets primitive data for the chart. Internally, this is converted into a
      * ChartData object with one DataSet (type 0). If you have more specific
@@ -380,7 +390,7 @@ public abstract class Chart extends View {
         if (mDataNotSet) { // check if there is data
 
             // if no data, inform the user
-            canvas.drawText("No chart data available.", getWidth() / 2, getHeight() / 2, mInfoPaint);
+            canvas.drawText(mNoDataAvailableText, getWidth() / 2, getHeight() / 2, mInfoPaint);
             return;
         }
 

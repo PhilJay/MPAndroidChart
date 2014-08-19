@@ -146,7 +146,7 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         // modify the legend ...
 //        l.setPosition(LegendPosition.LEFT_OF_CHART);   
         l.setForm(LegendForm.LINE);
-        
+
         // dont forget to refresh the drawing
         mChart.invalidate();
     }
