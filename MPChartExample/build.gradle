@@ -7,8 +7,8 @@ android {
         applicationId 'com.xxmassdeveloper.mpchartexample'
         minSdkVersion 16
         targetSdkVersion 19
-        versionCode 11
-        versionName '1.2.1'
+        versionCode 12
+        versionName '1.2.2'
 
         sourceSets {
             main {

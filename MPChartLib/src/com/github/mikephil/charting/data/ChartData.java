@@ -91,6 +91,11 @@ public abstract class ChartData {
      * calculates the average length (in characters) across all x-value strings
      */
     private void calcXValAverageLength() {
+        
+        if(mXVals.size() == 0) {
+            mXValAverageLength = 1;
+            return;
+        }
 
         int sum = 0;
 
@@ -249,7 +254,7 @@ public abstract class ChartData {
      * @return
      */
     public boolean isValid() {
-        if (mXVals == null || mXVals.size() <= 1)
+        if (mXVals == null || mXVals.size() < 1)
             return false;
 
         if (mDataSets == null || mDataSets.size() < 1)

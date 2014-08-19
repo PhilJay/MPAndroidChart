@@ -68,7 +68,7 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
         // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(false);
 
-        mSeekBarX.setProgress(45);
+        mSeekBarX.setProgress(20);
         mSeekBarY.setProgress(100);
 
         Legend l = mChart.getLegend();
@@ -190,6 +190,8 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
         }
         return true;
     }
+    
+    private int[] mColors = new int[] { R.color.vordiplom_1, R.color.vordiplom_2, R.color.vordiplom_3 };
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -216,6 +218,10 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
             LineDataSet d = new LineDataSet(values, "DataSet " + (z + 1));
             d.setLineWidth(2.5f);
             d.setCircleSize(4f);
+            
+            int color = getResources().getColor(mColors[z % mColors.length]);
+            d.setColor(color);
+            d.setCircleColor(color);
             dataSets.add(d);
         }
 

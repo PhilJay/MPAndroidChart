@@ -251,8 +251,13 @@ public class PieChart extends Chart {
     protected void calcFormats() {
 
         // -1 means calculate digits
-        if (mValueDigitsToUse == -1)
-            mValueFormatDigits = Utils.getPieFormatDigits(mDeltaY);
+        if (mValueDigitsToUse == -1) {
+            if (mOriginalData.getXValCount() <= 1)
+                mValueFormatDigits = 0;
+            else
+                mValueFormatDigits = Utils.getPieFormatDigits(mDeltaY);
+        }
+
         else
             mValueFormatDigits = mValueDigitsToUse;
 
