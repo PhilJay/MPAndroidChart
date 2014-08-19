@@ -36,11 +36,6 @@ public abstract class DataSet {
     /** label that describes the DataSet or the data the DataSet represents */
     private String mLabel = "DataSet";
 
-    /** default constructor */
-    protected DataSet() {
-
-    }
-
     /**
      * Creates a new DataSet object with the given values it represents. Also, a
      * label that describes the DataSet can be specified. The label can also be
