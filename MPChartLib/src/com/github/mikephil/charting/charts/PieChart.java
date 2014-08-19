@@ -313,6 +313,10 @@ public class PieChart extends Chart {
     protected void prepareContentRect() {
         super.prepareContentRect();
 
+        // prevent nullpointer when no data set
+        if (mDataNotSet)
+            return;
+
         float width = mContentRect.width() + mOffsetLeft + mOffsetRight;
         float height = mContentRect.height() + mOffsetTop + mOffsetBottom;
 
@@ -386,7 +390,7 @@ public class PieChart extends Chart {
                     angle = mChartAngle;
                 else
                     angle = mChartAngle + mAbsoluteAngles[xIndex - 1];
-                
+
                 angle *= mPhaseY;
 
                 float sliceDegrees = mDrawAngles[xIndex];
@@ -548,9 +552,11 @@ public class PieChart extends Chart {
 
                 // calculate the text position
                 float x = (float) (r
-                        * Math.cos(Math.toRadians((mChartAngle + mAbsoluteAngles[cnt] - offset) * mPhaseY)) + center.x);
+                        * Math.cos(Math.toRadians((mChartAngle + mAbsoluteAngles[cnt] - offset)
+                                * mPhaseY)) + center.x);
                 float y = (float) (r
-                        * Math.sin(Math.toRadians((mChartAngle + mAbsoluteAngles[cnt] - offset) * mPhaseY)) + center.y);
+                        * Math.sin(Math.toRadians((mChartAngle + mAbsoluteAngles[cnt] - offset)
+                                * mPhaseY)) + center.y);
 
                 String val = "";
                 float value = entries.get(j).getVal();
@@ -559,8 +565,8 @@ public class PieChart extends Chart {
                     val = mFormatValue.format(getPercentOfTotal(value)) + " %";
                 else
                     val = mFormatValue.format(value);
-                
-                if(mDrawUnitInChart)
+
+                if (mDrawUnitInChart)
                     val = val + mUnit;
 
                 // draw everything, depending on settings
