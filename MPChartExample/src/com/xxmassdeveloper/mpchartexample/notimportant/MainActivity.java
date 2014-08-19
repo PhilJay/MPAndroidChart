@@ -23,6 +23,7 @@ import com.github.mikephil.charting.utils.Utils;
 import com.xxmassdeveloper.mpchartexample.AnotherBarActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivityMultiDataset;
+import com.xxmassdeveloper.mpchartexample.CandleStickChartActivity;
 import com.xxmassdeveloper.mpchartexample.InvertedLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.LineChartActivity;
 import com.xxmassdeveloper.mpchartexample.ListViewBarChartActivity;
@@ -77,6 +78,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
         objects.add(new ContentItem(
                 "Inverted Line Chart",
                 "Demonstrates the feature of inverting the y-axis."));
+        objects.add(new ContentItem(
+                "Candle Stick Chart",
+                "Demonstrates usage of the CandleStickChart."));
 
         MyAdapter adapter = new MyAdapter(this, objects);
 
@@ -149,6 +153,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 break;
             case 12:
                 i = new Intent(this, InvertedLineChartActivity.class);
+                startActivity(i);
+                break;
+            case 13:
+                i = new Intent(this, CandleStickChartActivity.class);
                 startActivity(i);
                 break;
         }

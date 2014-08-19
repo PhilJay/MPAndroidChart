@@ -117,7 +117,7 @@ public class LineChart extends BarLineChartBase {
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
             LineDataSet dataSet = dataSets.get(i);
-            ArrayList<Entry> entries = dataSet.getYVals();
+            ArrayList<? extends Entry> entries = dataSet.getYVals();
 
             float[] valuePoints = generateTransformedValues(entries, 0f);
 
@@ -206,7 +206,7 @@ public class LineChart extends BarLineChartBase {
      * @param entries
      * @return
      */
-    private Path generateFilledPath(ArrayList<Entry> entries) {
+    private Path generateFilledPath(ArrayList<? extends Entry> entries) {
 
         Path filled = new Path();
         filled.moveTo(entries.get(0).getXIndex(), entries.get(0).getVal() * mPhaseY);
@@ -260,7 +260,7 @@ public class LineChart extends BarLineChartBase {
                 if (!dataSet.isDrawCirclesEnabled())
                     valOffset = valOffset / 2;
 
-                ArrayList<Entry> entries = dataSet.getYVals();
+                ArrayList<? extends Entry> entries = dataSet.getYVals();
 
                 float[] positions = generateTransformedValues(entries, 0f);
 
@@ -308,7 +308,7 @@ public class LineChart extends BarLineChartBase {
             // if drawing circles is enabled for this dataset
             if (dataSet.isDrawCirclesEnabled()) {
 
-                ArrayList<Entry> entries = dataSet.getYVals();
+                ArrayList<? extends Entry> entries = dataSet.getYVals();
 
                 float[] positions = generateTransformedValues(entries, 0f);
 

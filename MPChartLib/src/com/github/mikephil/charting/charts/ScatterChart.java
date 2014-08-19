@@ -54,7 +54,7 @@ public class ScatterChart extends BarLineChartBase {
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
             ScatterDataSet dataSet = dataSets.get(i);
-            ArrayList<Entry> entries = dataSet.getYVals();
+            ArrayList<? extends Entry> entries = dataSet.getYVals();
 
             float shapeHalf = dataSet.getScatterShapeSize() / 2f;
 
@@ -131,7 +131,7 @@ public class ScatterChart extends BarLineChartBase {
             for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
                 ScatterDataSet dataSet = dataSets.get(i);
-                ArrayList<Entry> entries = dataSet.getYVals();
+                ArrayList<? extends Entry> entries = dataSet.getYVals();
 
                 float[] positions = generateTransformedValues(entries, 0f);
 

@@ -5,6 +5,7 @@ import android.content.res.AssetManager;
 import android.os.Environment;
 import android.util.Log;
 
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 
 import java.io.BufferedReader;
@@ -59,7 +60,7 @@ public class FileUtils {
                         vals[i] = Float.parseFloat(split[i]);
                     }                 
                     
-                    entries.add(new Entry(vals, Integer.parseInt(split[split.length - 1])));
+                    entries.add(new BarEntry(vals, Integer.parseInt(split[split.length - 1])));
                 }
             }
         } catch (IOException e) {
@@ -129,7 +130,7 @@ public class FileUtils {
                         vals[i] = Float.parseFloat(split[i]);
                     }                 
                     
-                    entries.add(new Entry(vals, Integer.parseInt(split[split.length - 1])));
+                    entries.add(new BarEntry(vals, Integer.parseInt(split[split.length - 1])));
                 }
                 line = reader.readLine();
             }

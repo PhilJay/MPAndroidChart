@@ -1,7 +1,6 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,25 +10,22 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.charts.CandleStickChart;
+import com.github.mikephil.charting.data.CandleData;
+import com.github.mikephil.charting.data.CandleDataSet;
+import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
-import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.Legend.LegendPosition;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
-import com.github.mikephil.charting.utils.YLabels;
-import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 
-public class BarChartActivity extends DemoBase implements OnSeekBarChangeListener {
+public class CandleStickChartActivity extends DemoBase implements OnSeekBarChangeListener {
 
-    private BarChart mChart;
+    private CandleStickChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
 
@@ -38,7 +34,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_barchart);
+        setContentView(R.layout.activity_candlechart);
 
         tvX = (TextView) findViewById(R.id.tvXMax);
         tvY = (TextView) findViewById(R.id.tvYMax);
@@ -49,72 +45,41 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
         mSeekBarY.setOnSeekBarChangeListener(this);
 
-        mChart = (BarChart) findViewById(R.id.chart1);
+        mChart = (CandleStickChart) findViewById(R.id.chart1);
+        
+        mChart.setDrawYValues(false);
 
-        // enable the drawing of values
-        mChart.setDrawYValues(true);
-
+        mChart.setUnit(" €");
         mChart.setDescription("");
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
         mChart.setMaxVisibleValueCount(60);
 
-        // sets the number of digits for values inside the chart
-        mChart.setValueDigits(2);
-
-        // disable 3D
-        mChart.set3DEnabled(false);
-
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
-
-        // draw shadows for each bar that show the maximum value
-//        mChart.setDrawBarShadow(true);
-
-        mChart.setUnit(" €");
-
-        // change the position of the y-labels
-        YLabels yLabels = mChart.getYLabels();
-        yLabels.setPosition(YLabelPosition.BOTH_SIDED);
+        
+        mChart.setDrawVerticalGrid(false);
+        mChart.setDrawHorizontalGrid(false);
+        mChart.setDrawGridBackground(false);
 
         XLabels xLabels = mChart.getXLabels();
-        xLabels.setPosition(XLabelPosition.TOP);
-        // mChart.setDrawXLabels(false);
+        xLabels.setPosition(XLabelPosition.BOTTOM);
+        xLabels.setCenterXLabelText(true);
+        xLabels.setSpaceBetweenLabels(0);
 
-        mChart.setDrawGridBackground(false);
-        mChart.setDrawHorizontalGrid(true);
-        mChart.setDrawVerticalGrid(false);
-        // mChart.setDrawYLabels(false);
-        
-        // sets the text size of the values inside the chart
-        mChart.setValueTextSize(10f);
-
-        mChart.setDrawBorder(false);
-        // mChart.setBorderPositions(new BorderPosition[] {BorderPosition.LEFT,
-        // BorderPosition.RIGHT});
-
-        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-
-        XLabels xl = mChart.getXLabels();
-        xl.setPosition(XLabelPosition.BOTTOM);
-        xl.setCenterXLabelText(true);
-        xl.setTypeface(tf);
-        
-        YLabels yl = mChart.getYLabels();
-        yl.setTypeface(tf);
-        yl.setLabelCount(8);
-        
-        mChart.setValueTypeface(tf);
+         mChart.setDrawYLabels(false);
+         mChart.setDrawLegend(false);
 
         // setting data
-        mSeekBarX.setProgress(12);
-        mSeekBarY.setProgress(50);
+        mSeekBarX.setProgress(10);
+        mSeekBarY.setProgress(100);
 
-        Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
-        l.setFormSize(8f);
-        l.setXEntrySpace(4f);
+//        Legend l = mChart.getLegend();
+//        l.setPosition(LegendPosition.BELOW_CHART_CENTER);
+//        l.setFormSize(8f);
+//        l.setFormToTextSpace(4f);
+//        l.setXEntrySpace(6f);
 
         // mChart.setDrawLegend(false);
     }
@@ -137,14 +102,6 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
                 mChart.invalidate();
                 break;
             }
-            case R.id.actionToggle3D: {
-                if (mChart.is3DEnabled())
-                    mChart.set3DEnabled(false);
-                else
-                    mChart.set3DEnabled(true);
-                mChart.invalidate();
-                break;
-            }
             case R.id.actionToggleHighlight: {
                 if (mChart.isHighlightEnabled())
                     mChart.setHighlightEnabled(false);
@@ -162,19 +119,22 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
                 mChart.invalidate();
                 break;
             }
-            case R.id.actionToggleHighlightArrow: {
-                if (mChart.isDrawHighlightArrowEnabled())
-                    mChart.setDrawHighlightArrow(false);
-                else
-                    mChart.setDrawHighlightArrow(true);
-                mChart.invalidate();
-                break;
-            }
             case R.id.actionToggleStartzero: {
                 if (mChart.isStartAtZeroEnabled())
                     mChart.setStartAtZero(false);
                 else
                     mChart.setStartAtZero(true);
+
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleAdjustXLegend: {
+                XLabels xLabels = mChart.getXLabels();
+
+                if (xLabels.isAdjustXLabelsEnabled())
+                    xLabels.setAdjustXLabels(false);
+                else
+                    xLabels.setAdjustXLabels(true);
 
                 mChart.invalidate();
                 break;
@@ -190,17 +150,6 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
             case R.id.animateXY: {
 
                 mChart.animateXY(3000, 3000);
-                break;
-            }
-            case R.id.actionToggleAdjustXLegend: {
-                XLabels xLabels = mChart.getXLabels();
-
-                if (xLabels.isAdjustXLabelsEnabled())
-                    xLabels.setAdjustXLabels(false);
-                else
-                    xLabels.setAdjustXLabels(true);
-
-                mChart.invalidate();
                 break;
             }
             case R.id.actionToggleFilter: {
@@ -234,25 +183,24 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         tvX.setText("" + (mSeekBarX.getProgress() + 1));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < mSeekBarX.getProgress()+1; i++) {
-            xVals.add(mMonths[i % 12]);
-        }
-
-        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+        ArrayList<CandleEntry> yVals1 = new ArrayList<CandleEntry>();
 
         for (int i = 0; i < mSeekBarX.getProgress()+1; i++) {
             float mult = (mSeekBarY.getProgress() + 1);
-            float val = (float) (Math.random() * mult) + 3;
-            yVals1.add(new BarEntry(val, i));
+            float val = (float) (Math.random() * mult) + mult / 3;
+            yVals1.add(new CandleEntry(val, i, val+5, val-5, val+7, val-7));
+        }
+        
+        ArrayList<String> xVals = new ArrayList<String>();
+        for (int i = 0; i < mSeekBarX.getProgress()+1; i++) {
+            xVals.add((int) yVals1.get(i).getVal() + " " + mChart.getUnit());
         }
 
-        BarDataSet set1 = new BarDataSet(yVals1, "DataSet");
-        set1.setBarSpacePercent(35f);
-        ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
-        dataSets.add(set1);
+        CandleDataSet set1 = new CandleDataSet(yVals1, "Data Set");
+        set1.setColors(ColorTemplate.createColors(getApplicationContext(),
+                ColorTemplate.VORDIPLOM_COLORS));
 
-        BarData data = new BarData(xVals, dataSets);
+        CandleData data = new CandleData(xVals, set1);
 
         mChart.setData(data);
         mChart.invalidate();

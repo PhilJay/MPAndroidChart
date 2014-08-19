@@ -358,7 +358,7 @@ public class PieChart extends Chart {
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
             DataSet set = dataSets.get(i);
-            ArrayList<Entry> entries = set.getYVals();
+            ArrayList<? extends Entry> entries = set.getYVals();
 
             for (int j = 0; j < entries.size(); j++) {
 
@@ -436,7 +436,7 @@ public class PieChart extends Chart {
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
             PieDataSet dataSet = dataSets.get(i);
-            ArrayList<Entry> entries = dataSet.getYVals();
+            ArrayList<? extends Entry> entries = dataSet.getYVals();
 
             for (int j = 0; j < entries.size(); j++) {
 
@@ -548,7 +548,7 @@ public class PieChart extends Chart {
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
             DataSet dataSet = dataSets.get(i);
-            ArrayList<Entry> entries = dataSet.getYVals();
+            ArrayList<? extends Entry> entries = dataSet.getYVals();
 
             for (int j = 0; j < entries.size() * mPhaseX; j++) {
 

@@ -570,13 +570,13 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      *            to center for barchart
      * @return
      */
-    protected float[] generateTransformedValues(ArrayList<Entry> entries, float xOffset) {
+    protected float[] generateTransformedValues(ArrayList<? extends Entry> entries, float xOffset) {
 
         float[] valuePoints = new float[entries.size() * 2];
 
         for (int j = 0; j < valuePoints.length; j += 2) {
             valuePoints[j] = entries.get(j / 2).getXIndex() + xOffset;
-            valuePoints[j + 1] = entries.get(j / 2).getSum() * mPhaseY;
+            valuePoints[j + 1] = entries.get(j / 2).getVal() * mPhaseY;
         }
 
         transformPointArray(valuePoints);
@@ -1157,23 +1157,23 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      */
     /** BELOW THIS FOR DYNAMICALLY ADDING ENTRIES AND DATASETS */
 
-    public void addEntry(Entry e, int dataSetIndex) {
-        mOriginalData.getDataSetByIndex(dataSetIndex).addEntry(e);
-        
-        prepare();
-        calcMinMax(false);
-        prepareMatrix();
-        calculateOffsets();
-    }
-    
-    public void addEntry(Entry e, String label) {
-        mOriginalData.getDataSetByLabel(label, false).addEntry(e);
-        
-        prepare();
-        calcMinMax(false);
-        prepareMatrix();
-        calculateOffsets();
-    }
+//    public void addEntry(Entry e, int dataSetIndex) {
+//        mOriginalData.getDataSetByIndex(dataSetIndex).addEntry(e);
+//        
+//        prepare();
+//        calcMinMax(false);
+//        prepareMatrix();
+//        calculateOffsets();
+//    }
+//    
+//    public void addEntry(Entry e, String label) {
+//        mOriginalData.getDataSetByLabel(label, false).addEntry(e);
+//        
+//        prepare();
+//        calcMinMax(false);
+//        prepareMatrix();
+//        calculateOffsets();
+//    }
     
     public void addDataSet(DataSet d) {
         mOriginalData.addDataSet(d);

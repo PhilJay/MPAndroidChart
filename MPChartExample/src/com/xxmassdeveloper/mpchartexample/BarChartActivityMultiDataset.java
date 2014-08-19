@@ -12,13 +12,11 @@ import android.widget.TextView;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.github.mikephil.charting.utils.XLabels;
-import com.github.mikephil.charting.utils.YLabels;
-import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -176,23 +174,23 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
             xVals.add((i) + "");
         }
 
-        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
-        ArrayList<Entry> yVals2 = new ArrayList<Entry>();
-        ArrayList<Entry> yVals3 = new ArrayList<Entry>();
+        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> yVals2 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> yVals3 = new ArrayList<BarEntry>();
 
         for (int i = 0; i < mSeekBarX.getProgress() / 3; i++) {
             float val = (float) (Math.random() * mSeekBarY.getProgress()) + 3;
-            yVals1.add(new Entry(val, i));
+            yVals1.add(new BarEntry(val, i));
         }
 
         for (int i = mSeekBarX.getProgress() / 3; i < mSeekBarX.getProgress() / 3 * 2; i++) {
             float val = (float) (Math.random() * mSeekBarY.getProgress()) + 3;
-            yVals2.add(new Entry(val, i));
+            yVals2.add(new BarEntry(val, i));
         }
 
         for (int i = mSeekBarX.getProgress() / 3 * 2; i < mSeekBarX.getProgress(); i++) {
             float val = (float) (Math.random() * mSeekBarY.getProgress()) + 3;
-            yVals3.add(new Entry(val, i));
+            yVals3.add(new BarEntry(val, i));
         }
 
         // create 3 datasets with different types

@@ -22,7 +22,7 @@ public abstract class DataSet {
     protected ArrayList<Integer> mColors = null;
 
     /** the entries that this dataset represents / holds together */
-    protected ArrayList<Entry> mYVals = null;
+    protected ArrayList<? extends Entry> mYVals = null;
 
     /** maximum y-value in the y-value array */
     protected float mYMax = 0.0f;
@@ -44,7 +44,7 @@ public abstract class DataSet {
      * @param yVals
      * @param label
      */
-    public DataSet(ArrayList<Entry> yVals, String label) {
+    public DataSet(ArrayList<? extends Entry> yVals, String label) {
 
         this.mLabel = label;
         this.mYVals = yVals;
@@ -80,18 +80,18 @@ public abstract class DataSet {
             return;
         }
 
-        mYMin = mYVals.get(0).getSum();
-        mYMax = mYVals.get(0).getSum();
+        mYMin = mYVals.get(0).getVal();
+        mYMax = mYVals.get(0).getVal();
 
         for (int i = 0; i < mYVals.size(); i++) {
 
             Entry e = mYVals.get(i);
 
-            if (e.getSum() < mYMin)
-                mYMin = e.getSum();
+            if (e.getVal() < mYMin)
+                mYMin = e.getVal();
 
-            if (e.getSum() > mYMax)
-                mYMax = e.getSum();
+            if (e.getVal() > mYMax)
+                mYMax = e.getVal();
         }
     }
 
@@ -103,7 +103,7 @@ public abstract class DataSet {
         mYValueSum = 0;
 
         for (int i = 0; i < mYVals.size(); i++) {
-            mYValueSum += Math.abs(mYVals.get(i).getSum());
+            mYValueSum += Math.abs(mYVals.get(i).getVal());
         }
     }
 
@@ -130,7 +130,7 @@ public abstract class DataSet {
         Entry e = getEntryForXIndex(xIndex);
 
         if (e != null)
-            return e.getSum();
+            return e.getVal();
         else
             return Float.NaN;
     }
@@ -178,7 +178,7 @@ public abstract class DataSet {
      * 
      * @return
      */
-    public ArrayList<Entry> getYVals() {
+    public ArrayList<? extends Entry> getYVals() {
         return mYVals;
     }
 
@@ -275,30 +275,30 @@ public abstract class DataSet {
         return mLabel;
     }
     
-    /**
-     * Adds an Entry dynamically.
-     * 
-     * @param d
-     */
-    public void addEntry(Entry e) {
-               
-        float sum = e.getSum();
-        
-        if(mYVals == null || mYVals.size() <= 0) {
-            
-            mYVals = new ArrayList<Entry>();
-            mYMax = sum;
-            mYMin = sum;
-        } else {
-            
-            if(mYMax < sum) mYMax = sum;
-            if(mYMin > sum) mYMin = sum;
-        }
-        
-        mYVals.add(e);
-        
-        mYValueSum += sum;
-    }
+//    /**
+//     * Adds an Entry dynamically.
+//     * 
+//     * @param d
+//     */
+//    public void addEntry(Entry e) {
+//               
+//        float sum = e.getSum();
+//        
+//        if(mYVals == null || mYVals.size() <= 0) {
+//            
+//            mYVals = new ArrayList<Entry>();
+//            mYMax = sum;
+//            mYMin = sum;
+//        } else {
+//            
+//            if(mYMax < sum) mYMax = sum;
+//            if(mYMin > sum) mYMin = sum;
+//        }
+//        
+//        mYVals.add(e);
+//        
+//        mYValueSum += sum;
+//    }
 
     /** BELOW THIS COLOR HANDLING */
 

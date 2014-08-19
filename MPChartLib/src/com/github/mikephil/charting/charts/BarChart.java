@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Utils;
@@ -166,10 +167,10 @@ public class BarChart extends BarLineChartBase {
     protected void calcMinMax(boolean fixedValues) {
         super.calcMinMax(fixedValues);
 
-//        if (!mStartAtZero && getYMin() >= 0f) {
-//            mYChartMin = getYMin();
-//            mDeltaY = Math.abs(mYChartMax - mYChartMin);
-//        }
+        // if (!mStartAtZero && getYMin() >= 0f) {
+        // mYChartMin = getYMin();
+        // mDeltaY = Math.abs(mYChartMax - mYChartMin);
+        // }
 
         // increase deltax by 1 because the bars have a width of 1
         mDeltaX++;
@@ -193,29 +194,29 @@ public class BarChart extends BarLineChartBase {
                 if (index < mCurrentData.getYValCount() && index >= 0 && index < mDeltaX * mPhaseX) {
 
                     mHighlightPaint.setAlpha(120);
-                    
-                    Entry e = getEntryByDataSetIndex(index, dataSetIndex);             
 
-                    prepareBar(e.getXIndex(), e.getSum(), ds.getBarSpace());
+                    Entry e = getEntryByDataSetIndex(index, dataSetIndex);
+
+                    prepareBar(e.getXIndex(), e.getVal(), ds.getBarSpace());
 
                     mDrawCanvas.drawRect(mBarRect, mHighlightPaint);
 
-//                    if (mDrawHighlightArrow) {
-//                    
-//
-//                    // distance between highlight arrow and bar
-//                    float offsetY = mDeltaY * 0.04f;
-//
-//                        mHighlightPaint.setAlpha(200);
-//                        
-//                        Path arrow = new Path();
-//                        arrow.moveTo(index + 0.5f, y + offsetY * 0.3f);
-//                        arrow.lineTo(index + 0.2f, y + offsetY);
-//                        arrow.lineTo(index + 0.8f, y + offsetY);
-//
-//                        transformPath(arrow);
-//                        mDrawCanvas.drawPath(arrow, mHighlightPaint);
-//                    }
+                    // if (mDrawHighlightArrow) {
+                    //
+                    //
+                    // // distance between highlight arrow and bar
+                    // float offsetY = mDeltaY * 0.04f;
+                    //
+                    // mHighlightPaint.setAlpha(200);
+                    //
+                    // Path arrow = new Path();
+                    // arrow.moveTo(index + 0.5f, y + offsetY * 0.3f);
+                    // arrow.lineTo(index + 0.2f, y + offsetY);
+                    // arrow.lineTo(index + 0.8f, y + offsetY);
+                    //
+                    // transformPath(arrow);
+                    // mDrawCanvas.drawPath(arrow, mHighlightPaint);
+                    // }
                 }
             }
         }
@@ -230,15 +231,17 @@ public class BarChart extends BarLineChartBase {
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
             BarDataSet dataSet = dataSets.get(i);
-            ArrayList<Entry> entries = dataSet.getYVals();
+            boolean noStacks = dataSet.getStackSize() == 1 ? true : false;
+            
+            ArrayList<BarEntry> entries = (ArrayList<BarEntry>) dataSet.getYVals();
 
             // do the drawing
             for (int j = 0; j < dataSet.getEntryCount() * mPhaseX; j++) {
 
-                Entry e = entries.get(j);
+                BarEntry e = entries.get(j);
 
                 // no stacks
-                if (dataSet.getStackSize() == 1) {
+                if (noStacks) {
 
                     prepareBar(e.getXIndex(), e.getVal(), dataSet.getBarSpace());
 
@@ -284,12 +287,12 @@ public class BarChart extends BarLineChartBase {
 
                     } else {
 
-                        float all = e.getSum();
-                        
+                        float all = e.getVal();
+
                         // if drawing the bar shadow is enabled
                         if (mDrawBarShadow) {
-                            
-                            prepareBar(e.getXIndex(), e.getSum(), dataSet.getBarSpace());
+
+                            prepareBar(e.getXIndex(), e.getVal(), dataSet.getBarSpace());
                             mRenderPaint.setColor(dataSet.getBarShadowColor());
                             mDrawCanvas.drawRect(mBarShadow, mRenderPaint);
                         }
@@ -501,7 +504,7 @@ public class BarChart extends BarLineChartBase {
             for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
                 BarDataSet dataSet = dataSets.get(i);
-                ArrayList<Entry> entries = dataSet.getYVals();
+                ArrayList<BarEntry> entries = (ArrayList<BarEntry>) dataSet.getYVals();
 
                 float[] valuePoints = generateTransformedValues(entries, 0.5f);
 
@@ -517,7 +520,7 @@ public class BarChart extends BarLineChartBase {
                                 || isOffContentBottom(valuePoints[j + 1]))
                             continue;
 
-                        float val = entries.get(j / 2).getSum();
+                        float val = entries.get(j / 2).getVal();
 
                         drawValue(mFormatValue.format(val), valuePoints[j],
                                 valuePoints[j + 1] + offset);
@@ -535,7 +538,7 @@ public class BarChart extends BarLineChartBase {
                                 || isOffContentBottom(valuePoints[j + 1]))
                             continue;
 
-                        Entry e = entries.get(j / 2);
+                        BarEntry e = entries.get(j / 2);
 
                         float[] vals = e.getVals();
 
@@ -551,7 +554,7 @@ public class BarChart extends BarLineChartBase {
 
                             float[] transformed = new float[vals.length * 2];
                             int cnt = 0;
-                            float add = e.getSum();
+                            float add = e.getVal();
 
                             for (int k = 0; k < transformed.length; k += 2) {
 
@@ -685,7 +688,8 @@ public class BarChart extends BarLineChartBase {
     @Override
     public Paint getPaint(int which) {
         Paint p = super.getPaint(which);
-        if(p != null) return p;
+        if (p != null)
+            return p;
 
         switch (which) {
             case PAINT_HIGHLIGHT_BAR:

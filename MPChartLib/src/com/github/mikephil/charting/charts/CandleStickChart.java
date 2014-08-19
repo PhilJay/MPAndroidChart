@@ -4,6 +4,8 @@ package com.github.mikephil.charting.charts;
 import android.content.Context;
 import android.util.AttributeSet;
 
+import com.github.mikephil.charting.data.CandleData;
+
 /**
  * Chart that draws candle-sticks.
  * 
@@ -23,12 +25,21 @@ public class CandleStickChart extends BarLineChartBase {
         super(context, attrs, defStyle);
     }
 
+    /**
+     * Sets a CandleData object for the CandleStickChart.
+     * 
+     * @param data
+     */
+    public void setData(CandleData data) {
+        super.setData(data);
+    }
+
     @Override
     protected void drawData() {
         // TODO Auto-generated method stub
 
     }
-    
+
     @Override
     protected void drawValues() {
         // TODO Auto-generated method stub

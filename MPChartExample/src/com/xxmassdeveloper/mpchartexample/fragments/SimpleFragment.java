@@ -2,11 +2,11 @@ package com.xxmassdeveloper.mpchartexample.fragments;
 
 import android.support.v4.app.Fragment;
 
-import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -29,12 +29,12 @@ public abstract class SimpleFragment extends Fragment {
         
         for(int i = 0; i < dataSets; i++) {
            
-            ArrayList<Entry> entries = new ArrayList<Entry>();
+            ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
             
 //            entries = FileUtils.loadEntriesFromAssets(getActivity().getAssets(), "stacked_bars.txt");
             
             for(int j = 0; j < count; j++) {        
-                entries.add(new Entry((float) (Math.random() * range) + range / 4, j));
+                entries.add(new BarEntry((float) (Math.random() * range) + range / 4, j));
             }
             
             BarDataSet ds = new BarDataSet(entries, getLabel(i));

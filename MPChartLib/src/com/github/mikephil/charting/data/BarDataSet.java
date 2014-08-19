@@ -30,20 +30,20 @@ public class BarDataSet extends DataSet {
     private String[] mStackLabels = new String[] { "Stack" };
     
 
-    public BarDataSet(ArrayList<Entry> yVals, String label) {
+    public BarDataSet(ArrayList<BarEntry> yVals, String label) {
         super(yVals, label);
 
-        calcStackSize();
-        calcEntryCountIncludingStacks();
+        calcStackSize(yVals);
+        calcEntryCountIncludingStacks(yVals);
     }
 
     @Override
     public DataSet copy() {
 
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
+        ArrayList<BarEntry> yVals = new ArrayList<BarEntry>();
 
         for (int i = 0; i < mYVals.size(); i++) {
-            yVals.add(mYVals.get(i).copy());
+            yVals.add(((BarEntry) mYVals.get(i)).copy());
         }
 
         BarDataSet copied = new BarDataSet(yVals, getLabel());
@@ -60,13 +60,13 @@ public class BarDataSet extends DataSet {
      * Calculates the total number of entries this DataSet represents, including
      * stacks. All values belonging to a stack are calculated separately.
      */
-    private void calcEntryCountIncludingStacks() {
+    private void calcEntryCountIncludingStacks(ArrayList<BarEntry> yVals) {
 
         mEntryCountStacks = 0;
 
-        for (int i = 0; i < mYVals.size(); i++) {
+        for (int i = 0; i < yVals.size(); i++) {
 
-            float[] vals = mYVals.get(i).getVals();
+            float[] vals = yVals.get(i).getVals();
 
             if (vals == null)
                 mEntryCountStacks++;
@@ -79,11 +79,11 @@ public class BarDataSet extends DataSet {
      * calculates the maximum stacksize that occurs in the Entries array of this
      * DataSet
      */
-    private void calcStackSize() {
+    private void calcStackSize(ArrayList<BarEntry> yVals) {
 
-        for (int i = 0; i < mYVals.size(); i++) {
+        for (int i = 0; i < yVals.size(); i++) {
 
-            float[] vals = mYVals.get(i).getVals();
+            float[] vals = yVals.get(i).getVals();
 
             if (vals != null && vals.length > mStackSize)
                 mStackSize = vals.length;

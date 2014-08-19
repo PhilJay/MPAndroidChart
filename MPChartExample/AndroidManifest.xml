@@ -37,6 +37,7 @@
         <activity android:name="StackedBarActivity"></activity>
         <activity android:name="AnotherBarActivity"></activity>
         <activity android:name="InvertedLineChartActivity"></activity>
+        <activity android:name="CandleStickChartActivity"></activity>
     </application>
 
 </manifest>

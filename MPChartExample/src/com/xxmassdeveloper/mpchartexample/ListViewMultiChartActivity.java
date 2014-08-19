@@ -11,6 +11,7 @@ import android.widget.ListView;
 
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -132,10 +133,10 @@ public class ListViewMultiChartActivity extends DemoBase {
      */
     private ChartData generateDataBar(int cnt) {
 
-        ArrayList<Entry> entries = new ArrayList<Entry>();
+        ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
 
         for (int i = 0; i < 12; i++) {
-            entries.add(new Entry((int) (Math.random() * 70) + 30, i));
+            entries.add(new BarEntry((int) (Math.random() * 70) + 30, i));
         }
 
         BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);

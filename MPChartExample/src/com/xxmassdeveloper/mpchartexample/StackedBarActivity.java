@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
@@ -66,7 +67,10 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         mChart.setMaxVisibleValueCount(60);
 
         // sets the number of digits for values inside the chart
-        mChart.setValueDigits(2);
+        mChart.setValueDigits(0);
+        
+        // if false values are only drawn for the stack sum, else each value is drawn
+        mChart.setDrawValuesForWholeStack(true);
 
         // disable 3D
         mChart.set3DEnabled(false);
@@ -220,7 +224,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
             xVals.add(mMonths[i % mMonths.length]);
         }
 
-        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
 
         for (int i = 0; i < mSeekBarX.getProgress()+1; i++) {
             float mult = (mSeekBarY.getProgress() + 1);
@@ -228,7 +232,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
             float val2 = (float) (Math.random() * mult) + mult / 3;
             float val3 = (float) (Math.random() * mult) + mult / 3;
 
-            yVals1.add(new Entry(new float[] {
+            yVals1.add(new BarEntry(new float[] {
                     (int) val1,  (int) val2, (int) val3
             }, i));
         }
