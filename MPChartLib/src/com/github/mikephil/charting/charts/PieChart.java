@@ -13,6 +13,7 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View.OnTouchListener;
 
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -92,6 +93,9 @@ public class PieChart extends Chart {
      * chart
      */
     private Paint mCenterTextPaint;
+    
+    /** the piechart touchlistener */
+    private OnTouchListener mListener;
 
     public PieChart(Context context) {
         super(context);
@@ -273,9 +277,9 @@ public class PieChart extends Chart {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
         // use the piecharts own listener
-        return mListener.onTouch(this, event);
+        if(mTouchEnabled && mListener != null) return mListener.onTouch(this, event);
+        else return super.onTouchEvent(event);
     }
 
     /** the angle where the dragging started */
@@ -612,6 +616,16 @@ public class PieChart extends Chart {
      */
     private float calcAngle(float value) {
         return value / mCurrentData.getYValueSum() * 360f;
+    }
+    
+    /**
+     * set a new (e.g. custom) charttouchlistener NOTE: make sure to
+     * setTouchEnabled(true); if you need touch gestures on the chart
+     * 
+     * @param l
+     */
+    public void setOnTouchListener(OnTouchListener l) {
+        this.mListener = l;
     }
 
     /**

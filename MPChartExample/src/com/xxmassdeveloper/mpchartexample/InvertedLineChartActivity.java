@@ -102,6 +102,9 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
         // enable/disable highlight indicators (the lines that indicate the
         // highlighted Entry)
         mChart.setHighlightIndicatorEnabled(false);
+        
+        XLabels xl = mChart.getXLabels();
+        xl.setAvoidFirstLastClipping(true);
 
         // add data
         setData(25, 50);
@@ -287,7 +290,7 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
 
         ArrayList<String> xVals = new ArrayList<String>();
         for (int i = 0; i < count; i++) {
-            xVals.add((i) + "");
+            xVals.add((i % 30) + "/" + (i % 12) + "/14");
         }
 
         ArrayList<Entry> yVals = new ArrayList<Entry>();

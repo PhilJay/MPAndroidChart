@@ -65,7 +65,6 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         // draws the corresponding description value into the slice
         mChart.setDrawXValues(true);
-        mChart.setTouchEnabled(true);
 
         // display percentage values
         mChart.setUsePercentValues(true);
@@ -74,7 +73,8 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         // add a selection listener
         mChart.setOnChartValueSelectedListener(this);
-
+//        mChart.setTouchEnabled(false);
+        
         mSeekBarX.setProgress(3);
         mSeekBarY.setProgress(100);
         

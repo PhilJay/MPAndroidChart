@@ -871,22 +871,6 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      */
     protected abstract void drawHighlights();
 
-    /** touchlistener that handles touches and gestures on the chart */
-    protected OnTouchListener mListener;
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-
-        if (mListener == null || mDataNotSet)
-            return false;
-
-        // check if touch gestures are enabled
-        if (!mTouchEnabled)
-            return false;
-        else
-            return mListener.onTouch(this, event);
-    }
-
     /**
      * ################ ################ ################ ################
      */
@@ -1188,16 +1172,6 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      * ################ ################ ################ ################
      */
     /** BELOW THIS ONLY GETTERS AND SETTERS */
-
-    /**
-     * set a new (e.g. custom) charttouchlistener NOTE: make sure to
-     * setTouchEnabled(true); if you need touch gestures on the chart
-     * 
-     * @param l
-     */
-    public void setOnTouchListener(OnTouchListener l) {
-        this.mListener = l;
-    }
 
     /**
      * set a selection listener for the chart

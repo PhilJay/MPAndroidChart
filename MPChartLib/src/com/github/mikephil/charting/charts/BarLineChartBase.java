@@ -14,7 +14,9 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.ViewParent;
+import android.view.View.OnTouchListener;
 
 import com.github.mikephil.charting.data.BarLineScatterData;
 import com.github.mikephil.charting.data.ChartData;
@@ -512,7 +514,7 @@ public abstract class BarLineChartBase extends Chart {
         super.calcMinMax(fixedValues); // calc min and max in the super class
 
         // additional handling for space (default 15% space)
-//        float space = Math.abs(mDeltaY / 100f * 15f);
+        // float space = Math.abs(mDeltaY / 100f * 15f);
         float space = Math.abs(Math.max(Math.abs(mYChartMax), Math.abs(mYChartMin)) / 100f * 15f);
 
         if (mStartAtZero) {
@@ -658,7 +660,7 @@ public abstract class BarLineChartBase extends Chart {
         } else { // BOTH SIDED
 
             drawXLabels(getOffsetTop() - 7);
-            drawXLabels(getHeight() - mOffsetBottom + mXLabels.mXLabelHeight + yoffset * 1.5f);
+            drawXLabels(getHeight() - mOffsetBottom + mXLabels.mXLabelHeight + yoffset * 1.6f);
         }
     }
 
@@ -686,7 +688,26 @@ public abstract class BarLineChartBase extends Chart {
 
             if (position[0] >= mOffsetLeft && position[0] <= getWidth() - mOffsetRight) {
 
-                mDrawCanvas.drawText(mCurrentData.getXVals().get(i), position[0],
+                String label = mCurrentData.getXVals().get(i);
+
+                if (mXLabels.isAvoidFirstLastClippingEnabled()) {
+
+                    // avoid clipping of the last
+                    if (i == mCurrentData.getXValCount()- 1) {
+                        float width = Utils.calcTextWidth(mXLabelPaint, label);
+
+                        if (width > getOffsetRight() * 2 && position[0] + width > getWidth())
+                            position[0] -= width / 2;
+
+                        // avoid clipping of the first
+                    } else if (i == 0) {
+
+                        float width = Utils.calcTextWidth(mXLabelPaint, label);
+                        position[0] += width / 2;
+                    }
+                }
+
+                mDrawCanvas.drawText(label, position[0],
                         yPos,
                         mXLabelPaint);
             }
@@ -968,6 +989,22 @@ public abstract class BarLineChartBase extends Chart {
         else
             return false;
     }
+    
+    /** touchlistener that handles touches and gestures on the chart */
+    protected OnTouchListener mListener;
+    
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        if (mListener == null || mDataNotSet)
+            return false;
+
+        // check if touch gestures are enabled
+        if (!mTouchEnabled)
+            return false;
+        else
+            return mListener.onTouch(this, event);
+    }
 
     /**
      * ################ ################ ################ ################
@@ -1203,6 +1240,16 @@ public abstract class BarLineChartBase extends Chart {
      * ################ ################ ################ ################
      */
     /** CODE BELOW IS GETTERS AND SETTERS */
+    
+    /**
+     * set a new (e.g. custom) charttouchlistener NOTE: make sure to
+     * setTouchEnabled(true); if you need touch gestures on the chart
+     * 
+     * @param l
+     */
+    public void setOnTouchListener(OnTouchListener l) {
+        this.mListener = l;
+    }
 
     /**
      * Sets the OnDrawListener

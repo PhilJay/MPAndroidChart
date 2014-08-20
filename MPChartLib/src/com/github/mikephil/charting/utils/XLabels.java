@@ -38,6 +38,12 @@ public class XLabels extends LabelBase {
     private boolean mCenterXAxisLabels = false;
 
     /**
+     * if set to true, the chart will avoid that the first and last label entry
+     * in the chart "clip" off the edge of the chart
+     */
+    private boolean mAvoidFirstLastClipping = false;
+
+    /**
      * if set to true, the x-axis label entries will adjust themselves when
      * scaling the graph
      */
@@ -125,5 +131,24 @@ public class XLabels extends LabelBase {
      */
     public int getSpaceBetweenLabels() {
         return mSpaceBetweenLabels;
+    }
+
+    /**
+     * if set to true, the chart will avoid that the first and last label entry
+     * in the chart "clip" off the edge of the chart or the screen
+     * 
+     * @param enabled
+     */
+    public void setAvoidFirstLastClipping(boolean enabled) {
+        mAvoidFirstLastClipping = enabled;
+    }
+
+    /**
+     * returns true if avoid-first-lastclipping is enabled, false if not
+     * 
+     * @return
+     */
+    public boolean isAvoidFirstLastClippingEnabled() {
+        return mAvoidFirstLastClipping;
     }
 }
