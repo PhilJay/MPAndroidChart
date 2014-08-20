@@ -25,9 +25,6 @@ public class LineChart extends BarLineChartBase {
     /** the width of the highlighning line */
     protected float mHighlightWidth = 3f;
 
-    /** paint for the filled are (if enabled) below the chart line */
-    protected Paint mFilledPaint;
-
     /** paint for the inner circle of the value indicators */
     protected Paint mCirclePaintInner;
 
@@ -49,11 +46,6 @@ public class LineChart extends BarLineChartBase {
     @Override
     protected void init() {
         super.init();
-
-        mFilledPaint = new Paint();
-        mFilledPaint.setStyle(Paint.Style.FILL);
-        mFilledPaint.setColor(mColorDarkBlue);
-        mFilledPaint.setAlpha(130); // alpha ~55%
 
         mCirclePaintInner = new Paint(Paint.ANTI_ALIAS_FLAG);
         mCirclePaintInner.setStyle(Paint.Style.FILL);
@@ -185,8 +177,9 @@ public class LineChart extends BarLineChartBase {
 
                 mRenderPaint.setStyle(Paint.Style.FILL);
 
+                mRenderPaint.setColor(dataSet.getFillColor());
                 // filled is drawn with less alpha
-                mRenderPaint.setAlpha(85);
+                mRenderPaint.setAlpha(dataSet.getFillAlpha());
 
                 Path filled = generateFilledPath(entries);
 
@@ -337,15 +330,6 @@ public class LineChart extends BarLineChartBase {
             } // else do nothing
 
         }
-    }
-
-    /**
-     * sets the color for the fill-paint
-     * 
-     * @param color
-     */
-    public void setFillColor(int color) {
-        mFilledPaint.setColor(color);
     }
 
     /**
