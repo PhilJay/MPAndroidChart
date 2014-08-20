@@ -15,6 +15,12 @@ public class LineDataSet extends DataSet {
     /** arraylist representing all colors that are used for the circles */
     private ArrayList<Integer> mCircleColors = null;
 
+    /** the color that is used for filling the line surface */
+    private int mFillColor = Color.rgb(140, 234, 255);
+    
+    /** transparency used for filling line surface */
+    private int mFillAlpha = 85;
+
     /** the radius of the circle-shaped value indicators */
     private float mCircleSize = 4f;
 
@@ -33,8 +39,8 @@ public class LineDataSet extends DataSet {
     public LineDataSet(ArrayList<Entry> yVals, String label) {
         super(yVals, label);
 
-//        mCircleSize = Utils.convertDpToPixel(4f);
-//        mLineWidth = Utils.convertDpToPixel(1f);
+        // mCircleSize = Utils.convertDpToPixel(4f);
+        // mLineWidth = Utils.convertDpToPixel(1f);
 
         mCircleColors = new ArrayList<Integer>();
 
@@ -62,6 +68,44 @@ public class LineDataSet extends DataSet {
         copied.mDrawCircles = mDrawCircles;
         copied.mDrawFilled = mDrawFilled;
         return copied;
+    }
+
+    /**
+     * returns the color that is used for filling the line surface
+     * 
+     * @return
+     */
+    public int getFillColor() {
+        return mFillColor;
+    }
+
+    /**
+     * sets the color that is used for filling the line surface
+     * 
+     * @param color
+     */
+    public void setFillColor(int color) {
+        mFillColor = color;
+    }
+
+    /**
+     * returns the alpha value that is used for filling the line surface,
+     * default: 85
+     * 
+     * @return
+     */
+    public int getFillAlpha() {
+        return mFillAlpha;
+    }
+
+    /**
+     * sets the alpha value (transparency) that is used for filling the line
+     * surface (0-255), default: 85
+     * 
+     * @param color
+     */
+    public void setFillAlpha(int alpha) {
+        mFillAlpha = alpha;
     }
 
     /**
