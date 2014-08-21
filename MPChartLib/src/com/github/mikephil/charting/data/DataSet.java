@@ -1,6 +1,11 @@
 
 package com.github.mikephil.charting.data;
 
+import android.content.Context;
+import android.graphics.Color;
+
+import com.github.mikephil.charting.utils.ColorTemplate;
+
 import java.util.ArrayList;
 
 /**
@@ -11,16 +16,19 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public class DataSet {
+public abstract class DataSet {
+
+    /** arraylist representing all colors that are used for this DataSet */
+    protected ArrayList<Integer> mColors = null;
 
     /** the entries that this dataset represents / holds together */
-    private ArrayList<Entry> mYVals = null;
+    protected ArrayList<Entry> mYVals = null;
 
     /** maximum y-value in the y-value array */
-    private float mYMax = 0.0f;
+    protected float mYMax = 0.0f;
 
     /** the minimum y-value in the y-value array */
-    private float mYMin = 0.0f;
+    protected float mYMin = 0.0f;
 
     /** the total sum of all y-values */
     private float mYValueSum = 0f;
@@ -28,6 +36,10 @@ public class DataSet {
     /** label that describes the DataSet or the data the DataSet represents */
     private String mLabel = "DataSet";
 
+    /** default constructor */
+    protected DataSet() {
+
+    }
 
     /**
      * Creates a new DataSet object with the given values it represents. Also, a
@@ -39,12 +51,19 @@ public class DataSet {
      */
     public DataSet(ArrayList<Entry> yVals, String label) {
 
-        this.mLabel = label;        
+        this.mLabel = label;
         this.mYVals = yVals;
 
-        if (yVals.size() <= 0) {
-            return;
-        }
+//        if (yVals.size() <= 0) {
+//            return;
+//        }
+
+        mColors = new ArrayList<Integer>();
+
+        // default colors
+        // mColors.add(Color.rgb(192, 255, 140));
+        // mColors.add(Color.rgb(255, 247, 140));
+        mColors.add(Color.rgb(140, 234, 255));
 
         calcMinMax();
         calcYValueSum();
@@ -58,32 +77,26 @@ public class DataSet {
         calcYValueSum();
     }
 
-    public DataSet cloneDataSet() {
-        ArrayList<Entry> duplicatedEntries = new ArrayList<Entry>();
-        for (int i = 0; i < mYVals.size(); i++) {
-            Entry entry = mYVals.get(i).copy();
-            duplicatedEntries.add(entry);
-        }
-        DataSet dataSet = new DataSet(duplicatedEntries, mLabel);
-        return dataSet;
-    }
-
     /**
      * calc minimum and maximum y value
      */
-    private void calcMinMax() {
+    protected void calcMinMax() {
         if (mYVals.size() == 0) {
             return;
         }
-        mYMin = mYVals.get(0).getVal();
-        mYMax = mYVals.get(0).getVal();
+
+        mYMin = mYVals.get(0).getSum();
+        mYMax = mYVals.get(0).getSum();
 
         for (int i = 0; i < mYVals.size(); i++) {
-            if (mYVals.get(i).getVal() < mYMin)
-                mYMin = mYVals.get(i).getVal();
 
-            if (mYVals.get(i).getVal() > mYMax)
-                mYMax = mYVals.get(i).getVal();
+            Entry e = mYVals.get(i);
+
+            if (e.getSum() < mYMin)
+                mYMin = e.getSum();
+
+            if (e.getSum() > mYMax)
+                mYMax = e.getSum();
         }
     }
 
@@ -95,7 +108,7 @@ public class DataSet {
         mYValueSum = 0;
 
         for (int i = 0; i < mYVals.size(); i++) {
-            mYValueSum += Math.abs(mYVals.get(i).getVal());
+            mYValueSum += Math.abs(mYVals.get(i).getSum());
         }
     }
 
@@ -119,10 +132,10 @@ public class DataSet {
      */
     public float getYValForXIndex(int xIndex) {
 
-        Entry s = getEntryForXIndex(xIndex);
+        Entry e = getEntryForXIndex(xIndex);
 
-        if (s != null)
-            return s.getVal();
+        if (e != null)
+            return e.getSum();
         else
             return Float.NaN;
     }
@@ -230,50 +243,11 @@ public class DataSet {
     }
 
     /**
-     * Convenience method to create multiple DataSets of different types with
-     * various double value arrays. Each double array represents the data of one
-     * DataSet with a type created by this method, starting at 0 (and
-     * incremented).
-     * 
-     * @param yValues
-     * @return
-     */
-    public static ArrayList<DataSet> makeDataSets(ArrayList<Double[]> yValues) {
-
-        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
-
-        for (int i = 0; i < yValues.size(); i++) {
-
-            Double[] curValues = yValues.get(i);
-
-            ArrayList<Entry> entries = new ArrayList<Entry>();
-
-            for (int j = 0; j < curValues.length; j++) {
-                entries.add(new Entry(curValues[j].floatValue(), j));
-            }
-
-            dataSets.add(new DataSet(entries, "DS " + i));
-        }
-
-        return dataSets;
-    }
-
-    /**
-     * provides an exact copy of the DataSet this method is used on
+     * Provides an exact copy of the DataSet this method is used on.
      * 
      * @return
      */
-    public DataSet copy() {
-
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
-
-        for (int i = 0; i < mYVals.size(); i++) {
-            yVals.add(mYVals.get(i).copy());
-        }
-
-        DataSet copied = new DataSet(yVals, mLabel);
-        return copied;
-    }
+    public abstract DataSet copy();
 
     @Override
     public String toString() {
@@ -305,4 +279,158 @@ public class DataSet {
     public String getLabel() {
         return mLabel;
     }
+    
+    /**
+     * Adds an Entry dynamically.
+     * 
+     * @param d
+     */
+    public void addEntry(Entry e) {
+               
+        float sum = e.getSum();
+        
+        if(mYVals == null || mYVals.size() <= 0) {
+            
+            mYVals = new ArrayList<Entry>();
+            mYMax = sum;
+            mYMin = sum;
+        } else {
+            
+            if(mYMax < sum) mYMax = sum;
+            if(mYMin > sum) mYMin = sum;
+        }
+        
+        mYVals.add(e);
+        
+        mYValueSum += sum;
+    }
+
+    /** BELOW THIS COLOR HANDLING */
+
+    /**
+     * Sets the colors that should be used fore this DataSet. Colors are reused
+     * as soon as the number of Entries the DataSet represents is higher than
+     * the size of the colors array. Make sure that the colors are already
+     * prepared (by calling getResources().getColor(...)) before adding them to
+     * the DataSet.
+     * 
+     * @param colors
+     */
+    public void setColors(ArrayList<Integer> colors) {
+        this.mColors = colors;
+    }
+
+    /**
+     * Sets the colors that should be used fore this DataSet. Colors are reused
+     * as soon as the number of Entries the DataSet represents is higher than
+     * the size of the colors array. Make sure that the colors are already
+     * prepared (by calling getResources().getColor(...)) before adding them to
+     * the DataSet.
+     * 
+     * @param colors
+     */
+    public void setColors(int[] colors) {
+        this.mColors = ColorTemplate.createColors(colors);
+    }
+
+    /**
+     * Sets the colors that should be used fore this DataSet. Colors are reused
+     * as soon as the number of Entries the DataSet represents is higher than
+     * the size of the colors array. You can use
+     * "new int[] { R.color.red, R.color.green, ... }" to provide colors for
+     * this method. Internally, the colors are resolved using
+     * getResources().getColor(...)
+     * 
+     * @param colors
+     */
+    public void setColors(int[] colors, Context c) {
+
+        ArrayList<Integer> clrs = new ArrayList<Integer>();
+
+        for (int color : colors) {
+            clrs.add(c.getResources().getColor(color));
+        }
+
+        mColors = clrs;
+    }
+
+    /**
+     * Adds a new color to the colors array of the DataSet.
+     * 
+     * @param color
+     */
+    public void addColor(int color) {
+        if (mColors == null)
+            mColors = new ArrayList<Integer>();
+        mColors.add(color);
+    }
+
+    /**
+     * Sets the one and ONLY color that should be used for this DataSet.
+     * Internally, this recreates the colors array and adds the specified color.
+     * 
+     * @param color
+     */
+    public void setColor(int color) {
+        resetColors();
+        mColors.add(color);
+    }
+
+    /**
+     * returns all the colors that are set for this DataSet
+     * 
+     * @return
+     */
+    public ArrayList<Integer> getColors() {
+        return mColors;
+    }
+
+    /**
+     * Returns the color at the given index of the DataSet's color array.
+     * Performs a IndexOutOfBounds check by modulus.
+     * 
+     * @param index
+     * @return
+     */
+    public int getColor(int index) {
+        return mColors.get(index % mColors.size());
+    }
+
+    /**
+     * Resets all colors of this DataSet and recreates the colors array.
+     */
+    public void resetColors() {
+        mColors = new ArrayList<Integer>();
+    }
+
+    // /**
+    // * Convenience method to create multiple DataSets of different types with
+    // * various double value arrays. Each double array represents the data of
+    // one
+    // * DataSet with a type created by this method, starting at 0 (and
+    // * incremented).
+    // *
+    // * @param yValues
+    // * @return
+    // */
+    // public static ArrayList<DataSet> makeDataSets(ArrayList<Double[]>
+    // yValues) {
+    //
+    // ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+    //
+    // for (int i = 0; i < yValues.size(); i++) {
+    //
+    // Double[] curValues = yValues.get(i);
+    //
+    // ArrayList<Entry> entries = new ArrayList<Entry>();
+    //
+    // for (int j = 0; j < curValues.length; j++) {
+    // entries.add(new Entry(curValues[j].floatValue(), j));
+    // }
+    //
+    // dataSets.add(new DataSet(entries, "DS " + i));
+    // }
+    //
+    // return dataSets;
+    // }
 }

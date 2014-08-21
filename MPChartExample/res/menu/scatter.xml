@@ -18,6 +18,18 @@
         android:title="Toggle AdjustXLegend">
     </item>
     <item
+        android:id="@+id/animateX"
+        android:title="Animate X">
+    </item>
+    <item
+        android:id="@+id/animateY"
+        android:title="Animate Y">
+    </item>
+    <item
+        android:id="@+id/animateXY"
+        android:title="Animate XY">
+    </item>
+    <item
         android:id="@+id/actionToggleFilter"
         android:title="Toggle filter">
     </item>
@@ -25,8 +37,9 @@
         android:id="@+id/actionSave"
         android:title="Save to Gallery">
     </item>
-<item
+    <item
         android:id="@+id/actionTogglePinch"
         android:title="Toggle PinchZoom">
     </item>
+
 </menu>

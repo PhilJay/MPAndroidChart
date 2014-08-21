@@ -43,7 +43,7 @@ public class PieChartFrag extends SimpleFragment {
 //        mChart.setDrawYValues(false);
 //        mChart.setDrawXValues(false);
         
-        mChart.setData(generateLessData());
+        mChart.setData(generatePieData());
         
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART);

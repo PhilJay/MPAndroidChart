@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.utils.Legend;
+import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.MyMarkerView;
 import com.xxmassdeveloper.mpchartexample.R;
 
@@ -27,7 +28,6 @@ public class BarChartFrag extends SimpleFragment {
         
         // create a new chart object
         mChart = new BarChart(getActivity());
-        mChart.setYLabelCount(6);
         mChart.setDescription("");
         
         MyMarkerView mv = new MyMarkerView(getActivity(), R.layout.custom_marker_view);
@@ -43,17 +43,17 @@ public class BarChartFrag extends SimpleFragment {
         mChart.setDrawXLabels(false);
         mChart.setDrawYValues(false);
         mChart.setUnit(" €");
+        mChart.setDrawBarShadow(false);
         
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"OpenSans-Light.ttf");
         
-        mChart.setYLabelTypeface(tf);
-        
-        mChart.setData(generateData(1, 20000, 12));
+        mChart.setData(generateBarData(1, 20000, 12));
         
         Legend l = mChart.getLegend();
         l.setTypeface(tf);
         
-//        YLabels labels = mChart.getYLabels();
+        YLabels labels = mChart.getYLabels();
+        labels.setTypeface(tf);
 //        labels.setPosition(YLabelPosition.BOTH_SIDED);
         
         // programatically add the chart

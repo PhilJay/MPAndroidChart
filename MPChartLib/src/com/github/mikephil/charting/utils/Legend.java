@@ -17,12 +17,16 @@ import java.util.ArrayList;
 public class Legend {
 
     public enum LegendPosition {
-        RIGHT_OF_CHART, BELOW_CHART_LEFT, BELOW_CHART_RIGHT
+        RIGHT_OF_CHART, BELOW_CHART_LEFT, BELOW_CHART_RIGHT, BELOW_CHART_CENTER
     }
 
     public enum LegendForm {
         SQUARE, CIRCLE, LINE
     }
+
+    /** offsets for the legend */
+    private float mLegendOffsetBottom = 12f, mLegendOffsetRight = 12f, mLegendOffsetLeft = 12f,
+            mLegendOffsetTop = 12f;
 
     /** the legend colors */
     private int[] mColors;
@@ -39,21 +43,41 @@ public class Legend {
     /** the typeface used for the legend labels */
     private Typeface mTypeface = null;
 
+    /** the text size of the legend labels */
+    private float mTextSize = 9f;
+
     /** the size of the legend forms/shapes */
     private float mFormSize = 8f;
 
-    /** the space between the legend entries on a vertical or horizontal axis */
-    private float mEntrySpace;
+    /**
+     * the space between the legend entries on a horizontal axis, default 6f
+     */
+    private float mXEntrySpace = 6f;
 
-    /** the space between the form and the actual label/text */
-    private float mFormToTextSpace;
+    /**
+     * the space between the legend entries on a vertical axis, default 5f
+     */
+    private float mYEntrySpace = 5f;
+
+    /**
+     * the space between the legend entries on a vertical axis, default 2f
+     * private float mYEntrySpace = 2f; /** the space between the form and the
+     * actual label/text
+     */
+    private float mFormToTextSpace = 5f;
+
+    /** the space that should be left between stacked forms */
+    private float mStackSpace = 3f;
 
     /** default constructor */
     public Legend() {
 
-        mFormSize = Utils.convertDpToPixel(mFormSize);
-        mEntrySpace = mFormSize * 1.6f;
-        mFormToTextSpace = mFormSize * 1.5f;
+        mFormSize = Utils.convertDpToPixel(8f);
+        mXEntrySpace = Utils.convertDpToPixel(6f);
+        mYEntrySpace = Utils.convertDpToPixel(5f);
+        mFormToTextSpace = Utils.convertDpToPixel(5f);
+        mTextSize = Utils.convertDpToPixel(9f);
+        mStackSpace = Utils.convertDpToPixel(3f);
     }
 
     /**
@@ -121,7 +145,7 @@ public class Legend {
             }
         }
 
-        return max + (int) mFormSize * 4;
+        return max + (int) mFormSize;
     }
 
     /**
@@ -233,23 +257,42 @@ public class Legend {
     }
 
     /**
-     * returns the space between the legend entries on a vertical or horizontal
-     * axis in pixels
+     * returns the space between the legend entries on a horizontal axis in
+     * pixels
      * 
      * @return
      */
-    public float getEntrySpace() {
-        return mEntrySpace;
+    public float getXEntrySpace() {
+        return mXEntrySpace;
     }
 
     /**
-     * sets the space between the legend entries on a vertical or horizontal
-     * axis in pixels, converts to dp internally
+     * sets the space between the legend entries on a horizontal axis in pixels,
+     * converts to dp internally
      * 
      * @param space
      */
-    public void setEntrySpace(float space) {
-        mEntrySpace = Utils.convertDpToPixel(space);
+    public void setXEntrySpace(float space) {
+        mXEntrySpace = Utils.convertDpToPixel(space);
+    }
+
+    /**
+     * returns the space between the legend entries on a vertical axis in pixels
+     * 
+     * @return
+     */
+    public float getYEntrySpace() {
+        return mYEntrySpace;
+    }
+
+    /**
+     * sets the space between the legend entries on a vertical axis in pixels,
+     * converts to dp internally
+     * 
+     * @param space
+     */
+    public void setYEntrySpace(float space) {
+        mYEntrySpace = Utils.convertDpToPixel(space);
     }
 
     /**
@@ -281,6 +324,9 @@ public class Legend {
      * @param index the index of the color to use (in the colors array)
      */
     public void drawForm(Canvas c, float x, float y, Paint p, int index) {
+
+        if (mColors[index] == -1)
+            return;
 
         p.setColor(mColors[index]);
 
@@ -316,7 +362,7 @@ public class Legend {
 
     /**
      * applies the state from the legend in the parameter to this legend (except
-     * colors and labels)
+     * colors, labels and offsets)
      * 
      * @param l
      */
@@ -326,34 +372,146 @@ public class Legend {
         mShape = l.mShape;
         mTypeface = l.mTypeface;
         mFormSize = l.mFormSize;
-        mEntrySpace = l.mEntrySpace;
+        mXEntrySpace = l.mXEntrySpace;
+        mYEntrySpace = l.mYEntrySpace;
         mFormToTextSpace = l.mFormToTextSpace;
+        mTextSize = l.mTextSize;
+        mStackSpace = l.mStackSpace;
     }
 
-    // /**
-    // * Draws the legend.
-    // * @param drawCanvas
-    // * @param labelPaint
-    // * @param formPaint
-    // */
-    // public void draw(Canvas drawCanvas, Paint labelPaint, Paint formPaint) {
-    //
-    // if(mTypeface != null) labelPaint.setTypeface(mTypeface);
-    //
-    // switch(mPosition) {
-    // case BELOW_CHART:
-    //
-    // for(int i = 0; i < mLegendLabels.length; i++) {
-    //
-    // formPaint.setColor(mColors[i]);
-    //
-    // drawCanvas.drawRect(left, top, right, bottom, formPaint);
-    // }
-    //
-    //
-    // break;
-    // case LEFT_OF_CHART:
-    // break;
-    // }
-    // }
+    /**
+     * returns the bottom offset
+     * 
+     * @return
+     */
+    public float getOffsetBottom() {
+        return mLegendOffsetBottom;
+    }
+
+    /**
+     * returns the right offset
+     * 
+     * @return
+     */
+    public float getOffsetRight() {
+        return mLegendOffsetRight;
+    }
+
+    /**
+     * sets the bottom offset
+     * 
+     * @param off
+     */
+    public void setOffsetBottom(float off) {
+        mLegendOffsetBottom = off;
+    }
+
+    /**
+     * sets the right offset
+     * 
+     * @param off
+     */
+    public void setOffsetRight(float off) {
+        mLegendOffsetRight = off;
+    }
+
+    /**
+     * returns the bottom offset
+     * 
+     * @return
+     */
+    public float getOffsetTop() {
+        return mLegendOffsetTop;
+    }
+
+    /**
+     * returns the left offset
+     * 
+     * @return
+     */
+    public float getOffsetLeft() {
+        return mLegendOffsetLeft;
+    }
+
+    /**
+     * sets the bottom offset
+     * 
+     * @param off
+     */
+    public void setOffsetTop(float off) {
+        mLegendOffsetTop = off;
+    }
+
+    /**
+     * sets the left offset
+     * 
+     * @param off
+     */
+    public void setOffsetLeft(float off) {
+        mLegendOffsetLeft = off;
+    }
+
+    /**
+     * sets the text size of the legend labels, default 9f
+     * 
+     * @param size
+     */
+    public void setTextSize(float size) {
+        mTextSize = Utils.convertDpToPixel(size);
+    }
+
+    /**
+     * returns the text size of the legend labels
+     * 
+     * @return
+     */
+    public float getTextSize() {
+        return mTextSize;
+    }
+
+    /**
+     * returns the space that is left out between stacked forms (with no label)
+     * 
+     * @return
+     */
+    public float getStackSpace() {
+        return mStackSpace;
+    }
+
+    /**
+     * sets the space that is left out between stacked forms (with no label)
+     * 
+     * @param space
+     */
+    public void setStackSpace(float space) {
+        mStackSpace = space;
+    }
+
+    /**
+     * calculates the full width the fully drawn legend will use in pixels
+     * 
+     * @return
+     */
+    public float getFullWidth(Paint labelpaint) {
+
+        float width = 0f;
+
+        for (int i = 0; i < mLegendLabels.length; i++) {
+
+            // grouped forms have null labels
+            if (mLegendLabels[i] != null) {
+
+                // make a step to the left
+                if (mColors[i] != -1)
+                    width += mFormSize + mFormToTextSpace;
+
+                width += Utils.calcTextWidth(labelpaint, mLegendLabels[i])
+                        + mXEntrySpace;
+            } else {
+                width += mFormSize + mStackSpace;
+            }
+        }
+
+        return width;
+    }
 }

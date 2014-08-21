@@ -1,9 +1,10 @@
 
 package com.github.mikephil.charting.data;
 
-import java.util.ArrayList;
-
 import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.LimitLine;
+
+import java.util.ArrayList;
 
 /**
  * Class that holds all relevant data that represents the chart. That involves
@@ -11,25 +12,31 @@ import com.github.mikephil.charting.utils.Highlight;
  * 
  * @author Philipp Jahoda
  */
-public class ChartData {
+public abstract class ChartData {
 
     /** maximum y-value in the y-value array */
-    private float mYMax = 0.0f;
+    protected float mYMax = 0.0f;
 
     /** the minimum y-value in the y-value array */
-    private float mYMin = 0.0f;
+    protected float mYMin = 0.0f;
 
     /** the total sum of all y-values */
     private float mYValueSum = 0f;
 
+    /** total number of y-values across all DataSet objects */
+    private int mYValCount = 0;
+
+    /**
+     * contains the average length (in characters) an entry in the x-vals array
+     * has
+     */
+    private int mXValAverageLength = 0;
+
     /** holds all x-values the chart represents */
-    private ArrayList<String> mXVals;
+    protected ArrayList<String> mXVals;
 
-    /** holds all the datasets (e.g. different lines) the chart represents */
-    private ArrayList<DataSet> mDataSets;
-
-    /** array that holds all the different labels that are in the DataSet array */
-    private ArrayList<String> mDiffLabels;
+    /** array that holds all DataSets the ChartData object represents */
+    protected ArrayList<? extends DataSet> mDataSets;
 
     /**
      * constructor for chart data
@@ -37,10 +44,13 @@ public class ChartData {
      * @param xVals The values describing the x-axis. Must be at least as long
      *            as the highest xIndex in the Entry objects across all
      *            DataSets.
-     * @param dataSets all DataSet objects the chart needs to represent
+     * @param sets the dataset array
      */
-    public ChartData(ArrayList<String> xVals, ArrayList<DataSet> dataSets) {
-        init(xVals, dataSets);
+    public ChartData(ArrayList<String> xVals, ArrayList<? extends DataSet> sets) {
+        this.mXVals = xVals;
+        this.mDataSets = sets;
+
+        init();
     }
 
     /**
@@ -49,43 +59,73 @@ public class ChartData {
      * @param xVals The values describing the x-axis. Must be at least as long
      *            as the highest xIndex in the Entry objects across all
      *            DataSets.
-     * @param dataSets all DataSet objects the chart needs to represent
+     * @param sets the dataset array
      */
-    public ChartData(String[] xVals, ArrayList<DataSet> dataSets) {
+    public ChartData(String[] xVals, ArrayList<? extends DataSet> sets) {
         ArrayList<String> newXVals = new ArrayList<String>();
         for (int i = 0; i < xVals.length; i++) {
             newXVals.add(xVals[i]);
         }
-        init(newXVals, dataSets);
+        this.mXVals = newXVals;
+        this.mDataSets = sets;
+
+        init();
     }
 
     /**
-     * Constructor that takes only one DataSet
-     * 
-     * @param xVals
-     * @param data
+     * performs all kinds of initialization calculations, such as min-max and
+     * value count and sum
      */
-    public ChartData(ArrayList<String> xVals, DataSet data) {
+    private void init() {
 
-        ArrayList<DataSet> sets = new ArrayList<DataSet>();
-        sets.add(data);
-        init(xVals, sets);
+        isLegal(mDataSets);
+
+        calcMinMax(mDataSets);
+        calcYValueSum(mDataSets);
+        calcYValueCount(mDataSets);
+
+        calcXValAverageLength();
     }
 
-    private void init(ArrayList<String> xVals, ArrayList<DataSet> dataSets) {
-        this.mXVals = xVals;
-        this.mDataSets = dataSets;
+    /**
+     * calculates the average length (in characters) across all x-value strings
+     */
+    private void calcXValAverageLength() {
+        
+        if(mXVals.size() == 0) {
+            mXValAverageLength = 1;
+            return;
+        }
 
-        calcTypes();
-        calcMinMax();
-        calcYValueSum();
+        int sum = 0;
 
-        for (int i = 0; i < mDataSets.size(); i++) {
-            if (mDataSets.get(i)
+        for (int i = 0; i < mXVals.size(); i++) {
+            sum += mXVals.get(i).length();
+        }
+
+        mXValAverageLength = sum / mXVals.size();
+    }
+
+    protected static ArrayList<? extends DataSet> toArrayList(DataSet dataSet) {
+        ArrayList<DataSet> sets = new ArrayList<DataSet>();
+        sets.add(dataSet);
+        return sets;
+    }
+
+    /**
+     * Checks if the combination of x-values array and DataSet array is legal or
+     * not.
+     * 
+     * @param dataSets
+     */
+    private void isLegal(ArrayList<? extends DataSet> dataSets) {
+
+        for (int i = 0; i < dataSets.size(); i++) {
+            if (dataSets.get(i)
                     .getYVals()
-                    .size() > xVals.size()) {
+                    .size() > mXVals.size()) {
                 throw new IllegalArgumentException(
-                        "One or more of the DataSet Entry arrays are longer than the x-values array.");
+                        "One or more of the DataSet Entry arrays are longer than the x-values array of this ChartData object.");
             }
         }
     }
@@ -95,44 +135,13 @@ public class ChartData {
      * changed.
      */
     public void notifyDataChanged() {
-        doCalculations();
-    }
-
-    /**
-     * Does all necessary calculations, if the underlying data has changed
-     */
-    private void doCalculations() {
-        calcTypes();
-        calcMinMax();
-        calcYValueSum();
-    }
-
-    /**
-     * calculates all different labels that occur in the DataSets and stores
-     * them for fast access
-     */
-    private void calcTypes() {
-        mDiffLabels = new ArrayList<String>();
-
-        // check which dataset to use
-        ArrayList<DataSet> dataSets = mDataSets;
-
-        for (int i = 0; i < dataSets.size(); i++) {
-
-            String label = dataSets.get(i).getLabel();
-
-            if (!alreadyCounted(mDiffLabels, label)) {
-                mDiffLabels.add(label);
-            }
-        }
+        init();
     }
 
     /**
      * calc minimum and maximum y value over all datasets
      */
-    private void calcMinMax() {
-        // check which dataset to use
-        ArrayList<DataSet> dataSets = mDataSets;
+    protected void calcMinMax(ArrayList<? extends DataSet> dataSets) {
 
         mYMin = dataSets.get(0).getYMin();
         mYMax = dataSets.get(0).getYMax();
@@ -149,24 +158,29 @@ public class ChartData {
     /**
      * calculates the sum of all y-values in all datasets
      */
-    private void calcYValueSum() {
+    protected void calcYValueSum(ArrayList<? extends DataSet> dataSets) {
 
         mYValueSum = 0;
 
-        // check which dataset to use
-        ArrayList<DataSet> dataSets = mDataSets;
         for (int i = 0; i < dataSets.size(); i++) {
             mYValueSum += Math.abs(dataSets.get(i).getYValueSum());
         }
     }
 
-    private boolean alreadyCounted(ArrayList<String> countedLabels, String label) {
-        for (int i = 0; i < countedLabels.size(); i++) {
-            if (countedLabels.get(i).equals(label))
-                return true;
+    /**
+     * Calculates the total number of y-values across all DataSets the ChartData
+     * represents.
+     * 
+     * @return
+     */
+    protected void calcYValueCount(ArrayList<? extends DataSet> dataSets) {
+        int count = 0;
+
+        for (int i = 0; i < dataSets.size(); i++) {
+            count += dataSets.get(i).getEntryCount();
         }
 
-        return false;
+        mYValCount = count;
     }
 
     /**
@@ -185,6 +199,13 @@ public class ChartData {
         }
     }
 
+    /** ONLY GETTERS AND SETTERS BELOW THIS */
+
+    /**
+     * returns the number of LineDataSets this object contains
+     * 
+     * @return
+     */
     public int getDataSetCount() {
         return mDataSets.size();
     }
@@ -197,8 +218,34 @@ public class ChartData {
         return mYMax;
     }
 
+    /**
+     * returns the average length (in characters) across all values in the
+     * x-vals array
+     * 
+     * @return
+     */
+    public int getXValAverageLength() {
+        return mXValAverageLength;
+    }
+
+    /**
+     * Returns the total y-value sum across all DataSet objects the this object
+     * represents.
+     * 
+     * @return
+     */
     public float getYValueSum() {
         return mYValueSum;
+    }
+
+    /**
+     * Returns the total number of y-values across all DataSet objects the this
+     * object represents.
+     * 
+     * @return
+     */
+    public int getYValCount() {
+        return mYValCount;
     }
 
     /**
@@ -207,7 +254,7 @@ public class ChartData {
      * @return
      */
     public boolean isValid() {
-        if (mXVals == null || mXVals.size() <= 1)
+        if (mXVals == null || mXVals.size() < 1)
             return false;
 
         if (mDataSets == null || mDataSets.size() < 1)
@@ -226,29 +273,110 @@ public class ChartData {
     }
 
     /**
-     * returns the Entries array from the DataSet at the given index. If a
-     * filter is set, the filtered Entries are returned
+     * Returns an the array of DataSets this object holds.
      * 
-     * @param index
      * @return
      */
-    public ArrayList<Entry> getYVals(int index) {
-        return mDataSets.get(index).getYVals();
+    public ArrayList<? extends DataSet> getDataSets() {
+        return mDataSets;
+    }
+
+    // /**
+    // * returns the Entries array from the DataSet at the given index. If a
+    // * filter is set, the filtered Entries are returned
+    // *
+    // * @param index
+    // * @return
+    // */
+    // public ArrayList<Entry> getYVals(int index) {
+    // return mDataSets.get(index).getYVals();
+    // }
+
+    /**
+     * Retrieve the index of a DataSet with a specific label from the ChartData.
+     * Search can be case sensitive or not. IMPORTANT: This method does
+     * calculations at runtime, do not over-use in performance critical
+     * situations.
+     * 
+     * @param dataSets the DataSet array to search
+     * @param type
+     * @param ignorecase if true, the search is not case-sensitive
+     * @return
+     */
+    protected int getDataSetIndexByLabel(ArrayList<? extends DataSet> dataSets, String label,
+            boolean ignorecase) {
+
+        if (ignorecase) {
+            for (int i = 0; i < dataSets.size(); i++)
+                if (label.equalsIgnoreCase(dataSets.get(i).getLabel()))
+                    return i;
+        } else {
+            for (int i = 0; i < dataSets.size(); i++)
+                if (label.equals(dataSets.get(i).getLabel()))
+                    return i;
+        }
+
+        return -1;
     }
 
     /**
-     * Get the entry for a corresponding highlight object
+     * returns the total number of x-values this ChartData object represents
+     * (the size of the x-values array)
+     * 
+     * @return
+     */
+    public int getXValCount() {
+        return mXVals.size();
+    }
+
+    /**
+     * Returns the labels of all DataSets as a string array.
+     * 
+     * @return
+     */
+    protected String[] getDataSetLabels() {
+
+        String[] types = new String[mDataSets.size()];
+
+        for (int i = 0; i < mDataSets.size(); i++) {
+            types[i] = mDataSets.get(i).getLabel();
+        }
+
+        return types;
+    }
+
+    /**
+     * Get the Entry for a corresponding highlight object
      * 
      * @param highlight
      * @return the entry that is highlighted
      */
     public Entry getEntryForHighlight(Highlight highlight) {
-        return getDataSetByIndex(highlight.getDataSetIndex()).getEntryForXIndex(
+        return mDataSets.get(highlight.getDataSetIndex()).getEntryForXIndex(
                 highlight.getXIndex());
     }
 
     /**
-     * returns the dataset at the given index.
+     * Returns the DataSet object with the given label. Search can be case
+     * sensitive or not. IMPORTANT: This method does calculations at runtime.
+     * Use with care in performance critical situations.
+     * 
+     * @param label
+     * @param ignorecase
+     * @return
+     */
+    public DataSet getDataSetByLabel(String label, boolean ignorecase) {
+
+        int index = getDataSetIndexByLabel(mDataSets, label, ignorecase);
+
+        if (index <= 0 || index >= mDataSets.size())
+            return null;
+        else
+            return mDataSets.get(index);
+    }
+
+    /**
+     * Returns the DataSet object at the given index.
      * 
      * @param index
      * @return
@@ -258,101 +386,52 @@ public class ChartData {
     }
 
     /**
-     * Retrieve a DataSet with a specific label from the ChartData. Search can
-     * be case sensitive or not. IMPORTANT: This method does calculations at
-     * runtime, do not over-use in performance critical situations.
+     * Adds a DataSet dynamically.
      * 
-     * @param type
-     * @param ignorecase if true, the search is not case-sensitive
-     * @return
+     * @param d
      */
-    public DataSet getDataSetByLabel(String label, boolean ignorecase) {
-        // check which dataset to use
-        ArrayList<DataSet> dataSets = mDataSets;
+    public void addDataSet(DataSet d) {
+        if (mDataSets == null)
+            mDataSets = new ArrayList<DataSet>();
+        ((ArrayList<DataSet>) mDataSets).add(d);
 
-        if (ignorecase) {
-            for (int i = 0; i < dataSets.size(); i++)
-                if (label.equalsIgnoreCase(dataSets.get(i).getLabel()))
-                    return dataSets.get(i);
-        } else {
-            for (int i = 0; i < dataSets.size(); i++)
-                if (label.equals(dataSets.get(i).getLabel()))
-                    return dataSets.get(i);
-        }
+        mYValCount += d.getEntryCount();
+        mYValueSum += d.getYValueSum();
 
-        return null;
+        if (mYMax < d.getYMax())
+            mYMax = d.getYMax();
+        if (mYMin > d.getYMin())
+            mYMin = d.getYMin();
     }
 
     /**
-     * returns all DataSet objects the ChartData represents. If a filter is set,
-     * the filtered DataSets are returned
+     * Returns all colors used across all DataSet objects this object
+     * represents.
      * 
      * @return
      */
-    public ArrayList<DataSet> getDataSets() {
-        return mDataSets;
-    }
+    public int[] getColors() {
 
-    /**
-     * This returns the original data set, regardless of any filter options.
-     * 
-     * @return
-     */
-    public ArrayList<DataSet> getOriginalDataSets() {
-        return mDataSets;
-    }
-
-    /**
-     * returns all the different DataSet labels the chartdata represents
-     * 
-     * @return
-     */
-    public ArrayList<String> getLabels() {
-        return mDiffLabels;
-    }
-
-    /**
-     * returns the total number of x-values this chartdata represents (the size
-     * of the xvals array)
-     * 
-     * @return
-     */
-    public int getXValCount() {
-        return mXVals.size();
-    }
-
-    /**
-     * returns the total number of y-values across all DataSets the chartdata
-     * represents. If a filter is set, the filtered count is returned
-     * 
-     * @return
-     */
-    public int getYValCount() {
-        int count = 0;
-        // check which dataset to use
-        ArrayList<DataSet> dataSets = mDataSets;
-
-        for (int i = 0; i < dataSets.size(); i++) {
-            count += dataSets.get(i).getEntryCount();
-        }
-
-        return count;
-    }
-
-    /**
-     * Returns the labels of all DataSets as a string array.
-     * 
-     * @return
-     */
-    public String[] getDataSetLabels() {
-
-        String[] types = new String[mDataSets.size()];
+        int clrcnt = 0;
 
         for (int i = 0; i < mDataSets.size(); i++) {
-            types[i] = mDataSets.get(i).getLabel();
+            clrcnt += mDataSets.get(i).getColors().size();
         }
 
-        return types;
+        int[] colors = new int[clrcnt];
+        int cnt = 0;
+
+        for (int i = 0; i < mDataSets.size(); i++) {
+
+            ArrayList<Integer> clrs = mDataSets.get(i).getColors();
+
+            for (Integer clr : clrs) {
+                colors[cnt] = clr;
+                cnt++;
+            }
+        }
+
+        return colors;
     }
 
     /**

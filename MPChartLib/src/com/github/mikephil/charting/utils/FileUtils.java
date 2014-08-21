@@ -5,7 +5,6 @@ import android.content.res.AssetManager;
 import android.os.Environment;
 import android.util.Log;
 
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 
 import java.io.BufferedReader;
@@ -28,13 +27,12 @@ public class FileUtils {
     private static final String LOG = "MPChart-FileUtils";
 
     /**
-     * Loads a DataSet from a textfile from the sd-card. Textfile syntax is:
-     * labelstring<linebreak>500.99#0<linebreak>350.80#1<linebreak>and so on...
+     * Loads a an Array of Entries from a textfile from the sd-card.
      * 
-     * @param path the name of the file on the sd card (path if needed)
+     * @param path the name of the file on the sd-card (+ path if needed)
      * @return
      */
-    public static DataSet dataSetFromFile(String path) {
+    public static ArrayList<Entry> loadEntriesFromFile(String path) {
 
         File sdcard = Environment.getExternalStorageDirectory();
 
@@ -42,39 +40,72 @@ public class FileUtils {
         File file = new File(sdcard, path);
 
         ArrayList<Entry> entries = new ArrayList<Entry>();
-        String label = "";
 
         try {
             @SuppressWarnings("resource")
             BufferedReader br = new BufferedReader(new FileReader(file));
-            String line = br.readLine();
-
-            // firstline is the label
-            label = line;
+            String line;
 
             while ((line = br.readLine()) != null) {
                 String[] split = line.split("#");
-                entries.add(new Entry(Float.parseFloat(split[0]), Integer.parseInt(split[1])));
+                
+                if(split.length <= 2) {
+                    entries.add(new Entry(Float.parseFloat(split[0]), Integer.parseInt(split[1])));
+                } else {
+                    
+                    float[] vals = new float[split.length - 1];
+                    
+                    for(int i = 0; i < vals.length; i++) {
+                        vals[i] = Float.parseFloat(split[i]);
+                    }                 
+                    
+                    entries.add(new Entry(vals, Integer.parseInt(split[split.length - 1])));
+                }
             }
         } catch (IOException e) {
             Log.e(LOG, e.toString());
         }
 
-        DataSet ds = new DataSet(entries, label);
-        return ds;
+        return entries;
+
+        // File sdcard = Environment.getExternalStorageDirectory();
+        //
+        // // Get the text file
+        // File file = new File(sdcard, path);
+        //
+        // ArrayList<Entry> entries = new ArrayList<Entry>();
+        // String label = "";
+        //
+        // try {
+        // @SuppressWarnings("resource")
+        // BufferedReader br = new BufferedReader(new FileReader(file));
+        // String line = br.readLine();
+        //
+        // // firstline is the label
+        // label = line;
+        //
+        // while ((line = br.readLine()) != null) {
+        // String[] split = line.split("#");
+        // entries.add(new Entry(Float.parseFloat(split[0]),
+        // Integer.parseInt(split[1])));
+        // }
+        // } catch (IOException e) {
+        // Log.e(LOG, e.toString());
+        // }
+        //
+        // DataSet ds = new DataSet(entries, label);
+        // return ds;
     }
 
     /**
-     * Loads a DataSet from a textfile from the assets folder. Textfile syntax
-     * is: labelstring|newline|500.99#03|newline|50.80#1|newline|and so on...
+     * Loads an array of Entries from a textfile from the assets folder.
      * 
      * @param am
-     * @param path the name of the file in the assets folder (path if needed)
+     * @param path the name of the file in the assets folder (+ path if needed)
      * @return
      */
-    public static DataSet dataSetFromAssets(AssetManager am, String path) {
+    public static ArrayList<Entry> loadEntriesFromAssets(AssetManager am, String path) {
 
-        String label = null;
         ArrayList<Entry> entries = new ArrayList<Entry>();
 
         BufferedReader reader = null;
@@ -82,21 +113,31 @@ public class FileUtils {
             reader = new BufferedReader(
                     new InputStreamReader(am.open(path), "UTF-8"));
 
-            // do reading, usually loop until end of file reading
-            label = reader.readLine();
             String line = reader.readLine();
 
             while (line != null) {
                 // process line
                 String[] split = line.split("#");
-                entries.add(new Entry(Float.parseFloat(split[0]), Integer.parseInt(split[1])));
+                
+                if(split.length <= 2) {
+                    entries.add(new Entry(Float.parseFloat(split[0]), Integer.parseInt(split[1])));
+                } else {
+                    
+                    float[] vals = new float[split.length - 1];
+                    
+                    for(int i = 0; i < vals.length; i++) {
+                        vals[i] = Float.parseFloat(split[i]);
+                    }                 
+                    
+                    entries.add(new Entry(vals, Integer.parseInt(split[split.length - 1])));
+                }
                 line = reader.readLine();
             }
         } catch (IOException e) {
             Log.e(LOG, e.toString());
-            
+
         } finally {
-            
+
             if (reader != null) {
                 try {
                     reader.close();
@@ -106,17 +147,52 @@ public class FileUtils {
             }
         }
 
-        DataSet ds = new DataSet(entries, label);
-        return ds;
+        return entries;
+
+        // String label = null;
+        // ArrayList<Entry> entries = new ArrayList<Entry>();
+        //
+        // BufferedReader reader = null;
+        // try {
+        // reader = new BufferedReader(
+        // new InputStreamReader(am.open(path), "UTF-8"));
+        //
+        // // do reading, usually loop until end of file reading
+        // label = reader.readLine();
+        // String line = reader.readLine();
+        //
+        // while (line != null) {
+        // // process line
+        // String[] split = line.split("#");
+        // entries.add(new Entry(Float.parseFloat(split[0]),
+        // Integer.parseInt(split[1])));
+        // line = reader.readLine();
+        // }
+        // } catch (IOException e) {
+        // Log.e(LOG, e.toString());
+        //
+        // } finally {
+        //
+        // if (reader != null) {
+        // try {
+        // reader.close();
+        // } catch (IOException e) {
+        // Log.e(LOG, e.toString());
+        // }
+        // }
+        // }
+        //
+        // DataSet ds = new DataSet(entries, label);
+        // return ds;
     }
 
     /**
-     * Saves a DataSet to the specified location on the sdcard
+     * Saves an Array of Entries to the specified location on the sdcard
      * 
      * @param ds
      * @param path
      */
-    public static void saveToSdCard(DataSet ds, String path) {
+    public static void saveToSdCard(ArrayList<Entry> entries, String path) {
 
         File sdcard = Environment.getExternalStorageDirectory();
 
@@ -135,10 +211,6 @@ public class FileUtils {
         {
             // BufferedWriter for performance, true to set append to file flag
             BufferedWriter buf = new BufferedWriter(new FileWriter(saved, true));
-            buf.append(ds.getLabel());
-            buf.newLine();
-
-            ArrayList<Entry> entries = ds.getYVals();
 
             for (Entry e : entries) {
 

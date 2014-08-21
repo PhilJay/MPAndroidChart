@@ -2,6 +2,8 @@
 package com.github.mikephil.charting.charts;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -16,41 +18,59 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Environment;
-import android.provider.MediaStore;
+import android.provider.MediaStore.Images;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.MarkerView;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
+import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.animation.ValueAnimator;
+import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
 
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
 
 /**
  * Baseclass of all Chart-Views.
  * 
  * @author Philipp Jahoda
  */
-public abstract class Chart extends View {
+public abstract class Chart extends View implements AnimatorUpdateListener {
 
     public static final String LOG_TAG = "MPChart";
 
     protected int mColorDarkBlue = Color.rgb(41, 128, 186);
     protected int mColorDarkRed = Color.rgb(232, 76, 59);
+
+    /**
+     * string that is drawn next to the values in the chart, indicating their
+     * unit
+     */
+    protected String mUnit = "";
+
+    /**
+     * flag that holds the background color of the view and the color the canvas
+     * is cleared with
+     */
+    private int mBackgroundColor = Color.WHITE;
 
     /**
      * defines the number of digits to use for all printed values, -1 means
@@ -64,16 +84,16 @@ public abstract class Chart extends View {
     protected int mValueFormatDigits = -1;
 
     /** chart offset to the left */
-    protected int mOffsetLeft = 15;
+    protected float mOffsetLeft = 12;
 
     /** chart toffset to the top */
-    protected int mOffsetTop = 22;
+    protected float mOffsetTop = 12;
 
     /** chart offset to the right */
-    protected int mOffsetRight = 15;
+    protected float mOffsetRight = 12;
 
     /** chart offset to the bottom */
-    protected int mOffsetBottom = 15;
+    protected float mOffsetBottom = 12;
 
     /**
      * object that holds all data relevant for the chart (x-vals, y-vals, ...)
@@ -124,21 +144,21 @@ public abstract class Chart extends View {
 
     /** this is the paint object used for drawing the data onto the chart */
     protected Paint mRenderPaint;
-    
+
     /** paint for the legend labels */
     protected Paint mLegendLabelPaint;
 
     /** paint used for the legend forms */
     protected Paint mLegendFormPaint;
 
-    /** the colortemplate the chart uses */
-    protected ColorTemplate mCt;
-
     /** description text that appears in the bottom right corner of the chart */
     protected String mDescription = "Description.";
 
     /** flag that indicates if the chart has been fed with data yet */
     protected boolean mDataNotSet = true;
+
+    /** if true, units are drawn next to the values in the chart */
+    protected boolean mDrawUnitInChart = false;
 
     /** the range of y-values the chart displays */
     protected float mDeltaY = 1f;
@@ -166,7 +186,7 @@ public abstract class Chart extends View {
 
     /** if true, thousands values are separated by a dot */
     protected boolean mSeparateTousands = true;
-    
+
     /** flag indicating if the legend is drawn of not */
     protected boolean mDrawLegend = true;
 
@@ -178,6 +198,15 @@ public abstract class Chart extends View {
 
     /** listener that is called when a value on the chart is selected */
     protected OnChartValueSelectedListener mSelectionListener;
+
+    /** text that is displayed when the chart is empty */
+    private String mNoDataText = "No chart data available.";
+
+    /**
+     * text that is displayed when the chart is empty that describes why the
+     * chart is empty
+     */
+    private String mNoDataTextDescription;
 
     /** default constructor for initialization in code */
     public Chart(Context context) {
@@ -237,42 +266,41 @@ public abstract class Chart extends View {
 
         mLegendLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mLegendLabelPaint.setTextSize(Utils.convertDpToPixel(9f));
-
-        mCt = new ColorTemplate();
-        mCt.addDataSetColors(ColorTemplate.VORDIPLOM_COLORS, getContext());
     }
 
-    public void initWithDummyData() {
-        ColorTemplate template = new ColorTemplate();
-        template.addColorsForDataSets(ColorTemplate.COLORFUL_COLORS, getContext());
-
-        setColorTemplate(template);
-        setDrawYValues(false);
-
-        ArrayList<String> xVals = new ArrayList<String>();
-        Calendar calendar = Calendar.getInstance();
-        for (int i = 0; i < 12; i++) {
-            xVals.add(calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()));
-        }
-
-        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
-        for (int i = 0; i < 3; i++) {
-
-            ArrayList<Entry> yVals = new ArrayList<Entry>();
-
-            for (int j = 0; j < 12; j++) {
-                float val = (float) (Math.random() * 100);
-                yVals.add(new Entry(val, j));
-            }
-
-            DataSet set = new DataSet(yVals, "DataSet " + i);
-            dataSets.add(set); // add the datasets
-        }
-        // create a data object with the datasets
-        ChartData data = new ChartData(xVals, dataSets);
-        setData(data);
-        invalidate();
-    }
+    // public void initWithDummyData() {
+    // ColorTemplate template = new ColorTemplate();
+    // template.addColorsForDataSets(ColorTemplate.COLORFUL_COLORS,
+    // getContext());
+    //
+    // setColorTemplate(template);
+    // setDrawYValues(false);
+    //
+    // ArrayList<String> xVals = new ArrayList<String>();
+    // Calendar calendar = Calendar.getInstance();
+    // for (int i = 0; i < 12; i++) {
+    // xVals.add(calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT,
+    // Locale.getDefault()));
+    // }
+    //
+    // ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+    // for (int i = 0; i < 3; i++) {
+    //
+    // ArrayList<Entry> yVals = new ArrayList<Entry>();
+    //
+    // for (int j = 0; j < 12; j++) {
+    // float val = (float) (Math.random() * 100);
+    // yVals.add(new Entry(val, j));
+    // }
+    //
+    // DataSet set = new DataSet(yVals, "DataSet " + i);
+    // dataSets.add(set); // add the datasets
+    // }
+    // // create a data object with the datasets
+    // ChartData data = new ChartData(xVals, dataSets);
+    // setData(data);
+    // invalidate();
+    // }
 
     protected boolean mOffsetsCalculated = false;
 
@@ -281,7 +309,7 @@ public abstract class Chart extends View {
      * 
      * @param data
      */
-    public void setData(ChartData data) {
+    protected void setData(ChartData data) {
 
         if (data == null || !data.isValid()) {
             Log.e(LOG_TAG,
@@ -301,31 +329,57 @@ public abstract class Chart extends View {
         Log.i(LOG_TAG, "Data is set.");
     }
 
-    /**
-     * Sets primitive data for the chart. Internally, this is converted into a
-     * ChartData object with one DataSet (type 0). If you have more specific
-     * requirements for your data, use the setData(ChartData data) method and
-     * create your own ChartData object with as many DataSets as you like.
-     * 
-     * @param xVals
-     * @param yVals
-     */
-    public void setData(ArrayList<String> xVals, ArrayList<Float> yVals) {
+    // /**
+    // * Sets primitive data for the chart. Internally, this is converted into a
+    // * ChartData object with one DataSet (type 0). If you have more specific
+    // * requirements for your data, use the setData(ChartData data) method and
+    // * create your own ChartData object with as many DataSets as you like.
+    // *
+    // * @param xVals
+    // * @param yVals
+    // */
+    // public void setData(ArrayList<String> xVals, ArrayList<Float> yVals) {
+    //
+    // ArrayList<Entry> series = new ArrayList<Entry>();
+    //
+    // for (int i = 0; i < yVals.size(); i++) {
+    // series.add(new Entry(yVals.get(i), i));
+    // }
+    //
+    // DataSet set = new DataSet(series, "DataSet");
+    // ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+    // dataSets.add(set);
+    //
+    // ChartData data = new ChartData(xVals, dataSets);
+    //
+    // setData(data);
+    // }
 
-        ArrayList<Entry> series = new ArrayList<Entry>();
-
-        for (int i = 0; i < yVals.size(); i++) {
-            series.add(new Entry(yVals.get(i), i));
-        }
-
-        DataSet set = new DataSet(series, "DataSet");
-        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
-        dataSets.add(set);
-
-        ChartData data = new ChartData(xVals, dataSets);
-
-        setData(data);
-    }
+    // /**
+    // * Sets primitive data for the chart. Internally, this is converted into a
+    // * ChartData object with one DataSet (type 0). If you have more specific
+    // * requirements for your data, use the setData(ChartData data) method and
+    // * create your own ChartData object with as many DataSets as you like.
+    // *
+    // * @param xVals
+    // * @param yVals
+    // */
+    // public void setData(ArrayList<String> xVals, ArrayList<Float> yVals) {
+    //
+    // ArrayList<Entry> series = new ArrayList<Entry>();
+    //
+    // for (int i = 0; i < yVals.size(); i++) {
+    // series.add(new Entry(yVals.get(i), i));
+    // }
+    //
+    // DataSet set = new DataSet(series, "DataSet");
+    // ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+    // dataSets.add(set);
+    //
+    // ChartData data = new ChartData(xVals, dataSets);
+    //
+    // setData(data);
+    // }
 
     /**
      * does needed preparations for drawing
@@ -338,9 +392,9 @@ public abstract class Chart extends View {
     /**
      * calculates the offsets of the chart to the border depending on the
      * position of an eventual legend or depending on the length of the y-axis
-     * labels
+     * and x-axis labels and their position
      */
-    public abstract void calculateOffsets();
+    protected abstract void calculateOffsets();
 
     /**
      * calcualtes the y-min and y-max value and the y-delta and x-delta value
@@ -350,15 +404,10 @@ public abstract class Chart extends View {
         if (!fixedValues) {
             mYChartMin = mCurrentData.getYMin();
             mYChartMax = mCurrentData.getYMax();
-            
-            if(mYChartMin == mYChartMax) {
-                mYChartMin--;
-                mYChartMax++;
-            }
         }
 
         // calc delta
-        mDeltaY = Math.abs(mCurrentData.getYMax() - mCurrentData.getYMin());
+        mDeltaY = Math.abs(mYChartMax - mYChartMin);
         mDeltaX = mCurrentData.getXVals().size() - 1;
     }
 
@@ -366,7 +415,7 @@ public abstract class Chart extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        
+
         if (!mOffsetsCalculated) {
 
             calculateOffsets();
@@ -376,7 +425,13 @@ public abstract class Chart extends View {
         if (mDataNotSet) { // check if there is data
 
             // if no data, inform the user
-            canvas.drawText("No chart data available.", getWidth() / 2, getHeight() / 2, mInfoPaint);
+            canvas.drawText(mNoDataText, getWidth() / 2, getHeight() / 2, mInfoPaint);
+
+            if (!TextUtils.isEmpty(mNoDataTextDescription)) {
+                float textOffset = -mInfoPaint.ascent() + mInfoPaint.descent();
+                canvas.drawText(mNoDataTextDescription, getWidth() / 2, (getHeight() / 2)
+                        + textOffset, mInfoPaint);
+            }
             return;
         }
 
@@ -387,7 +442,7 @@ public abstract class Chart extends View {
             mDrawCanvas = new Canvas(mDrawBitmap);
         }
 
-        mDrawCanvas.drawColor(Color.WHITE); // clear all
+        mDrawCanvas.drawColor(mBackgroundColor); // clear all
     }
 
     /**
@@ -405,9 +460,13 @@ public abstract class Chart extends View {
         mMatrixValueToPx.postScale(scaleX, -scaleY);
 
         mMatrixOffset.reset();
+
         mMatrixOffset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
 
-//        Log.i(LOG_TAG, "Matrices prepared.");
+        // mMatrixOffset.setTranslate(mOffsetLeft, 0);
+        // mMatrixOffset.postScale(1.0f, -1.0f);
+
+        Log.i(LOG_TAG, "Matrices prepared.");
     }
 
     /**
@@ -415,14 +474,15 @@ public abstract class Chart extends View {
      */
     protected void prepareContentRect() {
 
-        mContentRect.set(mOffsetLeft, mOffsetTop, getMeasuredWidth() - mOffsetRight,
+        mContentRect.set((int) mOffsetLeft, (int) mOffsetTop, getMeasuredWidth()
+                - (int) mOffsetRight,
                 getMeasuredHeight()
-                        - mOffsetBottom);
+                        - (int) mOffsetBottom);
 
-//        Log.i(LOG_TAG, "Contentrect prepared. Width: " + mContentRect.width() + ", height: "
-//                + mContentRect.height());
+        // Log.i(LOG_TAG, "Contentrect prepared. Width: " + mContentRect.width()
+        // + ", height: "
+        // + mContentRect.height());
     }
-    
 
     /**
      * Generates an automatically prepared legend depending on the DataSets in
@@ -433,24 +493,61 @@ public abstract class Chart extends View {
         ArrayList<String> labels = new ArrayList<String>();
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
+        // loop for building up the colors and labels used in the legend
         for (int i = 0; i < mOriginalData.getDataSetCount(); i++) {
 
-            ArrayList<Integer> clrs = mCt.getDataSetColors(i % mCt.getColors().size());
-            int dataSetCount = mOriginalData.getDataSetByIndex(i).getEntryCount();
-            
-            for (int j = 0; j < clrs.size() && j < dataSetCount; j++) {
+            DataSet dataSet = mOriginalData.getDataSetByIndex(i);
 
-                // if multiple colors are set for a DataSet, group them
-                if (j < clrs.size() - 1 && j < dataSetCount - 1) {
+            ArrayList<Integer> clrs = dataSet.getColors();
+            int entryCount = dataSet.getEntryCount();
 
-                    labels.add(null);
-                } else { // add label to the last entry
+            // if we have a barchart with stacked bars
+            if (dataSet instanceof BarDataSet && ((BarDataSet) dataSet).getStackSize() > 1) {
 
-                    String label = mOriginalData.getDataSetByIndex(i).getLabel();
-                    labels.add(label);
+                BarDataSet bds = (BarDataSet) dataSet;
+                String[] sLabels = bds.getStackLabels();
+
+                for (int j = 0; j < clrs.size() && j < entryCount && j < bds.getStackSize(); j++) {
+
+                    labels.add(sLabels[j % sLabels.length]);
+                    colors.add(clrs.get(j));
                 }
 
-                colors.add(clrs.get(j));
+                // add the legend description label
+                colors.add(-1);
+                labels.add(bds.getLabel());
+
+            } else if (dataSet instanceof PieDataSet) {
+
+                ArrayList<String> xVals = mOriginalData.getXVals();
+                PieDataSet pds = (PieDataSet) dataSet;
+
+                for (int j = 0; j < clrs.size() && j < entryCount && j < xVals.size(); j++) {
+
+                    labels.add(xVals.get(j));
+                    colors.add(clrs.get(j));
+                }
+
+                // add the legend description label
+                colors.add(-1);
+                labels.add(pds.getLabel());
+
+            } else { // all others
+
+                for (int j = 0; j < clrs.size() && j < entryCount; j++) {
+
+                    // if multiple colors are set for a DataSet, group them
+                    if (j < clrs.size() - 1 && j < entryCount - 1) {
+
+                        labels.add(null);
+                    } else { // add label to the last entry
+
+                        String label = mOriginalData.getDataSetByIndex(i).getLabel();
+                        labels.add(label);
+                    }
+
+                    colors.add(clrs.get(j));
+                }
             }
         }
 
@@ -479,7 +576,7 @@ public abstract class Chart extends View {
 
         for (int j = 0; j < valuePoints.length; j += 2) {
             valuePoints[j] = entries.get(j / 2).getXIndex() + xOffset;
-            valuePoints[j + 1] = entries.get(j / 2).getVal();
+            valuePoints[j + 1] = entries.get(j / 2).getSum() * mPhaseY;
         }
 
         transformPointArray(valuePoints);
@@ -538,6 +635,22 @@ public abstract class Chart extends View {
     }
 
     /**
+     * Transform a rectangle with all matrices with potential animation phases.
+     * 
+     * @param r
+     */
+    protected void transformRectWithPhase(RectF r) {
+
+        // multiply the height of the rect with the phase
+        if(r.top > 0) r.top *= mPhaseY;
+        else r.bottom *= mPhaseY;
+
+        mMatrixValueToPx.mapRect(r);
+        mMatrixTouch.mapRect(r);
+        mMatrixOffset.mapRect(r);
+    }
+
+    /**
      * transforms multiple rects with all matrices
      * 
      * @param rects
@@ -569,7 +682,7 @@ public abstract class Chart extends View {
             paths.get(i).transform(mMatrixTouch);
         }
     }
-    
+
     /**
      * draws the legend
      */
@@ -584,75 +697,82 @@ public abstract class Chart extends View {
         if (tf != null)
             mLegendLabelPaint.setTypeface(tf);
 
+        mLegendLabelPaint.setTextSize(mLegend.getTextSize());
+
         float formSize = mLegend.getFormSize();
 
         // space between text and shape/form of entry
-        float formToTextSpace = mLegend.getFormToTextSpace();
+        float formTextSpaceAndForm = mLegend.getFormToTextSpace() + formSize;
 
         // space between the entries
-        float entrySpace = mLegend.getEntrySpace();
+        float stackSpace = mLegend.getStackSpace();
 
-        float textSize = Utils.convertPixelsToDp(mLegendLabelPaint.getTextSize());
+        float textSize = mLegend.getTextSize();
 
         // the amount of pixels the text needs to be set down to be on the same
         // height as the form
-        float textDrop = (textSize + formSize) / 2f + textSize / 2f;
+        float textDrop = (Utils.calcTextHeight(mLegendLabelPaint, "AQJ") + formSize) / 2f;
+
+        // Log.i(LOG_TAG, "OffsetBottom: " + mLegend.getOffsetBottom() +
+        // ", Formsize: " + formSize + ", Textsize: " + textSize +
+        // ", TextDrop: " + textDrop);
 
         float posX, posY;
 
         switch (mLegend.getPosition()) {
             case BELOW_CHART_LEFT:
 
-                posX = mOffsetLeft;
-                posY = getHeight() - mOffsetBottom + textSize * 2;
+                posX = mLegend.getOffsetLeft();
+                posY = getHeight() - mLegend.getOffsetBottom() / 2f - formSize / 2f;
 
                 for (int i = 0; i < labels.length; i++) {
 
                     mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
 
-                    // make a step to the left
-                    posX += formToTextSpace;
-
                     // grouped forms have null labels
                     if (labels[i] != null) {
 
+                        // make a step to the left
+                        if (mLegend.getColors()[i] != -1)
+                            posX += formTextSpaceAndForm;
+
                         mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
-                        posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i]) + entrySpace;
+                        posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i])
+                                + mLegend.getXEntrySpace();
+                    } else {
+                        posX += formSize + stackSpace;
                     }
                 }
 
                 break;
             case BELOW_CHART_RIGHT:
 
-                posX = getWidth() - mOffsetRight;
-                posY = getHeight() - mOffsetBottom + textSize * 2;
+                posX = getWidth() - getOffsetRight();
+                posY = getHeight() - mLegend.getOffsetBottom() / 2f - formSize / 2f;
 
                 for (int i = labels.length - 1; i >= 0; i--) {
 
                     if (labels[i] != null) {
 
-                        posX -= Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
+                        posX -= Utils.calcTextWidth(mLegendLabelPaint, labels[i])
+                                + mLegend.getXEntrySpace();
                         mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
-                        posX -= formToTextSpace;
+                        if (mLegend.getColors()[i] != -1)
+                            posX -= formTextSpaceAndForm;
+                    } else {
+                        posX -= stackSpace + formSize;
                     }
 
                     mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
-
-                    // make a step to the left
-                    posX -= entrySpace;
                 }
 
                 break;
             case RIGHT_OF_CHART:
-                
-                if(this instanceof BarLineChartBase) {
-                    posX = getWidth() - mOffsetRight + formSize; 
-                    posY = mOffsetTop;
-                } else {
-                    posX = getWidth() - mLegend.getMaximumEntryLength(mLegendLabelPaint);
-                    posY = Utils.calcTextHeight(mLegendLabelPaint, "A") * 1.5f;
-                }
-                
+
+                posX = getWidth() - mLegend.getMaximumEntryLength(mLegendLabelPaint)
+                        - formTextSpaceAndForm;
+                posY = mLegend.getOffsetTop();
+
                 float stack = 0f;
                 boolean wasStacked = false;
 
@@ -663,21 +783,57 @@ public abstract class Chart extends View {
                     if (labels[i] != null) {
 
                         if (!wasStacked) {
-                            mLegend.drawLabel(mDrawCanvas, posX + formToTextSpace, posY + textDrop,
+
+                            float x = posX;
+
+                            if (mLegend.getColors()[i] != -1)
+                                x += formTextSpaceAndForm;
+
+                            posY += textDrop;
+
+                            mLegend.drawLabel(mDrawCanvas, x, posY,
                                     mLegendLabelPaint, i);
                         } else {
 
-                            mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop + entrySpace,
+                            posY += textSize * 1.2f + formSize;
+
+                            mLegend.drawLabel(mDrawCanvas, posX, posY,
                                     mLegendLabelPaint, i);
-                            posY += entrySpace;
+
                         }
 
                         // make a step down
-                        posY += entrySpace;
+                        posY += mLegend.getYEntrySpace();
                         stack = 0f;
                     } else {
-                        stack += formSize + 4f;
+                        stack += formSize + stackSpace;
                         wasStacked = true;
+                    }
+                }
+                break;
+            case BELOW_CHART_CENTER:
+
+                float fullSize = mLegend.getFullWidth(mLegendLabelPaint);
+
+                posX = getWidth() / 2f - fullSize / 2f;
+                posY = getHeight() - mLegend.getOffsetBottom() / 2f - formSize / 2f;
+
+                for (int i = 0; i < labels.length; i++) {
+
+                    mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
+
+                    // grouped forms have null labels
+                    if (labels[i] != null) {
+
+                        // make a step to the left
+                        if (mLegend.getColors()[i] != -1)
+                            posX += formTextSpaceAndForm;
+
+                        mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
+                        posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i])
+                                + mLegend.getXEntrySpace();
+                    } else {
+                        posX += formSize + stackSpace;
                     }
                 }
 
@@ -721,7 +877,7 @@ public abstract class Chart extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        if (mListener == null)
+        if (mListener == null || mDataNotSet)
             return false;
 
         // check if touch gestures are enabled
@@ -836,7 +992,8 @@ public abstract class Chart extends View {
 
             int xIndex = mIndicesToHightlight[i].getXIndex();
 
-            drawMarkerView(xIndex, mIndicesToHightlight[i].getDataSetIndex());
+            if (xIndex < mCurrentData.getXVals().size() && xIndex < mDeltaX * mPhaseX)
+                drawMarkerView(xIndex, mIndicesToHightlight[i].getDataSetIndex());
         }
     }
 
@@ -857,7 +1014,7 @@ public abstract class Chart extends View {
 
         // position of the marker depends on selected value index and value
         float[] pts = new float[] {
-                xPos, value
+                xPos, value * mPhaseY
         };
         transformPointArray(pts);
 
@@ -872,6 +1029,161 @@ public abstract class Chart extends View {
         mMarkerView.draw(mDrawCanvas, posX, posY);
     }
 
+    /**
+     * ################ ################ ################ ################
+     * Animation support below Honeycomb thanks to Jake Wharton's awesome
+     * nineoldandroids library: https://github.com/JakeWharton/NineOldAndroids
+     */
+    /** CODE BELOW THIS RELATED TO ANIMATION */
+
+    /** the phase that is animated and influences the drawn values on the y-axis */
+    protected float mPhaseY = 1f;
+
+    /** the phase that is animated and influences the drawn values on the x-axis */
+    protected float mPhaseX = 1f;
+
+    /** objectanimator used for animating values on y-axis */
+    private ObjectAnimator mAnimatorY;
+
+    /** objectanimator used for animating values on x-axis */
+    private ObjectAnimator mAnimatorX;
+
+    /**
+     * Animates the drawing / rendering of the chart on both x- and y-axis with
+     * the specified animation time. If animate(...) is called, no further
+     * calling of invalidate() is necessary to refresh the chart.
+     * 
+     * @param durationMillisX
+     * @param durationMillisY
+     */
+    public void animateXY(int durationMillisX, int durationMillisY) {
+
+        mAnimatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
+        mAnimatorY.setDuration(
+                durationMillisY);
+        mAnimatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
+        mAnimatorX.setDuration(
+                durationMillisX);
+
+        // make sure only one animator produces update-callbacks (which then
+        // call invalidate())
+        if (durationMillisX > durationMillisY) {
+            mAnimatorX.addUpdateListener(this);
+        } else {
+            mAnimatorY.addUpdateListener(this);
+        }
+
+        mAnimatorX.start();
+        mAnimatorY.start();
+    }
+
+    /**
+     * Animates the rendering of the chart on the x-axis with the specified
+     * animation time. If animate(...) is called, no further calling of
+     * invalidate() is necessary to refresh the chart.
+     * 
+     * @param durationMillis
+     */
+    public void animateX(int durationMillis) {
+
+        mAnimatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
+        mAnimatorX.setDuration(durationMillis);
+        mAnimatorX.addUpdateListener(this);
+        mAnimatorX.start();
+    }
+
+    /**
+     * Animates the rendering of the chart on the y-axis with the specified
+     * animation time. If animate(...) is called, no further calling of
+     * invalidate() is necessary to refresh the chart.
+     * 
+     * @param durationMillis
+     */
+    public void animateY(int durationMillis) {
+
+        mAnimatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
+        mAnimatorY.setDuration(durationMillis);
+        mAnimatorY.addUpdateListener(this);
+        mAnimatorY.start();
+    }
+
+    @Override
+    public void onAnimationUpdate(ValueAnimator va) {
+
+        // redraw everything after animation value change
+        invalidate();
+
+//        Log.i(LOG_TAG, "UPDATING, x: " + mPhaseX + ", y: " + mPhaseY);
+    }
+
+    /**
+     * This gets the y-phase that is used to animate the values.
+     * 
+     * @return
+     */
+    public float getPhaseY() {
+        return mPhaseY;
+    }
+
+    /**
+     * This modifys the y-phase that is used to animate the values.
+     * 
+     * @param phase
+     */
+    public void setPhaseY(float phase) {
+        mPhaseY = phase;
+    }
+
+    /**
+     * This gets the x-phase that is used to animate the values.
+     * 
+     * @return
+     */
+    public float getPhaseX() {
+        return mPhaseX;
+    }
+
+    /**
+     * This modifys the x-phase that is used to animate the values.
+     * 
+     * @param phase
+     */
+    public void setPhaseX(float phase) {
+        mPhaseX = phase;
+    }
+    
+    /**
+     * ################ ################ ################ ################
+     */
+    /** BELOW THIS FOR DYNAMICALLY ADDING ENTRIES AND DATASETS */
+
+    public void addEntry(Entry e, int dataSetIndex) {
+        mOriginalData.getDataSetByIndex(dataSetIndex).addEntry(e);
+        
+        prepare();
+        calcMinMax(false);
+        prepareMatrix();
+        calculateOffsets();
+    }
+    
+    public void addEntry(Entry e, String label) {
+        mOriginalData.getDataSetByLabel(label, false).addEntry(e);
+        
+        prepare();
+        calcMinMax(false);
+        prepareMatrix();
+        calculateOffsets();
+    }
+    
+    public void addDataSet(DataSet d) {
+        mOriginalData.addDataSet(d);
+        
+        prepare();
+        calcMinMax(false);
+        prepareMatrix();
+        calculateOffsets();
+    }
+    
     /**
      * ################ ################ ################ ################
      */
@@ -1009,13 +1321,15 @@ public abstract class Chart extends View {
     public PointF getCenter() {
         return new PointF(getWidth() / 2, getHeight() / 2);
     }
-    
+
     /**
      * returns the center of the chart taking offsets under consideration
+     * 
      * @return
      */
-    public PointF getCenterOffsets() {      
-        return new PointF(mContentRect.left + mContentRect.width() / 2 , mContentRect.top + mContentRect.height() / 2);
+    public PointF getCenterOffsets() {
+        return new PointF(mContentRect.left + mContentRect.width() / 2, mContentRect.top
+                + mContentRect.height() / 2);
     }
 
     /**
@@ -1044,6 +1358,26 @@ public abstract class Chart extends View {
     }
 
     /**
+     * Sets the text that informs the user that there is no data available with
+     * which to draw the chart.
+     * 
+     * @param text
+     */
+    public void setNoDataText(String text) {
+        mNoDataText = text;
+    }
+
+    /**
+     * Sets descriptive text to explain to the user why there is no chart
+     * available Defaults to empty if not set
+     * 
+     * @param text
+     */
+    public void setNoDataTextDescription(String text) {
+        mNoDataTextDescription = text;
+    }
+
+    /**
      * Sets the offsets from the border of the view to the actual chart in every
      * direction manually. Provide density pixels -> they are then rendered to
      * pixels inside the chart
@@ -1053,27 +1387,27 @@ public abstract class Chart extends View {
      * @param top
      * @param bottom
      */
-    public void setOffsets(int left, int top, int right, int bottom) {
+    public void setOffsets(float left, float top, float right, float bottom) {
 
-        mOffsetBottom = (int) Utils.convertDpToPixel(bottom);
-        mOffsetLeft = (int) Utils.convertDpToPixel(left);
-        mOffsetRight = (int) Utils.convertDpToPixel(right);
-        mOffsetTop = (int) Utils.convertDpToPixel(top);
+        mOffsetBottom = Utils.convertDpToPixel(bottom);
+        mOffsetLeft = Utils.convertDpToPixel(left);
+        mOffsetRight = Utils.convertDpToPixel(right);
+        mOffsetTop = Utils.convertDpToPixel(top);
     }
 
-    public int getOffsetLeft() {
+    public float getOffsetLeft() {
         return mOffsetLeft;
     }
 
-    public int getOffsetBottom() {
+    public float getOffsetBottom() {
         return mOffsetBottom;
     }
 
-    public int getOffsetRight() {
+    public float getOffsetRight() {
         return mOffsetRight;
     }
 
-    public int getOffsetTop() {
+    public float getOffsetTop() {
         return mOffsetTop;
     }
 
@@ -1098,28 +1432,6 @@ public abstract class Chart extends View {
     }
 
     /**
-     * Sets a colortemplate for the chart that defindes the colors used for
-     * drawing. If more values need to be drawn than provided colors available
-     * in the colortemplate, colors are repeated.
-     * 
-     * @param ct
-     */
-    public void setColorTemplate(ColorTemplate ct) {
-        this.mCt = ct;
-        
-        Log.i(LOG_TAG, "ColorTemplate set.");
-    }
-
-    /**
-     * returns the colortemplate used by the chart
-     * 
-     * @return
-     */
-    public ColorTemplate getColorTemplate() {
-        return mCt;
-    }
-
-    /**
      * sets the view that is displayed when a value is clicked on the chart
      * 
      * @param v
@@ -1136,7 +1448,35 @@ public abstract class Chart extends View {
     public MarkerView getMarkerView() {
         return mMarkerView;
     }
-    
+
+    /**
+     * if set to true, units are drawn next to values in the chart, default:
+     * false
+     * 
+     * @param enabled
+     */
+    public void setDrawUnitsInChart(boolean enabled) {
+        mDrawUnitInChart = enabled;
+    }
+
+    /**
+     * sets the unit that is drawn next to the values in the chart, e.g. %
+     * 
+     * @param unit
+     */
+    public void setUnit(String unit) {
+        mUnit = unit;
+    }
+
+    /**
+     * Returns the unit that is used for the values in the chart
+     * 
+     * @return
+     */
+    public String getUnit() {
+        return mUnit;
+    }
+
     /**
      * set this to true to draw the legend, false if not
      * 
@@ -1214,6 +1554,9 @@ public abstract class Chart extends View {
     /** paint used for the legend */
     public static final int PAINT_LEGEND_LABEL = 18;
 
+    /** paint object used for the limit lines */
+    public static final int PAINT_LIMIT_LINE = 19;
+
     /**
      * set a new paint object for the specified parameter in the chart e.g.
      * Chart.PAINT_VALUES
@@ -1242,9 +1585,10 @@ public abstract class Chart extends View {
                 break;
         }
     }
-    
+
     /**
      * Returns the paint object associated with the provided constant.
+     * 
      * @param which e.g. Chart.PAINT_LEGEND_LABEL
      * @return
      */
@@ -1261,7 +1605,7 @@ public abstract class Chart extends View {
             case PAINT_LEGEND_LABEL:
                 return mLegendLabelPaint;
         }
-        
+
         return null;
     }
 
@@ -1291,8 +1635,17 @@ public abstract class Chart extends View {
      * 
      * @param color
      */
-    public void setValuePaintColor(int color) {
+    public void setValueTextColor(int color) {
         mValuePaint.setColor(color);
+    }
+
+    /**
+     * Sets the font size of the values that are drawn inside the chart.
+     * 
+     * @param size
+     */
+    public void setValueTextSize(float size) {
+        mValuePaint.setTextSize(Utils.convertDpToPixel(size));
     }
 
     /**
@@ -1474,9 +1827,10 @@ public abstract class Chart extends View {
     }
 
     /**
-     * Returns the ChartData object the chart CURRENTLY represents. It contains
-     * all values and information the chart displays. If filtering algorithms
-     * have been applied, this returns the filtered state of data.
+     * Returns the ChartData object the chart CURRENTLY represents (not
+     * dependant on zoom level). It contains all values and information the
+     * chart displays. If filtering algorithms have been applied, this returns
+     * the filtered state of data.
      * 
      * @return
      */
@@ -1544,26 +1898,27 @@ public abstract class Chart extends View {
     }
 
     /**
-     * saves the current chart state to a bitmap in the gallery NOTE: Needs
-     * permission WRITE_EXTERNAL_STORAGE
-     * 
-     * @param title
+     * sets the background color for the chart --> this also sets the color the
+     * canvas is cleared with
      */
-    public void saveToGallery(String title) {
-        MediaStore.Images.Media.insertImage(getContext().getContentResolver(), mDrawBitmap, title,
-                "");
+    @Override
+    public void setBackgroundColor(int color) {
+        super.setBackgroundColor(color);
+
+        mBackgroundColor = color;
     }
 
     /**
-     * saves the chart with the given name to the given path on the sdcard
+     * Saves the chart with the given name to the given path on the sdcard
      * leaving the path empty "" will put the saved file directly on the SD card
-     * chart is saved as .png example: saveToPath("myfilename",
+     * chart is saved as a PNG image, example: saveToPath("myfilename",
      * "foldername1/foldername2");
      * 
      * @param title
      * @param pathOnSD e.g. "folder1/folder2/folder3"
+     * @return returns true on success, false on error
      */
-    public void saveToPath(String title, String pathOnSD) {
+    public boolean saveToPath(String title, String pathOnSD) {
 
         OutputStream stream = null;
         try {
@@ -1579,9 +1934,71 @@ public abstract class Chart extends View {
 
             stream.close();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            return false;
         }
+
+        return true;
+    }
+
+    /**
+     * Saves the current state of the chart to the gallery as a JPEG image. The
+     * filename and compression can be set. 0 == maximum compression, 100 = low
+     * compression (high quality). NOTE: Needs permission WRITE_EXTERNAL_STORAGE
+     * 
+     * @param fileName e.g. "my_image"
+     * @param quality e.g. 50, min = 0, max = 100
+     * @return returns true if saving was successfull, false if not
+     */
+    public boolean saveToGallery(String fileName, int quality) {
+
+        // restrain quality
+        if (quality < 0 || quality > 100)
+            quality = 50;
+
+        long currentTime = System.currentTimeMillis();
+
+        File extBaseDir = Environment.getExternalStorageDirectory();
+        File file = new File(extBaseDir.getAbsolutePath() + "/DCIM");
+        if (!file.exists()) {
+            if (!file.mkdirs()) {
+                return false;
+            }
+        }
+
+        String filePath = file.getAbsolutePath() + "/" + fileName;
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(filePath);
+
+            mDrawBitmap.compress(Bitmap.CompressFormat.JPEG, quality, out); // control
+            // the jpeg
+            // quality
+
+            out.flush();
+            out.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return false;
+        }
+
+        long size = new File(filePath).length();
+
+        ContentValues values = new ContentValues(8);
+
+        values.put(Images.Media.TITLE, fileName);
+        values.put(Images.Media.DISPLAY_NAME, fileName);
+        values.put(Images.Media.DATE_ADDED, currentTime);
+        values.put(Images.Media.MIME_TYPE, "image/jpeg");
+        values.put(Images.Media.DESCRIPTION, "MPAndroidChart-Library Save");
+        values.put(Images.Media.ORIENTATION, 0);
+        values.put(Images.Media.DATA, filePath);
+        values.put(Images.Media.SIZE, size);
+
+        return getContext().getContentResolver().insert(Images.Media.EXTERNAL_CONTENT_URI, values) == null
+                ? false : true;
     }
 
     @Override
@@ -1589,18 +2006,27 @@ public abstract class Chart extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
+    /** flag indicating if the matrix has alerady been prepared */
+    private boolean mMatrixOnLayoutPrepared = false;
+
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
 
         prepareContentRect();
-        Log.i(LOG_TAG, "onLayout(), width: " + mContentRect.width() + ", height: " + mContentRect.height());
+        Log.i(LOG_TAG,
+                "onLayout(), width: " + mContentRect.width() + ", height: " + mContentRect.height());
 
         if (this instanceof BarLineChartBase) {
 
+            BarLineChartBase b = (BarLineChartBase) this;
+
             // if y-values are not fixed
-            if (!((BarLineChartBase) this).hasFixedYValues())
+            if (!b.hasFixedYValues() && !mMatrixOnLayoutPrepared) {
                 prepareMatrix();
+                mMatrixOnLayoutPrepared = true;
+            }
+
         } else {
             prepareMatrix();
         }
@@ -1611,11 +2037,11 @@ public abstract class Chart extends View {
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        if (isInEditMode()) {
-            initWithDummyData();
-        }
-    }
+    // @Override
+    // protected void onAttachedToWindow() {
+    // super.onAttachedToWindow();
+    // if (isInEditMode()) {
+    // initWithDummyData();
+    // }
+    // }
 }

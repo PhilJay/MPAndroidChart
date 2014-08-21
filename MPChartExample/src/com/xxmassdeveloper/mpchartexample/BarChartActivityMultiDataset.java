@@ -1,7 +1,6 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,16 +10,20 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
+import com.github.mikephil.charting.utils.XLabels;
+import com.github.mikephil.charting.utils.YLabels;
+import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
+import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 
-public class BarChartActivityMultiDataset extends Activity implements OnSeekBarChangeListener {
+public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarChangeListener {
 
     private BarChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
@@ -44,28 +47,12 @@ public class BarChartActivityMultiDataset extends Activity implements OnSeekBarC
 
         mChart = (BarChart) findViewById(R.id.chart1);
         mChart.setDescription("");
-
-        ColorTemplate ct = new ColorTemplate();
-
-        // add colors for the first dataset
-        ct.addDataSetColors(ColorTemplate.FRESH_COLORS, this);
-
-        // the second dataset only has one color
-        ct.addDataSetColors(new int[] {
-            R.color.liberty_2
-        }, this);
-
-        // add colors for the third dataset
-        ct.addDataSetColors(ColorTemplate.COLORFUL_COLORS, this);
-
-        mChart.setColorTemplate(ct);
-
+        
         // disable the drawing of values
         mChart.setDrawYValues(false);
 
         // disable 3D
         mChart.set3DEnabled(false);
-        mChart.setYLabelCount(5);
 
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
@@ -77,6 +64,12 @@ public class BarChartActivityMultiDataset extends Activity implements OnSeekBarC
         
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART);
+        
+//        XLabels xl  = mChart.getXLabels();
+//        xl.setPosition(XLabelPosition.TOP);
+//        
+//        YLabels yl = mChart.getYLabels();
+//        yl.setPosition(YLabelPosition.RIGHT);
     }
 
     @Override
@@ -140,10 +133,12 @@ public class BarChartActivityMultiDataset extends Activity implements OnSeekBarC
                 break;
             }
             case R.id.actionToggleAdjustXLegend: {
-                if (mChart.isAdjustXLabelsEnabled())
-                    mChart.setAdjustXLabels(false);
+                XLabels xLabels = mChart.getXLabels();
+                
+                if (xLabels.isAdjustXLabelsEnabled())
+                    xLabels.setAdjustXLabels(false);
                 else
-                    mChart.setAdjustXLabels(true);
+                    xLabels.setAdjustXLabels(true);
 
                 mChart.invalidate();
                 break;
@@ -151,6 +146,19 @@ public class BarChartActivityMultiDataset extends Activity implements OnSeekBarC
             case R.id.actionSave: {
                 // mChart.saveToGallery("title"+System.currentTimeMillis());
                 mChart.saveToPath("title" + System.currentTimeMillis(), "");
+                break;
+            }
+            case R.id.animateX: {
+                mChart.animateX(3000);
+                break;
+            }
+            case R.id.animateY: {
+                mChart.animateY(3000);
+                break;
+            }
+            case R.id.animateXY: {
+
+                mChart.animateXY(3000, 3000);
                 break;
             }
         }
@@ -188,16 +196,21 @@ public class BarChartActivityMultiDataset extends Activity implements OnSeekBarC
         }
 
         // create 3 datasets with different types
-        DataSet set1 = new DataSet(yVals1, "Company A");
-        DataSet set2 = new DataSet(yVals2, "Company B");
-        DataSet set3 = new DataSet(yVals3, "Company C");
+        BarDataSet set1 = new BarDataSet(yVals1, "Company A");
+        set1.setColors(ColorTemplate.createColors(getApplicationContext(), ColorTemplate.FRESH_COLORS));
+        BarDataSet set2 = new BarDataSet(yVals2, "Company B");
+        set2.resetColors();
+        set2.addColor(getResources().getColor(R.color.liberty_2));
+        set2.addColor(getResources().getColor(R.color.liberty_3));
+        BarDataSet set3 = new BarDataSet(yVals3, "Company C");
+        set3.setColors(ColorTemplate.createColors(getApplicationContext(), ColorTemplate.COLORFUL_COLORS));
         
-        ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
+        ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
         dataSets.add(set1);
         dataSets.add(set2);
         dataSets.add(set3);
 
-        ChartData data = new ChartData(xVals, dataSets);
+        BarData data = new BarData(xVals, dataSets);
 
         mChart.setData(data);
         mChart.invalidate();

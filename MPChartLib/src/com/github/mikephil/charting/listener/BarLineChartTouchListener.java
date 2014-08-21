@@ -11,9 +11,9 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 
 import com.github.mikephil.charting.charts.BarLineChartBase;
-import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DrawingContext;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.PointD;
 
@@ -76,7 +76,9 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
             return true;
 
         mDrawingContext.init(mChart.getDrawListener(), mChart.isAutoFinishEnabled());
-        ChartData data = mChart.getDataCurrent();
+        LineData data = null;
+        
+//        data = (LineData) mChart.getDataCurrent();
 
         // Handle touch events here...
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
@@ -203,8 +205,15 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 
                     mMatrix.set(mSavedMatrix);
                     PointF dragPoint = new PointF(event.getX(), event.getY());
-                    mMatrix.postTranslate(dragPoint.x - mTouchStartPoint.x, dragPoint.y
-                            - mTouchStartPoint.y);
+                    
+                    // check if axis is inverted
+                    if(!mChart.isInvertYAxisEnabled()) {
+                        mMatrix.postTranslate(dragPoint.x - mTouchStartPoint.x, dragPoint.y
+                                - mTouchStartPoint.y);
+                    } else {
+                        mMatrix.postTranslate(dragPoint.x - mTouchStartPoint.x, -(dragPoint.y
+                              - mTouchStartPoint.y));
+                    }
 
                 } else if (mTouchMode == X_ZOOM || mTouchMode == Y_ZOOM || mTouchMode == PINCH_ZOOM) {
 
@@ -213,13 +222,6 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
                     float totalDist = spacing(event);
 
                     if (totalDist > 10f) {
-
-                        float[] values = new float[9];
-                        mMatrix.getValues(values);
-
-                        // get the previous scale factors
-                        // float oldScaleX = values[Matrix.MSCALE_X];
-                        // float oldScaleY = values[Matrix.MSCALE_Y];
 
                         // get the translation
                         PointF t = getTrans(mTouchPointCenter.x, mTouchPointCenter.y);
@@ -230,7 +232,7 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 
                             float scale = totalDist / mSavedDist; // total
                                                                   // scale
-
+                            
                             mMatrix.set(mSavedMatrix);
                             mMatrix.postScale(scale, scale, t.x, t.y);
 
@@ -360,7 +362,14 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
     public PointF getTrans(float x, float y) {
 
         float xTrans = x - mChart.getOffsetLeft();
-        float yTrans = -(mChart.getMeasuredHeight() - y - mChart.getOffsetBottom());
+        float yTrans = 0f;
+        
+        // check if axis is inverted
+        if(!mChart.isInvertYAxisEnabled()) {
+            yTrans = -(mChart.getMeasuredHeight() - y - mChart.getOffsetBottom());
+        } else {
+            yTrans = -(y - mChart.getOffsetTop());
+        }
 
         return new PointF(xTrans, yTrans);
     }
@@ -379,8 +388,9 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 
         Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
         
-        if (h == null || h.equals(mLastHighlighted)) {
+        if (h == null || h.equalTo(mLastHighlighted)) {
             mChart.highlightValues(null);
+            mLastHighlighted = null;
         } else {
             mLastHighlighted = h;
             mChart.highlightValues(new Highlight[] {

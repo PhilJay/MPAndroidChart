@@ -3,7 +3,6 @@ package com.github.mikephil.charting.charts;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
@@ -11,7 +10,8 @@ import android.util.AttributeSet;
 
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 
 import java.util.ArrayList;
 
@@ -22,20 +22,8 @@ import java.util.ArrayList;
  */
 public class LineChart extends BarLineChartBase {
 
-    /** the radius of the circle-shaped value indicators */
-    protected float mCircleSize = 4f;
-
-    /** the width of the drawn data lines */
-    protected float mLineWidth = 1f;
-
     /** the width of the highlighning line */
     protected float mHighlightWidth = 3f;
-
-    /** if true, the data will also be drawn filled */
-    protected boolean mDrawFilled = false;
-
-    /** if true, drawing circles is enabled */
-    protected boolean mDrawCircles = true;
 
     /** paint for the filled are (if enabled) below the chart line */
     protected Paint mFilledPaint;
@@ -62,8 +50,6 @@ public class LineChart extends BarLineChartBase {
     protected void init() {
         super.init();
 
-        mCircleSize = Utils.convertDpToPixel(mCircleSize);
-
         mFilledPaint = new Paint();
         mFilledPaint.setStyle(Paint.Style.FILL);
         mFilledPaint.setColor(mColorDarkBlue);
@@ -79,6 +65,15 @@ public class LineChart extends BarLineChartBase {
         mHighlightPaint.setColor(Color.rgb(255, 187, 115));
     }
 
+    /**
+     * Sets a LineData object as a model for the LineChart.
+     * 
+     * @param data
+     */
+    public void setData(LineData data) {
+        super.setData(data);
+    }
+
     @Override
     protected void drawHighlights() {
 
@@ -91,7 +86,12 @@ public class LineChart extends BarLineChartBase {
 
                 int xIndex = mIndicesToHightlight[i].getXIndex(); // get the
                                                                   // x-position
-                float y = set.getYValForXIndex(xIndex); // get the y-position
+
+                if (xIndex > mDeltaX * mPhaseX)
+                    continue;
+
+                float y = set.getYValForXIndex(xIndex) * mPhaseY; // get the
+                                                                  // y-position
 
                 float[] pts = new float[] {
                         xIndex, mYChartMax, xIndex, mYChartMin, 0, y, mDeltaX, y
@@ -110,26 +110,25 @@ public class LineChart extends BarLineChartBase {
     @Override
     protected void drawData() {
 
-        ArrayList<DataSet> dataSets;
+        ArrayList<LineDataSet> dataSets = (ArrayList<LineDataSet>) mCurrentData.getDataSets();
 
-        dataSets = mCurrentData.getDataSets();
+        mRenderPaint.setStyle(Paint.Style.STROKE);
 
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
-            DataSet dataSet = dataSets.get(i);
+            LineDataSet dataSet = dataSets.get(i);
             ArrayList<Entry> entries = dataSet.getYVals();
 
             float[] valuePoints = generateTransformedValues(entries, 0f);
 
-            // Get the colors for the DataSet at the current index. If the index
-            // is out of bounds, reuse DataSet colors.
-            ArrayList<Integer> colors = mCt.getDataSetColors(i % mCt.getColors().size());
-
-            Paint paint = mRenderPaint;
+            mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
+            mRenderPaint.setPathEffect(dataSet.getDashPathEffect());
 
             if (mDrawCubic) {
-                
-                paint.setColor(colors.get(i % colors.size()));
+
+                // get the color that is specified for this position from the
+                // DataSet
+                mRenderPaint.setColor(dataSet.getColor(i));
 
                 Path spline = new Path();
 
@@ -151,16 +150,16 @@ public class LineChart extends BarLineChartBase {
 
                 transformPath(spline);
 
-                mDrawCanvas.drawPath(spline, paint);
+                mDrawCanvas.drawPath(spline, mRenderPaint);
 
             } else {
 
-                for (int j = 0; j < valuePoints.length - 2; j += 2) {
+                for (int j = 0; j < (valuePoints.length - 2) * mPhaseX; j += 2) {
 
-                    // Set the color for the currently drawn value. If the index
-                    // is
-                    // out of bounds, reuse colors.
-                    paint.setColor(colors.get(j % colors.size()));
+                    // get the color that is specified for this position from
+                    // the DataSet, this will reuse colors, if the index is out
+                    // of bounds
+                    mRenderPaint.setColor(dataSet.getColor(j / 2));
 
                     if (isOffContentRight(valuePoints[j]))
                         break;
@@ -172,41 +171,59 @@ public class LineChart extends BarLineChartBase {
                         continue;
 
                     mDrawCanvas.drawLine(valuePoints[j], valuePoints[j + 1], valuePoints[j + 2],
-                            valuePoints[j + 3], paint);
+                            valuePoints[j + 3], mRenderPaint);
                 }
             }
 
+            mRenderPaint.setPathEffect(null);
+
             // if drawing filled is enabled
-            if (mDrawFilled && entries.size() > 0) {
+            if (dataSet.isDrawFilledEnabled() && entries.size() > 0) {
                 // mDrawCanvas.drawVertices(VertexMode.TRIANGLE_STRIP,
                 // valuePoints.length, valuePoints, 0,
                 // null, 0, null, 0, null, 0, 0, paint);
 
+                mRenderPaint.setStyle(Paint.Style.FILL);
+
                 // filled is drawn with less alpha
-                paint.setAlpha(85);
+                mRenderPaint.setAlpha(85);
 
-                Path filled = new Path();
-                filled.moveTo(entries.get(0).getXIndex(), entries.get(0).getVal());
-
-                // create a new path
-                for (int x = 1; x < entries.size(); x++) {
-
-                    filled.lineTo(entries.get(x).getXIndex(), entries.get(x).getVal());
-                }
-
-                // close up
-                filled.lineTo(entries.get(entries.size() - 1).getXIndex(), mYChartMin);
-                filled.lineTo(entries.get(0).getXIndex(), mYChartMin);
-                filled.close();
+                Path filled = generateFilledPath(entries);
 
                 transformPath(filled);
 
-                mDrawCanvas.drawPath(filled, paint);
+                mDrawCanvas.drawPath(filled, mRenderPaint);
 
                 // restore alpha
-                paint.setAlpha(255);
+                mRenderPaint.setAlpha(255);
             }
         }
+    }
+
+    /**
+     * Generates the path that is used for filled drawing.
+     * 
+     * @param entries
+     * @return
+     */
+    private Path generateFilledPath(ArrayList<Entry> entries) {
+
+        Path filled = new Path();
+        filled.moveTo(entries.get(0).getXIndex(), entries.get(0).getVal() * mPhaseY);
+
+        // create a new path
+        for (int x = 1; x < entries.size() * mPhaseX; x++) {
+
+            Entry e = entries.get(x);
+            filled.lineTo(e.getXIndex(), e.getVal() * mPhaseY);
+        }
+
+        // close up
+        filled.lineTo(entries.get((int) ((entries.size() - 1) * mPhaseX)).getXIndex(), mYChartMin);
+        filled.lineTo(entries.get(0).getXIndex(), mYChartMin);
+        filled.close();
+
+        return filled;
     }
 
     /**
@@ -231,22 +248,23 @@ public class LineChart extends BarLineChartBase {
         // if values are drawn
         if (mDrawYValues && mCurrentData.getYValCount() < mMaxVisibleCount * mScaleX) {
 
-            // make sure the values do not interfear with the circles
-            int valOffset = (int) (mCircleSize * 1.7f);
-
-            if (!mDrawCircles)
-                valOffset = valOffset / 2;
-
-            ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
+            ArrayList<LineDataSet> dataSets = (ArrayList<LineDataSet>) mCurrentData.getDataSets();
 
             for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
-                DataSet dataSet = dataSets.get(i);
+                LineDataSet dataSet = dataSets.get(i);
+
+                // make sure the values do not interfear with the circles
+                int valOffset = (int) (dataSet.getCircleSize() * 1.75f);
+
+                if (!dataSet.isDrawCirclesEnabled())
+                    valOffset = valOffset / 2;
+
                 ArrayList<Entry> entries = dataSet.getYVals();
 
                 float[] positions = generateTransformedValues(entries, 0f);
 
-                for (int j = 0; j < positions.length; j += 2) {
+                for (int j = 0; j < positions.length * mPhaseX; j += 2) {
 
                     if (isOffContentRight(positions[j]))
                         break;
@@ -278,29 +296,28 @@ public class LineChart extends BarLineChartBase {
      */
     @Override
     protected void drawAdditional() {
-        // if drawing circles is enabled
-        if (mDrawCircles) {
 
-            ArrayList<DataSet> dataSets = mCurrentData.getDataSets();
+        mRenderPaint.setStyle(Paint.Style.FILL);
 
-            for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
+        ArrayList<LineDataSet> dataSets = (ArrayList<LineDataSet>) mCurrentData.getDataSets();
 
-                DataSet dataSet = dataSets.get(i);
+        for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
+
+            LineDataSet dataSet = dataSets.get(i);
+
+            // if drawing circles is enabled for this dataset
+            if (dataSet.isDrawCirclesEnabled()) {
+
                 ArrayList<Entry> entries = dataSet.getYVals();
-
-                // Get the colors for the DataSet at the current index. If the
-                // index
-                // is out of bounds, reuse DataSet colors.
-                ArrayList<Integer> colors = mCt.getDataSetColors(i % mCt.getColors().size());
 
                 float[] positions = generateTransformedValues(entries, 0f);
 
-                for (int j = 0; j < positions.length; j += 2) {
+                for (int j = 0; j < positions.length * mPhaseX; j += 2) {
 
                     // Set the color for the currently drawn value. If the index
                     // is
                     // out of bounds, reuse colors.
-                    mRenderPaint.setColor(colors.get(j % colors.size()));
+                    mRenderPaint.setColor(dataSet.getCircleColor(j));
 
                     if (isOffContentRight(positions[j]))
                         break;
@@ -311,96 +328,15 @@ public class LineChart extends BarLineChartBase {
                             || isOffContentBottom(positions[j + 1]))
                         continue;
 
-                    mDrawCanvas.drawCircle(positions[j], positions[j + 1], mCircleSize,
+                    mDrawCanvas.drawCircle(positions[j], positions[j + 1], dataSet.getCircleSize(),
                             mRenderPaint);
-                    mDrawCanvas.drawCircle(positions[j], positions[j + 1], mCircleSize / 2,
+                    mDrawCanvas.drawCircle(positions[j], positions[j + 1],
+                            dataSet.getCircleSize() / 2,
                             mCirclePaintInner);
                 }
-            }
+            } // else do nothing
+
         }
-    }
-
-    /**
-     * set this to true to enable the drawing of circle indicators
-     * 
-     * @param enabled
-     */
-    public void setDrawCircles(boolean enabled) {
-        this.mDrawCircles = enabled;
-    }
-
-    /**
-     * returns true if drawing circles is enabled, false if not
-     * 
-     * @return
-     */
-    public boolean isDrawCirclesEnabled() {
-        return mDrawCircles;
-    }
-
-    /**
-     * sets the size (radius) of the circle shpaed value indicators, default
-     * size = 4f
-     * 
-     * @param size
-     */
-    public void setCircleSize(float size) {
-        mCircleSize = Utils.convertDpToPixel(size);
-    }
-
-    /**
-     * returns the circlesize
-     * 
-     * @param size
-     */
-    public float getCircleSize(float size) {
-        return Utils.convertPixelsToDp(mCircleSize);
-    }
-
-    /**
-     * set if the chartdata should be drawn as a line or filled default = line /
-     * default = false, disabling this will give up to 20% performance boost on
-     * large datasets
-     * 
-     * @param filled
-     */
-    public void setDrawFilled(boolean filled) {
-        mDrawFilled = filled;
-    }
-
-    /**
-     * returns true if filled drawing is enabled, false if not
-     * 
-     * @return
-     */
-    public boolean isDrawFilledEnabled() {
-        return mDrawFilled;
-    }
-
-    /**
-     * set the line width of the chart (min = 0.5f, max = 10f); default 1f NOTE:
-     * thinner line == better performance, thicker line == worse performance
-     * 
-     * @param width
-     */
-    public void setLineWidth(float width) {
-
-        if (width < 0.5f)
-            width = 0.5f;
-        if (width > 10.0f)
-            width = 10.0f;
-        mLineWidth = width;
-
-        mRenderPaint.setStrokeWidth(width);
-    }
-
-    /**
-     * returns the width of the drawn chart line
-     * 
-     * @return
-     */
-    public float getLineWidth() {
-        return mLineWidth;
     }
 
     /**
@@ -430,35 +366,6 @@ public class LineChart extends BarLineChartBase {
         return mHighlightWidth;
     }
 
-    /**
-     * Enables the line to be drawn in dashed mode, e.g. like this "- - - - - -"
-     * 
-     * @param lineLength the length of the line pieces
-     * @param spaceLength the length of space inbetween the pieces
-     * @param phase offset, in degrees (normally, use 0)
-     */
-    public void enableDashedLine(float lineLength, float spaceLength, float phase) {
-        mRenderPaint.setPathEffect(new DashPathEffect(new float[] {
-                lineLength, spaceLength
-        }, phase));
-    }
-
-    /**
-     * Disables the line to be drawn in dashed mode.
-     */
-    public void disableDashedLine() {
-        mRenderPaint.setPathEffect(null);
-    }
-
-    /**
-     * Returns true if the dashed-line effect is enabled, false if not.
-     * 
-     * @return
-     */
-    public boolean isDashedLineEnabled() {
-        return mRenderPaint.getPathEffect() == null ? false : true;
-    }
-
     @Override
     public void setPaint(Paint p, int which) {
         super.setPaint(p, which);
@@ -475,7 +382,9 @@ public class LineChart extends BarLineChartBase {
 
     @Override
     public Paint getPaint(int which) {
-        super.getPaint(which);
+        Paint p = super.getPaint(which);
+        if (p != null)
+            return p;
 
         switch (which) {
             case PAINT_CIRCLES_INNER:
