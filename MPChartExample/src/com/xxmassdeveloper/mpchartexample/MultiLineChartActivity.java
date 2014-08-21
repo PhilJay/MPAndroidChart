@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -190,7 +191,7 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
         }
         return true;
     }
-    
+
     private int[] mColors = new int[] { R.color.vordiplom_1, R.color.vordiplom_2, R.color.vordiplom_3 };
 
     @Override
@@ -212,13 +213,13 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
 
             for (int i = 0; i < mSeekBarX.getProgress(); i++) {
                 double val = (Math.random() * mSeekBarY.getProgress()) + 3;
-                values.add(new Entry((float) val, i));
+                values.add(new Entry((float) val, "My custom message! " + z + " - " + i, i));
             }
 
             LineDataSet d = new LineDataSet(values, "DataSet " + (z + 1));
             d.setLineWidth(2.5f);
             d.setCircleSize(4f);
-            
+
             int color = getResources().getColor(mColors[z % mColors.length]);
             d.setColor(color);
             d.setCircleColor(color);
@@ -235,6 +236,8 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
 
     @Override
     public void onValuesSelected(Entry[] values, Highlight[] highlights) {
+        Toast.makeText(getBaseContext(), values[0].getTitle(), Toast.LENGTH_SHORT).show();
+
         Log.i("VALS SELECTED",
                 "Value: " + values[0].getVal() + ", xIndex: " + highlights[0].getXIndex()
                         + ", DataSet index: " + highlights[0].getDataSetIndex());
