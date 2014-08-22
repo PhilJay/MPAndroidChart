@@ -312,12 +312,14 @@ public class LineChart extends BarLineChartBase {
 
                 float[] positions = generateTransformedValues(entries, 0f);
 
+				int countColors = 0;
                 for (int j = 0; j < positions.length * mPhaseX; j += 2) {
 
                     // Set the color for the currently drawn value. If the index
                     // is
                     // out of bounds, reuse colors.
-                    mRenderPaint.setColor(dataSet.getCircleColor(j));
+                    mRenderPaint.setColor(dataSet.getCircleColor(countColors));
+					countColors++;
 
                     if (isOffContentRight(positions[j]))
                         break;
