@@ -310,7 +310,7 @@ public class LineChart extends BarLineChartBase {
                     // Set the color for the currently drawn value. If the index
                     // is
                     // out of bounds, reuse colors.
-                    mRenderPaint.setColor(dataSet.getCircleColor(j));
+                    mRenderPaint.setColor(dataSet.getCircleColor(j / 2));
 
                     if (isOffContentRight(positions[j]))
                         break;
