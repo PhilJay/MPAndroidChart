@@ -71,8 +71,8 @@ public class ColorTemplate {
     }
 
     /**
-     * tuns an array of colors (already converted with
-     * getResources().getColor(...) int an arraylist of colors
+     * Turns an array of colors (already converted with
+     * getResources().getColor(...)) into an ArrayList of colors.
      * 
      * @param colors
      * @return
@@ -87,4 +87,6 @@ public class ColorTemplate {
 
         return result;
     }
+    
+    
 }

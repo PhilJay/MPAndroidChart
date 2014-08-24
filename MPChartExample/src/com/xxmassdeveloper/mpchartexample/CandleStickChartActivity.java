@@ -187,8 +187,8 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
 
         for (int i = 0; i < mSeekBarX.getProgress()+1; i++) {
             float mult = (mSeekBarY.getProgress() + 1);
-            float val = (float) (Math.random() * mult) + mult / 3;
-            yVals1.add(new CandleEntry(val, i, val+5, val-5, val+7, val-7));
+            float val = (float) (Math.sin(i) * mult) + 100f;
+            yVals1.add(new CandleEntry(i, val+7, val-7, val+4, val-4));
         }
         
         ArrayList<String> xVals = new ArrayList<String>();

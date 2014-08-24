@@ -16,8 +16,8 @@ public class CandleEntry extends Entry {
 
     private float mOpen = 0f;
 
-    public CandleEntry(float val, int xIndex, float shadowH, float shadowL, float open, float close) {
-        super(val, xIndex);
+    public CandleEntry(int xIndex, float shadowH, float shadowL, float open, float close) {
+        super(shadowH, xIndex);
 
         this.mShadowHigh = shadowH;
         this.mShadowLow = shadowL;
@@ -25,9 +25,28 @@ public class CandleEntry extends Entry {
         this.mClose = close;
     }
 
+    /**
+     * Returns the overall range (difference) between shadow-high and
+     * shadow-low.
+     * 
+     * @return
+     */
+    public float getShadowRange() {
+        return Math.abs(mShadowHigh - mShadowLow);
+    }
+
+    /**
+     * Returns the body size (difference between open and close).
+     * 
+     * @return
+     */
+    public float getBodyRange() {
+        return Math.abs(mOpen - mClose);
+    }
+
     public CandleEntry copy() {
 
-        CandleEntry c = new CandleEntry(getVal(), getXIndex(), mShadowHigh, mShadowLow, mOpen,
+        CandleEntry c = new CandleEntry(getXIndex(), mShadowHigh, mShadowLow, mOpen,
                 mClose);
 
         return c;
