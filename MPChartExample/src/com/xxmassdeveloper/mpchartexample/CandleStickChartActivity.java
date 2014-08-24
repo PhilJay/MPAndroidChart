@@ -46,7 +46,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         mSeekBarY.setOnSeekBarChangeListener(this);
 
         mChart = (CandleStickChart) findViewById(R.id.chart1);
-        
+
         mChart.setDrawYValues(false);
 
         mChart.setUnit(" €");
@@ -58,28 +58,27 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
 
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
-        
+
         mChart.setDrawVerticalGrid(false);
-        mChart.setDrawHorizontalGrid(false);
         mChart.setDrawGridBackground(false);
 
         XLabels xLabels = mChart.getXLabels();
         xLabels.setPosition(XLabelPosition.BOTTOM);
         xLabels.setCenterXLabelText(true);
-        xLabels.setSpaceBetweenLabels(0);
+        xLabels.setSpaceBetweenLabels(2);
 
-         mChart.setDrawYLabels(false);
-         mChart.setDrawLegend(false);
+        mChart.setDrawYLabels(true);
+        mChart.setDrawLegend(false);
 
         // setting data
-        mSeekBarX.setProgress(10);
+        mSeekBarX.setProgress(30);
         mSeekBarY.setProgress(100);
 
-//        Legend l = mChart.getLegend();
-//        l.setPosition(LegendPosition.BELOW_CHART_CENTER);
-//        l.setFormSize(8f);
-//        l.setFormToTextSpace(4f);
-//        l.setXEntrySpace(6f);
+        // Legend l = mChart.getLegend();
+        // l.setPosition(LegendPosition.BELOW_CHART_CENTER);
+        // l.setFormSize(8f);
+        // l.setFormToTextSpace(4f);
+        // l.setXEntrySpace(6f);
 
         // mChart.setDrawLegend(false);
     }
@@ -185,15 +184,18 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
 
         ArrayList<CandleEntry> yVals1 = new ArrayList<CandleEntry>();
 
-        for (int i = 0; i < mSeekBarX.getProgress()+1; i++) {
+        for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
             float mult = (mSeekBarY.getProgress() + 1);
-            float val = (float) (Math.sin(i) * mult) + 100f;
-            yVals1.add(new CandleEntry(i, val+7, val-7, val+4, val-4));
+            float val = (float) (Math.sin(i) * mult) + 400f;
+            boolean even = i % 2 == 0;
+
+            yVals1.add(new CandleEntry(i, even ? val + 10 : val - 10, even ? val - 10 : val + 10,
+                    even ? val + 5 : val - 5, even ? val - 5 : val + 5));
         }
-        
+
         ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < mSeekBarX.getProgress()+1; i++) {
-            xVals.add((int) yVals1.get(i).getVal() + " " + mChart.getUnit());
+        for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
+            xVals.add("" + (i + 1));
         }
 
         CandleDataSet set1 = new CandleDataSet(yVals1, "Data Set");

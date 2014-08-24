@@ -30,7 +30,7 @@ public abstract class ChartData {
      * contains the average length (in characters) an entry in the x-vals array
      * has
      */
-    private int mXValAverageLength = 0;
+    private float mXValAverageLength = 0;
 
     /** holds all x-values the chart represents */
     protected ArrayList<String> mXVals;
@@ -97,13 +97,13 @@ public abstract class ChartData {
             return;
         }
 
-        int sum = 0;
+        float sum = 0f;
 
         for (int i = 0; i < mXVals.size(); i++) {
             sum += mXVals.get(i).length();
         }
 
-        mXValAverageLength = sum / mXVals.size();
+        mXValAverageLength = sum / (float) mXVals.size();
     }
 
     protected static ArrayList<? extends DataSet> toArrayList(DataSet dataSet) {
@@ -224,7 +224,7 @@ public abstract class ChartData {
      * 
      * @return
      */
-    public int getXValAverageLength() {
+    public float getXValAverageLength() {
         return mXValAverageLength;
     }
 

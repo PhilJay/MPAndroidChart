@@ -478,7 +478,7 @@ public abstract class BarLineChartBase extends Chart {
         mMatrixTouch.getValues(values);
 
         mXLabels.mXAxisLabelModulus = (int) Math
-                .ceil((mCurrentData.getXValCount() * mXLabels.mXLabelWidth)
+                .ceil((mCurrentData.getXValCount() * mXLabels.mLabelWidth)
                         / (mContentRect.width() * values[Matrix.MSCALE_X]));
     }
 
@@ -549,13 +549,15 @@ public abstract class BarLineChartBase extends Chart {
         // .getXVals()
         // .get(mCurrentData.getXValCount() - 1)
         // .length())));
+        
+        int max = (int) Math.round(mCurrentData.getXValAverageLength() + mXLabels.getSpaceBetweenLabels());
 
-        for (int i = 0; i < mCurrentData.getXValAverageLength() + mXLabels.getSpaceBetweenLabels(); i++) {
+        for (int i = 0; i < max; i++) {
             a.append("h");
         }
 
-        mXLabels.mXLabelWidth = Utils.calcTextWidth(mXLabelPaint, a.toString());
-        mXLabels.mXLabelHeight = Utils.calcTextWidth(mXLabelPaint, "Q");
+        mXLabels.mLabelWidth = Utils.calcTextWidth(mXLabelPaint, a.toString());
+        mXLabels.mLabelHeight = Utils.calcTextWidth(mXLabelPaint, "Q");
     }
 
     /**
@@ -655,12 +657,12 @@ public abstract class BarLineChartBase extends Chart {
 
         } else if (mXLabels.getPosition() == XLabelPosition.BOTTOM) {
 
-            drawXLabels(getHeight() - mOffsetBottom + mXLabels.mXLabelHeight + yoffset * 1.5f);
+            drawXLabels(getHeight() - mOffsetBottom + mXLabels.mLabelHeight + yoffset * 1.5f);
 
         } else { // BOTH SIDED
 
             drawXLabels(getOffsetTop() - 7);
-            drawXLabels(getHeight() - mOffsetBottom + mXLabels.mXLabelHeight + yoffset * 1.6f);
+            drawXLabels(getHeight() - mOffsetBottom + mXLabels.mLabelHeight + yoffset * 1.6f);
         }
     }
 

@@ -44,13 +44,11 @@ public class CandleStickChart extends BarLineChartBase {
 
         ArrayList<CandleDataSet> dataSets = (ArrayList<CandleDataSet>) mCurrentData.getDataSets();
 
-        mRenderPaint.setStyle(Paint.Style.FILL);
-
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
             CandleDataSet dataSet = dataSets.get(i);
             ArrayList<CandleEntry> entries = (ArrayList<CandleEntry>) dataSet.getYVals();
-            
+
             mRenderPaint.setStrokeWidth(dataSet.getShadowWidth());
 
             float[] shadowPoints = new float[4];
@@ -90,6 +88,11 @@ public class CandleStickChart extends BarLineChartBase {
                 // draw the shadow
                 mDrawCanvas.drawLine(xShadow, low, xShadow, high, mRenderPaint);
 
+                if (open > close)
+                    mRenderPaint.setStyle(Paint.Style.FILL);
+                else
+                    mRenderPaint.setStyle(Paint.Style.STROKE);
+
                 // draw the body
                 mDrawCanvas.drawRect(leftBody, open, rightBody, close, mRenderPaint);
             }
@@ -102,7 +105,6 @@ public class CandleStickChart extends BarLineChartBase {
      * @param bodyPoints
      * @param e
      * @param bodySpace
-     * 
      */
     private void transformBody(float[] bodyPoints, CandleEntry e, float bodySpace) {
 

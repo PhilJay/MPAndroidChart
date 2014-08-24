@@ -13,13 +13,13 @@ public class XLabels extends LabelBase {
      * width of the x-axis labels in pixels - this is calculated by the
      * calcTextWidth() method of the utils
      */
-    public int mXLabelWidth = 1;
+    public int mLabelWidth = 1;
 
     /**
      * height of the x-axis labels in pixels - this is calculated by the
      * calcTextHeight() method of the utils
      */
-    public int mXLabelHeight = 1;
+    public int mLabelHeight = 1;
 
     /**
      * the space that should be left out (in characters) between the x-axis
