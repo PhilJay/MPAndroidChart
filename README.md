@@ -3,7 +3,7 @@
 MPAndroidChart
 =======
 
-A simple charting library for Android, supporting line- bar- candlestick- and piecharts, scaling, dragging and selecting.
+A simple charting library for Android, supporting line-, bar-, scatter-, candlestick- and piecharts, as well as scaling, dragging, selecting and animations.
 
 Remember: *It's all about the looks.*
 
