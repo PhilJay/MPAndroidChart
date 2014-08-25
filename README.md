@@ -98,7 +98,7 @@ Furthermore, here is some code to get started.
 
 **Setup:**
 
-For using a <code>LineChart, BarChart, ScatterChart or PieChart </code>, define it in .xml:
+For using a <code>LineChart, BarChart, ScatterChart, CandleStickChart or PieChart </code>, define it in .xml:
 ```xml
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"
