@@ -995,7 +995,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
         float xPos = (float) xIndex;
 
         // make sure the marker is in the center of the bars in BarChart
-        if (this instanceof BarChart)
+        if (this instanceof BarChart || this instanceof CandleStickChart)
             xPos += 0.5f;
 
         // position of the marker depends on selected value index and value

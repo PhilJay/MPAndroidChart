@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CandleDataSet;
 import com.github.mikephil.charting.data.CandleEntry;
+import com.github.mikephil.charting.data.DataSet;
 
 import java.util.ArrayList;
 
@@ -38,7 +39,7 @@ public class CandleStickChart extends BarLineChartBase {
     public void setData(CandleData data) {
         super.setData(data);
     }
-    
+
     @Override
     protected void calcMinMax(boolean fixedValues) {
         super.calcMinMax(fixedValues);
@@ -51,7 +52,7 @@ public class CandleStickChart extends BarLineChartBase {
     protected void drawData() {
 
         ArrayList<CandleDataSet> dataSets = (ArrayList<CandleDataSet>) mCurrentData.getDataSets();
-        
+
         // pre allocate
         float[] shadowPoints = new float[4];
         float[] bodyPoints = new float[4];
@@ -87,26 +88,31 @@ public class CandleStickChart extends BarLineChartBase {
                 float open = bodyPoints[1];
                 float close = bodyPoints[3];
 
-//                if (isOffContentRight(leftBody))
-//                    break;
-//
-//                // make sure the lines don't do shitty things outside bounds
-//                if (isOffContentLeft(rightBody)
-//                        && isOffContentTop(low)
-//                        && isOffContentBottom(high))
-//                    continue;
+                if (isOffContentRight(leftBody))
+                    break;
+
+                // make sure the lines don't do shitty things outside bounds
+                if (isOffContentLeft(rightBody)
+                        && isOffContentTop(low)
+                        && isOffContentBottom(high))
+                    continue;
 
                 // draw the shadow
                 mDrawCanvas.drawLine(xShadow, low, xShadow, high, mRenderPaint);
 
                 // decide weather the body is hollow or filled
-                if (open > close)
-                    mRenderPaint.setStyle(Paint.Style.FILL);
-                else
-                    mRenderPaint.setStyle(Paint.Style.STROKE);
+                if (open > close) {
 
-                // draw the body
-                mDrawCanvas.drawRect(leftBody, open, rightBody, close, mRenderPaint);
+                    mRenderPaint.setStyle(Paint.Style.FILL);
+                    // draw the body
+                    mDrawCanvas.drawRect(leftBody, close, rightBody, open, mRenderPaint);
+
+                } else {
+
+                    mRenderPaint.setStyle(Paint.Style.STROKE);
+                    // draw the body
+                    mDrawCanvas.drawRect(leftBody, open, rightBody, close, mRenderPaint);
+                }
             }
         }
     }
@@ -121,9 +127,9 @@ public class CandleStickChart extends BarLineChartBase {
     private void transformBody(float[] bodyPoints, CandleEntry e, float bodySpace) {
 
         bodyPoints[0] = e.getXIndex() + bodySpace;
-        bodyPoints[1] = e.getClose();
+        bodyPoints[1] = e.getClose() * mPhaseY;
         bodyPoints[2] = e.getXIndex() + (1f - bodySpace);
-        bodyPoints[3] = e.getOpen();
+        bodyPoints[3] = e.getOpen() * mPhaseY;
 
         transformPointArray(bodyPoints);
     }
@@ -137,9 +143,9 @@ public class CandleStickChart extends BarLineChartBase {
     private void transformShadow(float[] shadowPoints, CandleEntry e) {
 
         shadowPoints[0] = e.getXIndex() + 0.5f;
-        shadowPoints[1] = e.getHigh();
+        shadowPoints[1] = e.getHigh() * mPhaseY;
         shadowPoints[2] = e.getXIndex() + 0.5f;
-        shadowPoints[3] = e.getLow();
+        shadowPoints[3] = e.getLow() * mPhaseY;
 
         transformPointArray(shadowPoints);
     }
@@ -158,8 +164,39 @@ public class CandleStickChart extends BarLineChartBase {
 
     @Override
     protected void drawHighlights() {
-        // TODO Auto-generated method stub
 
+        for (int i = 0; i < mIndicesToHightlight.length; i++) {
+
+            int xIndex = mIndicesToHightlight[i].getXIndex(); // get the
+                                                              // x-position
+
+            CandleDataSet set = (CandleDataSet) getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
+            
+            CandleEntry e = (CandleEntry) set.getEntryForXIndex(xIndex);
+            
+            if(e == null) continue;
+
+            float low = e.getLow() * mPhaseY;
+            float high = e.getHigh() * mPhaseY;
+
+            float[] vertPts = new float[] {
+                    xIndex, mYChartMax, xIndex, mYChartMin, xIndex + 1f, mYChartMax, xIndex + 1f,
+                    mYChartMin
+            };
+
+            float[] horPts = new float[] {
+                    0, low, mDeltaX, low, 0, high, mDeltaX, high
+            };
+
+            transformPointArray(vertPts);
+            transformPointArray(horPts);
+
+            // draw the vertical highlight lines
+            mDrawCanvas.drawLines(vertPts, mHighlightPaint);
+
+            // draw the horizontal highlight lines
+            mDrawCanvas.drawLines(horPts, mHighlightPaint);
+        }
     }
 
 }

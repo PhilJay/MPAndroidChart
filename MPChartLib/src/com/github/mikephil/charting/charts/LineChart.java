@@ -69,30 +69,26 @@ public class LineChart extends BarLineChartBase {
     @Override
     protected void drawHighlights() {
 
-        // if there are values to highlight and highlighnting is enabled, do it
-        if (mHighlightEnabled && mHighLightIndicatorEnabled && valuesToHighlight()) {
+        for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
-            for (int i = 0; i < mIndicesToHightlight.length; i++) {
+            DataSet set = getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
 
-                DataSet set = getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
+            int xIndex = mIndicesToHightlight[i].getXIndex(); // get the
+                                                              // x-position
 
-                int xIndex = mIndicesToHightlight[i].getXIndex(); // get the
-                                                                  // x-position
+            if (xIndex > mDeltaX * mPhaseX)
+                continue;
 
-                if (xIndex > mDeltaX * mPhaseX)
-                    continue;
+            float y = set.getYValForXIndex(xIndex) * mPhaseY; // get the
+                                                              // y-position
 
-                float y = set.getYValForXIndex(xIndex) * mPhaseY; // get the
-                                                                  // y-position
+            float[] pts = new float[] {
+                    xIndex, mYChartMax, xIndex, mYChartMin, 0, y, mDeltaX, y
+            };
 
-                float[] pts = new float[] {
-                        xIndex, mYChartMax, xIndex, mYChartMin, 0, y, mDeltaX, y
-                };
-
-                transformPointArray(pts);
-                // draw the highlight lines
-                mDrawCanvas.drawLines(pts, mHighlightPaint);
-            }
+            transformPointArray(pts);
+            // draw the highlight lines
+            mDrawCanvas.drawLines(pts, mHighlightPaint);
         }
     }
 

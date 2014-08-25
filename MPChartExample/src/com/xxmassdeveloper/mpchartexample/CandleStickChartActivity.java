@@ -1,8 +1,8 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -15,9 +15,6 @@ import com.github.mikephil.charting.charts.CandleStickChart;
 import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CandleDataSet;
 import com.github.mikephil.charting.data.CandleEntry;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
 import com.github.mikephil.charting.utils.YLabels;
@@ -68,7 +65,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         xLabels.setPosition(XLabelPosition.BOTTOM);
         xLabels.setCenterXLabelText(true);
         xLabels.setSpaceBetweenLabels(2);
-        
+
         YLabels yLabels = mChart.getYLabels();
         yLabels.setLabelCount(7);
 
@@ -76,7 +73,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         mChart.setDrawLegend(false);
 
         // setting data
-        mSeekBarX.setProgress(30);
+        mSeekBarX.setProgress(15);
         mSeekBarY.setProgress(100);
 
         // Legend l = mChart.getLegend();
@@ -90,7 +87,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.bar, menu);
+        getMenuInflater().inflate(R.menu.candle, menu);
         return true;
     }
 
@@ -98,14 +95,6 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.actionToggleValues: {
-                if (mChart.isDrawYValuesEnabled())
-                    mChart.setDrawYValues(false);
-                else
-                    mChart.setDrawYValues(true);
-                mChart.invalidate();
-                break;
-            }
             case R.id.actionToggleHighlight: {
                 if (mChart.isHighlightEnabled())
                     mChart.setHighlightEnabled(false);
@@ -156,18 +145,6 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
                 mChart.animateXY(3000, 3000);
                 break;
             }
-            case R.id.actionToggleFilter: {
-
-                Approximator a = new Approximator(ApproximatorType.DOUGLAS_PEUCKER, 25);
-
-                if (!mChart.isFilteringEnabled()) {
-                    mChart.enableFiltering(a);
-                } else {
-                    mChart.disableFiltering();
-                }
-                mChart.invalidate();
-                break;
-            }
             case R.id.actionSave: {
                 if (mChart.saveToGallery("title" + System.currentTimeMillis(), 50)) {
                     Toast.makeText(getApplicationContext(), "Saving SUCCESSFUL!",
@@ -183,32 +160,40 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        
+        int prog = (mSeekBarX.getProgress() + 1) * 2;
 
-        tvX.setText("" + (mSeekBarX.getProgress() + 1));
+        tvX.setText("" + prog);
         tvY.setText("" + (mSeekBarY.getProgress()));
 
         ArrayList<CandleEntry> yVals1 = new ArrayList<CandleEntry>();
 
-        for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
+        for (int i = 0; i < prog; i++) {
             float mult = (mSeekBarY.getProgress() + 1);
-            float val = (float) (Math.sin(i) * 50) + mult;
+            float val = (float) (Math.random() * 50) + mult;
+            
+            float high = (float) (Math.random() * 9) + 8f;
+            float low = (float) (Math.random() * 9) + 8f;
+            
+            float open = (float) (Math.random() * 6) + 1f;
+            float close = (float) (Math.random() * 6) + 1f;
+
             boolean even = i % 2 == 0;
 
-            yVals1.add(new CandleEntry(i, even ? val + 10 : val - 10, even ? val - 10 : val + 10,
-                    even ? val + 5 : val - 5, even ? val - 5 : val + 5));
+            yVals1.add(new CandleEntry(i, val + high, val - low, even ? val + open : val - open,
+                    even ? val - close : val + close));
         }
 
         ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
-            xVals.add("" + (i + 1));
+        for (int i = 0; i < prog; i++) {
+            xVals.add("" + (1990 + i));
         }
 
         CandleDataSet set1 = new CandleDataSet(yVals1, "Data Set");
-        set1.setColors(ColorTemplate.createColors(getApplicationContext(),
-                ColorTemplate.VORDIPLOM_COLORS));
-        
-        CandleData data = new CandleData(xVals, set1);
+        set1.setColor(Color.rgb(80, 80, 80));
 
+        CandleData data = new CandleData(xVals, set1);
+        
         mChart.setData(data);
         mChart.invalidate();
     }

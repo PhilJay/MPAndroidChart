@@ -17,7 +17,7 @@ public class CandleEntry extends Entry {
     private float mOpen = 0f;
 
     public CandleEntry(int xIndex, float shadowH, float shadowL, float open, float close) {
-        super(shadowH, xIndex);
+        super((shadowH + shadowL) / 2f, xIndex);
 
         this.mShadowHigh = shadowH;
         this.mShadowLow = shadowL;
@@ -42,6 +42,15 @@ public class CandleEntry extends Entry {
      */
     public float getBodyRange() {
         return Math.abs(mOpen - mClose);
+    }
+
+    /**
+     * Returns the center value of the candle. (Middle value between high and
+     * low)
+     */
+    @Override
+    public float getVal() {
+        return super.getVal();
     }
 
     public CandleEntry copy() {

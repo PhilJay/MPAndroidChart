@@ -179,45 +179,41 @@ public class BarChart extends BarLineChartBase {
     @Override
     protected void drawHighlights() {
 
-        // if there are values to highlight and highlighnting is enabled, do it
-        if (mHighlightEnabled && mHighLightIndicatorEnabled && valuesToHighlight()) {
+        for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
-            for (int i = 0; i < mIndicesToHightlight.length; i++) {
+            Highlight h = mIndicesToHightlight[i];
+            int index = h.getXIndex();
 
-                Highlight h = mIndicesToHightlight[i];
-                int index = h.getXIndex();
+            int dataSetIndex = h.getDataSetIndex();
+            BarDataSet ds = (BarDataSet) mCurrentData.getDataSetByIndex(dataSetIndex);
 
-                int dataSetIndex = h.getDataSetIndex();
-                BarDataSet ds = (BarDataSet) mCurrentData.getDataSetByIndex(dataSetIndex);
+            // check outofbounds
+            if (index < mCurrentData.getYValCount() && index >= 0 && index < mDeltaX * mPhaseX) {
 
-                // check outofbounds
-                if (index < mCurrentData.getYValCount() && index >= 0 && index < mDeltaX * mPhaseX) {
+                mHighlightPaint.setAlpha(120);
 
-                    mHighlightPaint.setAlpha(120);
+                Entry e = getEntryByDataSetIndex(index, dataSetIndex);
 
-                    Entry e = getEntryByDataSetIndex(index, dataSetIndex);
+                prepareBar(e.getXIndex(), e.getVal(), ds.getBarSpace());
 
-                    prepareBar(e.getXIndex(), e.getVal(), ds.getBarSpace());
+                mDrawCanvas.drawRect(mBarRect, mHighlightPaint);
 
-                    mDrawCanvas.drawRect(mBarRect, mHighlightPaint);
-
-                    // if (mDrawHighlightArrow) {
-                    //
-                    //
-                    // // distance between highlight arrow and bar
-                    // float offsetY = mDeltaY * 0.04f;
-                    //
-                    // mHighlightPaint.setAlpha(200);
-                    //
-                    // Path arrow = new Path();
-                    // arrow.moveTo(index + 0.5f, y + offsetY * 0.3f);
-                    // arrow.lineTo(index + 0.2f, y + offsetY);
-                    // arrow.lineTo(index + 0.8f, y + offsetY);
-                    //
-                    // transformPath(arrow);
-                    // mDrawCanvas.drawPath(arrow, mHighlightPaint);
-                    // }
-                }
+                // if (mDrawHighlightArrow) {
+                //
+                //
+                // // distance between highlight arrow and bar
+                // float offsetY = mDeltaY * 0.04f;
+                //
+                // mHighlightPaint.setAlpha(200);
+                //
+                // Path arrow = new Path();
+                // arrow.moveTo(index + 0.5f, y + offsetY * 0.3f);
+                // arrow.lineTo(index + 0.2f, y + offsetY);
+                // arrow.lineTo(index + 0.8f, y + offsetY);
+                //
+                // transformPath(arrow);
+                // mDrawCanvas.drawPath(arrow, mHighlightPaint);
+                // }
             }
         }
     }
@@ -232,7 +228,7 @@ public class BarChart extends BarLineChartBase {
 
             BarDataSet dataSet = dataSets.get(i);
             boolean noStacks = dataSet.getStackSize() == 1 ? true : false;
-            
+
             ArrayList<BarEntry> entries = (ArrayList<BarEntry>) dataSet.getYVals();
 
             // do the drawing

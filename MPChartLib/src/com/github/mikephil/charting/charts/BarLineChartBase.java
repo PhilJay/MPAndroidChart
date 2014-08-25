@@ -250,7 +250,9 @@ public abstract class BarLineChartBase extends Chart {
 
         drawLimitLines();
 
-        drawHighlights();
+        // if highlighting is enabled 
+        if (mHighlightEnabled && mHighLightIndicatorEnabled && valuesToHighlight())
+            drawHighlights();
 
         // Removes clipping rectangle
         mDrawCanvas.restoreToCount(clipRestoreCount);
@@ -549,8 +551,9 @@ public abstract class BarLineChartBase extends Chart {
         // .getXVals()
         // .get(mCurrentData.getXValCount() - 1)
         // .length())));
-        
-        int max = (int) Math.round(mCurrentData.getXValAverageLength() + mXLabels.getSpaceBetweenLabels());
+
+        int max = (int) Math.round(mCurrentData.getXValAverageLength()
+                + mXLabels.getSpaceBetweenLabels());
 
         for (int i = 0; i < max; i++) {
             a.append("h");
@@ -695,7 +698,7 @@ public abstract class BarLineChartBase extends Chart {
                 if (mXLabels.isAvoidFirstLastClippingEnabled()) {
 
                     // avoid clipping of the last
-                    if (i == mCurrentData.getXValCount()- 1) {
+                    if (i == mCurrentData.getXValCount() - 1) {
                         float width = Utils.calcTextWidth(mXLabelPaint, label);
 
                         if (width > getOffsetRight() * 2 && position[0] + width > getWidth())
@@ -991,10 +994,10 @@ public abstract class BarLineChartBase extends Chart {
         else
             return false;
     }
-    
+
     /** touchlistener that handles touches and gestures on the chart */
     protected OnTouchListener mListener;
-    
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
@@ -1242,7 +1245,7 @@ public abstract class BarLineChartBase extends Chart {
      * ################ ################ ################ ################
      */
     /** CODE BELOW IS GETTERS AND SETTERS */
-    
+
     /**
      * set a new (e.g. custom) charttouchlistener NOTE: make sure to
      * setTouchEnabled(true); if you need touch gestures on the chart

@@ -58,7 +58,7 @@ public class ScatterChart extends BarLineChartBase {
 
             float shapeHalf = dataSet.getScatterShapeSize() / 2f;
 
-            float[] valuePoints = generateTransformedValues(entries, 0f);   
+            float[] valuePoints = generateTransformedValues(entries, 0f);
 
             ScatterShape shape = dataSet.getScatterShape();
 
@@ -72,27 +72,31 @@ public class ScatterChart extends BarLineChartBase {
                         && isOffContentTop(valuePoints[j + 1])
                         && isOffContentBottom(valuePoints[j + 1]))
                     continue;
-                
+
                 // Set the color for the currently drawn value. If the index is
                 // out of bounds, reuse colors.
                 mRenderPaint.setColor(dataSet.getColor(j));
 
                 if (shape == ScatterShape.SQUARE) {
 
-                    mDrawCanvas.drawRect(valuePoints[j] - shapeHalf, valuePoints[j + 1] - shapeHalf, valuePoints[j]
-                            + shapeHalf, valuePoints[j + 1]
-                            + shapeHalf, mRenderPaint);
+                    mDrawCanvas.drawRect(valuePoints[j] - shapeHalf,
+                            valuePoints[j + 1] - shapeHalf, valuePoints[j]
+                                    + shapeHalf, valuePoints[j + 1]
+                                    + shapeHalf, mRenderPaint);
 
                 } else if (shape == ScatterShape.CIRCLE) {
 
-                    mDrawCanvas.drawCircle(valuePoints[j], valuePoints[j + 1], shapeHalf, mRenderPaint);
+                    mDrawCanvas.drawCircle(valuePoints[j], valuePoints[j + 1], shapeHalf,
+                            mRenderPaint);
 
                 } else if (shape == ScatterShape.CROSS) {
 
-                    mDrawCanvas.drawLine(valuePoints[j] - shapeHalf, valuePoints[j + 1], valuePoints[j] + shapeHalf,
+                    mDrawCanvas.drawLine(valuePoints[j] - shapeHalf, valuePoints[j + 1],
+                            valuePoints[j] + shapeHalf,
                             valuePoints[j + 1], mRenderPaint);
-                    mDrawCanvas.drawLine(valuePoints[j], valuePoints[j + 1] - shapeHalf, valuePoints[j], valuePoints[j + 1]
-                            + shapeHalf, mRenderPaint);
+                    mDrawCanvas.drawLine(valuePoints[j], valuePoints[j + 1] - shapeHalf,
+                            valuePoints[j], valuePoints[j + 1]
+                                    + shapeHalf, mRenderPaint);
 
                 } else if (shape == ScatterShape.TRIANGLE) {
 
@@ -166,28 +170,26 @@ public class ScatterChart extends BarLineChartBase {
     @Override
     protected void drawHighlights() {
 
-        // if there are values to highlight and highlighnting is enabled, do it
-        if (mHighlightEnabled && mHighLightIndicatorEnabled && valuesToHighlight()) {
+        for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
-            for (int i = 0; i < mIndicesToHightlight.length; i++) {
+            DataSet set = getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
 
-                DataSet set = getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
+            int xIndex = mIndicesToHightlight[i].getXIndex(); // get the
+                                                              // x-position
 
-                int xIndex = mIndicesToHightlight[i].getXIndex(); // get the
-                                                                  // x-position
-                
-                if(xIndex > mDeltaX * mPhaseX) continue;
-                
-                float y = set.getYValForXIndex(xIndex) * mPhaseY; // get the y-position
+            if (xIndex > mDeltaX * mPhaseX)
+                continue;
 
-                float[] pts = new float[] {
-                        xIndex, mYChartMax, xIndex, mYChartMin, 0, y, mDeltaX, y
-                };
+            float y = set.getYValForXIndex(xIndex) * mPhaseY; // get the
+                                                              // y-position
 
-                transformPointArray(pts);
-                // draw the highlight lines
-                mDrawCanvas.drawLines(pts, mHighlightPaint);
-            }
+            float[] pts = new float[] {
+                    xIndex, mYChartMax, xIndex, mYChartMin, 0, y, mDeltaX, y
+            };
+
+            transformPointArray(pts);
+            // draw the highlight lines
+            mDrawCanvas.drawLines(pts, mHighlightPaint);
         }
     }
 
