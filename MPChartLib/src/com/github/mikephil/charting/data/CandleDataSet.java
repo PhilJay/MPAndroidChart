@@ -33,7 +33,34 @@ public class CandleDataSet extends DataSet {
 
         CandleDataSet copied = new CandleDataSet(yVals, getLabel());
         copied.mColors = mColors;
+        copied.mShadowWidth = mShadowWidth;
+        copied.mBodySpace = mBodySpace;
         return copied;
+    }
+    
+    @Override
+    protected void calcMinMax() {
+//        super.calcMinMax();
+        
+        if (mYVals.size() == 0) {
+            return;
+        }
+        
+        ArrayList<CandleEntry> entries = (ArrayList<CandleEntry>) mYVals;
+
+        mYMin = entries.get(0).getLow();
+        mYMax = entries.get(0).getHigh();
+
+        for (int i = 0; i < entries.size(); i++) {
+
+            CandleEntry e = entries.get(i);
+
+            if (e.getLow() < mYMin)
+                mYMin = e.getLow();
+
+            if (e.getHigh() > mYMax)
+                mYMax = e.getHigh();
+        }
     }
 
     /**

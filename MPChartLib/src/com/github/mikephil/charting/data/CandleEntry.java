@@ -52,19 +52,19 @@ public class CandleEntry extends Entry {
         return c;
     }
 
-    public float getShadowHigh() {
+    public float getHigh() {
         return mShadowHigh;
     }
 
-    public void setShadowHigh(float mShadowHigh) {
+    public void setHigh(float mShadowHigh) {
         this.mShadowHigh = mShadowHigh;
     }
 
-    public float getShadowLow() {
+    public float getLow() {
         return mShadowLow;
     }
 
-    public void setShadowLow(float mShadowLow) {
+    public void setLow(float mShadowLow) {
         this.mShadowLow = mShadowLow;
     }
 

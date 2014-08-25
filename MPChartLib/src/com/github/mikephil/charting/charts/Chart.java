@@ -598,7 +598,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     }
 
     /**
-     * transforms multiple paths will all matrices
+     * Transforms multiple paths will all matrices.
      * 
      * @param paths
      */
@@ -610,8 +610,8 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     }
 
     /**
-     * transform an array of points VERY IMPORTANT: keep order to
-     * value-touch-offset
+     * Transform an array of points with all matrices. VERY IMPORTANT: Keep
+     * matrix order "value-touch-offset" when transforming.
      * 
      * @param pts
      */
@@ -623,7 +623,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     }
 
     /**
-     * transform a rectangle with all matrices
+     * Transform a rectangle with all matrices.
      * 
      * @param r
      */
@@ -642,8 +642,10 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     protected void transformRectWithPhase(RectF r) {
 
         // multiply the height of the rect with the phase
-        if(r.top > 0) r.top *= mPhaseY;
-        else r.bottom *= mPhaseY;
+        if (r.top > 0)
+            r.top *= mPhaseY;
+        else
+            r.bottom *= mPhaseY;
 
         mMatrixValueToPx.mapRect(r);
         mMatrixTouch.mapRect(r);
@@ -1097,7 +1099,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
         // redraw everything after animation value change
         invalidate();
 
-//        Log.i(LOG_TAG, "UPDATING, x: " + mPhaseX + ", y: " + mPhaseY);
+        // Log.i(LOG_TAG, "UPDATING, x: " + mPhaseX + ", y: " + mPhaseY);
     }
 
     /**
@@ -1135,39 +1137,39 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     public void setPhaseX(float phase) {
         mPhaseX = phase;
     }
-    
+
     /**
      * ################ ################ ################ ################
      */
     /** BELOW THIS FOR DYNAMICALLY ADDING ENTRIES AND DATASETS */
 
-//    public void addEntry(Entry e, int dataSetIndex) {
-//        mOriginalData.getDataSetByIndex(dataSetIndex).addEntry(e);
-//        
-//        prepare();
-//        calcMinMax(false);
-//        prepareMatrix();
-//        calculateOffsets();
-//    }
-//    
-//    public void addEntry(Entry e, String label) {
-//        mOriginalData.getDataSetByLabel(label, false).addEntry(e);
-//        
-//        prepare();
-//        calcMinMax(false);
-//        prepareMatrix();
-//        calculateOffsets();
-//    }
-    
+    // public void addEntry(Entry e, int dataSetIndex) {
+    // mOriginalData.getDataSetByIndex(dataSetIndex).addEntry(e);
+    //
+    // prepare();
+    // calcMinMax(false);
+    // prepareMatrix();
+    // calculateOffsets();
+    // }
+    //
+    // public void addEntry(Entry e, String label) {
+    // mOriginalData.getDataSetByLabel(label, false).addEntry(e);
+    //
+    // prepare();
+    // calcMinMax(false);
+    // prepareMatrix();
+    // calculateOffsets();
+    // }
+
     public void addDataSet(DataSet d) {
         mOriginalData.addDataSet(d);
-        
+
         prepare();
         calcMinMax(false);
         prepareMatrix();
         calculateOffsets();
     }
-    
+
     /**
      * ################ ################ ################ ################
      */

@@ -2,6 +2,7 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -19,6 +20,7 @@ import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
+import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -66,6 +68,9 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         xLabels.setPosition(XLabelPosition.BOTTOM);
         xLabels.setCenterXLabelText(true);
         xLabels.setSpaceBetweenLabels(2);
+        
+        YLabels yLabels = mChart.getYLabels();
+        yLabels.setLabelCount(7);
 
         mChart.setDrawYLabels(true);
         mChart.setDrawLegend(false);
@@ -186,7 +191,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
 
         for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
             float mult = (mSeekBarY.getProgress() + 1);
-            float val = (float) (Math.sin(i) * mult) + 400f;
+            float val = (float) (Math.sin(i) * 50) + mult;
             boolean even = i % 2 == 0;
 
             yVals1.add(new CandleEntry(i, even ? val + 10 : val - 10, even ? val - 10 : val + 10,
@@ -201,7 +206,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         CandleDataSet set1 = new CandleDataSet(yVals1, "Data Set");
         set1.setColors(ColorTemplate.createColors(getApplicationContext(),
                 ColorTemplate.VORDIPLOM_COLORS));
-
+        
         CandleData data = new CandleData(xVals, set1);
 
         mChart.setData(data);
