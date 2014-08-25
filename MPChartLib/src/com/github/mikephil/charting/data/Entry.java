@@ -4,13 +4,16 @@ package com.github.mikephil.charting.data;
 /**
  * Class representing one entry in the chart. Might contain multiple values.
  * Might only contain a single value depending on the used constructor.
- * 
+ *
  * @author Philipp Jahoda
  */
 public class Entry {
 
     /** the actual value */
     private float mVal = 0f;
+
+    /** custom title */
+    private String mTitle = "";
 
     /** the index on the x-axis */
     private int mXIndex = 0;
@@ -20,7 +23,7 @@ public class Entry {
 
     /**
      * A Entry represents one single entry in the chart.
-     * 
+     *
      * @param val the y value (the actual value of the entry)
      * @param xIndex the corresponding index in the x value array (index on the
      *            x-axis of the chart, must NOT be higher than the length of the
@@ -31,9 +34,15 @@ public class Entry {
         mXIndex = xIndex;
     }
 
+    public Entry(float val, String title, int xIndex) {
+        mVal = val;
+        mTitle = title;
+        mXIndex = xIndex;
+    }
+
     /**
      * A Entry represents one single entry in the chart.
-     * 
+     *
      * @param vals the y values (the actual value of the entry) this entry
      *            should represent. E.g. multiple values for a stacked BarChart.
      * @param xIndex the corresponding index in the x value array (index on the
@@ -47,7 +56,7 @@ public class Entry {
 
     /**
      * returns the x-index the value of this object is mapped to
-     * 
+     *
      * @return
      */
     public int getXIndex() {
@@ -56,7 +65,7 @@ public class Entry {
 
     /**
      * sets the x-index for the entry
-     * 
+     *
      * @param x
      */
     public void setXIndex(int x) {
@@ -65,7 +74,7 @@ public class Entry {
 
     /**
      * returns the value the entry represents
-     * 
+     *
      * @return
      */
     public float getVal() {
@@ -74,7 +83,7 @@ public class Entry {
 
     /**
      * sets the value for the entry
-     * 
+     *
      * @param val
      */
     public void setVal(float val) {
@@ -84,7 +93,7 @@ public class Entry {
     /**
      * Returns the values this Entry reprsents, might return null if only a
      * single value is represented. Then, user getVal() instead.
-     * 
+     *
      * @return
      */
     public float[] getVals() {
@@ -93,7 +102,7 @@ public class Entry {
 
     /**
      * Set the array of values this Entry should represent.
-     * 
+     *
      * @param vals
      */
     public void setVals(float[] vals) {
@@ -101,9 +110,27 @@ public class Entry {
     }
 
     /**
+     * returns the title the entry represents
+     *
+     * @return
+     */
+    public String getTitle() {
+        return mTitle;
+    }
+
+    /**
+     * sets the title for the entry
+     *
+     * @param mTitle
+     */
+    public void setTitle(String mTitle) {
+        this.mTitle = mTitle;
+    }
+
+    /**
      * If this Enry represents mulitple values (e.g. Stacked BarChart), it will
      * return the sum of them, otherwise just the one value it represents.
-     * 
+     *
      * @return
      */
     public float getSum() {
@@ -122,7 +149,7 @@ public class Entry {
 
     /**
      * returns an exact copy of the entry
-     * 
+     *
      * @return
      */
     public Entry copy() {
@@ -143,7 +170,7 @@ public class Entry {
      * Returns the closest value inside the values array (for stacked barchart)
      * to the value given as a parameter. The closest value must be higher
      * (above) the provided value.
-     * 
+     *
      * @param val
      * @return
      */
