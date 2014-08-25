@@ -46,9 +46,6 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
 
         mChart = (CandleStickChart) findViewById(R.id.chart1);
 
-        mChart.setDrawYValues(false);
-
-        mChart.setUnit(" €");
         mChart.setDescription("");
 
         // if more than 60 entries are displayed in the chart, no values will be
@@ -170,7 +167,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
 
         for (int i = 0; i < prog; i++) {
             float mult = (mSeekBarY.getProgress() + 1);
-            float val = (float) (Math.random() * 50) + mult;
+            float val = (float) (Math.random() * 40) + mult;
             
             float high = (float) (Math.random() * 9) + 8f;
             float low = (float) (Math.random() * 9) + 8f;
