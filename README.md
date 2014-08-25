@@ -83,6 +83,10 @@ Features
 
 ![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/scatterchart.png)
 
+ - **CandleStickChart** (for financial data)
+
+![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/candlestickchart.png)
+
 
 
 Usage
