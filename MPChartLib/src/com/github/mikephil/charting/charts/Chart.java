@@ -990,8 +990,9 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      * @param dataSetIndex the index of the selected DataSet
      */
     private void drawMarkerView(int xIndex, int dataSetIndex) {
+        
+        Entry e = getEntryByDataSetIndex(xIndex, dataSetIndex);
 
-        float value = getYValueByDataSetIndex(xIndex, dataSetIndex);
         float xPos = (float) xIndex;
 
         // make sure the marker is in the center of the bars in BarChart
@@ -1000,7 +1001,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
 
         // position of the marker depends on selected value index and value
         float[] pts = new float[] {
-                xPos, value * mPhaseY
+                xPos, e.getVal() * mPhaseY
         };
         transformPointArray(pts);
 
@@ -1008,7 +1009,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
         float posY = pts[1];
 
         // callbacks to update the content
-        mMarkerView.refreshContent(xIndex, value, dataSetIndex);
+        mMarkerView.refreshContent(e, dataSetIndex);
 
         // call the draw method of the markerview that will translate to the
         // given position and draw the view
