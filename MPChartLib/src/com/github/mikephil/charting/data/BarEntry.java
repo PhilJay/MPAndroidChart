@@ -19,7 +19,7 @@ public class BarEntry extends Entry {
      */
     public BarEntry(float[] vals, int xIndex) {
         super(calcSum(vals), xIndex);
-        
+
         this.mVals = vals;
     }
 
@@ -34,11 +34,35 @@ public class BarEntry extends Entry {
     }
 
     /**
+     * Constructor for stacked bar entries.
+     * 
+     * @param vals
+     * @param xIndex
+     * @param label Additional description label.
+     */
+    public BarEntry(float[] vals, int xIndex, String label) {
+        super(calcSum(vals), xIndex, label);
+
+        this.mVals = vals;
+    }
+
+    /**
+     * Constructor for normal bars (not stacked).
+     * 
+     * @param val
+     * @param xIndex
+     * @param data Spot for additional data this Entry represents.
+     */
+    public BarEntry(float val, int xIndex, Object data) {
+        super(val, xIndex, data);
+    }
+
+    /**
      * Returns an exact copy of the BarEntry.
      */
     public BarEntry copy() {
 
-        BarEntry copied = new BarEntry(getVal(), getXIndex());
+        BarEntry copied = new BarEntry(getVal(), getXIndex(), getData());
         copied.mVals = mVals;
         return copied;
     }

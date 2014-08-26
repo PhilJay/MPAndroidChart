@@ -15,6 +15,9 @@ public class Entry {
     /** the index on the x-axis */
     private int mXIndex = 0;
 
+    /** optional spot for additional data this Entry represents */
+    private Object mData = null;
+
     /**
      * A Entry represents one single entry in the chart.
      * 
@@ -28,20 +31,20 @@ public class Entry {
         mXIndex = xIndex;
     }
 
-    // /**
-    // * A Entry represents one single entry in the chart.
-    // *
-    // * @param vals the y values (the actual value of the entry) this entry
-    // * should represent. E.g. multiple values for a stacked BarChart.
-    // * @param xIndex the corresponding index in the x value array (index on
-    // the
-    // * x-axis of the chart, must NOT be higher than the length of the
-    // * x-values String array)
-    // */
-    // public Entry(float[] vals, int xIndex) {
-    // mVals = vals;
-    // mXIndex = xIndex;
-    // }
+    /**
+     * A Entry represents one single entry in the chart.
+     * 
+     * @param val the y value (the actual value of the entry)
+     * @param xIndex the corresponding index in the x value array (index on the
+     *            x-axis of the chart, must NOT be higher than the length of the
+     *            x-values String array)
+     * @param data Spot for additional data this Entry represents.
+     */
+    public Entry(float val, int xIndex, Object data) {
+        this(val, xIndex);
+
+        this.mData = data;
+    }
 
     /**
      * returns the x-index the value of this object is mapped to
@@ -79,6 +82,25 @@ public class Entry {
         this.mVal = val;
     }
 
+    /**
+     * Returns the data, additional information that this Entry represents, or
+     * null, if no data has been specified.
+     * 
+     * @return
+     */
+    public Object getData() {
+        return mData;
+    }
+
+    /**
+     * Sets additional data this Entry should represents.
+     * 
+     * @param data
+     */
+    public void setData(Object data) {
+        this.mData = data;
+    }
+
     // /**
     // * If this Enry represents mulitple values (e.g. Stacked BarChart), it
     // will
@@ -106,7 +128,7 @@ public class Entry {
      * @return
      */
     public Entry copy() {
-        Entry e = new Entry(mVal, mXIndex);
+        Entry e = new Entry(mVal, mXIndex, mData);
         return e;
     }
 
