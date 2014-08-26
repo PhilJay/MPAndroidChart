@@ -62,10 +62,15 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart.setDrawCenterText(true);
 
         mChart.setDrawHoleEnabled(true);
+        
+
 
         // draws the corresponding description value into the slice
         mChart.setDrawXValues(true);
 
+        // enable rotation of the chart by touch
+        mChart.setRotationEnabled(true);
+        
         // display percentage values
         mChart.setUsePercentValues(true);
         // mChart.setUnit(" €");
@@ -206,15 +211,10 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
     }
 
     @Override
-    public void onValuesSelected(Entry[] values, Highlight[] highs) {
-
-        StringBuffer a = new StringBuffer();
-
-        for (int i = 0; i < values.length; i++)
-            a.append("val: " + values[i].getVal() + ", x-ind: " + highs[i].getXIndex()
-                    + ", dataset-ind: " + highs[i].getDataSetIndex() + "\n");
-
-        Log.i("PieChart", "Selected: " + a.toString());
+    public void onValueSelected(Entry e, int dataSetIndex) {
+        Log.i("VAL SELECTED",
+                "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
+                        + ", DataSet index: " + dataSetIndex);
     }
 
     @Override

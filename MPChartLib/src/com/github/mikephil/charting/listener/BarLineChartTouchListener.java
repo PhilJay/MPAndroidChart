@@ -77,8 +77,8 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 
         mDrawingContext.init(mChart.getDrawListener(), mChart.isAutoFinishEnabled());
         LineData data = null;
-        
-//        data = (LineData) mChart.getDataCurrent();
+
+        // data = (LineData) mChart.getDataCurrent();
 
         // Handle touch events here...
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
@@ -205,14 +205,14 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 
                     mMatrix.set(mSavedMatrix);
                     PointF dragPoint = new PointF(event.getX(), event.getY());
-                    
+
                     // check if axis is inverted
-                    if(!mChart.isInvertYAxisEnabled()) {
+                    if (!mChart.isInvertYAxisEnabled()) {
                         mMatrix.postTranslate(dragPoint.x - mTouchStartPoint.x, dragPoint.y
                                 - mTouchStartPoint.y);
                     } else {
                         mMatrix.postTranslate(dragPoint.x - mTouchStartPoint.x, -(dragPoint.y
-                              - mTouchStartPoint.y));
+                                - mTouchStartPoint.y));
                     }
 
                 } else if (mTouchMode == X_ZOOM || mTouchMode == Y_ZOOM || mTouchMode == PINCH_ZOOM) {
@@ -232,7 +232,7 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 
                             float scale = totalDist / mSavedDist; // total
                                                                   // scale
-                            
+
                             mMatrix.set(mSavedMatrix);
                             mMatrix.postScale(scale, scale, t.x, t.y);
 
@@ -363,9 +363,9 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 
         float xTrans = x - mChart.getOffsetLeft();
         float yTrans = 0f;
-        
+
         // check if axis is inverted
-        if(!mChart.isInvertYAxisEnabled()) {
+        if (!mChart.isInvertYAxisEnabled()) {
             yTrans = -(mChart.getMeasuredHeight() - y - mChart.getOffsetBottom());
         } else {
             yTrans = -(y - mChart.getOffsetTop());
@@ -386,18 +386,6 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
 
-        Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
-        
-        if (h == null || h.equalTo(mLastHighlighted)) {
-            mChart.highlightValues(null);
-            mLastHighlighted = null;
-        } else {
-            mLastHighlighted = h;
-            mChart.highlightValues(new Highlight[] {
-                    h
-            });
-        }
-
         return super.onSingleTapConfirmed(e);
     }
 
@@ -407,9 +395,9 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
         PointF trans = getTrans(e.getX(), e.getY());
 
         mChart.zoomIn(trans.x, trans.y);
-        
+
         Log.i("BarlineChartTouch", "Double-Tap, Zooming In, x: " + trans.x + ", y: " + trans.y);
-        
+
         return super.onDoubleTap(e);
     }
 
@@ -419,13 +407,23 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
         PointF trans = getTrans(e.getX(), e.getY());
 
         mChart.zoomOut(trans.x, trans.y);
-        
+
         Log.i("BarlineChartTouch", "Longpress, Zooming Out, x: " + trans.x + ", y: " + trans.y);
     };
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        // ctx.showValue(e, matrix);
+        
+        Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
+
+        if (h == null || h.equalTo(mLastHighlighted)) {
+            mChart.highlightTouch(null);
+            mLastHighlighted = null;
+        } else {
+            mLastHighlighted = h;
+            mChart.highlightTouch(h);
+        }
+        
         return true;
     }
 

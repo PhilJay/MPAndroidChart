@@ -48,6 +48,9 @@ public class PieChart extends Chart {
     /** array that holds the absolute angle in degrees of each slice */
     private float[] mAbsoluteAngles;
 
+    /** flag that indicates if rotation is enabled or not */
+    private boolean mRotateEnabled = true;
+
     /** if true, the white hole inside the chart will be drawn */
     private boolean mDrawHole = true;
 
@@ -93,7 +96,7 @@ public class PieChart extends Chart {
      * chart
      */
     private Paint mCenterTextPaint;
-    
+
     /** the piechart touchlistener */
     private OnTouchListener mListener;
 
@@ -278,8 +281,10 @@ public class PieChart extends Chart {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         // use the piecharts own listener
-        if(mTouchEnabled && mListener != null) return mListener.onTouch(this, event);
-        else return super.onTouchEvent(event);
+        if (mTouchEnabled && mListener != null)
+            return mListener.onTouch(this, event);
+        else
+            return super.onTouchEvent(event);
     }
 
     /** the angle where the dragging started */
@@ -617,7 +622,7 @@ public class PieChart extends Chart {
     private float calcAngle(float value) {
         return value / mCurrentData.getYValueSum() * 360f;
     }
-    
+
     /**
      * set a new (e.g. custom) charttouchlistener NOTE: make sure to
      * setTouchEnabled(true); if you need touch gestures on the chart
@@ -712,6 +717,25 @@ public class PieChart extends Chart {
      */
     public void setDrawHoleEnabled(boolean enabled) {
         this.mDrawHole = enabled;
+    }
+
+    /**
+     * Set this to true to enable the rotation / spinning of the chart by touch.
+     * Set it to false to disable it. Default: true
+     * 
+     * @param enabled
+     */
+    public void setRotationEnabled(boolean enabled) {
+        mRotateEnabled = enabled;
+    }
+
+    /**
+     * Returns true if rotation of the chart by touch is enabled, false if not.
+     * 
+     * @return
+     */
+    public boolean isRotationEnabled() {
+        return mRotateEnabled;
     }
 
     /**

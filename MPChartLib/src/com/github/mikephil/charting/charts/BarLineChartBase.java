@@ -64,8 +64,8 @@ public abstract class BarLineChartBase extends Chart {
     /** contains the current scale factor of the y-axis */
     protected float mScaleY = 1f;
 
-    /** holds the maximum scale factor of the y-axis, default 8f */
-    protected float mMaxScaleY = 8f;
+    /** holds the maximum scale factor of the y-axis, default 10f */
+    protected float mMaxScaleY = 10f;
 
     /** the width of the grid lines */
     protected float mGridWidth = 1f;
@@ -1589,8 +1589,8 @@ public abstract class BarLineChartBase extends Chart {
         double base = Math.floor(xTouchVal);
 
         double touchOffset = mDeltaX * 0.025;
-        Log.i(LOG_TAG, "touchindex x: " + xTouchVal + ", touchindex y: " + yTouchVal + ", offset: "
-                + touchOffset);
+//        Log.i(LOG_TAG, "touchindex x: " + xTouchVal + ", touchindex y: " + yTouchVal + ", offset: "
+//                + touchOffset);
         // Toast.makeText(getContext(), "touchindex x: " + xTouchVal +
         // ", touchindex y: " + yTouchVal + ", offset: " + touchOffset,
         // Toast.LENGTH_SHORT).show();
@@ -1780,7 +1780,7 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * Returns the maximum y-scale factor. Default 7f
+     * Returns the maximum y-scale factor. Default 10f
      * 
      * @return
      */

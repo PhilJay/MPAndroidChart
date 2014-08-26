@@ -2,7 +2,6 @@
 package com.github.mikephil.charting.charts;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -18,13 +17,11 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore.Images;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 
 import com.github.mikephil.charting.data.BarDataSet;
@@ -924,7 +921,9 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
 
     /**
      * Highlights the values at the given indices in the given DataSets. Provide
-     * null or an empty array to undo all highlighting.
+     * null or an empty array to undo all highlighting. This should be used to
+     * programmatically highlight values. This DOES NOT generate a callback to
+     * the OnChartValueSelectedListener.
      * 
      * @param highs
      */
@@ -935,6 +934,29 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
 
         // redraw the chart
         invalidate();
+    }
+
+    /**
+     * Highlights the value selected by touch gesture. Unlike
+     * highlightValues(...), this generates a callback to the
+     * OnChartValueSelectedListener.
+     * 
+     * @param highs
+     */
+    public void highlightTouch(Highlight high) {
+
+        if (high == null)
+            mIndicesToHightlight = null;
+        else {
+
+            // set the indices to highlight
+            mIndicesToHightlight = new Highlight[] {
+                    high
+            };
+        }        
+
+        // redraw the chart
+        invalidate();
 
         if (mSelectionListener != null) {
 
@@ -942,14 +964,11 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
                 mSelectionListener.onNothingSelected();
             else {
 
-                Entry[] values = new Entry[highs.length];
-
-                for (int i = 0; i < values.length; i++)
-                    values[i] = getEntryByDataSetIndex(highs[i].getXIndex(),
-                            highs[i].getDataSetIndex());
+                Entry e = getEntryByDataSetIndex(high.getXIndex(),
+                        high.getDataSetIndex());
 
                 // notify the listener
-                mSelectionListener.onValuesSelected(values, highs);
+                mSelectionListener.onValueSelected(e, high.getDataSetIndex());
             }
         }
     }
@@ -990,12 +1009,17 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      * @param dataSetIndex the index of the selected DataSet
      */
     private void drawMarkerView(int xIndex, int dataSetIndex) {
-        
+
         Entry e = getEntryByDataSetIndex(xIndex, dataSetIndex);
+
+        // make sure the entry is not null
+        if (e == null)
+            return;
 
         float xPos = (float) xIndex;
 
-        // make sure the marker is in the center of the bars in BarChart
+        // make sure the marker is in the center of the bars in BarChart and
+        // CandleStickChart
         if (this instanceof BarChart || this instanceof CandleStickChart)
             xPos += 0.5f;
 
@@ -1186,7 +1210,8 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     }
 
     /**
-     * if set to true, value highlightning is enabled
+     * If set to true, value highlighting is enabled which means that values can
+     * be highlighted programmatically or by touch gesture.
      * 
      * @param enabled
      */
@@ -1195,7 +1220,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     }
 
     /**
-     * returns true if highlightning of values is enabled, false if not
+     * returns true if highlighting of values is enabled, false if not
      * 
      * @return
      */
@@ -1389,7 +1414,8 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     }
 
     /**
-     * set this to false to disable gestures on the chart, default: true
+     * Set this to false to disable all gestures and touches on the chart,
+     * default: true
      * 
      * @param enabled
      */
