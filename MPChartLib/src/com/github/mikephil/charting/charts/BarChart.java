@@ -4,6 +4,7 @@ package com.github.mikephil.charting.charts;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -194,30 +195,28 @@ public class BarChart extends BarLineChartBase {
             // check outofbounds
             if (index < mCurrentData.getYValCount() && index >= 0 && index < mDeltaX * mPhaseX) {
 
-                mHighlightPaint.setAlpha(120);
-
                 Entry e = getEntryByDataSetIndex(index, dataSetIndex);
 
                 prepareBar(e.getXIndex(), e.getVal(), ds.getBarSpace());
 
                 mDrawCanvas.drawRect(mBarRect, mHighlightPaint);
 
-                // if (mDrawHighlightArrow) {
-                //
-                //
-                // // distance between highlight arrow and bar
-                // float offsetY = mDeltaY * 0.04f;
-                //
-                // mHighlightPaint.setAlpha(200);
-                //
-                // Path arrow = new Path();
-                // arrow.moveTo(index + 0.5f, y + offsetY * 0.3f);
-                // arrow.lineTo(index + 0.2f, y + offsetY);
-                // arrow.lineTo(index + 0.8f, y + offsetY);
-                //
-                // transformPath(arrow);
-                // mDrawCanvas.drawPath(arrow, mHighlightPaint);
-                // }
+                if (mDrawHighlightArrow) {
+                    
+                    mHighlightPaint.setAlpha(255);
+
+                    // distance between highlight arrow and bar
+                    float offsetY = mDeltaY * 0.07f;
+                    float y = e.getVal();
+
+                    Path arrow = new Path();
+                    arrow.moveTo(index + 0.5f, y + offsetY * 0.3f);
+                    arrow.lineTo(index + 0.2f, y + offsetY);
+                    arrow.lineTo(index + 0.8f, y + offsetY);
+
+                    transformPath(arrow);
+                    mDrawCanvas.drawPath(arrow, mHighlightPaint);
+                }
             }
         }
     }

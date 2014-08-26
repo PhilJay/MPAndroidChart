@@ -2,6 +2,7 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,6 +104,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         LineDataSet d1 = new LineDataSet(e1, "New DataSet " + cnt + ", (1)");
         d1.setLineWidth(3f);
         d1.setCircleSize(5f);
+        d1.setHighLightColor(Color.rgb(244, 117, 117));
         
         ArrayList<Entry> e2 = new ArrayList<Entry>();
 
@@ -113,6 +115,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         LineDataSet d2 = new LineDataSet(e2, "New DataSet " + cnt + ", (2)");
         d2.setLineWidth(3f);
         d2.setCircleSize(5f);
+        d2.setHighLightColor(Color.rgb(244, 117, 117));
         d2.setColor(getResources().getColor(R.color.vordiplom_1));
         d2.setCircleColor(getResources().getColor(R.color.vordiplom_1));
         
@@ -142,6 +145,8 @@ public class ListViewMultiChartActivity extends DemoBase {
         BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);
         d.setBarSpacePercent(20f);
         d.setColors(ColorTemplate.VORDIPLOM_COLORS, getApplicationContext());
+        d.setHighLightAlpha(255);
+        
         BarData cd = new BarData(getMonths(), d);
         return cd;
     }
