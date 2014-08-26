@@ -78,7 +78,7 @@ public abstract class BarLineChartBase extends Chart {
     protected boolean mPinchZoomEnabled = false;
 
     /** if true, dragging / scaling is enabled for the chart */
-    protected boolean mDragEnabled = true;
+    protected boolean mDragScaleEnabled = true;
 
     /** if true, the y range is predefined */
     protected boolean mFixedYValues = false;
@@ -1381,7 +1381,6 @@ public abstract class BarLineChartBase extends Chart {
     public boolean hasFixedYValues() {
         return mFixedYValues;
     }
-
     /**
      * sets the color for the grid lines
      * 
@@ -1453,8 +1452,8 @@ public abstract class BarLineChartBase extends Chart {
      * 
      * @param enabled
      */
-    public void setDragEnabled(boolean enabled) {
-        this.mDragEnabled = enabled;
+    public void setDragScaleEnabled(boolean enabled) {
+        this.mDragScaleEnabled = enabled;
     }
 
     /**
@@ -1462,8 +1461,8 @@ public abstract class BarLineChartBase extends Chart {
      * 
      * @return
      */
-    public boolean isDragEnabled() {
-        return mDragEnabled;
+    public boolean isDragScaleEnabled() {
+        return mDragScaleEnabled;
     }
 
     /**
@@ -1631,7 +1630,7 @@ public abstract class BarLineChartBase extends Chart {
         if (dataSetIndex == -1)
             return null;
 
-        return new Highlight(xIndex, (float) yTouchVal, dataSetIndex);
+        return new Highlight(xIndex, dataSetIndex);
     }
 
     /**

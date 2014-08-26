@@ -80,7 +80,7 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
         mChart.setTouchEnabled(true);
 
         // enable scaling and dragging
-        mChart.setDragEnabled(true);
+        mChart.setDragScaleEnabled(false);
 
         // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(true);

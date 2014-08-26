@@ -72,7 +72,7 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
             mGestureDetector.onTouchEvent(event);
         }
 
-        if (!mChart.isDragEnabled() && !mDrawingEnabled)
+        if (!mChart.isDragScaleEnabled() && !mDrawingEnabled)
             return true;
 
         mDrawingContext.init(mChart.getDrawListener(), mChart.isAutoFinishEnabled());

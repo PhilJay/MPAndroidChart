@@ -63,7 +63,7 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
         mChart.setTouchEnabled(true);
 
         // enable scaling and dragging
-        mChart.setDragEnabled(true);
+        mChart.setDragScaleEnabled(true);
 
         // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(false);

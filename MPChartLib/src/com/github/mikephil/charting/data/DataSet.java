@@ -49,9 +49,9 @@ public abstract class DataSet {
         this.mLabel = label;
         this.mYVals = yVals;
 
-//        if (yVals.size() <= 0) {
-//            return;
-//        }
+        // if (yVals.size() <= 0) {
+        // return;
+        // }
 
         mColors = new ArrayList<Integer>();
 
@@ -136,18 +136,35 @@ public abstract class DataSet {
     }
 
     /**
-     * Returns the first Entry object found at the given xIndex. Returns null if
-     * no Entry object at that index. INFORMATION: This method does calculations
-     * at runtime. Do not over-use in performance critical situations.
+     * Returns the first Entry object found at the given xIndex with binary
+     * search. Returns null if no Entry object at that index. INFORMATION: This
+     * method does calculations at runtime. Do not over-use in performance
+     * critical situations.
      * 
      * @param xIndex
      * @return
      */
-    public Entry getEntryForXIndex(int xIndex) {
+    public Entry getEntryForXIndex(int x) {
 
-        for (int i = 0; i < mYVals.size(); i++) {
-            if (xIndex == mYVals.get(i).getXIndex())
-                return mYVals.get(i);
+//        for (int i = 0; i < mYVals.size(); i++) {
+//            if (xIndex == mYVals.get(i).getXIndex())
+//                return mYVals.get(i);
+//        }
+
+        int low = 0;
+        int high = mYVals.size();
+
+        while (low <= high) {
+            int m = (high + low) / 2;
+
+            if (x == mYVals.get(m).getXIndex()) {
+                return mYVals.get(m);
+            }
+
+            if (x > mYVals.get(m).getXIndex())
+                low = m + 1;
+            else
+                high = m - 1;
         }
 
         return null;
@@ -274,31 +291,31 @@ public abstract class DataSet {
     public String getLabel() {
         return mLabel;
     }
-    
-//    /**
-//     * Adds an Entry dynamically.
-//     * 
-//     * @param d
-//     */
-//    public void addEntry(Entry e) {
-//               
-//        float sum = e.getSum();
-//        
-//        if(mYVals == null || mYVals.size() <= 0) {
-//            
-//            mYVals = new ArrayList<Entry>();
-//            mYMax = sum;
-//            mYMin = sum;
-//        } else {
-//            
-//            if(mYMax < sum) mYMax = sum;
-//            if(mYMin > sum) mYMin = sum;
-//        }
-//        
-//        mYVals.add(e);
-//        
-//        mYValueSum += sum;
-//    }
+
+    // /**
+    // * Adds an Entry dynamically.
+    // *
+    // * @param d
+    // */
+    // public void addEntry(Entry e) {
+    //
+    // float sum = e.getSum();
+    //
+    // if(mYVals == null || mYVals.size() <= 0) {
+    //
+    // mYVals = new ArrayList<Entry>();
+    // mYMax = sum;
+    // mYMin = sum;
+    // } else {
+    //
+    // if(mYMax < sum) mYMax = sum;
+    // if(mYMin > sum) mYMin = sum;
+    // }
+    //
+    // mYVals.add(e);
+    //
+    // mYValueSum += sum;
+    // }
 
     /** BELOW THIS COLOR HANDLING */
 

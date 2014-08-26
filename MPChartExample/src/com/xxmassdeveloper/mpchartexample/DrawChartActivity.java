@@ -48,7 +48,7 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
         mChart.setDrawingEnabled(true);
 
         // enable dragging and scaling
-        mChart.setDragEnabled(true);
+        mChart.setDragScaleEnabled(true);
 
         mChart.setDrawYValues(false);
 //        mChart.setLineWidth(5f);

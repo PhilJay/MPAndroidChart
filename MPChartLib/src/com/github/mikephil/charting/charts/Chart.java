@@ -23,6 +23,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.ChartData;
@@ -997,7 +998,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
 
             int xIndex = mIndicesToHightlight[i].getXIndex();
 
-            if (xIndex < mCurrentData.getXVals().size() && xIndex < mDeltaX * mPhaseX)
+            if (xIndex <= mDeltaX && xIndex <= mDeltaX * mPhaseX)
                 drawMarkerView(xIndex, mIndicesToHightlight[i].getDataSetIndex());
         }
     }
@@ -1013,8 +1014,9 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
         Entry e = getEntryByDataSetIndex(xIndex, dataSetIndex);
 
         // make sure the entry is not null
-        if (e == null)
+        if (e == null) {
             return;
+        }
 
         float xPos = (float) xIndex;
 
