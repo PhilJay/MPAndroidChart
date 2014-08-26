@@ -18,7 +18,7 @@ import android.view.MotionEvent;
 import android.view.ViewParent;
 import android.view.View.OnTouchListener;
 
-import com.github.mikephil.charting.data.BarLineScatterData;
+import com.github.mikephil.charting.data.BarLineScatterCandleData;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
@@ -910,7 +910,7 @@ public abstract class BarLineChartBase extends Chart {
      */
     private void drawLimitLines() {
 
-        ArrayList<LimitLine> limitLines = ((BarLineScatterData) mOriginalData).getLimitLines();
+        ArrayList<LimitLine> limitLines = ((BarLineScatterCandleData) mOriginalData).getLimitLines();
 
         if (limitLines == null)
             return;

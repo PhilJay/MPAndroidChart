@@ -5,7 +5,7 @@ import android.graphics.Color;
 
 import java.util.ArrayList;
 
-public class BarDataSet extends DataSet {
+public class BarDataSet extends BarLineScatterCandleDataSet {
 
     /** space indicator between the bars 0.1f == 10 % */
     private float mBarSpace = 0.15f;
@@ -19,6 +19,9 @@ public class BarDataSet extends DataSet {
     /** the color used for drawing the bar shadows */
     private int mBarShadowColor = Color.rgb(215, 215, 215);
 
+    /** the alpha value used to draw the highlight indicator bar */
+    private int mHighLightAlpha = 120;
+
     /**
      * the overall entry count, including counting each stack-value individually
      */
@@ -27,11 +30,14 @@ public class BarDataSet extends DataSet {
     /**
      * array of labels used to describe the different values of the stacked bars
      */
-    private String[] mStackLabels = new String[] { "Stack" };
-    
+    private String[] mStackLabels = new String[] {
+            "Stack"
+    };
 
     public BarDataSet(ArrayList<BarEntry> yVals, String label) {
         super(yVals, label);
+
+        mHighLightColor = Color.rgb(0, 0, 0);
 
         calcStackSize(yVals);
         calcEntryCountIncludingStacks(yVals);
@@ -52,6 +58,8 @@ public class BarDataSet extends DataSet {
         copied.mBarSpace = mBarSpace;
         copied.mBarShadowColor = mBarShadowColor;
         copied.mStackLabels = mStackLabels;
+        copied.mHighLightColor = mHighLightColor;
+        copied.mHighLightAlpha = mHighLightAlpha;
 
         return copied;
     }
@@ -156,6 +164,26 @@ public class BarDataSet extends DataSet {
      */
     public int getBarShadowColor() {
         return mBarShadowColor;
+    }
+
+    /**
+     * Set the alpha value (transparency) that is used for drawing the highlight
+     * indicator bar. min = 0 (fully transparent), max = 255 (fully opaque)
+     * 
+     * @param alpha
+     */
+    public void setHighLightAlpha(int alpha) {
+        mHighLightAlpha = alpha;
+    }
+
+    /**
+     * Returns the alpha value (transparency) that is used for drawing the
+     * highlight indicator.
+     * 
+     * @return
+     */
+    public int getHighLightAlpha() {
+        return mHighLightAlpha;
     }
 
     /**

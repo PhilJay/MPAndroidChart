@@ -178,6 +178,7 @@ public class BarChart extends BarLineChartBase {
 
     @Override
     protected void drawHighlights() {
+        
 
         for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
@@ -186,6 +187,9 @@ public class BarChart extends BarLineChartBase {
 
             int dataSetIndex = h.getDataSetIndex();
             BarDataSet ds = (BarDataSet) mCurrentData.getDataSetByIndex(dataSetIndex);
+            
+            mHighlightPaint.setColor(ds.getHighLightColor());
+            mHighlightPaint.setAlpha(ds.getHighLightAlpha());
 
             // check outofbounds
             if (index < mCurrentData.getYValCount() && index >= 0 && index < mDeltaX * mPhaseX) {

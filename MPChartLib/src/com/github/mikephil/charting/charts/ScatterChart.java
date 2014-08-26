@@ -172,7 +172,9 @@ public class ScatterChart extends BarLineChartBase {
 
         for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
-            DataSet set = getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
+            ScatterDataSet set = (ScatterDataSet) getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
+            
+            mHighlightPaint.setColor(set.getHighLightColor());
 
             int xIndex = mIndicesToHightlight[i].getXIndex(); // get the
                                                               // x-position

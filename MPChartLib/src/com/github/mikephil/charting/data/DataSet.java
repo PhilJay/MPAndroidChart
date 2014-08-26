@@ -178,13 +178,24 @@ public abstract class DataSet {
      * @param xIndex
      * @return
      */
-    public ArrayList<Entry> getEntriesForXIndex(int xIndex) {
+    public ArrayList<Entry> getEntriesForXIndex(int x) {
 
         ArrayList<Entry> entries = new ArrayList<Entry>();
 
-        for (int i = 0; i < mYVals.size(); i++) {
-            if (xIndex == mYVals.get(i).getXIndex())
-                entries.add(mYVals.get(i));
+        int low = 0;
+        int high = mYVals.size();
+
+        while (low <= high) {
+            int m = (high + low) / 2;
+
+            if (x == mYVals.get(m).getXIndex()) {
+                entries.add(mYVals.get(m));
+            }
+
+            if (x > mYVals.get(m).getXIndex())
+                low = m + 1;
+            else
+                high = m - 1;
         }
 
         return entries;

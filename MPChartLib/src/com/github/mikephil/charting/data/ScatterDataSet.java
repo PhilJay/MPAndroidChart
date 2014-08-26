@@ -8,7 +8,7 @@ import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 
-public class ScatterDataSet extends DataSet {
+public class ScatterDataSet extends BarLineScatterCandleDataSet {
 
     /** the size the scattershape will have, in screen pixels */
     private float mShapeSize = 12f;
@@ -45,6 +45,8 @@ public class ScatterDataSet extends DataSet {
         copied.mShapeSize = mShapeSize;
         copied.mScatterShape = mScatterShape;
         copied.mCustomScatterPath = mCustomScatterPath;
+        copied.mHighLightColor = mHighLightColor;
+        
         return copied;
     }
 

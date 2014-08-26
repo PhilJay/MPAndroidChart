@@ -2,7 +2,6 @@
 package com.github.mikephil.charting.data;
 
 import com.github.mikephil.charting.utils.Highlight;
-import com.github.mikephil.charting.utils.LimitLine;
 
 import java.util.ArrayList;
 

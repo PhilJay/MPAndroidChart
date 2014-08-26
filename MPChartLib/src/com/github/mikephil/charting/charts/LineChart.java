@@ -71,7 +71,9 @@ public class LineChart extends BarLineChartBase {
 
         for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
-            DataSet set = getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
+            LineDataSet set = (LineDataSet) getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
+            
+            mHighlightPaint.setColor(set.getHighLightColor());
 
             int xIndex = mIndicesToHightlight[i].getXIndex(); // get the
                                                               // x-position

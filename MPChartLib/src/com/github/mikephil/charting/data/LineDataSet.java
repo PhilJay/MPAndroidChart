@@ -10,7 +10,7 @@ import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 
-public class LineDataSet extends DataSet {
+public class LineDataSet extends BarLineScatterCandleDataSet {
 
     /** arraylist representing all colors that are used for the circles */
     private ArrayList<Integer> mCircleColors = null;
@@ -67,6 +67,8 @@ public class LineDataSet extends DataSet {
         copied.mDashPathEffect = mDashPathEffect;
         copied.mDrawCircles = mDrawCircles;
         copied.mDrawFilled = mDrawFilled;
+        copied.mHighLightColor = mHighLightColor;
+        
         return copied;
     }
 
