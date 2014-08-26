@@ -16,6 +16,8 @@ public class DrawableFillableLineChart extends LineChart {
     private Drawable mFillDrawable;
     private int mParentBackgroundColor = 0;
 
+    private boolean mFillInverted = false;
+
     public DrawableFillableLineChart(Context context) {
         super(context);
     }
@@ -26,6 +28,18 @@ public class DrawableFillableLineChart extends LineChart {
 
     public DrawableFillableLineChart(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+    }
+
+    /*
+     * If set to true, it will fill the top section of the graph with the drawable fill
+     * If false, it will fill the bottom section
+     */
+    public void setFillInverted(boolean inverted) {
+        mFillInverted = inverted;
+    }
+
+    public boolean isFillInverted() {
+        return mFillInverted;
     }
 
     @Override
@@ -107,7 +121,10 @@ public class DrawableFillableLineChart extends LineChart {
         mFillDrawable.setDither(true);
         mFillDrawable.draw(mDrawCanvas);
 
-        filled.toggleInverseFillType();
+        if (!mFillInverted) {
+            filled.toggleInverseFillType();
+        }
+
         Paint backgroundPaint = new Paint();
         backgroundPaint.setColor(mParentBackgroundColor);
 

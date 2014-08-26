@@ -62,9 +62,15 @@ public class DrawableFillableLineChartActivity extends DemoBase implements SeekB
         *
         * In order to get a smooth gradient, fade into the background color and not into Color.Transparent
         */
-        mChart.enableChartFill(new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
-                                                    new int[] {getBaseContext().getResources().getColor(R.color.gradient), Color.WHITE}),
-                               Color.WHITE);
+//        mChart.enableChartFill(new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+//                                                    new int[] {getBaseContext().getResources().getColor(R.color.gradient), Color.WHITE}),
+//                               Color.WHITE);
+
+        mChart.enableChartFill(new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP,
+                        new int[] {getBaseContext().getResources().getColor(R.color.gradient), Color.WHITE}),
+                Color.WHITE);
+
+        mChart.setFillInverted(true);
 
         //Clear Fill
         //mChart.disableChartFill();
@@ -176,6 +182,11 @@ public class DrawableFillableLineChartActivity extends DemoBase implements SeekB
                     Toast.makeText(getApplicationContext(), "Saving SUCCESSFUL!", Toast.LENGTH_SHORT).show();
                 } else Toast.makeText(getApplicationContext(), "Saving FAILED!", Toast.LENGTH_SHORT).show();
 
+                break;
+            }
+            case R.id.actionInvertFill: {
+                mChart.setFillInverted(!mChart.isFillInverted());
+                mChart.invalidate();
                 break;
             }
         }

@@ -41,4 +41,8 @@
         android:id="@+id/actionTogglePinch"
         android:title="Toggle PinchZoom">
     </item>
+    <item
+        android:id="@+id/actionInvertFill"
+        android:title="Toggle Inverted Fill"
+        />
 </menu>
