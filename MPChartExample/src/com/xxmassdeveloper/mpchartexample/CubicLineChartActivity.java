@@ -12,15 +12,12 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.charts.BarLineChartBase.BorderPosition;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
-import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.Legend.LegendForm;
 import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -280,6 +277,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         // create a dataset and give it a type
         LineDataSet set1 = new LineDataSet(vals1, "DataSet 1");
         set1.setDrawCubic(true);
+        set1.setCubicIntensity(0.2f);
         set1.setDrawFilled(true);
         set1.setDrawCircles(false); 
         set1.setLineWidth(2f);
