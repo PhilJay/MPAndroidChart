@@ -53,6 +53,9 @@ Features
  - **LineChart (with legend, simple design)**
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_linechart3.png)
 
+ - **LineChart (cubic lines)**
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/cubiclinechart.png)
+
  - **LineChart (single DataSet)**
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart.png)
 
@@ -67,12 +70,7 @@ Features
  - **BarChart2D (multiple DataSets)**
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart2d_multi_dataset_date1.png)
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart2d_multi_dataset.png)
 
-
- - **BarChart3D**
-
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart3d.png)
 
  - **PieChart (with selection, ...)**
 
