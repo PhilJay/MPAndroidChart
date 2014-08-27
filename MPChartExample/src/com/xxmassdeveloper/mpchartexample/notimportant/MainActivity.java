@@ -24,6 +24,7 @@ import com.xxmassdeveloper.mpchartexample.AnotherBarActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivityMultiDataset;
 import com.xxmassdeveloper.mpchartexample.CandleStickChartActivity;
+import com.xxmassdeveloper.mpchartexample.CubicLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.InvertedLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.LineChartActivity;
 import com.xxmassdeveloper.mpchartexample.ListViewBarChartActivity;
@@ -81,6 +82,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
         objects.add(new ContentItem(
                 "Candle Stick Chart",
                 "Demonstrates usage of the CandleStickChart."));
+        objects.add(new ContentItem(
+                "Cubic Line Chart",
+                "Demonstrates cubic lines in a LineChart."));
 
         MyAdapter adapter = new MyAdapter(this, objects);
 
@@ -157,6 +161,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 break;
             case 13:
                 i = new Intent(this, CandleStickChartActivity.class);
+                startActivity(i);
+                break;
+            case 14:
+                i = new Intent(this, CubicLineChartActivity.class);
                 startActivity(i);
                 break;
         }

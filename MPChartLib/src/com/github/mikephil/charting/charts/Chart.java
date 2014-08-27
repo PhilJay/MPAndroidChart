@@ -475,7 +475,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
         mContentRect.set((int) mOffsetLeft, (int) mOffsetTop, getMeasuredWidth()
                 - (int) mOffsetRight,
                 getMeasuredHeight()
-                        - (int) mOffsetBottom);
+                        - (int) mOffsetBottom + 1);
 
         // Log.i(LOG_TAG, "Contentrect prepared. Width: " + mContentRect.width()
         // + ", height: "

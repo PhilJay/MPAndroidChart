@@ -13,6 +13,10 @@
         android:id="@+id/actionToggleCircles"
         android:title="Toggle Circles">
     </item>
+        <item
+        android:id="@+id/actionToggleCubic"
+        android:title="Toggle Cubic">
+    </item>
     <item
         android:id="@+id/actionToggleHighlight"
         android:title="Toggle Highlight">

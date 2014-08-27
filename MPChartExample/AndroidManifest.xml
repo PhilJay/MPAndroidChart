@@ -38,6 +38,7 @@
         <activity android:name="AnotherBarActivity"></activity>
         <activity android:name="InvertedLineChartActivity"></activity>
         <activity android:name="CandleStickChartActivity"></activity>
+        <activity android:name="CubicLineChartActivity"></activity>
     </application>
 
 </manifest>

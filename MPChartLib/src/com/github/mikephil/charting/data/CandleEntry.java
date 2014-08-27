@@ -94,6 +94,11 @@ public class CandleEntry extends Entry {
         return c;
     }
 
+    /**
+     * Returns the upper shadows highest value.
+     * 
+     * @return
+     */
     public float getHigh() {
         return mShadowHigh;
     }
@@ -102,6 +107,11 @@ public class CandleEntry extends Entry {
         this.mShadowHigh = mShadowHigh;
     }
 
+    /**
+     * Returns the lower shadows lowest value.
+     * 
+     * @return
+     */
     public float getLow() {
         return mShadowLow;
     }
@@ -110,6 +120,11 @@ public class CandleEntry extends Entry {
         this.mShadowLow = mShadowLow;
     }
 
+    /**
+     * Returns the bodys close value.
+     * 
+     * @return
+     */
     public float getClose() {
         return mClose;
     }
@@ -118,6 +133,11 @@ public class CandleEntry extends Entry {
         this.mClose = mClose;
     }
 
+    /**
+     * Returns the bodys open value.
+     * 
+     * @return
+     */
     public float getOpen() {
         return mOpen;
     }

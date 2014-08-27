@@ -8,7 +8,6 @@ import android.graphics.Path;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -27,9 +26,6 @@ public class LineChart extends BarLineChartBase {
 
     /** paint for the inner circle of the value indicators */
     protected Paint mCirclePaintInner;
-
-    /** flag for cubic curves instead of lines */
-    protected boolean mDrawCubic = false;
 
     public LineChart(Context context) {
         super(context);
@@ -71,8 +67,9 @@ public class LineChart extends BarLineChartBase {
 
         for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
-            LineDataSet set = (LineDataSet) getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
-            
+            LineDataSet set = (LineDataSet) getDataSetByIndex(mIndicesToHightlight[i]
+                    .getDataSetIndex());
+
             mHighlightPaint.setColor(set.getHighLightColor());
 
             int xIndex = mIndicesToHightlight[i].getXIndex(); // get the
@@ -94,6 +91,20 @@ public class LineChart extends BarLineChartBase {
         }
     }
 
+    private class CPoint {
+
+        public float x = 0f;
+        public float y = 0f;
+
+        public float dx = 0f;
+        public float dy = 0f;
+
+        public CPoint(float x, float y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
     /**
      * draws the given y values to the screen
      */
@@ -102,47 +113,85 @@ public class LineChart extends BarLineChartBase {
 
         ArrayList<LineDataSet> dataSets = (ArrayList<LineDataSet>) mCurrentData.getDataSets();
 
-        mRenderPaint.setStyle(Paint.Style.STROKE);
-
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
             LineDataSet dataSet = dataSets.get(i);
             ArrayList<? extends Entry> entries = dataSet.getYVals();
 
-            float[] valuePoints = generateTransformedValues(entries, 0f);
-
             mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
             mRenderPaint.setPathEffect(dataSet.getDashPathEffect());
 
-            if (mDrawCubic) {
+            // if drawing cubic lines is enabled
+            if (dataSet.isDrawCubicEnabled()) {
 
                 // get the color that is specified for this position from the
                 // DataSet
                 mRenderPaint.setColor(dataSet.getColor(i));
 
+                float intensity = dataSet.getCubicIntensity();
+
+                // the path for the cubic-spline
                 Path spline = new Path();
 
-                spline.moveTo(entries.get(0).getXIndex(), entries.get(0).getVal());
+                ArrayList<CPoint> points = new ArrayList<CPoint>();
+                for (Entry e : entries)
+                    points.add(new CPoint(e.getXIndex(), e.getVal()));
 
-                // create a new path
-                for (int x = 1; x < entries.size() - 3; x += 2) {
+                if (points.size() > 1) {
+                    for (int j = 0; j < points.size() * mPhaseX; j++) {
+                        CPoint point = points.get(j);
 
-                    // spline.rQuadTo(entries.get(x).getXIndex(),
-                    // entries.get(x).getVal(), entries.get(x+1).getXIndex(),
-                    // entries.get(x+1).getVal());
+                        if (j == 0) {
+                            CPoint next = points.get(j + 1);
+                            point.dx = ((next.x - point.x) * intensity);
+                            point.dy = ((next.y - point.y) * intensity);
+                        }
+                        else if (j == points.size() - 1) {
+                            CPoint prev = points.get(j - 1);
+                            point.dx = ((point.x - prev.x) * intensity);
+                            point.dy = ((point.y - prev.y) * intensity);
+                        }
+                        else {
+                            CPoint next = points.get(j + 1);
+                            CPoint prev = points.get(j - 1);
+                            point.dx = ((next.x - prev.x) * intensity);
+                            point.dy = ((next.y - prev.y) * intensity);
+                        }
 
-                    spline.cubicTo(entries.get(x).getXIndex(), entries.get(x).getVal(), entries
-                            .get(x + 1).getXIndex(), entries.get(x + 1).getVal(), entries
-                            .get(x + 2).getXIndex(), entries.get(x + 2).getVal());
+                        // create the cubic-spline path
+                        if (j == 0) {
+                            spline.moveTo(point.x, point.y * mPhaseY);
+                        }
+                        else {
+                            CPoint prev = points.get(j - 1);
+                            spline.cubicTo(prev.x + prev.dx, (prev.y + prev.dy) * mPhaseY, point.x - point.dx,
+                                    (point.y - point.dy) * mPhaseY, point.x, point.y * mPhaseY);
+                        }
+                    }
                 }
 
-                // spline.close();
+                // if filled is enabled, close the path
+                if (dataSet.isDrawFilledEnabled()) {
+
+                    spline.lineTo((entries.size() - 1) * mPhaseX, mYChartMin);
+                    spline.lineTo(0, mYChartMin);
+                    spline.close();
+
+                    mRenderPaint.setStyle(Paint.Style.FILL);
+                } else {
+                    mRenderPaint.setStyle(Paint.Style.STROKE);
+                }
 
                 transformPath(spline);
 
                 mDrawCanvas.drawPath(spline, mRenderPaint);
 
+                // draw normal (straight) lines
             } else {
+
+                mRenderPaint.setStyle(Paint.Style.STROKE);
+
+                float[] valuePoints = generateTransformedValues(entries, 0f);
 
                 for (int j = 0; j < (valuePoints.length - 2) * mPhaseX; j += 2) {
 
@@ -163,30 +212,30 @@ public class LineChart extends BarLineChartBase {
                     mDrawCanvas.drawLine(valuePoints[j], valuePoints[j + 1], valuePoints[j + 2],
                             valuePoints[j + 3], mRenderPaint);
                 }
-            }
 
-            mRenderPaint.setPathEffect(null);
+                mRenderPaint.setPathEffect(null);
 
-            // if drawing filled is enabled
-            if (dataSet.isDrawFilledEnabled() && entries.size() > 0) {
-                // mDrawCanvas.drawVertices(VertexMode.TRIANGLE_STRIP,
-                // valuePoints.length, valuePoints, 0,
-                // null, 0, null, 0, null, 0, 0, paint);
+                // if drawing filled is enabled
+                if (dataSet.isDrawFilledEnabled() && entries.size() > 0) {
+                    // mDrawCanvas.drawVertices(VertexMode.TRIANGLE_STRIP,
+                    // valuePoints.length, valuePoints, 0,
+                    // null, 0, null, 0, null, 0, 0, paint);
 
-                mRenderPaint.setStyle(Paint.Style.FILL);
+                    mRenderPaint.setStyle(Paint.Style.FILL);
 
-                mRenderPaint.setColor(dataSet.getFillColor());
-                // filled is drawn with less alpha
-                mRenderPaint.setAlpha(dataSet.getFillAlpha());
+                    mRenderPaint.setColor(dataSet.getFillColor());
+                    // filled is drawn with less alpha
+                    mRenderPaint.setAlpha(dataSet.getFillAlpha());
 
-                Path filled = generateFilledPath(entries);
+                    Path filled = generateFilledPath(entries);
 
-                transformPath(filled);
+                    transformPath(filled);
 
-                mDrawCanvas.drawPath(filled, mRenderPaint);
+                    mDrawCanvas.drawPath(filled, mRenderPaint);
 
-                // restore alpha
-                mRenderPaint.setAlpha(255);
+                    // restore alpha
+                    mRenderPaint.setAlpha(255);
+                }
             }
         }
     }

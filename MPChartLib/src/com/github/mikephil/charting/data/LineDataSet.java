@@ -17,7 +17,7 @@ public class LineDataSet extends BarLineScatterCandleDataSet {
 
     /** the color that is used for filling the line surface */
     private int mFillColor = Color.rgb(140, 234, 255);
-    
+
     /** transparency used for filling line surface */
     private int mFillAlpha = 85;
 
@@ -27,6 +27,9 @@ public class LineDataSet extends BarLineScatterCandleDataSet {
     /** the width of the drawn data lines */
     private float mLineWidth = 1f;
 
+    /** sets the intensity of the cubic lines */
+    private float mCubicIntensity = 0.2f;
+
     /** the path effect of this DataSet that makes dashed lines possible */
     private DashPathEffect mDashPathEffect = null;
 
@@ -35,6 +38,9 @@ public class LineDataSet extends BarLineScatterCandleDataSet {
 
     /** if true, the data will also be drawn filled */
     private boolean mDrawFilled = false;
+
+    /** if true, cubic lines are drawn instead of linear */
+    private boolean mDrawCubic = false;
 
     public LineDataSet(ArrayList<Entry> yVals, String label) {
         super(yVals, label);
@@ -67,8 +73,9 @@ public class LineDataSet extends BarLineScatterCandleDataSet {
         copied.mDashPathEffect = mDashPathEffect;
         copied.mDrawCircles = mDrawCircles;
         copied.mDrawFilled = mDrawFilled;
+        copied.mDrawCubic = mDrawCubic;
         copied.mHighLightColor = mHighLightColor;
-        
+
         return copied;
     }
 
@@ -132,6 +139,31 @@ public class LineDataSet extends BarLineScatterCandleDataSet {
      */
     public float getLineWidth() {
         return mLineWidth;
+    }
+
+    /**
+     * Sets the intensity for cubic lines (if enabled). Max = 1f = very cubic,
+     * Min = 0.05f = low cubic effect, Default: 0.2f
+     * 
+     * @param intensity
+     */
+    public void setCubicIntensity(float intensity) {
+
+        if (intensity > 1f)
+            intensity = 1f;
+        if (intensity < 0.05f)
+            intensity = 0.05f;
+
+        mCubicIntensity = intensity;
+    }
+
+    /**
+     * Returns the intensity of the cubic lines (the effect intensity).
+     * 
+     * @return
+     */
+    public float getCubicIntensity() {
+        return mCubicIntensity;
     }
 
     /**
@@ -226,6 +258,25 @@ public class LineDataSet extends BarLineScatterCandleDataSet {
      */
     public boolean isDrawFilledEnabled() {
         return mDrawFilled;
+    }
+
+    /**
+     * If set to true, the linechart lines are drawn in cubic-style instead of
+     * linear. Default: false
+     * 
+     * @param enabled
+     */
+    public void setDrawCubic(boolean enabled) {
+        mDrawCubic = enabled;
+    }
+
+    /**
+     * returns true if drawing cubic lines is enabled, false if not.
+     * 
+     * @return
+     */
+    public boolean isDrawCubicEnabled() {
+        return mDrawCubic;
     }
 
     /** ALL CODE BELOW RELATED TO CIRCLE-COLORS */
