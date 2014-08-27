@@ -409,7 +409,6 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
         mDeltaX = mCurrentData.getXVals().size() - 1;
     }
 
-    @SuppressLint("NewApi")
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);

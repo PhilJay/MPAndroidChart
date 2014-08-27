@@ -6,7 +6,7 @@ android {
     // resourcePrefix 'mpcht'
     defaultConfig {
         applicationId 'com.github.mikephil.charting'
-        minSdkVersion 9
+        minSdkVersion 8
         targetSdkVersion 19
         versionCode 1
         versionName '1.0'

@@ -43,7 +43,6 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public abstract class BarLineChartBase extends Chart {
 
     /** if set to true, the y-axis is inverted and low values start at the top */
@@ -614,7 +613,7 @@ public abstract class BarLineChartBase extends Chart {
         }
 
         double first = Math.ceil(yMin / interval) * interval;
-        double last = Math.nextUp(Math.floor(yMax / interval) * interval);
+        double last = Utils.nextUp(Math.floor(yMax / interval) * interval);
 
         double f;
         int i;
