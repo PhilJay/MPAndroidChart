@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewParent;
 import android.view.View.OnTouchListener;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.data.BarLineScatterCandleData;
 import com.github.mikephil.charting.data.ChartData;
@@ -249,7 +250,7 @@ public abstract class BarLineChartBase extends Chart {
 
         drawLimitLines();
 
-        // if highlighting is enabled 
+        // if highlighting is enabled
         if (mHighlightEnabled && mHighLightIndicatorEnabled && valuesToHighlight())
             drawHighlights();
 
@@ -680,13 +681,15 @@ public abstract class BarLineChartBase extends Chart {
                 0f, 0f
         };
 
+        int step = mCurrentData.getDataSetCount();
+
         for (int i = 0; i < mCurrentData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
 
-            position[0] = i;
+            position[0] = i * step;
 
             // center the text
             if (mXLabels.isCenterXLabelsEnabled())
-                position[0] += 0.5f;
+                position[0] += (step / 2f);
 
             transformPointArray(position);
 
@@ -890,9 +893,11 @@ public abstract class BarLineChartBase extends Chart {
                 0f, 0f
         };
 
+        int step = mCurrentData.getDataSetCount();
+
         for (int i = 0; i < mCurrentData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
 
-            position[0] = i;
+            position[0] = i * step;
 
             transformPointArray(position);
 
@@ -909,7 +914,8 @@ public abstract class BarLineChartBase extends Chart {
      */
     private void drawLimitLines() {
 
-        ArrayList<LimitLine> limitLines = ((BarLineScatterCandleData) mOriginalData).getLimitLines();
+        ArrayList<LimitLine> limitLines = ((BarLineScatterCandleData) mOriginalData)
+                .getLimitLines();
 
         if (limitLines == null)
             return;
@@ -1380,6 +1386,7 @@ public abstract class BarLineChartBase extends Chart {
     public boolean hasFixedYValues() {
         return mFixedYValues;
     }
+
     /**
      * sets the color for the grid lines
      * 
@@ -1587,8 +1594,9 @@ public abstract class BarLineChartBase extends Chart {
         double base = Math.floor(xTouchVal);
 
         double touchOffset = mDeltaX * 0.025;
-//        Log.i(LOG_TAG, "touchindex x: " + xTouchVal + ", touchindex y: " + yTouchVal + ", offset: "
-//                + touchOffset);
+        // Log.i(LOG_TAG, "touchindex x: " + xTouchVal + ", touchindex y: " +
+        // yTouchVal + ", offset: "
+        // + touchOffset);
         // Toast.makeText(getContext(), "touchindex x: " + xTouchVal +
         // ", touchindex y: " + yTouchVal + ", offset: " + touchOffset,
         // Toast.LENGTH_SHORT).show();
@@ -1606,6 +1614,14 @@ public abstract class BarLineChartBase extends Chart {
             base = mDeltaX - 1;
 
         int xIndex = (int) base;
+
+        if (this instanceof BarChart) {
+
+            // reduce x-index depending on DataSet count (because bars are next
+            // to each other)
+            xIndex /= mOriginalData.getDataSetCount();
+        }
+
         int dataSetIndex = 0; // index of the DataSet inside the ChartData
                               // object
 
@@ -1618,16 +1634,23 @@ public abstract class BarLineChartBase extends Chart {
         }
 
         if (mDataNotSet) {
-            Log.i(LOG_TAG, "no data set");
+            Log.e(LOG_TAG, "Can't select by touch. No data set.");
             return null;
         }
 
         ArrayList<SelInfo> valsAtIndex = getYValsAtIndex(xIndex);
 
-        dataSetIndex = getClosestDataSetIndex(valsAtIndex, (float) yTouchVal);
+        if(this instanceof BarChart) {
+            
+            dataSetIndex = ((int) base) % mOriginalData.getDataSetCount();            
+        } else {
+            dataSetIndex = getClosestDataSetIndex(valsAtIndex, (float) yTouchVal);
+        }
 
         if (dataSetIndex == -1)
             return null;
+        
+        Toast.makeText(getContext(), "xindex: " + xIndex + ", dataSetIndex: " + dataSetIndex, Toast.LENGTH_SHORT).show();
 
         return new Highlight(xIndex, dataSetIndex);
     }

@@ -139,6 +139,7 @@ public class LineChart extends BarLineChartBase {
 
                 if (points.size() > 1) {
                     for (int j = 0; j < points.size() * mPhaseX; j++) {
+                        
                         CPoint point = points.get(j);
 
                         if (j == 0) {
@@ -183,7 +184,7 @@ public class LineChart extends BarLineChartBase {
                 } else {
                     mRenderPaint.setStyle(Paint.Style.STROKE);
                 }
-
+                
                 transformPath(spline);
 
                 mDrawCanvas.drawPath(spline, mRenderPaint);
@@ -193,7 +194,7 @@ public class LineChart extends BarLineChartBase {
 
                 mRenderPaint.setStyle(Paint.Style.STROKE);
 
-                float[] valuePoints = generateTransformedValues(entries, 0f);
+                float[] valuePoints = generateTransformedValuesLineScatter(entries);
 
                 for (int j = 0; j < (valuePoints.length - 2) * mPhaseX; j += 2) {
 
@@ -306,7 +307,7 @@ public class LineChart extends BarLineChartBase {
 
                 ArrayList<? extends Entry> entries = dataSet.getYVals();
 
-                float[] positions = generateTransformedValues(entries, 0f);
+                float[] positions = generateTransformedValuesLineScatter(entries);
 
                 for (int j = 0; j < positions.length * mPhaseX; j += 2) {
 
@@ -354,7 +355,7 @@ public class LineChart extends BarLineChartBase {
 
                 ArrayList<? extends Entry> entries = dataSet.getYVals();
 
-                float[] positions = generateTransformedValues(entries, 0f);
+                float[] positions = generateTransformedValuesLineScatter(entries);
 
                 for (int j = 0; j < positions.length * mPhaseX; j += 2) {
 

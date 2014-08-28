@@ -559,21 +559,51 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     }
 
     /**
-     * transforms an arraylist of Entry into a float array containing the x and
-     * y values transformed with all matrices
+     * Transforms an arraylist of Entry into a float array containing the x and
+     * y values transformed with all matrices for the LINECHART or SCATTERCHART.
      * 
      * @param entries
-     * @param xoffset offset the chart values should have on the x-axis (0.5f)
-     *            to center for barchart
      * @return
      */
-    protected float[] generateTransformedValues(ArrayList<? extends Entry> entries, float xOffset) {
+    protected float[] generateTransformedValuesLineScatter(ArrayList<? extends Entry> entries) {
 
         float[] valuePoints = new float[entries.size() * 2];
 
         for (int j = 0; j < valuePoints.length; j += 2) {
-            valuePoints[j] = entries.get(j / 2).getXIndex() + xOffset;
+            valuePoints[j] = entries.get(j / 2).getXIndex();
             valuePoints[j + 1] = entries.get(j / 2).getVal() * mPhaseY;
+        }
+
+        transformPointArray(valuePoints);
+
+        return valuePoints;
+    }
+
+    /**
+     * Transforms an arraylist of Entry into a float array containing the x and
+     * y values transformed with all matrices for the BARCHART.
+     * 
+     * @param entries
+     * @param dataSet the dataset index
+     * @return
+     */
+    protected float[] generateTransformedValuesBarChart(ArrayList<? extends Entry> entries,
+            int dataSet) {
+
+        float[] valuePoints = new float[entries.size() * 2];
+
+        int setCount = mOriginalData.getDataSetCount();
+
+        for (int j = 0; j < valuePoints.length; j += 2) {
+
+            Entry e = entries.get(j / 2);
+
+            // calculate the x-position, depending on datasetcount
+            float x = e.getXIndex() + (j / 2 * (setCount - 1)) + dataSet + 0.5f;
+            float y = e.getVal();
+
+            valuePoints[j] = x;
+            valuePoints[j + 1] = y * mPhaseY;
         }
 
         transformPointArray(valuePoints);
@@ -953,7 +983,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
             mIndicesToHightlight = new Highlight[] {
                     high
             };
-        }        
+        }
 
         // redraw the chart
         invalidate();

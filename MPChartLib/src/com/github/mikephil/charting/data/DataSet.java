@@ -147,7 +147,7 @@ public abstract class DataSet {
     public Entry getEntryForXIndex(int x) {
 
         int low = 0;
-        int high = mYVals.size()-1;
+        int high = mYVals.size() - 1;
 
         while (low <= high) {
             int m = (high + low) / 2;
@@ -328,9 +328,9 @@ public abstract class DataSet {
     /**
      * Sets the colors that should be used fore this DataSet. Colors are reused
      * as soon as the number of Entries the DataSet represents is higher than
-     * the size of the colors array. Make sure that the colors are already
-     * prepared (by calling getResources().getColor(...)) before adding them to
-     * the DataSet.
+     * the size of the colors array. If you are using colors from the resources,
+     * make sure that the colors are already prepared (by calling
+     * getResources().getColor(...)) before adding them to the DataSet.
      * 
      * @param colors
      */
@@ -341,9 +341,9 @@ public abstract class DataSet {
     /**
      * Sets the colors that should be used fore this DataSet. Colors are reused
      * as soon as the number of Entries the DataSet represents is higher than
-     * the size of the colors array. Make sure that the colors are already
-     * prepared (by calling getResources().getColor(...)) before adding them to
-     * the DataSet.
+     * the size of the colors array. If you are using colors from the resources,
+     * make sure that the colors are already prepared (by calling
+     * getResources().getColor(...)) before adding them to the DataSet.
      * 
      * @param colors
      */

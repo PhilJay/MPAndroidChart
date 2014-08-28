@@ -27,6 +27,9 @@ public class BarDataSet extends BarLineScatterCandleDataSet {
      */
     private int mEntryCountStacks = 0;
 
+    /** the size of rounded corners */
+    private float mRoundedCornerSize = 0f;
+
     /**
      * array of labels used to describe the different values of the stacked bars
      */

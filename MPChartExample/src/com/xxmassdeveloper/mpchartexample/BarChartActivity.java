@@ -249,6 +249,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         BarDataSet set1 = new BarDataSet(yVals1, "DataSet");
         set1.setBarSpacePercent(35f);
+        
         ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
         dataSets.add(set1);
 

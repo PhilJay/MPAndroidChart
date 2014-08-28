@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -168,18 +167,15 @@ public class BarChart extends BarLineChartBase {
     protected void calcMinMax(boolean fixedValues) {
         super.calcMinMax(fixedValues);
 
-        // if (!mStartAtZero && getYMin() >= 0f) {
-        // mYChartMin = getYMin();
-        // mDeltaY = Math.abs(mYChartMax - mYChartMin);
-        // }
-
         // increase deltax by 1 because the bars have a width of 1
         mDeltaX++;
+
+        // extend xDelta to make space for multiple datasets (if ther are one)
+        mDeltaX *= mOriginalData.getDataSetCount();
     }
 
     @Override
     protected void drawHighlights() {
-        
 
         for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
@@ -188,7 +184,7 @@ public class BarChart extends BarLineChartBase {
 
             int dataSetIndex = h.getDataSetIndex();
             BarDataSet ds = (BarDataSet) mCurrentData.getDataSetByIndex(dataSetIndex);
-            
+
             mHighlightPaint.setColor(ds.getHighLightColor());
             mHighlightPaint.setAlpha(ds.getHighLightAlpha());
 
@@ -197,12 +193,14 @@ public class BarChart extends BarLineChartBase {
 
                 Entry e = getEntryByDataSetIndex(index, dataSetIndex);
 
-                prepareBar(e.getXIndex(), e.getVal(), ds.getBarSpace());
+                float x = index * mOriginalData.getDataSetCount() + dataSetIndex;
+                
+                prepareBar(x, e.getVal(), ds.getBarSpace());
 
                 mDrawCanvas.drawRect(mBarRect, mHighlightPaint);
 
                 if (mDrawHighlightArrow) {
-                    
+
                     mHighlightPaint.setAlpha(255);
 
                     // distance between highlight arrow and bar
@@ -225,9 +223,10 @@ public class BarChart extends BarLineChartBase {
     protected void drawData() {
 
         ArrayList<BarDataSet> dataSets = (ArrayList<BarDataSet>) mCurrentData.getDataSets();
+        int setCount = mCurrentData.getDataSetCount();
 
         // 2D drawing
-        for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
+        for (int i = 0; i < setCount; i++) {
 
             BarDataSet dataSet = dataSets.get(i);
             boolean noStacks = dataSet.getStackSize() == 1 ? true : false;
@@ -239,10 +238,14 @@ public class BarChart extends BarLineChartBase {
 
                 BarEntry e = entries.get(j);
 
+                // calculate the x-position, depending on datasetcount
+                float x = e.getXIndex() + j * (setCount - 1) + i;
+                float y = e.getVal();
+
                 // no stacks
                 if (noStacks) {
 
-                    prepareBar(e.getXIndex(), e.getVal(), dataSet.getBarSpace());
+                    prepareBar(x, y, dataSet.getBarSpace());
 
                     // avoid drawing outofbounds values
                     if (isOffContentRight(mBarRect.left))
@@ -273,7 +276,7 @@ public class BarChart extends BarLineChartBase {
                     // in between
                     if (vals == null) {
 
-                        prepareBar(e.getXIndex(), e.getVal(), dataSet.getBarSpace());
+                        prepareBar(x, y, dataSet.getBarSpace());
 
                         // if drawing the bar shadow is enabled
                         if (mDrawBarShadow) {
@@ -291,7 +294,7 @@ public class BarChart extends BarLineChartBase {
                         // if drawing the bar shadow is enabled
                         if (mDrawBarShadow) {
 
-                            prepareBar(e.getXIndex(), e.getVal(), dataSet.getBarSpace());
+                            prepareBar(x, y, dataSet.getBarSpace());
                             mRenderPaint.setColor(dataSet.getBarShadowColor());
                             mDrawCanvas.drawRect(mBarShadow, mRenderPaint);
                         }
@@ -300,7 +303,7 @@ public class BarChart extends BarLineChartBase {
 
                             all -= vals[k];
 
-                            prepareBar(e.getXIndex(), vals[k] + all, dataSet.getBarSpace());
+                            prepareBar(x, vals[k] + all, dataSet.getBarSpace());
 
                             mRenderPaint.setColor(dataSet.getColor(k));
                             mDrawCanvas.drawRect(mBarRect, mRenderPaint);
@@ -310,10 +313,6 @@ public class BarChart extends BarLineChartBase {
                     // avoid drawing outofbounds values
                     if (isOffContentRight(mBarRect.left))
                         break;
-
-                    if (isOffContentLeft(mBarRect.right)) {
-                        continue;
-                    }
                 }
             }
         }
@@ -485,7 +484,6 @@ public class BarChart extends BarLineChartBase {
     @Override
     protected void drawValues() {
 
-        long starttime = System.currentTimeMillis();
         // if values are drawn
         if (mDrawYValues && mCurrentData.getYValCount() < mMaxVisibleCount * mScaleX) {
 
@@ -505,7 +503,7 @@ public class BarChart extends BarLineChartBase {
                 BarDataSet dataSet = dataSets.get(i);
                 ArrayList<BarEntry> entries = (ArrayList<BarEntry>) dataSet.getYVals();
 
-                float[] valuePoints = generateTransformedValues(entries, 0.5f);
+                float[] valuePoints = generateTransformedValuesBarChart(entries, i);
 
                 // if only single values are drawn (sum)
                 if (!mDrawValuesForWholeStack) {
@@ -574,8 +572,6 @@ public class BarChart extends BarLineChartBase {
                 }
             }
         }
-
-        Log.i(LOG_TAG, "DrawValues time: " + (System.currentTimeMillis() - starttime) + "ms");
     }
 
     /**

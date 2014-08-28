@@ -1,6 +1,8 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,10 +15,10 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.github.mikephil.charting.utils.XLabels;
+import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -49,25 +51,31 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         // disable the drawing of values
         mChart.setDrawYValues(false);
 
-        // disable 3D
-        mChart.set3DEnabled(false);
-
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
-        
-//        mChart.setDrawLegend(false);
 
-        mSeekBarX.setProgress(45);
+        mChart.setDrawBarShadow(false);
+        
+        mChart.setDrawGridBackground(false);
+        mChart.setDrawHorizontalGrid(false);
+
+        mSeekBarX.setProgress(12);
         mSeekBarY.setProgress(100);
+        
+        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
         
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART);
+        l.setTypeface(tf);
         
-//        XLabels xl  = mChart.getXLabels();
-//        xl.setPosition(XLabelPosition.TOP);
-//        
-//        YLabels yl = mChart.getYLabels();
-//        yl.setPosition(YLabelPosition.RIGHT);
+        XLabels xl  = mChart.getXLabels();
+        xl.setCenterXLabelText(true);
+        xl.setTypeface(tf);
+        
+        YLabels yl = mChart.getYLabels();
+        yl.setTypeface(tf);
+        
+        mChart.setValueTypeface(tf);
     }
 
     @Override
@@ -171,37 +179,36 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
 
         ArrayList<String> xVals = new ArrayList<String>();
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-            xVals.add((i) + "");
+            xVals.add((i+1990) + "");
         }
 
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
         ArrayList<BarEntry> yVals2 = new ArrayList<BarEntry>();
         ArrayList<BarEntry> yVals3 = new ArrayList<BarEntry>();
 
-        for (int i = 0; i < mSeekBarX.getProgress() / 3; i++) {
+        for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             float val = (float) (Math.random() * mSeekBarY.getProgress()) + 3;
             yVals1.add(new BarEntry(val, i));
         }
 
-        for (int i = mSeekBarX.getProgress() / 3; i < mSeekBarX.getProgress() / 3 * 2; i++) {
+        for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             float val = (float) (Math.random() * mSeekBarY.getProgress()) + 3;
             yVals2.add(new BarEntry(val, i));
         }
 
-        for (int i = mSeekBarX.getProgress() / 3 * 2; i < mSeekBarX.getProgress(); i++) {
+        for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             float val = (float) (Math.random() * mSeekBarY.getProgress()) + 3;
             yVals3.add(new BarEntry(val, i));
         }
 
         // create 3 datasets with different types
         BarDataSet set1 = new BarDataSet(yVals1, "Company A");
-        set1.setColors(ColorTemplate.createColors(getApplicationContext(), ColorTemplate.FRESH_COLORS));
+//        set1.setColors(ColorTemplate.createColors(getApplicationContext(), ColorTemplate.FRESH_COLORS));
+        set1.setColor(Color.rgb(104, 241, 175));
         BarDataSet set2 = new BarDataSet(yVals2, "Company B");
-        set2.resetColors();
-        set2.addColor(getResources().getColor(R.color.liberty_2));
-        set2.addColor(getResources().getColor(R.color.liberty_3));
+        set2.setColor(Color.rgb(164, 228, 251));
         BarDataSet set3 = new BarDataSet(yVals3, "Company C");
-        set3.setColors(ColorTemplate.createColors(getApplicationContext(), ColorTemplate.COLORFUL_COLORS));
+        set3.setColor(Color.rgb(242, 247, 158));
         
         ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
         dataSets.add(set1);
