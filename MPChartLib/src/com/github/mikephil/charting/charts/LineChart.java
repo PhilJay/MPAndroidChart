@@ -172,9 +172,11 @@ public class LineChart extends BarLineChartBase {
 
                 // if filled is enabled, close the path
                 if (dataSet.isDrawFilledEnabled()) {
+                    
+                    float fillMin = dataSet.getYMin() >= 0 ? mYChartMin : 0;
 
-                    spline.lineTo((entries.size() - 1) * mPhaseX, mYChartMin);
-                    spline.lineTo(0, mYChartMin);
+                    spline.lineTo((entries.size() - 1) * mPhaseX, fillMin);
+                    spline.lineTo(0, fillMin);
                     spline.close();
 
                     mRenderPaint.setStyle(Paint.Style.FILL);
@@ -225,9 +227,11 @@ public class LineChart extends BarLineChartBase {
 
                     mRenderPaint.setColor(dataSet.getFillColor());
                     // filled is drawn with less alpha
-                    mRenderPaint.setAlpha(dataSet.getFillAlpha());
+                    mRenderPaint.setAlpha(dataSet.getFillAlpha());                    
+                    
+                    float fillMin = dataSet.getYMin() >= 0 ? mYChartMin : 0;
 
-                    Path filled = generateFilledPath(entries);
+                    Path filled = generateFilledPath(entries, fillMin);
 
                     transformPath(filled);
 
@@ -246,7 +250,7 @@ public class LineChart extends BarLineChartBase {
      * @param entries
      * @return
      */
-    private Path generateFilledPath(ArrayList<? extends Entry> entries) {
+    private Path generateFilledPath(ArrayList<? extends Entry> entries, float fillMin) {
 
         Path filled = new Path();
         filled.moveTo(entries.get(0).getXIndex(), entries.get(0).getVal() * mPhaseY);
@@ -259,8 +263,8 @@ public class LineChart extends BarLineChartBase {
         }
 
         // close up
-        filled.lineTo(entries.get((int) ((entries.size() - 1) * mPhaseX)).getXIndex(), mYChartMin);
-        filled.lineTo(entries.get(0).getXIndex(), mYChartMin);
+        filled.lineTo(entries.get((int) ((entries.size() - 1) * mPhaseX)).getXIndex(), fillMin);
+        filled.lineTo(entries.get(0).getXIndex(), fillMin);
         filled.close();
 
         return filled;

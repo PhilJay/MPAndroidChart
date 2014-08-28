@@ -146,11 +146,6 @@ public abstract class DataSet {
      */
     public Entry getEntryForXIndex(int x) {
 
-//        for (int i = 0; i < mYVals.size(); i++) {
-//            if (xIndex == mYVals.get(i).getXIndex())
-//                return mYVals.get(i);
-//        }
-
         int low = 0;
         int high = mYVals.size()-1;
 
