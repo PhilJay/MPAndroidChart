@@ -30,7 +30,7 @@ public class DrawableFillableLineChart extends LineChart {
         super(context, attrs, defStyle);
     }
 
-    /*
+    /**
      * If set to true, it will fill the top section of the graph with the drawable fill
      * If false, it will fill the bottom section
      */
@@ -107,12 +107,17 @@ public class DrawableFillableLineChart extends LineChart {
         filled.moveTo(entries.get(0).getXIndex(), entries.get(0).getVal());
 
         for (int x = 1; x < entries.size(); x++) {
-
             filled.lineTo(entries.get(x).getXIndex(), entries.get(x).getVal());
         }
 
-        filled.lineTo(entries.get(entries.size() - 1).getXIndex(), mYChartMin);
-        filled.lineTo(entries.get(0).getXIndex(), mYChartMin);
+        if (mFillInverted) {
+            filled.lineTo(entries.get(entries.size() - 1).getXIndex(), mYChartMax);
+            filled.lineTo(entries.get(0).getXIndex(), mYChartMax);
+        } else  {
+            filled.lineTo(entries.get(entries.size() - 1).getXIndex(), mYChartMin);
+            filled.lineTo(entries.get(0).getXIndex(), mYChartMin);
+        }
+
         filled.close();
 
         transformPath(filled);
@@ -121,9 +126,9 @@ public class DrawableFillableLineChart extends LineChart {
         mFillDrawable.setDither(true);
         mFillDrawable.draw(mDrawCanvas);
 
-        if (!mFillInverted) {
-            filled.toggleInverseFillType();
-        }
+
+        filled.toggleInverseFillType();
+
 
         Paint backgroundPaint = new Paint();
         backgroundPaint.setColor(mParentBackgroundColor);

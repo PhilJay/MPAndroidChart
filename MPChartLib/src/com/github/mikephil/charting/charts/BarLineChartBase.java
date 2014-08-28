@@ -1650,6 +1650,14 @@ public abstract class BarLineChartBase extends Chart {
         return mScaleY;
     }
 
+    public float getMaxYChartValue() {
+        return mYChartMax;
+    }
+
+    public float getMinYChartValue() {
+        return mYChartMin;
+    }
+
     /**
      * if the chart is fully zoomed out, return true
      * 
