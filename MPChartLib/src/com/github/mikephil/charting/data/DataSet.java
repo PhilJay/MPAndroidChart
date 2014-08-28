@@ -152,7 +152,7 @@ public abstract class DataSet {
 //        }
 
         int low = 0;
-        int high = mYVals.size();
+        int high = mYVals.size()-1;
 
         while (low <= high) {
             int m = (high + low) / 2;
