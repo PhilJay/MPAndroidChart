@@ -640,7 +640,7 @@ public abstract class BarLineChartBase extends Chart {
     /**
      * draws the x-axis labels to the screen depending on their position
      */
-    protected void drawXLabels() {
+    private void drawXLabels() {
 
         if (!mDrawXLabels)
             return;
@@ -670,24 +670,20 @@ public abstract class BarLineChartBase extends Chart {
      * 
      * @param yPos
      */
-    private void drawXLabels(float yPos) {
+    protected void drawXLabels(float yPos) {
 
         // pre allocate to save performance (dont allocate in loop)
         float[] position = new float[] {
                 0f, 0f
         };
 
-        int step = 1;
-        if (this instanceof BarChart)
-            step = mCurrentData.getDataSetCount();
-
         for (int i = 0; i < mCurrentData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
 
-            position[0] = i * step;
+            position[0] = i;
 
             // center the text
             if (mXLabels.isCenterXLabelsEnabled())
-                position[0] += (step / 2f);
+                position[0] += 0.5f;
 
             transformPointArray(position);
 
@@ -722,7 +718,7 @@ public abstract class BarLineChartBase extends Chart {
     /**
      * draws the y-axis labels to the screen
      */
-    protected void drawYLabels() {
+    private void drawYLabels() {
 
         if (!mDrawYLabels)
             return;
@@ -891,14 +887,9 @@ public abstract class BarLineChartBase extends Chart {
                 0f, 0f
         };
 
-        // take into consideration that multiple DataSets increase mDeltaX
-        int step = 1;
-        if (this instanceof BarChart)
-            step = mCurrentData.getDataSetCount();
-
         for (int i = 0; i < mCurrentData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
 
-            position[0] = i * step;
+            position[0] = i;
 
             transformPointArray(position);
 
@@ -1611,8 +1602,9 @@ public abstract class BarLineChartBase extends Chart {
         // touch out of chart
         if (xTouchVal < -touchOffset || xTouchVal > mDeltaX + touchOffset)
             return null;
-        
-        if(this instanceof CandleStickChart) base -= 0.5;
+
+        if (this instanceof CandleStickChart)
+            base -= 0.5;
 
         if (base < 0)
             base = 0;

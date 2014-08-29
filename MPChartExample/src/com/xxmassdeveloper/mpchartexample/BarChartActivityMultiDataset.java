@@ -59,7 +59,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         mChart.setDrawGridBackground(false);
         mChart.setDrawHorizontalGrid(false);
 
-        mSeekBarX.setProgress(12);
+        mSeekBarX.setProgress(10);
         mSeekBarY.setProgress(100);
         
         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
@@ -216,6 +216,9 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         dataSets.add(set3);
 
         BarData data = new BarData(xVals, dataSets);
+        
+        // add space between the dataset groups in percent of bar-width
+        data.setGroupSpace(110f);
 
         mChart.setData(data);
         mChart.invalidate();

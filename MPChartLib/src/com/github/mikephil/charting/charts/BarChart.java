@@ -177,22 +177,25 @@ public class BarChart extends BarLineChartBase {
         // extend xDelta to make space for multiple datasets (if ther are one)
         mDeltaX *= mOriginalData.getDataSetCount();
 
-        // int maxEntry = 0;
-        //
-        // for(int i = 0; i < mOriginalData.getDataSetCount(); i++) {
-        //
-        // DataSet set = mOriginalData.getDataSetByIndex(i);
-        //
-        // if(maxEntry < set.getEntryCount())
-        // maxEntry = set.getEntryCount();
-        // }
-        //
-        // float groupSpace = 0.5f;
-        // mDeltaX += maxEntry * groupSpace;
+        int maxEntry = 0;
+
+        for (int i = 0; i < mOriginalData.getDataSetCount(); i++) {
+
+            DataSet set = mOriginalData.getDataSetByIndex(i);
+
+            if (maxEntry < set.getEntryCount())
+                maxEntry = set.getEntryCount();
+        }
+
+        float groupSpace = ((BarData) mOriginalData).getGroupSpace();
+        mDeltaX += maxEntry * groupSpace;
     }
 
     @Override
     protected void drawHighlights() {
+        
+        BarData bd = (BarData) mOriginalData;
+        int setCount = mOriginalData.getDataSetCount();
 
         for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
@@ -212,7 +215,7 @@ public class BarChart extends BarLineChartBase {
                 Entry e = getEntryByDataSetIndex(index, dataSetIndex);
 
                 // calculate the correct x-position
-                float x = index * mOriginalData.getDataSetCount() + dataSetIndex;
+                float x = index * setCount + dataSetIndex + bd.getGroupSpace() / 2f + bd.getGroupSpace() * index;
                 float y = e.getVal();
 
                 prepareBar(x, y, ds.getBarSpace());
@@ -241,8 +244,10 @@ public class BarChart extends BarLineChartBase {
     @Override
     protected void drawData() {
 
-        ArrayList<BarDataSet> dataSets = (ArrayList<BarDataSet>) mCurrentData.getDataSets();
-        int setCount = mCurrentData.getDataSetCount();
+        BarData bd = (BarData) mCurrentData;
+
+        ArrayList<BarDataSet> dataSets = (ArrayList<BarDataSet>) bd.getDataSets();
+        int setCount = bd.getDataSetCount();
 
         // 2D drawing
         for (int i = 0; i < setCount; i++) {
@@ -252,14 +257,18 @@ public class BarChart extends BarLineChartBase {
 
             ArrayList<BarEntry> entries = (ArrayList<BarEntry>) dataSet.getYVals();
 
+            // the space between bar-groups
+            float spaceSum = bd.getGroupSpace() / 2f;
+
             // do the drawing
             for (int j = 0; j < dataSet.getEntryCount() * mPhaseX; j++) {
 
                 BarEntry e = entries.get(j);
 
                 // calculate the x-position, depending on datasetcount
-                float x = e.getXIndex() + j * (setCount - 1) + i;
+                float x = e.getXIndex() + j * (setCount - 1) + i + spaceSum;
                 float y = e.getVal();
+                spaceSum += bd.getGroupSpace();
 
                 // no stacks
                 if (noStacks) {
@@ -361,6 +370,85 @@ public class BarChart extends BarLineChartBase {
         // if a shadow is drawn, prepare it too
         if (mDrawBarShadow) {
             mBarShadow.set(mBarRect.left, mOffsetTop, mBarRect.right, getHeight() - mOffsetBottom);
+        }
+    }
+
+    @Override
+    protected void drawXLabels(float yPos) {
+
+        // pre allocate to save performance (dont allocate in loop)
+        float[] position = new float[] {
+                0f, 0f
+        };
+
+        BarData bd = (BarData) mCurrentData;
+
+        int step = mCurrentData.getDataSetCount();
+
+        for (int i = 0; i < mCurrentData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
+
+            position[0] = i * step + i * bd.getGroupSpace() + bd.getGroupSpace() / 2f;
+
+            // center the text
+            if (mXLabels.isCenterXLabelsEnabled())
+                position[0] += (step / 2f);
+
+            transformPointArray(position);
+
+            if (position[0] >= mOffsetLeft && position[0] <= getWidth() - mOffsetRight) {
+
+                String label = mCurrentData.getXVals().get(i);
+
+                if (mXLabels.isAvoidFirstLastClippingEnabled()) {
+
+                    // avoid clipping of the last
+                    if (i == mCurrentData.getXValCount() - 1) {
+                        float width = Utils.calcTextWidth(mXLabelPaint, label);
+
+                        if (width > getOffsetRight() * 2 && position[0] + width > getWidth())
+                            position[0] -= width / 2;
+
+                        // avoid clipping of the first
+                    } else if (i == 0) {
+
+                        float width = Utils.calcTextWidth(mXLabelPaint, label);
+                        position[0] += width / 2;
+                    }
+                }
+
+                mDrawCanvas.drawText(label, position[0],
+                        yPos,
+                        mXLabelPaint);
+            }
+        }
+    }
+
+    @Override
+    protected void drawVerticalGrid() {
+
+        if (!mDrawVerticalGrid || mCurrentData == null)
+            return;
+
+        float[] position = new float[] {
+                0f, 0f
+        };
+
+        BarData bd = (BarData) mCurrentData;
+
+        // take into consideration that multiple DataSets increase mDeltaX
+        int step = mCurrentData.getDataSetCount();
+
+        for (int i = 0; i < mCurrentData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
+
+            position[0] = i * step + i * bd.getGroupSpace();
+
+            transformPointArray(position);
+
+            if (position[0] >= mOffsetLeft && position[0] <= getWidth()) {
+
+                mDrawCanvas.drawLine(position[0], mOffsetTop, position[0], getHeight()
+                        - mOffsetBottom, mGridPaint);
+            }
         }
     }
 
@@ -649,7 +737,7 @@ public class BarChart extends BarLineChartBase {
 
         // for barchart, we only need x-val
         double xTouchVal = pts[0];
-        double base = Math.floor(xTouchVal);
+        double base = xTouchVal;
 
         if (xTouchVal < 0 || xTouchVal > mDeltaX)
             return null;
@@ -659,12 +747,22 @@ public class BarChart extends BarLineChartBase {
         if (base >= mDeltaX)
             base = mDeltaX - 1;
 
-        int xIndex = (int) base;
-        // reduce x-index depending on DataSet count (because bars are next
-        // to each other)
-        xIndex /= mOriginalData.getDataSetCount();
+        int setCount = mOriginalData.getDataSetCount();
+        int valCount = setCount * mOriginalData.getXValCount() + 1;
 
-        int dataSetIndex = ((int) base) % mOriginalData.getDataSetCount();
+        BarData bd = (BarData) mCurrentData;
+
+        // number of group-spaces
+        int spaces = (int) (((float) valCount / (float) setCount) / (mDeltaX / base));
+
+        float reduction = (float) spaces * bd.getGroupSpace() + bd.getGroupSpace() / 2f;
+
+        int xIndex = (int) ((base - reduction) / setCount);
+
+        int dataSetIndex = ((int) (base - reduction)) % setCount;
+
+        Log.i(LOG_TAG, "XIndex: " + xIndex + ", dataSet: " + dataSetIndex + ", base: " + base
+                + ", spaces: " + spaces + ", reduction: " + reduction);
 
         if (dataSetIndex == -1)
             return null;
