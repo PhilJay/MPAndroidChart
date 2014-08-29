@@ -63,11 +63,11 @@ Features
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_barchart3.png)
 
- - **BarChart2D (single DataSet)**
+ - **BarChart2D (grouped DataSets)**
 
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart2d.png)
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/groupedbarchart.png)
 
- - **BarChart2D (multiple DataSets)**
+ - **BarChart2D**
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart2d_multi_dataset_date1.png)
 
