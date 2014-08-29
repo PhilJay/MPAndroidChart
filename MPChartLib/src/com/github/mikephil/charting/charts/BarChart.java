@@ -16,7 +16,6 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.Highlight;
-import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
@@ -748,21 +747,18 @@ public class BarChart extends BarLineChartBase {
             base = mDeltaX - 1;
 
         int setCount = mOriginalData.getDataSetCount();
-        int valCount = setCount * mOriginalData.getXValCount() + 1;
+        int valCount = setCount * mOriginalData.getXValCount();
 
         BarData bd = (BarData) mCurrentData;
 
-        // number of group-spaces
-        int spaces = (int) (((float) valCount / (float) setCount) / (mDeltaX / base));
+        // calculate the amount of bar-space between index 0 and touch position
+        float space = (float) (((float) valCount / (float) setCount) / (mDeltaX / base));
 
-        float reduction = (float) spaces * bd.getGroupSpace() + bd.getGroupSpace() / 2f;
+        float reduction = (float) space * bd.getGroupSpace();
 
         int xIndex = (int) ((base - reduction) / setCount);
 
         int dataSetIndex = ((int) (base - reduction)) % setCount;
-
-        Log.i(LOG_TAG, "XIndex: " + xIndex + ", dataSet: " + dataSetIndex + ", base: " + base
-                + ", spaces: " + spaces + ", reduction: " + reduction);
 
         if (dataSetIndex == -1)
             return null;

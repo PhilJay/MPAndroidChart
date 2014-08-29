@@ -4,6 +4,7 @@ package com.xxmassdeveloper.mpchartexample;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -15,6 +16,8 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.github.mikephil.charting.utils.XLabels;
@@ -23,7 +26,7 @@ import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 
-public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarChangeListener {
+public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarChangeListener, OnChartValueSelectedListener {
 
     private BarChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
@@ -46,6 +49,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         mSeekBarY.setOnSeekBarChangeListener(this);
 
         mChart = (BarChart) findViewById(R.id.chart1);
+        mChart.setOnChartValueSelectedListener(this);
         mChart.setDescription("");
         
         // disable the drawing of values
@@ -234,5 +238,15 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
     public void onStopTrackingTouch(SeekBar seekBar) {
         // TODO Auto-generated method stub
 
+    }
+    
+    @Override
+    public void onValueSelected(Entry e, int dataSetIndex) {
+        Log.i("Activity", "Selected: " + e.toString() + ", dataSet: " + dataSetIndex);
+    }
+    
+    @Override
+    public void onNothingSelected() {
+        Log.i("Activity", "Nothing selected.");
     }
 }
