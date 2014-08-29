@@ -681,7 +681,9 @@ public abstract class BarLineChartBase extends Chart {
                 0f, 0f
         };
 
-        int step = mCurrentData.getDataSetCount();
+        int step = 1;
+        if (this instanceof BarChart)
+            step = mCurrentData.getDataSetCount();
 
         for (int i = 0; i < mCurrentData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
 
@@ -893,7 +895,10 @@ public abstract class BarLineChartBase extends Chart {
                 0f, 0f
         };
 
-        int step = mCurrentData.getDataSetCount();
+        // take into consideration that multiple DataSets increase mDeltaX
+        int step = 1;
+        if (this instanceof BarChart)
+            step = mCurrentData.getDataSetCount();
 
         for (int i = 0; i < mCurrentData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
 
@@ -1640,17 +1645,18 @@ public abstract class BarLineChartBase extends Chart {
 
         ArrayList<SelInfo> valsAtIndex = getYValsAtIndex(xIndex);
 
-        if(this instanceof BarChart) {
-            
-            dataSetIndex = ((int) base) % mOriginalData.getDataSetCount();            
+        if (this instanceof BarChart) {
+
+            dataSetIndex = ((int) base) % mOriginalData.getDataSetCount();
         } else {
             dataSetIndex = getClosestDataSetIndex(valsAtIndex, (float) yTouchVal);
         }
 
         if (dataSetIndex == -1)
             return null;
-        
-        Toast.makeText(getContext(), "xindex: " + xIndex + ", dataSetIndex: " + dataSetIndex, Toast.LENGTH_SHORT).show();
+
+//        Toast.makeText(getContext(), "xindex: " + xIndex + ", dataSetIndex: " + dataSetIndex,
+//                Toast.LENGTH_SHORT).show();
 
         return new Highlight(xIndex, dataSetIndex);
     }

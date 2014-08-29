@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Utils;
@@ -172,6 +173,19 @@ public class BarChart extends BarLineChartBase {
 
         // extend xDelta to make space for multiple datasets (if ther are one)
         mDeltaX *= mOriginalData.getDataSetCount();
+
+        // int maxEntry = 0;
+        //
+        // for(int i = 0; i < mOriginalData.getDataSetCount(); i++) {
+        //
+        // DataSet set = mOriginalData.getDataSetByIndex(i);
+        //
+        // if(maxEntry < set.getEntryCount())
+        // maxEntry = set.getEntryCount();
+        // }
+        //
+        // float groupSpace = 0.5f;
+        // mDeltaX += maxEntry * groupSpace;
     }
 
     @Override
@@ -189,13 +203,16 @@ public class BarChart extends BarLineChartBase {
             mHighlightPaint.setAlpha(ds.getHighLightAlpha());
 
             // check outofbounds
-            if (index < mCurrentData.getYValCount() && index >= 0 && index < mDeltaX * mPhaseX) {
+            if (index < mCurrentData.getYValCount() && index >= 0
+                    && index < (mDeltaX * mPhaseX) / mOriginalData.getDataSetCount()) {
 
                 Entry e = getEntryByDataSetIndex(index, dataSetIndex);
 
+                // calculate the correct x-position
                 float x = index * mOriginalData.getDataSetCount() + dataSetIndex;
-                
-                prepareBar(x, e.getVal(), ds.getBarSpace());
+                float y = e.getVal();
+
+                prepareBar(x, y, ds.getBarSpace());
 
                 mDrawCanvas.drawRect(mBarRect, mHighlightPaint);
 
@@ -205,12 +222,11 @@ public class BarChart extends BarLineChartBase {
 
                     // distance between highlight arrow and bar
                     float offsetY = mDeltaY * 0.07f;
-                    float y = e.getVal();
 
                     Path arrow = new Path();
-                    arrow.moveTo(index + 0.5f, y + offsetY * 0.3f);
-                    arrow.lineTo(index + 0.2f, y + offsetY);
-                    arrow.lineTo(index + 0.8f, y + offsetY);
+                    arrow.moveTo(x + 0.5f, y + offsetY * 0.3f);
+                    arrow.lineTo(x + 0.2f, y + offsetY);
+                    arrow.lineTo(x + 0.8f, y + offsetY);
 
                     transformPath(arrow);
                     mDrawCanvas.drawPath(arrow, mHighlightPaint);
@@ -324,11 +340,11 @@ public class BarChart extends BarLineChartBase {
      * 
      * @param x the x-position
      * @param y the y-position
-     * @param space the space between bars
+     * @param barspace the space between bars
      */
-    private void prepareBar(float x, float y, float space) {
+    private void prepareBar(float x, float y, float barspace) {
 
-        float spaceHalf = space / 2f;
+        float spaceHalf = barspace / 2f;
         float left = x + spaceHalf;
         float right = x + 1f - spaceHalf;
         float top = y >= 0 ? y : 0;
