@@ -27,7 +27,7 @@ If you are having questions or problems, feel free to contact me. Since I would 
  - Search [**known issues**](https://github.com/PhilJay/MPAndroidChart/issues) for your problem (open and closed)
  - Create new issues (if your issue does not exist yet)
 
-Please let me know via e-mail that you have opened a stackoverflow question so that I can get to answering it right away. Thank you.
+You can let me know via e-mail that you have opened a stackoverflow question so that I might get to answering it more quickly. Thank you.
 
 Features
 =======
