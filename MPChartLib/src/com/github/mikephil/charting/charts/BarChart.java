@@ -3,10 +3,12 @@ package com.github.mikephil.charting.charts;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -14,6 +16,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
@@ -315,6 +318,7 @@ public class BarChart extends BarLineChartBase {
                             mDrawCanvas.drawRect(mBarShadow, mRenderPaint);
                         }
 
+                        // draw the stack
                         for (int k = 0; k < vals.length; k++) {
 
                             all -= vals[k];
@@ -608,6 +612,64 @@ public class BarChart extends BarLineChartBase {
             mDrawCanvas.drawText(val, xPos, yPos,
                     mValuePaint);
         }
+    }
+
+    /**
+     * Returns the Highlight object (contains x-index and DataSet index) of the
+     * selected value at the given touch point inside the BarChart.
+     * 
+     * @param x
+     * @param y
+     * @return
+     */
+    @Override
+    public Highlight getHighlightByTouchPoint(float x, float y) {
+
+        if (mDataNotSet) {
+            Log.e(LOG_TAG, "Can't select by touch. No data set.");
+            return null;
+        }
+
+        // create an array of the touch-point
+        float[] pts = new float[2];
+        pts[0] = x;
+        pts[1] = y;
+
+        Matrix tmp = new Matrix();
+
+        // invert all matrixes to convert back to the original value
+        mMatrixOffset.invert(tmp);
+        tmp.mapPoints(pts);
+
+        mMatrixTouch.invert(tmp);
+        tmp.mapPoints(pts);
+
+        mMatrixValueToPx.invert(tmp);
+        tmp.mapPoints(pts);
+
+        // for barchart, we only need x-val
+        double xTouchVal = pts[0];
+        double base = Math.floor(xTouchVal);
+
+        if (xTouchVal < 0 || xTouchVal > mDeltaX)
+            return null;
+
+        if (base < 0)
+            base = 0;
+        if (base >= mDeltaX)
+            base = mDeltaX - 1;
+
+        int xIndex = (int) base;
+        // reduce x-index depending on DataSet count (because bars are next
+        // to each other)
+        xIndex /= mOriginalData.getDataSetCount();
+
+        int dataSetIndex = ((int) base) % mOriginalData.getDataSetCount();
+
+        if (dataSetIndex == -1)
+            return null;
+
+        return new Highlight(xIndex, dataSetIndex);
     }
 
     /**

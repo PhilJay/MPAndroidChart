@@ -17,6 +17,12 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.PointD;
 
+/**
+ * TouchListener for Bar-, Line-, Scatter- and CandleStickChart with handles all
+ * touch interaction. Longpress == Zoom out. Double-Tap == Zoom in.
+ * 
+ * @author Philipp Jahoda
+ */
 public class BarLineChartTouchListener extends SimpleOnGestureListener implements OnTouchListener {
 
     private Matrix mMatrix = new Matrix();
@@ -413,7 +419,7 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        
+
         Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
 
         if (h == null || h.equalTo(mLastHighlighted)) {
@@ -423,7 +429,7 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
             mLastHighlighted = h;
             mChart.highlightTouch(h);
         }
-        
+
         return true;
     }
 

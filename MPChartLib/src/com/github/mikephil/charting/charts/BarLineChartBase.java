@@ -1,7 +1,6 @@
 
 package com.github.mikephil.charting.charts;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,13 +10,10 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Rect;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewParent;
-import android.view.View.OnTouchListener;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.data.BarLineScatterCandleData;
 import com.github.mikephil.charting.data.ChartData;
@@ -1568,14 +1564,20 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * returns the Highlight object (contains x-index and DataSet index) of the
-     * selected value at the given touch point.
+     * Returns the Highlight object (contains x-index and DataSet index) of the
+     * selected value at the given touch point inside the Line-, Scatter-, or
+     * CandleStick-Chart.
      * 
      * @param x
      * @param y
      * @return
      */
     public Highlight getHighlightByTouchPoint(float x, float y) {
+
+        if (mDataNotSet) {
+            Log.e(LOG_TAG, "Can't select by touch. No data set.");
+            return null;
+        }
 
         // create an array of the touch-point
         float[] pts = new float[2];
@@ -1607,11 +1609,10 @@ public abstract class BarLineChartBase extends Chart {
         // Toast.LENGTH_SHORT).show();
 
         // touch out of chart
-        if ((this instanceof LineChart || this instanceof ScatterChart)
-                && (xTouchVal < -touchOffset || xTouchVal > mDeltaX + touchOffset))
+        if (xTouchVal < -touchOffset || xTouchVal > mDeltaX + touchOffset)
             return null;
-        if (this instanceof BarChart && (xTouchVal < 0 || xTouchVal > mDeltaX))
-            return null;
+        
+        if(this instanceof CandleStickChart) base -= 0.5;
 
         if (base < 0)
             base = 0;
@@ -1620,49 +1621,31 @@ public abstract class BarLineChartBase extends Chart {
 
         int xIndex = (int) base;
 
-        if (this instanceof BarChart) {
-
-            // reduce x-index depending on DataSet count (because bars are next
-            // to each other)
-            xIndex /= mOriginalData.getDataSetCount();
-        }
-
         int dataSetIndex = 0; // index of the DataSet inside the ChartData
                               // object
 
-        if (this instanceof LineChart || this instanceof ScatterChart) {
-
-            // check if we are more than half of a x-value or not
-            if (xTouchVal - base > 0.5) {
-                xIndex = (int) base + 1;
-            }
-        }
-
-        if (mDataNotSet) {
-            Log.e(LOG_TAG, "Can't select by touch. No data set.");
-            return null;
+        // check if we are more than half of a x-value or not
+        if (xTouchVal - base > 0.5) {
+            xIndex = (int) base + 1;
         }
 
         ArrayList<SelInfo> valsAtIndex = getYValsAtIndex(xIndex);
 
-        if (this instanceof BarChart) {
-
-            dataSetIndex = ((int) base) % mOriginalData.getDataSetCount();
-        } else {
-            dataSetIndex = getClosestDataSetIndex(valsAtIndex, (float) yTouchVal);
-        }
+        dataSetIndex = getClosestDataSetIndex(valsAtIndex, (float) yTouchVal);
 
         if (dataSetIndex == -1)
             return null;
 
-//        Toast.makeText(getContext(), "xindex: " + xIndex + ", dataSetIndex: " + dataSetIndex,
-//                Toast.LENGTH_SHORT).show();
+        // Toast.makeText(getContext(), "xindex: " + xIndex + ", dataSetIndex: "
+        // + dataSetIndex,
+        // Toast.LENGTH_SHORT).show();
 
         return new Highlight(xIndex, dataSetIndex);
     }
 
     /**
-     * returns the index of the DataSet that contains the closest value
+     * Returns the index of the DataSet that contains the closest value on the
+     * y-axis.
      * 
      * @param valsAtIndex all the values at a specific index
      * @return
@@ -1681,7 +1664,7 @@ public abstract class BarLineChartBase extends Chart {
             }
         }
 
-        Log.i(LOG_TAG, "Closest DataSet index: " + index);
+        // Log.i(LOG_TAG, "Closest DataSet index: " + index);
 
         return index;
     }
