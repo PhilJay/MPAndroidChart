@@ -1,8 +1,6 @@
 
 package com.github.mikephil.charting.listener;
 
-import android.graphics.Matrix;
-import android.graphics.PointF;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
@@ -18,12 +16,7 @@ import com.github.mikephil.charting.utils.Highlight;
  * @author Philipp Jahoda
  */
 public class PieChartTouchListener extends SimpleOnGestureListener implements OnTouchListener {
-
-    Matrix mMatrix = new Matrix();
-    Matrix mSavedMatrix = new Matrix();
-
-    PointF mMid = new PointF();
-
+    
     private PieChart mChart;
 
     private GestureDetector mGestureDetector;
@@ -61,10 +54,6 @@ public class PieChartTouchListener extends SimpleOnGestureListener implements On
         }
 
         return true;
-    }
-
-    public Matrix getMatrix() {
-        return mMatrix;
     }
 
     @Override

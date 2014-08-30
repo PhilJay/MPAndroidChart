@@ -1,7 +1,6 @@
 
 package com.github.mikephil.charting.charts;
 
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -23,7 +22,6 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.ChartData;
@@ -1540,6 +1538,16 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
         return mLegend;
     }
 
+    /**
+     * Returns the rectangle that defines the borders of the chart-value surface
+     * (into which the actual values are drawn).
+     * 
+     * @return
+     */
+    public Rect getContentRect() {
+        return mContentRect;
+    }
+
     /** paint for the grid lines (only line and barchart) */
     public static final int PAINT_GRID = 3;
 
@@ -1590,6 +1598,9 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
 
     /** paint object used for the limit lines */
     public static final int PAINT_LIMIT_LINE = 19;
+    
+    /** paint object used for the limit lines */
+    public static final int PAINT_RADAR_WEB = 20;
 
     /**
      * set a new paint object for the specified parameter in the chart e.g.

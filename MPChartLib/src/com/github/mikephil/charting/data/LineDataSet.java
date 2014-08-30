@@ -10,22 +10,13 @@ import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 
-public class LineDataSet extends BarLineScatterCandleDataSet {
+public class LineDataSet extends LineRadarDataSet {
 
     /** arraylist representing all colors that are used for the circles */
     private ArrayList<Integer> mCircleColors = null;
-
-    /** the color that is used for filling the line surface */
-    private int mFillColor = Color.rgb(140, 234, 255);
-
-    /** transparency used for filling line surface */
-    private int mFillAlpha = 85;
-
+    
     /** the radius of the circle-shaped value indicators */
     private float mCircleSize = 4f;
-
-    /** the width of the drawn data lines */
-    private float mLineWidth = 1f;
 
     /** sets the intensity of the cubic lines */
     private float mCubicIntensity = 0.2f;
@@ -35,9 +26,6 @@ public class LineDataSet extends BarLineScatterCandleDataSet {
 
     /** if true, drawing circles is enabled */
     private boolean mDrawCircles = true;
-
-    /** if true, the data will also be drawn filled */
-    private boolean mDrawFilled = false;
 
     /** if true, cubic lines are drawn instead of linear */
     private boolean mDrawCubic = false;
@@ -67,78 +55,14 @@ public class LineDataSet extends BarLineScatterCandleDataSet {
 
         LineDataSet copied = new LineDataSet(yVals, getLabel());
         copied.mColors = mColors;
-        copied.mLineWidth = mLineWidth;
         copied.mCircleSize = mCircleSize;
         copied.mCircleColors = mCircleColors;
         copied.mDashPathEffect = mDashPathEffect;
         copied.mDrawCircles = mDrawCircles;
-        copied.mDrawFilled = mDrawFilled;
         copied.mDrawCubic = mDrawCubic;
         copied.mHighLightColor = mHighLightColor;
 
         return copied;
-    }
-
-    /**
-     * returns the color that is used for filling the line surface
-     * 
-     * @return
-     */
-    public int getFillColor() {
-        return mFillColor;
-    }
-
-    /**
-     * sets the color that is used for filling the line surface
-     * 
-     * @param color
-     */
-    public void setFillColor(int color) {
-        mFillColor = color;
-    }
-
-    /**
-     * returns the alpha value that is used for filling the line surface,
-     * default: 85
-     * 
-     * @return
-     */
-    public int getFillAlpha() {
-        return mFillAlpha;
-    }
-
-    /**
-     * sets the alpha value (transparency) that is used for filling the line
-     * surface (0-255), default: 85
-     * 
-     * @param color
-     */
-    public void setFillAlpha(int alpha) {
-        mFillAlpha = alpha;
-    }
-
-    /**
-     * set the line width of the chart (min = 0.2f, max = 10f); default 1f NOTE:
-     * thinner line == better performance, thicker line == worse performance
-     * 
-     * @param width
-     */
-    public void setLineWidth(float width) {
-
-        if (width < 0.2f)
-            width = 0.5f;
-        if (width > 10.0f)
-            width = 10.0f;
-        mLineWidth = Utils.convertDpToPixel(width);
-    }
-
-    /**
-     * returns the width of the drawn chart line
-     * 
-     * @return
-     */
-    public float getLineWidth() {
-        return mLineWidth;
     }
 
     /**
@@ -238,26 +162,6 @@ public class LineDataSet extends BarLineScatterCandleDataSet {
      */
     public boolean isDrawCirclesEnabled() {
         return mDrawCircles;
-    }
-
-    /**
-     * Set to true if the DataSet should be drawn filled (surface), and not just
-     * as a line, disabling this will give up to 20% performance boost on large
-     * datasets, default: false
-     * 
-     * @param filled
-     */
-    public void setDrawFilled(boolean filled) {
-        mDrawFilled = filled;
-    }
-
-    /**
-     * returns true if filled drawing is enabled, false if not
-     * 
-     * @return
-     */
-    public boolean isDrawFilledEnabled() {
-        return mDrawFilled;
     }
 
     /**

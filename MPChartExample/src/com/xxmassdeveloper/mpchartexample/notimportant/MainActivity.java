@@ -32,6 +32,7 @@ import com.xxmassdeveloper.mpchartexample.ListViewMultiChartActivity;
 import com.xxmassdeveloper.mpchartexample.MultiLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.PieChartActivity;
 import com.xxmassdeveloper.mpchartexample.R;
+import com.xxmassdeveloper.mpchartexample.RadarChartActivitry;
 import com.xxmassdeveloper.mpchartexample.ScatterChartActivity;
 import com.xxmassdeveloper.mpchartexample.StackedBarActivity;
 import com.xxmassdeveloper.mpchartexample.fragments.SimpleChartDemo;
@@ -85,6 +86,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
         objects.add(new ContentItem(
                 "Cubic Line Chart",
                 "Demonstrates cubic lines in a LineChart."));
+        objects.add(new ContentItem(
+                "Radar Chart",
+                "Demonstrates the use of a spider-web like (net) chart."));
 
         MyAdapter adapter = new MyAdapter(this, objects);
 
@@ -165,6 +169,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 break;
             case 14:
                 i = new Intent(this, CubicLineChartActivity.class);
+                startActivity(i);
+                break;
+            case 15:
+                i = new Intent(this, RadarChartActivitry.class);
                 startActivity(i);
                 break;
         }
