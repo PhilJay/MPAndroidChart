@@ -37,6 +37,9 @@ public class RadarChartActivitry extends DemoBase {
         mChart.setValueTypeface(tf);
 
         mChart.setDescription("");
+        
+        mChart.setWebLineWidth(2f);
+        mChart.setWebLineWidthInner(0.75f);
 
         setData();
 

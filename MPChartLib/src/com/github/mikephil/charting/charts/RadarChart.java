@@ -4,9 +4,7 @@ package com.github.mikephil.charting.charts;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Paint.Align;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.util.AttributeSet;
@@ -16,7 +14,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.utils.Utils;
-import com.github.mikephil.charting.utils.Legend.LegendPosition;
+import com.github.mikephil.charting.utils.YLabels;
 
 import java.util.ArrayList;
 
@@ -26,9 +24,24 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public class RadarChart extends Chart {
+public class RadarChart extends PieRadarChartBase {
 
     private Paint mWebPaint;
+
+    private Paint mYLabelPaint;
+
+    private float mWebLineWidth = 2.5f;
+
+    private float mInnerWebLineWidth = 1.5f;
+
+    private int mWebColor = Color.rgb(122, 122, 122);
+
+    private int mWebColorInner = Color.rgb(122, 122, 122);
+
+    private int mWebAlpha = 255;
+
+    /** the object reprsenting the y-axis labels */
+    private YLabels mYLabels = new YLabels();
 
     public RadarChart(Context context) {
         super(context);
@@ -46,10 +59,15 @@ public class RadarChart extends Chart {
     protected void init() {
         super.init();
 
+        mWebLineWidth = Utils.convertDpToPixel(2f);
+        mInnerWebLineWidth = Utils.convertDpToPixel(1f);
+
         mWebPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mWebPaint.setStrokeWidth(Utils.convertDpToPixel(1.5f));
-        mWebPaint.setColor(Color.rgb(122, 122, 122));
         mWebPaint.setStyle(Paint.Style.STROKE);
+
+        mYLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mYLabelPaint.setColor(Color.BLACK);
+        mYLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
     }
 
     /**
@@ -89,71 +107,12 @@ public class RadarChart extends Chart {
         Log.i(LOG_TAG, "RadarChart DrawTime: " + (System.currentTimeMillis() - starttime) + " ms");
     }
 
-    @Override
-    public void prepare() {
-
-        if (mDataNotSet)
-            return;
-
-        calcMinMax(false);
-
-        // // calculate how many digits are needed
-        // calcFormats();
-
-        prepareLegend();
-    }
-
-    @Override
-    protected void calculateOffsets() {
-
-        if (mLegend == null)
-            return;
-
-        // setup offsets for legend
-        if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
-
-            mLegend.setOffsetRight(mLegend.getMaximumEntryLength(mLegendLabelPaint));
-            mLegendLabelPaint.setTextAlign(Align.LEFT);
-
-        } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
-                || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
-                || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
-
-            mLegend.setOffsetBottom(mLegendLabelPaint.getTextSize() * 3.5f);
-        }
-
-        if (mDrawLegend) {
-
-            mOffsetBottom = Math.max(mOffsetBottom, mLegend.getOffsetBottom());
-            mOffsetRight = Math.max(mOffsetRight, mLegend.getOffsetRight() / 3 * 2);
-        }
-
-        mLegend.setOffsetTop(mOffsetTop);
-        mLegend.setOffsetLeft(mOffsetLeft);
-
-        prepareContentRect();
-
-        float scaleX = (float) ((getWidth() - mOffsetLeft - mOffsetRight) / mDeltaX);
-        float scaleY = (float) ((getHeight() - mOffsetBottom - mOffsetTop) / mDeltaY);
-
-        Matrix val = new Matrix();
-        val.postTranslate(0, -mYChartMin);
-        val.postScale(scaleX, -scaleY);
-
-        mMatrixValueToPx.set(val);
-
-        Matrix offset = new Matrix();
-        offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
-
-        mMatrixOffset.set(offset);
-    }
-
     /**
      * Draws the spider web.
      */
     private void drawWeb() {
 
-        float sliceangle = 360 / (float) mCurrentData.getXValCount();
+        float sliceangle = getSliceAngle();
 
         // calculate the factor that is needed for transforming the value to
         // pixels
@@ -161,11 +120,36 @@ public class RadarChart extends Chart {
 
         PointF c = getCenter();
 
+        // draw the web lines that come from the center
+        mWebPaint.setStrokeWidth(mWebLineWidth);
+        mWebPaint.setColor(mWebColor);
+        mWebPaint.setAlpha(mWebAlpha);
+
         for (int i = 0; i < mCurrentData.getXValCount(); i++) {
 
-            PointF p = getPosition(c, mCurrentData.getYMax() * factor, sliceangle * i);
+            PointF p = getPosition(c, mYChartMax * factor, sliceangle * i);
 
             mDrawCanvas.drawLine(c.x, c.y, p.x, p.y, mWebPaint);
+        }
+
+        // draw the inner-web
+        mWebPaint.setStrokeWidth(mInnerWebLineWidth);
+        mWebPaint.setColor(mWebColorInner);
+        mWebPaint.setAlpha(mWebAlpha);
+
+        int labelCount = mYLabels.getLabelCount();
+
+        for (int j = 0; j < labelCount; j++) {
+
+            for (int i = 0; i < mCurrentData.getXValCount(); i++) {
+
+                float r = ((mYChartMax / labelCount) * (j + 1)) * factor;
+
+                PointF p1 = getPosition(c, r, sliceangle * i);
+                PointF p2 = getPosition(c, r, sliceangle * (i + 1));
+
+                mDrawCanvas.drawLine(p1.x, p1.y, p2.x, p2.y, mWebPaint);
+            }
         }
     }
 
@@ -174,7 +158,7 @@ public class RadarChart extends Chart {
 
         ArrayList<RadarDataSet> dataSets = (ArrayList<RadarDataSet>) mCurrentData.getDataSets();
 
-        float sliceangle = 360f / (float) mCurrentData.getXValCount();
+        float sliceangle = getSliceAngle();
 
         // calculate the factor that is needed for transforming the value to
         // pixels
@@ -248,6 +232,15 @@ public class RadarChart extends Chart {
                 / mYChartMax;
     }
 
+    /**
+     * Returns the angle that each slice in the radar chart occupies.
+     * 
+     * @return
+     */
+    public float getSliceAngle() {
+        return 360f / (float) mCurrentData.getXValCount();
+    }
+
     @Override
     protected void drawValues() {
         // TODO Auto-generated method stub
@@ -270,6 +263,66 @@ public class RadarChart extends Chart {
     public void notifyDataSetChanged() {
         // TODO Auto-generated method stub
 
+    }
+
+    /**
+     * Returns the object that represents all y-labels of the RadarChart.
+     * 
+     * @return
+     */
+    public YLabels getYLabels() {
+        return mYLabels;
+    }
+
+    /**
+     * Sets the width of the web lines that come from the center.
+     * 
+     * @param width
+     */
+    public void setWebLineWidth(float width) {
+        mWebLineWidth = Utils.convertDpToPixel(width);
+    }
+
+    /**
+     * Sets the width of the web lines that are in between the lines coming from
+     * the center.
+     * 
+     * @param width
+     */
+    public void setWebLineWidthInner(float width) {
+        mInnerWebLineWidth = Utils.convertDpToPixel(width);
+    }
+
+    /**
+     * Sets the transparency (alpha) value for all web lines, default 255 = 100%
+     * opaque, 0 = 100% transparent
+     * 
+     * @param alpha
+     */
+    public void setWebAlpha(int alpha) {
+        mWebAlpha = alpha;
+    }
+
+    /**
+     * Sets the color for the web lines that come from the center. Don't forget
+     * to use getResources().getColor(...) when loading a color from the
+     * resources. Default: Color.rgb(122, 122, 122)
+     * 
+     * @param color
+     */
+    public void setWebColor(int color) {
+        mWebColor = color;
+    }
+
+    /**
+     * Sets the color for the web lines in between the lines that come from the
+     * center. Don't forget to use getResources().getColor(...) when loading a
+     * color from the resources. Default: Color.rgb(122, 122, 122)
+     * 
+     * @param color
+     */
+    public void setWebColorInner(int color) {
+        mWebColorInner = color;
     }
 
     @Override
