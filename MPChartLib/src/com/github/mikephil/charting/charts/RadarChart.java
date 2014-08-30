@@ -26,18 +26,26 @@ import java.util.ArrayList;
  */
 public class RadarChart extends PieRadarChartBase {
 
+    /** paint for drawing the web */
     private Paint mWebPaint;
 
     private Paint mYLabelPaint;
 
+    private float mOffsetAngle = 270f;
+
+    /** width of the main web lines */
     private float mWebLineWidth = 2.5f;
 
+    /** width of the inner web lines */
     private float mInnerWebLineWidth = 1.5f;
 
+    /** color for the main web lines */
     private int mWebColor = Color.rgb(122, 122, 122);
 
+    /** color for the inner web */
     private int mWebColorInner = Color.rgb(122, 122, 122);
 
+    /** transparency the grid is drawn with (0-255) */
     private int mWebAlpha = 255;
 
     /** the object reprsenting the y-axis labels */
@@ -97,6 +105,8 @@ public class RadarChart extends PieRadarChartBase {
         drawHighlights();
 
         drawValues();
+        
+        drawYLabels();
 
         drawLegend();
 
@@ -127,7 +137,7 @@ public class RadarChart extends PieRadarChartBase {
 
         for (int i = 0; i < mCurrentData.getXValCount(); i++) {
 
-            PointF p = getPosition(c, mYChartMax * factor, sliceangle * i);
+            PointF p = getPosition(c, mYChartMax * factor, sliceangle * i + mOffsetAngle);
 
             mDrawCanvas.drawLine(c.x, c.y, p.x, p.y, mWebPaint);
         }
@@ -145,8 +155,8 @@ public class RadarChart extends PieRadarChartBase {
 
                 float r = ((mYChartMax / labelCount) * (j + 1)) * factor;
 
-                PointF p1 = getPosition(c, r, sliceangle * i);
-                PointF p2 = getPosition(c, r, sliceangle * (i + 1));
+                PointF p1 = getPosition(c, r, sliceangle * i + mOffsetAngle);
+                PointF p2 = getPosition(c, r, sliceangle * (i + 1) + mOffsetAngle);
 
                 mDrawCanvas.drawLine(p1.x, p1.y, p2.x, p2.y, mWebPaint);
             }
@@ -179,7 +189,7 @@ public class RadarChart extends PieRadarChartBase {
 
                 Entry e = entries.get(j);
 
-                PointF p = getPosition(c, e.getVal() * factor, sliceangle * j);
+                PointF p = getPosition(c, e.getVal() * factor, sliceangle * j + mOffsetAngle);
 
                 if (j == 0)
                     surface.moveTo(p.x, p.y);
@@ -203,6 +213,29 @@ public class RadarChart extends PieRadarChartBase {
             // draw the line (only if filled is disabled or alpha is below 255)
             if (!dataSet.isDrawFilledEnabled() || dataSet.getFillAlpha() < 255)
                 mDrawCanvas.drawPath(surface, mRenderPaint);
+        }
+    }
+
+    /**
+     * Draws the y-labels of the RadarChart.
+     */
+    private void drawYLabels() {
+
+        PointF c = getCenter();
+        float factor = getFactor();
+
+        int labelCount = mYLabels.getLabelCount();
+
+        for (int j = 0; j < labelCount; j++) {
+
+            for (int i = 0; i < mCurrentData.getXValCount(); i++) {
+
+                float r = ((mYChartMax / labelCount) * (j + 1)) * factor;
+
+                PointF p = getPosition(c, r, mOffsetAngle);
+                
+                mDrawCanvas.drawText("" + r, p.x, p.y, mYLabelPaint);
+            }
         }
     }
 
@@ -323,6 +356,17 @@ public class RadarChart extends PieRadarChartBase {
      */
     public void setWebColorInner(int color) {
         mWebColorInner = color;
+    }
+
+    /**
+     * Set an offset for the rotation of the RadarChart in degrees. Default 270f
+     * 
+     * @param angle
+     */
+    public void setRotation(float angle) {
+        
+        angle = Math.abs(angle % 360f);
+        mOffsetAngle = angle;
     }
 
     @Override
