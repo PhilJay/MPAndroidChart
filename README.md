@@ -116,7 +116,6 @@ or create it in code (and then **add it to a layout**):
 
  - <code>setDescription(String desc)</code>: Set a description text that appears in the bottom right corner of the chart.
  - <code>setDescriptionTypeface(Typeface t)</code>: Sets the <code>Typeface</code> used for drawing the description text.
- - <code>setGraphOffsets(int left, int right, int top, int bottom)</code>: Sets the offsets of the graph in every direction, provide density pixels.
  - <code>setDrawYValues(boolean enabled)</code>: If set to true, the actual drawn values will be drawn next to the points, bars, or pie slices of the chart.
  - <code>setValuePaintColor(int color)</code>: Sets the color used for drawing the values if <code>setDrawYValues(...)</code> is enabled.
  - <code>setValueTypeface(Typeface t)</code>: Sets the <code>Typeface</code> used for drawing the values if <code>setDrawYValues(...)</code> is enabled.
@@ -136,10 +135,10 @@ or create it in code (and then **add it to a layout**):
 **Gestures & Selecting:**
 
  - <code>setTouchEnabled(boolean enabled)</code>: If set to ture, touch gestures (such as scaling and dragging) will be possible on the chart. NOTE: If touch-gestures are disabled, highlighting on touch is disabled as well. Default: true.
- - <code>public void setDragScaleEnabled(boolean enabled)</code>: Enables/disables dragging and scaling for the chart.
+ - <code>setDragScaleEnabled(boolean enabled)</code>: Enables/disables dragging and scaling for the chart.
  - <code>setOnChartValueSelectedListener(OnChartValueSelectedListener l)</code>: Sets a selection-listener to the chart that will generate callbacks when values are selected or unselected. The callback contains the selected values and their indices.
  - <code>setHighlightEnabled(boolean enabled)</code>: If set to true, highlighting/selecting values is possible on the chart. Default: true.
-- <code>public void highlightValues(Highlight[] highs)</code>: Highlights the specified entries in the chart.
+ - <code>public void highlightValues(Highlight[] highs)</code>: Highlights the specified entries in the chart.
  
 **Other:**
  - <code>saveToGallery(String title)</code>: Saves the current chart state as an image to the gallery.
