@@ -125,19 +125,21 @@ or create it in code (and then **add it to a layout**):
 
 **Getters and convenience:**
 - <code>public ChartData getDataCurrent()</code>: Returns the <code>ChartData</code> object the chart currently displays. It contains all information concerning the displayed values such as minimum and maximum values, value counts, value sums, ...
-- <code>public float getScaleX()</code>: Returns the current scale factor on the x-axis.
 - <code>public float getYChartMin()</code>: Returns the current minimum y-value that can be displayed by the chart - bottom line.
 - <code>public float getYChartMax()</code>: Returns the current maximum y-value that can be displayed by the chart - top line.
 - <code>public float getAverage()</code>: Returns the average value across all values the chart holds.
 - <code>public float getAverage(int type)</code>: Returns the average value for a specific DataSet type in the chart. This type is the type provided in the <code>DataSet</code> constructor.
 - <code>public PointF getCenter()</code>: Returns the center point of the chart in pixels.
+- <code>public Paint getPaint(int which)</code>: Returns the requested Paint object from the chart.
 
  
 **Gestures & Selecting:**
 
  - <code>setTouchEnabled(boolean enabled)</code>: If set to ture, touch gestures (such as scaling and dragging) will be possible on the chart. NOTE: If touch-gestures are disabled, highlighting on touch is disabled as well. Default: true.
+ - <code>public void setDragScaleEnabled(boolean enabled)</code>: Enables/disables dragging and scaling for the chart.
  - <code>setOnChartValueSelectedListener(OnChartValueSelectedListener l)</code>: Sets a selection-listener to the chart that will generate callbacks when values are selected or unselected. The callback contains the selected values and their indices.
  - <code>setHighlightEnabled(boolean enabled)</code>: If set to true, highlighting/selecting values is possible on the chart. Default: true.
+- <code>public void highlightValues(Highlight[] highs)</code>: Highlights the specified entries in the chart.
  
 **Other:**
  - <code>saveToGallery(String title)</code>: Saves the current chart state as an image to the gallery.
