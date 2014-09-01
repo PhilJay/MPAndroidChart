@@ -23,6 +23,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
@@ -591,13 +592,16 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
         float[] valuePoints = new float[entries.size() * 2];
 
         int setCount = mOriginalData.getDataSetCount();
+        BarData bd = (BarData) mOriginalData;
+        float space = bd.getGroupSpace();
 
         for (int j = 0; j < valuePoints.length; j += 2) {
 
             Entry e = entries.get(j / 2);
 
             // calculate the x-position, depending on datasetcount
-            float x = e.getXIndex() + (j / 2 * (setCount - 1)) + dataSet + 0.5f;
+            float x = e.getXIndex() + (j / 2 * (setCount - 1)) + dataSet + 0.5f + space * (j / 2)
+                    + space / 2f;
             float y = e.getVal();
 
             valuePoints[j] = x;
@@ -1598,7 +1602,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
 
     /** paint object used for the limit lines */
     public static final int PAINT_LIMIT_LINE = 19;
-    
+
     /** paint object used for the limit lines */
     public static final int PAINT_RADAR_WEB = 20;
 
