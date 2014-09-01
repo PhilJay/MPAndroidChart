@@ -5,12 +5,16 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.Paint.Align;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.util.Log;
 
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.utils.Utils;
@@ -31,8 +35,6 @@ public class RadarChart extends PieRadarChartBase {
 
     private Paint mYLabelPaint;
 
-    private float mOffsetAngle = 270f;
-
     /** width of the main web lines */
     private float mWebLineWidth = 2.5f;
 
@@ -47,6 +49,9 @@ public class RadarChart extends PieRadarChartBase {
 
     /** transparency the grid is drawn with (0-255) */
     private int mWebAlpha = 255;
+
+    /** flag indicating if the y-labels should be drawn or not */
+    protected boolean mDrawYLabels = true;
 
     /** the object reprsenting the y-axis labels */
     private YLabels mYLabels = new YLabels();
@@ -75,7 +80,13 @@ public class RadarChart extends PieRadarChartBase {
 
         mYLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mYLabelPaint.setColor(Color.BLACK);
-        mYLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
+        mYLabelPaint.setTextAlign(Align.LEFT);
+        mYLabelPaint.setTextSize(Utils.convertDpToPixel(9f));
+        
+        mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mHighlightPaint.setStyle(Paint.Style.STROKE);
+        mHighlightPaint.setStrokeWidth(2f);
+        mHighlightPaint.setColor(Color.rgb(255, 187, 115));
     }
 
     /**
@@ -88,6 +99,49 @@ public class RadarChart extends PieRadarChartBase {
     }
 
     @Override
+    protected void calcMinMax(boolean fixedValues) {
+        super.calcMinMax(fixedValues);
+
+        mYChartMin = 0;
+    }
+
+    /**
+     * Calculates the required maximum y-value in order to be able to provide
+     * the desired number of label entries and rounded label values.
+     */
+    private void prepareYLabels() {
+
+        int labelCount = mYLabels.getLabelCount();
+        double range = mCurrentData.getYMax() - mYChartMin;
+
+        double rawInterval = range / labelCount;
+        double interval = Utils.roundToNextSignificant(rawInterval);
+        double intervalMagnitude = Math.pow(10, (int) Math.log10(interval));
+        int intervalSigDigit = (int) (interval / intervalMagnitude);
+        if (intervalSigDigit > 5) {
+            // Use one order of magnitude higher, to avoid intervals like 0.9 or
+            // 90
+            interval = Math.floor(10 * intervalMagnitude);
+        }
+
+        double first = Math.ceil(mYChartMin / interval) * interval;
+        double last = Utils.nextUp(Math.floor(mCurrentData.getYMax() / interval) * interval);
+
+        double f;
+        int n = 0;
+        for (f = first; f <= last; f += interval) {
+            ++n;
+        }
+
+        mYLabels.mEntryCount = n;
+
+        mYChartMax = (float) interval * n;
+
+        // calc delta
+        mDeltaY = Math.abs(mYChartMax - mYChartMin);
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
@@ -95,6 +149,8 @@ public class RadarChart extends PieRadarChartBase {
             return;
 
         long starttime = System.currentTimeMillis();
+
+        prepareYLabels();
 
         drawWeb();
 
@@ -104,9 +160,9 @@ public class RadarChart extends PieRadarChartBase {
 
         drawHighlights();
 
-        drawValues();
-        
         drawYLabels();
+
+        drawValues();
 
         drawLegend();
 
@@ -137,7 +193,7 @@ public class RadarChart extends PieRadarChartBase {
 
         for (int i = 0; i < mCurrentData.getXValCount(); i++) {
 
-            PointF p = getPosition(c, mYChartMax * factor, sliceangle * i + mOffsetAngle);
+            PointF p = getPosition(c, mYChartMax * factor, sliceangle * i + mChartAngle);
 
             mDrawCanvas.drawLine(c.x, c.y, p.x, p.y, mWebPaint);
         }
@@ -147,7 +203,7 @@ public class RadarChart extends PieRadarChartBase {
         mWebPaint.setColor(mWebColorInner);
         mWebPaint.setAlpha(mWebAlpha);
 
-        int labelCount = mYLabels.getLabelCount();
+        int labelCount = mYLabels.mEntryCount;
 
         for (int j = 0; j < labelCount; j++) {
 
@@ -155,8 +211,8 @@ public class RadarChart extends PieRadarChartBase {
 
                 float r = ((mYChartMax / labelCount) * (j + 1)) * factor;
 
-                PointF p1 = getPosition(c, r, sliceangle * i + mOffsetAngle);
-                PointF p2 = getPosition(c, r, sliceangle * (i + 1) + mOffsetAngle);
+                PointF p1 = getPosition(c, r, sliceangle * i + mChartAngle);
+                PointF p2 = getPosition(c, r, sliceangle * (i + 1) + mChartAngle);
 
                 mDrawCanvas.drawLine(p1.x, p1.y, p2.x, p2.y, mWebPaint);
             }
@@ -189,7 +245,7 @@ public class RadarChart extends PieRadarChartBase {
 
                 Entry e = entries.get(j);
 
-                PointF p = getPosition(c, e.getVal() * factor, sliceangle * j + mOffsetAngle);
+                PointF p = getPosition(c, e.getVal() * factor, sliceangle * j + mChartAngle);
 
                 if (j == 0)
                     surface.moveTo(p.x, p.y);
@@ -221,20 +277,27 @@ public class RadarChart extends PieRadarChartBase {
      */
     private void drawYLabels() {
 
+        if (!mDrawYLabels)
+            return;
+
+        mYLabelPaint.setTypeface(mYLabels.getTypeface());
+        mYLabelPaint.setTextSize(mYLabels.getTextSize());
+
         PointF c = getCenter();
         float factor = getFactor();
 
-        int labelCount = mYLabels.getLabelCount();
+        int labelCount = mYLabels.mEntryCount;
 
-        for (int j = 0; j < labelCount; j++) {
+        for (int j = 0; j <= labelCount; j++) {
 
             for (int i = 0; i < mCurrentData.getXValCount(); i++) {
 
-                float r = ((mYChartMax / labelCount) * (j + 1)) * factor;
+                float r = ((mYChartMax / labelCount) * j) * factor;
 
-                PointF p = getPosition(c, r, mOffsetAngle);
-                
-                mDrawCanvas.drawText("" + r, p.x, p.y, mYLabelPaint);
+                PointF p = getPosition(c, r, mChartAngle);
+
+                mDrawCanvas.drawText(Utils.formatNumber(r / factor, mValueFormatDigits,
+                        mSeparateTousands), p.x + 10, p.y - 5, mYLabelPaint);
             }
         }
     }
@@ -273,29 +336,93 @@ public class RadarChart extends PieRadarChartBase {
     public float getSliceAngle() {
         return 360f / (float) mCurrentData.getXValCount();
     }
+    
+    @Override
+    public int getIndexForAngle(float angle) {
+        
+        // take the current angle of the chart into consideration
+        float a = (angle - mChartAngle + 360) % 360f;
+        
+        float sliceangle = getSliceAngle();
+
+        for (int i = 0; i < mCurrentData.getXValCount(); i++) {
+            if (sliceangle * (i+1) - sliceangle / 2f > a)
+                return i;
+        }
+
+        return 0; 
+    }
 
     @Override
     protected void drawValues() {
-        // TODO Auto-generated method stub
 
+        // if values are drawn
+        if (mDrawYValues) {
+
+            float sliceangle = getSliceAngle();
+
+            // calculate the factor that is needed for transforming the value to
+            // pixels
+            float factor = getFactor();
+
+            PointF c = getCenter();
+
+            float yoffset = Utils.convertDpToPixel(5f);
+
+            for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
+
+                DataSet dataSet = mCurrentData.getDataSetByIndex(i);
+                ArrayList<? extends Entry> entries = dataSet.getYVals();
+
+                for (int j = 0; j < entries.size(); j++) {
+
+                    Entry e = entries.get(j);
+
+                    PointF p = getPosition(c, e.getVal() * factor, sliceangle * j + mChartAngle);
+
+                    mDrawCanvas.drawText(
+                            Utils.formatNumber(e.getVal(), mValueFormatDigits, mSeparateTousands),
+                            p.x, p.y - yoffset, mValuePaint);
+                }
+            }
+        }
     }
 
     @Override
     protected void drawHighlights() {
-        // TODO Auto-generated method stub
+        
+        // if there are values to highlight and highlighnting is enabled, do it
+        if (mHighlightEnabled && valuesToHighlight()) {            
+            
+            float sliceangle = getSliceAngle();
+            float factor = getFactor();
 
-    }
+            PointF c = getCenter();
 
-    @Override
-    protected void drawAdditional() {
-        // TODO Auto-generated method stub
+            for (int i = 0; i < mIndicesToHightlight.length; i++) {
+                
+                RadarDataSet set = (RadarDataSet) mCurrentData
+                        .getDataSetByIndex(mIndicesToHightlight[i]
+                                .getDataSetIndex());
 
-    }
+                mHighlightPaint.setColor(set.getHighLightColor());
 
-    @Override
-    public void notifyDataSetChanged() {
-        // TODO Auto-generated method stub
+                // get the index to highlight
+                int xIndex = mIndicesToHightlight[i].getXIndex();
 
+                Entry e = set.getEntryForXIndex(xIndex);
+                int j = set.getEntryPosition(e);
+                float y = e.getVal();
+                
+                PointF p = getPosition(c, y * factor, sliceangle * j + mChartAngle);
+
+                float[] pts = new float[] {
+                        p.x, 0, p.x, getHeight(), 0, p.y, getWidth(), p.y
+                };
+                
+                mDrawCanvas.drawLines(pts, mHighlightPaint);
+            }
+        }        
     }
 
     /**
@@ -359,14 +486,20 @@ public class RadarChart extends PieRadarChartBase {
     }
 
     /**
-     * Set an offset for the rotation of the RadarChart in degrees. Default 270f
+     * set this to true to enable drawing the y-labels, false if not
      * 
-     * @param angle
+     * @param enabled
      */
-    public void setRotation(float angle) {
-        
-        angle = Math.abs(angle % 360f);
-        mOffsetAngle = angle;
+    public void setDrawYLabels(boolean enabled) {
+        mDrawYLabels = enabled;
+    }
+    
+    @Override
+    public float getRadius() {
+        if (mContentRect == null)
+            return 0;
+        else
+            return Math.min(mContentRect.width() / 2f, mContentRect.height() / 2f);
     }
 
     @Override

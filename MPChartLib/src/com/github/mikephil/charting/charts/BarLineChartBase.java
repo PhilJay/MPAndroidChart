@@ -15,7 +15,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewParent;
 
-import com.github.mikephil.charting.data.BarLineScatterCandleData;
+import com.github.mikephil.charting.data.BarLineScatterCandleRadarData;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
@@ -99,9 +99,6 @@ public abstract class BarLineChartBase extends Chart {
 
     /** paint for the y-label values */
     protected Paint mYLabelPaint;
-
-    /** paint used for highlighting values */
-    protected Paint mHighlightPaint;
 
     /** paint used for the limit lines */
     protected Paint mLimitLinePaint;
@@ -194,11 +191,6 @@ public abstract class BarLineChartBase extends Chart {
         // mGridBackgroundPaint.setColor(Color.WHITE);
         mGridBackgroundPaint.setColor(Color.rgb(240, 240, 240)); // light
         // grey
-
-        mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mHighlightPaint.setStyle(Paint.Style.STROKE);
-        mHighlightPaint.setStrokeWidth(2f);
-        mHighlightPaint.setColor(Color.rgb(255, 187, 115));
 
         mLimitLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mLimitLinePaint.setStyle(Paint.Style.STROKE);
@@ -608,7 +600,7 @@ public abstract class BarLineChartBase extends Chart {
             // 90
             interval = Math.floor(10 * intervalMagnitude);
         }
-
+        
         double first = Math.ceil(yMin / interval) * interval;
         double last = Utils.nextUp(Math.floor(yMax / interval) * interval);
 
@@ -906,7 +898,7 @@ public abstract class BarLineChartBase extends Chart {
      */
     private void drawLimitLines() {
 
-        ArrayList<LimitLine> limitLines = ((BarLineScatterCandleData) mOriginalData)
+        ArrayList<LimitLine> limitLines = ((BarLineScatterCandleRadarData) mOriginalData)
                 .getLimitLines();
 
         if (limitLines == null)

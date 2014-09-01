@@ -5,7 +5,7 @@ import android.graphics.Color;
 
 import java.util.ArrayList;
 
-public class BarDataSet extends BarLineScatterCandleDataSet {
+public class BarDataSet extends BarLineScatterCandleRadarDataSet {
 
     /** space indicator between the bars 0.1f == 10 % */
     private float mBarSpace = 0.15f;

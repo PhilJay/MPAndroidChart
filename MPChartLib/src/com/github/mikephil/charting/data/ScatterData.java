@@ -3,7 +3,7 @@ package com.github.mikephil.charting.data;
 
 import java.util.ArrayList;
 
-public class ScatterData extends BarLineScatterCandleData {
+public class ScatterData extends BarLineScatterCandleRadarData {
     
     public ScatterData(ArrayList<String> xVals, ArrayList<ScatterDataSet> dataSets) {
         super(xVals, dataSets);

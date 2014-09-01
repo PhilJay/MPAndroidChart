@@ -18,7 +18,7 @@ import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.listener.PieChartTouchListener;
+import com.github.mikephil.charting.listener.PieRadarChartTouchListener;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.github.mikephil.charting.utils.Utils;
 
@@ -38,17 +38,11 @@ public class PieChart extends PieRadarChartBase {
      */
     private RectF mCircleBox = new RectF();
 
-    /** holds the current rotation angle of the chart */
-    private float mChartAngle = 0f;
-
     /** array that holds the width of each pie-slice in degrees */
     private float[] mDrawAngles;
 
     /** array that holds the absolute angle in degrees of each slice */
     private float[] mAbsoluteAngles;
-
-    /** flag that indicates if rotation is enabled or not */
-    private boolean mRotateEnabled = true;
 
     /** if true, the white hole inside the chart will be drawn */
     private boolean mDrawHole = true;
@@ -96,9 +90,6 @@ public class PieChart extends PieRadarChartBase {
      */
     private Paint mCenterTextPaint;
 
-    /** the piechart touchlistener */
-    private OnTouchListener mListener;
-
     public PieChart(Context context) {
         super(context);
     }
@@ -132,8 +123,6 @@ public class PieChart extends PieRadarChartBase {
         mValuePaint.setTextSize(Utils.convertDpToPixel(13f));
         mValuePaint.setColor(Color.WHITE);
         mValuePaint.setTextAlign(Align.CENTER);
-
-        mListener = new PieChartTouchListener(this);
 
         // for the piechart, drawing values is enabled
         mDrawYValues = true;
@@ -174,6 +163,12 @@ public class PieChart extends PieRadarChartBase {
         canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
 
         Log.i(LOG_TAG, "PieChart DrawTime: " + (System.currentTimeMillis() - starttime) + " ms");
+        
+        PointF c1 = getCenter();
+        PointF c2 = getCenterCircleBox();
+        
+        Log.i(LOG_TAG, "Center content x: " + c1.x + ", y: " + c1.y);
+        Log.i(LOG_TAG, "Center circlebox x: " + c2.x + ", y: " + c2.y);
     }
 
     /**
@@ -183,92 +178,9 @@ public class PieChart extends PieRadarChartBase {
     @Override
     public void prepare() {
         super.prepare();
-        
-        // calculate how many digits are needed
-        calcFormats();
-        
+
         if (mCenterText == null)
             mCenterText = "Total Value\n" + (int) getYValueSum();
-    }
-
-    @Override
-    public void notifyDataSetChanged() {
-        // TODO
-    }
-
-    /** the decimalformat responsible for formatting the values in the chart */
-    protected DecimalFormat mFormatValue = null;
-
-    /**
-     * calculates the required number of digits for the y-legend and for the
-     * values that might be drawn in the chart (if enabled)
-     */
-    protected void calcFormats() {
-
-        // -1 means calculate digits
-        if (mValueDigitsToUse == -1) {
-            if (mOriginalData.getXValCount() <= 1)
-                mValueFormatDigits = 0;
-            else
-                mValueFormatDigits = Utils.getPieFormatDigits(mDeltaY);
-        }
-
-        else
-            mValueFormatDigits = mValueDigitsToUse;
-
-        StringBuffer b = new StringBuffer();
-        for (int i = 0; i < mValueFormatDigits; i++) {
-            if (i == 0)
-                b.append(".");
-            b.append("0");
-        }
-
-        mFormatValue = new DecimalFormat("###,###,###,##0" + b.toString());
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        // use the piecharts own listener
-        if (mTouchEnabled && mListener != null)
-            return mListener.onTouch(this, event);
-        else
-            return super.onTouchEvent(event);
-    }
-
-    /** the angle where the dragging started */
-    private float mStartAngle = 0f;
-
-    /**
-     * sets the starting angle of the rotation, this is only used by the touch
-     * listener, x and y is the touch position
-     * 
-     * @param x
-     * @param y
-     */
-    public void setStartAngle(float x, float y) {
-
-        mStartAngle = getAngleForPoint(x, y);
-
-        // take the current angle into consideration when starting a new drag
-        mStartAngle -= mChartAngle;
-    }
-
-    /**
-     * updates the view rotation depending on the given touch position, also
-     * takes the starting angle into consideration
-     * 
-     * @param x
-     * @param y
-     */
-    public void updateRotation(float x, float y) {
-
-        mChartAngle = getAngleForPoint(x, y);
-
-        // take the offset into consideration
-        mChartAngle -= mStartAngle;
-
-        // keep the angle >= 0 and <= 360
-        mChartAngle = (mChartAngle + 360f) % 360f;
     }
 
     @Override
@@ -524,9 +436,10 @@ public class PieChart extends PieRadarChartBase {
                 float value = entries.get(j).getVal();
 
                 if (mUsePercentValues)
-                    val = mFormatValue.format(getPercentOfTotal(value)) + " %";
+                    val = Utils.formatNumber(getPercentOfTotal(value), mValueFormatDigits,
+                            mSeparateTousands) + " %";
                 else
-                    val = mFormatValue.format(value);
+                    val = Utils.formatNumber(value, mValueFormatDigits, mSeparateTousands);
 
                 if (mDrawUnitInChart)
                     val = val + mUnit;
@@ -571,24 +484,9 @@ public class PieChart extends PieRadarChartBase {
         return value / mCurrentData.getYValueSum() * 360f;
     }
 
-    /**
-     * set a new (e.g. custom) charttouchlistener NOTE: make sure to
-     * setTouchEnabled(true); if you need touch gestures on the chart
-     * 
-     * @param l
-     */
-    public void setOnTouchListener(OnTouchListener l) {
-        this.mListener = l;
-    }
-
-    /**
-     * returns the pie index for the pie at the given angle
-     * 
-     * @param angle
-     * @return
-     */
+    @Override
     public int getIndexForAngle(float angle) {
-
+    
         // take the current angle of the chart into consideration
         float a = (angle - mChartAngle + 360) % 360f;
 
@@ -601,7 +499,7 @@ public class PieChart extends PieRadarChartBase {
     }
 
     /**
-     * returns the index of the DataSet this x-index belongs to.
+     * Returns the index of the DataSet this x-index belongs to.
      * 
      * @param xIndex
      * @return
@@ -640,50 +538,12 @@ public class PieChart extends PieRadarChartBase {
     }
 
     /**
-     * set a new starting angle for the pie chart (0-360) default is 0° -->
-     * right side (EAST)
-     * 
-     * @param angle
-     */
-    public void setStartAngle(float angle) {
-        mChartAngle = angle;
-    }
-
-    /**
-     * gets the current rotation angle of the pie chart
-     * 
-     * @return
-     */
-    public float getCurrentRotation() {
-        return mChartAngle;
-    }
-
-    /**
      * set this to true to draw the pie center empty
      * 
      * @param enabled
      */
     public void setDrawHoleEnabled(boolean enabled) {
         this.mDrawHole = enabled;
-    }
-
-    /**
-     * Set this to true to enable the rotation / spinning of the chart by touch.
-     * Set it to false to disable it. Default: true
-     * 
-     * @param enabled
-     */
-    public void setRotationEnabled(boolean enabled) {
-        mRotateEnabled = enabled;
-    }
-
-    /**
-     * Returns true if rotation of the chart by touch is enabled, false if not.
-     * 
-     * @return
-     */
-    public boolean isRotationEnabled() {
-        return mRotateEnabled;
     }
 
     /**
@@ -770,28 +630,12 @@ public class PieChart extends PieRadarChartBase {
         return mDrawXVals;
     }
 
-    /**
-     * returns the radius of the pie-chart
-     * 
-     * @return
-     */
+    @Override
     public float getRadius() {
         if (mCircleBox == null)
             return 0;
         else
             return Math.min(mCircleBox.width() / 2f, mCircleBox.height() / 2f);
-    }
-
-    /**
-     * returns the diameter of the pie-chart
-     * 
-     * @return
-     */
-    public float getDiameter() {
-        if (mContentRect == null)
-            return 0;
-        else
-            return Math.min(mContentRect.width(), mContentRect.height());
     }
 
     /**
@@ -810,73 +654,6 @@ public class PieChart extends PieRadarChartBase {
      */
     public PointF getCenterCircleBox() {
         return new PointF(mCircleBox.centerX(), mCircleBox.centerY());
-    }
-
-    /**
-     * returns the angle relative to the chart center for the given point on the
-     * chart in degrees. The angle is always between 0 and 360°, 0° is EAST, 90°
-     * is SOUTH, ...
-     * 
-     * @param x
-     * @param y
-     * @return
-     */
-    public float getAngleForPoint(float x, float y) {
-
-        PointF c = getCenterCircleBox();
-
-        double tx = x - c.x, ty = y - c.y;
-        double length = Math.sqrt(tx * tx + ty * ty);
-        double r = Math.acos(ty / length);
-
-        float angle = (float) Math.toDegrees(r);
-
-        if (x > c.x)
-            angle = 360f - angle;
-
-        // add 90° because chart starts EAST
-        angle = angle + 90f;
-
-        // neutralize overflow
-        if (angle > 360f)
-            angle = angle - 360f;
-
-        return angle;
-    }
-
-    /**
-     * returns the distance of a certain point on the chart to the center of the
-     * piechart
-     * 
-     * @param x
-     * @param y
-     * @return
-     */
-    public float distanceToCenter(float x, float y) {
-
-        PointF c = getCenterCircleBox();
-
-        float dist = 0f;
-
-        float xDist = 0f;
-        float yDist = 0f;
-
-        if (x > c.x) {
-            xDist = x - c.x;
-        } else {
-            xDist = c.x - x;
-        }
-
-        if (y > c.y) {
-            yDist = y - c.y;
-        } else {
-            yDist = c.y - y;
-        }
-
-        // pythagoras
-        dist = (float) Math.sqrt(Math.pow(xDist, 2.0) + Math.pow(yDist, 2.0));
-
-        return dist;
     }
 
     /**

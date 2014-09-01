@@ -15,6 +15,8 @@ import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
+import com.github.mikephil.charting.utils.YLabels;
+import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -37,16 +39,21 @@ public class RadarChartActivitry extends DemoBase {
         mChart.setValueTypeface(tf);
 
         mChart.setDescription("");
-        
+
         mChart.setWebLineWidth(2f);
         mChart.setWebLineWidthInner(0.75f);
 
         setData();
 
-        mChart.animateXY(1500, 1500);
+        YLabels yl = mChart.getYLabels();
+        yl.setTypeface(tf);
+        yl.setLabelCount(5);
+
+        // mChart.animateXY(1500, 1500);
 
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART);
+        l.setTypeface(tf);
         l.setXEntrySpace(7f);
         l.setYEntrySpace(5f);
     }
@@ -56,8 +63,8 @@ public class RadarChartActivitry extends DemoBase {
     };
 
     public void setData() {
-        
-        float mult = 100;
+
+        float mult = 150;
 
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
         ArrayList<Entry> yVals2 = new ArrayList<Entry>();
@@ -68,7 +75,7 @@ public class RadarChartActivitry extends DemoBase {
         for (int i = 0; i < 6; i++) {
             yVals1.add(new Entry((float) (Math.random() * mult) + mult / 2, i));
         }
-        
+
         for (int i = 0; i < 6; i++) {
             yVals2.add(new Entry((float) (Math.random() * mult) + mult / 2, i));
         }
@@ -80,14 +87,14 @@ public class RadarChartActivitry extends DemoBase {
 
         RadarDataSet set1 = new RadarDataSet(yVals1, "Set 1");
         set1.setColor(getResources().getColor(R.color.vordiplom_1));
-//        set1.setDrawFilled(true);
+        // set1.setDrawFilled(true);
         set1.setLineWidth(2f);
-        
+
         RadarDataSet set2 = new RadarDataSet(yVals2, "Set 2");
         set2.setColor(getResources().getColor(R.color.vordiplom_5));
-//        set2.setDrawFilled(true);
+        // set2.setDrawFilled(true);
         set2.setLineWidth(2f);
-        
+
         ArrayList<RadarDataSet> sets = new ArrayList<RadarDataSet>();
         sets.add(set1);
         sets.add(set2);

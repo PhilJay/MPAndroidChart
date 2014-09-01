@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.charts.PieRadarChartBase;
 import com.github.mikephil.charting.utils.Highlight;
 
 /**
@@ -15,13 +16,13 @@ import com.github.mikephil.charting.utils.Highlight;
  * 
  * @author Philipp Jahoda
  */
-public class PieChartTouchListener extends SimpleOnGestureListener implements OnTouchListener {
+public class PieRadarChartTouchListener extends SimpleOnGestureListener implements OnTouchListener {
     
-    private PieChart mChart;
+    private PieRadarChartBase mChart;
 
     private GestureDetector mGestureDetector;
 
-    public PieChartTouchListener(PieChart ctx) {
+    public PieRadarChartTouchListener(PieRadarChartBase ctx) {
         this.mChart = ctx;
 
         mGestureDetector = new GestureDetector(ctx.getContext(), this);
@@ -71,19 +72,20 @@ public class PieChartTouchListener extends SimpleOnGestureListener implements On
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-
+        
         float distance = mChart.distanceToCenter(e.getX(), e.getY());
 
         // check if a slice was touched
-        if (distance < mChart.getRadius() / 2 || distance > mChart.getRadius()) {
+        if (mChart instanceof PieChart && (distance < mChart.getRadius() / 3 || distance > mChart.getRadius())) {
 
             // if no slice was touched, highlight nothing
             mChart.highlightValues(null);
             mLastHighlight = null;
+            
         } else {
-
+            
             int index = mChart.getIndexForAngle(mChart.getAngleForPoint(e.getX(), e.getY()));
-            int dataSetIndex = mChart.getDataSetIndexForIndex(index);
+            int dataSetIndex = 0;
 
             Highlight h = new Highlight(index, dataSetIndex);
 
@@ -97,7 +99,7 @@ public class PieChartTouchListener extends SimpleOnGestureListener implements On
                 mLastHighlight = h;
             }
         }
-
+        
         return true;
     }
 }

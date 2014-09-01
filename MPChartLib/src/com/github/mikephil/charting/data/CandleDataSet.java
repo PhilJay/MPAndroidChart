@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public class CandleDataSet extends BarLineScatterCandleDataSet {
+public class CandleDataSet extends BarLineScatterCandleRadarDataSet {
 
     /** the width of the shadow of the candle */
     private float mShadowWidth = 3f;

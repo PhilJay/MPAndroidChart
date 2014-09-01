@@ -119,7 +119,10 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     /**
      * paint object used for darwing the bitmap to the screen
      */
-    protected Paint mDrawPaint;
+    protected Paint mDrawPaint;    
+
+    /** paint used for highlighting values */
+    protected Paint mHighlightPaint;
 
     /**
      * paint object used for drawing the description text in the bottom right
@@ -188,7 +191,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     protected boolean mDrawLegend = true;
 
     /** this rectangle defines the area in which graph values can be drawn */
-    protected Rect mContentRect = new Rect();
+    protected RectF mContentRect = new RectF();
 
     /** the legend object containing all data associated with the legend */
     protected Legend mLegend;
@@ -262,7 +265,12 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
         mLegendFormPaint.setStrokeWidth(3f);
 
         mLegendLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mLegendLabelPaint.setTextSize(Utils.convertDpToPixel(9f));
+        mLegendLabelPaint.setTextSize(Utils.convertDpToPixel(9f));        
+
+        mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mHighlightPaint.setStyle(Paint.Style.STROKE);
+        mHighlightPaint.setStrokeWidth(2f);
+        mHighlightPaint.setColor(Color.rgb(255, 187, 115));
     }
 
     // public void initWithDummyData() {
@@ -1028,60 +1036,64 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
         for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
             int xIndex = mIndicesToHightlight[i].getXIndex();
+            int dataSetIndex = mIndicesToHightlight[i].getDataSetIndex();
 
-            if (xIndex <= mDeltaX && xIndex <= mDeltaX * mPhaseX)
-                drawMarkerView(xIndex, mIndicesToHightlight[i].getDataSetIndex());
+            if (xIndex <= mDeltaX && xIndex <= mDeltaX * mPhaseX) {
+
+                Entry e = getEntryByDataSetIndex(xIndex, dataSetIndex);
+
+                // make sure entry not null
+                if (e == null)
+                    continue;
+
+                float[] pos = getMarkerPosition(e, dataSetIndex);
+
+                // callbacks to update the content
+                mMarkerView.refreshContent(e, dataSetIndex);
+
+                mMarkerView.draw(mDrawCanvas, pos[0], pos[1]);
+            }
         }
     }
 
     /**
-     * Draws the view that is displayed when a value is highlighted.
+     * Returns the actual position in pixels of the MarkerView for the given
+     * Entry in the given DataSet.
      * 
-     * @param xIndex the selected x-index
-     * @param dataSetIndex the index of the selected DataSet
+     * @param xIndex
+     * @param dataSetIndex
+     * @return
      */
-    private void drawMarkerView(int xIndex, int dataSetIndex) {
+    private float[] getMarkerPosition(Entry e, int dataSetIndex) {
 
-        Entry e = getEntryByDataSetIndex(xIndex, dataSetIndex);
-
-        // make sure the entry is not null
-        if (e == null) {
-            return;
-        }
-
-        float xPos = (float) xIndex;
+        float xPos = (float) e.getXIndex();
 
         // make sure the marker is in the center of the bars in BarChart and
         // CandleStickChart
         if (this instanceof CandleStickChart)
             xPos += 0.5f;
-        
-        else if(this instanceof BarChart) { 
-            
+
+        else if (this instanceof BarChart) {
+
             BarData bd = (BarData) mCurrentData;
             float space = bd.getGroupSpace();
-            float j = mCurrentData.getDataSetByIndex(dataSetIndex).getEntryPosition(e);
-            
-            float x = (j * (mCurrentData.getDataSetCount() - 1)) + dataSetIndex + space * j + space / 2f + 0.5f;
-            
-            xPos += x; 
+            float j = mCurrentData.getDataSetByIndex(dataSetIndex)
+                    .getEntryPosition(e);
+
+            float x = (j * (mCurrentData.getDataSetCount() - 1)) + dataSetIndex + space * j + space
+                    / 2f + 0.5f;
+
+            xPos += x;
         }
 
         // position of the marker depends on selected value index and value
         float[] pts = new float[] {
                 xPos, e.getVal() * mPhaseY
         };
+        
         transformPointArray(pts);
 
-        float posX = pts[0];
-        float posY = pts[1];
-
-        // callbacks to update the content
-        mMarkerView.refreshContent(e, dataSetIndex);
-
-        // call the draw method of the markerview that will translate to the
-        // given position and draw the view
-        mMarkerView.draw(mDrawCanvas, posX, posY);
+        return pts;
     }
 
     /**
@@ -1365,7 +1377,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      * @return
      */
     public PointF getCenter() {
-        return new PointF(getWidth() / 2, getHeight() / 2);
+        return new PointF(getWidth() / 2f, getHeight() / 2f);
     }
 
     /**
@@ -1559,7 +1571,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      * 
      * @return
      */
-    public Rect getContentRect() {
+    public RectF getContentRect() {
         return mContentRect;
     }
 

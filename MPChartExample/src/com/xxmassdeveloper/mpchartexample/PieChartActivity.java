@@ -63,7 +63,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         mChart.setDrawHoleEnabled(true);
         
-
+        mChart.setRotationAngle(0);
 
         // draws the corresponding description value into the slice
         mChart.setDrawXValues(true);
