@@ -247,6 +247,9 @@ public class BarChart extends BarLineChartBase {
 
         ArrayList<BarDataSet> dataSets = (ArrayList<BarDataSet>) bd.getDataSets();
         int setCount = bd.getDataSetCount();
+        
+        // the space between bar-groups
+        float space = bd.getGroupSpace();
 
         // 2D drawing
         for (int i = 0; i < setCount; i++) {
@@ -256,18 +259,14 @@ public class BarChart extends BarLineChartBase {
 
             ArrayList<BarEntry> entries = (ArrayList<BarEntry>) dataSet.getYVals();
 
-            // the space between bar-groups
-            float spaceSum = bd.getGroupSpace() / 2f;
-
             // do the drawing
             for (int j = 0; j < dataSet.getEntryCount() * mPhaseX; j++) {
 
                 BarEntry e = entries.get(j);
 
                 // calculate the x-position, depending on datasetcount
-                float x = e.getXIndex() + j * (setCount - 1) + i + spaceSum;
+                float x = e.getXIndex() + j * (setCount - 1) + i + space * j + space / 2f;
                 float y = e.getVal();
-                spaceSum += bd.getGroupSpace();
 
                 // no stacks
                 if (noStacks) {

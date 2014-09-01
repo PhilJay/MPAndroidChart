@@ -421,6 +421,20 @@ public abstract class DataSet {
         mColors = new ArrayList<Integer>();
     }
 
+    /**
+     * Returns the position of the provided entry in the DataSets Entry array. Returns -1 if doesnt exist.
+     * @param e
+     * @return
+     */
+    public int getEntryPosition(Entry e) {
+        
+        for(int i = 0; i < mYVals.size(); i++) {
+            if(e.equalTo(mYVals.get(i))) return i;
+        }
+        
+        return -1;
+    }
+
     // /**
     // * Convenience method to create multiple DataSets of different types with
     // * various double value arrays. Each double array represents the data of

@@ -62,6 +62,17 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         
         mChart.setDrawGridBackground(false);
         mChart.setDrawHorizontalGrid(false);
+        
+        // create a custom MarkerView (extend MarkerView) and specify the layout
+        // to use for it
+        MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
+
+        // define an offset to change the original position of the marker
+        // (optional)
+        mv.setOffsets(-mv.getMeasuredWidth() / 2, -mv.getMeasuredHeight());
+
+        // set the marker to the chart
+        mChart.setMarkerView(mv);
 
         mSeekBarX.setProgress(10);
         mSeekBarY.setProgress(100);

@@ -133,6 +133,26 @@ public class Entry {
     }
 
     /**
+     * Compares value, xIndex and data of the entries. Returns true if entries
+     * are equal, false if not.
+     * 
+     * @param e
+     * @return
+     */
+    public boolean equalTo(Entry e) {
+
+        if (e.mData != this.mData)
+            return false;
+        if (e.mXIndex != this.mXIndex)
+            return false;
+
+        if (Math.abs(e.mVal - this.mVal) > 0.0001)
+            return false;
+
+        return true;
+    }
+
+    /**
      * returns a string representation of the entry containing x-index and value
      */
     @Override

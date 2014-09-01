@@ -1053,8 +1053,19 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
 
         // make sure the marker is in the center of the bars in BarChart and
         // CandleStickChart
-        if (this instanceof BarChart || this instanceof CandleStickChart)
+        if (this instanceof CandleStickChart)
             xPos += 0.5f;
+        
+        else if(this instanceof BarChart) { 
+            
+            BarData bd = (BarData) mCurrentData;
+            float space = bd.getGroupSpace();
+            float j = mCurrentData.getDataSetByIndex(dataSetIndex).getEntryPosition(e);
+            
+            float x = (j * (mCurrentData.getDataSetCount() - 1)) + dataSetIndex + space * j + space / 2f + 0.5f;
+            
+            xPos += x; 
+        }
 
         // position of the marker depends on selected value index and value
         float[] pts = new float[] {
