@@ -3,7 +3,8 @@ package com.github.mikephil.charting.utils;
 
 /**
  * Class representing the x-axis labels settings. Only use the setter methods to
- * modify it. Do not access public variables directly.
+ * modify it. Do not access public variables directly. Be aware that not all
+ * features the XLabels class provides are suitable for the RadarChart.
  * 
  * @author Philipp Jahoda
  */

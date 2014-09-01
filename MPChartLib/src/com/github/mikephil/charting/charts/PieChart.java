@@ -4,7 +4,6 @@ package com.github.mikephil.charting.charts;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.PointF;
@@ -12,17 +11,13 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.MotionEvent;
 
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.listener.PieRadarChartTouchListener;
-import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.github.mikephil.charting.utils.Utils;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -163,10 +158,10 @@ public class PieChart extends PieRadarChartBase {
         canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
 
         Log.i(LOG_TAG, "PieChart DrawTime: " + (System.currentTimeMillis() - starttime) + " ms");
-        
+
         PointF c1 = getCenter();
         PointF c2 = getCenterCircleBox();
-        
+
         Log.i(LOG_TAG, "Center content x: " + c1.x + ", y: " + c1.y);
         Log.i(LOG_TAG, "Center circlebox x: " + c2.x + ", y: " + c2.y);
     }
@@ -486,7 +481,7 @@ public class PieChart extends PieRadarChartBase {
 
     @Override
     public int getIndexForAngle(float angle) {
-    
+
         // take the current angle of the chart into consideration
         float a = (angle - mChartAngle + 360) % 360f;
 

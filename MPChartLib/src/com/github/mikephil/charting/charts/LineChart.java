@@ -410,9 +410,6 @@ public class LineChart extends BarLineChartBase {
             case PAINT_CIRCLES_INNER:
                 mCirclePaintInner = p;
                 break;
-            case PAINT_HIGHLIGHT_LINE:
-                mHighlightPaint = p;
-                break;
         }
     }
 
@@ -425,8 +422,6 @@ public class LineChart extends BarLineChartBase {
         switch (which) {
             case PAINT_CIRCLES_INNER:
                 return mCirclePaintInner;
-            case PAINT_HIGHLIGHT_LINE:
-                return mHighlightPaint;
         }
 
         return null;

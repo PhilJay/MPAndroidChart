@@ -116,10 +116,16 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     /** the highest value the chart can display */
     protected float mYChartMax = 0.0f;
 
+    /** paint for the x-label values */
+    protected Paint mXLabelPaint;
+
+    /** paint for the y-label values */
+    protected Paint mYLabelPaint;
+
     /**
      * paint object used for darwing the bitmap to the screen
      */
-    protected Paint mDrawPaint;    
+    protected Paint mDrawPaint;
 
     /** paint used for highlighting values */
     protected Paint mHighlightPaint;
@@ -265,7 +271,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
         mLegendFormPaint.setStrokeWidth(3f);
 
         mLegendLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mLegendLabelPaint.setTextSize(Utils.convertDpToPixel(9f));        
+        mLegendLabelPaint.setTextSize(Utils.convertDpToPixel(9f));
 
         mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mHighlightPaint.setStyle(Paint.Style.STROKE);
@@ -1090,7 +1096,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
         float[] pts = new float[] {
                 xPos, e.getVal() * mPhaseY
         };
-        
+
         transformPointArray(pts);
 
         return pts;
@@ -1612,10 +1618,10 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     public static final int PAINT_CENTER_TEXT = 14;
 
     /** paint for highlightning the values of a linechart */
-    public static final int PAINT_HIGHLIGHT_LINE = 15;
+    public static final int PAINT_HIGHLIGHT = 15;
 
-    /** paint for highlightning the values of a linechart */
-    public static final int PAINT_HIGHLIGHT_BAR = 16;
+    /** paint object used for the limit lines */
+    public static final int PAINT_RADAR_WEB = 16;
 
     /** paint used for all rendering processes */
     public static final int PAINT_RENDER = 17;
@@ -1625,9 +1631,6 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
 
     /** paint object used for the limit lines */
     public static final int PAINT_LIMIT_LINE = 19;
-
-    /** paint object used for the limit lines */
-    public static final int PAINT_RADAR_WEB = 20;
 
     /**
      * set a new paint object for the specified parameter in the chart e.g.
@@ -1655,6 +1658,15 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
             case PAINT_LEGEND_LABEL:
                 mLegendLabelPaint = p;
                 break;
+            case PAINT_XLABEL:
+                mXLabelPaint = p;
+                break;
+            case PAINT_YLABEL:
+                mYLabelPaint = p;
+                break;
+            case PAINT_HIGHLIGHT:
+                mHighlightPaint = p;
+                break;
         }
     }
 
@@ -1676,6 +1688,12 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
                 return mRenderPaint;
             case PAINT_LEGEND_LABEL:
                 return mLegendLabelPaint;
+            case PAINT_XLABEL:
+                return mXLabelPaint;
+            case PAINT_YLABEL:
+                return mYLabelPaint;
+            case PAINT_HIGHLIGHT:
+                return mHighlightPaint;
         }
 
         return null;
@@ -1855,7 +1873,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      * @param xIndex
      * @return
      */
-    protected ArrayList<SelInfo> getYValsAtIndex(int xIndex) {
+    public ArrayList<SelInfo> getYValsAtIndex(int xIndex) {
 
         ArrayList<SelInfo> vals = new ArrayList<SelInfo>();
 

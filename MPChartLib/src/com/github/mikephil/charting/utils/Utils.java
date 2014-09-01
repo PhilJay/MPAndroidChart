@@ -342,4 +342,32 @@ public abstract class Utils {
                     ((d >= 0.0d) ? +1L : -1L));
         }
     }
+    
+    
+
+    /**
+     * Returns the index of the DataSet that contains the closest value on the
+     * y-axis. This is needed for highlighting.
+     * 
+     * @param valsAtIndex all the values at a specific index
+     * @return
+     */
+    public static int getClosestDataSetIndex(ArrayList<SelInfo> valsAtIndex, float val) {
+
+        int index = -1;
+        float distance = Float.MAX_VALUE;
+
+        for (int i = 0; i < valsAtIndex.size(); i++) {
+
+            float cdistance = Math.abs((float) valsAtIndex.get(i).val - val);
+            if (cdistance < distance) {
+                index = valsAtIndex.get(i).dataSetIndex;
+                distance = cdistance;
+            }
+        }
+
+        // Log.i(LOG_TAG, "Closest DataSet index: " + index);
+
+        return index;
+    }
 }

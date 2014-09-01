@@ -840,31 +840,6 @@ public class BarChart extends BarLineChartBase {
         return mDrawHighlightArrow;
     }
 
-    @Override
-    public void setPaint(Paint p, int which) {
-        super.setPaint(p, which);
-
-        switch (which) {
-            case PAINT_HIGHLIGHT_BAR:
-                mHighlightPaint = p;
-                break;
-        }
-    }
-
-    @Override
-    public Paint getPaint(int which) {
-        Paint p = super.getPaint(which);
-        if (p != null)
-            return p;
-
-        switch (which) {
-            case PAINT_HIGHLIGHT_BAR:
-                return mHighlightPaint;
-        }
-
-        return null;
-    }
-
     /**
      * If set to true, all values are drawn above their bars, instead of below
      * their top.

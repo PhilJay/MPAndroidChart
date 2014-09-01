@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.graphics.Paint.Align;
 import android.graphics.Path;
 import android.graphics.PointF;
@@ -14,10 +13,10 @@ import android.util.Log;
 
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.YLabels;
 
 import java.util.ArrayList;
@@ -33,8 +32,6 @@ public class RadarChart extends PieRadarChartBase {
     /** paint for drawing the web */
     private Paint mWebPaint;
 
-    private Paint mYLabelPaint;
-
     /** width of the main web lines */
     private float mWebLineWidth = 2.5f;
 
@@ -48,13 +45,19 @@ public class RadarChart extends PieRadarChartBase {
     private int mWebColorInner = Color.rgb(122, 122, 122);
 
     /** transparency the grid is drawn with (0-255) */
-    private int mWebAlpha = 255;
+    private int mWebAlpha = 150;
 
     /** flag indicating if the y-labels should be drawn or not */
     protected boolean mDrawYLabels = true;
 
+    /** flag indicating if the x-labels should be drawn or not */
+    protected boolean mDrawXLabels = true;
+
     /** the object reprsenting the y-axis labels */
     private YLabels mYLabels = new YLabels();
+
+    /** the object representing the x-axis labels */
+    private XLabels mXLabels = new XLabels();
 
     public RadarChart(Context context) {
         super(context);
@@ -82,7 +85,7 @@ public class RadarChart extends PieRadarChartBase {
         mYLabelPaint.setColor(Color.BLACK);
         mYLabelPaint.setTextAlign(Align.LEFT);
         mYLabelPaint.setTextSize(Utils.convertDpToPixel(9f));
-        
+
         mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mHighlightPaint.setStyle(Paint.Style.STROKE);
         mHighlightPaint.setStrokeWidth(2f);
@@ -303,54 +306,12 @@ public class RadarChart extends PieRadarChartBase {
     }
 
     /**
-     * Calculates the position on the RadarChart depending on the center of the
-     * chart, the value and angle.
-     * 
-     * @param center
-     * @param val
-     * @param angle in degrees, converted to radians internally
-     * @return
+     * Draws the x-labels of the chart.
      */
-    private PointF getPosition(PointF c, float val, float angle) {
+    private void drawXLabels() {
 
-        PointF p = new PointF((float) (c.x + val * Math.cos(Math.toRadians(angle))),
-                (float) (c.y + val * Math.sin(Math.toRadians(angle))));
-        return p;
-    }
-
-    /**
-     * Returns the factor that is needed to transform values into pixels.
-     * 
-     * @return
-     */
-    public float getFactor() {
-        return (float) Math.min(mContentRect.width() / 2, mContentRect.height() / 2)
-                / mYChartMax;
-    }
-
-    /**
-     * Returns the angle that each slice in the radar chart occupies.
-     * 
-     * @return
-     */
-    public float getSliceAngle() {
-        return 360f / (float) mCurrentData.getXValCount();
-    }
-    
-    @Override
-    public int getIndexForAngle(float angle) {
-        
-        // take the current angle of the chart into consideration
-        float a = (angle - mChartAngle + 360) % 360f;
-        
-        float sliceangle = getSliceAngle();
-
-        for (int i = 0; i < mCurrentData.getXValCount(); i++) {
-            if (sliceangle * (i+1) - sliceangle / 2f > a)
-                return i;
-        }
-
-        return 0; 
+        if (!mDrawXLabels)
+            return;
     }
 
     @Override
@@ -390,17 +351,17 @@ public class RadarChart extends PieRadarChartBase {
 
     @Override
     protected void drawHighlights() {
-        
+
         // if there are values to highlight and highlighnting is enabled, do it
-        if (mHighlightEnabled && valuesToHighlight()) {            
-            
+        if (mHighlightEnabled && valuesToHighlight()) {
+
             float sliceangle = getSliceAngle();
             float factor = getFactor();
 
             PointF c = getCenter();
 
             for (int i = 0; i < mIndicesToHightlight.length; i++) {
-                
+
                 RadarDataSet set = (RadarDataSet) mCurrentData
                         .getDataSetByIndex(mIndicesToHightlight[i]
                                 .getDataSetIndex());
@@ -413,16 +374,67 @@ public class RadarChart extends PieRadarChartBase {
                 Entry e = set.getEntryForXIndex(xIndex);
                 int j = set.getEntryPosition(e);
                 float y = e.getVal();
-                
+
                 PointF p = getPosition(c, y * factor, sliceangle * j + mChartAngle);
 
                 float[] pts = new float[] {
                         p.x, 0, p.x, getHeight(), 0, p.y, getWidth(), p.y
                 };
-                
+
                 mDrawCanvas.drawLines(pts, mHighlightPaint);
             }
-        }        
+        }
+    }
+
+    /**
+     * Calculates the position on the RadarChart depending on the center of the
+     * chart, the value and angle.
+     * 
+     * @param center
+     * @param val
+     * @param angle in degrees, converted to radians internally
+     * @return
+     */
+    private PointF getPosition(PointF c, float val, float angle) {
+
+        PointF p = new PointF((float) (c.x + val * Math.cos(Math.toRadians(angle))),
+                (float) (c.y + val * Math.sin(Math.toRadians(angle))));
+        return p;
+    }
+
+    /**
+     * Returns the factor that is needed to transform values into pixels.
+     * 
+     * @return
+     */
+    public float getFactor() {
+        return (float) Math.min(mContentRect.width() / 2, mContentRect.height() / 2)
+                / mYChartMax;
+    }
+
+    /**
+     * Returns the angle that each slice in the radar chart occupies.
+     * 
+     * @return
+     */
+    public float getSliceAngle() {
+        return 360f / (float) mCurrentData.getXValCount();
+    }
+
+    @Override
+    public int getIndexForAngle(float angle) {
+
+        // take the current angle of the chart into consideration
+        float a = (angle - mChartAngle + 360) % 360f;
+
+        float sliceangle = getSliceAngle();
+
+        for (int i = 0; i < mCurrentData.getXValCount(); i++) {
+            if (sliceangle * (i + 1) - sliceangle / 2f > a)
+                return i;
+        }
+
+        return 0;
     }
 
     /**
@@ -432,6 +444,15 @@ public class RadarChart extends PieRadarChartBase {
      */
     public YLabels getYLabels() {
         return mYLabels;
+    }
+
+    /**
+     * Returns the object that represents all x-labels of the RadarChart.
+     * 
+     * @return
+     */
+    public XLabels getXLabels() {
+        return mXLabels;
     }
 
     /**
@@ -454,8 +475,8 @@ public class RadarChart extends PieRadarChartBase {
     }
 
     /**
-     * Sets the transparency (alpha) value for all web lines, default 255 = 100%
-     * opaque, 0 = 100% transparent
+     * Sets the transparency (alpha) value for all web lines, default: 150, 255
+     * = 100% opaque, 0 = 100% transparent
      * 
      * @param alpha
      */
@@ -493,7 +514,34 @@ public class RadarChart extends PieRadarChartBase {
     public void setDrawYLabels(boolean enabled) {
         mDrawYLabels = enabled;
     }
-    
+
+    /**
+     * set this to true to enable drawing the x-labels, false if not
+     * 
+     * @param enabled
+     */
+    public void setDrawXLabels(boolean enabled) {
+        mDrawXLabels = enabled;
+    }
+
+    /**
+     * Returns true if drawing y-labels is enabled, false if not.
+     * 
+     * @return
+     */
+    public boolean isDrawYLabelsEnabled() {
+        return mDrawYLabels;
+    }
+
+    /**
+     * Returns true if drawing x-labels is enabled, false if not.
+     * 
+     * @return
+     */
+    public boolean isDrawXLabelsEnabled() {
+        return mDrawXLabels;
+    }
+
     @Override
     public float getRadius() {
         if (mContentRect == null)

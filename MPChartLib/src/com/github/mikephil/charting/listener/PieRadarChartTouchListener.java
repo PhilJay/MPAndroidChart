@@ -9,7 +9,12 @@ import android.view.View.OnTouchListener;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.charts.PieRadarChartBase;
+import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.SelInfo;
+import com.github.mikephil.charting.utils.Utils;
+
+import java.util.ArrayList;
 
 /**
  * Touchlistener for the PieChart.
@@ -17,7 +22,7 @@ import com.github.mikephil.charting.utils.Highlight;
  * @author Philipp Jahoda
  */
 public class PieRadarChartTouchListener extends SimpleOnGestureListener implements OnTouchListener {
-    
+
     private PieRadarChartBase mChart;
 
     private GestureDetector mGestureDetector;
@@ -30,7 +35,7 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
 
     @Override
     public boolean onTouch(View v, MotionEvent e) {
-              
+
         if (mGestureDetector.onTouchEvent(e))
             return true;
 
@@ -72,20 +77,29 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        
+
         float distance = mChart.distanceToCenter(e.getX(), e.getY());
 
         // check if a slice was touched
-        if (mChart instanceof PieChart && (distance < mChart.getRadius() / 3 || distance > mChart.getRadius())) {
+        if (distance > mChart.getRadius()) {
 
             // if no slice was touched, highlight nothing
             mChart.highlightValues(null);
             mLastHighlight = null;
-            
+
         } else {
-            
+
             int index = mChart.getIndexForAngle(mChart.getAngleForPoint(e.getX(), e.getY()));
+            ArrayList<SelInfo> valsAtIndex = mChart.getYValsAtIndex(index);
+
             int dataSetIndex = 0;
+
+            // get the dataset that is closest to the selection (PieChart only has one DataSet)
+            if (mChart instanceof RadarChart) {
+
+                dataSetIndex = Utils.getClosestDataSetIndex(valsAtIndex, distance
+                        / ((RadarChart) mChart).getFactor());
+            }
 
             Highlight h = new Highlight(index, dataSetIndex);
 
@@ -99,7 +113,7 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
                 mLastHighlight = h;
             }
         }
-        
+
         return true;
     }
 }

@@ -3,7 +3,9 @@ package com.github.mikephil.charting.utils;
 
 /**
  * Class representing the y-axis labels settings and its entries. Only use the
- * setter methods to modify it. Do not access public variables directly.
+ * setter methods to modify it. Do not access public variables directly. Be
+ * aware that not all features the YLabels class provides are suitable for the
+ * RadarChart.
  * 
  * @author Philipp Jahoda
  */

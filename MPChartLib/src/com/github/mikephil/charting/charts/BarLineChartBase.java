@@ -94,12 +94,6 @@ public abstract class BarLineChartBase extends Chart {
     /** paint for the line surrounding the chart */
     protected Paint mBorderPaint;
 
-    /** paint for the x-label values */
-    protected Paint mXLabelPaint;
-
-    /** paint for the y-label values */
-    protected Paint mYLabelPaint;
-
     /** paint used for the limit lines */
     protected Paint mLimitLinePaint;
 
@@ -1526,6 +1520,24 @@ public abstract class BarLineChartBase extends Chart {
     public void setDrawYLabels(boolean enabled) {
         mDrawYLabels = enabled;
     }
+    
+    /**
+     * Returns true if drawing y-labels is enabled, false if not.
+     * 
+     * @return
+     */
+    public boolean isDrawYLabelsEnabled() {
+        return mDrawYLabels;
+    }
+
+    /**
+     * Returns true if drawing x-labels is enabled, false if not.
+     * 
+     * @return
+     */
+    public boolean isDrawXLabelsEnabled() {
+        return mDrawXLabels;
+    }
 
     /**
      * Sets an array of positions where to draw the chart border lines (e.g. new
@@ -1615,7 +1627,7 @@ public abstract class BarLineChartBase extends Chart {
 
         ArrayList<SelInfo> valsAtIndex = getYValsAtIndex(xIndex);
 
-        dataSetIndex = getClosestDataSetIndex(valsAtIndex, (float) yTouchVal);
+        dataSetIndex = Utils.getClosestDataSetIndex(valsAtIndex, (float) yTouchVal);
 
         if (dataSetIndex == -1)
             return null;
@@ -1627,31 +1639,6 @@ public abstract class BarLineChartBase extends Chart {
         return new Highlight(xIndex, dataSetIndex);
     }
 
-    /**
-     * Returns the index of the DataSet that contains the closest value on the
-     * y-axis.
-     * 
-     * @param valsAtIndex all the values at a specific index
-     * @return
-     */
-    private int getClosestDataSetIndex(ArrayList<SelInfo> valsAtIndex, float val) {
-
-        int index = -1;
-        float distance = Float.MAX_VALUE;
-
-        for (int i = 0; i < valsAtIndex.size(); i++) {
-
-            float cdistance = Math.abs((float) valsAtIndex.get(i).val - val);
-            if (cdistance < distance) {
-                index = valsAtIndex.get(i).dataSetIndex;
-                distance = cdistance;
-            }
-        }
-
-        // Log.i(LOG_TAG, "Closest DataSet index: " + index);
-
-        return index;
-    }
 
     /**
      * Returns the x and y values in the chart at the given touch point
@@ -1916,12 +1903,6 @@ public abstract class BarLineChartBase extends Chart {
             case PAINT_BORDER:
                 mBorderPaint = p;
                 break;
-            case PAINT_XLABEL:
-                mXLabelPaint = p;
-                break;
-            case PAINT_YLABEL:
-                mYLabelPaint = p;
-                break;
             case PAINT_LIMIT_LINE:
                 mLimitLinePaint = p;
                 break;
@@ -1941,10 +1922,6 @@ public abstract class BarLineChartBase extends Chart {
                 return mGridBackgroundPaint;
             case PAINT_BORDER:
                 return mBorderPaint;
-            case PAINT_XLABEL:
-                return mXLabelPaint;
-            case PAINT_YLABEL:
-                return mYLabelPaint;
             case PAINT_LIMIT_LINE:
                 return mLimitLinePaint;
         }

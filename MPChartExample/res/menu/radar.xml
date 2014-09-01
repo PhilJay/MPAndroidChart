@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/actionToggleValues"
+        android:title="Toggle Values">
+    </item>
+        <item
+        android:id="@+id/actionToggleFilled"
+        android:title="Toggle Filled">
+    </item>
+    <item
+        android:id="@+id/actionToggleHighlight"
+        android:title="Toggle Highlight">
+            </item>
+    <item
+        android:id="@+id/actionSave"
+        android:title="Save to SD">
+    </item>
+    <item
+        android:id="@+id/actionToggleRotate"
+        android:title="Toggle Rotation">
+    </item>
+        <item
+        android:id="@+id/actionToggleYLabels"
+        android:title="Toggle Y-Labels">
+    </item>
+            <item
+        android:id="@+id/actionToggleXLabels"
+        android:title="Toggle X-Labels">
+    </item>
+
+</menu>
