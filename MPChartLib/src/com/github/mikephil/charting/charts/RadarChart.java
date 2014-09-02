@@ -22,8 +22,8 @@ import com.github.mikephil.charting.utils.YLabels;
 import java.util.ArrayList;
 
 /**
- * Implementation of the RadarChart, a "net"-like chart. It works best when
- * displaying 5-7 entries per DataSet.
+ * Implementation of the RadarChart, a "spidernet"-like chart. It works best when
+ * displaying 5-10 entries per DataSet.
  * 
  * @author Philipp Jahoda
  */
@@ -75,16 +75,11 @@ public class RadarChart extends PieRadarChartBase {
     protected void init() {
         super.init();
 
-        mWebLineWidth = Utils.convertDpToPixel(2f);
-        mInnerWebLineWidth = Utils.convertDpToPixel(1f);
+        mWebLineWidth = Utils.convertDpToPixel(1.5f);
+        mInnerWebLineWidth = Utils.convertDpToPixel(0.75f);
 
         mWebPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mWebPaint.setStyle(Paint.Style.STROKE);
-
-        mYLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mYLabelPaint.setColor(Color.BLACK);
-        mYLabelPaint.setTextAlign(Align.LEFT);
-        mYLabelPaint.setTextSize(Utils.convertDpToPixel(9f));
 
         mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mHighlightPaint.setStyle(Paint.Style.STROKE);
@@ -154,6 +149,8 @@ public class RadarChart extends PieRadarChartBase {
         long starttime = System.currentTimeMillis();
 
         prepareYLabels();
+        
+        drawXLabels();
 
         drawWeb();
 
@@ -285,23 +282,21 @@ public class RadarChart extends PieRadarChartBase {
 
         mYLabelPaint.setTypeface(mYLabels.getTypeface());
         mYLabelPaint.setTextSize(mYLabels.getTextSize());
+        mYLabelPaint.setColor(mYLabels.getTextColor());
 
         PointF c = getCenter();
         float factor = getFactor();
 
         int labelCount = mYLabels.mEntryCount;
 
-        for (int j = 0; j <= labelCount; j++) {
+        for (int j = 0; j < labelCount; j++) {
 
-            for (int i = 0; i < mCurrentData.getXValCount(); i++) {
+            float r = ((mYChartMax / labelCount) * j) * factor;
 
-                float r = ((mYChartMax / labelCount) * j) * factor;
+            PointF p = getPosition(c, r, mChartAngle);
 
-                PointF p = getPosition(c, r, mChartAngle);
-
-                mDrawCanvas.drawText(Utils.formatNumber(r / factor, mValueFormatDigits,
-                        mSeparateTousands), p.x + 10, p.y - 5, mYLabelPaint);
-            }
+            mDrawCanvas.drawText(Utils.formatNumber(r / factor, mValueFormatDigits,
+                    mSeparateTousands), p.x + 10, p.y - 5, mYLabelPaint);
         }
     }
 
@@ -312,6 +307,27 @@ public class RadarChart extends PieRadarChartBase {
 
         if (!mDrawXLabels)
             return;
+        
+        mXLabelPaint.setTypeface(mXLabels.getTypeface());
+        mXLabelPaint.setTextSize(mXLabels.getTextSize());
+        mXLabelPaint.setColor(mXLabels.getTextColor());
+        
+        float sliceangle = getSliceAngle();
+
+        // calculate the factor that is needed for transforming the value to
+        // pixels
+        float factor = getFactor();
+
+        PointF c = getCenter();
+        
+        for(int i = 0; i < mCurrentData.getXValCount(); i++) {
+            
+            String text = mCurrentData.getXVals().get(i);
+            
+            PointF p = getPosition(c, mYChartMax * factor, sliceangle * i + mChartAngle);
+            
+            mDrawCanvas.drawText(text, p.x, p.y, mXLabelPaint);
+        }
     }
 
     @Override

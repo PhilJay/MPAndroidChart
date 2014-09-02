@@ -42,9 +42,9 @@ public class RadarChartActivitry extends DemoBase {
 
         mChart.setDescription("");
 
-        mChart.setWebLineWidth(2f);
+        mChart.setWebLineWidth(1.5f);
         mChart.setWebLineWidthInner(0.75f);
-        mChart.setWebAlpha(140);
+        mChart.setWebAlpha(100);
 
         setData();
         

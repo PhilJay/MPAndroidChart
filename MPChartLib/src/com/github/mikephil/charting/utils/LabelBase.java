@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.utils;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 
 /**
@@ -15,6 +16,9 @@ public abstract class LabelBase {
 
     /** the size of the label text */
     private float mTextSize = 10f;
+
+    /** the text color to use */
+    private int mTextColor = Color.BLACK;
 
     /** default constructor */
     public LabelBase() {
@@ -62,5 +66,24 @@ public abstract class LabelBase {
      */
     public Typeface getTypeface() {
         return mTypeface;
+    }
+
+    /**
+     * Sets the text color to use for the labels. Make sure to use
+     * getResources().getColor(...) when using a color from the resources.
+     * 
+     * @param color
+     */
+    public void setTextColor(int color) {
+        mTextColor = color;
+    }
+
+    /**
+     * Returns the text color that is set for the labels.
+     * 
+     * @return
+     */
+    public int getTextColor() {
+        return mTextColor;
     }
 }

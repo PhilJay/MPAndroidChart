@@ -160,15 +160,6 @@ public abstract class BarLineChartBase extends Chart {
 
         mListener = new BarLineChartTouchListener(this, mMatrixTouch);
 
-        mXLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mXLabelPaint.setColor(Color.BLACK);
-        mXLabelPaint.setTextAlign(Align.CENTER);
-        mXLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
-
-        mYLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mYLabelPaint.setColor(Color.BLACK);
-        mYLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
-
         mGridPaint = new Paint();
         mGridPaint.setColor(Color.GRAY);
         mGridPaint.setStrokeWidth(mGridWidth);
@@ -635,6 +626,7 @@ public abstract class BarLineChartBase extends Chart {
 
         mXLabelPaint.setTypeface(mXLabels.getTypeface());
         mXLabelPaint.setTextSize(mXLabels.getTextSize());
+        mXLabelPaint.setColor(mXLabels.getTextColor());
 
         if (mXLabels.getPosition() == XLabelPosition.TOP) {
 
@@ -725,6 +717,7 @@ public abstract class BarLineChartBase extends Chart {
 
         mYLabelPaint.setTypeface(mYLabels.getTypeface());
         mYLabelPaint.setTextSize(mYLabels.getTextSize());
+        mYLabelPaint.setColor(mYLabels.getTextColor());
 
         // determine position and draw adequately
         if (mYLabels.getPosition() == YLabelPosition.LEFT) {

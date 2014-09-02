@@ -7,7 +7,6 @@ import android.graphics.Paint.Align;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View.OnTouchListener;
 
 import com.github.mikephil.charting.listener.PieRadarChartTouchListener;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
@@ -50,7 +49,7 @@ public abstract class PieRadarChartBase extends Chart {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        // use the piecharts own listener
+        // use the pie- and radarchart listener own listener
         if (mTouchEnabled && mListener != null)
             return mListener.onTouch(this, event);
         else
@@ -182,8 +181,8 @@ public abstract class PieRadarChartBase extends Chart {
 
     /**
      * returns the angle relative to the chart center for the given point on the
-     * chart in degrees. The angle is always between 0 and 360°, 0° is EAST, 90°
-     * is SOUTH, ...
+     * chart in degrees. The angle is always between 0 and 360°, 0° is NORTH, 90°
+     * is EAST, ...
      * 
      * @param x
      * @param y

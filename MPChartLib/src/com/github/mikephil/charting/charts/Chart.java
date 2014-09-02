@@ -277,6 +277,15 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
         mHighlightPaint.setStyle(Paint.Style.STROKE);
         mHighlightPaint.setStrokeWidth(2f);
         mHighlightPaint.setColor(Color.rgb(255, 187, 115));
+        
+        mXLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mXLabelPaint.setColor(Color.BLACK);
+        mXLabelPaint.setTextAlign(Align.CENTER);
+        mXLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
+
+        mYLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mYLabelPaint.setColor(Color.BLACK);
+        mYLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
     }
 
     // public void initWithDummyData() {
