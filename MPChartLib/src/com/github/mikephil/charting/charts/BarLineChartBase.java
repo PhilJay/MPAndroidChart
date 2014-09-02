@@ -241,11 +241,11 @@ public abstract class BarLineChartBase extends Chart {
         drawLegend();
 
         drawMarkers();
-
+ 
         drawDescription();
 
         canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
-
+        
         Log.i(LOG_TAG, "DrawTime: " + (System.currentTimeMillis() - starttime) + " ms");
     }
 

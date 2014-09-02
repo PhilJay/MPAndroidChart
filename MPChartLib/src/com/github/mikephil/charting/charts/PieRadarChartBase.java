@@ -126,7 +126,7 @@ public abstract class PieRadarChartBase extends Chart {
 
         mLegend.setOffsetTop(mOffsetTop);
         mLegend.setOffsetLeft(mOffsetLeft);
-
+        
         prepareContentRect();
 
         float scaleX = (float) ((getWidth() - mOffsetLeft - mOffsetRight) / mDeltaX);

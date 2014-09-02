@@ -16,7 +16,7 @@ public abstract class LabelBase {
 
     /** the size of the label text */
     private float mTextSize = 10f;
-
+    
     /** the text color to use */
     private int mTextColor = Color.BLACK;
 

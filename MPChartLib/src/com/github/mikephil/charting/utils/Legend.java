@@ -2,6 +2,7 @@
 package com.github.mikephil.charting.utils;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 
@@ -45,6 +46,9 @@ public class Legend {
 
     /** the text size of the legend labels */
     private float mTextSize = 9f;
+    
+    /** the text color to use */
+    private int mTextColor = Color.BLACK;
 
     /** the size of the legend forms/shapes */
     private float mFormSize = 8f;
@@ -325,7 +329,7 @@ public class Legend {
      */
     public void drawForm(Canvas c, float x, float y, Paint p, int index) {
 
-        if (mColors[index] == -1)
+        if (mColors[index] == -2)
             return;
 
         p.setColor(mColors[index]);
@@ -377,6 +381,7 @@ public class Legend {
         mFormToTextSpace = l.mFormToTextSpace;
         mTextSize = l.mTextSize;
         mStackSpace = l.mStackSpace;
+        mTextColor = l.mTextColor;
     }
 
     /**
@@ -513,5 +518,24 @@ public class Legend {
         }
 
         return width;
+    }
+
+    /**
+     * Sets the text color to use for the legend labels. Make sure to use
+     * getResources().getColor(...) when using a color from the resources.
+     * 
+     * @param color
+     */
+    public void setTextColor(int color) {
+        mTextColor = color;
+    }
+
+    /**
+     * Returns the text color that is set for the legend labels.
+     * 
+     * @return
+     */
+    public int getTextColor() {
+        return mTextColor;
     }
 }

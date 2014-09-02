@@ -101,41 +101,12 @@ public class RadarChart extends PieRadarChartBase {
 
         mYChartMin = 0;
     }
-
-    /**
-     * Calculates the required maximum y-value in order to be able to provide
-     * the desired number of label entries and rounded label values.
-     */
-    private void prepareYLabels() {
-
-        int labelCount = mYLabels.getLabelCount();
-        double range = mCurrentData.getYMax() - mYChartMin;
-
-        double rawInterval = range / labelCount;
-        double interval = Utils.roundToNextSignificant(rawInterval);
-        double intervalMagnitude = Math.pow(10, (int) Math.log10(interval));
-        int intervalSigDigit = (int) (interval / intervalMagnitude);
-        if (intervalSigDigit > 5) {
-            // Use one order of magnitude higher, to avoid intervals like 0.9 or
-            // 90
-            interval = Math.floor(10 * intervalMagnitude);
-        }
-
-        double first = Math.ceil(mYChartMin / interval) * interval;
-        double last = Utils.nextUp(Math.floor(mCurrentData.getYMax() / interval) * interval);
-
-        double f;
-        int n = 0;
-        for (f = first; f <= last; f += interval) {
-            ++n;
-        }
-
-        mYLabels.mEntryCount = n;
-
-        mYChartMax = (float) interval * n;
-
-        // calc delta
-        mDeltaY = Math.abs(mYChartMax - mYChartMin);
+    
+    @Override
+    public void prepare() {
+        super.prepare();
+        
+        prepareXLabels();
     }
 
     @Override
@@ -272,6 +243,43 @@ public class RadarChart extends PieRadarChartBase {
                 mDrawCanvas.drawPath(surface, mRenderPaint);
         }
     }
+    
+
+    /**
+     * Calculates the required maximum y-value in order to be able to provide
+     * the desired number of label entries and rounded label values.
+     */
+    private void prepareYLabels() {
+
+        int labelCount = mYLabels.getLabelCount();
+        double range = mCurrentData.getYMax() - mYChartMin;
+
+        double rawInterval = range / labelCount;
+        double interval = Utils.roundToNextSignificant(rawInterval);
+        double intervalMagnitude = Math.pow(10, (int) Math.log10(interval));
+        int intervalSigDigit = (int) (interval / intervalMagnitude);
+        if (intervalSigDigit > 5) {
+            // Use one order of magnitude higher, to avoid intervals like 0.9 or
+            // 90
+            interval = Math.floor(10 * intervalMagnitude);
+        }
+
+        double first = Math.ceil(mYChartMin / interval) * interval;
+        double last = Utils.nextUp(Math.floor(mCurrentData.getYMax() / interval) * interval);
+
+        double f;
+        int n = 0;
+        for (f = first; f <= last; f += interval) {
+            ++n;
+        }
+
+        mYLabels.mEntryCount = n;
+
+        mYChartMax = (float) interval * n;
+
+        // calc delta
+        mDeltaY = Math.abs(mYChartMax - mYChartMin);
+    }
 
     /**
      * Draws the y-labels of the RadarChart.
@@ -299,6 +307,24 @@ public class RadarChart extends PieRadarChartBase {
             mDrawCanvas.drawText(Utils.formatNumber(r / factor, mYLabels.mDecimals,
                     mSeparateTousands), p.x + 10, p.y - 5, mYLabelPaint);
         }
+    }
+    
+    /**
+     * setup the x-axis labels
+     */
+    private void prepareXLabels() {
+
+        StringBuffer a = new StringBuffer();
+
+        int max = (int) Math.round(mCurrentData.getXValAverageLength()
+                + mXLabels.getSpaceBetweenLabels());
+
+        for (int i = 0; i < max; i++) {
+            a.append("h");
+        }
+
+        mXLabels.mLabelWidth = Utils.calcTextWidth(mXLabelPaint, a.toString());
+        mXLabels.mLabelHeight = Utils.calcTextWidth(mXLabelPaint, "Q");
     }
 
     /**

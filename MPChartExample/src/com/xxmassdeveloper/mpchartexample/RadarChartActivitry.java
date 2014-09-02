@@ -68,7 +68,7 @@ public class RadarChartActivitry extends DemoBase {
         // mChart.animateXY(1500, 1500);
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.RIGHT_OF_CHART);
+        l.setPosition(LegendPosition.BELOW_CHART_CENTER);
         l.setTypeface(tf);
         l.setXEntrySpace(7f);
         l.setYEntrySpace(5f);

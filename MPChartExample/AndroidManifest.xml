@@ -40,6 +40,7 @@
         <activity android:name="CandleStickChartActivity"></activity>
         <activity android:name="CubicLineChartActivity"></activity>
         <activity android:name="RadarChartActivitry"></activity>
+        <activity android:name="LineChartActivityColored"></activity>
     </application>
 
 </manifest>

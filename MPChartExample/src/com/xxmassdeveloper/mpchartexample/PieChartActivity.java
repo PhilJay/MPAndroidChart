@@ -87,7 +87,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 //        mChart.spin(2000, 0, 360);
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.RIGHT_OF_CHART);
+        l.setPosition(LegendPosition.BELOW_CHART_CENTER);
         l.setXEntrySpace(7f);
         l.setYEntrySpace(5f);
     }

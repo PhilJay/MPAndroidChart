@@ -434,12 +434,6 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (!mOffsetsCalculated) {
-
-            calculateOffsets();
-            mOffsetsCalculated = true;
-        }
-
         if (mDataNotSet) { // check if there is data
 
             // if no data, inform the user
@@ -451,6 +445,12 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
                         + textOffset, mInfoPaint);
             }
             return;
+        }
+        
+        if (!mOffsetsCalculated) {
+
+            calculateOffsets();
+            mOffsetsCalculated = true;
         }
 
         if (mDrawBitmap == null || mDrawCanvas == null) {
@@ -496,10 +496,6 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
                 - (int) mOffsetRight,
                 getMeasuredHeight()
                         - (int) mOffsetBottom + 1);
-
-        // Log.i(LOG_TAG, "Contentrect prepared. Width: " + mContentRect.width()
-        // + ", height: "
-        // + mContentRect.height());
     }
 
     /**
@@ -532,7 +528,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
                 }
 
                 // add the legend description label
-                colors.add(-1);
+                colors.add(-2);
                 labels.add(bds.getLabel());
 
             } else if (dataSet instanceof PieDataSet) {
@@ -547,7 +543,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
                 }
 
                 // add the legend description label
-                colors.add(-1);
+                colors.add(-2);
                 labels.add(pds.getLabel());
 
             } else { // all others
@@ -751,6 +747,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
             mLegendLabelPaint.setTypeface(tf);
 
         mLegendLabelPaint.setTextSize(mLegend.getTextSize());
+        mLegendLabelPaint.setColor(mLegend.getTextColor());
 
         float formSize = mLegend.getFormSize();
 
@@ -786,7 +783,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
                     if (labels[i] != null) {
 
                         // make a step to the left
-                        if (mLegend.getColors()[i] != -1)
+                        if (mLegend.getColors()[i] != -2)
                             posX += formTextSpaceAndForm;
 
                         mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
@@ -810,7 +807,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
                         posX -= Utils.calcTextWidth(mLegendLabelPaint, labels[i])
                                 + mLegend.getXEntrySpace();
                         mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
-                        if (mLegend.getColors()[i] != -1)
+                        if (mLegend.getColors()[i] != -2)
                             posX -= formTextSpaceAndForm;
                     } else {
                         posX -= stackSpace + formSize;
@@ -834,12 +831,12 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
                     mLegend.drawForm(mDrawCanvas, posX + stack, posY, mLegendFormPaint, i);
 
                     if (labels[i] != null) {
-
+                        
                         if (!wasStacked) {
 
                             float x = posX;
 
-                            if (mLegend.getColors()[i] != -1)
+                            if (mLegend.getColors()[i] != -2)
                                 x += formTextSpaceAndForm;
 
                             posY += textDrop;
@@ -869,7 +866,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
                 float fullSize = mLegend.getFullWidth(mLegendLabelPaint);
 
                 posX = getWidth() / 2f - fullSize / 2f;
-                posY = getHeight() - mLegend.getOffsetBottom() / 2f - formSize / 2f;
+                posY = getHeight() - mLegend.getOffsetBottom() / 2f - formSize;
 
                 for (int i = 0; i < labels.length; i++) {
 
@@ -879,7 +876,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
                     if (labels[i] != null) {
 
                         // make a step to the left
-                        if (mLegend.getColors()[i] != -1)
+                        if (mLegend.getColors()[i] != -2)
                             posX += formTextSpaceAndForm;
 
                         mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);

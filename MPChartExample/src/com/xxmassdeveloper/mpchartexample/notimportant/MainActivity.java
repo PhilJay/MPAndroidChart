@@ -27,6 +27,7 @@ import com.xxmassdeveloper.mpchartexample.CandleStickChartActivity;
 import com.xxmassdeveloper.mpchartexample.CubicLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.InvertedLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.LineChartActivity;
+import com.xxmassdeveloper.mpchartexample.LineChartActivityColored;
 import com.xxmassdeveloper.mpchartexample.ListViewBarChartActivity;
 import com.xxmassdeveloper.mpchartexample.ListViewMultiChartActivity;
 import com.xxmassdeveloper.mpchartexample.MultiLineChartActivity;
@@ -89,6 +90,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
         objects.add(new ContentItem(
                 "Radar Chart",
                 "Demonstrates the use of a spider-web like (net) chart."));
+        objects.add(new ContentItem(
+                "Colored Line Chart",
+                "Shows a LineChart with different background and line color."));
 
         MyAdapter adapter = new MyAdapter(this, objects);
 
@@ -173,6 +177,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 break;
             case 15:
                 i = new Intent(this, RadarChartActivitry.class);
+                startActivity(i);
+                break;
+            case 16:
+                i = new Intent(this, LineChartActivityColored.class);
                 startActivity(i);
                 break;
         }
