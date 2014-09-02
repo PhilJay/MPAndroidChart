@@ -256,9 +256,9 @@ public class PieChart extends PieRadarChartBase {
                     continue;
 
                 if (xIndex == 0)
-                    angle = mChartAngle;
+                    angle = mRotationAngle;
                 else
-                    angle = mChartAngle + mAbsoluteAngles[xIndex - 1];
+                    angle = mRotationAngle + mAbsoluteAngles[xIndex - 1];
 
                 angle *= mPhaseY;
 
@@ -291,7 +291,7 @@ public class PieChart extends PieRadarChartBase {
     @Override
     protected void drawData() {
 
-        float angle = mChartAngle;
+        float angle = mRotationAngle;
 
         ArrayList<PieDataSet> dataSets = (ArrayList<PieDataSet>) mCurrentData.getDataSets();
 
@@ -421,10 +421,10 @@ public class PieChart extends PieRadarChartBase {
 
                 // calculate the text position
                 float x = (float) (r
-                        * Math.cos(Math.toRadians((mChartAngle + mAbsoluteAngles[cnt] - offset)
+                        * Math.cos(Math.toRadians((mRotationAngle + mAbsoluteAngles[cnt] - offset)
                                 * mPhaseY)) + center.x);
                 float y = (float) (r
-                        * Math.sin(Math.toRadians((mChartAngle + mAbsoluteAngles[cnt] - offset)
+                        * Math.sin(Math.toRadians((mRotationAngle + mAbsoluteAngles[cnt] - offset)
                                 * mPhaseY)) + center.y);
 
                 String val = "";
@@ -483,7 +483,7 @@ public class PieChart extends PieRadarChartBase {
     public int getIndexForAngle(float angle) {
 
         // take the current angle of the chart into consideration
-        float a = (angle - mChartAngle + 360) % 360f;
+        float a = (angle - mRotationAngle + 360) % 360f;
 
         for (int i = 0; i < mAbsoluteAngles.length; i++) {
             if (mAbsoluteAngles[i] > a)

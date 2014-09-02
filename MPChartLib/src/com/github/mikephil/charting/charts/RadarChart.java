@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Paint.Align;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.util.AttributeSet;
@@ -167,6 +166,8 @@ public class RadarChart extends PieRadarChartBase {
         drawLegend();
 
         drawDescription();
+        
+        drawMarkers();
 
         canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
 
@@ -193,7 +194,7 @@ public class RadarChart extends PieRadarChartBase {
 
         for (int i = 0; i < mCurrentData.getXValCount(); i++) {
 
-            PointF p = getPosition(c, mYChartMax * factor, sliceangle * i + mChartAngle);
+            PointF p = getPosition(c, mYChartMax * factor, sliceangle * i + mRotationAngle);
 
             mDrawCanvas.drawLine(c.x, c.y, p.x, p.y, mWebPaint);
         }
@@ -211,8 +212,8 @@ public class RadarChart extends PieRadarChartBase {
 
                 float r = ((mYChartMax / labelCount) * (j + 1)) * factor;
 
-                PointF p1 = getPosition(c, r, sliceangle * i + mChartAngle);
-                PointF p2 = getPosition(c, r, sliceangle * (i + 1) + mChartAngle);
+                PointF p1 = getPosition(c, r, sliceangle * i + mRotationAngle);
+                PointF p2 = getPosition(c, r, sliceangle * (i + 1) + mRotationAngle);
 
                 mDrawCanvas.drawLine(p1.x, p1.y, p2.x, p2.y, mWebPaint);
             }
@@ -245,7 +246,7 @@ public class RadarChart extends PieRadarChartBase {
 
                 Entry e = entries.get(j);
 
-                PointF p = getPosition(c, e.getVal() * factor, sliceangle * j + mChartAngle);
+                PointF p = getPosition(c, e.getVal() * factor, sliceangle * j + mRotationAngle);
 
                 if (j == 0)
                     surface.moveTo(p.x, p.y);
@@ -293,9 +294,9 @@ public class RadarChart extends PieRadarChartBase {
 
             float r = ((mYChartMax / labelCount) * j) * factor;
 
-            PointF p = getPosition(c, r, mChartAngle);
+            PointF p = getPosition(c, r, mRotationAngle);
 
-            mDrawCanvas.drawText(Utils.formatNumber(r / factor, mValueFormatDigits,
+            mDrawCanvas.drawText(Utils.formatNumber(r / factor, mYLabels.mDecimals,
                     mSeparateTousands), p.x + 10, p.y - 5, mYLabelPaint);
         }
     }
@@ -324,7 +325,7 @@ public class RadarChart extends PieRadarChartBase {
             
             String text = mCurrentData.getXVals().get(i);
             
-            PointF p = getPosition(c, mYChartMax * factor, sliceangle * i + mChartAngle);
+            PointF p = getPosition(c, mYChartMax * factor, sliceangle * i + mRotationAngle);
             
             mDrawCanvas.drawText(text, p.x, p.y, mXLabelPaint);
         }
@@ -355,7 +356,7 @@ public class RadarChart extends PieRadarChartBase {
 
                     Entry e = entries.get(j);
 
-                    PointF p = getPosition(c, e.getVal() * factor, sliceangle * j + mChartAngle);
+                    PointF p = getPosition(c, e.getVal() * factor, sliceangle * j + mRotationAngle);
 
                     mDrawCanvas.drawText(
                             Utils.formatNumber(e.getVal(), mValueFormatDigits, mSeparateTousands),
@@ -391,7 +392,7 @@ public class RadarChart extends PieRadarChartBase {
                 int j = set.getEntryPosition(e);
                 float y = e.getVal();
 
-                PointF p = getPosition(c, y * factor, sliceangle * j + mChartAngle);
+                PointF p = getPosition(c, y * factor, sliceangle * j + mRotationAngle);
 
                 float[] pts = new float[] {
                         p.x, 0, p.x, getHeight(), 0, p.y, getWidth(), p.y
@@ -441,7 +442,7 @@ public class RadarChart extends PieRadarChartBase {
     public int getIndexForAngle(float angle) {
 
         // take the current angle of the chart into consideration
-        float a = (angle - mChartAngle + 360) % 360f;
+        float a = (angle - mRotationAngle + 360) % 360f;
 
         float sliceangle = getSliceAngle();
 

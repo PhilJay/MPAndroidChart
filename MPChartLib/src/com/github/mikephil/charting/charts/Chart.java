@@ -13,7 +13,6 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.PointF;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Environment;
@@ -1099,6 +1098,17 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
                     / 2f + 0.5f;
 
             xPos += x;
+        } else if(this instanceof RadarChart) {
+            
+            RadarChart rc = (RadarChart) this;
+            float angle = rc.getSliceAngle() * e.getXIndex() + rc.getRotationAngle();
+            float val = e.getVal() * rc.getFactor();
+            PointF c = getCenter();
+            
+            PointF p = new PointF((float) (c.x + val * Math.cos(Math.toRadians(angle))),
+                    (float) (c.y + val * Math.sin(Math.toRadians(angle))));
+            
+            return new float[] { p.x, p.y };
         }
 
         // position of the marker depends on selected value index and value

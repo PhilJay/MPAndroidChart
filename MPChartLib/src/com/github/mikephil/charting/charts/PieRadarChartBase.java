@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import com.github.mikephil.charting.listener.PieRadarChartTouchListener;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.github.mikephil.charting.utils.Utils;
+import com.nineoldandroids.animation.ObjectAnimator;
 
 /**
  * Baseclass of PieChart and RadarChart.
@@ -20,7 +21,7 @@ import com.github.mikephil.charting.utils.Utils;
 public abstract class PieRadarChartBase extends Chart {
 
     /** holds the current rotation angle of the chart */
-    protected float mChartAngle = 270f;
+    protected float mRotationAngle = 270f;
 
     /** flag that indicates if rotation is enabled or not */
     private boolean mRotateEnabled = true;
@@ -158,7 +159,7 @@ public abstract class PieRadarChartBase extends Chart {
         mStartAngle = getAngleForPoint(x, y);
 
         // take the current angle into consideration when starting a new drag
-        mStartAngle -= mChartAngle;
+        mStartAngle -= mRotationAngle;
     }
 
     /**
@@ -170,13 +171,13 @@ public abstract class PieRadarChartBase extends Chart {
      */
     public void updateRotation(float x, float y) {
 
-        mChartAngle = getAngleForPoint(x, y);
+        mRotationAngle = getAngleForPoint(x, y);
 
         // take the offset into consideration
-        mChartAngle -= mStartAngle;
+        mRotationAngle -= mStartAngle;
 
         // keep the angle >= 0 and <= 360
-        mChartAngle = (mChartAngle + 360f) % 360f;
+        mRotationAngle = (mRotationAngle + 360f) % 360f;
     }
 
     /**
@@ -261,10 +262,10 @@ public abstract class PieRadarChartBase extends Chart {
      * 
      * @param angle
      */
-    public void setRotationAngle(int angle) {
+    public void setRotationAngle(float angle) {
 
         angle = (int) Math.abs(angle % 360);
-        mChartAngle = angle;
+        mRotationAngle = angle;
     }
 
     /**
@@ -273,7 +274,7 @@ public abstract class PieRadarChartBase extends Chart {
      * @return
      */
     public float getRotationAngle() {
-        return mChartAngle;
+        return mRotationAngle;
     }
 
     /**
@@ -322,5 +323,29 @@ public abstract class PieRadarChartBase extends Chart {
      */
     public void setOnTouchListener(OnTouchListener l) {
         this.mListener = l;
+    }    
+    
+    /**
+     * ################ ################ ################ ################
+     */
+    /** CODE BELOW THIS RELATED TO ANIMATION */
+    
+    /** objectanimator used for animating values on y-axis */
+    private ObjectAnimator mSpinAnimator;
+    
+    /**
+     * Applys a spin animation to the Chart.
+     * @param durationmillis
+     * @param fromangle
+     * @param toangle
+     */
+    public void spin(int durationmillis, float fromangle, float toangle) {
+        
+        mRotationAngle = fromangle;
+        
+        mSpinAnimator = ObjectAnimator.ofFloat(this, "rotationAngle", fromangle, toangle);
+        mSpinAnimator.setDuration(durationmillis);
+        mSpinAnimator.addUpdateListener(this);
+        mSpinAnimator.start();
     }
 }

@@ -10,11 +10,8 @@ import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.github.mikephil.charting.utils.XLabels;
@@ -45,6 +42,17 @@ public class RadarChartActivitry extends DemoBase {
         mChart.setWebLineWidth(1.5f);
         mChart.setWebLineWidthInner(0.75f);
         mChart.setWebAlpha(100);
+        
+        // create a custom MarkerView (extend MarkerView) and specify the layout
+        // to use for it
+        MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
+
+        // define an offset to change the original position of the marker
+        // (optional)
+        mv.setOffsets(-mv.getMeasuredWidth() / 2, -mv.getMeasuredHeight());
+
+        // set the marker to the chart
+        mChart.setMarkerView(mv);
 
         setData();
         
@@ -137,6 +145,10 @@ public class RadarChartActivitry extends DemoBase {
                 else
                     mChart.setDrawYLabels(true);
                 mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleSpin: {                
+                mChart.spin(2000, mChart.getRotationAngle(), mChart.getRotationAngle() + 360);
                 break;
             }
         }

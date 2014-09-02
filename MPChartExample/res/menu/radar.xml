@@ -5,14 +5,14 @@
         android:id="@+id/actionToggleValues"
         android:title="Toggle Values">
     </item>
-        <item
+    <item
         android:id="@+id/actionToggleFilled"
         android:title="Toggle Filled">
     </item>
     <item
         android:id="@+id/actionToggleHighlight"
         android:title="Toggle Highlight">
-            </item>
+    </item>
     <item
         android:id="@+id/actionSave"
         android:title="Save to SD">
@@ -21,13 +21,17 @@
         android:id="@+id/actionToggleRotate"
         android:title="Toggle Rotation">
     </item>
-        <item
+    <item
         android:id="@+id/actionToggleYLabels"
         android:title="Toggle Y-Labels">
     </item>
-            <item
+    <item
         android:id="@+id/actionToggleXLabels"
         android:title="Toggle X-Labels">
+    </item>
+    <item
+        android:id="@+id/actionToggleSpin"
+        android:title="Spin Animation">
     </item>
 
 </menu>
