@@ -99,38 +99,14 @@ public abstract class PieRadarChartBase extends Chart {
     protected void drawAdditional() {
         // TODO Auto-generated method stub
     }
-
-    @Override
-    protected void calculateOffsets() {
-
-        if (mLegend == null)
-            return;
-
-        // setup offsets for legend
-        if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
-
-            mLegend.setOffsetRight(mLegend.getMaximumEntryLength(mLegendLabelPaint));
-            mLegendLabelPaint.setTextAlign(Align.LEFT);
-
-        } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
-                || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
-                || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
-
-            if(this instanceof RadarChart) mLegend.setOffsetBottom(mLegendLabelPaint.getTextSize() * 5.5f);
-            else mLegend.setOffsetBottom(mLegendLabelPaint.getTextSize() * 4f);
-        }
-
-        if (mDrawLegend) {
-
-            mOffsetBottom = Math.max(mOffsetBottom, mLegend.getOffsetBottom());
-            mOffsetRight = Math.max(mOffsetRight, mLegend.getOffsetRight() / 3 * 2);
-        }
-
-        mLegend.setOffsetTop(mOffsetTop);
-        mLegend.setOffsetLeft(mOffsetLeft);
+    
+    /**
+     * Applys the newly calculated offsets to the matrices.
+     */
+    protected void applyCalculatedOffsets() {
         
         prepareContentRect();
-
+        
         float scaleX = (float) ((getWidth() - mOffsetLeft - mOffsetRight) / mDeltaX);
         float scaleY = (float) ((getHeight() - mOffsetBottom - mOffsetTop) / mDeltaY);
 

@@ -42,7 +42,9 @@ public class RadarChartActivitry extends DemoBase {
         mChart.setWebLineWidth(1.5f);
         mChart.setWebLineWidthInner(0.75f);
         mChart.setWebAlpha(100);
-        
+
+        mChart.setDrawYValues(false);
+
         // create a custom MarkerView (extend MarkerView) and specify the layout
         // to use for it
         MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
@@ -55,7 +57,7 @@ public class RadarChartActivitry extends DemoBase {
         mChart.setMarkerView(mv);
 
         setData();
-        
+
         XLabels xl = mChart.getXLabels();
         xl.setTypeface(tf);
         xl.setTextSize(9f);
@@ -68,18 +70,18 @@ public class RadarChartActivitry extends DemoBase {
         // mChart.animateXY(1500, 1500);
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.BELOW_CHART_CENTER);
+        l.setPosition(LegendPosition.RIGHT_OF_CHART);
         l.setTypeface(tf);
         l.setXEntrySpace(7f);
         l.setYEntrySpace(5f);
     }
-    
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.radar, menu);
         return true;
     }
-    
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -147,7 +149,7 @@ public class RadarChartActivitry extends DemoBase {
                 mChart.invalidate();
                 break;
             }
-            case R.id.actionToggleSpin: {                
+            case R.id.actionToggleSpin: {
                 mChart.spin(2000, mChart.getRotationAngle(), mChart.getRotationAngle() + 360);
                 break;
             }
@@ -156,7 +158,8 @@ public class RadarChartActivitry extends DemoBase {
     }
 
     private String[] mParties = new String[] {
-            "Party A", "Party B", "Party C", "Party D", "Party E", "Party F"
+            "Party A", "Party B", "Party C", "Party D", "Party E", "Party F", "Party G", "Party H",
+            "Party I"
     };
 
     public void setData() {
@@ -185,12 +188,12 @@ public class RadarChartActivitry extends DemoBase {
 
         RadarDataSet set1 = new RadarDataSet(yVals1, "Set 1");
         set1.setColor(getResources().getColor(R.color.vordiplom_1));
-         set1.setDrawFilled(true);
+        set1.setDrawFilled(true);
         set1.setLineWidth(2f);
 
         RadarDataSet set2 = new RadarDataSet(yVals2, "Set 2");
         set2.setColor(getResources().getColor(R.color.vordiplom_5));
-         set2.setDrawFilled(true);
+        set2.setDrawFilled(true);
         set2.setLineWidth(2f);
 
         ArrayList<RadarDataSet> sets = new ArrayList<RadarDataSet>();

@@ -23,7 +23,6 @@ public abstract class LineRadarDataSet extends BarLineScatterCandleRadarDataSet 
     /** the width of the drawn data lines */
     private float mLineWidth = 1f;
     
-
     /** if true, the data will also be drawn filled */
     private boolean mDrawFilled = false;
     

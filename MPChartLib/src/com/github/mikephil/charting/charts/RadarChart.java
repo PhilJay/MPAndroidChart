@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.Paint.Align;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -17,12 +18,13 @@ import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.YLabels;
+import com.github.mikephil.charting.utils.Legend.LegendPosition;
 
 import java.util.ArrayList;
 
 /**
- * Implementation of the RadarChart, a "spidernet"-like chart. It works best when
- * displaying 5-10 entries per DataSet.
+ * Implementation of the RadarChart, a "spidernet"-like chart. It works best
+ * when displaying 5-10 entries per DataSet.
  * 
  * @author Philipp Jahoda
  */
@@ -101,12 +103,48 @@ public class RadarChart extends PieRadarChartBase {
 
         mYChartMin = 0;
     }
-    
+
     @Override
     public void prepare() {
         super.prepare();
-        
+
         prepareXLabels();
+    }
+    
+    @Override
+    protected void calculateOffsets() {
+
+        if (mLegend == null)
+            return;
+
+        // setup offsets for legend
+        if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
+
+            mLegend.setOffsetRight(mLegend.getMaximumEntryLength(mLegendLabelPaint));
+            mLegendLabelPaint.setTextAlign(Align.LEFT);
+
+        } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
+                || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
+                || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
+
+            mLegend.setOffsetBottom(mLegendLabelPaint.getTextSize() * 5.5f);
+        }
+        
+        mLegend.setOffsetTop(mOffsetTop);
+        mLegend.setOffsetLeft(mOffsetLeft);
+
+        if (mDrawLegend) {
+            
+            mOffsetBottom = Math.max(mXLabels.mLabelWidth, mOffsetBottom);
+            mOffsetTop = Math.max(mXLabels.mLabelWidth, mOffsetTop);
+            mOffsetRight = Math.max(mXLabels.mLabelWidth, mOffsetRight);
+            mOffsetLeft = Math.max(mXLabels.mLabelWidth, mOffsetLeft);
+            
+            mOffsetBottom = Math.max(mOffsetBottom, mLegend.getOffsetBottom());
+            mOffsetRight = Math.max(mOffsetRight, mLegend.getOffsetRight() / 3 * 2);
+        }
+        
+        applyCalculatedOffsets();
     }
 
     @Override
@@ -119,7 +157,7 @@ public class RadarChart extends PieRadarChartBase {
         long starttime = System.currentTimeMillis();
 
         prepareYLabels();
-        
+
         drawXLabels();
 
         drawWeb();
@@ -137,9 +175,9 @@ public class RadarChart extends PieRadarChartBase {
         drawLegend();
 
         drawDescription();
-        
+
         drawMarkers();
-        
+
         canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
 
         Log.i(LOG_TAG, "RadarChart DrawTime: " + (System.currentTimeMillis() - starttime) + " ms");
@@ -243,7 +281,6 @@ public class RadarChart extends PieRadarChartBase {
                 mDrawCanvas.drawPath(surface, mRenderPaint);
         }
     }
-    
 
     /**
      * Calculates the required maximum y-value in order to be able to provide
@@ -308,7 +345,7 @@ public class RadarChart extends PieRadarChartBase {
                     mSeparateTousands), p.x + 10, p.y - 5, mYLabelPaint);
         }
     }
-    
+
     /**
      * setup the x-axis labels
      */
@@ -324,7 +361,7 @@ public class RadarChart extends PieRadarChartBase {
 
         mXLabels.mLabelWidth = Utils.calcTextWidth(mXLabelPaint, a.toString());
         mXLabels.mLabelHeight = Utils.calcTextWidth(mXLabelPaint, "Q");
-        
+
         Log.i(LOG_TAG, "xlabels prepared, width: " + mXLabels.mLabelWidth);
     }
 
@@ -335,11 +372,11 @@ public class RadarChart extends PieRadarChartBase {
 
         if (!mDrawXLabels)
             return;
-        
+
         mXLabelPaint.setTypeface(mXLabels.getTypeface());
         mXLabelPaint.setTextSize(mXLabels.getTextSize());
         mXLabelPaint.setColor(mXLabels.getTextColor());
-        
+
         float sliceangle = getSliceAngle();
 
         // calculate the factor that is needed for transforming the value to
@@ -347,14 +384,16 @@ public class RadarChart extends PieRadarChartBase {
         float factor = getFactor();
 
         PointF c = getCenterOffsets();
-        
-        for(int i = 0; i < mCurrentData.getXValCount(); i++) {
-            
+
+        for (int i = 0; i < mCurrentData.getXValCount(); i++) {
+
             String text = mCurrentData.getXVals().get(i);
-            
-            PointF p = getPosition(c, mYChartMax * factor, sliceangle * i + mRotationAngle);
-            
-            mDrawCanvas.drawText(text, p.x, p.y, mXLabelPaint);
+
+            float angle = (sliceangle * i + mRotationAngle) % 360f;
+
+            PointF p = getPosition(c, mYChartMax * factor + mXLabels.mLabelWidth / 2f, angle);
+
+            mDrawCanvas.drawText(text, p.x, p.y + mXLabels.mLabelHeight / 2f, mXLabelPaint);
         }
     }
 
