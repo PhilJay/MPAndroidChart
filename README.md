@@ -11,6 +11,21 @@ The **experimental** branch might contain new features that are still buggy. It 
 
 Forks, pull-requests or any other forms of contribution are **always welcome**.
 
+Donations
+-----
+
+If you would like to support this project's further development, the creator of this project or the continuous maintenance of this project, **feel free to donate**. Your donation is highly appreciated.
+
+PayPal
+
+[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EGBENAC5XBCKS)
+
+Gittip
+
+<a href="https://www.gittip.com/PhilJay/">
+  <img alt="Support via Gittip" src="https://rawgithub.com/twolfson/gittip-badge/0.2.0/dist/gittip.png"/>
+</a>
+
 Demo
 -----
 
@@ -27,7 +42,7 @@ If you are having questions or problems, feel free to contact me. Since I would 
  - Search [**known issues**](https://github.com/PhilJay/MPAndroidChart/issues) for your problem (open and closed)
  - Create new issues (if your issue does not exist yet)
 
-Please let me know via e-mail that you have opened a stackoverflow question so that I can get to answering it right away. Thank you.
+You can let me know via e-mail that you have opened a stackoverflow question so that I might get to answering it more quickly. Thank you.
 
 Features
 =======
@@ -63,11 +78,11 @@ Features
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_barchart3.png)
 
- - **BarChart2D (single DataSet)**
+ - **BarChart2D (grouped DataSets)**
 
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart2d.png)
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/groupedbarchart.png)
 
- - **BarChart2D (multiple DataSets)**
+ - **BarChart2D**
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart2d_multi_dataset_date1.png)
 
@@ -116,7 +131,6 @@ or create it in code (and then **add it to a layout**):
 
  - <code>setDescription(String desc)</code>: Set a description text that appears in the bottom right corner of the chart.
  - <code>setDescriptionTypeface(Typeface t)</code>: Sets the <code>Typeface</code> used for drawing the description text.
- - <code>setGraphOffsets(int left, int right, int top, int bottom)</code>: Sets the offsets of the graph in every direction, provide density pixels.
  - <code>setDrawYValues(boolean enabled)</code>: If set to true, the actual drawn values will be drawn next to the points, bars, or pie slices of the chart.
  - <code>setValuePaintColor(int color)</code>: Sets the color used for drawing the values if <code>setDrawYValues(...)</code> is enabled.
  - <code>setValueTypeface(Typeface t)</code>: Sets the <code>Typeface</code> used for drawing the values if <code>setDrawYValues(...)</code> is enabled.
@@ -125,19 +139,21 @@ or create it in code (and then **add it to a layout**):
 
 **Getters and convenience:**
 - <code>public ChartData getDataCurrent()</code>: Returns the <code>ChartData</code> object the chart currently displays. It contains all information concerning the displayed values such as minimum and maximum values, value counts, value sums, ...
-- <code>public float getScaleX()</code>: Returns the current scale factor on the x-axis.
 - <code>public float getYChartMin()</code>: Returns the current minimum y-value that can be displayed by the chart - bottom line.
 - <code>public float getYChartMax()</code>: Returns the current maximum y-value that can be displayed by the chart - top line.
 - <code>public float getAverage()</code>: Returns the average value across all values the chart holds.
 - <code>public float getAverage(int type)</code>: Returns the average value for a specific DataSet type in the chart. This type is the type provided in the <code>DataSet</code> constructor.
 - <code>public PointF getCenter()</code>: Returns the center point of the chart in pixels.
+- <code>public Paint getPaint(int which)</code>: Returns the requested Paint object from the chart.
 
  
 **Gestures & Selecting:**
 
  - <code>setTouchEnabled(boolean enabled)</code>: If set to ture, touch gestures (such as scaling and dragging) will be possible on the chart. NOTE: If touch-gestures are disabled, highlighting on touch is disabled as well. Default: true.
+ - <code>setDragScaleEnabled(boolean enabled)</code>: Enables/disables dragging and scaling for the chart.
  - <code>setOnChartValueSelectedListener(OnChartValueSelectedListener l)</code>: Sets a selection-listener to the chart that will generate callbacks when values are selected or unselected. The callback contains the selected values and their indices.
  - <code>setHighlightEnabled(boolean enabled)</code>: If set to true, highlighting/selecting values is possible on the chart. Default: true.
+ - <code>public void highlightValues(Highlight[] highs)</code>: Highlights the specified entries in the chart.
  
 **Other:**
  - <code>saveToGallery(String title)</code>: Saves the current chart state as an image to the gallery.
