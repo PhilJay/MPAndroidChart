@@ -66,6 +66,12 @@ public abstract class BarLineChartBase extends Chart {
     /** the width of the grid lines */
     protected float mGridWidth = 1f;
 
+    /** offset that allows the chart to be dragged over its bounds on the x-axis */
+    private float mTransOffsetX = 0f;
+
+    /** offset that allows the chart to be dragged over its bounds on the x-axis */
+    private float mTransOffsetY = 0f;
+
     /**
      * flag that indicates if pinch-zoom is enabled. if true, both x and y axis
      * can be scaled with 2 fingers, if false, x and y axis can be scaled
@@ -241,11 +247,11 @@ public abstract class BarLineChartBase extends Chart {
         drawLegend();
 
         drawMarkers();
- 
+
         drawDescription();
 
         canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
-        
+
         Log.i(LOG_TAG, "DrawTime: " + (System.currentTimeMillis() - starttime) + " ms");
     }
 
@@ -585,7 +591,7 @@ public abstract class BarLineChartBase extends Chart {
             // 90
             interval = Math.floor(10 * intervalMagnitude);
         }
-        
+
         double first = Math.ceil(yMin / interval) * interval;
         double last = Utils.nextUp(Math.floor(yMax / interval) * interval);
 
@@ -1148,24 +1154,6 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
-     * call this method to refresh the graph with a given touch matrix without
-     * calling invalidate()
-     * 
-     * @param newTouchMatrix
-     * @return
-     */
-    public Matrix refreshTouchNoInvalidate(Matrix newTouchMatrix) {
-
-        mMatrixTouch.set(newTouchMatrix);
-
-        // make sure scale and translation are within their bounds
-        limitTransAndScale(mMatrixTouch);
-
-        newTouchMatrix.set(mMatrixTouch);
-        return newTouchMatrix;
-    }
-
-    /**
      * limits the maximum scale and X translation of the given matrix
      * 
      * @param matrix
@@ -1196,10 +1184,10 @@ public abstract class BarLineChartBase extends Chart {
             return;
 
         float maxTransX = -(float) mContentRect.width() * (mScaleX - 1f);
-        float newTransX = Math.min(Math.max(curTransX, maxTransX), 0f);
+        float newTransX = Math.min(Math.max(curTransX, maxTransX - mTransOffsetX), mTransOffsetX);
 
         float maxTransY = (float) mContentRect.height() * (mScaleY - 1f);
-        float newTransY = Math.max(Math.min(curTransY, maxTransY), 0f);
+        float newTransY = Math.max(Math.min(curTransY, maxTransY + mTransOffsetY), -mTransOffsetY);
 
         // Log.i(LOG_TAG, "scale-X: " + mScaleX + ", maxTransX: " + maxTransX +
         // ", newTransX: "
@@ -1283,14 +1271,19 @@ public abstract class BarLineChartBase extends Chart {
 
     /**
      * Sets the minimum scale values for both axes. This limits the extent to
-     * which the user can zoom-out. Scale 0.5f means 0.5x zoom (zoomed out by
-     * factor 2), scale 0.1f means maximum zoomed out by factor 10, scale 2f
-     * means the user cannot zoom out further than 2x zoom, ...
+     * which the user can zoom-out. Scale 2f means the user cannot zoom out
+     * further than 2x zoom, ...
+     * Min = 1f
      * 
      * @param scaleXmin
      * @param scaleYmin
      */
     public void setScaleMinima(float scaleXmin, float scaleYmin) {
+
+        if (scaleXmin < 1f)
+            scaleXmin = 1f;
+        if (scaleYmin < 1f)
+            scaleYmin = 1f;
 
         mMinScaleX = scaleXmin;
         mMinScaleY = scaleYmin;
@@ -1513,7 +1506,7 @@ public abstract class BarLineChartBase extends Chart {
     public void setDrawYLabels(boolean enabled) {
         mDrawYLabels = enabled;
     }
-    
+
     /**
      * Returns true if drawing y-labels is enabled, false if not.
      * 
@@ -1631,7 +1624,6 @@ public abstract class BarLineChartBase extends Chart {
 
         return new Highlight(xIndex, dataSetIndex);
     }
-
 
     /**
      * Returns the x and y values in the chart at the given touch point
@@ -1843,6 +1835,26 @@ public abstract class BarLineChartBase extends Chart {
      */
     public boolean isPinchZoomEnabled() {
         return mPinchZoomEnabled;
+    }
+
+    /**
+     * Set an offset in dp that allows the user to drag the chart over it's
+     * bounds on the x-axis.
+     * 
+     * @param offset
+     */
+    public void setDragOffsetX(float offset) {
+        mTransOffsetX = Utils.convertDpToPixel(offset);
+    }
+
+    /**
+     * Set an offset in dp that allows the user to drag the chart over it's
+     * bounds on the y-axis.
+     * 
+     * @param offset
+     */
+    public void setDragOffsetY(float offset) {
+        mTransOffsetY = Utils.convertDpToPixel(offset);
     }
 
     /**
