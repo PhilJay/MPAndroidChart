@@ -139,7 +139,7 @@ public class RadarChart extends PieRadarChartBase {
         drawDescription();
         
         drawMarkers();
-
+        
         canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
 
         Log.i(LOG_TAG, "RadarChart DrawTime: " + (System.currentTimeMillis() - starttime) + " ms");
@@ -156,7 +156,7 @@ public class RadarChart extends PieRadarChartBase {
         // pixels
         float factor = getFactor();
 
-        PointF c = getCenter();
+        PointF c = getCenterOffsets();
 
         // draw the web lines that come from the center
         mWebPaint.setStrokeWidth(mWebLineWidth);
@@ -202,7 +202,7 @@ public class RadarChart extends PieRadarChartBase {
         // pixels
         float factor = getFactor();
 
-        PointF c = getCenter();
+        PointF c = getCenterOffsets();
 
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
@@ -293,7 +293,7 @@ public class RadarChart extends PieRadarChartBase {
         mYLabelPaint.setTextSize(mYLabels.getTextSize());
         mYLabelPaint.setColor(mYLabels.getTextColor());
 
-        PointF c = getCenter();
+        PointF c = getCenterOffsets();
         float factor = getFactor();
 
         int labelCount = mYLabels.mEntryCount;
@@ -316,8 +316,7 @@ public class RadarChart extends PieRadarChartBase {
 
         StringBuffer a = new StringBuffer();
 
-        int max = (int) Math.round(mCurrentData.getXValAverageLength()
-                + mXLabels.getSpaceBetweenLabels());
+        int max = (int) Math.round(mCurrentData.getXValAverageLength());
 
         for (int i = 0; i < max; i++) {
             a.append("h");
@@ -325,6 +324,8 @@ public class RadarChart extends PieRadarChartBase {
 
         mXLabels.mLabelWidth = Utils.calcTextWidth(mXLabelPaint, a.toString());
         mXLabels.mLabelHeight = Utils.calcTextWidth(mXLabelPaint, "Q");
+        
+        Log.i(LOG_TAG, "xlabels prepared, width: " + mXLabels.mLabelWidth);
     }
 
     /**
@@ -345,7 +346,7 @@ public class RadarChart extends PieRadarChartBase {
         // pixels
         float factor = getFactor();
 
-        PointF c = getCenter();
+        PointF c = getCenterOffsets();
         
         for(int i = 0; i < mCurrentData.getXValCount(); i++) {
             
@@ -369,7 +370,7 @@ public class RadarChart extends PieRadarChartBase {
             // pixels
             float factor = getFactor();
 
-            PointF c = getCenter();
+            PointF c = getCenterOffsets();
 
             float yoffset = Utils.convertDpToPixel(5f);
 
@@ -401,7 +402,7 @@ public class RadarChart extends PieRadarChartBase {
             float sliceangle = getSliceAngle();
             float factor = getFactor();
 
-            PointF c = getCenter();
+            PointF c = getCenterOffsets();
 
             for (int i = 0; i < mIndicesToHightlight.length; i++) {
 

@@ -276,7 +276,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
         mHighlightPaint.setStyle(Paint.Style.STROKE);
         mHighlightPaint.setStrokeWidth(2f);
         mHighlightPaint.setColor(Color.rgb(255, 187, 115));
-        
+
         mXLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mXLabelPaint.setColor(Color.BLACK);
         mXLabelPaint.setTextAlign(Align.CENTER);
@@ -446,7 +446,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
             }
             return;
         }
-        
+
         if (!mOffsetsCalculated) {
 
             calculateOffsets();
@@ -831,7 +831,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
                     mLegend.drawForm(mDrawCanvas, posX + stack, posY, mLegendFormPaint, i);
 
                     if (labels[i] != null) {
-                        
+
                         if (!wasStacked) {
 
                             float x = posX;
@@ -866,7 +866,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
                 float fullSize = mLegend.getFullWidth(mLegendLabelPaint);
 
                 posX = getWidth() / 2f - fullSize / 2f;
-                posY = getHeight() - mLegend.getOffsetBottom() / 2f - formSize;
+                posY = getHeight() - mLegend.getOffsetBottom() / 2f - formSize / 2f;
 
                 for (int i = 0; i < labels.length; i++) {
 
@@ -886,6 +886,9 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
                         posX += formSize + stackSpace;
                     }
                 }
+
+                Log.i(LOG_TAG, "content bottom: " + mContentRect.bottom + ", height: "
+                        + getHeight() + ", posY: " + posY + ", formSize: " + formSize);
 
                 break;
         }
@@ -1095,17 +1098,19 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
                     / 2f + 0.5f;
 
             xPos += x;
-        } else if(this instanceof RadarChart) {
-            
+        } else if (this instanceof RadarChart) {
+
             RadarChart rc = (RadarChart) this;
             float angle = rc.getSliceAngle() * e.getXIndex() + rc.getRotationAngle();
             float val = e.getVal() * rc.getFactor();
-            PointF c = getCenter();
-            
+            PointF c = getCenterOffsets();
+
             PointF p = new PointF((float) (c.x + val * Math.cos(Math.toRadians(angle))),
                     (float) (c.y + val * Math.sin(Math.toRadians(angle))));
-            
-            return new float[] { p.x, p.y };
+
+            return new float[] {
+                    p.x, p.y
+            };
         }
 
         // position of the marker depends on selected value index and value
@@ -1394,7 +1399,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     }
 
     /**
-     * returns the center point of the chart in pixels
+     * Returns the center point of the chart (the whole View) in pixels.
      * 
      * @return
      */
@@ -1403,13 +1408,13 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     }
 
     /**
-     * returns the center of the chart taking offsets under consideration
+     * Returns the center of the chart taking offsets under consideration.
+     * (returns the center of the content rectangle)
      * 
      * @return
      */
     public PointF getCenterOffsets() {
-        return new PointF(mContentRect.left + mContentRect.width() / 2, mContentRect.top
-                + mContentRect.height() / 2);
+        return new PointF(mContentRect.centerX(), mContentRect.centerY());
     }
 
     /**

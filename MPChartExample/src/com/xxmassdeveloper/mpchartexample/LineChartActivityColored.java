@@ -46,7 +46,7 @@ public class LineChartActivityColored extends DemoBase {
 
         for (int i = 0; i < mCharts.length; i++)
             // add some transparency to the color with "& 0x90FFFFFF"
-            setupChart(mCharts[i], data, mColors[i % mColors.length] & 0x90FFFFFF);
+            setupChart(mCharts[i], data, mColors[i % mColors.length]);
     }
 
     private int[] mColors = new int[] {

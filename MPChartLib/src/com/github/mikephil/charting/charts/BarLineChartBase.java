@@ -31,6 +31,7 @@ import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
 import com.github.mikephil.charting.utils.YLabels;
 import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
+import com.nineoldandroids.animation.ObjectAnimator;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -1578,7 +1579,7 @@ public abstract class BarLineChartBase extends Chart {
      */
     public Highlight getHighlightByTouchPoint(float x, float y) {
 
-        if (mDataNotSet) {
+        if (mDataNotSet || mCurrentData == null) {
             Log.e(LOG_TAG, "Can't select by touch. No data set.");
             return null;
         }

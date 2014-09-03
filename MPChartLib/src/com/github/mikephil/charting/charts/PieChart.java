@@ -6,11 +6,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
+import android.graphics.Paint.Style;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -158,12 +160,6 @@ public class PieChart extends PieRadarChartBase {
         canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
 
         Log.i(LOG_TAG, "PieChart DrawTime: " + (System.currentTimeMillis() - starttime) + " ms");
-
-        PointF c1 = getCenter();
-        PointF c2 = getCenterCircleBox();
-
-        Log.i(LOG_TAG, "Center content x: " + c1.x + ", y: " + c1.y);
-        Log.i(LOG_TAG, "Center circlebox x: " + c2.x + ", y: " + c2.y);
     }
 
     /**
@@ -185,19 +181,16 @@ public class PieChart extends PieRadarChartBase {
         // prevent nullpointer when no data set
         if (mDataNotSet)
             return;
-
-        float width = mContentRect.width() + mOffsetLeft + mOffsetRight;
-        float height = mContentRect.height() + mOffsetTop + mOffsetBottom;
-
+        
         float diameter = getDiameter();
-        float shift = ((PieData) mCurrentData).getDataSet().getSelectionShift();
+        float boxSize = diameter / 2f;
+        
+        PointF c = getCenterOffsets();
 
         // create the circle box that will contain the pie-chart (the bounds of
         // the pie-chart)
-        mCircleBox.set(width / 2 - diameter / 2 + shift, height / 2 - diameter / 2
-                + shift,
-                width / 2 + diameter / 2 - shift, height / 2 + diameter / 2
-                        - shift);
+        mCircleBox.set(c.x - boxSize, c.y - boxSize,
+                       c.x + boxSize, c.y + boxSize);
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint.Align;
 import android.graphics.PointF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import com.github.mikephil.charting.listener.PieRadarChartTouchListener;
@@ -115,7 +116,8 @@ public abstract class PieRadarChartBase extends Chart {
                 || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
                 || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
 
-            mLegend.setOffsetBottom(mLegendLabelPaint.getTextSize() * 3.5f);
+            if(this instanceof RadarChart) mLegend.setOffsetBottom(mLegendLabelPaint.getTextSize() * 5.5f);
+            else mLegend.setOffsetBottom(mLegendLabelPaint.getTextSize() * 4f);
         }
 
         if (mDrawLegend) {
@@ -191,7 +193,7 @@ public abstract class PieRadarChartBase extends Chart {
      */
     public float getAngleForPoint(float x, float y) {
 
-        PointF c = getCenter();
+        PointF c = getCenterOffsets();
 
         double tx = x - c.x, ty = y - c.y;
         double length = Math.sqrt(tx * tx + ty * ty);
@@ -222,7 +224,7 @@ public abstract class PieRadarChartBase extends Chart {
      */
     public float distanceToCenter(float x, float y) {
 
-        PointF c = getCenter();
+        PointF c = getCenterOffsets();
 
         float dist = 0f;
 

@@ -711,7 +711,7 @@ public class BarChart extends BarLineChartBase {
     @Override
     public Highlight getHighlightByTouchPoint(float x, float y) {
 
-        if (mDataNotSet) {
+        if (mDataNotSet || mCurrentData == null) {
             Log.e(LOG_TAG, "Can't select by touch. No data set.");
             return null;
         }
