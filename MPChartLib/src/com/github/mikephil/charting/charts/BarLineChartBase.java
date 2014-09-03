@@ -1067,6 +1067,30 @@ public abstract class BarLineChartBase extends Chart {
     }
 
     /**
+     * Resets all zooming and dragging and makes the chart fit exactly it's
+     * bounds.
+     */
+    public void fitScreen() {
+
+        Matrix save = new Matrix();
+        save.set(mMatrixTouch);
+
+        float[] vals = new float[9];
+        
+        save.getValues(vals);
+        
+        // reset all translations and scaling
+        vals[Matrix.MTRANS_X] = 0f;
+        vals[Matrix.MTRANS_Y] = 0f;
+        vals[Matrix.MSCALE_X] = 1f;
+        vals[Matrix.MSCALE_Y] = 1f;
+        
+        save.setValues(vals);
+
+        refreshTouch(save);
+    }
+
+    /**
      * If this is set to true, the y-axis is inverted which means that low
      * values are on top of the chart, high values on bottom.
      * 
@@ -1272,8 +1296,7 @@ public abstract class BarLineChartBase extends Chart {
     /**
      * Sets the minimum scale values for both axes. This limits the extent to
      * which the user can zoom-out. Scale 2f means the user cannot zoom out
-     * further than 2x zoom, ...
-     * Min = 1f
+     * further than 2x zoom, ... Min = 1f
      * 
      * @param scaleXmin
      * @param scaleYmin
