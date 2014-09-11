@@ -240,6 +240,7 @@ public class LineChart extends BarLineChartBase<LineData> {
 
                     float[] valuePoints = generateTransformedValuesLineScatter(entries);
 
+                    Path path = new Path();
                     for (int j = 0; j < (valuePoints.length - 2) * mPhaseX; j += 2) {
 
                         if (isOffContentRight(valuePoints[j]))
@@ -252,10 +253,14 @@ public class LineChart extends BarLineChartBase<LineData> {
                                 && isOffContentBottom(valuePoints[j + 1]))
                             continue;
 
-                        mDrawCanvas.drawLine(valuePoints[j], valuePoints[j + 1],
-                                valuePoints[j + 2], valuePoints[j + 3], mRenderPaint);
+                        if (j == 0) {
+                            path.moveTo(valuePoints[j], valuePoints[j + 1]);
+                        } else {
+                            path.lineTo(valuePoints[j + 2], valuePoints[j + 3]);
+                        }
                     }
 
+                    mDrawCanvas.drawPath(path, mRenderPaint);
                     // Path line = generateLinePath(entries);
                     // transformPath(line);
                     // mDrawCanvas.drawPath(line, mRenderPaint);

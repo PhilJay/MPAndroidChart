@@ -1,4 +1,3 @@
-
 package com.github.mikephil.charting.utils;
 
 import android.graphics.Canvas;
@@ -12,13 +11,14 @@ import java.util.ArrayList;
  * Class representing the legend of the chart. The legend will contain one entry
  * per color and DataSet. Multiple colors in one DataSet are grouped together.
  * The legend object is NOT available before setting data to the chart.
- * 
+ *
  * @author Philipp Jahoda
  */
 public class Legend {
 
+    /** CENTER for PieChart which has hole inside */
     public enum LegendPosition {
-        RIGHT_OF_CHART, BELOW_CHART_LEFT, BELOW_CHART_RIGHT, BELOW_CHART_CENTER
+        RIGHT_OF_CHART, BELOW_CHART_LEFT, BELOW_CHART_RIGHT, BELOW_CHART_CENTER, CENTER
     }
 
     public enum LegendForm {
@@ -46,7 +46,7 @@ public class Legend {
 
     /** the text size of the legend labels */
     private float mTextSize = 9f;
-    
+
     /** the text color to use */
     private int mTextColor = Color.BLACK;
 
@@ -86,7 +86,7 @@ public class Legend {
 
     /**
      * Constructor. Provide colors and labels for the legend.
-     * 
+     *
      * @param colors
      * @param labels
      */
@@ -108,7 +108,7 @@ public class Legend {
 
     /**
      * Constructor. Provide colors and labels for the legend.
-     * 
+     *
      * @param colors
      * @param labels
      */
@@ -130,7 +130,7 @@ public class Legend {
 
     /**
      * returns the maximum length in pixels over all legend labels + their forms
-     * 
+     *
      * @param p the paint object used for rendering the text
      * @return
      */
@@ -149,12 +149,12 @@ public class Legend {
             }
         }
 
-        return max + (int) mFormSize;
+        return (int)(max + mFormSize + mFormToTextSpace);
     }
 
     /**
      * returns all the colors the legend uses
-     * 
+     *
      * @return
      */
     public int[] getColors() {
@@ -163,7 +163,7 @@ public class Legend {
 
     /**
      * returns all the labels the legend uses
-     * 
+     *
      * @return
      */
     public String[] getLegendLabels() {
@@ -173,7 +173,7 @@ public class Legend {
     /**
      * Sets a custom array of labels for the legend. Make sure the labels array
      * has the same length as the colors array.
-     * 
+     *
      * @param labels
      */
     public void setLegendLabels(String[] labels) {
@@ -188,7 +188,7 @@ public class Legend {
 
     /**
      * returns the position of the legend relative to the chart
-     * 
+     *
      * @return
      */
     public LegendPosition getPosition() {
@@ -197,7 +197,7 @@ public class Legend {
 
     /**
      * sets the position of the legend relative to the whole chart
-     * 
+     *
      * @param pos
      */
     public void setPosition(LegendPosition pos) {
@@ -206,7 +206,7 @@ public class Legend {
 
     /**
      * returns the current form/shape that is set for the legend
-     * 
+     *
      * @return
      */
     public LegendForm getForm() {
@@ -215,7 +215,7 @@ public class Legend {
 
     /**
      * sets the form/shape of the legend forms
-     * 
+     *
      * @param shape
      */
     public void setForm(LegendForm shape) {
@@ -225,7 +225,7 @@ public class Legend {
     /**
      * returns the typeface used for the legend labels, returns null if none is
      * set
-     * 
+     *
      * @return
      */
     public Typeface getTypeface() {
@@ -234,7 +234,7 @@ public class Legend {
 
     /**
      * sets a specific typeface for the legend labels
-     * 
+     *
      * @param tf
      */
     public void setTypeface(Typeface tf) {
@@ -244,7 +244,7 @@ public class Legend {
     /**
      * sets the size in pixels of the legend forms, this is internally converted
      * in dp, default 8f
-     * 
+     *
      * @param size
      */
     public void setFormSize(float size) {
@@ -253,7 +253,7 @@ public class Legend {
 
     /**
      * returns the size in dp of the legend forms
-     * 
+     *
      * @return
      */
     public float getFormSize() {
@@ -263,7 +263,7 @@ public class Legend {
     /**
      * returns the space between the legend entries on a horizontal axis in
      * pixels
-     * 
+     *
      * @return
      */
     public float getXEntrySpace() {
@@ -273,7 +273,7 @@ public class Legend {
     /**
      * sets the space between the legend entries on a horizontal axis in pixels,
      * converts to dp internally
-     * 
+     *
      * @param space
      */
     public void setXEntrySpace(float space) {
@@ -282,7 +282,7 @@ public class Legend {
 
     /**
      * returns the space between the legend entries on a vertical axis in pixels
-     * 
+     *
      * @return
      */
     public float getYEntrySpace() {
@@ -292,7 +292,7 @@ public class Legend {
     /**
      * sets the space between the legend entries on a vertical axis in pixels,
      * converts to dp internally
-     * 
+     *
      * @param space
      */
     public void setYEntrySpace(float space) {
@@ -301,7 +301,7 @@ public class Legend {
 
     /**
      * returns the space between the form and the actual label/text
-     * 
+     *
      * @return
      */
     public float getFormToTextSpace() {
@@ -311,7 +311,7 @@ public class Legend {
     /**
      * sets the space between the form and the actual label/text, converts to dp
      * internally
-     * 
+     *
      * @param mFormToTextSpace
      */
     public void setFormToTextSpace(float space) {
@@ -320,7 +320,7 @@ public class Legend {
 
     /**
      * draws the form at the given position with the color at the given index
-     * 
+     *
      * @param c canvas to draw with
      * @param x
      * @param y
@@ -352,7 +352,7 @@ public class Legend {
     /**
      * draws the label at the given index in the labels array at the given
      * position
-     * 
+     *
      * @param c canvas to draw with
      * @param x
      * @param y
@@ -367,7 +367,7 @@ public class Legend {
     /**
      * applies the state from the legend in the parameter to this legend (except
      * colors, labels and offsets)
-     * 
+     *
      * @param l
      */
     public void apply(Legend l) {
@@ -382,7 +382,7 @@ public class Legend {
         mTextSize = l.mTextSize;
         mStackSpace = l.mStackSpace;
         mTextColor = l.mTextColor;
-        
+
         // apply offsets
         mLegendOffsetBottom = l.mLegendOffsetBottom;
         mLegendOffsetLeft = l.mLegendOffsetLeft;
@@ -392,7 +392,7 @@ public class Legend {
 
     /**
      * returns the bottom offset
-     * 
+     *
      * @return
      */
     public float getOffsetBottom() {
@@ -401,7 +401,7 @@ public class Legend {
 
     /**
      * returns the right offset
-     * 
+     *
      * @return
      */
     public float getOffsetRight() {
@@ -410,7 +410,7 @@ public class Legend {
 
     /**
      * sets the bottom offset
-     * 
+     *
      * @param off
      */
     public void setOffsetBottom(float off) {
@@ -419,7 +419,7 @@ public class Legend {
 
     /**
      * sets the right offset
-     * 
+     *
      * @param off
      */
     public void setOffsetRight(float off) {
@@ -428,7 +428,7 @@ public class Legend {
 
     /**
      * returns the bottom offset
-     * 
+     *
      * @return
      */
     public float getOffsetTop() {
@@ -437,7 +437,7 @@ public class Legend {
 
     /**
      * returns the left offset
-     * 
+     *
      * @return
      */
     public float getOffsetLeft() {
@@ -446,7 +446,7 @@ public class Legend {
 
     /**
      * sets the bottom offset
-     * 
+     *
      * @param off
      */
     public void setOffsetTop(float off) {
@@ -455,7 +455,7 @@ public class Legend {
 
     /**
      * sets the left offset
-     * 
+     *
      * @param off
      */
     public void setOffsetLeft(float off) {
@@ -464,7 +464,7 @@ public class Legend {
 
     /**
      * sets the text size of the legend labels, default 9f
-     * 
+     *
      * @param size
      */
     public void setTextSize(float size) {
@@ -473,7 +473,7 @@ public class Legend {
 
     /**
      * returns the text size of the legend labels
-     * 
+     *
      * @return
      */
     public float getTextSize() {
@@ -482,7 +482,7 @@ public class Legend {
 
     /**
      * returns the space that is left out between stacked forms (with no label)
-     * 
+     *
      * @return
      */
     public float getStackSpace() {
@@ -491,7 +491,7 @@ public class Legend {
 
     /**
      * sets the space that is left out between stacked forms (with no label)
-     * 
+     *
      * @param space
      */
     public void setStackSpace(float space) {
@@ -500,7 +500,7 @@ public class Legend {
 
     /**
      * calculates the full width the fully drawn legend will use in pixels
-     * 
+     *
      * @return
      */
     public float getFullWidth(Paint labelpaint) {
@@ -525,14 +525,14 @@ public class Legend {
 
         return width;
     }
-    
+
     /**
      * Calculates the full height of the drawn legend.
      * @param mLegendLabelPaint
      * @return
      */
     public float getFullHeight(Paint labelpaint) {
-        
+
         float height = 0f;
 
         for (int i = 0; i < mLegendLabels.length; i++) {
@@ -542,7 +542,7 @@ public class Legend {
 
                 height += Utils.calcTextHeight(labelpaint, mLegendLabels[i])
                         + mYEntrySpace;
-            } 
+            }
         }
 
         return height;
@@ -551,7 +551,7 @@ public class Legend {
     /**
      * Sets the text color to use for the legend labels. Make sure to use
      * getResources().getColor(...) when using a color from the resources.
-     * 
+     *
      * @param color
      */
     public void setTextColor(int color) {
@@ -560,7 +560,7 @@ public class Legend {
 
     /**
      * Returns the text color that is set for the legend labels.
-     * 
+     *
      * @return
      */
     public int getTextColor() {

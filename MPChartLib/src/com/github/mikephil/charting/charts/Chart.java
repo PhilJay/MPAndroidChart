@@ -557,8 +557,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 }
 
                 // add the legend description label
-                colors.add(-2);
-                labels.add(pds.getLabel());
+//                colors.add(-2);
+//                labels.add(pds.getLabel());
 
             } else { // all others
 
@@ -902,6 +902,23 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
                 Log.i(LOG_TAG, "content bottom: " + mContentRect.bottom + ", height: "
                         + getHeight() + ", posY: " + posY + ", formSize: " + formSize);
+
+                break;
+
+            case CENTER:
+                posX = (getWidth() - getOffsetLeft() - getOffsetRight()) / 2f - mLegend.getMaximumEntryLength(mLegendLabelPaint) / 2f + getOffsetLeft();
+                posY = (getHeight() - getOffsetTop() - getOffsetBottom() - ((mLegend.getYEntrySpace() + formSize) * labels.length - formSize)) / 2f + getOffsetTop();
+                for (int i = 0; i < labels.length; i++) {
+
+                    mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
+
+                    if (labels[i] != null) {
+
+                        mLegend.drawLabel(mDrawCanvas, posX + formTextSpaceAndForm, posY + textDrop,
+                                mLegendLabelPaint, i);
+                    }
+                    posY += mLegend.getYEntrySpace() + formSize;
+                }
 
                 break;
         }

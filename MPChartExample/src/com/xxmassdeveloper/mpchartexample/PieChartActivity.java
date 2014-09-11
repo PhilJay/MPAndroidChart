@@ -1,4 +1,3 @@
-
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
@@ -43,7 +42,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
         mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
-        
+
         mSeekBarY.setProgress(10);
 
         mSeekBarX.setOnSeekBarChangeListener(this);
@@ -84,7 +83,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         // add a selection listener
         mChart.setOnChartValueSelectedListener(this);
         // mChart.setTouchEnabled(false);
-        
+
         mChart.setCenterText("MPAndroidChart\nLibrary");
 
         setData(3, 100);
@@ -120,11 +119,11 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 //            }
 //        }
 //    }
-//    
+//
 //    private void addEntry() {
 //
 //        PieData data = mChart.getDataOriginal();
-//        
+//
 //        if(data != null) {
 //
 //            PieDataSet set = data.getDataSet();
@@ -136,7 +135,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 //            mChart.notifyDataSetChanged();
 //
 //            // redraw the chart
-//            mChart.invalidate();   
+//            mChart.invalidate();
 //        }
 //    }
 
@@ -259,7 +258,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         // undo all highlights
         mChart.highlightValues(null);
-        
+
         mChart.invalidate();
     }
 
