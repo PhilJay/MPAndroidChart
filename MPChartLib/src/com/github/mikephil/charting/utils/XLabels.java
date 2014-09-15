@@ -55,7 +55,7 @@ public class XLabels extends LabelBase {
 
     /** enum for the position of the x-labels relative to the chart */
     public enum XLabelPosition {
-        TOP, BOTTOM, BOTH_SIDED
+        TOP, BOTTOM, BOTH_SIDED, TOP_INSIDE, BOTTOM_INSIDE
     }
 
     /**

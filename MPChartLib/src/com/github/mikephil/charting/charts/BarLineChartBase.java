@@ -540,7 +540,7 @@ public abstract class BarLineChartBase extends Chart {
         }
 
         mXLabels.mLabelWidth = Utils.calcTextWidth(mXLabelPaint, a.toString());
-        mXLabels.mLabelHeight = Utils.calcTextWidth(mXLabelPaint, "Q");
+        mXLabels.mLabelHeight = Utils.calcTextHeight(mXLabelPaint, "Q");
     }
 
     /**
@@ -643,6 +643,14 @@ public abstract class BarLineChartBase extends Chart {
 
             drawXLabels(getHeight() - mOffsetBottom + mXLabels.mLabelHeight + yoffset * 1.5f);
 
+        } else if(mXLabels.getPosition() == XLabelPosition.BOTTOM_INSIDE) { 
+            
+            drawXLabels(getHeight() - getOffsetBottom() - yoffset);
+            
+        } else if(mXLabels.getPosition() == XLabelPosition.TOP_INSIDE) { 
+            
+            drawXLabels(getOffsetTop() + yoffset + mXLabels.mLabelHeight);
+            
         } else { // BOTH SIDED
 
             drawXLabels(getOffsetTop() - 7);
@@ -736,6 +744,16 @@ public abstract class BarLineChartBase extends Chart {
 
             mYLabelPaint.setTextAlign(Align.LEFT);
             drawYLabels(getWidth() - mOffsetRight + xoffset, positions, yoffset);
+
+        } else if (mYLabels.getPosition() == YLabelPosition.RIGHT_INSIDE) {
+
+            mYLabelPaint.setTextAlign(Align.RIGHT);
+            drawYLabels(getWidth() - mOffsetRight - xoffset, positions, yoffset);
+
+        } else if (mYLabels.getPosition() == YLabelPosition.LEFT_INSIDE) {
+
+            mYLabelPaint.setTextAlign(Align.LEFT);
+            drawYLabels(mOffsetLeft + xoffset, positions, yoffset);
 
         } else { // BOTH SIDED Y-AXIS LABELS
 

@@ -36,7 +36,7 @@ public class YLabels extends LabelBase {
 
     /** enum for the position of the y-labels relative to the chart */
     public enum YLabelPosition {
-        LEFT, RIGHT, BOTH_SIDED
+        LEFT, RIGHT, BOTH_SIDED, LEFT_INSIDE, RIGHT_INSIDE
     }
 
     /**

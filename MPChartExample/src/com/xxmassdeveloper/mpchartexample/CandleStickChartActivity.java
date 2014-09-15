@@ -11,6 +11,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.BarLineChartBase.BorderPosition;
 import com.github.mikephil.charting.charts.CandleStickChart;
 import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CandleDataSet;
@@ -18,6 +19,7 @@ import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
 import com.github.mikephil.charting.utils.YLabels;
+import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -63,8 +65,9 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         xLabels.setCenterXLabelText(true);
         xLabels.setSpaceBetweenLabels(2);
 
-        YLabels yLabels = mChart.getYLabels();
+        YLabels yLabels = mChart.getYLabels();  
         yLabels.setLabelCount(7);
+        yLabels.setPosition(YLabelPosition.RIGHT_INSIDE);
 
         mChart.setDrawYLabels(true);
         mChart.setDrawLegend(false);
