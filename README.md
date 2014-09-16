@@ -160,6 +160,7 @@ or create it in code (and then **add it to a layout**):
  - <code>saveToPath(String title, String pathOnSD)</code>: Saves the current chart state as an image to the specified path.
  - <code>setScaleMinima(float x, float y)</code>: Sets the minimum scale factors for x- and y-axis. If set for example to 3f, the user will not be able to fully zoom out.
  - <code>centerViewPort(int xIndex, float val)</code>: This method makes it possible to aim the center of the view (what you can see from the chart) to a specific position inside the chart, described by the index on the x-axis and the value on the y-axis. This also works very well in combination with the `setScaleMinima(...)` method.
+ - <code>fitScreen()</code>: Resets all zooming and dragging and makes the chart fit exactly it's bounds.
 
 **Adding data:**
 
@@ -205,13 +206,13 @@ Then, fill the lists with <code>Entry</code> objects. Make sure the entry object
 ```java
     Entry c1e1 = new Entry(100.000f, 0); // 0 == quarter 1
     valsComp1.add(c1e1);
-    Entry c1e2 = new Entry(50.000f, 1; // 1 == quarter 2 ...
+    Entry c1e2 = new Entry(50.000f, 1); // 1 == quarter 2 ...
     valsComp1.add(c1e2);
     // and so on ...
     
     Entry c2e1 = new Entry(120.000f, 0); // 0 == quarter 1
     valsComp2.add(c2e1);
-    Entry c2e2 = new Entry(110.000f, 1; // 1 == quarter 2 ...
+    Entry c2e2 = new Entry(110.000f, 1); // 1 == quarter 2 ...
     valsComp2.add(c2e2);
     //...
 ```
