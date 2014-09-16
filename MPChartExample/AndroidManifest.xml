@@ -41,6 +41,7 @@
         <activity android:name="CubicLineChartActivity"></activity>
         <activity android:name="RadarChartActivitry"></activity>
         <activity android:name="LineChartActivityColored"></activity>
+        <activity android:name="DynamicalAddingActivity"></activity>
     </application>
 
 </manifest>

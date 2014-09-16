@@ -31,7 +31,6 @@ import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
 import com.github.mikephil.charting.utils.YLabels;
 import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
-import com.nineoldandroids.animation.ObjectAnimator;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -280,6 +279,8 @@ public abstract class BarLineChartBase extends Chart {
     public void notifyDataSetChanged() {
         if (!mFixedYValues) {
             prepare();
+//            prepareContentRect();
+            prepareMatrixValuePx();
         } else {
             calcMinMax(mFixedYValues);
         }
@@ -366,18 +367,16 @@ public abstract class BarLineChartBase extends Chart {
 
             if (mDrawXLabels) {
                 mOffsetBottom = Math.max(mOffsetBottom, xbottom + mLegend.getOffsetBottom());
-                mOffsetTop = Math.max(mOffsetTop, xtop + mLegend.getOffsetTop());
+                mOffsetTop = Math.max(mOffsetTop, xtop);
             } else {
                 mOffsetBottom = Math.max(mOffsetBottom, mLegend.getOffsetBottom());
-                mOffsetTop = Math.max(mOffsetTop, mLegend.getOffsetTop());
             }
 
             if (mDrawYLabels) {
                 // merge legend, label and chart offsets
-                mOffsetLeft = Math.max(mOffsetLeft, yleft + mLegend.getOffsetLeft());
+                mOffsetLeft = Math.max(mOffsetLeft, yleft);
                 mOffsetRight = Math.max(mOffsetRight, yright + mLegend.getOffsetRight());
             } else {
-                mOffsetLeft = Math.max(mOffsetLeft, mLegend.getOffsetLeft());
                 mOffsetRight = Math.max(mOffsetRight, mLegend.getOffsetRight());
             }
 
@@ -395,24 +394,22 @@ public abstract class BarLineChartBase extends Chart {
             }
         }
 
-        // Log.i(LOG_TAG, "left: " + mOffsetLeft + ", right: " + mOffsetRight +
-        // ", top: " + mOffsetTop
-        // + ", bottom: " + mOffsetBottom);
-
         // those offsets are equal for legend and other chart, just apply them
         mLegend.setOffsetTop(mOffsetTop);
         mLegend.setOffsetLeft(mOffsetLeft);
 
         prepareContentRect();
+        
+        prepareMatrixValuePx();
 
-        float scaleX = (float) ((getWidth() - mOffsetLeft - mOffsetRight) / mDeltaX);
-        float scaleY = (float) ((getHeight() - mOffsetBottom - mOffsetTop) / mDeltaY);
-
-        Matrix val = new Matrix();
-        val.postTranslate(0, -mYChartMin);
-        val.postScale(scaleX, -scaleY);
-
-        mMatrixValueToPx.set(val);
+//        float scaleX = (float) ((getWidth() - mOffsetLeft - mOffsetRight) / mDeltaX);
+//        float scaleY = (float) ((getHeight() - mOffsetBottom - mOffsetTop) / mDeltaY);
+//
+//        Matrix val = new Matrix();
+//        val.postTranslate(0, -mYChartMin);
+//        val.postScale(scaleX, -scaleY);
+//
+//        mMatrixValueToPx.set(val);
 
         Matrix offset = new Matrix();
         // offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);

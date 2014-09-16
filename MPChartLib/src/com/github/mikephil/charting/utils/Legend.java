@@ -382,6 +382,12 @@ public class Legend {
         mTextSize = l.mTextSize;
         mStackSpace = l.mStackSpace;
         mTextColor = l.mTextColor;
+        
+        // apply offsets
+        mLegendOffsetBottom = l.mLegendOffsetBottom;
+        mLegendOffsetLeft = l.mLegendOffsetLeft;
+        mLegendOffsetRight = l.mLegendOffsetRight;
+        mLegendOffsetTop = l.mLegendOffsetTop;
     }
 
     /**

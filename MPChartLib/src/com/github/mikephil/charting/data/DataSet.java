@@ -298,30 +298,31 @@ public abstract class DataSet {
         return mLabel;
     }
 
-    // /**
-    // * Adds an Entry dynamically.
-    // *
-    // * @param d
-    // */
-    // public void addEntry(Entry e) {
-    //
-    // float sum = e.getSum();
-    //
-    // if(mYVals == null || mYVals.size() <= 0) {
-    //
-    // mYVals = new ArrayList<Entry>();
-    // mYMax = sum;
-    // mYMin = sum;
-    // } else {
-    //
-    // if(mYMax < sum) mYMax = sum;
-    // if(mYMin > sum) mYMin = sum;
-    // }
-    //
-    // mYVals.add(e);
-    //
-    // mYValueSum += sum;
-    // }
+    /**
+     * Adds an Entry to the DataSet dynamically. This will also recalculate the
+     * current minimum and maximum values of the DataSet and the value-sum.
+     *
+     * @param d
+     */
+    public void addEntry(Entry e) {
+
+        float val = e.getVal();
+
+        if (mYVals == null || mYVals.size() <= 0) {
+
+            mYVals = new ArrayList<Entry>();
+            mYMax = val;
+            mYMin = val;
+        } else {
+
+            if (mYMax < val)
+                mYMax = val;
+            if (mYMin > val)
+                mYMin = val;
+        }
+
+        mYValueSum += val;
+    }
 
     /** BELOW THIS COLOR HANDLING */
 
@@ -422,16 +423,19 @@ public abstract class DataSet {
     }
 
     /**
-     * Returns the position of the provided entry in the DataSets Entry array. Returns -1 if doesnt exist.
+     * Returns the position of the provided entry in the DataSets Entry array.
+     * Returns -1 if doesnt exist.
+     * 
      * @param e
      * @return
      */
     public int getEntryPosition(Entry e) {
-        
-        for(int i = 0; i < mYVals.size(); i++) {
-            if(e.equalTo(mYVals.get(i))) return i;
+
+        for (int i = 0; i < mYVals.size(); i++) {
+            if (e.equalTo(mYVals.get(i)))
+                return i;
         }
-        
+
         return -1;
     }
 

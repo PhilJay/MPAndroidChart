@@ -52,6 +52,16 @@ public class LineChart extends BarLineChartBase {
         mHighlightPaint.setStrokeWidth(2f);
         mHighlightPaint.setColor(Color.rgb(255, 187, 115));
     }
+    
+    @Override
+    protected void calcMinMax(boolean fixedValues) {
+        super.calcMinMax(fixedValues);
+
+        // if there is only one value in the chart
+        if(mOriginalData.getYValCount() == 1) {
+            mDeltaX = 1;
+        }
+    }
 
     /**
      * Sets a LineData object as a model for the LineChart.

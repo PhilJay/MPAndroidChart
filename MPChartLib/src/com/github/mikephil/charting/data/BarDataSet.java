@@ -206,4 +206,11 @@ public class BarDataSet extends BarLineScatterCandleRadarDataSet {
     public String[] getStackLabels() {
         return mStackLabels;
     }
+    
+    @Override
+    public void addEntry(Entry e) {
+        super.addEntry(e);
+        
+        ((ArrayList<BarEntry>) mYVals).add((BarEntry) e);
+    }
 }

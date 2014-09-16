@@ -465,10 +465,22 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     }
 
     /**
-     * setup all the matrices that will be used for scaling the coordinates to
-     * the display
+     * Sets up all the matrices that will be used for scaling the coordinates to
+     * the display. Offset and Value-px.
      */
     protected void prepareMatrix() {
+
+        prepareMatrixValuePx();
+
+        prepareMatrixOffset();
+
+        Log.i(LOG_TAG, "Matrices prepared.");
+    }
+
+    /**
+     * Prepares the matrix that transforms values to pixels.
+     */
+    protected void prepareMatrixValuePx() {
 
         float scaleX = (float) ((getWidth() - mOffsetLeft - mOffsetRight) / mDeltaX);
         float scaleY = (float) ((getHeight() - mOffsetBottom - mOffsetTop) / mDeltaY);
@@ -477,15 +489,19 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
         mMatrixValueToPx.reset();
         mMatrixValueToPx.postTranslate(0, -mYChartMin);
         mMatrixValueToPx.postScale(scaleX, -scaleY);
+    }
+
+    /**
+     * Prepares the matrix that contains all offsets.
+     */
+    protected void prepareMatrixOffset() {
 
         mMatrixOffset.reset();
 
         mMatrixOffset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
-
+        
         // mMatrixOffset.setTranslate(mOffsetLeft, 0);
         // mMatrixOffset.postScale(1.0f, -1.0f);
-
-        Log.i(LOG_TAG, "Matrices prepared.");
     }
 
     /**
@@ -1068,7 +1084,8 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
 
                 mMarkerView.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
                         MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-                mMarkerView.layout(0, 0, mMarkerView.getMeasuredWidth(), mMarkerView.getMeasuredHeight());
+                mMarkerView.layout(0, 0, mMarkerView.getMeasuredWidth(),
+                        mMarkerView.getMeasuredHeight());
                 mMarkerView.draw(mDrawCanvas, pos[0], pos[1]);
             }
         }

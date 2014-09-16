@@ -26,5 +26,10 @@ public class RadarDataSet extends LineRadarDataSet {
         return copied;
     }
   
-    
+    @Override
+    public void addEntry(Entry e) {
+        super.addEntry(e);
+        
+        ((ArrayList<Entry>) mYVals).add(e);
+    }
 }

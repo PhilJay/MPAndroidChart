@@ -108,4 +108,11 @@ public class CandleDataSet extends BarLineScatterCandleRadarDataSet {
     public float getShadowWidth() {
         return mShadowWidth;
     }
+    
+    @Override
+    public void addEntry(Entry e) {
+        super.addEntry(e);
+        
+        ((ArrayList<CandleEntry>) mYVals).add((CandleEntry) e);
+    }
 }

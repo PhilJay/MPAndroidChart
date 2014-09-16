@@ -90,8 +90,8 @@ public abstract class ChartData {
      * calculates the average length (in characters) across all x-value strings
      */
     private void calcXValAverageLength() {
-        
-        if(mXVals.size() == 0) {
+
+        if (mXVals.size() == 0) {
             mXValAverageLength = 1;
             return;
         }
@@ -401,6 +401,37 @@ public abstract class ChartData {
             mYMax = d.getYMax();
         if (mYMin > d.getYMin())
             mYMin = d.getYMin();
+    }
+
+    /**
+     * Adds an Entry to the DataSet at the specified index.
+     * 
+     * @param e
+     * @param dataSetIndex
+     */
+    public void addEntry(Entry e, int dataSetIndex) {
+
+        float val = e.getVal();
+        
+        mYValCount += 1;
+        mYValueSum += val;
+
+        if (mYMax < val)
+            mYMax = val;
+        if (mYMin > val)
+            mYMin = val;
+
+        mDataSets.get(dataSetIndex).addEntry(e);
+    }
+    
+    public void removeEntry(Entry e, int dataSetIndex) {
+       
+        float val = e.getVal();
+        
+        mYValCount -= 1;
+        mYValueSum -= val;
+
+
     }
 
     /**

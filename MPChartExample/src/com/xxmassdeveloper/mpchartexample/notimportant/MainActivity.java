@@ -25,6 +25,7 @@ import com.xxmassdeveloper.mpchartexample.BarChartActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivityMultiDataset;
 import com.xxmassdeveloper.mpchartexample.CandleStickChartActivity;
 import com.xxmassdeveloper.mpchartexample.CubicLineChartActivity;
+import com.xxmassdeveloper.mpchartexample.DynamicalAddingActivity;
 import com.xxmassdeveloper.mpchartexample.InvertedLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.LineChartActivity;
 import com.xxmassdeveloper.mpchartexample.LineChartActivityColored;
@@ -93,6 +94,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
         objects.add(new ContentItem(
                 "Colored Line Chart",
                 "Shows a LineChart with different background and line color."));
+        objects.add(new ContentItem(
+                "Dynamical data adding",
+                "This Activity demonstrates dynamical adding of Entries and DataSets (real time graph)."));
 
         MyAdapter adapter = new MyAdapter(this, objects);
 
@@ -181,6 +185,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 break;
             case 16:
                 i = new Intent(this, LineChartActivityColored.class);
+                startActivity(i);
+                break;
+            case 17:
+                i = new Intent(this, DynamicalAddingActivity.class);
                 startActivity(i);
                 break;
         }

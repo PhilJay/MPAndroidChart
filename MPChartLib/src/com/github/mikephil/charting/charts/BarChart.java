@@ -212,6 +212,8 @@ public class BarChart extends BarLineChartBase {
                     && index < (mDeltaX * mPhaseX) / mOriginalData.getDataSetCount()) {
 
                 Entry e = getEntryByDataSetIndex(index, dataSetIndex);
+                
+                if(e == null) continue;
 
                 // calculate the correct x-position
                 float x = index * setCount + dataSetIndex + bd.getGroupSpace() / 2f + bd.getGroupSpace() * index;

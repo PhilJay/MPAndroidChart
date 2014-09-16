@@ -80,4 +80,11 @@ public class PieDataSet extends DataSet {
     public float getSelectionShift() {
         return mShift;
     }
+    
+    @Override
+    public void addEntry(Entry e) {
+        super.addEntry(e);
+        
+        ((ArrayList<Entry>) mYVals).add(e);
+    }
 }
