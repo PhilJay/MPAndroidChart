@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public abstract class ChartData {
+public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /** maximum y-value in the y-value array */
     protected float mYMax = 0.0f;
@@ -35,7 +35,7 @@ public abstract class ChartData {
     protected ArrayList<String> mXVals;
 
     /** array that holds all DataSets the ChartData object represents */
-    protected ArrayList<? extends DataSet> mDataSets;
+    protected ArrayList<T> mDataSets;
 
     /**
      * constructor for chart data
@@ -45,7 +45,7 @@ public abstract class ChartData {
      *            DataSets.
      * @param sets the dataset array
      */
-    public ChartData(ArrayList<String> xVals, ArrayList<? extends DataSet> sets) {
+    public ChartData(ArrayList<String> xVals, ArrayList<T> sets) {
         this.mXVals = xVals;
         this.mDataSets = sets;
 
@@ -60,7 +60,7 @@ public abstract class ChartData {
      *            DataSets.
      * @param sets the dataset array
      */
-    public ChartData(String[] xVals, ArrayList<? extends DataSet> sets) {
+    public ChartData(String[] xVals, ArrayList<T> sets) {
         ArrayList<String> newXVals = new ArrayList<String>();
         for (int i = 0; i < xVals.length; i++) {
             newXVals.add(xVals[i]);
@@ -105,19 +105,13 @@ public abstract class ChartData {
         mXValAverageLength = sum / (float) mXVals.size();
     }
 
-    protected static ArrayList<? extends DataSet> toArrayList(DataSet dataSet) {
-        ArrayList<DataSet> sets = new ArrayList<DataSet>();
-        sets.add(dataSet);
-        return sets;
-    }
-
     /**
      * Checks if the combination of x-values array and DataSet array is legal or
      * not.
      * 
      * @param dataSets
      */
-    private void isLegal(ArrayList<? extends DataSet> dataSets) {
+    private void isLegal(ArrayList<T> dataSets) {
 
         for (int i = 0; i < dataSets.size(); i++) {
             if (dataSets.get(i)
@@ -140,7 +134,7 @@ public abstract class ChartData {
     /**
      * calc minimum and maximum y value over all datasets
      */
-    protected void calcMinMax(ArrayList<? extends DataSet> dataSets) {
+    protected void calcMinMax(ArrayList<T> dataSets) {
 
         mYMin = dataSets.get(0).getYMin();
         mYMax = dataSets.get(0).getYMax();
@@ -157,7 +151,7 @@ public abstract class ChartData {
     /**
      * calculates the sum of all y-values in all datasets
      */
-    protected void calcYValueSum(ArrayList<? extends DataSet> dataSets) {
+    protected void calcYValueSum(ArrayList<T> dataSets) {
 
         mYValueSum = 0;
 
@@ -172,7 +166,7 @@ public abstract class ChartData {
      * 
      * @return
      */
-    protected void calcYValueCount(ArrayList<? extends DataSet> dataSets) {
+    protected void calcYValueCount(ArrayList<T> dataSets) {
         int count = 0;
 
         for (int i = 0; i < dataSets.size(); i++) {
@@ -276,7 +270,7 @@ public abstract class ChartData {
      * 
      * @return
      */
-    public ArrayList<? extends DataSet> getDataSets() {
+    public ArrayList<T> getDataSets() {
         return mDataSets;
     }
 
@@ -364,7 +358,7 @@ public abstract class ChartData {
      * @param ignorecase
      * @return
      */
-    public DataSet getDataSetByLabel(String label, boolean ignorecase) {
+    public T getDataSetByLabel(String label, boolean ignorecase) {
 
         int index = getDataSetIndexByLabel(mDataSets, label, ignorecase);
 
@@ -380,7 +374,7 @@ public abstract class ChartData {
      * @param index
      * @return
      */
-    public DataSet getDataSetByIndex(int index) {
+    public T getDataSetByIndex(int index) {
         return mDataSets.get(index);
     }
 
@@ -389,10 +383,10 @@ public abstract class ChartData {
      * 
      * @param d
      */
-    public void addDataSet(DataSet d) {
+    public void addDataSet(T d) {
         if (mDataSets == null)
-            mDataSets = new ArrayList<DataSet>();
-        ((ArrayList<DataSet>) mDataSets).add(d);
+            mDataSets = new ArrayList<T>();
+        mDataSets.add(d);
 
         mYValCount += d.getEntryCount();
         mYValueSum += d.getYValueSum();
@@ -412,7 +406,7 @@ public abstract class ChartData {
     public void addEntry(Entry e, int dataSetIndex) {
 
         float val = e.getVal();
-        
+
         mYValCount += 1;
         mYValueSum += val;
 
@@ -420,17 +414,17 @@ public abstract class ChartData {
             mYMax = val;
         if (mYMin > val)
             mYMin = val;
-
+        
+        // add the entry to the dataset
         mDataSets.get(dataSetIndex).addEntry(e);
     }
-    
+
     public void removeEntry(Entry e, int dataSetIndex) {
-       
+
         float val = e.getVal();
-        
+
         mYValCount -= 1;
         mYValueSum -= val;
-
 
     }
 

@@ -16,13 +16,13 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public abstract class DataSet {
+public abstract class DataSet<T extends Entry> {
 
     /** arraylist representing all colors that are used for this DataSet */
     protected ArrayList<Integer> mColors = null;
 
     /** the entries that this dataset represents / holds together */
-    protected ArrayList<? extends Entry> mYVals = null;
+    protected ArrayList<T> mYVals = null;
 
     /** maximum y-value in the y-value array */
     protected float mYMax = 0.0f;
@@ -44,7 +44,7 @@ public abstract class DataSet {
      * @param yVals
      * @param label
      */
-    public DataSet(ArrayList<? extends Entry> yVals, String label) {
+    public DataSet(ArrayList<T> yVals, String label) {
 
         this.mLabel = label;
         this.mYVals = yVals;
@@ -201,7 +201,7 @@ public abstract class DataSet {
      * 
      * @return
      */
-    public ArrayList<? extends Entry> getYVals() {
+    public ArrayList<T> getYVals() {
         return mYVals;
     }
 
@@ -310,7 +310,7 @@ public abstract class DataSet {
 
         if (mYVals == null || mYVals.size() <= 0) {
 
-            mYVals = new ArrayList<Entry>();
+            mYVals = new ArrayList<T>();
             mYMax = val;
             mYMin = val;
         } else {
@@ -322,6 +322,9 @@ public abstract class DataSet {
         }
 
         mYValueSum += val;
+        
+        // add the entry
+        mYVals.add((T) e);
     }
 
     /** BELOW THIS COLOR HANDLING */

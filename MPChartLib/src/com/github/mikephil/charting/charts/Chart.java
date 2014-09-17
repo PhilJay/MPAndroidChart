@@ -96,13 +96,13 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      * object that holds all data relevant for the chart (x-vals, y-vals, ...)
      * that are currently displayed
      */
-    protected ChartData mCurrentData = null;
+    protected ChartData<? extends DataSet<? extends Entry>> mCurrentData = null;
 
     /**
      * object that holds all data that was originally set for the chart, before
      * it was modified or any filtering algorithms had been applied
      */
-    protected ChartData mOriginalData = null;
+    protected ChartData<? extends DataSet<? extends Entry>> mOriginalData = null;
 
     /** final bitmap that contains all information and is drawn to the screen */
     protected Bitmap mDrawBitmap;
@@ -1289,15 +1289,15 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     // prepareMatrix();
     // calculateOffsets();
     // }
-
-    public void addDataSet(DataSet d) {
-        mOriginalData.addDataSet(d);
-
-        prepare();
-        calcMinMax(false);
-        prepareMatrix();
-        calculateOffsets();
-    }
+//
+//    public void addDataSet(DataSet d) {
+//        mOriginalData.addDataSet(d);
+//
+//        prepare();
+//        calcMinMax(false);
+//        prepareMatrix();
+//        calculateOffsets();
+//    }
 
     /**
      * ################ ################ ################ ################
@@ -1812,17 +1812,6 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     }
 
     /**
-     * Returns the y-value for the given index from the first DataSet. If
-     * multiple DataSets are used, please use getYValue(int index, int type);
-     * 
-     * @param index
-     * @return
-     */
-    public float getYValue(int index) {
-        return mCurrentData.getDataSetByIndex(0).getYVals().get(index).getVal();
-    }
-
-    /**
      * returns the y-value for the given index from the DataSet with the given
      * label
      * 
@@ -1831,7 +1820,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      * @return
      */
     public float getYValue(int index, String dataSetLabel) {
-        DataSet set = mCurrentData.getDataSetByLabel(dataSetLabel, true);
+        DataSet<? extends Entry> set = mCurrentData.getDataSetByLabel(dataSetLabel, true);
         return set.getYVals().get(index).getVal();
     }
 
@@ -1842,8 +1831,8 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      * @param dataSet
      * @return
      */
-    public float getYValueByDataSetIndex(int xIndex, int dataSet) {
-        DataSet set = mCurrentData.getDataSetByIndex(dataSet);
+    public float getYValue(int xIndex, int dataSetIndex) {
+        DataSet<? extends Entry> set = mCurrentData.getDataSetByIndex(dataSetIndex);
         return set.getYValForXIndex(xIndex);
     }
 
@@ -1854,7 +1843,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      * @param index
      * @return
      */
-    public DataSet getDataSetByIndex(int index) {
+    public DataSet<? extends Entry> getDataSetByIndex(int index) {
         return mCurrentData.getDataSetByIndex(index);
     }
 
@@ -1865,7 +1854,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      * @param type
      * @return
      */
-    public DataSet getDataSetByLabel(String dataSetLabel) {
+    public DataSet<? extends Entry> getDataSetByLabel(String dataSetLabel) {
         return mCurrentData.getDataSetByLabel(dataSetLabel, true);
     }
 

@@ -10,16 +10,16 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public abstract class BarLineScatterCandleRadarData extends ChartData {
+public abstract class BarLineScatterCandleRadarData<T extends BarLineScatterCandleRadarDataSet<? extends Entry>> extends ChartData<T> {
 
     /** array of limit-lines that are set for this data object */
     private ArrayList<LimitLine> mLimitLines;
 
-    public BarLineScatterCandleRadarData(ArrayList<String> xVals, ArrayList<? extends DataSet> sets) {
+    public BarLineScatterCandleRadarData(ArrayList<String> xVals, ArrayList<T> sets) {
         super(xVals, sets);
     }
 
-    public BarLineScatterCandleRadarData(String[] xVals, ArrayList<? extends DataSet> sets) {
+    public BarLineScatterCandleRadarData(String[] xVals, ArrayList<T> sets) {
         super(xVals, sets);
     }
 

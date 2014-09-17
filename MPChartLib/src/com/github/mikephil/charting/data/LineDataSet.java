@@ -10,7 +10,7 @@ import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 
-public class LineDataSet extends LineRadarDataSet {
+public class LineDataSet extends LineRadarDataSet<Entry> {
 
     /** arraylist representing all colors that are used for the circles */
     private ArrayList<Integer> mCircleColors = null;
@@ -268,12 +268,5 @@ public class LineDataSet extends LineRadarDataSet {
      */
     public void resetCircleColors() {
         mCircleColors = new ArrayList<Integer>();
-    }
-    
-    @Override
-    public void addEntry(Entry e) {
-        super.addEntry(e);
-        
-        ((ArrayList<Entry>) mYVals).add(e);
     }
 }

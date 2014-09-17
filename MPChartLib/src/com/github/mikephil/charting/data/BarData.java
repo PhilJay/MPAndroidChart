@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public class BarData extends BarLineScatterCandleRadarData {
+public class BarData extends BarLineScatterCandleRadarData<BarDataSet> {
 
     /** the space that is left between groups of bars */
     private float mGroupSpace = 0.8f;
@@ -27,6 +27,12 @@ public class BarData extends BarLineScatterCandleRadarData {
 
     public BarData(String[] xVals, BarDataSet dataSet) {
         super(xVals, toArrayList(dataSet));
+    }
+    
+    private static ArrayList<BarDataSet> toArrayList(BarDataSet dataSet) {
+        ArrayList<BarDataSet> sets = new ArrayList<BarDataSet>();
+        sets.add(dataSet);
+        return sets;
     }
 
     /**

@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public class RadarData extends BarLineScatterCandleRadarData {
+public class RadarData extends BarLineScatterCandleRadarData<RadarDataSet> {
 
     public RadarData(ArrayList<String> xVals, ArrayList<RadarDataSet> dataSets) {
         super(xVals, dataSets);
@@ -24,5 +24,11 @@ public class RadarData extends BarLineScatterCandleRadarData {
 
     public RadarData(String[] xVals, RadarDataSet dataSet) {
         super(xVals, toArrayList(dataSet));
+    }
+    
+    private static ArrayList<RadarDataSet> toArrayList(RadarDataSet dataSet) {
+        ArrayList<RadarDataSet> sets = new ArrayList<RadarDataSet>();
+        sets.add(dataSet);
+        return sets;
     }
 }

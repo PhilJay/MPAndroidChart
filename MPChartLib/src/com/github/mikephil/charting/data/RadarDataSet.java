@@ -3,7 +3,7 @@ package com.github.mikephil.charting.data;
 
 import java.util.ArrayList;
 
-public class RadarDataSet extends LineRadarDataSet {
+public class RadarDataSet extends LineRadarDataSet<Entry> {
     
 
     public RadarDataSet(ArrayList<Entry> yVals, String label) {
@@ -24,12 +24,5 @@ public class RadarDataSet extends LineRadarDataSet {
         copied.mHighLightColor = mHighLightColor;
 
         return copied;
-    }
-  
-    @Override
-    public void addEntry(Entry e) {
-        super.addEntry(e);
-        
-        ((ArrayList<Entry>) mYVals).add(e);
     }
 }

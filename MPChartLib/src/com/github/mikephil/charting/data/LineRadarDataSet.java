@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public abstract class LineRadarDataSet extends BarLineScatterCandleRadarDataSet {
+public abstract class LineRadarDataSet<T extends Entry> extends BarLineScatterCandleRadarDataSet<T> {
 
     /** the color that is used for filling the line surface */
     private int mFillColor = Color.rgb(140, 234, 255);
@@ -26,7 +26,7 @@ public abstract class LineRadarDataSet extends BarLineScatterCandleRadarDataSet 
     /** if true, the data will also be drawn filled */
     private boolean mDrawFilled = false;
     
-    public LineRadarDataSet(ArrayList<? extends Entry> yVals, String label) {
+    public LineRadarDataSet(ArrayList<T> yVals, String label) {
         super(yVals, label);
     }
 

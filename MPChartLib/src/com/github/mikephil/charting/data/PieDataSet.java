@@ -5,7 +5,7 @@ import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 
-public class PieDataSet extends DataSet {
+public class PieDataSet extends DataSet<Entry> {
 
     /** the space in degrees between the chart-slices, default 0f */
     private float mSliceSpace = 0f;
@@ -79,12 +79,5 @@ public class PieDataSet extends DataSet {
      */
     public float getSelectionShift() {
         return mShift;
-    }
-    
-    @Override
-    public void addEntry(Entry e) {
-        super.addEntry(e);
-        
-        ((ArrayList<Entry>) mYVals).add(e);
     }
 }

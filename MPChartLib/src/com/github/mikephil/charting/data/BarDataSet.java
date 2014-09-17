@@ -5,7 +5,7 @@ import android.graphics.Color;
 
 import java.util.ArrayList;
 
-public class BarDataSet extends BarLineScatterCandleRadarDataSet {
+public class BarDataSet extends BarLineScatterCandleRadarDataSet<BarEntry> {
 
     /** space indicator between the bars 0.1f == 10 % */
     private float mBarSpace = 0.15f;
@@ -205,12 +205,5 @@ public class BarDataSet extends BarLineScatterCandleRadarDataSet {
      */
     public String[] getStackLabels() {
         return mStackLabels;
-    }
-    
-    @Override
-    public void addEntry(Entry e) {
-        super.addEntry(e);
-        
-        ((ArrayList<BarEntry>) mYVals).add((BarEntry) e);
     }
 }
