@@ -406,7 +406,10 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      */
     public abstract void prepare();
 
-    /** lets the chart know its unterlying data has changed */
+    /**
+     * Lets the chart know its underlying data has changed and performs all
+     * necessary recalculations.
+     */
     public abstract void notifyDataSetChanged();
 
     /**
@@ -499,7 +502,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
         mMatrixOffset.reset();
 
         mMatrixOffset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
-        
+
         // mMatrixOffset.setTranslate(mOffsetLeft, 0);
         // mMatrixOffset.postScale(1.0f, -1.0f);
     }
@@ -1289,15 +1292,15 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     // prepareMatrix();
     // calculateOffsets();
     // }
-//
-//    public void addDataSet(DataSet d) {
-//        mOriginalData.addDataSet(d);
-//
-//        prepare();
-//        calcMinMax(false);
-//        prepareMatrix();
-//        calculateOffsets();
-//    }
+    //
+    // public void addDataSet(DataSet d) {
+    // mOriginalData.addDataSet(d);
+    //
+    // prepare();
+    // calcMinMax(false);
+    // prepareMatrix();
+    // calculateOffsets();
+    // }
 
     /**
      * ################ ################ ################ ################

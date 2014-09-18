@@ -11,4 +11,14 @@
         android:title="Remove Entry">
     </item>
     
+        <item
+        android:id="@+id/actionAddDataSet"
+        android:title="Add DataSet">
+    </item>
+    
+    <item
+        android:id="@+id/actionRemoveDataSet"
+        android:title="Remove DataSet">
+    </item>
+    
 </menu>

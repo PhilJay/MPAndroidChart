@@ -136,15 +136,22 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      */
     protected void calcMinMax(ArrayList<T> dataSets) {
 
-        mYMin = dataSets.get(0).getYMin();
-        mYMax = dataSets.get(0).getYMax();
+        if (dataSets == null || dataSets.size() < 1) {
+            
+            mYMax = 0f;
+            mYMin = 0f;
+        } else {
 
-        for (int i = 0; i < dataSets.size(); i++) {
-            if (dataSets.get(i).getYMin() < mYMin)
-                mYMin = dataSets.get(i).getYMin();
+            mYMin = dataSets.get(0).getYMin();
+            mYMax = dataSets.get(0).getYMax();
 
-            if (dataSets.get(i).getYMax() > mYMax)
-                mYMax = dataSets.get(i).getYMax();
+            for (int i = 0; i < dataSets.size(); i++) {
+                if (dataSets.get(i).getYMin() < mYMin)
+                    mYMin = dataSets.get(i).getYMin();
+
+                if (dataSets.get(i).getYMax() > mYMax)
+                    mYMax = dataSets.get(i).getYMax();
+            }
         }
     }
 
@@ -398,6 +405,48 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     }
 
     /**
+     * Removes the given DataSet from this data object. Also recalculates all
+     * minimum and maximum values. Returns true if a DataSet was removed, false
+     * if no DataSet could be removed.
+     * 
+     * @param d
+     */
+    public boolean removeDataSet(T d) {
+
+        if (mDataSets == null || d == null)
+            return false;
+
+        boolean removed = mDataSets.remove(d);
+
+        // if a DataSet was removed
+        if (removed) {
+
+            mYValCount -= d.getEntryCount();
+            mYValueSum -= d.getYValueSum();
+
+            calcMinMax(mDataSets);
+        }
+
+        return removed;
+    }
+
+    /**
+     * Removes the DataSet at the given index in the DataSet array from the data
+     * object. Also recalculates all minimum and maximum values. Returns true if
+     * a DataSet was removed, false if no DataSet could be removed.
+     * 
+     * @param index
+     */
+    public boolean removeDataSet(int index) {
+
+        if (mDataSets == null || index >= mDataSets.size())
+            return false;
+
+        T set = mDataSets.get(index);
+        return removeDataSet(set);
+    }
+
+    /**
      * Adds an Entry to the DataSet at the specified index. Entries are added to
      * the end of the list.
      * 
@@ -426,39 +475,46 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * @param e
      * @param dataSetIndex
      */
-    public void removeEntry(Entry e, int dataSetIndex) {
+    public boolean removeEntry(Entry e, int dataSetIndex) {
 
         // entry null, outofbounds
         if (e == null || dataSetIndex >= mDataSets.size())
-            return;
-
-        float val = e.getVal();
-
-        mYValCount -= 1;
-        mYValueSum -= val;
+            return false;
 
         // remove the entry from the dataset
-        mDataSets.get(dataSetIndex).removeEntry(e.getXIndex());
+        boolean removed = mDataSets.get(dataSetIndex).removeEntry(e.getXIndex());
 
-        calcMinMax(mDataSets);
+        if (removed) {
+
+            float val = e.getVal();
+
+            mYValCount -= 1;
+            mYValueSum -= val;
+
+            calcMinMax(mDataSets);
+        }
+
+        return removed;
     }
 
     /**
      * Removes the Entry object at the given xIndex from the DataSet at the
-     * specified index.
+     * specified index. Returns true if an Entry was removed, false if no Entry
+     * was found that meets the specified requirements.
      * 
      * @param xIndex
      * @param dataSetIndex
+     * @return
      */
-    public void removeEntry(int xIndex, int dataSetIndex) {
+    public boolean removeEntry(int xIndex, int dataSetIndex) {
 
         if (dataSetIndex >= mDataSets.size())
-            return;
+            return false;
 
         T dataSet = mDataSets.get(dataSetIndex);
         Entry e = dataSet.getEntryForXIndex(xIndex);
 
-        removeEntry(e, dataSetIndex);
+        return removeEntry(e, dataSetIndex);
     }
 
     /**

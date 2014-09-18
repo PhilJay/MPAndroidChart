@@ -333,34 +333,40 @@ public abstract class DataSet<T extends Entry> {
     /**
      * Removes an Entry from the DataSets entries array. This will also
      * recalculate the current minimum and maximum values of the DataSet and the
-     * value-sum.
+     * value-sum. Returns true if an Entry was removed, false if no Entry could
+     * be removed.
      * 
      * @param e
      */
-    public void removeEntry(T e) {
+    public boolean removeEntry(T e) {
 
         if (e == null)
-            return;
+            return false;
 
         // remove the entry
-        mYVals.remove(e);
+        boolean removed = mYVals.remove(e);
 
-        float val = e.getVal();
+        if (removed) {
 
-        calcMinMax();
+            float val = e.getVal();
+            mYValueSum -= val;
 
-        mYValueSum -= val;
+            calcMinMax();
+        }
+
+        return removed;
     }
 
     /**
      * Removes the Entry object that has the given xIndex from the DataSet.
+     * Returns true if an Entry was removed, false if no Entry could be removed.
      * 
      * @param xIndex
      */
-    public void removeEntry(int xIndex) {
+    public boolean removeEntry(int xIndex) {
 
         T e = getEntryForXIndex(xIndex);
-        removeEntry(e);
+        return removeEntry(e);
     }
 
     /** BELOW THIS COLOR HANDLING */
