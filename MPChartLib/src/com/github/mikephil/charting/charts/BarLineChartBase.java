@@ -79,6 +79,9 @@ public abstract class BarLineChartBase extends Chart {
      */
     protected boolean mPinchZoomEnabled = false;
 
+    /** flat that indicates if double tap zoom is enabled or not */
+    protected boolean mDoubleTapToZoomEnabled = true;
+
     /** if true, dragging / scaling is enabled for the chart */
     protected boolean mDragScaleEnabled = true;
 
@@ -279,7 +282,7 @@ public abstract class BarLineChartBase extends Chart {
     public void notifyDataSetChanged() {
         if (!mFixedYValues) {
             prepare();
-//            prepareContentRect();
+            // prepareContentRect();
             prepareMatrixValuePx();
         } else {
             calcMinMax(mFixedYValues);
@@ -399,17 +402,19 @@ public abstract class BarLineChartBase extends Chart {
         mLegend.setOffsetLeft(mOffsetLeft);
 
         prepareContentRect();
-        
+
         prepareMatrixValuePx();
 
-//        float scaleX = (float) ((getWidth() - mOffsetLeft - mOffsetRight) / mDeltaX);
-//        float scaleY = (float) ((getHeight() - mOffsetBottom - mOffsetTop) / mDeltaY);
-//
-//        Matrix val = new Matrix();
-//        val.postTranslate(0, -mYChartMin);
-//        val.postScale(scaleX, -scaleY);
-//
-//        mMatrixValueToPx.set(val);
+        // float scaleX = (float) ((getWidth() - mOffsetLeft - mOffsetRight) /
+        // mDeltaX);
+        // float scaleY = (float) ((getHeight() - mOffsetBottom - mOffsetTop) /
+        // mDeltaY);
+        //
+        // Matrix val = new Matrix();
+        // val.postTranslate(0, -mYChartMin);
+        // val.postScale(scaleX, -scaleY);
+        //
+        // mMatrixValueToPx.set(val);
 
         Matrix offset = new Matrix();
         // offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
@@ -640,14 +645,14 @@ public abstract class BarLineChartBase extends Chart {
 
             drawXLabels(getHeight() - mOffsetBottom + mXLabels.mLabelHeight + yoffset * 1.5f);
 
-        } else if(mXLabels.getPosition() == XLabelPosition.BOTTOM_INSIDE) { 
-            
+        } else if (mXLabels.getPosition() == XLabelPosition.BOTTOM_INSIDE) {
+
             drawXLabels(getHeight() - getOffsetBottom() - yoffset);
-            
-        } else if(mXLabels.getPosition() == XLabelPosition.TOP_INSIDE) { 
-            
+
+        } else if (mXLabels.getPosition() == XLabelPosition.TOP_INSIDE) {
+
             drawXLabels(getOffsetTop() + yoffset + mXLabels.mLabelHeight);
-            
+
         } else { // BOTH SIDED
 
             drawXLabels(getOffsetTop() - 7);
@@ -1092,15 +1097,15 @@ public abstract class BarLineChartBase extends Chart {
         save.set(mMatrixTouch);
 
         float[] vals = new float[9];
-        
+
         save.getValues(vals);
-        
+
         // reset all translations and scaling
         vals[Matrix.MTRANS_X] = 0f;
         vals[Matrix.MTRANS_Y] = 0f;
         vals[Matrix.MSCALE_X] = 1f;
         vals[Matrix.MSCALE_Y] = 1f;
-        
+
         save.setValues(vals);
 
         refreshTouch(save);
@@ -1472,6 +1477,25 @@ public abstract class BarLineChartBase extends Chart {
      */
     public boolean isDragScaleEnabled() {
         return mDragScaleEnabled;
+    }
+
+    /**
+     * Set this to true to enable zooming in by double-tap on the chart.
+     * Default: enabled
+     * 
+     * @param enabled
+     */
+    public void setDoubleTapToZoomEnabled(boolean enabled) {
+        mDoubleTapToZoomEnabled = enabled;
+    }
+
+    /**
+     * Returns true if zooming via double-tap is enabled false if not.
+     * 
+     * @return
+     */
+    public boolean isDoubleTapToZoomEnabled() {
+        return mDoubleTapToZoomEnabled;
     }
 
     /**
