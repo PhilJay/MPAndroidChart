@@ -296,7 +296,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * @param ignorecase if true, the search is not case-sensitive
      * @return
      */
-    protected int getDataSetIndexByLabel(ArrayList<? extends DataSet> dataSets, String label,
+    protected int getDataSetIndexByLabel(ArrayList<T> dataSets, String label,
             boolean ignorecase) {
 
         if (ignorecase) {
@@ -398,7 +398,8 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     }
 
     /**
-     * Adds an Entry to the DataSet at the specified index.
+     * Adds an Entry to the DataSet at the specified index. Entries are added to
+     * the end of the list.
      * 
      * @param e
      * @param dataSetIndex
@@ -414,18 +415,50 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             mYMax = val;
         if (mYMin > val)
             mYMin = val;
-        
+
         // add the entry to the dataset
-        mDataSets.get(dataSetIndex).addEntry(e);
+        mDataSets.get(dataSetIndex).addEntry((Entry) e);
     }
 
+    /**
+     * Removes the given Entry object from the DataSet at the specified index.
+     * 
+     * @param e
+     * @param dataSetIndex
+     */
     public void removeEntry(Entry e, int dataSetIndex) {
+
+        // entry null, outofbounds
+        if (e == null || dataSetIndex >= mDataSets.size())
+            return;
 
         float val = e.getVal();
 
         mYValCount -= 1;
         mYValueSum -= val;
 
+        // remove the entry from the dataset
+        mDataSets.get(dataSetIndex).removeEntry(e.getXIndex());
+
+        calcMinMax(mDataSets);
+    }
+
+    /**
+     * Removes the Entry object at the given xIndex from the DataSet at the
+     * specified index.
+     * 
+     * @param xIndex
+     * @param dataSetIndex
+     */
+    public void removeEntry(int xIndex, int dataSetIndex) {
+
+        if (dataSetIndex >= mDataSets.size())
+            return;
+
+        T dataSet = mDataSets.get(dataSetIndex);
+        Entry e = dataSet.getEntryForXIndex(xIndex);
+
+        removeEntry(e, dataSetIndex);
     }
 
     /**

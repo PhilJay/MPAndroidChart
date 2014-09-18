@@ -144,7 +144,7 @@ public abstract class DataSet<T extends Entry> {
      * @param xIndex
      * @return
      */
-    public Entry getEntryForXIndex(int x) {
+    public T getEntryForXIndex(int x) {
 
         int low = 0;
         int high = mYVals.size() - 1;
@@ -173,9 +173,9 @@ public abstract class DataSet<T extends Entry> {
      * @param xIndex
      * @return
      */
-    public ArrayList<Entry> getEntriesForXIndex(int x) {
+    public ArrayList<T> getEntriesForXIndex(int x) {
 
-        ArrayList<Entry> entries = new ArrayList<Entry>();
+        ArrayList<T> entries = new ArrayList<T>();
 
         int low = 0;
         int high = mYVals.size();
@@ -306,6 +306,9 @@ public abstract class DataSet<T extends Entry> {
      */
     public void addEntry(Entry e) {
 
+        if (e == null)
+            return;
+
         float val = e.getVal();
 
         if (mYVals == null || mYVals.size() <= 0) {
@@ -322,9 +325,42 @@ public abstract class DataSet<T extends Entry> {
         }
 
         mYValueSum += val;
-        
+
         // add the entry
         mYVals.add((T) e);
+    }
+
+    /**
+     * Removes an Entry from the DataSets entries array. This will also
+     * recalculate the current minimum and maximum values of the DataSet and the
+     * value-sum.
+     * 
+     * @param e
+     */
+    public void removeEntry(T e) {
+
+        if (e == null)
+            return;
+
+        // remove the entry
+        mYVals.remove(e);
+
+        float val = e.getVal();
+
+        calcMinMax();
+
+        mYValueSum -= val;
+    }
+
+    /**
+     * Removes the Entry object that has the given xIndex from the DataSet.
+     * 
+     * @param xIndex
+     */
+    public void removeEntry(int xIndex) {
+
+        T e = getEntryForXIndex(xIndex);
+        removeEntry(e);
     }
 
     /** BELOW THIS COLOR HANDLING */

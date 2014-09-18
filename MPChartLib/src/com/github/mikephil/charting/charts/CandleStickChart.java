@@ -51,7 +51,7 @@ public class CandleStickChart extends BarLineChartBase {
     @Override
     protected void drawData() {
 
-        ArrayList<CandleDataSet> dataSets = (ArrayList<CandleDataSet>) mCurrentData.getDataSets();
+        ArrayList<CandleDataSet> dataSets = ((CandleData) mCurrentData).getDataSets();
 
         // pre allocate
         float[] shadowPoints = new float[4];
@@ -60,7 +60,7 @@ public class CandleStickChart extends BarLineChartBase {
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
             CandleDataSet dataSet = dataSets.get(i);
-            ArrayList<CandleEntry> entries = (ArrayList<CandleEntry>) dataSet.getYVals();
+            ArrayList<CandleEntry> entries = dataSet.getYVals();
 
             mRenderPaint.setStrokeWidth(dataSet.getShadowWidth());
 
@@ -165,15 +165,17 @@ public class CandleStickChart extends BarLineChartBase {
     @Override
     protected void drawHighlights() {
 
+        CandleData cd = (CandleData) mCurrentData;
+        
         for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
             int xIndex = mIndicesToHightlight[i].getXIndex(); // get the
                                                               // x-position
 
-            CandleDataSet set = (CandleDataSet) getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
+            CandleDataSet set = cd.getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
             mHighlightPaint.setColor(set.getHighLightColor());
             
-            CandleEntry e = (CandleEntry) set.getEntryForXIndex(xIndex);
+            CandleEntry e = set.getEntryForXIndex(xIndex);
             
             if(e == null) continue;
 

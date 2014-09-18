@@ -247,7 +247,7 @@ public class BarChart extends BarLineChartBase {
 
         BarData bd = (BarData) mCurrentData;
 
-        ArrayList<BarDataSet> dataSets = (ArrayList<BarDataSet>) bd.getDataSets();
+        ArrayList<BarDataSet> dataSets = bd.getDataSets();
         int setCount = bd.getDataSetCount();
         
         // the space between bar-groups
@@ -259,7 +259,7 @@ public class BarChart extends BarLineChartBase {
             BarDataSet dataSet = dataSets.get(i);
             boolean noStacks = dataSet.getStackSize() == 1 ? true : false;
 
-            ArrayList<BarEntry> entries = (ArrayList<BarEntry>) dataSet.getYVals();
+            ArrayList<BarEntry> entries = dataSet.getYVals();
 
             // do the drawing
             for (int j = 0; j < dataSet.getEntryCount() * mPhaseX; j++) {
@@ -595,7 +595,7 @@ public class BarChart extends BarLineChartBase {
         // if values are drawn
         if (mDrawYValues && mCurrentData.getYValCount() < mMaxVisibleCount * mScaleX) {
 
-            ArrayList<BarDataSet> dataSets = (ArrayList<BarDataSet>) mCurrentData.getDataSets();
+            ArrayList<BarDataSet> dataSets = ((BarData) mCurrentData).getDataSets();
 
             float offset = 0f;
 
@@ -609,7 +609,7 @@ public class BarChart extends BarLineChartBase {
             for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
                 BarDataSet dataSet = dataSets.get(i);
-                ArrayList<BarEntry> entries = (ArrayList<BarEntry>) dataSet.getYVals();
+                ArrayList<BarEntry> entries = dataSet.getYVals();
 
                 float[] valuePoints = generateTransformedValuesBarChart(entries, i);
 

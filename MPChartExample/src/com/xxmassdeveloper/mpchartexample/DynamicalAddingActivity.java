@@ -63,7 +63,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 
     private void addEntry() {
 
-        DataSet set = mData.getDataSetByIndex(0);
+        LineDataSet set = mData.getDataSetByIndex(0);
         // set.addEntry();
 
         mData.addEntry(new Entry((float) (Math.random() * 100) + 500f, set.getEntryCount()), 0);
@@ -74,7 +74,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 
     private void removeLastEntry() {
 
-        DataSet set = mData.getDataSetByIndex(0);
+        LineDataSet set = mData.getDataSetByIndex(0);
 
         Entry e = set.getEntryForXIndex(set.getEntryCount() - 1);
 

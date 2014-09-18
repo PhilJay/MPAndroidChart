@@ -415,6 +415,8 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
     public void onLongPress(MotionEvent e) {
         
         mChart.fitScreen();
+        
+        Log.i("BarlineChartTouch", "Longpress, resetting zoom and drag, adjusting chart bounds to screen.");
 
 //        PointF trans = getTrans(e.getX(), e.getY());
 //

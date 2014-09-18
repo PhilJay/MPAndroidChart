@@ -121,12 +121,12 @@ public class LineChart extends BarLineChartBase {
     @Override
     protected void drawData() {
 
-        ArrayList<LineDataSet> dataSets = (ArrayList<LineDataSet>) mCurrentData.getDataSets();
+        ArrayList<LineDataSet> dataSets = ((LineData) mCurrentData).getDataSets();
 
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
             LineDataSet dataSet = dataSets.get(i);
-            ArrayList<? extends Entry> entries = dataSet.getYVals();
+            ArrayList<Entry> entries = dataSet.getYVals();
 
             mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
             mRenderPaint.setPathEffect(dataSet.getDashPathEffect());
@@ -281,29 +281,13 @@ public class LineChart extends BarLineChartBase {
         return filled;
     }
 
-    /**
-     * Calculates the middle point between two points and multiplies its
-     * coordinates with the given smoothness _Mulitplier.
-     * 
-     * @param p1 First point
-     * @param p2 Second point
-     * @param _Result Resulting point
-     * @param mult Smoothness multiplier
-     */
-    private void calculatePointDiff(PointF p1, PointF p2, PointF _Result, float mult) {
-        float diffX = p2.x - p1.x;
-        float diffY = p2.y - p1.y;
-        _Result.x = (p1.x + (diffX * mult));
-        _Result.y = (p1.y + (diffY * mult));
-    }
-
     @Override
     protected void drawValues() {
 
         // if values are drawn
         if (mDrawYValues && mCurrentData.getYValCount() < mMaxVisibleCount * mScaleX) {
 
-            ArrayList<LineDataSet> dataSets = (ArrayList<LineDataSet>) mCurrentData.getDataSets();
+            ArrayList<LineDataSet> dataSets = ((LineData) mCurrentData).getDataSets();
 
             for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
@@ -315,7 +299,7 @@ public class LineChart extends BarLineChartBase {
                 if (!dataSet.isDrawCirclesEnabled())
                     valOffset = valOffset / 2;
 
-                ArrayList<? extends Entry> entries = dataSet.getYVals();
+                ArrayList<Entry> entries = dataSet.getYVals();
 
                 float[] positions = generateTransformedValuesLineScatter(entries);
 
@@ -354,7 +338,7 @@ public class LineChart extends BarLineChartBase {
 
         mRenderPaint.setStyle(Paint.Style.FILL);
 
-        ArrayList<LineDataSet> dataSets = (ArrayList<LineDataSet>) mCurrentData.getDataSets();
+        ArrayList<LineDataSet> dataSets = ((LineData) mCurrentData).getDataSets();
 
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
@@ -363,7 +347,7 @@ public class LineChart extends BarLineChartBase {
             // if drawing circles is enabled for this dataset
             if (dataSet.isDrawCirclesEnabled()) {
 
-                ArrayList<? extends Entry> entries = dataSet.getYVals();
+                ArrayList<Entry> entries = dataSet.getYVals();
 
                 float[] positions = generateTransformedValuesLineScatter(entries);
 

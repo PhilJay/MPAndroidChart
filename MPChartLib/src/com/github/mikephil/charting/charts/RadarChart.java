@@ -110,7 +110,7 @@ public class RadarChart extends PieRadarChartBase {
 
         prepareXLabels();
     }
-    
+
     @Override
     protected void calculateOffsets() {
 
@@ -129,21 +129,21 @@ public class RadarChart extends PieRadarChartBase {
 
             mLegend.setOffsetBottom(mLegendLabelPaint.getTextSize() * 5.5f);
         }
-        
+
         mLegend.setOffsetTop(mOffsetTop);
         mLegend.setOffsetLeft(mOffsetLeft);
 
         if (mDrawLegend) {
-            
+
             mOffsetBottom = Math.max(mXLabels.mLabelWidth, mOffsetBottom);
             mOffsetTop = Math.max(mXLabels.mLabelWidth, mOffsetTop);
             mOffsetRight = Math.max(mXLabels.mLabelWidth, mOffsetRight);
             mOffsetLeft = Math.max(mXLabels.mLabelWidth, mOffsetLeft);
-            
+
             mOffsetBottom = Math.max(mOffsetBottom, mLegend.getOffsetBottom());
             mOffsetRight = Math.max(mOffsetRight, mLegend.getOffsetRight() / 3 * 2);
         }
-        
+
         applyCalculatedOffsets();
     }
 
@@ -232,7 +232,7 @@ public class RadarChart extends PieRadarChartBase {
     @Override
     protected void drawData() {
 
-        ArrayList<RadarDataSet> dataSets = (ArrayList<RadarDataSet>) mCurrentData.getDataSets();
+        ArrayList<RadarDataSet> dataSets = ((RadarData) mCurrentData).getDataSets();
 
         float sliceangle = getSliceAngle();
 
@@ -245,7 +245,7 @@ public class RadarChart extends PieRadarChartBase {
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
             RadarDataSet dataSet = dataSets.get(i);
-            ArrayList<? extends Entry> entries = dataSet.getYVals();
+            ArrayList<Entry> entries = dataSet.getYVals();
 
             Path surface = new Path();
 
@@ -361,8 +361,6 @@ public class RadarChart extends PieRadarChartBase {
 
         mXLabels.mLabelWidth = Utils.calcTextWidth(mXLabelPaint, a.toString());
         mXLabels.mLabelHeight = Utils.calcTextWidth(mXLabelPaint, "Q");
-
-        Log.i(LOG_TAG, "xlabels prepared, width: " + mXLabels.mLabelWidth);
     }
 
     /**
@@ -403,6 +401,8 @@ public class RadarChart extends PieRadarChartBase {
         // if values are drawn
         if (mDrawYValues) {
 
+            RadarData rd = (RadarData) mCurrentData;
+
             float sliceangle = getSliceAngle();
 
             // calculate the factor that is needed for transforming the value to
@@ -415,8 +415,8 @@ public class RadarChart extends PieRadarChartBase {
 
             for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
-                DataSet dataSet = mCurrentData.getDataSetByIndex(i);
-                ArrayList<? extends Entry> entries = dataSet.getYVals();
+                RadarDataSet dataSet = rd.getDataSetByIndex(i);
+                ArrayList<Entry> entries = dataSet.getYVals();
 
                 for (int j = 0; j < entries.size(); j++) {
 
@@ -438,6 +438,8 @@ public class RadarChart extends PieRadarChartBase {
         // if there are values to highlight and highlighnting is enabled, do it
         if (mHighlightEnabled && valuesToHighlight()) {
 
+            RadarData rd = (RadarData) mCurrentData;
+
             float sliceangle = getSliceAngle();
             float factor = getFactor();
 
@@ -445,7 +447,7 @@ public class RadarChart extends PieRadarChartBase {
 
             for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
-                RadarDataSet set = (RadarDataSet) mCurrentData
+                RadarDataSet set = rd
                         .getDataSetByIndex(mIndicesToHightlight[i]
                                 .getDataSetIndex());
 

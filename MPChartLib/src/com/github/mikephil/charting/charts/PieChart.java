@@ -6,20 +6,18 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
-import android.graphics.Paint.Style;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
+import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -241,14 +239,14 @@ public class PieChart extends PieRadarChartBase {
         mDrawAngles = new float[mCurrentData.getYValCount()];
         mAbsoluteAngles = new float[mCurrentData.getYValCount()];
 
-        ArrayList<? extends DataSet> dataSets = mCurrentData.getDataSets();
+        ArrayList<PieDataSet> dataSets = ((PieData) mCurrentData).getDataSets();
 
         int cnt = 0;
 
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
-            DataSet set = dataSets.get(i);
-            ArrayList<? extends Entry> entries = set.getYVals();
+            PieDataSet set = dataSets.get(i);
+            ArrayList<Entry> entries = set.getYVals();
 
             for (int j = 0; j < entries.size(); j++) {
 
@@ -271,6 +269,8 @@ public class PieChart extends PieRadarChartBase {
 
         // if there are values to highlight and highlighnting is enabled, do it
         if (mHighlightEnabled && valuesToHighlight()) {
+            
+            PieData pd = (PieData) mCurrentData;
 
             float angle = 0f;
 
@@ -292,7 +292,7 @@ public class PieChart extends PieRadarChartBase {
 
                 float shiftangle = (float) Math.toRadians(angle + sliceDegrees / 2f);
 
-                PieDataSet set = (PieDataSet) mCurrentData
+                PieDataSet set = pd
                         .getDataSetByIndex(mIndicesToHightlight[i]
                                 .getDataSetIndex());
 
@@ -319,14 +319,14 @@ public class PieChart extends PieRadarChartBase {
 
         float angle = mRotationAngle;
 
-        ArrayList<PieDataSet> dataSets = (ArrayList<PieDataSet>) mCurrentData.getDataSets();
+        ArrayList<PieDataSet> dataSets = ((PieData) mCurrentData).getDataSets();
 
         int cnt = 0;
 
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
             PieDataSet dataSet = dataSets.get(i);
-            ArrayList<? extends Entry> entries = dataSet.getYVals();
+            ArrayList<Entry> entries = dataSet.getYVals();
 
             for (int j = 0; j < entries.size(); j++) {
 
@@ -431,14 +431,14 @@ public class PieChart extends PieRadarChartBase {
 
         r -= off; // offset to keep things inside the chart
 
-        ArrayList<? extends DataSet> dataSets = mCurrentData.getDataSets();
+        ArrayList<PieDataSet> dataSets = ((PieData) mCurrentData).getDataSets();
 
         int cnt = 0;
 
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
-            DataSet dataSet = dataSets.get(i);
-            ArrayList<? extends Entry> entries = dataSet.getYVals();
+            PieDataSet dataSet = dataSets.get(i);
+            ArrayList<Entry> entries = dataSet.getYVals();
 
             for (int j = 0; j < entries.size() * mPhaseX; j++) {
 
