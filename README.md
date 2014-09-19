@@ -357,7 +357,8 @@ ll.setLineWidth(4f);
 ld.addLimitLine(ll);
 ```
 
-**Dynamically adding data (real time)**
+**Dynamically adding data (real time):**
+
 For adding new data to the chart dynamically, there are various methods that allow to either add `Entry` objects to an existing `DataSet` or `DataSet` objects to an existing `ChartData` object. 
 
 Class `DataSet` (and all subclasses):
