@@ -359,7 +359,7 @@ ld.addLimitLine(ll);
 
 **Dynamically adding data (real time):**
 
-For adding new data to the chart dynamically, there are various methods that allow to either add `Entry` objects to an existing `DataSet` or `DataSet` objects to an existing `ChartData` object. 
+For **adding new data** to the chart dynamically, there are various methods that allow to either add `Entry` objects to an existing `DataSet` or `DataSet` objects to an existing `ChartData` object. 
 
 Class `DataSet` (and all subclasses):
  - `addEntry(Entry e)`: Adds the given `Entry` object to the `DataSet`.
@@ -368,7 +368,7 @@ Class `ChartData` (and all subclasses):
  - `addEntry(Entry e, int dataSetIndex)`: Adds the given `Entry` to the `DataSet` at the specified dataset index.
  - `addDataSet(DataSet d)`: Adds the given `DataSet` object to the `ChartData` object.
 
-In addition to that, there are also methods for removing data dynamically.
+In addition to that, there are also methods for **removing data dynamically**.
 
 Class `DataSet` (and all subclasses):
  - `public boolean removeEntry(Entry e)`: Removes the given `Entry` object from the `DataSet`. Returns true if successful.
