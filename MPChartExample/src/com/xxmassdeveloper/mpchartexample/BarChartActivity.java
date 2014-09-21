@@ -104,7 +104,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         YLabels yl = mChart.getYLabels();
         yl.setTypeface(tf);
         yl.setLabelCount(8);
-        
+
         mChart.setValueTypeface(tf);
 
         // setting data

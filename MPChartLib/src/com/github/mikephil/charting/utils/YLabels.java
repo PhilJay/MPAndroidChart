@@ -31,6 +31,9 @@ public class YLabels extends LabelBase {
     /** indicates if the top y-label entry is drawn or not */
     private boolean mDrawTopYLabelEntry = true;
 
+    /** the formatter used to customly format the y-labels */
+    private YLabelFormatter mFormatter = null;
+
     /** the position of the y-labels relative to the chart */
     private YLabelPosition mPosition = YLabelPosition.LEFT;
 
@@ -117,5 +120,23 @@ public class YLabels extends LabelBase {
      */
     public int getLabelCount() {
         return mLabelCount;
+    }
+
+    /**
+     * Returns the custom formatter used to format the YLabels.
+     * 
+     * @return
+     */
+    public YLabelFormatter getFormatter() {
+        return mFormatter;
+    }
+
+    /**
+     * Sets a custom formatter that will be used to format the YLabels.
+     * 
+     * @param f
+     */
+    public void setFormatter(YLabelFormatter f) {
+        this.mFormatter = f;
     }
 }

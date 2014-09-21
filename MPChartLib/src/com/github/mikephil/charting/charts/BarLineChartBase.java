@@ -729,12 +729,12 @@ public abstract class BarLineChartBase extends Chart {
 
         transformPointArray(positions);
 
-        float xoffset = Utils.convertDpToPixel(5f);
-        float yoffset = Utils.calcTextHeight(mYLabelPaint, "A") / 2.5f;
-
         mYLabelPaint.setTypeface(mYLabels.getTypeface());
         mYLabelPaint.setTextSize(mYLabels.getTextSize());
         mYLabelPaint.setColor(mYLabels.getTextColor());
+        
+        float xoffset = Utils.convertDpToPixel(5f);
+        float yoffset = Utils.calcTextHeight(mYLabelPaint, "A") / 2.5f;
 
         // determine position and draw adequately
         if (mYLabels.getPosition() == YLabelPosition.LEFT) {
@@ -780,8 +780,14 @@ public abstract class BarLineChartBase extends Chart {
         // draw
         for (int i = 0; i < mYLabels.mEntryCount; i++) {
 
-            String text = Utils.formatNumber(mYLabels.mEntries[i], mYLabels.mDecimals,
-                    mSeparateTousands);
+            String text = null;
+
+            // if there is no formatter
+            if (mYLabels.getFormatter() == null)
+                text = Utils.formatNumber(mYLabels.mEntries[i], mYLabels.mDecimals,
+                        mSeparateTousands);
+            else
+                text = mYLabels.getFormatter().getFormattedLabel(mYLabels.mEntries[i]);
 
             if (!mYLabels.isDrawTopYLabelEntryEnabled() && i >= mYLabels.mEntryCount - 1)
                 return;
