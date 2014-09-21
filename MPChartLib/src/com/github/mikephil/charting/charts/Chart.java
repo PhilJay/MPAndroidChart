@@ -21,7 +21,6 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.view.View.MeasureSpec;
 
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -43,6 +42,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -69,16 +69,8 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      */
     private int mBackgroundColor = Color.WHITE;
 
-    /**
-     * defines the number of digits to use for all printed values, -1 means
-     * automatically determine
-     */
-    protected int mValueDigitsToUse = -1;
-
-    /**
-     * defines the number of digits all printed values
-     */
-    protected int mValueFormatDigits = -1;
+    /** the decimalformat responsible for formatting the values in the chart */
+    protected DecimalFormat mValueFormat = null;
 
     /** chart offset to the left */
     protected float mOffsetLeft = 12;
@@ -157,6 +149,9 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     /** paint used for the legend forms */
     protected Paint mLegendFormPaint;
 
+    /** paint used for the limit lines */
+    protected Paint mLimitLinePaint;
+
     /** description text that appears in the bottom right corner of the chart */
     protected String mDescription = "Description.";
 
@@ -189,9 +184,6 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
 
     /** if true, value highlightning is enabled */
     protected boolean mHighlightEnabled = true;
-
-    /** if true, thousands values are separated by a dot */
-    protected boolean mSeparateTousands = true;
 
     /** flag indicating if the legend is drawn of not */
     protected boolean mDrawLegend = true;
@@ -286,6 +278,9 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
         mYLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mYLabelPaint.setColor(Color.BLACK);
         mYLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
+
+        mLimitLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mLimitLinePaint.setStyle(Paint.Style.STROKE);
     }
 
     // public void initWithDummyData() {
@@ -329,11 +324,11 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      * 
      * @param data
      */
-    protected void setData(ChartData data) {
+    protected void setData(ChartData<? extends DataSet<? extends Entry>> data) {
 
         if (data == null || !data.isValid()) {
             Log.e(LOG_TAG,
-                    "Cannot set data for chart. Provided chart values are null or contain less than 2 entries.");
+                    "Cannot set data for chart. Provided chart values are null or contain less than 1 entry.");
             mDataNotSet = true;
             return;
         }
@@ -345,6 +340,9 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
         mOriginalData = data;
 
         prepare();
+
+        // calculate how many digits are needed
+        calcFormats();
 
         Log.i(LOG_TAG, "Data is set.");
     }
@@ -432,6 +430,27 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
         // calc delta
         mDeltaY = Math.abs(mYChartMax - mYChartMin);
         mDeltaX = mCurrentData.getXVals().size() - 1;
+    }
+
+    /**
+     * calculates the required number of digits for the values that might be
+     * drawn in the chart (if enabled)
+     */
+    protected void calcFormats() {
+
+        if (!mUseCustomFormatter) {
+
+            int digits = Utils.getFormatDigits(mDeltaY);
+
+            StringBuffer b = new StringBuffer();
+            for (int i = 0; i < digits; i++) {
+                if (i == 0)
+                    b.append(".");
+                b.append("0");
+            }
+
+            mValueFormat = new DecimalFormat("###,###,###,##0" + b.toString());
+        }
     }
 
     @Override
@@ -530,7 +549,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
         // loop for building up the colors and labels used in the legend
         for (int i = 0; i < mOriginalData.getDataSetCount(); i++) {
 
-            DataSet dataSet = mOriginalData.getDataSetByIndex(i);
+            DataSet<? extends Entry> dataSet = mOriginalData.getDataSetByIndex(i);
 
             ArrayList<Integer> clrs = dataSet.getColors();
             int entryCount = dataSet.getEntryCount();
@@ -1407,7 +1426,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      */
     public float getAverage(String dataSetLabel) {
 
-        DataSet ds = mCurrentData.getDataSetByLabel(dataSetLabel, true);
+        DataSet<? extends Entry> ds = mCurrentData.getDataSetByLabel(dataSetLabel, true);
 
         return ds.getYValueSum()
                 / ds.getEntryCount();
@@ -1712,6 +1731,9 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
             case PAINT_HIGHLIGHT:
                 mHighlightPaint = p;
                 break;
+            case PAINT_LIMIT_LINE:
+                mLimitLinePaint = p;
+                break;
         }
     }
 
@@ -1739,6 +1761,8 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
                 return mYLabelPaint;
             case PAINT_HIGHLIGHT:
                 return mHighlightPaint;
+            case PAINT_LIMIT_LINE:
+                return mLimitLinePaint;
         }
 
         return null;
@@ -1764,6 +1788,32 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     public void setDrawMarkerViews(boolean enabled) {
         mDrawMarkerViews = enabled;
     }
+    
+    private boolean mUseCustomFormatter = false;
+
+    /**
+     * Sets the formatter to be used for drawing the values inside the chart. If
+     * no formatter is set, the chart will automatically create one. To
+     * re-enable auto formatting after setting a custom formatter, call
+     * setValueFormatter(null).
+     * 
+     * @param f
+     */
+    public void setValueFormatter(DecimalFormat f) {
+        mValueFormat = f;
+        
+        if(f != null) mUseCustomFormatter = true;
+        else mUseCustomFormatter = false;
+    }
+
+    /**
+     * Returns the formatter used for drawing the values inside the chart.
+     * 
+     * @return
+     */
+    public DecimalFormat getValueFormatter() {
+        return mValueFormat;
+    }
 
     /**
      * sets the draw color for the value paint object
@@ -1781,15 +1831,6 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      */
     public void setValueTextSize(float size) {
         mValuePaint.setTextSize(Utils.convertDpToPixel(size));
-    }
-
-    /**
-     * set this to true to separate thousands values by a dot. Default: true
-     * 
-     * @param enabled
-     */
-    public void setSeparateThousands(boolean enabled) {
-        mSeparateTousands = enabled;
     }
 
     /**
@@ -1938,7 +1979,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
 
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
-            DataSet set = mCurrentData.getDataSetByIndex(i);
+            DataSet<? extends Entry> set = mCurrentData.getDataSetByIndex(i);
 
             Entry e = set.getEntryForXIndex(xIndex);
 
@@ -1958,7 +1999,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      * 
      * @return
      */
-    public ChartData getDataCurrent() {
+    public ChartData<? extends DataSet<? extends Entry>> getDataCurrent() {
         return mCurrentData;
     }
 
@@ -1969,7 +2010,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      * 
      * @return
      */
-    public ChartData getDataOriginal() {
+    public ChartData<? extends DataSet<? extends Entry>> getDataOriginal() {
         return mOriginalData;
     }
 
@@ -1999,26 +2040,6 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      */
     public void setDescriptionTypeface(Typeface t) {
         mDescPaint.setTypeface(t);
-    }
-
-    /**
-     * sets the number of digits that should be used for all printed values (if
-     * this is set to -1, digits will be calculated automatically), default -1
-     * 
-     * @param digits
-     */
-    public void setValueDigits(int digits) {
-        mValueDigitsToUse = digits;
-    }
-
-    /**
-     * returns the number of digits used to format the printed values of the
-     * chart (-1 means digits are calculated automatically)
-     * 
-     * @return
-     */
-    public int getValueDigits() {
-        return mValueDigitsToUse;
     }
 
     /**

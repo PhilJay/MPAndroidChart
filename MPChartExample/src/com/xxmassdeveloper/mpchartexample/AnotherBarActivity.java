@@ -56,9 +56,6 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
         // drawn
         mChart.setMaxVisibleValueCount(60);
 
-        // sets the number of digits for values inside the chart
-        mChart.setValueDigits(2);
-
         // disable 3D
         mChart.set3DEnabled(false);
         // scaling can now only be done on x- and y-axis separately

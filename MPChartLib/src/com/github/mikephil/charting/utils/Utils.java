@@ -140,9 +140,11 @@ public abstract class Utils {
             return 6;
         } else if (delta <= 1) {
             return 4;
+        } else if(delta < 4) {
+            return 3;
         } else if (delta < 20) {
             return 2;
-        } else if (delta < 100) {
+        } else if (delta < 60) {
             return 1;
         } else {
             return 0;

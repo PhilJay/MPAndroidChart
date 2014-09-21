@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PointF;
 import android.util.AttributeSet;
 
 import com.github.mikephil.charting.data.Entry;
@@ -316,12 +315,12 @@ public class LineChart extends BarLineChartBase {
 
                     if (mDrawUnitInChart) {
 
-                        mDrawCanvas.drawText(mFormatValue.format(val) + mUnit, positions[j],
+                        mDrawCanvas.drawText(mValueFormat.format(val) + mUnit, positions[j],
                                 positions[j + 1]
                                         - valOffset, mValuePaint);
                     } else {
 
-                        mDrawCanvas.drawText(mFormatValue.format(val), positions[j],
+                        mDrawCanvas.drawText(mValueFormat.format(val), positions[j],
                                 positions[j + 1] - valOffset,
                                 mValuePaint);
                     }

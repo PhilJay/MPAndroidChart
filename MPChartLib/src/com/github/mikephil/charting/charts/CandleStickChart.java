@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CandleDataSet;
 import com.github.mikephil.charting.data.CandleEntry;
-import com.github.mikephil.charting.data.DataSet;
 
 import java.util.ArrayList;
 

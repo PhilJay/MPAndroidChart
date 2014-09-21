@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Path;
 import android.util.AttributeSet;
 
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
@@ -154,11 +153,11 @@ public class ScatterChart extends BarLineChartBase {
 
                     if (mDrawUnitInChart) {
 
-                        mDrawCanvas.drawText(mFormatValue.format(val) + mUnit, positions[j],
+                        mDrawCanvas.drawText(mValueFormat.format(val) + mUnit, positions[j],
                                 positions[j + 1] - shapeSize, mValuePaint);
                     } else {
 
-                        mDrawCanvas.drawText(mFormatValue.format(val), positions[j],
+                        mDrawCanvas.drawText(mValueFormat.format(val), positions[j],
                                 positions[j + 1] - shapeSize,
                                 mValuePaint);
                     }

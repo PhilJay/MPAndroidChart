@@ -5,20 +5,22 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint.Align;
 import android.graphics.Path;
 import android.graphics.PointF;
-import android.graphics.Paint.Align;
 import android.util.AttributeSet;
 import android.util.Log;
 
+import com.github.mikephil.charting.data.BarLineScatterCandleRadarData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
+import com.github.mikephil.charting.utils.Legend.LegendPosition;
+import com.github.mikephil.charting.utils.LimitLine;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.YLabels;
-import com.github.mikephil.charting.utils.Legend.LegendPosition;
 
 import java.util.ArrayList;
 
@@ -161,7 +163,9 @@ public class RadarChart extends PieRadarChartBase {
         drawXLabels();
 
         drawWeb();
-
+       
+        drawLimitLines();
+        
         drawData();
 
         drawAdditional();
@@ -281,6 +285,53 @@ public class RadarChart extends PieRadarChartBase {
                 mDrawCanvas.drawPath(surface, mRenderPaint);
         }
     }
+    
+    /**
+     * Draws the limit lines if there are one.
+     */
+    private void drawLimitLines() {
+
+        ArrayList<LimitLine> limitLines = ((BarLineScatterCandleRadarData<? extends DataSet<? extends Entry>>) mOriginalData)
+                .getLimitLines();
+
+        if (limitLines == null)
+            return;
+
+        float sliceangle = getSliceAngle();
+
+        // calculate the factor that is needed for transforming the value to
+        // pixels
+        float factor = getFactor();
+
+        PointF c = getCenterOffsets();
+
+        for (int i = 0; i < limitLines.size(); i++) {
+
+            LimitLine l = limitLines.get(i);
+
+            mLimitLinePaint.setColor(l.getLineColor());
+            mLimitLinePaint.setPathEffect(l.getDashPathEffect());
+            mLimitLinePaint.setStrokeWidth(l.getLineWidth());
+            
+            float r = l.getLimit() * factor;
+            
+            Path limitPath = new Path();
+
+            for (int j = 0; j < mCurrentData.getXValCount(); j++) {
+
+                PointF p = getPosition(c, r, sliceangle * j + mRotationAngle);
+                
+                if (j == 0)
+                    limitPath.moveTo(p.x, p.y);
+                else
+                    limitPath.lineTo(p.x, p.y);
+            }
+            
+            limitPath.close();
+            
+            mDrawCanvas.drawPath(limitPath, mLimitLinePaint);
+        }       
+    }
 
     /**
      * Calculates the required maximum y-value in order to be able to provide
@@ -342,7 +393,7 @@ public class RadarChart extends PieRadarChartBase {
             PointF p = getPosition(c, r, mRotationAngle);
 
             mDrawCanvas.drawText(Utils.formatNumber(r / factor, mYLabels.mDecimals,
-                    mSeparateTousands), p.x + 10, p.y - 5, mYLabelPaint);
+                    mYLabels.isSeparateThousandsEnabled()), p.x + 10, p.y - 5, mYLabelPaint);
         }
     }
 
@@ -424,8 +475,7 @@ public class RadarChart extends PieRadarChartBase {
 
                     PointF p = getPosition(c, e.getVal() * factor, sliceangle * j + mRotationAngle);
 
-                    mDrawCanvas.drawText(
-                            Utils.formatNumber(e.getVal(), mValueFormatDigits, mSeparateTousands),
+                    mDrawCanvas.drawText(mValueFormat.format(e.getVal()),
                             p.x, p.y - yoffset, mValuePaint);
                 }
             }

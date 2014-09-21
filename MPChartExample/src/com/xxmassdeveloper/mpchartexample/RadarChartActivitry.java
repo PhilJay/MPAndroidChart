@@ -14,6 +14,7 @@ import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
+import com.github.mikephil.charting.utils.LimitLine;
 import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -201,6 +202,7 @@ public class RadarChartActivitry extends DemoBase {
         sets.add(set2);
 
         RadarData data = new RadarData(xVals, sets);
+        
         mChart.setData(data);
 
         // undo all highlights

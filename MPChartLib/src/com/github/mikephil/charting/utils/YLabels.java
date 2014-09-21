@@ -31,6 +31,9 @@ public class YLabels extends LabelBase {
     /** indicates if the top y-label entry is drawn or not */
     private boolean mDrawTopYLabelEntry = true;
 
+    /** if true, thousands ylabel values are separated by a dot */
+    protected boolean mSeparateTousands = true;
+
     /** the formatter used to customly format the y-labels */
     private YLabelFormatter mFormatter = null;
 
@@ -120,6 +123,24 @@ public class YLabels extends LabelBase {
      */
     public int getLabelCount() {
         return mLabelCount;
+    }
+
+    /**
+     * Set this to true to enable values above 1000 to be separated by a dot.
+     * 
+     * @param enabled
+     */
+    public void setSeparateThousands(boolean enabled) {
+        mSeparateTousands = enabled;
+    }
+
+    /**
+     * Returns true if separating thousands is enabled, false if not.
+     * 
+     * @return
+     */
+    public boolean isSeparateThousandsEnabled() {
+        return mSeparateTousands;
     }
 
     /**

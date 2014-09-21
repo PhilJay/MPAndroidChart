@@ -3,15 +3,11 @@ package com.github.mikephil.charting.charts;
 
 import android.content.Context;
 import android.graphics.Matrix;
-import android.graphics.Paint.Align;
 import android.graphics.PointF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import com.github.mikephil.charting.listener.PieRadarChartTouchListener;
-import com.github.mikephil.charting.utils.Legend.LegendPosition;
-import com.github.mikephil.charting.utils.Utils;
 import com.nineoldandroids.animation.ObjectAnimator;
 
 /**
@@ -66,28 +62,7 @@ public abstract class PieRadarChartBase extends Chart {
 
         calcMinMax(false);
 
-        // calculate how many digits are needed
-        calcFormats();
-
         prepareLegend();
-    }
-
-    /**
-     * calculates the required number of digits for the y-legend and for the
-     * values that might be drawn in the chart (if enabled)
-     */
-    private void calcFormats() {
-
-        // -1 means calculate digits
-        if (mValueDigitsToUse == -1) {
-            if (mOriginalData.getXValCount() <= 1)
-                mValueFormatDigits = 0;
-            else
-                mValueFormatDigits = Utils.getPieFormatDigits(mDeltaY);
-        }
-
-        else
-            mValueFormatDigits = mValueDigitsToUse;
     }
 
     @Override

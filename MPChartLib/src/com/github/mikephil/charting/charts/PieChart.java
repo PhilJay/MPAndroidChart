@@ -457,10 +457,9 @@ public class PieChart extends PieRadarChartBase {
                 float value = entries.get(j).getVal();
 
                 if (mUsePercentValues)
-                    val = Utils.formatNumber(getPercentOfTotal(value), mValueFormatDigits,
-                            mSeparateTousands) + " %";
+                    val = mValueFormat.format(getPercentOfTotal(value)) + " %";
                 else
-                    val = Utils.formatNumber(value, mValueFormatDigits, mSeparateTousands);
+                    val = mValueFormat.format(value);
 
                 if (mDrawUnitInChart)
                     val = val + mUnit;
@@ -527,7 +526,7 @@ public class PieChart extends PieRadarChartBase {
      */
     public int getDataSetIndexForIndex(int xIndex) {
 
-        ArrayList<? extends DataSet> dataSets = mCurrentData.getDataSets();
+        ArrayList<? extends DataSet<? extends Entry>> dataSets = mCurrentData.getDataSets();
 
         for (int i = 0; i < dataSets.size(); i++) {
             if (dataSets.get(i).getEntryForXIndex(xIndex) != null)

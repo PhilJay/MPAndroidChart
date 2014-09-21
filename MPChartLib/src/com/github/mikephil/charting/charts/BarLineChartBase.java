@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.charts;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -17,6 +18,7 @@ import android.view.ViewParent;
 
 import com.github.mikephil.charting.data.BarLineScatterCandleRadarData;
 import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.interfaces.OnDrawListener;
@@ -32,7 +34,6 @@ import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
 import com.github.mikephil.charting.utils.YLabels;
 import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -40,6 +41,7 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
+@SuppressLint("RtlHardcoded")
 public abstract class BarLineChartBase extends Chart {
 
     /** if set to true, the y-axis is inverted and low values start at the top */
@@ -103,9 +105,6 @@ public abstract class BarLineChartBase extends Chart {
     /** paint for the line surrounding the chart */
     protected Paint mBorderPaint;
 
-    /** paint used for the limit lines */
-    protected Paint mLimitLinePaint;
-
     /**
      * if set to true, the highlight indicator (lines for linechart, dark bar
      * for barchart) will be drawn upon selecting values.
@@ -148,8 +147,8 @@ public abstract class BarLineChartBase extends Chart {
     /** the object representing the labels on the x-axis */
     protected XLabels mXLabels = new XLabels();
 
-    /** the approximator object used for data filtering */
-    private Approximator mApproximator;
+//    /** the approximator object used for data filtering */
+//    private Approximator mApproximator;
 
     public BarLineChartBase(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -185,9 +184,6 @@ public abstract class BarLineChartBase extends Chart {
         // mGridBackgroundPaint.setColor(Color.WHITE);
         mGridBackgroundPaint.setColor(Color.rgb(240, 240, 240)); // light
         // grey
-
-        mLimitLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mLimitLinePaint.setStyle(Paint.Style.STROKE);
     }
 
     @Override
@@ -271,9 +267,6 @@ public abstract class BarLineChartBase extends Chart {
         calcMinMax(mFixedYValues);
 
         prepareXLabels();
-
-        // calculate how many digits are needed
-        calcFormats();
 
         prepareLegend();
     }
@@ -464,33 +457,6 @@ public abstract class BarLineChartBase extends Chart {
         mXLabels.mXAxisLabelModulus = (int) Math
                 .ceil((mCurrentData.getXValCount() * mXLabels.mLabelWidth)
                         / (mContentRect.width() * values[Matrix.MSCALE_X]));
-    }
-
-    /** the decimalformat responsible for formatting the values in the chart */
-    protected DecimalFormat mFormatValue = null;
-
-    /** the number of digits the y-labels are formatted with */
-    protected int mYLabelFormatDigits = -1;
-
-    /**
-     * calculates the required number of digits for the y-labels and for the
-     * values that might be drawn in the chart (if enabled)
-     */
-    protected void calcFormats() {
-
-        if (mValueDigitsToUse == -1)
-            mValueFormatDigits = Utils.getFormatDigits(mDeltaY);
-        else
-            mValueFormatDigits = mValueDigitsToUse;
-
-        StringBuffer b = new StringBuffer();
-        for (int i = 0; i < mValueFormatDigits; i++) {
-            if (i == 0)
-                b.append(".");
-            b.append("0");
-        }
-
-        mFormatValue = new DecimalFormat("###,###,###,##0" + b.toString());
     }
 
     @Override
@@ -732,7 +698,7 @@ public abstract class BarLineChartBase extends Chart {
         mYLabelPaint.setTypeface(mYLabels.getTypeface());
         mYLabelPaint.setTextSize(mYLabels.getTextSize());
         mYLabelPaint.setColor(mYLabels.getTextColor());
-        
+
         float xoffset = Utils.convertDpToPixel(5f);
         float yoffset = Utils.calcTextHeight(mYLabelPaint, "A") / 2.5f;
 
@@ -785,7 +751,7 @@ public abstract class BarLineChartBase extends Chart {
             // if there is no formatter
             if (mYLabels.getFormatter() == null)
                 text = Utils.formatNumber(mYLabels.mEntries[i], mYLabels.mDecimals,
-                        mSeparateTousands);
+                        mYLabels.isSeparateThousandsEnabled());
             else
                 text = mYLabels.getFormatter().getFormattedLabel(mYLabels.mEntries[i]);
 
@@ -918,7 +884,7 @@ public abstract class BarLineChartBase extends Chart {
      */
     private void drawLimitLines() {
 
-        ArrayList<LimitLine> limitLines = ((BarLineScatterCandleRadarData) mOriginalData)
+        ArrayList<LimitLine> limitLines = ((BarLineScatterCandleRadarData<? extends DataSet<? extends Entry>>) mOriginalData)
                 .getLimitLines();
 
         if (limitLines == null)
@@ -1868,7 +1834,7 @@ public abstract class BarLineChartBase extends Chart {
      */
     public void enableFiltering(Approximator a) {
         mFilterData = true;
-        mApproximator = a;
+//        mApproximator = a;
     }
 
     /**
@@ -1932,7 +1898,7 @@ public abstract class BarLineChartBase extends Chart {
      * 
      * @return
      */
-    private ChartData getFilteredData() {
+    private ChartData<? extends DataSet<? extends Entry>> getFilteredData() {
         //
         // float deltaRatio = mDeltaY / mDeltaX;
         // float scaleRatio = mScaleY / mScaleX;
@@ -1977,9 +1943,6 @@ public abstract class BarLineChartBase extends Chart {
             case PAINT_BORDER:
                 mBorderPaint = p;
                 break;
-            case PAINT_LIMIT_LINE:
-                mLimitLinePaint = p;
-                break;
         }
     }
 
@@ -1996,8 +1959,6 @@ public abstract class BarLineChartBase extends Chart {
                 return mGridBackgroundPaint;
             case PAINT_BORDER:
                 return mBorderPaint;
-            case PAINT_LIMIT_LINE:
-                return mLimitLinePaint;
         }
 
         return null;

@@ -44,10 +44,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         tvY = (TextView) findViewById(R.id.tvYMax);
 
         mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
-        mSeekBarX.setOnSeekBarChangeListener(this);
-
         mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
-        mSeekBarY.setOnSeekBarChangeListener(this);
 
         mChart = (BarChart) findViewById(R.id.chart1);
 
@@ -59,9 +56,6 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
         mChart.setMaxVisibleValueCount(60);
-
-        // sets the number of digits for values inside the chart
-        mChart.setValueDigits(2);
 
         // disable 3D
         mChart.set3DEnabled(false);
@@ -106,10 +100,15 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         yl.setLabelCount(8);
 
         mChart.setValueTypeface(tf);
+        
+        setData(12, 50);
 
         // setting data
-        mSeekBarX.setProgress(12);
         mSeekBarY.setProgress(50);
+        mSeekBarX.setProgress(12);
+        
+        mSeekBarY.setOnSeekBarChangeListener(this);
+        mSeekBarX.setOnSeekBarChangeListener(this);
 
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.BELOW_CHART_LEFT);
@@ -230,32 +229,11 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+        
         tvX.setText("" + (mSeekBarX.getProgress() + 1));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < mSeekBarX.getProgress()+1; i++) {
-            xVals.add(mMonths[i % 12]);
-        }
-
-        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
-
-        for (int i = 0; i < mSeekBarX.getProgress()+1; i++) {
-            float mult = (mSeekBarY.getProgress() + 1);
-            float val = (float) (Math.random() * mult) + 3;
-            yVals1.add(new BarEntry(val, i));
-        }
-
-        BarDataSet set1 = new BarDataSet(yVals1, "DataSet");
-        set1.setBarSpacePercent(35f);
-        
-        ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
-        dataSets.add(set1);
-
-        BarData data = new BarData(xVals, dataSets);
-
-        mChart.setData(data);
+        setData(mSeekBarX.getProgress(), mSeekBarY.getProgress());
         mChart.invalidate();
     }
 
@@ -269,5 +247,31 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
     public void onStopTrackingTouch(SeekBar seekBar) {
         // TODO Auto-generated method stub
 
+    }
+    
+    private void setData(int count, float range) {
+
+        ArrayList<String> xVals = new ArrayList<String>();
+        for (int i = 0; i < count; i++) {
+            xVals.add(mMonths[i % 12]);
+        }
+
+        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+
+        for (int i = 0; i < count; i++) {
+            float mult = (range + 1);
+            float val = (float) (Math.random() * mult) + 3;
+            yVals1.add(new BarEntry(val, i));
+        }
+
+        BarDataSet set1 = new BarDataSet(yVals1, "DataSet");
+        set1.setBarSpacePercent(35f);
+        
+        ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
+        dataSets.add(set1);
+
+        BarData data = new BarData(xVals, dataSets);
+
+        mChart.setData(data);
     }
 }

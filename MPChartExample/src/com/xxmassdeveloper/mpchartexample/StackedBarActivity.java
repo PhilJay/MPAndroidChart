@@ -29,6 +29,7 @@ import com.github.mikephil.charting.utils.YLabels;
 import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListener,
@@ -65,9 +66,11 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
         mChart.setMaxVisibleValueCount(60);
-
-        // sets the number of digits for values inside the chart
-        mChart.setValueDigits(0);
+        
+        DecimalFormat f = new DecimalFormat("###,###,###");
+        
+        // set a custom formatter for the values inside the chart
+        mChart.setValueFormatter(f);
         
         // if false values are only drawn for the stack sum, else each value is drawn
         mChart.setDrawValuesForWholeStack(true);
@@ -233,7 +236,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
             float val3 = (float) (Math.random() * mult) + mult / 3;
 
             yVals1.add(new BarEntry(new float[] {
-                    (int) val1,  (int) val2, (int) val3
+                     val1, val2, val3
             }, i));
         }
 

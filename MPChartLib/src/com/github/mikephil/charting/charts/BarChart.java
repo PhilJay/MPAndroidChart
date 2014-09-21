@@ -180,7 +180,7 @@ public class BarChart extends BarLineChartBase {
 
         for (int i = 0; i < mOriginalData.getDataSetCount(); i++) {
 
-            DataSet set = mOriginalData.getDataSetByIndex(i);
+            DataSet<? extends Entry> set = mOriginalData.getDataSetByIndex(i);
 
             if (maxEntry < set.getEntryCount())
                 maxEntry = set.getEntryCount();
@@ -627,7 +627,7 @@ public class BarChart extends BarLineChartBase {
 
                         float val = entries.get(j / 2).getVal();
 
-                        drawValue(mFormatValue.format(val), valuePoints[j],
+                        drawValue(mValueFormat.format(val), valuePoints[j],
                                 valuePoints[j + 1] + offset);
                     }
 
@@ -652,7 +652,7 @@ public class BarChart extends BarLineChartBase {
                         // in between
                         if (vals == null) {
 
-                            drawValue(mFormatValue.format(e.getVal()), valuePoints[j],
+                            drawValue(mValueFormat.format(e.getVal()), valuePoints[j],
                                     valuePoints[j + 1] + offset);
 
                         } else {
@@ -672,7 +672,7 @@ public class BarChart extends BarLineChartBase {
 
                             for (int k = 0; k < transformed.length; k += 2) {
 
-                                drawValue(mFormatValue.format(vals[k / 2]), valuePoints[j],
+                                drawValue(mValueFormat.format(vals[k / 2]), valuePoints[j],
                                         transformed[k + 1] + offset);
                             }
                         }
