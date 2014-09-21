@@ -140,7 +140,7 @@ public abstract class Utils {
             return 6;
         } else if (delta <= 1) {
             return 4;
-        } else if(delta < 4) {
+        } else if (delta < 4) {
             return 3;
         } else if (delta < 20) {
             return 2;
@@ -277,7 +277,10 @@ public abstract class Utils {
         if (neg)
             out[ind--] = '-';
 
-        return new String(out);
+        int start = out.length - charCount;
+
+        // use this instead of "new String(...)" because of issue < Android 4.0
+        return String.valueOf(out, start, out.length - start);
     }
 
     /**
@@ -344,8 +347,6 @@ public abstract class Utils {
                     ((d >= 0.0d) ? +1L : -1L));
         }
     }
-    
-    
 
     /**
      * Returns the index of the DataSet that contains the closest value on the

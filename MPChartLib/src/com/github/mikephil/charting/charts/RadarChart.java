@@ -392,8 +392,12 @@ public class RadarChart extends PieRadarChartBase {
 
             PointF p = getPosition(c, r, mRotationAngle);
 
-            mDrawCanvas.drawText(Utils.formatNumber(r / factor, mYLabels.mDecimals,
-                    mYLabels.isSeparateThousandsEnabled()), p.x + 10, p.y - 5, mYLabelPaint);
+            float val = r / factor;
+            
+            String label = Utils.formatNumber(val, mYLabels.mDecimals,
+                    mYLabels.isSeparateThousandsEnabled());
+            
+            mDrawCanvas.drawText(label, p.x + 10, p.y - 5, mYLabelPaint);
         }
     }
 
