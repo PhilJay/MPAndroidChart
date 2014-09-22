@@ -134,7 +134,7 @@ or create it in code (and then **add it to a layout**):
  - <code>setDrawYValues(boolean enabled)</code>: If set to true, the actual drawn values will be drawn next to the points, bars, or pie slices of the chart.
  - <code>setValuePaintColor(int color)</code>: Sets the color used for drawing the values if <code>setDrawYValues(...)</code> is enabled.
  - <code>setValueTypeface(Typeface t)</code>: Sets the <code>Typeface</code> used for drawing the values if <code>setDrawYValues(...)</code> is enabled.
- - <code>setValueDigits(int digits)</code>: Sets the number of digits to use for all printed values.
+ - <code>setValueFormatter(DecimalFormat format)</code>: Sets a new `DecimalFormat` object that will be used to format all values inside the chart. If nothing is set, formatting (digits) is done automatically.
  - <code>setPaint(Paint p, int which)</code>: Replaces the specified default <code>Paint</code> object with a new one. This method can be used to replace any predefined <code>Paint</code> object with an own <code>Paint</code> object and develop a completely personalized design.
 
 **Getters and convenience:**
