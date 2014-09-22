@@ -137,7 +137,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     protected void calcMinMax(ArrayList<T> dataSets) {
 
         if (dataSets == null || dataSets.size() < 1) {
-            
+
             mYMax = 0f;
             mYMin = 0f;
         } else {
@@ -382,6 +382,10 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * @return
      */
     public T getDataSetByIndex(int index) {
+
+        if (mDataSets == null || index < 0 || index >= mDataSets.size())
+            return null;
+
         return mDataSets.get(index);
     }
 
@@ -439,7 +443,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      */
     public boolean removeDataSet(int index) {
 
-        if (mDataSets == null || index >= mDataSets.size())
+        if (mDataSets == null || index >= mDataSets.size() || index < 0)
             return false;
 
         T set = mDataSets.get(index);

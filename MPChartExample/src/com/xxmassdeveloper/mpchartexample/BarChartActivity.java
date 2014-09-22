@@ -52,7 +52,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart.setDrawYValues(true);
 
         mChart.setDescription("");
-
+        
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
         mChart.setMaxVisibleValueCount(60);

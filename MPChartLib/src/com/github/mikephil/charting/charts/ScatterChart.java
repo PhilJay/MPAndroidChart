@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public class ScatterChart extends BarLineChartBase {
+public class ScatterChart extends BarLineChartBase<ScatterData> {
 
     /** enum that defines the shape that is drawn where the values are */
     public enum ScatterShape {
@@ -36,19 +36,10 @@ public class ScatterChart extends BarLineChartBase {
         super(context, attrs, defStyle);
     }
 
-    /**
-     * Sets a ScatterData object as a model for the ScatterChart.
-     * 
-     * @param data
-     */
-    public void setData(ScatterData data) {
-        super.setData(data);
-    }
-
     @Override
     protected void drawData() {
 
-        ArrayList<ScatterDataSet> dataSets = ((ScatterData) mCurrentData).getDataSets();
+        ArrayList<ScatterDataSet> dataSets = mCurrentData.getDataSets();
 
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
@@ -128,7 +119,7 @@ public class ScatterChart extends BarLineChartBase {
         // if values are drawn
         if (mDrawYValues && mCurrentData.getYValCount() < mMaxVisibleCount * mScaleX) {
 
-            ArrayList<ScatterDataSet> dataSets = ((ScatterData) mCurrentData)
+            ArrayList<ScatterDataSet> dataSets = mCurrentData
                     .getDataSets();
 
             for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
@@ -171,7 +162,7 @@ public class ScatterChart extends BarLineChartBase {
 
         for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
-            ScatterDataSet set = (ScatterDataSet) getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
+            ScatterDataSet set = mCurrentData.getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
             
             mHighlightPaint.setColor(set.getHighLightColor());
 

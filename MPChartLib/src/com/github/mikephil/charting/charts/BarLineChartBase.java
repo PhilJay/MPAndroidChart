@@ -16,9 +16,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewParent;
 
-import com.github.mikephil.charting.data.BarLineScatterCandleRadarData;
-import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.BarLineScatterCandleData;
+import com.github.mikephil.charting.data.BarLineScatterCandleRadarDataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.interfaces.OnDrawListener;
@@ -42,7 +41,8 @@ import java.util.ArrayList;
  * @author Philipp Jahoda
  */
 @SuppressLint("RtlHardcoded")
-public abstract class BarLineChartBase extends Chart {
+public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? extends BarLineScatterCandleRadarDataSet<? extends Entry>>>
+        extends Chart<T> {
 
     /** if set to true, the y-axis is inverted and low values start at the top */
     private boolean mInvertYAxis = false;
@@ -895,8 +895,7 @@ public abstract class BarLineChartBase extends Chart {
      */
     private void drawLimitLines() {
 
-        ArrayList<LimitLine> limitLines = ((BarLineScatterCandleRadarData<? extends DataSet<? extends Entry>>) mOriginalData)
-                .getLimitLines();
+        ArrayList<LimitLine> limitLines = mOriginalData.getLimitLines();
 
         if (limitLines == null)
             return;
@@ -1909,7 +1908,7 @@ public abstract class BarLineChartBase extends Chart {
      * 
      * @return
      */
-    private ChartData<? extends DataSet<? extends Entry>> getFilteredData() {
+    private T getFilteredData() {
         //
         // float deltaRatio = mDeltaY / mDeltaX;
         // float scaleRatio = mScaleY / mScaleX;

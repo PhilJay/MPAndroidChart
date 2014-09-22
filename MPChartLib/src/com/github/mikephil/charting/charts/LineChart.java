@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public class LineChart extends BarLineChartBase {
+public class LineChart extends BarLineChartBase<LineData> {
 
     /** the width of the highlighning line */
     protected float mHighlightWidth = 3f;
@@ -62,21 +62,12 @@ public class LineChart extends BarLineChartBase {
         }
     }
 
-    /**
-     * Sets a LineData object as a model for the LineChart.
-     * 
-     * @param data
-     */
-    public void setData(LineData data) {
-        super.setData(data);
-    }
-
     @Override
     protected void drawHighlights() {
 
         for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
-            LineDataSet set = (LineDataSet) getDataSetByIndex(mIndicesToHightlight[i]
+            LineDataSet set = mOriginalData.getDataSetByIndex(mIndicesToHightlight[i]
                     .getDataSetIndex());
 
             mHighlightPaint.setColor(set.getHighLightColor());
@@ -120,7 +111,7 @@ public class LineChart extends BarLineChartBase {
     @Override
     protected void drawData() {
 
-        ArrayList<LineDataSet> dataSets = ((LineData) mCurrentData).getDataSets();
+        ArrayList<LineDataSet> dataSets = mCurrentData.getDataSets();
 
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
@@ -286,7 +277,7 @@ public class LineChart extends BarLineChartBase {
         // if values are drawn
         if (mDrawYValues && mCurrentData.getYValCount() < mMaxVisibleCount * mScaleX) {
 
-            ArrayList<LineDataSet> dataSets = ((LineData) mCurrentData).getDataSets();
+            ArrayList<LineDataSet> dataSets = mCurrentData.getDataSets();
 
             for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
@@ -337,7 +328,7 @@ public class LineChart extends BarLineChartBase {
 
         mRenderPaint.setStyle(Paint.Style.FILL);
 
-        ArrayList<LineDataSet> dataSets = ((LineData) mCurrentData).getDataSets();
+        ArrayList<LineDataSet> dataSets = mCurrentData.getDataSets();
 
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 

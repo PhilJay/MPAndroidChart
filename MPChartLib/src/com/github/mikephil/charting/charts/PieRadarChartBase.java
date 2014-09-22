@@ -7,6 +7,9 @@ import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.listener.PieRadarChartTouchListener;
 import com.nineoldandroids.animation.ObjectAnimator;
 
@@ -15,7 +18,8 @@ import com.nineoldandroids.animation.ObjectAnimator;
  * 
  * @author Philipp Jahoda
  */
-public abstract class PieRadarChartBase extends Chart {
+public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? extends Entry>>>
+        extends Chart<T> {
 
     /** holds the current rotation angle of the chart */
     protected float mRotationAngle = 270f;
@@ -74,14 +78,14 @@ public abstract class PieRadarChartBase extends Chart {
     protected void drawAdditional() {
         // TODO Auto-generated method stub
     }
-    
+
     /**
      * Applys the newly calculated offsets to the matrices.
      */
     protected void applyCalculatedOffsets() {
-        
+
         prepareContentRect();
-        
+
         float scaleX = (float) ((getWidth() - mOffsetLeft - mOffsetRight) / mDeltaX);
         float scaleY = (float) ((getHeight() - mOffsetBottom - mOffsetTop) / mDeltaY);
 
@@ -135,8 +139,8 @@ public abstract class PieRadarChartBase extends Chart {
 
     /**
      * returns the angle relative to the chart center for the given point on the
-     * chart in degrees. The angle is always between 0 and 360°, 0° is NORTH, 90°
-     * is EAST, ...
+     * chart in degrees. The angle is always between 0 and 360°, 0° is NORTH,
+     * 90° is EAST, ...
      * 
      * @param x
      * @param y
@@ -276,26 +280,27 @@ public abstract class PieRadarChartBase extends Chart {
      */
     public void setOnTouchListener(OnTouchListener l) {
         this.mListener = l;
-    }    
-    
+    }
+
     /**
      * ################ ################ ################ ################
      */
     /** CODE BELOW THIS RELATED TO ANIMATION */
-    
+
     /** objectanimator used for animating values on y-axis */
     private ObjectAnimator mSpinAnimator;
-    
+
     /**
      * Applys a spin animation to the Chart.
+     * 
      * @param durationmillis
      * @param fromangle
      * @param toangle
      */
     public void spin(int durationmillis, float fromangle, float toangle) {
-        
+
         mRotationAngle = fromangle;
-        
+
         mSpinAnimator = ObjectAnimator.ofFloat(this, "rotationAngle", fromangle, toangle);
         mSpinAnimator.setDuration(durationmillis);
         mSpinAnimator.addUpdateListener(this);

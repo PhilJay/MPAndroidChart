@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public class BarChart extends BarLineChartBase {
+public class BarChart extends BarLineChartBase<BarData> {
 
     /** indicates the angle of the 3d effect */
     private float mSkew = 0.3f;
@@ -86,15 +86,6 @@ public class BarChart extends BarLineChartBase {
         mHighlightPaint.setAlpha(120);
 
         // calculate3DColors();
-    }
-
-    /**
-     * Sets a BarData object as a model for the BarChart.
-     * 
-     * @param data
-     */
-    public void setData(BarData data) {
-        super.setData(data);
     }
 
     // @Override
@@ -186,14 +177,13 @@ public class BarChart extends BarLineChartBase {
                 maxEntry = set.getEntryCount();
         }
 
-        float groupSpace = ((BarData) mOriginalData).getGroupSpace();
+        float groupSpace = mOriginalData.getGroupSpace();
         mDeltaX += maxEntry * groupSpace;
     }
 
     @Override
     protected void drawHighlights() {
         
-        BarData bd = (BarData) mOriginalData;
         int setCount = mOriginalData.getDataSetCount();
 
         for (int i = 0; i < mIndicesToHightlight.length; i++) {
@@ -216,7 +206,7 @@ public class BarChart extends BarLineChartBase {
                 if(e == null) continue;
 
                 // calculate the correct x-position
-                float x = index * setCount + dataSetIndex + bd.getGroupSpace() / 2f + bd.getGroupSpace() * index;
+                float x = index * setCount + dataSetIndex + mOriginalData.getGroupSpace() / 2f + mOriginalData.getGroupSpace() * index;
                 float y = e.getVal();
 
                 prepareBar(x, y, ds.getBarSpace());
@@ -244,14 +234,12 @@ public class BarChart extends BarLineChartBase {
 
     @Override
     protected void drawData() {
-
-        BarData bd = (BarData) mCurrentData;
-
-        ArrayList<BarDataSet> dataSets = bd.getDataSets();
-        int setCount = bd.getDataSetCount();
+        
+        ArrayList<BarDataSet> dataSets = mOriginalData.getDataSets();
+        int setCount = mOriginalData.getDataSetCount();
         
         // the space between bar-groups
-        float space = bd.getGroupSpace();
+        float space = mOriginalData.getGroupSpace();
 
         // 2D drawing
         for (int i = 0; i < setCount; i++) {
@@ -380,14 +368,12 @@ public class BarChart extends BarLineChartBase {
         float[] position = new float[] {
                 0f, 0f
         };
-
-        BarData bd = (BarData) mCurrentData;
-
+        
         int step = mCurrentData.getDataSetCount();
 
         for (int i = 0; i < mCurrentData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
 
-            position[0] = i * step + i * bd.getGroupSpace() + bd.getGroupSpace() / 2f;
+            position[0] = i * step + i * mOriginalData.getGroupSpace() + mOriginalData.getGroupSpace() / 2f;
 
             // center the text
             if (mXLabels.isCenterXLabelsEnabled())
@@ -432,15 +418,13 @@ public class BarChart extends BarLineChartBase {
         float[] position = new float[] {
                 0f, 0f
         };
-
-        BarData bd = (BarData) mCurrentData;
-
+        
         // take into consideration that multiple DataSets increase mDeltaX
         int step = mCurrentData.getDataSetCount();
 
         for (int i = 0; i < mCurrentData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
 
-            position[0] = i * step + i * bd.getGroupSpace();
+            position[0] = i * step + i * mOriginalData.getGroupSpace();
 
             transformPointArray(position);
 
@@ -749,13 +733,11 @@ public class BarChart extends BarLineChartBase {
 
         int setCount = mOriginalData.getDataSetCount();
         int valCount = setCount * mOriginalData.getXValCount();
-
-        BarData bd = (BarData) mCurrentData;
-
+        
         // calculate the amount of bar-space between index 0 and touch position
         float space = (float) (((float) valCount / (float) setCount) / (mDeltaX / base));
 
-        float reduction = (float) space * bd.getGroupSpace();
+        float reduction = (float) space * mOriginalData.getGroupSpace();
 
         int xIndex = (int) ((base - reduction) / setCount);
 

@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public class PieChart extends PieRadarChartBase {
+public class PieChart extends PieRadarChartBase<PieData> {
 
     /**
      * rect object that represents the bounds of the piechart, needed for
@@ -122,15 +122,6 @@ public class PieChart extends PieRadarChartBase {
 
         // for the piechart, drawing values is enabled
         mDrawYValues = true;
-    }
-
-    /**
-     * Sets a PieData object as a model for the PieChart.
-     * 
-     * @param data
-     */
-    public void setData(PieData data) {
-        super.setData(data);
     }
 
     @Override
@@ -239,7 +230,7 @@ public class PieChart extends PieRadarChartBase {
         mDrawAngles = new float[mCurrentData.getYValCount()];
         mAbsoluteAngles = new float[mCurrentData.getYValCount()];
 
-        ArrayList<PieDataSet> dataSets = ((PieData) mCurrentData).getDataSets();
+        ArrayList<PieDataSet> dataSets = mCurrentData.getDataSets();
 
         int cnt = 0;
 
@@ -269,8 +260,6 @@ public class PieChart extends PieRadarChartBase {
 
         // if there are values to highlight and highlighnting is enabled, do it
         if (mHighlightEnabled && valuesToHighlight()) {
-            
-            PieData pd = (PieData) mCurrentData;
 
             float angle = 0f;
 
@@ -292,7 +281,7 @@ public class PieChart extends PieRadarChartBase {
 
                 float shiftangle = (float) Math.toRadians(angle + sliceDegrees / 2f);
 
-                PieDataSet set = pd
+                PieDataSet set = mCurrentData
                         .getDataSetByIndex(mIndicesToHightlight[i]
                                 .getDataSetIndex());
 
@@ -319,7 +308,7 @@ public class PieChart extends PieRadarChartBase {
 
         float angle = mRotationAngle;
 
-        ArrayList<PieDataSet> dataSets = ((PieData) mCurrentData).getDataSets();
+        ArrayList<PieDataSet> dataSets = mCurrentData.getDataSets();
 
         int cnt = 0;
 
@@ -431,7 +420,7 @@ public class PieChart extends PieRadarChartBase {
 
         r -= off; // offset to keep things inside the chart
 
-        ArrayList<PieDataSet> dataSets = ((PieData) mCurrentData).getDataSets();
+        ArrayList<PieDataSet> dataSets = mCurrentData.getDataSets();
 
         int cnt = 0;
 

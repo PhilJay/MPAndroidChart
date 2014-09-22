@@ -24,6 +24,8 @@ import android.view.View;
 
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarLineScatterCandleData;
+import com.github.mikephil.charting.data.BarLineScatterCandleRadarDataSet;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -50,7 +52,8 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public abstract class Chart extends View implements AnimatorUpdateListener {
+public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entry>>> extends View
+        implements AnimatorUpdateListener {
 
     public static final String LOG_TAG = "MPChart";
 
@@ -88,13 +91,13 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      * object that holds all data relevant for the chart (x-vals, y-vals, ...)
      * that are currently displayed
      */
-    protected ChartData<? extends DataSet<? extends Entry>> mCurrentData = null;
+    protected T mCurrentData = null;
 
     /**
      * object that holds all data that was originally set for the chart, before
      * it was modified or any filtering algorithms had been applied
      */
-    protected ChartData<? extends DataSet<? extends Entry>> mOriginalData = null;
+    protected T mOriginalData = null;
 
     /** final bitmap that contains all information and is drawn to the screen */
     protected Bitmap mDrawBitmap;
@@ -320,11 +323,12 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     protected boolean mOffsetsCalculated = false;
 
     /**
-     * Sets a new ChartData object for the chart.
+     * Sets a new data object for the chart. The data object contains all values
+     * and information needed for displaying.
      * 
      * @param data
      */
-    protected void setData(ChartData<? extends DataSet<? extends Entry>> data) {
+    public void setData(T data) {
 
         if (data == null || !data.isValid()) {
             Log.e(LOG_TAG,
@@ -440,7 +444,16 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
 
         if (!mUseCustomFormatter) {
 
-            int digits = Utils.getFormatDigits(mDeltaY);
+            float reference = 0f;
+            
+            if(mOriginalData.getXValCount() < 2) {
+               
+                reference = Math.max(Math.abs(mYChartMin), Math.abs(mYChartMax));                
+            } else {
+                reference = mDeltaY;
+            }
+            
+            int digits = Utils.getFormatDigits(reference);
 
             StringBuffer b = new StringBuffer();
             for (int i = 0; i < digits; i++) {
@@ -1788,7 +1801,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
     public void setDrawMarkerViews(boolean enabled) {
         mDrawMarkerViews = enabled;
     }
-    
+
     private boolean mUseCustomFormatter = false;
 
     /**
@@ -1801,9 +1814,11 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      */
     public void setValueFormatter(DecimalFormat f) {
         mValueFormat = f;
-        
-        if(f != null) mUseCustomFormatter = true;
-        else mUseCustomFormatter = false;
+
+        if (f != null)
+            mUseCustomFormatter = true;
+        else
+            mUseCustomFormatter = false;
     }
 
     /**
@@ -1999,7 +2014,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      * 
      * @return
      */
-    public ChartData<? extends DataSet<? extends Entry>> getDataCurrent() {
+    public T getDataCurrent() {
         return mCurrentData;
     }
 
@@ -2010,7 +2025,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
      * 
      * @return
      */
-    public ChartData<? extends DataSet<? extends Entry>> getDataOriginal() {
+    public T getDataOriginal() {
         return mOriginalData;
     }
 
@@ -2164,7 +2179,7 @@ public abstract class Chart extends View implements AnimatorUpdateListener {
 
         if (this instanceof BarLineChartBase) {
 
-            BarLineChartBase b = (BarLineChartBase) this;
+            BarLineChartBase<BarLineScatterCandleData<? extends BarLineScatterCandleRadarDataSet<Entry>>> b = (BarLineChartBase<BarLineScatterCandleData<? extends BarLineScatterCandleRadarDataSet<Entry>>>) this;
 
             // if y-values are not fixed
             if (!b.hasFixedYValues() && !mMatrixOnLayoutPrepared) {

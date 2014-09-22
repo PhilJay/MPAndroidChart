@@ -21,7 +21,6 @@ import java.util.ArrayList;
 public class DynamicalAddingActivity extends DemoBase implements OnChartValueSelectedListener {
 
     private LineChart mChart;
-    private LineData mData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,20 +54,22 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
         set.setCircleColor(Color.rgb(240, 99, 99));
         set.setHighLightColor(Color.rgb(190, 190, 190));
 
-        mData = new LineData(xVals, set);
+        LineData data = new LineData(xVals, set);
 
-        mChart.setData(mData);
+        mChart.setData(data);
         mChart.invalidate();
     }
     
     int[] mColors = ColorTemplate.VORDIPLOM_COLORS;   
 
     private void addEntry() {
+        
+        LineData data = mChart.getDataOriginal();
 
-        LineDataSet set = mData.getDataSetByIndex(0);
+        LineDataSet set = data.getDataSetByIndex(0);
         // set.addEntry(...);
 
-        mData.addEntry(new Entry((float) (Math.random() * 50) + 50f, set.getEntryCount()), 0);
+        data.addEntry(new Entry((float) (Math.random() * 50) + 50f, set.getEntryCount()), 0);
 
         // let the chart know it's data has changed
         mChart.notifyDataSetChanged();
@@ -78,12 +79,14 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
     }
 
     private void removeLastEntry() {
+        
+        LineData data = mChart.getDataOriginal();
 
-        LineDataSet set = mData.getDataSetByIndex(0);
+        LineDataSet set = data.getDataSetByIndex(0);
 
         Entry e = set.getEntryForXIndex(set.getEntryCount() - 1);
 
-        mData.removeEntry(e, 0);
+        data.removeEntry(e, 0);
         // or remove by index
         // mData.removeEntry(xIndex, dataSetIndex);
 
@@ -93,12 +96,14 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 
     private void addDataSet() {
         
-        int count = (mData.getDataSetCount() + 1);
+        LineData data = mChart.getDataOriginal();
+        
+        int count = (data.getDataSetCount() + 1);
 
         // create 10 y-vals
         ArrayList<Entry> yVals = new ArrayList<Entry>();
 
-        for (int i = 0; i < mData.getXValCount(); i++)
+        for (int i = 0; i < data.getXValCount(); i++)
             yVals.add(new Entry((float) (Math.random() * 50f) + 50f * count, i));
         
 
@@ -112,15 +117,17 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
         set.setCircleColor(color);
         set.setHighLightColor(color);
 
-        mData.addDataSet(set);
+        data.addDataSet(set);
         
         mChart.notifyDataSetChanged();
         mChart.invalidate();
     }
 
     private void removeDataSet() {
+        
+        LineData data = mChart.getDataOriginal();
 
-        mData.removeDataSet(mData.getDataSetByIndex(mData.getDataSetCount() - 1));
+        data.removeDataSet(data.getDataSetByIndex(data.getDataSetCount() - 1));
         
         mChart.notifyDataSetChanged();
         mChart.invalidate();

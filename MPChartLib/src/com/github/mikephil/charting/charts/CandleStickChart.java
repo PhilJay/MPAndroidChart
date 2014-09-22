@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public class CandleStickChart extends BarLineChartBase {
+public class CandleStickChart extends BarLineChartBase<CandleData> {
 
     public CandleStickChart(Context context) {
         super(context);
@@ -30,15 +30,6 @@ public class CandleStickChart extends BarLineChartBase {
         super(context, attrs, defStyle);
     }
 
-    /**
-     * Sets a CandleData object for the CandleStickChart.
-     * 
-     * @param data
-     */
-    public void setData(CandleData data) {
-        super.setData(data);
-    }
-
     @Override
     protected void calcMinMax(boolean fixedValues) {
         super.calcMinMax(fixedValues);
@@ -50,7 +41,7 @@ public class CandleStickChart extends BarLineChartBase {
     @Override
     protected void drawData() {
 
-        ArrayList<CandleDataSet> dataSets = ((CandleData) mCurrentData).getDataSets();
+        ArrayList<CandleDataSet> dataSets = mCurrentData.getDataSets();
 
         // pre allocate
         float[] shadowPoints = new float[4];
@@ -164,14 +155,12 @@ public class CandleStickChart extends BarLineChartBase {
     @Override
     protected void drawHighlights() {
 
-        CandleData cd = (CandleData) mCurrentData;
-        
         for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
             int xIndex = mIndicesToHightlight[i].getXIndex(); // get the
                                                               // x-position
 
-            CandleDataSet set = cd.getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
+            CandleDataSet set = mOriginalData.getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
             mHighlightPaint.setColor(set.getHighLightColor());
             
             CandleEntry e = set.getEntryForXIndex(xIndex);

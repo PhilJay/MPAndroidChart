@@ -11,8 +11,6 @@ import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.util.Log;
 
-import com.github.mikephil.charting.data.BarLineScatterCandleRadarData;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
@@ -30,7 +28,7 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public class RadarChart extends PieRadarChartBase {
+public class RadarChart extends PieRadarChartBase<RadarData> {
 
     /** paint for drawing the web */
     private Paint mWebPaint;
@@ -88,15 +86,6 @@ public class RadarChart extends PieRadarChartBase {
         mHighlightPaint.setStyle(Paint.Style.STROKE);
         mHighlightPaint.setStrokeWidth(2f);
         mHighlightPaint.setColor(Color.rgb(255, 187, 115));
-    }
-
-    /**
-     * Sets a RadarData object for the chart to display.
-     * 
-     * @param data
-     */
-    public void setData(RadarData data) {
-        super.setData(data);
     }
 
     @Override
@@ -236,7 +225,7 @@ public class RadarChart extends PieRadarChartBase {
     @Override
     protected void drawData() {
 
-        ArrayList<RadarDataSet> dataSets = ((RadarData) mCurrentData).getDataSets();
+        ArrayList<RadarDataSet> dataSets = mCurrentData.getDataSets();
 
         float sliceangle = getSliceAngle();
 
@@ -291,8 +280,7 @@ public class RadarChart extends PieRadarChartBase {
      */
     private void drawLimitLines() {
 
-        ArrayList<LimitLine> limitLines = ((BarLineScatterCandleRadarData<? extends DataSet<? extends Entry>>) mOriginalData)
-                .getLimitLines();
+        ArrayList<LimitLine> limitLines = mOriginalData.getLimitLines();
 
         if (limitLines == null)
             return;
@@ -456,8 +444,6 @@ public class RadarChart extends PieRadarChartBase {
         // if values are drawn
         if (mDrawYValues) {
 
-            RadarData rd = (RadarData) mCurrentData;
-
             float sliceangle = getSliceAngle();
 
             // calculate the factor that is needed for transforming the value to
@@ -470,7 +456,7 @@ public class RadarChart extends PieRadarChartBase {
 
             for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
-                RadarDataSet dataSet = rd.getDataSetByIndex(i);
+                RadarDataSet dataSet = mCurrentData.getDataSetByIndex(i);
                 ArrayList<Entry> entries = dataSet.getYVals();
 
                 for (int j = 0; j < entries.size(); j++) {
@@ -491,9 +477,7 @@ public class RadarChart extends PieRadarChartBase {
 
         // if there are values to highlight and highlighnting is enabled, do it
         if (mHighlightEnabled && valuesToHighlight()) {
-
-            RadarData rd = (RadarData) mCurrentData;
-
+            
             float sliceangle = getSliceAngle();
             float factor = getFactor();
 
@@ -501,7 +485,7 @@ public class RadarChart extends PieRadarChartBase {
 
             for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
-                RadarDataSet set = rd
+                RadarDataSet set = mCurrentData
                         .getDataSetByIndex(mIndicesToHightlight[i]
                                 .getDataSetIndex());
 

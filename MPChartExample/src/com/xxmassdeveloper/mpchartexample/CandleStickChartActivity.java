@@ -67,7 +67,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
 
         YLabels yLabels = mChart.getYLabels();  
         yLabels.setLabelCount(7);
-        yLabels.setPosition(YLabelPosition.RIGHT_INSIDE);
+        yLabels.setPosition(YLabelPosition.LEFT);
 
         mChart.setDrawYLabels(true);
         mChart.setDrawLegend(false);

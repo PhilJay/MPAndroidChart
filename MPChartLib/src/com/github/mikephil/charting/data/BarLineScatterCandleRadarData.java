@@ -6,7 +6,7 @@ import com.github.mikephil.charting.utils.LimitLine;
 import java.util.ArrayList;
 
 /**
- * Baseclass for all Line, Bar and ScatterData. Supports LimitLines.
+ * Baseclass for all Line, Bar, Radar and ScatterData. Supports LimitLines.
  * 
  * @author Philipp Jahoda
  */
