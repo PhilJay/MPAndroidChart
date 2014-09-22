@@ -147,8 +147,8 @@ public abstract class BarLineChartBase extends Chart {
     /** the object representing the labels on the x-axis */
     protected XLabels mXLabels = new XLabels();
 
-//    /** the approximator object used for data filtering */
-//    private Approximator mApproximator;
+    // /** the approximator object used for data filtering */
+    // private Approximator mApproximator;
 
     public BarLineChartBase(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -561,25 +561,36 @@ public abstract class BarLineChartBase extends Chart {
             interval = Math.floor(10 * intervalMagnitude);
         }
 
-        double first = Math.ceil(yMin / interval) * interval;
-        double last = Utils.nextUp(Math.floor(yMax / interval) * interval);
+        // if the labels should only show min and max
+        if (mYLabels.isShowOnlyMinMaxEnabled()) {
 
-        double f;
-        int i;
-        int n = 0;
-        for (f = first; f <= last; f += interval) {
-            ++n;
-        }
+            mYLabels.mEntryCount = 2;
+            mYLabels.mEntries = new float[2];
+            mYLabels.mEntries[0] = mYChartMin;
+            mYLabels.mEntries[1] = mYChartMax;
 
-        mYLabels.mEntryCount = n;
+        } else {
 
-        if (mYLabels.mEntries.length < n) {
-            // Ensure stops contains at least numStops elements.
-            mYLabels.mEntries = new float[n];
-        }
+            double first = Math.ceil(yMin / interval) * interval;
+            double last = Utils.nextUp(Math.floor(yMax / interval) * interval);
 
-        for (f = first, i = 0; i < n; f += interval, ++i) {
-            mYLabels.mEntries[i] = (float) f;
+            double f;
+            int i;
+            int n = 0;
+            for (f = first; f <= last; f += interval) {
+                ++n;
+            }
+
+            mYLabels.mEntryCount = n;
+
+            if (mYLabels.mEntries.length < n) {
+                // Ensure stops contains at least numStops elements.
+                mYLabels.mEntries = new float[n];
+            }
+
+            for (f = first, i = 0; i < n; f += interval, ++i) {
+                mYLabels.mEntries[i] = (float) f;
+            }
         }
 
         if (interval < 1) {
@@ -1834,7 +1845,7 @@ public abstract class BarLineChartBase extends Chart {
      */
     public void enableFiltering(Approximator a) {
         mFilterData = true;
-//        mApproximator = a;
+        // mApproximator = a;
     }
 
     /**

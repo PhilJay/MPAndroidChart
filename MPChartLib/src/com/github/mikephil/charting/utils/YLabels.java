@@ -34,6 +34,9 @@ public class YLabels extends LabelBase {
     /** if true, thousands ylabel values are separated by a dot */
     protected boolean mSeparateTousands = true;
 
+    /** if true, the y-labels show only the minimum and maximum value */
+    protected boolean mShowOnlyMinMax = false;
+
     /** the formatter used to customly format the y-labels */
     private YLabelFormatter mFormatter = null;
 
@@ -159,5 +162,24 @@ public class YLabels extends LabelBase {
      */
     public void setFormatter(YLabelFormatter f) {
         this.mFormatter = f;
+    }
+
+    /**
+     * If enabled, the YLabels will only show the minimum and maximum value of
+     * the chart. This will ignore/override the set label count.
+     * 
+     * @param enabled
+     */
+    public void setShowOnlyMinMax(boolean enabled) {
+        mShowOnlyMinMax = enabled;
+    }
+
+    /**
+     * Returns true if showing only min and max value is enabled.
+     * 
+     * @return
+     */
+    public boolean isShowOnlyMinMaxEnabled() {
+        return mShowOnlyMinMax;
     }
 }
