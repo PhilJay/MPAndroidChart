@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 
 import com.github.mikephil.charting.charts.BarLineChartBase;
+import com.github.mikephil.charting.data.BarLineScatterCandleData;
+import com.github.mikephil.charting.data.BarLineScatterCandleRadarDataSet;
 import com.github.mikephil.charting.data.DrawingContext;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -23,7 +25,7 @@ import com.github.mikephil.charting.utils.PointD;
  * 
  * @author Philipp Jahoda
  */
-public class BarLineChartTouchListener extends SimpleOnGestureListener implements OnTouchListener {
+public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarLineScatterCandleData<? extends BarLineScatterCandleRadarDataSet<? extends Entry>>>> extends SimpleOnGestureListener implements OnTouchListener {
 
     private Matrix mMatrix = new Matrix();
     private Matrix mSavedMatrix = new Matrix();
@@ -58,12 +60,12 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
     private long mStartTimestamp = 0;
     private Highlight mLastHighlighted;
 
-    private BarLineChartBase mChart;
+    private T mChart;
 
     private DrawingContext mDrawingContext;
     private GestureDetector mGestureDetector;
 
-    public BarLineChartTouchListener(BarLineChartBase chart, Matrix start) {
+    public BarLineChartTouchListener(T chart, Matrix start) {
         this.mChart = chart;
         this.mMatrix = start;
 
@@ -82,9 +84,8 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
             return true;
 
         mDrawingContext.init(mChart.getDrawListener(), mChart.isAutoFinishEnabled());
-        LineData data = null;
 
-        // data = (LineData) mChart.getDataCurrent();
+        BarLineScatterCandleData<? extends BarLineScatterCandleRadarDataSet<? extends Entry>> data = mChart.getDataCurrent();
 
         // Handle touch events here...
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
@@ -397,10 +398,10 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 
     @Override
     public boolean onDoubleTap(MotionEvent e) {
-        
+
         // check if double-tap zooming is enabled
-        if(mChart.isDoubleTapToZoomEnabled()) {
-         
+        if (mChart.isDoubleTapToZoomEnabled()) {
+
             PointF trans = getTrans(e.getX(), e.getY());
 
             mChart.zoomIn(trans.x, trans.y);
@@ -413,16 +414,18 @@ public class BarLineChartTouchListener extends SimpleOnGestureListener implement
 
     @Override
     public void onLongPress(MotionEvent e) {
-        
-        mChart.fitScreen();
-        
-        Log.i("BarlineChartTouch", "Longpress, resetting zoom and drag, adjusting chart bounds to screen.");
 
-//        PointF trans = getTrans(e.getX(), e.getY());
-//
-//        mChart.zoomOut(trans.x, trans.y);
-//
-//        Log.i("BarlineChartTouch", "Longpress, Zooming Out, x: " + trans.x + ", y: " + trans.y);
+        mChart.fitScreen();
+
+        Log.i("BarlineChartTouch",
+                "Longpress, resetting zoom and drag, adjusting chart bounds to screen.");
+
+        // PointF trans = getTrans(e.getX(), e.getY());
+        //
+        // mChart.zoomOut(trans.x, trans.y);
+        //
+        // Log.i("BarlineChartTouch", "Longpress, Zooming Out, x: " + trans.x +
+        // ", y: " + trans.y);
     };
 
     @Override

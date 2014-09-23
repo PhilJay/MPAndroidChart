@@ -1,8 +1,14 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.annotation.SuppressLint;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PointF;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -15,8 +21,10 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
+import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.github.mikephil.charting.utils.XLabels;
@@ -27,7 +35,7 @@ import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 
-public class BarChartActivity extends DemoBase implements OnSeekBarChangeListener {
+public class BarChartActivity extends DemoBase implements OnSeekBarChangeListener, OnChartValueSelectedListener {
 
     private BarChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
@@ -47,6 +55,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
 
         mChart = (BarChart) findViewById(R.id.chart1);
+        mChart.setOnChartValueSelectedListener(this);
 
         // enable the drawing of values
         mChart.setDrawYValues(true);
@@ -274,4 +283,17 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         mChart.setData(data);
     }
+    
+    @SuppressLint("NewApi")
+    @Override
+    public void onValueSelected(Entry e, int dataSetIndex) {
+        
+        RectF bounds = mChart.getBarBounds((BarEntry) e);
+        PointF position = mChart.getPosition(e);
+        
+        Log.i("bounds", bounds.toString());
+        Log.i("position", position.toString());
+    }
+    
+    public void onNothingSelected() {};
 }

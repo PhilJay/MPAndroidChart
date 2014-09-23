@@ -141,6 +141,9 @@ public class Entry {
      */
     public boolean equalTo(Entry e) {
 
+        if (e == null)
+            return false;
+
         if (e.mData != this.mData)
             return false;
         if (e.mXIndex != this.mXIndex)

@@ -10,12 +10,14 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewParent;
 
+import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarLineScatterCandleData;
 import com.github.mikephil.charting.data.BarLineScatterCandleRadarDataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -1375,6 +1377,34 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     public boolean hasFixedYValues() {
         return mFixedYValues;
+    }
+
+    /**
+     * Returns the position (in pixels) the provided Entry has inside the chart
+     * view or null, if the provided Entry is null.
+     * 
+     * @param e
+     * @return
+     */
+    public PointF getPosition(Entry e) {
+
+        if (e == null)
+            return null;
+
+        float[] vals = new float[] {
+                e.getXIndex(), e.getVal()
+        };
+
+        if (this instanceof BarChart) {
+
+            BarDataSet set = (BarDataSet) mOriginalData.getDataSetForEntry(e);
+            if (set != null)
+                vals[0] += set.getBarSpace() / 2f;
+        }
+
+        transformPointArray(vals);
+
+        return new PointF(vals[0], vals[1]);
     }
 
     /**

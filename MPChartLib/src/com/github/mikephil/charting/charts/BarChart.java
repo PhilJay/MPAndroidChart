@@ -183,7 +183,7 @@ public class BarChart extends BarLineChartBase<BarData> {
 
     @Override
     protected void drawHighlights() {
-        
+
         int setCount = mOriginalData.getDataSetCount();
 
         for (int i = 0; i < mIndicesToHightlight.length; i++) {
@@ -202,11 +202,13 @@ public class BarChart extends BarLineChartBase<BarData> {
                     && index < (mDeltaX * mPhaseX) / mOriginalData.getDataSetCount()) {
 
                 Entry e = getEntryByDataSetIndex(index, dataSetIndex);
-                
-                if(e == null) continue;
+
+                if (e == null)
+                    continue;
 
                 // calculate the correct x-position
-                float x = index * setCount + dataSetIndex + mOriginalData.getGroupSpace() / 2f + mOriginalData.getGroupSpace() * index;
+                float x = index * setCount + dataSetIndex + mOriginalData.getGroupSpace() / 2f
+                        + mOriginalData.getGroupSpace() * index;
                 float y = e.getVal();
 
                 prepareBar(x, y, ds.getBarSpace());
@@ -234,10 +236,10 @@ public class BarChart extends BarLineChartBase<BarData> {
 
     @Override
     protected void drawData() {
-        
+
         ArrayList<BarDataSet> dataSets = mOriginalData.getDataSets();
         int setCount = mOriginalData.getDataSetCount();
-        
+
         // the space between bar-groups
         float space = mOriginalData.getGroupSpace();
 
@@ -368,12 +370,13 @@ public class BarChart extends BarLineChartBase<BarData> {
         float[] position = new float[] {
                 0f, 0f
         };
-        
+
         int step = mCurrentData.getDataSetCount();
 
         for (int i = 0; i < mCurrentData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
 
-            position[0] = i * step + i * mOriginalData.getGroupSpace() + mOriginalData.getGroupSpace() / 2f;
+            position[0] = i * step + i * mOriginalData.getGroupSpace()
+                    + mOriginalData.getGroupSpace() / 2f;
 
             // center the text
             if (mXLabels.isCenterXLabelsEnabled())
@@ -418,7 +421,7 @@ public class BarChart extends BarLineChartBase<BarData> {
         float[] position = new float[] {
                 0f, 0f
         };
-        
+
         // take into consideration that multiple DataSets increase mDeltaX
         int step = mCurrentData.getDataSetCount();
 
@@ -733,7 +736,7 @@ public class BarChart extends BarLineChartBase<BarData> {
 
         int setCount = mOriginalData.getDataSetCount();
         int valCount = setCount * mOriginalData.getXValCount();
-        
+
         // calculate the amount of bar-space between index 0 and touch position
         float space = (float) (((float) valCount / (float) setCount) / (mDeltaX / base));
 
@@ -747,6 +750,38 @@ public class BarChart extends BarLineChartBase<BarData> {
             return null;
 
         return new Highlight(xIndex, dataSetIndex);
+    }
+
+    /**
+     * Returns the bounding box of the specified Entry in the specified DataSet.
+     * Returns null if the Entry could not be found in the charts data.
+     * 
+     * @param e
+     * @param dataSetIndex
+     * @return
+     */
+    public RectF getBarBounds(BarEntry e) {
+
+        BarDataSet set = mOriginalData.getDataSetForEntry(e);
+
+        if (set == null)
+            return null;
+
+        float barspace = set.getBarSpace();
+        float y = e.getVal();
+        float x = e.getXIndex();
+
+        float spaceHalf = barspace / 2f;
+        float left = x + spaceHalf;
+        float right = x + 1f - spaceHalf;
+        float top = y >= 0 ? y : 0;
+        float bottom = y <= 0 ? y : 0;
+
+        RectF bounds = new RectF(left, top, right, bottom);
+
+        transformRect(bounds);
+
+        return bounds;
     }
 
     /**

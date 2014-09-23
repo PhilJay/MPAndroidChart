@@ -445,14 +445,14 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         if (!mUseCustomFormatter) {
 
             float reference = 0f;
-            
-            if(mOriginalData.getXValCount() < 2) {
-               
-                reference = Math.max(Math.abs(mYChartMin), Math.abs(mYChartMax));                
+
+            if (mOriginalData.getXValCount() < 2) {
+
+                reference = Math.max(Math.abs(mYChartMin), Math.abs(mYChartMax));
             } else {
                 reference = mDeltaY;
             }
-            
+
             int digits = Utils.getFormatDigits(reference);
 
             StringBuffer b = new StringBuffer();
@@ -1338,6 +1338,15 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * ################ ################ ################ ################
      */
     /** BELOW THIS ONLY GETTERS AND SETTERS */
+
+    /**
+     * Returns the canvas object the chart uses for drawing.
+     * 
+     * @return
+     */
+    public Canvas getCanvas() {
+        return mDrawCanvas;
+    }
 
     /**
      * set a selection listener for the chart

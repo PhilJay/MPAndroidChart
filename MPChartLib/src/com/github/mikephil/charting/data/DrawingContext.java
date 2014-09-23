@@ -1,9 +1,9 @@
 package com.github.mikephil.charting.data;
 
-import java.util.ArrayList;
-
 import com.github.mikephil.charting.exception.DrawingDataSetNotCreatedException;
 import com.github.mikephil.charting.interfaces.OnDrawListener;
+
+import java.util.ArrayList;
 
 public class DrawingContext {
 
@@ -25,17 +25,19 @@ public class DrawingContext {
 	 * @param type
 	 *            the type of the new DataSet
 	 */
-	public void createNewDrawingDataSet(LineData chartData) {
+	public void createNewDrawingDataSet(ChartData<? extends DataSet<? extends Entry>> data) {
 		if (mCurrentDrawingDataSet != null && mCurrentDrawingEntries != null) {
 			// if an old one exist, finish the other one first
-			finishNewDrawingEntry(chartData);
+			finishNewDrawingEntry(data);
 		}
 
 		mCurrentDrawingEntries = new ArrayList<Entry>();
 		this.mCurrentDrawingDataSet = new LineDataSet(mCurrentDrawingEntries, "DS " + mLastDrawnDataSetIndex);
+		mCurrentDrawingDataSet.setLineWidth(2.5f);
+		mCurrentDrawingDataSet.setCircleSize(4f);
 		
-		ArrayList<LineDataSet> dataSets = (ArrayList<LineDataSet>) chartData.getDataSets();
-		dataSets.add(mCurrentDrawingDataSet);
+		ArrayList<LineDataSet> dataSets = (ArrayList<LineDataSet>) data.getDataSets();
+		dataSets.add((LineDataSet) mCurrentDrawingDataSet);
 	}
 
 	/**
@@ -44,7 +46,7 @@ public class DrawingContext {
 	 * @param entry
 	 * @return true if entry added, false if an entry on this x index already existed
 	 */
-	public boolean addNewDrawingEntry(Entry entry, ChartData data) {
+	public boolean addNewDrawingEntry(Entry entry, ChartData<? extends DataSet<? extends Entry>> data) {
 		if (mCurrentDrawingDataSet != null && mCurrentDrawingEntries != null) {
 			if (mCurrentDrawingEntries.size() > 0
 					&& mCurrentDrawingEntries.get(mCurrentDrawingEntries.size() - 1).getXIndex() == entry.getXIndex()) {
@@ -74,7 +76,7 @@ public class DrawingContext {
 	 * 
 	 * @param data
 	 */
-	public void notifyEntryMoved(ChartData data) {
+	public void notifyEntryMoved(ChartData<? extends DataSet<? extends Entry>> data) {
 		data.notifyDataForNewEntry(mMovingEntry);
 
 		if (mListener != null) {
@@ -117,7 +119,7 @@ public class DrawingContext {
 	/**
 	 * Finishes a drawing entry and adds values at the beginning and the end to fill up the line
 	 */
-	public void finishNewDrawingEntry(LineData data) {
+	public void finishNewDrawingEntry(ChartData<? extends DataSet<? extends Entry>> data) {
 		if (mAutoFinishDrawing && mCurrentDrawingEntries.size() > 0) {
 			Entry firstEntry = mCurrentDrawingEntries.get(0);
 			int xIndex = 0;
@@ -149,7 +151,7 @@ public class DrawingContext {
 		mCurrentDrawingEntries = null;
 	}
 
-	public void deleteLastDrawingEntry(LineData data) {
+	public void deleteLastDrawingEntry(ChartData<? extends DataSet<? extends Entry>> data) {
 	    if(data == null) return;
 		data.getDataSets().remove(mCurrentDrawingDataSet);
 		mCurrentDrawingDataSet = null;

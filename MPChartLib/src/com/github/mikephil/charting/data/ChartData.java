@@ -522,6 +522,31 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     }
 
     /**
+     * Returns the DataSet that contains the provided Entry, or null, if no
+     * DataSet contains this Entry.
+     * 
+     * @param e
+     * @return
+     */
+    public T getDataSetForEntry(Entry e) {
+
+        if (e == null)
+            return null;
+
+        for (int i = 0; i < mDataSets.size(); i++) {
+
+            T set = mDataSets.get(i);
+
+            for (int j = 0; j < set.getEntryCount(); j++) {
+                if (e.equalTo(set.getEntryForXIndex(e.getXIndex())))
+                    return set;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Returns all colors used across all DataSet objects this object
      * represents.
      * 
