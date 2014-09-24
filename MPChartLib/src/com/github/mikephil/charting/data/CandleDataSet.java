@@ -23,7 +23,7 @@ public class CandleDataSet extends BarLineScatterCandleRadarDataSet<CandleEntry>
     }
 
     @Override
-    public DataSet copy() {
+    public DataSet<CandleEntry> copy() {
 
         ArrayList<CandleEntry> yVals = new ArrayList<CandleEntry>();
 

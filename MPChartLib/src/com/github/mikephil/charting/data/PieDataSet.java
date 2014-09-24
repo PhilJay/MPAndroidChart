@@ -20,7 +20,7 @@ public class PieDataSet extends DataSet<Entry> {
     }
 
     @Override
-    public DataSet copy() {
+    public DataSet<Entry> copy() {
 
         ArrayList<Entry> yVals = new ArrayList<Entry>();
 

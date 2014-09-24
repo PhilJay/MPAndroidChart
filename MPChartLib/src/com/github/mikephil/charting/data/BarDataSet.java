@@ -27,9 +27,6 @@ public class BarDataSet extends BarLineScatterCandleRadarDataSet<BarEntry> {
      */
     private int mEntryCountStacks = 0;
 
-    /** the size of rounded corners */
-    private float mRoundedCornerSize = 0f;
-
     /**
      * array of labels used to describe the different values of the stacked bars
      */
@@ -47,8 +44,8 @@ public class BarDataSet extends BarLineScatterCandleRadarDataSet<BarEntry> {
     }
 
     @Override
-    public DataSet copy() {
-
+    public DataSet<BarEntry> copy() {
+        
         ArrayList<BarEntry> yVals = new ArrayList<BarEntry>();
 
         for (int i = 0; i < mYVals.size(); i++) {

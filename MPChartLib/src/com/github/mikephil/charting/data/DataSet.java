@@ -265,7 +265,7 @@ public abstract class DataSet<T extends Entry> {
      * 
      * @return
      */
-    public abstract DataSet copy();
+    public abstract DataSet<T> copy();
 
     @Override
     public String toString() {

@@ -15,7 +15,6 @@ import com.github.mikephil.charting.data.BarLineScatterCandleData;
 import com.github.mikephil.charting.data.BarLineScatterCandleRadarDataSet;
 import com.github.mikephil.charting.data.DrawingContext;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.PointD;
 
@@ -39,14 +38,12 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
     // states
     private static final int NONE = 0;
     private static final int DRAG = 1;
-    private static final int POSTZOOM = 3;
-    private static final int LONGPRESS = 4;
-    private static final int DRAWING = 5;
-    private static final int MOVE_POINT = 6;
+    private static final int DRAWING = 2;
+    private static final int MOVE_POINT = 3;
 
-    private static final int X_ZOOM = 7;
-    private static final int Y_ZOOM = 8;
-    private static final int PINCH_ZOOM = 9;
+    private static final int X_ZOOM = 4;
+    private static final int Y_ZOOM = 5;
+    private static final int PINCH_ZOOM = 6;
 
     /** if true, user can draw on the chart */
     private boolean mDrawingEnabled = false;
@@ -146,8 +143,6 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
                     }
                 }
                 break;
-
-            case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
                 if (mTouchMode == DRAWING) {
                     long deltaT = System.currentTimeMillis() - mStartTimestamp;
@@ -165,9 +160,6 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
                 }
                 mDrawingContext.setMovingEntry(null);
                 mTouchMode = NONE;
-                break;
-            case MotionEvent.ACTION_POINTER_UP:
-                mTouchMode = POSTZOOM;
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (mTouchMode == DRAWING || mTouchMode == MOVE_POINT) {
@@ -265,9 +257,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
                         }
                     }
-                } else if (mTouchMode == LONGPRESS) {
-                    mChart.disableScroll();
-                }
+                } 
 
                 break;
         }
@@ -392,7 +382,6 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
-
         return super.onSingleTapConfirmed(e);
     }
 
@@ -426,13 +415,14 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
         //
         // Log.i("BarlineChartTouch", "Longpress, Zooming Out, x: " + trans.x +
         // ", y: " + trans.y);
-    };
+    }
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
 
         Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
 
+        // check if the same was highlighted again
         if (h == null || h.equalTo(mLastHighlighted)) {
             mChart.highlightTouch(null);
             mLastHighlighted = null;
@@ -443,5 +433,4 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
         return true;
     }
-
 }

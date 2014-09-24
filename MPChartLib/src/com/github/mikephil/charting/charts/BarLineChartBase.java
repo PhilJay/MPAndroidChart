@@ -1265,7 +1265,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     public void setDrawingEnabled(boolean drawingEnabled) {
         if (mListener instanceof BarLineChartTouchListener) {
-            ((BarLineChartTouchListener) mListener).setDrawingEnabled(drawingEnabled);
+            ((BarLineChartTouchListener<?>) mListener).setDrawingEnabled(drawingEnabled);
         }
     }
 

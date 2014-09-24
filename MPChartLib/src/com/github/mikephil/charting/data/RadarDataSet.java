@@ -5,13 +5,12 @@ import java.util.ArrayList;
 
 public class RadarDataSet extends LineRadarDataSet<Entry> {
     
-
     public RadarDataSet(ArrayList<Entry> yVals, String label) {
         super(yVals, label);
     }
 
     @Override
-    public DataSet copy() {
+    public DataSet<Entry> copy() {
 
         ArrayList<Entry> yVals = new ArrayList<Entry>();
 
