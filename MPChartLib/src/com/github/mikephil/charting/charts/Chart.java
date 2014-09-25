@@ -544,8 +544,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     protected void prepareContentRect() {
 
-        mContentRect.set((int) mOffsetLeft, (int) mOffsetTop, getMeasuredWidth()
-                - (int) mOffsetRight,
+        mContentRect.set((int) mOffsetLeft - 1, (int) mOffsetTop, getMeasuredWidth()
+                - (int) mOffsetRight + 1,
                 getMeasuredHeight()
                         - (int) mOffsetBottom + 1);
     }

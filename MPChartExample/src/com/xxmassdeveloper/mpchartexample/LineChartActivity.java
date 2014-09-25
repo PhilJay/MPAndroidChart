@@ -2,6 +2,8 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -112,7 +114,7 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         // enable/disable highlight indicators (the lines that indicate the
         // highlighted Entry)
         mChart.setHighlightIndicatorEnabled(false);
-
+               
         // add data
         setData(45, 100);
         
@@ -340,8 +342,13 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
 
         // set the line to be drawn like this "- - - - - -"
         set1.enableDashedLine(10f, 5f, 0f);
+        set1.setColor(Color.BLACK);
+        set1.setCircleColor(Color.BLACK);
         set1.setLineWidth(1f);
         set1.setCircleSize(4f);
+        set1.setFillAlpha(65);
+        set1.setFillColor(Color.BLACK);
+//        set1.setShader(new LinearGradient(0, 0, 0, mChart.getHeight(), Color.BLACK, Color.WHITE, Shader.TileMode.MIRROR));
 
         ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
         dataSets.add(set1); // add the datasets

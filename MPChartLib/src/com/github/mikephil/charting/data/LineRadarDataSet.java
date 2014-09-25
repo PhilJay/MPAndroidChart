@@ -2,6 +2,7 @@
 package com.github.mikephil.charting.data;
 
 import android.graphics.Color;
+import android.graphics.Shader;
 
 import com.github.mikephil.charting.utils.Utils;
 
@@ -25,6 +26,8 @@ public abstract class LineRadarDataSet<T extends Entry> extends BarLineScatterCa
     
     /** if true, the data will also be drawn filled */
     private boolean mDrawFilled = false;
+    
+//    private Shader mShader;
     
     public LineRadarDataSet(ArrayList<T> yVals, String label) {
         super(yVals, label);
@@ -111,4 +114,12 @@ public abstract class LineRadarDataSet<T extends Entry> extends BarLineScatterCa
     public boolean isDrawFilledEnabled() {
         return mDrawFilled;
     }
+    
+//    public void setShader(Shader s) {
+//        mShader = s;
+//    }
+//    
+//    public Shader getShader() {
+//        return mShader;
+//    }
 }

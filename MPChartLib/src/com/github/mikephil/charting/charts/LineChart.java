@@ -228,7 +228,9 @@ public class LineChart extends BarLineChartBase<LineData> {
 
                     mRenderPaint.setColor(dataSet.getFillColor());
                     // filled is drawn with less alpha
-                    mRenderPaint.setAlpha(dataSet.getFillAlpha());                    
+                    mRenderPaint.setAlpha(dataSet.getFillAlpha());  
+
+//                    mRenderPaint.setShader(dataSet.getShader());
                     
                     float fillMin = dataSet.getYMin() >= 0 ? mYChartMin : 0;
 
@@ -240,6 +242,7 @@ public class LineChart extends BarLineChartBase<LineData> {
 
                     // restore alpha
                     mRenderPaint.setAlpha(255);
+//                    mRenderPaint.setShader(null);
                 }
             }
         }
