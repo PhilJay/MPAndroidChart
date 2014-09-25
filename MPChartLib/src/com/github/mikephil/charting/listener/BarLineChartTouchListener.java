@@ -24,7 +24,8 @@ import com.github.mikephil.charting.utils.PointD;
  * 
  * @author Philipp Jahoda
  */
-public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarLineScatterCandleData<? extends BarLineScatterCandleRadarDataSet<? extends Entry>>>> extends SimpleOnGestureListener implements OnTouchListener {
+public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarLineScatterCandleData<? extends BarLineScatterCandleRadarDataSet<? extends Entry>>>>
+        extends SimpleOnGestureListener implements OnTouchListener {
 
     private Matrix mMatrix = new Matrix();
     private Matrix mSavedMatrix = new Matrix();
@@ -38,12 +39,13 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
     // states
     private static final int NONE = 0;
     private static final int DRAG = 1;
-    private static final int DRAWING = 2;
-    private static final int MOVE_POINT = 3;
+    private static final int CANCEL = 2;
+    private static final int DRAWING = 3;
+    private static final int MOVE_POINT = 4;
 
-    private static final int X_ZOOM = 4;
-    private static final int Y_ZOOM = 5;
-    private static final int PINCH_ZOOM = 6;
+    private static final int X_ZOOM = 5;
+    private static final int Y_ZOOM = 6;
+    private static final int PINCH_ZOOM = 7;
 
     /** if true, user can draw on the chart */
     private boolean mDrawingEnabled = false;
@@ -82,7 +84,8 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
         mDrawingContext.init(mChart.getDrawListener(), mChart.isAutoFinishEnabled());
 
-        BarLineScatterCandleData<? extends BarLineScatterCandleRadarDataSet<? extends Entry>> data = mChart.getDataCurrent();
+        BarLineScatterCandleData<? extends BarLineScatterCandleRadarDataSet<? extends Entry>> data = mChart
+                .getDataCurrent();
 
         // Handle touch events here...
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
@@ -160,6 +163,9 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
                 }
                 mDrawingContext.setMovingEntry(null);
                 mTouchMode = NONE;
+                break;
+            case MotionEvent.ACTION_POINTER_UP:
+                mTouchMode = CANCEL;
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (mTouchMode == DRAWING || mTouchMode == MOVE_POINT) {
@@ -257,7 +263,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
                         }
                     }
-                } 
+                }
 
                 break;
         }
@@ -415,14 +421,13 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
         //
         // Log.i("BarlineChartTouch", "Longpress, Zooming Out, x: " + trans.x +
         // ", y: " + trans.y);
-    }
+    };
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
 
         Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
 
-        // check if the same was highlighted again
         if (h == null || h.equalTo(mLastHighlighted)) {
             mChart.highlightTouch(null);
             mLastHighlighted = null;
