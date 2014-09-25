@@ -270,12 +270,16 @@ public abstract class Utils {
         }
 
         // if number around zero (between 1 and -1)
-        if (zero)
+        if (zero) {
             out[ind--] = '0';
+            charCount += 1;
+        }
 
         // if the number is negative
-        if (neg)
+        if (neg) {
             out[ind--] = '-';
+            charCount += 1;
+        }
 
         int start = out.length - charCount;
 
