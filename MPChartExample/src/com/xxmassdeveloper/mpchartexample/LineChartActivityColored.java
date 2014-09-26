@@ -4,17 +4,12 @@ package com.xxmassdeveloper.mpchartexample;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendForm;
 import com.github.mikephil.charting.utils.XLabels;

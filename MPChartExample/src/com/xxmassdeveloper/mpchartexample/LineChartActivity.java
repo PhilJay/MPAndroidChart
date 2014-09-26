@@ -2,8 +2,6 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
-import android.graphics.LinearGradient;
-import android.graphics.Shader;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -22,7 +20,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendForm;
 import com.github.mikephil.charting.utils.LimitLine;

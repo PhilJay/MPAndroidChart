@@ -443,10 +443,10 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     protected void calcFormats() {
 
         if (!mUseCustomFormatter) {
-
+            
             float reference = 0f;
 
-            if (mOriginalData.getXValCount() < 2) {
+            if (mOriginalData == null || mOriginalData.getXValCount() < 2) {
 
                 reference = Math.max(Math.abs(mYChartMin), Math.abs(mYChartMax));
             } else {

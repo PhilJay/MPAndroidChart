@@ -2,7 +2,6 @@
 package com.github.mikephil.charting.data;
 
 import android.graphics.Color;
-import android.graphics.Shader;
 
 import com.github.mikephil.charting.utils.Utils;
 

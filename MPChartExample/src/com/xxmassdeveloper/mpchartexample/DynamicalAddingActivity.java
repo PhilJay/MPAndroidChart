@@ -68,14 +68,17 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 
         LineDataSet set = data.getDataSetByIndex(0);
         // set.addEntry(...);
+        
+        if(set != null) {
+         
+            data.addEntry(new Entry((float) (Math.random() * 50) + 50f, set.getEntryCount()), 0);
 
-        data.addEntry(new Entry((float) (Math.random() * 50) + 50f, set.getEntryCount()), 0);
+            // let the chart know it's data has changed
+            mChart.notifyDataSetChanged();
 
-        // let the chart know it's data has changed
-        mChart.notifyDataSetChanged();
-
-        // redraw the chart
-        mChart.invalidate();
+            // redraw the chart
+            mChart.invalidate();
+        }
     }
 
     private void removeLastEntry() {
@@ -83,15 +86,18 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
         LineData data = mChart.getDataOriginal();
 
         LineDataSet set = data.getDataSetByIndex(0);
+        
+        if(set != null) {        
 
-        Entry e = set.getEntryForXIndex(set.getEntryCount() - 1);
+            Entry e = set.getEntryForXIndex(set.getEntryCount() - 1);
 
-        data.removeEntry(e, 0);
-        // or remove by index
-        // mData.removeEntry(xIndex, dataSetIndex);
+            data.removeEntry(e, 0);
+            // or remove by index
+            // mData.removeEntry(xIndex, dataSetIndex);
 
-        mChart.notifyDataSetChanged();
-        mChart.invalidate();
+            mChart.notifyDataSetChanged();
+            mChart.invalidate();
+        }
     }
 
     private void addDataSet() {

@@ -2,8 +2,6 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.annotation.SuppressLint;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.Typeface;
