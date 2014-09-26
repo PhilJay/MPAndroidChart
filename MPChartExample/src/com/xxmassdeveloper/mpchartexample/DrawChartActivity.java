@@ -48,7 +48,7 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
         mChart.setOnDrawListener(this);
 
         // enable drawing with the finger
-        mChart.setDrawingEnabled(true);
+//        mChart.setDrawingEnabled(true);
 
         // enable dragging and scaling
         mChart.setDragScaleEnabled(true);
@@ -61,7 +61,7 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
 
         // if disabled, drawn datasets with the finger will not be automatically
         // finished
-        mChart.setAutoFinish(true);
+//        mChart.setAutoFinish(true);
         mChart.setDrawGridBackground(false);
         
         mChart.setDrawLegend(false);

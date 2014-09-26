@@ -113,12 +113,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     protected boolean mHighLightIndicatorEnabled = true;
 
-    /**
-     * boolean to indicate if user drawing on chart should automatically be
-     * finished
-     */
-    protected boolean mAutoFinishDrawing;
-
     /** flag indicating if the vertical grid should be drawn or not */
     protected boolean mDrawVerticalGrid = true;
 
@@ -1258,36 +1252,42 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         this.mDrawListener = drawListener;
     }
 
-    /**
-     * set if the user should be allowed to draw onto the chart
-     * 
-     * @param drawingEnabled
-     */
-    public void setDrawingEnabled(boolean drawingEnabled) {
-        if (mListener instanceof BarLineChartTouchListener) {
-            ((BarLineChartTouchListener<?>) mListener).setDrawingEnabled(drawingEnabled);
-        }
-    }
-
-    /**
-     * Set to true to auto finish user drawing. THis means that the value that
-     * has been drawn into the chart is filled up to the maximum x-index
-     * automatically.
-     * 
-     * @param enabled
-     */
-    public void setAutoFinish(boolean enabled) {
-        this.mAutoFinishDrawing = enabled;
-    }
-
-    /**
-     * True if auto finish user drawing is enabled
-     * 
-     * @return
-     */
-    public boolean isAutoFinishEnabled() {
-        return mAutoFinishDrawing;
-    }
+//    /**
+//     * set if the user should be allowed to draw onto the chart
+//     * 
+//     * @param drawingEnabled
+//     */
+//    public void setDrawingEnabled(boolean drawingEnabled) {
+//        if (mListener instanceof BarLineChartTouchListener) {
+//            ((BarLineChartTouchListener<?>) mListener).setDrawingEnabled(drawingEnabled);
+//        }
+//    }
+//    
+//    /**
+//     * boolean to indicate if user drawing on chart should automatically be
+//     * finished
+//     */
+//    protected boolean mAutoFinishDrawing;
+//
+//    /**
+//     * Set to true to auto finish user drawing. THis means that the value that
+//     * has been drawn into the chart is filled up to the maximum x-index
+//     * automatically.
+//     * 
+//     * @param enabled
+//     */
+//    public void setAutoFinish(boolean enabled) {
+//        this.mAutoFinishDrawing = enabled;
+//    }
+//
+//    /**
+//     * True if auto finish user drawing is enabled
+//     * 
+//     * @return
+//     */
+//    public boolean isAutoFinishEnabled() {
+//        return mAutoFinishDrawing;
+//    }
 
     /**
      * Gets the OnDrawListener. May be null.
