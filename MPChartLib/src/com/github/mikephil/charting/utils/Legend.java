@@ -513,7 +513,7 @@ public class Legend {
             if (mLegendLabels[i] != null) {
 
                 // make a step to the left
-                if (mColors[i] != -1)
+                if (mColors[i] != -2)
                     width += mFormSize + mFormToTextSpace;
 
                 width += Utils.calcTextWidth(labelpaint, mLegendLabels[i])
@@ -524,6 +524,28 @@ public class Legend {
         }
 
         return width;
+    }
+    
+    /**
+     * Calculates the full height of the drawn legend.
+     * @param mLegendLabelPaint
+     * @return
+     */
+    public float getFullHeight(Paint labelpaint) {
+        
+        float height = 0f;
+
+        for (int i = 0; i < mLegendLabels.length; i++) {
+
+            // grouped forms have null labels
+            if (mLegendLabels[i] != null) {
+
+                height += Utils.calcTextHeight(labelpaint, mLegendLabels[i])
+                        + mYEntrySpace;
+            } 
+        }
+
+        return height;
     }
 
     /**

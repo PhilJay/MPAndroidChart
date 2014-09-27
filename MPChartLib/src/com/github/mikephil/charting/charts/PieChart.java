@@ -17,6 +17,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
+import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
@@ -171,16 +172,16 @@ public class PieChart extends PieRadarChartBase<PieData> {
         // prevent nullpointer when no data set
         if (mDataNotSet)
             return;
-        
+
         float diameter = getDiameter();
         float boxSize = diameter / 2f;
-        
+
         PointF c = getCenterOffsets();
 
         // create the circle box that will contain the pie-chart (the bounds of
         // the pie-chart)
         mCircleBox.set(c.x - boxSize, c.y - boxSize,
-                       c.x + boxSize, c.y + boxSize);
+                c.x + boxSize, c.y + boxSize);
     }
 
     @Override
@@ -189,37 +190,47 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
         calcAngles();
     }
-    
 
     @Override
     protected void calculateOffsets() {
 
-        if (mLegend == null)
-            return;
-
         // setup offsets for legend
-        if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
-
-            mLegend.setOffsetRight(mLegend.getMaximumEntryLength(mLegendLabelPaint));
-            mLegendLabelPaint.setTextAlign(Align.LEFT);
-
-        } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
-                || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
-                || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
-
-            mLegend.setOffsetBottom(mLegendLabelPaint.getTextSize() * 4f);
-        }
-
         if (mDrawLegend) {
+            
+            float legendRight = 0f, legendBottom = 0f;
 
-            mOffsetBottom = Math.max(mOffsetBottom, mLegend.getOffsetBottom());
-            mOffsetRight = Math.max(mOffsetRight, mLegend.getOffsetRight() / 3 * 2);
+            if (mLegend == null)
+                return;
+
+            if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
+
+                // this is the space between the legend and the chart
+                float spacing = Utils.convertDpToPixel(7f);
+
+                legendRight = mLegend.getMaximumEntryLength(mLegendLabelPaint)
+                        + mLegend.getFormSize() + mLegend.getFormToTextSpace() + spacing;
+
+                mLegendLabelPaint.setTextAlign(Align.LEFT);
+
+            } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
+                    || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
+                    || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
+
+                legendBottom = mLegendLabelPaint.getTextSize() * 4f;
+            }
+
+            mLegend.setOffsetBottom(legendBottom);
+            mLegend.setOffsetRight(legendRight);
+            
+            float min = Utils.convertDpToPixel(11f);
+            
+            mLegend.setOffsetTop(min);
+            mLegend.setOffsetLeft(min);
+            
+            mOffsetTop = Math.max(mLegend.getFullHeight(mLegendLabelPaint), min);
+
+            applyCalculatedOffsets();
         }
-
-        mLegend.setOffsetTop(mOffsetTop);
-        mLegend.setOffsetLeft(mOffsetLeft);
-        
-        applyCalculatedOffsets();
     }
 
     /**

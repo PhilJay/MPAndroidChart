@@ -506,6 +506,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         float yMin = 0f;
         float yMax = 0f;
    
+        // calculate the starting and entry point of the y-labels (depending on zoom / contentrect bounds)
         if(mContentRect.width() > 10) {
             
             PointD p1 = getValuesByTouchPoint(mContentRect.left, mContentRect.top);
@@ -1441,7 +1442,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         this.mStartAtZero = enabled;
         prepare();
         prepareMatrix();
-        calculateOffsets();
     }
 
     /**
