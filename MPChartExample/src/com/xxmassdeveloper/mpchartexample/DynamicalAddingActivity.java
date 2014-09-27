@@ -124,7 +124,6 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
         set.setHighLightColor(color);
 
         data.addDataSet(set);
-        
         mChart.notifyDataSetChanged();
         mChart.invalidate();
     }

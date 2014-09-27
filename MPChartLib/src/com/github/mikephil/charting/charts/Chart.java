@@ -24,8 +24,6 @@ import android.view.View;
 
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarLineScatterCandleData;
-import com.github.mikephil.charting.data.BarLineScatterCandleRadarDataSet;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -329,7 +327,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @param data
      */
     public void setData(T data) {
-
+        
         if (data == null || !data.isValid()) {
             Log.e(LOG_TAG,
                     "Cannot set data for chart. Provided chart values are null or contain less than 1 entry.");
@@ -351,57 +349,15 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         Log.i(LOG_TAG, "Data is set.");
     }
 
-    // /**
-    // * Sets primitive data for the chart. Internally, this is converted into a
-    // * ChartData object with one DataSet (type 0). If you have more specific
-    // * requirements for your data, use the setData(ChartData data) method and
-    // * create your own ChartData object with as many DataSets as you like.
-    // *
-    // * @param xVals
-    // * @param yVals
-    // */
-    // public void setData(ArrayList<String> xVals, ArrayList<Float> yVals) {
-    //
-    // ArrayList<Entry> series = new ArrayList<Entry>();
-    //
-    // for (int i = 0; i < yVals.size(); i++) {
-    // series.add(new Entry(yVals.get(i), i));
-    // }
-    //
-    // DataSet set = new DataSet(series, "DataSet");
-    // ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
-    // dataSets.add(set);
-    //
-    // ChartData data = new ChartData(xVals, dataSets);
-    //
-    // setData(data);
-    // }
-
-    // /**
-    // * Sets primitive data for the chart. Internally, this is converted into a
-    // * ChartData object with one DataSet (type 0). If you have more specific
-    // * requirements for your data, use the setData(ChartData data) method and
-    // * create your own ChartData object with as many DataSets as you like.
-    // *
-    // * @param xVals
-    // * @param yVals
-    // */
-    // public void setData(ArrayList<String> xVals, ArrayList<Float> yVals) {
-    //
-    // ArrayList<Entry> series = new ArrayList<Entry>();
-    //
-    // for (int i = 0; i < yVals.size(); i++) {
-    // series.add(new Entry(yVals.get(i), i));
-    // }
-    //
-    // DataSet set = new DataSet(series, "DataSet");
-    // ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
-    // dataSets.add(set);
-    //
-    // ChartData data = new ChartData(xVals, dataSets);
-    //
-    // setData(data);
-    // }
+    /**
+     * Clears the chart from all data and refreshes it.
+     */
+    public void clear() {
+        mCurrentData = null;
+        mOriginalData = null;
+        mDataNotSet = true;
+        invalidate();
+    }
 
     /**
      * does needed preparations for drawing
@@ -442,8 +398,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     protected void calcFormats() {
 
+        // check if a custom formatter was set (then this flag is true)
         if (!mUseCustomFormatter) {
-            
+
             float reference = 0f;
 
             if (mOriginalData == null || mOriginalData.getXValCount() < 2) {
@@ -517,8 +474,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     protected void prepareMatrixValuePx() {
 
-        float scaleX = (float) ((getWidth() - mOffsetLeft - mOffsetRight) / mDeltaX);
-        float scaleY = (float) ((getHeight() - mOffsetBottom - mOffsetTop) / mDeltaY);
+        float scaleX = (float) ((getWidth() - mOffsetRight - mOffsetLeft) / mDeltaX);
+        float scaleY = (float) ((getHeight() - mOffsetTop - mOffsetBottom) / mDeltaY);
 
         // setup all matrices
         mMatrixValueToPx.reset();
@@ -544,10 +501,10 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     protected void prepareContentRect() {
 
-        mContentRect.set((int) mOffsetLeft - 1, (int) mOffsetTop, getMeasuredWidth()
-                - (int) mOffsetRight + 1,
-                getMeasuredHeight()
-                        - (int) mOffsetBottom + 1);
+        mContentRect.set(mOffsetLeft,
+                mOffsetTop,
+                getWidth() - mOffsetRight,
+                getHeight() - mOffsetBottom);
     }
 
     /**
@@ -814,10 +771,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         // the amount of pixels the text needs to be set down to be on the same
         // height as the form
         float textDrop = (Utils.calcTextHeight(mLegendLabelPaint, "AQJ") + formSize) / 2f;
-
-        // Log.i(LOG_TAG, "OffsetBottom: " + mLegend.getOffsetBottom() +
-        // ", Formsize: " + formSize + ", Textsize: " + textSize +
-        // ", TextDrop: " + textDrop);
 
         float posX, posY;
 
@@ -1113,6 +1066,10 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                     continue;
 
                 float[] pos = getMarkerPosition(e, dataSetIndex);
+                
+                // check bounds
+                if(pos[0] < mOffsetLeft || pos[0] > getWidth() - mOffsetRight 
+                        || pos[1] < mOffsetTop || pos[1] > getHeight() - mOffsetBottom) continue;
 
                 // callbacks to update the content
                 mMarkerView.refreshContent(e, dataSetIndex);
@@ -2181,24 +2138,16 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-
+        
         prepareContentRect();
-        Log.i(LOG_TAG,
-                "onLayout(), width: " + mContentRect.width() + ", height: " + mContentRect.height());
-
-        if (this instanceof BarLineChartBase) {
-
-            BarLineChartBase<BarLineScatterCandleData<? extends BarLineScatterCandleRadarDataSet<Entry>>> b = (BarLineChartBase<BarLineScatterCandleData<? extends BarLineScatterCandleRadarDataSet<Entry>>>) this;
-
-            // if y-values are not fixed
-            if (!b.hasFixedYValues() && !mMatrixOnLayoutPrepared) {
-                prepareMatrix();
-                mMatrixOnLayoutPrepared = true;
-            }
-
-        } else {
-            prepareMatrix();
-        }
+        
+        //
+        // prepareContentRect();
+        // Log.i(LOG_TAG,
+        // "onLayout(), width: " + mContentRect.width() + ", height: " +
+        // mContentRect.height());
+        //
+        // calculateOffsets();
     }
 
     @Override

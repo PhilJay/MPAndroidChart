@@ -182,4 +182,28 @@ public class YLabels extends LabelBase {
     public boolean isShowOnlyMinMaxEnabled() {
         return mShowOnlyMinMax;
     }
+
+    /**
+     * Returns the formatted y-label at the specified index. This will either
+     * use the auto-formatter or the custom formatter (if one is set).
+     * 
+     * @param index
+     * @return
+     */
+    public String getFormattedLabel(int index) {
+
+        if (index < 0)
+            return "";
+
+        String text = null;
+
+        // if there is no formatter
+        if (getFormatter() == null)
+            text = Utils.formatNumber(mEntries[index], mDecimals,
+                    isSeparateThousandsEnabled());
+        else
+            text = getFormatter().getFormattedLabel(mEntries[index]);
+
+        return text;
+    }
 }

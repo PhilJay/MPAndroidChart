@@ -208,7 +208,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         // execute all drawing commands
         drawGridBackground();
-        drawBorder();
 
         prepareYLabels();
 
@@ -218,6 +217,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mDrawCanvas.clipRect(mContentRect);
 
         drawHorizontalGrid();
+
         drawVerticalGrid();
 
         drawData();
@@ -241,6 +241,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         drawLegend();
 
+        drawBorder();
+
         drawMarkers();
 
         drawDescription();
@@ -260,11 +262,15 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         if (mDataNotSet)
             return;
 
-        calcMinMax(mFixedYValues);
+        calcMinMax(mFixedYValues);  
+        
+        prepareYLabels();
 
         prepareXLabels();
 
         prepareLegend();
+        
+        calculateOffsets();
     }
 
     @Override
@@ -281,110 +287,97 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     @Override
     protected void calculateOffsets() {
 
-        if (mLegend == null)
-            return;
+        float legendRight = 0f, legendBottom = 0f;
 
         // setup offsets for legend
-        if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
+        if (mDrawLegend) {
 
-            // this is the space between the legend and the chart
-            float spacing = Utils.convertDpToPixel(7f);
-            mLegend.setOffsetRight(mLegend.getMaximumEntryLength(mLegendLabelPaint)
-                    + mLegend.getFormSize() + mLegend.getFormToTextSpace() + spacing);
-            mLegendLabelPaint.setTextAlign(Align.LEFT);
+            if (mLegend == null)
+                return;
 
-        } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
-                || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
-                || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
+            if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
 
-            if (mXLabels.getPosition() == XLabelPosition.TOP)
-                mLegend.setOffsetBottom(mLegendLabelPaint.getTextSize() * 3.5f);
-            else {
-                mLegend.setOffsetBottom(mLegendLabelPaint.getTextSize() * 2.5f);
+                // this is the space between the legend and the chart
+                float spacing = Utils.convertDpToPixel(7f);
+
+                legendRight = mLegend.getMaximumEntryLength(mLegendLabelPaint)
+                        + mLegend.getFormSize() + mLegend.getFormToTextSpace() + spacing;
+
+                mLegendLabelPaint.setTextAlign(Align.LEFT);
+
+            } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
+                    || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
+                    || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
+
+                if (mXLabels.getPosition() == XLabelPosition.TOP)
+                    legendBottom = mLegendLabelPaint.getTextSize() * 3.5f;
+                else {
+                    legendBottom = mLegendLabelPaint.getTextSize() * 2.5f;
+                }
             }
+
+            mLegend.setOffsetBottom(legendBottom);
+            mLegend.setOffsetRight(legendRight);
         }
 
         float yleft = 0f, yright = 0f;
+        
+        String label = mYLabels.getFormattedLabel(mYLabels.mEntryCount - 1);
+
+        // calculate the maximum y-label width (including eventual offsets)
+        float ylabelwidth = Utils.calcTextWidth(mYLabelPaint,
+                label + mUnit + (mYChartMin < 0 ? "----" : "+++")); // offsets
+
+        if (mDrawYLabels) {
+
+            // offsets for y-labels
+            if (mYLabels.getPosition() == YLabelPosition.LEFT) {
+
+                yleft = ylabelwidth;
+                mYLabelPaint.setTextAlign(Align.RIGHT);
+
+            } else if (mYLabels.getPosition() == YLabelPosition.RIGHT) {
+
+                yright = ylabelwidth;
+                mYLabelPaint.setTextAlign(Align.LEFT);
+
+            } else if (mYLabels.getPosition() == YLabelPosition.BOTH_SIDED) {
+
+                yright = ylabelwidth;
+                yleft = ylabelwidth;
+            }
+        }
+
         float xtop = 0f, xbottom = 0f;
 
-        // offsets for y-labels
-        if (mYLabels.getPosition() == YLabelPosition.LEFT) {
+        float xlabelheight = Utils.calcTextHeight(mXLabelPaint, "Q") * 2f;
 
-            if (mYChartMin >= 0)
-                yleft = Utils.calcTextWidth(mYLabelPaint, (int) mDeltaY + ".00" + mUnit);
-            else
-                yleft = Utils.calcTextWidth(mYLabelPaint, (int) (mDeltaY * -1) + ".00" + mUnit);
+        if (mDrawXLabels) {
 
-            mYLabelPaint.setTextAlign(Align.RIGHT);
+            // offsets for x-labels
+            if (mXLabels.getPosition() == XLabelPosition.BOTTOM) {
 
-        } else if (mYLabels.getPosition() == YLabelPosition.RIGHT) {
+                xbottom = xlabelheight;
 
-            if (mYChartMin >= 0)
-                yright = Utils.calcTextWidth(mYLabelPaint, (int) mDeltaY + ".00" + mUnit);
-            else
-                yright = Utils.calcTextWidth(mYLabelPaint, (int) (mDeltaY * -1) + ".00" + mUnit);
+            } else if (mXLabels.getPosition() == XLabelPosition.TOP) {
 
-            mYLabelPaint.setTextAlign(Align.LEFT);
+                xtop = xlabelheight;
 
-        } else if (mYLabels.getPosition() == YLabelPosition.BOTH_SIDED) {
+            } else if (mXLabels.getPosition() == XLabelPosition.BOTH_SIDED) {
 
-            float width = 0f;
-
-            if (mYChartMin >= 0)
-                width = Utils.calcTextWidth(mYLabelPaint, (int) mDeltaY + ".00" + mUnit);
-            else
-                width = Utils.calcTextWidth(mYLabelPaint, (int) (mDeltaY * -1) + ".00" + mUnit);
-
-            yright = width;
-            yleft = width;
-        }
-
-        // offsets for x-labels
-        if (mXLabels.getPosition() == XLabelPosition.BOTTOM) {
-
-            xbottom = Utils.calcTextHeight(mXLabelPaint, "Q") * 2f;
-
-        } else if (mXLabels.getPosition() == XLabelPosition.TOP) {
-
-            xtop = Utils.calcTextHeight(mXLabelPaint, "Q") * 2f;
-
-        } else if (mXLabels.getPosition() == XLabelPosition.BOTH_SIDED) {
-
-            float height = Utils.calcTextHeight(mXLabelPaint, "Q") * 2f;
-            xbottom = height;
-            xtop = height;
-        }
-
-        if (mDrawLegend) {
-
-            if (mDrawXLabels) {
-                mOffsetBottom = Math.max(mOffsetBottom, xbottom + mLegend.getOffsetBottom());
-                mOffsetTop = Math.max(mOffsetTop, xtop);
-            } else {
-                mOffsetBottom = Math.max(mOffsetBottom, mLegend.getOffsetBottom());
-            }
-
-            if (mDrawYLabels) {
-                // merge legend, label and chart offsets
-                mOffsetLeft = Math.max(mOffsetLeft, yleft);
-                mOffsetRight = Math.max(mOffsetRight, yright + mLegend.getOffsetRight());
-            } else {
-                mOffsetRight = Math.max(mOffsetRight, mLegend.getOffsetRight());
-            }
-
-        } else {
-
-            if (mDrawXLabels) {
-                mOffsetBottom = Math.max(mOffsetBottom, xbottom);
-                mOffsetTop = Math.max(mOffsetTop, xtop);
-            }
-
-            if (mDrawYLabels) {
-                // merge chart and label offsets
-                mOffsetLeft = Math.max(mOffsetLeft, yleft);
-                mOffsetRight = Math.max(mOffsetRight, yright);
+                xbottom = xlabelheight;
+                xtop = xlabelheight;
             }
         }
+
+        // all required offsets are calculated, now find largest and apply
+        float min = Utils.convertDpToPixel(11f);
+
+        mOffsetBottom = Math.max(min, xbottom + legendBottom);
+        mOffsetTop = Math.max(min, xtop);
+
+        mOffsetLeft = Math.max(min, yleft);
+        mOffsetRight = Math.max(min, yright + legendRight);
 
         // those offsets are equal for legend and other chart, just apply them
         mLegend.setOffsetTop(mOffsetTop);
@@ -411,7 +404,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         if (!mInvertYAxis)
             offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
         else {
-            offset.setTranslate(mOffsetLeft, -getOffsetTop());
+            offset.setTranslate(mOffsetLeft, -mOffsetTop);
             offset.postScale(1.0f, -1.0f);
         }
 
@@ -490,12 +483,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         StringBuffer a = new StringBuffer();
 
-        // float length = (int) (((float)
-        // (mCurrentData.getXVals().get(0).length() + mCurrentData
-        // .getXVals()
-        // .get(mCurrentData.getXValCount() - 1)
-        // .length())));
-
         int max = (int) Math.round(mCurrentData.getXValAverageLength()
                 + mXLabels.getSpaceBetweenLabels());
 
@@ -515,31 +502,44 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * @return
      */
     private void prepareYLabels() {
+        
+        float yMin = 0f;
+        float yMax = 0f;
+   
+        if(mContentRect.width() > 10) {
+            
+            PointD p1 = getValuesByTouchPoint(mContentRect.left, mContentRect.top);
+            PointD p2 = getValuesByTouchPoint(mContentRect.left, mContentRect.bottom);
+            
+            if (!mInvertYAxis) {
+                yMin = (float) p2.y;
+                yMax = (float) p1.y;
+            } else {
 
-        // calculate the currently visible extremes
-        PointD p1 = getValuesByTouchPoint(mContentRect.left, mContentRect.top);
-        PointD p2 = getValuesByTouchPoint(mContentRect.left, mContentRect.bottom);
-
-        // mYChartMin = (float) p2.y;
-        // mYChartMax = (float) p1.y;
-
-        if (!mInvertYAxis) {
-            mYChartMin = (float) p2.y;
-            mYChartMax = (float) p1.y;
+                if (!mStartAtZero)
+                    yMin = (float) Math.min(p1.y, p2.y);
+                else
+                    yMin = 0;
+                yMax = (float) Math.max(p1.y, p2.y);
+            } 
+            
         } else {
+            
+            if (!mInvertYAxis) {
+                yMin = mYChartMin;
+                yMax = mYChartMax;
+            } else {
 
-            if (!mStartAtZero)
-                mYChartMin = (float) Math.min(p1.y, p2.y);
-            else
-                mYChartMin = 0;
-            mYChartMax = (float) Math.max(p1.y, p2.y);
+                if (!mStartAtZero)
+                    yMin = (float) Math.min(mYChartMax, mYChartMin);
+                else
+                    yMin = 0;
+                yMax = (float) Math.max(mYChartMax, mYChartMin);
+            }  
         }
 
-        float yMin = mYChartMin;
-        float yMax = mYChartMax;
-
         int labelCount = mYLabels.getLabelCount();
-        double range = yMax - yMin;
+        double range = Math.abs(yMax - yMin);
 
         if (labelCount == 0 || range <= 0) {
             mYLabels.mEntries = new float[] {};
@@ -604,7 +604,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         if (!mDrawXLabels)
             return;
 
-        float yoffset = Utils.convertDpToPixel(3.5f);
+        float yoffset = Utils.convertDpToPixel(4f);
 
         mXLabelPaint.setTypeface(mXLabels.getTypeface());
         mXLabelPaint.setTextSize(mXLabels.getTextSize());
@@ -753,14 +753,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         // draw
         for (int i = 0; i < mYLabels.mEntryCount; i++) {
 
-            String text = null;
-
-            // if there is no formatter
-            if (mYLabels.getFormatter() == null)
-                text = Utils.formatNumber(mYLabels.mEntries[i], mYLabels.mDecimals,
-                        mYLabels.isSeparateThousandsEnabled());
-            else
-                text = mYLabels.getFormatter().getFormattedLabel(mYLabels.mEntries[i]);
+            String text = mYLabels.getFormattedLabel(i);
 
             if (!mYLabels.isDrawTopYLabelEntryEnabled() && i >= mYLabels.mEntryCount - 1)
                 return;
@@ -1252,42 +1245,43 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         this.mDrawListener = drawListener;
     }
 
-//    /**
-//     * set if the user should be allowed to draw onto the chart
-//     * 
-//     * @param drawingEnabled
-//     */
-//    public void setDrawingEnabled(boolean drawingEnabled) {
-//        if (mListener instanceof BarLineChartTouchListener) {
-//            ((BarLineChartTouchListener<?>) mListener).setDrawingEnabled(drawingEnabled);
-//        }
-//    }
-//    
-//    /**
-//     * boolean to indicate if user drawing on chart should automatically be
-//     * finished
-//     */
-//    protected boolean mAutoFinishDrawing;
-//
-//    /**
-//     * Set to true to auto finish user drawing. THis means that the value that
-//     * has been drawn into the chart is filled up to the maximum x-index
-//     * automatically.
-//     * 
-//     * @param enabled
-//     */
-//    public void setAutoFinish(boolean enabled) {
-//        this.mAutoFinishDrawing = enabled;
-//    }
-//
-//    /**
-//     * True if auto finish user drawing is enabled
-//     * 
-//     * @return
-//     */
-//    public boolean isAutoFinishEnabled() {
-//        return mAutoFinishDrawing;
-//    }
+    // /**
+    // * set if the user should be allowed to draw onto the chart
+    // *
+    // * @param drawingEnabled
+    // */
+    // public void setDrawingEnabled(boolean drawingEnabled) {
+    // if (mListener instanceof BarLineChartTouchListener) {
+    // ((BarLineChartTouchListener<?>)
+    // mListener).setDrawingEnabled(drawingEnabled);
+    // }
+    // }
+    //
+    // /**
+    // * boolean to indicate if user drawing on chart should automatically be
+    // * finished
+    // */
+    // protected boolean mAutoFinishDrawing;
+    //
+    // /**
+    // * Set to true to auto finish user drawing. THis means that the value that
+    // * has been drawn into the chart is filled up to the maximum x-index
+    // * automatically.
+    // *
+    // * @param enabled
+    // */
+    // public void setAutoFinish(boolean enabled) {
+    // this.mAutoFinishDrawing = enabled;
+    // }
+    //
+    // /**
+    // * True if auto finish user drawing is enabled
+    // *
+    // * @return
+    // */
+    // public boolean isAutoFinishEnabled() {
+    // return mAutoFinishDrawing;
+    // }
 
     /**
      * Gets the OnDrawListener. May be null.

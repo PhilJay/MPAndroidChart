@@ -74,13 +74,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 //        mChart.setDrawBarShadow(true);
 
         mChart.setUnit(" €");
-
-        // change the position of the y-labels
-        YLabels yLabels = mChart.getYLabels();
-        yLabels.setPosition(YLabelPosition.BOTH_SIDED);
-
-        XLabels xLabels = mChart.getXLabels();
-        xLabels.setPosition(XLabelPosition.TOP);
+        
         // mChart.setDrawXLabels(false);
 
         mChart.setDrawGridBackground(false);
@@ -105,6 +99,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         YLabels yl = mChart.getYLabels();
         yl.setTypeface(tf);
         yl.setLabelCount(8);
+        yl.setPosition(YLabelPosition.BOTH_SIDED);
 
         mChart.setValueTypeface(tf);
         
@@ -267,7 +262,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         for (int i = 0; i < count; i++) {
             float mult = (range + 1);
-            float val = (float) (Math.random() * mult) + 3;
+            float val = (float) (Math.random() * mult);
             yVals1.add(new BarEntry(val, i));
         }
 
