@@ -410,7 +410,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 reference = mDeltaY;
             }
 
-            int digits = Utils.getFormatDigits(reference);
+            int digits = Utils.getDecimals(reference);
 
             StringBuffer b = new StringBuffer();
             for (int i = 0; i < digits; i++) {

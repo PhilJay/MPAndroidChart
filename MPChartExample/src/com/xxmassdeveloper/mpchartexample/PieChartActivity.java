@@ -61,7 +61,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart.setDrawCenterText(true);
 
         mChart.setDrawHoleEnabled(true);
-        
+
         mChart.setRotationAngle(0);
 
         // draws the corresponding description value into the slice
@@ -69,7 +69,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         // enable rotation of the chart by touch
         mChart.setRotationEnabled(true);
-        
+
         // display percentage values
         mChart.setUsePercentValues(true);
         // mChart.setUnit(" €");
@@ -77,13 +77,13 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         // add a selection listener
         mChart.setOnChartValueSelectedListener(this);
-//        mChart.setTouchEnabled(false);
-        
+        // mChart.setTouchEnabled(false);
+
         mSeekBarX.setProgress(3);
         mSeekBarY.setProgress(100);
-        
+
         mChart.animateXY(1500, 1500);
-//        mChart.spin(2000, 0, 360);
+        // mChart.spin(2000, 0, 360);
 
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART);
@@ -198,7 +198,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         set1.setSliceSpace(3f);
         set1.setColors(ColorTemplate.createColors(getApplicationContext(),
                 ColorTemplate.VORDIPLOM_COLORS));
-        
+
         PieData data = new PieData(xVals, set1);
         mChart.setData(data);
 

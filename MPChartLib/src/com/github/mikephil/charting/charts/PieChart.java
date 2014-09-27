@@ -196,7 +196,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
         // setup offsets for legend
         if (mDrawLegend) {
-            
+
             float legendRight = 0f, legendBottom = 0f;
 
             if (mLegend == null)
@@ -221,12 +221,12 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
             mLegend.setOffsetBottom(legendBottom);
             mLegend.setOffsetRight(legendRight);
-            
+
             float min = Utils.convertDpToPixel(11f);
-            
+
             mLegend.setOffsetTop(min);
             mLegend.setOffsetLeft(min);
-            
+
             mOffsetTop = Math.max(mLegend.getFullHeight(mLegendLabelPaint), min);
 
             applyCalculatedOffsets();
@@ -252,7 +252,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
             for (int j = 0; j < entries.size(); j++) {
 
-                mDrawAngles[cnt] = calcAngle(entries.get(j).getVal());
+                mDrawAngles[cnt] = calcAngle(Math.abs(entries.get(j).getVal()));
 
                 if (cnt == 0) {
                     mAbsoluteAngles[cnt] = mDrawAngles[cnt];
@@ -333,11 +333,17 @@ public class PieChart extends PieRadarChartBase<PieData> {
                 float newangle = mDrawAngles[cnt];
                 float sliceSpace = dataSet.getSliceSpace();
 
-                if (!needsHighlight(entries.get(j).getXIndex(), i)) {
+                Entry e = entries.get(j);
 
-                    mRenderPaint.setColor(dataSet.getColor(j));
-                    mDrawCanvas.drawArc(mCircleBox, angle + sliceSpace / 2f, newangle * mPhaseY
-                            - sliceSpace / 2f, true, mRenderPaint);
+                // draw only if the value is greater than zero
+                if ((Math.abs(e.getVal()) > 0.000001)) {
+
+                    if (!needsHighlight(e.getXIndex(), i)) {
+
+                        mRenderPaint.setColor(dataSet.getColor(j));
+                        mDrawCanvas.drawArc(mCircleBox, angle + sliceSpace / 2f, newangle * mPhaseY
+                                - sliceSpace / 2f, true, mRenderPaint);
+                    }
                 }
 
                 angle += newangle * mPhaseX;
@@ -457,7 +463,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
                 float value = entries.get(j).getVal();
 
                 if (mUsePercentValues)
-                    val = mValueFormat.format(getPercentOfTotal(value)) + " %";
+                    val = mValueFormat.format(Math.abs(getPercentOfTotal(value))) + " %";
                 else
                     val = mValueFormat.format(value);
 

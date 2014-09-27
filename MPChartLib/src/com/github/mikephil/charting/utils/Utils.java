@@ -128,42 +128,28 @@ public abstract class Utils {
         return r.height();
     }
 
-    /**
-     * returns the appropriate number of format digits for a delta value
-     * 
-     * @param delta
-     * @return
-     */
-    public static int getFormatDigits(float delta) {
-
-        if (delta < 0.1) {
-            return 6;
-        } else if (delta <= 1) {
-            return 4;
-        } else if (delta < 4) {
-            return 3;
-        } else if (delta < 20) {
-            return 2;
-        } else if (delta < 60) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    public static int getPieFormatDigits(float delta) {
-        if (delta < 0.01) {
-            return 4;
-        } else if (delta < 0.1) {
-            return 3;
-        } else if (delta < 1) {
-            return 2;
-        } else if (delta < 10) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
+//    /**
+//     * returns the appropriate number of format digits for a delta value
+//     * 
+//     * @param delta
+//     * @return
+//     */
+//    public static int getFormatDigits(float delta) {
+//
+//        if (delta < 0.1) {
+//            return 6;
+//        } else if (delta <= 1) {
+//            return 4;
+//        } else if (delta < 4) {
+//            return 3;
+//        } else if (delta < 20) {
+//            return 2;
+//        } else if (delta < 60) {
+//            return 1;
+//        } else {
+//            return 0;
+//        }
+//    }
 
     /**
      * returns the appropriate number of format digits for a legend value
@@ -299,6 +285,19 @@ public abstract class Utils {
         final float magnitude = (float) Math.pow(10, pw);
         final long shifted = Math.round(number * magnitude);
         return shifted / magnitude;
+    }
+
+    /**
+     * Returns the appropriate number of decimals to be used for the provided
+     * number.
+     * 
+     * @param number
+     * @return
+     */
+    public static int getDecimals(float number) {
+
+        float i = roundToNextSignificant(number);
+        return (int) Math.ceil(-Math.log10(i)) + 2;
     }
 
     /**

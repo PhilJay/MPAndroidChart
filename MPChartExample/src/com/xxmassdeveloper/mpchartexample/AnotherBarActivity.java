@@ -51,6 +51,8 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
 
         mChart.setUnit(" €");
         mChart.setDescription("");
+        
+        mChart.setDrawYValues(true);
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
