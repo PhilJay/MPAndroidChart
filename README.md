@@ -123,9 +123,9 @@ In order to use the library, there are 2 options:
  - After importing, add the library to your project by right clicking your project `Properties-->Android`. There, you press the "Add.." button and choose the library project you just imported into eclipse. Then press `apply`.
  - Start using the library
 
-Rely on the **"MPChartExample"** folder and check out the examples in that project. The example project is also  [**available in the Google PlayStore**](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample). 
+For getting started, rely on the **"MPChartExample"** folder and check out the examples in that project. The example project is also  [**available in the Google PlayStore**](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample). 
 
-Furthermore, here is some code to get started.
+Furthermore, here is some code to begin with.
 
 **Setup:**
 
