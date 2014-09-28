@@ -463,9 +463,9 @@ public class PieChart extends PieRadarChartBase<PieData> {
                 float value = entries.get(j).getVal();
 
                 if (mUsePercentValues)
-                    val = mValueFormat.format(Math.abs(getPercentOfTotal(value))) + " %";
+                    val = mValueFormatter.getFormattedValue(Math.abs(getPercentOfTotal(value))) + " %";
                 else
-                    val = mValueFormat.format(value);
+                    val = mValueFormatter.getFormattedValue(value);
 
                 if (mDrawUnitInChart)
                     val = val + mUnit;

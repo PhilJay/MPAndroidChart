@@ -66,10 +66,10 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         // drawn
         mChart.setMaxVisibleValueCount(60);
         
-        DecimalFormat f = new DecimalFormat("###,###,###");
+        MyValueFormatter customFormatter = new MyValueFormatter();
         
         // set a custom formatter for the values inside the chart
-        mChart.setValueFormatter(f);
+        mChart.setValueFormatter(customFormatter);
         
         // if false values are only drawn for the stack sum, else each value is drawn
         mChart.setDrawValuesForWholeStack(true);
@@ -85,6 +85,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         YLabels yLabels = mChart.getYLabels();
         yLabels.setPosition(YLabelPosition.BOTH_SIDED);
         yLabels.setLabelCount(5);
+        yLabels.setFormatter(customFormatter);
 
         XLabels xLabels = mChart.getXLabels();
         xLabels.setPosition(XLabelPosition.TOP);

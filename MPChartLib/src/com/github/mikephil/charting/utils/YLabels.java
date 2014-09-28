@@ -38,7 +38,7 @@ public class YLabels extends LabelBase {
     protected boolean mShowOnlyMinMax = false;
 
     /** the formatter used to customly format the y-labels */
-    private YLabelFormatter mFormatter = null;
+    private ValueFormatter mFormatter = null;
 
     /** the position of the y-labels relative to the chart */
     private YLabelPosition mPosition = YLabelPosition.LEFT;
@@ -151,7 +151,7 @@ public class YLabels extends LabelBase {
      * 
      * @return
      */
-    public YLabelFormatter getFormatter() {
+    public ValueFormatter getFormatter() {
         return mFormatter;
     }
 
@@ -160,7 +160,7 @@ public class YLabels extends LabelBase {
      * 
      * @param f
      */
-    public void setFormatter(YLabelFormatter f) {
+    public void setFormatter(ValueFormatter f) {
         this.mFormatter = f;
     }
 
@@ -202,7 +202,7 @@ public class YLabels extends LabelBase {
             text = Utils.formatNumber(mEntries[index], mDecimals,
                     isSeparateThousandsEnabled());
         else
-            text = getFormatter().getFormattedLabel(mEntries[index]);
+            text = getFormatter().getFormattedValue(mEntries[index]);
 
         return text;
     }

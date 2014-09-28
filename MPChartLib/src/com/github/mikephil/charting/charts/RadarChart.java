@@ -492,10 +492,10 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
                     PointF p = getPosition(c, e.getVal() * factor, sliceangle * j + mRotationAngle);
 
                     if (mDrawUnitInChart)
-                        mDrawCanvas.drawText(mValueFormat.format(e.getVal()) + mUnit,
+                        mDrawCanvas.drawText(mValueFormatter.getFormattedValue(e.getVal()) + mUnit,
                                 p.x, p.y - yoffset, mValuePaint);
                     else
-                        mDrawCanvas.drawText(mValueFormat.format(e.getVal()),
+                        mDrawCanvas.drawText(mValueFormatter.getFormattedValue(e.getVal()),
                                 p.x, p.y - yoffset, mValuePaint);
                 }
             }

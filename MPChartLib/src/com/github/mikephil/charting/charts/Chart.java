@@ -34,6 +34,7 @@ import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.MarkerView;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.ValueFormatter;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.animation.ValueAnimator;
 import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
@@ -70,8 +71,14 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     private int mBackgroundColor = Color.WHITE;
 
-    /** the decimalformat responsible for formatting the values in the chart */
-    protected DecimalFormat mValueFormat = null;
+    /** custom formatter that is used instead of the auto-formatter if set */
+    protected ValueFormatter mValueFormatter = null;
+
+    /**
+     * flag that indicates if the default formatter should be used or if a
+     * custom one is set
+     */
+    private boolean mUseDefaultFormatter = true;
 
     /** chart offset to the left */
     protected float mOffsetLeft = 12;
@@ -327,7 +334,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @param data
      */
     public void setData(T data) {
-        
+
         if (data == null || !data.isValid()) {
             Log.e(LOG_TAG,
                     "Cannot set data for chart. Provided chart values are null or contain less than 1 entry.");
@@ -398,8 +405,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     protected void calcFormats() {
 
-        // check if a custom formatter was set (then this flag is true)
-        if (!mUseCustomFormatter) {
+        // check if a custom formatter is set or not
+        if (mUseDefaultFormatter) {
 
             float reference = 0f;
 
@@ -419,7 +426,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 b.append("0");
             }
 
-            mValueFormat = new DecimalFormat("###,###,###,##0" + b.toString());
+            DecimalFormat formatter = new DecimalFormat("###,###,###,##0" + b.toString());
+            mValueFormatter = new DefaultValueFormatter(formatter);
         }
     }
 
@@ -1066,10 +1074,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                     continue;
 
                 float[] pos = getMarkerPosition(e, dataSetIndex);
-                
+
                 // check bounds
-                if(pos[0] < mOffsetLeft || pos[0] > getWidth() - mOffsetRight 
-                        || pos[1] < mOffsetTop || pos[1] > getHeight() - mOffsetBottom) continue;
+                if (pos[0] < mOffsetLeft || pos[0] > getWidth() - mOffsetRight
+                        || pos[1] < mOffsetTop || pos[1] > getHeight() - mOffsetBottom)
+                    continue;
 
                 // callbacks to update the content
                 mMarkerView.refreshContent(e, dataSetIndex);
@@ -1768,23 +1777,21 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         mDrawMarkerViews = enabled;
     }
 
-    private boolean mUseCustomFormatter = false;
-
     /**
      * Sets the formatter to be used for drawing the values inside the chart. If
-     * no formatter is set, the chart will automatically create one. To
-     * re-enable auto formatting after setting a custom formatter, call
-     * setValueFormatter(null).
+     * no formatter is set, the chart will automatically determine a reasonable
+     * formatting (concerning decimals) for all the values that are drawn inside
+     * the chart. Set this to NULL to re-enable auto formatting.
      * 
      * @param f
      */
-    public void setValueFormatter(DecimalFormat f) {
-        mValueFormat = f;
+    public void setValueFormatter(ValueFormatter f) {
+        mValueFormatter = f;
 
-        if (f != null)
-            mUseCustomFormatter = true;
+        if (f == null)
+            mUseDefaultFormatter = true;
         else
-            mUseCustomFormatter = false;
+            mUseDefaultFormatter = false;
     }
 
     /**
@@ -1792,8 +1799,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * 
      * @return
      */
-    public DecimalFormat getValueFormatter() {
-        return mValueFormat;
+    public ValueFormatter getValueFormatter() {
+        return mValueFormatter;
     }
 
     /**
@@ -2132,15 +2139,12 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-    /** flag indicating if the matrix has alerady been prepared */
-    private boolean mMatrixOnLayoutPrepared = false;
-
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        
+
         prepareContentRect();
-        
+
         //
         // prepareContentRect();
         // Log.i(LOG_TAG,
@@ -2153,6 +2157,20 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+    }
+
+    private class DefaultValueFormatter implements ValueFormatter {
+
+        private DecimalFormat mFormat;
+
+        public DefaultValueFormatter(DecimalFormat f) {
+            mFormat = f;
+        }
+
+        @Override
+        public String getFormattedValue(float value) {
+            return mFormat.format(value);
+        }
     }
 
     // @Override

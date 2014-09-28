@@ -309,12 +309,12 @@ public class LineChart extends BarLineChartBase<LineData> {
 
                     if (mDrawUnitInChart) {
 
-                        mDrawCanvas.drawText(mValueFormat.format(val) + mUnit, positions[j],
+                        mDrawCanvas.drawText(mValueFormatter.getFormattedValue(val) + mUnit, positions[j],
                                 positions[j + 1]
                                         - valOffset, mValuePaint);
                     } else {
 
-                        mDrawCanvas.drawText(mValueFormat.format(val), positions[j],
+                        mDrawCanvas.drawText(mValueFormatter.getFormattedValue(val), positions[j],
                                 positions[j + 1] - valOffset,
                                 mValuePaint);
                     }
