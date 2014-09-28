@@ -117,7 +117,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
         set.setLineWidth(2.5f);
         set.setCircleSize(4.5f);
         
-        int color = getResources().getColor(mColors[count % mColors.length]);
+        int color = mColors[count % mColors.length];
         
         set.setColor(color);
         set.setCircleColor(color);

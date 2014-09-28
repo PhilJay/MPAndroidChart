@@ -38,7 +38,7 @@ public abstract class SimpleFragment extends Fragment {
             }
             
             BarDataSet ds = new BarDataSet(entries, getLabel(i));
-            ds.setColors(ColorTemplate.VORDIPLOM_COLORS, getActivity());
+            ds.setColors(ColorTemplate.VORDIPLOM_COLORS);
             sets.add(ds);
         }
         
@@ -63,7 +63,7 @@ public abstract class SimpleFragment extends Fragment {
             ScatterDataSet ds = new ScatterDataSet(entries, getLabel(i));
             ds.setScatterShapeSize(12f);
             ds.setScatterShape(shapes[i % shapes.length]);
-            ds.setColors(ColorTemplate.COLORFUL_COLORS, getActivity());
+            ds.setColors(ColorTemplate.COLORFUL_COLORS);
             ds.setScatterShapeSize(9f);
             sets.add(ds);
         }
@@ -95,7 +95,7 @@ public abstract class SimpleFragment extends Fragment {
         }
         
         PieDataSet ds1 = new PieDataSet(entries1, "Quarterly Revenues 2014");
-        ds1.setColors(ColorTemplate.VORDIPLOM_COLORS, getActivity());
+        ds1.setColors(ColorTemplate.VORDIPLOM_COLORS);
         ds1.setSliceSpace(2f);
         
         PieData d = new PieData(xVals, ds1);

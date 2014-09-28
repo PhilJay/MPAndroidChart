@@ -9,7 +9,7 @@ import com.github.mikephil.charting.R;
 import java.util.ArrayList;
 
 /**
- * Class that holds predefined color arrays (e.g.
+ * Class that holds predefined color integer arrays (e.g.
  * ColorTemplate.VORDIPLOM_COLORS) and convenience methods for loading colors
  * from resources.
  * 
@@ -21,37 +21,39 @@ public class ColorTemplate {
      * THE COLOR THEMES ARE PREDEFINED (predefined color integer arrays), FEEL
      * FREE TO CREATE YOUR OWN WITH AS MANY DIFFERENT COLORS AS YOU WANT
      */
-
-    public static final int[] FRESH_COLORS = {
-            R.color.fresh_1, R.color.fresh_2, R.color.fresh_3, R.color.fresh_4, R.color.fresh_5
-    };
-    public static final int[] MONO_COLORS = {
-            R.color.mono_1, R.color.mono_2, R.color.mono_3, R.color.mono_4, R.color.mono_5
-    };
     public static final int[] LIBERTY_COLORS = {
-            R.color.liberty_1, R.color.liberty_2, R.color.liberty_3, R.color.liberty_4,
-            R.color.liberty_5
-    };
-    public static final int[] COLORFUL_COLORS = {
-            R.color.colorful_1, R.color.colorful_2, R.color.colorful_3, R.color.colorful_4,
-            R.color.colorful_5
-    };
-    public static final int[] GREEN_COLORS = {
-            R.color.greens_1, R.color.greens_2, R.color.greens_3, R.color.greens_4,
-            R.color.greens_5
+            Color.rgb(207, 248, 246), Color.rgb(148, 212, 212), Color.rgb(136, 180, 187),
+            Color.rgb(118, 174, 175), Color.rgb(42, 109, 130)
     };
     public static final int[] JOYFUL_COLORS = {
-            R.color.joyful_1, R.color.joyful_2, R.color.joyful_3, R.color.joyful_4,
-            R.color.joyful_5
+            Color.rgb(217, 80, 138), Color.rgb(254, 149, 7), Color.rgb(254, 247, 120),
+            Color.rgb(106, 167, 134), Color.rgb(53, 194, 209)
     };
     public static final int[] PASTEL_COLORS = {
-            R.color.pastel_1, R.color.pastel_2, R.color.pastel_3, R.color.pastel_4,
-            R.color.pastel_5
+            Color.rgb(64, 89, 128), Color.rgb(149, 165, 124), Color.rgb(217, 184, 162),
+            Color.rgb(191, 134, 134), Color.rgb(179, 48, 80)
+    };
+    public static final int[] COLORFUL_COLORS = {
+            Color.rgb(193, 37, 82), Color.rgb(255, 102, 0), Color.rgb(245, 199, 0),
+            Color.rgb(106, 150, 31), Color.rgb(179, 100, 53)
     };
     public static final int[] VORDIPLOM_COLORS = {
             Color.rgb(192, 255, 140), Color.rgb(255, 247, 140), Color.rgb(255, 208, 140),
             Color.rgb(140, 234, 255), Color.rgb(255, 140, 157)
     };
+
+    // public static final int[] FRESH_COLORS = {
+    // R.color.fresh_1, R.color.fresh_2, R.color.fresh_3, R.color.fresh_4,
+    // R.color.fresh_5
+    // };
+    // public static final int[] MONO_COLORS = {
+    // R.color.mono_1, R.color.mono_2, R.color.mono_3, R.color.mono_4,
+    // R.color.mono_5
+    // };
+    // public static final int[] GREEN_COLORS = {
+    // R.color.greens_1, R.color.greens_2, R.color.greens_3, R.color.greens_4,
+    // R.color.greens_5
+    // };
 
     /**
      * turn an array of resource-colors (contains resource-id integers) into an
