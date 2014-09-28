@@ -17,6 +17,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.github.mikephil.charting.utils.XLabels;
@@ -189,8 +190,12 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
         }
         return true;
     }
-    
-    private int[] mColors = new int[] { R.color.vordiplom_1, R.color.vordiplom_2, R.color.vordiplom_3 };
+
+    private int[] mColors = new int[] {
+            ColorTemplate.VORDIPLOM_COLORS[0], 
+            ColorTemplate.VORDIPLOM_COLORS[1],
+            ColorTemplate.VORDIPLOM_COLORS[2]
+    };
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -217,8 +222,8 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
             LineDataSet d = new LineDataSet(values, "DataSet " + (z + 1));
             d.setLineWidth(2.5f);
             d.setCircleSize(4f);
-            
-            int color = getResources().getColor(mColors[z % mColors.length]);
+
+            int color = mColors[z % mColors.length];
             d.setColor(color);
             d.setCircleColor(color);
             dataSets.add(d);

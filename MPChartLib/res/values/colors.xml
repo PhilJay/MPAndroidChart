@@ -42,11 +42,12 @@
     <color name="pastel_3">#D9B8A2</color>
     <color name="pastel_4">#BF8686</color>
     <color name="pastel_5">#B33050</color>
-    
+<!--   
     <color name="vordiplom_1">#C0FF8C</color>
     <color name="vordiplom_2">#FFF78C</color>
     <color name="vordiplom_3">#FFD08C</color>
     <color name="vordiplom_4">#8CEAFF</color>
     <color name="vordiplom_5">#FF8C9D</color>
+    -->
     
 </resources>

@@ -1,7 +1,8 @@
 
 package com.github.mikephil.charting.utils;
 
-import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Color;
 
 import com.github.mikephil.charting.R;
 
@@ -17,8 +18,8 @@ import java.util.ArrayList;
 public class ColorTemplate {
 
     /**
-     * THE COLOR THEMES ARE PREDEFINED, FEEL FREE TO CREATE YOUR OWN WITH AS
-     * MANY DIFFERENT COLORS AS YOU WANT
+     * THE COLOR THEMES ARE PREDEFINED (predefined color integer arrays), FEEL
+     * FREE TO CREATE YOUR OWN WITH AS MANY DIFFERENT COLORS AS YOU WANT
      */
 
     public static final int[] FRESH_COLORS = {
@@ -48,31 +49,32 @@ public class ColorTemplate {
             R.color.pastel_5
     };
     public static final int[] VORDIPLOM_COLORS = {
-            R.color.vordiplom_1, R.color.vordiplom_2, R.color.vordiplom_3, R.color.vordiplom_4,
-            R.color.vordiplom_5
+            Color.rgb(192, 255, 140), Color.rgb(255, 247, 140), Color.rgb(255, 208, 140),
+            Color.rgb(140, 234, 255), Color.rgb(255, 140, 157)
     };
 
     /**
-     * turn an array of resource-colors into an arraylist of actual color values
+     * turn an array of resource-colors (contains resource-id integers) into an
+     * array list of actual color integers
      * 
-     * @param c
-     * @param colors e.g. ColorTemplate.MONO_COLORS
+     * @param r
+     * @param colors an integer array of resource id's of colors
      * @return
      */
-    public static ArrayList<Integer> createColors(Context c, int[] colors) {
+    public static ArrayList<Integer> createColors(Resources r, int[] colors) {
 
         ArrayList<Integer> result = new ArrayList<Integer>();
 
         for (int i : colors) {
-            result.add(c.getResources().getColor(i));
+            result.add(r.getColor(i));
         }
 
         return result;
     }
 
     /**
-     * Turns an array of colors (already converted with
-     * getResources().getColor(...)) into an ArrayList of colors.
+     * Turns an array of colors (integer color values) into an ArrayList of
+     * colors.
      * 
      * @param colors
      * @return
@@ -87,6 +89,4 @@ public class ColorTemplate {
 
         return result;
     }
-    
-    
 }

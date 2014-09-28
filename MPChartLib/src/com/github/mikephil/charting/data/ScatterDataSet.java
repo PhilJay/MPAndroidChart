@@ -28,7 +28,7 @@ public class ScatterDataSet extends BarLineScatterCandleRadarDataSet<Entry> {
     public ScatterDataSet(ArrayList<Entry> yVals, String label) {
         super(yVals, label);
 
-//        mShapeSize = Utils.convertDpToPixel(8f);
+        // mShapeSize = Utils.convertDpToPixel(8f);
     }
 
     @Override
@@ -46,13 +46,13 @@ public class ScatterDataSet extends BarLineScatterCandleRadarDataSet<Entry> {
         copied.mScatterShape = mScatterShape;
         copied.mCustomScatterPath = mCustomScatterPath;
         copied.mHighLightColor = mHighLightColor;
-        
+
         return copied;
     }
 
     /**
-     * Sets the size the drawn scattershape will have. This only applies for non
-     * custom shapes. Default 12f
+     * Sets the size in density pixels the drawn scattershape will have. This
+     * only applies for non custom shapes.
      * 
      * @param size
      */

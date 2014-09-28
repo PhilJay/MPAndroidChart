@@ -14,6 +14,7 @@ import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -38,6 +39,8 @@ public class RadarChartActivitry extends DemoBase {
         mChart.setValueTypeface(tf);
 
         mChart.setDescription("");
+        mChart.setUnit(" $");
+        mChart.setDrawUnitsInChart(true);
 
         mChart.setWebLineWidth(1.5f);
         mChart.setWebLineWidthInner(0.75f);
@@ -66,6 +69,7 @@ public class RadarChartActivitry extends DemoBase {
         yl.setTypeface(tf);
         yl.setLabelCount(5);
         yl.setTextSize(9f);
+        yl.setDrawUnitsInYLabel(true);
 
         // mChart.animateXY(1500, 1500);
 
@@ -187,12 +191,12 @@ public class RadarChartActivitry extends DemoBase {
             xVals.add(mParties[i % mParties.length]);
 
         RadarDataSet set1 = new RadarDataSet(yVals1, "Set 1");
-        set1.setColor(getResources().getColor(R.color.vordiplom_1));
+        set1.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
         set1.setDrawFilled(true);
         set1.setLineWidth(2f);
 
         RadarDataSet set2 = new RadarDataSet(yVals2, "Set 2");
-        set2.setColor(getResources().getColor(R.color.vordiplom_5));
+        set2.setColor(ColorTemplate.VORDIPLOM_COLORS[4]);
         set2.setDrawFilled(true);
         set2.setLineWidth(2f);
 

@@ -1,6 +1,7 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -21,6 +22,7 @@ import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.github.mikephil.charting.utils.XLabels;
+import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -49,8 +51,14 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         mSeekBarY.setOnSeekBarChangeListener(this);
         
         mChart = (ScatterChart) findViewById(R.id.chart1);
+        mChart.setDescription("");
+        
+        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+        mChart.setValueTypeface(tf);
         
         mChart.setOnChartValueSelectedListener(this);
+        
+        mChart.setDrawGridBackground(false);
 
         mChart.setTouchEnabled(true);
         mChart.setHighlightEnabled(true);
@@ -66,6 +74,13 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART);
+        l.setTypeface(tf);
+        
+        YLabels yl = mChart.getYLabels();
+        yl.setTypeface(tf);
+        
+        XLabels xl = mChart.getXLabels();
+        xl.setTypeface(tf);
     }
 
     @Override
@@ -197,6 +212,10 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         ScatterDataSet set3 = new ScatterDataSet(yVals3, "DS 3");
         set3.setScatterShape(ScatterShape.TRIANGLE);
         set3.setColor(getResources().getColor(R.color.colorful_3));
+        
+        set1.setScatterShapeSize(8f);
+        set2.setScatterShapeSize(8f);
+        set3.setScatterShapeSize(8f);
 
         ArrayList<ScatterDataSet> dataSets = new ArrayList<ScatterDataSet>();
         dataSets.add(set1); // add the datasets

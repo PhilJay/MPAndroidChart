@@ -240,8 +240,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         }
 
         BarDataSet set1 = new BarDataSet(yVals1, "Statistics Vienna 2014");
-        set1.setColors(ColorTemplate.createColors(getApplicationContext(),
-                ColorTemplate.VORDIPLOM_COLORS));
+        set1.setColors(ColorTemplate.VORDIPLOM_COLORS);
         set1.setStackLabels(new String[] {
                 "Births", "Divorces", "Marriages"
         });

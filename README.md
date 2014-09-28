@@ -100,6 +100,10 @@ Features
 
 ![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/candlestickchart.png)
 
+ - **RadarChart** (spider web chart)
+
+![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/radarchart.png)
+
 
 
 Usage

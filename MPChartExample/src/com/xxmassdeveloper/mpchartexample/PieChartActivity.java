@@ -196,8 +196,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         PieDataSet set1 = new PieDataSet(yVals1, "Election Results");
         set1.setSliceSpace(3f);
-        set1.setColors(ColorTemplate.createColors(getApplicationContext(),
-                ColorTemplate.VORDIPLOM_COLORS));
+        set1.setColors(ColorTemplate.VORDIPLOM_COLORS);
 
         PieData data = new PieData(xVals, set1);
         mChart.setData(data);
