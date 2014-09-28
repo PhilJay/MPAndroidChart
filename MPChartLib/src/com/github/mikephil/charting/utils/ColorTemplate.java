@@ -4,8 +4,6 @@ package com.github.mikephil.charting.utils;
 import android.content.res.Resources;
 import android.graphics.Color;
 
-import com.github.mikephil.charting.R;
-
 import java.util.ArrayList;
 
 /**

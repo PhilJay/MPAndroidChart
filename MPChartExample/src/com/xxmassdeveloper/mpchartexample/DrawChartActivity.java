@@ -1,4 +1,3 @@
-
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Typeface;
