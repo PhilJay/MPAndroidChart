@@ -87,11 +87,12 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
             case MotionEvent.ACTION_DOWN:
 
                 saveTouchStart(event);
-
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
 
-                if (event.getPointerCount() == 2) {
+                if (event.getPointerCount() >= 2) {
+                    
+                    mChart.disableScroll();
 
                     saveTouchStart(event);
 
@@ -121,6 +122,8 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
+                
+                mChart.disableScroll();
 
                 if (mTouchMode == DRAG) {
 
@@ -141,6 +144,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
             case MotionEvent.ACTION_UP:
                 mTouchMode = NONE;
+                mChart.enableScroll();
                 break;
             case MotionEvent.ACTION_POINTER_UP:
                 mTouchMode = POST_ZOOM;
@@ -175,7 +179,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
      * @param event
      */
     private void performDrag(MotionEvent event) {
-
+        
         mMatrix.set(mSavedMatrix);
         PointF dragPoint = new PointF(event.getX(), event.getY());
 
@@ -195,46 +199,49 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
      * @param event
      */
     private void performZoom(MotionEvent event) {
+        
+        if(event.getPointerCount() >= 2) {
+         
+            // get the distance between the pointers of the touch
+            // event
+            float totalDist = spacing(event);
 
-        // get the distance between the pointers of the touch
-        // event
-        float totalDist = spacing(event);
+            if (totalDist > 10f) {
 
-        if (totalDist > 10f) {
+                // get the translation
+                PointF t = getTrans(mTouchPointCenter.x, mTouchPointCenter.y);
 
-            // get the translation
-            PointF t = getTrans(mTouchPointCenter.x, mTouchPointCenter.y);
+                // take actions depending on the activated touch
+                // mode
+                if (mTouchMode == PINCH_ZOOM) {
 
-            // take actions depending on the activated touch
-            // mode
-            if (mTouchMode == PINCH_ZOOM) {
+                    float scale = totalDist / mSavedDist; // total
+                                                          // scale
 
-                float scale = totalDist / mSavedDist; // total
-                                                      // scale
+                    mMatrix.set(mSavedMatrix);
+                    mMatrix.postScale(scale, scale, t.x, t.y);
 
-                mMatrix.set(mSavedMatrix);
-                mMatrix.postScale(scale, scale, t.x, t.y);
+                } else if (mTouchMode == X_ZOOM) {
 
-            } else if (mTouchMode == X_ZOOM) {
+                    float xDist = getXDist(event);
+                    float scaleX = xDist / mSavedXDist; // x-axis
+                                                        // scale
 
-                float xDist = getXDist(event);
-                float scaleX = xDist / mSavedXDist; // x-axis
-                                                    // scale
+                    mMatrix.set(mSavedMatrix);
+                    mMatrix.postScale(scaleX, 1f, t.x, t.y);
 
-                mMatrix.set(mSavedMatrix);
-                mMatrix.postScale(scaleX, 1f, t.x, t.y);
+                } else if (mTouchMode == Y_ZOOM) {
 
-            } else if (mTouchMode == Y_ZOOM) {
+                    float yDist = getYDist(event);
+                    float scaleY = yDist / mSavedYDist; // y-axis
+                                                        // scale
 
-                float yDist = getYDist(event);
-                float scaleY = yDist / mSavedYDist; // y-axis
-                                                    // scale
+                    mMatrix.set(mSavedMatrix);
 
-                mMatrix.set(mSavedMatrix);
+                    // y-axis comes from top to bottom, revert y
+                    mMatrix.postScale(1f, scaleY, t.x, t.y);
 
-                // y-axis comes from top to bottom, revert y
-                mMatrix.postScale(1f, scaleY, t.x, t.y);
-
+                }
             }
         }
     }
