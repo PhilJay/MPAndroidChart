@@ -67,6 +67,13 @@ public class PieChart extends PieRadarChartBase<PieData> {
      * slices
      */
     private boolean mDrawXVals = true;
+    
+    
+    /**
+     * set this to true to draw the x-values in percent and original next to the values in the pie
+     * slices
+     */
+    private boolean mDrawXValsAndXPercent= false;
 
     /**
      * if set to true, all values show up in percent instead of their real value
@@ -469,9 +476,33 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
                 if (mDrawUnitInChart)
                     val = val + mUnit;
+                
+                
+                if (mDrawXVals && mDrawYValues && mDrawXValsAndXPercent) {
 
+                    // use ascent and descent to calculate the new line
+                    // position,
+                    // 1.6f is the line spacing
+                    float lineHeight = (mValuePaint.ascent() + mValuePaint.descent()) * 1.6f;
+                    y -= lineHeight / 3;
+
+                    mDrawCanvas.drawText(val, x, y, mValuePaint);
+                    mDrawCanvas.drawText(mCurrentData.getXVals().get(j), x, y + lineHeight,
+                            mValuePaint);
+                    mDrawCanvas.drawText(mValueFormatter.getFormattedValue(value), x, y + lineHeight * 2 , mValuePaint);
+
+                } 
+                else if (mDrawXValsAndXPercent){
+                	
+                	float lineHeight = (mValuePaint.ascent() + mValuePaint.descent()) * 1.6f;
+                    y -= lineHeight / 2;
+
+                    mDrawCanvas.drawText(val, x, y, mValuePaint);
+                    mDrawCanvas.drawText(mValueFormatter.getFormattedValue(value), x, y + lineHeight , mValuePaint);
+                	
+                }
                 // draw everything, depending on settings
-                if (mDrawXVals && mDrawYValues) {
+                else if (mDrawXVals && mDrawYValues ) {
 
                     // use ascent and descent to calculate the new line
                     // position,
@@ -646,6 +677,17 @@ public class PieChart extends PieRadarChartBase<PieData> {
     public void setDrawXValues(boolean enabled) {
         mDrawXVals = enabled;
     }
+    
+    /**
+     * set this to true to draw the x-value text and percent into the pie slices
+     * 
+     * @param enabled
+     */
+    public void setDrawXValuesXPercent(boolean enabled) {
+    	mDrawXValsAndXPercent = enabled;
+    }
+    
+    
 
     /**
      * returns true if drawing x-values is enabled, false if not
