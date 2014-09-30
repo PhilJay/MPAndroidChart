@@ -10,6 +10,14 @@ import java.util.ArrayList;
  */
 public abstract class BarLineScatterCandleData<T extends BarLineScatterCandleRadarDataSet<? extends Entry>>
         extends BarLineScatterCandleRadarData<T> {
+    
+    public BarLineScatterCandleData(ArrayList<String> xVals) {
+        super(xVals);
+    }
+    
+    public BarLineScatterCandleData(String[] xVals) {
+        super(xVals);
+    }
 
     public BarLineScatterCandleData(ArrayList<String> xVals, ArrayList<T> sets) {
         super(xVals, sets);

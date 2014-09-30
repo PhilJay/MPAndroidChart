@@ -3,6 +3,7 @@ package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -34,107 +35,115 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
         mChart.setDrawYValues(false);
         mChart.setDrawGridBackground(false);
         mChart.setDescription("");
+        
+        addEmptyData();
 
-        // create 30 x-vals
-        String[] xVals = new String[30];
-
-        for (int i = 0; i < 30; i++)
-            xVals[i] = "" + i;
-
-        // create 10 y-vals
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
-
-        for (int i = 0; i < 10; i++)
-            yVals.add(new Entry((float) (Math.random() * 50) + 50f, i));
-
-        LineDataSet set = new LineDataSet(yVals, "DataSet 1");
-        set.setLineWidth(2.5f);
-        set.setCircleSize(4.5f);
-        set.setColor(Color.rgb(240, 99, 99));
-        set.setCircleColor(Color.rgb(240, 99, 99));
-        set.setHighLightColor(Color.rgb(190, 190, 190));
-
-        LineData data = new LineData(xVals, set);
-
-        mChart.setData(data);
         mChart.invalidate();
     }
-    
-    int[] mColors = ColorTemplate.VORDIPLOM_COLORS;   
+
+    int[] mColors = ColorTemplate.VORDIPLOM_COLORS;
 
     private void addEntry() {
-        
-        LineData data = mChart.getDataOriginal();
 
-        LineDataSet set = data.getDataSetByIndex(0);
-        // set.addEntry(...);
+        LineData data = mChart.getDataOriginal();
         
-        if(set != null) {
-         
+        if(data != null) {
+
+            LineDataSet set = data.getDataSetByIndex(0);
+            // set.addEntry(...);
+
+            if (set == null) {
+                set = createSet();
+                data.addDataSet(set);
+            }
+
             data.addEntry(new Entry((float) (Math.random() * 50) + 50f, set.getEntryCount()), 0);
 
             // let the chart know it's data has changed
             mChart.notifyDataSetChanged();
 
             // redraw the chart
-            mChart.invalidate();
+            mChart.invalidate();   
         }
     }
 
     private void removeLastEntry() {
-        
+
         LineData data = mChart.getDataOriginal();
-
-        LineDataSet set = data.getDataSetByIndex(0);
         
-        if(set != null) {        
+        if(data != null) {
+         
+            LineDataSet set = data.getDataSetByIndex(0);
 
-            Entry e = set.getEntryForXIndex(set.getEntryCount() - 1);
+            if (set != null) {
 
-            data.removeEntry(e, 0);
-            // or remove by index
-            // mData.removeEntry(xIndex, dataSetIndex);
+                Entry e = set.getEntryForXIndex(set.getEntryCount() - 1);
 
-            mChart.notifyDataSetChanged();
-            mChart.invalidate();
+                data.removeEntry(e, 0);
+                // or remove by index
+                // mData.removeEntry(xIndex, dataSetIndex);
+
+                mChart.notifyDataSetChanged();
+                mChart.invalidate();
+            }
         }
     }
 
     private void addDataSet() {
-        
+
         LineData data = mChart.getDataOriginal();
         
-        int count = (data.getDataSetCount() + 1);
+        if(data != null) {
 
-        // create 10 y-vals
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
+            int count = (data.getDataSetCount() + 1);
 
-        for (int i = 0; i < data.getXValCount(); i++)
-            yVals.add(new Entry((float) (Math.random() * 50f) + 50f * count, i));
-        
+            // create 10 y-vals
+            ArrayList<Entry> yVals = new ArrayList<Entry>();
 
-        LineDataSet set = new LineDataSet(yVals, "DataSet " + count);
-        set.setLineWidth(2.5f);
-        set.setCircleSize(4.5f);
-        
-        int color = mColors[count % mColors.length];
-        
-        set.setColor(color);
-        set.setCircleColor(color);
-        set.setHighLightColor(color);
+            for (int i = 0; i < data.getXValCount(); i++)
+                yVals.add(new Entry((float) (Math.random() * 50f) + 50f * count, i));
 
-        data.addDataSet(set);
-        mChart.notifyDataSetChanged();
-        mChart.invalidate();
+            LineDataSet set = new LineDataSet(yVals, "DataSet " + count);
+            set.setLineWidth(2.5f);
+            set.setCircleSize(4.5f);
+
+            int color = mColors[count % mColors.length];
+
+            set.setColor(color);
+            set.setCircleColor(color);
+            set.setHighLightColor(color);
+
+            data.addDataSet(set);
+            mChart.notifyDataSetChanged();
+            mChart.invalidate();   
+        }
     }
 
     private void removeDataSet() {
-        
-        LineData data = mChart.getDataOriginal();
 
-        data.removeDataSet(data.getDataSetByIndex(data.getDataSetCount() - 1));
+        LineData data = mChart.getDataOriginal();
         
-        mChart.notifyDataSetChanged();
+        if(data != null) {
+
+            data.removeDataSet(data.getDataSetByIndex(data.getDataSetCount() - 1));
+
+            mChart.notifyDataSetChanged();
+            mChart.invalidate();   
+        }
+    }
+    
+    private void addEmptyData() {
+        
+        // create 30 x-vals
+        String[] xVals = new String[30];
+
+        for (int i = 0; i < 30; i++)
+            xVals[i] = "" + i;
+
+        // create a chartdata object that contains only the x-axis labels (no entries or datasets)
+        LineData data = new LineData(xVals);
+
+        mChart.setData(data);
         mChart.invalidate();
     }
 
@@ -174,8 +183,28 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
                 removeDataSet();
                 Toast.makeText(this, "DataSet removed!", Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.actionAddEmptyLineData:
+                addEmptyData();
+                Toast.makeText(this, "Empty data added!", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.actionClear:
+                mChart.clear();
+                Toast.makeText(this, "Chart cleared!", Toast.LENGTH_SHORT).show();
+                break;
         }
 
         return true;
+    }
+
+    private LineDataSet createSet() {
+
+        LineDataSet set = new LineDataSet(null, "DataSet 1");
+        set.setLineWidth(2.5f);
+        set.setCircleSize(4.5f);
+        set.setColor(Color.rgb(240, 99, 99));
+        set.setCircleColor(Color.rgb(240, 99, 99));
+        set.setHighLightColor(Color.rgb(190, 190, 190));
+
+        return set;
     }
 }

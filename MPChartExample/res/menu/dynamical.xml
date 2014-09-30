@@ -21,4 +21,13 @@
         android:title="Remove DataSet">
     </item>
     
+    <item
+        android:id="@+id/actionAddEmptyLineData"
+        android:title="Add empty LineData">
+    </item>
+    
+    <item
+        android:id="@+id/actionClear"
+        android:title="Clear chart">
+    </item>
 </menu>

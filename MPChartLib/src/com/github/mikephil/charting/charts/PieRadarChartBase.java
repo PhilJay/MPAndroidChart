@@ -170,6 +170,22 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
         return angle;
     }
+    
+    /**
+     * Calculates the position around a center point, depending on the distance
+     * from the center, and the angle of the position around the center.
+     * 
+     * @param center
+     * @param dist
+     * @param angle in degrees, converted to radians internally
+     * @return
+     */
+    protected PointF getPosition(PointF center, float dist, float angle) {
+
+        PointF p = new PointF((float) (center.x + dist * Math.cos(Math.toRadians(angle))),
+                (float) (center.y + dist * Math.sin(Math.toRadians(angle))));
+        return p;
+    }
 
     /**
      * Returns the distance of a certain point on the chart to the center of the

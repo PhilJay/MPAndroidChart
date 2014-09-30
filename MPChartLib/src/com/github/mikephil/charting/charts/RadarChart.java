@@ -540,22 +540,6 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     }
 
     /**
-     * Calculates the position on the RadarChart depending on the center of the
-     * chart, the value and angle.
-     * 
-     * @param center
-     * @param val
-     * @param angle in degrees, converted to radians internally
-     * @return
-     */
-    private PointF getPosition(PointF c, float val, float angle) {
-
-        PointF p = new PointF((float) (c.x + val * Math.cos(Math.toRadians(angle))),
-                (float) (c.y + val * Math.sin(Math.toRadians(angle))));
-        return p;
-    }
-
-    /**
      * Returns the factor that is needed to transform values into pixels.
      * 
      * @return

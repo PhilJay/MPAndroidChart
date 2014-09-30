@@ -51,13 +51,13 @@ public class LineChart extends BarLineChartBase<LineData> {
         mHighlightPaint.setStrokeWidth(2f);
         mHighlightPaint.setColor(Color.rgb(255, 187, 115));
     }
-    
+
     @Override
     protected void calcMinMax(boolean fixedValues) {
         super.calcMinMax(fixedValues);
 
         // if there is only one value in the chart
-        if(mOriginalData.getYValCount() == 1) {
+        if (mOriginalData.getYValCount() == 1) {
             mDeltaX = 1;
         }
     }
@@ -91,12 +91,20 @@ public class LineChart extends BarLineChartBase<LineData> {
         }
     }
 
+    /**
+     * Class needed for saving the points when drawing cubic-lines.
+     * 
+     * @author Philipp Jahoda
+     */
     private class CPoint {
 
         public float x = 0f;
         public float y = 0f;
 
+        /** x-axis distance */
         public float dx = 0f;
+
+        /** y-axis distance */
         public float dy = 0f;
 
         public CPoint(float x, float y) {
@@ -139,7 +147,7 @@ public class LineChart extends BarLineChartBase<LineData> {
 
                 if (points.size() > 1) {
                     for (int j = 0; j < points.size() * mPhaseX; j++) {
-                        
+
                         CPoint point = points.get(j);
 
                         if (j == 0) {
@@ -165,7 +173,8 @@ public class LineChart extends BarLineChartBase<LineData> {
                         }
                         else {
                             CPoint prev = points.get(j - 1);
-                            spline.cubicTo(prev.x + prev.dx, (prev.y + prev.dy) * mPhaseY, point.x - point.dx,
+                            spline.cubicTo(prev.x + prev.dx, (prev.y + prev.dy) * mPhaseY, point.x
+                                    - point.dx,
                                     (point.y - point.dy) * mPhaseY, point.x, point.y * mPhaseY);
                         }
                     }
@@ -173,7 +182,7 @@ public class LineChart extends BarLineChartBase<LineData> {
 
                 // if filled is enabled, close the path
                 if (dataSet.isDrawFilledEnabled()) {
-                    
+
                     float fillMin = dataSet.getYMin() >= 0 ? mYChartMin : 0;
 
                     spline.lineTo((entries.size() - 1) * mPhaseX, fillMin);
@@ -184,7 +193,7 @@ public class LineChart extends BarLineChartBase<LineData> {
                 } else {
                     mRenderPaint.setStyle(Paint.Style.STROKE);
                 }
-                
+
                 transformPath(spline);
 
                 mDrawCanvas.drawPath(spline, mRenderPaint);
@@ -228,10 +237,10 @@ public class LineChart extends BarLineChartBase<LineData> {
 
                     mRenderPaint.setColor(dataSet.getFillColor());
                     // filled is drawn with less alpha
-                    mRenderPaint.setAlpha(dataSet.getFillAlpha());  
+                    mRenderPaint.setAlpha(dataSet.getFillAlpha());
 
-//                    mRenderPaint.setShader(dataSet.getShader());
-                    
+                    // mRenderPaint.setShader(dataSet.getShader());
+
                     float fillMin = dataSet.getYMin() >= 0 ? mYChartMin : 0;
 
                     Path filled = generateFilledPath(entries, fillMin);
@@ -242,7 +251,7 @@ public class LineChart extends BarLineChartBase<LineData> {
 
                     // restore alpha
                     mRenderPaint.setAlpha(255);
-//                    mRenderPaint.setShader(null);
+                    // mRenderPaint.setShader(null);
                 }
             }
         }
@@ -309,7 +318,8 @@ public class LineChart extends BarLineChartBase<LineData> {
 
                     if (mDrawUnitInChart) {
 
-                        mDrawCanvas.drawText(mValueFormatter.getFormattedValue(val) + mUnit, positions[j],
+                        mDrawCanvas.drawText(mValueFormatter.getFormattedValue(val) + mUnit,
+                                positions[j],
                                 positions[j + 1]
                                         - valOffset, mValuePaint);
                     } else {

@@ -78,10 +78,9 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         // add a selection listener
         mChart.setOnChartValueSelectedListener(this);
         // mChart.setTouchEnabled(false);
-
-        mSeekBarX.setProgress(3);
-        mSeekBarY.setProgress(100);
-
+        
+        setData(3, 100);
+        
         mChart.animateXY(1500, 1500);
         // mChart.spin(2000, 0, 360);
 
@@ -89,6 +88,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         l.setPosition(LegendPosition.RIGHT_OF_CHART);
         l.setXEntrySpace(7f);
         l.setYEntrySpace(5f);
+
     }
 
     @Override
@@ -172,7 +172,12 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         tvX.setText("" + (mSeekBarX.getProgress() + 1));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
-        float mult = (float) mSeekBarY.getProgress();
+        setData(mSeekBarX.getProgress(), mSeekBarY.getProgress());
+    }
+    
+    private void setData(int count, float range) {
+        
+        float mult = range;
 
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
         // ArrayList<Entry> yVals2 = new ArrayList<Entry>();
@@ -180,7 +185,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         // IMPORTANT: In a PieChart, no values (Entry) should have the same
         // xIndex (even if from different DataSets), since no values can be
         // drawn above each other.
-        for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
+        for (int i = 0; i < count + 1; i++) {
             yVals1.add(new Entry((float) (Math.random() * mult) + mult / 5, i));
         }
 
@@ -191,7 +196,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         ArrayList<String> xVals = new ArrayList<String>();
 
-        for (int i = 0; i < mSeekBarX.getProgress() + 1; i++)
+        for (int i = 0; i < count + 1; i++)
             xVals.add(mParties[i % mParties.length]);
 
         PieDataSet set1 = new PieDataSet(yVals1, "Election Results");

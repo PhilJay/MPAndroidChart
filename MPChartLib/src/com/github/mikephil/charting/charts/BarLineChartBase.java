@@ -262,14 +262,14 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         if (mDataNotSet)
             return;
 
-        calcMinMax(mFixedYValues);  
-        
+        calcMinMax(mFixedYValues);
+
         prepareYLabels();
 
         prepareXLabels();
 
         prepareLegend();
-        
+
         calculateOffsets();
     }
 
@@ -321,12 +321,14 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         }
 
         float yleft = 0f, yright = 0f;
-        
+
         String label = mYLabels.getFormattedLabel(mYLabels.mEntryCount - 1);
 
         // calculate the maximum y-label width (including eventual offsets)
         float ylabelwidth = Utils.calcTextWidth(mYLabelPaint,
                 label + mUnit + (mYChartMin < 0 ? "----" : "+++")); // offsets
+
+        Log.i(LOG_TAG, "OFFSETS, labelwidth: " + ylabelwidth + ", label: " + label);
 
         if (mDrawYLabels) {
 
@@ -502,16 +504,17 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * @return
      */
     private void prepareYLabels() {
-        
+
         float yMin = 0f;
         float yMax = 0f;
-   
-        // calculate the starting and entry point of the y-labels (depending on zoom / contentrect bounds)
-        if(mContentRect.width() > 10) {
-            
+
+        // calculate the starting and entry point of the y-labels (depending on
+        // zoom / contentrect bounds)
+        if (mContentRect.width() > 10 && !isFullyZoomedOutY()) {
+
             PointD p1 = getValuesByTouchPoint(mContentRect.left, mContentRect.top);
             PointD p2 = getValuesByTouchPoint(mContentRect.left, mContentRect.bottom);
-            
+
             if (!mInvertYAxis) {
                 yMin = (float) p2.y;
                 yMax = (float) p1.y;
@@ -522,10 +525,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 else
                     yMin = 0;
                 yMax = (float) Math.max(p1.y, p2.y);
-            } 
-            
+            }
+
         } else {
-            
+
             if (!mInvertYAxis) {
                 yMin = mYChartMin;
                 yMax = mYChartMax;
@@ -536,7 +539,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 else
                     yMin = 0;
                 yMax = (float) Math.max(mYChartMax, mYChartMin);
-            }  
+            }
         }
 
         int labelCount = mYLabels.getLabelCount();
@@ -1796,9 +1799,32 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     public boolean isFullyZoomedOut() {
 
-        // Log.i(LOG_TAG, "MinScaleX: " + mMinScaleX + ", ScaleX: " + mScaleX);
+        if (isFullyZoomedOutX() && isFullyZoomedOutY())
+            return true;
+        else
+            return false;
+    }
 
-        if (mScaleX <= mMinScaleX && mScaleY <= mMinScaleY)
+    /**
+     * Returns true if the chart is fully zoomed out on it's y-axis (vertical).
+     * 
+     * @return
+     */
+    public boolean isFullyZoomedOutY() {
+        if (mScaleY <= mMinScaleY)
+            return true;
+        else
+            return false;
+    }
+
+    /**
+     * Returns true if the chart is fully zoomed out on it's x-axis
+     * (horizontal).
+     * 
+     * @return
+     */
+    public boolean isFullyZoomedOutX() {
+        if (mScaleX <= mMinScaleX)
             return true;
         else
             return false;

@@ -69,7 +69,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * flag that holds the background color of the view and the color the canvas
      * is cleared with
      */
-    private int mBackgroundColor = Color.WHITE;
+    protected int mBackgroundColor = Color.WHITE;
 
     /** custom formatter that is used instead of the auto-formatter if set */
     protected ValueFormatter mValueFormatter = null;
@@ -335,10 +335,16 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public void setData(T data) {
 
-        if (data == null || !data.isValid()) {
+        // if (data == null || !data.isValid()) {
+        // Log.e(LOG_TAG,
+        // "Cannot set data for chart. Provided chart values are null or contain less than 1 entry.");
+        // mDataNotSet = true;
+        // return;
+        // }
+
+        if (data == null) {
             Log.e(LOG_TAG,
-                    "Cannot set data for chart. Provided chart values are null or contain less than 1 entry.");
-            mDataNotSet = true;
+                    "Cannot set data for chart. Provided data object is null.");
             return;
         }
 
@@ -357,13 +363,33 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
-     * Clears the chart from all data and refreshes it.
+     * Clears the chart from all data and refreshes it (by calling
+     * invalidate()).
      */
     public void clear() {
         mCurrentData = null;
         mOriginalData = null;
         mDataNotSet = true;
         invalidate();
+    }
+
+    /**
+     * Returns true if the chart is empty (meaning it's data object is either
+     * null or contains no entries).
+     * 
+     * @return
+     */
+    public boolean isEmpty() {
+
+        if (mOriginalData == null)
+            return true;
+        else {
+
+            if (mOriginalData.getYValCount() <= 0)
+                return true;
+            else
+                return false;
+        }
     }
 
     /**

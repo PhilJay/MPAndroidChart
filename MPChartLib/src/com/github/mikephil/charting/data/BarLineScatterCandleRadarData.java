@@ -15,6 +15,14 @@ public abstract class BarLineScatterCandleRadarData<T extends BarLineScatterCand
 
     /** array of limit-lines that are set for this data object */
     private ArrayList<LimitLine> mLimitLines;
+    
+    public BarLineScatterCandleRadarData(ArrayList<String> xVals) {
+        super(xVals);
+    }
+    
+    public BarLineScatterCandleRadarData(String[] xVals) {
+        super(xVals);
+    }
 
     public BarLineScatterCandleRadarData(ArrayList<String> xVals, ArrayList<T> sets) {
         super(xVals, sets);

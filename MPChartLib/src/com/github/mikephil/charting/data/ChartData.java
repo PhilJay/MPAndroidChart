@@ -1,6 +1,8 @@
 
 package com.github.mikephil.charting.data;
 
+import android.util.Log;
+
 import com.github.mikephil.charting.utils.Highlight;
 
 import java.util.ArrayList;
@@ -38,6 +40,30 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     protected ArrayList<T> mDataSets;
 
     /**
+     * Constructor for only x-values. This constructor can be used for setting
+     * up an empty chart without data.
+     * 
+     * @param xVals
+     */
+    public ChartData(ArrayList<String> xVals) {
+        this.mXVals = xVals;
+
+        init();
+    }
+
+    /**
+     * Constructor for only x-values. This constructor can be used for setting
+     * up an empty chart without data.
+     * 
+     * @param xVals
+     */
+    public ChartData(String[] xVals) {
+        this.mXVals = arrayToArrayList(xVals);
+
+        init();
+    }
+
+    /**
      * constructor for chart data
      * 
      * @param xVals The values describing the x-axis. Must be at least as long
@@ -61,14 +87,26 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * @param sets the dataset array
      */
     public ChartData(String[] xVals, ArrayList<T> sets) {
-        ArrayList<String> newXVals = new ArrayList<String>();
-        for (int i = 0; i < xVals.length; i++) {
-            newXVals.add(xVals[i]);
-        }
-        this.mXVals = newXVals;
+        this.mXVals = arrayToArrayList(xVals);
         this.mDataSets = sets;
 
         init();
+    }
+
+    /**
+     * Turns an array of strings into an arraylist of strings.
+     * 
+     * @param array
+     * @return
+     */
+    private ArrayList<String> arrayToArrayList(String[] array) {
+
+        ArrayList<String> arraylist = new ArrayList<String>();
+        for (int i = 0; i < array.length; i++) {
+            arraylist.add(array[i]);
+        }
+
+        return arraylist;
     }
 
     /**
@@ -112,6 +150,9 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * @param dataSets
      */
     private void isLegal(ArrayList<T> dataSets) {
+
+        if (dataSets == null)
+            return;
 
         for (int i = 0; i < dataSets.size(); i++) {
             if (dataSets.get(i)
@@ -162,6 +203,9 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
         mYValueSum = 0;
 
+        if (dataSets == null)
+            return;
+
         for (int i = 0; i < dataSets.size(); i++) {
             mYValueSum += Math.abs(dataSets.get(i).getYValueSum());
         }
@@ -174,6 +218,12 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * @return
      */
     protected void calcYValueCount(ArrayList<T> dataSets) {
+
+        mYValCount = 0;
+
+        if (dataSets == null)
+            return;
+
         int count = 0;
 
         for (int i = 0; i < dataSets.size(); i++) {
@@ -181,22 +231,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         }
 
         mYValCount = count;
-    }
-
-    /**
-     * Corrects all values that are kept as member variables after a new entry
-     * was added. This saves recalculating all values.
-     * 
-     * @param entry the new entry
-     */
-    public void notifyDataForNewEntry(Entry entry) {
-        mYValueSum += Math.abs(entry.getVal());
-        if (mYMin > entry.getVal()) {
-            mYMin = entry.getVal();
-        }
-        if (mYMax < entry.getVal()) {
-            mYMax = entry.getVal();
-        }
     }
 
     /** ONLY GETTERS AND SETTERS BELOW THIS */
@@ -207,13 +241,25 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * @return
      */
     public int getDataSetCount() {
+        if (mDataSets == null)
+            return 0;
         return mDataSets.size();
     }
 
+    /**
+     * Returns the smallest y-value the data object contains.
+     * 
+     * @return
+     */
     public float getYMin() {
         return mYMin;
     }
 
+    /**
+     * Returns the greatest y-value the data object contains.
+     * 
+     * @return
+     */
     public float getYMax() {
         return mYMax;
     }
@@ -469,8 +515,21 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         if (mYMin > val)
             mYMin = val;
 
-        // add the entry to the dataset
-        mDataSets.get(dataSetIndex).addEntry((Entry) e);
+        if (mDataSets == null)
+            mDataSets = new ArrayList<T>();
+
+        if (mDataSets.size() > dataSetIndex) {
+
+            T set = mDataSets.get(dataSetIndex);
+
+            if (set != null) {
+
+                // add the entry to the dataset
+                set.addEntry(e);
+            }
+        } else {
+            Log.e("addEntry", "Cannot add Entry because dataSetIndex too high.");
+        }
     }
 
     /**

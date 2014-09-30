@@ -49,6 +49,9 @@ public abstract class DataSet<T extends Entry> {
         this.mLabel = label;
         this.mYVals = yVals;
 
+        if (mYVals == null)
+            mYVals = new ArrayList<T>();
+
         // if (yVals.size() <= 0) {
         // return;
         // }

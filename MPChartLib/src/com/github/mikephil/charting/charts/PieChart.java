@@ -10,14 +10,12 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
-import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
@@ -132,8 +130,6 @@ public class PieChart extends PieRadarChartBase<PieData> {
         if (mDataNotSet)
             return;
 
-        long starttime = System.currentTimeMillis();
-
         drawHighlights();
 
         drawData();
@@ -149,8 +145,6 @@ public class PieChart extends PieRadarChartBase<PieData> {
         drawCenterText();
 
         canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
-
-        Log.i(LOG_TAG, "PieChart DrawTime: " + (System.currentTimeMillis() - starttime) + " ms");
     }
 
     /**
@@ -344,6 +338,12 @@ public class PieChart extends PieRadarChartBase<PieData> {
                         mDrawCanvas.drawArc(mCircleBox, angle + sliceSpace / 2f, newangle * mPhaseY
                                 - sliceSpace / 2f, true, mRenderPaint);
                     }
+                    
+//                    if(sliceSpace > 0f) {
+//                        
+//                        PointF outer = getPosition(c, radius, angle);
+//                        PointF inner = getPosition(c, radius * mHoleRadiusPercent / 100f, angle);
+//                    }
                 }
 
                 angle += newangle * mPhaseX;

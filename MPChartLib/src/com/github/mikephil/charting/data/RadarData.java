@@ -10,6 +10,14 @@ import java.util.ArrayList;
  */
 public class RadarData extends BarLineScatterCandleRadarData<RadarDataSet> {
 
+    public RadarData(ArrayList<String> xVals) {
+        super(xVals);
+    }
+    
+    public RadarData(String[] xVals) {
+        super(xVals);
+    }
+    
     public RadarData(ArrayList<String> xVals, ArrayList<RadarDataSet> dataSets) {
         super(xVals, dataSets);
     }
