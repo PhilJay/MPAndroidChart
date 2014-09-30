@@ -294,20 +294,20 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         return mYValCount;
     }
 
-    /**
-     * Checks if the ChartData object contains valid data
-     * 
-     * @return
-     */
-    public boolean isValid() {
-        if (mXVals == null || mXVals.size() < 1)
-            return false;
-
-        if (mDataSets == null || mDataSets.size() < 1)
-            return false;
-
-        return true;
-    }
+    // /**
+    // * Checks if the ChartData object contains valid data
+    // *
+    // * @return
+    // */
+    // public boolean isValid() {
+    // if (mXVals == null || mXVals.size() < 1)
+    // return false;
+    //
+    // if (mDataSets == null || mDataSets.size() < 1)
+    // return false;
+    //
+    // return true;
+    // }
 
     /**
      * returns the x-values the chart represents
@@ -612,6 +612,9 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * @return
      */
     public int[] getColors() {
+
+        if (mDataSets == null)
+            return null;
 
         int clrcnt = 0;
 

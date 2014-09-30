@@ -327,9 +327,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         // calculate the maximum y-label width (including eventual offsets)
         float ylabelwidth = Utils.calcTextWidth(mYLabelPaint,
                 label + mUnit + (mYChartMin < 0 ? "----" : "+++")); // offsets
-
-        Log.i(LOG_TAG, "OFFSETS, labelwidth: " + ylabelwidth + ", label: " + label);
-
+        
         if (mDrawYLabels) {
 
             // offsets for y-labels

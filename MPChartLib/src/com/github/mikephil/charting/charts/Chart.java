@@ -347,6 +347,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                     "Cannot set data for chart. Provided data object is null.");
             return;
         }
+        
+//        Log.i(LOG_TAG, "xvalcount: " + data.getXValCount());
+//        Log.i(LOG_TAG, "entrycount: " + data.getYValCount());
 
         // LET THE CHART KNOW THERE IS DATA
         mDataNotSet = false;
@@ -630,8 +633,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         float[] valuePoints = new float[entries.size() * 2];
 
         for (int j = 0; j < valuePoints.length; j += 2) {
-            valuePoints[j] = entries.get(j / 2).getXIndex();
-            valuePoints[j + 1] = entries.get(j / 2).getVal() * mPhaseY;
+            
+            Entry e = entries.get(j / 2);
+            
+            valuePoints[j] = e.getXIndex();
+            valuePoints[j + 1] = e.getVal() * mPhaseY;
         }
 
         transformPointArray(valuePoints);

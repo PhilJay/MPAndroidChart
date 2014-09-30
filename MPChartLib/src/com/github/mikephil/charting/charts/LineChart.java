@@ -57,7 +57,8 @@ public class LineChart extends BarLineChartBase<LineData> {
         super.calcMinMax(fixedValues);
 
         // if there is only one value in the chart
-        if (mOriginalData.getYValCount() == 1) {
+        if (mOriginalData.getYValCount() == 1
+                || mOriginalData.getYValCount() <= mOriginalData.getDataSetCount()) {
             mDeltaX = 1;
         }
     }
@@ -366,14 +367,15 @@ public class LineChart extends BarLineChartBase<LineData> {
 
                     // make sure the circles don't do shitty things outside
                     // bounds
-                    if (isOffContentLeft(positions[j]) || isOffContentTop(positions[j + 1])
+                    if (isOffContentLeft(positions[j]) ||
+                            isOffContentTop(positions[j + 1])
                             || isOffContentBottom(positions[j + 1]))
                         continue;
 
                     mDrawCanvas.drawCircle(positions[j], positions[j + 1], dataSet.getCircleSize(),
                             mRenderPaint);
                     mDrawCanvas.drawCircle(positions[j], positions[j + 1],
-                            dataSet.getCircleSize() / 2,
+                            dataSet.getCircleSize() / 2f,
                             mCirclePaintInner);
                 }
             } // else do nothing
