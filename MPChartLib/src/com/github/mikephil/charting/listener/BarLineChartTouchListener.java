@@ -91,7 +91,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
             case MotionEvent.ACTION_POINTER_DOWN:
 
                 if (event.getPointerCount() >= 2) {
-                    
+
                     mChart.disableScroll();
 
                     saveTouchStart(event);
@@ -122,21 +122,23 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                
-                mChart.disableScroll();
 
                 if (mTouchMode == DRAG) {
+
+                    mChart.disableScroll();
 
                     performDrag(event);
 
                 } else if (mTouchMode == X_ZOOM || mTouchMode == Y_ZOOM || mTouchMode == PINCH_ZOOM) {
+ 
+                    mChart.disableScroll();
 
                     performZoom(event);
 
                 } else if (((mTouchMode == NONE) || (mTouchMode != DRAG && event
                         .getPointerCount() == 3))
                         && Math.abs(distance(event.getX(), mTouchStartPoint.x, event.getY(),
-                                mTouchStartPoint.y)) > 25f)  {
+                                mTouchStartPoint.y)) > 25f) {
 
                     mTouchMode = DRAG;
                 }
@@ -179,7 +181,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
      * @param event
      */
     private void performDrag(MotionEvent event) {
-        
+
         mMatrix.set(mSavedMatrix);
         PointF dragPoint = new PointF(event.getX(), event.getY());
 
@@ -199,9 +201,9 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
      * @param event
      */
     private void performZoom(MotionEvent event) {
-        
-        if(event.getPointerCount() >= 2) {
-         
+
+        if (event.getPointerCount() >= 2) {
+
             // get the distance between the pointers of the touch
             // event
             float totalDist = spacing(event);
