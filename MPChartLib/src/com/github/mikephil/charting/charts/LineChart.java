@@ -56,11 +56,14 @@ public class LineChart extends BarLineChartBase<LineData> {
     protected void calcMinMax(boolean fixedValues) {
         super.calcMinMax(fixedValues);
 
-        // if there is only one value in the chart
-        if (mOriginalData.getYValCount() == 1
-                || mOriginalData.getYValCount() <= mOriginalData.getDataSetCount()) {
+        // // if there is only one value in the chart
+        // if (mOriginalData.getYValCount() == 1
+        // || mOriginalData.getYValCount() <= mOriginalData.getDataSetCount()) {
+        // mDeltaX = 1;
+        // }
+
+        if (mDeltaX == 0 && mOriginalData.getYValCount() > 0)
             mDeltaX = 1;
-        }
     }
 
     @Override

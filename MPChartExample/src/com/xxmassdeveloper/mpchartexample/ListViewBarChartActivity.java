@@ -131,7 +131,7 @@ public class ListViewBarChartActivity extends DemoBase {
 
         BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);    
         d.setBarSpacePercent(20f);
-        d.setColors(ColorTemplate.VORDIPLOM_COLORS, getApplicationContext());
+        d.setColors(ColorTemplate.VORDIPLOM_COLORS);
         d.setBarShadowColor(Color.rgb(203, 203, 203));
         
         ArrayList<BarDataSet> sets = new ArrayList<BarDataSet>();

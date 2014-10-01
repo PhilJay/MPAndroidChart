@@ -37,6 +37,14 @@ public class ScatterChart extends BarLineChartBase<ScatterData> {
     }
 
     @Override
+    protected void calcMinMax(boolean fixedValues) {
+        super.calcMinMax(fixedValues);
+
+        if (mDeltaX == 0 && mOriginalData.getYValCount() > 0)
+            mDeltaX = 1;
+    }
+
+    @Override
     protected void drawData() {
 
         ArrayList<ScatterDataSet> dataSets = mCurrentData.getDataSets();
@@ -144,7 +152,8 @@ public class ScatterChart extends BarLineChartBase<ScatterData> {
 
                     if (mDrawUnitInChart) {
 
-                        mDrawCanvas.drawText(mValueFormatter.getFormattedValue(val) + mUnit, positions[j],
+                        mDrawCanvas.drawText(mValueFormatter.getFormattedValue(val) + mUnit,
+                                positions[j],
                                 positions[j + 1] - shapeSize, mValuePaint);
                     } else {
 
@@ -162,8 +171,9 @@ public class ScatterChart extends BarLineChartBase<ScatterData> {
 
         for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
-            ScatterDataSet set = mCurrentData.getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
-            
+            ScatterDataSet set = mCurrentData.getDataSetByIndex(mIndicesToHightlight[i]
+                    .getDataSetIndex());
+
             mHighlightPaint.setColor(set.getHighLightColor());
 
             int xIndex = mIndicesToHightlight[i].getXIndex(); // get the
