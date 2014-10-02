@@ -20,6 +20,7 @@ import android.provider.MediaStore.Images;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.MonthDisplayHelper;
 import android.view.View;
 
 import com.github.mikephil.charting.data.BarData;
@@ -28,6 +29,7 @@ import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.interfaces.OnChartGestureListener;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend;
@@ -207,6 +209,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /** text that is displayed when the chart is empty */
     private String mNoDataText = "No chart data available.";
+
+    /**
+     * Gesture listener for custom callbacks when making gestures on the chart.
+     */
+    private OnChartGestureListener mGestureListener;
 
     /**
      * text that is displayed when the chart is empty that describes why the
@@ -1353,6 +1360,25 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public void setOnChartValueSelectedListener(OnChartValueSelectedListener l) {
         this.mSelectionListener = l;
+    }
+
+    /**
+     * Sets a gesture-listener for the chart for custom callbacks when executing
+     * gestures on the chart surface.
+     * 
+     * @param l
+     */
+    public void setOnChartGestureListener(OnChartGestureListener l) {
+        this.mGestureListener = l;
+    }
+
+    /**
+     * Returns the custom gesture listener.
+     * 
+     * @return
+     */
+    public OnChartGestureListener getOnChartGestureListener() {
+        return mGestureListener;
     }
 
     /**

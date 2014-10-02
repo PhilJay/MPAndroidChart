@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -19,6 +20,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
+import com.github.mikephil.charting.interfaces.OnChartGestureListener;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendForm;
@@ -29,7 +31,7 @@ import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 import java.util.ArrayList;
 
 public class LineChartActivity extends DemoBase implements OnSeekBarChangeListener,
-        OnChartValueSelectedListener {
+        OnChartGestureListener, OnChartValueSelectedListener {
 
     private LineChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
@@ -55,6 +57,7 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         mSeekBarX.setOnSeekBarChangeListener(this);
 
         mChart = (LineChart) findViewById(R.id.chart1);
+        mChart.setOnChartGestureListener(this);
         mChart.setOnChartValueSelectedListener(this);
 
         // if enabled, the chart will always start at zero on the y-axis
@@ -291,19 +294,6 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
     }
 
     @Override
-    public void onValueSelected(Entry e, int dataSetIndex) {
-        Log.i("VAL SELECTED",
-                "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
-                        + ", DataSet index: " + dataSetIndex);
-    }
-
-    @Override
-    public void onNothingSelected() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
         // TODO Auto-generated method stub
 
@@ -366,5 +356,30 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
 
         // set data
         mChart.setData(data);
+    }
+
+    @Override
+    public void onChartLongPressed(MotionEvent me) {
+        Log.i("LongPress", "Chart longpressed.");
+    }
+
+    @Override
+    public void onChartDoubleTapped(MotionEvent me) {
+        Log.i("DoubleTap", "Chart double-tapped.");        
+    }
+
+    @Override
+    public void onChartSingleTapped(MotionEvent me) {
+        Log.i("SingleTap", "Chart single-tapped.");
+    }
+    
+    @Override
+    public void onValueSelected(Entry e, int dataSetIndex) {
+        Log.i("Entry selected", e.toString());
+    }
+    
+    @Override
+    public void onNothingSelected() {
+        Log.i("Nothing selected", "Nothing selected.");
     }
 }

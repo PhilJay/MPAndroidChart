@@ -7,9 +7,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
-import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.charts.PieRadarChartBase;
 import com.github.mikephil.charting.charts.RadarChart;
+import com.github.mikephil.charting.interfaces.OnChartGestureListener;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
@@ -64,8 +64,12 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
 
     @Override
     public void onLongPress(MotionEvent me) {
-        // todo
-    };
+        OnChartGestureListener l = mChart.getOnChartGestureListener();
+
+        if (l != null) {
+            l.onChartLongPressed(me);
+        }
+    }
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
@@ -77,6 +81,12 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
+
+        OnChartGestureListener l = mChart.getOnChartGestureListener();
+
+        if (l != null) {
+            l.onChartSingleTapped(e);
+        }
 
         float distance = mChart.distanceToCenter(e.getX(), e.getY());
 
@@ -94,7 +104,8 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
 
             int dataSetIndex = 0;
 
-            // get the dataset that is closest to the selection (PieChart only has one DataSet)
+            // get the dataset that is closest to the selection (PieChart only
+            // has one DataSet)
             if (mChart instanceof RadarChart) {
 
                 dataSetIndex = Utils.getClosestDataSetIndex(valsAtIndex, distance
@@ -115,5 +126,15 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
         }
 
         return true;
+    }
+
+    @Override
+    public boolean onDoubleTap(MotionEvent e) {
+        OnChartGestureListener l = mChart.getOnChartGestureListener();
+
+        if (l != null) {
+            l.onChartDoubleTapped(e);
+        }
+        return super.onDoubleTap(e);
     }
 }

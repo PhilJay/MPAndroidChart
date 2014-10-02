@@ -327,7 +327,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         // calculate the maximum y-label width (including eventual offsets)
         float ylabelwidth = Utils.calcTextWidth(mYLabelPaint,
                 label + mUnit + (mYChartMin < 0 ? "----" : "+++")); // offsets
-        
+
         if (mDrawYLabels) {
 
             // offsets for y-labels
@@ -1948,6 +1948,15 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     public void setDragOffsetY(float offset) {
         mTransOffsetY = Utils.convertDpToPixel(offset);
+    }
+
+    /**
+     * Returns true if both drag offsets (x and y) are zero or smaller.
+     * 
+     * @return
+     */
+    public boolean hasNoDragOffset() {
+        return mTransOffsetX <= 0 && mTransOffsetY <= 0 ? true : false;
     }
 
     /**

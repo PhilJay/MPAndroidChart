@@ -15,6 +15,7 @@ import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.data.BarLineScatterCandleData;
 import com.github.mikephil.charting.data.BarLineScatterCandleRadarDataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.interfaces.OnChartGestureListener;
 import com.github.mikephil.charting.utils.Highlight;
 
 /**
@@ -130,17 +131,23 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
                     performDrag(event);
 
                 } else if (mTouchMode == X_ZOOM || mTouchMode == Y_ZOOM || mTouchMode == PINCH_ZOOM) {
- 
+
                     mChart.disableScroll();
 
                     performZoom(event);
 
-                } else if (((mTouchMode == NONE) || (mTouchMode != DRAG && event
-                        .getPointerCount() == 3))
+                } else if (mTouchMode == NONE
                         && Math.abs(distance(event.getX(), mTouchStartPoint.x, event.getY(),
-                                mTouchStartPoint.y)) > 25f) {
+                                mTouchStartPoint.y)) > 10f) {
 
-                    mTouchMode = DRAG;
+                    if (mChart.hasNoDragOffset()) {
+
+                        if (!mChart.isFullyZoomedOut())
+                            mTouchMode = DRAG;
+
+                    } else {
+                        mTouchMode = DRAG;
+                    }
                 }
                 break;
 
@@ -364,6 +371,13 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
     @Override
     public boolean onDoubleTap(MotionEvent e) {
 
+        OnChartGestureListener l = mChart.getOnChartGestureListener();
+
+        if (l != null) {
+            l.onChartDoubleTapped(e);
+            return super.onDoubleTap(e);
+        }
+
         // check if double-tap zooming is enabled
         if (mChart.isDoubleTapToZoomEnabled()) {
 
@@ -380,21 +394,37 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
     @Override
     public void onLongPress(MotionEvent e) {
 
-        mChart.fitScreen();
+        OnChartGestureListener l = mChart.getOnChartGestureListener();
 
-        Log.i("BarlineChartTouch",
-                "Longpress, resetting zoom and drag, adjusting chart bounds to screen.");
+        if (l != null) {
 
-        // PointF trans = getTrans(e.getX(), e.getY());
-        //
-        // mChart.zoomOut(trans.x, trans.y);
-        //
-        // Log.i("BarlineChartTouch", "Longpress, Zooming Out, x: " + trans.x +
-        // ", y: " + trans.y);
+            l.onChartLongPressed(e);
+        } else {
+
+            mChart.fitScreen();
+
+            Log.i("BarlineChartTouch",
+                    "Longpress, resetting zoom and drag, adjusting chart bounds to screen.");
+
+            // PointF trans = getTrans(e.getX(), e.getY());
+            //
+            // mChart.zoomOut(trans.x, trans.y);
+            //
+            // Log.i("BarlineChartTouch", "Longpress, Zooming Out, x: " +
+            // trans.x +
+            // ", y: " + trans.y);
+        }
     }
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
+
+        OnChartGestureListener l = mChart.getOnChartGestureListener();
+
+        if (l != null) {
+
+            l.onChartSingleTapped(e);
+        }
 
         Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
 
