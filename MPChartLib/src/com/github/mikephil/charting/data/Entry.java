@@ -149,7 +149,7 @@ public class Entry {
         if (e.mXIndex != this.mXIndex)
             return false;
 
-        if (Math.abs(e.mVal - this.mVal) > 0.0001)
+        if (Math.abs(e.mVal - this.mVal) > 0.00001f)
             return false;
 
         return true;

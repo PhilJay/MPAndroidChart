@@ -26,6 +26,7 @@ import com.github.mikephil.charting.interfaces.OnDrawListener;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
+import com.github.mikephil.charting.utils.LimitLine.LimitLabelPosition;
 import com.github.mikephil.charting.utils.LimitLine;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.SelInfo;
@@ -912,6 +913,36 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             mLimitLinePaint.setStrokeWidth(l.getLineWidth());
 
             mDrawCanvas.drawLine(pts[0], pts[1], pts[2], pts[3], mLimitLinePaint);
+
+            // if drawing the limit-value is enabled
+            if (l.isDrawValueEnabled()) {
+
+                // save text align
+                Align align = mValuePaint.getTextAlign();
+
+                float xOffset = Utils.convertDpToPixel(4f);
+                float yOffset = l.getLineWidth() + xOffset;
+                String label = mValueFormatter.getFormattedValue(l.getLimit());
+
+                if (mDrawUnitInChart)
+                    label += mUnit;
+
+                if (l.getLabelPosition() == LimitLabelPosition.RIGHT) {
+
+                    mValuePaint.setTextAlign(Align.RIGHT);
+                    mDrawCanvas.drawText(label, getWidth() - mOffsetRight
+                            - xOffset,
+                            pts[1] - yOffset, mValuePaint);
+
+                } else {
+                    mValuePaint.setTextAlign(Align.LEFT);
+                    mDrawCanvas.drawText(label, mOffsetLeft
+                            + xOffset,
+                            pts[1] - yOffset, mValuePaint);
+                }
+
+                mValuePaint.setTextAlign(align);
+            }
         }
     }
 

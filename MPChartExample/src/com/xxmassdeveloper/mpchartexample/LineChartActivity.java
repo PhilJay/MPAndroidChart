@@ -24,6 +24,7 @@ import com.github.mikephil.charting.interfaces.OnChartGestureListener;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendForm;
+import com.github.mikephil.charting.utils.LimitLine.LimitLabelPosition;
 import com.github.mikephil.charting.utils.LimitLine;
 import com.github.mikephil.charting.utils.XLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -59,6 +60,9 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setOnChartGestureListener(this);
         mChart.setOnChartValueSelectedListener(this);
+        
+        mChart.setUnit(" $");
+        mChart.setDrawUnitsInChart(true);
 
         // if enabled, the chart will always start at zero on the y-axis
         mChart.setStartAtZero(false);
@@ -346,10 +350,14 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         LimitLine ll1 = new LimitLine(130f);
         ll1.setLineWidth(4f);
         ll1.enableDashedLine(10f, 10f, 0f);
+        ll1.setDrawValue(true);
+        ll1.setLabelPosition(LimitLabelPosition.RIGHT);
         
         LimitLine ll2 = new LimitLine(-30f);
         ll2.setLineWidth(4f);
         ll2.enableDashedLine(10f, 10f, 0f);
+        ll2.setDrawValue(true);
+        ll2.setLabelPosition(LimitLabelPosition.RIGHT);
         
         data.addLimitLine(ll1);
         data.addLimitLine(ll2);

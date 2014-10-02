@@ -22,8 +22,19 @@ public class LimitLine {
     /** the color of the limit line */
     private int mLineColor = Color.rgb(237, 91, 91);
 
+    /** flag that indicates if the value of the limit line is drawn or not */
+    private boolean mDrawValue = true;
+
     /** the path effect of this LimitLine that makes dashed lines possible */
     private DashPathEffect mDashPathEffect = null;
+
+    /** indicates the position of the LimitLine label */
+    private LimitLabelPosition mLabelPosition = LimitLabelPosition.RIGHT;
+
+    /** enum that indicates the position of the LimitLine label */
+    public enum LimitLabelPosition {
+        LEFT, RIGHT
+    }
 
     /**
      * Constructor with limit.
@@ -115,7 +126,7 @@ public class LimitLine {
     public boolean isDashedLineEnabled() {
         return mDashPathEffect == null ? false : true;
     }
-    
+
     /**
      * returns the DashPathEffect that is set for this LimitLine
      * 
@@ -123,5 +134,43 @@ public class LimitLine {
      */
     public DashPathEffect getDashPathEffect() {
         return mDashPathEffect;
+    }
+
+    /**
+     * Set this to true to enable the value of the LimitLine to be drawn next to
+     * it. Default: true, not supported for RadarChart.
+     * 
+     * @param enabled
+     */
+    public void setDrawValue(boolean enabled) {
+        mDrawValue = enabled;
+    }
+
+    /**
+     * Returns true if drawing the value is enabled, false if not.
+     * 
+     * @return
+     */
+    public boolean isDrawValueEnabled() {
+        return mDrawValue;
+    }
+
+    /**
+     * Sets the position of the LimitLine value label (either on the right or on
+     * the left edge of the chart). Not supported for RadarChart.
+     * 
+     * @param pos
+     */
+    public void setLabelPosition(LimitLabelPosition pos) {
+        mLabelPosition = pos;
+    }
+
+    /**
+     * Returns the position of the LimitLine label (value).
+     * 
+     * @return
+     */
+    public LimitLabelPosition getLabelPosition() {
+        return mLabelPosition;
     }
 }
