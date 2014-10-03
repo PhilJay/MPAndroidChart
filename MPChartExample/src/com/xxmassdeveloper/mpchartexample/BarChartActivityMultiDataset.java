@@ -18,6 +18,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.LargeValueFormatter;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.github.mikephil.charting.utils.XLabels;
@@ -57,6 +58,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
 
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
+        mChart.setValueFormatter(new LargeValueFormatter());
 
         mChart.setDrawBarShadow(false);
         
@@ -89,6 +91,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         
         YLabels yl = mChart.getYLabels();
         yl.setTypeface(tf);
+        yl.setFormatter(new LargeValueFormatter());
         
         mChart.setValueTypeface(tf);
     }
@@ -200,19 +203,21 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
         ArrayList<BarEntry> yVals2 = new ArrayList<BarEntry>();
         ArrayList<BarEntry> yVals3 = new ArrayList<BarEntry>();
+        
+        float mult = mSeekBarY.getProgress() * 10000000f;
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-            float val = (float) (Math.random() * mSeekBarY.getProgress()) + 3;
+            float val = (float) (Math.random() * mult) + 3;
             yVals1.add(new BarEntry(val, i));
         }
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-            float val = (float) (Math.random() * mSeekBarY.getProgress()) + 3;
+            float val = (float) (Math.random() * mult) + 3;
             yVals2.add(new BarEntry(val, i));
         }
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-            float val = (float) (Math.random() * mSeekBarY.getProgress()) + 3;
+            float val = (float) (Math.random() * mult) + 3;
             yVals3.add(new BarEntry(val, i));
         }
 

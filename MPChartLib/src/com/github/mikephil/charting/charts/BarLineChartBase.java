@@ -26,8 +26,8 @@ import com.github.mikephil.charting.interfaces.OnDrawListener;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
-import com.github.mikephil.charting.utils.LimitLine.LimitLabelPosition;
 import com.github.mikephil.charting.utils.LimitLine;
+import com.github.mikephil.charting.utils.LimitLine.LimitLabelPosition;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
@@ -323,7 +323,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         float yleft = 0f, yright = 0f;
 
-        String label = mYLabels.getFormattedLabel(mYLabels.mEntryCount - 1);
+//        String label = mYLabels.getFormattedLabel(mYLabels.mEntryCount - 1);
+        String label = mYLabels.getLongestLabel();
 
         // calculate the maximum y-label width (including eventual offsets)
         float ylabelwidth = Utils.calcTextWidth(mYLabelPaint,

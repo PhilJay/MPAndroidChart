@@ -184,6 +184,26 @@ public class YLabels extends LabelBase {
     }
 
     /**
+     * Returns the longest formatted label (in terms of characters) the y-labels
+     * contain.
+     * 
+     * @return
+     */
+    public String getLongestLabel() {
+
+        String longest = "";
+
+        for (int i = 0; i < mEntries.length; i++) {
+            String text = getFormattedLabel(i);
+
+            if (longest.length() < text.length())
+                longest = text;
+        }
+
+        return longest;
+    }
+
+    /**
      * Returns the formatted y-label at the specified index. This will either
      * use the auto-formatter or the custom formatter (if one is set).
      * 

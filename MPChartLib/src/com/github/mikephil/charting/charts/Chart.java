@@ -11,6 +11,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
+import android.graphics.drawable.Drawable;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.RectF;
@@ -20,7 +21,6 @@ import android.provider.MediaStore.Images;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.MonthDisplayHelper;
 import android.view.View;
 
 import com.github.mikephil.charting.data.BarData;
@@ -2100,10 +2100,10 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
-     * Saves the chart with the given name to the given path on the sdcard
-     * leaving the path empty "" will put the saved file directly on the SD card
-     * chart is saved as a PNG image, example: saveToPath("myfilename",
-     * "foldername1/foldername2");
+     * Saves the current chart state with the given name to the given path on
+     * the sdcard leaving the path empty "" will put the saved file directly on
+     * the SD card chart is saved as a PNG image, example:
+     * saveToPath("myfilename", "foldername1/foldername2");
      * 
      * @param title
      * @param pathOnSD e.g. "folder1/folder2/folder3"
@@ -2179,6 +2179,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         ContentValues values = new ContentValues(8);
 
+        // store the details
         values.put(Images.Media.TITLE, fileName);
         values.put(Images.Media.DISPLAY_NAME, fileName);
         values.put(Images.Media.DATE_ADDED, currentTime);
@@ -2217,8 +2218,15 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
+    /**
+     * Default formatter used for formatting values. Uses a DecimalFormat with
+     * pre-calculated number of digits (depending on max and min value).
+     * 
+     * @author Philipp Jahoda
+     */
     private class DefaultValueFormatter implements ValueFormatter {
 
+        /** decimalformat for formatting */
         private DecimalFormat mFormat;
 
         public DefaultValueFormatter(DecimalFormat f) {
@@ -2227,6 +2235,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         @Override
         public String getFormattedValue(float value) {
+            // avoid memory allocations here (for performance)
             return mFormat.format(value);
         }
     }
