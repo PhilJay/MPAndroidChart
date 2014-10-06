@@ -84,6 +84,8 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         // add a selection listener
         mChart.setOnChartValueSelectedListener(this);
         // mChart.setTouchEnabled(false);
+        
+        mChart.setCenterText("MPAndroidChart\nLibrary");
 
         setData(3, 100);
 
@@ -257,9 +259,6 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         // undo all highlights
         mChart.highlightValues(null);
-
-        // set a text for the chart center
-        mChart.setCenterText("MPAndroid\nChart");
         
         mChart.invalidate();
     }

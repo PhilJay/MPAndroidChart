@@ -46,7 +46,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
      * variable for the text that is drawn in the center of the pie-chart. If
      * this value is null, the default is "Total Value\n + getYValueSum()"
      */
-    private String mCenterText = null;
+    private String mCenterText = "";
 
     /**
      * indicates the size of the hole in the center of the piechart, default:
@@ -385,7 +385,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
      */
     private void drawCenterText() {
 
-        if (mDrawCenterText) {
+        if (mDrawCenterText && mCenterText != null) {
 
             PointF c = getCenterCircleBox();
 
