@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.listener;
 
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
@@ -99,29 +100,41 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
 
         } else {
 
-            int index = mChart.getIndexForAngle(mChart.getAngleForPoint(e.getX(), e.getY()));
-            ArrayList<SelInfo> valsAtIndex = mChart.getYValsAtIndex(index);
+            float angle = mChart.getAngleForPoint(e.getX(), e.getY());
+            int index = mChart.getIndexForAngle(angle);
 
-            int dataSetIndex = 0;
-
-            // get the dataset that is closest to the selection (PieChart only
-            // has one DataSet)
-            if (mChart instanceof RadarChart) {
-
-                dataSetIndex = Utils.getClosestDataSetIndex(valsAtIndex, distance
-                        / ((RadarChart) mChart).getFactor());
-            }
-
-            Highlight h = new Highlight(index, dataSetIndex);
-
-            if (h.equalTo(mLastHighlight)) {
-
-                mChart.highlightTouch(null);
+            // check if the index could be found
+            if (index < 0) {
+                
+                mChart.highlightValues(null);
                 mLastHighlight = null;
+                
             } else {
 
-                mChart.highlightTouch(h);
-                mLastHighlight = h;
+                ArrayList<SelInfo> valsAtIndex = mChart.getYValsAtIndex(index);
+
+                int dataSetIndex = 0;
+
+                // get the dataset that is closest to the selection (PieChart
+                // only
+                // has one DataSet)
+                if (mChart instanceof RadarChart) {
+
+                    dataSetIndex = Utils.getClosestDataSetIndex(valsAtIndex, distance
+                            / ((RadarChart) mChart).getFactor());
+                }
+
+                Highlight h = new Highlight(index, dataSetIndex);
+
+                if (h.equalTo(mLastHighlight)) {
+
+                    mChart.highlightTouch(null);
+                    mLastHighlight = null;
+                } else {
+
+                    mChart.highlightTouch(h);
+                    mLastHighlight = h;
+                }
             }
         }
 

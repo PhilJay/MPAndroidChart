@@ -14,8 +14,6 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
@@ -45,6 +43,8 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
         mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
+        
+        mSeekBarY.setProgress(10);
 
         mSeekBarX.setOnSeekBarChangeListener(this);
         mSeekBarY.setOnSeekBarChangeListener(this);
