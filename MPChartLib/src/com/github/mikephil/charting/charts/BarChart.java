@@ -123,10 +123,13 @@ public class BarChart extends BarLineChartBase<BarData> {
             int index = h.getXIndex();
 
             int dataSetIndex = h.getDataSetIndex();
-            BarDataSet ds = (BarDataSet) mCurrentData.getDataSetByIndex(dataSetIndex);
+            BarDataSet set = (BarDataSet) mCurrentData.getDataSetByIndex(dataSetIndex);
+            
+            if (set == null)
+                continue;
 
-            mHighlightPaint.setColor(ds.getHighLightColor());
-            mHighlightPaint.setAlpha(ds.getHighLightAlpha());
+            mHighlightPaint.setColor(set.getHighLightColor());
+            mHighlightPaint.setAlpha(set.getHighLightAlpha());
 
             // check outofbounds
             if (index < mCurrentData.getYValCount() && index >= 0
@@ -142,7 +145,7 @@ public class BarChart extends BarLineChartBase<BarData> {
                         + mOriginalData.getGroupSpace() * index;
                 float y = e.getVal();
 
-                prepareBar(x, y, ds.getBarSpace());
+                prepareBar(x, y, set.getBarSpace());
 
                 mDrawCanvas.drawRect(mBarRect, mHighlightPaint);
 

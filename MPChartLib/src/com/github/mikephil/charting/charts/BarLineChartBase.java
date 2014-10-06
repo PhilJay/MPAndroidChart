@@ -39,7 +39,7 @@ import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
 import java.util.ArrayList;
 
 /**
- * Baseclass of LineChart and BarChart.
+ * Base-class of LineChart, BarChart, ScatterChart and CandleStickChart.
  * 
  * @author Philipp Jahoda
  */
@@ -274,6 +274,57 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         calculateOffsets();
     }
 
+    /**
+     * Sets up all the matrices that will be used for scaling the coordinates to
+     * the display. Offset and Value-px.
+     */
+    private void prepareMatrix() {
+
+        prepareMatrixValuePx();
+
+        prepareMatrixOffset();
+
+        Log.i(LOG_TAG, "Matrices prepared.");
+    }
+
+    /**
+     * Prepares the matrix that transforms values to pixels.
+     */
+    private void prepareMatrixValuePx() {
+
+        float scaleX = (float) ((getWidth() - mOffsetRight - mOffsetLeft) / mDeltaX);
+        float scaleY = (float) ((getHeight() - mOffsetTop - mOffsetBottom) / mDeltaY);
+
+        // setup all matrices
+         mMatrixValueToPx.reset();
+        mMatrixValueToPx.postTranslate(0, -mYChartMin);
+        mMatrixValueToPx.postScale(scaleX, -scaleY);
+    }
+
+    /**
+     * Prepares the matrix that contains all offsets.
+     */
+    private void prepareMatrixOffset() {
+        
+        mMatrixOffset.reset();
+
+        // offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
+
+        if (!mInvertYAxis)
+            mMatrixOffset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
+        else {
+            mMatrixOffset.setTranslate(mOffsetLeft, -mOffsetTop);
+            mMatrixOffset.postScale(1.0f, -1.0f);
+        }
+
+//        mMatrixOffset.set(offset);
+
+        // mMatrixOffset.reset();
+        //
+        // mMatrixOffset.postTranslate(mOffsetLeft, getHeight() -
+        // mOffsetBottom);
+    }
+
     @Override
     public void notifyDataSetChanged() {
         if (!mFixedYValues) {
@@ -323,7 +374,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         float yleft = 0f, yright = 0f;
 
-//        String label = mYLabels.getFormattedLabel(mYLabels.mEntryCount - 1);
+        // String label = mYLabels.getFormattedLabel(mYLabels.mEntryCount - 1);
         String label = mYLabels.getLongestLabel();
 
         // calculate the maximum y-label width (including eventual offsets)
@@ -387,30 +438,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         prepareContentRect();
 
-        prepareMatrixValuePx();
-
-        // float scaleX = (float) ((getWidth() - mOffsetLeft - mOffsetRight) /
-        // mDeltaX);
-        // float scaleY = (float) ((getHeight() - mOffsetBottom - mOffsetTop) /
-        // mDeltaY);
-        //
-        // Matrix val = new Matrix();
-        // val.postTranslate(0, -mYChartMin);
-        // val.postScale(scaleX, -scaleY);
-        //
-        // mMatrixValueToPx.set(val);
-
-        Matrix offset = new Matrix();
-        // offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
-
-        if (!mInvertYAxis)
-            offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
-        else {
-            offset.setTranslate(mOffsetLeft, -mOffsetTop);
-            offset.postScale(1.0f, -1.0f);
-        }
-
-        mMatrixOffset.set(offset);
+        prepareMatrix();
     }
 
     /**
@@ -453,26 +481,35 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     @Override
     protected void calcMinMax(boolean fixedValues) {
         super.calcMinMax(fixedValues); // calc min and max in the super class
-
-        // additional handling for space (default 15% space)
-        // float space = Math.abs(mDeltaY / 100f * 15f);
-        float space = Math.abs(Math.max(Math.abs(mYChartMax), Math.abs(mYChartMin)) / 100f * 15f);
-
-        if (mStartAtZero) {
-
-            if (mYChartMax < 0) {
-                mYChartMax = 0;
-                // calc delta
-                mYChartMin = mYChartMin - space;
-            } else {
-                mYChartMin = 0;
-                // calc delta
-                mYChartMax = mYChartMax + space;
+        
+        if(!fixedValues) {
+         
+            // additional handling for space (default 15% space)
+            // float space = Math.abs(mDeltaY / 100f * 15f);
+            float space = Math.abs(Math.max(Math.abs(mYChartMax), Math.abs(mYChartMin)) / 100f * 15f);
+            if (Math.abs(mYChartMax) - Math.abs(mYChartMin) < 0.00001f) {
+                if (Math.abs(mYChartMax) < 10f)
+                    space = 1f;
+                else
+                    space = Math.abs(mYChartMax / 100f * 15f);
             }
-        } else {
 
-            mYChartMin = mYChartMin - space / 2f;
-            mYChartMax = mYChartMax + space / 2f;
+            if (mStartAtZero) {
+
+                if (mYChartMax < 0) {
+                    mYChartMax = 0;
+                    // calc delta
+                    mYChartMin = mYChartMin - space;
+                } else {
+                    mYChartMin = 0;
+                    // calc delta
+                    mYChartMax = mYChartMax + space;
+                }
+            } else {
+
+                mYChartMin = mYChartMin - space / 2f;
+                mYChartMax = mYChartMax + space / 2f;
+            }
         }
 
         mDeltaY = Math.abs(mYChartMax - mYChartMin);
@@ -840,20 +877,17 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         if (!mDrawHorizontalGrid)
             return;
 
-        // create a new path object only once and use reset() instead of
-        // unnecessary allocations
-        Path p = new Path();
+        // pre alloc
+        float[] position = new float[2];
 
         // draw the horizontal grid
         for (int i = 0; i < mYLabels.mEntryCount; i++) {
 
-            p.reset();
-            p.moveTo(0, mYLabels.mEntries[i]);
-            p.lineTo(mDeltaX, mYLabels.mEntries[i]);
+            position[1] = mYLabels.mEntries[i];
+            transformPointArray(position);
 
-            transformPath(p);
-
-            mDrawCanvas.drawPath(p, mGridPaint);
+            mDrawCanvas.drawLine(mOffsetLeft, position[1], getWidth() - mOffsetRight, position[1],
+                    mGridPaint);
         }
     }
 
@@ -893,30 +927,26 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         if (limitLines == null)
             return;
 
-        // pre allocate to save performance
-        float[] pts = new float[] {
-                0, 0, 0, 0
-        };
-
         for (int i = 0; i < limitLines.size(); i++) {
 
             LimitLine l = limitLines.get(i);
 
-            pts[0] = 0f;
-            pts[1] = l.getLimit();
-            pts[2] = mDeltaX;
-            pts[3] = l.getLimit();
+            Path line = new Path();
+            line.moveTo(0f, l.getLimit());
+            line.lineTo(mDeltaX, l.getLimit());
 
-            transformPointArray(pts);
+            transformPath(line);
 
             mLimitLinePaint.setColor(l.getLineColor());
             mLimitLinePaint.setPathEffect(l.getDashPathEffect());
             mLimitLinePaint.setStrokeWidth(l.getLineWidth());
 
-            mDrawCanvas.drawLine(pts[0], pts[1], pts[2], pts[3], mLimitLinePaint);
+            mDrawCanvas.drawPath(line, mLimitLinePaint);
 
             // if drawing the limit-value is enabled
             if (l.isDrawValueEnabled()) {
+
+                PointF pos = getPosition(new Entry(l.getLimit(), 0));
 
                 // save text align
                 Align align = mValuePaint.getTextAlign();
@@ -933,13 +963,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                     mValuePaint.setTextAlign(Align.RIGHT);
                     mDrawCanvas.drawText(label, getWidth() - mOffsetRight
                             - xOffset,
-                            pts[1] - yOffset, mValuePaint);
+                            pos.y - yOffset, mValuePaint);
 
                 } else {
                     mValuePaint.setTextAlign(Align.LEFT);
                     mDrawCanvas.drawText(label, mOffsetLeft
                             + xOffset,
-                            pts[1] - yOffset, mValuePaint);
+                            pos.y - yOffset, mValuePaint);
                 }
 
                 mValuePaint.setTextAlign(align);

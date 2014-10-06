@@ -173,6 +173,9 @@ public class ScatterChart extends BarLineChartBase<ScatterData> {
 
             ScatterDataSet set = mCurrentData.getDataSetByIndex(mIndicesToHightlight[i]
                     .getDataSetIndex());
+            
+            if (set == null)
+                continue;
 
             mHighlightPaint.setColor(set.getHighLightColor());
 

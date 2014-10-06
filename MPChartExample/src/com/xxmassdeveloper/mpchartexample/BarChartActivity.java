@@ -33,7 +33,8 @@ import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 
-public class BarChartActivity extends DemoBase implements OnSeekBarChangeListener, OnChartValueSelectedListener {
+public class BarChartActivity extends DemoBase implements OnSeekBarChangeListener,
+        OnChartValueSelectedListener {
 
     private BarChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
@@ -59,7 +60,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart.setDrawYValues(true);
 
         mChart.setDescription("");
-        
+
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
         mChart.setMaxVisibleValueCount(60);
@@ -71,17 +72,17 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart.setPinchZoom(false);
 
         // draw shadows for each bar that show the maximum value
-//        mChart.setDrawBarShadow(true);
+        // mChart.setDrawBarShadow(true);
 
         mChart.setUnit(" €");
-        
+
         // mChart.setDrawXLabels(false);
 
         mChart.setDrawGridBackground(false);
         mChart.setDrawHorizontalGrid(true);
         mChart.setDrawVerticalGrid(false);
         // mChart.setDrawYLabels(false);
-        
+
         // sets the text size of the values inside the chart
         mChart.setValueTextSize(10f);
 
@@ -95,20 +96,20 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         xl.setPosition(XLabelPosition.BOTTOM);
         xl.setCenterXLabelText(true);
         xl.setTypeface(tf);
-        
+
         YLabels yl = mChart.getYLabels();
         yl.setTypeface(tf);
         yl.setLabelCount(8);
         yl.setPosition(YLabelPosition.BOTH_SIDED);
 
         mChart.setValueTypeface(tf);
-        
+
         setData(12, 50);
 
         // setting data
         mSeekBarY.setProgress(50);
         mSeekBarX.setProgress(12);
-        
+
         mSeekBarY.setOnSeekBarChangeListener(this);
         mSeekBarX.setOnSeekBarChangeListener(this);
 
@@ -231,7 +232,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        
+
         tvX.setText("" + (mSeekBarX.getProgress() + 1));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
@@ -250,7 +251,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         // TODO Auto-generated method stub
 
     }
-    
+
     private void setData(int count, float range) {
 
         ArrayList<String> xVals = new ArrayList<String>();
@@ -268,7 +269,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         BarDataSet set1 = new BarDataSet(yVals1, "DataSet");
         set1.setBarSpacePercent(35f);
-        
+
         ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
         dataSets.add(set1);
 
@@ -276,17 +277,21 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         mChart.setData(data);
     }
-    
+
     @SuppressLint("NewApi")
     @Override
     public void onValueSelected(Entry e, int dataSetIndex) {
-        
+
+        if (e == null)
+            return;
+
         RectF bounds = mChart.getBarBounds((BarEntry) e);
         PointF position = mChart.getPosition(e);
-        
+
         Log.i("bounds", bounds.toString());
         Log.i("position", position.toString());
     }
-    
-    public void onNothingSelected() {};
+
+    public void onNothingSelected() {
+    };
 }

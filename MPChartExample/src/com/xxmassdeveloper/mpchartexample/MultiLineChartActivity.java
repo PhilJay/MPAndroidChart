@@ -50,6 +50,8 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
 
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
+        
+        mChart.setDrawGridBackground(false);
 
         // mChart.setStartAtZero(true);
 
@@ -231,6 +233,8 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
 
         // make the first DataSet dashed
         dataSets.get(0).enableDashedLine(10, 10, 0);
+        dataSets.get(0).setColors(ColorTemplate.VORDIPLOM_COLORS);
+        dataSets.get(0).setCircleColors(ColorTemplate.VORDIPLOM_COLORS);
 
         LineData data = new LineData(xVals, dataSets);
         mChart.setData(data);

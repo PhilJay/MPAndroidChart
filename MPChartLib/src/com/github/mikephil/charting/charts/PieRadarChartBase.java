@@ -73,7 +73,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
     @Override
     public void notifyDataSetChanged() {
-        // TODO Auto-generated method stub
+        prepare();
     }
 
     @Override

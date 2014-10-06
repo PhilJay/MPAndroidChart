@@ -161,6 +161,10 @@ public class CandleStickChart extends BarLineChartBase<CandleData> {
                                                               // x-position
 
             CandleDataSet set = mOriginalData.getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
+            
+            if (set == null)
+                continue;
+            
             mHighlightPaint.setColor(set.getHighLightColor());
             
             CandleEntry e = set.getEntryForXIndex(xIndex);

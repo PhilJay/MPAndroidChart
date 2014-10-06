@@ -10,6 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="7dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:text=""
         android:textSize="12dp"
         android:textColor="@android:color/white"

@@ -1,6 +1,7 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
@@ -48,6 +51,9 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         mChart = (PieChart) findViewById(R.id.chart1);
 
+        // change the color of the center-hole
+        mChart.setHoleColor(Color.rgb(235, 235, 235));
+
         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
         mChart.setValueTypeface(tf);
@@ -78,9 +84,9 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         // add a selection listener
         mChart.setOnChartValueSelectedListener(this);
         // mChart.setTouchEnabled(false);
-        
+
         setData(3, 100);
-        
+
         mChart.animateXY(1500, 1500);
         // mChart.spin(2000, 0, 360);
 
@@ -89,6 +95,47 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         l.setXEntrySpace(7f);
         l.setYEntrySpace(5f);
 
+    }
+
+    private void removeLastEntry() {
+
+        PieData data = mChart.getDataOriginal();
+
+        if (data != null) {
+
+            PieDataSet set = data.getDataSet();
+
+            if (set != null) {
+
+                Entry e = set.getEntryForXIndex(set.getEntryCount() - 1);
+
+                data.removeEntry(e, 0);
+                // or remove by index
+                // mData.removeEntry(xIndex, dataSetIndex);
+
+                mChart.notifyDataSetChanged();
+                mChart.invalidate();
+            }
+        }
+    }
+    
+    private void addEntry() {
+
+        PieData data = mChart.getDataOriginal();
+        
+        if(data != null) {
+
+            PieDataSet set = data.getDataSet();
+            // set.addEntry(...);
+
+            data.addEntry(new Entry((float) (Math.random() * 50) + 50f, set.getEntryCount()), 0);
+
+            // let the chart know it's data has changed
+            mChart.notifyDataSetChanged();
+
+            // redraw the chart
+            mChart.invalidate();   
+        }
     }
 
     @Override
@@ -102,19 +149,21 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         switch (item.getItemId()) {
             case R.id.actionToggleValues: {
-                if (mChart.isDrawYValuesEnabled())
-                    mChart.setDrawYValues(false);
-                else
-                    mChart.setDrawYValues(true);
-                mChart.invalidate();
+                // if (mChart.isDrawYValuesEnabled())
+                // mChart.setDrawYValues(false);
+                // else
+                // mChart.setDrawYValues(true);
+                // mChart.invalidate();
+                removeLastEntry();
                 break;
             }
             case R.id.actionTogglePercent: {
-                if (mChart.isUsePercentValuesEnabled())
-                    mChart.setUsePercentValues(false);
-                else
-                    mChart.setUsePercentValues(true);
-                mChart.invalidate();
+//                if (mChart.isUsePercentValuesEnabled())
+//                    mChart.setUsePercentValues(false);
+//                else
+//                    mChart.setUsePercentValues(true);
+//                mChart.invalidate();
+                addEntry();
                 break;
             }
             case R.id.actionToggleHole: {
@@ -163,7 +212,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
     }
 
     private String[] mParties = new String[] {
-            "Party A", "Party B", "Party C", "Party D", "Party E"
+            "Party A", "Party B", "Party C", "Party D", "Party E", "Party F", "Party G"
     };
 
     @Override
@@ -174,9 +223,9 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         setData(mSeekBarX.getProgress(), mSeekBarY.getProgress());
     }
-    
+
     private void setData(int count, float range) {
-        
+
         float mult = range;
 
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
@@ -210,12 +259,16 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart.highlightValues(null);
 
         // set a text for the chart center
-        mChart.setCenterText("Total Value\n" + (int) mChart.getYValueSum() + "\n(all slices)");
+        mChart.setCenterText("MPAndroid\nChart");
+        
         mChart.invalidate();
     }
 
     @Override
     public void onValueSelected(Entry e, int dataSetIndex) {
+
+        if (e == null)
+            return;
         Log.i("VAL SELECTED",
                 "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
                         + ", DataSet index: " + dataSetIndex);

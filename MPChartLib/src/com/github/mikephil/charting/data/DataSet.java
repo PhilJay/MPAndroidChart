@@ -462,6 +462,16 @@ public abstract class DataSet<T extends Entry> {
     public int getColor(int index) {
         return mColors.get(index % mColors.size());
     }
+    
+    /**
+     * Returns the first color (index 0) of the colors-array this DataSet
+     * contains.
+     * 
+     * @return
+     */
+    public int getColor() {
+        return mColors.get(0);
+    }
 
     /**
      * Resets all colors of this DataSet and recreates the colors array.
