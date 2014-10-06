@@ -290,10 +290,7 @@ Besides that, there are many other ways for setting colors for a `DataSet`. Here
 
 ```java
 LineDataSet set = new LineDataSet(...);
-set.setColors(ColorTemplate.VORDIPLOM_COLORS, Context);
-
-// or:
-set.setColors(ColorTemplate.createColors(ColorTemplate.VORDIPLOM_COLORS));
+set.setColors(ColorTemplate.VORDIPLOM_COLORS);
 ```
 
 If no colors are set for a `DataSet`, default colors are used.
