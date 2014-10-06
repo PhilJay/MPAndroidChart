@@ -119,7 +119,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
                     }
 
                     // determine the touch-pointer center
-                    midPoint(mTouchPointCenter, event);
+                    midPoint(mTouchPointCenter, event); 
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -138,7 +138,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
                 } else if (mTouchMode == NONE
                         && Math.abs(distance(event.getX(), mTouchStartPoint.x, event.getY(),
-                                mTouchStartPoint.y)) > 5f) {
+                                mTouchStartPoint.y)) > 25f) {
 
                     if (mChart.hasNoDragOffset()) {
 
@@ -399,7 +399,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
         if (l != null) {
 
             l.onChartLongPressed(e);
-        } else {
+        } else if(mTouchMode == NONE) {
 
             mChart.fitScreen();
 
