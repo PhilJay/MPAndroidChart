@@ -179,7 +179,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
         // setup offsets for legend
         if (mDrawLegend) {
 
-            float legendRight = 0f, legendBottom = 0f;
+            float legendRight = 0f, legendBottom = 0f, legendTop = 0f;
 
             if (mLegend == null)
                 return;
@@ -193,6 +193,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
                         + mLegend.getFormSize() + mLegend.getFormToTextSpace() + spacing;
 
                 mLegendLabelPaint.setTextAlign(Align.LEFT);
+                legendTop = mLegend.getFullHeight(mLegendLabelPaint);
 
             } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
                     || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
@@ -208,8 +209,9 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
             mLegend.setOffsetTop(min);
             mLegend.setOffsetLeft(min);
-
-            mOffsetTop = Math.max(mLegend.getFullHeight(mLegendLabelPaint), min);
+           
+            mOffsetTop = Math.max(min, legendTop);
+            mOffsetBottom = Math.max(min, legendBottom);
 
             applyCalculatedOffsets();
         }
