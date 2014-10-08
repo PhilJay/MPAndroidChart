@@ -12,6 +12,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Chart that draws lines, surfaces, circles, ...
@@ -19,7 +20,9 @@ import java.util.ArrayList;
  * @author Philipp Jahoda
  */
 public class LineChart extends BarLineChartBase<LineData> {
-
+	
+	protected List<Integer> listYValuesToDraw ;
+	
     /** the width of the highlighning line */
     protected float mHighlightWidth = 3f;
 
@@ -50,6 +53,40 @@ public class LineChart extends BarLineChartBase<LineData> {
         mHighlightPaint.setStyle(Paint.Style.STROKE);
         mHighlightPaint.setStrokeWidth(2f);
         mHighlightPaint.setColor(Color.rgb(255, 187, 115));
+        
+        listYValuesToDraw = new ArrayList<Integer>();
+    }
+    
+    /**
+     * 
+     * @param index: the index of dataset values to draw
+     */
+    public void addSetDrawYValueForIndex(int index){
+    	listYValuesToDraw.add(index);
+    }
+    
+    /**
+     * 
+     * @param index : the index of dataset values dray to remove
+     */
+    
+    public void removeDrawYValueForIndex(int index){
+    	
+    	if (listYValuesToDraw.indexOf(index) != -1){
+    		listYValuesToDraw.remove(listYValuesToDraw.indexOf(index)); 		
+    	}
+    }
+    
+    /**
+     * 
+     * @param index
+     * @return true if index is already set to be drawn
+     */
+    public boolean isValueInArrayYValuesToDraw(int index){
+    	if (listYValuesToDraw.indexOf(index) != -1)
+    		return true ;
+    	else return false ;
+    	
     }
 
     @Override
@@ -127,7 +164,7 @@ public class LineChart extends BarLineChartBase<LineData> {
     protected void drawData() {
 
         ArrayList<LineDataSet> dataSets = mCurrentData.getDataSets();
-
+        
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
             LineDataSet dataSet = dataSets.get(i);
@@ -323,9 +360,50 @@ public class LineChart extends BarLineChartBase<LineData> {
 
     @Override
     protected void drawValues() {
+    	
+        if (listYValuesToDraw.size() > 0){
+        	for (int i = 0 ; i < listYValuesToDraw.size() ; i++){
+        		LineDataSet dataSet = getDataCurrent().getDataSetByIndex(listYValuesToDraw.get(i));
+
+                 // make sure the values do not interfear with the circles
+                 int valOffset = (int) (dataSet.getCircleSize() * 1.75f);
+
+                 if (!dataSet.isDrawCirclesEnabled())
+                     valOffset = valOffset / 2;
+
+                 ArrayList<Entry> entries = dataSet.getYVals();
+
+                 float[] positions = generateTransformedValuesLineScatter(entries);
+
+                 for (int j = 0; j < positions.length * mPhaseX; j += 2) {
+
+                     if (isOffContentRight(positions[j]))
+                         break;
+
+                     if (isOffContentLeft(positions[j]) || isOffContentTop(positions[j + 1])
+                             || isOffContentBottom(positions[j + 1]))
+                         continue;
+
+                     float val = entries.get(j / 2).getVal();
+
+                     if (mDrawUnitInChart) {
+
+                         mDrawCanvas.drawText(mValueFormatter.getFormattedValue(val) + mUnit,
+                                 positions[j],
+                                 positions[j + 1]
+                                         - valOffset, mValuePaint);
+                     } else {
+
+                         mDrawCanvas.drawText(mValueFormatter.getFormattedValue(val), positions[j],
+                                 positions[j + 1] - valOffset,
+                                 mValuePaint);
+                     }
+                 }
+        	}
+        }
 
         // if values are drawn
-        if (mDrawYValues && mCurrentData.getYValCount() < mMaxVisibleCount * mScaleX) {
+        else if  (mDrawYValues && mCurrentData.getYValCount() < mMaxVisibleCount * mScaleX) {
 
             ArrayList<LineDataSet> dataSets = mCurrentData.getDataSets();
 
