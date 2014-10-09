@@ -154,12 +154,15 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         if (dataSets == null)
             return;
 
-        for (int i = 0; i < dataSets.size(); i++) {
-            if (dataSets.get(i)
-                    .getYVals()
-                    .size() > mXVals.size()) {
+        int xSize = mXVals.size();
+        for (T dataSet : dataSets) {
+            if (dataSet.getYVals().size() > xSize) {
+                dataSet.getYVals().subList(xSize, dataSet.getYVals().size()).clear();
+				Log.i("Trim Y", "Trimming Y's size to " + xSize); //Intimate developers.
+            }
+            if (dataSet.getYVals().size() > xSize) {
                 throw new IllegalArgumentException(
-                        "One or more of the DataSet Entry arrays are longer than the x-values array of this ChartData object.");
+                        "Unable to trim one of the DataSet Entry arrays, which is longer than the x-values array of this ChartData object.");
             }
         }
     }
