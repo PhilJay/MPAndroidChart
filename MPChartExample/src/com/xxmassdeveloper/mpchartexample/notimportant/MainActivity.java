@@ -24,13 +24,17 @@ import com.xxmassdeveloper.mpchartexample.AnotherBarActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivityMultiDataset;
 import com.xxmassdeveloper.mpchartexample.CandleStickChartActivity;
+import com.xxmassdeveloper.mpchartexample.CubicLineChartActivity;
+import com.xxmassdeveloper.mpchartexample.DynamicalAddingActivity;
 import com.xxmassdeveloper.mpchartexample.InvertedLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.LineChartActivity;
+import com.xxmassdeveloper.mpchartexample.LineChartActivityColored;
 import com.xxmassdeveloper.mpchartexample.ListViewBarChartActivity;
 import com.xxmassdeveloper.mpchartexample.ListViewMultiChartActivity;
 import com.xxmassdeveloper.mpchartexample.MultiLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.PieChartActivity;
 import com.xxmassdeveloper.mpchartexample.R;
+import com.xxmassdeveloper.mpchartexample.RadarChartActivitry;
 import com.xxmassdeveloper.mpchartexample.ScatterChartActivity;
 import com.xxmassdeveloper.mpchartexample.StackedBarActivity;
 import com.xxmassdeveloper.mpchartexample.fragments.SimpleChartDemo;
@@ -81,6 +85,18 @@ public class MainActivity extends Activity implements OnItemClickListener {
         objects.add(new ContentItem(
                 "Candle Stick Chart",
                 "Demonstrates usage of the CandleStickChart."));
+        objects.add(new ContentItem(
+                "Cubic Line Chart",
+                "Demonstrates cubic lines in a LineChart."));
+        objects.add(new ContentItem(
+                "Radar Chart",
+                "Demonstrates the use of a spider-web like (net) chart."));
+        objects.add(new ContentItem(
+                "Colored Line Chart",
+                "Shows a LineChart with different background and line color."));
+        objects.add(new ContentItem(
+                "Dynamical data adding",
+                "This Activity demonstrates dynamical adding of Entries and DataSets (real time graph)."));
 
         MyAdapter adapter = new MyAdapter(this, objects);
 
@@ -130,8 +146,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 startActivity(i);
                 break;
             case 8:
-                // i = new Intent(this, DrawChartActivity.class);
-                // startActivity(i);
+//                 i = new Intent(this, DrawChartActivity.class);
+//                 startActivity(i);
 
                 AlertDialog.Builder b = new AlertDialog.Builder(this);
                 b.setTitle("Feature not available");
@@ -157,6 +173,22 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 break;
             case 13:
                 i = new Intent(this, CandleStickChartActivity.class);
+                startActivity(i);
+                break;
+            case 14:
+                i = new Intent(this, CubicLineChartActivity.class);
+                startActivity(i);
+                break;
+            case 15:
+                i = new Intent(this, RadarChartActivitry.class);
+                startActivity(i);
+                break;
+            case 16:
+                i = new Intent(this, LineChartActivityColored.class);
+                startActivity(i);
+                break;
+            case 17:
+                i = new Intent(this, DynamicalAddingActivity.class);
                 startActivity(i);
                 break;
         }

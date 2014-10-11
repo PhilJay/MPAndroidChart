@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -63,9 +64,14 @@ public abstract class Utils {
      */
     public static float convertDpToPixel(float dp) {
 
-        if (mRes == null)
-            throw new IllegalStateException(
-                    "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertDpToPixel(...).");
+        if (mRes == null) {
+
+            Log.e("MPChartLib-Utils",
+                    "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertDpToPixel(...). Otherwise conversion does not take place.");
+            return dp;
+            // throw new IllegalStateException(
+            // "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertDpToPixel(...).");
+        }
 
         DisplayMetrics metrics = mRes.getDisplayMetrics();
         float px = dp * (metrics.densityDpi / 160f);
@@ -81,9 +87,14 @@ public abstract class Utils {
      */
     public static float convertPixelsToDp(float px) {
 
-        if (mRes == null)
-            throw new IllegalStateException(
-                    "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertPixelsToDp(...).");
+        if (mRes == null) {
+
+            Log.e("MPChartLib-Utils",
+                    "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertPixelsToDp(...). Otherwise conversion does not take place.");
+            return px;
+            // throw new IllegalStateException(
+            // "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertPixelsToDp(...).");
+        }
 
         DisplayMetrics metrics = mRes.getDisplayMetrics();
         float dp = px / (metrics.densityDpi / 160f);
@@ -117,40 +128,28 @@ public abstract class Utils {
         return r.height();
     }
 
-    /**
-     * returns the appropriate number of format digits for a delta value
-     * 
-     * @param delta
-     * @return
-     */
-    public static int getFormatDigits(float delta) {
-
-        if (delta < 0.1) {
-            return 6;
-        } else if (delta <= 1) {
-            return 4;
-        } else if (delta < 20) {
-            return 2;
-        } else if (delta < 100) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    public static int getPieFormatDigits(float delta) {
-        if (delta < 0.01) {
-            return 4;
-        } else if (delta < 0.1) {
-            return 3;
-        } else if (delta < 1) {
-            return 2;
-        } else if (delta < 10) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
+//    /**
+//     * returns the appropriate number of format digits for a delta value
+//     * 
+//     * @param delta
+//     * @return
+//     */
+//    public static int getFormatDigits(float delta) {
+//
+//        if (delta < 0.1) {
+//            return 6;
+//        } else if (delta <= 1) {
+//            return 4;
+//        } else if (delta < 4) {
+//            return 3;
+//        } else if (delta < 20) {
+//            return 2;
+//        } else if (delta < 60) {
+//            return 1;
+//        } else {
+//            return 0;
+//        }
+//    }
 
     /**
      * returns the appropriate number of format digits for a legend value
@@ -257,14 +256,21 @@ public abstract class Utils {
         }
 
         // if number around zero (between 1 and -1)
-        if (zero)
+        if (zero) {
             out[ind--] = '0';
+            charCount += 1;
+        }
 
         // if the number is negative
-        if (neg)
+        if (neg) {
             out[ind--] = '-';
+            charCount += 1;
+        }
 
-        return new String(out);
+        int start = out.length - charCount;
+
+        // use this instead of "new String(...)" because of issue < Android 4.0
+        return String.valueOf(out, start, out.length - start);
     }
 
     /**
@@ -279,6 +285,19 @@ public abstract class Utils {
         final float magnitude = (float) Math.pow(10, pw);
         final long shifted = Math.round(number * magnitude);
         return shifted / magnitude;
+    }
+
+    /**
+     * Returns the appropriate number of decimals to be used for the provided
+     * number.
+     * 
+     * @param number
+     * @return
+     */
+    public static int getDecimals(float number) {
+
+        float i = roundToNextSignificant(number);
+        return (int) Math.ceil(-Math.log10(i)) + 2;
     }
 
     /**
@@ -313,5 +332,48 @@ public abstract class Utils {
         }
 
         return ret;
+    }
+
+    /**
+     * Replacement for the Math.nextUp(...) method that is only available in
+     * HONEYCOMB and higher.
+     * 
+     * @param d
+     * @return
+     */
+    public static double nextUp(double d) {
+        if (d == Double.POSITIVE_INFINITY)
+            return d;
+        else {
+            d += 0.0d;
+            return Double.longBitsToDouble(Double.doubleToRawLongBits(d) +
+                    ((d >= 0.0d) ? +1L : -1L));
+        }
+    }
+
+    /**
+     * Returns the index of the DataSet that contains the closest value on the
+     * y-axis. This is needed for highlighting.
+     * 
+     * @param valsAtIndex all the values at a specific index
+     * @return
+     */
+    public static int getClosestDataSetIndex(ArrayList<SelInfo> valsAtIndex, float val) {
+
+        int index = -1;
+        float distance = Float.MAX_VALUE;
+
+        for (int i = 0; i < valsAtIndex.size(); i++) {
+
+            float cdistance = Math.abs((float) valsAtIndex.get(i).val - val);
+            if (cdistance < distance) {
+                index = valsAtIndex.get(i).dataSetIndex;
+                distance = cdistance;
+            }
+        }
+
+        // Log.i(LOG_TAG, "Closest DataSet index: " + index);
+
+        return index;
     }
 }

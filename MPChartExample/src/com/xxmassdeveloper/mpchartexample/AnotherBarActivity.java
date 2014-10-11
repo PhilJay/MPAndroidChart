@@ -51,13 +51,12 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
 
         mChart.setUnit(" €");
         mChart.setDescription("");
+        
+        mChart.setDrawYValues(true);
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
         mChart.setMaxVisibleValueCount(60);
-
-        // sets the number of digits for values inside the chart
-        mChart.setValueDigits(2);
 
         // disable 3D
         mChart.set3DEnabled(false);
@@ -223,8 +222,7 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
         }
 
         BarDataSet set1 = new BarDataSet(yVals1, "Data Set");
-        set1.setColors(ColorTemplate.createColors(getApplicationContext(),
-                ColorTemplate.VORDIPLOM_COLORS));
+        set1.setColors(ColorTemplate.VORDIPLOM_COLORS);
 
         ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
         dataSets.add(set1);

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Path;
 import android.util.AttributeSet;
 
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public class ScatterChart extends BarLineChartBase {
+public class ScatterChart extends BarLineChartBase<ScatterData> {
 
     /** enum that defines the shape that is drawn where the values are */
     public enum ScatterShape {
@@ -36,29 +35,43 @@ public class ScatterChart extends BarLineChartBase {
     public ScatterChart(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
+    
+    @Override
+    protected void prepareContentRect() {
+        if(isEmpty()) {
+            super.prepareContentRect();
+        } else {
+            
+            float offset = mOriginalData.getGreatestShapeSize() / 2f;
+            
+            mContentRect.set(mOffsetLeft - offset,
+                    mOffsetTop,
+                    getWidth() - mOffsetRight + offset,
+                    getHeight() - mOffsetBottom);
+        }
+    }
 
-    /**
-     * Sets a ScatterData object as a model for the ScatterChart.
-     * 
-     * @param data
-     */
-    public void setData(ScatterData data) {
-        super.setData(data);
+    @Override
+    protected void calcMinMax(boolean fixedValues) {
+        super.calcMinMax(fixedValues);
+
+        if (mDeltaX == 0 && mOriginalData.getYValCount() > 0)
+            mDeltaX = 1;
     }
 
     @Override
     protected void drawData() {
 
-        ArrayList<ScatterDataSet> dataSets = (ArrayList<ScatterDataSet>) mCurrentData.getDataSets();
+        ArrayList<ScatterDataSet> dataSets = mCurrentData.getDataSets();
 
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
             ScatterDataSet dataSet = dataSets.get(i);
-            ArrayList<? extends Entry> entries = dataSet.getYVals();
+            ArrayList<Entry> entries = dataSet.getYVals();
 
             float shapeHalf = dataSet.getScatterShapeSize() / 2f;
 
-            float[] valuePoints = generateTransformedValues(entries, 0f);
+            float[] valuePoints = generateTransformedValuesLineScatter(entries);
 
             ScatterShape shape = dataSet.getScatterShape();
 
@@ -129,15 +142,15 @@ public class ScatterChart extends BarLineChartBase {
         // if values are drawn
         if (mDrawYValues && mCurrentData.getYValCount() < mMaxVisibleCount * mScaleX) {
 
-            ArrayList<ScatterDataSet> dataSets = (ArrayList<ScatterDataSet>) mCurrentData
+            ArrayList<ScatterDataSet> dataSets = mCurrentData
                     .getDataSets();
 
             for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
                 ScatterDataSet dataSet = dataSets.get(i);
-                ArrayList<? extends Entry> entries = dataSet.getYVals();
+                ArrayList<Entry> entries = dataSet.getYVals();
 
-                float[] positions = generateTransformedValues(entries, 0f);
+                float[] positions = generateTransformedValuesLineScatter(entries);
 
                 float shapeSize = dataSet.getScatterShapeSize();
 
@@ -154,11 +167,12 @@ public class ScatterChart extends BarLineChartBase {
 
                     if (mDrawUnitInChart) {
 
-                        mDrawCanvas.drawText(mFormatValue.format(val) + mUnit, positions[j],
+                        mDrawCanvas.drawText(mValueFormatter.getFormattedValue(val) + mUnit,
+                                positions[j],
                                 positions[j + 1] - shapeSize, mValuePaint);
                     } else {
 
-                        mDrawCanvas.drawText(mFormatValue.format(val), positions[j],
+                        mDrawCanvas.drawText(mValueFormatter.getFormattedValue(val), positions[j],
                                 positions[j + 1] - shapeSize,
                                 mValuePaint);
                     }
@@ -172,7 +186,13 @@ public class ScatterChart extends BarLineChartBase {
 
         for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
-            DataSet set = getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
+            ScatterDataSet set = mCurrentData.getDataSetByIndex(mIndicesToHightlight[i]
+                    .getDataSetIndex());
+            
+            if (set == null)
+                continue;
+
+            mHighlightPaint.setColor(set.getHighLightColor());
 
             int xIndex = mIndicesToHightlight[i].getXIndex(); // get the
                                                               // x-position

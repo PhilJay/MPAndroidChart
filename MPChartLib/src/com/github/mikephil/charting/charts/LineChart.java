@@ -5,10 +5,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PointF;
 import android.util.AttributeSet;
 
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -20,16 +18,13 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public class LineChart extends BarLineChartBase {
+public class LineChart extends BarLineChartBase<LineData> {
 
     /** the width of the highlighning line */
     protected float mHighlightWidth = 3f;
 
     /** paint for the inner circle of the value indicators */
     protected Paint mCirclePaintInner;
-
-    /** flag for cubic curves instead of lines */
-    protected boolean mDrawCubic = false;
 
     public LineChart(Context context) {
         super(context);
@@ -57,13 +52,18 @@ public class LineChart extends BarLineChartBase {
         mHighlightPaint.setColor(Color.rgb(255, 187, 115));
     }
 
-    /**
-     * Sets a LineData object as a model for the LineChart.
-     * 
-     * @param data
-     */
-    public void setData(LineData data) {
-        super.setData(data);
+    @Override
+    protected void calcMinMax(boolean fixedValues) {
+        super.calcMinMax(fixedValues);
+
+        // // if there is only one value in the chart
+        // if (mOriginalData.getYValCount() == 1
+        // || mOriginalData.getYValCount() <= mOriginalData.getDataSetCount()) {
+        // mDeltaX = 1;
+        // }
+
+        if (mDeltaX == 0 && mOriginalData.getYValCount() > 0)
+            mDeltaX = 1;
     }
 
     @Override
@@ -71,7 +71,13 @@ public class LineChart extends BarLineChartBase {
 
         for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
-            DataSet set = getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
+            LineDataSet set = mOriginalData.getDataSetByIndex(mIndicesToHightlight[i]
+                    .getDataSetIndex());
+
+            if (set == null)
+                continue;
+
+            mHighlightPaint.setColor(set.getHighLightColor());
 
             int xIndex = mIndicesToHightlight[i].getXIndex(); // get the
                                                               // x-position
@@ -93,99 +99,204 @@ public class LineChart extends BarLineChartBase {
     }
 
     /**
+     * Class needed for saving the points when drawing cubic-lines.
+     * 
+     * @author Philipp Jahoda
+     */
+    private class CPoint {
+
+        public float x = 0f;
+        public float y = 0f;
+
+        /** x-axis distance */
+        public float dx = 0f;
+
+        /** y-axis distance */
+        public float dy = 0f;
+
+        public CPoint(float x, float y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    /**
      * draws the given y values to the screen
      */
     @Override
     protected void drawData() {
 
-        ArrayList<LineDataSet> dataSets = (ArrayList<LineDataSet>) mCurrentData.getDataSets();
-
-        mRenderPaint.setStyle(Paint.Style.STROKE);
+        ArrayList<LineDataSet> dataSets = mCurrentData.getDataSets();
 
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
             LineDataSet dataSet = dataSets.get(i);
-            ArrayList<? extends Entry> entries = dataSet.getYVals();
-
-            float[] valuePoints = generateTransformedValues(entries, 0f);
+            ArrayList<Entry> entries = dataSet.getYVals();
 
             mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
             mRenderPaint.setPathEffect(dataSet.getDashPathEffect());
 
-            if (mDrawCubic) {
+            // if drawing cubic lines is enabled
+            if (dataSet.isDrawCubicEnabled()) {
 
                 // get the color that is specified for this position from the
                 // DataSet
-                mRenderPaint.setColor(dataSet.getColor(i));
+                mRenderPaint.setColor(dataSet.getColor());
 
+                float intensity = dataSet.getCubicIntensity();
+
+                // the path for the cubic-spline
                 Path spline = new Path();
 
-                spline.moveTo(entries.get(0).getXIndex(), entries.get(0).getVal());
+                ArrayList<CPoint> points = new ArrayList<CPoint>();
+                for (Entry e : entries)
+                    points.add(new CPoint(e.getXIndex(), e.getVal()));
 
-                // create a new path
-                for (int x = 1; x < entries.size() - 3; x += 2) {
+                if (points.size() > 1) {
+                    for (int j = 0; j < points.size() * mPhaseX; j++) {
 
-                    // spline.rQuadTo(entries.get(x).getXIndex(),
-                    // entries.get(x).getVal(), entries.get(x+1).getXIndex(),
-                    // entries.get(x+1).getVal());
+                        CPoint point = points.get(j);
 
-                    spline.cubicTo(entries.get(x).getXIndex(), entries.get(x).getVal(), entries
-                            .get(x + 1).getXIndex(), entries.get(x + 1).getVal(), entries
-                            .get(x + 2).getXIndex(), entries.get(x + 2).getVal());
+                        if (j == 0) {
+                            CPoint next = points.get(j + 1);
+                            point.dx = ((next.x - point.x) * intensity);
+                            point.dy = ((next.y - point.y) * intensity);
+                        }
+                        else if (j == points.size() - 1) {
+                            CPoint prev = points.get(j - 1);
+                            point.dx = ((point.x - prev.x) * intensity);
+                            point.dy = ((point.y - prev.y) * intensity);
+                        }
+                        else {
+                            CPoint next = points.get(j + 1);
+                            CPoint prev = points.get(j - 1);
+                            point.dx = ((next.x - prev.x) * intensity);
+                            point.dy = ((next.y - prev.y) * intensity);
+                        }
+
+                        // create the cubic-spline path
+                        if (j == 0) {
+                            spline.moveTo(point.x, point.y * mPhaseY);
+                        }
+                        else {
+                            CPoint prev = points.get(j - 1);
+                            spline.cubicTo(prev.x + prev.dx, (prev.y + prev.dy) * mPhaseY, point.x
+                                    - point.dx,
+                                    (point.y - point.dy) * mPhaseY, point.x, point.y * mPhaseY);
+                        }
+                    }
                 }
 
-                // spline.close();
+                // if filled is enabled, close the path
+                if (dataSet.isDrawFilledEnabled()) {
+
+                    float fillMin = dataSet.getYMin() >= 0 ? mYChartMin : 0;
+
+                    spline.lineTo((entries.size() - 1) * mPhaseX, fillMin);
+                    spline.lineTo(0, fillMin);
+                    spline.close();
+
+                    mRenderPaint.setStyle(Paint.Style.FILL);
+                } else {
+                    mRenderPaint.setStyle(Paint.Style.STROKE);
+                }
 
                 transformPath(spline);
 
                 mDrawCanvas.drawPath(spline, mRenderPaint);
 
+                // draw normal (straight) lines
             } else {
 
-                for (int j = 0; j < (valuePoints.length - 2) * mPhaseX; j += 2) {
+                mRenderPaint.setStyle(Paint.Style.STROKE);
 
-                    // get the color that is specified for this position from
-                    // the DataSet, this will reuse colors, if the index is out
-                    // of bounds
-                    mRenderPaint.setColor(dataSet.getColor(j / 2));
+                // more than 1 color
+                if (dataSet.getColors().size() > 1) {
 
-                    if (isOffContentRight(valuePoints[j]))
-                        break;
+                    float[] valuePoints = generateTransformedValuesLineScatter(entries);
 
-                    // make sure the lines don't do shitty things outside bounds
-                    if (j != 0 && isOffContentLeft(valuePoints[j - 1])
-                            && isOffContentTop(valuePoints[j + 1])
-                            && isOffContentBottom(valuePoints[j + 1]))
-                        continue;
+                    for (int j = 0; j < (valuePoints.length - 2) * mPhaseX; j += 2) {
 
-                    mDrawCanvas.drawLine(valuePoints[j], valuePoints[j + 1], valuePoints[j + 2],
-                            valuePoints[j + 3], mRenderPaint);
+                        if (isOffContentRight(valuePoints[j]))
+                            break;
+
+                        // make sure the lines don't do shitty things outside
+                        // bounds
+                        if (j != 0 && isOffContentLeft(valuePoints[j - 1])
+                                && isOffContentTop(valuePoints[j + 1])
+                                && isOffContentBottom(valuePoints[j + 1]))
+                            continue;
+
+                        // get the color that is set for this line-segment
+                        mRenderPaint.setColor(dataSet.getColor(j / 2));
+
+                        mDrawCanvas.drawLine(valuePoints[j], valuePoints[j + 1],
+                                valuePoints[j + 2], valuePoints[j + 3], mRenderPaint);
+                    }
+
+                } else { // only one color per dataset
+
+                    mRenderPaint.setColor(dataSet.getColor());
+
+                    float[] valuePoints = generateTransformedValuesLineScatter(entries);
+
+                    Path path = new Path();
+                    for (int j = 0; j < (valuePoints.length - 2) * mPhaseX; j += 2) {
+
+                        if (isOffContentRight(valuePoints[j]))
+                            break;
+
+                        // make sure the lines don't do shitty things outside
+                        // bounds
+                        if (j != 0 && isOffContentLeft(valuePoints[j - 1])
+                                && isOffContentTop(valuePoints[j + 1])
+                                && isOffContentBottom(valuePoints[j + 1]))
+                            continue;
+
+                        if (j == 0) {
+                            path.moveTo(valuePoints[j], valuePoints[j + 1]);
+                        } else {
+                            path.lineTo(valuePoints[j + 2], valuePoints[j + 3]);
+                        }
+                    }
+
+                    mDrawCanvas.drawPath(path, mRenderPaint);
+                    // Path line = generateLinePath(entries);
+                    // transformPath(line);
+                    // mDrawCanvas.drawPath(line, mRenderPaint);
+                }
+
+                mRenderPaint.setPathEffect(null);
+
+                // if drawing filled is enabled
+                if (dataSet.isDrawFilledEnabled() && entries.size() > 0) {
+                    // mDrawCanvas.drawVertices(VertexMode.TRIANGLE_STRIP,
+                    // valuePoints.length, valuePoints, 0,
+                    // null, 0, null, 0, null, 0, 0, paint);
+
+                    mRenderPaint.setStyle(Paint.Style.FILL);
+
+                    mRenderPaint.setColor(dataSet.getFillColor());
+                    // filled is drawn with less alpha
+                    mRenderPaint.setAlpha(dataSet.getFillAlpha());
+
+                    // mRenderPaint.setShader(dataSet.getShader());
+
+                    float fillMin = dataSet.getYMin() >= 0 ? mYChartMin : 0;
+
+                    Path filled = generateFilledPath(entries, fillMin);
+
+                    transformPath(filled);
+
+                    mDrawCanvas.drawPath(filled, mRenderPaint);
+
+                    // restore alpha
+                    mRenderPaint.setAlpha(255);
+                    // mRenderPaint.setShader(null);
                 }
             }
 
             mRenderPaint.setPathEffect(null);
-
-            // if drawing filled is enabled
-            if (dataSet.isDrawFilledEnabled() && entries.size() > 0) {
-                // mDrawCanvas.drawVertices(VertexMode.TRIANGLE_STRIP,
-                // valuePoints.length, valuePoints, 0,
-                // null, 0, null, 0, null, 0, 0, paint);
-
-                mRenderPaint.setStyle(Paint.Style.FILL);
-
-                mRenderPaint.setColor(dataSet.getFillColor());
-                // filled is drawn with less alpha
-                mRenderPaint.setAlpha(dataSet.getFillAlpha());
-
-                Path filled = generateFilledPath(entries);
-
-                transformPath(filled);
-
-                mDrawCanvas.drawPath(filled, mRenderPaint);
-
-                // restore alpha
-                mRenderPaint.setAlpha(255);
-            }
         }
     }
 
@@ -195,7 +306,7 @@ public class LineChart extends BarLineChartBase {
      * @param entries
      * @return
      */
-    private Path generateFilledPath(ArrayList<? extends Entry> entries) {
+    private Path generateFilledPath(ArrayList<Entry> entries, float fillMin) {
 
         Path filled = new Path();
         filled.moveTo(entries.get(0).getXIndex(), entries.get(0).getVal() * mPhaseY);
@@ -208,27 +319,11 @@ public class LineChart extends BarLineChartBase {
         }
 
         // close up
-        filled.lineTo(entries.get((int) ((entries.size() - 1) * mPhaseX)).getXIndex(), mYChartMin);
-        filled.lineTo(entries.get(0).getXIndex(), mYChartMin);
+        filled.lineTo(entries.get((int) ((entries.size() - 1) * mPhaseX)).getXIndex(), fillMin);
+        filled.lineTo(entries.get(0).getXIndex(), fillMin);
         filled.close();
 
         return filled;
-    }
-
-    /**
-     * Calculates the middle point between two points and multiplies its
-     * coordinates with the given smoothness _Mulitplier.
-     * 
-     * @param p1 First point
-     * @param p2 Second point
-     * @param _Result Resulting point
-     * @param mult Smoothness multiplier
-     */
-    private void calculatePointDiff(PointF p1, PointF p2, PointF _Result, float mult) {
-        float diffX = p2.x - p1.x;
-        float diffY = p2.y - p1.y;
-        _Result.x = (p1.x + (diffX * mult));
-        _Result.y = (p1.y + (diffY * mult));
     }
 
     @Override
@@ -237,7 +332,7 @@ public class LineChart extends BarLineChartBase {
         // if values are drawn
         if (mDrawYValues && mCurrentData.getYValCount() < mMaxVisibleCount * mScaleX) {
 
-            ArrayList<LineDataSet> dataSets = (ArrayList<LineDataSet>) mCurrentData.getDataSets();
+            ArrayList<LineDataSet> dataSets = mCurrentData.getDataSets();
 
             for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
@@ -249,9 +344,9 @@ public class LineChart extends BarLineChartBase {
                 if (!dataSet.isDrawCirclesEnabled())
                     valOffset = valOffset / 2;
 
-                ArrayList<? extends Entry> entries = dataSet.getYVals();
+                ArrayList<Entry> entries = dataSet.getYVals();
 
-                float[] positions = generateTransformedValues(entries, 0f);
+                float[] positions = generateTransformedValuesLineScatter(entries);
 
                 for (int j = 0; j < positions.length * mPhaseX; j += 2) {
 
@@ -266,12 +361,13 @@ public class LineChart extends BarLineChartBase {
 
                     if (mDrawUnitInChart) {
 
-                        mDrawCanvas.drawText(mFormatValue.format(val) + mUnit, positions[j],
+                        mDrawCanvas.drawText(mValueFormatter.getFormattedValue(val) + mUnit,
+                                positions[j],
                                 positions[j + 1]
                                         - valOffset, mValuePaint);
                     } else {
 
-                        mDrawCanvas.drawText(mFormatValue.format(val), positions[j],
+                        mDrawCanvas.drawText(mValueFormatter.getFormattedValue(val), positions[j],
                                 positions[j + 1] - valOffset,
                                 mValuePaint);
                     }
@@ -288,7 +384,7 @@ public class LineChart extends BarLineChartBase {
 
         mRenderPaint.setStyle(Paint.Style.FILL);
 
-        ArrayList<LineDataSet> dataSets = (ArrayList<LineDataSet>) mCurrentData.getDataSets();
+        ArrayList<LineDataSet> dataSets = mCurrentData.getDataSets();
 
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
@@ -297,9 +393,9 @@ public class LineChart extends BarLineChartBase {
             // if drawing circles is enabled for this dataset
             if (dataSet.isDrawCirclesEnabled()) {
 
-                ArrayList<? extends Entry> entries = dataSet.getYVals();
+                ArrayList<Entry> entries = dataSet.getYVals();
 
-                float[] positions = generateTransformedValues(entries, 0f);
+                float[] positions = generateTransformedValuesLineScatter(entries);
 
                 for (int j = 0; j < positions.length * mPhaseX; j += 2) {
 
@@ -313,14 +409,15 @@ public class LineChart extends BarLineChartBase {
 
                     // make sure the circles don't do shitty things outside
                     // bounds
-                    if (isOffContentLeft(positions[j]) || isOffContentTop(positions[j + 1])
+                    if (isOffContentLeft(positions[j]) ||
+                            isOffContentTop(positions[j + 1])
                             || isOffContentBottom(positions[j + 1]))
                         continue;
 
                     mDrawCanvas.drawCircle(positions[j], positions[j + 1], dataSet.getCircleSize(),
                             mRenderPaint);
                     mDrawCanvas.drawCircle(positions[j], positions[j + 1],
-                            dataSet.getCircleSize() / 2,
+                            dataSet.getCircleSize() / 2f,
                             mCirclePaintInner);
                 }
             } // else do nothing
@@ -354,9 +451,6 @@ public class LineChart extends BarLineChartBase {
             case PAINT_CIRCLES_INNER:
                 mCirclePaintInner = p;
                 break;
-            case PAINT_HIGHLIGHT_LINE:
-                mHighlightPaint = p;
-                break;
         }
     }
 
@@ -369,8 +463,6 @@ public class LineChart extends BarLineChartBase {
         switch (which) {
             case PAINT_CIRCLES_INNER:
                 return mCirclePaintInner;
-            case PAINT_HIGHLIGHT_LINE:
-                return mHighlightPaint;
         }
 
         return null;

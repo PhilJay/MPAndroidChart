@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/actionAddEntry"
+        android:title="Add Entry">
+    </item>
+    
+    <item
+        android:id="@+id/actionRemoveEntry"
+        android:title="Remove Entry">
+    </item>
+    
+        <item
+        android:id="@+id/actionAddDataSet"
+        android:title="Add DataSet">
+    </item>
+    
+    <item
+        android:id="@+id/actionRemoveDataSet"
+        android:title="Remove DataSet">
+    </item>
+    
+    <item
+        android:id="@+id/actionAddEmptyLineData"
+        android:title="Add empty LineData">
+    </item>
+    
+    <item
+        android:id="@+id/actionClear"
+        android:title="Clear chart">
+    </item>
+</menu>

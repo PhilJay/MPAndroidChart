@@ -3,13 +3,28 @@
 MPAndroidChart
 =======
 
-A simple charting library for Android, supporting line- bar- and piecharts, scaling, dragging and selecting.
+A simple charting library for Android, supporting line-, bar-, scatter-, candlestick- and piecharts, as well as scaling, dragging, selecting and animations. **Supporting Android 2.2 (API level 8)** and upwards.
 
 Remember: *It's all about the looks.*
 
 The **experimental** branch might contain new features that are still buggy. It is recommended to be safe and only make use of the code on the **master** branch.
 
 Forks, pull-requests or any other forms of contribution are **always welcome**.
+
+Donations
+-----
+
+If you would like to support this project's further development, the creator of this project or the continuous maintenance of this project, **feel free to donate**. Your donation is highly appreciated.
+
+PayPal
+
+[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EGBENAC5XBCKS)
+
+Gittip
+
+<a href="https://www.gittip.com/PhilJay/">
+  <img alt="Support via Gittip" src="https://rawgithub.com/twolfson/gittip-badge/0.2.0/dist/gittip.png"/>
+</a>
 
 Demo
 -----
@@ -27,7 +42,7 @@ If you are having questions or problems, feel free to contact me. Since I would 
  - Search [**known issues**](https://github.com/PhilJay/MPAndroidChart/issues) for your problem (open and closed)
  - Create new issues (if your issue does not exist yet)
 
-Please let me know via e-mail that you have opened a stackoverflow question so that I can get to answering it right away. Thank you.
+You can let me know via e-mail that you have opened a stackoverflow question so that I might get to answering it more quickly. Thank you.
 
 Features
 =======
@@ -53,6 +68,9 @@ Features
  - **LineChart (with legend, simple design)**
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_linechart3.png)
 
+ - **LineChart (cubic lines)**
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/cubiclinechart.png)
+
  - **LineChart (single DataSet)**
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart.png)
 
@@ -60,41 +78,58 @@ Features
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_barchart3.png)
 
- - **BarChart2D (single DataSet)**
+ - **BarChart2D (grouped DataSets)**
 
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart2d.png)
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/groupedbarchart.png)
 
- - **BarChart2D (multiple DataSets)**
+ - **BarChart2D**
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart2d_multi_dataset_date1.png)
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart2d_multi_dataset.png)
 
-
- - **BarChart3D**
-
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart3d.png)
 
  - **PieChart (with selection, ...)**
 
 ![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/simpledesign_piechart1.png)
-![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/piechart_holeradius_space.png)
 
  - **ScatterChart** (with squares, triangles, circles, ... and more)
 
 ![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/scatterchart.png)
+
+ - **CandleStickChart** (for financial data)
+
+![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/candlestickchart.png)
+
+ - **RadarChart** (spider web chart)
+
+![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/radarchart.png)
 
 
 
 Usage
 =======
 
-Rely on the **"MPChartExample"** folder and check out the examples in that project. The example project is also  [**available in the Google PlayStore**](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample). 
+In order to use the library, there are 2 options:
 
-Furthermore, here is some code to get started.
+
+**1. jar file only**
+ - Download the [**latest .jar file**](https://github.com/PhilJay/MPAndroidChart/releases) from the releases section
+ - Copy the **mpandroidchartlibrary-.jar** file into the `libs` folder of your Android application project
+ - Start using the library
+ 
+**2. clone whole repository**
+ - Open your **commandline-input** and navigate to your desired destination folder (where you want to put the library)
+ - Use the command `git clone https://github.com/PhilJay/MPAndroidChart.git` to download the full MPAndroidChart repository to your computer (this includes the folder of the library project as well as the example project)
+ - Import the library folder (`MPChartLib`) into your Eclipse workspace, using `File-->Import-->Android-->Existing Android Code` and then choose the library folder from your file system and press `Finish`.
+ - After importing, add the library to your project by right clicking your project `Properties-->Android`. There, you press the "Add.." button and choose the library project you just imported into eclipse. Then press `apply`.
+ - Start using the library
+
+For getting started, rely on the **"MPChartExample"** folder and check out the examples in that project. The example project is also  [**available in the Google PlayStore**](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample). 
+
+Furthermore, here is some code to begin with.
 
 **Setup:**
 
-For using a <code>LineChart, BarChart, ScatterChart or PieChart </code>, define it in .xml:
+For using a <code>LineChart, BarChart, ScatterChart, CandleStickChart or PieChart </code>, define it in .xml:
 ```xml
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"
@@ -114,34 +149,36 @@ or create it in code (and then **add it to a layout**):
 
  - <code>setDescription(String desc)</code>: Set a description text that appears in the bottom right corner of the chart.
  - <code>setDescriptionTypeface(Typeface t)</code>: Sets the <code>Typeface</code> used for drawing the description text.
- - <code>setGraphOffsets(int left, int right, int top, int bottom)</code>: Sets the offsets of the graph in every direction, provide density pixels.
  - <code>setDrawYValues(boolean enabled)</code>: If set to true, the actual drawn values will be drawn next to the points, bars, or pie slices of the chart.
  - <code>setValuePaintColor(int color)</code>: Sets the color used for drawing the values if <code>setDrawYValues(...)</code> is enabled.
  - <code>setValueTypeface(Typeface t)</code>: Sets the <code>Typeface</code> used for drawing the values if <code>setDrawYValues(...)</code> is enabled.
- - <code>setValueDigits(int digits)</code>: Sets the number of digits to use for all printed values.
+ - <code>setValueFormatter(DecimalFormat format)</code>: Sets a new `DecimalFormat` object that will be used to format all values inside the chart. If nothing is set, formatting (digits) is done automatically.
  - <code>setPaint(Paint p, int which)</code>: Replaces the specified default <code>Paint</code> object with a new one. This method can be used to replace any predefined <code>Paint</code> object with an own <code>Paint</code> object and develop a completely personalized design.
 
 **Getters and convenience:**
 - <code>public ChartData getDataCurrent()</code>: Returns the <code>ChartData</code> object the chart currently displays. It contains all information concerning the displayed values such as minimum and maximum values, value counts, value sums, ...
-- <code>public float getScaleX()</code>: Returns the current scale factor on the x-axis.
 - <code>public float getYChartMin()</code>: Returns the current minimum y-value that can be displayed by the chart - bottom line.
 - <code>public float getYChartMax()</code>: Returns the current maximum y-value that can be displayed by the chart - top line.
 - <code>public float getAverage()</code>: Returns the average value across all values the chart holds.
 - <code>public float getAverage(int type)</code>: Returns the average value for a specific DataSet type in the chart. This type is the type provided in the <code>DataSet</code> constructor.
 - <code>public PointF getCenter()</code>: Returns the center point of the chart in pixels.
+- <code>public Paint getPaint(int which)</code>: Returns the requested Paint object from the chart.
 
  
 **Gestures & Selecting:**
 
  - <code>setTouchEnabled(boolean enabled)</code>: If set to ture, touch gestures (such as scaling and dragging) will be possible on the chart. NOTE: If touch-gestures are disabled, highlighting on touch is disabled as well. Default: true.
+ - <code>setDragScaleEnabled(boolean enabled)</code>: Enables/disables dragging and scaling for the chart.
  - <code>setOnChartValueSelectedListener(OnChartValueSelectedListener l)</code>: Sets a selection-listener to the chart that will generate callbacks when values are selected or unselected. The callback contains the selected values and their indices.
  - <code>setHighlightEnabled(boolean enabled)</code>: If set to true, highlighting/selecting values is possible on the chart. Default: true.
+ - <code>public void highlightValues(Highlight[] highs)</code>: Highlights the specified entries in the chart.
  
 **Other:**
  - <code>saveToGallery(String title)</code>: Saves the current chart state as an image to the gallery.
  - <code>saveToPath(String title, String pathOnSD)</code>: Saves the current chart state as an image to the specified path.
  - <code>setScaleMinima(float x, float y)</code>: Sets the minimum scale factors for x- and y-axis. If set for example to 3f, the user will not be able to fully zoom out.
  - <code>centerViewPort(int xIndex, float val)</code>: This method makes it possible to aim the center of the view (what you can see from the chart) to a specific position inside the chart, described by the index on the x-axis and the value on the y-axis. This also works very well in combination with the `setScaleMinima(...)` method.
+ - <code>fitScreen()</code>: Resets all zooming and dragging and makes the chart fit exactly it's bounds.
 
 **Adding data:**
 
@@ -187,13 +224,13 @@ Then, fill the lists with <code>Entry</code> objects. Make sure the entry object
 ```java
     Entry c1e1 = new Entry(100.000f, 0); // 0 == quarter 1
     valsComp1.add(c1e1);
-    Entry c1e2 = new Entry(50.000f, 1; // 1 == quarter 2 ...
+    Entry c1e2 = new Entry(50.000f, 1); // 1 == quarter 2 ...
     valsComp1.add(c1e2);
     // and so on ...
     
     Entry c2e1 = new Entry(120.000f, 0); // 0 == quarter 1
     valsComp2.add(c2e1);
-    Entry c2e2 = new Entry(110.000f, 1; // 1 == quarter 2 ...
+    Entry c2e2 = new Entry(110.000f, 1); // 1 == quarter 2 ...
     valsComp2.add(c2e2);
     //...
 ```
@@ -253,10 +290,7 @@ Besides that, there are many other ways for setting colors for a `DataSet`. Here
 
 ```java
 LineDataSet set = new LineDataSet(...);
-set.setColors(ColorTemplate.VORDIPLOM_COLORS, Context);
-
-// or:
-set.setColors(ColorTemplate.createColors(ColorTemplate.VORDIPLOM_COLORS));
+set.setColors(ColorTemplate.VORDIPLOM_COLORS);
 ```
 
 If no colors are set for a `DataSet`, default colors are used.
@@ -337,6 +371,30 @@ ll.setLineWidth(4f);
 
 ld.addLimitLine(ll);
 ```
+
+**Dynamically adding data (real time):**
+
+For **adding new data** to the chart dynamically, there are various methods that allow to either add `Entry` objects to an existing `DataSet` or `DataSet` objects to an existing `ChartData` object. 
+
+Class `DataSet` (and all subclasses):
+ - `addEntry(Entry e)`: Adds the given `Entry` object to the `DataSet`.
+
+Class `ChartData` (and all subclasses):
+ - `addEntry(Entry e, int dataSetIndex)`: Adds the given `Entry` to the `DataSet` at the specified dataset index.
+ - `addDataSet(DataSet d)`: Adds the given `DataSet` object to the `ChartData` object.
+
+In addition to that, there are also methods for **removing data dynamically**.
+
+Class `DataSet` (and all subclasses):
+ - `public boolean removeEntry(Entry e)`: Removes the given `Entry` object from the `DataSet`. Returns true if successful.
+ - `public boolean removeEntry(int xIndex)`: Removes the `Entry` at the given x-index from the `DataSet`. Returns true if successful.
+
+Class `ChartData` (and all subclasses):
+ - `public boolean removeEntry(Entry e, int dataSetIndex)`: Removes the given `Entry` object from the `DataSet` with the given dataset index. Returns true if successful.
+ - `public boolean removeEntry(int xIndex, int dataSetIndex)`: Removes the `Entry` at the given x-index from the `DataSet` with the given dataset index. Returns true if successful.
+ - `public boolean removeDataSet(DataSet d)`: Removes the given `DataSet` object from the `ChartData` object. Returns true if successful.
+ - `public boolean removeDataSet(int index)`: Removes the `DataSet` at the given index from the `ChartData` object. Returns true if successful.
+
 
 **Animations:**
 

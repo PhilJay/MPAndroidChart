@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public class CandleDataSet extends DataSet {
+public class CandleDataSet extends BarLineScatterCandleRadarDataSet<CandleEntry> {
 
     /** the width of the shadow of the candle */
     private float mShadowWidth = 3f;
@@ -23,7 +23,7 @@ public class CandleDataSet extends DataSet {
     }
 
     @Override
-    public DataSet copy() {
+    public DataSet<CandleEntry> copy() {
 
         ArrayList<CandleEntry> yVals = new ArrayList<CandleEntry>();
 
@@ -35,6 +35,8 @@ public class CandleDataSet extends DataSet {
         copied.mColors = mColors;
         copied.mShadowWidth = mShadowWidth;
         copied.mBodySpace = mBodySpace;
+        copied.mHighLightColor = mHighLightColor;
+        
         return copied;
     }
     

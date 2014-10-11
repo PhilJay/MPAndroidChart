@@ -16,13 +16,13 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public abstract class DataSet {
+public abstract class DataSet<T extends Entry> {
 
     /** arraylist representing all colors that are used for this DataSet */
     protected ArrayList<Integer> mColors = null;
 
     /** the entries that this dataset represents / holds together */
-    protected ArrayList<? extends Entry> mYVals = null;
+    protected ArrayList<T> mYVals = null;
 
     /** maximum y-value in the y-value array */
     protected float mYMax = 0.0f;
@@ -44,14 +44,17 @@ public abstract class DataSet {
      * @param yVals
      * @param label
      */
-    public DataSet(ArrayList<? extends Entry> yVals, String label) {
+    public DataSet(ArrayList<T> yVals, String label) {
 
         this.mLabel = label;
         this.mYVals = yVals;
 
-//        if (yVals.size() <= 0) {
-//            return;
-//        }
+        if (mYVals == null)
+            mYVals = new ArrayList<T>();
+
+        // if (yVals.size() <= 0) {
+        // return;
+        // }
 
         mColors = new ArrayList<Integer>();
 
@@ -136,18 +139,30 @@ public abstract class DataSet {
     }
 
     /**
-     * Returns the first Entry object found at the given xIndex. Returns null if
-     * no Entry object at that index. INFORMATION: This method does calculations
-     * at runtime. Do not over-use in performance critical situations.
+     * Returns the first Entry object found at the given xIndex with binary
+     * search. Returns null if no Entry object at that index. INFORMATION: This
+     * method does calculations at runtime. Do not over-use in performance
+     * critical situations.
      * 
      * @param xIndex
      * @return
      */
-    public Entry getEntryForXIndex(int xIndex) {
+    public T getEntryForXIndex(int x) {
 
-        for (int i = 0; i < mYVals.size(); i++) {
-            if (xIndex == mYVals.get(i).getXIndex())
-                return mYVals.get(i);
+        int low = 0;
+        int high = mYVals.size() - 1;
+
+        while (low <= high) {
+            int m = (high + low) / 2;
+
+            if (x == mYVals.get(m).getXIndex()) {
+                return mYVals.get(m);
+            }
+
+            if (x > mYVals.get(m).getXIndex())
+                low = m + 1;
+            else
+                high = m - 1;
         }
 
         return null;
@@ -161,13 +176,24 @@ public abstract class DataSet {
      * @param xIndex
      * @return
      */
-    public ArrayList<Entry> getEntriesForXIndex(int xIndex) {
+    public ArrayList<T> getEntriesForXIndex(int x) {
 
-        ArrayList<Entry> entries = new ArrayList<Entry>();
+        ArrayList<T> entries = new ArrayList<T>();
 
-        for (int i = 0; i < mYVals.size(); i++) {
-            if (xIndex == mYVals.get(i).getXIndex())
-                entries.add(mYVals.get(i));
+        int low = 0;
+        int high = mYVals.size();
+
+        while (low <= high) {
+            int m = (high + low) / 2;
+
+            if (x == mYVals.get(m).getXIndex()) {
+                entries.add(mYVals.get(m));
+            }
+
+            if (x > mYVals.get(m).getXIndex())
+                low = m + 1;
+            else
+                high = m - 1;
         }
 
         return entries;
@@ -178,7 +204,7 @@ public abstract class DataSet {
      * 
      * @return
      */
-    public ArrayList<? extends Entry> getYVals() {
+    public ArrayList<T> getYVals() {
         return mYVals;
     }
 
@@ -242,7 +268,7 @@ public abstract class DataSet {
      * 
      * @return
      */
-    public abstract DataSet copy();
+    public abstract DataSet<T> copy();
 
     @Override
     public String toString() {
@@ -274,40 +300,86 @@ public abstract class DataSet {
     public String getLabel() {
         return mLabel;
     }
-    
-//    /**
-//     * Adds an Entry dynamically.
-//     * 
-//     * @param d
-//     */
-//    public void addEntry(Entry e) {
-//               
-//        float sum = e.getSum();
-//        
-//        if(mYVals == null || mYVals.size() <= 0) {
-//            
-//            mYVals = new ArrayList<Entry>();
-//            mYMax = sum;
-//            mYMin = sum;
-//        } else {
-//            
-//            if(mYMax < sum) mYMax = sum;
-//            if(mYMin > sum) mYMin = sum;
-//        }
-//        
-//        mYVals.add(e);
-//        
-//        mYValueSum += sum;
-//    }
+
+    /**
+     * Adds an Entry to the DataSet dynamically. This will also recalculate the
+     * current minimum and maximum values of the DataSet and the value-sum.
+     *
+     * @param d
+     */
+    public void addEntry(Entry e) {
+
+        if (e == null)
+            return;
+
+        float val = e.getVal();
+
+        if (mYVals == null || mYVals.size() <= 0) {
+
+            mYVals = new ArrayList<T>();
+            mYMax = val;
+            mYMin = val;
+        } else {
+
+            if (mYMax < val)
+                mYMax = val;
+            if (mYMin > val)
+                mYMin = val;
+        }
+
+        mYValueSum += val;
+
+        // add the entry
+        mYVals.add((T) e);
+    }
+
+    /**
+     * Removes an Entry from the DataSets entries array. This will also
+     * recalculate the current minimum and maximum values of the DataSet and the
+     * value-sum. Returns true if an Entry was removed, false if no Entry could
+     * be removed.
+     * 
+     * @param e
+     */
+    public boolean removeEntry(T e) {
+
+        if (e == null)
+            return false;
+
+        // remove the entry
+        boolean removed = mYVals.remove(e);
+
+        if (removed) {
+
+            float val = e.getVal();
+            mYValueSum -= val;
+
+            calcMinMax();
+        }
+
+        return removed;
+    }
+
+    /**
+     * Removes the Entry object that has the given xIndex from the DataSet.
+     * Returns true if an Entry was removed, false if no Entry could be removed.
+     * 
+     * @param xIndex
+     */
+    public boolean removeEntry(int xIndex) {
+
+        T e = getEntryForXIndex(xIndex);
+        return removeEntry(e);
+    }
 
     /** BELOW THIS COLOR HANDLING */
 
     /**
      * Sets the colors that should be used fore this DataSet. Colors are reused
      * as soon as the number of Entries the DataSet represents is higher than
-     * the size of the colors array. Make sure that the colors are already
-     * prepared (by calling getResources().getColor(...)) before adding them to
-     * the DataSet.
+     * the size of the colors array. If you are using colors from the resources,
+     * make sure that the colors are already prepared (by calling
+     * getResources().getColor(...)) before adding them to the DataSet.
      * 
      * @param colors
      */
@@ -318,9 +390,9 @@ public abstract class DataSet {
     /**
      * Sets the colors that should be used fore this DataSet. Colors are reused
      * as soon as the number of Entries the DataSet represents is higher than
-     * the size of the colors array. Make sure that the colors are already
-     * prepared (by calling getResources().getColor(...)) before adding them to
-     * the DataSet.
+     * the size of the colors array. If you are using colors from the resources,
+     * make sure that the colors are already prepared (by calling
+     * getResources().getColor(...)) before adding them to the DataSet.
      * 
      * @param colors
      */
@@ -390,12 +462,39 @@ public abstract class DataSet {
     public int getColor(int index) {
         return mColors.get(index % mColors.size());
     }
+    
+    /**
+     * Returns the first color (index 0) of the colors-array this DataSet
+     * contains.
+     * 
+     * @return
+     */
+    public int getColor() {
+        return mColors.get(0);
+    }
 
     /**
      * Resets all colors of this DataSet and recreates the colors array.
      */
     public void resetColors() {
         mColors = new ArrayList<Integer>();
+    }
+
+    /**
+     * Returns the position of the provided entry in the DataSets Entry array.
+     * Returns -1 if doesnt exist.
+     * 
+     * @param e
+     * @return
+     */
+    public int getEntryPosition(Entry e) {
+
+        for (int i = 0; i < mYVals.size(); i++) {
+            if (e.equalTo(mYVals.get(i)))
+                return i;
+        }
+
+        return -1;
     }
 
     // /**

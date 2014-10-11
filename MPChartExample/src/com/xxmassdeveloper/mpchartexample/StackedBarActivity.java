@@ -20,7 +20,6 @@ import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.github.mikephil.charting.utils.XLabels;
@@ -29,6 +28,7 @@ import com.github.mikephil.charting.utils.YLabels;
 import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListener,
@@ -65,9 +65,11 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
         mChart.setMaxVisibleValueCount(60);
-
-        // sets the number of digits for values inside the chart
-        mChart.setValueDigits(0);
+        
+        MyValueFormatter customFormatter = new MyValueFormatter();
+        
+        // set a custom formatter for the values inside the chart
+        mChart.setValueFormatter(customFormatter);
         
         // if false values are only drawn for the stack sum, else each value is drawn
         mChart.setDrawValuesForWholeStack(true);
@@ -83,6 +85,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         YLabels yLabels = mChart.getYLabels();
         yLabels.setPosition(YLabelPosition.BOTH_SIDED);
         yLabels.setLabelCount(5);
+        yLabels.setFormatter(customFormatter);
 
         XLabels xLabels = mChart.getXLabels();
         xLabels.setPosition(XLabelPosition.TOP);
@@ -233,13 +236,12 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
             float val3 = (float) (Math.random() * mult) + mult / 3;
 
             yVals1.add(new BarEntry(new float[] {
-                    (int) val1,  (int) val2, (int) val3
+                     val1, val2, val3
             }, i));
         }
 
         BarDataSet set1 = new BarDataSet(yVals1, "Statistics Vienna 2014");
-        set1.setColors(ColorTemplate.createColors(getApplicationContext(),
-                ColorTemplate.VORDIPLOM_COLORS));
+        set1.setColors(ColorTemplate.VORDIPLOM_COLORS);
         set1.setStackLabels(new String[] {
                 "Births", "Divorces", "Marriages"
         });
@@ -266,10 +268,10 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
     }
 
     @Override
-    public void onValuesSelected(Entry[] values, Highlight[] highlights) {
-
-        Log.i("VALUE SELECTED",
-                values[0].toString() + ", dataSet: " + highlights[0].getDataSetIndex());
+    public void onValueSelected(Entry e, int dataSetIndex) {
+        Log.i("VAL SELECTED",
+                "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
+                        + ", DataSet index: " + dataSetIndex);
     }
 
     @Override

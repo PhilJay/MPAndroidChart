@@ -19,7 +19,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendForm;
 import com.github.mikephil.charting.utils.XLabels;
@@ -80,7 +79,7 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
         mChart.setTouchEnabled(true);
 
         // enable scaling and dragging
-        mChart.setDragEnabled(true);
+        mChart.setDragScaleEnabled(true);
 
         // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(true);
@@ -262,10 +261,10 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
     }
 
     @Override
-    public void onValuesSelected(Entry[] values, Highlight[] highlights) {
-        Log.i("VALS SELECTED",
-                "Value: " + values[0].getVal() + ", xIndex: " + highlights[0].getXIndex()
-                        + ", DataSet index: " + highlights[0].getDataSetIndex());
+    public void onValueSelected(Entry e, int dataSetIndex) {
+        Log.i("VAL SELECTED",
+                "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
+                        + ", DataSet index: " + dataSetIndex);
     }
 
     @Override

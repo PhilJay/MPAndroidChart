@@ -1,6 +1,6 @@
-
 package com.xxmassdeveloper.mpchartexample;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,8 +15,8 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.interfaces.OnDrawListener;
-import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.XLabels;
+import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -46,10 +46,10 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
         mChart.setOnDrawListener(this);
 
         // enable drawing with the finger
-        mChart.setDrawingEnabled(true);
+//        mChart.setDrawingEnabled(true);
 
         // enable dragging and scaling
-        mChart.setDragEnabled(true);
+        mChart.setDragScaleEnabled(true);
 
         mChart.setDrawYValues(false);
 //        mChart.setLineWidth(5f);
@@ -59,12 +59,24 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
 
         // if disabled, drawn datasets with the finger will not be automatically
         // finished
-        mChart.setAutoFinish(false);
+//        mChart.setAutoFinish(true);
+        mChart.setDrawGridBackground(false);
         
         mChart.setDrawLegend(false);
 
         // add dummy-data to the chart
         initWithDummyData();
+        
+        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+
+        XLabels xl = mChart.getXLabels();
+        xl.setTypeface(tf);
+        xl.setAvoidFirstLastClipping(true);
+        
+        YLabels yl = mChart.getYLabels();
+        yl.setTypeface(tf);
+
+        mChart.setValueTypeface(tf);
 
         mChart.setYRange(-40f, 40f, true);
         // call this to reset the changed y-range
@@ -74,13 +86,15 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
     private void initWithDummyData() {
         ArrayList<String> xVals = new ArrayList<String>();
         for (int i = 0; i < 24; i++) {
-            xVals.add((i) + "h");
+            xVals.add((i) + ":00");
         }
 
         ArrayList<Entry> yVals = new ArrayList<Entry>();
 
         // create a dataset and give it a type (0)
         LineDataSet set1 = new LineDataSet(yVals, "DataSet");
+        set1.setLineWidth(3f);
+        set1.setCircleSize(5f);
 
         ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
         dataSets.add(set1); // add the datasets
@@ -156,10 +170,10 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
     }
 
     @Override
-    public void onValuesSelected(Entry[] values, Highlight[] highlights) {
-        Log.i("VALS SELECTED",
-                "Value: " + values[0].getVal() + ", xIndex: " + highlights[0].getXIndex()
-                        + ", DataSet index: " + highlights[0].getDataSetIndex());
+    public void onValueSelected(Entry e, int dataSetIndex) {
+        Log.i("VAL SELECTED",
+                "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
+                        + ", DataSet index: " + dataSetIndex);
     }
 
     @Override

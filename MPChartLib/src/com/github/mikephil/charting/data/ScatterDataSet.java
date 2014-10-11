@@ -8,7 +8,7 @@ import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 
-public class ScatterDataSet extends DataSet {
+public class ScatterDataSet extends BarLineScatterCandleRadarDataSet<Entry> {
 
     /** the size the scattershape will have, in screen pixels */
     private float mShapeSize = 12f;
@@ -28,11 +28,11 @@ public class ScatterDataSet extends DataSet {
     public ScatterDataSet(ArrayList<Entry> yVals, String label) {
         super(yVals, label);
 
-//        mShapeSize = Utils.convertDpToPixel(8f);
+        // mShapeSize = Utils.convertDpToPixel(8f);
     }
 
     @Override
-    public DataSet copy() {
+    public DataSet<Entry> copy() {
 
         ArrayList<Entry> yVals = new ArrayList<Entry>();
 
@@ -45,12 +45,14 @@ public class ScatterDataSet extends DataSet {
         copied.mShapeSize = mShapeSize;
         copied.mScatterShape = mScatterShape;
         copied.mCustomScatterPath = mCustomScatterPath;
+        copied.mHighLightColor = mHighLightColor;
+
         return copied;
     }
 
     /**
-     * Sets the size the drawn scattershape will have. This only applies for non
-     * custom shapes. Default 12f
+     * Sets the size in density pixels the drawn scattershape will have. This
+     * only applies for non custom shapes.
      * 
      * @param size
      */

@@ -18,6 +18,7 @@ import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
 import com.github.mikephil.charting.utils.YLabels;
+import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -46,9 +47,6 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
 
         mChart = (CandleStickChart) findViewById(R.id.chart1);
 
-        mChart.setDrawYValues(false);
-
-        mChart.setUnit(" €");
         mChart.setDescription("");
 
         // if more than 60 entries are displayed in the chart, no values will be
@@ -66,8 +64,9 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         xLabels.setCenterXLabelText(true);
         xLabels.setSpaceBetweenLabels(2);
 
-        YLabels yLabels = mChart.getYLabels();
+        YLabels yLabels = mChart.getYLabels();  
         yLabels.setLabelCount(7);
+        yLabels.setPosition(YLabelPosition.LEFT);
 
         mChart.setDrawYLabels(true);
         mChart.setDrawLegend(false);
@@ -170,7 +169,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
 
         for (int i = 0; i < prog; i++) {
             float mult = (mSeekBarY.getProgress() + 1);
-            float val = (float) (Math.random() * 50) + mult;
+            float val = (float) (Math.random() * 40) + mult;
             
             float high = (float) (Math.random() * 9) + 8f;
             float low = (float) (Math.random() * 9) + 8f;

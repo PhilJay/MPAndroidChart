@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.github.mikephil.charting.data.Entry;
+
 /**
  * View that can be displayed when selecting values in the chart. Extend this
  * class to provide custom layouts for your markers.
@@ -41,7 +43,8 @@ public abstract class MarkerView extends RelativeLayout {
 
         View inflated = LayoutInflater.from(getContext()).inflate(layoutResource, this);
 
-        inflated.setLayoutParams(new LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        inflated.setLayoutParams(new LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT));
         inflated.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
                 MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
 
@@ -70,14 +73,14 @@ public abstract class MarkerView extends RelativeLayout {
     }
 
     /**
-     * this method enables a specified custom MarkerView to update it's content
-     * everytime the MarkerView is redrawn
+     * This method enables a specified custom MarkerView to update it's content
+     * everytime the MarkerView is redrawn.
      * 
-     * @param xIndex the index on the x-axis
-     * @param value the actual selected value
+     * @param e The Entry the MarkerView belongs to. This can also be any
+     *            subclass of Entry, like BarEntry or CandleEntry.
      * @param dataSetIndex the index of the DataSet the selected value is in
      */
-    public abstract void refreshContent(int xIndex, float value, int dataSetIndex);
+    public abstract void refreshContent(Entry e, int dataSetIndex);
 
     /**
      * Set the position offset of the MarkerView. By default, the top left edge

@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CandleDataSet;
 import com.github.mikephil.charting.data.CandleEntry;
-import com.github.mikephil.charting.data.DataSet;
 
 import java.util.ArrayList;
 
@@ -17,7 +16,7 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public class CandleStickChart extends BarLineChartBase {
+public class CandleStickChart extends BarLineChartBase<CandleData> {
 
     public CandleStickChart(Context context) {
         super(context);
@@ -31,15 +30,6 @@ public class CandleStickChart extends BarLineChartBase {
         super(context, attrs, defStyle);
     }
 
-    /**
-     * Sets a CandleData object for the CandleStickChart.
-     * 
-     * @param data
-     */
-    public void setData(CandleData data) {
-        super.setData(data);
-    }
-
     @Override
     protected void calcMinMax(boolean fixedValues) {
         super.calcMinMax(fixedValues);
@@ -51,7 +41,7 @@ public class CandleStickChart extends BarLineChartBase {
     @Override
     protected void drawData() {
 
-        ArrayList<CandleDataSet> dataSets = (ArrayList<CandleDataSet>) mCurrentData.getDataSets();
+        ArrayList<CandleDataSet> dataSets = mCurrentData.getDataSets();
 
         // pre allocate
         float[] shadowPoints = new float[4];
@@ -60,7 +50,7 @@ public class CandleStickChart extends BarLineChartBase {
         for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
             CandleDataSet dataSet = dataSets.get(i);
-            ArrayList<CandleEntry> entries = (ArrayList<CandleEntry>) dataSet.getYVals();
+            ArrayList<CandleEntry> entries = dataSet.getYVals();
 
             mRenderPaint.setStrokeWidth(dataSet.getShadowWidth());
 
@@ -170,9 +160,14 @@ public class CandleStickChart extends BarLineChartBase {
             int xIndex = mIndicesToHightlight[i].getXIndex(); // get the
                                                               // x-position
 
-            CandleDataSet set = (CandleDataSet) getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
+            CandleDataSet set = mOriginalData.getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
             
-            CandleEntry e = (CandleEntry) set.getEntryForXIndex(xIndex);
+            if (set == null)
+                continue;
+            
+            mHighlightPaint.setColor(set.getHighLightColor());
+            
+            CandleEntry e = set.getEntryForXIndex(xIndex);
             
             if(e == null) continue;
 

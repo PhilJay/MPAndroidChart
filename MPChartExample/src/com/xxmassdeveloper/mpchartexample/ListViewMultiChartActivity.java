@@ -2,6 +2,7 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,7 +93,7 @@ public class ListViewMultiChartActivity extends DemoBase {
      * 
      * @return
      */
-    private ChartData generateDataLine(int cnt) {
+    private LineData generateDataLine(int cnt) {
 
         ArrayList<Entry> e1 = new ArrayList<Entry>();
 
@@ -103,6 +104,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         LineDataSet d1 = new LineDataSet(e1, "New DataSet " + cnt + ", (1)");
         d1.setLineWidth(3f);
         d1.setCircleSize(5f);
+        d1.setHighLightColor(Color.rgb(244, 117, 117));
         
         ArrayList<Entry> e2 = new ArrayList<Entry>();
 
@@ -113,10 +115,9 @@ public class ListViewMultiChartActivity extends DemoBase {
         LineDataSet d2 = new LineDataSet(e2, "New DataSet " + cnt + ", (2)");
         d2.setLineWidth(3f);
         d2.setCircleSize(5f);
-        d2.setColor(getResources().getColor(R.color.vordiplom_1));
-        d2.setCircleColor(getResources().getColor(R.color.vordiplom_1));
-        
-//        d.setColors(ColorTemplate.VORDIPLOM_COLORS, getApplicationContext());
+        d2.setHighLightColor(Color.rgb(244, 117, 117));
+        d2.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
+        d2.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0]);
         
         ArrayList<LineDataSet> sets = new ArrayList<LineDataSet>();
         sets.add(d1);
@@ -131,7 +132,7 @@ public class ListViewMultiChartActivity extends DemoBase {
      * 
      * @return
      */
-    private ChartData generateDataBar(int cnt) {
+    private BarData generateDataBar(int cnt) {
 
         ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
 
@@ -141,7 +142,9 @@ public class ListViewMultiChartActivity extends DemoBase {
 
         BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);
         d.setBarSpacePercent(20f);
-        d.setColors(ColorTemplate.VORDIPLOM_COLORS, getApplicationContext());
+        d.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        d.setHighLightAlpha(255);
+        
         BarData cd = new BarData(getMonths(), d);
         return cd;
     }
@@ -151,7 +154,7 @@ public class ListViewMultiChartActivity extends DemoBase {
      * 
      * @return
      */
-    private ChartData generateDataPie(int cnt) {
+    private PieData generateDataPie(int cnt) {
 
         ArrayList<Entry> entries = new ArrayList<Entry>();
 
@@ -163,7 +166,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         
         // space between slices
         d.setSliceSpace(5f);
-        d.setColors(ColorTemplate.VORDIPLOM_COLORS, getApplicationContext());
+        d.setColors(ColorTemplate.VORDIPLOM_COLORS);
         
         PieData cd = new PieData(getQuarters(), d);
         return cd;

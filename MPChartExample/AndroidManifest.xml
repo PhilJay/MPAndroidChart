@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xxmassdeveloper.mpchartexample"
-    android:versionCode="12"
-    android:versionName="1.2.2" >
+    android:versionCode="26"
+    android:versionName="1.6.5" >
 
     <uses-sdk
-        android:minSdkVersion="9"
+        android:minSdkVersion="8"
         android:targetSdkVersion="19" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
@@ -38,6 +38,10 @@
         <activity android:name="AnotherBarActivity"></activity>
         <activity android:name="InvertedLineChartActivity"></activity>
         <activity android:name="CandleStickChartActivity"></activity>
+        <activity android:name="CubicLineChartActivity"></activity>
+        <activity android:name="RadarChartActivitry"></activity>
+        <activity android:name="LineChartActivityColored"></activity>
+        <activity android:name="DynamicalAddingActivity"></activity>
     </application>
 
 </manifest>

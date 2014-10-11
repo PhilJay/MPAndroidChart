@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -19,10 +20,11 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
+import com.github.mikephil.charting.interfaces.OnChartGestureListener;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendForm;
+import com.github.mikephil.charting.utils.LimitLine.LimitLabelPosition;
 import com.github.mikephil.charting.utils.LimitLine;
 import com.github.mikephil.charting.utils.XLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -30,7 +32,7 @@ import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 import java.util.ArrayList;
 
 public class LineChartActivity extends DemoBase implements OnSeekBarChangeListener,
-        OnChartValueSelectedListener {
+        OnChartGestureListener, OnChartValueSelectedListener {
 
     private LineChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
@@ -56,7 +58,11 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         mSeekBarX.setOnSeekBarChangeListener(this);
 
         mChart = (LineChart) findViewById(R.id.chart1);
+        mChart.setOnChartGestureListener(this);
         mChart.setOnChartValueSelectedListener(this);
+        
+        mChart.setUnit(" $");
+        mChart.setDrawUnitsInChart(true);
 
         // if enabled, the chart will always start at zero on the y-axis
         mChart.setStartAtZero(false);
@@ -90,7 +96,7 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         mChart.setTouchEnabled(true);
 
         // enable scaling and dragging
-        mChart.setDragEnabled(true);
+        mChart.setDragScaleEnabled(true);
 
         // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(true);
@@ -112,7 +118,7 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         // enable/disable highlight indicators (the lines that indicate the
         // highlighted Entry)
         mChart.setHighlightIndicatorEnabled(false);
-
+               
         // add data
         setData(45, 100);
         
@@ -131,8 +137,8 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         // l.setPosition(LegendPosition.LEFT_OF_CHART);
         l.setForm(LegendForm.LINE);
 
-        // dont forget to refresh the drawing
-        mChart.invalidate();
+//        // dont forget to refresh the drawing
+//        mChart.invalidate();
     }
 
     @Override
@@ -184,6 +190,19 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
                         set.setDrawCircles(false);
                     else
                         set.setDrawCircles(true);
+                }
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleCubic: {
+                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getDataCurrent()
+                        .getDataSets();
+
+                for (LineDataSet set : sets) {
+                    if (set.isDrawCubicEnabled())
+                        set.setDrawCubic(false);
+                    else
+                        set.setDrawCubic(true);
                 }
                 mChart.invalidate();
                 break;
@@ -279,19 +298,6 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
     }
 
     @Override
-    public void onValuesSelected(Entry[] values, Highlight[] highlights) {
-        Log.i("VALS SELECTED",
-                "Value: " + values[0].getVal() + ", xIndex: " + highlights[0].getXIndex()
-                        + ", DataSet index: " + highlights[0].getDataSetIndex());
-    }
-
-    @Override
-    public void onNothingSelected() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
         // TODO Auto-generated method stub
 
@@ -327,8 +333,13 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
 
         // set the line to be drawn like this "- - - - - -"
         set1.enableDashedLine(10f, 5f, 0f);
+        set1.setColor(Color.BLACK);
+        set1.setCircleColor(Color.BLACK);
         set1.setLineWidth(1f);
         set1.setCircleSize(4f);
+        set1.setFillAlpha(65);
+        set1.setFillColor(Color.BLACK);
+//        set1.setShader(new LinearGradient(0, 0, 0, mChart.getHeight(), Color.BLACK, Color.WHITE, Shader.TileMode.MIRROR));
 
         ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
         dataSets.add(set1); // add the datasets
@@ -339,15 +350,44 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         LimitLine ll1 = new LimitLine(130f);
         ll1.setLineWidth(4f);
         ll1.enableDashedLine(10f, 10f, 0f);
+        ll1.setDrawValue(true);
+        ll1.setLabelPosition(LimitLabelPosition.RIGHT);
         
         LimitLine ll2 = new LimitLine(-30f);
         ll2.setLineWidth(4f);
         ll2.enableDashedLine(10f, 10f, 0f);
+        ll2.setDrawValue(true);
+        ll2.setLabelPosition(LimitLabelPosition.RIGHT);
         
         data.addLimitLine(ll1);
         data.addLimitLine(ll2);
 
         // set data
         mChart.setData(data);
+    }
+
+    @Override
+    public void onChartLongPressed(MotionEvent me) {
+        Log.i("LongPress", "Chart longpressed.");
+    }
+
+    @Override
+    public void onChartDoubleTapped(MotionEvent me) {
+        Log.i("DoubleTap", "Chart double-tapped.");        
+    }
+
+    @Override
+    public void onChartSingleTapped(MotionEvent me) {
+        Log.i("SingleTap", "Chart single-tapped.");
+    }
+    
+    @Override
+    public void onValueSelected(Entry e, int dataSetIndex) {
+        Log.i("Entry selected", e.toString());
+    }
+    
+    @Override
+    public void onNothingSelected() {
+        Log.i("Nothing selected", "Nothing selected.");
     }
 }

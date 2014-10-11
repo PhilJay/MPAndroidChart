@@ -2,8 +2,16 @@ package com.github.mikephil.charting.data;
 
 import java.util.ArrayList;
 
-public class CandleData extends BarLineScatterData {
+public class CandleData extends BarLineScatterCandleData<CandleDataSet> {
 
+    public CandleData(ArrayList<String> xVals) {
+        super(xVals);
+    }
+    
+    public CandleData(String[] xVals) {
+        super(xVals);
+    }
+    
     public CandleData(ArrayList<String> xVals, ArrayList<CandleDataSet> dataSets) {
         super(xVals, dataSets);
     }
@@ -18,5 +26,11 @@ public class CandleData extends BarLineScatterData {
     
     public CandleData(String[] xVals, CandleDataSet dataSet) {
         super(xVals, toArrayList(dataSet));
+    }
+    
+    private static ArrayList<CandleDataSet> toArrayList(CandleDataSet dataSet) {
+        ArrayList<CandleDataSet> sets = new ArrayList<CandleDataSet>();
+        sets.add(dataSet);
+        return sets;
     }
 }

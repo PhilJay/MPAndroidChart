@@ -17,7 +17,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.github.mikephil.charting.utils.XLabels;
@@ -50,6 +50,8 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
 
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
+        
+        mChart.setDrawGridBackground(false);
 
         // mChart.setStartAtZero(true);
 
@@ -63,7 +65,7 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
         mChart.setTouchEnabled(true);
 
         // enable scaling and dragging
-        mChart.setDragEnabled(true);
+        mChart.setDragScaleEnabled(true);
 
         // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(false);
@@ -190,20 +192,24 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
         }
         return true;
     }
-    
-    private int[] mColors = new int[] { R.color.vordiplom_1, R.color.vordiplom_2, R.color.vordiplom_3 };
+
+    private int[] mColors = new int[] {
+            ColorTemplate.VORDIPLOM_COLORS[0], 
+            ColorTemplate.VORDIPLOM_COLORS[1],
+            ColorTemplate.VORDIPLOM_COLORS[2]
+    };
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-        tvX.setText("" + (mSeekBarX.getProgress() + 1));
+        tvX.setText("" + (mSeekBarX.getProgress()));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
         ArrayList<String> xVals = new ArrayList<String>();
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             xVals.add((i) + "");
         }
-
+ 
         ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
 
         for (int z = 0; z < 3; z++) {
@@ -218,8 +224,8 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
             LineDataSet d = new LineDataSet(values, "DataSet " + (z + 1));
             d.setLineWidth(2.5f);
             d.setCircleSize(4f);
-            
-            int color = getResources().getColor(mColors[z % mColors.length]);
+
+            int color = mColors[z % mColors.length];
             d.setColor(color);
             d.setCircleColor(color);
             dataSets.add(d);
@@ -227,6 +233,8 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
 
         // make the first DataSet dashed
         dataSets.get(0).enableDashedLine(10, 10, 0);
+        dataSets.get(0).setColors(ColorTemplate.VORDIPLOM_COLORS);
+        dataSets.get(0).setCircleColors(ColorTemplate.VORDIPLOM_COLORS);
 
         LineData data = new LineData(xVals, dataSets);
         mChart.setData(data);
@@ -234,10 +242,10 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
     }
 
     @Override
-    public void onValuesSelected(Entry[] values, Highlight[] highlights) {
-        Log.i("VALS SELECTED",
-                "Value: " + values[0].getVal() + ", xIndex: " + highlights[0].getXIndex()
-                        + ", DataSet index: " + highlights[0].getDataSetIndex());
+    public void onValueSelected(Entry e, int dataSetIndex) {
+        Log.i("VAL SELECTED",
+                "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
+                        + ", DataSet index: " + dataSetIndex);
     }
 
     @Override

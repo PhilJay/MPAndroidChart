@@ -5,7 +5,7 @@ import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 
-public class PieDataSet extends DataSet {
+public class PieDataSet extends DataSet<Entry> {
 
     /** the space in degrees between the chart-slices, default 0f */
     private float mSliceSpace = 0f;
@@ -20,7 +20,7 @@ public class PieDataSet extends DataSet {
     }
 
     @Override
-    public DataSet copy() {
+    public DataSet<Entry> copy() {
 
         ArrayList<Entry> yVals = new ArrayList<Entry>();
 
