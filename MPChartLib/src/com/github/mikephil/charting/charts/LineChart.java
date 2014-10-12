@@ -238,27 +238,10 @@ public class LineChart extends BarLineChartBase<LineData> {
 
                     mRenderPaint.setColor(dataSet.getColor());
 
-                    float[] valuePoints = generateTransformedValuesLineScatter(entries);
-
-                    for (int j = 0; j < (valuePoints.length - 2) * mPhaseX; j += 2) {
-
-                        if (isOffContentRight(valuePoints[j]))
-                            break;
-
-                        // make sure the lines don't do shitty things outside
-                        // bounds
-                        if (j != 0 && isOffContentLeft(valuePoints[j - 1])
-                                && isOffContentTop(valuePoints[j + 1])
-                                && isOffContentBottom(valuePoints[j + 1]))
-                            continue;
-
-                        mDrawCanvas.drawLine(valuePoints[j], valuePoints[j + 1],
-                                valuePoints[j + 2], valuePoints[j + 3], mRenderPaint);
-                    }
-
-                    // Path line = generateLinePath(entries);
-                    // transformPath(line);
-                    // mDrawCanvas.drawPath(line, mRenderPaint);
+                    Path line = generateLinePath(entries);
+                    transformPath(line);
+                    
+                    mDrawCanvas.drawPath(line, mRenderPaint);
                 }
 
                 mRenderPaint.setPathEffect(null);
@@ -319,6 +302,27 @@ public class LineChart extends BarLineChartBase<LineData> {
         filled.close();
 
         return filled;
+    }
+    
+    /**
+     * Generates the path that is used for drawing a single line.
+     * 
+     * @param entries
+     * @return
+     */
+    private Path generateLinePath(ArrayList<Entry> entries) {
+
+        Path line = new Path();
+        line.moveTo(entries.get(0).getXIndex(), entries.get(0).getVal() * mPhaseY);
+
+        // create a new path
+        for (int x = 1; x < entries.size() * mPhaseX; x++) {
+
+            Entry e = entries.get(x);
+            line.lineTo(e.getXIndex(), e.getVal() * mPhaseY);
+        }
+
+        return line;
     }
 
     @Override
