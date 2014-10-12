@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class Legend {
 
     public enum LegendPosition {
-        RIGHT_OF_CHART, BELOW_CHART_LEFT, BELOW_CHART_RIGHT, BELOW_CHART_CENTER
+        RIGHT_OF_CHART, RIGHT_OF_CHART_CENTER, BELOW_CHART_LEFT, BELOW_CHART_RIGHT, BELOW_CHART_CENTER
     }
 
     public enum LegendForm {
@@ -46,7 +46,7 @@ public class Legend {
 
     /** the text size of the legend labels */
     private float mTextSize = 9f;
-    
+
     /** the text color to use */
     private int mTextColor = Color.BLACK;
 
@@ -382,7 +382,7 @@ public class Legend {
         mTextSize = l.mTextSize;
         mStackSpace = l.mStackSpace;
         mTextColor = l.mTextColor;
-        
+
         // apply offsets
         mLegendOffsetBottom = l.mLegendOffsetBottom;
         mLegendOffsetLeft = l.mLegendOffsetLeft;
@@ -525,14 +525,15 @@ public class Legend {
 
         return width;
     }
-    
+
     /**
      * Calculates the full height of the drawn legend.
+     * 
      * @param mLegendLabelPaint
      * @return
      */
     public float getFullHeight(Paint labelpaint) {
-        
+
         float height = 0f;
 
         for (int i = 0; i < mLegendLabels.length; i++) {
@@ -542,7 +543,7 @@ public class Legend {
 
                 height += Utils.calcTextHeight(labelpaint, mLegendLabels[i])
                         + mYEntrySpace;
-            } 
+            }
         }
 
         return height;

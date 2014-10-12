@@ -279,7 +279,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         mLimitLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mLimitLinePaint.setStyle(Paint.Style.STROKE);
-        
+
         mDrawPaint = new Paint(Paint.DITHER_FLAG);
     }
 
@@ -459,7 +459,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * drawn on the canvas directly.
      **/
     protected Bitmap mDrawBitmap;
-    
+
     /** paint object used for drawing the bitmap */
     protected Paint mDrawPaint;
 
@@ -493,12 +493,13 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                     Bitmap.Config.ARGB_4444);
             mDrawCanvas = new Canvas(mDrawBitmap);
         }
-        
+
         // clear everything
         mDrawBitmap.eraseColor(Color.TRANSPARENT);
 
-//        mDrawCanvas.drawColor(Color.WHITE);
-//        canvas.drawColor(Color.TRANSPARENT, android.graphics.PorterDuff.Mode.XOR); // clear all
+        // mDrawCanvas.drawColor(Color.WHITE);
+        // canvas.drawColor(Color.TRANSPARENT,
+        // android.graphics.PorterDuff.Mode.XOR); // clear all
     }
 
     /**
@@ -782,6 +783,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         float posX, posY;
 
+        // contains the stacked legend size in pixels
+        float stack = 0f;
+
+        boolean wasStacked = false;
+
         switch (mLegend.getPosition()) {
             case BELOW_CHART_LEFT:
 
@@ -836,8 +842,45 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                         - formTextSpaceAndForm;
                 posY = mLegend.getOffsetTop();
 
-                float stack = 0f;
-                boolean wasStacked = false;
+                for (int i = 0; i < labels.length; i++) {
+
+                    mLegend.drawForm(mDrawCanvas, posX + stack, posY, mLegendFormPaint, i);
+
+                    if (labels[i] != null) {
+
+                        if (!wasStacked) {
+
+                            float x = posX;
+
+                            if (mLegend.getColors()[i] != -2)
+                                x += formTextSpaceAndForm;
+
+                            posY += textDrop;
+
+                            mLegend.drawLabel(mDrawCanvas, x, posY,
+                                    mLegendLabelPaint, i);
+                        } else {
+
+                            posY += textSize * 1.2f + formSize;
+
+                            mLegend.drawLabel(mDrawCanvas, posX, posY,
+                                    mLegendLabelPaint, i);
+
+                        }
+
+                        // make a step down
+                        posY += mLegend.getYEntrySpace();
+                        stack = 0f;
+                    } else {
+                        stack += formSize + stackSpace;
+                        wasStacked = true;
+                    }
+                }
+                break;
+            case RIGHT_OF_CHART_CENTER:
+                posX = getWidth() - mLegend.getMaximumEntryLength(mLegendLabelPaint)
+                        - formTextSpaceAndForm;
+                posY = getHeight() / 2f - mLegend.getFullHeight(mLegendLabelPaint) / 2f;
 
                 for (int i = 0; i < labels.length; i++) {
 
@@ -873,6 +916,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                         wasStacked = true;
                     }
                 }
+
                 break;
             case BELOW_CHART_CENTER:
 

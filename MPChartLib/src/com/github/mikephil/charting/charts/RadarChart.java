@@ -102,6 +102,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     public void prepare() {
         super.prepare();
 
+        prepareYLabels();
         prepareXLabels();
     }
 
@@ -116,13 +117,14 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
             if (mLegend == null)
                 return;
 
-            if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
+            if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART
+                    || mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART_CENTER) {
 
                 // this is the space between the legend and the chart
-                float spacing = Utils.convertDpToPixel(7f);
+                float spacing = Utils.convertDpToPixel(8f);
 
                 legendRight = mLegend.getMaximumEntryLength(mLegendLabelPaint)
-                        + mLegend.getFormSize() + mLegend.getFormToTextSpace() + spacing;
+                        + mLegend.getFormSize() + mLegend.getFormToTextSpace() + spacing + mXLabels.mLabelWidth;
 
                 mLegendLabelPaint.setTextAlign(Align.LEFT);
 
@@ -141,7 +143,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
             mOffsetBottom = Math.max(mXLabels.mLabelWidth, min);
             mOffsetTop = Math.max(mXLabels.mLabelWidth, min);
-            mOffsetRight = Math.max(mXLabels.mLabelWidth, min);
+            mOffsetRight = Math.max(legendRight, min);
             mOffsetLeft = Math.max(mXLabels.mLabelWidth, min);
 
             mOffsetBottom = Math.max(mOffsetBottom, legendBottom);
@@ -162,8 +164,6 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
             return;
 
         long starttime = System.currentTimeMillis();
-
-        prepareYLabels();
 
         drawXLabels();
 

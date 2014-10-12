@@ -211,7 +211,7 @@ public class LineChart extends BarLineChartBase<LineData> {
                 mRenderPaint.setStyle(Paint.Style.STROKE);
 
                 // more than 1 color
-                if (dataSet.getColors().size() > 1) {
+                if (dataSet.getColors() == null || dataSet.getColors().size() > 1) {
 
                     float[] valuePoints = generateTransformedValuesLineScatter(entries);
 

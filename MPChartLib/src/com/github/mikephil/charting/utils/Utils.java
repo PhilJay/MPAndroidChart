@@ -20,7 +20,7 @@ import java.util.ArrayList;
  */
 public abstract class Utils {
 
-    private static Resources mRes;
+    private static DisplayMetrics mMetrics;
 
     /**
      * initialize method, called inside the Chart.init() method.
@@ -28,7 +28,7 @@ public abstract class Utils {
      * @param res
      */
     public static void init(Resources res) {
-        mRes = res;
+        mMetrics = res.getDisplayMetrics();
     }
 
     /**
@@ -64,7 +64,7 @@ public abstract class Utils {
      */
     public static float convertDpToPixel(float dp) {
 
-        if (mRes == null) {
+        if (mMetrics == null) {
 
             Log.e("MPChartLib-Utils",
                     "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertDpToPixel(...). Otherwise conversion does not take place.");
@@ -73,7 +73,7 @@ public abstract class Utils {
             // "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertDpToPixel(...).");
         }
 
-        DisplayMetrics metrics = mRes.getDisplayMetrics();
+        DisplayMetrics metrics = mMetrics;
         float px = dp * (metrics.densityDpi / 160f);
         return px;
     }
@@ -87,7 +87,7 @@ public abstract class Utils {
      */
     public static float convertPixelsToDp(float px) {
 
-        if (mRes == null) {
+        if (mMetrics == null) {
 
             Log.e("MPChartLib-Utils",
                     "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertPixelsToDp(...). Otherwise conversion does not take place.");
@@ -96,7 +96,7 @@ public abstract class Utils {
             // "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertPixelsToDp(...).");
         }
 
-        DisplayMetrics metrics = mRes.getDisplayMetrics();
+        DisplayMetrics metrics = mMetrics;
         float dp = px / (metrics.densityDpi / 160f);
         return dp;
     }
@@ -128,28 +128,28 @@ public abstract class Utils {
         return r.height();
     }
 
-//    /**
-//     * returns the appropriate number of format digits for a delta value
-//     * 
-//     * @param delta
-//     * @return
-//     */
-//    public static int getFormatDigits(float delta) {
-//
-//        if (delta < 0.1) {
-//            return 6;
-//        } else if (delta <= 1) {
-//            return 4;
-//        } else if (delta < 4) {
-//            return 3;
-//        } else if (delta < 20) {
-//            return 2;
-//        } else if (delta < 60) {
-//            return 1;
-//        } else {
-//            return 0;
-//        }
-//    }
+    // /**
+    // * returns the appropriate number of format digits for a delta value
+    // *
+    // * @param delta
+    // * @return
+    // */
+    // public static int getFormatDigits(float delta) {
+    //
+    // if (delta < 0.1) {
+    // return 6;
+    // } else if (delta <= 1) {
+    // return 4;
+    // } else if (delta < 4) {
+    // return 3;
+    // } else if (delta < 20) {
+    // return 2;
+    // } else if (delta < 60) {
+    // return 1;
+    // } else {
+    // return 0;
+    // }
+    // }
 
     /**
      * returns the appropriate number of format digits for a legend value

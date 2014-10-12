@@ -296,7 +296,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         float scaleY = (float) ((getHeight() - mOffsetTop - mOffsetBottom) / mDeltaY);
 
         // setup all matrices
-         mMatrixValueToPx.reset();
+        mMatrixValueToPx.reset();
         mMatrixValueToPx.postTranslate(0, -mYChartMin);
         mMatrixValueToPx.postScale(scaleX, -scaleY);
     }
@@ -305,7 +305,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * Prepares the matrix that contains all offsets.
      */
     private void prepareMatrixOffset() {
-        
+
         mMatrixOffset.reset();
 
         // offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
@@ -317,7 +317,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             mMatrixOffset.postScale(1.0f, -1.0f);
         }
 
-//        mMatrixOffset.set(offset);
+        // mMatrixOffset.set(offset);
 
         // mMatrixOffset.reset();
         //
@@ -347,10 +347,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             if (mLegend == null)
                 return;
 
-            if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
+            if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART
+                    || mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART_CENTER) {
 
                 // this is the space between the legend and the chart
-                float spacing = Utils.convertDpToPixel(7f);
+                float spacing = Utils.convertDpToPixel(12f);
 
                 legendRight = mLegend.getMaximumEntryLength(mLegendLabelPaint)
                         + mLegend.getFormSize() + mLegend.getFormToTextSpace() + spacing;
@@ -481,12 +482,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     @Override
     protected void calcMinMax(boolean fixedValues) {
         super.calcMinMax(fixedValues); // calc min and max in the super class
-        
-        if(!fixedValues) {
-         
+
+        if (!fixedValues) {
+
             // additional handling for space (default 15% space)
             // float space = Math.abs(mDeltaY / 100f * 15f);
-            float space = Math.abs(Math.max(Math.abs(mYChartMax), Math.abs(mYChartMin)) / 100f * 15f);
+            float space = Math
+                    .abs(Math.max(Math.abs(mYChartMax), Math.abs(mYChartMin)) / 100f * 15f);
             if (Math.abs(mYChartMax) - Math.abs(mYChartMin) < 0.00001f) {
                 if (Math.abs(mYChartMax) < 10f)
                     space = 1f;
