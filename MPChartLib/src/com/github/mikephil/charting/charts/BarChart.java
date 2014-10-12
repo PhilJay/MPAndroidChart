@@ -381,14 +381,17 @@ public class BarChart extends BarLineChartBase<BarData> {
 
             ArrayList<BarDataSet> dataSets = ((BarData) mCurrentData).getDataSets();
 
-            float offset = 0f;
+            float posOffset = 0f; float negOffset = 0f;
 
             // calculate the correct offset depending on the draw position of
             // the value
-            if (mDrawValueAboveBar)
-                offset = -Utils.convertDpToPixel(5);
-            else
-                offset = Utils.calcTextHeight(mValuePaint, "8") * 1.5f;
+            if (mDrawValueAboveBar) {
+                posOffset = -Utils.convertDpToPixel(5);
+                negOffset = Utils.calcTextHeight(mValuePaint, "8") * 1.5f;
+            } else {
+                posOffset = Utils.calcTextHeight(mValuePaint, "8") * 1.5f;
+                negOffset = -Utils.convertDpToPixel(5);
+            }
 
             for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
 
@@ -411,8 +414,8 @@ public class BarChart extends BarLineChartBase<BarData> {
 
                         float val = entries.get(j / 2).getVal();
 
-                        drawValue(mValueFormatter.getFormattedValue(val), valuePoints[j],
-                                valuePoints[j + 1] + offset);
+                        drawValue(val, valuePoints[j],
+                                valuePoints[j + 1] + (val >= 0 ? posOffset : negOffset));
                     }
 
                     // if each value of a potential stack should be drawn
@@ -436,8 +439,8 @@ public class BarChart extends BarLineChartBase<BarData> {
                         // in between
                         if (vals == null) {
 
-                            drawValue(mValueFormatter.getFormattedValue(e.getVal()), valuePoints[j],
-                                    valuePoints[j + 1] + offset);
+                            drawValue(e.getVal(), valuePoints[j],
+                                    valuePoints[j + 1] + (e.getVal() >= 0 ? posOffset : negOffset));
 
                         } else {
 
@@ -456,8 +459,8 @@ public class BarChart extends BarLineChartBase<BarData> {
 
                             for (int k = 0; k < transformed.length; k += 2) {
 
-                                drawValue(mValueFormatter.getFormattedValue(vals[k / 2]), valuePoints[j],
-                                        transformed[k + 1] + offset);
+                                drawValue(vals[k / 2], valuePoints[j],
+                                        transformed[k + 1] + (vals[k / 2] >= 0 ? posOffset : negOffset));
                             }
                         }
                     }
@@ -473,15 +476,17 @@ public class BarChart extends BarLineChartBase<BarData> {
      * @param xPos
      * @param yPos
      */
-    private void drawValue(String val, float xPos, float yPos) {
+    private void drawValue(float val, float xPos, float yPos) {
+        
+        String value = mValueFormatter.getFormattedValue(val);     
 
         if (mDrawUnitInChart) {
 
-            mDrawCanvas.drawText(val + mUnit, xPos, yPos,
+            mDrawCanvas.drawText(value + mUnit, xPos, yPos,
                     mValuePaint);
         } else {
 
-            mDrawCanvas.drawText(val, xPos, yPos,
+            mDrawCanvas.drawText(value, xPos, yPos,
                     mValuePaint);
         }
     }

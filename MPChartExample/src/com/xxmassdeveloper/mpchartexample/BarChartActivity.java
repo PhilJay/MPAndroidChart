@@ -58,6 +58,8 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         // enable the drawing of values
         mChart.setDrawYValues(true);
+        
+        mChart.setDrawValueAboveBar(true);
 
         mChart.setDescription("");
 
@@ -263,7 +265,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         for (int i = 0; i < count; i++) {
             float mult = (range + 1);
-            float val = (float) (Math.random() * mult);
+            float val = (float) (Math.random() * mult) - 50;
             yVals1.add(new BarEntry(val, i));
         }
 
