@@ -1040,6 +1040,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        super.onTouchEvent(event);
 
         if (mListener == null || mDataNotSet)
             return false;

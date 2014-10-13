@@ -436,7 +436,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
             mChart.highlightTouch(h);
         }
 
-        return true;
+        return super.onSingleTapUp(e);
     }
 
     @Override

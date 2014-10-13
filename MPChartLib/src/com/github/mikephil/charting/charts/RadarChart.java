@@ -109,10 +109,10 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     @Override
     protected void calculateOffsets() {
 
+        float legendRight = 0f, legendBottom = 0f;
+
         // setup offsets for legend
         if (mDrawLegend) {
-
-            float legendRight = 0f, legendBottom = 0f;
 
             if (mLegend == null)
                 return;
@@ -124,7 +124,8 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
                 float spacing = Utils.convertDpToPixel(8f);
 
                 legendRight = mLegend.getMaximumEntryLength(mLegendLabelPaint)
-                        + mLegend.getFormSize() + mLegend.getFormToTextSpace() + spacing + mXLabels.mLabelWidth;
+                        + mLegend.getFormSize() + mLegend.getFormToTextSpace() + spacing
+                        + mXLabels.mLabelWidth;
 
                 mLegendLabelPaint.setTextAlign(Align.LEFT);
 
@@ -137,23 +138,24 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
             mLegend.setOffsetBottom(legendBottom);
             mLegend.setOffsetRight(legendRight);
-
-            // all required offsets are calculated, now find largest and apply
-            float min = Utils.convertDpToPixel(11f);
-
-            mOffsetBottom = Math.max(mXLabels.mLabelWidth, min);
-            mOffsetTop = Math.max(mXLabels.mLabelWidth, min);
-            mOffsetRight = Math.max(legendRight, min);
-            mOffsetLeft = Math.max(mXLabels.mLabelWidth, min);
-
-            mOffsetBottom = Math.max(mOffsetBottom, legendBottom);
-            mOffsetRight = Math.max(mOffsetRight, legendRight / 3f * 2f);
-
-            mLegend.setOffsetTop(min);
-            mLegend.setOffsetLeft(min);
-
-            applyCalculatedOffsets();
         }
+
+        // all required offsets are calculated, now find largest and apply
+        float min = Utils.convertDpToPixel(11f);
+
+        mOffsetBottom = Math.max(mXLabels.mLabelWidth, min);
+        mOffsetTop = Math.max(mXLabels.mLabelWidth, min);
+        mOffsetRight = Math.max(legendRight, min);
+        mOffsetLeft = Math.max(mXLabels.mLabelWidth, min);
+
+        mOffsetBottom = Math.max(mOffsetBottom, legendBottom);
+        mOffsetRight = Math.max(mOffsetRight, legendRight / 3f * 2f);
+
+        mLegend.setOffsetTop(min);
+        mLegend.setOffsetLeft(min);
+
+        applyCalculatedOffsets();
+
     }
 
     @Override

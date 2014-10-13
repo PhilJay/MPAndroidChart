@@ -77,7 +77,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         // mChart.setDrawBarShadow(true);
 
         mChart.setUnit(" €");
-
+        
         // mChart.setDrawXLabels(false);
 
         mChart.setDrawGridBackground(false);
@@ -265,7 +265,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         for (int i = 0; i < count; i++) {
             float mult = (range + 1);
-            float val = (float) (Math.random() * mult) - 50;
+            float val = (float) (Math.random() * mult);
             yVals1.add(new BarEntry(val, i));
         }
 

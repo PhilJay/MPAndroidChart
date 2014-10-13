@@ -176,17 +176,16 @@ public class PieChart extends PieRadarChartBase<PieData> {
     @Override
     protected void calculateOffsets() {
 
-        // setup offsets for legend
-        if (mDrawLegend) {
+        float legendRight = 0f, legendBottom = 0f;
 
-            float legendRight = 0f, legendBottom = 0f;
+        if (mDrawLegend) {
 
             if (mLegend == null)
                 return;
 
-            if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART 
+            if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART
                     || mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART_CENTER) {
-                
+
                 // this is the space between the legend and the chart
                 float spacing = Utils.convertDpToPixel(13f);
 
@@ -202,21 +201,23 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
                 legendBottom = mLegendLabelPaint.getTextSize() * 4f;
             }
-
+            
             mLegend.setOffsetBottom(legendBottom);
             mLegend.setOffsetRight(legendRight);
-
-            float min = Utils.convertDpToPixel(11f);
-
-            mLegend.setOffsetTop(min);
-            mLegend.setOffsetLeft(min);
-
-            mOffsetTop = min;
-            mOffsetRight = Math.max(min, legendRight);
-            mOffsetBottom = Math.max(min, legendBottom);
-
-            applyCalculatedOffsets();
         }
+
+        float min = Utils.convertDpToPixel(11f);
+
+        mLegend.setOffsetTop(min);
+        mLegend.setOffsetLeft(min);
+
+        mOffsetLeft = min;
+        mOffsetTop = min;
+        mOffsetRight = Math.max(min, legendRight);
+        mOffsetBottom = Math.max(min, legendBottom);
+
+        applyCalculatedOffsets();
+
     }
 
     /**

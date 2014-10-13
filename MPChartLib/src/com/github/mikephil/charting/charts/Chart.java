@@ -488,7 +488,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         if (mDrawBitmap == null || mDrawCanvas == null) {
 
-            // use RGB_565 for best performance
             mDrawBitmap = Bitmap.createBitmap(getWidth(), getHeight(),
                     Bitmap.Config.ARGB_4444);
             mDrawCanvas = new Canvas(mDrawBitmap);
@@ -2238,6 +2237,15 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        
+        // create a new bitmap with the new dimensions
+        mDrawBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_4444);
+        mDrawCanvas = new Canvas(mDrawBitmap);        
+        
+        // prepare content rect and matrices
+        prepareContentRect();
+        prepare();
+        
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
