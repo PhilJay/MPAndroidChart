@@ -48,9 +48,6 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
         // enable drawing with the finger
 //        mChart.setDrawingEnabled(true);
 
-        // enable dragging and scaling
-        mChart.setDragScaleEnabled(true);
-
         mChart.setDrawYValues(false);
 //        mChart.setLineWidth(5f);
 //        mChart.setCircleSize(5f);

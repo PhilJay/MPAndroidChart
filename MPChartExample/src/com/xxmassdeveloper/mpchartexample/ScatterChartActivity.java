@@ -65,7 +65,9 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         mChart.setHighlightEnabled(true);
         mChart.setDrawYValues(false);
 
-        mChart.setDragScaleEnabled(true);
+        // enable scaling and dragging
+        mChart.setDragEnabled(true);
+        mChart.setScaleEnabled(true);
 
         mChart.setMaxVisibleValueCount(200);
         mChart.setPinchZoom(true);

@@ -79,7 +79,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
             mGestureDetector.onTouchEvent(event);
         }
 
-        if (!mChart.isDragScaleEnabled())
+        if (!mChart.isDragEnabled() && !mChart.isScaleEnabled())
             return true;
 
         // Handle touch events here...
@@ -119,7 +119,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
                     }
 
                     // determine the touch-pointer center
-                    midPoint(mTouchPointCenter, event); 
+                    midPoint(mTouchPointCenter, event);
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -128,13 +128,15 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
                     mChart.disableScroll();
 
-                    performDrag(event);
+                    if (mChart.isDragEnabled())
+                        performDrag(event);
 
                 } else if (mTouchMode == X_ZOOM || mTouchMode == Y_ZOOM || mTouchMode == PINCH_ZOOM) {
 
                     mChart.disableScroll();
 
-                    performZoom(event);
+                    if (mChart.isScaleEnabled())
+                        performZoom(event);
 
                 } else if (mTouchMode == NONE
                         && Math.abs(distance(event.getX(), mTouchStartPoint.x, event.getY(),
@@ -399,7 +401,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
         if (l != null) {
 
             l.onChartLongPressed(e);
-        } else if(mTouchMode == NONE) {
+        } else if (mTouchMode == NONE) {
 
             mChart.fitScreen();
 

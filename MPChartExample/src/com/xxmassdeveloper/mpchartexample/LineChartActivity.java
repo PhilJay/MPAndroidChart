@@ -96,7 +96,8 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         mChart.setTouchEnabled(true);
 
         // enable scaling and dragging
-        mChart.setDragScaleEnabled(true);
+        mChart.setDragEnabled(true);
+        mChart.setScaleEnabled(true);
 
         // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(true);
