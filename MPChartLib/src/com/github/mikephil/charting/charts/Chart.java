@@ -22,6 +22,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewParent;
 
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -1736,6 +1737,22 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public RectF getContentRect() {
         return mContentRect;
+    }
+    
+    /**
+     * disables intercept touchevents
+     */
+    public void disableScroll() {
+        ViewParent parent = getParent();
+        parent.requestDisallowInterceptTouchEvent(true);
+    }
+
+    /**
+     * enables intercept touchevents
+     */
+    public void enableScroll() {
+        ViewParent parent = getParent();
+        parent.requestDisallowInterceptTouchEvent(false);
     }
 
     /** paint for the grid lines (only line and barchart) */

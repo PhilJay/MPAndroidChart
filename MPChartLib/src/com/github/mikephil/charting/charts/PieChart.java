@@ -173,77 +173,6 @@ public class PieChart extends PieRadarChartBase<PieData> {
         calcAngles();
     }
 
-    @Override
-    protected void calculateOffsets() {
-
-        float legendRight = 0f, legendBottom = 0f, legendTop = 0f;
-
-        if (mDrawLegend) {
-
-            if (mLegend == null)
-                return;
-
-            if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART_CENTER) {
-
-                // this is the space between the legend and the chart
-                float spacing = Utils.convertDpToPixel(13f);
-
-                legendRight = mLegend.getMaximumEntryLength(mLegendLabelPaint)
-                        + mLegend.getFormSize() + mLegend.getFormToTextSpace() + spacing;
-
-                mLegendLabelPaint.setTextAlign(Align.LEFT);
-                // legendTop = mLegend.getFullHeight(mLegendLabelPaint);
-
-            } else if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
-
-                // this is the space between the legend and the chart
-                float spacing = Utils.convertDpToPixel(13f);
-
-                float legendWidth = mLegend.getMaximumEntryLength(mLegendLabelPaint)
-                        + mLegend.getFormSize() + mLegend.getFormToTextSpace() + spacing;
-
-                float legendHeight = mLegend.getFullHeight(mLegendLabelPaint) + mOffsetTop;
-
-                PointF bottomRight = new PointF(getWidth() - legendWidth, legendHeight);
-                PointF reference = getPosition(getCenter(), getRadius(), 315);
-
-                float distLegend = distanceToCenter(bottomRight.x, bottomRight.y);
-                float distReference = distanceToCenter(reference.x, reference.y);
-                float min = Utils.convertDpToPixel(5f);
-
-                if (distLegend < distReference) {
-
-                    float diff = distReference - distLegend;
-
-                    legendRight = min + diff;
-                    legendTop = min + diff;
-                }
-
-                mLegendLabelPaint.setTextAlign(Align.LEFT);
-
-            } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
-                    || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
-                    || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
-
-                legendBottom = mLegendLabelPaint.getTextSize() * 4f;
-            }
-
-            mLegend.setOffsetBottom(legendBottom);
-            mLegend.setOffsetRight(legendRight);
-        }
-
-        float min = Utils.convertDpToPixel(11f);
-
-        mLegend.setOffsetLeft(min);
-
-        mOffsetLeft = min;
-        mOffsetTop = Math.max(min, legendTop);
-        mOffsetRight = Math.max(min, legendRight);
-        mOffsetBottom = Math.max(min, legendBottom);
-
-        applyCalculatedOffsets();
-    }
-
     /**
      * calculates the needed angles for the chart slices
      */
@@ -692,6 +621,16 @@ public class PieChart extends PieRadarChartBase<PieData> {
      */
     public boolean isDrawXValuesEnabled() {
         return mDrawXVals;
+    }
+
+    @Override
+    protected float getRequiredBottomOffset() {
+        return mLegendLabelPaint.getTextSize() * 4f;
+    }
+    
+    @Override
+    protected float getRequiredBaseOffset() {
+        return 0;
     }
 
     @Override

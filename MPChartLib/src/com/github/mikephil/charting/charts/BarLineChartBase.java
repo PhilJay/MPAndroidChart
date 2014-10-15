@@ -1058,22 +1058,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     /** CODE BELOW THIS RELATED TO SCALING AND GESTURES */
 
     /**
-     * disables intercept touchevents
-     */
-    public void disableScroll() {
-        ViewParent parent = getParent();
-        parent.requestDisallowInterceptTouchEvent(true);
-    }
-
-    /**
-     * enables intercept touchevents
-     */
-    public void enableScroll() {
-        ViewParent parent = getParent();
-        parent.requestDisallowInterceptTouchEvent(false);
-    }
-
-    /**
      * Zooms in by 1.4f, x and y are the coordinates (in pixels) of the zoom
      * center.
      * 

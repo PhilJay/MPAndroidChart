@@ -4,6 +4,7 @@ package com.github.mikephil.charting.charts;
 import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.PointF;
+import android.graphics.Paint.Align;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
@@ -11,6 +12,8 @@ import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.listener.PieRadarChartTouchListener;
+import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.nineoldandroids.animation.ObjectAnimator;
 
 /**
@@ -67,13 +70,85 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
         calcMinMax(false);
 
         prepareLegend();
-        
+
         calculateOffsets();
     }
 
     @Override
     public void notifyDataSetChanged() {
         prepare();
+    }
+
+    @Override
+    protected void calculateOffsets() {
+
+        float legendRight = 0f, legendBottom = 0f, legendTop = 0f;
+
+        if (mDrawLegend) {
+
+            if (mLegend == null)
+                return;
+
+            if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART_CENTER) {
+
+                // this is the space between the legend and the chart
+                float spacing = Utils.convertDpToPixel(13f);
+
+                legendRight = getFullLegendWidth() + spacing;
+
+                mLegendLabelPaint.setTextAlign(Align.LEFT);
+                // legendTop = mLegend.getFullHeight(mLegendLabelPaint);
+
+            } else if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
+
+                // this is the space between the legend and the chart
+                float spacing = Utils.convertDpToPixel(13f);
+
+                float legendWidth = getFullLegendWidth() + spacing;
+
+                float legendHeight = mLegend.getFullHeight(mLegendLabelPaint) + mOffsetTop;
+
+                PointF bottomRight = new PointF(getWidth() - legendWidth, legendHeight);
+                PointF reference = getPosition(getCenter(), getRadius(), 315);
+
+                float distLegend = distanceToCenter(bottomRight.x, bottomRight.y);
+                float distReference = distanceToCenter(reference.x, reference.y);
+                float min = Utils.convertDpToPixel(5f);
+
+                if (distLegend < distReference) {
+
+                    float diff = distReference - distLegend;
+
+                    legendRight = min + diff;
+                    legendTop = min + diff;
+                }
+
+                mLegendLabelPaint.setTextAlign(Align.LEFT);
+
+            } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
+                    || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
+                    || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
+
+                legendBottom = getRequiredBottomOffset();
+            }
+            
+            legendRight += getRequiredBaseOffset();
+            legendTop += getRequiredBaseOffset();
+
+            mLegend.setOffsetBottom(mLegendLabelPaint.getTextSize() * 4f);
+            mLegend.setOffsetRight(legendRight);
+        }
+
+        float min = Utils.convertDpToPixel(11f);
+
+        mLegend.setOffsetLeft(min);
+
+        mOffsetLeft = Math.max(min, getRequiredBaseOffset());
+        mOffsetTop = Math.max(min, legendTop);
+        mOffsetRight = Math.max(min, legendRight);
+        mOffsetBottom = Math.max(min, legendBottom);
+
+        applyCalculatedOffsets();
     }
 
     @Override
@@ -170,7 +245,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
         return angle;
     }
-    
+
     /**
      * Calculates the position around a center point, depending on the distance
      * from the center, and the angle of the position around the center.
@@ -199,7 +274,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     public float distanceToCenter(float x, float y) {
 
         PointF c = getCenterOffsets();
-        
+
         float dist = 0f;
 
         float xDist = 0f;
@@ -290,6 +365,31 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
      * @return
      */
     public abstract float getRadius();
+
+    /**
+     * Returns the required bottom offset for the chart.
+     * 
+     * @return
+     */
+    protected abstract float getRequiredBottomOffset();
+
+    /**
+     * Returns the required right offset for the chart.
+     * 
+     * @return
+     */
+    private float getFullLegendWidth() {
+        return mLegend.getMaximumEntryLength(mLegendLabelPaint)
+                + mLegend.getFormSize() + mLegend.getFormToTextSpace();
+    }
+
+    /**
+     * Returns the base offset needed for the chart without calculating the
+     * legend size.
+     * 
+     * @return
+     */
+    protected abstract float getRequiredBaseOffset();
 
     /**
      * set a new (e.g. custom) charttouchlistener NOTE: make sure to

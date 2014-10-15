@@ -106,57 +106,57 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         prepareXLabels();
     }
 
-    @Override
-    protected void calculateOffsets() {
-
-        float legendRight = 0f, legendBottom = 0f;
-
-        // setup offsets for legend
-        if (mDrawLegend) {
-
-            if (mLegend == null)
-                return;
-
-            if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART
-                    || mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART_CENTER) {
-
-                // this is the space between the legend and the chart
-                float spacing = Utils.convertDpToPixel(8f);
-
-                legendRight = mLegend.getMaximumEntryLength(mLegendLabelPaint)
-                        + mLegend.getFormSize() + mLegend.getFormToTextSpace() + spacing
-                        + mXLabels.mLabelWidth;
-
-                mLegendLabelPaint.setTextAlign(Align.LEFT);
-
-            } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
-                    || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
-                    || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
-
-                legendBottom = mLegendLabelPaint.getTextSize() * 5.5f;
-            }
-
-            mLegend.setOffsetBottom(legendBottom);
-            mLegend.setOffsetRight(legendRight);
-        }
-
-        // all required offsets are calculated, now find largest and apply
-        float min = Utils.convertDpToPixel(11f);
-
-        mOffsetBottom = Math.max(mXLabels.mLabelWidth, min);
-        mOffsetTop = Math.max(mXLabels.mLabelWidth, min);
-        mOffsetRight = Math.max(legendRight, min);
-        mOffsetLeft = Math.max(mXLabels.mLabelWidth, min);
-
-        mOffsetBottom = Math.max(mOffsetBottom, legendBottom);
-        mOffsetRight = Math.max(mOffsetRight, legendRight / 3f * 2f);
-
-        mLegend.setOffsetTop(min);
-        mLegend.setOffsetLeft(min);
-
-        applyCalculatedOffsets();
-
-    }
+    // @Override
+    // protected void calculateOffsets() {
+    //
+    // float legendRight = 0f, legendBottom = 0f;
+    //
+    // // setup offsets for legend
+    // if (mDrawLegend) {
+    //
+    // if (mLegend == null)
+    // return;
+    //
+    // if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART
+    // || mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART_CENTER) {
+    //
+    // // this is the space between the legend and the chart
+    // float spacing = Utils.convertDpToPixel(8f);
+    //
+    // legendRight = mLegend.getMaximumEntryLength(mLegendLabelPaint)
+    // + mLegend.getFormSize() + mLegend.getFormToTextSpace() + spacing
+    // + mXLabels.mLabelWidth;
+    //
+    // mLegendLabelPaint.setTextAlign(Align.LEFT);
+    //
+    // } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
+    // || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
+    // || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
+    //
+    // legendBottom = mLegendLabelPaint.getTextSize() * 5.5f;
+    // }
+    //
+    // mLegend.setOffsetBottom(legendBottom);
+    // mLegend.setOffsetRight(legendRight);
+    // }
+    //
+    // // all required offsets are calculated, now find largest and apply
+    // float min = Utils.convertDpToPixel(11f);
+    //
+    // mOffsetBottom = Math.max(mXLabels.mLabelWidth, min);
+    // mOffsetTop = Math.max(mXLabels.mLabelWidth, min);
+    // mOffsetRight = Math.max(legendRight, min);
+    // mOffsetLeft = Math.max(mXLabels.mLabelWidth, min);
+    //
+    // mOffsetBottom = Math.max(mOffsetBottom, legendBottom);
+    // mOffsetRight = Math.max(mOffsetRight, legendRight / 3f * 2f);
+    //
+    // mLegend.setOffsetTop(min);
+    // mLegend.setOffsetLeft(min);
+    //
+    // applyCalculatedOffsets();
+    //
+    // }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -692,6 +692,16 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      */
     public boolean isDrawXLabelsEnabled() {
         return mDrawXLabels;
+    }
+
+    @Override
+    protected float getRequiredBottomOffset() {
+        return mLegendLabelPaint.getTextSize() * 6.5f;
+    }
+    
+    @Override
+    protected float getRequiredBaseOffset() {
+        return mXLabels.mLabelWidth;
     }
 
     @Override
