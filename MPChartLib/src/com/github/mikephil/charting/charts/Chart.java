@@ -1036,31 +1036,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     protected Highlight[] mIndicesToHightlight = new Highlight[0];
 
     /**
-     * checks if the given index in the given DataSet is set for highlighting or
-     * not
-     * 
-     * @param xIndex
-     * @param dataSetIndex
-     * @return
-     */
-    public boolean needsHighlight(int xIndex, int dataSetIndex) {
-
-        // no highlight
-        if (!valuesToHighlight())
-            return false;
-
-        for (int i = 0; i < mIndicesToHightlight.length; i++)
-
-            // check if the xvalue for the given dataset needs highlight
-            if (mIndicesToHightlight[i].getXIndex() == xIndex
-                    && mIndicesToHightlight[i].getDataSetIndex() == dataSetIndex
-                    && xIndex <= mDeltaX)
-                return true;
-
-        return false;
-    }
-
-    /**
      * Returns true if there are values to highlight, false if there are no
      * values to highlight. Checks if the highlight array is null, has a length
      * of zero or if the first object is null.
