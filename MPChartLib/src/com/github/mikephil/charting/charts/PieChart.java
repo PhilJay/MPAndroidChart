@@ -176,15 +176,14 @@ public class PieChart extends PieRadarChartBase<PieData> {
     @Override
     protected void calculateOffsets() {
 
-        float legendRight = 0f, legendBottom = 0f;
+        float legendRight = 0f, legendBottom = 0f, legendTop = 0f;
 
         if (mDrawLegend) {
 
             if (mLegend == null)
                 return;
 
-            if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART
-                    || mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART_CENTER) {
+            if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART_CENTER) {
 
                 // this is the space between the legend and the chart
                 float spacing = Utils.convertDpToPixel(13f);
@@ -195,29 +194,54 @@ public class PieChart extends PieRadarChartBase<PieData> {
                 mLegendLabelPaint.setTextAlign(Align.LEFT);
                 // legendTop = mLegend.getFullHeight(mLegendLabelPaint);
 
+            } else if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
+
+                // this is the space between the legend and the chart
+                float spacing = Utils.convertDpToPixel(13f);
+
+                float legendWidth = mLegend.getMaximumEntryLength(mLegendLabelPaint)
+                        + mLegend.getFormSize() + mLegend.getFormToTextSpace() + spacing;
+
+                float legendHeight = mLegend.getFullHeight(mLegendLabelPaint) + mOffsetTop;
+
+                PointF bottomRight = new PointF(getWidth() - legendWidth, legendHeight);
+                PointF reference = getPosition(getCenter(), getRadius(), 315);
+
+                float distLegend = distanceToCenter(bottomRight.x, bottomRight.y);
+                float distReference = distanceToCenter(reference.x, reference.y);
+                float min = Utils.convertDpToPixel(5f);
+
+                if (distLegend < distReference) {
+
+                    float diff = distReference - distLegend;
+
+                    legendRight = min + diff;
+                    legendTop = min + diff;
+                }
+
+                mLegendLabelPaint.setTextAlign(Align.LEFT);
+
             } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
                     || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
                     || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
 
                 legendBottom = mLegendLabelPaint.getTextSize() * 4f;
             }
-            
+
             mLegend.setOffsetBottom(legendBottom);
             mLegend.setOffsetRight(legendRight);
         }
 
         float min = Utils.convertDpToPixel(11f);
 
-        mLegend.setOffsetTop(min);
         mLegend.setOffsetLeft(min);
 
         mOffsetLeft = min;
-        mOffsetTop = min;
+        mOffsetTop = Math.max(min, legendTop);
         mOffsetRight = Math.max(min, legendRight);
         mOffsetBottom = Math.max(min, legendBottom);
 
         applyCalculatedOffsets();
-
     }
 
     /**

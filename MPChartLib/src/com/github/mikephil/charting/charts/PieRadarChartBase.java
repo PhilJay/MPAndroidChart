@@ -191,6 +191,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
      * Returns the distance of a certain point on the chart to the center of the
      * chart.
      * 
+     * @param c the center
      * @param x
      * @param y
      * @return
@@ -198,7 +199,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     public float distanceToCenter(float x, float y) {
 
         PointF c = getCenterOffsets();
-
+        
         float dist = 0f;
 
         float xDist = 0f;

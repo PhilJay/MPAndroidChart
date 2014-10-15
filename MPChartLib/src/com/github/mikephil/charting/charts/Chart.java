@@ -947,6 +947,49 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                         + getHeight() + ", posY: " + posY + ", formSize: " + formSize);
 
                 break;
+            case PIECHART_CENTER:
+
+                posX = getWidth() / 2f
+                        - (mLegend.getMaximumEntryLength(mLegendLabelPaint) + mLegend.getXEntrySpace())
+                        / 2f;
+                posY = getHeight() / 2f - mLegend.getFullHeight(mLegendLabelPaint) / 2f;
+
+                for (int i = 0; i < labels.length; i++) {
+
+                    mLegend.drawForm(mDrawCanvas, posX + stack, posY, mLegendFormPaint, i);
+
+                    if (labels[i] != null) {
+
+                        if (!wasStacked) {
+
+                            float x = posX;
+
+                            if (mLegend.getColors()[i] != -2)
+                                x += formTextSpaceAndForm;
+
+                            posY += textDrop;
+
+                            mLegend.drawLabel(mDrawCanvas, x, posY,
+                                    mLegendLabelPaint, i);
+                        } else {
+
+                            posY += textSize * 1.2f + formSize;
+
+                            mLegend.drawLabel(mDrawCanvas, posX, posY,
+                                    mLegendLabelPaint, i);
+
+                        }
+
+                        // make a step down
+                        posY += mLegend.getYEntrySpace();
+                        stack = 0f;
+                    } else {
+                        stack += formSize + stackSpace;
+                        wasStacked = true;
+                    }
+                }
+
+                break;
         }
     }
 
@@ -2237,15 +2280,15 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        
+
         // create a new bitmap with the new dimensions
         mDrawBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_4444);
-        mDrawCanvas = new Canvas(mDrawBitmap);        
-        
+        mDrawCanvas = new Canvas(mDrawBitmap);
+
         // prepare content rect and matrices
         prepareContentRect();
         prepare();
-        
+
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
