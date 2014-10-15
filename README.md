@@ -418,6 +418,7 @@ In order to support animations below Honeycomb, this library makes use of the aw
 
 More documentation and example code coming soon.
 
+This chart library is intended to fill the gap between popular charting libraries like "GraphView" or "achartengine".
 
 
 License
