@@ -133,6 +133,9 @@ public class LineChart extends BarLineChartBase<LineData> {
             LineDataSet dataSet = dataSets.get(i);
             ArrayList<Entry> entries = dataSet.getYVals();
 
+            if (entries.size() < 1)
+                continue;
+
             mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
             mRenderPaint.setPathEffect(dataSet.getDashPathEffect());
 
@@ -240,7 +243,7 @@ public class LineChart extends BarLineChartBase<LineData> {
 
                     Path line = generateLinePath(entries);
                     transformPath(line);
-                    
+
                     mDrawCanvas.drawPath(line, mRenderPaint);
                 }
 
@@ -303,7 +306,7 @@ public class LineChart extends BarLineChartBase<LineData> {
 
         return filled;
     }
-    
+
     /**
      * Generates the path that is used for drawing a single line.
      * 
