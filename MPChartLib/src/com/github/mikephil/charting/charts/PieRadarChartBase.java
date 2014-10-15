@@ -146,7 +146,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
         mOffsetLeft = Math.max(min, getRequiredBaseOffset());
         mOffsetTop = Math.max(min, legendTop);
         mOffsetRight = Math.max(min, legendRight);
-        mOffsetBottom = Math.max(min, legendBottom);
+        mOffsetBottom = Math.max(min, Math.max(getRequiredBaseOffset(), legendBottom));
 
         applyCalculatedOffsets();
     }
@@ -372,6 +372,14 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
      * @return
      */
     protected abstract float getRequiredBottomOffset();
+    
+    /**
+     * Returns the base offset needed for the chart without calculating the
+     * legend size.
+     * 
+     * @return
+     */
+    protected abstract float getRequiredBaseOffset();
 
     /**
      * Returns the required right offset for the chart.
@@ -382,14 +390,6 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
         return mLegend.getMaximumEntryLength(mLegendLabelPaint)
                 + mLegend.getFormSize() + mLegend.getFormToTextSpace();
     }
-
-    /**
-     * Returns the base offset needed for the chart without calculating the
-     * legend size.
-     * 
-     * @return
-     */
-    protected abstract float getRequiredBaseOffset();
 
     /**
      * set a new (e.g. custom) charttouchlistener NOTE: make sure to

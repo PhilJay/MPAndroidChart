@@ -99,48 +99,6 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
     }
 
-     private void removeLastEntry() {
-    
-     PieData data = mChart.getDataOriginal();
-    
-     if (data != null) {
-    
-     PieDataSet set = data.getDataSet();
-    
-     if (set != null) {
-    
-     Entry e = set.getEntryForXIndex(set.getEntryCount() - 1);
-    
-     data.removeEntry(e, 0);
-     // or remove by index
-     // mData.removeEntry(xIndex, dataSetIndex);
-    
-     mChart.notifyDataSetChanged();
-     mChart.invalidate();
-     }
-     }
-     }
-    
-     private void addEntry() {
-    
-     PieData data = mChart.getDataOriginal();
-    
-     if(data != null) {
-    
-     PieDataSet set = data.getDataSet();
-     // set.addEntry(...);
-    
-     data.addEntry(new Entry((float) (Math.random() * 25) + 20f,
-     set.getEntryCount()), 0);
-    
-     // let the chart know it's data has changed
-     mChart.notifyDataSetChanged();
-    
-     // redraw the chart
-     mChart.invalidate();
-     }
-     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.pie, menu);
@@ -297,4 +255,46 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         // TODO Auto-generated method stub
 
     }
+    
+//  private void removeLastEntry() {
+//
+//      PieData data = mChart.getDataOriginal();
+//
+//      if (data != null) {
+//
+//          PieDataSet set = data.getDataSet();
+//
+//          if (set != null) {
+//
+//              Entry e = set.getEntryForXIndex(set.getEntryCount() - 1);
+//
+//              data.removeEntry(e, 0);
+//              // or remove by index
+//              // mData.removeEntry(xIndex, dataSetIndex);
+//
+//              mChart.notifyDataSetChanged();
+//              mChart.invalidate();
+//          }
+//      }
+//  }
+//
+//  private void addEntry() {
+//
+//      PieData data = mChart.getDataOriginal();
+//
+//      if (data != null) {
+//
+//          PieDataSet set = data.getDataSet();
+//          // set.addEntry(...);
+//
+//          data.addEntry(new Entry((float) (Math.random() * 25) + 20f,
+//                  set.getEntryCount()), 0);
+//
+//          // let the chart know it's data has changed
+//          mChart.notifyDataSetChanged();
+//
+//          // redraw the chart
+//          mChart.invalidate();
+//      }
+//  }
 }
