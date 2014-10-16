@@ -170,10 +170,6 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         return true;
     }
 
-    private String[] mParties = new String[] {
-            "Party A", "Party B", "Party C", "Party D", "Party E", "Party F", "Party G"
-    };
-
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
@@ -188,7 +184,6 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         float mult = range;
 
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
-        // ArrayList<Entry> yVals2 = new ArrayList<Entry>();
 
         // IMPORTANT: In a PieChart, no values (Entry) should have the same
         // xIndex (even if from different DataSets), since no values can be
@@ -197,11 +192,6 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
             yVals1.add(new Entry((float) (Math.random() * mult) + mult / 5, i));
         }
 
-        // for (int i = mSeekBarX.getProgress() / 2; i <
-        // mSeekBarX.getProgress(); i++) {
-        // yVals2.add(new Entry((float) (Math.random() * mult) + mult / 5, i));
-        // }
-
         ArrayList<String> xVals = new ArrayList<String>();
 
         for (int i = 0; i < count + 1; i++)
@@ -209,6 +199,8 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         PieDataSet set1 = new PieDataSet(yVals1, "Election Results");
         set1.setSliceSpace(3f);
+        
+        // add a lot of colors
 
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
@@ -217,6 +209,17 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         for (int c : ColorTemplate.JOYFUL_COLORS)
             colors.add(c);
+
+        for (int c : ColorTemplate.COLORFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.LIBERTY_COLORS)
+            colors.add(c);
+        
+        for (int c : ColorTemplate.PASTEL_COLORS)
+            colors.add(c);
+        
+        colors.add(ColorTemplate.getHoloBlue());
 
         set1.setColors(colors);
 
@@ -255,46 +258,46 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         // TODO Auto-generated method stub
 
     }
-    
-//  private void removeLastEntry() {
-//
-//      PieData data = mChart.getDataOriginal();
-//
-//      if (data != null) {
-//
-//          PieDataSet set = data.getDataSet();
-//
-//          if (set != null) {
-//
-//              Entry e = set.getEntryForXIndex(set.getEntryCount() - 1);
-//
-//              data.removeEntry(e, 0);
-//              // or remove by index
-//              // mData.removeEntry(xIndex, dataSetIndex);
-//
-//              mChart.notifyDataSetChanged();
-//              mChart.invalidate();
-//          }
-//      }
-//  }
-//
-//  private void addEntry() {
-//
-//      PieData data = mChart.getDataOriginal();
-//
-//      if (data != null) {
-//
-//          PieDataSet set = data.getDataSet();
-//          // set.addEntry(...);
-//
-//          data.addEntry(new Entry((float) (Math.random() * 25) + 20f,
-//                  set.getEntryCount()), 0);
-//
-//          // let the chart know it's data has changed
-//          mChart.notifyDataSetChanged();
-//
-//          // redraw the chart
-//          mChart.invalidate();
-//      }
-//  }
+
+    // private void removeLastEntry() {
+    //
+    // PieData data = mChart.getDataOriginal();
+    //
+    // if (data != null) {
+    //
+    // PieDataSet set = data.getDataSet();
+    //
+    // if (set != null) {
+    //
+    // Entry e = set.getEntryForXIndex(set.getEntryCount() - 1);
+    //
+    // data.removeEntry(e, 0);
+    // // or remove by index
+    // // mData.removeEntry(xIndex, dataSetIndex);
+    //
+    // mChart.notifyDataSetChanged();
+    // mChart.invalidate();
+    // }
+    // }
+    // }
+    //
+    // private void addEntry() {
+    //
+    // PieData data = mChart.getDataOriginal();
+    //
+    // if (data != null) {
+    //
+    // PieDataSet set = data.getDataSet();
+    // // set.addEntry(...);
+    //
+    // data.addEntry(new Entry((float) (Math.random() * 25) + 20f,
+    // set.getEntryCount()), 0);
+    //
+    // // let the chart know it's data has changed
+    // mChart.notifyDataSetChanged();
+    //
+    // // redraw the chart
+    // mChart.invalidate();
+    // }
+    // }
 }

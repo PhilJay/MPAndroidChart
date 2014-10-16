@@ -54,6 +54,15 @@ public class ColorTemplate {
     // };
 
     /**
+     * Returns the Android ICS holo blue light color.
+     * 
+     * @return
+     */
+    public static int getHoloBlue() {
+        return Color.rgb(51, 181, 229);
+    }
+
+    /**
      * turn an array of resource-colors (contains resource-id integers) into an
      * array list of actual color integers
      * 

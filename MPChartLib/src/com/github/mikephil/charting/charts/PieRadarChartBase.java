@@ -108,8 +108,10 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
                 float legendHeight = mLegend.getFullHeight(mLegendLabelPaint) + mOffsetTop;
 
+                PointF c = getCenter();
+
                 PointF bottomRight = new PointF(getWidth() - legendWidth, legendHeight);
-                PointF reference = getPosition(getCenter(), getRadius(), 315);
+                PointF reference = getPosition(c, getRadius(), 320);
 
                 float distLegend = distanceToCenter(bottomRight.x, bottomRight.y);
                 float distReference = distanceToCenter(reference.x, reference.y);
@@ -123,6 +125,10 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
                     legendTop = min + diff;
                 }
 
+                if (bottomRight.y >= c.y) {
+                    legendRight = legendWidth;
+                }
+
                 mLegendLabelPaint.setTextAlign(Align.LEFT);
 
             } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
@@ -131,7 +137,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
                 legendBottom = getRequiredBottomOffset();
             }
-            
+
             legendRight += getRequiredBaseOffset();
             legendTop += getRequiredBaseOffset();
 
@@ -372,7 +378,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
      * @return
      */
     protected abstract float getRequiredBottomOffset();
-    
+
     /**
      * Returns the base offset needed for the chart without calculating the
      * legend size.
