@@ -950,8 +950,10 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 break;
             case PIECHART_CENTER:
 
-                posX = getWidth() / 2f
-                        - (mLegend.getMaximumEntryLength(mLegendLabelPaint) + mLegend.getXEntrySpace())
+                posX = getWidth()
+                        / 2f
+                        - (mLegend.getMaximumEntryLength(mLegendLabelPaint) + mLegend
+                                .getXEntrySpace())
                         / 2f;
                 posY = getHeight() / 2f - mLegend.getFullHeight(mLegendLabelPaint) / 2f;
 
@@ -1063,6 +1065,26 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         // redraw the chart
         invalidate();
+    }
+
+    /**
+     * Highlights the value at the given x-index in the given DataSet. Provide
+     * -1 as the x-index to undo all highlighting.
+     * 
+     * @param xIndex
+     * @param dataSetIndex
+     */
+    public void highlightValue(int xIndex, int dataSetIndex) {
+
+        if (xIndex < 0 || dataSetIndex < 0 || xIndex >= mOriginalData.getXValCount()
+                || dataSetIndex >= mOriginalData.getDataSetCount()) {
+
+            highlightValues(null);
+        } else {
+            highlightValues(new Highlight[] {
+                    new Highlight(xIndex, dataSetIndex)
+            });
+        }
     }
 
     /**
@@ -1713,7 +1735,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public RectF getContentRect() {
         return mContentRect;
     }
-    
+
     /**
      * disables intercept touchevents
      */
