@@ -17,7 +17,6 @@ import com.github.mikephil.charting.data.BarLineScatterCandleRadarDataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.OnChartGestureListener;
 import com.github.mikephil.charting.utils.Highlight;
-import com.github.mikephil.charting.utils.MarkerView;
 
 /**
  * TouchListener for Bar-, Line-, Scatter- and CandleStickChart with handles all

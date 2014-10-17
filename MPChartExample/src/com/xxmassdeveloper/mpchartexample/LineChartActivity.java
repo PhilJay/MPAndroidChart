@@ -24,9 +24,8 @@ import com.github.mikephil.charting.interfaces.OnChartGestureListener;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendForm;
-import com.github.mikephil.charting.utils.LimitLine.LimitLabelPosition;
-import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.LimitLine;
+import com.github.mikephil.charting.utils.LimitLine.LimitLabelPosition;
 import com.github.mikephil.charting.utils.XLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -126,11 +125,11 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
         
         mChart.animateX(2500);
         
-        // // restrain the maximum scale-out factor
-        // mChart.setScaleMinima(3f, 3f);
-        //
-        // // center the view to a specific position inside the chart
-        // mChart.centerViewPort(10, 50);
+//         // restrain the maximum scale-out factor
+//         mChart.setScaleMinima(3f, 3f);
+//        
+//         // center the view to a specific position inside the chart
+//         mChart.centerViewPort(10, 50);
 
         // get the legend (only possible after setting data)
         Legend l = mChart.getLegend();

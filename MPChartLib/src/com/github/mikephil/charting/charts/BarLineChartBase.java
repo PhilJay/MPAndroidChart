@@ -929,18 +929,18 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         if (limitLines == null)
             return;
-        
-        float [] pts = new float[4];
+
+        float[] pts = new float[4];
 
         for (int i = 0; i < limitLines.size(); i++) {
 
             LimitLine l = limitLines.get(i);
-            
+
             pts[1] = l.getLimit();
             pts[3] = l.getLimit();
 
             transformPointArray(pts);
-            
+
             pts[0] = 0;
             pts[2] = getWidth();
 
@@ -1884,10 +1884,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * @return
      */
     public boolean isFullyZoomedOutY() {
-        if (mScaleY <= mMinScaleY)
-            return true;
-        else
+        if (mScaleY > mMinScaleY || mMinScaleY > 1f)
             return false;
+        else
+            return true;
     }
 
     /**
@@ -1897,10 +1897,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * @return
      */
     public boolean isFullyZoomedOutX() {
-        if (mScaleX <= mMinScaleX)
-            return true;
-        else
+        if (mScaleX > mMinScaleX || mMinScaleX > 1f)
             return false;
+        else
+            return true;
     }
 
     /**
