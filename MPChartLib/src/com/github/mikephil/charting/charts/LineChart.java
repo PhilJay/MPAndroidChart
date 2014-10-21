@@ -1,4 +1,3 @@
-
 package com.github.mikephil.charting.charts;
 
 import android.content.Context;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 
 /**
  * Chart that draws lines, surfaces, circles, ...
- * 
+ *
  * @author Philipp Jahoda
  */
 public class LineChart extends BarLineChartBase<LineData> {
@@ -100,7 +99,7 @@ public class LineChart extends BarLineChartBase<LineData> {
 
     /**
      * Class needed for saving the points when drawing cubic-lines.
-     * 
+     *
      * @author Philipp Jahoda
      */
     private class CPoint {
@@ -252,11 +251,11 @@ public class LineChart extends BarLineChartBase<LineData> {
                                 && isOffContentBottom(valuePoints[j + 1]))
                             continue;
 
+
                         if (j == 0) {
                             path.moveTo(valuePoints[j], valuePoints[j + 1]);
-                        } else {
-                            path.lineTo(valuePoints[j + 2], valuePoints[j + 3]);
                         }
+                        path.lineTo(valuePoints[j + 2], valuePoints[j + 3]);
                     }
                     mDrawCanvas.drawPath(path, mRenderPaint);
                     // Path line = generateLinePath(entries);
@@ -300,7 +299,7 @@ public class LineChart extends BarLineChartBase<LineData> {
 
     /**
      * Generates the path that is used for filled drawing.
-     * 
+     *
      * @param entries
      * @return
      */
@@ -425,7 +424,7 @@ public class LineChart extends BarLineChartBase<LineData> {
 
     /**
      * set the width of the highlightning lines, default 3f
-     * 
+     *
      * @param width
      */
     public void setHighlightLineWidth(float width) {
@@ -434,7 +433,7 @@ public class LineChart extends BarLineChartBase<LineData> {
 
     /**
      * returns the width of the highlightning line, default 3f
-     * 
+     *
      * @return
      */
     public float getHighlightLineWidth() {
