@@ -122,14 +122,14 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
 
         // add data
         setData(45, 100);
-        
+
         mChart.animateX(2500);
-        
-//         // restrain the maximum scale-out factor
-//         mChart.setScaleMinima(3f, 3f);
-//        
-//         // center the view to a specific position inside the chart
-//         mChart.centerViewPort(10, 50);
+
+        // // restrain the maximum scale-out factor
+        // mChart.setScaleMinima(3f, 3f);
+        //
+        // // center the view to a specific position inside the chart
+        // mChart.centerViewPort(10, 50);
 
         // get the legend (only possible after setting data)
         Legend l = mChart.getLegend();
@@ -386,10 +386,10 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
     public void onChartSingleTapped(MotionEvent me) {
         Log.i("SingleTap", "Chart single-tapped.");
     }
-    
+
     @Override
     public void onChartFling(MotionEvent me1, MotionEvent me2, float velocityX, float velocityY) {
-        Log.i("Fling", "Chart flinged.");
+        Log.i("Fling", "Chart flinged. VeloX: " + velocityX + ", VeloY: " + velocityY);
     }
 
     @Override
