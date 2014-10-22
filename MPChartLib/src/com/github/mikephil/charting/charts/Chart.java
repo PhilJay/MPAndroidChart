@@ -34,6 +34,7 @@ import com.github.mikephil.charting.interfaces.OnChartGestureListener;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend;
+import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.github.mikephil.charting.utils.MarkerView;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
@@ -58,6 +59,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         implements AnimatorUpdateListener {
 
     public static final String LOG_TAG = "MPChart";
+
+    /** flag that indicates if logging is enabled or not */
+    protected boolean mLogEnabled = false;
 
     /**
      * string that is drawn next to the values in the chart, indicating their
@@ -755,7 +759,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     protected void drawLegend() {
 
-        if (!mDrawLegend || mLegend == null)
+        if (!mDrawLegend || mLegend == null || mLegend.getPosition() == LegendPosition.NONE)
             return;
 
         String[] labels = mLegend.getLegendLabels();
@@ -992,6 +996,49 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                     }
                 }
 
+                break;
+            case RIGHT_OF_CHART_INSIDE:
+
+                posX = getWidth() - mLegend.getMaximumEntryLength(mLegendLabelPaint)
+                        - formTextSpaceAndForm;
+                posY = mLegend.getOffsetTop();
+
+                for (int i = 0; i < labels.length; i++) {
+
+                    mLegend.drawForm(mDrawCanvas, posX + stack, posY, mLegendFormPaint, i);
+
+                    if (labels[i] != null) {
+
+                        if (!wasStacked) {
+
+                            float x = posX;
+
+                            if (mLegend.getColors()[i] != -2)
+                                x += formTextSpaceAndForm;
+
+                            posY += textDrop;
+
+                            mLegend.drawLabel(mDrawCanvas, x, posY,
+                                    mLegendLabelPaint, i);
+                        } else {
+
+                            posY += textSize * 1.2f + formSize;
+
+                            mLegend.drawLabel(mDrawCanvas, posX, posY,
+                                    mLegendLabelPaint, i);
+
+                        }
+
+                        // make a step down
+                        posY += mLegend.getYEntrySpace();
+                        stack = 0f;
+                    } else {
+                        stack += formSize + stackSpace;
+                        wasStacked = true;
+                    }
+                }
+                break;
+            case NONE:
                 break;
         }
     }
@@ -1564,6 +1611,16 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             size = 7f;
 
         mInfoPaint.setTextSize(Utils.convertDpToPixel(size));
+    }
+
+    /**
+     * Set this to true to enable logcat outputs for the chart. Default:
+     * disabled
+     * 
+     * @param enabled
+     */
+    public void setLogEnabled(boolean enabled) {
+        mLogEnabled = enabled;
     }
 
     /**

@@ -8,7 +8,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.RadarData;
@@ -112,8 +111,6 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         if (mDataNotSet)
             return;
 
-        long starttime = System.currentTimeMillis();
-
         drawXLabels();
 
         drawWeb();
@@ -137,8 +134,6 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         drawMarkers();
 
         canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
-
-        Log.i(LOG_TAG, "RadarChart DrawTime: " + (System.currentTimeMillis() - starttime) + " ms");
     }
 
     /**

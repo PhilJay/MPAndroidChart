@@ -82,7 +82,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
         
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.RIGHT_OF_CHART);
+        l.setPosition(LegendPosition.RIGHT_OF_CHART_INSIDE);
         l.setTypeface(tf);
         
         XLabels xl  = mChart.getXLabels();
