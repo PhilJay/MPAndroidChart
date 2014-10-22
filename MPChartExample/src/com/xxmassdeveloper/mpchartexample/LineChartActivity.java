@@ -386,6 +386,11 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
     public void onChartSingleTapped(MotionEvent me) {
         Log.i("SingleTap", "Chart single-tapped.");
     }
+    
+    @Override
+    public void onChartFling(MotionEvent me1, MotionEvent me2, float velocityX, float velocityY) {
+        Log.i("Fling", "Chart flinged.");
+    }
 
     @Override
     public void onValueSelected(Entry e, int dataSetIndex) {

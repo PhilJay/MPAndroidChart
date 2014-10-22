@@ -445,4 +445,15 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
     public boolean onSingleTapConfirmed(MotionEvent e) {
         return super.onSingleTapConfirmed(e);
     }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+
+        OnChartGestureListener l = mChart.getOnChartGestureListener();
+
+        if (l != null)
+            l.onChartFling(e1, e2, velocityX, velocityY);
+
+        return super.onFling(e1, e2, velocityX, velocityY);
+    }
 }

@@ -30,4 +30,14 @@ public interface OnChartGestureListener {
      * @param me
      */
     public void onChartSingleTapped(MotionEvent me);
+
+    /**
+     * Callbacks then a fling gesture is made on the chart.
+     * 
+     * @param me1
+     * @param me2
+     * @param velocityX
+     * @param velocityY
+     */
+    public void onChartFling(MotionEvent me1, MotionEvent me2, float velocityX, float velocityY);
 }
