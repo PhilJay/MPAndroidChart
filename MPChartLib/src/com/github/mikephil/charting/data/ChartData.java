@@ -134,7 +134,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             return;
         }
 
-        float sum = 0f;
+        float sum = 1f;
 
         for (int i = 0; i < mXVals.size(); i++) {
             sum += mXVals.get(i).length();
