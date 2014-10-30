@@ -492,13 +492,16 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             // additional handling for space (default 15% space)
             // float space = Math.abs(mDeltaY / 100f * 15f);
             float space = Math
-                    .abs(Math.max(Math.abs(mYChartMax), Math.abs(mYChartMin)) / 100f * 15f);
-            if (Math.abs(mYChartMax) - Math.abs(mYChartMin) < 0.00001f) {
+                    .abs(Math.abs(Math.max(Math.abs(mYChartMax), Math.abs(mYChartMin))) / 100f * 20f);
+            
+            if (Math.abs(mYChartMax - mYChartMin) < 0.00001f) {
                 if (Math.abs(mYChartMax) < 10f)
                     space = 1f;
                 else
-                    space = Math.abs(mYChartMax / 100f * 15f);
+                    space = Math.abs(mYChartMax / 100f * 20f);
             }
+            
+            Log.i(LOG_TAG, "Space: " + space);
 
             if (mStartAtZero) {
 

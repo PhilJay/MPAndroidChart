@@ -7,9 +7,12 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
 
+import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.utils.FillFormatter;
 
 import java.util.ArrayList;
 
@@ -26,6 +29,8 @@ public class LineChart extends BarLineChartBase<LineData> {
     /** paint for the inner circle of the value indicators */
     protected Paint mCirclePaintInner;
 
+    private FillFormatter mFillFormatter;
+
     public LineChart(Context context) {
         super(context);
     }
@@ -41,6 +46,8 @@ public class LineChart extends BarLineChartBase<LineData> {
     @Override
     protected void init() {
         super.init();
+
+        mFillFormatter = new DefaultFillFormatter();
 
         mCirclePaintInner = new Paint(Paint.ANTI_ALIAS_FLAG);
         mCirclePaintInner.setStyle(Paint.Style.FILL);
@@ -263,9 +270,9 @@ public class LineChart extends BarLineChartBase<LineData> {
 
                     // mRenderPaint.setShader(dataSet.getShader());
 
-                    float fillMin = dataSet.getYMin() >= 0 ? mYChartMin : 0;
-
-                    Path filled = generateFilledPath(entries, fillMin);
+                    Path filled = generateFilledPath(entries,
+                            mFillFormatter.getFillLinePosition(dataSet, mOriginalData, mYChartMax,
+                                    mYChartMin));
 
                     transformPath(filled);
 
@@ -468,5 +475,46 @@ public class LineChart extends BarLineChartBase<LineData> {
         }
 
         return null;
+    }
+
+    /**
+     * Default formatter that calculates the position of the filled line.
+     * 
+     * @author Philipp Jahoda
+     */
+    private class DefaultFillFormatter implements FillFormatter {
+
+        @Override
+        public float getFillLinePosition(LineDataSet dataSet, LineData data,
+                float chartMaxY, float chartMinY) {
+
+            float fillMin = 0f;
+
+            if (dataSet.getYMax() > 0 && dataSet.getYMin() < 0) {
+                fillMin = 0f;
+            } else {
+
+                if (!mStartAtZero) {
+
+                    float max, min;
+
+                    if (data.getYMax() > 0)
+                        max = 0f;
+                    else
+                        max = chartMaxY;
+                    if (data.getYMin() < 0)
+                        min = 0f;
+                    else
+                        min = chartMinY;
+
+                    fillMin = dataSet.getYMin() >= 0 ? min : max;
+                } else {
+                    fillMin = 0f;
+                }
+
+            }
+
+            return fillMin;
+        }
     }
 }
