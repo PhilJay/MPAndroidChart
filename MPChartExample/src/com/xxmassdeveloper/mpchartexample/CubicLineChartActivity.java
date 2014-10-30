@@ -240,7 +240,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         tvX.setText("" + (mSeekBarX.getProgress() + 1));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
-        setData(mSeekBarX.getProgress() + 1, mSeekBarY.getProgress());
+        setData(mSeekBarX.getProgress() + 1, mSeekBarY.getProgress() - 100);
 
         // redraw
         mChart.invalidate();
