@@ -26,6 +26,8 @@ Gittip
   <img alt="Support via Gittip" src="https://rawgithub.com/twolfson/gittip-badge/0.2.0/dist/gittip.png"/>
 </a>
 
+[![Gratipay](http://img.shields.io/gratipay/PhilJay.svg)](https://gratipay.com/PhilJay)
+
 Demo
 -----
 
@@ -38,6 +40,7 @@ Questions & Issues
 
 If you are having questions or problems, feel free to contact me. Since I would very much like that other users of this library **can also benefit** from your question, I am asking you to contact me via e-mail **only as a last option**. Instead, you should:
 
+ - Make sure you are using the latest version of the library. Check the [**release-section**](https://github.com/PhilJay/MPAndroidChart/releases).
  - Search or open questions on [**stackoverflow**](https://stackoverflow.com/search?q=mpandroidchart) with the `mpandroidchart` tag
  - Search [**known issues**](https://github.com/PhilJay/MPAndroidChart/issues) for your problem (open and closed)
  - Create new issues (please **search known issues before**, do not create duplicate issues)
