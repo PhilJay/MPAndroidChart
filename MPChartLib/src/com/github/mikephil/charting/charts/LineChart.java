@@ -198,11 +198,12 @@ public class LineChart extends BarLineChartBase<LineData> {
                 // if filled is enabled, close the path
                 if (dataSet.isDrawFilledEnabled()) {
 
-                    float fillMin = mFillFormatter
-                            .getFillLinePosition(dataSet, mOriginalData, mYChartMax, mYChartMin);
+//                    float fillMin = mFillFormatter
+//                            .getFillLinePosition(dataSet, mOriginalData, mYChartMax, mYChartMin);
 
-                    spline.lineTo((entries.size() - 1) * mPhaseX, fillMin);
-                    spline.lineTo(0, fillMin);
+					CPoint lastPoint = points.get(points.size()-1);
+                    spline.lineTo(lastPoint.x, 0);
+                    spline.lineTo(0, 0);
                     spline.close();
 
                     mRenderPaint.setStyle(Paint.Style.FILL);
