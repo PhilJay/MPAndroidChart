@@ -7,8 +7,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
 
-import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -475,6 +473,20 @@ public class LineChart extends BarLineChartBase<LineData> {
         }
 
         return null;
+    }
+
+    /**
+     * Sets a custom FillFormatter to the chart that handles the position of the
+     * filled-line for each DataSet. Set this to null to use the default logic.
+     * 
+     * @param formatter
+     */
+    public void setFillFormatter(FillFormatter formatter) {
+
+        if (formatter == null)
+            formatter = new DefaultFillFormatter();
+
+        mFillFormatter = formatter;
     }
 
     /**
