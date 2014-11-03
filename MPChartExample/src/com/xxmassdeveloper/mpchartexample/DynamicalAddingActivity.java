@@ -222,20 +222,12 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
                 break;
             case R.id.actionRemoveEntry:
                 removeLastEntryNew();
-                Toast.makeText(this, "Entry removed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Entry shifted!", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.actionAddDataSet:
+            case R.id.actionAddSomeData:
                 //addDataSet();
                 addSomeElements(1000);
-                Toast.makeText(this, "DataSet added!", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.actionRemoveDataSet:
-                removeDataSet();
-                Toast.makeText(this, "DataSet removed!", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.actionAddEmptyLineData:
-                addEmptyData();
-                Toast.makeText(this, "Empty data added!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "1000 entries added!", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.actionClear:
                 mChart.clear();
