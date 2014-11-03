@@ -19,7 +19,11 @@ public abstract class BarLineScatterCandleRadarData<T extends BarLineScatterCand
     public BarLineScatterCandleRadarData(ArrayList<String> xVals) {
         super(xVals);
     }
-    
+
+    public BarLineScatterCandleRadarData() {
+        super();
+    }
+
     public BarLineScatterCandleRadarData(String[] xVals) {
         super(xVals);
     }

@@ -18,7 +18,9 @@ import android.view.MotionEvent;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarLineScatterCandleData;
 import com.github.mikephil.charting.data.BarLineScatterCandleRadarDataSet;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.interfaces.OnDrawListener;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
@@ -98,7 +100,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     protected boolean mStartAtZero = true;
 
     /** if true, data filtering is enabled */
-    protected boolean mFilterData = false;
+    protected boolean mFilterData = false;//false;
 
     /** paint object for the grid lines */
     protected Paint mGridPaint;
@@ -146,7 +148,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     protected XLabels mXLabels = new XLabels();
 
     // /** the approximator object used for data filtering */
-    // private Approximator mApproximator;
+    private Approximator mApproximator;
+
+    private Class<T> mClass;
 
     public BarLineChartBase(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -2045,33 +2049,40 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * 
      * @return
      */
+    //private T getFilteredData() {
     private T getFilteredData() {
-        //
-        // float deltaRatio = mDeltaY / mDeltaX;
-        // float scaleRatio = mScaleY / mScaleX;
-        //
+        /*mApproximator = new Approximator();
+        mApproximator.setType(Approximator.ApproximatorType.DOUGLAS_PEUCKER);
+
+        float deltaRatio = mDeltaY / mDeltaX;
+        float scaleRatio = mScaleY / mScaleX;
+
         // // set the determined ratios
-        // mApproximator.setRatios(deltaRatio, scaleRatio);
+        mApproximator.setRatios(deltaRatio, scaleRatio);
         //
         // // Log.i("Approximator", "DeltaRatio: " + deltaRatio +
         // ", ScaleRatio: "
         // // + scaleRatio);
         //
-        // ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
-        //
-        // for (int j = 0; j < mOriginalData.getDataSetCount(); j++) {
-        //
-        // DataSet old = mOriginalData.getDataSetByIndex(j);
-        //
-        // // do the filtering
-        // ArrayList<Entry> approximated = mApproximator.filter(old.getYVals());
-        //
-        // DataSet set = new DataSet(approximated, old.getLabel());
-        // dataSets.add(set);
-        // }
-        //
-        // ChartData d = new ChartData(mOriginalData.getXVals(), dataSets);
-        // return d;
+
+        T a;
+
+        ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
+
+        for (int j = 0; j < mOriginalData.getDataSetCount(); j++) {
+            DataSet old = mOriginalData.getDataSetByIndex(j);
+
+            ArrayList<Entry> approximated = mApproximator.filter(old.getYVals());
+
+            LineDataSet set = new LineDataSet(approximated, old.getLabel());
+            dataSets.add(set);
+
+        }*/
+
+
+
+        //T d = new T(mOriginalData.getXVals(), dataSets);
+        //return d;
 
         return null;
     }

@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.data;
 
+import android.text.format.Time;
 import android.util.Log;
 
 import com.github.mikephil.charting.utils.Highlight;
@@ -38,6 +39,16 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /** array that holds all DataSets the ChartData object represents */
     protected ArrayList<T> mDataSets;
+
+    /**
+     * Empty Constructor
+     *
+     */
+
+    public ChartData(){
+        mXVals = new ArrayList<String>();
+        init();
+    }
 
     /**
      * Constructor for only x-values. This constructor can be used for setting
@@ -530,6 +541,81 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         } else {
             Log.e("addEntry", "Cannot add Entry because dataSetIndex too high.");
         }
+    }
+
+    public void pushData(Entry e){
+        int temp = Integer.valueOf(mXVals.get(mXVals.size()-1).toString())+1;
+        pushData(e, "" + temp, 0);
+    }
+
+    /**
+     * Adds an Entry with a x-value at the end to the first DataSet.
+     *
+     * @param e
+     * @param xVal
+     * @param dataSetIndex
+     */
+
+    public void pushData(Entry e, String xVal){
+        pushData(e,xVal,0);
+    }
+
+    /**
+     * Adds an Entry with a x-value at the end to the DataSet at the specified index.
+     *
+     * @param e
+     * @param xVal
+     * @param dataSetIndex
+     */
+
+    public void pushData(Entry e, String xVal, int dataSetIndex){
+        addEntry(e,dataSetIndex);
+        mXVals.add(xVal);
+    }
+
+    /**
+     * Adds an Entry with current time as x-value at the end to the first DataSet.
+     *
+     * @param e
+     */
+
+    public void pushDataWithXTimeNow(Entry e){
+        pushDataWithXTimeNow(e,0);
+    }
+
+    /**
+     * Adds an Entry with current time as x-value at the end to the DataSet at the specified index.
+     *
+     * @param e
+     * @param dataSetIndex
+     */
+
+    public void pushDataWithXTimeNow(Entry e, int dataSetIndex){
+        Time time = new Time();
+        time.setToNow();
+        pushData(e, time.format("%k:%M:%S"), dataSetIndex);
+    }
+
+    /**
+     * Shift the first element at the first DataSet.
+     *
+     */
+
+    public void shiftData(){
+        shiftData(0);
+    }
+
+    /**
+     * Shift the first element from the DataSet at the specified index.
+     *
+     */
+
+    public void shiftData(int dataSetIndex){
+        T set = mDataSets.get(dataSetIndex);
+        removeEntry(0,dataSetIndex);
+        for(Entry i : set.mYVals)i.setXIndex(i.getXIndex()-1);
+        mXVals.remove(0);
+
     }
 
     /**

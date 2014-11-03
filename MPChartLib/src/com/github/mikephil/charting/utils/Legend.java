@@ -4,7 +4,9 @@ package com.github.mikephil.charting.utils;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -360,7 +362,6 @@ public class Legend {
      * @param index index in the labels-array
      */
     public void drawLabel(Canvas c, float x, float y, Paint p, int index) {
-
         c.drawText(mLegendLabels[index], x, y, p);
     }
 

@@ -13,6 +13,7 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -101,6 +102,10 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * it was modified or any filtering algorithms had been applied
      */
     protected T mOriginalData = null;
+
+    /** Data for filtering */
+
+    /*protected T mDataFiltered = null;*/
 
     /** the canvas that is used for drawing on the bitmap */
     protected Canvas mDrawCanvas;
@@ -191,6 +196,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /** the legend object containing all data associated with the legend */
     protected Legend mLegend;
+
+    /** Holds Rects of the Labels for Touchlistener */
+    protected ArrayList<Rect> mLabelRects = new ArrayList<Rect>();
 
     /** listener that is called when a value on the chart is selected */
     protected OnChartValueSelectedListener mSelectionListener;
@@ -790,6 +798,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         // contains the stacked legend size in pixels
         float stack = 0f;
 
+        //Clear the Labelrects
+        mLabelRects.clear();
+
         boolean wasStacked = false;
 
         switch (mLegend.getPosition()) {
@@ -810,6 +821,14 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                             posX += formTextSpaceAndForm;
 
                         mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
+
+                        String[] mLegendLabels = mLegend.getLegendLabels();
+                        Rect bounds = new Rect();
+                        mLegendLabelPaint.getTextBounds("S", 0, 1, bounds);
+                        Rect LabelRect = new Rect((int)posX,(int)(posY+bounds.height()), (int)(posX+mLegendLabelPaint.measureText(mLegendLabels[i])), (int)posY);
+
+                        mLabelRects.add(LabelRect);
+
                         posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i])
                                 + mLegend.getXEntrySpace();
                     } else {
@@ -1599,6 +1618,15 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
+     * Returns the Label Rects
+     * @return
+     */
+
+    public ArrayList<Rect> getLabelRects(){
+        return mLabelRects;
+    }
+
+    /**
      * sets the size of the description text in pixels, min 7f, max 14f
      * 
      * @param size
@@ -1798,7 +1826,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public void disableScroll() {
         ViewParent parent = getParent();
-        parent.requestDisallowInterceptTouchEvent(true);
+        try {
+            parent.requestDisallowInterceptTouchEvent(true);
+        } catch (NullPointerException e) {
+            Log.w(LOG_TAG, "NullPointerException of parent in disableScroll");
+        }
     }
 
     /**
@@ -1806,7 +1838,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public void enableScroll() {
         ViewParent parent = getParent();
-        parent.requestDisallowInterceptTouchEvent(false);
+        try {
+            parent.requestDisallowInterceptTouchEvent(false);
+        } catch (NullPointerException e) {
+            Log.w(LOG_TAG, "NullPointerException of parent in enableScroll.");
+        }
     }
 
     /** paint for the grid lines (only line and barchart) */

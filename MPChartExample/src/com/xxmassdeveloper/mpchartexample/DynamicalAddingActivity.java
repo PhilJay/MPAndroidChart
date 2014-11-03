@@ -35,7 +35,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
         mChart.setDrawGridBackground(false);
         mChart.setDescription("");
         
-        addEmptyData();
+        //addEmptyData();
 
         mChart.invalidate();
     }
@@ -63,6 +63,50 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 
             // redraw the chart
             mChart.invalidate();   
+        }
+    }
+
+    private void addEntryNew(){
+        //addEmptyData();
+        LineData data = mChart.getDataOriginal();
+        if(data != null) {
+
+            LineDataSet set = data.getDataSetByIndex(0);
+
+            if (set == null) {
+                set = createSet();
+                data.addDataSet(set);
+            }
+
+            //push data to dataset
+
+            if(set.getEntryCount() == 0) {
+                data.pushData(new Entry((float) (Math.random() * 50) + 50f, set.getEntryCount()), "" + (set.getEntryCount() + 1), 0);
+            }else{
+                data.pushData(new Entry((float) (Math.random() * 50) + 50f, set.getEntryCount()));
+            }
+
+            // let the chart know it's data has changed
+            mChart.notifyDataSetChanged();
+
+            // redraw the chart
+            mChart.invalidate();
+        }else{
+            LineData data1 = new LineData();
+            mChart.setData(data1);
+            addEntryNew();
+        }
+    }
+
+    private void removeLastEntryNew() {
+        LineData data = mChart.getDataOriginal();
+
+        if(data != null) {
+
+            data.shiftData();
+
+            mChart.notifyDataSetChanged();
+            mChart.invalidate();
         }
     }
 
@@ -146,6 +190,12 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
         mChart.invalidate();
     }
 
+    private void addSomeElements(int howMany){
+        for(int i = 0; i < howMany; i++){
+            addEntryNew();
+        }
+    }
+
     @Override
     public void onValueSelected(Entry e, int dataSetIndex) {
         Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
@@ -167,24 +217,17 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 
         switch (item.getItemId()) {
             case R.id.actionAddEntry:
-                addEntry();
+                addEntryNew();
                 Toast.makeText(this, "Entry added!", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.actionRemoveEntry:
-                removeLastEntry();
-                Toast.makeText(this, "Entry removed!", Toast.LENGTH_SHORT).show();
+                removeLastEntryNew();
+                Toast.makeText(this, "Entry shifted!", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.actionAddDataSet:
-                addDataSet();
-                Toast.makeText(this, "DataSet added!", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.actionRemoveDataSet:
-                removeDataSet();
-                Toast.makeText(this, "DataSet removed!", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.actionAddEmptyLineData:
-                addEmptyData();
-                Toast.makeText(this, "Empty data added!", Toast.LENGTH_SHORT).show();
+            case R.id.actionAddSomeData:
+                //addDataSet();
+                addSomeElements(1000);
+                Toast.makeText(this, "1000 entries added!", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.actionClear:
                 mChart.clear();

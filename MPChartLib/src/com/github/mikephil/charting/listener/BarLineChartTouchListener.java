@@ -4,6 +4,7 @@ package com.github.mikephil.charting.listener;
 import android.annotation.SuppressLint;
 import android.graphics.Matrix;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -74,6 +75,18 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+
+        Log.i("Touchpoint", "X: " + (int)event.getX() + " Y: " + (int)event.getY());
+        Rect touchpoint = new Rect((int)event.getX()-20,(int)event.getY()-20,(int)event.getX() + 20,(int)event.getY() + 20);
+        //Check if LegendLabel got clicked
+
+        for(Rect i : mChart.getLabelRects()){
+            Log.i("Label RectCompare", i.flattenToString());
+            Log.i("Label RectTouch", touchpoint.flattenToString());
+            if (Rect.intersects(touchpoint, i)){
+                Log.i("TouchLegendTest: ", "The Label was touched");
+            }
+        }
 
         if (mTouchMode == NONE) {
             mGestureDetector.onTouchEvent(event);

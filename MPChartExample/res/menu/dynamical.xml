@@ -8,22 +8,12 @@
     
     <item
         android:id="@+id/actionRemoveEntry"
-        android:title="Remove Entry">
-    </item>
-    
-        <item
-        android:id="@+id/actionAddDataSet"
-        android:title="Add DataSet">
+        android:title="Shift Entry">
     </item>
     
     <item
-        android:id="@+id/actionRemoveDataSet"
-        android:title="Remove DataSet">
-    </item>
-    
-    <item
-        android:id="@+id/actionAddEmptyLineData"
-        android:title="Add empty LineData">
+        android:id="@+id/actionAddSomeData"
+        android:title="Add some Data">
     </item>
     
     <item
