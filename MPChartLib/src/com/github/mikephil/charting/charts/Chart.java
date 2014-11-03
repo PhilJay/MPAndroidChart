@@ -13,6 +13,7 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -195,6 +196,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /** the legend object containing all data associated with the legend */
     protected Legend mLegend;
+
+    /** Holds Rects of the Labels for Touchlistener */
+    protected ArrayList<Rect> mLabelRects = new ArrayList<Rect>();
 
     /** listener that is called when a value on the chart is selected */
     protected OnChartValueSelectedListener mSelectionListener;
@@ -794,6 +798,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         // contains the stacked legend size in pixels
         float stack = 0f;
 
+        //Clear the Labelrects
+        mLabelRects.clear();
+
         boolean wasStacked = false;
 
         switch (mLegend.getPosition()) {
@@ -814,6 +821,14 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                             posX += formTextSpaceAndForm;
 
                         mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
+
+                        String[] mLegendLabels = mLegend.getLegendLabels();
+                        Rect bounds = new Rect();
+                        mLegendLabelPaint.getTextBounds("S", 0, 1, bounds);
+                        Rect LabelRect = new Rect((int)posX,(int)(posY+bounds.height()), (int)(posX+mLegendLabelPaint.measureText(mLegendLabels[i])), (int)posY);
+
+                        mLabelRects.add(LabelRect);
+
                         posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i])
                                 + mLegend.getXEntrySpace();
                     } else {
@@ -1600,6 +1615,15 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public PointF getCenterOffsets() {
         return new PointF(mContentRect.centerX(), mContentRect.centerY());
+    }
+
+    /**
+     * Returns the Label Rects
+     * @return
+     */
+
+    public ArrayList<Rect> getLabelRects(){
+        return mLabelRects;
     }
 
     /**
