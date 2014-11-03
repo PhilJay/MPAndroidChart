@@ -543,6 +543,11 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         }
     }
 
+    public void pushData(Entry e){
+        int temp = Integer.valueOf(mXVals.get(mXVals.size()-1).toString())+1;
+        pushData(e, "" + temp, 0);
+    }
+
     /**
      * Adds an Entry with a x-value at the end to the first DataSet.
      *
@@ -607,9 +612,8 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     public void shiftData(int dataSetIndex){
         T set = mDataSets.get(dataSetIndex);
-        Entry temp = set.mYVals.get(0);
-        removeEntry(temp,dataSetIndex);
-        //set.mYVals.remove(0);
+        removeEntry(0,dataSetIndex);
+        for(Entry i : set.mYVals)i.setXIndex(i.getXIndex()-1);
         mXVals.remove(0);
 
     }

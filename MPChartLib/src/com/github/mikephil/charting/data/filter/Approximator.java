@@ -121,7 +121,8 @@ public class Approximator {
             case NONE:
                 return points;
             default:
-                return points;
+                return reduceWithDouglasPeuker(points, tolerance);
+                //return points;
         }
     }
 

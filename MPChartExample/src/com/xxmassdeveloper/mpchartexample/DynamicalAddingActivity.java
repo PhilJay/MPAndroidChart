@@ -72,16 +72,19 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
         if(data != null) {
 
             LineDataSet set = data.getDataSetByIndex(0);
-            // set.addEntry(...);
 
             if (set == null) {
                 set = createSet();
                 data.addDataSet(set);
             }
 
-            data.pushData(new Entry((float) (Math.random() * 50) + 50f, set.getEntryCount()), ""+(set.getEntryCount()+1), 0);
+            //push data to dataset
 
-            //data.addEntry(new Entry((float) (Math.random() * 50) + 50f, set.getEntryCount()), 0);
+            if(set.getEntryCount() == 0) {
+                data.pushData(new Entry((float) (Math.random() * 50) + 50f, set.getEntryCount()), "" + (set.getEntryCount() + 1), 0);
+            }else{
+                data.pushData(new Entry((float) (Math.random() * 50) + 50f, set.getEntryCount()));
+            }
 
             // let the chart know it's data has changed
             mChart.notifyDataSetChanged();
@@ -187,6 +190,12 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
         mChart.invalidate();
     }
 
+    private void addSomeElements(int howMany){
+        for(int i = 0; i < howMany; i++){
+            addEntryNew();
+        }
+    }
+
     @Override
     public void onValueSelected(Entry e, int dataSetIndex) {
         Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
@@ -216,7 +225,8 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
                 Toast.makeText(this, "Entry removed!", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.actionAddDataSet:
-                addDataSet();
+                //addDataSet();
+                addSomeElements(1000);
                 Toast.makeText(this, "DataSet added!", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.actionRemoveDataSet:
