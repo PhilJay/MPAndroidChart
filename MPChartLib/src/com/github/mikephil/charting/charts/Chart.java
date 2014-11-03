@@ -104,7 +104,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /** Data for filtering */
 
-    protected T mDataFiltered = null;
+    /*protected T mDataFiltered = null;*/
 
     /** the canvas that is used for drawing on the bitmap */
     protected Canvas mDrawCanvas;

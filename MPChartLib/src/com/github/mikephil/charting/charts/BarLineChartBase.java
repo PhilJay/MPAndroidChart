@@ -2051,7 +2051,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     //private T getFilteredData() {
     private T getFilteredData() {
-        mApproximator = new Approximator();
+        /*mApproximator = new Approximator();
         mApproximator.setType(Approximator.ApproximatorType.DOUGLAS_PEUCKER);
 
         float deltaRatio = mDeltaY / mDeltaX;
@@ -2077,7 +2077,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             LineDataSet set = new LineDataSet(approximated, old.getLabel());
             dataSets.add(set);
 
-        }
+        }*/
 
 
 
