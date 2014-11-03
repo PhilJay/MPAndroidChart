@@ -95,6 +95,18 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
         }
     }
 
+    private void removeLastEntryNew() {
+        LineData data = mChart.getDataOriginal();
+
+        if(data != null) {
+
+            data.shiftData();
+
+            mChart.notifyDataSetChanged();
+            mChart.invalidate();
+        }
+    }
+
     private void removeLastEntry() {
 
         LineData data = mChart.getDataOriginal();
@@ -200,7 +212,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
                 Toast.makeText(this, "Entry added!", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.actionRemoveEntry:
-                removeLastEntry();
+                removeLastEntryNew();
                 Toast.makeText(this, "Entry removed!", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.actionAddDataSet:

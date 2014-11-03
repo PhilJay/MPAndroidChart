@@ -592,6 +592,29 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     }
 
     /**
+     * Shift the first element at the first DataSet.
+     *
+     */
+
+    public void shiftData(){
+        shiftData(0);
+    }
+
+    /**
+     * Shift the first element from the DataSet at the specified index.
+     *
+     */
+
+    public void shiftData(int dataSetIndex){
+        T set = mDataSets.get(dataSetIndex);
+        Entry temp = set.mYVals.get(0);
+        removeEntry(temp,dataSetIndex);
+        //set.mYVals.remove(0);
+        mXVals.remove(0);
+
+    }
+
+    /**
      * Removes the given Entry object from the DataSet at the specified index.
      * 
      * @param e
