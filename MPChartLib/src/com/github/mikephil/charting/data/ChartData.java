@@ -41,6 +41,16 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     protected ArrayList<T> mDataSets;
 
     /**
+     * Empty Constructor
+     *
+     */
+
+    public ChartData(){
+        mXVals = new ArrayList<String>();
+        init();
+    }
+
+    /**
      * Constructor for only x-values. This constructor can be used for setting
      * up an empty chart without data.
      * 
