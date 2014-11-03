@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.data;
 
+import android.text.format.Time;
 import android.util.Log;
 
 import com.github.mikephil.charting.utils.Highlight;
@@ -530,6 +531,54 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         } else {
             Log.e("addEntry", "Cannot add Entry because dataSetIndex too high.");
         }
+    }
+
+    /**
+     * Adds an Entry with a x-value at the end to the first DataSet.
+     *
+     * @param e
+     * @param xVal
+     * @param dataSetIndex
+     */
+
+    public void pushData(Entry e, String xVal){
+        pushData(e,xVal,0);
+    }
+
+    /**
+     * Adds an Entry with a x-value at the end to the DataSet at the specified index.
+     *
+     * @param e
+     * @param xVal
+     * @param dataSetIndex
+     */
+
+    public void pushData(Entry e, String xVal, int dataSetIndex){
+        addEntry(e,dataSetIndex);
+        mXVals.add(xVal);
+    }
+
+    /**
+     * Adds an Entry with current time as x-value at the end to the first DataSet.
+     *
+     * @param e
+     */
+
+    public void pushDataWithXTimeNow(Entry e){
+        pushDataWithXTimeNow(e,0);
+    }
+
+    /**
+     * Adds an Entry with current time as x-value at the end to the DataSet at the specified index.
+     *
+     * @param e
+     * @param dataSetIndex
+     */
+
+    public void pushDataWithXTimeNow(Entry e, int dataSetIndex){
+        Time time = new Time();
+        time.setToNow();
+        pushData(e, time.format("%k:%M:%S"), dataSetIndex);
     }
 
     /**
