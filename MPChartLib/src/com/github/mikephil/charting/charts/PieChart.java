@@ -89,12 +89,6 @@ public class PieChart extends PieRadarChartBase<PieData> {
     private Paint mHolePaint;
 
     /**
-     * {@link android.graphics.PorterDuffXfermode} used to display a transparent hole by applying
-     * {@link android.graphics.PorterDuff.Mode#DST_OUT} mode.
-     */
-    private PorterDuffXfermode mTransparentHoleMode;
-
-    /**
      * paint object for the text that can be displayed in the center of the
      * chart
      */
@@ -355,10 +349,6 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
             int color = mHolePaint.getColor();
 
-            // if transparent hole has been enable, Porter-Duff DEST_OUT mode will be set
-            // to "clear" the hole, otherwise, null will be passed to erase the previous mode.
-            mHolePaint.setXfermode(mTransparentHoleMode);
-
             // draw the hole-circle
             mDrawCanvas.drawCircle(c.x, c.y,
                     radius / 100 * mHoleRadiusPercent, mHolePaint);
@@ -579,9 +569,9 @@ public class PieChart extends PieRadarChartBase<PieData> {
      */
     public void setHoleTransparent(boolean enable) {
         if (enable) {
-            mTransparentHoleMode = new PorterDuffXfermode(PorterDuff.Mode.DST_OUT);
+            mHolePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
         } else {
-            mTransparentHoleMode = null;
+            mHolePaint.setXfermode(null);
         }
     }
 
@@ -591,7 +581,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
      * @return true if hole is transparent.
      */
     public boolean isHoleTransparent() {
-        return mTransparentHoleMode != null;
+        return mHolePaint.getXfermode() != null;
     }
 
     /**
