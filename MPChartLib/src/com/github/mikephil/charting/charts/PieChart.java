@@ -177,14 +177,14 @@ public class PieChart extends PieRadarChartBase<PieData> {
      */
     private void calcAngles() {
 
-        mDrawAngles = new float[mCurrentData.getYValCount()];
-        mAbsoluteAngles = new float[mCurrentData.getYValCount()];
+        mDrawAngles = new float[mData.getYValCount()];
+        mAbsoluteAngles = new float[mData.getYValCount()];
 
-        ArrayList<PieDataSet> dataSets = mCurrentData.getDataSets();
+        ArrayList<PieDataSet> dataSets = mData.getDataSets();
 
         int cnt = 0;
 
-        for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
+        for (int i = 0; i < mData.getDataSetCount(); i++) {
 
             PieDataSet set = dataSets.get(i);
             ArrayList<Entry> entries = set.getYVals();
@@ -231,7 +231,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
                 float shiftangle = (float) Math.toRadians(angle + sliceDegrees / 2f);
 
-                PieDataSet set = mCurrentData
+                PieDataSet set = mData
                         .getDataSetByIndex(mIndicesToHightlight[i]
                                 .getDataSetIndex());
 
@@ -261,11 +261,11 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
         float angle = mRotationAngle;
 
-        ArrayList<PieDataSet> dataSets = mCurrentData.getDataSets();
+        ArrayList<PieDataSet> dataSets = mData.getDataSets();
 
         int cnt = 0;
 
-        for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
+        for (int i = 0; i < mData.getDataSetCount(); i++) {
 
             PieDataSet dataSet = dataSets.get(i);
             ArrayList<Entry> entries = dataSet.getYVals();
@@ -413,11 +413,11 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
         r -= off; // offset to keep things inside the chart
 
-        ArrayList<PieDataSet> dataSets = mCurrentData.getDataSets();
+        ArrayList<PieDataSet> dataSets = mData.getDataSets();
 
         int cnt = 0;
 
-        for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
+        for (int i = 0; i < mData.getDataSetCount(); i++) {
 
             PieDataSet dataSet = dataSets.get(i);
             ArrayList<Entry> entries = dataSet.getYVals();
@@ -457,13 +457,13 @@ public class PieChart extends PieRadarChartBase<PieData> {
                     y -= lineHeight / 2;
 
                     mDrawCanvas.drawText(val, x, y, mValuePaint);
-                    if (j < mCurrentData.getXValCount())
-                        mDrawCanvas.drawText(mCurrentData.getXVals().get(j), x, y + lineHeight,
+                    if (j < mData.getXValCount())
+                        mDrawCanvas.drawText(mData.getXVals().get(j), x, y + lineHeight,
                                 mValuePaint);
 
                 } else if (mDrawXVals && !mDrawYValues) {
-                    if (j < mCurrentData.getXValCount())
-                        mDrawCanvas.drawText(mCurrentData.getXVals().get(j), x, y, mValuePaint);
+                    if (j < mData.getXValCount())
+                        mDrawCanvas.drawText(mData.getXVals().get(j), x, y, mValuePaint);
                 } else if (!mDrawXVals && mDrawYValues) {
 
                     mDrawCanvas.drawText(val, x, y, mValuePaint);
@@ -486,7 +486,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
      * @return
      */
     private float calcAngle(float value) {
-        return value / mCurrentData.getYValueSum() * 360f;
+        return value / mData.getYValueSum() * 360f;
     }
 
     @Override
@@ -511,7 +511,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
      */
     public int getDataSetIndexForIndex(int xIndex) {
 
-        ArrayList<? extends DataSet<? extends Entry>> dataSets = mCurrentData.getDataSets();
+        ArrayList<? extends DataSet<? extends Entry>> dataSets = mData.getDataSets();
 
         for (int i = 0; i < dataSets.size(); i++) {
             if (dataSets.get(i).getEntryForXIndex(xIndex) != null)

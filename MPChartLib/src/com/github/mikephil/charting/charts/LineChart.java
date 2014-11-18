@@ -54,7 +54,7 @@ public class LineChart extends BarLineChartBase<LineData> {
         mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mHighlightPaint.setStyle(Paint.Style.STROKE);
         mHighlightPaint.setStrokeWidth(2f);
-        mHighlightPaint.setColor(Color.rgb(255, 187, 115));
+        mHighlightPaint.setColor(Color.rgb(255, 187, 115));        
     }
 
     @Override
@@ -67,7 +67,7 @@ public class LineChart extends BarLineChartBase<LineData> {
         // mDeltaX = 1;
         // }
 
-        if (mDeltaX == 0 && mOriginalData.getYValCount() > 0)
+        if (mDeltaX == 0 && mData.getYValCount() > 0)
             mDeltaX = 1;
     }
 
@@ -76,7 +76,7 @@ public class LineChart extends BarLineChartBase<LineData> {
 
         for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
-            LineDataSet set = mOriginalData.getDataSetByIndex(mIndicesToHightlight[i]
+            LineDataSet set = mData.getDataSetByIndex(mIndicesToHightlight[i]
                     .getDataSetIndex());
 
             if (set == null)
@@ -97,7 +97,7 @@ public class LineChart extends BarLineChartBase<LineData> {
                     xIndex, mYChartMax, xIndex, mYChartMin, 0, y, mDeltaX, y
             };
 
-            transformPointArray(pts);
+            mTrans.pointValuesToPixel(pts);
             // draw the highlight lines
             mDrawCanvas.drawLines(pts, mHighlightPaint);
         }
@@ -131,9 +131,9 @@ public class LineChart extends BarLineChartBase<LineData> {
     @Override
     protected void drawData() {
 
-        ArrayList<LineDataSet> dataSets = mCurrentData.getDataSets();
+        ArrayList<LineDataSet> dataSets = mData.getDataSets();
 
-        for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
+        for (int i = 0; i < mData.getDataSetCount(); i++) {
 
             LineDataSet dataSet = dataSets.get(i);
             ArrayList<Entry> entries = dataSet.getYVals();
@@ -199,7 +199,7 @@ public class LineChart extends BarLineChartBase<LineData> {
                 if (dataSet.isDrawFilledEnabled()) {
 
                     float fillMin = mFillFormatter
-                            .getFillLinePosition(dataSet, mOriginalData, mYChartMax, mYChartMin);
+                            .getFillLinePosition(dataSet, mData, mYChartMax, mYChartMin);
 
                     spline.lineTo((entries.size() - 1) * mPhaseX, fillMin);
                     spline.lineTo(0, fillMin);
@@ -210,7 +210,7 @@ public class LineChart extends BarLineChartBase<LineData> {
                     mRenderPaint.setStyle(Paint.Style.STROKE);
                 }
 
-                transformPath(spline);
+                mTrans.pathValueToPixel(spline);
 
                 mDrawCanvas.drawPath(spline, mRenderPaint);
 
@@ -222,7 +222,7 @@ public class LineChart extends BarLineChartBase<LineData> {
                 // more than 1 color
                 if (dataSet.getColors() == null || dataSet.getColors().size() > 1) {
 
-                    float[] valuePoints = generateTransformedValuesLineScatter(entries);
+                    float[] valuePoints = mTrans.generateTransformedValuesLineScatter(entries, mPhaseY);
 
                     for (int j = 0; j < (valuePoints.length - 2) * mPhaseX; j += 2) {
 
@@ -248,7 +248,7 @@ public class LineChart extends BarLineChartBase<LineData> {
                     mRenderPaint.setColor(dataSet.getColor());
 
                     Path line = generateLinePath(entries);
-                    transformPath(line);
+                    mTrans.pathValueToPixel(line);
 
                     mDrawCanvas.drawPath(line, mRenderPaint);
                 }
@@ -270,10 +270,10 @@ public class LineChart extends BarLineChartBase<LineData> {
                     // mRenderPaint.setShader(dataSet.getShader());
 
                     Path filled = generateFilledPath(entries,
-                            mFillFormatter.getFillLinePosition(dataSet, mOriginalData, mYChartMax,
+                            mFillFormatter.getFillLinePosition(dataSet, mData, mYChartMax,
                                     mYChartMin));
 
-                    transformPath(filled);
+                    mTrans.pathValueToPixel(filled);
 
                     mDrawCanvas.drawPath(filled, mRenderPaint);
 
@@ -286,7 +286,7 @@ public class LineChart extends BarLineChartBase<LineData> {
             mRenderPaint.setPathEffect(null);
         }
     }
-
+    
     /**
      * Generates the path that is used for filled drawing.
      * 
@@ -338,11 +338,11 @@ public class LineChart extends BarLineChartBase<LineData> {
     protected void drawValues() {
 
         // if values are drawn
-        if (mDrawYValues && mCurrentData.getYValCount() < mMaxVisibleCount * mScaleX) {
+        if (mDrawYValues && mData.getYValCount() < mMaxVisibleCount * mTrans.getScaleX()) {
 
-            ArrayList<LineDataSet> dataSets = mCurrentData.getDataSets();
+            ArrayList<LineDataSet> dataSets = mData.getDataSets();
 
-            for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
+            for (int i = 0; i < mData.getDataSetCount(); i++) {
 
                 LineDataSet dataSet = dataSets.get(i);
 
@@ -354,7 +354,7 @@ public class LineChart extends BarLineChartBase<LineData> {
 
                 ArrayList<Entry> entries = dataSet.getYVals();
 
-                float[] positions = generateTransformedValuesLineScatter(entries);
+                float[] positions = mTrans.generateTransformedValuesLineScatter(entries, mPhaseY);
 
                 for (int j = 0; j < positions.length * mPhaseX; j += 2) {
 
@@ -392,9 +392,9 @@ public class LineChart extends BarLineChartBase<LineData> {
 
         mRenderPaint.setStyle(Paint.Style.FILL);
 
-        ArrayList<LineDataSet> dataSets = mCurrentData.getDataSets();
+        ArrayList<LineDataSet> dataSets = mData.getDataSets();
 
-        for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
+        for (int i = 0; i < mData.getDataSetCount(); i++) {
 
             LineDataSet dataSet = dataSets.get(i);
 
@@ -403,7 +403,7 @@ public class LineChart extends BarLineChartBase<LineData> {
 
                 ArrayList<Entry> entries = dataSet.getYVals();
 
-                float[] positions = generateTransformedValuesLineScatter(entries);
+                float[] positions = mTrans.generateTransformedValuesLineScatter(entries, mPhaseY);
 
                 for (int j = 0; j < positions.length * mPhaseX; j += 2) {
 

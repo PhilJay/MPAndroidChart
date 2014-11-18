@@ -114,7 +114,7 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
                 break;
             }
             case R.id.actionToggleFilled: {
-                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getDataCurrent()
+                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getData()
                         .getDataSets();
 
                 for (LineDataSet set : sets) {
@@ -127,7 +127,7 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
                 break;
             }
             case R.id.actionToggleCircles: {
-                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getDataCurrent()
+                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getData()
                         .getDataSets();
 
                 for (LineDataSet set : sets) {

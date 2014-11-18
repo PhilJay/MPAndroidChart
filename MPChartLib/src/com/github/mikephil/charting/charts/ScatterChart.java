@@ -42,7 +42,7 @@ public class ScatterChart extends BarLineChartBase<ScatterData> {
             super.prepareContentRect();
         } else {
             
-            float offset = mOriginalData.getGreatestShapeSize() / 2f;
+            float offset = mData.getGreatestShapeSize() / 2f;
             
             mContentRect.set(mOffsetLeft - offset,
                     mOffsetTop,
@@ -55,23 +55,23 @@ public class ScatterChart extends BarLineChartBase<ScatterData> {
     protected void calcMinMax(boolean fixedValues) {
         super.calcMinMax(fixedValues);
 
-        if (mDeltaX == 0 && mOriginalData.getYValCount() > 0)
+        if (mDeltaX == 0 && mData.getYValCount() > 0)
             mDeltaX = 1;
     }
 
     @Override
     protected void drawData() {
 
-        ArrayList<ScatterDataSet> dataSets = mCurrentData.getDataSets();
+        ArrayList<ScatterDataSet> dataSets = mData.getDataSets();
 
-        for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
+        for (int i = 0; i < mData.getDataSetCount(); i++) {
 
             ScatterDataSet dataSet = dataSets.get(i);
             ArrayList<Entry> entries = dataSet.getYVals();
 
             float shapeHalf = dataSet.getScatterShapeSize() / 2f;
 
-            float[] valuePoints = generateTransformedValuesLineScatter(entries);
+            float[] valuePoints = mTrans.generateTransformedValuesLineScatter(entries, mPhaseY);
 
             ScatterShape shape = dataSet.getScatterShape();
 
@@ -130,7 +130,7 @@ public class ScatterChart extends BarLineChartBase<ScatterData> {
                         return;
 
                     // transform the provided custom path
-                    transformPath(customShape);
+                    mTrans.pathValueToPixel(customShape);
                     mDrawCanvas.drawPath(customShape, mRenderPaint);
                 }
             }
@@ -140,17 +140,17 @@ public class ScatterChart extends BarLineChartBase<ScatterData> {
     @Override
     protected void drawValues() {
         // if values are drawn
-        if (mDrawYValues && mCurrentData.getYValCount() < mMaxVisibleCount * mScaleX) {
+        if (mDrawYValues && mData.getYValCount() < mMaxVisibleCount * mTrans.getScaleX()) {
 
-            ArrayList<ScatterDataSet> dataSets = mCurrentData
+            ArrayList<ScatterDataSet> dataSets = mData
                     .getDataSets();
 
-            for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
+            for (int i = 0; i < mData.getDataSetCount(); i++) {
 
                 ScatterDataSet dataSet = dataSets.get(i);
                 ArrayList<Entry> entries = dataSet.getYVals();
 
-                float[] positions = generateTransformedValuesLineScatter(entries);
+                float[] positions = mTrans.generateTransformedValuesLineScatter(entries, mPhaseY);
 
                 float shapeSize = dataSet.getScatterShapeSize();
 
@@ -186,7 +186,7 @@ public class ScatterChart extends BarLineChartBase<ScatterData> {
 
         for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
-            ScatterDataSet set = mCurrentData.getDataSetByIndex(mIndicesToHightlight[i]
+            ScatterDataSet set = mData.getDataSetByIndex(mIndicesToHightlight[i]
                     .getDataSetIndex());
             
             if (set == null)
@@ -207,7 +207,7 @@ public class ScatterChart extends BarLineChartBase<ScatterData> {
                     xIndex, mYChartMax, xIndex, mYChartMin, 0, y, mDeltaX, y
             };
 
-            transformPointArray(pts);
+            mTrans.pointValuesToPixel(pts);
             // draw the highlight lines
             mDrawCanvas.drawLines(pts, mHighlightPaint);
         }

@@ -154,7 +154,7 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
             }
             case R.id.actionToggleFilled: {
 
-                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getDataCurrent()
+                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getData()
                         .getDataSets();
 
                 for (LineDataSet set : sets) {
@@ -167,7 +167,7 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
                 break;
             }
             case R.id.actionToggleCircles: {
-                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getDataCurrent()
+                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getData()
                         .getDataSets();
 
                 for (LineDataSet set : sets) {

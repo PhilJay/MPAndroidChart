@@ -117,7 +117,7 @@ public class RadarChartActivitry extends DemoBase {
             }
             case R.id.actionToggleFilled: {
 
-                ArrayList<RadarDataSet> sets = (ArrayList<RadarDataSet>) mChart.getDataCurrent()
+                ArrayList<RadarDataSet> sets = (ArrayList<RadarDataSet>) mChart.getData()
                         .getDataSets();
 
                 for (RadarDataSet set : sets) {

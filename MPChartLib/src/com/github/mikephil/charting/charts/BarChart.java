@@ -96,26 +96,26 @@ public class BarChart extends BarLineChartBase<BarData> {
         mDeltaX++;
 
         // extend xDelta to make space for multiple datasets (if ther are one)
-        mDeltaX *= mOriginalData.getDataSetCount();
+        mDeltaX *= mData.getDataSetCount();
 
         int maxEntry = 0;
 
-        for (int i = 0; i < mOriginalData.getDataSetCount(); i++) {
+        for (int i = 0; i < mData.getDataSetCount(); i++) {
 
-            DataSet<? extends Entry> set = mOriginalData.getDataSetByIndex(i);
+            DataSet<? extends Entry> set = mData.getDataSetByIndex(i);
 
             if (maxEntry < set.getEntryCount())
                 maxEntry = set.getEntryCount();
         }
 
-        float groupSpace = mOriginalData.getGroupSpace();
+        float groupSpace = mData.getGroupSpace();
         mDeltaX += maxEntry * groupSpace;
     }
 
     @Override
     protected void drawHighlights() {
 
-        int setCount = mOriginalData.getDataSetCount();
+        int setCount = mData.getDataSetCount();
 
         for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
@@ -123,7 +123,7 @@ public class BarChart extends BarLineChartBase<BarData> {
             int index = h.getXIndex();
 
             int dataSetIndex = h.getDataSetIndex();
-            BarDataSet set = (BarDataSet) mCurrentData.getDataSetByIndex(dataSetIndex);
+            BarDataSet set = (BarDataSet) mData.getDataSetByIndex(dataSetIndex);
             
             if (set == null)
                 continue;
@@ -132,8 +132,8 @@ public class BarChart extends BarLineChartBase<BarData> {
             mHighlightPaint.setAlpha(set.getHighLightAlpha());
 
             // check outofbounds
-            if (index < mCurrentData.getYValCount() && index >= 0
-                    && index < (mDeltaX * mPhaseX) / mOriginalData.getDataSetCount()) {
+            if (index < mData.getYValCount() && index >= 0
+                    && index < (mDeltaX * mPhaseX) / mData.getDataSetCount()) {
 
                 Entry e = getEntryByDataSetIndex(index, dataSetIndex);
 
@@ -141,8 +141,8 @@ public class BarChart extends BarLineChartBase<BarData> {
                     continue;
 
                 // calculate the correct x-position
-                float x = index * setCount + dataSetIndex + mOriginalData.getGroupSpace() / 2f
-                        + mOriginalData.getGroupSpace() * index;
+                float x = index * setCount + dataSetIndex + mData.getGroupSpace() / 2f
+                        + mData.getGroupSpace() * index;
                 float y = e.getVal();
 
                 prepareBar(x, y, set.getBarSpace());
@@ -161,7 +161,7 @@ public class BarChart extends BarLineChartBase<BarData> {
                     arrow.lineTo(x + 0.2f, y + offsetY);
                     arrow.lineTo(x + 0.8f, y + offsetY);
 
-                    transformPath(arrow);
+                    mTrans.pathValueToPixel(arrow);
                     mDrawCanvas.drawPath(arrow, mHighlightPaint);
                 }
             }
@@ -171,11 +171,11 @@ public class BarChart extends BarLineChartBase<BarData> {
     @Override
     protected void drawData() {
 
-        ArrayList<BarDataSet> dataSets = mOriginalData.getDataSets();
-        int setCount = mOriginalData.getDataSetCount();
+        ArrayList<BarDataSet> dataSets = mData.getDataSets();
+        int setCount = mData.getDataSetCount();
 
         // the space between bar-groups
-        float space = mOriginalData.getGroupSpace();
+        float space = mData.getGroupSpace();
 
         // 2D drawing
         for (int i = 0; i < setCount; i++) {
@@ -289,7 +289,7 @@ public class BarChart extends BarLineChartBase<BarData> {
 
         mBarRect.set(left, top, right, bottom);
 
-        transformRectWithPhase(mBarRect);
+        mTrans.rectValueToPixel(mBarRect, mPhaseY);
 
         // if a shadow is drawn, prepare it too
         if (mDrawBarShadow) {
@@ -305,27 +305,27 @@ public class BarChart extends BarLineChartBase<BarData> {
                 0f, 0f
         };
 
-        int step = mCurrentData.getDataSetCount();
+        int step = mData.getDataSetCount();
 
-        for (int i = 0; i < mCurrentData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
+        for (int i = 0; i < mData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
 
-            position[0] = i * step + i * mOriginalData.getGroupSpace()
-                    + mOriginalData.getGroupSpace() / 2f;
+            position[0] = i * step + i * mData.getGroupSpace()
+                    + mData.getGroupSpace() / 2f;
 
             // center the text
             if (mXLabels.isCenterXLabelsEnabled())
                 position[0] += (step / 2f);
 
-            transformPointArray(position);
+            mTrans.pointValuesToPixel(position);
 
             if (position[0] >= mOffsetLeft && position[0] <= getWidth() - mOffsetRight) {
 
-                String label = mCurrentData.getXVals().get(i);
+                String label = mData.getXVals().get(i);
 
                 if (mXLabels.isAvoidFirstLastClippingEnabled()) {
 
                     // avoid clipping of the last
-                    if (i == mCurrentData.getXValCount() - 1) {
+                    if (i == mData.getXValCount() - 1) {
                         float width = Utils.calcTextWidth(mXLabelPaint, label);
 
                         if (width > getOffsetRight() * 2 && position[0] + width > getWidth())
@@ -349,7 +349,7 @@ public class BarChart extends BarLineChartBase<BarData> {
     @Override
     protected void drawVerticalGrid() {
 
-        if (!mDrawVerticalGrid || mCurrentData == null)
+        if (!mDrawVerticalGrid || mData == null)
             return;
 
         float[] position = new float[] {
@@ -357,13 +357,13 @@ public class BarChart extends BarLineChartBase<BarData> {
         };
 
         // take into consideration that multiple DataSets increase mDeltaX
-        int step = mCurrentData.getDataSetCount();
+        int step = mData.getDataSetCount();
 
-        for (int i = 0; i < mCurrentData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
+        for (int i = 0; i < mData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
 
-            position[0] = i * step + i * mOriginalData.getGroupSpace();
+            position[0] = i * step + i * mData.getGroupSpace();
 
-            transformPointArray(position);
+            mTrans.pointValuesToPixel(position);
 
             if (position[0] >= mOffsetLeft && position[0] <= getWidth()) {
 
@@ -377,9 +377,9 @@ public class BarChart extends BarLineChartBase<BarData> {
     protected void drawValues() {
 
         // if values are drawn
-        if (mDrawYValues && mCurrentData.getYValCount() < mMaxVisibleCount * mScaleX) {
+        if (mDrawYValues && mData.getYValCount() < mMaxVisibleCount * mTrans.getScaleX()) {
 
-            ArrayList<BarDataSet> dataSets = ((BarData) mCurrentData).getDataSets();
+            ArrayList<BarDataSet> dataSets = ((BarData) mData).getDataSets();
 
             float posOffset = 0f; float negOffset = 0f;
 
@@ -393,12 +393,12 @@ public class BarChart extends BarLineChartBase<BarData> {
                 negOffset = -Utils.convertDpToPixel(5);
             }
 
-            for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
+            for (int i = 0; i < mData.getDataSetCount(); i++) {
 
                 BarDataSet dataSet = dataSets.get(i);
                 ArrayList<BarEntry> entries = dataSet.getYVals();
 
-                float[] valuePoints = generateTransformedValuesBarChart(entries, i);
+                float[] valuePoints = mTrans.generateTransformedValuesBarChart(entries, i, mData, mPhaseY);
 
                 // if only single values are drawn (sum)
                 if (!mDrawValuesForWholeStack) {
@@ -455,7 +455,7 @@ public class BarChart extends BarLineChartBase<BarData> {
                                 cnt++;
                             }
 
-                            transformPointArray(transformed);
+                            mTrans.pointValuesToPixel(transformed);
 
                             for (int k = 0; k < transformed.length; k += 2) {
 
@@ -502,7 +502,7 @@ public class BarChart extends BarLineChartBase<BarData> {
     @Override
     public Highlight getHighlightByTouchPoint(float x, float y) {
 
-        if (mDataNotSet || mCurrentData == null) {
+        if (mDataNotSet || mData == null) {
             Log.e(LOG_TAG, "Can't select by touch. No data set.");
             return null;
         }
@@ -512,17 +512,7 @@ public class BarChart extends BarLineChartBase<BarData> {
         pts[0] = x;
         pts[1] = y;
 
-        Matrix tmp = new Matrix();
-
-        // invert all matrixes to convert back to the original value
-        mMatrixOffset.invert(tmp);
-        tmp.mapPoints(pts);
-
-        mMatrixTouch.invert(tmp);
-        tmp.mapPoints(pts);
-
-        mMatrixValueToPx.invert(tmp);
-        tmp.mapPoints(pts);
+        mTrans.pixelsToValue(pts);
 
         // for barchart, we only need x-val
         double xTouchVal = pts[0];
@@ -536,13 +526,13 @@ public class BarChart extends BarLineChartBase<BarData> {
         if (base >= mDeltaX)
             base = mDeltaX - 1;
 
-        int setCount = mOriginalData.getDataSetCount();
-        int valCount = setCount * mOriginalData.getXValCount();
+        int setCount = mData.getDataSetCount();
+        int valCount = setCount * mData.getXValCount();
 
         // calculate the amount of bar-space between index 0 and touch position
         float space = (float) (((float) valCount / (float) setCount) / (mDeltaX / base));
 
-        float reduction = (float) space * mOriginalData.getGroupSpace();
+        float reduction = (float) space * mData.getGroupSpace();
 
         int xIndex = (int) ((base - reduction) / setCount);
 
@@ -564,7 +554,7 @@ public class BarChart extends BarLineChartBase<BarData> {
      */
     public RectF getBarBounds(BarEntry e) {
 
-        BarDataSet set = mOriginalData.getDataSetForEntry(e);
+        BarDataSet set = mData.getDataSetForEntry(e);
 
         if (set == null)
             return null;
@@ -581,7 +571,7 @@ public class BarChart extends BarLineChartBase<BarData> {
 
         RectF bounds = new RectF(left, top, right, bottom);
 
-        transformRect(bounds);
+        mTrans.rectValueToPixel(bounds);
 
         return bounds;
     }

@@ -45,35 +45,11 @@ import java.util.ArrayList;
 public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? extends BarLineScatterCandleRadarDataSet<? extends Entry>>>
         extends Chart<T> {
 
-    /** if set to true, the y-axis is inverted and low values start at the top */
-    private boolean mInvertYAxis = false;
-
     /** the maximum number of entried to which values will be drawn */
     protected int mMaxVisibleCount = 100;
 
-    /** minimum scale value on the y-axis */
-    private float mMinScaleY = 1f;
-
-    /** minimum scale value on the x-axis */
-    private float mMinScaleX = 1f;
-
-    /** contains the current scale factor of the x-axis */
-    protected float mScaleX = 1f;
-
-    /** contains the current scale factor of the y-axis */
-    protected float mScaleY = 1f;
-
-    /** holds the maximum scale factor of the y-axis, default 12f */
-    protected float mMaxScaleY = 12f;
-
     /** the width of the grid lines */
     protected float mGridWidth = 1f;
-
-    /** offset that allows the chart to be dragged over its bounds on the x-axis */
-    private float mTransOffsetX = 0f;
-
-    /** offset that allows the chart to be dragged over its bounds on the x-axis */
-    private float mTransOffsetY = 0f;
 
     /**
      * flag that indicates if pinch-zoom is enabled. if true, both x and y axis
@@ -164,7 +140,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     protected void init() {
         super.init();
 
-        mListener = new BarLineChartTouchListener(this, mMatrixTouch);
+        mListener = new BarLineChartTouchListener(this, mTrans.getTouchMatrix());
 
         mGridPaint = new Paint();
         mGridPaint.setColor(Color.GRAY);
@@ -195,13 +171,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         // if data filtering is enabled
         if (mFilterData) {
-            mCurrentData = getFilteredData();
+            mData = getFilteredData();
 
             Log.i(LOG_TAG, "FilterTime: " + (System.currentTimeMillis() -
                     starttime) + " ms");
             starttime = System.currentTimeMillis();
         } else {
-            mCurrentData = getDataOriginal();
+            mData = getData();
             // Log.i(LOG_TAG, "Filtering disabled.");
         }
 
@@ -282,50 +258,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     private void prepareMatrix() {
 
-        prepareMatrixValuePx();
+        mTrans.prepareMatrixValuePx(this);
 
-        prepareMatrixOffset();
+        mTrans.prepareMatrixOffset(this);
 
         if (mLogEnabled)
             Log.i(LOG_TAG, "Matrices prepared.");
-    }
-
-    /**
-     * Prepares the matrix that transforms values to pixels.
-     */
-    private void prepareMatrixValuePx() {
-
-        float scaleX = (float) ((getWidth() - mOffsetRight - mOffsetLeft) / mDeltaX);
-        float scaleY = (float) ((getHeight() - mOffsetTop - mOffsetBottom) / mDeltaY);
-
-        // setup all matrices
-        mMatrixValueToPx.reset();
-        mMatrixValueToPx.postTranslate(0, -mYChartMin);
-        mMatrixValueToPx.postScale(scaleX, -scaleY);
-    }
-
-    /**
-     * Prepares the matrix that contains all offsets.
-     */
-    private void prepareMatrixOffset() {
-
-        mMatrixOffset.reset();
-
-        // offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
-
-        if (!mInvertYAxis)
-            mMatrixOffset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
-        else {
-            mMatrixOffset.setTranslate(mOffsetLeft, -mOffsetTop);
-            mMatrixOffset.postScale(1.0f, -1.0f);
-        }
-
-        // mMatrixOffset.set(offset);
-
-        // mMatrixOffset.reset();
-        //
-        // mMatrixOffset.postTranslate(mOffsetLeft, getHeight() -
-        // mOffsetBottom);
     }
 
     @Override
@@ -333,7 +271,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         if (!mFixedYValues) {
             prepare();
             // prepareContentRect();
-            prepareMatrixValuePx();
+            mTrans.prepareMatrixValuePx(this);
         } else {
             calcMinMax(mFixedYValues);
         }
@@ -433,10 +371,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mOffsetLeft = Math.max(min, yleft);
         mOffsetRight = Math.max(min, yright + legendRight);
 
-        
-        if(mLegend != null) {
-         
-            // those offsets are equal for legend and other chart, just apply them
+        if (mLegend != null) {
+
+            // those offsets are equal for legend and other chart, just apply
+            // them
             mLegend.setOffsetTop(mOffsetTop + min / 3f);
             mLegend.setOffsetLeft(mOffsetLeft);
         }
@@ -476,10 +414,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     protected void calcModulus() {
 
         float[] values = new float[9];
-        mMatrixTouch.getValues(values);
+        mTrans.getTouchMatrix().getValues(values);
 
         mXLabels.mXAxisLabelModulus = (int) Math
-                .ceil((mCurrentData.getXValCount() * mXLabels.mLabelWidth)
+                .ceil((mData.getXValCount() * mXLabels.mLabelWidth)
                         / (mContentRect.width() * values[Matrix.MSCALE_X]));
     }
 
@@ -493,15 +431,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             // float space = Math.abs(mDeltaY / 100f * 15f);
             float space = Math
                     .abs(Math.abs(Math.max(Math.abs(mYChartMax), Math.abs(mYChartMin))) / 100f * 20f);
-            
+
             if (Math.abs(mYChartMax - mYChartMin) < 0.00001f) {
                 if (Math.abs(mYChartMax) < 10f)
                     space = 1f;
                 else
                     space = Math.abs(mYChartMax / 100f * 20f);
             }
-            
-            Log.i(LOG_TAG, "Space: " + space);
 
             if (mStartAtZero) {
 
@@ -531,7 +467,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         StringBuffer a = new StringBuffer();
 
-        int max = (int) Math.round(mCurrentData.getXValAverageLength()
+        int max = (int) Math.round(mData.getXValAverageLength()
                 + mXLabels.getSpaceBetweenLabels());
 
         for (int i = 0; i < max; i++) {
@@ -556,12 +492,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         // calculate the starting and entry point of the y-labels (depending on
         // zoom / contentrect bounds)
-        if (mContentRect.width() > 10 && !isFullyZoomedOutY()) {
+        if (mContentRect.width() > 10 && !mTrans.isFullyZoomedOutY()) {
 
             PointD p1 = getValuesByTouchPoint(mContentRect.left, mContentRect.top);
             PointD p2 = getValuesByTouchPoint(mContentRect.left, mContentRect.bottom);
 
-            if (!mInvertYAxis) {
+            if (!mTrans.isInvertYAxisEnabled()) {
                 yMin = (float) p2.y;
                 yMax = (float) p1.y;
             } else {
@@ -575,7 +511,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         } else {
 
-            if (!mInvertYAxis) {
+            if (!mTrans.isInvertYAxisEnabled()) {
                 yMin = mYChartMin;
                 yMax = mYChartMax;
             } else {
@@ -695,7 +631,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 0f, 0f
         };
 
-        for (int i = 0; i < mCurrentData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
+        for (int i = 0; i < mData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
 
             position[0] = i;
 
@@ -703,16 +639,16 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             if (mXLabels.isCenterXLabelsEnabled())
                 position[0] += 0.5f;
 
-            transformPointArray(position);
+            mTrans.pointValuesToPixel(position);
 
             if (position[0] >= mOffsetLeft && position[0] <= getWidth() - mOffsetRight) {
 
-                String label = mCurrentData.getXVals().get(i);
+                String label = mData.getXVals().get(i);
 
                 if (mXLabels.isAvoidFirstLastClippingEnabled()) {
 
                     // avoid clipping of the last
-                    if (i == mCurrentData.getXValCount() - 1) {
+                    if (i == mData.getXValCount() - 1) {
                         float width = Utils.calcTextWidth(mXLabelPaint, label);
 
                         if (width > getOffsetRight() * 2 && position[0] + width > getWidth())
@@ -750,7 +686,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             positions[i + 1] = mYLabels.mEntries[i / 2];
         }
 
-        transformPointArray(positions);
+        mTrans.pointValuesToPixel(positions);
 
         mYLabelPaint.setTypeface(mYLabels.getTypeface());
         mYLabelPaint.setTextSize(mYLabels.getTextSize());
@@ -893,7 +829,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         for (int i = 0; i < mYLabels.mEntryCount; i++) {
 
             position[1] = mYLabels.mEntries[i];
-            transformPointArray(position);
+            mTrans.pointValuesToPixel(position);
 
             mDrawCanvas.drawLine(mOffsetLeft, position[1], getWidth() - mOffsetRight, position[1],
                     mGridPaint);
@@ -905,18 +841,18 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     protected void drawVerticalGrid() {
 
-        if (!mDrawVerticalGrid || mCurrentData == null)
+        if (!mDrawVerticalGrid || mData == null)
             return;
 
         float[] position = new float[] {
                 0f, 0f
         };
 
-        for (int i = 0; i < mCurrentData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
+        for (int i = 0; i < mData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
 
             position[0] = i;
 
-            transformPointArray(position);
+            mTrans.pointValuesToPixel(position);
 
             if (position[0] >= mOffsetLeft && position[0] <= getWidth()) {
 
@@ -931,7 +867,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     private void drawLimitLines() {
 
-        ArrayList<LimitLine> limitLines = mOriginalData.getLimitLines();
+        ArrayList<LimitLine> limitLines = mData.getLimitLines();
 
         if (limitLines == null)
             return;
@@ -945,7 +881,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             pts[1] = l.getLimit();
             pts[3] = l.getLimit();
 
-            transformPointArray(pts);
+            mTrans.pointValuesToPixel(pts);
 
             pts[0] = 0;
             pts[2] = getWidth();
@@ -1069,34 +1005,19 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     /** CODE BELOW THIS RELATED TO SCALING AND GESTURES */
 
     /**
-     * Zooms in by 1.4f, x and y are the coordinates (in pixels) of the zoom
-     * center.
-     * 
-     * @param x
-     * @param y
+     * Zooms in by 1.4f, into the charts center. center.
      */
-    public void zoomIn(float x, float y) {
-
-        Matrix save = new Matrix();
-        save.set(mMatrixTouch);
-
-        save.postScale(1.4f, 1.4f, x, y);
-
-        refreshTouch(save);
+    public void zoomIn() {
+        Matrix save = mTrans.zoomIn(getWidth() / 2f, -(getHeight() / 2f));
+        mTrans.refresh(save, this);
     }
 
     /**
-     * Zooms out by 0.7f, x and y are the coordinates (in pixels) of the zoom
-     * center.
+     * Zooms out by 0.7f, from the charts center. center.
      */
-    public void zoomOut(float x, float y) {
-
-        Matrix save = new Matrix();
-        save.set(mMatrixTouch);
-
-        save.postScale(0.7f, 0.7f, x, y);
-
-        refreshTouch(save);
+    public void zoomOut() {
+        Matrix save = mTrans.zoomOut(getWidth() / 2f, -(getHeight() / 2f));
+        mTrans.refresh(save, this);
     }
 
     /**
@@ -1109,15 +1030,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * @param y
      */
     public void zoom(float scaleX, float scaleY, float x, float y) {
-
-        Matrix save = new Matrix();
-        save.set(mMatrixTouch);
-
-        // Log.i(LOG_TAG, "Zooming, x: " + x + ", y: " + y);
-
-        save.postScale(scaleX, scaleY, x, -y);
-
-        refreshTouch(save);
+        Matrix save = mTrans.zoom(scaleX, scaleY, x, -y);
+        mTrans.refresh(save, this);
     }
 
     /**
@@ -1125,23 +1039,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * bounds.
      */
     public void fitScreen() {
-
-        Matrix save = new Matrix();
-        save.set(mMatrixTouch);
-
-        float[] vals = new float[9];
-
-        save.getValues(vals);
-
-        // reset all translations and scaling
-        vals[Matrix.MTRANS_X] = 0f;
-        vals[Matrix.MTRANS_Y] = 0f;
-        vals[Matrix.MSCALE_X] = 1f;
-        vals[Matrix.MSCALE_Y] = 1f;
-
-        save.setValues(vals);
-
-        refreshTouch(save);
+        Matrix save = mTrans.fitScreen();
+        mTrans.refresh(save, this);
     }
 
     /**
@@ -1151,7 +1050,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * @param enabled
      */
     public void setInvertYAxisEnabled(boolean enabled) {
-        mInvertYAxis = enabled;
+        mTrans.setInvertYAxisEnabled(enabled);
     }
 
     /**
@@ -1160,7 +1059,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * @return
      */
     public boolean isInvertYAxisEnabled() {
-        return mInvertYAxis;
+        return mTrans.isInvertYAxisEnabled();
     }
 
     /**
@@ -1175,112 +1074,17 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     public synchronized void centerViewPort(final int xIndex, final float yVal) {
 
-        // the post makes it possible that this call waits until the view has
-        // finisted setting up
-        post(new Runnable() {
+        float indicesInView = mDeltaX / mTrans.getScaleX();
+        float valsInView = mDeltaY / mTrans.getScaleY();
 
-            @Override
-            public void run() {
+        Log.i(LOG_TAG, "indices: " + indicesInView + ", vals: " +
+                valsInView);
 
-                float indicesInView = mDeltaX / mScaleX;
-                float valsInView = mDeltaY / mScaleY;
+        float[] pts = new float[] {
+                xIndex - indicesInView / 2f, yVal + valsInView / 2f
+        };
 
-                // Log.i(LOG_TAG, "indices: " + indicesInView + ", vals: " +
-                // valsInView);
-
-                float[] pts = new float[] {
-                        xIndex - indicesInView / 2f, yVal + valsInView / 2f
-                };
-
-                Matrix save = new Matrix();
-                save.set(mMatrixTouch);
-
-                transformPointArray(pts);
-
-                final float x = -pts[0] + getOffsetLeft();
-                final float y = -pts[1] - getOffsetTop();
-
-                save.postTranslate(x, y);
-
-                refreshTouch(save);
-
-                // Log.i(LOG_TAG, "ViewPort centered, xIndex: " + xIndex +
-                // ", yVal: " + yVal
-                // + ", transX: " + x + ", transY: " + y);
-            }
-        });
-    }
-
-    /**
-     * call this method to refresh the graph with a given touch matrix
-     * 
-     * @param newTouchMatrix
-     * @return
-     */
-    public Matrix refreshTouch(Matrix newTouchMatrix) {
-
-        mMatrixTouch.set(newTouchMatrix);
-
-        // make sure scale and translation are within their bounds
-        limitTransAndScale(mMatrixTouch);
-
-        // redraw
-        invalidate();
-
-        newTouchMatrix.set(mMatrixTouch);
-        return newTouchMatrix;
-    }
-
-    /**
-     * limits the maximum scale and X translation of the given matrix
-     * 
-     * @param matrix
-     */
-    protected void limitTransAndScale(Matrix matrix) {
-
-        float[] vals = new float[9];
-        matrix.getValues(vals);
-
-        float curTransX = vals[Matrix.MTRANS_X];
-        float curScaleX = vals[Matrix.MSCALE_X];
-
-        float curTransY = vals[Matrix.MTRANS_Y];
-        float curScaleY = vals[Matrix.MSCALE_Y];
-
-        // Log.i(LOG_TAG, "curTransX: " + curTransX + ", curScaleX: " +
-        // curScaleX);
-        // Log.i(LOG_TAG, "curTransY: " + curTransY + ", curScaleY: " +
-        // curScaleY);
-
-        // min scale-x is 1f
-        mScaleX = Math.max(mMinScaleX, Math.min(getMaxScaleX(), curScaleX));
-
-        // min scale-y is 1f
-        mScaleY = Math.max(mMinScaleY, Math.min(getMaxScaleY(), curScaleY));
-
-        if (mContentRect == null)
-            return;
-
-        float maxTransX = -(float) mContentRect.width() * (mScaleX - 1f);
-        float newTransX = Math.min(Math.max(curTransX, maxTransX - mTransOffsetX), mTransOffsetX);
-
-        float maxTransY = (float) mContentRect.height() * (mScaleY - 1f);
-        float newTransY = Math.max(Math.min(curTransY, maxTransY + mTransOffsetY), -mTransOffsetY);
-
-        // Log.i(LOG_TAG, "scale-X: " + mScaleX + ", maxTransX: " + maxTransX +
-        // ", newTransX: "
-        // + newTransX);
-        // Log.i(LOG_TAG, "scale-Y: " + mScaleY + ", maxTransY: " + maxTransY +
-        // ", newTransY: "
-        // + newTransY);
-
-        vals[Matrix.MTRANS_X] = newTransX;
-        vals[Matrix.MSCALE_X] = mScaleX;
-
-        vals[Matrix.MTRANS_Y] = newTransY;
-        vals[Matrix.MSCALE_Y] = mScaleY;
-
-        matrix.setValues(vals);
+        mTrans.centerViewPort(pts, this);
     }
 
     /**
@@ -1307,44 +1111,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         this.mDrawListener = drawListener;
     }
 
-    // /**
-    // * set if the user should be allowed to draw onto the chart
-    // *
-    // * @param drawingEnabled
-    // */
-    // public void setDrawingEnabled(boolean drawingEnabled) {
-    // if (mListener instanceof BarLineChartTouchListener) {
-    // ((BarLineChartTouchListener<?>)
-    // mListener).setDrawingEnabled(drawingEnabled);
-    // }
-    // }
-    //
-    // /**
-    // * boolean to indicate if user drawing on chart should automatically be
-    // * finished
-    // */
-    // protected boolean mAutoFinishDrawing;
-    //
-    // /**
-    // * Set to true to auto finish user drawing. THis means that the value that
-    // * has been drawn into the chart is filled up to the maximum x-index
-    // * automatically.
-    // *
-    // * @param enabled
-    // */
-    // public void setAutoFinish(boolean enabled) {
-    // this.mAutoFinishDrawing = enabled;
-    // }
-    //
-    // /**
-    // * True if auto finish user drawing is enabled
-    // *
-    // * @return
-    // */
-    // public boolean isAutoFinishEnabled() {
-    // return mAutoFinishDrawing;
-    // }
-
     /**
      * Gets the OnDrawListener. May be null.
      * 
@@ -1363,16 +1129,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * @param scaleYmin
      */
     public void setScaleMinima(float scaleXmin, float scaleYmin) {
-
-        if (scaleXmin < 1f)
-            scaleXmin = 1f;
-        if (scaleYmin < 1f)
-            scaleYmin = 1f;
-
-        mMinScaleX = scaleXmin;
-        mMinScaleY = scaleYmin;
-
-        zoom(mMinScaleX, mMinScaleY, 0f, 0f);
+        mTrans.setScaleMinima(scaleXmin, scaleYmin, this);
     }
 
     /**
@@ -1453,12 +1210,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         if (this instanceof BarChart) {
 
-            BarDataSet set = (BarDataSet) mOriginalData.getDataSetForEntry(e);
+            BarDataSet set = (BarDataSet) mData.getDataSetForEntry(e);
             if (set != null)
                 vals[0] += set.getBarSpace() / 2f;
         }
 
-        transformPointArray(vals);
+        mTrans.pointValuesToPixel(vals);
 
         return new PointF(vals[0], vals[1]);
     }
@@ -1706,7 +1463,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     public Highlight getHighlightByTouchPoint(float x, float y) {
 
-        if (mDataNotSet || mCurrentData == null) {
+        if (mDataNotSet || mData == null) {
             Log.e(LOG_TAG, "Can't select by touch. No data set.");
             return null;
         }
@@ -1716,17 +1473,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         pts[0] = x;
         pts[1] = y;
 
-        Matrix tmp = new Matrix();
-
-        // invert all matrixes to convert back to the original value
-        mMatrixOffset.invert(tmp);
-        tmp.mapPoints(pts);
-
-        mMatrixTouch.invert(tmp);
-        tmp.mapPoints(pts);
-
-        mMatrixValueToPx.invert(tmp);
-        tmp.mapPoints(pts);
+        mTrans.pixelsToValue(pts);
 
         double xTouchVal = pts[0];
         double yTouchVal = pts[1];
@@ -1793,17 +1540,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         pts[0] = x;
         pts[1] = y;
 
-        Matrix tmp = new Matrix();
-
-        // invert all matrixes to convert back to the original value
-        mMatrixOffset.invert(tmp);
-        tmp.mapPoints(pts);
-
-        mMatrixTouch.invert(tmp);
-        tmp.mapPoints(pts);
-
-        mMatrixValueToPx.invert(tmp);
-        tmp.mapPoints(pts);
+        mTrans.pixelsToValue(pts);
 
         double xTouchVal = pts[0];
         double yTouchVal = pts[1];
@@ -1825,7 +1562,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 x, y
         };
 
-        transformPointArray(pts);
+        mTrans.pointValuesToPixel(pts);
 
         return new PointD(pts[0], pts[1]);
     }
@@ -1852,7 +1589,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     public Entry getEntryByTouchPoint(float x, float y) {
         Highlight h = getHighlightByTouchPoint(x, y);
         if (h != null) {
-            return mCurrentData.getEntryForHighlight(h);
+            return mData.getEntryForHighlight(h);
         }
         return null;
     }
@@ -1861,14 +1598,14 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * returns the current x-scale factor
      */
     public float getScaleX() {
-        return mScaleX;
+        return mTrans.getScaleX();
     }
 
     /**
      * returns the current y-scale factor
      */
     public float getScaleY() {
-        return mScaleY;
+        return mTrans.getScaleY();
     }
 
     /**
@@ -1877,69 +1614,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * @return
      */
     public boolean isFullyZoomedOut() {
-
-        if (isFullyZoomedOutX() && isFullyZoomedOutY())
-            return true;
-        else
-            return false;
-    }
-
-    /**
-     * Returns true if the chart is fully zoomed out on it's y-axis (vertical).
-     * 
-     * @return
-     */
-    public boolean isFullyZoomedOutY() {
-        if (mScaleY > mMinScaleY || mMinScaleY > 1f)
-            return false;
-        else
-            return true;
-    }
-
-    /**
-     * Returns true if the chart is fully zoomed out on it's x-axis
-     * (horizontal).
-     * 
-     * @return
-     */
-    public boolean isFullyZoomedOutX() {
-        if (mScaleX > mMinScaleX || mMinScaleX > 1f)
-            return false;
-        else
-            return true;
-    }
-
-    /**
-     * calcualtes the maximum x-scale value depending on the number of x-values,
-     * maximum scale is numberOfXvals / 2
-     * 
-     * @return
-     */
-    public float getMaxScaleX() {
-        return mDeltaX / 2f;
-    }
-
-    /**
-     * Returns the maximum y-scale factor. Default 10f
-     * 
-     * @return
-     */
-    public float getMaxScaleY() {
-        return mMaxScaleY;
-    }
-
-    /**
-     * sets the maximum scale factor for the y-axis. Default 12f, min 1f, max
-     * unlimited
-     * 
-     * @param factor
-     */
-    public void setMaxScaleY(float factor) {
-
-        if (factor < 1f)
-            factor = 1f;
-
-        mMaxScaleY = factor;
+        return mTrans.isFullyZoomedOut();
     }
 
     /**
@@ -2017,7 +1692,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * @param offset
      */
     public void setDragOffsetX(float offset) {
-        mTransOffsetX = Utils.convertDpToPixel(offset);
+        mTrans.setDragOffsetX(offset);
     }
 
     /**
@@ -2027,7 +1702,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * @param offset
      */
     public void setDragOffsetY(float offset) {
-        mTransOffsetY = Utils.convertDpToPixel(offset);
+        mTrans.setDragOffsetY(offset);
     }
 
     /**
@@ -2036,7 +1711,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * @return
      */
     public boolean hasNoDragOffset() {
-        return mTransOffsetX <= 0 && mTransOffsetY <= 0 ? true : false;
+        return mTrans.hasNoDragOffset();
     }
 
     /**

@@ -175,12 +175,12 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
         val.postTranslate(0, -mYChartMin);
         val.postScale(scaleX, -scaleY);
 
-        mMatrixValueToPx.set(val);
+        mTrans.getValueMatrix().set(val);
 
         Matrix offset = new Matrix();
         offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
 
-        mMatrixOffset.set(offset);
+        mTrans.getOffsetMatrix().set(offset);
     }
 
     /** the angle where the dragging started */

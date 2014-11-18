@@ -163,7 +163,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
         }
 
         // Perform the transformation, update the chart
-        mMatrix = mChart.refreshTouch(mMatrix);
+        mMatrix = mChart.getTransformer().refresh(mMatrix, mChart);
 
         return true; // indicate event was handled
     }
@@ -385,7 +385,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
             PointF trans = getTrans(e.getX(), e.getY());
 
-            mChart.zoomIn(trans.x, trans.y);
+            mChart.zoom(1.4f, 1.4f, trans.x, trans.y);
 
             Log.i("BarlineChartTouch", "Double-Tap, Zooming In, x: " + trans.x + ", y: " + trans.y);
         }

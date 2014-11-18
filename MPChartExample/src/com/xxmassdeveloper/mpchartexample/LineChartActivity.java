@@ -125,11 +125,11 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
 
         mChart.animateX(2500);
 
-        // // restrain the maximum scale-out factor
-        // mChart.setScaleMinima(3f, 3f);
-        //
-        // // center the view to a specific position inside the chart
-        // mChart.centerViewPort(10, 50);
+//        // restrain the maximum scale-out factor
+//        mChart.setScaleMinima(3f, 3f);
+//
+//        // center the view to a specific position inside the chart
+//        mChart.centerViewPort(10, 50);
 
         // get the legend (only possible after setting data)
         Legend l = mChart.getLegend();
@@ -170,7 +170,7 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
             }
             case R.id.actionToggleFilled: {
 
-                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getDataCurrent()
+                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getData()
                         .getDataSets();
 
                 for (LineDataSet set : sets) {
@@ -183,7 +183,7 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
                 break;
             }
             case R.id.actionToggleCircles: {
-                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getDataCurrent()
+                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getData()
                         .getDataSets();
 
                 for (LineDataSet set : sets) {
@@ -196,7 +196,7 @@ public class LineChartActivity extends DemoBase implements OnSeekBarChangeListen
                 break;
             }
             case R.id.actionToggleCubic: {
-                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getDataCurrent()
+                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getData()
                         .getDataSets();
 
                 for (LineDataSet set : sets) {

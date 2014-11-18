@@ -41,13 +41,13 @@ public class CandleStickChart extends BarLineChartBase<CandleData> {
     @Override
     protected void drawData() {
 
-        ArrayList<CandleDataSet> dataSets = mCurrentData.getDataSets();
+        ArrayList<CandleDataSet> dataSets = mData.getDataSets();
 
         // pre allocate
         float[] shadowPoints = new float[4];
         float[] bodyPoints = new float[4];
 
-        for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
+        for (int i = 0; i < mData.getDataSetCount(); i++) {
 
             CandleDataSet dataSet = dataSets.get(i);
             ArrayList<CandleEntry> entries = dataSet.getYVals();
@@ -121,7 +121,7 @@ public class CandleStickChart extends BarLineChartBase<CandleData> {
         bodyPoints[2] = e.getXIndex() + (1f - bodySpace);
         bodyPoints[3] = e.getOpen() * mPhaseY;
 
-        transformPointArray(bodyPoints);
+        mTrans.pointValuesToPixel(bodyPoints);
     }
 
     /**
@@ -137,7 +137,7 @@ public class CandleStickChart extends BarLineChartBase<CandleData> {
         shadowPoints[2] = e.getXIndex() + 0.5f;
         shadowPoints[3] = e.getLow() * mPhaseY;
 
-        transformPointArray(shadowPoints);
+        mTrans.pointValuesToPixel(shadowPoints);
     }
 
     @Override
@@ -160,7 +160,7 @@ public class CandleStickChart extends BarLineChartBase<CandleData> {
             int xIndex = mIndicesToHightlight[i].getXIndex(); // get the
                                                               // x-position
 
-            CandleDataSet set = mOriginalData.getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
+            CandleDataSet set = mData.getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
             
             if (set == null)
                 continue;
@@ -183,8 +183,8 @@ public class CandleStickChart extends BarLineChartBase<CandleData> {
                     0, low, mDeltaX, low, 0, high, mDeltaX, high
             };
 
-            transformPointArray(vertPts);
-            transformPointArray(horPts);
+            mTrans.pointValuesToPixel(vertPts);
+            mTrans.pointValuesToPixel(horPts);
 
             // draw the vertical highlight lines
             mDrawCanvas.drawLines(vertPts, mHighlightPaint);

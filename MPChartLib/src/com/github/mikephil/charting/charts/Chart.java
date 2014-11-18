@@ -7,11 +7,9 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
-import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.Typeface;
@@ -30,8 +28,10 @@ import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.interfaces.ChartInterface;
 import com.github.mikephil.charting.interfaces.OnChartGestureListener;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
+import com.github.mikephil.charting.renderer.Transformer;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
@@ -56,7 +56,7 @@ import java.util.ArrayList;
  * @author Philipp Jahoda
  */
 public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entry>>> extends View
-        implements AnimatorUpdateListener {
+        implements AnimatorUpdateListener, ChartInterface {
 
     public static final String LOG_TAG = "MPChart";
 
@@ -91,16 +91,10 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     protected float mOffsetBottom = 12;
 
     /**
-     * object that holds all data relevant for the chart (x-vals, y-vals, ...)
-     * that are currently displayed
-     */
-    protected T mCurrentData = null;
-
-    /**
      * object that holds all data that was originally set for the chart, before
      * it was modified or any filtering algorithms had been applied
      */
-    protected T mOriginalData = null;
+    protected T mData = null;
 
     /** the canvas that is used for drawing on the bitmap */
     protected Canvas mDrawCanvas;
@@ -165,15 +159,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /** the number of x-values the chart displays */
     protected float mDeltaX = 1f;
 
-    /** matrix to map the values to the screen pixels */
-    protected Matrix mMatrixValueToPx = new Matrix();
-
-    /** matrix for handling the different offsets of the chart */
-    protected Matrix mMatrixOffset = new Matrix();
-
-    /** matrix used for touch events */
-    protected final Matrix mMatrixTouch = new Matrix();
-
     /** if true, touch gestures are enabled on the chart */
     protected boolean mTouchEnabled = true;
 
@@ -191,6 +176,12 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /** the legend object containing all data associated with the legend */
     protected Legend mLegend;
+
+    /**
+     * Transformer object used to transform values to pixels and the other way
+     * around
+     */
+    protected Transformer mTrans;
 
     /** listener that is called when a value on the chart is selected */
     protected OnChartValueSelectedListener mSelectionListener;
@@ -233,6 +224,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     protected void init() {
 
         // setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+
+        mTrans = new Transformer();
 
         // initialize the utils
         Utils.init(getContext().getResources());
@@ -349,8 +342,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         // LET THE CHART KNOW THERE IS DATA
         mDataNotSet = false;
         mOffsetsCalculated = false;
-        mCurrentData = data;
-        mOriginalData = data;
+        mData = data;
+        mData = data;
 
         prepare();
 
@@ -365,8 +358,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * invalidate()).
      */
     public void clear() {
-        mCurrentData = null;
-        mOriginalData = null;
+        mData = null;
+        mData = null;
         mDataNotSet = true;
         invalidate();
     }
@@ -379,11 +372,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public boolean isEmpty() {
 
-        if (mOriginalData == null)
+        if (mData == null)
             return true;
         else {
 
-            if (mOriginalData.getYValCount() <= 0)
+            if (mData.getYValCount() <= 0)
                 return true;
             else
                 return false;
@@ -414,13 +407,13 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     protected void calcMinMax(boolean fixedValues) {
         // only calculate values if not fixed values
         if (!fixedValues) {
-            mYChartMin = mCurrentData.getYMin();
-            mYChartMax = mCurrentData.getYMax();
+            mYChartMin = mData.getYMin();
+            mYChartMax = mData.getYMax();
         }
 
         // calc delta
         mDeltaY = Math.abs(mYChartMax - mYChartMin);
-        mDeltaX = mCurrentData.getXVals().size() - 1;
+        mDeltaX = mData.getXVals().size() - 1;
     }
 
     /**
@@ -434,7 +427,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
             float reference = 0f;
 
-            if (mOriginalData == null || mOriginalData.getXValCount() < 2) {
+            if (mData == null || mData.getXValCount() < 2) {
 
                 reference = Math.max(Math.abs(mYChartMin), Math.abs(mYChartMax));
             } else {
@@ -527,9 +520,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
         // loop for building up the colors and labels used in the legend
-        for (int i = 0; i < mOriginalData.getDataSetCount(); i++) {
+        for (int i = 0; i < mData.getDataSetCount(); i++) {
 
-            DataSet<? extends Entry> dataSet = mOriginalData.getDataSetByIndex(i);
+            DataSet<? extends Entry> dataSet = mData.getDataSetByIndex(i);
 
             ArrayList<Integer> clrs = dataSet.getColors();
             int entryCount = dataSet.getEntryCount();
@@ -552,7 +545,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
             } else if (dataSet instanceof PieDataSet) {
 
-                ArrayList<String> xVals = mOriginalData.getXVals();
+                ArrayList<String> xVals = mData.getXVals();
                 PieDataSet pds = (PieDataSet) dataSet;
 
                 for (int j = 0; j < clrs.size() && j < entryCount && j < xVals.size(); j++) {
@@ -575,7 +568,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                         labels.add(null);
                     } else { // add label to the last entry
 
-                        String label = mOriginalData.getDataSetByIndex(i).getLabel();
+                        String label = mData.getDataSetByIndex(i).getLabel();
                         labels.add(label);
                     }
 
@@ -592,166 +585,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         }
 
         mLegend = l;
-    }
-
-    /**
-     * Transforms an arraylist of Entry into a float array containing the x and
-     * y values transformed with all matrices for the LINECHART or SCATTERCHART.
-     * 
-     * @param entries
-     * @return
-     */
-    protected float[] generateTransformedValuesLineScatter(ArrayList<? extends Entry> entries) {
-
-        float[] valuePoints = new float[entries.size() * 2];
-
-        for (int j = 0; j < valuePoints.length; j += 2) {
-
-            Entry e = entries.get(j / 2);
-
-            valuePoints[j] = e.getXIndex();
-            valuePoints[j + 1] = e.getVal() * mPhaseY;
-        }
-
-        transformPointArray(valuePoints);
-
-        return valuePoints;
-    }
-
-    /**
-     * Transforms an arraylist of Entry into a float array containing the x and
-     * y values transformed with all matrices for the BARCHART.
-     * 
-     * @param entries
-     * @param dataSet the dataset index
-     * @return
-     */
-    protected float[] generateTransformedValuesBarChart(ArrayList<? extends Entry> entries,
-            int dataSet) {
-
-        float[] valuePoints = new float[entries.size() * 2];
-
-        int setCount = mOriginalData.getDataSetCount();
-        BarData bd = (BarData) mOriginalData;
-        float space = bd.getGroupSpace();
-
-        for (int j = 0; j < valuePoints.length; j += 2) {
-
-            Entry e = entries.get(j / 2);
-
-            // calculate the x-position, depending on datasetcount
-            float x = e.getXIndex() + (j / 2 * (setCount - 1)) + dataSet + 0.5f + space * (j / 2)
-                    + space / 2f;
-            float y = e.getVal();
-
-            valuePoints[j] = x;
-            valuePoints[j + 1] = y * mPhaseY;
-        }
-
-        transformPointArray(valuePoints);
-
-        return valuePoints;
-    }
-
-    /**
-     * transform a path with all the given matrices VERY IMPORTANT: keep order
-     * to value-touch-offset
-     * 
-     * @param path
-     */
-    protected void transformPath(Path path) {
-
-        path.transform(mMatrixValueToPx);
-        path.transform(mMatrixTouch);
-        path.transform(mMatrixOffset);
-    }
-
-    /**
-     * Transforms multiple paths will all matrices.
-     * 
-     * @param paths
-     */
-    protected void transformPaths(ArrayList<Path> paths) {
-
-        for (int i = 0; i < paths.size(); i++) {
-            transformPath(paths.get(i));
-        }
-    }
-
-    /**
-     * Transform an array of points with all matrices. VERY IMPORTANT: Keep
-     * matrix order "value-touch-offset" when transforming.
-     * 
-     * @param pts
-     */
-    protected void transformPointArray(float[] pts) {
-
-        mMatrixValueToPx.mapPoints(pts);
-        mMatrixTouch.mapPoints(pts);
-        mMatrixOffset.mapPoints(pts);
-    }
-
-    /**
-     * Transform a rectangle with all matrices.
-     * 
-     * @param r
-     */
-    protected void transformRect(RectF r) {
-
-        mMatrixValueToPx.mapRect(r);
-        mMatrixTouch.mapRect(r);
-        mMatrixOffset.mapRect(r);
-    }
-
-    /**
-     * Transform a rectangle with all matrices with potential animation phases.
-     * 
-     * @param r
-     */
-    protected void transformRectWithPhase(RectF r) {
-
-        // multiply the height of the rect with the phase
-        if (r.top > 0)
-            r.top *= mPhaseY;
-        else
-            r.bottom *= mPhaseY;
-
-        mMatrixValueToPx.mapRect(r);
-        mMatrixTouch.mapRect(r);
-        mMatrixOffset.mapRect(r);
-    }
-
-    /**
-     * transforms multiple rects with all matrices
-     * 
-     * @param rects
-     */
-    protected void transformRects(ArrayList<RectF> rects) {
-
-        for (int i = 0; i < rects.size(); i++)
-            transformRect(rects.get(i));
-    }
-
-    /**
-     * transforms the given rect objects with the touch matrix only
-     * 
-     * @param paths
-     */
-    protected void transformRectsTouch(ArrayList<RectF> rects) {
-        for (int i = 0; i < rects.size(); i++) {
-            mMatrixTouch.mapRect(rects.get(i));
-        }
-    }
-
-    /**
-     * transforms the given path objects with the touch matrix only
-     * 
-     * @param paths
-     */
-    protected void transformPathsTouch(ArrayList<Path> paths) {
-        for (int i = 0; i < paths.size(); i++) {
-            paths.get(i).transform(mMatrixTouch);
-        }
     }
 
     /**
@@ -1123,8 +956,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public void highlightValue(int xIndex, int dataSetIndex) {
 
-        if (xIndex < 0 || dataSetIndex < 0 || xIndex >= mOriginalData.getXValCount()
-                || dataSetIndex >= mOriginalData.getDataSetCount()) {
+        if (xIndex < 0 || dataSetIndex < 0 || xIndex >= mData.getXValCount()
+                || dataSetIndex >= mData.getDataSetCount()) {
 
             highlightValues(null);
         } else {
@@ -1242,12 +1075,12 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         else if (this instanceof BarChart) {
 
-            BarData bd = (BarData) mCurrentData;
+            BarData bd = (BarData) mData;
             float space = bd.getGroupSpace();
-            float j = mCurrentData.getDataSetByIndex(dataSetIndex)
+            float j = mData.getDataSetByIndex(dataSetIndex)
                     .getEntryPosition(e);
 
-            float x = (j * (mCurrentData.getDataSetCount() - 1)) + dataSetIndex + space * j + space
+            float x = (j * (mData.getDataSetCount() - 1)) + dataSetIndex + space * j + space
                     / 2f + 0.5f;
 
             xPos += x;
@@ -1271,7 +1104,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 xPos, e.getVal() * mPhaseY
         };
 
-        transformPointArray(pts);
+        mTrans.pointValuesToPixel(pts);
 
         return pts;
     }
@@ -1498,7 +1331,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @return
      */
     public float getYValueSum() {
-        return mCurrentData.getYValueSum();
+        return mData.getYValueSum();
     }
 
     /**
@@ -1507,7 +1340,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @return
      */
     public float getYMax() {
-        return mCurrentData.getYMax();
+        return mData.getYMax();
     }
 
     /**
@@ -1534,7 +1367,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @return
      */
     public float getYMin() {
-        return mCurrentData.getYMin();
+        return mData.getYMin();
     }
 
     /**
@@ -1547,12 +1380,21 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
+     * Returns the total range of values (on y-axis) the chart displays.
+     * 
+     * @return
+     */
+    public float getDeltaY() {
+        return mDeltaY;
+    }
+
+    /**
      * returns the average value of all values the chart holds
      * 
      * @return
      */
     public float getAverage() {
-        return getYValueSum() / mCurrentData.getYValCount();
+        return getYValueSum() / mData.getYValCount();
     }
 
     /**
@@ -1564,7 +1406,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public float getAverage(String dataSetLabel) {
 
-        DataSet<? extends Entry> ds = mCurrentData.getDataSetByLabel(dataSetLabel, true);
+        DataSet<? extends Entry> ds = mData.getDataSetByLabel(dataSetLabel, true);
 
         return ds.getYValueSum()
                 / ds.getEntryCount();
@@ -1576,7 +1418,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @return
      */
     public int getValueCount() {
-        return mCurrentData.getYValCount();
+        return mData.getYValCount();
     }
 
     /**
@@ -1791,6 +1633,17 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public RectF getContentRect() {
         return mContentRect;
+    }
+
+    /**
+     * Returns the Transformer class that contains all matrices and is
+     * responsible for transforming values into pixels on the screen and
+     * backwards.
+     * 
+     * @return
+     */
+    public Transformer getTransformer() {
+        return mTrans;
     }
 
     /**
@@ -2013,10 +1866,10 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @return
      */
     public String getXValue(int index) {
-        if (mCurrentData == null || mCurrentData.getXValCount() <= index)
+        if (mData == null || mData.getXValCount() <= index)
             return null;
         else
-            return mCurrentData.getXVals().get(index);
+            return mData.getXVals().get(index);
     }
 
     /**
@@ -2028,7 +1881,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @return
      */
     public float getYValue(int index, String dataSetLabel) {
-        DataSet<? extends Entry> set = mCurrentData.getDataSetByLabel(dataSetLabel, true);
+        DataSet<? extends Entry> set = mData.getDataSetByLabel(dataSetLabel, true);
         return set.getYVals().get(index).getVal();
     }
 
@@ -2040,7 +1893,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @return
      */
     public float getYValue(int xIndex, int dataSetIndex) {
-        DataSet<? extends Entry> set = mCurrentData.getDataSetByIndex(dataSetIndex);
+        DataSet<? extends Entry> set = mData.getDataSetByIndex(dataSetIndex);
         return set.getYValForXIndex(xIndex);
     }
 
@@ -2052,7 +1905,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @return
      */
     public DataSet<? extends Entry> getDataSetByIndex(int index) {
-        return mCurrentData.getDataSetByIndex(index);
+        return mData.getDataSetByIndex(index);
     }
 
     /**
@@ -2063,7 +1916,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @return
      */
     public DataSet<? extends Entry> getDataSetByLabel(String dataSetLabel) {
-        return mCurrentData.getDataSetByLabel(dataSetLabel, true);
+        return mData.getDataSetByLabel(dataSetLabel, true);
     }
 
     /**
@@ -2075,7 +1928,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @return
      */
     public Entry getEntry(int index) {
-        return mCurrentData.getDataSetByIndex(0).getYVals().get(index);
+        return mData.getDataSetByIndex(0).getYVals().get(index);
     }
 
     /**
@@ -2087,7 +1940,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @return
      */
     public Entry getEntry(int index, String dataSetLabel) {
-        return mCurrentData.getDataSetByLabel(dataSetLabel, true).getYVals().get(index);
+        return mData.getDataSetByLabel(dataSetLabel, true).getYVals().get(index);
     }
 
     /**
@@ -2100,7 +1953,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @return
      */
     public Entry getEntryByDataSetIndex(int xIndex, int dataSetIndex) {
-        return mCurrentData.getDataSetByIndex(dataSetIndex).getEntryForXIndex(xIndex);
+        return mData.getDataSetByIndex(dataSetIndex).getEntryForXIndex(xIndex);
     }
 
     /**
@@ -2116,10 +1969,10 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         ArrayList<SelInfo> vals = new ArrayList<SelInfo>();
 
-        for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
+        for (int i = 0; i < mData.getDataSetCount(); i++) {
 
             // extract all y-values from all DataSets at the given x-index
-            float yVal = mCurrentData.getDataSetByIndex(i).getYValForXIndex(xIndex);
+            float yVal = mData.getDataSetByIndex(i).getYValForXIndex(xIndex);
 
             if (!Float.isNaN(yVal)) {
                 vals.add(new SelInfo(yVal, i));
@@ -2141,9 +1994,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         ArrayList<Entry> vals = new ArrayList<Entry>();
 
-        for (int i = 0; i < mCurrentData.getDataSetCount(); i++) {
+        for (int i = 0; i < mData.getDataSetCount(); i++) {
 
-            DataSet<? extends Entry> set = mCurrentData.getDataSetByIndex(i);
+            DataSet<? extends Entry> set = mData.getDataSetByIndex(i);
 
             Entry e = set.getEntryForXIndex(xIndex);
 
@@ -2156,26 +2009,14 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
-     * Returns the ChartData object the chart CURRENTLY represents (not
-     * dependant on zoom level). It contains all values and information the
-     * chart displays. If filtering algorithms have been applied, this returns
-     * the filtered state of data.
-     * 
-     * @return
-     */
-    public T getDataCurrent() {
-        return mCurrentData;
-    }
-
-    /**
      * Returns the ChartData object that ORIGINALLY has been set for the chart.
      * It contains all data in an unaltered state, before any filtering
      * algorithms have been applied.
      * 
      * @return
      */
-    public T getDataOriginal() {
-        return mOriginalData;
+    public T getData() {
+        return mData;
     }
 
     /**
@@ -2185,7 +2026,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @return
      */
     public float getPercentOfTotal(float val) {
-        return val / mCurrentData.getYValueSum() * 100f;
+        return val / mData.getYValueSum() * 100f;
     }
 
     /**
@@ -2383,6 +2224,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             // avoid memory allocations here (for performance)
             return mFormat.format(value);
         }
+    }
+    
+    @Override
+    public View getChartView() {
+        return this;
     }
 
     // @Override

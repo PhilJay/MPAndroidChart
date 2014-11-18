@@ -44,7 +44,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 
     private void addEntry() {
 
-        LineData data = mChart.getDataOriginal();
+        LineData data = mChart.getData();
         
         if(data != null) {
 
@@ -68,7 +68,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 
     private void removeLastEntry() {
 
-        LineData data = mChart.getDataOriginal();
+        LineData data = mChart.getData();
         
         if(data != null) {
          
@@ -90,7 +90,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 
     private void addDataSet() {
 
-        LineData data = mChart.getDataOriginal();
+        LineData data = mChart.getData();
         
         if(data != null) {
 
@@ -120,7 +120,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 
     private void removeDataSet() {
 
-        LineData data = mChart.getDataOriginal();
+        LineData data = mChart.getData();
         
         if(data != null) {
 
