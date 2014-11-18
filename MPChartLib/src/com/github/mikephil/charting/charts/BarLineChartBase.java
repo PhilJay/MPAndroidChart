@@ -775,6 +775,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         for (int i = 0; i < mBorderPositions.length; i++) {
 
+            if (mBorderPositions[i] == null)
+                continue;
+
             switch (mBorderPositions[i]) {
                 case LEFT:
                     mDrawCanvas.drawLine(mOffsetLeft, mOffsetTop, mOffsetLeft, getHeight()
@@ -1450,6 +1453,24 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     public BorderPosition[] getBorderPositions() {
         return mBorderPositions;
+    }
+
+    /**
+     * Sets the width of the border surrounding the chart in dp.
+     * 
+     * @param width
+     */
+    public void setBorderWidth(int width) {
+        mBorderPaint.setStrokeWidth(Utils.convertDpToPixel(width));
+    }
+
+    /**
+     * Sets the color of the border surrounding the chart.
+     * 
+     * @param color
+     */
+    public void setBorderColor(int color) {
+        mBorderPaint.setColor(color);
     }
 
     /**

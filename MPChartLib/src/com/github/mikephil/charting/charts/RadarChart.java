@@ -92,7 +92,15 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     protected void calcMinMax(boolean fixedValues) {
         super.calcMinMax(fixedValues);
 
+        // additional handling for space (default 15% space)
+        // float space = Math.abs(mDeltaY / 100f * 15f);
+
+        if (mYChartMax <= 0)
+            mYChartMax = 1f;
+
         mYChartMin = 0;
+
+        mDeltaY = Math.abs(mYChartMax - mYChartMin);
     }
 
     @Override
@@ -102,7 +110,6 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         prepareYLabels();
         prepareXLabels();
     }
-
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -291,7 +298,9 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     private void prepareYLabels() {
 
         int labelCount = mYLabels.getLabelCount();
-        double range = mData.getYMax() - mYChartMin;
+
+        double max = mData.getYMax() > 0 ? mData.getYMax() : 1.0;
+        double range = max - mYChartMin;
 
         double rawInterval = range / labelCount;
         double interval = Utils.roundToNextSignificant(rawInterval);
@@ -304,7 +313,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         }
 
         double first = Math.ceil(mYChartMin / interval) * interval;
-        double last = Utils.nextUp(Math.floor(mData.getYMax() / interval) * interval);
+        double last = Utils.nextUp(Math.floor(max / interval) * interval);
 
         double f;
         int n = 0;
@@ -640,7 +649,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     protected float getRequiredBottomOffset() {
         return mLegendLabelPaint.getTextSize() * 6.5f;
     }
-    
+
     @Override
     protected float getRequiredBaseOffset() {
         return mXLabels.mLabelWidth;

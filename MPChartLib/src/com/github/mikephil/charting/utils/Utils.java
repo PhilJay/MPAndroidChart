@@ -336,7 +336,7 @@ public abstract class Utils {
 
     /**
      * Replacement for the Math.nextUp(...) method that is only available in
-     * HONEYCOMB and higher.
+     * HONEYCOMB and higher. Dat's some seeeeek sheeet.
      * 
      * @param d
      * @return

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xxmassdeveloper.mpchartexample"
-    android:versionCode="28"
-    android:versionName="1.7.1" >
+    android:versionCode="29"
+    android:versionName="1.7.4" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -23,7 +23,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="LineChartActivity"></activity>
+        <activity android:name="LineChartActivity1"></activity>
+        <activity android:name="LineChartActivity2"></activity>
         <activity android:screenOrientation="landscape" android:name="MultipleChartsActivity"></activity>
         <activity android:name="BarChartActivity"></activity>
         <activity android:name="PieChartActivity"></activity>
