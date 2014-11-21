@@ -1,10 +1,11 @@
 
 package com.github.mikephil.charting.charts;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Matrix;
-import android.graphics.PointF;
 import android.graphics.Paint.Align;
+import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
@@ -12,9 +13,8 @@ import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.listener.PieRadarChartTouchListener;
-import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
-import com.nineoldandroids.animation.ObjectAnimator;
+import com.github.mikephil.charting.utils.Utils;
 
 /**
  * Baseclass of PieChart and RadarChart.
