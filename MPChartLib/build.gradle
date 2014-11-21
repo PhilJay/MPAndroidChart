@@ -1,3 +1,15 @@
+buildscript {
+    repositories {
+        maven { url 'http://10.10.0.246:8081/nexus/content/groups/astdev' }
+        mavenLocal()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.14.0'
+        classpath 'com.jakewharton.hugo:hugo-plugin:1.1.+'
+        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.10.+'
+    }
+}
+
 apply plugin: 'android-library'
 
 android {
