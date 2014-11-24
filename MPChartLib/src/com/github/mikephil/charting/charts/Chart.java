@@ -2182,6 +2182,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         prepareContentRect();
 
+		for (int i=0; i < getChildCount(); i++)
+		{
+			getChildAt(i).layout(left, top, right, bottom);
+		}
+
         //
         // prepareContentRect();
         // Log.i(LOG_TAG,
