@@ -108,7 +108,7 @@ public class LineChart extends BarLineChartBase<LineData> {
      * 
      * @author Philipp Jahoda
      */
-    private class CPoint {
+    protected class CPoint {
 
         public float x = 0f;
         public float y = 0f;
