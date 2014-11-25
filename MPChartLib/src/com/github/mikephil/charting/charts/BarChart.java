@@ -54,13 +54,13 @@ public class BarChart extends BarLineChartBase<BarData> {
      * if set to true, a grey area is darawn behind each bar that indicates the
      * maximum value
      */
-    private boolean mDrawBarShadow = true;
+    protected boolean mDrawBarShadow = true;
 
     /** the rect object that is used for drawing the bar shadow */
-    private RectF mBarShadow = new RectF();
+    protected RectF mBarShadow = new RectF();
 
     /** the rect object that is used for drawing the bars */
-    private RectF mBarRect = new RectF();
+    protected RectF mBarRect = new RectF();
 
     public BarChart(Context context) {
         super(context);
