@@ -3,7 +3,6 @@ package com.github.mikephil.charting.charts;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
@@ -279,7 +278,7 @@ public class BarChart extends BarLineChartBase<BarData> {
      * @param y the y-position
      * @param barspace the space between bars
      */
-    private void prepareBar(float x, float y, float barspace) {
+    protected void prepareBar(float x, float y, float barspace) {
 
         float spaceHalf = barspace / 2f;
         float left = x + spaceHalf;
