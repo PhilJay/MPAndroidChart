@@ -14,3 +14,6 @@ https://play.google.com/store/apps/details?id=com.tutorialsface.phoneaddiction
 
 AS Sales Management
 https://play.google.com/store/apps/details?id=com.armsoft.mtrade
+
+Notification Analyser
+https://play.google.com/store/apps/details?id=com.tierep.notificationanalyser
