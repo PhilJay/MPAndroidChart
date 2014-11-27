@@ -52,7 +52,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart = (PieChart) findViewById(R.id.chart1);
 
         // change the color of the center-hole
-        mChart.setHoleColor(Color.rgb(235, 235, 235));
+        mChart.setHoleColor(Color.WHITE);
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
@@ -133,6 +133,11 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
                 mChart.invalidate();
                 break;
             }
+            case R.id.actionHoleTransparent: {
+                mChart.setHoleTransparent(!mChart.isHoleTransparent());
+                mChart.invalidate();
+                break;
+            }
             case R.id.actionDrawCenter: {
                 if (mChart.isDrawCenterTextEnabled())
                     mChart.setDrawCenterText(false);
@@ -199,7 +204,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         PieDataSet set1 = new PieDataSet(yVals1, "Election Results");
         set1.setSliceSpace(3f);
-        
+
         // add a lot of colors
 
         ArrayList<Integer> colors = new ArrayList<Integer>();
@@ -215,10 +220,10 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         for (int c : ColorTemplate.LIBERTY_COLORS)
             colors.add(c);
-        
+
         for (int c : ColorTemplate.PASTEL_COLORS)
             colors.add(c);
-        
+
         colors.add(ColorTemplate.getHoloBlue());
 
         set1.setColors(colors);

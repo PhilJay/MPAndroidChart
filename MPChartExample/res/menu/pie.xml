@@ -1,41 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/actionToggleValues"
-        android:title="Toggle Y-Values">
-    </item>
+        android:title="Toggle Y-Values"></item>
     <item
         android:id="@+id/actionToggleXVals"
-        android:title="Toggle X-Values">
-    </item>
+        android:title="Toggle X-Values"></item>
     <item
         android:id="@+id/actionTogglePercent"
-        android:title="Toggle Percent">
-    </item>
+        android:title="Toggle Percent"></item>
     <item
         android:id="@+id/actionToggleHole"
-        android:title="Toggle Hole">
-    </item>
+        android:title="Toggle Hole"></item>
+    <item
+        android:id="@+id/actionHoleTransparent"
+        android:title="Transparent Hole"></item>
     <item
         android:id="@+id/animateX"
-        android:title="Animate X">
-    </item>
+        android:title="Animate X"></item>
     <item
         android:id="@+id/animateY"
-        android:title="Animate Y">
-    </item>
-        <item
+        android:title="Animate Y"></item>
+    <item
         android:id="@+id/animateXY"
-        android:title="Animate XY">
-    </item>
+        android:title="Animate XY"></item>
     <item
         android:id="@+id/actionDrawCenter"
-        android:title="Draw CenterText">
-    </item>
+        android:title="Draw CenterText"></item>
     <item
         android:id="@+id/actionSave"
-        android:title="Save to Gallery">
-    </item>
+        android:title="Save to Gallery"></item>
 
 </menu>
