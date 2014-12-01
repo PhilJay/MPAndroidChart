@@ -225,6 +225,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     protected void init() {
 
+		setWillNotDraw(false);
         // setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
         mTrans = new Transformer();
