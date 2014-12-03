@@ -485,7 +485,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * 
      * @return
      */
-    private void prepareYLabels() {
+    protected void prepareYLabels() {
 
         float yMin = 0f;
         float yMax = 0f;

@@ -384,13 +384,8 @@ public class BarChart extends BarLineChartBase<BarData> {
 
             // calculate the correct offset depending on the draw position of
             // the value
-            if (mDrawValueAboveBar) {
-                posOffset = -Utils.convertDpToPixel(5);
-                negOffset = Utils.calcTextHeight(mValuePaint, "8") * 1.5f;
-            } else {
-                posOffset = Utils.calcTextHeight(mValuePaint, "8") * 1.5f;
-                negOffset = -Utils.convertDpToPixel(5);
-            }
+			posOffset = getPositiveYOffset(mDrawValueAboveBar);
+			negOffset = getNegativeYOffset(mDrawValueAboveBar);
 
             for (int i = 0; i < mData.getDataSetCount(); i++) {
 
@@ -467,6 +462,16 @@ public class BarChart extends BarLineChartBase<BarData> {
             }
         }
     }
+
+	protected float getPositiveYOffset(boolean drawAboveValueBar)
+	{
+		return (mDrawValueAboveBar ? -Utils.convertDpToPixel(5) : Utils.calcTextHeight(mValuePaint, "8") * 1.5f);
+	}
+
+	protected float getNegativeYOffset(boolean drawAboveValueBar)
+	{
+		return (mDrawValueAboveBar ? Utils.calcTextHeight(mValuePaint, "8") * 1.5f : -Utils.convertDpToPixel(5));
+	}
 
     /**
      * Draws a value at the specified x and y position.
