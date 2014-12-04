@@ -20,6 +20,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.github.mikephil.charting.data.BarData;
@@ -55,7 +56,8 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entry>>> extends View
+public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entry>>>
+		extends ViewGroup
         implements AnimatorUpdateListener, ChartInterface {
 
     public static final String LOG_TAG = "MPChart";
@@ -223,6 +225,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     protected void init() {
 
+		setWillNotDraw(false);
         // setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
         mTrans = new Transformer();
@@ -2177,9 +2180,13 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
 
         prepareContentRect();
+
+		for (int i=0; i < getChildCount(); i++)
+		{
+			getChildAt(i).layout(left, top, right, bottom);
+		}
 
         //
         // prepareContentRect();

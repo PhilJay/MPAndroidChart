@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class Transformer {
 
     /** matrix to map the values to the screen pixels */
-    private Matrix mMatrixValueToPx = new Matrix();
+    protected Matrix mMatrixValueToPx = new Matrix();
 
     /** matrix for handling the different offsets of the chart */
     private Matrix mMatrixOffset = new Matrix();
