@@ -3,7 +3,6 @@ package com.github.mikephil.charting.renderer;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.ChartInterface;
-import com.github.mikephil.charting.renderer.Transformer;
 
 import java.util.ArrayList;
 

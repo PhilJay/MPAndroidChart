@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import com.github.mikephil.charting.renderer.ColumnToBarTransformer;
 import com.github.mikephil.charting.utils.YLabels;
 
-public class HorizontalBarChart extends ColumnChart
+public class HorizontalBarChart extends BarChart
 {
 	public HorizontalBarChart(Context context)
 	{
