@@ -4,7 +4,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.14.0'
+        classpath 'com.android.tools.build:gradle:1.0.0'
         classpath 'com.jakewharton.hugo:hugo-plugin:1.1.+'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.10.+'
     }
@@ -17,7 +17,6 @@ android {
     buildToolsVersion '19.1.0'
     // resourcePrefix 'mpcht'
     defaultConfig {
-        applicationId 'com.github.mikephil.charting'
         minSdkVersion 14
         targetSdkVersion 19
         versionCode 1
@@ -34,7 +33,7 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
