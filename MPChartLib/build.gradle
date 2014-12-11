@@ -5,7 +5,6 @@ android {
     buildToolsVersion '19.1.0'
     // resourcePrefix 'mpcht'
     defaultConfig {
-        applicationId 'com.github.mikephil.charting'
         minSdkVersion 8
         targetSdkVersion 19
         versionCode 1
@@ -22,7 +21,7 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
