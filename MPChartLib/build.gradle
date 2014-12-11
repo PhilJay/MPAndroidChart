@@ -2,7 +2,7 @@ apply plugin: 'android-library'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '19.1.0'
+    buildToolsVersion '21.1.1'
     // resourcePrefix 'mpcht'
     defaultConfig {
         minSdkVersion 8
