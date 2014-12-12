@@ -1,11 +1,10 @@
-apply plugin: 'android-library'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '19.1.0'
+    buildToolsVersion '21.1.1'
     // resourcePrefix 'mpcht'
     defaultConfig {
-        applicationId 'com.github.mikephil.charting'
         minSdkVersion 8
         targetSdkVersion 19
         versionCode 1
@@ -22,7 +21,7 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
