@@ -76,7 +76,7 @@ public class HorizontalBarChart extends BarChart
 
 		int step = mData.getDataSetCount();
 
-		for (int i = 0; i < mData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
+		for (int i = 0; i < mData.getXValCount(); i ++) {
 
 			position[1] = i * step + i * mData.getGroupSpace()
 					+ mData.getGroupSpace() / 2f;
@@ -138,7 +138,7 @@ public class HorizontalBarChart extends BarChart
 		{
 			String longest = "";
 
-			for (int i = 0; i < mData.getXValCount(); i += mXLabels.mXAxisLabelModulus)
+			for (int i = 0; i < mData.getXValCount(); i ++)
 			{
 				String text = mData.getXVals().get(i);
 
