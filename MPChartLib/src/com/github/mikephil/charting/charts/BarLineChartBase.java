@@ -365,11 +365,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         // all required offsets are calculated, now find largest and apply
         float min = Utils.convertDpToPixel(11f);
 
-        mOffsetBottom = Math.max(min, xbottom + legendBottom);
-        mOffsetTop = Math.max(min, xtop);
+        mOffsetBottom = calcOffsetBottom(min, xbottom + legendBottom);
+        mOffsetTop = calcOffsetTop(min, xtop);
 
-        mOffsetLeft = Math.max(min, yleft);
-        mOffsetRight = Math.max(min, yright + legendRight);
+        mOffsetLeft = calcOffsetLeft(min, yleft);
+        mOffsetRight = calcOffsetRight(min, yright + legendRight);
 
         if (mLegend != null) {
 
@@ -383,6 +383,50 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         prepareMatrix();
     }
+
+	/**
+	 * returns the maximum of the two values.  Allows subclasses to independently change this offset
+	 * @param min
+	 * @param left
+	 * @return
+	 */
+	protected float calcOffsetLeft(float min, float left)
+	{
+		return Math.max(min, left);
+	}
+
+
+	/**
+	 * returns the maximum of the two values.  Allows subclasses to independently change this offset
+	 * @param min
+	 * @param top
+	 * @return
+	 */	protected float calcOffsetTop(float min, float top)
+	{
+		return Math.max(min, top);
+	}
+
+
+	/**
+	 * returns the maximum of the two values.  Allows subclasses to independently change this offset
+	 * @param min
+	 * @param right
+	 * @return
+	 */	protected float calcOffsetRight(float min, float right)
+	{
+		return Math.max(min, right);
+	}
+
+
+	/**
+	 * returns the maximum of the two values.  Allows subclasses to independently change this offset
+	 * @param min
+	 * @param bottom
+	 * @return
+	 */	protected float calcOffsetBottom(float min, float bottom)
+	{
+		return Math.max(min, bottom);
+	}
 
     /**
      * Calculates the offsets that belong to the legend, this method is only
