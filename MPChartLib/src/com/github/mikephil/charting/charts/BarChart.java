@@ -3,7 +3,6 @@ package com.github.mikephil.charting.charts;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
@@ -55,13 +54,13 @@ public class BarChart extends BarLineChartBase<BarData> {
      * if set to true, a grey area is darawn behind each bar that indicates the
      * maximum value
      */
-    private boolean mDrawBarShadow = true;
+    protected boolean mDrawBarShadow = true;
 
     /** the rect object that is used for drawing the bar shadow */
-    private RectF mBarShadow = new RectF();
+    protected RectF mBarShadow = new RectF();
 
     /** the rect object that is used for drawing the bars */
-    private RectF mBarRect = new RectF();
+    protected RectF mBarRect = new RectF();
 
     public BarChart(Context context) {
         super(context);
@@ -279,7 +278,7 @@ public class BarChart extends BarLineChartBase<BarData> {
      * @param y the y-position
      * @param barspace the space between bars
      */
-    private void prepareBar(float x, float y, float barspace) {
+    protected void prepareBar(float x, float y, float barspace) {
 
         float spaceHalf = barspace / 2f;
         float left = x + spaceHalf;
@@ -385,13 +384,8 @@ public class BarChart extends BarLineChartBase<BarData> {
 
             // calculate the correct offset depending on the draw position of
             // the value
-            if (mDrawValueAboveBar) {
-                posOffset = -Utils.convertDpToPixel(5);
-                negOffset = Utils.calcTextHeight(mValuePaint, "8") * 1.5f;
-            } else {
-                posOffset = Utils.calcTextHeight(mValuePaint, "8") * 1.5f;
-                negOffset = -Utils.convertDpToPixel(5);
-            }
+			posOffset = getPositiveYOffset(mDrawValueAboveBar);
+			negOffset = getNegativeYOffset(mDrawValueAboveBar);
 
             for (int i = 0; i < mData.getDataSetCount(); i++) {
 
@@ -468,6 +462,16 @@ public class BarChart extends BarLineChartBase<BarData> {
             }
         }
     }
+
+	protected float getPositiveYOffset(boolean drawAboveValueBar)
+	{
+		return (mDrawValueAboveBar ? -Utils.convertDpToPixel(5) : Utils.calcTextHeight(mValuePaint, "8") * 1.5f);
+	}
+
+	protected float getNegativeYOffset(boolean drawAboveValueBar)
+	{
+		return (mDrawValueAboveBar ? Utils.calcTextHeight(mValuePaint, "8") * 1.5f : -Utils.convertDpToPixel(5));
+	}
 
     /**
      * Draws a value at the specified x and y position.

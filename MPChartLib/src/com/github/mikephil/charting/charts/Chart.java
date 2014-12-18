@@ -1,6 +1,8 @@
 
 package com.github.mikephil.charting.charts;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -20,6 +22,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.github.mikephil.charting.data.BarData;
@@ -39,9 +42,6 @@ import com.github.mikephil.charting.utils.MarkerView;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
-import com.nineoldandroids.animation.ObjectAnimator;
-import com.nineoldandroids.animation.ValueAnimator;
-import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -55,8 +55,9 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entry>>> extends View
-        implements AnimatorUpdateListener, ChartInterface {
+public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entry>>>
+		extends ViewGroup
+        implements ValueAnimator.AnimatorUpdateListener, ChartInterface {
 
     public static final String LOG_TAG = "MPChart";
 
@@ -223,6 +224,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     protected void init() {
 
+		setWillNotDraw(false);
         // setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
         mTrans = new Transformer();
@@ -2177,10 +2179,13 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
 
         prepareContentRect();
 
+		for (int i=0; i < getChildCount(); i++)
+		{
+			getChildAt(i).layout(left, top, right, bottom);
+		}
         //
         // prepareContentRect();
         // Log.i(LOG_TAG,
