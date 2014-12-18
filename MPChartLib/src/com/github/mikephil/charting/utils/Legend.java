@@ -344,7 +344,7 @@ public class Legend {
                 c.drawRect(x, y, x + mFormSize, y + mFormSize, p);
                 break;
             case LINE:
-                c.drawLine(x - half, y + half, x + half, y + half, p);
+                c.drawLine(x, y + half, x + mFormSize, y + half, p);
                 break;
         }
     }
