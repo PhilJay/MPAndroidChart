@@ -1443,18 +1443,18 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
-     * sets the size of the description text in pixels, min 7f, max 14f
+     * sets the size of the description text in pixels, min 6f, max 16f
      * 
      * @param size
      */
     public void setDescriptionTextSize(float size) {
 
-        if (size > 14f)
-            size = 14f;
-        if (size < 7f)
-            size = 7f;
+        if (size > 16f)
+            size = 16f;
+        if (size < 6f)
+            size = 6f;
 
-        mInfoPaint.setTextSize(Utils.convertDpToPixel(size));
+        mDescPaint.setTextSize(Utils.convertDpToPixel(size));
     }
 
     /**

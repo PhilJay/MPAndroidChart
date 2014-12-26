@@ -415,7 +415,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
         int index = getDataSetIndexByLabel(mDataSets, label, ignorecase);
 
-        if (index <= 0 || index >= mDataSets.size())
+        if (index < 0 || index >= mDataSets.size())
             return null;
         else
             return mDataSets.get(index);
