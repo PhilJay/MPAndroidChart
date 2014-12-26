@@ -1,8 +1,6 @@
 
 package com.github.mikephil.charting.charts;
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -42,6 +40,9 @@ import com.github.mikephil.charting.utils.MarkerView;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
+import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.animation.ValueAnimator;
+import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -55,9 +56,8 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entry>>>
-		extends ViewGroup
-        implements ValueAnimator.AnimatorUpdateListener, ChartInterface {
+public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entry>>> extends View
+        implements AnimatorUpdateListener, ChartInterface {
 
     public static final String LOG_TAG = "MPChart";
 

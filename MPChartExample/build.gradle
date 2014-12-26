@@ -4,7 +4,6 @@ android {
     compileSdkVersion 19
     buildToolsVersion '19.1.0'
     defaultConfig {
-        applicationId 'com.xxmassdeveloper.mpchartexample'
         minSdkVersion 16
         targetSdkVersion 19
         versionCode 29
@@ -23,6 +22,7 @@ android {
     buildTypes {
 
         release {
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
