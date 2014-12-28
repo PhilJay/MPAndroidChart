@@ -12,6 +12,7 @@ public class HorizontalBarChartActivity extends BarChartActivity
 
 		//FIXME:  Bar Shadow is not yet supported
 		mChart.setDrawBarShadow(false);
+		mChart.setDrawXLabels(true);
 	}
 
 	@Override

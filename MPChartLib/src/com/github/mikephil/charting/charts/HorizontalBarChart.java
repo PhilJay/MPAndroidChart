@@ -1,6 +1,7 @@
 package com.github.mikephil.charting.charts;
 
 import android.content.Context;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
@@ -62,6 +63,17 @@ public class HorizontalBarChart extends BarChart
 			mBarShadow.set(mBarRect.left, mOffsetTop, mBarRect.right, getHeight() - mOffsetBottom);
 		}
 	}
+	
+	@Override
+	protected void calcModulus() {
+	    
+        float[] values = new float[9];
+        mTrans.getTouchMatrix().getValues(values);
+
+        mXLabels.mYAxisLabelModulus = (int) Math
+                .ceil((mData.getXValCount() * mXLabels.mLabelHeight)
+                        / (mContentRect.height() * values[Matrix.MSCALE_Y]));
+	}
 
 	@Override
 	protected void drawXLabels(float yPos)
@@ -76,7 +88,7 @@ public class HorizontalBarChart extends BarChart
 
 		int step = mData.getDataSetCount();
 
-		for (int i = 0; i < mData.getXValCount(); i ++) {
+		for (int i = 0; i < mData.getXValCount(); i += mXLabels.mYAxisLabelModulus) {
 
 			position[1] = i * step + i * mData.getGroupSpace()
 					+ mData.getGroupSpace() / 2f;

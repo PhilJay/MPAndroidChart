@@ -34,6 +34,13 @@ public class XLabels extends LabelBase {
      * 0 DRAW, else dont draw.
      */
     public int mXAxisLabelModulus = 1;
+    
+    /**
+     * the modulus that indicates if a value at a specified index in an
+     * array(list) for the y-axis-labels is drawn or not. If index % modulus ==
+     * 0 DRAW, else dont draw. THIS IS ONLY FOR HORIZONTAL BARCHART.
+     */
+    public int mYAxisLabelModulus = 1;
 
     /** if true, x-axis label text is centered when using barcharts */
     private boolean mCenterXAxisLabels = false;
