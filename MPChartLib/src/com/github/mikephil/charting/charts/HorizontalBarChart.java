@@ -138,7 +138,7 @@ public class HorizontalBarChart extends BarChart
 	protected void prepareYLabels()
 	{
 	    mYLabels = new XLabelsAsYLabels();
-	    super.prepareYLabels();
+//	    super.prepareYLabels();
 		
 	}
 
