@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 
 import com.github.mikephil.charting.renderer.ColumnToBarTransformer;
+import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.YLabels;
 
 public class HorizontalBarChart extends BarChart
@@ -85,6 +86,8 @@ public class HorizontalBarChart extends BarChart
 		float[] position = new float[] {
 				0f, 0f
 		};
+		
+		float offset = Utils.calcTextHeight(mXLabelPaint, mData.getXVals().get(0)) / 2f;
 
 		int step = mData.getDataSetCount();
 
@@ -103,7 +106,7 @@ public class HorizontalBarChart extends BarChart
 			{
 				String label = mData.getXVals().get(i);
 
-				mDrawCanvas.drawText(label, mOffsetLeft-10, position[1],	mXLabelPaint);
+				mDrawCanvas.drawText(label, mOffsetLeft-10, position[1] + offset, mXLabelPaint);
 			}
 		}
 	}
@@ -134,7 +137,9 @@ public class HorizontalBarChart extends BarChart
 	@Override
 	protected void prepareYLabels()
 	{
-		mYLabels = new XLabelsAsYLabels();
+	    mYLabels = new XLabelsAsYLabels();
+	    super.prepareYLabels();
+		
 	}
 
 	private class XLabelsAsYLabels extends YLabels

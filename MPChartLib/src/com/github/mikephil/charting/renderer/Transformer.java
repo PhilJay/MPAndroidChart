@@ -25,10 +25,10 @@ public class Transformer {
     protected Matrix mMatrixValueToPx = new Matrix();
 
     /** matrix for handling the different offsets of the chart */
-    private Matrix mMatrixOffset = new Matrix();
+    protected Matrix mMatrixOffset = new Matrix();
 
     /** matrix used for touch events */
-    private final Matrix mMatrixTouch = new Matrix();
+    protected final Matrix mMatrixTouch = new Matrix();
 
     /** if set to true, the y-axis is inverted and low values start at the top */
     private boolean mInvertYAxis = false;

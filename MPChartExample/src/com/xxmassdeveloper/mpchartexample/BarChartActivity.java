@@ -45,7 +45,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(getLayout());
+        setContentView(R.layout.activity_barchart);
 
         tvX = (TextView) findViewById(R.id.tvXMax);
         tvY = (TextView) findViewById(R.id.tvYMax);
@@ -122,11 +122,6 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         // mChart.setDrawLegend(false);
     }
-
-	protected int getLayout()
-	{
-		return R.layout.activity_barchart;
-	}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
