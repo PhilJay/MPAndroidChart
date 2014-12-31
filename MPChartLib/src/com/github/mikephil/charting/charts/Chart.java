@@ -1350,7 +1350,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @return
      */
     @Override
-	public float getYChartMin() {
+    public float getYChartMin() {
         return mYChartMin;
     }
 
@@ -1360,7 +1360,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @return
      */
     @Override
-	public float getYChartMax() {
+    public float getYChartMax() {
         return mYChartMax;
     }
 
@@ -1379,7 +1379,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @return
      */
     @Override
-	public float getDeltaX() {
+    public float getDeltaX() {
         return mDeltaX;
     }
 
@@ -1389,7 +1389,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @return
      */
     @Override
-	public float getDeltaY() {
+    public float getDeltaY() {
         return mDeltaY;
     }
 
@@ -1519,22 +1519,22 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     @Override
-	public float getOffsetLeft() {
+    public float getOffsetLeft() {
         return mOffsetLeft;
     }
 
     @Override
-	public float getOffsetBottom() {
+    public float getOffsetBottom() {
         return mOffsetBottom;
     }
 
     @Override
-	public float getOffsetRight() {
+    public float getOffsetRight() {
         return mOffsetRight;
     }
 
     @Override
-	public float getOffsetTop() {
+    public float getOffsetTop() {
         return mOffsetTop;
     }
 
@@ -1641,7 +1641,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @return
      */
     @Override
-	public RectF getContentRect() {
+    public RectF getContentRect() {
         return mContentRect;
     }
 
@@ -2204,11 +2204,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-    	if (w > 0 && h > 0) {
-	        // create a new bitmap with the new dimensions
-	        mDrawBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_4444);
-	        mDrawCanvas = new Canvas(mDrawBitmap);
-    	}
+        if (w > 0 && h > 0) {
+            // create a new bitmap with the new dimensions
+            mDrawBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_4444);
+            mDrawCanvas = new Canvas(mDrawBitmap);
+        }
 
         // prepare content rect and matrices
         prepareContentRect();
