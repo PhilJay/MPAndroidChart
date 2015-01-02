@@ -22,7 +22,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.ChartData;
@@ -43,7 +42,6 @@ import com.github.mikephil.charting.utils.ValueFormatter;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.animation.ValueAnimator;
 import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -53,7 +51,7 @@ import java.util.ArrayList;
 
 /**
  * Baseclass of all Chart-Views.
- * 
+ *
  * @author Philipp Jahoda
  */
 public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entry>>> extends
@@ -321,7 +319,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * Sets a new data object for the chart. The data object contains all values
      * and information needed for displaying.
-     * 
+     *
      * @param data
      */
     public void setData(T data) {
@@ -370,7 +368,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * Returns true if the chart is empty (meaning it's data object is either
      * null or contains no entries).
-     * 
+     *
      * @return
      */
     public boolean isEmpty() {
@@ -924,7 +922,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * Returns true if there are values to highlight, false if there are no
      * values to highlight. Checks if the highlight array is null, has a length
      * of zero or if the first object is null.
-     * 
+     *
      * @return
      */
     public boolean valuesToHighlight() {
@@ -938,7 +936,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * null or an empty array to undo all highlighting. This should be used to
      * programmatically highlight values. This DOES NOT generate a callback to
      * the OnChartValueSelectedListener.
-     * 
+     *
      * @param highs
      */
     public void highlightValues(Highlight[] highs) {
@@ -953,7 +951,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * Highlights the value at the given x-index in the given DataSet. Provide
      * -1 as the x-index to undo all highlighting.
-     * 
+     *
      * @param xIndex
      * @param dataSetIndex
      */
@@ -974,7 +972,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * Highlights the value selected by touch gesture. Unlike
      * highlightValues(...), this generates a callback to the
      * OnChartValueSelectedListener.
-     * 
+     *
      * @param highs
      */
     public void highlightTouch(Highlight high) {
@@ -1062,14 +1060,14 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * Returns the actual position in pixels of the MarkerView for the given
      * Entry in the given DataSet.
-     * 
+     *
      * @param xIndex
      * @param dataSetIndex
      * @return
      */
     private float[] getMarkerPosition(Entry e, int dataSetIndex) {
 
-        float xPos = (float) e.getXIndex();
+        float xPos = e.getXIndex();
 
         // make sure the marker is in the center of the bars in BarChart and
         // CandleStickChart
@@ -1135,7 +1133,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * Animates the drawing / rendering of the chart on both x- and y-axis with
      * the specified animation time. If animate(...) is called, no further
      * calling of invalidate() is necessary to refresh the chart.
-     * 
+     *
      * @param durationMillisX
      * @param durationMillisY
      */
@@ -1164,7 +1162,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * Animates the rendering of the chart on the x-axis with the specified
      * animation time. If animate(...) is called, no further calling of
      * invalidate() is necessary to refresh the chart.
-     * 
+     *
      * @param durationMillis
      */
     public void animateX(int durationMillis) {
@@ -1179,7 +1177,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * Animates the rendering of the chart on the y-axis with the specified
      * animation time. If animate(...) is called, no further calling of
      * invalidate() is necessary to refresh the chart.
-     * 
+     *
      * @param durationMillis
      */
     public void animateY(int durationMillis) {
@@ -1201,7 +1199,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * This gets the y-phase that is used to animate the values.
-     * 
+     *
      * @return
      */
     public float getPhaseY() {
@@ -1210,7 +1208,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * This modifys the y-phase that is used to animate the values.
-     * 
+     *
      * @param phase
      */
     public void setPhaseY(float phase) {
@@ -1219,7 +1217,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * This gets the x-phase that is used to animate the values.
-     * 
+     *
      * @return
      */
     public float getPhaseX() {
@@ -1228,7 +1226,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * This modifys the x-phase that is used to animate the values.
-     * 
+     *
      * @param phase
      */
     public void setPhaseX(float phase) {
@@ -1274,7 +1272,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * Returns the canvas object the chart uses for drawing.
-     * 
+     *
      * @return
      */
     public Canvas getCanvas() {
@@ -1283,7 +1281,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * set a selection listener for the chart
-     * 
+     *
      * @param l
      */
     public void setOnChartValueSelectedListener(OnChartValueSelectedListener l) {
@@ -1293,7 +1291,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * Sets a gesture-listener for the chart for custom callbacks when executing
      * gestures on the chart surface.
-     * 
+     *
      * @param l
      */
     public void setOnChartGestureListener(OnChartGestureListener l) {
@@ -1302,7 +1300,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * Returns the custom gesture listener.
-     * 
+     *
      * @return
      */
     public OnChartGestureListener getOnChartGestureListener() {
@@ -1312,7 +1310,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * If set to true, value highlighting is enabled which means that values can
      * be highlighted programmatically or by touch gesture.
-     * 
+     *
      * @param enabled
      */
     public void setHighlightEnabled(boolean enabled) {
@@ -1321,7 +1319,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * returns true if highlighting of values is enabled, false if not
-     * 
+     *
      * @return
      */
     public boolean isHighlightEnabled() {
@@ -1330,7 +1328,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * returns the total value (sum) of all y-values across all DataSets
-     * 
+     *
      * @return
      */
     public float getYValueSum() {
@@ -1339,7 +1337,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * returns the current y-max value across all DataSets
-     * 
+     *
      * @return
      */
     public float getYMax() {
@@ -1348,25 +1346,27 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * returns the lowest value the chart can display
-     * 
+     *
      * @return
      */
+    @Override
     public float getYChartMin() {
         return mYChartMin;
     }
 
     /**
      * returns the highest value the chart can display
-     * 
+     *
      * @return
      */
+    @Override
     public float getYChartMax() {
         return mYChartMax;
     }
 
     /**
      * returns the current y-min value across all DataSets
-     * 
+     *
      * @return
      */
     public float getYMin() {
@@ -1375,25 +1375,27 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * Get the total number of X-values.
-     * 
+     *
      * @return
      */
+    @Override
     public float getDeltaX() {
         return mDeltaX;
     }
 
     /**
      * Returns the total range of values (on y-axis) the chart displays.
-     * 
+     *
      * @return
      */
+    @Override
     public float getDeltaY() {
         return mDeltaY;
     }
 
     /**
      * returns the average value of all values the chart holds
-     * 
+     *
      * @return
      */
     public float getAverage() {
@@ -1403,7 +1405,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * returns the average value for a specific DataSet (with a specific label)
      * in the chart
-     * 
+     *
      * @param dataSetLabel
      * @return
      */
@@ -1417,7 +1419,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * returns the total number of values the chart holds (across all DataSets)
-     * 
+     *
      * @return
      */
     public int getValueCount() {
@@ -1426,7 +1428,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * Returns the center point of the chart (the whole View) in pixels.
-     * 
+     *
      * @return
      */
     public PointF getCenter() {
@@ -1436,7 +1438,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * Returns the center of the chart taking offsets under consideration.
      * (returns the center of the content rectangle)
-     * 
+     *
      * @return
      */
     public PointF getCenterOffsets() {
@@ -1445,7 +1447,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * sets the size of the description text in pixels, min 6f, max 16f
-     * 
+     *
      * @param size
      */
     public void setDescriptionTextSize(float size) {
@@ -1461,7 +1463,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * Set this to true to enable logcat outputs for the chart. Default:
      * disabled
-     * 
+     *
      * @param enabled
      */
     public void setLogEnabled(boolean enabled) {
@@ -1471,7 +1473,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * set a description text that appears in the bottom right corner of the
      * chart, size = Y-legend text size
-     * 
+     *
      * @param desc
      */
     public void setDescription(String desc) {
@@ -1481,7 +1483,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * Sets the text that informs the user that there is no data available with
      * which to draw the chart.
-     * 
+     *
      * @param text
      */
     public void setNoDataText(String text) {
@@ -1491,7 +1493,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * Sets descriptive text to explain to the user why there is no chart
      * available Defaults to empty if not set
-     * 
+     *
      * @param text
      */
     public void setNoDataTextDescription(String text) {
@@ -1502,7 +1504,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * Sets the offsets from the border of the view to the actual chart in every
      * direction manually. Provide density pixels -> they are then rendered to
      * pixels inside the chart
-     * 
+     *
      * @param left
      * @param right
      * @param top
@@ -1516,18 +1518,22 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         mOffsetTop = Utils.convertDpToPixel(top);
     }
 
+    @Override
     public float getOffsetLeft() {
         return mOffsetLeft;
     }
 
+    @Override
     public float getOffsetBottom() {
         return mOffsetBottom;
     }
 
+    @Override
     public float getOffsetRight() {
         return mOffsetRight;
     }
 
+    @Override
     public float getOffsetTop() {
         return mOffsetTop;
     }
@@ -1535,7 +1541,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * Set this to false to disable all gestures and touches on the chart,
      * default: true
-     * 
+     *
      * @param enabled
      */
     public void setTouchEnabled(boolean enabled) {
@@ -1546,7 +1552,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * set this to true to draw y-values on the chart NOTE (for bar and
      * linechart): if "maxvisiblecount" is reached, no values will be drawn even
      * if this is enabled
-     * 
+     *
      * @param enabled
      */
     public void setDrawYValues(boolean enabled) {
@@ -1555,7 +1561,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * sets the view that is displayed when a value is clicked on the chart
-     * 
+     *
      * @param v
      */
     public void setMarkerView(MarkerView v) {
@@ -1564,7 +1570,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * returns the view that is set as a marker view for the chart
-     * 
+     *
      * @return
      */
     public MarkerView getMarkerView() {
@@ -1574,7 +1580,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * if set to true, units are drawn next to values in the chart, default:
      * false
-     * 
+     *
      * @param enabled
      */
     public void setDrawUnitsInChart(boolean enabled) {
@@ -1583,7 +1589,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * sets the unit that is drawn next to the values in the chart, e.g. %
-     * 
+     *
      * @param unit
      */
     public void setUnit(String unit) {
@@ -1592,7 +1598,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * Returns the unit that is used for the values in the chart
-     * 
+     *
      * @return
      */
     public String getUnit() {
@@ -1601,7 +1607,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * set this to true to draw the legend, false if not
-     * 
+     *
      * @param enabled
      */
     public void setDrawLegend(boolean enabled) {
@@ -1610,7 +1616,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * returns true if drawing the legend is enabled, false if not
-     * 
+     *
      * @return
      */
     public boolean isDrawLegendEnabled() {
@@ -1621,7 +1627,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * Returns the legend object of the chart. This method can be used to
      * customize the automatically generated legend. IMPORTANT: this will return
      * null if no data has been set for the chart when calling this method
-     * 
+     *
      * @return
      */
     public Legend getLegend() {
@@ -1631,9 +1637,10 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * Returns the rectangle that defines the borders of the chart-value surface
      * (into which the actual values are drawn).
-     * 
+     *
      * @return
      */
+    @Override
     public RectF getContentRect() {
         return mContentRect;
     }
@@ -1642,7 +1649,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * Returns the Transformer class that contains all matrices and is
      * responsible for transforming values into pixels on the screen and
      * backwards.
-     * 
+     *
      * @return
      */
     public Transformer getTransformer() {
@@ -1719,7 +1726,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * set a new paint object for the specified parameter in the chart e.g.
      * Chart.PAINT_VALUES
-     * 
+     *
      * @param p the new paint object
      * @param which Chart.PAINT_VALUES, Chart.PAINT_GRID, Chart.PAINT_VALUES,
      *            ...
@@ -1759,7 +1766,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * Returns the paint object associated with the provided constant.
-     * 
+     *
      * @param which e.g. Chart.PAINT_LEGEND_LABEL
      * @return
      */
@@ -1791,7 +1798,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * returns true if drawing the marker-view is enabled when tapping on values
      * (use the setMarkerView(View v) method to specify a marker view)
-     * 
+     *
      * @return
      */
     public boolean isDrawMarkerViewEnabled() {
@@ -1802,7 +1809,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * Set this to true to draw a user specified marker-view when tapping on
      * chart values (use the setMarkerView(MarkerView mv) method to specify a
      * marker view). Default: true
-     * 
+     *
      * @param enabled
      */
     public void setDrawMarkerViews(boolean enabled) {
@@ -1814,7 +1821,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * no formatter is set, the chart will automatically determine a reasonable
      * formatting (concerning decimals) for all the values that are drawn inside
      * the chart. Set this to NULL to re-enable auto formatting.
-     * 
+     *
      * @param f
      */
     public void setValueFormatter(ValueFormatter f) {
@@ -1828,7 +1835,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * Returns the formatter used for drawing the values inside the chart.
-     * 
+     *
      * @return
      */
     public ValueFormatter getValueFormatter() {
@@ -1837,7 +1844,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * sets the draw color for the value paint object
-     * 
+     *
      * @param color
      */
     public void setValueTextColor(int color) {
@@ -1846,7 +1853,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * Sets the font size of the values that are drawn inside the chart.
-     * 
+     *
      * @param size
      */
     public void setValueTextSize(float size) {
@@ -1855,7 +1862,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * returns true if y-value drawing is enabled, false if not
-     * 
+     *
      * @return
      */
     public boolean isDrawYValuesEnabled() {
@@ -1864,7 +1871,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * returns the x-value at the given index
-     * 
+     *
      * @param index
      * @return
      */
@@ -1878,7 +1885,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * returns the y-value for the given index from the DataSet with the given
      * label
-     * 
+     *
      * @param index
      * @param dataSetLabel
      * @return
@@ -1890,7 +1897,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * returns the y-value for the given x-index and DataSet index
-     * 
+     *
      * @param index
      * @param dataSet
      * @return
@@ -1903,7 +1910,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * returns the DataSet with the given index in the DataSet array held by the
      * ChartData object.
-     * 
+     *
      * @param index
      * @return
      */
@@ -1914,7 +1921,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * returns the DataSet with the given label that is stored in the ChartData
      * object.
-     * 
+     *
      * @param type
      * @return
      */
@@ -1926,7 +1933,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * returns the Entry object from the first DataSet stored in the ChartData
      * object. If multiple DataSets are used, use getEntry(index, type) or
      * getEntryByDataSetIndex(xIndex, dataSetIndex);
-     * 
+     *
      * @param index
      * @return
      */
@@ -1937,7 +1944,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * returns the Entry object at the given index from the DataSet with the
      * given label.
-     * 
+     *
      * @param index
      * @param dataSetLabel
      * @return
@@ -1950,7 +1957,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * Returns the corresponding Entry object at the given xIndex from the given
      * DataSet. INFORMATION: This method does calculations at runtime. Do not
      * over-use in performance critical situations.
-     * 
+     *
      * @param xIndex
      * @param dataSetIndex
      * @return
@@ -1964,7 +1971,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * objects give information about the value at the selected index and the
      * DataSet it belongs to. INFORMATION: This method does calculations at
      * runtime. Do not over-use in performance critical situations.
-     * 
+     *
      * @param xIndex
      * @return
      */
@@ -1989,7 +1996,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * Get all Entry objects at the given index across all DataSets.
      * INFORMATION: This method does calculations at runtime. Do not over-use in
      * performance critical situations.
-     * 
+     *
      * @param xIndex
      * @return
      */
@@ -2015,7 +2022,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * Returns the ChartData object that ORIGINALLY has been set for the chart.
      * It contains all data in an unaltered state, before any filtering
      * algorithms have been applied.
-     * 
+     *
      * @return
      */
     public T getData() {
@@ -2024,7 +2031,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * returns the percentage the given value has of the total y-value sum
-     * 
+     *
      * @param val
      * @return
      */
@@ -2034,7 +2041,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * sets a typeface for the value-paint
-     * 
+     *
      * @param t
      */
     public void setValueTypeface(Typeface t) {
@@ -2043,7 +2050,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * sets the typeface for the description paint
-     * 
+     *
      * @param t
      */
     public void setDescriptionTypeface(Typeface t) {
@@ -2052,7 +2059,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * Returns the bitmap that represents the chart.
-     * 
+     *
      * @return
      */
     public Bitmap getChartBitmap() {
@@ -2080,7 +2087,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * the sdcard leaving the path empty "" will put the saved file directly on
      * the SD card chart is saved as a PNG image, example:
      * saveToPath("myfilename", "foldername1/foldername2");
-     * 
+     *
      * @param title
      * @param pathOnSD e.g. "folder1/folder2/folder3"
      * @return returns true on success, false on error
@@ -2114,7 +2121,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * Saves the current state of the chart to the gallery as a JPEG image. The
      * filename and compression can be set. 0 == maximum compression, 100 = low
      * compression (high quality). NOTE: Needs permission WRITE_EXTERNAL_STORAGE
-     * 
+     *
      * @param fileName e.g. "my_image"
      * @param quality e.g. 50, min = 0, max = 100
      * @return returns true if saving was successfull, false if not
@@ -2197,10 +2204,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-
-        // create a new bitmap with the new dimensions
-        mDrawBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_4444);
-        mDrawCanvas = new Canvas(mDrawBitmap);
+        if (w > 0 && h > 0) {
+            // create a new bitmap with the new dimensions
+            mDrawBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_4444);
+            mDrawCanvas = new Canvas(mDrawBitmap);
+        }
 
         // prepare content rect and matrices
         prepareContentRect();
@@ -2212,7 +2220,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * Default formatter used for formatting values. Uses a DecimalFormat with
      * pre-calculated number of digits (depending on max and min value).
-     * 
+     *
      * @author Philipp Jahoda
      */
     private class DefaultValueFormatter implements ValueFormatter {
