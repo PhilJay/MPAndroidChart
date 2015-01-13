@@ -239,8 +239,13 @@ public class PieChart extends PieRadarChartBase<PieData> {
                     continue;
 
                 float shift = set.getSelectionShift();
-                // make the box containing current arc larger equally
-                // in every dimension, to preserve shape of arc
+
+                /**
+                 * Make the box containing current arc larger equally in every
+                 * dimension, to preserve shape of arc. Code provided by:
+                 * 
+                 * @link https://github.com/wogg
+                 */
                 RectF highlighted = new RectF(mCircleBox.left - shift,
                         mCircleBox.top - shift,
                         mCircleBox.right + shift,
@@ -555,8 +560,10 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * Set the hole in the center of the PieChart transparent.
-     *
+     * Set the hole in the center of the PieChart transparent. Thank you, code
+     * provided by:
+     * 
+     * @link https://github.com/wogg
      * @param enable
      */
     public void setHoleColorTransparent(boolean enable) {
