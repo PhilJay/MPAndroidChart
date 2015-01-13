@@ -167,7 +167,10 @@ public class LineChart extends BarLineChartBase<LineData> {
 
 		// the path for the cubic-spline
 		Path spline = new Path();
-
+		
+		Path spline2 = new Path();
+		float x1, y1, x2, y2, x3, y3;
+		
 		ArrayList<CPoint> points = new ArrayList<CPoint>();
 		for (Entry e : entries)
 			points.add(new CPoint(e.getXIndex(), e.getVal()));
@@ -196,40 +199,52 @@ public class LineChart extends BarLineChartBase<LineData> {
 
 				// create the cubic-spline path
 				if (j == 0) {
-					spline.moveTo(point.x, point.y * mPhaseY);
+					y1 = point.y * mPhaseY;
+					spline.moveTo(point.x, y1);
+					spline2.moveTo(point.x, y1);
 				}
 				else {
 					CPoint prev = points.get(j - 1);
-					spline.cubicTo(prev.x + prev.dx, (prev.y + prev.dy) * mPhaseY, point.x
-									- point.dx,
-							(point.y - point.dy) * mPhaseY, point.x, point.y * mPhaseY);
+					x1 = prev.x + prev.dx;
+					y1 = (prev.y + prev.dy) * mPhaseY;
+					x2 = point.x - point.dx;
+					y2 = (point.y - point.dy) * mPhaseY;
+					y3 = point.y * mPhaseY;
+					spline.cubicTo(x1, y1, x2, y2, point.x, y3);
+					spline2.cubicTo(x1, y1, x2, y2, point.x, y3);
 				}
 			}
 		}
 
 		// if filled is enabled, close the path
-		if (dataSet.isDrawFilledEnabled()) {
-			drawCubicFill(dataSet, entries, spline);
-		} else {
-			mRenderPaint.setStyle(Paint.Style.STROKE);
-		}
 
+		mRenderPaint.setStyle(Paint.Style.STROKE);
 		mTrans.pathValueToPixel(spline);
-
 		mDrawCanvas.drawPath(spline, mRenderPaint);
+		// if filled is enabled, close the path
+		if (dataSet.isDrawFilledEnabled()) {
+			drawCubicFill(dataSet, entries, spline2);
+		}
 
 	}
 
 	protected void drawCubicFill(LineDataSet dataSet, ArrayList<Entry> entries, Path spline)
 	{
-		float fillMin = mFillFormatter
-				.getFillLinePosition(dataSet, mData, mYChartMax, mYChartMin);
+		//float fillMin = mFillFormatter
+		//		.getFillLinePosition(dataSet, mData, mYChartMax, mYChartMin);
 
-		spline.lineTo((entries.size() - 1) * mPhaseX, fillMin);
-		spline.lineTo(0, fillMin);
-		spline.close();
+		//spline.lineTo((entries.size() - 1) * mPhaseX, fillMin);
+		//spline.lineTo(0, fillMin);
+		//spline.close();
 
 		mRenderPaint.setStyle(Paint.Style.FILL);
+		spline.close();
+        	mRenderPaint.setStyle(Paint.Style.FILL);
+        	mRenderPaint.setColor(dataSet.getFillColor());
+        	mRenderPaint.setAlpha(dataSet.getFillAlpha());
+        	mTrans.pathValueToPixel(spline);
+        	mDrawCanvas.drawPath(spline, mRenderPaint);
+        	mRenderPaint.setAlpha(255);
 	}
 
 	protected void drawLinear(LineDataSet dataSet, ArrayList<Entry> entries)
