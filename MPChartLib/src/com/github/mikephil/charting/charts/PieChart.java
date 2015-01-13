@@ -563,7 +563,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
      * Set the hole in the center of the PieChart transparent. Thank you, code
      * provided by:
      * 
-     * @link https://github.com/wogg
+     * @link https://github.com/tbarthel-fr
      * @param enable
      */
     public void setHoleColorTransparent(boolean enable) {

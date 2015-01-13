@@ -145,7 +145,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     protected Paint mLimitLinePaint;
 
     /** description text that appears in the bottom right corner of the chart */
-    protected String mDescription = "Description.";
+    protected String mDescription = "Description";
 
     /** flag that indicates if the chart has been fed with data yet */
     protected boolean mDataNotSet = true;
@@ -1048,11 +1048,24 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 // callbacks to update the content
                 mMarkerView.refreshContent(e, dataSetIndex);
 
+                // mMarkerView.measure(MeasureSpec.makeMeasureSpec(0,
+                // MeasureSpec.UNSPECIFIED),
+                // MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+                // mMarkerView.layout(0, 0, mMarkerView.getMeasuredWidth(),
+                // mMarkerView.getMeasuredHeight());
+                // mMarkerView.draw(mDrawCanvas, pos[0], pos[1]);
+
                 mMarkerView.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
                         MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
                 mMarkerView.layout(0, 0, mMarkerView.getMeasuredWidth(),
                         mMarkerView.getMeasuredHeight());
-                mMarkerView.draw(mDrawCanvas, pos[0], pos[1]);
+
+                if (pos[1] - mMarkerView.getHeight() <= 0) {
+                    float y = mMarkerView.getHeight() - pos[1];
+                    mMarkerView.draw(mDrawCanvas, pos[0], pos[1] + y);
+                } else {
+                    mMarkerView.draw(mDrawCanvas, pos[0], pos[1]);
+                }
             }
         }
     }
@@ -1477,6 +1490,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @param desc
      */
     public void setDescription(String desc) {
+        if (desc == null)
+            desc = "";
         this.mDescription = desc;
     }
 

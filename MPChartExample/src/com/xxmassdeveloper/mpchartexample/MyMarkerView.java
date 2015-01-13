@@ -9,6 +9,11 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.MarkerView;
 import com.github.mikephil.charting.utils.Utils;
 
+/**
+ * Custom implementation of the MarkerView.
+ * 
+ * @author Philipp Jahoda
+ */
 public class MyMarkerView extends MarkerView {
 
     private TextView tvContent;
@@ -33,5 +38,17 @@ public class MyMarkerView extends MarkerView {
 
             tvContent.setText("" + Utils.formatNumber(e.getVal(), 0, true));
         }
+    }
+
+    @Override
+    public int getXOffset() {
+        // this will center the marker-view horizontally
+        return -(getWidth() / 2);
+    }
+
+    @Override
+    public int getYOffset() {
+        // this will cause the marker-view to be above the selected value
+        return -getHeight();
     }
 }

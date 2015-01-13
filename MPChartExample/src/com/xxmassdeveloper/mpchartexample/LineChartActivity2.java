@@ -57,6 +57,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
 
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
+        mChart.setValueTextColor(Color.WHITE);
 
         mChart.setUnit(" $");
         mChart.setDrawUnitsInChart(true);

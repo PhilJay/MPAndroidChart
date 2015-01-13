@@ -71,7 +71,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
 
         // define an offset to change the original position of the marker
         // (optional)
-        mv.setOffsets(-mv.getMeasuredWidth() / 2, -mv.getMeasuredHeight());
+//        mv.setOffsets(-mv.getMeasuredWidth() / 2, -mv.getMeasuredHeight());
 
         // set the marker to the chart
         mChart.setMarkerView(mv);

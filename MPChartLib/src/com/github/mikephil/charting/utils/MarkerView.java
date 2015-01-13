@@ -17,12 +17,6 @@ import com.github.mikephil.charting.data.Entry;
  */
 public abstract class MarkerView extends RelativeLayout {
 
-    /** draw offset on the x-axis */
-    private float mXOffset = 0f;
-
-    /** draw offset on the y-axis */
-    private float mYOffset = 0f;
-
     /**
      * Constructor. Sets up the MarkerView with a custom layout resource.
      * 
@@ -63,8 +57,8 @@ public abstract class MarkerView extends RelativeLayout {
     public void draw(Canvas canvas, float posx, float posy) {
 
         // take offsets into consideration
-        posx += mXOffset;
-        posy += mYOffset;
+        posx += getXOffset();
+        posy += getYOffset();
 
         // translate to the correct position and draw
         canvas.translate(posx, posy);
@@ -83,35 +77,55 @@ public abstract class MarkerView extends RelativeLayout {
     public abstract void refreshContent(Entry e, int dataSetIndex);
 
     /**
-     * Set the position offset of the MarkerView. By default, the top left edge
-     * of the MarkerView is drawn directly where the selected value is at. In
-     * order to change that, offsets in pixels can be defined. Default offset is
-     * zero (0f) on both axes. For offsets dependent on the MarkerViews width
-     * and height, use getMeasuredWidth() / getMeasuredHeight().
-     * 
-     * @param x
-     * @param y
-     */
-    public void setOffsets(float x, float y) {
-        this.mXOffset = x;
-        this.mYOffset = y;
-    }
-
-    /**
-     * returns the x-offset that is set for the MarkerView
+     * Use this to return the desired offset you wish the MarkerView to have on
+     * the x-axis. By returning -(getWidth() / 2) you will center the MarkerView
+     * horizontally.
      * 
      * @return
      */
-    public float getXOffset() {
-        return mXOffset;
-    }
+    public abstract int getXOffset();
 
     /**
-     * returns the y-offset that is set for the MarkerView
+     * Use this to return the desired position offset you wish the MarkerView to
+     * have on the y-axis. By returning -getHeight() you will cause the
+     * MarkerView to be above the selected value.
      * 
      * @return
      */
-    public float getYOffset() {
-        return mYOffset;
-    }
+    public abstract int getYOffset();
+
+    // /**
+    // * Set the position offset of the MarkerView. By default, the top left
+    // edge
+    // * of the MarkerView is drawn directly where the selected value is at. In
+    // * order to change that, offsets in pixels can be defined. Default offset
+    // is
+    // * zero (0f) on both axes. For offsets dependent on the MarkerViews width
+    // * and height, use getMeasuredWidth() / getMeasuredHeight().
+    // *
+    // * @param x
+    // * @param y
+    // */
+    // public void setOffsets(float x, float y) {
+    // this.mXOffset = x;
+    // this.mYOffset = y;
+    // }
+    //
+    // /**
+    // * returns the x-offset that is set for the MarkerView
+    // *
+    // * @return
+    // */
+    // public float getXOffset() {
+    // return mXOffset;
+    // }
+    //
+    // /**
+    // * returns the y-offset that is set for the MarkerView
+    // *
+    // * @return
+    // */
+    // public float getYOffset() {
+    // return mYOffset;
+    // }
 }
