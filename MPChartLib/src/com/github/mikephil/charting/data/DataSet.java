@@ -90,11 +90,14 @@ public abstract class DataSet<T extends Entry> {
 
             Entry e = mYVals.get(i);
 
-            if (e.getVal() < mYMin)
-                mYMin = e.getVal();
+            if (e != null) {
 
-            if (e.getVal() > mYMax)
-                mYMax = e.getVal();
+                if (e.getVal() < mYMin)
+                    mYMin = e.getVal();
+
+                if (e.getVal() > mYMax)
+                    mYMax = e.getVal();
+            }
         }
     }
 
@@ -106,7 +109,9 @@ public abstract class DataSet<T extends Entry> {
         mYValueSum = 0;
 
         for (int i = 0; i < mYVals.size(); i++) {
-            mYValueSum += Math.abs(mYVals.get(i).getVal());
+            Entry e = mYVals.get(i);
+            if (e != null)
+                mYValueSum += Math.abs(e.getVal());
         }
     }
 
@@ -462,7 +467,7 @@ public abstract class DataSet<T extends Entry> {
     public int getColor(int index) {
         return mColors.get(index % mColors.size());
     }
-    
+
     /**
      * Returns the first color (index 0) of the colors-array this DataSet
      * contains.

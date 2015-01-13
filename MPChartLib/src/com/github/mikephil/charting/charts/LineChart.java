@@ -169,8 +169,11 @@ public class LineChart extends BarLineChartBase<LineData> {
 		Path spline = new Path();
 
 		ArrayList<CPoint> points = new ArrayList<CPoint>();
-		for (Entry e : entries)
-			points.add(new CPoint(e.getXIndex(), e.getVal()));
+		
+		for (Entry e : entries) {	    
+		    if(e != null)
+		        points.add(new CPoint(e.getXIndex(), e.getVal()));
+		}
 
 		if (points.size() > 1) {
 			for (int j = 0; j < points.size() * mPhaseX; j++) {
@@ -209,7 +212,7 @@ public class LineChart extends BarLineChartBase<LineData> {
 
 		// if filled is enabled, close the path
 		if (dataSet.isDrawFilledEnabled()) {
-			drawCubicFill(dataSet, entries, spline);
+			drawCubicFill(dataSet, spline);
 		} else {
 			mRenderPaint.setStyle(Paint.Style.STROKE);
 		}
@@ -217,15 +220,14 @@ public class LineChart extends BarLineChartBase<LineData> {
 		mTrans.pathValueToPixel(spline);
 
 		mDrawCanvas.drawPath(spline, mRenderPaint);
-
 	}
 
-	protected void drawCubicFill(LineDataSet dataSet, ArrayList<Entry> entries, Path spline)
+	protected void drawCubicFill(LineDataSet dataSet, Path spline)
 	{
 		float fillMin = mFillFormatter
 				.getFillLinePosition(dataSet, mData, mYChartMax, mYChartMin);
 
-		spline.lineTo((entries.size() - 1) * mPhaseX, fillMin);
+		spline.lineTo((mDeltaX + 1) * mPhaseX, fillMin);
 		spline.lineTo(0, fillMin);
 		spline.close();
 

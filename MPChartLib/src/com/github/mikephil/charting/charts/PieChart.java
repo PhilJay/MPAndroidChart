@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.PointF;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
@@ -543,13 +545,38 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * Sets the color for the hole that is drawn in the center of the piechart
-     * (if enabled).
+     * Sets the color for the hole that is drawn in the center of the PieChart
+     * (if enabled). NOTE: Use setHoleColorTransparent(boolean enabled) to make
+     * the hole transparent.
      * 
      * @param color
      */
     public void setHoleColor(int color) {
+        mHolePaint.setXfermode(null);
         mHolePaint.setColor(color);
+    }
+
+    /**
+     * Set the hole in the center of the PieChart transparent.
+     *
+     * @param enable
+     */
+    public void setHoleColorTransparent(boolean enable) {
+        if (enable) {
+            mHolePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+        } else {
+            mHolePaint.setXfermode(null);
+        }
+    }
+
+    /**
+     * Returns true if the hole in the center of the PieChart is transparent,
+     * false if not.
+     *
+     * @return true if hole is transparent.
+     */
+    public boolean isHoleTransparent() {
+        return mHolePaint.getXfermode() != null;
     }
 
     /**
