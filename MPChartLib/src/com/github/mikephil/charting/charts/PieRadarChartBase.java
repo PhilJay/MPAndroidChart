@@ -14,7 +14,6 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.listener.PieRadarChartTouchListener;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.github.mikephil.charting.utils.Utils;
-import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.nineoldandroids.animation.ObjectAnimator;
 
 /**

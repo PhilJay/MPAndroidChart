@@ -1661,7 +1661,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public void disableScroll() {
         ViewParent parent = getParent();
-        parent.requestDisallowInterceptTouchEvent(true);
+        if (parent != null)
+            parent.requestDisallowInterceptTouchEvent(true);
     }
 
     /**
@@ -1669,7 +1670,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public void enableScroll() {
         ViewParent parent = getParent();
-        parent.requestDisallowInterceptTouchEvent(false);
+        if (parent != null)
+            parent.requestDisallowInterceptTouchEvent(false);
     }
 
     /** paint for the grid lines (only line and barchart) */

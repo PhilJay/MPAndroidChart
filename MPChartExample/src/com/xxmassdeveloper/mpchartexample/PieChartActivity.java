@@ -1,7 +1,6 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -52,7 +51,8 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart = (PieChart) findViewById(R.id.chart1);
 
         // change the color of the center-hole
-        mChart.setHoleColor(Color.rgb(235, 235, 235));
+//        mChart.setHoleColor(Color.rgb(235, 235, 235));
+        mChart.setHoleColorTransparent(true);
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 

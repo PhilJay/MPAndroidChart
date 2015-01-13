@@ -231,8 +231,6 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
                 float sliceDegrees = mDrawAngles[xIndex];
 
-                float shiftangle = (float) Math.toRadians(angle + sliceDegrees / 2f);
-
                 PieDataSet set = mData
                         .getDataSetByIndex(mIndicesToHightlight[i]
                                 .getDataSetIndex());
@@ -241,12 +239,12 @@ public class PieChart extends PieRadarChartBase<PieData> {
                     continue;
 
                 float shift = set.getSelectionShift();
-                float xShift = shift * (float) Math.cos(shiftangle);
-                float yShift = shift * (float) Math.sin(shiftangle);
-
-                RectF highlighted = new RectF(mCircleBox.left + xShift, mCircleBox.top + yShift,
-                        mCircleBox.right
-                                + xShift, mCircleBox.bottom + yShift);
+                // make the box containing current arc larger equally
+                // in every dimension, to preserve shape of arc
+                RectF highlighted = new RectF(mCircleBox.left - shift,
+                        mCircleBox.top - shift,
+                        mCircleBox.right + shift,
+                        mCircleBox.bottom + shift);
 
                 mRenderPaint.setColor(set.getColor(xIndex));
 
