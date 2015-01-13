@@ -111,7 +111,7 @@ Features
 Usage
 =======
 
-In order to use the library, there are 2 options:
+In order to use the library, there are 3 options:
 
 **1. Gradle dependecy**
  - Add dependency to your build.gradle file:
