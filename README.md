@@ -113,13 +113,19 @@ Usage
 
 In order to use the library, there are 2 options:
 
-
-**1. jar file only**
+**1. Gradle dependecy**
+ - Add dependency to your build.gradle file:
+ 
+ ```gradle
+compile 'org.quanqi:mpandroidchart:1.7.5'
+ ```
+ 
+**2. jar file only**
  - Download the [**latest .jar file**](https://github.com/PhilJay/MPAndroidChart/releases) from the releases section
  - Copy the **mpandroidchartlibrary-.jar** file into the `libs` folder of your Android application project
  - Start using the library
  
-**2. clone whole repository**
+**3. clone whole repository**
  - Open your **commandline-input** and navigate to your desired destination folder (where you want to put the library)
  - Use the command `git clone https://github.com/PhilJay/MPAndroidChart.git` to download the full MPAndroidChart repository to your computer (this includes the folder of the library project as well as the example project)
  - Import the library folder (`MPChartLib`) into your Eclipse workspace, using `File-->Import-->Android-->Existing Android Code` and then choose the library folder from your file system and press `Finish`.
