@@ -19,6 +19,6 @@ Notification Analyser
 https://play.google.com/store/apps/details?id=com.tierep.notificationanalyser
 
 Bluetooth Terminal/Graphics
-https://play.google.com/store/apps/details?id=com.emrctn.BluetoothGraphics&hl=de
+https://play.google.com/store/apps/details?id=com.emrctn.BluetoothGraphics
 
 
