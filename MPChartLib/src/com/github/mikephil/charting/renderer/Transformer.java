@@ -56,7 +56,8 @@ public class Transformer {
     }
 
     /**
-     * Prepares the matrix that transforms values to pixels.
+     * Prepares the matrix that transforms values to pixels. Calculates the
+     * scale factors from the charts size and offsets.
      * 
      * @param chart
      */
@@ -68,6 +69,20 @@ public class Transformer {
                 .getOffsetBottom()) / chart.getDeltaY());
 
         // setup all matrices
+        mMatrixValueToPx.reset();
+        mMatrixValueToPx.postTranslate(0, -chart.getYChartMin());
+        mMatrixValueToPx.postScale(scaleX, -scaleY);
+    }
+
+    /**
+     * Prepares the transformation matrix with the specified scales.
+     * 
+     * @param chart
+     * @param scaleX
+     * @param scaleY
+     */
+    public void prepareMatrixValuePx(ChartInterface chart, float scaleX, float scaleY) {
+
         mMatrixValueToPx.reset();
         mMatrixValueToPx.postTranslate(0, -chart.getYChartMin());
         mMatrixValueToPx.postScale(scaleX, -scaleY);

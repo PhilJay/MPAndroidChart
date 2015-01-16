@@ -118,7 +118,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
         // add data
         setData(45, 100);
-
         mChart.animateX(2500);
 
 //        // restrain the maximum scale-out factor

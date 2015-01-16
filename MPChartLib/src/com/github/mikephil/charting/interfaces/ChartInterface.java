@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.interfaces;
 
+import android.graphics.PointF;
 import android.graphics.RectF;
 import android.view.View;
 
@@ -31,6 +32,10 @@ public interface ChartInterface {
     public int getWidth();
 
     public int getHeight();
+    
+    public PointF getCenterOfView();
+    
+    public PointF getCenterOffsets();
     
     public RectF getContentRect();
     

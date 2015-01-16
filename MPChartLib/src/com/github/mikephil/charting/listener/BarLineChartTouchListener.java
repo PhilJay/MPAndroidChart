@@ -424,7 +424,6 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
         OnChartGestureListener l = mChart.getOnChartGestureListener();
 
         if (l != null) {
-
             l.onChartSingleTapped(e);
         }
 

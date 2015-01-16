@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.ChartData;
@@ -42,6 +43,7 @@ import com.github.mikephil.charting.utils.ValueFormatter;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.animation.ValueAnimator;
 import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -1454,6 +1456,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      *
      * @return
      */
+    @Override
     public PointF getCenterOffsets() {
         return new PointF(mContentRect.centerX(), mContentRect.centerY());
     }
@@ -1517,8 +1520,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * Sets the offsets from the border of the view to the actual chart in every
-     * direction manually. Provide density pixels -> they are then rendered to
-     * pixels inside the chart
+     * direction manually. This method needs to be recalled everytime a new data
+     * object is set for the chart. Provide density pixels -> they are then
+     * rendered to pixels inside the chart.
      *
      * @param left
      * @param right
@@ -1531,6 +1535,10 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         mOffsetLeft = Utils.convertDpToPixel(left);
         mOffsetRight = Utils.convertDpToPixel(right);
         mOffsetTop = Utils.convertDpToPixel(top);
+
+        mTrans.prepareMatrixValuePx(this);
+        mTrans.prepareMatrixOffset(this);
+        prepareContentRect();
     }
 
     @Override
@@ -2259,6 +2267,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     @Override
     public View getChartView() {
         return this;
+    }
+
+    @Override
+    public PointF getCenterOfView() {
+        return getCenter();
     }
 
     // @Override
