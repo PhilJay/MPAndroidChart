@@ -262,47 +262,42 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     @Override
-    protected void drawData() {
+    protected void drawDataSet(int index) {
 
         float angle = mRotationAngle;
 
-        ArrayList<PieDataSet> dataSets = mData.getDataSets();
-
         int cnt = 0;
 
-        for (int i = 0; i < mData.getDataSetCount(); i++) {
+        PieDataSet dataSet = mData.getDataSets().get(index);
+        ArrayList<Entry> entries = dataSet.getYVals();
 
-            PieDataSet dataSet = dataSets.get(i);
-            ArrayList<Entry> entries = dataSet.getYVals();
+        for (int j = 0; j < entries.size(); j++) {
 
-            for (int j = 0; j < entries.size(); j++) {
+            float newangle = mDrawAngles[cnt];
+            float sliceSpace = dataSet.getSliceSpace();
 
-                float newangle = mDrawAngles[cnt];
-                float sliceSpace = dataSet.getSliceSpace();
+            Entry e = entries.get(j);
 
-                Entry e = entries.get(j);
+            // draw only if the value is greater than zero
+            if ((Math.abs(e.getVal()) > 0.000001)) {
 
-                // draw only if the value is greater than zero
-                if ((Math.abs(e.getVal()) > 0.000001)) {
+                if (!needsHighlight(e.getXIndex(), index)) {
 
-                    if (!needsHighlight(e.getXIndex(), i)) {
-
-                        mRenderPaint.setColor(dataSet.getColor(j));
-                        mDrawCanvas.drawArc(mCircleBox, angle + sliceSpace / 2f, newangle * mPhaseY
-                                - sliceSpace / 2f, true, mRenderPaint);
-                    }
-
-                    // if(sliceSpace > 0f) {
-                    //
-                    // PointF outer = getPosition(c, radius, angle);
-                    // PointF inner = getPosition(c, radius * mHoleRadiusPercent
-                    // / 100f, angle);
-                    // }
+                    mRenderPaint.setColor(dataSet.getColor(j));
+                    mDrawCanvas.drawArc(mCircleBox, angle + sliceSpace / 2f, newangle * mPhaseY
+                            - sliceSpace / 2f, true, mRenderPaint);
                 }
 
-                angle += newangle * mPhaseX;
-                cnt++;
+                // if(sliceSpace > 0f) {
+                //
+                // PointF outer = getPosition(c, radius, angle);
+                // PointF inner = getPosition(c, radius * mHoleRadiusPercent
+                // / 100f, angle);
+                // }
             }
+
+            angle += newangle * mPhaseX;
+            cnt++;
         }
     }
 

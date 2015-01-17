@@ -193,9 +193,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     }
 
     @Override
-    protected void drawData() {
-
-        ArrayList<RadarDataSet> dataSets = mData.getDataSets();
+    protected void drawDataSet(int index) {
 
         float sliceangle = getSliceAngle();
 
@@ -205,44 +203,41 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
         PointF c = getCenterOffsets();
 
-        for (int i = 0; i < mData.getDataSetCount(); i++) {
+        RadarDataSet dataSet = mData.getDataSets().get(index);
+        ArrayList<Entry> entries = dataSet.getYVals();
 
-            RadarDataSet dataSet = dataSets.get(i);
-            ArrayList<Entry> entries = dataSet.getYVals();
+        Path surface = new Path();
 
-            Path surface = new Path();
+        for (int j = 0; j < entries.size(); j++) {
 
-            for (int j = 0; j < entries.size(); j++) {
+            mRenderPaint.setColor(dataSet.getColor(j));
 
-                mRenderPaint.setColor(dataSet.getColor(j));
+            Entry e = entries.get(j);
 
-                Entry e = entries.get(j);
+            PointF p = getPosition(c, e.getVal() * factor, sliceangle * j + mRotationAngle);
 
-                PointF p = getPosition(c, e.getVal() * factor, sliceangle * j + mRotationAngle);
-
-                if (j == 0)
-                    surface.moveTo(p.x, p.y);
-                else
-                    surface.lineTo(p.x, p.y);
-            }
-
-            surface.close();
-
-            // draw filled
-            if (dataSet.isDrawFilledEnabled()) {
-                mRenderPaint.setStyle(Paint.Style.FILL);
-                mRenderPaint.setAlpha(dataSet.getFillAlpha());
-                mDrawCanvas.drawPath(surface, mRenderPaint);
-                mRenderPaint.setAlpha(255);
-            }
-
-            mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
-            mRenderPaint.setStyle(Paint.Style.STROKE);
-
-            // draw the line (only if filled is disabled or alpha is below 255)
-            if (!dataSet.isDrawFilledEnabled() || dataSet.getFillAlpha() < 255)
-                mDrawCanvas.drawPath(surface, mRenderPaint);
+            if (j == 0)
+                surface.moveTo(p.x, p.y);
+            else
+                surface.lineTo(p.x, p.y);
         }
+
+        surface.close();
+
+        // draw filled
+        if (dataSet.isDrawFilledEnabled()) {
+            mRenderPaint.setStyle(Paint.Style.FILL);
+            mRenderPaint.setAlpha(dataSet.getFillAlpha());
+            mDrawCanvas.drawPath(surface, mRenderPaint);
+            mRenderPaint.setAlpha(255);
+        }
+
+        mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
+        mRenderPaint.setStyle(Paint.Style.STROKE);
+
+        // draw the line (only if filled is disabled or alpha is below 255)
+        if (!dataSet.isDrawFilledEnabled() || dataSet.getFillAlpha() < 255)
+            mDrawCanvas.drawPath(surface, mRenderPaint);
     }
 
     /**

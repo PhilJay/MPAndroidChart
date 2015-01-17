@@ -895,9 +895,26 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     protected abstract void drawValues();
 
     /**
-     * draws the actual data
+     * Draws the actual data by calling drawDataSet(...) for each DataSet. Skips
+     * DataSets that are set invisible.
      */
-    protected abstract void drawData();
+    protected void drawData() {
+
+        for (int i = 0; i < mData.getDataSetCount(); i++) {
+
+            DataSet<?> ds = mData.getDataSets().get(i);
+
+            if (ds.isVisible())
+                drawDataSet(i);
+        }
+    }
+
+    /**
+     * Draws the DataSet at the given index.
+     * 
+     * @param index
+     */
+    protected abstract void drawDataSet(int index);
 
     /**
      * draws additional stuff, whatever that might be

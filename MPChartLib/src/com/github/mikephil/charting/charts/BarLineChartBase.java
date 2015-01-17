@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarLineScatterCandleData;
 import com.github.mikephil.charting.data.BarLineScatterCandleRadarDataSet;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.interfaces.OnDrawListener;
@@ -928,6 +929,16 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             }
         }
     }
+
+//    @Override
+//    protected void drawData() {
+//        for (int i = 0; i < mData.getDataSetCount(); i++) {
+//
+//            DataSet<?> ds = mData.getDataSets().get(i);
+//            if (ds.isVisible())
+//                drawDataSet(i);
+//        }
+//    }
 
     /**
      * returns true if the specified point (x-axis) exceeds the limits of what

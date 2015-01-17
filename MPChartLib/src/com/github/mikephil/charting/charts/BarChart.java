@@ -123,7 +123,7 @@ public class BarChart extends BarLineChartBase<BarData> {
 
             int dataSetIndex = h.getDataSetIndex();
             BarDataSet set = (BarDataSet) mData.getDataSetByIndex(dataSetIndex);
-            
+
             if (set == null)
                 continue;
 
@@ -168,43 +168,60 @@ public class BarChart extends BarLineChartBase<BarData> {
     }
 
     @Override
-    protected void drawData() {
-
-        ArrayList<BarDataSet> dataSets = mData.getDataSets();
-        int setCount = mData.getDataSetCount();
-
+    protected void drawDataSet(int index) {
+        
         // the space between bar-groups
         float space = mData.getGroupSpace();
 
-        // 2D drawing
-        for (int i = 0; i < setCount; i++) {
+        BarDataSet dataSet = mData.getDataSets().get(index);
+        boolean noStacks = dataSet.getStackSize() == 1 ? true : false;
 
-            BarDataSet dataSet = dataSets.get(i);
-            boolean noStacks = dataSet.getStackSize() == 1 ? true : false;
+        ArrayList<BarEntry> entries = dataSet.getYVals();
 
-            ArrayList<BarEntry> entries = dataSet.getYVals();
+        // do the drawing
+        for (int j = 0; j < dataSet.getEntryCount() * mPhaseX; j++) {
 
-            // do the drawing
-            for (int j = 0; j < dataSet.getEntryCount() * mPhaseX; j++) {
+            BarEntry e = entries.get(j);
 
-                BarEntry e = entries.get(j);
+            // calculate the x-position, depending on datasetcount
+            float x = e.getXIndex() + j * (mData.getDataSetCount() - 1) + index + space * j + space / 2f;
+            float y = e.getVal();
 
-                // calculate the x-position, depending on datasetcount
-                float x = e.getXIndex() + j * (setCount - 1) + i + space * j + space / 2f;
-                float y = e.getVal();
+            // no stacks
+            if (noStacks) {
 
-                // no stacks
-                if (noStacks) {
+                prepareBar(x, y, dataSet.getBarSpace());
+
+                // avoid drawing outofbounds values
+                if (isOffContentRight(mBarRect.left))
+                    break;
+
+                if (isOffContentLeft(mBarRect.right)) {
+                    continue;
+                }
+
+                // if drawing the bar shadow is enabled
+                if (mDrawBarShadow) {
+                    mRenderPaint.setColor(dataSet.getBarShadowColor());
+                    mDrawCanvas.drawRect(mBarShadow, mRenderPaint);
+                }
+
+                // Set the color for the currently drawn value. If the index
+                // is
+                // out of bounds, reuse colors.
+                mRenderPaint.setColor(dataSet.getColor(j));
+                mDrawCanvas.drawRect(mBarRect, mRenderPaint);
+
+            } else { // stacked bars
+
+                float[] vals = e.getVals();
+
+                // we still draw stacked bars, but there could be one
+                // non-stacked
+                // in between
+                if (vals == null) {
 
                     prepareBar(x, y, dataSet.getBarSpace());
-
-                    // avoid drawing outofbounds values
-                    if (isOffContentRight(mBarRect.left))
-                        break;
-
-                    if (isOffContentLeft(mBarRect.right)) {
-                        continue;
-                    }
 
                     // if drawing the bar shadow is enabled
                     if (mDrawBarShadow) {
@@ -212,60 +229,36 @@ public class BarChart extends BarLineChartBase<BarData> {
                         mDrawCanvas.drawRect(mBarShadow, mRenderPaint);
                     }
 
-                    // Set the color for the currently drawn value. If the index
-                    // is
-                    // out of bounds, reuse colors.
-                    mRenderPaint.setColor(dataSet.getColor(j));
+                    mRenderPaint.setColor(dataSet.getColor(0));
                     mDrawCanvas.drawRect(mBarRect, mRenderPaint);
 
-                } else { // stacked bars
+                } else {
 
-                    float[] vals = e.getVals();
+                    float all = e.getVal();
 
-                    // we still draw stacked bars, but there could be one
-                    // non-stacked
-                    // in between
-                    if (vals == null) {
+                    // if drawing the bar shadow is enabled
+                    if (mDrawBarShadow) {
 
                         prepareBar(x, y, dataSet.getBarSpace());
-
-                        // if drawing the bar shadow is enabled
-                        if (mDrawBarShadow) {
-                            mRenderPaint.setColor(dataSet.getBarShadowColor());
-                            mDrawCanvas.drawRect(mBarShadow, mRenderPaint);
-                        }
-
-                        mRenderPaint.setColor(dataSet.getColor(0));
-                        mDrawCanvas.drawRect(mBarRect, mRenderPaint);
-
-                    } else {
-
-                        float all = e.getVal();
-
-                        // if drawing the bar shadow is enabled
-                        if (mDrawBarShadow) {
-
-                            prepareBar(x, y, dataSet.getBarSpace());
-                            mRenderPaint.setColor(dataSet.getBarShadowColor());
-                            mDrawCanvas.drawRect(mBarShadow, mRenderPaint);
-                        }
-
-                        // draw the stack
-                        for (int k = 0; k < vals.length; k++) {
-
-                            all -= vals[k];
-
-                            prepareBar(x, vals[k] + all, dataSet.getBarSpace());
-
-                            mRenderPaint.setColor(dataSet.getColor(k));
-                            mDrawCanvas.drawRect(mBarRect, mRenderPaint);
-                        }
+                        mRenderPaint.setColor(dataSet.getBarShadowColor());
+                        mDrawCanvas.drawRect(mBarShadow, mRenderPaint);
                     }
 
-                    // avoid drawing outofbounds values
-                    if (isOffContentRight(mBarRect.left))
-                        break;
+                    // draw the stack
+                    for (int k = 0; k < vals.length; k++) {
+
+                        all -= vals[k];
+
+                        prepareBar(x, vals[k] + all, dataSet.getBarSpace());
+
+                        mRenderPaint.setColor(dataSet.getColor(k));
+                        mDrawCanvas.drawRect(mBarRect, mRenderPaint);
+                    }
                 }
+
+                // avoid drawing outofbounds values
+                if (isOffContentRight(mBarRect.left))
+                    break;
             }
         }
     }
@@ -371,7 +364,7 @@ public class BarChart extends BarLineChartBase<BarData> {
             }
         }
     }
-    
+
     @Override
     protected void drawValues() {
 
@@ -380,19 +373,21 @@ public class BarChart extends BarLineChartBase<BarData> {
 
             ArrayList<BarDataSet> dataSets = ((BarData) mData).getDataSets();
 
-            float posOffset = 0f; float negOffset = 0f;
+            float posOffset = 0f;
+            float negOffset = 0f;
 
             // calculate the correct offset depending on the draw position of
             // the value
-			posOffset = getPositiveYOffset(mDrawValueAboveBar);
-			negOffset = getNegativeYOffset(mDrawValueAboveBar);
+            posOffset = getPositiveYOffset(mDrawValueAboveBar);
+            negOffset = getNegativeYOffset(mDrawValueAboveBar);
 
             for (int i = 0; i < mData.getDataSetCount(); i++) {
 
                 BarDataSet dataSet = dataSets.get(i);
                 ArrayList<BarEntry> entries = dataSet.getYVals();
 
-                float[] valuePoints = mTrans.generateTransformedValuesBarChart(entries, i, mData, mPhaseY);
+                float[] valuePoints = mTrans.generateTransformedValuesBarChart(entries, i, mData,
+                        mPhaseY);
 
                 // if only single values are drawn (sum)
                 if (!mDrawValuesForWholeStack) {
@@ -454,7 +449,8 @@ public class BarChart extends BarLineChartBase<BarData> {
                             for (int k = 0; k < transformed.length; k += 2) {
 
                                 drawValue(vals[k / 2], valuePoints[j],
-                                        transformed[k + 1] + (vals[k / 2] >= 0 ? posOffset : negOffset));
+                                        transformed[k + 1]
+                                                + (vals[k / 2] >= 0 ? posOffset : negOffset));
                             }
                         }
                     }
@@ -463,15 +459,17 @@ public class BarChart extends BarLineChartBase<BarData> {
         }
     }
 
-	protected float getPositiveYOffset(boolean drawAboveValueBar)
-	{
-		return (mDrawValueAboveBar ? -Utils.convertDpToPixel(5) : Utils.calcTextHeight(mValuePaint, "8") * 1.5f);
-	}
+    protected float getPositiveYOffset(boolean drawAboveValueBar)
+    {
+        return (mDrawValueAboveBar ? -Utils.convertDpToPixel(5) : Utils.calcTextHeight(mValuePaint,
+                "8") * 1.5f);
+    }
 
-	protected float getNegativeYOffset(boolean drawAboveValueBar)
-	{
-		return (mDrawValueAboveBar ? Utils.calcTextHeight(mValuePaint, "8") * 1.5f : -Utils.convertDpToPixel(5));
-	}
+    protected float getNegativeYOffset(boolean drawAboveValueBar)
+    {
+        return (mDrawValueAboveBar ? Utils.calcTextHeight(mValuePaint, "8") * 1.5f : -Utils
+                .convertDpToPixel(5));
+    }
 
     /**
      * Draws a value at the specified x and y position.
@@ -481,8 +479,8 @@ public class BarChart extends BarLineChartBase<BarData> {
      * @param yPos
      */
     private void drawValue(float val, float xPos, float yPos) {
-        
-        String value = mValueFormatter.getFormattedValue(val);     
+
+        String value = mValueFormatter.getFormattedValue(val);
 
         if (mDrawUnitInChart) {
 

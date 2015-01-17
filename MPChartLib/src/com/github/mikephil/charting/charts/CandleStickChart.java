@@ -39,70 +39,65 @@ public class CandleStickChart extends BarLineChartBase<CandleData> {
     }
 
     @Override
-    protected void drawData() {
-
-        ArrayList<CandleDataSet> dataSets = mData.getDataSets();
+    protected void drawDataSet(int index) {
 
         // pre allocate
         float[] shadowPoints = new float[4];
         float[] bodyPoints = new float[4];
 
-        for (int i = 0; i < mData.getDataSetCount(); i++) {
+        CandleDataSet dataSet = mData.getDataSets().get(index);
+        ArrayList<CandleEntry> entries = dataSet.getYVals();
 
-            CandleDataSet dataSet = dataSets.get(i);
-            ArrayList<CandleEntry> entries = dataSet.getYVals();
+        mRenderPaint.setStrokeWidth(dataSet.getShadowWidth());
 
-            mRenderPaint.setStrokeWidth(dataSet.getShadowWidth());
+        for (int j = 0; j < entries.size() * mPhaseX; j++) {
 
-            for (int j = 0; j < entries.size() * mPhaseX; j++) {
+            // get the color that is specified for this position from
+            // the DataSet, this will reuse colors, if the index is out
+            // of bounds
+            mRenderPaint.setColor(dataSet.getColor(j));
 
-                // get the color that is specified for this position from
-                // the DataSet, this will reuse colors, if the index is out
-                // of bounds
-                mRenderPaint.setColor(dataSet.getColor(j));
+            // get the entry
+            CandleEntry e = entries.get(j);
 
-                // get the entry
-                CandleEntry e = entries.get(j);
+            // transform the entries values for shadow and body
+            transformShadow(shadowPoints, e);
+            transformBody(bodyPoints, e, dataSet.getBodySpace());
 
-                // transform the entries values for shadow and body
-                transformShadow(shadowPoints, e);
-                transformBody(bodyPoints, e, dataSet.getBodySpace());
+            float xShadow = shadowPoints[0];
+            float leftBody = bodyPoints[0];
+            float rightBody = bodyPoints[2];
 
-                float xShadow = shadowPoints[0];
-                float leftBody = bodyPoints[0];
-                float rightBody = bodyPoints[2];
+            float high = shadowPoints[1];
+            float low = shadowPoints[3];
 
-                float high = shadowPoints[1];
-                float low = shadowPoints[3];
+            float open = bodyPoints[1];
+            float close = bodyPoints[3];
 
-                float open = bodyPoints[1];
-                float close = bodyPoints[3];
+            if (isOffContentRight(leftBody))
+                break;
 
-                if (isOffContentRight(leftBody))
-                    break;
+            // make sure the lines don't do shitty things outside bounds
+            if (isOffContentLeft(rightBody)
+                    && isOffContentTop(low)
+                    && isOffContentBottom(high))
+                continue;
 
-                // make sure the lines don't do shitty things outside bounds
-                if (isOffContentLeft(rightBody)
-                        && isOffContentTop(low)
-                        && isOffContentBottom(high))
-                    continue;
+            // draw the shadow
+            mDrawCanvas.drawLine(xShadow, low, xShadow, high, mRenderPaint);
 
-                // draw the shadow
-                mDrawCanvas.drawLine(xShadow, low, xShadow, high, mRenderPaint);
+            // decide weather the body is hollow or filled
+            if (open > close) {
 
-                // decide weather the body is hollow or filled
-                if (open > close) {
+                mRenderPaint.setStyle(Paint.Style.FILL);
+                // draw the body
+                mDrawCanvas.drawRect(leftBody, close, rightBody, open, mRenderPaint);
 
-                    mRenderPaint.setStyle(Paint.Style.FILL);
-                    // draw the body
-                    mDrawCanvas.drawRect(leftBody, close, rightBody, open, mRenderPaint);
+            } else {
 
-                } else {
-
-                    mRenderPaint.setStyle(Paint.Style.STROKE);
-                    // draw the body
-                    mDrawCanvas.drawRect(leftBody, open, rightBody, close, mRenderPaint);
-                }
+                mRenderPaint.setStyle(Paint.Style.STROKE);
+                // draw the body
+                mDrawCanvas.drawRect(leftBody, open, rightBody, close, mRenderPaint);
             }
         }
     }
@@ -161,15 +156,16 @@ public class CandleStickChart extends BarLineChartBase<CandleData> {
                                                               // x-position
 
             CandleDataSet set = mData.getDataSetByIndex(mIndicesToHightlight[i].getDataSetIndex());
-            
+
             if (set == null)
                 continue;
-            
+
             mHighlightPaint.setColor(set.getHighLightColor());
-            
+
             CandleEntry e = set.getEntryForXIndex(xIndex);
-            
-            if(e == null) continue;
+
+            if (e == null)
+                continue;
 
             float low = e.getLow() * mPhaseY;
             float high = e.getHigh() * mPhaseY;

@@ -54,7 +54,7 @@ public class LineChart extends BarLineChartBase<LineData> {
         mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mHighlightPaint.setStyle(Paint.Style.STROKE);
         mHighlightPaint.setStrokeWidth(2f);
-        mHighlightPaint.setColor(Color.rgb(255, 187, 115));        
+        mHighlightPaint.setColor(Color.rgb(255, 187, 115));
     }
 
     @Override
@@ -125,187 +125,179 @@ public class LineChart extends BarLineChartBase<LineData> {
         }
     }
 
-    /**
-     * draws the given y values to the screen
-     */
     @Override
-    protected void drawData() {
+    protected void drawDataSet(int index) {
 
-        ArrayList<LineDataSet> dataSets = mData.getDataSets();
+        LineDataSet dataSet = mData.getDataSets().get(index);
+        ArrayList<Entry> entries = dataSet.getYVals();
 
-        for (int i = 0; i < mData.getDataSetCount(); i++) {
+        if (entries.size() < 1)
+            return;
 
-            LineDataSet dataSet = dataSets.get(i);
-            ArrayList<Entry> entries = dataSet.getYVals();
+        mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
+        mRenderPaint.setPathEffect(dataSet.getDashPathEffect());
 
-            if (entries.size() < 1)
-                continue;
+        // if drawing cubic lines is enabled
+        if (dataSet.isDrawCubicEnabled()) {
+            drawCubic(dataSet, entries);
 
-            mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
-            mRenderPaint.setPathEffect(dataSet.getDashPathEffect());
+            // draw normal (straight) lines
+        } else {
+            drawLinear(dataSet, entries);
+        }
 
-            // if drawing cubic lines is enabled
-            if (dataSet.isDrawCubicEnabled()) {
-				drawCubic(dataSet, entries);
+        mRenderPaint.setPathEffect(null);
+    }
 
-                // draw normal (straight) lines
-            } else {
-				drawLinear(dataSet, entries);
+    protected void drawCubic(LineDataSet dataSet, ArrayList<Entry> entries)
+    {
+        // get the color that is specified for this position from the
+        // DataSet
+        mRenderPaint.setColor(dataSet.getColor());
+
+        float intensity = dataSet.getCubicIntensity();
+
+        // the path for the cubic-spline
+        Path spline = new Path();
+
+        ArrayList<CPoint> points = new ArrayList<CPoint>();
+
+        for (Entry e : entries) {
+            if (e != null)
+                points.add(new CPoint(e.getXIndex(), e.getVal()));
+        }
+
+        if (points.size() > 1) {
+            for (int j = 0; j < points.size() * mPhaseX; j++) {
+
+                CPoint point = points.get(j);
+
+                if (j == 0) {
+                    CPoint next = points.get(j + 1);
+                    point.dx = ((next.x - point.x) * intensity);
+                    point.dy = ((next.y - point.y) * intensity);
+                }
+                else if (j == points.size() - 1) {
+                    CPoint prev = points.get(j - 1);
+                    point.dx = ((point.x - prev.x) * intensity);
+                    point.dy = ((point.y - prev.y) * intensity);
+                }
+                else {
+                    CPoint next = points.get(j + 1);
+                    CPoint prev = points.get(j - 1);
+                    point.dx = ((next.x - prev.x) * intensity);
+                    point.dy = ((next.y - prev.y) * intensity);
+                }
+
+                // create the cubic-spline path
+                if (j == 0) {
+                    spline.moveTo(point.x, point.y * mPhaseY);
+                }
+                else {
+                    CPoint prev = points.get(j - 1);
+                    spline.cubicTo(prev.x + prev.dx, (prev.y + prev.dy) * mPhaseY, point.x
+                            - point.dx,
+                            (point.y - point.dy) * mPhaseY, point.x, point.y * mPhaseY);
+                }
+            }
+        }
+
+        // if filled is enabled, close the path
+        if (dataSet.isDrawFilledEnabled()) {
+            drawCubicFill(dataSet, spline);
+        } else {
+            mRenderPaint.setStyle(Paint.Style.STROKE);
+        }
+
+        mTrans.pathValueToPixel(spline);
+
+        mDrawCanvas.drawPath(spline, mRenderPaint);
+    }
+
+    protected void drawCubicFill(LineDataSet dataSet, Path spline)
+    {
+        float fillMin = mFillFormatter
+                .getFillLinePosition(dataSet, mData, mYChartMax, mYChartMin);
+
+        spline.lineTo((mDeltaX + 1) * mPhaseX, fillMin);
+        spline.lineTo(0, fillMin);
+        spline.close();
+
+        mRenderPaint.setStyle(Paint.Style.FILL);
+    }
+
+    protected void drawLinear(LineDataSet dataSet, ArrayList<Entry> entries)
+    {
+        mRenderPaint.setStyle(Paint.Style.STROKE);
+
+        // more than 1 color
+        if (dataSet.getColors() == null || dataSet.getColors().size() > 1) {
+
+            float[] valuePoints = mTrans.generateTransformedValuesLineScatter(entries, mPhaseY);
+
+            for (int j = 0; j < (valuePoints.length - 2) * mPhaseX; j += 2) {
+
+                if (isOffContentRight(valuePoints[j]))
+                    break;
+
+                // make sure the lines don't do shitty things outside
+                // bounds
+                if (j != 0 && isOffContentLeft(valuePoints[j - 1])
+                        && isOffContentTop(valuePoints[j + 1])
+                        && isOffContentBottom(valuePoints[j + 1]))
+                    continue;
+
+                // get the color that is set for this line-segment
+                mRenderPaint.setColor(dataSet.getColor(j / 2));
+
+                mDrawCanvas.drawLine(valuePoints[j], valuePoints[j + 1],
+                        valuePoints[j + 2], valuePoints[j + 3], mRenderPaint);
             }
 
-            mRenderPaint.setPathEffect(null);
+        } else { // only one color per dataset
+
+            mRenderPaint.setColor(dataSet.getColor());
+
+            Path line = generateLinePath(entries);
+            mTrans.pathValueToPixel(line);
+
+            mDrawCanvas.drawPath(line, mRenderPaint);
+        }
+
+        mRenderPaint.setPathEffect(null);
+
+        // if drawing filled is enabled
+        if (dataSet.isDrawFilledEnabled() && entries.size() > 0) {
+            drawLinearFill(dataSet, entries);
         }
     }
 
-	protected void drawCubic(LineDataSet dataSet, ArrayList<Entry> entries)
-	{
-		// get the color that is specified for this position from the
-		// DataSet
-		mRenderPaint.setColor(dataSet.getColor());
+    protected void drawLinearFill(LineDataSet dataSet, ArrayList<Entry> entries)
+    {
+        // mDrawCanvas.drawVertices(VertexMode.TRIANGLE_STRIP,
+        // valuePoints.length, valuePoints, 0,
+        // null, 0, null, 0, null, 0, 0, paint);
 
-		float intensity = dataSet.getCubicIntensity();
+        mRenderPaint.setStyle(Paint.Style.FILL);
 
-		// the path for the cubic-spline
-		Path spline = new Path();
+        mRenderPaint.setColor(dataSet.getFillColor());
+        // filled is drawn with less alpha
+        mRenderPaint.setAlpha(dataSet.getFillAlpha());
 
-		ArrayList<CPoint> points = new ArrayList<CPoint>();
-		
-		for (Entry e : entries) {	    
-		    if(e != null)
-		        points.add(new CPoint(e.getXIndex(), e.getVal()));
-		}
+        // mRenderPaint.setShader(dataSet.getShader());
 
-		if (points.size() > 1) {
-			for (int j = 0; j < points.size() * mPhaseX; j++) {
+        Path filled = generateFilledPath(entries,
+                mFillFormatter.getFillLinePosition(dataSet, mData, mYChartMax,
+                        mYChartMin));
 
-				CPoint point = points.get(j);
+        mTrans.pathValueToPixel(filled);
 
-				if (j == 0) {
-					CPoint next = points.get(j + 1);
-					point.dx = ((next.x - point.x) * intensity);
-					point.dy = ((next.y - point.y) * intensity);
-				}
-				else if (j == points.size() - 1) {
-					CPoint prev = points.get(j - 1);
-					point.dx = ((point.x - prev.x) * intensity);
-					point.dy = ((point.y - prev.y) * intensity);
-				}
-				else {
-					CPoint next = points.get(j + 1);
-					CPoint prev = points.get(j - 1);
-					point.dx = ((next.x - prev.x) * intensity);
-					point.dy = ((next.y - prev.y) * intensity);
-				}
+        mDrawCanvas.drawPath(filled, mRenderPaint);
 
-				// create the cubic-spline path
-				if (j == 0) {
-					spline.moveTo(point.x, point.y * mPhaseY);
-				}
-				else {
-					CPoint prev = points.get(j - 1);
-					spline.cubicTo(prev.x + prev.dx, (prev.y + prev.dy) * mPhaseY, point.x
-									- point.dx,
-							(point.y - point.dy) * mPhaseY, point.x, point.y * mPhaseY);
-				}
-			}
-		}
-
-		// if filled is enabled, close the path
-		if (dataSet.isDrawFilledEnabled()) {
-			drawCubicFill(dataSet, spline);
-		} else {
-			mRenderPaint.setStyle(Paint.Style.STROKE);
-		}
-
-		mTrans.pathValueToPixel(spline);
-
-		mDrawCanvas.drawPath(spline, mRenderPaint);
-	}
-
-	protected void drawCubicFill(LineDataSet dataSet, Path spline)
-	{
-		float fillMin = mFillFormatter
-				.getFillLinePosition(dataSet, mData, mYChartMax, mYChartMin);
-
-		spline.lineTo((mDeltaX + 1) * mPhaseX, fillMin);
-		spline.lineTo(0, fillMin);
-		spline.close();
-
-		mRenderPaint.setStyle(Paint.Style.FILL);
-	}
-
-	protected void drawLinear(LineDataSet dataSet, ArrayList<Entry> entries)
-	{
-		mRenderPaint.setStyle(Paint.Style.STROKE);
-
-		// more than 1 color
-		if (dataSet.getColors() == null || dataSet.getColors().size() > 1) {
-
-			float[] valuePoints = mTrans.generateTransformedValuesLineScatter(entries, mPhaseY);
-
-			for (int j = 0; j < (valuePoints.length - 2) * mPhaseX; j += 2) {
-
-				if (isOffContentRight(valuePoints[j]))
-					break;
-
-				// make sure the lines don't do shitty things outside
-				// bounds
-				if (j != 0 && isOffContentLeft(valuePoints[j - 1])
-						&& isOffContentTop(valuePoints[j + 1])
-						&& isOffContentBottom(valuePoints[j + 1]))
-					continue;
-
-				// get the color that is set for this line-segment
-				mRenderPaint.setColor(dataSet.getColor(j / 2));
-
-				mDrawCanvas.drawLine(valuePoints[j], valuePoints[j + 1],
-						valuePoints[j + 2], valuePoints[j + 3], mRenderPaint);
-			}
-
-		} else { // only one color per dataset
-
-			mRenderPaint.setColor(dataSet.getColor());
-
-			Path line = generateLinePath(entries);
-			mTrans.pathValueToPixel(line);
-
-			mDrawCanvas.drawPath(line, mRenderPaint);
-		}
-
-		mRenderPaint.setPathEffect(null);
-
-		// if drawing filled is enabled
-		if (dataSet.isDrawFilledEnabled() && entries.size() > 0) {
-			drawLinearFill(dataSet, entries);
-		}
-	}
-
-	protected void drawLinearFill(LineDataSet dataSet, ArrayList<Entry> entries)
-	{
-		// mDrawCanvas.drawVertices(VertexMode.TRIANGLE_STRIP,
-		// valuePoints.length, valuePoints, 0,
-		// null, 0, null, 0, null, 0, 0, paint);
-
-		mRenderPaint.setStyle(Paint.Style.FILL);
-
-		mRenderPaint.setColor(dataSet.getFillColor());
-		// filled is drawn with less alpha
-		mRenderPaint.setAlpha(dataSet.getFillAlpha());
-
-		// mRenderPaint.setShader(dataSet.getShader());
-
-		Path filled = generateFilledPath(entries,
-				mFillFormatter.getFillLinePosition(dataSet, mData, mYChartMax,
-						mYChartMin));
-
-		mTrans.pathValueToPixel(filled);
-
-		mDrawCanvas.drawPath(filled, mRenderPaint);
-
-		// restore alpha
-		mRenderPaint.setAlpha(255);
-		// mRenderPaint.setShader(null);
-	}
+        // restore alpha
+        mRenderPaint.setAlpha(255);
+        // mRenderPaint.setShader(null);
+    }
 
     /**
      * Generates the path that is used for filled drawing.

@@ -35,15 +35,15 @@ public class ScatterChart extends BarLineChartBase<ScatterData> {
     public ScatterChart(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
-    
+
     @Override
     protected void prepareContentRect() {
-        if(isEmpty()) {
+        if (isEmpty()) {
             super.prepareContentRect();
         } else {
-            
+
             float offset = mData.getGreatestShapeSize() / 2f;
-            
+
             mContentRect.set(mOffsetLeft - offset,
                     mOffsetTop,
                     getWidth() - mOffsetRight + offset,
@@ -60,79 +60,74 @@ public class ScatterChart extends BarLineChartBase<ScatterData> {
     }
 
     @Override
-    protected void drawData() {
+    protected void drawDataSet(int index) {
 
-        ArrayList<ScatterDataSet> dataSets = mData.getDataSets();
+        ScatterDataSet dataSet = mData.getDataSets().get(index);
+        ArrayList<Entry> entries = dataSet.getYVals();
 
-        for (int i = 0; i < mData.getDataSetCount(); i++) {
+        float shapeHalf = dataSet.getScatterShapeSize() / 2f;
 
-            ScatterDataSet dataSet = dataSets.get(i);
-            ArrayList<Entry> entries = dataSet.getYVals();
+        float[] valuePoints = mTrans.generateTransformedValuesLineScatter(entries, mPhaseY);
 
-            float shapeHalf = dataSet.getScatterShapeSize() / 2f;
+        ScatterShape shape = dataSet.getScatterShape();
 
-            float[] valuePoints = mTrans.generateTransformedValuesLineScatter(entries, mPhaseY);
+        for (int j = 0; j < valuePoints.length * mPhaseX; j += 2) {
 
-            ScatterShape shape = dataSet.getScatterShape();
+            if (isOffContentRight(valuePoints[j]))
+                break;
 
-            for (int j = 0; j < valuePoints.length * mPhaseX; j += 2) {
+            // make sure the lines don't do shitty things outside bounds
+            if (j != 0 && isOffContentLeft(valuePoints[j - 1])
+                    && isOffContentTop(valuePoints[j + 1])
+                    && isOffContentBottom(valuePoints[j + 1]))
+                continue;
 
-                if (isOffContentRight(valuePoints[j]))
-                    break;
+            // Set the color for the currently drawn value. If the index is
+            // out of bounds, reuse colors.
+            mRenderPaint.setColor(dataSet.getColor(j));
 
-                // make sure the lines don't do shitty things outside bounds
-                if (j != 0 && isOffContentLeft(valuePoints[j - 1])
-                        && isOffContentTop(valuePoints[j + 1])
-                        && isOffContentBottom(valuePoints[j + 1]))
-                    continue;
+            if (shape == ScatterShape.SQUARE) {
 
-                // Set the color for the currently drawn value. If the index is
-                // out of bounds, reuse colors.
-                mRenderPaint.setColor(dataSet.getColor(j));
+                mDrawCanvas.drawRect(valuePoints[j] - shapeHalf,
+                        valuePoints[j + 1] - shapeHalf, valuePoints[j]
+                                + shapeHalf, valuePoints[j + 1]
+                                + shapeHalf, mRenderPaint);
 
-                if (shape == ScatterShape.SQUARE) {
+            } else if (shape == ScatterShape.CIRCLE) {
 
-                    mDrawCanvas.drawRect(valuePoints[j] - shapeHalf,
-                            valuePoints[j + 1] - shapeHalf, valuePoints[j]
-                                    + shapeHalf, valuePoints[j + 1]
-                                    + shapeHalf, mRenderPaint);
+                mDrawCanvas.drawCircle(valuePoints[j], valuePoints[j + 1], shapeHalf,
+                        mRenderPaint);
 
-                } else if (shape == ScatterShape.CIRCLE) {
+            } else if (shape == ScatterShape.CROSS) {
 
-                    mDrawCanvas.drawCircle(valuePoints[j], valuePoints[j + 1], shapeHalf,
-                            mRenderPaint);
+                mDrawCanvas.drawLine(valuePoints[j] - shapeHalf, valuePoints[j + 1],
+                        valuePoints[j] + shapeHalf,
+                        valuePoints[j + 1], mRenderPaint);
+                mDrawCanvas.drawLine(valuePoints[j], valuePoints[j + 1] - shapeHalf,
+                        valuePoints[j], valuePoints[j + 1]
+                                + shapeHalf, mRenderPaint);
 
-                } else if (shape == ScatterShape.CROSS) {
+            } else if (shape == ScatterShape.TRIANGLE) {
 
-                    mDrawCanvas.drawLine(valuePoints[j] - shapeHalf, valuePoints[j + 1],
-                            valuePoints[j] + shapeHalf,
-                            valuePoints[j + 1], mRenderPaint);
-                    mDrawCanvas.drawLine(valuePoints[j], valuePoints[j + 1] - shapeHalf,
-                            valuePoints[j], valuePoints[j + 1]
-                                    + shapeHalf, mRenderPaint);
+                // create a triangle path
+                Path tri = new Path();
+                tri.moveTo(valuePoints[j], valuePoints[j + 1] - shapeHalf);
+                tri.lineTo(valuePoints[j] + shapeHalf, valuePoints[j + 1] + shapeHalf);
+                tri.lineTo(valuePoints[j] - shapeHalf, valuePoints[j + 1] + shapeHalf);
+                tri.close();
 
-                } else if (shape == ScatterShape.TRIANGLE) {
+                mDrawCanvas.drawPath(tri, mRenderPaint);
 
-                    // create a triangle path
-                    Path tri = new Path();
-                    tri.moveTo(valuePoints[j], valuePoints[j + 1] - shapeHalf);
-                    tri.lineTo(valuePoints[j] + shapeHalf, valuePoints[j + 1] + shapeHalf);
-                    tri.lineTo(valuePoints[j] - shapeHalf, valuePoints[j + 1] + shapeHalf);
-                    tri.close();
+            } else if (shape == ScatterShape.CUSTOM) {
 
-                    mDrawCanvas.drawPath(tri, mRenderPaint);
+                Path customShape = dataSet.getCustomScatterShape();
 
-                } else if (shape == ScatterShape.CUSTOM) {
+                if (customShape == null)
+                    return;
 
-                    Path customShape = dataSet.getCustomScatterShape();
-
-                    if (customShape == null)
-                        return;
-
-                    // transform the provided custom path
-                    mTrans.pathValueToPixel(customShape);
-                    mDrawCanvas.drawPath(customShape, mRenderPaint);
-                }
+                // transform the provided custom path
+                mTrans.pathValueToPixel(customShape);
+                mDrawCanvas.drawPath(customShape, mRenderPaint);
             }
         }
     }
@@ -188,7 +183,7 @@ public class ScatterChart extends BarLineChartBase<ScatterData> {
 
             ScatterDataSet set = mData.getDataSetByIndex(mIndicesToHightlight[i]
                     .getDataSetIndex());
-            
+
             if (set == null)
                 continue;
 

@@ -36,6 +36,9 @@ public abstract class DataSet<T extends Entry> {
     /** label that describes the DataSet or the data the DataSet represents */
     private String mLabel = "DataSet";
 
+    /** flag that indicates if the DataSet is visible or not */
+    private boolean mVisible = true;
+
     /**
      * Creates a new DataSet object with the given values it represents. Also, a
      * label that describes the DataSet can be specified. The label can also be
@@ -304,6 +307,26 @@ public abstract class DataSet<T extends Entry> {
      */
     public String getLabel() {
         return mLabel;
+    }
+
+    /**
+     * Set the visibility of this DataSet. If not visible, the DataSet will not
+     * be drawn to the chart upon refreshing it.
+     * 
+     * @param visible
+     */
+    public void setVisible(boolean visible) {
+        mVisible = visible;
+    }
+
+    /**
+     * Returns true if this DataSet is visible inside the chart, or false if it
+     * is currently hidden.
+     * 
+     * @return
+     */
+    public boolean isVisible() {
+        return mVisible;
     }
 
     /**
