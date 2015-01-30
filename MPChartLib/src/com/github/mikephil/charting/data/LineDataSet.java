@@ -117,17 +117,22 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
 
     /**
      * Sets the circle stroke ratio
-     * @param mCircleStrokeRatio the ratio of the circle stroke. Default value is 0.5f, meaning that
+     * @param circleStrokeRatio the ratio of the circle stroke. Default value is 0.5f, meaning that
      * the stoke is half of the total circle diameter. It should be between 0f (no stroke) and 1f
      * (circle is filled)
      */
-    public void setCircleStrokeRatio(float mCircleStrokeRatio) {
-        this.mCircleStrokeRatio = mCircleStrokeRatio;
+    public void setCircleStrokeRatio(float circleStrokeRatio) {
+        // We don't allow negative values
+        if (circleStrokeRatio < 0f) mCircleStrokeRatio = 0f;
+        // Ratio can't be above 1 (already fully filled)
+        else if (circleStrokeRatio > 1f) mCircleStrokeRatio = 1f;
+        // Else we just set the value
+        else mCircleStrokeRatio = circleStrokeRatio;
     }
 
     /**
      * Circle stroke ratio getter
-     * @return Returns the ratio of the stroke for the circle
+     * @return Returns the ratio of the stroke for the circle.
      */
     public float getCircleStrokeRatio() {
         return mCircleStrokeRatio;
