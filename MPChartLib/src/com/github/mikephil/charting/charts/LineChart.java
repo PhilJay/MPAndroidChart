@@ -445,7 +445,7 @@ public class LineChart extends BarLineChartBase<LineData> {
                     mDrawCanvas.drawCircle(positions[j], positions[j + 1], dataSet.getCircleSize(),
                             mRenderPaint);
                     mDrawCanvas.drawCircle(positions[j], positions[j + 1],
-                            dataSet.getCircleSize() / 2f,
+                            dataSet.getCircleSize() * (1 - dataSet.getCircleStrokeRatio()),
                             mCirclePaintInner);
                 }
             } // else do nothing
