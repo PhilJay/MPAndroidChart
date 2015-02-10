@@ -217,12 +217,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         // initialize the utils
         Utils.init(getContext().getResources());
 
-        // do screen density conversions
-        mOffsetBottom = (int) Utils.convertDpToPixel(mOffsetBottom);
-        mOffsetLeft = (int) Utils.convertDpToPixel(mOffsetLeft);
-        mOffsetRight = (int) Utils.convertDpToPixel(mOffsetRight);
-        mOffsetTop = (int) Utils.convertDpToPixel(mOffsetTop);
-
         mRenderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mRenderPaint.setStyle(Style.FILL);
 
@@ -1656,10 +1650,10 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 mYLabelPaint = p;
                 break;
             case PAINT_HIGHLIGHT:
-                mHighlightPaint = p;
+//                mHighlightPaint = p;
                 break;
             case PAINT_LIMIT_LINE:
-                mLimitLinePaint = p;
+//                mLimitLinePaint = p;
                 break;
         }
     }
@@ -1687,9 +1681,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             case PAINT_YLABEL:
                 return mYLabelPaint;
             case PAINT_HIGHLIGHT:
-                return mHighlightPaint;
+//                return mHighlightPaint;
             case PAINT_LIMIT_LINE:
-                return mLimitLinePaint;
+//                return mLimitLinePaint;
         }
 
         return null;
@@ -2090,8 +2084,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
 
         prepareContentRect();
-        for (int i = 0; i < getChildCount(); i++)
-        {
+        for (int i = 0; i < getChildCount(); i++) {
             getChildAt(i).layout(left, top, right, bottom);
         }
         //

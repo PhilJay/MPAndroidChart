@@ -2,9 +2,9 @@
 package com.github.mikephil.charting.charts;
 
 import android.content.Context;
-import android.graphics.Matrix;
 import android.graphics.Paint.Align;
 import android.graphics.PointF;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
@@ -103,7 +103,8 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
                 float legendWidth = getFullLegendWidth() + spacing;
 
-                float legendHeight = mLegend.getFullHeight(mLegendLabelPaint) + mOffsetTop;
+                float legendHeight = mLegend.getFullHeight(mLegendLabelPaint);// +
+                                                                              // mOffsetTop;
 
                 PointF c = getCenter();
 
@@ -148,10 +149,12 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
             mLegend.setOffsetLeft(min);
         }
 
-        mOffsetLeft = Math.max(min, getRequiredBaseOffset());
-        mOffsetTop = Math.max(min, legendTop);
-        mOffsetRight = Math.max(min, legendRight);
-        mOffsetBottom = Math.max(min, Math.max(getRequiredBaseOffset(), legendBottom));
+        float offsetLeft = Math.max(min, getRequiredBaseOffset());
+        float offsetTop = Math.max(min, legendTop);
+        float offsetRight = Math.max(min, legendRight);
+        float offsetBottom = Math.max(min, Math.max(getRequiredBaseOffset(), legendBottom));
+
+        mViewPortHandler.restrainViewPort(offsetLeft, offsetTop, offsetRight, offsetBottom);
 
         applyCalculatedOffsets();
     }
@@ -166,21 +169,23 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
      */
     protected void applyCalculatedOffsets() {
 
-        prepareContentRect();
-
-        float scaleX = (float) ((getWidth() - mOffsetLeft - mOffsetRight) / mDeltaX);
-        float scaleY = (float) ((getHeight() - mOffsetBottom - mOffsetTop) / mDeltaY);
-
-        Matrix val = new Matrix();
-        val.postTranslate(0, -mYChartMin);
-        val.postScale(scaleX, -scaleY);
-
-        mTrans.getValueMatrix().set(val);
-
-        Matrix offset = new Matrix();
-        offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
-
-        mTrans.getOffsetMatrix().set(offset);
+        // prepareContentRect();
+        //
+        // float scaleX = (float) ((getWidth() - mOffsetLeft - mOffsetRight) /
+        // mDeltaX);
+        // float scaleY = (float) ((getHeight() - mOffsetBottom - mOffsetTop) /
+        // mDeltaY);
+        //
+        // Matrix val = new Matrix();
+        // val.postTranslate(0, -mYChartMin);
+        // val.postScale(scaleX, -scaleY);
+        //
+        // mTrans.getValueMatrix().set(val);
+        //
+        // Matrix offset = new Matrix();
+        // offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
+        //
+        // mTrans.getOffsetMatrix().set(offset);
     }
 
     /** the angle where the dragging started */
@@ -358,10 +363,8 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
      * @return
      */
     public float getDiameter() {
-        if (mContentRect == null)
-            return 0;
-        else
-            return Math.min(mContentRect.width(), mContentRect.height());
+        RectF content = mViewPortHandler.getContentRect();
+        return Math.min(content.width(), content.height());
     }
 
     /**

@@ -147,11 +147,11 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
         canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
     }
-
+    
     @Override
-    protected void prepareContentRect() {
-        super.prepareContentRect();
-
+    protected void calculateOffsets() {
+        super.calculateOffsets();
+        
         // prevent nullpointer when no data set
         if (mDataNotSet)
             return;
@@ -166,6 +166,25 @@ public class PieChart extends PieRadarChartBase<PieData> {
         mCircleBox.set(c.x - boxSize, c.y - boxSize,
                 c.x + boxSize, c.y + boxSize);
     }
+
+//    @Override
+//    protected void prepareContentRect() {
+//        super.prepareContentRect();
+//
+//        // prevent nullpointer when no data set
+//        if (mDataNotSet)
+//            return;
+//
+//        float diameter = getDiameter();
+//        float boxSize = diameter / 2f;
+//
+//        PointF c = getCenterOffsets();
+//
+//        // create the circle box that will contain the pie-chart (the bounds of
+//        // the pie-chart)
+//        mCircleBox.set(c.x - boxSize, c.y - boxSize,
+//                c.x + boxSize, c.y + boxSize);
+//    }
 
     @Override
     protected void calcMinMax(boolean fixedValues) {

@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 
 import com.github.mikephil.charting.data.Entry;
@@ -55,10 +56,10 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     private boolean mDrawWeb = true;
 
     /** the object reprsenting the y-axis labels */
-    private YAxis mYLabels = new YAxis();
+    private YAxis mYAxis = new YAxis();
 
     /** the object representing the x-axis labels */
-    private XAxis mXLabels = new XAxis();
+    private XAxis mXAxis = new XAxis();
 
     public RadarChart(Context context) {
         super(context);
@@ -124,7 +125,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
         drawLimitLines();
 
-//        drawData();
+        // drawData();
 
         drawAdditional();
 
@@ -176,7 +177,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         mWebPaint.setColor(mWebColorInner);
         mWebPaint.setAlpha(mWebAlpha);
 
-        int labelCount = mYLabels.mEntryCount;
+        int labelCount = mYAxis.mEntryCount;
 
         for (int j = 0; j < labelCount; j++) {
 
@@ -292,7 +293,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      */
     private void prepareYLabels() {
 
-        int labelCount = mYLabels.getLabelCount();
+        int labelCount = mYAxis.getLabelCount();
 
         double max = mData.getYMax() > 0 ? mData.getYMax() : 1.0;
         double range = max - mYChartMin;
@@ -316,7 +317,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
             ++n;
         }
 
-        mYLabels.mEntryCount = n;
+        mYAxis.mEntryCount = n;
 
         mYChartMax = (float) interval * n;
 
@@ -332,18 +333,18 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         if (!mDrawYLabels)
             return;
 
-        mYLabelPaint.setTypeface(mYLabels.getTypeface());
-        mYLabelPaint.setTextSize(mYLabels.getTextSize());
-        mYLabelPaint.setColor(mYLabels.getTextColor());
+        mYLabelPaint.setTypeface(mYAxis.getTypeface());
+        mYLabelPaint.setTextSize(mYAxis.getTextSize());
+        mYLabelPaint.setColor(mYAxis.getTextColor());
 
         PointF c = getCenterOffsets();
         float factor = getFactor();
 
-        int labelCount = mYLabels.mEntryCount;
+        int labelCount = mYAxis.mEntryCount;
 
         for (int j = 0; j < labelCount; j++) {
 
-            if (j == labelCount - 1 && mYLabels.isDrawTopYLabelEntryEnabled() == false)
+            if (j == labelCount - 1 && mYAxis.isDrawTopYLabelEntryEnabled() == false)
                 break;
 
             float r = ((mYChartMax / labelCount) * j) * factor;
@@ -352,10 +353,10 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
             float val = r / factor;
 
-            String label = Utils.formatNumber(val, mYLabels.mDecimals,
-                    mYLabels.isSeparateThousandsEnabled());
+            String label = Utils.formatNumber(val, mYAxis.mDecimals,
+                    mYAxis.isSeparateThousandsEnabled());
 
-            if (mYLabels.isDrawUnitsInYLabelEnabled())
+            if (mYAxis.isDrawUnitsInYLabelEnabled())
                 mDrawCanvas.drawText(label + mUnit, p.x + 10, p.y - 5, mYLabelPaint);
             else {
                 mDrawCanvas.drawText(label, p.x + 10, p.y - 5, mYLabelPaint);
@@ -376,8 +377,8 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
             a.append("h");
         }
 
-        mXLabels.mLabelWidth = Utils.calcTextWidth(mXLabelPaint, a.toString());
-        mXLabels.mLabelHeight = Utils.calcTextWidth(mXLabelPaint, "Q");
+        mXAxis.mLabelWidth = Utils.calcTextWidth(mXLabelPaint, a.toString());
+        mXAxis.mLabelHeight = Utils.calcTextWidth(mXLabelPaint, "Q");
     }
 
     /**
@@ -388,9 +389,9 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         if (!mDrawXLabels)
             return;
 
-        mXLabelPaint.setTypeface(mXLabels.getTypeface());
-        mXLabelPaint.setTextSize(mXLabels.getTextSize());
-        mXLabelPaint.setColor(mXLabels.getTextColor());
+        mXLabelPaint.setTypeface(mXAxis.getTypeface());
+        mXLabelPaint.setTextSize(mXAxis.getTextSize());
+        mXLabelPaint.setColor(mXAxis.getTextColor());
 
         float sliceangle = getSliceAngle();
 
@@ -406,9 +407,9 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
             float angle = (sliceangle * i + mRotationAngle) % 360f;
 
-            PointF p = getPosition(c, mYChartMax * factor + mXLabels.mLabelWidth / 2f, angle);
+            PointF p = getPosition(c, mYChartMax * factor + mXAxis.mLabelWidth / 2f, angle);
 
-            mDrawCanvas.drawText(text, p.x, p.y + mXLabels.mLabelHeight / 2f, mXLabelPaint);
+            mDrawCanvas.drawText(text, p.x, p.y + mXAxis.mLabelHeight / 2f, mXLabelPaint);
         }
     }
 
@@ -496,7 +497,8 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      * @return
      */
     public float getFactor() {
-        return (float) Math.min(mContentRect.width() / 2, mContentRect.height() / 2)
+        RectF content = mViewPortHandler.getContentRect();
+        return (float) Math.min(content.width() / 2, content.height() / 2)
                 / mYChartMax;
     }
 
@@ -531,7 +533,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      * @return
      */
     public YAxis getYLabels() {
-        return mYLabels;
+        return mYAxis;
     }
 
     /**
@@ -540,7 +542,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      * @return
      */
     public XAxis getXLabels() {
-        return mXLabels;
+        return mXAxis;
     }
 
     /**
@@ -647,15 +649,13 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
     @Override
     protected float getRequiredBaseOffset() {
-        return mXLabels.mLabelWidth;
+        return mXAxis.mLabelWidth;
     }
 
     @Override
     public float getRadius() {
-        if (mContentRect == null)
-            return 0;
-        else
-            return Math.min(mContentRect.width() / 2f, mContentRect.height() / 2f);
+        RectF content = mViewPortHandler.getContentRect();
+        return Math.min(content.width() / 2f, content.height() / 2f);
     }
 
     @Override
