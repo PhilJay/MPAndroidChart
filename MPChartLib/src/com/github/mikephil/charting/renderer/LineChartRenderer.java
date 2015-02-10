@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class LineChartRenderer extends DataRenderer {
 
-    private LineChart mChart;
+    protected LineChart mChart;
 
     /** paint for the inner circle of the value indicators */
     protected Paint mCirclePaintInner;
@@ -37,12 +37,10 @@ public class LineChartRenderer extends DataRenderer {
 
         LineData lineData = mChart.getData();
 
-        for (int i = 0; i < lineData.getDataSetCount(); i++) {
-
-            LineDataSet ds = lineData.getDataSets().get(i);
-
-            if (ds.isVisible())
-                drawDataSet(c, ds);
+        for (LineDataSet set : lineData.getDataSets()) {
+            
+            if (set.isVisible())
+                drawDataSet(c, set);
         }
     }
 

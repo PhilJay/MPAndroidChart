@@ -26,14 +26,14 @@ import java.util.ArrayList;
  */
 public class BarChart extends BarLineChartBase<BarData> {
 
-    /** indicates the angle of the 3d effect */
-    private float mSkew = 0.3f;
-
-    /** indicates how much the 3d effect goes back */
-    private float mDepth = 0.3f;
-
-    /** flag the enables or disables 3d bars */
-    private boolean m3DEnabled = false;
+//    /** indicates the angle of the 3d effect */
+//    private float mSkew = 0.3f;
+//
+//    /** indicates how much the 3d effect goes back */
+//    private float mDepth = 0.3f;
+//
+//    /** flag the enables or disables 3d bars */
+//    private boolean m3DEnabled = false;
 
     /** flag that enables or disables the highlighting arrow */
     private boolean mDrawHighlightArrow = false;
@@ -56,12 +56,6 @@ public class BarChart extends BarLineChartBase<BarData> {
      */
     protected boolean mDrawBarShadow = true;
 
-    /** the rect object that is used for drawing the bar shadow */
-    protected RectF mBarShadow = new RectF();
-
-    /** the rect object that is used for drawing the bars */
-    protected RectF mBarRect = new RectF();
-
     public BarChart(Context context) {
         super(context);
     }
@@ -77,14 +71,6 @@ public class BarChart extends BarLineChartBase<BarData> {
     @Override
     protected void init() {
         super.init();
-
-        mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mHighlightPaint.setStyle(Paint.Style.FILL);
-        mHighlightPaint.setColor(Color.rgb(0, 0, 0));
-        // set alpha after color
-        mHighlightPaint.setAlpha(120);
-
-        // calculate3DColors();
     }
 
     @Override
@@ -114,179 +100,12 @@ public class BarChart extends BarLineChartBase<BarData> {
     @Override
     protected void drawHighlights() {
 
-        int setCount = mData.getDataSetCount();
-
-        for (int i = 0; i < mIndicesToHightlight.length; i++) {
-
-            Highlight h = mIndicesToHightlight[i];
-            int index = h.getXIndex();
-
-            int dataSetIndex = h.getDataSetIndex();
-            BarDataSet set = (BarDataSet) mData.getDataSetByIndex(dataSetIndex);
-
-            if (set == null)
-                continue;
-
-            mHighlightPaint.setColor(set.getHighLightColor());
-            mHighlightPaint.setAlpha(set.getHighLightAlpha());
-
-            // check outofbounds
-            if (index < mData.getYValCount() && index >= 0
-                    && index < (mDeltaX * xxx) / mData.getDataSetCount()) {
-
-                Entry e = getEntryByDataSetIndex(index, dataSetIndex);
-
-                if (e == null)
-                    continue;
-
-                // calculate the correct x-position
-                float x = index * setCount + dataSetIndex + mData.getGroupSpace() / 2f
-                        + mData.getGroupSpace() * index;
-                float y = e.getVal();
-
-                prepareBar(x, y, set.getBarSpace());
-
-                mDrawCanvas.drawRect(mBarRect, mHighlightPaint);
-
-                if (mDrawHighlightArrow) {
-
-                    mHighlightPaint.setAlpha(255);
-
-                    // distance between highlight arrow and bar
-                    float offsetY = mDeltaY * 0.07f;
-
-                    Path arrow = new Path();
-                    arrow.moveTo(x + 0.5f, y + offsetY * 0.3f);
-                    arrow.lineTo(x + 0.2f, y + offsetY);
-                    arrow.lineTo(x + 0.8f, y + offsetY);
-
-                    mTrans.pathValueToPixel(arrow);
-                    mDrawCanvas.drawPath(arrow, mHighlightPaint);
-                }
-            }
-        }
     }
 
     @Override
     protected void drawDataSet(int index) {
         
-        // the space between bar-groups
-        float space = mData.getGroupSpace();
-
-        BarDataSet dataSet = mData.getDataSets().get(index);
-        boolean noStacks = dataSet.getStackSize() == 1 ? true : false;
-
-        ArrayList<BarEntry> entries = dataSet.getYVals();
-
-        // do the drawing
-        for (int j = 0; j < dataSet.getEntryCount() * xxx; j++) {
-
-            BarEntry e = entries.get(j);
-
-            // calculate the x-position, depending on datasetcount
-            float x = e.getXIndex() + j * (mData.getDataSetCount() - 1) + index + space * j + space / 2f;
-            float y = e.getVal();
-
-            // no stacks
-            if (noStacks) {
-
-                prepareBar(x, y, dataSet.getBarSpace());
-
-                // avoid drawing outofbounds values
-                if (isOffContentRight(mBarRect.left))
-                    break;
-
-                if (isOffContentLeft(mBarRect.right)) {
-                    continue;
-                }
-
-                // if drawing the bar shadow is enabled
-                if (mDrawBarShadow) {
-                    mRenderPaint.setColor(dataSet.getBarShadowColor());
-                    mDrawCanvas.drawRect(mBarShadow, mRenderPaint);
-                }
-
-                // Set the color for the currently drawn value. If the index
-                // is
-                // out of bounds, reuse colors.
-                mRenderPaint.setColor(dataSet.getColor(j));
-                mDrawCanvas.drawRect(mBarRect, mRenderPaint);
-
-            } else { // stacked bars
-
-                float[] vals = e.getVals();
-
-                // we still draw stacked bars, but there could be one
-                // non-stacked
-                // in between
-                if (vals == null) {
-
-                    prepareBar(x, y, dataSet.getBarSpace());
-
-                    // if drawing the bar shadow is enabled
-                    if (mDrawBarShadow) {
-                        mRenderPaint.setColor(dataSet.getBarShadowColor());
-                        mDrawCanvas.drawRect(mBarShadow, mRenderPaint);
-                    }
-
-                    mRenderPaint.setColor(dataSet.getColor(0));
-                    mDrawCanvas.drawRect(mBarRect, mRenderPaint);
-
-                } else {
-
-                    float all = e.getVal();
-
-                    // if drawing the bar shadow is enabled
-                    if (mDrawBarShadow) {
-
-                        prepareBar(x, y, dataSet.getBarSpace());
-                        mRenderPaint.setColor(dataSet.getBarShadowColor());
-                        mDrawCanvas.drawRect(mBarShadow, mRenderPaint);
-                    }
-
-                    // draw the stack
-                    for (int k = 0; k < vals.length; k++) {
-
-                        all -= vals[k];
-
-                        prepareBar(x, vals[k] + all, dataSet.getBarSpace());
-
-                        mRenderPaint.setColor(dataSet.getColor(k));
-                        mDrawCanvas.drawRect(mBarRect, mRenderPaint);
-                    }
-                }
-
-                // avoid drawing outofbounds values
-                if (isOffContentRight(mBarRect.left))
-                    break;
-            }
-        }
-    }
-
-    /**
-     * Prepares a bar for drawing on the specified x-index and y-position. Also
-     * prepares the shadow-bar if enabled.
-     * 
-     * @param x the x-position
-     * @param y the y-position
-     * @param barspace the space between bars
-     */
-    protected void prepareBar(float x, float y, float barspace) {
-
-        float spaceHalf = barspace / 2f;
-        float left = x + spaceHalf;
-        float right = x + 1f - spaceHalf;
-        float top = y >= 0 ? y : 0;
-        float bottom = y <= 0 ? y : 0;
-
-        mBarRect.set(left, top, right, bottom);
-
-        mTrans.rectValueToPixel(mBarRect, yyy);
-
-        // if a shadow is drawn, prepare it too
-        if (mDrawBarShadow) {
-            mBarShadow.set(mBarRect.left, mOffsetTop, mBarRect.right, getHeight() - mOffsetBottom);
-        }
+        
     }
 
     @Override
@@ -368,95 +187,7 @@ public class BarChart extends BarLineChartBase<BarData> {
     @Override
     protected void drawValues() {
 
-        // if values are drawn
-        if (mDrawYValues && mData.getYValCount() < mMaxVisibleCount * mTrans.getScaleX()) {
-
-            ArrayList<BarDataSet> dataSets = ((BarData) mData).getDataSets();
-
-            float posOffset = 0f;
-            float negOffset = 0f;
-
-            // calculate the correct offset depending on the draw position of
-            // the value
-            posOffset = getPositiveYOffset(mDrawValueAboveBar);
-            negOffset = getNegativeYOffset(mDrawValueAboveBar);
-
-            for (int i = 0; i < mData.getDataSetCount(); i++) {
-
-                BarDataSet dataSet = dataSets.get(i);
-                ArrayList<BarEntry> entries = dataSet.getYVals();
-
-                float[] valuePoints = mTrans.generateTransformedValuesBarChart(entries, i, mData,
-                        yyy);
-
-                // if only single values are drawn (sum)
-                if (!mDrawValuesForWholeStack) {
-
-                    for (int j = 0; j < valuePoints.length * xxx; j += 2) {
-
-                        if (isOffContentRight(valuePoints[j]))
-                            break;
-
-                        if (isOffContentLeft(valuePoints[j]) || isOffContentTop(valuePoints[j + 1])
-                                || isOffContentBottom(valuePoints[j + 1]))
-                            continue;
-
-                        float val = entries.get(j / 2).getVal();
-
-                        drawValue(val, valuePoints[j],
-                                valuePoints[j + 1] + (val >= 0 ? posOffset : negOffset));
-                    }
-
-                    // if each value of a potential stack should be drawn
-                } else {
-
-                    for (int j = 0; j < (valuePoints.length - 1) * xxx; j += 2) {
-
-                        if (isOffContentRight(valuePoints[j]))
-                            break;
-
-                        if (isOffContentLeft(valuePoints[j]) || isOffContentTop(valuePoints[j + 1])
-                                || isOffContentBottom(valuePoints[j + 1]))
-                            continue;
-
-                        BarEntry e = entries.get(j / 2);
-
-                        float[] vals = e.getVals();
-
-                        // we still draw stacked bars, but there is one
-                        // non-stacked
-                        // in between
-                        if (vals == null) {
-
-                            drawValue(e.getVal(), valuePoints[j],
-                                    valuePoints[j + 1] + (e.getVal() >= 0 ? posOffset : negOffset));
-
-                        } else {
-
-                            float[] transformed = new float[vals.length * 2];
-                            int cnt = 0;
-                            float add = e.getVal();
-
-                            for (int k = 0; k < transformed.length; k += 2) {
-
-                                add -= vals[cnt];
-                                transformed[k + 1] = (vals[cnt] + add) * yyy;
-                                cnt++;
-                            }
-
-                            mTrans.pointValuesToPixel(transformed);
-
-                            for (int k = 0; k < transformed.length; k += 2) {
-
-                                drawValue(vals[k / 2], valuePoints[j],
-                                        transformed[k + 1]
-                                                + (vals[k / 2] >= 0 ? posOffset : negOffset));
-                            }
-                        }
-                    }
-                }
-            }
-        }
+       
     }
 
     protected float getPositiveYOffset(boolean drawAboveValueBar)
@@ -469,28 +200,6 @@ public class BarChart extends BarLineChartBase<BarData> {
     {
         return (mDrawValueAboveBar ? Utils.calcTextHeight(mValuePaint, "8") * 1.5f : -Utils
                 .convertDpToPixel(5));
-    }
-
-    /**
-     * Draws a value at the specified x and y position.
-     * 
-     * @param value
-     * @param xPos
-     * @param yPos
-     */
-    private void drawValue(float val, float xPos, float yPos) {
-
-        String value = mValueFormatter.getFormattedValue(val);
-
-        if (mDrawUnitInChart) {
-
-            mDrawCanvas.drawText(value + mUnit, xPos, yPos,
-                    mValuePaint);
-        } else {
-
-            mDrawCanvas.drawText(value, xPos, yPos,
-                    mValuePaint);
-        }
     }
 
     /**
@@ -573,67 +282,67 @@ public class BarChart extends BarLineChartBase<BarData> {
 
         RectF bounds = new RectF(left, top, right, bottom);
 
-        mTrans.rectValueToPixel(bounds);
+        getTransformer(set.getAxisDependency()).rectValueToPixel(bounds);
 
         return bounds;
     }
 
-    /**
-     * sets the skew (default 0.3f), the skew indicates how much the 3D effect
-     * of the chart is turned to the right
-     * 
-     * @param skew
-     */
-    public void setSkew(float skew) {
-        this.mSkew = skew;
-    }
-
-    /**
-     * returns the skew value that indicates how much the 3D effect is turned to
-     * the right
-     * 
-     * @return
-     */
-    public float getSkew() {
-        return mSkew;
-    }
-
-    /**
-     * set the depth of the chart (default 0.3f), the depth indicates how much
-     * the 3D effect of the chart goes back
-     * 
-     * @param depth
-     */
-    public void setDepth(float depth) {
-        this.mDepth = depth;
-    }
-
-    /**
-     * returhs the depth, which indicates how much the 3D effect goes back
-     * 
-     * @return
-     */
-    public float getDepth() {
-        return mDepth;
-    }
-
-    /**
-     * if enabled, chart will be drawn in 3d
-     * 
-     * @param enabled
-     */
-    public void set3DEnabled(boolean enabled) {
-        this.m3DEnabled = enabled;
-    }
-
-    /**
-     * returns true if 3d bars is enabled, false if not
-     * 
-     * @return
-     */
-    public boolean is3DEnabled() {
-        return m3DEnabled;
-    }
+//    /**
+//     * sets the skew (default 0.3f), the skew indicates how much the 3D effect
+//     * of the chart is turned to the right
+//     * 
+//     * @param skew
+//     */
+//    public void setSkew(float skew) {
+//        this.mSkew = skew;
+//    }
+//
+//    /**
+//     * returns the skew value that indicates how much the 3D effect is turned to
+//     * the right
+//     * 
+//     * @return
+//     */
+//    public float getSkew() {
+//        return mSkew;
+//    }
+//
+//    /**
+//     * set the depth of the chart (default 0.3f), the depth indicates how much
+//     * the 3D effect of the chart goes back
+//     * 
+//     * @param depth
+//     */
+//    public void setDepth(float depth) {
+//        this.mDepth = depth;
+//    }
+//
+//    /**
+//     * returhs the depth, which indicates how much the 3D effect goes back
+//     * 
+//     * @return
+//     */
+//    public float getDepth() {
+//        return mDepth;
+//    }
+//
+//    /**
+//     * if enabled, chart will be drawn in 3d
+//     * 
+//     * @param enabled
+//     */
+//    public void set3DEnabled(boolean enabled) {
+//        this.m3DEnabled = enabled;
+//    }
+//
+//    /**
+//     * returns true if 3d bars is enabled, false if not
+//     * 
+//     * @return
+//     */
+//    public boolean is3DEnabled() {
+//        return m3DEnabled;
+//    }
 
     /**
      * set this to true to draw the highlightning arrow
