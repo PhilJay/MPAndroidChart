@@ -1,6 +1,8 @@
 
 package com.github.mikephil.charting.utils;
 
+import java.util.ArrayList;
+
 /**
  * Class representing the x-axis labels settings. Only use the setter methods to
  * modify it. Do not access public variables directly. Be aware that not all
@@ -9,6 +11,9 @@ package com.github.mikephil.charting.utils;
  * @author Philipp Jahoda
  */
 public class XAxis extends AxisBase {
+
+    /** the arraylist containing all the x-axis labels */
+    protected ArrayList<String> mValues = new ArrayList<String>();
 
     /**
      * width of the x-axis labels in pixels - this is calculated by the
@@ -34,7 +39,7 @@ public class XAxis extends AxisBase {
      * 0 DRAW, else dont draw.
      */
     public int mXAxisLabelModulus = 1;
-    
+
     /**
      * the modulus that indicates if a value at a specified index in an
      * array(list) for the y-axis-labels is drawn or not. If index % modulus ==
@@ -158,5 +163,23 @@ public class XAxis extends AxisBase {
      */
     public boolean isAvoidFirstLastClippingEnabled() {
         return mAvoidFirstLastClipping;
+    }
+
+    /**
+     * Sets the labels for this axis.
+     * 
+     * @param values
+     */
+    public void setValues(ArrayList<String> values) {
+        mValues = values;
+    }
+
+    /**
+     * Returns the labels for this axis.
+     * 
+     * @return
+     */
+    public ArrayList<String> getValues() {
+        return mValues;
     }
 }

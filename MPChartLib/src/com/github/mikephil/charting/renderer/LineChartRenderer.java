@@ -38,7 +38,7 @@ public class LineChartRenderer extends DataRenderer {
         LineData lineData = mChart.getData();
 
         for (LineDataSet set : lineData.getDataSets()) {
-            
+
             if (set.isVisible())
                 drawDataSet(c, set);
         }
@@ -413,16 +413,18 @@ public class LineChartRenderer extends DataRenderer {
             mHighlightPaint.setColor(set.getHighLightColor());
 
             int xIndex = indices[i].getXIndex(); // get the
-                                                              // x-position
+                                                 // x-position
 
             if (xIndex > mChart.getDeltaX() * mAnimator.getPhaseX())
                 continue;
 
-            float y = set.getYValForXIndex(xIndex) * mAnimator.getPhaseY(); // get the
-                                                          // y-position
+            float y = set.getYValForXIndex(xIndex) * mAnimator.getPhaseY(); // get
+                                                                            // the
+            // y-position
 
             float[] pts = new float[] {
-                    xIndex, mChart.getYChartMax(), xIndex, mChart.getYChartMin(), 0, y, mChart.getDeltaX(), y
+                    xIndex, mChart.getYChartMax(), xIndex, mChart.getYChartMin(), 0, y,
+                    mChart.getDeltaX(), y
             };
 
             mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);

@@ -6,10 +6,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 
-import com.github.mikephil.charting.interfaces.ChartInterface;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.XAxis;
 import com.github.mikephil.charting.utils.XAxis.XLabelPosition;
+
+import java.util.ArrayList;
 
 public class XAxisRenderer extends AxisRenderer {
 
@@ -29,7 +30,7 @@ public class XAxisRenderer extends AxisRenderer {
         mXLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
     }
 
-    public void computeAxis(float xValAverageLength) {
+    public void computeAxis(float xValAverageLength, ArrayList<String> xValues) {
 
         StringBuffer a = new StringBuffer();
 
@@ -42,6 +43,7 @@ public class XAxisRenderer extends AxisRenderer {
 
         mXAxis.mLabelWidth = Utils.calcTextWidth(mXLabelPaint, a.toString());
         mXAxis.mLabelHeight = Utils.calcTextHeight(mXLabelPaint, "Q");
+        mXAxis.setValues(xValues);
     }
 
     @Override
@@ -81,14 +83,14 @@ public class XAxisRenderer extends AxisRenderer {
      * 
      * @param yPos
      */
-    private void drawLabels(Canvas c, float yPos) {
+    protected void drawLabels(Canvas c, float yPos) {
 
         // pre allocate to save performance (dont allocate in loop)
         float[] position = new float[] {
                 0f, 0f
         };
 
-        for (int i = 0; i < mData.getXValCount(); i += mXAxis.mXAxisLabelModulus) {
+        for (int i = 0; i < mXAxis.getValues().size(); i += mXAxis.mXAxisLabelModulus) {
 
             position[0] = i;
 
@@ -98,14 +100,14 @@ public class XAxisRenderer extends AxisRenderer {
 
             mTrans.pointValuesToPixel(position);
 
-            if (position[0] >= mOffsetLeft && position[0] <= getWidth() - mOffsetRight) {
+            if (mViewPortHandler.isInBoundsX(position[0])) {
 
-                String label = mData.getXVals().get(i);
+                String label = mXAxis.getValues().get(i);
 
                 if (mXAxis.isAvoidFirstLastClippingEnabled()) {
 
                     // avoid clipping of the last
-                    if (i == mData.getXValCount() - 1) {
+                    if (i == mXAxis.getValues().size() - 1) {
                         float width = Utils.calcTextWidth(mXLabelPaint, label);
 
                         if (width > mViewPortHandler.offsetRight() * 2
@@ -139,7 +141,7 @@ public class XAxisRenderer extends AxisRenderer {
 
         mGridPaint.setColor(mXAxis.getGridColor());
 
-        for (int i = 0; i < mData.getXValCount(); i += mXAxis.mXAxisLabelModulus) {
+        for (int i = 0; i < mXAxis.getValues().size(); i += mXAxis.mXAxisLabelModulus) {
 
             position[0] = i;
 

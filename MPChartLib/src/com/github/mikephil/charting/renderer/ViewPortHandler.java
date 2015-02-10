@@ -43,7 +43,7 @@ public class ViewPortHandler {
         mChartWidth = width;
     }
 
-    public void restrainViewPort(float offsetLeft, float offsetRight, float offsetTop, float offsetBottom) {
+    public void restrainViewPort(float offsetLeft, float offsetTop, float offsetRight, float offsetBottom) {
         mContentRect.set(offsetLeft, offsetTop, mChartWidth - offsetRight, mChartHeight - offsetBottom);
     }
     

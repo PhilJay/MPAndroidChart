@@ -154,6 +154,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         mAxisRendererLeft = new YAxisRenderer(mViewPortHandler, mAxisLeft, mLeftAxisTransformer);
         mAxisRendererRight = new YAxisRenderer(mViewPortHandler, mAxisRight, mRightAxisTransformer);
+        
+        mXAxisRenderer = new XAxisRenderer(mViewPortHandler, mXAxis, mLeftAxisTransformer);
 
         mListener = new BarLineChartTouchListener(this, mViewPortHandler.getMatrixTouch());
 
@@ -262,7 +264,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mAxisRendererLeft.computeAxis(this);
         mAxisRendererRight.computeAxis(this);
 
-        mXAxisRenderer.computeAxis(mData.getXValAverageLength());
+        mXAxisRenderer.computeAxis(mData.getXValAverageLength(), mData.getXVals());
 
         prepareLegend();
 
@@ -273,7 +275,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * Sets up all the matrices that will be used for scaling the coordinates to
      * the display. Offset and Value-px.
      */
-    private void prepareMatrix() {
+    protected void prepareMatrix() {
 
         mRightAxisTransformer.prepareMatrixValuePx(this, mDeltaX, mDeltaY);
         mLeftAxisTransformer.prepareMatrixValuePx(this, mDeltaX, mDeltaY);
@@ -391,7 +393,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             mLegend.setOffsetLeft(offsetLeft);
         }
 
-        mViewPortHandler.restrainViewPort(offsetLeft, offsetRight, offsetTop, offsetBottom);
+        mViewPortHandler.restrainViewPort(offsetLeft, offsetTop, offsetRight, offsetBottom);
 
         prepareMatrix();
     }

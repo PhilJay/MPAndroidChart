@@ -14,6 +14,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.renderer.XAxisRendererBarChart;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Utils;
 
@@ -71,6 +72,8 @@ public class BarChart extends BarLineChartBase<BarData> {
     @Override
     protected void init() {
         super.init();
+        
+        mXAxisRenderer = new XAxisRendererBarChart(mViewPortHandler, mXAxis, mLeftAxisTransformer, this);
     }
 
     @Override
@@ -98,92 +101,11 @@ public class BarChart extends BarLineChartBase<BarData> {
     }
 
     @Override
-    protected void drawHighlights() {
-
-    }
-
-    @Override
     protected void drawDataSet(int index) {
         
         
     }
-
-    @Override
-    protected void drawXLabels(float yPos) {
-
-        // pre allocate to save performance (dont allocate in loop)
-        float[] position = new float[] {
-                0f, 0f
-        };
-
-        int step = mData.getDataSetCount();
-
-        for (int i = 0; i < mData.getXValCount(); i += mXAxis.mXAxisLabelModulus) {
-
-            position[0] = i * step + i * mData.getGroupSpace()
-                    + mData.getGroupSpace() / 2f;
-
-            // center the text
-            if (mXAxis.isCenterXLabelsEnabled())
-                position[0] += (step / 2f);
-
-            mTrans.pointValuesToPixel(position);
-
-            if (position[0] >= mOffsetLeft && position[0] <= getWidth() - mOffsetRight) {
-
-                String label = mData.getXVals().get(i);
-
-                if (mXAxis.isAvoidFirstLastClippingEnabled()) {
-
-                    // avoid clipping of the last
-                    if (i == mData.getXValCount() - 1) {
-                        float width = Utils.calcTextWidth(mXLabelPaint, label);
-
-                        if (width > getOffsetRight() * 2 && position[0] + width > getWidth())
-                            position[0] -= width / 2;
-
-                        // avoid clipping of the first
-                    } else if (i == 0) {
-
-                        float width = Utils.calcTextWidth(mXLabelPaint, label);
-                        position[0] += width / 2;
-                    }
-                }
-
-                mDrawCanvas.drawText(label, position[0],
-                        yPos,
-                        mXLabelPaint);
-            }
-        }
-    }
-
-    @Override
-    protected void drawVerticalGrid() {
-
-        if (!mDrawVerticalGrid || mData == null)
-            return;
-
-        float[] position = new float[] {
-                0f, 0f
-        };
-
-        // take into consideration that multiple DataSets increase mDeltaX
-        int step = mData.getDataSetCount();
-
-        for (int i = 0; i < mData.getXValCount(); i += mXAxis.mXAxisLabelModulus) {
-
-            position[0] = i * step + i * mData.getGroupSpace();
-
-            mTrans.pointValuesToPixel(position);
-
-            if (position[0] >= mOffsetLeft && position[0] <= getWidth()) {
-
-                mDrawCanvas.drawLine(position[0], mOffsetTop, position[0], getHeight()
-                        - mOffsetBottom, mGridPaint);
-            }
-        }
-    }
-
+    
     @Override
     protected void drawValues() {
 
