@@ -8,7 +8,7 @@ package com.github.mikephil.charting.utils;
  * 
  * @author Philipp Jahoda
  */
-public class XLabels extends LabelBase {
+public class XAxis extends AxisBase {
 
     /**
      * width of the x-axis labels in pixels - this is calculated by the

@@ -9,19 +9,27 @@ import android.graphics.Typeface;
  * 
  * @author Philipp Jahoda
  */
-public abstract class LabelBase {
+public abstract class AxisBase {
 
     /** the typeface to use for the labels */
     private Typeface mTypeface;
 
     /** the size of the label text */
     private float mTextSize = 10f;
-    
+
     /** the text color to use */
     private int mTextColor = Color.BLACK;
 
+    /** the color of the axis lines */
+    private int mAxisColor = Color.BLACK;
+
+    private int mGridColor = Color.GRAY;
+
+    /** flag indicating if the grid lines for this axis should be drawn */
+    private boolean mDrawGridLines = true;
+
     /** default constructor */
-    public LabelBase() {
+    public AxisBase() {
         mTextSize = Utils.convertDpToPixel(10f);
     }
 
@@ -85,5 +93,59 @@ public abstract class LabelBase {
      */
     public int getTextColor() {
         return mTextColor;
+    }
+
+    /**
+     * Returns the color of the axis line.
+     * 
+     * @return
+     */
+    public int getAxisColor() {
+        return mAxisColor;
+    }
+
+    /**
+     * Sets the color of the axis line.
+     * 
+     * @param color
+     */
+    public void setAxisColor(int color) {
+        mAxisColor = color;
+    }
+
+    /**
+     * Set this to true to enable drawing the grid lines for this axis.
+     * 
+     * @param enabled
+     */
+    public void setDrawGridLines(boolean enabled) {
+        mDrawGridLines = enabled;
+    }
+
+    /**
+     * Returns true if drawing grid lines is enabled for this axis.
+     * 
+     * @return
+     */
+    public boolean isDrawGridLinesEnabled() {
+        return mDrawGridLines;
+    }
+
+    /**
+     * Sets the color of the grid lines for this axis.
+     * 
+     * @param color
+     */
+    public void setGridColor(int color) {
+        mGridColor = color;
+    }
+
+    /**
+     * Returns the color of the grid lines for this axis.
+     * 
+     * @return
+     */
+    public int getGridColor() {
+        return mGridColor;
     }
 }

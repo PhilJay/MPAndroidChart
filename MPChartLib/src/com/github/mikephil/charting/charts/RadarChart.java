@@ -14,8 +14,8 @@ import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.utils.LimitLine;
 import com.github.mikephil.charting.utils.Utils;
-import com.github.mikephil.charting.utils.XLabels;
-import com.github.mikephil.charting.utils.YLabels;
+import com.github.mikephil.charting.utils.XAxis;
+import com.github.mikephil.charting.utils.YAxis;
 
 import java.util.ArrayList;
 
@@ -55,10 +55,10 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     private boolean mDrawWeb = true;
 
     /** the object reprsenting the y-axis labels */
-    private YLabels mYLabels = new YLabels();
+    private YAxis mYLabels = new YAxis();
 
     /** the object representing the x-axis labels */
-    private XLabels mXLabels = new XLabels();
+    private XAxis mXLabels = new XAxis();
 
     public RadarChart(Context context) {
         super(context);
@@ -124,7 +124,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
         drawLimitLines();
 
-        drawData();
+//        drawData();
 
         drawAdditional();
 
@@ -530,7 +530,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      * 
      * @return
      */
-    public YLabels getYLabels() {
+    public YAxis getYLabels() {
         return mYLabels;
     }
 
@@ -539,7 +539,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      * 
      * @return
      */
-    public XLabels getXLabels() {
+    public XAxis getXLabels() {
         return mXLabels;
     }
 

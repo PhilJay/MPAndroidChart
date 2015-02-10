@@ -67,11 +67,11 @@ public class ScatterChart extends BarLineChartBase<ScatterData> {
 
         float shapeHalf = dataSet.getScatterShapeSize() / 2f;
 
-        float[] valuePoints = mTrans.generateTransformedValuesLineScatter(entries, mPhaseY);
+        float[] valuePoints = mTrans.generateTransformedValuesLineScatter(entries, yyy);
 
         ScatterShape shape = dataSet.getScatterShape();
 
-        for (int j = 0; j < valuePoints.length * mPhaseX; j += 2) {
+        for (int j = 0; j < valuePoints.length * xxx; j += 2) {
 
             if (isOffContentRight(valuePoints[j]))
                 break;
@@ -145,11 +145,11 @@ public class ScatterChart extends BarLineChartBase<ScatterData> {
                 ScatterDataSet dataSet = dataSets.get(i);
                 ArrayList<Entry> entries = dataSet.getYVals();
 
-                float[] positions = mTrans.generateTransformedValuesLineScatter(entries, mPhaseY);
+                float[] positions = mTrans.generateTransformedValuesLineScatter(entries, yyy);
 
                 float shapeSize = dataSet.getScatterShapeSize();
 
-                for (int j = 0; j < positions.length * mPhaseX; j += 2) {
+                for (int j = 0; j < positions.length * xxx; j += 2) {
 
                     if (isOffContentRight(positions[j]))
                         break;
@@ -192,10 +192,10 @@ public class ScatterChart extends BarLineChartBase<ScatterData> {
             int xIndex = mIndicesToHightlight[i].getXIndex(); // get the
                                                               // x-position
 
-            if (xIndex > mDeltaX * mPhaseX)
+            if (xIndex > mDeltaX * xxx)
                 continue;
 
-            float y = set.getYValForXIndex(xIndex) * mPhaseY; // get the
+            float y = set.getYValForXIndex(xIndex) * yyy; // get the
                                                               // y-position
 
             float[] pts = new float[] {

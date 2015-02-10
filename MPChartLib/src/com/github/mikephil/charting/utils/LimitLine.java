@@ -22,6 +22,9 @@ public class LimitLine {
     /** the color of the limit line */
     private int mLineColor = Color.rgb(237, 91, 91);
 
+    /** the color of the value-text */
+    private int mValueTextColor = Color.BLACK;
+
     /** flag that indicates if the value of the limit line is drawn or not */
     private boolean mDrawValue = true;
 
@@ -153,6 +156,24 @@ public class LimitLine {
      */
     public boolean isDrawValueEnabled() {
         return mDrawValue;
+    }
+
+    /**
+     * Sets the color of the value-text that is drawn next to the LimitLine.
+     * 
+     * @param color
+     */
+    public void setTextColor(int color) {
+        mValueTextColor = color;
+    }
+
+    /**
+     * Returns the color of the value-text that is drawn next to the LimitLine.
+     * 
+     * @return
+     */
+    public int getTextColor() {
+        return mValueTextColor;
     }
 
     /**

@@ -16,6 +16,7 @@ import com.github.mikephil.charting.data.BarLineScatterCandleData;
 import com.github.mikephil.charting.data.BarLineScatterCandleRadarDataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.OnChartGestureListener;
+import com.github.mikephil.charting.renderer.ViewPortHandler;
 import com.github.mikephil.charting.utils.Highlight;
 
 /**
@@ -64,9 +65,9 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
     /** the gesturedetector used for detecting taps and longpresses, ... */
     private GestureDetector mGestureDetector;
 
-    public BarLineChartTouchListener(T chart, Matrix start) {
+    public BarLineChartTouchListener(T chart, Matrix touchMatrix) {
         this.mChart = chart;
-        this.mMatrix = start;
+        this.mMatrix = touchMatrix;
 
         mGestureDetector = new GestureDetector(chart.getContext(), this);
     }
@@ -163,7 +164,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
         }
 
         // Perform the transformation, update the chart
-        mMatrix = mChart.getTransformer().refresh(mMatrix, mChart);
+        mMatrix = mChart.getViewPortHandler().refresh(mMatrix, mChart);
 
         return true; // indicate event was handled
     }
@@ -333,15 +334,17 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
      * @return
      */
     public PointF getTrans(float x, float y) {
+        
+        ViewPortHandler vph = mChart.getViewPortHandler();
 
-        float xTrans = x - mChart.getOffsetLeft();
+        float xTrans = x - vph.offsetLeft();
         float yTrans = 0f;
 
         // check if axis is inverted
         if (!mChart.isInvertYAxisEnabled()) {
-            yTrans = -(mChart.getMeasuredHeight() - y - mChart.getOffsetBottom());
+            yTrans = -(mChart.getMeasuredHeight() - y - vph.offsetBottom());
         } else {
-            yTrans = -(y - mChart.getOffsetTop());
+            yTrans = -(y - vph.offsetTop());
         }
 
         return new PointF(xTrans, yTrans);

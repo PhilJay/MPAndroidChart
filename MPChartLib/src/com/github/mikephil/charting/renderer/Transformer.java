@@ -4,12 +4,11 @@ package com.github.mikephil.charting.renderer;
 import android.graphics.Matrix;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.view.View;
 
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.ChartInterface;
-import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.PointD;
 
 import java.util.ArrayList;
 
@@ -26,33 +25,11 @@ public class Transformer {
 
     /** matrix for handling the different offsets of the chart */
     protected Matrix mMatrixOffset = new Matrix();
+    
+    private ViewPortHandler mViewPortHandler;
 
-    /** matrix used for touch events */
-    protected final Matrix mMatrixTouch = new Matrix();
-
-    /** if set to true, the y-axis is inverted and low values start at the top */
-    private boolean mInvertYAxis = false;
-
-    /** minimum scale value on the y-axis */
-    private float mMinScaleY = 1f;
-
-    /** minimum scale value on the x-axis */
-    private float mMinScaleX = 1f;
-
-    /** contains the current scale factor of the x-axis */
-    private float mScaleX = 1f;
-
-    /** contains the current scale factor of the y-axis */
-    private float mScaleY = 1f;
-
-    /** offset that allows the chart to be dragged over its bounds on the x-axis */
-    private float mTransOffsetX = 0f;
-
-    /** offset that allows the chart to be dragged over its bounds on the x-axis */
-    private float mTransOffsetY = 0f;
-
-    public Transformer() {
-
+    public Transformer(ViewPortHandler viewPortHandler) {
+        this.mViewPortHandler = viewPortHandler;
     }
 
     /**
@@ -61,16 +38,14 @@ public class Transformer {
      * 
      * @param chart
      */
-    public void prepareMatrixValuePx(ChartInterface chart) {
+    public void prepareMatrixValuePx(ViewPortHandler viewport, float deltaX, float deltaY, float yChartMin) {
 
-        float scaleX = (float) ((chart.getWidth() - chart.getOffsetRight() - chart
-                .getOffsetLeft()) / chart.getDeltaX());
-        float scaleY = (float) ((chart.getHeight() - chart.getOffsetTop() - chart
-                .getOffsetBottom()) / chart.getDeltaY());
+        float scaleX = (float) ((viewport.getChartWidth() - viewport.contentRight() - viewport.offsetLeft()) / deltaX);
+        float scaleY = (float) ((viewport.getChartHeight() - viewport.offsetTop() - viewport.offsetBottom()) / deltaY);
 
         // setup all matrices
         mMatrixValueToPx.reset();
-        mMatrixValueToPx.postTranslate(0, -chart.getYChartMin());
+        mMatrixValueToPx.postTranslate(0, -yChartMin);
         mMatrixValueToPx.postScale(scaleX, -scaleY);
     }
 
@@ -93,17 +68,17 @@ public class Transformer {
      * 
      * @param chart
      */
-    public void prepareMatrixOffset(ChartInterface chart) {
+    public void prepareMatrixOffset(ViewPortHandler viewport, boolean inverted) {
 
         mMatrixOffset.reset();
 
         // offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
 
-        if (!mInvertYAxis)
-            mMatrixOffset.postTranslate(chart.getOffsetLeft(),
-                    chart.getHeight() - chart.getOffsetBottom());
+        if (!inverted)
+            mMatrixOffset.postTranslate(viewport.offsetLeft(),
+                    viewport.getChartHeight() - viewport.offsetBottom());
         else {
-            mMatrixOffset.setTranslate(chart.getOffsetLeft(), -chart.getOffsetTop());
+            mMatrixOffset.setTranslate(viewport.offsetLeft(), -viewport.offsetTop());
             mMatrixOffset.postScale(1.0f, -1.0f);
         }
 
@@ -185,7 +160,7 @@ public class Transformer {
     public void pathValueToPixel(Path path) {
 
         path.transform(mMatrixValueToPx);
-        path.transform(mMatrixTouch);
+        path.transform(mViewPortHandler.getMatrixTouch());
         path.transform(mMatrixOffset);
     }
 
@@ -210,7 +185,7 @@ public class Transformer {
     public void pointValuesToPixel(float[] pts) {
 
         mMatrixValueToPx.mapPoints(pts);
-        mMatrixTouch.mapPoints(pts);
+        mViewPortHandler.getMatrixTouch().mapPoints(pts);
         mMatrixOffset.mapPoints(pts);
     }
 
@@ -222,7 +197,7 @@ public class Transformer {
     public void rectValueToPixel(RectF r) {
 
         mMatrixValueToPx.mapRect(r);
-        mMatrixTouch.mapRect(r);
+        mViewPortHandler.getMatrixTouch().mapRect(r);
         mMatrixOffset.mapRect(r);
     }
 
@@ -241,7 +216,7 @@ public class Transformer {
             r.bottom *= phaseY;
 
         mMatrixValueToPx.mapRect(r);
-        mMatrixTouch.mapRect(r);
+        mViewPortHandler.getMatrixTouch().mapRect(r);
         mMatrixOffset.mapRect(r);
     }
 
@@ -270,7 +245,7 @@ public class Transformer {
         mMatrixOffset.invert(tmp);
         tmp.mapPoints(pixels);
 
-        mMatrixTouch.invert(tmp);
+        mViewPortHandler.getMatrixTouch().invert(tmp);
         tmp.mapPoints(pixels);
 
         mMatrixValueToPx.invert(tmp);
@@ -278,229 +253,28 @@ public class Transformer {
     }
 
     /**
-     * ################ ################ ################ ################
-     */
-    /** CODE BELOW THIS RELATED TO SCALING AND GESTURES */
-
-    /**
-     * Zooms in by 1.4f, x and y are the coordinates (in pixels) of the zoom
-     * center.
+     * Returns the x and y values in the chart at the given touch point
+     * (encapsulated in a PointD). This method transforms pixel coordinates to
+     * coordinates / values in the chart. This is the opposite method to
+     * getPixelsForValues(...).
      * 
      * @param x
      * @param y
-     */
-    public Matrix zoomIn(float x, float y) {
-
-        Matrix save = new Matrix();
-        save.set(mMatrixTouch);
-
-        save.postScale(1.4f, 1.4f, x, y);
-
-        return save;
-    }
-
-    /**
-     * Zooms out by 0.7f, x and y are the coordinates (in pixels) of the zoom
-     * center.
-     */
-    public Matrix zoomOut(float x, float y) {
-
-        Matrix save = new Matrix();
-        save.set(mMatrixTouch);
-
-        save.postScale(0.7f, 0.7f, x, y);
-
-        return save;
-    }
-
-    /**
-     * Zooms in or out by the given scale factor. x and y are the coordinates
-     * (in pixels) of the zoom center.
-     * 
-     * @param scaleX if < 1f --> zoom out, if > 1f --> zoom in
-     * @param scaleY if < 1f --> zoom out, if > 1f --> zoom in
-     * @param x
-     * @param y
-     */
-    public Matrix zoom(float scaleX, float scaleY, float x, float y) {
-
-        Matrix save = new Matrix();
-        save.set(mMatrixTouch);
-
-        // Log.i(LOG_TAG, "Zooming, x: " + x + ", y: " + y);
-
-        save.postScale(scaleX, scaleY, x, y);
-
-        return save;
-    }
-
-    /**
-     * Resets all zooming and dragging and makes the chart fit exactly it's
-     * bounds.
-     */
-    public Matrix fitScreen() {
-
-        Matrix save = new Matrix();
-        save.set(mMatrixTouch);
-
-        float[] vals = new float[9];
-
-        save.getValues(vals);
-
-        // reset all translations and scaling
-        vals[Matrix.MTRANS_X] = 0f;
-        vals[Matrix.MTRANS_Y] = 0f;
-        vals[Matrix.MSCALE_X] = 1f;
-        vals[Matrix.MSCALE_Y] = 1f;
-
-        save.setValues(vals);
-
-        return save;
-    }
-
-    /**
-     * If this is set to true, the y-axis is inverted which means that low
-     * values are on top of the chart, high values on bottom.
-     * 
-     * @param enabled
-     */
-    public void setInvertYAxisEnabled(boolean enabled) {
-        mInvertYAxis = enabled;
-    }
-
-    /**
-     * If this returns true, the y-axis is inverted.
-     * 
      * @return
      */
-    public boolean isInvertYAxisEnabled() {
-        return mInvertYAxis;
-    }
+    public PointD getValuesByTouchPoint(float x, float y) {
 
-    /**
-     * Centers the viewport around the specified position (x-index and y-value)
-     * in the chart. Centering the viewport outside the bounds of the chart is
-     * not possible. Makes most sense in combination with the
-     * setScaleMinima(...) method.
-     * 
-     * @param pts the position to center view viewport to
-     * @param chart
-     * @return save
-     */
-    public synchronized void centerViewPort(final float[] pts, final ChartInterface chart) {
+        // create an array of the touch-point
+        float[] pts = new float[2];
+        pts[0] = x;
+        pts[1] = y;
 
-        final View v = chart.getChartView();
+        pixelsToValue(pts);
 
-        v.post(new Runnable() {
+        double xTouchVal = pts[0];
+        double yTouchVal = pts[1];
 
-            @Override
-            public void run() {
-                Matrix save = new Matrix();
-                save.set(mMatrixTouch);
-
-                pointValuesToPixel(pts);
-
-                final float x = pts[0] - chart.getOffsetLeft();
-                final float y = pts[1] - chart.getOffsetTop();
-
-                save.postTranslate(-x, -y);
-
-                refresh(save, chart);
-            }
-        });
-    }
-
-    /**
-     * call this method to refresh the graph with a given matrix
-     * 
-     * @param newMatrix
-     * @return
-     */
-    public Matrix refresh(Matrix newMatrix, ChartInterface chart) {
-
-        mMatrixTouch.set(newMatrix);
-
-        // make sure scale and translation are within their bounds
-        limitTransAndScale(mMatrixTouch, chart.getContentRect());
-
-        chart.getChartView().invalidate();
-
-        newMatrix.set(mMatrixTouch);
-        return newMatrix;
-    }
-
-    /**
-     * limits the maximum scale and X translation of the given matrix
-     * 
-     * @param matrix
-     */
-    private void limitTransAndScale(Matrix matrix, RectF content) {
-
-        float[] vals = new float[9];
-        matrix.getValues(vals);
-
-        float curTransX = vals[Matrix.MTRANS_X];
-        float curScaleX = vals[Matrix.MSCALE_X];
-
-        float curTransY = vals[Matrix.MTRANS_Y];
-        float curScaleY = vals[Matrix.MSCALE_Y];
-
-        // min scale-x is 1f
-        mScaleX = Math.max(mMinScaleX, curScaleX);
-
-        // min scale-y is 1f
-        mScaleY = Math.max(mMinScaleY, curScaleY);
-
-        float width = 0f;
-        float height = 0f;
-
-        if (content != null) {
-            width = content.width();
-            height = content.height();
-        }
-
-        float maxTransX = -width * (mScaleX - 1f);
-        float newTransX = Math.min(Math.max(curTransX, maxTransX - mTransOffsetX), mTransOffsetX);
-
-        // if(curScaleX < mMinScaleX) {
-        // newTransX = (-width * (mScaleX - 1f)) / 2f;
-        // }
-
-        float maxTransY = height * (mScaleY - 1f);
-        float newTransY = Math.max(Math.min(curTransY, maxTransY + mTransOffsetY), -mTransOffsetY);
-
-        // if(curScaleY < mMinScaleY) {
-        // newTransY = (height * (mScaleY - 1f)) / 2f;
-        // }
-
-        vals[Matrix.MTRANS_X] = newTransX;
-        vals[Matrix.MSCALE_X] = mScaleX;
-
-        vals[Matrix.MTRANS_Y] = newTransY;
-        vals[Matrix.MSCALE_Y] = mScaleY;
-
-        matrix.setValues(vals);
-    }
-
-    /**
-     * Sets the minimum scale values for both axes. This limits the extent to
-     * which the user can zoom-out.
-     * 
-     * @param scaleXmin
-     * @param scaleYmin
-     */
-    public void setScaleMinima(float scaleXmin, float scaleYmin, ChartInterface chart) {
-
-        if (scaleXmin < 1f)
-            scaleXmin = 1f;
-        if (scaleYmin < 1f)
-            scaleYmin = 1f;
-
-        mMinScaleX = scaleXmin;
-        mMinScaleY = scaleYmin;
-
-        Matrix save = zoom(mMinScaleX, mMinScaleY, 0f, 0f);
-        refresh(save, chart);
+        return new PointD(xTouchVal, yTouchVal);
     }
 
     // /**
@@ -525,96 +299,11 @@ public class Transformer {
     // }
     // }
 
-    public Matrix getTouchMatrix() {
-        return mMatrixTouch;
-    }
-
     public Matrix getValueMatrix() {
         return mMatrixValueToPx;
     }
 
     public Matrix getOffsetMatrix() {
         return mMatrixOffset;
-    }
-
-    /**
-     * returns the current x-scale factor
-     */
-    public float getScaleX() {
-        return mScaleX;
-    }
-
-    /**
-     * returns the current y-scale factor
-     */
-    public float getScaleY() {
-        return mScaleY;
-    }
-
-    /**
-     * if the chart is fully zoomed out, return true
-     * 
-     * @return
-     */
-    public boolean isFullyZoomedOut() {
-
-        if (isFullyZoomedOutX() && isFullyZoomedOutY())
-            return true;
-        else
-            return false;
-    }
-
-    /**
-     * Returns true if the chart is fully zoomed out on it's y-axis (vertical).
-     * 
-     * @return
-     */
-    public boolean isFullyZoomedOutY() {
-        if (mScaleY > mMinScaleY || mMinScaleY > 1f)
-            return false;
-        else
-            return true;
-    }
-
-    /**
-     * Returns true if the chart is fully zoomed out on it's x-axis
-     * (horizontal).
-     * 
-     * @return
-     */
-    public boolean isFullyZoomedOutX() {
-        if (mScaleX > mMinScaleX || mMinScaleX > 1f)
-            return false;
-        else
-            return true;
-    }
-
-    /**
-     * Set an offset in dp that allows the user to drag the chart over it's
-     * bounds on the x-axis.
-     * 
-     * @param offset
-     */
-    public void setDragOffsetX(float offset) {
-        mTransOffsetX = Utils.convertDpToPixel(offset);
-    }
-
-    /**
-     * Set an offset in dp that allows the user to drag the chart over it's
-     * bounds on the y-axis.
-     * 
-     * @param offset
-     */
-    public void setDragOffsetY(float offset) {
-        mTransOffsetY = Utils.convertDpToPixel(offset);
-    }
-
-    /**
-     * Returns true if both drag offsets (x and y) are zero or smaller.
-     * 
-     * @return
-     */
-    public boolean hasNoDragOffset() {
-        return mTransOffsetX <= 0 && mTransOffsetY <= 0 ? true : false;
     }
 }

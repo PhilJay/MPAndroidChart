@@ -1,6 +1,8 @@
 
 package com.github.mikephil.charting.utils;
 
+import java.util.ArrayList;
+
 /**
  * Class representing the y-axis labels settings and its entries. Only use the
  * setter methods to modify it. Do not access public variables directly. Be
@@ -9,7 +11,7 @@ package com.github.mikephil.charting.utils;
  * 
  * @author Philipp Jahoda
  */
-public class YLabels extends LabelBase {
+public class YAxis extends AxisBase {
 
     /** the actual array of entries */
     public float[] mEntries = new float[] {};
@@ -23,11 +25,6 @@ public class YLabels extends LabelBase {
     /** the number of y-label entries the y-labels should have, default 6 */
     private int mLabelCount = 6;
 
-    /**
-     * if true, units are drawn next to the values of the y-axis labels
-     */
-    private boolean mDrawUnitsInLabels = true;
-
     /** indicates if the top y-label entry is drawn or not */
     private boolean mDrawTopYLabelEntry = true;
 
@@ -37,21 +34,44 @@ public class YLabels extends LabelBase {
     /** if true, the y-labels show only the minimum and maximum value */
     protected boolean mShowOnlyMinMax = false;
 
+    /** flag that indicates if this axis is enabled or not */
+    protected boolean mEnabled = true;
+
+    /** flag that indicates if the axis is inverted or not */
+    protected boolean mInverted = false;
+
     /** the formatter used to customly format the y-labels */
     private ValueFormatter mFormatter = null;
 
+    private ArrayList<LimitLine> mLimitLines;
+
     /** the position of the y-labels relative to the chart */
-    private YLabelPosition mPosition = YLabelPosition.LEFT;
+    private YLabelPosition mPosition = YLabelPosition.OUTSIDE_CHART;
 
     /** enum for the position of the y-labels relative to the chart */
     public enum YLabelPosition {
-        LEFT, RIGHT, BOTH_SIDED, LEFT_INSIDE, RIGHT_INSIDE
+        OUTSIDE_CHART, INSIDE_CHART
+    }
+
+    private AxisDependency mAxisDependency;
+
+    public enum AxisDependency {
+        LEFT, RIGHT
+    }
+
+    public YAxis(AxisDependency position) {
+        this.mAxisDependency = position;
+        this.mLimitLines = new ArrayList<LimitLine>();
+    }
+
+    public AxisDependency getAxisDependency() {
+        return mAxisDependency;
     }
 
     /**
      * returns the position of the y-labels
      */
-    public YLabelPosition getPosition() {
+    public YLabelPosition getLabelPosition() {
         return mPosition;
     }
 
@@ -62,24 +82,6 @@ public class YLabels extends LabelBase {
      */
     public void setPosition(YLabelPosition pos) {
         mPosition = pos;
-    }
-
-    /**
-     * returns true if drawing units in y-axis labels is enabled
-     * 
-     * @return
-     */
-    public boolean isDrawUnitsInYLabelEnabled() {
-        return mDrawUnitsInLabels;
-    }
-
-    /**
-     * if set to true, units are drawn next to y-label values, default: true
-     * 
-     * @param enabled
-     */
-    public void setDrawUnitsInYLabel(boolean enabled) {
-        mDrawUnitsInLabels = enabled;
     }
 
     /**
@@ -181,6 +183,77 @@ public class YLabels extends LabelBase {
      */
     public boolean isShowOnlyMinMaxEnabled() {
         return mShowOnlyMinMax;
+    }
+
+    /**
+     * Set this to true to enable this axis from being drawn to the screen.
+     * 
+     * @param enabled
+     */
+    public void setEnabled(boolean enabled) {
+        mEnabled = enabled;
+    }
+
+    /**
+     * Returns true if the axis is enabled (will be drawn).
+     * 
+     * @return
+     */
+    public boolean isEnabled() {
+        return mEnabled;
+    }
+
+    /**
+     * If this is set to true, the y-axis is inverted which means that low
+     * values are on top of the chart, high values on bottom.
+     * 
+     * @param enabled
+     */
+    public void setInvertAxis(boolean enabled) {
+        mInverted = enabled;
+    }
+
+    /**
+     * If this returns true, the y-axis is inverted.
+     * 
+     * @return
+     */
+    public boolean isInverted() {
+        return mInverted;
+    }
+
+    /**
+     * Adds a new LimitLine to this axis.
+     * 
+     * @param l
+     */
+    public void addLimitLine(LimitLine l) {
+        mLimitLines.add(l);
+    }
+
+    /**
+     * Removes the specified LimitLine from the axis.
+     * 
+     * @param l
+     */
+    public void removeLimitLine(LimitLine l) {
+        mLimitLines.remove(l);
+    }
+
+    /**
+     * Removes all LimitLines from the axis.
+     */
+    public void removeAllLimitLines() {
+        mLimitLines = new ArrayList<LimitLine>();
+    }
+
+    /**
+     * Returns the LimitLines of this axis.
+     * 
+     * @return
+     */
+    public ArrayList<LimitLine> getLimitLines() {
+        return mLimitLines;
     }
 
     /**

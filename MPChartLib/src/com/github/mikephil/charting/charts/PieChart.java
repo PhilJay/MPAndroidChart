@@ -133,7 +133,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
         drawHighlights();
 
-        drawData();
+//        drawData();
 
         drawAdditional();
 
@@ -227,7 +227,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
                 else
                     angle = mRotationAngle + mAbsoluteAngles[xIndex - 1];
 
-                angle *= mPhaseY;
+                angle *= yyy;
 
                 float sliceDegrees = mDrawAngles[xIndex];
 
@@ -284,7 +284,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
                 if (!needsHighlight(e.getXIndex(), index)) {
 
                     mRenderPaint.setColor(dataSet.getColor(j));
-                    mDrawCanvas.drawArc(mCircleBox, angle + sliceSpace / 2f, newangle * mPhaseY
+                    mDrawCanvas.drawArc(mCircleBox, angle + sliceSpace / 2f, newangle * yyy
                             - sliceSpace / 2f, true, mRenderPaint);
                 }
 
@@ -296,7 +296,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
                 // }
             }
 
-            angle += newangle * mPhaseX;
+            angle += newangle * xxx;
             cnt++;
         }
     }
@@ -422,7 +422,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
             PieDataSet dataSet = dataSets.get(i);
             ArrayList<Entry> entries = dataSet.getYVals();
 
-            for (int j = 0; j < entries.size() * mPhaseX; j++) {
+            for (int j = 0; j < entries.size() * xxx; j++) {
 
                 // offset needed to center the drawn text in the slice
                 float offset = mDrawAngles[cnt] / 2;
@@ -430,10 +430,10 @@ public class PieChart extends PieRadarChartBase<PieData> {
                 // calculate the text position
                 float x = (float) (r
                         * Math.cos(Math.toRadians((mRotationAngle + mAbsoluteAngles[cnt] - offset)
-                                * mPhaseY)) + center.x);
+                                * yyy)) + center.x);
                 float y = (float) (r
                         * Math.sin(Math.toRadians((mRotationAngle + mAbsoluteAngles[cnt] - offset)
-                                * mPhaseY)) + center.y);
+                                * yyy)) + center.y);
 
                 String val = "";
                 float value = entries.get(j).getVal();

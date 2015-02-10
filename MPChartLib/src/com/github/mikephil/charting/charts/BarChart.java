@@ -132,7 +132,7 @@ public class BarChart extends BarLineChartBase<BarData> {
 
             // check outofbounds
             if (index < mData.getYValCount() && index >= 0
-                    && index < (mDeltaX * mPhaseX) / mData.getDataSetCount()) {
+                    && index < (mDeltaX * xxx) / mData.getDataSetCount()) {
 
                 Entry e = getEntryByDataSetIndex(index, dataSetIndex);
 
@@ -179,7 +179,7 @@ public class BarChart extends BarLineChartBase<BarData> {
         ArrayList<BarEntry> entries = dataSet.getYVals();
 
         // do the drawing
-        for (int j = 0; j < dataSet.getEntryCount() * mPhaseX; j++) {
+        for (int j = 0; j < dataSet.getEntryCount() * xxx; j++) {
 
             BarEntry e = entries.get(j);
 
@@ -281,7 +281,7 @@ public class BarChart extends BarLineChartBase<BarData> {
 
         mBarRect.set(left, top, right, bottom);
 
-        mTrans.rectValueToPixel(mBarRect, mPhaseY);
+        mTrans.rectValueToPixel(mBarRect, yyy);
 
         // if a shadow is drawn, prepare it too
         if (mDrawBarShadow) {
@@ -299,13 +299,13 @@ public class BarChart extends BarLineChartBase<BarData> {
 
         int step = mData.getDataSetCount();
 
-        for (int i = 0; i < mData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
+        for (int i = 0; i < mData.getXValCount(); i += mXAxis.mXAxisLabelModulus) {
 
             position[0] = i * step + i * mData.getGroupSpace()
                     + mData.getGroupSpace() / 2f;
 
             // center the text
-            if (mXLabels.isCenterXLabelsEnabled())
+            if (mXAxis.isCenterXLabelsEnabled())
                 position[0] += (step / 2f);
 
             mTrans.pointValuesToPixel(position);
@@ -314,7 +314,7 @@ public class BarChart extends BarLineChartBase<BarData> {
 
                 String label = mData.getXVals().get(i);
 
-                if (mXLabels.isAvoidFirstLastClippingEnabled()) {
+                if (mXAxis.isAvoidFirstLastClippingEnabled()) {
 
                     // avoid clipping of the last
                     if (i == mData.getXValCount() - 1) {
@@ -351,7 +351,7 @@ public class BarChart extends BarLineChartBase<BarData> {
         // take into consideration that multiple DataSets increase mDeltaX
         int step = mData.getDataSetCount();
 
-        for (int i = 0; i < mData.getXValCount(); i += mXLabels.mXAxisLabelModulus) {
+        for (int i = 0; i < mData.getXValCount(); i += mXAxis.mXAxisLabelModulus) {
 
             position[0] = i * step + i * mData.getGroupSpace();
 
@@ -387,12 +387,12 @@ public class BarChart extends BarLineChartBase<BarData> {
                 ArrayList<BarEntry> entries = dataSet.getYVals();
 
                 float[] valuePoints = mTrans.generateTransformedValuesBarChart(entries, i, mData,
-                        mPhaseY);
+                        yyy);
 
                 // if only single values are drawn (sum)
                 if (!mDrawValuesForWholeStack) {
 
-                    for (int j = 0; j < valuePoints.length * mPhaseX; j += 2) {
+                    for (int j = 0; j < valuePoints.length * xxx; j += 2) {
 
                         if (isOffContentRight(valuePoints[j]))
                             break;
@@ -410,7 +410,7 @@ public class BarChart extends BarLineChartBase<BarData> {
                     // if each value of a potential stack should be drawn
                 } else {
 
-                    for (int j = 0; j < (valuePoints.length - 1) * mPhaseX; j += 2) {
+                    for (int j = 0; j < (valuePoints.length - 1) * xxx; j += 2) {
 
                         if (isOffContentRight(valuePoints[j]))
                             break;
@@ -440,7 +440,7 @@ public class BarChart extends BarLineChartBase<BarData> {
                             for (int k = 0; k < transformed.length; k += 2) {
 
                                 add -= vals[cnt];
-                                transformed[k + 1] = (vals[cnt] + add) * mPhaseY;
+                                transformed[k + 1] = (vals[cnt] + add) * yyy;
                                 cnt++;
                             }
 

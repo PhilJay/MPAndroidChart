@@ -50,7 +50,7 @@ public class CandleStickChart extends BarLineChartBase<CandleData> {
 
         mRenderPaint.setStrokeWidth(dataSet.getShadowWidth());
 
-        for (int j = 0; j < entries.size() * mPhaseX; j++) {
+        for (int j = 0; j < entries.size() * xxx; j++) {
 
             // get the color that is specified for this position from
             // the DataSet, this will reuse colors, if the index is out
@@ -112,9 +112,9 @@ public class CandleStickChart extends BarLineChartBase<CandleData> {
     private void transformBody(float[] bodyPoints, CandleEntry e, float bodySpace) {
 
         bodyPoints[0] = e.getXIndex() + bodySpace;
-        bodyPoints[1] = e.getClose() * mPhaseY;
+        bodyPoints[1] = e.getClose() * yyy;
         bodyPoints[2] = e.getXIndex() + (1f - bodySpace);
-        bodyPoints[3] = e.getOpen() * mPhaseY;
+        bodyPoints[3] = e.getOpen() * yyy;
 
         mTrans.pointValuesToPixel(bodyPoints);
     }
@@ -128,9 +128,9 @@ public class CandleStickChart extends BarLineChartBase<CandleData> {
     private void transformShadow(float[] shadowPoints, CandleEntry e) {
 
         shadowPoints[0] = e.getXIndex() + 0.5f;
-        shadowPoints[1] = e.getHigh() * mPhaseY;
+        shadowPoints[1] = e.getHigh() * yyy;
         shadowPoints[2] = e.getXIndex() + 0.5f;
-        shadowPoints[3] = e.getLow() * mPhaseY;
+        shadowPoints[3] = e.getLow() * yyy;
 
         mTrans.pointValuesToPixel(shadowPoints);
     }
@@ -167,8 +167,8 @@ public class CandleStickChart extends BarLineChartBase<CandleData> {
             if (e == null)
                 continue;
 
-            float low = e.getLow() * mPhaseY;
-            float high = e.getHigh() * mPhaseY;
+            float low = e.getLow() * yyy;
+            float high = e.getHigh() * yyy;
 
             float[] vertPts = new float[] {
                     xIndex, mYChartMax, xIndex, mYChartMin, xIndex + 1f, mYChartMax, xIndex + 1f,

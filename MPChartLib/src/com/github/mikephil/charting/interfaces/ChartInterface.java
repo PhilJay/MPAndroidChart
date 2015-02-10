@@ -13,13 +13,13 @@ import android.view.View;
  */
 public interface ChartInterface {
 
-    public float getOffsetBottom();
-
-    public float getOffsetTop();
-
-    public float getOffsetLeft();
-
-    public float getOffsetRight();
+//    public float getOffsetBottom();
+//
+//    public float getOffsetTop();
+//
+//    public float getOffsetLeft();
+//
+//    public float getOffsetRight();
 
     public float getDeltaX();
 
@@ -32,6 +32,8 @@ public interface ChartInterface {
     public int getWidth();
 
     public int getHeight();
+    
+    public boolean isStartAtZeroEnabled();
     
     public PointF getCenterOfView();
     

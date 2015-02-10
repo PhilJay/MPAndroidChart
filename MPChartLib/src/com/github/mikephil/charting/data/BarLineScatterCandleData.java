@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @author Philipp Jahoda
  */
 public abstract class BarLineScatterCandleData<T extends BarLineScatterCandleRadarDataSet<? extends Entry>>
-        extends BarLineScatterCandleRadarData<T> {
+        extends ChartData<T> {
     
     public BarLineScatterCandleData(ArrayList<String> xVals) {
         super(xVals);

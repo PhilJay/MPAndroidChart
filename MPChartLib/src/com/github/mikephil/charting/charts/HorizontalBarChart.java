@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 
 import com.github.mikephil.charting.renderer.HorizontalBarChartTransformer;
 import com.github.mikephil.charting.utils.Utils;
-import com.github.mikephil.charting.utils.YLabels;
+import com.github.mikephil.charting.utils.YAxis;
 
 /**
  * BarChart with horizontal bar orientation. In this implementation, x- and
@@ -149,7 +149,7 @@ public class HorizontalBarChart extends BarChart
 //
 //    }
 
-    private class XLabelsAsYLabels extends YLabels
+    private class XLabelsAsYLabels extends YAxis
     {
         /**
          * Returns the longest formatted label (in terms of characters) the

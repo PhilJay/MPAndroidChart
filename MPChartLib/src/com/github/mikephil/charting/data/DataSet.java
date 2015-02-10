@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.YAxis.AxisDependency;
 
 import java.util.ArrayList;
 
@@ -38,6 +39,11 @@ public abstract class DataSet<T extends Entry> {
 
     /** flag that indicates if the DataSet is visible or not */
     private boolean mVisible = true;
+
+    /** if true, y-values are drawn on the chart */
+    private boolean mDrawValues = true;
+    
+    private AxisDependency mAxisDependency = AxisDependency.LEFT;
 
     /**
      * Creates a new DataSet object with the given values it represents. Also, a
@@ -328,6 +334,34 @@ public abstract class DataSet<T extends Entry> {
     public boolean isVisible() {
         return mVisible;
     }
+    
+    public AxisDependency getAxisDependency() {
+        return mAxisDependency;
+    }
+    
+    public void setAxisDependency(AxisDependency dependency) {
+        mAxisDependency = dependency;
+    }
+
+    /**
+     * set this to true to draw y-values on the chart NOTE (for bar and
+     * linechart): if "maxvisiblecount" is reached, no values will be drawn even
+     * if this is enabled
+     *
+     * @param enabled
+     */
+    public void setDrawValues(boolean enabled) {
+        this.mDrawValues = enabled;
+    }
+
+    /**
+     * returns true if y-value drawing is enabled, false if not
+     *
+     * @return
+     */
+    public boolean isDrawValuesEnabled() {
+        return mDrawValues;
+    }
 
     /**
      * Adds an Entry to the DataSet dynamically. This will also recalculate the
@@ -526,33 +560,9 @@ public abstract class DataSet<T extends Entry> {
     }
 
     // /**
-    // * Convenience method to create multiple DataSets of different types with
-    // * various double value arrays. Each double array represents the data of
-    // one
-    // * DataSet with a type created by this method, starting at 0 (and
-    // * incremented).
-    // *
-    // * @param yValues
-    // * @return
+    // * ################ ################ ################ ################
     // */
-    // public static ArrayList<DataSet> makeDataSets(ArrayList<Double[]>
-    // yValues) {
+    // /** BELOW THIS CODE FOR DRAWING */
     //
-    // ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
-    //
-    // for (int i = 0; i < yValues.size(); i++) {
-    //
-    // Double[] curValues = yValues.get(i);
-    //
-    // ArrayList<Entry> entries = new ArrayList<Entry>();
-    //
-    // for (int j = 0; j < curValues.length; j++) {
-    // entries.add(new Entry(curValues[j].floatValue(), j));
-    // }
-    //
-    // dataSets.add(new DataSet(entries, "DS " + i));
-    // }
-    //
-    // return dataSets;
-    // }
+    // public abstract void drawData(Canvas c);
 }

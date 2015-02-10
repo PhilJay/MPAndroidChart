@@ -16,6 +16,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.provider.MediaStore.Images;
+import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -23,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.ChartData;
@@ -32,7 +34,9 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.interfaces.ChartInterface;
 import com.github.mikephil.charting.interfaces.OnChartGestureListener;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
+import com.github.mikephil.charting.renderer.DataRenderer;
 import com.github.mikephil.charting.renderer.Transformer;
+import com.github.mikephil.charting.renderer.ViewPortHandler;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.Legend.LegendPosition;
@@ -40,7 +44,6 @@ import com.github.mikephil.charting.utils.MarkerView;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
-import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.animation.ValueAnimator;
 import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
 
@@ -80,18 +83,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     private boolean mUseDefaultFormatter = true;
 
-    /** chart offset to the left */
-    protected float mOffsetLeft = 12;
-
-    /** chart toffset to the top */
-    protected float mOffsetTop = 12;
-
-    /** chart offset to the right */
-    protected float mOffsetRight = 12;
-
-    /** chart offset to the bottom */
-    protected float mOffsetBottom = 12;
-
     /**
      * object that holds all data that was originally set for the chart, before
      * it was modified or any filtering algorithms had been applied
@@ -112,9 +103,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /** paint for the y-label values */
     protected Paint mYLabelPaint;
-
-    /** paint used for highlighting values */
-    protected Paint mHighlightPaint;
 
     /**
      * paint object used for drawing the description text in the bottom right
@@ -143,9 +131,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /** paint used for the legend forms */
     protected Paint mLegendFormPaint;
 
-    /** paint used for the limit lines */
-    protected Paint mLimitLinePaint;
-
     /** description text that appears in the bottom right corner of the chart */
     protected String mDescription = "Description";
 
@@ -164,26 +149,14 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /** if true, touch gestures are enabled on the chart */
     protected boolean mTouchEnabled = true;
 
-    /** if true, y-values are drawn on the chart */
-    protected boolean mDrawYValues = true;
-
     /** if true, value highlightning is enabled */
     protected boolean mHighlightEnabled = true;
 
     /** flag indicating if the legend is drawn of not */
     protected boolean mDrawLegend = true;
 
-    /** this rectangle defines the area in which graph values can be drawn */
-    protected RectF mContentRect = new RectF();
-
     /** the legend object containing all data associated with the legend */
     protected Legend mLegend;
-
-    /**
-     * Transformer object used to transform values to pixels and the other way
-     * around
-     */
-    protected Transformer mTrans;
 
     /** listener that is called when a value on the chart is selected */
     protected OnChartValueSelectedListener mSelectionListener;
@@ -201,6 +174,15 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * chart is empty
      */
     private String mNoDataTextDescription;
+
+    protected DataRenderer mRenderer;
+
+    protected ViewPortHandler mViewPortHandler;
+
+    protected ChartAnimator mAnimator;
+
+    protected float yyy = 1f;
+    protected float xxx = 1f;
 
     /** default constructor for initialization in code */
     public Chart(Context context) {
@@ -225,10 +207,12 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     protected void init() {
 
+        Log.i("", "Chart.init()");
+
         setWillNotDraw(false);
         // setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
-        mTrans = new Transformer();
+        mAnimator = new ChartAnimator(this);
 
         // initialize the utils
         Utils.init(getContext().getResources());
@@ -264,11 +248,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         mLegendLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mLegendLabelPaint.setTextSize(Utils.convertDpToPixel(9f));
 
-        mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mHighlightPaint.setStyle(Paint.Style.STROKE);
-        mHighlightPaint.setStrokeWidth(2f);
-        mHighlightPaint.setColor(Color.rgb(255, 187, 115));
-
         mXLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mXLabelPaint.setColor(Color.BLACK);
         mXLabelPaint.setTextAlign(Align.CENTER);
@@ -277,9 +256,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         mYLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mYLabelPaint.setColor(Color.BLACK);
         mYLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
-
-        mLimitLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mLimitLinePaint.setStyle(Paint.Style.STROKE);
 
         mDrawPaint = new Paint(Paint.DITHER_FLAG);
     }
@@ -502,16 +478,17 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         // android.graphics.PorterDuff.Mode.XOR); // clear all
     }
 
-    /**
-     * sets up the content rect that restricts the chart surface
-     */
-    protected void prepareContentRect() {
-
-        mContentRect.set(mOffsetLeft,
-                mOffsetTop,
-                getWidth() - mOffsetRight,
-                getHeight() - mOffsetBottom);
-    }
+    // /**
+    // * sets up the content rect that restricts the chart surface
+    // */
+    // protected void prepareContentRect(float offL, float offR, float offT,
+    // float offB) {
+    // mViewPortHandler.restrainViewPort(offL, offR, offT, offB);
+    // // mContentRect.set(mOffsetLeft,
+    // // mOffsetTop,
+    // // getWidth() - mOffsetRight,
+    // // getHeight() - mOffsetBottom);
+    // }
 
     /**
      * Generates an automatically prepared legend depending on the DataSets in
@@ -656,7 +633,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 break;
             case BELOW_CHART_RIGHT:
 
-                posX = getWidth() - getOffsetRight();
+                posX = mViewPortHandler.contentRight();
                 posY = getHeight() - mLegend.getOffsetBottom() / 2f - formSize / 2f;
 
                 for (int i = labels.length - 1; i >= 0; i--) {
@@ -784,8 +761,10 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                     }
                 }
 
-                Log.i(LOG_TAG, "content bottom: " + mContentRect.bottom + ", height: "
-                        + getHeight() + ", posY: " + posY + ", formSize: " + formSize);
+                // Log.i(LOG_TAG, "content bottom: " + mContentRect.bottom +
+                // ", height: "
+                // + getHeight() + ", posY: " + posY + ", formSize: " +
+                // formSize);
 
                 break;
             case PIECHART_CENTER:
@@ -885,29 +864,15 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     protected void drawDescription() {
 
         mDrawCanvas
-                .drawText(mDescription, getWidth() - mOffsetRight - 10, getHeight() - mOffsetBottom
-                        - 10, mDescPaint);
+                .drawText(mDescription, getWidth() - mViewPortHandler.offsetRight() - 10,
+                        getHeight() - mViewPortHandler.offsetBottom()
+                                - 10, mDescPaint);
     }
 
     /**
      * draws all the text-values to the chart
      */
     protected abstract void drawValues();
-
-    /**
-     * Draws the actual data by calling drawDataSet(...) for each DataSet. Skips
-     * DataSets that are set invisible.
-     */
-    protected void drawData() {
-
-        for (int i = 0; i < mData.getDataSetCount(); i++) {
-
-            DataSet<?> ds = mData.getDataSets().get(i);
-
-            if (ds.isVisible())
-                drawDataSet(i);
-        }
-    }
 
     /**
      * Draws the DataSet at the given index.
@@ -920,12 +885,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * draws additional stuff, whatever that might be
      */
     protected abstract void drawAdditional();
-
-    /**
-     * draws the values of the chart that need highlightning
-     */
-    protected abstract void drawHighlights();
-
+    
     /**
      * ################ ################ ################ ################
      */
@@ -1049,7 +1009,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             int xIndex = mIndicesToHightlight[i].getXIndex();
             int dataSetIndex = mIndicesToHightlight[i].getDataSetIndex();
 
-            if (xIndex <= mDeltaX && xIndex <= mDeltaX * mPhaseX) {
+            if (xIndex <= mDeltaX && xIndex <= mDeltaX * mAnimator.getPhaseX()) {
 
                 Entry e = getEntryByDataSetIndex(xIndex, dataSetIndex);
 
@@ -1060,8 +1020,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 float[] pos = getMarkerPosition(e, dataSetIndex);
 
                 // check bounds
-                if (pos[0] < mOffsetLeft || pos[0] > getWidth() - mOffsetRight
-                        || pos[1] < mOffsetTop || pos[1] > getHeight() - mOffsetBottom)
+                if (!mViewPortHandler.isInBounds(pos[0], pos[1]))
                     continue;
 
                 // callbacks to update the content
@@ -1134,7 +1093,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         // position of the marker depends on selected value index and value
         float[] pts = new float[] {
-                xPos, e.getVal() * mPhaseY
+                xPos, e.getVal() * mAnimator.getPhaseY()
         };
 
         mTrans.pointValuesToPixel(pts);
@@ -1149,17 +1108,14 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     /** CODE BELOW THIS RELATED TO ANIMATION */
 
-    /** the phase that is animated and influences the drawn values on the y-axis */
-    protected float mPhaseY = 1f;
-
-    /** the phase that is animated and influences the drawn values on the x-axis */
-    protected float mPhaseX = 1f;
-
-    /** objectanimator used for animating values on y-axis */
-    private ObjectAnimator mAnimatorY;
-
-    /** objectanimator used for animating values on x-axis */
-    private ObjectAnimator mAnimatorX;
+    /**
+     * Returns the animator responsible for animating chart values.
+     * 
+     * @return
+     */
+    public ChartAnimator getAnimator() {
+        return mAnimator;
+    }
 
     /**
      * Animates the drawing / rendering of the chart on both x- and y-axis with
@@ -1170,24 +1126,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @param durationMillisY
      */
     public void animateXY(int durationMillisX, int durationMillisY) {
-
-        mAnimatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
-        mAnimatorY.setDuration(
-                durationMillisY);
-        mAnimatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
-        mAnimatorX.setDuration(
-                durationMillisX);
-
-        // make sure only one animator produces update-callbacks (which then
-        // call invalidate())
-        if (durationMillisX > durationMillisY) {
-            mAnimatorX.addUpdateListener(this);
-        } else {
-            mAnimatorY.addUpdateListener(this);
-        }
-
-        mAnimatorX.start();
-        mAnimatorY.start();
+        mAnimator.animateXY(durationMillisX, durationMillisY);
     }
 
     /**
@@ -1198,11 +1137,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @param durationMillis
      */
     public void animateX(int durationMillis) {
-
-        mAnimatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
-        mAnimatorX.setDuration(durationMillis);
-        mAnimatorX.addUpdateListener(this);
-        mAnimatorX.start();
+        mAnimator.animateX(durationMillis);
     }
 
     /**
@@ -1213,56 +1148,18 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @param durationMillis
      */
     public void animateY(int durationMillis) {
-
-        mAnimatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
-        mAnimatorY.setDuration(durationMillis);
-        mAnimatorY.addUpdateListener(this);
-        mAnimatorY.start();
+        mAnimator.animateY(durationMillis);
     }
 
     @Override
     public void onAnimationUpdate(ValueAnimator va) {
 
         // redraw everything after animation value change
-        invalidate();
+        // invalidate();
+
+        ViewCompat.postInvalidateOnAnimation(this);
 
         // Log.i(LOG_TAG, "UPDATING, x: " + mPhaseX + ", y: " + mPhaseY);
-    }
-
-    /**
-     * This gets the y-phase that is used to animate the values.
-     *
-     * @return
-     */
-    public float getPhaseY() {
-        return mPhaseY;
-    }
-
-    /**
-     * This modifys the y-phase that is used to animate the values.
-     *
-     * @param phase
-     */
-    public void setPhaseY(float phase) {
-        mPhaseY = phase;
-    }
-
-    /**
-     * This gets the x-phase that is used to animate the values.
-     *
-     * @return
-     */
-    public float getPhaseX() {
-        return mPhaseX;
-    }
-
-    /**
-     * This modifys the x-phase that is used to animate the values.
-     *
-     * @param phase
-     */
-    public void setPhaseX(float phase) {
-        mPhaseX = phase;
     }
 
     /**
@@ -1475,7 +1372,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     @Override
     public PointF getCenterOffsets() {
-        return new PointF(mContentRect.centerX(), mContentRect.centerY());
+        return mViewPortHandler.getContentCenter();
     }
 
     /**
@@ -1535,48 +1432,31 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         mNoDataTextDescription = text;
     }
 
-    /**
-     * Sets the offsets from the border of the view to the actual chart in every
-     * direction manually. This method needs to be recalled everytime a new data
-     * object is set for the chart. Provide density pixels -> they are then
-     * rendered to pixels inside the chart.
-     *
-     * @param left
-     * @param right
-     * @param top
-     * @param bottom
-     */
-    public void setOffsets(float left, float top, float right, float bottom) {
-
-        mOffsetBottom = Utils.convertDpToPixel(bottom);
-        mOffsetLeft = Utils.convertDpToPixel(left);
-        mOffsetRight = Utils.convertDpToPixel(right);
-        mOffsetTop = Utils.convertDpToPixel(top);
-
-        mTrans.prepareMatrixValuePx(this);
-        mTrans.prepareMatrixOffset(this);
-        prepareContentRect();
-    }
-
-    @Override
-    public float getOffsetLeft() {
-        return mOffsetLeft;
-    }
-
-    @Override
-    public float getOffsetBottom() {
-        return mOffsetBottom;
-    }
-
-    @Override
-    public float getOffsetRight() {
-        return mOffsetRight;
-    }
-
-    @Override
-    public float getOffsetTop() {
-        return mOffsetTop;
-    }
+    // /**
+    // * Sets the offsets from the border of the view to the actual chart in
+    // every
+    // * direction manually. This method needs to be recalled everytime a new
+    // data
+    // * object is set for the chart. Provide density pixels -> they are then
+    // * rendered to pixels inside the chart.
+    // *
+    // * @param left
+    // * @param right
+    // * @param top
+    // * @param bottom
+    // */
+    // public void setOffsets(float left, float top, float right, float bottom)
+    // {
+    //
+    // mOffsetBottom = Utils.convertDpToPixel(bottom);
+    // mOffsetLeft = Utils.convertDpToPixel(left);
+    // mOffsetRight = Utils.convertDpToPixel(right);
+    // mOffsetTop = Utils.convertDpToPixel(top);
+    //
+    // mTrans.prepareMatrixValuePx(this);
+    // mTrans.prepareMatrixOffset(this);
+    // prepareContentRect();
+    // }
 
     /**
      * Set this to false to disable all gestures and touches on the chart,
@@ -1586,17 +1466,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public void setTouchEnabled(boolean enabled) {
         this.mTouchEnabled = enabled;
-    }
-
-    /**
-     * set this to true to draw y-values on the chart NOTE (for bar and
-     * linechart): if "maxvisiblecount" is reached, no values will be drawn even
-     * if this is enabled
-     *
-     * @param enabled
-     */
-    public void setDrawYValues(boolean enabled) {
-        this.mDrawYValues = enabled;
     }
 
     /**
@@ -1682,18 +1551,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     @Override
     public RectF getContentRect() {
-        return mContentRect;
-    }
-
-    /**
-     * Returns the Transformer class that contains all matrices and is
-     * responsible for transforming values into pixels on the screen and
-     * backwards.
-     *
-     * @return
-     */
-    public Transformer getTransformer() {
-        return mTrans;
+        return mViewPortHandler.getContentRect();
     }
 
     /**
@@ -1903,15 +1761,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
-     * returns true if y-value drawing is enabled, false if not
-     *
-     * @return
-     */
-    public boolean isDrawYValuesEnabled() {
-        return mDrawYValues;
-    }
-
-    /**
      * returns the x-value at the given index
      *
      * @param index
@@ -2100,6 +1949,16 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
+     * Returns the ViewPortHandler of the chart that is responsible for the
+     * content area of the chart and its offsets and dimensions.
+     * 
+     * @return
+     */
+    public ViewPortHandler getViewPortHandler() {
+        return mViewPortHandler;
+    }
+
+    /**
      * Returns the bitmap that represents the chart.
      *
      * @return
@@ -2246,10 +2105,13 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        if (w > 0 && h > 0) {
+        Log.i("", "OnSizeChanged()");
+
+        if (w > 0 && h > 0 && w < 10000 && h < 10000) {
             // create a new bitmap with the new dimensions
             mDrawBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_4444);
             mDrawCanvas = new Canvas(mDrawBitmap);
+            mViewPortHandler = new ViewPortHandler(w, h);
         }
 
         // prepare content rect and matrices
