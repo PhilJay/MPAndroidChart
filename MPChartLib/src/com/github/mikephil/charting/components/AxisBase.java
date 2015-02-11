@@ -1,8 +1,10 @@
 
-package com.github.mikephil.charting.utils;
+package com.github.mikephil.charting.components;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
+
+import com.github.mikephil.charting.utils.Utils;
 
 /**
  * Baseclass of all labels.

@@ -100,18 +100,6 @@ public class BarChart extends BarLineChartBase<BarData> {
         mDeltaX += maxEntry * groupSpace;
     }
 
-    @Override
-    protected void drawDataSet(int index) {
-        
-        
-    }
-    
-    @Override
-    protected void drawValues() {
-
-       
-    }
-
     protected float getPositiveYOffset(boolean drawAboveValueBar)
     {
         return (mDrawValueAboveBar ? -Utils.convertDpToPixel(5) : Utils.calcTextHeight(mValuePaint,
@@ -340,9 +328,5 @@ public class BarChart extends BarLineChartBase<BarData> {
      */
     public boolean isDrawBarShadowEnabled() {
         return mDrawBarShadow;
-    }
-
-    @Override
-    protected void drawAdditional() {
     }
 }

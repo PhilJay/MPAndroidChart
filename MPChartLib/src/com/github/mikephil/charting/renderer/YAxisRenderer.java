@@ -6,15 +6,16 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 
+import com.github.mikephil.charting.components.LimitLine;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition;
+import com.github.mikephil.charting.components.YAxis.AxisDependency;
+import com.github.mikephil.charting.components.YAxis.YLabelPosition;
 import com.github.mikephil.charting.interfaces.ChartInterface;
-import com.github.mikephil.charting.utils.LimitLine;
-import com.github.mikephil.charting.utils.LimitLine.LimitLabelPosition;
 import com.github.mikephil.charting.utils.PointD;
+import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
-import com.github.mikephil.charting.utils.YAxis;
-import com.github.mikephil.charting.utils.YAxis.AxisDependency;
-import com.github.mikephil.charting.utils.YAxis.YLabelPosition;
 
 import java.util.ArrayList;
 

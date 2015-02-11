@@ -4,9 +4,10 @@ package com.github.mikephil.charting.renderer;
 import android.graphics.Canvas;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
-import com.github.mikephil.charting.utils.XAxis;
 
 public class XAxisRendererBarChart extends XAxisRenderer {
 

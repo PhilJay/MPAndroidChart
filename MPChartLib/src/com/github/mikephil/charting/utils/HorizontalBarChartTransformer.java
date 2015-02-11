@@ -1,4 +1,4 @@
-package com.github.mikephil.charting.renderer;
+package com.github.mikephil.charting.utils;
 
 import com.github.mikephil.charting.interfaces.ChartInterface;
 

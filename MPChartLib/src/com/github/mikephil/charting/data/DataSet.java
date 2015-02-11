@@ -4,8 +4,8 @@ package com.github.mikephil.charting.data;
 import android.content.Context;
 import android.graphics.Color;
 
+import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.YAxis.AxisDependency;
 
 import java.util.ArrayList;
 
@@ -41,7 +41,7 @@ public abstract class DataSet<T extends Entry> {
     private boolean mVisible = true;
 
     /** if true, y-values are drawn on the chart */
-    private boolean mDrawValues = true;
+    protected boolean mDrawValues = true;
     
     private AxisDependency mAxisDependency = AxisDependency.LEFT;
 

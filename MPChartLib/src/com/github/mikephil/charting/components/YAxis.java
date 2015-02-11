@@ -1,5 +1,8 @@
 
-package com.github.mikephil.charting.utils;
+package com.github.mikephil.charting.components;
+
+import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.ValueFormatter;
 
 import java.util.ArrayList;
 

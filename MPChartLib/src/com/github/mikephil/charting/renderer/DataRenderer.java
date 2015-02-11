@@ -43,6 +43,14 @@ public abstract class DataRenderer extends Renderer {
         mHighlightPaint.setStrokeWidth(2f);
         mHighlightPaint.setColor(Color.rgb(255, 187, 115));
     }
+    
+    public Paint getPaintValues() {
+        return mValuePaint;
+    }
+    
+    public Paint getPaintHighlight() {
+        return mHighlightPaint;
+    }
 
     public abstract void drawData(Canvas c);
     

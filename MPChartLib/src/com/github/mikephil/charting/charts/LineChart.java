@@ -57,21 +57,6 @@ public class LineChart extends BarLineChartBase<LineData> {
         if (mDeltaX == 0 && mData.getYValCount() > 0)
             mDeltaX = 1;
     }
-
-    @Override
-    protected void drawDataSet(int index) {
-        
-    }
-
-    @Override
-    protected void drawValues() {
-
-    }
-   
-    @Override
-    protected void drawAdditional() {
-
-    }
     
     /**
      * set the width of the highlightning lines, default 3f

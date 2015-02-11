@@ -8,11 +8,11 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.listener.PieRadarChartTouchListener;
-import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.github.mikephil.charting.utils.Utils;
 import com.nineoldandroids.animation.ObjectAnimator;
 
@@ -157,11 +157,6 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
         mViewPortHandler.restrainViewPort(offsetLeft, offsetTop, offsetRight, offsetBottom);
 
         applyCalculatedOffsets();
-    }
-
-    @Override
-    protected void drawAdditional() {
-        // TODO Auto-generated method stub
     }
 
     /**

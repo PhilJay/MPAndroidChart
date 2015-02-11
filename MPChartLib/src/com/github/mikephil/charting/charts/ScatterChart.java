@@ -59,21 +59,6 @@ public class ScatterChart extends BarLineChartBase<ScatterData> {
             mDeltaX = 1;
     }
 
-    @Override
-    protected void drawDataSet(int index) {
-
-    }
-
-    @Override
-    protected void drawValues() {
-       
-    }
-
-    @Override
-    protected void drawAdditional() {
-
-    }
-
     /**
      * Returns all possible predefined ScatterShapes (excluding CUSTOM).
      * 

@@ -1,10 +1,12 @@
 
-package com.github.mikephil.charting.utils;
+package com.github.mikephil.charting.components;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+
+import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 

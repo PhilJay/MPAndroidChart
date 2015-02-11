@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 
+import com.github.mikephil.charting.utils.Transformer;
+
 public abstract class AxisRenderer extends Renderer {
 
     protected Transformer mTrans;

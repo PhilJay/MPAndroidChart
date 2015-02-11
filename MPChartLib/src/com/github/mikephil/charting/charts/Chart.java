@@ -25,6 +25,9 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.MarkerView;
+import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.ChartData;
@@ -35,13 +38,10 @@ import com.github.mikephil.charting.interfaces.ChartInterface;
 import com.github.mikephil.charting.interfaces.OnChartGestureListener;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.renderer.DataRenderer;
-import com.github.mikephil.charting.renderer.Transformer;
 import com.github.mikephil.charting.renderer.ViewPortHandler;
 import com.github.mikephil.charting.utils.Highlight;
-import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.Legend.LegendPosition;
-import com.github.mikephil.charting.utils.MarkerView;
 import com.github.mikephil.charting.utils.SelInfo;
+import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
 import com.nineoldandroids.animation.ValueAnimator;
@@ -67,12 +67,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /** flag that indicates if logging is enabled or not */
     protected boolean mLogEnabled = false;
-
-    /**
-     * string that is drawn next to the values in the chart, indicating their
-     * unit
-     */
-    protected String mUnit = "";
 
     /** custom formatter that is used instead of the auto-formatter if set */
     protected ValueFormatter mValueFormatter = null;
@@ -864,23 +858,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
-     * draws all the text-values to the chart
-     */
-    protected abstract void drawValues();
-
-    /**
-     * Draws the DataSet at the given index.
-     * 
-     * @param index
-     */
-    protected abstract void drawDataSet(int index);
-
-    /**
-     * draws additional stuff, whatever that might be
-     */
-    protected abstract void drawAdditional();
-    
-    /**
      * ################ ################ ################ ################
      */
     /** BELOW THIS CODE FOR HIGHLIGHTING */
@@ -1478,34 +1455,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public MarkerView getMarkerView() {
         return mMarkerView;
-    }
-
-    /**
-     * if set to true, units are drawn next to values in the chart, default:
-     * false
-     *
-     * @param enabled
-     */
-    public void setDrawUnitsInChart(boolean enabled) {
-        mDrawUnitInChart = enabled;
-    }
-
-    /**
-     * sets the unit that is drawn next to the values in the chart, e.g. %
-     *
-     * @param unit
-     */
-    public void setUnit(String unit) {
-        mUnit = unit;
-    }
-
-    /**
-     * Returns the unit that is used for the values in the chart
-     *
-     * @return
-     */
-    public String getUnit() {
-        return mUnit;
     }
 
     /**

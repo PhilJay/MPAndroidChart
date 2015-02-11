@@ -15,7 +15,6 @@ public class PieDataSet extends DataSet<Entry> {
 
     public PieDataSet(ArrayList<Entry> yVals, String label) {
         super(yVals, label);
-
 //        mShift = Utils.convertDpToPixel(12f);
     }
 

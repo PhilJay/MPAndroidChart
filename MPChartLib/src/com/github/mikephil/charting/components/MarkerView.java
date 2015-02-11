@@ -1,5 +1,5 @@
 
-package com.github.mikephil.charting.utils;
+package com.github.mikephil.charting.components;
 
 import android.content.Context;
 import android.graphics.Canvas;

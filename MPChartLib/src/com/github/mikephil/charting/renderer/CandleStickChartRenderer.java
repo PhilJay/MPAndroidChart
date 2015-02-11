@@ -10,6 +10,7 @@ import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CandleDataSet;
 import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.Transformer;
 
 import java.util.ArrayList;
 

@@ -639,6 +639,23 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     }
 
     /**
+     * Returns the index of the provided DataSet inside the DataSets array of
+     * this data object. Returns -1 if the DataSet was not found.
+     * 
+     * @param dataSet
+     * @return
+     */
+    public int getIndexOfDataSet(T dataSet) {
+
+        for (int i = 0; i < mDataSets.size(); i++) {
+            if (mDataSets.get(i) == dataSet)
+                return i;
+        }
+
+        return -1;
+    }
+
+    /**
      * Generates an x-values array filled with numbers in range specified by the
      * parameters. Can be used for convenience.
      * 

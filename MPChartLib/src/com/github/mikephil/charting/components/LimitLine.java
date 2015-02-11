@@ -1,8 +1,10 @@
 
-package com.github.mikephil.charting.utils;
+package com.github.mikephil.charting.components;
 
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
+
+import com.github.mikephil.charting.utils.Utils;
 
 /**
  * The limit line is an additional feature for all Line-, Bar- and

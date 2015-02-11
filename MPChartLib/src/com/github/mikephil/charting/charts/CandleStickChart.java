@@ -40,22 +40,4 @@ public class CandleStickChart extends BarLineChartBase<CandleData> {
         // increase deltax by 1 because the candles have a width of 1
         mDeltaX++;
     }
-
-    @Override
-    protected void drawDataSet(int index) {
-
-        
-    }
-
-    @Override
-    protected void drawValues() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    protected void drawAdditional() {
-        // TODO Auto-generated method stub
-
-    }
 }

@@ -7,9 +7,9 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 
-import com.github.mikephil.charting.renderer.HorizontalBarChartTransformer;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.utils.HorizontalBarChartTransformer;
 import com.github.mikephil.charting.utils.Utils;
-import com.github.mikephil.charting.utils.YAxis;
 
 /**
  * BarChart with horizontal bar orientation. In this implementation, x- and
