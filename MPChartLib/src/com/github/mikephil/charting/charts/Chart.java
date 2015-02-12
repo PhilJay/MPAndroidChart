@@ -26,9 +26,8 @@ import android.view.ViewParent;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
-import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
@@ -41,7 +40,6 @@ import com.github.mikephil.charting.renderer.DataRenderer;
 import com.github.mikephil.charting.renderer.ViewPortHandler;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.SelInfo;
-import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
 import com.nineoldandroids.animation.ValueAnimator;
@@ -1002,50 +1000,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @param dataSetIndex
      * @return
      */
-    private float[] getMarkerPosition(Entry e, int dataSetIndex) {
-
-        float xPos = e.getXIndex();
-
-        // make sure the marker is in the center of the bars in BarChart and
-        // CandleStickChart
-        if (this instanceof CandleStickChart)
-            xPos += 0.5f;
-
-        else if (this instanceof BarChart) {
-
-            BarData bd = (BarData) mData;
-            float space = bd.getGroupSpace();
-            float j = mData.getDataSetByIndex(dataSetIndex)
-                    .getEntryPosition(e);
-
-            float x = (j * (mData.getDataSetCount() - 1)) + dataSetIndex + space * j + space
-                    / 2f + 0.5f;
-
-            xPos += x;
-        } else if (this instanceof RadarChart) {
-
-            RadarChart rc = (RadarChart) this;
-            float angle = rc.getSliceAngle() * e.getXIndex() + rc.getRotationAngle();
-            float val = e.getVal() * rc.getFactor();
-            PointF c = getCenterOffsets();
-
-            PointF p = new PointF((float) (c.x + val * Math.cos(Math.toRadians(angle))),
-                    (float) (c.y + val * Math.sin(Math.toRadians(angle))));
-
-            return new float[] {
-                    p.x, p.y
-            };
-        }
-
-        // position of the marker depends on selected value index and value
-        float[] pts = new float[] {
-                xPos, e.getVal() * mAnimator.getPhaseY()
-        };
-
-        mTrans.pointValuesToPixel(pts);
-
-        return pts;
-    }
+    protected abstract float[] getMarkerPosition(Entry e, int dataSetIndex);
 
     /**
      * ################ ################ ################ ################
@@ -2007,7 +1962,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
 
-        prepareContentRect();
+//        prepareContentRect();
         for (int i = 0; i < getChildCount(); i++) {
             getChildAt(i).layout(left, top, right, bottom);
         }
@@ -2032,7 +1987,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         }
 
         // prepare content rect and matrices
-        prepareContentRect();
+//        prepareContentRect();
         prepare();
 
         super.onSizeChanged(w, h, oldw, oldh);

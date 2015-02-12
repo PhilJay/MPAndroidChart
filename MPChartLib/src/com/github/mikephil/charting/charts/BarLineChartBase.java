@@ -22,6 +22,7 @@ import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition;
 import com.github.mikephil.charting.components.XAxis.XLabelPosition;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.components.YAxis.YLabelPosition;
+import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarLineScatterCandleData;
 import com.github.mikephil.charting.data.BarLineScatterCandleRadarDataSet;
@@ -154,7 +155,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         mAxisRendererLeft = new YAxisRenderer(mViewPortHandler, mAxisLeft, mLeftAxisTransformer);
         mAxisRendererRight = new YAxisRenderer(mViewPortHandler, mAxisRight, mRightAxisTransformer);
-        
+
         mXAxisRenderer = new XAxisRenderer(mViewPortHandler, mXAxis, mLeftAxisTransformer);
 
         mListener = new BarLineChartTouchListener(this, mViewPortHandler.getMatrixTouch());
@@ -343,7 +344,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             // offsets for y-labels
             if (mAxisLeft.isEnabled()) {
 
-                // calculate the maximum y-label width (including eventual offsets)
+                // calculate the maximum y-label width (including eventual
+                // offsets)
                 float ylabelwidth = Utils.calcTextWidth(mAxisRendererLeft.getAxisPaint(),
                         label + (mYChartMin < 0 ? "----" : "+++")); // offsets
                 yleft = ylabelwidth;
@@ -351,7 +353,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
             if (mAxisRight.isEnabled()) {
 
-                // calculate the maximum y-label width (including eventual offsets)
+                // calculate the maximum y-label width (including eventual
+                // offsets)
                 float ylabelwidth = Utils.calcTextWidth(mAxisRendererRight.getAxisPaint(),
                         label + (mYChartMin < 0 ? "----" : "+++")); // offsets
                 yright = ylabelwidth;
@@ -478,11 +481,38 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mDeltaY = Math.abs(mYChartMax - mYChartMin);
     }
 
-    /**
-     * draws the x-axis labels to the screen depending on their position
-     */
-    private void drawXLabels() {
+    @Override
+    protected float[] getMarkerPosition(Entry e, int dataSetIndex) {
 
+        float xPos = e.getXIndex();
+
+        // make sure the marker is in the center of the bars in BarChart and
+        // CandleStickChart
+        if (this instanceof CandleStickChart)
+            xPos += 0.5f;
+
+        else if (this instanceof BarChart) {
+
+            BarData bd = (BarData) mData;
+            float space = bd.getGroupSpace();
+            float j = mData.getDataSetByIndex(dataSetIndex)
+                    .getEntryPosition(e);
+
+            float x = (j * (mData.getDataSetCount() - 1)) + dataSetIndex + space * j + space
+                    / 2f + 0.5f;
+
+            xPos += x;
+        }
+
+        // position of the marker depends on selected value index and value
+        float[] pts = new float[] {
+                xPos, e.getVal() * mAnimator.getPhaseY()
+        };
+
+        getTransformer(mData.getDataSetByIndex(dataSetIndex).getAxisDependency())
+                .pointValuesToPixel(pts);
+
+        return pts;
     }
 
     /** enums for all different border styles */

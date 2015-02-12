@@ -2,7 +2,6 @@
 package com.github.mikephil.charting.charts;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 

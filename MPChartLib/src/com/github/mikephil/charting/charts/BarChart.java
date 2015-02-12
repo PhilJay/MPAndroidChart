@@ -100,17 +100,17 @@ public class BarChart extends BarLineChartBase<BarData> {
         mDeltaX += maxEntry * groupSpace;
     }
 
-    protected float getPositiveYOffset(boolean drawAboveValueBar)
-    {
-        return (mDrawValueAboveBar ? -Utils.convertDpToPixel(5) : Utils.calcTextHeight(mValuePaint,
-                "8") * 1.5f);
-    }
-
-    protected float getNegativeYOffset(boolean drawAboveValueBar)
-    {
-        return (mDrawValueAboveBar ? Utils.calcTextHeight(mValuePaint, "8") * 1.5f : -Utils
-                .convertDpToPixel(5));
-    }
+//    protected float getPositiveYOffset(boolean drawAboveValueBar)
+//    {
+//        return (mDrawValueAboveBar ? -Utils.convertDpToPixel(5) : Utils.calcTextHeight(mValuePaint,
+//                "8") * 1.5f);
+//    }
+//
+//    protected float getNegativeYOffset(boolean drawAboveValueBar)
+//    {
+//        return (mDrawValueAboveBar ? Utils.calcTextHeight(mValuePaint, "8") * 1.5f : -Utils
+//                .convertDpToPixel(5));
+//    }
 
     /**
      * Returns the Highlight object (contains x-index and DataSet index) of the

@@ -2,14 +2,9 @@
 package com.github.mikephil.charting.charts;
 
 import android.content.Context;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.util.AttributeSet;
 
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.utils.HorizontalBarChartTransformer;
-import com.github.mikephil.charting.utils.Utils;
 
 /**
  * BarChart with horizontal bar orientation. In this implementation, x- and
@@ -40,7 +35,6 @@ public class HorizontalBarChart extends BarChart
         setDrawXLabels(false);
 //        setDrawYLabels(true);
 //        mTrans = new HorizontalBarChartTransformer();
-        mValuePaint.setTextAlign(Paint.Align.LEFT);
     }
 
     /**
@@ -116,23 +110,23 @@ public class HorizontalBarChart extends BarChart
 //            }
 //        }
 //    }
-
-    private static String TALL_VALUE = "100%";
-
-    @Override
-    protected float getPositiveYOffset(boolean drawAboveValueBar)
-    {
-        Rect bounds = new Rect();
-        mValuePaint.getTextBounds(TALL_VALUE, 0, TALL_VALUE.length(), bounds);
-
-        return bounds.height() / 2;
-    }
-
-    @Override
-    protected float getNegativeYOffset(boolean drawAboveValueBar)
-    {
-        return getPositiveYOffset(drawAboveValueBar);
-    }
+//
+//    private static String TALL_VALUE = "100%";
+//
+//    @Override
+//    protected float getPositiveYOffset(boolean drawAboveValueBar)
+//    {
+//        Rect bounds = new Rect();
+//        mValuePaint.getTextBounds(TALL_VALUE, 0, TALL_VALUE.length(), bounds);
+//
+//        return bounds.height() / 2;
+//    }
+//
+//    @Override
+//    protected float getNegativeYOffset(boolean drawAboveValueBar)
+//    {
+//        return getPositiveYOffset(drawAboveValueBar);
+//    }
 
 //    /**
 //     * Sets up the y-axis labels. Computes the desired number of labels between

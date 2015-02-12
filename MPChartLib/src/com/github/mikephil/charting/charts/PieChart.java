@@ -149,6 +149,12 @@ public class PieChart extends PieRadarChartBase<PieData> {
         calcAngles();
     }
 
+    /** PieChart does not support MarkerView */
+    @Override
+    protected float[] getMarkerPosition(Entry e, int dataSetIndex) {
+        return new float[0];
+    }
+
     /**
      * calculates the needed angles for the chart slices
      */

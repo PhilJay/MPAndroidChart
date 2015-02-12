@@ -5,12 +5,14 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.renderer.RadarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererRadarChart;
@@ -94,6 +96,21 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         mYChartMin = 0;
 
         mDeltaY = Math.abs(mYChartMax - mYChartMin);
+    }
+
+    @Override
+    protected float[] getMarkerPosition(Entry e, int dataSetIndex) {
+
+        float angle = getSliceAngle() * e.getXIndex() + getRotationAngle();
+        float val = e.getVal() * getFactor();
+        PointF c = getCenterOffsets();
+
+        PointF p = new PointF((float) (c.x + val * Math.cos(Math.toRadians(angle))),
+                (float) (c.y + val * Math.sin(Math.toRadians(angle))));
+
+        return new float[] {
+                p.x, p.y
+        };
     }
 
     @Override
