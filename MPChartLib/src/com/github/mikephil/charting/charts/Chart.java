@@ -91,13 +91,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /** the highest value the chart can display */
     protected float mYChartMax = 0.0f;
-
-    /** paint for the x-label values */
-    protected Paint mXLabelPaint;
-
-    /** paint for the y-label values */
-    protected Paint mYLabelPaint;
-
+    
     /**
      * paint object used for drawing the description text in the bottom right
      * corner of the chart
@@ -110,11 +104,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     protected Paint mInfoPaint;
 
-    /**
-     * paint object for drawing values (text representing values of chart
-     * entries)
-     */
-    protected Paint mValuePaint;
 
     /** this is the paint object used for drawing the data onto the chart */
     protected Paint mRenderPaint;
@@ -224,26 +213,12 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         mInfoPaint.setTextAlign(Align.CENTER);
         mInfoPaint.setTextSize(Utils.convertDpToPixel(12f));
 
-        mValuePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mValuePaint.setColor(Color.rgb(63, 63, 63));
-        mValuePaint.setTextAlign(Align.CENTER);
-        mValuePaint.setTextSize(Utils.convertDpToPixel(9f));
-
         mLegendFormPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mLegendFormPaint.setStyle(Paint.Style.FILL);
         mLegendFormPaint.setStrokeWidth(3f);
 
         mLegendLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mLegendLabelPaint.setTextSize(Utils.convertDpToPixel(9f));
-
-        mXLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mXLabelPaint.setColor(Color.BLACK);
-        mXLabelPaint.setTextAlign(Align.CENTER);
-        mXLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
-
-        mYLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mYLabelPaint.setColor(Color.BLACK);
-        mYLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
 
         mDrawPaint = new Paint(Paint.DITHER_FLAG);
     }
@@ -1584,7 +1559,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 mDescPaint = p;
                 break;
             case PAINT_VALUES:
-                mValuePaint = p;
+//                mValuePaint = p;
                 break;
             case PAINT_RENDER:
                 mRenderPaint = p;
@@ -1593,10 +1568,10 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 mLegendLabelPaint = p;
                 break;
             case PAINT_XLABEL:
-                mXLabelPaint = p;
+//                mXLabelPaint = p;
                 break;
             case PAINT_YLABEL:
-                mYLabelPaint = p;
+//                mYLabelPaint = p;
                 break;
             case PAINT_HIGHLIGHT:
 //                mHighlightPaint = p;
@@ -1620,15 +1595,15 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             case PAINT_DESCRIPTION:
                 return mDescPaint;
             case PAINT_VALUES:
-                return mValuePaint;
+//                return mValuePaint;
             case PAINT_RENDER:
                 return mRenderPaint;
             case PAINT_LEGEND_LABEL:
                 return mLegendLabelPaint;
             case PAINT_XLABEL:
-                return mXLabelPaint;
+//                return mXLabelPaint;
             case PAINT_YLABEL:
-                return mYLabelPaint;
+//                return mYLabelPaint;
             case PAINT_HIGHLIGHT:
 //                return mHighlightPaint;
             case PAINT_LIMIT_LINE:
@@ -1691,7 +1666,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @param color
      */
     public void setValueTextColor(int color) {
-        mValuePaint.setColor(color);
+        mRenderer.getPaintValues().setColor(color);
     }
 
     /**
@@ -1700,7 +1675,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @param size
      */
     public void setValueTextSize(float size) {
-        mValuePaint.setTextSize(Utils.convertDpToPixel(size));
+        mRenderer.getPaintValues().setTextSize(Utils.convertDpToPixel(size));
     }
 
     /**
@@ -1879,7 +1854,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @param t
      */
     public void setValueTypeface(Typeface t) {
-        mValuePaint.setTypeface(t);
+        mRenderer.getPaintValues().setTypeface(t);
     }
 
     /**

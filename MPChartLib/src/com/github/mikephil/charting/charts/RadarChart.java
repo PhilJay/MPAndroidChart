@@ -5,20 +5,17 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 
-import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.RadarData;
-import com.github.mikephil.charting.data.RadarDataSet;
+import com.github.mikephil.charting.renderer.RadarChartRenderer;
+import com.github.mikephil.charting.renderer.XAxisRendererRadarChart;
+import com.github.mikephil.charting.renderer.YAxisRendererRadarChart;
 import com.github.mikephil.charting.utils.Utils;
-
-import java.util.ArrayList;
 
 /**
  * Implementation of the RadarChart, a "spidernet"-like chart. It works best
@@ -27,9 +24,6 @@ import java.util.ArrayList;
  * @author Philipp Jahoda
  */
 public class RadarChart extends PieRadarChartBase<RadarData> {
-
-    /** paint for drawing the web */
-    private Paint mWebPaint;
 
     /** width of the main web lines */
     private float mWebLineWidth = 2.5f;
@@ -46,9 +40,6 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     /** transparency the grid is drawn with (0-255) */
     private int mWebAlpha = 150;
 
-    /** flag indicating if the y-labels should be drawn or not */
-    private boolean mDrawYLabels = true;
-
     /** flag indicating if the x-labels should be drawn or not */
     private boolean mDrawXLabels = true;
 
@@ -56,10 +47,13 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     private boolean mDrawWeb = true;
 
     /** the object reprsenting the y-axis labels */
-    private YAxis mYAxis = new YAxis();
+    private YAxis mYAxis = new YAxis(AxisDependency.LEFT);
 
     /** the object representing the x-axis labels */
     private XAxis mXAxis = new XAxis();
+
+    protected YAxisRendererRadarChart mYAxisRenderer;
+    protected XAxisRendererRadarChart mXAxisRenderer;
 
     public RadarChart(Context context) {
         super(context);
@@ -77,16 +71,14 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     protected void init() {
         super.init();
 
+        mXAxis.setSpaceBetweenLabels(0);
+
         mWebLineWidth = Utils.convertDpToPixel(1.5f);
         mInnerWebLineWidth = Utils.convertDpToPixel(0.75f);
 
-        mWebPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mWebPaint.setStyle(Paint.Style.STROKE);
-
-        mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mHighlightPaint.setStyle(Paint.Style.STROKE);
-        mHighlightPaint.setStrokeWidth(2f);
-        mHighlightPaint.setColor(Color.rgb(255, 187, 115));
+        mRenderer = new RadarChartRenderer(this, mAnimator, mViewPortHandler);
+        mYAxisRenderer = new YAxisRendererRadarChart(mViewPortHandler, mYAxis, this);
+        mXAxisRenderer = new XAxisRendererRadarChart(mViewPortHandler, mXAxis, this);
     }
 
     @Override
@@ -108,8 +100,9 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     public void prepare() {
         super.prepare();
 
+        mYAxisRenderer.computeAxis(this);
         prepareYLabels();
-        prepareXLabels();
+        mXAxisRenderer.computeAxis(mData.getXValAverageLength(), mData.getXVals());
     }
 
     @Override
@@ -119,21 +112,23 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         if (mDataNotSet)
             return;
 
-        drawXLabels();
+        if (mDrawXLabels)
+            mXAxisRenderer.renderAxis(mDrawCanvas);
 
-        drawWeb();
+        if (mDrawWeb)
+            mRenderer.drawExtras(mDrawCanvas);
 
-        drawLimitLines();
+        mYAxisRenderer.renderLimitLines(mDrawCanvas, mValueFormatter);
 
-        // drawData();
+        mRenderer.drawData(mDrawCanvas);
 
-        drawAdditional();
+        if (mHighlightEnabled && valuesToHighlight())
+            mRenderer.drawHighlighted(mDrawCanvas, mIndicesToHightlight);
 
-        drawHighlights();
+        if (mYAxis.isEnabled())
+            mYAxisRenderer.renderAxis(mDrawCanvas);
 
-        drawYLabels();
-
-        drawValues();
+        mRenderer.drawValues(mDrawCanvas);
 
         drawLegend();
 
@@ -142,149 +137,6 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         drawMarkers();
 
         canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
-    }
-
-    /**
-     * Draws the spider web.
-     */
-    private void drawWeb() {
-
-        if (!mDrawWeb)
-            return;
-
-        float sliceangle = getSliceAngle();
-
-        // calculate the factor that is needed for transforming the value to
-        // pixels
-        float factor = getFactor();
-
-        PointF c = getCenterOffsets();
-
-        // draw the web lines that come from the center
-        mWebPaint.setStrokeWidth(mWebLineWidth);
-        mWebPaint.setColor(mWebColor);
-        mWebPaint.setAlpha(mWebAlpha);
-
-        for (int i = 0; i < mData.getXValCount(); i++) {
-
-            PointF p = getPosition(c, mYChartMax * factor, sliceangle * i + mRotationAngle);
-
-            mDrawCanvas.drawLine(c.x, c.y, p.x, p.y, mWebPaint);
-        }
-
-        // draw the inner-web
-        mWebPaint.setStrokeWidth(mInnerWebLineWidth);
-        mWebPaint.setColor(mWebColorInner);
-        mWebPaint.setAlpha(mWebAlpha);
-
-        int labelCount = mYAxis.mEntryCount;
-
-        for (int j = 0; j < labelCount; j++) {
-
-            for (int i = 0; i < mData.getXValCount(); i++) {
-
-                float r = ((mYChartMax / labelCount) * (j + 1)) * factor;
-
-                PointF p1 = getPosition(c, r, sliceangle * i + mRotationAngle);
-                PointF p2 = getPosition(c, r, sliceangle * (i + 1) + mRotationAngle);
-
-                mDrawCanvas.drawLine(p1.x, p1.y, p2.x, p2.y, mWebPaint);
-            }
-        }
-    }
-
-    @Override
-    protected void drawDataSet(int index) {
-
-        float sliceangle = getSliceAngle();
-
-        // calculate the factor that is needed for transforming the value to
-        // pixels
-        float factor = getFactor();
-
-        PointF c = getCenterOffsets();
-
-        RadarDataSet dataSet = mData.getDataSets().get(index);
-        ArrayList<Entry> entries = dataSet.getYVals();
-
-        Path surface = new Path();
-
-        for (int j = 0; j < entries.size(); j++) {
-
-            mRenderPaint.setColor(dataSet.getColor(j));
-
-            Entry e = entries.get(j);
-
-            PointF p = getPosition(c, e.getVal() * factor, sliceangle * j + mRotationAngle);
-
-            if (j == 0)
-                surface.moveTo(p.x, p.y);
-            else
-                surface.lineTo(p.x, p.y);
-        }
-
-        surface.close();
-
-        // draw filled
-        if (dataSet.isDrawFilledEnabled()) {
-            mRenderPaint.setStyle(Paint.Style.FILL);
-            mRenderPaint.setAlpha(dataSet.getFillAlpha());
-            mDrawCanvas.drawPath(surface, mRenderPaint);
-            mRenderPaint.setAlpha(255);
-        }
-
-        mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
-        mRenderPaint.setStyle(Paint.Style.STROKE);
-
-        // draw the line (only if filled is disabled or alpha is below 255)
-        if (!dataSet.isDrawFilledEnabled() || dataSet.getFillAlpha() < 255)
-            mDrawCanvas.drawPath(surface, mRenderPaint);
-    }
-
-    /**
-     * Draws the limit lines if there are one.
-     */
-    private void drawLimitLines() {
-
-        ArrayList<LimitLine> limitLines = mData.getLimitLines();
-
-        if (limitLines == null)
-            return;
-
-        float sliceangle = getSliceAngle();
-
-        // calculate the factor that is needed for transforming the value to
-        // pixels
-        float factor = getFactor();
-
-        PointF c = getCenterOffsets();
-
-        for (int i = 0; i < limitLines.size(); i++) {
-
-            LimitLine l = limitLines.get(i);
-
-            mLimitLinePaint.setColor(l.getLineColor());
-            mLimitLinePaint.setPathEffect(l.getDashPathEffect());
-            mLimitLinePaint.setStrokeWidth(l.getLineWidth());
-
-            float r = l.getLimit() * factor;
-
-            Path limitPath = new Path();
-
-            for (int j = 0; j < mData.getXValCount(); j++) {
-
-                PointF p = getPosition(c, r, sliceangle * j + mRotationAngle);
-
-                if (j == 0)
-                    limitPath.moveTo(p.x, p.y);
-                else
-                    limitPath.lineTo(p.x, p.y);
-            }
-
-            limitPath.close();
-
-            mDrawCanvas.drawPath(limitPath, mLimitLinePaint);
-        }
     }
 
     /**
@@ -323,172 +175,6 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
         // calc delta
         mDeltaY = Math.abs(mYChartMax - mYChartMin);
-    }
-
-    /**
-     * Draws the y-labels of the RadarChart.
-     */
-    private void drawYLabels() {
-
-        if (!mDrawYLabels)
-            return;
-
-        mYLabelPaint.setTypeface(mYAxis.getTypeface());
-        mYLabelPaint.setTextSize(mYAxis.getTextSize());
-        mYLabelPaint.setColor(mYAxis.getTextColor());
-
-        PointF c = getCenterOffsets();
-        float factor = getFactor();
-
-        int labelCount = mYAxis.mEntryCount;
-
-        for (int j = 0; j < labelCount; j++) {
-
-            if (j == labelCount - 1 && mYAxis.isDrawTopYLabelEntryEnabled() == false)
-                break;
-
-            float r = ((mYChartMax / labelCount) * j) * factor;
-
-            PointF p = getPosition(c, r, mRotationAngle);
-
-            float val = r / factor;
-
-            String label = Utils.formatNumber(val, mYAxis.mDecimals,
-                    mYAxis.isSeparateThousandsEnabled());
-
-            if (mYAxis.isDrawUnitsInYLabelEnabled())
-                mDrawCanvas.drawText(label + mUnit, p.x + 10, p.y - 5, mYLabelPaint);
-            else {
-                mDrawCanvas.drawText(label, p.x + 10, p.y - 5, mYLabelPaint);
-            }
-        }
-    }
-
-    /**
-     * setup the x-axis labels
-     */
-    private void prepareXLabels() {
-
-        StringBuffer a = new StringBuffer();
-
-        int max = (int) Math.round(mData.getXValAverageLength());
-
-        for (int i = 0; i < max; i++) {
-            a.append("h");
-        }
-
-        mXAxis.mLabelWidth = Utils.calcTextWidth(mXLabelPaint, a.toString());
-        mXAxis.mLabelHeight = Utils.calcTextWidth(mXLabelPaint, "Q");
-    }
-
-    /**
-     * Draws the x-labels of the chart.
-     */
-    private void drawXLabels() {
-
-        if (!mDrawXLabels)
-            return;
-
-        mXLabelPaint.setTypeface(mXAxis.getTypeface());
-        mXLabelPaint.setTextSize(mXAxis.getTextSize());
-        mXLabelPaint.setColor(mXAxis.getTextColor());
-
-        float sliceangle = getSliceAngle();
-
-        // calculate the factor that is needed for transforming the value to
-        // pixels
-        float factor = getFactor();
-
-        PointF c = getCenterOffsets();
-
-        for (int i = 0; i < mData.getXValCount(); i++) {
-
-            String text = mData.getXVals().get(i);
-
-            float angle = (sliceangle * i + mRotationAngle) % 360f;
-
-            PointF p = getPosition(c, mYChartMax * factor + mXAxis.mLabelWidth / 2f, angle);
-
-            mDrawCanvas.drawText(text, p.x, p.y + mXAxis.mLabelHeight / 2f, mXLabelPaint);
-        }
-    }
-
-    @Override
-    protected void drawValues() {
-
-        // if values are drawn
-        if (mDrawYValues) {
-
-            float sliceangle = getSliceAngle();
-
-            // calculate the factor that is needed for transforming the value to
-            // pixels
-            float factor = getFactor();
-
-            PointF c = getCenterOffsets();
-
-            float yoffset = Utils.convertDpToPixel(5f);
-
-            for (int i = 0; i < mData.getDataSetCount(); i++) {
-
-                RadarDataSet dataSet = mData.getDataSetByIndex(i);
-                ArrayList<Entry> entries = dataSet.getYVals();
-
-                for (int j = 0; j < entries.size(); j++) {
-
-                    Entry e = entries.get(j);
-
-                    PointF p = getPosition(c, e.getVal() * factor, sliceangle * j + mRotationAngle);
-
-                    if (mDrawUnitInChart)
-                        mDrawCanvas.drawText(mValueFormatter.getFormattedValue(e.getVal()) + mUnit,
-                                p.x, p.y - yoffset, mValuePaint);
-                    else
-                        mDrawCanvas.drawText(mValueFormatter.getFormattedValue(e.getVal()),
-                                p.x, p.y - yoffset, mValuePaint);
-                }
-            }
-        }
-    }
-
-    @Override
-    protected void drawHighlights() {
-
-        // if there are values to highlight and highlighnting is enabled, do it
-        if (mHighlightEnabled && valuesToHighlight()) {
-
-            float sliceangle = getSliceAngle();
-            float factor = getFactor();
-
-            PointF c = getCenterOffsets();
-
-            for (int i = 0; i < mIndicesToHightlight.length; i++) {
-
-                RadarDataSet set = mData
-                        .getDataSetByIndex(mIndicesToHightlight[i]
-                                .getDataSetIndex());
-
-                if (set == null)
-                    continue;
-
-                mHighlightPaint.setColor(set.getHighLightColor());
-
-                // get the index to highlight
-                int xIndex = mIndicesToHightlight[i].getXIndex();
-
-                Entry e = set.getEntryForXIndex(xIndex);
-                int j = set.getEntryPosition(e);
-                float y = e.getVal();
-
-                PointF p = getPosition(c, y * factor, sliceangle * j + mRotationAngle);
-
-                float[] pts = new float[] {
-                        p.x, 0, p.x, getHeight(), 0, p.y, getWidth(), p.y
-                };
-
-                mDrawCanvas.drawLines(pts, mHighlightPaint);
-            }
-        }
     }
 
     /**
@@ -532,7 +218,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      * 
      * @return
      */
-    public YAxis getYLabels() {
+    public YAxis getYAxis() {
         return mYAxis;
     }
 
@@ -541,7 +227,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      * 
      * @return
      */
-    public XAxis getXLabels() {
+    public XAxis getXAxis() {
         return mXAxis;
     }
 
@@ -554,6 +240,10 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         mWebLineWidth = Utils.convertDpToPixel(width);
     }
 
+    public float getWebLineWidth() {
+        return mWebLineWidth;
+    }
+
     /**
      * Sets the width of the web lines that are in between the lines coming from
      * the center.
@@ -562,6 +252,10 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      */
     public void setWebLineWidthInner(float width) {
         mInnerWebLineWidth = Utils.convertDpToPixel(width);
+    }
+
+    public float getWebLineWidthInner() {
+        return mInnerWebLineWidth;
     }
 
     /**
@@ -575,6 +269,15 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     }
 
     /**
+     * Returns the alpha value for all web lines.
+     * 
+     * @return
+     */
+    public int getWebAlpha() {
+        return mWebAlpha;
+    }
+
+    /**
      * Sets the color for the web lines that come from the center. Don't forget
      * to use getResources().getColor(...) when loading a color from the
      * resources. Default: Color.rgb(122, 122, 122)
@@ -583,6 +286,10 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      */
     public void setWebColor(int color) {
         mWebColor = color;
+    }
+
+    public int getWebColor() {
+        return mWebColor;
     }
 
     /**
@@ -596,6 +303,10 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         mWebColorInner = color;
     }
 
+    public int getWebColorInner() {
+        return mWebColorInner;
+    }
+
     /**
      * If set to true, drawing the web is enabled, if set to false, drawing the
      * whole web is disabled. Default: true
@@ -607,30 +318,12 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     }
 
     /**
-     * set this to true to enable drawing the y-labels, false if not
-     * 
-     * @param enabled
-     */
-    public void setDrawYLabels(boolean enabled) {
-        mDrawYLabels = enabled;
-    }
-
-    /**
      * set this to true to enable drawing the x-labels, false if not
      * 
      * @param enabled
      */
     public void setDrawXLabels(boolean enabled) {
         mDrawXLabels = enabled;
-    }
-
-    /**
-     * Returns true if drawing y-labels is enabled, false if not.
-     * 
-     * @return
-     */
-    public boolean isDrawYLabelsEnabled() {
-        return mDrawYLabels;
     }
 
     /**
@@ -664,7 +357,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
         switch (which) {
             case PAINT_RADAR_WEB:
-                mWebPaint = p;
+                // mWebPaint = p;
                 break;
         }
     }
@@ -677,9 +370,15 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
         switch (which) {
             case PAINT_RADAR_WEB:
-                return mWebPaint;
+                // return mWebPaint;
         }
 
         return null;
+    }
+
+    @Override
+    public boolean isStartAtZeroEnabled() {
+        // TODO Auto-generated method stub
+        return false;
     }
 }

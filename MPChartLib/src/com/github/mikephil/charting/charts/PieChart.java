@@ -62,12 +62,6 @@ public class PieChart extends PieRadarChartBase<PieData> {
     /** if enabled, centertext is drawn */
     private boolean mDrawCenterText = true;
 
-    /**
-     * set this to true to draw the x-values next to the values in the pie
-     * slices
-     */
-    private boolean mDrawXVals = true;
-
     public PieChart(Context context) {
         super(context);
     }
@@ -368,24 +362,6 @@ public class PieChart extends PieRadarChartBase<PieData> {
      */
     public boolean isDrawCenterTextEnabled() {
         return mDrawCenterText;
-    }
-
-    /**
-     * set this to true to draw the x-value text into the pie slices
-     * 
-     * @param enabled
-     */
-    public void setDrawXValues(boolean enabled) {
-        mDrawXVals = enabled;
-    }
-
-    /**
-     * returns true if drawing x-values is enabled, false if not
-     * 
-     * @return
-     */
-    public boolean isDrawXValuesEnabled() {
-        return mDrawXVals;
     }
 
     @Override

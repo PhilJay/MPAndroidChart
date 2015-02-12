@@ -21,9 +21,6 @@ import java.util.ArrayList;
 
 public class YAxisRenderer extends AxisRenderer {
 
-    /** paint for the y-label values */
-    protected Paint mYAxisPaint;
-
     /** paint used for the limit lines */
     protected Paint mLimitLinePaint;
 
@@ -34,9 +31,8 @@ public class YAxisRenderer extends AxisRenderer {
 
         this.mYAxis = yAxis;
 
-        mYAxisPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mYAxisPaint.setColor(Color.BLACK);
-        mYAxisPaint.setTextSize(Utils.convertDpToPixel(10f));
+        mAxisPaint.setColor(Color.BLACK);
+        mAxisPaint.setTextSize(Utils.convertDpToPixel(10f));
 
         mLimitLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mLimitLinePaint.setStyle(Paint.Style.STROKE);
@@ -173,12 +169,12 @@ public class YAxisRenderer extends AxisRenderer {
 
         mTrans.pointValuesToPixel(positions);
 
-        mYAxisPaint.setTypeface(mYAxis.getTypeface());
-        mYAxisPaint.setTextSize(mYAxis.getTextSize());
-        mYAxisPaint.setColor(mYAxis.getTextColor());
+        mAxisPaint.setTypeface(mYAxis.getTypeface());
+        mAxisPaint.setTextSize(mYAxis.getTextSize());
+        mAxisPaint.setColor(mYAxis.getTextColor());
 
         float xoffset = Utils.convertDpToPixel(5f);
-        float yoffset = Utils.calcTextHeight(mYAxisPaint, "A") / 2.5f;
+        float yoffset = Utils.calcTextHeight(mAxisPaint, "A") / 2.5f;
 
         AxisDependency dependency = mYAxis.getAxisDependency();
         YLabelPosition labelPosition = mYAxis.getLabelPosition();
@@ -188,20 +184,20 @@ public class YAxisRenderer extends AxisRenderer {
         if (dependency == AxisDependency.LEFT) {
 
             if (labelPosition == YLabelPosition.OUTSIDE_CHART) {
-                mYAxisPaint.setTextAlign(Align.RIGHT);
+                mAxisPaint.setTextAlign(Align.RIGHT);
                 xPos = mViewPortHandler.offsetLeft() - xoffset;
             } else {
-                mYAxisPaint.setTextAlign(Align.LEFT);
+                mAxisPaint.setTextAlign(Align.LEFT);
                 xPos = mViewPortHandler.offsetLeft() + xoffset;
             }
 
         } else {
 
             if (labelPosition == YLabelPosition.OUTSIDE_CHART) {
-                mYAxisPaint.setTextAlign(Align.LEFT);
+                mAxisPaint.setTextAlign(Align.LEFT);
                 xPos = mViewPortHandler.contentRight() + xoffset;
             } else {
-                mYAxisPaint.setTextAlign(Align.RIGHT);
+                mAxisPaint.setTextAlign(Align.RIGHT);
                 xPos = mViewPortHandler.contentRight() - xoffset;
             }
         }
@@ -225,7 +221,7 @@ public class YAxisRenderer extends AxisRenderer {
             if (!mYAxis.isDrawTopYLabelEntryEnabled() && i >= mYAxis.mEntryCount - 1)
                 return;
 
-            c.drawText(text, xPos, positions[i * 2 + 1] + yOffset, mYAxisPaint);
+            c.drawText(text, xPos, positions[i * 2 + 1] + yOffset, mAxisPaint);
         }
     }
 

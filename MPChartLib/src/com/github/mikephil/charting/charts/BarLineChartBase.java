@@ -338,25 +338,29 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         // String label = mYLabels.getFormattedLabel(mYLabels.mEntryCount - 1);
         String label = mAxisLeft.getLongestLabel();
 
-        // calculate the maximum y-label width (including eventual offsets)
-        float ylabelwidth = Utils.calcTextWidth(mYLabelPaint,
-                label + mUnit + (mYChartMin < 0 ? "----" : "+++")); // offsets
-
         if (mDrawYAxis) {
 
             // offsets for y-labels
             if (mAxisLeft.isEnabled()) {
+
+                // calculate the maximum y-label width (including eventual offsets)
+                float ylabelwidth = Utils.calcTextWidth(mAxisRendererLeft.getAxisPaint(),
+                        label + (mYChartMin < 0 ? "----" : "+++")); // offsets
                 yleft = ylabelwidth;
             }
 
             if (mAxisRight.isEnabled()) {
+
+                // calculate the maximum y-label width (including eventual offsets)
+                float ylabelwidth = Utils.calcTextWidth(mAxisRendererRight.getAxisPaint(),
+                        label + (mYChartMin < 0 ? "----" : "+++")); // offsets
                 yright = ylabelwidth;
             }
         }
 
         float xtop = 0f, xbottom = 0f;
 
-        float xlabelheight = Utils.calcTextHeight(mXLabelPaint, "Q") * 2f;
+        float xlabelheight = Utils.calcTextHeight(mXAxisRenderer.getAxisPaint(), "Q") * 2f;
 
         if (mDrawXLabels) {
 
@@ -965,24 +969,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     public void setDrawXLabels(boolean enabled) {
         mDrawXLabels = enabled;
-    }
-
-    /**
-     * set this to true to enable drawing the y-labels, false if not
-     * 
-     * @param enabled
-     */
-    public void setDrawYLabels(boolean enabled) {
-        mDrawYAxis = enabled;
-    }
-
-    /**
-     * Returns true if drawing y-labels is enabled, false if not.
-     * 
-     * @return
-     */
-    public boolean isDrawYLabelsEnabled() {
-        return mDrawYAxis;
     }
 
     /**

@@ -1,25 +1,31 @@
 package com.github.mikephil.charting.utils;
 
 import com.github.mikephil.charting.interfaces.ChartInterface;
+import com.github.mikephil.charting.renderer.ViewPortHandler;
 
 public class HorizontalBarChartTransformer extends Transformer {
     
-	/**
+	public HorizontalBarChartTransformer(ViewPortHandler viewPortHandler) {
+        super(viewPortHandler);
+        // TODO Auto-generated constructor stub
+    }
+
+    /**
 	 * Prepares the matrix that transforms values to pixels.
 	 *
 	 * @param chart
 	 */
-	@Override
-	public void prepareMatrixValuePx(ChartInterface chart) {
-		float scaleX = (chart.getWidth() - chart.getOffsetRight() - chart.getOffsetLeft()) / chart.getDeltaY();
-		float scaleY = (chart.getHeight() - chart.getOffsetTop() - chart.getOffsetBottom()) / chart.getDeltaX();
-
-		// setup all matrices
-		mMatrixValueToPx.reset();
-		mMatrixValueToPx.postTranslate(0, -chart.getYChartMin());
-		mMatrixValueToPx.postScale(scaleX, -scaleY);  
-		mMatrixValueToPx.postRotate(90, chart.getHeight() / 2, chart.getWidth() / 2);
-	}
+//	@Override
+//	public void prepareMatrixValuePx(ChartInterface chart) {
+//		float scaleX = (chart.getWidth() - chart.getOffsetRight() - chart.getOffsetLeft()) / chart.getDeltaY();
+//		float scaleY = (chart.getHeight() - chart.getOffsetTop() - chart.getOffsetBottom()) / chart.getDeltaX();
+//
+//		// setup all matrices
+//		mMatrixValueToPx.reset();
+//		mMatrixValueToPx.postTranslate(0, -chart.getYChartMin());
+//		mMatrixValueToPx.postScale(scaleX, -scaleY);  
+//		mMatrixValueToPx.postRotate(90, chart.getHeight() / 2, chart.getWidth() / 2);
+//	}
 
 //	/**
 //	 * Transforms an arraylist of Entry into a float array containing the x and

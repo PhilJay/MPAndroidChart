@@ -3,6 +3,7 @@ package com.github.mikephil.charting.utils;
 
 import android.content.res.Resources;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -375,5 +376,22 @@ public abstract class Utils {
         // Log.i(LOG_TAG, "Closest DataSet index: " + index);
 
         return index;
+    }
+    
+    
+    /**
+     * Calculates the position around a center point, depending on the distance
+     * from the center, and the angle of the position around the center.
+     * 
+     * @param center
+     * @param dist
+     * @param angle in degrees, converted to radians internally
+     * @return
+     */
+    public static PointF getPosition(PointF center, float dist, float angle) {
+
+        PointF p = new PointF((float) (center.x + dist * Math.cos(Math.toRadians(angle))),
+                (float) (center.y + dist * Math.sin(Math.toRadians(angle))));
+        return p;
     }
 }

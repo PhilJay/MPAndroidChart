@@ -38,8 +38,8 @@ public class HorizontalBarChart extends BarChart
         super.init();
 
         setDrawXLabels(false);
-        setDrawYLabels(true);
-        mTrans = new HorizontalBarChartTransformer();
+//        setDrawYLabels(true);
+//        mTrans = new HorizontalBarChartTransformer();
         mValuePaint.setTextAlign(Paint.Align.LEFT);
     }
 
@@ -151,6 +151,11 @@ public class HorizontalBarChart extends BarChart
 
     private class XLabelsAsYLabels extends YAxis
     {
+        public XLabelsAsYLabels(AxisDependency position) {
+            super(position);
+            // TODO Auto-generated constructor stub
+        }
+
         /**
          * Returns the longest formatted label (in terms of characters) the
          * y-labels contain.
