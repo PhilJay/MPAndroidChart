@@ -290,7 +290,7 @@ public class YAxisRenderer extends AxisRenderer {
                 mLimitLinePaint.setPathEffect(null);
                 mLimitLinePaint.setColor(l.getTextColor());
 
-                if (l.getLabelPosition() == LimitLabelPosition.RIGHT) {
+                if (l.getLabelPosition() == LimitLabelPosition.POS_RIGHT) {
 
                     mLimitLinePaint.setTextAlign(Align.RIGHT);
                     c.drawText(label, mViewPortHandler.contentRight()

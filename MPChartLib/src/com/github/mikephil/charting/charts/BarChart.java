@@ -133,7 +133,7 @@ public class BarChart extends BarLineChartBase<BarData> {
         pts[0] = x;
         pts[1] = y;
 
-        mTrans.pixelsToValue(pts);
+        mLeftAxisTransformer.pixelsToValue(pts);
 
         // for barchart, we only need x-val
         double xTouchVal = pts[0];

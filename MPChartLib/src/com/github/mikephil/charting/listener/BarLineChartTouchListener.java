@@ -196,13 +196,16 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
         PointF dragPoint = new PointF(event.getX(), event.getY());
 
         // check if axis is inverted
-        if (!mChart.isInvertYAxisEnabled()) {
+//        if (mChart.isInvertYAxisEnabled()) {
+//            
+//            
+//            mMatrix.postTranslate(dragPoint.x - mTouchStartPoint.x, -(dragPoint.y
+//                    - mTouchStartPoint.y));
+//        } 
+//        else {
             mMatrix.postTranslate(dragPoint.x - mTouchStartPoint.x, dragPoint.y
                     - mTouchStartPoint.y);
-        } else {
-            mMatrix.postTranslate(dragPoint.x - mTouchStartPoint.x, -(dragPoint.y
-                    - mTouchStartPoint.y));
-        }
+//        }
     }
 
     /**
@@ -341,11 +344,13 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
         float yTrans = 0f;
 
         // check if axis is inverted
-        if (!mChart.isInvertYAxisEnabled()) {
+//        if (mChart.isInvertYAxisEnabled()) {
+//            yTrans = -(y - vph.offsetTop());
+//        } 
+//        else {
+                
             yTrans = -(mChart.getMeasuredHeight() - y - vph.offsetBottom());
-        } else {
-            yTrans = -(y - vph.offsetTop());
-        }
+//        }
 
         return new PointF(xTrans, yTrans);
     }

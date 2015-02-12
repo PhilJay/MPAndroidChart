@@ -1068,7 +1068,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         pts[0] = x;
         pts[1] = y;
 
-        mTrans.pixelsToValue(pts);
+        mLeftAxisTransformer.pixelsToValue(pts);
 
         double xTouchVal = pts[0];
         double yTouchVal = pts[1];
