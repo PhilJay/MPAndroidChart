@@ -12,13 +12,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.CandleStickChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.XAxis.XLabelPosition;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.components.YAxis.YLabelPosition;
 import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CandleDataSet;
 import com.github.mikephil.charting.data.CandleEntry;
-import com.github.mikephil.charting.utils.XLabels;
-import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
-import com.github.mikephil.charting.utils.YLabels;
-import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -59,16 +59,15 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         mChart.setDrawVerticalGrid(false);
         mChart.setDrawGridBackground(false);
 
-        XLabels xLabels = mChart.getXLabels();
+        XAxis xLabels = mChart.getXAxis();
         xLabels.setPosition(XLabelPosition.BOTTOM);
         xLabels.setCenterXLabelText(true);
         xLabels.setSpaceBetweenLabels(2);
 
-        YLabels yLabels = mChart.getYLabels();  
+        YAxis yLabels = mChart.getAxisLeft();  
         yLabels.setLabelCount(7);
-        yLabels.setPosition(YLabelPosition.LEFT);
+//        yLabels.setPosition(YLabelPosition.LEFT);
 
-        mChart.setDrawYLabels(true);
         mChart.setDrawLegend(false);
 
         // setting data
@@ -121,12 +120,12 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
                 break;
             }
             case R.id.actionToggleAdjustXLegend: {
-                XLabels xLabels = mChart.getXLabels();
+                XAxis xAxis = mChart.getXAxis();
 
-                if (xLabels.isAdjustXLabelsEnabled())
-                    xLabels.setAdjustXLabels(false);
+                if (xAxis.isAdjustXLabelsEnabled())
+                    xAxis.setAdjustXLabels(false);
                 else
-                    xLabels.setAdjustXLabels(true);
+                    xAxis.setAdjustXLabels(true);
 
                 mChart.invalidate();
                 break;

@@ -13,13 +13,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
-import com.github.mikephil.charting.utils.XLabels;
-import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -52,17 +53,12 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         mChart = (LineChart) findViewById(R.id.chart1);
         // if enabled, the chart will always start at zero on the y-axis
         mChart.setStartAtZero(true);
-
-        // disable the drawing of values into the chart
-        mChart.setDrawYValues(false);
-
         mChart.setDrawBorder(false);
         
         mChart.setDrawLegend(false);
 
         // no description text
         mChart.setDescription("");
-        mChart.setUnit(" $");
 
         // enable value highlighting
         mChart.setHighlightEnabled(true);
@@ -83,10 +79,10 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
         mChart.setValueTypeface(tf);
         
-        XLabels x = mChart.getXLabels();
+        XAxis x = mChart.getXAxis();
         x.setTypeface(tf);
         
-        YLabels y = mChart.getYLabels();
+        YAxis y = mChart.getAxisLeft();
         y.setTypeface(tf);
         y.setLabelCount(5);
 
@@ -110,10 +106,9 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
 
         switch (item.getItemId()) {
             case R.id.actionToggleValues: {
-                if (mChart.isDrawYValuesEnabled())
-                    mChart.setDrawYValues(false);
-                else
-                    mChart.setDrawYValues(true);
+                for (DataSet<?> set : mChart.getData().getDataSets())
+                    set.setDrawValues(!set.isDrawValuesEnabled());
+
                 mChart.invalidate();
                 break;
             }
@@ -196,7 +191,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
                 break;
             }
             case R.id.actionToggleAdjustXLegend: {
-                XLabels xLabels = mChart.getXLabels();
+                XAxis xLabels = mChart.getXAxis();
 
                 if (xLabels.isAdjustXLabelsEnabled())
                     xLabels.setAdjustXLabels(false);

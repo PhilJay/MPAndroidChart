@@ -15,6 +15,11 @@ import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarLineChartBase.BorderPosition;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.Legend.LegendForm;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -22,10 +27,6 @@ import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.Legend.LegendForm;
-import com.github.mikephil.charting.utils.XLabels;
-import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -59,14 +60,8 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         mChart.setOnChartValueSelectedListener(this);
         mChart.setValueTextColor(Color.WHITE);
 
-        mChart.setUnit(" $");
-        mChart.setDrawUnitsInChart(true);
-
         // if enabled, the chart will always start at zero on the y-axis
         mChart.setStartAtZero(false);
-
-        // disable the drawing of values into the chart
-        mChart.setDrawYValues(false);
 
         mChart.setDrawBorder(true);
         mChart.setBorderPositions(new BorderPosition[] {
@@ -112,11 +107,11 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         l.setTypeface(tf);
         l.setTextColor(Color.WHITE);
 
-        XLabels xl = mChart.getXLabels();
+        XAxis xl = mChart.getXAxis();
         xl.setTypeface(tf);
         xl.setTextColor(Color.WHITE);
 
-        YLabels yl = mChart.getYLabels();
+        YAxis yl = mChart.getAxisLeft();
         yl.setTypeface(tf);
         yl.setTextColor(Color.WHITE);
     }
@@ -132,10 +127,9 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
 
         switch (item.getItemId()) {
             case R.id.actionToggleValues: {
-                if (mChart.isDrawYValuesEnabled())
-                    mChart.setDrawYValues(false);
-                else
-                    mChart.setDrawYValues(true);
+                for (DataSet<?> set : mChart.getData().getDataSets())
+                    set.setDrawValues(!set.isDrawValuesEnabled());
+
                 mChart.invalidate();
                 break;
             }
@@ -218,7 +212,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
                 break;
             }
             case R.id.actionToggleAdjustXLegend: {
-                XLabels xLabels = mChart.getXLabels();
+                XAxis xLabels = mChart.getXAxis();
 
                 if (xLabels.isAdjustXLabelsEnabled())
                     xLabels.setAdjustXLabels(false);

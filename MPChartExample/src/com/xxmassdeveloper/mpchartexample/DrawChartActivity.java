@@ -9,14 +9,14 @@ import android.view.WindowManager;
 
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.interfaces.OnDrawListener;
-import com.github.mikephil.charting.utils.XLabels;
-import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -48,7 +48,6 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
         // enable drawing with the finger
 //        mChart.setDrawingEnabled(true);
 
-        mChart.setDrawYValues(false);
 //        mChart.setLineWidth(5f);
 //        mChart.setCircleSize(5f);
 
@@ -66,11 +65,11 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
         
         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
-        XLabels xl = mChart.getXLabels();
+        XAxis xl = mChart.getXAxis();
         xl.setTypeface(tf);
         xl.setAvoidFirstLastClipping(true);
         
-        YLabels yl = mChart.getYLabels();
+        YAxis yl = mChart.getAxisLeft();
         yl.setTypeface(tf);
 
         mChart.setValueTypeface(tf);
@@ -113,10 +112,9 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
 
         switch (item.getItemId()) {
             case R.id.actionToggleValues: {
-                if (mChart.isDrawYValuesEnabled())
-                    mChart.setDrawYValues(false);
-                else
-                    mChart.setDrawYValues(true);
+                for (DataSet<?> set : mChart.getData().getDataSets())
+                    set.setDrawValues(!set.isDrawValuesEnabled());
+
                 mChart.invalidate();
                 break;
             }
@@ -138,7 +136,7 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
                 break;
             }
             case R.id.actionToggleAdjustXLegend: {
-                XLabels xLabels = mChart.getXLabels();
+                XAxis xLabels = mChart.getXAxis();
 
                 if (xLabels.isAdjustXLabelsEnabled())
                     xLabels.setAdjustXLabels(false);

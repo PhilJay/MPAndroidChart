@@ -16,19 +16,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.Legend.LegendPosition;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.XAxis.XLabelPosition;
+import com.github.mikephil.charting.components.YAxis.AxisDependency;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.Legend.LegendPosition;
-import com.github.mikephil.charting.utils.XLabels;
-import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
-import com.github.mikephil.charting.utils.YLabels;
-import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -55,9 +56,6 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         mChart = (BarChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
-
-        // enable the drawing of values
-        mChart.setDrawYValues(true);
         
         mChart.setDrawValueAboveBar(true);
 
@@ -67,16 +65,11 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         // drawn
         mChart.setMaxVisibleValueCount(60);
 
-        // disable 3D
-        mChart.set3DEnabled(false);
-
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
 
         // draw shadows for each bar that show the maximum value
         // mChart.setDrawBarShadow(true);
-
-        mChart.setUnit(" €");
         
         // mChart.setDrawXLabels(false);
 
@@ -94,15 +87,15 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
-        XLabels xl = mChart.getXLabels();
+        XAxis xl = mChart.getXAxis();
         xl.setPosition(XLabelPosition.BOTTOM);
         xl.setCenterXLabelText(true);
         xl.setTypeface(tf);
 
-        YLabels yl = mChart.getYLabels();
+        YAxis yl = mChart.getAxisLeft();
         yl.setTypeface(tf);
         yl.setLabelCount(8);
-        yl.setPosition(YLabelPosition.BOTH_SIDED);
+//        yl.setPosition(YLabelPosition.BOTH_SIDED);
 
         mChart.setValueTypeface(tf);
 
@@ -134,18 +127,9 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         switch (item.getItemId()) {
             case R.id.actionToggleValues: {
-                if (mChart.isDrawYValuesEnabled())
-                    mChart.setDrawYValues(false);
-                else
-                    mChart.setDrawYValues(true);
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggle3D: {
-                if (mChart.is3DEnabled())
-                    mChart.set3DEnabled(false);
-                else
-                    mChart.set3DEnabled(true);
+                for (DataSet<?> set : mChart.getData().getDataSets())
+                    set.setDrawValues(!set.isDrawValuesEnabled());
+
                 mChart.invalidate();
                 break;
             }
@@ -197,7 +181,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
                 break;
             }
             case R.id.actionToggleAdjustXLegend: {
-                XLabels xLabels = mChart.getXLabels();
+                XAxis xLabels = mChart.getXAxis();
 
                 if (xLabels.isAdjustXLabelsEnabled())
                     xLabels.setAdjustXLabels(false);
@@ -288,7 +272,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
             return;
 
         RectF bounds = mChart.getBarBounds((BarEntry) e);
-        PointF position = mChart.getPosition(e);
+        PointF position = mChart.getPosition(e, AxisDependency.LEFT);
 
         Log.i("bounds", bounds.toString());
         Log.i("position", position.toString());

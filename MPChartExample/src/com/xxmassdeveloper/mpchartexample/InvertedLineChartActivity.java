@@ -13,15 +13,16 @@ import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarLineChartBase.BorderPosition;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.Legend.LegendForm;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.Legend.LegendForm;
-import com.github.mikephil.charting.utils.XLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -58,9 +59,6 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
         // if enabled, the chart will always start at zero on the y-axis
         mChart.setStartAtZero(true);
 
-        // enable the drawing of values into the chart
-        mChart.setDrawYValues(true);
-
         mChart.setDrawBorder(true);
         mChart.setBorderPositions(new BorderPosition[] {
             BorderPosition.BOTTOM
@@ -70,7 +68,8 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
         mChart.setDescription("");
 
         // invert the y-axis
-        mChart.setInvertYAxisEnabled(true);
+        // MAKE THIS RIGHT
+//        mChart.setInvertYAxisEnabled(true);
 
         // enable value highlighting
         mChart.setHighlightEnabled(true);
@@ -99,7 +98,7 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
         // highlighted Entry)
         mChart.setHighlightIndicatorEnabled(false);
         
-        XLabels xl = mChart.getXLabels();
+        XAxis xl = mChart.getXAxis();
         xl.setAvoidFirstLastClipping(true);
 
         // add data
@@ -133,10 +132,9 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
 
         switch (item.getItemId()) {
             case R.id.actionToggleValues: {
-                if (mChart.isDrawYValuesEnabled())
-                    mChart.setDrawYValues(false);
-                else
-                    mChart.setDrawYValues(true);
+                for (DataSet<?> set : mChart.getData().getDataSets())
+                    set.setDrawValues(!set.isDrawValuesEnabled());
+
                 mChart.invalidate();
                 break;
             }
@@ -207,7 +205,7 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
                 break;
             }
             case R.id.actionToggleAdjustXLegend: {
-                XLabels xLabels = mChart.getXLabels();
+                XAxis xLabels = mChart.getXAxis();
 
                 if (xLabels.isAdjustXLabelsEnabled())
                     xLabels.setAdjustXLabels(false);

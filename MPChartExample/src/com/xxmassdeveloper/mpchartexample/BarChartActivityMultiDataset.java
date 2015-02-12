@@ -13,16 +13,17 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.Legend.LegendPosition;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.LargeValueFormatter;
-import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.Legend.LegendPosition;
-import com.github.mikephil.charting.utils.XLabels;
-import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -52,9 +53,6 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         mChart = (BarChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
         mChart.setDescription("");
-        
-        // disable the drawing of values
-        mChart.setDrawYValues(false);
 
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
@@ -85,11 +83,11 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         l.setPosition(LegendPosition.RIGHT_OF_CHART_INSIDE);
         l.setTypeface(tf);
         
-        XLabels xl  = mChart.getXLabels();
+        XAxis xl  = mChart.getXAxis();
         xl.setCenterXLabelText(true);
         xl.setTypeface(tf);
         
-        YLabels yl = mChart.getYLabels();
+        YAxis yl = mChart.getAxisLeft();
         yl.setTypeface(tf);
         yl.setFormatter(new LargeValueFormatter());
         
@@ -107,10 +105,9 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
 
         switch (item.getItemId()) {
             case R.id.actionToggleValues: {
-                if (mChart.isDrawYValuesEnabled())
-                    mChart.setDrawYValues(false);
-                else
-                    mChart.setDrawYValues(true);
+                for (DataSet<?> set : mChart.getData().getDataSets())
+                    set.setDrawValues(!set.isDrawValuesEnabled());
+
                 mChart.invalidate();
                 break;
             }
@@ -120,14 +117,6 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
                 else
                     mChart.setPinchZoom(true);
 
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggle3D: {
-                if (mChart.is3DEnabled())
-                    mChart.set3DEnabled(false);
-                else
-                    mChart.set3DEnabled(true);
                 mChart.invalidate();
                 break;
             }
@@ -157,12 +146,12 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
                 break;
             }
             case R.id.actionToggleAdjustXLegend: {
-                XLabels xLabels = mChart.getXLabels();
+                XAxis xAxis = mChart.getXAxis();
                 
-                if (xLabels.isAdjustXLabelsEnabled())
-                    xLabels.setAdjustXLabels(false);
+                if (xAxis.isAdjustXLabelsEnabled())
+                    xAxis.setAdjustXLabels(false);
                 else
-                    xLabels.setAdjustXLabels(true);
+                    xAxis.setAdjustXLabels(true);
 
                 mChart.invalidate();
                 break;

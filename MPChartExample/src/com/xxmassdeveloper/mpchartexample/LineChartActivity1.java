@@ -15,6 +15,12 @@ import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarLineChartBase.BorderPosition;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.Legend.LegendForm;
+import com.github.mikephil.charting.components.LimitLine;
+import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -22,11 +28,6 @@ import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartGestureListener;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.Legend.LegendForm;
-import com.github.mikephil.charting.utils.LimitLine;
-import com.github.mikephil.charting.utils.LimitLine.LimitLabelPosition;
-import com.github.mikephil.charting.utils.XLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -61,14 +62,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         mChart.setOnChartGestureListener(this);
         mChart.setOnChartValueSelectedListener(this);
 
-        mChart.setUnit(" $");
-        mChart.setDrawUnitsInChart(true);
-
         // if enabled, the chart will always start at zero on the y-axis
         mChart.setStartAtZero(false);
-
-        // disable the drawing of values into the chart
-        mChart.setDrawYValues(false);
 
         mChart.setDrawBorder(true);
         mChart.setBorderPositions(new BorderPosition[] {
@@ -148,10 +143,9 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
         switch (item.getItemId()) {
             case R.id.actionToggleValues: {
-                if (mChart.isDrawYValuesEnabled())
-                    mChart.setDrawYValues(false);
-                else
-                    mChart.setDrawYValues(true);
+                for (DataSet<?> set : mChart.getData().getDataSets())
+                    set.setDrawValues(!set.isDrawValuesEnabled());
+
                 mChart.invalidate();
                 break;
             }
@@ -234,7 +228,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                 break;
             }
             case R.id.actionToggleAdjustXLegend: {
-                XLabels xLabels = mChart.getXLabels();
+                XAxis xLabels = mChart.getXAxis();
 
                 if (xLabels.isAdjustXLabelsEnabled())
                     xLabels.setAdjustXLabels(false);
@@ -352,16 +346,16 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         ll1.setLineWidth(4f);
         ll1.enableDashedLine(10f, 10f, 0f);
         ll1.setDrawValue(true);
-        ll1.setLabelPosition(LimitLabelPosition.RIGHT);
+        ll1.setLabelPosition(LimitLabelPosition.POS_RIGHT);
 
         LimitLine ll2 = new LimitLine(-30f);
         ll2.setLineWidth(4f);
         ll2.enableDashedLine(10f, 10f, 0f);
         ll2.setDrawValue(true);
-        ll2.setLabelPosition(LimitLabelPosition.RIGHT);
+        ll2.setLabelPosition(LimitLabelPosition.POS_RIGHT);
 
-        data.addLimitLine(ll1);
-        data.addLimitLine(ll2);
+        mChart.getAxisLeft().addLimitLine(ll1);
+        mChart.getAxisLeft().addLimitLine(ll2);
 
         // set data
         mChart.setData(data);

@@ -14,10 +14,6 @@
         android:title="Toggle Highlight Arrow">
     </item>
     <item
-        android:id="@+id/actionToggle3D"
-        android:title="Toggle 3D">
-    </item>
-    <item
         android:id="@+id/animateX"
         android:title="Animate X">
     </item>

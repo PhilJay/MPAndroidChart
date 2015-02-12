@@ -7,28 +7,24 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.Legend.LegendPosition;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.XAxis.XLabelPosition;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.components.YAxis.AxisDependency;
+import com.github.mikephil.charting.components.YAxis.YLabelPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.Legend.LegendPosition;
-import com.github.mikephil.charting.utils.XLabels;
-import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
-import com.github.mikephil.charting.utils.YLabels;
-import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -57,9 +53,6 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         mChart.setOnChartValueSelectedListener(this);
         
         mChart.setDrawBarShadow(false);
-
-        // enable the drawing of values
-        mChart.setDrawYValues(true);
         
         mChart.setDrawValueAboveBar(true);
 
@@ -69,16 +62,11 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         // drawn
         mChart.setMaxVisibleValueCount(60);
 
-        // disable 3D
-        mChart.set3DEnabled(false);
-
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
 
         // draw shadows for each bar that show the maximum value
         // mChart.setDrawBarShadow(true);
-
-        mChart.setUnit(" €");
         
         // mChart.setDrawXLabels(false);
 
@@ -96,15 +84,15 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
-        XLabels xl = mChart.getXLabels();
+        XAxis xl = mChart.getXAxis();
         xl.setPosition(XLabelPosition.BOTTOM);
         xl.setCenterXLabelText(true);
         xl.setTypeface(tf);
 
-        YLabels yl = mChart.getYLabels();
+        YAxis yl = mChart.getAxisLeft();
         yl.setTypeface(tf);
         yl.setLabelCount(8);
-        yl.setPosition(YLabelPosition.BOTH_SIDED);
+//        yl.setPosition(YLabelPosition.BOTH_SIDED);
 
         mChart.setValueTypeface(tf);
 
@@ -290,7 +278,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
             return;
 
         RectF bounds = mChart.getBarBounds((BarEntry) e);
-        PointF position = mChart.getPosition(e);
+        PointF position = mChart.getPosition(e, AxisDependency.LEFT);
 
         Log.i("bounds", bounds.toString());
         Log.i("position", position.toString());
