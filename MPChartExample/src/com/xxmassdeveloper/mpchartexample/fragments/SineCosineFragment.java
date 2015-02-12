@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.YLabels;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.YAxis;
 import com.xxmassdeveloper.mpchartexample.R;
 
 
@@ -27,7 +27,6 @@ public class SineCosineFragment extends SimpleFragment {
         mChart = (LineChart) v.findViewById(R.id.lineChart1);
         
         mChart.setDescription("");
-        mChart.setDrawYValues(false);
 //        mChart.setCircleSize(5f);
         
         mChart.setHighlightIndicatorEnabled(false); 
@@ -35,7 +34,6 @@ public class SineCosineFragment extends SimpleFragment {
         mChart.setDrawGridBackground(false);
         mChart.setDrawVerticalGrid(false);
         mChart.setDrawXLabels(false);
-        mChart.setDrawYValues(false);
         mChart.setStartAtZero(false);
         
         mChart.setYRange(-1.2f, 1.2f, false);
@@ -51,7 +49,7 @@ public class SineCosineFragment extends SimpleFragment {
         Legend l = mChart.getLegend();
         l.setTypeface(tf);
         
-        YLabels labels = mChart.getYLabels();
+        YAxis labels = mChart.getAxisLeft();
         labels.setTypeface(tf);
         
         return v;

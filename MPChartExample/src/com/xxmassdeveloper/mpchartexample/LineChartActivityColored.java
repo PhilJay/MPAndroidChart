@@ -7,13 +7,13 @@ import android.os.Bundle;
 import android.view.WindowManager;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.Legend.LegendForm;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.Legend.LegendForm;
-import com.github.mikephil.charting.utils.XLabels;
-import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -56,9 +56,6 @@ public class LineChartActivityColored extends DemoBase {
         // if enabled, the chart will always start at zero on the y-axis
         chart.setStartAtZero(true);
 
-        // disable the drawing of values into the chart
-        chart.setDrawYValues(false);
-
         chart.setDrawBorder(false);
 
         // no description text
@@ -71,7 +68,7 @@ public class LineChartActivityColored extends DemoBase {
         //
         // enable / disable grid background
         chart.setDrawGridBackground(false);
-        chart.setGridColor(Color.WHITE & 0x70FFFFFF);
+//        chart.getRenderer().getGridPaint().setGridColor(Color.WHITE & 0x70FFFFFF);
         chart.setGridWidth(1.25f);
 
         // enable touch gestures
@@ -101,12 +98,12 @@ public class LineChartActivityColored extends DemoBase {
         l.setTextColor(Color.WHITE);
         l.setTypeface(mTf);
 
-        YLabels y = chart.getYLabels();
+        YAxis y = chart.getAxisLeft();
         y.setTextColor(Color.WHITE);
         y.setTypeface(mTf);
         y.setLabelCount(4);
 
-        XLabels x = chart.getXLabels();
+        XAxis x = chart.getXAxis();
         x.setTextColor(Color.WHITE);
         x.setTypeface(mTf);
 

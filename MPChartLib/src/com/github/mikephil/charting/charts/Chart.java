@@ -89,7 +89,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /** the highest value the chart can display */
     protected float mYChartMax = 0.0f;
-    
+
     /**
      * paint object used for drawing the description text in the bottom right
      * corner of the chart
@@ -101,7 +101,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * the chart
      */
     protected Paint mInfoPaint;
-
 
     /** this is the paint object used for drawing the data onto the chart */
     protected Paint mRenderPaint;
@@ -1514,7 +1513,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 mDescPaint = p;
                 break;
             case PAINT_VALUES:
-//                mValuePaint = p;
+                // mValuePaint = p;
                 break;
             case PAINT_RENDER:
                 mRenderPaint = p;
@@ -1523,16 +1522,16 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 mLegendLabelPaint = p;
                 break;
             case PAINT_XLABEL:
-//                mXLabelPaint = p;
+                // mXLabelPaint = p;
                 break;
             case PAINT_YLABEL:
-//                mYLabelPaint = p;
+                // mYLabelPaint = p;
                 break;
             case PAINT_HIGHLIGHT:
-//                mHighlightPaint = p;
+                // mHighlightPaint = p;
                 break;
             case PAINT_LIMIT_LINE:
-//                mLimitLinePaint = p;
+                // mLimitLinePaint = p;
                 break;
         }
     }
@@ -1550,19 +1549,19 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             case PAINT_DESCRIPTION:
                 return mDescPaint;
             case PAINT_VALUES:
-//                return mValuePaint;
+                // return mValuePaint;
             case PAINT_RENDER:
                 return mRenderPaint;
             case PAINT_LEGEND_LABEL:
                 return mLegendLabelPaint;
             case PAINT_XLABEL:
-//                return mXLabelPaint;
+                // return mXLabelPaint;
             case PAINT_YLABEL:
-//                return mYLabelPaint;
+                // return mYLabelPaint;
             case PAINT_HIGHLIGHT:
-//                return mHighlightPaint;
+                // return mHighlightPaint;
             case PAINT_LIMIT_LINE:
-//                return mLimitLinePaint;
+                // return mLimitLinePaint;
         }
 
         return null;
@@ -1832,6 +1831,15 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
+     * Returns the Renderer object the chart uses for drawing data.
+     * 
+     * @return
+     */
+    public DataRenderer getRenderer() {
+        return mRenderer;
+    }
+
+    /**
      * Returns the bitmap that represents the chart.
      *
      * @return
@@ -1962,7 +1970,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
 
-//        prepareContentRect();
+        // prepareContentRect();
         for (int i = 0; i < getChildCount(); i++) {
             getChildAt(i).layout(left, top, right, bottom);
         }
@@ -1987,7 +1995,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         }
 
         // prepare content rect and matrices
-//        prepareContentRect();
+        // prepareContentRect();
         prepare();
 
         super.onSizeChanged(w, h, oldw, oldh);

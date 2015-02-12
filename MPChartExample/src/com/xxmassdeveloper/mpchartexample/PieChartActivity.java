@@ -12,13 +12,14 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.Legend.LegendPosition;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart = (PieChart) findViewById(R.id.chart1);
 
         // change the color of the center-hole
-//        mChart.setHoleColor(Color.rgb(235, 235, 235));
+        // mChart.setHoleColor(Color.rgb(235, 235, 235));
         mChart.setHoleColorTransparent(true);
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
@@ -63,21 +64,14 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         mChart.setDescription("");
 
-        mChart.setDrawYValues(true);
         mChart.setDrawCenterText(true);
 
         mChart.setDrawHoleEnabled(true);
 
         mChart.setRotationAngle(0);
-
-        // draws the corresponding description value into the slice
-        mChart.setDrawXValues(true);
-
         // enable rotation of the chart by touch
         mChart.setRotationEnabled(true);
 
-        // display percentage values
-        mChart.setUsePercentValues(true);
         // mChart.setUnit(" €");
         // mChart.setDrawUnitsInChart(true);
 
@@ -110,18 +104,9 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         switch (item.getItemId()) {
             case R.id.actionToggleValues: {
-                if (mChart.isDrawYValuesEnabled())
-                    mChart.setDrawYValues(false);
-                else
-                    mChart.setDrawYValues(true);
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionTogglePercent: {
-                if (mChart.isUsePercentValuesEnabled())
-                    mChart.setUsePercentValues(false);
-                else
-                    mChart.setUsePercentValues(true);
+                for (DataSet<?> set : mChart.getData().getDataSets())
+                    set.setDrawValues(!set.isDrawValuesEnabled());
+
                 mChart.invalidate();
                 break;
             }
@@ -142,10 +127,8 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
                 break;
             }
             case R.id.actionToggleXVals: {
-                if (mChart.isDrawXValuesEnabled())
-                    mChart.setDrawXValues(false);
-                else
-                    mChart.setDrawXValues(true);
+
+                mChart.setDrawAxisLabels(!mChart.isDrawAxisLabelsEnabled());
                 mChart.invalidate();
                 break;
             }
@@ -199,7 +182,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         PieDataSet set1 = new PieDataSet(yVals1, "Election Results");
         set1.setSliceSpace(3f);
-        
+
         // add a lot of colors
 
         ArrayList<Integer> colors = new ArrayList<Integer>();
@@ -215,10 +198,10 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         for (int c : ColorTemplate.LIBERTY_COLORS)
             colors.add(c);
-        
+
         for (int c : ColorTemplate.PASTEL_COLORS)
             colors.add(c);
-        
+
         colors.add(ColorTemplate.getHoloBlue());
 
         set1.setColors(colors);

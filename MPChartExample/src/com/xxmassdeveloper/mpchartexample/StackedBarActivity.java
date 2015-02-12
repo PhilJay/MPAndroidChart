@@ -12,23 +12,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.Legend.LegendPosition;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.XAxis.XLabelPosition;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.Legend.LegendPosition;
-import com.github.mikephil.charting.utils.XLabels;
-import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
-import com.github.mikephil.charting.utils.YLabels;
-import com.github.mikephil.charting.utils.YLabels.YLabelPosition;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListener,
@@ -57,9 +56,6 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         mChart = (BarChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
 
-        // enable the drawing of values
-        mChart.setDrawYValues(true);
-
         mChart.setDescription("");
 
         // if more than 60 entries are displayed in the chart, no values will be
@@ -73,21 +69,18 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         
         // if false values are only drawn for the stack sum, else each value is drawn
         mChart.setDrawValuesForWholeStack(true);
-
-        // disable 3D
-        mChart.set3DEnabled(false);
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
 
         mChart.setDrawBarShadow(false);
 
         // change the position of the y-labels
-        YLabels yLabels = mChart.getYLabels();
-        yLabels.setPosition(YLabelPosition.BOTH_SIDED);
+        YAxis yLabels = mChart.getAxisLeft();
+//        yLabels.setPosition(YLabelPosition.BOTH_SIDED);
         yLabels.setLabelCount(5);
         yLabels.setFormatter(customFormatter);
 
-        XLabels xLabels = mChart.getXLabels();
+        XAxis xLabels = mChart.getXAxis();
         xLabels.setPosition(XLabelPosition.TOP);
         xLabels.setCenterXLabelText(true);
 
@@ -118,18 +111,9 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 
         switch (item.getItemId()) {
             case R.id.actionToggleValues: {
-                if (mChart.isDrawYValuesEnabled())
-                    mChart.setDrawYValues(false);
-                else
-                    mChart.setDrawYValues(true);
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggle3D: {
-                if (mChart.is3DEnabled())
-                    mChart.set3DEnabled(false);
-                else
-                    mChart.set3DEnabled(true);
+                for (DataSet<?> set : mChart.getData().getDataSets())
+                    set.setDrawValues(!set.isDrawValuesEnabled());
+
                 mChart.invalidate();
                 break;
             }
@@ -168,7 +152,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
                 break;
             }
             case R.id.actionToggleAdjustXLegend: {
-                XLabels xLabels = mChart.getXLabels();
+                XAxis xLabels = mChart.getXAxis();
 
                 if (xLabels.isAdjustXLabelsEnabled())
                     xLabels.setAdjustXLabels(false);

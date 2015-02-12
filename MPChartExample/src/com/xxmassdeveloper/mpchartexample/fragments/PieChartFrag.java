@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.Legend.LegendPosition;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.xxmassdeveloper.mpchartexample.R;
 
 
@@ -31,7 +31,6 @@ public class PieChartFrag extends SimpleFragment {
         
         mChart.setValueTypeface(tf);
         mChart.setCenterTextTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
-        mChart.setUsePercentValues(true);
         mChart.setCenterText("Quarterly\nRevenue");
         mChart.setCenterTextSize(22f);
          

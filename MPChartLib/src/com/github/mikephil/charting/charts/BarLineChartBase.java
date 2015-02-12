@@ -1311,6 +1311,18 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     public boolean hasNoDragOffset() {
         return mViewPortHandler.hasNoDragOffset();
     }
+    
+    public XAxisRenderer getRendererXAxis() {
+        return mXAxisRenderer;
+    }
+    
+    public YAxisRenderer getRendererLeftYAxis() {
+        return mAxisRendererLeft;
+    }
+    
+    public YAxisRenderer getRendererRightYAxis() {
+        return mAxisRendererRight;
+    }
 
     /**
      * returns the filtered ChartData object depending on approximator settings,

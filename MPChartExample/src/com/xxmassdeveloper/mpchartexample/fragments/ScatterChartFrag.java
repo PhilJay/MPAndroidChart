@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.ScatterChart;
-import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.YLabels;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.YAxis;
 import com.xxmassdeveloper.mpchartexample.MyMarkerView;
 import com.xxmassdeveloper.mpchartexample.R;
 
@@ -26,12 +26,11 @@ public class ScatterChartFrag extends SimpleFragment {
         View v = inflater.inflate(R.layout.frag_simple_scatter, container, false);
         
         mChart = (ScatterChart) v.findViewById(R.id.scatterChart1);
-        mChart.setDrawYValues(false);
         mChart.setDescription("");
         
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"OpenSans-Light.ttf");
         
-        YLabels labels = mChart.getYLabels();
+        YAxis labels = mChart.getAxisLeft();
         labels.setTypeface(tf);
         
         MyMarkerView mv = new MyMarkerView(getActivity(), R.layout.custom_marker_view);
@@ -44,8 +43,7 @@ public class ScatterChartFrag extends SimpleFragment {
         mChart.setDrawGridBackground(false);
         mChart.setDrawVerticalGrid(false);
         mChart.setDrawXLabels(false);
-        mChart.setUnit(" $");
-        
+
         mChart.setData(generateScatterData(3, 10000, 150));
         
         Legend l = mChart.getLegend();

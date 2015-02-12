@@ -13,13 +13,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.XAxis.XLabelPosition;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.XLabels;
-import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
-import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -91,12 +91,12 @@ public class ListViewBarChartActivity extends DemoBase {
             holder.chart.setDrawGridBackground(false);
             holder.chart.setValueTextColor(Color.WHITE);
 
-            XLabels xl = holder.chart.getXLabels();
+            XAxis xl = holder.chart.getXAxis();
             xl.setCenterXLabelText(true);
             xl.setPosition(XLabelPosition.BOTTOM);
             xl.setTypeface(mTf);
             
-            YLabels yl = holder.chart.getYLabels();
+            YAxis yl = holder.chart.getAxisLeft();
             yl.setTypeface(mTf);
             yl.setLabelCount(5);
 

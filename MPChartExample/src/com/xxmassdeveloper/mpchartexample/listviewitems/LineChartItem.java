@@ -7,11 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.XAxis.XLabelPosition;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.utils.XLabels;
-import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
-import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.R;
 
 public class LineChartItem extends ChartItem {
@@ -50,17 +50,16 @@ public class LineChartItem extends ChartItem {
 
         // apply styling
         // holder.chart.setValueTypeface(mTf);
-        holder.chart.setDrawYValues(false);
         holder.chart.setDescription("");
         holder.chart.setDrawVerticalGrid(false);
         holder.chart.setDrawGridBackground(false);
 
-        XLabels xl = holder.chart.getXLabels();
+        XAxis xl = holder.chart.getXAxis();
         xl.setCenterXLabelText(true);
         xl.setPosition(XLabelPosition.BOTTOM);
         xl.setTypeface(mTf);
 
-        YLabels yl = holder.chart.getYLabels();
+        YAxis yl = holder.chart.getAxisLeft();
         yl.setTypeface(mTf);
         yl.setLabelCount(5);
 

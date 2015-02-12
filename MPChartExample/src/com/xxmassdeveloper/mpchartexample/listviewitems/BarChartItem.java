@@ -6,11 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.XAxis.XLabelPosition;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.utils.XLabels;
-import com.github.mikephil.charting.utils.XLabels.XLabelPosition;
-import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.R;
 
 public class BarChartItem extends ChartItem {
@@ -54,12 +54,12 @@ public class BarChartItem extends ChartItem {
         holder.chart.setDrawGridBackground(false);
         holder.chart.setDrawBarShadow(false);
 
-        XLabels xl = holder.chart.getXLabels();
+        XAxis xl = holder.chart.getXAxis();
         xl.setCenterXLabelText(true);
         xl.setPosition(XLabelPosition.BOTTOM);
         xl.setTypeface(mTf);
         
-        YLabels yl = holder.chart.getYLabels();
+        YAxis yl = holder.chart.getAxisLeft();
         yl.setTypeface(mTf);
         yl.setLabelCount(5);
 

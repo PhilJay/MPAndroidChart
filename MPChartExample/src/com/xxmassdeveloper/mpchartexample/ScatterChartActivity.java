@@ -13,6 +13,11 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.Legend.LegendPosition;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
@@ -20,10 +25,6 @@ import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.Legend.LegendPosition;
-import com.github.mikephil.charting.utils.XLabels;
-import com.github.mikephil.charting.utils.YLabels;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -63,7 +64,6 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
 
         mChart.setTouchEnabled(true);
         mChart.setHighlightEnabled(true);
-        mChart.setDrawYValues(false);
 
         // enable scaling and dragging
         mChart.setDragEnabled(true);
@@ -79,10 +79,10 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         l.setPosition(LegendPosition.RIGHT_OF_CHART);
         l.setTypeface(tf);
 
-        YLabels yl = mChart.getYLabels();
+        YAxis yl = mChart.getAxisLeft();
         yl.setTypeface(tf);
 
-        XLabels xl = mChart.getXLabels();
+        XAxis xl = mChart.getXAxis();
         xl.setTypeface(tf);
     }
 
@@ -97,10 +97,9 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
 
         switch (item.getItemId()) {
             case R.id.actionToggleValues: {
-                if (mChart.isDrawYValuesEnabled())
-                    mChart.setDrawYValues(false);
-                else
-                    mChart.setDrawYValues(true);
+                for (DataSet<?> set : mChart.getData().getDataSets())
+                    set.setDrawValues(!set.isDrawValuesEnabled());
+
                 mChart.invalidate();
                 break;
             }
@@ -131,7 +130,7 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
                 break;
             }
             case R.id.actionToggleAdjustXLegend: {
-                XLabels xLabels = mChart.getXLabels();
+                XAxis xLabels = mChart.getXAxis();
 
                 if (xLabels.isAdjustXLabelsEnabled())
                     xLabels.setAdjustXLabels(false);

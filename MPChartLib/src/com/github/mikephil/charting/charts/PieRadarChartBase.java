@@ -30,8 +30,8 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     /** flag that indicates if rotation is enabled or not */
     protected boolean mRotateEnabled = true;
     
-    /** flag indicating if the y-labels should be drawn or not */
-    protected boolean mDrawYLabels = true;
+    /** flag indicating if the x-labels should be drawn or not */
+    protected boolean mDrawXLabels = true;
 
     /** the pie- and radarchart touchlistener */
     private OnTouchListener mListener;
@@ -356,21 +356,21 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     }
     
     /**
-     * set this to true to draw the y-value text into the pie slices
+     * set this to true to draw the x-value text into the pie slices
      * 
      * @param enabled
      */
     public void setDrawAxisLabels(boolean enabled) {
-        mDrawYLabels = enabled;
+        mDrawXLabels = enabled;
     }
 
     /**
-     * returns true if drawing y-values is enabled, false if not
+     * returns true if drawing x-values is enabled, false if not
      * 
      * @return
      */
     public boolean isDrawAxisLabelsEnabled() {
-        return mDrawYLabels;
+        return mDrawXLabels;
     }
 
     /**

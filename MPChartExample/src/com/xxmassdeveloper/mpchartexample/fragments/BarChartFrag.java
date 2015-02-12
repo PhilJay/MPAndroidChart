@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.YLabels;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.YAxis;
 import com.xxmassdeveloper.mpchartexample.MyMarkerView;
 import com.xxmassdeveloper.mpchartexample.R;
 
@@ -40,8 +40,6 @@ public class BarChartFrag extends SimpleFragment {
         mChart.setDrawGridBackground(false);
         mChart.setDrawVerticalGrid(false);
         mChart.setDrawXLabels(false);
-        mChart.setDrawYValues(false);
-        mChart.setUnit(" €");
         mChart.setDrawBarShadow(false);
         
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"OpenSans-Light.ttf");
@@ -51,7 +49,7 @@ public class BarChartFrag extends SimpleFragment {
         Legend l = mChart.getLegend();
         l.setTypeface(tf);
         
-        YLabels labels = mChart.getYLabels();
+        YAxis labels = mChart.getAxisLeft();
         labels.setTypeface(tf);
 //        labels.setPosition(YLabelPosition.BOTH_SIDED);
         

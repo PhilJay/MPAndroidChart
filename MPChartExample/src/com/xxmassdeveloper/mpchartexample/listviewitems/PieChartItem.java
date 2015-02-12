@@ -7,10 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.Legend.LegendPosition;
 import com.xxmassdeveloper.mpchartexample.R;
 
 public class PieChartItem extends ChartItem {
@@ -55,8 +55,6 @@ public class PieChartItem extends ChartItem {
         holder.chart.setCenterText("MPChart\nAndroid");
         holder.chart.setCenterTextTypeface(mTf);
         holder.chart.setCenterTextSize(18f);
-        holder.chart.setDrawXValues(false);
-        holder.chart.setUsePercentValues(true);
 
         // set data
         holder.chart.setData((PieData) mChartData);
