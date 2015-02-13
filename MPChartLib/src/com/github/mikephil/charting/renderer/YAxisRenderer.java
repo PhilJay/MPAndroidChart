@@ -5,13 +5,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
+import android.util.Log;
 
 import com.github.mikephil.charting.components.LimitLine;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.components.YAxis.YLabelPosition;
-import com.github.mikephil.charting.interfaces.ChartInterface;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
@@ -102,9 +102,6 @@ public class YAxisRenderer extends AxisRenderer {
                 }
             }
         }
-        
-        mYAxis.mAxisMaximum = yMax;
-        mYAxis.mAxisMinimum = yMin;
 
         computeAxisValues(yMin, yMax);
     }
@@ -284,7 +281,7 @@ public class YAxisRenderer extends AxisRenderer {
 
         ArrayList<LimitLine> limitLines = mYAxis.getLimitLines();
 
-        if (limitLines == null)
+        if (limitLines == null || limitLines.size() <= 0)
             return;
 
         float[] pts = new float[4];

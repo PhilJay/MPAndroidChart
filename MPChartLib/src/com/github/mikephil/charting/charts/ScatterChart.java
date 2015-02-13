@@ -48,7 +48,7 @@ public class ScatterChart extends BarLineChartBase<ScatterData> {
                 mViewPortHandler.offsetTop(), mViewPortHandler.offsetRight() - offset,
                 mViewPortHandler.offsetBottom());
 
-        prepareMatrix();
+        prepareOffsetMatrix();
     }
 
     @Override

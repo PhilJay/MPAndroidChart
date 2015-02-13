@@ -7,7 +7,6 @@ import android.graphics.RectF;
 
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.interfaces.ChartInterface;
 import com.github.mikephil.charting.renderer.ViewPortHandler;
 
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class Transformer {
 
     /** matrix for handling the different offsets of the chart */
     protected Matrix mMatrixOffset = new Matrix();
-    
+
     private ViewPortHandler mViewPortHandler;
 
     public Transformer(ViewPortHandler viewPortHandler) {
@@ -38,10 +37,12 @@ public class Transformer {
      * 
      * @param chart
      */
-    public void prepareMatrixValuePx(ViewPortHandler viewport, float deltaX, float deltaY, float yChartMin) {
+    public void prepareMatrixValuePx(float deltaX, float deltaY, float yChartMin) {
 
-        float scaleX = (float) ((viewport.getChartWidth() - viewport.offsetRight() - viewport.offsetLeft()) / deltaX);
-        float scaleY = (float) ((viewport.getChartHeight() - viewport.offsetTop() - viewport.offsetBottom()) / deltaY);
+        float scaleX = (float) ((mViewPortHandler.getChartWidth() - mViewPortHandler.offsetRight() - mViewPortHandler
+                .offsetLeft()) / deltaX);
+        float scaleY = (float) ((mViewPortHandler.getChartHeight() - mViewPortHandler.offsetTop() - mViewPortHandler
+                .offsetBottom()) / deltaY);
 
         // setup all matrices
         mMatrixValueToPx.reset();
@@ -49,36 +50,38 @@ public class Transformer {
         mMatrixValueToPx.postScale(scaleX, -scaleY);
     }
 
-//    /**
-//     * Prepares the transformation matrix with the specified scales.
-//     * 
-//     * @param chart
-//     * @param scaleX
-//     * @param scaleY
-//     */
-//    public void prepareMatrixValuePx(ChartInterface chart, float scaleX, float scaleY) {
-//
-//        mMatrixValueToPx.reset();
-//        mMatrixValueToPx.postTranslate(0, -chart.getYChartMin());
-//        mMatrixValueToPx.postScale(scaleX, -scaleY);
-//    }
+    // /**
+    // * Prepares the transformation matrix with the specified scales.
+    // *
+    // * @param chart
+    // * @param scaleX
+    // * @param scaleY
+    // */
+    // public void prepareMatrixValuePx(ChartInterface chart, float scaleX,
+    // float scaleY) {
+    //
+    // mMatrixValueToPx.reset();
+    // mMatrixValueToPx.postTranslate(0, -chart.getYChartMin());
+    // mMatrixValueToPx.postScale(scaleX, -scaleY);
+    // }
 
     /**
      * Prepares the matrix that contains all offsets.
      * 
      * @param chart
      */
-    public void prepareMatrixOffset(ViewPortHandler viewport, boolean inverted) {
+    public void prepareMatrixOffset(boolean inverted) {
 
         mMatrixOffset.reset();
 
         // offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
 
         if (!inverted)
-            mMatrixOffset.postTranslate(viewport.offsetLeft(),
-                    viewport.getChartHeight() - viewport.offsetBottom());
+            mMatrixOffset.postTranslate(mViewPortHandler.offsetLeft(),
+                    mViewPortHandler.getChartHeight() - mViewPortHandler.offsetBottom());
         else {
-            mMatrixOffset.setTranslate(viewport.offsetLeft(), -viewport.offsetTop());
+            mMatrixOffset
+                    .setTranslate(mViewPortHandler.offsetLeft(), -mViewPortHandler.offsetTop());
             mMatrixOffset.postScale(1.0f, -1.0f);
         }
 

@@ -70,8 +70,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     }
 
     @Override
-    public void prepare() {
-
+    public void notifyDataSetChanged() {
         if (mDataNotSet)
             return;
 
@@ -80,11 +79,6 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
         prepareLegend();
 
         calculateOffsets();
-    }
-
-    @Override
-    public void notifyDataSetChanged() {
-        prepare();
     }
 
     @Override

@@ -279,7 +279,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         mData = data;
         mData = data;
 
-        prepare();
+        notifyDataSetChanged();
 
         // calculate how many digits are needed
         calcFormats(data.getYMin(), data.getYMax());
@@ -316,12 +316,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 return false;
         }
     }
-
-    /**
-     * does needed preparations for drawing
-     */
-    public abstract void prepare();
-
+    
     /**
      * Lets the chart know its underlying data has changed and performs all
      * necessary recalculations.
@@ -1955,7 +1950,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         // prepare content rect and matrices
         // prepareContentRect();
-        prepare();
+        notifyDataSetChanged();
 
         super.onSizeChanged(w, h, oldw, oldh);
     }

@@ -254,13 +254,25 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             Log.i(LOG_TAG, "DrawTime: " + (System.currentTimeMillis() - starttime) + " ms");
     }
 
-    /**
-     * does all necessary preparations, needed when data is changed or flags
-     * that effect the data are changed
-     */
-    @Override
-    public void prepare() {
+    private void prepareValuePxMatrix() {
 
+        if(mLogEnabled) Log.i(LOG_TAG, "Preparing Value-Px Matrix, deltaLeft: " + mDeltaYLeft + ", deltaRight: " + mDeltaYRight);
+        
+        mRightAxisTransformer.prepareMatrixValuePx(mDeltaX, mDeltaYRight,
+                mAxisRight.mAxisMinimum);
+        mLeftAxisTransformer.prepareMatrixValuePx(mDeltaX, mDeltaYLeft,
+                mAxisLeft.mAxisMinimum);
+    }
+    
+    protected void prepareOffsetMatrix() {
+
+        mRightAxisTransformer.prepareMatrixOffset(mAxisRight.isInverted());
+        mLeftAxisTransformer.prepareMatrixOffset(mAxisLeft.isInverted());
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        
         if (mDataNotSet) {
             if (mLogEnabled)
                 Log.i(LOG_TAG, "Preparing... DATA NOT SET.");
@@ -269,9 +281,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             if (mLogEnabled)
                 Log.i(LOG_TAG, "Preparing...");
         }
-
+             
         calcMinMax(false);
-
+        
         float minLeft = mData.getYMin(AxisDependency.LEFT);
         float maxLeft = mData.getYMax(AxisDependency.LEFT);
         float minRight = mData.getYMin(AxisDependency.RIGHT);
@@ -284,36 +296,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         prepareLegend();
 
-        calculateOffsets();
-    }
-
-    /**
-     * Sets up all the matrices that will be used for scaling the coordinates to
-     * the display. Offset and Value-px.
-     */
-    protected void prepareMatrix() {
-
-        mRightAxisTransformer.prepareMatrixValuePx(mViewPortHandler, mDeltaX, mDeltaYRight,
-                mAxisRight.mAxisMinimum);
-        mLeftAxisTransformer.prepareMatrixValuePx(mViewPortHandler, mDeltaX, mDeltaYLeft,
-                mAxisLeft.mAxisMinimum);
-
-        mRightAxisTransformer.prepareMatrixOffset(mViewPortHandler, mAxisRight.isInverted());
-        mLeftAxisTransformer.prepareMatrixOffset(mViewPortHandler, mAxisLeft.isInverted());
-
-        if (mLogEnabled)
-            Log.i(LOG_TAG, "Matrices prepared.");
-    }
-
-    @Override
-    public void notifyDataSetChanged() {
-        prepare();
-        // prepareContentRect();
-        mRightAxisTransformer.prepareMatrixValuePx(mViewPortHandler, mDeltaX, mDeltaYRight,
-                mAxisRight.mAxisMinimum);
-        mLeftAxisTransformer.prepareMatrixValuePx(mViewPortHandler, mDeltaX, mDeltaYLeft,
-                mAxisLeft.mAxisMinimum);
-
+        calculateOffsets();        
     }
 
     @Override
@@ -424,7 +407,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             Log.i(LOG_TAG, "Content: " + mViewPortHandler.getContentRect().toString());
         }
 
-        prepareMatrix();
+        prepareOffsetMatrix();
+        prepareValuePxMatrix();
     }
 
     /**
@@ -479,6 +463,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mDeltaX = mData.getXVals().size() - 1;
         mDeltaYLeft = Math.abs(maxLeft - minLeft);
         mDeltaYRight = Math.abs(maxRight - minRight);
+      
+        mAxisLeft.mAxisMaximum = maxLeft;
+        mAxisRight.mAxisMaximum = maxRight;
+        mAxisLeft.mAxisMinimum = minLeft;
+        mAxisRight.mAxisMinimum = minRight;
 
 //        // only calculate values if not fixed values
 //        if (!fixedValues) {

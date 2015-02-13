@@ -54,7 +54,7 @@ public class YAxis extends AxisBase {
     protected float mCustomAxisMin = Float.NaN;
 
     protected float mCustomAxisMax = Float.NaN;
-    
+
     public float mAxisMaximum = 0f;
     public float mAxisMinimum = 0f;
 
@@ -291,10 +291,21 @@ public class YAxis extends AxisBase {
         return mCustomAxisMin;
     }
 
+    /**
+     * Set a custom minimum value for this axis. If set, this value will not be
+     * calculated automatically depending on the provided data. Use
+     * resetAxisMinValue() to undo this.
+     * 
+     * @param min
+     */
     public void setAxisMinValue(float min) {
         mCustomAxisMin = min;
     }
 
+    /**
+     * By calling this method, any custom minimum value that has been previously
+     * set is reseted, and the calculation is done automatically.
+     */
     public void resetAxisMinValue() {
         mCustomAxisMin = Float.NaN;
     }
@@ -303,10 +314,21 @@ public class YAxis extends AxisBase {
         return mCustomAxisMax;
     }
 
+    /**
+     * Set a custom maximum value for this axis. If set, this value will not be
+     * calculated automatically depending on the provided data. Use
+     * resetAxisMaxValue() to undo this.
+     * 
+     * @param max
+     */
     public void setAxisMaxValue(float max) {
         mCustomAxisMax = max;
     }
 
+    /**
+     * By calling this method, any custom maximum value that has been previously
+     * set is reseted, and the calculation is done automatically.
+     */
     public void resetAxisMaxValue() {
         mCustomAxisMax = Float.NaN;
     }

@@ -116,9 +116,8 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     }
 
     @Override
-    public void prepare() {
-        super.prepare();
-
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
         mYAxisRenderer.computeAxis(0f, 0f);
         prepareYLabels();
         mXAxisRenderer.computeAxis(mData.getXValAverageLength(), mData.getXVals());

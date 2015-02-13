@@ -122,6 +122,10 @@ public class ScatterChartRenderer extends DataRenderer {
             for (int i = 0; i < mChart.getData().getDataSetCount(); i++) {
 
                 ScatterDataSet dataSet = dataSets.get(i);
+
+                if (!dataSet.isDrawValuesEnabled())
+                    continue;
+
                 ArrayList<Entry> entries = dataSet.getYVals();
 
                 float[] positions = mChart.getTransformer(dataSet.getAxisDependency())
