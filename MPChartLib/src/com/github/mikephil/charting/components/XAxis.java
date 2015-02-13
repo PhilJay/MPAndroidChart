@@ -38,7 +38,7 @@ public class XAxis extends AxisBase {
      * array(list) for the x-axis-labels is drawn or not. If index % modulus ==
      * 0 DRAW, else dont draw.
      */
-    public int mXAxisLabelModulus = 1;
+    public int mAxisLabelModulus = 1;
 
     /**
      * the modulus that indicates if a value at a specified index in an

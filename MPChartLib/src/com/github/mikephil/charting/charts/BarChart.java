@@ -14,6 +14,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.renderer.BarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererBarChart;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Utils;
@@ -27,14 +28,14 @@ import java.util.ArrayList;
  */
 public class BarChart extends BarLineChartBase<BarData> {
 
-//    /** indicates the angle of the 3d effect */
-//    private float mSkew = 0.3f;
-//
-//    /** indicates how much the 3d effect goes back */
-//    private float mDepth = 0.3f;
-//
-//    /** flag the enables or disables 3d bars */
-//    private boolean m3DEnabled = false;
+    // /** indicates the angle of the 3d effect */
+    // private float mSkew = 0.3f;
+    //
+    // /** indicates how much the 3d effect goes back */
+    // private float mDepth = 0.3f;
+    //
+    // /** flag the enables or disables 3d bars */
+    // private boolean m3DEnabled = false;
 
     /** flag that enables or disables the highlighting arrow */
     private boolean mDrawHighlightArrow = false;
@@ -73,7 +74,9 @@ public class BarChart extends BarLineChartBase<BarData> {
     protected void init() {
         super.init();
         
-        mXAxisRenderer = new XAxisRendererBarChart(mViewPortHandler, mXAxis, mLeftAxisTransformer, this);
+        mRenderer = new BarChartRenderer(this, mAnimator, mViewPortHandler);
+        mXAxisRenderer = new XAxisRendererBarChart(mViewPortHandler, mXAxis, mLeftAxisTransformer,
+                this);
     }
 
     @Override
@@ -100,17 +103,19 @@ public class BarChart extends BarLineChartBase<BarData> {
         mDeltaX += maxEntry * groupSpace;
     }
 
-//    protected float getPositiveYOffset(boolean drawAboveValueBar)
-//    {
-//        return (mDrawValueAboveBar ? -Utils.convertDpToPixel(5) : Utils.calcTextHeight(mValuePaint,
-//                "8") * 1.5f);
-//    }
-//
-//    protected float getNegativeYOffset(boolean drawAboveValueBar)
-//    {
-//        return (mDrawValueAboveBar ? Utils.calcTextHeight(mValuePaint, "8") * 1.5f : -Utils
-//                .convertDpToPixel(5));
-//    }
+    // protected float getPositiveYOffset(boolean drawAboveValueBar)
+    // {
+    // return (mDrawValueAboveBar ? -Utils.convertDpToPixel(5) :
+    // Utils.calcTextHeight(mValuePaint,
+    // "8") * 1.5f);
+    // }
+    //
+    // protected float getNegativeYOffset(boolean drawAboveValueBar)
+    // {
+    // return (mDrawValueAboveBar ? Utils.calcTextHeight(mValuePaint, "8") *
+    // 1.5f : -Utils
+    // .convertDpToPixel(5));
+    // }
 
     /**
      * Returns the Highlight object (contains x-index and DataSet index) of the
@@ -197,62 +202,63 @@ public class BarChart extends BarLineChartBase<BarData> {
         return bounds;
     }
 
-//    /**
-//     * sets the skew (default 0.3f), the skew indicates how much the 3D effect
-//     * of the chart is turned to the right
-//     * 
-//     * @param skew
-//     */
-//    public void setSkew(float skew) {
-//        this.mSkew = skew;
-//    }
-//
-//    /**
-//     * returns the skew value that indicates how much the 3D effect is turned to
-//     * the right
-//     * 
-//     * @return
-//     */
-//    public float getSkew() {
-//        return mSkew;
-//    }
-//
-//    /**
-//     * set the depth of the chart (default 0.3f), the depth indicates how much
-//     * the 3D effect of the chart goes back
-//     * 
-//     * @param depth
-//     */
-//    public void setDepth(float depth) {
-//        this.mDepth = depth;
-//    }
-//
-//    /**
-//     * returhs the depth, which indicates how much the 3D effect goes back
-//     * 
-//     * @return
-//     */
-//    public float getDepth() {
-//        return mDepth;
-//    }
-//
-//    /**
-//     * if enabled, chart will be drawn in 3d
-//     * 
-//     * @param enabled
-//     */
-//    public void set3DEnabled(boolean enabled) {
-//        this.m3DEnabled = enabled;
-//    }
-//
-//    /**
-//     * returns true if 3d bars is enabled, false if not
-//     * 
-//     * @return
-//     */
-//    public boolean is3DEnabled() {
-//        return m3DEnabled;
-//    }
+    // /**
+    // * sets the skew (default 0.3f), the skew indicates how much the 3D effect
+    // * of the chart is turned to the right
+    // *
+    // * @param skew
+    // */
+    // public void setSkew(float skew) {
+    // this.mSkew = skew;
+    // }
+    //
+    // /**
+    // * returns the skew value that indicates how much the 3D effect is turned
+    // to
+    // * the right
+    // *
+    // * @return
+    // */
+    // public float getSkew() {
+    // return mSkew;
+    // }
+    //
+    // /**
+    // * set the depth of the chart (default 0.3f), the depth indicates how much
+    // * the 3D effect of the chart goes back
+    // *
+    // * @param depth
+    // */
+    // public void setDepth(float depth) {
+    // this.mDepth = depth;
+    // }
+    //
+    // /**
+    // * returhs the depth, which indicates how much the 3D effect goes back
+    // *
+    // * @return
+    // */
+    // public float getDepth() {
+    // return mDepth;
+    // }
+    //
+    // /**
+    // * if enabled, chart will be drawn in 3d
+    // *
+    // * @param enabled
+    // */
+    // public void set3DEnabled(boolean enabled) {
+    // this.m3DEnabled = enabled;
+    // }
+    //
+    // /**
+    // * returns true if 3d bars is enabled, false if not
+    // *
+    // * @return
+    // */
+    // public boolean is3DEnabled() {
+    // return m3DEnabled;
+    // }
 
     /**
      * set this to true to draw the highlightning arrow

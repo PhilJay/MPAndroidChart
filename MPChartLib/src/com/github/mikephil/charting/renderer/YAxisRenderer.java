@@ -26,6 +26,8 @@ public class YAxisRenderer extends AxisRenderer {
 
     protected YAxis mYAxis;
 
+    protected float mXOffset = 5f;
+
     public YAxisRenderer(ViewPortHandler viewPortHandler, YAxis yAxis, Transformer trans) {
         super(viewPortHandler, trans);
 
@@ -36,6 +38,24 @@ public class YAxisRenderer extends AxisRenderer {
 
         mLimitLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mLimitLinePaint.setStyle(Paint.Style.STROKE);
+    }
+
+    /**
+     * Returns the used offset on the x-axis for drawing the axis labels.
+     * 
+     * @return
+     */
+    public float getXOffset() {
+        return Utils.convertDpToPixel(mXOffset);
+    }
+
+    /**
+     * Sets the used offset for the labels on the x-axis.
+     * 
+     * @param xOffset
+     */
+    public void setXOffset(float xOffset) {
+        mXOffset = xOffset;
     }
 
     public void computeAxis(ChartInterface chart) {
@@ -173,7 +193,7 @@ public class YAxisRenderer extends AxisRenderer {
         mAxisPaint.setTextSize(mYAxis.getTextSize());
         mAxisPaint.setColor(mYAxis.getTextColor());
 
-        float xoffset = Utils.convertDpToPixel(5f);
+        float xoffset = getXOffset();
         float yoffset = Utils.calcTextHeight(mAxisPaint, "A") / 2.5f;
 
         AxisDependency dependency = mYAxis.getAxisDependency();

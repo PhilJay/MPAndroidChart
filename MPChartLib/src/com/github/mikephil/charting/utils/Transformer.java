@@ -40,7 +40,7 @@ public class Transformer {
      */
     public void prepareMatrixValuePx(ViewPortHandler viewport, float deltaX, float deltaY, float yChartMin) {
 
-        float scaleX = (float) ((viewport.getChartWidth() - viewport.contentRight() - viewport.offsetLeft()) / deltaX);
+        float scaleX = (float) ((viewport.getChartWidth() - viewport.offsetRight() - viewport.offsetLeft()) / deltaX);
         float scaleY = (float) ((viewport.getChartHeight() - viewport.offsetTop() - viewport.offsetBottom()) / deltaY);
 
         // setup all matrices
@@ -49,19 +49,19 @@ public class Transformer {
         mMatrixValueToPx.postScale(scaleX, -scaleY);
     }
 
-    /**
-     * Prepares the transformation matrix with the specified scales.
-     * 
-     * @param chart
-     * @param scaleX
-     * @param scaleY
-     */
-    public void prepareMatrixValuePx(ChartInterface chart, float scaleX, float scaleY) {
-
-        mMatrixValueToPx.reset();
-        mMatrixValueToPx.postTranslate(0, -chart.getYChartMin());
-        mMatrixValueToPx.postScale(scaleX, -scaleY);
-    }
+//    /**
+//     * Prepares the transformation matrix with the specified scales.
+//     * 
+//     * @param chart
+//     * @param scaleX
+//     * @param scaleY
+//     */
+//    public void prepareMatrixValuePx(ChartInterface chart, float scaleX, float scaleY) {
+//
+//        mMatrixValueToPx.reset();
+//        mMatrixValueToPx.postTranslate(0, -chart.getYChartMin());
+//        mMatrixValueToPx.postScale(scaleX, -scaleY);
+//    }
 
     /**
      * Prepares the matrix that contains all offsets.

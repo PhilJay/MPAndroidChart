@@ -36,7 +36,7 @@ public class XAxisRendererBarChart extends XAxisRenderer {
         BarData bd = mChart.getData();
         int step = bd.getDataSetCount();
 
-        for (int i = 0; i < mXAxis.getValues().size(); i += mXAxis.mXAxisLabelModulus) {
+        for (int i = 0; i < mXAxis.getValues().size(); i += mXAxis.mAxisLabelModulus) {
 
             position[0] = i * step + i * bd.getGroupSpace()
                     + bd.getGroupSpace() / 2f;
@@ -90,7 +90,7 @@ public class XAxisRendererBarChart extends XAxisRenderer {
         // take into consideration that multiple DataSets increase mDeltaX
         int step = bd.getDataSetCount();
 
-        for (int i = 0; i < mXAxis.getValues().size(); i += mXAxis.mXAxisLabelModulus) {
+        for (int i = 0; i < mXAxis.getValues().size(); i += mXAxis.mAxisLabelModulus) {
 
             position[0] = i * step + i * bd.getGroupSpace();
 

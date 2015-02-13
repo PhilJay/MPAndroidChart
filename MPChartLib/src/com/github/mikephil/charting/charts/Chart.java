@@ -64,7 +64,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public static final String LOG_TAG = "MPChart";
 
     /** flag that indicates if logging is enabled or not */
-    protected boolean mLogEnabled = false;
+    protected boolean mLogEnabled = true;
 
     /** custom formatter that is used instead of the auto-formatter if set */
     protected ValueFormatter mValueFormatter = null;
@@ -157,7 +157,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     protected DataRenderer mRenderer;
 
-    protected ViewPortHandler mViewPortHandler;
+    protected ViewPortHandler mViewPortHandler = new ViewPortHandler();
 
     protected ChartAnimator mAnimator;
 
@@ -186,8 +186,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * initialize all paints and stuff
      */
     protected void init() {
-
-        Log.i("", "Chart.init()");
 
         setWillNotDraw(false);
         // setLayerType(View.LAYER_TYPE_SOFTWARE, null);
@@ -218,6 +216,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         mLegendLabelPaint.setTextSize(Utils.convertDpToPixel(9f));
 
         mDrawPaint = new Paint(Paint.DITHER_FLAG);
+
+        if (mLogEnabled)
+            Log.i("", "Chart.init()");
     }
 
     // public void initWithDummyData() {
@@ -1985,13 +1986,17 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        Log.i("", "OnSizeChanged()");
+        if (mLogEnabled)
+            Log.i(LOG_TAG, "OnSizeChanged()");
 
         if (w > 0 && h > 0 && w < 10000 && h < 10000) {
             // create a new bitmap with the new dimensions
             mDrawBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_4444);
             mDrawCanvas = new Canvas(mDrawBitmap);
-            mViewPortHandler = new ViewPortHandler(w, h);
+            mViewPortHandler.setChartDimens(w, h);
+
+            if (mLogEnabled)
+                Log.i(LOG_TAG, "Setting chart dimens, width: " + w + ", height: " + h);
         }
 
         // prepare content rect and matrices

@@ -73,6 +73,8 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     protected void init() {
         super.init();
 
+        mYAxis = new YAxis(AxisDependency.LEFT);
+        mXAxis = new XAxis();
         mXAxis.setSpaceBetweenLabels(0);
 
         mWebLineWidth = Utils.convertDpToPixel(1.5f);

@@ -37,12 +37,21 @@ public class ViewPortHandler {
 
     /** offset that allows the chart to be dragged over its bounds on the x-axis */
     private float mTransOffsetY = 0f;
+    
+    public ViewPortHandler() {
+        
+    }
 
     public ViewPortHandler(float width, float height) {
         mChartHeight = height;
         mChartWidth = width;
     }
 
+    public void setChartDimens(float width, float height) {
+        mChartHeight = height;
+        mChartWidth = width;   
+    }
+    
     public void restrainViewPort(float offsetLeft, float offsetTop, float offsetRight, float offsetBottom) {
         mContentRect.set(offsetLeft, offsetTop, mChartWidth - offsetRight, mChartHeight - offsetBottom);
     }

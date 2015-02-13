@@ -87,7 +87,7 @@ public class XAxisRenderer extends AxisRenderer {
                 0f, 0f
         };
 
-        for (int i = 0; i < mXAxis.getValues().size(); i += mXAxis.mXAxisLabelModulus) {
+        for (int i = 0; i < mXAxis.getValues().size(); i += mXAxis.mAxisLabelModulus) {
 
             position[0] = i;
 
@@ -138,7 +138,7 @@ public class XAxisRenderer extends AxisRenderer {
 
         mGridPaint.setColor(mXAxis.getGridColor());
 
-        for (int i = 0; i < mXAxis.getValues().size(); i += mXAxis.mXAxisLabelModulus) {
+        for (int i = 0; i < mXAxis.getValues().size(); i += mXAxis.mAxisLabelModulus) {
 
             position[0] = i;
 

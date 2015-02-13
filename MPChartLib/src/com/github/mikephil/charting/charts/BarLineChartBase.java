@@ -14,14 +14,11 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
-import com.github.mikephil.charting.components.LimitLine;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
-import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XLabelPosition;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
-import com.github.mikephil.charting.components.YAxis.YLabelPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarLineScatterCandleData;
@@ -117,11 +114,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * the object representing the labels on the y-axis, this object is prepared
      * in the pepareYLabels() method
      */
-    protected YAxis mAxisLeft = new YAxis(AxisDependency.LEFT);
-    protected YAxis mAxisRight = new YAxis(AxisDependency.RIGHT);
+    protected YAxis mAxisLeft;
+    protected YAxis mAxisRight;
 
     /** the object representing the labels on the x-axis */
-    protected XAxis mXAxis = new XAxis();
+    protected XAxis mXAxis;
 
     protected YAxisRenderer mAxisRendererLeft;
     protected YAxisRenderer mAxisRendererRight;
@@ -149,6 +146,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     @Override
     protected void init() {
         super.init();
+
+        mAxisLeft = new YAxis(AxisDependency.LEFT);
+        mAxisRight = new YAxis(AxisDependency.RIGHT);
+
+        mXAxis = new XAxis();
 
         mLeftAxisTransformer = new Transformer(mViewPortHandler);
         mRightAxisTransformer = new Transformer(mViewPortHandler);
@@ -257,8 +259,14 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     @Override
     public void prepare() {
 
-        if (mDataNotSet)
+        if (mDataNotSet) {
+            if (mLogEnabled)
+                Log.i(LOG_TAG, "Preparing... DATA NOT SET.");
             return;
+        } else {
+            if (mLogEnabled)
+                Log.i(LOG_TAG, "Preparing...");
+        }
 
         calcMinMax(mFixedYValues);
 
@@ -278,8 +286,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     protected void prepareMatrix() {
 
-        mRightAxisTransformer.prepareMatrixValuePx(this, mDeltaX, mDeltaY);
-        mLeftAxisTransformer.prepareMatrixValuePx(this, mDeltaX, mDeltaY);
+        mRightAxisTransformer.prepareMatrixValuePx(mViewPortHandler, mDeltaX, mDeltaY, mYChartMin);
+        mLeftAxisTransformer.prepareMatrixValuePx(mViewPortHandler, mDeltaX, mDeltaY, mYChartMin);
 
         mRightAxisTransformer.prepareMatrixOffset(mViewPortHandler, mAxisRight.isInverted());
         mLeftAxisTransformer.prepareMatrixOffset(mViewPortHandler, mAxisLeft.isInverted());
@@ -293,8 +301,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         if (!mFixedYValues) {
             prepare();
             // prepareContentRect();
-            mRightAxisTransformer.prepareMatrixValuePx(this, mDeltaX, mDeltaY);
-            mLeftAxisTransformer.prepareMatrixValuePx(this, mDeltaX, mDeltaY);
+            mRightAxisTransformer.prepareMatrixValuePx(mViewPortHandler, mDeltaX, mDeltaY,
+                    mYChartMin);
+            mLeftAxisTransformer.prepareMatrixValuePx(mViewPortHandler, mDeltaX, mDeltaY,
+                    mYChartMin);
         } else {
             calcMinMax(mFixedYValues);
         }
@@ -337,27 +347,28 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         float yleft = 0f, yright = 0f;
 
         // String label = mYLabels.getFormattedLabel(mYLabels.mEntryCount - 1);
-        String label = mAxisLeft.getLongestLabel();
 
         if (mDrawYAxis) {
 
             // offsets for y-labels
             if (mAxisLeft.isEnabled()) {
-
+                String label = mAxisLeft.getLongestLabel();
+                
                 // calculate the maximum y-label width (including eventual
                 // offsets)
                 float ylabelwidth = Utils.calcTextWidth(mAxisRendererLeft.getAxisPaint(),
                         label + (mYChartMin < 0 ? "----" : "+++")); // offsets
-                yleft = ylabelwidth;
+                yleft = ylabelwidth + mAxisRendererLeft.getXOffset() / 2f;
             }
 
             if (mAxisRight.isEnabled()) {
+                String label = mAxisRight.getLongestLabel();
 
                 // calculate the maximum y-label width (including eventual
                 // offsets)
                 float ylabelwidth = Utils.calcTextWidth(mAxisRendererRight.getAxisPaint(),
                         label + (mYChartMin < 0 ? "----" : "+++")); // offsets
-                yright = ylabelwidth;
+                yright = ylabelwidth + mAxisRendererRight.getXOffset() / 2f;
             }
         }
 
@@ -401,6 +412,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         }
 
         mViewPortHandler.restrainViewPort(offsetLeft, offsetTop, offsetRight, offsetBottom);
+        if (mLogEnabled) {
+            Log.i(LOG_TAG, "offsetLeft: " + offsetLeft + ", offsetTop: " + offsetTop
+                    + ", offsetRight: " + offsetRight + ", offsetBottom: " + offsetBottom);
+            Log.i(LOG_TAG, "Content: " + mViewPortHandler.getContentRect().toString());
+        }
 
         prepareMatrix();
     }
@@ -437,9 +453,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         float[] values = new float[9];
         mViewPortHandler.getMatrixTouch().getValues(values);
 
-        mXAxis.mXAxisLabelModulus = (int) Math
+        mXAxis.mAxisLabelModulus = (int) Math
                 .ceil((mData.getXValCount() * mXAxis.mLabelWidth)
                         / (mViewPortHandler.contentWidth() * values[Matrix.MSCALE_X]));
+
+        if (mLogEnabled)
+            Log.i(LOG_TAG, "X-Axis modulus: " + mXAxis.mAxisLabelModulus + ", x-axis label width: "
+                    + mXAxis.mLabelWidth + ", content width: " + mViewPortHandler.contentWidth());
     }
 
     @Override
@@ -1311,15 +1331,15 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     public boolean hasNoDragOffset() {
         return mViewPortHandler.hasNoDragOffset();
     }
-    
+
     public XAxisRenderer getRendererXAxis() {
         return mXAxisRenderer;
     }
-    
+
     public YAxisRenderer getRendererLeftYAxis() {
         return mAxisRendererLeft;
     }
-    
+
     public YAxisRenderer getRendererRightYAxis() {
         return mAxisRendererRight;
     }
