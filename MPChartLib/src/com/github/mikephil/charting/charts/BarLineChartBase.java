@@ -68,12 +68,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     /** if true, scaling is enabled for the chart */
     private boolean mScaleEnabled = true;
 
-    /** if true, the y range is predefined */
-    protected boolean mFixedYValues = false;
-
-    /** if true, the y-label entries will always start at zero */
-    protected boolean mStartAtZero = true;
-
     /** if true, data filtering is enabled */
     protected boolean mFilterData = false;
 
@@ -109,6 +103,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
     /** the listener for user drawing on the chart */
     protected OnDrawListener mDrawListener;
+
+    protected float mDeltaYLeft = 0f;
+    protected float mDeltaYRight = 0f;
 
     /**
      * the object representing the labels on the y-axis, this object is prepared
@@ -201,8 +198,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         // execute all drawing commands
         drawGridBackground();
 
-        mAxisRendererLeft.computeAxis(this);
-        mAxisRendererRight.computeAxis(this);
+        float minLeft = mData.getYMin(AxisDependency.LEFT);
+        float maxLeft = mData.getYMax(AxisDependency.LEFT);
+        float minRight = mData.getYMin(AxisDependency.RIGHT);
+        float maxRight = mData.getYMax(AxisDependency.RIGHT);
+
+        mAxisRendererLeft.computeAxis(minLeft, maxLeft);
+        mAxisRendererRight.computeAxis(minRight, maxRight);
 
         // make sure the graph values and grid cannot be drawn outside the
         // content-rect
@@ -268,10 +270,15 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 Log.i(LOG_TAG, "Preparing...");
         }
 
-        calcMinMax(mFixedYValues);
+        calcMinMax(false);
 
-        mAxisRendererLeft.computeAxis(this);
-        mAxisRendererRight.computeAxis(this);
+        float minLeft = mData.getYMin(AxisDependency.LEFT);
+        float maxLeft = mData.getYMax(AxisDependency.LEFT);
+        float minRight = mData.getYMin(AxisDependency.RIGHT);
+        float maxRight = mData.getYMax(AxisDependency.RIGHT);
+
+        mAxisRendererLeft.computeAxis(minLeft, maxLeft);
+        mAxisRendererRight.computeAxis(minRight, maxRight);
 
         mXAxisRenderer.computeAxis(mData.getXValAverageLength(), mData.getXVals());
 
@@ -286,8 +293,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     protected void prepareMatrix() {
 
-        mRightAxisTransformer.prepareMatrixValuePx(mViewPortHandler, mDeltaX, mDeltaY, mYChartMin);
-        mLeftAxisTransformer.prepareMatrixValuePx(mViewPortHandler, mDeltaX, mDeltaY, mYChartMin);
+        mRightAxisTransformer.prepareMatrixValuePx(mViewPortHandler, mDeltaX, mDeltaYRight,
+                mAxisRight.mAxisMinimum);
+        mLeftAxisTransformer.prepareMatrixValuePx(mViewPortHandler, mDeltaX, mDeltaYLeft,
+                mAxisLeft.mAxisMinimum);
 
         mRightAxisTransformer.prepareMatrixOffset(mViewPortHandler, mAxisRight.isInverted());
         mLeftAxisTransformer.prepareMatrixOffset(mViewPortHandler, mAxisLeft.isInverted());
@@ -298,16 +307,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
     @Override
     public void notifyDataSetChanged() {
-        if (!mFixedYValues) {
-            prepare();
-            // prepareContentRect();
-            mRightAxisTransformer.prepareMatrixValuePx(mViewPortHandler, mDeltaX, mDeltaY,
-                    mYChartMin);
-            mLeftAxisTransformer.prepareMatrixValuePx(mViewPortHandler, mDeltaX, mDeltaY,
-                    mYChartMin);
-        } else {
-            calcMinMax(mFixedYValues);
-        }
+        prepare();
+        // prepareContentRect();
+        mRightAxisTransformer.prepareMatrixValuePx(mViewPortHandler, mDeltaX, mDeltaYRight,
+                mAxisRight.mAxisMinimum);
+        mLeftAxisTransformer.prepareMatrixValuePx(mViewPortHandler, mDeltaX, mDeltaYLeft,
+                mAxisLeft.mAxisMinimum);
+
     }
 
     @Override
@@ -353,11 +359,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             // offsets for y-labels
             if (mAxisLeft.isEnabled()) {
                 String label = mAxisLeft.getLongestLabel();
-                
+
                 // calculate the maximum y-label width (including eventual
                 // offsets)
                 float ylabelwidth = Utils.calcTextWidth(mAxisRendererLeft.getAxisPaint(),
-                        label + (mYChartMin < 0 ? "----" : "+++")); // offsets
+                        label + (mAxisLeft.mAxisMinimum < 0 ? "----" : "+++")); // offsets
                 yleft = ylabelwidth + mAxisRendererLeft.getXOffset() / 2f;
             }
 
@@ -367,7 +373,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 // calculate the maximum y-label width (including eventual
                 // offsets)
                 float ylabelwidth = Utils.calcTextWidth(mAxisRendererRight.getAxisPaint(),
-                        label + (mYChartMin < 0 ? "----" : "+++")); // offsets
+                        label + (mAxisLeft.mAxisMinimum < 0 ? "----" : "+++")); // offsets
                 yright = ylabelwidth + mAxisRendererRight.getXOffset() / 2f;
             }
         }
@@ -464,41 +470,59 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
     @Override
     protected void calcMinMax(boolean fixedValues) {
-        super.calcMinMax(fixedValues); // calc min and max in the super class
+        
+        float minLeft = mData.getYMin(AxisDependency.LEFT);
+        float maxLeft = mData.getYMax(AxisDependency.LEFT);
+        float minRight = mData.getYMin(AxisDependency.RIGHT);
+        float maxRight = mData.getYMax(AxisDependency.RIGHT);
+        
+        mDeltaX = mData.getXVals().size() - 1;
+        mDeltaYLeft = Math.abs(maxLeft - minLeft);
+        mDeltaYRight = Math.abs(maxRight - minRight);
 
-        if (!fixedValues) {
-
-            // additional handling for space (default 15% space)
-            // float space = Math.abs(mDeltaY / 100f * 15f);
-            float space = Math
-                    .abs(Math.abs(Math.max(Math.abs(mYChartMax), Math.abs(mYChartMin))) / 100f * 20f);
-
-            if (Math.abs(mYChartMax - mYChartMin) < 0.00001f) {
-                if (Math.abs(mYChartMax) < 10f)
-                    space = 1f;
-                else
-                    space = Math.abs(mYChartMax / 100f * 20f);
-            }
-
-            if (mStartAtZero) {
-
-                if (mYChartMax < 0) {
-                    mYChartMax = 0;
-                    // calc delta
-                    mYChartMin = mYChartMin - space;
-                } else {
-                    mYChartMin = 0;
-                    // calc delta
-                    mYChartMax = mYChartMax + space;
-                }
-            } else {
-
-                mYChartMin = mYChartMin - space / 2f;
-                mYChartMax = mYChartMax + space / 2f;
-            }
-        }
-
-        mDeltaY = Math.abs(mYChartMax - mYChartMin);
+//        // only calculate values if not fixed values
+//        if (!fixedValues) {
+//            mYChartMin = mData.getYMin();
+//            mYChartMax = mData.getYMax();
+//        }
+//
+//        // calc delta
+//        mDeltaY = Math.abs(mYChartMax - mYChartMin);
+//        mDeltaX = mData.getXVals().size() - 1;
+//
+//        if (!fixedValues) {
+//
+//            // additional handling for space (default 15% space)
+//            // float space = Math.abs(mDeltaY / 100f * 15f);
+//            float space = Math
+//                    .abs(Math.abs(Math.max(Math.abs(mYChartMax), Math.abs(mYChartMin))) / 100f * 20f);
+//
+//            if (Math.abs(mYChartMax - mYChartMin) < 0.00001f) {
+//                if (Math.abs(mYChartMax) < 10f)
+//                    space = 1f;
+//                else
+//                    space = Math.abs(mYChartMax / 100f * 20f);
+//            }
+//
+//            if (mStartAtZero) {
+//
+//                if (mYChartMax < 0) {
+//                    mYChartMax = 0;
+//                    // calc delta
+//                    mYChartMin = mYChartMin - space;
+//                } else {
+//                    mYChartMin = 0;
+//                    // calc delta
+//                    mYChartMax = mYChartMax + space;
+//                }
+//            } else {
+//
+//                mYChartMin = mYChartMin - space / 2f;
+//                mYChartMax = mYChartMax + space / 2f;
+//            }
+//        }
+//
+//        mDeltaY = Math.abs(mYChartMax - mYChartMin);
     }
 
     @Override
@@ -687,10 +711,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * @param xIndex the index on the x-axis to center to
      * @param yVal the value ont he y-axis to center to
      */
-    public synchronized void centerViewPort(final int xIndex, final float yVal) {
+    public synchronized void centerViewPort(final int xIndex, final float yVal, AxisDependency axis) {
 
         float indicesInView = mDeltaX / mViewPortHandler.getScaleX();
-        float valsInView = mDeltaY / mViewPortHandler.getScaleY();
+        float valsInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
 
         Log.i(LOG_TAG, "indices: " + indicesInView + ", vals: " +
                 valsInView);
@@ -699,7 +723,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 xIndex - indicesInView / 2f, yVal + valsInView / 2f
         };
 
-        mLeftAxisTransformer.pointValuesToPixel(pts);
+        getTransformer(axis).pointValuesToPixel(pts);
         mViewPortHandler.centerViewPort(pts, this);
     }
 
@@ -707,6 +731,19 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * ################ ################ ################ ################
      */
     /** CODE BELOW IS GETTERS AND SETTERS */
+
+    /**
+     * Returns the delta-y value (y-value range) of the specified axis.
+     * 
+     * @param axis
+     * @return
+     */
+    public float getDeltaY(AxisDependency axis) {
+        if (axis == AxisDependency.LEFT)
+            return mDeltaYLeft;
+        else
+            return mDeltaYRight;
+    }
 
     /**
      * set a new (e.g. custom) charttouchlistener NOTE: make sure to
@@ -748,65 +785,59 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mViewPortHandler.setScaleMinima(scaleXmin, scaleYmin, this);
     }
 
-    /**
-     * Sets the effective range of y-values the chart can display. If this is
-     * set, the y-range is fixed and cannot be changed. This means, no
-     * recalculation of the bounds of the chart concerning the y-axis will be
-     * done when adding new data. To disable this, provide Float.NaN as a
-     * parameter or call resetYRange();
-     * 
-     * @param minY
-     * @param maxY
-     * @param invalidate if set to true, the chart will redraw itself after
-     *            calling this method
-     */
-    public void setYRange(float minY, float maxY, boolean invalidate) {
-
-        if (Float.isNaN(minY) || Float.isNaN(maxY)) {
-            resetYRange(invalidate);
-            return;
-        }
-
-        mFixedYValues = true;
-
-        mYChartMin = minY;
-        mYChartMax = maxY;
-        if (minY < 0) {
-            mStartAtZero = false;
-        }
-        mDeltaY = mYChartMax - mYChartMin;
-
-        calcFormats();
-        prepareMatrix();
-        if (invalidate)
-            invalidate();
-    }
-
-    /**
-     * Resets the previously set y range. If new data is added, the y-range will
-     * be recalculated.
-     * 
-     * @param invalidate if set to true, the chart will redraw itself after
-     *            calling this method
-     */
-    public void resetYRange(boolean invalidate) {
-        mFixedYValues = false;
-        calcMinMax(mFixedYValues);
-
-        prepareMatrix();
-        if (invalidate)
-            invalidate();
-    }
-
-    /**
-     * if this returns true, the chart has a fixed range on the y-axis that is
-     * not dependant on the actual data in the chart
-     * 
-     * @return
-     */
-    public boolean hasFixedYValues() {
-        return mFixedYValues;
-    }
+    // /**
+    // * Sets the effective range of y-values the chart can display. If this is
+    // * set, the y-range is fixed and cannot be changed. This means, no
+    // * recalculation of the bounds of the chart concerning the y-axis will be
+    // * done when adding new data. To disable this, provide Float.NaN as a
+    // * parameter or call resetYRange();
+    // *
+    // * @param minY
+    // * @param maxY
+    // * @param invalidate if set to true, the chart will redraw itself after
+    // * calling this method
+    // */
+    // public void setYRange(float minY, float maxY, AxisDependency axis,
+    // boolean invalidate) {
+    //
+    // if (Float.isNaN(minY) || Float.isNaN(maxY)) {
+    // resetYRange(invalidate);
+    // return;
+    // }
+    //
+    // mFixedYValues = true;
+    //
+    // mYChartMin = minY;
+    // mYChartMax = maxY;
+    // if (minY < 0) {
+    // mStartAtZero = false;
+    // }
+    //
+    // if (axis == AxisDependency.LEFT)
+    // mDeltaYLeft = mYChartMax - mYChartMin;
+    //
+    // calcFormats();
+    // prepareMatrix();
+    // if (invalidate)
+    // invalidate();
+    // }
+    //
+    // /**
+    // * Resets the previously set y range. If new data is added, the y-range
+    // will
+    // * be recalculated.
+    // *
+    // * @param invalidate if set to true, the chart will redraw itself after
+    // * calling this method
+    // */
+    // public void resetYRange(boolean invalidate) {
+    // mFixedYValues = false;
+    // calcMinMax(mFixedYValues);
+    //
+    // prepareMatrix();
+    // if (invalidate)
+    // invalidate();
+    // }
 
     /**
      * Returns the position (in pixels) the provided Entry has inside the chart
@@ -865,26 +896,26 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mHighLightIndicatorEnabled = enabled;
     }
 
-    /**
-     * enable this to force the y-axis labels to always start at zero
-     * 
-     * @param enabled
-     */
-    public void setStartAtZero(boolean enabled) {
-        this.mStartAtZero = enabled;
-        prepare();
-        prepareMatrix();
-    }
-
-    /**
-     * returns true if the chart is set to start at zero, false otherwise
-     * 
-     * @return
-     */
-    @Override
-    public boolean isStartAtZeroEnabled() {
-        return mStartAtZero;
-    }
+    // /**
+    // * enable this to force the y-axis labels to always start at zero
+    // *
+    // * @param enabled
+    // */
+    // public void setStartAtZero(boolean enabled) {
+    // this.mStartAtZero = enabled;
+    // prepare();
+    // prepareMatrix();
+    // }
+    //
+    // /**
+    // * returns true if the chart is set to start at zero, false otherwise
+    // *
+    // * @return
+    // */
+    // @Override
+    // public boolean isStartAtZeroEnabled() {
+    // return mStartAtZero;
+    // }
 
     /**
      * sets the width of the grid lines (min 0.1f, max = 3f)
@@ -1238,12 +1269,35 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         return mViewPortHandler.isFullyZoomedOut();
     }
 
+    /**
+     * Returns the left y-axis object.
+     * 
+     * @return
+     */
     public YAxis getAxisLeft() {
         return mAxisLeft;
     }
 
+    /**
+     * Returns the right y-axis object.
+     * 
+     * @return
+     */
     public YAxis getAxisRight() {
         return mAxisRight;
+    }
+
+    /**
+     * Returns the y-axis object to the corresponding axisdependency.
+     * 
+     * @param axis
+     * @return
+     */
+    public YAxis getAxis(AxisDependency axis) {
+        if (axis == AxisDependency.LEFT)
+            return mAxisLeft;
+        else
+            return mAxisRight;
     }
 
     /**
@@ -1342,6 +1396,14 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
     public YAxisRenderer getRendererRightYAxis() {
         return mAxisRendererRight;
+    }
+
+    public float getYChartMax() {
+        return Math.max(mAxisLeft.mAxisMaximum, mAxisRight.mAxisMaximum);
+    }
+
+    public float getYChartMin() {
+        return Math.min(mAxisLeft.mAxisMinimum, mAxisRight.mAxisMinimum);
     }
 
     /**

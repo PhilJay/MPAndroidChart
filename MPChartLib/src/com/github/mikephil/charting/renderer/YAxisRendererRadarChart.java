@@ -24,7 +24,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
     }
 
     @Override
-    public void computeAxis(ChartInterface chart) {
+    public void computeAxis(float yMin, float yMax) {
         
         
     }

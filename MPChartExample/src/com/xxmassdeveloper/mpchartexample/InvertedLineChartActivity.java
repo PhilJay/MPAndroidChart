@@ -56,9 +56,6 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
 
-        // if enabled, the chart will always start at zero on the y-axis
-        mChart.setStartAtZero(true);
-
         mChart.setDrawBorder(true);
         mChart.setBorderPositions(new BorderPosition[] {
             BorderPosition.BOTTOM
@@ -174,11 +171,8 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
                 break;
             }
             case R.id.actionToggleStartzero: {
-                if (mChart.isStartAtZeroEnabled())
-                    mChart.setStartAtZero(false);
-                else
-                    mChart.setStartAtZero(true);
-
+                mChart.getAxisLeft().setStartAtZero(!mChart.getAxisLeft().isStartAtZeroEnabled());
+                mChart.getAxisRight().setStartAtZero(!mChart.getAxisRight().isStartAtZeroEnabled());
                 mChart.invalidate();
                 break;
             }

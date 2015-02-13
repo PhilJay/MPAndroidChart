@@ -62,9 +62,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         mChart.setOnChartGestureListener(this);
         mChart.setOnChartValueSelectedListener(this);
 
-        // if enabled, the chart will always start at zero on the y-axis
-        mChart.setStartAtZero(false);
-
         mChart.setDrawBorder(true);
         mChart.setBorderPositions(new BorderPosition[] {
                 BorderPosition.BOTTOM
@@ -198,11 +195,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                 break;
             }
             case R.id.actionToggleStartzero: {
-                if (mChart.isStartAtZeroEnabled())
-                    mChart.setStartAtZero(false);
-                else
-                    mChart.setStartAtZero(true);
-
+                mChart.getAxisLeft().setStartAtZero(!mChart.getAxisLeft().isStartAtZeroEnabled());
+                mChart.getAxisRight().setStartAtZero(!mChart.getAxisRight().isStartAtZeroEnabled());
                 mChart.invalidate();
                 break;
             }

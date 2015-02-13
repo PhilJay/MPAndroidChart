@@ -23,17 +23,17 @@ public interface ChartInterface {
 
     public float getDeltaX();
 
-    public float getDeltaY();
+//    public float getDeltaY();
 
-    public float getYChartMin();
+//    public float getYChartMin();
 
-    public float getYChartMax();
+//    public float getYChartMax();
 
     public int getWidth();
 
     public int getHeight();
     
-    public boolean isStartAtZeroEnabled();
+//    public boolean isStartAtZeroEnabled();
     
     public PointF getCenterOfView();
     

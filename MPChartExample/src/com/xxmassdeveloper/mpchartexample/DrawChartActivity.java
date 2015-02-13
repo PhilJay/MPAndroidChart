@@ -74,7 +74,7 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
 
         mChart.setValueTypeface(tf);
 
-        mChart.setYRange(-40f, 40f, true);
+//        mChart.setYRange(-40f, 40f, true);
         // call this to reset the changed y-range
         // mChart.resetYRange(true); 
     }
@@ -127,11 +127,8 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
                 break;
             }
             case R.id.actionToggleStartzero: {
-                if (mChart.isStartAtZeroEnabled())
-                    mChart.setStartAtZero(false);
-                else
-                    mChart.setStartAtZero(true);
-
+                mChart.getAxisLeft().setStartAtZero(!mChart.getAxisLeft().isStartAtZeroEnabled());
+                mChart.getAxisRight().setStartAtZero(!mChart.getAxisRight().isStartAtZeroEnabled());
                 mChart.invalidate();
                 break;
             }

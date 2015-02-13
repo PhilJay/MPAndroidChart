@@ -140,7 +140,7 @@ public class LineChart extends BarLineChartBase<LineData> {
                 fillMin = 0f;
             } else {
 
-                if (!mStartAtZero) {
+                if (!getAxis(dataSet.getAxisDependency()).isStartAtZeroEnabled()) {
 
                     float max, min;
 

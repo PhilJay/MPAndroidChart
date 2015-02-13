@@ -43,10 +43,20 @@ public class YAxis extends AxisBase {
     /** flag that indicates if the axis is inverted or not */
     protected boolean mInverted = false;
 
+    /** if true, the y-label entries will always start at zero */
+    protected boolean mStartAtZero = true;
+
     /** the formatter used to customly format the y-labels */
     private ValueFormatter mFormatter = null;
 
     private ArrayList<LimitLine> mLimitLines;
+
+    protected float mCustomAxisMin = Float.NaN;
+
+    protected float mCustomAxisMax = Float.NaN;
+    
+    public float mAxisMaximum = 0f;
+    public float mAxisMinimum = 0f;
 
     /** the position of the y-labels relative to the chart */
     private YLabelPosition mPosition = YLabelPosition.OUTSIDE_CHART;
@@ -226,6 +236,24 @@ public class YAxis extends AxisBase {
     }
 
     /**
+     * enable this to force the y-axis labels to always start at zero
+     * 
+     * @param enabled
+     */
+    public void setStartAtZero(boolean enabled) {
+        this.mStartAtZero = enabled;
+    }
+
+    /**
+     * returns true if the chart is set to start at zero, false otherwise
+     * 
+     * @return
+     */
+    public boolean isStartAtZeroEnabled() {
+        return mStartAtZero;
+    }
+
+    /**
      * Adds a new LimitLine to this axis.
      * 
      * @param l
@@ -257,6 +285,30 @@ public class YAxis extends AxisBase {
      */
     public ArrayList<LimitLine> getLimitLines() {
         return mLimitLines;
+    }
+
+    public float getAxisMinValue() {
+        return mCustomAxisMin;
+    }
+
+    public void setAxisMinValue(float min) {
+        mCustomAxisMin = min;
+    }
+
+    public void resetAxisMinValue() {
+        mCustomAxisMin = Float.NaN;
+    }
+
+    public float getAxisMaxValue() {
+        return mCustomAxisMax;
+    }
+
+    public void setAxisMaxValue(float max) {
+        mCustomAxisMax = max;
+    }
+
+    public void resetAxisMaxValue() {
+        mCustomAxisMax = Float.NaN;
     }
 
     /**

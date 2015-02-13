@@ -84,11 +84,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /** the canvas that is used for drawing on the bitmap */
     protected Canvas mDrawCanvas;
 
-    /** the lowest value the chart can display */
-    protected float mYChartMin = 0.0f;
-
-    /** the highest value the chart can display */
-    protected float mYChartMax = 0.0f;
+//    /** the lowest value the chart can display */
+//    protected float mYChartMin = 0.0f;
+//
+//    /** the highest value the chart can display */
+//    protected float mYChartMax = 0.0f;
 
     /**
      * paint object used for drawing the description text in the bottom right
@@ -119,9 +119,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /** if true, units are drawn next to the values in the chart */
     protected boolean mDrawUnitInChart = false;
-
-    /** the range of y-values the chart displays */
-    protected float mDeltaY = 1f;
 
     /** the number of x-values the chart displays */
     protected float mDeltaX = 1f;
@@ -160,10 +157,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     protected ViewPortHandler mViewPortHandler = new ViewPortHandler();
 
     protected ChartAnimator mAnimator;
-
-    protected float yyy = 1f;
-    protected float xxx = 1f;
-
+    
     /** default constructor for initialization in code */
     public Chart(Context context) {
         super(context);
@@ -288,7 +282,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         prepare();
 
         // calculate how many digits are needed
-        calcFormats();
+        calcFormats(data.getYMin(), data.getYMax());
 
         Log.i(LOG_TAG, "Data is set.");
     }
@@ -340,27 +334,17 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * and x-axis labels and their position
      */
     protected abstract void calculateOffsets();
-
+    
     /**
      * calcualtes the y-min and y-max value and the y-delta and x-delta value
      */
-    protected void calcMinMax(boolean fixedValues) {
-        // only calculate values if not fixed values
-        if (!fixedValues) {
-            mYChartMin = mData.getYMin();
-            mYChartMax = mData.getYMax();
-        }
-
-        // calc delta
-        mDeltaY = Math.abs(mYChartMax - mYChartMin);
-        mDeltaX = mData.getXVals().size() - 1;
-    }
+    protected abstract void calcMinMax(boolean fixedValues);
 
     /**
      * calculates the required number of digits for the values that might be
      * drawn in the chart (if enabled)
      */
-    protected void calcFormats() {
+    protected void calcFormats(float min, float max) {
 
         // check if a custom formatter is set or not
         if (mUseDefaultFormatter) {
@@ -369,9 +353,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
             if (mData == null || mData.getXValCount() < 2) {
 
-                reference = Math.max(Math.abs(mYChartMin), Math.abs(mYChartMax));
+                reference = Math.max(Math.abs(min), Math.abs(max));
             } else {
-                reference = mDeltaY;
+                reference = Math.abs(max - min);
             }
 
             int digits = Utils.getDecimals(reference);
@@ -1175,26 +1159,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
-     * returns the lowest value the chart can display
-     *
-     * @return
-     */
-    @Override
-    public float getYChartMin() {
-        return mYChartMin;
-    }
-
-    /**
-     * returns the highest value the chart can display
-     *
-     * @return
-     */
-    @Override
-    public float getYChartMax() {
-        return mYChartMax;
-    }
-
-    /**
      * returns the current y-min value across all DataSets
      *
      * @return
@@ -1211,16 +1175,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     @Override
     public float getDeltaX() {
         return mDeltaX;
-    }
-
-    /**
-     * Returns the total range of values (on y-axis) the chart displays.
-     *
-     * @return
-     */
-    @Override
-    public float getDeltaY() {
-        return mDeltaY;
     }
 
     /**

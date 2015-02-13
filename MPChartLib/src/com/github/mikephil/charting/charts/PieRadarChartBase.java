@@ -54,6 +54,11 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
         mListener = new PieRadarChartTouchListener(this);
     }
+    
+    @Override
+    protected void calcMinMax(boolean fixedValues) {
+        mDeltaX = mData.getXVals().size() - 1;
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {

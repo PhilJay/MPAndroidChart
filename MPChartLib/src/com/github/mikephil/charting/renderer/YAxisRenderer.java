@@ -58,10 +58,12 @@ public class YAxisRenderer extends AxisRenderer {
         mXOffset = xOffset;
     }
 
-    public void computeAxis(ChartInterface chart) {
-
-        float yMin = 0f;
-        float yMax = 0f;
+    /**
+     * Computes the axis values.
+     * @param yMin - the minimum y-value in the data object for this axis
+     * @param yMax - the maximum y-value in the data object for this axis
+     */
+    public void computeAxis(float yMin, float yMax) {
 
         // calculate the starting and entry point of the y-labels (depending on
         // zoom / contentrect bounds)
@@ -77,7 +79,7 @@ public class YAxisRenderer extends AxisRenderer {
                 yMax = (float) p1.y;
             } else {
 
-                if (!chart.isStartAtZeroEnabled())
+                if (!mYAxis.isStartAtZeroEnabled())
                     yMin = (float) Math.min(p1.y, p2.y);
                 else
                     yMin = 0;
@@ -85,19 +87,24 @@ public class YAxisRenderer extends AxisRenderer {
             }
 
         } else {
-
-            if (!mYAxis.isInverted()) {
-                yMin = chart.getYChartMin();
-                yMax = chart.getYChartMax();
+            
+            // in case a custom maximum is set
+            if(!Float.isNaN(mYAxis.getAxisMaxValue())) {
+                yMax = mYAxis.getAxisMaxValue(); 
+            } 
+            
+            // in case a custom minimum is set
+            if(!Float.isNaN(mYAxis.getAxisMinValue())) {
+                yMin = mYAxis.getAxisMinValue();
             } else {
-
-                if (!chart.isStartAtZeroEnabled())
-                    yMin = (float) Math.min(chart.getYChartMax(), chart.getYChartMin());
-                else
+                if (mYAxis.isStartAtZeroEnabled()) {
                     yMin = 0;
-                yMax = (float) Math.max(chart.getYChartMax(), chart.getYChartMin());
+                }
             }
         }
+        
+        mYAxis.mAxisMaximum = yMax;
+        mYAxis.mAxisMinimum = yMin;
 
         computeAxisValues(yMin, yMax);
     }

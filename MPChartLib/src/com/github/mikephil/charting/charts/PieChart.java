@@ -484,10 +484,4 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
         return null;
     }
-
-    @Override
-    public boolean isStartAtZeroEnabled() {
-        // TODO Auto-generated method stub
-        return false;
-    }
 }

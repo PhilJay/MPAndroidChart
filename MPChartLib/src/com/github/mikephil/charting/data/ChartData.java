@@ -3,6 +3,7 @@ package com.github.mikephil.charting.data;
 
 import android.util.Log;
 
+import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.utils.Highlight;
 
 import java.util.ArrayList;
@@ -20,6 +21,14 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /** the minimum y-value in the y-value array */
     protected float mYMin = 0.0f;
+
+    protected float mLeftAxisMax = 0.0f;
+
+    protected float mLeftAxisMin = 0.0f;
+
+    protected float mRightAxisMax = 0.0f;
+
+    protected float mRightAxisMin = 0.0f;
 
     /** the total sum of all y-values */
     private float mYValueSum = 0f;
@@ -183,6 +192,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             mYMin = 0f;
         } else {
 
+            // calculate absolute min and max
             mYMin = dataSets.get(0).getYMin();
             mYMax = dataSets.get(0).getYMax();
 
@@ -192,6 +202,53 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
                 if (dataSets.get(i).getYMax() > mYMax)
                     mYMax = dataSets.get(i).getYMax();
+            }
+
+            // left axis
+            T firstLeft = getFirstLeft();
+
+            if (firstLeft != null) {
+
+                mLeftAxisMax = firstLeft.getYMax();
+                mLeftAxisMin = firstLeft.getYMin();
+
+                for (T dataSet : dataSets) {
+                    if (dataSet.getAxisDependency() == AxisDependency.LEFT) {
+                        if (dataSet.getYMin() < mLeftAxisMin)
+                            mLeftAxisMin = dataSet.getYMin();
+
+                        if (dataSet.getYMax() > mLeftAxisMax)
+                            mLeftAxisMax = dataSet.getYMax();
+                    }
+                }
+            }
+
+            // right axis
+            T firstRight = getFirstLeft();
+
+            if (firstRight != null) {
+
+                mRightAxisMax = firstRight.getYMax();
+                mRightAxisMin = firstRight.getYMin();
+
+                for (T dataSet : dataSets) {
+                    if (dataSet.getAxisDependency() == AxisDependency.RIGHT) {
+                        if (dataSet.getYMin() < mRightAxisMin)
+                            mRightAxisMin = dataSet.getYMin();
+
+                        if (dataSet.getYMax() > mRightAxisMax)
+                            mRightAxisMax = dataSet.getYMax();
+                    }
+                }
+            }
+
+            // in case there is only one axis, adjust the second axis
+            if (firstLeft == null) {
+                mLeftAxisMax = mRightAxisMax;
+                mLeftAxisMin = mRightAxisMin;
+            } else {
+                mRightAxisMax = mLeftAxisMax;
+                mRightAxisMin = mLeftAxisMin;
             }
         }
     }
@@ -254,6 +311,19 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     public float getYMin() {
         return mYMin;
     }
+    
+    /**
+     * Returns the minimum y-value for the specified axis.
+     * 
+     * @param axis
+     * @return
+     */
+    public float getYMin(AxisDependency axis) {
+        if (axis == AxisDependency.LEFT)
+            return mLeftAxisMin;
+        else
+            return mRightAxisMin;
+    }
 
     /**
      * Returns the greatest y-value the data object contains.
@@ -262,6 +332,19 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      */
     public float getYMax() {
         return mYMax;
+    }
+
+    /**
+     * Returns the maximum y-value for the specified axis.
+     * 
+     * @param axis
+     * @return
+     */
+    public float getYMax(AxisDependency axis) {
+        if (axis == AxisDependency.LEFT)
+            return mLeftAxisMax;
+        else
+            return mRightAxisMax;
     }
 
     /**
@@ -653,6 +736,24 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         }
 
         return -1;
+    }
+
+    private T getFirstLeft() {
+        for (T dataSet : mDataSets) {
+            if (dataSet.getAxisDependency() == AxisDependency.LEFT)
+                return dataSet;
+        }
+
+        return null;
+    }
+
+    private T getFirstRight() {
+        for (T dataSet : mDataSets) {
+            if (dataSet.getAxisDependency() == AxisDependency.RIGHT)
+                return dataSet;
+        }
+
+        return null;
     }
 
     /**

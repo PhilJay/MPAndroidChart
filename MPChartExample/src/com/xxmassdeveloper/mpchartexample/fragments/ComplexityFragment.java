@@ -33,7 +33,6 @@ public class ComplexityFragment extends SimpleFragment {
         mChart.setDrawGridBackground(false);
         mChart.setDrawVerticalGrid(false);
         mChart.setDrawXLabels(false);
-        mChart.setStartAtZero(false);
         
         mChart.setData(getComplexity());
         mChart.animateX(3000);

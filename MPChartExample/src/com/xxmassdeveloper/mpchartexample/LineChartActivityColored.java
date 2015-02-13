@@ -52,10 +52,6 @@ public class LineChartActivityColored extends DemoBase {
     };
 
     private void setupChart(LineChart chart, LineData data, int color) {
-
-        // if enabled, the chart will always start at zero on the y-axis
-        chart.setStartAtZero(true);
-
         chart.setDrawBorder(false);
 
         // no description text

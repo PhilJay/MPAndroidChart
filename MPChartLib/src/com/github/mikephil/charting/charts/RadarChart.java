@@ -92,12 +92,12 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         // additional handling for space (default 15% space)
         // float space = Math.abs(mDeltaY / 100f * 15f);
 
-        if (mYChartMax <= 0)
-            mYChartMax = 1f;
+        if (mYAxis.mAxisMaximum <= 0)
+            mYAxis.mAxisMaximum = 1f;
 
-        mYChartMin = 0;
+        mYAxis.mAxisMinimum = 0;
 
-        mDeltaY = Math.abs(mYChartMax - mYChartMin);
+//        mDeltaY = Math.abs(mYChartMax - mYChartMin);
     }
 
     @Override
@@ -119,7 +119,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     public void prepare() {
         super.prepare();
 
-        mYAxisRenderer.computeAxis(this);
+        mYAxisRenderer.computeAxis(0f, 0f);
         prepareYLabels();
         mXAxisRenderer.computeAxis(mData.getXValAverageLength(), mData.getXVals());
     }
@@ -167,7 +167,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         int labelCount = mYAxis.getLabelCount();
 
         double max = mData.getYMax() > 0 ? mData.getYMax() : 1.0;
-        double range = max - mYChartMin;
+        double range = max - mYAxis.mAxisMinimum;
 
         double rawInterval = range / labelCount;
         double interval = Utils.roundToNextSignificant(rawInterval);
@@ -179,7 +179,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
             interval = Math.floor(10 * intervalMagnitude);
         }
 
-        double first = Math.ceil(mYChartMin / interval) * interval;
+        double first = Math.ceil(mYAxis.mAxisMinimum / interval) * interval;
         double last = Utils.nextUp(Math.floor(max / interval) * interval);
 
         double f;
@@ -190,10 +190,10 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
         mYAxis.mEntryCount = n;
 
-        mYChartMax = (float) interval * n;
+        mYAxis.mAxisMaximum = (float) interval * n;
 
         // calc delta
-        mDeltaY = Math.abs(mYChartMax - mYChartMin);
+//        mDeltaY = Math.abs(mYChartMax - mYChartMin);
     }
 
     /**
@@ -204,7 +204,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     public float getFactor() {
         RectF content = mViewPortHandler.getContentRect();
         return (float) Math.min(content.width() / 2, content.height() / 2)
-                / mYChartMax;
+                / mYAxis.mAxisMaximum;
     }
 
     /**
@@ -369,6 +369,14 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         RectF content = mViewPortHandler.getContentRect();
         return Math.min(content.width() / 2f, content.height() / 2f);
     }
+    
+    public float getYChartMax() {
+        return mYAxis.mAxisMaximum;
+    }
+    
+    public float getYChartMin() {
+        return mYAxis.mAxisMinimum;
+    }
 
     @Override
     public void setPaint(Paint p, int which) {
@@ -393,11 +401,5 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         }
 
         return null;
-    }
-
-    @Override
-    public boolean isStartAtZeroEnabled() {
-        // TODO Auto-generated method stub
-        return false;
     }
 }
