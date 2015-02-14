@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -48,7 +49,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
         if(data != null) {
 
             LineDataSet set = data.getDataSetByIndex(0);
-            // set.addEntry(...);
+            // set.addEntry(...); // can be called as well
 
             if (set == null) {
                 set = createSet();
@@ -202,6 +203,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
         set.setColor(Color.rgb(240, 99, 99));
         set.setCircleColor(Color.rgb(240, 99, 99));
         set.setHighLightColor(Color.rgb(190, 190, 190));
+        set.setAxisDependency(AxisDependency.LEFT);
 
         return set;
     }

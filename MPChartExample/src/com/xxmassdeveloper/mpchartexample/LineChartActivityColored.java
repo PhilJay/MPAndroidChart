@@ -92,10 +92,13 @@ public class LineChartActivityColored extends DemoBase {
         l.setTextColor(Color.WHITE);
         l.setTypeface(mTf);
 
-        YAxis y = chart.getAxisLeft();
-        y.setTextColor(Color.WHITE);
-        y.setTypeface(mTf);
-        y.setLabelCount(4);
+        YAxis leftAxis = chart.getAxisLeft();
+        leftAxis.setTextColor(Color.WHITE);
+        leftAxis.setTypeface(mTf);
+        leftAxis.setLabelCount(4);
+        leftAxis.setDrawGridLines(false);
+        
+        chart.getAxisRight().setEnabled(false);
 
         XAxis x = chart.getXAxis();
         x.setTextColor(Color.WHITE);
@@ -130,6 +133,7 @@ public class LineChartActivityColored extends DemoBase {
         set1.setColor(Color.WHITE);
         set1.setCircleColor(Color.WHITE);
         set1.setHighLightColor(Color.WHITE);
+        set1.setDrawValues(false);
 
         ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
         dataSets.add(set1); // add the datasets

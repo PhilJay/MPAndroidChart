@@ -64,7 +64,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public static final String LOG_TAG = "MPAndroidChart";
 
     /** flag that indicates if logging is enabled or not */
-    protected boolean mLogEnabled = false;
+    protected boolean mLogEnabled = true;
 
     /** custom formatter that is used instead of the auto-formatter if set */
     protected ValueFormatter mValueFormatter = null;
@@ -84,11 +84,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /** the canvas that is used for drawing on the bitmap */
     protected Canvas mDrawCanvas;
 
-//    /** the lowest value the chart can display */
-//    protected float mYChartMin = 0.0f;
-//
-//    /** the highest value the chart can display */
-//    protected float mYChartMax = 0.0f;
+    // /** the lowest value the chart can display */
+    // protected float mYChartMin = 0.0f;
+    //
+    // /** the highest value the chart can display */
+    // protected float mYChartMax = 0.0f;
 
     /**
      * paint object used for drawing the description text in the bottom right
@@ -152,12 +152,15 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     private String mNoDataTextDescription;
 
+    /** object responsible for rendering the data */
     protected DataRenderer mRenderer;
 
+    /** object that manages the bounds and drawing constraints of the chart */
     protected ViewPortHandler mViewPortHandler = new ViewPortHandler();
 
+    /** object responsible for animations */
     protected ChartAnimator mAnimator;
-    
+
     /** default constructor for initialization in code */
     public Chart(Context context) {
         super(context);
@@ -316,7 +319,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 return false;
         }
     }
-    
+
     /**
      * Lets the chart know its underlying data has changed and performs all
      * necessary recalculations.
@@ -329,7 +332,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * and x-axis labels and their position
      */
     protected abstract void calculateOffsets();
-    
+
     /**
      * calcualtes the y-min and y-max value and the y-delta and x-delta value
      */

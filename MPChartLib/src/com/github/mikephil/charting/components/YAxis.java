@@ -46,18 +46,31 @@ public class YAxis extends AxisBase {
     /** the formatter used to customly format the y-labels */
     private ValueFormatter mFormatter = null;
 
+    /** array of limitlines that can be set for the axis */
     private ArrayList<LimitLine> mLimitLines;
 
+    /** custom minimum value this axis represents */
     protected float mCustomAxisMin = Float.NaN;
 
+    /** custom maximum value this axis represents */
     protected float mCustomAxisMax = Float.NaN;
 
+    /**
+     * axis space from the largest value to the top in percent of the total axis
+     * range
+     */
     protected float mSpacePercentTop = 10f;
+
+    /**
+     * axis space from the smallest value to the bottom in percent of the total
+     * axis range
+     */
     protected float mSpacePercentBottom = 10f;
 
     public float mAxisMaximum = 0f;
     public float mAxisMinimum = 0f;
 
+    /** the total range of values this axis covers */
     public float mAxisRange = 0f;
 
     /** the position of the y-labels relative to the chart */
@@ -68,6 +81,7 @@ public class YAxis extends AxisBase {
         OUTSIDE_CHART, INSIDE_CHART
     }
 
+    /** the side this axis object represents */
     private AxisDependency mAxisDependency;
 
     public enum AxisDependency {

@@ -42,7 +42,7 @@ public abstract class DataSet<T extends Entry> {
 
     /** if true, y-values are drawn on the chart */
     protected boolean mDrawValues = true;
-    
+
     private AxisDependency mAxisDependency = AxisDependency.LEFT;
 
     /**
@@ -334,11 +334,22 @@ public abstract class DataSet<T extends Entry> {
     public boolean isVisible() {
         return mVisible;
     }
-    
+
+    /**
+     * Returns the axis this DataSet should be plotted against.
+     * 
+     * @return
+     */
     public AxisDependency getAxisDependency() {
         return mAxisDependency;
     }
-    
+
+    /**
+     * Set the y-axis this DataSet should be plotted against (either LEFT or
+     * RIGHT). Default: LEFT
+     * 
+     * @param dependency
+     */
     public void setAxisDependency(AxisDependency dependency) {
         mAxisDependency = dependency;
     }

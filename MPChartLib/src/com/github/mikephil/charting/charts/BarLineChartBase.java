@@ -288,6 +288,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         float topSpaceRight = rightRange / 100f * mAxisRight.getSpaceTop();
         float bottomSpaceLeft = leftRange / 100f * mAxisLeft.getSpaceBottom();
         float bottomSpaceRight = rightRange / 100f * mAxisRight.getSpaceBottom();
+        
+        Log.i(LOG_TAG, "minLeft: " + minLeft + ", maxLeft: " + maxLeft);
 
         mDeltaX = mData.getXVals().size() - 1;
 

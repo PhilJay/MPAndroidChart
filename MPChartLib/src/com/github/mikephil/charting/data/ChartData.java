@@ -56,7 +56,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      */
     public ChartData(ArrayList<String> xVals) {
         this.mXVals = xVals;
-
+        this.mDataSets = new ArrayList<T>();
         init();
     }
 
@@ -68,7 +68,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      */
     public ChartData(String[] xVals) {
         this.mXVals = arrayToArrayList(xVals);
-
+        this.mDataSets = new ArrayList<T>();
         init();
     }
 
@@ -241,7 +241,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
                     }
                 }
             }
-            
+
             // in case there is only one axis, adjust the second axis
             if (firstLeft == null) {
                 mLeftAxisMax = mRightAxisMax;
@@ -535,6 +535,19 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             mYMax = d.getYMax();
         if (mYMin > d.getYMin())
             mYMin = d.getYMin();
+
+        if (d.getAxisDependency() == AxisDependency.LEFT) {
+
+            if (mLeftAxisMax < d.getYMax())
+                mLeftAxisMax = d.getYMax();
+            if (mLeftAxisMin > d.getYMin())
+                mLeftAxisMin = d.getYMin();
+        } else {
+            if (mRightAxisMax < d.getYMax())
+                mRightAxisMax = d.getYMax();
+            if (mRightAxisMin > d.getYMin())
+                mRightAxisMin = d.getYMin();
+        }
     }
 
     /**
@@ -588,30 +601,46 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      */
     public void addEntry(Entry e, int dataSetIndex) {
 
-        float val = e.getVal();
-
-        mYValCount += 1;
-        mYValueSum += val;
-
-        if (mYMax < val)
-            mYMax = val;
-        if (mYMin > val)
-            mYMin = val;
-
         if (mDataSets == null)
             mDataSets = new ArrayList<T>();
 
-        if (mDataSets.size() > dataSetIndex) {
+        if (mDataSets.size() > dataSetIndex && dataSetIndex >= 0) {
+
+            float val = e.getVal();
+
+            mYValCount += 1;
+            mYValueSum += val;
+
+            if (mYMax < val)
+                mYMax = val;
+            if (mYMin > val)
+                mYMin = val;
+
+            if (mDataSets == null)
+                mDataSets = new ArrayList<T>();
 
             T set = mDataSets.get(dataSetIndex);
 
             if (set != null) {
 
+                if (set.getAxisDependency() == AxisDependency.LEFT) {
+
+                    if (mLeftAxisMax < e.getVal())
+                        mLeftAxisMax = e.getVal();
+                    if (mLeftAxisMin > e.getVal())
+                        mLeftAxisMin = e.getVal();
+                } else {
+                    if (mRightAxisMax < e.getVal())
+                        mRightAxisMax = e.getVal();
+                    if (mRightAxisMin > e.getVal())
+                        mRightAxisMin = e.getVal();
+                }
+
                 // add the entry to the dataset
                 set.addEntry(e);
             }
         } else {
-            Log.e("addEntry", "Cannot add Entry because dataSetIndex too high.");
+            Log.e("addEntry", "Cannot add Entry because dataSetIndex too high or too low.");
         }
     }
 
