@@ -111,6 +111,8 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         YAxis yl = mChart.getAxisLeft();
         yl.setTypeface(tf);
         yl.setTextColor(Color.WHITE);
+        yl.setAxisMaxValue(300);
+        yl.setAxisMinValue(-100f);
     }
 
     @Override

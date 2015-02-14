@@ -61,10 +61,10 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         ViewGroup
         implements AnimatorUpdateListener, ChartInterface {
 
-    public static final String LOG_TAG = "MPChart";
+    public static final String LOG_TAG = "MPAndroidChart";
 
     /** flag that indicates if logging is enabled or not */
-    protected boolean mLogEnabled = true;
+    protected boolean mLogEnabled = false;
 
     /** custom formatter that is used instead of the auto-formatter if set */
     protected ValueFormatter mValueFormatter = null;

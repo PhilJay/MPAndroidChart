@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
-import android.util.Log;
 
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition;
@@ -85,18 +84,6 @@ public class YAxisRenderer extends AxisRenderer {
                     yMin = 0;
                 yMax = (float) Math.max(p1.y, p2.y);
             }
-
-        } else {
-            
-            // in case a custom maximum is set
-            if(!Float.isNaN(mYAxis.getAxisMaxValue())) {
-                yMax = mYAxis.getAxisMaxValue(); 
-            } 
-            
-            // in case a custom minimum is set
-            if(!Float.isNaN(mYAxis.getAxisMinValue())) {
-                yMin = mYAxis.getAxisMinValue();
-            } 
         }
 
         computeAxisValues(yMin, yMax);

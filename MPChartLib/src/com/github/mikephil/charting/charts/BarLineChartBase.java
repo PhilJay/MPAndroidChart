@@ -104,9 +104,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     /** the listener for user drawing on the chart */
     protected OnDrawListener mDrawListener;
 
-    protected float mDeltaYLeft = 0f;
-    protected float mDeltaYRight = 0f;
-
     /**
      * the object representing the labels on the y-axis, this object is prepared
      * in the pepareYLabels() method
@@ -200,7 +197,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum);
         mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum);
-        
+
         // make sure the graph values and grid cannot be drawn outside the
         // content-rect
         int clipRestoreCount = mDrawCanvas.save();
@@ -252,12 +249,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     private void prepareValuePxMatrix() {
 
         if (mLogEnabled)
-            Log.i(LOG_TAG, "Preparing Value-Px Matrix, deltaLeft: " + mDeltaYLeft
-                    + ", deltaRight: " + mDeltaYRight);
+            Log.i(LOG_TAG, "Preparing Value-Px Matrix, deltaLeft: " + mAxisLeft.mAxisRange
+                    + ", deltaRight: " + mAxisRight.mAxisRange);
 
-        mRightAxisTransformer.prepareMatrixValuePx(mDeltaX, mDeltaYRight,
+        mRightAxisTransformer.prepareMatrixValuePx(mDeltaX, mAxisRight.mAxisRange,
                 mAxisRight.mAxisMinimum);
-        mLeftAxisTransformer.prepareMatrixValuePx(mDeltaX, mDeltaYLeft,
+        mLeftAxisTransformer.prepareMatrixValuePx(mDeltaX, mAxisLeft.mAxisRange,
                 mAxisLeft.mAxisMinimum);
     }
 
@@ -298,10 +295,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         float maxLeft = mData.getYMax(AxisDependency.LEFT);
         float minRight = mData.getYMin(AxisDependency.RIGHT);
         float maxRight = mData.getYMax(AxisDependency.RIGHT);
-        
+
         float leftRange = Math.abs(maxLeft - minLeft);
         float rightRange = Math.abs(maxRight - minRight);
-        
+
         float topSpaceLeft = leftRange / 100f * mAxisLeft.getSpaceTop();
         float topSpaceRight = rightRange / 100f * mAxisRight.getSpaceTop();
         float bottomSpaceLeft = leftRange / 100f * mAxisLeft.getSpaceBottom();
@@ -309,14 +306,18 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         mDeltaX = mData.getXVals().size() - 1;
 
-        mAxisLeft.mAxisMaximum = maxLeft + topSpaceLeft;
-        mAxisRight.mAxisMaximum = maxRight + topSpaceRight;
-        mAxisLeft.mAxisMinimum = minLeft - bottomSpaceLeft;
-        mAxisRight.mAxisMinimum = minRight - bottomSpaceRight;
+        mAxisLeft.mAxisMaximum = !Float.isNaN(mAxisLeft.getAxisMaxValue()) ? mAxisLeft
+                .getAxisMaxValue() : maxLeft + topSpaceLeft;
+        mAxisRight.mAxisMaximum = !Float.isNaN(mAxisRight.getAxisMaxValue()) ? mAxisRight
+                .getAxisMaxValue() : maxRight + topSpaceRight;
+        mAxisLeft.mAxisMinimum = !Float.isNaN(mAxisLeft.getAxisMinValue()) ? mAxisLeft
+                .getAxisMinValue() : minLeft - bottomSpaceLeft;
+        mAxisRight.mAxisMinimum = !Float.isNaN(mAxisRight.getAxisMinValue()) ? mAxisRight
+                .getAxisMinValue() : minRight - bottomSpaceRight;
 
-        mDeltaYLeft = Math.abs(mAxisLeft.mAxisMaximum - mAxisLeft.mAxisMinimum);
-        mDeltaYRight = Math.abs(mAxisRight.mAxisMaximum - mAxisRight.mAxisMinimum);
-
+        mAxisLeft.mAxisRange = Math.abs(mAxisLeft.mAxisMaximum - mAxisLeft.mAxisMinimum);
+        mAxisRight.mAxisRange = Math.abs(mAxisRight.mAxisMaximum - mAxisRight.mAxisMinimum);
+        //
         // // only calculate values if not fixed values
         // if (!fixedValues) {
         // mYChartMin = mData.getYMin();
@@ -731,9 +732,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     public float getDeltaY(AxisDependency axis) {
         if (axis == AxisDependency.LEFT)
-            return mDeltaYLeft;
+            return mAxisLeft.mAxisRange;
         else
-            return mDeltaYRight;
+            return mAxisRight.mAxisRange;
     }
 
     /**

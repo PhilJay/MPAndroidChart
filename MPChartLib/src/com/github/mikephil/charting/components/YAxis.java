@@ -60,6 +60,8 @@ public class YAxis extends AxisBase {
 
     public float mAxisMaximum = 0f;
     public float mAxisMinimum = 0f;
+    
+    public float mAxisRange = 0f;
 
     /** the position of the y-labels relative to the chart */
     private YLabelPosition mPosition = YLabelPosition.OUTSIDE_CHART;
