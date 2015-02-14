@@ -44,8 +44,8 @@ public class LineChart extends BarLineChartBase<LineData> {
     }
 
     @Override
-    protected void calcMinMax(boolean fixedValues) {
-        super.calcMinMax(fixedValues);
+    protected void calcMinMax() {
+        super.calcMinMax();
 
         // // if there is only one value in the chart
         // if (mOriginalData.getYValCount() == 1

@@ -80,8 +80,8 @@ public class BarChart extends BarLineChartBase<BarData> {
     }
 
     @Override
-    protected void calcMinMax(boolean fixedValues) {
-        super.calcMinMax(fixedValues);
+    protected void calcMinMax() {
+        super.calcMinMax();
 
         // increase deltax by 1 because the bars have a width of 1
         mDeltaX++;

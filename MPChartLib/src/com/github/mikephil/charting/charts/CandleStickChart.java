@@ -34,8 +34,8 @@ public class CandleStickChart extends BarLineChartBase<CandleData> {
     }
 
     @Override
-    protected void calcMinMax(boolean fixedValues) {
-        super.calcMinMax(fixedValues);
+    protected void calcMinMax() {
+        super.calcMinMax();
 
         // increase deltax by 1 because the candles have a width of 1
         mDeltaX++;

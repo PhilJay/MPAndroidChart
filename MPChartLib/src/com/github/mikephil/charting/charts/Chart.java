@@ -333,7 +333,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * calcualtes the y-min and y-max value and the y-delta and x-delta value
      */
-    protected abstract void calcMinMax(boolean fixedValues);
+    protected abstract void calcMinMax();
 
     /**
      * calculates the required number of digits for the values that might be

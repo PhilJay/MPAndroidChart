@@ -52,8 +52,8 @@ public class ScatterChart extends BarLineChartBase<ScatterData> {
     }
 
     @Override
-    protected void calcMinMax(boolean fixedValues) {
-        super.calcMinMax(fixedValues);
+    protected void calcMinMax() {
+        super.calcMinMax();
 
         if (mDeltaX == 0 && mData.getYValCount() > 0)
             mDeltaX = 1;

@@ -143,8 +143,8 @@ public class PieChart extends PieRadarChartBase<PieData> {
     // }
 
     @Override
-    protected void calcMinMax(boolean fixedValues) {
-        super.calcMinMax(fixedValues);
+    protected void calcMinMax() {
+        super.calcMinMax();
 
         calcAngles();
     }

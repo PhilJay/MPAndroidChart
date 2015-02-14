@@ -96,11 +96,7 @@ public class YAxisRenderer extends AxisRenderer {
             // in case a custom minimum is set
             if(!Float.isNaN(mYAxis.getAxisMinValue())) {
                 yMin = mYAxis.getAxisMinValue();
-            } else {
-                if (mYAxis.isStartAtZeroEnabled()) {
-                    yMin = 0;
-                }
-            }
+            } 
         }
 
         computeAxisValues(yMin, yMax);

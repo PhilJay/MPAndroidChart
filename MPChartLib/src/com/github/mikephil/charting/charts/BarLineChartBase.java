@@ -198,14 +198,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         // execute all drawing commands
         drawGridBackground();
 
-        float minLeft = mData.getYMin(AxisDependency.LEFT);
-        float maxLeft = mData.getYMax(AxisDependency.LEFT);
-        float minRight = mData.getYMin(AxisDependency.RIGHT);
-        float maxRight = mData.getYMax(AxisDependency.RIGHT);
-
-        mAxisRendererLeft.computeAxis(minLeft, maxLeft);
-        mAxisRendererRight.computeAxis(minRight, maxRight);
-
+        mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum);
+        mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum);
+        
         // make sure the graph values and grid cannot be drawn outside the
         // content-rect
         int clipRestoreCount = mDrawCanvas.save();
@@ -256,14 +251,16 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
     private void prepareValuePxMatrix() {
 
-        if(mLogEnabled) Log.i(LOG_TAG, "Preparing Value-Px Matrix, deltaLeft: " + mDeltaYLeft + ", deltaRight: " + mDeltaYRight);
-        
+        if (mLogEnabled)
+            Log.i(LOG_TAG, "Preparing Value-Px Matrix, deltaLeft: " + mDeltaYLeft
+                    + ", deltaRight: " + mDeltaYRight);
+
         mRightAxisTransformer.prepareMatrixValuePx(mDeltaX, mDeltaYRight,
                 mAxisRight.mAxisMinimum);
         mLeftAxisTransformer.prepareMatrixValuePx(mDeltaX, mDeltaYLeft,
                 mAxisLeft.mAxisMinimum);
     }
-    
+
     protected void prepareOffsetMatrix() {
 
         mRightAxisTransformer.prepareMatrixOffset(mAxisRight.isInverted());
@@ -272,7 +269,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
     @Override
     public void notifyDataSetChanged() {
-        
+
         if (mDataNotSet) {
             if (mLogEnabled)
                 Log.i(LOG_TAG, "Preparing... DATA NOT SET.");
@@ -281,22 +278,89 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             if (mLogEnabled)
                 Log.i(LOG_TAG, "Preparing...");
         }
-             
-        calcMinMax(false);
-        
-        float minLeft = mData.getYMin(AxisDependency.LEFT);
-        float maxLeft = mData.getYMax(AxisDependency.LEFT);
-        float minRight = mData.getYMin(AxisDependency.RIGHT);
-        float maxRight = mData.getYMax(AxisDependency.RIGHT);
 
-        mAxisRendererLeft.computeAxis(minLeft, maxLeft);
-        mAxisRendererRight.computeAxis(minRight, maxRight);
+        calcMinMax();
+
+        mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum);
+        mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum);
 
         mXAxisRenderer.computeAxis(mData.getXValAverageLength(), mData.getXVals());
 
         prepareLegend();
 
-        calculateOffsets();        
+        calculateOffsets();
+    }
+
+    @Override
+    protected void calcMinMax() {
+
+        float minLeft = mData.getYMin(AxisDependency.LEFT);
+        float maxLeft = mData.getYMax(AxisDependency.LEFT);
+        float minRight = mData.getYMin(AxisDependency.RIGHT);
+        float maxRight = mData.getYMax(AxisDependency.RIGHT);
+        
+        float leftRange = Math.abs(maxLeft - minLeft);
+        float rightRange = Math.abs(maxRight - minRight);
+        
+        float topSpaceLeft = leftRange / 100f * mAxisLeft.getSpaceTop();
+        float topSpaceRight = rightRange / 100f * mAxisRight.getSpaceTop();
+        float bottomSpaceLeft = leftRange / 100f * mAxisLeft.getSpaceBottom();
+        float bottomSpaceRight = rightRange / 100f * mAxisRight.getSpaceBottom();
+
+        mDeltaX = mData.getXVals().size() - 1;
+
+        mAxisLeft.mAxisMaximum = maxLeft + topSpaceLeft;
+        mAxisRight.mAxisMaximum = maxRight + topSpaceRight;
+        mAxisLeft.mAxisMinimum = minLeft - bottomSpaceLeft;
+        mAxisRight.mAxisMinimum = minRight - bottomSpaceRight;
+
+        mDeltaYLeft = Math.abs(mAxisLeft.mAxisMaximum - mAxisLeft.mAxisMinimum);
+        mDeltaYRight = Math.abs(mAxisRight.mAxisMaximum - mAxisRight.mAxisMinimum);
+
+        // // only calculate values if not fixed values
+        // if (!fixedValues) {
+        // mYChartMin = mData.getYMin();
+        // mYChartMax = mData.getYMax();
+        // }
+        //
+        // // calc delta
+        // mDeltaY = Math.abs(mYChartMax - mYChartMin);
+        // mDeltaX = mData.getXVals().size() - 1;
+        //
+        // if (!fixedValues) {
+        //
+        // // additional handling for space (default 15% space)
+        // // float space = Math.abs(mDeltaY / 100f * 15f);
+        // float space = Math
+        // .abs(Math.abs(Math.max(Math.abs(mYChartMax), Math.abs(mYChartMin))) /
+        // 100f * 20f);
+        //
+        // if (Math.abs(mYChartMax - mYChartMin) < 0.00001f) {
+        // if (Math.abs(mYChartMax) < 10f)
+        // space = 1f;
+        // else
+        // space = Math.abs(mYChartMax / 100f * 20f);
+        // }
+        //
+        // if (mStartAtZero) {
+        //
+        // if (mYChartMax < 0) {
+        // mYChartMax = 0;
+        // // calc delta
+        // mYChartMin = mYChartMin - space;
+        // } else {
+        // mYChartMin = 0;
+        // // calc delta
+        // mYChartMax = mYChartMax + space;
+        // }
+        // } else {
+        //
+        // mYChartMin = mYChartMin - space / 2f;
+        // mYChartMax = mYChartMax + space / 2f;
+        // }
+        // }
+        //
+        // mDeltaY = Math.abs(mYChartMax - mYChartMin);
     }
 
     @Override
@@ -450,68 +514,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         if (mLogEnabled)
             Log.i(LOG_TAG, "X-Axis modulus: " + mXAxis.mAxisLabelModulus + ", x-axis label width: "
                     + mXAxis.mLabelWidth + ", content width: " + mViewPortHandler.contentWidth());
-    }
-
-    @Override
-    protected void calcMinMax(boolean fixedValues) {
-        
-        float minLeft = mData.getYMin(AxisDependency.LEFT);
-        float maxLeft = mData.getYMax(AxisDependency.LEFT);
-        float minRight = mData.getYMin(AxisDependency.RIGHT);
-        float maxRight = mData.getYMax(AxisDependency.RIGHT);
-        
-        mDeltaX = mData.getXVals().size() - 1;
-        mDeltaYLeft = Math.abs(maxLeft - minLeft);
-        mDeltaYRight = Math.abs(maxRight - minRight);
-      
-        mAxisLeft.mAxisMaximum = maxLeft;
-        mAxisRight.mAxisMaximum = maxRight;
-        mAxisLeft.mAxisMinimum = minLeft;
-        mAxisRight.mAxisMinimum = minRight;
-
-//        // only calculate values if not fixed values
-//        if (!fixedValues) {
-//            mYChartMin = mData.getYMin();
-//            mYChartMax = mData.getYMax();
-//        }
-//
-//        // calc delta
-//        mDeltaY = Math.abs(mYChartMax - mYChartMin);
-//        mDeltaX = mData.getXVals().size() - 1;
-//
-//        if (!fixedValues) {
-//
-//            // additional handling for space (default 15% space)
-//            // float space = Math.abs(mDeltaY / 100f * 15f);
-//            float space = Math
-//                    .abs(Math.abs(Math.max(Math.abs(mYChartMax), Math.abs(mYChartMin))) / 100f * 20f);
-//
-//            if (Math.abs(mYChartMax - mYChartMin) < 0.00001f) {
-//                if (Math.abs(mYChartMax) < 10f)
-//                    space = 1f;
-//                else
-//                    space = Math.abs(mYChartMax / 100f * 20f);
-//            }
-//
-//            if (mStartAtZero) {
-//
-//                if (mYChartMax < 0) {
-//                    mYChartMax = 0;
-//                    // calc delta
-//                    mYChartMin = mYChartMin - space;
-//                } else {
-//                    mYChartMin = 0;
-//                    // calc delta
-//                    mYChartMax = mYChartMax + space;
-//                }
-//            } else {
-//
-//                mYChartMin = mYChartMin - space / 2f;
-//                mYChartMax = mYChartMax + space / 2f;
-//            }
-//        }
-//
-//        mDeltaY = Math.abs(mYChartMax - mYChartMin);
     }
 
     @Override

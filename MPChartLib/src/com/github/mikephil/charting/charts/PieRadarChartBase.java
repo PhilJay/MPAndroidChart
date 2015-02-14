@@ -56,7 +56,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     }
     
     @Override
-    protected void calcMinMax(boolean fixedValues) {
+    protected void calcMinMax() {
         mDeltaX = mData.getXVals().size() - 1;
     }
 
@@ -74,7 +74,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
         if (mDataNotSet)
             return;
 
-        calcMinMax(false);
+        calcMinMax();
 
         prepareLegend();
 

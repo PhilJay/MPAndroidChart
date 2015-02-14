@@ -86,8 +86,8 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     }
 
     @Override
-    protected void calcMinMax(boolean fixedValues) {
-        super.calcMinMax(fixedValues);
+    protected void calcMinMax() {
+        super.calcMinMax();
 
         // additional handling for space (default 15% space)
         // float space = Math.abs(mDeltaY / 100f * 15f);

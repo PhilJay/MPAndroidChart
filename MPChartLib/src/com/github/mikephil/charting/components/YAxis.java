@@ -55,6 +55,9 @@ public class YAxis extends AxisBase {
 
     protected float mCustomAxisMax = Float.NaN;
 
+    protected float mSpacePercentTop = 10f;
+    protected float mSpacePercentBottom = 10f;
+
     public float mAxisMaximum = 0f;
     public float mAxisMinimum = 0f;
 
@@ -331,6 +334,42 @@ public class YAxis extends AxisBase {
      */
     public void resetAxisMaxValue() {
         mCustomAxisMax = Float.NaN;
+    }
+
+    /**
+     * Sets the top axis space in percent of the full range. Default 10f
+     * 
+     * @param percent
+     */
+    public void setSpaceTop(float percent) {
+        mSpacePercentTop = percent;
+    }
+
+    /**
+     * Returns the top axis space in percent of the full range. Default 10f
+     * 
+     * @return
+     */
+    public float getSpaceTop() {
+        return mSpacePercentTop;
+    }
+
+    /**
+     * Sets the bottom axis space in percent of the full range. Default 10f
+     * 
+     * @param percent
+     */
+    public void setSpaceBottom(float percent) {
+        mSpacePercentBottom = percent;
+    }
+
+    /**
+     * Returns the bottom axis space in percent of the full range. Default 10f
+     * 
+     * @return
+     */
+    public float getSpaceBottom() {
+        return mSpacePercentBottom;
     }
 
     /**
