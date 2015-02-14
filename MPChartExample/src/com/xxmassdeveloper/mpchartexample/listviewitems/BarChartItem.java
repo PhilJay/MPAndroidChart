@@ -53,15 +53,21 @@ public class BarChartItem extends ChartItem {
         holder.chart.setDrawGridBackground(false);
         holder.chart.setDrawBarShadow(false);
 
-        XAxis xl = holder.chart.getXAxis();
-        xl.setCenterXLabelText(true);
-        xl.setPosition(XLabelPosition.BOTTOM);
-        xl.setTypeface(mTf);
-        xl.setDrawGridLines(false);
+        XAxis xAxis = holder.chart.getXAxis();
+        xAxis.setCenterXLabelText(true);
+        xAxis.setPosition(XLabelPosition.BOTTOM);
+        xAxis.setTypeface(mTf);
+        xAxis.setDrawGridLines(false);
         
-        YAxis yl = holder.chart.getAxisLeft();
-        yl.setTypeface(mTf);
-        yl.setLabelCount(5);
+        YAxis leftAxis = holder.chart.getAxisLeft();
+        leftAxis.setTypeface(mTf);
+        leftAxis.setLabelCount(5);
+        leftAxis.setSpaceTop(20f);
+       
+        YAxis rightAxis = holder.chart.getAxisRight();
+        rightAxis.setTypeface(mTf);
+        rightAxis.setLabelCount(5);
+        rightAxis.setSpaceTop(20f);
 
         // set data
         holder.chart.setData((BarData) mChartData);

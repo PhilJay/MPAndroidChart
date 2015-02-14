@@ -13,7 +13,6 @@ import android.widget.ListView;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -105,6 +104,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         d1.setLineWidth(3f);
         d1.setCircleSize(5f);
         d1.setHighLightColor(Color.rgb(244, 117, 117));
+        d1.setDrawValues(false);
         
         ArrayList<Entry> e2 = new ArrayList<Entry>();
 
@@ -118,6 +118,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         d2.setHighLightColor(Color.rgb(244, 117, 117));
         d2.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
         d2.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0]);
+        d2.setDrawValues(false);
         
         ArrayList<LineDataSet> sets = new ArrayList<LineDataSet>();
         sets.add(d1);

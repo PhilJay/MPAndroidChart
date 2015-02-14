@@ -1,5 +1,5 @@
 
-package com.xxmassdeveloper.mpchartexample;
+package com.xxmassdeveloper.mpchartexample.custom;
 
 import android.content.Context;
 import android.widget.TextView;
@@ -8,6 +8,8 @@ import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.Utils;
+import com.xxmassdeveloper.mpchartexample.R;
+import com.xxmassdeveloper.mpchartexample.R.id;
 
 /**
  * Custom implementation of the MarkerView.

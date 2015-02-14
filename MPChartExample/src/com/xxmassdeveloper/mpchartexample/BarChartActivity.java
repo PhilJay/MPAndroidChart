@@ -20,8 +20,8 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XLabelPosition;
-import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -91,11 +91,16 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         xl.setTypeface(tf);
         xl.setDrawGridLines(false);
 
-        YAxis yl = mChart.getAxisLeft();
-        yl.setTypeface(tf);
-        yl.setLabelCount(8);
+        YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.setTypeface(tf);
+        leftAxis.setLabelCount(8);
 
-        mChart.getAxisRight().setDrawGridLines(false);
+        YAxis rightAxis = mChart.getAxisRight();
+        rightAxis.setDrawGridLines(false);
+        rightAxis.setTypeface(tf);
+        rightAxis.setLabelCount(8);
+        
+        mChart.setValueFormatter(new MyValueFormatter());
 
         mChart.setValueTypeface(tf);
 

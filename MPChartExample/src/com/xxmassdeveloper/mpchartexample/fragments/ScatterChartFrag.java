@@ -10,8 +10,8 @@ import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.xxmassdeveloper.mpchartexample.MyMarkerView;
 import com.xxmassdeveloper.mpchartexample.R;
+import com.xxmassdeveloper.mpchartexample.custom.MyMarkerView;
 
 
 public class ScatterChartFrag extends SimpleFragment {

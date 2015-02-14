@@ -59,9 +59,14 @@ public class LineChartItem extends ChartItem {
         xl.setTypeface(mTf);
         xl.setDrawGridLines(false);
 
-        YAxis yl = holder.chart.getAxisLeft();
-        yl.setTypeface(mTf);
-        yl.setLabelCount(5);
+        YAxis leftAxis = holder.chart.getAxisLeft();
+        leftAxis.setTypeface(mTf);
+        leftAxis.setLabelCount(5);
+        
+        YAxis rightAxis = holder.chart.getAxisRight();
+        rightAxis.setTypeface(mTf);
+        rightAxis.setLabelCount(5);
+        rightAxis.setDrawGridLines(false);
 
         // set data
         holder.chart.setData((LineData) mChartData);
