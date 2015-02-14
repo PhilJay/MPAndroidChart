@@ -13,6 +13,10 @@ public class BarData extends BarLineScatterCandleData<BarDataSet> {
     /** the space that is left between groups of bars */
     private float mGroupSpace = 0.8f;
     
+    public BarData() {
+        super();
+    }
+    
     public BarData(ArrayList<String> xVals) {
         super(xVals);
     }

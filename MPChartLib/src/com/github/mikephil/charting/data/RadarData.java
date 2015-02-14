@@ -10,6 +10,10 @@ import java.util.ArrayList;
  */
 public class RadarData extends ChartData<RadarDataSet> {
 
+    public RadarData() {
+        super();
+    }
+    
     public RadarData(ArrayList<String> xVals) {
         super(xVals);
     }

@@ -12,6 +12,10 @@ import java.util.ArrayList;
  */
 public class PieData extends ChartData<PieDataSet> {
     
+    public PieData() {
+        super();
+    }
+    
     public PieData(ArrayList<String> xVals) {
         super(xVals);
     }

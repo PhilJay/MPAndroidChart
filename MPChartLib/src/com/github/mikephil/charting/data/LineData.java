@@ -4,6 +4,10 @@ package com.github.mikephil.charting.data;
 import java.util.ArrayList;
 
 public class LineData extends BarLineScatterCandleData<LineDataSet> {
+
+    public LineData() {
+        super();
+    }
     
     public LineData(ArrayList<String> xVals) {
         super(xVals);

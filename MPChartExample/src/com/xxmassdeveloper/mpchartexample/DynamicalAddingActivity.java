@@ -35,7 +35,8 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
         mChart.setDrawGridBackground(false);
         mChart.setDescription("");
         
-        addEmptyData();
+        // add an empty data object
+        mChart.setData(new LineData());
 
         mChart.invalidate();
     }
@@ -56,6 +57,8 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
                 data.addDataSet(set);
             }
 
+            // add a new x-value first
+            data.addXValue((set.getEntryCount()+1) + "");
             data.addEntry(new Entry((float) (Math.random() * 50) + 50f, set.getEntryCount()), 0);
 
             // let the chart know it's data has changed
@@ -131,20 +134,22 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
         }
     }
     
-    private void addEmptyData() {
-        
-        // create 30 x-vals
-        String[] xVals = new String[30];
-
-        for (int i = 0; i < 30; i++)
-            xVals[i] = "" + i;
-
-        // create a chartdata object that contains only the x-axis labels (no entries or datasets)
-        LineData data = new LineData(xVals);
-
-        mChart.setData(data);
-        mChart.invalidate();
-    }
+//    private void addEmptyData() {
+//        
+//        int size = 1;
+//        
+//        // create 30 x-vals
+//        String[] xVals = new String[size];
+//
+//        for (int i = 0; i < size; i++)
+//            xVals[i] = "" + i;
+//
+//        // create a chartdata object that contains only the x-axis labels (no entries or datasets)
+//        LineData data = new LineData();
+//
+//        mChart.setData(data);
+//        mChart.invalidate();
+//    }
 
     @Override
     public void onValueSelected(Entry e, int dataSetIndex) {
@@ -183,7 +188,8 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
                 Toast.makeText(this, "DataSet removed!", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.actionAddEmptyLineData:
-                addEmptyData();
+                mChart.setData(new LineData());
+                mChart.invalidate();
                 Toast.makeText(this, "Empty data added!", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.actionClear:

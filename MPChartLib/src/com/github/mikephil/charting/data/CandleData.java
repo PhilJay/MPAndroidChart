@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 public class CandleData extends BarLineScatterCandleData<CandleDataSet> {
 
+    public CandleData() {
+        super();
+    }
+    
     public CandleData(ArrayList<String> xVals) {
         super(xVals);
     }

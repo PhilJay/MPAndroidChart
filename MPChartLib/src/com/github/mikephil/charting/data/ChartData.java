@@ -47,6 +47,11 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /** array that holds all DataSets the ChartData object represents */
     protected ArrayList<T> mDataSets;
+    
+    public ChartData() {
+        mXVals = new ArrayList<String>();
+        mDataSets = new ArrayList<T>();
+    }
 
     /**
      * Constructor for only x-values. This constructor can be used for setting
@@ -399,6 +404,24 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      */
     public ArrayList<String> getXVals() {
         return mXVals;
+    }
+
+    /**
+     * Adds a new x-value to the chart data.
+     * 
+     * @param xVal
+     */
+    public void addXValue(String xVal) {
+        mXVals.add(xVal);
+    }
+
+    /**
+     * Removes the x-value at the specified index.
+     * 
+     * @param index
+     */
+    public void removeXValue(int index) {
+        mXVals.remove(index);
     }
 
     /**
