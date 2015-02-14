@@ -224,7 +224,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             }
 
             // right axis
-            T firstRight = getFirstLeft();
+            T firstRight = getFirstRight();
 
             if (firstRight != null) {
 
@@ -241,12 +241,12 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
                     }
                 }
             }
-
+            
             // in case there is only one axis, adjust the second axis
             if (firstLeft == null) {
                 mLeftAxisMax = mRightAxisMax;
                 mLeftAxisMin = mRightAxisMin;
-            } else {
+            } else if (firstRight == null) {
                 mRightAxisMax = mLeftAxisMax;
                 mRightAxisMin = mLeftAxisMin;
             }
@@ -311,7 +311,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     public float getYMin() {
         return mYMin;
     }
-    
+
     /**
      * Returns the minimum y-value for the specified axis.
      * 

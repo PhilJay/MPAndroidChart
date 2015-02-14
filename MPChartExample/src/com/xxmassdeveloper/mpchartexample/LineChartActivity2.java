@@ -17,6 +17,7 @@ import com.github.mikephil.charting.charts.BarLineChartBase.BorderPosition;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
+import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.DataSet;
@@ -108,11 +109,16 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         xl.setTypeface(tf);
         xl.setTextColor(Color.WHITE);
 
-        YAxis yl = mChart.getAxisLeft();
-        yl.setTypeface(tf);
-        yl.setTextColor(Color.WHITE);
-        yl.setAxisMaxValue(300);
-        yl.setAxisMinValue(-100f);
+        YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.setTypeface(tf);
+        leftAxis.setTextColor(ColorTemplate.getHoloBlue());
+        
+        YAxis rightAxis = mChart.getAxisRight();
+        rightAxis.setTypeface(tf);
+        rightAxis.setTextColor(Color.RED);
+        
+//        yl.setAxisMaxValue(300f);
+//        yl.setAxisMinValue(-100f);
     }
 
     @Override
@@ -265,18 +271,19 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             xVals.add((i) + "");
         }
 
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
+        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
 
         for (int i = 0; i < count; i++) {
             float mult = (range + 1);
             float val = (float) (Math.random() * mult) + 3;// + (float)
                                                            // ((mult *
                                                            // 0.1) / 10);
-            yVals.add(new Entry(val, i));
+            yVals1.add(new Entry(val, i));
         }
 
         // create a dataset and give it a type
-        LineDataSet set1 = new LineDataSet(yVals, "DataSet 1");
+        LineDataSet set1 = new LineDataSet(yVals1, "DataSet 1");
+        set1.setAxisDependency(AxisDependency.LEFT);
         set1.setColor(ColorTemplate.getHoloBlue());
         set1.setCircleColor(ColorTemplate.getHoloBlue());
         set1.setLineWidth(2f);
@@ -285,8 +292,30 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         set1.setFillColor(ColorTemplate.getHoloBlue());
         set1.setHighLightColor(Color.rgb(244, 117, 117));
 
+        ArrayList<Entry> yVals2 = new ArrayList<Entry>();
+
+        for (int i = 0; i < count; i++) {
+            float mult = (range / 10);
+            float val = (float) (Math.random() * mult) + 500;// + (float)
+                                                           // ((mult *
+                                                           // 0.1) / 10);
+            yVals2.add(new Entry(val, i));
+        }
+
+        // create a dataset and give it a type
+        LineDataSet set2 = new LineDataSet(yVals2, "DataSet 2");
+        set2.setAxisDependency(AxisDependency.RIGHT);
+        set2.setColor(Color.RED);
+        set2.setCircleColor(Color.RED);
+        set2.setLineWidth(2f);
+        set2.setCircleSize(4f);
+        set2.setFillAlpha(65);
+        set2.setFillColor(Color.RED);
+        set2.setHighLightColor(Color.rgb(244, 117, 117));
+
         ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
-        dataSets.add(set1); // add the datasets
+        dataSets.add(set1);
+        dataSets.add(set2); // add the datasets
 
         // create a data object with the datasets
         LineData data = new LineData(xVals, dataSets);
