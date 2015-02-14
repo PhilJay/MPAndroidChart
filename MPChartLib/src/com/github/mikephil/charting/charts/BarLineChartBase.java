@@ -83,15 +83,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     protected boolean mHighLightIndicatorEnabled = true;
 
-    /** flag indicating if the vertical grid should be drawn or not */
-    protected boolean mDrawVerticalGrid = true;
-
-    /** flag indicating if the horizontal grid should be drawn or not */
-    protected boolean mDrawHorizontalGrid = true;
-
-    /** flag indicating if the y-labels should be drawn or not */
-    protected boolean mDrawYAxis = true;
-
     /** flag indicating if the x-labels should be drawn or not */
     protected boolean mDrawXLabels = true;
 
@@ -221,14 +212,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         mRenderer.drawExtras(mDrawCanvas);
 
-        if (mDrawXLabels) {
-            mXAxisRenderer.renderAxis(mDrawCanvas);
-        }
+        mXAxisRenderer.renderAxis(mDrawCanvas);
 
-        if (mDrawYAxis) {
-            mAxisRendererLeft.renderAxis(mDrawCanvas);
-            mAxisRendererRight.renderAxis(mDrawCanvas);
-        }
+        mAxisRendererLeft.renderAxis(mDrawCanvas);
+
+        mAxisRendererRight.renderAxis(mDrawCanvas);
 
         mRenderer.drawValues(mDrawCanvas);
 
@@ -296,8 +284,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         float minRight = mData.getYMin(AxisDependency.RIGHT);
         float maxRight = mData.getYMax(AxisDependency.RIGHT);
 
-        float leftRange = Math.abs(maxLeft - minLeft);
-        float rightRange = Math.abs(maxRight - minRight);
+        float leftRange = Math.abs(maxLeft - (mAxisLeft.isStartAtZeroEnabled() ? 0 : minLeft));
+        float rightRange = Math.abs(maxRight - (mAxisRight.isStartAtZeroEnabled() ? 0 : minRight));
 
         float topSpaceLeft = leftRange / 100f * mAxisLeft.getSpaceTop();
         float topSpaceRight = rightRange / 100f * mAxisRight.getSpaceTop();
@@ -314,6 +302,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 .getAxisMinValue() : minLeft - bottomSpaceLeft;
         mAxisRight.mAxisMinimum = !Float.isNaN(mAxisRight.getAxisMinValue()) ? mAxisRight
                 .getAxisMinValue() : minRight - bottomSpaceRight;
+
+        if (mAxisLeft.isStartAtZeroEnabled())
+            mAxisLeft.mAxisMinimum = 0f;
+        if (mAxisRight.isStartAtZeroEnabled())
+            mAxisRight.mAxisMinimum = 0f;
 
         mAxisLeft.mAxisRange = Math.abs(mAxisLeft.mAxisMaximum - mAxisLeft.mAxisMinimum);
         mAxisRight.mAxisRange = Math.abs(mAxisRight.mAxisMaximum - mAxisRight.mAxisMinimum);
@@ -400,30 +393,25 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         float yleft = 0f, yright = 0f;
 
-        // String label = mYLabels.getFormattedLabel(mYLabels.mEntryCount - 1);
+        // offsets for y-labels
+        if (mAxisLeft.isEnabled()) {
+            String label = mAxisLeft.getLongestLabel();
 
-        if (mDrawYAxis) {
+            // calculate the maximum y-label width (including eventual
+            // offsets)
+            float ylabelwidth = Utils.calcTextWidth(mAxisRendererLeft.getAxisPaint(),
+                    label + (mAxisLeft.mAxisMinimum < 0 ? "----" : "+++")); // offsets
+            yleft = ylabelwidth + mAxisRendererLeft.getXOffset() / 2f;
+        }
 
-            // offsets for y-labels
-            if (mAxisLeft.isEnabled()) {
-                String label = mAxisLeft.getLongestLabel();
+        if (mAxisRight.isEnabled()) {
+            String label = mAxisRight.getLongestLabel();
 
-                // calculate the maximum y-label width (including eventual
-                // offsets)
-                float ylabelwidth = Utils.calcTextWidth(mAxisRendererLeft.getAxisPaint(),
-                        label + (mAxisLeft.mAxisMinimum < 0 ? "----" : "+++")); // offsets
-                yleft = ylabelwidth + mAxisRendererLeft.getXOffset() / 2f;
-            }
-
-            if (mAxisRight.isEnabled()) {
-                String label = mAxisRight.getLongestLabel();
-
-                // calculate the maximum y-label width (including eventual
-                // offsets)
-                float ylabelwidth = Utils.calcTextWidth(mAxisRendererRight.getAxisPaint(),
-                        label + (mAxisLeft.mAxisMinimum < 0 ? "----" : "+++")); // offsets
-                yright = ylabelwidth + mAxisRendererRight.getXOffset() / 2f;
-            }
+            // calculate the maximum y-label width (including eventual
+            // offsets)
+            float ylabelwidth = Utils.calcTextWidth(mAxisRendererRight.getAxisPaint(),
+                    label + (mAxisLeft.mAxisMinimum < 0 ? "----" : "+++")); // offsets
+            yright = ylabelwidth + mAxisRendererRight.getXOffset() / 2f;
         }
 
         float xtop = 0f, xbottom = 0f;
@@ -979,42 +967,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     public boolean isDoubleTapToZoomEnabled() {
         return mDoubleTapToZoomEnabled;
-    }
-
-    /**
-     * if set to true, the vertical grid will be drawn, default: true
-     * 
-     * @param enabled
-     */
-    public void setDrawVerticalGrid(boolean enabled) {
-        mDrawVerticalGrid = enabled;
-    }
-
-    /**
-     * if set to true, the horizontal grid will be drawn, default: true
-     * 
-     * @param enabled
-     */
-    public void setDrawHorizontalGrid(boolean enabled) {
-        mDrawHorizontalGrid = enabled;
-    }
-
-    /**
-     * returns true if drawing the vertical grid is enabled, false if not
-     * 
-     * @return
-     */
-    public boolean isDrawVerticalGridEnabled() {
-        return mDrawVerticalGrid;
-    }
-
-    /**
-     * returns true if drawing the horizontal grid is enabled, false if not
-     * 
-     * @return
-     */
-    public boolean isDrawHorizontalGridEnabled() {
-        return mDrawHorizontalGrid;
     }
 
     /**

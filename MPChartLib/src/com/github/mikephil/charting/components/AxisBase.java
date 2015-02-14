@@ -25,10 +25,13 @@ public abstract class AxisBase {
     /** the color of the axis lines */
     private int mAxisColor = Color.BLACK;
 
-    private int mGridColor = Color.GRAY;
+    private int mGridColor = Color.GRAY;    
+
+    /** flag that indicates if this axis is enabled or not */
+    protected boolean mEnabled = true;
 
     /** flag indicating if the grid lines for this axis should be drawn */
-    private boolean mDrawGridLines = true;
+    protected boolean mDrawGridLines = true;
 
     /** default constructor */
     public AxisBase() {
@@ -149,5 +152,23 @@ public abstract class AxisBase {
      */
     public int getGridColor() {
         return mGridColor;
+    }  
+
+    /**
+     * Set this to true to enable this axis from being drawn to the screen.
+     * 
+     * @param enabled
+     */
+    public void setEnabled(boolean enabled) {
+        mEnabled = enabled;
+    }
+
+    /**
+     * Returns true if the axis is enabled (will be drawn).
+     * 
+     * @return
+     */
+    public boolean isEnabled() {
+        return mEnabled;
     }
 }

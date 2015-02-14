@@ -58,15 +58,15 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
         mChart.setPinchZoom(false);
 
         mChart.setDrawBarShadow(false);
-
-        mChart.setDrawVerticalGrid(false);
-        mChart.setDrawHorizontalGrid(false);
         mChart.setDrawGridBackground(false);
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XLabelPosition.BOTTOM);
         xAxis.setCenterXLabelText(true);
         xAxis.setSpaceBetweenLabels(0);
+        xAxis.setDrawGridLines(false);
+        
+        mChart.getAxisLeft().setDrawGridLines(false);
 
         mChart.setDrawLegend(false);
 

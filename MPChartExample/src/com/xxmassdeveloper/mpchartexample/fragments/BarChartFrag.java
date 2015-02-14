@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.xxmassdeveloper.mpchartexample.MyMarkerView;
 import com.xxmassdeveloper.mpchartexample.R;
@@ -38,7 +39,6 @@ public class BarChartFrag extends SimpleFragment {
         mChart.setDrawBorder(false);
 //        mChart.setBorderStyles(new BorderStyle[] { BorderStyle.LEFT });
         mChart.setDrawGridBackground(false);
-        mChart.setDrawVerticalGrid(false);
         mChart.setDrawXLabels(false);
         mChart.setDrawBarShadow(false);
         
@@ -51,7 +51,9 @@ public class BarChartFrag extends SimpleFragment {
         
         YAxis labels = mChart.getAxisLeft();
         labels.setTypeface(tf);
-//        labels.setPosition(YLabelPosition.BOTH_SIDED);
+
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setDrawGridLines(false);
         
         // programatically add the chart
         FrameLayout parent = (FrameLayout) v.findViewById(R.id.parentLayout);

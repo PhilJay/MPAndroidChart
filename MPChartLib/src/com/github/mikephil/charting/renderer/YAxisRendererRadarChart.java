@@ -1,3 +1,4 @@
+
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
@@ -7,31 +8,32 @@ import android.graphics.PointF;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.interfaces.ChartInterface;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
 
 import java.util.ArrayList;
 
 public class YAxisRendererRadarChart extends YAxisRenderer {
-    
+
     private RadarChart mChart;
 
     public YAxisRendererRadarChart(ViewPortHandler viewPortHandler, YAxis yAxis, RadarChart chart) {
         super(viewPortHandler, yAxis, null);
-       
+
         mChart = chart;
     }
 
     @Override
     public void computeAxis(float yMin, float yMax) {
-        
-        
+
     }
-    
+
     @Override
     public void renderAxis(Canvas c) {
-        
+
+        if (!mYAxis.isEnabled())
+            return;
+
         mAxisPaint.setTypeface(mYAxis.getTypeface());
         mAxisPaint.setTextSize(mYAxis.getTextSize());
         mAxisPaint.setColor(mYAxis.getTextColor());
@@ -58,10 +60,10 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
             c.drawText(label, p.x + 10, p.y - 5, mAxisPaint);
         }
     }
-    
+
     @Override
     public void renderLimitLines(Canvas c, ValueFormatter valueFormatter) {
-        
+
         ArrayList<LimitLine> limitLines = mYAxis.getLimitLines();
 
         if (limitLines == null)

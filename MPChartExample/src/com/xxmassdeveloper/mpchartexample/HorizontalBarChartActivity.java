@@ -71,8 +71,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         // mChart.setDrawXLabels(false);
 
         mChart.setDrawGridBackground(false);
-        mChart.setDrawHorizontalGrid(true);
-        mChart.setDrawVerticalGrid(false);
+
         // mChart.setDrawYLabels(false);
 
         // sets the text size of the values inside the chart

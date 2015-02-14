@@ -79,7 +79,7 @@ public class XAxisRendererBarChart extends XAxisRenderer {
     @Override
     public void renderGridLines(Canvas c) {
 
-        if (!mXAxis.isDrawGridLinesEnabled())
+        if (!mXAxis.isDrawGridLinesEnabled() || !mXAxis.isEnabled())
             return;
 
         float[] position = new float[] {

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.xxmassdeveloper.mpchartexample.MyMarkerView;
 import com.xxmassdeveloper.mpchartexample.R;
@@ -41,10 +42,12 @@ public class ScatterChartFrag extends SimpleFragment {
         mChart.setDrawBorder(false);
 //        mChart.setBorderStyles(new BorderStyle[] { BorderStyle.LEFT });
         mChart.setDrawGridBackground(false);
-        mChart.setDrawVerticalGrid(false);
         mChart.setDrawXLabels(false);
 
         mChart.setData(generateScatterData(3, 10000, 150));
+        
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setDrawGridLines(false);
         
         Legend l = mChart.getLegend();
         l.setTypeface(tf);

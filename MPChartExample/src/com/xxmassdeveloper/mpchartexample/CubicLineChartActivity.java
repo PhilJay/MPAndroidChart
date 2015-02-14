@@ -74,7 +74,6 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         mChart.setPinchZoom(false);
 
         mChart.setDrawGridBackground(false);
-        mChart.setDrawVerticalGrid(false);
         
         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
         mChart.setValueTypeface(tf);
@@ -85,6 +84,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         YAxis y = mChart.getAxisLeft();
         y.setTypeface(tf);
         y.setLabelCount(5);
+        y.setDrawGridLines(false);
 
         // add data
         setData(45, 100);

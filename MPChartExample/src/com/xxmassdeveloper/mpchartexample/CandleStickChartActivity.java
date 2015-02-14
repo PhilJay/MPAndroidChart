@@ -56,7 +56,6 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
 
-        mChart.setDrawVerticalGrid(false);
         mChart.setDrawGridBackground(false);
 
         XAxis xLabels = mChart.getXAxis();
@@ -66,6 +65,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
 
         YAxis yLabels = mChart.getAxisLeft();  
         yLabels.setLabelCount(7);
+        yLabels.setDrawGridLines(false);
 //        yLabels.setPosition(YLabelPosition.LEFT);
 
         mChart.setDrawLegend(false);

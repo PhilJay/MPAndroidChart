@@ -59,6 +59,7 @@ public class YAxisRenderer extends AxisRenderer {
 
     /**
      * Computes the axis values.
+     * 
      * @param yMin - the minimum y-value in the data object for this axis
      * @param yMax - the maximum y-value in the data object for this axis
      */
@@ -165,6 +166,9 @@ public class YAxisRenderer extends AxisRenderer {
     @Override
     public void renderAxis(Canvas c) {
 
+        if (!mYAxis.isEnabled())
+            return;
+
         float[] positions = new float[mYAxis.mEntryCount * 2];
 
         for (int i = 0; i < positions.length; i += 2) {
@@ -235,7 +239,7 @@ public class YAxisRenderer extends AxisRenderer {
     @Override
     public void renderGridLines(Canvas c) {
 
-        if (!mYAxis.isDrawGridLinesEnabled())
+        if (!mYAxis.isDrawGridLinesEnabled() || !mYAxis.isEnabled())
             return;
 
         // pre alloc

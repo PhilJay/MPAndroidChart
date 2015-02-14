@@ -57,9 +57,7 @@ public class LineChartActivityColored extends DemoBase {
         // no description text
         chart.setDescription("");
         chart.setNoDataTextDescription("You need to provide data for the chart.");
-
-        // enable / disable grid lines
-        chart.setDrawVerticalGrid(false);
+        
         // mChart.setDrawHorizontalGrid(false);
         //
         // enable / disable grid background
@@ -102,6 +100,7 @@ public class LineChartActivityColored extends DemoBase {
         XAxis x = chart.getXAxis();
         x.setTextColor(Color.WHITE);
         x.setTypeface(mTf);
+        x.setDrawGridLines(false);
 
         // animate calls invalidate()...
         chart.animateX(2500);

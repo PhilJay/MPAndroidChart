@@ -87,7 +87,6 @@ public class ListViewBarChartActivity extends DemoBase {
             // apply styling
             holder.chart.setValueTypeface(mTf);
             holder.chart.setDescription("");
-            holder.chart.setDrawVerticalGrid(false);
             holder.chart.setDrawGridBackground(false);
             holder.chart.setValueTextColor(Color.WHITE);
 
@@ -95,6 +94,7 @@ public class ListViewBarChartActivity extends DemoBase {
             xl.setCenterXLabelText(true);
             xl.setPosition(XLabelPosition.BOTTOM);
             xl.setTypeface(mTf);
+            xl.setDrawGridLines(false);
             
             YAxis yl = holder.chart.getAxisLeft();
             yl.setTypeface(mTf);

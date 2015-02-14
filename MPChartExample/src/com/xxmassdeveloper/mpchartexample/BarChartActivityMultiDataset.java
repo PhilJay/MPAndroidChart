@@ -28,7 +28,8 @@ import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 
-public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarChangeListener, OnChartValueSelectedListener {
+public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarChangeListener,
+        OnChartValueSelectedListener {
 
     private BarChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
@@ -59,38 +60,41 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         mChart.setValueFormatter(new LargeValueFormatter());
 
         mChart.setDrawBarShadow(false);
-        
+
         mChart.setDrawGridBackground(false);
-        mChart.setDrawHorizontalGrid(false);
-        
+
         // create a custom MarkerView (extend MarkerView) and specify the layout
         // to use for it
         MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
 
         // define an offset to change the original position of the marker
         // (optional)
-//        mv.setOffsets(-mv.getMeasuredWidth() / 2, -mv.getMeasuredHeight());
+        // mv.setOffsets(-mv.getMeasuredWidth() / 2, -mv.getMeasuredHeight());
 
         // set the marker to the chart
         mChart.setMarkerView(mv);
 
         mSeekBarX.setProgress(10);
         mSeekBarY.setProgress(100);
-        
+
         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-        
+
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART_INSIDE);
         l.setTypeface(tf);
-        
-        XAxis xl  = mChart.getXAxis();
+
+        XAxis xl = mChart.getXAxis();
         xl.setCenterXLabelText(true);
         xl.setTypeface(tf);
-        
-        YAxis yl = mChart.getAxisLeft();
-        yl.setTypeface(tf);
-        yl.setFormatter(new LargeValueFormatter());
-        
+
+        YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.setTypeface(tf);
+        leftAxis.setFormatter(new LargeValueFormatter());
+        leftAxis.setDrawGridLines(false);
+        leftAxis.setSpaceTop(25f);
+
+        mChart.getAxisRight().setEnabled(false);
+
         mChart.setValueTypeface(tf);
     }
 
@@ -144,7 +148,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
             }
             case R.id.actionToggleAdjustXLegend: {
                 XAxis xAxis = mChart.getXAxis();
-                
+
                 if (xAxis.isAdjustXLabelsEnabled())
                     xAxis.setAdjustXLabels(false);
                 else
@@ -177,19 +181,19 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        
+
         tvX.setText("" + (mSeekBarX.getProgress() + 1));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
         ArrayList<String> xVals = new ArrayList<String>();
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-            xVals.add((i+1990) + "");
+            xVals.add((i + 1990) + "");
         }
 
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
         ArrayList<BarEntry> yVals2 = new ArrayList<BarEntry>();
         ArrayList<BarEntry> yVals3 = new ArrayList<BarEntry>();
-        
+
         float mult = mSeekBarY.getProgress() * 10000000f;
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
@@ -209,20 +213,21 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
 
         // create 3 datasets with different types
         BarDataSet set1 = new BarDataSet(yVals1, "Company A");
-//        set1.setColors(ColorTemplate.createColors(getApplicationContext(), ColorTemplate.FRESH_COLORS));
+        // set1.setColors(ColorTemplate.createColors(getApplicationContext(),
+        // ColorTemplate.FRESH_COLORS));
         set1.setColor(Color.rgb(104, 241, 175));
         BarDataSet set2 = new BarDataSet(yVals2, "Company B");
         set2.setColor(Color.rgb(164, 228, 251));
         BarDataSet set3 = new BarDataSet(yVals3, "Company C");
         set3.setColor(Color.rgb(242, 247, 158));
-        
+
         ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
         dataSets.add(set1);
         dataSets.add(set2);
         dataSets.add(set3);
 
         BarData data = new BarData(xVals, dataSets);
-        
+
         // add space between the dataset groups in percent of bar-width
         data.setGroupSpace(110f);
 
@@ -241,12 +246,12 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         // TODO Auto-generated method stub
 
     }
-    
+
     @Override
     public void onValueSelected(Entry e, int dataSetIndex) {
         Log.i("Activity", "Selected: " + e.toString() + ", dataSet: " + dataSetIndex);
     }
-    
+
     @Override
     public void onNothingSelected() {
         Log.i("Activity", "Nothing selected.");

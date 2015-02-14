@@ -46,6 +46,9 @@ public class XAxisRenderer extends AxisRenderer {
     @Override
     public void renderAxis(Canvas c) {
 
+        if (!mXAxis.isEnabled())
+            return;
+
         float yoffset = Utils.convertDpToPixel(4f);
 
         mAxisPaint.setTypeface(mXAxis.getTypeface());
@@ -129,7 +132,7 @@ public class XAxisRenderer extends AxisRenderer {
     @Override
     public void renderGridLines(Canvas c) {
 
-        if (!mXAxis.isDrawGridLinesEnabled())
+        if (!mXAxis.isDrawGridLinesEnabled() || !mXAxis.isEnabled())
             return;
 
         float[] position = new float[] {

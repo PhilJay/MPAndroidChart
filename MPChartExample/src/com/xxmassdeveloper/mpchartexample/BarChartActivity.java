@@ -56,7 +56,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         mChart = (BarChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
-        
+
         mChart.setDrawValueAboveBar(true);
 
         mChart.setDescription("");
@@ -70,12 +70,10 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         // draw shadows for each bar that show the maximum value
         // mChart.setDrawBarShadow(true);
-        
+
         // mChart.setDrawXLabels(false);
 
         mChart.setDrawGridBackground(false);
-        mChart.setDrawHorizontalGrid(true);
-        mChart.setDrawVerticalGrid(false);
         // mChart.setDrawYLabels(false);
 
         // sets the text size of the values inside the chart
@@ -91,11 +89,13 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         xl.setPosition(XLabelPosition.BOTTOM);
         xl.setCenterXLabelText(true);
         xl.setTypeface(tf);
+        xl.setDrawGridLines(false);
 
         YAxis yl = mChart.getAxisLeft();
         yl.setTypeface(tf);
         yl.setLabelCount(8);
-//        yl.setPosition(YLabelPosition.BOTH_SIDED);
+
+        mChart.getAxisRight().setDrawGridLines(false);
 
         mChart.setValueTypeface(tf);
 

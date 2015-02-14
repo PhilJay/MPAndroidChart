@@ -51,13 +51,13 @@ public class LineChartItem extends ChartItem {
         // apply styling
         // holder.chart.setValueTypeface(mTf);
         holder.chart.setDescription("");
-        holder.chart.setDrawVerticalGrid(false);
         holder.chart.setDrawGridBackground(false);
 
         XAxis xl = holder.chart.getXAxis();
         xl.setCenterXLabelText(true);
         xl.setPosition(XLabelPosition.BOTTOM);
         xl.setTypeface(mTf);
+        xl.setDrawGridLines(false);
 
         YAxis yl = holder.chart.getAxisLeft();
         yl.setTypeface(mTf);

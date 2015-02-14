@@ -80,17 +80,15 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         mChart.setDragEnabled(true);
         mChart.setScaleEnabled(true);
         mChart.setDrawGridBackground(false);
-        mChart.setDrawVerticalGrid(false);
-        mChart.setDrawHorizontalGrid(false);
 
         // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(true);
 
         // set an alternative background color
-        mChart.setBackgroundColor(Color.GRAY);
+        mChart.setBackgroundColor(Color.LTGRAY);
 
         // add data
-        setData(45, 100);
+        setData(20, 30);
 
         mChart.animateX(2500);
 
@@ -108,14 +106,18 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         XAxis xl = mChart.getXAxis();
         xl.setTypeface(tf);
         xl.setTextColor(Color.WHITE);
+        xl.setDrawGridLines(false);
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(tf);
         leftAxis.setTextColor(ColorTemplate.getHoloBlue());
+        leftAxis.setAxisMaxValue(200f);
+        leftAxis.setDrawGridLines(true);
         
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setTypeface(tf);
         rightAxis.setTextColor(Color.RED);
+        rightAxis.setDrawGridLines(false);
         
 //        yl.setAxisMaxValue(300f);
 //        yl.setAxisMinValue(-100f);
@@ -274,8 +276,8 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
 
         for (int i = 0; i < count; i++) {
-            float mult = (range + 1);
-            float val = (float) (Math.random() * mult) + 3;// + (float)
+            float mult = range / 2f;
+            float val = (float) (Math.random() * mult) + 50;// + (float)
                                                            // ((mult *
                                                            // 0.1) / 10);
             yVals1.add(new Entry(val, i));
@@ -295,8 +297,8 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         ArrayList<Entry> yVals2 = new ArrayList<Entry>();
 
         for (int i = 0; i < count; i++) {
-            float mult = (range / 10);
-            float val = (float) (Math.random() * mult) + 500;// + (float)
+            float mult = range;
+            float val = (float) (Math.random() * mult) + 450;// + (float)
                                                            // ((mult *
                                                            // 0.1) / 10);
             yVals2.add(new Entry(val, i));

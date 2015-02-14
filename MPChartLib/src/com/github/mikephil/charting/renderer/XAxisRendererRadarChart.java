@@ -21,6 +21,9 @@ public class XAxisRendererRadarChart extends XAxisRenderer {
     @Override
     public void renderAxis(Canvas c) {
 
+        if (!mXAxis.isEnabled())
+            return;
+
         mAxisPaint.setTypeface(mXAxis.getTypeface());
         mAxisPaint.setTextSize(mXAxis.getTextSize());
         mAxisPaint.setColor(mXAxis.getTextColor());

@@ -37,9 +37,6 @@ public class YAxis extends AxisBase {
     /** if true, the y-labels show only the minimum and maximum value */
     protected boolean mShowOnlyMinMax = false;
 
-    /** flag that indicates if this axis is enabled or not */
-    protected boolean mEnabled = true;
-
     /** flag that indicates if the axis is inverted or not */
     protected boolean mInverted = false;
 
@@ -60,7 +57,7 @@ public class YAxis extends AxisBase {
 
     public float mAxisMaximum = 0f;
     public float mAxisMinimum = 0f;
-    
+
     public float mAxisRange = 0f;
 
     /** the position of the y-labels relative to the chart */
@@ -201,24 +198,6 @@ public class YAxis extends AxisBase {
      */
     public boolean isShowOnlyMinMaxEnabled() {
         return mShowOnlyMinMax;
-    }
-
-    /**
-     * Set this to true to enable this axis from being drawn to the screen.
-     * 
-     * @param enabled
-     */
-    public void setEnabled(boolean enabled) {
-        mEnabled = enabled;
-    }
-
-    /**
-     * Returns true if the axis is enabled (will be drawn).
-     * 
-     * @return
-     */
-    public boolean isEnabled() {
-        return mEnabled;
     }
 
     /**

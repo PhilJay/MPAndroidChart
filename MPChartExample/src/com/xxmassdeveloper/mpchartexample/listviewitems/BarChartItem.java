@@ -50,7 +50,6 @@ public class BarChartItem extends ChartItem {
         // apply styling
         holder.chart.setValueTypeface(mTf);
         holder.chart.setDescription("");
-        holder.chart.setDrawVerticalGrid(false);
         holder.chart.setDrawGridBackground(false);
         holder.chart.setDrawBarShadow(false);
 
@@ -58,6 +57,7 @@ public class BarChartItem extends ChartItem {
         xl.setCenterXLabelText(true);
         xl.setPosition(XLabelPosition.BOTTOM);
         xl.setTypeface(mTf);
+        xl.setDrawGridLines(false);
         
         YAxis yl = holder.chart.getAxisLeft();
         yl.setTypeface(mTf);
