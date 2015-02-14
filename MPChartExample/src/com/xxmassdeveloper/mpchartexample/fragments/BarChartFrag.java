@@ -39,7 +39,6 @@ public class BarChartFrag extends SimpleFragment {
         mChart.setDrawBorder(false);
 //        mChart.setBorderStyles(new BorderStyle[] { BorderStyle.LEFT });
         mChart.setDrawGridBackground(false);
-        mChart.setDrawXLabels(false);
         mChart.setDrawBarShadow(false);
         
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"OpenSans-Light.ttf");
@@ -49,11 +48,13 @@ public class BarChartFrag extends SimpleFragment {
         Legend l = mChart.getLegend();
         l.setTypeface(tf);
         
-        YAxis labels = mChart.getAxisLeft();
-        labels.setTypeface(tf);
+        YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.setTypeface(tf);
 
+        mChart.getAxisRight().setEnabled(false);
+        
         XAxis xAxis = mChart.getXAxis();
-        xAxis.setDrawGridLines(false);
+        xAxis.setEnabled(false);
         
         // programatically add the chart
         FrameLayout parent = (FrameLayout) v.findViewById(R.id.parentLayout);

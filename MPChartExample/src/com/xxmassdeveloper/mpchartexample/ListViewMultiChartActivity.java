@@ -166,7 +166,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         PieDataSet d = new PieDataSet(entries, "");
         
         // space between slices
-        d.setSliceSpace(5f);
+        d.setSliceSpace(2f);
         d.setColors(ColorTemplate.VORDIPLOM_COLORS);
         
         PieData cd = new PieData(getQuarters(), d);

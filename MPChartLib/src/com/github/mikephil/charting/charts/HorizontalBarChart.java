@@ -31,8 +31,6 @@ public class HorizontalBarChart extends BarChart
     @Override
     protected void init() {
         super.init();
-
-        setDrawXLabels(false);
 //        setDrawYLabels(true);
 //        mTrans = new HorizontalBarChartTransformer();
     }

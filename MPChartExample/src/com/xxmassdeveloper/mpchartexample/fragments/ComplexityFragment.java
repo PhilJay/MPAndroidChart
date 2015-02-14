@@ -32,7 +32,6 @@ public class ComplexityFragment extends SimpleFragment {
         mChart.setHighlightIndicatorEnabled(false); 
         mChart.setDrawBorder(false);
         mChart.setDrawGridBackground(false);
-        mChart.setDrawXLabels(false);
         
         mChart.setData(getComplexity());
         mChart.animateX(3000);
@@ -45,11 +44,13 @@ public class ComplexityFragment extends SimpleFragment {
         Legend l = mChart.getLegend();
         l.setTypeface(tf);
         
-        YAxis labels = mChart.getAxisLeft();
-        labels.setTypeface(tf);
+        YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.setTypeface(tf);
+        
+        mChart.getAxisRight().setEnabled(false);
         
         XAxis xAxis = mChart.getXAxis();
-        xAxis.setDrawGridLines(false);
+        xAxis.setEnabled(false);
         
         return v;
     }

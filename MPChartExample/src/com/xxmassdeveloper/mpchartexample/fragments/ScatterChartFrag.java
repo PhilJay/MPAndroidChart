@@ -31,9 +31,6 @@ public class ScatterChartFrag extends SimpleFragment {
         
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"OpenSans-Light.ttf");
         
-        YAxis labels = mChart.getAxisLeft();
-        labels.setTypeface(tf);
-        
         MyMarkerView mv = new MyMarkerView(getActivity(), R.layout.custom_marker_view);
 
         mChart.setMarkerView(mv);
@@ -42,12 +39,17 @@ public class ScatterChartFrag extends SimpleFragment {
         mChart.setDrawBorder(false);
 //        mChart.setBorderStyles(new BorderStyle[] { BorderStyle.LEFT });
         mChart.setDrawGridBackground(false);
-        mChart.setDrawXLabels(false);
-
         mChart.setData(generateScatterData(3, 10000, 150));
         
         XAxis xAxis = mChart.getXAxis();
-        xAxis.setDrawGridLines(false);
+        xAxis.setEnabled(false);
+        
+        YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.setTypeface(tf);
+        
+        YAxis rightAxis = mChart.getAxisRight();
+        rightAxis.setTypeface(tf);
+        rightAxis.setDrawGridLines(false);
         
         Legend l = mChart.getLegend();
         l.setTypeface(tf);

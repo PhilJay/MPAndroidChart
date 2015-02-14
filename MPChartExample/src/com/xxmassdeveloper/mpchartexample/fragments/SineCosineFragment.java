@@ -33,9 +33,6 @@ public class SineCosineFragment extends SimpleFragment {
         mChart.setHighlightIndicatorEnabled(false); 
         mChart.setDrawBorder(false);
         mChart.setDrawGridBackground(false);
-        mChart.setDrawXLabels(false);
-        
-//        mChart.setYRange(-1.2f, 1.2f, false);
         
         mChart.setData(generateLineData());
         mChart.animateX(3000);
@@ -48,11 +45,16 @@ public class SineCosineFragment extends SimpleFragment {
         Legend l = mChart.getLegend();
         l.setTypeface(tf);
         
-        YAxis labels = mChart.getAxisLeft();
-        labels.setTypeface(tf);
+        YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.setTypeface(tf);
+        leftAxis.setStartAtZero(false);
+        leftAxis.setAxisMaxValue(1.2f);
+        leftAxis.setAxisMinValue(-1.2f);
+        
+        mChart.getAxisRight().setEnabled(false);
         
         XAxis xAxis = mChart.getXAxis();
-        xAxis.setDrawGridLines(false);
+        xAxis.setEnabled(false);
         
         return v;
     }

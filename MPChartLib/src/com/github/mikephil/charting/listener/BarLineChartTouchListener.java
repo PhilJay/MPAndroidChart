@@ -141,7 +141,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
                 } else if (mTouchMode == NONE
                         && Math.abs(distance(event.getX(), mTouchStartPoint.x, event.getY(),
-                                mTouchStartPoint.y)) > 25f) {
+                                mTouchStartPoint.y)) > 5f) {
 
                     if (mChart.hasNoDragOffset()) {
 

@@ -18,7 +18,7 @@ public class PieChartItem extends ChartItem {
 
     private Typeface mTf;
 
-    public PieChartItem(ChartData cd, Context c) {
+    public PieChartItem(ChartData<?> cd, Context c) {
         super(cd);
 
         mTf = Typeface.createFromAsset(c.getAssets(), "OpenSans-Regular.ttf");

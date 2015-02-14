@@ -83,9 +83,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     protected boolean mHighLightIndicatorEnabled = true;
 
-    /** flag indicating if the x-labels should be drawn or not */
-    protected boolean mDrawXLabels = true;
-
     /** flag indicating if the chart border rectangle should be drawn or not */
     protected boolean mDrawBorder = true;
 
@@ -418,7 +415,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         float xlabelheight = Utils.calcTextHeight(mXAxisRenderer.getAxisPaint(), "Q") * 2f;
 
-        if (mDrawXLabels) {
+        if (mXAxis.isEnabled()) {
 
             // offsets for x-labels
             if (mXAxis.getPosition() == XLabelPosition.BOTTOM) {
@@ -985,24 +982,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     public void setDrawGridBackground(boolean enabled) {
         mDrawGridBackground = enabled;
-    }
-
-    /**
-     * set this to true to enable drawing the x-labels, false if not
-     * 
-     * @param enabled
-     */
-    public void setDrawXLabels(boolean enabled) {
-        mDrawXLabels = enabled;
-    }
-
-    /**
-     * Returns true if drawing x-labels is enabled, false if not.
-     * 
-     * @return
-     */
-    public boolean isDrawXLabelsEnabled() {
-        return mDrawXLabels;
     }
 
     /**

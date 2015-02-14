@@ -19,6 +19,7 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition;
+import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -117,7 +118,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 //        mChart.setScaleMinima(3f, 3f);
 //
 //        // center the view to a specific position inside the chart
-//        mChart.centerViewPort(10, 50);
+//        mChart.centerViewPort(10, 50, AxisDependency.LEFT);
 
         // get the legend (only possible after setting data)
         Legend l = mChart.getLegend();
