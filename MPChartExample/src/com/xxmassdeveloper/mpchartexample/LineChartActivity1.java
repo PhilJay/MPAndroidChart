@@ -19,7 +19,6 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition;
-import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -73,16 +72,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         mChart.setDescription("");
         mChart.setNoDataTextDescription("You need to provide data for the chart.");
 
-        // // enable / disable grid lines
-        // mChart.setDrawVerticalGrid(false);
-        // mChart.setDrawHorizontalGrid(false);
-        //
-        // // enable / disable grid background
-        // mChart.setDrawGridBackground(false);
-        //
-        // mChart.setDrawXLegend(false);
-        // mChart.setDrawYLegend(false);
-
         // enable value highlighting
         mChart.setHighlightEnabled(true);
 
@@ -109,10 +98,11 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         // enable/disable highlight indicators (the lines that indicate the
         // highlighted Entry)
         mChart.setHighlightIndicatorEnabled(false);
-
+        
         // add data
         setData(45, 100);
         mChart.animateX(2500);
+//        mChart.setVisibleYRange(30, AxisDependency.LEFT);
 
 //        // restrain the maximum scale-out factor
 //        mChart.setScaleMinima(3f, 3f);
@@ -282,7 +272,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         tvY.setText("" + (mSeekBarY.getProgress()));
 
         setData(mSeekBarX.getProgress() + 1, mSeekBarY.getProgress());
-
         // redraw
         mChart.invalidate();
     }

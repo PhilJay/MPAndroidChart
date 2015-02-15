@@ -37,6 +37,7 @@ import com.xxmassdeveloper.mpchartexample.MultiLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.PieChartActivity;
 import com.xxmassdeveloper.mpchartexample.R;
 import com.xxmassdeveloper.mpchartexample.RadarChartActivitry;
+import com.xxmassdeveloper.mpchartexample.RealtimeLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.ScatterChartActivity;
 import com.xxmassdeveloper.mpchartexample.StackedBarActivity;
 import com.xxmassdeveloper.mpchartexample.fragments.SimpleChartDemo;
@@ -98,6 +99,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
         objects.add(new ContentItem(
                 "Colored Line Chart",
                 "Shows a LineChart with different background and line color."));
+        objects.add(new ContentItem(
+                "Realtime Chart",
+                "This chart is fed with new data in realtime."));
         objects.add(new ContentItem(
                 "Dynamical data adding",
                 "This Activity demonstrates dynamical adding of Entries and DataSets (real time graph)."));
@@ -198,7 +202,11 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 i = new Intent(this, LineChartActivityColored.class);
                 startActivity(i);
                 break;
-            case 19:
+            case 19 :
+                i = new Intent(this, RealtimeLineChartActivity.class);
+                startActivity(i);
+                break;
+            case 20:
                 i = new Intent(this, DynamicalAddingActivity.class);
                 startActivity(i);
                 break;

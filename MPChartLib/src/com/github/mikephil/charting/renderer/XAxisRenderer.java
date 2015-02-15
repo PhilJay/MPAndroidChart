@@ -3,7 +3,6 @@ package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Paint.Align;
 
 import com.github.mikephil.charting.components.XAxis;
@@ -107,7 +106,7 @@ public class XAxisRenderer extends AxisRenderer {
                 if (mXAxis.isAvoidFirstLastClippingEnabled()) {
 
                     // avoid clipping of the last
-                    if (i == mXAxis.getValues().size() - 1) {
+                    if (i == mXAxis.getValues().size() - 1 && mXAxis.getValues().size() > 1) {
                         float width = Utils.calcTextWidth(mAxisPaint, label);
 
                         if (width > mViewPortHandler.offsetRight() * 2

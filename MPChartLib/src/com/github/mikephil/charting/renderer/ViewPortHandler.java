@@ -205,23 +205,33 @@ public class ViewPortHandler {
      */
     public synchronized void centerViewPort(final float[] transformedPts, final ChartInterface chart) {
 
-        final View v = chart.getChartView();
+        Matrix save = new Matrix();
+        save.set(mMatrixTouch);
+        
+        final float x = transformedPts[0] - offsetLeft();
+        final float y = transformedPts[1] - offsetTop();
 
-        v.post(new Runnable() {
+        save.postTranslate(-x, -y);
 
-            @Override
-            public void run() {
-                Matrix save = new Matrix();
-                save.set(mMatrixTouch);
-                
-                final float x = transformedPts[0] - offsetLeft();
-                final float y = transformedPts[1] - offsetTop();
-
-                save.postTranslate(-x, -y);
-
-                refresh(save, chart, false);
-            }
-        });
+        refresh(save, chart, false);
+        
+//        final View v = chart.getChartView();
+//
+//        v.post(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                Matrix save = new Matrix();
+//                save.set(mMatrixTouch);
+//                
+//                final float x = transformedPts[0] - offsetLeft();
+//                final float y = transformedPts[1] - offsetTop();
+//
+//                save.postTranslate(-x, -y);
+//
+//                refresh(save, chart, false);
+//            }
+//        });
     }
 
     /**

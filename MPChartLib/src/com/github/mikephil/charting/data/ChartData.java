@@ -47,7 +47,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /** array that holds all DataSets the ChartData object represents */
     protected ArrayList<T> mDataSets;
-    
+
     public ChartData() {
         mXVals = new ArrayList<String>();
         mDataSets = new ArrayList<T>();
@@ -248,13 +248,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             }
 
             // in case there is only one axis, adjust the second axis
-            if (firstLeft == null) {
-                mLeftAxisMax = mRightAxisMax;
-                mLeftAxisMin = mRightAxisMin;
-            } else if (firstRight == null) {
-                mRightAxisMax = mLeftAxisMax;
-                mRightAxisMin = mLeftAxisMin;
-            }
+            handleEmptyAxis(firstLeft, firstRight);
         }
     }
 
@@ -571,6 +565,26 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             if (mRightAxisMin > d.getYMin())
                 mRightAxisMin = d.getYMin();
         }
+
+        handleEmptyAxis(getFirstLeft(), getFirstRight());
+    }
+
+    /**
+     * This adjusts the other axis if one axis is empty and the other is not.
+     * 
+     * @param firstLeft
+     * @param firstRight
+     */
+    private void handleEmptyAxis(T firstLeft, T firstRight) {
+
+        // in case there is only one axis, adjust the second axis
+        if (firstLeft == null) {
+            mLeftAxisMax = mRightAxisMax;
+            mLeftAxisMin = mRightAxisMin;
+        } else if (firstRight == null) {
+            mRightAxisMax = mLeftAxisMax;
+            mRightAxisMin = mLeftAxisMin;
+        }
     }
 
     /**
@@ -658,6 +672,8 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
                     if (mRightAxisMin > e.getVal())
                         mRightAxisMin = e.getVal();
                 }
+
+                handleEmptyAxis(getFirstLeft(), getFirstRight());
 
                 // add the entry to the dataset
                 set.addEntry(e);

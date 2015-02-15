@@ -44,6 +44,7 @@
         <activity android:name="RadarChartActivitry"></activity>
         <activity android:name="LineChartActivityColored"></activity>
         <activity android:name="DynamicalAddingActivity"></activity>
+        <activity android:name="RealtimeLineChartActivity"></activity>
     </application>
 
 </manifest>
