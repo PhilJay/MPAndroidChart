@@ -58,11 +58,17 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
             }
 
             // add a new x-value first
-            data.addXValue((set.getEntryCount()+1) + "");
-            data.addEntry(new Entry((float) (Math.random() * 50) + 50f, set.getEntryCount()), 0);
+            data.addXValue(set.getEntryCount() + "");
+            data.addEntry(new Entry((float) (Math.random() * 10) + 50f, set.getEntryCount()), 0);
 
             // let the chart know it's data has changed
             mChart.notifyDataSetChanged();
+            
+//            mChart.setVisibleXRange(6);
+//            mChart.setVisibleYRange(30, AxisDependency.LEFT);
+//            
+//            // this automatically refreshes the chart (calls invalidate())
+//            mChart.moveViewTo(data.getXValCount()-7, 55f, AxisDependency.LEFT);
 
             // redraw the chart
             mChart.invalidate();   

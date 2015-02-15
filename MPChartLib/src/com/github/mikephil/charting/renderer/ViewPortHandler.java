@@ -219,7 +219,7 @@ public class ViewPortHandler {
 
                 save.postTranslate(-x, -y);
 
-                refresh(save, chart);
+                refresh(save, chart, false);
             }
         });
     }
@@ -230,7 +230,7 @@ public class ViewPortHandler {
      * @param newMatrix
      * @return
      */
-    public Matrix refresh(Matrix newMatrix, ChartInterface chart) {
+    public Matrix refresh(Matrix newMatrix, ChartInterface chart, boolean invalidate) {
 
         mMatrixTouch.set(newMatrix);
 
@@ -295,27 +295,49 @@ public class ViewPortHandler {
 
         matrix.setValues(vals);
     }
+    
+    public void setMinimumScaleX(float xScale) {
+        
+        if (xScale < 1f)
+            xScale = 1f;
 
-    /**
-     * Sets the minimum scale values for both axes. This limits the extent to
-     * which the user can zoom-out.
-     * 
-     * @param scaleXmin
-     * @param scaleYmin
-     */
-    public void setScaleMinima(float scaleXmin, float scaleYmin, ChartInterface chart) {
-
-        if (scaleXmin < 1f)
-            scaleXmin = 1f;
-        if (scaleYmin < 1f)
-            scaleYmin = 1f;
-
-        mMinScaleX = scaleXmin;
-        mMinScaleY = scaleYmin;
-
-        Matrix save = zoom(mMinScaleX, mMinScaleY, 0f, 0f);
-        refresh(save, chart);
+        mMinScaleX = xScale;
+        
+        limitTransAndScale(mMatrixTouch, mContentRect);
     }
+    
+    public void setMinimumScaleY(float yScale) {
+        
+        if (yScale < 1f)
+            yScale = 1f;
+
+        mMinScaleY = yScale;
+        
+        limitTransAndScale(mMatrixTouch, mContentRect);
+    }
+
+//    /**
+//     * Sets the minimum scale values for both axes. This limits the extent to
+//     * which the user can zoom-out.
+//     * 
+//     * @param scaleXmin
+//     * @param scaleYmin
+//     */
+//    public void setScaleMinima(float scaleXmin, float scaleYmin, ChartInterface chart) {
+//
+//        if (scaleXmin < 1f)
+//            scaleXmin = 1f;
+//        if (scaleYmin < 1f)
+//            scaleYmin = 1f;
+//
+//        mMinScaleX = scaleXmin;
+//        mMinScaleY = scaleYmin;
+////
+////        Matrix save = zoom(mMinScaleX, mMinScaleY, 0f, 0f);
+////        refresh(mMatrixTouch, chart);
+//        
+//        limitTransAndScale(mMatrixTouch, mContentRect);
+//    }
     
     public Matrix getMatrixTouch() {
         return mMatrixTouch;

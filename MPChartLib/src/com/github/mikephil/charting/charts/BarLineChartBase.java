@@ -288,7 +288,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         float topSpaceRight = rightRange / 100f * mAxisRight.getSpaceTop();
         float bottomSpaceLeft = leftRange / 100f * mAxisLeft.getSpaceBottom();
         float bottomSpaceRight = rightRange / 100f * mAxisRight.getSpaceBottom();
-        
+
         Log.i(LOG_TAG, "minLeft: " + minLeft + ", maxLeft: " + maxLeft);
 
         mDeltaX = mData.getXVals().size() - 1;
@@ -646,7 +646,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     public void zoomIn() {
         Matrix save = mViewPortHandler.zoomIn(getWidth() / 2f, -(getHeight() / 2f));
-        mViewPortHandler.refresh(save, this);
+        mViewPortHandler.refresh(save, this, true);
     }
 
     /**
@@ -654,7 +654,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     public void zoomOut() {
         Matrix save = mViewPortHandler.zoomOut(getWidth() / 2f, -(getHeight() / 2f));
-        mViewPortHandler.refresh(save, this);
+        mViewPortHandler.refresh(save, this, true);
     }
 
     /**
@@ -668,7 +668,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     public void zoom(float scaleX, float scaleY, float x, float y) {
         Matrix save = mViewPortHandler.zoom(scaleX, scaleY, x, -y);
-        mViewPortHandler.refresh(save, this);
+        mViewPortHandler.refresh(save, this, true);
     }
 
     /**
@@ -677,29 +677,108 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     public void fitScreen() {
         Matrix save = mViewPortHandler.fitScreen();
-        mViewPortHandler.refresh(save, this);
+        mViewPortHandler.refresh(save, this, true);
+    }
+
+    // /**
+    // * Centers the viewport around the specified x-index and the specified
+    // * y-value in the chart. Centering the viewport outside the bounds of the
+    // * chart is not possible. Makes most sense in combination with the
+    // * setScaleMinima(...) method. First set the scale minima, then center the
+    // * viewport. SHOULD BE CALLED AFTER setting data for the chart.
+    // *
+    // * @param xIndex the index on the x-axis to center to
+    // * @param yVal the value ont he y-axis to center to
+    // */
+    // public synchronized void centerViewPort(final int xIndex, final float
+    // yVal, AxisDependency axis) {
+    //
+    // float indicesInView = mDeltaX / mViewPortHandler.getScaleX();
+    // float valsInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
+    //
+    // // Log.i(LOG_TAG, "indices: " + indicesInView + ", vals: " +
+    // // valsInView);
+    //
+    // float[] pts = new float[] {
+    // xIndex - indicesInView / 2f, yVal + valsInView / 2f
+    // };
+    //
+    // getTransformer(axis).pointValuesToPixel(pts);
+    // mViewPortHandler.centerViewPort(pts, this);
+    // }
+
+    /**
+     * Sets the size of the area (range on the x-axis) that should be maximum
+     * visible at once. If this is e.g. set to 10, no more than 10 values on the
+     * x-axis can be viewed at once without scrolling.
+     * 
+     * @param xRange
+     */
+    public void setVisibleXRange(float xRange) {
+        float xScale = mDeltaX / (xRange + 0.01f);
+        mViewPortHandler.setMinimumScaleX(xScale);
     }
 
     /**
-     * Centers the viewport around the specified x-index and the specified
-     * y-value in the chart. Centering the viewport outside the bounds of the
-     * chart is not possible. Makes most sense in combination with the
-     * setScaleMinima(...) method. First set the scale minima, then center the
-     * viewport. SHOULD BE CALLED AFTER setting data for the chart.
+     * Sets the size of the area (range on the y-axis) that should be maximum
+     * visible at once.
      * 
-     * @param xIndex the index on the x-axis to center to
-     * @param yVal the value ont he y-axis to center to
+     * @param yRange
+     * @param axis - the axis for which this limit should apply
      */
-    public synchronized void centerViewPort(final int xIndex, final float yVal, AxisDependency axis) {
+    public void setVisibleYRange(float yRange, AxisDependency axis) {
+        float yScale = getDeltaY(axis) / yRange;
+        mViewPortHandler.setMinimumScaleY(yScale);
+    }
 
-        float indicesInView = mDeltaX / mViewPortHandler.getScaleX();
-        float valsInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
-
-        Log.i(LOG_TAG, "indices: " + indicesInView + ", vals: " +
-                valsInView);
+    /**
+     * Moves the left side of the current viewport to the specified x-index.
+     * 
+     * @param xIndex
+     */
+    public void moveViewToX(int xIndex) {
 
         float[] pts = new float[] {
-                xIndex - indicesInView / 2f, yVal + valsInView / 2f
+                xIndex, 0f
+        };
+
+        getTransformer(AxisDependency.LEFT).pointValuesToPixel(pts);
+        mViewPortHandler.centerViewPort(pts, this);
+    }
+
+    /**
+     * Centers the viewport to the specified y-value on the y-axis.
+     * 
+     * @param yValue
+     * @param axis - which axis should be used as a reference for the y-axis
+     */
+    public void moveViewToY(float yValue, AxisDependency axis) {
+
+        float valsInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
+
+        float[] pts = new float[] {
+                0f, yValue + valsInView / 2f
+        };
+
+        getTransformer(axis).pointValuesToPixel(pts);
+        mViewPortHandler.centerViewPort(pts, this);
+    }
+
+    /**
+     * This will move the left side of the current viewport to the specified
+     * x-index on the x-axis, and center the viewport to the specified y-value
+     * on the y-axis.
+     * 
+     * @param xIndex
+     * @param yValue
+     * @param axis - which axis should be used as a reference for the y-axis
+     */
+    public void moveViewTo(int xIndex, float yValue, AxisDependency axis) {
+
+        float valsInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
+
+        float[] pts = new float[] {
+                xIndex, yValue + valsInView / 2f
         };
 
         getTransformer(axis).pointValuesToPixel(pts);
@@ -752,17 +831,17 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         return mDrawListener;
     }
 
-    /**
-     * Sets the minimum scale values for both axes. This limits the extent to
-     * which the user can zoom-out. Scale 2f means the user cannot zoom out
-     * further than 2x zoom, ... Min = 1f
-     * 
-     * @param scaleXmin
-     * @param scaleYmin
-     */
-    public void setScaleMinima(float scaleXmin, float scaleYmin) {
-        mViewPortHandler.setScaleMinima(scaleXmin, scaleYmin, this);
-    }
+    // /**
+    // * Sets the minimum scale values for both axes. This limits the extent to
+    // * which the user can zoom-out. Scale 2f means the user cannot zoom out
+    // * further than 2x zoom, ... Min = 1f
+    // *
+    // * @param scaleXmin
+    // * @param scaleYmin
+    // */
+    // public void setScaleMinima(float scaleXmin, float scaleYmin) {
+    // mViewPortHandler.setScaleMinima(scaleXmin, scaleYmin, this);
+    // }
 
     // /**
     // * Sets the effective range of y-values the chart can display. If this is
