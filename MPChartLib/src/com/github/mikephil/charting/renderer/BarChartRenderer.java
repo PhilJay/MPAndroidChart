@@ -164,8 +164,8 @@ public class BarChartRenderer extends DataRenderer {
     protected void prepareBar(float x, float y, float barspace, Transformer trans) {
 
         float spaceHalf = barspace / 2f;
-        float left = x + spaceHalf;
-        float right = x + 1f - spaceHalf;
+        float left = x - 0.5f + spaceHalf;
+        float right = x + 0.5f - spaceHalf;
         float top = y >= 0 ? y : 0;
         float bottom = y <= 0 ? y : 0;
 
@@ -326,7 +326,7 @@ public class BarChartRenderer extends DataRenderer {
 
             // check outofbounds
             if (index < mChart.getBarData().getYValCount() && index >= 0
-                    && index < (mChart.getDeltaX() * mAnimator.getPhaseX()) / setCount) {
+                    && index < (mChart.getXChartMax() * mAnimator.getPhaseX()) / setCount) {
 
                 Entry e = mChart.getBarData().getDataSetByIndex(dataSetIndex)
                         .getEntryForXIndex(index);

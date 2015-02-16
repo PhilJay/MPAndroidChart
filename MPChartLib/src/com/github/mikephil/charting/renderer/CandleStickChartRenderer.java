@@ -180,7 +180,7 @@ public class CandleStickChartRenderer extends DataRenderer {
             };
 
             float[] horPts = new float[] {
-                    0, low, mChart.getDeltaX(), low, 0, high, mChart.getDeltaX(), high
+                    0, low, mChart.getXChartMax(), low, 0, high, mChart.getXChartMax(), high
             };
 
             mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(vertPts);

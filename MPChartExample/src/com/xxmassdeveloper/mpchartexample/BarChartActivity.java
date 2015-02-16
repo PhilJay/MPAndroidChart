@@ -87,7 +87,6 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         XAxis xl = mChart.getXAxis();
         xl.setPosition(XLabelPosition.BOTTOM);
-        xl.setCenterXLabelText(true);
         xl.setTypeface(tf);
         xl.setDrawGridLines(false);
 

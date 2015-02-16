@@ -174,7 +174,7 @@ public class ScatterChartRenderer extends DataRenderer {
             int xIndex = indices[i].getXIndex(); // get the
                                                  // x-position
 
-            if (xIndex > mChart.getDeltaX() * mAnimator.getPhaseX())
+            if (xIndex > mChart.getXChartMax() * mAnimator.getPhaseX())
                 continue;
 
             float y = set.getYValForXIndex(xIndex) * mAnimator.getPhaseY(); // get
@@ -183,7 +183,7 @@ public class ScatterChartRenderer extends DataRenderer {
 
             float[] pts = new float[] {
                     xIndex, mChart.getYChartMax(), xIndex, mChart.getYChartMin(), 0, y,
-                    mChart.getDeltaX(), y
+                    mChart.getXChartMax(), y
             };
 
             mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);

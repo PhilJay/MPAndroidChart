@@ -116,11 +116,6 @@ public class LineChart extends BarLineChartBase<LineData> implements LineDataPro
     }
     
     @Override
-    public float getXAxisInset() {
-        return 0f;
-    }
-    
-    @Override
     public LineData getLineData() {
         return mData;
     }

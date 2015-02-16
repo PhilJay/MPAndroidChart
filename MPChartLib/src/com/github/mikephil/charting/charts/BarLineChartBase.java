@@ -237,12 +237,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     private void prepareValuePxMatrix() {
 
         if (mLogEnabled)
-            Log.i(LOG_TAG, "Preparing Value-Px Matrix, deltaLeft: " + mAxisLeft.mAxisRange
-                    + ", deltaRight: " + mAxisRight.mAxisRange);
+            Log.i(LOG_TAG, "Preparing Value-Px Matrix, xmin: " + mXChartMin + ", xmax: " + mXChartMax + ", xdelta: " + mDeltaX);
 
-        mRightAxisTransformer.prepareMatrixValuePx(mDeltaX, mAxisRight.mAxisRange,
+        mRightAxisTransformer.prepareMatrixValuePx(mXChartMin, mDeltaX, mAxisRight.mAxisRange,
                 mAxisRight.mAxisMinimum);
-        mLeftAxisTransformer.prepareMatrixValuePx(mDeltaX, mAxisLeft.mAxisRange,
+        mLeftAxisTransformer.prepareMatrixValuePx(mXChartMin, mDeltaX, mAxisLeft.mAxisRange,
                 mAxisLeft.mAxisMinimum);
     }
 
@@ -293,8 +292,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         float bottomSpaceRight = rightRange / 100f * mAxisRight.getSpaceBottom();
 
         Log.i(LOG_TAG, "minLeft: " + minLeft + ", maxLeft: " + maxLeft);
-
-        mDeltaX = mData.getXVals().size() - 1;
+        
+        mXChartMax = mData.getXVals().size() - 1;
+        mDeltaX = Math.abs(mXChartMax - mXChartMin);
 
         mAxisLeft.mAxisMaximum = !Float.isNaN(mAxisLeft.getAxisMaxValue()) ? mAxisLeft
                 .getAxisMaxValue() : maxLeft + topSpaceLeft;
@@ -525,7 +525,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                     .getEntryPosition(e);
 
             float x = (j * (mData.getDataSetCount() - 1)) + dataSetIndex + space * j + space
-                    / 2f + 0.5f;
+                    / 2f;
 
             xPos += x;
         }

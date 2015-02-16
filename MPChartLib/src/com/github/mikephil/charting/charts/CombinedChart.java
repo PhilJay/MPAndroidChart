@@ -18,8 +18,6 @@ import com.github.mikephil.charting.utils.FillFormatter;
 
 public class CombinedChart extends BarLineChartBase<CombinedData> implements LineDataProvider,
         BarDataProvider, ScatterDataProvider, CandleDataProvider {
-
-    private float mXAxisInset = 0f;
     
     private FillFormatter mFillFormatter;
 
@@ -49,9 +47,9 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
         super.calcMinMax();
 
         if (getBarData() != null) {
-            mDeltaX += 1;
-            mXAxisInset = 0.5f;
-            mXAxis.setCenterXLabelText(true);
+            mXChartMin = -0.5f;
+            mXChartMax = mData.getXVals().size() - 0.5f;
+            mDeltaX = Math.abs(mXChartMax - mXChartMin);
         }
     }
 
@@ -124,14 +122,5 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
     public boolean isDrawValuesForWholeStackEnabled() {
         // TODO Auto-generated method stub
         return false;
-    }
-    
-    @Override
-    public float getXAxisInset() {
-        return mXAxisInset;
-    }
-    
-    public void setXAxisInset(float inset) {
-        mXAxisInset = inset;
     }
 }

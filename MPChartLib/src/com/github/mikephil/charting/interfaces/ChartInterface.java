@@ -23,7 +23,8 @@ public interface ChartInterface {
 //
 //    public float getOffsetRight();
 
-    public float getDeltaX();
+    public float getXChartMin();
+    public float getXChartMax();
 
 //    public float getDeltaY();
 

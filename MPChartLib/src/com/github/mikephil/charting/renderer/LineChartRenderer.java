@@ -107,12 +107,9 @@ public class LineChartRenderer extends DataRenderer {
         Path spline = new Path();
 
         ArrayList<CPoint> points = new ArrayList<CPoint>();
-        
-        float inset = mChart.getXAxisInset();
-
         for (Entry e : entries) {
             if (e != null)
-                points.add(new CPoint(e.getXIndex() + inset, e.getVal()));
+                points.add(new CPoint(e.getXIndex(), e.getVal()));
         }
 
         if (points.size() > 1) {
@@ -164,14 +161,12 @@ public class LineChartRenderer extends DataRenderer {
 
     protected void drawCubicFill(LineDataSet dataSet, Path spline) {
         
-        float inset = mChart.getXAxisInset();
-        
         float fillMin = mChart.getFillFormatter()
                 .getFillLinePosition(dataSet, mChart.getLineData(), mChart.getYChartMax(),
                         mChart.getYChartMin());
 
-        spline.lineTo(dataSet.getYVals().get((int) ((dataSet.getYVals().size() - 1) * mAnimator.getPhaseX())).getXIndex() + inset, fillMin);
-        spline.lineTo(inset, fillMin);
+        spline.lineTo(dataSet.getYVals().get((int) ((dataSet.getYVals().size() - 1) * mAnimator.getPhaseX())).getXIndex(), fillMin);
+        spline.lineTo(mChart.getXChartMin(), fillMin);
         spline.close();
 
         mRenderPaint.setStyle(Paint.Style.FILL);
@@ -190,7 +185,7 @@ public class LineChartRenderer extends DataRenderer {
         if (dataSet.getColors() == null || dataSet.getColors().size() > 1) {
 
             float[] positions = trans.generateTransformedValuesLine(
-                    entries, phaseY, mChart.getXAxisInset());
+                    entries, phaseY);
 
             for (int j = 0; j < (positions.length - 2) * phaseX; j += 2) {
 
@@ -267,21 +262,20 @@ public class LineChartRenderer extends DataRenderer {
 
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
-        float inset = mChart.getXAxisInset();
 
         Path filled = new Path();
-        filled.moveTo(entries.get(0).getXIndex() + inset, entries.get(0).getVal() * phaseY);
+        filled.moveTo(entries.get(0).getXIndex(), entries.get(0).getVal() * phaseY);
 
         // create a new path
         for (int x = 1; x < entries.size() * phaseX; x++) {
 
             Entry e = entries.get(x);
-            filled.lineTo(e.getXIndex() + inset, e.getVal() * phaseY);
+            filled.lineTo(e.getXIndex(), e.getVal() * phaseY);
         }
 
         // close up
-        filled.lineTo(entries.get((int) ((entries.size() - 1) * phaseX)).getXIndex() + inset, fillMin);
-        filled.lineTo(entries.get(0).getXIndex() + inset, fillMin);
+        filled.lineTo(entries.get((int) ((entries.size() - 1) * phaseX)).getXIndex(), fillMin);
+        filled.lineTo(entries.get(0).getXIndex(), fillMin);
         filled.close();
 
         return filled;
@@ -297,16 +291,15 @@ public class LineChartRenderer extends DataRenderer {
 
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
-        float inset = mChart.getXAxisInset();
 
         Path line = new Path();
-        line.moveTo(entries.get(0).getXIndex() + inset, entries.get(0).getVal() * phaseY);
+        line.moveTo(entries.get(0).getXIndex(), entries.get(0).getVal() * phaseY);
 
         // create a new path
         for (int x = 1; x < entries.size() * phaseX; x++) {
 
             Entry e = entries.get(x);
-            line.lineTo(e.getXIndex() + inset, e.getVal() * phaseY);
+            line.lineTo(e.getXIndex(), e.getVal() * phaseY);
         }
 
         return line;
@@ -338,7 +331,7 @@ public class LineChartRenderer extends DataRenderer {
                 ArrayList<Entry> entries = dataSet.getYVals();
 
                 float[] positions = trans.generateTransformedValuesLine(
-                        entries, mAnimator.getPhaseY(), mChart.getXAxisInset());
+                        entries, mAnimator.getPhaseY());
 
                 for (int j = 0; j < positions.length * mAnimator.getPhaseX(); j += 2) {
 
@@ -381,7 +374,7 @@ public class LineChartRenderer extends DataRenderer {
                 ArrayList<Entry> entries = dataSet.getYVals();
 
                 float[] positions = trans.generateTransformedValuesLine(
-                        entries, mAnimator.getPhaseY(), mChart.getXAxisInset());
+                        entries, mAnimator.getPhaseY());
 
                 for (int j = 0; j < positions.length * mAnimator.getPhaseX(); j += 2) {
 
@@ -424,7 +417,7 @@ public class LineChartRenderer extends DataRenderer {
             int xIndex = indices[i].getXIndex(); // get the
                                                  // x-position
 
-            if (xIndex > mChart.getDeltaX() * mAnimator.getPhaseX())
+            if (xIndex > mChart.getXChartMax() * mAnimator.getPhaseX())
                 continue;
 
             float y = set.getYValForXIndex(xIndex) * mAnimator.getPhaseY(); // get
@@ -433,7 +426,7 @@ public class LineChartRenderer extends DataRenderer {
 
             float[] pts = new float[] {
                     xIndex, mChart.getYChartMax(), xIndex, mChart.getYChartMin(), 0, y,
-                    mChart.getDeltaX(), y
+                    mChart.getXChartMax(), y
             };
 
             mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);

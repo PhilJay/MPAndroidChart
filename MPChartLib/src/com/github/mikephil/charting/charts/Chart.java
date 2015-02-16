@@ -122,6 +122,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /** the number of x-values the chart displays */
     protected float mDeltaX = 1f;
+    
+    protected float mXChartMin = 0f;
+    protected float mXChartMax = 0f;
 
     /** if true, touch gestures are enabled on the chart */
     protected boolean mTouchEnabled = true;
@@ -1165,14 +1168,24 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         return mData.getYMin();
     }
 
-    /**
-     * Get the total number of X-values.
-     *
-     * @return
-     */
+//    /**
+//     * Get the total number of X-values.
+//     *
+//     * @return
+//     */
+//    @Override
+//    public float getDeltaX() {
+//        return mDeltaX;
+//    }
+    
     @Override
-    public float getDeltaX() {
-        return mDeltaX;
+    public float getXChartMax() {
+        return mXChartMax;
+    }
+    
+    @Override
+    public float getXChartMin() {
+        return mXChartMin;
     }
 
     /**

@@ -54,7 +54,6 @@ public class LineChartItem extends ChartItem {
         holder.chart.setDrawGridBackground(false);
 
         XAxis xl = holder.chart.getXAxis();
-        xl.setCenterXLabelText(true);
         xl.setPosition(XLabelPosition.BOTTOM);
         xl.setTypeface(mTf);
         xl.setDrawGridLines(false);

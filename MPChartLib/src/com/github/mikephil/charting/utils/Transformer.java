@@ -37,7 +37,7 @@ public class Transformer {
      * 
      * @param chart
      */
-    public void prepareMatrixValuePx(float deltaX, float deltaY, float yChartMin) {
+    public void prepareMatrixValuePx(float xChartMin, float deltaX, float deltaY, float yChartMin) {
 
         float scaleX = (float) ((mViewPortHandler.getChartWidth() - mViewPortHandler.offsetRight() - mViewPortHandler
                 .offsetLeft()) / deltaX);
@@ -46,7 +46,7 @@ public class Transformer {
 
         // setup all matrices
         mMatrixValueToPx.reset();
-        mMatrixValueToPx.postTranslate(0, -yChartMin);
+        mMatrixValueToPx.postTranslate(-xChartMin, -yChartMin);
         mMatrixValueToPx.postScale(scaleX, -scaleY);
     }
 
@@ -128,7 +128,7 @@ public class Transformer {
      * @return
      */
     public float[] generateTransformedValuesLine(ArrayList<? extends Entry> entries,
-            float phaseY, float xAxisInset) {
+            float phaseY) {
 
         float[] valuePoints = new float[entries.size() * 2];
 
@@ -137,7 +137,7 @@ public class Transformer {
             Entry e = entries.get(j / 2);
 
             if (e != null) {
-                valuePoints[j] = e.getXIndex() + xAxisInset;
+                valuePoints[j] = e.getXIndex();
                 valuePoints[j + 1] = e.getVal() * phaseY;
             }
         }
@@ -168,7 +168,7 @@ public class Transformer {
             Entry e = entries.get(j / 2);
 
             // calculate the x-position, depending on datasetcount
-            float x = e.getXIndex() + (j / 2 * (setCount - 1)) + dataSet + 0.5f + space * (j / 2)
+            float x = e.getXIndex() + (j / 2 * (setCount - 1)) + dataSet + space * (j / 2)
                     + space / 2f;
             float y = e.getVal();
 

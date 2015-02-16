@@ -2,9 +2,6 @@
 package com.github.mikephil.charting.charts;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -18,9 +15,8 @@ import com.github.mikephil.charting.interfaces.BarDataProvider;
 import com.github.mikephil.charting.renderer.BarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererBarChart;
 import com.github.mikephil.charting.utils.Highlight;
-import com.github.mikephil.charting.utils.Utils;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
 
 /**
  * Chart that draws bars.
@@ -74,10 +70,12 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     @Override
     protected void init() {
         super.init();
-        
+
         mRenderer = new BarChartRenderer(this, mAnimator, mViewPortHandler);
         mXAxisRenderer = new XAxisRendererBarChart(mViewPortHandler, mXAxis, mLeftAxisTransformer,
                 this);
+
+        mXChartMin = -0.5f;
     }
 
     @Override
@@ -85,7 +83,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         super.calcMinMax();
 
         // increase deltax by 1 because the bars have a width of 1
-        mDeltaX++;
+        mDeltaX += 0.5f;
 
         // extend xDelta to make space for multiple datasets (if ther are one)
         mDeltaX *= mData.getDataSetCount();
@@ -102,6 +100,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 
         float groupSpace = mData.getGroupSpace();
         mDeltaX += maxEntry * groupSpace;
+        mXChartMax = mDeltaX - mXChartMin;
     }
 
     // protected float getPositiveYOffset(boolean drawAboveValueBar)
@@ -145,28 +144,43 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         double xTouchVal = pts[0];
         double base = xTouchVal;
 
-        if (xTouchVal < 0 || xTouchVal > mDeltaX)
+        if (xTouchVal < mXChartMin || xTouchVal > mXChartMax)
             return null;
 
-        if (base < 0)
-            base = 0;
-        if (base >= mDeltaX)
-            base = mDeltaX - 1;
+        Log.i(LOG_TAG, "base: " + base);
 
         int setCount = mData.getDataSetCount();
         int valCount = setCount * mData.getXValCount();
 
+        if (setCount <= 1) {
+            return new Highlight((int) Math.round(base), 0);
+        }
+
         // calculate the amount of bar-space between index 0 and touch position
-        float space = (float) (((float) valCount / (float) setCount) / (mDeltaX / base));
+        float space = (float) ((((float) valCount / (float) setCount) / (mDeltaX / base)));
 
         float reduction = (float) space * mData.getGroupSpace();
 
-        int xIndex = (int) ((base - reduction) / setCount);
+        Log.i(LOG_TAG, "space: " + space);
+        Log.i(LOG_TAG, "reduction: " + reduction);
 
-        int dataSetIndex = ((int) (base - reduction)) % setCount;
+        float beforeRound = (float) ((base - reduction) / setCount);
 
-        if (dataSetIndex == -1)
+        int xIndex = (int) beforeRound;
+        Log.i(LOG_TAG, "touch x-index: " + xIndex);
+
+        float dataSetBeforeRound = (float) ((base - reduction) % setCount);
+
+        Log.i(LOG_TAG, "datasetindex before round: " + dataSetBeforeRound);
+
+        int dataSetIndex = (int) Math.round(dataSetBeforeRound);
+        Log.i(LOG_TAG, "touch dataset-index: " + dataSetIndex);
+        
+        if (dataSetIndex < 0 || dataSetIndex >= mData.getDataSetCount())
             return null;
+
+        if (xIndex < 0)
+            xIndex = 0;
 
         return new Highlight(xIndex, dataSetIndex);
     }
@@ -191,8 +205,8 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         float x = e.getXIndex();
 
         float spaceHalf = barspace / 2f;
-        float left = x + spaceHalf;
-        float right = x + 1f - spaceHalf;
+        float left = x - 0.5f + spaceHalf;
+        float right = x + 0.5f - spaceHalf;
         float top = y >= 0 ? y : 0;
         float bottom = y <= 0 ? y : 0;
 
@@ -336,7 +350,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     public boolean isDrawBarShadowEnabled() {
         return mDrawBarShadow;
     }
-    
+
     @Override
     public BarData getBarData() {
         return mData;

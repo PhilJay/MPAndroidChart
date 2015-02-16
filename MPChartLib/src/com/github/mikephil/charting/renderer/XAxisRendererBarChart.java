@@ -39,7 +39,7 @@ public class XAxisRendererBarChart extends XAxisRenderer {
         for (int i = 0; i < mXAxis.getValues().size(); i += mXAxis.mAxisLabelModulus) {
 
             position[0] = i * step + i * bd.getGroupSpace()
-                    + bd.getGroupSpace() / 2f;
+                    + bd.getGroupSpace() / 2f - 0.5f;
 
             // center the text
             if (mXAxis.isCenterXLabelsEnabled())
@@ -92,7 +92,7 @@ public class XAxisRendererBarChart extends XAxisRenderer {
 
         for (int i = 0; i < mXAxis.getValues().size(); i += mXAxis.mAxisLabelModulus) {
 
-            position[0] = i * step + i * bd.getGroupSpace();
+            position[0] = i * step + i * bd.getGroupSpace() - 0.5f;
 
             mTrans.pointValuesToPixel(position);
 

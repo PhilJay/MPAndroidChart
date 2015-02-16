@@ -22,13 +22,4 @@ public interface LineDataProvider extends BarLineScatterCandleDataProvider {
      * @return
      */
     public FillFormatter getFillFormatter();
-
-    /**
-     * Returns the inset the chart should have on the x-axis. Inset of e.g. 1f
-     * would mean all values of this LineChart are shifted 1 x-index to the
-     * right.
-     * 
-     * @return
-     */
-    public float getXAxisInset();
 }
