@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.LineDataProvider;
 import com.github.mikephil.charting.renderer.LineChartRenderer;
 import com.github.mikephil.charting.utils.FillFormatter;
 
@@ -15,7 +16,7 @@ import com.github.mikephil.charting.utils.FillFormatter;
  * 
  * @author Philipp Jahoda
  */
-public class LineChart extends BarLineChartBase<LineData> {
+public class LineChart extends BarLineChartBase<LineData> implements LineDataProvider {
 
     /** the width of the highlighning line */
     protected float mHighlightWidth = 3f;
@@ -100,12 +101,7 @@ public class LineChart extends BarLineChartBase<LineData> {
         return null;
     }
 
-    /**
-     * Sets a custom FillFormatter to the chart that handles the position of the
-     * filled-line for each DataSet. Set this to null to use the default logic.
-     * 
-     * @param formatter
-     */
+    @Override
     public void setFillFormatter(FillFormatter formatter) {
 
         if (formatter == null)
@@ -114,53 +110,18 @@ public class LineChart extends BarLineChartBase<LineData> {
             mFillFormatter = formatter;
     }
 
-    /**
-     * Returns the FillFormatter that handles the position of the filled-line.
-     * 
-     * @return
-     */
+    @Override
     public FillFormatter getFillFormatter() {
         return mFillFormatter;
     }
-
-    /**
-     * Default formatter that calculates the position of the filled line.
-     * 
-     * @author Philipp Jahoda
-     */
-    private class DefaultFillFormatter implements FillFormatter {
-
-        @Override
-        public float getFillLinePosition(LineDataSet dataSet, LineData data,
-                float chartMaxY, float chartMinY) {
-
-            float fillMin = 0f;
-
-            if (dataSet.getYMax() > 0 && dataSet.getYMin() < 0) {
-                fillMin = 0f;
-            } else {
-
-                if (!getAxis(dataSet.getAxisDependency()).isStartAtZeroEnabled()) {
-
-                    float max, min;
-
-                    if (data.getYMax() > 0)
-                        max = 0f;
-                    else
-                        max = chartMaxY;
-                    if (data.getYMin() < 0)
-                        min = 0f;
-                    else
-                        min = chartMinY;
-
-                    fillMin = dataSet.getYMin() >= 0 ? min : max;
-                } else {
-                    fillMin = 0f;
-                }
-
-            }
-
-            return fillMin;
-        }
+    
+    @Override
+    public float getXAxisInset() {
+        return 0f;
+    }
+    
+    @Override
+    public LineData getLineData() {
+        return mData;
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import com.github.mikephil.charting.data.ScatterData;
+import com.github.mikephil.charting.interfaces.ScatterDataProvider;
 import com.github.mikephil.charting.renderer.ScatterChartRenderer;
 
 /**
@@ -13,7 +14,7 @@ import com.github.mikephil.charting.renderer.ScatterChartRenderer;
  * 
  * @author Philipp Jahoda
  */
-public class ScatterChart extends BarLineChartBase<ScatterData> {
+public class ScatterChart extends BarLineChartBase<ScatterData> implements ScatterDataProvider {
 
     /** enum that defines the shape that is drawn where the values are */
     public enum ScatterShape {
@@ -39,17 +40,17 @@ public class ScatterChart extends BarLineChartBase<ScatterData> {
         mRenderer = new ScatterChartRenderer(this, mAnimator, mViewPortHandler);
     }
 
-    @Override
-    protected void calculateOffsets() {
-        super.calculateOffsets();
-
-        float offset = mData.getGreatestShapeSize() / 2f;
-        mViewPortHandler.restrainViewPort(mViewPortHandler.offsetLeft() - offset,
-                mViewPortHandler.offsetTop(), mViewPortHandler.offsetRight() - offset,
-                mViewPortHandler.offsetBottom());
-
-        prepareOffsetMatrix();
-    }
+//    @Override
+//    protected void calculateOffsets() {
+//        super.calculateOffsets();
+//
+//        float offset = mData.getGreatestShapeSize() / 2f;
+//        mViewPortHandler.restrainViewPort(mViewPortHandler.offsetLeft() - offset,
+//                mViewPortHandler.offsetTop(), mViewPortHandler.offsetRight() - offset,
+//                mViewPortHandler.offsetBottom());
+//
+//        prepareOffsetMatrix();
+//    }
 
     @Override
     protected void calcMinMax() {
@@ -69,4 +70,8 @@ public class ScatterChart extends BarLineChartBase<ScatterData> {
                 ScatterShape.SQUARE, ScatterShape.CIRCLE, ScatterShape.TRIANGLE, ScatterShape.CROSS
         };
     }
+    
+    public ScatterData getScatterData() {
+        return mData;
+    };
 }

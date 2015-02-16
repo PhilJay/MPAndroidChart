@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import com.github.mikephil.charting.data.CandleData;
+import com.github.mikephil.charting.interfaces.CandleDataProvider;
 import com.github.mikephil.charting.renderer.CandleStickChartRenderer;
 
 /**
@@ -12,7 +13,7 @@ import com.github.mikephil.charting.renderer.CandleStickChartRenderer;
  * 
  * @author Philipp Jahoda
  */
-public class CandleStickChart extends BarLineChartBase<CandleData> {
+public class CandleStickChart extends BarLineChartBase<CandleData> implements CandleDataProvider {
 
     public CandleStickChart(Context context) {
         super(context);
@@ -39,5 +40,10 @@ public class CandleStickChart extends BarLineChartBase<CandleData> {
 
         // increase deltax by 1 because the candles have a width of 1
         mDeltaX++;
+    }
+    
+    @Override
+    public CandleData getCandleData() {
+        return mData;
     }
 }

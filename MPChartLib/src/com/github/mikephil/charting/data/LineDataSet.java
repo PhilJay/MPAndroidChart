@@ -16,7 +16,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
     private ArrayList<Integer> mCircleColors = null;
     
     /** the radius of the circle-shaped value indicators */
-    private float mCircleSize = 4f;
+    private float mCircleSize = 8f;
 
     /** sets the intensity of the cubic lines */
     private float mCubicIntensity = 0.2f;

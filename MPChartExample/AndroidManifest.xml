@@ -45,6 +45,7 @@
         <activity android:name="LineChartActivityColored"></activity>
         <activity android:name="DynamicalAddingActivity"></activity>
         <activity android:name="RealtimeLineChartActivity"></activity>
+        <activity android:name="CombinedChartActivity"></activity>
     </application>
 
 </manifest>

@@ -5,6 +5,8 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.view.View;
 
+import com.github.mikephil.charting.utils.ValueFormatter;
+
 /**
  * Interface that provides everything there is to know about the dimensions,
  * bounds, and range of the chart.
@@ -16,7 +18,7 @@ public interface ChartInterface {
 //    public float getOffsetBottom();
 //
 //    public float getOffsetTop();
-//
+// 
 //    public float getOffsetLeft();
 //
 //    public float getOffsetRight();
@@ -25,9 +27,9 @@ public interface ChartInterface {
 
 //    public float getDeltaY();
 
-//    public float getYChartMin();
+    public float getYChartMin();
 
-//    public float getYChartMax();
+    public float getYChartMax();
 
     public int getWidth();
 
@@ -42,4 +44,6 @@ public interface ChartInterface {
     public RectF getContentRect();
     
     public View getChartView();
+    
+    public ValueFormatter getValueFormatter();
 }

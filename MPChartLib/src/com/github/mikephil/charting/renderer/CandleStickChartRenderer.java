@@ -5,10 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
-import com.github.mikephil.charting.charts.CandleStickChart;
 import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CandleDataSet;
 import com.github.mikephil.charting.data.CandleEntry;
+import com.github.mikephil.charting.interfaces.CandleDataProvider;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Transformer;
 
@@ -16,9 +16,9 @@ import java.util.ArrayList;
 
 public class CandleStickChartRenderer extends DataRenderer {
 
-    protected CandleStickChart mChart;
+    protected CandleDataProvider mChart;
 
-    public CandleStickChartRenderer(CandleStickChart chart, ChartAnimator animator,
+    public CandleStickChartRenderer(CandleDataProvider chart, ChartAnimator animator,
             ViewPortHandler viewPortHandler) {
         super(animator, viewPortHandler);
         mChart = chart;
@@ -27,7 +27,7 @@ public class CandleStickChartRenderer extends DataRenderer {
     @Override
     public void drawData(Canvas c) {
 
-        CandleData candleData = mChart.getData();
+        CandleData candleData = mChart.getCandleData();
 
         for (CandleDataSet set : candleData.getDataSets()) {
 
@@ -156,7 +156,7 @@ public class CandleStickChartRenderer extends DataRenderer {
             int xIndex = indices[i].getXIndex(); // get the
                                                  // x-position
 
-            CandleDataSet set = mChart.getData().getDataSetByIndex(indices[i].getDataSetIndex());
+            CandleDataSet set = mChart.getCandleData().getDataSetByIndex(indices[i].getDataSetIndex());
 
             if (set == null)
                 continue;

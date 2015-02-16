@@ -24,11 +24,14 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarLineScatterCandleData;
 import com.github.mikephil.charting.data.BarLineScatterCandleRadarDataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.interfaces.OnDrawListener;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.renderer.XAxisRenderer;
 import com.github.mikephil.charting.renderer.YAxisRenderer;
+import com.github.mikephil.charting.utils.FillFormatter;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.SelInfo;
@@ -1480,4 +1483,45 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         return null;
     }
+    
+    /**
+     * Default formatter that calculates the position of the filled line.
+     * 
+     * @author Philipp Jahoda
+     */
+    protected class DefaultFillFormatter implements FillFormatter {
+
+        @Override
+        public float getFillLinePosition(LineDataSet dataSet, LineData data,
+                float chartMaxY, float chartMinY) {
+
+            float fillMin = 0f;
+
+            if (dataSet.getYMax() > 0 && dataSet.getYMin() < 0) {
+                fillMin = 0f;
+            } else {
+
+                if (!getAxis(dataSet.getAxisDependency()).isStartAtZeroEnabled()) {
+
+                    float max, min;
+
+                    if (data.getYMax() > 0)
+                        max = 0f;
+                    else
+                        max = chartMaxY;
+                    if (data.getYMin() < 0)
+                        min = 0f;
+                    else
+                        min = chartMinY;
+
+                    fillMin = dataSet.getYMin() >= 0 ? min : max;
+                } else {
+                    fillMin = 0f;
+                }
+
+            }
+
+            return fillMin;
+        }
+    }   
 }

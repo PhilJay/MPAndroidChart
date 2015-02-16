@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public abstract class ChartData<T extends DataSet<? extends Entry>> {
+public abstract class ChartData<T extends DataSet<? extends Entry>> extends Data<T> {
 
     /** maximum y-value in the y-value array */
     protected float mYMax = 0.0f;
@@ -62,7 +62,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     public ChartData(ArrayList<String> xVals) {
         this.mXVals = xVals;
         this.mDataSets = new ArrayList<T>();
-        init();
+        init(mDataSets);
     }
 
     /**
@@ -74,7 +74,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     public ChartData(String[] xVals) {
         this.mXVals = arrayToArrayList(xVals);
         this.mDataSets = new ArrayList<T>();
-        init();
+        init(mDataSets);
     }
 
     /**
@@ -89,7 +89,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         this.mXVals = xVals;
         this.mDataSets = sets;
 
-        init();
+        init(mDataSets);
     }
 
     /**
@@ -104,7 +104,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         this.mXVals = arrayToArrayList(xVals);
         this.mDataSets = sets;
 
-        init();
+        init(mDataSets);
     }
 
     /**
@@ -127,13 +127,13 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * performs all kinds of initialization calculations, such as min-max and
      * value count and sum
      */
-    private void init() {
+    protected void init(ArrayList<? extends DataSet<?>> dataSets) {
 
-        isLegal(mDataSets);
+        isLegal(dataSets);
 
-        calcMinMax(mDataSets);
-        calcYValueSum(mDataSets);
-        calcYValueCount(mDataSets);
+        calcMinMax(dataSets);
+        calcYValueSum(dataSets);
+        calcYValueCount(dataSets);
 
         calcXValAverageLength();
     }
@@ -163,7 +163,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * 
      * @param dataSets
      */
-    private void isLegal(ArrayList<T> dataSets) {
+    private void isLegal(ArrayList<? extends DataSet<?>> dataSets) {
 
         if (dataSets == null)
             return;
@@ -183,13 +183,13 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * changed.
      */
     public void notifyDataChanged() {
-        init();
+        init(mDataSets);
     }
 
     /**
      * calc minimum and maximum y value over all datasets
      */
-    protected void calcMinMax(ArrayList<T> dataSets) {
+    protected void calcMinMax(ArrayList<? extends DataSet<?>> dataSets) {
 
         if (dataSets == null || dataSets.size() < 1) {
 
@@ -217,7 +217,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
                 mLeftAxisMax = firstLeft.getYMax();
                 mLeftAxisMin = firstLeft.getYMin();
 
-                for (T dataSet : dataSets) {
+                for (DataSet<?> dataSet : dataSets) {
                     if (dataSet.getAxisDependency() == AxisDependency.LEFT) {
                         if (dataSet.getYMin() < mLeftAxisMin)
                             mLeftAxisMin = dataSet.getYMin();
@@ -236,7 +236,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
                 mRightAxisMax = firstRight.getYMax();
                 mRightAxisMin = firstRight.getYMin();
 
-                for (T dataSet : dataSets) {
+                for (DataSet<?> dataSet : dataSets) {
                     if (dataSet.getAxisDependency() == AxisDependency.RIGHT) {
                         if (dataSet.getYMin() < mRightAxisMin)
                             mRightAxisMin = dataSet.getYMin();
@@ -255,7 +255,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /**
      * calculates the sum of all y-values in all datasets
      */
-    protected void calcYValueSum(ArrayList<T> dataSets) {
+    protected void calcYValueSum(ArrayList<? extends DataSet<?>>dataSets) {
 
         mYValueSum = 0;
 
@@ -273,7 +273,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * 
      * @return
      */
-    protected void calcYValueCount(ArrayList<T> dataSets) {
+    protected void calcYValueCount(ArrayList<? extends DataSet<?>> dataSets) {
 
         mYValCount = 0;
 

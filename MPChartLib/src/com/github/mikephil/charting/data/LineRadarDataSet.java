@@ -21,7 +21,7 @@ public abstract class LineRadarDataSet<T extends Entry> extends BarLineScatterCa
     private int mFillAlpha = 85;
     
     /** the width of the drawn data lines */
-    private float mLineWidth = 1f;
+    private float mLineWidth = 2.5f;
     
     /** if true, the data will also be drawn filled */
     private boolean mDrawFilled = false;

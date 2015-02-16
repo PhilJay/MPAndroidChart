@@ -1688,7 +1688,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * DataSet it belongs to. INFORMATION: This method does calculations at
      * runtime. Do not over-use in performance critical situations.
      *
-     * @param xIndex
      * @return
      */
     public ArrayList<SelInfo> getYValsAtIndex(int xIndex) {

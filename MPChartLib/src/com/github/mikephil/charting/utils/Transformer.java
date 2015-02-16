@@ -95,12 +95,12 @@ public class Transformer {
 
     /**
      * Transforms an arraylist of Entry into a float array containing the x and
-     * y values transformed with all matrices for the LINECHART or SCATTERCHART.
+     * y values transformed with all matrices for the SCATTERCHART.
      * 
      * @param entries
      * @return
      */
-    public float[] generateTransformedValuesLineScatter(ArrayList<? extends Entry> entries,
+    public float[] generateTransformedValuesScatter(ArrayList<? extends Entry> entries,
             float phaseY) {
 
         float[] valuePoints = new float[entries.size() * 2];
@@ -111,6 +111,33 @@ public class Transformer {
 
             if (e != null) {
                 valuePoints[j] = e.getXIndex();
+                valuePoints[j + 1] = e.getVal() * phaseY;
+            }
+        }
+
+        pointValuesToPixel(valuePoints);
+
+        return valuePoints;
+    }
+    
+    /**
+     * Transforms an arraylist of Entry into a float array containing the x and
+     * y values transformed with all matrices for the LINECHART.
+     * 
+     * @param entries
+     * @return
+     */
+    public float[] generateTransformedValuesLine(ArrayList<? extends Entry> entries,
+            float phaseY, float xAxisInset) {
+
+        float[] valuePoints = new float[entries.size() * 2];
+
+        for (int j = 0; j < valuePoints.length; j += 2) {
+
+            Entry e = entries.get(j / 2);
+
+            if (e != null) {
+                valuePoints[j] = e.getXIndex() + xAxisInset;
                 valuePoints[j + 1] = e.getVal() * phaseY;
             }
         }

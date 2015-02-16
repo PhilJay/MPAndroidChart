@@ -14,6 +14,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.interfaces.BarDataProvider;
 import com.github.mikephil.charting.renderer.BarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererBarChart;
 import com.github.mikephil.charting.utils.Highlight;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public class BarChart extends BarLineChartBase<BarData> {
+public class BarChart extends BarLineChartBase<BarData> implements BarDataProvider {
 
     // /** indicates the angle of the 3d effect */
     // private float mSkew = 0.3f;
@@ -334,5 +335,10 @@ public class BarChart extends BarLineChartBase<BarData> {
      */
     public boolean isDrawBarShadowEnabled() {
         return mDrawBarShadow;
+    }
+    
+    @Override
+    public BarData getBarData() {
+        return mData;
     }
 }

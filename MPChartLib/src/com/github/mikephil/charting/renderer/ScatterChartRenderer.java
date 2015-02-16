@@ -5,11 +5,11 @@ import android.graphics.Canvas;
 import android.graphics.Path;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
-import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
+import com.github.mikephil.charting.interfaces.ScatterDataProvider;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Transformer;
 
@@ -17,9 +17,9 @@ import java.util.ArrayList;
 
 public class ScatterChartRenderer extends DataRenderer {
 
-    protected ScatterChart mChart;
+    protected ScatterDataProvider mChart;
 
-    public ScatterChartRenderer(ScatterChart chart, ChartAnimator animator,
+    public ScatterChartRenderer(ScatterDataProvider chart, ChartAnimator animator,
             ViewPortHandler viewPortHandler) {
         super(animator, viewPortHandler);
         mChart = chart;
@@ -28,7 +28,7 @@ public class ScatterChartRenderer extends DataRenderer {
     @Override
     public void drawData(Canvas c) {
 
-        ScatterData scatterData = mChart.getData();
+        ScatterData scatterData = mChart.getScatterData();
 
         for (ScatterDataSet set : scatterData.getDataSets()) {
 
@@ -45,7 +45,7 @@ public class ScatterChartRenderer extends DataRenderer {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-        float[] valuePoints = trans.generateTransformedValuesLineScatter(entries,
+        float[] valuePoints = trans.generateTransformedValuesScatter(entries,
                 mAnimator.getPhaseY());
 
         ScatterShape shape = dataSet.getScatterShape();
@@ -114,12 +114,12 @@ public class ScatterChartRenderer extends DataRenderer {
     public void drawValues(Canvas c) {
 
         // if values are drawn
-        if (mChart.getData().getYValCount() < mChart.getMaxVisibleCount()
+        if (mChart.getScatterData().getYValCount() < mChart.getMaxVisibleCount()
                 * mViewPortHandler.getScaleX()) {
 
-            ArrayList<ScatterDataSet> dataSets = mChart.getData().getDataSets();
+            ArrayList<ScatterDataSet> dataSets = mChart.getScatterData().getDataSets();
 
-            for (int i = 0; i < mChart.getData().getDataSetCount(); i++) {
+            for (int i = 0; i < mChart.getScatterData().getDataSetCount(); i++) {
 
                 ScatterDataSet dataSet = dataSets.get(i);
 
@@ -129,7 +129,7 @@ public class ScatterChartRenderer extends DataRenderer {
                 ArrayList<Entry> entries = dataSet.getYVals();
 
                 float[] positions = mChart.getTransformer(dataSet.getAxisDependency())
-                        .generateTransformedValuesLineScatter(entries,
+                        .generateTransformedValuesScatter(entries,
                                 mAnimator.getPhaseY());
 
                 float shapeSize = dataSet.getScatterShapeSize();
@@ -140,8 +140,8 @@ public class ScatterChartRenderer extends DataRenderer {
                         break;
 
                     // make sure the lines don't do shitty things outside bounds
-                    if (j != 0 && !mViewPortHandler.isInBoundsLeft(positions[j - 1])
-                            && !mViewPortHandler.isInBoundsY(positions[j + 1]))
+                    if (j != 0 && (!mViewPortHandler.isInBoundsLeft(positions[j])
+                            || !mViewPortHandler.isInBoundsY(positions[j + 1])))
                         continue;
 
                     float val = entries.get(j / 2).getVal();
@@ -163,7 +163,7 @@ public class ScatterChartRenderer extends DataRenderer {
 
         for (int i = 0; i < indices.length; i++) {
 
-            ScatterDataSet set = mChart.getData().getDataSetByIndex(indices[i]
+            ScatterDataSet set = mChart.getScatterData().getDataSetByIndex(indices[i]
                     .getDataSetIndex());
 
             if (set == null)
