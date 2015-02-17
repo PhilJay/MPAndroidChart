@@ -112,9 +112,9 @@ public class CandleStickChartRenderer extends DataRenderer {
 
         float phase = mAnimator.getPhaseY();
 
-        bodyPoints[0] = e.getXIndex() + bodySpace;
+        bodyPoints[0] = e.getXIndex() -0.5f + bodySpace;
         bodyPoints[1] = e.getClose() * phase;
-        bodyPoints[2] = e.getXIndex() + (1f - bodySpace);
+        bodyPoints[2] = e.getXIndex() + 0.5f - bodySpace;
         bodyPoints[3] = e.getOpen() * phase;
 
         trans.pointValuesToPixel(bodyPoints);
@@ -130,9 +130,9 @@ public class CandleStickChartRenderer extends DataRenderer {
 
         float phase = mAnimator.getPhaseY();
 
-        shadowPoints[0] = e.getXIndex() + 0.5f;
+        shadowPoints[0] = e.getXIndex();
         shadowPoints[1] = e.getHigh() * phase;
-        shadowPoints[2] = e.getXIndex() + 0.5f;
+        shadowPoints[2] = e.getXIndex();
         shadowPoints[3] = e.getLow() * phase;
 
         trans.pointValuesToPixel(shadowPoints);
@@ -175,7 +175,7 @@ public class CandleStickChartRenderer extends DataRenderer {
             float max = mChart.getYChartMax();
 
             float[] vertPts = new float[] {
-                    xIndex, max, xIndex, min, xIndex + 1f, max, xIndex + 1f,
+                    xIndex - 0.5f, max, xIndex - 0.5f, min, xIndex + 0.5f, max, xIndex + 0.5f,
                     min
             };
 

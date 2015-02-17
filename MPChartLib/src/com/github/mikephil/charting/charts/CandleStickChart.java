@@ -32,14 +32,14 @@ public class CandleStickChart extends BarLineChartBase<CandleData> implements Ca
         super.init();
         
         mRenderer = new CandleStickChartRenderer(this, mAnimator, mViewPortHandler);
+        mXChartMin = -0.5f;
     }
 
     @Override
     protected void calcMinMax() {
         super.calcMinMax();
 
-        // increase deltax by 1 because the candles have a width of 1
-        mDeltaX++;
+        mDeltaX = Math.abs(mXChartMax - mXChartMin);
     }
     
     @Override

@@ -512,12 +512,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         float xPos = e.getXIndex();
 
-        // make sure the marker is in the center of the bars in BarChart and
-        // CandleStickChart
-        if (this instanceof CandleStickChart)
-            xPos += 0.5f;
-
-        else if (this instanceof BarChart) {
+        if (this instanceof BarChart) {
 
             BarData bd = (BarData) mData;
             float space = bd.getGroupSpace();
@@ -1143,9 +1138,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         // touch out of chart
         if (xTouchVal < -touchOffset || xTouchVal > mDeltaX + touchOffset)
             return null;
-
-        if (this instanceof CandleStickChart)
-            base -= 0.5;
 
         if (base < 0)
             base = 0;

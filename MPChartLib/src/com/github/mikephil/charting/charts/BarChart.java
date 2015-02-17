@@ -158,18 +158,22 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 
         // calculate the amount of bar-space between index 0 and touch position
         float space = (float) ((((float) valCount / (float) setCount) / (mDeltaX / base)));
+//        
+        float border = (float) setCount + mData.getGroupSpace();
+        
+        float steps = 0.5f + (int) (((float) base + 0.5f) / ((float) setCount));
 
-        float reduction = (float) space * mData.getGroupSpace();
+        float reduction = (float) (steps) * mData.getGroupSpace();
 
-        Log.i(LOG_TAG, "space: " + space);
         Log.i(LOG_TAG, "reduction: " + reduction);
 
         float beforeRound = (float) ((base - reduction) / setCount);
-
+        Log.i(LOG_TAG, "touch x-index before round: " + beforeRound);
+        
         int xIndex = (int) beforeRound;
         Log.i(LOG_TAG, "touch x-index: " + xIndex);
 
-        float dataSetBeforeRound = (float) ((base - reduction) % setCount);
+        float dataSetBeforeRound = (float) ((base - reduction) % (setCount - 0.5f));
 
         Log.i(LOG_TAG, "datasetindex before round: " + dataSetBeforeRound);
 

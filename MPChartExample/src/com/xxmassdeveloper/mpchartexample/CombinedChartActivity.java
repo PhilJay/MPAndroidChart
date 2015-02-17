@@ -10,10 +10,15 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.CandleData;
+import com.github.mikephil.charting.data.CandleDataSet;
+import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.ScatterData;
+import com.github.mikephil.charting.data.ScatterDataSet;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -41,6 +46,8 @@ public class CombinedChartActivity extends DemoBase {
 
         data.setData(generateLineData());
         data.setData(generateBarData());
+        data.setData(generateScatterData());
+        data.setData(generateCandleData());
 
         mChart.setData(data);
         mChart.invalidate();
@@ -77,6 +84,39 @@ public class CombinedChartActivity extends DemoBase {
             entries.add(new BarEntry(getRandom(), index));
 
         BarDataSet set = new BarDataSet(entries, "Bar DataSet");
+        d.addDataSet(set);
+
+        return d;
+    }
+    
+    private ScatterData generateScatterData() {
+
+        ScatterData d = new ScatterData();
+
+        ArrayList<Entry> entries = new ArrayList<Entry>();
+
+        for (int index = 0; index < itemcount; index++)
+            entries.add(new Entry(getRandom(), index));
+
+        ScatterDataSet set = new ScatterDataSet(entries, "Scatter DataSet");
+        set.setColor(Color.GREEN);
+        set.setScatterShapeSize(7.5f);
+        d.addDataSet(set);
+
+        return d;
+    }
+    
+    private CandleData generateCandleData() {
+
+        CandleData d = new CandleData();
+
+        ArrayList<CandleEntry> entries = new ArrayList<CandleEntry>();
+
+        for (int index = 0; index < itemcount; index++)
+            entries.add(new CandleEntry(index, 25f, 10f, 12f, 22f));
+
+        CandleDataSet set = new CandleDataSet(entries, "Candle DataSet");
+        set.setColor(Color.rgb(80, 80, 80));
         d.addDataSet(set);
 
         return d;

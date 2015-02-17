@@ -60,13 +60,14 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
 
         XAxis xLabels = mChart.getXAxis();
         xLabels.setPosition(XLabelPosition.BOTTOM);
-        xLabels.setCenterXLabelText(true);
         xLabels.setSpaceBetweenLabels(2);
 
         YAxis yLabels = mChart.getAxisLeft();  
         yLabels.setLabelCount(7);
         yLabels.setDrawGridLines(false);
 //        yLabels.setPosition(YLabelPosition.LEFT);
+        
+        mChart.getAxisRight().setEnabled(false);
 
         mChart.setDrawLegend(false);
 

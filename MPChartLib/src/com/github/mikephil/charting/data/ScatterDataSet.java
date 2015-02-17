@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class ScatterDataSet extends BarLineScatterCandleRadarDataSet<Entry> {
 
     /** the size the scattershape will have, in screen pixels */
-    private float mShapeSize = 12f;
+    private float mShapeSize = 15f;
 
     /**
      * the type of shape that is set to be drawn where the values are at,
