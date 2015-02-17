@@ -39,6 +39,7 @@ public class CandleStickChart extends BarLineChartBase<CandleData> implements Ca
     protected void calcMinMax() {
         super.calcMinMax();
 
+        mXChartMax += 0.5f;
         mDeltaX = Math.abs(mXChartMax - mXChartMin);
     }
     

@@ -6,6 +6,7 @@ import android.graphics.Path;
 import android.graphics.RectF;
 
 import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.renderer.ViewPortHandler;
 
@@ -139,6 +140,33 @@ public class Transformer {
             if (e != null) {
                 valuePoints[j] = e.getXIndex();
                 valuePoints[j + 1] = e.getVal() * phaseY;
+            }
+        }
+
+        pointValuesToPixel(valuePoints);
+
+        return valuePoints;
+    }
+    
+    /**
+     * Transforms an arraylist of Entry into a float array containing the x and
+     * y values transformed with all matrices for the CANDLESTICKCHART.
+     * 
+     * @param entries
+     * @return
+     */
+    public float[] generateTransformedValuesCandle(ArrayList<CandleEntry> entries,
+            float phaseY) {
+
+        float[] valuePoints = new float[entries.size() * 2];
+
+        for (int j = 0; j < valuePoints.length; j += 2) {
+
+            CandleEntry e = entries.get(j / 2);
+
+            if (e != null) {
+                valuePoints[j] = e.getXIndex();
+                valuePoints[j + 1] = e.getHigh() * phaseY;
             }
         }
 

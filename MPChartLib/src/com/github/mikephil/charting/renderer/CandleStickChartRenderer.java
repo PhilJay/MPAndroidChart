@@ -11,6 +11,7 @@ import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.interfaces.CandleDataProvider;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Transformer;
+import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -140,8 +141,46 @@ public class CandleStickChartRenderer extends DataRenderer {
 
     @Override
     public void drawValues(Canvas c) {
-        // TODO Auto-generated method stub
+        
+     // if values are drawn
+        if (mChart.getCandleData().getYValCount() < mChart.getMaxVisibleCount()
+                * mViewPortHandler.getScaleX()) {
 
+            ArrayList<CandleDataSet> dataSets = mChart.getCandleData().getDataSets();
+
+            for (int i = 0; i < dataSets.size(); i++) {
+
+                CandleDataSet dataSet = dataSets.get(i);
+                Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
+
+                if (!dataSet.isDrawValuesEnabled())
+                    continue;
+
+                ArrayList<CandleEntry> entries = dataSet.getYVals();
+
+                float[] positions = trans.generateTransformedValuesCandle(
+                        entries, mAnimator.getPhaseY());
+                
+                float yOffset = Utils.convertDpToPixel(5f);
+
+                for (int j = 0; j < positions.length * mAnimator.getPhaseX(); j += 2) {
+
+                    float x = positions[j];
+                    float y = positions[j + 1];
+
+                    if (!mViewPortHandler.isInBoundsRight(x))
+                        break;
+
+                    if (!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y))
+                        continue;
+
+                    float val = entries.get(j / 2).getVal();
+
+                    c.drawText(mChart.getValueFormatter().getFormattedValue(val), x, y - yOffset,
+                            mValuePaint);
+                }
+            }
+        }
     }
 
     @Override

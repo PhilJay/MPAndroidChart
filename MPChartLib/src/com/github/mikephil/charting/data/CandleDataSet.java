@@ -15,7 +15,7 @@ public class CandleDataSet extends BarLineScatterCandleRadarDataSet<CandleEntry>
     /** the width of the shadow of the candle */
     private float mShadowWidth = 3f;
 
-    /** the space between the candle entries, default 0.2f (20%) */
+    /** the space between the candle entries, default 0.1f (10%) */
     private float mBodySpace = 0.1f;
 
     public CandleDataSet(ArrayList<CandleEntry> yVals, String label) {

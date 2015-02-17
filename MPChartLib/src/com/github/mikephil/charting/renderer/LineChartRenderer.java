@@ -308,7 +308,6 @@ public class LineChartRenderer extends DataRenderer {
     @Override
     public void drawValues(Canvas c) {
 
-        // if values are drawn
         if (mChart.getLineData().getYValCount() < mChart.getMaxVisibleCount()
                 * mViewPortHandler.getScaleX()) {
 

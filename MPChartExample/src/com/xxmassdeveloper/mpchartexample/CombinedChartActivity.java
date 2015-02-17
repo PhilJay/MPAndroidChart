@@ -7,6 +7,7 @@ import android.view.WindowManager;
 
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -46,7 +47,7 @@ public class CombinedChartActivity extends DemoBase {
 
         data.setData(generateLineData());
         data.setData(generateBarData());
-        data.setData(generateScatterData());
+//        data.setData(generateScatterData());
         data.setData(generateCandleData());
 
         mChart.setData(data);
@@ -69,6 +70,7 @@ public class CombinedChartActivity extends DemoBase {
         set.setCircleSize(5f);
         set.setFillColor(Color.RED);
         set.setDrawCubic(true);
+        set.setDrawValues(false);
         d.addDataSet(set);
         
         return d;
@@ -101,6 +103,7 @@ public class CombinedChartActivity extends DemoBase {
         ScatterDataSet set = new ScatterDataSet(entries, "Scatter DataSet");
         set.setColor(Color.GREEN);
         set.setScatterShapeSize(7.5f);
+        set.setDrawValues(false);
         d.addDataSet(set);
 
         return d;
@@ -113,10 +116,12 @@ public class CombinedChartActivity extends DemoBase {
         ArrayList<CandleEntry> entries = new ArrayList<CandleEntry>();
 
         for (int index = 0; index < itemcount; index++)
-            entries.add(new CandleEntry(index, 25f, 10f, 12f, 22f));
+            entries.add(new CandleEntry(index, 20f, 10f, 13f, 17f));
 
         CandleDataSet set = new CandleDataSet(entries, "Candle DataSet");
         set.setColor(Color.rgb(80, 80, 80));
+        set.setBodySpace(0.3f);
+        set.setDrawValues(false);
         d.addDataSet(set);
 
         return d;
