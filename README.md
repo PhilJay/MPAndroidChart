@@ -408,11 +408,11 @@ All chart types support animations that can be used to create / build up the cha
  - `animateXY(int xDuration, int yDuration)`: Animates both horizontal and vertical axis, resulting in a left/right bottom/top build-up.
 
 ```java
-mChart.animateX(3000f); // animate horizontal 3000 milliseconds
+mChart.animateX(3000); // animate horizontal 3000 milliseconds
 // or:
-mChart.animateY(3000f); // animate vertical 3000 milliseconds
+mChart.animateY(3000); // animate vertical 3000 milliseconds
 // or:
-mChart.animateXY(3000f, 3000f); // animate horizontal and vertical 3000 milliseconds
+mChart.animateXY(3000, 3000); // animate horizontal and vertical 3000 milliseconds
 ```
 
 If `animate(...)` (of any kind) is called, no further calling of `invalidate()` is necessary to refresh the chart.
