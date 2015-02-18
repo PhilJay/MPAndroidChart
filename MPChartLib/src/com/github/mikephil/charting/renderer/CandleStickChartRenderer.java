@@ -174,7 +174,7 @@ public class CandleStickChartRenderer extends DataRenderer {
                     if (!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y))
                         continue;
 
-                    float val = entries.get(j / 2).getVal();
+                    float val = entries.get(j / 2).getHigh();
 
                     c.drawText(mChart.getValueFormatter().getFormattedValue(val), x, y - yOffset,
                             mValuePaint);

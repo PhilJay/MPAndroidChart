@@ -128,7 +128,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
             }
             case R.id.actionToggleXVals: {
 
-                mChart.setDrawAxisLabels(!mChart.isDrawAxisLabelsEnabled());
+                mChart.setDrawSliceText(!mChart.isDrawSliceTextEnabled());
                 mChart.invalidate();
                 break;
             }

@@ -22,7 +22,7 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarLineScatterCandleData;
-import com.github.mikephil.charting.data.BarLineScatterCandleRadarDataSet;
+import com.github.mikephil.charting.data.BarLineScatterCandleDataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -46,7 +46,7 @@ import java.util.ArrayList;
  * @author Philipp Jahoda
  */
 @SuppressLint("RtlHardcoded")
-public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? extends BarLineScatterCandleRadarDataSet<? extends Entry>>>
+public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? extends BarLineScatterCandleDataSet<? extends Entry>>>
         extends Chart<T> {
 
     /** the maximum number of entried to which values will be drawn */
@@ -918,10 +918,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 vals[0] += set.getBarSpace() / 2f;
         }
 
-        if (axis == AxisDependency.LEFT)
-            mLeftAxisTransformer.pointValuesToPixel(vals);
-        else
-            mRightAxisTransformer.pointValuesToPixel(vals);
+        getTransformer(axis).pointValuesToPixel(vals);
 
         return new PointF(vals[0], vals[1]);
     }

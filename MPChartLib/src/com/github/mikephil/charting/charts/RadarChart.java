@@ -42,17 +42,14 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     /** transparency the grid is drawn with (0-255) */
     private int mWebAlpha = 150;
 
-    /** flag indicating if the x-labels should be drawn or not */
-    private boolean mDrawXLabels = true;
-
     /** flag indicating if the web lines should be drawn or not */
     private boolean mDrawWeb = true;
 
     /** the object reprsenting the y-axis labels */
-    private YAxis mYAxis = new YAxis(AxisDependency.LEFT);
+    private YAxis mYAxis;
 
     /** the object representing the x-axis labels */
-    private XAxis mXAxis = new XAxis();
+    private XAxis mXAxis;
 
     protected YAxisRendererRadarChart mYAxisRenderer;
     protected XAxisRendererRadarChart mXAxisRenderer;
@@ -97,7 +94,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
         mYAxis.mAxisMinimum = 0;
 
-//        mDeltaY = Math.abs(mYChartMax - mYChartMin);
+        // mDeltaY = Math.abs(mYChartMax - mYChartMin);
     }
 
     @Override
@@ -118,8 +115,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
-        mYAxisRenderer.computeAxis(0f, 0f);
-        prepareYLabels();
+        mYAxisRenderer.computeAxis(0f, mData.getYMax());
         mXAxisRenderer.computeAxis(mData.getXValAverageLength(), mData.getXVals());
     }
 
@@ -130,8 +126,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         if (mDataNotSet)
             return;
 
-        if (mDrawXLabels)
-            mXAxisRenderer.renderAxis(mDrawCanvas);
+        mXAxisRenderer.renderAxis(mDrawCanvas);
 
         if (mDrawWeb)
             mRenderer.drawExtras(mDrawCanvas);
@@ -143,8 +138,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         if (mHighlightEnabled && valuesToHighlight())
             mRenderer.drawHighlighted(mDrawCanvas, mIndicesToHightlight);
 
-        if (mYAxis.isEnabled())
-            mYAxisRenderer.renderAxis(mDrawCanvas);
+        mYAxisRenderer.renderAxis(mDrawCanvas);
 
         mRenderer.drawValues(mDrawCanvas);
 
@@ -155,44 +149,6 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         drawMarkers();
 
         canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
-    }
-
-    /**
-     * Calculates the required maximum y-value in order to be able to provide
-     * the desired number of label entries and rounded label values.
-     */
-    private void prepareYLabels() {
-
-        int labelCount = mYAxis.getLabelCount();
-
-        double max = mData.getYMax() > 0 ? mData.getYMax() : 1.0;
-        double range = max - mYAxis.mAxisMinimum;
-
-        double rawInterval = range / labelCount;
-        double interval = Utils.roundToNextSignificant(rawInterval);
-        double intervalMagnitude = Math.pow(10, (int) Math.log10(interval));
-        int intervalSigDigit = (int) (interval / intervalMagnitude);
-        if (intervalSigDigit > 5) {
-            // Use one order of magnitude higher, to avoid intervals like 0.9 or
-            // 90
-            interval = Math.floor(10 * intervalMagnitude);
-        }
-
-        double first = Math.ceil(mYAxis.mAxisMinimum / interval) * interval;
-        double last = Utils.nextUp(Math.floor(max / interval) * interval);
-
-        double f;
-        int n = 0;
-        for (f = first; f <= last; f += interval) {
-            ++n;
-        }
-
-        mYAxis.mEntryCount = n;
-
-        mYAxis.mAxisMaximum = (float) interval * n;
-
-        // calc delta
-//        mDeltaY = Math.abs(mYChartMax - mYChartMin);
     }
 
     /**
@@ -241,7 +197,8 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     }
 
     /**
-     * Returns the object that represents all x-labels of the RadarChart.
+     * Returns the object that represents all x-labels that are placed around
+     * the RadarChart.
      * 
      * @return
      */
@@ -335,24 +292,6 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         mDrawWeb = enabled;
     }
 
-    /**
-     * set this to true to enable drawing the x-labels, false if not
-     * 
-     * @param enabled
-     */
-    public void setDrawXLabels(boolean enabled) {
-        mDrawXLabels = enabled;
-    }
-
-    /**
-     * Returns true if drawing x-labels is enabled, false if not.
-     * 
-     * @return
-     */
-    public boolean isDrawXLabelsEnabled() {
-        return mDrawXLabels;
-    }
-
     @Override
     protected float getRequiredBottomOffset() {
         return mLegendLabelPaint.getTextSize() * 6.5f;
@@ -368,11 +307,11 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         RectF content = mViewPortHandler.getContentRect();
         return Math.min(content.width() / 2f, content.height() / 2f);
     }
-    
+
     public float getYChartMax() {
         return mYAxis.mAxisMaximum;
     }
-    
+
     public float getYChartMin() {
         return mYAxis.mAxisMinimum;
     }

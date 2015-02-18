@@ -6,6 +6,7 @@ import android.graphics.Paint.Align;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import com.github.mikephil.charting.components.Legend.LegendPosition;
@@ -29,9 +30,6 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
     /** flag that indicates if rotation is enabled or not */
     protected boolean mRotateEnabled = true;
-    
-    /** flag indicating if the x-labels should be drawn or not */
-    protected boolean mDrawXLabels = true;
 
     /** the pie- and radarchart touchlistener */
     private OnTouchListener mListener;
@@ -54,7 +52,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
         mListener = new PieRadarChartTouchListener(this);
     }
-    
+
     @Override
     protected void calcMinMax() {
         mDeltaX = mData.getXVals().size() - 1;
@@ -158,32 +156,31 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
         mViewPortHandler.restrainViewPort(offsetLeft, offsetTop, offsetRight, offsetBottom);
 
-        applyCalculatedOffsets();
+            Log.i(LOG_TAG, "offsetLeft: " + offsetLeft + ", offsetTop: " + offsetTop
+                    + ", offsetRight: " + offsetRight + ", offsetBottom: " + offsetBottom);
     }
 
-    /**
-     * Applys the newly calculated offsets to the matrices.
-     */
-    protected void applyCalculatedOffsets() {
-
-        // prepareContentRect();
-        //
-        // float scaleX = (float) ((getWidth() - mOffsetLeft - mOffsetRight) /
-        // mDeltaX);
-        // float scaleY = (float) ((getHeight() - mOffsetBottom - mOffsetTop) /
-        // mDeltaY);
-        //
-        // Matrix val = new Matrix();
-        // val.postTranslate(0, -mYChartMin);
-        // val.postScale(scaleX, -scaleY);
-        //
-        // mTrans.getValueMatrix().set(val);
-        //
-        // Matrix offset = new Matrix();
-        // offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
-        //
-        // mTrans.getOffsetMatrix().set(offset);
-    }
+    // /**
+    // * Applys the newly calculated offsets to the matrices.
+    // */
+    // private void applyCalculatedOffsets() {
+    //
+    // float scaleX = (float) ((getWidth() - mOffsetLeft - mOffsetRight) /
+    // mDeltaX);
+    // float scaleY = (float) ((getHeight() - mOffsetBottom - mOffsetTop) /
+    // mDeltaY);
+    //
+    // Matrix val = new Matrix();
+    // val.postTranslate(0, -mYChartMin);
+    // val.postScale(scaleX, -scaleY);
+    //
+    // mTrans.getValueMatrix().set(val);
+    //
+    // Matrix offset = new Matrix();
+    // offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
+    //
+    // mTrans.getOffsetMatrix().set(offset);
+    // }
 
     /** the angle where the dragging started */
     private float mStartAngle = 0f;
@@ -353,24 +350,6 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     public boolean isRotationEnabled() {
         return mRotateEnabled;
     }
-    
-    /**
-     * set this to true to draw the x-value text into the pie slices
-     * 
-     * @param enabled
-     */
-    public void setDrawAxisLabels(boolean enabled) {
-        mDrawXLabels = enabled;
-    }
-
-    /**
-     * returns true if drawing x-values is enabled, false if not
-     * 
-     * @return
-     */
-    public boolean isDrawAxisLabelsEnabled() {
-        return mDrawXLabels;
-    }
 
     /**
      * returns the diameter of the pie- or radar-chart
@@ -423,13 +402,13 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     public void setOnTouchListener(OnTouchListener l) {
         this.mListener = l;
     }
-    
+
     @Override
     public float getYChartMax() {
         // TODO Auto-generated method stub
         return 0;
     }
-    
+
     @Override
     public float getYChartMin() {
         // TODO Auto-generated method stub

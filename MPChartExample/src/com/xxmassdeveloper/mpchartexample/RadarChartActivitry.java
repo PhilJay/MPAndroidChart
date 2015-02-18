@@ -130,15 +130,12 @@ public class RadarChartActivitry extends DemoBase {
                 break;
             }
             case R.id.actionToggleXLabels: {
-                if (mChart.isDrawXLabelsEnabled())
-                    mChart.setDrawXLabels(false);
-                else
-                    mChart.setDrawXLabels(true);
+                mChart.getXAxis().setEnabled(!mChart.getXAxis().isEnabled());
                 mChart.invalidate();
                 break;
             }
             case R.id.actionToggleYLabels: {
-                
+
                 mChart.getYAxis().setEnabled(!mChart.getYAxis().isEnabled());
                 mChart.invalidate();
                 break;
@@ -195,7 +192,7 @@ public class RadarChartActivitry extends DemoBase {
         sets.add(set2);
 
         RadarData data = new RadarData(xVals, sets);
-        
+
         mChart.setData(data);
 
         // undo all highlights

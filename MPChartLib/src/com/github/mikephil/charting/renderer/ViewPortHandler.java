@@ -4,7 +4,6 @@ package com.github.mikephil.charting.renderer;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.util.Log;
 
 import com.github.mikephil.charting.interfaces.ChartInterface;
 import com.github.mikephil.charting.utils.Utils;

@@ -13,7 +13,7 @@ import android.view.View.OnTouchListener;
 
 import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.data.BarLineScatterCandleData;
-import com.github.mikephil.charting.data.BarLineScatterCandleRadarDataSet;
+import com.github.mikephil.charting.data.BarLineScatterCandleDataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.OnChartGestureListener;
 import com.github.mikephil.charting.renderer.ViewPortHandler;
@@ -25,7 +25,7 @@ import com.github.mikephil.charting.utils.Highlight;
  * 
  * @author Philipp Jahoda
  */
-public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarLineScatterCandleData<? extends BarLineScatterCandleRadarDataSet<? extends Entry>>>>
+public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarLineScatterCandleData<? extends BarLineScatterCandleDataSet<? extends Entry>>>>
         extends SimpleOnGestureListener implements OnTouchListener {
 
     /** the original touch-matrix from the chart */

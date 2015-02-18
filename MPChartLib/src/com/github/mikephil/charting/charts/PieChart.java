@@ -32,6 +32,9 @@ public class PieChart extends PieRadarChartBase<PieData> {
      * drawing the circle
      */
     private RectF mCircleBox = new RectF();
+    
+    /** flag indicating if the x-labels should be drawn or not */
+    protected boolean mDrawXLabels = true;
 
     /** array that holds the width of each pie-slice in degrees */
     private float[] mDrawAngles;
@@ -453,6 +456,24 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
     public float getTransparentCircleRadius() {
         return mTransparentCircleRadiusPercent;
+    }    
+
+    /**
+     * set this to true to draw the x-value text into the pie slices
+     * 
+     * @param enabled
+     */
+    public void setDrawSliceText(boolean enabled) {
+        mDrawXLabels = enabled;
+    }
+
+    /**
+     * returns true if drawing x-values is enabled, false if not
+     * 
+     * @return
+     */
+    public boolean isDrawSliceTextEnabled() {
+        return mDrawXLabels;
     }
 
     @Override

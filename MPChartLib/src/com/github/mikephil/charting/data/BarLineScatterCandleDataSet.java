@@ -10,12 +10,12 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public abstract class BarLineScatterCandleRadarDataSet<T extends Entry> extends DataSet<T> {
+public abstract class BarLineScatterCandleDataSet<T extends Entry> extends DataSet<T> {
 
     /** default highlight color */
     protected int mHighLightColor = Color.rgb(255, 187, 115);
 
-    public BarLineScatterCandleRadarDataSet(ArrayList<T> yVals, String label) {
+    public BarLineScatterCandleDataSet(ArrayList<T> yVals, String label) {
         super(yVals, label);
     }
 

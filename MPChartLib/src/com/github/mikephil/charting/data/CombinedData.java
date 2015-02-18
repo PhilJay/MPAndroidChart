@@ -2,7 +2,7 @@ package com.github.mikephil.charting.data;
 
 import java.util.ArrayList;
 
-public class CombinedData extends BarLineScatterCandleData<BarLineScatterCandleRadarDataSet<?>> {
+public class CombinedData extends BarLineScatterCandleData<BarLineScatterCandleDataSet<?>> {
 
     private LineData mLineData;
     private BarData mBarData;

@@ -159,7 +159,7 @@ public class PieChartRenderer extends DataRenderer {
 
                 String val = mChart.getValueFormatter().getFormattedValue(value);
 
-                boolean drawXVals = mChart.isDrawAxisLabelsEnabled();
+                boolean drawXVals = mChart.isDrawSliceTextEnabled();
                 boolean drawYVals = dataSet.isDrawValuesEnabled();
 
                 // draw everything, depending on settings

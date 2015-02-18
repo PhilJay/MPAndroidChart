@@ -14,12 +14,12 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public abstract class ChartData<T extends DataSet<? extends Entry>> extends Data<T> {
+public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
-    /** maximum y-value in the y-value array */
+    /** maximum y-value in the y-value array across all axes */
     protected float mYMax = 0.0f;
 
-    /** the minimum y-value in the y-value array */
+    /** the minimum y-value in the y-value array across all axes */
     protected float mYMin = 0.0f;
 
     protected float mLeftAxisMax = 0.0f;

@@ -4,6 +4,7 @@ package com.github.mikephil.charting.renderer;
 import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.util.Log;
 
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.LimitLine;
@@ -20,12 +21,41 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
     public YAxisRendererRadarChart(ViewPortHandler viewPortHandler, YAxis yAxis, RadarChart chart) {
         super(viewPortHandler, yAxis, null);
 
-        mChart = chart;
+        this.mChart = chart;
     }
 
     @Override
     public void computeAxis(float yMin, float yMax) {
+        
+        int labelCount = mYAxis.getLabelCount();
 
+        double max = yMax > 0 ? yMax : 1.0;
+        double range = max - mYAxis.mAxisMinimum;
+
+        double rawInterval = range / labelCount;
+        double interval = Utils.roundToNextSignificant(rawInterval);
+        double intervalMagnitude = Math.pow(10, (int) Math.log10(interval));
+        int intervalSigDigit = (int) (interval / intervalMagnitude);
+        if (intervalSigDigit > 5) {
+            // Use one order of magnitude higher, to avoid intervals like 0.9 or
+            // 90
+            interval = Math.floor(10 * intervalMagnitude);
+        }
+
+        double first = Math.ceil(mYAxis.mAxisMinimum / interval) * interval;
+        double last = Utils.nextUp(Math.floor(max / interval) * interval);
+
+        double f;
+        int n = 0;
+        for (f = first; f <= last; f += interval) {
+            ++n;
+        }
+
+        mYAxis.mEntryCount = n;
+
+        mYAxis.mAxisMaximum = (float) interval * n;
+        
+        Log.i("", "Maximum: " + mYAxis.mAxisMaximum);
     }
 
     @Override
