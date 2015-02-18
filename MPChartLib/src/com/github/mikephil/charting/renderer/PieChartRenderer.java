@@ -51,11 +51,11 @@ public class PieChartRenderer extends DataRenderer {
         mValuePaint.setColor(Color.WHITE);
         mValuePaint.setTextAlign(Align.CENTER);
     }
-    
+
     public Paint getPaintHole() {
         return mHolePaint;
     }
-    
+
     public Paint getPaintCenterText() {
         return mCenterTextPaint;
     }
@@ -155,7 +155,8 @@ public class PieChartRenderer extends DataRenderer {
                         * Math.sin(Math.toRadians((rotationAngle + absoluteAngles[cnt] - offset)
                                 * mAnimator.getPhaseY())) + center.y);
 
-                float value = entries.get(j).getVal();
+                float value = mChart.isUsePercentValuesEnabled() ? entries.get(j).getVal()
+                        / mChart.getYValueSum() * 100f : entries.get(j).getVal();
 
                 String val = mChart.getValueFormatter().getFormattedValue(value);
 

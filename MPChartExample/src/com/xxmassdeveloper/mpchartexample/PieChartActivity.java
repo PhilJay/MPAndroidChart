@@ -20,6 +20,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.xxmassdeveloper.mpchartexample.custom.PercentFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -50,6 +51,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         mSeekBarY.setOnSeekBarChangeListener(this);
 
         mChart = (PieChart) findViewById(R.id.chart1);
+        mChart.setValueFormatter(new PercentFormatter());
 
         // change the color of the center-hole
         // mChart.setHoleColor(Color.rgb(235, 235, 235));
@@ -137,6 +139,10 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
                 mChart.saveToPath("title" + System.currentTimeMillis(), "");
                 break;
             }
+            case R.id.actionTogglePercent:
+                mChart.setUsePercentValues(!mChart.isUsePercentValuesEnabled());
+                mChart.invalidate();
+                break;
             case R.id.animateX: {
                 mChart.animateX(1800);
                 break;
@@ -180,8 +186,8 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         for (int i = 0; i < count + 1; i++)
             xVals.add(mParties[i % mParties.length]);
 
-        PieDataSet set1 = new PieDataSet(yVals1, "Election Results");
-        set1.setSliceSpace(3f);
+        PieDataSet dataSet = new PieDataSet(yVals1, "Election Results");
+        dataSet.setSliceSpace(3f);
 
         // add a lot of colors
 
@@ -204,9 +210,9 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         colors.add(ColorTemplate.getHoloBlue());
 
-        set1.setColors(colors);
+        dataSet.setColors(colors);
 
-        PieData data = new PieData(xVals, set1);
+        PieData data = new PieData(xVals, dataSet);
         mChart.setData(data);
 
         // undo all highlights

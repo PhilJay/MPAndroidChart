@@ -32,7 +32,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
      * drawing the circle
      */
     private RectF mCircleBox = new RectF();
-    
+
     /** flag indicating if the x-labels should be drawn or not */
     protected boolean mDrawXLabels = true;
 
@@ -44,6 +44,9 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
     /** if true, the white hole inside the chart will be drawn */
     private boolean mDrawHole = true;
+
+    /** if true, the values inside the piechart are drawn as percent values */
+    private boolean mUsePercentValues = false;
 
     /**
      * variable for the text that is drawn in the center of the pie-chart. If
@@ -456,7 +459,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
     public float getTransparentCircleRadius() {
         return mTransparentCircleRadiusPercent;
-    }    
+    }
 
     /**
      * set this to true to draw the x-value text into the pie slices
@@ -474,6 +477,21 @@ public class PieChart extends PieRadarChartBase<PieData> {
      */
     public boolean isDrawSliceTextEnabled() {
         return mDrawXLabels;
+    }
+
+    /**
+     * If this is enabled, values inside the PieChart are drawn in percent and
+     * not with their original value. Values provided for the ValueFormatter to
+     * format are then provided in percent.
+     * 
+     * @param enabled
+     */
+    public void setUsePercentValues(boolean enabled) {
+        mUsePercentValues = enabled;
+    }
+
+    public boolean isUsePercentValuesEnabled() {
+        return mUsePercentValues;
     }
 
     @Override
