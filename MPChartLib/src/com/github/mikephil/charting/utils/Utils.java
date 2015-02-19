@@ -8,6 +8,8 @@ import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.github.mikephil.charting.components.YAxis.AxisDependency;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -359,17 +361,23 @@ public abstract class Utils {
      * @param valsAtIndex all the values at a specific index
      * @return
      */
-    public static int getClosestDataSetIndex(ArrayList<SelInfo> valsAtIndex, float val) {
+    public static int getClosestDataSetIndex(ArrayList<SelInfo> valsAtIndex, float val,
+            AxisDependency axis) {
 
         int index = -1;
         float distance = Float.MAX_VALUE;
 
         for (int i = 0; i < valsAtIndex.size(); i++) {
 
-            float cdistance = Math.abs((float) valsAtIndex.get(i).val - val);
-            if (cdistance < distance) {
-                index = valsAtIndex.get(i).dataSetIndex;
-                distance = cdistance;
+            SelInfo sel = valsAtIndex.get(i);
+
+            if (axis == null || sel.dataSet.getAxisDependency() == axis) {
+
+                float cdistance = Math.abs((float) sel.val - val);
+                if (cdistance < distance) {
+                    index = valsAtIndex.get(i).dataSetIndex;
+                    distance = cdistance;
+                }
             }
         }
 
@@ -377,8 +385,37 @@ public abstract class Utils {
 
         return index;
     }
-    
-    
+
+    /**
+     * Returns the minimum distance from a touch-y-value (in pixels) to the
+     * closest y-value (in pixels) that is displayed in the chart.
+     * 
+     * @param valsAtIndex
+     * @param val
+     * @param axis
+     * @return
+     */
+    public static float getMinimumDistance(ArrayList<SelInfo> valsAtIndex, float val,
+            AxisDependency axis) {
+
+        float distance = Float.MAX_VALUE;
+
+        for (int i = 0; i < valsAtIndex.size(); i++) {
+
+            SelInfo sel = valsAtIndex.get(i);
+
+            if (sel.dataSet.getAxisDependency() == axis) {
+
+                float cdistance = Math.abs((float) sel.val - val);
+                if (cdistance < distance) {
+                    distance = cdistance;
+                }
+            }
+        }
+
+        return distance;
+    }
+
     /**
      * Calculates the position around a center point, depending on the distance
      * from the center, and the angle of the position around the center.

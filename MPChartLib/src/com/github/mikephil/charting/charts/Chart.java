@@ -1690,31 +1690,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 //    }
 
     /**
-     * Returns an array of SelInfo objects for the given x-index. The SelInfo
-     * objects give information about the value at the selected index and the
-     * DataSet it belongs to. INFORMATION: This method does calculations at
-     * runtime. Do not over-use in performance critical situations.
-     *
-     * @return
-     */
-    public ArrayList<SelInfo> getYValsAtIndex(int xIndex) {
-
-        ArrayList<SelInfo> vals = new ArrayList<SelInfo>();
-
-        for (int i = 0; i < mData.getDataSetCount(); i++) {
-
-            // extract all y-values from all DataSets at the given x-index
-            float yVal = mData.getDataSetByIndex(i).getYValForXIndex(xIndex);
-
-            if (!Float.isNaN(yVal)) {
-                vals.add(new SelInfo(yVal, i));
-            }
-        }
-
-        return vals;
-    }
-
-    /**
      * Get all Entry objects at the given index across all DataSets.
      * INFORMATION: This method does calculations at runtime. Do not over-use in
      * performance critical situations.

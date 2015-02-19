@@ -14,8 +14,11 @@ import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.listener.PieRadarChartTouchListener;
+import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
 import com.nineoldandroids.animation.ObjectAnimator;
+
+import java.util.ArrayList;
 
 /**
  * Baseclass of PieChart and RadarChart.
@@ -415,6 +418,33 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
         return 0;
     }
 
+    /**
+     * Returns an array of SelInfo objects for the given x-index. The SelInfo
+     * objects give information about the value at the selected index and the
+     * DataSet it belongs to. INFORMATION: This method does calculations at
+     * runtime. Do not over-use in performance critical situations.
+     *
+     * @return
+     */
+    public ArrayList<SelInfo> getYValsAtIndex(int xIndex) {
+
+        ArrayList<SelInfo> vals = new ArrayList<SelInfo>();
+
+        for (int i = 0; i < mData.getDataSetCount(); i++) {
+            
+            DataSet<?> dataSet = mData.getDataSetByIndex(i);
+
+            // extract all y-values from all DataSets at the given x-index
+            float yVal = dataSet.getYValForXIndex(xIndex);
+            
+            if (!Float.isNaN(yVal)) {
+                vals.add(new SelInfo(yVal, i, dataSet));
+            }
+        }
+
+        return vals;
+    }
+    
     /**
      * ################ ################ ################ ################
      */

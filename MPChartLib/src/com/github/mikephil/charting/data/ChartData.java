@@ -806,7 +806,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         return -1;
     }
 
-    private T getFirstLeft() {
+    public T getFirstLeft() {
         for (T dataSet : mDataSets) {
             if (dataSet.getAxisDependency() == AxisDependency.LEFT)
                 return dataSet;
@@ -815,7 +815,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         return null;
     }
 
-    private T getFirstRight() {
+    public T getFirstRight() {
         for (T dataSet : mDataSets) {
             if (dataSet.getAxisDependency() == AxisDependency.RIGHT)
                 return dataSet;

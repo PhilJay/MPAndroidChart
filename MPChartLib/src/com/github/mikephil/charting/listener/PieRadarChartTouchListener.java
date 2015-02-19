@@ -127,7 +127,7 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
 
                 mChart.highlightValues(null);
                 mLastHighlight = null;
-
+ 
             } else {
 
                 ArrayList<SelInfo> valsAtIndex = mChart.getYValsAtIndex(index);
@@ -140,7 +140,7 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
                 if (mChart instanceof RadarChart) {
 
                     dataSetIndex = Utils.getClosestDataSetIndex(valsAtIndex, distance
-                            / ((RadarChart) mChart).getFactor());
+                            / ((RadarChart) mChart).getFactor(), null);
                 }
 
                 Highlight h = new Highlight(index, dataSetIndex);

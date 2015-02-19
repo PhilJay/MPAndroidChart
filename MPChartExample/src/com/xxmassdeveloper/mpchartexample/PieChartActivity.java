@@ -52,6 +52,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         mChart = (PieChart) findViewById(R.id.chart1);
         mChart.setValueFormatter(new PercentFormatter());
+        mChart.setUsePercentValues(true);
 
         // change the color of the center-hole
         // mChart.setHoleColor(Color.rgb(235, 235, 235));

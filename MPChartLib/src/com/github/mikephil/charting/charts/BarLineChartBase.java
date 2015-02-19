@@ -13,6 +13,7 @@ import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
@@ -23,6 +24,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarLineScatterCandleData;
 import com.github.mikephil.charting.data.BarLineScatterCandleDataSet;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -237,7 +239,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     private void prepareValuePxMatrix() {
 
         if (mLogEnabled)
-            Log.i(LOG_TAG, "Preparing Value-Px Matrix, xmin: " + mXChartMin + ", xmax: " + mXChartMax + ", xdelta: " + mDeltaX);
+            Log.i(LOG_TAG, "Preparing Value-Px Matrix, xmin: " + mXChartMin + ", xmax: "
+                    + mXChartMax + ", xdelta: " + mDeltaX);
 
         mRightAxisTransformer.prepareMatrixValuePx(mXChartMin, mDeltaX, mAxisRight.mAxisRange,
                 mAxisRight.mAxisMinimum);
@@ -292,7 +295,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         float bottomSpaceRight = rightRange / 100f * mAxisRight.getSpaceBottom();
 
         Log.i(LOG_TAG, "minLeft: " + minLeft + ", maxLeft: " + maxLeft);
-        
+
         mXChartMax = mData.getXVals().size() - 1;
         mDeltaX = Math.abs(mXChartMax - mXChartMin);
 
@@ -1116,21 +1119,14 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         // create an array of the touch-point
         float[] pts = new float[2];
         pts[0] = x;
-        pts[1] = y;
 
+        // take any transformer to determine the x-axis value
         mLeftAxisTransformer.pixelsToValue(pts);
 
         double xTouchVal = pts[0];
-        double yTouchVal = pts[1];
         double base = Math.floor(xTouchVal);
 
         double touchOffset = mDeltaX * 0.025;
-        // Log.i(LOG_TAG, "touchindex x: " + xTouchVal + ", touchindex y: " +
-        // yTouchVal + ", offset: "
-        // + touchOffset);
-        // Toast.makeText(getContext(), "touchindex x: " + xTouchVal +
-        // ", touchindex y: " + yTouchVal + ", offset: " + touchOffset,
-        // Toast.LENGTH_SHORT).show();
 
         // touch out of chart
         if (xTouchVal < -touchOffset || xTouchVal > mDeltaX + touchOffset)
@@ -1143,9 +1139,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         int xIndex = (int) base;
 
-        int dataSetIndex = 0; // index of the DataSet inside the ChartData
-                              // object
-
         // check if we are more than half of a x-value or not
         if (xTouchVal - base > 0.5) {
             xIndex = (int) base + 1;
@@ -1153,16 +1146,54 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         ArrayList<SelInfo> valsAtIndex = getYValsAtIndex(xIndex);
 
-        dataSetIndex = Utils.getClosestDataSetIndex(valsAtIndex, (float) yTouchVal);
+        float leftdist = Utils.getMinimumDistance(valsAtIndex, y, AxisDependency.LEFT);
+        float rightdist = Utils.getMinimumDistance(valsAtIndex, y, AxisDependency.RIGHT);
+
+        if (mData.getFirstRight() == null)
+            rightdist = Float.MAX_VALUE;
+        if (mData.getFirstLeft() == null)
+            leftdist = Float.MAX_VALUE;
+
+        AxisDependency axis = leftdist < rightdist ? AxisDependency.LEFT : AxisDependency.RIGHT;
+
+        int dataSetIndex = Utils.getClosestDataSetIndex(valsAtIndex, y, axis);
 
         if (dataSetIndex == -1)
             return null;
 
-        // Toast.makeText(getContext(), "xindex: " + xIndex + ", dataSetIndex: "
-        // + dataSetIndex,
-        // Toast.LENGTH_SHORT).show();
-
         return new Highlight(xIndex, dataSetIndex);
+    }
+
+    /**
+     * Returns an array of SelInfo objects for the given x-index. The SelInfo
+     * objects give information about the value at the selected index and the
+     * DataSet it belongs to. INFORMATION: This method does calculations at
+     * runtime. Do not over-use in performance critical situations.
+     *
+     * @return
+     */
+    public ArrayList<SelInfo> getYValsAtIndex(int xIndex) {
+
+        ArrayList<SelInfo> vals = new ArrayList<SelInfo>();
+
+        float[] pts = new float[2];
+
+        for (int i = 0; i < mData.getDataSetCount(); i++) {
+
+            DataSet<?> dataSet = mData.getDataSetByIndex(i);
+
+            // extract all y-values from all DataSets at the given x-index
+            float yVal = dataSet.getYValForXIndex(xIndex);
+            pts[1] = yVal;
+
+            getTransformer(dataSet.getAxisDependency()).pointValuesToPixel(pts);
+
+            if (!Float.isNaN(pts[1])) {
+                vals.add(new SelInfo(pts[1], i, dataSet));
+            }
+        }
+
+        return vals;
     }
 
     /**
@@ -1472,7 +1503,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         return null;
     }
-    
+
     /**
      * Default formatter that calculates the position of the filled line.
      * 
@@ -1512,5 +1543,5 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
             return fillMin;
         }
-    }   
+    }
 }
