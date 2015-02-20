@@ -113,6 +113,7 @@ Usage
 
 In order to use the library, there are 2 options:
 
+Using ADT
 
 **1. jar file only**
  - Download the [**latest .jar file**](https://github.com/PhilJay/MPAndroidChart/releases) from the releases section
@@ -125,6 +126,14 @@ In order to use the library, there are 2 options:
  - Import the library folder (`MPChartLib`) into your Eclipse workspace, using `File-->Import-->Android-->Existing Android Code` and then choose the library folder from your file system and press `Finish`.
  - After importing, add the library to your project by right clicking your project `Properties-->Android`. There, you press the "Add.." button and choose the library project you just imported into eclipse. Then press `apply`.
  - Start using the library
+
+Using Android Studio
+ - Add the below line to your app's build.gradle file.
+```groovy
+compile 'org.quanqi:mpandroidchart:1.7.5'
+```
+
+
 
 For getting started, rely on the **"MPChartExample"** folder and check out the examples in that project. The example project is also  [**available in the Google PlayStore**](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample). 
 
