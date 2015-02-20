@@ -81,10 +81,10 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
-        XAxis xl = mChart.getXAxis();
-        xl.setPosition(XAxisPosition.BOTTOM);
-        xl.setTypeface(tf);
-        xl.setDrawGridLines(false);
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setPosition(XAxisPosition.BOTTOM);
+        xAxis.setTypeface(tf);
+        xAxis.setDrawGridLines(false);
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(tf);

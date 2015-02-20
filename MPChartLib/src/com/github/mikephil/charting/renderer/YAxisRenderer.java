@@ -14,7 +14,6 @@ import com.github.mikephil.charting.components.YAxis.YLabelPosition;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
-import com.github.mikephil.charting.utils.ValueFormatter;
 
 import java.util.ArrayList;
 
@@ -315,15 +314,15 @@ public class YAxisRenderer extends AxisRenderer {
             
             String label = l.getLabel();
 
-            // if drawing the limit-value is enabled
+            // if drawing the limit-value label is enabled
             if (label != null && !label.equals("")) {
 
                 float xOffset = Utils.convertDpToPixel(4f);
-                float yOffset = l.getLineWidth() + xOffset;
+                float yOffset = l.getLineWidth() + Utils.calcTextHeight(mLimitLinePaint, label) / 2f;
 
                 mLimitLinePaint.setPathEffect(null);
                 mLimitLinePaint.setColor(l.getTextColor());
-                mLimitLinePaint.setStrokeWidth(1f);
+                mLimitLinePaint.setStrokeWidth(0.5f);
                 mLimitLinePaint.setTextSize(l.getTextSize());
 
                 if (l.getLabelPosition() == LimitLabelPosition.POS_RIGHT) {

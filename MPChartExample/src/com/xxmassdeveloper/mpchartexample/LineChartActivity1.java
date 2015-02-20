@@ -339,6 +339,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         leftAxis.addLimitLine(ll2);
         leftAxis.setAxisMaxValue(220f);
         leftAxis.setAxisMinValue(-50f);
+        leftAxis.setStartAtZero(false);
 
         mChart.getAxisRight().setEnabled(false);
 
