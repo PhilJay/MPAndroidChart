@@ -92,7 +92,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
     }
 
     @Override
-    public void renderLimitLines(Canvas c, ValueFormatter valueFormatter) {
+    public void renderLimitLines(Canvas c) {
 
         ArrayList<LimitLine> limitLines = mYAxis.getLimitLines();
 

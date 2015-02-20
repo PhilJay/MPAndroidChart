@@ -19,6 +19,7 @@ import com.github.mikephil.charting.components.Legend.LegendForm;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -321,20 +322,25 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         // create a data object with the datasets
         LineData data = new LineData(xVals, dataSets);
 
-        LimitLine ll1 = new LimitLine(130f);
+        LimitLine ll1 = new LimitLine(130f, "Upper Limit");
         ll1.setLineWidth(4f);
         ll1.enableDashedLine(10f, 10f, 0f);
-        ll1.setDrawValue(true);
         ll1.setLabelPosition(LimitLabelPosition.POS_RIGHT);
+        ll1.setTextSize(10f);
 
-        LimitLine ll2 = new LimitLine(-30f);
+        LimitLine ll2 = new LimitLine(-30f, "Lower Limit");
         ll2.setLineWidth(4f);
         ll2.enableDashedLine(10f, 10f, 0f);
-        ll2.setDrawValue(true);
         ll2.setLabelPosition(LimitLabelPosition.POS_RIGHT);
+        ll2.setTextSize(10f);
+        
+        YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.addLimitLine(ll1);
+        leftAxis.addLimitLine(ll2);
+        leftAxis.setAxisMaxValue(220f);
+        leftAxis.setAxisMinValue(-50f);
 
-        mChart.getAxisLeft().addLimitLine(ll1);
-        mChart.getAxisLeft().addLimitLine(ll2);
+        mChart.getAxisRight().setEnabled(false);
 
         // set data
         mChart.setData(data);

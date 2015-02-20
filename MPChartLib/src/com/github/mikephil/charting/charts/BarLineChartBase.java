@@ -190,8 +190,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         mRenderer.drawData(mDrawCanvas);
 
-        mAxisRendererLeft.renderLimitLines(mDrawCanvas, mValueFormatter);
-        mAxisRendererRight.renderLimitLines(mDrawCanvas, mValueFormatter);
+        mAxisRendererLeft.renderLimitLines(mDrawCanvas);
+        mAxisRendererRight.renderLimitLines(mDrawCanvas);
 
         // if highlighting is enabled
         if (mHighlightEnabled && mHighLightIndicatorEnabled && valuesToHighlight())

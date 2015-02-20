@@ -36,7 +36,7 @@ public class YAxisRenderer extends AxisRenderer {
         mAxisPaint.setTextSize(Utils.convertDpToPixel(10f));
 
         mLimitLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mLimitLinePaint.setStyle(Paint.Style.STROKE);
+        mLimitLinePaint.setStyle(Paint.Style.FILL_AND_STROKE);
     }
 
     /**
@@ -286,7 +286,7 @@ public class YAxisRenderer extends AxisRenderer {
      * 
      * @param c
      */
-    public void renderLimitLines(Canvas c, ValueFormatter valueFormatter) {
+    public void renderLimitLines(Canvas c) {
 
         ArrayList<LimitLine> limitLines = mYAxis.getLimitLines();
 
@@ -312,16 +312,19 @@ public class YAxisRenderer extends AxisRenderer {
             mLimitLinePaint.setStrokeWidth(l.getLineWidth());
 
             c.drawLines(pts, mLimitLinePaint);
+            
+            String label = l.getLabel();
 
             // if drawing the limit-value is enabled
-            if (l.isDrawValueEnabled()) {
+            if (label != null && !label.equals("")) {
 
                 float xOffset = Utils.convertDpToPixel(4f);
                 float yOffset = l.getLineWidth() + xOffset;
-                String label = valueFormatter.getFormattedValue(l.getLimit());
 
                 mLimitLinePaint.setPathEffect(null);
                 mLimitLinePaint.setColor(l.getTextColor());
+                mLimitLinePaint.setStrokeWidth(1f);
+                mLimitLinePaint.setTextSize(l.getTextSize());
 
                 if (l.getLabelPosition() == LimitLabelPosition.POS_RIGHT) {
 

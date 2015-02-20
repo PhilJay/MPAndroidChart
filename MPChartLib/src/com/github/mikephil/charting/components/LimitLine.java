@@ -27,8 +27,11 @@ public class LimitLine {
     /** the color of the value-text */
     private int mValueTextColor = Color.BLACK;
 
-    /** flag that indicates if the value of the limit line is drawn or not */
-    private boolean mDrawValue = true;
+    /** the size of the label text */
+    private float mTextSize = 13f;
+
+    /** label string that is drawn next to the limit line */
+    private String mLabel = "";
 
     /** the path effect of this LimitLine that makes dashed lines possible */
     private DashPathEffect mDashPathEffect = null;
@@ -44,10 +47,23 @@ public class LimitLine {
     /**
      * Constructor with limit.
      * 
-     * @param limit
+     * @param limit - the position (the value) on the y-axis where this line
+     *            should appear
      */
     public LimitLine(float limit) {
         mLimit = limit;
+    }
+
+    /**
+     * Constructor with limit and label.
+     * 
+     * @param limit - the position (the value) on the y-axis where this line
+     *            should appear
+     * @param label - provide "" if no label is required
+     */
+    public LimitLine(float limit, String label) {
+        mLimit = limit;
+        mLabel = label;
     }
 
     /**
@@ -142,25 +158,6 @@ public class LimitLine {
     }
 
     /**
-     * Set this to true to enable the value of the LimitLine to be drawn next to
-     * it. Default: true, not supported for RadarChart.
-     * 
-     * @param enabled
-     */
-    public void setDrawValue(boolean enabled) {
-        mDrawValue = enabled;
-    }
-
-    /**
-     * Returns true if drawing the value is enabled, false if not.
-     * 
-     * @return
-     */
-    public boolean isDrawValueEnabled() {
-        return mDrawValue;
-    }
-
-    /**
      * Sets the color of the value-text that is drawn next to the LimitLine.
      * 
      * @param color
@@ -195,5 +192,42 @@ public class LimitLine {
      */
     public LimitLabelPosition getLabelPosition() {
         return mLabelPosition;
+    }
+
+    /**
+     * Sets the label that is drawn next to the limit line. Provide "" if no
+     * label is required.
+     * 
+     * @param label
+     */
+    public void setLabel(String label) {
+        mLabel = label;
+    }
+
+    /**
+     * Returns the label that is drawn next to the limit line.
+     * 
+     * @return
+     */
+    public String getLabel() {
+        return mLabel;
+    }
+
+    /**
+     * Sets the size of the label-text.
+     * 
+     * @param size
+     */
+    public void setTextSize(float size) {
+        mTextSize = Utils.convertDpToPixel(size);
+    }
+
+    /**
+     * Returns the size of the label text.
+     * 
+     * @return
+     */
+    public float getTextSize() {
+        return mTextSize;
     }
 }
