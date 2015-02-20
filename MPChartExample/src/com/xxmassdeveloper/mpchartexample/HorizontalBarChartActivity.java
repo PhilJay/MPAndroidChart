@@ -55,12 +55,12 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
         mChart = (HorizontalBarChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
-        
+
         mChart.setDrawBarShadow(false);
 
         // enable the drawing of values
         mChart.setDrawYValues(true);
-        
+
         mChart.setDrawValueAboveBar(true);
 
         mChart.setDescription("");
@@ -79,7 +79,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         // mChart.setDrawBarShadow(true);
 
         mChart.setUnit(" €");
-        
+
         // mChart.setDrawXLabels(false);
 
         mChart.setDrawGridBackground(false);
@@ -240,7 +240,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         tvX.setText("" + (mSeekBarX.getProgress() + 1));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
-        setData(mSeekBarX.getProgress(), mSeekBarY.getProgress());
+        setData(mSeekBarX.getProgress() + 1, mSeekBarY.getProgress());
         mChart.invalidate();
     }
 
