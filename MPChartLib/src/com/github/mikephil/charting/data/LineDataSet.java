@@ -18,6 +18,12 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
     /** the radius of the circle-shaped value indicators */
     private float mCircleSize = 4f;
 
+    /**
+     * the ratio of the circle stroke. Default value is 0.5f, meaning that the stoke is half of the
+     * total circle diameter. It should be between 0f (no stroke) and 1f (circle is filled)
+     */
+    private float mCircleStrokeRatio = 0.5f;
+
     /** sets the intensity of the cubic lines */
     private float mCubicIntensity = 0.2f;
 
@@ -56,6 +62,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
         LineDataSet copied = new LineDataSet(yVals, getLabel());
         copied.mColors = mColors;
         copied.mCircleSize = mCircleSize;
+        copied.mCircleStrokeRatio = mCircleStrokeRatio;
         copied.mCircleColors = mCircleColors;
         copied.mDashPathEffect = mDashPathEffect;
         copied.mDrawCircles = mDrawCircles;
@@ -105,6 +112,30 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
      */
     public float getCircleSize() {
         return mCircleSize;
+    }
+
+
+    /**
+     * Sets the circle stroke ratio
+     * @param circleStrokeRatio the ratio of the circle stroke. Default value is 0.5f, meaning that
+     * the stoke is half of the total circle diameter. It should be between 0f (no stroke) and 1f
+     * (circle is filled)
+     */
+    public void setCircleStrokeRatio(float circleStrokeRatio) {
+        // We don't allow negative values
+        if (circleStrokeRatio < 0f) mCircleStrokeRatio = 0f;
+        // Ratio can't be above 1 (already fully filled)
+        else if (circleStrokeRatio > 1f) mCircleStrokeRatio = 1f;
+        // Else we just set the value
+        else mCircleStrokeRatio = circleStrokeRatio;
+    }
+
+    /**
+     * Circle stroke ratio getter
+     * @return Returns the ratio of the stroke for the circle.
+     */
+    public float getCircleStrokeRatio() {
+        return mCircleStrokeRatio;
     }
 
     /**
