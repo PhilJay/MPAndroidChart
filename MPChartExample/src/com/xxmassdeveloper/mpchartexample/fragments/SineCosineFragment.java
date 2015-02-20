@@ -31,7 +31,6 @@ public class SineCosineFragment extends SimpleFragment {
 //        mChart.setCircleSize(5f);
         
         mChart.setHighlightIndicatorEnabled(false); 
-        mChart.setDrawBorder(false);
         mChart.setDrawGridBackground(false);
         
         mChart.setData(generateLineData());

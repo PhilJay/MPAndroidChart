@@ -13,13 +13,12 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.charts.BarLineChartBase.BorderPosition;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
-import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -60,12 +59,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
         mChart.setValueTextColor(Color.WHITE);
-
-        mChart.setDrawBorder(true);
-        mChart.setBorderPositions(new BorderPosition[] {
-                BorderPosition.BOTTOM
-        });
-
+        
         // no description text
         mChart.setDescription("");
         mChart.setNoDataTextDescription("You need to provide data for the chart.");
@@ -103,10 +97,10 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         l.setTypeface(tf);
         l.setTextColor(Color.WHITE);
 
-        XAxis xl = mChart.getXAxis();
-        xl.setTypeface(tf);
-        xl.setTextColor(Color.WHITE);
-        xl.setDrawGridLines(false);
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setTypeface(tf);
+        xAxis.setTextColor(Color.WHITE);
+        xAxis.setDrawGridLines(false);
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(tf);
@@ -117,6 +111,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setTypeface(tf);
         rightAxis.setTextColor(Color.RED);
+        rightAxis.setAxisMaxValue(900);
         rightAxis.setDrawGridLines(false);
         
 //        yl.setAxisMaxValue(300f);

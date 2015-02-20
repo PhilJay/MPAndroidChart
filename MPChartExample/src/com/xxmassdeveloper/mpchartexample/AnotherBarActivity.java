@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.XAxis.XLabelPosition;
+import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -61,7 +61,7 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
         mChart.setDrawGridBackground(false);
 
         XAxis xAxis = mChart.getXAxis();
-        xAxis.setPosition(XLabelPosition.BOTTOM);
+        xAxis.setPosition(XAxisPosition.BOTTOM);
         xAxis.setCenterXLabelText(true);
         xAxis.setSpaceBetweenLabels(0);
         xAxis.setDrawGridLines(false);

@@ -63,10 +63,10 @@ public class XAxis extends AxisBase {
     protected boolean mAdjustXAxisLabels = true;
 
     /** the position of the x-labels relative to the chart */
-    private XLabelPosition mPosition = XLabelPosition.TOP;
+    private XAxisPosition mPosition = XAxisPosition.TOP;
 
     /** enum for the position of the x-labels relative to the chart */
-    public enum XLabelPosition {
+    public enum XAxisPosition {
         TOP, BOTTOM, BOTH_SIDED, TOP_INSIDE, BOTTOM_INSIDE
     }
 
@@ -113,7 +113,7 @@ public class XAxis extends AxisBase {
     /**
      * returns the position of the x-labels
      */
-    public XLabelPosition getPosition() {
+    public XAxisPosition getPosition() {
         return mPosition;
     }
 
@@ -122,7 +122,7 @@ public class XAxis extends AxisBase {
      * 
      * @param pos
      */
-    public void setPosition(XLabelPosition pos) {
+    public void setPosition(XAxisPosition pos) {
         mPosition = pos;
     }
 

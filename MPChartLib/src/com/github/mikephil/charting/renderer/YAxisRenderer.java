@@ -214,6 +214,28 @@ public class YAxisRenderer extends AxisRenderer {
         }
 
         drawYLabels(c, xPos, positions, yoffset);
+
+        drawAxisLine(c);
+    }
+
+    @Override
+    protected void drawAxisLine(Canvas c) {
+
+        if (!mYAxis.isDrawAxisLineEnabled())
+            return;
+
+        mAxisLinePaint.setColor(mYAxis.getAxisLineColor());
+        mAxisLinePaint.setStrokeWidth(mYAxis.getAxisLineWidth());
+
+        if (mYAxis.getAxisDependency() == AxisDependency.LEFT) {
+            c.drawLine(mViewPortHandler.contentLeft(),
+                    mViewPortHandler.contentTop(), mViewPortHandler.contentLeft(),
+                    mViewPortHandler.contentBottom(), mAxisLinePaint);
+        } else {
+            c.drawLine(mViewPortHandler.contentRight(),
+                    mViewPortHandler.contentTop(), mViewPortHandler.contentRight(),
+                    mViewPortHandler.contentBottom(), mAxisLinePaint);
+        }
     }
 
     /**

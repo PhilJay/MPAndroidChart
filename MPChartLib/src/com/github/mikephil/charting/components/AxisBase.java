@@ -22,10 +22,11 @@ public abstract class AxisBase {
     /** the text color to use */
     private int mTextColor = Color.BLACK;
 
-    /** the color of the axis lines */
-    private int mAxisColor = Color.BLACK;
+    private int mGridColor = Color.GRAY;
 
-    private int mGridColor = Color.GRAY;    
+    private int mAxisLineColor = Color.GRAY;
+
+    private float mAxisLineWidth = 1f;
 
     /** flag that indicates if this axis is enabled or not */
     protected boolean mEnabled = true;
@@ -33,21 +34,24 @@ public abstract class AxisBase {
     /** flag indicating if the grid lines for this axis should be drawn */
     protected boolean mDrawGridLines = true;
 
+    /** flag that indicates if the line alongside the axis is drawn or not */
+    protected boolean mDrawAxisLine = false;
+
     /** default constructor */
     public AxisBase() {
         mTextSize = Utils.convertDpToPixel(10f);
     }
 
     /**
-     * sets the size of the label text in pixels min = 6f, max = 16f, default
+     * sets the size of the label text in pixels min = 6f, max = 24f, default
      * 10f
      * 
      * @param size
      */
     public void setTextSize(float size) {
 
-        if (size > 16f)
-            size = 16f;
+        if (size > 24f)
+            size = 24f;
         if (size < 6f)
             size = 6f;
 
@@ -101,24 +105,6 @@ public abstract class AxisBase {
     }
 
     /**
-     * Returns the color of the axis line.
-     * 
-     * @return
-     */
-    public int getAxisColor() {
-        return mAxisColor;
-    }
-
-    /**
-     * Sets the color of the axis line.
-     * 
-     * @param color
-     */
-    public void setAxisColor(int color) {
-        mAxisColor = color;
-    }
-
-    /**
      * Set this to true to enable drawing the grid lines for this axis.
      * 
      * @param enabled
@@ -137,7 +123,26 @@ public abstract class AxisBase {
     }
 
     /**
-     * Sets the color of the grid lines for this axis.
+     * Set this to true if the line alongside the axis should be drawn or not.
+     * 
+     * @param enabled
+     */
+    public void setDrawAxisLine(boolean enabled) {
+        mDrawAxisLine = enabled;
+    }
+
+    /**
+     * Returns true if the line alongside the axis should be drawn.
+     * 
+     * @return
+     */
+    public boolean isDrawAxisLineEnabled() {
+        return mDrawAxisLine;
+    }
+
+    /**
+     * Sets the color of the grid lines for this axis (the horizontal lines
+     * coming from each label).
      * 
      * @param color
      */
@@ -146,13 +151,50 @@ public abstract class AxisBase {
     }
 
     /**
-     * Returns the color of the grid lines for this axis.
+     * Returns the color of the grid lines for this axis (the horizontal lines
+     * coming from each label).
      * 
      * @return
      */
     public int getGridColor() {
         return mGridColor;
-    }  
+    }
+
+    /**
+     * Sets the width of the border surrounding the chart in dp.
+     * 
+     * @param width
+     */
+    public void setAxisLineWidth(float width) {
+        mAxisLineWidth = Utils.convertDpToPixel(width);
+    }
+
+    /**
+     * Returns the width of the axis line (line alongside the axis).
+     * 
+     * @return
+     */
+    public float getAxisLineWidth() {
+        return mAxisLineWidth;
+    }
+
+    /**
+     * Sets the color of the border surrounding the chart.
+     * 
+     * @param color
+     */
+    public void setAxisLineColor(int color) {
+        mAxisLineColor = color;
+    }
+
+    /**
+     * Returns the color of the axis line (line alongside the axis).
+     * 
+     * @return
+     */
+    public int getAxisLineColor() {
+        return mAxisLineColor;
+    }
 
     /**
      * Set this to true to enable this axis from being drawn to the screen.

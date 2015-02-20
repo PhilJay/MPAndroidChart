@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
-import com.github.mikephil.charting.charts.BarLineChartBase.BorderPosition;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
@@ -38,11 +37,6 @@ public class RealtimeLineChartActivity extends DemoBase implements
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
         mChart.setValueTextColor(Color.WHITE);
-
-        mChart.setDrawBorder(true);
-        mChart.setBorderPositions(new BorderPosition[] {
-                BorderPosition.BOTTOM
-        });
 
         // no description text
         mChart.setDescription("");

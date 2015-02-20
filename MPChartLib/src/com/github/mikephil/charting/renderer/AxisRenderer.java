@@ -16,7 +16,10 @@ public abstract class AxisRenderer extends Renderer {
     protected Paint mGridPaint;
 
     /** paint for the x-label values */
-    protected Paint mAxisPaint;
+    protected Paint mAxisPaint;    
+
+    /** paint for the line surrounding the chart */
+    protected Paint mAxisLinePaint;
 
     public AxisRenderer(ViewPortHandler viewPortHandler, Transformer trans) {
         super(viewPortHandler);
@@ -30,6 +33,11 @@ public abstract class AxisRenderer extends Renderer {
         mGridPaint.setStrokeWidth(1f);
         mGridPaint.setStyle(Style.STROKE);
         mGridPaint.setAlpha(90);
+        
+        mAxisLinePaint = new Paint();
+        mAxisLinePaint.setColor(Color.BLACK);
+        mAxisLinePaint.setStrokeWidth(1f);
+        mAxisLinePaint.setStyle(Style.STROKE);
     }
 
     /**
@@ -41,11 +49,14 @@ public abstract class AxisRenderer extends Renderer {
         return mAxisPaint;
     }
 
+    /**
+     * Returns the Transformer object used for transforming the axis values.
+     * 
+     * @return
+     */
     public Transformer getTransformer() {
         return mTrans;
     }
-
-    // public abstract void computeAxis(ChartInterface chart);
 
     /**
      * Draws the axis labels to the screen.
@@ -60,4 +71,11 @@ public abstract class AxisRenderer extends Renderer {
      * @param c
      */
     public abstract void renderGridLines(Canvas c);
+
+    /**
+     * Draws the line that goes alongside the axis.
+     * 
+     * @param c
+     */
+    protected abstract void drawAxisLine(Canvas c);
 }

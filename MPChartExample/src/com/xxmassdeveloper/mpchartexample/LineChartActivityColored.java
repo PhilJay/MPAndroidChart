@@ -52,7 +52,6 @@ public class LineChartActivityColored extends DemoBase {
     };
 
     private void setupChart(LineChart chart, LineData data, int color) {
-        chart.setDrawBorder(false);
 
         // no description text
         chart.setDescription("");

@@ -13,14 +13,12 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.charts.BarLineChartBase.BorderPosition;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -63,11 +61,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setOnChartGestureListener(this);
         mChart.setOnChartValueSelectedListener(this);
-
-        mChart.setDrawBorder(true);
-        mChart.setBorderPositions(new BorderPosition[] {
-                BorderPosition.BOTTOM
-        });
 
         // no description text
         mChart.setDescription("");

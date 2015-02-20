@@ -15,7 +15,7 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.XAxis.XLabelPosition;
+import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -81,7 +81,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         yLabels.setFormatter(customFormatter);
 
         XAxis xLabels = mChart.getXAxis();
-        xLabels.setPosition(XLabelPosition.TOP);
+        xLabels.setPosition(XAxisPosition.TOP);
         xLabels.setCenterXLabelText(true);
 
         // mChart.setDrawXLabels(false);

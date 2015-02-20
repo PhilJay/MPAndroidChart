@@ -19,7 +19,7 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.XAxis.XLabelPosition;
+import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.BarData;
@@ -79,14 +79,10 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         // sets the text size of the values inside the chart
         mChart.setValueTextSize(10f);
 
-        mChart.setDrawBorder(false);
-        // mChart.setBorderPositions(new BorderPosition[] {BorderPosition.LEFT,
-        // BorderPosition.RIGHT});
-
         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
         XAxis xl = mChart.getXAxis();
-        xl.setPosition(XLabelPosition.BOTTOM);
+        xl.setPosition(XAxisPosition.BOTTOM);
         xl.setTypeface(tf);
         xl.setDrawGridLines(false);
 

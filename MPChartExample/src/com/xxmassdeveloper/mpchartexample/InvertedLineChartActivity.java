@@ -11,7 +11,6 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.charts.BarLineChartBase.BorderPosition;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
@@ -56,12 +55,7 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
 
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
-
-        mChart.setDrawBorder(true);
-        mChart.setBorderPositions(new BorderPosition[] {
-            BorderPosition.BOTTOM
-        });
-
+        
         // no description text
         mChart.setDescription("");
 

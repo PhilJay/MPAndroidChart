@@ -16,10 +16,9 @@ import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.XAxis.XLabelPosition;
+import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
-import com.github.mikephil.charting.components.YAxis.YLabelPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -77,14 +76,10 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         // sets the text size of the values inside the chart
         mChart.setValueTextSize(10f);
 
-        mChart.setDrawBorder(false);
-        // mChart.setBorderPositions(new BorderPosition[] {BorderPosition.LEFT,
-        // BorderPosition.RIGHT});
-
         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
         XAxis xl = mChart.getXAxis();
-        xl.setPosition(XLabelPosition.BOTTOM);
+        xl.setPosition(XAxisPosition.BOTTOM);
         xl.setCenterXLabelText(true);
         xl.setTypeface(tf);
 

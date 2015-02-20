@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.XAxis.XLabelPosition;
+import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.ChartData;
@@ -55,7 +55,7 @@ public class BarChartItem extends ChartItem {
 
         XAxis xAxis = holder.chart.getXAxis();
         xAxis.setCenterXLabelText(true);
-        xAxis.setPosition(XLabelPosition.BOTTOM);
+        xAxis.setPosition(XAxisPosition.BOTTOM);
         xAxis.setTypeface(mTf);
         xAxis.setDrawGridLines(false);
         

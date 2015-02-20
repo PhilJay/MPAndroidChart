@@ -13,11 +13,10 @@ import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.XAxis.XLabelPosition;
+import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.BarData;
@@ -79,18 +78,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     /** paint object for the (by default) lightgrey background of the grid */
     protected Paint mGridBackgroundPaint;
 
-    /** paint for the line surrounding the chart */
-    protected Paint mBorderPaint;
-
     /**
      * if set to true, the highlight indicator (lines for linechart, dark bar
      * for barchart) will be drawn upon selecting values.
      */
     protected boolean mHighLightIndicatorEnabled = true;
-
-    /** flag indicating if the chart border rectangle should be drawn or not */
-    protected boolean mDrawBorder = true;
-
+    
     /** flag indicating if the grid background should be drawn or not */
     protected boolean mDrawGridBackground = true;
 
@@ -148,11 +141,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mXAxisRenderer = new XAxisRenderer(mViewPortHandler, mXAxis, mLeftAxisTransformer);
 
         mListener = new BarLineChartTouchListener(this, mViewPortHandler.getMatrixTouch());
-
-        mBorderPaint = new Paint();
-        mBorderPaint.setColor(Color.BLACK);
-        mBorderPaint.setStrokeWidth(mGridWidth * 2f);
-        mBorderPaint.setStyle(Style.STROKE);
 
         mGridBackgroundPaint = new Paint();
         mGridBackgroundPaint.setStyle(Style.FILL);
@@ -223,9 +211,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mRenderer.drawValues(mDrawCanvas);
 
         drawLegend();
-
-        drawBorder();
-
+        
         drawMarkers();
 
         drawDescription();
@@ -385,7 +371,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                     || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
                     || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
 
-                if (mXAxis.getPosition() == XLabelPosition.TOP)
+                if (mXAxis.getPosition() == XAxisPosition.TOP)
                     legendBottom = mLegendLabelPaint.getTextSize() * 3.5f;
                 else {
                     legendBottom = mLegendLabelPaint.getTextSize() * 2.5f;
@@ -426,15 +412,15 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         if (mXAxis.isEnabled()) {
 
             // offsets for x-labels
-            if (mXAxis.getPosition() == XLabelPosition.BOTTOM) {
+            if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
 
                 xbottom = xlabelheight;
 
-            } else if (mXAxis.getPosition() == XLabelPosition.TOP) {
+            } else if (mXAxis.getPosition() == XAxisPosition.TOP) {
 
                 xtop = xlabelheight;
 
-            } else if (mXAxis.getPosition() == XLabelPosition.BOTH_SIDED) {
+            } else if (mXAxis.getPosition() == XAxisPosition.BOTH_SIDED) {
 
                 xbottom = xlabelheight;
                 xtop = xlabelheight;
@@ -485,7 +471,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
                 || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT) {
 
-            if (mXAxis.getPosition() == XLabelPosition.TOP)
+            if (mXAxis.getPosition() == XAxisPosition.TOP)
                 mLegend.setOffsetBottom(mLegendLabelPaint.getTextSize() * 3.5f);
             else {
                 mLegend.setOffsetBottom(mLegendLabelPaint.getTextSize() * 2.5f);
@@ -537,56 +523,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 .pointValuesToPixel(pts);
 
         return pts;
-    }
-
-    /** enums for all different border styles */
-    public enum BorderPosition {
-        LEFT, RIGHT, TOP, BOTTOM
-    }
-
-    /**
-     * array that holds positions where to draw the chart border lines
-     */
-    private BorderPosition[] mBorderPositions = new BorderPosition[] {
-            BorderPosition.BOTTOM
-    };
-
-    /**
-     * draws a line that surrounds the chart
-     */
-    protected void drawBorder() {
-
-        if (!mDrawBorder || mBorderPositions == null)
-            return;
-
-        for (int i = 0; i < mBorderPositions.length; i++) {
-
-            if (mBorderPositions[i] == null)
-                continue;
-
-            switch (mBorderPositions[i]) {
-                case LEFT:
-                    mDrawCanvas.drawLine(mViewPortHandler.contentLeft(),
-                            mViewPortHandler.contentTop(), mViewPortHandler.contentLeft(),
-                            mViewPortHandler.contentBottom(), mBorderPaint);
-                    break;
-                case RIGHT:
-                    mDrawCanvas.drawLine(mViewPortHandler.contentRight(),
-                            mViewPortHandler.contentTop(), mViewPortHandler.contentRight(),
-                            mViewPortHandler.contentBottom(), mBorderPaint);
-                    break;
-                case TOP:
-                    mDrawCanvas.drawLine(mViewPortHandler.contentLeft(),
-                            mViewPortHandler.contentTop(), mViewPortHandler.contentRight(),
-                            mViewPortHandler.contentTop(), mBorderPaint);
-                    break;
-                case BOTTOM:
-                    mDrawCanvas.drawLine(mViewPortHandler.contentLeft(),
-                            mViewPortHandler.contentBottom(), mViewPortHandler.contentRight(),
-                            mViewPortHandler.contentBottom(), mBorderPaint);
-                    break;
-            }
-        }
     }
 
     /**
@@ -1046,58 +982,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     }
 
     /**
-     * set this to true to draw the border surrounding the chart, default: true
-     * 
-     * @param enabled
-     */
-    public void setDrawBorder(boolean enabled) {
-        mDrawBorder = enabled;
-    }
-
-    /**
      * set this to true to draw the grid background, false if not
      * 
      * @param enabled
      */
     public void setDrawGridBackground(boolean enabled) {
         mDrawGridBackground = enabled;
-    }
-
-    /**
-     * Sets an array of positions where to draw the chart border lines (e.g. new
-     * BorderStyle[] { BorderStyle.BOTTOM })
-     * 
-     * @param styles
-     */
-    public void setBorderPositions(BorderPosition[] styles) {
-        mBorderPositions = styles;
-    }
-
-    /**
-     * Returns the array of positions where the chart-border is drawn.
-     * 
-     * @return
-     */
-    public BorderPosition[] getBorderPositions() {
-        return mBorderPositions;
-    }
-
-    /**
-     * Sets the width of the border surrounding the chart in dp.
-     * 
-     * @param width
-     */
-    public void setBorderWidth(int width) {
-        mBorderPaint.setStrokeWidth(Utils.convertDpToPixel(width));
-    }
-
-    /**
-     * Sets the color of the border surrounding the chart.
-     * 
-     * @param color
-     */
-    public void setBorderColor(int color) {
-        mBorderPaint.setColor(color);
     }
 
     /**
@@ -1297,7 +1187,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     }
 
     /**
-     * Returns the left y-axis object.
+     * Returns the left y-axis object. In the horizontal bar-chart, this is the
+     * top axis.
      * 
      * @return
      */
@@ -1306,7 +1197,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     }
 
     /**
-     * Returns the right y-axis object.
+     * Returns the right y-axis object. In the horizontal bar-chart, this is the
+     * bottom axis.
      * 
      * @return
      */
@@ -1315,7 +1207,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     }
 
     /**
-     * Returns the y-axis object to the corresponding axisdependency.
+     * Returns the y-axis object to the corresponding AxisDependency. In the
+     * horizontal bar-chart, LEFT == top, RIGHT == BOTTOM
      * 
      * @param axis
      * @return
@@ -1328,8 +1221,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     }
 
     /**
-     * returns the object representing all x-labels, this method can be used to
-     * acquire the XLabels object and modify it (e.g. change the position of the
+     * Returns the object representing all x-labels, this method can be used to
+     * acquire the XAxis object and modify it (e.g. change the position of the
      * labels)
      * 
      * @return
@@ -1481,7 +1374,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 mGridBackgroundPaint = p;
                 break;
             case PAINT_BORDER:
-                mBorderPaint = p;
+//                mBorderPaint = p;
                 break;
         }
     }
@@ -1497,8 +1390,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 return null;
             case PAINT_GRID_BACKGROUND:
                 return mGridBackgroundPaint;
-            case PAINT_BORDER:
-                return mBorderPaint;
+//            case PAINT_BORDER:
+//                return mBorderPaint;
         }
 
         return null;

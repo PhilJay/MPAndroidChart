@@ -36,8 +36,7 @@ public class BarChartFrag extends SimpleFragment {
         mChart.setMarkerView(mv);
         
         mChart.setHighlightIndicatorEnabled(false);
-        mChart.setDrawBorder(false);
-//        mChart.setBorderStyles(new BorderStyle[] { BorderStyle.LEFT });
+
         mChart.setDrawGridBackground(false);
         mChart.setDrawBarShadow(false);
         

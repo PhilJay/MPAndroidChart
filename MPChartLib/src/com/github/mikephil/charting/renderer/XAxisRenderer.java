@@ -6,7 +6,8 @@ import android.graphics.Color;
 import android.graphics.Paint.Align;
 
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.XAxis.XLabelPosition;
+import com.github.mikephil.charting.components.XAxis.XAxisPosition;
+import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 
@@ -54,19 +55,19 @@ public class XAxisRenderer extends AxisRenderer {
         mAxisPaint.setTextSize(mXAxis.getTextSize());
         mAxisPaint.setColor(mXAxis.getTextColor());
 
-        if (mXAxis.getPosition() == XLabelPosition.TOP) {
+        if (mXAxis.getPosition() == XAxisPosition.TOP) {
 
             drawLabels(c, mViewPortHandler.offsetTop() - yoffset);
 
-        } else if (mXAxis.getPosition() == XLabelPosition.BOTTOM) {
+        } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
 
             drawLabels(c, mViewPortHandler.contentBottom() + mXAxis.mLabelHeight + yoffset * 1.5f);
 
-        } else if (mXAxis.getPosition() == XLabelPosition.BOTTOM_INSIDE) {
+        } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM_INSIDE) {
 
             drawLabels(c, mViewPortHandler.contentBottom() - yoffset);
 
-        } else if (mXAxis.getPosition() == XLabelPosition.TOP_INSIDE) {
+        } else if (mXAxis.getPosition() == XAxisPosition.TOP_INSIDE) {
 
             drawLabels(c, mViewPortHandler.offsetTop() + yoffset + mXAxis.mLabelHeight);
 
@@ -74,6 +75,34 @@ public class XAxisRenderer extends AxisRenderer {
 
             drawLabels(c, mViewPortHandler.offsetTop() - yoffset);
             drawLabels(c, mViewPortHandler.contentBottom() + mXAxis.mLabelHeight + yoffset * 1.6f);
+        }
+
+        drawAxisLine(c);
+    }
+
+    @Override
+    protected void drawAxisLine(Canvas c) {
+
+        if (!mXAxis.isDrawAxisLineEnabled())
+            return;
+
+        mAxisLinePaint.setColor(mXAxis.getAxisLineColor());
+        mAxisLinePaint.setStrokeWidth(mXAxis.getAxisLineWidth());
+
+        if (mXAxis.getPosition() == XAxisPosition.TOP
+                || mXAxis.getPosition() == XAxisPosition.TOP_INSIDE
+                || mXAxis.getPosition() == XAxisPosition.BOTH_SIDED) {
+            c.drawLine(mViewPortHandler.contentLeft(),
+                    mViewPortHandler.contentTop(), mViewPortHandler.contentRight(),
+                    mViewPortHandler.contentTop(), mAxisLinePaint);
+        }
+
+        if (mXAxis.getPosition() == XAxisPosition.BOTTOM
+                || mXAxis.getPosition() == XAxisPosition.BOTTOM_INSIDE
+                || mXAxis.getPosition() == XAxisPosition.BOTH_SIDED) {
+            c.drawLine(mViewPortHandler.contentLeft(),
+                    mViewPortHandler.contentBottom(), mViewPortHandler.contentRight(),
+                    mViewPortHandler.contentBottom(), mAxisLinePaint);
         }
     }
 

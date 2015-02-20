@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.XAxis.XLabelPosition;
+import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.LineData;
@@ -54,7 +54,7 @@ public class LineChartItem extends ChartItem {
         holder.chart.setDrawGridBackground(false);
 
         XAxis xl = holder.chart.getXAxis();
-        xl.setPosition(XLabelPosition.BOTTOM);
+        xl.setPosition(XAxisPosition.BOTTOM);
         xl.setTypeface(mTf);
         xl.setDrawGridLines(false);
 

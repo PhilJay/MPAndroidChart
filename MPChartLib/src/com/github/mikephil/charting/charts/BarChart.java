@@ -16,8 +16,6 @@ import com.github.mikephil.charting.renderer.BarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererBarChart;
 import com.github.mikephil.charting.utils.Highlight;
 
-import java.math.BigDecimal;
-
 /**
  * Chart that draws bars.
  * 

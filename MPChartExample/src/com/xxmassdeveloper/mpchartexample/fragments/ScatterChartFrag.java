@@ -36,7 +36,6 @@ public class ScatterChartFrag extends SimpleFragment {
         mChart.setMarkerView(mv);
 
         mChart.setHighlightIndicatorEnabled(false);
-        mChart.setDrawBorder(false);
 //        mChart.setBorderStyles(new BorderStyle[] { BorderStyle.LEFT });
         mChart.setDrawGridBackground(false);
         mChart.setData(generateScatterData(3, 10000, 150));

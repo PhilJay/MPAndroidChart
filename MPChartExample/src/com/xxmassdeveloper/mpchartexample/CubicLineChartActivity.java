@@ -52,8 +52,6 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
 
         mChart = (LineChart) findViewById(R.id.chart1);
         // if enabled, the chart will always start at zero on the y-axis
-
-        mChart.setDrawBorder(false);
         
         mChart.setDrawLegend(false);
 

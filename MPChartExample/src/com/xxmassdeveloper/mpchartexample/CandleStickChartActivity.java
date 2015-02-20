@@ -13,9 +13,8 @@ import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.CandleStickChart;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.XAxis.XLabelPosition;
+import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.components.YAxis.YLabelPosition;
 import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CandleDataSet;
 import com.github.mikephil.charting.data.CandleEntry;
@@ -59,7 +58,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         mChart.setDrawGridBackground(false);
 
         XAxis xLabels = mChart.getXAxis();
-        xLabels.setPosition(XLabelPosition.BOTTOM);
+        xLabels.setPosition(XAxisPosition.BOTTOM);
         xLabels.setSpaceBetweenLabels(2);
 
         YAxis yLabels = mChart.getAxisLeft();  
