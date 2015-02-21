@@ -222,7 +222,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             Log.i(LOG_TAG, "DrawTime: " + (System.currentTimeMillis() - starttime) + " ms");
     }
 
-    private void prepareValuePxMatrix() {
+    protected void prepareValuePxMatrix() {
 
         if (mLogEnabled)
             Log.i(LOG_TAG, "Preparing Value-Px Matrix, xmin: " + mXChartMin + ", xmax: "

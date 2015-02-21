@@ -56,7 +56,7 @@ public class BarChartRenderer extends DataRenderer {
         }
     }
 
-    private void drawDataSet(Canvas c, BarDataSet dataSet, int index) {
+    protected void drawDataSet(Canvas c, BarDataSet dataSet, int index) {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
@@ -291,7 +291,7 @@ public class BarChartRenderer extends DataRenderer {
      * @param xPos
      * @param yPos
      */
-    private void drawValue(Canvas c, float val, float xPos, float yPos) {
+    protected void drawValue(Canvas c, float val, float xPos, float yPos) {
 
         String value = mChart.getValueFormatter().getFormattedValue(val);
         c.drawText(value, xPos, yPos,

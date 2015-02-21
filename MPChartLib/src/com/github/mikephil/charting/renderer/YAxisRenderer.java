@@ -96,7 +96,7 @@ public class YAxisRenderer extends AxisRenderer {
      * 
      * @return
      */
-    private void computeAxisValues(float min, float max) {
+    protected void computeAxisValues(float min, float max) {
 
         float yMin = min;
         float yMax = max;
@@ -240,10 +240,10 @@ public class YAxisRenderer extends AxisRenderer {
     /**
      * draws the y-labels on the specified x-position
      * 
-     * @param xPos
+     * @param fixedPosition
      * @param positions
      */
-    private void drawYLabels(Canvas c, float xPos, float[] positions, float yOffset) {
+    protected void drawYLabels(Canvas c, float fixedPosition, float[] positions, float offset) {
 
         // draw
         for (int i = 0; i < mYAxis.mEntryCount; i++) {
@@ -253,7 +253,7 @@ public class YAxisRenderer extends AxisRenderer {
             if (!mYAxis.isDrawTopYLabelEntryEnabled() && i >= mYAxis.mEntryCount - 1)
                 return;
 
-            c.drawText(text, xPos, positions[i * 2 + 1] + yOffset, mAxisPaint);
+            c.drawText(text, fixedPosition, positions[i * 2 + 1] + offset, mAxisPaint);
         }
     }
 
