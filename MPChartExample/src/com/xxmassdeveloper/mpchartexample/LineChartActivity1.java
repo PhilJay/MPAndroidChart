@@ -75,6 +75,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                 BorderPosition.BOTTOM
         });
 
+
+
         // no description text
         mChart.setDescription("");
         mChart.setNoDataTextDescription("You need to provide data for the chart.");
@@ -85,6 +87,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         //
         // // enable / disable grid background
         // mChart.setDrawGridBackground(false);
+        // mChart.setGridWidth(3f);
         //
         // mChart.setDrawXLegend(false);
         // mChart.setDrawYLegend(false);
