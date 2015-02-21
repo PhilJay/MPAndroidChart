@@ -5,6 +5,12 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 
+/**
+ * Object responsible for all animations in the Chart. ANIMATIONS ONLY WORK FOR
+ * API LEVEL 11 (Android 3.0.x) AND HIGHER.
+ * 
+ * @author Philipp Jahoda
+ */
 @SuppressLint("NewApi")
 public class ChartAnimator {
 

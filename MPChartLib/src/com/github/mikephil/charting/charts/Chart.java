@@ -195,7 +195,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             mAnimator = new ChartAnimator();
         else
             mAnimator = new ChartAnimator(new AnimatorUpdateListener() {
-                
+
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     ViewCompat.postInvalidateOnAnimation(Chart.this);
@@ -993,8 +993,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * ################ ################ ################ ################
-     * Animation support below Honeycomb thanks to Jake Wharton's awesome
-     * nineoldandroids library: https://github.com/JakeWharton/NineOldAndroids
+     * ANIMATIONS ONLY WORK FOR API LEVEL 11 (Android 3.0.x) AND HIGHER.
      */
     /** CODE BELOW THIS RELATED TO ANIMATION */
 
@@ -1010,7 +1009,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * Animates the drawing / rendering of the chart on both x- and y-axis with
      * the specified animation time. If animate(...) is called, no further
-     * calling of invalidate() is necessary to refresh the chart.
+     * calling of invalidate() is necessary to refresh the chart. ANIMATIONS
+     * ONLY WORK FOR API LEVEL 11 (Android 3.0.x) AND HIGHER.
      *
      * @param durationMillisX
      * @param durationMillisY
@@ -1022,7 +1022,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * Animates the rendering of the chart on the x-axis with the specified
      * animation time. If animate(...) is called, no further calling of
-     * invalidate() is necessary to refresh the chart.
+     * invalidate() is necessary to refresh the chart. ANIMATIONS ONLY WORK FOR
+     * API LEVEL 11 (Android 3.0.x) AND HIGHER.
      *
      * @param durationMillis
      */
@@ -1033,7 +1034,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * Animates the rendering of the chart on the y-axis with the specified
      * animation time. If animate(...) is called, no further calling of
-     * invalidate() is necessary to refresh the chart.
+     * invalidate() is necessary to refresh the chart. ANIMATIONS ONLY WORK FOR
+     * API LEVEL 11 (Android 3.0.x) AND HIGHER.
      *
      * @param durationMillis
      */
