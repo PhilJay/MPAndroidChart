@@ -45,11 +45,11 @@ import java.util.ArrayList;
 public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? extends BarLineScatterCandleRadarDataSet<? extends Entry>>>
         extends Chart<T> {
 
+    /** Default width of grid lines */
+    private static final float DEFAULT_GRID_WIDTH = 1f;
+
     /** the maximum number of entried to which values will be drawn */
     protected int mMaxVisibleCount = 100;
-
-    /** the width of the grid lines */
-    protected float mGridWidth = 1f;
 
     /**
      * flag that indicates if pinch-zoom is enabled. if true, both x and y axis
@@ -144,13 +144,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         mGridPaint = new Paint();
         mGridPaint.setColor(Color.GRAY);
-        mGridPaint.setStrokeWidth(mGridWidth);
+        mGridPaint.setStrokeWidth(DEFAULT_GRID_WIDTH);
         mGridPaint.setStyle(Style.STROKE);
         mGridPaint.setAlpha(90);
 
         mBorderPaint = new Paint();
         mBorderPaint.setColor(Color.BLACK);
-        mBorderPaint.setStrokeWidth(mGridWidth * 2f);
+        mBorderPaint.setStrokeWidth(DEFAULT_GRID_WIDTH * 2f);
         mBorderPaint.setStyle(Style.STROKE);
 
         mGridBackgroundPaint = new Paint();
@@ -933,7 +933,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * returns true if the specified point (x-axis) exceeds the limits of what
      * is visible to the right side
      * 
-     * @param v
+     * @param p
      * @return
      */
     protected boolean isOffContentRight(float p) {
@@ -947,7 +947,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * returns true if the specified point (x-axis) exceeds the limits of what
      * is visible to the left side
      * 
-     * @param v
+     * @param p
      * @return
      */
     protected boolean isOffContentLeft(float p) {
@@ -961,7 +961,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * returns true if the specified point (y-axis) exceeds the limits of what
      * is visible on the top
      * 
-     * @param v
+     * @param p
      * @return
      */
     protected boolean isOffContentTop(float p) {
@@ -975,7 +975,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * returns true if the specified point (y-axis) exceeds the limits of what
      * is visible on the bottom
      * 
-     * @param v
+     * @param p
      * @return
      */
     protected boolean isOffContentBottom(float p) {
@@ -1275,7 +1275,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     }
 
     /**
-     * sets the width of the grid lines (min 0.1f, max = 3f)
+     * sets the width of the grid lines (min = 0.1f, max = 3f)
      * 
      * @param width
      */
@@ -1285,7 +1285,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             width = 0.1f;
         if (width > 3.0f)
             width = 3.0f;
-        mGridWidth = width;
+        mGridPaint.setStrokeWidth(width);
     }
 
     /**
