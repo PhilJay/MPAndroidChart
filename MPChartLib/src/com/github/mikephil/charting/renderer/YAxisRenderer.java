@@ -303,22 +303,23 @@ public class YAxisRenderer extends AxisRenderer {
 
             mTrans.pointValuesToPixel(pts);
 
-            pts[0] = 0;
-            pts[2] = mViewPortHandler.getChartWidth();
+            pts[0] = mViewPortHandler.contentLeft();
+            pts[2] = mViewPortHandler.contentRight();
 
             mLimitLinePaint.setColor(l.getLineColor());
             mLimitLinePaint.setPathEffect(l.getDashPathEffect());
             mLimitLinePaint.setStrokeWidth(l.getLineWidth());
 
             c.drawLines(pts, mLimitLinePaint);
-            
+
             String label = l.getLabel();
 
             // if drawing the limit-value label is enabled
             if (label != null && !label.equals("")) {
 
                 float xOffset = Utils.convertDpToPixel(4f);
-                float yOffset = l.getLineWidth() + Utils.calcTextHeight(mLimitLinePaint, label) / 2f;
+                float yOffset = l.getLineWidth() + Utils.calcTextHeight(mLimitLinePaint, label)
+                        / 2f;
 
                 mLimitLinePaint.setPathEffect(null);
                 mLimitLinePaint.setColor(l.getTextColor());

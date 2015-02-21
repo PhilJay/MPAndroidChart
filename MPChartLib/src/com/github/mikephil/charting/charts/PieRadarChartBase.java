@@ -1,13 +1,20 @@
 
 package com.github.mikephil.charting.charts;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Paint.Align;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.data.ChartData;
@@ -16,7 +23,6 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.listener.PieRadarChartTouchListener;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
-import com.nineoldandroids.animation.ObjectAnimator;
 
 import java.util.ArrayList;
 
@@ -159,8 +165,8 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
         mViewPortHandler.restrainViewPort(offsetLeft, offsetTop, offsetRight, offsetBottom);
 
-            Log.i(LOG_TAG, "offsetLeft: " + offsetLeft + ", offsetTop: " + offsetTop
-                    + ", offsetRight: " + offsetRight + ", offsetBottom: " + offsetBottom);
+        Log.i(LOG_TAG, "offsetLeft: " + offsetLeft + ", offsetTop: " + offsetTop
+                + ", offsetRight: " + offsetRight + ", offsetBottom: " + offsetBottom);
     }
 
     // /**
@@ -431,12 +437,12 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
         ArrayList<SelInfo> vals = new ArrayList<SelInfo>();
 
         for (int i = 0; i < mData.getDataSetCount(); i++) {
-            
+
             DataSet<?> dataSet = mData.getDataSetByIndex(i);
 
             // extract all y-values from all DataSets at the given x-index
             float yVal = dataSet.getYValForXIndex(xIndex);
-            
+
             if (!Float.isNaN(yVal)) {
                 vals.add(new SelInfo(yVal, i, dataSet));
             }
@@ -444,7 +450,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
         return vals;
     }
-    
+
     /**
      * ################ ################ ################ ################
      */
@@ -460,13 +466,26 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
      * @param fromangle
      * @param toangle
      */
+    @SuppressLint("NewApi")
     public void spin(int durationmillis, float fromangle, float toangle) {
+
+        if (android.os.Build.VERSION.SDK_INT < 11)
+            return;
 
         mRotationAngle = fromangle;
 
         mSpinAnimator = ObjectAnimator.ofFloat(this, "rotationAngle", fromangle, toangle);
         mSpinAnimator.setDuration(durationmillis);
-        mSpinAnimator.addUpdateListener(this);
+        
+        final ViewGroup view = this;
+        
+        mSpinAnimator.addUpdateListener(new AnimatorUpdateListener() {
+            
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                ViewCompat.postInvalidateOnAnimation(view);
+            }
+        });
         mSpinAnimator.start();
     }
 }

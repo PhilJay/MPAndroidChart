@@ -178,7 +178,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum);
         mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum);
-
+        
         // make sure the graph values and grid cannot be drawn outside the
         // content-rect
         int clipRestoreCount = mDrawCanvas.save();
@@ -187,11 +187,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mXAxisRenderer.renderGridLines(mDrawCanvas);
         mAxisRendererLeft.renderGridLines(mDrawCanvas);
         mAxisRendererRight.renderGridLines(mDrawCanvas);
-
-        mRenderer.drawData(mDrawCanvas);
-
+        
         mAxisRendererLeft.renderLimitLines(mDrawCanvas);
         mAxisRendererRight.renderLimitLines(mDrawCanvas);
+
+        mRenderer.drawData(mDrawCanvas);
 
         // if highlighting is enabled
         if (mHighlightEnabled && mHighLightIndicatorEnabled && valuesToHighlight())

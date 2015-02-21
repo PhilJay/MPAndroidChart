@@ -1,6 +1,9 @@
 
 package com.github.mikephil.charting.charts;
 
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -39,11 +42,8 @@ import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.renderer.DataRenderer;
 import com.github.mikephil.charting.renderer.ViewPortHandler;
 import com.github.mikephil.charting.utils.Highlight;
-import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
-import com.nineoldandroids.animation.ValueAnimator;
-import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -57,9 +57,10 @@ import java.util.ArrayList;
  *
  * @author Philipp Jahoda
  */
+@SuppressLint("NewApi")
 public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entry>>> extends
         ViewGroup
-        implements AnimatorUpdateListener, ChartInterface {
+        implements ChartInterface {
 
     public static final String LOG_TAG = "MPAndroidChart";
 
@@ -122,7 +123,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /** the number of x-values the chart displays */
     protected float mDeltaX = 1f;
-    
+
     protected float mXChartMin = 0f;
     protected float mXChartMax = 0f;
 
@@ -190,7 +191,16 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         setWillNotDraw(false);
         // setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
-        mAnimator = new ChartAnimator(this);
+        if (android.os.Build.VERSION.SDK_INT < 11)
+            mAnimator = new ChartAnimator();
+        else
+            mAnimator = new ChartAnimator(new AnimatorUpdateListener() {
+                
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    ViewCompat.postInvalidateOnAnimation(Chart.this);
+                }
+            });
 
         // initialize the utils
         Utils.init(getContext().getResources());
@@ -407,7 +417,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             mOffsetsCalculated = true;
         }
 
-        if ( mDrawCanvas == null) {
+        if (mDrawCanvas == null) {
             mDrawCanvas = new Canvas(mDrawBitmap);
         }
 
@@ -1031,17 +1041,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         mAnimator.animateY(durationMillis);
     }
 
-    @Override
-    public void onAnimationUpdate(ValueAnimator va) {
-
-        // redraw everything after animation value change
-        // invalidate();
-
-        ViewCompat.postInvalidateOnAnimation(this);
-
-        // Log.i(LOG_TAG, "UPDATING, x: " + mPhaseX + ", y: " + mPhaseY);
-    }
-
     /**
      * ################ ################ ################ ################
      */
@@ -1162,21 +1161,21 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         return mData.getYMin();
     }
 
-//    /**
-//     * Get the total number of X-values.
-//     *
-//     * @return
-//     */
-//    @Override
-//    public float getDeltaX() {
-//        return mDeltaX;
-//    }
-    
+    // /**
+    // * Get the total number of X-values.
+    // *
+    // * @return
+    // */
+    // @Override
+    // public float getDeltaX() {
+    // return mDeltaX;
+    // }
+
     @Override
     public float getXChartMax() {
         return mXChartMax;
     }
-    
+
     @Override
     public float getXChartMin() {
         return mXChartMin;
@@ -1592,102 +1591,106 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         mRenderer.getPaintValues().setTextSize(Utils.convertDpToPixel(size));
     }
 
-//    /**
-//     * returns the x-value at the given index
-//     *
-//     * @param index
-//     * @return
-//     */
-//    public String getXValue(int index) {
-//        if (mData == null || mData.getXValCount() <= index)
-//            return null;
-//        else
-//            return mData.getXVals().get(index);
-//    }
-//
-//    /**
-//     * returns the y-value for the given index from the DataSet with the given
-//     * label
-//     *
-//     * @param index
-//     * @param dataSetLabel
-//     * @return
-//     */
-//    public float getYValue(int index, String dataSetLabel) {
-//        DataSet<? extends Entry> set = mData.getDataSetByLabel(dataSetLabel, true);
-//        return set.getYVals().get(index).getVal();
-//    }
-//
-//    /**
-//     * returns the y-value for the given x-index and DataSet index
-//     *
-//     * @param index
-//     * @param dataSet
-//     * @return
-//     */
-//    public float getYValue(int xIndex, int dataSetIndex) {
-//        DataSet<? extends Entry> set = mData.getDataSetByIndex(dataSetIndex);
-//        return set.getYValForXIndex(xIndex);
-//    }
-//
-//    /**
-//     * returns the DataSet with the given index in the DataSet array held by the
-//     * ChartData object.
-//     *
-//     * @param index
-//     * @return
-//     */
-//    public DataSet<? extends Entry> getDataSetByIndex(int index) {
-//        return mData.getDataSetByIndex(index);
-//    }
-//
-//    /**
-//     * returns the DataSet with the given label that is stored in the ChartData
-//     * object.
-//     *
-//     * @param type
-//     * @return
-//     */
-//    public DataSet<? extends Entry> getDataSetByLabel(String dataSetLabel) {
-//        return mData.getDataSetByLabel(dataSetLabel, true);
-//    }
-//
-//    /**
-//     * returns the Entry object from the first DataSet stored in the ChartData
-//     * object. If multiple DataSets are used, use getEntry(index, type) or
-//     * getEntryByDataSetIndex(xIndex, dataSetIndex);
-//     *
-//     * @param index
-//     * @return
-//     */
-//    public Entry getEntry(int index) {
-//        return mData.getDataSetByIndex(0).getYVals().get(index);
-//    }
-//
-//    /**
-//     * returns the Entry object at the given index from the DataSet with the
-//     * given label.
-//     *
-//     * @param index
-//     * @param dataSetLabel
-//     * @return
-//     */
-//    public Entry getEntry(int index, String dataSetLabel) {
-//        return mData.getDataSetByLabel(dataSetLabel, true).getYVals().get(index);
-//    }
-//
-//    /**
-//     * Returns the corresponding Entry object at the given xIndex from the given
-//     * DataSet. INFORMATION: This method does calculations at runtime. Do not
-//     * over-use in performance critical situations.
-//     *
-//     * @param xIndex
-//     * @param dataSetIndex
-//     * @return
-//     */
-//    public Entry getEntryByDataSetIndex(int xIndex, int dataSetIndex) {
-//        return mData.getDataSetByIndex(dataSetIndex).getEntryForXIndex(xIndex);
-//    }
+    // /**
+    // * returns the x-value at the given index
+    // *
+    // * @param index
+    // * @return
+    // */
+    // public String getXValue(int index) {
+    // if (mData == null || mData.getXValCount() <= index)
+    // return null;
+    // else
+    // return mData.getXVals().get(index);
+    // }
+    //
+    // /**
+    // * returns the y-value for the given index from the DataSet with the given
+    // * label
+    // *
+    // * @param index
+    // * @param dataSetLabel
+    // * @return
+    // */
+    // public float getYValue(int index, String dataSetLabel) {
+    // DataSet<? extends Entry> set = mData.getDataSetByLabel(dataSetLabel,
+    // true);
+    // return set.getYVals().get(index).getVal();
+    // }
+    //
+    // /**
+    // * returns the y-value for the given x-index and DataSet index
+    // *
+    // * @param index
+    // * @param dataSet
+    // * @return
+    // */
+    // public float getYValue(int xIndex, int dataSetIndex) {
+    // DataSet<? extends Entry> set = mData.getDataSetByIndex(dataSetIndex);
+    // return set.getYValForXIndex(xIndex);
+    // }
+    //
+    // /**
+    // * returns the DataSet with the given index in the DataSet array held by
+    // the
+    // * ChartData object.
+    // *
+    // * @param index
+    // * @return
+    // */
+    // public DataSet<? extends Entry> getDataSetByIndex(int index) {
+    // return mData.getDataSetByIndex(index);
+    // }
+    //
+    // /**
+    // * returns the DataSet with the given label that is stored in the
+    // ChartData
+    // * object.
+    // *
+    // * @param type
+    // * @return
+    // */
+    // public DataSet<? extends Entry> getDataSetByLabel(String dataSetLabel) {
+    // return mData.getDataSetByLabel(dataSetLabel, true);
+    // }
+    //
+    // /**
+    // * returns the Entry object from the first DataSet stored in the ChartData
+    // * object. If multiple DataSets are used, use getEntry(index, type) or
+    // * getEntryByDataSetIndex(xIndex, dataSetIndex);
+    // *
+    // * @param index
+    // * @return
+    // */
+    // public Entry getEntry(int index) {
+    // return mData.getDataSetByIndex(0).getYVals().get(index);
+    // }
+    //
+    // /**
+    // * returns the Entry object at the given index from the DataSet with the
+    // * given label.
+    // *
+    // * @param index
+    // * @param dataSetLabel
+    // * @return
+    // */
+    // public Entry getEntry(int index, String dataSetLabel) {
+    // return mData.getDataSetByLabel(dataSetLabel, true).getYVals().get(index);
+    // }
+    //
+    // /**
+    // * Returns the corresponding Entry object at the given xIndex from the
+    // given
+    // * DataSet. INFORMATION: This method does calculations at runtime. Do not
+    // * over-use in performance critical situations.
+    // *
+    // * @param xIndex
+    // * @param dataSetIndex
+    // * @return
+    // */
+    // public Entry getEntryByDataSetIndex(int xIndex, int dataSetIndex) {
+    // return mData.getDataSetByIndex(dataSetIndex).getEntryForXIndex(xIndex);
+    // }
 
     /**
      * Get all Entry objects at the given index across all DataSets.

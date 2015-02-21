@@ -1,21 +1,26 @@
+
 package com.github.mikephil.charting.animation;
 
-import com.nineoldandroids.animation.ObjectAnimator;
-import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.annotation.SuppressLint;
 
+@SuppressLint("NewApi")
 public class ChartAnimator {
-    
+
     /** object that is updated upon animation update */
     private AnimatorUpdateListener mListener;
-    
+
+    public ChartAnimator() {
+
+    }
+
     public ChartAnimator(AnimatorUpdateListener listener) {
         mListener = listener;
     }
 
     /**
      * ################ ################ ################ ################
-     * Animation support below Honeycomb thanks to Jake Wharton's awesome
-     * nineoldandroids library: https://github.com/JakeWharton/NineOldAndroids
      */
     /** CODE BELOW THIS RELATED TO ANIMATION */
 
@@ -40,6 +45,9 @@ public class ChartAnimator {
      * @param durationMillisY
      */
     public void animateXY(int durationMillisX, int durationMillisY) {
+
+        if (android.os.Build.VERSION.SDK_INT < 11)
+            return;
 
         mAnimatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
         mAnimatorY.setDuration(
@@ -69,6 +77,9 @@ public class ChartAnimator {
      */
     public void animateX(int durationMillis) {
 
+        if (android.os.Build.VERSION.SDK_INT < 11)
+            return;
+
         mAnimatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
         mAnimatorX.setDuration(durationMillis);
         mAnimatorX.addUpdateListener(mListener);
@@ -83,6 +94,9 @@ public class ChartAnimator {
      * @param durationMillis
      */
     public void animateY(int durationMillis) {
+
+        if (android.os.Build.VERSION.SDK_INT < 11)
+            return;
 
         mAnimatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
         mAnimatorY.setDuration(durationMillis);
