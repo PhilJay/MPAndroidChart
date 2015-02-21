@@ -454,7 +454,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 BarDataSet bds = (BarDataSet) dataSet;
                 String[] sLabels = bds.getStackLabels();
 
-                for (int j = 0; j < clrs.size() && j < entryCount && j < bds.getStackSize(); j++) {
+                for (int j = 0; j < clrs.size() && j < bds.getStackSize(); j++) {
 
                     labels.add(sLabels[j % sLabels.length]);
                     colors.add(clrs.get(j));
