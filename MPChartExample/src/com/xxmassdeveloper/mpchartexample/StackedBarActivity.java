@@ -82,7 +82,6 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 
         XAxis xLabels = mChart.getXAxis();
         xLabels.setPosition(XAxisPosition.TOP);
-        xLabels.setCenterXLabelText(true);
 
         // mChart.setDrawXLabels(false);
         // mChart.setDrawYLabels(false);

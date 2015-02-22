@@ -54,7 +54,6 @@ public class BarChartItem extends ChartItem {
         holder.chart.setDrawBarShadow(false);
 
         XAxis xAxis = holder.chart.getXAxis();
-        xAxis.setCenterXLabelText(true);
         xAxis.setPosition(XAxisPosition.BOTTOM);
         xAxis.setTypeface(mTf);
         xAxis.setDrawGridLines(false);

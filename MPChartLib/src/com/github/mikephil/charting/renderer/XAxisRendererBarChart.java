@@ -39,11 +39,12 @@ public class XAxisRendererBarChart extends XAxisRenderer {
         for (int i = 0; i < mXAxis.getValues().size(); i += mXAxis.mAxisLabelModulus) {
 
             position[0] = i * step + i * bd.getGroupSpace()
-                    + bd.getGroupSpace() / 2f - 0.5f;
+                    + bd.getGroupSpace() / 2f;
 
-            // center the text
-            if (mXAxis.isCenterXLabelsEnabled())
-                position[0] += (step / 2f);
+            // consider groups (center label for each group)
+            if (step > 1) {
+                position[0] += ((float) step - 1f) / 2f;
+            }
 
             mTrans.pointValuesToPixel(position);
 

@@ -47,9 +47,6 @@ public class XAxis extends AxisBase {
      */
     public int mYAxisLabelModulus = 1;
 
-    /** if true, x-axis label text is centered when using barcharts */
-    private boolean mCenterXAxisLabels = false;
-
     /**
      * if set to true, the chart will avoid that the first and last label entry
      * in the chart "clip" off the edge of the chart
@@ -68,26 +65,6 @@ public class XAxis extends AxisBase {
     /** enum for the position of the x-labels relative to the chart */
     public enum XAxisPosition {
         TOP, BOTTOM, BOTH_SIDED, TOP_INSIDE, BOTTOM_INSIDE
-    }
-
-    /**
-     * returns true if centering x-axis labels when using barcharts is enabled,
-     * false if not
-     * 
-     * @return
-     */
-    public boolean isCenterXLabelsEnabled() {
-        return mCenterXAxisLabels;
-    }
-
-    /**
-     * set this to true to center the x-label text when using barcharts ,
-     * default: false
-     * 
-     * @param enabled
-     */
-    public void setCenterXLabelText(boolean enabled) {
-        mCenterXAxisLabels = enabled;
     }
 
     /**

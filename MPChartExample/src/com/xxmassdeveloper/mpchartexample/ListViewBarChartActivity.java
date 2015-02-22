@@ -91,7 +91,6 @@ public class ListViewBarChartActivity extends DemoBase {
             holder.chart.setValueTextColor(Color.WHITE);
 
             XAxis xAxis = holder.chart.getXAxis();
-            xAxis.setCenterXLabelText(true);
             xAxis.setPosition(XAxisPosition.BOTTOM);
             xAxis.setTypeface(mTf);
             xAxis.setDrawGridLines(false);

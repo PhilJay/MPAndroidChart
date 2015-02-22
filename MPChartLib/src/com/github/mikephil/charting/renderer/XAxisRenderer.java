@@ -121,10 +121,6 @@ public class XAxisRenderer extends AxisRenderer {
 
             position[0] = i;
 
-            // center the text
-            if (mXAxis.isCenterXLabelsEnabled())
-                position[0] += 0.5f;
-
             mTrans.pointValuesToPixel(position);
 
             if (mViewPortHandler.isInBoundsX(position[0])) {
