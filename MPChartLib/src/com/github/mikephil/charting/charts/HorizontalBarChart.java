@@ -2,10 +2,12 @@
 package com.github.mikephil.charting.charts;
 
 import android.content.Context;
+import android.graphics.Matrix;
 import android.util.AttributeSet;
 
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.renderer.HorizontalBarChartRenderer;
+import com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart;
 import com.github.mikephil.charting.renderer.YAxisRendererHorizontalBarChart;
 
 /**
@@ -41,14 +43,28 @@ public class HorizontalBarChart extends BarChart {
                 mLeftAxisTransformer);
         mAxisRendererRight = new YAxisRendererHorizontalBarChart(mViewPortHandler, mAxisRight,
                 mRightAxisTransformer);
+        mXAxisRenderer = new XAxisRendererHorizontalBarChart(mViewPortHandler, mXAxis,
+                mLeftAxisTransformer, this);
     }
 
     @Override
     protected void prepareValuePxMatrix() {
-        mRightAxisTransformer.prepareMatrixValuePx(mXChartMin, mAxisRight.mAxisRange, mDeltaX,
-                mAxisRight.mAxisMinimum);
-        mLeftAxisTransformer.prepareMatrixValuePx(mXChartMin, mAxisLeft.mAxisRange, mDeltaX,
-                mAxisLeft.mAxisMinimum);
+        mRightAxisTransformer.prepareMatrixValuePx(mAxisRight.mAxisMinimum, mAxisRight.mAxisRange,
+                mDeltaX,
+                mXChartMin);
+        mLeftAxisTransformer.prepareMatrixValuePx(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisRange,
+                mDeltaX,
+                mXChartMin);
+    }
+    
+    @Override
+    protected void calcModulus() {
+        float[] values = new float[9];
+        mViewPortHandler.getMatrixTouch().getValues(values);
+
+        mXAxis.mAxisLabelModulus = (int) Math
+                .ceil((mData.getXValCount() * mXAxis.mLabelHeight)
+                        / (mViewPortHandler.contentHeight() * values[Matrix.MSCALE_Y]));
     }
 
     private class XLabelsAsYLabels extends YAxis

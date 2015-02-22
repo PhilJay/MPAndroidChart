@@ -108,9 +108,9 @@ public class XAxisRenderer extends AxisRenderer {
     /**
      * draws the x-labels on the specified y-position
      * 
-     * @param yPos
+     * @param pos
      */
-    protected void drawLabels(Canvas c, float yPos) {
+    protected void drawLabels(Canvas c, float pos) {
 
         // pre allocate to save performance (dont allocate in loop)
         float[] position = new float[] {
@@ -150,7 +150,7 @@ public class XAxisRenderer extends AxisRenderer {
                 }
 
                 c.drawText(label, position[0],
-                        yPos,
+                        pos,
                         mAxisPaint);
             }
         }

@@ -81,7 +81,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         XAxis xl = mChart.getXAxis();
         xl.setPosition(XAxisPosition.BOTTOM);
         xl.setTypeface(tf);
-        xl.setEnabled(false);
+//        xl.setEnabled(false);
 
         YAxis yl = mChart.getAxisLeft();
         yl.setTypeface(tf);
@@ -94,6 +94,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         mChart.setValueTypeface(tf);
 
         setData(12, 50);
+        mChart.animateY(2500);
 
         // setting data
         mSeekBarY.setProgress(50);

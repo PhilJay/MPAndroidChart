@@ -29,7 +29,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
         mBarRect.set(left, top, right, bottom);
 
-        trans.rectValueToPixel(mBarRect, mAnimator.getPhaseY());
+        trans.rectValueToPixelHorizontal(mBarRect, mAnimator.getPhaseY());
 
         // if a shadow is drawn, prepare it too
         if (mChart.isDrawBarShadowEnabled()) {

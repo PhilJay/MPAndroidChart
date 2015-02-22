@@ -277,6 +277,25 @@ public class Transformer {
         mViewPortHandler.getMatrixTouch().mapRect(r);
         mMatrixOffset.mapRect(r);
     }
+    
+    /**
+     * Transform a rectangle with all matrices with potential animation phases.
+     * 
+     * @param r
+     * @param phaseY
+     */
+    public void rectValueToPixelHorizontal(RectF r, float phaseY) {
+
+        // multiply the height of the rect with the phase
+        if (r.left > 0)
+            r.left *= phaseY;
+        else
+            r.right *= phaseY;
+
+        mMatrixValueToPx.mapRect(r);
+        mViewPortHandler.getMatrixTouch().mapRect(r);
+        mMatrixOffset.mapRect(r);
+    }
 
     /**
      * transforms multiple rects with all matrices

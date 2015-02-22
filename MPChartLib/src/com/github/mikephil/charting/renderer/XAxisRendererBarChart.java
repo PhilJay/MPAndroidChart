@@ -11,7 +11,7 @@ import com.github.mikephil.charting.utils.Utils;
 
 public class XAxisRendererBarChart extends XAxisRenderer {
 
-    private BarChart mChart;
+    protected BarChart mChart;
 
     public XAxisRendererBarChart(ViewPortHandler viewPortHandler, XAxis xAxis, Transformer trans,
             BarChart chart) {
@@ -23,10 +23,10 @@ public class XAxisRendererBarChart extends XAxisRenderer {
     /**
      * draws the x-labels on the specified y-position
      * 
-     * @param yPos
+     * @param pos
      */
     @Override
-    protected void drawLabels(Canvas c, float yPos) {
+    protected void drawLabels(Canvas c, float pos) {
 
         // pre allocate to save performance (dont allocate in loop)
         float[] position = new float[] {
@@ -70,7 +70,7 @@ public class XAxisRendererBarChart extends XAxisRenderer {
                 }
 
                 c.drawText(label, position[0],
-                        yPos,
+                        pos,
                         mAxisPaint);
             }
         }
