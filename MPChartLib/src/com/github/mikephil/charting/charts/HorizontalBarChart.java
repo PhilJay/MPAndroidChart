@@ -17,19 +17,16 @@ import com.github.mikephil.charting.renderer.YAxisRendererHorizontalBarChart;
  */
 public class HorizontalBarChart extends BarChart {
 
-    public HorizontalBarChart(Context context)
-    {
+    public HorizontalBarChart(Context context) {
         super(context);
     }
 
-    public HorizontalBarChart(Context context, AttributeSet attrs)
-    {
+    public HorizontalBarChart(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     public HorizontalBarChart(Context context, AttributeSet attrs,
-            int defStyle)
-    {
+            int defStyle) {
         super(context, attrs, defStyle);
     }
 
@@ -55,7 +52,7 @@ public class HorizontalBarChart extends BarChart {
                 mDeltaX,
                 mXChartMin);
     }
-    
+
     @Override
     protected void calcModulus() {
         float[] values = new float[9];

@@ -33,8 +33,9 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
         // if a shadow is drawn, prepare it too
         if (mChart.isDrawBarShadowEnabled()) {
-            mBarShadow.set(mBarRect.left, mViewPortHandler.offsetTop(), mBarRect.right,
-                    mViewPortHandler.contentBottom());
+            mBarShadow.set(mViewPortHandler.contentLeft(), mBarRect.top,
+                    mViewPortHandler.contentRight(),
+                    mBarRect.bottom);
         }
     }
 }

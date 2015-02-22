@@ -1405,17 +1405,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             parent.requestDisallowInterceptTouchEvent(false);
     }
 
-    /** paint for the grid lines (only line and barchart) */
-    public static final int PAINT_GRID = 3;
-
     /** paint for the grid background (only line and barchart) */
     public static final int PAINT_GRID_BACKGROUND = 4;
-
-    /** paint for the y-legend values (only line and barchart) */
-    public static final int PAINT_YLABEL = 5;
-
-    /** paint for the x-legend values (only line and barchart) */
-    public static final int PAINT_XLABEL = 6;
 
     /**
      * paint for the info text that is displayed when there are no values in the
@@ -1423,17 +1414,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public static final int PAINT_INFO = 7;
 
-    /** paint for the value text */
-    public static final int PAINT_VALUES = 8;
-
-    /** paint for the inner circle (linechart) */
-    public static final int PAINT_CIRCLES_INNER = 10;
-
     /** paint for the description text in the bottom right corner */
     public static final int PAINT_DESCRIPTION = 11;
-
-    /** paint for the line surrounding the chart (only line and barchart) */
-    public static final int PAINT_BORDER = 12;
 
     /** paint for the hole in the middle of the pie chart */
     public static final int PAINT_HOLE = 13;
@@ -1441,20 +1423,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /** paint for the text in the middle of the pie chart */
     public static final int PAINT_CENTER_TEXT = 14;
 
-    /** paint for highlightning the values of a linechart */
-    public static final int PAINT_HIGHLIGHT = 15;
-
-    /** paint object used for the limit lines */
-    public static final int PAINT_RADAR_WEB = 16;
-
     /** paint used for all rendering processes */
     public static final int PAINT_RENDER = 17;
 
     /** paint used for the legend */
     public static final int PAINT_LEGEND_LABEL = 18;
-
-    /** paint object used for the limit lines */
-    public static final int PAINT_LIMIT_LINE = 19;
 
     /**
      * set a new paint object for the specified parameter in the chart e.g.
@@ -1473,26 +1446,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             case PAINT_DESCRIPTION:
                 mDescPaint = p;
                 break;
-            case PAINT_VALUES:
-                // mValuePaint = p;
-                break;
             case PAINT_RENDER:
                 mRenderPaint = p;
                 break;
             case PAINT_LEGEND_LABEL:
                 mLegendLabelPaint = p;
-                break;
-            case PAINT_XLABEL:
-                // mXLabelPaint = p;
-                break;
-            case PAINT_YLABEL:
-                // mYLabelPaint = p;
-                break;
-            case PAINT_HIGHLIGHT:
-                // mHighlightPaint = p;
-                break;
-            case PAINT_LIMIT_LINE:
-                // mLimitLinePaint = p;
                 break;
         }
     }
@@ -1509,20 +1467,10 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 return mInfoPaint;
             case PAINT_DESCRIPTION:
                 return mDescPaint;
-            case PAINT_VALUES:
-                // return mValuePaint;
             case PAINT_RENDER:
                 return mRenderPaint;
             case PAINT_LEGEND_LABEL:
                 return mLegendLabelPaint;
-            case PAINT_XLABEL:
-                // return mXLabelPaint;
-            case PAINT_YLABEL:
-                // return mYLabelPaint;
-            case PAINT_HIGHLIGHT:
-                // return mHighlightPaint;
-            case PAINT_LIMIT_LINE:
-                // return mLimitLinePaint;
         }
 
         return null;

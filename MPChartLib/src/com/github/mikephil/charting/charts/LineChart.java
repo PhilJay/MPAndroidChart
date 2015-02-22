@@ -77,31 +77,6 @@ public class LineChart extends BarLineChartBase<LineData> implements LineDataPro
     }
 
     @Override
-    public void setPaint(Paint p, int which) {
-        super.setPaint(p, which);
-
-        switch (which) {
-            case PAINT_CIRCLES_INNER:
-//                mCirclePaintInner = p;
-                break;
-        }
-    }
-
-    @Override
-    public Paint getPaint(int which) {
-        Paint p = super.getPaint(which);
-        if (p != null)
-            return p;
-
-        switch (which) {
-            case PAINT_CIRCLES_INNER:
-                return null;
-        }
-
-        return null;
-    }
-
-    @Override
     public void setFillFormatter(FillFormatter formatter) {
 
         if (formatter == null)

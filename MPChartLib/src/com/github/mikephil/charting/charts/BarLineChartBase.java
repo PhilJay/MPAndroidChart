@@ -53,9 +53,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     /** the maximum number of entried to which values will be drawn */
     protected int mMaxVisibleCount = 100;
 
-    /** the width of the grid lines */
-    protected float mGridWidth = 1f;
-
     /**
      * flag that indicates if pinch-zoom is enabled. if true, both x and y axis
      * can be scaled with 2 fingers, if false, x and y axis can be scaled
@@ -83,7 +80,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * for barchart) will be drawn upon selecting values.
      */
     protected boolean mHighLightIndicatorEnabled = true;
-    
+
     /** flag indicating if the grid background should be drawn or not */
     protected boolean mDrawGridBackground = true;
 
@@ -178,7 +175,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum);
         mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum);
-        
+
         // make sure the graph values and grid cannot be drawn outside the
         // content-rect
         int clipRestoreCount = mDrawCanvas.save();
@@ -187,7 +184,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mXAxisRenderer.renderGridLines(mDrawCanvas);
         mAxisRendererLeft.renderGridLines(mDrawCanvas);
         mAxisRendererRight.renderGridLines(mDrawCanvas);
-        
+
         mAxisRendererLeft.renderLimitLines(mDrawCanvas);
         mAxisRendererRight.renderLimitLines(mDrawCanvas);
 
@@ -211,7 +208,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mRenderer.drawValues(mDrawCanvas);
 
         drawLegend();
-        
+
         drawMarkers();
 
         drawDescription();
@@ -294,6 +291,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mAxisRight.mAxisMinimum = !Float.isNaN(mAxisRight.getAxisMinValue()) ? mAxisRight
                 .getAxisMinValue() : minRight - bottomSpaceRight;
 
+        // consider starting at zero (0)
         if (mAxisLeft.isStartAtZeroEnabled())
             mAxisLeft.mAxisMinimum = 0f;
         if (mAxisRight.isStartAtZeroEnabled())
@@ -301,51 +299,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         mAxisLeft.mAxisRange = Math.abs(mAxisLeft.mAxisMaximum - mAxisLeft.mAxisMinimum);
         mAxisRight.mAxisRange = Math.abs(mAxisRight.mAxisMaximum - mAxisRight.mAxisMinimum);
-        //
-        // // only calculate values if not fixed values
-        // if (!fixedValues) {
-        // mYChartMin = mData.getYMin();
-        // mYChartMax = mData.getYMax();
-        // }
-        //
-        // // calc delta
-        // mDeltaY = Math.abs(mYChartMax - mYChartMin);
-        // mDeltaX = mData.getXVals().size() - 1;
-        //
-        // if (!fixedValues) {
-        //
-        // // additional handling for space (default 15% space)
-        // // float space = Math.abs(mDeltaY / 100f * 15f);
-        // float space = Math
-        // .abs(Math.abs(Math.max(Math.abs(mYChartMax), Math.abs(mYChartMin))) /
-        // 100f * 20f);
-        //
-        // if (Math.abs(mYChartMax - mYChartMin) < 0.00001f) {
-        // if (Math.abs(mYChartMax) < 10f)
-        // space = 1f;
-        // else
-        // space = Math.abs(mYChartMax / 100f * 20f);
-        // }
-        //
-        // if (mStartAtZero) {
-        //
-        // if (mYChartMax < 0) {
-        // mYChartMax = 0;
-        // // calc delta
-        // mYChartMin = mYChartMin - space;
-        // } else {
-        // mYChartMin = 0;
-        // // calc delta
-        // mYChartMax = mYChartMax + space;
-        // }
-        // } else {
-        //
-        // mYChartMin = mYChartMin - space / 2f;
-        // mYChartMax = mYChartMax + space / 2f;
-        // }
-        // }
-        //
-        // mDeltaY = Math.abs(mYChartMax - mYChartMin);
     }
 
     @Override
@@ -533,11 +486,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         if (!mDrawGridBackground)
             return;
 
-        // Rect gridBackground = new Rect((int) mOffsetLeft + 1, (int)
-        // mOffsetTop + 1, getWidth()
-        // - (int) mOffsetRight,
-        // getHeight() - (int) mOffsetBottom);
-
         // draw the grid background
         mDrawCanvas.drawRect(mViewPortHandler.getContentRect(), mGridBackgroundPaint);
     }
@@ -616,33 +564,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         Matrix save = mViewPortHandler.fitScreen();
         mViewPortHandler.refresh(save, this, true);
     }
-
-    // /**
-    // * Centers the viewport around the specified x-index and the specified
-    // * y-value in the chart. Centering the viewport outside the bounds of the
-    // * chart is not possible. Makes most sense in combination with the
-    // * setScaleMinima(...) method. First set the scale minima, then center the
-    // * viewport. SHOULD BE CALLED AFTER setting data for the chart.
-    // *
-    // * @param xIndex the index on the x-axis to center to
-    // * @param yVal the value ont he y-axis to center to
-    // */
-    // public synchronized void centerViewPort(final int xIndex, final float
-    // yVal, AxisDependency axis) {
-    //
-    // float indicesInView = mDeltaX / mViewPortHandler.getScaleX();
-    // float valsInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
-    //
-    // // Log.i(LOG_TAG, "indices: " + indicesInView + ", vals: " +
-    // // valsInView);
-    //
-    // float[] pts = new float[] {
-    // xIndex - indicesInView / 2f, yVal + valsInView / 2f
-    // };
-    //
-    // getTransformer(axis).pointValuesToPixel(pts);
-    // mViewPortHandler.centerViewPort(pts, this);
-    // }
 
     /**
      * Sets the size of the area (range on the x-axis) that should be maximum
@@ -768,72 +689,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         return mDrawListener;
     }
 
-    // /**
-    // * Sets the minimum scale values for both axes. This limits the extent to
-    // * which the user can zoom-out. Scale 2f means the user cannot zoom out
-    // * further than 2x zoom, ... Min = 1f
-    // *
-    // * @param scaleXmin
-    // * @param scaleYmin
-    // */
-    // public void setScaleMinima(float scaleXmin, float scaleYmin) {
-    // mViewPortHandler.setScaleMinima(scaleXmin, scaleYmin, this);
-    // }
-
-    // /**
-    // * Sets the effective range of y-values the chart can display. If this is
-    // * set, the y-range is fixed and cannot be changed. This means, no
-    // * recalculation of the bounds of the chart concerning the y-axis will be
-    // * done when adding new data. To disable this, provide Float.NaN as a
-    // * parameter or call resetYRange();
-    // *
-    // * @param minY
-    // * @param maxY
-    // * @param invalidate if set to true, the chart will redraw itself after
-    // * calling this method
-    // */
-    // public void setYRange(float minY, float maxY, AxisDependency axis,
-    // boolean invalidate) {
-    //
-    // if (Float.isNaN(minY) || Float.isNaN(maxY)) {
-    // resetYRange(invalidate);
-    // return;
-    // }
-    //
-    // mFixedYValues = true;
-    //
-    // mYChartMin = minY;
-    // mYChartMax = maxY;
-    // if (minY < 0) {
-    // mStartAtZero = false;
-    // }
-    //
-    // if (axis == AxisDependency.LEFT)
-    // mDeltaYLeft = mYChartMax - mYChartMin;
-    //
-    // calcFormats();
-    // prepareMatrix();
-    // if (invalidate)
-    // invalidate();
-    // }
-    //
-    // /**
-    // * Resets the previously set y range. If new data is added, the y-range
-    // will
-    // * be recalculated.
-    // *
-    // * @param invalidate if set to true, the chart will redraw itself after
-    // * calling this method
-    // */
-    // public void resetYRange(boolean invalidate) {
-    // mFixedYValues = false;
-    // calcMinMax(mFixedYValues);
-    //
-    // prepareMatrix();
-    // if (invalidate)
-    // invalidate();
-    // }
-
     /**
      * Returns the position (in pixels) the provided Entry has inside the chart
      * view or null, if the provided Entry is null.
@@ -888,39 +743,14 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mHighLightIndicatorEnabled = enabled;
     }
 
-    // /**
-    // * enable this to force the y-axis labels to always start at zero
-    // *
-    // * @param enabled
-    // */
-    // public void setStartAtZero(boolean enabled) {
-    // this.mStartAtZero = enabled;
-    // prepare();
-    // prepareMatrix();
-    // }
-    //
-    // /**
-    // * returns true if the chart is set to start at zero, false otherwise
-    // *
-    // * @return
-    // */
-    // @Override
-    // public boolean isStartAtZeroEnabled() {
-    // return mStartAtZero;
-    // }
-
     /**
-     * sets the width of the grid lines (min 0.1f, max = 3f)
+     * Sets the color for the background of the chart-drawing area (everything
+     * behind the grid lines).
      * 
-     * @param width
+     * @param color
      */
-    public void setGridWidth(float width) {
-
-        if (width < 0.1f)
-            width = 0.1f;
-        if (width > 3.0f)
-            width = 3.0f;
-        mGridWidth = width;
+    public void setGridBackgroundColor(int color) {
+        mGridBackgroundPaint.setColor(color);
     }
 
     /**
@@ -1368,13 +1198,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         super.setPaint(p, which);
 
         switch (which) {
-            case PAINT_GRID:
-                break;
             case PAINT_GRID_BACKGROUND:
                 mGridBackgroundPaint = p;
-                break;
-            case PAINT_BORDER:
-//                mBorderPaint = p;
                 break;
         }
     }
@@ -1386,12 +1211,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             return p;
 
         switch (which) {
-            case PAINT_GRID:
-                return null;
             case PAINT_GRID_BACKGROUND:
                 return mGridBackgroundPaint;
-//            case PAINT_BORDER:
-//                return mBorderPaint;
         }
 
         return null;

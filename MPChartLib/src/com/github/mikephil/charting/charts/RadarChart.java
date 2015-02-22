@@ -4,7 +4,6 @@ package com.github.mikephil.charting.charts;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.AttributeSet;
@@ -308,36 +307,17 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         return Math.min(content.width() / 2f, content.height() / 2f);
     }
 
+    /**
+     * Returns the maximum value this chart can display on it's y-axis.
+     */
     public float getYChartMax() {
         return mYAxis.mAxisMaximum;
     }
 
+    /**
+     * Returns the minimum value this chart can display on it's y-axis.
+     */
     public float getYChartMin() {
         return mYAxis.mAxisMinimum;
-    }
-
-    @Override
-    public void setPaint(Paint p, int which) {
-        super.setPaint(p, which);
-
-        switch (which) {
-            case PAINT_RADAR_WEB:
-                // mWebPaint = p;
-                break;
-        }
-    }
-
-    @Override
-    public Paint getPaint(int which) {
-        Paint p = super.getPaint(which);
-        if (p != null)
-            return p;
-
-        switch (which) {
-            case PAINT_RADAR_WEB:
-                // return mWebPaint;
-        }
-
-        return null;
     }
 }

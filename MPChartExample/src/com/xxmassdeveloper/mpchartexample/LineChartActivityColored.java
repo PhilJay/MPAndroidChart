@@ -62,7 +62,6 @@ public class LineChartActivityColored extends DemoBase {
         // enable / disable grid background
         chart.setDrawGridBackground(false);
 //        chart.getRenderer().getGridPaint().setGridColor(Color.WHITE & 0x70FFFFFF);
-        chart.setGridWidth(1.25f);
 
         // enable touch gestures
         chart.setTouchEnabled(true);
