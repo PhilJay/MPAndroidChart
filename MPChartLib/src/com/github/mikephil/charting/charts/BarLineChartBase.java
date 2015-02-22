@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.PointF;
 import android.util.AttributeSet;
@@ -208,7 +207,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mRenderer.drawValues(mDrawCanvas);
 
         mLegendRenderer.renderLegend(mDrawCanvas, mLegend);
-//        drawLegend();
+        // drawLegend();
 
         drawMarkers();
 
@@ -258,7 +257,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mXAxisRenderer.computeAxis(mData.getXValAverageLength(), mData.getXVals());
 
         mLegend = mLegendRenderer.computeLegend(mData, mLegend);
-//        prepareLegend();
+        // prepareLegend();
 
         calculateOffsets();
     }
@@ -306,7 +305,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     @Override
     protected void calculateOffsets() {
 
-        float legendRight = 0f, legendBottom = 0f;
+        float offsetLeft = 0f, offsetRight = 0f, offsetTop = 0f, offsetBottom = 0f;
 
         // setup offsets for legend
         if (mLegend != null && mLegend.isEnabled()) {
@@ -314,30 +313,15 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART
                     || mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART_CENTER) {
 
-                // this is the space between the legend and the chart
-                float spacing = Utils.convertDpToPixel(12f);
-
-                legendRight = mLegend.getMaximumEntryWidth(mLegendRenderer.getLabelPaint())
-                        + mLegend.getFormSize() + mLegend.getFormToTextSpace() + spacing;
-
-                mLegendRenderer.getLabelPaint().setTextAlign(Align.LEFT);
+                offsetRight += mLegend.mTextWidthMax;
 
             } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
                     || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
                     || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
 
-                if (mXAxis.getPosition() == XAxisPosition.TOP)
-                    legendBottom = mLegendRenderer.getLabelPaint().getTextSize() * 3.5f;
-                else {
-                    legendBottom = mLegendRenderer.getLabelPaint().getTextSize() * 2.5f;
-                }
+                offsetBottom += mLegend.mTextHeightMax * 3f;
             }
-
-            mLegend.setOffsetBottom(legendBottom);
-            mLegend.setOffsetRight(legendRight);
         }
-
-        float yleft = 0f, yright = 0f;
 
         // offsets for y-labels
         if (mAxisLeft.isEnabled()) {
@@ -346,8 +330,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             // calculate the maximum y-label width (including eventual
             // offsets)
             float ylabelwidth = Utils.calcTextWidth(mAxisRendererLeft.getAxisPaint(),
-                    label + (mAxisLeft.mAxisMinimum < 0 ? "----" : "+++")); // offsets
-            yleft = ylabelwidth + mAxisRendererLeft.getXOffset() / 2f;
+                    label + (mAxisLeft.mAxisMinimum < 0 ? "---" : "++")); // offsets
+            offsetLeft += ylabelwidth + mAxisRendererLeft.getXOffset() / 2f;
         }
 
         if (mAxisRight.isEnabled()) {
@@ -356,11 +340,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             // calculate the maximum y-label width (including eventual
             // offsets)
             float ylabelwidth = Utils.calcTextWidth(mAxisRendererRight.getAxisPaint(),
-                    label + (mAxisLeft.mAxisMinimum < 0 ? "----" : "+++")); // offsets
-            yright = ylabelwidth + mAxisRendererRight.getXOffset() / 2f;
+                    label + (mAxisLeft.mAxisMinimum < 0 ? "---" : "++")); // offsets
+            offsetRight += ylabelwidth + mAxisRendererRight.getXOffset() / 2f;
         }
-
-        float xtop = 0f, xbottom = 0f;
 
         float xlabelheight = Utils.calcTextHeight(mXAxisRenderer.getAxisPaint(), "Q") * 2f;
 
@@ -369,37 +351,24 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             // offsets for x-labels
             if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
 
-                xbottom = xlabelheight;
+                offsetBottom += xlabelheight;
 
             } else if (mXAxis.getPosition() == XAxisPosition.TOP) {
 
-                xtop = xlabelheight;
+                offsetTop += xlabelheight;
 
             } else if (mXAxis.getPosition() == XAxisPosition.BOTH_SIDED) {
 
-                xbottom = xlabelheight;
-                xtop = xlabelheight;
+                offsetBottom += xlabelheight;
+                offsetTop += xlabelheight;
             }
         }
 
-        // all required offsets are calculated, now find largest and apply
-        float min = Utils.convertDpToPixel(11f);
+        float min = Utils.convertDpToPixel(10f);
 
-        float offsetBottom = Math.max(min, xbottom + legendBottom);
-        float offsetTop = Math.max(min, xtop);
+        mViewPortHandler.restrainViewPort(Math.max(min, offsetLeft), Math.max(min, offsetTop),
+                Math.max(min, offsetRight), Math.max(min, offsetBottom));
 
-        float offsetLeft = Math.max(min, yleft);
-        float offsetRight = Math.max(min, yright + legendRight);
-
-        if (mLegend != null) {
-
-            // those offsets are equal for legend and other chart, just apply
-            // them
-            mLegend.setOffsetTop(offsetTop + min / 3f);
-            mLegend.setOffsetLeft(offsetLeft);
-        }
-
-        mViewPortHandler.restrainViewPort(offsetLeft, offsetTop, offsetRight, offsetBottom);
         if (mLogEnabled) {
             Log.i(LOG_TAG, "offsetLeft: " + offsetLeft + ", offsetTop: " + offsetTop
                     + ", offsetRight: " + offsetRight + ", offsetBottom: " + offsetBottom);
@@ -408,30 +377,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         prepareOffsetMatrix();
         prepareValuePxMatrix();
-    }
-
-    /**
-     * Calculates the offsets that belong to the legend, this method is only
-     * relevant when drawing into the chart. It can be used to refresh the
-     * legend.
-     */
-    public void calculateLegendOffsets() {
-
-        // setup offsets for legend
-        if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
-
-            mLegend.setOffsetRight(mLegend.getMaximumEntryWidth(mLegendRenderer.getLabelPaint()));
-            mLegendRenderer.getLabelPaint().setTextAlign(Align.LEFT);
-
-        } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
-                || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT) {
-
-            if (mXAxis.getPosition() == XAxisPosition.TOP)
-                mLegend.setOffsetBottom(mLegendRenderer.getLabelPaint().getTextSize() * 3.5f);
-            else {
-                mLegend.setOffsetBottom(mLegendRenderer.getLabelPaint().getTextSize() * 2.5f);
-            }
-        }
     }
 
     /**

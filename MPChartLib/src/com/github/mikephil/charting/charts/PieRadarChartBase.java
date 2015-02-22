@@ -146,16 +146,9 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
             legendRight += getRequiredBaseOffset();
             legendTop += getRequiredBaseOffset();
-
-            mLegend.setOffsetBottom(mLegendRenderer.getLabelPaint().getTextSize() * 4f);
-            mLegend.setOffsetRight(legendRight);
         }
 
         float min = Utils.convertDpToPixel(11f);
-
-        if (mLegend != null) {
-            mLegend.setOffsetLeft(min);
-        }
 
         float offsetLeft = Math.max(min, getRequiredBaseOffset());
         float offsetTop = Math.max(min, legendTop);

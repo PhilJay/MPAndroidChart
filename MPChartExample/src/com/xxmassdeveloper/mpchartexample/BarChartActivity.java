@@ -110,7 +110,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         mSeekBarX.setOnSeekBarChangeListener(this);
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.RIGHT_OF_CHART);
+        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
         l.setForm(LegendForm.SQUARE);
         l.setFormSize(9f);
         l.setTextSize(11f);

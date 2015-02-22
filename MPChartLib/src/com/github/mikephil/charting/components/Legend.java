@@ -25,11 +25,7 @@ public class Legend {
     public enum LegendForm {
         SQUARE, CIRCLE, LINE
     }
-
-    /** offsets for the legend */
-    private float mLegendOffsetBottom = 12f, mLegendOffsetRight = 12f, mLegendOffsetLeft = 12f,
-            mLegendOffsetTop = 12f;
-
+    
     /** flag indicating if the legend should be drawn or not */
     private boolean mEnabled = true;
 
@@ -76,9 +72,6 @@ public class Legend {
 
     /** the space that should be left between stacked forms */
     private float mStackSpace = 3f;
-
-    public float mTextHeight = 0f;
-    public float mTextWidth = 0f;
 
     /** default constructor */
     public Legend() {
@@ -388,78 +381,6 @@ public class Legend {
     }
 
     /**
-     * returns the bottom offset
-     * 
-     * @return
-     */
-    public float getOffsetBottom() {
-        return mLegendOffsetBottom;
-    }
-
-    /**
-     * returns the right offset
-     * 
-     * @return
-     */
-    public float getOffsetRight() {
-        return mLegendOffsetRight;
-    }
-
-    /**
-     * sets the bottom offset
-     * 
-     * @param off
-     */
-    public void setOffsetBottom(float off) {
-        mLegendOffsetBottom = off;
-    }
-
-    /**
-     * sets the right offset
-     * 
-     * @param off
-     */
-    public void setOffsetRight(float off) {
-        mLegendOffsetRight = off;
-    }
-
-    /**
-     * returns the bottom offset
-     * 
-     * @return
-     */
-    public float getOffsetTop() {
-        return mLegendOffsetTop;
-    }
-
-    /**
-     * returns the left offset
-     * 
-     * @return
-     */
-    public float getOffsetLeft() {
-        return mLegendOffsetLeft;
-    }
-
-    /**
-     * sets the bottom offset
-     * 
-     * @param off
-     */
-    public void setOffsetTop(float off) {
-        mLegendOffsetTop = off;
-    }
-
-    /**
-     * sets the left offset
-     * 
-     * @param off
-     */
-    public void setOffsetLeft(float off) {
-        mLegendOffsetLeft = off;
-    }
-
-    /**
      * sets the text size of the legend labels, default 9f
      * 
      * @param size
@@ -544,6 +465,42 @@ public class Legend {
         }
 
         return height;
+    }
+
+    /** the total width of the legend (needed width space) */
+    public float mNeededWidth = 0f;
+
+    /** the total height of the legend (needed height space) */
+    public float mNeededHeight = 0f;
+    
+    public float mTextHeightMax = 0f;
+    
+    public float mTextWidthMax = 0f;
+
+    /**
+     * Calculates the dimensions of the Legend. This includes the maximum width
+     * and height of a single entry, as well as the total width and height of
+     * the Legend.
+     * 
+     * @param labelpaint
+     */
+    public void calculateDimensions(Paint labelpaint) {
+
+        if (mPosition == LegendPosition.RIGHT_OF_CHART
+                || mPosition == LegendPosition.RIGHT_OF_CHART_CENTER
+                || mPosition == LegendPosition.PIECHART_CENTER) {
+            mNeededWidth = getMaximumEntryWidth(labelpaint);
+            mNeededHeight = getFullHeight(labelpaint);
+            mTextWidthMax = mNeededWidth;
+            mTextHeightMax = getMaximumEntryHeight(labelpaint);
+
+        } else {
+
+            mNeededWidth = getFullWidth(labelpaint);
+            mNeededHeight = getMaximumEntryHeight(labelpaint);
+            mTextWidthMax = getMaximumEntryWidth(labelpaint);
+            mTextHeightMax = mNeededHeight;
+        }
     }
 
     /**

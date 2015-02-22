@@ -186,8 +186,6 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
 
         // prepare the legend again
         mChart.getLegendRenderer().computeLegend(mChart.getData(), mChart.getLegend());
-
-        mChart.calculateLegendOffsets();
     }
 
     @Override
