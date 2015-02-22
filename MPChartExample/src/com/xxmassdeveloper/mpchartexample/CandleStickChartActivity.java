@@ -68,11 +68,12 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         
         mChart.getAxisRight().setEnabled(false);
 
-        mChart.setDrawLegend(false);
 
         // setting data
         mSeekBarX.setProgress(15);
         mSeekBarY.setProgress(100);
+        
+        mChart.getLegend().setEnabled(false);
 
         // Legend l = mChart.getLegend();
         // l.setPosition(LegendPosition.BELOW_CHART_CENTER);

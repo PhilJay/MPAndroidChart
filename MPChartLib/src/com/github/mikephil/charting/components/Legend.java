@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class Legend {
 
     public enum LegendPosition {
-        RIGHT_OF_CHART, RIGHT_OF_CHART_CENTER, RIGHT_OF_CHART_INSIDE, BELOW_CHART_LEFT, BELOW_CHART_RIGHT, BELOW_CHART_CENTER, PIECHART_CENTER, NONE
+        RIGHT_OF_CHART, RIGHT_OF_CHART_CENTER, RIGHT_OF_CHART_INSIDE, BELOW_CHART_LEFT, BELOW_CHART_RIGHT, BELOW_CHART_CENTER, PIECHART_CENTER
     }
 
     public enum LegendForm {
@@ -31,11 +31,14 @@ public class Legend {
     private float mLegendOffsetBottom = 12f, mLegendOffsetRight = 12f, mLegendOffsetLeft = 12f,
             mLegendOffsetTop = 12f;
 
+    /** flag indicating if the legend should be drawn or not */
+    private boolean mEnabled = true;
+
     /** the legend colors */
     private int[] mColors;
 
     /** the legend labels */
-    private String[] mLegendLabels;
+    private String[] mLabels;
 
     /** the position relative to the chart the legend is drawn on */
     private LegendPosition mPosition = LegendPosition.BELOW_CHART_LEFT;
@@ -105,7 +108,7 @@ public class Legend {
         }
 
         this.mColors = colors;
-        this.mLegendLabels = labels;
+        this.mLabels = labels;
     }
 
     /**
@@ -127,7 +130,7 @@ public class Legend {
         }
 
         this.mColors = Utils.convertIntegers(colors);
-        this.mLegendLabels = Utils.convertStrings(labels);
+        this.mLabels = Utils.convertStrings(labels);
     }
 
     /**
@@ -140,11 +143,11 @@ public class Legend {
 
         int max = 0;
 
-        for (int i = 0; i < mLegendLabels.length; i++) {
+        for (int i = 0; i < mLabels.length; i++) {
 
-            if (mLegendLabels[i] != null) {
+            if (mLabels[i] != null) {
 
-                int length = Utils.calcTextWidth(p, mLegendLabels[i]);
+                int length = Utils.calcTextWidth(p, mLabels[i]);
 
                 if (length > max)
                     max = length;
@@ -169,7 +172,7 @@ public class Legend {
      * @return
      */
     public String[] getLegendLabels() {
-        return mLegendLabels;
+        return mLabels;
     }
 
     /**
@@ -185,7 +188,7 @@ public class Legend {
                     "colors array and labels array need to be of same size");
         }
 
-        this.mLegendLabels = labels;
+        this.mLabels = labels;
     }
 
     /**
@@ -321,37 +324,6 @@ public class Legend {
     }
 
     /**
-     * draws the form at the given position with the color at the given index
-     * 
-     * @param c canvas to draw with
-     * @param x
-     * @param y
-     * @param p paint to use for drawing
-     * @param index the index of the color to use (in the colors array)
-     */
-    public void drawForm(Canvas c, float x, float y, Paint p, int index) {
-
-        if (mColors[index] == -2)
-            return;
-
-        p.setColor(mColors[index]);
-
-        float half = mFormSize / 2f;
-
-        switch (getForm()) {
-            case CIRCLE:
-                c.drawCircle(x + half, y + half, half, p);
-                break;
-            case SQUARE:
-                c.drawRect(x, y, x + mFormSize, y + mFormSize, p);
-                break;
-            case LINE:
-                c.drawLine(x, y + half, x + mFormSize, y + half, p);
-                break;
-        }
-    }
-
-    /**
      * draws the label at the given index in the labels array at the given
      * position
      * 
@@ -363,7 +335,7 @@ public class Legend {
      */
     public void drawLabel(Canvas c, float x, float y, Paint p, int index) {
 
-        c.drawText(mLegendLabels[index], x, y, p);
+        c.drawText(mLabels[index], x, y, p);
     }
 
     /**
@@ -509,16 +481,16 @@ public class Legend {
 
         float width = 0f;
 
-        for (int i = 0; i < mLegendLabels.length; i++) {
+        for (int i = 0; i < mLabels.length; i++) {
 
             // grouped forms have null labels
-            if (mLegendLabels[i] != null) {
+            if (mLabels[i] != null) {
 
                 // make a step to the left
                 if (mColors[i] != -2)
                     width += mFormSize + mFormToTextSpace;
 
-                width += Utils.calcTextWidth(labelpaint, mLegendLabels[i])
+                width += Utils.calcTextWidth(labelpaint, mLabels[i])
                         + mXEntrySpace;
             } else {
                 width += mFormSize + mStackSpace;
@@ -538,12 +510,12 @@ public class Legend {
 
         float height = 0f;
 
-        for (int i = 0; i < mLegendLabels.length; i++) {
+        for (int i = 0; i < mLabels.length; i++) {
 
             // grouped forms have null labels
-            if (mLegendLabels[i] != null) {
+            if (mLabels[i] != null) {
 
-                height += Utils.calcTextHeight(labelpaint, mLegendLabels[i])
+                height += Utils.calcTextHeight(labelpaint, mLabels[i])
                         + mYEntrySpace;
             }
         }
@@ -568,5 +540,28 @@ public class Legend {
      */
     public int getTextColor() {
         return mTextColor;
+    }
+
+    /**
+     * Set this to true if the legend should be enabled (should be drawn), false
+     * if not. Default: true
+     * 
+     * @param enabled
+     */
+    public void setEnabled(boolean enabled) {
+        mEnabled = enabled;
+    }
+
+    /**
+     * Returns true if the legend is enabled (should be drawn), false if not.
+     * 
+     * @return
+     */
+    public boolean isEnabled() {
+        return mEnabled;
+    }
+    
+    public boolean isSetUp() {
+        return mLabels != null && mColors != null;
     }
 }

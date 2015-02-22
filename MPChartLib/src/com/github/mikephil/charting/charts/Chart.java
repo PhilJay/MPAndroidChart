@@ -40,6 +40,7 @@ import com.github.mikephil.charting.interfaces.ChartInterface;
 import com.github.mikephil.charting.interfaces.OnChartGestureListener;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.renderer.DataRenderer;
+import com.github.mikephil.charting.renderer.LegendRenderer;
 import com.github.mikephil.charting.renderer.ViewPortHandler;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Utils;
@@ -106,12 +107,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /** this is the paint object used for drawing the data onto the chart */
     protected Paint mRenderPaint;
 
-    /** paint for the legend labels */
-    protected Paint mLegendLabelPaint;
-
-    /** paint used for the legend forms */
-    protected Paint mLegendFormPaint;
-
     /** description text that appears in the bottom right corner of the chart */
     protected String mDescription = "Description";
 
@@ -133,9 +128,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /** if true, value highlightning is enabled */
     protected boolean mHighlightEnabled = true;
 
-    /** flag indicating if the legend is drawn of not */
-    protected boolean mDrawLegend = true;
-
     /** the legend object containing all data associated with the legend */
     protected Legend mLegend;
 
@@ -156,11 +148,13 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     private String mNoDataTextDescription;
 
+    protected LegendRenderer mLegendRenderer;
+
     /** object responsible for rendering the data */
     protected DataRenderer mRenderer;
 
     /** object that manages the bounds and drawing constraints of the chart */
-    protected ViewPortHandler mViewPortHandler = new ViewPortHandler();
+    protected ViewPortHandler mViewPortHandler;
 
     /** object responsible for animations */
     protected ChartAnimator mAnimator;
@@ -205,6 +199,10 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         // initialize the utils
         Utils.init(getContext().getResources());
 
+        mViewPortHandler = new ViewPortHandler();
+        
+        mLegendRenderer = new LegendRenderer(mViewPortHandler);
+
         mRenderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mRenderPaint.setStyle(Style.FILL);
 
@@ -217,13 +215,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         mInfoPaint.setColor(Color.rgb(247, 189, 51)); // orange
         mInfoPaint.setTextAlign(Align.CENTER);
         mInfoPaint.setTextSize(Utils.convertDpToPixel(12f));
-
-        mLegendFormPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mLegendFormPaint.setStyle(Paint.Style.FILL);
-        mLegendFormPaint.setStrokeWidth(3f);
-
-        mLegendLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mLegendLabelPaint.setTextSize(Utils.convertDpToPixel(9f));
 
         mDrawPaint = new Paint(Paint.DITHER_FLAG);
 
@@ -440,374 +431,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     // // getWidth() - mOffsetRight,
     // // getHeight() - mOffsetBottom);
     // }
-
-    /**
-     * Generates an automatically prepared legend depending on the DataSets in
-     * the chart and their colors.
-     */
-    public void prepareLegend() {
-
-        ArrayList<String> labels = new ArrayList<String>();
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-
-        // loop for building up the colors and labels used in the legend
-        for (int i = 0; i < mData.getDataSetCount(); i++) {
-
-            DataSet<? extends Entry> dataSet = mData.getDataSetByIndex(i);
-
-            ArrayList<Integer> clrs = dataSet.getColors();
-            int entryCount = dataSet.getEntryCount();
-
-            // if we have a barchart with stacked bars
-            if (dataSet instanceof BarDataSet && ((BarDataSet) dataSet).getStackSize() > 1) {
-
-                BarDataSet bds = (BarDataSet) dataSet;
-                String[] sLabels = bds.getStackLabels();
-
-                for (int j = 0; j < clrs.size() && j < bds.getStackSize(); j++) {
-
-                    labels.add(sLabels[j % sLabels.length]);
-                    colors.add(clrs.get(j));
-                }
-
-                // add the legend description label
-                colors.add(-2);
-                labels.add(bds.getLabel());
-
-            } else if (dataSet instanceof PieDataSet) {
-
-                ArrayList<String> xVals = mData.getXVals();
-                PieDataSet pds = (PieDataSet) dataSet;
-
-                for (int j = 0; j < clrs.size() && j < entryCount && j < xVals.size(); j++) {
-
-                    labels.add(xVals.get(j));
-                    colors.add(clrs.get(j));
-                }
-
-                // add the legend description label
-                colors.add(-2);
-                labels.add(pds.getLabel());
-
-            } else { // all others
-
-                for (int j = 0; j < clrs.size() && j < entryCount; j++) {
-
-                    // if multiple colors are set for a DataSet, group them
-                    if (j < clrs.size() - 1 && j < entryCount - 1) {
-
-                        labels.add(null);
-                    } else { // add label to the last entry
-
-                        String label = mData.getDataSetByIndex(i).getLabel();
-                        labels.add(label);
-                    }
-
-                    colors.add(clrs.get(j));
-                }
-            }
-        }
-
-        Legend l = new Legend(colors, labels);
-
-        if (mLegend != null) {
-            // apply the old legend settings to a potential new legend
-            l.apply(mLegend);
-        }
-
-        mLegend = l;
-    }
-
-    /**
-     * draws the legend
-     */
-    protected void drawLegend() {
-
-        if (!mDrawLegend || mLegend == null || mLegend.getPosition() == LegendPosition.NONE)
-            return;
-
-        String[] labels = mLegend.getLegendLabels();
-        Typeface tf = mLegend.getTypeface();
-
-        if (tf != null)
-            mLegendLabelPaint.setTypeface(tf);
-
-        mLegendLabelPaint.setTextSize(mLegend.getTextSize());
-        mLegendLabelPaint.setColor(mLegend.getTextColor());
-
-        float formSize = mLegend.getFormSize();
-
-        // space between text and shape/form of entry
-        float formTextSpaceAndForm = mLegend.getFormToTextSpace() + formSize;
-
-        // space between the entries
-        float stackSpace = mLegend.getStackSpace();
-
-        float textSize = mLegend.getTextSize();
-
-        // the amount of pixels the text needs to be set down to be on the same
-        // height as the form
-        float textDrop = (Utils.calcTextHeight(mLegendLabelPaint, "AQJ") + formSize) / 2f;
-
-        float posX, posY;
-
-        // contains the stacked legend size in pixels
-        float stack = 0f;
-
-        boolean wasStacked = false;
-
-        switch (mLegend.getPosition()) {
-            case BELOW_CHART_LEFT:
-
-                posX = mLegend.getOffsetLeft();
-                posY = getHeight() - mLegend.getOffsetBottom() / 2f - formSize / 2f;
-
-                for (int i = 0; i < labels.length; i++) {
-
-                    mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
-
-                    // grouped forms have null labels
-                    if (labels[i] != null) {
-
-                        // make a step to the left
-                        if (mLegend.getColors()[i] != -2)
-                            posX += formTextSpaceAndForm;
-
-                        mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
-                        posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i])
-                                + mLegend.getXEntrySpace();
-                    } else {
-                        posX += formSize + stackSpace;
-                    }
-                }
-
-                break;
-            case BELOW_CHART_RIGHT:
-
-                posX = mViewPortHandler.contentRight();
-                posY = getHeight() - mLegend.getOffsetBottom() / 2f - formSize / 2f;
-
-                for (int i = labels.length - 1; i >= 0; i--) {
-
-                    if (labels[i] != null) {
-
-                        posX -= Utils.calcTextWidth(mLegendLabelPaint, labels[i])
-                                + mLegend.getXEntrySpace();
-                        mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
-                        if (mLegend.getColors()[i] != -2)
-                            posX -= formTextSpaceAndForm;
-                    } else {
-                        posX -= stackSpace + formSize;
-                    }
-
-                    mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
-                }
-
-                break;
-            case RIGHT_OF_CHART:
-
-                posX = getWidth() - mLegend.getMaximumEntryLength(mLegendLabelPaint)
-                        - formTextSpaceAndForm;
-                posY = mLegend.getOffsetTop();
-
-                for (int i = 0; i < labels.length; i++) {
-
-                    mLegend.drawForm(mDrawCanvas, posX + stack, posY, mLegendFormPaint, i);
-
-                    if (labels[i] != null) {
-
-                        if (!wasStacked) {
-
-                            float x = posX;
-
-                            if (mLegend.getColors()[i] != -2)
-                                x += formTextSpaceAndForm;
-
-                            posY += textDrop;
-
-                            mLegend.drawLabel(mDrawCanvas, x, posY,
-                                    mLegendLabelPaint, i);
-                        } else {
-
-                            posY += textSize * 1.2f + formSize;
-
-                            mLegend.drawLabel(mDrawCanvas, posX, posY,
-                                    mLegendLabelPaint, i);
-
-                        }
-
-                        // make a step down
-                        posY += mLegend.getYEntrySpace();
-                        stack = 0f;
-                    } else {
-                        stack += formSize + stackSpace;
-                        wasStacked = true;
-                    }
-                }
-                break;
-            case RIGHT_OF_CHART_CENTER:
-                posX = getWidth() - mLegend.getMaximumEntryLength(mLegendLabelPaint)
-                        - formTextSpaceAndForm;
-                posY = getHeight() / 2f - mLegend.getFullHeight(mLegendLabelPaint) / 2f;
-
-                for (int i = 0; i < labels.length; i++) {
-
-                    mLegend.drawForm(mDrawCanvas, posX + stack, posY, mLegendFormPaint, i);
-
-                    if (labels[i] != null) {
-
-                        if (!wasStacked) {
-
-                            float x = posX;
-
-                            if (mLegend.getColors()[i] != -2)
-                                x += formTextSpaceAndForm;
-
-                            posY += textDrop;
-
-                            mLegend.drawLabel(mDrawCanvas, x, posY,
-                                    mLegendLabelPaint, i);
-                        } else {
-
-                            posY += textSize * 1.2f + formSize;
-
-                            mLegend.drawLabel(mDrawCanvas, posX, posY,
-                                    mLegendLabelPaint, i);
-
-                        }
-
-                        // make a step down
-                        posY += mLegend.getYEntrySpace();
-                        stack = 0f;
-                    } else {
-                        stack += formSize + stackSpace;
-                        wasStacked = true;
-                    }
-                }
-
-                break;
-            case BELOW_CHART_CENTER:
-
-                float fullSize = mLegend.getFullWidth(mLegendLabelPaint);
-
-                posX = getWidth() / 2f - fullSize / 2f;
-                posY = getHeight() - mLegend.getOffsetBottom() / 2f - formSize / 2f;
-
-                for (int i = 0; i < labels.length; i++) {
-
-                    mLegend.drawForm(mDrawCanvas, posX, posY, mLegendFormPaint, i);
-
-                    // grouped forms have null labels
-                    if (labels[i] != null) {
-
-                        // make a step to the left
-                        if (mLegend.getColors()[i] != -2)
-                            posX += formTextSpaceAndForm;
-
-                        mLegend.drawLabel(mDrawCanvas, posX, posY + textDrop, mLegendLabelPaint, i);
-                        posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i])
-                                + mLegend.getXEntrySpace();
-                    } else {
-                        posX += formSize + stackSpace;
-                    }
-                }
-
-                // Log.i(LOG_TAG, "content bottom: " + mContentRect.bottom +
-                // ", height: "
-                // + getHeight() + ", posY: " + posY + ", formSize: " +
-                // formSize);
-
-                break;
-            case PIECHART_CENTER:
-
-                posX = getWidth()
-                        / 2f
-                        - (mLegend.getMaximumEntryLength(mLegendLabelPaint) + mLegend
-                                .getXEntrySpace())
-                        / 2f;
-                posY = getHeight() / 2f - mLegend.getFullHeight(mLegendLabelPaint) / 2f;
-
-                for (int i = 0; i < labels.length; i++) {
-
-                    mLegend.drawForm(mDrawCanvas, posX + stack, posY, mLegendFormPaint, i);
-
-                    if (labels[i] != null) {
-
-                        if (!wasStacked) {
-
-                            float x = posX;
-
-                            if (mLegend.getColors()[i] != -2)
-                                x += formTextSpaceAndForm;
-
-                            posY += textDrop;
-
-                            mLegend.drawLabel(mDrawCanvas, x, posY,
-                                    mLegendLabelPaint, i);
-                        } else {
-
-                            posY += textSize * 1.2f + formSize;
-
-                            mLegend.drawLabel(mDrawCanvas, posX, posY,
-                                    mLegendLabelPaint, i);
-
-                        }
-
-                        // make a step down
-                        posY += mLegend.getYEntrySpace();
-                        stack = 0f;
-                    } else {
-                        stack += formSize + stackSpace;
-                        wasStacked = true;
-                    }
-                }
-
-                break;
-            case RIGHT_OF_CHART_INSIDE:
-
-                posX = getWidth() - mLegend.getMaximumEntryLength(mLegendLabelPaint)
-                        - formTextSpaceAndForm;
-                posY = mLegend.getOffsetTop();
-
-                for (int i = 0; i < labels.length; i++) {
-
-                    mLegend.drawForm(mDrawCanvas, posX + stack, posY, mLegendFormPaint, i);
-
-                    if (labels[i] != null) {
-
-                        if (!wasStacked) {
-
-                            float x = posX;
-
-                            if (mLegend.getColors()[i] != -2)
-                                x += formTextSpaceAndForm;
-
-                            posY += textDrop;
-
-                            mLegend.drawLabel(mDrawCanvas, x, posY,
-                                    mLegendLabelPaint, i);
-                        } else {
-
-                            posY += textSize * 1.2f + formSize;
-
-                            mLegend.drawLabel(mDrawCanvas, posX, posY,
-                                    mLegendLabelPaint, i);
-
-                        }
-
-                        // make a step down
-                        posY += mLegend.getYEntrySpace();
-                        stack = 0f;
-                    } else {
-                        stack += formSize + stackSpace;
-                        wasStacked = true;
-                    }
-                }
-                break;
-            case NONE:
-                break;
-        }
-    }
 
     /**
      * draws the description text in the bottom right corner of the chart
@@ -1348,24 +971,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
-     * set this to true to draw the legend, false if not
-     *
-     * @param enabled
-     */
-    public void setDrawLegend(boolean enabled) {
-        mDrawLegend = enabled;
-    }
-
-    /**
-     * returns true if drawing the legend is enabled, false if not
-     *
-     * @return
-     */
-    public boolean isDrawLegendEnabled() {
-        return mDrawLegend;
-    }
-
-    /**
      * Returns the legend object of the chart. This method can be used to
      * customize the automatically generated legend. IMPORTANT: this will return
      * null if no data has been set for the chart when calling this method
@@ -1374,6 +979,16 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public Legend getLegend() {
         return mLegend;
+    }
+
+    /**
+     * Returns the renderer object responsible for rendering / drawing the
+     * Legend.
+     * 
+     * @return
+     */
+    public LegendRenderer getLegendRenderer() {
+        return mLegendRenderer;
     }
 
     /**
@@ -1449,9 +1064,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             case PAINT_RENDER:
                 mRenderPaint = p;
                 break;
-            case PAINT_LEGEND_LABEL:
-                mLegendLabelPaint = p;
-                break;
         }
     }
 
@@ -1469,8 +1081,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 return mDescPaint;
             case PAINT_RENDER:
                 return mRenderPaint;
-            case PAINT_LEGEND_LABEL:
-                return mLegendLabelPaint;
         }
 
         return null;

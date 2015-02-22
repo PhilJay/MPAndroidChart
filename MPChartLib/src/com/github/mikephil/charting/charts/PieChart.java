@@ -103,7 +103,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
         mRenderer.drawValues(mDrawCanvas);
 
-        drawLegend();
+        mLegendRenderer.renderLegend(mDrawCanvas, mLegend);
 
         drawDescription();
 
@@ -378,7 +378,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
     @Override
     protected float getRequiredBottomOffset() {
-        return mLegendLabelPaint.getTextSize() * 4f;
+        return mLegendRenderer.getLabelPaint().getTextSize() * 4f;
     }
 
     @Override

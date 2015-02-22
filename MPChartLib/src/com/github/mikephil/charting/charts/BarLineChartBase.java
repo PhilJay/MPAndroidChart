@@ -207,7 +207,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         mRenderer.drawValues(mDrawCanvas);
 
-        drawLegend();
+        mLegendRenderer.renderLegend(mDrawCanvas, mLegend);
+//        drawLegend();
 
         drawMarkers();
 
@@ -256,7 +257,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         mXAxisRenderer.computeAxis(mData.getXValAverageLength(), mData.getXVals());
 
-        prepareLegend();
+        mLegend = mLegendRenderer.computeLegend(mData, mLegend);
+//        prepareLegend();
 
         calculateOffsets();
     }
@@ -307,7 +309,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         float legendRight = 0f, legendBottom = 0f;
 
         // setup offsets for legend
-        if (mDrawLegend && mLegend != null && mLegend.getPosition() != LegendPosition.NONE) {
+        if (mLegend != null && mLegend.isEnabled()) {
 
             if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART
                     || mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART_CENTER) {
@@ -315,19 +317,19 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 // this is the space between the legend and the chart
                 float spacing = Utils.convertDpToPixel(12f);
 
-                legendRight = mLegend.getMaximumEntryLength(mLegendLabelPaint)
+                legendRight = mLegend.getMaximumEntryLength(mLegendRenderer.getLabelPaint())
                         + mLegend.getFormSize() + mLegend.getFormToTextSpace() + spacing;
 
-                mLegendLabelPaint.setTextAlign(Align.LEFT);
+                mLegendRenderer.getLabelPaint().setTextAlign(Align.LEFT);
 
             } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
                     || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
                     || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
 
                 if (mXAxis.getPosition() == XAxisPosition.TOP)
-                    legendBottom = mLegendLabelPaint.getTextSize() * 3.5f;
+                    legendBottom = mLegendRenderer.getLabelPaint().getTextSize() * 3.5f;
                 else {
-                    legendBottom = mLegendLabelPaint.getTextSize() * 2.5f;
+                    legendBottom = mLegendRenderer.getLabelPaint().getTextSize() * 2.5f;
                 }
             }
 
@@ -418,16 +420,16 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         // setup offsets for legend
         if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
 
-            mLegend.setOffsetRight(mLegend.getMaximumEntryLength(mLegendLabelPaint));
-            mLegendLabelPaint.setTextAlign(Align.LEFT);
+            mLegend.setOffsetRight(mLegend.getMaximumEntryLength(mLegendRenderer.getLabelPaint()));
+            mLegendRenderer.getLabelPaint().setTextAlign(Align.LEFT);
 
         } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
                 || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT) {
 
             if (mXAxis.getPosition() == XAxisPosition.TOP)
-                mLegend.setOffsetBottom(mLegendLabelPaint.getTextSize() * 3.5f);
+                mLegend.setOffsetBottom(mLegendRenderer.getLabelPaint().getTextSize() * 3.5f);
             else {
-                mLegend.setOffsetBottom(mLegendLabelPaint.getTextSize() * 2.5f);
+                mLegend.setOffsetBottom(mLegendRenderer.getLabelPaint().getTextSize() * 2.5f);
             }
         }
     }

@@ -245,9 +245,14 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 i.putExtra(Intent.EXTRA_TEXT, "Your error report here...");
                 startActivity(Intent.createChooser(i, "Report Problem"));
                 break;
-            case R.id.website:
+            case R.id.blog:
                 i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse("http://www.xxmassdeveloper.com"));
+                startActivity(i);
+                break;
+            case R.id.website:
+                i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("http://at.linkedin.com/in/philippjahoda"));
                 startActivity(i);
                 break;
         }

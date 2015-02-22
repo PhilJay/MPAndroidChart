@@ -13,7 +13,6 @@ import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.components.Legend.LegendPosition;
@@ -83,7 +82,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
         calcMinMax();
 
-        prepareLegend();
+        mLegend = mLegendRenderer.computeLegend(mData, mLegend);
 
         calculateOffsets();
     }
@@ -93,7 +92,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
         float legendRight = 0f, legendBottom = 0f, legendTop = 0f;
 
-        if (mDrawLegend && mLegend != null && mLegend.getPosition() != LegendPosition.NONE) {
+        if (mLegend != null && mLegend.isEnabled()) {
 
             if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART_CENTER) {
 
@@ -102,7 +101,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
                 legendRight = getFullLegendWidth() + spacing;
 
-                mLegendLabelPaint.setTextAlign(Align.LEFT);
+                mLegendRenderer.getLabelPaint().setTextAlign(Align.LEFT);
                 // legendTop = mLegend.getFullHeight(mLegendLabelPaint);
 
             } else if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
@@ -112,7 +111,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
                 float legendWidth = getFullLegendWidth() + spacing;
 
-                float legendHeight = mLegend.getFullHeight(mLegendLabelPaint);// +
+                float legendHeight = mLegend.getFullHeight(mLegendRenderer.getLabelPaint());// +
                                                                               // mOffsetTop;
 
                 PointF c = getCenter();
@@ -136,7 +135,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
                     legendRight = legendWidth;
                 }
 
-                mLegendLabelPaint.setTextAlign(Align.LEFT);
+                mLegendRenderer.getLabelPaint().setTextAlign(Align.LEFT);
 
             } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
                     || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
@@ -148,7 +147,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
             legendRight += getRequiredBaseOffset();
             legendTop += getRequiredBaseOffset();
 
-            mLegend.setOffsetBottom(mLegendLabelPaint.getTextSize() * 4f);
+            mLegend.setOffsetBottom(mLegendRenderer.getLabelPaint().getTextSize() * 4f);
             mLegend.setOffsetRight(legendRight);
         }
 
@@ -398,7 +397,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
      * @return
      */
     private float getFullLegendWidth() {
-        return mLegend.getMaximumEntryLength(mLegendLabelPaint)
+        return mLegend.getMaximumEntryLength(mLegendRenderer.getLabelPaint())
                 + mLegend.getFormSize() + mLegend.getFormToTextSpace();
     }
 

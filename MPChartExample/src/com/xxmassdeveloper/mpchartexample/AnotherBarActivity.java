@@ -67,14 +67,14 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
         
         mChart.getAxisLeft().setDrawGridLines(false);
 
-        mChart.setDrawLegend(false);
-
         // setting data
         mSeekBarX.setProgress(10);
         mSeekBarY.setProgress(100);
 
         // add a nice and smooth animation
         mChart.animateY(2500);
+        
+        mChart.getLegend().setEnabled(false);
 
         // Legend l = mChart.getLegend();
         // l.setPosition(LegendPosition.BELOW_CHART_CENTER);

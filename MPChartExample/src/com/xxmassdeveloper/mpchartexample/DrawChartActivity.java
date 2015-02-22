@@ -1,3 +1,4 @@
+
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Typeface;
@@ -46,37 +47,37 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
         mChart.setOnDrawListener(this);
 
         // enable drawing with the finger
-//        mChart.setDrawingEnabled(true);
+        // mChart.setDrawingEnabled(true);
 
-//        mChart.setLineWidth(5f);
-//        mChart.setCircleSize(5f);
+        // mChart.setLineWidth(5f);
+        // mChart.setCircleSize(5f);
 
         mChart.setHighlightEnabled(true);
 
         // if disabled, drawn datasets with the finger will not be automatically
         // finished
-//        mChart.setAutoFinish(true);
+        // mChart.setAutoFinish(true);
         mChart.setDrawGridBackground(false);
-        
-        mChart.setDrawLegend(false);
 
         // add dummy-data to the chart
         initWithDummyData();
-        
+
         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
         XAxis xl = mChart.getXAxis();
         xl.setTypeface(tf);
         xl.setAvoidFirstLastClipping(true);
-        
+
         YAxis yl = mChart.getAxisLeft();
         yl.setTypeface(tf);
 
+        mChart.getLegend().setEnabled(false);
+
         mChart.setValueTypeface(tf);
 
-//        mChart.setYRange(-40f, 40f, true);
+        // mChart.setYRange(-40f, 40f, true);
         // call this to reset the changed y-range
-        // mChart.resetYRange(true); 
+        // mChart.resetYRange(true);
     }
 
     private void initWithDummyData() {
@@ -184,8 +185,8 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
         Log.i(Chart.LOG_TAG, "DataSet drawn. " + dataSet.toSimpleString());
 
         // prepare the legend again
-        mChart.prepareLegend();
-        
+        mChart.getLegendRenderer().computeLegend(mChart.getData(), mChart.getLegend());
+
         mChart.calculateLegendOffsets();
     }
 
