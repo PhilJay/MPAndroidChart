@@ -356,12 +356,13 @@ public class Legend {
         mTextSize = l.mTextSize;
         mStackSpace = l.mStackSpace;
         mTextColor = l.mTextColor;
-
-        // apply offsets
-        mLegendOffsetBottom = l.mLegendOffsetBottom;
-        mLegendOffsetLeft = l.mLegendOffsetLeft;
-        mLegendOffsetRight = l.mLegendOffsetRight;
-        mLegendOffsetTop = l.mLegendOffsetTop;
+        mEnabled = l.mEnabled;
+//
+//        // apply offsets
+//        mLegendOffsetBottom = l.mLegendOffsetBottom;
+//        mLegendOffsetLeft = l.mLegendOffsetLeft;
+//        mLegendOffsetRight = l.mLegendOffsetRight;
+//        mLegendOffsetTop = l.mLegendOffsetTop;
     }
 
     /**
@@ -559,9 +560,5 @@ public class Legend {
      */
     public boolean isEnabled() {
         return mEnabled;
-    }
-    
-    public boolean isSetUp() {
-        return mLabels != null && mColors != null;
     }
 }

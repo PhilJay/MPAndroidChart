@@ -418,7 +418,8 @@ public class LegendRenderer extends Renderer {
     }
 
     /**
-     * draws the form at the given position with the color at the given index
+     * Draws the Legend-form at the given position with the color at the given
+     * index.
      * 
      * @param c canvas to draw with
      * @param x

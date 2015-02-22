@@ -29,13 +29,10 @@ import android.view.ViewParent;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.MarkerView;
-import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.interfaces.ChartInterface;
 import com.github.mikephil.charting.interfaces.OnChartGestureListener;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
@@ -200,7 +197,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         Utils.init(getContext().getResources());
 
         mViewPortHandler = new ViewPortHandler();
-        
+
         mLegendRenderer = new LegendRenderer(mViewPortHandler);
 
         mRenderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -971,9 +968,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
-     * Returns the legend object of the chart. This method can be used to
-     * customize the automatically generated legend. IMPORTANT: this will return
-     * null if no data has been set for the chart when calling this method
+     * Returns the Legend object of the chart. This method can be used to
+     * customize the automatically generated Legend. IMPORTANT: Since the Legend
+     * is generated from data provided by the user (via setData(...) method),
+     * this will return NULL if no data has been set for the chart. You need to
+     * set data for the chart before calling this method.
      *
      * @return
      */
@@ -1151,106 +1150,18 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         mRenderer.getPaintValues().setTextSize(Utils.convertDpToPixel(size));
     }
 
-    // /**
-    // * returns the x-value at the given index
-    // *
-    // * @param index
-    // * @return
-    // */
-    // public String getXValue(int index) {
-    // if (mData == null || mData.getXValCount() <= index)
-    // return null;
-    // else
-    // return mData.getXVals().get(index);
-    // }
-    //
-    // /**
-    // * returns the y-value for the given index from the DataSet with the given
-    // * label
-    // *
-    // * @param index
-    // * @param dataSetLabel
-    // * @return
-    // */
-    // public float getYValue(int index, String dataSetLabel) {
-    // DataSet<? extends Entry> set = mData.getDataSetByLabel(dataSetLabel,
-    // true);
-    // return set.getYVals().get(index).getVal();
-    // }
-    //
-    // /**
-    // * returns the y-value for the given x-index and DataSet index
-    // *
-    // * @param index
-    // * @param dataSet
-    // * @return
-    // */
-    // public float getYValue(int xIndex, int dataSetIndex) {
-    // DataSet<? extends Entry> set = mData.getDataSetByIndex(dataSetIndex);
-    // return set.getYValForXIndex(xIndex);
-    // }
-    //
-    // /**
-    // * returns the DataSet with the given index in the DataSet array held by
-    // the
-    // * ChartData object.
-    // *
-    // * @param index
-    // * @return
-    // */
-    // public DataSet<? extends Entry> getDataSetByIndex(int index) {
-    // return mData.getDataSetByIndex(index);
-    // }
-    //
-    // /**
-    // * returns the DataSet with the given label that is stored in the
-    // ChartData
-    // * object.
-    // *
-    // * @param type
-    // * @return
-    // */
-    // public DataSet<? extends Entry> getDataSetByLabel(String dataSetLabel) {
-    // return mData.getDataSetByLabel(dataSetLabel, true);
-    // }
-    //
-    // /**
-    // * returns the Entry object from the first DataSet stored in the ChartData
-    // * object. If multiple DataSets are used, use getEntry(index, type) or
-    // * getEntryByDataSetIndex(xIndex, dataSetIndex);
-    // *
-    // * @param index
-    // * @return
-    // */
-    // public Entry getEntry(int index) {
-    // return mData.getDataSetByIndex(0).getYVals().get(index);
-    // }
-    //
-    // /**
-    // * returns the Entry object at the given index from the DataSet with the
-    // * given label.
-    // *
-    // * @param index
-    // * @param dataSetLabel
-    // * @return
-    // */
-    // public Entry getEntry(int index, String dataSetLabel) {
-    // return mData.getDataSetByLabel(dataSetLabel, true).getYVals().get(index);
-    // }
-    //
-    // /**
-    // * Returns the corresponding Entry object at the given xIndex from the
-    // given
-    // * DataSet. INFORMATION: This method does calculations at runtime. Do not
-    // * over-use in performance critical situations.
-    // *
-    // * @param xIndex
-    // * @param dataSetIndex
-    // * @return
-    // */
-    // public Entry getEntryByDataSetIndex(int xIndex, int dataSetIndex) {
-    // return mData.getDataSetByIndex(dataSetIndex).getEntryForXIndex(xIndex);
-    // }
+    /**
+     * returns the x-value at the given index
+     *
+     * @param index
+     * @return
+     */
+    public String getXValue(int index) {
+        if (mData == null || mData.getXValCount() <= index)
+            return null;
+        else
+            return mData.getXVals().get(index);
+    }
 
     /**
      * Get all Entry objects at the given index across all DataSets.
@@ -1471,13 +1382,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         for (int i = 0; i < getChildCount(); i++) {
             getChildAt(i).layout(left, top, right, bottom);
         }
-        //
-        // prepareContentRect();
-        // Log.i(LOG_TAG,
-        // "onLayout(), width: " + mContentRect.width() + ", height: " +
-        // mContentRect.height());
-        //
-        // calculateOffsets();
     }
 
     @Override
@@ -1495,8 +1399,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 Log.i(LOG_TAG, "Setting chart dimens, width: " + w + ", height: " + h);
         }
 
-        // prepare content rect and matrices
-        // prepareContentRect();
         notifyDataSetChanged();
 
         super.onSizeChanged(w, h, oldw, oldh);
@@ -1533,12 +1435,4 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public PointF getCenterOfView() {
         return getCenter();
     }
-
-    // @Override
-    // protected void onAttachedToWindow() {
-    // super.onAttachedToWindow();
-    // if (isInEditMode()) {
-    // initWithDummyData();
-    // }
-    // }
 }
