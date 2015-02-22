@@ -119,4 +119,29 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
         }
     }
 
+    @Override
+    protected void drawAxisLine(Canvas c) {
+
+        if (!mXAxis.isDrawAxisLineEnabled())
+            return;
+
+        mAxisLinePaint.setColor(mXAxis.getAxisLineColor());
+        mAxisLinePaint.setStrokeWidth(mXAxis.getAxisLineWidth());
+
+        if (mXAxis.getPosition() == XAxisPosition.TOP
+                || mXAxis.getPosition() == XAxisPosition.TOP_INSIDE
+                || mXAxis.getPosition() == XAxisPosition.BOTH_SIDED) {
+            c.drawLine(mViewPortHandler.contentRight(),
+                    mViewPortHandler.contentTop(), mViewPortHandler.contentRight(),
+                    mViewPortHandler.contentBottom(), mAxisLinePaint);
+        }
+
+        if (mXAxis.getPosition() == XAxisPosition.BOTTOM
+                || mXAxis.getPosition() == XAxisPosition.BOTTOM_INSIDE
+                || mXAxis.getPosition() == XAxisPosition.BOTH_SIDED) {
+            c.drawLine(mViewPortHandler.contentLeft(),
+                    mViewPortHandler.contentTop(), mViewPortHandler.contentLeft(),
+                    mViewPortHandler.contentBottom(), mAxisLinePaint);
+        }
+    }
 }

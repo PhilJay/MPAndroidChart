@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Matrix;
 import android.util.AttributeSet;
 
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.renderer.HorizontalBarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart;
 import com.github.mikephil.charting.renderer.YAxisRendererHorizontalBarChart;
@@ -65,53 +64,5 @@ public class HorizontalBarChart extends BarChart {
         mXAxis.mAxisLabelModulus = (int) Math
                 .ceil((mData.getXValCount() * mXAxis.mLabelHeight)
                         / (mViewPortHandler.contentHeight() * values[Matrix.MSCALE_Y]));
-    }
-
-    private class XLabelsAsYLabels extends YAxis
-    {
-        public XLabelsAsYLabels(AxisDependency position) {
-            super(position);
-            // TODO Auto-generated constructor stub
-        }
-
-        /**
-         * Returns the longest formatted label (in terms of characters) the
-         * y-labels contain.
-         *
-         * @return
-         */
-        @Override
-        public String getLongestLabel()
-        {
-            String longest = "";
-
-            for (int i = 0; i < mData.getXValCount(); i++)
-            {
-                String text = mData.getXVals().get(i);
-
-                if (longest.length() < text.length())
-                    longest = text;
-            }
-
-            return longest;
-        }
-
-        /**
-         * Returns the formatted y-label at the specified index. This will
-         * either use the auto-formatter or the custom formatter (if one is
-         * set).
-         *
-         * @param index
-         * @return
-         */
-        @Override
-        public String getFormattedLabel(int index)
-        {
-            super.getFormattedLabel(index);
-            if (index < 0)
-                return "";
-
-            return mData.getXVals().get(index);
-        }
     }
 }

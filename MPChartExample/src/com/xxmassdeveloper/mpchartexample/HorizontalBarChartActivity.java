@@ -81,15 +81,19 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         XAxis xl = mChart.getXAxis();
         xl.setPosition(XAxisPosition.BOTTOM);
         xl.setTypeface(tf);
+        xl.setDrawAxisLine(true);
+        xl.setDrawGridLines(true);
 //        xl.setEnabled(false);
 
         YAxis yl = mChart.getAxisLeft();
         yl.setTypeface(tf);
         yl.setDrawAxisLine(true);
+        yl.setDrawGridLines(true);
 
         YAxis yr = mChart.getAxisRight();
         yr.setTypeface(tf);
         yr.setDrawAxisLine(true);
+        yr.setDrawGridLines(true);
         
         mChart.setValueTypeface(tf);
 

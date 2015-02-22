@@ -6,7 +6,7 @@ import android.graphics.Paint.Align;
 
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
-import com.github.mikephil.charting.components.YAxis.YLabelPosition;
+import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
@@ -50,7 +50,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
 
         computeAxisValues(yMin, yMax);
     }
-    
+
     /**
      * draws the y-axis labels to the screen
      */
@@ -79,26 +79,28 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         float yoffset = Utils.calcTextHeight(mAxisPaint, "A") * 1.3f;
 
         AxisDependency dependency = mYAxis.getAxisDependency();
-        YLabelPosition labelPosition = mYAxis.getLabelPosition();
+        YAxisLabelPosition labelPosition = mYAxis.getLabelPosition();
 
         float yPos = 0f;
 
         if (dependency == AxisDependency.LEFT) {
-            
-            if (labelPosition == YLabelPosition.OUTSIDE_CHART) {
+
+            if (labelPosition == YAxisLabelPosition.OUTSIDE_CHART) {
                 yoffset = Utils.convertDpToPixel(3f);
-                yPos = mViewPortHandler.contentTop() - yoffset;
+                yPos = mViewPortHandler.contentTop();
             } else {
-                yPos = mViewPortHandler.contentTop() + yoffset;
+                yoffset = yoffset * -1f;
+                yPos = mViewPortHandler.contentTop();
             }
 
         } else {
 
-            if (labelPosition == YLabelPosition.OUTSIDE_CHART) {
-                yPos = mViewPortHandler.contentBottom() + yoffset;
+            if (labelPosition == YAxisLabelPosition.OUTSIDE_CHART) {
+                yoffset = yoffset * -1f;
+                yPos = mViewPortHandler.contentBottom();
             } else {
                 yoffset = Utils.convertDpToPixel(4f);
-                yPos = mViewPortHandler.contentBottom() - yoffset;
+                yPos = mViewPortHandler.contentBottom();
             }
         }
 
@@ -106,7 +108,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
 
         drawAxisLine(c);
     }
-    
+
     @Override
     protected void drawAxisLine(Canvas c) {
 
@@ -126,7 +128,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
                     mViewPortHandler.contentBottom(), mAxisLinePaint);
         }
     }
-    
+
     /**
      * draws the y-labels on the specified x-position
      * 
@@ -143,7 +145,30 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
             if (!mYAxis.isDrawTopYLabelEntryEnabled() && i >= mYAxis.mEntryCount - 1)
                 return;
 
-            c.drawText(text, positions[i * 2 ] + offset, fixedPosition, mAxisPaint);
+            c.drawText(text, positions[i * 2], fixedPosition - offset, mAxisPaint);
+        }
+    }
+
+    @Override
+    public void renderGridLines(Canvas c) {
+
+        if (!mYAxis.isDrawGridLinesEnabled() || !mYAxis.isEnabled())
+            return;
+
+        // pre alloc
+        float[] position = new float[2];
+
+        mGridPaint.setColor(mYAxis.getGridColor());
+
+        // draw the horizontal grid
+        for (int i = 0; i < mYAxis.mEntryCount; i++) {
+
+            position[0] = mYAxis.mEntries[i];
+            mTrans.pointValuesToPixel(position);
+
+            c.drawLine(position[0], mViewPortHandler.contentTop(), position[0],
+                    mViewPortHandler.contentBottom(),
+                    mGridPaint);
         }
     }
 }

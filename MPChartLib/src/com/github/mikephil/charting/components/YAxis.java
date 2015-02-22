@@ -74,10 +74,10 @@ public class YAxis extends AxisBase {
     public float mAxisRange = 0f;
 
     /** the position of the y-labels relative to the chart */
-    private YLabelPosition mPosition = YLabelPosition.OUTSIDE_CHART;
+    private YAxisLabelPosition mPosition = YAxisLabelPosition.OUTSIDE_CHART;
 
     /** enum for the position of the y-labels relative to the chart */
-    public enum YLabelPosition {
+    public enum YAxisLabelPosition {
         OUTSIDE_CHART, INSIDE_CHART
     }
 
@@ -100,7 +100,7 @@ public class YAxis extends AxisBase {
     /**
      * returns the position of the y-labels
      */
-    public YLabelPosition getLabelPosition() {
+    public YAxisLabelPosition getLabelPosition() {
         return mPosition;
     }
 
@@ -109,7 +109,7 @@ public class YAxis extends AxisBase {
      * 
      * @param pos
      */
-    public void setPosition(YLabelPosition pos) {
+    public void setPosition(YAxisLabelPosition pos) {
         mPosition = pos;
     }
 

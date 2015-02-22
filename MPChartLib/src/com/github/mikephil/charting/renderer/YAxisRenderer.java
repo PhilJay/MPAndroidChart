@@ -10,7 +10,7 @@ import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
-import com.github.mikephil.charting.components.YAxis.YLabelPosition;
+import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
@@ -187,13 +187,13 @@ public class YAxisRenderer extends AxisRenderer {
         float yoffset = Utils.calcTextHeight(mAxisPaint, "A") / 2.5f;
 
         AxisDependency dependency = mYAxis.getAxisDependency();
-        YLabelPosition labelPosition = mYAxis.getLabelPosition();
+        YAxisLabelPosition labelPosition = mYAxis.getLabelPosition();
 
         float xPos = 0f;
 
         if (dependency == AxisDependency.LEFT) {
 
-            if (labelPosition == YLabelPosition.OUTSIDE_CHART) {
+            if (labelPosition == YAxisLabelPosition.OUTSIDE_CHART) {
                 mAxisPaint.setTextAlign(Align.RIGHT);
                 xPos = mViewPortHandler.offsetLeft() - xoffset;
             } else {
@@ -203,7 +203,7 @@ public class YAxisRenderer extends AxisRenderer {
 
         } else {
 
-            if (labelPosition == YLabelPosition.OUTSIDE_CHART) {
+            if (labelPosition == YAxisLabelPosition.OUTSIDE_CHART) {
                 mAxisPaint.setTextAlign(Align.LEFT);
                 xPos = mViewPortHandler.contentRight() + xoffset;
             } else {
