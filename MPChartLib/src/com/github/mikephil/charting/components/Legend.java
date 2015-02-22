@@ -192,6 +192,16 @@ public class Legend {
     }
 
     /**
+     * Returns the legend-label at the given index.
+     * 
+     * @param index
+     * @return
+     */
+    public String getLabel(int index) {
+        return mLabels[index];
+    }
+
+    /**
      * returns the position of the legend relative to the chart
      * 
      * @return
@@ -324,21 +334,6 @@ public class Legend {
     }
 
     /**
-     * draws the label at the given index in the labels array at the given
-     * position
-     * 
-     * @param c canvas to draw with
-     * @param x
-     * @param y
-     * @param p paint to use for drawing
-     * @param index index in the labels-array
-     */
-    public void drawLabel(Canvas c, float x, float y, Paint p, int index) {
-
-        c.drawText(mLabels[index], x, y, p);
-    }
-
-    /**
      * applies the state from the legend in the parameter to this legend (except
      * colors, labels and offsets)
      * 
@@ -357,12 +352,12 @@ public class Legend {
         mStackSpace = l.mStackSpace;
         mTextColor = l.mTextColor;
         mEnabled = l.mEnabled;
-//
-//        // apply offsets
-//        mLegendOffsetBottom = l.mLegendOffsetBottom;
-//        mLegendOffsetLeft = l.mLegendOffsetLeft;
-//        mLegendOffsetRight = l.mLegendOffsetRight;
-//        mLegendOffsetTop = l.mLegendOffsetTop;
+        //
+        // // apply offsets
+        // mLegendOffsetBottom = l.mLegendOffsetBottom;
+        // mLegendOffsetLeft = l.mLegendOffsetLeft;
+        // mLegendOffsetRight = l.mLegendOffsetRight;
+        // mLegendOffsetTop = l.mLegendOffsetTop;
     }
 
     /**
