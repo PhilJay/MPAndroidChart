@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
+import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
@@ -96,6 +97,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         l.setForm(LegendForm.LINE);
         l.setTypeface(tf);
         l.setTextColor(Color.WHITE);
+        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setTypeface(tf);

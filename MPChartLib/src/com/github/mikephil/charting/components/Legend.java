@@ -1,7 +1,6 @@
 
 package com.github.mikephil.charting.components;
 
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -50,7 +49,7 @@ public class Legend {
     private Typeface mTypeface = null;
 
     /** the text size of the legend labels */
-    private float mTextSize = 9f;
+    private float mTextSize = 10f;
 
     /** the text color to use */
     private int mTextColor = Color.BLACK;
@@ -78,6 +77,9 @@ public class Legend {
     /** the space that should be left between stacked forms */
     private float mStackSpace = 3f;
 
+    public float mTextHeight = 0f;
+    public float mTextWidth = 0f;
+
     /** default constructor */
     public Legend() {
 
@@ -85,7 +87,7 @@ public class Legend {
         mXEntrySpace = Utils.convertDpToPixel(6f);
         mYEntrySpace = Utils.convertDpToPixel(5f);
         mFormToTextSpace = Utils.convertDpToPixel(5f);
-        mTextSize = Utils.convertDpToPixel(9f);
+        mTextSize = Utils.convertDpToPixel(10f);
         mStackSpace = Utils.convertDpToPixel(3f);
     }
 
@@ -134,27 +136,52 @@ public class Legend {
     }
 
     /**
-     * returns the maximum length in pixels over all legend labels + their forms
+     * returns the maximum length in pixels across all legend labels + formsize
+     * + formtotextspace
      * 
      * @param p the paint object used for rendering the text
      * @return
      */
-    public int getMaximumEntryLength(Paint p) {
+    public float getMaximumEntryWidth(Paint p) {
 
-        int max = 0;
+        float max = 0f;
 
         for (int i = 0; i < mLabels.length; i++) {
 
             if (mLabels[i] != null) {
 
-                int length = Utils.calcTextWidth(p, mLabels[i]);
+                float length = (float) Utils.calcTextWidth(p, mLabels[i]);
 
                 if (length > max)
                     max = length;
             }
         }
 
-        return max + (int) mFormSize;
+        return max + mFormSize + mFormToTextSpace;
+    }
+
+    /**
+     * returns the maximum height in pixels across all legend labels
+     * 
+     * @param p the paint object used for rendering the text
+     * @return
+     */
+    public float getMaximumEntryHeight(Paint p) {
+
+        float max = 0f;
+
+        for (int i = 0; i < mLabels.length; i++) {
+
+            if (mLabels[i] != null) {
+
+                float length = (float) Utils.calcTextHeight(p, mLabels[i]);
+
+                if (length > max)
+                    max = length;
+            }
+        }
+
+        return max;
     }
 
     /**

@@ -397,7 +397,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
      * @return
      */
     private float getFullLegendWidth() {
-        return mLegend.getMaximumEntryLength(mLegendRenderer.getLabelPaint())
+        return mLegend.getMaximumEntryWidth(mLegendRenderer.getLabelPaint())
                 + mLegend.getFormSize() + mLegend.getFormToTextSpace();
     }
 

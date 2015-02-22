@@ -317,7 +317,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 // this is the space between the legend and the chart
                 float spacing = Utils.convertDpToPixel(12f);
 
-                legendRight = mLegend.getMaximumEntryLength(mLegendRenderer.getLabelPaint())
+                legendRight = mLegend.getMaximumEntryWidth(mLegendRenderer.getLabelPaint())
                         + mLegend.getFormSize() + mLegend.getFormToTextSpace() + spacing;
 
                 mLegendRenderer.getLabelPaint().setTextAlign(Align.LEFT);
@@ -420,7 +420,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         // setup offsets for legend
         if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
 
-            mLegend.setOffsetRight(mLegend.getMaximumEntryLength(mLegendRenderer.getLabelPaint()));
+            mLegend.setOffsetRight(mLegend.getMaximumEntryWidth(mLegendRenderer.getLabelPaint()));
             mLegendRenderer.getLabelPaint().setTextAlign(Align.LEFT);
 
         } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT

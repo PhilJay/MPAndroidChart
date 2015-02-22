@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.Legend.LegendForm;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
@@ -109,8 +110,10 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         mSeekBarX.setOnSeekBarChangeListener(this);
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
-        l.setFormSize(8f);
+        l.setPosition(LegendPosition.RIGHT_OF_CHART);
+        l.setForm(LegendForm.SQUARE);
+        l.setFormSize(9f);
+        l.setTextSize(11f);
         l.setXEntrySpace(4f);
 
         // mChart.setDrawLegend(false);
