@@ -11,11 +11,25 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 
+import java.util.ArrayList;
+
 public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
 
     public XAxisRendererHorizontalBarChart(ViewPortHandler viewPortHandler, XAxis xAxis,
             Transformer trans, BarChart chart) {
         super(viewPortHandler, xAxis, trans, chart);
+    }
+    
+    @Override
+    public void computeAxis(float xValAverageLength, ArrayList<String> xValues) {
+        
+        mAxisPaint.setTypeface(mXAxis.getTypeface());
+        mAxisPaint.setTextSize(mXAxis.getTextSize());
+        mXAxis.setValues(xValues);
+
+        String longest = mXAxis.getLongestLabel();
+        mXAxis.mLabelWidth = (int) (Utils.calcTextWidth(mAxisPaint, longest) + mXAxis.getXOffset() * 3.5f);
+        mXAxis.mLabelHeight = Utils.calcTextHeight(mAxisPaint, longest);
     }
 
     @Override
@@ -24,7 +38,7 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
         if (!mXAxis.isEnabled())
             return;
 
-        float xoffset = Utils.convertDpToPixel(4f);
+        float xoffset = mXAxis.getXOffset();
 
         mAxisPaint.setTypeface(mXAxis.getTypeface());
         mAxisPaint.setTextSize(mXAxis.getTextSize());

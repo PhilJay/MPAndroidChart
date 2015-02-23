@@ -208,6 +208,40 @@ public class Transformer {
 
         return valuePoints;
     }
+    
+    /**
+     * Transforms an arraylist of Entry into a float array containing the x and
+     * y values transformed with all matrices for the BARCHART.
+     * 
+     * @param entries
+     * @param dataSet the dataset index
+     * @return
+     */
+    public float[] generateTransformedValuesHorizontalBarChart(ArrayList<? extends Entry> entries,
+            int dataSet, BarData bd, float phaseY) {
+
+        float[] valuePoints = new float[entries.size() * 2];
+
+        int setCount = bd.getDataSetCount();
+        float space = bd.getGroupSpace();
+
+        for (int j = 0; j < valuePoints.length; j += 2) {
+
+            Entry e = entries.get(j / 2);
+
+            // calculate the x-position, depending on datasetcount
+            float x = e.getXIndex() + (j / 2 * (setCount - 1)) + dataSet + space * (j / 2)
+                    + space / 2f ;
+            float y = e.getVal();
+
+            valuePoints[j] = y * phaseY;
+            valuePoints[j + 1] = x;
+        }
+
+        pointValuesToPixel(valuePoints);
+
+        return valuePoints;
+    }
 
     /**
      * transform a path with all the given matrices VERY IMPORTANT: keep order

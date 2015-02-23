@@ -66,6 +66,10 @@ public class XAxis extends AxisBase {
     public enum XAxisPosition {
         TOP, BOTTOM, BOTH_SIDED, TOP_INSIDE, BOTTOM_INSIDE
     }
+    
+    public XAxis() {
+        super();
+    }
 
     /**
      * if set to true, the x-label entries will adjust themselves when scaling
@@ -158,5 +162,20 @@ public class XAxis extends AxisBase {
      */
     public ArrayList<String> getValues() {
         return mValues;
+    }
+    
+    @Override
+    public String getLongestLabel() {
+
+        String longest = "";
+
+        for (int i = 0; i < mValues.size(); i++) {
+            String text = mValues.get(i);
+
+            if (longest.length() < text.length())
+                longest = text;
+        }
+
+        return longest;
     }
 }

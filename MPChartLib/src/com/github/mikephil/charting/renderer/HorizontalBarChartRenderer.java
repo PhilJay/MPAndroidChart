@@ -1,9 +1,16 @@
 
 package com.github.mikephil.charting.renderer;
 
+import android.graphics.Canvas;
+import android.graphics.Paint.Align;
+
 import com.github.mikephil.charting.animation.ChartAnimator;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.BarDataProvider;
 import com.github.mikephil.charting.utils.Transformer;
+import com.github.mikephil.charting.utils.Utils;
+
+import java.util.ArrayList;
 
 /**
  * Renderer for the HorizontalBarChart.
@@ -11,10 +18,17 @@ import com.github.mikephil.charting.utils.Transformer;
  * @author Philipp Jahoda
  */
 public class HorizontalBarChartRenderer extends BarChartRenderer {
+    
+    private float xOffset = 0f;
+    private float yOffset = 0f;
 
     public HorizontalBarChartRenderer(BarDataProvider chart, ChartAnimator animator,
             ViewPortHandler viewPortHandler) {
         super(chart, animator, viewPortHandler);
+        
+        mValuePaint.setTextAlign(Align.LEFT);
+        yOffset = Utils.calcTextHeight(mValuePaint, "Q");
+        xOffset = Utils.convertDpToPixel(4f);
     }
 
     @Override
@@ -37,5 +51,15 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                     mViewPortHandler.contentRight(),
                     mBarRect.bottom);
         }
+    }
+    
+    @Override
+    public float[] getTransformedValues(Transformer trans, ArrayList<BarEntry> entries, int dataSetIndex) {       
+        return trans.generateTransformedValuesHorizontalBarChart(entries, dataSetIndex, mChart.getBarData(), mAnimator.getPhaseY());
+    }
+    
+    @Override
+    protected void drawValue(Canvas c, float val, float xPos, float yPos) {
+        super.drawValue(c, val, xPos + xOffset, yPos + yOffset);
     }
 }

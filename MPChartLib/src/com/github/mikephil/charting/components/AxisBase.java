@@ -36,10 +36,18 @@ public abstract class AxisBase {
 
     /** flag that indicates if the line alongside the axis is drawn or not */
     protected boolean mDrawAxisLine = false;
+    
+    /** the offset in pixels this axis labels have on the x-axis */
+    protected float mXOffset = 5f;
+    
+    /** the offset in pixels this axis labels have on the Y-axis */
+    protected float mYOffset = 5f;
 
     /** default constructor */
     public AxisBase() {
-        mTextSize = Utils.convertDpToPixel(10f);
+        this.mTextSize = Utils.convertDpToPixel(10f);
+        this.mXOffset = Utils.convertDpToPixel(5f);
+        this.mYOffset = Utils.convertDpToPixel(5f);
     }
 
     /**
@@ -213,4 +221,50 @@ public abstract class AxisBase {
     public boolean isEnabled() {
         return mEnabled;
     }
+    
+
+    /**
+     * Returns the used offset on the x-axis for drawing the axis labels. This
+     * offset is applied before and after the label.
+     * 
+     * @return
+     */
+    public float getXOffset() {
+        return mXOffset;
+    }
+
+    /**
+     * Sets the used x-axis offset for the labels on this axis.
+     * 
+     * @param xOffset
+     */
+    public void setXOffset(float xOffset) {
+        mXOffset = Utils.convertDpToPixel(xOffset);
+    }
+    
+    /**
+     * Returns the used offset on the x-axis for drawing the axis labels. This
+     * offset is applied before and after the label.
+     * 
+     * @return
+     */
+    public float getYOffset() {
+        return mYOffset;
+    }
+
+    /**
+     * Sets the used x-axis offset for the labels on this axis.
+     * 
+     * @param xOffset
+     */
+    public void setYOffset(float yOffset) {
+        mYOffset = Utils.convertDpToPixel(yOffset);
+    }
+
+    /**
+     * Returns the longest formatted label (in terms of characters), this axis contains.
+     * 
+     * @return
+     */
+    public abstract String getLongestLabel();
 }

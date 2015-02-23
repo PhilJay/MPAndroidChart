@@ -210,9 +210,7 @@ public class BarChartRenderer extends DataRenderer {
 
                 ArrayList<BarEntry> entries = dataSet.getYVals();
 
-                float[] valuePoints = trans.generateTransformedValuesBarChart(entries, i,
-                        mChart.getBarData(),
-                        mAnimator.getPhaseY());
+                float[] valuePoints = getTransformedValues(trans, entries, i);
 
                 // if only single values are drawn (sum)
                 if (!mChart.isDrawValuesForWholeStackEnabled()) {
@@ -361,5 +359,11 @@ public class BarChartRenderer extends DataRenderer {
                 }
             }
         }
+    }
+    
+    public float[] getTransformedValues(Transformer trans, ArrayList<BarEntry> entries, int dataSetIndex) {
+        return trans.generateTransformedValuesBarChart(entries, dataSetIndex,
+                mChart.getBarData(),
+                mAnimator.getPhaseY());
     }
 }
