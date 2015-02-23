@@ -357,7 +357,7 @@ public class LineChartRenderer extends DataRenderer {
         drawCircles(c);
     }
 
-    private void drawCircles(Canvas c) {
+    protected void drawCircles(Canvas c) {
         mRenderPaint.setStyle(Paint.Style.FILL);
 
         ArrayList<LineDataSet> dataSets = mChart.getLineData().getDataSets();
