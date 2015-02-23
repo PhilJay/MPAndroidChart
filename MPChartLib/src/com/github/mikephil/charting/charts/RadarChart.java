@@ -114,8 +114,10 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
-        mYAxisRenderer.computeAxis(0f, mData.getYMax());
-        mXAxisRenderer.computeAxis(mData.getXValAverageLength(), mData.getXVals());
+        if (mData != null) {
+            mYAxisRenderer.computeAxis(0f, mData.getYMax());
+            mXAxisRenderer.computeAxis(mData.getXValAverageLength(), mData.getXVals());
+        }
     }
 
     @Override
