@@ -200,7 +200,7 @@ public class PieChartRenderer extends DataRenderer {
      * draws the hole in the center of the chart and the transparent circle /
      * hole
      */
-    private void drawHole(Canvas c) {
+    protected void drawHole(Canvas c) {
 
         if (mChart.isDrawHoleEnabled()) {
 
@@ -234,7 +234,7 @@ public class PieChartRenderer extends DataRenderer {
      * draws the description text in the center of the pie chart makes most
      * sense when center-hole is enabled
      */
-    private void drawCenterText(Canvas c) {
+    protected void drawCenterText(Canvas c) {
 
         String centerText = mChart.getCenterText();
 

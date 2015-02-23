@@ -141,7 +141,7 @@ public class RadarChartRenderer extends DataRenderer {
         drawWeb(c);
     }
     
-    private void drawWeb(Canvas c) {
+    protected void drawWeb(Canvas c) {
         
         float sliceangle = mChart.getSliceAngle();
 
