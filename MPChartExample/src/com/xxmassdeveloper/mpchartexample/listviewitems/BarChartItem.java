@@ -57,6 +57,7 @@ public class BarChartItem extends ChartItem {
         xAxis.setPosition(XAxisPosition.BOTTOM);
         xAxis.setTypeface(mTf);
         xAxis.setDrawGridLines(false);
+        xAxis.setDrawAxisLine(true);
         
         YAxis leftAxis = holder.chart.getAxisLeft();
         leftAxis.setTypeface(mTf);

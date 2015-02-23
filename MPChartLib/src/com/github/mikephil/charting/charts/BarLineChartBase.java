@@ -313,7 +313,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART
                     || mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART_CENTER) {
 
-                offsetRight += mLegend.mTextWidthMax;
+                offsetRight += mLegend.mTextWidthMax + mLegend.getXOffset() * 2f;
 
             } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
                     || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT

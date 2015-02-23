@@ -59,6 +59,9 @@ public class ScatterChart extends BarLineChartBase<ScatterData> implements Scatt
 
         if (mDeltaX == 0 && mData.getYValCount() > 0)
             mDeltaX = 1;
+        
+        mXChartMax += 0.5f;
+        mDeltaX = Math.abs(mXChartMax - mXChartMin);
     }
 
     /**

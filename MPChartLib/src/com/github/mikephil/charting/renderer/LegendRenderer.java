@@ -177,8 +177,8 @@ public class LegendRenderer extends Renderer {
 
         boolean wasStacked = false;
 
-        float yoffset = Utils.convertDpToPixel(4f);
-        float xoffset = Utils.convertDpToPixel(3f);
+        float yoffset = legend.getYOffset();
+        float xoffset = legend.getXOffset();
 
         switch (legend.getPosition()) {
             case BELOW_CHART_LEFT:

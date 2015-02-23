@@ -6,8 +6,9 @@ import android.os.Bundle;
 import android.view.WindowManager;
 
 import com.github.mikephil.charting.charts.CombinedChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -42,13 +43,19 @@ public class CombinedChartActivity extends DemoBase {
         
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
+        
+        YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.setDrawGridLines(false);
+        
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setPosition(XAxisPosition.BOTH_SIDED);
 
         CombinedData data = new CombinedData(mMonths);
 
         data.setData(generateLineData());
         data.setData(generateBarData());
 //        data.setData(generateScatterData());
-        data.setData(generateCandleData());
+//        data.setData(generateCandleData());
 
         mChart.setData(data);
         mChart.invalidate();
@@ -61,14 +68,14 @@ public class CombinedChartActivity extends DemoBase {
         ArrayList<Entry> entries = new ArrayList<Entry>();
 
         for (int index = 0; index < itemcount; index++)
-            entries.add(new Entry(getRandom(), index));
+            entries.add(new Entry(getRandom(15, 10), index));
 
         LineDataSet set = new LineDataSet(entries, "Line DataSet");
-        set.setColor(Color.RED);
+        set.setColor(Color.rgb(240, 238, 70));
         set.setLineWidth(2.5f);
-        set.setCircleColor(Color.RED);
+        set.setCircleColor(Color.rgb(240, 238, 70));
         set.setCircleSize(5f);
-        set.setFillColor(Color.RED);
+        set.setFillColor(Color.rgb(240, 238, 70));
         set.setDrawCubic(true);
         set.setDrawValues(false);
         d.addDataSet(set);
@@ -83,9 +90,10 @@ public class CombinedChartActivity extends DemoBase {
         ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
 
         for (int index = 0; index < itemcount; index++)
-            entries.add(new BarEntry(getRandom(), index));
+            entries.add(new BarEntry(getRandom(15, 30), index));
 
         BarDataSet set = new BarDataSet(entries, "Bar DataSet");
+        set.setColor(Color.rgb(60, 220, 78));
         d.addDataSet(set);
 
         return d;
@@ -98,7 +106,7 @@ public class CombinedChartActivity extends DemoBase {
         ArrayList<Entry> entries = new ArrayList<Entry>();
 
         for (int index = 0; index < itemcount; index++)
-            entries.add(new Entry(getRandom(), index));
+            entries.add(new Entry(getRandom(20, 30), index));
 
         ScatterDataSet set = new ScatterDataSet(entries, "Scatter DataSet");
         set.setColor(Color.GREEN);
@@ -127,7 +135,7 @@ public class CombinedChartActivity extends DemoBase {
         return d;
     }
 
-    private float getRandom() {
-        return (float) (Math.random() * 20f) + 25f;
+    private float getRandom(float range, float startsfrom) {
+        return (float) (Math.random() * range) + startsfrom;
     }
 }

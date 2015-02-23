@@ -71,7 +71,13 @@ public class Legend {
     private float mFormToTextSpace = 5f;
 
     /** the space that should be left between stacked forms */
-    private float mStackSpace = 3f;
+    private float mStackSpace = 3f;    
+    
+    /** the offset in pixels this axis labels have on the x-axis */
+    protected float mXOffset = 5f;
+    
+    /** the offset in pixels this axis labels have on the Y-axis */
+    protected float mYOffset = 6f;
 
     /** default constructor */
     public Legend() {
@@ -82,6 +88,8 @@ public class Legend {
         mFormToTextSpace = Utils.convertDpToPixel(5f);
         mTextSize = Utils.convertDpToPixel(10f);
         mStackSpace = Utils.convertDpToPixel(3f);
+        this.mXOffset = Utils.convertDpToPixel(5f);
+        this.mYOffset = Utils.convertDpToPixel(6f);
     }
 
     /**
@@ -372,12 +380,8 @@ public class Legend {
         mStackSpace = l.mStackSpace;
         mTextColor = l.mTextColor;
         mEnabled = l.mEnabled;
-        //
-        // // apply offsets
-        // mLegendOffsetBottom = l.mLegendOffsetBottom;
-        // mLegendOffsetLeft = l.mLegendOffsetLeft;
-        // mLegendOffsetRight = l.mLegendOffsetRight;
-        // mLegendOffsetTop = l.mLegendOffsetTop;
+        mXOffset = l.mXOffset;
+        mYOffset = l.mYOffset;
     }
 
     /**
@@ -539,5 +543,43 @@ public class Legend {
      */
     public boolean isEnabled() {
         return mEnabled;
+    }
+    
+    /**
+     * Returns the used offset on the x-axis for drawing the axis labels. This
+     * offset is applied before and after the label.
+     * 
+     * @return
+     */
+    public float getXOffset() {
+        return mXOffset;
+    }
+
+    /**
+     * Sets the used x-axis offset for the labels on this axis.
+     * 
+     * @param xOffset
+     */
+    public void setXOffset(float xOffset) {
+        mXOffset = Utils.convertDpToPixel(xOffset);
+    }
+    
+    /**
+     * Returns the used offset on the x-axis for drawing the axis labels. This
+     * offset is applied before and after the label.
+     * 
+     * @return
+     */
+    public float getYOffset() {
+        return mYOffset;
+    }
+
+    /**
+     * Sets the used x-axis offset for the labels on this axis.
+     * 
+     * @param xOffset
+     */
+    public void setYOffset(float yOffset) {
+        mYOffset = Utils.convertDpToPixel(yOffset);
     }
 }

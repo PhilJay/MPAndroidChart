@@ -53,10 +53,11 @@ public class LineChartItem extends ChartItem {
         holder.chart.setDescription("");
         holder.chart.setDrawGridBackground(false);
 
-        XAxis xl = holder.chart.getXAxis();
-        xl.setPosition(XAxisPosition.BOTTOM);
-        xl.setTypeface(mTf);
-        xl.setDrawGridLines(false);
+        XAxis xAxis = holder.chart.getXAxis();
+        xAxis.setPosition(XAxisPosition.BOTTOM);
+        xAxis.setTypeface(mTf);
+        xAxis.setDrawGridLines(false);
+        xAxis.setDrawAxisLine(true);
 
         YAxis leftAxis = holder.chart.getAxisLeft();
         leftAxis.setTypeface(mTf);

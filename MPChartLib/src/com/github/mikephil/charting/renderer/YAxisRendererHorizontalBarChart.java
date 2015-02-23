@@ -76,7 +76,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         mAxisPaint.setColor(mYAxis.getTextColor());
         mAxisPaint.setTextAlign(Align.CENTER);
 
-        float yoffset = Utils.calcTextHeight(mAxisPaint, "A") * 1.3f;
+        float yoffset = Utils.calcTextHeight(mAxisPaint, "A") + mYAxis.getYOffset();
 
         AxisDependency dependency = mYAxis.getAxisDependency();
         YAxisLabelPosition labelPosition = mYAxis.getLabelPosition();

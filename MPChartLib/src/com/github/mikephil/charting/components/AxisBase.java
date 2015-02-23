@@ -35,7 +35,7 @@ public abstract class AxisBase {
     protected boolean mDrawGridLines = true;
 
     /** flag that indicates if the line alongside the axis is drawn or not */
-    protected boolean mDrawAxisLine = false;
+    protected boolean mDrawAxisLine = true;
     
     /** the offset in pixels this axis labels have on the x-axis */
     protected float mXOffset = 5f;
@@ -222,7 +222,6 @@ public abstract class AxisBase {
         return mEnabled;
     }
     
-
     /**
      * Returns the used offset on the x-axis for drawing the axis labels. This
      * offset is applied before and after the label.
