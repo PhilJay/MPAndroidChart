@@ -1,6 +1,8 @@
 
 package com.github.mikephil.charting.components;
 
+import android.graphics.Paint;
+
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
 
@@ -73,6 +75,9 @@ public class YAxis extends AxisBase {
     /** the total range of values this axis covers */
     public float mAxisRange = 0f;
 
+    /** the offset in pixels this axis has on the x-axis */
+    protected float mXOffset = 5f;
+
     /** the position of the y-labels relative to the chart */
     private YAxisLabelPosition mPosition = YAxisLabelPosition.OUTSIDE_CHART;
 
@@ -91,6 +96,7 @@ public class YAxis extends AxisBase {
     public YAxis(AxisDependency position) {
         this.mAxisDependency = position;
         this.mLimitLines = new ArrayList<LimitLine>();
+        this.mXOffset = Utils.convertDpToPixel(5f);
     }
 
     public AxisDependency getAxisDependency() {
@@ -367,6 +373,11 @@ public class YAxis extends AxisBase {
         return mSpacePercentBottom;
     }
 
+    public float getRequiredWidthSpace(Paint p) {
+        String label = getLongestLabel();
+        return (float) Utils.calcTextWidth(p, label) + getXOffset() * 2f;
+    }
+
     /**
      * Returns the longest formatted label (in terms of characters) the y-labels
      * contain.
@@ -409,5 +420,24 @@ public class YAxis extends AxisBase {
             text = getFormatter().getFormattedValue(mEntries[index]);
 
         return text;
+    }
+
+    /**
+     * Returns the used offset on the x-axis for drawing the axis labels. This
+     * offset is applied before and after the label.
+     * 
+     * @return
+     */
+    public float getXOffset() {
+        return mXOffset;
+    }
+
+    /**
+     * Sets the used x-axis offset for the labels on this axis.
+     * 
+     * @param xOffset
+     */
+    public void setXOffset(float xOffset) {
+        mXOffset = Utils.convertDpToPixel(xOffset);
     }
 }

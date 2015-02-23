@@ -325,26 +325,14 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         // offsets for y-labels
         if (mAxisLeft.isEnabled()) {
-            String label = mAxisLeft.getLongestLabel();
-
-            // calculate the maximum y-label width (including eventual
-            // offsets)
-            float ylabelwidth = Utils.calcTextWidth(mAxisRendererLeft.getAxisPaint(),
-                    label + (mAxisLeft.mAxisMinimum < 0 ? "---" : "++")); // offsets
-            offsetLeft += ylabelwidth + mAxisRendererLeft.getXOffset() / 2f;
+            offsetLeft += mAxisLeft.getRequiredWidthSpace(mAxisRendererLeft.getAxisPaint());
         }
 
         if (mAxisRight.isEnabled()) {
-            String label = mAxisRight.getLongestLabel();
-
-            // calculate the maximum y-label width (including eventual
-            // offsets)
-            float ylabelwidth = Utils.calcTextWidth(mAxisRendererRight.getAxisPaint(),
-                    label + (mAxisLeft.mAxisMinimum < 0 ? "---" : "++")); // offsets
-            offsetRight += ylabelwidth + mAxisRendererRight.getXOffset() / 2f;
+            offsetRight += mAxisRight.getRequiredWidthSpace(mAxisRendererRight.getAxisPaint());
         }
 
-        float xlabelheight = Utils.calcTextHeight(mXAxisRenderer.getAxisPaint(), "Q") * 2f;
+        float xlabelheight = mXAxis.mLabelHeight * 2f;
 
         if (mXAxis.isEnabled()) {
 
