@@ -3,12 +3,14 @@ package com.github.mikephil.charting.charts;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.graphics.Paint.Style;
 import android.util.AttributeSet;
 
 import com.github.mikephil.charting.data.DataSet;
@@ -106,7 +108,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
         mLegendRenderer.renderLegend(mDrawCanvas, mLegend);
 
         drawDescription();
-
+        
         canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
     }
 
@@ -128,26 +130,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
         mCircleBox.set(c.x - boxSize, c.y - boxSize,
                 c.x + boxSize, c.y + boxSize);
     }
-
-    // @Override
-    // protected void prepareContentRect() {
-    // super.prepareContentRect();
-    //
-    // // prevent nullpointer when no data set
-    // if (mDataNotSet)
-    // return;
-    //
-    // float diameter = getDiameter();
-    // float boxSize = diameter / 2f;
-    //
-    // PointF c = getCenterOffsets();
-    //
-    // // create the circle box that will contain the pie-chart (the bounds of
-    // // the pie-chart)
-    // mCircleBox.set(c.x - boxSize, c.y - boxSize,
-    // c.x + boxSize, c.y + boxSize);
-    // }
-
+    
     @Override
     protected void calcMinMax() {
         super.calcMinMax();

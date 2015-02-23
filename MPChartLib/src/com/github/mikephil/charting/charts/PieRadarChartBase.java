@@ -6,7 +6,9 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Paint.Align;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.support.v4.view.ViewCompat;
@@ -87,6 +89,9 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
         calculateOffsets();
     }
 
+    PointF ref;
+    PointF bot;
+
     @Override
     protected void calculateOffsets() {
 
@@ -101,41 +106,38 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
                 legendRight = getFullLegendWidth() + spacing;
 
-                mLegendRenderer.getLabelPaint().setTextAlign(Align.LEFT);
-                // legendTop = mLegend.getFullHeight(mLegendLabelPaint);
-
             } else if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
 
                 // this is the space between the legend and the chart
-                float spacing = Utils.convertDpToPixel(13f);
+                float spacing = Utils.convertDpToPixel(8f);
 
                 float legendWidth = getFullLegendWidth() + spacing;
 
-                float legendHeight = mLegend.getFullHeight(mLegendRenderer.getLabelPaint());// +
-                                                                              // mOffsetTop;
+                float legendHeight = mLegend.mNeededHeight + mLegend.mTextHeightMax;
 
                 PointF c = getCenter();
 
-                PointF bottomRight = new PointF(getWidth() - legendWidth, legendHeight);
-                PointF reference = getPosition(c, getRadius(), 320);
-
+                PointF bottomRight = new PointF(getWidth() - legendWidth + 15, legendHeight + 15);
                 float distLegend = distanceToCenter(bottomRight.x, bottomRight.y);
+
+                PointF reference = getPosition(c, getRadius(),
+                        getAngleForPoint(bottomRight.x, bottomRight.y));
+
+                ref = reference;
+                bot = bottomRight;
+
                 float distReference = distanceToCenter(reference.x, reference.y);
                 float min = Utils.convertDpToPixel(5f);
 
                 if (distLegend < distReference) {
 
                     float diff = distReference - distLegend;
-
                     legendRight = min + diff;
-                    legendTop = min + diff;
                 }
 
-                if (bottomRight.y >= c.y) {
+                if (bottomRight.y >= c.y && getHeight() - legendWidth > getWidth()) {
                     legendRight = legendWidth;
                 }
-
-                mLegendRenderer.getLabelPaint().setTextAlign(Align.LEFT);
 
             } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
                     || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
@@ -148,7 +150,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
             legendTop += getRequiredBaseOffset();
         }
 
-        float min = Utils.convertDpToPixel(11f);
+        float min = Utils.convertDpToPixel(10f);
 
         float offsetLeft = Math.max(min, getRequiredBaseOffset());
         float offsetTop = Math.max(min, legendTop);
@@ -390,8 +392,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
      * @return
      */
     private float getFullLegendWidth() {
-        return mLegend.getMaximumEntryWidth(mLegendRenderer.getLabelPaint())
-                + mLegend.getFormSize() + mLegend.getFormToTextSpace();
+        return mLegend.mTextWidthMax + mLegend.getFormSize() + mLegend.getFormToTextSpace();
     }
 
     /**
@@ -468,11 +469,11 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
         mSpinAnimator = ObjectAnimator.ofFloat(this, "rotationAngle", fromangle, toangle);
         mSpinAnimator.setDuration(durationmillis);
-        
+
         final ViewGroup view = this;
-        
+
         mSpinAnimator.addUpdateListener(new AnimatorUpdateListener() {
-            
+
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 ViewCompat.postInvalidateOnAnimation(view);
