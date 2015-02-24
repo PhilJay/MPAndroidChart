@@ -372,6 +372,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     protected void calcModulus() {
 
+        if (mXAxis == null)
+            return;
+
         float[] values = new float[9];
         mViewPortHandler.getMatrixTouch().getValues(values);
 

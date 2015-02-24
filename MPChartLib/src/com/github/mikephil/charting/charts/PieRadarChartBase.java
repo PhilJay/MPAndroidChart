@@ -6,12 +6,8 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Paint.Style;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -470,13 +466,11 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
         mSpinAnimator = ObjectAnimator.ofFloat(this, "rotationAngle", fromangle, toangle);
         mSpinAnimator.setDuration(durationmillis);
 
-        final ViewGroup view = this;
-
         mSpinAnimator.addUpdateListener(new AnimatorUpdateListener() {
 
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                ViewCompat.postInvalidateOnAnimation(view);
+                postInvalidate();
             }
         });
         mSpinAnimator.start();

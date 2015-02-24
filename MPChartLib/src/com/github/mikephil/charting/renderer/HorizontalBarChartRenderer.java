@@ -62,4 +62,9 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
     protected void drawValue(Canvas c, float val, float xPos, float yPos) {
         super.drawValue(c, val, xPos + xOffset, yPos + yOffset);
     }
+    
+    protected boolean passesCheck() {
+        return mChart.getBarData().getYValCount() < mChart.getMaxVisibleCount()
+                * mViewPortHandler.getScaleY();
+    }
 }

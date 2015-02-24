@@ -50,6 +50,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
         mChart = (HorizontalBarChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
+        mChart.setHighlightEnabled(false);
         
         mChart.setDrawBarShadow(false);
         

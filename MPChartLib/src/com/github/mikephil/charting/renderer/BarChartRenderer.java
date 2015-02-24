@@ -182,8 +182,7 @@ public class BarChartRenderer extends DataRenderer {
     @Override
     public void drawValues(Canvas c) {
         // if values are drawn
-        if (mChart.getBarData().getYValCount() < mChart.getMaxVisibleCount()
-                * mViewPortHandler.getScaleX()) {
+        if (passesCheck()) {
 
             ArrayList<BarDataSet> dataSets = mChart.getBarData().getDataSets();
 
@@ -365,5 +364,10 @@ public class BarChartRenderer extends DataRenderer {
         return trans.generateTransformedValuesBarChart(entries, dataSetIndex,
                 mChart.getBarData(),
                 mAnimator.getPhaseY());
+    }
+    
+    protected boolean passesCheck() {
+        return mChart.getBarData().getYValCount() < mChart.getMaxVisibleCount()
+                * mViewPortHandler.getScaleX();
     }
 }

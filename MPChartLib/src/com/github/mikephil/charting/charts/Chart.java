@@ -19,7 +19,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.provider.MediaStore.Images;
-import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -63,7 +62,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public static final String LOG_TAG = "MPAndroidChart";
 
     /** flag that indicates if logging is enabled or not */
-    protected boolean mLogEnabled = true;
+    protected boolean mLogEnabled = false;
 
     /** custom formatter that is used instead of the auto-formatter if set */
     protected ValueFormatter mValueFormatter = null;
@@ -189,7 +188,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    ViewCompat.postInvalidateOnAnimation(Chart.this);
+                    //ViewCompat.postInvalidateOnAnimation(Chart.this);
+                    postInvalidate();
                 }
             });
 
