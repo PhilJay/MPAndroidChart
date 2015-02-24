@@ -111,15 +111,9 @@ Features
 Usage
 =======
 
-In order to use the library, there are 3 options:
+In order to use the library, there are 4 options:
 
-
-**1. jar file only**
- - Download the [**latest .jar file**](https://github.com/PhilJay/MPAndroidChart/releases) from the releases section
- - Copy the **mpandroidchartlibrary-.jar** file into the `libs` folder of your Android application project
- - Start using the library
-
-**2. Gradle dependency**
+**1. Gradle dependency**
 
  - 	Add the following to your `build.gradle`:
  ```gradle
@@ -131,7 +125,8 @@ dependencies {
 	    compile 'com.github.PhilJay:MPAndroidChart:v2.0.0'
 }
 ```
-**3. Maven**
+
+**2. Maven**
 - Add the following to your `pom.xml`:
  ```xml
 <repository>
@@ -145,6 +140,11 @@ dependencies {
 	    <version>v2.0.0</version>
 </dependency>
 ```
+
+**3. jar file only**
+ - Download the [**latest .jar file**](https://github.com/PhilJay/MPAndroidChart/releases) from the releases section
+ - Copy the **mpandroidchartlibrary-.jar** file into the `libs` folder of your Android application project
+ - Start using the library
 	
 **4. clone whole repository**
  - Open your **commandline-input** and navigate to your desired destination folder (where you want to put the library)
