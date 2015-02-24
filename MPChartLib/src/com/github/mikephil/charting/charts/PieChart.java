@@ -3,14 +3,11 @@ package com.github.mikephil.charting.charts;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.graphics.Typeface;
-import android.graphics.Paint.Style;
 import android.util.AttributeSet;
 
 import com.github.mikephil.charting.data.DataSet;
@@ -475,35 +472,5 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
     public boolean isUsePercentValuesEnabled() {
         return mUsePercentValues;
-    }
-
-    @Override
-    public void setPaint(Paint p, int which) {
-        super.setPaint(p, which);
-
-        switch (which) {
-            case PAINT_HOLE:
-                // mHolePaint = p;
-                break;
-            case PAINT_CENTER_TEXT:
-                // mCenterTextPaint = p;
-                break;
-        }
-    }
-
-    @Override
-    public Paint getPaint(int which) {
-        Paint p = super.getPaint(which);
-        if (p != null)
-            return p;
-
-        switch (which) {
-            case PAINT_HOLE:
-                // return mHolePaint;
-            case PAINT_CENTER_TEXT:
-                // return mCenterTextPaint;
-        }
-
-        return null;
     }
 }
