@@ -111,15 +111,42 @@ Features
 Usage
 =======
 
-In order to use the library, there are 2 options:
+In order to use the library, there are 4 options:
 
+**1. Gradle dependency**
 
-**1. jar file only**
+ - 	Add the following to your `build.gradle`:
+ ```gradle
+repositories {
+	    maven { url "https://jitpack.io" }
+}
+
+dependencies {
+	    compile 'com.github.PhilJay:MPAndroidChart:v2.0.0'
+}
+```
+
+**2. Maven**
+- Add the following to your `pom.xml`:
+ ```xml
+<repository>
+       	<id>jitpack.io</id>
+	    <url>https://jitpack.io</url>
+</repository>
+
+<dependency>
+	    <groupId>com.github.PhilJay</groupId>
+	    <artifactId>MPAndroidChart</artifactId>
+	    <version>v2.0.0</version>
+</dependency>
+```
+
+**3. jar file only**
  - Download the [**latest .jar file**](https://github.com/PhilJay/MPAndroidChart/releases) from the releases section
  - Copy the **mpandroidchartlibrary-.jar** file into the `libs` folder of your Android application project
  - Start using the library
- 
-**2. clone whole repository**
+	
+**4. clone whole repository**
  - Open your **commandline-input** and navigate to your desired destination folder (where you want to put the library)
  - Use the command `git clone https://github.com/PhilJay/MPAndroidChart.git` to download the full MPAndroidChart repository to your computer (this includes the folder of the library project as well as the example project)
  - Import the library folder (`MPChartLib`) into your Eclipse workspace, using `File-->Import-->Android-->Existing Android Code` and then choose the library folder from your file system and press `Finish`.
