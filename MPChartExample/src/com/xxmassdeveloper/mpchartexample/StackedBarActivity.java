@@ -26,6 +26,7 @@ import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.xxmassdeveloper.mpchartexample.custom.MyValueFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -62,11 +63,6 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         // drawn
         mChart.setMaxVisibleValueCount(60);
         
-        MyValueFormatter customFormatter = new MyValueFormatter();
-        
-        // set a custom formatter for the values inside the chart
-        mChart.setValueFormatter(customFormatter);
-        
         // if false values are only drawn for the stack sum, else each value is drawn
         mChart.setDrawValuesForWholeStack(true);
         // scaling can now only be done on x- and y-axis separately
@@ -78,7 +74,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         YAxis yLabels = mChart.getAxisLeft();
 //        yLabels.setPosition(YLabelPosition.BOTH_SIDED);
         yLabels.setLabelCount(5);
-        yLabels.setFormatter(customFormatter);
+        yLabels.setValueFormatter(new MyValueFormatter());
 
         XAxis xLabels = mChart.getXAxis();
         xLabels.setPosition(XAxisPosition.TOP);
@@ -230,6 +226,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         dataSets.add(set1);
 
         BarData data = new BarData(xVals, dataSets);
+        data.setValueFormatter(new MyValueFormatter());
 
         mChart.setData(data);
         mChart.invalidate();

@@ -58,7 +58,6 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
 
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
-        mChart.setValueFormatter(new LargeValueFormatter());
 
         mChart.setDrawBarShadow(false);
 
@@ -89,7 +88,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(tf);
-        leftAxis.setFormatter(new LargeValueFormatter());
+        leftAxis.setValueFormatter(new LargeValueFormatter());
         leftAxis.setDrawGridLines(false);
         leftAxis.setSpaceTop(25f);
 

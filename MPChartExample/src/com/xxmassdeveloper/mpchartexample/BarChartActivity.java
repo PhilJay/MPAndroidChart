@@ -31,6 +31,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ValueFormatter;
+import com.xxmassdeveloper.mpchartexample.custom.MyValueFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -86,18 +88,20 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         xAxis.setPosition(XAxisPosition.BOTTOM);
         xAxis.setTypeface(tf);
         xAxis.setDrawGridLines(false);
+        
+        ValueFormatter custom = new MyValueFormatter();
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(tf);
         leftAxis.setLabelCount(8);
+        leftAxis.setValueFormatter(custom);
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
         rightAxis.setTypeface(tf);
         rightAxis.setLabelCount(8);
+        rightAxis.setValueFormatter(custom);
         
-        mChart.setValueFormatter(new MyValueFormatter());
-
         mChart.setValueTypeface(tf);
 
         setData(12, 50);
@@ -260,6 +264,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         dataSets.add(set1);
 
         BarData data = new BarData(xVals, dataSets);
+//        data.setValueFormatter(new MyValueFormatter());
 
         mChart.setData(data);
     }

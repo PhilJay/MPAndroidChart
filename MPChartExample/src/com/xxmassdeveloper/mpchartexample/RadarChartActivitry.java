@@ -195,9 +195,6 @@ public class RadarChartActivitry extends DemoBase {
 
         mChart.setData(data);
 
-        // undo all highlights
-        mChart.highlightValues(null);
-
         mChart.invalidate();
     }
 }

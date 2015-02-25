@@ -158,7 +158,7 @@ public class PieChartRenderer extends DataRenderer {
                 float value = mChart.isUsePercentValuesEnabled() ? entries.get(j).getVal()
                         / mChart.getYValueSum() * 100f : entries.get(j).getVal();
 
-                String val = mChart.getValueFormatter().getFormattedValue(value);
+                String val = dataSet.getValueFormatter().getFormattedValue(value);
 
                 boolean drawXVals = mChart.isDrawSliceTextEnabled();
                 boolean drawYVals = dataSet.isDrawValuesEnabled();

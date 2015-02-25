@@ -251,13 +251,17 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         calcMinMax();
 
+        if (mAxisLeft.needsDefaultFormatter())
+            mAxisLeft.setValueFormatter(mDefaultFormatter);
+        if (mAxisRight.needsDefaultFormatter())
+            mAxisRight.setValueFormatter(mDefaultFormatter);
+
         mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum);
         mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum);
 
         mXAxisRenderer.computeAxis(mData.getXValAverageLength(), mData.getXVals());
 
         mLegend = mLegendRenderer.computeLegend(mData, mLegend);
-        // prepareLegend();
 
         calculateOffsets();
     }
@@ -295,7 +299,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         // consider starting at zero (0)
         if (mAxisLeft.isStartAtZeroEnabled())
             mAxisLeft.mAxisMinimum = 0f;
-        
+
         if (mAxisRight.isStartAtZeroEnabled())
             mAxisRight.mAxisMinimum = 0f;
 

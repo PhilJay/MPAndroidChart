@@ -11,7 +11,6 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.ViewGroup;
 
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.data.ChartData;
@@ -85,9 +84,6 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
         calculateOffsets();
     }
 
-    PointF ref;
-    PointF bot;
-
     @Override
     protected void calculateOffsets() {
 
@@ -118,9 +114,6 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
                 PointF reference = getPosition(c, getRadius(),
                         getAngleForPoint(bottomRight.x, bottomRight.y));
-
-                ref = reference;
-                bot = bottomRight;
 
                 float distReference = distanceToCenter(reference.x, reference.y);
                 float min = Utils.convertDpToPixel(5f);
@@ -155,8 +148,9 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
         mViewPortHandler.restrainViewPort(offsetLeft, offsetTop, offsetRight, offsetBottom);
 
-        Log.i(LOG_TAG, "offsetLeft: " + offsetLeft + ", offsetTop: " + offsetTop
-                + ", offsetRight: " + offsetRight + ", offsetBottom: " + offsetBottom);
+        if (mLogEnabled)
+            Log.i(LOG_TAG, "offsetLeft: " + offsetLeft + ", offsetTop: " + offsetTop
+                    + ", offsetRight: " + offsetRight + ", offsetBottom: " + offsetBottom);
     }
 
     // /**

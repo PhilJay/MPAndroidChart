@@ -16,6 +16,7 @@ import com.github.mikephil.charting.interfaces.BarDataProvider;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.ValueFormatter;
 
 import java.util.ArrayList;
 
@@ -205,6 +206,8 @@ public class BarChartRenderer extends DataRenderer {
                 if (!dataSet.isDrawValuesEnabled())
                     continue;
 
+                ValueFormatter formatter = dataSet.getValueFormatter();
+                
                 Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
                 ArrayList<BarEntry> entries = dataSet.getYVals();
@@ -226,7 +229,7 @@ public class BarChartRenderer extends DataRenderer {
                         float val = entries.get(j / 2).getVal();
 
                         drawValue(c, val, valuePoints[j],
-                                valuePoints[j + 1] + (val >= 0 ? posOffset : negOffset));
+                                valuePoints[j + 1] + (val >= 0 ? posOffset : negOffset), formatter);
                     }
 
                     // if each value of a potential stack should be drawn
@@ -251,7 +254,7 @@ public class BarChartRenderer extends DataRenderer {
                         if (vals == null) {
 
                             drawValue(c, e.getVal(), valuePoints[j],
-                                    valuePoints[j + 1] + (e.getVal() >= 0 ? posOffset : negOffset));
+                                    valuePoints[j + 1] + (e.getVal() >= 0 ? posOffset : negOffset), formatter);
 
                         } else {
 
@@ -272,7 +275,7 @@ public class BarChartRenderer extends DataRenderer {
 
                                 drawValue(c, vals[k / 2], valuePoints[j],
                                         transformed[k + 1]
-                                                + (vals[k / 2] >= 0 ? posOffset : negOffset));
+                                                + (vals[k / 2] >= 0 ? posOffset : negOffset), formatter);
                             }
                         }
                     }
@@ -287,10 +290,11 @@ public class BarChartRenderer extends DataRenderer {
      * @param value
      * @param xPos
      * @param yPos
+     * @formatter
      */
-    protected void drawValue(Canvas c, float val, float xPos, float yPos) {
+    protected void drawValue(Canvas c, float val, float xPos, float yPos, ValueFormatter formatter) {
 
-        String value = mChart.getValueFormatter().getFormattedValue(val);
+        String value = formatter.getFormattedValue(val);
         c.drawText(value, xPos, yPos,
                 mValuePaint);
     }

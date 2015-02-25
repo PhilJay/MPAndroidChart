@@ -51,7 +51,6 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         mSeekBarY.setOnSeekBarChangeListener(this);
 
         mChart = (PieChart) findViewById(R.id.chart1);
-        mChart.setValueFormatter(new PercentFormatter());
         mChart.setUsePercentValues(true);
 
         // change the color of the center-hole
@@ -213,6 +212,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         dataSet.setColors(colors);
 
         PieData data = new PieData(xVals, dataSet);
+        data.setValueFormatter(new PercentFormatter());
         mChart.setData(data);
 
         // undo all highlights

@@ -146,7 +146,7 @@ public class ScatterChartRenderer extends DataRenderer {
 
                     float val = entries.get(j / 2).getVal();
 
-                    c.drawText(mChart.getValueFormatter().getFormattedValue(val), positions[j],
+                    c.drawText(dataSet.getValueFormatter().getFormattedValue(val), positions[j],
                             positions[j + 1] - shapeSize,
                             mValuePaint);
                 }

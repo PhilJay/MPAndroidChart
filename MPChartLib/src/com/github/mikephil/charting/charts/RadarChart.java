@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -16,6 +17,7 @@ import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.renderer.RadarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererRadarChart;
 import com.github.mikephil.charting.renderer.YAxisRendererRadarChart;
+import com.github.mikephil.charting.utils.DefaultValueFormatter;
 import com.github.mikephil.charting.utils.Utils;
 
 /**
@@ -85,15 +87,27 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     protected void calcMinMax() {
         super.calcMinMax();
 
-        // additional handling for space (default 15% space)
-        // float space = Math.abs(mDeltaY / 100f * 15f);
+        float minLeft = mData.getYMin(AxisDependency.LEFT);
+        float maxLeft = mData.getYMax(AxisDependency.LEFT);
 
-        if (mYAxis.mAxisMaximum <= 0)
-            mYAxis.mAxisMaximum = 1f;
+        float leftRange = Math.abs(maxLeft - (mYAxis.isStartAtZeroEnabled() ? 0 : minLeft));
 
-        mYAxis.mAxisMinimum = 0;
+        float topSpaceLeft = leftRange / 100f * mYAxis.getSpaceTop();
+        float bottomSpaceLeft = leftRange / 100f * mYAxis.getSpaceBottom();
 
-        // mDeltaY = Math.abs(mYChartMax - mYChartMin);
+        mXChartMax = mData.getXVals().size() - 1;
+        mDeltaX = Math.abs(mXChartMax - mXChartMin);
+
+        mYAxis.mAxisMaximum = !Float.isNaN(mYAxis.getAxisMaxValue()) ? mYAxis
+                .getAxisMaxValue() : maxLeft + topSpaceLeft;
+        mYAxis.mAxisMinimum = !Float.isNaN(mYAxis.getAxisMinValue()) ? mYAxis
+                .getAxisMinValue() : minLeft - bottomSpaceLeft;
+
+        // consider starting at zero (0)
+        if (mYAxis.isStartAtZeroEnabled())
+            mYAxis.mAxisMinimum = 0f;
+
+        mYAxis.mAxisRange = Math.abs(mYAxis.mAxisMaximum - mYAxis.mAxisMinimum);
     }
 
     @Override
@@ -113,11 +127,21 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
     @Override
     public void notifyDataSetChanged() {
-        super.notifyDataSetChanged();
-        if (mData != null) {
-            mYAxisRenderer.computeAxis(0f, mData.getYMax());
-            mXAxisRenderer.computeAxis(mData.getXValAverageLength(), mData.getXVals());
+        if (mDataNotSet)
+            return;
+
+        calcMinMax();
+
+        if (mYAxis.needsDefaultFormatter()) {
+            mYAxis.setValueFormatter(mDefaultFormatter);
         }
+
+        mYAxisRenderer.computeAxis(0f, mYAxis.mAxisMaximum);
+        mXAxisRenderer.computeAxis(mData.getXValAverageLength(), mData.getXVals());
+
+        mLegend = mLegendRenderer.computeLegend(mData, mLegend);
+
+        calculateOffsets();
     }
 
     @Override
@@ -159,7 +183,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      */
     public float getFactor() {
         RectF content = mViewPortHandler.getContentRect();
-        return (float) Math.min(content.width() / 2, content.height() / 2)
+        return (float) Math.min(content.width() / 2f, content.height() / 2f)
                 / mYAxis.mAxisMaximum;
     }
 

@@ -46,5 +46,5 @@ public interface ChartInterface {
     
     public View getChartView();
     
-    public ValueFormatter getValueFormatter();
+//    public ValueFormatter getValueFormatter();
 }

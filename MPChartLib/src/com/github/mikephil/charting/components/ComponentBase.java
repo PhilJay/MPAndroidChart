@@ -4,7 +4,11 @@ package com.github.mikephil.charting.components;
 import android.graphics.Color;
 import android.graphics.Typeface;
 
+import com.github.mikephil.charting.utils.DefaultValueFormatter;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.ValueFormatter;
+
+import java.text.DecimalFormat;
 
 /**
  * This class encapsulates everything both Axis and Legend have in common.
@@ -24,9 +28,13 @@ public abstract class ComponentBase {
 
     /** the text size of the labels */
     protected float mTextSize = 10f;
-    
+
     /** the text color to use for the labels */
     protected int mTextColor = Color.BLACK;
+
+    public ComponentBase() {
+
+    }
 
     /**
      * Returns the used offset on the x-axis for drawing the axis or legend
@@ -107,7 +115,7 @@ public abstract class ComponentBase {
      */
     public float getTextSize() {
         return mTextSize;
-    }  
+    }
 
     /**
      * Sets the text color to use for the labels. Make sure to use

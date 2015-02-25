@@ -130,7 +130,7 @@ public class RadarChartRenderer extends DataRenderer {
                 PointF p = Utils.getPosition(center, e.getVal() * factor,
                         sliceangle * j + mChart.getRotationAngle());
 
-                c.drawText(mChart.getValueFormatter().getFormattedValue(e.getVal()),
+                c.drawText(dataSet.getValueFormatter().getFormattedValue(e.getVal()),
                         p.x, p.y - yoffset, mValuePaint);
             }
         }
@@ -175,7 +175,7 @@ public class RadarChartRenderer extends DataRenderer {
 
             for (int i = 0; i < mChart.getData().getXValCount(); i++) {
 
-                float r = ((mChart.getYChartMax() / labelCount) * (j + 1)) * factor;
+                float r = mChart.getYAxis().mEntries[j] * factor;
 
                 PointF p1 = Utils.getPosition(center, r, sliceangle * i + rotationangle);
                 PointF p2 = Utils.getPosition(center, r, sliceangle * (i + 1) + rotationangle);

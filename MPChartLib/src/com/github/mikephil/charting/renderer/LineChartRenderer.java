@@ -345,7 +345,7 @@ public class LineChartRenderer extends DataRenderer {
 
                     float val = entries.get(j / 2).getVal();
 
-                    c.drawText(mChart.getValueFormatter().getFormattedValue(val), x, y - valOffset,
+                    c.drawText(dataSet.getValueFormatter().getFormattedValue(val), x, y - valOffset,
                             mValuePaint);
                 }
             }

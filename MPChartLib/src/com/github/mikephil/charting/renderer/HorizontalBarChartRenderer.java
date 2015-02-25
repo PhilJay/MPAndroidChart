@@ -9,6 +9,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.BarDataProvider;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.ValueFormatter;
 
 import java.util.ArrayList;
 
@@ -59,8 +60,8 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
     }
     
     @Override
-    protected void drawValue(Canvas c, float val, float xPos, float yPos) {
-        super.drawValue(c, val, xPos + xOffset, yPos + yOffset);
+    protected void drawValue(Canvas c, float val, float xPos, float yPos, ValueFormatter formatter) {
+        super.drawValue(c, val, xPos + xOffset, yPos + yOffset, formatter);
     }
     
     protected boolean passesCheck() {

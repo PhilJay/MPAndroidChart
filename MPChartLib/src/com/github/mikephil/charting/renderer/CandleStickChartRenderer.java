@@ -113,7 +113,7 @@ public class CandleStickChartRenderer extends DataRenderer {
 
         float phase = mAnimator.getPhaseY();
 
-        bodyPoints[0] = e.getXIndex() -0.5f + bodySpace;
+        bodyPoints[0] = e.getXIndex() - 0.5f + bodySpace;
         bodyPoints[1] = e.getClose() * phase;
         bodyPoints[2] = e.getXIndex() + 0.5f - bodySpace;
         bodyPoints[3] = e.getOpen() * phase;
@@ -141,8 +141,8 @@ public class CandleStickChartRenderer extends DataRenderer {
 
     @Override
     public void drawValues(Canvas c) {
-        
-     // if values are drawn
+
+        // if values are drawn
         if (mChart.getCandleData().getYValCount() < mChart.getMaxVisibleCount()
                 * mViewPortHandler.getScaleX()) {
 
@@ -160,7 +160,7 @@ public class CandleStickChartRenderer extends DataRenderer {
 
                 float[] positions = trans.generateTransformedValuesCandle(
                         entries, mAnimator.getPhaseY());
-                
+
                 float yOffset = Utils.convertDpToPixel(5f);
 
                 for (int j = 0; j < positions.length * mAnimator.getPhaseX(); j += 2) {
@@ -176,7 +176,7 @@ public class CandleStickChartRenderer extends DataRenderer {
 
                     float val = entries.get(j / 2).getHigh();
 
-                    c.drawText(mChart.getValueFormatter().getFormattedValue(val), x, y - yOffset,
+                    c.drawText(dataSet.getValueFormatter().getFormattedValue(val), x, y - yOffset,
                             mValuePaint);
                 }
             }
@@ -195,7 +195,8 @@ public class CandleStickChartRenderer extends DataRenderer {
             int xIndex = indices[i].getXIndex(); // get the
                                                  // x-position
 
-            CandleDataSet set = mChart.getCandleData().getDataSetByIndex(indices[i].getDataSetIndex());
+            CandleDataSet set = mChart.getCandleData().getDataSetByIndex(
+                    indices[i].getDataSetIndex());
 
             if (set == null)
                 continue;

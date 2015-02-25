@@ -38,6 +38,7 @@ import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 import com.github.mikephil.charting.renderer.DataRenderer;
 import com.github.mikephil.charting.renderer.LegendRenderer;
 import com.github.mikephil.charting.renderer.ViewPortHandler;
+import com.github.mikephil.charting.utils.DefaultValueFormatter;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
@@ -46,7 +47,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -62,16 +62,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public static final String LOG_TAG = "MPAndroidChart";
 
     /** flag that indicates if logging is enabled or not */
-    protected boolean mLogEnabled = false;
-
-    /** custom formatter that is used instead of the auto-formatter if set */
-    protected ValueFormatter mValueFormatter = null;
-
-    /**
-     * flag that indicates if the default formatter should be used or if a
-     * custom one is set
-     */
-    private boolean mUseDefaultFormatter = true;
+    protected boolean mLogEnabled = true;
 
     /**
      * object that holds all data that was originally set for the chart, before
@@ -79,14 +70,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     protected T mData = null;
 
+    /** default value-formatter, number of digits depends on provided chart-data */
+    protected ValueFormatter mDefaultFormatter;
+
     /** the canvas that is used for drawing on the bitmap */
     protected Canvas mDrawCanvas;
-
-    // /** the lowest value the chart can display */
-    // protected float mYChartMin = 0.0f;
-    //
-    // /** the highest value the chart can display */
-    // protected float mYChartMax = 0.0f;
 
     /**
      * paint object used for drawing the description text in the bottom right
@@ -188,13 +176,15 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    //ViewCompat.postInvalidateOnAnimation(Chart.this);
+                    // ViewCompat.postInvalidateOnAnimation(Chart.this);
                     postInvalidate();
                 }
             });
 
         // initialize the utils
         Utils.init(getContext().getResources());
+
+        mDefaultFormatter = new DefaultValueFormatter(1);
 
         mViewPortHandler = new ViewPortHandler();
 
@@ -282,12 +272,19 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         mOffsetsCalculated = false;
         mData = data;
 
+        // calculate how many digits are needed
+        calculateFormatter(data.getYMin(), data.getYMax());
+
+        for (DataSet<?> set : mData.getDataSets()) {
+            if (set.needsDefaultFormatter())
+                set.setValueFormatter(mDefaultFormatter);
+        }
+
+        // let the chart know there is new data
         notifyDataSetChanged();
 
-        // calculate how many digits are needed
-        calcFormats(data.getYMin(), data.getYMax());
-
-        Log.i(LOG_TAG, "Data is set.");
+        if (mLogEnabled)
+            Log.i(LOG_TAG, "Data is set.");
     }
 
     /**
@@ -339,34 +336,21 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * calculates the required number of digits for the values that might be
-     * drawn in the chart (if enabled)
+     * drawn in the chart (if enabled), and creates the default-value-formatter
      */
-    protected void calcFormats(float min, float max) {
+    protected void calculateFormatter(float min, float max) {
 
-        // check if a custom formatter is set or not
-        if (mUseDefaultFormatter) {
+        float reference = 0f;
 
-            float reference = 0f;
+        if (mData == null || mData.getXValCount() < 2) {
 
-            if (mData == null || mData.getXValCount() < 2) {
-
-                reference = Math.max(Math.abs(min), Math.abs(max));
-            } else {
-                reference = Math.abs(max - min);
-            }
-
-            int digits = Utils.getDecimals(reference);
-
-            StringBuffer b = new StringBuffer();
-            for (int i = 0; i < digits; i++) {
-                if (i == 0)
-                    b.append(".");
-                b.append("0");
-            }
-
-            DecimalFormat formatter = new DecimalFormat("###,###,###,##0" + b.toString());
-            mValueFormatter = new DefaultValueFormatter(formatter);
+            reference = Math.max(Math.abs(min), Math.abs(max));
+        } else {
+            reference = Math.abs(max - min);
         }
+
+        int digits = Utils.getDecimals(reference);
+        mDefaultFormatter = new DefaultValueFormatter(digits);
     }
 
     /** flag that indicates if offsets calculation has already been done or not */
@@ -416,18 +400,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         // canvas.drawColor(Color.TRANSPARENT,
         // android.graphics.PorterDuff.Mode.XOR); // clear all
     }
-
-    // /**
-    // * sets up the content rect that restricts the chart surface
-    // */
-    // protected void prepareContentRect(float offL, float offR, float offT,
-    // float offB) {
-    // mViewPortHandler.restrainViewPort(offL, offR, offT, offB);
-    // // mContentRect.set(mOffsetLeft,
-    // // mOffsetTop,
-    // // getWidth() - mOffsetRight,
-    // // getHeight() - mOffsetBottom);
-    // }
 
     /**
      * draws the description text in the bottom right corner of the chart
@@ -707,6 +679,16 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public Canvas getCanvas() {
         return mDrawCanvas;
+    }
+
+    /**
+     * Returns the default ValueFormatter that has been determined by the chart
+     * considering the provided minimum and maximum values.
+     * 
+     * @return
+     */
+    public ValueFormatter getDefaultValueFormatter() {
+        return mDefaultFormatter;
     }
 
     /**
@@ -1107,32 +1089,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
-     * Sets the formatter to be used for drawing the values inside the chart. If
-     * no formatter is set, the chart will automatically determine a reasonable
-     * formatting (concerning decimals) for all the values that are drawn inside
-     * the chart. Set this to NULL to re-enable auto formatting.
-     *
-     * @param f
-     */
-    public void setValueFormatter(ValueFormatter f) {
-        mValueFormatter = f;
-
-        if (f == null)
-            mUseDefaultFormatter = true;
-        else
-            mUseDefaultFormatter = false;
-    }
-
-    /**
-     * Returns the formatter used for drawing the values inside the chart.
-     *
-     * @return
-     */
-    public ValueFormatter getValueFormatter() {
-        return mValueFormatter;
-    }
-
-    /**
      * sets the draw color for the value paint object
      *
      * @param color
@@ -1190,9 +1146,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
-     * Returns the ChartData object that ORIGINALLY has been set for the chart.
-     * It contains all data in an unaltered state, before any filtering
-     * algorithms have been applied.
+     * Returns the ChartData object that has been set for the chart.
      *
      * @return
      */
@@ -1402,28 +1356,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         notifyDataSetChanged();
 
         super.onSizeChanged(w, h, oldw, oldh);
-    }
-
-    /**
-     * Default formatter used for formatting values. Uses a DecimalFormat with
-     * pre-calculated number of digits (depending on max and min value).
-     *
-     * @author Philipp Jahoda
-     */
-    private class DefaultValueFormatter implements ValueFormatter {
-
-        /** decimalformat for formatting */
-        private DecimalFormat mFormat;
-
-        public DefaultValueFormatter(DecimalFormat f) {
-            mFormat = f;
-        }
-
-        @Override
-        public String getFormattedValue(float value) {
-            // avoid memory allocations here (for performance)
-            return mFormat.format(value);
-        }
     }
 
     @Override

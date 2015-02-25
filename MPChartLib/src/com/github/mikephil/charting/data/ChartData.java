@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.ValueFormatter;
 
 import java.util.ArrayList;
 
@@ -255,7 +256,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /**
      * calculates the sum of all y-values in all datasets
      */
-    protected void calcYValueSum(ArrayList<? extends DataSet<?>>dataSets) {
+    protected void calcYValueSum(ArrayList<? extends DataSet<?>> dataSets) {
 
         mYValueSum = 0;
 
@@ -804,6 +805,21 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         }
 
         return -1;
+    }
+
+    /**
+     * Sets a custom ValueFormatter for all DataSets this data object contains.
+     * 
+     * @param f
+     */
+    public void setValueFormatter(ValueFormatter f) {
+        if (f == null)
+            return;
+        else {
+            for (DataSet<?> set : mDataSets) {
+                set.setValueFormatter(f);
+            }
+        }
     }
 
     public T getFirstLeft() {

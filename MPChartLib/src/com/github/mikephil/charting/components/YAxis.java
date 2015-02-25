@@ -3,6 +3,7 @@ package com.github.mikephil.charting.components;
 
 import android.graphics.Paint;
 
+import com.github.mikephil.charting.utils.DefaultValueFormatter;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
 
@@ -17,6 +18,9 @@ import java.util.ArrayList;
  * @author Philipp Jahoda
  */
 public class YAxis extends AxisBase {
+
+    /** custom formatter that is used instead of the auto-formatter if set */
+    protected ValueFormatter mValueFormatter;
 
     /** the actual array of entries */
     public float[] mEntries = new float[] {};
@@ -33,9 +37,6 @@ public class YAxis extends AxisBase {
     /** indicates if the top y-label entry is drawn or not */
     private boolean mDrawTopYLabelEntry = true;
 
-    /** if true, thousands ylabel values are separated by a dot */
-    protected boolean mSeparateTousands = true;
-
     /** if true, the y-labels show only the minimum and maximum value */
     protected boolean mShowOnlyMinMax = false;
 
@@ -44,9 +45,6 @@ public class YAxis extends AxisBase {
 
     /** if true, the y-label entries will always start at zero */
     protected boolean mStartAtZero = true;
-
-    /** the formatter used to customly format the y-labels */
-    private ValueFormatter mFormatter = null;
 
     /** array of limitlines that can be set for the axis */
     private ArrayList<LimitLine> mLimitLines;
@@ -166,42 +164,6 @@ public class YAxis extends AxisBase {
      */
     public int getLabelCount() {
         return mLabelCount;
-    }
-
-    /**
-     * Set this to true to enable values above 1000 to be separated by a dot.
-     * 
-     * @param enabled
-     */
-    public void setSeparateThousands(boolean enabled) {
-        mSeparateTousands = enabled;
-    }
-
-    /**
-     * Returns true if separating thousands is enabled, false if not.
-     * 
-     * @return
-     */
-    public boolean isSeparateThousandsEnabled() {
-        return mSeparateTousands;
-    }
-
-    /**
-     * Returns the custom formatter used to format the YLabels.
-     * 
-     * @return
-     */
-    public ValueFormatter getFormatter() {
-        return mFormatter;
-    }
-
-    /**
-     * Sets a custom formatter that will be used to format the YLabels.
-     * 
-     * @param f
-     */
-    public void setFormatter(ValueFormatter f) {
-        this.mFormatter = f;
     }
 
     /**
@@ -410,18 +372,51 @@ public class YAxis extends AxisBase {
      */
     public String getFormattedLabel(int index) {
 
-        if (index < 0)
+        if (index < 0 || index >= mEntries.length)
             return "";
-
-        String text = null;
-
-        // if there is no formatter
-        if (getFormatter() == null)
-            text = Utils.formatNumber(mEntries[index], mDecimals,
-                    isSeparateThousandsEnabled());
         else
-            text = getFormatter().getFormattedValue(mEntries[index]);
+            return getValueFormatter().getFormattedValue(mEntries[index]);
+    }
+    
 
-        return text;
+    /**
+     * Sets the formatter to be used for drawing the values inside the chart. If
+     * no formatter is set, the chart will automatically determine a reasonable
+     * formatting (concerning decimals) for all the values that are drawn inside
+     * the chart. Use chart.getDefaultValueFormatter() to use the formatter
+     * calculated by the chart.
+     *
+     * @param f
+     */
+    public void setValueFormatter(ValueFormatter f) {
+
+        if (f == null)
+            return;
+        else
+            mValueFormatter = f;
+    }
+
+    /**
+     * Returns the formatter used for drawing the values inside the chart.
+     *
+     * @return
+     */
+    public ValueFormatter getValueFormatter() {
+        return mValueFormatter;
+    }
+
+    /**
+     * If this component has no ValueFormatter or is only equipped with the
+     * default one (no custom set), return true.
+     * 
+     * @return
+     */
+    public boolean needsDefaultFormatter() {
+        if (mValueFormatter == null)
+            return true;
+        if (mValueFormatter instanceof DefaultValueFormatter)
+            return true;
+
+        return false;
     }
 }

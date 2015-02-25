@@ -6,6 +6,8 @@ import android.graphics.Color;
 
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.DefaultValueFormatter;
+import com.github.mikephil.charting.utils.ValueFormatter;
 
 import java.util.ArrayList;
 
@@ -42,6 +44,9 @@ public abstract class DataSet<T extends Entry> {
 
     /** if true, y-values are drawn on the chart */
     protected boolean mDrawValues = true;
+
+    /** custom formatter that is used instead of the auto-formatter if set */
+    protected ValueFormatter mValueFormatter;
 
     /** this specifies which axis this DataSet should be plotted against */
     protected AxisDependency mAxisDependency = AxisDependency.LEFT;
@@ -571,10 +576,44 @@ public abstract class DataSet<T extends Entry> {
         return -1;
     }
 
-    // /**
-    // * ################ ################ ################ ################
-    // */
-    // /** BELOW THIS CODE FOR DRAWING */
-    //
-    // public abstract void drawData(Canvas c);
+    /**
+     * Sets the formatter to be used for drawing the values inside the chart. If
+     * no formatter is set, the chart will automatically determine a reasonable
+     * formatting (concerning decimals) for all the values that are drawn inside
+     * the chart. Use chart.getDefaultValueFormatter() to use the formatter
+     * calculated by the chart.
+     *
+     * @param f
+     */
+    public void setValueFormatter(ValueFormatter f) {
+
+        if (f == null)
+            return;
+        else
+            mValueFormatter = f;
+    }
+
+    /**
+     * Returns the formatter used for drawing the values inside the chart.
+     *
+     * @return
+     */
+    public ValueFormatter getValueFormatter() {
+        return mValueFormatter;
+    }
+    
+    /**
+     * If this component has no ValueFormatter or is only equipped with the
+     * default one (no custom set), return true.
+     * 
+     * @return
+     */
+    public boolean needsDefaultFormatter() {
+        if (mValueFormatter == null)
+            return true;
+        if (mValueFormatter instanceof DefaultValueFormatter)
+            return true;
+
+        return false;
+    }
 }
