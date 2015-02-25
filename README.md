@@ -1,4 +1,4 @@
- [![Android Arsenal](http://img.shields.io/badge/Android%20Arsenal-MPAndroidChart-blue.svg?style=flat)](http://android-arsenal.com/details/1/741)  [  **android-arsenal.com**] (https://github.com/vbauer/android-arsenal.com)
+ [![Android Arsenal](http://img.shields.io/badge/Android%20Arsenal-MPAndroidChart-blue.svg?style=flat)](http://android-arsenal.com/details/1/741)  [![Release](https://img.shields.io/github/release/PhilJay/MPAndroidChart.svg?label=maven-version)](https://jitpack.io/#PhilJay/MPAndroidChart)
 
 MPAndroidChart
 =======
