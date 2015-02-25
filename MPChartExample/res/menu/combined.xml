@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/actionToggleLineValues"
+        android:title="Toggle line Values">
+    </item>
+    <item
+        android:id="@+id/actionToggleBarValues"
+        android:title="Toggle bar Values">
+    </item>
+    <item
+        android:id="@+id/actionToggleBarYDependency"
+        android:title="Toggle bar Y Axis dependency">
+    </item>
+    <item
+        android:id="@+id/actionToggleLineYDependency"
+        android:title="Toggle line Y Axis dependency">
+    </item>
+
+</menu>

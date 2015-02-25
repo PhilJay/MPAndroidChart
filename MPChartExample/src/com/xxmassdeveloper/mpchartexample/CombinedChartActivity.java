@@ -3,6 +3,8 @@ package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.WindowManager;
 
 import com.github.mikephil.charting.charts.CombinedChart;
@@ -16,6 +18,7 @@ import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CandleDataSet;
 import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.CombinedData;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -29,6 +32,8 @@ public class CombinedChartActivity extends DemoBase {
 
     private CombinedChart mChart;
     private final int itemcount = 12;
+    private final int maxYLeft = 40;
+    private final int maxYRight = 60;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +45,15 @@ public class CombinedChartActivity extends DemoBase {
         mChart = (CombinedChart) findViewById(R.id.chart1);
         mChart.setDescription("");
         mChart.setDrawGridBackground(false);
-        
+
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
-        
+        rightAxis.setAxisMaxValue(maxYRight);
+
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setDrawGridLines(false);
-        
+        leftAxis.setAxisMaxValue(maxYLeft);
+
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxisPosition.BOTH_SIDED);
 
@@ -67,8 +74,9 @@ public class CombinedChartActivity extends DemoBase {
 
         ArrayList<Entry> entries = new ArrayList<Entry>();
 
+        int minValue = 5;
         for (int index = 0; index < itemcount; index++)
-            entries.add(new Entry(getRandom(15, 10), index));
+            entries.add(new Entry(getRandom(maxYLeft - minValue, minValue), index));
 
         LineDataSet set = new LineDataSet(entries, "Line DataSet");
         set.setColor(Color.rgb(240, 238, 70));
@@ -77,9 +85,12 @@ public class CombinedChartActivity extends DemoBase {
         set.setCircleSize(5f);
         set.setFillColor(Color.rgb(240, 238, 70));
         set.setDrawCubic(true);
-        set.setDrawValues(false);
+        set.setDrawValues(true);
+
+        set.setAxisDependency(YAxis.AxisDependency.LEFT);
+
         d.addDataSet(set);
-        
+
         return d;
     }
 
@@ -89,16 +100,19 @@ public class CombinedChartActivity extends DemoBase {
 
         ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
 
+        int minValue = 20;
         for (int index = 0; index < itemcount; index++)
-            entries.add(new BarEntry(getRandom(15, 30), index));
+            entries.add(new BarEntry(getRandom(maxYRight - minValue, minValue), index));
 
         BarDataSet set = new BarDataSet(entries, "Bar DataSet");
         set.setColor(Color.rgb(60, 220, 78));
         d.addDataSet(set);
 
+        set.setAxisDependency(YAxis.AxisDependency.RIGHT);
+
         return d;
     }
-    
+
     private ScatterData generateScatterData() {
 
         ScatterData d = new ScatterData();
@@ -116,7 +130,7 @@ public class CombinedChartActivity extends DemoBase {
 
         return d;
     }
-    
+
     private CandleData generateCandleData() {
 
         CandleData d = new CandleData();
@@ -138,4 +152,57 @@ public class CombinedChartActivity extends DemoBase {
     private float getRandom(float range, float startsfrom) {
         return (float) (Math.random() * range) + startsfrom;
     }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.combined, menu);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.actionToggleLineValues: {
+        for (DataSet<?> set : mChart.getData().getDataSets()) {
+          if(set instanceof LineDataSet)
+            set.setDrawValues(!set.isDrawValuesEnabled());
+        }
+
+        mChart.invalidate();
+        break;
+      }
+      case R.id.actionToggleBarValues: {
+        for (DataSet<?> set : mChart.getData().getDataSets()) {
+          if(set instanceof BarDataSet)
+            set.setDrawValues(!set.isDrawValuesEnabled());
+        }
+
+        mChart.invalidate();
+        break;
+      }
+      case R.id.actionToggleBarYDependency: {
+        for (DataSet<?> set : mChart.getData().getDataSets()) {
+          if(set instanceof BarDataSet) {
+            YAxis.AxisDependency newAxisDependency = set.getAxisDependency().equals(YAxis.AxisDependency.LEFT) ? YAxis.AxisDependency.RIGHT : YAxis.AxisDependency.LEFT;
+            set.setAxisDependency(newAxisDependency);
+          }
+        }
+
+        mChart.invalidate();
+        break;
+      }
+      case R.id.actionToggleLineYDependency: {
+        for (DataSet<?> set : mChart.getData().getDataSets()) {
+          if(set instanceof LineDataSet) {
+            YAxis.AxisDependency newAxisDependency = set.getAxisDependency().equals(YAxis.AxisDependency.LEFT) ? YAxis.AxisDependency.RIGHT : YAxis.AxisDependency.LEFT;
+            set.setAxisDependency(newAxisDependency);
+          }
+        }
+
+        mChart.invalidate();
+        break;
+      }
+    }
+    return true;
+  }
 }
