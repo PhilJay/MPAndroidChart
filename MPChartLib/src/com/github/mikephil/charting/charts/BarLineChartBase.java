@@ -295,6 +295,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         // consider starting at zero (0)
         if (mAxisLeft.isStartAtZeroEnabled())
             mAxisLeft.mAxisMinimum = 0f;
+        
         if (mAxisRight.isStartAtZeroEnabled())
             mAxisRight.mAxisMinimum = 0f;
 
@@ -871,10 +872,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         pts[0] = x;
         pts[1] = y;
 
-        if (axis == AxisDependency.LEFT)
-            mLeftAxisTransformer.pixelsToValue(pts);
-        else
-            mRightAxisTransformer.pixelsToValue(pts);
+        getTransformer(axis).pixelsToValue(pts);
 
         double xTouchVal = pts[0];
         double yTouchVal = pts[1];
@@ -896,10 +894,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 x, y
         };
 
-        if (axis == AxisDependency.LEFT)
-            mLeftAxisTransformer.pointValuesToPixel(pts);
-        else
-            mRightAxisTransformer.pointValuesToPixel(pts);
+        getTransformer(axis).pointValuesToPixel(pts);
 
         return new PointD(pts[0], pts[1]);
     }

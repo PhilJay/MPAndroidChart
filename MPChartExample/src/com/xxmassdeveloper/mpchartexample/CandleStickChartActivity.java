@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.github.mikephil.charting.charts.CandleStickChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
+import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CandleDataSet;
@@ -57,17 +58,20 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
 
         mChart.setDrawGridBackground(false);
 
-        XAxis xLabels = mChart.getXAxis();
-        xLabels.setPosition(XAxisPosition.BOTTOM);
-        xLabels.setSpaceBetweenLabels(2);
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setPosition(XAxisPosition.BOTTOM);
+        xAxis.setSpaceBetweenLabels(2);
 
-        YAxis yLabels = mChart.getAxisLeft();  
-        yLabels.setLabelCount(7);
-        yLabels.setDrawGridLines(false);
-        yLabels.setDrawAxisLine(false);
+        YAxis leftAxis = mChart.getAxisLeft();  
+//        leftAxis.setEnabled(false);
+        leftAxis.setLabelCount(7);
+        leftAxis.setDrawGridLines(false);
+        leftAxis.setDrawAxisLine(false);
+        leftAxis.setStartAtZero(true);
         
-        mChart.getAxisRight().setEnabled(false);
-
+        YAxis rightAxis = mChart.getAxisRight();
+        rightAxis.setEnabled(false);
+//        rightAxis.setStartAtZero(false);
 
         // setting data
         mSeekBarX.setProgress(15);
@@ -186,6 +190,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         }
 
         CandleDataSet set1 = new CandleDataSet(yVals1, "Data Set");
+        set1.setAxisDependency(AxisDependency.LEFT);
         set1.setColor(Color.rgb(80, 80, 80));
 
         CandleData data = new CandleData(xVals, set1);
