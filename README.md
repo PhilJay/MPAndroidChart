@@ -198,7 +198,8 @@ or create it in code (and then **add it to a layout**):
 **Gestures & Selecting:**
 
  - <code>setTouchEnabled(boolean enabled)</code>: If set to ture, touch gestures (such as scaling and dragging) will be possible on the chart. NOTE: If touch-gestures are disabled, highlighting on touch is disabled as well. Default: true.
- - <code>setDragScaleEnabled(boolean enabled)</code>: Enables/disables dragging and scaling for the chart.
+ - <code>setDragEnabled(boolean enabled)</code>: Enables/disables dragging for the chart.
+ - <code>setScaleEnabled(boolean enabled)</code>: Enables/disables scaling for the chart.
  - <code>setOnChartValueSelectedListener(OnChartValueSelectedListener l)</code>: Sets a selection-listener to the chart that will generate callbacks when values are selected or unselected. The callback contains the selected values and their indices.
  - <code>setHighlightEnabled(boolean enabled)</code>: If set to true, highlighting/selecting values is possible on the chart. Default: true.
  - <code>public void highlightValues(Highlight[] highs)</code>: Highlights the specified entries in the chart.
