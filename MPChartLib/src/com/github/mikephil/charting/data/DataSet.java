@@ -43,7 +43,8 @@ public abstract class DataSet<T extends Entry> {
     /** if true, y-values are drawn on the chart */
     protected boolean mDrawValues = true;
 
-    private AxisDependency mAxisDependency = AxisDependency.LEFT;
+    /** this specifies which axis this DataSet should be plotted against */
+    protected AxisDependency mAxisDependency = AxisDependency.LEFT;
 
     /**
      * Creates a new DataSet object with the given values it represents. Also, a

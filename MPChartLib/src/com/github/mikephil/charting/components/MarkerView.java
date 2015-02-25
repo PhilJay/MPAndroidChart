@@ -93,39 +93,4 @@ public abstract class MarkerView extends RelativeLayout {
      * @return
      */
     public abstract int getYOffset();
-
-    // /**
-    // * Set the position offset of the MarkerView. By default, the top left
-    // edge
-    // * of the MarkerView is drawn directly where the selected value is at. In
-    // * order to change that, offsets in pixels can be defined. Default offset
-    // is
-    // * zero (0f) on both axes. For offsets dependent on the MarkerViews width
-    // * and height, use getMeasuredWidth() / getMeasuredHeight().
-    // *
-    // * @param x
-    // * @param y
-    // */
-    // public void setOffsets(float x, float y) {
-    // this.mXOffset = x;
-    // this.mYOffset = y;
-    // }
-    //
-    // /**
-    // * returns the x-offset that is set for the MarkerView
-    // *
-    // * @return
-    // */
-    // public float getXOffset() {
-    // return mXOffset;
-    // }
-    //
-    // /**
-    // * returns the y-offset that is set for the MarkerView
-    // *
-    // * @return
-    // */
-    // public float getYOffset() {
-    // return mYOffset;
-    // }
 }

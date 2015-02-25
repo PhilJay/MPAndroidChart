@@ -86,6 +86,12 @@ public class YAxis extends AxisBase {
     /** the side this axis object represents */
     private AxisDependency mAxisDependency;
 
+    /**
+     * Enum that specifies the axis a DataSet should be plotted against, either
+     * LEFT or RIGHT.
+     * 
+     * @author Philipp Jahoda
+     */
     public enum AxisDependency {
         LEFT, RIGHT
     }
@@ -374,7 +380,7 @@ public class YAxis extends AxisBase {
         String label = getLongestLabel();
         return (float) Utils.calcTextWidth(p, label) + getXOffset() * 2f;
     }
-    
+
     public float getRequiredHeightSpace(Paint p) {
         String label = getLongestLabel();
         return (float) Utils.calcTextHeight(p, label) + getYOffset() * 2f;

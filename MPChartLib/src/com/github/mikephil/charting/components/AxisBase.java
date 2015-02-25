@@ -2,7 +2,6 @@
 package com.github.mikephil.charting.components;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 
 import com.github.mikephil.charting.utils.Utils;
 
@@ -11,17 +10,8 @@ import com.github.mikephil.charting.utils.Utils;
  * 
  * @author Philipp Jahoda
  */
-public abstract class AxisBase {
-
-    /** the typeface to use for the labels */
-    private Typeface mTypeface;
-
-    /** the size of the label text */
-    private float mTextSize = 10f;
-
-    /** the text color to use */
-    private int mTextColor = Color.BLACK;
-
+public abstract class AxisBase extends ComponentBase {
+    
     private int mGridColor = Color.GRAY;
 
     private int mAxisLineColor = Color.GRAY;
@@ -36,80 +26,12 @@ public abstract class AxisBase {
 
     /** flag that indicates if the line alongside the axis is drawn or not */
     protected boolean mDrawAxisLine = true;
-    
-    /** the offset in pixels this axis labels have on the x-axis */
-    protected float mXOffset = 5f;
-    
-    /** the offset in pixels this axis labels have on the Y-axis */
-    protected float mYOffset = 5f;
 
     /** default constructor */
     public AxisBase() {
         this.mTextSize = Utils.convertDpToPixel(10f);
         this.mXOffset = Utils.convertDpToPixel(5f);
         this.mYOffset = Utils.convertDpToPixel(5f);
-    }
-
-    /**
-     * sets the size of the label text in pixels min = 6f, max = 24f, default
-     * 10f
-     * 
-     * @param size
-     */
-    public void setTextSize(float size) {
-
-        if (size > 24f)
-            size = 24f;
-        if (size < 6f)
-            size = 6f;
-
-        mTextSize = Utils.convertDpToPixel(size);
-    }
-
-    /**
-     * returns the text size that is currently set for the labels
-     * 
-     * @return
-     */
-    public float getTextSize() {
-        return mTextSize;
-    }
-
-    /**
-     * sets the typeface that should be used for the labels
-     * 
-     * @param t
-     */
-    public void setTypeface(Typeface t) {
-        mTypeface = t;
-    }
-
-    /**
-     * returns the typeface that is used for the labels
-     * 
-     * @return
-     */
-    public Typeface getTypeface() {
-        return mTypeface;
-    }
-
-    /**
-     * Sets the text color to use for the labels. Make sure to use
-     * getResources().getColor(...) when using a color from the resources.
-     * 
-     * @param color
-     */
-    public void setTextColor(int color) {
-        mTextColor = color;
-    }
-
-    /**
-     * Returns the text color that is set for the labels.
-     * 
-     * @return
-     */
-    public int getTextColor() {
-        return mTextColor;
     }
 
     /**
@@ -220,44 +142,6 @@ public abstract class AxisBase {
      */
     public boolean isEnabled() {
         return mEnabled;
-    }
-    
-    /**
-     * Returns the used offset on the x-axis for drawing the axis labels. This
-     * offset is applied before and after the label.
-     * 
-     * @return
-     */
-    public float getXOffset() {
-        return mXOffset;
-    }
-
-    /**
-     * Sets the used x-axis offset for the labels on this axis.
-     * 
-     * @param xOffset
-     */
-    public void setXOffset(float xOffset) {
-        mXOffset = Utils.convertDpToPixel(xOffset);
-    }
-    
-    /**
-     * Returns the used offset on the x-axis for drawing the axis labels. This
-     * offset is applied before and after the label.
-     * 
-     * @return
-     */
-    public float getYOffset() {
-        return mYOffset;
-    }
-
-    /**
-     * Sets the used x-axis offset for the labels on this axis.
-     * 
-     * @param xOffset
-     */
-    public void setYOffset(float yOffset) {
-        mYOffset = Utils.convertDpToPixel(yOffset);
     }
 
     /**

@@ -1,9 +1,7 @@
 
 package com.github.mikephil.charting.components;
 
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 
 import com.github.mikephil.charting.utils.Utils;
 
@@ -16,7 +14,7 @@ import java.util.ArrayList;
  * 
  * @author Philipp Jahoda
  */
-public class Legend {
+public class Legend extends ComponentBase {
 
     public enum LegendPosition {
         RIGHT_OF_CHART, RIGHT_OF_CHART_CENTER, RIGHT_OF_CHART_INSIDE, BELOW_CHART_LEFT, BELOW_CHART_RIGHT, BELOW_CHART_CENTER, PIECHART_CENTER
@@ -41,15 +39,6 @@ public class Legend {
     /** the shape/form the legend colors are drawn in */
     private LegendForm mShape = LegendForm.SQUARE;
 
-    /** the typeface used for the legend labels */
-    private Typeface mTypeface = null;
-
-    /** the text size of the legend labels */
-    private float mTextSize = 10f;
-
-    /** the text color to use */
-    private int mTextColor = Color.BLACK;
-
     /** the size of the legend forms/shapes */
     private float mFormSize = 8f;
 
@@ -72,12 +61,6 @@ public class Legend {
 
     /** the space that should be left between stacked forms */
     private float mStackSpace = 3f;    
-    
-    /** the offset in pixels this axis labels have on the x-axis */
-    protected float mXOffset = 5f;
-    
-    /** the offset in pixels this axis labels have on the Y-axis */
-    protected float mYOffset = 6f;
 
     /** default constructor */
     public Legend() {
@@ -266,25 +249,6 @@ public class Legend {
     }
 
     /**
-     * returns the typeface used for the legend labels, returns null if none is
-     * set
-     * 
-     * @return
-     */
-    public Typeface getTypeface() {
-        return mTypeface;
-    }
-
-    /**
-     * sets a specific typeface for the legend labels
-     * 
-     * @param tf
-     */
-    public void setTypeface(Typeface tf) {
-        mTypeface = tf;
-    }
-
-    /**
      * sets the size in pixels of the legend forms, this is internally converted
      * in dp, default 8f
      * 
@@ -382,24 +346,6 @@ public class Legend {
         mEnabled = l.mEnabled;
         mXOffset = l.mXOffset;
         mYOffset = l.mYOffset;
-    }
-
-    /**
-     * sets the text size of the legend labels, default 9f
-     * 
-     * @param size
-     */
-    public void setTextSize(float size) {
-        mTextSize = Utils.convertDpToPixel(size);
-    }
-
-    /**
-     * returns the text size of the legend labels
-     * 
-     * @return
-     */
-    public float getTextSize() {
-        return mTextSize;
     }
 
     /**
@@ -508,25 +454,6 @@ public class Legend {
     }
 
     /**
-     * Sets the text color to use for the legend labels. Make sure to use
-     * getResources().getColor(...) when using a color from the resources.
-     * 
-     * @param color
-     */
-    public void setTextColor(int color) {
-        mTextColor = color;
-    }
-
-    /**
-     * Returns the text color that is set for the legend labels.
-     * 
-     * @return
-     */
-    public int getTextColor() {
-        return mTextColor;
-    }
-
-    /**
      * Set this to true if the legend should be enabled (should be drawn), false
      * if not. Default: true
      * 
@@ -543,43 +470,5 @@ public class Legend {
      */
     public boolean isEnabled() {
         return mEnabled;
-    }
-    
-    /**
-     * Returns the used offset on the x-axis for drawing the axis labels. This
-     * offset is applied before and after the label.
-     * 
-     * @return
-     */
-    public float getXOffset() {
-        return mXOffset;
-    }
-
-    /**
-     * Sets the used x-axis offset for the labels on this axis.
-     * 
-     * @param xOffset
-     */
-    public void setXOffset(float xOffset) {
-        mXOffset = Utils.convertDpToPixel(xOffset);
-    }
-    
-    /**
-     * Returns the used offset on the x-axis for drawing the axis labels. This
-     * offset is applied before and after the label.
-     * 
-     * @return
-     */
-    public float getYOffset() {
-        return mYOffset;
-    }
-
-    /**
-     * Sets the used x-axis offset for the labels on this axis.
-     * 
-     * @param xOffset
-     */
-    public void setYOffset(float yOffset) {
-        mYOffset = Utils.convertDpToPixel(yOffset);
     }
 }
