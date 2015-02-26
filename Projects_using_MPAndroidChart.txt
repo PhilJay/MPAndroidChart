@@ -26,3 +26,6 @@ https://play.google.com/store/apps/details?id=com.droidinfinity.healthplus
 
 БИТ.Лидер
 https://play.google.com/store/apps/details?id=com.firstbit.bitlider
+
+My Expenses
+https://play.google.com/store/apps/details?id=org.totschnig.myexpenses
