@@ -122,44 +122,44 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         if (xTouchVal < mXChartMin || xTouchVal > mXChartMax)
             return null;
 
-        Log.i(LOG_TAG, "base: " + base);
-
         int setCount = mData.getDataSetCount();
-        int valCount = setCount * mData.getXValCount();
+        int valCount = mData.getXValCount();
 
         if (setCount <= 1) {
             return new Highlight((int) Math.round(base), 0);
         }
 
-        // calculate the amount of bar-space between index 0 and touch position
-        float space = (float) ((((float) valCount / (float) setCount) / (mDeltaX / base)));
-//        
-        float border = (float) setCount + mData.getGroupSpace();
-        
-        float steps = 0.5f + (int) (((float) base + 0.5f) / ((float) setCount));
+        int steps = (int) ((float) base / ((float) setCount + mData.getGroupSpace()));
 
-        float reduction = (float) (steps) * mData.getGroupSpace();
+        float groupSpaceSum = mData.getGroupSpace() * (float) steps;
 
-        Log.i(LOG_TAG, "reduction: " + reduction);
+        float baseNoSpace = (float) base - groupSpaceSum;
 
-        float beforeRound = (float) ((base - reduction) / setCount);
-        Log.i(LOG_TAG, "touch x-index before round: " + beforeRound);
-        
-        int xIndex = (int) beforeRound;
-        Log.i(LOG_TAG, "touch x-index: " + xIndex);
+        if (mLogEnabled)
+            Log.i(LOG_TAG, "base: " + base + ", steps: " + steps + ", groupSpaceSum: "
+                    + groupSpaceSum
+                    + ", baseNoSpace: " + baseNoSpace);
 
-        float dataSetBeforeRound = (float) ((base - reduction) % (setCount - 0.5f));
+        int dataSetIndex = (int) baseNoSpace % setCount;
+        int xIndex = (int) baseNoSpace / setCount;
 
-        Log.i(LOG_TAG, "datasetindex before round: " + dataSetBeforeRound);
+        if (mLogEnabled)
+            Log.i(LOG_TAG, "xIndex: " + xIndex + ", dataSet: " + dataSetIndex);
 
-        int dataSetIndex = (int) Math.round(dataSetBeforeRound);
-        Log.i(LOG_TAG, "touch dataset-index: " + dataSetIndex);
-        
-        if (dataSetIndex < 0 || dataSetIndex >= mData.getDataSetCount())
-            return null;
-
-        if (xIndex < 0)
+        // check bounds
+        if (xIndex < 0) {
             xIndex = 0;
+            dataSetIndex = 0;
+        } else if (xIndex >= valCount) {
+            xIndex = valCount - 1;
+            dataSetIndex = setCount - 1;
+        }
+
+        // check bounds
+        if (dataSetIndex < 0)
+            dataSetIndex = 0;
+        else if (dataSetIndex >= setCount)
+            dataSetIndex = setCount - 1;
 
         return new Highlight(xIndex, dataSetIndex);
     }

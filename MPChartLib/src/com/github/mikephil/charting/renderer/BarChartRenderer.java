@@ -162,10 +162,12 @@ public class BarChartRenderer extends DataRenderer {
      * @param barspace the space between bars
      */
     protected void prepareBar(float x, float y, float barspace, Transformer trans) {
+        
+        float barWidth = 0.5f;
 
         float spaceHalf = barspace / 2f;
-        float left = x - 0.5f + spaceHalf;
-        float right = x + 0.5f - spaceHalf;
+        float left = x - barWidth + spaceHalf;
+        float right = x + barWidth - spaceHalf;
         float top = y >= 0 ? y : 0;
         float bottom = y <= 0 ? y : 0;
 

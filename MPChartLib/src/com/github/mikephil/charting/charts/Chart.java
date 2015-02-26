@@ -62,7 +62,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public static final String LOG_TAG = "MPAndroidChart";
 
     /** flag that indicates if logging is enabled or not */
-    protected boolean mLogEnabled = false;
+    protected boolean mLogEnabled = true;
 
     /**
      * object that holds all data that was originally set for the chart, before
