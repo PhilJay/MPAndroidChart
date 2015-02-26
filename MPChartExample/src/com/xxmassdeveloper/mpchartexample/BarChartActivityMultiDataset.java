@@ -226,6 +226,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         dataSets.add(set3);
 
         BarData data = new BarData(xVals, dataSets);
+        data.setValueFormatter(new LargeValueFormatter());
 
         // add space between the dataset groups in percent of bar-width
         data.setGroupSpace(80f);

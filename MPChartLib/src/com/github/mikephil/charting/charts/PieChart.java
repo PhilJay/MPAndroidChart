@@ -105,7 +105,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
         mLegendRenderer.renderLegend(mDrawCanvas, mLegend);
 
         drawDescription();
-        
+
         canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
     }
 
@@ -127,7 +127,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
         mCircleBox.set(c.x - boxSize, c.y - boxSize,
                 c.x + boxSize, c.y + boxSize);
     }
-    
+
     @Override
     protected void calcMinMax() {
         super.calcMinMax();
@@ -402,13 +402,31 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * Sets the size of the center text of the piechart.
+     * Sets the size of the center text of the PieChart in dp.
      * 
      * @param size
      */
-    public void setCenterTextSize(float size) {
+    public void setCenterTextSize(float sizeDp) {
         ((PieChartRenderer) mRenderer).getPaintCenterText().setTextSize(
-                Utils.convertDpToPixel(size));
+                Utils.convertDpToPixel(sizeDp));
+    }
+
+    /**
+     * Sets the size of the center text of the PieChart in pixels.
+     * 
+     * @param size
+     */
+    public void setCenterTextSizePixels(float sizePixels) {
+        ((PieChartRenderer) mRenderer).getPaintCenterText().setTextSize(sizePixels);
+    }
+
+    /**
+     * Sets the color of the center text of the PieChart.
+     * 
+     * @param color
+     */
+    public void setCenterTextColor(int color) {
+        ((PieChartRenderer) mRenderer).getPaintCenterText().setColor(color);
     }
 
     /**
