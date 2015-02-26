@@ -3,10 +3,12 @@ package com.github.mikephil.charting.data;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.DefaultValueFormatter;
+import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
 
 import java.util.ArrayList;
@@ -44,6 +46,12 @@ public abstract class DataSet<T extends Entry> {
 
     /** if true, y-values are drawn on the chart */
     protected boolean mDrawValues = true;
+
+    private int mValueColor = Color.BLACK;
+
+    private float mValueTextSize = 16f;
+
+    private Typeface mValueTypeface;
 
     /** custom formatter that is used instead of the auto-formatter if set */
     protected ValueFormatter mValueFormatter;
@@ -599,9 +607,11 @@ public abstract class DataSet<T extends Entry> {
      * @return
      */
     public ValueFormatter getValueFormatter() {
+        if (mValueFormatter == null)
+            return new DefaultValueFormatter(1);
         return mValueFormatter;
     }
-    
+
     /**
      * If this component has no ValueFormatter or is only equipped with the
      * default one (no custom set), return true.
@@ -615,5 +625,44 @@ public abstract class DataSet<T extends Entry> {
             return true;
 
         return false;
+    }
+
+    /**
+     * Sets the color the value-labels of this DataSet should have.
+     * 
+     * @param color
+     */
+    public void setValueTextColor(int color) {
+        mValueColor = color;
+    }
+
+    public int getValueTextColor() {
+        return mValueColor;
+    }
+
+    /**
+     * Sets a Typeface for the value-labels of this DataSet.
+     * 
+     * @param tf
+     */
+    public void setValueTypeface(Typeface tf) {
+        mValueTypeface = tf;
+    }
+
+    public Typeface getValueTypeface() {
+        return mValueTypeface;
+    }
+
+    /**
+     * Sets the text-size of the value-labels of this DataSet in dp.
+     * 
+     * @param size
+     */
+    public void setValueTextSize(float size) {
+        mValueTextSize = Utils.convertDpToPixel(size);
+    }
+
+    public float getValueTextSize() {
+        return mValueTextSize;
     }
 }

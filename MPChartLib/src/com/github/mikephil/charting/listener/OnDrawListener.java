@@ -1,4 +1,4 @@
-package com.github.mikephil.charting.interfaces;
+package com.github.mikephil.charting.listener;
 
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;

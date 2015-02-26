@@ -18,7 +18,7 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -36,7 +36,6 @@ public class RealtimeLineChartActivity extends DemoBase implements
 
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
-        mChart.setValueTextColor(Color.WHITE);
 
         // no description text
         mChart.setDescription("");
@@ -59,8 +58,11 @@ public class RealtimeLineChartActivity extends DemoBase implements
         // set an alternative background color
         mChart.setBackgroundColor(Color.LTGRAY);
 
+        LineData data = new LineData();
+        data.setValueTextColor(Color.WHITE);
+        
         // add empty data
-        mChart.setData(new LineData());
+        mChart.setData(data);
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
@@ -156,6 +158,8 @@ public class RealtimeLineChartActivity extends DemoBase implements
         set.setFillAlpha(65);
         set.setFillColor(ColorTemplate.getHoloBlue());
         set.setHighLightColor(Color.rgb(244, 117, 117));
+        set.setValueTextColor(Color.WHITE);
+        set.setValueTextSize(10f);
         return set;
     }
 

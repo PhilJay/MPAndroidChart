@@ -2,6 +2,7 @@
 package com.xxmassdeveloper.mpchartexample.listviewitems;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,17 +50,18 @@ public class PieChartItem extends ChartItem {
         }
 
         // apply styling
-        holder.chart.setValueTypeface(mTf);
         holder.chart.setDescription("");
         holder.chart.setHoleRadius(52f);
         holder.chart.setTransparentCircleRadius(57f);
         holder.chart.setCenterText("MPChart\nAndroid");
         holder.chart.setCenterTextTypeface(mTf);
         holder.chart.setCenterTextSize(18f);
-        holder.chart.setValueTextSize(11f);
         holder.chart.setUsePercentValues(true);
 
         mChartData.setValueFormatter(new PercentFormatter());
+        mChartData.setValueTypeface(mTf);
+        mChartData.setValueTextSize(11f);
+        mChartData.setValueTextColor(Color.WHITE);
         // set data
         holder.chart.setData((PieData) mChartData);
 

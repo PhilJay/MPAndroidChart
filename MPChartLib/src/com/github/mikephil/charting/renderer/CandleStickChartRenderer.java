@@ -151,10 +151,14 @@ public class CandleStickChartRenderer extends DataRenderer {
             for (int i = 0; i < dataSets.size(); i++) {
 
                 CandleDataSet dataSet = dataSets.get(i);
-                Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
                 if (!dataSet.isDrawValuesEnabled())
                     continue;
+                
+                // apply the text-styling defined by the DataSet
+                applyValueTextStyle(dataSet);
+                
+                Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
                 ArrayList<CandleEntry> entries = dataSet.getYVals();
 

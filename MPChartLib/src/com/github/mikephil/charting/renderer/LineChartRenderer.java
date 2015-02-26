@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
-import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -316,11 +315,15 @@ public class LineChartRenderer extends DataRenderer {
             for (int i = 0; i < dataSets.size(); i++) {
 
                 LineDataSet dataSet = dataSets.get(i);
-                Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
                 if (!dataSet.isDrawValuesEnabled())
                     continue;
+                
+                // apply the text-styling defined by the DataSet
+                applyValueTextStyle(dataSet);
 
+                Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
+                
                 // make sure the values do not interfear with the circles
                 int valOffset = (int) (dataSet.getCircleSize() * 1.75f);
 

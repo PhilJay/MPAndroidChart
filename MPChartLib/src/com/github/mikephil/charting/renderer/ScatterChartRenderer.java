@@ -126,6 +126,9 @@ public class ScatterChartRenderer extends DataRenderer {
                 if (!dataSet.isDrawValuesEnabled())
                     continue;
 
+                // apply the text-styling defined by the DataSet
+                applyValueTextStyle(dataSet);
+
                 ArrayList<Entry> entries = dataSet.getYVals();
 
                 float[] positions = mChart.getTransformer(dataSet.getAxisDependency())

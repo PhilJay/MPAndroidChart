@@ -4,11 +4,7 @@ package com.github.mikephil.charting.components;
 import android.graphics.Color;
 import android.graphics.Typeface;
 
-import com.github.mikephil.charting.utils.DefaultValueFormatter;
 import com.github.mikephil.charting.utils.Utils;
-import com.github.mikephil.charting.utils.ValueFormatter;
-
-import java.text.DecimalFormat;
 
 /**
  * This class encapsulates everything both Axis and Legend have in common.

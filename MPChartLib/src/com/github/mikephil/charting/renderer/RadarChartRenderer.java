@@ -37,7 +37,7 @@ public class RadarChartRenderer extends DataRenderer {
         mWebPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mWebPaint.setStyle(Paint.Style.STROKE);
     }
-    
+
     public Paint getWebPaint() {
         return mWebPaint;
     }
@@ -121,6 +121,9 @@ public class RadarChartRenderer extends DataRenderer {
             if (!dataSet.isDrawValuesEnabled())
                 continue;
 
+            // apply the text-styling defined by the DataSet
+            applyValueTextStyle(dataSet);
+
             ArrayList<Entry> entries = dataSet.getYVals();
 
             for (int j = 0; j < entries.size(); j++) {
@@ -140,9 +143,9 @@ public class RadarChartRenderer extends DataRenderer {
     public void drawExtras(Canvas c) {
         drawWeb(c);
     }
-    
+
     protected void drawWeb(Canvas c) {
-        
+
         float sliceangle = mChart.getSliceAngle();
 
         // calculate the factor that is needed for transforming the value to
@@ -159,7 +162,8 @@ public class RadarChartRenderer extends DataRenderer {
 
         for (int i = 0; i < mChart.getData().getXValCount(); i++) {
 
-            PointF p = Utils.getPosition(center, mChart.getYChartMax() * factor, sliceangle * i + rotationangle);
+            PointF p = Utils.getPosition(center, mChart.getYChartMax() * factor, sliceangle * i
+                    + rotationangle);
 
             c.drawLine(center.x, center.y, p.x, p.y, mWebPaint);
         }

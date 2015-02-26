@@ -22,7 +22,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.LargeValueFormatter;
 import com.xxmassdeveloper.mpchartexample.custom.MyMarkerView;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -35,6 +35,8 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
     private BarChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
+    
+    private Typeface tf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +79,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         mSeekBarX.setProgress(10);
         mSeekBarY.setProgress(100);
 
-        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+        tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART_INSIDE);
@@ -93,8 +95,6 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         leftAxis.setSpaceTop(25f);
 
         mChart.getAxisRight().setEnabled(false);
-
-        mChart.setValueTypeface(tf);
     }
 
     @Override
@@ -230,6 +230,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
 
         // add space between the dataset groups in percent of bar-width
         data.setGroupSpace(80f);
+        data.setValueTypeface(tf);
 
         mChart.setData(data);
         mChart.invalidate();

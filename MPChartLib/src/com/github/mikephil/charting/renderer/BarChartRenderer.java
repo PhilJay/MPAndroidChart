@@ -207,6 +207,9 @@ public class BarChartRenderer extends DataRenderer {
 
                 if (!dataSet.isDrawValuesEnabled())
                     continue;
+                
+                // apply the text-styling defined by the DataSet
+                applyValueTextStyle(dataSet);
 
                 ValueFormatter formatter = dataSet.getValueFormatter();
                 

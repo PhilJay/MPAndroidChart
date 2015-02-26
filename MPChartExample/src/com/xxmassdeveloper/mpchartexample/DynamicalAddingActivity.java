@@ -13,7 +13,7 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -59,7 +59,11 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 
             // add a new x-value first
             data.addXValue(set.getEntryCount() + "");
-            data.addEntry(new Entry((float) (Math.random() * 10) + 50f, set.getEntryCount()), 0);
+            
+            // choose a random dataSet
+            int randomDataSetIndex = (int) (Math.random() * data.getDataSetCount());
+            
+            data.addEntry(new Entry((float) (Math.random() * 10) + 50f, set.getEntryCount()), randomDataSetIndex);
 
             // let the chart know it's data has changed
             mChart.notifyDataSetChanged();
@@ -107,9 +111,17 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 
             // create 10 y-vals
             ArrayList<Entry> yVals = new ArrayList<Entry>();
+            
+            if(data.getXValCount() == 0) {
+                // add 10 x-entries
+                for (int i = 0; i < 10; i++) {
+                    data.addXValue("" + (i+1));
+                }
+            }
 
-            for (int i = 0; i < data.getXValCount(); i++)
+            for (int i = 0; i < data.getXValCount(); i++) {
                 yVals.add(new Entry((float) (Math.random() * 50f) + 50f * count, i));
+            }
 
             LineDataSet set = new LineDataSet(yVals, "DataSet " + count);
             set.setLineWidth(2.5f);
@@ -120,6 +132,8 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
             set.setColor(color);
             set.setCircleColor(color);
             set.setHighLightColor(color);
+            set.setValueTextSize(10f);
+            set.setValueTextColor(color);
 
             data.addDataSet(set);
             mChart.notifyDataSetChanged();
@@ -139,23 +153,6 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
             mChart.invalidate();   
         }
     }
-    
-//    private void addEmptyData() {
-//        
-//        int size = 1;
-//        
-//        // create 30 x-vals
-//        String[] xVals = new String[size];
-//
-//        for (int i = 0; i < size; i++)
-//            xVals[i] = "" + i;
-//
-//        // create a chartdata object that contains only the x-axis labels (no entries or datasets)
-//        LineData data = new LineData();
-//
-//        mChart.setData(data);
-//        mChart.invalidate();
-//    }
 
     @Override
     public void onValueSelected(Entry e, int dataSetIndex) {
@@ -216,6 +213,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
         set.setCircleColor(Color.rgb(240, 99, 99));
         set.setHighLightColor(Color.rgb(190, 190, 190));
         set.setAxisDependency(AxisDependency.LEFT);
+        set.setValueTextSize(10f);
 
         return set;
     }

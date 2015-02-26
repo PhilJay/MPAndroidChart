@@ -137,6 +137,10 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
      */
     @Override
     protected void drawYLabels(Canvas c, float fixedPosition, float[] positions, float offset) {
+        
+        mAxisPaint.setTypeface(mYAxis.getTypeface());
+        mAxisPaint.setTextSize(mYAxis.getTextSize());
+        mAxisPaint.setColor(mYAxis.getTextColor());
 
         for (int i = 0; i < mYAxis.mEntryCount; i++) {
 

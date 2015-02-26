@@ -38,6 +38,7 @@ public class LineChartActivityColored extends DemoBase {
         mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Bold.ttf");
 
         LineData data = getData(36, 100);
+        data.setValueTypeface(mTf);
 
         for (int i = 0; i < mCharts.length; i++)
             // add some transparency to the color with "& 0x90FFFFFF"
@@ -74,8 +75,6 @@ public class LineChartActivityColored extends DemoBase {
         chart.setPinchZoom(false);
 
         chart.setBackgroundColor(color);
-
-        chart.setValueTypeface(mTf);
 
         // add data
         chart.setData(data);

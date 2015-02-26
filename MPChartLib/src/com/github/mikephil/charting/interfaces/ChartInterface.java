@@ -15,18 +15,9 @@ import com.github.mikephil.charting.utils.ValueFormatter;
  */
 public interface ChartInterface {
 
-//    public float getOffsetBottom();
-//
-//    public float getOffsetTop();
-// 
-//    public float getOffsetLeft();
-//
-//    public float getOffsetRight();
-
     public float getXChartMin();
-    public float getXChartMax();
 
-//    public float getDeltaY();
+    public float getXChartMax();
 
     public float getYChartMin();
 
@@ -35,16 +26,15 @@ public interface ChartInterface {
     public int getWidth();
 
     public int getHeight();
-    
-//    public boolean isStartAtZeroEnabled();
-    
+
     public PointF getCenterOfView();
-    
+
     public PointF getCenterOffsets();
-    
+
     public RectF getContentRect();
-    
+
     public View getChartView();
-    
-//    public ValueFormatter getValueFormatter();
+
+    public ValueFormatter getDefaultValueFormatter();
+
 }

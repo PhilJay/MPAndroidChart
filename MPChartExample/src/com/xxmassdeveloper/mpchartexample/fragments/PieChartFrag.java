@@ -27,9 +27,6 @@ public class PieChartFrag extends SimpleFragment {
         mChart = (PieChart) v.findViewById(R.id.pieChart1);
         mChart.setDescription("");
         
-        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Regular.ttf");
-        
-        mChart.setValueTypeface(tf);
         mChart.setCenterTextTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
         mChart.setCenterText("Quarterly\nRevenue");
         mChart.setCenterTextSize(22f);

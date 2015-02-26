@@ -30,7 +30,7 @@ import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
-import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ValueFormatter;
 import com.xxmassdeveloper.mpchartexample.custom.MyValueFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -43,6 +43,8 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
     protected BarChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
+    
+    private Typeface mTf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,30 +81,25 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart.setDrawGridBackground(false);
         // mChart.setDrawYLabels(false);
 
-        // sets the text size of the values inside the chart
-        mChart.setValueTextSize(10f);
-
-        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+        mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxisPosition.BOTTOM);
-        xAxis.setTypeface(tf);
+        xAxis.setTypeface(mTf);
         xAxis.setDrawGridLines(false);
         
         ValueFormatter custom = new MyValueFormatter();
 
         YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setTypeface(tf);
+        leftAxis.setTypeface(mTf);
         leftAxis.setLabelCount(8);
         leftAxis.setValueFormatter(custom);
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
-        rightAxis.setTypeface(tf);
+        rightAxis.setTypeface(mTf);
         rightAxis.setLabelCount(8);
         rightAxis.setValueFormatter(custom);
-        
-        mChart.setValueTypeface(tf);
 
         setData(12, 50);
 
@@ -265,6 +262,8 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         BarData data = new BarData(xVals, dataSets);
 //        data.setValueFormatter(new MyValueFormatter());
+        data.setValueTextSize(10f);
+        data.setValueTypeface(mTf);
 
         mChart.setData(data);
     }

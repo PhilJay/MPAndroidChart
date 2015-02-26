@@ -26,7 +26,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
-import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -59,7 +59,6 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
 
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
-        mChart.setValueTextColor(Color.WHITE);
         
         // no description text
         mChart.setDescription("");
@@ -318,6 +317,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
 
         // create a data object with the datasets
         LineData data = new LineData(xVals, dataSets);
+        data.setValueTextColor(Color.WHITE);
 
         // set data
         mChart.setData(data);

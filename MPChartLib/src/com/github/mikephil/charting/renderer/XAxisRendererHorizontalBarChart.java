@@ -93,6 +93,11 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
 
             position[1] = i * step + i * bd.getGroupSpace()
                     + bd.getGroupSpace() / 2f;
+            
+            // consider groups (center label for each group)
+            if (step > 1) {
+                position[1] += ((float) step - 1f) / 2f;
+            }
 
             mTrans.pointValuesToPixel(position);
 

@@ -1,6 +1,11 @@
 package com.xxmassdeveloper.mpchartexample.fragments;
 
+import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
@@ -17,11 +22,22 @@ import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.FileUtils;
-import com.xxmassdeveloper.mpchartexample.R;
 
 import java.util.ArrayList;
 
 public abstract class SimpleFragment extends Fragment {
+    
+    private Typeface tf;
+    
+    public SimpleFragment() {
+        
+    }
+    
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        tf = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Regular.ttf");
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
 
     protected BarData generateBarData(int dataSets, float range, int count) {
         
@@ -43,6 +59,7 @@ public abstract class SimpleFragment extends Fragment {
         }
         
         BarData d = new BarData(ChartData.generateXVals(0, count), sets);
+        d.setValueTypeface(tf);
         return d;
     }
     
@@ -69,6 +86,7 @@ public abstract class SimpleFragment extends Fragment {
         }
         
         ScatterData d = new ScatterData(ChartData.generateXVals(0, count), sets);
+        d.setValueTypeface(tf);
         return d;
     }
     
@@ -99,6 +117,7 @@ public abstract class SimpleFragment extends Fragment {
         ds1.setSliceSpace(2f);
         
         PieData d = new PieData(xVals, ds1);
+        d.setValueTypeface(tf);
         return d;
     }
     
@@ -135,6 +154,7 @@ public abstract class SimpleFragment extends Fragment {
         int max = Math.max(sets.get(0).getEntryCount(), sets.get(1).getEntryCount());
         
         LineData d = new LineData(ChartData.generateXVals(0, max),  sets);
+        d.setValueTypeface(tf);
         return d;
     }
     
@@ -174,6 +194,7 @@ public abstract class SimpleFragment extends Fragment {
         sets.add(ds4);
         
         LineData d = new LineData(ChartData.generateXVals(0, ds1.getEntryCount()), sets);
+        d.setValueTypeface(tf);
         return d;
     }
     

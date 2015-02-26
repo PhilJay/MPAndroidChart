@@ -26,6 +26,7 @@ import java.util.ArrayList;
 public class RadarChartActivitry extends DemoBase {
 
     private RadarChart mChart;
+    private Typeface tf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +37,7 @@ public class RadarChartActivitry extends DemoBase {
 
         mChart = (RadarChart) findViewById(R.id.chart1);
 
-        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-
-        mChart.setValueTypeface(tf);
+        tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
         mChart.setDescription("");
 
@@ -192,6 +191,7 @@ public class RadarChartActivitry extends DemoBase {
         sets.add(set2);
 
         RadarData data = new RadarData(xVals, sets);
+        data.setValueTypeface(tf);
 
         mChart.setData(data);
 

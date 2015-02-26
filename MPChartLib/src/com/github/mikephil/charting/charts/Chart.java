@@ -33,8 +33,8 @@ import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.ChartInterface;
-import com.github.mikephil.charting.interfaces.OnChartGestureListener;
-import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.renderer.DataRenderer;
 import com.github.mikephil.charting.renderer.LegendRenderer;
 import com.github.mikephil.charting.renderer.ViewPortHandler;
@@ -1088,23 +1088,32 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         mDrawMarkerViews = enabled;
     }
 
-    /**
-     * sets the draw color for the value paint object
-     *
-     * @param color
-     */
-    public void setValueTextColor(int color) {
-        mRenderer.getPaintValues().setColor(color);
-    }
-
-    /**
-     * Sets the font size of the values that are drawn inside the chart.
-     *
-     * @param size
-     */
-    public void setValueTextSize(float size) {
-        mRenderer.getPaintValues().setTextSize(Utils.convertDpToPixel(size));
-    }
+//    /**
+//     * sets the draw color for the value paint object
+//     *
+//     * @param color
+//     */
+//    public void setValueTextColor(int color) {
+//        mRenderer.getPaintValues().setColor(color);
+//    }
+//
+//    /**
+//     * Sets the font size of the values that are drawn inside the chart.
+//     *
+//     * @param size
+//     */
+//    public void setValueTextSize(float size) {
+//        mRenderer.getPaintValues().setTextSize(Utils.convertDpToPixel(size));
+//    }
+//
+//    /**
+//     * sets a typeface for the value-paint
+//     *
+//     * @param t
+//     */
+//    public void setValueTypeface(Typeface t) {
+//        mRenderer.getPaintValues().setTypeface(t);
+//    }
 
     /**
      * returns the x-value at the given index
@@ -1163,16 +1172,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public float getPercentOfTotal(float val) {
         return val / mData.getYValueSum() * 100f;
     }
-
-    /**
-     * sets a typeface for the value-paint
-     *
-     * @param t
-     */
-    public void setValueTypeface(Typeface t) {
-        mRenderer.getPaintValues().setTypeface(t);
-    }
-
+    
     /**
      * sets the typeface for the description paint
      *

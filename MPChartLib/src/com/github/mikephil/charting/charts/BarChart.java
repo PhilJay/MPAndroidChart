@@ -122,21 +122,34 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         if (xTouchVal < mXChartMin || xTouchVal > mXChartMax)
             return null;
 
+        return getHighlight(base);
+    }
+
+    /**
+     * Returns the correct Highlight object (including xIndex and dataSet-index)
+     * for the specified touch position.
+     * 
+     * @param touchPositionBase
+     * @return
+     */
+    protected Highlight getHighlight(double touchPositionBase) {
+
         int setCount = mData.getDataSetCount();
         int valCount = mData.getXValCount();
 
         if (setCount <= 1) {
-            return new Highlight((int) Math.round(base), 0);
+            return new Highlight((int) Math.round(touchPositionBase), 0);
         }
 
-        int steps = (int) ((float) base / ((float) setCount + mData.getGroupSpace()));
+        // calculate how often the group-space appears
+        int steps = (int) ((float) touchPositionBase / ((float) setCount + mData.getGroupSpace()));
 
         float groupSpaceSum = mData.getGroupSpace() * (float) steps;
 
-        float baseNoSpace = (float) base - groupSpaceSum;
+        float baseNoSpace = (float) touchPositionBase - groupSpaceSum;
 
         if (mLogEnabled)
-            Log.i(LOG_TAG, "base: " + base + ", steps: " + steps + ", groupSpaceSum: "
+            Log.i(LOG_TAG, "base: " + touchPositionBase + ", steps: " + steps + ", groupSpaceSum: "
                     + groupSpaceSum
                     + ", baseNoSpace: " + baseNoSpace);
 

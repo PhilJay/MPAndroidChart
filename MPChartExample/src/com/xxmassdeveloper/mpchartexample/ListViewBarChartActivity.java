@@ -66,7 +66,7 @@ public class ListViewBarChartActivity extends DemoBase {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            BarData c = getItem(position);
+            BarData data = getItem(position);
 
             ViewHolder holder = null;
 
@@ -85,10 +85,10 @@ public class ListViewBarChartActivity extends DemoBase {
             }
 
             // apply styling
-            holder.chart.setValueTypeface(mTf);
+            data.setValueTypeface(mTf);
             holder.chart.setDescription("");
             holder.chart.setDrawGridBackground(false);
-            holder.chart.setValueTextColor(Color.WHITE);
+            data.setValueTextColor(Color.WHITE);
 
             XAxis xAxis = holder.chart.getXAxis();
             xAxis.setPosition(XAxisPosition.BOTTOM);
@@ -106,7 +106,7 @@ public class ListViewBarChartActivity extends DemoBase {
             rightAxis.setSpaceTop(15f);
 
             // set data
-            holder.chart.setData(c);
+            holder.chart.setData(data);
             
             // do not forget to refresh the chart
 //            holder.chart.invalidate();

@@ -1,10 +1,12 @@
 
 package com.github.mikephil.charting.data;
 
+import android.graphics.Typeface;
 import android.util.Log;
 
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
 
 import java.util.ArrayList;
@@ -377,21 +379,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         return mYValCount;
     }
 
-    // /**
-    // * Checks if the ChartData object contains valid data
-    // *
-    // * @return
-    // */
-    // public boolean isValid() {
-    // if (mXVals == null || mXVals.size() < 1)
-    // return false;
-    //
-    // if (mDataSets == null || mDataSets.size() < 1)
-    // return false;
-    //
-    // return true;
-    // }
-
     /**
      * returns the x-values the chart represents
      * 
@@ -427,17 +414,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     public ArrayList<T> getDataSets() {
         return mDataSets;
     }
-
-    // /**
-    // * returns the Entries array from the DataSet at the given index. If a
-    // * filter is set, the filtered Entries are returned
-    // *
-    // * @param index
-    // * @return
-    // */
-    // public ArrayList<Entry> getYVals(int index) {
-    // return mDataSets.get(index).getYVals();
-    // }
 
     /**
      * Retrieve the index of a DataSet with a specific label from the ChartData.
@@ -807,21 +783,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         return -1;
     }
 
-    /**
-     * Sets a custom ValueFormatter for all DataSets this data object contains.
-     * 
-     * @param f
-     */
-    public void setValueFormatter(ValueFormatter f) {
-        if (f == null)
-            return;
-        else {
-            for (DataSet<?> set : mDataSets) {
-                set.setValueFormatter(f);
-            }
-        }
-    }
-
     public T getFirstLeft() {
         for (T dataSet : mDataSets) {
             if (dataSet.getAxisDependency() == AxisDependency.LEFT)
@@ -855,5 +816,56 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         }
 
         return xvals;
+    }
+
+    /**
+     * Sets a custom ValueFormatter for all DataSets this data object contains.
+     * 
+     * @param f
+     */
+    public void setValueFormatter(ValueFormatter f) {
+        if (f == null)
+            return;
+        else {
+            for (DataSet<?> set : mDataSets) {
+                set.setValueFormatter(f);
+            }
+        }
+    }
+
+    /**
+     * Sets the color of the value-text (color in which the value-labels are
+     * drawn) for all DataSets this data object contains.
+     * 
+     * @param color
+     */
+    public void setValueTextColor(int color) {
+        for (DataSet<?> set : mDataSets) {
+            set.setValueTextColor(color);
+        }
+    }
+
+    /**
+     * Sets the Typeface for all value-labels for all DataSets this data object
+     * contains.
+     * 
+     * @param color
+     */
+    public void setValueTypeface(Typeface tf) {
+        for (DataSet<?> set : mDataSets) {
+            set.setValueTypeface(tf);
+        }
+    }
+
+    /**
+     * Sets the size (in dp) of the value-text for all DataSets this data object
+     * contains.
+     * 
+     * @param color
+     */
+    public void setValueTextSize(float size) {
+        for (DataSet<?> set : mDataSets) {
+            set.setValueTextSize(size);
+        }
     }
 }

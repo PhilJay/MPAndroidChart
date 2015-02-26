@@ -140,6 +140,13 @@ public class PieChartRenderer extends DataRenderer {
         for (int i = 0; i < dataSets.size(); i++) {
 
             PieDataSet dataSet = dataSets.get(i);
+
+            if (!dataSet.isDrawValuesEnabled())
+                continue;
+
+            // apply the text-styling defined by the DataSet
+            applyValueTextStyle(dataSet);
+
             ArrayList<Entry> entries = dataSet.getYVals();
 
             for (int j = 0; j < entries.size() * mAnimator.getPhaseX(); j++) {

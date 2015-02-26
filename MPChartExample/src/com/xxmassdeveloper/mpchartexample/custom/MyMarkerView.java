@@ -9,7 +9,6 @@ import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.Utils;
 import com.xxmassdeveloper.mpchartexample.R;
-import com.xxmassdeveloper.mpchartexample.R.id;
 
 /**
  * Custom implementation of the MarkerView.

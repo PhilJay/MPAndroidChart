@@ -30,6 +30,8 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
     private LineChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
+    
+    private Typeface tf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +73,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
 
         mChart.setDrawGridBackground(false);
         
-        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-        mChart.setValueTypeface(tf);
+        tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
         
         XAxis x = mChart.getXAxis();
         x.setTypeface(tf);
@@ -281,6 +282,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
 
         // create a data object with the datasets
         LineData data = new LineData(xVals, dataSets);
+        data.setValueTypeface(tf);
 
         // set data
         mChart.setData(data);

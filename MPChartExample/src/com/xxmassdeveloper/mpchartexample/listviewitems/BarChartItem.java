@@ -48,7 +48,6 @@ public class BarChartItem extends ChartItem {
         }
 
         // apply styling
-        holder.chart.setValueTypeface(mTf);
         holder.chart.setDescription("");
         holder.chart.setDrawGridBackground(false);
         holder.chart.setDrawBarShadow(false);
@@ -69,6 +68,8 @@ public class BarChartItem extends ChartItem {
         rightAxis.setLabelCount(5);
         rightAxis.setSpaceTop(20f);
 
+        mChartData.setValueTypeface(mTf);
+        
         // set data
         holder.chart.setData((BarData) mChartData);
         

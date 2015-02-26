@@ -16,8 +16,8 @@ import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
-import com.github.mikephil.charting.interfaces.OnDrawListener;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.listener.OnDrawListener;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -72,8 +72,6 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
         yl.setTypeface(tf);
 
         mChart.getLegend().setEnabled(false);
-
-        mChart.setValueTypeface(tf);
 
         // mChart.setYRange(-40f, 40f, true);
         // call this to reset the changed y-range

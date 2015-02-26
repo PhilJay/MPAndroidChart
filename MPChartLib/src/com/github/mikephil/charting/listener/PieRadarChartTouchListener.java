@@ -10,7 +10,6 @@ import android.view.View.OnTouchListener;
 
 import com.github.mikephil.charting.charts.PieRadarChartBase;
 import com.github.mikephil.charting.charts.RadarChart;
-import com.github.mikephil.charting.interfaces.OnChartGestureListener;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;

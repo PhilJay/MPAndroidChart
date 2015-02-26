@@ -81,6 +81,8 @@ public class CombinedChartActivity extends DemoBase {
         set.setFillColor(Color.rgb(240, 238, 70));
         set.setDrawCubic(true);
         set.setDrawValues(true);
+        set.setValueTextSize(10f);
+        set.setValueTextColor(Color.rgb(240, 238, 70));
 
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
 
@@ -100,6 +102,8 @@ public class CombinedChartActivity extends DemoBase {
 
         BarDataSet set = new BarDataSet(entries, "Bar DataSet");
         set.setColor(Color.rgb(60, 220, 78));
+        set.setValueTextColor(Color.rgb(60, 220, 78));
+        set.setValueTextSize(10f);
         d.addDataSet(set);
 
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
@@ -120,6 +124,7 @@ public class CombinedChartActivity extends DemoBase {
         set.setColor(Color.GREEN);
         set.setScatterShapeSize(7.5f);
         set.setDrawValues(false);
+        set.setValueTextSize(10f);
         d.addDataSet(set);
 
         return d;
@@ -137,6 +142,7 @@ public class CombinedChartActivity extends DemoBase {
         CandleDataSet set = new CandleDataSet(entries, "Candle DataSet");
         set.setColor(Color.rgb(80, 80, 80));
         set.setBodySpace(0.3f);
+        set.setValueTextSize(10f);
         set.setDrawValues(false);
         d.addDataSet(set);
 

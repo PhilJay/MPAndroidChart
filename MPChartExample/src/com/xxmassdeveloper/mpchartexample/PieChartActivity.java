@@ -1,6 +1,7 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +19,7 @@ import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.PercentFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -31,6 +32,8 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
     private PieChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
+    
+    private Typeface tf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +60,8 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         // mChart.setHoleColor(Color.rgb(235, 235, 235));
         mChart.setHoleColorTransparent(true);
 
-        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+        tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
-        mChart.setValueTypeface(tf);
         mChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
 
         mChart.setHoleRadius(60f);
@@ -213,6 +215,9 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         PieData data = new PieData(xVals, dataSet);
         data.setValueFormatter(new PercentFormatter());
+        data.setValueTextSize(11f);
+        data.setValueTextColor(Color.WHITE);
+        data.setValueTypeface(tf);
         mChart.setData(data);
 
         // undo all highlights
