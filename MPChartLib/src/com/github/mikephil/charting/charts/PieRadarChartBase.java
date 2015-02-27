@@ -153,28 +153,6 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
                     + ", offsetRight: " + offsetRight + ", offsetBottom: " + offsetBottom);
     }
 
-    // /**
-    // * Applys the newly calculated offsets to the matrices.
-    // */
-    // private void applyCalculatedOffsets() {
-    //
-    // float scaleX = (float) ((getWidth() - mOffsetLeft - mOffsetRight) /
-    // mDeltaX);
-    // float scaleY = (float) ((getHeight() - mOffsetBottom - mOffsetTop) /
-    // mDeltaY);
-    //
-    // Matrix val = new Matrix();
-    // val.postTranslate(0, -mYChartMin);
-    // val.postScale(scaleX, -scaleY);
-    //
-    // mTrans.getValueMatrix().set(val);
-    //
-    // Matrix offset = new Matrix();
-    // offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
-    //
-    // mTrans.getOffsetMatrix().set(offset);
-    // }
-
     /** the angle where the dragging started */
     private float mStartAngle = 0f;
 
