@@ -41,10 +41,10 @@ public class ViewPortHandler {
         
     }
 
-    public ViewPortHandler(float width, float height) {
-        mChartHeight = height;
-        mChartWidth = width;
-    }
+//    public ViewPortHandler(float width, float height) {
+//        mChartHeight = height;
+//        mChartWidth = width;
+//    }
 
     public void setChartDimens(float width, float height) {
         mChartHeight = height;

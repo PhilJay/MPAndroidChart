@@ -267,6 +267,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         tvY.setText("" + (mSeekBarY.getProgress()));
 
         setData(mSeekBarX.getProgress() + 1, mSeekBarY.getProgress());
+       
         // redraw
         mChart.invalidate();
     }

@@ -75,6 +75,9 @@ public class LineChartActivityColored extends DemoBase {
         chart.setPinchZoom(false);
 
         chart.setBackgroundColor(color);
+        
+        // set custom chart offsets (automatic offset calculation is hereby disabled)
+        chart.setViewPortOffsets(10, 0, 10, 0);
 
         // add data
         chart.setData(data);
@@ -89,18 +92,10 @@ public class LineChartActivityColored extends DemoBase {
         l.setTextColor(Color.WHITE);
         l.setTypeface(mTf);
 
-        YAxis leftAxis = chart.getAxisLeft();
-        leftAxis.setTextColor(Color.WHITE);
-        leftAxis.setTypeface(mTf);
-        leftAxis.setLabelCount(4);
-        leftAxis.setDrawGridLines(false);
-        
+        chart.getAxisLeft().setEnabled(false);
         chart.getAxisRight().setEnabled(false);
 
-        XAxis x = chart.getXAxis();
-        x.setTextColor(Color.WHITE);
-        x.setTypeface(mTf);
-        x.setDrawGridLines(false);
+        chart.getXAxis().setEnabled(false);
 
         // animate calls invalidate()...
         chart.animateX(2500);

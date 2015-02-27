@@ -183,7 +183,7 @@ public class LegendRenderer extends Renderer {
         switch (legend.getPosition()) {
             case BELOW_CHART_LEFT:
                 
-                posX = mViewPortHandler.contentLeft();
+                posX = mViewPortHandler.contentLeft() + xoffset;
                 posY = mViewPortHandler.getChartHeight() - yoffset;
 
                 for (int i = 0; i < labels.length; i++) {
@@ -208,7 +208,7 @@ public class LegendRenderer extends Renderer {
                 break;
             case BELOW_CHART_RIGHT:
 
-                posX = mViewPortHandler.contentRight();
+                posX = mViewPortHandler.contentRight() - xoffset;;
                 posY = mViewPortHandler.getChartHeight() - yoffset;
 
                 for (int i = labels.length - 1; i >= 0; i--) {

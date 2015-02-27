@@ -313,62 +313,65 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     @Override
     protected void calculateOffsets() {
 
-        float offsetLeft = 0f, offsetRight = 0f, offsetTop = 0f, offsetBottom = 0f;
+        if (!mCustomViewPortEnabled) {
 
-        // setup offsets for legend
-        if (mLegend != null && mLegend.isEnabled()) {
+            float offsetLeft = 0f, offsetRight = 0f, offsetTop = 0f, offsetBottom = 0f;
 
-            if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART
-                    || mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART_CENTER) {
+            // setup offsets for legend
+            if (mLegend != null && mLegend.isEnabled()) {
 
-                offsetRight += mLegend.mTextWidthMax + mLegend.getXOffset() * 2f;
+                if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART
+                        || mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART_CENTER) {
 
-            } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
-                    || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
-                    || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
+                    offsetRight += mLegend.mTextWidthMax + mLegend.getXOffset() * 2f;
 
-                offsetBottom += mLegend.mTextHeightMax * 3f;
+                } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
+                        || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
+                        || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
+
+                    offsetBottom += mLegend.mTextHeightMax * 3f;
+                }
             }
-        }
 
-        // offsets for y-labels
-        if (mAxisLeft.isEnabled()) {
-            offsetLeft += mAxisLeft.getRequiredWidthSpace(mAxisRendererLeft.getAxisPaint());
-        }
-
-        if (mAxisRight.isEnabled()) {
-            offsetRight += mAxisRight.getRequiredWidthSpace(mAxisRendererRight.getAxisPaint());
-        }
-
-        float xlabelheight = mXAxis.mLabelHeight * 2f;
-
-        if (mXAxis.isEnabled()) {
-
-            // offsets for x-labels
-            if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
-
-                offsetBottom += xlabelheight;
-
-            } else if (mXAxis.getPosition() == XAxisPosition.TOP) {
-
-                offsetTop += xlabelheight;
-
-            } else if (mXAxis.getPosition() == XAxisPosition.BOTH_SIDED) {
-
-                offsetBottom += xlabelheight;
-                offsetTop += xlabelheight;
+            // offsets for y-labels
+            if (mAxisLeft.isEnabled()) {
+                offsetLeft += mAxisLeft.getRequiredWidthSpace(mAxisRendererLeft.getAxisPaint());
             }
-        }
 
-        float min = Utils.convertDpToPixel(10f);
+            if (mAxisRight.isEnabled()) {
+                offsetRight += mAxisRight.getRequiredWidthSpace(mAxisRendererRight.getAxisPaint());
+            }
 
-        mViewPortHandler.restrainViewPort(Math.max(min, offsetLeft), Math.max(min, offsetTop),
-                Math.max(min, offsetRight), Math.max(min, offsetBottom));
+            float xlabelheight = mXAxis.mLabelHeight * 2f;
 
-        if (mLogEnabled) {
-            Log.i(LOG_TAG, "offsetLeft: " + offsetLeft + ", offsetTop: " + offsetTop
-                    + ", offsetRight: " + offsetRight + ", offsetBottom: " + offsetBottom);
-            Log.i(LOG_TAG, "Content: " + mViewPortHandler.getContentRect().toString());
+            if (mXAxis.isEnabled()) {
+
+                // offsets for x-labels
+                if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
+
+                    offsetBottom += xlabelheight;
+
+                } else if (mXAxis.getPosition() == XAxisPosition.TOP) {
+
+                    offsetTop += xlabelheight;
+
+                } else if (mXAxis.getPosition() == XAxisPosition.BOTH_SIDED) {
+
+                    offsetBottom += xlabelheight;
+                    offsetTop += xlabelheight;
+                }
+            }
+
+            float min = Utils.convertDpToPixel(10f);
+
+            mViewPortHandler.restrainViewPort(Math.max(min, offsetLeft), Math.max(min, offsetTop),
+                    Math.max(min, offsetRight), Math.max(min, offsetBottom));
+
+            if (mLogEnabled) {
+                Log.i(LOG_TAG, "offsetLeft: " + offsetLeft + ", offsetTop: " + offsetTop
+                        + ", offsetRight: " + offsetRight + ", offsetBottom: " + offsetBottom);
+                Log.i(LOG_TAG, "Content: " + mViewPortHandler.getContentRect().toString());
+            }
         }
 
         prepareOffsetMatrix();
@@ -587,6 +590,43 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         getTransformer(axis).pointValuesToPixel(pts);
         mViewPortHandler.centerViewPort(pts, this);
+    }
+
+    /** flag that indicates if a custom viewport offset has been set */
+    private boolean mCustomViewPortEnabled = false;
+
+    /**
+     * Sets custom offsets for the current ViewPort (the offsets on the sides of
+     * the actual chart window). Setting this will prevent the chart from
+     * automatically calculating it's offsets. Use resetViewPortOffsets() to
+     * undo this.
+     * 
+     * @param left
+     * @param top
+     * @param right
+     * @param bottom
+     */
+    public void setViewPortOffsets(final float left, final float top,
+            final float right, final float bottom) {
+
+        mCustomViewPortEnabled = true;
+        
+        post(new Runnable() {
+            
+            @Override
+            public void run() {               
+                mViewPortHandler.restrainViewPort(left, top, right, bottom);
+            }
+        });
+    }
+
+    /**
+     * Resets all custom offsets set via setViewPortOffsets(...) method. Allows
+     * the chart to again calculate all offsets automatically.
+     */
+    public void resetViewPortOffsets() {
+        mCustomViewPortEnabled = false;
+        calculateOffsets();
     }
 
     /**
@@ -932,7 +972,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         }
         return null;
     }
-    
+
     /**
      * returns the DataSet object displayed at the touched position of the chart
      * 
