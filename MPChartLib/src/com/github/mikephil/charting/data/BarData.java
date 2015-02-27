@@ -13,10 +13,10 @@ public class BarData extends BarLineScatterCandleData<BarDataSet> {
     /** the space that is left between groups of bars */
     private float mGroupSpace = 0.8f;
 
-//    /**
-//     * The maximum space (in pixels on the screen) a single bar can consume.
-//     */
-//    private float mMaximumBarWidth = 100f;
+    // /**
+    // * The maximum space (in pixels on the screen) a single bar can consume.
+    // */
+    // private float mMaximumBarWidth = 100f;
 
     public BarData() {
         super();
@@ -77,24 +77,35 @@ public class BarData extends BarLineScatterCandleData<BarDataSet> {
     public void setGroupSpace(float percent) {
         mGroupSpace = percent / 100f;
     }
-//
-//    /**
-//     * Sets the maximum width (in density pixels) a single bar in the barchart
-//     * should consume.
-//     * 
-//     * @param max
-//     */
-//    public void setBarWidthMaximum(float max) {
-//        mMaximumBarWidth = Utils.convertDpToPixel(max);
-//    }
-//
-//    /**
-//     * Returns the maximum width (in density pixels) a single bar in the
-//     * barchart should consume.
-//     * 
-//     * @return
-//     */
-//    public float getBarWidthMaximum() {
-//        return mMaximumBarWidth;
-//    }
+
+    /**
+     * Returns true if this BarData object contains grouped DataSets (more than
+     * 1 DataSet).
+     * 
+     * @return
+     */
+    public boolean isGrouped() {
+        return mDataSets.size() > 1 ? true : false;
+    }
+    
+    //
+    // /**
+    // * Sets the maximum width (in density pixels) a single bar in the barchart
+    // * should consume.
+    // *
+    // * @param max
+    // */
+    // public void setBarWidthMaximum(float max) {
+    // mMaximumBarWidth = Utils.convertDpToPixel(max);
+    // }
+    //
+    // /**
+    // * Returns the maximum width (in density pixels) a single bar in the
+    // * barchart should consume.
+    // *
+    // * @return
+    // */
+    // public float getBarWidthMaximum() {
+    // return mMaximumBarWidth;
+    // }
 }

@@ -504,7 +504,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 Entry e = mData.getEntryForHighlight(high);
 
                 // notify the listener
-                mSelectionListener.onValueSelected(e, high.getDataSetIndex());
+                mSelectionListener.onValueSelected(e, high.getDataSetIndex(), high);
             }
         }
     }

@@ -98,21 +98,32 @@ public class BarEntry extends Entry {
 
         if (mVals == null)
             return 0;
+        
+        int index = mVals.length - 1;
+        float remainder = 0f;
 
-        float dist = 0f;
-        int closestIndex = 0;
-
-        for (int i = 0; i < mVals.length; i++) {
-
-            float newDist = Math.abs((getVal() - mVals[i]) - val);
-
-            if (newDist < dist && mVals[i] > val) {
-                dist = newDist;
-                closestIndex = i;
-            }
+        while(index > 0 && val > mVals[index] + remainder) {
+            remainder += mVals[index];
+            index--;
         }
-
-        return closestIndex;
+        
+        return index;
+    }
+    
+    public float getBelowSum(int stackIndex) {
+        
+        if (mVals == null)
+            return 0;
+        
+        float remainder = 0f;
+        int index = mVals.length - 1;
+        
+        while(index > stackIndex) {
+            remainder += mVals[index];
+            index--;
+        }
+        
+        return remainder;
     }
 
     /**

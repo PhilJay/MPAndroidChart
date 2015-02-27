@@ -2,6 +2,7 @@
 package com.github.mikephil.charting.listener;
 
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.utils.Highlight;
 
 /**
  * Listener for callbacks when selecting values inside the chart by
@@ -17,8 +18,10 @@ public interface OnChartValueSelectedListener {
      * @param e The selected Entry.
      * @param dataSetIndex The index in the datasets array of the data object
      *            the Entrys DataSet is in.
+     * @param h the corresponding highlight object that contains information
+     *            about the highlighted position
      */
-    public void onValueSelected(Entry e, int dataSetIndex);
+    public void onValueSelected(Entry e, int dataSetIndex, Highlight h);
 
     /**
      * Called when nothing has been selected or an "un-select" has been made.

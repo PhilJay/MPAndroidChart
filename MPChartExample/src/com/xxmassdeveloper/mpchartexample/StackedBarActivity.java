@@ -26,6 +26,7 @@ import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.Highlight;
 import com.xxmassdeveloper.mpchartexample.custom.MyValueFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -62,8 +63,9 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
         mChart.setMaxVisibleValueCount(60);
-        
-        // if false values are only drawn for the stack sum, else each value is drawn
+
+        // if false values are only drawn for the stack sum, else each value is
+        // drawn
         mChart.setDrawValuesForWholeStack(true);
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
@@ -72,7 +74,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 
         // change the position of the y-labels
         YAxis yLabels = mChart.getAxisLeft();
-//        yLabels.setPosition(YLabelPosition.BOTH_SIDED);
+        // yLabels.setPosition(YLabelPosition.BOTH_SIDED);
         yLabels.setLabelCount(5);
         yLabels.setValueFormatter(new MyValueFormatter());
 
@@ -199,20 +201,20 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         tvY.setText("" + (mSeekBarY.getProgress()));
 
         ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < mSeekBarX.getProgress()+1; i++) {
+        for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
             xVals.add(mMonths[i % mMonths.length]);
         }
 
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
 
-        for (int i = 0; i < mSeekBarX.getProgress()+1; i++) {
+        for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
             float mult = (mSeekBarY.getProgress() + 1);
             float val1 = (float) (Math.random() * mult) + mult / 3;
             float val2 = (float) (Math.random() * mult) + mult / 3;
             float val3 = (float) (Math.random() * mult) + mult / 3;
 
             yVals1.add(new BarEntry(new float[] {
-                     val1, val2, val3
+                    val1, val2, val3
             }, i));
         }
 
@@ -245,10 +247,11 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
     }
 
     @Override
-    public void onValueSelected(Entry e, int dataSetIndex) {
+    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+
+        BarEntry entry = (BarEntry) e;
         Log.i("VAL SELECTED",
-                "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
-                        + ", DataSet index: " + dataSetIndex);
+                "Value: " + entry.getVals()[h.getStackIndex()]);
     }
 
     @Override

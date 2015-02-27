@@ -222,7 +222,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                             for (int k = 0; k < transformed.length; k += 2) {
 
                                 add -= vals[cnt];
-                                transformed[k + 1] = (vals[cnt] + add) * mAnimator.getPhaseY();
+                                transformed[k] = (vals[cnt] + add) * mAnimator.getPhaseY();
                                 cnt++;
                             }
 
@@ -230,8 +230,8 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
                             for (int k = 0; k < transformed.length; k += 2) {
 
-                                drawValue(c, vals[k / 2], valuePoints[j],
-                                        transformed[k + 1]
+                                drawValue(c, vals[k / 2],
+                                        transformed[k], valuePoints[j+1]
                                                 + (vals[k / 2] >= 0 ? posOffset : negOffset),
                                         formatter);
                             }

@@ -11,7 +11,6 @@ import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.BarDataProvider;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Transformer;
@@ -333,7 +332,7 @@ public class BarChartRenderer extends DataRenderer {
             if (index < mChart.getBarData().getYValCount() && index >= 0
                     && index < (mChart.getXChartMax() * mAnimator.getPhaseX()) / setCount) {
 
-                Entry e = mChart.getBarData().getDataSetByIndex(dataSetIndex)
+                BarEntry e = mChart.getBarData().getDataSetByIndex(dataSetIndex)
                         .getEntryForXIndex(index);
 
                 if (e == null)
@@ -344,7 +343,7 @@ public class BarChartRenderer extends DataRenderer {
                 // calculate the correct x-position
                 float x = index * setCount + dataSetIndex + groupspace / 2f
                         + groupspace * index;
-                float y = e.getVal();
+                float y = h.getStackIndex() < 0 ? e.getVal() : e.getVals()[h.getStackIndex()] + e.getBelowSum(h.getStackIndex());
 
                 prepareBar(x, y, set.getBarSpace(), trans);
 

@@ -45,7 +45,7 @@ public class BarDataSet extends BarLineScatterCandleDataSet<BarEntry> {
 
     @Override
     public DataSet<BarEntry> copy() {
-        
+
         ArrayList<BarEntry> yVals = new ArrayList<BarEntry>();
 
         for (int i = 0; i < mYVals.size(); i++) {
@@ -106,6 +106,15 @@ public class BarDataSet extends BarLineScatterCandleDataSet<BarEntry> {
      */
     public int getStackSize() {
         return mStackSize;
+    }
+
+    /**
+     * Returns true if this DataSet is stacked (stacksize > 1) or not.
+     * 
+     * @return
+     */
+    public boolean isStacked() {
+        return mStackSize > 1 ? true : false;
     }
 
     /**

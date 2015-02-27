@@ -156,13 +156,9 @@ public class HorizontalBarChart extends BarChart {
 
         mLeftAxisTransformer.pixelsToValue(pts);
 
-        // for barchart, we only need x-val
-        double yTouchVal = pts[1];
-        double base = yTouchVal;
-
-        if (yTouchVal < mXChartMin || yTouchVal > mXChartMax)
+        if (pts[1] < mXChartMin || pts[1] > mXChartMax)
             return null;
 
-        return getHighlight(base);
+        return getHighlight(pts[1], pts[0]);
     }
 }
