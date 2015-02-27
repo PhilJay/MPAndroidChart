@@ -932,6 +932,21 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         }
         return null;
     }
+    
+    /**
+     * returns the DataSet object displayed at the touched position of the chart
+     * 
+     * @param x
+     * @param y
+     * @return
+     */
+    public BarLineScatterCandleDataSet<? extends Entry> getDataSetByTouchPoint(float x, float y) {
+        Highlight h = getHighlightByTouchPoint(x, y);
+        if (h != null) {
+            return mData.getDataSetByIndex(h.getDataSetIndex());
+        }
+        return null;
+    }
 
     /**
      * returns the current x-scale factor
@@ -1094,6 +1109,19 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
     public float getYChartMin() {
         return Math.min(mAxisLeft.mAxisMinimum, mAxisRight.mAxisMinimum);
+    }
+
+    /**
+     * Returns true if either the left or the right or both axes are inverted.
+     * 
+     * @return
+     */
+    public boolean isAnyAxisInverted() {
+        if (mAxisLeft.isInverted())
+            return true;
+        if (mAxisRight.isInverted())
+            return true;
+        return false;
     }
 
     /**

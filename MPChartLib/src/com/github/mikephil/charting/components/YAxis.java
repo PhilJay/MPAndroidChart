@@ -187,11 +187,11 @@ public class YAxis extends AxisBase {
 
     /**
      * If this is set to true, the y-axis is inverted which means that low
-     * values are on top of the chart, high values on bottom.
+     * values are on top of the chart, high values on bottom. 
      * 
      * @param enabled
      */
-    public void setInvertAxis(boolean enabled) {
+    public void setInverted(boolean enabled) {
         mInverted = enabled;
     }
 
@@ -341,17 +341,17 @@ public class YAxis extends AxisBase {
     }
 
     public float getRequiredWidthSpace(Paint p) {
-        
+
         p.setTextSize(mTextSize);
-        
+
         String label = getLongestLabel();
         return (float) Utils.calcTextWidth(p, label) + getXOffset() * 2f;
     }
 
     public float getRequiredHeightSpace(Paint p) {
-        
+
         p.setTextSize(mTextSize);
-        
+
         String label = getLongestLabel();
         return (float) Utils.calcTextHeight(p, label) + getYOffset() * 2f;
     }

@@ -14,6 +14,7 @@ import android.view.View.OnTouchListener;
 import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.data.BarLineScatterCandleData;
 import com.github.mikephil.charting.data.BarLineScatterCandleDataSet;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.renderer.ViewPortHandler;
 import com.github.mikephil.charting.utils.Highlight;
@@ -57,6 +58,8 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
     /** the last highlighted object */
     private Highlight mLastHighlighted;
+
+    private DataSet<?> mClosestDataSetToTouch;
 
     /** the chart the listener represents */
     private T mChart;
@@ -182,6 +185,8 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
         mSavedMatrix.set(mMatrix);
         mTouchStartPoint.set(event.getX(), event.getY());
+
+        mClosestDataSetToTouch = mChart.getDataSetByTouchPoint(event.getX(), event.getY());
     }
 
     /**
@@ -195,16 +200,16 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
         PointF dragPoint = new PointF(event.getX(), event.getY());
 
         // check if axis is inverted
-//        if (mChart.isInvertYAxisEnabled()) {
-//            
-//            
-//            mMatrix.postTranslate(dragPoint.x - mTouchStartPoint.x, -(dragPoint.y
-//                    - mTouchStartPoint.y));
-//        } 
-//        else {
+        if (mChart.isAnyAxisInverted() && mClosestDataSetToTouch != null
+                && mChart.getAxis(mClosestDataSetToTouch.getAxisDependency()).isInverted()) {
+
+            mMatrix.postTranslate(dragPoint.x - mTouchStartPoint.x, -(dragPoint.y
+                    - mTouchStartPoint.y));
+        }
+        else {
             mMatrix.postTranslate(dragPoint.x - mTouchStartPoint.x, dragPoint.y
                     - mTouchStartPoint.y);
-//        }
+        }
     }
 
     /**
@@ -336,20 +341,19 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
      * @return
      */
     public PointF getTrans(float x, float y) {
-        
+
         ViewPortHandler vph = mChart.getViewPortHandler();
 
         float xTrans = x - vph.offsetLeft();
         float yTrans = 0f;
 
         // check if axis is inverted
-//        if (mChart.isInvertYAxisEnabled()) {
-//            yTrans = -(y - vph.offsetTop());
-//        } 
-//        else {
-                
+        if (mChart.isAnyAxisInverted() && mClosestDataSetToTouch != null
+                && mChart.getAxis(mClosestDataSetToTouch.getAxisDependency()).isInverted()) {
+            yTrans = -(y - vph.offsetTop());
+        } else {
             yTrans = -(mChart.getMeasuredHeight() - y - vph.offsetBottom());
-//        }
+        }
 
         return new PointF(xTrans, yTrans);
     }
@@ -409,21 +413,21 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
             l.onChartLongPressed(e);
         }
-//        else if (mTouchMode == NONE) {
-//
-//            mChart.fitScreen();
-//
-//            Log.i("BarlineChartTouch",
-//                    "Longpress, resetting zoom and drag, adjusting chart bounds to screen.");
-//
-//            // PointF trans = getTrans(e.getX(), e.getY());
-//            //
-//            // mChart.zoomOut(trans.x, trans.y);
-//            //
-//            // Log.i("BarlineChartTouch", "Longpress, Zooming Out, x: " +
-//            // trans.x +
-//            // ", y: " + trans.y);
-//        }
+        // else if (mTouchMode == NONE) {
+        //
+        // mChart.fitScreen();
+        //
+        // Log.i("BarlineChartTouch",
+        // "Longpress, resetting zoom and drag, adjusting chart bounds to screen.");
+        //
+        // // PointF trans = getTrans(e.getX(), e.getY());
+        // //
+        // // mChart.zoomOut(trans.x, trans.y);
+        // //
+        // // Log.i("BarlineChartTouch", "Longpress, Zooming Out, x: " +
+        // // trans.x +
+        // // ", y: " + trans.y);
+        // }
     }
 
     @Override

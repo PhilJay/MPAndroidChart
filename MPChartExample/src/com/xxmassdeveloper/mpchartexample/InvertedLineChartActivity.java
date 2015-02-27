@@ -15,6 +15,7 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -59,10 +60,6 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
         // no description text
         mChart.setDescription("");
 
-        // invert the y-axis
-        // MAKE THIS RIGHT
-//        mChart.setInvertYAxisEnabled(true);
-
         // enable value highlighting
         mChart.setHighlightEnabled(true);
 
@@ -92,6 +89,12 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
         
         XAxis xl = mChart.getXAxis();
         xl.setAvoidFirstLastClipping(true);
+        
+        YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.setInverted(true);
+        
+        YAxis rightAxis = mChart.getAxisRight();
+        rightAxis.setEnabled(false);
 
         // add data
         setData(25, 50);
