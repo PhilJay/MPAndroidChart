@@ -3,11 +3,17 @@ package com.github.mikephil.charting.charts;
 
 import android.content.Context;
 import android.graphics.Matrix;
+import android.graphics.PointF;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
+import com.github.mikephil.charting.components.YAxis.AxisDependency;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.renderer.HorizontalBarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart;
 import com.github.mikephil.charting.renderer.YAxisRendererHorizontalBarChart;
@@ -131,6 +137,47 @@ public class HorizontalBarChart extends BarChart {
         mXAxis.mAxisLabelModulus = (int) Math
                 .ceil((mData.getXValCount() * mXAxis.mLabelHeight)
                         / (mViewPortHandler.contentHeight() * values[Matrix.MSCALE_Y]));
+    }
+
+    @Override
+    public RectF getBarBounds(BarEntry e) {
+
+        BarDataSet set = mData.getDataSetForEntry(e);
+
+        if (set == null)
+            return null;
+
+        float barspace = set.getBarSpace();
+        float y = e.getVal();
+        float x = e.getXIndex();
+
+        float spaceHalf = barspace / 2f;
+
+        float top = x - 0.5f + spaceHalf;
+        float bottom = x + 0.5f - spaceHalf;
+        float left = y >= 0 ? y : 0;
+        float right = y <= 0 ? y : 0;
+        
+        RectF bounds = new RectF(left, top, right, bottom);
+
+        getTransformer(set.getAxisDependency()).rectValueToPixel(bounds);
+
+        return bounds;
+    }
+    
+    @Override
+    public PointF getPosition(Entry e, AxisDependency axis) {
+
+        if (e == null)
+            return null;
+
+        float[] vals = new float[] {
+                e.getVal(), e.getXIndex()
+        };
+
+        getTransformer(axis).pointValuesToPixel(vals);
+
+        return new PointF(vals[0], vals[1]);
     }
     
     /**

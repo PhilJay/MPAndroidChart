@@ -323,6 +323,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
         // create a data object with the datasets
         LineData data = new LineData(xVals, dataSets);
+        data.setValueTextSize(10f);
 
         LimitLine ll1 = new LimitLine(130f, "Upper Limit");
         ll1.setLineWidth(4f);

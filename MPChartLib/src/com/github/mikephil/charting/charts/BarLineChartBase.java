@@ -689,13 +689,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 e.getXIndex(), e.getVal()
         };
 
-        if (this instanceof BarChart) {
-
-            BarDataSet set = (BarDataSet) mData.getDataSetForEntry(e);
-            if (set != null)
-                vals[0] += set.getBarSpace() / 2f;
-        }
-
         getTransformer(axis).pointValuesToPixel(vals);
 
         return new PointF(vals[0], vals[1]);

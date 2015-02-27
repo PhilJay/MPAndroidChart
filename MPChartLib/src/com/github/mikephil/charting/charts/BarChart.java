@@ -223,12 +223,14 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         float y = e.getVal();
         float x = e.getXIndex();
 
+        float barWidth = 0.5f;
+
         float spaceHalf = barspace / 2f;
-        float left = x - 0.5f + spaceHalf;
-        float right = x + 0.5f - spaceHalf;
+        float left = x - barWidth + spaceHalf;
+        float right = x + barWidth - spaceHalf;
         float top = y >= 0 ? y : 0;
         float bottom = y <= 0 ? y : 0;
-
+        
         RectF bounds = new RectF(left, top, right, bottom);
 
         getTransformer(set.getAxisDependency()).rectValueToPixel(bounds);

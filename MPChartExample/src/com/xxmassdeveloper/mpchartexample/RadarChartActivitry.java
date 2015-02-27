@@ -192,6 +192,7 @@ public class RadarChartActivitry extends DemoBase {
         RadarData data = new RadarData(xVals, sets);
         data.setValueTypeface(tf);
         data.setValueTextSize(8f);
+        data.setDrawValues(false);
 
         mChart.setData(data);
 

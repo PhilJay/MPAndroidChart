@@ -41,7 +41,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
     protected HorizontalBarChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
-    
+
     private Typeface tf;
 
     @Override
@@ -59,10 +59,10 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
         mChart = (HorizontalBarChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
-//        mChart.setHighlightEnabled(false);
-        
+        // mChart.setHighlightEnabled(false);
+
         mChart.setDrawBarShadow(false);
-        
+
         mChart.setDrawValueAboveBar(true);
 
         mChart.setDescription("");
@@ -76,7 +76,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
         // draw shadows for each bar that show the maximum value
         // mChart.setDrawBarShadow(true);
-        
+
         // mChart.setDrawXLabels(false);
 
         mChart.setDrawGridBackground(false);
@@ -90,17 +90,19 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         xl.setTypeface(tf);
         xl.setDrawAxisLine(true);
         xl.setDrawGridLines(true);
-//        xl.setEnabled(false);
+        xl.setGridLineWidth(0.3f);
+        // xl.setEnabled(false);
 
         YAxis yl = mChart.getAxisLeft();
         yl.setTypeface(tf);
         yl.setDrawAxisLine(true);
         yl.setDrawGridLines(true);
+        yl.setGridLineWidth(0.3f);
 
         YAxis yr = mChart.getAxisRight();
         yr.setTypeface(tf);
         yr.setDrawAxisLine(true);
-        yr.setDrawGridLines(true);
+        yr.setDrawGridLines(false);
 
         setData(12, 50);
         mChart.animateY(2500);
@@ -275,7 +277,8 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
             return;
 
         RectF bounds = mChart.getBarBounds((BarEntry) e);
-        PointF position = mChart.getPosition(e, AxisDependency.LEFT);
+        PointF position = mChart.getPosition(e, mChart.getData().getDataSetByIndex(dataSetIndex)
+                .getAxisDependency());
 
         Log.i("bounds", bounds.toString());
         Log.i("position", position.toString());

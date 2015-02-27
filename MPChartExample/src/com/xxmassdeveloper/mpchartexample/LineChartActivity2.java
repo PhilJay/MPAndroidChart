@@ -322,6 +322,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         // create a data object with the datasets
         LineData data = new LineData(xVals, dataSets);
         data.setValueTextColor(Color.WHITE);
+        data.setValueTextSize(9f);
 
         // set data
         mChart.setData(data);

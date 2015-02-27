@@ -283,6 +283,8 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         // create a data object with the datasets
         LineData data = new LineData(xVals, dataSets);
         data.setValueTypeface(tf);
+        data.setValueTextSize(9f);
+        data.setDrawValues(false);
 
         // set data
         mChart.setData(data);

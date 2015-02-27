@@ -60,11 +60,14 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
         ArrayList<ContentItem> objects = new ArrayList<ContentItem>();
 
-        objects.add(new ContentItem("Line Chart 1", "A simple demonstration of the linechart."));
-        objects.add(new ContentItem("Line Chart 2", "Another simple demonstration of the linechart."));
-		objects.add(new ContentItem("Bar Chart", "A simple demonstration of the bar chart."));
-		objects.add(new ContentItem("Horizontal Bar Chart", "A simple demonstration of the horizontal bar chart."));
-		objects.add(new ContentItem("Combined Chart", "Demonstrates how to create a combined chart."));
+        objects.add(new ContentItem("Line Chart", "A simple demonstration of the linechart."));
+        objects.add(new ContentItem("Line Chart (Dual YAxis)",
+                "Demonstration of the linechart with dual y-axis."));
+        objects.add(new ContentItem("Bar Chart", "A simple demonstration of the bar chart."));
+        objects.add(new ContentItem("Horizontal Bar Chart",
+                "A simple demonstration of the horizontal bar chart."));
+        objects.add(new ContentItem("Combined Chart",
+                "Demonstrates how to create a combined chart (bar and line in this case)."));
         objects.add(new ContentItem("Pie Chart", "A simple demonstration of the pie chart."));
         objects.add(new ContentItem("Scatter Chart", "A simple demonstration of the scatter chart."));
         objects.add(new ContentItem("Stacked Bar Chart",
@@ -79,7 +82,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 "Demonstration of drawing values into the chart per touch-gesture. With callbacks."));
         objects.add(new ContentItem(
                 "Charts in Fragments, awesome design.",
-                "Demonstration of charts inside Fragments. In this example the focus was on the design and look and feel of the chart."));
+                "Demonstration of charts inside ViewPager Fragments. In this example the focus was on the design and look and feel of the chart."));
         objects.add(new ContentItem(
                 "BarChart inside ListView",
                 "Demonstrates the usage of a BarChart inside a ListView item."));
@@ -103,7 +106,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 "Shows a LineChart with different background and line color."));
         objects.add(new ContentItem(
                 "Realtime Chart",
-                "This chart is fed with new data in realtime."));
+                "This chart is fed with new data in realtime. It also restrains the view on the x-axis."));
         objects.add(new ContentItem(
                 "Dynamical data adding",
                 "This Activity demonstrates dynamical adding of Entries and DataSets (real time graph)."));
@@ -130,15 +133,15 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 i = new Intent(this, LineChartActivity2.class);
                 startActivity(i);
                 break;
-			case 2:
-				i = new Intent(this, BarChartActivity.class);
-				startActivity(i);
-				break;
-			case 3:
-				i = new Intent(this, HorizontalBarChartActivity.class);
-				startActivity(i);
-				break;
-			case 4:
+            case 2:
+                i = new Intent(this, BarChartActivity.class);
+                startActivity(i);
+                break;
+            case 3:
+                i = new Intent(this, HorizontalBarChartActivity.class);
+                startActivity(i);
+                break;
+            case 4:
                 i = new Intent(this, CombinedChartActivity.class);
                 startActivity(i);
                 break;
@@ -167,8 +170,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 startActivity(i);
                 break;
             case 11:
-//                 i = new Intent(this, DrawChartActivity.class);
-//                 startActivity(i);
+                // i = new Intent(this, DrawChartActivity.class);
+                // startActivity(i);
 
                 AlertDialog.Builder b = new AlertDialog.Builder(this);
                 b.setTitle("Feature not available");
@@ -208,7 +211,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 i = new Intent(this, LineChartActivityColored.class);
                 startActivity(i);
                 break;
-            case 20 :
+            case 20:
                 i = new Intent(this, RealtimeLineChartActivity.class);
                 startActivity(i);
                 break;
