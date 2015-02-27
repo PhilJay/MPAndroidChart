@@ -157,6 +157,8 @@ Getting Started
 
 For getting started, rely on the **"MPChartExample"** folder and check out the examples in that project. The example project is also  [**available in the Google PlayStore**](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample). 
 
+For a **detailed documentation**, please refer the [**Wiki**](https://github.com/PhilJay/MPAndroidChart/wiki).
+
 Furthermore, here is some code to begin with.
 
 **Setup:**
