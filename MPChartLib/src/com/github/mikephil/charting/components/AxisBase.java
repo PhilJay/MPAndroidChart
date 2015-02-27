@@ -14,6 +14,8 @@ public abstract class AxisBase extends ComponentBase {
 
     private int mGridColor = Color.GRAY;
 
+    private float mGridLineWidth = 1f;
+
     private int mAxisLineColor = Color.GRAY;
 
     private float mAxisLineWidth = 1f;
@@ -106,6 +108,26 @@ public abstract class AxisBase extends ComponentBase {
      */
     public float getAxisLineWidth() {
         return mAxisLineWidth;
+    }
+
+    /**
+     * Sets the width of the grid lines that are drawn away from each axis
+     * label.
+     * 
+     * @param width
+     */
+    public void setGridLineWidth(float width) {
+        mGridLineWidth = Utils.convertDpToPixel(width);
+    }
+
+    /**
+     * Returns the width of the grid lines that are drawn away from each axis
+     * label.
+     * 
+     * @return
+     */
+    public float getGridLineWidth() {
+        return mGridLineWidth;
     }
 
     /**

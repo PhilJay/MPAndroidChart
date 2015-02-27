@@ -245,6 +245,7 @@ public class YAxisRenderer extends AxisRenderer {
         float[] position = new float[2];
 
         mGridPaint.setColor(mYAxis.getGridColor());
+        mGridPaint.setStrokeWidth(mYAxis.getGridLineWidth());
 
         // draw the horizontal grid
         for (int i = 0; i < mYAxis.mEntryCount; i++) {

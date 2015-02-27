@@ -164,6 +164,7 @@ public class XAxisRenderer extends AxisRenderer {
         };
 
         mGridPaint.setColor(mXAxis.getGridColor());
+        mGridPaint.setStrokeWidth(mXAxis.getGridLineWidth());
 
         for (int i = 0; i < mXAxis.getValues().size(); i += mXAxis.mAxisLabelModulus) {
 

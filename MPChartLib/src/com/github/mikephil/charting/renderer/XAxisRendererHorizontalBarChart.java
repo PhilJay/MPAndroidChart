@@ -117,6 +117,9 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
         float[] position = new float[] {
                 0f, 0f
         };
+        
+        mGridPaint.setColor(mXAxis.getGridColor());
+        mGridPaint.setStrokeWidth(mXAxis.getGridLineWidth());
 
         BarData bd = mChart.getData();
         // take into consideration that multiple DataSets increase mDeltaX
