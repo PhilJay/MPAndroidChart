@@ -201,7 +201,6 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         BarEntry entry = mData.getDataSetByIndex(dataSet).getEntryForXIndex(xIndex);
         int stackIndex = entry.getClosestIndexAbove((float) yValue);
         Highlight h = new Highlight(xIndex, dataSet, stackIndex);
-        Log.i(LOG_TAG, h.toString());
         return h;
     }
 
