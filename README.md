@@ -52,14 +52,14 @@ Features
 
 **Core features:**
  - Scaling on both axes (with touch-gesture, axes separately or pinch-zoom)
- - Dragging (with touch-gesture)
+ - Dragging / Panning (with touch-gesture)
  - Finger drawing (draw values into the chart with touch-gesture)
  - Highlighting values (with customizeable popup-views)
+ - Multiple / Separate Axes
  - Save chart to SD-Card (as image, or as .txt file)
- - Read .txt file chart-data
  - Predefined color templates
  - Legends (generated automatically, customizeable)
- - Labels (both x- and y-axis, customizeable)
+ - Customizeable Axes (both x- and y-axis)
  - Animations (build up animations, on both x- and y-axis)
  - Limit lines (providing additional information, maximums, ...)
  - Fully customizeable (paints, typefaces, legends, colors, background, gestures, dashed lines, ...)
@@ -165,80 +165,6 @@ For a **detailed documentation**, please refer the [**Wiki**](https://github.com
  - <code>setScaleMinima(float x, float y)</code>: Sets the minimum scale factors for x- and y-axis. If set for example to 3f, the user will not be able to fully zoom out.
  - <code>centerViewPort(int xIndex, float val)</code>: This method makes it possible to aim the center of the view (what you can see from the chart) to a specific position inside the chart, described by the index on the x-axis and the value on the y-axis. This also works very well in combination with the `setScaleMinima(...)` method.
  - <code>fitScreen()</code>: Resets all zooming and dragging and makes the chart fit exactly it's bounds.
-
-**Adding data:**
-
-If you want to add values (data) to the chart, it has to be done via the 
-
-```java
-    setData(ChartData data);
-```
-method. The baseclass <code>ChartData</code> class encapsulates all data and information that is needed for the chart during rendering. For each type of chart, a different subclass of `ChartData` (e.g. `LineData`) exists that should be used for setting data for the chart. In the constructor, you can hand over an <code>ArrayList<? extends DataSet></code> as the values to display, and an additional <code>ArrayList</code> of <code>String</code> that will describe the labels on the x-axis. Example with the class `LineData` (extends `ChartData`), which is used for adding data to a `LineChart`:
-
-```java
-    public LineData(ArrayList<String> xVals, ArrayList<LineDataSet> sets) { ... }
-```
-
-So, what is a <code>DataSet</code> and why do you need it? That is actually pretty simple. One <code>DataSet</code> object represents a group of entries (datatype <code>Entry</code>) inside the chart that belong together. It is designed to **logically separate different groups of values in the chart**. For each type of chart, a differnt object that extends `DataSet` (e.g. `LineDataSet`) exists that allows specific styling. 
-
-As an example, you might want to display the quarterly revenue of two different companies over one year in a `LineChart`. In that case, it would be recommended to create two different <code>LineDataSet</code> objects, each containing four values (one for each quarter). As an <code>ArrayList<String></code> to describe the labels on the x-axis, you would simply provide the four Strings "1.Q", "2.Q", "3.Q", "4.Q".
-
-Of course, it is also possible to provide just one <code>LineDataSet</code> object containing all 8 values for the two companys. 
-
-So how to setup a <code>LineDataSet</code> object?
-```java
-    public LineDataSet(ArrayList<Entry> yVals, String label) { ... }
-```
-
-When looking at the constructor, it is visible that the <code>LineDataSet</code> needs an <code>ArrayList</code> of type <code>Entry</code> and a `String` used to describe the `LineDataSet` and as a label used for the `Legend`. Furthermore this label can be used to find the `LineDataSet` amongst other `LineDataSet` objects in the `LineData` object.
-
-The <code>ArrayList</code> of type <code>Entry</code> encapsulates all values of the chart. A <code>Entry</code> object is an additional wrapper around a value and holds the value itself, and it's position on the x-axis (the index inside the <code>ArrayList</code> of <code>String</code> of the <code>LineData</code> object the value is mapped to):
-```java
-    public Entry(float val, int xIndex) { ... }
-```
-
-Putting it all together (example of two companies with quarterly revenue over one year):
-
-At first, create the lists of type <code>Entry</code> that will hold your values:
-
-```java
-    ArrayList<Entry> valsComp1 = new ArrayList<Entry>();
-    ArrayList<Entry> valsComp2 = new ArrayList<Entry>();
-```
-Then, fill the lists with <code>Entry</code> objects. Make sure the entry objects contain the correct indices to the x-axis. (of course, a loop can be used here, in that case, the counter variable of the loop could be the index on the x-axis).
-
-```java
-    Entry c1e1 = new Entry(100.000f, 0); // 0 == quarter 1
-    valsComp1.add(c1e1);
-    Entry c1e2 = new Entry(50.000f, 1); // 1 == quarter 2 ...
-    valsComp1.add(c1e2);
-    // and so on ...
-    
-    Entry c2e1 = new Entry(120.000f, 0); // 0 == quarter 1
-    valsComp2.add(c2e1);
-    Entry c2e2 = new Entry(110.000f, 1); // 1 == quarter 2 ...
-    valsComp2.add(c2e2);
-    //...
-```
-
-Now that we have our lists of <code>Entry</code> objects, the <code>LineDataSet</code> objects can be created:
-```java
-    LineDataSet setComp1 = new LineDataSet(valsComp1, "Company 1");
-    LineDataSet setComp2 = new LineDataSet(valsComp2, "Company 2");
-```
-Last but not least, we create a list of <code>DataSets</code> and a list of x legend entries and build our <code>ChartData</code> object:
-
-```java
-    ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
-    dataSets.add(setComp1);
-    dataSets.add(setComp2);
-    
-    ArrayList<String> xVals = new ArrayList<String>();
-    xVals.add("1.Q"); xVals.add("2.Q"); xVals.add("3.Q"); xVals.add("4.Q"); 
-    
-    LineData data = new LineData(xVals, dataSets);
-    mLineChart.setData(data);
-```
 
 **Setting colors:**
 
