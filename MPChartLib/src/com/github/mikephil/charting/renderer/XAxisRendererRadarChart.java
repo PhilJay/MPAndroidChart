@@ -19,9 +19,9 @@ public class XAxisRendererRadarChart extends XAxisRenderer {
     }
 
     @Override
-    public void renderAxis(Canvas c) {
+    public void renderAxisLabels(Canvas c) {
 
-        if (!mXAxis.isEnabled())
+        if (!mXAxis.isEnabled() || !mXAxis.isDrawLabelsEnabled())
             return;
 
         mAxisPaint.setTypeface(mXAxis.getTypeface());

@@ -11,21 +11,21 @@ import com.github.mikephil.charting.utils.Utils;
  * @author Philipp Jahoda
  */
 public abstract class AxisBase extends ComponentBase {
-    
+
     private int mGridColor = Color.GRAY;
 
     private int mAxisLineColor = Color.GRAY;
 
     private float mAxisLineWidth = 1f;
 
-    /** flag that indicates if this axis is enabled or not */
-    protected boolean mEnabled = true;
-
     /** flag indicating if the grid lines for this axis should be drawn */
     protected boolean mDrawGridLines = true;
 
     /** flag that indicates if the line alongside the axis is drawn or not */
     protected boolean mDrawAxisLine = true;
+
+    /** flag that indicates of the labels of this axis should be drawn or not */
+    protected boolean mDrawLabels = true;
 
     /** default constructor */
     public AxisBase() {
@@ -127,25 +127,27 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
-     * Set this to true to enable this axis from being drawn to the screen.
+     * Set this to true to enable drawing the labels of this axis (this will not
+     * affect drawing the grid lines or axis lines).
      * 
      * @param enabled
      */
-    public void setEnabled(boolean enabled) {
-        mEnabled = enabled;
+    public void setDrawLabels(boolean enabled) {
+        mDrawLabels = enabled;
     }
 
     /**
-     * Returns true if the axis is enabled (will be drawn).
+     * Returns true if drawing the labels is enabled for this axis.
      * 
      * @return
      */
-    public boolean isEnabled() {
-        return mEnabled;
+    public boolean isDrawLabelsEnabled() {
+        return mDrawLabels;
     }
 
     /**
-     * Returns the longest formatted label (in terms of characters), this axis contains.
+     * Returns the longest formatted label (in terms of characters), this axis
+     * contains.
      * 
      * @return
      */

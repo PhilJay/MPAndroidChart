@@ -28,11 +28,11 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
     }
 
     @Override
-    public void renderAxis(Canvas c) {
+    public void renderAxisLabels(Canvas c) {
 
-        if (!mYAxis.isEnabled())
+        if (!mYAxis.isEnabled() || !mYAxis.isDrawLabelsEnabled())
             return;
-
+ 
         mAxisPaint.setTypeface(mYAxis.getTypeface());
         mAxisPaint.setTextSize(mYAxis.getTextSize());
         mAxisPaint.setColor(mYAxis.getTextColor());

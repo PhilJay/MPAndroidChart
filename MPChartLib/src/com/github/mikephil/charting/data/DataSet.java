@@ -47,10 +47,13 @@ public abstract class DataSet<T extends Entry> {
     /** if true, y-values are drawn on the chart */
     protected boolean mDrawValues = true;
 
+    /** the color used for the value-text */
     private int mValueColor = Color.BLACK;
 
-    private float mValueTextSize = 16f;
+    /** the size of the value-text labels */
+    private float mValueTextSize = 17f;
 
+    /** the typeface used for the value text */
     private Typeface mValueTypeface;
 
     /** custom formatter that is used instead of the auto-formatter if set */

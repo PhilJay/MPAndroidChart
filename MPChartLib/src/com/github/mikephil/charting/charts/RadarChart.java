@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -17,7 +16,6 @@ import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.renderer.RadarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererRadarChart;
 import com.github.mikephil.charting.renderer.YAxisRendererRadarChart;
-import com.github.mikephil.charting.utils.DefaultValueFormatter;
 import com.github.mikephil.charting.utils.Utils;
 
 /**
@@ -151,7 +149,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         if (mDataNotSet)
             return;
 
-        mXAxisRenderer.renderAxis(mDrawCanvas);
+        mXAxisRenderer.renderAxisLabels(mDrawCanvas);
 
         if (mDrawWeb)
             mRenderer.drawExtras(mDrawCanvas);
@@ -163,7 +161,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         if (mHighlightEnabled && valuesToHighlight())
             mRenderer.drawHighlighted(mDrawCanvas, mIndicesToHightlight);
 
-        mYAxisRenderer.renderAxis(mDrawCanvas);
+        mYAxisRenderer.renderAxisLabels(mDrawCanvas);
 
         mRenderer.drawValues(mDrawCanvas);
 

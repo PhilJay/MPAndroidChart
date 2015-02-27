@@ -6,7 +6,6 @@ import android.util.Log;
 
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.utils.Highlight;
-import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
 
 import java.util.ArrayList;
@@ -866,6 +865,18 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     public void setValueTextSize(float size) {
         for (DataSet<?> set : mDataSets) {
             set.setValueTextSize(size);
+        }
+    }
+
+    /**
+     * Enables / disables drawing values (value-text) for all DataSets this data
+     * object contains.
+     * 
+     * @param enabled
+     */
+    public void setDrawValues(boolean enabled) {
+        for (DataSet<?> set : mDataSets) {
+            set.setDrawValues(enabled);
         }
     }
 }

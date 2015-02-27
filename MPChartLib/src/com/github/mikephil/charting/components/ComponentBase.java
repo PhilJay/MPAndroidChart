@@ -13,6 +13,9 @@ import com.github.mikephil.charting.utils.Utils;
  */
 public abstract class ComponentBase {
 
+    /** flag that indicates if this axis / legend is enabled or not */
+    protected boolean mEnabled = true;
+
     /** the offset in pixels this axis labels have on the x-axis */
     protected float mXOffset = 5f;
 
@@ -130,5 +133,25 @@ public abstract class ComponentBase {
      */
     public int getTextColor() {
         return mTextColor;
+    }
+
+    /**
+     * Set this to true if this component should be enabled (should be drawn),
+     * false if not. If disabled, nothing of this component will be drawn.
+     * Default: true
+     * 
+     * @param enabled
+     */
+    public void setEnabled(boolean enabled) {
+        mEnabled = enabled;
+    }
+
+    /**
+     * Returns true if this comonent is enabled (should be drawn), false if not.
+     * 
+     * @return
+     */
+    public boolean isEnabled() {
+        return mEnabled;
     }
 }

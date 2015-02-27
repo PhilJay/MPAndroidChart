@@ -33,9 +33,9 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
     }
 
     @Override
-    public void renderAxis(Canvas c) {
+    public void renderAxisLabels(Canvas c) {
 
-        if (!mXAxis.isEnabled())
+        if (!mXAxis.isEnabled() || !mXAxis.isDrawLabelsEnabled())
             return;
 
         float xoffset = mXAxis.getXOffset();
@@ -69,8 +69,6 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
             drawLabels(c, mViewPortHandler.contentLeft());
             drawLabels(c, mViewPortHandler.contentRight());
         }
-
-        drawAxisLine(c);
     }
 
     /**
@@ -139,9 +137,9 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
     }
 
     @Override
-    protected void drawAxisLine(Canvas c) {
+    public void renderAxisLine(Canvas c) {
 
-        if (!mXAxis.isDrawAxisLineEnabled())
+        if (!mXAxis.isDrawAxisLineEnabled() || !mXAxis.isEnabled())
             return;
 
         mAxisLinePaint.setColor(mXAxis.getAxisLineColor());

@@ -43,9 +43,9 @@ public class XAxisRenderer extends AxisRenderer {
     }
 
     @Override
-    public void renderAxis(Canvas c) {
+    public void renderAxisLabels(Canvas c) {
 
-        if (!mXAxis.isEnabled())
+        if (!mXAxis.isEnabled() || !mXAxis.isDrawLabelsEnabled())
             return;
 
         float yoffset = Utils.convertDpToPixel(4f);
@@ -75,14 +75,12 @@ public class XAxisRenderer extends AxisRenderer {
             drawLabels(c, mViewPortHandler.offsetTop() - yoffset);
             drawLabels(c, mViewPortHandler.contentBottom() + mXAxis.mLabelHeight + yoffset * 1.6f);
         }
-
-        drawAxisLine(c);
     }
 
     @Override
-    protected void drawAxisLine(Canvas c) {
+    public void renderAxisLine(Canvas c) {
 
-        if (!mXAxis.isDrawAxisLineEnabled())
+        if (!mXAxis.isDrawAxisLineEnabled() || !mXAxis.isEnabled())
             return;
 
         mAxisLinePaint.setColor(mXAxis.getAxisLineColor());

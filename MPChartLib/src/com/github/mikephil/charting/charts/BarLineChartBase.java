@@ -198,11 +198,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         mRenderer.drawExtras(mDrawCanvas);
 
-        mXAxisRenderer.renderAxis(mDrawCanvas);
+        mXAxisRenderer.renderAxisLabels(mDrawCanvas);
+        mXAxisRenderer.renderAxisLine(mDrawCanvas);
 
-        mAxisRendererLeft.renderAxis(mDrawCanvas);
+        mAxisRendererLeft.renderAxisLabels(mDrawCanvas);
 
-        mAxisRendererRight.renderAxis(mDrawCanvas);
+        mAxisRendererRight.renderAxisLabels(mDrawCanvas);
 
         mRenderer.drawValues(mDrawCanvas);
 

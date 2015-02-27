@@ -23,9 +23,6 @@ public class Legend extends ComponentBase {
     public enum LegendForm {
         SQUARE, CIRCLE, LINE
     }
-    
-    /** flag indicating if the legend should be drawn or not */
-    private boolean mEnabled = true;
 
     /** the legend colors */
     private int[] mColors;
@@ -451,24 +448,5 @@ public class Legend extends ComponentBase {
             mTextWidthMax = getMaximumEntryWidth(labelpaint);
             mTextHeightMax = mNeededHeight;
         }
-    }
-
-    /**
-     * Set this to true if the legend should be enabled (should be drawn), false
-     * if not. Default: true
-     * 
-     * @param enabled
-     */
-    public void setEnabled(boolean enabled) {
-        mEnabled = enabled;
-    }
-
-    /**
-     * Returns true if the legend is enabled (should be drawn), false if not.
-     * 
-     * @return
-     */
-    public boolean isEnabled() {
-        return mEnabled;
     }
 }

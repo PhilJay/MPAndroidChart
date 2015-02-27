@@ -63,7 +63,7 @@ public abstract class AxisRenderer extends Renderer {
      * 
      * @param c
      */
-    public abstract void renderAxis(Canvas c);
+    public abstract void renderAxisLabels(Canvas c);
 
     /**
      * Draws the grid lines belonging to the axis.
@@ -77,5 +77,5 @@ public abstract class AxisRenderer extends Renderer {
      * 
      * @param c
      */
-    protected abstract void drawAxisLine(Canvas c);
+    public abstract void renderAxisLine(Canvas c);
 }

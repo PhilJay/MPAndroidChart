@@ -71,7 +71,8 @@ public abstract class MarkerView extends RelativeLayout {
      * everytime the MarkerView is redrawn.
      * 
      * @param e The Entry the MarkerView belongs to. This can also be any
-     *            subclass of Entry, like BarEntry or CandleEntry.
+     *            subclass of Entry, like BarEntry or CandleEntry, simply cast
+     *            it at runtime.
      * @param dataSetIndex the index of the DataSet the selected value is in
      */
     public abstract void refreshContent(Entry e, int dataSetIndex);

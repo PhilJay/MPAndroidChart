@@ -2,11 +2,9 @@
 package com.github.mikephil.charting.charts;
 
 import android.content.Context;
-import android.graphics.Paint;
 import android.util.AttributeSet;
 
 import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.LineDataProvider;
 import com.github.mikephil.charting.renderer.LineChartRenderer;
 import com.github.mikephil.charting.utils.FillFormatter;
