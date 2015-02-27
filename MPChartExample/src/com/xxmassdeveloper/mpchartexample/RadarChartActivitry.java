@@ -54,16 +54,15 @@ public class RadarChartActivitry extends DemoBase {
 
         setData();
 
-        XAxis xl = mChart.getXAxis();
-        xl.setTypeface(tf);
-        xl.setTextSize(9f);
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setTypeface(tf);
+        xAxis.setTextSize(9f);
 
-        YAxis yl = mChart.getYAxis();
-        yl.setTypeface(tf);
-        yl.setLabelCount(5);
-        yl.setTextSize(9f);
-
-        // mChart.animateXY(1500, 1500);
+        YAxis yAxis = mChart.getYAxis();
+        yAxis.setTypeface(tf);
+        yAxis.setLabelCount(5);
+        yAxis.setTextSize(9f);
+        yAxis.setStartAtZero(true);
 
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART);
@@ -192,6 +191,7 @@ public class RadarChartActivitry extends DemoBase {
 
         RadarData data = new RadarData(xVals, sets);
         data.setValueTypeface(tf);
+        data.setValueTextSize(8f);
 
         mChart.setData(data);
 

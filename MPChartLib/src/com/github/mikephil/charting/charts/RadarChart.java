@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -88,6 +89,9 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         float minLeft = mData.getYMin(AxisDependency.LEFT);
         float maxLeft = mData.getYMax(AxisDependency.LEFT);
 
+        mXChartMax = mData.getXVals().size() - 1;
+        mDeltaX = Math.abs(mXChartMax - mXChartMin);
+
         float leftRange = Math.abs(maxLeft - (mYAxis.isStartAtZeroEnabled() ? 0 : minLeft));
 
         float topSpaceLeft = leftRange / 100f * mYAxis.getSpaceTop();
@@ -134,7 +138,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
             mYAxis.setValueFormatter(mDefaultFormatter);
         }
 
-        mYAxisRenderer.computeAxis(0f, mYAxis.mAxisMaximum);
+        mYAxisRenderer.computeAxis(mYAxis.mAxisMinimum, mYAxis.mAxisMaximum);
         mXAxisRenderer.computeAxis(mData.getXValAverageLength(), mData.getXVals());
 
         mLegend = mLegendRenderer.computeLegend(mData, mLegend);
@@ -182,7 +186,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     public float getFactor() {
         RectF content = mViewPortHandler.getContentRect();
         return (float) Math.min(content.width() / 2f, content.height() / 2f)
-                / mYAxis.mAxisMaximum;
+                / mYAxis.mAxisRange;
     }
 
     /**
@@ -343,5 +347,14 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      */
     public float getYChartMin() {
         return mYAxis.mAxisMinimum;
+    }
+
+    /**
+     * Returns the range of y-values this chart can display.
+     * 
+     * @return
+     */
+    public float getYRange() {
+        return mYAxis.mAxisRange;
     }
 }

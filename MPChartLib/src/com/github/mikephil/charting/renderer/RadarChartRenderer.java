@@ -74,7 +74,7 @@ public class RadarChartRenderer extends DataRenderer {
 
             Entry e = entries.get(j);
 
-            PointF p = Utils.getPosition(center, e.getVal() * factor,
+            PointF p = Utils.getPosition(center, (e.getVal() - mChart.getYChartMin()) * factor,
                     sliceangle * j + mChart.getRotationAngle());
 
             if (j == 0)
@@ -130,7 +130,7 @@ public class RadarChartRenderer extends DataRenderer {
 
                 Entry e = entries.get(j);
 
-                PointF p = Utils.getPosition(center, e.getVal() * factor,
+                PointF p = Utils.getPosition(center, (e.getVal() - mChart.getYChartMin()) * factor,
                         sliceangle * j + mChart.getRotationAngle());
 
                 c.drawText(dataSet.getValueFormatter().getFormattedValue(e.getVal()),
@@ -162,7 +162,7 @@ public class RadarChartRenderer extends DataRenderer {
 
         for (int i = 0; i < mChart.getData().getXValCount(); i++) {
 
-            PointF p = Utils.getPosition(center, mChart.getYChartMax() * factor, sliceangle * i
+            PointF p = Utils.getPosition(center, mChart.getYRange() * factor, sliceangle * i
                     + rotationangle);
 
             c.drawLine(center.x, center.y, p.x, p.y, mWebPaint);
@@ -179,7 +179,7 @@ public class RadarChartRenderer extends DataRenderer {
 
             for (int i = 0; i < mChart.getData().getXValCount(); i++) {
 
-                float r = mChart.getYAxis().mEntries[j] * factor;
+                float r = (mChart.getYAxis().mEntries[j] - mChart.getYChartMin()) * factor;
 
                 PointF p1 = Utils.getPosition(center, r, sliceangle * i + rotationangle);
                 PointF p2 = Utils.getPosition(center, r, sliceangle * (i + 1) + rotationangle);
@@ -213,7 +213,7 @@ public class RadarChartRenderer extends DataRenderer {
 
             Entry e = set.getEntryForXIndex(xIndex);
             int j = set.getEntryPosition(e);
-            float y = e.getVal();
+            float y = (e.getVal() - mChart.getYChartMin());
 
             PointF p = Utils.getPosition(center, y * factor,
                     sliceangle * j + mChart.getRotationAngle());
