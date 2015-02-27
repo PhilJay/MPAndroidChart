@@ -95,13 +95,17 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         // l.setPosition(LegendPosition.LEFT_OF_CHART);
         l.setForm(LegendForm.LINE);
         l.setTypeface(tf);
+        l.setTextSize(11f);
         l.setTextColor(Color.WHITE);
         l.setPosition(LegendPosition.BELOW_CHART_LEFT);
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setTypeface(tf);
+        xAxis.setTextSize(12f);
         xAxis.setTextColor(Color.WHITE);
         xAxis.setDrawGridLines(false);
+        xAxis.setDrawAxisLine(false);
+        xAxis.setSpaceBetweenLabels(1);
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(tf);
@@ -113,10 +117,9 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         rightAxis.setTypeface(tf);
         rightAxis.setTextColor(Color.RED);
         rightAxis.setAxisMaxValue(900);
+        rightAxis.setStartAtZero(false);
+        rightAxis.setAxisMinValue(-200);
         rightAxis.setDrawGridLines(false);
-        
-//        yl.setAxisMaxValue(300f);
-//        yl.setAxisMinValue(-100f);
     }
 
     @Override

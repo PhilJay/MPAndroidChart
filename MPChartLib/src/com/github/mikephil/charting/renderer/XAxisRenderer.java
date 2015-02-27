@@ -27,6 +27,9 @@ public class XAxisRenderer extends AxisRenderer {
     }
 
     public void computeAxis(float xValAverageLength, ArrayList<String> xValues) {
+        
+        mAxisPaint.setTypeface(mXAxis.getTypeface());
+        mAxisPaint.setTextSize(mXAxis.getTextSize());
 
         StringBuffer a = new StringBuffer();
 

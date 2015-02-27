@@ -263,7 +263,9 @@ public class YAxis extends AxisBase {
     /**
      * Set a custom minimum value for this axis. If set, this value will not be
      * calculated automatically depending on the provided data. Use
-     * resetAxisMinValue() to undo this.
+     * resetAxisMinValue() to undo this. Do not forget to call
+     * setStartAtZero(false) if you use this method. Otherwise, the axis-minimum
+     * value will still be forced to 0.
      * 
      * @param min
      */
@@ -339,11 +341,17 @@ public class YAxis extends AxisBase {
     }
 
     public float getRequiredWidthSpace(Paint p) {
+        
+        p.setTextSize(mTextSize);
+        
         String label = getLongestLabel();
         return (float) Utils.calcTextWidth(p, label) + getXOffset() * 2f;
     }
 
     public float getRequiredHeightSpace(Paint p) {
+        
+        p.setTextSize(mTextSize);
+        
         String label = getLongestLabel();
         return (float) Utils.calcTextHeight(p, label) + getYOffset() * 2f;
     }
@@ -377,7 +385,6 @@ public class YAxis extends AxisBase {
         else
             return getValueFormatter().getFormattedValue(mEntries[index]);
     }
-    
 
     /**
      * Sets the formatter to be used for drawing the values inside the chart. If
