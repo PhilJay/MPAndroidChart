@@ -192,56 +192,6 @@ For customizing the `Legend`, use you can retreive the `Legend` object from the 
     // and many more...
 ```
 
-
-**Displaying / styling labels:**
-
-Labels (classes `XLabel` and `YLabel`) are used to describe the values of the chart on the x- and y-axis. While the x-axis labels display what is handed over to the `ChartData` object as an `ArrayList<String>` ("xVals"), the y-axis labels depend on the actual values that are set for the chart.
-
-Labels can be enabled/disabled, using the methods:
-
- - `setDrawXLabels(boolean enabled)`
- - `setDrawYLabels(boolean enabled)`
-
-the chart provides.
-In order to apply a different styling to the labels, the methods `getYLabels()` and `getXLabels()` can be used to acquire the labels object and modify it.
-
-Example:
-
-```java
-XLabels xl = mChart.getXLabels();
-xl.setPosition(XLabelPosition.BOTTOM); // set the position
-xl.setTypeface(...); // set a different font
-xl.setTextSize(12f); // set the textsize
-xl.setSpaceBetweenLabels(3); // set how many characters of space should be between the labels
-//... and more
-
-YLabels yl = mChart.getYLabels();
-yl.setPosition(YLabelPosition.BOTH_SIDED); // set the position
-yl.setTypeface(...); // set a different font
-yl.setTextSize(12f); // set the textsize
-yl.setLabelCount(6); // set how many label entries should be displayed
-//... and more
-
-```
-
-**Limit Lines:**
-
-Limit lines (class `LimitLine`) are (as the name might indicate) plain and simple lines that can be set for all `Line-, Bar- and ScatterData` objects. They can be used to **provide additional information** for the user. 
-
-As an example, your chart might display various blood pressure measurement results the user logged with an application. In order to inform the user that a systolic blood pressure of over 140 mmHg is considered to be a health risk, you could add a `LimitLine` at 140 to provide that information.
-
-```java
-
-LineData ld = new LineData(...);
-
-LimitLine ll = new LimitLine(140f);
-ll.setLineColor(Color.RED);
-ll.setLineWidth(4f);
-// .. and more styling options
-
-ld.addLimitLine(ll);
-```
-
 **Dynamically adding data (real time):**
 
 For **adding new data** to the chart dynamically, there are various methods that allow to either add `Entry` objects to an existing `DataSet` or `DataSet` objects to an existing `ChartData` object. 
@@ -283,8 +233,6 @@ mChart.animateXY(3000, 3000); // animate horizontal and vertical 3000 millisecon
 ```
 
 If `animate(...)` (of any kind) is called, no further calling of `invalidate()` is necessary to refresh the chart.
-
-In order to support animations below Honeycomb, this library makes use of the awesome [**nineoldandroids library**](https://github.com/JakeWharton/NineOldAndroids) developed by Jake Wharton.
 
 More documentation and example code coming soon.
 
