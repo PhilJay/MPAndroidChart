@@ -2,12 +2,12 @@ apply plugin: 'com.android.library'
 apply plugin: 'android-maven'
 
 android {
-    compileSdkVersion 19
+    compileSdkVersion 21
     buildToolsVersion '21.1.1'
     // resourcePrefix 'mpcht'
     defaultConfig {
         minSdkVersion 8
-        targetSdkVersion 19
+        targetSdkVersion 21
         versionCode 1
         versionName '1.0'
 
@@ -33,6 +33,6 @@ android {
 
 dependencies {
     //compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-v4:19.+'
-    compile 'com.nineoldandroids:library:2.4.+'
+    //compile 'com.android.support:support-v4:19.+'
+    //compile 'com.nineoldandroids:library:2.4.+'
 }
