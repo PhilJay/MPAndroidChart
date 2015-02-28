@@ -77,6 +77,8 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         // yLabels.setPosition(YLabelPosition.BOTH_SIDED);
         yLabels.setLabelCount(5);
         yLabels.setValueFormatter(new MyValueFormatter());
+        
+        mChart.getAxisRight().setValueFormatter(new MyValueFormatter());
 
         XAxis xLabels = mChart.getXAxis();
         xLabels.setPosition(XAxisPosition.TOP);

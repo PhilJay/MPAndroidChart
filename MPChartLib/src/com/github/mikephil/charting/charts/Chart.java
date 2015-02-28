@@ -485,6 +485,10 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         if (high == null)
             mIndicesToHightlight = null;
         else {
+            
+//            if(mLogEnabled) 
+                
+                Log.i(LOG_TAG, "Highlighted: " + high.toString());
 
             // set the indices to highlight
             mIndicesToHightlight = new Highlight[] {

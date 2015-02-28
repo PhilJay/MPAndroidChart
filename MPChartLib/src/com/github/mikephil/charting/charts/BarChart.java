@@ -136,13 +136,28 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         // only one dataset exists
         if (!mData.isGrouped()) {
 
-            int dataSet = 0;
+            int dataSetIndex = 0;
             int xIndex = (int) Math.round(xPosition);
 
-            if (!mData.getDataSetByIndex(dataSet).isStacked())
-                return new Highlight(xIndex, dataSet);
+         // check bounds
+            if (xIndex < 0) {
+                xIndex = 0;
+                dataSetIndex = 0;
+            } else if (xIndex >= valCount) {
+                xIndex = valCount - 1;
+                dataSetIndex = setCount - 1;
+            }
+
+            // check bounds
+            if (dataSetIndex < 0)
+                dataSetIndex = 0;
+            else if (dataSetIndex >= setCount)
+                dataSetIndex = setCount - 1;
+
+            if (!mData.getDataSetByIndex(dataSetIndex).isStacked())
+                return new Highlight(xIndex, dataSetIndex);
             else
-                return getStackedHighlight(xIndex, dataSet, yPosition);
+                return getStackedHighlight(xIndex, dataSetIndex, yPosition);
 
             // if this bardata is grouped into more datasets
         } else {
@@ -165,7 +180,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
             if (mLogEnabled)
                 Log.i(LOG_TAG, "xIndex: " + xIndex + ", dataSet: " + dataSetIndex);
 
-            // check bounds
+         // check bounds
             if (xIndex < 0) {
                 xIndex = 0;
                 dataSetIndex = 0;
@@ -199,9 +214,13 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     protected Highlight getStackedHighlight(int xIndex, int dataSet, double yValue) {
 
         BarEntry entry = mData.getDataSetByIndex(dataSet).getEntryForXIndex(xIndex);
-        int stackIndex = entry.getClosestIndexAbove((float) yValue);
-        Highlight h = new Highlight(xIndex, dataSet, stackIndex);
-        return h;
+
+        if (entry != null) {
+            int stackIndex = entry.getClosestIndexAbove((float) yValue);
+            Highlight h = new Highlight(xIndex, dataSet, stackIndex);
+            return h;
+        } else
+            return null;
     }
 
     /**
@@ -230,7 +249,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         float right = x + barWidth - spaceHalf;
         float top = y >= 0 ? y : 0;
         float bottom = y <= 0 ? y : 0;
-        
+
         RectF bounds = new RectF(left, top, right, bottom);
 
         getTransformer(set.getAxisDependency()).rectValueToPixel(bounds);
