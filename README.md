@@ -3,6 +3,8 @@
 MPAndroidChart
 =======
 
+[![Join the chat at https://gitter.im/PhilJay/MPAndroidChart](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PhilJay/MPAndroidChart?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 A simple charting library for Android, supporting line-, bar-, scatter-, candlestick-, pie- and radarcharts (spider web), as well as scaling, dragging, selecting and animations. **Supporting Android 2.2 (API level 8)** and upwards.
 
 Remember: *It's all about the looks.*
