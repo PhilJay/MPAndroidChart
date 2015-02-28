@@ -192,48 +192,6 @@ For customizing the `Legend`, use you can retreive the `Legend` object from the 
     // and many more...
 ```
 
-**Dynamically adding data (real time):**
-
-For **adding new data** to the chart dynamically, there are various methods that allow to either add `Entry` objects to an existing `DataSet` or `DataSet` objects to an existing `ChartData` object. 
-
-Class `DataSet` (and all subclasses):
- - `addEntry(Entry e)`: Adds the given `Entry` object to the `DataSet`.
-
-Class `ChartData` (and all subclasses):
- - `addEntry(Entry e, int dataSetIndex)`: Adds the given `Entry` to the `DataSet` at the specified dataset index.
- - `addDataSet(DataSet d)`: Adds the given `DataSet` object to the `ChartData` object.
-
-In addition to that, there are also methods for **removing data dynamically**.
-
-Class `DataSet` (and all subclasses):
- - `public boolean removeEntry(Entry e)`: Removes the given `Entry` object from the `DataSet`. Returns true if successful.
- - `public boolean removeEntry(int xIndex)`: Removes the `Entry` at the given x-index from the `DataSet`. Returns true if successful.
-
-Class `ChartData` (and all subclasses):
- - `public boolean removeEntry(Entry e, int dataSetIndex)`: Removes the given `Entry` object from the `DataSet` with the given dataset index. Returns true if successful.
- - `public boolean removeEntry(int xIndex, int dataSetIndex)`: Removes the `Entry` at the given x-index from the `DataSet` with the given dataset index. Returns true if successful.
- - `public boolean removeDataSet(DataSet d)`: Removes the given `DataSet` object from the `ChartData` object. Returns true if successful.
- - `public boolean removeDataSet(int index)`: Removes the `DataSet` at the given index from the `ChartData` object. Returns true if successful.
-
-
-**Animations:**
-
-All chart types support animations that can be used to create / build up the chart in an awesome looking way. Three different kinds of animation methods exist that animate either both, or x- and y-axis separately:
-
- - `animateX(int durationMillis)`: Animates the charts values on the horizontal axis, meaning that the chart will build up within the specified time from left to right.
- - `animateY(int durationMillis)`: Animates the charts values on the vertical axis, meaning that the chart will build up within the specified time from bottom to top.
- - `animateXY(int xDuration, int yDuration)`: Animates both horizontal and vertical axis, resulting in a left/right bottom/top build-up.
-
-```java
-mChart.animateX(3000); // animate horizontal 3000 milliseconds
-// or:
-mChart.animateY(3000); // animate vertical 3000 milliseconds
-// or:
-mChart.animateXY(3000, 3000); // animate horizontal and vertical 3000 milliseconds
-```
-
-If `animate(...)` (of any kind) is called, no further calling of `invalidate()` is necessary to refresh the chart.
-
 More documentation and example code coming soon.
 
 This chart library is intended to fill the gap between popular charting libraries like "GraphView" or "achartengine".
