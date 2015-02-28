@@ -167,6 +167,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
             case R.id.actionToggleStartzero: {
                 mChart.getAxisLeft().setStartAtZero(!mChart.getAxisLeft().isStartAtZeroEnabled());
                 mChart.getAxisRight().setStartAtZero(!mChart.getAxisRight().isStartAtZeroEnabled());
+                mChart.notifyDataSetChanged();
                 mChart.invalidate();
                 break;
             }

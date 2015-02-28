@@ -71,6 +71,8 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         mChart.setPinchZoom(false);
 
         mChart.setDrawBarShadow(false);
+        
+        mChart.setDrawValueAboveBar(false);
 
         // change the position of the y-labels
         YAxis yLabels = mChart.getAxisLeft();

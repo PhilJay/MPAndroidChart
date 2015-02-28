@@ -161,7 +161,7 @@ public class BarChartRenderer extends DataRenderer {
      * @param barspace the space between bars
      */
     protected void prepareBar(float x, float y, float barspace, Transformer trans) {
-        
+
         float barWidth = 0.5f;
 
         float spaceHalf = barspace / 2f;
@@ -179,6 +179,30 @@ public class BarChartRenderer extends DataRenderer {
             mBarShadow.set(mBarRect.left, mViewPortHandler.offsetTop(), mBarRect.right,
                     mViewPortHandler.contentBottom());
         }
+    }
+
+    /**
+     * Prepares a bar for being highlighted.
+     * 
+     * @param x the x-position
+     * @param y the y-position
+     * @param barspace the space between bars
+     * @param from
+     * @param trans
+     */
+    protected void prepareBarHighlight(float x, float y, float barspace, float from, Transformer trans) {
+
+        float barWidth = 0.5f;
+
+        float spaceHalf = barspace / 2f;
+        float left = x - barWidth + spaceHalf;
+        float right = x + barWidth - spaceHalf;
+        float top = y >= from ? y : from;
+        float bottom = y <= from ? y : from;
+
+        mBarRect.set(left, top, right, bottom);
+
+        trans.rectValueToPixel(mBarRect, mAnimator.getPhaseY());
     }
 
     @Override
@@ -206,12 +230,12 @@ public class BarChartRenderer extends DataRenderer {
 
                 if (!dataSet.isDrawValuesEnabled())
                     continue;
-                
+
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet);
 
                 ValueFormatter formatter = dataSet.getValueFormatter();
-                
+
                 Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
                 ArrayList<BarEntry> entries = dataSet.getYVals();
@@ -249,7 +273,7 @@ public class BarChartRenderer extends DataRenderer {
                         // non-stacked
                         // in between
                         if (vals == null) {
-                            
+
                             if (!mViewPortHandler.isInBoundsRight(valuePoints[j]))
                                 break;
 
@@ -258,7 +282,8 @@ public class BarChartRenderer extends DataRenderer {
                                 continue;
 
                             drawValue(c, e.getVal(), valuePoints[j],
-                                    valuePoints[j + 1] + (e.getVal() >= 0 ? posOffset : negOffset), formatter);
+                                    valuePoints[j + 1] + (e.getVal() >= 0 ? posOffset : negOffset),
+                                    formatter);
 
                         } else {
 
@@ -276,11 +301,11 @@ public class BarChartRenderer extends DataRenderer {
                             trans.pointValuesToPixel(transformed);
 
                             for (int k = 0; k < transformed.length; k += 2) {
-                                
+
                                 float x = valuePoints[j];
                                 float y = transformed[k + 1]
                                         + (vals[k / 2] >= 0 ? posOffset : negOffset);
-                                
+
                                 if (!mViewPortHandler.isInBoundsRight(x))
                                     break;
 
@@ -348,13 +373,18 @@ public class BarChartRenderer extends DataRenderer {
                     continue;
 
                 float groupspace = mChart.getBarData().getGroupSpace();
+                boolean isStack = h.getStackIndex() < 0 ? false : true;
 
                 // calculate the correct x-position
                 float x = index * setCount + dataSetIndex + groupspace / 2f
                         + groupspace * index;
-                float y = h.getStackIndex() < 0 ? e.getVal() : e.getVals()[h.getStackIndex()] + e.getBelowSum(h.getStackIndex());
+                float y = isStack ? e.getVals()[h.getStackIndex()]
+                        + e.getBelowSum(h.getStackIndex()) : e.getVal();
+                
+                // this is where the bar starts
+                float from = isStack ? e.getBelowSum(h.getStackIndex()) : 0f;
 
-                prepareBar(x, y, set.getBarSpace(), trans);
+                prepareBarHighlight(x, y, set.getBarSpace(), from, trans);
 
                 c.drawRect(mBarRect, mHighlightPaint);
 
@@ -376,13 +406,14 @@ public class BarChartRenderer extends DataRenderer {
             }
         }
     }
-    
-    public float[] getTransformedValues(Transformer trans, ArrayList<BarEntry> entries, int dataSetIndex) {
+
+    public float[] getTransformedValues(Transformer trans, ArrayList<BarEntry> entries,
+            int dataSetIndex) {
         return trans.generateTransformedValuesBarChart(entries, dataSetIndex,
                 mChart.getBarData(),
                 mAnimator.getPhaseY());
     }
-    
+
     protected boolean passesCheck() {
         return mChart.getBarData().getYValCount() < mChart.getMaxVisibleCount()
                 * mViewPortHandler.getScaleX();

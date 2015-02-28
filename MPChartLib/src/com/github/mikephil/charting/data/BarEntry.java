@@ -118,7 +118,7 @@ public class BarEntry extends Entry {
         float remainder = 0f;
         int index = mVals.length - 1;
         
-        while(index > stackIndex) {
+        while(index > stackIndex && index >= 0) {
             remainder += mVals[index];
             index--;
         }
