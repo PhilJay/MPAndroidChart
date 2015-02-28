@@ -153,14 +153,11 @@ dependencies {
  - Import the library folder (`MPChartLib`) into your Eclipse workspace
  - Add it as a reference to your project: [referencing library projects in Eclipse](http://developer.android.com/tools/projects/projects-eclipse.html#ReferencingLibraryProject)
 
-Getting Started
-=======
-
-For getting started, rely on the **"MPChartExample"** folder and check out the examples in that project. The example project is also  [**available in the Google PlayStore**](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample). 
-
 Documentation
 =======
 For a **detailed documentation**, please have a look at the [**Wiki**](https://github.com/PhilJay/MPAndroidChart/wiki).
+
+Furthermore, you can also rely on the **"MPChartExample"** folder and check out the example code in that project. The corresponding application to the example project is also  [**available in the Google PlayStore**](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample). 
 
 License
 =======
