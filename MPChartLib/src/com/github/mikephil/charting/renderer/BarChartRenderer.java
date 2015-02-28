@@ -241,13 +241,6 @@ public class BarChartRenderer extends DataRenderer {
 
                     for (int j = 0; j < (valuePoints.length - 1) * mAnimator.getPhaseX(); j += 2) {
 
-                        if (!mViewPortHandler.isInBoundsRight(valuePoints[j]))
-                            break;
-
-                        if (!mViewPortHandler.isInBoundsY(valuePoints[j + 1])
-                                || !mViewPortHandler.isInBoundsLeft(valuePoints[j]))
-                            continue;
-
                         BarEntry e = entries.get(j / 2);
 
                         float[] vals = e.getVals();
@@ -256,6 +249,13 @@ public class BarChartRenderer extends DataRenderer {
                         // non-stacked
                         // in between
                         if (vals == null) {
+                            
+                            if (!mViewPortHandler.isInBoundsRight(valuePoints[j]))
+                                break;
+
+                            if (!mViewPortHandler.isInBoundsY(valuePoints[j + 1])
+                                    || !mViewPortHandler.isInBoundsLeft(valuePoints[j]))
+                                continue;
 
                             drawValue(c, e.getVal(), valuePoints[j],
                                     valuePoints[j + 1] + (e.getVal() >= 0 ? posOffset : negOffset), formatter);
@@ -276,10 +276,19 @@ public class BarChartRenderer extends DataRenderer {
                             trans.pointValuesToPixel(transformed);
 
                             for (int k = 0; k < transformed.length; k += 2) {
+                                
+                                float x = valuePoints[j];
+                                float y = transformed[k + 1]
+                                        + (vals[k / 2] >= 0 ? posOffset : negOffset);
+                                
+                                if (!mViewPortHandler.isInBoundsRight(x))
+                                    break;
 
-                                drawValue(c, vals[k / 2], valuePoints[j],
-                                        transformed[k + 1]
-                                                + (vals[k / 2] >= 0 ? posOffset : negOffset), formatter);
+                                if (!mViewPortHandler.isInBoundsY(y)
+                                        || !mViewPortHandler.isInBoundsLeft(x))
+                                    continue;
+
+                                drawValue(c, vals[k / 2], x, y, formatter);
                             }
                         }
                     }

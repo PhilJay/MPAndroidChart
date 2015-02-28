@@ -132,32 +132,20 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 
         int setCount = mData.getDataSetCount();
         int valCount = mData.getXValCount();
+        int dataSetIndex = 0;
+        int xIndex = 0;
 
         // only one dataset exists
         if (!mData.isGrouped()) {
 
-            int dataSetIndex = 0;
-            int xIndex = (int) Math.round(xPosition);
-
-         // check bounds
-            if (xIndex < 0) {
-                xIndex = 0;
-                dataSetIndex = 0;
-            } else if (xIndex >= valCount) {
-                xIndex = valCount - 1;
-                dataSetIndex = setCount - 1;
-            }
+            xIndex = (int) Math.round(xPosition);
 
             // check bounds
-            if (dataSetIndex < 0)
-                dataSetIndex = 0;
-            else if (dataSetIndex >= setCount)
-                dataSetIndex = setCount - 1;
-
-            if (!mData.getDataSetByIndex(dataSetIndex).isStacked())
-                return new Highlight(xIndex, dataSetIndex);
-            else
-                return getStackedHighlight(xIndex, dataSetIndex, yPosition);
+            if (xIndex < 0) {
+                xIndex = 0;
+            } else if (xIndex >= valCount) {
+                xIndex = valCount - 1;
+            }
 
             // if this bardata is grouped into more datasets
         } else {
@@ -174,13 +162,13 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
                         + groupSpaceSum
                         + ", baseNoSpace: " + baseNoSpace);
 
-            int dataSetIndex = (int) baseNoSpace % setCount;
-            int xIndex = (int) baseNoSpace / setCount;
+            dataSetIndex = (int) baseNoSpace % setCount;
+            xIndex = (int) baseNoSpace / setCount;
 
             if (mLogEnabled)
                 Log.i(LOG_TAG, "xIndex: " + xIndex + ", dataSet: " + dataSetIndex);
 
-         // check bounds
+            // check bounds
             if (xIndex < 0) {
                 xIndex = 0;
                 dataSetIndex = 0;
@@ -194,12 +182,12 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
                 dataSetIndex = 0;
             else if (dataSetIndex >= setCount)
                 dataSetIndex = setCount - 1;
-
-            if (!mData.getDataSetByIndex(dataSetIndex).isStacked())
-                return new Highlight(xIndex, dataSetIndex);
-            else
-                return getStackedHighlight(xIndex, dataSetIndex, yPosition);
         }
+        
+        if (!mData.getDataSetByIndex(dataSetIndex).isStacked())
+            return new Highlight(xIndex, dataSetIndex);
+        else
+            return getStackedHighlight(xIndex, dataSetIndex, yPosition);
     }
 
     /**

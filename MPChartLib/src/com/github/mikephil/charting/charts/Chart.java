@@ -485,9 +485,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         if (high == null)
             mIndicesToHightlight = null;
         else {
-            
-//            if(mLogEnabled) 
-                
+
+            if (mLogEnabled)
                 Log.i(LOG_TAG, "Highlighted: " + high.toString());
 
             // set the indices to highlight
@@ -1092,32 +1091,32 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         mDrawMarkerViews = enabled;
     }
 
-//    /**
-//     * sets the draw color for the value paint object
-//     *
-//     * @param color
-//     */
-//    public void setValueTextColor(int color) {
-//        mRenderer.getPaintValues().setColor(color);
-//    }
-//
-//    /**
-//     * Sets the font size of the values that are drawn inside the chart.
-//     *
-//     * @param size
-//     */
-//    public void setValueTextSize(float size) {
-//        mRenderer.getPaintValues().setTextSize(Utils.convertDpToPixel(size));
-//    }
-//
-//    /**
-//     * sets a typeface for the value-paint
-//     *
-//     * @param t
-//     */
-//    public void setValueTypeface(Typeface t) {
-//        mRenderer.getPaintValues().setTypeface(t);
-//    }
+    // /**
+    // * sets the draw color for the value paint object
+    // *
+    // * @param color
+    // */
+    // public void setValueTextColor(int color) {
+    // mRenderer.getPaintValues().setColor(color);
+    // }
+    //
+    // /**
+    // * Sets the font size of the values that are drawn inside the chart.
+    // *
+    // * @param size
+    // */
+    // public void setValueTextSize(float size) {
+    // mRenderer.getPaintValues().setTextSize(Utils.convertDpToPixel(size));
+    // }
+    //
+    // /**
+    // * sets a typeface for the value-paint
+    // *
+    // * @param t
+    // */
+    // public void setValueTypeface(Typeface t) {
+    // mRenderer.getPaintValues().setTypeface(t);
+    // }
 
     /**
      * returns the x-value at the given index
@@ -1176,7 +1175,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public float getPercentOfTotal(float val) {
         return val / mData.getYValueSum() * 100f;
     }
-    
+
     /**
      * sets the typeface for the description paint
      *
