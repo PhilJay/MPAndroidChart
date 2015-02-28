@@ -3,7 +3,7 @@
 MPAndroidChart
 =======
 
-A simple charting library for Android, supporting line-, bar-, scatter-, candlestick- and piecharts, as well as scaling, dragging, selecting and animations. **Supporting Android 2.2 (API level 8)** and upwards.
+A simple charting library for Android, supporting line-, bar-, scatter-, candlestick-, pie- and radarcharts (spider web), as well as scaling, dragging, selecting and animations. **Supporting Android 2.2 (API level 8)** and upwards.
 
 Remember: *It's all about the looks.*
 
@@ -53,6 +53,7 @@ Features
 **Core features:**
  - Scaling on both axes (with touch-gesture, axes separately or pinch-zoom)
  - Dragging / Panning (with touch-gesture)
+ - Combined-Charts (line-, bar-, scatter-, candle-data)
  - Finger drawing (draw values into the chart with touch-gesture)
  - Highlighting values (with customizeable popup-views)
  - Multiple / Separate Axes
@@ -157,38 +158,9 @@ Getting Started
 
 For getting started, rely on the **"MPChartExample"** folder and check out the examples in that project. The example project is also  [**available in the Google PlayStore**](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample). 
 
-For a **detailed documentation**, please refer the [**Wiki**](https://github.com/PhilJay/MPAndroidChart/wiki).
-
-**Displaying / styling legends:**
-
-By default, all chart types support legends and will automatically generate and draw a legend after setting data for the chart. If a legend should be drawn or not can be enabled/disabled using the
-
- - `setDrawLegend(boolean enabled)`
- 
-method.
-
-The number of entries the automatically generated legend contains depends on the number of different colors (across all `DataSet` objects) as well as on the `DataSet` labels. The labels of the `Legend` depend on the labels set for the used `DataSet` objects in the chart. If no labels for the `DataSet` objects have been specified, the chart will automatically generate them. If multiple colors are used for one `DataSet`, those colors are grouped and only described by one label.
-
-For customizing the `Legend`, use you can retreive the `Legend` object from the chart **after setting data** using the `getLegend()` method.
-
-```java
-    // setting data...
-    chart.setData(....);
-    
-    Legend l = chart.getLegend();
-    l.setFormSize(10f); // set the size of the legend forms/shapes
-    l.setForm(LegendForm.CIRCLE); // set what type of form/shape should be used
-    l.setPosition(LegendPosition.BELOW_CHART_LEFT);
-    l.setTypeface(...);
-    l.setXEntrySpace(5f); // set the space between the legend entries on the x-axis
-    l.setYEntrySpace(5f); // set the space between the legend entries on the y-axis
-    // and many more...
-```
-
-More documentation and example code coming soon.
-
-This chart library is intended to fill the gap between popular charting libraries like "GraphView" or "achartengine".
-
+Documentation
+=======
+For a **detailed documentation**, please have a look at the [**Wiki**](https://github.com/PhilJay/MPAndroidChart/wiki).
 
 License
 =======
