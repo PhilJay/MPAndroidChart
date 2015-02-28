@@ -6,8 +6,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 34
-        versionName '2.0.2'
+        versionCode 33
+        versionName '2.0.1'
 
         sourceSets {
             main {
@@ -31,11 +31,26 @@ android {
     lintOptions {
         abortOnError false
     }
+}
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.1.0'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+repositories {
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
     //compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-v4:19.+'
-    compile project(':MPChartLib')
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.github.PhilJay:MPAndroidChart:v2.0.3'
 }
