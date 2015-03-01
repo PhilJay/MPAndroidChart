@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xxmassdeveloper.mpchartexample"
     android:versionCode="36"
-    android:versionName="2.1.2" >
+    android:versionName="2.0.7" >
 
     <uses-sdk
         android:minSdkVersion="8"
