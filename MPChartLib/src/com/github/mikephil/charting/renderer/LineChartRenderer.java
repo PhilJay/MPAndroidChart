@@ -96,10 +96,6 @@ public class LineChartRenderer extends DataRenderer {
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
 
-        // get the color that is specified for this position from the
-        // DataSet
-        mRenderPaint.setColor(dataSet.getColor());
-
         float intensity = dataSet.getCubicIntensity();
 
         // the path for the cubic-spline
@@ -145,20 +141,26 @@ public class LineChartRenderer extends DataRenderer {
                 }
             }
         }
-
+        
         // if filled is enabled, close the path
         if (dataSet.isDrawFilledEnabled()) {
-            drawCubicFill(dataSet, spline);
-        } else {
-            mRenderPaint.setStyle(Paint.Style.STROKE);
-        }
-
+            
+            // create a new path, this is bad for performance
+            drawCubicFill(c, dataSet, new Path(spline), trans);
+        } 
+        
+        mRenderPaint.setColor(dataSet.getColor());
+        
+        mRenderPaint.setStyle(Paint.Style.STROKE);
+        
         trans.pathValueToPixel(spline);
 
         c.drawPath(spline, mRenderPaint);
+        
+        mRenderPaint.setPathEffect(null);
     }
 
-    protected void drawCubicFill(LineDataSet dataSet, Path spline) {
+    protected void drawCubicFill(Canvas c, LineDataSet dataSet, Path spline, Transformer trans) {
         
         float fillMin = mChart.getFillFormatter()
                 .getFillLinePosition(dataSet, mChart.getLineData(), mChart.getYChartMax(),
@@ -169,6 +171,15 @@ public class LineChartRenderer extends DataRenderer {
         spline.close();
 
         mRenderPaint.setStyle(Paint.Style.FILL);
+
+        mRenderPaint.setColor(dataSet.getFillColor());
+        // filled is drawn with less alpha
+        mRenderPaint.setAlpha(dataSet.getFillAlpha());
+
+        trans.pathValueToPixel(spline);
+        c.drawPath(spline, mRenderPaint);
+        
+        mRenderPaint.setAlpha(255);
     }
 
     protected void drawLinear(Canvas c, LineDataSet dataSet, ArrayList<Entry> entries) {
@@ -224,10 +235,6 @@ public class LineChartRenderer extends DataRenderer {
 
     protected void drawLinearFill(Canvas c, LineDataSet dataSet, ArrayList<Entry> entries,
             Transformer trans) {
-
-        // mDrawCanvas.drawVertices(VertexMode.TRIANGLE_STRIP,
-        // valuePoints.length, valuePoints, 0,
-        // null, 0, null, 0, null, 0, 0, paint);
 
         mRenderPaint.setStyle(Paint.Style.FILL);
 

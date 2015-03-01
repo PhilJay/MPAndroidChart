@@ -21,6 +21,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -81,7 +82,8 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         YAxis y = mChart.getAxisLeft();
         y.setTypeface(tf);
         y.setLabelCount(5);
-        y.setDrawGridLines(false);
+        
+        mChart.getAxisRight().setEnabled(false);
 
         // add data
         setData(45, 100);
@@ -270,18 +272,16 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         LineDataSet set1 = new LineDataSet(vals1, "DataSet 1");
         set1.setDrawCubic(true);
         set1.setCubicIntensity(0.2f);
-        set1.setDrawFilled(true);
+        //set1.setDrawFilled(true);
         set1.setDrawCircles(false); 
         set1.setLineWidth(2f);
         set1.setCircleSize(5f);
         set1.setHighLightColor(Color.rgb(244, 117, 117));
         set1.setColor(Color.rgb(104, 241, 175));
-
-        ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
-        dataSets.add(set1);
+        set1.setFillColor(ColorTemplate.getHoloBlue());
 
         // create a data object with the datasets
-        LineData data = new LineData(xVals, dataSets);
+        LineData data = new LineData(xVals, set1);
         data.setValueTypeface(tf);
         data.setValueTextSize(9f);
         data.setDrawValues(false);
