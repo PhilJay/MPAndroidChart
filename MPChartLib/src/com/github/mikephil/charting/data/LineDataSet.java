@@ -14,7 +14,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
 
     /** arraylist representing all colors that are used for the circles */
     private ArrayList<Integer> mCircleColors = null;
-    
+
     /** the radius of the circle-shaped value indicators */
     private float mCircleSize = 8f;
 
@@ -29,6 +29,8 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
 
     /** if true, cubic lines are drawn instead of linear */
     private boolean mDrawCubic = false;
+
+    private boolean mDrawCircleHole = true;
 
     public LineDataSet(ArrayList<Entry> yVals, String label) {
         super(yVals, label);
@@ -268,5 +270,18 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
      */
     public void resetCircleColors() {
         mCircleColors = new ArrayList<Integer>();
+    }
+
+    /**
+     * Set this to true to allow drawing a hole in each data circle.
+     * 
+     * @param enabled
+     */
+    public void setDrawCircleHole(boolean enabled) {
+        mDrawCircleHole = enabled;
+    }
+    
+    public boolean isDrawCircleHoleEnabled() {
+        return mDrawCircleHole;
     }
 }

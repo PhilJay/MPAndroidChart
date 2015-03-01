@@ -141,32 +141,35 @@ public class LineChartRenderer extends DataRenderer {
                 }
             }
         }
-        
+
         // if filled is enabled, close the path
         if (dataSet.isDrawFilledEnabled()) {
-            
+
             // create a new path, this is bad for performance
             drawCubicFill(c, dataSet, new Path(spline), trans);
-        } 
-        
+        }
+
         mRenderPaint.setColor(dataSet.getColor());
-        
+
         mRenderPaint.setStyle(Paint.Style.STROKE);
-        
+
         trans.pathValueToPixel(spline);
 
         c.drawPath(spline, mRenderPaint);
-        
+
         mRenderPaint.setPathEffect(null);
     }
 
     protected void drawCubicFill(Canvas c, LineDataSet dataSet, Path spline, Transformer trans) {
-        
+
         float fillMin = mChart.getFillFormatter()
                 .getFillLinePosition(dataSet, mChart.getLineData(), mChart.getYChartMax(),
                         mChart.getYChartMin());
 
-        spline.lineTo(dataSet.getYVals().get((int) ((dataSet.getYVals().size() - 1) * mAnimator.getPhaseX())).getXIndex(), fillMin);
+        spline.lineTo(
+                dataSet.getYVals()
+                        .get((int) ((dataSet.getYVals().size() - 1) * mAnimator.getPhaseX()))
+                        .getXIndex(), fillMin);
         spline.lineTo(mChart.getXChartMin(), fillMin);
         spline.close();
 
@@ -178,7 +181,7 @@ public class LineChartRenderer extends DataRenderer {
 
         trans.pathValueToPixel(spline);
         c.drawPath(spline, mRenderPaint);
-        
+
         mRenderPaint.setAlpha(255);
     }
 
@@ -325,12 +328,12 @@ public class LineChartRenderer extends DataRenderer {
 
                 if (!dataSet.isDrawValuesEnabled())
                     continue;
-                
+
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet);
 
                 Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
-                
+
                 // make sure the values do not interfear with the circles
                 int valOffset = (int) (dataSet.getCircleSize() * 1.75f);
 
@@ -355,7 +358,8 @@ public class LineChartRenderer extends DataRenderer {
 
                     float val = entries.get(j / 2).getVal();
 
-                    c.drawText(dataSet.getValueFormatter().getFormattedValue(val), x, y - valOffset,
+                    c.drawText(dataSet.getValueFormatter().getFormattedValue(val), x,
+                            y - valOffset,
                             mValuePaint);
                 }
             }
@@ -402,9 +406,11 @@ public class LineChartRenderer extends DataRenderer {
 
                     c.drawCircle(x, y, dataSet.getCircleSize(),
                             mRenderPaint);
-                    c.drawCircle(x, y,
-                            dataSet.getCircleSize() / 2f,
-                            mCirclePaintInner);
+                    
+                    if (dataSet.isDrawCircleHoleEnabled())
+                        c.drawCircle(x, y,
+                                dataSet.getCircleSize() / 2f,
+                                mCirclePaintInner);
                 }
             } // else do nothing
         }

@@ -312,7 +312,9 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         set1.setColor(Color.BLACK);
         set1.setCircleColor(Color.BLACK);
         set1.setLineWidth(1f);
-        set1.setCircleSize(4f);
+        set1.setCircleSize(3f);
+        set1.setDrawCircleHole(false);
+        set1.setValueTextSize(9f);
         set1.setFillAlpha(65);
         set1.setFillColor(Color.BLACK);
         // set1.setShader(new LinearGradient(0, 0, 0, mChart.getHeight(),
@@ -323,7 +325,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
         // create a data object with the datasets
         LineData data = new LineData(xVals, dataSets);
-        data.setValueTextSize(10f);
 
         LimitLine ll1 = new LimitLine(130f, "Upper Limit");
         ll1.setLineWidth(4f);
