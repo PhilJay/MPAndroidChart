@@ -7,7 +7,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 21
         versionCode 35
-        versionName '2.0.5'
+        versionName '2.0.3'
 
         sourceSets {
             main {
@@ -53,5 +53,5 @@ dependencies {
     //compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':MPChartLib') // remove this if you only imported the example project
     compile 'com.android.support:appcompat-v7:21.0.3'
-    //compile 'com.github.PhilJay:MPAndroidChart:v2.0.5' 
+    //compile 'com.github.PhilJay:MPAndroidChart:v2.0.3' 
 }

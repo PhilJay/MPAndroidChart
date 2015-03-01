@@ -3,6 +3,11 @@ package com.github.mikephil.charting.data;
 
 import java.util.ArrayList;
 
+/**
+ * Data object that encapsulates all data associated with a LineChart.
+ * 
+ * @author Philipp Jahoda
+ */
 public class LineData extends BarLineScatterCandleData<LineDataSet> {
 
     public LineData() {

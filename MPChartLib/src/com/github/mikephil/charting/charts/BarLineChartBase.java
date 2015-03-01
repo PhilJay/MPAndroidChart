@@ -217,21 +217,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
 
-//        if (mLogEnabled)
-        
-        long drawtime = (System.currentTimeMillis() - starttime);
-        draws++;
-        totaltime+=drawtime;
-        long average = totaltime / draws;
-            Log.i(LOG_TAG, "DrawTime: " + drawtime + " ms, average: " + average + " ms");
-    }
-    
-    long draws = 0;
-    long totaltime = 0;
-    
-    public void resetAverage() {
-        draws = 0;
-        totaltime = 0;
+        if (mLogEnabled) {
+            long drawtime = (System.currentTimeMillis() - starttime);
+            Log.i(LOG_TAG, "DrawTime: " + drawtime + " ms");
+        }
     }
 
     protected void prepareValuePxMatrix() {
@@ -620,11 +609,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             final float right, final float bottom) {
 
         mCustomViewPortEnabled = true;
-        
+
         post(new Runnable() {
-            
+
             @Override
-            public void run() {               
+            public void run() {
                 mViewPortHandler.restrainViewPort(left, top, right, bottom);
             }
         });
