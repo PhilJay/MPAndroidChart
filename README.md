@@ -79,17 +79,17 @@ Features
  - **LineChart (single DataSet)**
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart.png)
 
- - **BarChart2D (with legend, simple design)**
+ - **BarChart (with legend, simple design)**
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_barchart3.png)
 
- - **BarChart2D (grouped DataSets)**
+ - **BarChart (grouped DataSets)**
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/groupedbarchart.png)
 
- - **BarChart2D**
+ - **Horizontal-BarChart**
 
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart2d_multi_dataset_date1.png)
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/horizontal_barchart.jpg)
 
 
  - **PieChart (with selection, ...)**
