@@ -35,6 +35,7 @@ import com.xxmassdeveloper.mpchartexample.LineChartActivityColored;
 import com.xxmassdeveloper.mpchartexample.ListViewBarChartActivity;
 import com.xxmassdeveloper.mpchartexample.ListViewMultiChartActivity;
 import com.xxmassdeveloper.mpchartexample.MultiLineChartActivity;
+import com.xxmassdeveloper.mpchartexample.PerformanceLineChart;
 import com.xxmassdeveloper.mpchartexample.PieChartActivity;
 import com.xxmassdeveloper.mpchartexample.R;
 import com.xxmassdeveloper.mpchartexample.RadarChartActivitry;
@@ -110,6 +111,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
         objects.add(new ContentItem(
                 "Dynamical data adding",
                 "This Activity demonstrates dynamical adding of Entries and DataSets (real time graph)."));
+//        objects.add(new ContentItem(
+//                "Performance Line Chart",
+//                "Renders up to 3000 objects."));
 
         MyAdapter adapter = new MyAdapter(this, objects);
 
@@ -217,6 +221,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 break;
             case 21:
                 i = new Intent(this, DynamicalAddingActivity.class);
+                startActivity(i);
+                break;
+            case 22:
+                i = new Intent(this, PerformanceLineChart.class);
                 startActivity(i);
                 break;
         }

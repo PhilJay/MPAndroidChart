@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xxmassdeveloper.mpchartexample"
     android:versionCode="35"
-    android:versionName="2.0.3" >
+    android:versionName="2.0.5" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -46,6 +46,7 @@
         <activity android:name="DynamicalAddingActivity"></activity>
         <activity android:name="RealtimeLineChartActivity"></activity>
         <activity android:name="CombinedChartActivity"></activity>
+        <activity android:name="PerformanceLineChart"></activity>
     </application>
 
 </manifest>
