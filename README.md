@@ -165,7 +165,7 @@ No problem, let's talk: [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](ht
 
 License
 =======
-Copyright 2014 Philipp Jahoda
+Copyright 2015 Philipp Jahoda
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
