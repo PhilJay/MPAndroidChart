@@ -79,17 +79,17 @@ Features
  - **LineChart (single DataSet)**
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart.png)
 
- - **BarChart2D (with legend, simple design)**
+ - **BarChart (with legend, simple design)**
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_barchart3.png)
 
- - **BarChart2D (grouped DataSets)**
+ - **BarChart (grouped DataSets)**
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/groupedbarchart.png)
 
- - **BarChart2D**
+ - **Horizontal-BarChart**
 
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/barchart2d_multi_dataset_date1.png)
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/horizontal_barchart.jpg)
 
 
  - **PieChart (with selection, ...)**
@@ -165,7 +165,7 @@ No problem, let's talk: [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](ht
 
 License
 =======
-Copyright 2014 Philipp Jahoda
+Copyright 2015 Philipp Jahoda
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
