@@ -30,6 +30,21 @@ public class CombinedChartRenderer extends DataRenderer {
         if (chart.getCandleData() != null)
             mCandleRenderer = new CandleStickChartRenderer(chart, animator, viewPortHandler);
     }
+    
+    @Override
+    public void initBuffers() {
+        if (mBarRenderer != null)
+            mBarRenderer.initBuffers();
+
+        if (mCandleRenderer != null)
+            mCandleRenderer.initBuffers();
+
+        if (mLineRenderer != null)
+            mLineRenderer.initBuffers();
+
+        if (mScatterRenderer != null)
+            mScatterRenderer.initBuffers();
+    }
 
     @Override
     public void drawData(Canvas c) {

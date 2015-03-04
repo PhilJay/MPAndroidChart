@@ -1,0 +1,51 @@
+
+package com.github.mikephil.charting.buffer;
+
+import com.github.mikephil.charting.data.Entry;
+
+import java.util.ArrayList;
+
+public class LineBuffer extends AbstractBuffer<Entry> {
+
+    public LineBuffer(int size) {
+        super(size);
+    }
+
+    public void moveTo(float x, float y) {
+
+        if (index != 0)
+            return;
+
+        buffer[index++] = x;
+        buffer[index++] = y;
+    }
+
+    public void lineTo(float x, float y) {
+
+        if (index == 2) {
+            buffer[index++] = x;
+            buffer[index++] = y;
+        } else {
+
+            float prevX = buffer[index - 2];
+            float prevY = buffer[index - 1];
+            buffer[index++] = prevX;
+            buffer[index++] = prevY;
+            buffer[index++] = x;
+            buffer[index++] = y;
+        }
+    }
+
+    @Override
+    public void feed(ArrayList<Entry> entries) {
+        moveTo(entries.get(0).getXIndex(), entries.get(0).getVal());
+
+        for (int i = 1; i < entries.size(); i++) {
+
+            Entry e = entries.get(i);
+            lineTo(e.getXIndex(), e.getVal());
+        }
+        
+        reset();
+    }
+}

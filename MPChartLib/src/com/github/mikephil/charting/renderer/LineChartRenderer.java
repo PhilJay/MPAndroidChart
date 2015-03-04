@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
+import com.github.mikephil.charting.buffer.LineBuffer;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -22,6 +23,21 @@ public class LineChartRenderer extends DataRenderer {
 
     /** paint for the inner circle of the value indicators */
     protected Paint mCirclePaintInner;
+    //
+    // /**
+    // * Bitmap object used for drawing the paths (otherwise they are too long
+    // if
+    // * rendered directly on the canvas)
+    // */
+    // protected Bitmap mPathBitmap;
+    //
+    // /**
+    // * on this canvas, the paths are rendered, it is initialized with the
+    // * pathBitmap
+    // */
+    // protected Canvas mPathCanvas;
+
+    protected LineBuffer[] mLineBuffers;
 
     public LineChartRenderer(LineDataProvider chart, ChartAnimator animator,
             ViewPortHandler viewPortHandler) {
@@ -34,7 +50,49 @@ public class LineChartRenderer extends DataRenderer {
     }
 
     @Override
+    public void initBuffers() {
+
+        LineData lineData = mChart.getLineData();
+        mLineBuffers = new LineBuffer[lineData.getDataSetCount()];
+
+        for (int i = 0; i < mLineBuffers.length; i++) {
+            LineDataSet set = lineData.getDataSetByIndex(i);
+            mLineBuffers[i] = new LineBuffer(getBufferSize(set));
+        }
+    }
+
+    /**
+     * Returns the correct buffer size depending on the DataSet setup.
+     * 
+     * @param set
+     * @return
+     */
+    private int getBufferSize(LineDataSet set) {
+        if (set.isDrawFilledEnabled()) {
+            if (set.isDrawCubicEnabled()) {
+                return 0;
+            } else {
+                return set.getValueCount() * 4 - 4;
+            }
+        } else {
+            if (set.isDrawCubicEnabled()) {
+                return 0;
+            } else {
+                return set.getValueCount() * 4 - 4;
+            }
+        }
+    }
+
+    @Override
     public void drawData(Canvas c) {
+
+        // if (mPathBitmap == null) {
+        // mPathBitmap = Bitmap.createBitmap((int) mViewPortHandler.mChartWidth,
+        // (int) mViewPortHandler.mChartHeight, Config.ARGB_4444);
+        // mPathCanvas = new Canvas(mPathBitmap);
+        // }
+        //
+        // mPathBitmap.eraseColor(Color.TRANSPARENT);
 
         LineData lineData = mChart.getLineData();
 
@@ -43,6 +101,8 @@ public class LineChartRenderer extends DataRenderer {
             if (set.isVisible())
                 drawDataSet(c, set);
         }
+
+        // c.drawBitmap(mPathBitmap, 0, 0, mDrawPaint);
     }
 
     /**
@@ -93,6 +153,15 @@ public class LineChartRenderer extends DataRenderer {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
+        int minx = (int)
+                trans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), 0).x;
+        int maxx = (int)
+                trans.getValuesByTouchPoint(mViewPortHandler.contentRight(),
+                        0).x + 2;
+
+        if (maxx > entries.size())
+            maxx = entries.size();
+
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
 
@@ -102,7 +171,9 @@ public class LineChartRenderer extends DataRenderer {
         Path spline = new Path();
 
         ArrayList<CPoint> points = new ArrayList<CPoint>();
-        for (Entry e : entries) {
+        for (int i = minx; i < maxx; i++) {
+
+            Entry e = entries.get(i);
             if (e != null)
                 points.add(new CPoint(e.getXIndex(), e.getVal()));
         }
@@ -146,7 +217,7 @@ public class LineChartRenderer extends DataRenderer {
         if (dataSet.isDrawFilledEnabled()) {
 
             // create a new path, this is bad for performance
-            drawCubicFill(c, dataSet, new Path(spline), trans);
+            drawCubicFill(c, dataSet, new Path(spline), trans, minx, maxx);
         }
 
         mRenderPaint.setColor(dataSet.getColor());
@@ -160,17 +231,15 @@ public class LineChartRenderer extends DataRenderer {
         mRenderPaint.setPathEffect(null);
     }
 
-    protected void drawCubicFill(Canvas c, LineDataSet dataSet, Path spline, Transformer trans) {
+    protected void drawCubicFill(Canvas c, LineDataSet dataSet, Path spline, Transformer trans,
+            int from, int to) {
 
         float fillMin = mChart.getFillFormatter()
                 .getFillLinePosition(dataSet, mChart.getLineData(), mChart.getYChartMax(),
                         mChart.getYChartMin());
 
-        spline.lineTo(
-                dataSet.getYVals()
-                        .get((int) ((dataSet.getYVals().size() - 1) * mAnimator.getPhaseX()))
-                        .getXIndex(), fillMin);
-        spline.lineTo(mChart.getXChartMin(), fillMin);
+        spline.lineTo(to, fillMin);
+        spline.lineTo(from, fillMin);
         spline.close();
 
         mRenderPaint.setStyle(Paint.Style.FILL);
@@ -186,6 +255,8 @@ public class LineChartRenderer extends DataRenderer {
     }
 
     protected void drawLinear(Canvas c, LineDataSet dataSet, ArrayList<Entry> entries) {
+
+        int dataSetIndex = mChart.getLineData().getIndexOfDataSet(dataSet);
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
@@ -220,12 +291,25 @@ public class LineChartRenderer extends DataRenderer {
 
         } else { // only one color per dataset
 
+            int minx = (int) trans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), 0).x;
+            int maxx = (int) trans.getValuesByTouchPoint(mViewPortHandler.contentRight(), 0).x;
+
+            int range = (maxx - minx) * 4;
+            int from = minx * 4;
+
             mRenderPaint.setColor(dataSet.getColor());
 
-            Path line = generateLinePath(entries);
-            trans.pathValueToPixel(line);
+            LineBuffer buffer = mLineBuffers[dataSetIndex];
+            buffer.feed(entries);
 
-            c.drawPath(line, mRenderPaint);
+            trans.pointValuesToPixel(buffer.buffer);
+
+            c.drawLines(buffer.buffer, from, range, mRenderPaint);
+
+            // Path line = generateLinePath(entries);
+            //
+            // trans.pathValueToPixel(line);
+            // c.drawPath(line, mRenderPaint);
         }
 
         mRenderPaint.setPathEffect(null);
@@ -247,10 +331,16 @@ public class LineChartRenderer extends DataRenderer {
 
         // mRenderPaint.setShader(dataSet.getShader());
 
+        int minx = (int)
+                trans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), 0).x;
+        int maxx = (int)
+                trans.getValuesByTouchPoint(mViewPortHandler.contentRight(),
+                        0).x + 1;
+
         Path filled = generateFilledPath(
                 entries,
                 mChart.getFillFormatter().getFillLinePosition(dataSet, mChart.getLineData(),
-                        mChart.getYChartMax(), mChart.getYChartMin()));
+                        mChart.getYChartMax(), mChart.getYChartMin()), minx, maxx);
 
         trans.pathValueToPixel(filled);
 
@@ -267,24 +357,27 @@ public class LineChartRenderer extends DataRenderer {
      * @param entries
      * @return
      */
-    private Path generateFilledPath(ArrayList<Entry> entries, float fillMin) {
+    private Path generateFilledPath(ArrayList<Entry> entries, float fillMin, int from, int to) {
 
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
 
         Path filled = new Path();
-        filled.moveTo(entries.get(0).getXIndex(), entries.get(0).getVal() * phaseY);
+        filled.moveTo(entries.get(from).getXIndex(), entries.get(from).getVal() * phaseY);
+
+        if (to >= entries.size())
+            to = entries.size() - 1;
 
         // create a new path
-        for (int x = 1; x < entries.size() * phaseX; x++) {
+        for (int x = from + 1; x <= to * phaseX; x++) {
 
             Entry e = entries.get(x);
             filled.lineTo(e.getXIndex(), e.getVal() * phaseY);
         }
 
         // close up
-        filled.lineTo(entries.get((int) ((entries.size() - 1) * phaseX)).getXIndex(), fillMin);
-        filled.lineTo(entries.get(0).getXIndex(), fillMin);
+        filled.lineTo(entries.get((int) (to * phaseX)).getXIndex(), fillMin);
+        filled.lineTo(entries.get(from).getXIndex(), fillMin);
         filled.close();
 
         return filled;
@@ -406,7 +499,7 @@ public class LineChartRenderer extends DataRenderer {
 
                     c.drawCircle(x, y, dataSet.getCircleSize(),
                             mRenderPaint);
-                    
+
                     if (dataSet.isDrawCircleHoleEnabled())
                         c.drawCircle(x, y,
                                 dataSet.getCircleSize() / 2f,

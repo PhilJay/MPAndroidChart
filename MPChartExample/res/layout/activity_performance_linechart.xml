@@ -19,12 +19,12 @@
         android:layout_marginBottom="35dp"
         android:layout_toLeftOf="@+id/tvValueCount"
         android:layout_marginRight="5dp"
-        android:max="3000"
+        android:max="29000"
         android:paddingBottom="12dp" />
 
     <TextView
         android:id="@+id/tvValueCount"
-        android:layout_width="50dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/seekbarValues"
         android:layout_alignParentRight="true"

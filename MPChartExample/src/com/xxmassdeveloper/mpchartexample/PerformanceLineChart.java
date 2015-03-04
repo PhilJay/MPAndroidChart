@@ -74,9 +74,12 @@ public class PerformanceLineChart extends DemoBase implements OnSeekBarChangeLis
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-        mTvCount.setText("" + (mSeekBarValues.getProgress()));
+        int count = mSeekBarValues.getProgress() + 1000;
+        mTvCount.setText("" + count);
+        
+        mChart.resetTracking();
 
-        setData(mSeekBarValues.getProgress(), 500f);
+        setData(count, 500f);
        
         // redraw
         mChart.invalidate();
@@ -115,9 +118,11 @@ public class PerformanceLineChart extends DemoBase implements OnSeekBarChangeLis
         LineDataSet set1 = new LineDataSet(yVals, "DataSet 1");
         
         set1.setColor(Color.BLACK);
-        set1.setLineWidth(1f);
+        set1.setLineWidth(0.5f);
         set1.setDrawValues(false);
         set1.setDrawCircles(false);
+        set1.setDrawCubic(false);
+        set1.setDrawFilled(false);
 
         // create a data object with the datasets
         LineData data = new LineData(xVals, set1);

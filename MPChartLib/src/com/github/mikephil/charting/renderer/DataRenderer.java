@@ -21,6 +21,8 @@ public abstract class DataRenderer extends Renderer {
 
     /** paint used for highlighting values */
     protected Paint mHighlightPaint;
+    
+    protected Paint mDrawPaint;
 
     /**
      * paint object for drawing values (text representing values of chart
@@ -34,6 +36,8 @@ public abstract class DataRenderer extends Renderer {
 
         mRenderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mRenderPaint.setStyle(Style.FILL);
+        
+        mDrawPaint = new Paint(Paint.DITHER_FLAG);
 
         mValuePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mValuePaint.setColor(Color.rgb(63, 63, 63));
@@ -78,6 +82,8 @@ public abstract class DataRenderer extends Renderer {
         mValuePaint.setTypeface(set.getValueTypeface());
         mValuePaint.setTextSize(set.getValueTextSize());
     }
+    
+    public abstract void initBuffers();
 
     public abstract void drawData(Canvas c);
 

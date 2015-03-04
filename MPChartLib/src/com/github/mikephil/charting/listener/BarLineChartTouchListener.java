@@ -28,6 +28,8 @@ import com.github.mikephil.charting.utils.Highlight;
 public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarLineScatterCandleData<? extends BarLineScatterCandleDataSet<? extends Entry>>>>
         extends SimpleOnGestureListener implements OnTouchListener {
 
+   // private static final long REFRESH_MILLIS = 20;
+
     /** the original touch-matrix from the chart */
     private Matrix mMatrix = new Matrix();
 
@@ -166,10 +168,18 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
         }
 
         // Perform the transformation, update the chart
-        mMatrix = mChart.getViewPortHandler().refresh(mMatrix, mChart, true);
+//        if (needsRefresh())
+            mMatrix = mChart.getViewPortHandler().refresh(mMatrix, mChart, true);
 
         return true; // indicate event was handled
     }
+
+//    private boolean needsRefresh() {
+//        if (System.currentTimeMillis() - mChart.getLastDrawMillis() > REFRESH_MILLIS) {
+//            return true;
+//        } else
+//            return false;
+//    }
 
     /**
      * ################ ################ ################ ################

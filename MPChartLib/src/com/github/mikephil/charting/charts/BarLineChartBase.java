@@ -143,6 +143,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mGridBackgroundPaint.setColor(Color.rgb(240, 240, 240)); // light
         // grey
     }
+   
+    // for performance tracking
+    private long totalTime = 0;
+    private long drawCycles = 0;
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -169,58 +173,69 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             calcModulus();
 
         // execute all drawing commands
-        drawGridBackground();
+        drawGridBackground(canvas);
 
         mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum);
         mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum);
 
         // make sure the graph values and grid cannot be drawn outside the
         // content-rect
-        int clipRestoreCount = mDrawCanvas.save();
-        mDrawCanvas.clipRect(mViewPortHandler.getContentRect());
+        int clipRestoreCount = canvas.save();
+        canvas.clipRect(mViewPortHandler.getContentRect());
 
-        mXAxisRenderer.renderGridLines(mDrawCanvas);
-        mAxisRendererLeft.renderGridLines(mDrawCanvas);
-        mAxisRendererRight.renderGridLines(mDrawCanvas);
+        mXAxisRenderer.renderGridLines(canvas);
+        mAxisRendererLeft.renderGridLines(canvas);
+        mAxisRendererRight.renderGridLines(canvas);
 
-        mAxisRendererLeft.renderLimitLines(mDrawCanvas);
-        mAxisRendererRight.renderLimitLines(mDrawCanvas);
-
-        mRenderer.drawData(mDrawCanvas);
+        mRenderer.drawData(canvas);
+        
+        mAxisRendererLeft.renderLimitLines(canvas);
+        mAxisRendererRight.renderLimitLines(canvas);
 
         // if highlighting is enabled
         if (mHighlightEnabled && mHighLightIndicatorEnabled && valuesToHighlight())
-            mRenderer.drawHighlighted(mDrawCanvas, mIndicesToHightlight);
+            mRenderer.drawHighlighted(canvas, mIndicesToHightlight);
 
         // Removes clipping rectangle
-        mDrawCanvas.restoreToCount(clipRestoreCount);
+        canvas.restoreToCount(clipRestoreCount);
 
-        mRenderer.drawExtras(mDrawCanvas);
+        mRenderer.drawExtras(canvas);
 
-        mXAxisRenderer.renderAxisLabels(mDrawCanvas);
-        mXAxisRenderer.renderAxisLine(mDrawCanvas);
+        mXAxisRenderer.renderAxisLabels(canvas);
+        mXAxisRenderer.renderAxisLine(canvas);
 
-        mAxisRendererLeft.renderAxisLabels(mDrawCanvas);
-        mAxisRendererLeft.renderAxisLine(mDrawCanvas);
+        mAxisRendererLeft.renderAxisLabels(canvas);
+        mAxisRendererLeft.renderAxisLine(canvas);
 
-        mAxisRendererRight.renderAxisLabels(mDrawCanvas);
-        mAxisRendererRight.renderAxisLine(mDrawCanvas);
+        mAxisRendererRight.renderAxisLabels(canvas);
+        mAxisRendererRight.renderAxisLine(canvas);
 
-        mRenderer.drawValues(mDrawCanvas);
+        mRenderer.drawValues(canvas);
 
-        mLegendRenderer.renderLegend(mDrawCanvas, mLegend);
+        mLegendRenderer.renderLegend(canvas, mLegend);
         // drawLegend();
 
-        drawMarkers();
+        drawMarkers(canvas);
 
-        drawDescription();
+        drawDescription(canvas);
 
-        canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
+//        canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
 
-        if (mLogEnabled) {
+        if (true) {
             long drawtime = (System.currentTimeMillis() - starttime);
-            Log.i(LOG_TAG, "DrawTime: " + drawtime + " ms");
+            totalTime += drawtime;
+            drawCycles += 1;
+            long average = totalTime / drawCycles;
+            Log.i(LOG_TAG, "Drawtime: " + drawtime + " ms, average: " + average + " ms, cycles: " + drawCycles);
         }
+    }
+    
+    /**
+     * RESET PERFORMANCE TRACKING FIELDS
+     */
+    public void resetTracking() {
+        totalTime = 0;
+        drawCycles = 0;
     }
 
     protected void prepareValuePxMatrix() {
@@ -252,6 +267,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             if (mLogEnabled)
                 Log.i(LOG_TAG, "Preparing...");
         }
+        
+        mRenderer.initBuffers();
 
         calcMinMax();
 
@@ -429,13 +446,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     /**
      * draws the grid background
      */
-    protected void drawGridBackground() {
+    protected void drawGridBackground(Canvas c) {
 
         if (!mDrawGridBackground)
             return;
 
         // draw the grid background
-        mDrawCanvas.drawRect(mViewPortHandler.getContentRect(), mGridBackgroundPaint);
+        c.drawRect(mViewPortHandler.getContentRect(), mGridBackgroundPaint);
     }
 
     /**

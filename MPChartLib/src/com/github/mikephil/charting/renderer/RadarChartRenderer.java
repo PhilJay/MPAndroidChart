@@ -43,6 +43,12 @@ public class RadarChartRenderer extends DataRenderer {
     }
 
     @Override
+    public void initBuffers() {
+        // TODO Auto-generated method stub
+        
+    }
+    
+    @Override
     public void drawData(Canvas c) {
 
         RadarData radarData = mChart.getData();

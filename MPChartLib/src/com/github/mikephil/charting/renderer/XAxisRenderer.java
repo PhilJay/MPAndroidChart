@@ -4,6 +4,7 @@ package com.github.mikephil.charting.renderer;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
+import android.util.Log;
 
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
@@ -27,7 +28,7 @@ public class XAxisRenderer extends AxisRenderer {
     }
 
     public void computeAxis(float xValAverageLength, ArrayList<String> xValues) {
-        
+
         mAxisPaint.setTypeface(mXAxis.getTypeface());
         mAxisPaint.setTextSize(mXAxis.getTextSize());
 
@@ -118,7 +119,13 @@ public class XAxisRenderer extends AxisRenderer {
                 0f, 0f
         };
 
-        for (int i = 0; i < mXAxis.getValues().size(); i += mXAxis.mAxisLabelModulus) {
+        int minx = (int)
+                mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), 0).x;
+        int maxx = (int)
+                mTrans.getValuesByTouchPoint(mViewPortHandler.contentRight(),
+                        0).x;
+
+        for (int i = minx; i < maxx; i += mXAxis.mAxisLabelModulus) {
 
             position[0] = i;
 
@@ -162,11 +169,17 @@ public class XAxisRenderer extends AxisRenderer {
         float[] position = new float[] {
                 0f, 0f
         };
+        
+        int minx = (int)
+                mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), 0).x;
+        int maxx = (int)
+                mTrans.getValuesByTouchPoint(mViewPortHandler.contentRight(),
+                        0).x;
 
         mGridPaint.setColor(mXAxis.getGridColor());
         mGridPaint.setStrokeWidth(mXAxis.getGridLineWidth());
 
-        for (int i = 0; i < mXAxis.getValues().size(); i += mXAxis.mAxisLabelModulus) {
+        for (int i = minx; i < maxx; i += mXAxis.mAxisLabelModulus) {
 
             position[0] = i;
 

@@ -40,6 +40,12 @@ public class BarChartRenderer extends DataRenderer {
         // set alpha after color
         mHighlightPaint.setAlpha(120);
     }
+    
+    @Override
+    public void initBuffers() {
+        // TODO Auto-generated method stub
+        
+    }
 
     @Override
     public void drawData(Canvas c) {

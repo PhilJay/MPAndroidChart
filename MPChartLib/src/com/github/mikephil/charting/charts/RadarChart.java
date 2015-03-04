@@ -153,29 +153,29 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         if (mDataNotSet)
             return;
 
-        mXAxisRenderer.renderAxisLabels(mDrawCanvas);
+        mXAxisRenderer.renderAxisLabels(canvas);
 
         if (mDrawWeb)
-            mRenderer.drawExtras(mDrawCanvas);
+            mRenderer.drawExtras(canvas);
 
-        mYAxisRenderer.renderLimitLines(mDrawCanvas);
+        mYAxisRenderer.renderLimitLines(canvas);
 
-        mRenderer.drawData(mDrawCanvas);
+        mRenderer.drawData(canvas);
 
         if (mHighlightEnabled && valuesToHighlight())
-            mRenderer.drawHighlighted(mDrawCanvas, mIndicesToHightlight);
+            mRenderer.drawHighlighted(canvas, mIndicesToHightlight);
 
-        mYAxisRenderer.renderAxisLabels(mDrawCanvas);
+        mYAxisRenderer.renderAxisLabels(canvas);
 
-        mRenderer.drawValues(mDrawCanvas);
+        mRenderer.drawValues(canvas);
 
-        mLegendRenderer.renderLegend(mDrawCanvas, mLegend);
+        mLegendRenderer.renderLegend(canvas, mLegend);
 
-        drawDescription();
+        drawDescription(canvas);
 
-        drawMarkers();
+        drawMarkers(canvas);
 
-        canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
+//        canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
     }
 
     /**

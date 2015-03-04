@@ -111,9 +111,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
         objects.add(new ContentItem(
                 "Dynamical data adding",
                 "This Activity demonstrates dynamical adding of Entries and DataSets (real time graph)."));
-//        objects.add(new ContentItem(
-//                "Performance Line Chart",
-//                "Renders up to 3000 objects."));
+        objects.add(new ContentItem(
+                "Performance Line Chart",
+                "Renders up to 30.000 objects smoothly."));
 
         MyAdapter adapter = new MyAdapter(this, objects);
 

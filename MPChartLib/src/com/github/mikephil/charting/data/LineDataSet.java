@@ -110,10 +110,12 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
     }
 
     /**
-     * Enables the line to be drawn in dashed mode, e.g. like this "- - - - - -"
+     * Enables the line to be drawn in dashed mode, e.g. like this
+     * "- - - - - -". THIS ONLY WORKS IF HARDWARE-ACCELERATION IS TURNED OFF.
+     * Keep in mind that hardware acceleration boosts performance.
      * 
      * @param lineLength the length of the line pieces
-     * @param spaceLength the length of space inbetween the pieces
+     * @param spaceLength the length of space in between the pieces
      * @param phase offset, in degrees (normally, use 0)
      */
     public void enableDashedLine(float lineLength, float spaceLength, float phase) {
@@ -280,7 +282,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
     public void setDrawCircleHole(boolean enabled) {
         mDrawCircleHole = enabled;
     }
-    
+
     public boolean isDrawCircleHoleEnabled() {
         return mDrawCircleHole;
     }

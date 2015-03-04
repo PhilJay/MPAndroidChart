@@ -267,13 +267,13 @@ public abstract class DataSet<T extends Entry> {
     }
 
     /**
-     * returns the type of the DataSet, specified via constructor
+     * Returns the number of entries this DataSet holds.
      * 
      * @return
      */
-    // public int getType() {
-    // return mType;
-    // }
+    public int getValueCount() {
+        return mYVals.size();
+    }
 
     /**
      * The xIndex of an Entry object is provided. This method returns the actual

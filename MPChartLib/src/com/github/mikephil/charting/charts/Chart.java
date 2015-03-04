@@ -74,7 +74,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     protected ValueFormatter mDefaultFormatter;
 
     /** the canvas that is used for drawing on the bitmap */
-    protected Canvas mDrawCanvas;
+//    protected Canvas mDrawCanvas;
 
     /**
      * paint object used for drawing the description text in the bottom right
@@ -167,7 +167,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     protected void init() {
 
         setWillNotDraw(false);
-        // setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+//         setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
         if (android.os.Build.VERSION.SDK_INT < 11)
             mAnimator = new ChartAnimator();
@@ -389,25 +389,20 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             mOffsetsCalculated = true;
         }
 
-        if (mDrawCanvas == null) {
-            mDrawCanvas = new Canvas(mDrawBitmap);
-        }
+//        if (mDrawCanvas == null) {
+//            mDrawCanvas = new Canvas(mDrawBitmap);
+//        }
 
         // clear everything
-        mDrawBitmap.eraseColor(Color.TRANSPARENT);
-
-        // mDrawCanvas.drawColor(Color.WHITE);
-        // canvas.drawColor(Color.TRANSPARENT,
-        // android.graphics.PorterDuff.Mode.XOR); // clear all
+//        mDrawBitmap.eraseColor(Color.TRANSPARENT);
     }
 
     /**
      * draws the description text in the bottom right corner of the chart
      */
-    protected void drawDescription() {
+    protected void drawDescription(Canvas c) {
 
-        mDrawCanvas
-                .drawText(mDescription, getWidth() - mViewPortHandler.offsetRight() - 10,
+        c.drawText(mDescription, getWidth() - mViewPortHandler.offsetRight() - 10,
                         getHeight() - mViewPortHandler.offsetBottom()
                                 - 10, mDescPaint);
     }
@@ -526,7 +521,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * draws all MarkerViews on the highlighted positions
      */
-    protected void drawMarkers() {
+    protected void drawMarkers(Canvas canvas) {
 
         // if there is no marker view or drawing marker is disabled
         if (mMarkerView == null || !mDrawMarkerViews || !valuesToHighlight())
@@ -568,9 +563,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
                 if (pos[1] - mMarkerView.getHeight() <= 0) {
                     float y = mMarkerView.getHeight() - pos[1];
-                    mMarkerView.draw(mDrawCanvas, pos[0], pos[1] + y);
+                    mMarkerView.draw(canvas, pos[0], pos[1] + y);
                 } else {
-                    mMarkerView.draw(mDrawCanvas, pos[0], pos[1]);
+                    mMarkerView.draw(canvas, pos[0], pos[1]);
                 }
             }
         }
@@ -675,14 +670,14 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     /** BELOW THIS ONLY GETTERS AND SETTERS */
 
-    /**
-     * Returns the canvas object the chart uses for drawing.
-     *
-     * @return
-     */
-    public Canvas getCanvas() {
-        return mDrawCanvas;
-    }
+//    /**
+//     * Returns the canvas object the chart uses for drawing.
+//     *
+//     * @return
+//     */
+//    public Canvas getCanvas() {
+//        return mDrawCanvas;
+//    }
 
     /**
      * Returns the default ValueFormatter that has been determined by the chart
@@ -1349,7 +1344,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         if (w > 0 && h > 0 && w < 10000 && h < 10000) {
             // create a new bitmap with the new dimensions
             mDrawBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_4444);
-            mDrawCanvas = new Canvas(mDrawBitmap);
+//            mDrawCanvas = new Canvas(mDrawBitmap);
             mViewPortHandler.setChartDimens(w, h);
 
             if (mLogEnabled)

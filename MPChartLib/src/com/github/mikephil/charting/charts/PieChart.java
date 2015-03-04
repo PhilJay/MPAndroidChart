@@ -94,19 +94,19 @@ public class PieChart extends PieRadarChartBase<PieData> {
             return;
 
         if (mHighlightEnabled && valuesToHighlight())
-            mRenderer.drawHighlighted(mDrawCanvas, mIndicesToHightlight);
+            mRenderer.drawHighlighted(canvas, mIndicesToHightlight);
 
-        mRenderer.drawData(mDrawCanvas);
+        mRenderer.drawData(canvas);
 
-        mRenderer.drawExtras(mDrawCanvas);
+        mRenderer.drawExtras(canvas);
 
-        mRenderer.drawValues(mDrawCanvas);
+        mRenderer.drawValues(canvas);
 
-        mLegendRenderer.renderLegend(mDrawCanvas, mLegend);
+        mLegendRenderer.renderLegend(canvas, mLegend);
 
-        drawDescription();
+        drawDescription(canvas);
 
-        canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
+//        canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
     }
 
     @Override

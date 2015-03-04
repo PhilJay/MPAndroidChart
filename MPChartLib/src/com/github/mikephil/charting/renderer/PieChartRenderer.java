@@ -59,6 +59,12 @@ public class PieChartRenderer extends DataRenderer {
     public Paint getPaintCenterText() {
         return mCenterTextPaint;
     }
+    
+    @Override
+    public void initBuffers() {
+        // TODO Auto-generated method stub
+        
+    }
 
     @Override
     public void drawData(Canvas c) {
