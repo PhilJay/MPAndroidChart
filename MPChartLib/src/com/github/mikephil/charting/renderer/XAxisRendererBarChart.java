@@ -2,6 +2,7 @@
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
+import android.util.Log;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -35,8 +36,17 @@ public class XAxisRendererBarChart extends XAxisRenderer {
 
         BarData bd = mChart.getData();
         int step = bd.getDataSetCount();
+        float div = (float) step + (step > 1 ? bd.getGroupSpace() : 0f);
 
-        for (int i = 0; i < mXAxis.getValues().size(); i += mXAxis.mAxisLabelModulus) {
+        float min = (float) (mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), 0).x)
+                / div;
+        float max = (float) (mTrans.getValuesByTouchPoint(mViewPortHandler.contentRight(), 0).x)
+                / div;
+        
+        for (int i = (int) min; i < max; i += mXAxis.mAxisLabelModulus) {
+
+            if (!fitsBounds(i, min - 1f, max + 0.5f))
+                continue;
 
             position[0] = i * step + i * bd.getGroupSpace()
                     + bd.getGroupSpace() / 2f;
@@ -86,7 +96,7 @@ public class XAxisRendererBarChart extends XAxisRenderer {
         float[] position = new float[] {
                 0f, 0f
         };
-        
+
         mGridPaint.setColor(mXAxis.getGridColor());
         mGridPaint.setStrokeWidth(mXAxis.getGridLineWidth());
 

@@ -4,7 +4,6 @@ package com.github.mikephil.charting.renderer;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
-import android.util.Log;
 
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
@@ -123,9 +122,12 @@ public class XAxisRenderer extends AxisRenderer {
                 mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), 0).x;
         int maxx = (int)
                 mTrans.getValuesByTouchPoint(mViewPortHandler.contentRight(),
-                        0).x;
+                        0).x + 1;
 
         for (int i = minx; i < maxx; i += mXAxis.mAxisLabelModulus) {
+
+            if (!fitsBounds(i, minx, maxx))
+                continue;
 
             position[0] = i;
 
@@ -169,12 +171,12 @@ public class XAxisRenderer extends AxisRenderer {
         float[] position = new float[] {
                 0f, 0f
         };
-        
+
         int minx = (int)
                 mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), 0).x;
         int maxx = (int)
                 mTrans.getValuesByTouchPoint(mViewPortHandler.contentRight(),
-                        0).x;
+                        0).x + 1;
 
         mGridPaint.setColor(mXAxis.getGridColor());
         mGridPaint.setStrokeWidth(mXAxis.getGridLineWidth());

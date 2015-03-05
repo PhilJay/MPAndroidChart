@@ -13,7 +13,8 @@ import java.util.ArrayList;
  * Class representing the y-axis labels settings and its entries. Only use the
  * setter methods to modify it. Do not access public variables directly. Be
  * aware that not all features the YLabels class provides are suitable for the
- * RadarChart.
+ * RadarChart. Customizations that affect the value range of the axis need to be
+ * applied before setting data for the chart.
  * 
  * @author Philipp Jahoda
  */
@@ -187,7 +188,7 @@ public class YAxis extends AxisBase {
 
     /**
      * If this is set to true, the y-axis is inverted which means that low
-     * values are on top of the chart, high values on bottom. 
+     * values are on top of the chart, high values on bottom.
      * 
      * @param enabled
      */

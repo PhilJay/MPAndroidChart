@@ -40,11 +40,11 @@ public class BarChartRenderer extends DataRenderer {
         // set alpha after color
         mHighlightPaint.setAlpha(120);
     }
-    
+
     @Override
     public void initBuffers() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
@@ -65,21 +65,28 @@ public class BarChartRenderer extends DataRenderer {
     protected void drawDataSet(Canvas c, BarDataSet dataSet, int index) {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
+        calcXBounds(trans);
 
         // the space between bar-groups
         float space = mChart.getBarData().getGroupSpace();
+        int step = mChart.getBarData().getDataSetCount();
+        float multi = (float) step + space;
 
         boolean noStacks = dataSet.getStackSize() == 1 ? true : false;
 
         ArrayList<BarEntry> entries = dataSet.getYVals();
 
         // do the drawing
-        for (int j = 0; j < dataSet.getEntryCount() * mAnimator.getPhaseX(); j++) {
+        for (int j = 0; j < entries.size() * mAnimator.getPhaseX(); j++) {
 
             BarEntry e = entries.get(j);
 
+            // check bounds
+            if (!fitsBounds(((float) e.getXIndex()) * multi, mMinX - multi, mMaxX + multi))
+                continue;
+
             // calculate the x-position, depending on datasetcount
-            float x = e.getXIndex() + j * (mChart.getBarData().getDataSetCount() - 1) + index
+            float x = e.getXIndex() + j * (step - 1) + index
                     + space * j + space / 2f;
             float y = e.getVal();
 
@@ -87,13 +94,6 @@ public class BarChartRenderer extends DataRenderer {
             if (noStacks) {
 
                 prepareBar(x, y, dataSet.getBarSpace(), trans);
-
-                // avoid drawing outofbounds values
-                if (!mViewPortHandler.isInBoundsRight(mBarRect.left))
-                    break;
-
-                if (!mViewPortHandler.isInBoundsLeft(mBarRect.right))
-                    continue;
 
                 // if drawing the bar shadow is enabled
                 if (mChart.isDrawBarShadowEnabled()) {
@@ -150,10 +150,6 @@ public class BarChartRenderer extends DataRenderer {
                         c.drawRect(mBarRect, mRenderPaint);
                     }
                 }
-
-                // avoid drawing outofbounds values
-                if (!mViewPortHandler.isInBoundsRight(mBarRect.left))
-                    break;
             }
         }
     }
@@ -196,7 +192,8 @@ public class BarChartRenderer extends DataRenderer {
      * @param from
      * @param trans
      */
-    protected void prepareBarHighlight(float x, float y, float barspace, float from, Transformer trans) {
+    protected void prepareBarHighlight(float x, float y, float barspace, float from,
+            Transformer trans) {
 
         float barWidth = 0.5f;
 
@@ -386,7 +383,7 @@ public class BarChartRenderer extends DataRenderer {
                         + groupspace * index;
                 float y = isStack ? e.getVals()[h.getStackIndex()]
                         + e.getBelowSum(h.getStackIndex()) : e.getVal();
-                
+
                 // this is where the bar starts
                 float from = isStack ? e.getBelowSum(h.getStackIndex()) : 0f;
 

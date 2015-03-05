@@ -86,14 +86,6 @@ public class LineChartRenderer extends DataRenderer {
     @Override
     public void drawData(Canvas c) {
 
-        // if (mPathBitmap == null) {
-        // mPathBitmap = Bitmap.createBitmap((int) mViewPortHandler.mChartWidth,
-        // (int) mViewPortHandler.mChartHeight, Config.ARGB_4444);
-        // mPathCanvas = new Canvas(mPathBitmap);
-        // }
-        //
-        // mPathBitmap.eraseColor(Color.TRANSPARENT);
-
         LineData lineData = mChart.getLineData();
 
         for (LineDataSet set : lineData.getDataSets()) {
@@ -101,8 +93,6 @@ public class LineChartRenderer extends DataRenderer {
             if (set.isVisible())
                 drawDataSet(c, set);
         }
-
-        // c.drawBitmap(mPathBitmap, 0, 0, mDrawPaint);
     }
 
     /**
@@ -133,6 +123,8 @@ public class LineChartRenderer extends DataRenderer {
 
         if (entries.size() < 1)
             return;
+        
+        calcXBounds(mChart.getTransformer(dataSet.getAxisDependency()));
 
         mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
         mRenderPaint.setPathEffect(dataSet.getDashPathEffect());
@@ -153,11 +145,8 @@ public class LineChartRenderer extends DataRenderer {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-        int minx = (int)
-                trans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), 0).x;
-        int maxx = (int)
-                trans.getValuesByTouchPoint(mViewPortHandler.contentRight(),
-                        0).x + 2;
+        int minx = mMinX;
+        int maxx = mMaxX + 2;
 
         if (maxx > entries.size())
             maxx = entries.size();
@@ -291,11 +280,8 @@ public class LineChartRenderer extends DataRenderer {
 
         } else { // only one color per dataset
 
-            int minx = (int) trans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), 0).x;
-            int maxx = (int) trans.getValuesByTouchPoint(mViewPortHandler.contentRight(), 0).x;
-
-            int range = (maxx - minx) * 4;
-            int from = minx * 4;
+            int range = (mMaxX - mMinX) * 4;
+            int from = mMinX * 4;
 
             mRenderPaint.setColor(dataSet.getColor());
 
@@ -329,18 +315,10 @@ public class LineChartRenderer extends DataRenderer {
         // filled is drawn with less alpha
         mRenderPaint.setAlpha(dataSet.getFillAlpha());
 
-        // mRenderPaint.setShader(dataSet.getShader());
-
-        int minx = (int)
-                trans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), 0).x;
-        int maxx = (int)
-                trans.getValuesByTouchPoint(mViewPortHandler.contentRight(),
-                        0).x + 1;
-
         Path filled = generateFilledPath(
                 entries,
                 mChart.getFillFormatter().getFillLinePosition(dataSet, mChart.getLineData(),
-                        mChart.getYChartMax(), mChart.getYChartMin()), minx, maxx);
+                        mChart.getYChartMax(), mChart.getYChartMin()), mMinX, mMaxX + 1);
 
         trans.pathValueToPixel(filled);
 
@@ -348,7 +326,6 @@ public class LineChartRenderer extends DataRenderer {
 
         // restore alpha
         mRenderPaint.setAlpha(255);
-        // mRenderPaint.setShader(null);
     }
 
     /**

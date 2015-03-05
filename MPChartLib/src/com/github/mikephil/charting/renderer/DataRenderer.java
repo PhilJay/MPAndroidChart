@@ -10,6 +10,7 @@ import android.graphics.Paint.Style;
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 
 public abstract class DataRenderer extends Renderer {
@@ -21,8 +22,12 @@ public abstract class DataRenderer extends Renderer {
 
     /** paint used for highlighting values */
     protected Paint mHighlightPaint;
-    
+
     protected Paint mDrawPaint;
+
+    protected int mMinX = 0;
+
+    protected int mMaxX = 0;
 
     /**
      * paint object for drawing values (text representing values of chart
@@ -36,7 +41,7 @@ public abstract class DataRenderer extends Renderer {
 
         mRenderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mRenderPaint.setStyle(Style.FILL);
-        
+
         mDrawPaint = new Paint(Paint.DITHER_FLAG);
 
         mValuePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -82,7 +87,18 @@ public abstract class DataRenderer extends Renderer {
         mValuePaint.setTypeface(set.getValueTypeface());
         mValuePaint.setTextSize(set.getValueTextSize());
     }
-    
+
+    /**
+     * Calculates the minimum and maximum x-value the chart can currently
+     * display (with the given zoom level).
+     * 
+     * @param trans
+     */
+    protected void calcXBounds(Transformer trans) {
+        mMinX = (int) trans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), 0).x;
+        mMaxX = (int) trans.getValuesByTouchPoint(mViewPortHandler.contentRight(), 0).x;
+    }
+
     public abstract void initBuffers();
 
     public abstract void drawData(Canvas c);

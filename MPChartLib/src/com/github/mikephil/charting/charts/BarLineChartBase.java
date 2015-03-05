@@ -143,7 +143,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mGridBackgroundPaint.setColor(Color.rgb(240, 240, 240)); // light
         // grey
     }
-   
+
     // for performance tracking
     private long totalTime = 0;
     private long drawCycles = 0;
@@ -188,7 +188,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mAxisRendererRight.renderGridLines(canvas);
 
         mRenderer.drawData(canvas);
-        
+
         mAxisRendererLeft.renderLimitLines(canvas);
         mAxisRendererRight.renderLimitLines(canvas);
 
@@ -219,17 +219,18 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         drawDescription(canvas);
 
-//        canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
+        // canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
 
         if (true) {
             long drawtime = (System.currentTimeMillis() - starttime);
             totalTime += drawtime;
             drawCycles += 1;
             long average = totalTime / drawCycles;
-            Log.i(LOG_TAG, "Drawtime: " + drawtime + " ms, average: " + average + " ms, cycles: " + drawCycles);
+            Log.i(LOG_TAG, "Drawtime: " + drawtime + " ms, average: " + average + " ms, cycles: "
+                    + drawCycles);
         }
     }
-    
+
     /**
      * RESET PERFORMANCE TRACKING FIELDS
      */
@@ -267,8 +268,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             if (mLogEnabled)
                 Log.i(LOG_TAG, "Preparing...");
         }
-        
-        mRenderer.initBuffers();
+
+        if (mRenderer != null)
+            mRenderer.initBuffers();
 
         calcMinMax();
 

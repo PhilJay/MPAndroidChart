@@ -63,6 +63,7 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
     public void setData(CombinedData data) {
         super.setData(data);
         mRenderer = new CombinedChartRenderer(this, mAnimator, mViewPortHandler);
+        mRenderer.initBuffers();
     }
 
     public void setFillFormatter(FillFormatter formatter) {
