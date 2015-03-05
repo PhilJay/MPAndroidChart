@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
+import com.github.mikephil.charting.buffer.CandleBodyBuffer;
+import com.github.mikephil.charting.buffer.CandleShadowBuffer;
 import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CandleDataSet;
 import com.github.mikephil.charting.data.CandleEntry;
@@ -18,6 +20,9 @@ import java.util.ArrayList;
 public class CandleStickChartRenderer extends DataRenderer {
 
     protected CandleDataProvider mChart;
+    
+    private CandleShadowBuffer[] mShadowBuffers;
+    private CandleBodyBuffer[] mBodyBuffers;
 
     public CandleStickChartRenderer(CandleDataProvider chart, ChartAnimator animator,
             ViewPortHandler viewPortHandler) {
@@ -27,8 +32,15 @@ public class CandleStickChartRenderer extends DataRenderer {
     
     @Override
     public void initBuffers() {
-        // TODO Auto-generated method stub
-        
+        CandleData candleData = mChart.getCandleData();
+        mShadowBuffers = new CandleShadowBuffer[candleData.getDataSetCount()];
+        mBodyBuffers = new CandleBodyBuffer[candleData.getDataSetCount()];
+
+        for (int i = 0; i < mShadowBuffers.length; i++) {
+            CandleDataSet set = candleData.getDataSetByIndex(i);
+            mShadowBuffers[i] = new CandleShadowBuffer(set.getValueCount() * 4);
+            mBodyBuffers[i] = new CandleBodyBuffer(set.getValueCount() * 4);
+        }
     }
 
     @Override
@@ -44,53 +56,52 @@ public class CandleStickChartRenderer extends DataRenderer {
     }
 
     protected void drawDataSet(Canvas c, CandleDataSet dataSet) {
-
-        // pre allocate
-        float[] shadowPoints = new float[4];
-        float[] bodyPoints = new float[4];
+                
+        Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
+        calcXBounds(trans);
+        
+        int dataSetIndex = mChart.getCandleData().getIndexOfDataSet(dataSet);
 
         ArrayList<CandleEntry> entries = dataSet.getYVals();
+     
+        // draw the shadow
+        int range = (mMaxX - mMinX) * 4;
+        int from = mMinX * 4;
 
+        CandleShadowBuffer shadowBuffer = mShadowBuffers[dataSetIndex];
+        shadowBuffer.feed(entries);
+
+        trans.pointValuesToPixel(shadowBuffer.buffer);
+        
+        mRenderPaint.setStyle(Paint.Style.STROKE);
+        mRenderPaint.setColor(dataSet.getColor());
         mRenderPaint.setStrokeWidth(dataSet.getShadowWidth());
 
-        for (int j = 0; j < entries.size() * mAnimator.getPhaseX(); j++) {
+        c.drawLines(shadowBuffer.buffer, from, range, mRenderPaint);
+                
+        CandleBodyBuffer bodyBuffer = mBodyBuffers[dataSetIndex];
+        bodyBuffer.setBodySpace(dataSet.getBodySpace());
+        bodyBuffer.feed(entries);
+
+        trans.pointValuesToPixel(bodyBuffer.buffer);
+
+        for (int j = 0; j < bodyBuffer.size(); j+=4) {
+            
+            // get the entry
+            CandleEntry e = entries.get(j / 4);
+            
+            if (!fitsBounds(e.getXIndex(), mMinX, mMaxX))
+                continue;
 
             // get the color that is specified for this position from
             // the DataSet, this will reuse colors, if the index is out
             // of bounds
             mRenderPaint.setColor(dataSet.getColor(j));
 
-            // get the entry
-            CandleEntry e = entries.get(j);
-
-            Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
-
-            // transform the entries values for shadow and body
-            transformShadow(shadowPoints, e, trans);
-            transformBody(bodyPoints, e, dataSet.getBodySpace(), trans);
-
-            float xShadow = shadowPoints[0];
-            float leftBody = bodyPoints[0];
-            float rightBody = bodyPoints[2];
-
-            float high = shadowPoints[1];
-            float low = shadowPoints[3];
-
-            float open = bodyPoints[1];
-            float close = bodyPoints[3];
-
-            if (!mViewPortHandler.isInBoundsRight(leftBody))
-                break;
-
-            // make sure the lines don't do shitty things outside
-            // bounds
-            if (j != 0 && !mViewPortHandler.isInBoundsLeft(rightBody)
-                    && !mViewPortHandler.isInBoundsTop(low)
-                    && !mViewPortHandler.isInBoundsBottom(high))
-                continue;
-
-            // draw the shadow
-            c.drawLine(xShadow, low, xShadow, high, mRenderPaint);
+            float leftBody = bodyBuffer.buffer[j];
+            float open = bodyBuffer.buffer[j + 1];
+            float rightBody = bodyBuffer.buffer[j + 2];
+            float close = bodyBuffer.buffer[j + 3];
 
             // decide weather the body is hollow or filled
             if (open > close) {
@@ -108,42 +119,42 @@ public class CandleStickChartRenderer extends DataRenderer {
         }
     }
 
-    /**
-     * Transforms the values of an entry in order to draw the candle-body.
-     * 
-     * @param bodyPoints
-     * @param e
-     * @param bodySpace
-     */
-    private void transformBody(float[] bodyPoints, CandleEntry e, float bodySpace, Transformer trans) {
-
-        float phase = mAnimator.getPhaseY();
-
-        bodyPoints[0] = e.getXIndex() - 0.5f + bodySpace;
-        bodyPoints[1] = e.getClose() * phase;
-        bodyPoints[2] = e.getXIndex() + 0.5f - bodySpace;
-        bodyPoints[3] = e.getOpen() * phase;
-
-        trans.pointValuesToPixel(bodyPoints);
-    }
-
-    /**
-     * Transforms the values of an entry in order to draw the candle-shadow.
-     * 
-     * @param shadowPoints
-     * @param e
-     */
-    private void transformShadow(float[] shadowPoints, CandleEntry e, Transformer trans) {
-
-        float phase = mAnimator.getPhaseY();
-
-        shadowPoints[0] = e.getXIndex();
-        shadowPoints[1] = e.getHigh() * phase;
-        shadowPoints[2] = e.getXIndex();
-        shadowPoints[3] = e.getLow() * phase;
-
-        trans.pointValuesToPixel(shadowPoints);
-    }
+//    /**
+//     * Transforms the values of an entry in order to draw the candle-body.
+//     * 
+//     * @param bodyPoints
+//     * @param e
+//     * @param bodySpace
+//     */
+//    private void transformBody(float[] bodyPoints, CandleEntry e, float bodySpace, Transformer trans) {
+//
+//        float phase = mAnimator.getPhaseY();
+//
+//        bodyPoints[0] = e.getXIndex() - 0.5f + bodySpace;
+//        bodyPoints[1] = e.getClose() * phase;
+//        bodyPoints[2] = e.getXIndex() + 0.5f - bodySpace;
+//        bodyPoints[3] = e.getOpen() * phase;
+//
+//        trans.pointValuesToPixel(bodyPoints);
+//    }
+//
+//    /**
+//     * Transforms the values of an entry in order to draw the candle-shadow.
+//     * 
+//     * @param shadowPoints
+//     * @param e
+//     */
+//    private void transformShadow(float[] shadowPoints, CandleEntry e, Transformer trans) {
+//
+//        float phase = mAnimator.getPhaseY();
+//
+//        shadowPoints[0] = e.getXIndex();
+//        shadowPoints[1] = e.getHigh() * phase;
+//        shadowPoints[2] = e.getXIndex();
+//        shadowPoints[3] = e.getLow() * phase;
+//
+//        trans.pointValuesToPixel(shadowPoints);
+//    }
 
     @Override
     public void drawValues(Canvas c) {

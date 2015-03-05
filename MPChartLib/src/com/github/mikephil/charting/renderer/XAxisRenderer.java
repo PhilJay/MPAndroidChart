@@ -183,6 +183,9 @@ public class XAxisRenderer extends AxisRenderer {
 
         for (int i = minx; i < maxx; i += mXAxis.mAxisLabelModulus) {
 
+            if (!fitsBounds(i, minx, maxx))
+                continue;
+            
             position[0] = i;
 
             mTrans.pointValuesToPixel(position);

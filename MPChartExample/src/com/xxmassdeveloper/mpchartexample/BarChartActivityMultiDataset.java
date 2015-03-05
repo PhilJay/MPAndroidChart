@@ -182,7 +182,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-        tvX.setText("" + (mSeekBarX.getProgress() + 1));
+        tvX.setText("" + (mSeekBarX.getProgress() * 3 + 1));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
         ArrayList<String> xVals = new ArrayList<String>();
@@ -194,7 +194,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         ArrayList<BarEntry> yVals2 = new ArrayList<BarEntry>();
         ArrayList<BarEntry> yVals3 = new ArrayList<BarEntry>();
 
-        float mult = mSeekBarY.getProgress() * 10000000f;
+        float mult = mSeekBarY.getProgress() * 1000f;
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             float val = (float) (Math.random() * mult) + 3;
@@ -227,8 +227,8 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         dataSets.add(set3);
 
         BarData data = new BarData(xVals, dataSets);
-        data.setValueFormatter(new LargeValueFormatter());
-
+//        data.setValueFormatter(new LargeValueFormatter());
+        
         // add space between the dataset groups in percent of bar-width
         data.setGroupSpace(80f);
         data.setValueTypeface(tf);
