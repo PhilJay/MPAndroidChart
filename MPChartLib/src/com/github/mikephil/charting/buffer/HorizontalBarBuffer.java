@@ -39,7 +39,7 @@ public class HorizontalBarBuffer extends BarBuffer {
                 float left = y <= 0 ? y : 0;
 
                 // multiply the height of the rect with the phase
-                if (right >= 0)
+                if (right > 0)
                     right *= phaseY;
                 else
                     left *= phaseY;
@@ -62,7 +62,7 @@ public class HorizontalBarBuffer extends BarBuffer {
                     float left = y <= 0 ? y : 0;
 
                     // multiply the height of the rect with the phase
-                    if (right >= 0)
+                    if (right > 0)
                         right *= phaseY;
                     else
                         left *= phaseY;

@@ -19,7 +19,7 @@
         android:layout_marginBottom="35dp"
         android:layout_toLeftOf="@+id/tvValueCount"
         android:layout_marginRight="5dp"
-        android:max="750"
+        android:max="8000"
         android:paddingBottom="12dp" />
 
     <TextView

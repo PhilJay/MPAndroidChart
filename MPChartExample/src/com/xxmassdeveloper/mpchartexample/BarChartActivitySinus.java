@@ -47,7 +47,7 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_barchart_sinus);
         
-        mSinusData = FileUtils.loadBarEntriesFromAssets(getAssets(),"sine.txt");
+        mSinusData = FileUtils.loadBarEntriesFromAssets(getAssets(),"othersine.txt");
 
         tvX = (TextView) findViewById(R.id.tvValueCount);
 
@@ -85,21 +85,21 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(mTf);
-        leftAxis.setLabelCount(8);
+        leftAxis.setLabelCount(6);
         leftAxis.setStartAtZero(false);
-        leftAxis.setAxisMinValue(-1.2f);
-        leftAxis.setAxisMaxValue(1.2f);
+        leftAxis.setAxisMinValue(-2.5f);
+        leftAxis.setAxisMaxValue(2.5f);
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
         rightAxis.setTypeface(mTf);
-        rightAxis.setLabelCount(8);
+        rightAxis.setLabelCount(6);
         rightAxis.setStartAtZero(false);
-        rightAxis.setAxisMinValue(-1.2f);
-        rightAxis.setAxisMaxValue(1.2f);
+        rightAxis.setAxisMinValue(-2.5f);
+        rightAxis.setAxisMaxValue(2.5f);
 
         mSeekBarX.setOnSeekBarChangeListener(this);
-        mSeekBarX.setProgress(750);
+        mSeekBarX.setProgress(150); // set data
 
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.BELOW_CHART_LEFT);
@@ -108,7 +108,7 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
         l.setTextSize(11f);
         l.setXEntrySpace(4f);
 
-        // mChart.setDrawLegend(false);
+        mChart.animateY(1500);
     }
 
     @Override
@@ -161,16 +161,16 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
                 break;
             }
             case R.id.animateX: {
-                mChart.animateX(3000);
+                mChart.animateX(1500);
                 break;
             }
             case R.id.animateY: {
-                mChart.animateY(3000);
+                mChart.animateY(1500);
                 break;
             }
             case R.id.animateXY: {
 
-                mChart.animateXY(3000, 3000);
+                mChart.animateXY(2000, 2000);
                 break;
             }
             case R.id.actionToggleAdjustXLegend: {
@@ -212,7 +212,7 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-        tvX.setText("" + (mSeekBarX.getProgress() + 1));
+        tvX.setText("" + (mSeekBarX.getProgress()));
 
         setData(mSeekBarX.getProgress());
         mChart.invalidate();
@@ -242,8 +242,8 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
         }
         
         BarDataSet set = new BarDataSet(entries, "Sinus Function");
-        set.setBarSpacePercent(35f);
-        set.setColor(Color.rgb(233, 101, 105));
+        set.setBarSpacePercent(40f);
+        set.setColor(Color.rgb(240, 120, 124));
 
         BarData data = new BarData(xVals, set);
         data.setValueTextSize(10f);

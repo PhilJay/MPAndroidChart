@@ -117,7 +117,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 "Renders up to 30.000 objects smoothly."));
         objects.add(new ContentItem(
                 "Sinus Bar Chart",
-                "A BarChart plotting the sinus function (~750 values)."));
+                "A Bar Chart plotting the sinus function with 8.000 values."));
 
         MyAdapter adapter = new MyAdapter(this, objects);
 

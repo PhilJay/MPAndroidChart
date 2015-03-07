@@ -64,7 +64,7 @@ public class BarBuffer extends AbstractBuffer<BarEntry> {
                 float bottom = y <= 0 ? y : 0;
 
                 // multiply the height of the rect with the phase
-                if (top >= 0)
+                if (top > 0)
                     top *= phaseY;
                 else
                     bottom *= phaseY;
@@ -87,7 +87,7 @@ public class BarBuffer extends AbstractBuffer<BarEntry> {
                     float bottom = y <= 0 ? y : 0;
 
                     // multiply the height of the rect with the phase
-                    if (top >= 0)
+                    if (top > 0)
                         top *= phaseY;
                     else
                         bottom *= phaseY;
