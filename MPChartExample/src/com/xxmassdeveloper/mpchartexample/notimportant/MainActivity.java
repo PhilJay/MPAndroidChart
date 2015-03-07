@@ -23,6 +23,7 @@ import com.github.mikephil.charting.utils.Utils;
 import com.xxmassdeveloper.mpchartexample.AnotherBarActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivityMultiDataset;
+import com.xxmassdeveloper.mpchartexample.BarChartActivitySinus;
 import com.xxmassdeveloper.mpchartexample.CandleStickChartActivity;
 import com.xxmassdeveloper.mpchartexample.CombinedChartActivity;
 import com.xxmassdeveloper.mpchartexample.CubicLineChartActivity;
@@ -114,6 +115,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
         objects.add(new ContentItem(
                 "Performance Line Chart",
                 "Renders up to 30.000 objects smoothly."));
+        objects.add(new ContentItem(
+                "Sinus Bar Chart",
+                "A BarChart plotting the sinus function (~750 values)."));
 
         MyAdapter adapter = new MyAdapter(this, objects);
 
@@ -225,6 +229,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 break;
             case 22:
                 i = new Intent(this, PerformanceLineChart.class);
+                startActivity(i);
+                break;
+            case 23:
+                i = new Intent(this, BarChartActivitySinus.class);
                 startActivity(i);
                 break;
         }

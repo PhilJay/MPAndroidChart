@@ -7,11 +7,11 @@ import java.util.ArrayList;
 
 public class BarBuffer extends AbstractBuffer<BarEntry> {
 
-    private float mBarSpace = 0f;
-    private float mGroupSpace = 0f;
-    private int mDataSetIndex = 0;
-    private int mDataSetCount = 1;
-    private boolean mContainsStacks = false;
+    protected float mBarSpace = 0f;
+    protected float mGroupSpace = 0f;
+    protected int mDataSetIndex = 0;
+    protected int mDataSetCount = 1;
+    protected boolean mContainsStacks = false;
 
     public BarBuffer(int size, float groupspace, int dataSetCount, boolean containsStacks) {
         super(size);
@@ -28,7 +28,7 @@ public class BarBuffer extends AbstractBuffer<BarEntry> {
         this.mDataSetIndex = index;
     }
 
-    private void addBar(float left, float top, float right, float bottom) {
+    protected void addBar(float left, float top, float right, float bottom) {
 
         buffer[index++] = left;
         buffer[index++] = top;

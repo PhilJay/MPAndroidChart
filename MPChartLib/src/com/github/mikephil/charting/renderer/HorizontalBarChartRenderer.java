@@ -5,6 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint.Align;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
+import com.github.mikephil.charting.buffer.BarBuffer;
+import com.github.mikephil.charting.buffer.HorizontalBarBuffer;
+import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.BarDataProvider;
@@ -30,99 +33,62 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
         mValuePaint.setTextAlign(Align.LEFT);
     }
 
+    @Override
+    public void initBuffers() {
+
+        BarData barData = mChart.getBarData();
+        mBarBuffers = new HorizontalBarBuffer[barData.getDataSetCount()];
+
+        for (int i = 0; i < mBarBuffers.length; i++) {
+            BarDataSet set = barData.getDataSetByIndex(i);
+            mBarBuffers[i] = new HorizontalBarBuffer(set.getValueCount() * 4 * set.getStackSize(),
+                    barData.getGroupSpace(),
+                    barData.getDataSetCount(), set.isStacked());
+        }
+    }
+
     protected void drawDataSet(Canvas c, BarDataSet dataSet, int index) {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
+        calcXBounds(trans);
 
-        // the space between bar-groups
-        float space = mChart.getBarData().getGroupSpace();
+        mShadowPaint.setColor(dataSet.getBarShadowColor());
 
-        boolean noStacks = dataSet.getStackSize() == 1 ? true : false;
+        float phaseX = mAnimator.getPhaseX();
+        float phaseY = mAnimator.getPhaseY();
 
         ArrayList<BarEntry> entries = dataSet.getYVals();
 
-        // do the drawing
-        for (int j = 0; j < dataSet.getEntryCount() * mAnimator.getPhaseX(); j++) {
+        // initialize the buffer
+        BarBuffer buffer = mBarBuffers[index];
+        buffer.setPhases(phaseX, phaseY);
+        buffer.setBarSpace(dataSet.getBarSpace());
+        buffer.setDataSet(index);
 
-            BarEntry e = entries.get(j);
+        buffer.feed(entries);
 
-            // calculate the x-position, depending on datasetcount
-            float x = e.getXIndex() + j * (mChart.getBarData().getDataSetCount() - 1) + index
-                    + space * j + space / 2f;
-            float y = e.getVal();
+        trans.pointValuesToPixel(buffer.buffer);
 
-            // no stacks
-            if (noStacks) {
+        for (int j = 0; j < buffer.size(); j += 4) {
 
-                prepareBar(x, y, dataSet.getBarSpace(), trans);
+            if (!mViewPortHandler.isInBoundsTop(buffer.buffer[j + 3]))
+                break;
 
-                // avoid drawing outofbounds values
-                if (!mViewPortHandler.isInBoundsTop(mBarRect.bottom))
-                    break;
+            if (!mViewPortHandler.isInBoundsBottom(buffer.buffer[j + 1]))
+                continue;
 
-                if (!mViewPortHandler.isInBoundsBottom(mBarRect.top))
-                    continue;
-
-                // if drawing the bar shadow is enabled
-                if (mChart.isDrawBarShadowEnabled()) {
-                    mRenderPaint.setColor(dataSet.getBarShadowColor());
-                    c.drawRect(mBarShadow, mRenderPaint);
-                }
-
-                // Set the color for the currently drawn value. If the index
-                // is
-                // out of bounds, reuse colors.
-                mRenderPaint.setColor(dataSet.getColor(j));
-                c.drawRect(mBarRect, mRenderPaint);
-
-            } else { // stacked bars
-
-                float[] vals = e.getVals();
-
-                // we still draw stacked bars, but there could be one
-                // non-stacked
-                // in between
-                if (vals == null) {
-
-                    prepareBar(x, y, dataSet.getBarSpace(), trans);
-
-                    // if drawing the bar shadow is enabled
-                    if (mChart.isDrawBarShadowEnabled()) {
-                        mRenderPaint.setColor(dataSet.getBarShadowColor());
-                        c.drawRect(mBarShadow, mRenderPaint);
-                    }
-
-                    mRenderPaint.setColor(dataSet.getColor(0));
-                    c.drawRect(mBarRect, mRenderPaint);
-
-                } else {
-
-                    float all = e.getVal();
-
-                    // if drawing the bar shadow is enabled
-                    if (mChart.isDrawBarShadowEnabled()) {
-
-                        prepareBar(x, y, dataSet.getBarSpace(), trans);
-                        mRenderPaint.setColor(dataSet.getBarShadowColor());
-                        c.drawRect(mBarShadow, mRenderPaint);
-                    }
-
-                    // draw the stack
-                    for (int k = 0; k < vals.length; k++) {
-
-                        all -= vals[k];
-
-                        prepareBar(x, vals[k] + all, dataSet.getBarSpace(), trans);
-
-                        mRenderPaint.setColor(dataSet.getColor(k));
-                        c.drawRect(mBarRect, mRenderPaint);
-                    }
-                }
-
-                // avoid drawing outofbounds values
-                if (!mViewPortHandler.isInBoundsTop(mBarRect.bottom))
-                    break;
+            if (mChart.isDrawBarShadowEnabled()) {
+                c.drawRect(mViewPortHandler.contentLeft(), buffer.buffer[j + 1],
+                        mViewPortHandler.contentRight(),
+                        buffer.buffer[j + 3], mShadowPaint);
             }
+
+            // Set the color for the currently drawn value. If the index
+            // is
+            // out of bounds, reuse colors.
+            mRenderPaint.setColor(dataSet.getColor(j / 4));
+            c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+                    buffer.buffer[j + 3], mRenderPaint);
         }
     }
 
@@ -255,29 +221,8 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
     }
 
     @Override
-    protected void prepareBar(float x, float y, float barspace, Transformer trans) {
-
-        float spaceHalf = barspace / 2f;
-
-        float top = x - 0.5f + spaceHalf;
-        float bottom = x + 0.5f - spaceHalf;
-        float left = y >= 0 ? y : 0;
-        float right = y <= 0 ? y : 0;
-
-        mBarRect.set(left, top, right, bottom);
-
-        trans.rectValueToPixelHorizontal(mBarRect, mAnimator.getPhaseY());
-
-        // if a shadow is drawn, prepare it too
-        if (mChart.isDrawBarShadowEnabled()) {
-            mBarShadow.set(mViewPortHandler.contentLeft(), mBarRect.top,
-                    mViewPortHandler.contentRight(),
-                    mBarRect.bottom);
-        }
-    }
-    
-    @Override
-    protected void prepareBarHighlight(float x, float y, float barspace, float from, Transformer trans) {
+    protected void prepareBarHighlight(float x, float y, float barspace, float from,
+            Transformer trans) {
 
         float spaceHalf = barspace / 2f;
 

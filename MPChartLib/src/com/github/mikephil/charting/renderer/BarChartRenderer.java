@@ -24,13 +24,12 @@ public class BarChartRenderer extends DataRenderer {
 
     protected BarDataProvider mChart;
 
-    /** the rect object that is used for drawing the bar shadow */
-    protected RectF mBarShadow = new RectF();
-
     /** the rect object that is used for drawing the bars */
     protected RectF mBarRect = new RectF();
 
     protected BarBuffer[] mBarBuffers;
+    
+    protected Paint mShadowPaint;
 
     public BarChartRenderer(BarDataProvider chart, ChartAnimator animator,
             ViewPortHandler viewPortHandler) {
@@ -42,6 +41,9 @@ public class BarChartRenderer extends DataRenderer {
         mHighlightPaint.setColor(Color.rgb(0, 0, 0));
         // set alpha after color
         mHighlightPaint.setAlpha(120);
+        
+        mShadowPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mShadowPaint.setStyle(Paint.Style.FILL);
     }
 
     @Override
@@ -77,6 +79,8 @@ public class BarChartRenderer extends DataRenderer {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
         calcXBounds(trans);
+        
+        mShadowPaint.setColor(dataSet.getBarShadowColor());
 
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
@@ -100,6 +104,12 @@ public class BarChartRenderer extends DataRenderer {
 
             if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j]))
                 break;
+            
+            if (mChart.isDrawBarShadowEnabled()) {
+                c.drawRect(buffer.buffer[j], mViewPortHandler.contentTop(),
+                        buffer.buffer[j+2],
+                        mViewPortHandler.contentBottom(), mShadowPaint);
+            }
 
             // Set the color for the currently drawn value. If the index
             // is
@@ -107,35 +117,6 @@ public class BarChartRenderer extends DataRenderer {
             mRenderPaint.setColor(dataSet.getColor(j / 4));
             c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                     buffer.buffer[j + 3], mRenderPaint);
-        }
-    }
-
-    /**
-     * Prepares a bar for drawing on the specified x-index and y-position. Also
-     * prepares the shadow-bar if enabled.
-     * 
-     * @param x the x-position
-     * @param y the y-position
-     * @param barspace the space between bars
-     */
-    protected void prepareBar(float x, float y, float barspace, Transformer trans) {
-
-        float barWidth = 0.5f;
-
-        float spaceHalf = barspace / 2f;
-        float left = x - barWidth + spaceHalf;
-        float right = x + barWidth - spaceHalf;
-        float top = y >= 0 ? y : 0;
-        float bottom = y <= 0 ? y : 0;
-
-        mBarRect.set(left, top, right, bottom);
-
-        trans.rectValueToPixel(mBarRect, mAnimator.getPhaseY());
-
-        // if a shadow is drawn, prepare it too
-        if (mChart.isDrawBarShadowEnabled()) {
-            mBarShadow.set(mBarRect.left, mViewPortHandler.offsetTop(), mBarRect.right,
-                    mViewPortHandler.contentBottom());
         }
     }
 
@@ -177,10 +158,12 @@ public class BarChartRenderer extends DataRenderer {
 
             // calculate the correct offset depending on the draw position of
             // the value
+            float plus = Utils.convertDpToPixel(6f);
+            
             posOffset = (drawValueAboveBar ? -Utils.convertDpToPixel(5) : Utils.calcTextHeight(
                     mValuePaint,
-                    "8") * 1.8f);
-            negOffset = (drawValueAboveBar ? Utils.calcTextHeight(mValuePaint, "8") * 1.8f : -Utils
+                    "8") + plus);
+            negOffset = (drawValueAboveBar ? Utils.calcTextHeight(mValuePaint, "8") + plus : -Utils
                     .convertDpToPixel(5));
 
             for (int i = 0; i < mChart.getBarData().getDataSetCount(); i++) {

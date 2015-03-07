@@ -48,6 +48,7 @@
         <activity android:name="RealtimeLineChartActivity"></activity>
         <activity android:name="CombinedChartActivity"></activity>
         <activity android:name="PerformanceLineChart"></activity>
+        <activity android:name="BarChartActivitySinus"></activity>
     </application>
 
 </manifest>

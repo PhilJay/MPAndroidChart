@@ -42,10 +42,7 @@ public class XAxisRendererBarChart extends XAxisRenderer {
         float max = (float) mMaxX
                 / div;
         
-        for (int i = (int) min; i < max; i += mXAxis.mAxisLabelModulus) {
-
-            if (!fitsBounds(i, min - 1f, max + 0.5f))
-                continue;
+        for (int i = (int) min; i <= max; i += mXAxis.mAxisLabelModulus) {
 
             position[0] = i * step + i * bd.getGroupSpace()
                     + bd.getGroupSpace() / 2f;
@@ -88,6 +85,8 @@ public class XAxisRendererBarChart extends XAxisRenderer {
 
     @Override
     public void renderGridLines(Canvas c) {
+        
+        calcXBounds(mTrans);
 
         if (!mXAxis.isDrawGridLinesEnabled() || !mXAxis.isEnabled())
             return;
