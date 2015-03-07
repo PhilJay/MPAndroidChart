@@ -17,7 +17,7 @@ public class CandleBodyBuffer extends AbstractBuffer<CandleEntry> {
         this.mBodySpace = bodySpace;
     }
 
-    public void addBody(float left, float top, float right, float bottom) {
+    private void addBody(float left, float top, float right, float bottom) {
 
         buffer[index++] = left;
         buffer[index++] = top;
@@ -27,11 +27,13 @@ public class CandleBodyBuffer extends AbstractBuffer<CandleEntry> {
 
     @Override
     public void feed(ArrayList<CandleEntry> entries) {
+        
+        float size = entries.size() * phaseX;
 
-        for (int i = 0; i < entries.size(); i++) {
+        for (int i = 0; i < size; i++) {
 
             CandleEntry e = entries.get(i);
-            addBody(e.getXIndex() - 0.5f + mBodySpace, e.getClose(), e.getXIndex() + 0.5f - mBodySpace, e.getOpen());
+            addBody(e.getXIndex() - 0.5f + mBodySpace, e.getClose() * phaseY, e.getXIndex() + 0.5f - mBodySpace, e.getOpen() * phaseY);
         }
 
         reset();

@@ -171,9 +171,10 @@ public abstract class DataSet<T extends Entry> {
 
     /**
      * Returns the first Entry object found at the given xIndex with binary
-     * search. Returns null if no Entry object at that index. INFORMATION: This
-     * method does calculations at runtime. Do not over-use in performance
-     * critical situations.
+     * search. If the no Entry at the specifed x-index is found, this method
+     * returns the Entry at the closest x-index. Returns null if no Entry object
+     * at that index. INFORMATION: This method does calculations at runtime. Do
+     * not over-use in performance critical situations.
      * 
      * @param xIndex
      * @return
@@ -182,6 +183,7 @@ public abstract class DataSet<T extends Entry> {
 
         int low = 0;
         int high = mYVals.size() - 1;
+        T closest = null;
 
         while (low <= high) {
             int m = (high + low) / 2;
@@ -194,9 +196,11 @@ public abstract class DataSet<T extends Entry> {
                 low = m + 1;
             else
                 high = m - 1;
+
+            closest = mYVals.get(m);
         }
 
-        return null;
+        return closest;
     }
 
     /**

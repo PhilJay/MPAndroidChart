@@ -11,7 +11,7 @@ public class CandleShadowBuffer extends AbstractBuffer<CandleEntry> {
         super(size);
     }
 
-    public void addShadow(float x1, float y1, float x2, float y2) {
+    private void addShadow(float x1, float y1, float x2, float y2) {
 
         buffer[index++] = x1;
         buffer[index++] = y1;
@@ -21,11 +21,13 @@ public class CandleShadowBuffer extends AbstractBuffer<CandleEntry> {
 
     @Override
     public void feed(ArrayList<CandleEntry> entries) {
+        
+        float size = entries.size() * phaseX;
 
-        for (int i = 0; i < entries.size(); i++) {
+        for (int i = 0; i < size; i++) {
 
             CandleEntry e = entries.get(i);
-            addShadow(e.getXIndex(), e.getHigh(), e.getXIndex(), e.getLow());
+            addShadow(e.getXIndex(), e.getHigh() * phaseY, e.getXIndex(), e.getLow() * phaseY);
         }
 
         reset();

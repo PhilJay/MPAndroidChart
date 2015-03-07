@@ -137,6 +137,9 @@ public class HorizontalBarChart extends BarChart {
         mXAxis.mAxisLabelModulus = (int) Math
                 .ceil((mData.getXValCount() * mXAxis.mLabelHeight)
                         / (mViewPortHandler.contentHeight() * values[Matrix.MSCALE_Y]));
+        
+        if (mXAxis.mAxisLabelModulus < 1)
+            mXAxis.mAxisLabelModulus = 1;
     }
 
     @Override

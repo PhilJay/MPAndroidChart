@@ -38,6 +38,8 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
         
         // add an empty data object
         mChart.setData(new LineData());
+//        mChart.getXAxis().setDrawLabels(false);
+//        mChart.getXAxis().setDrawGridLines(false);
 
         mChart.invalidate();
     }

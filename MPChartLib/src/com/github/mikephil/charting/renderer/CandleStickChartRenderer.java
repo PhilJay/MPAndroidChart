@@ -60,6 +60,9 @@ public class CandleStickChartRenderer extends DataRenderer {
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
         calcXBounds(trans);
         
+        float phaseX = mAnimator.getPhaseX();
+        float phaseY = mAnimator.getPhaseY();
+        
         int dataSetIndex = mChart.getCandleData().getIndexOfDataSet(dataSet);
 
         ArrayList<CandleEntry> entries = dataSet.getYVals();
@@ -69,6 +72,7 @@ public class CandleStickChartRenderer extends DataRenderer {
         int from = mMinX * 4;
 
         CandleShadowBuffer shadowBuffer = mShadowBuffers[dataSetIndex];
+        shadowBuffer.setPhases(phaseX, phaseY);
         shadowBuffer.feed(entries);
 
         trans.pointValuesToPixel(shadowBuffer.buffer);
@@ -81,6 +85,7 @@ public class CandleStickChartRenderer extends DataRenderer {
                 
         CandleBodyBuffer bodyBuffer = mBodyBuffers[dataSetIndex];
         bodyBuffer.setBodySpace(dataSet.getBodySpace());
+        bodyBuffer.setPhases(phaseX, phaseY);
         bodyBuffer.feed(entries);
 
         trans.pointValuesToPixel(bodyBuffer.buffer);

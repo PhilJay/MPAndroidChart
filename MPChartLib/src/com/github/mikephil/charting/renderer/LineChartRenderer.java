@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.util.Log;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.buffer.LineBuffer;
@@ -57,7 +58,9 @@ public class LineChartRenderer extends DataRenderer {
 
         for (int i = 0; i < mLineBuffers.length; i++) {
             LineDataSet set = lineData.getDataSetByIndex(i);
-            mLineBuffers[i] = new LineBuffer(getBufferSize(set));
+            int size = lineData.getXValCount() * 4 - 4;
+            if(size < 4) size = 4;
+            mLineBuffers[i] = new LineBuffer(size);
         }
     }
 
@@ -67,18 +70,18 @@ public class LineChartRenderer extends DataRenderer {
      * @param set
      * @return
      */
-    private int getBufferSize(LineDataSet set) {
+    private int getBufferSize(LineDataSet set, int xValCount) {
         if (set.isDrawFilledEnabled()) {
             if (set.isDrawCubicEnabled()) {
                 return 0;
             } else {
-                return set.getValueCount() * 4 - 4;
+                return xValCount * 4 - 4;
             }
         } else {
             if (set.isDrawCubicEnabled()) {
                 return 0;
             } else {
-                return set.getValueCount() * 4 - 4;
+                return xValCount * 4 - 4;
             }
         }
     }
@@ -226,9 +229,12 @@ public class LineChartRenderer extends DataRenderer {
         float fillMin = mChart.getFillFormatter()
                 .getFillLinePosition(dataSet, mChart.getLineData(), mChart.getYChartMax(),
                         mChart.getYChartMin());
+        
+        Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
+        Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
-        spline.lineTo(to, fillMin);
-        spline.lineTo(from, fillMin);
+        spline.lineTo(entryTo.getXIndex(), fillMin);
+        spline.lineTo(entryFrom.getXIndex(), fillMin);
         spline.close();
 
         mRenderPaint.setStyle(Paint.Style.FILL);
@@ -255,7 +261,7 @@ public class LineChartRenderer extends DataRenderer {
         mRenderPaint.setStyle(Paint.Style.STROKE);
 
         // more than 1 color
-        if (dataSet.getColors() == null || dataSet.getColors().size() > 1) {
+        if (dataSet.getColors().size() > 1) {
 
             float[] positions = trans.generateTransformedValuesLine(
                     entries, phaseY);
@@ -280,17 +286,19 @@ public class LineChartRenderer extends DataRenderer {
 
         } else { // only one color per dataset
 
-            int range = (mMaxX - mMinX) * 4;
             int from = mMinX * 4;
+            int range = (mMaxX * 4 - mMinX) + 4;
+            int to = range + from;
 
             mRenderPaint.setColor(dataSet.getColor());
 
             LineBuffer buffer = mLineBuffers[dataSetIndex];
+            buffer.setPhases(phaseX, phaseY);
             buffer.feed(entries);
 
             trans.pointValuesToPixel(buffer.buffer);
 
-            c.drawLines(buffer.buffer, from, range, mRenderPaint);
+            c.drawLines(buffer.buffer, from, to >= buffer.size() ? buffer.size() - from : range, mRenderPaint);
 
             // Path line = generateLinePath(entries);
             //

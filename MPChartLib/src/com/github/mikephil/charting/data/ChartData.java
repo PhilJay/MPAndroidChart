@@ -145,7 +145,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      */
     private void calcXValAverageLength() {
 
-        if (mXVals.size() == 0) {
+        if (mXVals.size() <= 0) {
             mXValAverageLength = 1;
             return;
         }

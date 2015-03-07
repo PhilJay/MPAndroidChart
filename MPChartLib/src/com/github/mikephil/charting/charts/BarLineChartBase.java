@@ -414,6 +414,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         if (mLogEnabled)
             Log.i(LOG_TAG, "X-Axis modulus: " + mXAxis.mAxisLabelModulus + ", x-axis label width: "
                     + mXAxis.mLabelWidth + ", content width: " + mViewPortHandler.contentWidth());
+
+        if (mXAxis.mAxisLabelModulus < 1)
+            mXAxis.mAxisLabelModulus = 1;
     }
 
     @Override

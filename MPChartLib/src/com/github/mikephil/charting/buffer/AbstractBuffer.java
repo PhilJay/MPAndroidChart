@@ -4,15 +4,25 @@ package com.github.mikephil.charting.buffer;
 import java.util.ArrayList;
 
 /**
- * Buffer class to boost performance while drawing.
+ * Buffer class to boost performance while drawing. Concept: Replace instead of
+ * recreate.
  * 
  * @author Philipp Jahoda
- * @param <T>
+ * @param <T> The data the buffer accepts to be fed with.
  */
 public abstract class AbstractBuffer<T> {
 
+    /** index in the buffer */
     protected int index = 0;
+
+    /** float-buffer that holds the data points to draw, order: x,y,x,y,... */
     public final float[] buffer;
+
+    /** animation phase x-axis */
+    protected float phaseX = 1f;
+
+    /** animation phase y-axis */
+    protected float phaseY = 1f;
 
     /**
      * Initialization with buffer-size.
@@ -25,14 +35,14 @@ public abstract class AbstractBuffer<T> {
     }
 
     /**
-     * Resets the buffer index to 0.
+     * Resets the buffer index to 0 and makes the buffer reusable.
      */
     public void reset() {
         index = 0;
     }
 
     /**
-     * Returns the size of the buffer array.
+     * Returns the size (length) of the buffer array.
      * 
      * @return
      */
@@ -41,8 +51,19 @@ public abstract class AbstractBuffer<T> {
     }
 
     /**
+     * Set the phases used for animations.
+     * 
+     * @param phaseX
+     * @param phaseY
+     */
+    public void setPhases(float phaseX, float phaseY) {
+        this.phaseX = phaseX;
+        this.phaseY = phaseY;
+    }
+
+    /**
      * Builds up the buffer with the provided data and resets the buffer-index
-     * after feed-completion.
+     * after feed-completion. This needs to run FAST.
      * 
      * @param entries
      */

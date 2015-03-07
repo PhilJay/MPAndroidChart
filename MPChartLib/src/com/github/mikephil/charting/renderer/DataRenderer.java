@@ -25,10 +25,6 @@ public abstract class DataRenderer extends Renderer {
 
     protected Paint mDrawPaint;
 
-    protected int mMinX = 0;
-
-    protected int mMaxX = 0;
-
     /**
      * paint object for drawing values (text representing values of chart
      * entries)
@@ -86,17 +82,6 @@ public abstract class DataRenderer extends Renderer {
         mValuePaint.setColor(set.getValueTextColor());
         mValuePaint.setTypeface(set.getValueTypeface());
         mValuePaint.setTextSize(set.getValueTextSize());
-    }
-
-    /**
-     * Calculates the minimum and maximum x-value the chart can currently
-     * display (with the given zoom level).
-     * 
-     * @param trans
-     */
-    protected void calcXBounds(Transformer trans) {
-        mMinX = (int) trans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), 0).x;
-        mMaxX = (int) trans.getValuesByTouchPoint(mViewPortHandler.contentRight(), 0).x;
     }
 
     public abstract void initBuffers();

@@ -81,6 +81,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         yLabels.setValueFormatter(new MyValueFormatter());
         
         mChart.getAxisRight().setValueFormatter(new MyValueFormatter());
+        mChart.getAxisRight().setDrawGridLines(false);
 
         XAxis xLabels = mChart.getXAxis();
         xLabels.setPosition(XAxisPosition.TOP);
@@ -223,7 +224,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         }
 
         BarDataSet set1 = new BarDataSet(yVals1, "Statistics Vienna 2014");
-        set1.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        set1.setColors(getColors());
         set1.setStackLabels(new String[] {
                 "Births", "Divorces", "Marriages"
         });
@@ -262,5 +263,19 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
     public void onNothingSelected() {
         // TODO Auto-generated method stub
 
+    }
+    
+    private int[] getColors() {
+        
+        int stacksize = 3;
+        
+        // have as many colors as stack-values per entry
+        int []colors = new int[stacksize];
+        
+        for(int i = 0; i < stacksize; i++) {
+            colors[i] = ColorTemplate.VORDIPLOM_COLORS[i];
+        }      
+        
+        return colors;
     }
 }
