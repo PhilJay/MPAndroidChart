@@ -2,9 +2,11 @@
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
+import android.graphics.Paint.Style;
 import android.graphics.Path;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
+import com.github.mikephil.charting.buffer.ScatterBuffer;
 import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.ScatterData;
@@ -12,6 +14,7 @@ import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.interfaces.ScatterDataProvider;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Transformer;
+import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -19,16 +22,27 @@ public class ScatterChartRenderer extends DataRenderer {
 
     protected ScatterDataProvider mChart;
 
+    protected ScatterBuffer[] mScatterBuffers;
+
     public ScatterChartRenderer(ScatterDataProvider chart, ChartAnimator animator,
             ViewPortHandler viewPortHandler) {
         super(animator, viewPortHandler);
         mChart = chart;
+
+        mRenderPaint.setStrokeWidth(Utils.convertDpToPixel(1f));
     }
-    
+
     @Override
     public void initBuffers() {
-        // TODO Auto-generated method stub
-        
+
+        ScatterData scatterData = mChart.getScatterData();
+
+        mScatterBuffers = new ScatterBuffer[scatterData.getDataSetCount()];
+
+        for (int i = 0; i < mScatterBuffers.length; i++) {
+            ScatterDataSet set = scatterData.getDataSetByIndex(i);
+            mScatterBuffers[i] = new ScatterBuffer(set.getEntryCount() * 2);
+        }
     }
 
     @Override
@@ -45,75 +59,141 @@ public class ScatterChartRenderer extends DataRenderer {
 
     protected void drawDataSet(Canvas c, ScatterDataSet dataSet) {
 
+        Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
+        calcXBounds(trans);
+
+        float phaseX = mAnimator.getPhaseX();
+        float phaseY = mAnimator.getPhaseY();
+
         ArrayList<Entry> entries = dataSet.getYVals();
 
         float shapeHalf = dataSet.getScatterShapeSize() / 2f;
 
-        Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
-
-        float[] valuePoints = trans.generateTransformedValuesScatter(entries,
-                mAnimator.getPhaseY());
-
         ScatterShape shape = dataSet.getScatterShape();
 
-        for (int j = 0; j < valuePoints.length * mAnimator.getPhaseX(); j += 2) {
+        ScatterBuffer buffer = mScatterBuffers[mChart.getScatterData().getIndexOfDataSet(
+                dataSet)];
+        buffer.setPhases(phaseX, phaseY);
+        buffer.feed(entries);
 
-            if (!mViewPortHandler.isInBoundsRight(valuePoints[j]))
+        trans.pointValuesToPixel(buffer.buffer);
+
+        switch (shape) {
+            case SQUARE:
+
+                mRenderPaint.setStyle(Style.FILL);
+
+                for (int i = 0; i < buffer.size(); i += 2) {
+
+                    if (!mViewPortHandler.isInBoundsRight(buffer.buffer[i]))
+                        break;
+
+                    if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[i])
+                            || !mViewPortHandler.isInBoundsY(buffer.buffer[i + 1]))
+                        continue;
+
+                    mRenderPaint.setColor(dataSet.getColor(i));
+                    c.drawRect(buffer.buffer[i] - shapeHalf,
+                            buffer.buffer[i + 1] - shapeHalf, buffer.buffer[i]
+                                    + shapeHalf, buffer.buffer[i + 1]
+                                    + shapeHalf, mRenderPaint);
+                }
                 break;
+            case CIRCLE:
 
-            // make sure the lines don't do shitty things outside bounds
-            if (j != 0 && !mViewPortHandler.isInBoundsLeft(valuePoints[j - 1])
-                    && !mViewPortHandler.isInBoundsY(valuePoints[j + 1]))
-                continue;
+                mRenderPaint.setStyle(Style.FILL);
 
-            // Set the color for the currently drawn value. If the index is
-            // out of bounds, reuse colors.
-            mRenderPaint.setColor(dataSet.getColor(j));
+                for (int i = 0; i < buffer.size(); i += 2) {
 
-            if (shape == ScatterShape.SQUARE) {
+                    if (!mViewPortHandler.isInBoundsRight(buffer.buffer[i]))
+                        break;
 
-                c.drawRect(valuePoints[j] - shapeHalf,
-                        valuePoints[j + 1] - shapeHalf, valuePoints[j]
-                                + shapeHalf, valuePoints[j + 1]
-                                + shapeHalf, mRenderPaint);
+                    if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[i])
+                            || !mViewPortHandler.isInBoundsY(buffer.buffer[i + 1]))
+                        continue;
 
-            } else if (shape == ScatterShape.CIRCLE) {
+                    mRenderPaint.setColor(dataSet.getColor(i));
+                    c.drawCircle(buffer.buffer[i], buffer.buffer[i + 1], shapeHalf,
+                            mRenderPaint);
+                }
+                break;
+            case TRIANGLE:
 
-                c.drawCircle(valuePoints[j], valuePoints[j + 1], shapeHalf,
-                        mRenderPaint);
-
-            } else if (shape == ScatterShape.CROSS) {
-
-                c.drawLine(valuePoints[j] - shapeHalf, valuePoints[j + 1],
-                        valuePoints[j] + shapeHalf,
-                        valuePoints[j + 1], mRenderPaint);
-                c.drawLine(valuePoints[j], valuePoints[j + 1] - shapeHalf,
-                        valuePoints[j], valuePoints[j + 1]
-                                + shapeHalf, mRenderPaint);
-
-            } else if (shape == ScatterShape.TRIANGLE) {
+                mRenderPaint.setStyle(Style.FILL);
 
                 // create a triangle path
                 Path tri = new Path();
-                tri.moveTo(valuePoints[j], valuePoints[j + 1] - shapeHalf);
-                tri.lineTo(valuePoints[j] + shapeHalf, valuePoints[j + 1] + shapeHalf);
-                tri.lineTo(valuePoints[j] - shapeHalf, valuePoints[j + 1] + shapeHalf);
-                tri.close();
 
-                c.drawPath(tri, mRenderPaint);
+                for (int i = 0; i < buffer.size(); i += 2) {
 
-            } else if (shape == ScatterShape.CUSTOM) {
+                    if (!mViewPortHandler.isInBoundsRight(buffer.buffer[i]))
+                        break;
 
-                Path customShape = dataSet.getCustomScatterShape();
+                    if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[i])
+                            || !mViewPortHandler.isInBoundsY(buffer.buffer[i + 1]))
+                        continue;
 
-                if (customShape == null)
-                    return;
+                    mRenderPaint.setColor(dataSet.getColor(i));
+                    tri.moveTo(buffer.buffer[i], buffer.buffer[i + 1] - shapeHalf);
+                    tri.lineTo(buffer.buffer[i] + shapeHalf, buffer.buffer[i + 1] + shapeHalf);
+                    tri.lineTo(buffer.buffer[i] - shapeHalf, buffer.buffer[i + 1] + shapeHalf);
+                    tri.close();
 
-                // transform the provided custom path
-                trans.pathValueToPixel(customShape);
-                c.drawPath(customShape, mRenderPaint);
-            }
+                    c.drawPath(tri, mRenderPaint);
+                    tri.reset();
+                }
+                break;
+            case CROSS:
+
+                mRenderPaint.setStyle(Style.STROKE);
+
+                for (int i = 0; i < buffer.size(); i += 2) {
+
+                    if (!mViewPortHandler.isInBoundsRight(buffer.buffer[i]))
+                        break;
+
+                    if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[i])
+                            || !mViewPortHandler.isInBoundsY(buffer.buffer[i + 1]))
+                        continue;
+
+                    mRenderPaint.setColor(dataSet.getColor(i));
+
+                    c.drawLine(buffer.buffer[i] - shapeHalf, buffer.buffer[i + 1],
+                            buffer.buffer[i] + shapeHalf,
+                            buffer.buffer[i + 1], mRenderPaint);
+                    c.drawLine(buffer.buffer[i], buffer.buffer[i + 1] - shapeHalf,
+                            buffer.buffer[i], buffer.buffer[i + 1]
+                                    + shapeHalf, mRenderPaint);
+                }
+                break;
+            default:
+                break;
         }
+
+        // else { // draw the custom-shape
+        //
+        // Path customShape = dataSet.getCustomScatterShape();
+        //
+        // for (int j = 0; j < entries.size() * mAnimator.getPhaseX(); j += 2) {
+        //
+        // Entry e = entries.get(j / 2);
+        //
+        // if (!fitsBounds(e.getXIndex(), mMinX, mMaxX))
+        // continue;
+        //
+        // if (customShape == null)
+        // return;
+        //
+        // mRenderPaint.setColor(dataSet.getColor(j));
+        //
+        // Path newPath = new Path(customShape);
+        // newPath.offset(e.getXIndex(), e.getVal());
+        //
+        // // transform the provided custom path
+        // trans.pathValueToPixel(newPath);
+        // c.drawPath(newPath, mRenderPaint);
+        // }
+        // }
     }
 
     @Override
