@@ -3,7 +3,7 @@
 MPAndroidChart
 =======
 
-A simple charting library for Android, supporting line-, bar-, scatter-, candlestick-, pie- and radarcharts (spider web), as well as scaling, dragging, selecting and animations. **Supporting Android 2.2 (API level 8)** and upwards.
+A simple and powerful charting library for Android, supporting line-, bar-, scatter-, candlestick-, pie- and radarcharts (spider web), as well as scaling, dragging, selecting and animations. **Supporting Android 2.2 (API level 8)** and upwards.
 
 Remember: *It's all about the looks.*
 
@@ -25,7 +25,7 @@ If you would like to support this project's further development, the creator of 
  - [**Donate 50 $**] (https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZPQVJ2XRBSBYY): I really really want to support this project, great job!
  - [**Donate 100 $**] (https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=KY7F59RYPCYCQ): You are the man! This project saved me hours (if not days) of struggle and hard work, simply awesome!
  - [**Donate 300 $**] (https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PGW8CXUHZS2T2): I can afford it and want to assure the further development and maintenance of this project. Furthermore, I also want to show my gratitude to it's creator.
- - Of course, you can also [**choose what you want to donate**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EGBENAC5XBCKS).
+ - Of course, you can also [**choose what you want to donate**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EGBENAC5XBCKS), all donations are awesome!
 
 
 **Gittip**
