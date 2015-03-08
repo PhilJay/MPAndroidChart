@@ -5,9 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.util.Log;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
+import com.github.mikephil.charting.buffer.CircleBuffer;
 import com.github.mikephil.charting.buffer.LineBuffer;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -40,6 +40,8 @@ public class LineChartRenderer extends DataRenderer {
 
     protected LineBuffer[] mLineBuffers;
 
+    protected CircleBuffer[] mCircleBuffers;
+
     public LineChartRenderer(LineDataProvider chart, ChartAnimator animator,
             ViewPortHandler viewPortHandler) {
         super(animator, viewPortHandler);
@@ -59,8 +61,16 @@ public class LineChartRenderer extends DataRenderer {
         for (int i = 0; i < mLineBuffers.length; i++) {
             LineDataSet set = lineData.getDataSetByIndex(i);
             int size = lineData.getXValCount() * 4 - 4;
-            if(size < 4) size = 4;
+            if (size < 4)
+                size = 4;
             mLineBuffers[i] = new LineBuffer(size);
+        }
+
+        mCircleBuffers = new CircleBuffer[lineData.getDataSetCount()];
+
+        for (int i = 0; i < mCircleBuffers.length; i++) {
+            LineDataSet set = lineData.getDataSetByIndex(i);
+            mCircleBuffers[i] = new CircleBuffer(set.getEntryCount() * 2);
         }
     }
 
@@ -98,35 +108,13 @@ public class LineChartRenderer extends DataRenderer {
         }
     }
 
-    /**
-     * Class needed for saving the points when drawing cubic-lines.
-     * 
-     * @author Philipp Jahoda
-     */
-    protected class CPoint {
-
-        public float x = 0f;
-        public float y = 0f;
-
-        /** x-axis distance */
-        public float dx = 0f;
-
-        /** y-axis distance */
-        public float dy = 0f;
-
-        public CPoint(float x, float y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
-
     protected void drawDataSet(Canvas c, LineDataSet dataSet) {
 
         ArrayList<Entry> entries = dataSet.getYVals();
 
         if (entries.size() < 1)
             return;
-        
+
         calcXBounds(mChart.getTransformer(dataSet.getAxisDependency()));
 
         mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
@@ -229,7 +217,7 @@ public class LineChartRenderer extends DataRenderer {
         float fillMin = mChart.getFillFormatter()
                 .getFillLinePosition(dataSet, mChart.getLineData(), mChart.getYChartMax(),
                         mChart.getYChartMin());
-        
+
         Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
         Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
@@ -260,28 +248,34 @@ public class LineChartRenderer extends DataRenderer {
 
         mRenderPaint.setStyle(Paint.Style.STROKE);
 
+        LineBuffer buffer = mLineBuffers[dataSetIndex];
+        buffer.setPhases(phaseX, phaseY);
+        buffer.feed(entries);
+
+        trans.pointValuesToPixel(buffer.buffer);
+
         // more than 1 color
         if (dataSet.getColors().size() > 1) {
 
-            float[] positions = trans.generateTransformedValuesLine(
-                    entries, phaseY);
+            for (int j = 0; j < buffer.size() - 3; j += 2) {
 
-            for (int j = 0; j < (positions.length - 2) * phaseX; j += 2) {
-
-                if (!mViewPortHandler.isInBoundsRight(positions[j]))
+                if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j]))
                     break;
 
                 // make sure the lines don't do shitty things outside
                 // bounds
-                if (j != 0 && !mViewPortHandler.isInBoundsLeft(positions[j - 1])
-                        && !mViewPortHandler.isInBoundsY(positions[j + 1]))
+                if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])
+                        || (!mViewPortHandler.isInBoundsTop(buffer.buffer[j + 1]) && !mViewPortHandler
+                                .isInBoundsBottom(buffer.buffer[j + 3]))
+                        || (!mViewPortHandler.isInBoundsTop(buffer.buffer[j + 1]) && !mViewPortHandler
+                                .isInBoundsBottom(buffer.buffer[j + 3])))
                     continue;
 
                 // get the color that is set for this line-segment
                 mRenderPaint.setColor(dataSet.getColor(j / 2));
 
-                c.drawLine(positions[j], positions[j + 1],
-                        positions[j + 2], positions[j + 3], mRenderPaint);
+                c.drawLine(buffer.buffer[j], buffer.buffer[j + 1],
+                        buffer.buffer[j + 2], buffer.buffer[j + 3], mRenderPaint);
             }
 
         } else { // only one color per dataset
@@ -292,18 +286,8 @@ public class LineChartRenderer extends DataRenderer {
 
             mRenderPaint.setColor(dataSet.getColor());
 
-            LineBuffer buffer = mLineBuffers[dataSetIndex];
-            buffer.setPhases(phaseX, phaseY);
-            buffer.feed(entries);
-
-            trans.pointValuesToPixel(buffer.buffer);
-
-            c.drawLines(buffer.buffer, from, to >= buffer.size() ? buffer.size() - from : range, mRenderPaint);
-
-            // Path line = generateLinePath(entries);
-            //
-            // trans.pathValueToPixel(line);
-            // c.drawPath(line, mRenderPaint);
+            c.drawLines(buffer.buffer, from, to >= buffer.size() ? buffer.size() - from : range,
+                    mRenderPaint);
         }
 
         mRenderPaint.setPathEffect(null);
@@ -452,45 +436,52 @@ public class LineChartRenderer extends DataRenderer {
     protected void drawCircles(Canvas c) {
         mRenderPaint.setStyle(Paint.Style.FILL);
 
+        float phaseX = mAnimator.getPhaseX();
+        float phaseY = mAnimator.getPhaseY();
+
         ArrayList<LineDataSet> dataSets = mChart.getLineData().getDataSets();
 
-        for (int i = 0; i < mChart.getLineData().getDataSetCount(); i++) {
+        for (int i = 0; i < dataSets.size(); i++) {
 
             LineDataSet dataSet = dataSets.get(i);
+
+            if (!dataSet.isVisible() || !dataSet.isDrawCirclesEnabled())
+                continue;
+
             Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
+            ArrayList<Entry> entries = dataSet.getYVals();
 
-            // if drawing circles is enabled for this dataset
-            if (dataSet.isDrawCirclesEnabled()) {
+            CircleBuffer buffer = mCircleBuffers[i];
+            buffer.setPhases(phaseX, phaseY);
+            buffer.feed(entries);
 
-                ArrayList<Entry> entries = dataSet.getYVals();
+            trans.pointValuesToPixel(buffer.buffer);
+            
+            float halfsize = dataSet.getCircleSize() / 2f;
 
-                float[] positions = trans.generateTransformedValuesLine(
-                        entries, mAnimator.getPhaseY());
+            for (int j = 0; j < buffer.size(); j += 2) {
 
-                for (int j = 0; j < positions.length * mAnimator.getPhaseX(); j += 2) {
+                mRenderPaint.setColor(dataSet.getCircleColor(j / 2));
 
-                    mRenderPaint.setColor(dataSet.getCircleColor(j / 2));
+                float x = buffer.buffer[j];
+                float y = buffer.buffer[j + 1];
 
-                    float x = positions[j];
-                    float y = positions[j + 1];
+                if (!mViewPortHandler.isInBoundsRight(x))
+                    break;
 
-                    if (!mViewPortHandler.isInBoundsRight(x))
-                        break;
+                // make sure the circles don't do shitty things outside
+                // bounds
+                if (!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y))
+                    continue;
 
-                    // make sure the circles don't do shitty things outside
-                    // bounds
-                    if (!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y))
-                        continue;
+                c.drawCircle(x, y, dataSet.getCircleSize(),
+                        mRenderPaint);
 
-                    c.drawCircle(x, y, dataSet.getCircleSize(),
-                            mRenderPaint);
-
-                    if (dataSet.isDrawCircleHoleEnabled())
-                        c.drawCircle(x, y,
-                                dataSet.getCircleSize() / 2f,
-                                mCirclePaintInner);
-                }
-            } // else do nothing
+                if (dataSet.isDrawCircleHoleEnabled())
+                    c.drawCircle(x, y,
+                            halfsize,
+                            mCirclePaintInner);
+            }
         }
     }
 
@@ -525,6 +516,28 @@ public class LineChartRenderer extends DataRenderer {
             mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);
             // draw the highlight lines
             c.drawLines(pts, mHighlightPaint);
+        }
+    }
+
+    /**
+     * Class needed for saving the points when drawing cubic-lines.
+     * 
+     * @author Philipp Jahoda
+     */
+    protected class CPoint {
+
+        public float x = 0f;
+        public float y = 0f;
+
+        /** x-axis distance */
+        public float dx = 0f;
+
+        /** y-axis distance */
+        public float dy = 0f;
+
+        public CPoint(float x, float y) {
+            this.x = x;
+            this.y = y;
         }
     }
 }
