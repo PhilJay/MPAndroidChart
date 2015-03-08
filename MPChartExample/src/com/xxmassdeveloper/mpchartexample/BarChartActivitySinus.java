@@ -108,7 +108,7 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
         l.setTextSize(11f);
         l.setXEntrySpace(4f);
 
-        mChart.animateY(1500);
+        mChart.animateXY(2000, 2000);
     }
 
     @Override

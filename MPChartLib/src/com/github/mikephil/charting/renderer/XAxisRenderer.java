@@ -4,7 +4,6 @@ package com.github.mikephil.charting.renderer;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
-import android.util.Log;
 
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
@@ -118,15 +117,18 @@ public class XAxisRenderer extends AxisRenderer {
         float[] position = new float[] {
                 0f, 0f
         };
-        
-        int maxx = mMaxX + 1;
-        
-        if(maxx > mXAxis.getValues().size()) {
-            maxx = mXAxis.getValues().size();
-        }
 
-        for (int i = mMinX; i < maxx; i += mXAxis.mAxisLabelModulus) {
-            
+        int maxx = mMaxX + 1;
+        int minx = mMinX - 1;
+
+        if (maxx > mXAxis.getValues().size())
+            maxx = mXAxis.getValues().size();
+
+        if (minx < 0)
+            minx = 0;
+
+        for (int i = minx; i < maxx; i += mXAxis.mAxisLabelModulus) {
+
             position[0] = i;
 
             mTrans.pointValuesToPixel(position);

@@ -68,8 +68,9 @@ public class CandleStickChartRenderer extends DataRenderer {
         ArrayList<CandleEntry> entries = dataSet.getYVals();
      
         // draw the shadow
-        int range = (mMaxX - mMinX) * 4;
+        int range = (mMaxX - mMinX + 1) * 4;
         int from = mMinX * 4;
+        int to = mMaxX + 1;
 
         CandleShadowBuffer shadowBuffer = mShadowBuffers[dataSetIndex];
         shadowBuffer.setPhases(phaseX, phaseY);
@@ -81,6 +82,7 @@ public class CandleStickChartRenderer extends DataRenderer {
         mRenderPaint.setColor(dataSet.getColor());
         mRenderPaint.setStrokeWidth(dataSet.getShadowWidth());
 
+        // draw the shadow
         c.drawLines(shadowBuffer.buffer, from, range, mRenderPaint);
                 
         CandleBodyBuffer bodyBuffer = mBodyBuffers[dataSetIndex];
@@ -90,12 +92,13 @@ public class CandleStickChartRenderer extends DataRenderer {
 
         trans.pointValuesToPixel(bodyBuffer.buffer);
 
+        // draw the body
         for (int j = 0; j < bodyBuffer.size(); j+=4) {
             
             // get the entry
             CandleEntry e = entries.get(j / 4);
             
-            if (!fitsBounds(e.getXIndex(), mMinX, mMaxX))
+            if (!fitsBounds(e.getXIndex(), mMinX, to))
                 continue;
 
             // get the color that is specified for this position from
