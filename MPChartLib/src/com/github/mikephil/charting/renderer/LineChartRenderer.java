@@ -150,46 +150,69 @@ public class LineChartRenderer extends DataRenderer {
         // the path for the cubic-spline
         Path spline = new Path();
 
-        ArrayList<CPoint> points = new ArrayList<CPoint>();
-        for (int i = minx; i < maxx; i++) {
+        float size = entries.size() * phaseX;
 
-            Entry e = entries.get(i);
-            if (e != null)
-                points.add(new CPoint(e.getXIndex(), e.getVal()));
-        }
+        if (entries.size() > 2) {
 
-        if (points.size() > 1) {
-            for (int j = 0; j < points.size() * phaseX; j++) {
+            float prevDx = 0f;
+            float prevDy = 0f;
+            float curDx = 0f;
+            float curDy = 0f;
 
-                CPoint point = points.get(j);
+            Entry cur = entries.get(0);
+            Entry next = entries.get(1);
+            Entry prev = entries.get(0);
+            Entry prevPrev = entries.get(0);
 
-                if (j == 0) {
-                    CPoint next = points.get(j + 1);
-                    point.dx = ((next.x - point.x) * intensity);
-                    point.dy = ((next.y - point.y) * intensity);
-                }
-                else if (j == points.size() - 1) {
-                    CPoint prev = points.get(j - 1);
-                    point.dx = ((point.x - prev.x) * intensity);
-                    point.dy = ((point.y - prev.y) * intensity);
-                }
-                else {
-                    CPoint next = points.get(j + 1);
-                    CPoint prev = points.get(j - 1);
-                    point.dx = ((next.x - prev.x) * intensity);
-                    point.dy = ((next.y - prev.y) * intensity);
-                }
+            // let the spline start
+            spline.moveTo(cur.getXIndex(), cur.getVal() * phaseY);
 
-                // create the cubic-spline path
-                if (j == 0) {
-                    spline.moveTo(point.x, point.y * phaseY);
-                }
-                else {
-                    CPoint prev = points.get(j - 1);
-                    spline.cubicTo(prev.x + prev.dx, (prev.y + prev.dy) * phaseY, point.x
-                            - point.dx,
-                            (point.y - point.dy) * phaseY, point.x, point.y * phaseY);
-                }
+            prevDx = (next.getXIndex() - cur.getXIndex()) * intensity;
+            prevDy = (next.getVal() - cur.getVal()) * intensity;
+
+            cur = entries.get(1);
+            next = entries.get(2);
+            curDx = (next.getXIndex() - prev.getXIndex()) * intensity;
+            curDy = (next.getVal() - prev.getVal()) * intensity;
+
+            // the first cubic
+            spline.cubicTo(prev.getXIndex() + prevDx, (prev.getVal() + prevDy) * phaseY,
+                    cur.getXIndex() - curDx,
+                    (cur.getVal() - curDy) * phaseY, cur.getXIndex(), cur.getVal() * phaseY);
+
+            for (int j = 2; j < size - 1; j++) {
+
+                prevPrev = entries.get(j - 2);
+                prev = entries.get(j - 1);
+                cur = entries.get(j);
+                next = entries.get(j + 1);
+
+                prevDx = (cur.getXIndex() - prevPrev.getXIndex()) * intensity;
+                prevDy = (cur.getVal() - prevPrev.getVal()) * intensity;
+                curDx = (next.getXIndex() - prev.getXIndex()) * intensity;
+                curDy = (next.getVal() - prev.getVal()) * intensity;
+
+                spline.cubicTo(prev.getXIndex() + prevDx, (prev.getVal() + prevDy) * phaseY,
+                        cur.getXIndex() - curDx,
+                        (cur.getVal() - curDy) * phaseY, cur.getXIndex(), cur.getVal() * phaseY);
+            }
+
+            if (size > entries.size() - 1) {
+
+                cur = entries.get(entries.size() - 1);
+                prev = entries.get(entries.size() - 2);
+                prevPrev = entries.get(entries.size() - 3);
+                next = cur;
+
+                prevDx = (cur.getXIndex() - prevPrev.getXIndex()) * intensity;
+                prevDy = (cur.getVal() - prevPrev.getVal()) * intensity;
+                curDx = (next.getXIndex() - prev.getXIndex()) * intensity;
+                curDy = (next.getVal() - prev.getVal()) * intensity;
+
+                // the last cubic
+                spline.cubicTo(prev.getXIndex() + prevDx, (prev.getVal() + prevDy) * phaseY,
+                        cur.getXIndex() - curDx,
+                        (cur.getVal() - curDy) * phaseY, cur.getXIndex(), cur.getVal() * phaseY);
             }
         }
 
@@ -456,7 +479,7 @@ public class LineChartRenderer extends DataRenderer {
             buffer.feed(entries);
 
             trans.pointValuesToPixel(buffer.buffer);
-            
+
             float halfsize = dataSet.getCircleSize() / 2f;
 
             for (int j = 0; j < buffer.size(); j += 2) {

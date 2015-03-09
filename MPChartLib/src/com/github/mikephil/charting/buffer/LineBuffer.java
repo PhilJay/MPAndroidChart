@@ -18,7 +18,7 @@ public class LineBuffer extends AbstractBuffer<Entry> {
 
         buffer[index++] = x;
         buffer[index++] = y;
-        
+
         // in case just one entry, this is overwritten when lineTo is called
         buffer[index] = x;
         buffer[index + 1] = y;
@@ -42,8 +42,9 @@ public class LineBuffer extends AbstractBuffer<Entry> {
 
     @Override
     public void feed(ArrayList<Entry> entries) {
+
         moveTo(entries.get(0).getXIndex(), entries.get(0).getVal());
-        
+
         float size = entries.size() * phaseX;
 
         for (int i = 1; i < size; i++) {
@@ -51,7 +52,7 @@ public class LineBuffer extends AbstractBuffer<Entry> {
             Entry e = entries.get(i);
             lineTo(e.getXIndex(), e.getVal() * phaseY);
         }
-        
+
         reset();
     }
 }
