@@ -268,7 +268,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 Log.i(LOG_TAG, "Preparing...");
         }
         
-        mRenderer.initBuffers();
+        if (mRenderer != null)
+            mRenderer.initBuffers();
 
         calcMinMax();
 
