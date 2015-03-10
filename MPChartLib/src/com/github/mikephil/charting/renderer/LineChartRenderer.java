@@ -1,10 +1,12 @@
 
 package com.github.mikephil.charting.renderer;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.util.Log;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.buffer.CircleBuffer;
@@ -24,19 +26,21 @@ public class LineChartRenderer extends DataRenderer {
 
     /** paint for the inner circle of the value indicators */
     protected Paint mCirclePaintInner;
-    //
-    // /**
-    // * Bitmap object used for drawing the paths (otherwise they are too long
-    // if
-    // * rendered directly on the canvas)
-    // */
-    // protected Bitmap mPathBitmap;
-    //
-    // /**
-    // * on this canvas, the paths are rendered, it is initialized with the
-    // * pathBitmap
-    // */
-    // protected Canvas mPathCanvas;
+
+    /**
+     * Bitmap object used for drawing the paths (otherwise they are too long if
+     * rendered directly on the canvas)
+     */
+    protected Bitmap mPathBitmap;
+
+    /**
+     * on this canvas, the paths are rendered, it is initialized with the
+     * pathBitmap
+     */
+    protected Canvas mPathCanvas;
+    
+    protected Path cubicPath = new Path();
+    protected Path cubicFillPath = new Path();
 
     protected LineBuffer[] mLineBuffers;
 
@@ -99,6 +103,14 @@ public class LineChartRenderer extends DataRenderer {
     @Override
     public void drawData(Canvas c) {
 
+        if (mPathBitmap == null) {
+            mPathBitmap = Bitmap.createBitmap((int) mViewPortHandler.getChartWidth(),
+                    (int) mViewPortHandler.getChartHeight(), Bitmap.Config.ARGB_4444);
+            mPathCanvas = new Canvas(mPathBitmap);
+        }
+
+        mPathBitmap.eraseColor(Color.TRANSPARENT);
+
         LineData lineData = mChart.getLineData();
 
         for (LineDataSet set : lineData.getDataSets()) {
@@ -122,6 +134,7 @@ public class LineChartRenderer extends DataRenderer {
 
         // if drawing cubic lines is enabled
         if (dataSet.isDrawCubicEnabled()) {
+
             drawCubic(c, dataSet, entries);
 
             // draw normal (straight) lines
@@ -147,8 +160,9 @@ public class LineChartRenderer extends DataRenderer {
 
         float intensity = dataSet.getCubicIntensity();
 
-        // the path for the cubic-spline
-        Path spline = new Path();
+        long start = System.currentTimeMillis();
+        
+        cubicPath.reset();
 
         float size = entries.size() * phaseX;
 
@@ -165,7 +179,7 @@ public class LineChartRenderer extends DataRenderer {
             Entry prevPrev = entries.get(0);
 
             // let the spline start
-            spline.moveTo(cur.getXIndex(), cur.getVal() * phaseY);
+            cubicPath.moveTo(cur.getXIndex(), cur.getVal() * phaseY);
 
             prevDx = (next.getXIndex() - cur.getXIndex()) * intensity;
             prevDy = (next.getVal() - cur.getVal()) * intensity;
@@ -176,7 +190,7 @@ public class LineChartRenderer extends DataRenderer {
             curDy = (next.getVal() - prev.getVal()) * intensity;
 
             // the first cubic
-            spline.cubicTo(prev.getXIndex() + prevDx, (prev.getVal() + prevDy) * phaseY,
+            cubicPath.cubicTo(prev.getXIndex() + prevDx, (prev.getVal() + prevDy) * phaseY,
                     cur.getXIndex() - curDx,
                     (cur.getVal() - curDy) * phaseY, cur.getXIndex(), cur.getVal() * phaseY);
 
@@ -192,7 +206,7 @@ public class LineChartRenderer extends DataRenderer {
                 curDx = (next.getXIndex() - prev.getXIndex()) * intensity;
                 curDy = (next.getVal() - prev.getVal()) * intensity;
 
-                spline.cubicTo(prev.getXIndex() + prevDx, (prev.getVal() + prevDy) * phaseY,
+                cubicPath.cubicTo(prev.getXIndex() + prevDx, (prev.getVal() + prevDy) * phaseY,
                         cur.getXIndex() - curDx,
                         (cur.getVal() - curDy) * phaseY, cur.getXIndex(), cur.getVal() * phaseY);
             }
@@ -210,7 +224,7 @@ public class LineChartRenderer extends DataRenderer {
                 curDy = (next.getVal() - prev.getVal()) * intensity;
 
                 // the last cubic
-                spline.cubicTo(prev.getXIndex() + prevDx, (prev.getVal() + prevDy) * phaseY,
+                cubicPath.cubicTo(prev.getXIndex() + prevDx, (prev.getVal() + prevDy) * phaseY,
                         cur.getXIndex() - curDx,
                         (cur.getVal() - curDy) * phaseY, cur.getXIndex(), cur.getVal() * phaseY);
             }
@@ -219,17 +233,27 @@ public class LineChartRenderer extends DataRenderer {
         // if filled is enabled, close the path
         if (dataSet.isDrawFilledEnabled()) {
 
+            cubicFillPath.reset();
+            cubicFillPath.addPath(cubicPath);
             // create a new path, this is bad for performance
-            drawCubicFill(c, dataSet, new Path(spline), trans, minx, maxx);
+            drawCubicFill(mPathCanvas, dataSet, cubicFillPath, trans, minx, maxx);
         }
+
+        Log.i("", "perpare: " + (System.currentTimeMillis() - start));
 
         mRenderPaint.setColor(dataSet.getColor());
 
         mRenderPaint.setStyle(Paint.Style.STROKE);
 
-        trans.pathValueToPixel(spline);
+        start = System.currentTimeMillis();
+        trans.pathValueToPixel(cubicPath);
 
-        c.drawPath(spline, mRenderPaint);
+        Log.i("", "transform: " + (System.currentTimeMillis() - start));
+        start = System.currentTimeMillis();
+
+        mPathCanvas.drawPath(cubicPath, mRenderPaint);
+        Log.i("", "draw: " + (System.currentTimeMillis() - start));
+        c.drawBitmap(mPathBitmap, 0, 0, mRenderPaint);
 
         mRenderPaint.setPathEffect(null);
     }
@@ -255,7 +279,7 @@ public class LineChartRenderer extends DataRenderer {
         mRenderPaint.setAlpha(dataSet.getFillAlpha());
 
         trans.pathValueToPixel(spline);
-        c.drawPath(spline, mRenderPaint);
+        mPathCanvas.drawPath(spline, mRenderPaint);
 
         mRenderPaint.setAlpha(255);
     }
@@ -373,30 +397,6 @@ public class LineChartRenderer extends DataRenderer {
         filled.close();
 
         return filled;
-    }
-
-    /**
-     * Generates the path that is used for drawing a single line.
-     * 
-     * @param entries
-     * @return
-     */
-    private Path generateLinePath(ArrayList<Entry> entries) {
-
-        float phaseX = mAnimator.getPhaseX();
-        float phaseY = mAnimator.getPhaseY();
-
-        Path line = new Path();
-        line.moveTo(entries.get(0).getXIndex(), entries.get(0).getVal() * phaseY);
-
-        // create a new path
-        for (int x = 1; x < entries.size() * phaseX; x++) {
-
-            Entry e = entries.get(x);
-            line.lineTo(e.getXIndex(), e.getVal() * phaseY);
-        }
-
-        return line;
     }
 
     @Override
@@ -539,28 +539,6 @@ public class LineChartRenderer extends DataRenderer {
             mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);
             // draw the highlight lines
             c.drawLines(pts, mHighlightPaint);
-        }
-    }
-
-    /**
-     * Class needed for saving the points when drawing cubic-lines.
-     * 
-     * @author Philipp Jahoda
-     */
-    protected class CPoint {
-
-        public float x = 0f;
-        public float y = 0f;
-
-        /** x-axis distance */
-        public float dx = 0f;
-
-        /** y-axis distance */
-        public float dy = 0f;
-
-        public CPoint(float x, float y) {
-            this.x = x;
-            this.y = y;
         }
     }
 }

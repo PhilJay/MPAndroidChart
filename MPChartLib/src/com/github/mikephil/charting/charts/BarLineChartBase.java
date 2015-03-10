@@ -157,17 +157,17 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         long starttime = System.currentTimeMillis();
 
-        // if data filtering is enabled
-        if (mFilterData) {
-            mData = getFilteredData();
-
-            Log.i(LOG_TAG, "FilterTime: " + (System.currentTimeMillis() -
-                    starttime) + " ms");
-            starttime = System.currentTimeMillis();
-        } else {
-            mData = getData();
-            // Log.i(LOG_TAG, "Filtering disabled.");
-        }
+//        // if data filtering is enabled
+//        if (mFilterData) {
+//            mData = getFilteredData();
+//
+//            Log.i(LOG_TAG, "FilterTime: " + (System.currentTimeMillis() -
+//                    starttime) + " ms");
+//            starttime = System.currentTimeMillis();
+//        } else {
+//            mData = getData();
+//            // Log.i(LOG_TAG, "Filtering disabled.");
+//        }
 
         if (mXAxis.isAdjustXLabelsEnabled())
             calcModulus();
@@ -175,8 +175,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         // execute all drawing commands
         drawGridBackground(canvas);
 
-        mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum);
-        mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum);
+        if (mAxisLeft.isEnabled())
+            mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum);
+        if (mAxisRight.isEnabled())
+            mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum);
 
         // make sure the graph values and grid cannot be drawn outside the
         // content-rect

@@ -78,10 +78,12 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         
         XAxis x = mChart.getXAxis();
         x.setTypeface(tf);
+        x.setEnabled(false);
         
         YAxis y = mChart.getAxisLeft();
         y.setTypeface(tf);
         y.setLabelCount(5);
+        y.setEnabled(false);
         
         mChart.getAxisRight().setEnabled(false);
 
