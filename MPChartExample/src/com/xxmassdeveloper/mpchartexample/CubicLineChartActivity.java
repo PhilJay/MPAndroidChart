@@ -262,7 +262,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
 
         ArrayList<Entry> vals1 = new ArrayList<Entry>();
 
-        for (int i = 0; i < count; i++) {
+        for (int i = 5; i < count-5; i++) {
             float mult = (range + 1);
             float val = (float) (Math.random() * mult) + 20;// + (float)
                                                            // ((mult *

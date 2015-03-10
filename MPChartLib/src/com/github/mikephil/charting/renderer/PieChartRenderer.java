@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.renderer;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -33,6 +34,11 @@ public class PieChartRenderer extends DataRenderer {
      * chart
      */
     private Paint mCenterTextPaint;
+    
+    /** Bitmap for drawing the center hole */
+    protected Bitmap mDrawBitmap;
+
+    protected Canvas mBitmapCanvas;
 
     public PieChartRenderer(PieChart chart, ChartAnimator animator,
             ViewPortHandler viewPortHandler) {
@@ -68,6 +74,14 @@ public class PieChartRenderer extends DataRenderer {
 
     @Override
     public void drawData(Canvas c) {
+        
+        if (mDrawBitmap == null) {
+            mDrawBitmap = Bitmap.createBitmap((int) mViewPortHandler.getChartWidth(),
+                    (int) mViewPortHandler.getChartHeight(), Bitmap.Config.ARGB_4444);
+            mBitmapCanvas = new Canvas(mDrawBitmap);
+        }
+
+        mDrawBitmap.eraseColor(Color.TRANSPARENT);
 
         PieData pieData = mChart.getData();
 
@@ -76,6 +90,8 @@ public class PieChartRenderer extends DataRenderer {
             if (set.isVisible())
                 drawDataSet(c, set);
         }
+                
+        c.drawBitmap(mDrawBitmap, 0, 0, mRenderPaint);
     }
 
     protected void drawDataSet(Canvas c, PieDataSet dataSet) {
@@ -101,7 +117,7 @@ public class PieChartRenderer extends DataRenderer {
                         mChart.getData().getIndexOfDataSet(dataSet))) {
 
                     mRenderPaint.setColor(dataSet.getColor(j));
-                    c.drawArc(mChart.getCircleBox(), angle + sliceSpace / 2f,
+                    mBitmapCanvas.drawArc(mChart.getCircleBox(), angle + sliceSpace / 2f,
                             newangle * mAnimator.getPhaseY()
                                     - sliceSpace / 2f, true, mRenderPaint);
                 }
@@ -130,7 +146,7 @@ public class PieChartRenderer extends DataRenderer {
         float[] drawAngles = mChart.getDrawAngles();
         float[] absoluteAngles = mChart.getAbsoluteAngles();
 
-        float off = r / 2f;
+        float off = r / 3f;
 
         if (mChart.isDrawHoleEnabled()) {
             off = (r - (r / 100f * mChart.getHoleRadius())) / 2f;
@@ -226,7 +242,7 @@ public class PieChartRenderer extends DataRenderer {
             int color = mHolePaint.getColor();
 
             // draw the hole-circle
-            c.drawCircle(center.x, center.y,
+            mBitmapCanvas.drawCircle(center.x, center.y,
                     radius / 100 * holeRadius, mHolePaint);
 
             if (transparentCircleRadius > holeRadius) {
@@ -235,7 +251,7 @@ public class PieChartRenderer extends DataRenderer {
                 mHolePaint.setColor(color & 0x60FFFFFF);
 
                 // draw the transparent-circle
-                c.drawCircle(center.x, center.y,
+                mBitmapCanvas.drawCircle(center.x, center.y,
                         radius / 100 * transparentCircleRadius, mHolePaint);
 
                 mHolePaint.setColor(color);
@@ -331,7 +347,7 @@ public class PieChartRenderer extends DataRenderer {
 
             // redefine the rect that contains the arc so that the
             // highlighted pie is not cut off
-            c.drawArc(highlighted, angle + set.getSliceSpace() / 2f, sliceDegrees
+            mBitmapCanvas.drawArc(highlighted, angle + set.getSliceSpace() / 2f, sliceDegrees
                     - set.getSliceSpace() / 2f, true, mRenderPaint);
         }
     }

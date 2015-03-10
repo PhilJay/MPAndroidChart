@@ -37,7 +37,7 @@ public class LineChartRenderer extends DataRenderer {
      * on this canvas, the paths are rendered, it is initialized with the
      * pathBitmap
      */
-    protected Canvas mPathCanvas;
+    protected Canvas mBitmapCanvas;
     
     protected Path cubicPath = new Path();
     protected Path cubicFillPath = new Path();
@@ -106,7 +106,7 @@ public class LineChartRenderer extends DataRenderer {
         if (mPathBitmap == null) {
             mPathBitmap = Bitmap.createBitmap((int) mViewPortHandler.getChartWidth(),
                     (int) mViewPortHandler.getChartHeight(), Bitmap.Config.ARGB_4444);
-            mPathCanvas = new Canvas(mPathBitmap);
+            mBitmapCanvas = new Canvas(mPathBitmap);
         }
 
         mPathBitmap.eraseColor(Color.TRANSPARENT);
@@ -236,7 +236,7 @@ public class LineChartRenderer extends DataRenderer {
             cubicFillPath.reset();
             cubicFillPath.addPath(cubicPath);
             // create a new path, this is bad for performance
-            drawCubicFill(mPathCanvas, dataSet, cubicFillPath, trans, minx, maxx);
+            drawCubicFill(mBitmapCanvas, dataSet, cubicFillPath, trans, minx, maxx);
         }
 
         Log.i("", "perpare: " + (System.currentTimeMillis() - start));
@@ -251,7 +251,7 @@ public class LineChartRenderer extends DataRenderer {
         Log.i("", "transform: " + (System.currentTimeMillis() - start));
         start = System.currentTimeMillis();
 
-        mPathCanvas.drawPath(cubicPath, mRenderPaint);
+        mBitmapCanvas.drawPath(cubicPath, mRenderPaint);
         Log.i("", "draw: " + (System.currentTimeMillis() - start));
         c.drawBitmap(mPathBitmap, 0, 0, mRenderPaint);
 
@@ -266,7 +266,7 @@ public class LineChartRenderer extends DataRenderer {
                         mChart.getYChartMin());
 
         Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
-        Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
+        Entry entryTo = dataSet.getEntryForXIndex(mMaxX+1);
 
         spline.lineTo(entryTo.getXIndex(), fillMin);
         spline.lineTo(entryFrom.getXIndex(), fillMin);
@@ -279,7 +279,7 @@ public class LineChartRenderer extends DataRenderer {
         mRenderPaint.setAlpha(dataSet.getFillAlpha());
 
         trans.pathValueToPixel(spline);
-        mPathCanvas.drawPath(spline, mRenderPaint);
+        mBitmapCanvas.drawPath(spline, mRenderPaint);
 
         mRenderPaint.setAlpha(255);
     }

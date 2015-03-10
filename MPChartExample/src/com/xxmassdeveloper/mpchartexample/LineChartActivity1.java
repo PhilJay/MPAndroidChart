@@ -294,7 +294,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
         ArrayList<Entry> yVals = new ArrayList<Entry>();
 
-        for (int i = 0; i < count; i++) {
+        for (int i = 10; i < count-10; i++) {
             float mult = (range + 1);
             float val = (float) (Math.random() * mult) + 3;// + (float)
                                                            // ((mult *
