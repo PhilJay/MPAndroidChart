@@ -19,19 +19,35 @@ public class CombinedChartRenderer extends DataRenderer {
         super(animator, viewPortHandler);
         
         if (chart.getLineData() != null)
-            mLineRenderer = new LineChartRenderer(chart, animator, viewPortHandler);
+            mLineRenderer = createLineChartRenderer(chart, animator, viewPortHandler);
 
         if (chart.getBarData() != null)
-            mBarRenderer = new BarChartRenderer(chart, animator, viewPortHandler);
+            mBarRenderer = createBarChartRenderer(chart, animator, viewPortHandler);
 
         if (chart.getScatterData() != null)
-            mScatterRenderer = new ScatterChartRenderer(chart, animator, viewPortHandler);
+            mScatterRenderer = createScatterChartRenderer(chart, animator, viewPortHandler);
 
         if (chart.getCandleData() != null)
-            mCandleRenderer = new CandleStickChartRenderer(chart, animator, viewPortHandler);
+            mCandleRenderer = createCandleStickChartRenderer(chart, animator, viewPortHandler);
     }
-    
-    @Override
+
+    protected CandleStickChartRenderer createCandleStickChartRenderer(CombinedChart chart, ChartAnimator animator, ViewPortHandler viewPortHandler) {
+        return new CandleStickChartRenderer(chart, animator, viewPortHandler);
+    }
+
+    protected ScatterChartRenderer createScatterChartRenderer(CombinedChart chart, ChartAnimator animator, ViewPortHandler viewPortHandler) {
+        return new ScatterChartRenderer(chart, animator, viewPortHandler);
+    }
+
+    protected BarChartRenderer createBarChartRenderer(CombinedChart chart, ChartAnimator animator, ViewPortHandler viewPortHandler) {
+        return new BarChartRenderer(chart, animator, viewPortHandler);
+    }
+
+    protected LineChartRenderer createLineChartRenderer(CombinedChart chart, ChartAnimator animator, ViewPortHandler viewPortHandler) {
+        return new LineChartRenderer(chart, animator, viewPortHandler);
+    }
+
+  @Override
     public void initBuffers() {
         if (mBarRenderer != null)
             mBarRenderer.initBuffers();
