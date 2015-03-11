@@ -278,12 +278,21 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
-     * Clears the chart from all data and refreshes it (by calling
-     * invalidate()).
+     * Clears the chart from all data (sets it to null) and refreshes it (by
+     * calling invalidate()).
      */
     public void clear() {
         mData = null;
         mDataNotSet = true;
+        invalidate();
+    }
+
+    /**
+     * Removes all DataSets (and thereby Entries) from the chart. Does not
+     * remove the x-values.
+     */
+    public void clearValues() {
+        mData.clearValues();
         invalidate();
     }
 

@@ -879,4 +879,12 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             set.setDrawValues(enabled);
         }
     }
+
+    /**
+     * Clears this data object from all DataSets and removes all Entries.
+     */
+    public void clearValues() {
+        mDataSets.clear();
+        notifyDataChanged();
+    }
 }
