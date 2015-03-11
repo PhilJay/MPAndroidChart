@@ -1209,6 +1209,17 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
+     * Sets a new DataRenderer object for the chart.
+     * 
+     * @param renderer
+     */
+    public void setRenderer(DataRenderer renderer) {
+
+        if (renderer != null)
+            mRenderer = renderer;
+    }
+
+    /**
      * Returns the bitmap that represents the chart.
      *
      * @return

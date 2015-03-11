@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class LineBuffer extends AbstractBuffer<Entry> {
 
     public LineBuffer(int size) {
-        super(size);
+        super((size < 4) ? 4 : size);
     }
 
     public void moveTo(float x, float y) {

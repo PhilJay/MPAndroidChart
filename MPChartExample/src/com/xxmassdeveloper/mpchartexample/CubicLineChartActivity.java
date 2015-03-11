@@ -262,7 +262,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
 
         ArrayList<Entry> vals1 = new ArrayList<Entry>();
 
-        for (int i = 5; i < count-5; i++) {
+        for (int i = 0; i < count; i++) {
             float mult = (range + 1);
             float val = (float) (Math.random() * mult) + 20;// + (float)
                                                            // ((mult *
@@ -281,7 +281,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         set1.setHighLightColor(Color.rgb(244, 117, 117));
         set1.setColor(Color.rgb(104, 241, 175));
         set1.setFillColor(ColorTemplate.getHoloBlue());
-
+        
         // create a data object with the datasets
         LineData data = new LineData(xVals, set1);
         data.setValueTypeface(tf);

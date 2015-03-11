@@ -121,8 +121,8 @@ public class XAxisRenderer extends AxisRenderer {
         int maxx = mMaxX;
         int minx = mMinX;
 
-        if (maxx > mXAxis.getValues().size())
-            maxx = mXAxis.getValues().size();
+        if (maxx >= mXAxis.getValues().size())
+            maxx = mXAxis.getValues().size()-1;
 
         if (minx < 0)
             minx = 0;

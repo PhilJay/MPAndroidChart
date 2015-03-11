@@ -15,6 +15,9 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
     /** arraylist representing all colors that are used for the circles */
     private ArrayList<Integer> mCircleColors = null;
 
+    /** the color of the inner circles */
+    private int mCircleColorHole = Color.WHITE;
+
     /** the radius of the circle-shaped value indicators */
     private float mCircleSize = 8f;
 
@@ -272,6 +275,24 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
      */
     public void resetCircleColors() {
         mCircleColors = new ArrayList<Integer>();
+    }
+
+    /**
+     * Sets the color of the inner circle of the line-circles.
+     * 
+     * @param color
+     */
+    public void setCircleColorHole(int color) {
+        mCircleColorHole = color;
+    }
+
+    /**
+     * Returns the color of the inner circle.
+     * 
+     * @return
+     */
+    public int getCircleHoleColor() {
+        return mCircleColorHole;
     }
 
     /**

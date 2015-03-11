@@ -20,7 +20,6 @@ import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
-import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -288,12 +287,14 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         LineDataSet set1 = new LineDataSet(yVals1, "DataSet 1");
         set1.setAxisDependency(AxisDependency.LEFT);
         set1.setColor(ColorTemplate.getHoloBlue());
-        set1.setCircleColor(ColorTemplate.getHoloBlue());
+        set1.setCircleColor(Color.WHITE);
         set1.setLineWidth(2f);
-        set1.setCircleSize(4f);
+        set1.setCircleSize(3f);
         set1.setFillAlpha(65);
         set1.setFillColor(ColorTemplate.getHoloBlue());
         set1.setHighLightColor(Color.rgb(244, 117, 117));
+        set1.setDrawCircleHole(false);
+//        set1.setCircleHoleColor(Color.WHITE);
 
         ArrayList<Entry> yVals2 = new ArrayList<Entry>();
 
@@ -309,11 +310,12 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         LineDataSet set2 = new LineDataSet(yVals2, "DataSet 2");
         set2.setAxisDependency(AxisDependency.RIGHT);
         set2.setColor(Color.RED);
-        set2.setCircleColor(Color.RED);
+        set2.setCircleColor(Color.WHITE);
         set2.setLineWidth(2f);
-        set2.setCircleSize(4f);
+        set2.setCircleSize(3f);
         set2.setFillAlpha(65);
         set2.setFillColor(Color.RED);
+        set2.setDrawCircleHole(false);
         set2.setHighLightColor(Color.rgb(244, 117, 117));
 
         ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
