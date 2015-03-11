@@ -76,11 +76,11 @@ public class HorizontalBarChart extends BarChart {
         }
 
         // offsets for y-labels
-        if (mAxisLeft.isEnabled()) {
+        if (mAxisLeft.needsOffset()) {
             offsetTop += mAxisLeft.getRequiredHeightSpace(mAxisRendererLeft.getAxisPaint());
         }
 
-        if (mAxisRight.isEnabled()) {
+        if (mAxisRight.needsOffset()) {
             offsetBottom += mAxisRight.getRequiredHeightSpace(mAxisRendererRight.getAxisPaint());
         }
 

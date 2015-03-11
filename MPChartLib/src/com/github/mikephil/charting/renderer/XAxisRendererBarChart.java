@@ -99,10 +99,15 @@ public class XAxisRendererBarChart extends XAxisRenderer {
         mGridPaint.setStrokeWidth(mXAxis.getGridLineWidth());
 
         BarData bd = mChart.getData();
-        // take into consideration that multiple DataSets increase mDeltaX
         int step = bd.getDataSetCount();
+        float div = (float) step + (step > 1 ? bd.getGroupSpace() : 0f);
 
-        for (int i = 0; i < mXAxis.getValues().size(); i += mXAxis.mAxisLabelModulus) {
+        float min = (float) mMinX
+                / div;
+        float max = (float) mMaxX
+                / div;
+
+        for (int i = (int) min; i <= max; i += mXAxis.mAxisLabelModulus) {
 
             position[0] = i * step + i * bd.getGroupSpace() - 0.5f;
 

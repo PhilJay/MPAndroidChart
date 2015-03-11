@@ -439,4 +439,18 @@ public class YAxis extends AxisBase {
 
         return false;
     }
+
+    /**
+     * Returns true if this axis needs horizontal offset, false if no offset is
+     * needed.
+     * 
+     * @return
+     */
+    public boolean needsOffset() {
+        if (isEnabled() && isDrawLabelsEnabled()
+                && getLabelPosition() == YAxisLabelPosition.OUTSIDE_CHART)
+            return true;
+        else
+            return false;
+    }
 }

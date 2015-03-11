@@ -23,6 +23,7 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
+import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -89,6 +90,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         xAxis.setPosition(XAxisPosition.BOTTOM);
         xAxis.setTypeface(mTf);
         xAxis.setDrawGridLines(false);
+        xAxis.setSpaceBetweenLabels(2);
         
         ValueFormatter custom = new MyValueFormatter();
 
@@ -96,6 +98,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         leftAxis.setTypeface(mTf);
         leftAxis.setLabelCount(8);
         leftAxis.setValueFormatter(custom);
+        leftAxis.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawGridLines(false);

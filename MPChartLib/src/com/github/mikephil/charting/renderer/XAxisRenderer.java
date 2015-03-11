@@ -118,8 +118,8 @@ public class XAxisRenderer extends AxisRenderer {
                 0f, 0f
         };
 
-        int maxx = mMaxX + 1;
-        int minx = mMinX - 1;
+        int maxx = mMaxX;
+        int minx = mMinX;
 
         if (maxx > mXAxis.getValues().size())
             maxx = mXAxis.getValues().size();
@@ -127,7 +127,7 @@ public class XAxisRenderer extends AxisRenderer {
         if (minx < 0)
             minx = 0;
 
-        for (int i = minx; i < maxx; i += mXAxis.mAxisLabelModulus) {
+        for (int i = minx; i <= maxx; i += mXAxis.mAxisLabelModulus) {
 
             position[0] = i;
 

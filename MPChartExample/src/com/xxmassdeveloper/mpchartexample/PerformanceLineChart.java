@@ -64,7 +64,7 @@ public class PerformanceLineChart extends DemoBase implements OnSeekBarChangeLis
               
         mChart.getAxisLeft().setDrawGridLines(false);
         mChart.getAxisRight().setEnabled(false);
-        mChart.getXAxis().setDrawGridLines(false);
+        mChart.getXAxis().setDrawGridLines(true);
         mChart.getXAxis().setDrawAxisLine(false);
 
         // dont forget to refresh the drawing
@@ -122,7 +122,7 @@ public class PerformanceLineChart extends DemoBase implements OnSeekBarChangeLis
         set1.setDrawValues(false);
         set1.setDrawCircles(false);
         set1.setDrawCubic(false);
-        set1.setDrawFilled(true);
+        set1.setDrawFilled(false);
 
         // create a data object with the datasets
         LineData data = new LineData(xVals, set1);
