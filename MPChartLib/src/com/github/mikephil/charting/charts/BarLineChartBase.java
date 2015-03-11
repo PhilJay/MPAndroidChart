@@ -223,7 +223,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         // canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
 
-        if (true) {
+        if (mLogEnabled) {
             long drawtime = (System.currentTimeMillis() - starttime);
             totalTime += drawtime;
             drawCycles += 1;

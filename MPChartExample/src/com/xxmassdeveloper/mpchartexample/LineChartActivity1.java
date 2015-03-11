@@ -342,6 +342,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         ll2.setTextSize(10f);
 
         YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
         leftAxis.addLimitLine(ll1);
         leftAxis.addLimitLine(ll2);
         leftAxis.setAxisMaxValue(220f);

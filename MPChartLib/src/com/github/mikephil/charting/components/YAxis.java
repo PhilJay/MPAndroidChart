@@ -2,6 +2,7 @@
 package com.github.mikephil.charting.components;
 
 import android.graphics.Paint;
+import android.util.Log;
 
 import com.github.mikephil.charting.utils.DefaultValueFormatter;
 import com.github.mikephil.charting.utils.Utils;
@@ -93,6 +94,12 @@ public class YAxis extends AxisBase {
      */
     public enum AxisDependency {
         LEFT, RIGHT
+    }
+
+    public YAxis() {
+        super();
+        this.mAxisDependency = AxisDependency.LEFT;
+        this.mLimitLines = new ArrayList<LimitLine>();
     }
 
     public YAxis(AxisDependency position) {
@@ -230,6 +237,11 @@ public class YAxis extends AxisBase {
      */
     public void addLimitLine(LimitLine l) {
         mLimitLines.add(l);
+
+        if (mLimitLines.size() > 6) {
+            Log.e("MPAndroiChart",
+                    "Warning! You have more than 6 LimitLines on your axis, do you really want that?");
+        }
     }
 
     /**
@@ -245,7 +257,7 @@ public class YAxis extends AxisBase {
      * Removes all LimitLines from the axis.
      */
     public void removeAllLimitLines() {
-        mLimitLines = new ArrayList<LimitLine>();
+        mLimitLines.clear();
     }
 
     /**
