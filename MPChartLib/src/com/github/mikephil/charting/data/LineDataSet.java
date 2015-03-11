@@ -170,7 +170,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
 
     /**
      * If set to true, the linechart lines are drawn in cubic-style instead of
-     * linear. Default: false
+     * linear. This affects performance! Default: false
      * 
      * @param enabled
      */

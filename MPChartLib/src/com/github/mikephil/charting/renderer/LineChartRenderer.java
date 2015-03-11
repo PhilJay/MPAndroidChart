@@ -304,7 +304,7 @@ public class LineChartRenderer extends DataRenderer {
         // more than 1 color
         if (dataSet.getColors().size() > 1) {
 
-            for (int j = 0; j < buffer.size() - 3; j += 2) {
+            for (int j = 0; j < buffer.size(); j += 4) {
 
                 if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j]))
                     break;
@@ -319,20 +319,27 @@ public class LineChartRenderer extends DataRenderer {
                     continue;
 
                 // get the color that is set for this line-segment
-                mRenderPaint.setColor(dataSet.getColor(j / 2));
+                mRenderPaint.setColor(dataSet.getColor(j / 4));
 
                 c.drawLine(buffer.buffer[j], buffer.buffer[j + 1],
                         buffer.buffer[j + 2], buffer.buffer[j + 3], mRenderPaint);
             }
 
         } else { // only one color per dataset
+            
+            Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
+            Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
+            
+            int minx = dataSet.getEntryPosition(entryFrom);
+            int maxx = dataSet.getEntryPosition(entryTo);
 
-            int from = mMinX * 4;
-            int range = (mMaxX * 4 - mMinX) + 4;
+            int from = minx * 4;
+            int range = (maxx * 4 - from) + 4;
             int to = range + from;
 
             mRenderPaint.setColor(dataSet.getColor());
-
+            
+//            c.drawLines(buffer.buffer, mRenderPaint);
             c.drawLines(buffer.buffer, from, to >= buffer.size() ? buffer.size() - from : range,
                     mRenderPaint);
         }
@@ -347,6 +354,12 @@ public class LineChartRenderer extends DataRenderer {
 
     protected void drawLinearFill(Canvas c, LineDataSet dataSet, ArrayList<Entry> entries,
             Transformer trans) {
+        
+        Entry entryFrom = dataSet.getEntryForXIndex(mMinX-2);
+        Entry entryTo = dataSet.getEntryForXIndex(mMaxX+2);
+        
+        int minx = dataSet.getEntryPosition(entryFrom);
+        int maxx = dataSet.getEntryPosition(entryTo);
 
         mRenderPaint.setStyle(Paint.Style.FILL);
 
@@ -357,7 +370,7 @@ public class LineChartRenderer extends DataRenderer {
         Path filled = generateFilledPath(
                 entries,
                 mChart.getFillFormatter().getFillLinePosition(dataSet, mChart.getLineData(),
-                        mChart.getYChartMax(), mChart.getYChartMin()), mMinX, mMaxX + 1);
+                        mChart.getYChartMax(), mChart.getYChartMin()), minx, maxx);
 
         trans.pathValueToPixel(filled);
 

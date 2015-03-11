@@ -64,8 +64,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     /** if true, dragging is enabled for the chart */
     private boolean mDragEnabled = true;
 
-    /** if true, scaling is enabled for the chart */
-    private boolean mScaleEnabled = true;
+    private boolean mScaleXEnabled = true;
+    private boolean mScaleYEnabled = true;
 
     /** if true, data filtering is enabled */
     protected boolean mFilterData = false;
@@ -776,22 +776,29 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
     /**
      * Set this to true to enable scaling (zooming in and out by gesture) for
-     * the chart (this does not effect dragging).
+     * the chart (this does not effect dragging) on both X- and Y-Axis.
      * 
      * @param enabled
      */
     public void setScaleEnabled(boolean enabled) {
-        this.mScaleEnabled = enabled;
+        this.mScaleXEnabled = enabled;
+        this.mScaleYEnabled = enabled;
     }
-
-    /**
-     * Returns true if scaling (zooming in and out by gesture) is enabled for
-     * the chart, false if not.
-     * 
-     * @return
-     */
-    public boolean isScaleEnabled() {
-        return mScaleEnabled;
+    
+    public void setScaleXEnabled(boolean enabled) {
+        mScaleXEnabled = enabled;
+    }
+    
+    public void setScaleYEnabled(boolean enabled) {
+        mScaleYEnabled = enabled;
+    }
+    
+    public boolean isScaleXEnabled() {
+        return mScaleXEnabled;
+    }
+    
+    public boolean isScaleYEnabled() {
+        return mScaleYEnabled;
     }
 
     /**

@@ -28,7 +28,7 @@ import com.github.mikephil.charting.utils.Highlight;
 public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarLineScatterCandleData<? extends BarLineScatterCandleDataSet<? extends Entry>>>>
         extends SimpleOnGestureListener implements OnTouchListener {
 
-   // private static final long REFRESH_MILLIS = 20;
+    // private static final long REFRESH_MILLIS = 20;
 
     /** the original touch-matrix from the chart */
     private Matrix mMatrix = new Matrix();
@@ -84,7 +84,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
             mGestureDetector.onTouchEvent(event);
         }
 
-        if (!mChart.isDragEnabled() && !mChart.isScaleEnabled())
+        if (!mChart.isDragEnabled() && (!mChart.isScaleXEnabled() && !mChart.isScaleYEnabled()))
             return true;
 
         // Handle touch events here...
@@ -140,7 +140,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
                     mChart.disableScroll();
 
-                    if (mChart.isScaleEnabled())
+                    if (mChart.isScaleXEnabled() || mChart.isScaleYEnabled())
                         performZoom(event);
 
                 } else if (mTouchMode == NONE
@@ -168,18 +168,19 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
         }
 
         // Perform the transformation, update the chart
-//        if (needsRefresh())
-            mMatrix = mChart.getViewPortHandler().refresh(mMatrix, mChart, true);
+        // if (needsRefresh())
+        mMatrix = mChart.getViewPortHandler().refresh(mMatrix, mChart, true);
 
         return true; // indicate event was handled
     }
 
-//    private boolean needsRefresh() {
-//        if (System.currentTimeMillis() - mChart.getLastDrawMillis() > REFRESH_MILLIS) {
-//            return true;
-//        } else
-//            return false;
-//    }
+    // private boolean needsRefresh() {
+    // if (System.currentTimeMillis() - mChart.getLastDrawMillis() >
+    // REFRESH_MILLIS) {
+    // return true;
+    // } else
+    // return false;
+    // }
 
     /**
      * ################ ################ ################ ################
@@ -248,9 +249,10 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
                                                           // scale
 
                     mMatrix.set(mSavedMatrix);
-                    mMatrix.postScale(scale, scale, t.x, t.y);
+                    mMatrix.postScale((mChart.isScaleXEnabled()) ? scale : 1f,
+                            (mChart.isScaleYEnabled()) ? scale : 1f, t.x, t.y);
 
-                } else if (mTouchMode == X_ZOOM) {
+                } else if (mTouchMode == X_ZOOM && mChart.isScaleXEnabled()) {
 
                     float xDist = getXDist(event);
                     float scaleX = xDist / mSavedXDist; // x-axis
@@ -259,7 +261,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
                     mMatrix.set(mSavedMatrix);
                     mMatrix.postScale(scaleX, 1f, t.x, t.y);
 
-                } else if (mTouchMode == Y_ZOOM) {
+                } else if (mTouchMode == Y_ZOOM && mChart.isScaleYEnabled()) {
 
                     float yDist = getYDist(event);
                     float scaleY = yDist / mSavedYDist; // y-axis

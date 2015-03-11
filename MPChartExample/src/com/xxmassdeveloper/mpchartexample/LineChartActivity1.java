@@ -77,6 +77,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         // enable scaling and dragging
         mChart.setDragEnabled(true);
         mChart.setScaleEnabled(true);
+        // mChart.setScaleXEnabled(true);
+        // mChart.setScaleYEnabled(true);
 
         // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(true);
@@ -94,17 +96,17 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         // enable/disable highlight indicators (the lines that indicate the
         // highlighted Entry)
         mChart.setHighlightIndicatorEnabled(false);
-        
+
         // add data
         setData(45, 100);
         mChart.animateX(2500);
-//        mChart.setVisibleYRange(30, AxisDependency.LEFT);
+        // mChart.setVisibleYRange(30, AxisDependency.LEFT);
 
-//        // restrain the maximum scale-out factor
-//        mChart.setScaleMinima(3f, 3f);
-//
-//        // center the view to a specific position inside the chart
-//        mChart.centerViewPort(10, 50, AxisDependency.LEFT);
+        // // restrain the maximum scale-out factor
+        // mChart.setScaleMinima(3f, 3f);
+        //
+        // // center the view to a specific position inside the chart
+        // mChart.centerViewPort(10, 50, AxisDependency.LEFT);
 
         // get the legend (only possible after setting data)
         Legend l = mChart.getLegend();
@@ -268,7 +270,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         tvY.setText("" + (mSeekBarY.getProgress()));
 
         setData(mSeekBarX.getProgress() + 1, mSeekBarY.getProgress());
-       
+
         // redraw
         mChart.invalidate();
     }
@@ -294,7 +296,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
         ArrayList<Entry> yVals = new ArrayList<Entry>();
 
-        for (int i = 10; i < count-10; i++) {
+        for (int i = 0; i < count; i++) {
+
             float mult = (range + 1);
             float val = (float) (Math.random() * mult) + 3;// + (float)
                                                            // ((mult *
@@ -337,7 +340,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         ll2.enableDashedLine(10f, 10f, 0f);
         ll2.setLabelPosition(LimitLabelPosition.POS_RIGHT);
         ll2.setTextSize(10f);
-        
+
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.addLimitLine(ll1);
         leftAxis.addLimitLine(ll2);

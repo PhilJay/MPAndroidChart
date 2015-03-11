@@ -19,15 +19,15 @@ public abstract class LineRadarDataSet<T extends Entry> extends BarLineScatterCa
 
     /** transparency used for filling line surface */
     private int mFillAlpha = 85;
-    
+
     /** the width of the drawn data lines */
     private float mLineWidth = 2.5f;
-    
+
     /** if true, the data will also be drawn filled */
     private boolean mDrawFilled = false;
-    
-//    private Shader mShader;
-    
+
+    // private Shader mShader;
+
     public LineRadarDataSet(ArrayList<T> yVals, String label) {
         super(yVals, label);
     }
@@ -69,7 +69,7 @@ public abstract class LineRadarDataSet<T extends Entry> extends BarLineScatterCa
     public void setFillAlpha(int alpha) {
         mFillAlpha = alpha;
     }
-    
+
     /**
      * set the line width of the chart (min = 0.2f, max = 10f); default 1f NOTE:
      * thinner line == better performance, thicker line == worse performance
@@ -93,11 +93,11 @@ public abstract class LineRadarDataSet<T extends Entry> extends BarLineScatterCa
     public float getLineWidth() {
         return mLineWidth;
     }
-    
+
     /**
      * Set to true if the DataSet should be drawn filled (surface), and not just
-     * as a line, disabling this will give up to 20% performance boost on large
-     * datasets, default: false
+     * as a line, disabling this will give great performance boost! default:
+     * false
      * 
      * @param filled
      */
@@ -113,12 +113,4 @@ public abstract class LineRadarDataSet<T extends Entry> extends BarLineScatterCa
     public boolean isDrawFilledEnabled() {
         return mDrawFilled;
     }
-    
-//    public void setShader(Shader s) {
-//        mShader = s;
-//    }
-//    
-//    public Shader getShader() {
-//        return mShader;
-//    }
 }

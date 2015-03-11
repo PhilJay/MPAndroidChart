@@ -1373,9 +1373,16 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @param enabled
      */
     public void setHardwareAccelerationEnabled(boolean enabled) {
-        if (enabled)
-            setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        else
-            setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+
+        if (android.os.Build.VERSION.SDK_INT >= 11) {
+
+            if (enabled)
+                setLayerType(View.LAYER_TYPE_HARDWARE, null);
+            else
+                setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        } else {
+            Log.e(LOG_TAG,
+                    "Cannot enable/disable hardware acceleration for devices below API level 11.");
+        }
     }
 }
