@@ -1,8 +1,6 @@
 
 package com.github.mikephil.charting.renderer;
 
-import android.util.Log;
-
 import com.github.mikephil.charting.utils.Transformer;
 
 /**
