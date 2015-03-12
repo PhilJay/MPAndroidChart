@@ -18,7 +18,6 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
-import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarLineScatterCandleData;
 import com.github.mikephil.charting.data.BarLineScatterCandleDataSet;
@@ -140,7 +139,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         mXAxisRenderer = new XAxisRenderer(mViewPortHandler, mXAxis, mLeftAxisTransformer);
 
-        mListener = new BarLineChartTouchListener(this, mViewPortHandler.getMatrixTouch());
+        mListener = new BarLineChartTouchListener<BarLineChartBase<? extends BarLineScatterCandleData<? extends BarLineScatterCandleDataSet<? extends Entry>>>>(
+                this, mViewPortHandler.getMatrixTouch());
 
         mGridBackgroundPaint = new Paint();
         mGridBackgroundPaint.setStyle(Style.FILL);
@@ -1238,43 +1238,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         if (mAxisRight.isInverted())
             return true;
         return false;
-    }
-
-    /**
-     * returns the filtered ChartData object depending on approximator settings,
-     * current scale level and x- and y-axis ratio
-     * 
-     * @return
-     */
-    private T getFilteredData() {
-        //
-        // float deltaRatio = mDeltaY / mDeltaX;
-        // float scaleRatio = mScaleY / mScaleX;
-        //
-        // // set the determined ratios
-        // mApproximator.setRatios(deltaRatio, scaleRatio);
-        //
-        // // Log.i("Approximator", "DeltaRatio: " + deltaRatio +
-        // ", ScaleRatio: "
-        // // + scaleRatio);
-        //
-        // ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
-        //
-        // for (int j = 0; j < mOriginalData.getDataSetCount(); j++) {
-        //
-        // DataSet old = mOriginalData.getDataSetByIndex(j);
-        //
-        // // do the filtering
-        // ArrayList<Entry> approximated = mApproximator.filter(old.getYVals());
-        //
-        // DataSet set = new DataSet(approximated, old.getLabel());
-        // dataSets.add(set);
-        // }
-        //
-        // ChartData d = new ChartData(mOriginalData.getXVals(), dataSets);
-        // return d;
-
-        return null;
     }
 
     @Override

@@ -1,19 +1,18 @@
 
 package com.github.mikephil.charting.listener;
 
+import android.annotation.SuppressLint;
 import android.graphics.PointF;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-
 import com.github.mikephil.charting.charts.PieRadarChartBase;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
-
 import java.util.ArrayList;
 
 /**
@@ -28,18 +27,19 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
 
     private PointF mTouchStartPoint = new PointF();
 
-    private PieRadarChartBase mChart;
+    private PieRadarChartBase<?> mChart;
 
     private int mTouchMode = NONE;
 
     private GestureDetector mGestureDetector;
 
-    public PieRadarChartTouchListener(PieRadarChartBase ctx) {
+    public PieRadarChartTouchListener(PieRadarChartBase<?> ctx) {
         this.mChart = ctx;
 
         mGestureDetector = new GestureDetector(ctx.getContext(), this);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View v, MotionEvent e) {
 

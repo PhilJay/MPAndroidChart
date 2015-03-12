@@ -11,7 +11,7 @@ public class ScatterBuffer extends AbstractBuffer<Entry> {
         super(size);
     }
 
-    protected void addTwo(float x, float y) {
+    protected void addForm(float x, float y) {
         buffer[index++] = x;
         buffer[index++] = y;
     }
@@ -24,7 +24,7 @@ public class ScatterBuffer extends AbstractBuffer<Entry> {
         for (int i = 0; i < size; i++) {
 
             Entry e = entries.get(i);
-            addTwo(e.getXIndex(), e.getVal() * phaseY);
+            addForm(e.getXIndex(), e.getVal() * phaseY);
         }
         
         reset();

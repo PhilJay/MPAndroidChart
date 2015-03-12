@@ -609,7 +609,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * Adds an Entry to the DataSet at the specified index. Entries are added to
      * the end of the list.
      * 
-     * @param e
+     * @param entry
      * @param dataSetIndex
      */
     public void addEntry(Entry e, int dataSetIndex) {
@@ -886,5 +886,40 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     public void clearValues() {
         mDataSets.clear();
         notifyDataChanged();
+    }
+
+    /**
+     * Checks if this data object contains the specified Entry. Returns true if
+     * so, false if not. NOTE: Performance is pretty bad on this one, do not
+     * over-use in performance critical situations.
+     * 
+     * @param e
+     * @return
+     */
+    public boolean contains(Entry e) {
+
+        for (T set : mDataSets) {
+            if (set.contains(e))
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if this data object contains the specified DataSet. Returns true
+     * if so, false if not.
+     * 
+     * @param dataSet
+     * @return
+     */
+    public boolean contains(T dataSet) {
+
+        for (T set : mDataSets) {
+            if (set.equals(dataSet))
+                return true;
+        }
+
+        return false;
     }
 }

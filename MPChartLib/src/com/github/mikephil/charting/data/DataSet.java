@@ -77,16 +77,10 @@ public abstract class DataSet<T extends Entry> {
 
         if (mYVals == null)
             mYVals = new ArrayList<T>();
-
-        // if (yVals.size() <= 0) {
-        // return;
-        // }
-
+        
         mColors = new ArrayList<Integer>();
 
-        // default colors
-        // mColors.add(Color.rgb(192, 255, 140));
-        // mColors.add(Color.rgb(255, 247, 140));
+        // default color
         mColors.add(Color.rgb(140, 234, 255));
 
         calcMinMax();
@@ -401,6 +395,7 @@ public abstract class DataSet<T extends Entry> {
      *
      * @param d
      */
+    @SuppressWarnings("unchecked")
     public void addEntry(Entry e) {
 
         if (e == null)
@@ -576,7 +571,7 @@ public abstract class DataSet<T extends Entry> {
 
     /**
      * Returns the position of the provided entry in the DataSets Entry array.
-     * Returns -1 if doesnt exist.
+     * Returns -1 if doesn't exist.
      * 
      * @param e
      * @return
@@ -669,7 +664,30 @@ public abstract class DataSet<T extends Entry> {
         mValueTextSize = Utils.convertDpToPixel(size);
     }
 
+    /**
+     * Returns the text-size of the labels that are displayed above the values.
+     * 
+     * @return
+     */
     public float getValueTextSize() {
         return mValueTextSize;
+    }
+
+    /**
+     * Checks if this DataSet contains the specified Entry. Returns true if so,
+     * false if not. NOTE: Performance is pretty bad on this one, do not
+     * over-use in performance critical situations.
+     * 
+     * @param e
+     * @return
+     */
+    public boolean contains(Entry e) {
+
+        for (Entry entry : mYVals) {
+            if (entry.equals(e))
+                return true;
+        }
+
+        return false;
     }
 }
