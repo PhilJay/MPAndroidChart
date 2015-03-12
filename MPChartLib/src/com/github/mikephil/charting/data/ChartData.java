@@ -9,6 +9,7 @@ import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.ValueFormatter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.List;
 
@@ -118,13 +119,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * @return
      */
     private List<String> arrayToList(String[] array) {
-
-        List<String> List = new ArrayList<String>();
-        for (int i = 0; i < array.length; i++) {
-            List.add(array[i]);
-        }
-
-        return List;
+        return Arrays.asList(array);
     }
 
     /**
