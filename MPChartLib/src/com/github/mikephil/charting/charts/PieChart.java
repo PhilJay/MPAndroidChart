@@ -17,7 +17,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.renderer.PieChartRenderer;
 import com.github.mikephil.charting.utils.Utils;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * View that represents a pie chart. Draws cake like slices.
@@ -149,14 +149,14 @@ public class PieChart extends PieRadarChartBase<PieData> {
         mDrawAngles = new float[mData.getYValCount()];
         mAbsoluteAngles = new float[mData.getYValCount()];
 
-        ArrayList<PieDataSet> dataSets = mData.getDataSets();
+        List<PieDataSet> dataSets = mData.getDataSets();
 
         int cnt = 0;
 
         for (int i = 0; i < mData.getDataSetCount(); i++) {
 
             PieDataSet set = dataSets.get(i);
-            ArrayList<Entry> entries = set.getYVals();
+            List<Entry> entries = set.getYVals();
 
             for (int j = 0; j < entries.size(); j++) {
 
@@ -230,7 +230,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
      */
     public int getDataSetIndexForIndex(int xIndex) {
 
-        ArrayList<? extends DataSet<? extends Entry>> dataSets = mData.getDataSets();
+        List<? extends DataSet<? extends Entry>> dataSets = mData.getDataSets();
 
         for (int i = 0; i < dataSets.size(); i++) {
             if (dataSets.get(i).getEntryForXIndex(xIndex) != null)

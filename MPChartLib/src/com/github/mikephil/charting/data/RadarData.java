@@ -2,6 +2,7 @@
 package com.github.mikephil.charting.data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Data container for the RadarChart.
@@ -14,7 +15,7 @@ public class RadarData extends ChartData<RadarDataSet> {
         super();
     }
     
-    public RadarData(ArrayList<String> xVals) {
+    public RadarData(List<String> xVals) {
         super(xVals);
     }
     
@@ -22,24 +23,24 @@ public class RadarData extends ChartData<RadarDataSet> {
         super(xVals);
     }
     
-    public RadarData(ArrayList<String> xVals, ArrayList<RadarDataSet> dataSets) {
+    public RadarData(List<String> xVals, List<RadarDataSet> dataSets) {
         super(xVals, dataSets);
     }
 
-    public RadarData(String[] xVals, ArrayList<RadarDataSet> dataSets) {
+    public RadarData(String[] xVals, List<RadarDataSet> dataSets) {
         super(xVals, dataSets);
     }
 
-    public RadarData(ArrayList<String> xVals, RadarDataSet dataSet) {
-        super(xVals, toArrayList(dataSet));
+    public RadarData(List<String> xVals, RadarDataSet dataSet) {
+        super(xVals, toList(dataSet));
     }
 
     public RadarData(String[] xVals, RadarDataSet dataSet) {
-        super(xVals, toArrayList(dataSet));
+        super(xVals, toList(dataSet));
     }
     
-    private static ArrayList<RadarDataSet> toArrayList(RadarDataSet dataSet) {
-        ArrayList<RadarDataSet> sets = new ArrayList<RadarDataSet>();
+    private static List<RadarDataSet> toList(RadarDataSet dataSet) {
+        List<RadarDataSet> sets = new ArrayList<RadarDataSet>();
         sets.add(dataSet);
         return sets;
     }

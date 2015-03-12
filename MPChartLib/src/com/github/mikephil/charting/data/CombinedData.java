@@ -1,7 +1,7 @@
 
 package com.github.mikephil.charting.data;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Data object that allows the combination of Line-, Bar-, Scatter- and
@@ -20,7 +20,7 @@ public class CombinedData extends BarLineScatterCandleData<BarLineScatterCandleD
         super();
     }
 
-    public CombinedData(ArrayList<String> xVals) {
+    public CombinedData(List<String> xVals) {
         super(xVals);
     }
 

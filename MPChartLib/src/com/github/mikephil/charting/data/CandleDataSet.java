@@ -4,6 +4,7 @@ package com.github.mikephil.charting.data;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * DataSet for the CandleStickChart.
@@ -18,14 +19,14 @@ public class CandleDataSet extends BarLineScatterCandleDataSet<CandleEntry> {
     /** the space between the candle entries, default 0.1f (10%) */
     private float mBodySpace = 0.1f;
 
-    public CandleDataSet(ArrayList<CandleEntry> yVals, String label) {
+    public CandleDataSet(List<CandleEntry> yVals, String label) {
         super(yVals, label);
     }
 
     @Override
     public DataSet<CandleEntry> copy() {
 
-        ArrayList<CandleEntry> yVals = new ArrayList<CandleEntry>();
+        List<CandleEntry> yVals = new ArrayList<CandleEntry>();
 
         for (int i = 0; i < mYVals.size(); i++) {
             yVals.add(((CandleEntry) mYVals.get(i)).copy());
@@ -48,7 +49,7 @@ public class CandleDataSet extends BarLineScatterCandleDataSet<CandleEntry> {
             return;
         }
         
-        ArrayList<CandleEntry> entries = (ArrayList<CandleEntry>) mYVals;
+        List<CandleEntry> entries = mYVals;
 
         mYMin = entries.get(0).getLow();
         mYMax = entries.get(0).getHigh();

@@ -4,6 +4,7 @@ package com.github.mikephil.charting.data;
 import android.graphics.Color;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BarDataSet extends BarLineScatterCandleDataSet<BarEntry> {
 
@@ -34,7 +35,7 @@ public class BarDataSet extends BarLineScatterCandleDataSet<BarEntry> {
             "Stack"
     };
 
-    public BarDataSet(ArrayList<BarEntry> yVals, String label) {
+    public BarDataSet(List<BarEntry> yVals, String label) {
         super(yVals, label);
 
         mHighLightColor = Color.rgb(0, 0, 0);
@@ -46,7 +47,7 @@ public class BarDataSet extends BarLineScatterCandleDataSet<BarEntry> {
     @Override
     public DataSet<BarEntry> copy() {
 
-        ArrayList<BarEntry> yVals = new ArrayList<BarEntry>();
+        List<BarEntry> yVals = new ArrayList<BarEntry>();
 
         for (int i = 0; i < mYVals.size(); i++) {
             yVals.add(((BarEntry) mYVals.get(i)).copy());
@@ -68,7 +69,7 @@ public class BarDataSet extends BarLineScatterCandleDataSet<BarEntry> {
      * Calculates the total number of entries this DataSet represents, including
      * stacks. All values belonging to a stack are calculated separately.
      */
-    private void calcEntryCountIncludingStacks(ArrayList<BarEntry> yVals) {
+    private void calcEntryCountIncludingStacks(List<BarEntry> yVals) {
 
         mEntryCountStacks = 0;
 
@@ -87,7 +88,7 @@ public class BarDataSet extends BarLineScatterCandleDataSet<BarEntry> {
      * calculates the maximum stacksize that occurs in the Entries array of this
      * DataSet
      */
-    private void calcStackSize(ArrayList<BarEntry> yVals) {
+    private void calcStackSize(List<BarEntry> yVals) {
 
         for (int i = 0; i < yVals.size(); i++) {
 

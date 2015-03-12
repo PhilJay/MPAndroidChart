@@ -16,6 +16,7 @@ import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Transformer;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class LineChartRenderer extends DataRenderer {
 
@@ -129,7 +130,7 @@ public class LineChartRenderer extends DataRenderer {
 
     protected void drawDataSet(Canvas c, LineDataSet dataSet) {
 
-        ArrayList<Entry> entries = dataSet.getYVals();
+        List<Entry> entries = dataSet.getYVals();
 
         if (entries.size() < 1)
             return;
@@ -149,7 +150,7 @@ public class LineChartRenderer extends DataRenderer {
         mRenderPaint.setPathEffect(null);
     }
 
-    protected void drawCubic(Canvas c, LineDataSet dataSet, ArrayList<Entry> entries) {
+    protected void drawCubic(Canvas c, LineDataSet dataSet, List<Entry> entries) {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
@@ -170,7 +171,7 @@ public class LineChartRenderer extends DataRenderer {
         // the path for the cubic-spline
         Path spline = new Path();
 
-        ArrayList<CPoint> points = new ArrayList<CPoint>();
+        List<CPoint> points = new ArrayList<CPoint>();
         for (int i = minx; i < maxx; i++) {
 
             Entry e = entries.get(i);
@@ -254,7 +255,7 @@ public class LineChartRenderer extends DataRenderer {
         mRenderPaint.setAlpha(255);
     }
 
-    protected void drawLinear(Canvas c, LineDataSet dataSet, ArrayList<Entry> entries) {
+    protected void drawLinear(Canvas c, LineDataSet dataSet, List<Entry> entries) {
 
         int dataSetIndex = mChart.getLineData().getIndexOfDataSet(dataSet);
 
@@ -320,7 +321,7 @@ public class LineChartRenderer extends DataRenderer {
         }
     }
 
-    protected void drawLinearFill(Canvas c, LineDataSet dataSet, ArrayList<Entry> entries,
+    protected void drawLinearFill(Canvas c, LineDataSet dataSet, List<Entry> entries,
             Transformer trans) {
 
         mRenderPaint.setStyle(Paint.Style.FILL);
@@ -357,7 +358,7 @@ public class LineChartRenderer extends DataRenderer {
      * @param entries
      * @return
      */
-    private Path generateFilledPath(ArrayList<Entry> entries, float fillMin, int from, int to) {
+    private Path generateFilledPath(List<Entry> entries, float fillMin, int from, int to) {
 
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
@@ -389,7 +390,7 @@ public class LineChartRenderer extends DataRenderer {
      * @param entries
      * @return
      */
-    private Path generateLinePath(ArrayList<Entry> entries) {
+    private Path generateLinePath(List<Entry> entries) {
 
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
@@ -413,7 +414,7 @@ public class LineChartRenderer extends DataRenderer {
         if (mChart.getLineData().getYValCount() < mChart.getMaxVisibleCount()
                 * mViewPortHandler.getScaleX()) {
 
-            ArrayList<LineDataSet> dataSets = mChart.getLineData().getDataSets();
+            List<LineDataSet> dataSets = mChart.getLineData().getDataSets();
 
             for (int i = 0; i < dataSets.size(); i++) {
 
@@ -433,7 +434,7 @@ public class LineChartRenderer extends DataRenderer {
                 if (!dataSet.isDrawCirclesEnabled())
                     valOffset = valOffset / 2;
 
-                ArrayList<Entry> entries = dataSet.getYVals();
+                List<Entry> entries = dataSet.getYVals();
 
                 float[] positions = trans.generateTransformedValuesLine(
                         entries, mAnimator.getPhaseY());
@@ -467,7 +468,7 @@ public class LineChartRenderer extends DataRenderer {
     protected void drawCircles(Canvas c) {
         mRenderPaint.setStyle(Paint.Style.FILL);
 
-        ArrayList<LineDataSet> dataSets = mChart.getLineData().getDataSets();
+        List<LineDataSet> dataSets = mChart.getLineData().getDataSets();
 
         for (int i = 0; i < mChart.getLineData().getDataSetCount(); i++) {
 
@@ -477,7 +478,7 @@ public class LineChartRenderer extends DataRenderer {
             // if drawing circles is enabled for this dataset
             if (dataSet.isDrawCirclesEnabled()) {
 
-                ArrayList<Entry> entries = dataSet.getYVals();
+                List<Entry> entries = dataSet.getYVals();
 
                 float[] positions = trans.generateTransformedValuesLine(
                         entries, mAnimator.getPhaseY());

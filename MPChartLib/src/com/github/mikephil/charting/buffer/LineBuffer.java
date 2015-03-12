@@ -3,7 +3,7 @@ package com.github.mikephil.charting.buffer;
 
 import com.github.mikephil.charting.data.Entry;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class LineBuffer extends AbstractBuffer<Entry> {
 
@@ -37,7 +37,7 @@ public class LineBuffer extends AbstractBuffer<Entry> {
     }
 
     @Override
-    public void feed(ArrayList<Entry> entries) {
+    public void feed(List<Entry> entries) {
         moveTo(entries.get(0).getXIndex(), entries.get(0).getVal());
 
         for (int i = 1; i < entries.size(); i++) {

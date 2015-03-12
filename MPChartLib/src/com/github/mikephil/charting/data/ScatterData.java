@@ -2,6 +2,7 @@
 package com.github.mikephil.charting.data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ScatterData extends BarLineScatterCandleData<ScatterDataSet> {
 
@@ -9,7 +10,7 @@ public class ScatterData extends BarLineScatterCandleData<ScatterDataSet> {
         super();
     }
     
-    public ScatterData(ArrayList<String> xVals) {
+    public ScatterData(List<String> xVals) {
         super(xVals);
     }
 
@@ -17,24 +18,24 @@ public class ScatterData extends BarLineScatterCandleData<ScatterDataSet> {
         super(xVals);
     }
 
-    public ScatterData(ArrayList<String> xVals, ArrayList<ScatterDataSet> dataSets) {
+    public ScatterData(List<String> xVals, List<ScatterDataSet> dataSets) {
         super(xVals, dataSets);
     }
 
-    public ScatterData(String[] xVals, ArrayList<ScatterDataSet> dataSets) {
+    public ScatterData(String[] xVals, List<ScatterDataSet> dataSets) {
         super(xVals, dataSets);
     }
 
-    public ScatterData(ArrayList<String> xVals, ScatterDataSet dataSet) {
-        super(xVals, toArrayList(dataSet));
+    public ScatterData(List<String> xVals, ScatterDataSet dataSet) {
+        super(xVals, toList(dataSet));
     }
 
     public ScatterData(String[] xVals, ScatterDataSet dataSet) {
-        super(xVals, toArrayList(dataSet));
+        super(xVals, toList(dataSet));
     }
 
-    private static ArrayList<ScatterDataSet> toArrayList(ScatterDataSet dataSet) {
-        ArrayList<ScatterDataSet> sets = new ArrayList<ScatterDataSet>();
+    private static List<ScatterDataSet> toList(ScatterDataSet dataSet) {
+        List<ScatterDataSet> sets = new ArrayList<ScatterDataSet>();
         sets.add(dataSet);
         return sets;
     }

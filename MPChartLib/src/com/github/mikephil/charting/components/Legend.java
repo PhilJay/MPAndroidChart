@@ -5,7 +5,7 @@ import android.graphics.Paint;
 
 import com.github.mikephil.charting.utils.Utils;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class representing the legend of the chart. The legend will contain one entry
@@ -100,7 +100,7 @@ public class Legend extends ComponentBase {
      * @param colors
      * @param labels
      */
-    public Legend(ArrayList<Integer> colors, ArrayList<String> labels) {
+    public Legend(List<Integer> colors, List<String> labels) {
         this();
 
         if (colors == null || labels == null) {

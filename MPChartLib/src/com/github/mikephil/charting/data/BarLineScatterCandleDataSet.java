@@ -3,7 +3,7 @@ package com.github.mikephil.charting.data;
 
 import android.graphics.Color;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Baseclass of all DataSets for Bar-, Line-, Scatter- and CandleStickChart.
@@ -15,7 +15,7 @@ public abstract class BarLineScatterCandleDataSet<T extends Entry> extends DataS
     /** default highlight color */
     protected int mHighLightColor = Color.rgb(255, 187, 115);
 
-    public BarLineScatterCandleDataSet(ArrayList<T> yVals, String label) {
+    public BarLineScatterCandleDataSet(List<T> yVals, String label) {
         super(yVals, label);
     }
 
