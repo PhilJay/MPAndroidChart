@@ -10,7 +10,7 @@ import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.utils.Utils;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class YAxisRendererRadarChart extends YAxisRenderer {
 
@@ -129,7 +129,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
     @Override
     public void renderLimitLines(Canvas c) {
 
-        ArrayList<LimitLine> limitLines = mYAxis.getLimitLines();
+        List<LimitLine> limitLines = mYAxis.getLimitLines();
 
         if (limitLines == null)
             return;

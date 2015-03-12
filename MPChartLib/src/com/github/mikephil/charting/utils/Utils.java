@@ -11,7 +11,8 @@ import android.util.Log;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.List;
 
 /**
  * Utilities class that has some helper methods. Needs to be initialized by
@@ -304,12 +305,12 @@ public abstract class Utils {
     }
 
     /**
-     * Converts the provided Integer ArrayList to an int array.
+     * Converts the provided Integer List to an int array.
      * 
      * @param integers
      * @return
      */
-    public static int[] convertIntegers(ArrayList<Integer> integers) {
+    public static int[] convertIntegers(List<Integer> integers) {
 
         int[] ret = new int[integers.size()];
 
@@ -321,12 +322,12 @@ public abstract class Utils {
     }
 
     /**
-     * Converts the provided String ArrayList to a String array.
+     * Converts the provided String List to a String array.
      * 
      * @param labels
      * @return
      */
-    public static String[] convertStrings(ArrayList<String> strings) {
+    public static String[] convertStrings(List<String> strings) {
 
         String[] ret = new String[strings.size()];
 
@@ -361,7 +362,7 @@ public abstract class Utils {
      * @param valsAtIndex all the values at a specific index
      * @return
      */
-    public static int getClosestDataSetIndex(ArrayList<SelInfo> valsAtIndex, float val,
+    public static int getClosestDataSetIndex(List<SelInfo> valsAtIndex, float val,
             AxisDependency axis) {
 
         int index = -1;
@@ -395,7 +396,7 @@ public abstract class Utils {
      * @param axis
      * @return
      */
-    public static float getMinimumDistance(ArrayList<SelInfo> valsAtIndex, float val,
+    public static float getMinimumDistance(List<SelInfo> valsAtIndex, float val,
             AxisDependency axis) {
 
         float distance = Float.MAX_VALUE;

@@ -17,7 +17,7 @@ import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class BarChartRenderer extends DataRenderer {
 
@@ -71,7 +71,7 @@ public class BarChartRenderer extends DataRenderer {
 
         boolean noStacks = dataSet.getStackSize() == 1 ? true : false;
 
-        ArrayList<BarEntry> entries = dataSet.getYVals();
+        List<BarEntry> entries = dataSet.getYVals();
 
         // do the drawing
         for (int j = 0; j < dataSet.getEntryCount() * mAnimator.getPhaseX(); j++) {
@@ -216,7 +216,7 @@ public class BarChartRenderer extends DataRenderer {
         // if values are drawn
         if (passesCheck()) {
 
-            ArrayList<BarDataSet> dataSets = mChart.getBarData().getDataSets();
+            List<BarDataSet> dataSets = mChart.getBarData().getDataSets();
 
             float posOffset = 0f;
             float negOffset = 0f;
@@ -244,7 +244,7 @@ public class BarChartRenderer extends DataRenderer {
 
                 Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-                ArrayList<BarEntry> entries = dataSet.getYVals();
+                List<BarEntry> entries = dataSet.getYVals();
 
                 float[] valuePoints = getTransformedValues(trans, entries, i);
 
@@ -413,7 +413,7 @@ public class BarChartRenderer extends DataRenderer {
         }
     }
 
-    public float[] getTransformedValues(Transformer trans, ArrayList<BarEntry> entries,
+    public float[] getTransformedValues(Transformer trans, List<BarEntry> entries,
             int dataSetIndex) {
         return trans.generateTransformedValuesBarChart(entries, dataSetIndex,
                 mChart.getBarData(),

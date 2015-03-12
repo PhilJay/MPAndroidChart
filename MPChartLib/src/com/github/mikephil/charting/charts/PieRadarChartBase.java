@@ -21,6 +21,7 @@ import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Baseclass of PieChart and RadarChart.
@@ -393,9 +394,9 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
      *
      * @return
      */
-    public ArrayList<SelInfo> getYValsAtIndex(int xIndex) {
+    public List<SelInfo> getYValsAtIndex(int xIndex) {
 
-        ArrayList<SelInfo> vals = new ArrayList<SelInfo>();
+        List<SelInfo> vals = new ArrayList<SelInfo>();
 
         for (int i = 0; i < mData.getDataSetCount(); i++) {
 

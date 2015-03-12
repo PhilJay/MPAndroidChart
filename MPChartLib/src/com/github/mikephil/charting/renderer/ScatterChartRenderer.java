@@ -13,7 +13,7 @@ import com.github.mikephil.charting.interfaces.ScatterDataProvider;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Transformer;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ScatterChartRenderer extends DataRenderer {
 
@@ -45,7 +45,7 @@ public class ScatterChartRenderer extends DataRenderer {
 
     protected void drawDataSet(Canvas c, ScatterDataSet dataSet) {
 
-        ArrayList<Entry> entries = dataSet.getYVals();
+        List<Entry> entries = dataSet.getYVals();
 
         float shapeHalf = dataSet.getScatterShapeSize() / 2f;
 
@@ -123,7 +123,7 @@ public class ScatterChartRenderer extends DataRenderer {
         if (mChart.getScatterData().getYValCount() < mChart.getMaxVisibleCount()
                 * mViewPortHandler.getScaleX()) {
 
-            ArrayList<ScatterDataSet> dataSets = mChart.getScatterData().getDataSets();
+            List<ScatterDataSet> dataSets = mChart.getScatterData().getDataSets();
 
             for (int i = 0; i < mChart.getScatterData().getDataSetCount(); i++) {
 
@@ -135,7 +135,7 @@ public class ScatterChartRenderer extends DataRenderer {
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet);
 
-                ArrayList<Entry> entries = dataSet.getYVals();
+                List<Entry> entries = dataSet.getYVals();
 
                 float[] positions = mChart.getTransformer(dataSet.getAxisDependency())
                         .generateTransformedValuesScatter(entries,

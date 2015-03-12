@@ -13,7 +13,7 @@ import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class CandleStickChartRenderer extends DataRenderer {
 
@@ -49,7 +49,7 @@ public class CandleStickChartRenderer extends DataRenderer {
         float[] shadowPoints = new float[4];
         float[] bodyPoints = new float[4];
 
-        ArrayList<CandleEntry> entries = dataSet.getYVals();
+        List<CandleEntry> entries = dataSet.getYVals();
 
         mRenderPaint.setStrokeWidth(dataSet.getShadowWidth());
 
@@ -152,7 +152,7 @@ public class CandleStickChartRenderer extends DataRenderer {
         if (mChart.getCandleData().getYValCount() < mChart.getMaxVisibleCount()
                 * mViewPortHandler.getScaleX()) {
 
-            ArrayList<CandleDataSet> dataSets = mChart.getCandleData().getDataSets();
+            List<CandleDataSet> dataSets = mChart.getCandleData().getDataSets();
 
             for (int i = 0; i < dataSets.size(); i++) {
 
@@ -166,7 +166,7 @@ public class CandleStickChartRenderer extends DataRenderer {
                 
                 Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-                ArrayList<CandleEntry> entries = dataSet.getYVals();
+                List<CandleEntry> entries = dataSet.getYVals();
 
                 float[] positions = trans.generateTransformedValuesCandle(
                         entries, mAnimator.getPhaseY());

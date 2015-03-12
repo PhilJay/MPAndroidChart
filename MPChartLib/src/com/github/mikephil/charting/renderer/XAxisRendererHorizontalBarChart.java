@@ -11,7 +11,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
 
@@ -21,7 +21,7 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
     }
     
     @Override
-    public void computeAxis(float xValAverageLength, ArrayList<String> xValues) {
+    public void computeAxis(float xValAverageLength, List<String> xValues) {
         
         mAxisPaint.setTypeface(mXAxis.getTypeface());
         mAxisPaint.setTextSize(mXAxis.getTextSize());

@@ -2,6 +2,7 @@
 package com.github.mikephil.charting.data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Data object that represents all data for the BarChart.
@@ -22,7 +23,7 @@ public class BarData extends BarLineScatterCandleData<BarDataSet> {
         super();
     }
 
-    public BarData(ArrayList<String> xVals) {
+    public BarData(List<String> xVals) {
         super(xVals);
     }
 
@@ -30,24 +31,24 @@ public class BarData extends BarLineScatterCandleData<BarDataSet> {
         super(xVals);
     }
 
-    public BarData(ArrayList<String> xVals, ArrayList<BarDataSet> dataSets) {
+    public BarData(List<String> xVals, List<BarDataSet> dataSets) {
         super(xVals, dataSets);
     }
 
-    public BarData(String[] xVals, ArrayList<BarDataSet> dataSets) {
+    public BarData(String[] xVals, List<BarDataSet> dataSets) {
         super(xVals, dataSets);
     }
 
-    public BarData(ArrayList<String> xVals, BarDataSet dataSet) {
-        super(xVals, toArrayList(dataSet));
+    public BarData(List<String> xVals, BarDataSet dataSet) {
+        super(xVals, toList(dataSet));
     }
 
     public BarData(String[] xVals, BarDataSet dataSet) {
-        super(xVals, toArrayList(dataSet));
+        super(xVals, toList(dataSet));
     }
 
-    private static ArrayList<BarDataSet> toArrayList(BarDataSet dataSet) {
-        ArrayList<BarDataSet> sets = new ArrayList<BarDataSet>();
+    private static List<BarDataSet> toList(BarDataSet dataSet) {
+        List<BarDataSet> sets = new ArrayList<BarDataSet>();
         sets.add(dataSet);
         return sets;
     }

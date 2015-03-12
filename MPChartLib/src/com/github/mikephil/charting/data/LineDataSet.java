@@ -9,11 +9,12 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class LineDataSet extends LineRadarDataSet<Entry> {
 
-    /** arraylist representing all colors that are used for the circles */
-    private ArrayList<Integer> mCircleColors = null;
+    /** List representing all colors that are used for the circles */
+    private List<Integer> mCircleColors = null;
 
     /** the radius of the circle-shaped value indicators */
     private float mCircleSize = 8f;
@@ -32,7 +33,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
 
     private boolean mDrawCircleHole = true;
 
-    public LineDataSet(ArrayList<Entry> yVals, String label) {
+    public LineDataSet(List<Entry> yVals, String label) {
         super(yVals, label);
 
         // mCircleSize = Utils.convertDpToPixel(4f);
@@ -49,7 +50,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
     @Override
     public DataSet<Entry> copy() {
 
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
+        List<Entry> yVals = new ArrayList<Entry>();
 
         for (int i = 0; i < mYVals.size(); i++) {
             yVals.add(mYVals.get(i).copy());
@@ -194,7 +195,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
      * 
      * @return
      */
-    public ArrayList<Integer> getCircleColors() {
+    public List<Integer> getCircleColors() {
         return mCircleColors;
     }
 
@@ -218,7 +219,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
      * 
      * @param colors
      */
-    public void setCircleColors(ArrayList<Integer> colors) {
+    public void setCircleColors(List<Integer> colors) {
         mCircleColors = colors;
     }
 
@@ -247,7 +248,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
      */
     public void setCircleColors(int[] colors, Context c) {
 
-        ArrayList<Integer> clrs = new ArrayList<Integer>();
+        List<Integer> clrs = new ArrayList<Integer>();
 
         for (int color : colors) {
             clrs.add(c.getResources().getColor(color));
