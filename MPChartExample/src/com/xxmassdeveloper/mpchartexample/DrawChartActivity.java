@@ -180,7 +180,7 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
 
     /** callback when a DataSet has been drawn (when lifting the finger) */
     @Override
-    public void onDrawFinished(DataSet dataSet) {
+    public void onDrawFinished(DataSet<?> dataSet) {
         Log.i(Chart.LOG_TAG, "DataSet drawn. " + dataSet.toSimpleString());
 
         // prepare the legend again

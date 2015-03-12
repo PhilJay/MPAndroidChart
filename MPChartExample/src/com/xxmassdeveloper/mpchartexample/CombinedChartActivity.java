@@ -111,7 +111,7 @@ public class CombinedChartActivity extends DemoBase {
         return d;
     }
 
-    private ScatterData generateScatterData() {
+    protected ScatterData generateScatterData() {
 
         ScatterData d = new ScatterData();
 
@@ -130,7 +130,7 @@ public class CombinedChartActivity extends DemoBase {
         return d;
     }
 
-    private CandleData generateCandleData() {
+    protected CandleData generateCandleData() {
 
         CandleData d = new CandleData();
 
