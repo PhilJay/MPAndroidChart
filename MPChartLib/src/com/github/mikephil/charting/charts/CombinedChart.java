@@ -25,7 +25,41 @@ import com.github.mikephil.charting.utils.FillFormatter;
 public class CombinedChart extends BarLineChartBase<CombinedData> implements LineDataProvider,
         BarDataProvider, ScatterDataProvider, CandleDataProvider {
 
-    private FillFormatter mFillFormatter;
+    /** the fill-formatter used for determining the position of the fill-line */
+    protected FillFormatter mFillFormatter;
+
+    /** flag that enables or disables the highlighting arrow */
+    private boolean mDrawHighlightArrow = false;
+
+    /**
+     * if set to true, all values are drawn above their bars, instead of below
+     * their top
+     */
+    private boolean mDrawValueAboveBar = true;
+
+    /**
+     * if set to true, all values of a stack are drawn individually, and not
+     * just their sum
+     */
+    private boolean mDrawValuesForWholeStack = true;
+
+    /**
+     * if set to true, a grey area is darawn behind each bar that indicates the
+     * maximum value
+     */
+    private boolean mDrawBarShadow = true;
+
+    protected DrawOrder[] mDrawOrder = new DrawOrder[] {
+            DrawOrder.BAR, DrawOrder.LINE, DrawOrder.CANDLE, DrawOrder.SCATTER
+    };
+
+    /**
+     * enum that allows to specify the order in which the different data objects
+     * for the combined-chart are drawn
+     */
+    public enum DrawOrder {
+        BAR, LINE, CANDLE, SCATTER
+    }
 
     public CombinedChart(Context context) {
         super(context);
@@ -52,7 +86,7 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
     protected void calcMinMax() {
         super.calcMinMax();
 
-        if (getBarData() != null) {
+        if (getBarData() != null || getCandleData() != null) {
             mXChartMin = -0.5f;
             mXChartMax = mData.getXVals().size() - 0.5f;
             mDeltaX = Math.abs(mXChartMax - mXChartMin);
@@ -109,25 +143,83 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
 
     @Override
     public boolean isDrawBarShadowEnabled() {
-        // TODO Auto-generated method stub
-        return false;
+        return mDrawBarShadow;
     }
 
     @Override
     public boolean isDrawValueAboveBarEnabled() {
-        // TODO Auto-generated method stub
-        return true;
+        return mDrawValueAboveBar;
     }
 
     @Override
     public boolean isDrawHighlightArrowEnabled() {
-        // TODO Auto-generated method stub
-        return false;
+        return mDrawHighlightArrow;
     }
 
     @Override
     public boolean isDrawValuesForWholeStackEnabled() {
-        // TODO Auto-generated method stub
-        return false;
+        return mDrawValuesForWholeStack;
+    }
+
+    /**
+     * set this to true to draw the highlightning arrow
+     * 
+     * @param enabled
+     */
+    public void setDrawHighlightArrow(boolean enabled) {
+        mDrawHighlightArrow = enabled;
+    }
+
+    /**
+     * If set to true, all values are drawn above their bars, instead of below
+     * their top.
+     * 
+     * @param enabled
+     */
+    public void setDrawValueAboveBar(boolean enabled) {
+        mDrawValueAboveBar = enabled;
+    }
+
+    /**
+     * if set to true, all values of a stack are drawn individually, and not
+     * just their sum
+     * 
+     * @param enabled
+     */
+    public void setDrawValuesForWholeStack(boolean enabled) {
+        mDrawValuesForWholeStack = enabled;
+    }
+
+    /**
+     * If set to true, a grey area is drawn behind each bar that indicates the
+     * maximum value. Enabling his will reduce performance by about 50%.
+     * 
+     * @param enabled
+     */
+    public void setDrawBarShadow(boolean enabled) {
+        mDrawBarShadow = enabled;
+    }
+
+    /**
+     * Returns the currently set draw order.
+     * 
+     * @return
+     */
+    public DrawOrder[] getDrawOrder() {
+        return mDrawOrder;
+    }
+
+    /**
+     * Sets the order in which the provided data objects should be drawn. The
+     * earlier you place them in the provided array, the further they will be in
+     * the background. e.g. if you provide new DrawOrer[] { DrawOrder.BAR,
+     * DrawOrder.LINE }, the bars will be drawn behind the lines.
+     * 
+     * @param order
+     */
+    public void setDrawOrder(DrawOrder[] order) {
+        if (order == null || order.length <= 0)
+            return;
+        mDrawOrder = order;
     }
 }

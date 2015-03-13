@@ -5,101 +5,109 @@ import android.graphics.Canvas;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.CombinedChart;
+import com.github.mikephil.charting.charts.CombinedChart.DrawOrder;
 import com.github.mikephil.charting.utils.Highlight;
+
+import java.util.ArrayList;
 
 public class CombinedChartRenderer extends DataRenderer {
 
-    private LineChartRenderer mLineRenderer;
-    private BarChartRenderer mBarRenderer;
-    private CandleStickChartRenderer mCandleRenderer;
-    private ScatterChartRenderer mScatterRenderer;
+    /**
+     * all rederers for the different kinds of data this combined-renderer can
+     * draw
+     */
+    protected ArrayList<DataRenderer> mRenderers;
 
     public CombinedChartRenderer(CombinedChart chart, ChartAnimator animator,
             ViewPortHandler viewPortHandler) {
         super(animator, viewPortHandler);
-        
-        if (chart.getLineData() != null)
-            mLineRenderer = new LineChartRenderer(chart, animator, viewPortHandler);
 
-        if (chart.getBarData() != null)
-            mBarRenderer = new BarChartRenderer(chart, animator, viewPortHandler);
-
-        if (chart.getScatterData() != null)
-            mScatterRenderer = new ScatterChartRenderer(chart, animator, viewPortHandler);
-
-        if (chart.getCandleData() != null)
-            mCandleRenderer = new CandleStickChartRenderer(chart, animator, viewPortHandler);
+        createRenderers(chart, animator, viewPortHandler);
     }
-    
+
+    /**
+     * Creates the renderers needed for this combined-renderer in the required
+     * order. Also takes the DrawOrder into consideration.
+     * 
+     * @param chart
+     * @param animator
+     * @param viewPortHandler
+     */
+    protected void createRenderers(CombinedChart chart, ChartAnimator animator,
+            ViewPortHandler viewPortHandler) {
+
+        mRenderers = new ArrayList<DataRenderer>();
+
+        DrawOrder[] orders = chart.getDrawOrder();
+
+        for (DrawOrder order : orders) {
+
+            switch (order) {
+                case BAR:
+                    if (chart.getBarData() != null)
+                        mRenderers.add(new BarChartRenderer(chart, animator, viewPortHandler));
+                    break;
+                case LINE:
+                    if (chart.getLineData() != null)
+                        mRenderers.add(new LineChartRenderer(chart, animator, viewPortHandler));
+                    break;
+                case CANDLE:
+                    if (chart.getCandleData() != null)
+                        mRenderers.add(new CandleStickChartRenderer(chart, animator,
+                                viewPortHandler));
+                    break;
+                case SCATTER:
+                    if (chart.getScatterData() != null)
+                        mRenderers.add(new ScatterChartRenderer(chart, animator, viewPortHandler));
+                    break;
+            }
+        }
+    }
+
     @Override
     public void initBuffers() {
-        if (mBarRenderer != null)
-            mBarRenderer.initBuffers();
 
-        if (mCandleRenderer != null)
-            mCandleRenderer.initBuffers();
-
-        if (mLineRenderer != null)
-            mLineRenderer.initBuffers();
-
-        if (mScatterRenderer != null)
-            mScatterRenderer.initBuffers();
+        for (DataRenderer renderer : mRenderers)
+            renderer.initBuffers();
     }
 
     @Override
     public void drawData(Canvas c) {
 
-        if (mBarRenderer != null)
-            mBarRenderer.drawData(c);
-
-        if (mCandleRenderer != null)
-            mCandleRenderer.drawData(c);
-
-        if (mLineRenderer != null)
-            mLineRenderer.drawData(c);
-
-        if (mScatterRenderer != null)
-            mScatterRenderer.drawData(c);
+        for (DataRenderer renderer : mRenderers)
+            renderer.drawData(c);
     }
 
     @Override
     public void drawValues(Canvas c) {
 
-        if (mBarRenderer != null)
-            mBarRenderer.drawValues(c);
-
-        if (mCandleRenderer != null)
-            mCandleRenderer.drawValues(c);
-
-        if (mLineRenderer != null)
-            mLineRenderer.drawValues(c);
-
-        if (mScatterRenderer != null)
-            mScatterRenderer.drawValues(c);
+        for (DataRenderer renderer : mRenderers)
+            renderer.drawValues(c);
     }
 
     @Override
     public void drawExtras(Canvas c) {
 
-        if (mBarRenderer != null)
-            mBarRenderer.drawExtras(c);
-
-        if (mCandleRenderer != null)
-            mCandleRenderer.drawExtras(c);
-
-        if (mLineRenderer != null)
-            mLineRenderer.drawExtras(c);
-
-        if (mScatterRenderer != null)
-            mScatterRenderer.drawExtras(c);
+        for (DataRenderer renderer : mRenderers)
+            renderer.drawExtras(c);
     }
 
     @Override
     public void drawHighlighted(Canvas c, Highlight[] indices) {
-        // mBarRenderer.drawHighlighted(c, indices);
-        // mCandleRenderer.drawHighlighted(c, indices);
-        // mLineRenderer.drawHighlighted(c, indices);
-        // mScatterRenderer.drawHighlighted(c, indices);
+        for (DataRenderer renderer : mRenderers)
+            renderer.drawHighlighted(c, indices);
     }
 
+    /**
+     * Returns the sub-renderer object at the specified index.
+     * 
+     * @param index
+     * @return
+     */
+    public DataRenderer getSubRenderer(int index) {
+        if (index >= mRenderers.size() || index < 0)
+            return null;
+        else
+            return mRenderers.get(index);
+    }
 }

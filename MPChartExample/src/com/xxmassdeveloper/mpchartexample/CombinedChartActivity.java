@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 
 import com.github.mikephil.charting.charts.CombinedChart;
+import com.github.mikephil.charting.charts.CombinedChart.DrawOrder;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
@@ -43,6 +44,12 @@ public class CombinedChartActivity extends DemoBase {
         mChart = (CombinedChart) findViewById(R.id.chart1);
         mChart.setDescription("");
         mChart.setDrawGridBackground(false);
+        mChart.setDrawBarShadow(false);
+        
+        // draw bars behind lines
+        mChart.setDrawOrder(new DrawOrder[] {
+                DrawOrder.BAR, DrawOrder.LINE, DrawOrder.CANDLE
+        });
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
@@ -57,8 +64,8 @@ public class CombinedChartActivity extends DemoBase {
 
         data.setData(generateLineData());
         data.setData(generateBarData());
-//        data.setData(generateScatterData());
-//        data.setData(generateCandleData());
+//         data.setData(generateScatterData());
+//         data.setData(generateCandleData());
 
         mChart.setData(data);
         mChart.invalidate();
@@ -153,34 +160,34 @@ public class CombinedChartActivity extends DemoBase {
         return (float) (Math.random() * range) + startsfrom;
     }
 
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    getMenuInflater().inflate(R.menu.combined, menu);
-    return true;
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case R.id.actionToggleLineValues: {
-        for (DataSet<?> set : mChart.getData().getDataSets()) {
-          if(set instanceof LineDataSet)
-            set.setDrawValues(!set.isDrawValuesEnabled());
-        }
-
-        mChart.invalidate();
-        break;
-      }
-      case R.id.actionToggleBarValues: {
-        for (DataSet<?> set : mChart.getData().getDataSets()) {
-          if(set instanceof BarDataSet)
-            set.setDrawValues(!set.isDrawValuesEnabled());
-        }
-
-        mChart.invalidate();
-        break;
-      }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.combined, menu);
+        return true;
     }
-    return true;
-  }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.actionToggleLineValues: {
+                for (DataSet<?> set : mChart.getData().getDataSets()) {
+                    if (set instanceof LineDataSet)
+                        set.setDrawValues(!set.isDrawValuesEnabled());
+                }
+
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleBarValues: {
+                for (DataSet<?> set : mChart.getData().getDataSets()) {
+                    if (set instanceof BarDataSet)
+                        set.setDrawValues(!set.isDrawValuesEnabled());
+                }
+
+                mChart.invalidate();
+                break;
+            }
+        }
+        return true;
+    }
 }
