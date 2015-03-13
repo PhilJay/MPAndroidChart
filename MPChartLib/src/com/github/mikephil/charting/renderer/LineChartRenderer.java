@@ -89,6 +89,8 @@ public class LineChartRenderer extends DataRenderer {
         }
 
         c.drawBitmap(mPathBitmap, 0, 0, mRenderPaint);
+
+        drawCircles(c);
     }
 
     protected void drawDataSet(Canvas c, LineDataSet dataSet) {
@@ -269,11 +271,11 @@ public class LineChartRenderer extends DataRenderer {
         float phaseY = mAnimator.getPhaseY();
 
         mRenderPaint.setStyle(Paint.Style.STROKE);
-        
+
         Canvas canvas = null;
-        
+
         // if the data-set is dashed, draw on bitmap-canvas
-        if(dataSet.isDashedLineEnabled()) {
+        if (dataSet.isDashedLineEnabled()) {
             canvas = mBitmapCanvas;
         } else {
             canvas = c;
@@ -324,7 +326,8 @@ public class LineChartRenderer extends DataRenderer {
             mRenderPaint.setColor(dataSet.getColor());
 
             // c.drawLines(buffer.buffer, mRenderPaint);
-            canvas.drawLines(buffer.buffer, from, to >= buffer.size() ? buffer.size() - from : range,
+            canvas.drawLines(buffer.buffer, from, to >= buffer.size() ? buffer.size() - from
+                    : range,
                     mRenderPaint);
         }
 
@@ -450,11 +453,11 @@ public class LineChartRenderer extends DataRenderer {
 
     @Override
     public void drawExtras(Canvas c) {
-        drawCircles(c);
+
     }
 
     protected void drawCircles(Canvas c) {
-        
+
         mRenderPaint.setStyle(Paint.Style.FILL);
 
         float phaseX = mAnimator.getPhaseX();
@@ -468,7 +471,7 @@ public class LineChartRenderer extends DataRenderer {
 
             if (!dataSet.isVisible() || !dataSet.isDrawCirclesEnabled())
                 continue;
-            
+
             mCirclePaintInner.setColor(dataSet.getCircleHoleColor());
 
             Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
@@ -483,7 +486,7 @@ public class LineChartRenderer extends DataRenderer {
             float halfsize = dataSet.getCircleSize() / 2f;
 
             for (int j = 0; j < buffer.size(); j += 2) {
-                
+
                 float x = buffer.buffer[j];
                 float y = buffer.buffer[j + 1];
 
@@ -494,13 +497,16 @@ public class LineChartRenderer extends DataRenderer {
                 // bounds
                 if (!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y))
                     continue;
-                
-                mRenderPaint.setColor(dataSet.getCircleColor(j / 2));
+
+                int circleColor = dataSet.getCircleColor(j / 2);
+
+                mRenderPaint.setColor(circleColor);
 
                 c.drawCircle(x, y, dataSet.getCircleSize(),
                         mRenderPaint);
 
-                if (dataSet.isDrawCircleHoleEnabled())
+                if (dataSet.isDrawCircleHoleEnabled()
+                        && circleColor != mCirclePaintInner.getColor())
                     c.drawCircle(x, y,
                             halfsize,
                             mCirclePaintInner);
