@@ -59,6 +59,7 @@ Features
  - Scaling on both axes (with touch-gesture, axes separately or pinch-zoom)
  - Dragging / Panning (with touch-gesture)
  - Combined-Charts (line-, bar-, scatter-, candle-data)
+ - Dual (separate) Y-Axis
  - Finger drawing (draw values into the chart with touch-gesture)
  - Highlighting values (with customizeable popup-views)
  - Multiple / Separate Axes
@@ -69,6 +70,7 @@ Features
  - Animations (build up animations, on both x- and y-axis)
  - Limit lines (providing additional information, maximums, ...)
  - Fully customizeable (paints, typefaces, legends, colors, background, gestures, dashed lines, ...)
+ - Smooth zooming and scrolling for up to 30.000 data points in Line- and BarChart
  
 **Chart types:**
 
@@ -131,7 +133,7 @@ repositories {
 }
 
 dependencies {
-	    compile 'com.github.PhilJay:MPAndroidChart:v2.0.7'
+	    compile 'com.github.PhilJay:MPAndroidChart:v2.0.8'
 }
 ```
 
@@ -146,7 +148,7 @@ dependencies {
 <dependency>
 	    <groupId>com.github.PhilJay</groupId>
 	    <artifactId>MPAndroidChart</artifactId>
-	    <version>v2.0.7</version>
+	    <version>v2.0.8</version>
 </dependency>
 ```
 
