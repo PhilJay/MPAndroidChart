@@ -33,6 +33,7 @@ public class BarChartFrag extends SimpleFragment implements OnChartGestureListen
         // create a new chart object
         mChart = new BarChart(getActivity());
         mChart.setDescription("");
+        mChart.setOnChartGestureListener(this);
         
         MyMarkerView mv = new MyMarkerView(getActivity(), R.layout.custom_marker_view);
 

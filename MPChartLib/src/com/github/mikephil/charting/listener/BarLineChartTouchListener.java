@@ -472,12 +472,6 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
 
-        OnChartGestureListener l = mChart.getOnChartGestureListener();
-
-        if (l != null) {
-            l.onChartSingleTapped(e);
-        }
-
         performHighlight(e);
 
         return super.onSingleTapUp(e);
@@ -485,6 +479,13 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
+        
+        OnChartGestureListener l = mChart.getOnChartGestureListener();
+
+        if (l != null) {
+            l.onChartSingleTapped(e);
+        }
+        
         return super.onSingleTapConfirmed(e);
     }
 
