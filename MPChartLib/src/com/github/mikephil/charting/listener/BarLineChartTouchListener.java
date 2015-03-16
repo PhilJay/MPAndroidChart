@@ -16,8 +16,8 @@ import com.github.mikephil.charting.data.BarLineScatterCandleData;
 import com.github.mikephil.charting.data.BarLineScatterCandleDataSet;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.renderer.ViewPortHandler;
 import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**
  * TouchListener for Bar-, Line-, Scatter- and CandleStickChart with handles all
@@ -479,13 +479,13 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
-        
+
         OnChartGestureListener l = mChart.getOnChartGestureListener();
 
         if (l != null) {
             l.onChartSingleTapped(e);
         }
-        
+
         return super.onSingleTapConfirmed(e);
     }
 

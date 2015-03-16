@@ -1,14 +1,13 @@
 
-package com.github.mikephil.charting.renderer;
+package com.github.mikephil.charting.utils;
 
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
 import com.github.mikephil.charting.interfaces.ChartInterface;
-import com.github.mikephil.charting.utils.Utils;
 
-public class ViewPortHandler {   
+public class ViewPortHandler {
 
     /** matrix used for touch events */
     protected final Matrix mMatrixTouch = new Matrix();
@@ -18,7 +17,7 @@ public class ViewPortHandler {
 
     protected float mChartWidth = 0f;
     protected float mChartHeight = 0f;
-    
+
     /** minimum scale value on the y-axis */
     private float mMinScaleY = 1f;
 
@@ -36,61 +35,67 @@ public class ViewPortHandler {
 
     /** offset that allows the chart to be dragged over its bounds on the x-axis */
     private float mTransOffsetY = 0f;
-    
+
     public ViewPortHandler() {
-        
+
     }
 
-//    public ViewPortHandler(float width, float height) {
-//        mChartHeight = height;
-//        mChartWidth = width;
-//    }
-
+    /**
+     * Sets the width and height of the chart.
+     * 
+     * @param width
+     * @param height
+     */
     public void setChartDimens(float width, float height) {
         mChartHeight = height;
-        mChartWidth = width;   
+        mChartWidth = width;
+
+        if (mContentRect.width() <= 0 || mContentRect.height() <= 0)
+            mContentRect.set(0, 0, width, height);
     }
-    
-    public void restrainViewPort(float offsetLeft, float offsetTop, float offsetRight, float offsetBottom) {
-        mContentRect.set(offsetLeft, offsetTop, mChartWidth - offsetRight, mChartHeight - offsetBottom);
+
+    public void restrainViewPort(float offsetLeft, float offsetTop, float offsetRight,
+            float offsetBottom) {
+        mContentRect.set(offsetLeft, offsetTop, mChartWidth - offsetRight, mChartHeight
+                - offsetBottom);
     }
-    
+
     public float offsetLeft() {
         return mContentRect.left;
     }
-    
+
     public float offsetRight() {
         return mChartWidth - mContentRect.right;
     }
-    
+
     public float offsetTop() {
         return mContentRect.top;
     }
-    
+
     public float offsetBottom() {
         return mChartHeight - mContentRect.bottom;
     }
-    
+
     public float contentTop() {
         return mContentRect.top;
     }
-    
+
     public float contentLeft() {
         return mContentRect.left;
     }
-    
+
     public float contentRight() {
         return mContentRect.right;
     }
-    
+
     public float contentBottom() {
         return mContentRect.bottom;
     }
-    
+
     public float contentWidth() {
         return mContentRect.width();
     }
-    
+
     public float contentHeight() {
         return mContentRect.height();
     }
@@ -98,19 +103,19 @@ public class ViewPortHandler {
     public RectF getContentRect() {
         return mContentRect;
     }
-    
+
     public PointF getContentCenter() {
         return new PointF(mContentRect.centerX(), mContentRect.centerY());
     }
-    
+
     public float getChartHeight() {
         return mChartHeight;
     }
-    
+
     public float getChartWidth() {
         return mChartWidth;
     }
-    
+
     /**
      * ################ ################ ################ ################
      */
@@ -206,31 +211,31 @@ public class ViewPortHandler {
 
         Matrix save = new Matrix();
         save.set(mMatrixTouch);
-        
+
         final float x = transformedPts[0] - offsetLeft();
         final float y = transformedPts[1] - offsetTop();
 
         save.postTranslate(-x, -y);
 
         refresh(save, chart, false);
-        
-//        final View v = chart.getChartView();
-//
-//        v.post(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                Matrix save = new Matrix();
-//                save.set(mMatrixTouch);
-//                
-//                final float x = transformedPts[0] - offsetLeft();
-//                final float y = transformedPts[1] - offsetTop();
-//
-//                save.postTranslate(-x, -y);
-//
-//                refresh(save, chart, false);
-//            }
-//        });
+
+        // final View v = chart.getChartView();
+        //
+        // v.post(new Runnable() {
+        //
+        // @Override
+        // public void run() {
+        // Matrix save = new Matrix();
+        // save.set(mMatrixTouch);
+        //
+        // final float x = transformedPts[0] - offsetLeft();
+        // final float y = transformedPts[1] - offsetTop();
+        //
+        // save.postTranslate(-x, -y);
+        //
+        // refresh(save, chart, false);
+        // }
+        // });
     }
 
     /**
@@ -250,7 +255,7 @@ public class ViewPortHandler {
 
         newMatrix.set(mMatrixTouch);
         return newMatrix;
-    }   
+    }
 
     /**
      * limits the maximum scale and X translation of the given matrix
@@ -304,54 +309,36 @@ public class ViewPortHandler {
 
         matrix.setValues(vals);
     }
-    
+
     public void setMinimumScaleX(float xScale) {
-        
+
         if (xScale < 1f)
             xScale = 1f;
 
         mMinScaleX = xScale;
-        
+
         limitTransAndScale(mMatrixTouch, mContentRect);
     }
-    
+
     public void setMinimumScaleY(float yScale) {
-        
+
         if (yScale < 1f)
             yScale = 1f;
 
         mMinScaleY = yScale;
-        
+
         limitTransAndScale(mMatrixTouch, mContentRect);
     }
 
-//    /**
-//     * Sets the minimum scale values for both axes. This limits the extent to
-//     * which the user can zoom-out.
-//     * 
-//     * @param scaleXmin
-//     * @param scaleYmin
-//     */
-//    public void setScaleMinima(float scaleXmin, float scaleYmin, ChartInterface chart) {
-//
-//        if (scaleXmin < 1f)
-//            scaleXmin = 1f;
-//        if (scaleYmin < 1f)
-//            scaleYmin = 1f;
-//
-//        mMinScaleX = scaleXmin;
-//        mMinScaleY = scaleYmin;
-////
-////        Matrix save = zoom(mMinScaleX, mMinScaleY, 0f, 0f);
-////        refresh(mMatrixTouch, chart);
-//        
-//        limitTransAndScale(mMatrixTouch, mContentRect);
-//    }
-    
+    /**
+     * Returns the charts-touch matrix used for translation and scale on touch.
+     * 
+     * @return
+     */
     public Matrix getMatrixTouch() {
         return mMatrixTouch;
     }
-    
+
     /**
      * ################ ################ ################ ################
      */
@@ -393,7 +380,6 @@ public class ViewPortHandler {
     public boolean isInBoundsBottom(float y) {
         return mContentRect.bottom >= y ? true : false;
     }
-    
 
     /**
      * returns the current x-scale factor

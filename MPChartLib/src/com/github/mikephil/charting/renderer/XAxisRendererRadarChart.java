@@ -7,6 +7,7 @@ import android.graphics.PointF;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 public class XAxisRendererRadarChart extends XAxisRenderer {
 

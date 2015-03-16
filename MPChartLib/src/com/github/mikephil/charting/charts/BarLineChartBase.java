@@ -657,11 +657,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             final float right, final float bottom) {
 
         mCustomViewPortEnabled = true;
-
         post(new Runnable() {
 
             @Override
             public void run() {
+
                 mViewPortHandler.restrainViewPort(left, top, right, bottom);
             }
         });

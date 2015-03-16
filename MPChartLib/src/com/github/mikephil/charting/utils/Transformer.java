@@ -8,7 +8,6 @@ import android.graphics.RectF;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.renderer.ViewPortHandler;
 
 import java.util.ArrayList;
 

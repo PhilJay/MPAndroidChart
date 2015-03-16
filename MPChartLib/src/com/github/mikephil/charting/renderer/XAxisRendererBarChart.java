@@ -8,6 +8,7 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 public class XAxisRendererBarChart extends XAxisRenderer {
 
@@ -41,7 +42,7 @@ public class XAxisRendererBarChart extends XAxisRenderer {
                 / div;
         float max = (float) mMaxX
                 / div;
-        
+
         for (int i = (int) min; i <= max; i += mXAxis.mAxisLabelModulus) {
 
             position[0] = i * step + i * bd.getGroupSpace()
@@ -54,7 +55,8 @@ public class XAxisRendererBarChart extends XAxisRenderer {
 
             mTrans.pointValuesToPixel(position);
 
-            if (mViewPortHandler.isInBoundsX(position[0])) {
+            if (mViewPortHandler.isInBoundsX(position[0]) && i >= 0
+                    && i < mXAxis.getValues().size()) {
 
                 String label = mXAxis.getValues().get(i);
 
@@ -85,7 +87,7 @@ public class XAxisRendererBarChart extends XAxisRenderer {
 
     @Override
     public void renderGridLines(Canvas c) {
-        
+
         calcXBounds(mTrans);
 
         if (!mXAxis.isDrawGridLinesEnabled() || !mXAxis.isEnabled())
