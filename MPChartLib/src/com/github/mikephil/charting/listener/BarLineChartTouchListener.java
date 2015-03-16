@@ -174,14 +174,6 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
         return true; // indicate event was handled
     }
 
-    // private boolean needsRefresh() {
-    // if (System.currentTimeMillis() - mChart.getLastDrawMillis() >
-    // REFRESH_MILLIS) {
-    // return true;
-    // } else
-    // return false;
-    // }
-
     /**
      * ################ ################ ################ ################
      */
@@ -274,6 +266,39 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
                 }
             }
+        }
+    }
+
+    /**
+     * Perform a highlight operation.
+     * 
+     * @param e
+     */
+    private void performHighlight(MotionEvent e) {
+
+        Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
+
+        if (h == null || h.equalTo(mLastHighlighted)) {
+            mChart.highlightTouch(null);
+            mLastHighlighted = null;
+        } else {
+            mLastHighlighted = h;
+            mChart.highlightTouch(h);
+        }
+    }
+
+    /**
+     * Highlights upon dragging.
+     * 
+     * @param e
+     */
+    private void performHighlightDrag(MotionEvent e) {
+
+        Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
+
+        if (h != null && !h.equalTo(mLastHighlighted)) {
+            mLastHighlighted = h;
+            mChart.highlightTouch(h);
         }
     }
 
@@ -410,7 +435,9 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
             mChart.zoom(1.4f, 1.4f, trans.x, trans.y);
 
-            Log.i("BarlineChartTouch", "Double-Tap, Zooming In, x: " + trans.x + ", y: " + trans.y);
+            if (mChart.isLogEnabled())
+                Log.i("BarlineChartTouch", "Double-Tap, Zooming In, x: " + trans.x + ", y: "
+                        + trans.y);
         }
 
         return super.onDoubleTap(e);
@@ -451,15 +478,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
             l.onChartSingleTapped(e);
         }
 
-        Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
-
-        if (h == null || h.equalTo(mLastHighlighted)) {
-            mChart.highlightTouch(null);
-            mLastHighlighted = null;
-        } else {
-            mLastHighlighted = h;
-            mChart.highlightTouch(h);
-        }
+        performHighlight(e);
 
         return super.onSingleTapUp(e);
     }

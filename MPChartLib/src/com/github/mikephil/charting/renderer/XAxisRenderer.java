@@ -82,6 +82,8 @@ public class XAxisRenderer extends AxisRenderer {
 
     @Override
     public void renderAxisLine(Canvas c) {
+        
+        calcXBounds(mTrans);
 
         if (!mXAxis.isDrawAxisLineEnabled() || !mXAxis.isEnabled())
             return;
@@ -164,8 +166,6 @@ public class XAxisRenderer extends AxisRenderer {
 
     @Override
     public void renderGridLines(Canvas c) {
-
-        calcXBounds(mTrans);
 
         if (!mXAxis.isDrawGridLinesEnabled() || !mXAxis.isEnabled())
             return;

@@ -189,6 +189,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum);
         if (mAxisRight.isEnabled())
             mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum);
+        
+        mXAxisRenderer.renderAxisLine(canvas);
+        mAxisRendererLeft.renderAxisLine(canvas);
+        mAxisRendererRight.renderAxisLine(canvas);
 
         // make sure the graph values and grid cannot be drawn outside the
         // content-rect
@@ -214,13 +218,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mRenderer.drawExtras(canvas);
 
         mXAxisRenderer.renderAxisLabels(canvas);
-        mXAxisRenderer.renderAxisLine(canvas);
-
         mAxisRendererLeft.renderAxisLabels(canvas);
-        mAxisRendererLeft.renderAxisLine(canvas);
-
         mAxisRendererRight.renderAxisLabels(canvas);
-        mAxisRendererRight.renderAxisLine(canvas);
 
         mRenderer.drawValues(canvas);
 

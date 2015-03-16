@@ -32,12 +32,15 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
     /** holds the current rotation angle of the chart */
     protected float mRotationAngle = 270f;
+    
+    /** the angle where the dragging started */
+    private float mStartAngle = 0f;
 
     /** flag that indicates if rotation is enabled or not */
     protected boolean mRotateEnabled = true;
 
     /** the pie- and radarchart touchlistener */
-    private OnTouchListener mListener;
+    protected OnTouchListener mListener;
 
     public PieRadarChartBase(Context context) {
         super(context);
@@ -152,9 +155,6 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
             Log.i(LOG_TAG, "offsetLeft: " + offsetLeft + ", offsetTop: " + offsetTop
                     + ", offsetRight: " + offsetRight + ", offsetBottom: " + offsetBottom);
     }
-
-    /** the angle where the dragging started */
-    private float mStartAngle = 0f;
 
     /**
      * sets the starting angle of the rotation, this is only used by the touch

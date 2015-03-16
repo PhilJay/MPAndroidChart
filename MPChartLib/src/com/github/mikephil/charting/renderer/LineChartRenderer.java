@@ -89,8 +89,6 @@ public class LineChartRenderer extends DataRenderer {
         }
 
         c.drawBitmap(mPathBitmap, 0, 0, mRenderPaint);
-
-        drawCircles(c);
     }
 
     protected void drawDataSet(Canvas c, LineDataSet dataSet) {
@@ -453,7 +451,7 @@ public class LineChartRenderer extends DataRenderer {
 
     @Override
     public void drawExtras(Canvas c) {
-
+        drawCircles(c);
     }
 
     protected void drawCircles(Canvas c) {

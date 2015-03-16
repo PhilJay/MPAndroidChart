@@ -871,6 +871,15 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
+     * Returns true if log-output is enabled for the chart, fals if not.
+     * 
+     * @return
+     */
+    public boolean isLogEnabled() {
+        return mLogEnabled;
+    }
+
+    /**
      * set a description text that appears in the bottom right corner of the
      * chart, size = Y-legend text size
      *

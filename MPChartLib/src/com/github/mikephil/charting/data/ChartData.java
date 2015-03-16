@@ -517,30 +517,48 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * @param d
      */
     public void addDataSet(T d) {
-        if (mDataSets == null)
-            mDataSets = new ArrayList<T>();
-        mDataSets.add(d);
+
+        if (d == null)
+            return;
 
         mYValCount += d.getEntryCount();
         mYValueSum += d.getYValueSum();
 
-        if (mYMax < d.getYMax())
+        if (mDataSets.size() <= 0) {
+
             mYMax = d.getYMax();
-        if (mYMin > d.getYMin())
             mYMin = d.getYMin();
 
-        if (d.getAxisDependency() == AxisDependency.LEFT) {
+            if (d.getAxisDependency() == AxisDependency.LEFT) {
 
-            if (mLeftAxisMax < d.getYMax())
                 mLeftAxisMax = d.getYMax();
-            if (mLeftAxisMin > d.getYMin())
                 mLeftAxisMin = d.getYMin();
-        } else {
-            if (mRightAxisMax < d.getYMax())
+            } else {
                 mRightAxisMax = d.getYMax();
-            if (mRightAxisMin > d.getYMin())
                 mRightAxisMin = d.getYMin();
+            }
+        } else {
+
+            if (mYMax < d.getYMax())
+                mYMax = d.getYMax();
+            if (mYMin > d.getYMin())
+                mYMin = d.getYMin();
+
+            if (d.getAxisDependency() == AxisDependency.LEFT) {
+
+                if (mLeftAxisMax < d.getYMax())
+                    mLeftAxisMax = d.getYMax();
+                if (mLeftAxisMin > d.getYMin())
+                    mLeftAxisMin = d.getYMin();
+            } else {
+                if (mRightAxisMax < d.getYMax())
+                    mRightAxisMax = d.getYMax();
+                if (mRightAxisMin > d.getYMin())
+                    mRightAxisMin = d.getYMin();
+            }
         }
+
+        mDataSets.add(d);
 
         handleEmptyAxis(getFirstLeft(), getFirstRight());
     }
@@ -572,7 +590,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      */
     public boolean removeDataSet(T d) {
 
-        if (mDataSets == null || d == null)
+        if (d == null)
             return false;
 
         boolean removed = mDataSets.remove(d);
@@ -598,7 +616,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      */
     public boolean removeDataSet(int index) {
 
-        if (mDataSets == null || index >= mDataSets.size() || index < 0)
+        if (index >= mDataSets.size() || index < 0)
             return false;
 
         T set = mDataSets.get(index);
@@ -614,9 +632,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      */
     public void addEntry(Entry e, int dataSetIndex) {
 
-        if (mDataSets == null)
-            mDataSets = new ArrayList<T>();
-
         if (mDataSets.size() > dataSetIndex && dataSetIndex >= 0) {
 
             float val = e.getVal();
@@ -628,9 +643,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
                 mYMax = val;
             if (mYMin > val)
                 mYMin = val;
-
-            if (mDataSets == null)
-                mDataSets = new ArrayList<T>();
 
             T set = mDataSets.get(dataSetIndex);
 
