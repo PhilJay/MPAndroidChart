@@ -6,7 +6,7 @@ Remember: *It's all about the looks.*
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/design/feature_graphic.png)
 
-**MPAndroidChart** is a simple and powerful charting library for Android, supporting line-, bar-, scatter-, candlestick-, pie- and radarcharts (spider web), as well as scaling, dragging, selecting and animations. **Supporting Android 2.2 (API level 8)** and upwards.
+**MPAndroidChart** is a powerful & easy to use chart library for Android, supporting line-, bar-, scatter-, candlestick-, pie- and radarcharts (spider web), as well as scaling, dragging (panning), selecting and animations. Works on **Android 2.2 (API level 8)** and upwards.
 
 Donations
 -----
@@ -24,10 +24,6 @@ If you would like to support this project's further development, the creator of 
  - [**Donate 300 $**] (https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PGW8CXUHZS2T2): I can afford it and want to assure the further development and maintenance of this project. Furthermore, I also want to show my gratitude to it's creator.
  - Of course, you can also [**choose what you want to donate**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EGBENAC5XBCKS), all donations are awesome!
 
-
-**Gittip**
-
-[![Gratipay](http://img.shields.io/gratipay/PhilJay.svg)](https://gratipay.com/PhilJay)
 
 Demo
 -----
