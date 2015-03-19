@@ -11,7 +11,6 @@ import com.github.mikephil.charting.utils.ValueFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.List;
 
 /**
  * Class that holds all relevant data that represents the chart. That involves

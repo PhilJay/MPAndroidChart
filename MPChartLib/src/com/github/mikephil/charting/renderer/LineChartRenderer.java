@@ -18,7 +18,6 @@ import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LineChartRenderer extends DataRenderer {

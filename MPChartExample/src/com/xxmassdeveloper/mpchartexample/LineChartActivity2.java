@@ -319,8 +319,8 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         set2.setHighLightColor(Color.rgb(244, 117, 117));
 
         ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
-        dataSets.add(set1);
-        dataSets.add(set2); // add the datasets
+        dataSets.add(set2);
+        dataSets.add(set1); // add the datasets
 
         // create a data object with the datasets
         LineData data = new LineData(xVals, dataSets);

@@ -12,7 +12,6 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency;
 
 import java.text.DecimalFormat;
 import java.util.List;
-import java.util.List;
 
 /**
  * Utilities class that has some helper methods. Needs to be initialized by

@@ -3,7 +3,6 @@ package com.github.mikephil.charting.buffer;
 
 import com.github.mikephil.charting.data.CandleEntry;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CandleShadowBuffer extends AbstractBuffer<CandleEntry> {

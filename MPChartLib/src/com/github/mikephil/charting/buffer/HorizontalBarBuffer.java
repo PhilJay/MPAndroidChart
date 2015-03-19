@@ -3,7 +3,6 @@ package com.github.mikephil.charting.buffer;
 
 import com.github.mikephil.charting.data.BarEntry;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HorizontalBarBuffer extends BarBuffer {
