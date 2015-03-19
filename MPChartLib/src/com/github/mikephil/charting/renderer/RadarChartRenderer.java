@@ -16,7 +16,7 @@ import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class RadarChartRenderer extends DataRenderer {
 
@@ -71,7 +71,7 @@ public class RadarChartRenderer extends DataRenderer {
 
         PointF center = mChart.getCenterOffsets();
 
-        ArrayList<Entry> entries = dataSet.getYVals();
+        List<Entry> entries = dataSet.getYVals();
 
         Path surface = new Path();
 
@@ -131,7 +131,7 @@ public class RadarChartRenderer extends DataRenderer {
             // apply the text-styling defined by the DataSet
             applyValueTextStyle(dataSet);
 
-            ArrayList<Entry> entries = dataSet.getYVals();
+            List<Entry> entries = dataSet.getYVals();
 
             for (int j = 0; j < entries.size(); j++) {
 

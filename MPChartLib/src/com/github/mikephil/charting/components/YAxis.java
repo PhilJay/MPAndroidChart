@@ -9,6 +9,7 @@ import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class representing the y-axis labels settings and its entries. Only use the
@@ -49,7 +50,7 @@ public class YAxis extends AxisBase {
     protected boolean mStartAtZero = true;
 
     /** array of limitlines that can be set for the axis */
-    private ArrayList<LimitLine> mLimitLines;
+    private List<LimitLine> mLimitLines;
 
     /** custom minimum value this axis represents */
     protected float mCustomAxisMin = Float.NaN;
@@ -265,7 +266,7 @@ public class YAxis extends AxisBase {
      * 
      * @return
      */
-    public ArrayList<LimitLine> getLimitLines() {
+    public List<LimitLine> getLimitLines() {
         return mLimitLines;
     }
 

@@ -5,7 +5,7 @@ import android.graphics.Color;
 
 import com.github.mikephil.charting.utils.Utils;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base dataset for line and radar DataSets.
@@ -25,10 +25,10 @@ public abstract class LineRadarDataSet<T extends Entry> extends BarLineScatterCa
 
     /** if true, the data will also be drawn filled */
     private boolean mDrawFilled = false;
-
-    // private Shader mShader;
-
-    public LineRadarDataSet(ArrayList<T> yVals, String label) {
+    
+//    private Shader mShader;
+    
+    public LineRadarDataSet(List<T> yVals, String label) {
         super(yVals, label);
     }
 

@@ -10,6 +10,7 @@ import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CombinedChartRenderer extends DataRenderer {
 
@@ -17,7 +18,7 @@ public class CombinedChartRenderer extends DataRenderer {
      * all rederers for the different kinds of data this combined-renderer can
      * draw
      */
-    protected ArrayList<DataRenderer> mRenderers;
+    protected List<DataRenderer> mRenderers;
 
     public CombinedChartRenderer(CombinedChart chart, ChartAnimator animator,
             ViewPortHandler viewPortHandler) {

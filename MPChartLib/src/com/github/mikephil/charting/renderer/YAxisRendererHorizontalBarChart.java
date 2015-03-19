@@ -16,6 +16,7 @@ import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
 
@@ -191,7 +192,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
     @Override
     public void renderLimitLines(Canvas c) {
 
-        ArrayList<LimitLine> limitLines = mYAxis.getLimitLines();
+        List<LimitLine> limitLines = mYAxis.getLimitLines();
 
         if (limitLines == null || limitLines.size() <= 0)
             return;

@@ -17,7 +17,7 @@ import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class YAxisRenderer extends AxisRenderer {
 
@@ -268,7 +268,7 @@ public class YAxisRenderer extends AxisRenderer {
      */
     public void renderLimitLines(Canvas c) {
 
-        ArrayList<LimitLine> limitLines = mYAxis.getLimitLines();
+        List<LimitLine> limitLines = mYAxis.getLimitLines();
 
         if (limitLines == null || limitLines.size() <= 0)
             return;

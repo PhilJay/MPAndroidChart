@@ -13,7 +13,8 @@ import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
-import java.util.ArrayList;
+
+import java.util.List;
 
 /**
  * Touchlistener for the PieChart.
@@ -129,7 +130,7 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
  
             } else {
 
-                ArrayList<SelInfo> valsAtIndex = mChart.getYValsAtIndex(index);
+                List<SelInfo> valsAtIndex = mChart.getYValsAtIndex(index);
 
                 int dataSetIndex = 0;
 

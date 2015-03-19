@@ -1,7 +1,7 @@
 
 package com.github.mikephil.charting.buffer;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Buffer class to boost performance while drawing. Concept: Replace instead of
@@ -67,5 +67,5 @@ public abstract class AbstractBuffer<T> {
      * 
      * @param entries
      */
-    public abstract void feed(ArrayList<T> entries);
+    public abstract void feed(List<T> entries);
 }

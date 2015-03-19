@@ -18,7 +18,7 @@ import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class PieChartRenderer extends DataRenderer {
 
@@ -101,7 +101,7 @@ public class PieChartRenderer extends DataRenderer {
 
         int cnt = 0;
 
-        ArrayList<Entry> entries = dataSet.getYVals();
+        List<Entry> entries = dataSet.getYVals();
         float[] drawAngles = mChart.getDrawAngles();
 
         for (int j = 0; j < entries.size(); j++) {
@@ -156,7 +156,7 @@ public class PieChartRenderer extends DataRenderer {
         r -= off; // offset to keep things inside the chart
 
         PieData data = mChart.getData();
-        ArrayList<PieDataSet> dataSets = data.getDataSets();
+        List<PieDataSet> dataSets = data.getDataSets();
 
         int cnt = 0;
 
@@ -170,7 +170,7 @@ public class PieChartRenderer extends DataRenderer {
             // apply the text-styling defined by the DataSet
             applyValueTextStyle(dataSet);
 
-            ArrayList<Entry> entries = dataSet.getYVals();
+            List<Entry> entries = dataSet.getYVals();
 
             for (int j = 0; j < entries.size() * mAnimator.getPhaseX(); j++) {
 

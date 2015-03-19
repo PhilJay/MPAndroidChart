@@ -17,7 +17,7 @@ import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ScatterChartRenderer extends DataRenderer {
 
@@ -66,7 +66,7 @@ public class ScatterChartRenderer extends DataRenderer {
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
 
-        ArrayList<Entry> entries = dataSet.getYVals();
+        List<Entry> entries = dataSet.getYVals();
 
         float shapeHalf = dataSet.getScatterShapeSize() / 2f;
 
@@ -204,7 +204,7 @@ public class ScatterChartRenderer extends DataRenderer {
         if (mChart.getScatterData().getYValCount() < mChart.getMaxVisibleCount()
                 * mViewPortHandler.getScaleX()) {
 
-            ArrayList<ScatterDataSet> dataSets = mChart.getScatterData().getDataSets();
+            List<ScatterDataSet> dataSets = mChart.getScatterData().getDataSets();
 
             for (int i = 0; i < mChart.getScatterData().getDataSetCount(); i++) {
 
@@ -216,7 +216,7 @@ public class ScatterChartRenderer extends DataRenderer {
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet);
 
-                ArrayList<Entry> entries = dataSet.getYVals();
+                List<Entry> entries = dataSet.getYVals();
 
                 float[] positions = mChart.getTransformer(dataSet.getAxisDependency())
                         .generateTransformedValuesScatter(entries,

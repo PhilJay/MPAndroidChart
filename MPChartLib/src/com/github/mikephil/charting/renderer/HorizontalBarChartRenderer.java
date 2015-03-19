@@ -16,7 +16,7 @@ import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Renderer for the HorizontalBarChart.
@@ -58,7 +58,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
 
-        ArrayList<BarEntry> entries = dataSet.getYVals();
+        List<BarEntry> entries = dataSet.getYVals();
 
         // initialize the buffer
         BarBuffer buffer = mBarBuffers[index];
@@ -98,7 +98,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
         // if values are drawn
         if (passesCheck()) {
 
-            ArrayList<BarDataSet> dataSets = mChart.getBarData().getDataSets();
+            List<BarDataSet> dataSets = mChart.getBarData().getDataSets();
 
             float posOffset = 0f;
             float negOffset = 0f;
@@ -130,7 +130,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
                 Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-                ArrayList<BarEntry> entries = dataSet.getYVals();
+                List<BarEntry> entries = dataSet.getYVals();
 
                 float[] valuePoints = getTransformedValues(trans, entries, i);
 
@@ -238,7 +238,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
     }
 
     @Override
-    public float[] getTransformedValues(Transformer trans, ArrayList<BarEntry> entries,
+    public float[] getTransformedValues(Transformer trans, List<BarEntry> entries,
             int dataSetIndex) {
         return trans.generateTransformedValuesHorizontalBarChart(entries, dataSetIndex,
                 mChart.getBarData(), mAnimator.getPhaseY());

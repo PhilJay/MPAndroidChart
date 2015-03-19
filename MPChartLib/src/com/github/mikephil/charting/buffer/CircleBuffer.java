@@ -4,6 +4,7 @@ package com.github.mikephil.charting.buffer;
 import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CircleBuffer extends AbstractBuffer<Entry> {
 
@@ -17,7 +18,7 @@ public class CircleBuffer extends AbstractBuffer<Entry> {
     }
 
     @Override
-    public void feed(ArrayList<Entry> entries) {
+    public void feed(List<Entry> entries) {
         
         float size = entries.size() * phaseX;
 

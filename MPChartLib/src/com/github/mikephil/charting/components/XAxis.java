@@ -2,6 +2,7 @@
 package com.github.mikephil.charting.components;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class representing the x-axis labels settings. Only use the setter methods to
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 public class XAxis extends AxisBase {
 
     /** the arraylist containing all the x-axis labels */
-    protected ArrayList<String> mValues = new ArrayList<String>();
+    protected List<String> mValues = new ArrayList<String>();
 
     /**
      * width of the x-axis labels in pixels - this is calculated by the
@@ -151,7 +152,7 @@ public class XAxis extends AxisBase {
      * 
      * @param values
      */
-    public void setValues(ArrayList<String> values) {
+    public void setValues(List<String> values) {
         mValues = values;
     }
 
@@ -160,7 +161,7 @@ public class XAxis extends AxisBase {
      * 
      * @return
      */
-    public ArrayList<String> getValues() {
+    public List<String> getValues() {
         return mValues;
     }
     

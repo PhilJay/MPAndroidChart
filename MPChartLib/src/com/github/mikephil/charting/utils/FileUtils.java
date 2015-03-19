@@ -16,6 +16,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Utilities class for interacting with the assets and the devices storage to
@@ -33,14 +34,14 @@ public class FileUtils {
      * @param path the name of the file on the sd-card (+ path if needed)
      * @return
      */
-    public static ArrayList<Entry> loadEntriesFromFile(String path) {
+    public static List<Entry> loadEntriesFromFile(String path) {
 
         File sdcard = Environment.getExternalStorageDirectory();
 
         // Get the text file
         File file = new File(sdcard, path);
 
-        ArrayList<Entry> entries = new ArrayList<Entry>();
+        List<Entry> entries = new ArrayList<Entry>();
 
         try {
             @SuppressWarnings("resource")
@@ -74,7 +75,7 @@ public class FileUtils {
         // // Get the text file
         // File file = new File(sdcard, path);
         //
-        // ArrayList<Entry> entries = new ArrayList<Entry>();
+        // List<Entry> entries = new ArrayList<Entry>();
         // String label = "";
         //
         // try {
@@ -105,9 +106,9 @@ public class FileUtils {
      * @param path the name of the file in the assets folder (+ path if needed)
      * @return
      */
-    public static ArrayList<Entry> loadEntriesFromAssets(AssetManager am, String path) {
+    public static List<Entry> loadEntriesFromAssets(AssetManager am, String path) {
 
-        ArrayList<Entry> entries = new ArrayList<Entry>();
+        List<Entry> entries = new ArrayList<Entry>();
 
         BufferedReader reader = null;
         try {
@@ -151,7 +152,7 @@ public class FileUtils {
         return entries;
 
         // String label = null;
-        // ArrayList<Entry> entries = new ArrayList<Entry>();
+        // List<Entry> entries = new ArrayList<Entry>();
         //
         // BufferedReader reader = null;
         // try {
@@ -193,7 +194,7 @@ public class FileUtils {
      * @param ds
      * @param path
      */
-    public static void saveToSdCard(ArrayList<Entry> entries, String path) {
+    public static void saveToSdCard(List<Entry> entries, String path) {
 
         File sdcard = Environment.getExternalStorageDirectory();
 
@@ -226,9 +227,9 @@ public class FileUtils {
         }
     }
 
-    public static ArrayList<BarEntry> loadBarEntriesFromAssets(AssetManager am, String path) {
+    public static List<BarEntry> loadBarEntriesFromAssets(AssetManager am, String path) {
 
-        ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
+        List<BarEntry> entries = new ArrayList<BarEntry>();
 
         BufferedReader reader = null;
         try {

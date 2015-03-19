@@ -19,6 +19,7 @@ import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class LineChartRenderer extends DataRenderer {
 
@@ -94,7 +95,7 @@ public class LineChartRenderer extends DataRenderer {
 
     protected void drawDataSet(Canvas c, LineDataSet dataSet) {
 
-        ArrayList<Entry> entries = dataSet.getYVals();
+        List<Entry> entries = dataSet.getYVals();
 
         if (entries.size() < 1)
             return;
@@ -124,7 +125,7 @@ public class LineChartRenderer extends DataRenderer {
      * @param dataSet
      * @param entries
      */
-    protected void drawCubic(Canvas c, LineDataSet dataSet, ArrayList<Entry> entries) {
+    protected void drawCubic(Canvas c, LineDataSet dataSet, List<Entry> entries) {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
@@ -260,7 +261,7 @@ public class LineChartRenderer extends DataRenderer {
      * @param dataSet
      * @param entries
      */
-    protected void drawLinear(Canvas c, LineDataSet dataSet, ArrayList<Entry> entries) {
+    protected void drawLinear(Canvas c, LineDataSet dataSet, List<Entry> entries) {
 
         int dataSetIndex = mChart.getLineData().getIndexOfDataSet(dataSet);
 
@@ -338,7 +339,7 @@ public class LineChartRenderer extends DataRenderer {
         }
     }
 
-    protected void drawLinearFill(Canvas c, LineDataSet dataSet, ArrayList<Entry> entries,
+    protected void drawLinearFill(Canvas c, LineDataSet dataSet, List<Entry> entries,
             Transformer trans) {
 
         Entry entryFrom = dataSet.getEntryForXIndex(mMinX - 2);
@@ -372,7 +373,7 @@ public class LineChartRenderer extends DataRenderer {
      * @param entries
      * @return
      */
-    private Path generateFilledPath(ArrayList<Entry> entries, float fillMin, int from, int to) {
+    private Path generateFilledPath(List<Entry> entries, float fillMin, int from, int to) {
 
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
@@ -404,7 +405,7 @@ public class LineChartRenderer extends DataRenderer {
         if (mChart.getLineData().getYValCount() < mChart.getMaxVisibleCount()
                 * mViewPortHandler.getScaleX()) {
 
-            ArrayList<LineDataSet> dataSets = mChart.getLineData().getDataSets();
+            List<LineDataSet> dataSets = mChart.getLineData().getDataSets();
 
             for (int i = 0; i < dataSets.size(); i++) {
 
@@ -424,7 +425,7 @@ public class LineChartRenderer extends DataRenderer {
                 if (!dataSet.isDrawCirclesEnabled())
                     valOffset = valOffset / 2;
 
-                ArrayList<Entry> entries = dataSet.getYVals();
+                List<Entry> entries = dataSet.getYVals();
 
                 float[] positions = trans.generateTransformedValuesLine(
                         entries, mAnimator.getPhaseY());
@@ -462,7 +463,7 @@ public class LineChartRenderer extends DataRenderer {
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
 
-        ArrayList<LineDataSet> dataSets = mChart.getLineData().getDataSets();
+        List<LineDataSet> dataSets = mChart.getLineData().getDataSets();
 
         for (int i = 0; i < dataSets.size(); i++) {
 
@@ -474,7 +475,7 @@ public class LineChartRenderer extends DataRenderer {
             mCirclePaintInner.setColor(dataSet.getCircleHoleColor());
 
             Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
-            ArrayList<Entry> entries = dataSet.getYVals();
+            List<Entry> entries = dataSet.getYVals();
 
             CircleBuffer buffer = mCircleBuffers[i];
             buffer.setPhases(phaseX, phaseY);
