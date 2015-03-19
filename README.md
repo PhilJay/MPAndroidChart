@@ -1,4 +1,5 @@
  [![Android Arsenal](http://img.shields.io/badge/Android%20Arsenal-MPAndroidChart-blue.svg?style=flat)](http://android-arsenal.com/details/1/741)  [![Release](https://img.shields.io/github/release/PhilJay/MPAndroidChart.svg?label=maven central)](https://jitpack.io/#PhilJay/MPAndroidChart)      [![API](https://img.shields.io/badge/API-8%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=8)
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/PhilJay/mpandroidchart/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 MPAndroidChart
 =======
