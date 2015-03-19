@@ -360,7 +360,7 @@ public class LineChartRenderer extends DataRenderer {
 
         trans.pathValueToPixel(filled);
 
-        c.drawPath(filled, mRenderPaint);
+        mBitmapCanvas.drawPath(filled, mRenderPaint);
 
         // restore alpha
         mRenderPaint.setAlpha(255);
