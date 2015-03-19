@@ -16,6 +16,9 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
     /** List representing all colors that are used for the circles */
     private List<Integer> mCircleColors = null;
 
+    /** the color of the inner circles */
+    private int mCircleColorHole = Color.WHITE;
+
     /** the radius of the circle-shaped value indicators */
     private float mCircleSize = 8f;
 
@@ -171,7 +174,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
 
     /**
      * If set to true, the linechart lines are drawn in cubic-style instead of
-     * linear. Default: false
+     * linear. This affects performance! Default: false
      * 
      * @param enabled
      */
@@ -273,6 +276,24 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
      */
     public void resetCircleColors() {
         mCircleColors = new ArrayList<Integer>();
+    }
+
+    /**
+     * Sets the color of the inner circle of the line-circles.
+     * 
+     * @param color
+     */
+    public void setCircleColorHole(int color) {
+        mCircleColorHole = color;
+    }
+
+    /**
+     * Returns the color of the inner circle.
+     * 
+     * @return
+     */
+    public int getCircleHoleColor() {
+        return mCircleColorHole;
     }
 
     /**

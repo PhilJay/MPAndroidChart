@@ -142,7 +142,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      */
     private void calcXValAverageLength() {
 
-        if (mXVals.size() == 0) {
+        if (mXVals.size() <= 0) {
             mXValAverageLength = 1;
             return;
         }
@@ -514,30 +514,48 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * @param d
      */
     public void addDataSet(T d) {
-        if (mDataSets == null)
-            mDataSets = new ArrayList<T>();
-        mDataSets.add(d);
+
+        if (d == null)
+            return;
 
         mYValCount += d.getEntryCount();
         mYValueSum += d.getYValueSum();
 
-        if (mYMax < d.getYMax())
+        if (mDataSets.size() <= 0) {
+
             mYMax = d.getYMax();
-        if (mYMin > d.getYMin())
             mYMin = d.getYMin();
 
-        if (d.getAxisDependency() == AxisDependency.LEFT) {
+            if (d.getAxisDependency() == AxisDependency.LEFT) {
 
-            if (mLeftAxisMax < d.getYMax())
                 mLeftAxisMax = d.getYMax();
-            if (mLeftAxisMin > d.getYMin())
                 mLeftAxisMin = d.getYMin();
-        } else {
-            if (mRightAxisMax < d.getYMax())
+            } else {
                 mRightAxisMax = d.getYMax();
-            if (mRightAxisMin > d.getYMin())
                 mRightAxisMin = d.getYMin();
+            }
+        } else {
+
+            if (mYMax < d.getYMax())
+                mYMax = d.getYMax();
+            if (mYMin > d.getYMin())
+                mYMin = d.getYMin();
+
+            if (d.getAxisDependency() == AxisDependency.LEFT) {
+
+                if (mLeftAxisMax < d.getYMax())
+                    mLeftAxisMax = d.getYMax();
+                if (mLeftAxisMin > d.getYMin())
+                    mLeftAxisMin = d.getYMin();
+            } else {
+                if (mRightAxisMax < d.getYMax())
+                    mRightAxisMax = d.getYMax();
+                if (mRightAxisMin > d.getYMin())
+                    mRightAxisMin = d.getYMin();
+            }
         }
+
+        mDataSets.add(d);
 
         handleEmptyAxis(getFirstLeft(), getFirstRight());
     }
@@ -569,7 +587,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      */
     public boolean removeDataSet(T d) {
 
-        if (mDataSets == null || d == null)
+        if (d == null)
             return false;
 
         boolean removed = mDataSets.remove(d);
@@ -595,7 +613,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      */
     public boolean removeDataSet(int index) {
 
-        if (mDataSets == null || index >= mDataSets.size() || index < 0)
+        if (index >= mDataSets.size() || index < 0)
             return false;
 
         T set = mDataSets.get(index);
@@ -606,13 +624,10 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * Adds an Entry to the DataSet at the specified index. Entries are added to
      * the end of the list.
      * 
-     * @param e
+     * @param entry
      * @param dataSetIndex
      */
     public void addEntry(Entry e, int dataSetIndex) {
-
-        if (mDataSets == null)
-            mDataSets = new ArrayList<T>();
 
         if (mDataSets.size() > dataSetIndex && dataSetIndex >= 0) {
 
@@ -625,9 +640,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
                 mYMax = val;
             if (mYMin > val)
                 mYMin = val;
-
-            if (mDataSets == null)
-                mDataSets = new ArrayList<T>();
 
             T set = mDataSets.get(dataSetIndex);
 
@@ -875,5 +887,48 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         for (DataSet<?> set : mDataSets) {
             set.setDrawValues(enabled);
         }
+    }
+
+    /**
+     * Clears this data object from all DataSets and removes all Entries.
+     */
+    public void clearValues() {
+        mDataSets.clear();
+        notifyDataChanged();
+    }
+
+    /**
+     * Checks if this data object contains the specified Entry. Returns true if
+     * so, false if not. NOTE: Performance is pretty bad on this one, do not
+     * over-use in performance critical situations.
+     * 
+     * @param e
+     * @return
+     */
+    public boolean contains(Entry e) {
+
+        for (T set : mDataSets) {
+            if (set.contains(e))
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if this data object contains the specified DataSet. Returns true
+     * if so, false if not.
+     * 
+     * @param dataSet
+     * @return
+     */
+    public boolean contains(T dataSet) {
+
+        for (T set : mDataSets) {
+            if (set.equals(dataSet))
+                return true;
+        }
+
+        return false;
     }
 }

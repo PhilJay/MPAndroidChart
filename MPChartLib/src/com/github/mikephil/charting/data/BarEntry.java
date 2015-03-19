@@ -14,7 +14,7 @@ public class BarEntry extends Entry {
     /**
      * Constructor for stacked bar entries.
      * 
-     * @param vals
+     * @param vals - the stack values
      * @param xIndex
      */
     public BarEntry(float[] vals, int xIndex) {
@@ -36,7 +36,7 @@ public class BarEntry extends Entry {
     /**
      * Constructor for stacked bar entries.
      * 
-     * @param vals
+     * @param vals - the stack values
      * @param xIndex
      * @param label Additional description label.
      */

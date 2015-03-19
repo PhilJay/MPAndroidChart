@@ -33,6 +33,6 @@ public interface OnDrawListener {
 	 * @param dataSet
 	 *            the last drawn DataSet
 	 */
-	public void onDrawFinished(DataSet dataSet);
+	public void onDrawFinished(DataSet<?> dataSet);
 
 }

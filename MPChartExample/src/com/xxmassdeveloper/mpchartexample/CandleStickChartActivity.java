@@ -61,6 +61,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxisPosition.BOTTOM);
         xAxis.setSpaceBetweenLabels(2);
+        xAxis.setDrawGridLines(false);
 
         YAxis leftAxis = mChart.getAxisLeft();  
 //        leftAxis.setEnabled(false);
@@ -74,7 +75,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
 //        rightAxis.setStartAtZero(false);
 
         // setting data
-        mSeekBarX.setProgress(15);
+        mSeekBarX.setProgress(40);
         mSeekBarY.setProgress(100);
         
         mChart.getLegend().setEnabled(false);
@@ -161,10 +162,12 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         
-        int prog = (mSeekBarX.getProgress() + 1) * 2;
+        int prog = (mSeekBarX.getProgress() + 1);
 
         tvX.setText("" + prog);
         tvY.setText("" + (mSeekBarY.getProgress()));
+        
+        mChart.resetTracking();
 
         ArrayList<CandleEntry> yVals1 = new ArrayList<CandleEntry>();
 

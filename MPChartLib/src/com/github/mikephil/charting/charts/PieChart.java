@@ -33,7 +33,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     private RectF mCircleBox = new RectF();
 
     /** flag indicating if the x-labels should be drawn or not */
-    protected boolean mDrawXLabels = true;
+    private boolean mDrawXLabels = true;
 
     /** array that holds the width of each pie-slice in degrees */
     private float[] mDrawAngles;
@@ -93,10 +93,10 @@ public class PieChart extends PieRadarChartBase<PieData> {
         if (mDataNotSet)
             return;
 
+        mRenderer.drawData(canvas);
+
         if (mHighlightEnabled && valuesToHighlight())
             mRenderer.drawHighlighted(canvas, mIndicesToHightlight);
-
-        mRenderer.drawData(canvas);
 
         mRenderer.drawExtras(canvas);
 
@@ -106,7 +106,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
         drawDescription(canvas);
 
-//        canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
+        // canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
     }
 
     @Override
@@ -488,6 +488,11 @@ public class PieChart extends PieRadarChartBase<PieData> {
         mUsePercentValues = enabled;
     }
 
+    /**
+     * Returns true if using percentage values is enabled for the chart.
+     * 
+     * @return
+     */
     public boolean isUsePercentValuesEnabled() {
         return mUsePercentValues;
     }

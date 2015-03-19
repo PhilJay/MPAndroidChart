@@ -57,6 +57,7 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
 
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
+        mChart.setDrawGridBackground(false);
         
         // no description text
         mChart.setDescription("");

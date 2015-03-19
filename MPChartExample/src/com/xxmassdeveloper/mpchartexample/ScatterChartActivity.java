@@ -214,7 +214,7 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         set2.setScatterShape(ScatterShape.CIRCLE);
         set2.setColor(ColorTemplate.COLORFUL_COLORS[1]);
         ScatterDataSet set3 = new ScatterDataSet(yVals3, "DS 3");
-        set3.setScatterShape(ScatterShape.TRIANGLE);
+        set3.setScatterShape(ScatterShape.CROSS);
         set3.setColor(ColorTemplate.COLORFUL_COLORS[2]);
 
         set1.setScatterShapeSize(8f);

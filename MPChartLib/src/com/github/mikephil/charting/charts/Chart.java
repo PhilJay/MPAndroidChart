@@ -37,11 +37,11 @@ import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.renderer.DataRenderer;
 import com.github.mikephil.charting.renderer.LegendRenderer;
-import com.github.mikephil.charting.renderer.ViewPortHandler;
 import com.github.mikephil.charting.utils.DefaultValueFormatter;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -75,7 +75,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     protected ValueFormatter mDefaultFormatter;
 
     /** the canvas that is used for drawing on the bitmap */
-//    protected Canvas mDrawCanvas;
+    // protected Canvas mDrawCanvas;
 
     /**
      * paint object used for drawing the description text in the bottom right
@@ -168,7 +168,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     protected void init() {
 
         setWillNotDraw(false);
-//         setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        // setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
         if (android.os.Build.VERSION.SDK_INT < 11)
             mAnimator = new ChartAnimator();
@@ -252,21 +252,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public void setData(T data) {
 
-        // if (data == null || !data.isValid()) {
-        // Log.e(LOG_TAG,
-        // "Cannot set data for chart. Provided chart values are null or contain less than 1 entry.");
-        // mDataNotSet = true;
-        // return;
-        // }
-
         if (data == null) {
             Log.e(LOG_TAG,
                     "Cannot set data for chart. Provided data object is null.");
             return;
         }
-
-        // Log.i(LOG_TAG, "xvalcount: " + data.getXValCount());
-        // Log.i(LOG_TAG, "entrycount: " + data.getYValCount());
 
         // LET THE CHART KNOW THERE IS DATA
         mDataNotSet = false;
@@ -289,12 +279,21 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
-     * Clears the chart from all data and refreshes it (by calling
-     * invalidate()).
+     * Clears the chart from all data (sets it to null) and refreshes it (by
+     * calling invalidate()).
      */
     public void clear() {
         mData = null;
         mDataNotSet = true;
+        invalidate();
+    }
+
+    /**
+     * Removes all DataSets (and thereby Entries) from the chart. Does not
+     * remove the x-values. Also refreshes the chart by calling invalidate().
+     */
+    public void clearValues() {
+        mData.clearValues();
         invalidate();
     }
 
@@ -390,12 +389,12 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             mOffsetsCalculated = true;
         }
 
-//        if (mDrawCanvas == null) {
-//            mDrawCanvas = new Canvas(mDrawBitmap);
-//        }
+        // if (mDrawCanvas == null) {
+        // mDrawCanvas = new Canvas(mDrawBitmap);
+        // }
 
         // clear everything
-//        mDrawBitmap.eraseColor(Color.TRANSPARENT);
+        // mDrawBitmap.eraseColor(Color.TRANSPARENT);
     }
 
     /**
@@ -404,8 +403,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     protected void drawDescription(Canvas c) {
 
         c.drawText(mDescription, getWidth() - mViewPortHandler.offsetRight() - 10,
-                        getHeight() - mViewPortHandler.offsetBottom()
-                                - 10, mDescPaint);
+                getHeight() - mViewPortHandler.offsetBottom()
+                        - 10, mDescPaint);
     }
 
     /**
@@ -418,6 +417,16 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * chart
      */
     protected Highlight[] mIndicesToHightlight = new Highlight[0];
+
+    /**
+     * Returns the array of currently highlighted values. This might be null or
+     * empty if nothing is highlighted.
+     * 
+     * @return
+     */
+    public Highlight[] getHighlighted() {
+        return mIndicesToHightlight;
+    }
 
     /**
      * Returns true if there are values to highlight, false if there are no
@@ -671,14 +680,14 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     /** BELOW THIS ONLY GETTERS AND SETTERS */
 
-//    /**
-//     * Returns the canvas object the chart uses for drawing.
-//     *
-//     * @return
-//     */
-//    public Canvas getCanvas() {
-//        return mDrawCanvas;
-//    }
+    // /**
+    // * Returns the canvas object the chart uses for drawing.
+    // *
+    // * @return
+    // */
+    // public Canvas getCanvas() {
+    // return mDrawCanvas;
+    // }
 
     /**
      * Returns the default ValueFormatter that has been determined by the chart
@@ -860,6 +869,15 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public void setLogEnabled(boolean enabled) {
         mLogEnabled = enabled;
+    }
+
+    /**
+     * Returns true if log-output is enabled for the chart, fals if not.
+     * 
+     * @return
+     */
+    public boolean isLogEnabled() {
+        return mLogEnabled;
     }
 
     /**
@@ -1201,6 +1219,17 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
+     * Sets a new DataRenderer object for the chart.
+     * 
+     * @param renderer
+     */
+    public void setRenderer(DataRenderer renderer) {
+
+        if (renderer != null)
+            mRenderer = renderer;
+    }
+
+    /**
      * Returns the bitmap that represents the chart.
      *
      * @return
@@ -1345,7 +1374,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         if (w > 0 && h > 0 && w < 10000 && h < 10000) {
             // create a new bitmap with the new dimensions
             mDrawBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_4444);
-//            mDrawCanvas = new Canvas(mDrawBitmap);
+            // mDrawCanvas = new Canvas(mDrawBitmap);
             mViewPortHandler.setChartDimens(w, h);
 
             if (mLogEnabled)
@@ -1365,5 +1394,25 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     @Override
     public PointF getCenterOfView() {
         return getCenter();
+    }
+
+    /**
+     * Setting this to true will set the layer-type HARDWARE for the view, false
+     * will set layer-type SOFTWARE.
+     * 
+     * @param enabled
+     */
+    public void setHardwareAccelerationEnabled(boolean enabled) {
+
+        if (android.os.Build.VERSION.SDK_INT >= 11) {
+
+            if (enabled)
+                setLayerType(View.LAYER_TYPE_HARDWARE, null);
+            else
+                setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        } else {
+            Log.e(LOG_TAG,
+                    "Cannot enable/disable hardware acceleration for devices below API level 11.");
+        }
     }
 }

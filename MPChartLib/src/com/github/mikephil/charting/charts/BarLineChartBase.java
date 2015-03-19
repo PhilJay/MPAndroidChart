@@ -65,14 +65,16 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     /** if true, dragging is enabled for the chart */
     private boolean mDragEnabled = true;
 
-    /** if true, scaling is enabled for the chart */
-    private boolean mScaleEnabled = true;
+    private boolean mScaleXEnabled = true;
+    private boolean mScaleYEnabled = true;
 
     /** if true, data filtering is enabled */
     protected boolean mFilterData = false;
 
     /** paint object for the (by default) lightgrey background of the grid */
     protected Paint mGridBackgroundPaint;
+
+    protected Paint mBorderPaint;
 
     /**
      * if set to true, the highlight indicator (lines for linechart, dark bar
@@ -82,6 +84,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
     /** flag indicating if the grid background should be drawn or not */
     protected boolean mDrawGridBackground = true;
+
+    protected boolean mDrawBorders = false;
 
     /** the listener for user drawing on the chart */
     protected OnDrawListener mDrawListener;
@@ -136,15 +140,21 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         mXAxisRenderer = new XAxisRenderer(mViewPortHandler, mXAxis, mLeftAxisTransformer);
 
-        mListener = new BarLineChartTouchListener(this, mViewPortHandler.getMatrixTouch());
+        mListener = new BarLineChartTouchListener<BarLineChartBase<? extends BarLineScatterCandleData<? extends BarLineScatterCandleDataSet<? extends Entry>>>>(
+                this, mViewPortHandler.getMatrixTouch());
 
         mGridBackgroundPaint = new Paint();
         mGridBackgroundPaint.setStyle(Style.FILL);
         // mGridBackgroundPaint.setColor(Color.WHITE);
         mGridBackgroundPaint.setColor(Color.rgb(240, 240, 240)); // light
         // grey
+
+        mBorderPaint = new Paint();
+        mBorderPaint.setStyle(Style.STROKE);
+        mBorderPaint.setColor(Color.BLACK);
+        mBorderPaint.setStrokeWidth(Utils.convertDpToPixel(1f));
     }
-   
+
     // for performance tracking
     private long totalTime = 0;
     private long drawCycles = 0;
@@ -158,17 +168,17 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         long starttime = System.currentTimeMillis();
 
-        // if data filtering is enabled
-        if (mFilterData) {
-            mData = getFilteredData();
-
-            Log.i(LOG_TAG, "FilterTime: " + (System.currentTimeMillis() -
-                    starttime) + " ms");
-            starttime = System.currentTimeMillis();
-        } else {
-            mData = getData();
-            // Log.i(LOG_TAG, "Filtering disabled.");
-        }
+        // // if data filtering is enabled
+        // if (mFilterData) {
+        // mData = getFilteredData();
+        //
+        // Log.i(LOG_TAG, "FilterTime: " + (System.currentTimeMillis() -
+        // starttime) + " ms");
+        // starttime = System.currentTimeMillis();
+        // } else {
+        // mData = getData();
+        // // Log.i(LOG_TAG, "Filtering disabled.");
+        // }
 
         if (mXAxis.isAdjustXLabelsEnabled())
             calcModulus();
@@ -176,8 +186,14 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         // execute all drawing commands
         drawGridBackground(canvas);
 
-        mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum);
-        mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum);
+        if (mAxisLeft.isEnabled())
+            mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum);
+        if (mAxisRight.isEnabled())
+            mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum);
+        
+        mXAxisRenderer.renderAxisLine(canvas);
+        mAxisRendererLeft.renderAxisLine(canvas);
+        mAxisRendererRight.renderAxisLine(canvas);
 
         // make sure the graph values and grid cannot be drawn outside the
         // content-rect
@@ -189,7 +205,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mAxisRendererRight.renderGridLines(canvas);
 
         mRenderer.drawData(canvas);
-        
+
         mAxisRendererLeft.renderLimitLines(canvas);
         mAxisRendererRight.renderLimitLines(canvas);
 
@@ -203,13 +219,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mRenderer.drawExtras(canvas);
 
         mXAxisRenderer.renderAxisLabels(canvas);
-        mXAxisRenderer.renderAxisLine(canvas);
-
         mAxisRendererLeft.renderAxisLabels(canvas);
-        mAxisRendererLeft.renderAxisLine(canvas);
-
         mAxisRendererRight.renderAxisLabels(canvas);
-        mAxisRendererRight.renderAxisLine(canvas);
 
         mRenderer.drawValues(canvas);
 
@@ -220,17 +231,18 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         drawDescription(canvas);
 
-//        canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
+        // canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
 
-        if (true) {
+        if (mLogEnabled) {
             long drawtime = (System.currentTimeMillis() - starttime);
             totalTime += drawtime;
             drawCycles += 1;
             long average = totalTime / drawCycles;
-            Log.i(LOG_TAG, "Drawtime: " + drawtime + " ms, average: " + average + " ms, cycles: " + drawCycles);
+            Log.i(LOG_TAG, "Drawtime: " + drawtime + " ms, average: " + average + " ms, cycles: "
+                    + drawCycles);
         }
     }
-    
+
     /**
      * RESET PERFORMANCE TRACKING FIELDS
      */
@@ -268,8 +280,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             if (mLogEnabled)
                 Log.i(LOG_TAG, "Preparing...");
         }
-        
-        mRenderer.initBuffers();
+
+        if (mRenderer != null)
+            mRenderer.initBuffers();
 
         calcMinMax();
 
@@ -351,11 +364,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             }
 
             // offsets for y-labels
-            if (mAxisLeft.isEnabled()) {
+            if (mAxisLeft.needsOffset()) {
                 offsetLeft += mAxisLeft.getRequiredWidthSpace(mAxisRendererLeft.getAxisPaint());
             }
 
-            if (mAxisRight.isEnabled()) {
+            if (mAxisRight.needsOffset()) {
                 offsetRight += mAxisRight.getRequiredWidthSpace(mAxisRendererRight.getAxisPaint());
             }
 
@@ -413,6 +426,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         if (mLogEnabled)
             Log.i(LOG_TAG, "X-Axis modulus: " + mXAxis.mAxisLabelModulus + ", x-axis label width: "
                     + mXAxis.mLabelWidth + ", content width: " + mViewPortHandler.contentWidth());
+
+        if (mXAxis.mAxisLabelModulus < 1)
+            mXAxis.mAxisLabelModulus = 1;
     }
 
     @Override
@@ -449,11 +465,15 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     protected void drawGridBackground(Canvas c) {
 
-        if (!mDrawGridBackground)
-            return;
+        if (mDrawGridBackground) {
 
-        // draw the grid background
-        c.drawRect(mViewPortHandler.getContentRect(), mGridBackgroundPaint);
+            // draw the grid background
+            c.drawRect(mViewPortHandler.getContentRect(), mGridBackgroundPaint);
+        }
+
+        if (mDrawBorders) {
+            c.drawRect(mViewPortHandler.getContentRect(), mBorderPaint);
+        }
     }
 
     /**
@@ -529,6 +549,17 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     public void fitScreen() {
         Matrix save = mViewPortHandler.fitScreen();
         mViewPortHandler.refresh(save, this, true);
+    }
+
+    /**
+     * Sets the minimum scale value to which can be zoomed out. 1f = fitScreen
+     * 
+     * @param scaleX
+     * @param scaleY
+     */
+    public void setScaleMinima(float scaleX, float scaleY) {
+        mViewPortHandler.setMinimumScaleX(scaleX);
+        mViewPortHandler.setMinimumScaleY(scaleY);
     }
 
     /**
@@ -627,11 +658,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             final float right, final float bottom) {
 
         mCustomViewPortEnabled = true;
-
         post(new Runnable() {
 
             @Override
             public void run() {
+
                 mViewPortHandler.restrainViewPort(left, top, right, bottom);
             }
         });
@@ -770,22 +801,29 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
     /**
      * Set this to true to enable scaling (zooming in and out by gesture) for
-     * the chart (this does not effect dragging).
+     * the chart (this does not effect dragging) on both X- and Y-Axis.
      * 
      * @param enabled
      */
     public void setScaleEnabled(boolean enabled) {
-        this.mScaleEnabled = enabled;
+        this.mScaleXEnabled = enabled;
+        this.mScaleYEnabled = enabled;
     }
 
-    /**
-     * Returns true if scaling (zooming in and out by gesture) is enabled for
-     * the chart, false if not.
-     * 
-     * @return
-     */
-    public boolean isScaleEnabled() {
-        return mScaleEnabled;
+    public void setScaleXEnabled(boolean enabled) {
+        mScaleXEnabled = enabled;
+    }
+
+    public void setScaleYEnabled(boolean enabled) {
+        mScaleYEnabled = enabled;
+    }
+
+    public boolean isScaleXEnabled() {
+        return mScaleXEnabled;
+    }
+
+    public boolean isScaleYEnabled() {
+        return mScaleYEnabled;
     }
 
     /**
@@ -814,6 +852,34 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     public void setDrawGridBackground(boolean enabled) {
         mDrawGridBackground = enabled;
+    }
+
+    /**
+     * Sets drawing the borders rectangle to true. If this is enabled, there is
+     * no point drawing the axis-lines of x- and y-axis.
+     * 
+     * @param enabled
+     */
+    public void setDrawBorders(boolean enabled) {
+        mDrawBorders = enabled;
+    }
+
+    /**
+     * Sets the width of the border lines in dp.
+     * 
+     * @param width
+     */
+    public void setBorderWidth(float width) {
+        mBorderPaint.setStrokeWidth(Utils.convertDpToPixel(width));
+    }
+
+    /**
+     * Sets the color of the chart border lines.
+     * 
+     * @param color
+     */
+    public void setBorderColor(int color) {
+        mBorderPaint.setColor(color);
     }
 
     /**
@@ -1172,43 +1238,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         if (mAxisRight.isInverted())
             return true;
         return false;
-    }
-
-    /**
-     * returns the filtered ChartData object depending on approximator settings,
-     * current scale level and x- and y-axis ratio
-     * 
-     * @return
-     */
-    private T getFilteredData() {
-        //
-        // float deltaRatio = mDeltaY / mDeltaX;
-        // float scaleRatio = mScaleY / mScaleX;
-        //
-        // // set the determined ratios
-        // mApproximator.setRatios(deltaRatio, scaleRatio);
-        //
-        // // Log.i("Approximator", "DeltaRatio: " + deltaRatio +
-        // ", ScaleRatio: "
-        // // + scaleRatio);
-        //
-        // ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
-        //
-        // for (int j = 0; j < mOriginalData.getDataSetCount(); j++) {
-        //
-        // DataSet old = mOriginalData.getDataSetByIndex(j);
-        //
-        // // do the filtering
-        // ArrayList<Entry> approximated = mApproximator.filter(old.getYVals());
-        //
-        // DataSet set = new DataSet(approximated, old.getLabel());
-        // dataSets.add(set);
-        // }
-        //
-        // ChartData d = new ChartData(mOriginalData.getXVals(), dataSets);
-        // return d;
-
-        return null;
     }
 
     @Override

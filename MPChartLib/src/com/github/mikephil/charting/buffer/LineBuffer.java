@@ -8,7 +8,7 @@ import java.util.List;
 public class LineBuffer extends AbstractBuffer<Entry> {
 
     public LineBuffer(int size) {
-        super(size);
+        super((size < 4) ? 4 : size);
     }
 
     public void moveTo(float x, float y) {
@@ -18,6 +18,10 @@ public class LineBuffer extends AbstractBuffer<Entry> {
 
         buffer[index++] = x;
         buffer[index++] = y;
+
+        // in case just one entry, this is overwritten when lineTo is called
+        buffer[index] = x;
+        buffer[index + 1] = y;
     }
 
     public void lineTo(float x, float y) {
@@ -40,12 +44,14 @@ public class LineBuffer extends AbstractBuffer<Entry> {
     public void feed(List<Entry> entries) {
         moveTo(entries.get(0).getXIndex(), entries.get(0).getVal());
 
-        for (int i = 1; i < entries.size(); i++) {
+        float size = entries.size() * phaseX;
+
+        for (int i = 1; i < size; i++) {
 
             Entry e = entries.get(i);
-            lineTo(e.getXIndex(), e.getVal());
+            lineTo(e.getXIndex(), e.getVal() * phaseY);
         }
-        
+
         reset();
     }
 }

@@ -93,34 +93,13 @@ public class Entry {
     }
 
     /**
-     * Sets additional data this Entry should represents.
+     * Sets additional data this Entry should represent.
      * 
      * @param data
      */
     public void setData(Object data) {
         this.mData = data;
     }
-
-    // /**
-    // * If this Enry represents mulitple values (e.g. Stacked BarChart), it
-    // will
-    // * return the sum of them, otherwise just the one value it represents.
-    // *
-    // * @return
-    // */
-    // public float getSum() {
-    // if (mVals == null)
-    // return mVal;
-    // else {
-    //
-    // float sum = 0f;
-    //
-    // for (int i = 0; i < mVals.length; i++)
-    // sum += mVals[i];
-    //
-    // return sum;
-    // }
-    // }
 
     /**
      * returns an exact copy of the entry
@@ -134,7 +113,8 @@ public class Entry {
 
     /**
      * Compares value, xIndex and data of the entries. Returns true if entries
-     * are equal, false if not.
+     * are equal in those points, false if not. Does not check by hash-code like
+     * it's done by the "equals" method.
      * 
      * @param e
      * @return

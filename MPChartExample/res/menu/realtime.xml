@@ -5,4 +5,8 @@
         android:id="@+id/actionAdd"
         android:title="Feed new Entry">
     </item>
+    <item
+        android:id="@+id/actionClear"
+        android:title="Clear Values">
+    </item>
 </menu>

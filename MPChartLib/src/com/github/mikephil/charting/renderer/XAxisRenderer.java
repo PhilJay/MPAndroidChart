@@ -4,12 +4,12 @@ package com.github.mikephil.charting.renderer;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
-import android.util.Log;
 
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.List;
 
@@ -83,6 +83,8 @@ public class XAxisRenderer extends AxisRenderer {
 
     @Override
     public void renderAxisLine(Canvas c) {
+        
+        calcXBounds(mTrans);
 
         if (!mXAxis.isDrawAxisLineEnabled() || !mXAxis.isEnabled())
             return;
@@ -119,13 +121,16 @@ public class XAxisRenderer extends AxisRenderer {
                 0f, 0f
         };
 
-        int minx = (int)
-                mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), 0).x;
-        int maxx = (int)
-                mTrans.getValuesByTouchPoint(mViewPortHandler.contentRight(),
-                        0).x;
+        int maxx = mMaxX;
+        int minx = mMinX;
 
-        for (int i = minx; i < maxx; i += mXAxis.mAxisLabelModulus) {
+        if (maxx >= mXAxis.getValues().size())
+            maxx = mXAxis.getValues().size()-1;
+
+        if (minx < 0)
+            minx = 0;
+
+        for (int i = minx; i <= maxx; i += mXAxis.mAxisLabelModulus) {
 
             position[0] = i;
 
@@ -169,17 +174,11 @@ public class XAxisRenderer extends AxisRenderer {
         float[] position = new float[] {
                 0f, 0f
         };
-        
-        int minx = (int)
-                mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), 0).x;
-        int maxx = (int)
-                mTrans.getValuesByTouchPoint(mViewPortHandler.contentRight(),
-                        0).x;
 
         mGridPaint.setColor(mXAxis.getGridColor());
         mGridPaint.setStrokeWidth(mXAxis.getGridLineWidth());
 
-        for (int i = minx; i < maxx; i += mXAxis.mAxisLabelModulus) {
+        for (int i = mMinX; i <= mMaxX; i += mXAxis.mAxisLabelModulus) {
 
             position[0] = i;
 

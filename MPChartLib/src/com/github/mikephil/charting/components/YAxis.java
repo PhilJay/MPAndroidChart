@@ -2,6 +2,7 @@
 package com.github.mikephil.charting.components;
 
 import android.graphics.Paint;
+import android.util.Log;
 
 import com.github.mikephil.charting.utils.DefaultValueFormatter;
 import com.github.mikephil.charting.utils.Utils;
@@ -14,7 +15,8 @@ import java.util.List;
  * Class representing the y-axis labels settings and its entries. Only use the
  * setter methods to modify it. Do not access public variables directly. Be
  * aware that not all features the YLabels class provides are suitable for the
- * RadarChart.
+ * RadarChart. Customizations that affect the value range of the axis need to be
+ * applied before setting data for the chart.
  * 
  * @author Philipp Jahoda
  */
@@ -93,6 +95,12 @@ public class YAxis extends AxisBase {
      */
     public enum AxisDependency {
         LEFT, RIGHT
+    }
+
+    public YAxis() {
+        super();
+        this.mAxisDependency = AxisDependency.LEFT;
+        this.mLimitLines = new ArrayList<LimitLine>();
     }
 
     public YAxis(AxisDependency position) {
@@ -188,7 +196,7 @@ public class YAxis extends AxisBase {
 
     /**
      * If this is set to true, the y-axis is inverted which means that low
-     * values are on top of the chart, high values on bottom. 
+     * values are on top of the chart, high values on bottom.
      * 
      * @param enabled
      */
@@ -230,6 +238,11 @@ public class YAxis extends AxisBase {
      */
     public void addLimitLine(LimitLine l) {
         mLimitLines.add(l);
+
+        if (mLimitLines.size() > 6) {
+            Log.e("MPAndroiChart",
+                    "Warning! You have more than 6 LimitLines on your axis, do you really want that?");
+        }
     }
 
     /**
@@ -245,7 +258,7 @@ public class YAxis extends AxisBase {
      * Removes all LimitLines from the axis.
      */
     public void removeAllLimitLines() {
-        mLimitLines = new ArrayList<LimitLine>();
+        mLimitLines.clear();
     }
 
     /**
@@ -426,5 +439,19 @@ public class YAxis extends AxisBase {
             return true;
 
         return false;
+    }
+
+    /**
+     * Returns true if this axis needs horizontal offset, false if no offset is
+     * needed.
+     * 
+     * @return
+     */
+    public boolean needsOffset() {
+        if (isEnabled() && isDrawLabelsEnabled()
+                && getLabelPosition() == YAxisLabelPosition.OUTSIDE_CHART)
+            return true;
+        else
+            return false;
     }
 }

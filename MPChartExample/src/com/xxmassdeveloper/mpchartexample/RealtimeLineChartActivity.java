@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -61,7 +62,7 @@ public class RealtimeLineChartActivity extends DemoBase implements
 
         LineData data = new LineData();
         data.setValueTextColor(Color.WHITE);
-        
+
         // add empty data
         mChart.setData(data);
 
@@ -87,7 +88,7 @@ public class RealtimeLineChartActivity extends DemoBase implements
         leftAxis.setTextColor(Color.WHITE);
         leftAxis.setAxisMaxValue(120f);
         leftAxis.setDrawGridLines(true);
-        
+
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setEnabled(false);
     }
@@ -106,12 +107,17 @@ public class RealtimeLineChartActivity extends DemoBase implements
                 addEntry();
                 break;
             }
+            case R.id.actionClear: {
+                mChart.clearValues();
+                Toast.makeText(this, "Chart cleared!", Toast.LENGTH_SHORT).show();
+                break;
+            }
         }
         return true;
     }
 
     private int year = 15;
-    
+
     private void addEntry() {
 
         LineData data = mChart.getData();
@@ -127,24 +133,26 @@ public class RealtimeLineChartActivity extends DemoBase implements
             }
 
             // add a new x-value first
-            data.addXValue(mMonths[data.getXValCount() % 12] + " " + (year + data.getXValCount() / 12));
+            data.addXValue(mMonths[data.getXValCount() % 12] + " "
+                    + (year + data.getXValCount() / 12));
             data.addEntry(new Entry((float) (Math.random() * 40) + 40f, set.getEntryCount()), 0);
 
             // let the chart know it's data has changed
             mChart.notifyDataSetChanged();
 
             // limit the number of visible entries
-             mChart.setVisibleXRange(6);
+            mChart.setVisibleXRange(6);
             // mChart.setVisibleYRange(30, AxisDependency.LEFT);
-            
-             // move to the latest entry
-             mChart.moveViewToX(data.getXValCount()-7);
-             
-             // this automatically refreshes the chart (calls invalidate())
-//             mChart.moveViewTo(data.getXValCount()-7, 55f, AxisDependency.LEFT);
+
+            // move to the latest entry
+            mChart.moveViewToX(data.getXValCount() - 7);
+
+            // this automatically refreshes the chart (calls invalidate())
+            // mChart.moveViewTo(data.getXValCount()-7, 55f,
+            // AxisDependency.LEFT);
 
             // redraw the chart
-//            mChart.invalidate();
+            // mChart.invalidate();
         }
     }
 

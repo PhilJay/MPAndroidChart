@@ -78,10 +78,12 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         
         XAxis x = mChart.getXAxis();
         x.setTypeface(tf);
+        x.setEnabled(false);
         
         YAxis y = mChart.getAxisLeft();
         y.setTypeface(tf);
         y.setLabelCount(5);
+        y.setEnabled(false);
         
         mChart.getAxisRight().setEnabled(false);
 
@@ -279,7 +281,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         set1.setHighLightColor(Color.rgb(244, 117, 117));
         set1.setColor(Color.rgb(104, 241, 175));
         set1.setFillColor(ColorTemplate.getHoloBlue());
-
+        
         // create a data object with the datasets
         LineData data = new LineData(xVals, set1);
         data.setValueTypeface(tf);

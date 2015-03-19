@@ -11,6 +11,7 @@ import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 public abstract class DataRenderer extends Renderer {
 
@@ -21,7 +22,7 @@ public abstract class DataRenderer extends Renderer {
 
     /** paint used for highlighting values */
     protected Paint mHighlightPaint;
-    
+
     protected Paint mDrawPaint;
 
     /**
@@ -36,7 +37,7 @@ public abstract class DataRenderer extends Renderer {
 
         mRenderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mRenderPaint.setStyle(Style.FILL);
-        
+
         mDrawPaint = new Paint(Paint.DITHER_FLAG);
 
         mValuePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -82,7 +83,7 @@ public abstract class DataRenderer extends Renderer {
         mValuePaint.setTypeface(set.getValueTypeface());
         mValuePaint.setTextSize(set.getValueTextSize());
     }
-    
+
     public abstract void initBuffers();
 
     public abstract void drawData(Canvas c);
