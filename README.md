@@ -8,9 +8,7 @@ A simple and powerful charting library for Android, supporting line-, bar-, scat
 
 Remember: *It's all about the looks.*
 
-The **experimental** branch might contain new features that are still buggy. It is recommended to be safe and only make use of the code on the **master** branch.
-
-Forks, pull-requests or any other forms of contribution are **always welcome**.
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/design/feature_graphic.png)
 
 Donations
 -----
