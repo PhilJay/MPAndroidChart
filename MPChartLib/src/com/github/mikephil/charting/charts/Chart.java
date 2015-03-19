@@ -402,9 +402,12 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     protected void drawDescription(Canvas c) {
 
-        c.drawText(mDescription, getWidth() - mViewPortHandler.offsetRight() - 10,
-                getHeight() - mViewPortHandler.offsetBottom()
-                        - 10, mDescPaint);
+        if (!mDescription.equals("")) {
+
+            c.drawText(mDescription, getWidth() - mViewPortHandler.offsetRight() - 10,
+                    getHeight() - mViewPortHandler.offsetBottom()
+                            - 10, mDescPaint);
+        }
     }
 
     /**
