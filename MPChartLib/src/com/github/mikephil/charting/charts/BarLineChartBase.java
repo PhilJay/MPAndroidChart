@@ -190,7 +190,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum);
         if (mAxisRight.isEnabled())
             mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum);
-        
+
         mXAxisRenderer.renderAxisLine(canvas);
         mAxisRendererLeft.renderAxisLine(canvas);
         mAxisRendererRight.renderAxisLine(canvas);
@@ -1062,6 +1062,34 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             return mData.getDataSetByIndex(h.getDataSetIndex());
         }
         return null;
+    }
+
+    /**
+     * Returns the lowest x-index (value on the x-axis) that is still visible on
+     * the chart.
+     * 
+     * @return
+     */
+    public int getLowestVisibleXIndex() {
+        float[] pts = new float[] {
+                mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom()
+        };
+        getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
+        return (pts[0] <= 0) ? 0 : (int) (pts[0] + 1);
+    }
+
+    /**
+     * Returns the highest x-index (value on the x-axis) that is still visible
+     * on the chart.
+     * 
+     * @return
+     */
+    public int getHighestVisibleXIndex() {
+        float[] pts = new float[] {
+                mViewPortHandler.contentRight(), mViewPortHandler.contentBottom()
+        };
+        getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
+        return (pts[0] >= mData.getXValCount()) ? mData.getXValCount() - 1 : (int) pts[0];
     }
 
     /**
