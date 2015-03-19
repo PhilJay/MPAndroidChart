@@ -39,10 +39,10 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     private boolean mDrawValuesForWholeStack = true;
 
     /**
-     * if set to true, a grey area is darawn behind each bar that indicates the
+     * if set to true, a grey area is drawn behind each bar that indicates the
      * maximum value
      */
-    protected boolean mDrawBarShadow = true;
+    private boolean mDrawBarShadow = false;
 
     public BarChart(Context context) {
         super(context);

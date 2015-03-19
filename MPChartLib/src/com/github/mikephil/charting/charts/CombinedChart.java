@@ -44,10 +44,10 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
     private boolean mDrawValuesForWholeStack = true;
 
     /**
-     * if set to true, a grey area is darawn behind each bar that indicates the
+     * if set to true, a grey area is drawn behind each bar that indicates the
      * maximum value
      */
-    private boolean mDrawBarShadow = true;
+    private boolean mDrawBarShadow = false;
 
     protected DrawOrder[] mDrawOrder = new DrawOrder[] {
             DrawOrder.BAR, DrawOrder.LINE, DrawOrder.CANDLE, DrawOrder.SCATTER
