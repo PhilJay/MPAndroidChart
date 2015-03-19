@@ -118,6 +118,9 @@ public class LineChartRenderer extends DataRenderer {
         mRenderPaint.setPathEffect(null);
     }
 
+<<<<<<< HEAD
+    protected void drawCubic(Canvas c, LineDataSet dataSet, List<Entry> entries) {
+=======
     /**
      * Draws a cubic line.
      * 
@@ -125,7 +128,8 @@ public class LineChartRenderer extends DataRenderer {
      * @param dataSet
      * @param entries
      */
-    protected void drawCubic(Canvas c, LineDataSet dataSet, List<Entry> entries) {
+    protected void drawCubic(Canvas c, LineDataSet dataSet, ArrayList<Entry> entries) {
+>>>>>>> upstream/master
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
@@ -142,7 +146,12 @@ public class LineChartRenderer extends DataRenderer {
 
         cubicPath.reset();
 
+<<<<<<< HEAD
+        List<CPoint> points = new ArrayList<CPoint>();
+        for (int i = minx; i < maxx; i++) {
+=======
         float size = entries.size() * phaseX;
+>>>>>>> upstream/master
 
         if (entries.size() > 2) {
 
@@ -254,6 +263,9 @@ public class LineChartRenderer extends DataRenderer {
         mRenderPaint.setAlpha(255);
     }
 
+<<<<<<< HEAD
+    protected void drawLinear(Canvas c, LineDataSet dataSet, List<Entry> entries) {
+=======
     /**
      * Draws a normal line.
      * 
@@ -261,7 +273,8 @@ public class LineChartRenderer extends DataRenderer {
      * @param dataSet
      * @param entries
      */
-    protected void drawLinear(Canvas c, LineDataSet dataSet, List<Entry> entries) {
+    protected void drawLinear(Canvas c, LineDataSet dataSet, ArrayList<Entry> entries) {
+>>>>>>> upstream/master
 
         int dataSetIndex = mChart.getLineData().getIndexOfDataSet(dataSet);
 
@@ -399,6 +412,33 @@ public class LineChartRenderer extends DataRenderer {
         return filled;
     }
 
+<<<<<<< HEAD
+    /**
+     * Generates the path that is used for drawing a single line.
+     * 
+     * @param entries
+     * @return
+     */
+    private Path generateLinePath(List<Entry> entries) {
+
+        float phaseX = mAnimator.getPhaseX();
+        float phaseY = mAnimator.getPhaseY();
+
+        Path line = new Path();
+        line.moveTo(entries.get(0).getXIndex(), entries.get(0).getVal() * phaseY);
+
+        // create a new path
+        for (int x = 1; x < entries.size() * phaseX; x++) {
+
+            Entry e = entries.get(x);
+            line.lineTo(e.getXIndex(), e.getVal() * phaseY);
+        }
+
+        return line;
+    }
+
+=======
+>>>>>>> upstream/master
     @Override
     public void drawValues(Canvas c) {
 
@@ -460,10 +500,14 @@ public class LineChartRenderer extends DataRenderer {
 
         mRenderPaint.setStyle(Paint.Style.FILL);
 
+<<<<<<< HEAD
+        List<LineDataSet> dataSets = mChart.getLineData().getDataSets();
+=======
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
 
-        List<LineDataSet> dataSets = mChart.getLineData().getDataSets();
+        ArrayList<LineDataSet> dataSets = mChart.getLineData().getDataSets();
+>>>>>>> upstream/master
 
         for (int i = 0; i < dataSets.size(); i++) {
 
@@ -475,13 +519,17 @@ public class LineChartRenderer extends DataRenderer {
             mCirclePaintInner.setColor(dataSet.getCircleHoleColor());
 
             Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
-            List<Entry> entries = dataSet.getYVals();
+            ArrayList<Entry> entries = dataSet.getYVals();
 
             CircleBuffer buffer = mCircleBuffers[i];
             buffer.setPhases(phaseX, phaseY);
             buffer.feed(entries);
 
+<<<<<<< HEAD
+                List<Entry> entries = dataSet.getYVals();
+=======
             trans.pointValuesToPixel(buffer.buffer);
+>>>>>>> upstream/master
 
             float halfsize = dataSet.getCircleSize() / 2f;
 

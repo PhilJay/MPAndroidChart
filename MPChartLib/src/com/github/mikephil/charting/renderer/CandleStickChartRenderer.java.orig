@@ -66,12 +66,16 @@ public class CandleStickChartRenderer extends DataRenderer {
         
         int dataSetIndex = mChart.getCandleData().getIndexOfDataSet(dataSet);
 
+<<<<<<< HEAD
         List<CandleEntry> entries = dataSet.getYVals();
+=======
+        ArrayList<CandleEntry> entries = dataSet.getYVals();
      
         // draw the shadow
         int range = (mMaxX - mMinX + 1) * 4;
         int from = mMinX * 4;
         int to = mMaxX + 1;
+>>>>>>> upstream/master
 
         CandleShadowBuffer shadowBuffer = mShadowBuffers[dataSetIndex];
         shadowBuffer.setPhases(phaseX, phaseY);

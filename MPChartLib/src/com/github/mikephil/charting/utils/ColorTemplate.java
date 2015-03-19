@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class that holds predefined color integer arrays (e.g.
@@ -70,9 +71,9 @@ public class ColorTemplate {
      * @param colors an integer array of resource id's of colors
      * @return
      */
-    public static ArrayList<Integer> createColors(Resources r, int[] colors) {
+    public static List<Integer> createColors(Resources r, int[] colors) {
 
-        ArrayList<Integer> result = new ArrayList<Integer>();
+        List<Integer> result = new ArrayList<Integer>();
 
         for (int i : colors) {
             result.add(r.getColor(i));
@@ -88,9 +89,9 @@ public class ColorTemplate {
      * @param colors
      * @return
      */
-    public static ArrayList<Integer> createColors(int[] colors) {
+    public static List<Integer> createColors(int[] colors) {
 
-        ArrayList<Integer> result = new ArrayList<Integer>();
+        List<Integer> result = new ArrayList<Integer>();
 
         for (int i : colors) {
             result.add(i);

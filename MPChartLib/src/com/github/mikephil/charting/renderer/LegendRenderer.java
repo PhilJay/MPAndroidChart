@@ -16,6 +16,7 @@ import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class LegendRenderer extends Renderer {
 
@@ -62,15 +63,15 @@ public class LegendRenderer extends Renderer {
      */
     public Legend computeLegend(ChartData<?> data, Legend legend) {
 
-        ArrayList<String> labels = new ArrayList<String>();
-        ArrayList<Integer> colors = new ArrayList<Integer>();
+        List<String> labels = new ArrayList<String>();
+        List<Integer> colors = new ArrayList<Integer>();
 
         // loop for building up the colors and labels used in the legend
         for (int i = 0; i < data.getDataSetCount(); i++) {
 
             DataSet<? extends Entry> dataSet = data.getDataSetByIndex(i);
 
-            ArrayList<Integer> clrs = dataSet.getColors();
+            List<Integer> clrs = dataSet.getColors();
             int entryCount = dataSet.getEntryCount();
 
             // if we have a barchart with stacked bars
@@ -91,7 +92,7 @@ public class LegendRenderer extends Renderer {
 
             } else if (dataSet instanceof PieDataSet) {
 
-                ArrayList<String> xVals = data.getXVals();
+                List<String> xVals = data.getXVals();
                 PieDataSet pds = (PieDataSet) dataSet;
 
                 for (int j = 0; j < clrs.size() && j < entryCount && j < xVals.size(); j++) {

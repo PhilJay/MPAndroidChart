@@ -29,6 +29,7 @@ import com.github.mikephil.charting.utils.FileUtils;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeListener {
 
@@ -38,7 +39,7 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
     
     private Typeface mTf;
     
-    private ArrayList<BarEntry> mSinusData;
+    private List<BarEntry> mSinusData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

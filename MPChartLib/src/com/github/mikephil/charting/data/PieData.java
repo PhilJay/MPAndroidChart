@@ -2,6 +2,7 @@
 package com.github.mikephil.charting.data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A PieData object can only represent one DataSet. Unlike all other charts, the
@@ -17,7 +18,7 @@ public class PieData extends ChartData<PieDataSet> {
         super();
     }
 
-    public PieData(ArrayList<String> xVals) {
+    public PieData(List<String> xVals) {
         super(xVals);
     }
 
@@ -25,16 +26,16 @@ public class PieData extends ChartData<PieDataSet> {
         super(xVals);
     }
 
-    public PieData(ArrayList<String> xVals, PieDataSet dataSet) {
-        super(xVals, toArrayList(dataSet));
+    public PieData(List<String> xVals, PieDataSet dataSet) {
+        super(xVals, toList(dataSet));
     }
 
     public PieData(String[] xVals, PieDataSet dataSet) {
-        super(xVals, toArrayList(dataSet));
+        super(xVals, toList(dataSet));
     }
 
-    private static ArrayList<PieDataSet> toArrayList(PieDataSet dataSet) {
-        ArrayList<PieDataSet> sets = new ArrayList<PieDataSet>();
+    private static List<PieDataSet> toList(PieDataSet dataSet) {
+        List<PieDataSet> sets = new ArrayList<PieDataSet>();
         sets.add(dataSet);
         return sets;
     }

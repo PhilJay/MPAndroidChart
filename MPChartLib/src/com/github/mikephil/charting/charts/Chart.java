@@ -48,6 +48,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Baseclass of all Chart-Views.
@@ -1152,9 +1153,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @param xIndex
      * @return
      */
-    public ArrayList<Entry> getEntriesAtIndex(int xIndex) {
+    public List<Entry> getEntriesAtIndex(int xIndex) {
 
-        ArrayList<Entry> vals = new ArrayList<Entry>();
+        List<Entry> vals = new ArrayList<Entry>();
 
         for (int i = 0; i < mData.getDataSetCount(); i++) {
 

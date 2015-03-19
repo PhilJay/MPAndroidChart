@@ -12,6 +12,7 @@ import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The DataSet class represents one group or type of entries (Entry) in the
@@ -23,11 +24,11 @@ import java.util.ArrayList;
  */
 public abstract class DataSet<T extends Entry> {
 
-    /** arraylist representing all colors that are used for this DataSet */
-    protected ArrayList<Integer> mColors = null;
+    /** List representing all colors that are used for this DataSet */
+    protected List<Integer> mColors = null;
 
     /** the entries that this dataset represents / holds together */
-    protected ArrayList<T> mYVals = null;
+    protected List<T> mYVals = null;
 
     /** maximum y-value in the y-value array */
     protected float mYMax = 0.0f;
@@ -70,7 +71,7 @@ public abstract class DataSet<T extends Entry> {
      * @param yVals
      * @param label
      */
-    public DataSet(ArrayList<T> yVals, String label) {
+    public DataSet(List<T> yVals, String label) {
 
         this.mLabel = label;
         this.mYVals = yVals;
@@ -205,9 +206,9 @@ public abstract class DataSet<T extends Entry> {
      * @param xIndex
      * @return
      */
-    public ArrayList<T> getEntriesForXIndex(int x) {
+    public List<T> getEntriesForXIndex(int x) {
 
-        ArrayList<T> entries = new ArrayList<T>();
+        List<T> entries = new ArrayList<T>();
 
         int low = 0;
         int high = mYVals.size();
@@ -233,7 +234,7 @@ public abstract class DataSet<T extends Entry> {
      * 
      * @return
      */
-    public ArrayList<T> getYVals() {
+    public List<T> getYVals() {
         return mYVals;
     }
 
@@ -472,7 +473,7 @@ public abstract class DataSet<T extends Entry> {
      * 
      * @param colors
      */
-    public void setColors(ArrayList<Integer> colors) {
+    public void setColors(List<Integer> colors) {
         this.mColors = colors;
     }
 
@@ -501,7 +502,7 @@ public abstract class DataSet<T extends Entry> {
      */
     public void setColors(int[] colors, Context c) {
 
-        ArrayList<Integer> clrs = new ArrayList<Integer>();
+        List<Integer> clrs = new ArrayList<Integer>();
 
         for (int color : colors) {
             clrs.add(c.getResources().getColor(color));
@@ -537,7 +538,7 @@ public abstract class DataSet<T extends Entry> {
      * 
      * @return
      */
-    public ArrayList<Integer> getColors() {
+    public List<Integer> getColors() {
         return mColors;
     }
 

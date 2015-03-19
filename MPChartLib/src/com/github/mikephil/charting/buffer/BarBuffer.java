@@ -4,6 +4,7 @@ package com.github.mikephil.charting.buffer;
 import com.github.mikephil.charting.data.BarEntry;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BarBuffer extends AbstractBuffer<BarEntry> {
 
@@ -37,7 +38,7 @@ public class BarBuffer extends AbstractBuffer<BarEntry> {
     }
 
     @Override
-    public void feed(ArrayList<BarEntry> entries) {
+    public void feed(List<BarEntry> entries) {
 
         float size = entries.size() * phaseX;
 

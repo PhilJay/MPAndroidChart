@@ -4,6 +4,7 @@ package com.github.mikephil.charting.data.filter;
 import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implemented according to Wiki-Pseudocode {@link}
@@ -97,7 +98,7 @@ public class Approximator {
      * @param points the points to filter
      * @return
      */
-    public ArrayList<Entry> filter(ArrayList<Entry> points) {
+    public List<Entry> filter(List<Entry> points) {
         return filter(points, mTolerance);
     }
 
@@ -108,7 +109,7 @@ public class Approximator {
      * @param tolerance the angle in degrees that will trigger the filtering
      * @return
      */
-    public ArrayList<Entry> filter(ArrayList<Entry> points, double tolerance) {
+    public List<Entry> filter(List<Entry> points, double tolerance) {
 
         if (tolerance <= 0)
             return points;
@@ -126,14 +127,14 @@ public class Approximator {
     }
 
     /**
-     * uses the douglas peuker algorithm to reduce the given arraylist of
+     * uses the douglas peuker algorithm to reduce the given List of
      * entries
      * 
      * @param entries
      * @param epsilon
      * @return
      */
-    private ArrayList<Entry> reduceWithDouglasPeuker(ArrayList<Entry> entries, double epsilon) {
+    private List<Entry> reduceWithDouglasPeuker(List<Entry> entries, double epsilon) {
         // if a shape has 2 or less points it cannot be reduced
         if (epsilon <= 0 || entries.size() < 3) {
             return entries;
@@ -147,7 +148,7 @@ public class Approximator {
         algorithmDouglasPeucker(entries, epsilon, 0, entries.size() - 1);
 
         // create a new array with series, only take the kept ones
-        ArrayList<Entry> reducedEntries = new ArrayList<Entry>();
+        List<Entry> reducedEntries = new ArrayList<Entry>();
         for (int i = 0; i < entries.size(); i++) {
             if (keep[i]) {
                 Entry curEntry = entries.get(i);
@@ -158,7 +159,7 @@ public class Approximator {
     }
 
     /**
-     * apply the Douglas-Peucker-Reduction to an ArrayList of Entry with a given
+     * apply the Douglas-Peucker-Reduction to an List of Entry with a given
      * epsilon (tolerance)
      * 
      * @param entries
@@ -166,7 +167,7 @@ public class Approximator {
      * @param start
      * @param end
      */
-    private void algorithmDouglasPeucker(ArrayList<Entry> entries, double epsilon, int start,
+    private void algorithmDouglasPeucker(List<Entry> entries, double epsilon, int start,
             int end) {
         if (end <= start + 1) {
             // recursion finished

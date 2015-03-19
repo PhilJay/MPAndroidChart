@@ -38,6 +38,7 @@ import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base-class of LineChart, BarChart, ScatterChart and CandleStickChart.
@@ -925,7 +926,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             xIndex = (int) base + 1;
         }
 
-        ArrayList<SelInfo> valsAtIndex = getYValsAtIndex(xIndex);
+        List<SelInfo> valsAtIndex = getYValsAtIndex(xIndex);
 
         float leftdist = Utils.getMinimumDistance(valsAtIndex, y, AxisDependency.LEFT);
         float rightdist = Utils.getMinimumDistance(valsAtIndex, y, AxisDependency.RIGHT);
@@ -953,9 +954,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      *
      * @return
      */
-    public ArrayList<SelInfo> getYValsAtIndex(int xIndex) {
+    public List<SelInfo> getYValsAtIndex(int xIndex) {
 
-        ArrayList<SelInfo> vals = new ArrayList<SelInfo>();
+        List<SelInfo> vals = new ArrayList<SelInfo>();
 
         float[] pts = new float[2];
 

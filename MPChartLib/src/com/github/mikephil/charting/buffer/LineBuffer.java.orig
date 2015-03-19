@@ -41,7 +41,12 @@ public class LineBuffer extends AbstractBuffer<Entry> {
     }
 
     @Override
+<<<<<<< HEAD
     public void feed(List<Entry> entries) {
+=======
+    public void feed(ArrayList<Entry> entries) {
+
+>>>>>>> upstream/master
         moveTo(entries.get(0).getXIndex(), entries.get(0).getVal());
 
         float size = entries.size() * phaseX;

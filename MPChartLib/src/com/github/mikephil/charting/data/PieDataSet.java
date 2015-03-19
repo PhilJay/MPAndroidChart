@@ -4,6 +4,7 @@ package com.github.mikephil.charting.data;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PieDataSet extends DataSet<Entry> {
 
@@ -13,7 +14,7 @@ public class PieDataSet extends DataSet<Entry> {
     /** indicates the selection distance of a pie slice */
     private float mShift = 18f;
 
-    public PieDataSet(ArrayList<Entry> yVals, String label) {
+    public PieDataSet(List<Entry> yVals, String label) {
         super(yVals, label);
 //        mShift = Utils.convertDpToPixel(12f);
     }
@@ -21,7 +22,7 @@ public class PieDataSet extends DataSet<Entry> {
     @Override
     public DataSet<Entry> copy() {
 
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
+        List<Entry> yVals = new ArrayList<Entry>();
 
         for (int i = 0; i < mYVals.size(); i++) {
             yVals.add(mYVals.get(i).copy());

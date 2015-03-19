@@ -34,8 +34,57 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
         mValuePaint.setTextAlign(Align.LEFT);
     }
 
+<<<<<<< HEAD
+    protected void drawDataSet(Canvas c, BarDataSet dataSet, int index) {
+
+        Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
+
+        // the space between bar-groups
+        float space = mChart.getBarData().getGroupSpace();
+
+        boolean noStacks = dataSet.getStackSize() == 1 ? true : false;
+
+        List<BarEntry> entries = dataSet.getYVals();
+
+        // do the drawing
+        for (int j = 0; j < dataSet.getEntryCount() * mAnimator.getPhaseX(); j++) {
+
+            BarEntry e = entries.get(j);
+
+            // calculate the x-position, depending on datasetcount
+            float x = e.getXIndex() + j * (mChart.getBarData().getDataSetCount() - 1) + index
+                    + space * j + space / 2f;
+            float y = e.getVal();
+
+            // no stacks
+            if (noStacks) {
+
+                prepareBar(x, y, dataSet.getBarSpace(), trans);
+
+                // avoid drawing outofbounds values
+                if (!mViewPortHandler.isInBoundsTop(mBarRect.bottom))
+                    break;
+
+                if (!mViewPortHandler.isInBoundsBottom(mBarRect.top))
+                    continue;
+
+                // if drawing the bar shadow is enabled
+                if (mChart.isDrawBarShadowEnabled()) {
+                    mRenderPaint.setColor(dataSet.getBarShadowColor());
+                    c.drawRect(mBarShadow, mRenderPaint);
+                }
+
+                // Set the color for the currently drawn value. If the index
+                // is
+                // out of bounds, reuse colors.
+                mRenderPaint.setColor(dataSet.getColor(j));
+                c.drawRect(mBarRect, mRenderPaint);
+
+            } else { // stacked bars
+=======
     @Override
     public void initBuffers() {
+>>>>>>> upstream/master
 
         BarData barData = mChart.getBarData();
         mBarBuffers = new HorizontalBarBuffer[barData.getDataSetCount()];
@@ -58,7 +107,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
 
-        List<BarEntry> entries = dataSet.getYVals();
+        ArrayList<BarEntry> entries = dataSet.getYVals();
 
         // initialize the buffer
         BarBuffer buffer = mBarBuffers[index];

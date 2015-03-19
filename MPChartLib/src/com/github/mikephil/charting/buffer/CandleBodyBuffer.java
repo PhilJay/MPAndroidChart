@@ -4,6 +4,7 @@ package com.github.mikephil.charting.buffer;
 import com.github.mikephil.charting.data.CandleEntry;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CandleBodyBuffer extends AbstractBuffer<CandleEntry> {
     
@@ -26,7 +27,7 @@ public class CandleBodyBuffer extends AbstractBuffer<CandleEntry> {
     }
 
     @Override
-    public void feed(ArrayList<CandleEntry> entries) {
+    public void feed(List<CandleEntry> entries) {
         
         float size = entries.size() * phaseX;
 
