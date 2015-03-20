@@ -188,7 +188,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         tvY.setText("" + (mSeekBarY.getProgress()));
 
         ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < mSeekBarX.getProgress(); i++) {
+        for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
             xVals.add((i + 1990) + "");
         }
 
