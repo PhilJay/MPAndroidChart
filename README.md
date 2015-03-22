@@ -45,8 +45,6 @@ If you are having questions or problems, feel free to contact me. Since I would 
  - Search [**known issues**](https://github.com/PhilJay/MPAndroidChart/issues) for your problem (open and closed)
  - Create new issues (please **search known issues before**, do not create duplicate issues)
 
-You can let me know via e-mail that you have opened a stackoverflow question so that I might get to answering it more quickly. Thank you.
-
 Features
 =======
 
