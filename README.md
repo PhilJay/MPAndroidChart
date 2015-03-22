@@ -37,7 +37,7 @@ For a brief overview of the most important features, please download the **PlayS
 Questions & Issues
 -----
 
-If you are having questions or problems, feel free to contact me. Since I would very much like that other users of this library **can also benefit** from your question, I am asking you to contact me via e-mail **only as a last option**. Instead, you should:
+If you are having questions or problems, you should:
 
  - Make sure you are using the latest version of the library. Check the [**release-section**](https://github.com/PhilJay/MPAndroidChart/releases).
  - Study the [**Documentation-Wiki**](https://github.com/PhilJay/MPAndroidChart/wiki)
