@@ -14,10 +14,10 @@ import java.util.List;
 public class CandleDataSet extends BarLineScatterCandleDataSet<CandleEntry> {
 
     /** the width of the shadow of the candle */
-    private float mShadowWidth = 3f;
+    protected float mShadowWidth = 3f;
 
     /** the space between the candle entries, default 0.1f (10%) */
-    private float mBodySpace = 0.1f;
+    protected float mBodySpace = 0.1f;
 
     public CandleDataSet(List<CandleEntry> yVals, String label) {
         super(yVals, label);
