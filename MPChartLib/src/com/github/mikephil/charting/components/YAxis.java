@@ -43,6 +43,9 @@ public class YAxis extends AxisBase {
     /** if true, the y-labels show only the minimum and maximum value */
     protected boolean mShowOnlyMinMax = false;
 
+    /** if true, the y-labels show all grid lines when mShowOnlyMinMax is true*/
+    protected boolean mShowGridLinesIfOnlyMinMax = false;
+
     /** flag that indicates if the axis is inverted or not */
     protected boolean mInverted = false;
 
@@ -178,7 +181,7 @@ public class YAxis extends AxisBase {
     /**
      * If enabled, the YLabels will only show the minimum and maximum value of
      * the chart. This will ignore/override the set label count.
-     * 
+     *
      * @param enabled
      */
     public void setShowOnlyMinMax(boolean enabled) {
@@ -187,11 +190,30 @@ public class YAxis extends AxisBase {
 
     /**
      * Returns true if showing only min and max value is enabled.
-     * 
+     *
      * @return
      */
     public boolean isShowOnlyMinMaxEnabled() {
         return mShowOnlyMinMax;
+    }
+
+    /**
+     * If enabled, the YLabels will show all grid lines of the chart even if
+     * isShowOnlyMinMaxEnabled is true.
+     *
+     * @param enabled
+     */
+    public void setmShowGridLinesIfOnlyMinMax(boolean enabled) {
+        mShowGridLinesIfOnlyMinMax = enabled;
+    }
+
+    /**
+     * Returns true if showing grid lines is enabled when isShowOnlyMinMaxEnabled is true.
+     *
+     * @return
+     */
+    public boolean ismShowGridLinesIfOnlyMinMaxEnabled() {
+        return mShowGridLinesIfOnlyMinMax;
     }
 
     /**
