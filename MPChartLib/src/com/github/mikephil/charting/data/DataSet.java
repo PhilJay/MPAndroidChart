@@ -323,8 +323,15 @@ public abstract class DataSet<T extends Entry> {
     }
 
     /**
+     * Sets the label string that describes the DataSet.
+     *
+     * @return
+     */
+    public void setLabel(String label) { mLabel = label; }
+
+    /**
      * Returns the label string that describes the DataSet.
-     * 
+     *
      * @return
      */
     public String getLabel() {
