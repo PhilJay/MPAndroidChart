@@ -400,18 +400,18 @@ public class YAxis extends AxisBase {
     public float getRequiredWidthSpace(Paint p) {
 
         p.setTextSize(mTextSize);
+        float labelWidth = Utils.calcTextWidth(p, getLongestLabel()) + getXOffset() * 2f;
+        float returnValue = Math.max(labelWidth, mCustomWidth);
 
-        String label = getLongestLabel();
-        return (float) Utils.calcTextWidth(p, label) + getXOffset() * 2f;
+        return returnValue;
     }
 
     public float getRequiredHeightSpace(Paint p) {
 
         p.setTextSize(mTextSize);
-        float labelWidth = Utils.calcTextWidth(p, getLongestLabel()) + getXOffset() * 2f;
-        float returnValue = Math.max(labelWidth, mCustomWidth);
 
-        return returnValue;
+        String label = getLongestLabel();
+        return (float) Utils.calcTextHeight(p, label) + getYOffset() * 2f;
     }
 
     @Override
