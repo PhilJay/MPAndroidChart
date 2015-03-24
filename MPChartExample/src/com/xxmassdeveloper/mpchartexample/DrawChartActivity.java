@@ -184,7 +184,7 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
         Log.i(Chart.LOG_TAG, "DataSet drawn. " + dataSet.toSimpleString());
 
         // prepare the legend again
-        mChart.getLegendRenderer().computeLegend(mChart.getData(), mChart.getLegend());
+        mChart.getLegendRenderer().computeLegend(mChart.getData());
     }
 
     @Override

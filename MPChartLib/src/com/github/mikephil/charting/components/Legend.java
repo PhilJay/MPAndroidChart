@@ -115,6 +115,14 @@ public class Legend extends ComponentBase {
         this.mColors = Utils.convertIntegers(colors);
         this.mLabels = Utils.convertStrings(labels);
     }
+    
+    public void setColors(List<Integer> colors) {
+        mColors = Utils.convertIntegers(colors);;
+    }
+    
+    public void setLabels(List<String> labels) {
+        mLabels = Utils.convertStrings(labels);;
+    }
 
     /**
      * returns the maximum length in pixels across all legend labels + formsize
@@ -189,13 +197,7 @@ public class Legend extends ComponentBase {
      * 
      * @param labels
      */
-    public void setLegendLabels(String[] labels) {
-
-        if (mColors.length != labels.length) {
-            throw new IllegalArgumentException(
-                    "colors array and labels array need to be of same size");
-        }
-
+    public void setLabels(String[] labels) {
         this.mLabels = labels;
     }
 
@@ -322,28 +324,28 @@ public class Legend extends ComponentBase {
         this.mFormToTextSpace = Utils.convertDpToPixel(space);
     }
 
-    /**
-     * applies the state from the legend in the parameter to this legend (except
-     * colors, labels and offsets)
-     * 
-     * @param l
-     */
-    public void apply(Legend l) {
-
-        mPosition = l.mPosition;
-        mShape = l.mShape;
-        mTypeface = l.mTypeface;
-        mFormSize = l.mFormSize;
-        mXEntrySpace = l.mXEntrySpace;
-        mYEntrySpace = l.mYEntrySpace;
-        mFormToTextSpace = l.mFormToTextSpace;
-        mTextSize = l.mTextSize;
-        mStackSpace = l.mStackSpace;
-        mTextColor = l.mTextColor;
-        mEnabled = l.mEnabled;
-        mXOffset = l.mXOffset;
-        mYOffset = l.mYOffset;
-    }
+//    /**
+//     * applies the state from the legend in the parameter to this legend (except
+//     * colors, labels and offsets)
+//     * 
+//     * @param l
+//     */
+//    public void apply(Legend l) {
+//
+//        mPosition = l.mPosition;
+//        mShape = l.mShape;
+//        mTypeface = l.mTypeface;
+//        mFormSize = l.mFormSize;
+//        mXEntrySpace = l.mXEntrySpace;
+//        mYEntrySpace = l.mYEntrySpace;
+//        mFormToTextSpace = l.mFormToTextSpace;
+//        mTextSize = l.mTextSize;
+//        mStackSpace = l.mStackSpace;
+//        mTextColor = l.mTextColor;
+//        mEnabled = l.mEnabled;
+//        mXOffset = l.mXOffset;
+//        mYOffset = l.mYOffset;
+//    }
 
     /**
      * returns the space that is left out between stacked forms (with no label)

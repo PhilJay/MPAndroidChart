@@ -224,7 +224,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         mRenderer.drawValues(canvas);
 
-        mLegendRenderer.renderLegend(canvas, mLegend);
+        mLegendRenderer.renderLegend(canvas);
         // drawLegend();
 
         drawMarkers(canvas);
@@ -296,7 +296,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         mXAxisRenderer.computeAxis(mData.getXValAverageLength(), mData.getXVals());
 
-        mLegend = mLegendRenderer.computeLegend(mData, mLegend);
+        mLegendRenderer.computeLegend(mData);
 
         calculateOffsets();
     }

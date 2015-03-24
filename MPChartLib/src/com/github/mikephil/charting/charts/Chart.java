@@ -191,7 +191,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         mLegend = new Legend();
 
-        mLegendRenderer = new LegendRenderer(mViewPortHandler);
+        mLegendRenderer = new LegendRenderer(mViewPortHandler, mLegend);
 
         mRenderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mRenderPaint.setStyle(Style.FILL);
@@ -972,11 +972,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
-     * Returns the Legend object of the chart. This method can be used to
-     * customize the automatically generated Legend. IMPORTANT: Since the Legend
-     * is generated from data provided by the user (via setData(...) method),
-     * this will return NULL if no data has been set for the chart. You need to
-     * set data for the chart before calling this method.
+     * Returns the Legend object of the chart. This method can be used to get an
+     * instance of the legend in order to customize the automatically generated
+     * Legend.
      *
      * @return
      */

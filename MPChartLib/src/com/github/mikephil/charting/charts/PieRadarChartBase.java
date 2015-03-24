@@ -83,7 +83,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
         calcMinMax();
 
-        mLegend = mLegendRenderer.computeLegend(mData, mLegend);
+        mLegendRenderer.computeLegend(mData);
 
         calculateOffsets();
     }

@@ -105,6 +105,13 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         rightAxis.setTypeface(mTf);
         rightAxis.setLabelCount(8);
         rightAxis.setValueFormatter(custom);
+        
+        Legend l = mChart.getLegend();
+        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
+        l.setForm(LegendForm.SQUARE);
+        l.setFormSize(9f);
+        l.setTextSize(11f);
+        l.setXEntrySpace(4f);
 
         setData(12, 50);
 
@@ -114,13 +121,6 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         mSeekBarY.setOnSeekBarChangeListener(this);
         mSeekBarX.setOnSeekBarChangeListener(this);
-
-        Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
-        l.setForm(LegendForm.SQUARE);
-        l.setFormSize(9f);
-        l.setTextSize(11f);
-        l.setXEntrySpace(4f);
 
         // mChart.setDrawLegend(false);
     }
