@@ -189,6 +189,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         mViewPortHandler = new ViewPortHandler();
 
+        mLegend = new Legend();
+
         mLegendRenderer = new LegendRenderer(mViewPortHandler);
 
         mRenderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
