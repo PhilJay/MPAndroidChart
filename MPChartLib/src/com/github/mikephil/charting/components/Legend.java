@@ -24,6 +24,10 @@ public class Legend extends ComponentBase {
         SQUARE, CIRCLE, LINE
     }
 
+    public enum LegendDirection {
+        LEFT_TO_RIGHT, RIGHT_TO_LEFT
+    }
+
     /** the legend colors */
     private int[] mColors;
 
@@ -32,6 +36,9 @@ public class Legend extends ComponentBase {
 
     /** the position relative to the chart the legend is drawn on */
     private LegendPosition mPosition = LegendPosition.BELOW_CHART_LEFT;
+
+    /** the text direction for the legend */
+    private LegendDirection mDirection = LegendDirection.LEFT_TO_RIGHT;
 
     /** the shape/form the legend colors are drawn in */
     private LegendForm mShape = LegendForm.SQUARE;
@@ -227,6 +234,24 @@ public class Legend extends ComponentBase {
      */
     public void setPosition(LegendPosition pos) {
         mPosition = pos;
+    }
+
+    /**
+     * returns the text direction of the legend
+     *
+     * @return
+     */
+    public LegendDirection getDirection() {
+        return mDirection;
+    }
+
+    /**
+     * sets the text direction of the legend
+     *
+     * @param pos
+     */
+    public void setDirection(LegendDirection pos) {
+        mDirection = pos;
     }
 
     /**
