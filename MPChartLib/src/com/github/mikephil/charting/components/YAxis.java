@@ -87,6 +87,12 @@ public class YAxis extends AxisBase {
     /** the side this axis object represents */
     private AxisDependency mAxisDependency;
 
+    /** custom axis width that */
+    private float mCustomWidth = 0f;
+
+    /** if true, the y-labels will be aligned to the right */
+    private boolean mLabelAlignRight = false;
+
     /**
      * Enum that specifies the axis a DataSet should be plotted against, either
      * LEFT or RIGHT.
@@ -232,6 +238,24 @@ public class YAxis extends AxisBase {
     }
 
     /**
+     * enable this to force the y-axis labels to be aligned to the right
+     *
+     * @param enabled
+     */
+    public void setLabelAlignRight(boolean enabled) {
+        mLabelAlignRight = enabled;
+    }
+
+    /**
+     * returns true if the y-axis labels are right aligned
+     *
+     * @return
+     */
+    public boolean isLabelAlignRight() {
+        return mLabelAlignRight;
+    }
+
+    /**
      * Adds a new LimitLine to this axis.
      * 
      * @param l
@@ -354,6 +378,25 @@ public class YAxis extends AxisBase {
         return mSpacePercentBottom;
     }
 
+    /**
+     * Sets a custom width for the axis. Default 0f
+     * In case this value is higher than the length of the longest label width,
+     * the axis will size itself according to this value.
+     *
+     * @param value
+     */
+    public void setCustomWidth(float value) {
+        mCustomWidth = Math.max(mCustomWidth, value);
+    }
+
+    /**
+     * Returns the custom with of the axis. Default 0f
+     * @return
+     */
+    public float getCustomWidth() {
+        return mCustomWidth;
+    }
+
     public float getRequiredWidthSpace(Paint p) {
 
         p.setTextSize(mTextSize);
@@ -365,9 +408,10 @@ public class YAxis extends AxisBase {
     public float getRequiredHeightSpace(Paint p) {
 
         p.setTextSize(mTextSize);
+        float labelWidth = Utils.calcTextWidth(p, getLongestLabel()) + getXOffset() * 2f;
+        float returnValue = Math.max(labelWidth, mCustomWidth);
 
-        String label = getLongestLabel();
-        return (float) Utils.calcTextHeight(p, label) + getYOffset() * 2f;
+        return returnValue;
     }
 
     @Override
