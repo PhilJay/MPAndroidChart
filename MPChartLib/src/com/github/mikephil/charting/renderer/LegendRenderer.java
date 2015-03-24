@@ -361,16 +361,32 @@ public class LegendRenderer extends Renderer {
             case RIGHT_OF_CHART:
             case RIGHT_OF_CHART_CENTER:
             case RIGHT_OF_CHART_INSIDE:
+            case LEFT_OF_CHART:
+            case LEFT_OF_CHART_CENTER:
+            case LEFT_OF_CHART_INSIDE:
 
-                posX = mViewPortHandler.getChartWidth() - xoffset;
-                if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
-                    posX -= mLegend.mTextWidthMax;
+                boolean isRightAligned = mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART ||
+                    mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART_CENTER ||
+                    mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART_INSIDE;
 
-                if (mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART) {
+                if (isRightAligned) {
+                    posX = mViewPortHandler.getChartWidth() - xoffset;
+                    if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
+                        posX -= mLegend.mTextWidthMax;
+                } else {
+                    posX = xoffset;
+                    if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
+                        posX += mLegend.mTextWidthMax;
+                }
+
+                if (mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART ||
+                        mLegend.getPosition() == Legend.LegendPosition.LEFT_OF_CHART) {
                     posY = mViewPortHandler.contentTop() + yoffset;
-                } else if (mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART_CENTER) {
+                } else if (mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART_CENTER ||
+                        mLegend.getPosition() == Legend.LegendPosition.LEFT_OF_CHART_CENTER) {
                     posY = mViewPortHandler.getChartHeight() / 2f - mLegend.mNeededHeight / 2f;
-                } else /*if (legend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART_INSIDE)*/ {
+                } else /*if (mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART_INSIDE ||
+                        mLegend.getPosition() == Legend.LegendPosition.LEFT_OF_CHART_INSIDE)*/ {
                     posY = mViewPortHandler.contentTop() + yoffset;
                 }
 
