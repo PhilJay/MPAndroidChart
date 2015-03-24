@@ -233,6 +233,9 @@ public class YAxisRenderer extends AxisRenderer {
             if (!mYAxis.isDrawTopYLabelEntryEnabled() && i >= mYAxis.mEntryCount - 1)
                 return;
 
+            if(mYAxis.isLabelAlignRight() == true)
+                fixedPosition = (c.getWidth() - mAxisPaint.measureText(text) - offset);
+
             c.drawText(text, fixedPosition, positions[i * 2 + 1] + offset, mAxisPaint);
         }
     }
