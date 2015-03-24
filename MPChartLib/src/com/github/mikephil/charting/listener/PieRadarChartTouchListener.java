@@ -120,6 +120,11 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
         } else {
 
             float angle = mChart.getAngleForPoint(e.getX(), e.getY());
+            
+            if (mChart instanceof PieChart) {
+                angle /= mChart.getAnimator().getPhaseY();
+            }
+            
             int index = mChart.getIndexForAngle(angle);
 
             // check if the index could be found

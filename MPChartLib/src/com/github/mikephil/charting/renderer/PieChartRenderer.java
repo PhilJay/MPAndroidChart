@@ -348,7 +348,7 @@ public class PieChartRenderer extends DataRenderer {
 
             // redefine the rect that contains the arc so that the
             // highlighted pie is not cut off
-            mBitmapCanvas.drawArc(highlighted, angle + set.getSliceSpace() / 2f, sliceDegrees
+            mBitmapCanvas.drawArc(highlighted, angle + set.getSliceSpace() / 2f, sliceDegrees * mAnimator.getPhaseY()
                     - set.getSliceSpace() / 2f, true, mRenderPaint);
         }
     }
