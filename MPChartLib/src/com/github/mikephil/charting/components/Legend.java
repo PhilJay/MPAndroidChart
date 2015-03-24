@@ -408,10 +408,14 @@ public class Legend extends ComponentBase {
                 if (mColors[i] != -2)
                     width += mFormSize + mFormToTextSpace;
 
-                width += Utils.calcTextWidth(labelpaint, mLabels[i])
-                        + mXEntrySpace;
+                width += Utils.calcTextWidth(labelpaint, mLabels[i]);
+
+                if (i < mLabels.length - 1)
+                    width += mXEntrySpace;
             } else {
-                width += mFormSize + mStackSpace;
+                width += mFormSize;
+                if (i < mLabels.length - 1)
+                    width += mStackSpace;
             }
         }
 
@@ -433,8 +437,10 @@ public class Legend extends ComponentBase {
             // grouped forms have null labels
             if (mLabels[i] != null) {
 
-                height += Utils.calcTextHeight(labelpaint, mLabels[i])
-                        + mYEntrySpace;
+                height += Utils.calcTextHeight(labelpaint, mLabels[i]);
+
+                if (i < mLabels.length - 1)
+                    height += mYEntrySpace;
             }
         }
 
