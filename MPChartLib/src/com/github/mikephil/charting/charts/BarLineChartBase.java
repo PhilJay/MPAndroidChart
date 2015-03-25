@@ -374,7 +374,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
             float xlabelheight = mXAxis.mLabelHeight * 2f;
 
-            if (mXAxis.isEnabled()) {
+            if (mXAxis.isEnabled() && mXAxis.isDrawLabelsEnabled()) {
 
                 // offsets for x-labels
                 if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
