@@ -1,5 +1,6 @@
 package com.xxmassdeveloper.mpchartexample.fragments;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -115,9 +116,12 @@ public abstract class SimpleFragment extends Fragment {
         PieDataSet ds1 = new PieDataSet(entries1, "Quarterly Revenues 2014");
         ds1.setColors(ColorTemplate.VORDIPLOM_COLORS);
         ds1.setSliceSpace(2f);
+        ds1.setValueTextColor(Color.WHITE);
+        ds1.setValueTextSize(12f);
         
         PieData d = new PieData(xVals, ds1);
         d.setValueTypeface(tf);
+
         return d;
     }
     

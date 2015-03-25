@@ -35,7 +35,7 @@ public class PieChartRenderer extends DataRenderer {
      * chart
      */
     private Paint mCenterTextPaint;
-    
+
     /** Bitmap for drawing the center hole */
     protected Bitmap mDrawBitmap;
 
@@ -66,16 +66,16 @@ public class PieChartRenderer extends DataRenderer {
     public Paint getPaintCenterText() {
         return mCenterTextPaint;
     }
-    
+
     @Override
     public void initBuffers() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void drawData(Canvas c) {
-        
+
         if (mDrawBitmap == null) {
             mDrawBitmap = Bitmap.createBitmap((int) mViewPortHandler.getChartWidth(),
                     (int) mViewPortHandler.getChartHeight(), Bitmap.Config.ARGB_4444);
@@ -91,7 +91,7 @@ public class PieChartRenderer extends DataRenderer {
             if (set.isVisible())
                 drawDataSet(c, set);
         }
-                
+
         c.drawBitmap(mDrawBitmap, 0, 0, mRenderPaint);
     }
 
@@ -275,11 +275,18 @@ public class PieChartRenderer extends DataRenderer {
             // get all lines from the text
             String[] lines = centerText.split("\n");
 
-            // calculate the height for each line
-            float lineHeight = Utils.calcTextHeight(mCenterTextPaint, lines[0]);
-            float linespacing = lineHeight * 0.2f;
+            float maxlineheight = 0f;
 
-            float totalheight = lineHeight * lines.length - linespacing * (lines.length - 1);
+            // calc the maximum line height
+            for (String line : lines) {
+                float curHeight = Utils.calcTextHeight(mCenterTextPaint, line);
+                if (curHeight > maxlineheight)
+                    maxlineheight = curHeight;
+            }
+
+            float linespacing = maxlineheight * 0.25f;
+
+            float totalheight = maxlineheight * lines.length - linespacing * (lines.length - 1);
 
             int cnt = lines.length;
 
@@ -290,7 +297,7 @@ public class PieChartRenderer extends DataRenderer {
                 String line = lines[lines.length - i - 1];
 
                 c.drawText(line, center.x, y
-                        + lineHeight * cnt - totalheight / 2f,
+                        + maxlineheight * cnt - totalheight / 2f,
                         mCenterTextPaint);
                 cnt--;
                 y -= linespacing;
@@ -348,7 +355,8 @@ public class PieChartRenderer extends DataRenderer {
 
             // redefine the rect that contains the arc so that the
             // highlighted pie is not cut off
-            mBitmapCanvas.drawArc(highlighted, angle + set.getSliceSpace() / 2f, sliceDegrees * mAnimator.getPhaseY()
+            mBitmapCanvas.drawArc(highlighted, angle + set.getSliceSpace() / 2f, sliceDegrees
+                    * mAnimator.getPhaseY()
                     - set.getSliceSpace() / 2f, true, mRenderPaint);
         }
     }

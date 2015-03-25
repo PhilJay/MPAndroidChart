@@ -83,7 +83,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
         objects.add(new ContentItem("Draw Chart",
                 "Demonstration of drawing values into the chart per touch-gesture. With callbacks."));
         objects.add(new ContentItem(
-                "Charts in Fragments, awesome design.",
+                "Charts in ViewPager Fragments",
                 "Demonstration of charts inside ViewPager Fragments. In this example the focus was on the design and look and feel of the chart."));
         objects.add(new ContentItem(
                 "BarChart inside ListView",
