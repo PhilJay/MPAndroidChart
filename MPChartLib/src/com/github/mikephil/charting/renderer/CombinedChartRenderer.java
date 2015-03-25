@@ -62,6 +62,10 @@ public class CombinedChartRenderer extends DataRenderer {
                     if (chart.getScatterData() != null)
                         mRenderers.add(new ScatterChartRenderer(chart, animator, viewPortHandler));
                     break;
+                case OHLC:
+                    if(chart.getOHLCData() != null)
+                        mRenderers.add(new OHLCChartRenderer(chart, animator, viewPortHandler));
+                    break;
             }
         }
     }
