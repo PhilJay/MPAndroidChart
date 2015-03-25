@@ -8,10 +8,12 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.OHLCData;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.interfaces.BarDataProvider;
 import com.github.mikephil.charting.interfaces.CandleDataProvider;
 import com.github.mikephil.charting.interfaces.LineDataProvider;
+import com.github.mikephil.charting.interfaces.OHLCDataProvider;
 import com.github.mikephil.charting.interfaces.ScatterDataProvider;
 import com.github.mikephil.charting.renderer.CombinedChartRenderer;
 import com.github.mikephil.charting.utils.FillFormatter;
@@ -23,7 +25,7 @@ import com.github.mikephil.charting.utils.FillFormatter;
  * @author Philipp Jahoda
  */
 public class CombinedChart extends BarLineChartBase<CombinedData> implements LineDataProvider,
-        BarDataProvider, ScatterDataProvider, CandleDataProvider {
+        BarDataProvider, ScatterDataProvider, CandleDataProvider, OHLCDataProvider {
 
     /** the fill-formatter used for determining the position of the fill-line */
     protected FillFormatter mFillFormatter;
@@ -50,7 +52,7 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
     private boolean mDrawBarShadow = false;
 
     protected DrawOrder[] mDrawOrder = new DrawOrder[] {
-            DrawOrder.BAR, DrawOrder.LINE, DrawOrder.CANDLE, DrawOrder.SCATTER
+            DrawOrder.BAR, DrawOrder.LINE, DrawOrder.CANDLE, DrawOrder.SCATTER, DrawOrder.OHLC
     };
 
     /**
@@ -58,7 +60,7 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
      * for the combined-chart are drawn
      */
     public enum DrawOrder {
-        BAR, LINE, CANDLE, SCATTER
+        BAR, LINE, CANDLE, SCATTER, OHLC
     }
 
     public CombinedChart(Context context) {
@@ -139,6 +141,13 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
         if (mData == null)
             return null;
         return mData.getCandleData();
+    }
+
+    @Override
+    public OHLCData getOHLCData() {
+        if (mData == null)
+            return null;
+        return mData.getOHLCData();
     }
 
     @Override
