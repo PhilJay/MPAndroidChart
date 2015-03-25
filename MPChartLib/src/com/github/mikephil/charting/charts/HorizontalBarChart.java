@@ -82,11 +82,11 @@ public class HorizontalBarChart extends BarChart {
 
         // offsets for y-labels
         if (mAxisLeft.needsOffset()) {
-            offsetTop += mAxisLeft.getRequiredHeightSpace(mAxisRendererLeft.getAxisPaint());
+            offsetTop += mAxisLeft.getRequiredHeightSpace(mAxisRendererLeft.getPaintAxisLabels());
         }
 
         if (mAxisRight.needsOffset()) {
-            offsetBottom += mAxisRight.getRequiredHeightSpace(mAxisRendererRight.getAxisPaint());
+            offsetBottom += mAxisRight.getRequiredHeightSpace(mAxisRendererRight.getPaintAxisLabels());
         }
 
         float xlabelwidth = mXAxis.mLabelWidth;

@@ -22,15 +22,15 @@ public class XAxisRenderer extends AxisRenderer {
 
         this.mXAxis = xAxis;
 
-        mAxisPaint.setColor(Color.BLACK);
-        mAxisPaint.setTextAlign(Align.CENTER);
-        mAxisPaint.setTextSize(Utils.convertDpToPixel(10f));
+        mAxisLabelPaint.setColor(Color.BLACK);
+        mAxisLabelPaint.setTextAlign(Align.CENTER);
+        mAxisLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
     }
 
     public void computeAxis(float xValAverageLength, List<String> xValues) {
 
-        mAxisPaint.setTypeface(mXAxis.getTypeface());
-        mAxisPaint.setTextSize(mXAxis.getTextSize());
+        mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
+        mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
 
         StringBuffer a = new StringBuffer();
 
@@ -41,8 +41,8 @@ public class XAxisRenderer extends AxisRenderer {
             a.append("h");
         }
 
-        mXAxis.mLabelWidth = Utils.calcTextWidth(mAxisPaint, a.toString());
-        mXAxis.mLabelHeight = Utils.calcTextHeight(mAxisPaint, "Q");
+        mXAxis.mLabelWidth = Utils.calcTextWidth(mAxisLabelPaint, a.toString());
+        mXAxis.mLabelHeight = Utils.calcTextHeight(mAxisLabelPaint, "Q");
         mXAxis.setValues(xValues);
     }
 
@@ -54,9 +54,9 @@ public class XAxisRenderer extends AxisRenderer {
 
         float yoffset = Utils.convertDpToPixel(4f);
 
-        mAxisPaint.setTypeface(mXAxis.getTypeface());
-        mAxisPaint.setTextSize(mXAxis.getTextSize());
-        mAxisPaint.setColor(mXAxis.getTextColor());
+        mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
+        mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
+        mAxisLabelPaint.setColor(mXAxis.getTextColor());
 
         if (mXAxis.getPosition() == XAxisPosition.TOP) {
 
@@ -144,7 +144,7 @@ public class XAxisRenderer extends AxisRenderer {
 
                     // avoid clipping of the last
                     if (i == mXAxis.getValues().size() - 1 && mXAxis.getValues().size() > 1) {
-                        float width = Utils.calcTextWidth(mAxisPaint, label);
+                        float width = Utils.calcTextWidth(mAxisLabelPaint, label);
 
                         if (width > mViewPortHandler.offsetRight() * 2
                                 && position[0] + width > mViewPortHandler.getChartWidth())
@@ -153,14 +153,14 @@ public class XAxisRenderer extends AxisRenderer {
                         // avoid clipping of the first
                     } else if (i == 0) {
 
-                        float width = Utils.calcTextWidth(mAxisPaint, label);
+                        float width = Utils.calcTextWidth(mAxisLabelPaint, label);
                         position[0] += width / 2;
                     }
                 }
 
                 c.drawText(label, position[0],
                         pos,
-                        mAxisPaint);
+                        mAxisLabelPaint);
             }
         }
     }

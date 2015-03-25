@@ -72,6 +72,15 @@ public abstract class DataRenderer extends Renderer {
     }
 
     /**
+     * Returns the Paint object used for rendering.
+     * 
+     * @return
+     */
+    public Paint getPaintRender() {
+        return mRenderPaint;
+    }
+
+    /**
      * Applies the required styling (provided by the DataSet) to the value-paint
      * object.
      * 

@@ -24,13 +24,13 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
     @Override
     public void computeAxis(float xValAverageLength, List<String> xValues) {
         
-        mAxisPaint.setTypeface(mXAxis.getTypeface());
-        mAxisPaint.setTextSize(mXAxis.getTextSize());
+        mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
+        mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
         mXAxis.setValues(xValues);
 
         String longest = mXAxis.getLongestLabel();
-        mXAxis.mLabelWidth = (int) (Utils.calcTextWidth(mAxisPaint, longest) + mXAxis.getXOffset() * 3.5f);
-        mXAxis.mLabelHeight = Utils.calcTextHeight(mAxisPaint, longest);
+        mXAxis.mLabelWidth = (int) (Utils.calcTextWidth(mAxisLabelPaint, longest) + mXAxis.getXOffset() * 3.5f);
+        mXAxis.mLabelHeight = Utils.calcTextHeight(mAxisLabelPaint, longest);
     }
 
     @Override
@@ -41,28 +41,28 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
 
         float xoffset = mXAxis.getXOffset();
 
-        mAxisPaint.setTypeface(mXAxis.getTypeface());
-        mAxisPaint.setTextSize(mXAxis.getTextSize());
-        mAxisPaint.setColor(mXAxis.getTextColor());
+        mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
+        mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
+        mAxisLabelPaint.setColor(mXAxis.getTextColor());
 
         if (mXAxis.getPosition() == XAxisPosition.TOP) {
 
-            mAxisPaint.setTextAlign(Align.LEFT);
+            mAxisLabelPaint.setTextAlign(Align.LEFT);
             drawLabels(c, mViewPortHandler.contentRight() + xoffset);
 
         } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
 
-            mAxisPaint.setTextAlign(Align.RIGHT);
+            mAxisLabelPaint.setTextAlign(Align.RIGHT);
             drawLabels(c, mViewPortHandler.contentLeft() - xoffset);
 
         } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM_INSIDE) {
 
-            mAxisPaint.setTextAlign(Align.LEFT);
+            mAxisLabelPaint.setTextAlign(Align.LEFT);
             drawLabels(c, mViewPortHandler.contentLeft() + xoffset);
 
         } else if (mXAxis.getPosition() == XAxisPosition.TOP_INSIDE) {
 
-            mAxisPaint.setTextAlign(Align.RIGHT);
+            mAxisLabelPaint.setTextAlign(Align.RIGHT);
             drawLabels(c, mViewPortHandler.contentRight() - xoffset);
 
         } else { // BOTH SIDED
@@ -104,7 +104,7 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
 
                 String label = mXAxis.getValues().get(i);
                 c.drawText(label, pos, position[1] + mXAxis.mLabelHeight / 2f,
-                        mAxisPaint);
+                        mAxisLabelPaint);
             }
         }
     }

@@ -79,12 +79,12 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
 
         mTrans.pointValuesToPixel(positions);
 
-        mAxisPaint.setTypeface(mYAxis.getTypeface());
-        mAxisPaint.setTextSize(mYAxis.getTextSize());
-        mAxisPaint.setColor(mYAxis.getTextColor());
-        mAxisPaint.setTextAlign(Align.CENTER);
+        mAxisLabelPaint.setTypeface(mYAxis.getTypeface());
+        mAxisLabelPaint.setTextSize(mYAxis.getTextSize());
+        mAxisLabelPaint.setColor(mYAxis.getTextColor());
+        mAxisLabelPaint.setTextAlign(Align.CENTER);
 
-        float yoffset = Utils.calcTextHeight(mAxisPaint, "A") + mYAxis.getYOffset();
+        float yoffset = Utils.calcTextHeight(mAxisLabelPaint, "A") + mYAxis.getYOffset();
 
         AxisDependency dependency = mYAxis.getAxisDependency();
         YAxisLabelPosition labelPosition = mYAxis.getLabelPosition();
@@ -144,9 +144,9 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
     @Override
     protected void drawYLabels(Canvas c, float fixedPosition, float[] positions, float offset) {
         
-        mAxisPaint.setTypeface(mYAxis.getTypeface());
-        mAxisPaint.setTextSize(mYAxis.getTextSize());
-        mAxisPaint.setColor(mYAxis.getTextColor());
+        mAxisLabelPaint.setTypeface(mYAxis.getTypeface());
+        mAxisLabelPaint.setTextSize(mYAxis.getTextSize());
+        mAxisLabelPaint.setColor(mYAxis.getTextColor());
 
         for (int i = 0; i < mYAxis.mEntryCount; i++) {
 
@@ -155,7 +155,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
             if (!mYAxis.isDrawTopYLabelEntryEnabled() && i >= mYAxis.mEntryCount - 1)
                 return;
 
-            c.drawText(text, positions[i * 2], fixedPosition - offset, mAxisPaint);
+            c.drawText(text, positions[i * 2], fixedPosition - offset, mAxisLabelPaint);
         }
     }
 

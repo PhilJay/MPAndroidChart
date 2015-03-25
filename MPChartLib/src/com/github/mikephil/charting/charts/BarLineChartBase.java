@@ -370,11 +370,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
             // offsets for y-labels
             if (mAxisLeft.needsOffset()) {
-                offsetLeft += mAxisLeft.getRequiredWidthSpace(mAxisRendererLeft.getAxisPaint());
+                offsetLeft += mAxisLeft.getRequiredWidthSpace(mAxisRendererLeft.getPaintAxisLabels());
             }
 
             if (mAxisRight.needsOffset()) {
-                offsetRight += mAxisRight.getRequiredWidthSpace(mAxisRendererRight.getAxisPaint());
+                offsetRight += mAxisRight.getRequiredWidthSpace(mAxisRendererRight.getPaintAxisLabels());
             }
 
             float xlabelheight = mXAxis.mLabelHeight * 2f;

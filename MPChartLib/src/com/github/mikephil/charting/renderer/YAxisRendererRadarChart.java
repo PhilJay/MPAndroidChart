@@ -103,9 +103,9 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
         if (!mYAxis.isEnabled() || !mYAxis.isDrawLabelsEnabled())
             return;
 
-        mAxisPaint.setTypeface(mYAxis.getTypeface());
-        mAxisPaint.setTextSize(mYAxis.getTextSize());
-        mAxisPaint.setColor(mYAxis.getTextColor());
+        mAxisLabelPaint.setTypeface(mYAxis.getTypeface());
+        mAxisLabelPaint.setTextSize(mYAxis.getTextSize());
+        mAxisLabelPaint.setColor(mYAxis.getTextColor());
 
         PointF center = mChart.getCenterOffsets();
         float factor = mChart.getFactor();
@@ -123,7 +123,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
 
             String label = mYAxis.getFormattedLabel(j);
 
-            c.drawText(label, p.x + 10, p.y, mAxisPaint);
+            c.drawText(label, p.x + 10, p.y, mAxisLabelPaint);
         }
     }
 

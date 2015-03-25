@@ -9,6 +9,11 @@ import android.graphics.Paint.Style;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
+/**
+ * Baseclass of all axis renderers.
+ * 
+ * @author Philipp Jahoda
+ */
 public abstract class AxisRenderer extends Renderer {
 
     protected Transformer mTrans;
@@ -17,7 +22,7 @@ public abstract class AxisRenderer extends Renderer {
     protected Paint mGridPaint;
 
     /** paint for the x-label values */
-    protected Paint mAxisPaint;    
+    protected Paint mAxisLabelPaint;
 
     /** paint for the line surrounding the chart */
     protected Paint mAxisLinePaint;
@@ -27,14 +32,14 @@ public abstract class AxisRenderer extends Renderer {
 
         this.mTrans = trans;
 
-        mAxisPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mAxisLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         mGridPaint = new Paint();
         mGridPaint.setColor(Color.GRAY);
         mGridPaint.setStrokeWidth(1f);
         mGridPaint.setStyle(Style.STROKE);
         mGridPaint.setAlpha(90);
-        
+
         mAxisLinePaint = new Paint();
         mAxisLinePaint.setColor(Color.BLACK);
         mAxisLinePaint.setStrokeWidth(1f);
@@ -42,12 +47,32 @@ public abstract class AxisRenderer extends Renderer {
     }
 
     /**
-     * Returns the Paint object used for drawing the axis.
+     * Returns the Paint object used for drawing the axis (labels).
      * 
      * @return
      */
-    public Paint getAxisPaint() {
-        return mAxisPaint;
+    public Paint getPaintAxisLabels() {
+        return mAxisLabelPaint;
+    }
+
+    /**
+     * Returns the Paint object that is used for drawing the grid-lines of the
+     * axis.
+     * 
+     * @return
+     */
+    public Paint getPaintGrid() {
+        return mGridPaint;
+    }
+
+    /**
+     * Returns the Paint object that is used for drawing the axis-line that goes
+     * alongside the axis.
+     * 
+     * @return
+     */
+    public Paint getPaintAxisLine() {
+        return mAxisLinePaint;
     }
 
     /**

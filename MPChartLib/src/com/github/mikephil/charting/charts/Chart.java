@@ -12,7 +12,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
-import android.graphics.Paint.Style;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.Typeface;
@@ -88,9 +87,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * the chart
      */
     protected Paint mInfoPaint;
-
-    /** this is the paint object used for drawing the data onto the chart */
-    protected Paint mRenderPaint;
 
     /** description text that appears in the bottom right corner of the chart */
     protected String mDescription = "Description";
@@ -192,9 +188,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         mLegend = new Legend();
 
         mLegendRenderer = new LegendRenderer(mViewPortHandler, mLegend);
-
-        mRenderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mRenderPaint.setStyle(Style.FILL);
 
         mDescPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mDescPaint.setColor(Color.BLACK);
@@ -1039,9 +1032,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /** paint for the text in the middle of the pie chart */
     public static final int PAINT_CENTER_TEXT = 14;
 
-    /** paint used for all rendering processes */
-    public static final int PAINT_RENDER = 17;
-
     /** paint used for the legend */
     public static final int PAINT_LEGEND_LABEL = 18;
 
@@ -1062,9 +1052,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             case PAINT_DESCRIPTION:
                 mDescPaint = p;
                 break;
-            case PAINT_RENDER:
-                mRenderPaint = p;
-                break;
         }
     }
 
@@ -1080,8 +1067,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 return mInfoPaint;
             case PAINT_DESCRIPTION:
                 return mDescPaint;
-            case PAINT_RENDER:
-                return mRenderPaint;
         }
 
         return null;
@@ -1107,33 +1092,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public void setDrawMarkerViews(boolean enabled) {
         mDrawMarkerViews = enabled;
     }
-
-    // /**
-    // * sets the draw color for the value paint object
-    // *
-    // * @param color
-    // */
-    // public void setValueTextColor(int color) {
-    // mRenderer.getPaintValues().setColor(color);
-    // }
-    //
-    // /**
-    // * Sets the font size of the values that are drawn inside the chart.
-    // *
-    // * @param size
-    // */
-    // public void setValueTextSize(float size) {
-    // mRenderer.getPaintValues().setTextSize(Utils.convertDpToPixel(size));
-    // }
-    //
-    // /**
-    // * sets a typeface for the value-paint
-    // *
-    // * @param t
-    // */
-    // public void setValueTypeface(Typeface t) {
-    // mRenderer.getPaintValues().setTypeface(t);
-    // }
 
     /**
      * returns the x-value at the given index
@@ -1387,11 +1345,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         notifyDataSetChanged();
 
         super.onSizeChanged(w, h, oldw, oldh);
-    }
-
-    @Override
-    public View getChartView() {
-        return this;
     }
 
     @Override

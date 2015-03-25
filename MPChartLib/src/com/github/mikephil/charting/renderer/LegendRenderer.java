@@ -3,8 +3,8 @@ package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.graphics.Paint.Align;
+import android.graphics.Typeface;
 
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -164,9 +164,6 @@ public class LegendRenderer extends Renderer {
         float xEntrySpace = mLegend.getXEntrySpace();
         Legend.LegendDirection direction = mLegend.getDirection();
         float formSize = mLegend.getFormSize();
-
-        // space between text and shape/form of entry
-        float formTextSpaceAndForm = formToTextSpace + formSize;
 
         // space between the entries
         float stackSpace = mLegend.getStackSpace();

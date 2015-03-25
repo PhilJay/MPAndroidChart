@@ -25,9 +25,9 @@ public class XAxisRendererRadarChart extends XAxisRenderer {
         if (!mXAxis.isEnabled() || !mXAxis.isDrawLabelsEnabled())
             return;
 
-        mAxisPaint.setTypeface(mXAxis.getTypeface());
-        mAxisPaint.setTextSize(mXAxis.getTextSize());
-        mAxisPaint.setColor(mXAxis.getTextColor());
+        mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
+        mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
+        mAxisLabelPaint.setColor(mXAxis.getTextColor());
 
         float sliceangle = mChart.getSliceAngle();
 
@@ -46,7 +46,7 @@ public class XAxisRendererRadarChart extends XAxisRenderer {
             PointF p = Utils.getPosition(center, mChart.getYRange() * factor
                     + mXAxis.mLabelWidth / 2f, angle);
 
-            c.drawText(text, p.x, p.y + mXAxis.mLabelHeight / 2f, mAxisPaint);
+            c.drawText(text, p.x, p.y + mXAxis.mLabelHeight / 2f, mAxisLabelPaint);
         }
     }
 }

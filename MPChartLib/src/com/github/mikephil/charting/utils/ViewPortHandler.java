@@ -5,7 +5,7 @@ import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
-import com.github.mikephil.charting.interfaces.ChartInterface;
+import com.github.mikephil.charting.charts.Chart;
 
 public class ViewPortHandler {
 
@@ -207,7 +207,7 @@ public class ViewPortHandler {
      * @param chart
      * @return save
      */
-    public synchronized void centerViewPort(final float[] transformedPts, final ChartInterface chart) {
+    public synchronized void centerViewPort(final float[] transformedPts, final Chart<?> chart) {
 
         Matrix save = new Matrix();
         save.set(mMatrixTouch);
@@ -244,14 +244,14 @@ public class ViewPortHandler {
      * @param newMatrix
      * @return
      */
-    public Matrix refresh(Matrix newMatrix, ChartInterface chart, boolean invalidate) {
+    public Matrix refresh(Matrix newMatrix, Chart<?> chart, boolean invalidate) {
 
         mMatrixTouch.set(newMatrix);
 
         // make sure scale and translation are within their bounds
         limitTransAndScale(mMatrixTouch, mContentRect);
 
-        chart.getChartView().invalidate();
+        chart.invalidate();
 
         newMatrix.set(mMatrixTouch);
         return newMatrix;

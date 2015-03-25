@@ -64,7 +64,7 @@ public class XAxisRendererBarChart extends XAxisRenderer {
 
                     // avoid clipping of the last
                     if (i == mXAxis.getValues().size() - 1) {
-                        float width = Utils.calcTextWidth(mAxisPaint, label);
+                        float width = Utils.calcTextWidth(mAxisLabelPaint, label);
 
                         if (width > mViewPortHandler.offsetRight() * 2
                                 && position[0] + width > mViewPortHandler.getChartWidth())
@@ -73,14 +73,14 @@ public class XAxisRendererBarChart extends XAxisRenderer {
                         // avoid clipping of the first
                     } else if (i == 0) {
 
-                        float width = Utils.calcTextWidth(mAxisPaint, label);
+                        float width = Utils.calcTextWidth(mAxisLabelPaint, label);
                         position[0] += width / 2;
                     }
                 }
 
                 c.drawText(label, position[0],
                         pos,
-                        mAxisPaint);
+                        mAxisLabelPaint);
             }
         }
     }

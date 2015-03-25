@@ -3,7 +3,6 @@ package com.github.mikephil.charting.interfaces;
 
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.view.View;
 
 import com.github.mikephil.charting.utils.ValueFormatter;
 
@@ -32,9 +31,6 @@ public interface ChartInterface {
     public PointF getCenterOffsets();
 
     public RectF getContentRect();
-
-    public View getChartView();
-
+    
     public ValueFormatter getDefaultValueFormatter();
-
 }
