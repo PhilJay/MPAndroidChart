@@ -34,6 +34,10 @@ public class CandleStickChartRenderer extends DataRenderer {
     @Override
     public void initBuffers() {
         CandleData candleData = mChart.getCandleData();
+
+        if(candleData == null)
+            return;
+
         mShadowBuffers = new CandleShadowBuffer[candleData.getDataSetCount()];
         mBodyBuffers = new CandleBodyBuffer[candleData.getDataSetCount()];
 

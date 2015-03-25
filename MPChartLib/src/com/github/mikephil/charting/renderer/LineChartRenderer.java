@@ -60,6 +60,10 @@ public class LineChartRenderer extends DataRenderer {
     public void initBuffers() {
 
         LineData lineData = mChart.getLineData();
+
+        if(lineData == null)
+            return;
+
         mLineBuffers = new LineBuffer[lineData.getDataSetCount()];
         mCircleBuffers = new CircleBuffer[lineData.getDataSetCount()];
 
