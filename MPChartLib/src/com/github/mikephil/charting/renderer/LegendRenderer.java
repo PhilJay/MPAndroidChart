@@ -158,11 +158,15 @@ public class LegendRenderer extends Renderer {
         mLegendLabelPaint.setColor(mLegend.getTextColor());
 
         String[] labels = mLegend.getLegendLabels();
+        int[] colors = mLegend.getColors();
 
+        float formToTextSpace = mLegend.getFormToTextSpace();
+        float xEntrySpace = mLegend.getXEntrySpace();
+        Legend.LegendDirection direction = mLegend.getDirection();
         float formSize = mLegend.getFormSize();
 
         // space between text and shape/form of entry
-        float formTextSpaceAndForm = mLegend.getFormToTextSpace() + formSize;
+        float formTextSpaceAndForm = formToTextSpace + formSize;
 
         // space between the entries
         float stackSpace = mLegend.getStackSpace();
@@ -173,7 +177,7 @@ public class LegendRenderer extends Renderer {
 
         float posX, posY;
 
-        // contains the stacked mLegend size in pixels
+        // contains the stacked legend size in pixels
         float stack = 0f;
 
         boolean wasStacked = false;
@@ -187,168 +191,161 @@ public class LegendRenderer extends Renderer {
                 posX = mViewPortHandler.contentLeft() + xoffset;
                 posY = mViewPortHandler.getChartHeight() - yoffset;
 
-                for (int i = 0; i < labels.length; i++) {
+                if (direction == Legend.LegendDirection.RIGHT_TO_LEFT) {
+                    posX += mLegend.mNeededWidth;
+                }
 
-                    drawForm(c, posX, posY - mLegend.mTextHeightMax / 2f, i, mLegend);
+                for (int i = 0, count = labels.length; i < count; i++) {
+
+                    boolean drawingForm = colors[i] != -2;
+
+                    if (drawingForm) {
+                        if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
+                            posX -= formSize;
+
+                        drawForm(c, posX, posY - mLegend.mTextHeightMax / 2f, i, mLegend);
+
+                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
+                            posX += formSize;
+                    }
 
                     // grouped forms have null labels
                     if (labels[i] != null) {
 
-                        // make a step to the left
-                        if (mLegend.getColors()[i] != -2)
-                            posX += formTextSpaceAndForm;
+                        // spacing between form and label
+                        if (drawingForm)
+                            posX += direction == Legend.LegendDirection.RIGHT_TO_LEFT ?
+                                    -formToTextSpace :
+                                    formToTextSpace;
 
-                        drawLabel(c, posX, posY, mLegend.getLabel(i));
-                        posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i])
-                                + mLegend.getXEntrySpace();
+                        if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
+                            posX -= Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
+
+                        drawLabel(c, posX, posY, labels[i]);
+
+                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
+                            posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
+
+                        posX += direction == Legend.LegendDirection.RIGHT_TO_LEFT ?
+                                -xEntrySpace :
+                                xEntrySpace;
                     } else {
-                        posX += formSize + stackSpace;
+                        posX += direction == Legend.LegendDirection.RIGHT_TO_LEFT ? -stackSpace : stackSpace;
                     }
                 }
-
                 break;
             case BELOW_CHART_RIGHT:
 
                 posX = mViewPortHandler.contentRight() - xoffset;
-                ;
                 posY = mViewPortHandler.getChartHeight() - yoffset;
 
-                for (int i = labels.length - 1; i >= 0; i--) {
+                for (int i = 0, count = labels.length; i < count; i++) {
 
-                    if (labels[i] != null) {
+                    boolean drawingForm = colors[i] != -2;
 
-                        posX -= Utils.calcTextWidth(mLegendLabelPaint, labels[i])
-                                + mLegend.getXEntrySpace();
-                        drawLabel(c, posX, posY, mLegend.getLabel(i));
-                        if (mLegend.getColors()[i] != -2)
-                            posX -= formTextSpaceAndForm;
-                    } else {
-                        posX -= stackSpace + formSize;
+                    if (direction == Legend.LegendDirection.RIGHT_TO_LEFT && drawingForm) {
+                        posX -= formSize;
+                        drawForm(c, posX, posY - mLegend.mTextHeightMax / 2f, i, mLegend);
+                        posX -= formToTextSpace;
                     }
 
-                    drawForm(c, posX, posY - mLegend.mTextHeightMax / 2f, i, mLegend);
-                }
-
-                break;
-            case RIGHT_OF_CHART:
-
-                posX = mViewPortHandler.getChartWidth() - mLegend.mTextWidthMax - xoffset;
-                posY = mViewPortHandler.contentTop() + yoffset;
-
-                for (int i = 0; i < labels.length; i++) {
-
-                    drawForm(c, posX + stack, posY, i, mLegend);
-
                     if (labels[i] != null) {
-
-                        if (!wasStacked) {
-
-                            float x = posX;
-
-                            if (mLegend.getColors()[i] != -2)
-                                x += formTextSpaceAndForm;
-
-                            drawLabel(c, x, posY + mLegend.mTextHeightMax / 2f, mLegend.getLabel(i));
-
-                            posY += textDrop;
-                        } else {
-                            posY += mLegend.mTextHeightMax * 3f;
-                            drawLabel(c, posX, posY - mLegend.mTextHeightMax, mLegend.getLabel(i));
-                        }
-
-                        // make a step down
-                        posY += mLegend.getYEntrySpace();
-                        stack = 0f;
-                    } else {
-                        stack += formSize + stackSpace;
-                        wasStacked = true;
+                        posX -= Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
+                        drawLabel(c, posX, posY, labels[i]);
                     }
-                }
-                break;
-            case RIGHT_OF_CHART_CENTER:
-                posX = mViewPortHandler.getChartWidth() - mLegend.mTextWidthMax - xoffset;
-                posY = mViewPortHandler.getChartHeight() / 2f - mLegend.mNeededHeight / 2f;
 
-                for (int i = 0; i < labels.length; i++) {
-
-                    drawForm(c, posX + stack, posY, i, mLegend);
-
-                    if (labels[i] != null) {
-
-                        if (!wasStacked) {
-
-                            float x = posX;
-
-                            if (mLegend.getColors()[i] != -2)
-                                x += formTextSpaceAndForm;
-
-                            drawLabel(c, x, posY + mLegend.mTextHeightMax / 2f, mLegend.getLabel(i));
-
-                            posY += textDrop;
-                        } else {
-                            posY += mLegend.mTextHeightMax * 3f;
-                            drawLabel(c, posX, posY - mLegend.mTextHeightMax, mLegend.getLabel(i));
-                        }
-
-                        // make a step down
-                        posY += mLegend.getYEntrySpace();
-                        stack = 0f;
-                    } else {
-                        stack += formSize + stackSpace;
-                        wasStacked = true;
+                    if (direction == Legend.LegendDirection.LEFT_TO_RIGHT && drawingForm) {
+                        posX -= formToTextSpace + formSize;
+                        drawForm(c, posX, posY - mLegend.mTextHeightMax / 2f, i, mLegend);
                     }
-                }
 
+                    posX -= labels[i] != null ? xEntrySpace : stackSpace;
+                }
                 break;
             case BELOW_CHART_CENTER:
 
-                posX = mViewPortHandler.getChartWidth() / 2f - mLegend.mNeededWidth / 2f;
+                posX = mViewPortHandler.getChartWidth() / 2f + (direction == Legend.LegendDirection.LEFT_TO_RIGHT ? -mLegend.mNeededWidth / 2f : mLegend.mNeededWidth / 2f);
                 posY = mViewPortHandler.getChartHeight() - yoffset;
 
                 for (int i = 0; i < labels.length; i++) {
 
-                    drawForm(c, posX, posY - mLegend.mTextHeightMax / 2f, i, mLegend);
+                    boolean drawingForm = colors[i] != -2;
+
+                    if (drawingForm) {
+                        if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
+                            posX -= formSize;
+
+                        drawForm(c, posX, posY - mLegend.mTextHeightMax / 2f, i, mLegend);
+
+                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
+                            posX += formSize;
+                    }
 
                     // grouped forms have null labels
                     if (labels[i] != null) {
 
-                        // make a step to the left
-                        if (mLegend.getColors()[i] != -2)
-                            posX += formTextSpaceAndForm;
+                        // spacing between form and label
+                        if (drawingForm)
+                            posX += direction == Legend.LegendDirection.RIGHT_TO_LEFT ?
+                                    -formToTextSpace :
+                                    formToTextSpace;
 
-                        drawLabel(c, posX, posY, mLegend.getLabel(i));
-                        posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i])
-                                + mLegend.getXEntrySpace();
+                        if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
+                            posX -= Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
+
+                        drawLabel(c, posX, posY, labels[i]);
+
+                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
+                            posX += Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
+
+                        posX += direction == Legend.LegendDirection.RIGHT_TO_LEFT ?
+                                -xEntrySpace :
+                                xEntrySpace;
                     } else {
-                        posX += formSize + stackSpace;
+                        posX += direction == Legend.LegendDirection.RIGHT_TO_LEFT ? -stackSpace : stackSpace;
                     }
                 }
 
                 break;
             case PIECHART_CENTER:
 
-                posX = mViewPortHandler.getChartWidth() / 2f - mLegend.mTextWidthMax / 2f;
+                posX = mViewPortHandler.getChartWidth() / 2f + (direction == Legend.LegendDirection.LEFT_TO_RIGHT ? -mLegend.mTextWidthMax / 2f : mLegend.mTextWidthMax / 2f);
                 posY = mViewPortHandler.getChartHeight() / 2f - mLegend.mNeededHeight / 2f;
 
                 for (int i = 0; i < labels.length; i++) {
 
-                    drawForm(c, posX + stack, posY, i, mLegend);
+                    boolean drawingForm = colors[i] != -2;
+                    float x = posX;
+
+                    if (drawingForm) {
+                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
+                            x += stack;
+                        else
+                            x -= formSize - stack;
+
+                        drawForm(c, x, posY, i, mLegend);
+
+                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
+                            x += formSize;
+                    }
 
                     if (labels[i] != null) {
 
+                        if (drawingForm && !wasStacked)
+                            x += direction == Legend.LegendDirection.LEFT_TO_RIGHT ? formToTextSpace : -formToTextSpace;
+                        else if (wasStacked)
+                            x = posX;
+
+                        if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
+                            x -= Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
+
                         if (!wasStacked) {
-
-                            float x = posX;
-
-                            if (mLegend.getColors()[i] != -2)
-                                x += formTextSpaceAndForm;
-
                             drawLabel(c, x, posY + mLegend.mTextHeightMax / 2f, mLegend.getLabel(i));
 
                             posY += textDrop;
                         } else {
                             posY += mLegend.mTextHeightMax * 3f;
-                            drawLabel(c, posX, posY - mLegend.mTextHeightMax, mLegend.getLabel(i));
+                            drawLabel(c, x, posY - mLegend.mTextHeightMax, mLegend.getLabel(i));
                         }
 
                         // make a step down
@@ -361,30 +358,72 @@ public class LegendRenderer extends Renderer {
                 }
 
                 break;
+            case RIGHT_OF_CHART:
+            case RIGHT_OF_CHART_CENTER:
             case RIGHT_OF_CHART_INSIDE:
+            case LEFT_OF_CHART:
+            case LEFT_OF_CHART_CENTER:
+            case LEFT_OF_CHART_INSIDE:
 
-                posX = mViewPortHandler.getChartWidth() - mLegend.mTextWidthMax - xoffset;
-                posY = mViewPortHandler.contentTop() + yoffset;
+                boolean isRightAligned = mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART ||
+                    mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART_CENTER ||
+                    mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART_INSIDE;
+
+                if (isRightAligned) {
+                    posX = mViewPortHandler.getChartWidth() - xoffset;
+                    if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
+                        posX -= mLegend.mTextWidthMax;
+                } else {
+                    posX = xoffset;
+                    if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
+                        posX += mLegend.mTextWidthMax;
+                }
+
+                if (mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART ||
+                        mLegend.getPosition() == Legend.LegendPosition.LEFT_OF_CHART) {
+                    posY = mViewPortHandler.contentTop() + yoffset;
+                } else if (mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART_CENTER ||
+                        mLegend.getPosition() == Legend.LegendPosition.LEFT_OF_CHART_CENTER) {
+                    posY = mViewPortHandler.getChartHeight() / 2f - mLegend.mNeededHeight / 2f;
+                } else /*if (mLegend.getPosition() == Legend.LegendPosition.RIGHT_OF_CHART_INSIDE ||
+                        mLegend.getPosition() == Legend.LegendPosition.LEFT_OF_CHART_INSIDE)*/ {
+                    posY = mViewPortHandler.contentTop() + yoffset;
+                }
 
                 for (int i = 0; i < labels.length; i++) {
 
-                    drawForm(c, posX + stack, posY, i, mLegend);
+                    Boolean drawingForm = colors[i] != -2;
+                    float x = posX;
+
+                    if (drawingForm) {
+                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
+                            x += stack;
+                        else
+                            x -= formSize - stack;
+
+                        drawForm(c, x, posY, i, mLegend);
+
+                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
+                            x += formSize;
+                    }
 
                     if (labels[i] != null) {
 
+                        if (drawingForm && !wasStacked)
+                            x += direction == Legend.LegendDirection.LEFT_TO_RIGHT ? formToTextSpace : -formToTextSpace;
+                        else if (wasStacked)
+                            x = posX;
+
+                        if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
+                            x -= Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
+
                         if (!wasStacked) {
-
-                            float x = posX;
-
-                            if (mLegend.getColors()[i] != -2)
-                                x += formTextSpaceAndForm;
-
                             drawLabel(c, x, posY + mLegend.mTextHeightMax / 2f, mLegend.getLabel(i));
 
                             posY += textDrop;
                         } else {
                             posY += mLegend.mTextHeightMax * 3f;
-                            drawLabel(c, posX, posY - mLegend.mTextHeightMax, mLegend.getLabel(i));
+                            drawLabel(c, x, posY - mLegend.mTextHeightMax, mLegend.getLabel(i));
                         }
 
                         // make a step down

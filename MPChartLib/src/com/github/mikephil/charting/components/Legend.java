@@ -17,11 +17,18 @@ import java.util.List;
 public class Legend extends ComponentBase {
 
     public enum LegendPosition {
-        RIGHT_OF_CHART, RIGHT_OF_CHART_CENTER, RIGHT_OF_CHART_INSIDE, BELOW_CHART_LEFT, BELOW_CHART_RIGHT, BELOW_CHART_CENTER, PIECHART_CENTER
+        RIGHT_OF_CHART, RIGHT_OF_CHART_CENTER, RIGHT_OF_CHART_INSIDE,
+        LEFT_OF_CHART, LEFT_OF_CHART_CENTER, LEFT_OF_CHART_INSIDE,
+        BELOW_CHART_LEFT, BELOW_CHART_RIGHT, BELOW_CHART_CENTER,
+        PIECHART_CENTER
     }
 
     public enum LegendForm {
         SQUARE, CIRCLE, LINE
+    }
+
+    public enum LegendDirection {
+        LEFT_TO_RIGHT, RIGHT_TO_LEFT
     }
 
     /** the legend colors */
@@ -32,6 +39,9 @@ public class Legend extends ComponentBase {
 
     /** the position relative to the chart the legend is drawn on */
     private LegendPosition mPosition = LegendPosition.BELOW_CHART_LEFT;
+
+    /** the text direction for the legend */
+    private LegendDirection mDirection = LegendDirection.LEFT_TO_RIGHT;
 
     /** the shape/form the legend colors are drawn in */
     private LegendForm mShape = LegendForm.SQUARE;
@@ -230,6 +240,24 @@ public class Legend extends ComponentBase {
     }
 
     /**
+     * returns the text direction of the legend
+     *
+     * @return
+     */
+    public LegendDirection getDirection() {
+        return mDirection;
+    }
+
+    /**
+     * sets the text direction of the legend
+     *
+     * @param pos
+     */
+    public void setDirection(LegendDirection pos) {
+        mDirection = pos;
+    }
+
+    /**
      * returns the current form/shape that is set for the legend
      * 
      * @return
@@ -383,10 +411,14 @@ public class Legend extends ComponentBase {
                 if (mColors[i] != -2)
                     width += mFormSize + mFormToTextSpace;
 
-                width += Utils.calcTextWidth(labelpaint, mLabels[i])
-                        + mXEntrySpace;
+                width += Utils.calcTextWidth(labelpaint, mLabels[i]);
+
+                if (i < mLabels.length - 1)
+                    width += mXEntrySpace;
             } else {
-                width += mFormSize + mStackSpace;
+                width += mFormSize;
+                if (i < mLabels.length - 1)
+                    width += mStackSpace;
             }
         }
 
@@ -408,8 +440,10 @@ public class Legend extends ComponentBase {
             // grouped forms have null labels
             if (mLabels[i] != null) {
 
-                height += Utils.calcTextHeight(labelpaint, mLabels[i])
-                        + mYEntrySpace;
+                height += Utils.calcTextHeight(labelpaint, mLabels[i]);
+
+                if (i < mLabels.length - 1)
+                    height += mYEntrySpace;
             }
         }
 
@@ -437,6 +471,8 @@ public class Legend extends ComponentBase {
 
         if (mPosition == LegendPosition.RIGHT_OF_CHART
                 || mPosition == LegendPosition.RIGHT_OF_CHART_CENTER
+                || mPosition == LegendPosition.LEFT_OF_CHART
+                || mPosition == LegendPosition.LEFT_OF_CHART_CENTER
                 || mPosition == LegendPosition.PIECHART_CENTER) {
             mNeededWidth = getMaximumEntryWidth(labelpaint);
             mNeededHeight = getFullHeight(labelpaint);
