@@ -31,6 +31,9 @@ public abstract class MarkerView extends RelativeLayout {
     /** Axis text color **/
     protected int mAxisTextColor;
 
+    /** Flag indicates draw axis text or not **/
+    protected boolean mDrawAxisText;
+
     /**
      * Constructor. Sets up the MarkerView with a custom layout resource.
      * 
@@ -171,5 +174,21 @@ public abstract class MarkerView extends RelativeLayout {
      */
     public void setAxisTextColor(int axisTextColor) {
         this.mAxisTextColor = axisTextColor;
+    }
+
+    /**
+     * Returns true if drawing a text on YAxis is enabled
+     * @return
+     */
+    public boolean isDrawAxisText() {
+        return mDrawAxisText;
+    }
+
+    /**
+     * Set true for drawing text on the YAxis
+     * @param mDrawAxisText
+     */
+    public void setDrawAxisText(boolean mDrawAxisText) {
+        this.mDrawAxisText = mDrawAxisText;
     }
 }

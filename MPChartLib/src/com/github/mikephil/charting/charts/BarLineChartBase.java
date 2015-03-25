@@ -113,10 +113,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     // /** the approximator object used for data filtering */
     // private Approximator mApproximator;
 
-    /** Pre-allocated Paint object for drawing marker text on the YAxis **/
+    /** Paint object for drawing marker text on the YAxis **/
     protected final Paint mAxisTextPaint = new Paint();
 
-    /** Pre-allocated Rect object for calculating marker text bounds **/
+    /** Rect object for calculating marker text bounds **/
     protected final Rect mAxisTextBoundsRect = new Rect();
 
 
@@ -478,7 +478,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     protected void drawMarkers(Canvas canvas) {
         super.drawMarkers(canvas);
         // if there is no marker view or drawing marker is disabled
-        if (mMarkerView == null || !mDrawMarkerViews || !valuesToHighlight()
+        if (mMarkerView == null || !mDrawMarkerViews || !valuesToHighlight() || !mMarkerView.isDrawAxisText()
                 || mMarkerView.getAxisText() == null || mMarkerView.getAxisText().length() == 0)
             return;
 
@@ -506,13 +506,28 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 mAxisTextPaint.getTextBounds(text, 0, text.length(), mAxisTextBoundsRect);
                 float x;
                 float y = pos[1] + mAxisTextBoundsRect.height() / 2;
+
                 if(mMarkerView.getAxisDependency() == AxisDependency.LEFT) {
-                    mAxisTextPaint.setTextAlign(Paint.Align.RIGHT);
-                    x = mViewPortHandler.offsetLeft() - getAxisLeft().getXOffset();
+                    YAxis yAxis = getAxisLeft();
+                    if(yAxis.getLabelPosition() == YAxis.YAxisLabelPosition.OUTSIDE_CHART) {
+                        mAxisTextPaint.setTextAlign(Paint.Align.RIGHT);
+                        x = mViewPortHandler.offsetLeft() - getAxisLeft().getXOffset();
+                    }
+                    else {
+                        mAxisTextPaint.setTextAlign(Paint.Align.LEFT);
+                        x = mViewPortHandler.offsetLeft() + getAxisLeft().getXOffset();
+                    }
                 }
                 else {
-                    mAxisTextPaint.setTextAlign(Paint.Align.LEFT);
-                    x = mViewPortHandler.contentRight() + mAxisRight.getXOffset();
+                    YAxis yAxis = getAxisRight();
+                    if(yAxis.getLabelPosition() == YAxis.YAxisLabelPosition.OUTSIDE_CHART) {
+                        mAxisTextPaint.setTextAlign(Paint.Align.LEFT);
+                        x = mViewPortHandler.contentRight() + mAxisRight.getXOffset();
+                    }
+                    else {
+                        mAxisTextPaint.setTextAlign(Paint.Align.RIGHT);
+                        x = mViewPortHandler.contentRight() - mAxisRight.getXOffset();
+                    }
                 }
                 canvas.drawText(text, x, y, mAxisTextPaint);
             }
