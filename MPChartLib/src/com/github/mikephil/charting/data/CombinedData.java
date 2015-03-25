@@ -15,6 +15,7 @@ public class CombinedData extends BarLineScatterCandleData<BarLineScatterCandleD
     private BarData mBarData;
     private ScatterData mScatterData;
     private CandleData mCandleData;
+    private OHLCData mOHLCData;
 
     public CombinedData() {
         super();
@@ -52,6 +53,12 @@ public class CombinedData extends BarLineScatterCandleData<BarLineScatterCandleD
         init(data.getDataSets());
     }
 
+    public void setData(OHLCData data) {
+        mOHLCData = data;
+        mDataSets.addAll(data.getDataSets());
+        init(data.getDataSets());
+    }
+
     public LineData getLineData() {
         return mLineData;
     }
@@ -68,11 +75,16 @@ public class CombinedData extends BarLineScatterCandleData<BarLineScatterCandleD
         return mCandleData;
     }
 
+    public OHLCData getOHLCData() {
+        return mOHLCData;
+    }
+
     @Override
     public void notifyDataChanged() {
         mLineData.notifyDataChanged();
         mBarData.notifyDataChanged();
         mCandleData.notifyDataChanged();
         mScatterData.notifyDataChanged();
+        mOHLCData.notifyDataChanged();
     }
 }
