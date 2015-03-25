@@ -3,11 +3,14 @@ package com.github.mikephil.charting.components;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.utils.Utils;
 
 /**
  * View that can be displayed when selecting values in the chart. Extend this
@@ -16,6 +19,17 @@ import com.github.mikephil.charting.data.Entry;
  * @author Philipp Jahoda
  */
 public abstract class MarkerView extends RelativeLayout {
+    /** On which axis will draw the text **/
+    protected YAxis.AxisDependency mAxisDependency = YAxis.AxisDependency.LEFT;
+
+    /** The text that will draw on the axis **/
+    protected String mAxisText;
+
+    /** Axis text size in dp **/
+    protected float mAxisTextSize;
+
+    /** Axis text color **/
+    protected int mAxisTextColor;
 
     /**
      * Constructor. Sets up the MarkerView with a custom layout resource.
@@ -94,4 +108,68 @@ public abstract class MarkerView extends RelativeLayout {
      * @return
      */
     public abstract int getYOffset();
+
+    /**
+     * Returns YAxis.AxisDependency object, that indicates on which axis will draw the text
+     * @return
+     */
+    public YAxis.AxisDependency getAxisDependency() {
+        return mAxisDependency;
+    }
+
+    /**
+     * Sets YAxis.AxisDependency object, that indicates on which axis will draw the text
+     * @param axisDependency
+     */
+    public void setAxisDependency(YAxis.AxisDependency axisDependency) {
+        this.mAxisDependency = axisDependency;
+    }
+
+    /**
+     * Returns the text which draw on the YAxis
+     * @return
+     */
+    public String getAxisText() {
+        return mAxisText;
+    }
+
+    /**
+     * Sets the text, which will draw on the YAxis
+     * @param axisText
+     */
+    public void setAxisText(String axisText) {
+        this.mAxisText = axisText;
+    }
+
+    /**
+     * Returns axis text size in dp
+     * @return
+     */
+    public float getAxisTextSize() {
+        return mAxisTextSize;
+    }
+
+    /**
+     * Sets axis text size in dp
+     * @param axisTextSize
+     */
+    public void setAxisTextSize(float axisTextSize) {
+        this.mAxisTextSize = axisTextSize;
+    }
+
+    /**
+     * Returns axis text color
+     * @return
+     */
+    public int getAxisTextColor() {
+        return mAxisTextColor;
+    }
+
+    /**
+     * Sets axis text color
+     * @param axisTextColor
+     */
+    public void setAxisTextColor(int axisTextColor) {
+        this.mAxisTextColor = axisTextColor;
+    }
 }

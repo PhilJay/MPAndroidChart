@@ -203,12 +203,13 @@ public class YAxis extends AxisBase {
      *
      * @param enabled
      */
-    public void setmShowGridLinesIfOnlyMinMax(boolean enabled) {
+    public void setShowGridLinesIfOnlyMinMax(boolean enabled) {
         mShowGridLinesIfOnlyMinMax = enabled;
     }
 
     /**
      * Returns true if showing grid lines is enabled when isShowOnlyMinMaxEnabled is true.
+     * Internaly this method used only when isShowOnlyMinMaxEnabled is true
      *
      * @return
      */

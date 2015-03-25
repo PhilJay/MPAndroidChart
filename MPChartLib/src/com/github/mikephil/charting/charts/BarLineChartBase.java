@@ -9,6 +9,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -21,6 +22,7 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarLineScatterCandleData;
 import com.github.mikephil.charting.data.BarLineScatterCandleDataSet;
+import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -110,6 +112,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
     // /** the approximator object used for data filtering */
     // private Approximator mApproximator;
+
+    /** Pre-allocated Paint object for drawing marker text on the YAxis **/
+    protected final Paint mAxisTextPaint = new Paint();
+
+    /** Pre-allocated Rect object for calculating marker text bounds **/
+    protected final Rect mAxisTextBoundsRect = new Rect();
+
 
     public BarLineChartBase(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -463,6 +472,52 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 .pointValuesToPixel(pts);
 
         return pts;
+    }
+
+    @Override
+    protected void drawMarkers(Canvas canvas) {
+        super.drawMarkers(canvas);
+        // if there is no marker view or drawing marker is disabled
+        if (mMarkerView == null || !mDrawMarkerViews || !valuesToHighlight()
+                || mMarkerView.getAxisText() == null || mMarkerView.getAxisText().length() == 0)
+            return;
+
+        for (int i = 0; i < mIndicesToHightlight.length; i++) {
+            int xIndex = mIndicesToHightlight[i].getXIndex();
+            int dataSetIndex = mIndicesToHightlight[i].getDataSetIndex();
+
+            if (xIndex <= mDeltaX && xIndex <= mDeltaX * mAnimator.getPhaseX()) {
+
+                Entry e = mData.getEntryForHighlight(mIndicesToHightlight[i]);
+
+                // make sure entry not null
+                if (e == null)
+                    continue;
+
+                float[] pos = getMarkerPosition(e, dataSetIndex);
+
+                // check bounds
+                if (!mViewPortHandler.isInBounds(pos[0], pos[1]))
+                    continue;
+
+                String text = mMarkerView.getAxisText();
+                mAxisTextPaint.setTextSize(Utils.convertDpToPixel(mMarkerView.getAxisTextSize()));
+                mAxisTextPaint.setColor(mMarkerView.getAxisTextColor());
+                mAxisTextPaint.getTextBounds(text, 0, text.length(), mAxisTextBoundsRect);
+                float x;
+                float y = pos[1] + mAxisTextBoundsRect.height() / 2;
+                if(mMarkerView.getAxisDependency() == AxisDependency.LEFT) {
+                    mAxisTextPaint.setTextAlign(Paint.Align.RIGHT);
+                    x = mViewPortHandler.offsetLeft() - getAxisLeft().getXOffset();
+                }
+                else {
+                    mAxisTextPaint.setTextAlign(Paint.Align.LEFT);
+                    x = mViewPortHandler.contentRight() + mAxisRight.getXOffset();
+                }
+                canvas.drawText(text, x, y, mAxisTextPaint);
+            }
+        }
+
     }
 
     /**
