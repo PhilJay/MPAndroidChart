@@ -34,6 +34,9 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
     /** if true, cubic lines are drawn instead of linear */
     private boolean mDrawCubic = false;
 
+    /** if true, lines are drawn stepped instead of directly point to point */
+    private boolean mDrawStepped = false;
+
     private boolean mDrawCircleHole = true;
 
     public LineDataSet(List<Entry> yVals, String label) {
@@ -67,6 +70,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
         copied.mDrawCircles = mDrawCircles;
         copied.mDrawCubic = mDrawCubic;
         copied.mHighLightColor = mHighLightColor;
+        copied.mDrawStepped = mDrawStepped;
 
         return copied;
     }
@@ -189,6 +193,25 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
      */
     public boolean isDrawCubicEnabled() {
         return mDrawCubic;
+    }
+
+    /**
+     * If ste to true, the linechart lines are drawn stepped instead of
+     * point to point. Default: false
+     *
+     * @param enabled
+     */
+    public void setmDrawStepped(boolean enabled) {
+        mDrawStepped = enabled;
+    }
+
+    /**
+     * returns true if drawing stepped lines is enabled, false if not.
+     *
+     * @return
+     */
+    public boolean isDrawSteppedEnabled() {
+        return mDrawStepped;
     }
 
     /** ALL CODE BELOW RELATED TO CIRCLE-COLORS */
