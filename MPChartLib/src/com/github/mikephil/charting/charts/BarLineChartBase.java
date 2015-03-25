@@ -1294,6 +1294,24 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     }
 
     /**
+     * Returns the required space of the right y-axis
+     *
+     * @return
+     */
+    public float getRightAxisWidth() {
+        return mAxisRight.getRequiredWidthSpace(mAxisRendererRight.getAxisPaint());
+    }
+
+    /**
+     * Sets a custom width for the right y-axis that will be used instead of the widest y-label in case it is bigger.
+     *
+     * @param width
+     */
+    public void setRightAxisWidth(float width) {
+        mAxisRight.setCustomWidth(width);
+    }
+
+    /**
      * Default formatter that calculates the position of the filled line.
      * 
      * @author Philipp Jahoda
