@@ -271,12 +271,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 set.setValueFormatter(mDefaultFormatter);
         }
 
-        // this won't work with a CombinedChart as it tries to init new buffers based on data it might not have any more
-        // for instance: change a CombinedChart from Line to Candle. 'notifyDataSetChanged' needs to happen after a new CombinedRenderer
-        // has been created, and the buffers have been initialised (see CombinedChart.setData())
-
         // let the chart know there is new data
-        //notifyDataSetChanged();
+        notifyDataSetChanged();
 
         if (mLogEnabled)
             Log.i(LOG_TAG, "Data is set.");
