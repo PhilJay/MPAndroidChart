@@ -7,6 +7,16 @@ import java.util.List;
 
 public class LineBuffer extends AbstractBuffer<Entry> {
 
+    private boolean mSteppedEnabled = false;
+
+    public void setSteppedEnabled(boolean enabled) {
+        mSteppedEnabled = enabled;
+    }
+
+    public boolean isSteppedEnabled() {
+        return mSteppedEnabled;
+    }
+
     public LineBuffer(int size) {
         super((size < 4) ? 4 : size);
     }
@@ -46,10 +56,24 @@ public class LineBuffer extends AbstractBuffer<Entry> {
 
         float size = entries.size() * phaseX;
 
-        for (int i = 1; i < size; i++) {
+        if(mSteppedEnabled == true) {
+            lineTo(entries.get(1).getXIndex(), entries.get(0).getVal());
+            for (int i = 1; i < size; i++) {
 
-            Entry e = entries.get(i);
-            lineTo(e.getXIndex(), e.getVal() * phaseY);
+                Entry e = entries.get(i);
+                lineTo(e.getXIndex(), e.getVal() * phaseY);
+
+                if(i < size - 1) {
+                    Entry next = entries.get(i + 1);
+                    lineTo(next.getXIndex(), e.getVal() * phaseY);
+                }
+            }
+        } else {
+            for (int i = 1; i < size; i++) {
+
+                Entry e = entries.get(i);
+                lineTo(e.getXIndex(), e.getVal() * phaseY);
+            }
         }
 
         reset();
