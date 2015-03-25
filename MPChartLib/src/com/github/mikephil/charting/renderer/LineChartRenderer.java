@@ -65,7 +65,14 @@ public class LineChartRenderer extends DataRenderer {
 
         for (int i = 0; i < mLineBuffers.length; i++) {
             LineDataSet set = lineData.getDataSetByIndex(i);
-            mLineBuffers[i] = new LineBuffer(set.getEntryCount() * 4 - 4);
+
+            if(set.isDrawSteppedEnabled() == true) {
+                mLineBuffers[i] = new LineBuffer(set.getEntryCount() * 4 * 2 - 4 * 2);
+            } else {
+                mLineBuffers[i] = new LineBuffer(set.getEntryCount() * 4 - 4);
+            }
+
+            mLineBuffers[i].setSteppedEnabled(set.isDrawSteppedEnabled());
             mCircleBuffers[i] = new CircleBuffer(set.getEntryCount() * 2);
         }
     }
@@ -318,8 +325,17 @@ public class LineChartRenderer extends DataRenderer {
             int minx = dataSet.getEntryPosition(entryFrom);
             int maxx = dataSet.getEntryPosition(entryTo);
 
-            int from = minx * 4;
-            int range = (maxx * 4 - from) + 4;
+            int from;
+            int range;
+
+            if(dataSet.isDrawSteppedEnabled()) {
+                from = minx * 4 * 2;
+                range = (maxx * 4 * 2 - from) + 4 * 2;
+            } else {
+                from = minx * 4;
+                range = (maxx * 4 - from) + 4;
+            }
+
             int to = range + from;
 
             mRenderPaint.setColor(dataSet.getColor());
