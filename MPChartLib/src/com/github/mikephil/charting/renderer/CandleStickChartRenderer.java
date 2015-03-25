@@ -57,7 +57,17 @@ public class CandleStickChartRenderer extends DataRenderer {
     }
 
     protected void drawDataSet(Canvas c, CandleDataSet dataSet) {
-                
+
+        /**
+         * CHANGELOG
+         *
+         * The change made to this method are based on the requirement to set the candle colours according
+         * to the open - close ratio. This behaviour is standard for candle stick charts as opposed to having
+         * filled / unfilled candle bodies.
+         * I decided against implementing both options here since I don't know if this should something that should be configurable
+         * for a CandleDataSet, though it would probably be best to offer both methods in order to remain backwards compatible.
+         */
+
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
         calcXBounds(trans);
         
@@ -78,13 +88,8 @@ public class CandleStickChartRenderer extends DataRenderer {
         shadowBuffer.feed(entries);
 
         trans.pointValuesToPixel(shadowBuffer.buffer);
-        
-        mRenderPaint.setStyle(Paint.Style.STROKE);
-        mRenderPaint.setColor(dataSet.getColor());
-        mRenderPaint.setStrokeWidth(dataSet.getShadowWidth());
 
-        // draw the shadow
-        c.drawLines(shadowBuffer.buffer, from, range, mRenderPaint);
+        mRenderPaint.setStrokeWidth(dataSet.getShadowWidth());
                 
         CandleBodyBuffer bodyBuffer = mBodyBuffers[dataSetIndex];
         bodyBuffer.setBodySpace(dataSet.getBodySpace());
@@ -105,26 +110,25 @@ public class CandleStickChartRenderer extends DataRenderer {
             // get the color that is specified for this position from
             // the DataSet, this will reuse colors, if the index is out
             // of bounds
-            mRenderPaint.setColor(dataSet.getColor(j));
+            //mRenderPaint.setColor(dataSet.getColor(j));
 
             float leftBody = bodyBuffer.buffer[j];
             float open = bodyBuffer.buffer[j + 1];
             float rightBody = bodyBuffer.buffer[j + 2];
             float close = bodyBuffer.buffer[j + 3];
 
-            // decide weather the body is hollow or filled
-            if (open > close) {
+            mRenderPaint.setStyle(Paint.Style.FILL);
 
-                mRenderPaint.setStyle(Paint.Style.FILL);
-                // draw the body
+            if(open > close) {
+                mRenderPaint.setColor(dataSet.getColor(0));
                 c.drawRect(leftBody, close, rightBody, open, mRenderPaint);
-
             } else {
-
-                mRenderPaint.setStyle(Paint.Style.STROKE);
-                // draw the body
+                mRenderPaint.setColor(dataSet.getColor(1));
                 c.drawRect(leftBody, open, rightBody, close, mRenderPaint);
             }
+
+            // draw the shadow
+            c.drawLine(shadowBuffer.buffer[j], shadowBuffer.buffer[j +1], shadowBuffer.buffer[j+2], shadowBuffer.buffer[j+3], mRenderPaint);
         }
     }
 
