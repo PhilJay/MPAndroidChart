@@ -60,9 +60,9 @@ public class YAxisRenderer extends AxisRenderer {
                 yMax = (float) p1.y;
             } else {
 
-                if (!mYAxis.isStartAtZeroEnabled())
+                if (!mYAxis.isStartAtZeroEnabled()) {
                     yMin = (float) Math.min(p1.y, p2.y);
-                else
+                } else
                     yMin = 0;
                 yMax = (float) Math.max(p1.y, p2.y);
             }
@@ -275,11 +275,11 @@ public class YAxisRenderer extends AxisRenderer {
 
         float[] pts = new float[4];
         Path limitLinePath = new Path();
-               
+
         for (int i = 0; i < limitLines.size(); i++) {
 
             LimitLine l = limitLines.get(i);
-            
+
             pts[1] = l.getLimit();
             pts[3] = l.getLimit();
 
@@ -287,7 +287,7 @@ public class YAxisRenderer extends AxisRenderer {
 
             pts[0] = mViewPortHandler.contentLeft();
             pts[2] = mViewPortHandler.contentRight();
-            
+
             limitLinePath.moveTo(pts[0], pts[1]);
             limitLinePath.lineTo(pts[2], pts[3]);
 
@@ -297,7 +297,7 @@ public class YAxisRenderer extends AxisRenderer {
 
             c.drawPath(limitLinePath, mLimitLinePaint);
             limitLinePath.reset();
-//            c.drawLines(pts, mLimitLinePaint);
+            // c.drawLines(pts, mLimitLinePaint);
 
             String label = l.getLabel();
 

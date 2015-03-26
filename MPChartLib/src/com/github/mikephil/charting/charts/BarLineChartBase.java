@@ -311,6 +311,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         float leftRange = Math.abs(maxLeft - (mAxisLeft.isStartAtZeroEnabled() ? 0 : minLeft));
         float rightRange = Math.abs(maxRight - (mAxisRight.isStartAtZeroEnabled() ? 0 : minRight));
+        
+        // in case all values are equal
+        if (leftRange == 0f)
+            maxLeft = maxLeft + 1f;
+
+        if (rightRange == 0f)
+            maxRight = maxRight + 1f;
 
         float topSpaceLeft = leftRange / 100f * mAxisLeft.getSpaceTop();
         float topSpaceRight = rightRange / 100f * mAxisRight.getSpaceTop();
@@ -356,7 +363,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                     offsetRight += mLegend.mTextWidthMax + mLegend.getXOffset() * 2f;
 
                 } else if (mLegend.getPosition() == LegendPosition.LEFT_OF_CHART
-                            || mLegend.getPosition() == LegendPosition.LEFT_OF_CHART_CENTER) {
+                        || mLegend.getPosition() == LegendPosition.LEFT_OF_CHART_CENTER) {
 
                     offsetLeft += mLegend.mTextWidthMax + mLegend.getXOffset() * 2f;
 
@@ -370,11 +377,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
             // offsets for y-labels
             if (mAxisLeft.needsOffset()) {
-                offsetLeft += mAxisLeft.getRequiredWidthSpace(mAxisRendererLeft.getPaintAxisLabels());
+                offsetLeft += mAxisLeft.getRequiredWidthSpace(mAxisRendererLeft
+                        .getPaintAxisLabels());
             }
 
             if (mAxisRight.needsOffset()) {
-                offsetRight += mAxisRight.getRequiredWidthSpace(mAxisRendererRight.getPaintAxisLabels());
+                offsetRight += mAxisRight.getRequiredWidthSpace(mAxisRendererRight
+                        .getPaintAxisLabels());
             }
 
             float xlabelheight = mXAxis.mLabelHeight * 2f;

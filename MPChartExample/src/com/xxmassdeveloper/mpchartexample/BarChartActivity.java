@@ -99,12 +99,14 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         leftAxis.setLabelCount(8);
         leftAxis.setValueFormatter(custom);
         leftAxis.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
+        leftAxis.setSpaceTop(15f);
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
         rightAxis.setTypeface(mTf);
         rightAxis.setLabelCount(8);
         rightAxis.setValueFormatter(custom);
+        rightAxis.setSpaceTop(15f);
         
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.BELOW_CHART_LEFT);
