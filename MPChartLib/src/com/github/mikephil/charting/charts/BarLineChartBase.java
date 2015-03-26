@@ -22,7 +22,6 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarLineScatterCandleData;
 import com.github.mikephil.charting.data.BarLineScatterCandleDataSet;
-import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -119,6 +118,18 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     /** Rect object for calculating marker text bounds **/
     protected final Rect mAxisTextBoundsRect = new Rect();
 
+    /**
+     * If set to true, chart continues to scroll after touch up, but with friction, and its speed
+     * decrease over time, depend on mFlingFriction value
+     */
+    private boolean mFlingFrictionEnabled;
+
+    /**
+     * Fling friction coefficient in [0 ; 1] interval, higher values indicate that speed will
+     * decrease slowly, for example if it set to 0, it will stop immediately, if set to 1, it will
+     * scroll with constant speed, until the last point
+     */
+    private float mFlingFrictionCoef = 0.9f;
 
     public BarLineChartBase(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -1328,6 +1339,47 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
     public float getYChartMin() {
         return Math.min(mAxisLeft.mAxisMinimum, mAxisRight.mAxisMinimum);
+    }
+
+    /**
+     * Returns fling friction coefficient
+     * @return
+     */
+    public float getFlingFrictionCoef() {
+        return mFlingFrictionCoef;
+    }
+
+    /**
+     * Fling friction coefficient in [0 ; 1] interval, higher values indicate that speed will
+     * decrease slowly, for example if it set to 0, it will stop immediately, if set to 1, it will
+     * scroll with constant speed, until last point
+     * @param flingFrictionCoef
+     */
+    public void setFlingFrictionCoef(float flingFrictionCoef) {
+        if(flingFrictionCoef < 0) {
+            flingFrictionCoef = 0;
+        }
+        else if(flingFrictionCoef > 1) {
+            flingFrictionCoef = 1;
+        }
+        mFlingFrictionCoef = flingFrictionCoef;
+    }
+
+    /**
+     * If fling friction enabled or not
+     * @return
+     */
+    public boolean isFlingFrictionEnabled() {
+        return mFlingFrictionEnabled;
+    }
+
+    /**
+     * If set to true, chart continues to scroll after touch up, but with friction, and its speed
+     * decrease over time, depend on getFlingFrictionCoef value
+     * @param flingFrictionEnabled
+     */
+    public void setFlingFrictionEnabled(boolean flingFrictionEnabled) {
+        mFlingFrictionEnabled = flingFrictionEnabled;
     }
 
     /**
