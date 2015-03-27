@@ -17,6 +17,11 @@ public class BarDataSet extends BarLineScatterCandleDataSet<BarEntry> {
      */
     private int mStackSize = 1;
 
+    /**
+     * is the chart stacked
+     */
+    private boolean mStacked = false;
+
     /** the color used for drawing the bar shadows */
     private int mBarShadowColor = Color.rgb(215, 215, 215);
 
@@ -94,8 +99,11 @@ public class BarDataSet extends BarLineScatterCandleDataSet<BarEntry> {
 
             float[] vals = yVals.get(i).getVals();
 
-            if (vals != null && vals.length > mStackSize)
+//            if vals array isn't null that this chart is stacked
+            if (vals != null) {
                 mStackSize = vals.length;
+                mStacked = true;
+            }
         }
     }
 
@@ -110,12 +118,12 @@ public class BarDataSet extends BarLineScatterCandleDataSet<BarEntry> {
     }
 
     /**
-     * Returns true if this DataSet is stacked (stacksize > 1) or not.
+     * Returns true if this DataSet is stacked.
      * 
      * @return
      */
     public boolean isStacked() {
-        return mStackSize > 1 ? true : false;
+        return mStacked;
     }
 
     /**
