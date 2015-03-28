@@ -71,22 +71,22 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
     private GestureDetector mGestureDetector;
 
     /* Handler for fling animation */
-    private Handler flingHandler = new Handler();
+    private Handler mFlingHandler = new Handler();
 
     /* Point where touch up happened and fling animation started */
-    private PointF flingStartPoint = new PointF();
+    private final PointF mFlingStartPoint = new PointF();
 
     /* Current fling point after start time */
-    private PointF flingCurrentPoint = new PointF();
+    private final PointF mFlingCurrentPoint = new PointF();
 
-    /* Current fling speed in pixel per millisecond */
-    private float flingPxPerMsec;
+    /* Current fling velocity in pixel per millisecond */
+    private final PointF flingVelocity = new PointF();
 
     /* When touch down happened */
-    private long touchStartTime;
+    private long mTouchStartTime;
 
     /* When flingRunnable's run method called last time */
-    private long runnableLastTime;
+    private long mRunnableLastTime;
 
     public BarLineChartTouchListener(T chart, Matrix touchMatrix) {
         this.mChart = chart;
@@ -111,8 +111,8 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
             case MotionEvent.ACTION_DOWN:
                 if(mChart.isFlingFrictionEnabled()) {
-                    touchStartTime = System.currentTimeMillis();
-                    flingHandler.removeCallbacks(flingRunnable);
+                    mTouchStartTime = System.currentTimeMillis();
+                    mFlingHandler.removeCallbacks(flingRunnable);
                 }
                 saveTouchStart(event);
                 break;
@@ -185,13 +185,15 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
                 mChart.enableScroll();
                 if(mChart.isFlingFrictionEnabled()) {
                     long currentTime = System.currentTimeMillis();
-                    flingStartPoint.set(event.getX(), event.getY());
-                    flingCurrentPoint.set(event.getX(), event.getY());
-                    flingPxPerMsec = (event.getX() - mTouchStartPoint.x) / (currentTime - touchStartTime);
-                    runnableLastTime = currentTime;
+                    mFlingStartPoint.set(event.getX(), event.getY());
+                    mFlingCurrentPoint.set(event.getX(), event.getY());
+                    long dt = currentTime - mTouchStartTime;
+                    flingVelocity.x = (event.getX() - mTouchStartPoint.x) / dt;
+                    flingVelocity.y = (event.getY() - mTouchStartPoint.y) / dt;
+                    mRunnableLastTime = currentTime;
                     saveTouchStart(event);
-                    flingHandler.removeCallbacks(flingRunnable);
-                    flingHandler.post(flingRunnable);
+                    mFlingHandler.removeCallbacks(flingRunnable);
+                    mFlingHandler.post(flingRunnable);
                 }
                 break;
             case MotionEvent.ACTION_POINTER_UP:
@@ -260,14 +262,17 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
         @Override
         public void run() {
             long currentTime = System.currentTimeMillis();
-            long dt = currentTime - runnableLastTime;
-            flingCurrentPoint.x += flingPxPerMsec * dt;
-            flingPxPerMsec *= mChart.getFlingFrictionCoef();
-            performDrag(flingStartPoint, flingCurrentPoint);
+            long dt = currentTime - mRunnableLastTime;
+            mFlingCurrentPoint.x += flingVelocity.x * dt;
+            mFlingCurrentPoint.y += flingVelocity.y * dt;
+            flingVelocity.x *= mChart.getFlingFrictionCoef();
+            flingVelocity.y *= mChart.getFlingFrictionCoef();
+            performDrag(mFlingStartPoint, mFlingCurrentPoint);
             mMatrix = mChart.getViewPortHandler().refresh(mMatrix, mChart, true);
-            runnableLastTime = currentTime;
-            if(Math.abs(flingPxPerMsec) > 0.01f) {
-                flingHandler.postDelayed(this, 25);
+            mRunnableLastTime = currentTime;
+            float eps = 0.01f;
+            if(Math.abs(flingVelocity.x) > eps || Math.abs(flingVelocity.y) > eps) {
+                mFlingHandler.postDelayed(this, 25);
             }
         }
     };
