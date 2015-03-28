@@ -1,5 +1,4 @@
  [![Android Arsenal](http://img.shields.io/badge/Android%20Arsenal-MPAndroidChart-blue.svg?style=flat)](http://android-arsenal.com/details/1/741)  [![Release](https://img.shields.io/github/release/PhilJay/MPAndroidChart.svg?label=maven central)](https://jitpack.io/#PhilJay/MPAndroidChart)      [![API](https://img.shields.io/badge/API-8%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=8)
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/PhilJay/mpandroidchart/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 Remember: *It's all about the looks.*
 
@@ -26,6 +25,10 @@ Donations
  - [**Donate 300 $**] (https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PGW8CXUHZS2T2): I can afford it and want to assure the further development and maintenance of this project. Furthermore, I also want to show my gratitude to it's creator.
  - Of course, you can also [**choose what you want to donate**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EGBENAC5XBCKS), all donations are awesome!
 
+
+**Spread the word**
+
+<a href="https://twitter.com/intent/tweet?text=Check%20out%20the%20awesome%20#MPAndroidChart%20#library%20on%20#Github%20https://github.com/PhilJay/MPAndroidChart" target="_blank" title="share to twitter" style="width:60%"><img src="https://github.com/PhilJay/MPAndroidChart/blob/master/design/twitter_icon.png" title="share to twitter"/>
 
 Demo
 -----
