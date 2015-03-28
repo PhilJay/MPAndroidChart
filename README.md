@@ -25,10 +25,7 @@ Donations
  - [**Donate 300 $**] (https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PGW8CXUHZS2T2): I can afford it and want to assure the further development and maintenance of this project. Furthermore, I also want to show my gratitude to it's creator.
  - Of course, you can also [**choose what you want to donate**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EGBENAC5XBCKS), all donations are awesome!
 
-
-**Spread the word**
-
-<a href="https://twitter.com/intent/tweet?text=Check%20out%20the%20awesome%20#MPAndroidChart%20#library%20on%20#Github%20https://github.com/PhilJay/MPAndroidChart" target="_blank" title="share to twitter" style="width:60%"><img src="https://github.com/PhilJay/MPAndroidChart/blob/master/design/twitter_icon.png" title="share to twitter"/>
+**Spread the word!**
 
 Demo
 -----
