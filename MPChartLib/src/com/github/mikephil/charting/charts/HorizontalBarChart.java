@@ -22,7 +22,8 @@ import com.github.mikephil.charting.utils.Utils;
 
 /**
  * BarChart with horizontal bar orientation. In this implementation, x- and
- * y-axis are switched.
+ * y-axis are switched, meaning the YAxis class represents the horizontal values
+ * and the XAxis class represents the vertical values.
  * 
  * @author Philipp Jahoda
  */
@@ -53,7 +54,7 @@ public class HorizontalBarChart extends BarChart {
         mXAxisRenderer = new XAxisRendererHorizontalBarChart(mViewPortHandler, mXAxis,
                 mLeftAxisTransformer, this);
     }
-    
+
     @Override
     protected void calculateOffsets() {
 
@@ -86,7 +87,8 @@ public class HorizontalBarChart extends BarChart {
         }
 
         if (mAxisRight.needsOffset()) {
-            offsetBottom += mAxisRight.getRequiredHeightSpace(mAxisRendererRight.getPaintAxisLabels());
+            offsetBottom += mAxisRight.getRequiredHeightSpace(mAxisRendererRight
+                    .getPaintAxisLabels());
         }
 
         float xlabelwidth = mXAxis.mLabelWidth;
@@ -142,7 +144,7 @@ public class HorizontalBarChart extends BarChart {
         mXAxis.mAxisLabelModulus = (int) Math
                 .ceil((mData.getXValCount() * mXAxis.mLabelHeight)
                         / (mViewPortHandler.contentHeight() * values[Matrix.MSCALE_Y]));
-        
+
         if (mXAxis.mAxisLabelModulus < 1)
             mXAxis.mAxisLabelModulus = 1;
     }
@@ -165,14 +167,14 @@ public class HorizontalBarChart extends BarChart {
         float bottom = x + 0.5f - spaceHalf;
         float left = y >= 0 ? y : 0;
         float right = y <= 0 ? y : 0;
-        
+
         RectF bounds = new RectF(left, top, right, bottom);
 
         getTransformer(set.getAxisDependency()).rectValueToPixel(bounds);
 
         return bounds;
     }
-    
+
     @Override
     public PointF getPosition(Entry e, AxisDependency axis) {
 
@@ -187,7 +189,7 @@ public class HorizontalBarChart extends BarChart {
 
         return new PointF(vals[0], vals[1]);
     }
-    
+
     /**
      * Returns the Highlight object (contains x-index and DataSet index) of the
      * selected value at the given touch point inside the BarChart.
