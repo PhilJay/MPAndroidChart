@@ -15,9 +15,13 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.renderer.HorizontalBarChartRenderer;
+import com.github.mikephil.charting.renderer.XAxisRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart;
+import com.github.mikephil.charting.renderer.YAxisRenderer;
 import com.github.mikephil.charting.renderer.YAxisRendererHorizontalBarChart;
 import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.Transformer;
+import com.github.mikephil.charting.utils.TransformerHorizontalBarChart;
 import com.github.mikephil.charting.utils.Utils;
 
 /**
@@ -45,6 +49,9 @@ public class HorizontalBarChart extends BarChart {
     @Override
     protected void init() {
         super.init();
+        
+        mLeftAxisTransformer = new TransformerHorizontalBarChart(mViewPortHandler);
+        mRightAxisTransformer = new TransformerHorizontalBarChart(mViewPortHandler);
 
         mRenderer = new HorizontalBarChartRenderer(this, mAnimator, mViewPortHandler);
         mAxisRendererLeft = new YAxisRendererHorizontalBarChart(mViewPortHandler, mAxisLeft,

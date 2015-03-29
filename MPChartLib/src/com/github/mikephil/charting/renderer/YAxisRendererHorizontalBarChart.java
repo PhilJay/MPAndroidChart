@@ -47,12 +47,8 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
                 yMin = (float) p1.x;
                 yMax = (float) p2.x;
             } else {
-
-                if (!mYAxis.isStartAtZeroEnabled())
-                    yMin = (float) Math.min(p1.x, p2.x);
-                else
-                    yMin = 0;
-                yMax = (float) Math.max(p1.x, p2.x);
+                yMin = (float) p2.x;
+                yMax = (float) p1.x;
             }
         }
 

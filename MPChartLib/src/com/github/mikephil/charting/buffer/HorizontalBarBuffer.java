@@ -31,30 +31,51 @@ public class HorizontalBarBuffer extends BarBuffer {
             float y = e.getVal();
             float[] vals = e.getVals();
 
-            if (!mContainsStacks || vals == null) {
+            if(mInverted) { // inverted axis
+                
+                if (!mContainsStacks || vals == null) {
 
-                float bottom = x - barWidth + barSpaceHalf;
-                float top = x + barWidth - barSpaceHalf;
-                float right = y >= 0 ? y : 0;
-                float left = y <= 0 ? y : 0;
+                    float bottom = x - barWidth + barSpaceHalf;
+                    float top = x + barWidth - barSpaceHalf;
+                    float left = y >= 0 ? y : 0;
+                    float right = y <= 0 ? y : 0;
 
-                // multiply the height of the rect with the phase
-                if (right > 0)
-                    right *= phaseY;
-                else
-                    left *= phaseY;
+                    // multiply the height of the rect with the phase
+                    if (right > 0)
+                        right *= phaseY;
+                    else
+                        left *= phaseY;
 
-                addBar(left, top, right, bottom);
+                    addBar(left, top, right, bottom);
 
-            } else {
+                } else {
 
-                float all = e.getVal();
+                    float all = e.getVal();
 
-                // fill the stack
-                for (int k = 0; k < vals.length; k++) {
+                    // fill the stack
+                    for (int k = 0; k < vals.length; k++) {
 
-                    all -= vals[k];
-                    y = vals[k] + all;
+                        all -= vals[k];
+                        y = vals[k] + all;
+
+                        float bottom = x - barWidth + barSpaceHalf;
+                        float top = x + barWidth - barSpaceHalf;
+                        float left = y >= 0 ? y : 0;
+                        float right = y <= 0 ? y : 0;
+
+                        // multiply the height of the rect with the phase
+                        if (right > 0)
+                            right *= phaseY;
+                        else
+                            left *= phaseY;
+
+                        addBar(left, top, right, bottom);
+                    }
+                }
+                
+            } else { // not inverted
+             
+                if (!mContainsStacks || vals == null) {
 
                     float bottom = x - barWidth + barSpaceHalf;
                     float top = x + barWidth - barSpaceHalf;
@@ -68,6 +89,30 @@ public class HorizontalBarBuffer extends BarBuffer {
                         left *= phaseY;
 
                     addBar(left, top, right, bottom);
+
+                } else {
+
+                    float all = e.getVal();
+
+                    // fill the stack
+                    for (int k = 0; k < vals.length; k++) {
+
+                        all -= vals[k];
+                        y = vals[k] + all;
+
+                        float bottom = x - barWidth + barSpaceHalf;
+                        float top = x + barWidth - barSpaceHalf;
+                        float right = y >= 0 ? y : 0;
+                        float left = y <= 0 ? y : 0;
+
+                        // multiply the height of the rect with the phase
+                        if (right > 0)
+                            right *= phaseY;
+                        else
+                            left *= phaseY;
+
+                        addBar(left, top, right, bottom);
+                    }
                 }
             }
         }

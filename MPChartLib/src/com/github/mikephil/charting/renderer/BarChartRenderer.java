@@ -93,6 +93,7 @@ public class BarChartRenderer extends DataRenderer {
         buffer.setPhases(phaseX, phaseY);
         buffer.setBarSpace(dataSet.getBarSpace());
         buffer.setDataSet(index);
+        buffer.setInverted(mChart.isInverted(dataSet.getAxisDependency()));
 
         buffer.feed(entries);
 
@@ -155,14 +156,13 @@ public class BarChartRenderer extends DataRenderer {
      * @param from
      * @param trans
      */
-    protected void prepareBarHighlight(float x, float y, float barspace, float from,
+    protected void prepareBarHighlight(float x, float y, float barspaceHalf, float from,
             Transformer trans) {
 
         float barWidth = 0.5f;
 
-        float spaceHalf = barspace / 2f;
-        float left = x - barWidth + spaceHalf;
-        float right = x + barWidth - spaceHalf;
+        float left = x - barWidth + barspaceHalf;
+        float right = x + barWidth - barspaceHalf;
         float top = y >= from ? y : from;
         float bottom = y <= from ? y : from;
 
@@ -325,6 +325,8 @@ public class BarChartRenderer extends DataRenderer {
             if (set == null)
                 continue;
 
+            float barspaceHalf = set.getBarSpace() / 2f;
+            
             Transformer trans = mChart.getTransformer(set.getAxisDependency());
 
             mHighlightPaint.setColor(set.getHighLightColor());
@@ -352,7 +354,7 @@ public class BarChartRenderer extends DataRenderer {
                 // this is where the bar starts
                 float from = isStack ? e.getBelowSum(h.getStackIndex()) : 0f;
 
-                prepareBarHighlight(x, y, set.getBarSpace(), from, trans);
+                prepareBarHighlight(x, y, barspaceHalf, from, trans);
 
                 c.drawRect(mBarRect, mHighlightPaint);
 

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 
 import com.github.mikephil.charting.charts.BarLineChartBase;
+import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.data.BarLineScatterCandleData;
 import com.github.mikephil.charting.data.BarLineScatterCandleDataSet;
 import com.github.mikephil.charting.data.DataSet;
@@ -228,12 +229,11 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
     /**
      * Performs all necessary operations needed for dragging.
-     * 
+     *
      * @param event
      */
     private void performDrag(MotionEvent event) {
-        PointF dragPoint = new PointF(event.getX(), event.getY());
-        performDrag(mTouchStartPoint, dragPoint);
+        performDrag(mTouchStartPoint, new PointF(event.getX(), event.getY()));
     }
 
     /**
@@ -243,17 +243,24 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
      */
     private void performDrag(PointF startPoint, PointF endPoint) {
         mMatrix.set(mSavedMatrix);
-        PointF dragPoint = new PointF(endPoint.x, endPoint.y);
 
         // check if axis is inverted
         if (mChart.isAnyAxisInverted() && mClosestDataSetToTouch != null
                 && mChart.getAxis(mClosestDataSetToTouch.getAxisDependency()).isInverted()) {
 
-            mMatrix.postTranslate(dragPoint.x - startPoint.x, -(dragPoint.y
-                    - startPoint.y));
+            // if there is an inverted horizontalbarchart
+            if(mChart instanceof HorizontalBarChart) {
+
+                mMatrix.postTranslate(endPoint.x - startPoint.x, -(endPoint.y
+                        - startPoint.y));
+            } else {
+
+                mMatrix.postTranslate(endPoint.x - startPoint.x, -(endPoint.y
+                        - startPoint.y));
+            }
         }
         else {
-            mMatrix.postTranslate(dragPoint.x - startPoint.x, dragPoint.y
+            mMatrix.postTranslate(endPoint.x - startPoint.x, endPoint.y
                     - startPoint.y);
         }
     }
@@ -449,7 +456,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
         // check if axis is inverted
         if (mChart.isAnyAxisInverted() && mClosestDataSetToTouch != null
-                && mChart.getAxis(mClosestDataSetToTouch.getAxisDependency()).isInverted()) {
+                && mChart.isInverted(mClosestDataSetToTouch.getAxisDependency())) {
             yTrans = -(y - vph.offsetTop());
         } else {
             yTrans = -(mChart.getMeasuredHeight() - y - vph.offsetBottom());
@@ -515,21 +522,6 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
             l.onChartLongPressed(e);
         }
-        // else if (mTouchMode == NONE) {
-        //
-        // mChart.fitScreen();
-        //
-        // Log.i("BarlineChartTouch",
-        // "Longpress, resetting zoom and drag, adjusting chart bounds to screen.");
-        //
-        // // PointF trans = getTrans(e.getX(), e.getY());
-        // //
-        // // mChart.zoomOut(trans.x, trans.y);
-        // //
-        // // Log.i("BarlineChartTouch", "Longpress, Zooming Out, x: " +
-        // // trans.x +
-        // // ", y: " + trans.y);
-        // }
     }
 
     @Override

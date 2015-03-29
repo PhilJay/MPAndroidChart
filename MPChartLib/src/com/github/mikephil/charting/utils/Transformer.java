@@ -25,7 +25,7 @@ public class Transformer {
     /** matrix for handling the different offsets of the chart */
     protected Matrix mMatrixOffset = new Matrix();
 
-    private ViewPortHandler mViewPortHandler;
+    protected ViewPortHandler mViewPortHandler;
 
     public Transformer(ViewPortHandler viewPortHandler) {
         this.mViewPortHandler = viewPortHandler;
