@@ -26,6 +26,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
+import com.github.mikephil.charting.interfaces.BarLineScatterCandleDataProvider;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.listener.OnDrawListener;
 import com.github.mikephil.charting.renderer.XAxisRenderer;
@@ -47,7 +48,7 @@ import java.util.List;
  */
 @SuppressLint("RtlHardcoded")
 public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? extends BarLineScatterCandleDataSet<? extends Entry>>>
-        extends Chart<T> {
+        extends Chart<T> implements BarLineScatterCandleDataProvider {
 
     /** the maximum number of entried to which values will be drawn */
     protected int mMaxVisibleCount = 100;
@@ -233,7 +234,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         // canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
 
-        if (true) {
+        if (mLogEnabled) {
             long drawtime = (System.currentTimeMillis() - starttime);
             totalTime += drawtime;
             drawCycles += 1;
@@ -1161,6 +1162,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             return mAxisLeft;
         else
             return mAxisRight;
+    }
+    
+    @Override
+    public boolean isInverted(AxisDependency axis) {
+        return getAxis(axis).isInverted();
     }
 
     /**

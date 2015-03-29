@@ -59,12 +59,9 @@ public class YAxisRenderer extends AxisRenderer {
                 yMin = (float) p2.y;
                 yMax = (float) p1.y;
             } else {
-
-                if (!mYAxis.isStartAtZeroEnabled()) {
-                    yMin = (float) Math.min(p1.y, p2.y);
-                } else
-                    yMin = 0;
-                yMax = (float) Math.max(p1.y, p2.y);
+                
+                yMin = (float) p1.y;
+                yMax = (float) p2.y;
             }
         }
 

@@ -222,19 +222,17 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
     }
 
     @Override
-    protected void prepareBarHighlight(float x, float y, float barspace, float from,
+    protected void prepareBarHighlight(float x, float y, float barspaceHalf, float from,
             Transformer trans) {
 
-        float spaceHalf = barspace / 2f;
-
-        float top = x - 0.5f + spaceHalf;
-        float bottom = x + 0.5f - spaceHalf;
+        float top = x - 0.5f + barspaceHalf;
+        float bottom = x + 0.5f - barspaceHalf;
         float left = y >= from ? y : from;
         float right = y <= from ? y : from;
 
         mBarRect.set(left, top, right, bottom);
 
-        trans.rectValueToPixel(mBarRect, mAnimator.getPhaseY());
+        trans.rectValueToPixelHorizontal(mBarRect, mAnimator.getPhaseY());
     }
 
     @Override

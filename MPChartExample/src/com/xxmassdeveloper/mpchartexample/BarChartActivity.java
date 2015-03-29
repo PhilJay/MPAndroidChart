@@ -64,7 +64,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart = (BarChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
 
-        mChart.setDrawBarShadow(true);
+        mChart.setDrawBarShadow(false);
         mChart.setDrawValueAboveBar(true);
 
         mChart.setDescription("");
@@ -256,11 +256,13 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
 
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count-1; i++) {
             float mult = (range + 1);
             float val = (float) (Math.random() * mult);
             yVals1.add(new BarEntry(val, i));
         }
+        
+        yVals1.add(new BarEntry(-20f, count-1));
 
         BarDataSet set1 = new BarDataSet(yVals1, "DataSet");
         set1.setBarSpacePercent(35f);
