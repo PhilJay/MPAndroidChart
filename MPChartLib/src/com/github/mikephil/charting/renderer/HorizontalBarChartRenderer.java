@@ -65,6 +65,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
         buffer.setPhases(phaseX, phaseY);
         buffer.setBarSpace(dataSet.getBarSpace());
         buffer.setDataSet(index);
+        buffer.setInverted(mChart.isInverted(dataSet.getAxisDependency()));
 
         buffer.feed(entries);
 
