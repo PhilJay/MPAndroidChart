@@ -9,7 +9,7 @@ import com.github.mikephil.charting.interfaces.CandleDataProvider;
 import com.github.mikephil.charting.renderer.CandleStickChartRenderer;
 
 /**
- * Financial chart type that draws candle-sticks.
+ * Financial chart type that draws candle-sticks (OHCL chart).
  * 
  * @author Philipp Jahoda
  */
@@ -26,11 +26,11 @@ public class CandleStickChart extends BarLineChartBase<CandleData> implements Ca
     public CandleStickChart(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
-    
+
     @Override
     protected void init() {
         super.init();
-        
+
         mRenderer = new CandleStickChartRenderer(this, mAnimator, mViewPortHandler);
         mXChartMin = -0.5f;
     }
@@ -42,7 +42,7 @@ public class CandleStickChart extends BarLineChartBase<CandleData> implements Ca
         mXChartMax += 0.5f;
         mDeltaX = Math.abs(mXChartMax - mXChartMin);
     }
-    
+
     @Override
     public CandleData getCandleData() {
         return mData;
