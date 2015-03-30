@@ -97,13 +97,13 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         yl.setDrawAxisLine(true);
         yl.setDrawGridLines(true);
         yl.setGridLineWidth(0.3f);
-        yl.setInverted(true);
+//        yl.setInverted(true);
 
         YAxis yr = mChart.getAxisRight();
         yr.setTypeface(tf);
         yr.setDrawAxisLine(true);
         yr.setDrawGridLines(false);
-        yr.setInverted(true);
+//        yr.setInverted(true);
 
         setData(12, 50);
         mChart.animateY(2500);

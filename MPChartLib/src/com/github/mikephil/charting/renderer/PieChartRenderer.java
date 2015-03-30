@@ -157,6 +157,7 @@ public class PieChartRenderer extends DataRenderer {
 
         PieData data = mChart.getData();
         List<PieDataSet> dataSets = data.getDataSets();
+        boolean drawXVals = mChart.isDrawSliceTextEnabled();
 
         int cnt = 0;
 
@@ -164,7 +165,7 @@ public class PieChartRenderer extends DataRenderer {
 
             PieDataSet dataSet = dataSets.get(i);
 
-            if (!dataSet.isDrawValuesEnabled())
+            if (!dataSet.isDrawValuesEnabled() && !drawXVals)
                 continue;
 
             // apply the text-styling defined by the DataSet
@@ -190,7 +191,6 @@ public class PieChartRenderer extends DataRenderer {
 
                 String val = dataSet.getValueFormatter().getFormattedValue(value);
 
-                boolean drawXVals = mChart.isDrawSliceTextEnabled();
                 boolean drawYVals = dataSet.isDrawValuesEnabled();
 
                 // draw everything, depending on settings
