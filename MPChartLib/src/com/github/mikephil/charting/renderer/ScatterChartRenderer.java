@@ -93,7 +93,7 @@ public class ScatterChartRenderer extends DataRenderer {
                             || !mViewPortHandler.isInBoundsY(buffer.buffer[i + 1]))
                         continue;
 
-                    mRenderPaint.setColor(dataSet.getColor(i));
+                    mRenderPaint.setColor(dataSet.getColor(i / 2));
                     c.drawRect(buffer.buffer[i] - shapeHalf,
                             buffer.buffer[i + 1] - shapeHalf, buffer.buffer[i]
                                     + shapeHalf, buffer.buffer[i + 1]
@@ -113,7 +113,7 @@ public class ScatterChartRenderer extends DataRenderer {
                             || !mViewPortHandler.isInBoundsY(buffer.buffer[i + 1]))
                         continue;
 
-                    mRenderPaint.setColor(dataSet.getColor(i));
+                    mRenderPaint.setColor(dataSet.getColor(i / 2));
                     c.drawCircle(buffer.buffer[i], buffer.buffer[i + 1], shapeHalf,
                             mRenderPaint);
                 }
@@ -134,7 +134,7 @@ public class ScatterChartRenderer extends DataRenderer {
                             || !mViewPortHandler.isInBoundsY(buffer.buffer[i + 1]))
                         continue;
 
-                    mRenderPaint.setColor(dataSet.getColor(i));
+                    mRenderPaint.setColor(dataSet.getColor(i / 2));
                     tri.moveTo(buffer.buffer[i], buffer.buffer[i + 1] - shapeHalf);
                     tri.lineTo(buffer.buffer[i] + shapeHalf, buffer.buffer[i + 1] + shapeHalf);
                     tri.lineTo(buffer.buffer[i] - shapeHalf, buffer.buffer[i + 1] + shapeHalf);
@@ -157,7 +157,7 @@ public class ScatterChartRenderer extends DataRenderer {
                             || !mViewPortHandler.isInBoundsY(buffer.buffer[i + 1]))
                         continue;
 
-                    mRenderPaint.setColor(dataSet.getColor(i));
+                    mRenderPaint.setColor(dataSet.getColor(i / 2));
 
                     c.drawLine(buffer.buffer[i] - shapeHalf, buffer.buffer[i + 1],
                             buffer.buffer[i] + shapeHalf,
