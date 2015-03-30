@@ -9,6 +9,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -111,6 +112,25 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
     // /** the approximator object used for data filtering */
     // private Approximator mApproximator;
+
+    /** Paint object for drawing marker text on the YAxis **/
+    protected final Paint mAxisTextPaint = new Paint();
+
+    /** Rect object for calculating marker text bounds **/
+    protected final Rect mAxisTextBoundsRect = new Rect();
+
+    /**
+     * If set to true, chart continues to scroll after touch up, but with friction, and its speed
+     * decrease over time, depend on mFlingFriction value
+     */
+    private boolean mFlingFrictionEnabled;
+
+    /**
+     * Fling friction coefficient in [0 ; 1] interval, higher values indicate that speed will
+     * decrease slowly, for example if it set to 0, it will stop immediately, if set to 1, it will
+     * scroll with constant speed, until the last point
+     */
+    private float mFlingFrictionCoef = 0.9f;
 
     public BarLineChartBase(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -473,6 +493,67 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 .pointValuesToPixel(pts);
 
         return pts;
+    }
+
+    @Override
+    protected void drawMarkers(Canvas canvas) {
+        super.drawMarkers(canvas);
+        // if there is no marker view or drawing marker is disabled
+        if (mMarkerView == null || !mDrawMarkerViews || !valuesToHighlight() || !mMarkerView.isDrawAxisText()
+                || mMarkerView.getAxisText() == null || mMarkerView.getAxisText().length() == 0)
+            return;
+
+        for (int i = 0; i < mIndicesToHightlight.length; i++) {
+            int xIndex = mIndicesToHightlight[i].getXIndex();
+            int dataSetIndex = mIndicesToHightlight[i].getDataSetIndex();
+
+            if (xIndex <= mDeltaX && xIndex <= mDeltaX * mAnimator.getPhaseX()) {
+
+                Entry e = mData.getEntryForHighlight(mIndicesToHightlight[i]);
+
+                // make sure entry not null
+                if (e == null)
+                    continue;
+
+                float[] pos = getMarkerPosition(e, dataSetIndex);
+
+                // check bounds
+                if (!mViewPortHandler.isInBounds(pos[0], pos[1]))
+                    continue;
+
+                String text = mMarkerView.getAxisText();
+                mAxisTextPaint.setTextSize(Utils.convertDpToPixel(mMarkerView.getAxisTextSize()));
+                mAxisTextPaint.setColor(mMarkerView.getAxisTextColor());
+                mAxisTextPaint.getTextBounds(text, 0, text.length(), mAxisTextBoundsRect);
+                float x;
+                float y = pos[1] + mAxisTextBoundsRect.height() / 2;
+
+                if(mMarkerView.getAxisDependency() == AxisDependency.LEFT) {
+                    YAxis yAxis = getAxisLeft();
+                    if(yAxis.getLabelPosition() == YAxis.YAxisLabelPosition.OUTSIDE_CHART) {
+                        mAxisTextPaint.setTextAlign(Paint.Align.RIGHT);
+                        x = mViewPortHandler.offsetLeft() - getAxisLeft().getXOffset();
+                    }
+                    else {
+                        mAxisTextPaint.setTextAlign(Paint.Align.LEFT);
+                        x = mViewPortHandler.offsetLeft() + getAxisLeft().getXOffset();
+                    }
+                }
+                else {
+                    YAxis yAxis = getAxisRight();
+                    if(yAxis.getLabelPosition() == YAxis.YAxisLabelPosition.OUTSIDE_CHART) {
+                        mAxisTextPaint.setTextAlign(Paint.Align.LEFT);
+                        x = mViewPortHandler.contentRight() + mAxisRight.getXOffset();
+                    }
+                    else {
+                        mAxisTextPaint.setTextAlign(Paint.Align.RIGHT);
+                        x = mViewPortHandler.contentRight() - mAxisRight.getXOffset();
+                    }
+                }
+                canvas.drawText(text, x, y, mAxisTextPaint);
+            }
+        }
+
     }
 
     /**
@@ -1273,6 +1354,47 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
     public float getYChartMin() {
         return Math.min(mAxisLeft.mAxisMinimum, mAxisRight.mAxisMinimum);
+    }
+
+    /**
+     * Returns fling friction coefficient
+     * @return
+     */
+    public float getFlingFrictionCoef() {
+        return mFlingFrictionCoef;
+    }
+
+    /**
+     * Fling friction coefficient in [0 ; 1] interval, higher values indicate that speed will
+     * decrease slowly, for example if it set to 0, it will stop immediately, if set to 1, it will
+     * scroll with constant speed, until last point
+     * @param flingFrictionCoef
+     */
+    public void setFlingFrictionCoef(float flingFrictionCoef) {
+        if(flingFrictionCoef < 0) {
+            flingFrictionCoef = 0;
+        }
+        else if(flingFrictionCoef > 1) {
+            flingFrictionCoef = 1;
+        }
+        mFlingFrictionCoef = flingFrictionCoef;
+    }
+
+    /**
+     * If fling friction enabled or not
+     * @return
+     */
+    public boolean isFlingFrictionEnabled() {
+        return mFlingFrictionEnabled;
+    }
+
+    /**
+     * If set to true, chart continues to scroll after touch up, but with friction, and its speed
+     * decrease over time, depend on getFlingFrictionCoef value
+     * @param flingFrictionEnabled
+     */
+    public void setFlingFrictionEnabled(boolean flingFrictionEnabled) {
+        mFlingFrictionEnabled = flingFrictionEnabled;
     }
 
     /**

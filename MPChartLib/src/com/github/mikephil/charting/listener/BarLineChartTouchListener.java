@@ -4,6 +4,7 @@ package com.github.mikephil.charting.listener;
 import android.annotation.SuppressLint;
 import android.graphics.Matrix;
 import android.graphics.PointF;
+import android.os.Handler;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -70,6 +71,24 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
     /** the gesturedetector used for detecting taps and longpresses, ... */
     private GestureDetector mGestureDetector;
 
+    /* Handler for fling animation */
+    private Handler mFlingHandler = new Handler();
+
+    /* Point where touch up happened and fling animation started */
+    private final PointF mFlingStartPoint = new PointF();
+
+    /* Current fling point after start time */
+    private final PointF mFlingCurrentPoint = new PointF();
+
+    /* Current fling velocity in pixel per millisecond */
+    private final PointF flingVelocity = new PointF();
+
+    /* When touch down happened */
+    private long mTouchStartTime;
+
+    /* When flingRunnable's run method called last time */
+    private long mRunnableLastTime;
+
     public BarLineChartTouchListener(T chart, Matrix touchMatrix) {
         this.mChart = chart;
         this.mMatrix = touchMatrix;
@@ -92,7 +111,10 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
 
             case MotionEvent.ACTION_DOWN:
-
+                if(mChart.isFlingFrictionEnabled()) {
+                    mTouchStartTime = System.currentTimeMillis();
+                    mFlingHandler.removeCallbacks(flingRunnable);
+                }
                 saveTouchStart(event);
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
@@ -162,6 +184,18 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
             case MotionEvent.ACTION_UP:
                 mTouchMode = NONE;
                 mChart.enableScroll();
+                if(mChart.isFlingFrictionEnabled()) {
+                    long currentTime = System.currentTimeMillis();
+                    mFlingStartPoint.set(event.getX(), event.getY());
+                    mFlingCurrentPoint.set(event.getX(), event.getY());
+                    long dt = currentTime - mTouchStartTime;
+                    flingVelocity.x = (event.getX() - mTouchStartPoint.x) / dt;
+                    flingVelocity.y = (event.getY() - mTouchStartPoint.y) / dt;
+                    mRunnableLastTime = currentTime;
+                    saveTouchStart(event);
+                    mFlingHandler.removeCallbacks(flingRunnable);
+                    mFlingHandler.post(flingRunnable);
+                }
                 break;
             case MotionEvent.ACTION_POINTER_UP:
                 mTouchMode = POST_ZOOM;
@@ -195,33 +229,60 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
     /**
      * Performs all necessary operations needed for dragging.
-     * 
+     *
      * @param event
      */
     private void performDrag(MotionEvent event) {
+        performDrag(mTouchStartPoint, new PointF(event.getX(), event.getY()));
+    }
 
+    /**
+     * Performs all necessary operations needed for dragging
+     * @param startPoint
+     * @param endPoint
+     */
+    private void performDrag(PointF startPoint, PointF endPoint) {
         mMatrix.set(mSavedMatrix);
 
         // check if axis is inverted
         if (mChart.isAnyAxisInverted() && mClosestDataSetToTouch != null
                 && mChart.getAxis(mClosestDataSetToTouch.getAxisDependency()).isInverted()) {
-            
+
             // if there is an inverted horizontalbarchart
             if(mChart instanceof HorizontalBarChart) {
 
-                mMatrix.postTranslate(event.getX() - mTouchStartPoint.x, -(event.getY()
-                        - mTouchStartPoint.y));
+                mMatrix.postTranslate(endPoint.x - startPoint.x, -(endPoint.y
+                        - startPoint.y));
             } else {
 
-                mMatrix.postTranslate(event.getX() - mTouchStartPoint.x, -(event.getY()
-                        - mTouchStartPoint.y));   
+                mMatrix.postTranslate(endPoint.x - startPoint.x, -(endPoint.y
+                        - startPoint.y));
             }
         }
         else {
-            mMatrix.postTranslate(event.getX() - mTouchStartPoint.x, event.getY()
-                    - mTouchStartPoint.y);
+            mMatrix.postTranslate(endPoint.x - startPoint.x, endPoint.y
+                    - startPoint.y);
         }
     }
+
+    private final Runnable flingRunnable = new Runnable() {
+        @Override
+        public void run() {
+            long currentTime = System.currentTimeMillis();
+            long dt = currentTime - mRunnableLastTime;
+            mFlingCurrentPoint.x += flingVelocity.x * dt;
+            mFlingCurrentPoint.y += flingVelocity.y * dt;
+            flingVelocity.x *= mChart.getFlingFrictionCoef();
+            flingVelocity.y *= mChart.getFlingFrictionCoef();
+            performDrag(mFlingStartPoint, mFlingCurrentPoint);
+            mMatrix = mChart.getViewPortHandler().refresh(mMatrix, mChart, true);
+            mRunnableLastTime = currentTime;
+            float eps = 0.01f;
+            if(Math.abs(flingVelocity.x) > eps || Math.abs(flingVelocity.y) > eps) {
+                mFlingHandler.postDelayed(this, 25);
+            }
+        }
+    };
 
     /**
      * Performs the all operations necessary for pinch and axis zoom.
@@ -382,7 +443,8 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
      * returns the correct translation depending on the provided x and y touch
      * points
      * 
-     * @param e
+     * @param x
+     * @param y
      * @return
      */
     public PointF getTrans(float x, float y) {
