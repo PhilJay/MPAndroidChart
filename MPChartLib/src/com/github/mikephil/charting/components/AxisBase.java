@@ -2,6 +2,7 @@
 package com.github.mikephil.charting.components;
 
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 
 import com.github.mikephil.charting.utils.Utils;
 
@@ -28,6 +29,9 @@ public abstract class AxisBase extends ComponentBase {
 
     /** flag that indicates of the labels of this axis should be drawn or not */
     protected boolean mDrawLabels = true;
+
+    /** the path effect of the grid lines that makes dashed lines possible */
+    private DashPathEffect mGridDashPathEffect = null;
 
     /** default constructor */
     public AxisBase() {
@@ -174,4 +178,44 @@ public abstract class AxisBase extends ComponentBase {
      * @return
      */
     public abstract String getLongestLabel();
+
+    /**
+     * Enables the grid line to be drawn in dashed mode, e.g. like this
+     * "- - - - - -". THIS ONLY WORKS IF HARDWARE-ACCELERATION IS TURNED OFF.
+     * Keep in mind that hardware acceleration boosts performance.
+     *
+     * @param lineLength the length of the line pieces
+     * @param spaceLength the length of space in between the pieces
+     * @param phase offset, in degrees (normally, use 0)
+     */
+    public void enableGridDashedLine(float lineLength, float spaceLength, float phase) {
+        mGridDashPathEffect = new DashPathEffect(new float[] {
+                lineLength, spaceLength
+        }, phase);
+    }
+
+    /**
+     * Disables the grid line to be drawn in dashed mode.
+     */
+    public void disableGridDashedLine() {
+        mGridDashPathEffect = null;
+    }
+
+    /**
+     * Returns true if the grid dashed-line effect is enabled, false if not.
+     *
+     * @return
+     */
+    public boolean isGridDashedLineEnabled() {
+        return mGridDashPathEffect == null ? false : true;
+    }
+
+    /**
+     * returns the DashPathEffect that is set for grid line
+     *
+     * @return
+     */
+    public DashPathEffect getDashPathEffect() {
+        return mGridDashPathEffect;
+    }
 }
