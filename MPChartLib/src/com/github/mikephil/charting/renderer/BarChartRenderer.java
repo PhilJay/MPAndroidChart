@@ -178,19 +178,10 @@ public class BarChartRenderer extends DataRenderer {
 
             List<BarDataSet> dataSets = mChart.getBarData().getDataSets();
 
+            final float valueOffsetPlus = Utils.convertDpToPixel(5f);
             float posOffset = 0f;
             float negOffset = 0f;
             boolean drawValueAboveBar = mChart.isDrawValueAboveBarEnabled();
-
-            // calculate the correct offset depending on the draw position of
-            // the value
-            float plus = Utils.convertDpToPixel(6f);
-
-            posOffset = (drawValueAboveBar ? -Utils.convertDpToPixel(5) : Utils.calcTextHeight(
-                    mValuePaint,
-                    "8") + plus);
-            negOffset = (drawValueAboveBar ? Utils.calcTextHeight(mValuePaint, "8") + plus : -Utils
-                    .convertDpToPixel(5));
 
             for (int i = 0; i < mChart.getBarData().getDataSetCount(); i++) {
 
@@ -198,6 +189,20 @@ public class BarChartRenderer extends DataRenderer {
 
                 if (!dataSet.isDrawValuesEnabled())
                     continue;
+
+                boolean isInverted = mChart.isInverted(dataSet.getAxisDependency());
+
+                // calculate the correct offset depending on the draw position of
+                // the value
+                float valueTextHeight = Utils.calcTextHeight(mValuePaint, "8");
+                posOffset = (drawValueAboveBar ? -valueOffsetPlus : valueTextHeight + valueOffsetPlus);
+                negOffset = (drawValueAboveBar ? valueTextHeight + valueOffsetPlus : -valueOffsetPlus);
+
+                if (isInverted)
+                {
+                    posOffset = -posOffset - valueTextHeight;
+                    negOffset = -negOffset - valueTextHeight;
+                }
 
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet);
@@ -224,8 +229,8 @@ public class BarChartRenderer extends DataRenderer {
 
                         float val = entries.get(j / 2).getVal();
 
-                        drawValue(c, val, valuePoints[j],
-                                valuePoints[j + 1] + (val >= 0 ? posOffset : negOffset), formatter);
+                        drawValue(c, formatter.getFormattedValue(val), valuePoints[j],
+                                valuePoints[j + 1] + (val >= 0 ? posOffset : negOffset));
                     }
 
                     // if each value of a potential stack should be drawn
@@ -249,9 +254,8 @@ public class BarChartRenderer extends DataRenderer {
                                     || !mViewPortHandler.isInBoundsLeft(valuePoints[j]))
                                 continue;
 
-                            drawValue(c, e.getVal(), valuePoints[j],
-                                    valuePoints[j + 1] + (e.getVal() >= 0 ? posOffset : negOffset),
-                                    formatter);
+                            drawValue(c, formatter.getFormattedValue(e.getVal()), valuePoints[j],
+                                    valuePoints[j + 1] + (e.getVal() >= 0 ? posOffset : negOffset));
 
                         } else {
 
@@ -281,7 +285,7 @@ public class BarChartRenderer extends DataRenderer {
                                         || !mViewPortHandler.isInBoundsLeft(x))
                                     continue;
 
-                                drawValue(c, vals[k / 2], x, y, formatter);
+                                drawValue(c, formatter.getFormattedValue(vals[k / 2]), x, y);
                             }
                         }
                     }
@@ -298,9 +302,8 @@ public class BarChartRenderer extends DataRenderer {
      * @param yPos
      * @formatter
      */
-    protected void drawValue(Canvas c, float val, float xPos, float yPos, ValueFormatter formatter) {
+    protected void drawValue(Canvas c, String value, float xPos, float yPos) {
 
-        String value = formatter.getFormattedValue(val);
         c.drawText(value, xPos, yPos,
                 mValuePaint);
     }

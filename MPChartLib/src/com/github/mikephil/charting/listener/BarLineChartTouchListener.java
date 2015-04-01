@@ -209,12 +209,12 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
             // if there is an inverted horizontalbarchart
             if(mChart instanceof HorizontalBarChart) {
 
-                mMatrix.postTranslate(event.getX() - mTouchStartPoint.x, -(event.getY()
-                        - mTouchStartPoint.y));
+                mMatrix.postTranslate(-(event.getX() - mTouchStartPoint.x), event.getY()
+                        - mTouchStartPoint.y);
             } else {
 
                 mMatrix.postTranslate(event.getX() - mTouchStartPoint.x, -(event.getY()
-                        - mTouchStartPoint.y));   
+                        - mTouchStartPoint.y));
             }
         }
         else {

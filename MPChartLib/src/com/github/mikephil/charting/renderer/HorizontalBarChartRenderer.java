@@ -101,14 +101,10 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
             List<BarDataSet> dataSets = mChart.getBarData().getDataSets();
 
+            final float valueOffsetPlus = Utils.convertDpToPixel(5f);
             float posOffset = 0f;
             float negOffset = 0f;
             boolean drawValueAboveBar = mChart.isDrawValueAboveBarEnabled();
-
-            // calculate the correct offset depending on the draw position of
-            // the value
-            negOffset = drawValueAboveBar ? -Utils.convertDpToPixel(5) : Utils.convertDpToPixel(5);
-            posOffset = drawValueAboveBar ? Utils.convertDpToPixel(5) : -Utils.convertDpToPixel(5);
 
             if (drawValueAboveBar)
                 mValuePaint.setTextAlign(Align.LEFT);
@@ -121,6 +117,8 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
                 if (!dataSet.isDrawValuesEnabled())
                     continue;
+
+                boolean isInverted = mChart.isInverted(dataSet.getAxisDependency());
 
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet);
@@ -150,9 +148,21 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                             continue;
 
                         float val = entries.get(j / 2).getVal();
+                        String valueText = formatter.getFormattedValue(val);
 
-                        drawValue(c, val, valuePoints[j] + (val >= 0 ? posOffset : negOffset),
-                                valuePoints[j + 1], formatter);
+                        // calculate the correct offset depending on the draw position of the value
+                        float valueTextWidth = Utils.calcTextWidth(mValuePaint, valueText);
+                        posOffset = (drawValueAboveBar ? valueOffsetPlus : -(valueTextWidth + valueOffsetPlus));
+                        negOffset = (drawValueAboveBar ? -(valueTextWidth + valueOffsetPlus) : valueOffsetPlus);
+
+                        if (isInverted)
+                        {
+                            posOffset = -posOffset - valueTextWidth;
+                            negOffset = -negOffset - valueTextWidth;
+                        }
+
+                        drawValue(c, valueText, valuePoints[j] + (val >= 0 ? posOffset : negOffset),
+                                valuePoints[j + 1]);
                     }
 
                     // if each value of a potential stack should be drawn
@@ -178,10 +188,23 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                             if (!mViewPortHandler.isInBoundsBottom(valuePoints[j + 1]))
                                 continue;
 
-                            drawValue(c, e.getVal(), valuePoints[j]
+                            float val = e.getVal();
+                            String valueText = formatter.getFormattedValue(val);
+
+                            // calculate the correct offset depending on the draw position of the value
+                            float valueTextWidth = Utils.calcTextWidth(mValuePaint, valueText);
+                            posOffset = (drawValueAboveBar ? valueOffsetPlus : -(valueTextWidth + valueOffsetPlus));
+                            negOffset = (drawValueAboveBar ? -(valueTextWidth + valueOffsetPlus) : valueOffsetPlus);
+
+                            if (isInverted)
+                            {
+                                posOffset = -posOffset - valueTextWidth;
+                                negOffset = -negOffset - valueTextWidth;
+                            }
+
+                            drawValue(c, valueText, valuePoints[j]
                                     + (e.getVal() >= 0 ? posOffset : negOffset),
-                                    valuePoints[j + 1],
-                                    formatter);
+                                    valuePoints[j + 1]);
 
                         } else {
 
@@ -200,8 +223,22 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
                             for (int k = 0; k < transformed.length; k += 2) {
 
+                                float val = vals[k / 2];
+                                String valueText = formatter.getFormattedValue(val);
+
+                                // calculate the correct offset depending on the draw position of the value
+                                float valueTextWidth = Utils.calcTextWidth(mValuePaint, valueText);
+                                posOffset = (drawValueAboveBar ? valueOffsetPlus : -(valueTextWidth + valueOffsetPlus));
+                                negOffset = (drawValueAboveBar ? -(valueTextWidth + valueOffsetPlus) : valueOffsetPlus);
+
+                                if (isInverted)
+                                {
+                                    posOffset = -posOffset - valueTextWidth;
+                                    negOffset = -negOffset - valueTextWidth;
+                                }
+
                                 float x = transformed[k]
-                                        + (vals[k / 2] >= 0 ? posOffset : negOffset);
+                                        + (val >= 0 ? posOffset : negOffset);
                                 float y = valuePoints[j + 1];
 
                                 if (!mViewPortHandler.isInBoundsX(x))
@@ -213,7 +250,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                                 if (!mViewPortHandler.isInBoundsBottom(y))
                                     continue;
 
-                                drawValue(c, vals[k / 2], x, y, formatter);
+                                drawValue(c, valueText, x, y);
                             }
                         }
                     }
@@ -244,8 +281,8 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
     }
 
     @Override
-    protected void drawValue(Canvas c, float val, float xPos, float yPos, ValueFormatter formatter) {
-        super.drawValue(c, val, xPos, yPos + mYOffset, formatter);
+    protected void drawValue(Canvas c, String value, float xPos, float yPos) {
+        super.drawValue(c, value, xPos, yPos + mYOffset);
     }
 
     @Override
