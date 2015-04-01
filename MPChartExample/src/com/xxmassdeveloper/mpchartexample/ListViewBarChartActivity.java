@@ -86,9 +86,9 @@ public class ListViewBarChartActivity extends DemoBase {
 
             // apply styling
             data.setValueTypeface(mTf);
+            data.setValueTextColor(Color.BLACK);
             holder.chart.setDescription("");
             holder.chart.setDrawGridBackground(false);
-            data.setValueTextColor(Color.WHITE);
 
             XAxis xAxis = holder.chart.getXAxis();
             xAxis.setPosition(XAxisPosition.BOTTOM);

@@ -61,7 +61,7 @@ public class BarBuffer extends AbstractBuffer<BarEntry> {
             float y = e.getVal();
             float [] vals = e.getVals();
             
-            if(mInverted) { // inverted axis
+            if(mInverted) { // inverted axis, here, I chose performance over readability
                 
                 if(!mContainsStacks || vals == null) {
                     

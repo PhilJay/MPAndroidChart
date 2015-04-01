@@ -247,7 +247,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public void setData(T data) {
 
-        if (data == null) {
+        if (data == null || data.getYValCount() <= 0) {
             Log.e(LOG_TAG,
                     "Cannot set data for chart. Provided data object is null.");
             return;
