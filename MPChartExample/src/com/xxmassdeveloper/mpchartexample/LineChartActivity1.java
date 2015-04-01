@@ -96,6 +96,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         // enable/disable highlight indicators (the lines that indicate the
         // highlighted Entry)
         mChart.setHighlightIndicatorEnabled(false);
+        
+        mChart.getAxisLeft().enableGridDashedLine(10f, 10f, 0f);
 
         // add data
         setData(45, 100);

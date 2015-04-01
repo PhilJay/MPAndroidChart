@@ -59,7 +59,7 @@ public class YAxisRenderer extends AxisRenderer {
                 yMin = (float) p2.y;
                 yMax = (float) p1.y;
             } else {
-                
+
                 yMin = (float) p1.y;
                 yMax = (float) p2.y;
             }
@@ -245,6 +245,9 @@ public class YAxisRenderer extends AxisRenderer {
 
         mGridPaint.setColor(mYAxis.getGridColor());
         mGridPaint.setStrokeWidth(mYAxis.getGridLineWidth());
+        mGridPaint.setPathEffect(mYAxis.getGridDashPathEffect());
+
+        Path gridLinePath = new Path();
 
         // draw the horizontal grid
         for (int i = 0; i < mYAxis.mEntryCount; i++) {
@@ -252,9 +255,13 @@ public class YAxisRenderer extends AxisRenderer {
             position[1] = mYAxis.mEntries[i];
             mTrans.pointValuesToPixel(position);
 
-            c.drawLine(mViewPortHandler.offsetLeft(), position[1], mViewPortHandler.contentRight(),
-                    position[1],
-                    mGridPaint);
+            gridLinePath.moveTo(mViewPortHandler.offsetLeft(), position[1]);
+            gridLinePath.lineTo(mViewPortHandler.contentRight(),
+                    position[1]);
+
+            c.drawPath(gridLinePath, mGridPaint);
+
+            gridLinePath.reset();
         }
     }
 

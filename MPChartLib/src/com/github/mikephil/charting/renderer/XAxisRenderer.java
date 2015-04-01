@@ -177,6 +177,7 @@ public class XAxisRenderer extends AxisRenderer {
 
         mGridPaint.setColor(mXAxis.getGridColor());
         mGridPaint.setStrokeWidth(mXAxis.getGridLineWidth());
+        mGridPaint.setPathEffect(mXAxis.getGridDashPathEffect());
 
         for (int i = mMinX; i <= mMaxX; i += mXAxis.mAxisLabelModulus) {
 
