@@ -365,7 +365,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     protected void onDraw(Canvas canvas) {
         // super.onDraw(canvas);
 
-        if (mDataNotSet || mData == null || mData.getYValCount() <= 0) { // check if there is data
+        if (mDataNotSet || mData == null || mData.getYValCount() <= 0) { // check
+                                                                         // if
+                                                                         // there
+                                                                         // is
+                                                                         // data
 
             // if no data, inform the user
             canvas.drawText(mNoDataText, getWidth() / 2, getHeight() / 2, mInfoPaint);
@@ -1189,6 +1193,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         if (renderer != null)
             mRenderer = renderer;
     }
+    
+    @Override
+    public PointF getCenterOfView() {
+        return getCenter();
+    }
 
     /**
      * Returns the bitmap that represents the chart.
@@ -1326,8 +1335,27 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             getChildAt(i).layout(left, top, right, bottom);
         }
     }
-    
+
+    /** tasks to be done after the view is setup */
     protected ArrayList<Runnable> mJobs = new ArrayList<Runnable>();
+
+    /**
+     * Adds a job to be executed after the chart-view is setup (after
+     * onSizeChanged(...) is called).
+     * 
+     * @param job
+     */
+    public void addJob(Runnable job) {
+        mJobs.add(job);
+    }
+
+    public void removeJob(Runnable job) {
+        mJobs.remove(job);
+    }
+
+    public void clearAllJobs() {
+        mJobs.clear();
+    }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -1342,22 +1370,17 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
             if (mLogEnabled)
                 Log.i(LOG_TAG, "Setting chart dimens, width: " + w + ", height: " + h);
-            
-            for(Runnable r : mJobs) {
+
+            for (Runnable r : mJobs) {
                 post(r);
             }
-            
+
             mJobs.clear();
         }
 
         notifyDataSetChanged();
 
         super.onSizeChanged(w, h, oldw, oldh);
-    }
-
-    @Override
-    public PointF getCenterOfView() {
-        return getCenter();
     }
 
     /**
