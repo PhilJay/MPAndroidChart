@@ -98,6 +98,9 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         mChart.setHighlightIndicatorEnabled(false);
         
         mChart.getAxisLeft().enableGridDashedLine(10f, 10f, 0f);
+        
+        // limit lines are drawn behind data (and not on top)
+        mChart.getAxisLeft().setDrawLimitLinesBehindData(true);
 
         // add data
         setData(45, 100);

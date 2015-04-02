@@ -205,10 +205,19 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mAxisRendererLeft.renderGridLines(canvas);
         mAxisRendererRight.renderGridLines(canvas);
 
-        mRenderer.drawData(canvas);
+        if (mAxisLeft.isDrawLimitLinesBehindDataEnabled())
+            mAxisRendererLeft.renderLimitLines(canvas);
 
-        mAxisRendererLeft.renderLimitLines(canvas);
-        mAxisRendererRight.renderLimitLines(canvas);
+        if (mAxisRight.isDrawLimitLinesBehindDataEnabled())
+            mAxisRendererRight.renderLimitLines(canvas);
+
+        mRenderer.drawData(canvas);
+        
+        if (!mAxisLeft.isDrawLimitLinesBehindDataEnabled())
+            mAxisRendererLeft.renderLimitLines(canvas);
+
+        if (!mAxisRight.isDrawLimitLinesBehindDataEnabled())
+            mAxisRendererRight.renderLimitLines(canvas);
 
         // if highlighting is enabled
         if (mHighlightEnabled && mHighLightIndicatorEnabled && valuesToHighlight())
@@ -312,7 +321,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         float leftRange = Math.abs(maxLeft - (mAxisLeft.isStartAtZeroEnabled() ? 0 : minLeft));
         float rightRange = Math.abs(maxRight - (mAxisRight.isStartAtZeroEnabled() ? 0 : minRight));
-        
+
         // in case all values are equal
         if (leftRange == 0f)
             maxLeft = maxLeft + 1f;
@@ -1163,7 +1172,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         else
             return mAxisRight;
     }
-    
+
     @Override
     public boolean isInverted(AxisDependency axis) {
         return getAxis(axis).isInverted();

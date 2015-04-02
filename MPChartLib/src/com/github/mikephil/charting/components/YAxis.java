@@ -49,6 +49,8 @@ public class YAxis extends AxisBase {
     /** if true, the y-label entries will always start at zero */
     protected boolean mStartAtZero = true;
 
+    protected boolean mDrawLimitLineBehindData = false;
+
     /** array of limitlines that can be set for the axis */
     private List<LimitLine> mLimitLines;
 
@@ -268,6 +270,20 @@ public class YAxis extends AxisBase {
      */
     public List<LimitLine> getLimitLines() {
         return mLimitLines;
+    }
+
+    /**
+     * If this is set to true, the LimitLines are drawn behind the actual data,
+     * otherwise on top. Default: false
+     * 
+     * @param enabled
+     */
+    public void setDrawLimitLinesBehindData(boolean enabled) {
+        mDrawLimitLineBehindData = enabled;
+    }
+
+    public boolean isDrawLimitLinesBehindDataEnabled() {
+        return mDrawLimitLineBehindData;
     }
 
     public float getAxisMinValue() {
