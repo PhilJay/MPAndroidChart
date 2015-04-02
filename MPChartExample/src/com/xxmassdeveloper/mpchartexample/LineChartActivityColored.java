@@ -82,13 +82,7 @@ public class LineChartActivityColored extends DemoBase {
 
         // get the legend (only possible after setting data)
         Legend l = chart.getLegend();
-
-        // modify the legend ...
-        // l.setPosition(LegendPosition.LEFT_OF_CHART);
-        l.setForm(LegendForm.CIRCLE);
-        l.setFormSize(6f);
-        l.setTextColor(Color.WHITE);
-        l.setTypeface(mTf);
+        l.setEnabled(false);
 
         chart.getAxisLeft().setEnabled(false);
         chart.getAxisRight().setEnabled(false);

@@ -595,7 +595,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * @param xRange
      */
     public void setVisibleXRange(float xRange) {
-        float xScale = mDeltaX / (xRange + 0.01f);
+        float xScale = mDeltaX / (xRange);
         mViewPortHandler.setMinimumScaleX(xScale);
     }
 
@@ -703,6 +703,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             public void run() {
 
                 mViewPortHandler.restrainViewPort(left, top, right, bottom);
+                prepareOffsetMatrix();
+                prepareValuePxMatrix();
             }
         });
     }

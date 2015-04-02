@@ -104,6 +104,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
         // add data
         setData(45, 100);
+//        mChart.setVisibleXRange(20);
         
         mChart.animateX(2500);
 
@@ -141,8 +142,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.actionToggleValues: {  
-                
+            case R.id.actionToggleValues: { 
                 for (DataSet<?> set : mChart.getData().getDataSets())
                     set.setDrawValues(!set.isDrawValuesEnabled());
 
