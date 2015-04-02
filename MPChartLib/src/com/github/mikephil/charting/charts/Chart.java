@@ -1326,6 +1326,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             getChildAt(i).layout(left, top, right, bottom);
         }
     }
+    
+    protected ArrayList<Runnable> mJobs = new ArrayList<Runnable>();
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -1340,6 +1342,12 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
             if (mLogEnabled)
                 Log.i(LOG_TAG, "Setting chart dimens, width: " + w + ", height: " + h);
+            
+            for(Runnable r : mJobs) {
+                post(r);
+            }
+            
+            mJobs.clear();
         }
 
         notifyDataSetChanged();

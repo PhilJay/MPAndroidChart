@@ -104,7 +104,9 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
         // add data
         setData(45, 100);
+        
         mChart.animateX(2500);
+
         // mChart.setVisibleYRange(30, AxisDependency.LEFT);
 
         // // restrain the maximum scale-out factor
@@ -123,6 +125,11 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         // // dont forget to refresh the drawing
         // mChart.invalidate();
     }
+    
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -134,7 +141,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.actionToggleValues: {
+            case R.id.actionToggleValues: {  
+                
                 for (DataSet<?> set : mChart.getData().getDataSets())
                     set.setDrawValues(!set.isDrawValuesEnabled());
 

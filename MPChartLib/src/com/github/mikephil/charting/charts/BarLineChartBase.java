@@ -27,6 +27,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.interfaces.BarLineScatterCandleDataProvider;
+import com.github.mikephil.charting.jobs.MoveViewJob;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.listener.OnDrawListener;
 import com.github.mikephil.charting.renderer.XAxisRenderer;
@@ -212,7 +213,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             mAxisRendererRight.renderLimitLines(canvas);
 
         mRenderer.drawData(canvas);
-        
+
         if (!mAxisLeft.isDrawLimitLinesBehindDataEnabled())
             mAxisRendererLeft.renderLimitLines(canvas);
 
@@ -615,14 +616,24 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * 
      * @param xIndex
      */
-    public void moveViewToX(int xIndex) {
+    public void moveViewToX(float xIndex) {
 
-        float[] pts = new float[] {
-                xIndex, 0f
-        };
+        Runnable job = new MoveViewJob(mViewPortHandler, xIndex, 0f,
+                getTransformer(AxisDependency.LEFT), this);
 
-        getTransformer(AxisDependency.LEFT).pointValuesToPixel(pts);
-        mViewPortHandler.centerViewPort(pts, this);
+        if (mViewPortHandler.hasChartDimens()) {
+            post(job);
+        } else {
+            mJobs.add(job);
+        }
+
+        // float[] pts = new float[] {
+        // xIndex, 0f
+        // };
+        //
+        // getTransformer(AxisDependency.LEFT).pointValuesToPixel(pts);
+        //
+        // mViewPortHandler.centerViewPort(pts, this);
     }
 
     /**
@@ -635,12 +646,14 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         float valsInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
 
-        float[] pts = new float[] {
-                0f, yValue + valsInView / 2f
-        };
+        Runnable job = new MoveViewJob(mViewPortHandler, 0f, yValue + valsInView / 2f,
+                getTransformer(axis), this);
 
-        getTransformer(axis).pointValuesToPixel(pts);
-        mViewPortHandler.centerViewPort(pts, this);
+        if (mViewPortHandler.hasChartDimens()) {
+            post(job);
+        } else {
+            mJobs.add(job);
+        }
     }
 
     /**
@@ -652,16 +665,18 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * @param yValue
      * @param axis - which axis should be used as a reference for the y-axis
      */
-    public void moveViewTo(int xIndex, float yValue, AxisDependency axis) {
+    public void moveViewTo(float xIndex, float yValue, AxisDependency axis) {
 
         float valsInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
 
-        float[] pts = new float[] {
-                xIndex, yValue + valsInView / 2f
-        };
+        Runnable job = new MoveViewJob(mViewPortHandler, xIndex, yValue + valsInView / 2f,
+                getTransformer(axis), this);
 
-        getTransformer(axis).pointValuesToPixel(pts);
-        mViewPortHandler.centerViewPort(pts, this);
+        if (mViewPortHandler.hasChartDimens()) {
+            post(job);
+        } else {
+            mJobs.add(job);
+        }
     }
 
     /** flag that indicates if a custom viewport offset has been set */

@@ -4,8 +4,8 @@ package com.github.mikephil.charting.utils;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
-
-import com.github.mikephil.charting.charts.Chart;
+import android.util.Log;
+import android.view.View;
 
 public class ViewPortHandler {
 
@@ -52,6 +52,13 @@ public class ViewPortHandler {
 
         if (mContentRect.width() <= 0 || mContentRect.height() <= 0)
             mContentRect.set(0, 0, width, height);
+    }
+
+    public boolean hasChartDimens() {
+        if (mChartHeight > 0 && mChartWidth > 0)
+            return true;
+        else
+            return false;
     }
 
     public void restrainViewPort(float offsetLeft, float offsetTop, float offsetRight,
@@ -207,7 +214,7 @@ public class ViewPortHandler {
      * @param chart
      * @return save
      */
-    public synchronized void centerViewPort(final float[] transformedPts, final Chart<?> chart) {
+    public synchronized void centerViewPort(final float[] transformedPts, final View view) {
 
         Matrix save = new Matrix();
         save.set(mMatrixTouch);
@@ -215,9 +222,11 @@ public class ViewPortHandler {
         final float x = transformedPts[0] - offsetLeft();
         final float y = transformedPts[1] - offsetTop();
 
+        Log.i("", "Moving view to x: " + x + ", y: " + y);
+
         save.postTranslate(-x, -y);
 
-        refresh(save, chart, false);
+        refresh(save, view, false);
 
         // final View v = chart.getChartView();
         //
@@ -244,7 +253,7 @@ public class ViewPortHandler {
      * @param newMatrix
      * @return
      */
-    public Matrix refresh(Matrix newMatrix, Chart<?> chart, boolean invalidate) {
+    public Matrix refresh(Matrix newMatrix, View chart, boolean invalidate) {
 
         mMatrixTouch.set(newMatrix);
 
