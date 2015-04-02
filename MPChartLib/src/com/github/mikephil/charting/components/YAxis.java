@@ -9,6 +9,7 @@ import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 /**
@@ -21,6 +22,14 @@ import java.util.List;
  * @author Philipp Jahoda
  */
 public class YAxis extends AxisBase {
+    /**
+     * Enum that allows to specify which entries will show on the axis
+     */
+    public enum VisibleEntry {
+        MIN,
+        INNER,
+        MAX,
+    }
 
     /** custom formatter that is used instead of the auto-formatter if set */
     protected ValueFormatter mValueFormatter;
@@ -37,11 +46,11 @@ public class YAxis extends AxisBase {
     /** the number of y-label entries the y-labels should have, default 6 */
     private int mLabelCount = 6;
 
-    /** indicates if the top y-label entry is drawn or not */
-    private boolean mDrawTopYLabelEntry = true;
+    /** set contains which labels will draw on the axis */
+    private final EnumSet<VisibleEntry> mVisibleLabelsSet = EnumSet.allOf(VisibleEntry.class);
 
-    /** if true, the y-labels show only the minimum and maximum value */
-    protected boolean mShowOnlyMinMax = false;
+    /** set contains which grid lines will draw on the axis */
+    private final EnumSet<VisibleEntry> mVisibleGridLinesSet = EnumSet.allOf(VisibleEntry.class);
 
     /** flag that indicates if the axis is inverted or not */
     protected boolean mInverted = false;
@@ -135,7 +144,7 @@ public class YAxis extends AxisBase {
      * @return
      */
     public boolean isDrawTopYLabelEntryEnabled() {
-        return mDrawTopYLabelEntry;
+        return mVisibleLabelsSet.contains(VisibleEntry.MAX);
     }
 
     /**
@@ -146,7 +155,12 @@ public class YAxis extends AxisBase {
      * @param enabled
      */
     public void setDrawTopYLabelEntry(boolean enabled) {
-        mDrawTopYLabelEntry = enabled;
+        if(enabled) {
+            mVisibleLabelsSet.add(VisibleEntry.MAX);
+        }
+        else {
+            mVisibleLabelsSet.remove(VisibleEntry.MAX);
+        }
     }
 
     /**
@@ -182,7 +196,16 @@ public class YAxis extends AxisBase {
      * @param enabled
      */
     public void setShowOnlyMinMax(boolean enabled) {
-        mShowOnlyMinMax = enabled;
+        if(enabled) {
+            mVisibleLabelsSet.add(VisibleEntry.MIN);
+            mVisibleLabelsSet.remove(VisibleEntry.INNER);
+            mVisibleLabelsSet.add(VisibleEntry.MAX);
+        }
+        else {
+            mVisibleLabelsSet.add(VisibleEntry.MIN);
+            mVisibleLabelsSet.add(VisibleEntry.INNER);
+            mVisibleLabelsSet.add(VisibleEntry.MAX);
+        }
     }
 
     /**
@@ -191,7 +214,23 @@ public class YAxis extends AxisBase {
      * @return
      */
     public boolean isShowOnlyMinMaxEnabled() {
-        return mShowOnlyMinMax;
+        return !mVisibleLabelsSet.contains(VisibleEntry.INNER);
+    }
+
+    /**
+     * Returns set that contains which labels will draw on the axis
+     * @return
+     */
+    public EnumSet<VisibleEntry> getVisibleLabelsSet() {
+        return mVisibleLabelsSet;
+    }
+
+    /**
+     * Returns set that contains which grid lines will draw on the axis
+     * @return
+     */
+    public EnumSet<VisibleEntry> getVisibleGridLinesSet() {
+        return mVisibleGridLinesSet;
     }
 
     /**

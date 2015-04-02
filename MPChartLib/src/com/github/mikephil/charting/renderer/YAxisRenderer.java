@@ -99,36 +99,25 @@ public class YAxisRenderer extends AxisRenderer {
             interval = Math.floor(10 * intervalMagnitude);
         }
 
-        // if the labels should only show min and max
-        if (mYAxis.isShowOnlyMinMaxEnabled()) {
+        double first = Math.ceil(yMin / interval) * interval;
+        double last = Utils.nextUp(Math.floor(yMax / interval) * interval);
 
-            mYAxis.mEntryCount = 2;
-            mYAxis.mEntries = new float[2];
-            mYAxis.mEntries[0] = yMin;
-            mYAxis.mEntries[1] = yMax;
+        double f;
+        int i;
+        int n = 0;
+        for (f = first; f <= last; f += interval) {
+            ++n;
+        }
 
-        } else {
+        mYAxis.mEntryCount = n;
 
-            double first = Math.ceil(yMin / interval) * interval;
-            double last = Utils.nextUp(Math.floor(yMax / interval) * interval);
+        if (mYAxis.mEntries.length < n) {
+            // Ensure stops contains at least numStops elements.
+            mYAxis.mEntries = new float[n];
+        }
 
-            double f;
-            int i;
-            int n = 0;
-            for (f = first; f <= last; f += interval) {
-                ++n;
-            }
-
-            mYAxis.mEntryCount = n;
-
-            if (mYAxis.mEntries.length < n) {
-                // Ensure stops contains at least numStops elements.
-                mYAxis.mEntries = new float[n];
-            }
-
-            for (f = first, i = 0; i < n; f += interval, ++i) {
-                mYAxis.mEntries[i] = (float) f;
-            }
+        for (f = first, i = 0; i < n; f += interval, ++i) {
+            mYAxis.mEntries[i] = (float) f;
         }
 
         if (interval < 1) {
@@ -224,12 +213,22 @@ public class YAxisRenderer extends AxisRenderer {
 
         // draw
         for (int i = 0; i < mYAxis.mEntryCount; i++) {
+            if(i == 0
+                    && !mYAxis.getVisibleLabelsSet().contains(YAxis.VisibleEntry.MIN)) {
+                continue;
+            }
+
+            if(i == mYAxis.mEntryCount - 1
+                    && !mYAxis.getVisibleLabelsSet().contains(YAxis.VisibleEntry.MAX)) {
+                continue;
+            }
+
+            if(i > 0 && i < mYAxis.mEntryCount - 1
+                    && !mYAxis.getVisibleLabelsSet().contains(YAxis.VisibleEntry.INNER)) {
+                continue;
+            }
 
             String text = mYAxis.getFormattedLabel(i);
-
-            if (!mYAxis.isDrawTopYLabelEntryEnabled() && i >= mYAxis.mEntryCount - 1)
-                return;
-
             c.drawText(text, fixedPosition, positions[i * 2 + 1] + offset, mAxisLabelPaint);
         }
     }
@@ -251,6 +250,20 @@ public class YAxisRenderer extends AxisRenderer {
 
         // draw the horizontal grid
         for (int i = 0; i < mYAxis.mEntryCount; i++) {
+            if(i == 0
+                    && !mYAxis.getVisibleGridLinesSet().contains(YAxis.VisibleEntry.MIN)) {
+                continue;
+            }
+
+            if(i == mYAxis.mEntryCount - 1
+                    && !mYAxis.getVisibleGridLinesSet().contains(YAxis.VisibleEntry.MAX)) {
+                continue;
+            }
+
+            if(i > 0 && i < mYAxis.mEntryCount - 1
+                    && !mYAxis.getVisibleGridLinesSet().contains(YAxis.VisibleEntry.INNER)) {
+                continue;
+            }
 
             position[1] = mYAxis.mEntries[i];
             mTrans.pointValuesToPixel(position);
