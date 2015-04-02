@@ -35,7 +35,7 @@ public class YAxisRenderer extends AxisRenderer {
         mAxisLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
 
         mLimitLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mLimitLinePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        mLimitLinePaint.setStyle(Paint.Style.STROKE);
     }
 
     /**
@@ -277,28 +277,25 @@ public class YAxisRenderer extends AxisRenderer {
         if (limitLines == null || limitLines.size() <= 0)
             return;
 
-        float[] pts = new float[4];
+        float[] pts = new float[2];
         Path limitLinePath = new Path();
 
         for (int i = 0; i < limitLines.size(); i++) {
 
             LimitLine l = limitLines.get(i);
+            
+            mLimitLinePaint.setStyle(Paint.Style.STROKE);
+            mLimitLinePaint.setColor(l.getLineColor());
+            mLimitLinePaint.setStrokeWidth(l.getLineWidth());
+            mLimitLinePaint.setPathEffect(l.getDashPathEffect());
 
             pts[1] = l.getLimit();
-            pts[3] = l.getLimit();
 
             mTrans.pointValuesToPixel(pts);
 
-            pts[0] = mViewPortHandler.contentLeft();
-            pts[2] = mViewPortHandler.contentRight();
-
-            limitLinePath.moveTo(pts[0], pts[1]);
-            limitLinePath.lineTo(pts[2], pts[3]);
-
-            mLimitLinePaint.setColor(l.getLineColor());
-            mLimitLinePaint.setPathEffect(l.getDashPathEffect());
-            mLimitLinePaint.setStrokeWidth(l.getLineWidth());
-
+            limitLinePath.moveTo(mViewPortHandler.contentLeft(), pts[1]);
+            limitLinePath.lineTo(mViewPortHandler.contentRight(), pts[1]);
+            
             c.drawPath(limitLinePath, mLimitLinePaint);
             limitLinePath.reset();
             // c.drawLines(pts, mLimitLinePaint);
@@ -312,6 +309,7 @@ public class YAxisRenderer extends AxisRenderer {
                 float yOffset = l.getLineWidth() + Utils.calcTextHeight(mLimitLinePaint, label)
                         / 2f;
 
+                mLimitLinePaint.setStyle(Paint.Style.FILL_AND_STROKE);
                 mLimitLinePaint.setPathEffect(null);
                 mLimitLinePaint.setColor(l.getTextColor());
                 mLimitLinePaint.setStrokeWidth(0.5f);
