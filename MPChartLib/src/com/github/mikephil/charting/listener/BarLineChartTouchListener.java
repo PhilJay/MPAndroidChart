@@ -205,9 +205,9 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
         // check if axis is inverted
         if (mChart.isAnyAxisInverted() && mClosestDataSetToTouch != null
                 && mChart.getAxis(mClosestDataSetToTouch.getAxisDependency()).isInverted()) {
-            
+
             // if there is an inverted horizontalbarchart
-            if(mChart instanceof HorizontalBarChart) {
+            if (mChart instanceof HorizontalBarChart) {
 
                 mMatrix.postTranslate(-(event.getX() - mTouchStartPoint.x), event.getY()
                         - mTouchStartPoint.y);
@@ -231,6 +231,8 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
     private void performZoom(MotionEvent event) {
 
         if (event.getPointerCount() >= 2) {
+            
+            OnChartGestureListener l = mChart.getOnChartGestureListener();
 
             // get the distance between the pointers of the touch
             // event
@@ -247,10 +249,15 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
                     float scale = totalDist / mSavedDist; // total
                                                           // scale
+                    
+                    float scaleX = (mChart.isScaleXEnabled()) ? scale : 1f;
+                    float scaleY = (mChart.isScaleYEnabled()) ? scale : 1f;
 
                     mMatrix.set(mSavedMatrix);
-                    mMatrix.postScale((mChart.isScaleXEnabled()) ? scale : 1f,
-                            (mChart.isScaleYEnabled()) ? scale : 1f, t.x, t.y);
+                    mMatrix.postScale(scaleX, scaleY, t.x, t.y);                   
+
+                    if (l != null)
+                        l.onChartScale(event, scaleX, scaleY);
 
                 } else if (mTouchMode == X_ZOOM && mChart.isScaleXEnabled()) {
 
@@ -260,6 +267,9 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
                     mMatrix.set(mSavedMatrix);
                     mMatrix.postScale(scaleX, 1f, t.x, t.y);
+                    
+                    if (l != null)
+                        l.onChartScale(event, scaleX, 1f);
 
                 } else if (mTouchMode == Y_ZOOM && mChart.isScaleYEnabled()) {
 
@@ -271,7 +281,9 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
                     // y-axis comes from top to bottom, revert y
                     mMatrix.postScale(1f, scaleY, t.x, t.y);
-
+                    
+                    if (l != null)
+                        l.onChartScale(event, 1f, scaleY);
                 }
             }
         }
