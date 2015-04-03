@@ -1,8 +1,11 @@
 
 package com.github.mikephil.charting.data;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
 
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
@@ -21,11 +24,21 @@ public class CandleDataSet extends BarLineScatterCandleDataSet<CandleEntry> {
     /** the space between the candle entries, default 0.1f (10%) */
     private float mBodySpace = 0.1f;
 
-    /** the color of the shadow line */
-    private int mShadowColor = Color.DKGRAY;
+    /** paint style when open <= close */
+    protected Paint.Style mPaintStyle = Paint.Style.FILL;
+
+    /** paint style when open > close */
+    protected Paint.Style mDecreasingPaintStyle = Paint.Style.STROKE;
+
+    /** List representing all colors that are used for this DataSet when open > close */
+    protected List<Integer> mDecreasingColors;
+
+    /** shadow line color, set -1 for backward compatibility and uses default color */
+    protected int mShadowColor = -1;
 
     public CandleDataSet(List<CandleEntry> yVals, String label) {
         super(yVals, label);
+        mDecreasingColors = new ArrayList<Integer>();
     }
 
     @Override
@@ -42,6 +55,10 @@ public class CandleDataSet extends BarLineScatterCandleDataSet<CandleEntry> {
         copied.mShadowWidth = mShadowWidth;
         copied.mBodySpace = mBodySpace;
         copied.mHighLightColor = mHighLightColor;
+        copied.mDecreasingColors = mDecreasingColors;
+        copied.mPaintStyle = mPaintStyle;
+        copied.mDecreasingPaintStyle = mDecreasingPaintStyle;
+        copied.mShadowColor = mShadowColor;
 
         return copied;
     }
@@ -115,21 +132,169 @@ public class CandleDataSet extends BarLineScatterCandleDataSet<CandleEntry> {
         return mShadowWidth;
     }
 
+    //TODO
     /**
-     * Sets the color of the candle shadow (the candle-line).
-     * 
-     * @param color
+     * It is necessary to implement ColorsList class that will encapsulate colors list functionality,
+     * because It's wrong to copy paste setColor, addColor, ... resetColors for each time when we want
+     * to add a coloring options for one of objects
+     * @author Mesrop
      */
-    public void setShadowColor(int color) {
-        mShadowColor = color;
+
+    /** BELOW THIS COLOR HANDLING */
+
+    /**
+     * Sets the colors that should be used fore this DataSet when open > close . Colors are reused
+     * as soon as the number of Entries the DataSet represents is higher than
+     * the size of the colors array. If you are using colors from the resources,
+     * make sure that the colors are already prepared (by calling
+     * getResources().getColor(...)) before adding them to the DataSet.
+     *
+     * @param colors
+     */
+    public void setDecreasingColors(List<Integer> colors) {
+        this.mDecreasingColors = colors;
     }
 
     /**
-     * Returns the color of the candle shadow.
-     * 
+     * Sets the colors that should be used fore this DataSet when open > close. Colors are reused
+     * as soon as the number of Entries the DataSet represents is higher than
+     * the size of the colors array. If you are using colors from the resources,
+     * make sure that the colors are already prepared (by calling
+     * getResources().getColor(...)) before adding them to the DataSet.
+     *
+     * @param colors
+     */
+    public void setDecreasingColors(int[] colors) {
+        this.mDecreasingColors = ColorTemplate.createColors(colors);
+    }
+
+    /**
+     * Sets the colors that should be used fore this DataSet when open > close. Colors are reused
+     * as soon as the number of Entries the DataSet represents is higher than
+     * the size of the colors array. You can use
+     * "new int[] { R.color.red, R.color.green, ... }" to provide colors for
+     * this method. Internally, the colors are resolved using
+     * getResources().getColor(...)
+     *
+     * @param colors
+     */
+    public void setDecreasingColors(int[] colors, Context c) {
+
+        List<Integer> clrs = new ArrayList<Integer>();
+
+        for (int color : colors) {
+            clrs.add(c.getResources().getColor(color));
+        }
+
+        mDecreasingColors = clrs;
+    }
+
+    /**
+     * Adds a new color to the colors array of the DataSet for open > close.
+     *
+     * @param color
+     */
+    public void addColor(int color) {
+        if (mDecreasingColors == null)
+            mDecreasingColors = new ArrayList<Integer>();
+        mDecreasingColors.add(color);
+    }
+
+    /**
+     * Sets the one and ONLY color that should be used for this DataSet when open > close.
+     * Internally, this recreates the colors array and adds the specified color.
+     *
+     * @param color
+     */
+    public void setDecreasingColor(int color) {
+        resetDecreasingColors();
+        mDecreasingColors.add(color);
+    }
+
+    /**
+     * returns all the decreasing colors that are set for this DataSet
+     *
+     * @return
+     */
+    public List<Integer> getDecreasingColors() {
+        return mDecreasingColors;
+    }
+
+    /**
+     * Returns the decreasing color at the given index of the DataSet's color array.
+     * Performs a IndexOutOfBounds check by modulus.
+     *
+     * @param index
+     * @return
+     */
+    public int getDecreasingColor(int index) {
+        return mDecreasingColors.get(index % mDecreasingColors.size());
+    }
+
+    /**
+     * Returns the first color (index 0) of the decreasing colors-array this DataSet
+     * contains.
+     *
+     * @return
+     */
+    public int getDecreasingColor() {
+        return mDecreasingColors.get(0);
+    }
+
+    /**
+     * Resets all colors of this DataSet and recreates the colors array.
+     */
+    public void resetDecreasingColors() {
+        mDecreasingColors = new ArrayList<Integer>();
+    }
+
+    /**
+     * Returns paint style when open > close
+     * @return
+     */
+    public Paint.Style getDecreasingPaintStyle() {
+        return mDecreasingPaintStyle;
+    }
+
+    /**
+     * Sets paint style when open > close
+     * @param decreasingPaintStyle
+     */
+    public void setDecreasingPaintStyle(Paint.Style decreasingPaintStyle) {
+        this.mDecreasingPaintStyle = decreasingPaintStyle;
+    }
+
+    /**
+     * Returns paint style when open <= close
+     * @return
+     */
+    public Paint.Style getPaintStyle() {
+        return mPaintStyle;
+    }
+
+    /**
+     * Sets paint style when open <= close
+     * @param paintStyle
+     */
+    public void setPaintStyle(Paint.Style paintStyle) {
+        this.mPaintStyle = paintStyle;
+    }
+
+
+    //TODO: Here temporary use only one color until ColorsList will be implemented
+    /**
+     * Returns shadow color for all entries
      * @return
      */
     public int getShadowColor() {
         return mShadowColor;
+    }
+
+    /**
+     * Sets shadow color for all entries
+     * @param shadowColor
+     */
+    public void setShadowColor(int shadowColor) {
+        this.mShadowColor = shadowColor;
     }
 }
