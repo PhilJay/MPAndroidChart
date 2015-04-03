@@ -80,7 +80,13 @@ public class CandleStickChartRenderer extends DataRenderer {
         trans.pointValuesToPixel(shadowBuffer.buffer);
         
         mRenderPaint.setStyle(Paint.Style.STROKE);
-        mRenderPaint.setColor(dataSet.getShadowColor());
+        //If not set, use default functionality for backward compatibility
+        if(dataSet.getShadowColor() == -1) {
+            mRenderPaint.setColor(dataSet.getColor());
+        }
+        else {
+            mRenderPaint.setColor(dataSet.getShadowColor());
+        }
         mRenderPaint.setStrokeWidth(dataSet.getShadowWidth());
 
         // draw the shadow
@@ -102,26 +108,33 @@ public class CandleStickChartRenderer extends DataRenderer {
             if (!fitsBounds(e.getXIndex(), mMinX, to))
                 continue;
 
-            // get the color that is specified for this position from
-            // the DataSet, this will reuse colors, if the index is out
-            // of bounds
-            mRenderPaint.setColor(dataSet.getColor(j));
-
             float leftBody = bodyBuffer.buffer[j];
             float open = bodyBuffer.buffer[j + 1];
             float rightBody = bodyBuffer.buffer[j + 2];
             float close = bodyBuffer.buffer[j + 3];
 
-            // decide weather the body is hollow or filled
+            // draw body differently for increasing and decreasing entry
             if (open > close) {
+                //Decreasing
+                //Check this for backward compatibility or when we want default functionality
+                if(dataSet.getDecreasingColors().size() == 0) {
+                    mRenderPaint.setColor(dataSet.getColor(j));
+                }
+                else {
+                    mRenderPaint.setColor(dataSet.getDecreasingColor(j));
+                }
 
-                mRenderPaint.setStyle(Paint.Style.FILL);
+                mRenderPaint.setStyle(dataSet.getDecreasingPaintStyle());
                 // draw the body
                 c.drawRect(leftBody, close, rightBody, open, mRenderPaint);
 
             } else {
-
-                mRenderPaint.setStyle(Paint.Style.STROKE);
+                //Increasing
+                // get the color that is specified for this position from
+                // the DataSet, this will reuse colors, if the index is out
+                // of bounds
+                mRenderPaint.setColor(dataSet.getColor(j));
+                mRenderPaint.setStyle(dataSet.getPaintStyle());
                 // draw the body
                 c.drawRect(leftBody, open, rightBody, close, mRenderPaint);
             }
