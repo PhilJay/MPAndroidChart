@@ -1,6 +1,8 @@
 
 package com.github.mikephil.charting.data;
 
+import android.graphics.Color;
+
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
@@ -18,6 +20,9 @@ public class CandleDataSet extends BarLineScatterCandleDataSet<CandleEntry> {
 
     /** the space between the candle entries, default 0.1f (10%) */
     private float mBodySpace = 0.1f;
+
+    /** the color of the shadow line */
+    private int mShadowColor = Color.DKGRAY;
 
     public CandleDataSet(List<CandleEntry> yVals, String label) {
         super(yVals, label);
@@ -37,18 +42,18 @@ public class CandleDataSet extends BarLineScatterCandleDataSet<CandleEntry> {
         copied.mShadowWidth = mShadowWidth;
         copied.mBodySpace = mBodySpace;
         copied.mHighLightColor = mHighLightColor;
-        
+
         return copied;
     }
-    
+
     @Override
     protected void calcMinMax() {
-//        super.calcMinMax();
-        
+        // super.calcMinMax();
+
         if (mYVals.size() == 0) {
             return;
         }
-        
+
         List<CandleEntry> entries = mYVals;
 
         mYMin = entries.get(0).getLow();
@@ -108,5 +113,23 @@ public class CandleDataSet extends BarLineScatterCandleDataSet<CandleEntry> {
      */
     public float getShadowWidth() {
         return mShadowWidth;
+    }
+
+    /**
+     * Sets the color of the candle shadow (the candle-line).
+     * 
+     * @param color
+     */
+    public void setShadowColor(int color) {
+        mShadowColor = color;
+    }
+
+    /**
+     * Returns the color of the candle shadow.
+     * 
+     * @return
+     */
+    public int getShadowColor() {
+        return mShadowColor;
     }
 }

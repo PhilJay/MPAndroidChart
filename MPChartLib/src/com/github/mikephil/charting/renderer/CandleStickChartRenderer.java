@@ -80,7 +80,7 @@ public class CandleStickChartRenderer extends DataRenderer {
         trans.pointValuesToPixel(shadowBuffer.buffer);
         
         mRenderPaint.setStyle(Paint.Style.STROKE);
-        mRenderPaint.setColor(dataSet.getColor());
+        mRenderPaint.setColor(dataSet.getShadowColor());
         mRenderPaint.setStrokeWidth(dataSet.getShadowWidth());
 
         // draw the shadow

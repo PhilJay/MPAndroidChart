@@ -195,6 +195,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         CandleDataSet set1 = new CandleDataSet(yVals1, "Data Set");
         set1.setAxisDependency(AxisDependency.LEFT);
         set1.setColor(Color.rgb(80, 80, 80));
+        set1.setShadowColor(Color.RED);
 
         CandleData data = new CandleData(xVals, set1);
         
