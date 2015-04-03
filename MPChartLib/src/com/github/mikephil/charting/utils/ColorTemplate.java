@@ -16,6 +16,8 @@ import java.util.List;
  */
 public class ColorTemplate {
 
+    public static final int COLOR_NONE = -1;
+
     /**
      * THE COLOR THEMES ARE PREDEFINED (predefined color integer arrays), FEEL
      * FREE TO CREATE YOUR OWN WITH AS MANY DIFFERENT COLORS AS YOU WANT

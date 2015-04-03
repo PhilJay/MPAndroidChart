@@ -2,6 +2,7 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -68,7 +69,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         leftAxis.setLabelCount(7);
         leftAxis.setDrawGridLines(false);
         leftAxis.setDrawAxisLine(false);
-        leftAxis.setStartAtZero(true);
+        leftAxis.setStartAtZero(false);
         
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setEnabled(false);
@@ -194,8 +195,13 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
 
         CandleDataSet set1 = new CandleDataSet(yVals1, "Data Set");
         set1.setAxisDependency(AxisDependency.LEFT);
-        set1.setColor(Color.rgb(80, 80, 80));
-        set1.setShadowColor(Color.RED);
+//        set1.setColor(Color.rgb(80, 80, 80));
+        set1.setShadowColor(Color.DKGRAY);
+        set1.setShadowWidth(0.7f);
+        set1.setDecreasingColor(Color.RED);
+        set1.setDecreasingPaintStyle(Paint.Style.STROKE);
+        set1.setIncreasingColor(Color.rgb(122, 242, 84));
+        set1.setIncreasingPaintStyle(Paint.Style.FILL);
 
         CandleData data = new CandleData(xVals, set1);
         
