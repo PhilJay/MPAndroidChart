@@ -145,6 +145,20 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         mAxisLabelPaint.setColor(mYAxis.getTextColor());
 
         for (int i = 0; i < mYAxis.mEntryCount; i++) {
+            if(i == 0
+                    && !mYAxis.getVisibleLabelsSet().contains(YAxis.VisibleEntry.MIN)) {
+                continue;
+            }
+
+            if(i == mYAxis.mEntryCount - 1
+                    && !mYAxis.getVisibleLabelsSet().contains(YAxis.VisibleEntry.MAX)) {
+                continue;
+            }
+
+            if(i > 0 && i < mYAxis.mEntryCount - 1
+                    && !mYAxis.getVisibleLabelsSet().contains(YAxis.VisibleEntry.INNER)) {
+                continue;
+            }
 
             String text = mYAxis.getFormattedLabel(i);
 
@@ -169,6 +183,20 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
 
         // draw the horizontal grid
         for (int i = 0; i < mYAxis.mEntryCount; i++) {
+            if(i == 0
+                    && !mYAxis.getVisibleGridLinesSet().contains(YAxis.VisibleEntry.MIN)) {
+                continue;
+            }
+
+            if(i == mYAxis.mEntryCount - 1
+                    && !mYAxis.getVisibleGridLinesSet().contains(YAxis.VisibleEntry.MAX)) {
+                continue;
+            }
+
+            if(i > 0 && i < mYAxis.mEntryCount - 1
+                    && !mYAxis.getVisibleGridLinesSet().contains(YAxis.VisibleEntry.INNER)) {
+                continue;
+            }
 
             position[0] = mYAxis.mEntries[i];
             mTrans.pointValuesToPixel(position);

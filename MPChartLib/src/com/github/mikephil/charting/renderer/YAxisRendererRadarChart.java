@@ -53,38 +53,28 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
         }
 
         // if the labels should only show min and max
-        if (mYAxis.isShowOnlyMinMaxEnabled()) {
+        double first = Math.ceil(yMin / interval) * interval;
+        double last = Utils.nextUp(Math.floor(yMax / interval) * interval);
 
-            mYAxis.mEntryCount = 2;
-            mYAxis.mEntries = new float[2];
-            mYAxis.mEntries[0] = yMin;
-            mYAxis.mEntries[1] = yMax;
+        double f;
+        int i;
+        int n = 0;
+        for (f = first; f <= last; f += interval) {
+            ++n;
+        }
 
-        } else {
+        if (Float.isNaN(mYAxis.getAxisMaxValue()))
+            n += 1;
 
-            double first = Math.ceil(yMin / interval) * interval;
-            double last = Utils.nextUp(Math.floor(yMax / interval) * interval);
+        mYAxis.mEntryCount = n;
 
-            double f;
-            int i;
-            int n = 0;
-            for (f = first; f <= last; f += interval) {
-                ++n;
-            }
+        if (mYAxis.mEntries.length < n) {
+            // Ensure stops contains at least numStops elements.
+            mYAxis.mEntries = new float[n];
+        }
 
-            if (Float.isNaN(mYAxis.getAxisMaxValue()))
-                n += 1;
-            
-            mYAxis.mEntryCount = n;
-
-            if (mYAxis.mEntries.length < n) {
-                // Ensure stops contains at least numStops elements.
-                mYAxis.mEntries = new float[n];
-            }
-
-            for (f = first, i = 0; i < n; f += interval, ++i) {
-                mYAxis.mEntries[i] = (float) f;
-            }
+        for (f = first, i = 0; i < n; f += interval, ++i) {
+            mYAxis.mEntries[i] = (float) f;
         }
 
         if (interval < 1) {
@@ -114,8 +104,20 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
 
         for (int j = 0; j < labelCount; j++) {
 
-            if (j == labelCount - 1 && mYAxis.isDrawTopYLabelEntryEnabled() == false)
-                break;
+            if(j == 0
+                    && !mYAxis.getVisibleLabelsSet().contains(YAxis.VisibleEntry.MIN)) {
+                continue;
+            }
+
+            if(j == mYAxis.mEntryCount - 1
+                    && !mYAxis.getVisibleLabelsSet().contains(YAxis.VisibleEntry.MAX)) {
+                continue;
+            }
+
+            if(j > 0 && j < mYAxis.mEntryCount - 1
+                    && !mYAxis.getVisibleLabelsSet().contains(YAxis.VisibleEntry.INNER)) {
+                continue;
+            }
 
             float r = (mYAxis.mEntries[j] - mYAxis.mAxisMinimum) * factor;
 
