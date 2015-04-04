@@ -324,11 +324,17 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         float rightRange = Math.abs(maxRight - (mAxisRight.isStartAtZeroEnabled() ? 0 : minRight));
 
         // in case all values are equal
-        if (leftRange == 0f)
+        if (leftRange == 0f) {
             maxLeft = maxLeft + 1f;
+            if (!mAxisLeft.isStartAtZeroEnabled())
+                minLeft = minLeft - 1f;
+        }
 
-        if (rightRange == 0f)
+        if (rightRange == 0f) {
             maxRight = maxRight + 1f;
+            if (!mAxisRight.isStartAtZeroEnabled())
+                minRight = minRight - 1f;
+        }
 
         float topSpaceLeft = leftRange / 100f * mAxisLeft.getSpaceTop();
         float topSpaceRight = rightRange / 100f * mAxisRight.getSpaceTop();

@@ -148,8 +148,7 @@ public class CandleDataSet extends BarLineScatterCandleDataSet<CandleEntry> {
 
     /**
      * Sets the one and ONLY color that should be used for this DataSet when
-     * open > close. Internally, this recreates the colors array and adds the
-     * specified color.
+     * open > close. 
      *
      * @param color
      */
@@ -168,8 +167,7 @@ public class CandleDataSet extends BarLineScatterCandleDataSet<CandleEntry> {
     
     /**
      * Sets the one and ONLY color that should be used for this DataSet when
-     * open <= close. Internally, this recreates the colors array and adds the
-     * specified color.
+     * open <= close. 
      *
      * @param color
      */
