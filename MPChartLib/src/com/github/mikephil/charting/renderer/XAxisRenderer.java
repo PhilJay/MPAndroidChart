@@ -3,8 +3,11 @@ package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Paint.Align;
+import android.graphics.Path;
 
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.utils.Transformer;
@@ -193,4 +196,68 @@ public class XAxisRenderer extends AxisRenderer {
             }
         }
     }
+
+	/**
+	 * Draws the LimitLines associated with this axis to the screen.
+	 *
+	 * @param c
+	 */
+	@Override
+	public void renderLimitLines(Canvas c) {
+
+		List<LimitLine> limitLines = mXAxis.getLimitLines();
+
+		if (limitLines == null || limitLines.size() <= 0)
+			return;
+
+		float[] pts = new float[4];
+		Path limitLinePath = new Path();
+
+		for (int i = 0; i < limitLines.size(); i++) {
+
+			LimitLine l = limitLines.get(i);
+
+			pts[0] = l.getLimit();
+			pts[2] = l.getLimit();
+
+			mTrans.pointValuesToPixel(pts);
+
+			pts[1] = mViewPortHandler.contentTop();
+			pts[3] = mViewPortHandler.contentBottom();
+
+			limitLinePath.moveTo(pts[0], pts[1]);
+			limitLinePath.lineTo(pts[2], pts[3]);
+
+			mLimitLinePaint.setStyle(Paint.Style.STROKE);
+			mLimitLinePaint.setColor(l.getLineColor());
+			mLimitLinePaint.setStrokeWidth(l.getLineWidth());
+			mLimitLinePaint.setPathEffect(l.getDashPathEffect());
+
+			c.drawPath(limitLinePath, mLimitLinePaint);
+			limitLinePath.reset();
+
+			String label = l.getLabel();
+
+			// if drawing the limit-value label is enabled
+			if (label != null && !label.equals("")) {
+
+				float xOffset = l.getLineWidth();
+				float add = Utils.convertDpToPixel(4f);
+
+				mLimitLinePaint.setStyle(l.getTextStyle());
+				mLimitLinePaint.setPathEffect(null);
+				mLimitLinePaint.setColor(l.getTextColor());
+				mLimitLinePaint.setStrokeWidth(0.5f);
+				mLimitLinePaint.setTextSize(l.getTextSize());
+
+				float yOffset = Utils.calcTextHeight(mLimitLinePaint, label) + add / 2f;
+
+				if (l.getLabelPosition() == LimitLine.LimitLabelPosition.POS_RIGHT) {
+					c.drawText(label, pts[0] + xOffset, mViewPortHandler.contentBottom() - add, mLimitLinePaint);
+				} else {
+					c.drawText(label, pts[0] + xOffset, mViewPortHandler.contentTop() + yOffset, mLimitLinePaint);
+				}
+			}
+		}
+	}
 }

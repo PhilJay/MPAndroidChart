@@ -49,12 +49,7 @@ public class YAxis extends AxisBase {
     /** if true, the y-label entries will always start at zero */
     protected boolean mStartAtZero = true;
 
-    protected boolean mDrawLimitLineBehindData = false;
-
-    /** array of limitlines that can be set for the axis */
-    private List<LimitLine> mLimitLines;
-
-    /** custom minimum value this axis represents */
+	/** custom minimum value this axis represents */
     protected float mCustomAxisMin = Float.NaN;
 
     /** custom maximum value this axis represents */
@@ -102,14 +97,12 @@ public class YAxis extends AxisBase {
     public YAxis() {
         super();
         this.mAxisDependency = AxisDependency.LEFT;
-        this.mLimitLines = new ArrayList<LimitLine>();
-    }
+	}
 
     public YAxis(AxisDependency position) {
         super();
         this.mAxisDependency = position;
-        this.mLimitLines = new ArrayList<LimitLine>();
-    }
+	}
 
     public AxisDependency getAxisDependency() {
         return mAxisDependency;
@@ -233,60 +226,7 @@ public class YAxis extends AxisBase {
         return mStartAtZero;
     }
 
-    /**
-     * Adds a new LimitLine to this axis.
-     * 
-     * @param l
-     */
-    public void addLimitLine(LimitLine l) {
-        mLimitLines.add(l);
-
-        if (mLimitLines.size() > 6) {
-            Log.e("MPAndroiChart",
-                    "Warning! You have more than 6 LimitLines on your axis, do you really want that?");
-        }
-    }
-
-    /**
-     * Removes the specified LimitLine from the axis.
-     * 
-     * @param l
-     */
-    public void removeLimitLine(LimitLine l) {
-        mLimitLines.remove(l);
-    }
-
-    /**
-     * Removes all LimitLines from the axis.
-     */
-    public void removeAllLimitLines() {
-        mLimitLines.clear();
-    }
-
-    /**
-     * Returns the LimitLines of this axis.
-     * 
-     * @return
-     */
-    public List<LimitLine> getLimitLines() {
-        return mLimitLines;
-    }
-
-    /**
-     * If this is set to true, the LimitLines are drawn behind the actual data,
-     * otherwise on top. Default: false
-     * 
-     * @param enabled
-     */
-    public void setDrawLimitLinesBehindData(boolean enabled) {
-        mDrawLimitLineBehindData = enabled;
-    }
-
-    public boolean isDrawLimitLinesBehindDataEnabled() {
-        return mDrawLimitLineBehindData;
-    }
-
-    public float getAxisMinValue() {
+	public float getAxisMinValue() {
         return mCustomAxisMin;
     }
 

@@ -49,4 +49,14 @@ public class XAxisRendererRadarChart extends XAxisRenderer {
             c.drawText(text, p.x, p.y + mXAxis.mLabelHeight / 2f, mAxisLabelPaint);
         }
     }
+
+	/**
+	 * XAxis LimitLines on RadarChart not yet supported.
+	 *
+	 * @param c
+	 */
+	@Override
+	public void renderLimitLines(Canvas c) {
+		// this space intentionally left blank
+	}
 }

@@ -3,6 +3,7 @@ package com.github.mikephil.charting.components;
 
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
+import android.graphics.Paint;
 
 import com.github.mikephil.charting.utils.Utils;
 
@@ -30,7 +31,10 @@ public class LimitLine {
     /** the size of the label text */
     private float mTextSize = 13f;
 
-    /** label string that is drawn next to the limit line */
+	/** the style of the label text */
+	private Paint.Style mTextStyle = Paint.Style.FILL_AND_STROKE;
+
+	/** label string that is drawn next to the limit line */
     private String mLabel = "";
 
     /** the path effect of this LimitLine that makes dashed lines possible */
@@ -175,7 +179,26 @@ public class LimitLine {
         return mValueTextColor;
     }
 
-    /**
+	/**
+	 * Sets the color of the value-text that is drawn next to the LimitLine.
+	 * Default: Paint.Style.FILL_AND_STROKE
+	 *
+	 * @param style
+	 */
+	public void setTextStyle(Paint.Style style) {
+		this.mTextStyle = style;
+	}
+
+	/**
+	 * Returns the color of the value-text that is drawn next to the LimitLine.
+	 *
+	 * @return
+	 */
+	public Paint.Style getTextStyle() {
+		return mTextStyle;
+	}
+
+	/**
      * Sets the position of the LimitLine value label (either on the right or on
      * the left edge of the chart). Not supported for RadarChart.
      * 

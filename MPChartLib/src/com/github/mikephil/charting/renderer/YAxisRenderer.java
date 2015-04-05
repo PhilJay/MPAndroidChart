@@ -21,10 +21,7 @@ import java.util.List;
 
 public class YAxisRenderer extends AxisRenderer {
 
-    /** paint used for the limit lines */
-    protected Paint mLimitLinePaint;
-
-    protected YAxis mYAxis;
+	protected YAxis mYAxis;
 
     public YAxisRenderer(ViewPortHandler viewPortHandler, YAxis yAxis, Transformer trans) {
         super(viewPortHandler, trans);
@@ -33,9 +30,6 @@ public class YAxisRenderer extends AxisRenderer {
 
         mAxisLabelPaint.setColor(Color.BLACK);
         mAxisLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
-
-        mLimitLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mLimitLinePaint.setStyle(Paint.Style.STROKE);
     }
 
     /**
@@ -270,7 +264,8 @@ public class YAxisRenderer extends AxisRenderer {
      * 
      * @param c
      */
-    public void renderLimitLines(Canvas c) {
+    @Override
+	public void renderLimitLines(Canvas c) {
 
         List<LimitLine> limitLines = mYAxis.getLimitLines();
 
@@ -309,7 +304,7 @@ public class YAxisRenderer extends AxisRenderer {
                 float yOffset = l.getLineWidth() + Utils.calcTextHeight(mLimitLinePaint, label)
                         / 2f;
 
-                mLimitLinePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+                mLimitLinePaint.setStyle(l.getTextStyle());
                 mLimitLinePaint.setPathEffect(null);
                 mLimitLinePaint.setColor(l.getTextColor());
                 mLimitLinePaint.setStrokeWidth(0.5f);
