@@ -2,9 +2,12 @@
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Paint.Align;
+import android.graphics.Path;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.data.BarData;
@@ -165,4 +168,73 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
                     mViewPortHandler.contentBottom(), mAxisLinePaint);
         }
     }
+
+	/**
+	 * Draws the LimitLines associated with this axis to the screen.
+	 * This is the standard YAxis renderer using the XAxis limit lines.
+	 *
+	 * @param c
+	 */
+	@Override
+	public void renderLimitLines(Canvas c) {
+
+		List<LimitLine> limitLines = mXAxis.getLimitLines();
+
+		if (limitLines == null || limitLines.size() <= 0)
+			return;
+
+		float[] pts = new float[2];
+		Path limitLinePath = new Path();
+
+		for (int i = 0; i < limitLines.size(); i++) {
+
+			LimitLine l = limitLines.get(i);
+
+			mLimitLinePaint.setStyle(Paint.Style.STROKE);
+			mLimitLinePaint.setColor(l.getLineColor());
+			mLimitLinePaint.setStrokeWidth(l.getLineWidth());
+			mLimitLinePaint.setPathEffect(l.getDashPathEffect());
+
+			pts[1] = l.getLimit();
+
+			mTrans.pointValuesToPixel(pts);
+
+			limitLinePath.moveTo(mViewPortHandler.contentLeft(), pts[1]);
+			limitLinePath.lineTo(mViewPortHandler.contentRight(), pts[1]);
+
+			c.drawPath(limitLinePath, mLimitLinePaint);
+			limitLinePath.reset();
+			// c.drawLines(pts, mLimitLinePaint);
+
+			String label = l.getLabel();
+
+			// if drawing the limit-value label is enabled
+			if (label != null && !label.equals("")) {
+
+				float xOffset = Utils.convertDpToPixel(4f);
+				float yOffset = l.getLineWidth() + Utils.calcTextHeight(mLimitLinePaint, label)
+						/ 2f;
+
+				mLimitLinePaint.setStyle(l.getTextStyle());
+				mLimitLinePaint.setPathEffect(null);
+				mLimitLinePaint.setColor(l.getTextColor());
+				mLimitLinePaint.setStrokeWidth(0.5f);
+				mLimitLinePaint.setTextSize(l.getTextSize());
+
+				if (l.getLabelPosition() == LimitLine.LimitLabelPosition.POS_RIGHT) {
+
+					mLimitLinePaint.setTextAlign(Align.RIGHT);
+					c.drawText(label, mViewPortHandler.contentRight()
+									- xOffset,
+							pts[1] - yOffset, mLimitLinePaint);
+
+				} else {
+					mLimitLinePaint.setTextAlign(Align.LEFT);
+					c.drawText(label, mViewPortHandler.offsetLeft()
+									+ xOffset,
+							pts[1] - yOffset, mLimitLinePaint);
+				}
+			}
+		}
+	}
 }

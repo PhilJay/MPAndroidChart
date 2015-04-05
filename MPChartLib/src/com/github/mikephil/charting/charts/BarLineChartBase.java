@@ -206,7 +206,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mAxisRendererLeft.renderGridLines(canvas);
         mAxisRendererRight.renderGridLines(canvas);
 
-        if (mAxisLeft.isDrawLimitLinesBehindDataEnabled())
+		if (mXAxis.isDrawLimitLinesBehindDataEnabled())
+			mXAxisRenderer.renderLimitLines(canvas);
+
+		if (mAxisLeft.isDrawLimitLinesBehindDataEnabled())
             mAxisRendererLeft.renderLimitLines(canvas);
 
         if (mAxisRight.isDrawLimitLinesBehindDataEnabled())
@@ -214,7 +217,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         mRenderer.drawData(canvas);
 
-        if (!mAxisLeft.isDrawLimitLinesBehindDataEnabled())
+		if (!mXAxis.isDrawLimitLinesBehindDataEnabled())
+			mXAxisRenderer.renderLimitLines(canvas);
+
+		if (!mAxisLeft.isDrawLimitLinesBehindDataEnabled())
             mAxisRendererLeft.renderLimitLines(canvas);
 
         if (!mAxisRight.isDrawLimitLinesBehindDataEnabled())
@@ -685,7 +691,32 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         }
     }
 
-    /** flag that indicates if a custom viewport offset has been set */
+	/**
+	 * This will move the center of the current viewport to the specified
+	 * x-index and y-value.
+	 *
+	 * @param xIndex
+	 * @param yValue
+	 * @param axis - which axis should be used as a reference for the y-axis
+	 */
+	public void centerViewTo(int xIndex, float yValue, AxisDependency axis) {
+
+		float valsInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
+		float xsInView = getXAxis().getValues().size() / mViewPortHandler.getScaleX();
+
+		Runnable job = new MoveViewJob(mViewPortHandler,
+				xIndex - xsInView / 2f, yValue + valsInView / 2f,
+				getTransformer(axis), this);
+
+		if (mViewPortHandler.hasChartDimens()) {
+			post(job);
+		} else {
+			mJobs.add(job);
+		}
+	}
+
+
+	/** flag that indicates if a custom viewport offset has been set */
     private boolean mCustomViewPortEnabled = false;
 
     /**

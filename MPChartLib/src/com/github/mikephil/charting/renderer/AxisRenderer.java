@@ -27,7 +27,10 @@ public abstract class AxisRenderer extends Renderer {
     /** paint for the line surrounding the chart */
     protected Paint mAxisLinePaint;
 
-    public AxisRenderer(ViewPortHandler viewPortHandler, Transformer trans) {
+	/** paint used for the limit lines */
+	protected Paint mLimitLinePaint;
+
+	public AxisRenderer(ViewPortHandler viewPortHandler, Transformer trans) {
         super(viewPortHandler);
 
         this.mTrans = trans;
@@ -44,7 +47,10 @@ public abstract class AxisRenderer extends Renderer {
         mAxisLinePaint.setColor(Color.BLACK);
         mAxisLinePaint.setStrokeWidth(1f);
         mAxisLinePaint.setStyle(Style.STROKE);
-    }
+
+		mLimitLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		mLimitLinePaint.setStyle(Paint.Style.STROKE);
+	}
 
     /**
      * Returns the Paint object used for drawing the axis (labels).
@@ -104,4 +110,12 @@ public abstract class AxisRenderer extends Renderer {
      * @param c
      */
     public abstract void renderAxisLine(Canvas c);
+
+	/**
+	 * Draws the LimitLines associated with this axis to the screen.
+	 *
+	 * @param c
+	 */
+	public abstract void renderLimitLines(Canvas c);
+
 }

@@ -2,6 +2,7 @@
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Path;
 
@@ -181,7 +182,8 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
     
     /**
      * Draws the LimitLines associated with this axis to the screen.
-     * 
+	 * This is the standard XAxis renderer using the YAxis limit lines.
+     *
      * @param c
      */
     @Override
@@ -210,6 +212,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
             limitLinePath.moveTo(pts[0], pts[1]);
             limitLinePath.lineTo(pts[2], pts[3]);
 
+			mLimitLinePaint.setStyle(Paint.Style.STROKE);
             mLimitLinePaint.setColor(l.getLineColor());
             mLimitLinePaint.setPathEffect(l.getDashPathEffect());
             mLimitLinePaint.setStrokeWidth(l.getLineWidth());
@@ -225,6 +228,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
                 float xOffset = l.getLineWidth();
                 float add = Utils.convertDpToPixel(4f);
 
+				mLimitLinePaint.setStyle(l.getTextStyle());
                 mLimitLinePaint.setPathEffect(null);
                 mLimitLinePaint.setColor(l.getTextColor());
                 mLimitLinePaint.setStrokeWidth(0.5f);
@@ -234,7 +238,6 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
 
                 if (l.getLabelPosition() == LimitLabelPosition.POS_RIGHT) {
                     c.drawText(label, pts[0] + xOffset, mViewPortHandler.contentBottom() - add, mLimitLinePaint);
-
                 } else {
                     c.drawText(label, pts[0] + xOffset, mViewPortHandler.contentTop() + yOffset, mLimitLinePaint);
                 }
