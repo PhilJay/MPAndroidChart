@@ -184,6 +184,9 @@ public abstract class DataSet<T extends Entry> {
             int m = (high + low) / 2;
 
             if (x == mYVals.get(m).getXIndex()) {
+                while (m > 0 && mYVals.get(m - 1).getXIndex() == x)
+                    m--;
+
                 return mYVals.get(m);
             }
 
@@ -211,16 +214,32 @@ public abstract class DataSet<T extends Entry> {
         List<T> entries = new ArrayList<T>();
 
         int low = 0;
-        int high = mYVals.size();
+        int high = mYVals.size() - 1;
 
         while (low <= high) {
             int m = (high + low) / 2;
+            T entry = mYVals.get(m);
 
-            if (x == mYVals.get(m).getXIndex()) {
-                entries.add(mYVals.get(m));
+            if (x == entry.getXIndex()) {
+                while (m > 0 && mYVals.get(m - 1).getXIndex() == x)
+                    m--;
+
+                high = mYVals.size();
+                for (; m < high; m++)
+                {
+                    entry = mYVals.get(m);
+                    if (entry.getXIndex() == x)
+                    {
+                        entries.add(entry);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
             }
 
-            if (x > mYVals.get(m).getXIndex())
+            if (x > entry.getXIndex())
                 low = m + 1;
             else
                 high = m - 1;
