@@ -55,6 +55,6 @@ public abstract class Renderer {
         if (!Double.isInfinite(minx))
             mMinX = (int) minx;
         if (!Double.isInfinite(maxx))
-            mMaxX = (int) maxx; 
+            mMaxX = (int) Math.ceil(maxx);
     }
 }
