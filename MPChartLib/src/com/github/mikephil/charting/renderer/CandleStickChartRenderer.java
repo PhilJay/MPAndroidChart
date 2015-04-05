@@ -10,6 +10,7 @@ import com.github.mikephil.charting.buffer.CandleShadowBuffer;
 import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CandleDataSet;
 import com.github.mikephil.charting.data.CandleEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.CandleDataProvider;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
@@ -69,13 +70,20 @@ public class CandleStickChartRenderer extends DataRenderer {
 
         List<CandleEntry> entries = dataSet.getYVals();
 
-        // draw the shadow
-        int range = (mMaxX - mMinX + 1) * 4;
-        int from = mMinX * 4;
-        int to = mMaxX + 1;
+        Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
+        Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
+
+        int minx = dataSet.getEntryPosition(entryFrom);
+        int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
+
+        int from = minx * 4;
+        int range = (maxx - minx) * 4;
+        int to = (int)Math.ceil((maxx - minx) * phaseX + minx);
 
         CandleShadowBuffer shadowBuffer = mShadowBuffers[dataSetIndex];
         shadowBuffer.setPhases(phaseX, phaseY);
+        shadowBuffer.limitFrom(minx);
+        shadowBuffer.limitTo(maxx);
         shadowBuffer.feed(entries);
 
         trans.pointValuesToPixel(shadowBuffer.buffer);
@@ -92,20 +100,22 @@ public class CandleStickChartRenderer extends DataRenderer {
         mRenderPaint.setStrokeWidth(dataSet.getShadowWidth());
 
         // draw the shadow
-        c.drawLines(shadowBuffer.buffer, from, range, mRenderPaint);
+        c.drawLines(shadowBuffer.buffer, 0, range, mRenderPaint);
 
         CandleBodyBuffer bodyBuffer = mBodyBuffers[dataSetIndex];
         bodyBuffer.setBodySpace(dataSet.getBodySpace());
         bodyBuffer.setPhases(phaseX, phaseY);
+        bodyBuffer.limitFrom(minx);
+        bodyBuffer.limitTo(maxx);
         bodyBuffer.feed(entries);
 
         trans.pointValuesToPixel(bodyBuffer.buffer);
 
         // draw the body
-        for (int j = 0; j < bodyBuffer.size(); j += 4) {
+        for (int j = 0; j < range; j += 4) {
 
             // get the entry
-            CandleEntry e = entries.get(j / 4);
+            CandleEntry e = entries.get(j / 4 + minx);
 
             if (!fitsBounds(e.getXIndex(), mMinX, to))
                 continue;
@@ -119,7 +129,7 @@ public class CandleStickChartRenderer extends DataRenderer {
             if (open > close) { // decreasing
 
                 if (dataSet.getDecreasingColor() == ColorTemplate.COLOR_NONE) {
-                    mRenderPaint.setColor(dataSet.getColor(j));
+                    mRenderPaint.setColor(dataSet.getColor(j / 4 + minx));
                 } else {
                     mRenderPaint.setColor(dataSet.getDecreasingColor());
                 }
@@ -131,7 +141,7 @@ public class CandleStickChartRenderer extends DataRenderer {
             } else {
 
                 if (dataSet.getIncreasingColor() == ColorTemplate.COLOR_NONE) {
-                    mRenderPaint.setColor(dataSet.getColor(j));
+                    mRenderPaint.setColor(dataSet.getColor(j / 4 + minx));
                 } else {
                     mRenderPaint.setColor(dataSet.getIncreasingColor());
                 }
@@ -205,12 +215,18 @@ public class CandleStickChartRenderer extends DataRenderer {
 
                 List<CandleEntry> entries = dataSet.getYVals();
 
+                Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
+                Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
+
+                int minx = dataSet.getEntryPosition(entryFrom);
+                int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
+
                 float[] positions = trans.generateTransformedValuesCandle(
-                        entries, mAnimator.getPhaseY());
+                        entries, mAnimator.getPhaseX(), mAnimator.getPhaseY(), minx, maxx);
 
                 float yOffset = Utils.convertDpToPixel(5f);
 
-                for (int j = 0; j < positions.length * mAnimator.getPhaseX(); j += 2) {
+                for (int j = 0; j < positions.length; j += 2) {
 
                     float x = positions[j];
                     float y = positions[j + 1];
@@ -221,7 +237,7 @@ public class CandleStickChartRenderer extends DataRenderer {
                     if (!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y))
                         continue;
 
-                    float val = entries.get(j / 2).getHigh();
+                    float val = entries.get(j / 2 + minx).getHigh();
 
                     c.drawText(dataSet.getValueFormatter().getFormattedValue(val), x, y - yOffset,
                             mValuePaint);

@@ -19,12 +19,25 @@ public class CandleShadowBuffer extends AbstractBuffer<CandleEntry> {
         buffer[index++] = y2;
     }
 
+    private int mFrom = 0;
+    private int mTo = 0;
+
+    public void limitFrom(int from)
+    {
+        mFrom = from;
+    }
+
+    public void limitTo(int to)
+    {
+        mTo = to;
+    }
+
     @Override
     public void feed(List<CandleEntry> entries) {
-        
-        float size = entries.size() * phaseX;
 
-        for (int i = 0; i < size; i++) {
+        int size = (int)Math.ceil((mTo - mFrom) * phaseX + mFrom);
+
+        for (int i = mFrom; i < size; i++) {
 
             CandleEntry e = entries.get(i);
             addShadow(e.getXIndex(), e.getHigh() * phaseY, e.getXIndex(), e.getLow() * phaseY);

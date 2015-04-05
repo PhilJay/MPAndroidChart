@@ -126,13 +126,15 @@ public class Transformer {
      * @return
      */
     public float[] generateTransformedValuesLine(List<? extends Entry> entries,
-            float phaseY) {
+            float phaseX, float phaseY, int from, int to) {
 
-        float[] valuePoints = new float[entries.size() * 2];
+        final int count = (int)Math.ceil((to - from) * phaseX) * 2;
 
-        for (int j = 0; j < valuePoints.length; j += 2) {
+        float[] valuePoints = new float[count];
 
-            Entry e = entries.get(j / 2);
+        for (int j = 0; j < count; j += 2) {
+
+            Entry e = entries.get(j / 2 + from);
 
             if (e != null) {
                 valuePoints[j] = e.getXIndex();
@@ -153,13 +155,15 @@ public class Transformer {
      * @return
      */
     public float[] generateTransformedValuesCandle(List<CandleEntry> entries,
-            float phaseY) {
+           float phaseX, float phaseY, int from, int to) {
 
-        float[] valuePoints = new float[entries.size() * 2];
+        final int count = (int)Math.ceil((to - from) * phaseX) * 2;
 
-        for (int j = 0; j < valuePoints.length; j += 2) {
+        float[] valuePoints = new float[count];
 
-            CandleEntry e = entries.get(j / 2);
+        for (int j = 0; j < count; j += 2) {
+
+            CandleEntry e = entries.get(j / 2 + from);
 
             if (e != null) {
                 valuePoints[j] = e.getXIndex();

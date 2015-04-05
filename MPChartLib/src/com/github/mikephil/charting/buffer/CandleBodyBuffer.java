@@ -25,12 +25,25 @@ public class CandleBodyBuffer extends AbstractBuffer<CandleEntry> {
         buffer[index++] = bottom;
     }
 
+    private int mFrom = 0;
+    private int mTo = 0;
+
+    public void limitFrom(int from)
+    {
+        mFrom = from;
+    }
+
+    public void limitTo(int to)
+    {
+        mTo = to;
+    }
+
     @Override
     public void feed(List<CandleEntry> entries) {
-        
-        float size = entries.size() * phaseX;
 
-        for (int i = 0; i < size; i++) {
+        int size = (int)Math.ceil((mTo - mFrom) * phaseX + mFrom);
+
+        for (int i = mFrom; i < size; i++) {
 
             CandleEntry e = entries.get(i);
             addBody(e.getXIndex() - 0.5f + mBodySpace, e.getClose() * phaseY, e.getXIndex() + 0.5f - mBodySpace, e.getOpen() * phaseY);

@@ -16,12 +16,25 @@ public class CircleBuffer extends AbstractBuffer<Entry> {
         buffer[index++] = y;
     }
 
+    private int mFrom = 0;
+    private int mTo = 0;
+
+    public void limitFrom(int from)
+    {
+        mFrom = from;
+    }
+
+    public void limitTo(int to)
+    {
+        mTo = to;
+    }
+
     @Override
     public void feed(List<Entry> entries) {
-        
-        float size = entries.size() * phaseX;
 
-        for (int i = 0; i < size; i++) {
+        int size = (int)Math.ceil((mTo - mFrom) * phaseX + mFrom);
+
+        for (int i = mFrom; i < size; i++) {
 
             Entry e = entries.get(i);
             addCircle(e.getXIndex(), e.getVal() * phaseY);
