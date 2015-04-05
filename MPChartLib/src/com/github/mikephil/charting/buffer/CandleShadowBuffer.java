@@ -19,19 +19,6 @@ public class CandleShadowBuffer extends AbstractBuffer<CandleEntry> {
         buffer[index++] = y2;
     }
 
-    private int mFrom = 0;
-    private int mTo = 0;
-
-    public void limitFrom(int from)
-    {
-        mFrom = from;
-    }
-
-    public void limitTo(int to)
-    {
-        mTo = to;
-    }
-
     @Override
     public void feed(List<CandleEntry> entries) {
 

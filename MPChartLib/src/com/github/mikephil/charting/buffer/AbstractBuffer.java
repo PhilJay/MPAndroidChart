@@ -23,6 +23,12 @@ public abstract class AbstractBuffer<T> {
 
     /** animation phase y-axis */
     protected float phaseY = 1f;
+    
+    /** indicates from which x-index the visible data begins */
+    protected int mFrom = 0;
+    
+    /** indicates to which x-index the visible data ranges */
+    protected int mTo = 0;
 
     /**
      * Initialization with buffer-size.
@@ -32,6 +38,16 @@ public abstract class AbstractBuffer<T> {
     public AbstractBuffer(int size) {
         index = 0;
         buffer = new float[size];
+    }
+
+    /** limits the drawing on the x-axis */
+    public void limitFrom(int from) {
+        mFrom = from;
+    }
+
+    /** limits the drawing on the x-axis */
+    public void limitTo(int to) {
+        mTo = to;
     }
 
     /**

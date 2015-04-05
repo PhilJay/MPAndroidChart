@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.util.Log;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.buffer.CircleBuffer;
@@ -287,7 +286,6 @@ public class LineChartRenderer extends DataRenderer {
         int minx = dataSet.getEntryPosition(entryFrom);
         int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
 
-        int from = minx * 4;
         int range = (maxx - minx) * 4 - 4;
 
         LineBuffer buffer = mLineBuffers[dataSetIndex];

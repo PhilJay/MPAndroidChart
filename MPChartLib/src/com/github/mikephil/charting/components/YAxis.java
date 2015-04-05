@@ -2,14 +2,10 @@
 package com.github.mikephil.charting.components;
 
 import android.graphics.Paint;
-import android.util.Log;
 
 import com.github.mikephil.charting.utils.DefaultValueFormatter;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class representing the y-axis labels settings and its entries. Only use the

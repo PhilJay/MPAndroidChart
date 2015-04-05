@@ -25,19 +25,6 @@ public class CandleBodyBuffer extends AbstractBuffer<CandleEntry> {
         buffer[index++] = bottom;
     }
 
-    private int mFrom = 0;
-    private int mTo = 0;
-
-    public void limitFrom(int from)
-    {
-        mFrom = from;
-    }
-
-    public void limitTo(int to)
-    {
-        mTo = to;
-    }
-
     @Override
     public void feed(List<CandleEntry> entries) {
 

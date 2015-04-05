@@ -10,13 +10,13 @@ import com.github.mikephil.charting.utils.Utils;
 /**
  * The limit line is an additional feature for all Line-, Bar- and
  * ScatterCharts. It allows the displaying of an additional line in the chart
- * that marks a certain maximum / limit.
+ * that marks a certain maximum / limit on the specified axis (x- or y-axis).
  * 
  * @author Philipp Jahoda
  */
 public class LimitLine {
 
-    /** limit / maximum (the y-position) */
+    /** limit / maximum (the y-value or xIndex) */
     private float mLimit = 0f;
 
     /** the width of the limit line */
@@ -31,10 +31,10 @@ public class LimitLine {
     /** the size of the label text */
     private float mTextSize = 13f;
 
-	/** the style of the label text */
-	private Paint.Style mTextStyle = Paint.Style.FILL_AND_STROKE;
+    /** the style of the label text */
+    private Paint.Style mTextStyle = Paint.Style.FILL_AND_STROKE;
 
-	/** label string that is drawn next to the limit line */
+    /** label string that is drawn next to the limit line */
     private String mLabel = "";
 
     /** the path effect of this LimitLine that makes dashed lines possible */
@@ -51,8 +51,8 @@ public class LimitLine {
     /**
      * Constructor with limit.
      * 
-     * @param limit - the position (the value) on the y-axis where this line
-     *            should appear
+     * @param limit - the position (the value) on the y-axis (y-value) or x-axis
+     *            (xIndex) where this line should appear
      */
     public LimitLine(float limit) {
         mLimit = limit;
@@ -61,8 +61,8 @@ public class LimitLine {
     /**
      * Constructor with limit and label.
      * 
-     * @param limit - the position (the value) on the y-axis where this line
-     *            should appear
+     * @param limit - the position (the value) on the y-axis (y-value) or x-axis
+     *            (xIndex) where this line should appear
      * @param label - provide "" if no label is required
      */
     public LimitLine(float limit, String label) {
@@ -179,26 +179,26 @@ public class LimitLine {
         return mValueTextColor;
     }
 
-	/**
-	 * Sets the color of the value-text that is drawn next to the LimitLine.
-	 * Default: Paint.Style.FILL_AND_STROKE
-	 *
-	 * @param style
-	 */
-	public void setTextStyle(Paint.Style style) {
-		this.mTextStyle = style;
-	}
+    /**
+     * Sets the color of the value-text that is drawn next to the LimitLine.
+     * Default: Paint.Style.FILL_AND_STROKE
+     *
+     * @param style
+     */
+    public void setTextStyle(Paint.Style style) {
+        this.mTextStyle = style;
+    }
 
-	/**
-	 * Returns the color of the value-text that is drawn next to the LimitLine.
-	 *
-	 * @return
-	 */
-	public Paint.Style getTextStyle() {
-		return mTextStyle;
-	}
+    /**
+     * Returns the color of the value-text that is drawn next to the LimitLine.
+     *
+     * @return
+     */
+    public Paint.Style getTextStyle() {
+        return mTextStyle;
+    }
 
-	/**
+    /**
      * Sets the position of the LimitLine value label (either on the right or on
      * the left edge of the chart). Not supported for RadarChart.
      * 

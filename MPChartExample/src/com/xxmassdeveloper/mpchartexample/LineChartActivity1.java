@@ -97,25 +97,51 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         // highlighted Entry)
         mChart.setHighlightIndicatorEnabled(false);
         
-        mChart.getAxisLeft().enableGridDashedLine(10f, 10f, 0f);
+        // x-axis limit line
+//        LimitLine llXAxis = new LimitLine(10f, "Index 10");
+//        llXAxis.setLineWidth(4f);
+//        llXAxis.enableDashedLine(10f, 10f, 0f);
+//        llXAxis.setLabelPosition(LimitLabelPosition.POS_RIGHT);
+//        llXAxis.setTextSize(10f);
+//        
+//        XAxis xAxis = mChart.getXAxis();
+//        xAxis.addLimitLine(llXAxis);
+        
+        LimitLine ll1 = new LimitLine(130f, "Upper Limit");
+        ll1.setLineWidth(4f);
+        ll1.enableDashedLine(10f, 10f, 0f);
+        ll1.setLabelPosition(LimitLabelPosition.POS_RIGHT);
+        ll1.setTextSize(10f);
+
+        LimitLine ll2 = new LimitLine(-30f, "Lower Limit");
+        ll2.setLineWidth(4f);
+        ll2.enableDashedLine(10f, 10f, 0f);
+        ll2.setLabelPosition(LimitLabelPosition.POS_RIGHT);
+        ll2.setTextSize(10f);
+
+        YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
+        leftAxis.addLimitLine(ll1);
+        leftAxis.addLimitLine(ll2);
+        leftAxis.setAxisMaxValue(220f);
+        leftAxis.setAxisMinValue(-50f);
+        leftAxis.setStartAtZero(false);
+        leftAxis.enableGridDashedLine(10f, 10f, 0f);
         
         // limit lines are drawn behind data (and not on top)
-        mChart.getAxisLeft().setDrawLimitLinesBehindData(true);
+        leftAxis.setDrawLimitLinesBehindData(true);
+
+        mChart.getAxisRight().setEnabled(false);
 
         // add data
         setData(45, 100);
+        
 //        mChart.setVisibleXRange(20);
+//        mChart.setVisibleYRange(20f, AxisDependency.LEFT);
+//        mChart.centerViewTo(20, 50, AxisDependency.LEFT);
         
         mChart.animateX(2500);
-
-        // mChart.setVisibleYRange(30, AxisDependency.LEFT);
-
-        // // restrain the maximum scale-out factor
-        // mChart.setScaleMinima(3f, 3f);
-        //
-        // // center the view to a specific position inside the chart
-        // mChart.centerViewPort(10, 50, AxisDependency.LEFT);
-
+        
         // get the legend (only possible after setting data)
         Legend l = mChart.getLegend();
 
@@ -341,28 +367,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
         // create a data object with the datasets
         LineData data = new LineData(xVals, dataSets);
-
-        LimitLine ll1 = new LimitLine(130f, "Upper Limit");
-        ll1.setLineWidth(4f);
-        ll1.enableDashedLine(10f, 10f, 0f);
-        ll1.setLabelPosition(LimitLabelPosition.POS_RIGHT);
-        ll1.setTextSize(10f);
-
-        LimitLine ll2 = new LimitLine(-30f, "Lower Limit");
-        ll2.setLineWidth(4f);
-        ll2.enableDashedLine(10f, 10f, 0f);
-        ll2.setLabelPosition(LimitLabelPosition.POS_RIGHT);
-        ll2.setTextSize(10f);
-
-        YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
-        leftAxis.addLimitLine(ll1);
-        leftAxis.addLimitLine(ll2);
-        leftAxis.setAxisMaxValue(220f);
-        leftAxis.setAxisMinValue(-50f);
-        leftAxis.setStartAtZero(false);
-
-        mChart.getAxisRight().setEnabled(false);
 
         // set data
         mChart.setData(data);

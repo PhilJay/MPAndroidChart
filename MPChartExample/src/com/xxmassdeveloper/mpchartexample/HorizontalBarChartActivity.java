@@ -90,7 +90,6 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         xl.setDrawAxisLine(true);
         xl.setDrawGridLines(true);
         xl.setGridLineWidth(0.3f);
-        // xl.setEnabled(false);
 
         YAxis yl = mChart.getAxisLeft();
         yl.setTypeface(tf);

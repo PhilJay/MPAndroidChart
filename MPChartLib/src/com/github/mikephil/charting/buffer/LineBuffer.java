@@ -40,19 +40,6 @@ public class LineBuffer extends AbstractBuffer<Entry> {
         }
     }
 
-    private int mFrom = 0;
-    private int mTo = 0;
-
-    public void limitFrom(int from)
-    {
-        mFrom = from;
-    }
-
-    public void limitTo(int to)
-    {
-        mTo = to;
-    }
-
     @Override
     public void feed(List<Entry> entries) {
         moveTo(entries.get(mFrom).getXIndex(), entries.get(mFrom).getVal());

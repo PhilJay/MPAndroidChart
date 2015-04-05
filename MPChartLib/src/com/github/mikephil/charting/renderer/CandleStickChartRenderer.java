@@ -76,7 +76,6 @@ public class CandleStickChartRenderer extends DataRenderer {
         int minx = dataSet.getEntryPosition(entryFrom);
         int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
 
-        int from = minx * 4;
         int range = (maxx - minx) * 4;
         int to = (int)Math.ceil((maxx - minx) * phaseX + minx);
 
