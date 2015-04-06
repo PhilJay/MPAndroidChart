@@ -495,7 +495,7 @@ public class LineChartRenderer extends DataRenderer {
 
             float halfsize = dataSet.getCircleSize() / 2f;
 
-            for (int j = 0, count = (int)Math.ceil((maxx - minx) * phaseX + minx) * 2; j < count; j += 2) {
+            for (int j = 0, count = (int) Math.ceil((maxx - minx) * phaseX + minx) * 2; j < count; j += 2) {
 
                 float x = buffer.buffer[j];
                 float y = buffer.buffer[j + 1];
@@ -508,7 +508,7 @@ public class LineChartRenderer extends DataRenderer {
                 if (!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y))
                     continue;
 
-                int circleColor = dataSet.getCircleColor(j / 2);
+                int circleColor = dataSet.getCircleColor(j / 2 + minx);
 
                 mRenderPaint.setColor(circleColor);
 

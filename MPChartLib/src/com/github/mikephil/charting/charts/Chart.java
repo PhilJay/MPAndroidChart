@@ -1193,7 +1193,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         if (renderer != null)
             mRenderer = renderer;
     }
-    
+
     @Override
     public PointF getCenterOfView() {
         return getCenter();
@@ -1357,6 +1357,16 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         mJobs.clear();
     }
 
+    /**
+     * Returns all jobs that are scheduled to be executed after
+     * onSizeChanged(...).
+     * 
+     * @return
+     */
+    public ArrayList<Runnable> getJobs() {
+        return mJobs;
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         if (mLogEnabled)
@@ -1364,8 +1374,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         if (w > 0 && h > 0 && w < 10000 && h < 10000) {
             // create a new bitmap with the new dimensions
+
+            if (mDrawBitmap != null)
+                mDrawBitmap.recycle();
+
             mDrawBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_4444);
-            // mDrawCanvas = new Canvas(mDrawBitmap);
             mViewPortHandler.setChartDimens(w, h);
 
             if (mLogEnabled)

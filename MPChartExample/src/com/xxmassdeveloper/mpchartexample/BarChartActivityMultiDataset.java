@@ -184,11 +184,11 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-        tvX.setText("" + (mSeekBarX.getProgress() * 3 + 1));
+        tvX.setText("" + (mSeekBarX.getProgress() * 3));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
         ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
+        for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             xVals.add((i + 1990) + "");
         }
 
