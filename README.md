@@ -185,4 +185,4 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-**Special thanks** to [mikegr](https://github.com/mikegr), [ph1lb4](https://github.com/ph1lb4) and [jitpack.io](https://github.com/jitpack-io) for their contributions to this project.
+**Special thanks** to [danielgindi](https://github.com/danielgindi), [mikegr](https://github.com/mikegr), [ph1lb4](https://github.com/ph1lb4) and [jitpack.io](https://github.com/jitpack-io) for their contributions to this project.
