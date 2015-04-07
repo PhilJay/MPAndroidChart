@@ -1,4 +1,4 @@
-package com.github.mikephil.charting.utils;
+package com.github.mikephil.charting.animation;
 
 /**
  * Created by dcg on 7/4/15.

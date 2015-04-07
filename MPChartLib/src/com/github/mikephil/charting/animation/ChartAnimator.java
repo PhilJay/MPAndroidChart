@@ -3,10 +3,7 @@ package com.github.mikephil.charting.animation;
 
 import android.annotation.SuppressLint;
 import android.os.Handler;
-import android.os.Message;
 import android.os.SystemClock;
-
-import com.github.mikephil.charting.utils.AnimationEasing;
 
 /**
  * Object responsible for all animations in the Chart. ANIMATIONS ONLY WORK FOR
