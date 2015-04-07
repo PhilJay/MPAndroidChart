@@ -1,10 +1,10 @@
+
 package com.github.mikephil.charting.animation;
 
 /**
  * Created by dcg on 7/4/15.
  */
-public class AnimationEasing
-{
+public class AnimationEasing {
 
     public enum EasingOption {
         Linear,
@@ -40,10 +40,27 @@ public class AnimationEasing
         EaseInOutBounce,
     }
 
+    /**
+     * Interface for creating custom made easing functions.
+     */
     public static interface EasingFunction {
+
+        /**
+         * Called each time the animation state is updated.
+         * 
+         * @param elapsed - the time that has passed so far
+         * @param duration - the total animation duration
+         * @return
+         */
         public float ease(long elapsed, long duration);
     }
 
+    /**
+     * Returns the correct easing function depending on the EasingOption.
+     * 
+     * @param easing
+     * @return
+     */
     public static EasingFunction getEasingFunctionFromOption(EasingOption easing) {
         switch (easing) {
             default:
@@ -111,6 +128,11 @@ public class AnimationEasing
                 return EasingFunctions.EaseInOutBounce;
         }
     }
+
+    /**
+     * ########## ########## ########## ########## ########## ##########
+     * PREDEFINED EASING FUNCTIONS BELOW THIS
+     */
 
     public static class EasingFunctions {
 
@@ -265,14 +287,16 @@ public class AnimationEasing
         public static final EasingFunction EaseInExpo = new EasingFunction() {
             @Override
             public float ease(long elapsed, long duration) {
-                return (elapsed == 0) ? 0.f : (float) Math.pow(2.f, 10.f * (elapsed / (float) duration - 1.f));
+                return (elapsed == 0) ? 0.f : (float) Math.pow(2.f, 10.f * (elapsed
+                        / (float) duration - 1.f));
             }
         };
 
         public static final EasingFunction EaseOutExpo = new EasingFunction() {
             @Override
             public float ease(long elapsed, long duration) {
-                return (elapsed == duration) ? 1.f : (-(float) Math.pow(2.f, -10.f * elapsed / (float) duration) + 1.f);
+                return (elapsed == duration) ? 1.f : (-(float) Math.pow(2.f, -10.f * elapsed
+                        / (float) duration) + 1.f);
             }
         };
 
@@ -342,7 +366,8 @@ public class AnimationEasing
 
                 float p = duration * .3f;
                 float s = p / (2.f * (float) Math.PI) * (float) Math.asin(1.f);
-                return -((float) Math.pow(2.f, 10.f * (position -= 1.f)) * (float) Math.sin((position * duration - s) * (2.f * Math.PI) / p));
+                return -((float) Math.pow(2.f, 10.f * (position -= 1.f)) * (float) Math
+                        .sin((position * duration - s) * (2.f * Math.PI) / p));
             }
         };
 
@@ -362,7 +387,8 @@ public class AnimationEasing
 
                 float p = duration * .3f;
                 float s = p / (2 * (float) Math.PI) * (float) Math.asin(1.f);
-                return (float) Math.pow(2, -10 * position) * (float) Math.sin((position * duration - s) * (2.f * Math.PI) / p) + 1.f;
+                return (float) Math.pow(2, -10 * position)
+                        * (float) Math.sin((position * duration - s) * (2.f * Math.PI) / p) + 1.f;
             }
         };
 
@@ -384,9 +410,13 @@ public class AnimationEasing
                 float s = p / (2.f * (float) Math.PI) * (float) Math.asin(1.f);
                 if (position < 1.f)
                 {
-                    return -.5f * ((float) Math.pow(2.f, 10.f * (position -= 1.f)) * (float) Math.sin((position * duration - s) * (2.f * Math.PI) / p));
+                    return -.5f
+                            * ((float) Math.pow(2.f, 10.f * (position -= 1.f)) * (float) Math
+                                    .sin((position * duration - s) * (2.f * Math.PI) / p));
                 }
-                return (float) Math.pow(2.f, -10.f * (position -= 1.f)) * (float) Math.sin((position * duration - s) * (2.f * Math.PI) / p) * .5f + 1.f;
+                return (float) Math.pow(2.f, -10.f * (position -= 1.f))
+                        * (float) Math.sin((position * duration - s) * (2.f * Math.PI) / p) * .5f
+                        + 1.f;
             }
         };
 
@@ -418,7 +448,8 @@ public class AnimationEasing
                 {
                     return 0.5f * (position * position * (((s *= (1.525f)) + 1.f) * position - s));
                 }
-                return 0.5f * ((position -= 2.f) * position * (((s *= (1.525f)) + 1.f) * position + s) + 2.f);
+                return 0.5f * ((position -= 2.f) * position
+                        * (((s *= (1.525f)) + 1.f) * position + s) + 2.f);
             }
         };
 

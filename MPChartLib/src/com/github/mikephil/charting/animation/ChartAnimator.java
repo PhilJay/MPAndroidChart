@@ -6,8 +6,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 
 /**
- * Object responsible for all animations in the Chart. ANIMATIONS ONLY WORK FOR
- * API LEVEL 11 (Android 3.0.x) AND HIGHER.
+ * Object responsible for all animations in the Chart.
  * 
  * @author Philipp Jahoda
  */
@@ -84,7 +83,8 @@ public class ChartAnimator {
      * @param durationMillisY
      * @param easing an easing function to be used on the animation phase
      */
-    public void animateXY(int durationMillisX, int durationMillisY, final AnimationEasing.EasingFunction easing) {
+    public void animateXY(int durationMillisX, int durationMillisY,
+            final AnimationEasing.EasingFunction easing) {
 
         stop();
 
@@ -112,8 +112,10 @@ public class ChartAnimator {
      * @param durationMillisY
      * @param easing an easing function option to be used on the animation phase
      */
-    public void animateXY(int durationMillisX, int durationMillisY, AnimationEasing.EasingOption easing) {
-        animateXY(durationMillisX, durationMillisY, AnimationEasing.getEasingFunctionFromOption(easing));
+    public void animateXY(int durationMillisX, int durationMillisY,
+            AnimationEasing.EasingOption easing) {
+        animateXY(durationMillisX, durationMillisY,
+                AnimationEasing.getEasingFunctionFromOption(easing));
     }
 
     /**
@@ -234,10 +236,16 @@ public class ChartAnimator {
         mPhaseX = phase;
     }
 
+    /**
+     * Listener for callbacks on animation update.
+     * 
+     * @author Philipp Jahoda
+     */
     public interface UpdateListener {
         public void onAnimationUpdate();
     }
 
+    @SuppressLint("HandlerLeak")
     public class FrameHandler extends Handler {
 
         public void queueNextFrame() {
@@ -269,7 +277,7 @@ public class ChartAnimator {
                         if (mEasing != null)
                             mPhaseX = mEasing.ease(elapsed, duration);
                         else
-                            mPhaseX = elapsed / (float)duration;
+                            mPhaseX = elapsed / (float) duration;
                     }
 
                     if (mEnabledY) {
@@ -282,7 +290,7 @@ public class ChartAnimator {
                         if (mEasing != null)
                             mPhaseY = mEasing.ease(elapsed, duration);
                         else
-                            mPhaseY = elapsed / (float)duration;
+                            mPhaseY = elapsed / (float) duration;
                     }
 
                     if (currentTime >= mEndTime)
