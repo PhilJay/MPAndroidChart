@@ -20,6 +20,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.AnimationEasing;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.PercentFormatter;
@@ -88,7 +89,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         setData(3, 100);
 
-        mChart.animateXY(1500, 1500);
+        mChart.animateXY(1500, 1500, AnimationEasing.EasingOption.EaseOutBack);
         // mChart.spin(2000, 0, 360);
 
         Legend l = mChart.getLegend();

@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.util.Log;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.PieChart;
@@ -118,7 +119,8 @@ public class PieChartRenderer extends DataRenderer {
                         mChart.getData().getIndexOfDataSet(dataSet))) {
 
                     mRenderPaint.setColor(dataSet.getColor(j));
-                    mBitmapCanvas.drawArc(mChart.getCircleBox(), angle + sliceSpace / 2f,
+                    mBitmapCanvas.drawArc(mChart.getCircleBox(),
+                            angle + sliceSpace / 2f,
                             newangle * mAnimator.getPhaseY()
                                     - sliceSpace / 2f, true, mRenderPaint);
                 }
@@ -173,7 +175,7 @@ public class PieChartRenderer extends DataRenderer {
 
             List<Entry> entries = dataSet.getYVals();
 
-            for (int j = 0; j < entries.size() * mAnimator.getPhaseX(); j++) {
+            for (int j = 0, maxEntry = Math.min((int)Math.ceil(entries.size() * mAnimator.getPhaseX()), entries.size()); j < maxEntry; j++) {
 
                 // offset needed to center the drawn text in the slice
                 float offset = drawAngles[cnt] / 2;

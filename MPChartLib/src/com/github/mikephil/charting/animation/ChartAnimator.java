@@ -1,9 +1,12 @@
 
 package com.github.mikephil.charting.animation;
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
+import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
+
+import com.github.mikephil.charting.utils.AnimationEasing;
 
 /**
  * Object responsible for all animations in the Chart. ANIMATIONS ONLY WORK FOR
@@ -15,13 +18,12 @@ import android.annotation.SuppressLint;
 public class ChartAnimator {
 
     /** object that is updated upon animation update */
-    private AnimatorUpdateListener mListener;
+    private UpdateListener mListener;
 
     public ChartAnimator() {
-
     }
 
-    public ChartAnimator(AnimatorUpdateListener listener) {
+    public ChartAnimator(UpdateListener listener) {
         mListener = listener;
     }
 
@@ -36,11 +38,86 @@ public class ChartAnimator {
     /** the phase that is animated and influences the drawn values on the x-axis */
     protected float mPhaseX = 1f;
 
-    /** objectanimator used for animating values on y-axis */
-    private ObjectAnimator mAnimatorY;
+    private long mStartTime;
 
     /** objectanimator used for animating values on x-axis */
-    private ObjectAnimator mAnimatorX;
+    private FrameHandler mHandler;
+    private final Object mLock = new Object();
+    private long mXDuration = 0;
+    private long mYDuration = 0;
+    private long mEndTimeX = 0;
+    private long mEndTimeY = 0;
+    private long mEndTime = 0;
+    private boolean mEnabledX = false;
+    private boolean mEnabledY = false;
+    private AnimationEasing.EasingFunction mEasing;
+
+    private static final long FRAME_DELAY = 15;
+
+    protected void startAnimationLoop() {
+        synchronized (mLock) {
+            if (mHandler != null) {
+                mHandler.removeMessages(0);
+                mHandler = null;
+            }
+
+            mHandler = new FrameHandler();
+            mHandler.sendEmptyMessageDelayed(0, FRAME_DELAY);
+        }
+    }
+
+    public void stop() {
+        mEnabledX = false;
+        mEnabledY = false;
+
+        synchronized (mLock) {
+            if (mHandler != null) {
+                mHandler.removeMessages(0);
+                mHandler = null;
+            }
+        }
+    }
+
+    /**
+     * Animates the drawing / rendering of the chart on both x- and y-axis with
+     * the specified animation time. If animate(...) is called, no further
+     * calling of invalidate() is necessary to refresh the chart.
+     *
+     * @param durationMillisX
+     * @param durationMillisY
+     * @param easing an easing function to be used on the animation phase
+     */
+    public void animateXY(int durationMillisX, int durationMillisY, final AnimationEasing.EasingFunction easing) {
+
+        stop();
+
+        mStartTime = SystemClock.uptimeMillis();
+        mXDuration = durationMillisX;
+        mYDuration = durationMillisY;
+        mEndTimeX = mStartTime + durationMillisX;
+        mEndTimeY = mStartTime + durationMillisY;
+        mEndTime = mEndTimeX > mEndTimeY ? mEndTimeX : mEndTimeY;
+        mEnabledX = durationMillisX > 0;
+        mEnabledY = durationMillisY > 0;
+
+        mEasing = easing;
+
+        if (mEnabledX || mEnabledY)
+            startAnimationLoop();
+    }
+
+    /**
+     * Animates the drawing / rendering of the chart on both x- and y-axis with
+     * the specified animation time. If animate(...) is called, no further
+     * calling of invalidate() is necessary to refresh the chart.
+     *
+     * @param durationMillisX
+     * @param durationMillisY
+     * @param easing an easing function option to be used on the animation phase
+     */
+    public void animateXY(int durationMillisX, int durationMillisY, AnimationEasing.EasingOption easing) {
+        animateXY(durationMillisX, durationMillisY, AnimationEasing.getEasingFunctionFromOption(easing));
+    }
 
     /**
      * Animates the drawing / rendering of the chart on both x- and y-axis with
@@ -51,45 +128,31 @@ public class ChartAnimator {
      * @param durationMillisY
      */
     public void animateXY(int durationMillisX, int durationMillisY) {
-
-        if (android.os.Build.VERSION.SDK_INT < 11)
-            return;
-
-        mAnimatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
-        mAnimatorY.setDuration(
-                durationMillisY);
-        mAnimatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
-        mAnimatorX.setDuration(
-                durationMillisX);
-
-        // make sure only one animator produces update-callbacks (which then
-        // call invalidate())
-        if (durationMillisX > durationMillisY) {
-            mAnimatorX.addUpdateListener(mListener);
-        } else {
-            mAnimatorY.addUpdateListener(mListener);
-        }
-
-        mAnimatorX.start();
-        mAnimatorY.start();
+        animateXY(durationMillisX, durationMillisY, (AnimationEasing.EasingFunction)null);
     }
 
     /**
-     * Animates the rendering of the chart on the x-axis with the specified
+     * Animates the rendering of the chart on the y-axis with the specified
      * animation time. If animate(...) is called, no further calling of
      * invalidate() is necessary to refresh the chart.
      *
      * @param durationMillis
+     * @param easing an easing function to be used on the animation phase
      */
-    public void animateX(int durationMillis) {
+    public void animateY(int durationMillis, final AnimationEasing.EasingFunction easing) {
+        animateXY(0, durationMillis, easing);
+    }
 
-        if (android.os.Build.VERSION.SDK_INT < 11)
-            return;
-
-        mAnimatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
-        mAnimatorX.setDuration(durationMillis);
-        mAnimatorX.addUpdateListener(mListener);
-        mAnimatorX.start();
+    /**
+     * Animates the rendering of the chart on the y-axis with the specified
+     * animation time. If animate(...) is called, no further calling of
+     * invalidate() is necessary to refresh the chart.
+     *
+     * @param durationMillis
+     * @param easing an easing function option to be used on the animation phase
+     */
+    public void animateY(int durationMillis, AnimationEasing.EasingOption easing) {
+        animateXY(0, durationMillis, AnimationEasing.getEasingFunctionFromOption(easing));
     }
 
     /**
@@ -100,14 +163,42 @@ public class ChartAnimator {
      * @param durationMillis
      */
     public void animateY(int durationMillis) {
+        animateXY(0, durationMillis, (AnimationEasing.EasingFunction) null);
+    }
 
-        if (android.os.Build.VERSION.SDK_INT < 11)
-            return;
+    /**
+     * Animates the rendering of the chart on the x-axis with the specified
+     * animation time. If animate(...) is called, no further calling of
+     * invalidate() is necessary to refresh the chart.
+     *
+     * @param durationMillis
+     * @param easing an easing function to be used on the animation phase
+     */
+    public void animateX(int durationMillis, final AnimationEasing.EasingFunction easing) {
+        animateXY(durationMillis, 0, easing);
+    }
 
-        mAnimatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
-        mAnimatorY.setDuration(durationMillis);
-        mAnimatorY.addUpdateListener(mListener);
-        mAnimatorY.start();
+    /**
+     * Animates the rendering of the chart on the x-axis with the specified
+     * animation time. If animate(...) is called, no further calling of
+     * invalidate() is necessary to refresh the chart.
+     *
+     * @param durationMillis
+     * @param easing an easing function option to be used on the animation phase
+     */
+    public void animateX(int durationMillis, AnimationEasing.EasingOption easing) {
+        animateXY(durationMillis, 0, AnimationEasing.getEasingFunctionFromOption(easing));
+    }
+
+    /**
+     * Animates the rendering of the chart on the x-axis with the specified
+     * animation time. If animate(...) is called, no further calling of
+     * invalidate() is necessary to refresh the chart.
+     *
+     * @param durationMillis
+     */
+    public void animateX(int durationMillis) {
+        animateXY(durationMillis, 0, (AnimationEasing.EasingFunction) null);
     }
 
     /**
@@ -144,5 +235,60 @@ public class ChartAnimator {
      */
     public void setPhaseX(float phase) {
         mPhaseX = phase;
+    }
+
+    public interface UpdateListener {
+        public void onAnimationUpdate();
+    }
+
+    public class FrameHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+
+            if (msg.what == 0) {
+
+                synchronized (mLock) {
+
+                    long currentTime = SystemClock.uptimeMillis();
+                    long elapsedTime = currentTime - mStartTime;
+
+                    if (mEnabledX) {
+                        long duration = mXDuration;
+                        long elapsed = elapsedTime;
+
+                        if (elapsed > duration)
+                            elapsed = duration;
+
+                        if (mEasing != null)
+                            mPhaseX = mEasing.ease(elapsed, duration);
+                        else
+                            mPhaseX = elapsed / (float)duration;
+                    }
+
+                    if (mEnabledY) {
+                        long duration = mYDuration;
+                        long elapsed = elapsedTime;
+
+                        if (elapsed > duration)
+                            elapsed = duration;
+
+                        if (mEasing != null)
+                            mPhaseY = mEasing.ease(elapsed, duration);
+                        else
+                            mPhaseY = elapsed / (float)duration;
+                    }
+
+                    if (currentTime >= mEndTime)
+                        stop();
+
+                    if (mEnabledX || mEnabledY) {
+                        mHandler.sendEmptyMessageDelayed(0, FRAME_DELAY);
+                    }
+
+                    if (mListener != null)
+                        mListener.onAnimationUpdate();
+                }
+            }
+        }
     }
 }
