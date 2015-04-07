@@ -62,7 +62,7 @@ public class ChartAnimator {
             }
 
             mHandler = new FrameHandler();
-            mHandler.sendEmptyMessageDelayed(0, FRAME_DELAY);
+            mHandler.queueNowFrame();
         }
     }
 
@@ -128,7 +128,7 @@ public class ChartAnimator {
      * @param durationMillisY
      */
     public void animateXY(int durationMillisX, int durationMillisY) {
-        animateXY(durationMillisX, durationMillisY, (AnimationEasing.EasingFunction)null);
+        animateXY(durationMillisX, durationMillisY, AnimationEasing.EasingOption.EaseInOutSine);
     }
 
     /**
@@ -163,7 +163,7 @@ public class ChartAnimator {
      * @param durationMillis
      */
     public void animateY(int durationMillis) {
-        animateXY(0, durationMillis, (AnimationEasing.EasingFunction) null);
+        animateXY(0, durationMillis, AnimationEasing.EasingOption.EaseInOutSine);
     }
 
     /**
@@ -198,7 +198,7 @@ public class ChartAnimator {
      * @param durationMillis
      */
     public void animateX(int durationMillis) {
-        animateXY(durationMillis, 0, (AnimationEasing.EasingFunction) null);
+        animateXY(durationMillis, 0, AnimationEasing.EasingOption.EaseInOutSine);
     }
 
     /**
@@ -242,10 +242,20 @@ public class ChartAnimator {
     }
 
     public class FrameHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
 
-            if (msg.what == 0) {
+        public void queueNextFrame() {
+            postAtTime(frameHandler, SystemClock.uptimeMillis() + FRAME_DELAY);
+        }
+
+        public void queueNowFrame() {
+            post(frameHandler);
+        }
+
+        private Runnable frameHandler = new Runnable()
+        {
+            @Override
+            public void run()
+            {
 
                 synchronized (mLock) {
 
@@ -282,13 +292,14 @@ public class ChartAnimator {
                         stop();
 
                     if (mEnabledX || mEnabledY) {
-                        mHandler.sendEmptyMessageDelayed(0, FRAME_DELAY);
+                        queueNextFrame();
                     }
 
                     if (mListener != null)
                         mListener.onAnimationUpdate();
                 }
+
             }
-        }
+        };
     }
 }
