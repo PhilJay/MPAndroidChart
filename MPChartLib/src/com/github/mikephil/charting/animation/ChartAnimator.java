@@ -62,7 +62,7 @@ public class ChartAnimator {
             }
 
             mHandler = new FrameHandler();
-            mHandler.sendEmptyMessageDelayed(0, FRAME_DELAY);
+            mHandler.queueNowFrame();
         }
     }
 
@@ -242,10 +242,20 @@ public class ChartAnimator {
     }
 
     public class FrameHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
 
-            if (msg.what == 0) {
+        public void queueNextFrame() {
+            postAtTime(frameHandler, SystemClock.uptimeMillis() + FRAME_DELAY);
+        }
+
+        public void queueNowFrame() {
+            post(frameHandler);
+        }
+
+        private Runnable frameHandler = new Runnable()
+        {
+            @Override
+            public void run()
+            {
 
                 synchronized (mLock) {
 
@@ -282,13 +292,14 @@ public class ChartAnimator {
                         stop();
 
                     if (mEnabledX || mEnabledY) {
-                        mHandler.sendEmptyMessageDelayed(0, FRAME_DELAY);
+                        queueNextFrame();
                     }
 
                     if (mListener != null)
                         mListener.onAnimationUpdate();
                 }
+
             }
-        }
+        };
     }
 }
