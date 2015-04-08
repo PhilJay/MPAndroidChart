@@ -479,7 +479,7 @@ public class LineChartRenderer extends DataRenderer {
             Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
             List<Entry> entries = dataSet.getYVals();
 
-            Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
+            Entry entryFrom = dataSet.getEntryForXIndex((mMinX < 0) ? 0 : mMinX);
             Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
             int minx = dataSet.getEntryPosition(entryFrom);

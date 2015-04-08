@@ -1,6 +1,8 @@
 
 package com.github.mikephil.charting.buffer;
 
+import android.util.Log;
+
 import com.github.mikephil.charting.data.CandleEntry;
 
 import java.util.List;
@@ -29,6 +31,8 @@ public class CandleBodyBuffer extends AbstractBuffer<CandleEntry> {
     public void feed(List<CandleEntry> entries) {
 
         int size = (int)Math.ceil((mTo - mFrom) * phaseX + mFrom);
+        
+        Log.i("BUFFER", "from: " + mFrom + ", to: " + mTo + ", size: " + size);
 
         for (int i = mFrom; i < size; i++) {
 

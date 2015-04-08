@@ -1,7 +1,7 @@
 
 package com.xxmassdeveloper.mpchartexample.custom;
 
-import com.github.mikephil.charting.animation.AnimationEasing.EasingFunction;
+import com.github.mikephil.charting.animation.EasingFunction;
 
 /**
  * Example of a custom made animation EasingFunction.
@@ -11,10 +11,8 @@ import com.github.mikephil.charting.animation.AnimationEasing.EasingFunction;
 public class MyEasingFunction implements EasingFunction {
 
     @Override
-    public float ease(long elapsed, long duration) {
-
+    public float getInterpolation(float input) {
         // do awesome stuff here, this is just linear easing
-        return elapsed / (float) duration;
+        return input;
     }
-
 }
