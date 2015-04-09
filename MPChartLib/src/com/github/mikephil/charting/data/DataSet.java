@@ -430,13 +430,14 @@ public abstract class DataSet<T extends Entry> {
 
         float val = e.getVal();
 
-        if (mYVals == null || mYVals.size() <= 0) {
-
+        if(mYVals == null) {
             mYVals = new ArrayList<T>();
+        }
+
+        if (mYVals.size() == 0) {
             mYMax = val;
             mYMin = val;
         } else {
-
             if (mYMax < val)
                 mYMax = val;
             if (mYMin > val)
