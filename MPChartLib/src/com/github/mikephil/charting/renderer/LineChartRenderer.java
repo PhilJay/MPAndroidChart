@@ -73,7 +73,8 @@ public class LineChartRenderer extends DataRenderer {
     @Override
     public void drawData(Canvas c) {
 
-        if (mPathBitmap == null || ((int) mViewPortHandler.getChartHeight() != mPathBitmap.getHeight())) {
+        if (mPathBitmap == null
+                || ((int) mViewPortHandler.getChartHeight() != mPathBitmap.getHeight())) {
             mPathBitmap = Bitmap.createBitmap((int) mViewPortHandler.getChartWidth(),
                     (int) mViewPortHandler.getChartHeight(), Bitmap.Config.ARGB_4444);
             mBitmapCanvas = new Canvas(mPathBitmap);
@@ -430,6 +431,9 @@ public class LineChartRenderer extends DataRenderer {
                 Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
                 int minx = dataSet.getEntryPosition(entryFrom);
+                if (minx < 0)
+                    minx = 0;
+
                 int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
 
                 float[] positions = trans.generateTransformedValuesLine(
