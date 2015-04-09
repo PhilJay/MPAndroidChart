@@ -143,7 +143,7 @@ public class LineChartRenderer extends DataRenderer {
 
         int size = (int)Math.ceil((maxx - minx) * phaseX + minx);
 
-        minx = Math.max(minx - 2, 0); // Decrement by 2 as we always render two extra points to keep cubic flowing
+        minx = Math.max(minx, 0); // Decrement by 2 as we always render two extra points to keep cubic flowing
         size = Math.min(size + 2, entries.size()); // Increment by 2 as we always render two extra points to keep cubic flowing
 
         if (size - minx >= 4) {
@@ -333,18 +333,12 @@ public class LineChartRenderer extends DataRenderer {
 
         // if drawing filled is enabled
         if (dataSet.isDrawFilledEnabled() && entries.size() > 0) {
-            drawLinearFill(c, dataSet, entries, trans);
+            drawLinearFill(c, dataSet, entries, minx, maxx, trans);
         }
     }
 
-    protected void drawLinearFill(Canvas c, LineDataSet dataSet, List<Entry> entries,
+    protected void drawLinearFill(Canvas c, LineDataSet dataSet, List<Entry> entries, int minx, int maxx,
             Transformer trans) {
-
-        Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
-        Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
-
-        int minx = dataSet.getEntryPosition(entryFrom);
-        int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
 
         mRenderPaint.setStyle(Paint.Style.FILL);
 

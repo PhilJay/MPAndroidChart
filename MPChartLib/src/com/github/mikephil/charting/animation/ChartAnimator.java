@@ -36,12 +36,6 @@ public class ChartAnimator {
     /** the phase that is animated and influences the drawn values on the x-axis */
     protected float mPhaseX = 1f;
 
-    /** objectanimator used for animating values on y-axis */
-    private ObjectAnimator mAnimatorY;
-
-    /** objectanimator used for animating values on x-axis */
-    private ObjectAnimator mAnimatorX;
-
     /**
      * Animates the drawing / rendering of the chart on both x- and y-axis with
      * the specified animation time. If animate(...) is called, no further
@@ -55,23 +49,23 @@ public class ChartAnimator {
         if (android.os.Build.VERSION.SDK_INT < 11)
             return;
 
-        mAnimatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
-        mAnimatorY.setDuration(
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
+        animatorY.setDuration(
                 durationMillisY);
-        mAnimatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
-        mAnimatorX.setDuration(
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
+        animatorX.setDuration(
                 durationMillisX);
 
         // make sure only one animator produces update-callbacks (which then
         // call invalidate())
         if (durationMillisX > durationMillisY) {
-            mAnimatorX.addUpdateListener(mListener);
+            animatorX.addUpdateListener(mListener);
         } else {
-            mAnimatorY.addUpdateListener(mListener);
+            animatorY.addUpdateListener(mListener);
         }
 
-        mAnimatorX.start();
-        mAnimatorY.start();
+        animatorX.start();
+        animatorY.start();
     }
     
     /**
@@ -89,25 +83,25 @@ public class ChartAnimator {
         if (android.os.Build.VERSION.SDK_INT < 11)
             return;
 
-        mAnimatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
-        mAnimatorY.setInterpolator(easingY);
-        mAnimatorY.setDuration(
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
+        animatorY.setInterpolator(easingY);
+        animatorY.setDuration(
                 durationMillisY);
-        mAnimatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
-        mAnimatorX.setInterpolator(easingX);
-        mAnimatorX.setDuration(
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
+        animatorX.setInterpolator(easingX);
+        animatorX.setDuration(
                 durationMillisX);
 
         // make sure only one animator produces update-callbacks (which then
         // call invalidate())
         if (durationMillisX > durationMillisY) {
-            mAnimatorX.addUpdateListener(mListener);
+            animatorX.addUpdateListener(mListener);
         } else {
-            mAnimatorY.addUpdateListener(mListener);
+            animatorY.addUpdateListener(mListener);
         }
 
-        mAnimatorX.start();
-        mAnimatorY.start();
+        animatorX.start();
+        animatorY.start();
     }
 
     /**
@@ -122,10 +116,10 @@ public class ChartAnimator {
         if (android.os.Build.VERSION.SDK_INT < 11)
             return;
 
-        mAnimatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
-        mAnimatorX.setDuration(durationMillis);
-        mAnimatorX.addUpdateListener(mListener);
-        mAnimatorX.start();
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
+        animatorX.setDuration(durationMillis);
+        animatorX.addUpdateListener(mListener);
+        animatorX.start();
     }
     
     /**
@@ -141,11 +135,11 @@ public class ChartAnimator {
         if (android.os.Build.VERSION.SDK_INT < 11)
             return;
 
-        mAnimatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
-        mAnimatorX.setInterpolator(easing);
-        mAnimatorX.setDuration(durationMillis);
-        mAnimatorX.addUpdateListener(mListener);
-        mAnimatorX.start();
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
+        animatorX.setInterpolator(easing);
+        animatorX.setDuration(durationMillis);
+        animatorX.addUpdateListener(mListener);
+        animatorX.start();
     }
 
     /**
@@ -160,10 +154,10 @@ public class ChartAnimator {
         if (android.os.Build.VERSION.SDK_INT < 11)
             return;
 
-        mAnimatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
-        mAnimatorY.setDuration(durationMillis);
-        mAnimatorY.addUpdateListener(mListener);
-        mAnimatorY.start();
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
+        animatorY.setDuration(durationMillis);
+        animatorY.addUpdateListener(mListener);
+        animatorY.start();
     }
     
     /**
@@ -179,11 +173,11 @@ public class ChartAnimator {
         if (android.os.Build.VERSION.SDK_INT < 11)
             return;
 
-        mAnimatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
-        mAnimatorY.setInterpolator(easing);
-        mAnimatorY.setDuration(durationMillis);
-        mAnimatorY.addUpdateListener(mListener);
-        mAnimatorY.start();
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
+        animatorY.setInterpolator(easing);
+        animatorY.setDuration(durationMillis);
+        animatorY.addUpdateListener(mListener);
+        animatorY.start();
     }
 
     /**

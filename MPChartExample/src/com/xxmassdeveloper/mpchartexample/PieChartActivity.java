@@ -12,6 +12,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.animation.EasingFunction;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
@@ -88,7 +89,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         setData(3, 100);
 
-        mChart.animateXY(1500, 1500);
+        mChart.animateXY(1500, 1500, EasingFunction.EaseInOutQuad, EasingFunction.EaseInOutQuad);
         // mChart.spin(2000, 0, 360);
 
         Legend l = mChart.getLegend();

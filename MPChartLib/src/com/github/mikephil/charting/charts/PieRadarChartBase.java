@@ -457,8 +457,6 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
      */
     /** CODE BELOW THIS RELATED TO ANIMATION */
 
-    /** objectanimator used for animating values on y-axis */
-    private ObjectAnimator mSpinAnimator;
 
     /**
      * Applys a spin animation to the Chart.
@@ -475,17 +473,17 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
         mRotationAngle = fromangle;
 
-        mSpinAnimator = ObjectAnimator.ofFloat(this, "rotationAngle", fromangle, toangle);
-        mSpinAnimator.setDuration(durationmillis);
-        mSpinAnimator.setInterpolator(easing);
+        ObjectAnimator spinAnimator = ObjectAnimator.ofFloat(this, "rotationAngle", fromangle, toangle);
+        spinAnimator.setDuration(durationmillis);
+        spinAnimator.setInterpolator(easing);
 
-        mSpinAnimator.addUpdateListener(new AnimatorUpdateListener() {
+        spinAnimator.addUpdateListener(new AnimatorUpdateListener() {
 
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 postInvalidate();
             }
         });
-        mSpinAnimator.start();
+        spinAnimator.start();
     }
 }
