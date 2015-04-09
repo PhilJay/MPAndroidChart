@@ -1438,6 +1438,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         super.onSizeChanged(w, h, oldw, oldh);
     }
+    
 
     /**
      * Setting this to true will set the layer-type HARDWARE for the view, false

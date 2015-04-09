@@ -73,7 +73,7 @@ public class LineChartRenderer extends DataRenderer {
     @Override
     public void drawData(Canvas c) {
 
-        if (mPathBitmap == null) {
+        if (mPathBitmap == null || ((int) mViewPortHandler.getChartHeight() != mPathBitmap.getHeight())) {
             mPathBitmap = Bitmap.createBitmap((int) mViewPortHandler.getChartWidth(),
                     (int) mViewPortHandler.getChartHeight(), Bitmap.Config.ARGB_4444);
             mBitmapCanvas = new Canvas(mPathBitmap);
@@ -141,10 +141,14 @@ public class LineChartRenderer extends DataRenderer {
 
         cubicPath.reset();
 
-        int size = (int)Math.ceil((maxx - minx) * phaseX + minx);
+        int size = (int) Math.ceil((maxx - minx) * phaseX + minx);
 
-        minx = Math.max(minx, 0); // Decrement by 2 as we always render two extra points to keep cubic flowing
-        size = Math.min(size + 2, entries.size()); // Increment by 2 as we always render two extra points to keep cubic flowing
+        minx = Math.max(minx, 0); // Decrement by 2 as we always render two
+                                  // extra points to keep cubic flowing
+        size = Math.min(size + 2, entries.size()); // Increment by 2 as we
+                                                   // always render two extra
+                                                   // points to keep cubic
+                                                   // flowing
 
         if (size - minx >= 4) {
 
@@ -337,7 +341,8 @@ public class LineChartRenderer extends DataRenderer {
         }
     }
 
-    protected void drawLinearFill(Canvas c, LineDataSet dataSet, List<Entry> entries, int minx, int maxx,
+    protected void drawLinearFill(Canvas c, LineDataSet dataSet, List<Entry> entries, int minx,
+            int maxx,
             Transformer trans) {
 
         mRenderPaint.setStyle(Paint.Style.FILL);
@@ -353,7 +358,7 @@ public class LineChartRenderer extends DataRenderer {
 
         trans.pathValueToPixel(filled);
 
-        mBitmapCanvas.drawPath(filled, mRenderPaint);
+        c.drawPath(filled, mRenderPaint);
 
         // restore alpha
         mRenderPaint.setAlpha(255);
@@ -375,14 +380,18 @@ public class LineChartRenderer extends DataRenderer {
         filled.lineTo(entries.get(from).getXIndex(), entries.get(from).getVal() * phaseY);
 
         // create a new path
-        for (int x = from + 1, count = (int)Math.ceil((to - from) * phaseX + from); x < count; x++) {
+        for (int x = from + 1, count = (int) Math.ceil((to - from) * phaseX + from); x < count; x++) {
 
             Entry e = entries.get(x);
             filled.lineTo(e.getXIndex(), e.getVal() * phaseY);
         }
 
         // close up
-        filled.lineTo(entries.get(Math.max(Math.min((int)Math.ceil((to - from) * phaseX + from) - 1, entries.size() - 1), 0)).getXIndex(), fillMin);
+        filled.lineTo(
+                entries.get(
+                        Math.max(
+                                Math.min((int) Math.ceil((to - from) * phaseX + from) - 1,
+                                        entries.size() - 1), 0)).getXIndex(), fillMin);
 
         filled.close();
 
