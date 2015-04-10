@@ -12,7 +12,6 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.animation.EasingFunction;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
@@ -57,22 +56,21 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         mChart = (PieChart) findViewById(R.id.chart1);
         mChart.setUsePercentValues(true);
-
-        // change the color of the center-hole
-        // mChart.setHoleColor(Color.rgb(235, 235, 235));
-        mChart.setHoleColorTransparent(true);
+        mChart.setDescription("");
 
         tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
         mChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
 
-        mChart.setHoleRadius(60f);
-
-        mChart.setDescription("");
-
-        mChart.setDrawCenterText(true);
-
         mChart.setDrawHoleEnabled(true);
+        mChart.setHoleColorTransparent(true);
+        
+        mChart.setTransparentCircleColor(Color.WHITE);
+        
+        mChart.setHoleRadius(58f);
+        mChart.setTransparentCircleRadius(61f);
+
+        mChart.setDrawCenterText(true);   
 
         mChart.setRotationAngle(0);
         // enable rotation of the chart by touch
@@ -83,13 +81,12 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         // add a selection listener
         mChart.setOnChartValueSelectedListener(this);
-        // mChart.setTouchEnabled(false);
 
         mChart.setCenterText("MPAndroidChart\nby Philipp Jahoda");
 
         setData(3, 100);
 
-        mChart.animateXY(1500, 1500, EasingFunction.EaseInOutQuad, EasingFunction.EaseInOutQuad);
+        mChart.animateXY(1500, 1500);//, EasingFunction.EaseInOutQuad, EasingFunction.EaseInOutQuad);
         // mChart.spin(2000, 0, 360);
 
         Legend l = mChart.getLegend();
@@ -191,6 +188,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         PieDataSet dataSet = new PieDataSet(yVals1, "Election Results");
         dataSet.setSliceSpace(3f);
+        dataSet.setSelectionShift(5f);
 
         // add a lot of colors
 
