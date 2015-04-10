@@ -34,6 +34,7 @@ Donations
 <a href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/PhilJay/MPAndroidChart" target="_blank" title="share to twitter" style="width:100%"><img src="https://github.com/PhilJay/MPAndroidChart/blob/master/design/facebook_icon.png" title="Share on Facebook" width="35" height=35 />
 
 Follow me on **Twitter**: [**@PhilippJahoda**](https://twitter.com/PhilippJahoda)
+
 Download my [**iOS apps**](https://itunes.apple.com/us/artist/philipp-jahoda/id951309215).
 
 Demo
