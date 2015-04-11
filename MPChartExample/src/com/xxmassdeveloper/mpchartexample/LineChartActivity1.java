@@ -361,7 +361,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         set1.setValueTextSize(9f);
         set1.setFillAlpha(65);
         set1.setFillColor(Color.BLACK);
-        set1.setDrawFilled(true);
+//        set1.setDrawFilled(true);
         // set1.setShader(new LinearGradient(0, 0, 0, mChart.getHeight(),
         // Color.BLACK, Color.WHITE, Shader.TileMode.MIRROR));
 

@@ -144,14 +144,13 @@ public class LineChartRenderer extends DataRenderer {
 
         int size = (int) Math.ceil((maxx - minx) * phaseX + minx);
 
-        minx = Math.max(minx, 0); // Decrement by 2 as we always render two
+        minx = Math.max(minx - 2, 0); // Decrement by 2 as we always render two
                                   // extra points to keep cubic flowing
         size = Math.min(size + 2, entries.size()); // Increment by 2 as we
                                                    // always render two extra
                                                    // points to keep cubic
                                                    // flowing
-
-        if (size - minx >= 4) {
+        if (size - minx >= 2) {
 
             float prevDx = 0f;
             float prevDy = 0f;
@@ -170,7 +169,7 @@ public class LineChartRenderer extends DataRenderer {
             prevDy = (next.getVal() - cur.getVal()) * intensity;
 
             cur = entries.get(1);
-            next = entries.get(2);
+            next = entries.get((entries.size() > 2) ? 2 : 1);
             curDx = (next.getXIndex() - prev.getXIndex()) * intensity;
             curDy = (next.getVal() - prev.getVal()) * intensity;
 
@@ -200,7 +199,7 @@ public class LineChartRenderer extends DataRenderer {
 
                 cur = entries.get(entries.size() - 1);
                 prev = entries.get(entries.size() - 2);
-                prevPrev = entries.get(entries.size() - 3);
+                prevPrev = entries.get((entries.size() >= 3) ? entries.size() - 3 : entries.size() - 2);
                 next = cur;
 
                 prevDx = (cur.getXIndex() - prevPrev.getXIndex()) * intensity;
@@ -221,7 +220,7 @@ public class LineChartRenderer extends DataRenderer {
             cubicFillPath.reset();
             cubicFillPath.addPath(cubicPath);
             // create a new path, this is bad for performance
-            drawCubicFill(mBitmapCanvas, dataSet, cubicFillPath, trans, minx, maxx);
+            drawCubicFill(mBitmapCanvas, dataSet, cubicFillPath, trans, minx, size);
         }
 
         mRenderPaint.setColor(dataSet.getColor());
@@ -242,7 +241,7 @@ public class LineChartRenderer extends DataRenderer {
                 .getFillLinePosition(dataSet, mChart.getLineData(), mChart.getYChartMax(),
                         mChart.getYChartMin());
 
-        spline.lineTo(to - 1, fillMin);
+        spline.lineTo(to-1, fillMin);
         spline.lineTo(from, fillMin);
         spline.close();
 
