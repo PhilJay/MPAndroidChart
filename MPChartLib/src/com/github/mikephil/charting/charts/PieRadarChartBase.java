@@ -12,7 +12,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
-import com.github.mikephil.charting.animation.EasingFunction;
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
@@ -466,7 +466,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
      * @param toangle
      */
     @SuppressLint("NewApi")
-    public void spin(int durationmillis, float fromangle, float toangle, EasingFunction easing) {
+    public void spin(int durationmillis, float fromangle, float toangle, Easing.EasingOption easing) {
 
         if (android.os.Build.VERSION.SDK_INT < 11)
             return;
@@ -475,7 +475,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
         ObjectAnimator spinAnimator = ObjectAnimator.ofFloat(this, "rotationAngle", fromangle, toangle);
         spinAnimator.setDuration(durationmillis);
-        spinAnimator.setInterpolator(easing);
+        spinAnimator.setInterpolator(Easing.getEasingFunctionFromOption(easing));
 
         spinAnimator.addUpdateListener(new AnimatorUpdateListener() {
 

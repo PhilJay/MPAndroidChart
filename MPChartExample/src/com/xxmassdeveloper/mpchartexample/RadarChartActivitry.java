@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.animation.EasingFunction;
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
@@ -140,7 +140,7 @@ public class RadarChartActivitry extends DemoBase {
                 break;
             }
             case R.id.actionToggleSpin: {
-                mChart.spin(2000, mChart.getRotationAngle(), mChart.getRotationAngle() + 360, EasingFunction.EaseInCubic);
+                mChart.spin(2000, mChart.getRotationAngle(), mChart.getRotationAngle() + 360, Easing.EasingOption.EaseInCubic);
                 break;
             }
         }
