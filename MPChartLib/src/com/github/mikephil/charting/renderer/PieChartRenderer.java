@@ -94,6 +94,11 @@ public class PieChartRenderer extends DataRenderer {
             mBitmapCanvas = new Canvas(mDrawBitmap);
         }
         
+//        Paint p = new Paint();
+//        p.setStyle(Paint.Style.FILL);
+//        p.setColor(Color.BLACK);
+//        c.drawRect(mChart.getCircleBox(), p);
+        
         mDrawBitmap.eraseColor(Color.TRANSPARENT);
 
         PieData pieData = mChart.getData();
@@ -129,17 +134,10 @@ public class PieChartRenderer extends DataRenderer {
 
                     mRenderPaint.setColor(dataSet.getColor(j));
                     mBitmapCanvas.drawArc(mChart.getCircleBox(),
-                            angle + sliceSpace / 2f,
+                            (angle + sliceSpace / 2f) * mAnimator.getPhaseY(),
                             newangle * mAnimator.getPhaseY()
                                     - sliceSpace / 2f, true, mRenderPaint);
                 }
-
-                // if(sliceSpace > 0f) {
-                //
-                // PointF outer = getPosition(c, radius, angle);
-                // PointF inner = getPosition(c, radius * mHoleRadiusPercent
-                // / 100f, angle);
-                // }
             }
 
             angle += newangle * mAnimator.getPhaseX();

@@ -13,7 +13,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.animation.EasingFunction;
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
@@ -141,7 +141,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 //        mChart.setVisibleYRange(20f, AxisDependency.LEFT);
 //        mChart.centerViewTo(20, 50, AxisDependency.LEFT);
         
-        mChart.animateX(2500, EasingFunction.EaseInOutQuart);
+        mChart.animateX(2500, Easing.EasingOption.EaseInOutQuart);
 //        mChart.invalidate();
         
         // get the legend (only possible after setting data)
@@ -245,7 +245,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                 break;
             }
             case R.id.animateY: {
-                mChart.animateY(3000, EasingFunction.EaseInCubic);
+                mChart.animateY(3000, Easing.EasingOption.EaseInCubic);
                 break;
             }
             case R.id.animateXY: {
