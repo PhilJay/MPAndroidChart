@@ -202,25 +202,32 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
         mMatrix.set(mSavedMatrix);
 
-        // check if axis is inverted
+		OnChartGestureListener l = mChart.getOnChartGestureListener();
+
+		float dX, dY;
+
+		// check if axis is inverted
         if (mChart.isAnyAxisInverted() && mClosestDataSetToTouch != null
                 && mChart.getAxis(mClosestDataSetToTouch.getAxisDependency()).isInverted()) {
 
             // if there is an inverted horizontalbarchart
             if (mChart instanceof HorizontalBarChart) {
-
-                mMatrix.postTranslate(-(event.getX() - mTouchStartPoint.x), event.getY()
-                        - mTouchStartPoint.y);
+				dX = -(event.getX() - mTouchStartPoint.x);
+				dY = event.getY() - mTouchStartPoint.y;
             } else {
-
-                mMatrix.postTranslate(event.getX() - mTouchStartPoint.x, -(event.getY()
-                        - mTouchStartPoint.y));
+				dX = event.getX() - mTouchStartPoint.x;
+				dY = -(event.getY() - mTouchStartPoint.y);
             }
         }
         else {
-            mMatrix.postTranslate(event.getX() - mTouchStartPoint.x, event.getY()
-                    - mTouchStartPoint.y);
+            dX = event.getX() - mTouchStartPoint.x;
+			dY = event.getY() - mTouchStartPoint.y;
         }
+
+		mMatrix.postTranslate(dX, dY);
+
+		if (l != null)
+			l.onChartTranslate(event, dX, dY);
     }
 
     /**
