@@ -55,7 +55,7 @@ public class PieChartRenderer extends DataRenderer {
         mTransparentCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTransparentCirclePaint.setColor(Color.WHITE);
         mTransparentCirclePaint.setStyle(Style.FILL);
-        
+
         mCenterTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mCenterTextPaint.setColor(Color.BLACK);
         mCenterTextPaint.setTextSize(Utils.convertDpToPixel(12f));
@@ -69,7 +69,7 @@ public class PieChartRenderer extends DataRenderer {
     public Paint getPaintHole() {
         return mHolePaint;
     }
-    
+
     public Paint getPaintTransparentCircle() {
         return mTransparentCirclePaint;
     }
@@ -86,19 +86,19 @@ public class PieChartRenderer extends DataRenderer {
 
     @Override
     public void drawData(Canvas c) {
-        
+
         if (mDrawBitmap == null
                 || ((int) mViewPortHandler.getChartHeight() != mDrawBitmap.getHeight())) {
             mDrawBitmap = Bitmap.createBitmap((int) mViewPortHandler.getChartWidth(),
                     (int) mViewPortHandler.getChartHeight(), Bitmap.Config.ARGB_8888);
             mBitmapCanvas = new Canvas(mDrawBitmap);
         }
-        
-//        Paint p = new Paint();
-//        p.setStyle(Paint.Style.FILL);
-//        p.setColor(Color.BLACK);
-//        c.drawRect(mChart.getCircleBox(), p);
-        
+
+        // Paint p = new Paint();
+        // p.setStyle(Paint.Style.FILL);
+        // p.setColor(Color.BLACK);
+        // c.drawRect(mChart.getCircleBox(), p);
+
         mDrawBitmap.eraseColor(Color.TRANSPARENT);
 
         PieData pieData = mChart.getData();
@@ -200,8 +200,9 @@ public class PieChartRenderer extends DataRenderer {
                         / mChart.getYValueSum() * 100f : entries.get(j).getVal();
 
                 String val = dataSet.getValueFormatter().getFormattedValue(value);
-                
-                float lineHeight = Utils.calcTextHeight(mValuePaint, val) + Utils.convertDpToPixel(4f);
+
+                float lineHeight = Utils.calcTextHeight(mValuePaint, val)
+                        + Utils.convertDpToPixel(4f);
 
                 boolean drawYVals = dataSet.isDrawValuesEnabled();
 
@@ -244,11 +245,12 @@ public class PieChartRenderer extends DataRenderer {
             float transparentCircleRadius = mChart.getTransparentCircleRadius();
             float holeRadius = mChart.getHoleRadius();
             float radius = mChart.getRadius();
-            
-            PointF center = mChart.getCenterCircleBox();    
-            
-            if (transparentCircleRadius > holeRadius) {
-                
+
+            PointF center = mChart.getCenterCircleBox();
+
+            if (transparentCircleRadius > holeRadius && mAnimator.getPhaseX() >= 1f
+                    && mAnimator.getPhaseY() >= 1f) {
+
                 int color = mTransparentCirclePaint.getColor();
 
                 // make transparent
@@ -257,10 +259,10 @@ public class PieChartRenderer extends DataRenderer {
                 // draw the transparent-circle
                 mBitmapCanvas.drawCircle(center.x, center.y,
                         radius / 100 * transparentCircleRadius, mTransparentCirclePaint);
-                
-                mTransparentCirclePaint.setColor(color); 
-            } 
-            
+
+                mTransparentCirclePaint.setColor(color);
+            }
+
             // draw the hole-circle
             mBitmapCanvas.drawCircle(center.x, center.y,
                     radius / 100 * holeRadius, mHolePaint);
