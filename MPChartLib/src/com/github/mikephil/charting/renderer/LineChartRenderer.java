@@ -168,8 +168,8 @@ public class LineChartRenderer extends DataRenderer {
             prevDx = (next.getXIndex() - cur.getXIndex()) * intensity;
             prevDy = (next.getVal() - cur.getVal()) * intensity;
 
-            cur = entries.get(1);
-            next = entries.get((entries.size() > 2) ? 2 : 1);
+            cur = entries.get(minx + 1);
+            next = entries.get(minx + (size - minx > 2 ? 2 : 1));
             curDx = (next.getXIndex() - prev.getXIndex()) * intensity;
             curDy = (next.getVal() - prev.getVal()) * intensity;
 
