@@ -49,4 +49,14 @@ public interface OnChartGestureListener {
      * @param scaleY scalefactor on the y-axis
      */
     public void onChartScale(MotionEvent me, float scaleX, float scaleY);
+
+	/**
+	 * Callbacks when the chart is moved / translated via drag gesture.
+	 *
+	 * @param me
+	 * @param dX translation distance on the x-axis
+	 * @param dY translation distance on the y-axis
+	 */
+	public void onChartTranslate(MotionEvent me, float dX, float dY);
+
 }

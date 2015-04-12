@@ -396,8 +396,13 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
     public void onChartScale(MotionEvent me, float scaleX, float scaleY) {
         Log.i("Scale / Zoom", "ScaleX: " + scaleX + ", ScaleY: " + scaleY);
     }
-    
-    @Override
+
+	@Override
+	public void onChartTranslate(MotionEvent me, float dX, float dY) {
+		Log.i("Translate / Move", "dX: " + dX + ", dY: " + dY);
+	}
+
+	@Override
     public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
         Log.i("Entry selected", e.toString());
         Log.i("", "low: " + mChart.getLowestVisibleXIndex() + ", high: " + mChart.getHighestVisibleXIndex());

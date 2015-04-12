@@ -222,7 +222,7 @@ public class ViewPortHandler {
         final float x = transformedPts[0] - offsetLeft();
         final float y = transformedPts[1] - offsetTop();
 
-        Log.i("", "Moving view to x: " + x + ", y: " + y);
+        //Log.i("", "Moving view to x: " + x + ", y: " + y);
 
         save.postTranslate(-x, -y);
 
