@@ -1,6 +1,8 @@
 
 package com.github.mikephil.charting.charts;
 
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
@@ -23,8 +25,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.github.mikephil.charting.animation.AnimationEasing;
 import com.github.mikephil.charting.animation.ChartAnimator;
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.animation.EasingFunction;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.ChartData;
@@ -165,14 +168,17 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         setWillNotDraw(false);
         // setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
-        mAnimator = new ChartAnimator(new ChartAnimator.UpdateListener() {
+        if (android.os.Build.VERSION.SDK_INT < 11)
+            mAnimator = new ChartAnimator();
+        else
+            mAnimator = new ChartAnimator(new AnimatorUpdateListener() {
 
-            @Override
-            public void onAnimationUpdate() {
-                // ViewCompat.postInvalidateOnAnimation(Chart.this);
-                postInvalidate();
-            }
-        });
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    // ViewCompat.postInvalidateOnAnimation(Chart.this);
+                    postInvalidate();
+                }
+            });
 
         // initialize the utils
         Utils.init(getContext().getResources());
@@ -603,6 +609,13 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public ChartAnimator getAnimator() {
         return mAnimator;
     }
+    
+    /**
+     * ################ ################ ################ ################
+     * ANIMATIONS ONLY WORK FOR API LEVEL 11 (Android 3.0.x) AND HIGHER.
+     */
+    /** CODE BELOW FOR PROVIDING EASING FUNCTIONS */
+
 
     /**
      * Animates the drawing / rendering of the chart on both x- and y-axis with
@@ -612,37 +625,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      *
      * @param durationMillisX
      * @param durationMillisY
-     * @param easing an easing function to be used on the animation phase
+     * @param easingX a custom easing function to be used on the animation phase
+     * @param easingY a custom easing function to be used on the animation phase
      */
-    public void animateXY(int durationMillisX, int durationMillisY, AnimationEasing.EasingFunction easing) {
-        mAnimator.animateXY(durationMillisX, durationMillisY, easing);
-    }
-
-    /**
-     * Animates the drawing / rendering of the chart on both x- and y-axis with
-     * the specified animation time. If animate(...) is called, no further
-     * calling of invalidate() is necessary to refresh the chart. ANIMATIONS
-     * ONLY WORK FOR API LEVEL 11 (Android 3.0.x) AND HIGHER.
-     *
-     * @param durationMillisX
-     * @param durationMillisY
-     * @param easing an easing function option to be used on the animation phase
-     */
-    public void animateXY(int durationMillisX, int durationMillisY, AnimationEasing.EasingOption easing) {
-        mAnimator.animateXY(durationMillisX, durationMillisY, easing);
-    }
-
-    /**
-     * Animates the drawing / rendering of the chart on both x- and y-axis with
-     * the specified animation time. If animate(...) is called, no further
-     * calling of invalidate() is necessary to refresh the chart. ANIMATIONS
-     * ONLY WORK FOR API LEVEL 11 (Android 3.0.x) AND HIGHER.
-     *
-     * @param durationMillisX
-     * @param durationMillisY
-     */
-    public void animateXY(int durationMillisX, int durationMillisY) {
-        mAnimator.animateXY(durationMillisX, durationMillisY);
+    public void animateXY(int durationMillisX, int durationMillisY, EasingFunction easingX, EasingFunction easingY) {
+        mAnimator.animateXY(durationMillisX, durationMillisY, easingX, easingY);
     }
 
     /**
@@ -652,10 +639,44 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * API LEVEL 11 (Android 3.0.x) AND HIGHER.
      *
      * @param durationMillis
-     * @param easing an easing function to be used on the animation phase
+     * @param easing a custom easing function to be used on the animation phase
      */
-    public void animateX(int durationMillis, AnimationEasing.EasingFunction easing) {
+    public void animateX(int durationMillis, EasingFunction easing) {
         mAnimator.animateX(durationMillis, easing);
+    }
+
+    /**
+     * Animates the rendering of the chart on the y-axis with the specified
+     * animation time. If animate(...) is called, no further calling of
+     * invalidate() is necessary to refresh the chart. ANIMATIONS ONLY WORK FOR
+     * API LEVEL 11 (Android 3.0.x) AND HIGHER.
+     *
+     * @param durationMillis
+     * @param easing a custom easing function to be used on the animation phase
+     */
+    public void animateY(int durationMillis, EasingFunction easing) {
+        mAnimator.animateY(durationMillis, easing);
+    }
+    
+    /**
+     * ################ ################ ################ ################
+     * ANIMATIONS ONLY WORK FOR API LEVEL 11 (Android 3.0.x) AND HIGHER.
+     */
+    /** CODE BELOW FOR PREDEFINED EASING OPTIONS */
+    
+    /**
+     * Animates the drawing / rendering of the chart on both x- and y-axis with
+     * the specified animation time. If animate(...) is called, no further
+     * calling of invalidate() is necessary to refresh the chart. ANIMATIONS
+     * ONLY WORK FOR API LEVEL 11 (Android 3.0.x) AND HIGHER.
+     *
+     * @param durationMillisX
+     * @param durationMillisY
+     * @param easingX a predefined easing option
+     * @param easingY a predefined easing option
+     */
+    public void animateXY(int durationMillisX, int durationMillisY, Easing.EasingOption easingX, Easing.EasingOption easingY) {
+        mAnimator.animateXY(durationMillisX, durationMillisY, easingX, easingY);
     }
 
     /**
@@ -665,11 +686,31 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * API LEVEL 11 (Android 3.0.x) AND HIGHER.
      *
      * @param durationMillis
-     * @param easing an easing function option to be used on the animation phase
+     * @param easing a predefined easing option
      */
-    public void animateX(int durationMillis, AnimationEasing.EasingOption easing) {
+    public void animateX(int durationMillis, Easing.EasingOption easing) {
         mAnimator.animateX(durationMillis, easing);
     }
+
+    /**
+     * Animates the rendering of the chart on the y-axis with the specified
+     * animation time. If animate(...) is called, no further calling of
+     * invalidate() is necessary to refresh the chart. ANIMATIONS ONLY WORK FOR
+     * API LEVEL 11 (Android 3.0.x) AND HIGHER.
+     *
+     * @param durationMillis
+     * @param easing a predefined easing option
+     */
+    public void animateY(int durationMillis, Easing.EasingOption easing) {
+        mAnimator.animateY(durationMillis, easing);
+    }
+    
+    /**
+     * ################ ################ ################ ################
+     * ANIMATIONS ONLY WORK FOR API LEVEL 11 (Android 3.0.x) AND HIGHER.
+     */
+    /** CODE BELOW FOR ANIMATIONS WITHOUT EASING */
+    
 
     /**
      * Animates the rendering of the chart on the x-axis with the specified
@@ -682,33 +723,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public void animateX(int durationMillis) {
         mAnimator.animateX(durationMillis);
     }
-
-    /**
-     * Animates the rendering of the chart on the y-axis with the specified
-     * animation time. If animate(...) is called, no further calling of
-     * invalidate() is necessary to refresh the chart. ANIMATIONS ONLY WORK FOR
-     * API LEVEL 11 (Android 3.0.x) AND HIGHER.
-     *
-     * @param durationMillis
-     * @param easing an easing function to be used on the animation phase
-     */
-    public void animateY(int durationMillis, AnimationEasing.EasingFunction easing) {
-        mAnimator.animateY(durationMillis, easing);
-    }
-
-    /**
-     * Animates the rendering of the chart on the y-axis with the specified
-     * animation time. If animate(...) is called, no further calling of
-     * invalidate() is necessary to refresh the chart. ANIMATIONS ONLY WORK FOR
-     * API LEVEL 11 (Android 3.0.x) AND HIGHER.
-     *
-     * @param durationMillis
-     * @param easing an easing function option to be used on the animation phase
-     */
-    public void animateY(int durationMillis, AnimationEasing.EasingOption easing) {
-        mAnimator.animateY(durationMillis, easing);
-    }
-
+    
     /**
      * Animates the rendering of the chart on the y-axis with the specified
      * animation time. If animate(...) is called, no further calling of
@@ -720,52 +735,24 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public void animateY(int durationMillis) {
         mAnimator.animateY(durationMillis);
     }
-
+    
     /**
-     * ################ ################ ################ ################
+     * Animates the drawing / rendering of the chart on both x- and y-axis with
+     * the specified animation time. If animate(...) is called, no further
+     * calling of invalidate() is necessary to refresh the chart. ANIMATIONS
+     * ONLY WORK FOR API LEVEL 11 (Android 3.0.x) AND HIGHER.
+     *
+     * @param durationMillisX
+     * @param durationMillisY
      */
-    /** BELOW THIS FOR DYNAMICALLY ADDING ENTRIES AND DATASETS */
-
-    // public void addEntry(Entry e, int dataSetIndex) {
-    // mOriginalData.getDataSetByIndex(dataSetIndex).addEntry(e);
-    //
-    // prepare();
-    // calcMinMax(false);
-    // prepareMatrix();
-    // calculateOffsets();
-    // }
-    //
-    // public void addEntry(Entry e, String label) {
-    // mOriginalData.getDataSetByLabel(label, false).addEntry(e);
-    //
-    // prepare();
-    // calcMinMax(false);
-    // prepareMatrix();
-    // calculateOffsets();
-    // }
-    //
-    // public void addDataSet(DataSet d) {
-    // mOriginalData.addDataSet(d);
-    //
-    // prepare();
-    // calcMinMax(false);
-    // prepareMatrix();
-    // calculateOffsets();
-    // }
-
+    public void animateXY(int durationMillisX, int durationMillisY) {
+        mAnimator.animateXY(durationMillisX, durationMillisY);
+    }
+    
     /**
      * ################ ################ ################ ################
      */
     /** BELOW THIS ONLY GETTERS AND SETTERS */
-
-    // /**
-    // * Returns the canvas object the chart uses for drawing.
-    // *
-    // * @return
-    // */
-    // public Canvas getCanvas() {
-    // return mDrawCanvas;
-    // }
 
     /**
      * Returns the default ValueFormatter that has been determined by the chart
@@ -1471,6 +1458,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         super.onSizeChanged(w, h, oldw, oldh);
     }
+    
 
     /**
      * Setting this to true will set the layer-type HARDWARE for the view, false

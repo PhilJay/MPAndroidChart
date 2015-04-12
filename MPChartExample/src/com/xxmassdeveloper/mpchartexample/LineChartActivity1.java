@@ -13,6 +13,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
@@ -140,7 +141,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 //        mChart.setVisibleYRange(20f, AxisDependency.LEFT);
 //        mChart.centerViewTo(20, 50, AxisDependency.LEFT);
         
-        mChart.animateX(2500);
+        mChart.animateX(2500, Easing.EasingOption.EaseInOutQuart);
+//        mChart.invalidate();
         
         // get the legend (only possible after setting data)
         Legend l = mChart.getLegend();
@@ -243,7 +245,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                 break;
             }
             case R.id.animateY: {
-                mChart.animateY(3000);
+                mChart.animateY(3000, Easing.EasingOption.EaseInCubic);
                 break;
             }
             case R.id.animateXY: {
@@ -359,6 +361,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         set1.setValueTextSize(9f);
         set1.setFillAlpha(65);
         set1.setFillColor(Color.BLACK);
+//        set1.setDrawFilled(true);
         // set1.setShader(new LinearGradient(0, 0, 0, mChart.getHeight(),
         // Color.BLACK, Color.WHITE, Shader.TileMode.MIRROR));
 
@@ -371,7 +374,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         // set data
         mChart.setData(data);
     }
-
+    
     @Override
     public void onChartLongPressed(MotionEvent me) {
         Log.i("LongPress", "Chart longpressed.");

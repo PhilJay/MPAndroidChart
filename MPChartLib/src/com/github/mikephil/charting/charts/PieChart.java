@@ -282,8 +282,9 @@ public class PieChart extends PieRadarChartBase<PieData> {
      */
     public void setHoleColorTransparent(boolean enable) {
         if (enable) {
+            ((PieChartRenderer) mRenderer).getPaintHole().setColor(0xFFFFFFFF);
             ((PieChartRenderer) mRenderer).getPaintHole().setXfermode(
-                    new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+                    new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         } else {
             ((PieChartRenderer) mRenderer).getPaintHole().setXfermode(null);
         }
@@ -441,6 +442,10 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
     public float getHoleRadius() {
         return mHoleRadiusPercent;
+    }
+    
+    public void setTransparentCircleColor(int color) {
+        ((PieChartRenderer) mRenderer).getPaintTransparentCircle().setColor(color);
     }
 
     /**

@@ -44,9 +44,10 @@ public class LineBuffer extends AbstractBuffer<Entry> {
     public void feed(List<Entry> entries) {
         moveTo(entries.get(mFrom).getXIndex(), entries.get(mFrom).getVal() * phaseY);
 
-        int size = (int)Math.ceil((mTo - mFrom) * phaseX + mFrom);
+        int size = (int) Math.ceil((mTo - mFrom) * phaseX + mFrom);
+        int from = mFrom + 1;
 
-        for (int i = mFrom + 1; i < size; i++) {
+        for (int i = from; i < size; i++) {
 
             Entry e = entries.get(i);
             lineTo(e.getXIndex(), e.getVal() * phaseY);

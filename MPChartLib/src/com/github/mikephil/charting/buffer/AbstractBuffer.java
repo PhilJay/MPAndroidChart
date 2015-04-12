@@ -23,10 +23,10 @@ public abstract class AbstractBuffer<T> {
 
     /** animation phase y-axis */
     protected float phaseY = 1f;
-    
+
     /** indicates from which x-index the visible data begins */
     protected int mFrom = 0;
-    
+
     /** indicates to which x-index the visible data ranges */
     protected int mTo = 0;
 
@@ -42,11 +42,15 @@ public abstract class AbstractBuffer<T> {
 
     /** limits the drawing on the x-axis */
     public void limitFrom(int from) {
+        if (from < 0)
+            from = 0;
         mFrom = from;
     }
 
     /** limits the drawing on the x-axis */
     public void limitTo(int to) {
+        if (to < 0)
+            to = 0;
         mTo = to;
     }
 

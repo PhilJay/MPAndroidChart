@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
@@ -110,7 +111,7 @@ public class ListViewBarChartActivity extends DemoBase {
             
             // do not forget to refresh the chart
 //            holder.chart.invalidate();
-            holder.chart.animateY(700);
+            holder.chart.animateY(700, Easing.EasingOption.EaseInCubic);
 
             return convertView;
         }

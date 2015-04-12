@@ -12,6 +12,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
@@ -456,8 +457,6 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
      */
     /** CODE BELOW THIS RELATED TO ANIMATION */
 
-    /** objectanimator used for animating values on y-axis */
-    private ObjectAnimator mSpinAnimator;
 
     /**
      * Applys a spin animation to the Chart.
@@ -467,23 +466,24 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
      * @param toangle
      */
     @SuppressLint("NewApi")
-    public void spin(int durationmillis, float fromangle, float toangle) {
+    public void spin(int durationmillis, float fromangle, float toangle, Easing.EasingOption easing) {
 
         if (android.os.Build.VERSION.SDK_INT < 11)
             return;
 
         mRotationAngle = fromangle;
 
-        mSpinAnimator = ObjectAnimator.ofFloat(this, "rotationAngle", fromangle, toangle);
-        mSpinAnimator.setDuration(durationmillis);
+        ObjectAnimator spinAnimator = ObjectAnimator.ofFloat(this, "rotationAngle", fromangle, toangle);
+        spinAnimator.setDuration(durationmillis);
+        spinAnimator.setInterpolator(Easing.getEasingFunctionFromOption(easing));
 
-        mSpinAnimator.addUpdateListener(new AnimatorUpdateListener() {
+        spinAnimator.addUpdateListener(new AnimatorUpdateListener() {
 
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 postInvalidate();
             }
         });
-        mSpinAnimator.start();
+        spinAnimator.start();
     }
 }
