@@ -26,8 +26,8 @@ public class CandleEntry extends Entry {
      * @param xIndex The index on the x-axis.
      * @param shadowH The (shadow) high value.
      * @param shadowL The (shadow) low value.
-     * @param open
-     * @param close
+     * @param open The open value.
+     * @param close The close value.
      */
     public CandleEntry(int xIndex, float shadowH, float shadowL, float open, float close) {
         super((shadowH + shadowL) / 2f, xIndex);

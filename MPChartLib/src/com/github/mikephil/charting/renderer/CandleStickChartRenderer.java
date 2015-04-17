@@ -2,6 +2,7 @@
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
@@ -137,7 +138,7 @@ public class CandleStickChartRenderer extends DataRenderer {
                 // draw the body
                 c.drawRect(leftBody, close, rightBody, open, mRenderPaint);
 
-            } else {
+            } else if(open < close) {
 
                 if (dataSet.getIncreasingColor() == ColorTemplate.COLOR_NONE) {
                     mRenderPaint.setColor(dataSet.getColor(j / 4 + minx));
@@ -148,6 +149,11 @@ public class CandleStickChartRenderer extends DataRenderer {
                 mRenderPaint.setStyle(dataSet.getIncreasingPaintStyle());
                 // draw the body
                 c.drawRect(leftBody, open, rightBody, close, mRenderPaint);
+            } else { // equal values
+                
+                mRenderPaint.setColor(Color.BLACK);
+                mRenderPaint.setStyle(Paint.Style.STROKE);
+                c.drawLine(leftBody, open, rightBody, close, mRenderPaint);
             }
         }
     }
