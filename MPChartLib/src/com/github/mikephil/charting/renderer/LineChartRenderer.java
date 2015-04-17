@@ -229,7 +229,8 @@ public class LineChartRenderer extends DataRenderer {
             cubicFillPath.reset();
             cubicFillPath.addPath(cubicPath);
             // create a new path, this is bad for performance
-            drawCubicFill(mBitmapCanvas, dataSet, cubicFillPath, trans, minx, size);
+            drawCubicFill(mBitmapCanvas, dataSet, cubicFillPath, trans,
+                    entryFrom.getXIndex(), entryFrom.getXIndex() + size);
         }
 
         mRenderPaint.setColor(dataSet.getColor());
