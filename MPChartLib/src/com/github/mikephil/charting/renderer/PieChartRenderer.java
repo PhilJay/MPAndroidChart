@@ -87,12 +87,18 @@ public class PieChartRenderer extends DataRenderer {
     @Override
     public void drawData(Canvas c) {
 
+        int width = (int) mViewPortHandler.getChartWidth();
+        int height = (int) mViewPortHandler.getChartHeight();
+
         if (mDrawBitmap == null
-				|| (mDrawBitmap.getWidth() != (int) mViewPortHandler.getChartWidth())
-				|| (mDrawBitmap.getHeight() != (int) mViewPortHandler.getChartHeight())) {
-            mDrawBitmap = Bitmap.createBitmap((int) mViewPortHandler.getChartWidth(),
-                    (int) mViewPortHandler.getChartHeight(), Bitmap.Config.ARGB_8888);
-            mBitmapCanvas = new Canvas(mDrawBitmap);
+                || (mDrawBitmap.getWidth() != width)
+                || (mDrawBitmap.getHeight() != height)) {
+
+            if (width > 0 && height > 0) {
+
+                mDrawBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
+                mBitmapCanvas = new Canvas(mDrawBitmap);
+            }
         }
 
         // Paint p = new Paint();

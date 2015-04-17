@@ -31,7 +31,7 @@ public class LineChartRenderer extends DataRenderer {
      * Bitmap object used for drawing the paths (otherwise they are too long if
      * rendered directly on the canvas)
      */
-    protected Bitmap mPathBitmap;
+    protected Bitmap mDrawBitmap;
 
     /**
      * on this canvas, the paths are rendered, it is initialized with the
@@ -73,15 +73,21 @@ public class LineChartRenderer extends DataRenderer {
     @Override
     public void drawData(Canvas c) {
 
-        if (mPathBitmap == null
-				|| (mPathBitmap.getWidth() != (int) mViewPortHandler.getChartWidth())
-				|| (mPathBitmap.getHeight() != (int) mViewPortHandler.getChartHeight())) {
-            mPathBitmap = Bitmap.createBitmap((int) mViewPortHandler.getChartWidth(),
-                    (int) mViewPortHandler.getChartHeight(), Bitmap.Config.ARGB_4444);
-            mBitmapCanvas = new Canvas(mPathBitmap);
+        int width = (int) mViewPortHandler.getChartWidth();
+        int height = (int) mViewPortHandler.getChartHeight();
+
+        if (mDrawBitmap == null
+                || (mDrawBitmap.getWidth() != width)
+                || (mDrawBitmap.getHeight() != height)) {
+
+            if (width > 0 && height > 0) {
+
+                mDrawBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
+                mBitmapCanvas = new Canvas(mDrawBitmap);
+            }
         }
 
-        mPathBitmap.eraseColor(Color.TRANSPARENT);
+        mDrawBitmap.eraseColor(Color.TRANSPARENT);
 
         LineData lineData = mChart.getLineData();
 
@@ -91,7 +97,7 @@ public class LineChartRenderer extends DataRenderer {
                 drawDataSet(c, set);
         }
 
-        c.drawBitmap(mPathBitmap, 0, 0, mRenderPaint);
+        c.drawBitmap(mDrawBitmap, 0, 0, mRenderPaint);
     }
 
     protected void drawDataSet(Canvas c, LineDataSet dataSet) {
@@ -146,7 +152,7 @@ public class LineChartRenderer extends DataRenderer {
         int size = (int) Math.ceil((maxx - minx) * phaseX + minx);
 
         minx = Math.max(minx - 2, 0); // Decrement by 2 as we always render two
-                                  // extra points to keep cubic flowing
+        // extra points to keep cubic flowing
         size = Math.min(size + 2, entries.size()); // Increment by 2 as we
                                                    // always render two extra
                                                    // points to keep cubic
@@ -200,7 +206,8 @@ public class LineChartRenderer extends DataRenderer {
 
                 cur = entries.get(entries.size() - 1);
                 prev = entries.get(entries.size() - 2);
-                prevPrev = entries.get((entries.size() >= 3) ? entries.size() - 3 : entries.size() - 2);
+                prevPrev = entries.get((entries.size() >= 3) ? entries.size() - 3
+                        : entries.size() - 2);
                 next = cur;
 
                 prevDx = (cur.getXIndex() - prevPrev.getXIndex()) * intensity;
@@ -242,7 +249,7 @@ public class LineChartRenderer extends DataRenderer {
                 .getFillLinePosition(dataSet, mChart.getLineData(), mChart.getYChartMax(),
                         mChart.getYChartMin());
 
-        spline.lineTo(to-1, fillMin);
+        spline.lineTo(to - 1, fillMin);
         spline.lineTo(from, fillMin);
         spline.close();
 
