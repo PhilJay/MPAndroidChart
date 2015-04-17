@@ -84,7 +84,8 @@ public class LineChartRenderer extends DataRenderer {
 
                 mDrawBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
                 mBitmapCanvas = new Canvas(mDrawBitmap);
-            }
+            } else
+                return;
         }
 
         mDrawBitmap.eraseColor(Color.TRANSPARENT);

@@ -98,7 +98,8 @@ public class PieChartRenderer extends DataRenderer {
 
                 mDrawBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
                 mBitmapCanvas = new Canvas(mDrawBitmap);
-            }
+            } else
+                return;
         }
 
         // Paint p = new Paint();
