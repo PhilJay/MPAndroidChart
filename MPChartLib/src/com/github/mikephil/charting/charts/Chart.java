@@ -398,6 +398,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         // mDrawBitmap.eraseColor(Color.TRANSPARENT);
     }
 
+    /** the custom position of the description text */
+    private PointF mDescriptionPosition;
+
     /**
      * draws the description text in the bottom right corner of the chart
      */
@@ -405,9 +408,14 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         if (!mDescription.equals("")) {
 
-            c.drawText(mDescription, getWidth() - mViewPortHandler.offsetRight() - 10,
-                    getHeight() - mViewPortHandler.offsetBottom()
-                            - 10, mDescPaint);
+            if (mDescriptionPosition == null) {
+
+                c.drawText(mDescription, getWidth() - mViewPortHandler.offsetRight() - 10,
+                        getHeight() - mViewPortHandler.offsetBottom()
+                                - 10, mDescPaint);
+            } else {
+                c.drawText(mDescription, mDescriptionPosition.x, mDescriptionPosition.y, mDescPaint);
+            }
         }
     }
 
@@ -609,13 +617,12 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public ChartAnimator getAnimator() {
         return mAnimator;
     }
-    
+
     /**
      * ################ ################ ################ ################
      * ANIMATIONS ONLY WORK FOR API LEVEL 11 (Android 3.0.x) AND HIGHER.
      */
     /** CODE BELOW FOR PROVIDING EASING FUNCTIONS */
-
 
     /**
      * Animates the drawing / rendering of the chart on both x- and y-axis with
@@ -628,7 +635,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @param easingX a custom easing function to be used on the animation phase
      * @param easingY a custom easing function to be used on the animation phase
      */
-    public void animateXY(int durationMillisX, int durationMillisY, EasingFunction easingX, EasingFunction easingY) {
+    public void animateXY(int durationMillisX, int durationMillisY, EasingFunction easingX,
+            EasingFunction easingY) {
         mAnimator.animateXY(durationMillisX, durationMillisY, easingX, easingY);
     }
 
@@ -657,13 +665,13 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public void animateY(int durationMillis, EasingFunction easing) {
         mAnimator.animateY(durationMillis, easing);
     }
-    
+
     /**
      * ################ ################ ################ ################
      * ANIMATIONS ONLY WORK FOR API LEVEL 11 (Android 3.0.x) AND HIGHER.
      */
     /** CODE BELOW FOR PREDEFINED EASING OPTIONS */
-    
+
     /**
      * Animates the drawing / rendering of the chart on both x- and y-axis with
      * the specified animation time. If animate(...) is called, no further
@@ -675,7 +683,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @param easingX a predefined easing option
      * @param easingY a predefined easing option
      */
-    public void animateXY(int durationMillisX, int durationMillisY, Easing.EasingOption easingX, Easing.EasingOption easingY) {
+    public void animateXY(int durationMillisX, int durationMillisY, Easing.EasingOption easingX,
+            Easing.EasingOption easingY) {
         mAnimator.animateXY(durationMillisX, durationMillisY, easingX, easingY);
     }
 
@@ -704,13 +713,12 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public void animateY(int durationMillis, Easing.EasingOption easing) {
         mAnimator.animateY(durationMillis, easing);
     }
-    
+
     /**
      * ################ ################ ################ ################
      * ANIMATIONS ONLY WORK FOR API LEVEL 11 (Android 3.0.x) AND HIGHER.
      */
     /** CODE BELOW FOR ANIMATIONS WITHOUT EASING */
-    
 
     /**
      * Animates the rendering of the chart on the x-axis with the specified
@@ -723,7 +731,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public void animateX(int durationMillis) {
         mAnimator.animateX(durationMillis);
     }
-    
+
     /**
      * Animates the rendering of the chart on the y-axis with the specified
      * animation time. If animate(...) is called, no further calling of
@@ -735,7 +743,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public void animateY(int durationMillis) {
         mAnimator.animateY(durationMillis);
     }
-    
+
     /**
      * Animates the drawing / rendering of the chart on both x- and y-axis with
      * the specified animation time. If animate(...) is called, no further
@@ -748,7 +756,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public void animateXY(int durationMillisX, int durationMillisY) {
         mAnimator.animateXY(durationMillisX, durationMillisY);
     }
-    
+
     /**
      * ################ ################ ################ ################
      */
@@ -838,16 +846,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         return mData.getYMin();
     }
 
-    // /**
-    // * Get the total number of X-values.
-    // *
-    // * @return
-    // */
-    // @Override
-    // public float getDeltaX() {
-    // return mDeltaX;
-    // }
-
     @Override
     public float getXChartMax() {
         return mXChartMax;
@@ -912,6 +910,37 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
+     * set a description text that appears in the bottom right corner of the
+     * chart, size = Y-legend text size
+     *
+     * @param desc
+     */
+    public void setDescription(String desc) {
+        if (desc == null)
+            desc = "";
+        this.mDescription = desc;
+    }
+
+    /**
+     * Sets a custom position for the description text in pixels on the screen.
+     * 
+     * @param x - xcoordinate
+     * @param y - ycoordinate
+     */
+    public void setDescriptionPosition(float x, float y) {
+        mDescriptionPosition = new PointF(x, y);
+    }
+
+    /**
+     * sets the typeface for the description paint
+     *
+     * @param t
+     */
+    public void setDescriptionTypeface(Typeface t) {
+        mDescPaint.setTypeface(t);
+    }
+
+    /**
      * sets the size of the description text in pixels, min 6f, max 16f
      *
      * @param size
@@ -924,6 +953,15 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             size = 6f;
 
         mDescPaint.setTextSize(Utils.convertDpToPixel(size));
+    }
+
+    /**
+     * Sets the color of the description text.
+     * 
+     * @param color
+     */
+    public void setDescriptionColor(int color) {
+        mDescPaint.setColor(color);
     }
 
     /**
@@ -943,18 +981,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public boolean isLogEnabled() {
         return mLogEnabled;
-    }
-
-    /**
-     * set a description text that appears in the bottom right corner of the
-     * chart, size = Y-legend text size
-     *
-     * @param desc
-     */
-    public void setDescription(String desc) {
-        if (desc == null)
-            desc = "";
-        this.mDescription = desc;
     }
 
     /**
@@ -1219,15 +1245,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
-     * sets the typeface for the description paint
-     *
-     * @param t
-     */
-    public void setDescriptionTypeface(Typeface t) {
-        mDescPaint.setTypeface(t);
-    }
-
-    /**
      * Returns the ViewPortHandler of the chart that is responsible for the
      * content area of the chart and its offsets and dimensions.
      * 
@@ -1458,7 +1475,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         super.onSizeChanged(w, h, oldw, oldh);
     }
-    
 
     /**
      * Setting this to true will set the layer-type HARDWARE for the view, false
