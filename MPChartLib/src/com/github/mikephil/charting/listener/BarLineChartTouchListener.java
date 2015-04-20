@@ -180,9 +180,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
                 break;
 
             case MotionEvent.ACTION_UP:
-                mTouchMode = NONE;
-                mChart.enableScroll();
-                if(mChart.isFlingFrictionEnabled()) {
+                if(mChart.isFlingFrictionEnabled() && mTouchMode == DRAG) {
                     long currentTime = System.currentTimeMillis();
                     mFlingCurrentPoint.set(event.getX(), event.getY());
                     long dt = currentTime - mTouchStartTime;
@@ -193,6 +191,8 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
                     mFlingHandler.removeCallbacks(flingRunnable);
                     mFlingHandler.post(flingRunnable);
                 }
+                mTouchMode = NONE;
+                mChart.enableScroll();
                 break;
             case MotionEvent.ACTION_POINTER_UP:
                 mTouchMode = POST_ZOOM;
