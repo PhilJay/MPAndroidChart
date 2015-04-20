@@ -61,8 +61,20 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     protected boolean mPinchZoomEnabled = false;
 
-    /** flat that indicates if double tap zoom is enabled or not */
+    /** flag that indicates if double tap zoom is enabled or not */
     protected boolean mDoubleTapToZoomEnabled = true;
+
+    /**
+     * flag that indicates if highlighting per dragging over a fully zoomed out
+     * chart is enabled
+     */
+    protected boolean mHighlightPerDragEnabled = true;
+
+    /**
+     * if set to true, the highlight indicator (lines for linechart, dark bar
+     * for barchart) will be drawn upon selecting values.
+     */
+    protected boolean mHighLightIndicatorEnabled = true;
 
     /** if true, dragging is enabled for the chart */
     private boolean mDragEnabled = true;
@@ -77,12 +89,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     protected Paint mGridBackgroundPaint;
 
     protected Paint mBorderPaint;
-
-    /**
-     * if set to true, the highlight indicator (lines for linechart, dark bar
-     * for barchart) will be drawn upon selecting values.
-     */
-    protected boolean mHighLightIndicatorEnabled = true;
 
     /** flag indicating if the grid background should be drawn or not */
     protected boolean mDrawGridBackground = true;
@@ -836,15 +842,29 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     }
 
     /**
-     * If set to true, the highlight indicators (cross of two lines for
-     * LineChart and ScatterChart, dark bar overlay for BarChart) that give
-     * visual indication that an Entry has been selected will be drawn upon
-     * selecting values. This does not depend on the MarkerView. Default: true
+     * If set to true, the highlight indicator (vertical line for LineChart and
+     * ScatterChart, dark bar overlay for BarChart) that gives visual indication
+     * that an Entry has been selected will be drawn upon selecting values. This
+     * does not depend on the MarkerView. Default: true
      * 
      * @param enabled
      */
     public void setHighlightIndicatorEnabled(boolean enabled) {
         mHighLightIndicatorEnabled = enabled;
+    }
+
+    /**
+     * Set this to true to allow highlighting per dragging over the chart
+     * surface when it is fully zoomed out. Default: true
+     * 
+     * @param enabled
+     */
+    public void setHighlightPerDragEnabled(boolean enabled) {
+        mHighlightPerDragEnabled = enabled;
+    }
+
+    public boolean isHighlightPerDragEnabled() {
+        return mHighlightPerDragEnabled;
     }
 
     /**

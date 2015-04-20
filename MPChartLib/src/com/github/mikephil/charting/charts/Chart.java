@@ -472,7 +472,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * Highlights the value at the given x-index in the given DataSet. Provide
-     * -1 as the x-index to undo all highlighting.
+     * -1 as the x-index or dataSetIndex to undo all highlighting.
      *
      * @param xIndex
      * @param dataSetIndex
