@@ -307,7 +307,7 @@ public class LegendRenderer extends Renderer {
             case PIECHART_CENTER:
 
                 posX = mViewPortHandler.getChartWidth() / 2f + (direction == Legend.LegendDirection.LEFT_TO_RIGHT ? -mLegend.mTextWidthMax / 2f : mLegend.mTextWidthMax / 2f);
-                posY = mViewPortHandler.getChartHeight() / 2f - mLegend.mNeededHeight / 2f;
+                posY = mViewPortHandler.getChartHeight() / 2f - mLegend.mNeededHeight / 2f + mLegend.getYOffset();
 
                 for (int i = 0; i < labels.length; i++) {
 
