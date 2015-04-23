@@ -152,12 +152,6 @@ public class LineChartRenderer extends DataRenderer {
 
         int size = (int) Math.ceil((maxx - minx) * phaseX + minx);
 
-        minx = Math.max(minx - 2, 0); // Decrement by 2 as we always render two
-        // extra points to keep cubic flowing
-        size = Math.min(size + 2, entries.size()); // Increment by 2 as we
-                                                   // always render two extra
-                                                   // points to keep cubic
-                                                   // flowing
         if (size - minx >= 2) {
 
             float prevDx = 0f;
@@ -177,7 +171,7 @@ public class LineChartRenderer extends DataRenderer {
             prevDy = (next.getVal() - cur.getVal()) * intensity;
 
             cur = entries.get(minx + 1);
-            next = entries.get(minx + (size - minx > 2 ? 2 : 1));
+            next = entries.get(minx + (entries.size() - minx > 2 ? 2 : 1));
             curDx = (next.getXIndex() - prev.getXIndex()) * intensity;
             curDy = (next.getVal() - prev.getVal()) * intensity;
 
@@ -186,7 +180,7 @@ public class LineChartRenderer extends DataRenderer {
                     cur.getXIndex() - curDx,
                     (cur.getVal() - curDy) * phaseY, cur.getXIndex(), cur.getVal() * phaseY);
 
-            for (int j = minx + 2; j < size - 1; j++) {
+            for (int j = minx + 2, count = Math.min(size, entries.size() - 1); j < count; j++) {
 
                 prevPrev = entries.get(j - 2);
                 prev = entries.get(j - 1);
@@ -205,10 +199,10 @@ public class LineChartRenderer extends DataRenderer {
 
             if (size > entries.size() - 1) {
 
-                cur = entries.get(entries.size() - 1);
-                prev = entries.get(entries.size() - 2);
                 prevPrev = entries.get((entries.size() >= 3) ? entries.size() - 3
                         : entries.size() - 2);
+                prev = entries.get(entries.size() - 2);
+                cur = entries.get(entries.size() - 1);
                 next = cur;
 
                 prevDx = (cur.getXIndex() - prevPrev.getXIndex()) * intensity;
