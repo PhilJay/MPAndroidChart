@@ -166,6 +166,15 @@ dependencies {
  - Import the library folder (`MPChartLib`) into your Eclipse workspace
  - Add it as a reference to your project: [referencing library projects in Eclipse](http://developer.android.com/tools/projects/projects-eclipse.html#ReferencingLibraryProject)
 
+Proguard
+=======
+
+In case you are using Proguard, you will need to whitelist MPAndroidChart, which requires to add the following line to your Proguard configuration file.
+
+```
+-keep class com.github.mikephil.charting.** { *; }
+```
+
 Documentation
 =======
 For a **detailed documentation**, please have a look at the [**Wiki**](https://github.com/PhilJay/MPAndroidChart/wiki).
