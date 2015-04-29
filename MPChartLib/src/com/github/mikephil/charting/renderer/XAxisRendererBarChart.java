@@ -36,14 +36,8 @@ public class XAxisRendererBarChart extends XAxisRenderer {
 
         BarData bd = mChart.getData();
         int step = bd.getDataSetCount();
-        float div = (float) step + (step > 1 ? bd.getGroupSpace() : 0f);
 
-        float min = (float) mMinX
-                / div;
-        float max = (float) mMaxX
-                / div;
-
-        for (int i = (int) min; i <= max; i += mXAxis.mAxisLabelModulus) {
+        for (int i = mMinX; i <= mMaxX; i += mXAxis.mAxisLabelModulus) {
 
             position[0] = i * step + i * bd.getGroupSpace()
                     + bd.getGroupSpace() / 2f;
@@ -88,8 +82,6 @@ public class XAxisRendererBarChart extends XAxisRenderer {
     @Override
     public void renderGridLines(Canvas c) {
 
-        calcXBounds(mTrans);
-
         if (!mXAxis.isDrawGridLinesEnabled() || !mXAxis.isEnabled())
             return;
 
@@ -102,14 +94,8 @@ public class XAxisRendererBarChart extends XAxisRenderer {
 
         BarData bd = mChart.getData();
         int step = bd.getDataSetCount();
-        float div = (float) step + (step > 1 ? bd.getGroupSpace() : 0f);
 
-        float min = (float) mMinX
-                / div;
-        float max = (float) mMaxX
-                / div;
-
-        for (int i = (int) min; i <= max; i += mXAxis.mAxisLabelModulus) {
+        for (int i = mMinX; i < mMaxX; i += mXAxis.mAxisLabelModulus) {
 
             position[0] = i * step + i * bd.getGroupSpace() - 0.5f;
 

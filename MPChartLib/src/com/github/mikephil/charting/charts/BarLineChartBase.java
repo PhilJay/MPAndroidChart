@@ -176,20 +176,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         long starttime = System.currentTimeMillis();
 
-        // // if data filtering is enabled
-        // if (mFilterData) {
-        // mData = getFilteredData();
-        //
-        // Log.i(LOG_TAG, "FilterTime: " + (System.currentTimeMillis() -
-        // starttime) + " ms");
-        // starttime = System.currentTimeMillis();
-        // } else {
-        // mData = getData();
-        // // Log.i(LOG_TAG, "Filtering disabled.");
-        // }
-
         if (mXAxis.isAdjustXLabelsEnabled())
             calcModulus();
+        
+        mXAxisRenderer.calcXBounds(this, mXAxis.mAxisLabelModulus);
+        mRenderer.calcXBounds(this, mXAxis.mAxisLabelModulus);
 
         // execute all drawing commands
         drawGridBackground(canvas);
@@ -248,13 +239,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mRenderer.drawValues(canvas);
 
         mLegendRenderer.renderLegend(canvas);
-        // drawLegend();
 
         drawMarkers(canvas);
 
         drawDescription(canvas);
-
-        // canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
 
         if (mLogEnabled) {
             long drawtime = (System.currentTimeMillis() - starttime);
@@ -1167,6 +1155,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * 
      * @return
      */
+    @Override
     public int getLowestVisibleXIndex() {
         float[] pts = new float[] {
                 mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom()
@@ -1181,6 +1170,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * 
      * @return
      */
+    @Override
     public int getHighestVisibleXIndex() {
         float[] pts = new float[] {
                 mViewPortHandler.contentRight(), mViewPortHandler.contentBottom()

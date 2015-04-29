@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.charts.CombinedChart.DrawOrder;
+import com.github.mikephil.charting.interfaces.BarLineScatterCandleDataProvider;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -98,6 +99,12 @@ public class CombinedChartRenderer extends DataRenderer {
     public void drawHighlighted(Canvas c, Highlight[] indices) {
         for (DataRenderer renderer : mRenderers)
             renderer.drawHighlighted(c, indices);
+    }
+
+    @Override
+    public void calcXBounds(BarLineScatterCandleDataProvider chart, int xAxisModulus) {
+        for (DataRenderer renderer : mRenderers)
+            renderer.calcXBounds(chart, xAxisModulus);
     }
 
     /**

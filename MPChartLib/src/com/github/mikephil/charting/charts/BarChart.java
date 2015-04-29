@@ -6,6 +6,7 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 
+import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -324,5 +325,45 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     @Override
     public BarData getBarData() {
         return mData;
+    }
+    
+    /**
+     * Returns the lowest x-index (value on the x-axis) that is still visible on
+     * the chart.
+     * 
+     * @return
+     */
+    @Override
+    public int getLowestVisibleXIndex() {
+        
+        float step = mData.getDataSetCount();
+        float div = (step <= 1) ? 1 : step + mData.getGroupSpace();
+        
+        float[] pts = new float[] {
+                mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom()
+        };
+        
+        getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
+        return (int) (((pts[0] <= 0) ? 0 : ((pts[0])) / div) + 1);
+    }
+
+    /**
+     * Returns the highest x-index (value on the x-axis) that is still visible
+     * on the chart.
+     * 
+     * @return
+     */
+    @Override
+    public int getHighestVisibleXIndex() {
+        
+        float step = mData.getDataSetCount();
+        float div = (step <= 1) ? 1 : step + mData.getGroupSpace();
+        
+        float[] pts = new float[] {
+                mViewPortHandler.contentRight(), mViewPortHandler.contentBottom()
+        };
+        
+        getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
+        return (int) ((pts[0] >= getXChartMax()) ? getXChartMax() / div : (pts[0] / div));
     }
 }

@@ -51,7 +51,6 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
     protected void drawDataSet(Canvas c, BarDataSet dataSet, int index) {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
-        calcXBounds(trans);
 
         mShadowPaint.setColor(dataSet.getBarShadowColor());
 

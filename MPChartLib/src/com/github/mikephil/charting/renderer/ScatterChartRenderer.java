@@ -61,7 +61,6 @@ public class ScatterChartRenderer extends DataRenderer {
     protected void drawDataSet(Canvas c, ScatterDataSet dataSet) {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
-        calcXBounds(trans);
 
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();

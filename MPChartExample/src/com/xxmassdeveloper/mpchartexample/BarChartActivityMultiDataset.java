@@ -189,7 +189,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
 
         ArrayList<String> xVals = new ArrayList<String>();
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-            xVals.add((i + 1990) + "");
+            xVals.add((i) + "");
         }
 
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();

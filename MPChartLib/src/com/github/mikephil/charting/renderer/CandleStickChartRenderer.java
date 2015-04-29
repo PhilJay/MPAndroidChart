@@ -62,7 +62,6 @@ public class CandleStickChartRenderer extends DataRenderer {
     protected void drawDataSet(Canvas c, CandleDataSet dataSet) {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
-        calcXBounds(trans);
 
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
@@ -288,7 +287,7 @@ public class CandleStickChartRenderer extends DataRenderer {
             };
 
             float[] horPts = new float[] {
-                    0, low, mChart.getXChartMax(), low, 0, high, mChart.getXChartMax(), high
+                    mChart.getXChartMin(), low, mChart.getXChartMax(), low, mChart.getXChartMin(), high, mChart.getXChartMax(), high
             };
 
             mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(vertPts);

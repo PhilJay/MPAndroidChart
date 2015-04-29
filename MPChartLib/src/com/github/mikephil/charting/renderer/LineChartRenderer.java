@@ -108,8 +108,6 @@ public class LineChartRenderer extends DataRenderer {
         if (entries.size() < 1)
             return;
 
-        calcXBounds(mChart.getTransformer(dataSet.getAxisDependency()));
-
         mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
         mRenderPaint.setPathEffect(dataSet.getDashPathEffect());
 
@@ -558,7 +556,7 @@ public class LineChartRenderer extends DataRenderer {
             // y-position
 
             float[] pts = new float[] {
-                    xIndex, mChart.getYChartMax(), xIndex, mChart.getYChartMin(), 0, y,
+                    xIndex, mChart.getYChartMax(), xIndex, mChart.getYChartMin(), mChart.getXChartMin(), y,
                     mChart.getXChartMax(), y
             };
 
