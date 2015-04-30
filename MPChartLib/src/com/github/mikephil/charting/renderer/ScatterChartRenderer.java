@@ -229,7 +229,7 @@ public class ScatterChartRenderer extends DataRenderer {
                         break;
 
                     // make sure the lines don't do shitty things outside bounds
-                    if (j != 0 && (!mViewPortHandler.isInBoundsLeft(positions[j])
+                    if ((!mViewPortHandler.isInBoundsLeft(positions[j])
                             || !mViewPortHandler.isInBoundsY(positions[j + 1])))
                         continue;
 
