@@ -34,6 +34,7 @@
         <activity android:name="BarChartActivityMultiDataset"></activity>
         <activity android:name="DrawChartActivity"></activity>
         <activity android:name="ScatterChartActivity"></activity>
+        <activity android:name="BubbleChartActivity"></activity>
         <activity android:name="com.xxmassdeveloper.mpchartexample.fragments.SimpleChartDemo"></activity>
         <activity android:name="ListViewBarChartActivity"></activity>
         <activity android:name="ListViewMultiChartActivity"></activity>

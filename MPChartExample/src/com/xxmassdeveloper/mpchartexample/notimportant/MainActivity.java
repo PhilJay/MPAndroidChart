@@ -24,6 +24,7 @@ import com.xxmassdeveloper.mpchartexample.AnotherBarActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivityMultiDataset;
 import com.xxmassdeveloper.mpchartexample.BarChartActivitySinus;
+import com.xxmassdeveloper.mpchartexample.BubbleChartActivity;
 import com.xxmassdeveloper.mpchartexample.CandleStickChartActivity;
 import com.xxmassdeveloper.mpchartexample.CombinedChartActivity;
 import com.xxmassdeveloper.mpchartexample.CubicLineChartActivity;
@@ -72,6 +73,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 "Demonstrates how to create a combined chart (bar and line in this case)."));
         objects.add(new ContentItem("Pie Chart", "A simple demonstration of the pie chart."));
         objects.add(new ContentItem("Scatter Chart", "A simple demonstration of the scatter chart."));
+        objects.add(new ContentItem("Bubble Chart", "A simple demonstration of the bubble chart."));
         objects.add(new ContentItem("Stacked Bar Chart",
                 "A simple demonstration of a bar chart with stacked bars."));
         objects.add(new ContentItem("Another Bar Chart",
@@ -162,22 +164,26 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 startActivity(i);
                 break;
             case 7:
-                i = new Intent(this, StackedBarActivity.class);
+                i = new Intent(this, BubbleChartActivity.class);
                 startActivity(i);
                 break;
             case 8:
-                i = new Intent(this, AnotherBarActivity.class);
+                i = new Intent(this, StackedBarActivity.class);
                 startActivity(i);
                 break;
             case 9:
-                i = new Intent(this, MultiLineChartActivity.class);
+                i = new Intent(this, AnotherBarActivity.class);
                 startActivity(i);
                 break;
             case 10:
-                i = new Intent(this, BarChartActivityMultiDataset.class);
+                i = new Intent(this, MultiLineChartActivity.class);
                 startActivity(i);
                 break;
             case 11:
+                i = new Intent(this, BarChartActivityMultiDataset.class);
+                startActivity(i);
+                break;
+            case 12:
                 // i = new Intent(this, DrawChartActivity.class);
                 // startActivity(i);
 
@@ -187,51 +193,51 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 b.setPositiveButton("OK", null);
                 b.create().show();
                 break;
-            case 12:
+            case 13:
                 i = new Intent(this, SimpleChartDemo.class);
                 startActivity(i);
                 break;
-            case 13:
+            case 14:
                 i = new Intent(this, ListViewBarChartActivity.class);
                 startActivity(i);
                 break;
-            case 14:
+            case 15:
                 i = new Intent(this, ListViewMultiChartActivity.class);
                 startActivity(i);
                 break;
-            case 15:
+            case 16:
                 i = new Intent(this, InvertedLineChartActivity.class);
                 startActivity(i);
                 break;
-            case 16:
+            case 17:
                 i = new Intent(this, CandleStickChartActivity.class);
                 startActivity(i);
                 break;
-            case 17:
+            case 18:
                 i = new Intent(this, CubicLineChartActivity.class);
                 startActivity(i);
                 break;
-            case 18:
+            case 19:
                 i = new Intent(this, RadarChartActivitry.class);
                 startActivity(i);
                 break;
-            case 19:
+            case 20:
                 i = new Intent(this, LineChartActivityColored.class);
                 startActivity(i);
                 break;
-            case 20:
+            case 21:
                 i = new Intent(this, RealtimeLineChartActivity.class);
                 startActivity(i);
                 break;
-            case 21:
+            case 22:
                 i = new Intent(this, DynamicalAddingActivity.class);
                 startActivity(i);
                 break;
-            case 22:
+            case 23:
                 i = new Intent(this, PerformanceLineChart.class);
                 startActivity(i);
                 break;
-            case 23:
+            case 24:
                 i = new Intent(this, BarChartActivitySinus.class);
                 startActivity(i);
                 break;
