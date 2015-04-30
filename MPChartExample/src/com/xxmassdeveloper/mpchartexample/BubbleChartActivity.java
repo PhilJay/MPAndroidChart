@@ -213,10 +213,10 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
         set1.setDrawValues(true);
         BubbleDataSet set2 = new BubbleDataSet(yVals2, "DS 2");
         set2.setColor(ColorTemplate.COLORFUL_COLORS[1]);
-        set2.setDrawValues(false);
+        set2.setDrawValues(true);
         BubbleDataSet set3 = new BubbleDataSet(yVals3, "DS 3");
         set3.setColor(ColorTemplate.COLORFUL_COLORS[2]);
-        set3.setDrawValues(false);
+        set3.setDrawValues(true);
 
         ArrayList<BubbleDataSet> dataSets = new ArrayList<BubbleDataSet>();
         dataSets.add(set1); // add the datasets
@@ -226,6 +226,8 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
         // create a data object with the datasets
         BubbleData data = new BubbleData(xVals, dataSets);
         data.setValueTypeface(tf);
+        data.setValueTextSize(8f);
+        data.setHighLightCircleWidth(1.5f);
 
         mChart.setData(data);
         mChart.invalidate();

@@ -3,6 +3,8 @@ package com.github.mikephil.charting.data;
 
 import android.graphics.Color;
 
+import com.github.mikephil.charting.utils.Utils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,11 +16,27 @@ public class BubbleDataSet extends BarLineScatterCandleDataSet<BubbleEntry> {
     protected float mXMin;
     protected float mMaxSize;
 
+    private float mHighlightCircleWidth = 2.5f;
+
     public BubbleDataSet(List<BubbleEntry> yVals, String label) {
         super(yVals, label);
 
         if (mMaxSize < 1.f)
             mMaxSize = 1.f;
+    }
+
+    /**
+     * Sets the width of the circle that surrounds the bubble when highlighted,
+     * in dp.
+     * 
+     * @param width
+     */
+    public void setHighLightCircleWidth(float width) {
+        mHighlightCircleWidth = Utils.convertDpToPixel(width);
+    }
+
+    public float getHighLightCircleWidth() {
+        return mHighlightCircleWidth;
     }
 
     @Override
@@ -31,7 +49,7 @@ public class BubbleDataSet extends BarLineScatterCandleDataSet<BubbleEntry> {
     {
         final List<BubbleEntry> entries = getYVals();
 
-        //need chart width to guess this properly
+        // need chart width to guess this properly
 
         for (BubbleEntry entry : entries)
         {
@@ -107,11 +125,11 @@ public class BubbleDataSet extends BarLineScatterCandleDataSet<BubbleEntry> {
     }
 
     private float xMin(BubbleEntry entry) {
-        return (float)entry.getXIndex();
+        return (float) entry.getXIndex();
     }
 
     private float xMax(BubbleEntry entry) {
-        return (float)entry.getXIndex();
+        return (float) entry.getXIndex();
     }
 
     private float largestSize(BubbleEntry entry) {
