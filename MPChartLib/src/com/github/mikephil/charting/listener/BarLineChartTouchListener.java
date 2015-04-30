@@ -4,6 +4,8 @@ package com.github.mikephil.charting.listener;
 import android.annotation.SuppressLint;
 import android.graphics.Matrix;
 import android.graphics.PointF;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -70,6 +72,21 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
     /** the gesturedetector used for detecting taps and longpresses, ... */
     private GestureDetector mGestureDetector;
 
+    /* Handler for fling animation */
+    private Handler mFlingHandler = new Handler();
+
+    /* Current fling point after start time */
+    private final PointF mFlingCurrentPoint = new PointF();
+
+    /* Current fling velocity in pixel per millisecond */
+    private final PointF flingVelocity = new PointF();
+
+    /* When touch down happened */
+    private long mTouchStartTime;
+
+    /* When flingRunnable's run method called last time */
+    private long mRunnableLastTime;
+
     public BarLineChartTouchListener(T chart, Matrix touchMatrix) {
         this.mChart = chart;
         this.mMatrix = touchMatrix;
@@ -92,7 +109,10 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
 
             case MotionEvent.ACTION_DOWN:
-
+                if(mChart.isFlingFrictionEnabled()) {
+                    mTouchStartTime = System.currentTimeMillis();
+                    mFlingHandler.removeCallbacks(flingRunnable);
+                }
                 saveTouchStart(event);
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
@@ -162,6 +182,17 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
                 break;
 
             case MotionEvent.ACTION_UP:
+                if(mChart.isFlingFrictionEnabled() && mTouchMode == DRAG) {
+                    long currentTime = System.currentTimeMillis();
+                    mFlingCurrentPoint.set(event.getX(), event.getY());
+                    long dt = currentTime - mTouchStartTime;
+                    flingVelocity.x = (event.getX() - mTouchStartPoint.x) / dt;
+                    flingVelocity.y = (event.getY() - mTouchStartPoint.y) / dt;
+                    mRunnableLastTime = currentTime;
+                    saveTouchStart(event);
+                    mFlingHandler.removeCallbacks(flingRunnable);
+                    mFlingHandler.post(flingRunnable);
+                }
                 mTouchMode = NONE;
                 mChart.enableScroll();
                 break;
@@ -231,6 +262,28 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
         if (l != null)
             l.onChartTranslate(event, dX, dY);
     }
+
+    private final Runnable flingRunnable = new Runnable() {
+        @Override
+        public void run() {
+            long currentTime = System.currentTimeMillis();
+            long dt = currentTime - mRunnableLastTime;
+            mFlingCurrentPoint.x += flingVelocity.x * dt;
+            mFlingCurrentPoint.y += flingVelocity.y * dt;
+            flingVelocity.x *= mChart.getFlingFrictionCoef();
+            flingVelocity.y *= mChart.getFlingFrictionCoef();
+            MotionEvent motionEvent =
+                    MotionEvent.obtain(SystemClock.uptimeMillis(),
+                    SystemClock.uptimeMillis(),
+                    MotionEvent.ACTION_MOVE, mFlingCurrentPoint.x, mFlingCurrentPoint.y, 0);
+            mChart.dispatchTouchEvent(motionEvent);
+            mRunnableLastTime = currentTime;
+            float eps = 0.01f;
+            if(Math.abs(flingVelocity.x) > eps || Math.abs(flingVelocity.y) > eps) {
+                mFlingHandler.postDelayed(this, 25);
+            }
+        }
+    };
 
     /**
      * Performs the all operations necessary for pinch and axis zoom.
@@ -402,8 +455,8 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
     /**
      * returns the correct translation depending on the provided x and y touch
      * points
-     * 
-     * @param e
+     * @param x
+     * @param y
      * @return
      */
     public PointF getTrans(float x, float y) {
