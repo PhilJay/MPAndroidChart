@@ -447,12 +447,16 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         if (mXAxis == null)
             return;
 
-        float[] values = new float[9];
-        mViewPortHandler.getMatrixTouch().getValues(values);
+        if (!mXAxis.axisLabelModulusCustom) {
 
-        mXAxis.mAxisLabelModulus = (int) Math
-                .ceil((mData.getXValCount() * mXAxis.mLabelWidth)
-                        / (mViewPortHandler.contentWidth() * values[Matrix.MSCALE_X]));
+            float[] values = new float[9];
+            mViewPortHandler.getMatrixTouch().getValues(values);
+
+            mXAxis.mAxisLabelModulus = (int) Math
+                    .ceil((mData.getXValCount() * mXAxis.mLabelWidth)
+                            / (mViewPortHandler.contentWidth() * values[Matrix.MSCALE_X]));
+
+        }
 
         if (mLogEnabled)
             Log.i(LOG_TAG, "X-Axis modulus: " + mXAxis.mAxisLabelModulus + ", x-axis label width: "

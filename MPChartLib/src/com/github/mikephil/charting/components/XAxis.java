@@ -42,6 +42,13 @@ public class XAxis extends AxisBase {
     public int mAxisLabelModulus = 1;
 
     /**
+     * is axisLabelModulus a custom value or auto calculated?
+     * If false, then it's auto, if true, then custom.
+     * default: false (automatic modulus)
+     */
+    public boolean axisLabelModulusCustom = false;
+
+    /**
      * the modulus that indicates if a value at a specified index in an
      * array(list) for the y-axis-labels is drawn or not. If index % modulus ==
      * 0 DRAW, else dont draw. THIS IS ONLY FOR HORIZONTAL BARCHART.
