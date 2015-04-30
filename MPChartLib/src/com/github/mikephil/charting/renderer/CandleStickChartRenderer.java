@@ -73,7 +73,7 @@ public class CandleStickChartRenderer extends DataRenderer {
         Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
         Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
-        int minx = dataSet.getEntryPosition(entryFrom);
+        int minx = Math.max(dataSet.getEntryPosition(entryFrom), 0);
         int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
 
         int range = (maxx - minx) * 4;
@@ -222,7 +222,7 @@ public class CandleStickChartRenderer extends DataRenderer {
                 Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
                 Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
-                int minx = dataSet.getEntryPosition(entryFrom);
+                int minx = Math.max(dataSet.getEntryPosition(entryFrom), 0);
                 int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
 
                 float[] positions = trans.generateTransformedValuesCandle(

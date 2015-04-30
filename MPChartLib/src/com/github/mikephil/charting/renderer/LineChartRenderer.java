@@ -138,7 +138,7 @@ public class LineChartRenderer extends DataRenderer {
         Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
         Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
-        int minx = dataSet.getEntryPosition(entryFrom);
+        int minx = Math.max(dataSet.getEntryPosition(entryFrom), 0);
         int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
 
         float phaseX = mAnimator.getPhaseX();
@@ -289,7 +289,7 @@ public class LineChartRenderer extends DataRenderer {
         Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
         Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
-        int minx = dataSet.getEntryPosition(entryFrom);
+        int minx = Math.max(dataSet.getEntryPosition(entryFrom), 0);
         int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
 
         int range = (maxx - minx) * 4 - 4;
@@ -431,10 +431,7 @@ public class LineChartRenderer extends DataRenderer {
                 Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
                 Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
-                int minx = dataSet.getEntryPosition(entryFrom);
-                if (minx < 0)
-                    minx = 0;
-
+                int minx = Math.max(dataSet.getEntryPosition(entryFrom), 0);
                 int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
 
                 float[] positions = trans.generateTransformedValuesLine(
@@ -490,7 +487,7 @@ public class LineChartRenderer extends DataRenderer {
             Entry entryFrom = dataSet.getEntryForXIndex((mMinX < 0) ? 0 : mMinX);
             Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
-            int minx = dataSet.getEntryPosition(entryFrom);
+            int minx = Math.max(dataSet.getEntryPosition(entryFrom), 0);
             int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
 
             CircleBuffer buffer = mCircleBuffers[i];
