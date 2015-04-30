@@ -82,15 +82,43 @@ public class RealtimeLineChartActivity extends DemoBase implements
         xl.setTextColor(Color.WHITE);
         xl.setDrawGridLines(false);
         xl.setAvoidFirstLastClipping(true);
+        xl.setSpaceBetweenLabels(5);
+        xl.setEnabled(false);
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(tf);
         leftAxis.setTextColor(Color.WHITE);
-        leftAxis.setAxisMaxValue(120f);
+        leftAxis.setAxisMaxValue(100f);
+        leftAxis.setAxisMinValue(0f);
+        leftAxis.setStartAtZero(false);
         leftAxis.setDrawGridLines(true);
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setEnabled(false);
+        
+//        new Thread(new Runnable() {
+//            
+//            @Override
+//            public void run() {
+//                for(int i = 0; i < 5000; i++) {
+//                    
+//                    runOnUiThread(new Runnable() {
+//                        
+//                        @Override
+//                        public void run() {
+//                            addEntry();
+//                        }
+//                    });
+//                    
+//                    try {
+//                        Thread.sleep(35);
+//                    } catch (InterruptedException e) {
+//                        // TODO Auto-generated catch block
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        }).start();
     }
 
     @Override
@@ -116,7 +144,7 @@ public class RealtimeLineChartActivity extends DemoBase implements
         return true;
     }
 
-    private int year = 15;
+    private int year = 2015;
 
     private void addEntry() {
 
@@ -135,17 +163,17 @@ public class RealtimeLineChartActivity extends DemoBase implements
             // add a new x-value first
             data.addXValue(mMonths[data.getXValCount() % 12] + " "
                     + (year + data.getXValCount() / 12));
-            data.addEntry(new Entry((float) (Math.random() * 40) + 40f, set.getEntryCount()), 0);
+            data.addEntry(new Entry((float) (Math.random() * 40) + 30f, set.getEntryCount()), 0);
 
             // let the chart know it's data has changed
             mChart.notifyDataSetChanged();
 
             // limit the number of visible entries
-            mChart.setVisibleXRange(6);
+            mChart.setVisibleXRange(120);
             // mChart.setVisibleYRange(30, AxisDependency.LEFT);
 
             // move to the latest entry
-            mChart.moveViewToX(data.getXValCount() - 7);
+            mChart.moveViewToX(data.getXValCount() - 121);
 
             // this automatically refreshes the chart (calls invalidate())
             // mChart.moveViewTo(data.getXValCount()-7, 55f,
@@ -161,14 +189,15 @@ public class RealtimeLineChartActivity extends DemoBase implements
         LineDataSet set = new LineDataSet(null, "Dynamic Data");
         set.setAxisDependency(AxisDependency.LEFT);
         set.setColor(ColorTemplate.getHoloBlue());
-        set.setCircleColor(ColorTemplate.getHoloBlue());
+        set.setCircleColor(Color.WHITE);
         set.setLineWidth(2f);
         set.setCircleSize(4f);
         set.setFillAlpha(65);
         set.setFillColor(ColorTemplate.getHoloBlue());
         set.setHighLightColor(Color.rgb(244, 117, 117));
         set.setValueTextColor(Color.WHITE);
-        set.setValueTextSize(10f);
+        set.setValueTextSize(9f);
+        set.setDrawValues(false);
         return set;
     }
 

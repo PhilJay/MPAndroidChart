@@ -389,6 +389,8 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * @param xVal
      */
     public void addXValue(String xVal) {
+        
+        mXValAverageLength = (mXValAverageLength + xVal.length())  / 2f;     
         mXVals.add(xVal);
     }
 

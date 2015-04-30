@@ -174,9 +174,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         if (mDataNotSet)
             return;
 
-        long starttime = System.currentTimeMillis();
-
-        calcModulus();
+        long starttime = System.currentTimeMillis();calcModulus();
 
         mXAxisRenderer.calcXBounds(this, mXAxis.mAxisLabelModulus);
         mRenderer.calcXBounds(this, mXAxis.mAxisLabelModulus);
