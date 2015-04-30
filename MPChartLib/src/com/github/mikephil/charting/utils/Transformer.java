@@ -117,6 +117,35 @@ public class Transformer {
 
         return valuePoints;
     }
+
+    /**
+     * Transforms an List of Entry into a float array containing the x and
+     * y values transformed with all matrices for the BUBBLECHART.
+     *
+     * @param entries
+     * @return
+     */
+    public float[] generateTransformedValuesBubble(List<? extends Entry> entries,
+                                                 float phaseX, float phaseY, int from, int to) {
+
+        final int count = (int)Math.ceil((to - from) * phaseX) * 2;
+
+        float[] valuePoints = new float[count];
+
+        for (int j = 0; j < count; j += 2) {
+
+            Entry e = entries.get(j / 2 + from);
+
+            if (e != null) {
+                valuePoints[j] = (float)(e.getXIndex() - from) * phaseX + from;
+                valuePoints[j + 1] = e.getVal() * phaseY;
+            }
+        }
+
+        pointValuesToPixel(valuePoints);
+
+        return valuePoints;
+    }
     
     /**
      * Transforms an List of Entry into a float array containing the x and
