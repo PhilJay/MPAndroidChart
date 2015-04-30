@@ -176,9 +176,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         long starttime = System.currentTimeMillis();
 
-        if (mXAxis.isAdjustXLabelsEnabled())
-            calcModulus();
-        
+        calcModulus();
+
         mXAxisRenderer.calcXBounds(this, mXAxis.mAxisLabelModulus);
         mRenderer.calcXBounds(this, mXAxis.mAxisLabelModulus);
 
@@ -444,10 +443,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     protected void calcModulus() {
 
-        if (mXAxis == null)
+        if (mXAxis == null || !mXAxis.isEnabled())
             return;
 
-        if (!mXAxis.axisLabelModulusCustom) {
+        if (!mXAxis.isAxisModulusCustom()) {
 
             float[] values = new float[9];
             mViewPortHandler.getMatrixTouch().getValues(values);

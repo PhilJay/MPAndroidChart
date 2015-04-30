@@ -174,17 +174,6 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
                 mChart.animateXY(2000, 2000);
                 break;
             }
-            case R.id.actionToggleAdjustXLegend: {
-                XAxis xLabels = mChart.getXAxis();
-
-                if (xLabels.isAdjustXLabelsEnabled())
-                    xLabels.setAdjustXLabels(false);
-                else
-                    xLabels.setAdjustXLabels(true);
-
-                mChart.invalidate();
-                break;
-            }
             case R.id.actionToggleFilter: {
 
                 Approximator a = new Approximator(ApproximatorType.DOUGLAS_PEUCKER, 25);

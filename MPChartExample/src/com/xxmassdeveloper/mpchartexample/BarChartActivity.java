@@ -189,17 +189,6 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
                 mChart.animateXY(3000, 3000);
                 break;
             }
-            case R.id.actionToggleAdjustXLegend: {
-                XAxis xLabels = mChart.getXAxis();
-
-                if (xLabels.isAdjustXLabelsEnabled())
-                    xLabels.setAdjustXLabels(false);
-                else
-                    xLabels.setAdjustXLabels(true);
-
-                mChart.invalidate();
-                break;
-            }
             case R.id.actionToggleFilter: {
 
                 Approximator a = new Approximator(ApproximatorType.DOUGLAS_PEUCKER, 25);

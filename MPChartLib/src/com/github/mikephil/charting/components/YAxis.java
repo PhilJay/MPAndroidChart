@@ -141,7 +141,7 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * sets the number of label entries for the y-axis max = 15, min = 2,
+     * sets the number of label entries for the y-axis max = 25, min = 2,
      * default: 6, be aware that this number is not fixed and can only be
      * approximated
      * 
@@ -149,8 +149,8 @@ public class YAxis extends AxisBase {
      */
     public void setLabelCount(int yCount) {
 
-        if (yCount > 15)
-            yCount = 15;
+        if (yCount > 25)
+            yCount = 25;
         if (yCount < 2)
             yCount = 2;
 

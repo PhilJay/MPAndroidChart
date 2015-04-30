@@ -132,17 +132,6 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
                 mChart.invalidate();
                 break;
             }
-            case R.id.actionToggleAdjustXLegend: {
-                XAxis xLabels = mChart.getXAxis();
-
-                if (xLabels.isAdjustXLabelsEnabled())
-                    xLabels.setAdjustXLabels(false);
-                else
-                    xLabels.setAdjustXLabels(true);
-
-                mChart.invalidate();
-                break;
-            }
             case R.id.actionTogglePinch: {
                 if (mChart.isPinchZoomEnabled())
                     mChart.setPinchZoom(false);

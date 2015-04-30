@@ -131,17 +131,6 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
                 mChart.invalidate();
                 break;
             }
-            case R.id.actionToggleAdjustXLegend: {
-                XAxis xLabels = mChart.getXAxis();
-
-                if (xLabels.isAdjustXLabelsEnabled())
-                    xLabels.setAdjustXLabels(false);
-                else
-                    xLabels.setAdjustXLabels(true);
-
-                mChart.invalidate();
-                break;
-            }
             case R.id.actionToggleFilter: {
 
                 Approximator a = new Approximator(ApproximatorType.DOUGLAS_PEUCKER, 25);

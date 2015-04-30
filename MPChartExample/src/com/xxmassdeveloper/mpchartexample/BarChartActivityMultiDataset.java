@@ -148,17 +148,6 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
                 mChart.invalidate();
                 break;
             }
-            case R.id.actionToggleAdjustXLegend: {
-                XAxis xAxis = mChart.getXAxis();
-
-                if (xAxis.isAdjustXLabelsEnabled())
-                    xAxis.setAdjustXLabels(false);
-                else
-                    xAxis.setAdjustXLabels(true);
-
-                mChart.invalidate();
-                break;
-            }
             case R.id.actionSave: {
                 // mChart.saveToGallery("title"+System.currentTimeMillis());
                 mChart.saveToPath("title" + System.currentTimeMillis(), "");
@@ -189,7 +178,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
 
         ArrayList<String> xVals = new ArrayList<String>();
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-            xVals.add((i) + "");
+            xVals.add((i+1990) + "");
         }
 
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();

@@ -135,17 +135,6 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
                 mChart.invalidate();
                 break;
             }
-            case R.id.actionToggleAdjustXLegend: {
-                XAxis xAxis = mChart.getXAxis();
-
-                if (xAxis.isAdjustXLabelsEnabled())
-                    xAxis.setAdjustXLabels(false);
-                else
-                    xAxis.setAdjustXLabels(true);
-
-                mChart.invalidate();
-                break;
-            }
             case R.id.animateX: {
                 mChart.animateX(3000);
                 break;
