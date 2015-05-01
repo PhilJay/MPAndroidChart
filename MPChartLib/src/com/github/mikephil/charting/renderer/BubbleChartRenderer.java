@@ -90,7 +90,8 @@ public class BubbleChartRenderer extends DataRenderer {
             trans.pointValuesToPixel(_pointBuffer);
 
             final float shapeSize = (chartSize / bubbleSizeFactor)
-                    * (float) (Math.sqrt(entry.getSize() / dataSet.getMaxSize()));
+                    * (float) (Math.sqrt(entry.getSize() /
+                    (dataSet.getMaxSize() > 0.0 ? dataSet.getMaxSize() : 1.0)));
             final float shapeHalf = shapeSize / 2.f;
 
             if (!mViewPortHandler.isInBoundsY(_pointBuffer[1]))
@@ -214,7 +215,8 @@ public class BubbleChartRenderer extends DataRenderer {
             trans.pointValuesToPixel(_pointBuffer);
 
             final float shapeSize = (chartSize / bubbleSizeFactor)
-                    * (float) (Math.sqrt(entry.getSize() / dataSet.getMaxSize()));
+                    * (float) (Math.sqrt(entry.getSize() /
+                    (dataSet.getMaxSize() > 0.0 ? dataSet.getMaxSize() : 1.0)));
             final float shapeHalf = shapeSize / 2.f;
 
             if (indice.getXIndex() < minx || indice.getXIndex() >= maxx)
@@ -231,7 +233,7 @@ public class BubbleChartRenderer extends DataRenderer {
             final int color = Color.HSVToColor(Color.alpha(originalColor), _hsvBuffer);
 
             mHighlightPaint.setColor(color);
-            mHighlightPaint.setStrokeWidth(dataSet.getHighLightCircleWidth());
+            mHighlightPaint.setStrokeWidth(dataSet.getHighlightCircleWidth());
             c.drawCircle(_pointBuffer[0], _pointBuffer[1], shapeHalf, mHighlightPaint);
         }
     }

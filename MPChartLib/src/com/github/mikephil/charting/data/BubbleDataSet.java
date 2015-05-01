@@ -20,9 +20,6 @@ public class BubbleDataSet extends BarLineScatterCandleDataSet<BubbleEntry> {
 
     public BubbleDataSet(List<BubbleEntry> yVals, String label) {
         super(yVals, label);
-
-        if (mMaxSize < 1.f)
-            mMaxSize = 1.f;
     }
 
     /**
@@ -31,11 +28,11 @@ public class BubbleDataSet extends BarLineScatterCandleDataSet<BubbleEntry> {
      * 
      * @param width
      */
-    public void setHighLightCircleWidth(float width) {
+    public void setHighlightCircleWidth(float width) {
         mHighlightCircleWidth = Utils.convertDpToPixel(width);
     }
 
-    public float getHighLightCircleWidth() {
+    public float getHighlightCircleWidth() {
         return mHighlightCircleWidth;
     }
 
