@@ -514,4 +514,12 @@ public abstract class Utils {
     public static int getMaximumFlingVelocity() {
         return mMaximumFlingVelocity;
     }
+
+    /** returns an angle between 0.f < 360.f (not less than zero, less than 360) */
+    public static float getNormalizedAngle(float angle) {
+        while (angle < 0.f)
+            angle += 360.f;
+
+        return angle % 360.f;
+    }
 }

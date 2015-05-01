@@ -14,7 +14,6 @@ import android.view.View.OnTouchListener;
 import android.view.animation.AnimationUtils;
 
 import com.github.mikephil.charting.charts.BarLineChartBase;
-import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.data.BarLineScatterCandleData;
 import com.github.mikephil.charting.data.BarLineScatterCandleDataSet;
@@ -77,9 +76,9 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
     /** used for tracking velocity of dragging */
     private VelocityTracker mVelocityTracker;
 
-    private long mDecelarationLastTime = 0;
-    private PointF mDecelarationCurrentPoint = new PointF();
-    private PointF mDecelarationVelocity = new PointF();
+    private long mDecelerationLastTime = 0;
+    private PointF mDecelerationCurrentPoint = new PointF();
+    private PointF mDecelerationVelocity = new PointF();
 
     public BarLineChartTouchListener(T chart, Matrix touchMatrix) {
         this.mChart = chart;
@@ -202,9 +201,9 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
                         stopDeceleration();
 
-                        mDecelarationLastTime = AnimationUtils.currentAnimationTimeMillis();
-                        mDecelarationCurrentPoint = new PointF(event.getX(), event.getY());
-                        mDecelarationVelocity = new PointF(velocityX, velocityY);
+                        mDecelerationLastTime = AnimationUtils.currentAnimationTimeMillis();
+                        mDecelerationCurrentPoint = new PointF(event.getX(), event.getY());
+                        mDecelerationVelocity = new PointF(velocityX, velocityY);
 
                         Utils.postInvalidateOnAnimation(mChart); // This causes computeScroll to fire, recommended for this by Google
                     }
@@ -577,35 +576,35 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
     }
 
     public void stopDeceleration() {
-        mDecelarationVelocity = new PointF(0.f, 0.f);
+        mDecelerationVelocity = new PointF(0.f, 0.f);
     }
 
     public void computeScroll() {
 
-        if (mDecelarationVelocity.x == 0.f && mDecelarationVelocity.y == 0.f)
+        if (mDecelerationVelocity.x == 0.f && mDecelerationVelocity.y == 0.f)
             return; // There's no deceleration in progress
 
         final long currentTime = AnimationUtils.currentAnimationTimeMillis();
 
-        mDecelarationVelocity.x *= mChart.getDragDecelerationFrictionCoef();
-        mDecelarationVelocity.y *= mChart.getDragDecelerationFrictionCoef();
+        mDecelerationVelocity.x *= mChart.getDragDecelerationFrictionCoef();
+        mDecelerationVelocity.y *= mChart.getDragDecelerationFrictionCoef();
 
-        final float timeInterval = (float)(currentTime - mDecelarationLastTime) / 1000.f;
+        final float timeInterval = (float)(currentTime - mDecelerationLastTime) / 1000.f;
 
-        float distanceX = mDecelarationVelocity.x * timeInterval;
-        float distanceY = mDecelarationVelocity.y * timeInterval;
+        float distanceX = mDecelerationVelocity.x * timeInterval;
+        float distanceY = mDecelerationVelocity.y * timeInterval;
 
-        mDecelarationCurrentPoint.x += distanceX;
-        mDecelarationCurrentPoint.y += distanceY;
+        mDecelerationCurrentPoint.x += distanceX;
+        mDecelerationCurrentPoint.y += distanceY;
 
-        MotionEvent event = MotionEvent.obtain(currentTime, currentTime, MotionEvent.ACTION_MOVE, mDecelarationCurrentPoint.x, mDecelarationCurrentPoint.y, 0);
+        MotionEvent event = MotionEvent.obtain(currentTime, currentTime, MotionEvent.ACTION_MOVE, mDecelerationCurrentPoint.x, mDecelerationCurrentPoint.y, 0);
         performDrag(event);
         event.recycle();
         mMatrix = mChart.getViewPortHandler().refresh(mMatrix, mChart, false);
 
-        mDecelarationLastTime = currentTime;
+        mDecelerationLastTime = currentTime;
 
-        if (Math.abs(mDecelarationVelocity.x) >= 0.001 || Math.abs(mDecelarationVelocity.y) >= 0.001)
+        if (Math.abs(mDecelerationVelocity.x) >= 0.001 || Math.abs(mDecelerationVelocity.y) >= 0.001)
             Utils.postInvalidateOnAnimation(mChart); // This causes computeScroll to fire, recommended for this by Google
         else
             stopDeceleration();
