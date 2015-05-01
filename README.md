@@ -5,7 +5,7 @@ Remember: *It's all about the looks.*
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/design/feature_graphic.png)
 
-**MPAndroidChart** is a powerful & easy to use chart library for Android, supporting line-, bar-, scatter-, candlestick-, pie- and radarcharts (spider web), as well as scaling, dragging (panning), selecting and animations. Works on **Android 2.2 (API level 8)** and upwards.
+**MPAndroidChart** is a powerful & easy to use chart library for Android, supporting line-, bar-, scatter-, candlestick-, bubble-, pie- and radarcharts (spider web), as well as scaling, dragging (panning), selecting and animations. Works on **Android 2.2 (API level 8)** and upwards.
 
 An **iOS** version of this library is now available, go check it out: [**ios-charts**](https://github.com/danielgindi/ios-charts)
 
@@ -60,6 +60,7 @@ Features
 =======
 
 **Core features:**
+ - 7 different chart types
  - Scaling on both axes (with touch-gesture, axes separately or pinch-zoom)
  - Dragging / Panning (with touch-gesture)
  - Combined-Charts (line-, bar-, scatter-, candle-data)
