@@ -41,16 +41,6 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     /** flag that indicates if rotation is enabled or not */
     protected boolean mRotateEnabled = true;
 
-    /** If set to true, chart continues to scroll after touch up */
-    private boolean mDragDecelarationEnabled = true;
-
-    /**
-     * Decelaration friction coefficient in [0 ; 1] interval, higher values indicate that
-     * speed will decrease slowly, for example if it set to 0, it will stop immediately,
-     * if set to 1, it will scroll with constant speed, until the last point
-     */
-    private float mDragDecelarationFrictionCoef = 0.9f;
-
     /** the pie- and radarchart touchlistener */
     protected OnTouchListener mListener;
 
@@ -379,46 +369,6 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
      */
     public boolean isRotationEnabled() {
         return mRotateEnabled;
-    }
-
-    /**
-     * If set to true, chart continues to scroll after touch up
-     *
-     * default: true
-     */
-    public boolean isDragDecelarationEnabled() {
-        return mDragDecelarationEnabled;
-    }
-
-    /**
-     * If set to true, chart continues to scroll after touch up
-     *
-     * @param enabled
-     */
-    public void setDragDecelarationEnabled(boolean enabled) {
-        mDragDecelarationEnabled = enabled;
-    }
-
-    /**
-     * Returns drag deceleration friction coefficient
-     * @return
-     */
-    public float getDragDecelarationFrictionCoef() {
-        return mDragDecelarationFrictionCoef;
-    }
-
-    /**+
-     * Decelaration friction coefficient in [0 ; 1] interval, higher values indicate that
-     * speed will decrease slowly, for example if it set to 0, it will stop immediately,
-     * if set to 1, it will scroll with constant speed, until the last point
-     *
-     * @param newValue
-     */
-    public void setDragDecelarationFrictionCoef(float newValue) {
-        if (newValue < 0.f || newValue >= 1.f)
-            newValue = 0.f;
-
-        mDragDecelarationFrictionCoef = newValue;
     }
 
     /**

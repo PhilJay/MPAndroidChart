@@ -4,7 +4,6 @@ package com.github.mikephil.charting.utils;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.util.Log;
 import android.view.View;
 
 public class ViewPortHandler {

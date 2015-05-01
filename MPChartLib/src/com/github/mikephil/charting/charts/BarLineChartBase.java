@@ -95,16 +95,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
     protected boolean mDrawBorders = false;
 
-    /** If set to true, chart continues to scroll after touch up */
-    private boolean mDragDecelarationEnabled = true;
-
-    /**
-     * Decelaration friction coefficient in [0 ; 1] interval, higher values indicate that
-     * speed will decrease slowly, for example if it set to 0, it will stop immediately.
-     * 1 is an invalid value, and will be converted to 0 automatically.
-     */
-    private float mDragDecelarationFrictionCoef = 0.9f;
-
     /** the listener for user drawing on the chart */
     protected OnDrawListener mDrawListener;
 
@@ -553,7 +543,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     public void computeScroll() {
 
         if (mListener instanceof BarLineChartTouchListener)
-            ((BarLineChartTouchListener)mListener).computeScroll();
+            ((BarLineChartTouchListener<?>) mListener).computeScroll();
     }
 
     /**
@@ -983,46 +973,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     public void setBorderColor(int color) {
         mBorderPaint.setColor(color);
-    }
-
-    /**
-     * If set to true, chart continues to scroll after touch up
-     *
-     * default: true
-     */
-    public boolean isDragDecelarationEnabled() {
-        return mDragDecelarationEnabled;
-    }
-
-    /**
-     * If set to true, chart continues to scroll after touch up
-     *
-     * @param enabled
-     */
-    public void setDragDecelarationEnabled(boolean enabled) {
-        mDragDecelarationEnabled = enabled;
-    }
-
-    /**
-     * Returns drag deceleration friction coefficient
-     * @return
-     */
-    public float getDragDecelarationFrictionCoef() {
-        return mDragDecelarationFrictionCoef;
-    }
-
-    /**+
-     * Decelaration friction coefficient in [0 ; 1] interval, higher values indicate that
-     * speed will decrease slowly, for example if it set to 0, it will stop immediately.
-     * 1 is an invalid value, and will be converted to 0 automatically.
-     *
-     * @param newValue
-     */
-    public void setDragDecelarationFrictionCoef(float newValue) {
-        if (newValue < 0.f || newValue >= 1.f)
-            newValue = 0.f;
-
-        mDragDecelarationFrictionCoef = newValue;
     }
 
     /**

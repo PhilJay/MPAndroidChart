@@ -70,6 +70,8 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
 
         // enable touch gestures
         mChart.setTouchEnabled(true);
+        
+        mChart.setDragDecelerationFrictionCoef(0.95f);
 
         // enable scaling and dragging
         mChart.setDragEnabled(true);

@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Paint;
@@ -13,9 +14,7 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
-
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
-
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -40,10 +39,6 @@ public abstract class Utils {
      */
     public static void init(Context context) {
 
-        Resources res = context.getResources();
-
-        mMetrics = res.getDisplayMetrics();
-
         if (context == null) {
             //noinspection deprecation
             mMinimumFlingVelocity = ViewConfiguration.getMinimumFlingVelocity();
@@ -54,6 +49,9 @@ public abstract class Utils {
             mMinimumFlingVelocity = viewConfiguration.getScaledMinimumFlingVelocity();
             mMaximumFlingVelocity = viewConfiguration.getScaledMaximumFlingVelocity();
         }
+        
+        Resources res = context.getResources();
+        mMetrics = res.getDisplayMetrics();
     }
 
     /**
@@ -501,6 +499,7 @@ public abstract class Utils {
      *
      * @param view
      */
+    @SuppressLint("NewApi")
     public static void postInvalidateOnAnimation(View view) {
         if (Build.VERSION.SDK_INT >= 16)
             view.postInvalidateOnAnimation();

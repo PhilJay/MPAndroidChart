@@ -72,11 +72,19 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     protected T mData = null;
 
+    /** If set to true, chart continues to scroll after touch up */
+    private boolean mDragDecelerationEnabled = true;
+
+    /**
+     * Decelaration friction coefficient in [0 ; 1] interval, higher values
+     * indicate that speed will decrease slowly, for example if it set to 0, it
+     * will stop immediately, if set to 1, it will scroll with constant speed,
+     * until the last point
+     */
+    private float mDragDecelerationFrictionCoef = 0.9f;
+
     /** default value-formatter, number of digits depends on provided chart-data */
     protected ValueFormatter mDefaultFormatter;
-
-    /** the canvas that is used for drawing on the bitmap */
-    // protected Canvas mDrawCanvas;
 
     /**
      * paint object used for drawing the description text in the bottom right
@@ -181,7 +189,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             });
 
         // initialize the utils
-        Utils.init(getContext().getResources());
+        Utils.init(getContext());
 
         mDefaultFormatter = new DefaultValueFormatter(1);
 
@@ -616,6 +624,50 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public ChartAnimator getAnimator() {
         return mAnimator;
+    }
+
+    /**
+     * If set to true, chart continues to scroll after touch up default: true
+     */
+    public boolean isDragDecelerationEnabled() {
+        return mDragDecelerationEnabled;
+    }
+
+    /**
+     * If set to true, chart continues to scroll after touch up. Default: true.
+     *
+     * @param enabled
+     */
+    public void setDragDecelerationEnabled(boolean enabled) {
+        mDragDecelerationEnabled = enabled;
+    }
+
+    /**
+     * Returns drag deceleration friction coefficient
+     * 
+     * @return
+     */
+    public float getDragDecelerationFrictionCoef() {
+        return mDragDecelerationFrictionCoef;
+    }
+
+    /**
+     * Deceleration friction coefficient in [0 ; 1] interval, higher values
+     * indicate that speed will decrease slowly, for example if it set to 0, it
+     * will stop immediately. 1 is an invalid value, and will be converted to 0.999f
+     * automatically.
+     *
+     * @param newValue
+     */
+    public void setDragDecelerationFrictionCoef(float newValue) {
+        
+        if (newValue < 0.f)
+            newValue = 0.f;
+        
+        if(newValue >= 1f) 
+            newValue = 0.999f;
+
+        mDragDecelerationFrictionCoef = newValue;
     }
 
     /**

@@ -42,7 +42,6 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
     private VelocityTracker mVelocityTracker;
 
     private long mDecelarationLastTime = 0;
-    private PointF mDecelarationCurrentPoint = new PointF();
     private float mDecelarationAngularVelocity = 0.f;
 
     public PieRadarChartTouchListener(PieRadarChartBase<?> ctx) {
@@ -107,7 +106,7 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
                     if (Math.abs(velocityX) > Utils.getMinimumFlingVelocity() ||
                             Math.abs(velocityY) > Utils.getMinimumFlingVelocity()) {
 
-                        if (mChart.isDragDecelarationEnabled()) {
+                        if (mChart.isDragDecelerationEnabled()) {
                             stopDeceleration();
 
                             mDecelarationLastTime = AnimationUtils.currentAnimationTimeMillis();
@@ -266,7 +265,7 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
 
         final long currentTime = AnimationUtils.currentAnimationTimeMillis();
 
-        mDecelarationAngularVelocity *= mChart.getDragDecelarationFrictionCoef();
+        mDecelarationAngularVelocity *= mChart.getDragDecelerationFrictionCoef();
 
         final float timeInterval = (float)(currentTime - mDecelarationLastTime) / 1000.f;
 

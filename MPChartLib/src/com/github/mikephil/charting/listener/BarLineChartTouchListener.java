@@ -4,7 +4,6 @@ package com.github.mikephil.charting.listener;
 import android.annotation.SuppressLint;
 import android.graphics.Matrix;
 import android.graphics.PointF;
-import android.os.Build;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -15,6 +14,7 @@ import android.view.View.OnTouchListener;
 import android.view.animation.AnimationUtils;
 
 import com.github.mikephil.charting.charts.BarLineChartBase;
+import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.data.BarLineScatterCandleData;
 import com.github.mikephil.charting.data.BarLineScatterCandleDataSet;
@@ -198,7 +198,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
                 if (Math.abs(velocityX) > Utils.getMinimumFlingVelocity() ||
                         Math.abs(velocityY) > Utils.getMinimumFlingVelocity()) {
 
-                    if (mTouchMode == DRAG && mChart.isDragDecelarationEnabled()) {
+                    if (mTouchMode == DRAG && mChart.isDragDecelerationEnabled()) {
 
                         stopDeceleration();
 
@@ -587,8 +587,8 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
         final long currentTime = AnimationUtils.currentAnimationTimeMillis();
 
-        mDecelarationVelocity.x *= mChart.getDragDecelarationFrictionCoef();
-        mDecelarationVelocity.y *= mChart.getDragDecelarationFrictionCoef();
+        mDecelarationVelocity.x *= mChart.getDragDecelerationFrictionCoef();
+        mDecelarationVelocity.y *= mChart.getDragDecelerationFrictionCoef();
 
         final float timeInterval = (float)(currentTime - mDecelarationLastTime) / 1000.f;
 
@@ -600,6 +600,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
         MotionEvent event = MotionEvent.obtain(currentTime, currentTime, MotionEvent.ACTION_MOVE, mDecelarationCurrentPoint.x, mDecelarationCurrentPoint.y, 0);
         performDrag(event);
+        event.recycle();
         mMatrix = mChart.getViewPortHandler().refresh(mMatrix, mChart, false);
 
         mDecelarationLastTime = currentTime;
