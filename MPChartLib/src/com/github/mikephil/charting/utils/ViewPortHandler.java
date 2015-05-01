@@ -260,7 +260,8 @@ public class ViewPortHandler {
         // make sure scale and translation are within their bounds
         limitTransAndScale(mMatrixTouch, mContentRect);
 
-        chart.invalidate();
+        if (invalidate)
+            chart.invalidate();
 
         newMatrix.set(mMatrixTouch);
         return newMatrix;

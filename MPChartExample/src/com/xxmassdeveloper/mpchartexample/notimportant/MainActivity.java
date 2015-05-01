@@ -59,7 +59,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
         setContentView(R.layout.activity_main);
 
         // initialize the utilities
-        Utils.init(getResources());
+        Utils.init(this);
 
         ArrayList<ContentItem> objects = new ArrayList<ContentItem>();
 
