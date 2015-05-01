@@ -1,12 +1,18 @@
 
 package com.github.mikephil.charting.utils;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.VelocityTracker;
+import android.view.View;
+import android.view.ViewConfiguration;
 
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 
@@ -24,14 +30,47 @@ import java.util.List;
 public abstract class Utils {
 
     private static DisplayMetrics mMetrics;
+    private static int mMinimumFlingVelocity = 50;
+    private static int mMaximumFlingVelocity = 8000;
 
     /**
      * initialize method, called inside the Chart.init() method.
      * 
      * @param res
      */
-    public static void init(Resources res) {
+    public static void init(Context context) {
+
+        Resources res = context.getResources();
+
         mMetrics = res.getDisplayMetrics();
+
+        if (context == null) {
+            //noinspection deprecation
+            mMinimumFlingVelocity = ViewConfiguration.getMinimumFlingVelocity();
+            //noinspection deprecation
+            mMaximumFlingVelocity = ViewConfiguration.getMaximumFlingVelocity();
+        } else {
+            ViewConfiguration viewConfiguration = ViewConfiguration.get(context);
+            mMinimumFlingVelocity = viewConfiguration.getScaledMinimumFlingVelocity();
+            mMaximumFlingVelocity = viewConfiguration.getScaledMaximumFlingVelocity();
+        }
+    }
+
+    /**
+     * initialize method, called inside the Chart.init() method.
+     * backwards compatibility - to not break existing code
+     *
+     * @param res
+     */
+    @Deprecated
+    public static void init(Resources res) {
+
+        mMetrics = res.getDisplayMetrics();
+
+        //noinspection deprecation
+        mMinimumFlingVelocity = ViewConfiguration.getMinimumFlingVelocity();
+        //noinspection deprecation
+        mMaximumFlingVelocity = ViewConfiguration.getMaximumFlingVelocity();
     }
 
     /**
@@ -430,5 +469,50 @@ public abstract class Utils {
         PointF p = new PointF((float) (center.x + dist * Math.cos(Math.toRadians(angle))),
                 (float) (center.y + dist * Math.sin(Math.toRadians(angle))));
         return p;
+    }
+
+    public static void velocityTrackerPointerUpCleanUpIfNecessary(MotionEvent ev, VelocityTracker tracker) {
+
+        // Check the dot product of current velocities.
+        // If the pointer that left was opposing another velocity vector, clear.
+        tracker.computeCurrentVelocity(1000, mMaximumFlingVelocity);
+        final int upIndex = ev.getActionIndex();
+        final int id1 = ev.getPointerId(upIndex);
+        final float x1 = tracker.getXVelocity(id1);
+        final float y1 = tracker.getYVelocity(id1);
+        for (int i = 0, count = ev.getPointerCount(); i < count; i++) {
+            if (i == upIndex) continue;
+
+            final int id2 = ev.getPointerId(i);
+            final float x = x1 * tracker.getXVelocity(id2);
+            final float y = y1 * tracker.getYVelocity(id2);
+
+            final float dot = x + y;
+            if (dot < 0) {
+                tracker.clear();
+                break;
+            }
+        }
+    }
+
+    /**
+     * Original method view.postInvalidateOnAnimation() only supportd in API >= 16,
+     * This is a replica of the code from ViewCompat.
+     *
+     * @param view
+     */
+    public static void postInvalidateOnAnimation(View view) {
+        if (Build.VERSION.SDK_INT >= 16)
+            view.postInvalidateOnAnimation();
+        else
+            view.postInvalidateDelayed(10);
+    }
+
+    public static int getMinimumFlingVelocity() {
+        return mMinimumFlingVelocity;
+    }
+
+    public static int getMaximumFlingVelocity() {
+        return mMaximumFlingVelocity;
     }
 }

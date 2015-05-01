@@ -4,12 +4,15 @@ package com.github.mikephil.charting.listener;
 import android.annotation.SuppressLint;
 import android.graphics.Matrix;
 import android.graphics.PointF;
+import android.os.Build;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.animation.AnimationUtils;
 
 import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
@@ -18,6 +21,7 @@ import com.github.mikephil.charting.data.BarLineScatterCandleDataSet;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**
@@ -70,6 +74,13 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
     /** the gesturedetector used for detecting taps and longpresses, ... */
     private GestureDetector mGestureDetector;
 
+    /** used for tracking velocity of dragging */
+    private VelocityTracker mVelocityTracker;
+
+    private long mDecelarationLastTime = 0;
+    private PointF mDecelarationCurrentPoint = new PointF();
+    private PointF mDecelarationVelocity = new PointF();
+
     public BarLineChartTouchListener(T chart, Matrix touchMatrix) {
         this.mChart = chart;
         this.mMatrix = touchMatrix;
@@ -80,6 +91,18 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+
+        if (mVelocityTracker == null) {
+            mVelocityTracker = VelocityTracker.obtain();
+        }
+        mVelocityTracker.addMovement(event);
+
+        if (event.getActionMasked() == MotionEvent.ACTION_CANCEL) {
+            if (mVelocityTracker != null) {
+                mVelocityTracker.recycle();
+                mVelocityTracker = null;
+            }
+        }
 
         if (mTouchMode == NONE) {
             mGestureDetector.onTouchEvent(event);
@@ -93,7 +116,10 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
             case MotionEvent.ACTION_DOWN:
 
+                stopDeceleration();
+
                 saveTouchStart(event);
+
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
 
@@ -162,11 +188,47 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
                 break;
 
             case MotionEvent.ACTION_UP:
+
+                final VelocityTracker velocityTracker = mVelocityTracker;
+                final int pointerId = event.getPointerId(0);
+                velocityTracker.computeCurrentVelocity(1000, Utils.getMaximumFlingVelocity());
+                final float velocityY = velocityTracker.getYVelocity(pointerId);
+                final float velocityX = velocityTracker.getXVelocity(pointerId);
+
+                if (Math.abs(velocityX) > Utils.getMinimumFlingVelocity() ||
+                        Math.abs(velocityY) > Utils.getMinimumFlingVelocity()) {
+
+                    if (mTouchMode == DRAG && mChart.isDragDecelarationEnabled()) {
+
+                        stopDeceleration();
+
+                        mDecelarationLastTime = AnimationUtils.currentAnimationTimeMillis();
+                        mDecelarationCurrentPoint = new PointF(event.getX(), event.getY());
+                        mDecelarationVelocity = new PointF(velocityX, velocityY);
+
+                        Utils.postInvalidateOnAnimation(mChart); // This causes computeScroll to fire, recommended for this by Google
+                    }
+                }
+
                 mTouchMode = NONE;
                 mChart.enableScroll();
+
+                if (mVelocityTracker != null) {
+                    mVelocityTracker.recycle();
+                    mVelocityTracker = null;
+                }
+
                 break;
             case MotionEvent.ACTION_POINTER_UP:
+                Utils.velocityTrackerPointerUpCleanUpIfNecessary(event, mVelocityTracker);
+
                 mTouchMode = POST_ZOOM;
+                break;
+
+            case MotionEvent.ACTION_CANCEL:
+
+                mTouchMode = NONE;
+
                 break;
         }
 
@@ -512,5 +574,39 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
             l.onChartFling(e1, e2, velocityX, velocityY);
 
         return super.onFling(e1, e2, velocityX, velocityY);
+    }
+
+    public void stopDeceleration() {
+        mDecelarationVelocity = new PointF(0.f, 0.f);
+    }
+
+    public void computeScroll() {
+
+        if (mDecelarationVelocity.x == 0.f && mDecelarationVelocity.y == 0.f)
+            return; // There's no deceleration in progress
+
+        final long currentTime = AnimationUtils.currentAnimationTimeMillis();
+
+        mDecelarationVelocity.x *= mChart.getDragDecelarationFrictionCoef();
+        mDecelarationVelocity.y *= mChart.getDragDecelarationFrictionCoef();
+
+        final float timeInterval = (float)(currentTime - mDecelarationLastTime) / 1000.f;
+
+        float distanceX = mDecelarationVelocity.x * timeInterval;
+        float distanceY = mDecelarationVelocity.y * timeInterval;
+
+        mDecelarationCurrentPoint.x += distanceX;
+        mDecelarationCurrentPoint.y += distanceY;
+
+        MotionEvent event = MotionEvent.obtain(currentTime, currentTime, MotionEvent.ACTION_MOVE, mDecelarationCurrentPoint.x, mDecelarationCurrentPoint.y, 0);
+        performDrag(event);
+        mMatrix = mChart.getViewPortHandler().refresh(mMatrix, mChart, false);
+
+        mDecelarationLastTime = currentTime;
+
+        if (Math.abs(mDecelarationVelocity.x) >= 0.001 || Math.abs(mDecelarationVelocity.y) >= 0.001)
+            Utils.postInvalidateOnAnimation(mChart); // This causes computeScroll to fire, recommended for this by Google
+        else
+            stopDeceleration();
     }
 }
