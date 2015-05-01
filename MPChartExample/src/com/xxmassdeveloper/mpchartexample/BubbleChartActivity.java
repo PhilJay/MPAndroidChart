@@ -227,7 +227,7 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
         BubbleData data = new BubbleData(xVals, dataSets);
         data.setValueTypeface(tf);
         data.setValueTextSize(8f);
-        data.setHighLightCircleWidth(1.5f);
+        data.setHighlightCircleWidth(1.5f);
 
         mChart.setData(data);
         mChart.invalidate();
