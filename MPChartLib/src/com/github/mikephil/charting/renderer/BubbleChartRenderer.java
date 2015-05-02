@@ -91,7 +91,7 @@ public class BubbleChartRenderer extends DataRenderer {
 
             final float shapeSize = (chartSize / bubbleSizeFactor)
                     * (float) (Math.sqrt(entry.getSize() /
-                    (dataSet.getMaxSize() > 0.0 ? dataSet.getMaxSize() : 1.0)));
+                    (dataSet.getMaxSize() != 0.0 ? dataSet.getMaxSize() : 1.0)));
             final float shapeHalf = shapeSize / 2.f;
 
             if (!mViewPortHandler.isInBoundsY(_pointBuffer[1]))
@@ -216,7 +216,7 @@ public class BubbleChartRenderer extends DataRenderer {
 
             final float shapeSize = (chartSize / bubbleSizeFactor)
                     * (float) (Math.sqrt(entry.getSize() /
-                    (dataSet.getMaxSize() > 0.0 ? dataSet.getMaxSize() : 1.0)));
+                    (dataSet.getMaxSize() != 0.0 ? dataSet.getMaxSize() : 1.0)));
             final float shapeHalf = shapeSize / 2.f;
 
             if (indice.getXIndex() < minx || indice.getXIndex() >= maxx)
