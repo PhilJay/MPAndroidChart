@@ -21,7 +21,7 @@ public class LargeValueFormatter implements ValueFormatter {
     private static final int MAX_LENGTH = 4;
 
     private DecimalFormat mFormat;
-    private String mText;
+    private String mText = "";
 
     public LargeValueFormatter() {
         mFormat = new DecimalFormat("###E0");
