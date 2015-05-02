@@ -11,25 +11,34 @@ import java.text.DecimalFormat;
  * (https://github.com/romangromov) for this piece of code.
  * 
  * @author Philipp Jahoda
+ * @author Oleksandr Tyshkovets <olexandr.tyshkovets@gmail.com>
  */
 public class LargeValueFormatter implements ValueFormatter {
 
-    private static String[] SUFFIX = new String[] {
+    private static final String[] SUFFIX = new String[] {
             "", "k", "m", "b", "t"
     };
-
-    private static int MAX_LENGTH = 4;
+    private static final int MAX_LENGTH = 4;
 
     private DecimalFormat mFormat;
+    private String mText;
 
     public LargeValueFormatter() {
-
         mFormat = new DecimalFormat("###E0");
+    }
+
+    /**
+     * Creates a formatter that appends a specified text to the result string
+     * @param text a text that will be appended
+     */
+    public LargeValueFormatter(String text) {
+        this();
+        mText = text;
     }
 
     @Override
     public String getFormattedValue(float value) {
-        return makePretty(value);
+        return makePretty(value) + " " + mText;
     }
 
     /**
