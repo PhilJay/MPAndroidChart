@@ -201,7 +201,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     public int getIndexForAngle(float angle) {
 
         // take the current angle of the chart into consideration
-        float a = (angle - mRotationAngle + 360) % 360f;
+        float a = Utils.getNormalizedAngle(angle - getRotationAngle());
 
         float sliceangle = getSliceAngle();
 

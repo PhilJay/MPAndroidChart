@@ -76,10 +76,10 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     private boolean mDragDecelerationEnabled = true;
 
     /**
-     * Decelaration friction coefficient in [0 ; 1] interval, higher values
+     * Deceleration friction coefficient in [0 ; 1] interval, higher values
      * indicate that speed will decrease slowly, for example if it set to 0, it
-     * will stop immediately, if set to 1, it will scroll with constant speed,
-     * until the last point
+     * will stop immediately. 1 is an invalid value, and will be converted to 0.999f
+     * automatically.
      */
     private float mDragDecelerationFrictionCoef = 0.9f;
 

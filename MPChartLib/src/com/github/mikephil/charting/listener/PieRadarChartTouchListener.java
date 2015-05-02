@@ -6,7 +6,6 @@ import android.graphics.PointF;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
-import android.view.VelocityTracker;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.animation.AnimationUtils;
@@ -18,6 +17,7 @@ import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.SelInfo;
 import com.github.mikephil.charting.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,15 +34,17 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
 
     private PieRadarChartBase<?> mChart;
 
+    /** the angle where the dragging started */
+    private float mStartAngle = 0f;
+
     private int mTouchMode = NONE;
 
     private GestureDetector mGestureDetector;
 
-    /** used for tracking velocity of dragging */
-    private VelocityTracker mVelocityTracker;
+    private ArrayList<AngularVelocitySample> _velocitySamples = new ArrayList<>();
 
-    private long mDecelarationLastTime = 0;
-    private float mDecelarationAngularVelocity = 0.f;
+    private long mDecelerationLastTime = 0;
+    private float mDecelerationAngularVelocity = 0.f;
 
     public PieRadarChartTouchListener(PieRadarChartBase<?> ctx) {
         this.mChart = ctx;
@@ -53,18 +55,6 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-
-        if (mVelocityTracker == null) {
-            mVelocityTracker = VelocityTracker.obtain();
-        }
-        mVelocityTracker.addMovement(event);
-
-        if (event.getActionMasked() == MotionEvent.ACTION_CANCEL) {
-            if (mVelocityTracker != null) {
-                mVelocityTracker.recycle();
-                mVelocityTracker = null;
-            }
-        }
 
         if (mGestureDetector.onTouchEvent(event))
             return true;
@@ -78,11 +68,23 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
             switch (event.getAction()) {
 
                 case MotionEvent.ACTION_DOWN:
-                    mChart.setGestureStartAngle(x, y);
+
+                    stopDeceleration();
+
+                    resetVelocity();
+
+                    if (mChart.isDragDecelerationEnabled())
+                        sampleVelocity(x, y);
+
+                    setGestureStartAngle(x, y);
                     mTouchStartPoint.x = x;
                     mTouchStartPoint.y = y;
+
                     break;
                 case MotionEvent.ACTION_MOVE:
+
+                    if (mChart.isDragDecelerationEnabled())
+                        sampleVelocity(x, y);
 
                     if (mTouchMode == NONE
                             && distance(x, mTouchStartPoint.x, y, mTouchStartPoint.y)
@@ -90,42 +92,23 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
                         mTouchMode = ROTATE;
                         mChart.disableScroll();
                     } else if (mTouchMode == ROTATE) {
-                        mChart.updateRotation(x, y);
+                        updateGestureRotation(x, y);
                         mChart.invalidate();
                     }
 
                     break;
                 case MotionEvent.ACTION_UP:
 
-                    final VelocityTracker velocityTracker = mVelocityTracker;
-                    final int pointerId = event.getPointerId(0);
-                    velocityTracker.computeCurrentVelocity(1000, Utils.getMaximumFlingVelocity());
-                    final float velocityY = velocityTracker.getYVelocity(pointerId);
-                    final float velocityX = velocityTracker.getXVelocity(pointerId);
+                    if (mChart.isDragDecelerationEnabled()) {
 
-                    if (Math.abs(velocityX) > Utils.getMinimumFlingVelocity() ||
-                            Math.abs(velocityY) > Utils.getMinimumFlingVelocity()) {
+                        stopDeceleration();
 
-                        if (mChart.isDragDecelerationEnabled()) {
-                            stopDeceleration();
+                        sampleVelocity(x, y);
 
-                            mDecelarationLastTime = AnimationUtils.currentAnimationTimeMillis();
+                        mDecelerationAngularVelocity = calculateVelocity();
 
-                            float newAngle = mChart.getAngleForPoint(event.getX(), event.getY());
-                            float previousAngle = mChart.getAngleForPoint(event.getX() - mVelocityTracker.getXVelocity(),
-                                    event.getY() - mVelocityTracker.getYVelocity());
-
-                            if (previousAngle >= 270.f && newAngle <= 90.f) {
-                                // This is the wrapping point between 360 and 0,
-                                // which prevents us from knowing if it's clockwise or counter.
-                                newAngle += 360.f;
-                            } else if (previousAngle <= 90.f && newAngle >= 270.f) {
-                                // This is the wrapping point between 0 and 360,
-                                // which prevents us from knowing if it's clockwise or counter.
-                                previousAngle += 360.f;
-                            }
-
-                            mDecelarationAngularVelocity = newAngle - previousAngle;
+                        if (mDecelerationAngularVelocity != 0.f) {
+                            mDecelerationLastTime = AnimationUtils.currentAnimationTimeMillis();
 
                             Utils.postInvalidateOnAnimation(mChart); // This causes computeScroll to fire, recommended for this by Google
                         }
@@ -133,11 +116,6 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
 
                     mChart.enableScroll();
                     mTouchMode = NONE;
-
-                    if (mVelocityTracker != null) {
-                        mVelocityTracker.recycle();
-                        mVelocityTracker = null;
-                    }
 
                     break;
             }
@@ -239,6 +217,115 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
         return super.onDoubleTap(e);
     }
 
+    private void resetVelocity()
+    {
+        _velocitySamples.clear();
+    }
+
+    private void sampleVelocity(float touchLocationX, float touchLocationY)
+    {
+        long currentTime = AnimationUtils.currentAnimationTimeMillis();
+
+        _velocitySamples.add(new AngularVelocitySample(currentTime, mChart.getAngleForPoint(touchLocationX, touchLocationY)));
+
+        // Remove samples older than our sample time - 1 seconds
+        for (int i = 0, count = _velocitySamples.size(); i < count - 2; i++)
+        {
+            if (currentTime - _velocitySamples.get(i).time > 1000)
+            {
+                _velocitySamples.remove(0);
+                i--;
+                count--;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+
+    private float calculateVelocity()
+    {
+        if (_velocitySamples.isEmpty())
+            return 0.f;
+
+        AngularVelocitySample firstSample = _velocitySamples.get(0);
+        AngularVelocitySample lastSample = _velocitySamples.get(_velocitySamples.size() - 1);
+
+        // Look for a sample that's closest to the latest sample, but not the same, so we can deduce the direction
+        AngularVelocitySample beforeLastSample = firstSample;
+        for (int i = _velocitySamples.size() - 1; i >= 0; i--)
+        {
+            beforeLastSample = _velocitySamples.get(i);
+            if (beforeLastSample.angle != lastSample.angle)
+            {
+                break;
+            }
+        }
+
+        // Calculate the sampling time
+        float timeDelta = (lastSample.time - firstSample.time) / 1000.f;
+        if (timeDelta == 0.f)
+        {
+            timeDelta = 0.1f;
+        }
+
+        // Calculate clockwise/ccw by choosing two values that should be closest to each other,
+        // so if the angles are two far from each other we know they are inverted "for sure"
+        boolean clockwise = lastSample.angle >= beforeLastSample.angle;
+        if (Math.abs(lastSample.angle - beforeLastSample.angle) > 270.0)
+        {
+            clockwise = !clockwise;
+        }
+
+        // Now if the "gesture" is over a too big of an angle - then we know the angles are inverted, and we need to move them closer to each other from both sides of the 360.0 wrapping point
+        if (lastSample.angle - firstSample.angle > 180.0)
+        {
+            firstSample.angle += 360.0;
+        }
+        else if (firstSample.angle - lastSample.angle > 180.0)
+        {
+            lastSample.angle += 360.0;
+        }
+
+        // The velocity
+        float velocity = Math.abs((lastSample.angle - firstSample.angle) / timeDelta);
+
+        // Direction?
+        if (!clockwise)
+        {
+            velocity = -velocity;
+        }
+
+        return velocity;
+    }
+
+    /**
+     * sets the starting angle of the rotation, this is only used by the touch
+     * listener, x and y is the touch position
+     *
+     * @param x
+     * @param y
+     */
+    public void setGestureStartAngle(float x, float y) {
+
+        mStartAngle = mChart.getAngleForPoint(x, y) - mChart.getRawRotationAngle();
+
+    }
+
+    /**
+     * updates the view rotation depending on the given touch position, also
+     * takes the starting angle into consideration
+     *
+     * @param x
+     * @param y
+     */
+    public void updateGestureRotation(float x, float y) {
+
+        mChart.setRotationAngle(mChart.getAngleForPoint(x, y) - mStartAngle);
+
+    }
+
     /**
      * returns the distance between two points
      * 
@@ -255,27 +342,39 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
     }
 
     public void stopDeceleration() {
-        mDecelarationAngularVelocity = 0.f;
+        mDecelerationAngularVelocity = 0.f;
     }
 
     public void computeScroll() {
 
-        if (mDecelarationAngularVelocity == 0.f)
+        if (mDecelerationAngularVelocity == 0.f)
             return; // There's no deceleration in progress
 
         final long currentTime = AnimationUtils.currentAnimationTimeMillis();
 
-        mDecelarationAngularVelocity *= mChart.getDragDecelerationFrictionCoef();
+        mDecelerationAngularVelocity *= mChart.getDragDecelerationFrictionCoef();
 
-        final float timeInterval = (float)(currentTime - mDecelarationLastTime) / 1000.f;
+        final float timeInterval = (float)(currentTime - mDecelerationLastTime) / 1000.f;
 
-        mChart.setRotationAngle(mChart.getRotationAngle() + mDecelarationAngularVelocity * timeInterval);
+        mChart.setRotationAngle(mChart.getRotationAngle() + mDecelerationAngularVelocity * timeInterval);
 
-        mDecelarationLastTime = currentTime;
+        mDecelerationLastTime = currentTime;
 
-        if (Math.abs(mDecelarationAngularVelocity) >= 0.001)
+        if (Math.abs(mDecelerationAngularVelocity) >= 0.001)
             Utils.postInvalidateOnAnimation(mChart); // This causes computeScroll to fire, recommended for this by Google
         else
             stopDeceleration();
+    }
+
+    private class AngularVelocitySample
+    {
+        public long time;
+        public float angle;
+
+        public AngularVelocitySample(long time, float angle)
+        {
+            this.time = time;
+            this.angle = angle;
+        }
     }
 }

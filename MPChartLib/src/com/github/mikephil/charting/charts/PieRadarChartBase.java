@@ -32,11 +32,11 @@ import java.util.List;
 public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? extends Entry>>>
         extends Chart<T> {
 
-    /** holds the current rotation angle of the chart */
-    protected float mRotationAngle = 270f;
-    
-    /** the angle where the dragging started */
-    private float mStartAngle = 0f;
+    /** holds the normalized version of the current rotation angle of the chart */
+    private float mRotationAngle = 270f;
+
+    /** holds the raw version of the current rotation angle of the chart */
+    private float mRawRotationAngle = 270f;
 
     /** flag that indicates if rotation is enabled or not */
     protected boolean mRotateEnabled = true;
@@ -204,39 +204,6 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     }
 
     /**
-     * sets the starting angle of the rotation, this is only used by the touch
-     * listener, x and y is the touch position
-     * 
-     * @param x
-     * @param y
-     */
-    public void setGestureStartAngle(float x, float y) {
-
-        mStartAngle = getAngleForPoint(x, y);
-
-        // take the current angle into consideration when starting a new drag
-        mStartAngle -= mRotationAngle;
-    }
-
-    /**
-     * updates the view rotation depending on the given touch position, also
-     * takes the starting angle into consideration
-     * 
-     * @param x
-     * @param y
-     */
-    public void updateRotation(float x, float y) {
-
-        mRotationAngle = getAngleForPoint(x, y);
-
-        // take the offset into consideration
-        mRotationAngle -= mStartAngle;
-
-        // keep the angle >= 0 and <= 360
-        mRotationAngle = (mRotationAngle + 360f) % 360f;
-    }
-
-    /**
      * returns the angle relative to the chart center for the given point on the
      * chart in degrees. The angle is always between 0 and 360°, 0° is NORTH,
      * 90° is EAST, ...
@@ -336,16 +303,25 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
      * @param angle
      */
     public void setRotationAngle(float angle) {
-
-        while (angle < 0.f)
-            angle += 360.f;
-
-        mRotationAngle = angle % 360;
+        mRawRotationAngle = angle;
+        mRotationAngle = Utils.getNormalizedAngle(mRawRotationAngle);
     }
 
     /**
-     * gets the current rotation angle of the pie chart
-     * 
+     * gets the raw version of the current rotation angle of the pie chart
+     * the returned value could be any value, negative or positive, outside of the 360 degrees.
+     * this is used when working with rotation direction, mainly by gestures and animations.
+     *
+     * @return
+     */
+    public float getRawRotationAngle() {
+        return mRawRotationAngle;
+    }
+
+    /**
+     * gets a normalized version of the current rotation angle of the pie chart,
+     * which will always be between 0.0 < 360.0
+     *
      * @return
      */
     public float getRotationAngle() {
@@ -480,7 +456,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
         if (android.os.Build.VERSION.SDK_INT < 11)
             return;
 
-        mRotationAngle = fromangle;
+        setRotationAngle(fromangle);
 
         ObjectAnimator spinAnimator = ObjectAnimator.ofFloat(this, "rotationAngle", fromangle, toangle);
         spinAnimator.setDuration(durationmillis);
