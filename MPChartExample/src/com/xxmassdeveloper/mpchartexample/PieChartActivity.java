@@ -58,6 +58,8 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart = (PieChart) findViewById(R.id.chart1);
         mChart.setUsePercentValues(true);
         mChart.setDescription("");
+        
+        mChart.setDragDecelerationFrictionCoef(0.99f);
 
         tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 

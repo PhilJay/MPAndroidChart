@@ -14,7 +14,9 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
+
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
+
 import java.text.DecimalFormat;
 import java.util.List;
 

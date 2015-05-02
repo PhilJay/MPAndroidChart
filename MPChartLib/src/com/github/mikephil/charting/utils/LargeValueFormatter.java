@@ -31,14 +31,14 @@ public class LargeValueFormatter implements ValueFormatter {
      * Creates a formatter that appends a specified text to the result string
      * @param text a text that will be appended
      */
-    public LargeValueFormatter(String text) {
+    public LargeValueFormatter(String appendix) {
         this();
-        mText = text;
+        mText = appendix;
     }
 
     @Override
     public String getFormattedValue(float value) {
-        return makePretty(value) + " " + mText;
+        return makePretty(value) + mText;
     }
 
     /**

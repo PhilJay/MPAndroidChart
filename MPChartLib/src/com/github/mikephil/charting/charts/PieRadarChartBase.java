@@ -81,7 +81,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     public void computeScroll() {
 
         if (mListener instanceof PieRadarChartTouchListener)
-            ((PieRadarChartTouchListener)mListener).computeScroll();
+            ((PieRadarChartTouchListener) mListener).computeScroll();
     }
 
     @Override
@@ -442,7 +442,6 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
      */
     /** CODE BELOW THIS RELATED TO ANIMATION */
 
-
     /**
      * Applys a spin animation to the Chart.
      * 
@@ -458,7 +457,8 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
         setRotationAngle(fromangle);
 
-        ObjectAnimator spinAnimator = ObjectAnimator.ofFloat(this, "rotationAngle", fromangle, toangle);
+        ObjectAnimator spinAnimator = ObjectAnimator.ofFloat(this, "rotationAngle", fromangle,
+                toangle);
         spinAnimator.setDuration(durationmillis);
         spinAnimator.setInterpolator(Easing.getEasingFunctionFromOption(easing));
 
