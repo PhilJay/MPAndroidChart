@@ -78,7 +78,7 @@ public abstract class DataSet<T extends Entry> {
 
         if (mYVals == null)
             mYVals = new ArrayList<T>();
-        
+
         mColors = new ArrayList<Integer>();
 
         // default color
@@ -346,7 +346,9 @@ public abstract class DataSet<T extends Entry> {
      *
      * @return
      */
-    public void setLabel(String label) { mLabel = label; }
+    public void setLabel(String label) {
+        mLabel = label;
+    }
 
     /**
      * Returns the label string that describes the DataSet.
@@ -430,7 +432,7 @@ public abstract class DataSet<T extends Entry> {
 
         float val = e.getVal();
 
-        if(mYVals == null) {
+        if (mYVals == null) {
             mYVals = new ArrayList<T>();
         }
 
@@ -717,5 +719,13 @@ public abstract class DataSet<T extends Entry> {
         }
 
         return false;
+    }
+
+    /**
+     * Removes all values from this DataSet and recalculates min and max value.
+     */
+    public void clear() {
+        mYVals.clear();
+        notifyDataSetChanged();
     }
 }

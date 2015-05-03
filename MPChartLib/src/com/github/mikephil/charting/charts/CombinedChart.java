@@ -5,11 +5,14 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BubbleData;
+import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.interfaces.BarDataProvider;
+import com.github.mikephil.charting.interfaces.BubbleDataProvider;
 import com.github.mikephil.charting.interfaces.CandleDataProvider;
 import com.github.mikephil.charting.interfaces.LineDataProvider;
 import com.github.mikephil.charting.interfaces.ScatterDataProvider;
@@ -23,7 +26,7 @@ import com.github.mikephil.charting.utils.FillFormatter;
  * @author Philipp Jahoda
  */
 public class CombinedChart extends BarLineChartBase<CombinedData> implements LineDataProvider,
-        BarDataProvider, ScatterDataProvider, CandleDataProvider {
+        BarDataProvider, ScatterDataProvider, CandleDataProvider, BubbleDataProvider {
 
     /** the fill-formatter used for determining the position of the fill-line */
     protected FillFormatter mFillFormatter;
@@ -50,7 +53,7 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
     private boolean mDrawBarShadow = false;
 
     protected DrawOrder[] mDrawOrder = new DrawOrder[] {
-            DrawOrder.BAR, DrawOrder.LINE, DrawOrder.CANDLE, DrawOrder.SCATTER
+            DrawOrder.BAR, DrawOrder.BUBBLE, DrawOrder.LINE, DrawOrder.CANDLE, DrawOrder.SCATTER
     };
 
     /**
@@ -58,7 +61,7 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
      * for the combined-chart are drawn
      */
     public enum DrawOrder {
-        BAR, LINE, CANDLE, SCATTER
+        BAR, BUBBLE, LINE, CANDLE, SCATTER
     }
 
     public CombinedChart(Context context) {
@@ -85,10 +88,26 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
     @Override
     protected void calcMinMax() {
         super.calcMinMax();
-
-        if (getBarData() != null || getCandleData() != null) {
+        
+        if (getBarData() != null || getCandleData() != null || getBubbleData() != null) {
             mXChartMin = -0.5f;
             mXChartMax = mData.getXVals().size() - 0.5f;
+
+            if (getBubbleData() != null) {
+
+                for (BubbleDataSet set : getBubbleData().getDataSets()) {
+
+                    final float xmin = set.getXMin();
+                    final float xmax = set.getXMax();
+
+                    if (xmin < mXChartMin)
+                        mXChartMin = xmin;
+
+                    if (xmax > mXChartMax)
+                        mXChartMax = xmax;
+                }
+            }
+
             mDeltaX = Math.abs(mXChartMax - mXChartMin);
         }
     }
@@ -139,6 +158,13 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
         if (mData == null)
             return null;
         return mData.getCandleData();
+    }
+
+    @Override
+    public BubbleData getBubbleData() {
+        if (mData == null)
+            return null;
+        return mData.getBubbleData();
     }
 
     @Override

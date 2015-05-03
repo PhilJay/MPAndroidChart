@@ -15,6 +15,9 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.BubbleData;
+import com.github.mikephil.charting.data.BubbleDataSet;
+import com.github.mikephil.charting.data.BubbleEntry;
 import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CandleDataSet;
 import com.github.mikephil.charting.data.CandleEntry;
@@ -25,6 +28,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -48,7 +52,7 @@ public class CombinedChartActivity extends DemoBase {
         
         // draw bars behind lines
         mChart.setDrawOrder(new DrawOrder[] {
-                DrawOrder.BAR, DrawOrder.CANDLE, DrawOrder.LINE, DrawOrder.SCATTER
+                DrawOrder.BAR, DrawOrder.BUBBLE, DrawOrder.CANDLE, DrawOrder.LINE, DrawOrder.SCATTER
         });
 
         YAxis rightAxis = mChart.getAxisRight();
@@ -64,6 +68,7 @@ public class CombinedChartActivity extends DemoBase {
 
         data.setData(generateLineData());
         data.setData(generateBarData());
+//        data.setData(generateBubbleData());
 //         data.setData(generateScatterData());
 //         data.setData(generateCandleData());
 
@@ -125,7 +130,7 @@ public class CombinedChartActivity extends DemoBase {
         ArrayList<Entry> entries = new ArrayList<Entry>();
 
         for (int index = 0; index < itemcount; index++)
-            entries.add(new Entry(getRandom(20, 30), index));
+            entries.add(new Entry(getRandom(20, 15), index));
 
         ScatterDataSet set = new ScatterDataSet(entries, "Scatter DataSet");
         set.setColor(Color.GREEN);
@@ -154,6 +159,28 @@ public class CombinedChartActivity extends DemoBase {
         d.addDataSet(set);
 
         return d;
+    }
+    
+    protected BubbleData generateBubbleData() {
+
+        BubbleData bd = new BubbleData();
+
+        ArrayList<BubbleEntry> entries = new ArrayList<BubbleEntry>();
+
+        for (int index = 0; index < itemcount; index++) {
+            float rnd = getRandom(20, 30);
+            entries.add(new BubbleEntry(index, rnd, rnd));
+        }
+
+        BubbleDataSet set = new BubbleDataSet(entries, "Bubble DataSet");
+        set.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        set.setValueTextSize(10f);
+        set.setValueTextColor(Color.WHITE);
+        set.setHighlightCircleWidth(1.5f);
+        set.setDrawValues(true);
+        bd.addDataSet(set);
+
+        return bd;
     }
 
     private float getRandom(float range, float startsfrom) {

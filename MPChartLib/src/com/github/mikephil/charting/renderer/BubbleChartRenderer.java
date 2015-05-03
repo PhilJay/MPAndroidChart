@@ -78,8 +78,7 @@ public class BubbleChartRenderer extends DataRenderer {
                 mViewPortHandler.contentWidth() * mViewPortHandler.getScaleX() :
                 mViewPortHandler.contentHeight() * mViewPortHandler.getScaleY();
 
-        final float bubbleSizeFactor = (float) (bubbleData.getXVals().size() > 0 ? bubbleData
-                .getXVals().size() : 1);
+        final float bubbleSizeFactor = (float) (mChart.getXValCount() > 0 ? mChart.getXValCount() : 1);
 
         for (int j = minx; j < maxx; j++) {
 
@@ -190,8 +189,7 @@ public class BubbleChartRenderer extends DataRenderer {
                 mViewPortHandler.contentWidth() * mViewPortHandler.getScaleX() :
                 mViewPortHandler.contentHeight() * mViewPortHandler.getScaleY();
 
-        final float bubbleSizeFactor = (float) (bubbleData.getXVals().size() > 0 ? bubbleData
-                .getXVals().size() : 1);
+        final float bubbleSizeFactor = (float) (mChart.getXValCount() > 0 ? mChart.getXValCount() : 1);
 
         for (Highlight indice : indices) {
 

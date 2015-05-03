@@ -389,8 +389,8 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * @param xVal
      */
     public void addXValue(String xVal) {
-        
-        mXValAverageLength = (mXValAverageLength + xVal.length())  / 2f;     
+
+        mXValAverageLength = (mXValAverageLength + xVal.length()) / 2f;
         mXVals.add(xVal);
     }
 
@@ -891,7 +891,8 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     }
 
     /**
-     * Clears this data object from all DataSets and removes all Entries.
+     * Clears this data object from all DataSets and removes all Entries. Don't
+     * forget to invalidate the chart after this.
      */
     public void clearValues() {
         mDataSets.clear();

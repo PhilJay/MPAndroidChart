@@ -908,6 +908,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         return mXChartMin;
     }
 
+    @Override
+    public int getXValCount() {
+        return mData.getXValCount();
+    }
+    
     /**
      * returns the average value of all values the chart holds
      *

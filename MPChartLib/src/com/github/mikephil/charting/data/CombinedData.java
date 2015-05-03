@@ -15,6 +15,7 @@ public class CombinedData extends BarLineScatterCandleData<BarLineScatterCandleD
     private BarData mBarData;
     private ScatterData mScatterData;
     private CandleData mCandleData;
+    private BubbleData mBubbleData;
 
     public CombinedData() {
         super();
@@ -50,6 +51,16 @@ public class CombinedData extends BarLineScatterCandleData<BarLineScatterCandleD
         mCandleData = data;
         mDataSets.addAll(data.getDataSets());
         init(data.getDataSets());
+    }
+    
+    public void setData(BubbleData data) {
+        mBubbleData = data;
+        mDataSets.addAll(data.getDataSets());
+        init(data.getDataSets());
+    }
+    
+    public BubbleData getBubbleData() {
+        return mBubbleData;
     }
 
     public LineData getLineData() {

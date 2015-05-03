@@ -2,11 +2,9 @@
 package com.github.mikephil.charting.data;
 
 /**
- * Subclass of Entry that holds a value for one entry in a BubbleChart.
- *
- * Bubble chart implementation:
- *   Copyright 2015 Pierre-Marc Airoldi
- *   Licensed under Apache License 2.0
+ * Subclass of Entry that holds a value for one entry in a BubbleChart. Bubble
+ * chart implementation: Copyright 2015 Pierre-Marc Airoldi Licensed under
+ * Apache License 2.0
  *
  * @author Philipp Jahoda
  */
@@ -19,8 +17,8 @@ public class BubbleEntry extends Entry {
      * Constructor.
      *
      * @param xIndex The index on the x-axis.
-     * @param val
-     * @param size The size value.
+     * @param val The value on the y-axis.
+     * @param size The size of the bubble.
      */
     public BubbleEntry(int xIndex, float val, float size) {
         super(val, xIndex);
@@ -32,8 +30,8 @@ public class BubbleEntry extends Entry {
      * Constructor.
      *
      * @param xIndex The index on the x-axis.
-     * @param val
-     * @param size The size value.
+     * @param val The value on the y-axis.
+     * @param size The size of the bubble.
      * @param data Spot for additional data this Entry represents.
      */
     public BubbleEntry(int xIndex, float val, float size, Object data) {
@@ -49,9 +47,8 @@ public class BubbleEntry extends Entry {
         return c;
     }
 
-
     /**
-     * Returns the size of this entry
+     * Returns the size of this entry (the size of the bubble).
      *
      * @return
      */

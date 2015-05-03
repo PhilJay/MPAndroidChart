@@ -21,6 +21,8 @@ public interface ChartInterface {
     public float getYChartMin();
 
     public float getYChartMax();
+    
+    public int getXValCount();
 
     public int getWidth();
 

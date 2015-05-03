@@ -42,8 +42,8 @@ public class BubbleDataSet extends BarLineScatterCandleDataSet<BubbleEntry> {
     }
 
     @Override
-    protected void calcMinMax()
-    {
+    protected void calcMinMax() {
+        
         final List<BubbleEntry> entries = getYVals();
 
         // need chart width to guess this properly
