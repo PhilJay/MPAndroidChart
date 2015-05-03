@@ -157,30 +157,28 @@ public class LineChartRenderer extends DataRenderer {
             float curDx = 0f;
             float curDy = 0f;
 
+            Entry prevPrev = entries.get(minx);
+            Entry prev = entries.get(minx);
             Entry cur = entries.get(minx);
             Entry next = entries.get(minx + 1);
-            Entry prev = entries.get(minx);
-            Entry prevPrev = entries.get(minx);
 
             // let the spline start
             cubicPath.moveTo(cur.getXIndex(), cur.getVal() * phaseY);
 
-            prevDx = (next.getXIndex() - cur.getXIndex()) * intensity;
-            prevDy = (next.getVal() - cur.getVal()) * intensity;
+            prevDx = (cur.getXIndex() - prev.getXIndex()) * intensity;
+            prevDy = (cur.getVal() - prev.getVal()) * intensity;
 
-            cur = entries.get(minx + 1);
-            next = entries.get(minx + (entries.size() - minx > 2 ? 2 : 1));
-            curDx = (next.getXIndex() - prev.getXIndex()) * intensity;
-            curDy = (next.getVal() - prev.getVal()) * intensity;
+            curDx = (next.getXIndex() - cur.getXIndex()) * intensity;
+            curDy = (next.getVal() - cur.getVal()) * intensity;
 
             // the first cubic
             cubicPath.cubicTo(prev.getXIndex() + prevDx, (prev.getVal() + prevDy) * phaseY,
                     cur.getXIndex() - curDx,
                     (cur.getVal() - curDy) * phaseY, cur.getXIndex(), cur.getVal() * phaseY);
 
-            for (int j = minx + 2, count = Math.min(size, entries.size() - 1); j < count; j++) {
+            for (int j = minx + 1, count = Math.min(size, entries.size() - 1); j < count; j++) {
 
-                prevPrev = entries.get(j - 2);
+                prevPrev = entries.get(j == 1 ? 0 : j - 2);
                 prev = entries.get(j - 1);
                 cur = entries.get(j);
                 next = entries.get(j + 1);
