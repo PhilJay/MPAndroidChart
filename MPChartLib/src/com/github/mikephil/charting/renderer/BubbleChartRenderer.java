@@ -79,15 +79,13 @@ public class BubbleChartRenderer extends DataRenderer {
         int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
 
         sizeBuffer[0] = 0f;
-        sizeBuffer[1] = mChart.getYChartMin();
         sizeBuffer[2] = 1f;
-        sizeBuffer[3] = mChart.getYChartMax();
 
         trans.pointValuesToPixel(sizeBuffer);
 
         // calcualte the full width of 1 step on the x-axis
         final float maxBubbleWidth = Math.abs(sizeBuffer[2] - sizeBuffer[0]);
-        final float maxBubbleHeight = Math.abs(sizeBuffer[1] - sizeBuffer[3]);
+        final float maxBubbleHeight = Math.abs(mViewPortHandler.contentBottom() - mViewPortHandler.contentTop());
         final float referenceSize = Math.min(maxBubbleHeight, maxBubbleWidth);
 
         for (int j = minx; j < maxx; j++) {
@@ -216,15 +214,13 @@ public class BubbleChartRenderer extends DataRenderer {
             Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
             
             sizeBuffer[0] = 0f;
-            sizeBuffer[1] = mChart.getYChartMin();
             sizeBuffer[2] = 1f;
-            sizeBuffer[3] = mChart.getYChartMax();
 
             trans.pointValuesToPixel(sizeBuffer);
             
             // calcualte the full width of 1 step on the x-axis
             final float maxBubbleWidth = Math.abs(sizeBuffer[2] - sizeBuffer[0]);
-            final float maxBubbleHeight = Math.abs(sizeBuffer[1] - sizeBuffer[3]);
+            final float maxBubbleHeight = Math.abs(mViewPortHandler.contentBottom() - mViewPortHandler.contentTop());
             final float referenceSize = Math.min(maxBubbleHeight, maxBubbleWidth);
 
             pointBuffer[0] = (float) (entry.getXIndex() - minx) * phaseX + (float) minx;
