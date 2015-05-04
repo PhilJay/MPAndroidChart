@@ -7,6 +7,7 @@
         android:id="@+id/chart1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@android:color/white"
         android:layout_above="@+id/seekBar1" />
     
     <SeekBar
