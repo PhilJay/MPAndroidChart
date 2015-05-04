@@ -103,7 +103,7 @@ Features
 
  - **Horizontal-BarChart**
 
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/horizontal_barchart.jpg)
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/horizontal_barchart.png)
 
 
  - **PieChart (with selection, ...)**
