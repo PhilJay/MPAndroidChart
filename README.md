@@ -103,7 +103,7 @@ Features
 
  - **Horizontal-BarChart**
 
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/horizontal_barchart.jpg)
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/horizontal_barchart.png)
 
 
  - **PieChart (with selection, ...)**
@@ -117,6 +117,10 @@ Features
  - **CandleStickChart** (for financial data)
 
 ![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/candlestickchart.png)
+
+ - **BubbleChart** (area covered by bubbles indicates the value)
+
+![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/bubblechart.png)
 
  - **RadarChart** (spider web chart)
 
