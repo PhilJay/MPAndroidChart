@@ -1,6 +1,7 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,11 +17,11 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BubbleData;
+import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.data.BubbleEntry;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.BubbleData;
-import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
@@ -86,6 +87,9 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
 
         YAxis yl = mChart.getAxisLeft();
         yl.setTypeface(tf);
+        yl.setSpaceTop(30f);
+        yl.setStartAtZero(false);
+        yl.setSpaceBottom(30f);
         
         mChart.getAxisRight().setEnabled(false);
 
@@ -209,13 +213,13 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
 
         // create a dataset and give it a type
         BubbleDataSet set1 = new BubbleDataSet(yVals1, "DS 1");
-        set1.setColor(ColorTemplate.COLORFUL_COLORS[0]);
+        set1.setColor(ColorTemplate.COLORFUL_COLORS[0], 130);
         set1.setDrawValues(true);
         BubbleDataSet set2 = new BubbleDataSet(yVals2, "DS 2");
-        set2.setColor(ColorTemplate.COLORFUL_COLORS[1]);
+        set2.setColor(ColorTemplate.COLORFUL_COLORS[1], 130);
         set2.setDrawValues(true);
         BubbleDataSet set3 = new BubbleDataSet(yVals3, "DS 3");
-        set3.setColor(ColorTemplate.COLORFUL_COLORS[2]);
+        set3.setColor(ColorTemplate.COLORFUL_COLORS[2], 130);
         set3.setDrawValues(true);
 
         ArrayList<BubbleDataSet> dataSets = new ArrayList<BubbleDataSet>();
@@ -227,6 +231,7 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
         BubbleData data = new BubbleData(xVals, dataSets);
         data.setValueTypeface(tf);
         data.setValueTextSize(8f);
+        data.setValueTextColor(Color.WHITE);
         data.setHighlightCircleWidth(1.5f);
 
         mChart.setData(data);

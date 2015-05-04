@@ -36,9 +36,13 @@ public class BubbleDataSet extends BarLineScatterCandleDataSet<BubbleEntry> {
         return mHighlightCircleWidth;
     }
 
-    @Override
-    public void setColor(int color) {
-        super.setColor(Color.argb(127, Color.red(color), Color.green(color), Color.blue(color)));
+    /**
+     * Sets a color with a specific alpha value.
+     * @param color
+     * @param alpha from 0-255
+     */
+    public void setColor(int color, int alpha) {
+        super.setColor(Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color)));
     }
 
     @Override
@@ -48,8 +52,8 @@ public class BubbleDataSet extends BarLineScatterCandleDataSet<BubbleEntry> {
 
         // need chart width to guess this properly
 
-        for (BubbleEntry entry : entries)
-        {
+        for (BubbleEntry entry : entries) {
+            
             final float ymin = yMin(entry);
             final float ymax = yMax(entry);
 

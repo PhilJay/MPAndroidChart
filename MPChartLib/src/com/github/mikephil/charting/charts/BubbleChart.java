@@ -10,11 +10,10 @@ import com.github.mikephil.charting.interfaces.BubbleDataProvider;
 import com.github.mikephil.charting.renderer.BubbleChartRenderer;
 
 /**
- * The BubbleChart. Draws bubbles.
- *
- * Bubble chart implementation:
- *   Copyright 2015 Pierre-Marc Airoldi
- *   Licensed under Apache License 2.0
+ * The BubbleChart. Draws bubbles. Bubble chart implementation: Copyright 2015
+ * Pierre-Marc Airoldi Licensed under Apache License 2.0. In the BubbleChart, it
+ * is the area of the bubble, not the radius or diameter of the bubble that
+ * conveys the data.
  *
  * @author Philipp Jahoda
  */
@@ -47,7 +46,7 @@ public class BubbleChart extends BarLineChartBase<BubbleData> implements BubbleD
             mDeltaX = 1;
 
         mXChartMin = -0.5f;
-        mXChartMax = (float)mData.getXValCount() - 0.5f;
+        mXChartMax = (float) mData.getXValCount() - 0.5f;
 
         if (mRenderer != null) {
             for (BubbleDataSet set : mData.getDataSets()) {
