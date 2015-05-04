@@ -118,6 +118,10 @@ Features
 
 ![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/candlestickchart.png)
 
+ - **BubbleChart** (area covered by bubbles indicates the value)
+
+![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/bubblechart.png)
+
  - **RadarChart** (spider web chart)
 
 ![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/radarchart.png)
