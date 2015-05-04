@@ -174,7 +174,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         if (mDataNotSet)
             return;
 
-        long starttime = System.currentTimeMillis();calcModulus();
+        long starttime = System.currentTimeMillis();
+        calcModulus();
 
         mXAxisRenderer.calcXBounds(this, mXAxis.mAxisLabelModulus);
         mRenderer.calcXBounds(this, mXAxis.mAxisLabelModulus);
@@ -1191,14 +1192,20 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * returns the current x-scale factor
      */
     public float getScaleX() {
-        return mViewPortHandler.getScaleX();
+        if (mViewPortHandler == null)
+            return 1f;
+        else
+            return mViewPortHandler.getScaleX();
     }
 
     /**
      * returns the current y-scale factor
      */
     public float getScaleY() {
-        return mViewPortHandler.getScaleY();
+        if (mViewPortHandler == null)
+            return 1f;
+        else
+            return mViewPortHandler.getScaleY();
     }
 
     /**
