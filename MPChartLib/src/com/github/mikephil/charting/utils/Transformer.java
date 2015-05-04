@@ -128,7 +128,7 @@ public class Transformer {
     public float[] generateTransformedValuesBubble(List<? extends Entry> entries,
                                                  float phaseX, float phaseY, int from, int to) {
 
-        final int count = (int)Math.ceil((to - from) * phaseX) * 2;
+        final int count = from - to;
 
         float[] valuePoints = new float[count];
 

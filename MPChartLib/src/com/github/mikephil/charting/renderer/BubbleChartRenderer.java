@@ -86,7 +86,7 @@ public class BubbleChartRenderer extends DataRenderer {
         trans.pointValuesToPixel(sizeBuffer);
 
         // calcualte the full width of 1 step on the x-axis
-        final float maxBubbleWidth = sizeBuffer[2] - sizeBuffer[0];
+        final float maxBubbleWidth = Math.abs(sizeBuffer[2] - sizeBuffer[0]);
         final float maxBubbleHeight = Math.abs(sizeBuffer[1] - sizeBuffer[3]);
         final float referenceSize = Math.min(maxBubbleHeight, maxBubbleWidth);
 
@@ -223,7 +223,7 @@ public class BubbleChartRenderer extends DataRenderer {
             trans.pointValuesToPixel(sizeBuffer);
             
             // calcualte the full width of 1 step on the x-axis
-            final float maxBubbleWidth = sizeBuffer[2] - sizeBuffer[0];
+            final float maxBubbleWidth = Math.abs(sizeBuffer[2] - sizeBuffer[0]);
             final float maxBubbleHeight = Math.abs(sizeBuffer[1] - sizeBuffer[3]);
             final float referenceSize = Math.min(maxBubbleHeight, maxBubbleWidth);
 
