@@ -142,7 +142,7 @@ repositories {
 }
 
 dependencies {
-	    compile 'com.github.PhilJay:MPAndroidChart:v2.0.9'
+	    compile 'com.github.PhilJay:MPAndroidChart:v2.1.0'
 }
 ```
 
@@ -157,7 +157,7 @@ dependencies {
 <dependency>
 	    <groupId>com.github.PhilJay</groupId>
 	    <artifactId>MPAndroidChart</artifactId>
-	    <version>v2.0.9</version>
+	    <version>v2.1.0</version>
 </dependency>
 ```
 
