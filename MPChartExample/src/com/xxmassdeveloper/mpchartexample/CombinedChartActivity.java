@@ -47,6 +47,7 @@ public class CombinedChartActivity extends DemoBase {
 
         mChart = (CombinedChart) findViewById(R.id.chart1);
         mChart.setDescription("");
+        mChart.setBackgroundColor(Color.WHITE);
         mChart.setDrawGridBackground(false);
         mChart.setDrawBarShadow(false);
         
