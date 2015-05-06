@@ -4,7 +4,7 @@ package com.github.mikephil.charting.data;
 import java.util.List;
 
 /**
- * Data object that allows the combination of Line-, Bar-, Scatter- and
+ * Data object that allows the combination of Line-, Bar-, Scatter-, Bubble- and
  * CandleData. Used in the CombinedChart class.
  * 
  * @author Philipp Jahoda
@@ -52,13 +52,13 @@ public class CombinedData extends BarLineScatterCandleData<BarLineScatterCandleD
         mDataSets.addAll(data.getDataSets());
         init(data.getDataSets());
     }
-    
+
     public void setData(BubbleData data) {
         mBubbleData = data;
         mDataSets.addAll(data.getDataSets());
         init(data.getDataSets());
     }
-    
+
     public BubbleData getBubbleData() {
         return mBubbleData;
     }
@@ -81,9 +81,15 @@ public class CombinedData extends BarLineScatterCandleData<BarLineScatterCandleD
 
     @Override
     public void notifyDataChanged() {
-        mLineData.notifyDataChanged();
-        mBarData.notifyDataChanged();
-        mCandleData.notifyDataChanged();
-        mScatterData.notifyDataChanged();
+        if (mLineData != null)
+            mLineData.notifyDataChanged();
+        if (mBarData != null)
+            mBarData.notifyDataChanged();
+        if (mCandleData != null)
+            mCandleData.notifyDataChanged();
+        if (mScatterData != null)
+            mScatterData.notifyDataChanged();
+        if (mBubbleData != null)
+            mBubbleData.notifyDataChanged();
     }
 }
