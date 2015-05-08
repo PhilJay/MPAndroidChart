@@ -39,26 +39,30 @@ public abstract class Utils {
      * 
      * @param res
      */
+    @SuppressWarnings("deprecation")
     public static void init(Context context) {
 
         if (context == null) {
-            //noinspection deprecation
+            // noinspection deprecation
             mMinimumFlingVelocity = ViewConfiguration.getMinimumFlingVelocity();
-            //noinspection deprecation
+            // noinspection deprecation
             mMaximumFlingVelocity = ViewConfiguration.getMaximumFlingVelocity();
+
+            Log.e("MPAndroidChart, Utils.init(...)", "PROVIDED CONTEXT OBJECT IS NULL");
+
         } else {
             ViewConfiguration viewConfiguration = ViewConfiguration.get(context);
             mMinimumFlingVelocity = viewConfiguration.getScaledMinimumFlingVelocity();
             mMaximumFlingVelocity = viewConfiguration.getScaledMaximumFlingVelocity();
+
+            Resources res = context.getResources();
+            mMetrics = res.getDisplayMetrics();
         }
-        
-        Resources res = context.getResources();
-        mMetrics = res.getDisplayMetrics();
     }
 
     /**
-     * initialize method, called inside the Chart.init() method.
-     * backwards compatibility - to not break existing code
+     * initialize method, called inside the Chart.init() method. backwards
+     * compatibility - to not break existing code
      *
      * @param res
      */
@@ -67,9 +71,9 @@ public abstract class Utils {
 
         mMetrics = res.getDisplayMetrics();
 
-        //noinspection deprecation
+        // noinspection deprecation
         mMinimumFlingVelocity = ViewConfiguration.getMinimumFlingVelocity();
-        //noinspection deprecation
+        // noinspection deprecation
         mMaximumFlingVelocity = ViewConfiguration.getMaximumFlingVelocity();
     }
 
@@ -471,7 +475,8 @@ public abstract class Utils {
         return p;
     }
 
-    public static void velocityTrackerPointerUpCleanUpIfNecessary(MotionEvent ev, VelocityTracker tracker) {
+    public static void velocityTrackerPointerUpCleanUpIfNecessary(MotionEvent ev,
+            VelocityTracker tracker) {
 
         // Check the dot product of current velocities.
         // If the pointer that left was opposing another velocity vector, clear.
@@ -481,7 +486,8 @@ public abstract class Utils {
         final float x1 = tracker.getXVelocity(id1);
         final float y1 = tracker.getYVelocity(id1);
         for (int i = 0, count = ev.getPointerCount(); i < count; i++) {
-            if (i == upIndex) continue;
+            if (i == upIndex)
+                continue;
 
             final int id2 = ev.getPointerId(i);
             final float x = x1 * tracker.getXVelocity(id2);
@@ -496,8 +502,8 @@ public abstract class Utils {
     }
 
     /**
-     * Original method view.postInvalidateOnAnimation() only supportd in API >= 16,
-     * This is a replica of the code from ViewCompat.
+     * Original method view.postInvalidateOnAnimation() only supportd in API >=
+     * 16, This is a replica of the code from ViewCompat.
      *
      * @param view
      */

@@ -43,19 +43,6 @@ public class ColorTemplate {
             Color.rgb(140, 234, 255), Color.rgb(255, 140, 157)
     };
 
-    // public static final int[] FRESH_COLORS = {
-    // R.color.fresh_1, R.color.fresh_2, R.color.fresh_3, R.color.fresh_4,
-    // R.color.fresh_5
-    // };
-    // public static final int[] MONO_COLORS = {
-    // R.color.mono_1, R.color.mono_2, R.color.mono_3, R.color.mono_4,
-    // R.color.mono_5
-    // };
-    // public static final int[] GREEN_COLORS = {
-    // R.color.greens_1, R.color.greens_2, R.color.greens_3, R.color.greens_4,
-    // R.color.greens_5
-    // };
-
     /**
      * Returns the Android ICS holo blue light color.
      * 

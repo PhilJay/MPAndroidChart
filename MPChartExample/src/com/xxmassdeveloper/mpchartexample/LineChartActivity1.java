@@ -63,6 +63,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setOnChartGestureListener(this);
         mChart.setOnChartValueSelectedListener(this);
+        mChart.setDrawGridBackground(false);
 
         // no description text
         mChart.setDescription("");

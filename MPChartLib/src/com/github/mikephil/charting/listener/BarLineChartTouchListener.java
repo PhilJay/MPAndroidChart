@@ -604,7 +604,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
         mDecelerationLastTime = currentTime;
 
-        if (Math.abs(mDecelerationVelocity.x) >= 0.001 || Math.abs(mDecelerationVelocity.y) >= 0.001)
+        if (Math.abs(mDecelerationVelocity.x) >= 0.01 || Math.abs(mDecelerationVelocity.y) >= 0.01)
             Utils.postInvalidateOnAnimation(mChart); // This causes computeScroll to fire, recommended for this by Google
         else
             stopDeceleration();
