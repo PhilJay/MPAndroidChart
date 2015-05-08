@@ -45,12 +45,19 @@ public class ViewPortHandler {
      * @param width
      * @param height
      */
+
     public void setChartDimens(float width, float height) {
+
+        float offsetLeft = this.offsetLeft();
+        float offsetTop = this.offsetTop();
+        float offsetRight = this.offsetRight();
+        float offsetBottom = this.offsetBottom();
+
         mChartHeight = height;
         mChartWidth = width;
 
-        if (mContentRect.width() <= 0 || mContentRect.height() <= 0)
-            mContentRect.set(0, 0, width, height);
+        restrainViewPort(offsetLeft, offsetTop, offsetRight, offsetBottom);
+
     }
 
     public boolean hasChartDimens() {
