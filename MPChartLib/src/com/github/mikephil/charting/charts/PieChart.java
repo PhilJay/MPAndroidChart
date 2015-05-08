@@ -46,6 +46,9 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
     /** if true, the values inside the piechart are drawn as percent values */
     private boolean mUsePercentValues = false;
+    
+    /** if true, the slices of the piechart are rounded */
+    private boolean mDrawRoundedSlices = false;
 
     /**
      * variable for the text that is drawn in the center of the pie-chart. If
@@ -440,10 +443,15 @@ public class PieChart extends PieRadarChartBase<PieData> {
         mHoleRadiusPercent = percent;
     }
 
+    /**
+     * Returns the size of the hole radius in percent of the total radius.
+     * 
+     * @return
+     */
     public float getHoleRadius() {
         return mHoleRadiusPercent;
     }
-    
+
     public void setTransparentCircleColor(int color) {
         ((PieChartRenderer) mRenderer).getPaintTransparentCircle().setColor(color);
     }
@@ -480,6 +488,16 @@ public class PieChart extends PieRadarChartBase<PieData> {
      */
     public boolean isDrawSliceTextEnabled() {
         return mDrawXLabels;
+    }
+
+    /**
+     * Returns true if the chart is set to draw each end of a pie-slice
+     * "rounded".
+     * 
+     * @return
+     */
+    public boolean isDrawRoundedSlicesEnabled() {
+        return mDrawRoundedSlices;
     }
 
     /**

@@ -102,11 +102,6 @@ public class PieChartRenderer extends DataRenderer {
                 return;
         }
 
-        // Paint p = new Paint();
-        // p.setStyle(Paint.Style.FILL);
-        // p.setColor(Color.BLACK);
-        // c.drawRect(mChart.getCircleBox(), p);
-
         mDrawBitmap.eraseColor(Color.TRANSPARENT);
 
         PieData pieData = mChart.getData();
@@ -122,14 +117,12 @@ public class PieChartRenderer extends DataRenderer {
 
         float angle = mChart.getRotationAngle();
 
-        int cnt = 0;
-
         List<Entry> entries = dataSet.getYVals();
         float[] drawAngles = mChart.getDrawAngles();
 
         for (int j = 0; j < entries.size(); j++) {
 
-            float newangle = drawAngles[cnt];
+            float newangle = drawAngles[j];
             float sliceSpace = dataSet.getSliceSpace();
 
             Entry e = entries.get(j);
@@ -143,13 +136,12 @@ public class PieChartRenderer extends DataRenderer {
                     mRenderPaint.setColor(dataSet.getColor(j));
                     mBitmapCanvas.drawArc(mChart.getCircleBox(),
                             (angle + sliceSpace / 2f) * mAnimator.getPhaseY(),
-                            newangle * mAnimator.getPhaseY()
-                                    - sliceSpace / 2f, true, mRenderPaint);
+                            (newangle - sliceSpace / 2f) * mAnimator.getPhaseY(),
+                            true, mRenderPaint);
                 }
             }
 
             angle += newangle * mAnimator.getPhaseX();
-            cnt++;
         }
     }
 
@@ -237,6 +229,7 @@ public class PieChartRenderer extends DataRenderer {
 
     @Override
     public void drawExtras(Canvas c) {
+        // drawCircles(c);
         drawHole(c);
         c.drawBitmap(mDrawBitmap, 0, 0, mRenderPaint);
         drawCenterText(c);
@@ -375,6 +368,55 @@ public class PieChartRenderer extends DataRenderer {
             mBitmapCanvas.drawArc(highlighted, angle + set.getSliceSpace() / 2f, sliceDegrees
                     * mAnimator.getPhaseY()
                     - set.getSliceSpace() / 2f, true, mRenderPaint);
+        }
+    }
+
+    /**
+     * This gives all pie-slices a rounded edge.
+     * 
+     * @param c
+     */
+    protected void drawRoundedSlices(Canvas c) {
+
+        if (!mChart.isDrawRoundedSlicesEnabled())
+            return;
+
+        PieDataSet dataSet = mChart.getData().getDataSet();
+
+        if (!dataSet.isVisible())
+            return;
+        
+        PointF center = mChart.getCenterCircleBox();
+        float r = mChart.getRadius();
+
+        // calculate the radius of the "slice-circle"
+        float circleRadius = (r - (r * mChart.getHoleRadius() / 100f)) / 2f;
+
+        List<Entry> entries = dataSet.getYVals();
+        float[] drawAngles = mChart.getDrawAngles();
+        float angle = mChart.getRotationAngle();
+
+        for (int j = 0; j < entries.size(); j++) {
+
+            float newangle = drawAngles[j];
+
+            Entry e = entries.get(j);
+
+            // draw only if the value is greater than zero
+            if ((Math.abs(e.getVal()) > 0.000001)) {
+
+                float x = (float) ((r - circleRadius)
+                        * Math.cos(Math.toRadians((angle + newangle)
+                                * mAnimator.getPhaseY())) + center.x);
+                float y = (float) ((r - circleRadius)
+                        * Math.sin(Math.toRadians((angle + newangle)
+                                * mAnimator.getPhaseY())) + center.y);
+
+                mRenderPaint.setColor(dataSet.getColor(j));
+                mBitmapCanvas.drawCircle(x, y, circleRadius, mRenderPaint);
+            }
+
+            angle += newangle * mAnimator.getPhaseX();
         }
     }
 }
