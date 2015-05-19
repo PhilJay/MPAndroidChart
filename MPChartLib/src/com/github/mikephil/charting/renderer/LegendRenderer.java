@@ -16,6 +16,7 @@ import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class LegendRenderer extends Renderer {
@@ -127,6 +128,12 @@ public class LegendRenderer extends Renderer {
                     colors.add(clrs.get(j));
                 }
             }
+        }
+
+        if (mLegend.getExtraColors() != null && mLegend.getExtraLabels() != null) {
+            for (int color : mLegend.getExtraColors())
+                colors.add(color);
+            Collections.addAll(labels, mLegend.getExtraLabels());
         }
 
         mLegend.setColors(colors);

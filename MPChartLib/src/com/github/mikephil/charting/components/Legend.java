@@ -31,11 +31,17 @@ public class Legend extends ComponentBase {
         LEFT_TO_RIGHT, RIGHT_TO_LEFT
     }
 
-    /** the legend colors */
+    /** the legend colors array, each color is for the form drawn at the same index */
     private int[] mColors;
 
-    /** the legend labels */
+    /** the legend text array. a null label will start a group. */
     private String[] mLabels;
+
+    /** colors that will be appended to the end of the colors array after calculating the legend. */
+    private int[] mExtraColors;
+
+    /** labels that will be appended to the end of the labels array after calculating the legend. a null label will start a group. */
+    private String[] mExtraLabels;
 
     /** the position relative to the chart the legend is drawn on */
     private LegendPosition mPosition = LegendPosition.BELOW_CHART_LEFT;
@@ -219,6 +225,36 @@ public class Legend extends ComponentBase {
      */
     public String getLabel(int index) {
         return mLabels[index];
+    }
+
+    /**
+     * colors that will be appended to the end of the colors array after calculating the legend.
+     */
+    public int[] getExtraColors() {
+        return mExtraColors;
+    }
+
+    /**
+     * colors that will be appended to the end of the colors array after calculating the legend.
+     * (if the legend has already been calculated, you will need to call notifyDataSetChanged())
+     */
+    public void setExtraColors(List<Integer> colors) {
+        this.mExtraColors = Utils.convertIntegers(colors);
+    }
+
+    /**
+     * labels that will be appended to the end of the labels array after calculating the legend. a null label will start a group.
+     */
+    public String[] getExtraLabels() {
+        return mExtraLabels;
+    }
+
+    /**
+     * labels that will be appended to the end of the labels array after calculating the legend. a null label will start a group.
+     * (if the legend has already been calculated, you will need to call notifyDataSetChanged())
+     */
+    public void setExtraLabels(String[] labels) {
+        this.mExtraLabels = labels;
     }
 
     /**
