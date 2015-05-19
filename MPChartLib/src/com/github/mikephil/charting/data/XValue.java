@@ -31,7 +31,16 @@ public class XValue {
         return image;
     }
 
-    public static List<XValue> convertStringList(List<String> xValueStrings) {
+    public static List<String> toStringList(List<XValue> xValues) {
+        ArrayList<String> xValueStrings = new ArrayList<>();
+        for (XValue xValue : xValues) {
+            xValueStrings.add(xValue.getValue());
+        }
+
+        return xValueStrings;
+    }
+
+    public static List<XValue> fromStringList(List<String> xValueStrings) {
         ArrayList<XValue> xValues = new ArrayList<>();
         for (String xValueString : xValueStrings) {
             xValues.add(new XValue(xValueString));
