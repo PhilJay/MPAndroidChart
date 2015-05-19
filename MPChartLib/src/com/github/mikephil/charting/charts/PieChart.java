@@ -70,6 +70,8 @@ public class PieChart extends PieRadarChartBase<PieData> {
     /** if enabled, centertext is drawn */
     private boolean mDrawCenterText = true;
 
+    private boolean mDrawImages = false;
+
     public PieChart(Context context) {
         super(context);
     }
@@ -518,5 +520,13 @@ public class PieChart extends PieRadarChartBase<PieData> {
      */
     public boolean isUsePercentValuesEnabled() {
         return mUsePercentValues;
+    }
+
+    public boolean isDrawImagesEnabled() {
+        return mDrawImages;
+    }
+
+    public void setDrawImages(boolean mDrawImages) {
+        this.mDrawImages = mDrawImages;
     }
 }
