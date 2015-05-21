@@ -92,9 +92,11 @@ public class LegendRenderer extends Renderer {
                     colors.add(clrs.get(j));
                 }
 
-                // add the legend description label
-                colors.add(-2);
-                labels.add(bds.getLabel());
+                if (bds.getLabel() != null) {
+                    // add the legend description label
+                    colors.add(-2);
+                    labels.add(bds.getLabel());
+                }
 
             } else if (dataSet instanceof PieDataSet) {
 
@@ -107,9 +109,11 @@ public class LegendRenderer extends Renderer {
                     colors.add(clrs.get(j));
                 }
 
-                // add the legend description label
-                colors.add(-2);
-                labels.add(pds.getLabel());
+                if (pds.getLabel() != null) {
+                    // add the legend description label
+                    colors.add(-2);
+                    labels.add(pds.getLabel());
+                }
 
             } else { // all others
 
