@@ -344,12 +344,12 @@ public class LegendRenderer extends Renderer {
                             x -= Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
 
                         if (!wasStacked) {
-                            drawLabel(c, x, posY + mLegend.mTextHeightMax / 2f, mLegend.getLabel(i));
+                            drawLabel(c, x, posY + mLegend.mTextHeightMax / 2f, labels[i]);
 
                             posY += textDrop;
                         } else {
                             posY += mLegend.mTextHeightMax * 3f;
-                            drawLabel(c, x, posY - mLegend.mTextHeightMax, mLegend.getLabel(i));
+                            drawLabel(c, x, posY - mLegend.mTextHeightMax, labels[i]);
                         }
 
                         // make a step down
@@ -422,12 +422,12 @@ public class LegendRenderer extends Renderer {
                             x -= Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
 
                         if (!wasStacked) {
-                            drawLabel(c, x, posY + mLegend.mTextHeightMax / 2f, mLegend.getLabel(i));
+                            drawLabel(c, x, posY + mLegend.mTextHeightMax / 2f, labels[i]);
 
                             posY += textDrop;
                         } else {
                             posY += mLegend.mTextHeightMax * 3f;
-                            drawLabel(c, x, posY - mLegend.mTextHeightMax, mLegend.getLabel(i));
+                            drawLabel(c, x, posY - mLegend.mTextHeightMax, labels[i]);
                         }
 
                         // make a step down
