@@ -63,6 +63,9 @@ public class XAxis extends AxisBase {
     /** the position of the x-labels relative to the chart */
     private XAxisPosition mPosition = XAxisPosition.TOP;
 
+    /** the position of the x-line relative to the chart */
+    private XAxisPosition mLinePosition = XAxisPosition.TOP;
+
     /** enum for the position of the x-labels relative to the chart */
     public enum XAxisPosition {
         TOP, BOTTOM, BOTH_SIDED, TOP_INSIDE, BOTTOM_INSIDE
@@ -86,6 +89,22 @@ public class XAxis extends AxisBase {
      */
     public void setPosition(XAxisPosition pos) {
         mPosition = pos;
+    }
+
+    /**
+     * returns the position of the x-line
+     */
+    public XAxisPosition getLinePosition() {
+        return mLinePosition;
+    }
+
+    /**
+     * sets the position of the x-line
+     *
+     * @param pos
+     */
+    public void setLinePosition(XAxisPosition position) {
+        this.mLinePosition = position;
     }
 
     /**
