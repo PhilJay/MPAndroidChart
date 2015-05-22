@@ -60,6 +60,9 @@ public class XAxis extends AxisBase {
      */
     private boolean mAvoidFirstLastClipping = false;
 
+    /** flag indicating if the xAxis center line should be drawn or not */
+    private boolean mDrawAxisCenterLine = false;
+
     /** the position of the x-labels relative to the chart */
     private XAxisPosition mPosition = XAxisPosition.TOP;
 
@@ -196,5 +199,23 @@ public class XAxis extends AxisBase {
         }
 
         return longest;
+    }
+
+    /**
+     * returns true if draw-center-line is enabled, false if not
+     *
+     * @return
+     */
+    public boolean getDrawAxisCenterLine() {
+        return mDrawAxisCenterLine;
+    }
+
+    /**
+     * set this to true to draw center xAxis line, false if not
+     *
+     * @param enabled
+     */
+    public void setDrawAxisCenterLine(boolean enabled) {
+        this.mDrawAxisCenterLine = enabled;
     }
 }
