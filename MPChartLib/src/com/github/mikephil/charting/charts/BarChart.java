@@ -344,7 +344,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         };
         
         getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
-        return (int) (((pts[0] <= 0) ? 0 : ((pts[0])) / div) + 1);
+        return (int) ((pts[0] <= getXChartMin()) ? 0 : (pts[0] / div) + 1);
     }
 
     /**

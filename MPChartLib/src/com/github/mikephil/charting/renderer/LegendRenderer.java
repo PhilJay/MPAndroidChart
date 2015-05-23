@@ -168,7 +168,7 @@ public class LegendRenderer extends Renderer {
         mLegendLabelPaint.setTextSize(mLegend.getTextSize());
         mLegendLabelPaint.setColor(mLegend.getTextColor());
 
-        String[] labels = mLegend.getLegendLabels();
+        String[] labels = mLegend.getLabels();
         int[] colors = mLegend.getColors();
 
         float formToTextSpace = mLegend.getFormToTextSpace();

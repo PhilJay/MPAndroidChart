@@ -32,6 +32,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.ValueFormatter;
 import com.xxmassdeveloper.mpchartexample.custom.MyValueFormatter;
@@ -114,6 +115,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         l.setFormSize(9f);
         l.setTextSize(11f);
         l.setXEntrySpace(4f);
+        //l.setCustom(ColorTemplate.VORDIPLOM_COLORS, new String[] { "a","b", "c", "d", "e" });
 
         setData(12, 50);
 
@@ -277,6 +279,8 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         Log.i("bounds", bounds.toString());
         Log.i("position", position.toString());
+        
+        Log.i("x-index", "low: " + mChart.getLowestVisibleXIndex() + ", high: " + mChart.getHighestVisibleXIndex());
     }
 
     public void onNothingSelected() {

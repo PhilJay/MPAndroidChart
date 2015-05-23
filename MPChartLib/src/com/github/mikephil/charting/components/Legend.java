@@ -31,21 +31,30 @@ public class Legend extends ComponentBase {
         LEFT_TO_RIGHT, RIGHT_TO_LEFT
     }
 
-    /** the legend colors array, each color is for the form drawn at the same index */
+    /**
+     * the legend colors array, each color is for the form drawn at the same
+     * index
+     */
     private int[] mColors;
 
     /** the legend text array. a null label will start a group. */
     private String[] mLabels;
 
-    /** colors that will be appended to the end of the colors array after calculating the legend. */
+    /**
+     * colors that will be appended to the end of the colors array after
+     * calculating the legend.
+     */
     private int[] mExtraColors;
 
-    /** labels that will be appended to the end of the labels array after calculating the legend. a null label will start a group. */
+    /**
+     * labels that will be appended to the end of the labels array after
+     * calculating the legend. a null label will start a group.
+     */
     private String[] mExtraLabels;
 
     /**
-     * Are the legend labels/colors a custom value or auto calculated? If false, then it's auto, if true, then custom.
-     * default false (automatic legend)
+     * Are the legend labels/colors a custom value or auto calculated? If false,
+     * then it's auto, if true, then custom. default false (automatic legend)
      */
     private boolean mIsLegendCustom = false;
 
@@ -79,7 +88,7 @@ public class Legend extends ComponentBase {
     private float mFormToTextSpace = 5f;
 
     /** the space that should be left between stacked forms */
-    private float mStackSpace = 3f;    
+    private float mStackSpace = 3f;
 
     /** default constructor */
     public Legend() {
@@ -137,13 +146,15 @@ public class Legend extends ComponentBase {
         this.mColors = Utils.convertIntegers(colors);
         this.mLabels = Utils.convertStrings(labels);
     }
-    
+
     public void setColors(List<Integer> colors) {
-        mColors = Utils.convertIntegers(colors);;
+        mColors = Utils.convertIntegers(colors);
+        ;
     }
-    
+
     public void setLabels(List<String> labels) {
-        mLabels = Utils.convertStrings(labels);;
+        mLabels = Utils.convertStrings(labels);
+        ;
     }
 
     /**
@@ -209,7 +220,7 @@ public class Legend extends ComponentBase {
      * 
      * @return
      */
-    public String[] getLegendLabels() {
+    public String[] getLabels() {
         return mLabels;
     }
 
@@ -234,81 +245,84 @@ public class Legend extends ComponentBase {
     }
 
     /**
-     * colors that will be appended to the end of the colors array after calculating the legend.
+     * colors that will be appended to the end of the colors array after
+     * calculating the legend.
      */
     public int[] getExtraColors() {
         return mExtraColors;
     }
 
     /**
-     * colors that will be appended to the end of the colors array after calculating the legend.
-     * (if the legend has already been calculated, you will need to call notifyDataSetChanged())
+     * colors that will be appended to the end of the colors array after
+     * calculating the legend. (if the legend has already been calculated, you
+     * will need to call notifyDataSetChanged())
      */
     public void setExtraColors(List<Integer> colors) {
         this.mExtraColors = Utils.convertIntegers(colors);
     }
 
     /**
-     * labels that will be appended to the end of the labels array after calculating the legend. a null label will start a group.
+     * labels that will be appended to the end of the labels array after
+     * calculating the legend. a null label will start a group.
      */
     public String[] getExtraLabels() {
         return mExtraLabels;
     }
 
     /**
-     * labels that will be appended to the end of the labels array after calculating the legend. a null label will start a group.
-     * (if the legend has already been calculated, you will need to call notifyDataSetChanged())
+     * labels that will be appended to the end of the labels array after
+     * calculating the legend. a null label will start a group. (if the legend
+     * has already been calculated, you will need to call
+     * notifyDataSetChanged())
      */
     public void setExtraLabels(String[] labels) {
         this.mExtraLabels = labels;
     }
 
     /**
-     * Sets a custom legend's labels and colors arrays.
-     * The colors count should match the labels count.
-     * * Each color is for the form drawn at the same index.
-     * * A null label will start a group.
-     * * A (-2) color will avoid drawing a form
-     * This will disable the feature that automatically calculates the legend labels and colors from the datasets.
-     * Call resetLegendToAuto(...) to re-enable automatic calculation.
+     * Sets a custom legend's labels and colors arrays. The colors count should
+     * match the labels count. * Each color is for the form drawn at the same
+     * index. * A null label will start a group. * A (-2) color will avoid
+     * drawing a form This will disable the feature that automatically
+     * calculates the legend labels and colors from the datasets. Call
+     * resetCustom() to re-enable automatic calculation (and then
+     * notifyDataSetChanged() is needed to auto-calculate the legend again)
      */
-    public void setLegend(int[] colors, String[] labels)
-    {
+    public void setCustom(int[] colors, String[] labels) {
         mLabels = labels;
         mColors = colors;
         mIsLegendCustom = true;
     }
 
     /**
-     * Sets a custom legend's labels and colors arrays.
-     * The colors count should match the labels count.
-     * * Each color is for the form drawn at the same index.
-     * * A null label will start a group.
-     * * A (-2) color will avoid drawing a form
-     * This will disable the feature that automatically calculates the legend labels and colors from the datasets.
-     * Call resetLegendToAuto(...) to re-enable automatic calculation (and then notifyDataSetChanged() is needed)
+     * Sets a custom legend's labels and colors arrays. The colors count should
+     * match the labels count. * Each color is for the form drawn at the same
+     * index. * A null label will start a group. * A (-2) color will avoid
+     * drawing a form This will disable the feature that automatically
+     * calculates the legend labels and colors from the datasets. Call
+     * resetCustom() to re-enable automatic calculation (and then
+     * notifyDataSetChanged() is needed to auto-calculate the legend again)
      */
-    public void setLegend(List<Integer> colors, List<String> labels)
-    {
+    public void setCustom(List<Integer> colors, List<String> labels) {
         mColors = Utils.convertIntegers(colors);
         mLabels = Utils.convertStrings(labels);
         mIsLegendCustom = true;
     }
 
     /**
-     * Calling this will disable the custom legend labels (set by setLegend(...)). Instead, the labels will again be calculated automatically (after notifyDataSetChanged() is called).
+     * Calling this will disable the custom legend labels (set by
+     * setCustom(...)). Instead, the labels will again be calculated
+     * automatically (after notifyDataSetChanged() is called).
      */
-    public void resetLegendToAuto()
-    {
+    public void resetCustom() {
         mIsLegendCustom = false;
     }
 
     /**
-     * @return true if a custom legend labels and colors has been set
-     * default false (automatic legend)
+     * @return true if a custom legend labels and colors has been set default
+     *         false (automatic legend)
      */
-    public boolean isLegendCustom()
-    {
+    public boolean isLegendCustom() {
         return mIsLegendCustom;
     }
 
@@ -443,28 +457,29 @@ public class Legend extends ComponentBase {
         this.mFormToTextSpace = Utils.convertDpToPixel(space);
     }
 
-//    /**
-//     * applies the state from the legend in the parameter to this legend (except
-//     * colors, labels and offsets)
-//     * 
-//     * @param l
-//     */
-//    public void apply(Legend l) {
-//
-//        mPosition = l.mPosition;
-//        mShape = l.mShape;
-//        mTypeface = l.mTypeface;
-//        mFormSize = l.mFormSize;
-//        mXEntrySpace = l.mXEntrySpace;
-//        mYEntrySpace = l.mYEntrySpace;
-//        mFormToTextSpace = l.mFormToTextSpace;
-//        mTextSize = l.mTextSize;
-//        mStackSpace = l.mStackSpace;
-//        mTextColor = l.mTextColor;
-//        mEnabled = l.mEnabled;
-//        mXOffset = l.mXOffset;
-//        mYOffset = l.mYOffset;
-//    }
+    // /**
+    // * applies the state from the legend in the parameter to this legend
+    // (except
+    // * colors, labels and offsets)
+    // *
+    // * @param l
+    // */
+    // public void apply(Legend l) {
+    //
+    // mPosition = l.mPosition;
+    // mShape = l.mShape;
+    // mTypeface = l.mTypeface;
+    // mFormSize = l.mFormSize;
+    // mXEntrySpace = l.mXEntrySpace;
+    // mYEntrySpace = l.mYEntrySpace;
+    // mFormToTextSpace = l.mFormToTextSpace;
+    // mTextSize = l.mTextSize;
+    // mStackSpace = l.mStackSpace;
+    // mTextColor = l.mTextColor;
+    // mEnabled = l.mEnabled;
+    // mXOffset = l.mXOffset;
+    // mYOffset = l.mYOffset;
+    // }
 
     /**
      * returns the space that is left out between stacked forms (with no label)
@@ -546,9 +561,9 @@ public class Legend extends ComponentBase {
 
     /** the total height of the legend (needed height space) */
     public float mNeededHeight = 0f;
-    
+
     public float mTextHeightMax = 0f;
-    
+
     public float mTextWidthMax = 0f;
 
     /**
