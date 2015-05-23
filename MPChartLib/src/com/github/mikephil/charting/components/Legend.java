@@ -31,11 +31,23 @@ public class Legend extends ComponentBase {
         LEFT_TO_RIGHT, RIGHT_TO_LEFT
     }
 
-    /** the legend colors */
+    /** the legend colors array, each color is for the form drawn at the same index */
     private int[] mColors;
 
-    /** the legend labels */
+    /** the legend text array. a null label will start a group. */
     private String[] mLabels;
+
+    /** colors that will be appended to the end of the colors array after calculating the legend. */
+    private int[] mExtraColors;
+
+    /** labels that will be appended to the end of the labels array after calculating the legend. a null label will start a group. */
+    private String[] mExtraLabels;
+
+    /**
+     * Are the legend labels/colors a custom value or auto calculated? If false, then it's auto, if true, then custom.
+     * default false (automatic legend)
+     */
+    private boolean mIsLegendCustom = false;
 
     /** the position relative to the chart the legend is drawn on */
     private LegendPosition mPosition = LegendPosition.BELOW_CHART_LEFT;
@@ -219,6 +231,85 @@ public class Legend extends ComponentBase {
      */
     public String getLabel(int index) {
         return mLabels[index];
+    }
+
+    /**
+     * colors that will be appended to the end of the colors array after calculating the legend.
+     */
+    public int[] getExtraColors() {
+        return mExtraColors;
+    }
+
+    /**
+     * colors that will be appended to the end of the colors array after calculating the legend.
+     * (if the legend has already been calculated, you will need to call notifyDataSetChanged())
+     */
+    public void setExtraColors(List<Integer> colors) {
+        this.mExtraColors = Utils.convertIntegers(colors);
+    }
+
+    /**
+     * labels that will be appended to the end of the labels array after calculating the legend. a null label will start a group.
+     */
+    public String[] getExtraLabels() {
+        return mExtraLabels;
+    }
+
+    /**
+     * labels that will be appended to the end of the labels array after calculating the legend. a null label will start a group.
+     * (if the legend has already been calculated, you will need to call notifyDataSetChanged())
+     */
+    public void setExtraLabels(String[] labels) {
+        this.mExtraLabels = labels;
+    }
+
+    /**
+     * Sets a custom legend's labels and colors arrays.
+     * The colors count should match the labels count.
+     * * Each color is for the form drawn at the same index.
+     * * A null label will start a group.
+     * * A (-2) color will avoid drawing a form
+     * This will disable the feature that automatically calculates the legend labels and colors from the datasets.
+     * Call resetLegendToAuto(...) to re-enable automatic calculation.
+     */
+    public void setLegend(int[] colors, String[] labels)
+    {
+        mLabels = labels;
+        mColors = colors;
+        mIsLegendCustom = true;
+    }
+
+    /**
+     * Sets a custom legend's labels and colors arrays.
+     * The colors count should match the labels count.
+     * * Each color is for the form drawn at the same index.
+     * * A null label will start a group.
+     * * A (-2) color will avoid drawing a form
+     * This will disable the feature that automatically calculates the legend labels and colors from the datasets.
+     * Call resetLegendToAuto(...) to re-enable automatic calculation (and then notifyDataSetChanged() is needed)
+     */
+    public void setLegend(List<Integer> colors, List<String> labels)
+    {
+        mColors = Utils.convertIntegers(colors);
+        mLabels = Utils.convertStrings(labels);
+        mIsLegendCustom = true;
+    }
+
+    /**
+     * Calling this will disable the custom legend labels (set by setLegend(...)). Instead, the labels will again be calculated automatically (after notifyDataSetChanged() is called).
+     */
+    public void resetLegendToAuto()
+    {
+        mIsLegendCustom = false;
+    }
+
+    /**
+     * @return true if a custom legend labels and colors has been set
+     * default false (automatic legend)
+     */
+    public boolean isLegendCustom()
+    {
+        return mIsLegendCustom;
     }
 
     /**
