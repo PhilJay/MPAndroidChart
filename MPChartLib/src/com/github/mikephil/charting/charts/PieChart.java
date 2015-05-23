@@ -70,6 +70,10 @@ public class PieChart extends PieRadarChartBase<PieData> {
     /** if enabled, centertext is drawn */
     private boolean mDrawCenterText = true;
 
+    private boolean mCenterTextWordWrapEnabled = false;
+
+    private float mCenterTextRadiusPercent = 1.f;
+
     public PieChart(Context context) {
         super(context);
     }
@@ -518,5 +522,39 @@ public class PieChart extends PieRadarChartBase<PieData> {
      */
     public boolean isUsePercentValuesEnabled() {
         return mUsePercentValues;
+    }
+
+    /**
+     * should the center text be word wrapped?
+     * note that word wrapping takes a toll on performance
+     * if word wrapping is disabled, newlines are still respected
+     */
+    public void setCenterTextWordWrapEnabled(boolean enabled) {
+        mCenterTextWordWrapEnabled = enabled;
+    }
+
+    /**
+     * should the center text be word wrapped?
+     * note that word wrapping takes a toll on performance
+     * if word wrapping is disabled, newlines are still respected
+     */
+    public boolean isCenterTextWordWrapEnabled() {
+        return mCenterTextWordWrapEnabled;
+    }
+
+    /**
+     * the rectangular radius of the bounding box for the center text, as a percentage of the pie hole
+     * default 1.f (100%)
+     */
+    public void setCenterTextRadiusPercent(float percent) {
+        mCenterTextRadiusPercent = percent;
+    }
+
+    /**
+     * the rectangular radius of the bounding box for the center text, as a percentage of the pie hole
+     * default 1.f (100%)
+     */
+    public float getCenterTextRadiusPercent() {
+        return mCenterTextRadiusPercent;
     }
 }

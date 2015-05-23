@@ -9,6 +9,9 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.PieChart;
@@ -36,7 +39,12 @@ public class PieChartRenderer extends DataRenderer {
      * paint object for the text that can be displayed in the center of the
      * chart
      */
-    private Paint mCenterTextPaint;
+    private TextPaint mCenterTextPaint;
+
+    private StaticLayout mCenterTextLayout;
+    private String mCenterTextLastValue;
+    private RectF mCenterTextLastBounds = new RectF();
+    private RectF[] mRectBuffer = { new RectF(), new RectF(), new RectF() };
 
     /** Bitmap for drawing the center hole */
     protected Bitmap mDrawBitmap;
@@ -56,7 +64,7 @@ public class PieChartRenderer extends DataRenderer {
         mTransparentCirclePaint.setColor(Color.WHITE);
         mTransparentCirclePaint.setStyle(Style.FILL);
 
-        mCenterTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mCenterTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
         mCenterTextPaint.setColor(Color.BLACK);
         mCenterTextPaint.setTextSize(Utils.convertDpToPixel(12f));
         mCenterTextPaint.setTextAlign(Align.CENTER);
@@ -74,7 +82,7 @@ public class PieChartRenderer extends DataRenderer {
         return mTransparentCirclePaint;
     }
 
-    public Paint getPaintCenterText() {
+    public TextPaint getPaintCenterText() {
         return mCenterTextPaint;
     }
 
@@ -282,35 +290,80 @@ public class PieChartRenderer extends DataRenderer {
 
             PointF center = mChart.getCenterCircleBox();
 
-            // get all lines from the text
-            String[] lines = centerText.split("\n");
+            if (mChart.isCenterTextWordWrapEnabled()) {
 
-            float maxlineheight = 0f;
+                float innerRadius = mChart.isDrawHoleEnabled() && mChart.isHoleTransparent() ? mChart.getRadius() * (mChart.getHoleRadius() / 100f) : mChart.getRadius();
 
-            // calc the maximum line height
-            for (String line : lines) {
-                float curHeight = Utils.calcTextHeight(mCenterTextPaint, line);
-                if (curHeight > maxlineheight)
-                    maxlineheight = curHeight;
-            }
+                RectF holeRect = mRectBuffer[0];
+                holeRect.left = center.x - innerRadius;
+                holeRect.top = center.y - innerRadius;
+                holeRect.right = center.x + innerRadius;
+                holeRect.bottom = center.y + innerRadius;
+                RectF boundingRect = mRectBuffer[1];
+                boundingRect.set(holeRect);
 
-            float linespacing = maxlineheight * 0.25f;
+                float radiusPercent = mChart.getCenterTextRadiusPercent();
+                if (radiusPercent > 0.0) {
+                    boundingRect.inset((boundingRect.width() - boundingRect.width() * radiusPercent) / 2.f,
+                            (boundingRect.height() - boundingRect.height() * radiusPercent) / 2.f);
+                }
 
-            float totalheight = maxlineheight * lines.length - linespacing * (lines.length - 1);
+                if (!centerText.equals(mCenterTextLastValue) || !boundingRect.equals(mCenterTextLastBounds)) {
 
-            int cnt = lines.length;
+                    // Next time we won't recalculate StaticLayout...
+                    mCenterTextLastBounds.set(boundingRect);
+                    mCenterTextLastValue = centerText;
 
-            float y = center.y;
+                    // If width is 0, it will crash. Always have a minimum of 1
+                    mCenterTextLayout = new StaticLayout(centerText, 0, centerText.length(),
+                            mCenterTextPaint,
+                            (int)Math.max(Math.ceil(mCenterTextLastBounds.width()), 1.f),
+                            Layout.Alignment.ALIGN_NORMAL, 1.f, 0.f, false);
+                }
 
-            for (int i = 0; i < lines.length; i++) {
+                // I wish we could make an ellipse clipping path on Android to clip to the hole...
+                // If we ever find out how, this is the place to add it, based on holeRect
 
-                String line = lines[lines.length - i - 1];
+                float layoutWidth = Utils.getStaticLayoutMaxWidth(mCenterTextLayout),
+                        layoutHeight = mCenterTextLayout.getHeight();
 
-                c.drawText(line, center.x, y
-                        + maxlineheight * cnt - totalheight / 2f,
-                        mCenterTextPaint);
-                cnt--;
-                y -= linespacing;
+                c.save();
+                c.translate(boundingRect.centerX(), boundingRect.top + (boundingRect.height() - layoutHeight) / 2.f);
+                mCenterTextLayout.draw(c);
+                c.restore();
+
+            } else {
+
+                // get all lines from the text
+                String[] lines = centerText.split("\n");
+
+                float maxlineheight = 0f;
+
+                // calc the maximum line height
+                for (String line : lines) {
+                    float curHeight = Utils.calcTextHeight(mCenterTextPaint, line);
+                    if (curHeight > maxlineheight)
+                        maxlineheight = curHeight;
+                }
+
+                float linespacing = maxlineheight * 0.25f;
+
+                float totalheight = maxlineheight * lines.length - linespacing * (lines.length - 1);
+
+                int cnt = lines.length;
+
+                float y = center.y;
+
+                for (int i = 0; i < lines.length; i++) {
+
+                    String line = lines[lines.length - i - 1];
+
+                    c.drawText(line, center.x, y
+                                    + maxlineheight * cnt - totalheight / 2f,
+                            mCenterTextPaint);
+                    cnt--;
+                    y -= linespacing;
+                }
             }
         }
     }
