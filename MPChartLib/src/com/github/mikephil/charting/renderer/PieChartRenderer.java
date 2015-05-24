@@ -324,8 +324,8 @@ public class PieChartRenderer extends DataRenderer {
                 // I wish we could make an ellipse clipping path on Android to clip to the hole...
                 // If we ever find out how, this is the place to add it, based on holeRect
 
-                float layoutWidth = Utils.getStaticLayoutMaxWidth(mCenterTextLayout),
-                        layoutHeight = mCenterTextLayout.getHeight();
+                //float layoutWidth = Utils.getStaticLayoutMaxWidth(mCenterTextLayout);
+                float layoutHeight = mCenterTextLayout.getHeight();
 
                 c.save();
                 c.translate(boundingRect.centerX(), boundingRect.top + (boundingRect.height() - layoutHeight) / 2.f);
