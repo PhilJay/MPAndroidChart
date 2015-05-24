@@ -16,9 +16,6 @@ import com.github.mikephil.charting.utils.FillFormatter;
  */
 public class LineChart extends BarLineChartBase<LineData> implements LineDataProvider {
 
-    /** the width of the highlighning line */
-    protected float mHighlightWidth = 3f;
-
     private FillFormatter mFillFormatter;
 
     public LineChart(Context context) {
@@ -54,24 +51,6 @@ public class LineChart extends BarLineChartBase<LineData> implements LineDataPro
 
         if (mDeltaX == 0 && mData.getYValCount() > 0)
             mDeltaX = 1;
-    }
-    
-    /**
-     * set the width of the highlightning lines, default 3f
-     * 
-     * @param width
-     */
-    public void setHighlightLineWidth(float width) {
-        mHighlightWidth = width;
-    }
-
-    /**
-     * returns the width of the highlightning line, default 3f
-     * 
-     * @return
-     */
-    public float getHighlightLineWidth() {
-        return mHighlightWidth;
     }
 
     @Override
