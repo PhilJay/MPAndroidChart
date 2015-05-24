@@ -130,6 +130,7 @@ public class RadarChartActivitry extends DemoBase {
             }
             case R.id.actionToggleXLabels: {
                 mChart.getXAxis().setEnabled(!mChart.getXAxis().isEnabled());
+                mChart.notifyDataSetChanged();
                 mChart.invalidate();
                 break;
             }

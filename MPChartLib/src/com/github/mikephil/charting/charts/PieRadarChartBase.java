@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -192,6 +193,14 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
         float min = Utils.convertDpToPixel(10f);
 
+        if (this instanceof RadarChart) {
+            XAxis x = ((RadarChart) this).getXAxis();
+
+            if (x.isEnabled()) {
+                min = Math.max(Utils.convertDpToPixel(10f), x.mLabelWidth);
+            }
+        }
+
         float offsetLeft = Math.max(min, legendLeft);
         float offsetTop = Math.max(min, legendTop);
         float offsetRight = Math.max(min, legendRight);
@@ -309,9 +318,10 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     }
 
     /**
-     * gets the raw version of the current rotation angle of the pie chart
-     * the returned value could be any value, negative or positive, outside of the 360 degrees.
-     * this is used when working with rotation direction, mainly by gestures and animations.
+     * gets the raw version of the current rotation angle of the pie chart the
+     * returned value could be any value, negative or positive, outside of the
+     * 360 degrees. this is used when working with rotation direction, mainly by
+     * gestures and animations.
      *
      * @return
      */

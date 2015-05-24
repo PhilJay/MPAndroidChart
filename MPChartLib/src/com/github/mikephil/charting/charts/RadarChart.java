@@ -174,8 +174,6 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         drawDescription(canvas);
 
         drawMarkers(canvas);
-
-//        canvas.drawBitmap(mDrawBitmap, 0, 0, mDrawPaint);
     }
 
     /**
@@ -326,7 +324,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
     @Override
     protected float getRequiredBaseOffset() {
-        return mXAxis.mLabelWidth;
+        return mXAxis.isEnabled() ? mXAxis.mLabelWidth : Utils.convertDpToPixel(10f);
     }
 
     @Override
