@@ -45,7 +45,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
     protected BarChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
-    
+
     private Typeface mTf;
 
     @Override
@@ -91,7 +91,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         xAxis.setTypeface(mTf);
         xAxis.setDrawGridLines(false);
         xAxis.setSpaceBetweenLabels(2);
-        
+
         ValueFormatter custom = new MyValueFormatter();
 
         YAxis leftAxis = mChart.getAxisLeft();
@@ -107,14 +107,17 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         rightAxis.setLabelCount(8);
         rightAxis.setValueFormatter(custom);
         rightAxis.setSpaceTop(15f);
-        
+
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.BELOW_CHART_LEFT);
         l.setForm(LegendForm.SQUARE);
         l.setFormSize(9f);
         l.setTextSize(11f);
         l.setXEntrySpace(4f);
-        //l.setCustom(ColorTemplate.VORDIPLOM_COLORS, new String[] { "a","b", "c", "d", "e" });
+        // l.setExtra(ColorTemplate.VORDIPLOM_COLORS, new String[] { "abc",
+        // "def", "ghj", "ikl", "mno" });
+        // l.setCustom(ColorTemplate.VORDIPLOM_COLORS, new String[] { "abc",
+        // "def", "ghj", "ikl", "mno" });
 
         setData(12, 50);
 
@@ -259,7 +262,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         dataSets.add(set1);
 
         BarData data = new BarData(xVals, dataSets);
-//        data.setValueFormatter(new MyValueFormatter());
+        // data.setValueFormatter(new MyValueFormatter());
         data.setValueTextSize(10f);
         data.setValueTypeface(mTf);
 
@@ -278,8 +281,10 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         Log.i("bounds", bounds.toString());
         Log.i("position", position.toString());
-        
-        Log.i("x-index", "low: " + mChart.getLowestVisibleXIndex() + ", high: " + mChart.getHighestVisibleXIndex());
+
+        Log.i("x-index",
+                "low: " + mChart.getLowestVisibleXIndex() + ", high: "
+                        + mChart.getHighestVisibleXIndex());
     }
 
     public void onNothingSelected() {

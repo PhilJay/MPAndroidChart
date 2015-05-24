@@ -3,6 +3,7 @@ package com.github.mikephil.charting.components;
 
 import android.graphics.Paint;
 
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.List;
@@ -149,12 +150,10 @@ public class Legend extends ComponentBase {
 
     public void setColors(List<Integer> colors) {
         mColors = Utils.convertIntegers(colors);
-        ;
     }
 
     public void setLabels(List<String> labels) {
         mLabels = Utils.convertStrings(labels);
-        ;
     }
 
     /**
@@ -253,15 +252,6 @@ public class Legend extends ComponentBase {
     }
 
     /**
-     * colors that will be appended to the end of the colors array after
-     * calculating the legend. (if the legend has already been calculated, you
-     * will need to call notifyDataSetChanged())
-     */
-    public void setExtraColors(List<Integer> colors) {
-        this.mExtraColors = Utils.convertIntegers(colors);
-    }
-
-    /**
      * labels that will be appended to the end of the labels array after
      * calculating the legend. a null label will start a group.
      */
@@ -270,25 +260,43 @@ public class Legend extends ComponentBase {
     }
 
     /**
-     * labels that will be appended to the end of the labels array after
-     * calculating the legend. a null label will start a group. (if the legend
-     * has already been calculated, you will need to call
-     * notifyDataSetChanged())
+     * Colors and labels that will be appended to the end of the auto calculated
+     * colors and labels arrays after calculating the legend. (if the legend has
+     * already been calculated, you will need to call notifyDataSetChanged() to
+     * let the changes take effect)
      */
-    public void setExtraLabels(String[] labels) {
+    public void setExtra(List<Integer> colors, List<String> labels) {
+        this.mExtraColors = Utils.convertIntegers(colors);
+        this.mExtraLabels = Utils.convertStrings(labels);
+    }
+
+    /**
+     * Colors and labels that will be appended to the end of the auto calculated
+     * colors and labels arrays after calculating the legend. (if the legend has
+     * already been calculated, you will need to call notifyDataSetChanged() to
+     * let the changes take effect)
+     */
+    public void setExtra(int[] colors, String[] labels) {
+        this.mExtraColors = colors;
         this.mExtraLabels = labels;
     }
 
     /**
      * Sets a custom legend's labels and colors arrays. The colors count should
      * match the labels count. * Each color is for the form drawn at the same
-     * index. * A null label will start a group. * A (-2) color will avoid
-     * drawing a form This will disable the feature that automatically
-     * calculates the legend labels and colors from the datasets. Call
-     * resetCustom() to re-enable automatic calculation (and then
+     * index. * A null label will start a group. * A ColorTemplate.COLOR_SKIP
+     * color will avoid drawing a form This will disable the feature that
+     * automatically calculates the legend labels and colors from the datasets.
+     * Call resetCustom() to re-enable automatic calculation (and then
      * notifyDataSetChanged() is needed to auto-calculate the legend again)
      */
     public void setCustom(int[] colors, String[] labels) {
+
+        if (colors.length != labels.length) {
+            throw new IllegalArgumentException(
+                    "colors array and labels array need to be of same size");
+        }
+
         mLabels = labels;
         mColors = colors;
         mIsLegendCustom = true;
@@ -297,13 +305,19 @@ public class Legend extends ComponentBase {
     /**
      * Sets a custom legend's labels and colors arrays. The colors count should
      * match the labels count. * Each color is for the form drawn at the same
-     * index. * A null label will start a group. * A (-2) color will avoid
-     * drawing a form This will disable the feature that automatically
-     * calculates the legend labels and colors from the datasets. Call
-     * resetCustom() to re-enable automatic calculation (and then
+     * index. * A null label will start a group. * A ColorTemplate.COLOR_SKIP
+     * color will avoid drawing a form This will disable the feature that
+     * automatically calculates the legend labels and colors from the datasets.
+     * Call resetCustom() to re-enable automatic calculation (and then
      * notifyDataSetChanged() is needed to auto-calculate the legend again)
      */
     public void setCustom(List<Integer> colors, List<String> labels) {
+
+        if (colors.size() != labels.size()) {
+            throw new IllegalArgumentException(
+                    "colors array and labels array need to be of same size");
+        }
+
         mColors = Utils.convertIntegers(colors);
         mLabels = Utils.convertStrings(labels);
         mIsLegendCustom = true;
@@ -514,7 +528,7 @@ public class Legend extends ComponentBase {
             if (mLabels[i] != null) {
 
                 // make a step to the left
-                if (mColors[i] != -2)
+                if (mColors[i] != ColorTemplate.COLOR_SKIP)
                     width += mFormSize + mFormToTextSpace;
 
                 width += Utils.calcTextWidth(labelpaint, mLabels[i]);

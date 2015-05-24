@@ -305,7 +305,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         mXAxisRenderer.computeAxis(mData.getXValAverageLength(), mData.getXVals());
 
-        if (mLegend != null && !mLegend.isLegendCustom())
+        if (mLegend != null)
             mLegendRenderer.computeLegend(mData);
 
         calculateOffsets();

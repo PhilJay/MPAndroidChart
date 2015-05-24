@@ -16,7 +16,16 @@ import java.util.List;
  */
 public class ColorTemplate {
 
+    /**
+     * an "invalid" color that indicates that no color is set
+     */
     public static final int COLOR_NONE = -1;
+
+    /**
+     * this "color" is used for the Legend creation and indicates that the next
+     * form should be skipped
+     */
+    public static final int COLOR_SKIP = -2;
 
     /**
      * THE COLOR THEMES ARE PREDEFINED (predefined color integer arrays), FEEL
