@@ -339,12 +339,12 @@ public class ViewPortHandler {
             {
                 if(newTransX==maxTransX)
                 {
-                    mGestureListener.onChartTranslateXEnd();
+                    mGestureListener.onChartTranslateToXEnd();
                 }else if(newTransX==0)
                 {
-                    mGestureListener.onChartTranslateXStart();
+                    mGestureListener.onChartTranslateToXStart();
                 }else{
-                    mGestureListener.onChartTranslateX(newTransX, maxTransX);
+                    mGestureListener.onChartTranslateToX(newTransX, maxTransX);
                 }
             }
 
@@ -352,12 +352,12 @@ public class ViewPortHandler {
             {
                 if(newTransY==maxTransY)
                 {
-                    mGestureListener.onChartTranslateYEnd();
+                    mGestureListener.onChartTranslateToYEnd();
                 }else if(newTransY==0)
                 {
-                    mGestureListener.onChartTranslateYStart();
+                    mGestureListener.onChartTranslateToYStart();
                 }else{
-                    mGestureListener.onChartTranslateY(newTransY, maxTransY);
+                    mGestureListener.onChartTranslateToY(newTransY, maxTransY);
                 }
             }
         }
