@@ -6,6 +6,8 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.view.View;
 
+import com.github.mikephil.charting.charts.Chart;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
 public class ViewPortHandler {
 
     /** matrix used for touch events */
@@ -34,7 +36,9 @@ public class ViewPortHandler {
 
     /** offset that allows the chart to be dragged over its bounds on the x-axis */
     private float mTransOffsetY = 0f;
-
+   
+    private Chart mChart;
+    
     public ViewPortHandler() {
 
     }
@@ -260,7 +264,8 @@ public class ViewPortHandler {
      * @return
      */
     public Matrix refresh(Matrix newMatrix, View chart, boolean invalidate) {
-
+        mChart=(Chart)chart;
+         
         mMatrixTouch.set(newMatrix);
 
         // make sure scale and translation are within their bounds
@@ -278,7 +283,9 @@ public class ViewPortHandler {
      * 
      * @param matrix
      */
-    public void limitTransAndScale(Matrix matrix, RectF content) {
+    private float lastTransY=0;
+    private float lastTransX=0;
+    public void limitTransAndScale(Matrix matrix,RectF content) {
 
         float[] vals = new float[9];
         matrix.getValues(vals);
@@ -324,6 +331,38 @@ public class ViewPortHandler {
         vals[Matrix.MSCALE_Y] = mScaleY;
 
         matrix.setValues(vals);
+
+        if(mChart!=null&&mChart.getOnChartGestureListener()!=null)
+        {
+            OnChartGestureListener mGestureListener=mChart.getOnChartGestureListener();
+            if(lastTransX!=newTransX)
+            {
+                if(newTransX==maxTransX)
+                {
+                    mGestureListener.onChartTranslateXEnd();
+                }else if(newTransX==0)
+                {
+                    mGestureListener.onChartTranslateXStart();
+                }else{
+                    mGestureListener.onChartTranslateX(newTransX, maxTransX);
+                }
+            }
+
+            if(lastTransY!=newTransY)
+            {
+                if(newTransY==maxTransY)
+                {
+                    mGestureListener.onChartTranslateYEnd();
+                }else if(newTransY==0)
+                {
+                    mGestureListener.onChartTranslateYStart();
+                }else{
+                    mGestureListener.onChartTranslateY(newTransY, maxTransY);
+                }
+            }
+        }
+        lastTransX=newTransX;
+        lastTransY=newTransY;
     }
 
     public void setMinimumScaleX(float xScale) {
