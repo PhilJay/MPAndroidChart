@@ -48,7 +48,7 @@ public class PieData extends ChartData<PieDataSet> {
     public void setDataSet(PieDataSet dataSet) {
         mDataSets.clear();
         mDataSets.add(dataSet);
-        init(mDataSets);
+        init();
     }
 
     /**
