@@ -83,6 +83,7 @@ public class BarEntry extends Entry {
      * @param vals
      */
     public void setVals(float[] vals) {
+        setVal(calcSum(vals));
         mVals = vals;
     }
 
