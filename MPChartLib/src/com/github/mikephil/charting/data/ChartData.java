@@ -40,6 +40,12 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /** total number of y-values across all DataSet objects */
     private int mYValCount = 0;
 
+    /** the last start value used for calcMinMax */
+    protected int mLastStart = 0;
+
+    /** the last end value used for calcMinMax */
+    protected int mLastEnd = 0;
+
     /**
      * contains the average length (in characters) an entry in the x-vals array
      * has
@@ -129,7 +135,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
         isLegal();
 
-        calcMinMax();
+        calcMinMax(mLastStart, mLastEnd);
         calcYValueSum();
         calcYValueCount();
 
@@ -186,7 +192,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /**
      * calc minimum and maximum y value over all datasets
      */
-    protected void calcMinMax() {
+    public void calcMinMax(int start, int end) {
 
         if (mDataSets == null || mDataSets.size() < 1) {
 
@@ -194,11 +200,16 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             mYMin = 0f;
         } else {
 
-            // calculate absolute min and max
-            mYMin = mDataSets.get(0).getYMin();
-            mYMax = mDataSets.get(0).getYMax();
+            mLastStart = start;
+            mLastEnd = end;
+
+            mYMin = Float.MAX_VALUE;
+            mYMax = Float.MIN_VALUE;
 
             for (int i = 0; i < mDataSets.size(); i++) {
+
+                mDataSets.get(i).calcMinMax(start, end);
+
                 if (mDataSets.get(i).getYMin() < mYMin)
                     mYMin = mDataSets.get(i).getYMin();
 
@@ -598,7 +609,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             mYValCount -= d.getEntryCount();
             mYValueSum -= d.getYValueSum();
 
-            calcMinMax();
+            calcMinMax(mLastStart, mLastEnd);
         }
 
         return removed;
@@ -690,7 +701,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             mYValCount -= 1;
             mYValueSum -= val;
 
-            calcMinMax();
+            calcMinMax(mLastStart, mLastEnd);
         }
 
         return removed;

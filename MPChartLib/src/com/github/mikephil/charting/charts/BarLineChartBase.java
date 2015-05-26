@@ -54,6 +54,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     /** the maximum number of entried to which values will be drawn */
     protected int mMaxVisibleCount = 100;
 
+    /** flag that indicates if auto scaling on the y axis is enabled */
+    private boolean mAutoScaleMinMaxEnabled = false;
+    private Integer mAutoScaleLastLowestVisibleXIndex = null;
+    private Integer mAutoScaleLastHighestVisibleXIndex = null;
+
     /**
      * flag that indicates if pinch-zoom is enabled. if true, both x and y axis
      * can be scaled with 2 fingers, if false, x and y axis can be scaled
@@ -192,6 +197,23 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mAxisRendererLeft.renderAxisLine(canvas);
         mAxisRendererRight.renderAxisLine(canvas);
 
+        if (mAutoScaleMinMaxEnabled) {
+            final int lowestVisibleXIndex = getLowestVisibleXIndex();
+            final int highestVisibleXIndex = getHighestVisibleXIndex();
+
+            if (mAutoScaleLastLowestVisibleXIndex == null ||
+                    mAutoScaleLastLowestVisibleXIndex != lowestVisibleXIndex ||
+                    mAutoScaleLastHighestVisibleXIndex == null ||
+                    mAutoScaleLastHighestVisibleXIndex != highestVisibleXIndex) {
+
+                calcMinMax();
+                calculateOffsets();
+
+                mAutoScaleLastLowestVisibleXIndex = lowestVisibleXIndex;
+                mAutoScaleLastHighestVisibleXIndex = highestVisibleXIndex;
+            }
+        }
+
         // make sure the graph values and grid cannot be drawn outside the
         // content-rect
         int clipRestoreCount = canvas.save();
@@ -313,6 +335,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
     @Override
     protected void calcMinMax() {
+
+        if (mAutoScaleMinMaxEnabled)
+            mData.calcMinMax(getLowestVisibleXIndex(), getHighestVisibleXIndex());
 
         float minLeft = mData.getYMin(AxisDependency.LEFT);
         float maxLeft = mData.getYMax(AxisDependency.LEFT);
@@ -1374,6 +1399,24 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         if (mAxisRight.isInverted())
             return true;
         return false;
+    }
+
+    /**
+     * flag that indicates if auto scaling on the y axis is enabled.
+     * @param enabled if yes, the y axis automatically adjusts to the
+     *                min and max y values of the current x axis range
+     *                whenever the viewport changes
+     */
+    public void setAutoScaleMinMaxEnabled(boolean enabled) {
+        mAutoScaleMinMaxEnabled = enabled;
+    }
+
+    /**
+     * @default false
+     * @return true if auto scaling on the y axis is enabled.
+     */
+    public boolean isAutoScaleMinMaxEnabled() {
+        return mAutoScaleMinMaxEnabled;
     }
 
     @Override
