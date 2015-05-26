@@ -59,4 +59,43 @@ public interface OnChartGestureListener {
 	 */
 	public void onChartTranslate(MotionEvent me, float dX, float dY);
 
+	/**
+	 * Callbacks when the chart is translated XAxis Start.
+	 *
+	 */
+    public void onChartTranslateXStart();
+
+	/**
+	 * Callbacks when the chart is translated XAxis progress.
+	 * @param curTransX translation distance on the x-axis
+	 * @param maxTransX translation distance on the x-axis
+	 *
+	 */
+    public void onChartTranslateX(float curTransX,float maxTransX);
+
+	/**
+	 *Callbacks when the chart is translated XAxis End.
+	 *
+	 */
+    public void onChartTranslateXEnd();
+
+	/**
+	 * Callbacks when the chart is translated YAxis Start.
+	 *
+	 */
+    public void onChartTranslateYStart();
+
+	/**
+	 * Callbacks when the chart is translated YAxis progress.
+	 * @param curTransY translation distance on the y-axis
+	 * @param maxTransY translation distance on the y-axis
+	 *
+	 */
+    public void onChartTranslateY(float curTransY,float maxTransY);
+
+	/**
+	 *Callbacks when the chart is translated YAxis End.
+	 *
+	 */
+    public void onChartTranslateYEnd();
 }
