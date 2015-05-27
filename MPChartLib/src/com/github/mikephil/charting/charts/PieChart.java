@@ -46,7 +46,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
     /** if true, the values inside the piechart are drawn as percent values */
     private boolean mUsePercentValues = false;
-    
+
     /** if true, the slices of the piechart are rounded */
     private boolean mDrawRoundedSlices = false;
 
@@ -73,6 +73,8 @@ public class PieChart extends PieRadarChartBase<PieData> {
     private boolean mCenterTextWordWrapEnabled = false;
 
     private float mCenterTextRadiusPercent = 1.f;
+
+    private boolean mDrawImages = false;
 
     public PieChart(Context context) {
         super(context);
@@ -525,36 +527,49 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * should the center text be word wrapped?
-     * note that word wrapping takes a toll on performance
-     * if word wrapping is disabled, newlines are still respected
+     * should the center text be word wrapped? note that word wrapping takes a
+     * toll on performance if word wrapping is disabled, newlines are still
+     * respected
      */
     public void setCenterTextWordWrapEnabled(boolean enabled) {
         mCenterTextWordWrapEnabled = enabled;
     }
 
     /**
-     * should the center text be word wrapped?
-     * note that word wrapping takes a toll on performance
-     * if word wrapping is disabled, newlines are still respected
+     * should the center text be word wrapped? note that word wrapping takes a
+     * toll on performance if word wrapping is disabled, newlines are still
+     * respected
      */
     public boolean isCenterTextWordWrapEnabled() {
         return mCenterTextWordWrapEnabled;
     }
 
     /**
-     * the rectangular radius of the bounding box for the center text, as a percentage of the pie hole
-     * default 1.f (100%)
+     * the rectangular radius of the bounding box for the center text, as a
+     * percentage of the pie hole default 1.f (100%)
      */
     public void setCenterTextRadiusPercent(float percent) {
         mCenterTextRadiusPercent = percent;
     }
 
     /**
-     * the rectangular radius of the bounding box for the center text, as a percentage of the pie hole
-     * default 1.f (100%)
+     * the rectangular radius of the bounding box for the center text, as a
+     * percentage of the pie hole default 1.f (100%)
      */
     public float getCenterTextRadiusPercent() {
         return mCenterTextRadiusPercent;
+    }
+
+    public boolean isDrawImagesEnabled() {
+        return mDrawImages;
+    }
+
+    /**
+     * Set this to true to allow drawing images into the piechart slices.
+     * 
+     * @param mDrawImages
+     */
+    public void setDrawImages(boolean mDrawImages) {
+        this.mDrawImages = mDrawImages;
     }
 }

@@ -53,8 +53,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     protected List<T> mDataSets;
 
     public ChartData() {
-        mXVals = new ArrayList<String>();
-        mDataSets = new ArrayList<T>();
+        this(new ArrayList<String>(), new ArrayList<T>());
     }
 
     /**
@@ -64,9 +63,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * @param xVals
      */
     public ChartData(List<String> xVals) {
-        this.mXVals = xVals;
-        this.mDataSets = new ArrayList<T>();
-        init(mDataSets);
+        this(xVals, new ArrayList<T>());
     }
 
     /**
@@ -76,9 +73,19 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * @param xVals
      */
     public ChartData(String[] xVals) {
-        this.mXVals = arrayToList(xVals);
-        this.mDataSets = new ArrayList<T>();
-        init(mDataSets);
+        this(Arrays.asList(xVals), new ArrayList<T>());
+    }
+
+    /**
+     * constructor that takes string array instead of List string
+     *
+     * @param xVals The values describing the x-axis. Must be at least as long
+     *            as the highest xIndex in the Entry objects across all
+     *            DataSets.
+     * @param sets the dataset array
+     */
+    public ChartData(String[] xVals, List<T> sets) {
+        this(Arrays.asList(xVals), sets);
     }
 
     /**
@@ -94,31 +101,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         this.mDataSets = sets;
 
         init(mDataSets);
-    }
-
-    /**
-     * constructor that takes string array instead of List string
-     * 
-     * @param xVals The values describing the x-axis. Must be at least as long
-     *            as the highest xIndex in the Entry objects across all
-     *            DataSets.
-     * @param sets the dataset array
-     */
-    public ChartData(String[] xVals, List<T> sets) {
-        this.mXVals = arrayToList(xVals);
-        this.mDataSets = sets;
-
-        init(mDataSets);
-    }
-
-    /**
-     * Turns an array of strings into an List of strings.
-     * 
-     * @param array
-     * @return
-     */
-    private List<String> arrayToList(String[] array) {
-        return Arrays.asList(array);
     }
 
     /**
@@ -290,6 +272,14 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /** ONLY GETTERS AND SETTERS BELOW THIS */
 
     /**
+     * Sets the x values of the chart.
+     * @param xVals A string list of x values.
+     */
+    public void setXVals(List<String> xVals) {
+        this.mXVals = xVals;
+    }
+
+    /**
      * returns the number of LineDataSets this object contains
      * 
      * @return
@@ -376,10 +366,19 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /**
      * returns the x-values the chart represents
-     * 
+     *
      * @return
      */
     public List<String> getXVals() {
+        return mXVals;
+    }
+
+    /**
+     * returns the x-values the chart represents
+     *
+     * @return
+     */
+    public List<String> getXValues() {
         return mXVals;
     }
 
@@ -389,7 +388,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * @param xVal
      */
     public void addXValue(String xVal) {
-
         mXValAverageLength = (mXValAverageLength + xVal.length()) / 2f;
         mXVals.add(xVal);
     }
@@ -419,7 +417,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * situations.
      * 
      * @param dataSets the DataSet array to search
-     * @param type
+     * @param label
      * @param ignorecase if true, the search is not case-sensitive
      * @return
      */
@@ -625,7 +623,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * Adds an Entry to the DataSet at the specified index. Entries are added to
      * the end of the list.
      * 
-     * @param entry
+     * @param e
      * @param dataSetIndex
      */
     public void addEntry(Entry e, int dataSetIndex) {
@@ -858,7 +856,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * Sets the Typeface for all value-labels for all DataSets this data object
      * contains.
      * 
-     * @param color
+     * @param tf
      */
     public void setValueTypeface(Typeface tf) {
         for (DataSet<?> set : mDataSets) {
@@ -870,7 +868,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * Sets the size (in dp) of the value-text for all DataSets this data object
      * contains.
      * 
-     * @param color
+     * @param size
      */
     public void setValueTextSize(float size) {
         for (DataSet<?> set : mDataSets) {
