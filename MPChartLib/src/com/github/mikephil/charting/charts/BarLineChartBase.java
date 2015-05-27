@@ -422,6 +422,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 }
             }
 
+            offsetTop += getExtraTopOffset();
+            offsetRight += getExtraRightOffset();
+            offsetBottom += getExtraBottomOffset();
+            offsetLeft += getExtraLeftOffset();
+
             float min = Utils.convertDpToPixel(10f);
 
             mViewPortHandler.restrainViewPort(Math.max(min, offsetLeft), Math.max(min, offsetTop),
