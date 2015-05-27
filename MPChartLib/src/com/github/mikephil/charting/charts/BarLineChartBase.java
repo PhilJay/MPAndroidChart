@@ -402,9 +402,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                         .getPaintAxisLabels());
             }
 
-            float xlabelheight = mXAxis.mLabelHeight * 2f;
+            if (mXAxis.isEnabled() && mXAxis.isDrawLabelsEnabled()) {
 
-            if (mXAxis.isEnabled()) {
+                float xlabelheight = mXAxis.mLabelHeight * 2f;
 
                 // offsets for x-labels
                 if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
