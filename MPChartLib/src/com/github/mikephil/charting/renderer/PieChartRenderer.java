@@ -191,8 +191,8 @@ public class PieChartRenderer extends DataRenderer {
 
             List<Entry> entries = dataSet.getYVals();
 
-            for (int entryIndex = 0, maxEntry = Math.min(
-                    (int) Math.ceil(entries.size() * mAnimator.getPhaseX()), entries.size()); entryIndex < maxEntry; entryIndex++) {
+            for (int j = 0, maxEntry = Math.min(
+                    (int) Math.ceil(entries.size() * mAnimator.getPhaseX()), entries.size()); j < maxEntry; j++) {
 
                 // offset needed to center the drawn text in the slice
                 float offset = drawAngles[cnt] / 2;
@@ -205,8 +205,8 @@ public class PieChartRenderer extends DataRenderer {
                         * Math.sin(Math.toRadians((rotationAngle + absoluteAngles[cnt] - offset)
                                 * mAnimator.getPhaseY())) + center.y);
 
-                float value = mChart.isUsePercentValuesEnabled() ? entries.get(entryIndex).getVal()
-                        / mChart.getYValueSum() * 100f : entries.get(entryIndex).getVal();
+                float value = mChart.isUsePercentValuesEnabled() ? entries.get(j).getVal()
+                        / mChart.getYValueSum() * 100f : entries.get(j).getVal();
 
                 String val = dataSet.getValueFormatter().getFormattedValue(value);
 
@@ -216,22 +216,22 @@ public class PieChartRenderer extends DataRenderer {
                 boolean drawYVals = dataSet.isDrawValuesEnabled();
 
                 // draw everything, depending on settings
-//                if(entryIndex < data.getXValCount()) {
-//                    XValue xValue = data.getXValues().get(entryIndex);
-//                    if(xValue.getImage() != null && showImages) {
-//                        float imageX = x - xValue.getImage().getWidth() / 2;
-//                        float imageY = y - xValue.getImage().getHeight() / 2;
-//                        c.drawBitmap(xValue.getImage(), imageX, imageY, mValuePaint);
-//                    }
-//                }
-                if(drawXVals) {
-                    float heightOffset = drawYVals ? lineHeight : lineHeight / 2;
-                    c.drawText(data.getXVals().get(entryIndex), x, y + heightOffset, mValuePaint);
+                if (drawXVals && drawYVals) {
+
+                    c.drawText(val, x, y, mValuePaint);
+                    if (j < data.getXValCount())
+                        c.drawText(data.getXVals().get(j), x, y + lineHeight,
+                                mValuePaint);
+
+                } else if (drawXVals && !drawYVals) {
+                    if (j < data.getXValCount())
+                        c.drawText(data.getXVals().get(j), x, y + lineHeight / 2f, mValuePaint);
+                } else if (!drawXVals && drawYVals) {
+
+                    c.drawText(val, x, y + lineHeight / 2f, mValuePaint);
                 }
-                if(drawYVals) {
-                    float yPos = drawXVals ? y : y + lineHeight / 2;
-                    c.drawText(val, x, yPos, mValuePaint);
-                }
+                
+                // TODO: DRAW BITMAPS SOMEWHERE HERE
 
                 cnt++;
             }
