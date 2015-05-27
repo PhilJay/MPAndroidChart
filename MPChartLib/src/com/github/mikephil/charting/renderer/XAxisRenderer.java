@@ -108,6 +108,12 @@ public class XAxisRenderer extends AxisRenderer {
                     mViewPortHandler.contentBottom(), mViewPortHandler.contentRight(),
                     mViewPortHandler.contentBottom(), mAxisLinePaint);
         }
+
+        if(mXAxis.getDrawAxisCenterLine()) {
+            c.drawLine(mViewPortHandler.contentLeft(),
+                    mViewPortHandler.getContentCenter().y, mViewPortHandler.contentRight(),
+                    mViewPortHandler.getContentCenter().y, getPaintAxisLine());
+        }
     }
 
     /**
