@@ -126,6 +126,11 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
                 mChart.invalidate();
                 break;
             }
+            case R.id.actionToggleAutoScaleMinMax: {
+                mChart.setAutoScaleMinMaxEnabled(!mChart.isAutoScaleMinMaxEnabled());
+                mChart.notifyDataSetChanged();
+                break;
+            }
             case R.id.actionToggleHighlight: {
                 if (mChart.isHighlightEnabled())
                     mChart.setHighlightEnabled(false);
