@@ -93,17 +93,17 @@ public class XAxisRenderer extends AxisRenderer {
         mAxisLinePaint.setColor(mXAxis.getAxisLineColor());
         mAxisLinePaint.setStrokeWidth(mXAxis.getAxisLineWidth());
 
-        if (mXAxis.getPosition() == XAxisPosition.TOP
-                || mXAxis.getPosition() == XAxisPosition.TOP_INSIDE
-                || mXAxis.getPosition() == XAxisPosition.BOTH_SIDED) {
+        if (mXAxis.getLinePosition() == XAxisPosition.TOP
+                || mXAxis.getLinePosition() == XAxisPosition.TOP_INSIDE
+                || mXAxis.getLinePosition() == XAxisPosition.BOTH_SIDED) {
             c.drawLine(mViewPortHandler.contentLeft(),
                     mViewPortHandler.contentTop(), mViewPortHandler.contentRight(),
                     mViewPortHandler.contentTop(), mAxisLinePaint);
         }
 
-        if (mXAxis.getPosition() == XAxisPosition.BOTTOM
-                || mXAxis.getPosition() == XAxisPosition.BOTTOM_INSIDE
-                || mXAxis.getPosition() == XAxisPosition.BOTH_SIDED) {
+        if (mXAxis.getLinePosition() == XAxisPosition.BOTTOM
+                || mXAxis.getLinePosition() == XAxisPosition.BOTTOM_INSIDE
+                || mXAxis.getLinePosition() == XAxisPosition.BOTH_SIDED) {
             c.drawLine(mViewPortHandler.contentLeft(),
                     mViewPortHandler.contentBottom(), mViewPortHandler.contentRight(),
                     mViewPortHandler.contentBottom(), mAxisLinePaint);
