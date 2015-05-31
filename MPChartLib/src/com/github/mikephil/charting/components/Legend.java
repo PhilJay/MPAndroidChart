@@ -91,6 +91,9 @@ public class Legend extends ComponentBase {
     /** the space that should be left between stacked forms */
     private float mStackSpace = 3f;
 
+    /// The maximum relative size out of the whole chart view.
+    private float mMaxSizePercent = 1.f;
+
     /** default constructor */
     public Legend() {
 
@@ -580,6 +583,24 @@ public class Legend extends ComponentBase {
 
     public float mTextWidthMax = 0f;
 
+    /// The maximum relative size out of the whole chart view.
+    /// If the legend is to the right/left of the chart, then this affects the width of the legend.
+    /// If the legend is to the top/bottom of the chart, then this affects the height of the legend.
+    /// If the legend is the center of the piechart, then this defines the size of the rectangular bounds out of the size of the "hole".
+    /// default: 1.0 (100%)
+    public float getMaxSizePercent() {
+        return mMaxSizePercent;
+    }
+
+    /// The maximum relative size out of the whole chart view.
+    /// If the legend is to the right/left of the chart, then this affects the width of the legend.
+    /// If the legend is to the top/bottom of the chart, then this affects the height of the legend.
+    /// If the legend is the center of the piechart, then this defines the size of the rectangular bounds out of the size of the "hole".
+    /// default: 1.0 (100%)
+    public void setMaxSizePercent(float maxSize) {
+        mMaxSizePercent = maxSize;
+    }
+
     /**
      * Calculates the dimensions of the Legend. This includes the maximum width
      * and height of a single entry, as well as the total width and height of
@@ -600,6 +621,7 @@ public class Legend extends ComponentBase {
             mTextHeightMax = getMaximumEntryHeight(labelpaint);
 
         } else {
+            /* BelowChartLeft. BelowChartRight, BelowChartCenter, RightOfChartInside, LeftOfChartInside */
 
             mNeededWidth = getFullWidth(labelpaint);
             mNeededHeight = getMaximumEntryHeight(labelpaint);

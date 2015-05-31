@@ -104,20 +104,24 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
         float legendLeft = 0f, legendRight = 0f, legendBottom = 0f, legendTop = 0f;
 
         if (mLegend != null && mLegend.isEnabled()) {
+            
+            float fullLegendWidth = Math.min(mLegend.mNeededWidth, 
+                    mViewPortHandler.getChartWidth() * mLegend.getMaxSizePercent()) + 
+                    mLegend.getFormSize() + mLegend.getFormToTextSpace();
 
             if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART_CENTER) {
 
                 // this is the space between the legend and the chart
                 float spacing = Utils.convertDpToPixel(13f);
 
-                legendRight = getFullLegendWidth() + spacing;
+                legendRight = fullLegendWidth + spacing;
 
             } else if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
 
                 // this is the space between the legend and the chart
                 float spacing = Utils.convertDpToPixel(8f);
 
-                float legendWidth = getFullLegendWidth() + spacing;
+                float legendWidth = fullLegendWidth + spacing;
 
                 float legendHeight = mLegend.mNeededHeight + mLegend.mTextHeightMax;
 
@@ -147,14 +151,14 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
                 // this is the space between the legend and the chart
                 float spacing = Utils.convertDpToPixel(13f);
 
-                legendLeft = getFullLegendWidth() + spacing;
+                legendLeft = fullLegendWidth + spacing;
 
             } else if (mLegend.getPosition() == LegendPosition.LEFT_OF_CHART) {
 
                 // this is the space between the legend and the chart
                 float spacing = Utils.convertDpToPixel(8f);
 
-                float legendWidth = getFullLegendWidth() + spacing;
+                float legendWidth = fullLegendWidth + spacing;
 
                 float legendHeight = mLegend.mNeededHeight + mLegend.mTextHeightMax;
 
@@ -389,15 +393,6 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
      * @return
      */
     protected abstract float getRequiredBaseOffset();
-
-    /**
-     * Returns the required right offset for the chart.
-     * 
-     * @return
-     */
-    private float getFullLegendWidth() {
-        return mLegend.mTextWidthMax + mLegend.getFormSize() + mLegend.getFormToTextSpace();
-    }
 
     /**
      * set a new (e.g. custom) charttouchlistener NOTE: make sure to
