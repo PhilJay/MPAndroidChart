@@ -190,6 +190,10 @@ public class LineChartRenderer extends DataRenderer {
                 curDx = (next.getXIndex() - prev.getXIndex()) * intensity;
                 curDy = (next.getVal() - prev.getVal()) * intensity;
 
+                // Limit the x-intensity to prevent cubic lines looping and going backwards
+                prevDx = Math.min(prevDx, intensity * 2);
+                curDx = Math.min(curDx, intensity * 2);
+                
                 cubicPath.cubicTo(prev.getXIndex() + prevDx, (prev.getVal() + prevDy) * phaseY,
                         cur.getXIndex() - curDx,
                         (cur.getVal() - curDy) * phaseY, cur.getXIndex(), cur.getVal() * phaseY);
@@ -208,6 +212,10 @@ public class LineChartRenderer extends DataRenderer {
                 curDx = (next.getXIndex() - prev.getXIndex()) * intensity;
                 curDy = (next.getVal() - prev.getVal()) * intensity;
 
+                // Limit the x-intensity to prevent cubic lines looping and going backwards
+                prevDx = Math.min(prevDx, intensity * 2);
+                curDx = Math.min(curDx, intensity * 2);
+                
                 // the last cubic
                 cubicPath.cubicTo(prev.getXIndex() + prevDx, (prev.getVal() + prevDy) * phaseY,
                         cur.getXIndex() - curDx,
