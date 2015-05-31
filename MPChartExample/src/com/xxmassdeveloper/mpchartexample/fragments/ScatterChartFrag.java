@@ -51,6 +51,7 @@ public class ScatterChartFrag extends SimpleFragment {
         rightAxis.setDrawGridLines(false);
         
         Legend l = mChart.getLegend();
+      //  l.setWordWrapEnabled(true);
         l.setTypeface(tf);
         
         return v;

@@ -94,8 +94,8 @@ public class Legend extends ComponentBase {
     /** the space that should be left between stacked forms */
     private float mStackSpace = 3f;
 
-    /// The maximum relative size out of the whole chart view.
-    private float mMaxSizePercent = 1.f;
+    /** the maximum relative size out of the whole chart view in percent */
+    private float mMaxSizePercent = 0.95f;
 
     /** default constructor */
     public Legend() {
@@ -586,44 +586,63 @@ public class Legend extends ComponentBase {
 
     public float mTextWidthMax = 0f;
 
-    /// should the legend word wrap?
-    public boolean mWordWrapEnabled = false;
+    /** flag that indicates if word wrapping is enabled */
+    private boolean mWordWrapEnabled = false;
 
-    /// should the legend word wrap?
-    /// this is currently supported only for: BelowChartLeft, BelowChartRight, BelowChartCenter.
-    /// note that word wrapping a legend takes a toll on performance.
-    /// you may want to set maxSizePercent when word wrapping, to set the point where the text wraps.
-    /// default: false
+    /**
+     * Should the legend word wrap? / this is currently supported only for:
+     * BelowChartLeft, BelowChartRight, BelowChartCenter. / note that word
+     * wrapping a legend takes a toll on performance. / you may want to set
+     * maxSizePercent when word wrapping, to set the point where the text wraps.
+     * / default: false
+     * 
+     * @param enabled
+     */
     public void setWordWrapEnabled(boolean enabled) {
         mWordWrapEnabled = enabled;
     }
 
-    /// if this is set, then word wrapping the legend is enabled.
+    /**
+     * If this is set, then word wrapping the legend is enabled. This means the
+     * legend will not be cut off if too long.
+     * 
+     * @return
+     */
     public boolean isWordWrapEnabled() {
         return mWordWrapEnabled;
     }
 
-    /// The maximum relative size out of the whole chart view.
-    /// If the legend is to the right/left of the chart, then this affects the width of the legend.
-    /// If the legend is to the top/bottom of the chart, then this affects the height of the legend.
-    /// If the legend is the center of the piechart, then this defines the size of the rectangular bounds out of the size of the "hole".
-    /// default: 1.0 (100%)
+    /**
+     * The maximum relative size out of the whole chart view. / If the legend is
+     * to the right/left of the chart, then this affects the width of the
+     * legend. / If the legend is to the top/bottom of the chart, then this
+     * affects the height of the legend. / If the legend is the center of the
+     * piechart, then this defines the size of the rectangular bounds out of the
+     * size of the "hole". / default: 0.95f (95%)
+     * 
+     * @return
+     */
     public float getMaxSizePercent() {
         return mMaxSizePercent;
     }
 
-    /// The maximum relative size out of the whole chart view.
-    /// If the legend is to the right/left of the chart, then this affects the width of the legend.
-    /// If the legend is to the top/bottom of the chart, then this affects the height of the legend.
-    /// If the legend is the center of the piechart, then this defines the size of the rectangular bounds out of the size of the "hole".
-    /// default: 1.0 (100%)
+    /**
+     * The maximum relative size out of the whole chart view. / If
+     * the legend is to the right/left of the chart, then this affects the width
+     * of the legend. / If the legend is to the top/bottom of the chart, then
+     * this affects the height of the legend. / If the legend is the center of
+     * the PieChart, then this defines the size of the rectangular bounds out of
+     * the size of the "hole". / default: 0.95f (95%)
+     * 
+     * @param maxSize
+     */
     public void setMaxSizePercent(float maxSize) {
         mMaxSizePercent = maxSize;
     }
 
-    private FSize[] mCalculatedLabelSizes = new FSize[]{};
-    private Boolean[] mCalculatedLabelBreakPoints = new Boolean[]{};
-    private FSize[] mCalculatedLineSizes = new FSize[]{};
+    private FSize[] mCalculatedLabelSizes = new FSize[] {};
+    private Boolean[] mCalculatedLabelBreakPoints = new Boolean[] {};
+    private FSize[] mCalculatedLineSizes = new FSize[] {};
 
     public FSize[] getCalculatedLabelSizes() {
         return mCalculatedLabelSizes;
@@ -657,86 +676,85 @@ public class Legend extends ComponentBase {
             mTextHeightMax = getMaximumEntryHeight(labelpaint);
 
         } else if (mPosition == LegendPosition.BELOW_CHART_LEFT
-                    || mPosition == LegendPosition.BELOW_CHART_RIGHT
-                    || mPosition == LegendPosition.BELOW_CHART_CENTER) {
+                || mPosition == LegendPosition.BELOW_CHART_RIGHT
+                || mPosition == LegendPosition.BELOW_CHART_CENTER) {
 
             int labelCount = mLabels.length;
-            float labelLineHeight = - labelpaint.ascent() - labelpaint.descent();
+            float labelLineHeight = -labelpaint.ascent() - labelpaint.descent();
             float contentWidth = viewPortHandler.contentWidth();
 
             // Prepare arrays for calculated layout
-            ArrayList<FSize> calculatedLabelSizes = new ArrayList<>(labelCount);
-            ArrayList<Boolean> calculatedLabelBreakPoints = new ArrayList<>(labelCount);
-            ArrayList<FSize> calculatedLineSizes = new ArrayList<>();
+            ArrayList<FSize> calculatedLabelSizes = new ArrayList<FSize>(labelCount);
+            ArrayList<Boolean> calculatedLabelBreakPoints = new ArrayList<Boolean>(labelCount);
+            ArrayList<FSize> calculatedLineSizes = new ArrayList<FSize>();
 
             // Start calculating layout
-
             float maxLineWidth = 0.f;
             float currentLineWidth = 0.f;
             float requiredWidth = 0.f;
             int stackedStartIndex = -1;
 
-            for (int i = 0; i < labelCount; i++)
-            {
+            for (int i = 0; i < labelCount; i++) {
+
                 boolean drawingForm = mColors[i] != ColorTemplate.COLOR_SKIP;
 
                 calculatedLabelBreakPoints.add(false);
 
                 if (stackedStartIndex == -1)
                 {
-                    // we are not stacking, so required width is for this label only
+                    // we are not stacking, so required width is for this label
+                    // only
                     requiredWidth = 0.f;
-                }
-                else
-                {
+                } else {
                     // add the spacing appropriate for stacked labels/forms
                     requiredWidth += mStackSpace;
                 }
 
                 // grouped forms have null labels
-                if (mLabels[i] != null)
-                {
+                if (mLabels[i] != null) {
+
                     calculatedLabelSizes.add(Utils.calcTextSize(labelpaint, mLabels[i]));
                     requiredWidth += drawingForm ? mFormToTextSpace + mFormSize : 0.f;
                     requiredWidth += calculatedLabelSizes.get(i).width;
-                }
-                else
-                {
+                } else {
+
                     calculatedLabelSizes.add(new FSize(0.f, 0.f));
                     requiredWidth += drawingForm ? mFormSize : 0.f;
 
-                    if (stackedStartIndex == -1)
-                    {
+                    if (stackedStartIndex == -1) {
                         // mark this index as we might want to break here later
                         stackedStartIndex = i;
                     }
                 }
 
-                if (mLabels[i] != null || i == labelCount - 1)
-                {
+                if (mLabels[i] != null || i == labelCount - 1) {
+
                     float requiredSpacing = currentLineWidth == 0.f ? 0.f : mXEntrySpace;
 
                     if (!mWordWrapEnabled || // No word wrapping, it must fit.
-                            currentLineWidth == 0.f || // The line is empty, it must fit.
-                            (contentWidth - currentLineWidth >= requiredSpacing + requiredWidth)) // It simply fits
+                            currentLineWidth == 0.f || // The line is empty, it
+                                                       // must fit.
+                            (contentWidth - currentLineWidth >= requiredSpacing + requiredWidth)) // It
+                                                                                                  // simply
+                                                                                                  // fits
                     {
                         // Expand current line
                         currentLineWidth += requiredSpacing + requiredWidth;
-                    }
-                    else
-                    { // It doesn't fit, we need to wrap a line
+
+                    } else { // It doesn't fit, we need to wrap a line
 
                         // Add current line size to array
                         calculatedLineSizes.add(new FSize(currentLineWidth, labelLineHeight));
                         maxLineWidth = Math.max(maxLineWidth, currentLineWidth);
 
                         // Start a new line
-                        calculatedLabelBreakPoints.set(stackedStartIndex > -1 ? stackedStartIndex : i, true);
+                        calculatedLabelBreakPoints.set(stackedStartIndex > -1 ? stackedStartIndex
+                                : i, true);
                         currentLineWidth = requiredWidth;
                     }
 
-                    if (i == labelCount - 1)
-                    { // Add last line size to array
+                    if (i == labelCount - 1) {
+                        // Add last line size to array
                         calculatedLineSizes.add(new FSize(currentLineWidth, labelLineHeight));
                         maxLineWidth = Math.max(maxLineWidth, currentLineWidth);
                     }
@@ -745,15 +763,22 @@ public class Legend extends ComponentBase {
                 stackedStartIndex = mLabels[i] != null ? -1 : stackedStartIndex;
             }
 
-            mCalculatedLabelSizes = calculatedLabelSizes.toArray(new FSize[calculatedLabelSizes.size()]);
-            mCalculatedLabelBreakPoints = calculatedLabelBreakPoints.toArray(new Boolean[calculatedLabelBreakPoints.size()]);
-            mCalculatedLineSizes = calculatedLineSizes.toArray(new FSize[calculatedLineSizes.size()]);
+            mCalculatedLabelSizes = calculatedLabelSizes.toArray(new FSize[calculatedLabelSizes
+                    .size()]);
+            mCalculatedLabelBreakPoints = calculatedLabelBreakPoints
+                    .toArray(new Boolean[calculatedLabelBreakPoints.size()]);
+            mCalculatedLineSizes = calculatedLineSizes
+                    .toArray(new FSize[calculatedLineSizes.size()]);
 
             mTextWidthMax = getMaximumEntryWidth(labelpaint);
             mTextHeightMax = getMaximumEntryHeight(labelpaint);
             mNeededWidth = maxLineWidth;
-            mNeededHeight = labelLineHeight * (float)(mCalculatedLineSizes.length) +
-                    mYEntrySpace * (float)(mCalculatedLineSizes.length == 0 ? 0 : (mCalculatedLineSizes.length - 1));
+            mNeededHeight = labelLineHeight
+                    * (float) (mCalculatedLineSizes.length)
+                    +
+                    mYEntrySpace
+                    * (float) (mCalculatedLineSizes.length == 0 ? 0
+                            : (mCalculatedLineSizes.length - 1));
 
         } else {
             /* RIGHT_OF_CHART_INSIDE, LEFT_OF_CHART_INSIDE */
