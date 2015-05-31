@@ -40,6 +40,12 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /** total number of y-values across all DataSet objects */
     private int mYValCount = 0;
 
+    /** the last start value used for calcMinMax */
+    protected int mLastStart = 0;
+
+    /** the last end value used for calcMinMax */
+    protected int mLastEnd = 0;
+
     /**
      * contains the average length (in characters) an entry in the x-vals array
      * has
@@ -66,7 +72,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     public ChartData(List<String> xVals) {
         this.mXVals = xVals;
         this.mDataSets = new ArrayList<T>();
-        init(mDataSets);
+        init();
     }
 
     /**
@@ -78,7 +84,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     public ChartData(String[] xVals) {
         this.mXVals = arrayToList(xVals);
         this.mDataSets = new ArrayList<T>();
-        init(mDataSets);
+        init();
     }
 
     /**
@@ -93,7 +99,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         this.mXVals = xVals;
         this.mDataSets = sets;
 
-        init(mDataSets);
+        init();
     }
 
     /**
@@ -108,7 +114,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         this.mXVals = arrayToList(xVals);
         this.mDataSets = sets;
 
-        init(mDataSets);
+        init();
     }
 
     /**
@@ -125,13 +131,13 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * performs all kinds of initialization calculations, such as min-max and
      * value count and sum
      */
-    protected void init(List<? extends DataSet<?>> dataSets) {
+    protected void init() {
 
-        isLegal(dataSets);
+        isLegal();
 
-        calcMinMax(dataSets);
-        calcYValueSum(dataSets);
-        calcYValueCount(dataSets);
+        calcMinMax(mLastStart, mLastEnd);
+        calcYValueSum();
+        calcYValueCount();
 
         calcXValAverageLength();
     }
@@ -159,15 +165,14 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * Checks if the combination of x-values array and DataSet array is legal or
      * not.
      * 
-     * @param dataSets
      */
-    private void isLegal(List<? extends DataSet<?>> dataSets) {
+    private void isLegal() {
 
-        if (dataSets == null)
+        if (mDataSets == null)
             return;
 
-        for (int i = 0; i < dataSets.size(); i++) {
-            if (dataSets.get(i)
+        for (int i = 0; i < mDataSets.size(); i++) {
+            if (mDataSets.get(i)
                     .getYVals()
                     .size() > mXVals.size()) {
                 throw new IllegalArgumentException(
@@ -181,30 +186,35 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * changed.
      */
     public void notifyDataChanged() {
-        init(mDataSets);
+        init();
     }
 
     /**
      * calc minimum and maximum y value over all datasets
      */
-    protected void calcMinMax(List<? extends DataSet<?>> dataSets) {
+    public void calcMinMax(int start, int end) {
 
-        if (dataSets == null || dataSets.size() < 1) {
+        if (mDataSets == null || mDataSets.size() < 1) {
 
             mYMax = 0f;
             mYMin = 0f;
         } else {
 
-            // calculate absolute min and max
-            mYMin = dataSets.get(0).getYMin();
-            mYMax = dataSets.get(0).getYMax();
+            mLastStart = start;
+            mLastEnd = end;
 
-            for (int i = 0; i < dataSets.size(); i++) {
-                if (dataSets.get(i).getYMin() < mYMin)
-                    mYMin = dataSets.get(i).getYMin();
+            mYMin = Float.MAX_VALUE;
+            mYMax = Float.MIN_VALUE;
 
-                if (dataSets.get(i).getYMax() > mYMax)
-                    mYMax = dataSets.get(i).getYMax();
+            for (int i = 0; i < mDataSets.size(); i++) {
+
+                mDataSets.get(i).calcMinMax(start, end);
+
+                if (mDataSets.get(i).getYMin() < mYMin)
+                    mYMin = mDataSets.get(i).getYMin();
+
+                if (mDataSets.get(i).getYMax() > mYMax)
+                    mYMax = mDataSets.get(i).getYMax();
             }
 
             // left axis
@@ -215,7 +225,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
                 mLeftAxisMax = firstLeft.getYMax();
                 mLeftAxisMin = firstLeft.getYMin();
 
-                for (DataSet<?> dataSet : dataSets) {
+                for (DataSet<?> dataSet : mDataSets) {
                     if (dataSet.getAxisDependency() == AxisDependency.LEFT) {
                         if (dataSet.getYMin() < mLeftAxisMin)
                             mLeftAxisMin = dataSet.getYMin();
@@ -234,7 +244,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
                 mRightAxisMax = firstRight.getYMax();
                 mRightAxisMin = firstRight.getYMin();
 
-                for (DataSet<?> dataSet : dataSets) {
+                for (DataSet<?> dataSet : mDataSets) {
                     if (dataSet.getAxisDependency() == AxisDependency.RIGHT) {
                         if (dataSet.getYMin() < mRightAxisMin)
                             mRightAxisMin = dataSet.getYMin();
@@ -253,15 +263,15 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /**
      * calculates the sum of all y-values in all datasets
      */
-    protected void calcYValueSum(List<? extends DataSet<?>> dataSets) {
+    protected void calcYValueSum() {
 
         mYValueSum = 0;
 
-        if (dataSets == null)
+        if (mDataSets == null)
             return;
 
-        for (int i = 0; i < dataSets.size(); i++) {
-            mYValueSum += Math.abs(dataSets.get(i).getYValueSum());
+        for (int i = 0; i < mDataSets.size(); i++) {
+            mYValueSum += Math.abs(mDataSets.get(i).getYValueSum());
         }
     }
 
@@ -271,17 +281,17 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * 
      * @return
      */
-    protected void calcYValueCount(List<? extends DataSet<?>> dataSets) {
+    protected void calcYValueCount() {
 
         mYValCount = 0;
 
-        if (dataSets == null)
+        if (mDataSets == null)
             return;
 
         int count = 0;
 
-        for (int i = 0; i < dataSets.size(); i++) {
-            count += dataSets.get(i).getEntryCount();
+        for (int i = 0; i < mDataSets.size(); i++) {
+            count += mDataSets.get(i).getEntryCount();
         }
 
         mYValCount = count;
@@ -599,7 +609,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             mYValCount -= d.getEntryCount();
             mYValueSum -= d.getYValueSum();
 
-            calcMinMax(mDataSets);
+            calcMinMax(mLastStart, mLastEnd);
         }
 
         return removed;
@@ -691,7 +701,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             mYValCount -= 1;
             mYValueSum -= val;
 
-            calcMinMax(mDataSets);
+            calcMinMax(mLastStart, mLastEnd);
         }
 
         return removed;

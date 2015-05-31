@@ -198,6 +198,11 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
                 mChart.invalidate();
                 break;
             }
+            case R.id.actionToggleAutoScaleMinMax: {
+                mChart.setAutoScaleMinMaxEnabled(!mChart.isAutoScaleMinMaxEnabled());
+                mChart.notifyDataSetChanged();
+                break;
+            }
             case R.id.actionToggleFilter: {
 
                 // the angle of filtering is 35°
