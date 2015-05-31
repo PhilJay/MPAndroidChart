@@ -187,7 +187,9 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
                     || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
                     || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
 
-                legendBottom = getRequiredBottomOffset();
+                float yOffset = getRequiredBottomOffset(); // It's possible that we do not need this offset anymore as it is available through the extraOffsets
+                legendBottom = Math.min(mLegend.mNeededHeight + yOffset, mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent());
+
             }
 
             legendLeft += getRequiredBaseOffset();
