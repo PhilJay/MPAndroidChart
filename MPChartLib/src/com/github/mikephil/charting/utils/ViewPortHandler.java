@@ -191,6 +191,9 @@ public class ViewPortHandler {
      * bounds.
      */
     public Matrix fitScreen() {
+        
+        mMinScaleX = 1f;
+        mMinScaleY = 1f;
 
         Matrix save = new Matrix();
         save.set(mMatrixTouch);
