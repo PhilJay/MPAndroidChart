@@ -174,6 +174,16 @@ public abstract class Utils {
         return r.height();
     }
 
+    public static float getLineHeight(Paint paint) {
+        Paint.FontMetrics metrics = paint.getFontMetrics();
+        return metrics.descent - metrics.ascent;
+    }
+
+    public static float getLineSpacing(Paint paint) {
+        Paint.FontMetrics metrics = paint.getFontMetrics();
+        return metrics.ascent - metrics.top + metrics.bottom;
+    }
+
     /**
      * calculates the approximate size of a text, depending on a demo text
      * avoid repeated calls (e.g. inside drawing methods)

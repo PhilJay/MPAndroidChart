@@ -82,7 +82,7 @@ public class Legend extends ComponentBase {
     /**
      * the space between the legend entries on a vertical axis, default 5f
      */
-    private float mYEntrySpace = 5f;
+    private float mYEntrySpace = 0f;
 
     /**
      * the space between the legend entries on a vertical axis, default 2f
@@ -102,7 +102,7 @@ public class Legend extends ComponentBase {
 
         mFormSize = Utils.convertDpToPixel(8f);
         mXEntrySpace = Utils.convertDpToPixel(6f);
-        mYEntrySpace = Utils.convertDpToPixel(5f);
+        mYEntrySpace = Utils.convertDpToPixel(0f);
         mFormToTextSpace = Utils.convertDpToPixel(5f);
         mTextSize = Utils.convertDpToPixel(10f);
         mStackSpace = Utils.convertDpToPixel(3f);
@@ -680,7 +680,8 @@ public class Legend extends ComponentBase {
                 || mPosition == LegendPosition.BELOW_CHART_CENTER) {
 
             int labelCount = mLabels.length;
-            float labelLineHeight = -labelpaint.ascent() - labelpaint.descent();
+            float labelLineHeight = Utils.getLineHeight(labelpaint);
+            float labelLineSpacing = Utils.getLineSpacing(labelpaint) + mYEntrySpace;
             float contentWidth = viewPortHandler.contentWidth();
 
             // Prepare arrays for calculated layout
@@ -763,8 +764,8 @@ public class Legend extends ComponentBase {
                 stackedStartIndex = mLabels[i] != null ? -1 : stackedStartIndex;
             }
 
-            mCalculatedLabelSizes = calculatedLabelSizes.toArray(new FSize[calculatedLabelSizes
-                    .size()]);
+            mCalculatedLabelSizes = calculatedLabelSizes.toArray(
+                    new FSize[calculatedLabelSizes.size()]);
             mCalculatedLabelBreakPoints = calculatedLabelBreakPoints
                     .toArray(new Boolean[calculatedLabelBreakPoints.size()]);
             mCalculatedLineSizes = calculatedLineSizes
@@ -775,9 +776,9 @@ public class Legend extends ComponentBase {
             mNeededWidth = maxLineWidth;
             mNeededHeight = labelLineHeight
                     * (float) (mCalculatedLineSizes.length)
-                    +
-                    mYEntrySpace
-                    * (float) (mCalculatedLineSizes.length == 0 ? 0
+                    + labelLineSpacing *
+                    (float) (mCalculatedLineSizes.length == 0
+                            ? 0
                             : (mCalculatedLineSizes.length - 1));
 
         } else {
