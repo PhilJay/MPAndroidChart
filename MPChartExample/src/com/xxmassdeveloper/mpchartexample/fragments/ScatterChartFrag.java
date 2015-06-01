@@ -10,6 +10,7 @@ import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.xxmassdeveloper.mpchartexample.R;
 import com.xxmassdeveloper.mpchartexample.custom.MyMarkerView;
 
@@ -51,7 +52,7 @@ public class ScatterChartFrag extends SimpleFragment {
         rightAxis.setDrawGridLines(false);
         
         Legend l = mChart.getLegend();
-      //  l.setWordWrapEnabled(true);
+        l.setWordWrapEnabled(true);
         l.setTypeface(tf);
         
         return v;

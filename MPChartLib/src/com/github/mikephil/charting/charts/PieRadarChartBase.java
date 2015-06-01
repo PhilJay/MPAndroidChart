@@ -207,6 +207,11 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
             }
         }
 
+        legendTop += getExtraTopOffset();
+        legendRight += getExtraRightOffset();
+        legendBottom += getExtraBottomOffset();
+        legendLeft += getExtraLeftOffset();
+
         float offsetLeft = Math.max(min, legendLeft);
         float offsetTop = Math.max(min, legendTop);
         float offsetRight = Math.max(min, legendRight);

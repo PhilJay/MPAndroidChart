@@ -150,6 +150,12 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /** object responsible for animations */
     protected ChartAnimator mAnimator;
 
+    /** Extra offsets to be appended to the viewport */
+    private float mExtraTopOffset = 0.f,
+            mExtraRightOffset = 0.f,
+            mExtraBottomOffset = 0.f,
+            mExtraLeftOffset = 0.f;
+
     /** default constructor for initialization in code */
     public Chart(Context context) {
         super(context);
@@ -1019,6 +1025,62 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public void setDescriptionColor(int color) {
         mDescPaint.setColor(color);
+    }
+
+    /**
+     * Set an extra offset to be appended to the viewport's top
+     */
+    public void setExtraTopOffset(float offset) {
+        mExtraTopOffset = offset;
+    }
+
+    /**
+     * @return the extra offset to be appended to the viewport's top
+     */
+    public float getExtraTopOffset() {
+        return mExtraTopOffset;
+    }
+
+    /**
+     * Set an extra offset to be appended to the viewport's right
+     */
+    public void setExtraRightOffset(float offset) {
+        mExtraRightOffset = offset;
+    }
+
+    /**
+     * @return the extra offset to be appended to the viewport's right
+     */
+    public float getExtraRightOffset() {
+        return mExtraRightOffset;
+    }
+
+    /**
+     * Set an extra offset to be appended to the viewport's bottom
+     */
+    public void setExtraBottomOffset(float offset) {
+        mExtraBottomOffset = offset;
+    }
+
+    /**
+     * @return the extra offset to be appended to the viewport's bottom
+     */
+    public float getExtraBottomOffset() {
+        return mExtraBottomOffset;
+    }
+
+    /**
+     * Set an extra offset to be appended to the viewport's left
+     */
+    public void setExtraLeftOffset(float offset) {
+        mExtraLeftOffset = offset;
+    }
+
+    /**
+     * @return the extra offset to be appended to the viewport's left
+     */
+    public float getExtraLeftOffset() {
+        return mExtraLeftOffset;
     }
 
     /**
