@@ -78,8 +78,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * Deceleration friction coefficient in [0 ; 1] interval, higher values
      * indicate that speed will decrease slowly, for example if it set to 0, it
-     * will stop immediately. 1 is an invalid value, and will be converted to 0.999f
-     * automatically.
+     * will stop immediately. 1 is an invalid value, and will be converted to
+     * 0.999f automatically.
      */
     private float mDragDecelerationFrictionCoef = 0.9f;
 
@@ -660,17 +660,17 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * Deceleration friction coefficient in [0 ; 1] interval, higher values
      * indicate that speed will decrease slowly, for example if it set to 0, it
-     * will stop immediately. 1 is an invalid value, and will be converted to 0.999f
-     * automatically.
+     * will stop immediately. 1 is an invalid value, and will be converted to
+     * 0.999f automatically.
      *
      * @param newValue
      */
     public void setDragDecelerationFrictionCoef(float newValue) {
-        
+
         if (newValue < 0.f)
             newValue = 0.f;
-        
-        if(newValue >= 1f) 
+
+        if (newValue >= 1f)
             newValue = 0.999f;
 
         mDragDecelerationFrictionCoef = newValue;
@@ -918,7 +918,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public int getXValCount() {
         return mData.getXValCount();
     }
-    
+
     /**
      * returns the average value of all values the chart holds
      *
@@ -1028,6 +1028,22 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
+     * Sets extra offsets (around the chart view) to be appended to the
+     * auto-calculated offsets.
+     * 
+     * @param left
+     * @param top
+     * @param right
+     * @param bottom
+     */
+    public void setExtraOffsets(float left, float top, float right, float bottom) {
+        mExtraLeftOffset = left;
+        mExtraTopOffset = top;
+        mExtraRightOffset = right;
+        mExtraBottomOffset = bottom;
+    }
+
+    /**
      * Set an extra offset to be appended to the viewport's top
      */
     public void setExtraTopOffset(float offset) {
@@ -1121,32 +1137,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public void setNoDataTextDescription(String text) {
         mNoDataTextDescription = text;
     }
-
-    // /**
-    // * Sets the offsets from the border of the view to the actual chart in
-    // every
-    // * direction manually. This method needs to be recalled everytime a new
-    // data
-    // * object is set for the chart. Provide density pixels -> they are then
-    // * rendered to pixels inside the chart.
-    // *
-    // * @param left
-    // * @param right
-    // * @param top
-    // * @param bottom
-    // */
-    // public void setOffsets(float left, float top, float right, float bottom)
-    // {
-    //
-    // mOffsetBottom = Utils.convertDpToPixel(bottom);
-    // mOffsetLeft = Utils.convertDpToPixel(left);
-    // mOffsetRight = Utils.convertDpToPixel(right);
-    // mOffsetTop = Utils.convertDpToPixel(top);
-    //
-    // mTrans.prepareMatrixValuePx(this);
-    // mTrans.prepareMatrixOffset(this);
-    // prepareContentRect();
-    // }
 
     /**
      * Set this to false to disable all gestures and touches on the chart,

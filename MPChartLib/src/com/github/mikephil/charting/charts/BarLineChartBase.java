@@ -597,7 +597,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     /**
      * ################ ################ ################ ################
      */
-    /** CODE BELOW THIS RELATED TO SCALING AND GESTURES */
+    /**
+     * CODE BELOW THIS RELATED TO SCALING AND GESTURES AND MODIFICATION OF THE
+     * VIEWPORT
+     */
 
     /**
      * Zooms in by 1.4f, into the charts center. center.
@@ -772,7 +775,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * Sets custom offsets for the current ViewPort (the offsets on the sides of
      * the actual chart window). Setting this will prevent the chart from
      * automatically calculating it's offsets. Use resetViewPortOffsets() to
-     * undo this.
+     * undo this. ONLY USE THIS WHEN YOU KNOW WHAT YOU ARE DOING, else use
+     * setExtraOffsets(...).
      * 
      * @param left
      * @param top

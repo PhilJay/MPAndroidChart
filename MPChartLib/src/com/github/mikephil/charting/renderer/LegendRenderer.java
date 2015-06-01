@@ -173,7 +173,7 @@ public class LegendRenderer extends Renderer {
         mLegendLabelPaint.setTextSize(mLegend.getTextSize());
         mLegendLabelPaint.setColor(mLegend.getTextColor());
 
-        float labelLineHeight = - mLegendLabelPaint.ascent() - mLegendLabelPaint.descent(); // Utils.calcTextHeight(mLegendLabelPaint, "AQJ");
+        float labelLineHeight = mLegendLabelPaint.getFontMetrics().bottom - mLegendLabelPaint.getFontMetrics().top; //- mLegendLabelPaint.ascent() - mLegendLabelPaint.descent(); // Utils.calcTextHeight(mLegendLabelPaint, "AQJ");
 
         String[] labels = mLegend.getLabels();
         int[] colors = mLegend.getColors();

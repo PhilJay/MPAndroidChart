@@ -70,7 +70,7 @@ public abstract class SimpleFragment extends Fragment {
         
         ScatterShape[] shapes = ScatterChart.getAllPossibleShapes();
         
-        for(int i = 0; i < dataSets; i++) {
+        for(int i = 0; i < dataSets*4; i++) {
            
             ArrayList<Entry> entries = new ArrayList<Entry>();
             
@@ -78,7 +78,7 @@ public abstract class SimpleFragment extends Fragment {
                 entries.add(new Entry((float) (Math.random() * range) + range / 4, j));
             }
             
-            ScatterDataSet ds = new ScatterDataSet(entries, getLabel(i));
+            ScatterDataSet ds = new ScatterDataSet(entries, "Company A");
             ds.setScatterShapeSize(12f);
             ds.setScatterShape(shapes[i % shapes.length]);
             ds.setColors(ColorTemplate.COLORFUL_COLORS);

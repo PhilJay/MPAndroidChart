@@ -10,7 +10,7 @@ import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.components.Legend.LegendPosition;
+import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.xxmassdeveloper.mpchartexample.R;
 import com.xxmassdeveloper.mpchartexample.custom.MyMarkerView;
 
@@ -37,12 +37,12 @@ public class ScatterChartFrag extends SimpleFragment {
         mChart.setMarkerView(mv);
 
         mChart.setHighlightIndicatorEnabled(false);
-//        mChart.setBorderStyles(new BorderStyle[] { BorderStyle.LEFT });
         mChart.setDrawGridBackground(false);
         mChart.setData(generateScatterData(2, 10000, 400));
         
         XAxis xAxis = mChart.getXAxis();
-        xAxis.setEnabled(false);
+        xAxis.setEnabled(true);
+        xAxis.setPosition(XAxisPosition.BOTTOM);
         
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(tf);
@@ -54,6 +54,8 @@ public class ScatterChartFrag extends SimpleFragment {
         Legend l = mChart.getLegend();
         l.setWordWrapEnabled(true);
         l.setTypeface(tf);
+//        l.setFormSize(18f);
+//        l.setTextSize(9f);
         
         return v;
     }
