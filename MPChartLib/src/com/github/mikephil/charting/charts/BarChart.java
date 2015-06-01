@@ -38,6 +38,12 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
      * just their sum
      */
     private boolean mDrawValuesForWholeStack = true;
+    
+    /**
+     * if set to true, sums, which are zero are not drawn on stacked bars.
+     * It is used to prevent overlapping values on the chart.
+     */
+    private boolean mDrawSuppressZeroSums = false;
 
     /**
      * if set to true, a grey area is drawn behind each bar that indicates the
@@ -302,6 +308,26 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         return mDrawValuesForWholeStack;
     }
 
+    /**
+     * if set to true, sums, which are zero are not drawn on stacked bars.
+     * It is used to prevent overlapping values on the chart.
+     * 
+     * @param enabled
+     */
+    public void setDrawSuppressZeroSums(boolean enabled) {
+    	mDrawSuppressZeroSums = enabled;
+    }
+    
+    /**
+     * returns true if sums, which are zero are not drawn on stacked bars
+     * It is used to prevent overlapping values on the chart.
+     * 
+     * @return
+     */
+	public boolean isDrawSuppressZeroSumsEnabled() {
+		return mDrawSuppressZeroSums;
+	}
+	
     /**
      * If set to true, a grey area is drawn behind each bar that indicates the
      * maximum value. Enabling his will reduce performance by about 50%.

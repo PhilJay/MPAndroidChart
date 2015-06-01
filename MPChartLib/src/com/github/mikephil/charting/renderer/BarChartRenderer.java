@@ -284,7 +284,12 @@ public class BarChartRenderer extends DataRenderer {
                                         || !mViewPortHandler.isInBoundsLeft(x))
                                     continue;
 
-                                drawValue(c, formatter.getFormattedValue(vals[k / 2]), x, y);
+                                float val = vals[k / 2];
+                                
+                                if(!(mChart.isDrawSuppressZeroSumsEnabled() && val == 0))
+                                {
+                                    drawValue(c, formatter.getFormattedValue(val), x, y);
+                                }
                             }
                         }
                     }

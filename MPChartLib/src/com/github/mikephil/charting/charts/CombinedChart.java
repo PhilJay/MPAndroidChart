@@ -47,6 +47,12 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
     private boolean mDrawValuesForWholeStack = true;
 
     /**
+     * if set to true, sums, which are zero are not drawn on stacked bars.
+     * It is used to prevent overlapping values on the chart.
+     */
+    private boolean mDrawSuppressZeroSums = false;
+    
+    /**
      * if set to true, a grey area is drawn behind each bar that indicates the
      * maximum value
      */
@@ -187,6 +193,11 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
         return mDrawValuesForWholeStack;
     }
 
+    @Override
+	public boolean isDrawSuppressZeroSumsEnabled() {
+		return mDrawSuppressZeroSums;
+	}
+	
     /**
      * set this to true to draw the highlightning arrow
      * 
@@ -214,6 +225,16 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
      */
     public void setDrawValuesForWholeStack(boolean enabled) {
         mDrawValuesForWholeStack = enabled;
+    }
+    
+    /**
+     * if set to true, sums, which are zero are not drawn on stacked bars.
+     * It is used to prevent overlapping values on the chart.
+     * 
+     * @param enabled
+     */
+    public void setDrawSuppressZeroSums(boolean enabled) {
+    	mDrawSuppressZeroSums = enabled;
     }
 
     /**
