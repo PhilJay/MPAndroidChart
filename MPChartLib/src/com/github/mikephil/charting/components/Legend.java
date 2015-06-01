@@ -107,7 +107,7 @@ public class Legend extends ComponentBase {
         mTextSize = Utils.convertDpToPixel(10f);
         mStackSpace = Utils.convertDpToPixel(3f);
         this.mXOffset = Utils.convertDpToPixel(5f);
-        this.mYOffset = Utils.convertDpToPixel(6f);
+        this.mYOffset = Utils.convertDpToPixel(7f);
     }
 
     /**
@@ -476,30 +476,6 @@ public class Legend extends ComponentBase {
     public void setFormToTextSpace(float space) {
         this.mFormToTextSpace = Utils.convertDpToPixel(space);
     }
-
-    // /**
-    // * applies the state from the legend in the parameter to this legend
-    // (except
-    // * colors, labels and offsets)
-    // *
-    // * @param l
-    // */
-    // public void apply(Legend l) {
-    //
-    // mPosition = l.mPosition;
-    // mShape = l.mShape;
-    // mTypeface = l.mTypeface;
-    // mFormSize = l.mFormSize;
-    // mXEntrySpace = l.mXEntrySpace;
-    // mYEntrySpace = l.mYEntrySpace;
-    // mFormToTextSpace = l.mFormToTextSpace;
-    // mTextSize = l.mTextSize;
-    // mStackSpace = l.mStackSpace;
-    // mTextColor = l.mTextColor;
-    // mEnabled = l.mEnabled;
-    // mXOffset = l.mXOffset;
-    // mYOffset = l.mYOffset;
-    // }
 
     /**
      * returns the space that is left out between stacked forms (with no label)

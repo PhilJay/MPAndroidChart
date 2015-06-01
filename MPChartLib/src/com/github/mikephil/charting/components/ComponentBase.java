@@ -65,7 +65,9 @@ public abstract class ComponentBase {
     }
 
     /**
-     * Sets the used x-axis offset for the labels on this axis.
+     * Sets the used y-axis offset for the labels on this axis. For the legend,
+     * higher offset means the legend as a whole will be placed further away
+     * from the top.
      * 
      * @param xOffset
      */

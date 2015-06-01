@@ -1037,17 +1037,17 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @param bottom
      */
     public void setExtraOffsets(float left, float top, float right, float bottom) {
-        mExtraLeftOffset = left;
-        mExtraTopOffset = top;
-        mExtraRightOffset = right;
-        mExtraBottomOffset = bottom;
+        setExtraLeftOffset(left);
+        setExtraTopOffset(top);
+        setExtraRightOffset(right);
+        setExtraBottomOffset(bottom);
     }
 
     /**
      * Set an extra offset to be appended to the viewport's top
      */
     public void setExtraTopOffset(float offset) {
-        mExtraTopOffset = offset;
+        mExtraTopOffset = Utils.convertDpToPixel(offset);
     }
 
     /**
@@ -1061,7 +1061,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * Set an extra offset to be appended to the viewport's right
      */
     public void setExtraRightOffset(float offset) {
-        mExtraRightOffset = offset;
+        mExtraRightOffset = Utils.convertDpToPixel(offset);
     }
 
     /**
@@ -1075,7 +1075,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * Set an extra offset to be appended to the viewport's bottom
      */
     public void setExtraBottomOffset(float offset) {
-        mExtraBottomOffset = offset;
+        mExtraBottomOffset = Utils.convertDpToPixel(offset);
     }
 
     /**
@@ -1089,7 +1089,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * Set an extra offset to be appended to the viewport's left
      */
     public void setExtraLeftOffset(float offset) {
-        mExtraLeftOffset = offset;
+        mExtraLeftOffset = Utils.convertDpToPixel(offset);
     }
 
     /**

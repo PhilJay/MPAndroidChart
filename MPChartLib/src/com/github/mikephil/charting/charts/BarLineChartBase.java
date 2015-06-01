@@ -416,7 +416,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                         || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
                         || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
 
-                    float yOffset = mLegend.mTextHeightMax * 2.f; // It's
+                    float yOffset = mLegend.mTextHeightMax; // It's
                                                                   // possible
                                                                   // that we do
                                                                   // not need
