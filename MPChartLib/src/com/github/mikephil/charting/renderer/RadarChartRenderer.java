@@ -210,7 +210,7 @@ public class RadarChartRenderer extends DataRenderer {
                     .getDataSetByIndex(indices[i]
                             .getDataSetIndex());
 
-            if (set == null)
+            if (set == null || !set.isHighlightEnabled())
                 continue;
 
             mHighlightPaint.setColor(set.getHighLightColor());

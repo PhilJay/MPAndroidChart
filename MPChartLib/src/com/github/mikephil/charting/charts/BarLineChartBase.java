@@ -75,12 +75,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      */
     protected boolean mHighlightPerDragEnabled = true;
 
-    /**
-     * if set to true, the highlight indicator (lines for linechart, dark bar
-     * for barchart) will be drawn upon selecting values.
-     */
-    protected boolean mHighLightIndicatorEnabled = true;
-
     /** if true, dragging is enabled for the chart */
     private boolean mDragEnabled = true;
 
@@ -244,7 +238,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             mAxisRendererRight.renderLimitLines(canvas);
 
         // if highlighting is enabled
-        if (mHighlightEnabled && mHighLightIndicatorEnabled && valuesToHighlight())
+        if (valuesToHighlight())
             mRenderer.drawHighlighted(canvas, mIndicesToHightlight);
 
         // Removes clipping rectangle
@@ -887,18 +881,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
     public int getMaxVisibleCount() {
         return mMaxVisibleCount;
-    }
-
-    /**
-     * If set to true, the highlight indicator (vertical line for LineChart and
-     * ScatterChart, dark bar overlay for BarChart) that gives visual indication
-     * that an Entry has been selected will be drawn upon selecting values. This
-     * does not depend on the MarkerView. Default: true
-     * 
-     * @param enabled
-     */
-    public void setHighlightIndicatorEnabled(boolean enabled) {
-        mHighLightIndicatorEnabled = enabled;
     }
 
     /**

@@ -102,7 +102,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
         mRenderer.drawData(canvas);
 
-        if (mHighlightEnabled && valuesToHighlight())
+        if (valuesToHighlight())
             mRenderer.drawHighlighted(canvas, mIndicesToHightlight);
 
         mRenderer.drawExtras(canvas);

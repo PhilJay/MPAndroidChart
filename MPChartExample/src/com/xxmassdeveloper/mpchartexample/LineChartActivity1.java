@@ -96,7 +96,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
         // enable/disable highlight indicators (the lines that indicate the
         // highlighted Entry)
-        mChart.setHighlightIndicatorEnabled(false);
+        mChart.setHighlightEnabled(false);
         
         // x-axis limit line
 //        LimitLine llXAxis = new LimitLine(10f, "Index 10");

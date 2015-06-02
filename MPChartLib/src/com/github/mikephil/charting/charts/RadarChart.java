@@ -162,7 +162,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
         mRenderer.drawData(canvas);
 
-        if (mHighlightEnabled && valuesToHighlight())
+        if (valuesToHighlight())
             mRenderer.drawHighlighted(canvas, mIndicesToHightlight);
 
         mYAxisRenderer.renderAxisLabels(canvas);

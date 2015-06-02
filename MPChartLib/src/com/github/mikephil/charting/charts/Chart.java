@@ -116,9 +116,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /** if true, touch gestures are enabled on the chart */
     protected boolean mTouchEnabled = true;
 
-    /** if true, value highlightning is enabled */
-    protected boolean mHighlightEnabled = true;
-
     /** the legend object containing all data associated with the legend */
     protected Legend mLegend;
 
@@ -865,7 +862,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @param enabled
      */
     public void setHighlightEnabled(boolean enabled) {
-        mHighlightEnabled = enabled;
+        if (mData != null)
+            mData.setHighlightEnabled(enabled);
     }
 
     /**
@@ -874,7 +872,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @return
      */
     public boolean isHighlightEnabled() {
-        return mHighlightEnabled;
+        return mData == null ? true : mData.isHighlightEnabled();
     }
 
     /**

@@ -324,7 +324,7 @@ public class BarChartRenderer extends DataRenderer {
             int dataSetIndex = h.getDataSetIndex();
             BarDataSet set = mChart.getBarData().getDataSetByIndex(dataSetIndex);
 
-            if (set == null)
+            if (set == null || !set.isHighlightEnabled())
                 continue;
 
             float barspaceHalf = set.getBarSpace() / 2f;

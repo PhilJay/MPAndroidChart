@@ -901,6 +901,28 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     }
 
     /**
+     * Enables / disables highlighting values for all DataSets this data object contains.
+     */
+    public void setHighlightEnabled(boolean enabled) {
+        for (DataSet<?> set : mDataSets) {
+            set.setHighlightEnabled(enabled);
+        }
+    }
+
+    /**
+     * returns true if highlighting of values is enabled, false if not
+     *
+     * @return
+     */
+    public boolean isHighlightEnabled() {
+        for (DataSet<?> set : mDataSets) {
+            if (!set.isHighlightEnabled())
+                return false;
+        }
+        return true;
+    }
+
+    /**
      * Clears this data object from all DataSets and removes all Entries. Don't
      * forget to invalidate the chart after this.
      */

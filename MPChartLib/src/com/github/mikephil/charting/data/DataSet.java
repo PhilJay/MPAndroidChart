@@ -69,6 +69,9 @@ public abstract class DataSet<T extends Entry> {
     /** this specifies which axis this DataSet should be plotted against */
     protected AxisDependency mAxisDependency = AxisDependency.LEFT;
 
+    /** if true, value highlightning is enabled */
+    protected boolean mHighlightEnabled = true;
+
     /**
      * Creates a new DataSet object with the given values it represents. Also, a
      * label that describes the DataSet can be specified. The label can also be
@@ -612,6 +615,25 @@ public abstract class DataSet<T extends Entry> {
      */
     public void resetColors() {
         mColors = new ArrayList<Integer>();
+    }
+
+    /**
+     * If set to true, value highlighting is enabled which means that values can
+     * be highlighted programmatically or by touch gesture.
+     *
+     * @param enabled
+     */
+    public void setHighlightEnabled(boolean enabled) {
+        mHighlightEnabled = enabled;
+    }
+
+    /**
+     * returns true if highlighting of values is enabled, false if not
+     *
+     * @return
+     */
+    public boolean isHighlightEnabled() {
+        return mHighlightEnabled;
     }
 
     /**
