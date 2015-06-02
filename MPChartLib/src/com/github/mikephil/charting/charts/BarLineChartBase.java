@@ -411,15 +411,15 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                         || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
 
                     float yOffset = mLegend.mTextHeightMax; // It's
-                                                                  // possible
-                                                                  // that we do
-                                                                  // not need
-                                                                  // this offset
-                                                                  // anymore as
-                                                                  // it is
-                                                                  // available
-                                                                  // through the
-                                                                  // extraOffsets
+                                                            // possible
+                                                            // that we do
+                                                            // not need
+                                                            // this offset
+                                                            // anymore as
+                                                            // it is
+                                                            // available
+                                                            // through the
+                                                            // extraOffsets
                     offsetBottom += Math.min(mLegend.mNeededHeight + yOffset,
                             mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent());
 
@@ -636,7 +636,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     }
 
     /**
-     * Sets the minimum scale value to which can be zoomed out. 1f = fitScreen
+     * Sets the minimum scale factor value to which can be zoomed out. 1f =
+     * fitScreen
      * 
      * @param scaleX
      * @param scaleY
@@ -648,36 +649,54 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
     /**
      * Sets the size of the area (range on the x-axis) that should be maximum
-     * visible at once. If this is e.g. set to 10, no more than 10 values on the
-     * x-axis can be viewed at once without scrolling.
+     * visible at once (no further zooming out allowed). If this is e.g. set to
+     * 10, no more than 10 values on the x-axis can be viewed at once without
+     * scrolling.
      * 
-     * @param minScaleX
+     * @param maxXRange The maximum visible range of x-values.
      */
-    public void setVisibleXRange(float minScaleX) {
-        float xScale = mDeltaX / (minScaleX);
-        mViewPortHandler.setMinimumScaleX(minScaleX);
+    public void setVisibleXRangeMaximum(float maxXRange) {
+        float xScale = mDeltaX / (maxXRange);
+        mViewPortHandler.setMinimumScaleX(xScale);
     }
 
     /**
-     * Limits the maximum and minimum value count that can be visible by pinching and zooming.
-     * e.g. minRange=10, maxRange=100 no less than 10 values and no more that 100 values can be viewed
-     * at once without scrolling
+     * Sets the size of the area (range on the x-axis) that should be minimum
+     * visible at once (no further zooming in allowed). If this is e.g. set to
+     * 10, no more than 10 values on the x-axis can be viewed at once without
+     * scrolling.
+     * 
+     * @param minXRange The minimum visible range of x-values.
      */
-    public void setVisibleXRange(float minScaleX, float maxScaleX) {
-        float maxScale = mDeltaX / minScaleX;
-        float minScale = mDeltaX / maxScaleX;
-        mViewPortHandler.setScaleXRange(minScaleX, maxScaleX);
+    public void setVisibleXRangeMinimum(float minXRange) {
+        float xScale = mDeltaX / (minXRange);
+        mViewPortHandler.setMaximumScaleX(xScale);
+    }
+
+    /**
+     * Limits the maximum and minimum value count that can be visible by
+     * pinching and zooming. e.g. minRange=10, maxRange=100 no less than 10
+     * values and no more that 100 values can be viewed at once without
+     * scrolling
+     * 
+     * @param minXRange
+     * @param maxXRange
+     */
+    public void setVisibleXRange(float minXRange, float maxXRange) {
+        float maxScale = mDeltaX / minXRange;
+        float minScale = mDeltaX / maxXRange;
+        mViewPortHandler.setMinMaxScaleX(minScale, maxScale);
     }
 
     /**
      * Sets the size of the area (range on the y-axis) that should be maximum
      * visible at once.
      * 
-     * @param yRange
+     * @param maxYRange the maximum visible range on the y-axis
      * @param axis - the axis for which this limit should apply
      */
-    public void setVisibleYRange(float yRange, AxisDependency axis) {
-        float yScale = getDeltaY(axis) / yRange;
+    public void setVisibleYRangeMaximum(float maxYRange, AxisDependency axis) {
+        float yScale = getDeltaY(axis) / maxYRange;
         mViewPortHandler.setMinimumScaleY(yScale);
     }
 

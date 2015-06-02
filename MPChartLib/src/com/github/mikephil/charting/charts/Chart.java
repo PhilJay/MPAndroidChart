@@ -856,8 +856,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
-     * If set to true, value highlighting is enabled which means that values can
-     * be highlighted programmatically or by touch gesture.
+     * If set to true, value highlighting is enabled for all underlying data of
+     * the chart which means that all values can be highlighted programmatically
+     * or by touch gesture.
      *
      * @param enabled
      */
@@ -867,7 +868,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
-     * returns true if highlighting of values is enabled, false if not
+     * Returns true if highlighting of values is enabled, false if not
      *
      * @return
      */

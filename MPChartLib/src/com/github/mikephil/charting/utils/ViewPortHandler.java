@@ -348,6 +348,17 @@ public class ViewPortHandler {
 
         limitTransAndScale(mMatrixTouch, mContentRect);
     }
+    
+    public void setMinMaxScaleX(float minScaleX, float maxScaleX) {
+
+        if (minScaleX < 1f)
+            minScaleX = 1f;
+
+        mMinScaleX = minScaleX;
+        mMaxScaleX = maxScaleX;
+
+        limitTransAndScale(mMatrixTouch, mContentRect);
+    }
 
     public void setMinimumScaleY(float yScale) {
 
@@ -491,17 +502,6 @@ public class ViewPortHandler {
      */
     public boolean hasNoDragOffset() {
         return mTransOffsetX <= 0 && mTransOffsetY <= 0 ? true : false;
-    }
-
-    public void setScaleXRange(float minScaleX, float maxScaleX) {
-
-        if (minScaleX < 1f)
-            minScaleX = 1f;
-
-        mMinScaleX = minScaleX;
-        mMaxScaleX = maxScaleX;
-
-        limitTransAndScale(mMatrixTouch, mContentRect);
     }
 
     public boolean canZoomOutMoreX() {

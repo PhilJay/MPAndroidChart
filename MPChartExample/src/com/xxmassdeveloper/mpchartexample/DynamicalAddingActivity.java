@@ -71,8 +71,8 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
             // let the chart know it's data has changed
             mChart.notifyDataSetChanged();
             
-            mChart.setVisibleXRange(6);
-            mChart.setVisibleYRange(10, AxisDependency.LEFT);
+            mChart.setVisibleXRangeMaximum(6);
+            mChart.setVisibleYRangeMaximum(15, AxisDependency.LEFT);
 //            
 //            // this automatically refreshes the chart (calls invalidate())
             mChart.moveViewTo(data.getXValCount()-7, 50f, AxisDependency.LEFT);

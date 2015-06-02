@@ -169,7 +169,7 @@ public class RealtimeLineChartActivity extends DemoBase implements
             mChart.notifyDataSetChanged();
 
             // limit the number of visible entries
-            mChart.setVisibleXRange(120);
+            mChart.setVisibleXRangeMaximum(120);
             // mChart.setVisibleYRange(30, AxisDependency.LEFT);
 
             // move to the latest entry

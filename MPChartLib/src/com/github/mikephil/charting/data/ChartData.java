@@ -164,7 +164,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /**
      * Checks if the combination of x-values array and DataSet array is legal or
      * not.
-     * 
      */
     private void isLegal() {
 
@@ -901,7 +900,8 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     }
 
     /**
-     * Enables / disables highlighting values for all DataSets this data object contains.
+     * Enables / disables highlighting values for all DataSets this data object
+     * contains.
      */
     public void setHighlightEnabled(boolean enabled) {
         for (DataSet<?> set : mDataSets) {
@@ -910,7 +910,8 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     }
 
     /**
-     * returns true if highlighting of values is enabled, false if not
+     * Returns true if highlighting of all underlying values is enabled, false
+     * if not.
      *
      * @return
      */
