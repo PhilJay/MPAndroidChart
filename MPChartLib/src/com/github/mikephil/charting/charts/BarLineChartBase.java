@@ -657,11 +657,22 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * visible at once. If this is e.g. set to 10, no more than 10 values on the
      * x-axis can be viewed at once without scrolling.
      * 
-     * @param xRange
+     * @param minScaleX
      */
-    public void setVisibleXRange(float xRange) {
-        float xScale = mDeltaX / (xRange);
-        mViewPortHandler.setMinimumScaleX(xScale);
+    public void setVisibleXRange(float minScaleX) {
+        float xScale = mDeltaX / (minScaleX);
+        mViewPortHandler.setMinimumScaleX(minScaleX);
+    }
+
+    /**
+     * Limits the maximum and minimum value count that can be visible by pinching and zooming.
+     * e.g. minRange=10, maxRange=100 no less than 10 values and no more that 100 values can be viewed
+     * at once without scrolling
+     */
+    public void setVisibleXRange(float minScaleX, float maxScaleX) {
+        float maxScale = mDeltaX / minScaleX;
+        float minScale = mDeltaX / maxScaleX;
+        mViewPortHandler.setScaleXRange(minScaleX, maxScaleX);
     }
 
     /**

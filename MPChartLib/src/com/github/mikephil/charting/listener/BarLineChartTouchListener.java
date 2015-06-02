@@ -317,35 +317,48 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
                 // mode
                 if (mTouchMode == PINCH_ZOOM) {
 
-                    float scale = totalDist / mSavedDist; // total
-                                                          // scale
+                    float scale = totalDist / mSavedDist; // total scale
+
+                    boolean isZoomingOut = (scale < 1);
+                    boolean canZoomMoreX = isZoomingOut ?
+                            mChart.getViewPortHandler().canZoomOutMoreX() :
+                            mChart.getViewPortHandler().canZoomInMoreX();
 
                     float scaleX = (mChart.isScaleXEnabled()) ? scale : 1f;
                     float scaleY = (mChart.isScaleYEnabled()) ? scale : 1f;
 
-                    mMatrix.set(mSavedMatrix);
-                    mMatrix.postScale(scaleX, scaleY, t.x, t.y);
+                    if (mChart.isScaleYEnabled() || canZoomMoreX) {
 
-                    if (l != null)
-                        l.onChartScale(event, scaleX, scaleY);
+                        mMatrix.set(mSavedMatrix);
+                        mMatrix.postScale(scaleX, scaleY, t.x, t.y);
+
+                        if (l != null)
+                            l.onChartScale(event, scaleX, scaleY);
+                    }
 
                 } else if (mTouchMode == X_ZOOM && mChart.isScaleXEnabled()) {
 
                     float xDist = getXDist(event);
-                    float scaleX = xDist / mSavedXDist; // x-axis
-                                                        // scale
+                    float scaleX = xDist / mSavedXDist; // x-axis scale
 
-                    mMatrix.set(mSavedMatrix);
-                    mMatrix.postScale(scaleX, 1f, t.x, t.y);
+                    boolean isZoomingOut = (scaleX < 1);
+                    boolean canZoomMoreX = isZoomingOut ?
+                            mChart.getViewPortHandler().canZoomOutMoreX() :
+                            mChart.getViewPortHandler().canZoomInMoreX();
 
-                    if (l != null)
-                        l.onChartScale(event, scaleX, 1f);
+                    if (canZoomMoreX) {
+
+                        mMatrix.set(mSavedMatrix);
+                        mMatrix.postScale(scaleX, 1f, t.x, t.y);
+
+                        if (l != null)
+                            l.onChartScale(event, scaleX, 1f);
+                    }
 
                 } else if (mTouchMode == Y_ZOOM && mChart.isScaleYEnabled()) {
 
                     float yDist = getYDist(event);
-                    float scaleY = yDist / mSavedYDist; // y-axis
-                                                        // scale
+                    float scaleY = yDist / mSavedYDist; // y-axis scale
 
                     mMatrix.set(mSavedMatrix);
 

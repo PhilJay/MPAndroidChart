@@ -23,6 +23,9 @@ public class ViewPortHandler {
     /** minimum scale value on the x-axis */
     private float mMinScaleX = 1f;
 
+    /** maximum scale value on the x-axis */
+    private float mMaxScaleX = Float.MAX_VALUE;
+
     /** contains the current scale factor of the x-axis */
     private float mScaleX = 1f;
 
@@ -292,8 +295,8 @@ public class ViewPortHandler {
         float curTransY = vals[Matrix.MTRANS_Y];
         float curScaleY = vals[Matrix.MSCALE_Y];
 
-        // min scale-x is 1f
-        mScaleX = Math.max(mMinScaleX, curScaleX);
+        // min scale-x is 1f, max is the max float
+        mScaleX = Math.min(Math.max(mMinScaleX, curScaleX), mMaxScaleX);
 
         // min scale-y is 1f
         mScaleY = Math.max(mMinScaleY, curScaleY);
@@ -335,6 +338,13 @@ public class ViewPortHandler {
             xScale = 1f;
 
         mMinScaleX = xScale;
+
+        limitTransAndScale(mMatrixTouch, mContentRect);
+    }
+
+    public void setMaximumScaleX(float xScale) {
+
+        mMaxScaleX = xScale;
 
         limitTransAndScale(mMatrixTouch, mContentRect);
     }
@@ -482,4 +492,24 @@ public class ViewPortHandler {
     public boolean hasNoDragOffset() {
         return mTransOffsetX <= 0 && mTransOffsetY <= 0 ? true : false;
     }
+
+    public void setScaleXRange(float minScaleX, float maxScaleX) {
+
+        if (minScaleX < 1f)
+            minScaleX = 1f;
+
+        mMinScaleX = minScaleX;
+        mMaxScaleX = maxScaleX;
+
+        limitTransAndScale(mMatrixTouch, mContentRect);
+    }
+
+    public boolean canZoomOutMoreX() {
+        return (mScaleX > mMinScaleX);
+    }
+
+    public boolean canZoomInMoreX() {
+        return (mScaleX < mMaxScaleX);
+    }
+
 }
