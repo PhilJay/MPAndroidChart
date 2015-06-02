@@ -255,7 +255,7 @@ public class ScatterChartRenderer extends DataRenderer {
             ScatterDataSet set = mChart.getScatterData().getDataSetByIndex(indices[i]
                     .getDataSetIndex());
 
-            if (set == null)
+            if (set == null || !set.isHighlightEnabled())
                 continue;
 
             mHighlightPaint.setColor(set.getHighLightColor());

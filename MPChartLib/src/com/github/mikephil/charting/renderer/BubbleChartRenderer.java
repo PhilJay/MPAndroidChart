@@ -200,7 +200,7 @@ public class BubbleChartRenderer extends DataRenderer {
 
             BubbleDataSet dataSet = bubbleData.getDataSetByIndex(indice.getDataSetIndex());
 
-            if (dataSet == null)
+            if (dataSet == null || !dataSet.isHighlightEnabled())
                 continue;
 
             Entry entryFrom = dataSet.getEntryForXIndex(mMinX);

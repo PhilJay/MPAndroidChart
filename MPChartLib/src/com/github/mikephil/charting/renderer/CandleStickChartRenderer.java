@@ -265,7 +265,7 @@ public class CandleStickChartRenderer extends DataRenderer {
             CandleDataSet set = mChart.getCandleData().getDataSetByIndex(
                     indices[i].getDataSetIndex());
 
-            if (set == null)
+            if (set == null || !set.isHighlightEnabled())
                 continue;
 
             mHighlightPaint.setColor(set.getHighLightColor());
