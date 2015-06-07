@@ -1510,20 +1510,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 ? false : true;
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-
-        // prepareContentRect();
-        for (int i = 0; i < getChildCount(); i++) {
-            getChildAt(i).layout(left, top, right, bottom);
-        }
-    }
-
     /** tasks to be done after the view is setup */
     protected ArrayList<Runnable> mJobs = new ArrayList<Runnable>();
 
@@ -1553,6 +1539,27 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public ArrayList<Runnable> getJobs() {
         return mJobs;
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+
+        for (int i = 0; i < getChildCount(); i++) {
+            getChildAt(i).layout(left, top, right, bottom);
+        }
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int size = (int) Utils.convertDpToPixel(50f);
+        setMeasuredDimension(
+                Math.max(getSuggestedMinimumWidth(),
+                        resolveSize(size,
+                                widthMeasureSpec)),
+                Math.max(getSuggestedMinimumHeight(),
+                        resolveSize(size,
+                                heightMeasureSpec)));
     }
 
     @Override

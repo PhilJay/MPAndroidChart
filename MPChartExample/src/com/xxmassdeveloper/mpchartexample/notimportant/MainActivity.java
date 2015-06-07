@@ -43,6 +43,7 @@ import com.xxmassdeveloper.mpchartexample.R;
 import com.xxmassdeveloper.mpchartexample.RadarChartActivitry;
 import com.xxmassdeveloper.mpchartexample.RealtimeLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.ScatterChartActivity;
+import com.xxmassdeveloper.mpchartexample.ScrollViewActivity;
 import com.xxmassdeveloper.mpchartexample.StackedBarActivity;
 import com.xxmassdeveloper.mpchartexample.fragments.SimpleChartDemo;
 
@@ -120,6 +121,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
         objects.add(new ContentItem(
                 "Sinus Bar Chart",
                 "A Bar Chart plotting the sinus function with 8.000 values."));
+        objects.add(new ContentItem(
+                "Chart in ScrollView",
+                "This demonstrates how to use a chart inside a ScrollView."));
 
         MyAdapter adapter = new MyAdapter(this, objects);
 
@@ -239,6 +243,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 break;
             case 24:
                 i = new Intent(this, BarChartActivitySinus.class);
+                startActivity(i);
+                break;
+            case 25:
+                i = new Intent(this, ScrollViewActivity.class);
                 startActivity(i);
                 break;
         }
