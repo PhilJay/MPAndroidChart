@@ -36,6 +36,9 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
 
     private boolean mDrawCircleHole = true;
 
+    /** if true, the fill will be drawn inverted */
+    private boolean mDrawFillInverted = false;
+
     public LineDataSet(List<Entry> yVals, String label) {
         super(yVals, label);
 
@@ -307,5 +310,25 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
 
     public boolean isDrawCircleHoleEnabled() {
         return mDrawCircleHole;
+    }
+
+    /**
+     * Set to true if the DataSet should be drawn filled (surface), and not just
+     * as a line, disabling this will give great performance boost! default:
+     * false
+     *
+     * @param inverted
+     */
+    public void setDrawFillInverted(boolean inverted) {
+        mDrawFillInverted = inverted;
+    }
+
+    /**
+     * returns true if filled drawing is enabled, false if not
+     *
+     * @return
+     */
+    public boolean isDrawFillInverted() {
+        return mDrawFillInverted;
     }
 }
