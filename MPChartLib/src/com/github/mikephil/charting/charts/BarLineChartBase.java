@@ -1494,33 +1494,35 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         public float getFillLinePosition(LineDataSet dataSet, LineData data,
                 float chartMaxY, float chartMinY) {
 
-            float fillMin = 0f;
+            float fillBaseline = 0f;
 
-            if (dataSet.getYMax() > 0 && dataSet.getYMin() < 0) {
-                fillMin = 0f;
+            if (dataSet.isDrawFillInverted()) {
+                fillBaseline = chartMaxY;
             } else {
-
-                if (!getAxis(dataSet.getAxisDependency()).isStartAtZeroEnabled()) {
-
-                    float max, min;
-
-                    if (data.getYMax() > 0)
-                        max = 0f;
-                    else
-                        max = chartMaxY;
-                    if (data.getYMin() < 0)
-                        min = 0f;
-                    else
-                        min = chartMinY;
-
-                    fillMin = dataSet.getYMin() >= 0 ? min : max;
+                if (dataSet.getYMax() > 0 && dataSet.getYMin() < 0) {
+                    fillBaseline = 0f;
                 } else {
-                    fillMin = 0f;
-                }
+                    if (!getAxis(dataSet.getAxisDependency()).isStartAtZeroEnabled()) {
 
+                        float max, min;
+
+                        if (data.getYMax() > 0)
+                            max = 0f;
+                        else
+                            max = chartMaxY;
+                        if (data.getYMin() < 0)
+                            min = 0f;
+                        else
+                            min = chartMinY;
+
+                        fillBaseline = dataSet.getYMin() >= 0 ? min : max;
+                    } else {
+                        fillBaseline = 0f;
+                    }
+                }
             }
 
-            return fillMin;
+            return fillBaseline;
         }
     }
 }
