@@ -338,10 +338,9 @@ public class BarChartRenderer extends DataRenderer {
             if (index < mChart.getBarData().getYValCount() && index >= 0
                     && index < (mChart.getXChartMax() * mAnimator.getPhaseX()) / setCount) {
 
-                BarEntry e = mChart.getBarData().getDataSetByIndex(dataSetIndex)
-                        .getEntryForXIndex(index);
+                BarEntry e = set.getEntryForXIndex(index);
 
-                if (e == null)
+                if (e == null || e.getXIndex() != index)
                     continue;
 
                 float groupspace = mChart.getBarData().getGroupSpace();

@@ -219,6 +219,9 @@ public class RadarChartRenderer extends DataRenderer {
             int xIndex = indices[i].getXIndex();
 
             Entry e = set.getEntryForXIndex(xIndex);
+            if (e == null || e.getXIndex() != xIndex)
+                continue;
+
             int j = set.getEntryPosition(e);
             float y = (e.getVal() - mChart.getYChartMin());
 

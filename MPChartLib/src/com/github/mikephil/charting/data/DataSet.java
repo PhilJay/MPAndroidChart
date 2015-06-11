@@ -176,7 +176,7 @@ public abstract class DataSet<T extends Entry> {
 
         Entry e = getEntryForXIndex(xIndex);
 
-        if (e != null)
+        if (e != null && e.getXIndex() == xIndex)
             return e.getVal();
         else
             return Float.NaN;

@@ -546,7 +546,11 @@ public class LineChartRenderer extends DataRenderer {
             if (xIndex > mChart.getXChartMax() * mAnimator.getPhaseX())
                 continue;
 
-            float y = set.getYValForXIndex(xIndex) * mAnimator.getPhaseY(); // get
+            float yValue = set.getYValForXIndex(xIndex);
+            if (yValue == Float.NaN)
+                continue;
+
+            float y = yValue * mAnimator.getPhaseY(); // get
                                                                             // the
             // y-position
 
