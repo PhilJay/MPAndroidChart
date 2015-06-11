@@ -335,7 +335,7 @@ public class BarChartRenderer extends DataRenderer {
             mHighlightPaint.setAlpha(set.getHighLightAlpha());
 
             // check outofbounds
-            if (index < mChart.getBarData().getYValCount() && index >= 0
+            if (index >= 0
                     && index < (mChart.getXChartMax() * mAnimator.getPhaseX()) / setCount) {
 
                 BarEntry e = set.getEntryForXIndex(index);
