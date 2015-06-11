@@ -87,6 +87,9 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART_INSIDE);
         l.setTypeface(tf);
+        l.setYOffset(0f);
+        l.setYEntrySpace(0f);
+        l.setTextSize(8f);
 
         XAxis xl = mChart.getXAxis();
         xl.setTypeface(tf);
@@ -95,7 +98,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         leftAxis.setTypeface(tf);
         leftAxis.setValueFormatter(new LargeValueFormatter());
         leftAxis.setDrawGridLines(false);
-        leftAxis.setSpaceTop(25f);
+        leftAxis.setSpaceTop(30f);
 
         mChart.getAxisRight().setEnabled(false);
     }
