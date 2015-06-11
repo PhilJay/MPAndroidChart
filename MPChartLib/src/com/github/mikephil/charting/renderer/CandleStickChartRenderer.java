@@ -272,7 +272,7 @@ public class CandleStickChartRenderer extends DataRenderer {
 
             CandleEntry e = set.getEntryForXIndex(xIndex);
 
-            if (e == null)
+            if (e == null || e.getXIndex() != xIndex)
                 continue;
 
             float low = e.getLow() * mAnimator.getPhaseY();

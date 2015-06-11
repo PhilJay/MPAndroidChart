@@ -210,6 +210,8 @@ public class BubbleChartRenderer extends DataRenderer {
             int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, dataSet.getEntryCount());
 
             final BubbleEntry entry = (BubbleEntry) bubbleData.getEntryForHighlight(indice);
+            if (entry == null || entry.getXIndex() != indice.getXIndex())
+                continue;
 
             Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
             

@@ -510,6 +510,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public void highlightTouch(Highlight high) {
 
+        Entry e = null;
+
         if (high == null)
             mIndicesToHightlight = null;
         else {
@@ -517,10 +519,17 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             if (mLogEnabled)
                 Log.i(LOG_TAG, "Highlighted: " + high.toString());
 
-            // set the indices to highlight
-            mIndicesToHightlight = new Highlight[] {
-                    high
-            };
+            e = mData.getEntryForHighlight(high);
+            if (e == null || e.getXIndex() != high.getXIndex()) {
+                mIndicesToHightlight = null;
+                high = null;
+            }
+            else {
+                // set the indices to highlight
+                mIndicesToHightlight = new Highlight[] {
+                        high
+                };
+            }
         }
 
         // redraw the chart
@@ -531,9 +540,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             if (!valuesToHighlight())
                 mSelectionListener.onNothingSelected();
             else {
-
-                Entry e = mData.getEntryForHighlight(high);
-
                 // notify the listener
                 mSelectionListener.onValueSelected(e, high.getDataSetIndex(), high);
             }
@@ -570,7 +576,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 Entry e = mData.getEntryForHighlight(mIndicesToHightlight[i]);
 
                 // make sure entry not null
-                if (e == null)
+                if (e == null || e.getXIndex() != mIndicesToHightlight[i].getXIndex())
                     continue;
 
                 float[] pos = getMarkerPosition(e, dataSetIndex);
