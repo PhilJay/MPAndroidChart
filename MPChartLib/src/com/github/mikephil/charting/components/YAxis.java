@@ -93,11 +93,13 @@ public class YAxis extends AxisBase {
     public YAxis() {
         super();
         this.mAxisDependency = AxisDependency.LEFT;
+        this.mYOffset = 0f;
 	}
 
     public YAxis(AxisDependency position) {
         super();
         this.mAxisDependency = position;
+        this.mYOffset = 0f;
 	}
 
     public AxisDependency getAxisDependency() {
