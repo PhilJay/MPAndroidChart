@@ -167,8 +167,8 @@ public class RadarChartRenderer extends DataRenderer {
         mWebPaint.setColor(mChart.getWebColor());
         mWebPaint.setAlpha(mChart.getWebAlpha());
 
-        for (int i = 0; i < mChart.getData().getXValCount(); i++) {
-
+        int mod = mChart.getWebModulus();
+        for (int i = 0; i < mChart.getData().getXValCount(); i += mod) {
             PointF p = Utils.getPosition(center, mChart.getYRange() * factor, sliceangle * i
                     + rotationangle);
 
