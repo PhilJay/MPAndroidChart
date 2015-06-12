@@ -42,9 +42,6 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     /** flag that indicates if rotation is enabled or not */
     protected boolean mRotateEnabled = true;
 
-    /** the pie- and radarchart touchlistener */
-    protected OnTouchListener mListener;
-
     public PieRadarChartBase(Context context) {
         super(context);
     }
@@ -61,7 +58,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     protected void init() {
         super.init();
 
-        mListener = new PieRadarChartTouchListener(this);
+        mChartTouchListener = new PieRadarChartTouchListener(this);
     }
 
     @Override
@@ -72,8 +69,8 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         // use the pie- and radarchart listener own listener
-        if (mTouchEnabled && mListener != null)
-            return mListener.onTouch(this, event);
+        if (mTouchEnabled && mChartTouchListener != null)
+            return mChartTouchListener.onTouch(this, event);
         else
             return super.onTouchEvent(event);
     }
@@ -81,8 +78,8 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     @Override
     public void computeScroll() {
 
-        if (mListener instanceof PieRadarChartTouchListener)
-            ((PieRadarChartTouchListener) mListener).computeScroll();
+        if (mChartTouchListener instanceof PieRadarChartTouchListener)
+            ((PieRadarChartTouchListener) mChartTouchListener).computeScroll();
     }
 
     @Override
@@ -275,8 +272,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     /**
      * Returns the distance of a certain point on the chart to the center of the
      * chart.
-     * 
-     * @param c the center
+     *
      * @param x
      * @param y
      * @return
@@ -400,16 +396,6 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
      * @return
      */
     protected abstract float getRequiredBaseOffset();
-
-    /**
-     * set a new (e.g. custom) charttouchlistener NOTE: make sure to
-     * setTouchEnabled(true); if you need touch gestures on the chart
-     * 
-     * @param l
-     */
-    public void setOnTouchListener(OnTouchListener l) {
-        this.mListener = l;
-    }
 
     @Override
     public float getYChartMax() {

@@ -30,7 +30,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
  * @author Philipp Jahoda
  */
 public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarLineScatterCandleData<? extends BarLineScatterCandleDataSet<? extends Entry>>>>
-        extends SimpleOnGestureListener implements OnTouchListener {
+        extends ChartTouchListener {
 
     // private static final long REFRESH_MILLIS = 20;
 
@@ -61,9 +61,6 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
     private float mSavedXDist = 1f;
     private float mSavedYDist = 1f;
     private float mSavedDist = 1f;
-
-    /** the last highlighted object */
-    private Highlight mLastHighlighted;
 
     private DataSet<?> mClosestDataSetToTouch;
 
@@ -410,20 +407,6 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
      */
     /** DOING THE MATH BELOW ;-) */
 
-    /**
-     * returns the distance between two points
-     * 
-     * @param eventX
-     * @param startX
-     * @param eventY
-     * @param startY
-     * @return
-     */
-    private static float distance(float eventX, float startX, float eventY, float startY) {
-        float dx = eventX - startX;
-        float dy = eventY - startY;
-        return (float) Math.sqrt(dx * dx + dy * dy);
-    }
 
     /**
      * Determines the center point between two pointer touch points.

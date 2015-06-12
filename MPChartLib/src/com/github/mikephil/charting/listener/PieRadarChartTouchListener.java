@@ -25,7 +25,7 @@ import java.util.List;
  * 
  * @author Philipp Jahoda
  */
-public class PieRadarChartTouchListener extends SimpleOnGestureListener implements OnTouchListener {
+public class PieRadarChartTouchListener extends ChartTouchListener {
 
     private static final int NONE = 0;
     private static final int ROTATE = 1;
@@ -138,9 +138,6 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
         return true;
     }
 
-    /** reference to the last highlighted object */
-    private Highlight mLastHighlight = null;
-
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
 
@@ -157,7 +154,7 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
 
             // if no slice was touched, highlight nothing
             mChart.highlightValues(null);
-            mLastHighlight = null;
+            mLastHighlighted = null;
 
         } else {
 
@@ -173,7 +170,7 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
             if (index < 0) {
 
                 mChart.highlightValues(null);
-                mLastHighlight = null;
+                mLastHighlighted = null;
 
             } else {
 
@@ -192,14 +189,14 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
 
                 Highlight h = new Highlight(index, dataSetIndex);
 
-                if (h.equalTo(mLastHighlight)) {
+                if (h.equalTo(mLastHighlighted)) {
 
                     mChart.highlightTouch(null);
-                    mLastHighlight = null;
+                    mLastHighlighted = null;
                 } else {
 
                     mChart.highlightTouch(h);
-                    mLastHighlight = h;
+                    mLastHighlighted = h;
                 }
             }
         }
@@ -324,21 +321,6 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
 
         mChart.setRotationAngle(mChart.getAngleForPoint(x, y) - mStartAngle);
 
-    }
-
-    /**
-     * returns the distance between two points
-     * 
-     * @param eventX
-     * @param startX
-     * @param eventY
-     * @param startY
-     * @return
-     */
-    private static float distance(float eventX, float startX, float eventY, float startY) {
-        float dx = eventX - startX;
-        float dy = eventY - startY;
-        return (float) Math.sqrt(dx * dx + dy * dy);
     }
 
     public void stopDeceleration() {

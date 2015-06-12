@@ -29,6 +29,7 @@ import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.interfaces.BarLineScatterCandleDataProvider;
 import com.github.mikephil.charting.jobs.MoveViewJob;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
+import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnDrawListener;
 import com.github.mikephil.charting.renderer.XAxisRenderer;
 import com.github.mikephil.charting.renderer.YAxisRenderer;
@@ -147,7 +148,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         mXAxisRenderer = new XAxisRenderer(mViewPortHandler, mXAxis, mLeftAxisTransformer);
 
-        mListener = new BarLineChartTouchListener<BarLineChartBase<? extends BarLineScatterCandleData<? extends BarLineScatterCandleDataSet<? extends Entry>>>>(
+        mChartTouchListener = new BarLineChartTouchListener<BarLineChartBase<? extends BarLineScatterCandleData<? extends BarLineScatterCandleDataSet<? extends Entry>>>>(
                 this, mViewPortHandler.getMatrixTouch());
 
         mGridBackgroundPaint = new Paint();
@@ -564,28 +565,25 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             return mRightAxisTransformer;
     }
 
-    /** touchlistener that handles touches and gestures on the chart */
-    protected OnTouchListener mListener;
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
 
-        if (mListener == null || mDataNotSet)
+        if (mChartTouchListener == null || mDataNotSet)
             return false;
 
         // check if touch gestures are enabled
         if (!mTouchEnabled)
             return false;
         else
-            return mListener.onTouch(this, event);
+            return mChartTouchListener.onTouch(this, event);
     }
 
     @Override
     public void computeScroll() {
 
-        if (mListener instanceof BarLineChartTouchListener)
-            ((BarLineChartTouchListener<?>) mListener).computeScroll();
+        if (mChartTouchListener instanceof BarLineChartTouchListener)
+            ((BarLineChartTouchListener<?>) mChartTouchListener).computeScroll();
     }
 
     /**
@@ -848,16 +846,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             return mAxisLeft.mAxisRange;
         else
             return mAxisRight.mAxisRange;
-    }
-
-    /**
-     * set a new (e.g. custom) charttouchlistener NOTE: make sure to
-     * setTouchEnabled(true); if you need touch gestures on the chart
-     * 
-     * @param l
-     */
-    public void setOnTouchListener(OnTouchListener l) {
-        this.mListener = l;
     }
 
     /**
@@ -1466,7 +1454,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * Flag that indicates if auto scaling on the y axis is enabled. This is
      * especially interesting for charts displaying financial data.
      * 
-     * @param If enabled the y axis automatically adjusts to the min and max y
+     * @param enabled the y axis automatically adjusts to the min and max y
      *            values of the current x axis range whenever the viewport
      *            changes
      */
