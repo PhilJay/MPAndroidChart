@@ -1409,12 +1409,36 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         return mXAxisRenderer;
     }
 
+    /**
+     * Sets a custom XAxisRenderer and overrides the existing (default) one.
+     * @param xAxisRenderer
+     */
+    public void setXAxisRenderer(XAxisRenderer xAxisRenderer) {
+        mXAxisRenderer = xAxisRenderer;
+    }
+
     public YAxisRenderer getRendererLeftYAxis() {
         return mAxisRendererLeft;
     }
 
+    /**
+     * Sets a custom axis renderer for the left axis and overwrites the existing one.
+     * @param rendererLeftYAxis
+     */
+    public void setRendererLeftYAxis(YAxisRenderer rendererLeftYAxis) {
+        mAxisRendererLeft = rendererLeftYAxis;
+    }
+
     public YAxisRenderer getRendererRightYAxis() {
         return mAxisRendererRight;
+    }
+
+    /**
+     * Sets a custom axis renderer for the right acis and overwrites the existing one.
+     * @param rendererRightYAxis
+     */
+    public void setRendererRightYAxis(YAxisRenderer rendererRightYAxis) {
+        mAxisRendererRight = rendererRightYAxis;
     }
 
     public float getYChartMax() {
