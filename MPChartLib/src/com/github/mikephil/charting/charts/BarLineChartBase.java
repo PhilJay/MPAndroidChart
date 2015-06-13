@@ -148,8 +148,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         mXAxisRenderer = new XAxisRenderer(mViewPortHandler, mXAxis, mLeftAxisTransformer);
 
-        mChartTouchListener = new BarLineChartTouchListener<BarLineChartBase<? extends BarLineScatterCandleData<? extends BarLineScatterCandleDataSet<? extends Entry>>>>(
-                this, mViewPortHandler.getMatrixTouch());
+        mChartTouchListener = new BarLineChartTouchListener(this, mViewPortHandler.getMatrixTouch());
 
         mGridBackgroundPaint = new Paint();
         mGridBackgroundPaint.setStyle(Style.FILL);
@@ -583,7 +582,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     public void computeScroll() {
 
         if (mChartTouchListener instanceof BarLineChartTouchListener)
-            ((BarLineChartTouchListener<?>) mChartTouchListener).computeScroll();
+            ((BarLineChartTouchListener) mChartTouchListener).computeScroll();
     }
 
     /**

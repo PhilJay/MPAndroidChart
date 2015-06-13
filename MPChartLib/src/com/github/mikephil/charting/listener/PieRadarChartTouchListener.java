@@ -25,31 +25,20 @@ import java.util.List;
  * 
  * @author Philipp Jahoda
  */
-public class PieRadarChartTouchListener extends ChartTouchListener {
-
-    private static final int NONE = 0;
-    private static final int ROTATE = 1;
+public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChartBase<?>> {
 
     private PointF mTouchStartPoint = new PointF();
 
-    private PieRadarChartBase<?> mChart;
-
     /** the angle where the dragging started */
     private float mStartAngle = 0f;
-
-    private int mTouchMode = NONE;
-
-    private GestureDetector mGestureDetector;
 
     private ArrayList<AngularVelocitySample> _velocitySamples = new ArrayList<AngularVelocitySample>();
 
     private long mDecelerationLastTime = 0;
     private float mDecelerationAngularVelocity = 0.f;
 
-    public PieRadarChartTouchListener(PieRadarChartBase<?> ctx) {
-        this.mChart = ctx;
-
-        mGestureDetector = new GestureDetector(ctx.getContext(), this);
+    public PieRadarChartTouchListener(PieRadarChartBase<?> chart) {
+        super(chart);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -204,23 +193,12 @@ public class PieRadarChartTouchListener extends ChartTouchListener {
         return true;
     }
 
-    @Override
-    public boolean onDoubleTap(MotionEvent e) {
-        OnChartGestureListener l = mChart.getOnChartGestureListener();
-
-        if (l != null) {
-            l.onChartDoubleTapped(e);
-        }
-        return super.onDoubleTap(e);
-    }
-
-    private void resetVelocity()
-    {
+    private void resetVelocity() {
         _velocitySamples.clear();
     }
 
-    private void sampleVelocity(float touchLocationX, float touchLocationY)
-    {
+    private void sampleVelocity(float touchLocationX, float touchLocationY) {
+
         long currentTime = AnimationUtils.currentAnimationTimeMillis();
 
         _velocitySamples.add(new AngularVelocitySample(currentTime, mChart.getAngleForPoint(touchLocationX, touchLocationY)));
@@ -241,8 +219,8 @@ public class PieRadarChartTouchListener extends ChartTouchListener {
         }
     }
 
-    private float calculateVelocity()
-    {
+    private float calculateVelocity() {
+
         if (_velocitySamples.isEmpty())
             return 0.f;
 
@@ -305,9 +283,7 @@ public class PieRadarChartTouchListener extends ChartTouchListener {
      * @param y
      */
     public void setGestureStartAngle(float x, float y) {
-
         mStartAngle = mChart.getAngleForPoint(x, y) - mChart.getRawRotationAngle();
-
     }
 
     /**
@@ -318,11 +294,12 @@ public class PieRadarChartTouchListener extends ChartTouchListener {
      * @param y
      */
     public void updateGestureRotation(float x, float y) {
-
         mChart.setRotationAngle(mChart.getAngleForPoint(x, y) - mStartAngle);
-
     }
 
+    /**
+     * Sets the deceleration-angular-velocity to 0f
+     */
     public void stopDeceleration() {
         mDecelerationAngularVelocity = 0.f;
     }
@@ -348,8 +325,8 @@ public class PieRadarChartTouchListener extends ChartTouchListener {
             stopDeceleration();
     }
 
-    private class AngularVelocitySample
-    {
+    private class AngularVelocitySample {
+
         public long time;
         public float angle;
 

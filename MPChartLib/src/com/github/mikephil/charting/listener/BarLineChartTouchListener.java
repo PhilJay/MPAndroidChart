@@ -29,10 +29,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
  * 
  * @author Philipp Jahoda
  */
-public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarLineScatterCandleData<? extends BarLineScatterCandleDataSet<? extends Entry>>>>
-        extends ChartTouchListener {
-
-    // private static final long REFRESH_MILLIS = 20;
+public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBase<? extends BarLineScatterCandleData<? extends BarLineScatterCandleDataSet<? extends Entry>>>> {
 
     /** the original touch-matrix from the chart */
     private Matrix mMatrix = new Matrix();
@@ -46,29 +43,11 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
     /** center between two pointers (fingers on the display) */
     private PointF mTouchPointCenter = new PointF();
 
-    // states
-    private static final int NONE = 0;
-    private static final int DRAG = 1;
-
-    private static final int X_ZOOM = 2;
-    private static final int Y_ZOOM = 3;
-    private static final int PINCH_ZOOM = 4;
-    private static final int POST_ZOOM = 5;
-
-    /** integer field that holds the current touch-state */
-    private int mTouchMode = NONE;
-
     private float mSavedXDist = 1f;
     private float mSavedYDist = 1f;
     private float mSavedDist = 1f;
 
     private DataSet<?> mClosestDataSetToTouch;
-
-    /** the chart the listener represents */
-    private T mChart;
-
-    /** the gesturedetector used for detecting taps and longpresses, ... */
-    private GestureDetector mGestureDetector;
 
     /** used for tracking velocity of dragging */
     private VelocityTracker mVelocityTracker;
@@ -77,11 +56,9 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
     private PointF mDecelerationCurrentPoint = new PointF();
     private PointF mDecelerationVelocity = new PointF();
 
-    public BarLineChartTouchListener(T chart, Matrix touchMatrix) {
-        this.mChart = chart;
+    public BarLineChartTouchListener(BarLineChartBase<? extends BarLineScatterCandleData<? extends BarLineScatterCandleDataSet<? extends Entry>>> chart, Matrix touchMatrix) {
+        super(chart);
         this.mMatrix = touchMatrix;
-
-        mGestureDetector = new GestureDetector(chart.getContext(), this);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -460,7 +437,8 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
      * returns the correct translation depending on the provided x and y touch
      * points
      * 
-     * @param e
+     * @param x
+     * @param y
      * @return
      */
     public PointF getTrans(float x, float y) {
@@ -493,15 +471,6 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
      */
     public Matrix getMatrix() {
         return mMatrix;
-    }
-
-    /**
-     * returns the touch mode the listener is currently in
-     * 
-     * @return
-     */
-    public int getTouchMode() {
-        return mTouchMode;
     }
 
     @Override
