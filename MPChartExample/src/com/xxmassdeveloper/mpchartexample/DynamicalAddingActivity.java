@@ -76,9 +76,6 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 //            
 //            // this automatically refreshes the chart (calls invalidate())
             mChart.moveViewTo(data.getXValCount()-7, 50f, AxisDependency.LEFT);
-
-            // redraw the chart
-            mChart.invalidate();   
         }
     }
 

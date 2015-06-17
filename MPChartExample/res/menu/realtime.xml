@@ -9,4 +9,8 @@
         android:id="@+id/actionClear"
         android:title="Clear Values">
     </item>
+    <item
+        android:id="@+id/actionFeedMultiple"
+        android:title="Fast feed multiple">
+    </item>
 </menu>

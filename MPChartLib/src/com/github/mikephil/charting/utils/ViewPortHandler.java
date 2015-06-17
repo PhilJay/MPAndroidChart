@@ -222,8 +222,8 @@ public class ViewPortHandler {
      * not possible. Makes most sense in combination with the
      * setScaleMinima(...) method.
      * 
-     * @param pts the position to center view viewport to
-     * @param chart
+     * @param transformedPts the position to center view viewport to
+     * @param view
      * @return save
      */
     public synchronized void centerViewPort(final float[] transformedPts, final View view) {
@@ -238,25 +238,7 @@ public class ViewPortHandler {
 
         save.postTranslate(-x, -y);
 
-        refresh(save, view, false);
-
-        // final View v = chart.getChartView();
-        //
-        // v.post(new Runnable() {
-        //
-        // @Override
-        // public void run() {
-        // Matrix save = new Matrix();
-        // save.set(mMatrixTouch);
-        //
-        // final float x = transformedPts[0] - offsetLeft();
-        // final float y = transformedPts[1] - offsetTop();
-        //
-        // save.postTranslate(-x, -y);
-        //
-        // refresh(save, chart, false);
-        // }
-        // });
+        refresh(save, view, true);
     }
 
     /**

@@ -95,30 +95,7 @@ public class RealtimeLineChartActivity extends DemoBase implements
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setEnabled(false);
-        
-//        new Thread(new Runnable() {
-//            
-//            @Override
-//            public void run() {
-//                for(int i = 0; i < 5000; i++) {
-//                    
-//                    runOnUiThread(new Runnable() {
-//                        
-//                        @Override
-//                        public void run() {
-//                            addEntry();
-//                        }
-//                    });
-//                    
-//                    try {
-//                        Thread.sleep(35);
-//                    } catch (InterruptedException e) {
-//                        // TODO Auto-generated catch block
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        }).start();
+
     }
 
     @Override
@@ -138,6 +115,10 @@ public class RealtimeLineChartActivity extends DemoBase implements
             case R.id.actionClear: {
                 mChart.clearValues();
                 Toast.makeText(this, "Chart cleared!", Toast.LENGTH_SHORT).show();
+                break;
+            }
+            case R.id.actionFeedMultiple: {
+                feedMultiple();
                 break;
             }
         }
@@ -178,9 +159,6 @@ public class RealtimeLineChartActivity extends DemoBase implements
             // this automatically refreshes the chart (calls invalidate())
             // mChart.moveViewTo(data.getXValCount()-7, 55f,
             // AxisDependency.LEFT);
-
-            // redraw the chart
-            // mChart.invalidate();
         }
     }
 
@@ -199,6 +177,33 @@ public class RealtimeLineChartActivity extends DemoBase implements
         set.setValueTextSize(9f);
         set.setDrawValues(false);
         return set;
+    }
+
+    private void feedMultiple() {
+
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                for(int i = 0; i < 500; i++) {
+
+                    runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            addEntry();
+                        }
+                    });
+
+                    try {
+                        Thread.sleep(35);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 
     @Override
