@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
+import com.github.mikephil.charting.data.Entry;
 
 import java.text.DecimalFormat;
 import java.util.List;
