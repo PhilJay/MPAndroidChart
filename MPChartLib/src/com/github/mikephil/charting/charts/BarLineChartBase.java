@@ -1108,6 +1108,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
             DataSet<?> dataSet = mData.getDataSetByIndex(i);
 
+            // dont include datasets that cannot be highlighted
+            if(!dataSet.isHighlightEnabled())
+                continue;
+
             // extract all y-values from all DataSets at the given x-index
             float yVal = dataSet.getYValForXIndex(xIndex);
             pts[1] = yVal;
