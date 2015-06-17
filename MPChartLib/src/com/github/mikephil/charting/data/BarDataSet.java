@@ -147,7 +147,7 @@ public class BarDataSet extends BarLineScatterCandleDataSet<BarEntry> {
     }
 
     /**
-     * sets the space between the bars in percent of the total bar width
+     * sets the space between the bars in percent (0-100) of the total bar width
      * 
      * @param percent
      */

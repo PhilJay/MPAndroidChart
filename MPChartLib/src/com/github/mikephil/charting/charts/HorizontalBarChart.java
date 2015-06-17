@@ -83,7 +83,6 @@ public class HorizontalBarChart extends BarChart {
 
                 float yOffset = mLegend.mTextHeightMax * 2.f; // It's possible that we do not need this offset anymore as it is available through the extraOffsets
                 offsetBottom += Math.min(mLegend.mNeededHeight + yOffset, mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent());
-
             }
         }
 

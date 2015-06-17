@@ -217,7 +217,6 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
      * Returns null if the Entry could not be found in the charts data.
      * 
      * @param e
-     * @param dataSetIndex
      * @return
      */
     public RectF getBarBounds(BarEntry e) {
