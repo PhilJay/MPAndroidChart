@@ -2,8 +2,8 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -13,8 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.Legend.LegendForm;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
@@ -23,93 +23,95 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
-import com.github.mikephil.charting.utils.FileUtils;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.utils.ValueFormatter;
+import com.xxmassdeveloper.mpchartexample.custom.MyValueFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 
-public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeListener {
+public class StackedBarActivityNegative extends DemoBase implements
+        OnChartValueSelectedListener {
 
-    protected BarChart mChart;
-    private SeekBar mSeekBarX;
-    private TextView tvX;
-    
-    private Typeface mTf;
-    
-    private List<BarEntry> mSinusData;
+    private HorizontalBarChart mChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_barchart_sinus);
-        
-        mSinusData = FileUtils.loadBarEntriesFromAssets(getAssets(),"othersine.txt");
+        setContentView(R.layout.activity_age_distribution);
 
-        tvX = (TextView) findViewById(R.id.tvValueCount);
+        setTitle("Age Distribution Austria");
 
-        mSeekBarX = (SeekBar) findViewById(R.id.seekbarValues);
-
-        mChart = (BarChart) findViewById(R.id.chart1);
-
-        mChart.setDrawBarShadow(false);
-        mChart.setDrawValueAboveBar(true);
-
+        mChart = (HorizontalBarChart) findViewById(R.id.chart1);
+        mChart.setOnChartValueSelectedListener(this);
+        mChart.setDrawGridBackground(false);
         mChart.setDescription("");
 
-        // if more than 60 entries are displayed in the chart, no values will be
+        // if false values are only drawn for the stack sum, else each value is
         // drawn
-        mChart.setMaxVisibleValueCount(60);
-
+        mChart.setDrawValuesForWholeStack(true);
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
 
-        // draw shadows for each bar that show the maximum value
-        // mChart.setDrawBarShadow(true);
-
-        // mChart.setDrawXLabels(false);
-
-        mChart.setDrawGridBackground(false);
-        // mChart.setDrawYLabels(false);
-
-        mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+        mChart.setDrawBarShadow(false);
+        mChart.setDrawValueAboveBar(true);
+        
+        mChart.getAxisLeft().setEnabled(false);
+        mChart.getAxisRight().setStartAtZero(false);
+        mChart.getAxisRight().setAxisMaxValue(25f);
+        mChart.getAxisRight().setAxisMinValue(-25f);
+        mChart.getAxisRight().setLabelCount(7);
+        mChart.getAxisRight().setValueFormatter(new CustomFormatter());
+        mChart.getAxisRight().setTextSize(9f);
 
         XAxis xAxis = mChart.getXAxis();
-        xAxis.setPosition(XAxisPosition.BOTTOM);
-        xAxis.setTypeface(mTf);
+        xAxis.setPosition(XAxisPosition.BOTH_SIDED);
         xAxis.setDrawGridLines(false);
-        xAxis.setEnabled(false);
-
-        YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setTypeface(mTf);
-        leftAxis.setLabelCount(6);
-        leftAxis.setStartAtZero(false);
-        leftAxis.setAxisMinValue(-2.5f);
-        leftAxis.setAxisMaxValue(2.5f);
-
-        YAxis rightAxis = mChart.getAxisRight();
-        rightAxis.setDrawGridLines(false);
-        rightAxis.setTypeface(mTf);
-        rightAxis.setLabelCount(6);
-        rightAxis.setStartAtZero(false);
-        rightAxis.setAxisMinValue(-2.5f);
-        rightAxis.setAxisMaxValue(2.5f);
-
-        mSeekBarX.setOnSeekBarChangeListener(this);
-        mSeekBarX.setProgress(150); // set data
+        xAxis.setDrawAxisLine(false);
+        xAxis.setTextSize(9f);
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
-        l.setForm(LegendForm.SQUARE);
-        l.setFormSize(9f);
-        l.setTextSize(11f);
-        l.setXEntrySpace(4f);
+        l.setPosition(LegendPosition.BELOW_CHART_RIGHT);
+        l.setFormSize(8f);
+        l.setFormToTextSpace(4f);
+        l.setXEntrySpace(6f);
 
-        mChart.animateXY(2000, 2000);
+        ArrayList<BarEntry> yValues = new ArrayList<BarEntry>();
+        yValues.add(new BarEntry(new float[]{ -10, 10 }, 0));
+        yValues.add(new BarEntry(new float[]{ -12, 13 }, 1));
+        yValues.add(new BarEntry(new float[]{ -15, 15 }, 2));
+        yValues.add(new BarEntry(new float[]{ -17, 17 }, 3));
+        yValues.add(new BarEntry(new float[]{ -19, 20 }, 4));
+        yValues.add(new BarEntry(new float[]{ -19, 19 }, 5));
+        yValues.add(new BarEntry(new float[]{ -16, 16 }, 6));
+        yValues.add(new BarEntry(new float[]{ -13, 14 }, 7));
+        yValues.add(new BarEntry(new float[]{ -10, 11 }, 8));
+        yValues.add(new BarEntry(new float[]{ -5, 6 }, 9));
+        yValues.add(new BarEntry(new float[]{ -1, 2 }, 10));
+
+        BarDataSet set = new BarDataSet(yValues, "Age Distribution");
+        set.setValueFormatter(new CustomFormatter());
+        set.setValueTextSize(7f);
+        set.setAxisDependency(YAxis.AxisDependency.RIGHT);
+        set.setBarSpacePercent(50f);
+        set.setColors(new int[] {Color.rgb(67,67,72), Color.rgb(124,181,236)});
+        set.setStackLabels(new String[]{
+                "Men", "Women"
+        });
+
+        String []xVals = new String[]{"0-10", "10-20", "20-30", "30-40", "40-50", "50-60", "60-70", "70-80", "80-90", "90-100", "100+"};
+
+        BarData data = new BarData(xVals, set);
+        mChart.setData(data);
+        mChart.invalidate();
     }
 
     @Override
@@ -162,21 +164,20 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
             case R.id.actionToggleStartzero: {
                 mChart.getAxisLeft().setStartAtZero(!mChart.getAxisLeft().isStartAtZeroEnabled());
                 mChart.getAxisRight().setStartAtZero(!mChart.getAxisRight().isStartAtZeroEnabled());
-                mChart.notifyDataSetChanged();
                 mChart.invalidate();
                 break;
             }
             case R.id.animateX: {
-                mChart.animateX(1500);
+                mChart.animateX(3000);
                 break;
             }
             case R.id.animateY: {
-                mChart.animateY(1500);
+                mChart.animateY(3000);
                 break;
             }
             case R.id.animateXY: {
 
-                mChart.animateXY(2000, 2000);
+                mChart.animateXY(3000, 3000);
                 break;
             }
             case R.id.actionToggleFilter: {
@@ -205,46 +206,30 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
     }
 
     @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
 
-        tvX.setText("" + (mSeekBarX.getProgress()));
-
-        setData(mSeekBarX.getProgress());
-        mChart.invalidate();
+        BarEntry entry = (BarEntry) e;
+        Log.i("VAL SELECTED",
+                "Value: " + entry.getVals()[h.getStackIndex()]);
     }
 
     @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
+    public void onNothingSelected() {
         // TODO Auto-generated method stub
 
     }
 
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
+    private class CustomFormatter implements ValueFormatter {
 
-    }
+        private DecimalFormat mFormat;
 
-    private void setData(int count) {
-
-        ArrayList<String> xVals = new ArrayList<String>();
-        
-        ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
-        
-        for (int i = 0; i < count; i++) {
-            xVals.add(i+"");
-            entries.add(mSinusData.get(i));
+        public CustomFormatter() {
+            mFormat = new DecimalFormat("###");
         }
-        
-        BarDataSet set = new BarDataSet(entries, "Sinus Function");
-        set.setBarSpacePercent(40f);
-        set.setColor(Color.rgb(240, 120, 124));
 
-        BarData data = new BarData(xVals, set);
-        data.setValueTextSize(10f);
-        data.setValueTypeface(mTf);
-        data.setDrawValues(false);
-
-        mChart.setData(data);
+        @Override
+        public String getFormattedValue(float value) {
+            return mFormat.format(Math.abs(value)) + "m";
+        }
     }
 }

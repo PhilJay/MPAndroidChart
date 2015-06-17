@@ -60,7 +60,7 @@ public class PerformanceLineChart extends DemoBase implements OnSeekBarChangeLis
 
         // enable/disable highlight indicators (the lines that indicate the
         // highlighted Entry)
-        mChart.setHighlightIndicatorEnabled(false);
+        mChart.setHighlightEnabled(false);
               
         mChart.getAxisLeft().setDrawGridLines(false);
         mChart.getAxisRight().setEnabled(false);

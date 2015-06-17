@@ -39,7 +39,7 @@ public class BarChartFrag extends SimpleFragment implements OnChartGestureListen
 
         mChart.setMarkerView(mv);
         
-        mChart.setHighlightIndicatorEnabled(false);
+        mChart.setHighlightEnabled(false);
 
         mChart.setDrawGridBackground(false);
         mChart.setDrawBarShadow(false);

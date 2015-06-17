@@ -162,7 +162,7 @@ public abstract class Utils {
     /**
      * calculates the approximate height of a text, depending on a demo text
      * avoid repeated calls (e.g. inside drawing methods)
-     * 
+     *
      * @param paint
      * @param demoText
      * @return
@@ -172,6 +172,31 @@ public abstract class Utils {
         Rect r = new Rect();
         paint.getTextBounds(demoText, 0, demoText.length(), r);
         return r.height();
+    }
+
+    public static float getLineHeight(Paint paint) {
+        Paint.FontMetrics metrics = paint.getFontMetrics();
+        return metrics.descent - metrics.ascent;
+    }
+
+    public static float getLineSpacing(Paint paint) {
+        Paint.FontMetrics metrics = paint.getFontMetrics();
+        return metrics.ascent - metrics.top + metrics.bottom;
+    }
+
+    /**
+     * calculates the approximate size of a text, depending on a demo text
+     * avoid repeated calls (e.g. inside drawing methods)
+     *
+     * @param paint
+     * @param demoText
+     * @return
+     */
+    public static FSize calcTextSize(Paint paint, String demoText) {
+
+        Rect r = new Rect();
+        paint.getTextBounds(demoText, 0, demoText.length(), r);
+        return new FSize(r.width(), r.height());
     }
 
     // /**

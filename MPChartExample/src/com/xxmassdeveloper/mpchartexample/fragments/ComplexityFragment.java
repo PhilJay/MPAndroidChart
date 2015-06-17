@@ -29,7 +29,7 @@ public class ComplexityFragment extends SimpleFragment {
         
         mChart.setDescription("");
         
-        mChart.setHighlightIndicatorEnabled(false); 
+        mChart.setHighlightEnabled(false);
         mChart.setDrawGridBackground(false);
         
         mChart.setData(getComplexity());

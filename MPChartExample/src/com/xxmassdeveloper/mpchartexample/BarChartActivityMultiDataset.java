@@ -87,6 +87,9 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART_INSIDE);
         l.setTypeface(tf);
+        l.setYOffset(0f);
+        l.setYEntrySpace(0f);
+        l.setTextSize(8f);
 
         XAxis xl = mChart.getXAxis();
         xl.setTypeface(tf);
@@ -95,7 +98,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         leftAxis.setTypeface(tf);
         leftAxis.setValueFormatter(new LargeValueFormatter());
         leftAxis.setDrawGridLines(false);
-        leftAxis.setSpaceTop(25f);
+        leftAxis.setSpaceTop(30f);
 
         mChart.getAxisRight().setEnabled(false);
     }
@@ -124,6 +127,11 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
                     mChart.setPinchZoom(true);
 
                 mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleAutoScaleMinMax: {
+                mChart.setAutoScaleMinMaxEnabled(!mChart.isAutoScaleMinMaxEnabled());
+                mChart.notifyDataSetChanged();
                 break;
             }
             case R.id.actionToggleHighlight: {
@@ -215,7 +223,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
         dataSets.add(set1);
         dataSets.add(set2);
-        dataSets.add(set3);
+       // dataSets.add(set3);
 
         BarData data = new BarData(xVals, dataSets);
 //        data.setValueFormatter(new LargeValueFormatter());

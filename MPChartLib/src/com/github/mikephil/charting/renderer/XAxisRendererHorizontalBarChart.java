@@ -70,8 +70,10 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
 
         } else { // BOTH SIDED
 
-            drawLabels(c, mViewPortHandler.contentLeft());
-            drawLabels(c, mViewPortHandler.contentRight());
+            mAxisLabelPaint.setTextAlign(Align.RIGHT);
+            drawLabels(c, mViewPortHandler.contentLeft() - xoffset);
+            mAxisLabelPaint.setTextAlign(Align.LEFT);
+            drawLabels(c, mViewPortHandler.contentRight() + xoffset);
         }
     }
 

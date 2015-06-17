@@ -1,6 +1,8 @@
 
 package com.github.mikephil.charting.data;
 
+import android.util.Log;
+
 /**
  * Entry class for the BarChart. (especially stacked bars)
  * 
@@ -88,7 +90,7 @@ public class BarEntry extends Entry {
     }
 
     /**
-     * Returns the closest value inside the values array (for stacked barchart)
+     * Returns the index of the closest value inside the values array (for stacked barchart)
      * to the value given as a parameter. The closest value must be higher
      * (above) the provided value.
      * 
@@ -99,15 +101,17 @@ public class BarEntry extends Entry {
 
         if (mVals == null)
             return 0;
-        
+
+        Log.i("TOUCHVALUE", val + "");
+
         int index = mVals.length - 1;
         float remainder = 0f;
 
-        while(index > 0 && val > mVals[index] + remainder) {
+        while (index > 0 && val > mVals[index] + remainder) {
             remainder += mVals[index];
             index--;
         }
-        
+
         return index;
     }
     
@@ -139,6 +143,36 @@ public class BarEntry extends Entry {
 
         for (float f : vals)
             sum += f;
+
+        return sum;
+    }
+
+    public float getPositiveSum() {
+
+        if(mVals == null)
+            return 0f;
+
+        float sum = 0f;
+
+        for (float f : mVals) {
+            if(f >= 0f)
+                sum += f;
+        }
+
+        return sum;
+    }
+
+    public float getNegativeSum() {
+
+        if(mVals == null)
+            return 0f;
+
+        float sum = 0f;
+
+        for (float f : mVals) {
+            if(f <= 0f)
+                sum += Math.abs(f);
+        }
 
         return sum;
     }

@@ -96,7 +96,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
         // enable/disable highlight indicators (the lines that indicate the
         // highlighted Entry)
-        mChart.setHighlightIndicatorEnabled(false);
+        mChart.setHighlightEnabled(false);
         
         // x-axis limit line
 //        LimitLine llXAxis = new LimitLine(10f, "Index 10");
@@ -127,6 +127,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         leftAxis.setAxisMaxValue(220f);
         leftAxis.setAxisMinValue(-50f);
         leftAxis.setStartAtZero(false);
+        //leftAxis.setYOffset(20f);
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
         
         // limit lines are drawn behind data (and not on top)
@@ -238,6 +239,11 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                     mChart.setPinchZoom(true);
 
                 mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleAutoScaleMinMax: {
+                mChart.setAutoScaleMinMaxEnabled(!mChart.isAutoScaleMinMaxEnabled());
+                mChart.notifyDataSetChanged();
                 break;
             }
             case R.id.animateX: {

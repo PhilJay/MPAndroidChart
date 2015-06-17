@@ -67,6 +67,8 @@ public class PieChartItem extends ChartItem {
 
         Legend l = holder.chart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART);
+        l.setYEntrySpace(0f);
+        l.setYOffset(0f);
 
         // do not forget to refresh the chart
         // holder.chart.invalidate();

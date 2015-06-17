@@ -157,7 +157,7 @@ public class YAxisRenderer extends AxisRenderer {
         mAxisLabelPaint.setColor(mYAxis.getTextColor());
 
         float xoffset = mYAxis.getXOffset();
-        float yoffset = Utils.calcTextHeight(mAxisLabelPaint, "A") / 2.5f;
+        float yoffset = Utils.calcTextHeight(mAxisLabelPaint, "A") / 2.5f + mYAxis.getYOffset();
 
         AxisDependency dependency = mYAxis.getAxisDependency();
         YAxisLabelPosition labelPosition = mYAxis.getLabelPosition();
@@ -253,6 +253,7 @@ public class YAxisRenderer extends AxisRenderer {
             gridLinePath.lineTo(mViewPortHandler.contentRight(),
                     position[1]);
 
+            // draw a path because lines don't support dashing on lower android versions
             c.drawPath(gridLinePath, mGridPaint);
 
             gridLinePath.reset();

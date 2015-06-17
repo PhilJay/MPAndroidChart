@@ -102,6 +102,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         l.setTextSize(11f);
         l.setTextColor(Color.WHITE);
         l.setPosition(LegendPosition.BELOW_CHART_LEFT);
+//        l.setYOffset(11f);
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setTypeface(tf);
@@ -206,6 +207,11 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
                 mChart.invalidate();
                 break;
             }
+            case R.id.actionToggleAutoScaleMinMax: {
+                mChart.setAutoScaleMinMaxEnabled(!mChart.isAutoScaleMinMaxEnabled());
+                mChart.notifyDataSetChanged();
+                break;
+            }
             case R.id.animateX: {
                 mChart.animateX(3000);
                 break;
@@ -286,6 +292,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         set1.setFillColor(ColorTemplate.getHoloBlue());
         set1.setHighLightColor(Color.rgb(244, 117, 117));
         set1.setDrawCircleHole(false);
+//        set1.setVisible(false);
 //        set1.setCircleHoleColor(Color.WHITE);
 
         ArrayList<Entry> yVals2 = new ArrayList<Entry>();

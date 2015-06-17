@@ -45,5 +45,9 @@
         android:id="@+id/actionTogglePinch"
         android:title="Toggle PinchZoom">
     </item>
+    <item
+        android:id="@+id/actionToggleAutoScaleMinMax"
+        android:title="Toggle auto scale min/max">
+    </item>
 
 </menu>

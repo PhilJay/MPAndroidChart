@@ -34,6 +34,7 @@ import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.ChartInterface;
+import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.renderer.DataRenderer;
@@ -78,8 +79,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * Deceleration friction coefficient in [0 ; 1] interval, higher values
      * indicate that speed will decrease slowly, for example if it set to 0, it
-     * will stop immediately. 1 is an invalid value, and will be converted to 0.999f
-     * automatically.
+     * will stop immediately. 1 is an invalid value, and will be converted to
+     * 0.999f automatically.
      */
     private float mDragDecelerationFrictionCoef = 0.9f;
 
@@ -116,14 +117,13 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /** if true, touch gestures are enabled on the chart */
     protected boolean mTouchEnabled = true;
 
-    /** if true, value highlightning is enabled */
-    protected boolean mHighlightEnabled = true;
-
     /** the legend object containing all data associated with the legend */
     protected Legend mLegend;
 
     /** listener that is called when a value on the chart is selected */
     protected OnChartValueSelectedListener mSelectionListener;
+
+    protected ChartTouchListener mChartTouchListener;
 
     /** text that is displayed when the chart is empty */
     private String mNoDataText = "No chart data available.";
@@ -149,6 +149,12 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /** object responsible for animations */
     protected ChartAnimator mAnimator;
+
+    /** Extra offsets to be appended to the viewport */
+    private float mExtraTopOffset = 0.f,
+            mExtraRightOffset = 0.f,
+            mExtraBottomOffset = 0.f,
+            mExtraLeftOffset = 0.f;
 
     /** default constructor for initialization in code */
     public Chart(Context context) {
@@ -474,6 +480,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         // set the indices to highlight
         mIndicesToHightlight = highs;
 
+        if(highs == null || highs.length == 0)
+            mChartTouchListener.setLastHighlighted(null);
+
         // redraw the chart
         invalidate();
     }
@@ -503,9 +512,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * highlightValues(...), this generates a callback to the
      * OnChartValueSelectedListener.
      *
-     * @param highs
+     * @param high
      */
     public void highlightTouch(Highlight high) {
+
+        Entry e = null;
 
         if (high == null)
             mIndicesToHightlight = null;
@@ -514,10 +525,17 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             if (mLogEnabled)
                 Log.i(LOG_TAG, "Highlighted: " + high.toString());
 
-            // set the indices to highlight
-            mIndicesToHightlight = new Highlight[] {
-                    high
-            };
+            e = mData.getEntryForHighlight(high);
+            if (e == null || e.getXIndex() != high.getXIndex()) {
+                mIndicesToHightlight = null;
+                high = null;
+            }
+            else {
+                // set the indices to highlight
+                mIndicesToHightlight = new Highlight[] {
+                        high
+                };
+            }
         }
 
         // redraw the chart
@@ -528,13 +546,20 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             if (!valuesToHighlight())
                 mSelectionListener.onNothingSelected();
             else {
-
-                Entry e = mData.getEntryForHighlight(high);
-
                 // notify the listener
                 mSelectionListener.onValueSelected(e, high.getDataSetIndex(), high);
             }
         }
+    }
+
+    /**
+     * Set a new (e.g. custom) ChartTouchListener NOTE: make sure to
+     * setTouchEnabled(true); if you need touch gestures on the chart
+     *
+     * @param l
+     */
+    public void setOnTouchListener(ChartTouchListener l) {
+        this.mChartTouchListener = l;
     }
 
     /**
@@ -567,7 +592,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 Entry e = mData.getEntryForHighlight(mIndicesToHightlight[i]);
 
                 // make sure entry not null
-                if (e == null)
+                if (e == null || e.getXIndex() != mIndicesToHightlight[i].getXIndex())
                     continue;
 
                 float[] pos = getMarkerPosition(e, dataSetIndex);
@@ -654,17 +679,17 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /**
      * Deceleration friction coefficient in [0 ; 1] interval, higher values
      * indicate that speed will decrease slowly, for example if it set to 0, it
-     * will stop immediately. 1 is an invalid value, and will be converted to 0.999f
-     * automatically.
+     * will stop immediately. 1 is an invalid value, and will be converted to
+     * 0.999f automatically.
      *
      * @param newValue
      */
     public void setDragDecelerationFrictionCoef(float newValue) {
-        
+
         if (newValue < 0.f)
             newValue = 0.f;
-        
-        if(newValue >= 1f) 
+
+        if (newValue >= 1f)
             newValue = 0.999f;
 
         mDragDecelerationFrictionCoef = newValue;
@@ -853,22 +878,24 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
-     * If set to true, value highlighting is enabled which means that values can
-     * be highlighted programmatically or by touch gesture.
+     * If set to true, value highlighting is enabled for all underlying data of
+     * the chart which means that all values can be highlighted programmatically
+     * or by touch gesture.
      *
      * @param enabled
      */
     public void setHighlightEnabled(boolean enabled) {
-        mHighlightEnabled = enabled;
+        if (mData != null)
+            mData.setHighlightEnabled(enabled);
     }
 
     /**
-     * returns true if highlighting of values is enabled, false if not
+     * Returns true if highlighting of values is enabled, false if not
      *
      * @return
      */
     public boolean isHighlightEnabled() {
-        return mHighlightEnabled;
+        return mData == null ? true : mData.isHighlightEnabled();
     }
 
     /**
@@ -912,7 +939,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public int getXValCount() {
         return mData.getXValCount();
     }
-    
+
     /**
      * returns the average value of all values the chart holds
      *
@@ -1022,6 +1049,78 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
+     * Sets extra offsets (around the chart view) to be appended to the
+     * auto-calculated offsets.
+     * 
+     * @param left
+     * @param top
+     * @param right
+     * @param bottom
+     */
+    public void setExtraOffsets(float left, float top, float right, float bottom) {
+        setExtraLeftOffset(left);
+        setExtraTopOffset(top);
+        setExtraRightOffset(right);
+        setExtraBottomOffset(bottom);
+    }
+
+    /**
+     * Set an extra offset to be appended to the viewport's top
+     */
+    public void setExtraTopOffset(float offset) {
+        mExtraTopOffset = Utils.convertDpToPixel(offset);
+    }
+
+    /**
+     * @return the extra offset to be appended to the viewport's top
+     */
+    public float getExtraTopOffset() {
+        return mExtraTopOffset;
+    }
+
+    /**
+     * Set an extra offset to be appended to the viewport's right
+     */
+    public void setExtraRightOffset(float offset) {
+        mExtraRightOffset = Utils.convertDpToPixel(offset);
+    }
+
+    /**
+     * @return the extra offset to be appended to the viewport's right
+     */
+    public float getExtraRightOffset() {
+        return mExtraRightOffset;
+    }
+
+    /**
+     * Set an extra offset to be appended to the viewport's bottom
+     */
+    public void setExtraBottomOffset(float offset) {
+        mExtraBottomOffset = Utils.convertDpToPixel(offset);
+    }
+
+    /**
+     * @return the extra offset to be appended to the viewport's bottom
+     */
+    public float getExtraBottomOffset() {
+        return mExtraBottomOffset;
+    }
+
+    /**
+     * Set an extra offset to be appended to the viewport's left
+     */
+    public void setExtraLeftOffset(float offset) {
+        mExtraLeftOffset = Utils.convertDpToPixel(offset);
+    }
+
+    /**
+     * @return the extra offset to be appended to the viewport's left
+     */
+    public float getExtraLeftOffset() {
+        return mExtraLeftOffset;
+    }
+
+    /**
      * Set this to true to enable logcat outputs for the chart. Default:
      * disabled
      *
@@ -1059,32 +1158,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public void setNoDataTextDescription(String text) {
         mNoDataTextDescription = text;
     }
-
-    // /**
-    // * Sets the offsets from the border of the view to the actual chart in
-    // every
-    // * direction manually. This method needs to be recalled everytime a new
-    // data
-    // * object is set for the chart. Provide density pixels -> they are then
-    // * rendered to pixels inside the chart.
-    // *
-    // * @param left
-    // * @param right
-    // * @param top
-    // * @param bottom
-    // */
-    // public void setOffsets(float left, float top, float right, float bottom)
-    // {
-    //
-    // mOffsetBottom = Utils.convertDpToPixel(bottom);
-    // mOffsetLeft = Utils.convertDpToPixel(left);
-    // mOffsetRight = Utils.convertDpToPixel(right);
-    // mOffsetTop = Utils.convertDpToPixel(top);
-    //
-    // mTrans.prepareMatrixValuePx(this);
-    // mTrans.prepareMatrixOffset(this);
-    // prepareContentRect();
-    // }
 
     /**
      * Set this to false to disable all gestures and touches on the chart,
@@ -1459,20 +1532,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 ? false : true;
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-
-        // prepareContentRect();
-        for (int i = 0; i < getChildCount(); i++) {
-            getChildAt(i).layout(left, top, right, bottom);
-        }
-    }
-
     /** tasks to be done after the view is setup */
     protected ArrayList<Runnable> mJobs = new ArrayList<Runnable>();
 
@@ -1502,6 +1561,27 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public ArrayList<Runnable> getJobs() {
         return mJobs;
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+
+        for (int i = 0; i < getChildCount(); i++) {
+            getChildAt(i).layout(left, top, right, bottom);
+        }
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int size = (int) Utils.convertDpToPixel(50f);
+        setMeasuredDimension(
+                Math.max(getSuggestedMinimumWidth(),
+                        resolveSize(size,
+                                widthMeasureSpec)),
+                Math.max(getSuggestedMinimumHeight(),
+                        resolveSize(size,
+                                heightMeasureSpec)));
     }
 
     @Override

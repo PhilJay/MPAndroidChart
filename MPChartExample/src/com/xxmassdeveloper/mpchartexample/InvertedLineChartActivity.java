@@ -87,7 +87,7 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
 
         // enable/disable highlight indicators (the lines that indicate the
         // highlighted Entry)
-        mChart.setHighlightIndicatorEnabled(false);
+        mChart.setHighlightEnabled(false);
         
         XAxis xl = mChart.getXAxis();
         xl.setAvoidFirstLastClipping(true);
@@ -196,6 +196,11 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
                     mChart.setPinchZoom(true);
 
                 mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleAutoScaleMinMax: {
+                mChart.setAutoScaleMinMaxEnabled(!mChart.isAutoScaleMinMaxEnabled());
+                mChart.notifyDataSetChanged();
                 break;
             }
             case R.id.actionToggleFilter: {

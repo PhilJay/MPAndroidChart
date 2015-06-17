@@ -95,7 +95,8 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART);
         l.setXEntrySpace(7f);
-        l.setYEntrySpace(5f);
+        l.setYEntrySpace(0f);
+        l.setYOffset(0f);
     }
 
     @Override

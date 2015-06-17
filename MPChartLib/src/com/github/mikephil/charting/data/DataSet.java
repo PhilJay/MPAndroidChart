@@ -39,6 +39,12 @@ public abstract class DataSet<T extends Entry> {
     /** the total sum of all y-values */
     private float mYValueSum = 0f;
 
+    /** the last start value used for calcMinMax */
+    protected int mLastStart = 0;
+
+    /** the last end value used for calcMinMax */
+    protected int mLastEnd = 0;
+
     /** label that describes the DataSet or the data the DataSet represents */
     private String mLabel = "DataSet";
 
@@ -63,6 +69,9 @@ public abstract class DataSet<T extends Entry> {
     /** this specifies which axis this DataSet should be plotted against */
     protected AxisDependency mAxisDependency = AxisDependency.LEFT;
 
+    /** if true, value highlightning is enabled */
+    protected boolean mHighlightEnabled = true;
+
     /**
      * Creates a new DataSet object with the given values it represents. Also, a
      * label that describes the DataSet can be specified. The label can also be
@@ -84,7 +93,7 @@ public abstract class DataSet<T extends Entry> {
         // default color
         mColors.add(Color.rgb(140, 234, 255));
 
-        calcMinMax();
+        calcMinMax(mLastStart, mLastEnd);
         calcYValueSum();
     }
 
@@ -92,22 +101,31 @@ public abstract class DataSet<T extends Entry> {
      * Use this method to tell the data set that the underlying data has changed
      */
     public void notifyDataSetChanged() {
-        calcMinMax();
+        calcMinMax(mLastStart, mLastEnd);
         calcYValueSum();
     }
 
     /**
      * calc minimum and maximum y value
      */
-    protected void calcMinMax() {
-        if (mYVals.size() == 0) {
+    protected void calcMinMax(int start, int end) {
+        if (mYVals.size() == 0)
             return;
-        }
 
-        mYMin = mYVals.get(0).getVal();
-        mYMax = mYVals.get(0).getVal();
+        int endValue;
 
-        for (int i = 0; i < mYVals.size(); i++) {
+        if (end == 0)
+            endValue = mYVals.size() - 1;
+        else
+            endValue = end;
+
+        mLastStart = start;
+        mLastEnd = endValue;
+
+        mYMin = mYVals.get(start).getVal();
+        mYMax = mYVals.get(start).getVal();
+
+        for (int i = start + 1; i <= endValue; i++) {
 
             Entry e = mYVals.get(i);
 
@@ -158,7 +176,7 @@ public abstract class DataSet<T extends Entry> {
 
         Entry e = getEntryForXIndex(xIndex);
 
-        if (e != null)
+        if (e != null && e.getXIndex() == xIndex)
             return e.getVal();
         else
             return Float.NaN;
@@ -473,7 +491,7 @@ public abstract class DataSet<T extends Entry> {
             float val = e.getVal();
             mYValueSum -= val;
 
-            calcMinMax();
+            calcMinMax(mLastStart, mLastEnd);
         }
 
         return removed;
@@ -597,6 +615,25 @@ public abstract class DataSet<T extends Entry> {
      */
     public void resetColors() {
         mColors = new ArrayList<Integer>();
+    }
+
+    /**
+     * If set to true, value highlighting is enabled which means that values can
+     * be highlighted programmatically or by touch gesture.
+     *
+     * @param enabled
+     */
+    public void setHighlightEnabled(boolean enabled) {
+        mHighlightEnabled = enabled;
+    }
+
+    /**
+     * returns true if highlighting of values is enabled, false if not
+     *
+     * @return
+     */
+    public boolean isHighlightEnabled() {
+        return mHighlightEnabled;
     }
 
     /**
@@ -726,6 +763,8 @@ public abstract class DataSet<T extends Entry> {
      */
     public void clear() {
         mYVals.clear();
+        mLastStart = 0;
+        mLastEnd = 0;
         notifyDataSetChanged();
     }
 }

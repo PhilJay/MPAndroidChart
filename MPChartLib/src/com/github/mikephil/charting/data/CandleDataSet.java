@@ -66,19 +66,28 @@ public class CandleDataSet extends BarLineScatterCandleDataSet<CandleEntry> {
     }
 
     @Override
-    protected void calcMinMax() {
+    protected void calcMinMax(int start, int end) {
         // super.calcMinMax();
 
-        if (mYVals.size() == 0) {
+        if (mYVals.size() == 0)
             return;
-        }
 
         List<CandleEntry> entries = mYVals;
 
-        mYMin = entries.get(0).getLow();
-        mYMax = entries.get(0).getHigh();
+        int endValue;
 
-        for (int i = 0; i < entries.size(); i++) {
+        if (end == 0)
+            endValue = mYVals.size() - 1;
+        else
+            endValue = end;
+
+        mLastStart = start;
+        mLastEnd = endValue;
+
+        mYMin = mYVals.get(start).getLow();
+        mYMax = mYVals.get(start).getHigh();
+
+        for (int i = start + 1; i <= endValue; i++) {
 
             CandleEntry e = entries.get(i);
 

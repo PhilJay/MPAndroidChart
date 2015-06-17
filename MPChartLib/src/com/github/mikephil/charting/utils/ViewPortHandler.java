@@ -23,6 +23,9 @@ public class ViewPortHandler {
     /** minimum scale value on the x-axis */
     private float mMinScaleX = 1f;
 
+    /** maximum scale value on the x-axis */
+    private float mMaxScaleX = Float.MAX_VALUE;
+
     /** contains the current scale factor of the x-axis */
     private float mScaleX = 1f;
 
@@ -191,6 +194,9 @@ public class ViewPortHandler {
      * bounds.
      */
     public Matrix fitScreen() {
+        
+        mMinScaleX = 1f;
+        mMinScaleY = 1f;
 
         Matrix save = new Matrix();
         save.set(mMatrixTouch);
@@ -216,8 +222,8 @@ public class ViewPortHandler {
      * not possible. Makes most sense in combination with the
      * setScaleMinima(...) method.
      * 
-     * @param pts the position to center view viewport to
-     * @param chart
+     * @param transformedPts the position to center view viewport to
+     * @param view
      * @return save
      */
     public synchronized void centerViewPort(final float[] transformedPts, final View view) {
@@ -232,25 +238,7 @@ public class ViewPortHandler {
 
         save.postTranslate(-x, -y);
 
-        refresh(save, view, false);
-
-        // final View v = chart.getChartView();
-        //
-        // v.post(new Runnable() {
-        //
-        // @Override
-        // public void run() {
-        // Matrix save = new Matrix();
-        // save.set(mMatrixTouch);
-        //
-        // final float x = transformedPts[0] - offsetLeft();
-        // final float y = transformedPts[1] - offsetTop();
-        //
-        // save.postTranslate(-x, -y);
-        //
-        // refresh(save, chart, false);
-        // }
-        // });
+        refresh(save, view, true);
     }
 
     /**
@@ -289,8 +277,8 @@ public class ViewPortHandler {
         float curTransY = vals[Matrix.MTRANS_Y];
         float curScaleY = vals[Matrix.MSCALE_Y];
 
-        // min scale-x is 1f
-        mScaleX = Math.max(mMinScaleX, curScaleX);
+        // min scale-x is 1f, max is the max float
+        mScaleX = Math.min(Math.max(mMinScaleX, curScaleX), mMaxScaleX);
 
         // min scale-y is 1f
         mScaleY = Math.max(mMinScaleY, curScaleY);
@@ -332,6 +320,24 @@ public class ViewPortHandler {
             xScale = 1f;
 
         mMinScaleX = xScale;
+
+        limitTransAndScale(mMatrixTouch, mContentRect);
+    }
+
+    public void setMaximumScaleX(float xScale) {
+
+        mMaxScaleX = xScale;
+
+        limitTransAndScale(mMatrixTouch, mContentRect);
+    }
+    
+    public void setMinMaxScaleX(float minScaleX, float maxScaleX) {
+
+        if (minScaleX < 1f)
+            minScaleX = 1f;
+
+        mMinScaleX = minScaleX;
+        mMaxScaleX = maxScaleX;
 
         limitTransAndScale(mMatrixTouch, mContentRect);
     }
@@ -479,4 +485,13 @@ public class ViewPortHandler {
     public boolean hasNoDragOffset() {
         return mTransOffsetX <= 0 && mTransOffsetY <= 0 ? true : false;
     }
+
+    public boolean canZoomOutMoreX() {
+        return (mScaleX > mMinScaleX);
+    }
+
+    public boolean canZoomInMoreX() {
+        return (mScaleX < mMaxScaleX);
+    }
+
 }

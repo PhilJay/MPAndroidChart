@@ -151,7 +151,7 @@ public class BarChartRenderer extends DataRenderer {
      * 
      * @param x the x-position
      * @param y the y-position
-     * @param barspace the space between bars
+     * @param barspaceHalf the space between bars
      * @param from
      * @param trans
      */
@@ -324,7 +324,7 @@ public class BarChartRenderer extends DataRenderer {
             int dataSetIndex = h.getDataSetIndex();
             BarDataSet set = mChart.getBarData().getDataSetByIndex(dataSetIndex);
 
-            if (set == null)
+            if (set == null || !set.isHighlightEnabled())
                 continue;
 
             float barspaceHalf = set.getBarSpace() / 2f;
@@ -335,13 +335,12 @@ public class BarChartRenderer extends DataRenderer {
             mHighlightPaint.setAlpha(set.getHighLightAlpha());
 
             // check outofbounds
-            if (index < mChart.getBarData().getYValCount() && index >= 0
+            if (index >= 0
                     && index < (mChart.getXChartMax() * mAnimator.getPhaseX()) / setCount) {
 
-                BarEntry e = mChart.getBarData().getDataSetByIndex(dataSetIndex)
-                        .getEntryForXIndex(index);
+                BarEntry e = set.getEntryForXIndex(index);
 
-                if (e == null)
+                if (e == null || e.getXIndex() != index)
                     continue;
 
                 float groupspace = mChart.getBarData().getGroupSpace();

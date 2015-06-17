@@ -387,6 +387,13 @@ public class PieChartRenderer extends DataRenderer {
             if (xIndex >= drawAngles.length)
                 continue;
 
+            PieDataSet set = mChart.getData()
+                    .getDataSetByIndex(indices[i]
+                            .getDataSetIndex());
+
+            if (set == null || !set.isHighlightEnabled())
+                continue;
+
             if (xIndex == 0)
                 angle = rotationAngle;
             else
@@ -395,13 +402,6 @@ public class PieChartRenderer extends DataRenderer {
             angle *= mAnimator.getPhaseY();
 
             float sliceDegrees = drawAngles[xIndex];
-
-            PieDataSet set = mChart.getData()
-                    .getDataSetByIndex(indices[i]
-                            .getDataSetIndex());
-
-            if (set == null)
-                continue;
 
             float shift = set.getSelectionShift();
             RectF circleBox = mChart.getCircleBox();

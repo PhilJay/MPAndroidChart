@@ -32,31 +32,31 @@ public class CombinedData extends BarLineScatterCandleData<BarLineScatterCandleD
     public void setData(LineData data) {
         mLineData = data;
         mDataSets.addAll(data.getDataSets());
-        init(data.getDataSets());
+        init();
     }
 
     public void setData(BarData data) {
         mBarData = data;
         mDataSets.addAll(data.getDataSets());
-        init(data.getDataSets());
+        init();
     }
 
     public void setData(ScatterData data) {
         mScatterData = data;
         mDataSets.addAll(data.getDataSets());
-        init(data.getDataSets());
+        init();
     }
 
     public void setData(CandleData data) {
         mCandleData = data;
         mDataSets.addAll(data.getDataSets());
-        init(data.getDataSets());
+        init();
     }
 
     public void setData(BubbleData data) {
         mBubbleData = data;
         mDataSets.addAll(data.getDataSets());
-        init(data.getDataSets());
+        init();
     }
 
     public BubbleData getBubbleData() {

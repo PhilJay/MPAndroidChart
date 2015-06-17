@@ -219,7 +219,7 @@ public class LineChartRenderer extends DataRenderer {
             cubicFillPath.reset();
             cubicFillPath.addPath(cubicPath);
             // create a new path, this is bad for performance
-            drawCubicFill(mBitmapCanvas, dataSet, cubicFillPath, trans,
+            drawCubicFill(dataSet, cubicFillPath, trans,
                     entryFrom.getXIndex(), entryFrom.getXIndex() + size);
         }
 
@@ -234,7 +234,7 @@ public class LineChartRenderer extends DataRenderer {
         mRenderPaint.setPathEffect(null);
     }
 
-    protected void drawCubicFill(Canvas c, LineDataSet dataSet, Path spline, Transformer trans,
+    protected void drawCubicFill(LineDataSet dataSet, Path spline, Transformer trans,
             int from, int to) {
 
         float fillMin = mChart.getFillFormatter()
@@ -535,7 +535,7 @@ public class LineChartRenderer extends DataRenderer {
             LineDataSet set = mChart.getLineData().getDataSetByIndex(indices[i]
                     .getDataSetIndex());
 
-            if (set == null)
+            if (set == null || !set.isHighlightEnabled())
                 continue;
 
             mHighlightPaint.setColor(set.getHighLightColor());
@@ -546,7 +546,11 @@ public class LineChartRenderer extends DataRenderer {
             if (xIndex > mChart.getXChartMax() * mAnimator.getPhaseX())
                 continue;
 
-            float y = set.getYValForXIndex(xIndex) * mAnimator.getPhaseY(); // get
+            float yValue = set.getYValForXIndex(xIndex);
+            if (yValue == Float.NaN)
+                continue;
+
+            float y = yValue * mAnimator.getPhaseY(); // get
                                                                             // the
             // y-position
 

@@ -46,13 +46,30 @@ public class BubbleDataSet extends BarLineScatterCandleDataSet<BubbleEntry> {
     }
 
     @Override
-    protected void calcMinMax() {
-        
+    protected void calcMinMax(int start, int end) {
+        if (mYVals.size() == 0)
+            return;
+
         final List<BubbleEntry> entries = getYVals();
+
+        int endValue;
+
+        if (end == 0)
+            endValue = mYVals.size() - 1;
+        else
+            endValue = end;
+
+        mLastStart = start;
+        mLastEnd = endValue;
+
+        mYMin = yMin(entries.get(start));
+        mYMax = yMax(entries.get(start));
 
         // need chart width to guess this properly
 
-        for (BubbleEntry entry : entries) {
+        for (int i = start; i <= endValue; i++) {
+
+            final BubbleEntry entry = entries.get(i);
             
             final float ymin = yMin(entry);
             final float ymax = yMax(entry);

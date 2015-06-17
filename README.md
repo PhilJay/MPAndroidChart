@@ -60,7 +60,7 @@ Features
 =======
 
 **Core features:**
- - 7 different chart types
+ - 8 different chart types
  - Scaling on both axes (with touch-gesture, axes separately or pinch-zoom)
  - Dragging / Panning (with touch-gesture)
  - Combined-Charts (line-, bar-, scatter-, candle-data)

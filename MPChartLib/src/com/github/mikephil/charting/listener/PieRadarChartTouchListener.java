@@ -25,31 +25,20 @@ import java.util.List;
  * 
  * @author Philipp Jahoda
  */
-public class PieRadarChartTouchListener extends SimpleOnGestureListener implements OnTouchListener {
-
-    private static final int NONE = 0;
-    private static final int ROTATE = 1;
+public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChartBase<?>> {
 
     private PointF mTouchStartPoint = new PointF();
 
-    private PieRadarChartBase<?> mChart;
-
     /** the angle where the dragging started */
     private float mStartAngle = 0f;
-
-    private int mTouchMode = NONE;
-
-    private GestureDetector mGestureDetector;
 
     private ArrayList<AngularVelocitySample> _velocitySamples = new ArrayList<AngularVelocitySample>();
 
     private long mDecelerationLastTime = 0;
     private float mDecelerationAngularVelocity = 0.f;
 
-    public PieRadarChartTouchListener(PieRadarChartBase<?> ctx) {
-        this.mChart = ctx;
-
-        mGestureDetector = new GestureDetector(ctx.getContext(), this);
+    public PieRadarChartTouchListener(PieRadarChartBase<?> chart) {
+        super(chart);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -138,9 +127,6 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
         return true;
     }
 
-    /** reference to the last highlighted object */
-    private Highlight mLastHighlight = null;
-
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
 
@@ -157,7 +143,7 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
 
             // if no slice was touched, highlight nothing
             mChart.highlightValues(null);
-            mLastHighlight = null;
+            mLastHighlighted = null;
 
         } else {
 
@@ -173,7 +159,7 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
             if (index < 0) {
 
                 mChart.highlightValues(null);
-                mLastHighlight = null;
+                mLastHighlighted = null;
 
             } else {
 
@@ -192,14 +178,14 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
 
                 Highlight h = new Highlight(index, dataSetIndex);
 
-                if (h.equalTo(mLastHighlight)) {
+                if (h.equalTo(mLastHighlighted)) {
 
                     mChart.highlightTouch(null);
-                    mLastHighlight = null;
+                    mLastHighlighted = null;
                 } else {
 
                     mChart.highlightTouch(h);
-                    mLastHighlight = h;
+                    mLastHighlighted = h;
                 }
             }
         }
@@ -207,23 +193,12 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
         return true;
     }
 
-    @Override
-    public boolean onDoubleTap(MotionEvent e) {
-        OnChartGestureListener l = mChart.getOnChartGestureListener();
-
-        if (l != null) {
-            l.onChartDoubleTapped(e);
-        }
-        return super.onDoubleTap(e);
-    }
-
-    private void resetVelocity()
-    {
+    private void resetVelocity() {
         _velocitySamples.clear();
     }
 
-    private void sampleVelocity(float touchLocationX, float touchLocationY)
-    {
+    private void sampleVelocity(float touchLocationX, float touchLocationY) {
+
         long currentTime = AnimationUtils.currentAnimationTimeMillis();
 
         _velocitySamples.add(new AngularVelocitySample(currentTime, mChart.getAngleForPoint(touchLocationX, touchLocationY)));
@@ -244,8 +219,8 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
         }
     }
 
-    private float calculateVelocity()
-    {
+    private float calculateVelocity() {
+
         if (_velocitySamples.isEmpty())
             return 0.f;
 
@@ -308,9 +283,7 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
      * @param y
      */
     public void setGestureStartAngle(float x, float y) {
-
         mStartAngle = mChart.getAngleForPoint(x, y) - mChart.getRawRotationAngle();
-
     }
 
     /**
@@ -321,26 +294,12 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
      * @param y
      */
     public void updateGestureRotation(float x, float y) {
-
         mChart.setRotationAngle(mChart.getAngleForPoint(x, y) - mStartAngle);
-
     }
 
     /**
-     * returns the distance between two points
-     * 
-     * @param eventX
-     * @param startX
-     * @param eventY
-     * @param startY
-     * @return
+     * Sets the deceleration-angular-velocity to 0f
      */
-    private static float distance(float eventX, float startX, float eventY, float startY) {
-        float dx = eventX - startX;
-        float dy = eventY - startY;
-        return (float) Math.sqrt(dx * dx + dy * dy);
-    }
-
     public void stopDeceleration() {
         mDecelerationAngularVelocity = 0.f;
     }
@@ -366,8 +325,8 @@ public class PieRadarChartTouchListener extends SimpleOnGestureListener implemen
             stopDeceleration();
     }
 
-    private class AngularVelocitySample
-    {
+    private class AngularVelocitySample {
+
         public long time;
         public float angle;
 

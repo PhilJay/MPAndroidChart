@@ -29,10 +29,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
  * 
  * @author Philipp Jahoda
  */
-public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarLineScatterCandleData<? extends BarLineScatterCandleDataSet<? extends Entry>>>>
-        extends SimpleOnGestureListener implements OnTouchListener {
-
-    // private static final long REFRESH_MILLIS = 20;
+public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBase<? extends BarLineScatterCandleData<? extends BarLineScatterCandleDataSet<? extends Entry>>>> {
 
     /** the original touch-matrix from the chart */
     private Matrix mMatrix = new Matrix();
@@ -46,32 +43,11 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
     /** center between two pointers (fingers on the display) */
     private PointF mTouchPointCenter = new PointF();
 
-    // states
-    private static final int NONE = 0;
-    private static final int DRAG = 1;
-
-    private static final int X_ZOOM = 2;
-    private static final int Y_ZOOM = 3;
-    private static final int PINCH_ZOOM = 4;
-    private static final int POST_ZOOM = 5;
-
-    /** integer field that holds the current touch-state */
-    private int mTouchMode = NONE;
-
     private float mSavedXDist = 1f;
     private float mSavedYDist = 1f;
     private float mSavedDist = 1f;
 
-    /** the last highlighted object */
-    private Highlight mLastHighlighted;
-
     private DataSet<?> mClosestDataSetToTouch;
-
-    /** the chart the listener represents */
-    private T mChart;
-
-    /** the gesturedetector used for detecting taps and longpresses, ... */
-    private GestureDetector mGestureDetector;
 
     /** used for tracking velocity of dragging */
     private VelocityTracker mVelocityTracker;
@@ -80,11 +56,9 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
     private PointF mDecelerationCurrentPoint = new PointF();
     private PointF mDecelerationVelocity = new PointF();
 
-    public BarLineChartTouchListener(T chart, Matrix touchMatrix) {
-        this.mChart = chart;
+    public BarLineChartTouchListener(BarLineChartBase<? extends BarLineScatterCandleData<? extends BarLineScatterCandleDataSet<? extends Entry>>> chart, Matrix touchMatrix) {
+        super(chart);
         this.mMatrix = touchMatrix;
-
-        mGestureDetector = new GestureDetector(chart.getContext(), this);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -317,35 +291,48 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
                 // mode
                 if (mTouchMode == PINCH_ZOOM) {
 
-                    float scale = totalDist / mSavedDist; // total
-                                                          // scale
+                    float scale = totalDist / mSavedDist; // total scale
+
+                    boolean isZoomingOut = (scale < 1);
+                    boolean canZoomMoreX = isZoomingOut ?
+                            mChart.getViewPortHandler().canZoomOutMoreX() :
+                            mChart.getViewPortHandler().canZoomInMoreX();
 
                     float scaleX = (mChart.isScaleXEnabled()) ? scale : 1f;
                     float scaleY = (mChart.isScaleYEnabled()) ? scale : 1f;
 
-                    mMatrix.set(mSavedMatrix);
-                    mMatrix.postScale(scaleX, scaleY, t.x, t.y);
+                    if (mChart.isScaleYEnabled() || canZoomMoreX) {
 
-                    if (l != null)
-                        l.onChartScale(event, scaleX, scaleY);
+                        mMatrix.set(mSavedMatrix);
+                        mMatrix.postScale(scaleX, scaleY, t.x, t.y);
+
+                        if (l != null)
+                            l.onChartScale(event, scaleX, scaleY);
+                    }
 
                 } else if (mTouchMode == X_ZOOM && mChart.isScaleXEnabled()) {
 
                     float xDist = getXDist(event);
-                    float scaleX = xDist / mSavedXDist; // x-axis
-                                                        // scale
+                    float scaleX = xDist / mSavedXDist; // x-axis scale
 
-                    mMatrix.set(mSavedMatrix);
-                    mMatrix.postScale(scaleX, 1f, t.x, t.y);
+                    boolean isZoomingOut = (scaleX < 1);
+                    boolean canZoomMoreX = isZoomingOut ?
+                            mChart.getViewPortHandler().canZoomOutMoreX() :
+                            mChart.getViewPortHandler().canZoomInMoreX();
 
-                    if (l != null)
-                        l.onChartScale(event, scaleX, 1f);
+                    if (canZoomMoreX) {
+
+                        mMatrix.set(mSavedMatrix);
+                        mMatrix.postScale(scaleX, 1f, t.x, t.y);
+
+                        if (l != null)
+                            l.onChartScale(event, scaleX, 1f);
+                    }
 
                 } else if (mTouchMode == Y_ZOOM && mChart.isScaleYEnabled()) {
 
                     float yDist = getYDist(event);
-                    float scaleY = yDist / mSavedYDist; // y-axis
-                                                        // scale
+                    float scaleY = yDist / mSavedYDist; // y-axis scale
 
                     mMatrix.set(mSavedMatrix);
 
@@ -397,20 +384,6 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
      */
     /** DOING THE MATH BELOW ;-) */
 
-    /**
-     * returns the distance between two points
-     * 
-     * @param eventX
-     * @param startX
-     * @param eventY
-     * @param startY
-     * @return
-     */
-    private static float distance(float eventX, float startX, float eventY, float startY) {
-        float dx = eventX - startX;
-        float dy = eventY - startY;
-        return (float) Math.sqrt(dx * dx + dy * dy);
-    }
 
     /**
      * Determines the center point between two pointer touch points.
@@ -464,7 +437,8 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
      * returns the correct translation depending on the provided x and y touch
      * points
      * 
-     * @param e
+     * @param x
+     * @param y
      * @return
      */
     public PointF getTrans(float x, float y) {
@@ -499,15 +473,6 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
         return mMatrix;
     }
 
-    /**
-     * returns the touch mode the listener is currently in
-     * 
-     * @return
-     */
-    public int getTouchMode() {
-        return mTouchMode;
-    }
-
     @Override
     public boolean onDoubleTap(MotionEvent e) {
 
@@ -523,7 +488,7 @@ public class BarLineChartTouchListener<T extends BarLineChartBase<? extends BarL
 
             PointF trans = getTrans(e.getX(), e.getY());
 
-            mChart.zoom(1.4f, 1.4f, trans.x, trans.y);
+            mChart.zoom(mChart.isScaleXEnabled() ? 1.4f : 1f, mChart.isScaleYEnabled() ? 1.4f : 1f, trans.x, trans.y);
 
             if (mChart.isLogEnabled())
                 Log.i("BarlineChartTouch", "Double-Tap, Zooming In, x: " + trans.x + ", y: "

@@ -255,7 +255,7 @@ public class ScatterChartRenderer extends DataRenderer {
             ScatterDataSet set = mChart.getScatterData().getDataSetByIndex(indices[i]
                     .getDataSetIndex());
 
-            if (set == null)
+            if (set == null || !set.isHighlightEnabled())
                 continue;
 
             mHighlightPaint.setColor(set.getHighLightColor());
@@ -266,7 +266,11 @@ public class ScatterChartRenderer extends DataRenderer {
             if (xIndex > mChart.getXChartMax() * mAnimator.getPhaseX())
                 continue;
 
-            float y = set.getYValForXIndex(xIndex) * mAnimator.getPhaseY(); // get
+            float yValue = set.getYValForXIndex(xIndex);
+            if (yValue == Float.NaN)
+                continue;
+
+            float y = yValue * mAnimator.getPhaseY(); // get
                                                                             // the
             // y-position
 

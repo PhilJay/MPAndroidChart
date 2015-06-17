@@ -162,7 +162,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
         mRenderer.drawData(canvas);
 
-        if (mHighlightEnabled && valuesToHighlight())
+        if (valuesToHighlight())
             mRenderer.drawHighlighted(canvas, mIndicesToHightlight);
 
         mYAxisRenderer.renderAxisLabels(canvas);
@@ -319,7 +319,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
     @Override
     protected float getRequiredBottomOffset() {
-        return mLegendRenderer.getLabelPaint().getTextSize() * 6.5f;
+        return mLegendRenderer.getLabelPaint().getTextSize() * 4.f;
     }
 
     @Override

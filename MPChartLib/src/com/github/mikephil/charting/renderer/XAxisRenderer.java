@@ -163,6 +163,7 @@ public class XAxisRenderer extends AxisRenderer {
         if (!mXAxis.isDrawGridLinesEnabled() || !mXAxis.isEnabled())
             return;
 
+        // pre alloc
         float[] position = new float[] {
                 0f, 0f
         };
@@ -171,18 +172,24 @@ public class XAxisRenderer extends AxisRenderer {
         mGridPaint.setStrokeWidth(mXAxis.getGridLineWidth());
         mGridPaint.setPathEffect(mXAxis.getGridDashPathEffect());
 
+        Path gridLinePath = new Path();
+
         for (int i = mMinX; i <= mMaxX; i += mXAxis.mAxisLabelModulus) {
 
             position[0] = i;
-
             mTrans.pointValuesToPixel(position);
 
             if (position[0] >= mViewPortHandler.offsetLeft()
                     && position[0] <= mViewPortHandler.getChartWidth()) {
 
-                c.drawLine(position[0], mViewPortHandler.offsetTop(), position[0],
-                        mViewPortHandler.contentBottom(), mGridPaint);
+                gridLinePath.moveTo(position[0], mViewPortHandler.contentBottom());
+                gridLinePath.lineTo(position[0], mViewPortHandler.contentTop());
+
+                // draw a path because lines don't support dashing on lower android versions
+                c.drawPath(gridLinePath, mGridPaint);
             }
+
+            gridLinePath.reset();
         }
     }
 

@@ -81,7 +81,8 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         mAxisLabelPaint.setColor(mYAxis.getTextColor());
         mAxisLabelPaint.setTextAlign(Align.CENTER);
 
-        float yoffset = Utils.calcTextHeight(mAxisLabelPaint, "A") + mYAxis.getYOffset();
+        float baseYOffset = Utils.convertDpToPixel(2.5f);
+        float textHeight = Utils.calcTextHeight(mAxisLabelPaint, "Q");
 
         AxisDependency dependency = mYAxis.getAxisDependency();
         YAxisLabelPosition labelPosition = mYAxis.getLabelPosition();
@@ -91,25 +92,21 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         if (dependency == AxisDependency.LEFT) {
 
             if (labelPosition == YAxisLabelPosition.OUTSIDE_CHART) {
-                yoffset = Utils.convertDpToPixel(3f);
-                yPos = mViewPortHandler.contentTop();
+                yPos = mViewPortHandler.contentTop() - baseYOffset;
             } else {
-                yoffset = yoffset * -1f;
-                yPos = mViewPortHandler.contentTop();
+                yPos = mViewPortHandler.contentTop() - baseYOffset;
             }
 
         } else {
 
             if (labelPosition == YAxisLabelPosition.OUTSIDE_CHART) {
-                yoffset = yoffset * -1f;
-                yPos = mViewPortHandler.contentBottom();
+                yPos = mViewPortHandler.contentBottom() + textHeight + baseYOffset;
             } else {
-                yoffset = Utils.convertDpToPixel(4f);
-                yPos = mViewPortHandler.contentBottom();
+                yPos = mViewPortHandler.contentBottom() + textHeight + baseYOffset;
             }
         }
 
-        drawYLabels(c, yPos, positions, yoffset);
+        drawYLabels(c, yPos, positions, mYAxis.getYOffset());
     }
 
     @Override

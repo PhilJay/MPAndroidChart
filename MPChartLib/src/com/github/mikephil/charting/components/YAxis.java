@@ -93,11 +93,13 @@ public class YAxis extends AxisBase {
     public YAxis() {
         super();
         this.mAxisDependency = AxisDependency.LEFT;
+        this.mYOffset = 0f;
 	}
 
     public YAxis(AxisDependency position) {
         super();
         this.mAxisDependency = position;
+        this.mYOffset = 0f;
 	}
 
     public AxisDependency getAxisDependency() {
@@ -319,7 +321,7 @@ public class YAxis extends AxisBase {
         p.setTextSize(mTextSize);
 
         String label = getLongestLabel();
-        return (float) Utils.calcTextHeight(p, label) + getYOffset() * 2f;
+        return (float) Utils.calcTextHeight(p, label) + Utils.convertDpToPixel(2.5f) * 2f + getYOffset();
     }
 
     @Override

@@ -50,13 +50,22 @@ public class HorizontalBarBuffer extends BarBuffer {
 
                 } else {
 
-                    float all = e.getVal();
+                    float allPos = e.getPositiveSum();
+                    float allNeg = e.getNegativeSum();
 
                     // fill the stack
                     for (int k = 0; k < vals.length; k++) {
 
-                        all -= vals[k];
-                        y = vals[k] + all;
+                        float value = vals[k];
+
+                        if(value >= 0f) {
+
+                            allPos -= value;
+                            y = value + allPos;
+                        } else {
+                            allNeg -= Math.abs(value);
+                            y = value + allNeg;
+                        }
 
                         float bottom = x - barWidth + barSpaceHalf;
                         float top = x + barWidth - barSpaceHalf;
@@ -92,13 +101,22 @@ public class HorizontalBarBuffer extends BarBuffer {
 
                 } else {
 
-                    float all = e.getVal();
+                    float allPos = e.getPositiveSum();
+                    float allNeg = e.getNegativeSum();
 
                     // fill the stack
                     for (int k = 0; k < vals.length; k++) {
 
-                        all -= vals[k];
-                        y = vals[k] + all;
+                        float value = vals[k];
+
+                        if(value >= 0f) {
+
+                            allPos -= value;
+                            y = value + allPos;
+                        } else {
+                            allNeg -= Math.abs(value);
+                            y = value + allNeg;
+                        }
 
                         float bottom = x - barWidth + barSpaceHalf;
                         float top = x + barWidth - barSpaceHalf;
