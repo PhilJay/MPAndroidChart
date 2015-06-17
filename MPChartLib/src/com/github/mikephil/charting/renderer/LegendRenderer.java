@@ -144,8 +144,8 @@ public class LegendRenderer extends Renderer {
                 Collections.addAll(labels, mLegend.getExtraLabels());
             }
 
-            mLegend.setColors(colors);
-            mLegend.setLabels(labels);
+            mLegend.setComputedColors(colors);
+            mLegend.setComputedLabels(labels);
         }
 
         Typeface tf = mLegend.getTypeface();

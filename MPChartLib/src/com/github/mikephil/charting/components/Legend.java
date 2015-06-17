@@ -154,11 +154,19 @@ public class Legend extends ComponentBase {
         this.mLabels = Utils.convertStrings(labels);
     }
 
-    public void setColors(List<Integer> colors) {
+    /**
+     * This method sets the automatically computed colors for the legend. Use setCustom(...) to set custom colors.
+     * @param colors
+     */
+    public void setComputedColors(List<Integer> colors) {
         mColors = Utils.convertIntegers(colors);
     }
 
-    public void setLabels(List<String> labels) {
+    /**
+     * This method sets the automatically computed labels for the legend. Use setCustom(...) to set custom labels.
+     * @param labels
+     */
+    public void setComputedLabels(List<String> labels) {
         mLabels = Utils.convertStrings(labels);
     }
 
@@ -227,16 +235,6 @@ public class Legend extends ComponentBase {
      */
     public String[] getLabels() {
         return mLabels;
-    }
-
-    /**
-     * Sets a custom array of labels for the legend. Make sure the labels array
-     * has the same length as the colors array.
-     * 
-     * @param labels
-     */
-    public void setLabels(String[] labels) {
-        this.mLabels = labels;
     }
 
     /**

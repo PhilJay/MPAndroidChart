@@ -151,7 +151,7 @@ public class BarChartRenderer extends DataRenderer {
      * 
      * @param x the x-position
      * @param y the y-position
-     * @param barspace the space between bars
+     * @param barspaceHalf the space between bars
      * @param from
      * @param trans
      */

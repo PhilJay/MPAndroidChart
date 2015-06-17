@@ -136,6 +136,9 @@ public class BubbleChartRenderer extends DataRenderer {
                 if (!dataSet.isDrawValuesEnabled())
                     continue;
 
+                // apply the text-styling defined by the DataSet
+                applyValueTextStyle(dataSet);
+
                 final float phaseX = mAnimator.getPhaseX();
                 final float phaseY = mAnimator.getPhaseY();
 
