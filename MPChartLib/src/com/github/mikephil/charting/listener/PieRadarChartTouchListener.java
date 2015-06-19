@@ -3,18 +3,15 @@ package com.github.mikephil.charting.listener;
 
 import android.annotation.SuppressLint;
 import android.graphics.PointF;
-import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.animation.AnimationUtils;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.charts.PieRadarChartBase;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.utils.Highlight;
-import com.github.mikephil.charting.utils.SelInfo;
+import com.github.mikephil.charting.utils.SelectionDetail;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
@@ -163,7 +160,7 @@ public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChart
 
             } else {
 
-                List<SelInfo> valsAtIndex = mChart.getYValsAtIndex(index);
+                List<SelectionDetail> valsAtIndex = mChart.getYValsAtIndex(index);
 
                 int dataSetIndex = 0;
 
