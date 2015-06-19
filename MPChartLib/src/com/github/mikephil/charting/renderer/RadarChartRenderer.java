@@ -75,6 +75,8 @@ public class RadarChartRenderer extends DataRenderer {
 
         Path surface = new Path();
 
+        boolean hasMovedToPoint = false;
+
         for (int j = 0; j < entries.size(); j++) {
 
             mRenderPaint.setColor(dataSet.getColor(j));
@@ -84,9 +86,13 @@ public class RadarChartRenderer extends DataRenderer {
             PointF p = Utils.getPosition(center, (e.getVal() - mChart.getYChartMin()) * factor,
                     sliceangle * j + mChart.getRotationAngle());
 
-            if (j == 0)
+            if (Float.isNaN(p.x))
+                continue;
+
+            if (!hasMovedToPoint) {
                 surface.moveTo(p.x, p.y);
-            else
+                hasMovedToPoint = true;
+            } else
                 surface.lineTo(p.x, p.y);
         }
 
@@ -224,6 +230,9 @@ public class RadarChartRenderer extends DataRenderer {
 
             int j = set.getEntryPosition(e);
             float y = (e.getVal() - mChart.getYChartMin());
+
+            if (Float.isNaN(y))
+                continue;
 
             PointF p = Utils.getPosition(center, y * factor,
                     sliceangle * j + mChart.getRotationAngle());
