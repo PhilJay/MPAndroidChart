@@ -29,14 +29,13 @@ import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.interfaces.BarLineScatterCandleDataProvider;
 import com.github.mikephil.charting.jobs.MoveViewJob;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
-import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnDrawListener;
 import com.github.mikephil.charting.renderer.XAxisRenderer;
 import com.github.mikephil.charting.renderer.YAxisRenderer;
 import com.github.mikephil.charting.utils.FillFormatter;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.PointD;
-import com.github.mikephil.charting.utils.SelInfo;
+import com.github.mikephil.charting.utils.SelectionDetail;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 
@@ -1070,7 +1069,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             xIndex = (int) base + 1;
         }
 
-        List<SelInfo> valsAtIndex = getYValsAtIndex(xIndex);
+        List<SelectionDetail> valsAtIndex = getSelectionDetailsAtIndex(xIndex);
 
         float leftdist = Utils.getMinimumDistance(valsAtIndex, y, AxisDependency.LEFT);
         float rightdist = Utils.getMinimumDistance(valsAtIndex, y, AxisDependency.RIGHT);
@@ -1091,16 +1090,16 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     }
 
     /**
-     * Returns an array of SelInfo objects for the given x-index. The SelInfo
+     * Returns an array of SelectionDetail objects for the given x-index. The SelectionDetail
      * objects give information about the value at the selected index and the
      * DataSet it belongs to. INFORMATION: This method does calculations at
      * runtime. Do not over-use in performance critical situations.
      *
      * @return
      */
-    public List<SelInfo> getYValsAtIndex(int xIndex) {
+    protected List<SelectionDetail> getSelectionDetailsAtIndex(int xIndex) {
 
-        List<SelInfo> vals = new ArrayList<SelInfo>();
+        List<SelectionDetail> vals = new ArrayList<SelectionDetail>();
 
         float[] pts = new float[2];
 
@@ -1119,7 +1118,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             getTransformer(dataSet.getAxisDependency()).pointValuesToPixel(pts);
 
             if (!Float.isNaN(pts[1])) {
-                vals.add(new SelInfo(pts[1], i, dataSet));
+                vals.add(new SelectionDetail(pts[1], i, dataSet));
             }
         }
 

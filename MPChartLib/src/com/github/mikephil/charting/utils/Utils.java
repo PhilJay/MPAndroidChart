@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
-import com.github.mikephil.charting.data.Entry;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -430,7 +429,7 @@ public abstract class Utils {
      * @param valsAtIndex all the values at a specific index
      * @return
      */
-    public static int getClosestDataSetIndex(List<SelInfo> valsAtIndex, float val,
+    public static int getClosestDataSetIndex(List<SelectionDetail> valsAtIndex, float val,
             AxisDependency axis) {
 
         int index = -1;
@@ -438,7 +437,7 @@ public abstract class Utils {
 
         for (int i = 0; i < valsAtIndex.size(); i++) {
 
-            SelInfo sel = valsAtIndex.get(i);
+            SelectionDetail sel = valsAtIndex.get(i);
 
             if (axis == null || sel.dataSet.getAxisDependency() == axis) {
 
@@ -464,14 +463,14 @@ public abstract class Utils {
      * @param axis
      * @return
      */
-    public static float getMinimumDistance(List<SelInfo> valsAtIndex, float val,
+    public static float getMinimumDistance(List<SelectionDetail> valsAtIndex, float val,
             AxisDependency axis) {
 
         float distance = Float.MAX_VALUE;
 
         for (int i = 0; i < valsAtIndex.size(); i++) {
 
-            SelInfo sel = valsAtIndex.get(i);
+            SelectionDetail sel = valsAtIndex.get(i);
 
             if (sel.dataSet.getAxisDependency() == axis) {
 
