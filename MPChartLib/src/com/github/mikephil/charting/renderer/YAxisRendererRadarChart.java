@@ -63,6 +63,10 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
         } else {
 
             double first = Math.ceil(yMin / interval) * interval;
+
+            if (first == 0.0) // Fix for IEEE negative zero case (Where value == -0.0, and 0.0 == -0.0)
+                first = 0.0;
+
             double last = Utils.nextUp(Math.floor(yMax / interval) * interval);
 
             double f;
