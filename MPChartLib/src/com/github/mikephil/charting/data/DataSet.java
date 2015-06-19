@@ -122,14 +122,14 @@ public abstract class DataSet<T extends Entry> {
         mLastStart = start;
         mLastEnd = endValue;
 
-        mYMin = mYVals.get(start).getVal();
-        mYMax = mYVals.get(start).getVal();
+        mYMin = Float.MAX_VALUE;
+        mYMax = Float.MIN_VALUE;
 
-        for (int i = start + 1; i <= endValue; i++) {
+        for (int i = start; i <= endValue; i++) {
 
             Entry e = mYVals.get(i);
 
-            if (e != null) {
+            if (e != null && !Float.isNaN(e.getVal())) {
 
                 if (e.getVal() < mYMin)
                     mYMin = e.getVal();
