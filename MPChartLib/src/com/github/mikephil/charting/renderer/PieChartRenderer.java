@@ -175,14 +175,15 @@ public class PieChartRenderer extends DataRenderer {
         PieData data = mChart.getData();
         List<PieDataSet> dataSets = data.getDataSets();
         boolean drawXVals = mChart.isDrawSliceTextEnabled();
+        boolean showImages = mChart.isDrawImagesEnabled();
 
         int cnt = 0;
 
-        for (int i = 0; i < dataSets.size(); i++) {
+        for (int dataSetIndex = 0; dataSetIndex < dataSets.size(); dataSetIndex++) {
 
-            PieDataSet dataSet = dataSets.get(i);
+            PieDataSet dataSet = dataSets.get(dataSetIndex);
 
-            if (!dataSet.isDrawValuesEnabled() && !drawXVals)
+            if (!dataSet.isDrawValuesEnabled() && !drawXVals && !showImages)
                 continue;
 
             // apply the text-styling defined by the DataSet
@@ -229,6 +230,8 @@ public class PieChartRenderer extends DataRenderer {
 
                     c.drawText(val, x, y + lineHeight / 2f, mValuePaint);
                 }
+                
+                // TODO: DRAW BITMAPS SOMEWHERE HERE
 
                 cnt++;
             }

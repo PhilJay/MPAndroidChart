@@ -19,7 +19,7 @@ import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.listener.PieRadarChartTouchListener;
-import com.github.mikephil.charting.utils.SelInfo;
+import com.github.mikephil.charting.utils.SelectionDetail;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
@@ -410,16 +410,16 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     }
 
     /**
-     * Returns an array of SelInfo objects for the given x-index. The SelInfo
+     * Returns an array of SelectionDetail objects for the given x-index. The SelectionDetail
      * objects give information about the value at the selected index and the
      * DataSet it belongs to. INFORMATION: This method does calculations at
      * runtime. Do not over-use in performance critical situations.
      *
      * @return
      */
-    public List<SelInfo> getYValsAtIndex(int xIndex) {
+    public List<SelectionDetail> getYValsAtIndex(int xIndex) {
 
-        List<SelInfo> vals = new ArrayList<SelInfo>();
+        List<SelectionDetail> vals = new ArrayList<SelectionDetail>();
 
         for (int i = 0; i < mData.getDataSetCount(); i++) {
 
@@ -429,7 +429,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
             float yVal = dataSet.getYValForXIndex(xIndex);
 
             if (!Float.isNaN(yVal)) {
-                vals.add(new SelInfo(yVal, i, dataSet));
+                vals.add(new SelectionDetail(yVal, i, dataSet));
             }
         }
 
