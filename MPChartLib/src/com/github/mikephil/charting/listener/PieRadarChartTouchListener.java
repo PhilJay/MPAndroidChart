@@ -160,7 +160,7 @@ public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChart
 
             } else {
 
-                List<SelectionDetail> valsAtIndex = mChart.getYValsAtIndex(index);
+                List<SelectionDetail> valsAtIndex = mChart.getSelectionDetailsAtIndex(index);
 
                 int dataSetIndex = 0;
 

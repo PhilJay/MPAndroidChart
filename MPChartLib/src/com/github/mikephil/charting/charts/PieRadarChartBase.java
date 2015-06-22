@@ -417,7 +417,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
      *
      * @return
      */
-    public List<SelectionDetail> getYValsAtIndex(int xIndex) {
+    public List<SelectionDetail> getSelectionDetailsAtIndex(int xIndex) {
 
         List<SelectionDetail> vals = new ArrayList<SelectionDetail>();
 
