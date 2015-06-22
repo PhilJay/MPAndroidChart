@@ -53,7 +53,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     private float mXValAverageLength = 0;
 
     /** holds all x-values the chart represents */
-    protected List<String> mXVals;
+    protected List<XValue> mXVals;
 
     /** array that holds all DataSets the ChartData object represents */
     protected List<T> mDataSets;
@@ -103,15 +103,15 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     }
 
     /**
-     * constructor that takes string array instead of List string
+     * constructor for chart data
      * 
      * @param xVals The values describing the x-axis. Must be at least as long
      *            as the highest xIndex in the Entry objects across all
      *            DataSets.
      * @param sets the dataset array
      */
-    public ChartData(String[] xVals, List<T> sets) {
-        this.mXVals = arrayToList(xVals);
+    public ChartData(List<String> xVals, List<T> sets) {
+        this.mXVals = XValue.fromStringList(xVals);
         this.mDataSets = sets;
 
         init();
@@ -155,7 +155,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         float sum = 1f;
 
         for (int i = 0; i < mXVals.size(); i++) {
-            sum += mXVals.get(i).length();
+            sum += mXVals.get(i).getValue().length();
         }
 
         mXValAverageLength = sum / (float) mXVals.size();
@@ -299,6 +299,23 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /** ONLY GETTERS AND SETTERS BELOW THIS */
 
     /**
+     * Sets the x values of the chart.
+     * @param xVals A string list of x values.
+     */
+    public void setXVals(List<String> xVals) {
+        this.mXVals = XValue.fromStringList(xVals);
+    }
+
+    /**
+     * Sets the x values of the chart as an XValue object which contains both the string
+     * title and an optional icon.
+     * @param xValues A list of XValue objects
+     */
+    public void setXValues(List<XValue> xValues) {
+        this.mXVals = xValues;
+    }
+
+    /**
      * returns the number of LineDataSets this object contains
      * 
      * @return
@@ -385,10 +402,19 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /**
      * returns the x-values the chart represents
-     * 
+     *
      * @return
      */
     public List<String> getXVals() {
+        return XValue.toStringList(mXVals);
+    }
+
+    /**
+     * returns the x-values the chart represents
+     *
+     * @return
+     */
+    public List<XValue> getXValues() {
         return mXVals;
     }
 
@@ -400,7 +426,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     public void addXValue(String xVal) {
 
         mXValAverageLength = (mXValAverageLength + xVal.length()) / 2f;
-        mXVals.add(xVal);
+        mXVals.add(new XValue(xVal));
     }
 
     /**
@@ -428,7 +454,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * situations.
      * 
      * @param dataSets the DataSet array to search
-     * @param type
+     * @param label
      * @param ignorecase if true, the search is not case-sensitive
      * @return
      */
@@ -634,7 +660,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * Adds an Entry to the DataSet at the specified index. Entries are added to
      * the end of the list.
      * 
-     * @param entry
+     * @param e
      * @param dataSetIndex
      */
     public void addEntry(Entry e, int dataSetIndex) {
@@ -867,7 +893,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * Sets the Typeface for all value-labels for all DataSets this data object
      * contains.
      * 
-     * @param color
+     * @param tf
      */
     public void setValueTypeface(Typeface tf) {
         for (DataSet<?> set : mDataSets) {
@@ -879,7 +905,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * Sets the size (in dp) of the value-text for all DataSets this data object
      * contains.
      * 
-     * @param color
+     * @param size
      */
     public void setValueTextSize(float size) {
         for (DataSet<?> set : mDataSets) {

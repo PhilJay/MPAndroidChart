@@ -69,8 +69,10 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
     /** if enabled, centertext is drawn */
     private boolean mDrawCenterText = true;
-
+    
     private boolean mCenterTextWordWrapEnabled = false;
+
+    private boolean mDrawImages = false;
 
     private float mCenterTextRadiusPercent = 1.f;
 
@@ -540,6 +542,14 @@ public class PieChart extends PieRadarChartBase<PieData> {
      */
     public boolean isCenterTextWordWrapEnabled() {
         return mCenterTextWordWrapEnabled;
+    }
+
+    public void setDrawImages(boolean mDrawImages) {
+        this.mDrawImages = mDrawImages;
+    }
+    
+    public boolean isDrawImagesEnabled() {
+        return mDrawImages;
     }
 
     /**
