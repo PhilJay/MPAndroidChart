@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.buffer.CircleBuffer;
@@ -19,6 +20,7 @@ import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.List;
+import java.util.TreeMap;
 
 public class LineChartRenderer extends DataRenderer {
 
@@ -188,6 +190,10 @@ public class LineChartRenderer extends DataRenderer {
                 curDx = (next.getXIndex() - prev.getXIndex()) * intensity;
                 curDy = (next.getVal() - prev.getVal()) * intensity;
 
+                // Limit the x-intensity to prevent cubic lines looping and going backwards
+                prevDx = Math.min(prevDx, intensity * 2);
+                curDx = Math.min(curDx, intensity * 2);
+                
                 cubicPath.cubicTo(prev.getXIndex() + prevDx, (prev.getVal() + prevDy) * phaseY,
                         cur.getXIndex() - curDx,
                         (cur.getVal() - curDy) * phaseY, cur.getXIndex(), cur.getVal() * phaseY);
@@ -206,6 +212,10 @@ public class LineChartRenderer extends DataRenderer {
                 curDx = (next.getXIndex() - prev.getXIndex()) * intensity;
                 curDy = (next.getVal() - prev.getVal()) * intensity;
 
+                // Limit the x-intensity to prevent cubic lines looping and going backwards
+                prevDx = Math.min(prevDx, intensity * 2);
+                curDx = Math.min(curDx, intensity * 2);
+                
                 // the last cubic
                 cubicPath.cubicTo(prev.getXIndex() + prevDx, (prev.getVal() + prevDy) * phaseY,
                         cur.getXIndex() - curDx,
@@ -405,6 +415,7 @@ public class LineChartRenderer extends DataRenderer {
                 * mViewPortHandler.getScaleX()) {
 
             List<LineDataSet> dataSets = mChart.getLineData().getDataSets();
+            TreeMap<Integer, Rect> prevRects = null;
 
             for (int i = 0; i < dataSets.size(); i++) {
 
@@ -412,6 +423,11 @@ public class LineChartRenderer extends DataRenderer {
 
                 if (!dataSet.isDrawValuesEnabled())
                     continue;
+
+                boolean drawValuesOverlap = dataSet.isDrawValuesOverlapEnabled();
+                if (!drawValuesOverlap && prevRects == null) {
+                    prevRects = new TreeMap<Integer, Rect>();
+                }
 
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet);
@@ -435,6 +451,11 @@ public class LineChartRenderer extends DataRenderer {
                 float[] positions = trans.generateTransformedValuesLine(
                         entries, mAnimator.getPhaseX(), mAnimator.getPhaseY(), minx, maxx);
 
+                if (!drawValuesOverlap) {
+                    prevRects.clear();
+                }
+
+                loop:
                 for (int j = 0; j < positions.length; j += 2) {
 
                     float x = positions[j];
@@ -448,7 +469,22 @@ public class LineChartRenderer extends DataRenderer {
 
                     float val = entries.get(j / 2 + minx).getVal();
 
-                    c.drawText(dataSet.getValueFormatter().getFormattedValue(val), x,
+                    String formatted = dataSet.getValueFormatter().getFormattedValue(val);
+
+                    if (!drawValuesOverlap) {
+                        Rect curRect = new Rect();
+                        mValuePaint.getTextBounds(formatted, 0, formatted.length(), curRect);
+                        curRect.offset((int) x, (int) (y - valOffset));
+                        prevRects.headMap((int) x).clear(); // No need to check rects older than this
+                        for (Rect prevRect : prevRects.values()) {
+                            if (curRect.intersect(prevRect)) {
+                                continue loop;
+                            }
+                        }
+                        prevRects.put(curRect.right, curRect);
+                    }
+
+                    c.drawText(formatted, x,
                             y - valOffset,
                             mValuePaint);
                 }

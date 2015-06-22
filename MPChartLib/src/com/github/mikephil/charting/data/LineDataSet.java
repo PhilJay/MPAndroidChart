@@ -36,6 +36,9 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
 
     private boolean mDrawCircleHole = true;
 
+    /** if true, y-values are allowed to overlap */
+    protected boolean mDrawValuesOverlap = true;
+    
     public LineDataSet(List<Entry> yVals, String label) {
         super(yVals, label);
 
@@ -66,6 +69,8 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
         copied.mDashPathEffect = mDashPathEffect;
         copied.mDrawCircles = mDrawCircles;
         copied.mDrawCubic = mDrawCubic;
+        copied.mDrawCircleHole = mDrawCircleHole;
+        copied.mDrawValuesOverlap = mDrawValuesOverlap;
         copied.mHighLightColor = mHighLightColor;
 
         return copied;
@@ -307,5 +312,21 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
 
     public boolean isDrawCircleHoleEnabled() {
         return mDrawCircleHole;
+    }
+
+    /**
+     * Set this to false to prevent drawing overlapping y-values.
+     * 
+     * @param enabled
+     */
+    public void setDrawValuesOverlap(boolean enabled) {
+        this.mDrawValuesOverlap = enabled;
+    }
+
+    /**
+     * Returns true if y-values are allowed to overlap, false if they are not allowed to overlap.
+     */
+    public boolean isDrawValuesOverlapEnabled() {
+        return mDrawValuesOverlap;
     }
 }
