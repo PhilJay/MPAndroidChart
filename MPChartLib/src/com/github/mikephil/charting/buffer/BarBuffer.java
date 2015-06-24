@@ -60,16 +60,58 @@ public class BarBuffer extends AbstractBuffer<BarEntry> {
                     + mGroupSpace * i + groupSpaceHalf;
             float y = e.getVal();
             float [] vals = e.getVals();
-            
-            if(mInverted) { // inverted axis, here, I chose performance over readability
                 
-                if(!mContainsStacks || vals == null) {
-                    
+            if (!mContainsStacks || vals == null) {
+
+                float left = x - barWidth + barSpaceHalf;
+                float right = x + barWidth - barSpaceHalf;
+                float bottom, top;
+                if (mInverted) {
+                    bottom = y >= 0 ? y : 0;
+                    top = y <= 0 ? y : 0;
+                } else {
+                    top = y >= 0 ? y : 0;
+                    bottom = y <= 0 ? y : 0;
+                }
+
+                // multiply the height of the rect with the phase
+                if (top > 0)
+                    top *= phaseY;
+                else
+                    bottom *= phaseY;
+
+                addBar(left, top, right, bottom);
+
+            } else {
+
+                float allPos = e.getPositiveSum();
+                float allNeg = e.getNegativeSum();
+
+                // fill the stack
+                for (int k = 0; k < vals.length; k++) {
+
+                    float value = vals[k];
+
+                    if(value >= 0f) {
+
+                        allPos -= value;
+                        y = value + allPos;
+                    } else {
+                        allNeg -= Math.abs(value);
+                        y = value + allNeg;
+                    }
+
                     float left = x - barWidth + barSpaceHalf;
                     float right = x + barWidth - barSpaceHalf;
-                    float bottom = y >= 0 ? y : 0;
-                    float top = y <= 0 ? y : 0;
-                    
+                    float bottom, top;
+                    if (mInverted) {
+                        bottom = y >= 0 ? y : 0;
+                        top = y <= 0 ? y : 0;
+                    } else {
+                        top = y >= 0 ? y : 0;
+                        bottom = y <= 0 ? y : 0;
+                    }
+
                     // multiply the height of the rect with the phase
                     if (top > 0)
                         top *= phaseY;
@@ -77,92 +119,8 @@ public class BarBuffer extends AbstractBuffer<BarEntry> {
                         bottom *= phaseY;
 
                     addBar(left, top, right, bottom);
-                    
-                } else {
-
-                    float allPos = e.getPositiveSum();
-                    float allNeg = e.getNegativeSum();
-
-                    // fill the stack
-                    for (int k = 0; k < vals.length; k++) {
-
-                        float value = vals[k];
-
-                        if(value >= 0f) {
-
-                            allPos -= value;
-                            y = value + allPos;
-                        } else {
-                            allNeg -= Math.abs(value);
-                            y = value + allNeg;
-                        }
-
-                        float left = x - barWidth + barSpaceHalf;
-                        float right = x + barWidth - barSpaceHalf;
-                        float bottom = y >= 0 ? y : 0;
-                        float top = y <= 0 ? y : 0;
-
-                        // multiply the height of the rect with the phase
-                        if (top > 0)
-                            top *= phaseY;
-                        else
-                            bottom *= phaseY;
-
-                        addBar(left, top, right, bottom);
-                    }
-                }   
-                
-            } else { // non inverted axis
-                
-                if(!mContainsStacks || vals == null) {
-                    
-                    float left = x - barWidth + barSpaceHalf;
-                    float right = x + barWidth - barSpaceHalf;
-                    float top = y >= 0 ? y : 0;
-                    float bottom = y <= 0 ? y : 0;
-                    
-                    // multiply the height of the rect with the phase
-                    if (top > 0)
-                        top *= phaseY;
-                    else
-                        bottom *= phaseY;
-
-                    addBar(left, top, right, bottom);
-                    
-                } else {
-
-                    float allPos = e.getPositiveSum();
-                    float allNeg = e.getNegativeSum();
-
-                    // fill the stack
-                    for (int k = 0; k < vals.length; k++) {
-
-                        float value = vals[k];
-
-                        if(value >= 0f) {
-
-                            allPos -= value;
-                            y = value + allPos;
-                        } else {
-                            allNeg -= Math.abs(value);
-                            y = value + allNeg;
-                        }
-
-                        float left = x - barWidth + barSpaceHalf;
-                        float right = x + barWidth - barSpaceHalf;
-                        float top = y >= 0 ? y : 0;
-                        float bottom = y <= 0 ? y : 0;
-
-                        // multiply the height of the rect with the phase
-                        if (top > 0)
-                            top *= phaseY;
-                        else
-                            bottom *= phaseY;
-
-                        addBar(left, top, right, bottom);
-                    }
-                }   
-            }          
+                }
+            }
         }
 
         reset();
