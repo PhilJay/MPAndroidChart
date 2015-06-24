@@ -79,14 +79,23 @@ public class BarBuffer extends AbstractBuffer<BarEntry> {
                     addBar(left, top, right, bottom);
                     
                 } else {
-                    
-                    float all = e.getVal();
+
+                    float allPos = e.getPositiveSum();
+                    float allNeg = e.getNegativeSum();
 
                     // fill the stack
                     for (int k = 0; k < vals.length; k++) {
 
-                        all -= vals[k];
-                        y = vals[k] + all;
+                        float value = vals[k];
+
+                        if(value >= 0f) {
+
+                            allPos -= value;
+                            y = value + allPos;
+                        } else {
+                            allNeg -= Math.abs(value);
+                            y = value + allNeg;
+                        }
 
                         float left = x - barWidth + barSpaceHalf;
                         float right = x + barWidth - barSpaceHalf;
@@ -121,14 +130,23 @@ public class BarBuffer extends AbstractBuffer<BarEntry> {
                     addBar(left, top, right, bottom);
                     
                 } else {
-                    
-                    float all = e.getVal();
+
+                    float allPos = e.getPositiveSum();
+                    float allNeg = e.getNegativeSum();
 
                     // fill the stack
                     for (int k = 0; k < vals.length; k++) {
 
-                        all -= vals[k];
-                        y = vals[k] + all;
+                        float value = vals[k];
+
+                        if(value >= 0f) {
+
+                            allPos -= value;
+                            y = value + allPos;
+                        } else {
+                            allNeg -= Math.abs(value);
+                            y = value + allNeg;
+                        }
 
                         float left = x - barWidth + barSpaceHalf;
                         float right = x + barWidth - barSpaceHalf;
