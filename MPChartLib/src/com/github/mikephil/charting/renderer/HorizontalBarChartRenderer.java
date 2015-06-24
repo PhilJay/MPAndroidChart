@@ -206,14 +206,13 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                         } else {
 
                             float[] transformed = new float[vals.length * 2];
-                            int cnt = 0;
                             float allPos = e.getPositiveSum();
                             float allNeg = e.getNegativeSum();
 
-                            for (int k = 0; k < transformed.length; k += 2) {
+                            for (int k = 0, idx = 0; k < transformed.length; k += 2, idx++) {
 
-                                float value = vals[cnt];
-                                float y = 0f;
+                                float value = vals[idx];
+                                float y;
 
                                 if(value >= 0f) {
 
@@ -225,7 +224,6 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                                 }
 
                                 transformed[k] = y * mAnimator.getPhaseY();
-                                cnt++;
                             }
 
                             trans.pointValuesToPixel(transformed);
