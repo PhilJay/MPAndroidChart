@@ -203,7 +203,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             mLastEnd = end;
 
             mYMin = Float.MAX_VALUE;
-            mYMax = Float.MIN_VALUE;
+            mYMax = -Float.MIN_VALUE;
 
             for (int i = 0; i < mDataSets.size(); i++) {
 
@@ -214,6 +214,11 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
                 if (mDataSets.get(i).getYMax() > mYMax)
                     mYMax = mDataSets.get(i).getYMax();
+            }
+
+            if (mYMin == Float.MAX_VALUE) {
+                mYMin = 0.f;
+                mYMax = 0.f;
             }
 
             // left axis
