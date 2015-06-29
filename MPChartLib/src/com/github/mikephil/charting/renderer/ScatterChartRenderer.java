@@ -266,11 +266,11 @@ public class ScatterChartRenderer extends DataRenderer {
             if (xIndex > mChart.getXChartMax() * mAnimator.getPhaseX())
                 continue;
 
-            float yValue = set.getYValForXIndex(xIndex);
-            if (yValue == Float.NaN)
+            final float yVal = set.getYValForXIndex(xIndex);
+            if (yVal == Float.NaN)
                 continue;
 
-            float y = yValue * mAnimator.getPhaseY(); // get
+            float y = yVal * mAnimator.getPhaseY(); // get
                                                                             // the
             // y-position
 
