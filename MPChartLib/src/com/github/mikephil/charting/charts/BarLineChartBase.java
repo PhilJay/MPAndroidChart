@@ -1112,7 +1112,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 continue;
 
             // extract all y-values from all DataSets at the given x-index
-            float yVal = dataSet.getYValForXIndex(xIndex);
+            final float yVal = dataSet.getYValForXIndex(xIndex);
+            if (yVal == Float.NaN)
+                continue;
+
             pts[1] = yVal;
 
             getTransformer(dataSet.getAxisDependency()).pointValuesToPixel(pts);
