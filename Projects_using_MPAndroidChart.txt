@@ -35,3 +35,6 @@ https://play.google.com/store/apps/details?id=com.hconnect.hfiles&hl=en
 
 Яндекс Метрика для Android
 https://play.google.com/store/apps/details?id=ru.vdmodule.androidmetrix
+
+Poker Manager
+https://play.google.com/store/apps/details?id=com.pokermanagerpro
