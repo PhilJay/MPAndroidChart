@@ -175,11 +175,13 @@ dependencies {
 Proguard
 =======
 
-In case you are using Proguard, you will need to whitelist MPAndroidChart, which requires to add the following line to your Proguard configuration file.
+In case you are using Proguard, you will need to **whitelist MPAndroidChart**, which requires to add the following line to your Proguard configuration file.
 
 ```
 -keep class com.github.mikephil.charting.** { *; }
 ```
+
+If you don't do this, animations might not work.
 
 Documentation
 =======
