@@ -22,6 +22,9 @@ public class CandleDataSet extends BarLineScatterCandleDataSet<CandleEntry> {
     /** the space between the candle entries, default 0.1f (10%) */
     private float mBodySpace = 0.1f;
 
+    /** use candle color for the shadow */
+    private boolean mShadowColorSameAsCandle = false;
+
     /** paint style when open <= close */
     protected Paint.Style mIncreasingPaintStyle = Paint.Style.FILL;
 
@@ -245,5 +248,23 @@ public class CandleDataSet extends BarLineScatterCandleDataSet<CandleEntry> {
      */
     public void setShadowColor(int shadowColor) {
         this.mShadowColor = shadowColor;
+    }
+
+    /**
+     * Is the shadow color same as the candle color?
+     *
+     * @return
+     */
+    public boolean getShadowColorSameAsCandle() {
+        return mShadowColorSameAsCandle;
+    }
+
+    /**
+     * Sets shadow color to be the same color as the candle color
+     *
+     * @param shadowColorSameAsCandle
+     */
+    public void setShadowColorSameAsCandle(boolean shadowColorSameAsCandle) {
+        this.mShadowColorSameAsCandle = shadowColorSameAsCandle;
     }
 }

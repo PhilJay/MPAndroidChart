@@ -122,6 +122,15 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
                 mChart.notifyDataSetChanged();
                 break;
             }
+            case R.id.actionToggleMakeShadowSameColorAsCandle: {
+                for (CandleDataSet set : mChart.getData().getDataSets())
+                {
+                    set.setShadowColorSameAsCandle(!set.getShadowColorSameAsCandle());
+                }
+
+                mChart.invalidate();
+                break;
+            }
             case R.id.actionToggleStartzero: {
                 mChart.getAxisLeft().setStartAtZero(!mChart.getAxisLeft().isStartAtZeroEnabled());
                 mChart.getAxisRight().setStartAtZero(!mChart.getAxisRight().isStartAtZeroEnabled());
