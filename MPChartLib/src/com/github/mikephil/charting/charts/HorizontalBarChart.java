@@ -60,7 +60,7 @@ public class HorizontalBarChart extends BarChart {
     }
 
     @Override
-    protected void calculateOffsets() {
+    public void calculateOffsets() {
 
         float offsetLeft = 0f, offsetRight = 0f, offsetTop = 0f, offsetBottom = 0f;
 

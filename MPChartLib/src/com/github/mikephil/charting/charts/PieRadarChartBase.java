@@ -96,7 +96,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     }
 
     @Override
-    protected void calculateOffsets() {
+    public void calculateOffsets() {
 
         float legendLeft = 0f, legendRight = 0f, legendBottom = 0f, legendTop = 0f;
 

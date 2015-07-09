@@ -183,6 +183,18 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                     }
                 }
 
+                if (mTouchMode == X_ZOOM ||
+                        mTouchMode == Y_ZOOM ||
+                        mTouchMode == PINCH_ZOOM ||
+                        mTouchMode == POST_ZOOM) {
+
+                    // Range might have changed, which means that Y-axis labels
+                    // could have changed in size, affecting Y-axis size.
+                    // So we need to recalculate offsets.
+                    mChart.calculateOffsets();
+                    mChart.postInvalidate();
+                }
+
                 mTouchMode = NONE;
                 mChart.enableScroll();
 
@@ -571,7 +583,14 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
 
         if (Math.abs(mDecelerationVelocity.x) >= 0.01 || Math.abs(mDecelerationVelocity.y) >= 0.01)
             Utils.postInvalidateOnAnimation(mChart); // This causes computeScroll to fire, recommended for this by Google
-        else
+        else {
+            // Range might have changed, which means that Y-axis labels
+            // could have changed in size, affecting Y-axis size.
+            // So we need to recalculate offsets.
+            mChart.calculateOffsets();
+            mChart.postInvalidate();
+
             stopDeceleration();
+        }
     }
 }

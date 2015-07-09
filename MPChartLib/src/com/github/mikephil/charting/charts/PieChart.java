@@ -117,7 +117,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     @Override
-    protected void calculateOffsets() {
+    public void calculateOffsets() {
         super.calculateOffsets();
 
         // prevent nullpointer when no data set

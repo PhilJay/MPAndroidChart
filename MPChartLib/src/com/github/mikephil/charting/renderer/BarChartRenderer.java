@@ -3,6 +3,7 @@ package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
@@ -150,20 +151,20 @@ public class BarChartRenderer extends DataRenderer {
      * Prepares a bar for being highlighted.
      * 
      * @param x the x-position
-     * @param y the y-position
+     * @param y1 the y1-position
+     * @param y2 the y2-position
      * @param barspaceHalf the space between bars
-     * @param from
      * @param trans
      */
-    protected void prepareBarHighlight(float x, float y, float barspaceHalf, float from,
+    protected void prepareBarHighlight(float x, float y1, float y2, float barspaceHalf,
             Transformer trans) {
 
         float barWidth = 0.5f;
 
         float left = x - barWidth + barspaceHalf;
         float right = x + barWidth - barspaceHalf;
-        float top = y >= from ? y : from;
-        float bottom = y <= from ? y : from;
+        float top = y1;
+        float bottom = y2;
 
         mBarRect.set(left, top, right, bottom);
 
@@ -359,13 +360,19 @@ public class BarChartRenderer extends DataRenderer {
                 // calculate the correct x-position
                 float x = index * setCount + dataSetIndex + groupspace / 2f
                         + groupspace * index;
-                float y = isStack ? e.getVals()[h.getStackIndex()]
-                        + e.getBelowSum(h.getStackIndex()) : e.getVal();
 
-                // this is where the bar starts
-                float from = isStack ? e.getBelowSum(h.getStackIndex()) : 0f;
+                final float y1;
+                final float y2;
 
-                prepareBarHighlight(x, y, barspaceHalf, from, trans);
+                if (isStack) {
+                    y1 = e.getPositiveSum();
+                    y2 = -e.getNegativeSum();
+                } else {
+                    y1 = e.getVal();
+                    y2 = 0.f;
+                }
+
+                prepareBarHighlight(x, y1, y2, barspaceHalf, trans);
 
                 c.drawRect(mBarRect, mHighlightPaint);
 
@@ -376,10 +383,19 @@ public class BarChartRenderer extends DataRenderer {
                     // distance between highlight arrow and bar
                     float offsetY = mAnimator.getPhaseY() * 0.07f;
 
+                    float[] values = new float[9];
+                    trans.getPixelToValueMatrix().getValues(values);
+                    final float xToYRel = Math.abs(values[Matrix.MSCALE_Y] / values[Matrix.MSCALE_X]);
+
+                    final float arrowWidth = set.getBarSpace() / 2.f;
+                    final float arrowHeight = arrowWidth * xToYRel;
+
+                    final float yArrow = y1 > -y2 ? y1 : y1;
+
                     Path arrow = new Path();
-                    arrow.moveTo(x + 0.5f, y + offsetY * 0.3f);
-                    arrow.lineTo(x + 0.2f, y + offsetY);
-                    arrow.lineTo(x + 0.8f, y + offsetY);
+                    arrow.moveTo(x + 0.4f, yArrow + offsetY);
+                    arrow.lineTo(x + 0.4f + arrowWidth, yArrow + offsetY - arrowHeight);
+                    arrow.lineTo(x + 0.4f + arrowWidth, yArrow + offsetY + arrowHeight);
 
                     trans.pathValueToPixel(arrow);
                     c.drawPath(arrow, mHighlightPaint);

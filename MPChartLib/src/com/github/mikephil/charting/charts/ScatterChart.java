@@ -47,7 +47,7 @@ public class ScatterChart extends BarLineChartBase<ScatterData> implements Scatt
     }
 
     // @Override
-    // protected void calculateOffsets() {
+    // public void calculateOffsets() {
     // super.calculateOffsets();
     //
     // float offset = mData.getGreatestShapeSize() / 2f;
