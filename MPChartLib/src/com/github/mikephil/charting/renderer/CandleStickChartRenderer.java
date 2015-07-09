@@ -79,28 +79,6 @@ public class CandleStickChartRenderer extends DataRenderer {
         int range = (maxx - minx) * 4;
         int to = (int)Math.ceil((maxx - minx) * phaseX + minx);
 
-        CandleShadowBuffer shadowBuffer = mShadowBuffers[dataSetIndex];
-        shadowBuffer.setPhases(phaseX, phaseY);
-        shadowBuffer.limitFrom(minx);
-        shadowBuffer.limitTo(maxx);
-        shadowBuffer.feed(entries);
-
-        trans.pointValuesToPixel(shadowBuffer.buffer);
-
-        mRenderPaint.setStyle(Paint.Style.STROKE);
-
-        // If not set, use default functionality for backward compatibility
-        if (dataSet.getShadowColor() == ColorTemplate.COLOR_NONE) {
-            mRenderPaint.setColor(dataSet.getColor());
-        } else {
-            mRenderPaint.setColor(dataSet.getShadowColor());
-        }
-
-        mRenderPaint.setStrokeWidth(dataSet.getShadowWidth());
-
-        // draw the shadow
-        c.drawLines(shadowBuffer.buffer, 0, range, mRenderPaint);
-
         CandleBodyBuffer bodyBuffer = mBodyBuffers[dataSetIndex];
         bodyBuffer.setBodySpace(dataSet.getBodySpace());
         bodyBuffer.setPhases(phaseX, phaseY);
@@ -110,6 +88,16 @@ public class CandleStickChartRenderer extends DataRenderer {
 
         trans.pointValuesToPixel(bodyBuffer.buffer);
 
+        CandleShadowBuffer shadowBuffer = mShadowBuffers[dataSetIndex];
+        shadowBuffer.setPhases(phaseX, phaseY);
+        shadowBuffer.limitFrom(minx);
+        shadowBuffer.limitTo(maxx);
+        shadowBuffer.feed(entries);
+
+        trans.pointValuesToPixel(shadowBuffer.buffer);
+
+        mRenderPaint.setStrokeWidth(dataSet.getShadowWidth());
+
         // draw the body
         for (int j = 0; j < range; j += 4) {
 
@@ -118,6 +106,44 @@ public class CandleStickChartRenderer extends DataRenderer {
 
             if (!fitsBounds(e.getXIndex(), mMinX, to))
                 continue;
+
+            if (dataSet.getShadowColorSameAsCandle()) {
+
+                if (e.getOpen() > e.getClose())
+                    mRenderPaint.setColor(
+                            dataSet.getDecreasingColor() == ColorTemplate.COLOR_NONE ?
+                                    dataSet.getColor(j) :
+                                    dataSet.getDecreasingColor()
+                    );
+
+                else if (e.getOpen() < e.getClose())
+                    mRenderPaint.setColor(
+                            dataSet.getIncreasingColor() == ColorTemplate.COLOR_NONE ?
+                                    dataSet.getColor(j) :
+                                    dataSet.getIncreasingColor()
+                    );
+
+                else
+                    mRenderPaint.setColor(
+                            dataSet.getShadowColor() == ColorTemplate.COLOR_NONE ?
+                                    dataSet.getColor(j) :
+                                    dataSet.getShadowColor()
+                    );
+
+            } else {
+                mRenderPaint.setColor(
+                        dataSet.getShadowColor() == ColorTemplate.COLOR_NONE ?
+                                dataSet.getColor(j) :
+                                dataSet.getShadowColor()
+                );
+            }
+
+            mRenderPaint.setStyle(Paint.Style.STROKE);
+
+            // draw the shadow
+            c.drawLine(shadowBuffer.buffer[j], shadowBuffer.buffer[j + 1],
+                    shadowBuffer.buffer[j + 2], shadowBuffer.buffer[j + 3],
+                    mRenderPaint);
 
             float leftBody = bodyBuffer.buffer[j];
             float open = bodyBuffer.buffer[j + 1];
@@ -150,8 +176,7 @@ public class CandleStickChartRenderer extends DataRenderer {
                 c.drawRect(leftBody, open, rightBody, close, mRenderPaint);
             } else { // equal values
                 
-                mRenderPaint.setColor(Color.BLACK);
-                mRenderPaint.setStyle(Paint.Style.STROKE);
+                mRenderPaint.setColor(dataSet.getShadowColor());
                 c.drawLine(leftBody, open, rightBody, close, mRenderPaint);
             }
         }
