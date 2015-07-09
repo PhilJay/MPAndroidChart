@@ -728,6 +728,9 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         T dataSet = mDataSets.get(dataSetIndex);
         Entry e = dataSet.getEntryForXIndex(xIndex);
 
+        if (e == null || e.getXIndex() != xIndex)
+            return false;
+
         return removeEntry(e, dataSetIndex);
     }
 
