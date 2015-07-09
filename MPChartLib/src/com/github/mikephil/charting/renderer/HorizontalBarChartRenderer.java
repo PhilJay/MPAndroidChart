@@ -266,13 +266,13 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
     }
 
     @Override
-    protected void prepareBarHighlight(float x, float y, float barspaceHalf, float from,
+    protected void prepareBarHighlight(float x, float y1, float y2, float barspaceHalf,
             Transformer trans) {
 
         float top = x - 0.5f + barspaceHalf;
         float bottom = x + 0.5f - barspaceHalf;
-        float left = y >= from ? y : from;
-        float right = y <= from ? y : from;
+        float left = y1;
+        float right = y2;
 
         mBarRect.set(left, top, right, bottom);
 
