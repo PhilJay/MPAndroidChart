@@ -636,10 +636,10 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     }
 
     /**
-     * Adds an Entry to the DataSet at the specified index. Entries are added to
-     * the end of the list.
+     * Adds an Entry to the DataSet at the specified index.
+     * Entries are added to the end of the list.
      * 
-     * @param entry
+     * @param e
      * @param dataSetIndex
      */
     public void addEntry(Entry e, int dataSetIndex) {
@@ -647,18 +647,26 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         if (mDataSets.size() > dataSetIndex && dataSetIndex >= 0) {
 
             float val = e.getVal();
-
-            mYValCount += 1;
-            mYValueSum += val;
-
-            if (mYMax < val)
-                mYMax = val;
-            if (mYMin > val)
-                mYMin = val;
-
             T set = mDataSets.get(dataSetIndex);
 
-            if (set != null) {
+            if (mYValCount == 0) {
+                mYMin = val;
+                mYMax = val;
+
+                if (set.getAxisDependency() == AxisDependency.LEFT) {
+
+                    mLeftAxisMax = e.getVal();
+                    mLeftAxisMin = e.getVal();
+                } else {
+                    mRightAxisMax = e.getVal();
+                    mRightAxisMin = e.getVal();
+                }
+            } else {
+
+                if (mYMax < val)
+                    mYMax = val;
+                if (mYMin > val)
+                    mYMin = val;
 
                 if (set.getAxisDependency() == AxisDependency.LEFT) {
 
@@ -672,12 +680,15 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
                     if (mRightAxisMin > e.getVal())
                         mRightAxisMin = e.getVal();
                 }
-
-                handleEmptyAxis(getFirstLeft(), getFirstRight());
-
-                // add the entry to the dataset
-                set.addEntry(e);
             }
+
+            mYValCount += 1;
+            mYValueSum += val;
+
+            handleEmptyAxis(getFirstLeft(), getFirstRight());
+
+            // add the entry to the dataset
+            set.addEntry(e);
         } else {
             Log.e("addEntry", "Cannot add Entry because dataSetIndex too high or too low.");
         }
