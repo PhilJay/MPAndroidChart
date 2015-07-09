@@ -382,7 +382,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     }
 
     @Override
-    protected void calculateOffsets() {
+    public void calculateOffsets() {
 
         if (!mCustomViewPortEnabled) {
 
@@ -598,6 +598,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     public void zoomIn() {
         Matrix save = mViewPortHandler.zoomIn(getWidth() / 2f, -(getHeight() / 2f));
         mViewPortHandler.refresh(save, this, true);
+
+        // Range might have changed, which means that Y-axis labels
+        // could have changed in size, affecting Y-axis size.
+        // So we need to recalculate offsets.
+        calculateOffsets();
+        postInvalidate();
     }
 
     /**
@@ -606,6 +612,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     public void zoomOut() {
         Matrix save = mViewPortHandler.zoomOut(getWidth() / 2f, -(getHeight() / 2f));
         mViewPortHandler.refresh(save, this, true);
+
+        // Range might have changed, which means that Y-axis labels
+        // could have changed in size, affecting Y-axis size.
+        // So we need to recalculate offsets.
+        calculateOffsets();
+        postInvalidate();
     }
 
     /**
@@ -620,6 +632,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     public void zoom(float scaleX, float scaleY, float x, float y) {
         Matrix save = mViewPortHandler.zoom(scaleX, scaleY, x, -y);
         mViewPortHandler.refresh(save, this, true);
+
+        // Range might have changed, which means that Y-axis labels
+        // could have changed in size, affecting Y-axis size.
+        // So we need to recalculate offsets.
+        calculateOffsets();
+        postInvalidate();
     }
 
     /**
@@ -629,6 +647,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     public void fitScreen() {
         Matrix save = mViewPortHandler.fitScreen();
         mViewPortHandler.refresh(save, this, true);
+
+        // Range might have changed, which means that Y-axis labels
+        // could have changed in size, affecting Y-axis size.
+        // So we need to recalculate offsets.
+        calculateOffsets();
+        postInvalidate();
     }
 
     /**
