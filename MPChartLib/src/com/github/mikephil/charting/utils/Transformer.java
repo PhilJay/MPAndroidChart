@@ -66,7 +66,7 @@ public class Transformer {
     /**
      * Prepares the matrix that contains all offsets.
      * 
-     * @param chart
+     * @param inverted
      */
     public void prepareMatrixOffset(boolean inverted) {
 
@@ -113,7 +113,7 @@ public class Transformer {
             }
         }
 
-        pointValuesToPixel(valuePoints);
+        getValueToPixelMatrix().mapPoints(valuePoints);
 
         return valuePoints;
     }
@@ -142,7 +142,7 @@ public class Transformer {
             }
         }
 
-        pointValuesToPixel(valuePoints);
+        getValueToPixelMatrix().mapPoints(valuePoints);
 
         return valuePoints;
     }
@@ -171,7 +171,7 @@ public class Transformer {
             }
         }
 
-        pointValuesToPixel(valuePoints);
+        getValueToPixelMatrix().mapPoints(valuePoints);
 
         return valuePoints;
     }
@@ -200,7 +200,7 @@ public class Transformer {
             }
         }
 
-        pointValuesToPixel(valuePoints);
+        getValueToPixelMatrix().mapPoints(valuePoints);
 
         return valuePoints;
     }
@@ -234,7 +234,7 @@ public class Transformer {
             valuePoints[j + 1] = y * phaseY;
         }
 
-        pointValuesToPixel(valuePoints);
+        getValueToPixelMatrix().mapPoints(valuePoints);
 
         return valuePoints;
     }
@@ -268,7 +268,7 @@ public class Transformer {
             valuePoints[j + 1] = x;
         }
 
-        pointValuesToPixel(valuePoints);
+        getValueToPixelMatrix().mapPoints(valuePoints);
 
         return valuePoints;
     }
@@ -368,8 +368,10 @@ public class Transformer {
      */
     public void rectValuesToPixel(List<RectF> rects) {
 
+        Matrix m = getValueToPixelMatrix();
+
         for (int i = 0; i < rects.size(); i++)
-            rectValueToPixel(rects.get(i));
+            m.mapRect(rects.get(i));
     }
 
     /**
@@ -442,6 +444,20 @@ public class Transformer {
 
     public Matrix getValueMatrix() {
         return mMatrixValueToPx;
+    }
+
+    private Matrix mMBuffer1 = new Matrix();
+    public Matrix getValueToPixelMatrix() {
+        mMBuffer1.set(mMatrixValueToPx);
+        mMBuffer1.postConcat(mViewPortHandler.mMatrixTouch);
+        mMBuffer1.postConcat(mMatrixOffset);
+        return mMBuffer1;
+    }
+
+    private Matrix mMBuffer2 = new Matrix();
+    public Matrix getPixelToValueMatrix() {
+        getValueToPixelMatrix().invert(mMBuffer2);
+        return mMBuffer2;
     }
 
     public Matrix getOffsetMatrix() {
