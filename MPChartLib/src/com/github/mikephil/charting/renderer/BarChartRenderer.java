@@ -3,6 +3,7 @@ package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
@@ -382,12 +383,19 @@ public class BarChartRenderer extends DataRenderer {
                     // distance between highlight arrow and bar
                     float offsetY = mAnimator.getPhaseY() * 0.07f;
 
+                    float[] values = new float[9];
+                    trans.getPixelToValueMatrix().getValues(values);
+                    final float xToYRel = Math.abs(values[Matrix.MSCALE_Y] / values[Matrix.MSCALE_X]);
+
+                    final float arrowWidth = set.getBarSpace() / 2.f;
+                    final float arrowHeight = arrowWidth * xToYRel;
+
                     final float yArrow = y1 > -y2 ? y1 : y1;
 
                     Path arrow = new Path();
-                    arrow.moveTo(x + 0.5f, yArrow + offsetY * 0.3f);
-                    arrow.lineTo(x + 0.2f, yArrow + offsetY);
-                    arrow.lineTo(x + 0.8f, yArrow + offsetY);
+                    arrow.moveTo(x + 0.4f, yArrow + offsetY);
+                    arrow.lineTo(x + 0.4f + arrowWidth, yArrow + offsetY - arrowHeight);
+                    arrow.lineTo(x + 0.4f + arrowWidth, yArrow + offsetY + arrowHeight);
 
                     trans.pathValueToPixel(arrow);
                     c.drawPath(arrow, mHighlightPaint);
