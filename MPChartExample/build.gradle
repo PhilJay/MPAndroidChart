@@ -7,7 +7,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 21
         versionCode 40
-        versionName '2.1.0'
+        versionName '2.1.1'
 
         sourceSets {
             main {

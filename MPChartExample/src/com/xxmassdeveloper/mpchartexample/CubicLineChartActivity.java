@@ -275,6 +275,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         set1.setHighLightColor(Color.rgb(244, 117, 117));
         set1.setColor(Color.rgb(104, 241, 175));
         set1.setFillColor(ColorTemplate.getHoloBlue());
+        set1.setDrawHorizontalHighlightIndicator(false);
         
         // create a data object with the datasets
         LineData data = new LineData(xVals, set1);

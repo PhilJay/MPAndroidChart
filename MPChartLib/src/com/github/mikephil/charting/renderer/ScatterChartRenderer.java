@@ -19,7 +19,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.List;
 
-public class ScatterChartRenderer extends DataRenderer {
+public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
     protected ScatterDataProvider mChart;
 
@@ -259,6 +259,7 @@ public class ScatterChartRenderer extends DataRenderer {
                 continue;
 
             mHighlightPaint.setColor(set.getHighLightColor());
+            mHighlightPaint.setStrokeWidth(set.getHighlightLineWidth());
 
             int xIndex = indices[i].getXIndex(); // get the
                                                  // x-position
@@ -280,8 +281,9 @@ public class ScatterChartRenderer extends DataRenderer {
             };
 
             mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);
-            // draw the highlight lines
-            c.drawLines(pts, mHighlightPaint);
+
+            // draw the lines
+            drawHighlightLines(c, pts, set.isHorizontalHighlightIndicatorEnabled(), set.isVerticalHighlightIndicatorEnabled());
         }
     }
 }

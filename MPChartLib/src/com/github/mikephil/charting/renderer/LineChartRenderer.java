@@ -20,7 +20,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.List;
 
-public class LineChartRenderer extends DataRenderer {
+public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
     protected LineDataProvider mChart;
 
@@ -539,6 +539,7 @@ public class LineChartRenderer extends DataRenderer {
                 continue;
 
             mHighlightPaint.setColor(set.getHighLightColor());
+            mHighlightPaint.setStrokeWidth(set.getHighlightLineWidth());
 
             int xIndex = indices[i].getXIndex(); // get the
                                                  // x-position
@@ -560,8 +561,9 @@ public class LineChartRenderer extends DataRenderer {
             };
 
             mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);
-            // draw the highlight lines
-            c.drawLines(pts, mHighlightPaint);
+
+            // draw the lines
+            drawHighlightLines(c, pts, set.isHorizontalHighlightIndicatorEnabled(), set.isVerticalHighlightIndicatorEnabled());
         }
     }
 }

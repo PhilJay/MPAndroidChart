@@ -21,7 +21,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.List;
 
-public class CandleStickChartRenderer extends DataRenderer {
+public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
     protected CandleDataProvider mChart;
 
@@ -294,6 +294,7 @@ public class CandleStickChartRenderer extends DataRenderer {
                 continue;
 
             mHighlightPaint.setColor(set.getHighLightColor());
+            mHighlightPaint.setStrokeWidth(set.getHighlightLineWidth());
 
             CandleEntry e = set.getEntryForXIndex(xIndex);
 
@@ -302,27 +303,21 @@ public class CandleStickChartRenderer extends DataRenderer {
 
             float low = e.getLow() * mAnimator.getPhaseY();
             float high = e.getHigh() * mAnimator.getPhaseY();
+            float y = (low + high) / 2f;
 
             float min = mChart.getYChartMin();
             float max = mChart.getYChartMax();
 
-            float[] vertPts = new float[] {
-                    xIndex - 0.5f, max, xIndex - 0.5f, min, xIndex + 0.5f, max, xIndex + 0.5f,
-                    min
+
+            float[] pts = new float[] {
+                    xIndex, mChart.getYChartMax(), xIndex, mChart.getYChartMin(), mChart.getXChartMin(), y,
+                    mChart.getXChartMax(), y
             };
 
-            float[] horPts = new float[] {
-                    mChart.getXChartMin(), low, mChart.getXChartMax(), low, mChart.getXChartMin(), high, mChart.getXChartMax(), high
-            };
+            mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);
 
-            mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(vertPts);
-            mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(horPts);
-
-            // draw the vertical highlight lines
-            c.drawLines(vertPts, mHighlightPaint);
-
-            // draw the horizontal highlight lines
-            c.drawLines(horPts, mHighlightPaint);
+            // draw the lines
+            drawHighlightLines(c, pts, set.isHorizontalHighlightIndicatorEnabled(), set.isVerticalHighlightIndicatorEnabled());
         }
     }
 
