@@ -35,7 +35,9 @@ Donations
 
 []()
 
-Follow me on **Twitter**: [**PhilippJahoda**](https://twitter.com/PhilippJahoda)
+Follow me on **Twitter**: [**@PhilippJahoda**](https://twitter.com/PhilippJahoda)
+
+Look me up on **StackOverflow**: [**Philipp Jahoda**](http://stackoverflow.com/users/1590502/philipp-jahoda)
 
 
 Demo
