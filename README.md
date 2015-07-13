@@ -53,7 +53,7 @@ Questions & Issues
 If you are having questions or problems, you should:
 
  - Make sure you are using the latest version of the library. Check the [**release-section**](https://github.com/PhilJay/MPAndroidChart/releases).
- - Study the [**Documentation-Wiki**](https://github.com/PhilJay/MPAndroidChart/wiki)
+ - Study the [**Documentation-Wiki**](https://github.com/PhilJay/MPAndroidChart/wiki) or the [javadocs](https://jitpack.io/com/github/PhilJay/MPAndroidChart/-SNAPSHOT/javadoc/)
  - Search or open questions on [**stackoverflow**](https://stackoverflow.com/search?q=mpandroidchart) with the `mpandroidchart` tag
  - Search [**known issues**](https://github.com/PhilJay/MPAndroidChart/issues) for your problem (open and closed)
  - Create new issues (please **search known issues before**, do not create duplicate issues)
