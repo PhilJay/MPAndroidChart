@@ -1,8 +1,18 @@
 apply plugin: 'com.android.application'
+apply plugin: 'android-command'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:gradle-android-command-plugin:1.5.0'
+    }
+}
 
 android {
     compileSdkVersion 21
-    buildToolsVersion '21.1.1'
+    buildToolsVersion '21.1.2'
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 21
