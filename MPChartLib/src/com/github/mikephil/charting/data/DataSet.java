@@ -109,13 +109,15 @@ public abstract class DataSet<T extends Entry> {
      * calc minimum and maximum y value
      */
     protected void calcMinMax(int start, int end) {
-        if (mYVals.size() == 0)
+        final int yValCount = mYVals.size();
+
+        if (yValCount == 0)
             return;
 
         int endValue;
 
-        if (end == 0 || end >= mYVals.size())
-            endValue = mYVals.size() - 1;
+        if (end == 0 || end >= yValCount)
+            endValue = yValCount - 1;
         else
             endValue = end;
 
