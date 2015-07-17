@@ -123,7 +123,7 @@ public abstract class DataSet<T extends Entry> {
         mLastEnd = endValue;
 
         mYMin = Float.MAX_VALUE;
-        mYMax = -Float.MIN_VALUE;
+        mYMax = -Float.MAX_VALUE;
 
         for (int i = start; i <= endValue; i++) {
 
