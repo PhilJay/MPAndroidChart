@@ -371,11 +371,25 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 .getAxisMinValue() : minRight - bottomSpaceRight;
 
         // consider starting at zero (0)
-        if (mAxisLeft.isStartAtZeroEnabled())
-            mAxisLeft.mAxisMinimum = 0f;
+        if (mAxisLeft.isStartAtZeroEnabled()) {
+            if (mAxisLeft.mAxisMinimum < 0f && mAxisLeft.mAxisMaximum < 0f) {
+                // If the values are all negative, let's stay in the negative zone
+                mAxisLeft.mAxisMaximum = 0f;
+            } else {
+                // We have positive values, stay in the positive zone
+                mAxisLeft.mAxisMinimum = 0f;
+            }
+        }
 
-        if (mAxisRight.isStartAtZeroEnabled())
-            mAxisRight.mAxisMinimum = 0f;
+        if (mAxisRight.isStartAtZeroEnabled()) {
+            if (mAxisRight.mAxisMinimum < 0.0 && mAxisRight.mAxisMaximum < 0.0) {
+                // If the values are all negative, let's stay in the negative zone
+                mAxisRight.mAxisMaximum = 0f;
+            } else {
+                // We have positive values, stay in the positive zone
+                mAxisRight.mAxisMinimum = 0f;
+            }
+        }
 
         mAxisLeft.mAxisRange = Math.abs(mAxisLeft.mAxisMaximum - mAxisLeft.mAxisMinimum);
         mAxisRight.mAxisRange = Math.abs(mAxisRight.mAxisMaximum - mAxisRight.mAxisMinimum);

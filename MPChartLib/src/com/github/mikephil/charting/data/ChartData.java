@@ -203,7 +203,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             mLastEnd = end;
 
             mYMin = Float.MAX_VALUE;
-            mYMax = -Float.MIN_VALUE;
+            mYMax = -Float.MAX_VALUE;
 
             for (int i = 0; i < mDataSets.size(); i++) {
 

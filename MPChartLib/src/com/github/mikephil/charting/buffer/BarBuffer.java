@@ -84,8 +84,9 @@ public class BarBuffer extends AbstractBuffer<BarEntry> {
 
             } else {
 
-                float allPos = e.getPositiveSum();
-                float allNeg = e.getNegativeSum();
+                float posY = 0f;
+                float negY = 0f;
+                float yStart = 0f;
 
                 // fill the stack
                 for (int k = 0; k < vals.length; k++) {
@@ -93,30 +94,29 @@ public class BarBuffer extends AbstractBuffer<BarEntry> {
                     float value = vals[k];
 
                     if(value >= 0f) {
-
-                        allPos -= value;
-                        y = value + allPos;
+                        y = posY;
+                        yStart = posY + value;
+                        posY = yStart;
                     } else {
-                        allNeg -= Math.abs(value);
-                        y = value + allNeg;
+                        y = negY;
+                        yStart = negY + value;
+                        negY = yStart;
                     }
 
                     float left = x - barWidth + barSpaceHalf;
                     float right = x + barWidth - barSpaceHalf;
                     float bottom, top;
                     if (mInverted) {
-                        bottom = y >= 0 ? y : 0;
-                        top = y <= 0 ? y : 0;
+                        bottom = y >= yStart ? y : yStart;
+                        top = y <= yStart ? y : yStart;
                     } else {
-                        top = y >= 0 ? y : 0;
-                        bottom = y <= 0 ? y : 0;
+                        top = y >= yStart ? y : yStart;
+                        bottom = y <= yStart ? y : yStart;
                     }
 
                     // multiply the height of the rect with the phase
-                    if (top > 0)
-                        top *= phaseY;
-                    else
-                        bottom *= phaseY;
+                    top *= phaseY;
+                    bottom *= phaseY;
 
                     addBar(left, top, right, bottom);
                 }
