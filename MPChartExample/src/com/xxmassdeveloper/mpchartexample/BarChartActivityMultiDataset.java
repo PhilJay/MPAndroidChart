@@ -223,7 +223,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
         dataSets.add(set1);
         dataSets.add(set2);
-       // dataSets.add(set3);
+        dataSets.add(set3);
 
         BarData data = new BarData(xVals, dataSets);
 //        data.setValueFormatter(new LargeValueFormatter());
