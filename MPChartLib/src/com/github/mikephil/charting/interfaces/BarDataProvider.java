@@ -9,4 +9,5 @@ public interface BarDataProvider extends BarLineScatterCandleDataProvider {
     public boolean isDrawValueAboveBarEnabled();
     public boolean isDrawHighlightArrowEnabled();
     public boolean isDrawValuesForWholeStackEnabled();
+    public boolean isDrawSuppressZeroSumsEnabled();
 }
