@@ -3,9 +3,6 @@ package com.github.mikephil.charting.renderer;
 import android.graphics.Canvas;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.LineScatterCandleRadarDataSet;
-import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**

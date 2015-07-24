@@ -13,8 +13,12 @@ public class BarEntry extends Entry {
     /** the values the stacked barchart holds */
     private float[] mVals;
 
+    /** the sum of all negative values this entry (if stacked) contains */
+    private float mNegativeSum;
+
     /**
-     * Constructor for stacked bar entries.
+     * Constructor for stacked bar entries. Don't forget to order the
+     * stacked-values in an ascending order e.g. (-2,-1,0,1,2).
      * 
      * @param vals - the stack values
      * @param xIndex
@@ -23,6 +27,7 @@ public class BarEntry extends Entry {
         super(calcSum(vals), xIndex);
 
         this.mVals = vals;
+        calcNegativeSum();
     }
 
     /**
@@ -36,7 +41,8 @@ public class BarEntry extends Entry {
     }
 
     /**
-     * Constructor for stacked bar entries.
+     * Constructor for stacked bar entries. Don't forget to order the
+     * stacked-values in an ascending order e.g. (-2,-1,0,1,2).
      * 
      * @param vals - the stack values
      * @param xIndex
@@ -46,6 +52,7 @@ public class BarEntry extends Entry {
         super(calcSum(vals), xIndex, label);
 
         this.mVals = vals;
+        calcNegativeSum();
     }
 
     /**
@@ -65,7 +72,7 @@ public class BarEntry extends Entry {
     public BarEntry copy() {
 
         BarEntry copied = new BarEntry(getVal(), getXIndex(), getData());
-        copied.mVals = mVals;
+        copied.setVals(mVals);
         return copied;
     }
 
@@ -87,32 +94,7 @@ public class BarEntry extends Entry {
     public void setVals(float[] vals) {
         setVal(calcSum(vals));
         mVals = vals;
-    }
-
-    /**
-     * Returns the index of the closest value inside the values array (for stacked barchart)
-     * to the value given as a parameter. The closest value must be higher
-     * (above) the provided value.
-     * 
-     * @param val
-     * @return
-     */
-    public int getClosestIndexAbove(float val) {
-
-        if (mVals == null)
-            return 0;
-
-        Log.i("TOUCHVALUE", val + "");
-
-        int index = mVals.length - 1;
-        float remainder = 0f;
-
-        while (index > 0 && val > mVals[index] + remainder) {
-            remainder += mVals[index];
-            index--;
-        }
-
-        return index;
+        calcNegativeSum();
     }
     
     public float getBelowSum(int stackIndex) {
@@ -132,21 +114,9 @@ public class BarEntry extends Entry {
     }
 
     /**
-     * Calculates the sum across all values.
-     * 
-     * @param vals
+     * Reuturns the sum of all positive values this entry (if stacked) contains.
      * @return
      */
-    private static float calcSum(float[] vals) {
-
-        float sum = 0f;
-
-        for (float f : vals)
-            sum += f;
-
-        return sum;
-    }
-
     public float getPositiveSum() {
 
         if(mVals == null)
@@ -162,10 +132,19 @@ public class BarEntry extends Entry {
         return sum;
     }
 
+    /**
+     * Returns the sum of all negative values this entry (if stacked) contains. (this is a positive number)
+     * @return
+     */
     public float getNegativeSum() {
+        return mNegativeSum;
+    }
 
-        if(mVals == null)
-            return 0f;
+    private void calcNegativeSum() {
+        if(mVals == null) {
+            mNegativeSum = 0;
+            return;
+        }
 
         float sum = 0f;
 
@@ -173,6 +152,26 @@ public class BarEntry extends Entry {
             if(f <= 0f)
                 sum += Math.abs(f);
         }
+
+        mNegativeSum = sum;
+    }
+
+
+    /**
+     * Calculates the sum across all values of the given stack.
+     *
+     * @param vals
+     * @return
+     */
+    private static float calcSum(float[] vals) {
+
+        if(vals == null)
+            return 0f;
+
+        float sum = 0f;
+
+        for (float f : vals)
+            sum += f;
 
         return sum;
     }

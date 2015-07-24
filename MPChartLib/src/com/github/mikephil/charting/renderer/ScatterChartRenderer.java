@@ -12,7 +12,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.interfaces.ScatterDataProvider;
-import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -276,7 +276,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
             // y-position
 
             float[] pts = new float[] {
-                    xIndex, mChart.getYChartMax(), xIndex, mChart.getYChartMin(), 0, y,
+                    xIndex, mChart.getYChartMax(), xIndex, mChart.getYChartMin(), mChart.getXChartMin(), y,
                     mChart.getXChartMax(), y
             };
 

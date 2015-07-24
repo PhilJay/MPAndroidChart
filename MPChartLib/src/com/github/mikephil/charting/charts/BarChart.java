@@ -12,10 +12,11 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.highlight.BarHighlighter;
 import com.github.mikephil.charting.interfaces.BarDataProvider;
 import com.github.mikephil.charting.renderer.BarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererBarChart;
-import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.highlight.Highlight;
 
 /**
  * Chart that draws bars.
@@ -65,6 +66,8 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         mXAxisRenderer = new XAxisRendererBarChart(mViewPortHandler, mXAxis, mLeftAxisTransformer,
                 this);
 
+        mHighlighter = new BarHighlighter(this);
+
         mXChartMin = -0.5f;
     }
 
@@ -107,19 +110,8 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         if (mDataNotSet || mData == null) {
             Log.e(LOG_TAG, "Can't select by touch. No data set.");
             return null;
-        }
-
-        // create an array of the touch-point
-        float[] pts = new float[2];
-        pts[0] = x;
-        pts[1] = y;
-
-        mLeftAxisTransformer.pixelsToValue(pts);
-
-        if (pts[0] < mXChartMin || pts[0] > mXChartMax)
-            return null;
-
-        return getHighlight(pts[0], pts[1]);
+        } else
+            return mHighlighter.getHighlight(x, y);
     }
 
     /**
@@ -131,85 +123,65 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
      */
     protected Highlight getHighlight(double xPosition, double yPosition) {
 
-        int setCount = mData.getDataSetCount();
-        int valCount = mData.getXValCount();
-        int dataSetIndex = 0;
-        int xIndex = 0;
-
-        // only one dataset exists
-        if (!mData.isGrouped()) {
-
-            xIndex = (int) Math.round(xPosition);
-
-            // check bounds
-            if (xIndex < 0) {
-                xIndex = 0;
-            } else if (xIndex >= valCount) {
-                xIndex = valCount - 1;
-            }
-
-            // if this bardata is grouped into more datasets
-        } else {
-
-            // calculate how often the group-space appears
-            int steps = (int) ((float) xPosition / ((float) setCount + mData.getGroupSpace()));
-
-            float groupSpaceSum = mData.getGroupSpace() * (float) steps;
-
-            float baseNoSpace = (float) xPosition - groupSpaceSum;
-
-            if (mLogEnabled)
-                Log.i(LOG_TAG, "base: " + xPosition + ", steps: " + steps + ", groupSpaceSum: "
-                        + groupSpaceSum
-                        + ", baseNoSpace: " + baseNoSpace);
-
-            dataSetIndex = (int) baseNoSpace % setCount;
-            xIndex = (int) baseNoSpace / setCount;
-
-            if (mLogEnabled)
-                Log.i(LOG_TAG, "xIndex: " + xIndex + ", dataSet: " + dataSetIndex);
-
-            // check bounds
-            if (xIndex < 0) {
-                xIndex = 0;
-                dataSetIndex = 0;
-            } else if (xIndex >= valCount) {
-                xIndex = valCount - 1;
-                dataSetIndex = setCount - 1;
-            }
-
-            // check bounds
-            if (dataSetIndex < 0)
-                dataSetIndex = 0;
-            else if (dataSetIndex >= setCount)
-                dataSetIndex = setCount - 1;
-        }
-        
-        if (!mData.getDataSetByIndex(dataSetIndex).isStacked())
-            return new Highlight(xIndex, dataSetIndex);
-        else
-            return getStackedHighlight(xIndex, dataSetIndex, yPosition);
-    }
-
-    /**
-     * This method creates the Highlight object that also indicates which value
-     * of a stacked BarEntry has been selected.
-     * 
-     * @param xIndex
-     * @param dataSet
-     * @param yValue
-     * @return
-     */
-    protected Highlight getStackedHighlight(int xIndex, int dataSet, double yValue) {
-
-        BarEntry entry = mData.getDataSetByIndex(dataSet).getEntryForXIndex(xIndex);
-
-        if (entry != null) {
-            int stackIndex = entry.getClosestIndexAbove((float) yValue);
-            Highlight h = new Highlight(xIndex, dataSet, stackIndex);
-            return h;
-        } else
-            return null;
+//        int setCount = mData.getDataSetCount();
+//        int valCount = mData.getXValCount();
+//        int dataSetIndex = 0;
+//        int xIndex = 0;
+//
+//        // only one dataset exists
+//        if (!mData.isGrouped()) {
+//
+//            xIndex = (int) Math.round(xPosition);
+//
+//            // check bounds
+//            if (xIndex < 0) {
+//                xIndex = 0;
+//            } else if (xIndex >= valCount) {
+//                xIndex = valCount - 1;
+//            }
+//
+//            // if this bardata is grouped into more datasets
+//        } else {
+//
+//            // calculate how often the group-space appears
+//            int steps = (int) ((float) xPosition / ((float) setCount + mData.getGroupSpace()));
+//
+//            float groupSpaceSum = mData.getGroupSpace() * (float) steps;
+//
+//            float baseNoSpace = (float) xPosition - groupSpaceSum;
+//
+//            if (mLogEnabled)
+//                Log.i(LOG_TAG, "base: " + xPosition + ", steps: " + steps + ", groupSpaceSum: "
+//                        + groupSpaceSum
+//                        + ", baseNoSpace: " + baseNoSpace);
+//
+//            dataSetIndex = (int) baseNoSpace % setCount;
+//            xIndex = (int) baseNoSpace / setCount;
+//
+//            if (mLogEnabled)
+//                Log.i(LOG_TAG, "xIndex: " + xIndex + ", dataSet: " + dataSetIndex);
+//
+//            // check bounds
+//            if (xIndex < 0) {
+//                xIndex = 0;
+//                dataSetIndex = 0;
+//            } else if (xIndex >= valCount) {
+//                xIndex = valCount - 1;
+//                dataSetIndex = setCount - 1;
+//            }
+//
+//            // check bounds
+//            if (dataSetIndex < 0)
+//                dataSetIndex = 0;
+//            else if (dataSetIndex >= setCount)
+//                dataSetIndex = setCount - 1;
+//        }
+//
+//        if (!mData.getDataSetByIndex(dataSetIndex).isStacked())
+//            return new Highlight(xIndex, dataSetIndex);
+//        else
+//            return getStackedHighlight(xIndex, dataSetIndex, yPosition);
+        return null;
     }
 
     /**

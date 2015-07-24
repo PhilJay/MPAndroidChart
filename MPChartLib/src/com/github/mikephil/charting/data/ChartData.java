@@ -5,7 +5,7 @@ import android.graphics.Typeface;
 import android.util.Log;
 
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
-import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.ValueFormatter;
 
 import java.util.ArrayList;

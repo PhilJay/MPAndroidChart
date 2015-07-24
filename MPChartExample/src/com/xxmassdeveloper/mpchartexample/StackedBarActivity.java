@@ -26,7 +26,7 @@ import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.xxmassdeveloper.mpchartexample.custom.MyValueFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -213,7 +213,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
             float val3 = (float) (Math.random() * mult) + mult / 3;
 
             yVals1.add(new BarEntry(new float[] {
-                    val1, val2, val3
+                    -val1, val2, val3
             }, i));
         }
 

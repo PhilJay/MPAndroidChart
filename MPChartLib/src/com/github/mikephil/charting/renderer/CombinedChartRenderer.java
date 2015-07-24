@@ -6,8 +6,8 @@ import android.graphics.Canvas;
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.charts.CombinedChart.DrawOrder;
-import com.github.mikephil.charting.interfaces.BarLineScatterCandleDataProvider;
-import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.interfaces.BarLineScatterCandleBubbleDataProvider;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.ArrayList;
@@ -107,7 +107,7 @@ public class CombinedChartRenderer extends DataRenderer {
     }
 
     @Override
-    public void calcXBounds(BarLineScatterCandleDataProvider chart, int xAxisModulus) {
+    public void calcXBounds(BarLineScatterCandleBubbleDataProvider chart, int xAxisModulus) {
         for (DataRenderer renderer : mRenderers)
             renderer.calcXBounds(chart, xAxisModulus);
     }

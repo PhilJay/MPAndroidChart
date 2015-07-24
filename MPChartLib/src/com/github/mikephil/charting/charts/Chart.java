@@ -33,6 +33,7 @@ import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.highlight.ChartHighlighter;
 import com.github.mikephil.charting.interfaces.ChartInterface;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
@@ -40,7 +41,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.renderer.DataRenderer;
 import com.github.mikephil.charting.renderer.LegendRenderer;
 import com.github.mikephil.charting.utils.DefaultValueFormatter;
-import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -143,6 +144,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /** object responsible for rendering the data */
     protected DataRenderer mRenderer;
+
+    protected ChartHighlighter mHighlighter;
 
     /** object that manages the bounds and drawing constraints of the chart */
     protected ViewPortHandler mViewPortHandler;

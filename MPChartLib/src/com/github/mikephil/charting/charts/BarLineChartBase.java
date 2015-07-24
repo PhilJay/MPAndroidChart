@@ -26,14 +26,15 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.interfaces.BarLineScatterCandleDataProvider;
+import com.github.mikephil.charting.highlight.ChartHighlighter;
+import com.github.mikephil.charting.interfaces.BarLineScatterCandleBubbleDataProvider;
 import com.github.mikephil.charting.jobs.MoveViewJob;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.listener.OnDrawListener;
 import com.github.mikephil.charting.renderer.XAxisRenderer;
 import com.github.mikephil.charting.renderer.YAxisRenderer;
 import com.github.mikephil.charting.utils.FillFormatter;
-import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.SelectionDetail;
 import com.github.mikephil.charting.utils.Transformer;
@@ -49,7 +50,7 @@ import java.util.List;
  */
 @SuppressLint("RtlHardcoded")
 public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? extends BarLineScatterCandleDataSet<? extends Entry>>>
-        extends Chart<T> implements BarLineScatterCandleDataProvider {
+        extends Chart<T> implements BarLineScatterCandleBubbleDataProvider {
 
     /** the maximum number of entried to which values will be drawn */
     protected int mMaxVisibleCount = 100;
@@ -146,6 +147,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mAxisRendererRight = new YAxisRenderer(mViewPortHandler, mAxisRight, mRightAxisTransformer);
 
         mXAxisRenderer = new XAxisRenderer(mViewPortHandler, mXAxis, mLeftAxisTransformer);
+
+        mHighlighter = new ChartHighlighter(this);
 
         mChartTouchListener = new BarLineChartTouchListener(this, mViewPortHandler.getMatrixTouch());
 
@@ -1077,54 +1080,55 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         if (mDataNotSet || mData == null) {
             Log.e(LOG_TAG, "Can't select by touch. No data set.");
             return null;
-        }
+        } else
+            return mHighlighter.getHighlight(x, y);
 
-        // create an array of the touch-point
-        float[] pts = new float[2];
-        pts[0] = x;
-
-        // take any transformer to determine the x-axis value
-        mLeftAxisTransformer.pixelsToValue(pts);
-
-        double xTouchVal = pts[0];
-        double base = Math.floor(xTouchVal);
-
-        double touchOffset = mDeltaX * 0.025;
-
-        // touch out of chart
-        if (xTouchVal < -touchOffset || xTouchVal > mDeltaX + touchOffset)
-            return null;
-
-        if (base < 0)
-            base = 0;
-        if (base >= mDeltaX)
-            base = mDeltaX - 1;
-
-        int xIndex = (int) base;
-
-        // check if we are more than half of a x-value or not
-        if (xTouchVal - base > 0.5) {
-            xIndex = (int) base + 1;
-        }
-
-        List<SelectionDetail> valsAtIndex = getSelectionDetailsAtIndex(xIndex);
-
-        float leftdist = Utils.getMinimumDistance(valsAtIndex, y, AxisDependency.LEFT);
-        float rightdist = Utils.getMinimumDistance(valsAtIndex, y, AxisDependency.RIGHT);
-
-        if (mData.getFirstRight() == null)
-            rightdist = Float.MAX_VALUE;
-        if (mData.getFirstLeft() == null)
-            leftdist = Float.MAX_VALUE;
-
-        AxisDependency axis = leftdist < rightdist ? AxisDependency.LEFT : AxisDependency.RIGHT;
-
-        int dataSetIndex = Utils.getClosestDataSetIndex(valsAtIndex, y, axis);
-
-        if (dataSetIndex == -1)
-            return null;
-
-        return new Highlight(xIndex, dataSetIndex);
+//        // create an array of the touch-point
+//        float[] pts = new float[2];
+//        pts[0] = x;
+//
+//        // take any transformer to determine the x-axis value
+//        mLeftAxisTransformer.pixelsToValue(pts);
+//
+//        double xTouchVal = pts[0];
+//        double base = Math.floor(xTouchVal);
+//
+//        double touchOffset = mDeltaX * 0.025;
+//
+//        // touch out of chart
+//        if (xTouchVal < -touchOffset || xTouchVal > mDeltaX + touchOffset)
+//            return null;
+//
+//        if (base < 0)
+//            base = 0;
+//        if (base >= mDeltaX)
+//            base = mDeltaX - 1;
+//
+//        int xIndex = (int) base;
+//
+//        // check if we are more than half of a x-value or not
+//        if (xTouchVal - base > 0.5) {
+//            xIndex = (int) base + 1;
+//        }
+//
+//        List<SelectionDetail> valsAtIndex = getSelectionDetailsAtIndex(xIndex);
+//
+//        float leftdist = Utils.getMinimumDistance(valsAtIndex, y, AxisDependency.LEFT);
+//        float rightdist = Utils.getMinimumDistance(valsAtIndex, y, AxisDependency.RIGHT);
+//
+//        if (mData.getFirstRight() == null)
+//            rightdist = Float.MAX_VALUE;
+//        if (mData.getFirstLeft() == null)
+//            leftdist = Float.MAX_VALUE;
+//
+//        AxisDependency axis = leftdist < rightdist ? AxisDependency.LEFT : AxisDependency.RIGHT;
+//
+//        int dataSetIndex = Utils.getClosestDataSetIndex(valsAtIndex, y, axis);
+//
+//        if (dataSetIndex == -1)
+//            return null;
+//
+//        return new Highlight(xIndex, dataSetIndex);
     }
 
     /**

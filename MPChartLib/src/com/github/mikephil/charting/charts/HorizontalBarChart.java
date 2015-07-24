@@ -14,10 +14,11 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.highlight.HorizontalBarHighlighter;
 import com.github.mikephil.charting.renderer.HorizontalBarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart;
 import com.github.mikephil.charting.renderer.YAxisRendererHorizontalBarChart;
-import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.TransformerHorizontalBarChart;
 import com.github.mikephil.charting.utils.Utils;
 
@@ -51,6 +52,8 @@ public class HorizontalBarChart extends BarChart {
         mRightAxisTransformer = new TransformerHorizontalBarChart(mViewPortHandler);
 
         mRenderer = new HorizontalBarChartRenderer(this, mAnimator, mViewPortHandler);
+        mHighlighter = new HorizontalBarHighlighter(this);
+
         mAxisRendererLeft = new YAxisRendererHorizontalBarChart(mViewPortHandler, mAxisLeft,
                 mLeftAxisTransformer);
         mAxisRendererRight = new YAxisRendererHorizontalBarChart(mViewPortHandler, mAxisRight,
@@ -214,19 +217,20 @@ public class HorizontalBarChart extends BarChart {
         if (mDataNotSet || mData == null) {
             Log.e(LOG_TAG, "Can't select by touch. No data set.");
             return null;
-        }
+        } else
+            return mHighlighter.getHighlight(y, x); // switch x and y
 
-        // create an array of the touch-point
-        float[] pts = new float[2];
-        pts[0] = x;
-        pts[1] = y;
-
-        mLeftAxisTransformer.pixelsToValue(pts);
-
-        if (pts[1] < mXChartMin || pts[1] > mXChartMax)
-            return null;
-
-        return getHighlight(pts[1], pts[0]);
+//        // create an array of the touch-point
+//        float[] pts = new float[2];
+//        pts[0] = x;
+//        pts[1] = y;
+//
+//        mLeftAxisTransformer.pixelsToValue(pts);
+//
+//        if (pts[1] < mXChartMin || pts[1] > mXChartMax)
+//            return null;
+//
+//        return getHighlight(pts[1], pts[0]);
     }
     
     /**

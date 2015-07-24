@@ -1,11 +1,10 @@
 package com.github.mikephil.charting.listener;
 
 import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
 
 import com.github.mikephil.charting.charts.Chart;
-import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.highlight.Highlight;
 
 /**
  * Created by philipp on 12/06/15.

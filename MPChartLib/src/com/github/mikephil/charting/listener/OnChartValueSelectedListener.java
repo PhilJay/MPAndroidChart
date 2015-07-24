@@ -2,7 +2,7 @@
 package com.github.mikephil.charting.listener;
 
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.highlight.Highlight;
 
 /**
  * Listener for callbacks when selecting values inside the chart by

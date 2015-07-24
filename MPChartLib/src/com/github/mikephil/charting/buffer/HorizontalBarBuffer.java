@@ -55,7 +55,7 @@ public class HorizontalBarBuffer extends BarBuffer {
             } else {
 
                 float posY = 0f;
-                float negY = 0f;
+                float negY = -e.getNegativeSum();
                 float yStart = 0f;
 
                 // fill the stack
@@ -69,8 +69,8 @@ public class HorizontalBarBuffer extends BarBuffer {
                         posY = yStart;
                     } else {
                         y = negY;
-                        yStart = negY + value;
-                        negY = yStart;
+                        yStart = negY + Math.abs(value);
+                        negY += Math.abs(value);
                     }
 
                     float bottom = x - barWidth + barSpaceHalf;

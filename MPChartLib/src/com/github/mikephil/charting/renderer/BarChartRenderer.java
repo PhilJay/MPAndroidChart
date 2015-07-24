@@ -14,7 +14,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.BarDataProvider;
-import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
@@ -190,6 +190,9 @@ public class BarChartRenderer extends DataRenderer {
                 if (!dataSet.isDrawValuesEnabled())
                     continue;
 
+                // apply the text-styling defined by the DataSet
+                applyValueTextStyle(dataSet);
+
                 boolean isInverted = mChart.isInverted(dataSet.getAxisDependency());
 
                 // calculate the correct offset depending on the draw position of
@@ -198,14 +201,10 @@ public class BarChartRenderer extends DataRenderer {
                 posOffset = (drawValueAboveBar ? -valueOffsetPlus : valueTextHeight + valueOffsetPlus);
                 negOffset = (drawValueAboveBar ? valueTextHeight + valueOffsetPlus : -valueOffsetPlus);
 
-                if (isInverted)
-                {
+                if (isInverted) {
                     posOffset = -posOffset - valueTextHeight;
                     negOffset = -negOffset - valueTextHeight;
                 }
-
-                // apply the text-styling defined by the DataSet
-                applyValueTextStyle(dataSet);
 
                 ValueFormatter formatter = dataSet.getValueFormatter();
 
