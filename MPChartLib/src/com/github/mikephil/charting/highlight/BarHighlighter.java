@@ -37,7 +37,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
                 // take any transformer to determine the x-axis value
                 mChart.getTransformer(set.getAxisDependency()).pixelsToValue(pts);
 
-                return getStackedHighlight(set, h.getXIndex(), h.getDataSetIndex(), pts[1]);
+                return getStackedHighlight(h, set, h.getXIndex(), h.getDataSetIndex(), pts[1]);
             } else
                 return h;
         }
@@ -91,15 +91,19 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
      * This method creates the Highlight object that also indicates which value
      * of a stacked BarEntry has been selected.
      *
+     * @param old the old highlight object before looking for stacked values
      * @param set
      * @param xIndex
      * @param dataSetIndex
      * @param yValue
      * @return
      */
-    protected Highlight getStackedHighlight(BarDataSet set, int xIndex, int dataSetIndex, double yValue) {
+    protected Highlight getStackedHighlight(Highlight old, BarDataSet set, int xIndex, int dataSetIndex, double yValue) {
 
         BarEntry entry = set.getEntryForXIndex(xIndex);
+
+        if(entry.getVals() == null)
+            return old;
 
         if (entry != null) {
 
@@ -121,6 +125,9 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
      * @return
      */
     protected int getClosestStackIndex(Range[] ranges, float value) {
+
+        if(ranges == null)
+            return 0;
 
         int stackIndex = 0;
 

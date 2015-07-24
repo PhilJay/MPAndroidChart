@@ -14,6 +14,7 @@ import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.renderer.PieChartRenderer;
 import com.github.mikephil.charting.utils.Utils;
 
@@ -144,7 +145,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
     /** PieChart does not support MarkerView */
     @Override
-    protected float[] getMarkerPosition(Entry e, int dataSetIndex) {
+    protected float[] getMarkerPosition(Entry e, Highlight highlight) {
         return new float[0];
     }
 

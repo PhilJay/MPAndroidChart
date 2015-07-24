@@ -19,6 +19,7 @@ import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.BarLineScatterCandleData;
 import com.github.mikephil.charting.data.BarLineScatterCandleDataSet;
 import com.github.mikephil.charting.data.DataSet;
@@ -522,9 +523,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     }
 
     @Override
-    protected float[] getMarkerPosition(Entry e, int dataSetIndex) {
+    protected float[] getMarkerPosition(Entry e, Highlight highlight) {
 
+        int dataSetIndex = highlight.getDataSetIndex();
         float xPos = e.getXIndex();
+        float yPos = e.getVal();
 
         if (this instanceof BarChart) {
 
@@ -537,11 +540,16 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                     / 2f;
 
             xPos += x;
+
+            BarEntry entry = (BarEntry) e;
+            if(entry.getVals() != null) {
+                yPos = highlight.getRange().to;
+            }
         }
 
         // position of the marker depends on selected value index and value
         float[] pts = new float[] {
-                xPos, e.getVal() * mAnimator.getPhaseY()
+                xPos, yPos * mAnimator.getPhaseY()
         };
 
         getTransformer(mData.getDataSetByIndex(dataSetIndex).getAxisDependency())

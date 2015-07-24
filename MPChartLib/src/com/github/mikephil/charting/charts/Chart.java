@@ -587,8 +587,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
-            int xIndex = mIndicesToHightlight[i].getXIndex();
-            int dataSetIndex = mIndicesToHightlight[i].getDataSetIndex();
+            Highlight highlight = mIndicesToHightlight[i];
+            int xIndex = highlight.getXIndex();
+            int dataSetIndex = highlight.getDataSetIndex();
 
             if (xIndex <= mDeltaX && xIndex <= mDeltaX * mAnimator.getPhaseX()) {
 
@@ -598,14 +599,14 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 if (e == null || e.getXIndex() != mIndicesToHightlight[i].getXIndex())
                     continue;
 
-                float[] pos = getMarkerPosition(e, dataSetIndex);
+                float[] pos = getMarkerPosition(e, highlight);
 
                 // check bounds
                 if (!mViewPortHandler.isInBounds(pos[0], pos[1]))
                     continue;
 
                 // callbacks to update the content
-                mMarkerView.refreshContent(e, dataSetIndex);
+                mMarkerView.refreshContent(e, highlight);
 
                 // mMarkerView.measure(MeasureSpec.makeMeasureSpec(0,
                 // MeasureSpec.UNSPECIFIED),
@@ -633,11 +634,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * Returns the actual position in pixels of the MarkerView for the given
      * Entry in the given DataSet.
      *
-     * @param xIndex
-     * @param dataSetIndex
+     * @param e
+     * @param highlight
      * @return
      */
-    protected abstract float[] getMarkerPosition(Entry e, int dataSetIndex);
+    protected abstract float[] getMarkerPosition(Entry e, Highlight highlight);
 
     /**
      * ################ ################ ################ ################

@@ -8,18 +8,19 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.highlight.Highlight;
 
 /**
  * View that can be displayed when selecting values in the chart. Extend this
  * class to provide custom layouts for your markers.
- * 
+ *
  * @author Philipp Jahoda
  */
 public abstract class MarkerView extends RelativeLayout {
 
     /**
      * Constructor. Sets up the MarkerView with a custom layout resource.
-     * 
+     *
      * @param context
      * @param layoutResource the layout resource to use for the MarkerView
      */
@@ -30,7 +31,7 @@ public abstract class MarkerView extends RelativeLayout {
 
     /**
      * Sets the layout resource for a custom MarkerView.
-     * 
+     *
      * @param layoutResource
      */
     private void setupLayoutResource(int layoutResource) {
@@ -49,7 +50,7 @@ public abstract class MarkerView extends RelativeLayout {
     /**
      * Draws the MarkerView on the given position on the screen with the given
      * Canvas object.
-     * 
+     *
      * @param canvas
      * @param posx
      * @param posy
@@ -69,19 +70,19 @@ public abstract class MarkerView extends RelativeLayout {
     /**
      * This method enables a specified custom MarkerView to update it's content
      * everytime the MarkerView is redrawn.
-     * 
-     * @param e The Entry the MarkerView belongs to. This can also be any
-     *            subclass of Entry, like BarEntry or CandleEntry, simply cast
-     *            it at runtime.
-     * @param dataSetIndex the index of the DataSet the selected value is in
+     *
+     * @param e         The Entry the MarkerView belongs to. This can also be any
+     *                  subclass of Entry, like BarEntry or CandleEntry, simply cast
+     *                  it at runtime.
+     * @param highlight the highlight object contains information about the highlighted value such as it's dataset-index, the selected range or stack-index (only stacked bar entries).
      */
-    public abstract void refreshContent(Entry e, int dataSetIndex);
+    public abstract void refreshContent(Entry e, Highlight highlight);
 
     /**
      * Use this to return the desired offset you wish the MarkerView to have on
      * the x-axis. By returning -(getWidth() / 2) you will center the MarkerView
      * horizontally.
-     * 
+     *
      * @return
      */
     public abstract int getXOffset();
@@ -90,7 +91,7 @@ public abstract class MarkerView extends RelativeLayout {
      * Use this to return the desired position offset you wish the MarkerView to
      * have on the y-axis. By returning -getHeight() you will cause the
      * MarkerView to be above the selected value.
-     * 
+     *
      * @return
      */
     public abstract int getYOffset();

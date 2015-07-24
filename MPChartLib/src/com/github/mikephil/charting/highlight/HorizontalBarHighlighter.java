@@ -34,7 +34,7 @@ public class HorizontalBarHighlighter extends BarHighlighter {
                 // take any transformer to determine the x-axis value
                 mChart.getTransformer(set.getAxisDependency()).pixelsToValue(pts);
 
-                return getStackedHighlight(set, h.getXIndex(), h.getDataSetIndex(), pts[0]);
+                return getStackedHighlight(h, set, h.getXIndex(), h.getDataSetIndex(), pts[0]);
             } else
                 return h;
         }

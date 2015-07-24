@@ -5,6 +5,7 @@ import android.content.Context;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.components.MarkerView;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
@@ -16,11 +17,11 @@ import com.xxmassdeveloper.mpchartexample.R;
  * 
  * @author Philipp Jahoda
  */
-public class MyMarkerView extends MarkerView {
+public class StackedBarsMarkerView extends MarkerView {
 
     private TextView tvContent;
 
-    public MyMarkerView(Context context, int layoutResource) {
+    public StackedBarsMarkerView(Context context, int layoutResource) {
         super(context, layoutResource);
 
         tvContent = (TextView) findViewById(R.id.tvContent);
@@ -31,11 +32,17 @@ public class MyMarkerView extends MarkerView {
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
 
-        if (e instanceof CandleEntry) {
+        if (e instanceof BarEntry) {
 
-            CandleEntry ce = (CandleEntry) e;
+            BarEntry be = (BarEntry) e;
 
-            tvContent.setText("" + Utils.formatNumber(ce.getHigh(), 0, true));
+            if(be.getVals() != null) {
+
+                // draw the stack value
+                tvContent.setText("" + Utils.formatNumber(be.getVals()[highlight.getStackIndex()], 0, true));
+            } else {
+                tvContent.setText("" + Utils.formatNumber(be.getVal(), 0, true));
+            }
         } else {
 
             tvContent.setText("" + Utils.formatNumber(e.getVal(), 0, true));
