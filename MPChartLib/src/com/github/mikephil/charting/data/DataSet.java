@@ -129,6 +129,9 @@ public abstract class DataSet<T extends Entry> {
 
         for (int i = start; i <= endValue; i++) {
 
+            if(i >= mYVals.size())
+                break;
+
             Entry e = mYVals.get(i);
 
             if (e != null && !Float.isNaN(e.getVal())) {
@@ -249,7 +252,7 @@ public abstract class DataSet<T extends Entry> {
      * does calculations at runtime. Do not over-use in performance critical
      * situations.
      * 
-     * @param xIndex
+     * @param x
      * @return
      */
     public List<T> getEntriesForXIndex(int x) {
