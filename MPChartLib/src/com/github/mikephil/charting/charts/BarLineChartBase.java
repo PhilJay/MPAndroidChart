@@ -22,7 +22,6 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.BarLineScatterCandleData;
 import com.github.mikephil.charting.data.BarLineScatterCandleDataSet;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -37,7 +36,6 @@ import com.github.mikephil.charting.renderer.YAxisRenderer;
 import com.github.mikephil.charting.utils.FillFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.PointD;
-import com.github.mikephil.charting.utils.SelectionDetail;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 
@@ -1090,92 +1088,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             return null;
         } else
             return mHighlighter.getHighlight(x, y);
-
-//        // create an array of the touch-point
-//        float[] pts = new float[2];
-//        pts[0] = x;
-//
-//        // take any transformer to determine the x-axis value
-//        mLeftAxisTransformer.pixelsToValue(pts);
-//
-//        double xTouchVal = pts[0];
-//        double base = Math.floor(xTouchVal);
-//
-//        double touchOffset = mDeltaX * 0.025;
-//
-//        // touch out of chart
-//        if (xTouchVal < -touchOffset || xTouchVal > mDeltaX + touchOffset)
-//            return null;
-//
-//        if (base < 0)
-//            base = 0;
-//        if (base >= mDeltaX)
-//            base = mDeltaX - 1;
-//
-//        int xIndex = (int) base;
-//
-//        // check if we are more than half of a x-value or not
-//        if (xTouchVal - base > 0.5) {
-//            xIndex = (int) base + 1;
-//        }
-//
-//        List<SelectionDetail> valsAtIndex = getSelectionDetailsAtIndex(xIndex);
-//
-//        float leftdist = Utils.getMinimumDistance(valsAtIndex, y, AxisDependency.LEFT);
-//        float rightdist = Utils.getMinimumDistance(valsAtIndex, y, AxisDependency.RIGHT);
-//
-//        if (mData.getFirstRight() == null)
-//            rightdist = Float.MAX_VALUE;
-//        if (mData.getFirstLeft() == null)
-//            leftdist = Float.MAX_VALUE;
-//
-//        AxisDependency axis = leftdist < rightdist ? AxisDependency.LEFT : AxisDependency.RIGHT;
-//
-//        int dataSetIndex = Utils.getClosestDataSetIndex(valsAtIndex, y, axis);
-//
-//        if (dataSetIndex == -1)
-//            return null;
-//
-//        return new Highlight(xIndex, dataSetIndex);
-    }
-
-    /**
-     * Returns an array of SelectionDetail objects for the given x-index. The SelectionDetail
-     * objects give information about the value at the selected index and the
-     * DataSet it belongs to. INFORMATION: This method does calculations at
-     * runtime. Do not over-use in performance critical situations.
-     *
-     * @return
-     */
-    protected List<SelectionDetail> getSelectionDetailsAtIndex(int xIndex) {
-
-        List<SelectionDetail> vals = new ArrayList<SelectionDetail>();
-
-        float[] pts = new float[2];
-
-        for (int i = 0; i < mData.getDataSetCount(); i++) {
-
-            DataSet<?> dataSet = mData.getDataSetByIndex(i);
-
-            // dont include datasets that cannot be highlighted
-            if(!dataSet.isHighlightEnabled())
-                continue;
-
-            // extract all y-values from all DataSets at the given x-index
-            final float yVal = dataSet.getYValForXIndex(xIndex);
-            if (yVal == Float.NaN)
-                continue;
-
-            pts[1] = yVal;
-
-            getTransformer(dataSet.getAxisDependency()).pointValuesToPixel(pts);
-
-            if (!Float.isNaN(pts[1])) {
-                vals.add(new SelectionDetail(pts[1], i, dataSet));
-            }
-        }
-
-        return vals;
     }
 
     /**
