@@ -96,7 +96,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(mTf);
-        leftAxis.setLabelCount(8);
+        leftAxis.setLabelCount(8, false);
         leftAxis.setValueFormatter(custom);
         leftAxis.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
         leftAxis.setSpaceTop(15f);
@@ -104,7 +104,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
         rightAxis.setTypeface(mTf);
-        rightAxis.setLabelCount(8);
+        rightAxis.setLabelCount(8, false);
         rightAxis.setValueFormatter(custom);
         rightAxis.setSpaceTop(15f);
 

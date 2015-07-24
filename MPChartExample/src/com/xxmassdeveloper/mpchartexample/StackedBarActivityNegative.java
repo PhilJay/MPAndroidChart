@@ -59,7 +59,7 @@ public class StackedBarActivityNegative extends DemoBase implements
         mChart.getAxisRight().setStartAtZero(false);
         mChart.getAxisRight().setAxisMaxValue(25f);
         mChart.getAxisRight().setAxisMinValue(-25f);
-        mChart.getAxisRight().setLabelCount(7);
+        mChart.getAxisRight().setLabelCount(7, false);
         mChart.getAxisRight().setValueFormatter(new CustomFormatter());
         mChart.getAxisRight().setTextSize(9f);
 

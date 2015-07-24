@@ -61,7 +61,7 @@ public class RadarChartActivitry extends DemoBase {
 
         YAxis yAxis = mChart.getYAxis();
         yAxis.setTypeface(tf);
-        yAxis.setLabelCount(5);
+        yAxis.setLabelCount(5, false);
         yAxis.setTextSize(9f);
         yAxis.setStartAtZero(true);
 

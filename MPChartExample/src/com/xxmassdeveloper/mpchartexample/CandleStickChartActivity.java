@@ -66,7 +66,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
 
         YAxis leftAxis = mChart.getAxisLeft();  
 //        leftAxis.setEnabled(false);
-        leftAxis.setLabelCount(7);
+        leftAxis.setLabelCount(7, false);
         leftAxis.setDrawGridLines(false);
         leftAxis.setDrawAxisLine(false);
         leftAxis.setStartAtZero(false);
