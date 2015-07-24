@@ -99,6 +99,56 @@ public class BarDataSet extends BarLineScatterCandleDataSet<BarEntry> {
         }
     }
 
+    @Override
+    protected void calcMinMax(int start, int end) {
+        final int yValCount = mYVals.size();
+
+        if (yValCount == 0)
+            return;
+
+        int endValue;
+
+        if (end == 0 || end >= yValCount)
+            endValue = yValCount - 1;
+        else
+            endValue = end;
+
+        mLastStart = start;
+        mLastEnd = endValue;
+
+        mYMin = Float.MAX_VALUE;
+        mYMax = -Float.MAX_VALUE;
+
+        for (int i = start; i <= endValue; i++) {
+
+            BarEntry e = mYVals.get(i);
+
+            if (e != null && !Float.isNaN(e.getVal())) {
+
+                if(e.getVals() == null) {
+
+                    if (e.getVal() < mYMin)
+                        mYMin = e.getVal();
+
+                    if (e.getVal() > mYMax)
+                        mYMax = e.getVal();
+                } else {
+
+                    if (-e.getNegativeSum() < mYMin)
+                        mYMin = -e.getNegativeSum();
+
+                    if (e.getPositiveSum() > mYMax)
+                        mYMax = e.getPositiveSum();
+                }
+            }
+        }
+
+        if (mYMin == Float.MAX_VALUE) {
+            mYMin = 0.f;
+            mYMax = 0.f;
+        }
+    }
+
     /**
      * Returns the maximum number of bars that can be stacked upon another in
      * this DataSet.

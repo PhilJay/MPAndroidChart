@@ -64,24 +64,18 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         // drawn
         mChart.setMaxVisibleValueCount(60);
 
-        // if false values are only drawn for the stack sum, else each value is
-        // drawn
-        mChart.setDrawValuesForWholeStack(true);
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
 
+        mChart.setDrawGridBackground(false);
         mChart.setDrawBarShadow(false);
         
         mChart.setDrawValueAboveBar(false);
 
         // change the position of the y-labels
         YAxis yLabels = mChart.getAxisLeft();
-        // yLabels.setPosition(YLabelPosition.BOTH_SIDED);
-//        yLabels.setLabelCount(5);
         yLabels.setValueFormatter(new MyValueFormatter());
-        
-        mChart.getAxisRight().setValueFormatter(new MyValueFormatter());
-        mChart.getAxisRight().setDrawGridLines(false);
+        mChart.getAxisRight().setEnabled(false);
 
         XAxis xLabels = mChart.getXAxis();
         xLabels.setPosition(XAxisPosition.TOP);
@@ -213,7 +207,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
             float val3 = (float) (Math.random() * mult) + mult / 3;
 
             yVals1.add(new BarEntry(new float[] {
-                    -val1, val2, val3
+                    val1, val2, val3
             }, i));
         }
 

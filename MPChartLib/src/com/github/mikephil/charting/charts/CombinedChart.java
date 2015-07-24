@@ -41,12 +41,6 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
     private boolean mDrawValueAboveBar = true;
 
     /**
-     * if set to true, all values of a stack are drawn individually, and not
-     * just their sum
-     */
-    private boolean mDrawValuesForWholeStack = true;
-
-    /**
      * if set to true, a grey area is drawn behind each bar that indicates the
      * maximum value
      */
@@ -182,11 +176,6 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
         return mDrawHighlightArrow;
     }
 
-    @Override
-    public boolean isDrawValuesForWholeStackEnabled() {
-        return mDrawValuesForWholeStack;
-    }
-
     /**
      * set this to true to draw the highlightning arrow
      * 
@@ -206,15 +195,6 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
         mDrawValueAboveBar = enabled;
     }
 
-    /**
-     * if set to true, all values of a stack are drawn individually, and not
-     * just their sum
-     * 
-     * @param enabled
-     */
-    public void setDrawValuesForWholeStack(boolean enabled) {
-        mDrawValuesForWholeStack = enabled;
-    }
 
     /**
      * If set to true, a grey area is drawn behind each bar that indicates the

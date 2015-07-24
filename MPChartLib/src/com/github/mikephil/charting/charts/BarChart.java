@@ -38,7 +38,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
      * if set to true, all values of a stack are drawn individually, and not
      * just their sum
      */
-    private boolean mDrawValuesForWholeStack = true;
+    //private boolean mDrawValuesForWholeStack = true;
 
     /**
      * if set to true, a grey area is drawn behind each bar that indicates the
@@ -254,24 +254,24 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         return mDrawValueAboveBar;
     }
 
-    /**
-     * if set to true, all values of a stack are drawn individually, and not
-     * just their sum
-     * 
-     * @param enabled
-     */
-    public void setDrawValuesForWholeStack(boolean enabled) {
-        mDrawValuesForWholeStack = enabled;
-    }
-
-    /**
-     * returns true if all values of a stack are drawn, and not just their sum
-     * 
-     * @return
-     */
-    public boolean isDrawValuesForWholeStackEnabled() {
-        return mDrawValuesForWholeStack;
-    }
+//    /**
+//     * if set to true, all values of a stack are drawn individually, and not
+//     * just their sum
+//     *
+//     * @param enabled
+//     */
+//    public void setDrawValuesForWholeStack(boolean enabled) {
+//        mDrawValuesForWholeStack = enabled;
+//    }
+//
+//    /**
+//     * returns true if all values of a stack are drawn, and not just their sum
+//     *
+//     * @return
+//     */
+//    public boolean isDrawValuesForWholeStackEnabled() {
+//        return mDrawValuesForWholeStack;
+//    }
 
     /**
      * If set to true, a grey area is drawn behind each bar that indicates the

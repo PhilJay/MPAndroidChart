@@ -16,6 +16,9 @@ public class BarEntry extends Entry {
     /** the sum of all negative values this entry (if stacked) contains */
     private float mNegativeSum;
 
+    /** the sum of all positive values this entry (if stacked) contains */
+    private float mPositiveSum;
+
     /**
      * Constructor for stacked bar entries. Don't forget to order the
      * stacked-values in an ascending order e.g. (-2,-1,0,1,2).
@@ -27,7 +30,7 @@ public class BarEntry extends Entry {
         super(calcSum(vals), xIndex);
 
         this.mVals = vals;
-        calcNegativeSum();
+        calcPosNegSum();
     }
 
     /**
@@ -52,7 +55,7 @@ public class BarEntry extends Entry {
         super(calcSum(vals), xIndex, label);
 
         this.mVals = vals;
-        calcNegativeSum();
+        calcPosNegSum();
     }
 
     /**
@@ -94,9 +97,18 @@ public class BarEntry extends Entry {
     public void setVals(float[] vals) {
         setVal(calcSum(vals));
         mVals = vals;
-        calcNegativeSum();
+        calcPosNegSum();
     }
-    
+
+    /**
+     * Returns the value of this BarEntry. If the entry is stacked, it returns the positive sum of all values.
+     * @return
+     */
+    @Override
+    public float getVal() {
+        return super.getVal();
+    }
+
     public float getBelowSum(int stackIndex) {
         
         if (mVals == null)
@@ -118,18 +130,7 @@ public class BarEntry extends Entry {
      * @return
      */
     public float getPositiveSum() {
-
-        if(mVals == null)
-            return 0f;
-
-        float sum = 0f;
-
-        for (float f : mVals) {
-            if(f >= 0f)
-                sum += f;
-        }
-
-        return sum;
+        return mPositiveSum;
     }
 
     /**
@@ -140,20 +141,26 @@ public class BarEntry extends Entry {
         return mNegativeSum;
     }
 
-    private void calcNegativeSum() {
+    private void calcPosNegSum() {
+
         if(mVals == null) {
             mNegativeSum = 0;
+            mPositiveSum = 0;
             return;
         }
 
-        float sum = 0f;
+        float sumNeg = 0f;
+        float sumPos = 0f;
 
         for (float f : mVals) {
             if(f <= 0f)
-                sum += Math.abs(f);
+                sumNeg += Math.abs(f);
+            else
+                sumPos += f;
         }
 
-        mNegativeSum = sum;
+        mNegativeSum = sumNeg;
+        mPositiveSum = sumPos;
     }
 
 

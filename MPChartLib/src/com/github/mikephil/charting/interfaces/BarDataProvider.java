@@ -8,5 +8,5 @@ public interface BarDataProvider extends BarLineScatterCandleBubbleDataProvider 
     public boolean isDrawBarShadowEnabled();
     public boolean isDrawValueAboveBarEnabled();
     public boolean isDrawHighlightArrowEnabled();
-    public boolean isDrawValuesForWholeStackEnabled();
+    //public boolean isDrawValuesForWholeStackEnabled();
 }

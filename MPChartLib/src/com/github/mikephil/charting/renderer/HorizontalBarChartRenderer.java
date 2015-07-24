@@ -125,15 +125,15 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                 float[] valuePoints = getTransformedValues(trans, entries, i);
 
                 // if only single values are drawn (sum)
-                if (!mChart.isDrawValuesForWholeStackEnabled()) {
+                if (!dataSet.isStacked()) {
 
                     for (int j = 0; j < valuePoints.length * mAnimator.getPhaseX(); j += 2) {
 
-                        if (!mViewPortHandler.isInBoundsX(valuePoints[j]))
-                            continue;
-
                         if (!mViewPortHandler.isInBoundsTop(valuePoints[j + 1]))
                             break;
+
+                        if (!mViewPortHandler.isInBoundsX(valuePoints[j]))
+                            continue;
 
                         if (!mViewPortHandler.isInBoundsBottom(valuePoints[j + 1]))
                             continue;
@@ -169,11 +169,11 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                         // in between
                         if (vals == null) {
 
-                            if (!mViewPortHandler.isInBoundsX(valuePoints[j]))
-                                continue;
-
                             if (!mViewPortHandler.isInBoundsTop(valuePoints[j + 1]))
                                 break;
+
+                            if (!mViewPortHandler.isInBoundsX(valuePoints[j]))
+                                continue;
 
                             if (!mViewPortHandler.isInBoundsBottom(valuePoints[j + 1]))
                                 continue;
@@ -239,11 +239,11 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                                         + (val >= 0 ? posOffset : negOffset);
                                 float y = valuePoints[j + 1];
 
-                                if (!mViewPortHandler.isInBoundsX(x))
-                                    continue;
-
                                 if (!mViewPortHandler.isInBoundsTop(y))
                                     break;
+
+                                if (!mViewPortHandler.isInBoundsX(x))
+                                    continue;
 
                                 if (!mViewPortHandler.isInBoundsBottom(y))
                                     continue;

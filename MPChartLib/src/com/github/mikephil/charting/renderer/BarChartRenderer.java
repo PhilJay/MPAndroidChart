@@ -178,7 +178,7 @@ public class BarChartRenderer extends DataRenderer {
 
             List<BarDataSet> dataSets = mChart.getBarData().getDataSets();
 
-            final float valueOffsetPlus = Utils.convertDpToPixel(5f);
+            final float valueOffsetPlus = Utils.convertDpToPixel(4.5f);
             float posOffset = 0f;
             float negOffset = 0f;
             boolean drawValueAboveBar = mChart.isDrawValueAboveBarEnabled();
@@ -215,7 +215,7 @@ public class BarChartRenderer extends DataRenderer {
                 float[] valuePoints = getTransformedValues(trans, entries, i);
 
                 // if only single values are drawn (sum)
-                if (!mChart.isDrawValuesForWholeStackEnabled()) {
+                if (!dataSet.isStacked()) {
 
                     for (int j = 0; j < valuePoints.length * mAnimator.getPhaseX(); j += 2) {
 
@@ -232,7 +232,7 @@ public class BarChartRenderer extends DataRenderer {
                                 valuePoints[j + 1] + (val >= 0 ? posOffset : negOffset));
                     }
 
-                    // if each value of a potential stack should be drawn
+                    // if we have stacks
                 } else {
 
                     for (int j = 0; j < (valuePoints.length - 1) * mAnimator.getPhaseX(); j += 2) {
@@ -256,6 +256,7 @@ public class BarChartRenderer extends DataRenderer {
                             drawValue(c, formatter.getFormattedValue(e.getVal()), valuePoints[j],
                                     valuePoints[j + 1] + (e.getVal() >= 0 ? posOffset : negOffset));
 
+                            // draw stack values
                         } else {
 
                             float[] transformed = new float[vals.length * 2];
@@ -312,7 +313,6 @@ public class BarChartRenderer extends DataRenderer {
      * @formatter
      */
     protected void drawValue(Canvas c, String value, float xPos, float yPos) {
-
         c.drawText(value, xPos, yPos,
                 mValuePaint);
     }

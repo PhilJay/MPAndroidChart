@@ -49,9 +49,6 @@ public class StackedBarActivityNegative extends DemoBase implements
         mChart.setDrawGridBackground(false);
         mChart.setDescription("");
 
-        // if false values are only drawn for the stack sum, else each value is
-        // drawn
-        mChart.setDrawValuesForWholeStack(true);
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
 
@@ -78,6 +75,7 @@ public class StackedBarActivityNegative extends DemoBase implements
         l.setFormToTextSpace(4f);
         l.setXEntrySpace(6f);
 
+        // IMPORTANT: When using negative values in stacked bars, always make sure the negative values are in the array first
         ArrayList<BarEntry> yValues = new ArrayList<BarEntry>();
         yValues.add(new BarEntry(new float[]{ -10, 10 }, 0));
         yValues.add(new BarEntry(new float[]{ -12, 13 }, 1));
@@ -204,7 +202,7 @@ public class StackedBarActivityNegative extends DemoBase implements
 
         BarEntry entry = (BarEntry) e;
         Log.i("VAL SELECTED",
-                "Value: " + entry.getVals()[h.getStackIndex()]);
+                "Value: " + Math.abs(entry.getVals()[h.getStackIndex()]));
     }
 
     @Override
