@@ -6,8 +6,8 @@ package com.github.mikephil.charting.highlight;
  */
 public final class Range {
 
-    float from;
-    float to;
+    public float from;
+    public float to;
 
     public Range(float from, float to) {
         this.from = from;

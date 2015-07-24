@@ -318,10 +318,6 @@ public class BarChartRenderer extends DataRenderer {
     }
 
     @Override
-    public void drawExtras(Canvas c) {
-    }
-
-    @Override
     public void drawHighlighted(Canvas c, Highlight[] indices) {
 
         int setCount = mChart.getBarData().getDataSetCount();
@@ -364,8 +360,8 @@ public class BarChartRenderer extends DataRenderer {
                 final float y2;
 
                 if (isStack) {
-                    y1 = e.getPositiveSum();
-                    y2 = -e.getNegativeSum();
+                    y1 = h.getRange().from;
+                    y2 = h.getRange().to * mAnimator.getPhaseY();
                 } else {
                     y1 = e.getVal();
                     y2 = 0.f;
@@ -414,4 +410,7 @@ public class BarChartRenderer extends DataRenderer {
         return mChart.getBarData().getYValCount() < mChart.getMaxVisibleCount()
                 * mViewPortHandler.getScaleX();
     }
+
+    @Override
+    public void drawExtras(Canvas c) { }
 }

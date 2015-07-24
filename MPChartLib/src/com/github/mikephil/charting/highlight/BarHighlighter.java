@@ -102,24 +102,26 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
         BarEntry entry = set.getEntryForXIndex(xIndex);
 
         if (entry != null) {
-            int stackIndex = getClosestStackIndex(entry, (float) yValue);
-            Highlight h = new Highlight(xIndex, dataSetIndex, stackIndex);
+
+            Range[] ranges = getRanges(entry);
+            int stackIndex = getClosestStackIndex(ranges, (float) yValue);
+
+            Highlight h = new Highlight(xIndex, dataSetIndex, stackIndex, ranges[stackIndex]);
             return h;
         } else
             return null;
     }
 
     /**
-     * Returns the index of the closest value inside the values array (for stacked barchart)
+     * Returns the index of the closest value inside the values array / ranges (stacked barchart)
      * to the value given as a parameter.
      *
-     * @param e
+     * @param ranges
      * @param value
      * @return
      */
-    protected int getClosestStackIndex(BarEntry e, float value) {
+    protected int getClosestStackIndex(Range[] ranges, float value) {
 
-        Range[] ranges = getRanges(e);
         int stackIndex = 0;
 
         for(Range range : ranges) {
@@ -175,9 +177,18 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
         return baseNoSpace;
     }
 
+    /**
+     * Splits up the stack-values of the given bar-entry into Range objects.
+     * @param entry
+     * @return
+     */
     protected Range[] getRanges(BarEntry entry) {
 
         float[] values = entry.getVals();
+
+        if(values == null)
+            return null;
+
         float negRemain = -entry.getNegativeSum();
         float posRemain = 0f;
 
