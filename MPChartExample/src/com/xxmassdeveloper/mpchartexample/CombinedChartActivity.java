@@ -207,16 +207,10 @@ public class CombinedChartActivity extends DemoBase {
                 break;
             }
             case R.id.actionToggleBarValues: {
-//                for (DataSet<?> set : mChart.getData().getDataSets()) {
-//                    if (set instanceof BarDataSet)
-//                        set.setDrawValues(!set.isDrawValuesEnabled());
-//                }
-
-                CombinedData data = new CombinedData(mMonths);
-
-                data.setData(generateLineData());
-
-                mChart.setData(data);
+                for (DataSet<?> set : mChart.getData().getDataSets()) {
+                    if (set instanceof BarDataSet)
+                        set.setDrawValues(!set.isDrawValuesEnabled());
+                }
 
                 mChart.invalidate();
                 break;
