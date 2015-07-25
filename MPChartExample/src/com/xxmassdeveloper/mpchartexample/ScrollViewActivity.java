@@ -40,7 +40,7 @@ public class ScrollViewActivity extends DemoBase {
         xAxis.setPosition(XAxisPosition.BOTTOM);
         xAxis.setLabelsToSkip(0);
         xAxis.setDrawGridLines(false);
-        
+
         mChart.getAxisLeft().setDrawGridLines(false);
         
         mChart.getLegend().setEnabled(false);

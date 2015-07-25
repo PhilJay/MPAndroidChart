@@ -101,13 +101,18 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
                         mXChartMax = xmax;
                 }
             }
-
-            mDeltaX = Math.abs(mXChartMax - mXChartMin);
+        } else {
+            mXChartMin = 0f;
+            mXChartMax = mData.getXValCount()-1;
         }
+
+        mDeltaX = Math.abs(mXChartMax - mXChartMin);
     }
 
     @Override
     public void setData(CombinedData data) {
+        mData = null;
+        mRenderer = null;
         super.setData(data);
         mRenderer = new CombinedChartRenderer(this, mAnimator, mViewPortHandler);
         mRenderer.initBuffers();

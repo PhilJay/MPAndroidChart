@@ -433,7 +433,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * situations.
      * 
      * @param dataSets the DataSet array to search
-     * @param type
+     * @param label
      * @param ignorecase if true, the search is not case-sensitive
      * @return
      */
