@@ -204,7 +204,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 			yVals1.add(new BarEntry(new float[] { val1, val2, val3 }, i));
 		}
 
-		BarDataSet set1 = new BarDataSet(yVals1, "Statistics Vienna 2015");
+		BarDataSet set1 = new BarDataSet(yVals1, "Statistics Vienna 2014");
 		set1.setColors(getColors());
 		set1.setStackLabels(new String[] { "Births", "Divorces", "Marriages" });
 
@@ -221,11 +221,13 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 	@Override
 	public void onStartTrackingTouch(SeekBar seekBar) {
 		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public void onStopTrackingTouch(SeekBar seekBar) {
 		// TODO Auto-generated method stub
+
 	}
 
 	@Override
@@ -233,7 +235,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 
 		BarEntry entry = (BarEntry) e;
 
-		if (entry.isStacked())
+		if (entry.getVals() != null)
 			Log.i("VAL SELECTED", "Value: " + entry.getVals()[h.getStackIndex()]);
 		else
 			Log.i("VAL SELECTED", "Value: " + entry.getVal());
@@ -242,6 +244,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 	@Override
 	public void onNothingSelected() {
 		// TODO Auto-generated method stub
+
 	}
 
 	private int[] getColors() {

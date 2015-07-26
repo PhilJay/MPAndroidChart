@@ -262,7 +262,7 @@ public class BarChartRenderer extends DataRenderer {
                             float[] transformed = new float[vals.length * 2];
 
                             float posY = 0f;
-                            float negY = 0f;
+                            float negY = -e.getNegativeSum();
 
                             for (int k = 0, idx = 0; k < transformed.length; k += 2, idx++) {
 
@@ -273,8 +273,8 @@ public class BarChartRenderer extends DataRenderer {
                                     posY += value;
                                     y = posY;
                                 } else {
-                                    negY += value;
                                     y = negY;
+                                    negY -= value;
                                 }
 
                                 transformed[k + 1] = y * mAnimator.getPhaseY();
