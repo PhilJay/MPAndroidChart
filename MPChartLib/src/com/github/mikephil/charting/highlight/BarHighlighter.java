@@ -99,18 +99,14 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 
 		BarEntry entry = set.getEntryForXIndex(xIndex);
 
-		if (entry.getVals() == null)
+		if (entry == null || entry.getVals() == null)
 			return old;
 
-		if (entry != null) {
+		Range[] ranges = getRanges(entry);
+		int stackIndex = getClosestStackIndex(ranges, (float) yValue);
 
-			Range[] ranges = getRanges(entry);
-			int stackIndex = getClosestStackIndex(ranges, (float) yValue);
-
-			Highlight h = new Highlight(xIndex, dataSetIndex, stackIndex, ranges[stackIndex]);
-			return h;
-		} else
-			return null;
+		Highlight h = new Highlight(xIndex, dataSetIndex, stackIndex, ranges[stackIndex]);
+		return h;
 	}
 
 	/**

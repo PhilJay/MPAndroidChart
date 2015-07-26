@@ -129,9 +129,6 @@ public abstract class DataSet<T extends Entry> {
 
         for (int i = start; i <= endValue; i++) {
 
-            if(i >= mYVals.size())
-                break;
-
             Entry e = mYVals.get(i);
 
             if (e != null && !Float.isNaN(e.getVal())) {
