@@ -238,21 +238,15 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
     private void setData(int count, float range) {
 
+        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
         ArrayList<String> xVals = new ArrayList<String>();
+
         for (int i = 0; i < count; i++) {
             xVals.add(mMonths[i % 12]);
+            yVals1.add(new BarEntry((float) (Math.random() * range), i));
         }
 
-        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
-
-        for (int i = 0; i < count; i++) {
-            float mult = (range + 1);
-            float val = (float) (Math.random() * mult);
-            yVals1.add(new BarEntry(val, i));
-        }
-
-        BarDataSet set1 = new BarDataSet(yVals1, "DataSet");
-        set1.setBarSpacePercent(35f);
+        BarDataSet set1 = new BarDataSet(yVals1, "DataSet 1");
 
         ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
         dataSets.add(set1);
@@ -261,7 +255,6 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         data.setValueTextSize(10f);
         data.setValueTypeface(tf);
 
-        mChart.setDrawValueAboveBar(false);
         mChart.setData(data);
     }
 

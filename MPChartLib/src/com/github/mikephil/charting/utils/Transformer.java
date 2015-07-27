@@ -224,9 +224,10 @@ public class Transformer {
         for (int j = 0; j < valuePoints.length; j += 2) {
 
             Entry e = entries.get(j / 2);
+            int i = e.getXIndex();
 
             // calculate the x-position, depending on datasetcount
-            float x = e.getXIndex() + (j / 2 * (setCount - 1)) + dataSet + space * (j / 2)
+            float x = e.getXIndex() + i * (setCount - 1) + dataSet + space * i
                     + space / 2f;
             float y = e.getVal();
 
@@ -258,9 +259,10 @@ public class Transformer {
         for (int j = 0; j < valuePoints.length; j += 2) {
 
             Entry e = entries.get(j / 2);
+            int i = e.getXIndex();
 
             // calculate the x-position, depending on datasetcount
-            float x = e.getXIndex() + (j / 2 * (setCount - 1)) + dataSet + space * (j / 2)
+            float x = e.getXIndex() + i * (setCount - 1) + dataSet + space * i
                     + space / 2f ;
             float y = e.getVal();
 
