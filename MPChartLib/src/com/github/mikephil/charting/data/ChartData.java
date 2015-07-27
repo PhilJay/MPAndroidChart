@@ -486,7 +486,10 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * @return the entry that is highlighted
      */
     public Entry getEntryForHighlight(Highlight highlight) {
-        return mDataSets.get(highlight.getDataSetIndex()).getEntryForXIndex(
+        if(highlight.getDataSetIndex() >= mDataSets.size())
+            return null;
+        else
+            return mDataSets.get(highlight.getDataSetIndex()).getEntryForXIndex(
                 highlight.getXIndex());
     }
 

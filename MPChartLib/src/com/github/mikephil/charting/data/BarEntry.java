@@ -17,8 +17,7 @@ public class BarEntry extends Entry {
 	private float mPositiveSum;
 
 	/**
-	 * Constructor for stacked bar entries. Don't forget to order the stacked-values in an ascending order e.g.
-	 * (-2,-1,0,1,2).
+	 * Constructor for stacked bar entries.
 	 * 
 	 * @param vals
 	 *            - the stack values, use at lest 2
@@ -42,8 +41,7 @@ public class BarEntry extends Entry {
 	}
 
 	/**
-	 * Constructor for stacked bar entries. Don't forget to order the stacked-values in an ascending order e.g.
-	 * (-2,-1,0,1,2).
+	 * Constructor for stacked bar entries.
 	 * 
 	 * @param vals
 	 *            - the stack values, use at least 2
