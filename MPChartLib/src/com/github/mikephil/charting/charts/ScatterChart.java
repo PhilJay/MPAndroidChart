@@ -46,18 +46,6 @@ public class ScatterChart extends BarLineChartBase<ScatterData> implements Scatt
         mXChartMin = -0.5f;
     }
 
-    // @Override
-    // public void calculateOffsets() {
-    // super.calculateOffsets();
-    //
-    // float offset = mData.getGreatestShapeSize() / 2f;
-    // mViewPortHandler.restrainViewPort(mViewPortHandler.offsetLeft() - offset,
-    // mViewPortHandler.offsetTop(), mViewPortHandler.offsetRight() - offset,
-    // mViewPortHandler.offsetBottom());
-    //
-    // prepareOffsetMatrix();
-    // }
-
     @Override
     protected void calcMinMax() {
         super.calcMinMax();

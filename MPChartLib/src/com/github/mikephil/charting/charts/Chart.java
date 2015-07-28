@@ -370,13 +370,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /** flag that indicates if offsets calculation has already been done or not */
     private boolean mOffsetsCalculated = false;
 
-    /**
-     * Bitmap object used for drawing. This is necessary because hardware
-     * acceleration uses OpenGL which only allows a specific texture size to be
-     * drawn on the canvas directly.
-     **/
-    protected Bitmap mDrawBitmap;
-
     /** paint object used for drawing the bitmap */
     protected Paint mDrawPaint;
 
@@ -1594,12 +1587,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             Log.i(LOG_TAG, "OnSizeChanged()");
 
         if (w > 0 && h > 0 && w < 10000 && h < 10000) {
-            // create a new bitmap with the new dimensions
 
-            if (mDrawBitmap != null)
-                mDrawBitmap.recycle();
-
-            mDrawBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_4444);
             mViewPortHandler.setChartDimens(w, h);
 
             if (mLogEnabled)
