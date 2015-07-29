@@ -531,10 +531,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
             BarData bd = (BarData) mData;
             float space = bd.getGroupSpace();
-            float j = mData.getDataSetByIndex(dataSetIndex)
-                    .getEntryPosition(e);
 
-            float x = (j * (mData.getDataSetCount() - 1)) + dataSetIndex + space * j + space
+            float x = e.getXIndex() * (mData.getDataSetCount() - 1) + dataSetIndex + space * e.getXIndex() + space
                     / 2f;
 
             xPos += x;
