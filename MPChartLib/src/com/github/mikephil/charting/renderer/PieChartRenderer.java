@@ -63,6 +63,7 @@ public class PieChartRenderer extends DataRenderer {
         mTransparentCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTransparentCirclePaint.setColor(Color.WHITE);
         mTransparentCirclePaint.setStyle(Style.FILL);
+        mTransparentCirclePaint.setAlpha(100);
 
         mCenterTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
         mCenterTextPaint.setColor(Color.BLACK);
@@ -260,16 +261,16 @@ public class PieChartRenderer extends DataRenderer {
             if (transparentCircleRadius > holeRadius && mAnimator.getPhaseX() >= 1f
                     && mAnimator.getPhaseY() >= 1f) {
 
-                int color = mTransparentCirclePaint.getColor();
+                //int color = mTransparentCirclePaint.getColor();
 
                 // make transparent
-                mTransparentCirclePaint.setColor(color & 0x60FFFFFF);
+                //mTransparentCirclePaint.setColor(color & 0x60FFFFFF);
 
                 // draw the transparent-circle
                 mBitmapCanvas.drawCircle(center.x, center.y,
                         radius / 100 * transparentCircleRadius, mTransparentCirclePaint);
 
-                mTransparentCirclePaint.setColor(color);
+                //mTransparentCirclePaint.setColor(color);
             }
 
             // draw the hole-circle

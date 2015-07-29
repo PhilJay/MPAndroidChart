@@ -3,6 +3,7 @@ package com.github.mikephil.charting.charts;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -66,7 +67,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     /**
      * the radius of the transparent circle next to the chart-hole in the center
      */
-    private float mTransparentCircleRadiusPercent = 55f;
+    protected float mTransparentCircleRadiusPercent = 55f;
 
     /** if enabled, centertext is drawn */
     private boolean mDrawCenterText = true;
@@ -455,8 +456,16 @@ public class PieChart extends PieRadarChartBase<PieData> {
         return mHoleRadiusPercent;
     }
 
+    /**
+     * Sets the color the transparent-circle should have.
+     * @param color
+     */
     public void setTransparentCircleColor(int color) {
-        ((PieChartRenderer) mRenderer).getPaintTransparentCircle().setColor(color);
+
+        Paint p = ((PieChartRenderer) mRenderer).getPaintTransparentCircle();
+        int alpha = p.getAlpha();
+        p.setColor(color);
+        p.setAlpha(alpha);
     }
 
     /**
@@ -474,6 +483,17 @@ public class PieChart extends PieRadarChartBase<PieData> {
     public float getTransparentCircleRadius() {
         return mTransparentCircleRadiusPercent;
     }
+
+	/**
+	 * Sets the amount of transparency the transparent circle should have 0 = fully transparent, 255 = fully opaque.
+     * Default value is 100.
+	 * 
+	 * @param alpha
+	 *            0-255
+	 */
+	public void setTransparentCircleAlpha(int alpha) {
+		((PieChartRenderer) mRenderer).getPaintTransparentCircle().setAlpha(alpha);
+	}
 
     /**
      * set this to true to draw the x-value text into the pie slices
