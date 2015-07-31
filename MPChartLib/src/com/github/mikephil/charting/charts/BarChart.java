@@ -76,18 +76,8 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 		// extend xDelta to make space for multiple datasets (if ther are one)
 		mDeltaX *= mData.getDataSetCount();
 
-		int maxEntry = 0;
-
-		for (int i = 0; i < mData.getDataSetCount(); i++) {
-
-			DataSet<? extends Entry> set = mData.getDataSetByIndex(i);
-
-			if (maxEntry < set.getEntryCount())
-				maxEntry = set.getEntryCount();
-		}
-
 		float groupSpace = mData.getGroupSpace();
-		mDeltaX += maxEntry * groupSpace;
+		mDeltaX += mData.getXValCount() * groupSpace;
 		mXChartMax = mDeltaX - mXChartMin;
 	}
 
