@@ -38,3 +38,6 @@ https://play.google.com/store/apps/details?id=ru.vdmodule.androidmetrix
 
 Poker Manager
 https://play.google.com/store/apps/details?id=com.pokermanagerpro
+
+Speaker Recognition
+https://github.com/C-piace-il-C/Speaker_Recognition
