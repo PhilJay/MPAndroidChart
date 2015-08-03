@@ -64,7 +64,7 @@ public abstract class DataSet<T extends Entry> {
     private Typeface mValueTypeface;
 
     /** custom formatter that is used instead of the auto-formatter if set */
-    protected ValueFormatter mValueFormatter;
+    protected transient ValueFormatter mValueFormatter;
 
     /** this specifies which axis this DataSet should be plotted against */
     protected AxisDependency mAxisDependency = AxisDependency.LEFT;
