@@ -41,3 +41,6 @@ https://play.google.com/store/apps/details?id=com.pokermanagerpro
 
 Speaker Recognition
 https://github.com/C-piace-il-C/Speaker_Recognition
+
+ExpenseDroid - Expense Manager
+https://play.google.com/store/apps/details?id=com.tphoneix.avi.myapplication
