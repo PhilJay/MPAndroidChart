@@ -19,6 +19,7 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -95,25 +96,25 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         mChart.setMarkerView(mv);
         
         // x-axis limit line
-//        LimitLine llXAxis = new LimitLine(10f, "Index 10");
-//        llXAxis.setLineWidth(4f);
-//        llXAxis.enableDashedLine(10f, 10f, 0f);
-//        llXAxis.setLabelPosition(LimitLabelPosition.POS_RIGHT);
-//        llXAxis.setTextSize(10f);
-//        
-//        XAxis xAxis = mChart.getXAxis();
-//        xAxis.addLimitLine(llXAxis);
+        LimitLine llXAxis = new LimitLine(10f, "Index 10");
+        llXAxis.setLineWidth(4f);
+        llXAxis.enableDashedLine(10f, 10f, 0f);
+        llXAxis.setLabelPosition(LimitLabelPosition.RIGHT_BOTTOM);
+        llXAxis.setTextSize(10f);
+
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.addLimitLine(llXAxis);
         
         LimitLine ll1 = new LimitLine(130f, "Upper Limit");
         ll1.setLineWidth(4f);
         ll1.enableDashedLine(10f, 10f, 0f);
-        ll1.setLabelPosition(LimitLabelPosition.POS_RIGHT);
+        ll1.setLabelPosition(LimitLabelPosition.RIGHT_TOP);
         ll1.setTextSize(10f);
 
         LimitLine ll2 = new LimitLine(-30f, "Lower Limit");
         ll2.setLineWidth(4f);
         ll2.enableDashedLine(10f, 10f, 0f);
-        ll2.setLabelPosition(LimitLabelPosition.POS_RIGHT);
+        ll2.setLabelPosition(LimitLabelPosition.RIGHT_BOTTOM);
         ll2.setTextSize(10f);
 
         YAxis leftAxis = mChart.getAxisLeft();
