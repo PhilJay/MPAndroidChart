@@ -9,6 +9,7 @@ import android.view.WindowManager;
 
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.charts.CombinedChart.DrawOrder;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
@@ -52,9 +53,16 @@ public class CombinedChartActivity extends DemoBase {
         mChart.setDrawBarShadow(false);
         
         // draw bars behind lines
-        mChart.setDrawOrder(new DrawOrder[] {
+        mChart.setDrawOrder(new DrawOrder[]{
                 DrawOrder.BAR, DrawOrder.BUBBLE, DrawOrder.CANDLE, DrawOrder.LINE, DrawOrder.SCATTER
         });
+
+        Legend l = mChart.getLegend();
+       l.setOrientation(Legend.LegendOrientation.HORIZONTIAL);
+        l.setPosition(Legend.LegendPosition.LEFT_OF_CHART);
+
+
+
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
