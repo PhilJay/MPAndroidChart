@@ -710,8 +710,7 @@ public class Legend extends ComponentBase {
                     || mPosition == LegendPosition.BELOW_CHART_RIGHT
                     || mPosition == LegendPosition.BELOW_CHART_CENTER
                     ) {
-
-
+            Log.i("Else if called", "d");
                 int labelCount = mLabels.length;
                 float labelLineHeight = Utils.getLineHeight(labelpaint);
                 float labelLineSpacing = Utils.getLineSpacing(labelpaint) + mYEntrySpace;
@@ -805,6 +804,7 @@ public class Legend extends ComponentBase {
 
 
                 if (mOrientation != LegendOrientation.VERTICAL) {
+                   Log.i("Not", "Vertical");
                     mTextWidthMax = getMaximumEntryWidth(labelpaint);
                     mTextHeightMax = getMaximumEntryHeight(labelpaint);
                     mNeededWidth = maxLineWidth;
