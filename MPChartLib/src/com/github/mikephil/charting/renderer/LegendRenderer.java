@@ -400,6 +400,7 @@ public class LegendRenderer extends Renderer {
        int lineIndex = 0;
 
        for (int i = 0, count = labels.length; i < count; i++) {
+
            if (calculatedLabelBreakPoints[i]) {
                posX = originPosX;
                posY += labelLineHeight + labelLineSpacing;

@@ -58,9 +58,9 @@ public class CombinedChartActivity extends DemoBase {
         });
 
         Legend l = mChart.getLegend();
-        l.setOrientation(Legend.LegendOrientation.HORIZONTIAL);
+        //l.setOrientation(Legend.LegendOrientation.HORIZONTIAL);
         //   Execption check!!!! l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART_INSIDE);
-        l.setPosition(Legend.LegendPosition.LEFT_OF_CHART);
+        l.setPosition(Legend.LegendPosition.BELOW_CHART_RIGHT);
 
 
 
