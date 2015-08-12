@@ -107,7 +107,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
         // consider starting at zero (0)
         if (mYAxis.isStartAtZeroEnabled())
-            mYAxis.mAxisMinimum = 0f;
+            mYAxis.mAxisMinimum = Math.min(0f, mYAxis.mAxisMinimum);
 
         mYAxis.mAxisRange = Math.abs(mYAxis.mAxisMaximum - mYAxis.mAxisMinimum);
     }

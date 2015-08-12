@@ -377,8 +377,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             if (mAxisLeft.mAxisMinimum < 0f && mAxisLeft.mAxisMaximum < 0f) {
                 // If the values are all negative, let's stay in the negative zone
                 mAxisLeft.mAxisMaximum = 0f;
-            } else {
-                // We have positive values, stay in the positive zone
+            } else if (mAxisLeft.mAxisMinimum >= 0f) {
+                // We have positive values only, stay in the positive zone
                 mAxisLeft.mAxisMinimum = 0f;
             }
         }
@@ -387,8 +387,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
             if (mAxisRight.mAxisMinimum < 0.0 && mAxisRight.mAxisMaximum < 0.0) {
                 // If the values are all negative, let's stay in the negative zone
                 mAxisRight.mAxisMaximum = 0f;
-            } else {
-                // We have positive values, stay in the positive zone
+            } else if (mAxisRight.mAxisMinimum >= 0f) {
+                // We have positive values only, stay in the positive zone
                 mAxisRight.mAxisMinimum = 0f;
             }
         }
