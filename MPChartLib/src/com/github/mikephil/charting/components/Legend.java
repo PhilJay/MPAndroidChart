@@ -692,12 +692,13 @@ public class Legend extends ComponentBase {
      */
     public void calculateDimensions(Paint labelpaint, ViewPortHandler viewPortHandler) {
         Log.i("calculate", "Here");
+
         if (mPosition == LegendPosition.RIGHT_OF_CHART
                 || mPosition == LegendPosition.RIGHT_OF_CHART_CENTER
                 || mPosition == LegendPosition.LEFT_OF_CHART
                 || mPosition == LegendPosition.LEFT_OF_CHART_CENTER
                 || mPosition == LegendPosition.PIECHART_CENTER
-               ) {
+                ) {
             mNeededWidth = getMaximumEntryWidth(labelpaint);
             mNeededHeight = getFullHeight(labelpaint);
             mTextWidthMax = mNeededWidth;
@@ -705,128 +706,14 @@ public class Legend extends ComponentBase {
 
             if (mOrientation == LegendOrientation.HORIZONTIAL) {
                 calculateDimHorizontial(labelpaint, viewPortHandler);
-            } }
-            else if (mPosition == LegendPosition.BELOW_CHART_LEFT
-                    || mPosition == LegendPosition.BELOW_CHART_RIGHT
-                    || mPosition == LegendPosition.BELOW_CHART_CENTER
-                    ) {
-            calculateDimHorizontial(labelpaint, viewPortHandler);
-            /*
-            Log.i("Else if called", "d");
-
-                int labelCount = mLabels.length;
-                float labelLineHeight = Utils.getLineHeight(labelpaint);
-                float labelLineSpacing = Utils.getLineSpacing(labelpaint) + mYEntrySpace;
-                float contentWidth = viewPortHandler.contentWidth();
-
-                // Prepare arrays for calculated layout
-                ArrayList<FSize> calculatedLabelSizes = new ArrayList<FSize>(labelCount);
-                ArrayList<Boolean> calculatedLabelBreakPoints = new ArrayList<Boolean>(labelCount);
-                ArrayList<FSize> calculatedLineSizes = new ArrayList<FSize>();
-
-                // Start calculating layout
-                float maxLineWidth = 0.f;
-                float currentLineWidth = 0.f;
-                float requiredWidth = 0.f;
-                int stackedStartIndex = -1;
-
-                for (int i = 0; i < labelCount; i++) {
-
-                    boolean drawingForm = mColors[i] != ColorTemplate.COLOR_SKIP;
-
-                    calculatedLabelBreakPoints.add(false);
-
-                    if (stackedStartIndex == -1) {
-                        // we are not stacking, so required width is for this label
-                        // only
-                        requiredWidth = 0.f;
-                    } else {
-                        // add the spacing appropriate for stacked labels/forms
-                        requiredWidth += mStackSpace;
-                    }
-
-                    // grouped forms have null labels
-                    if (mLabels[i] != null) {
-
-                        calculatedLabelSizes.add(Utils.calcTextSize(labelpaint, mLabels[i]));
-                        requiredWidth += drawingForm ? mFormToTextSpace + mFormSize : 0.f;
-                        requiredWidth += calculatedLabelSizes.get(i).width;
-                    } else {
-
-                        calculatedLabelSizes.add(new FSize(0.f, 0.f));
-                        requiredWidth += drawingForm ? mFormSize : 0.f;
-
-                        if (stackedStartIndex == -1) {
-                            // mark this index as we might want to break here later
-                            stackedStartIndex = i;
-                        }
-                    }
-
-                    if (mLabels[i] != null || i == labelCount - 1) {
-
-                        float requiredSpacing = currentLineWidth == 0.f ? 0.f : mXEntrySpace;
-
-                        if (!mWordWrapEnabled || // No word wrapping, it must fit.
-                                currentLineWidth == 0.f || // The line is empty, it
-                                // must fit.
-                                (contentWidth - currentLineWidth >= requiredSpacing + requiredWidth)) // It
-                        // simply
-                        // fits
-                        {
-                            // Expand current line
-                            currentLineWidth += requiredSpacing + requiredWidth;
-
-                        } else { // It doesn't fit, we need to wrap a line
-
-                            // Add current line size to array
-                            calculatedLineSizes.add(new FSize(currentLineWidth, labelLineHeight));
-                            maxLineWidth = Math.max(maxLineWidth, currentLineWidth);
-
-                            // Start a new line
-                            calculatedLabelBreakPoints.set(stackedStartIndex > -1 ? stackedStartIndex
-                                    : i, true);
-                            currentLineWidth = requiredWidth;
-                        }
-
-                        if (i == labelCount - 1) {
-                            // Add last line size to array
-                            calculatedLineSizes.add(new FSize(currentLineWidth, labelLineHeight));
-                            maxLineWidth = Math.max(maxLineWidth, currentLineWidth);
-                        }
-                    }
-
-                    stackedStartIndex = mLabels[i] != null ? -1 : stackedStartIndex;
-                }
-
-                mCalculatedLabelSizes = calculatedLabelSizes.toArray(
-                        new FSize[calculatedLabelSizes.size()]);
-                mCalculatedLabelBreakPoints = calculatedLabelBreakPoints
-                        .toArray(new Boolean[calculatedLabelBreakPoints.size()]);
-                mCalculatedLineSizes = calculatedLineSizes
-                        .toArray(new FSize[calculatedLineSizes.size()]);
-
-
-                if (mOrientation != LegendOrientation.VERTICAL) {
-                   Log.i("Not", "Vertical");
-                    mTextWidthMax = getMaximumEntryWidth(labelpaint);
-                    mTextHeightMax = getMaximumEntryHeight(labelpaint);
-                    mNeededWidth = maxLineWidth;
-                    mNeededHeight = labelLineHeight
-                            * (float) (mCalculatedLineSizes.length)
-                            + labelLineSpacing *
-                            (float) (mCalculatedLineSizes.length == 0
-                                    ? 0
-                                    : (mCalculatedLineSizes.length - 1));
-                } else {
-                    mNeededWidth = getMaximumEntryWidth(labelpaint);
-                    mNeededHeight += getFullHeight(labelpaint);
-                    mTextWidthMax = mNeededWidth;
-                    mTextHeightMax = getMaximumEntryHeight(labelpaint);
-                }
-//
-*/
+            }
+        } else if (mPosition == LegendPosition.BELOW_CHART_LEFT
+                || mPosition == LegendPosition.BELOW_CHART_RIGHT
+                || mPosition == LegendPosition.BELOW_CHART_CENTER
+                ) {
+           calculateDimHorizontial(labelpaint, viewPortHandler);
             } else {
-            /* RIGHT_OF_CHART_INSIDE, LEFT_OF_CHART_INSIDE */
+           /* RIGHT_OF_CHART_INSIDE, LEFT_OF_CHART_INSIDE*/
 
                 mNeededWidth = getFullWidth(labelpaint);
                 mNeededHeight = getMaximumEntryHeight(labelpaint);
@@ -835,9 +722,8 @@ public class Legend extends ComponentBase {
                 if (mOrientation == LegendOrientation.HORIZONTIAL) {
                     calculateDimHorizontial(labelpaint, viewPortHandler);
                 }
-            }
         }
-
+    }
 
 
     public void calculateDimHorizontial(Paint labelpaint, ViewPortHandler viewPortHandler) {
@@ -944,21 +830,17 @@ public class Legend extends ComponentBase {
                             ? 0
                             : (mCalculatedLineSizes.length - 1));
         } else {
+            Log.i("Vertical", "called");
             mNeededWidth = getMaximumEntryWidth(labelpaint);
             mNeededHeight += getFullHeight(labelpaint);
             mTextWidthMax = mNeededWidth;
             mTextHeightMax = getMaximumEntryHeight(labelpaint);
         }
-        if (mPosition == LegendPosition.LEFT_OF_CHART_INSIDE
-                ||mPosition == LegendPosition.RIGHT_OF_CHART_INSIDE)
-        mNeededWidth = getFullWidth(labelpaint);
-        mNeededHeight = getMaximumEntryHeight(labelpaint);
-        mTextWidthMax = getMaximumEntryWidth(labelpaint);
-        mTextHeightMax = mNeededHeight;
-
     }
 
 }
+
+
 
 
 
