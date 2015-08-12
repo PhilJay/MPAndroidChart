@@ -710,7 +710,10 @@ public class Legend extends ComponentBase {
                     || mPosition == LegendPosition.BELOW_CHART_RIGHT
                     || mPosition == LegendPosition.BELOW_CHART_CENTER
                     ) {
+            calculateDimHorizontial(labelpaint, viewPortHandler);
+            /*
             Log.i("Else if called", "d");
+
                 int labelCount = mLabels.length;
                 float labelLineHeight = Utils.getLineHeight(labelpaint);
                 float labelLineSpacing = Utils.getLineSpacing(labelpaint) + mYEntrySpace;
@@ -820,7 +823,8 @@ public class Legend extends ComponentBase {
                     mTextWidthMax = mNeededWidth;
                     mTextHeightMax = getMaximumEntryHeight(labelpaint);
                 }
-
+//
+*/
             } else {
             /* RIGHT_OF_CHART_INSIDE, LEFT_OF_CHART_INSIDE */
 
