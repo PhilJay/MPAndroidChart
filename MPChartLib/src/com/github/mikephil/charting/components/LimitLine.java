@@ -41,11 +41,11 @@ public class LimitLine {
     private DashPathEffect mDashPathEffect = null;
 
     /** indicates the position of the LimitLine label */
-    private LimitLabelPosition mLabelPosition = LimitLabelPosition.POS_RIGHT;
+    private LimitLabelPosition mLabelPosition = LimitLabelPosition.RIGHT_TOP;
 
     /** enum that indicates the position of the LimitLine label */
     public enum LimitLabelPosition {
-        POS_LEFT, POS_RIGHT
+        LEFT_TOP, LEFT_BOTTOM, RIGHT_TOP, RIGHT_BOTTOM
     }
 
     /**

@@ -319,23 +319,45 @@ public class YAxisRenderer extends AxisRenderer {
 			// if drawing the limit-value label is enabled
 			if (label != null && !label.equals("")) {
 
-				float xOffset = Utils.convertDpToPixel(4f);
-				float yOffset = l.getLineWidth() + Utils.calcTextHeight(mLimitLinePaint, label) / 2f;
-
 				mLimitLinePaint.setStyle(l.getTextStyle());
 				mLimitLinePaint.setPathEffect(null);
 				mLimitLinePaint.setColor(l.getTextColor());
 				mLimitLinePaint.setStrokeWidth(0.5f);
 				mLimitLinePaint.setTextSize(l.getTextSize());
 
-				if (l.getLabelPosition() == LimitLabelPosition.POS_RIGHT) {
+				final float labelLineHeight = Utils.calcTextHeight(mLimitLinePaint, label);
+				float xOffset = Utils.convertDpToPixel(4f);
+				float yOffset = l.getLineWidth() + labelLineHeight;
+
+				final LimitLine.LimitLabelPosition position = l.getLabelPosition();
+
+				if (position == LimitLine.LimitLabelPosition.RIGHT_TOP) {
 
 					mLimitLinePaint.setTextAlign(Align.RIGHT);
-					c.drawText(label, mViewPortHandler.contentRight() - xOffset, pts[1] - yOffset, mLimitLinePaint);
+					c.drawText(label,
+							mViewPortHandler.contentRight() - xOffset,
+							pts[1] - yOffset + labelLineHeight, mLimitLinePaint);
+
+				} else if (position == LimitLine.LimitLabelPosition.RIGHT_BOTTOM) {
+
+					mLimitLinePaint.setTextAlign(Align.RIGHT);
+					c.drawText(label,
+							mViewPortHandler.contentRight() - xOffset,
+							pts[1] + yOffset, mLimitLinePaint);
+
+				} else if (position == LimitLine.LimitLabelPosition.LEFT_TOP) {
+
+					mLimitLinePaint.setTextAlign(Align.LEFT);
+					c.drawText(label,
+							mViewPortHandler.contentLeft() + xOffset,
+							pts[1] - yOffset + labelLineHeight, mLimitLinePaint);
 
 				} else {
+
 					mLimitLinePaint.setTextAlign(Align.LEFT);
-					c.drawText(label, mViewPortHandler.offsetLeft() + xOffset, pts[1] - yOffset, mLimitLinePaint);
+					c.drawText(label,
+							mViewPortHandler.offsetLeft() + xOffset,
+							pts[1] + yOffset, mLimitLinePaint);
 				}
 			}
 		}
