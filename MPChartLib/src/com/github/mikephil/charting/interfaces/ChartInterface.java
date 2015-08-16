@@ -1,4 +1,3 @@
-
 package com.github.mikephil.charting.interfaces;
 
 import android.graphics.PointF;
@@ -15,27 +14,27 @@ import com.github.mikephil.charting.utils.ValueFormatter;
  */
 public interface ChartInterface {
 
-    public float getXChartMin();
+    float getXChartMin();
 
-    public float getXChartMax();
+    float getXChartMax();
 
-    public float getYChartMin();
+    float getYChartMin();
 
-    public float getYChartMax();
+    float getYChartMax();
     
-    public int getXValCount();
+    int getXValCount();
 
-    public int getWidth();
+    int getWidth();
 
-    public int getHeight();
+    int getHeight();
 
-    public PointF getCenterOfView();
+    PointF getCenterOfView();
 
-    public PointF getCenterOffsets();
+    PointF getCenterOffsets();
 
-    public RectF getContentRect();
+    RectF getContentRect();
     
-    public ValueFormatter getDefaultValueFormatter();
+    ValueFormatter getDefaultValueFormatter();
 
-    public ChartData getData();
+    ChartData getData();
 }

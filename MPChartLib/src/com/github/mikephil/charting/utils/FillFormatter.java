@@ -1,4 +1,3 @@
-
 package com.github.mikephil.charting.utils;
 
 import com.github.mikephil.charting.data.LineData;
@@ -22,6 +21,6 @@ public interface FillFormatter {
      * @param chartMinY
      * @return
      */
-    public float getFillLinePosition(LineDataSet dataSet, LineData data, float chartMaxY,
+    float getFillLinePosition(LineDataSet dataSet, LineData data, float chartMaxY,
             float chartMinY);
 }

@@ -6,12 +6,12 @@ import com.github.mikephil.charting.utils.Transformer;
 
 public interface BarLineScatterCandleBubbleDataProvider extends ChartInterface {
 
-    public Transformer getTransformer(AxisDependency axis);
-    public int getMaxVisibleCount();
-    public boolean isInverted(AxisDependency axis);
+    Transformer getTransformer(AxisDependency axis);
+    int getMaxVisibleCount();
+    boolean isInverted(AxisDependency axis);
     
-    public int getLowestVisibleXIndex();
-    public int getHighestVisibleXIndex();
+    int getLowestVisibleXIndex();
+    int getHighestVisibleXIndex();
 
-    public BarLineScatterCandleData getData();
+    BarLineScatterCandleData getData();
 }

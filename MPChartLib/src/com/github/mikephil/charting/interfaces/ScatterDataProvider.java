@@ -4,6 +4,6 @@ import com.github.mikephil.charting.data.ScatterData;
 
 public interface ScatterDataProvider extends BarLineScatterCandleBubbleDataProvider {
 
-    public ScatterData getScatterData();
+    ScatterData getScatterData();
     
 }
