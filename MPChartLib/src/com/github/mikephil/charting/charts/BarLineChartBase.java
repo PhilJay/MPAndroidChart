@@ -363,34 +363,51 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mXChartMax = mData.getXVals().size() - 1;
         mDeltaX = Math.abs(mXChartMax - mXChartMin);
 
-        mAxisLeft.mAxisMaximum = !Float.isNaN(mAxisLeft.getAxisMaxValue()) ? mAxisLeft
-                .getAxisMaxValue() : maxLeft + topSpaceLeft;
-        mAxisRight.mAxisMaximum = !Float.isNaN(mAxisRight.getAxisMaxValue()) ? mAxisRight
-                .getAxisMaxValue() : maxRight + topSpaceRight;
-        mAxisLeft.mAxisMinimum = !Float.isNaN(mAxisLeft.getAxisMinValue()) ? mAxisLeft
-                .getAxisMinValue() : minLeft - bottomSpaceLeft;
-        mAxisRight.mAxisMinimum = !Float.isNaN(mAxisRight.getAxisMinValue()) ? mAxisRight
-                .getAxisMinValue() : minRight - bottomSpaceRight;
+        // Consider sticking one of the edges of the axis to zero (0.0)
 
-        // consider starting at zero (0)
         if (mAxisLeft.isStartAtZeroEnabled()) {
-            if (mAxisLeft.mAxisMinimum < 0f && mAxisLeft.mAxisMaximum < 0f) {
+            if (minLeft < 0.f && maxLeft < 0.f) {
                 // If the values are all negative, let's stay in the negative zone
-                mAxisLeft.mAxisMaximum = 0f;
-            } else if (mAxisLeft.mAxisMinimum >= 0f) {
-                // We have positive values only, stay in the positive zone
-                mAxisLeft.mAxisMinimum = 0f;
+                mAxisLeft.mAxisMinimum = Math.min(0.f, !Float.isNaN(mAxisLeft.getAxisMinValue()) ? mAxisLeft.getAxisMinValue() : (minLeft - bottomSpaceLeft));
+                mAxisLeft.mAxisMaximum = 0.f;
             }
+            else if (minLeft >= 0.0) {
+                // We have positive values only, stay in the positive zone
+                mAxisLeft.mAxisMinimum = 0.f;
+                mAxisLeft.mAxisMaximum = Math.max(0.f, !Float.isNaN(mAxisLeft.getAxisMaxValue()) ? mAxisLeft.getAxisMaxValue() : (maxLeft + topSpaceLeft));
+            }
+            else {
+                // Stick the minimum to 0.0 or less, and maximum to 0.0 or more (startAtZero for negative/positive at the same time)
+                mAxisLeft.mAxisMinimum = Math.min(0.f, !Float.isNaN(mAxisLeft.getAxisMinValue()) ? mAxisLeft.getAxisMinValue() : (minLeft - bottomSpaceLeft));
+                mAxisLeft.mAxisMaximum = Math.max(0.f, !Float.isNaN(mAxisLeft.getAxisMaxValue()) ? mAxisLeft.getAxisMaxValue() : (maxLeft + topSpaceLeft));
+            }
+        }
+        else {
+            // Use the values as they are
+            mAxisLeft.mAxisMinimum = !Float.isNaN(mAxisLeft.getAxisMinValue()) ? mAxisLeft.getAxisMinValue() : (minLeft - bottomSpaceLeft);
+            mAxisLeft.mAxisMaximum = !Float.isNaN(mAxisLeft.getAxisMaxValue()) ? mAxisLeft.getAxisMaxValue() : (maxLeft + topSpaceLeft);
         }
 
         if (mAxisRight.isStartAtZeroEnabled()) {
-            if (mAxisRight.mAxisMinimum < 0.0 && mAxisRight.mAxisMaximum < 0.0) {
+            if (minRight < 0.f && maxRight < 0.f) {
                 // If the values are all negative, let's stay in the negative zone
-                mAxisRight.mAxisMaximum = 0f;
-            } else if (mAxisRight.mAxisMinimum >= 0f) {
-                // We have positive values only, stay in the positive zone
-                mAxisRight.mAxisMinimum = 0f;
+                mAxisRight.mAxisMinimum = Math.min(0.f, !Float.isNaN(mAxisRight.getAxisMinValue()) ? mAxisRight.getAxisMinValue() : (minRight - bottomSpaceRight));
+                mAxisRight.mAxisMaximum = 0.f;
             }
+            else if (minRight >= 0.f) {
+                // We have positive values only, stay in the positive zone
+                mAxisRight.mAxisMinimum = 0.f;
+                mAxisRight.mAxisMaximum = Math.max(0.f, !Float.isNaN(mAxisRight.getAxisMaxValue()) ? mAxisRight.getAxisMaxValue() : (maxRight + topSpaceRight));
+            }
+            else {
+                // Stick the minimum to 0.0 or less, and maximum to 0.0 or more (startAtZero for negative/positive at the same time)
+                mAxisRight.mAxisMinimum = Math.min(0.f, !Float.isNaN(mAxisRight.getAxisMinValue()) ? mAxisRight.getAxisMinValue() : (minRight - bottomSpaceRight));
+                mAxisRight.mAxisMaximum = Math.max(0.f, !Float.isNaN(mAxisRight.getAxisMaxValue()) ? mAxisRight.getAxisMaxValue() : (maxRight + topSpaceRight));
+            }
+        }
+        else {
+            mAxisRight.mAxisMinimum = !Float.isNaN(mAxisRight.getAxisMinValue()) ? mAxisRight.getAxisMinValue() : (minRight - bottomSpaceRight);
+            mAxisRight.mAxisMaximum = !Float.isNaN(mAxisRight.getAxisMaxValue()) ? mAxisRight.getAxisMaxValue() : (maxRight + topSpaceRight);
         }
 
         mAxisLeft.mAxisRange = Math.abs(mAxisLeft.mAxisMaximum - mAxisLeft.mAxisMinimum);
