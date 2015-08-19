@@ -339,7 +339,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
     @Override
     protected float getRequiredBaseOffset() {
-        return mXAxis.isEnabled() ? mXAxis.mLabelWidth : Utils.convertDpToPixel(10f);
+        return mXAxis.isEnabled() && mXAxis.isDrawLabelsEnabled() ? mXAxis.mLabelWidth : Utils.convertDpToPixel(10f);
     }
 
     @Override
