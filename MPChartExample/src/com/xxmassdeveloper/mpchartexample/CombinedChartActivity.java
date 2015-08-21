@@ -74,9 +74,7 @@ public class CombinedChartActivity extends DemoBase {
 
         data.setData(generateLineData());
         data.setData(generateBarData());
-//        data.setData(generateBubbleData());
-//         data.setData(generateScatterData());
-//         data.setData(generateCandleData());
+
 
         mChart.setData(data);
         mChart.invalidate();
@@ -218,6 +216,12 @@ public class CombinedChartActivity extends DemoBase {
                 }
 
                 mChart.invalidate();
+                break;
+            }
+            case R.id.actionUpdate: {
+                for(int i = 0; i< 25; i++){
+                    mChart = (CombinedChart) findViewById(R.id.chart1);
+                    mChart.invalidate();}
                 break;
             }
         }

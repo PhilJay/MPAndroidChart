@@ -9,5 +9,9 @@
         android:id="@+id/actionToggleBarValues"
         android:title="Toggle bar Values">
     </item>
+    <item
+        android:id="@+id/actionUpdate"
+        android:title="Update Graph">
+    </item>
 
 </menu>

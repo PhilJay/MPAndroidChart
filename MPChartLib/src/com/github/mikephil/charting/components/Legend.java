@@ -832,7 +832,7 @@ public class Legend extends ComponentBase {
         } else {
             Log.i("Vertical", "called");
             mNeededWidth = getMaximumEntryWidth(labelpaint);
-            mNeededHeight += getFullHeight(labelpaint);
+            mNeededHeight = getFullHeight(labelpaint)*2;
             mTextWidthMax = mNeededWidth;
             mTextHeightMax = getMaximumEntryHeight(labelpaint);
         }
