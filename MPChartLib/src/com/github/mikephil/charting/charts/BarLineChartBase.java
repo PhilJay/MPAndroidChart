@@ -19,23 +19,23 @@ import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.BarLineScatterCandleData;
 import com.github.mikephil.charting.data.BarLineScatterCandleDataSet;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.interfaces.BarLineScatterCandleDataProvider;
+import com.github.mikephil.charting.highlight.ChartHighlighter;
+import com.github.mikephil.charting.interfaces.BarLineScatterCandleBubbleDataProvider;
 import com.github.mikephil.charting.jobs.MoveViewJob;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.listener.OnDrawListener;
 import com.github.mikephil.charting.renderer.XAxisRenderer;
 import com.github.mikephil.charting.renderer.YAxisRenderer;
 import com.github.mikephil.charting.utils.FillFormatter;
-import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.PointD;
-import com.github.mikephil.charting.utils.SelectionDetail;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 
@@ -49,7 +49,7 @@ import java.util.List;
  */
 @SuppressLint("RtlHardcoded")
 public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? extends BarLineScatterCandleDataSet<? extends Entry>>>
-        extends Chart<T> implements BarLineScatterCandleDataProvider {
+        extends Chart<T> implements BarLineScatterCandleBubbleDataProvider {
 
     /** the maximum number of entried to which values will be drawn */
     protected int mMaxVisibleCount = 100;
@@ -146,6 +146,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mAxisRendererRight = new YAxisRenderer(mViewPortHandler, mAxisRight, mRightAxisTransformer);
 
         mXAxisRenderer = new XAxisRenderer(mViewPortHandler, mXAxis, mLeftAxisTransformer);
+
+        mHighlighter = new ChartHighlighter(this);
 
         mChartTouchListener = new BarLineChartTouchListener(this, mViewPortHandler.getMatrixTouch());
 
@@ -371,18 +373,32 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 .getAxisMinValue() : minRight - bottomSpaceRight;
 
         // consider starting at zero (0)
-        if (mAxisLeft.isStartAtZeroEnabled())
-            mAxisLeft.mAxisMinimum = 0f;
+        if (mAxisLeft.isStartAtZeroEnabled()) {
+            if (mAxisLeft.mAxisMinimum < 0f && mAxisLeft.mAxisMaximum < 0f) {
+                // If the values are all negative, let's stay in the negative zone
+                mAxisLeft.mAxisMaximum = 0f;
+            } else {
+                // We have positive values, stay in the positive zone
+                mAxisLeft.mAxisMinimum = 0f;
+            }
+        }
 
-        if (mAxisRight.isStartAtZeroEnabled())
-            mAxisRight.mAxisMinimum = 0f;
+        if (mAxisRight.isStartAtZeroEnabled()) {
+            if (mAxisRight.mAxisMinimum < 0.0 && mAxisRight.mAxisMaximum < 0.0) {
+                // If the values are all negative, let's stay in the negative zone
+                mAxisRight.mAxisMaximum = 0f;
+            } else {
+                // We have positive values, stay in the positive zone
+                mAxisRight.mAxisMinimum = 0f;
+            }
+        }
 
         mAxisLeft.mAxisRange = Math.abs(mAxisLeft.mAxisMaximum - mAxisLeft.mAxisMinimum);
         mAxisRight.mAxisRange = Math.abs(mAxisRight.mAxisMaximum - mAxisRight.mAxisMinimum);
     }
 
     @Override
-    protected void calculateOffsets() {
+    public void calculateOffsets() {
 
         if (!mCustomViewPortEnabled) {
 
@@ -505,26 +521,31 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     }
 
     @Override
-    protected float[] getMarkerPosition(Entry e, int dataSetIndex) {
+    protected float[] getMarkerPosition(Entry e, Highlight highlight) {
 
+        int dataSetIndex = highlight.getDataSetIndex();
         float xPos = e.getXIndex();
+        float yPos = e.getVal();
 
         if (this instanceof BarChart) {
 
             BarData bd = (BarData) mData;
             float space = bd.getGroupSpace();
-            float j = mData.getDataSetByIndex(dataSetIndex)
-                    .getEntryPosition(e);
 
-            float x = (j * (mData.getDataSetCount() - 1)) + dataSetIndex + space * j + space
+            float x = e.getXIndex() * (mData.getDataSetCount() - 1) + dataSetIndex + space * e.getXIndex() + space
                     / 2f;
 
             xPos += x;
+
+            BarEntry entry = (BarEntry) e;
+            if(entry.getVals() != null) {
+                yPos = highlight.getRange().to;
+            }
         }
 
         // position of the marker depends on selected value index and value
         float[] pts = new float[] {
-                xPos, e.getVal() * mAnimator.getPhaseY()
+                xPos, yPos * mAnimator.getPhaseY()
         };
 
         getTransformer(mData.getDataSetByIndex(dataSetIndex).getAxisDependency())
@@ -598,6 +619,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     public void zoomIn() {
         Matrix save = mViewPortHandler.zoomIn(getWidth() / 2f, -(getHeight() / 2f));
         mViewPortHandler.refresh(save, this, true);
+
+        // Range might have changed, which means that Y-axis labels
+        // could have changed in size, affecting Y-axis size.
+        // So we need to recalculate offsets.
+        calculateOffsets();
+        postInvalidate();
     }
 
     /**
@@ -606,6 +633,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     public void zoomOut() {
         Matrix save = mViewPortHandler.zoomOut(getWidth() / 2f, -(getHeight() / 2f));
         mViewPortHandler.refresh(save, this, true);
+
+        // Range might have changed, which means that Y-axis labels
+        // could have changed in size, affecting Y-axis size.
+        // So we need to recalculate offsets.
+        calculateOffsets();
+        postInvalidate();
     }
 
     /**
@@ -620,6 +653,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     public void zoom(float scaleX, float scaleY, float x, float y) {
         Matrix save = mViewPortHandler.zoom(scaleX, scaleY, x, -y);
         mViewPortHandler.refresh(save, this, true);
+
+        // Range might have changed, which means that Y-axis labels
+        // could have changed in size, affecting Y-axis size.
+        // So we need to recalculate offsets.
+        calculateOffsets();
+        postInvalidate();
     }
 
     /**
@@ -629,6 +668,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     public void fitScreen() {
         Matrix save = mViewPortHandler.fitScreen();
         mViewPortHandler.refresh(save, this, true);
+
+        // Range might have changed, which means that Y-axis labels
+        // could have changed in size, affecting Y-axis size.
+        // So we need to recalculate offsets.
+        calculateOffsets();
+        postInvalidate();
     }
 
     /**
@@ -1039,90 +1084,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         if (mDataNotSet || mData == null) {
             Log.e(LOG_TAG, "Can't select by touch. No data set.");
             return null;
-        }
-
-        // create an array of the touch-point
-        float[] pts = new float[2];
-        pts[0] = x;
-
-        // take any transformer to determine the x-axis value
-        mLeftAxisTransformer.pixelsToValue(pts);
-
-        double xTouchVal = pts[0];
-        double base = Math.floor(xTouchVal);
-
-        double touchOffset = mDeltaX * 0.025;
-
-        // touch out of chart
-        if (xTouchVal < -touchOffset || xTouchVal > mDeltaX + touchOffset)
-            return null;
-
-        if (base < 0)
-            base = 0;
-        if (base >= mDeltaX)
-            base = mDeltaX - 1;
-
-        int xIndex = (int) base;
-
-        // check if we are more than half of a x-value or not
-        if (xTouchVal - base > 0.5) {
-            xIndex = (int) base + 1;
-        }
-
-        List<SelectionDetail> valsAtIndex = getSelectionDetailsAtIndex(xIndex);
-
-        float leftdist = Utils.getMinimumDistance(valsAtIndex, y, AxisDependency.LEFT);
-        float rightdist = Utils.getMinimumDistance(valsAtIndex, y, AxisDependency.RIGHT);
-
-        if (mData.getFirstRight() == null)
-            rightdist = Float.MAX_VALUE;
-        if (mData.getFirstLeft() == null)
-            leftdist = Float.MAX_VALUE;
-
-        AxisDependency axis = leftdist < rightdist ? AxisDependency.LEFT : AxisDependency.RIGHT;
-
-        int dataSetIndex = Utils.getClosestDataSetIndex(valsAtIndex, y, axis);
-
-        if (dataSetIndex == -1)
-            return null;
-
-        return new Highlight(xIndex, dataSetIndex);
-    }
-
-    /**
-     * Returns an array of SelectionDetail objects for the given x-index. The SelectionDetail
-     * objects give information about the value at the selected index and the
-     * DataSet it belongs to. INFORMATION: This method does calculations at
-     * runtime. Do not over-use in performance critical situations.
-     *
-     * @return
-     */
-    protected List<SelectionDetail> getSelectionDetailsAtIndex(int xIndex) {
-
-        List<SelectionDetail> vals = new ArrayList<SelectionDetail>();
-
-        float[] pts = new float[2];
-
-        for (int i = 0; i < mData.getDataSetCount(); i++) {
-
-            DataSet<?> dataSet = mData.getDataSetByIndex(i);
-
-            // dont include datasets that cannot be highlighted
-            if(!dataSet.isHighlightEnabled())
-                continue;
-
-            // extract all y-values from all DataSets at the given x-index
-            float yVal = dataSet.getYValForXIndex(xIndex);
-            pts[1] = yVal;
-
-            getTransformer(dataSet.getAxisDependency()).pointValuesToPixel(pts);
-
-            if (!Float.isNaN(pts[1])) {
-                vals.add(new SelectionDetail(pts[1], i, dataSet));
-            }
-        }
-
-        return vals;
+        } else
+            return mHighlighter.getHighlight(x, y);
     }
 
     /**

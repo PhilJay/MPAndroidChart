@@ -1,7 +1,7 @@
 
 package com.github.mikephil.charting.renderer;
 
-import com.github.mikephil.charting.interfaces.BarLineScatterCandleDataProvider;
+import com.github.mikephil.charting.interfaces.BarLineScatterCandleBubbleDataProvider;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**
@@ -50,7 +50,7 @@ public abstract class Renderer {
      * @param chart
      * @param modulus
      */
-    public void calcXBounds(BarLineScatterCandleDataProvider chart, int xAxisModulus) {
+    public void calcXBounds(BarLineScatterCandleBubbleDataProvider chart, int xAxisModulus) {
         
         int low = chart.getLowestVisibleXIndex();
         int high = chart.getHighestVisibleXIndex();

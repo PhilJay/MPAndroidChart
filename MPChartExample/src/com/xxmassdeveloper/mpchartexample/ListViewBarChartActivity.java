@@ -98,12 +98,12 @@ public class ListViewBarChartActivity extends DemoBase {
             
             YAxis leftAxis = holder.chart.getAxisLeft();
             leftAxis.setTypeface(mTf);
-            leftAxis.setLabelCount(5);
+            leftAxis.setLabelCount(5, false);
             leftAxis.setSpaceTop(15f);
             
             YAxis rightAxis = holder.chart.getAxisRight();
             rightAxis.setTypeface(mTf);
-            rightAxis.setLabelCount(5);
+            rightAxis.setLabelCount(5, false);
             rightAxis.setSpaceTop(15f);
 
             // set data

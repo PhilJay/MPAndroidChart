@@ -3,6 +3,7 @@ package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
@@ -13,7 +14,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.BarDataProvider;
-import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
@@ -150,20 +151,20 @@ public class BarChartRenderer extends DataRenderer {
      * Prepares a bar for being highlighted.
      * 
      * @param x the x-position
-     * @param y the y-position
+     * @param y1 the y1-position
+     * @param y2 the y2-position
      * @param barspaceHalf the space between bars
-     * @param from
      * @param trans
      */
-    protected void prepareBarHighlight(float x, float y, float barspaceHalf, float from,
+    protected void prepareBarHighlight(float x, float y1, float y2, float barspaceHalf,
             Transformer trans) {
 
         float barWidth = 0.5f;
 
         float left = x - barWidth + barspaceHalf;
         float right = x + barWidth - barspaceHalf;
-        float top = y >= from ? y : from;
-        float bottom = y <= from ? y : from;
+        float top = y1;
+        float bottom = y2;
 
         mBarRect.set(left, top, right, bottom);
 
@@ -177,7 +178,7 @@ public class BarChartRenderer extends DataRenderer {
 
             List<BarDataSet> dataSets = mChart.getBarData().getDataSets();
 
-            final float valueOffsetPlus = Utils.convertDpToPixel(5f);
+            final float valueOffsetPlus = Utils.convertDpToPixel(4.5f);
             float posOffset = 0f;
             float negOffset = 0f;
             boolean drawValueAboveBar = mChart.isDrawValueAboveBarEnabled();
@@ -189,6 +190,9 @@ public class BarChartRenderer extends DataRenderer {
                 if (!dataSet.isDrawValuesEnabled())
                     continue;
 
+                // apply the text-styling defined by the DataSet
+                applyValueTextStyle(dataSet);
+
                 boolean isInverted = mChart.isInverted(dataSet.getAxisDependency());
 
                 // calculate the correct offset depending on the draw position of
@@ -197,14 +201,10 @@ public class BarChartRenderer extends DataRenderer {
                 posOffset = (drawValueAboveBar ? -valueOffsetPlus : valueTextHeight + valueOffsetPlus);
                 negOffset = (drawValueAboveBar ? valueTextHeight + valueOffsetPlus : -valueOffsetPlus);
 
-                if (isInverted)
-                {
+                if (isInverted) {
                     posOffset = -posOffset - valueTextHeight;
                     negOffset = -negOffset - valueTextHeight;
                 }
-
-                // apply the text-styling defined by the DataSet
-                applyValueTextStyle(dataSet);
 
                 ValueFormatter formatter = dataSet.getValueFormatter();
 
@@ -215,7 +215,7 @@ public class BarChartRenderer extends DataRenderer {
                 float[] valuePoints = getTransformedValues(trans, entries, i);
 
                 // if only single values are drawn (sum)
-                if (!mChart.isDrawValuesForWholeStackEnabled()) {
+                if (!dataSet.isStacked()) {
 
                     for (int j = 0; j < valuePoints.length * mAnimator.getPhaseX(); j += 2) {
 
@@ -232,7 +232,7 @@ public class BarChartRenderer extends DataRenderer {
                                 valuePoints[j + 1] + (val >= 0 ? posOffset : negOffset));
                     }
 
-                    // if each value of a potential stack should be drawn
+                    // if we have stacks
                 } else {
 
                     for (int j = 0; j < (valuePoints.length - 1) * mAnimator.getPhaseX(); j += 2) {
@@ -256,17 +256,28 @@ public class BarChartRenderer extends DataRenderer {
                             drawValue(c, formatter.getFormattedValue(e.getVal()), valuePoints[j],
                                     valuePoints[j + 1] + (e.getVal() >= 0 ? posOffset : negOffset));
 
+                            // draw stack values
                         } else {
 
                             float[] transformed = new float[vals.length * 2];
-                            int cnt = 0;
-                            float add = e.getVal();
 
-                            for (int k = 0; k < transformed.length; k += 2) {
+                            float posY = 0f;
+                            float negY = -e.getNegativeSum();
 
-                                add -= vals[cnt];
-                                transformed[k + 1] = (vals[cnt] + add) * mAnimator.getPhaseY();
-                                cnt++;
+                            for (int k = 0, idx = 0; k < transformed.length; k += 2, idx++) {
+
+                                float value = vals[idx];
+                                float y;
+
+                                if (value >= 0f) {
+                                    posY += value;
+                                    y = posY;
+                                } else {
+                                    y = negY;
+                                    negY -= value;
+                                }
+
+                                transformed[k + 1] = y * mAnimator.getPhaseY();
                             }
 
                             trans.pointValuesToPixel(transformed);
@@ -302,13 +313,8 @@ public class BarChartRenderer extends DataRenderer {
      * @formatter
      */
     protected void drawValue(Canvas c, String value, float xPos, float yPos) {
-
         c.drawText(value, xPos, yPos,
                 mValuePaint);
-    }
-
-    @Override
-    public void drawExtras(Canvas c) {
     }
 
     @Override
@@ -349,13 +355,19 @@ public class BarChartRenderer extends DataRenderer {
                 // calculate the correct x-position
                 float x = index * setCount + dataSetIndex + groupspace / 2f
                         + groupspace * index;
-                float y = isStack ? e.getVals()[h.getStackIndex()]
-                        + e.getBelowSum(h.getStackIndex()) : e.getVal();
 
-                // this is where the bar starts
-                float from = isStack ? e.getBelowSum(h.getStackIndex()) : 0f;
+                final float y1;
+                final float y2;
 
-                prepareBarHighlight(x, y, barspaceHalf, from, trans);
+                if (isStack) {
+                    y1 = h.getRange().from;
+                    y2 = h.getRange().to * mAnimator.getPhaseY();
+                } else {
+                    y1 = e.getVal();
+                    y2 = 0.f;
+                }
+
+                prepareBarHighlight(x, y1, y2, barspaceHalf, trans);
 
                 c.drawRect(mBarRect, mHighlightPaint);
 
@@ -366,10 +378,19 @@ public class BarChartRenderer extends DataRenderer {
                     // distance between highlight arrow and bar
                     float offsetY = mAnimator.getPhaseY() * 0.07f;
 
+                    float[] values = new float[9];
+                    trans.getPixelToValueMatrix().getValues(values);
+                    final float xToYRel = Math.abs(values[Matrix.MSCALE_Y] / values[Matrix.MSCALE_X]);
+
+                    final float arrowWidth = set.getBarSpace() / 2.f;
+                    final float arrowHeight = arrowWidth * xToYRel;
+
+                    final float yArrow = y1 > -y2 ? y1 : y1;
+
                     Path arrow = new Path();
-                    arrow.moveTo(x + 0.5f, y + offsetY * 0.3f);
-                    arrow.lineTo(x + 0.2f, y + offsetY);
-                    arrow.lineTo(x + 0.8f, y + offsetY);
+                    arrow.moveTo(x + 0.4f, yArrow + offsetY);
+                    arrow.lineTo(x + 0.4f + arrowWidth, yArrow + offsetY - arrowHeight);
+                    arrow.lineTo(x + 0.4f + arrowWidth, yArrow + offsetY + arrowHeight);
 
                     trans.pathValueToPixel(arrow);
                     c.drawPath(arrow, mHighlightPaint);
@@ -389,4 +410,7 @@ public class BarChartRenderer extends DataRenderer {
         return mChart.getBarData().getYValCount() < mChart.getMaxVisibleCount()
                 * mViewPortHandler.getScaleX();
     }
+
+    @Override
+    public void drawExtras(Canvas c) { }
 }

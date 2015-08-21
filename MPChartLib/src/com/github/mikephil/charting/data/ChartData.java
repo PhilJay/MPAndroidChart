@@ -5,7 +5,7 @@ import android.graphics.Typeface;
 import android.util.Log;
 
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
-import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.ValueFormatter;
 
 import java.util.ArrayList;
@@ -203,7 +203,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             mLastEnd = end;
 
             mYMin = Float.MAX_VALUE;
-            mYMax = Float.MIN_VALUE;
+            mYMax = -Float.MAX_VALUE;
 
             for (int i = 0; i < mDataSets.size(); i++) {
 
@@ -214,6 +214,11 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
                 if (mDataSets.get(i).getYMax() > mYMax)
                     mYMax = mDataSets.get(i).getYMax();
+            }
+
+            if (mYMin == Float.MAX_VALUE) {
+                mYMin = 0.f;
+                mYMax = 0.f;
             }
 
             // left axis
@@ -428,7 +433,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * situations.
      * 
      * @param dataSets the DataSet array to search
-     * @param type
+     * @param label
      * @param ignorecase if true, the search is not case-sensitive
      * @return
      */
@@ -481,7 +486,10 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * @return the entry that is highlighted
      */
     public Entry getEntryForHighlight(Highlight highlight) {
-        return mDataSets.get(highlight.getDataSetIndex()).getEntryForXIndex(
+        if(highlight.getDataSetIndex() >= mDataSets.size())
+            return null;
+        else
+            return mDataSets.get(highlight.getDataSetIndex()).getEntryForXIndex(
                 highlight.getXIndex());
     }
 
@@ -631,10 +639,10 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     }
 
     /**
-     * Adds an Entry to the DataSet at the specified index. Entries are added to
-     * the end of the list.
+     * Adds an Entry to the DataSet at the specified index.
+     * Entries are added to the end of the list.
      * 
-     * @param entry
+     * @param e
      * @param dataSetIndex
      */
     public void addEntry(Entry e, int dataSetIndex) {
@@ -642,18 +650,26 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         if (mDataSets.size() > dataSetIndex && dataSetIndex >= 0) {
 
             float val = e.getVal();
-
-            mYValCount += 1;
-            mYValueSum += val;
-
-            if (mYMax < val)
-                mYMax = val;
-            if (mYMin > val)
-                mYMin = val;
-
             T set = mDataSets.get(dataSetIndex);
 
-            if (set != null) {
+            if (mYValCount == 0) {
+                mYMin = val;
+                mYMax = val;
+
+                if (set.getAxisDependency() == AxisDependency.LEFT) {
+
+                    mLeftAxisMax = e.getVal();
+                    mLeftAxisMin = e.getVal();
+                } else {
+                    mRightAxisMax = e.getVal();
+                    mRightAxisMin = e.getVal();
+                }
+            } else {
+
+                if (mYMax < val)
+                    mYMax = val;
+                if (mYMin > val)
+                    mYMin = val;
 
                 if (set.getAxisDependency() == AxisDependency.LEFT) {
 
@@ -667,12 +683,15 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
                     if (mRightAxisMin > e.getVal())
                         mRightAxisMin = e.getVal();
                 }
-
-                handleEmptyAxis(getFirstLeft(), getFirstRight());
-
-                // add the entry to the dataset
-                set.addEntry(e);
             }
+
+            mYValCount += 1;
+            mYValueSum += val;
+
+            handleEmptyAxis(getFirstLeft(), getFirstRight());
+
+            // add the entry to the dataset
+            set.addEntry(e);
         } else {
             Log.e("addEntry", "Cannot add Entry because dataSetIndex too high or too low.");
         }
@@ -722,6 +741,9 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
         T dataSet = mDataSets.get(dataSetIndex);
         Entry e = dataSet.getEntryForXIndex(xIndex);
+
+        if (e == null || e.getXIndex() != xIndex)
+            return false;
 
         return removeEntry(e, dataSetIndex);
     }

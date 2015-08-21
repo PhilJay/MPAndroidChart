@@ -12,7 +12,7 @@ import java.util.List;
  * 
  * @author Philipp Jahoda
  */
-public abstract class LineRadarDataSet<T extends Entry> extends BarLineScatterCandleDataSet<T> {
+public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandleRadarDataSet<T> {
 
     /** the color that is used for filling the line surface */
     private int mFillColor = Color.rgb(140, 234, 255);
@@ -64,7 +64,7 @@ public abstract class LineRadarDataSet<T extends Entry> extends BarLineScatterCa
      * sets the alpha value (transparency) that is used for filling the line
      * surface (0-255), default: 85
      * 
-     * @param color
+     * @param alpha
      */
     public void setFillAlpha(int alpha) {
         mFillAlpha = alpha;
@@ -79,7 +79,7 @@ public abstract class LineRadarDataSet<T extends Entry> extends BarLineScatterCa
     public void setLineWidth(float width) {
 
         if (width < 0.2f)
-            width = 0.5f;
+            width = 0.2f;
         if (width > 10.0f)
             width = 10.0f;
         mLineWidth = Utils.convertDpToPixel(width);

@@ -424,7 +424,7 @@ public abstract class Utils {
 
     /**
      * Returns the index of the DataSet that contains the closest value on the
-     * y-axis. This is needed for highlighting.
+     * y-axis. This is needed for highlighting. This will return -Integer.MAX_VALUE if failure.
      * 
      * @param valsAtIndex all the values at a specific index
      * @return
@@ -432,7 +432,7 @@ public abstract class Utils {
     public static int getClosestDataSetIndex(List<SelectionDetail> valsAtIndex, float val,
             AxisDependency axis) {
 
-        int index = -1;
+        int index = -Integer.MAX_VALUE;
         float distance = Float.MAX_VALUE;
 
         for (int i = 0; i < valsAtIndex.size(); i++) {
@@ -448,8 +448,6 @@ public abstract class Utils {
                 }
             }
         }
-
-        // Log.i(LOG_TAG, "Closest DataSet index: " + index);
 
         return index;
     }

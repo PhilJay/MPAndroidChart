@@ -33,6 +33,7 @@ import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.highlight.ChartHighlighter;
 import com.github.mikephil.charting.interfaces.ChartInterface;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
@@ -40,7 +41,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.renderer.DataRenderer;
 import com.github.mikephil.charting.renderer.LegendRenderer;
 import com.github.mikephil.charting.utils.DefaultValueFormatter;
-import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -143,6 +144,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /** object responsible for rendering the data */
     protected DataRenderer mRenderer;
+
+    protected ChartHighlighter mHighlighter;
 
     /** object that manages the bounds and drawing constraints of the chart */
     protected ViewPortHandler mViewPortHandler;
@@ -367,13 +370,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     /** flag that indicates if offsets calculation has already been done or not */
     private boolean mOffsetsCalculated = false;
 
-    /**
-     * Bitmap object used for drawing. This is necessary because hardware
-     * acceleration uses OpenGL which only allows a specific texture size to be
-     * drawn on the canvas directly.
-     **/
-    protected Bitmap mDrawBitmap;
-
     /** paint object used for drawing the bitmap */
     protected Paint mDrawPaint;
 
@@ -584,8 +580,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         for (int i = 0; i < mIndicesToHightlight.length; i++) {
 
-            int xIndex = mIndicesToHightlight[i].getXIndex();
-            int dataSetIndex = mIndicesToHightlight[i].getDataSetIndex();
+            Highlight highlight = mIndicesToHightlight[i];
+            int xIndex = highlight.getXIndex();
+            int dataSetIndex = highlight.getDataSetIndex();
 
             if (xIndex <= mDeltaX && xIndex <= mDeltaX * mAnimator.getPhaseX()) {
 
@@ -595,14 +592,14 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 if (e == null || e.getXIndex() != mIndicesToHightlight[i].getXIndex())
                     continue;
 
-                float[] pos = getMarkerPosition(e, dataSetIndex);
+                float[] pos = getMarkerPosition(e, highlight);
 
                 // check bounds
                 if (!mViewPortHandler.isInBounds(pos[0], pos[1]))
                     continue;
 
                 // callbacks to update the content
-                mMarkerView.refreshContent(e, dataSetIndex);
+                mMarkerView.refreshContent(e, highlight);
 
                 // mMarkerView.measure(MeasureSpec.makeMeasureSpec(0,
                 // MeasureSpec.UNSPECIFIED),
@@ -630,11 +627,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * Returns the actual position in pixels of the MarkerView for the given
      * Entry in the given DataSet.
      *
-     * @param xIndex
-     * @param dataSetIndex
+     * @param e
+     * @param highlight
      * @return
      */
-    protected abstract float[] getMarkerPosition(Entry e, int dataSetIndex);
+    protected abstract float[] getMarkerPosition(Entry e, Highlight highlight);
 
     /**
      * ################ ################ ################ ################
@@ -1590,12 +1587,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             Log.i(LOG_TAG, "OnSizeChanged()");
 
         if (w > 0 && h > 0 && w < 10000 && h < 10000) {
-            // create a new bitmap with the new dimensions
 
-            if (mDrawBitmap != null)
-                mDrawBitmap.recycle();
-
-            mDrawBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_4444);
             mViewPortHandler.setChartDimens(w, h);
 
             if (mLogEnabled)

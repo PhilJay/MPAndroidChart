@@ -14,13 +14,13 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.LineDataProvider;
-import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.List;
 
-public class LineChartRenderer extends DataRenderer {
+public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
     protected LineDataProvider mChart;
 
@@ -539,6 +539,7 @@ public class LineChartRenderer extends DataRenderer {
                 continue;
 
             mHighlightPaint.setColor(set.getHighLightColor());
+            mHighlightPaint.setStrokeWidth(set.getHighlightLineWidth());
 
             int xIndex = indices[i].getXIndex(); // get the
                                                  // x-position
@@ -546,11 +547,11 @@ public class LineChartRenderer extends DataRenderer {
             if (xIndex > mChart.getXChartMax() * mAnimator.getPhaseX())
                 continue;
 
-            float yValue = set.getYValForXIndex(xIndex);
-            if (yValue == Float.NaN)
+            final float yVal = set.getYValForXIndex(xIndex);
+            if (yVal == Float.NaN)
                 continue;
 
-            float y = yValue * mAnimator.getPhaseY(); // get
+            float y = yVal * mAnimator.getPhaseY(); // get
                                                                             // the
             // y-position
 
@@ -560,8 +561,9 @@ public class LineChartRenderer extends DataRenderer {
             };
 
             mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);
-            // draw the highlight lines
-            c.drawLines(pts, mHighlightPaint);
+
+            // draw the lines
+            drawHighlightLines(c, pts, set.isHorizontalHighlightIndicatorEnabled(), set.isVerticalHighlightIndicatorEnabled());
         }
     }
 }

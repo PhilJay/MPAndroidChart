@@ -12,13 +12,13 @@ import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
-import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.List;
 
-public class RadarChartRenderer extends DataRenderer {
+public class RadarChartRenderer extends LineScatterCandleRadarRenderer {
 
     protected RadarChart mChart;
 
@@ -220,6 +220,7 @@ public class RadarChartRenderer extends DataRenderer {
                 continue;
 
             mHighlightPaint.setColor(set.getHighLightColor());
+            mHighlightPaint.setStrokeWidth(set.getHighlightLineWidth());
 
             // get the index to highlight
             int xIndex = indices[i].getXIndex();
@@ -242,7 +243,8 @@ public class RadarChartRenderer extends DataRenderer {
                     mViewPortHandler.getChartWidth(), p.y
             };
 
-            c.drawLines(pts, mHighlightPaint);
+            // draw the lines
+            drawHighlightLines(c, pts, set.isHorizontalHighlightIndicatorEnabled(), set.isVerticalHighlightIndicatorEnabled());
         }
     }
 

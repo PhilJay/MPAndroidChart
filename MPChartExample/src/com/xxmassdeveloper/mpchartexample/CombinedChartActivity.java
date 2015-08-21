@@ -9,6 +9,7 @@ import android.view.WindowManager;
 
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.charts.CombinedChart.DrawOrder;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
@@ -52,9 +53,13 @@ public class CombinedChartActivity extends DemoBase {
         mChart.setDrawBarShadow(false);
         
         // draw bars behind lines
-        mChart.setDrawOrder(new DrawOrder[] {
+        mChart.setDrawOrder(new DrawOrder[]{
                 DrawOrder.BAR, DrawOrder.BUBBLE, DrawOrder.CANDLE, DrawOrder.LINE, DrawOrder.SCATTER
         });
+
+        Legend l = mChart.getLegend();
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
@@ -69,9 +74,7 @@ public class CombinedChartActivity extends DemoBase {
 
         data.setData(generateLineData());
         data.setData(generateBarData());
-//        data.setData(generateBubbleData());
-//         data.setData(generateScatterData());
-//         data.setData(generateCandleData());
+
 
         mChart.setData(data);
         mChart.invalidate();
@@ -213,6 +216,12 @@ public class CombinedChartActivity extends DemoBase {
                 }
 
                 mChart.invalidate();
+                break;
+            }
+            case R.id.actionUpdate: {
+                for(int i = 0; i< 25; i++){
+                    mChart = (CombinedChart) findViewById(R.id.chart1);
+                    mChart.invalidate();}
                 break;
             }
         }

@@ -35,19 +35,12 @@ public class LineChart extends BarLineChartBase<LineData> implements LineDataPro
         super.init();
 
         mRenderer = new LineChartRenderer(this, mAnimator, mViewPortHandler);
-        
         mFillFormatter = new DefaultFillFormatter();
     }
 
     @Override
     protected void calcMinMax() {
         super.calcMinMax();
-
-        // // if there is only one value in the chart
-        // if (mOriginalData.getYValCount() == 1
-        // || mOriginalData.getYValCount() <= mOriginalData.getDataSetCount()) {
-        // mDeltaX = 1;
-        // }
 
         if (mDeltaX == 0 && mData.getYValCount() > 0)
             mDeltaX = 1;

@@ -64,7 +64,7 @@ public abstract class DataSet<T extends Entry> {
     private Typeface mValueTypeface;
 
     /** custom formatter that is used instead of the auto-formatter if set */
-    protected ValueFormatter mValueFormatter;
+    protected transient ValueFormatter mValueFormatter;
 
     /** this specifies which axis this DataSet should be plotted against */
     protected AxisDependency mAxisDependency = AxisDependency.LEFT;
@@ -109,13 +109,15 @@ public abstract class DataSet<T extends Entry> {
      * calc minimum and maximum y value
      */
     protected void calcMinMax(int start, int end) {
-        if (mYVals.size() == 0)
+        final int yValCount = mYVals.size();
+
+        if (yValCount == 0)
             return;
 
         int endValue;
 
-        if (end == 0)
-            endValue = mYVals.size() - 1;
+        if (end == 0 || end >= yValCount)
+            endValue = yValCount - 1;
         else
             endValue = end;
 
@@ -123,7 +125,7 @@ public abstract class DataSet<T extends Entry> {
         mLastEnd = endValue;
 
         mYMin = Float.MAX_VALUE;
-        mYMax = Float.MIN_VALUE;
+        mYMax = -Float.MAX_VALUE;
 
         for (int i = start; i <= endValue; i++) {
 
@@ -137,6 +139,11 @@ public abstract class DataSet<T extends Entry> {
                 if (e.getVal() > mYMax)
                     mYMax = e.getVal();
             }
+        }
+
+        if (mYMin == Float.MAX_VALUE) {
+            mYMin = 0.f;
+            mYMax = 0.f;
         }
     }
 
@@ -184,19 +191,37 @@ public abstract class DataSet<T extends Entry> {
 
     /**
      * Returns the first Entry object found at the given xIndex with binary
-     * search. If the no Entry at the specifed x-index is found, this method
-     * returns the Entry at the closest x-index. Returns null if no Entry object
+     * search. If the no Entry at the specified x-index is found, this method
+     * returns the index at the closest x-index. Returns null if no Entry object
      * at that index. INFORMATION: This method does calculations at runtime. Do
      * not over-use in performance critical situations.
      * 
-     * @param xIndex
+     * @param x
      * @return
      */
     public T getEntryForXIndex(int x) {
 
+        int index = getEntryIndex(x);
+        if (index > -1)
+            return mYVals.get(index);
+        return null;
+    }
+
+    /**
+     * Returns the first Entry index found at the given xIndex with binary
+     * search. If the no Entry at the specified x-index is found, this method
+     * returns the index at the closest x-index. Returns -1 if no Entry object
+     * at that index. INFORMATION: This method does calculations at runtime. Do
+     * not over-use in performance critical situations.
+     *
+     * @param x
+     * @return
+     */
+    public int getEntryIndex(int x) {
+
         int low = 0;
         int high = mYVals.size() - 1;
-        T closest = null;
+        int closest = -1;
 
         while (low <= high) {
             int m = (high + low) / 2;
@@ -205,7 +230,7 @@ public abstract class DataSet<T extends Entry> {
                 while (m > 0 && mYVals.get(m - 1).getXIndex() == x)
                     m--;
 
-                return mYVals.get(m);
+                return m;
             }
 
             if (x > mYVals.get(m).getXIndex())
@@ -213,7 +238,7 @@ public abstract class DataSet<T extends Entry> {
             else
                 high = m - 1;
 
-            closest = mYVals.get(m);
+            closest = m;
         }
 
         return closest;
@@ -224,7 +249,7 @@ public abstract class DataSet<T extends Entry> {
      * does calculations at runtime. Do not over-use in performance critical
      * situations.
      * 
-     * @param xIndex
+     * @param x
      * @return
      */
     public List<T> getEntriesForXIndex(int x) {
@@ -437,10 +462,12 @@ public abstract class DataSet<T extends Entry> {
     }
 
     /**
-     * Adds an Entry to the DataSet dynamically. This will also recalculate the
-     * current minimum and maximum values of the DataSet and the value-sum.
+     * Adds an Entry to the DataSet dynamically.
+     * Entries are added to the end of the list.
+     * This will also recalculate the current minimum and maximum
+     * values of the DataSet and the value-sum.
      *
-     * @param d
+     * @param e
      */
     @SuppressWarnings("unchecked")
     public void addEntry(Entry e) {
@@ -467,6 +494,50 @@ public abstract class DataSet<T extends Entry> {
         mYValueSum += val;
 
         // add the entry
+        mYVals.add((T) e);
+    }
+
+    /**
+     * Adds an Entry to the DataSet dynamically.
+     * Entries are added to their appropriate index respective to it's x-index.
+     * This will also recalculate the current minimum and maximum
+     * values of the DataSet and the value-sum.
+     *
+     * @param e
+     */
+    @SuppressWarnings("unchecked")
+    public void addEntryOrdered(Entry e) {
+
+        if (e == null)
+            return;
+
+        float val = e.getVal();
+
+        if (mYVals == null) {
+            mYVals = new ArrayList<T>();
+        }
+
+        if (mYVals.size() == 0) {
+            mYMax = val;
+            mYMin = val;
+        } else {
+            if (mYMax < val)
+                mYMax = val;
+            if (mYMin > val)
+                mYMin = val;
+        }
+
+        mYValueSum += val;
+
+        if (mYVals.size() > 0 && mYVals.get(mYVals.size() - 1).getXIndex() > e.getXIndex())
+        {
+            int closestIndex = getEntryIndex(e.getXIndex());
+            if (mYVals.get(closestIndex).getXIndex() < e.getXIndex())
+                closestIndex++;
+            mYVals.add(closestIndex, (T) e);
+            return;
+        }
+
         mYVals.add((T) e);
     }
 

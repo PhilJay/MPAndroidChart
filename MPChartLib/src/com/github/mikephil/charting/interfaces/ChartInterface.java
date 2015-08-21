@@ -4,6 +4,7 @@ package com.github.mikephil.charting.interfaces;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
+import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.utils.ValueFormatter;
 
 /**
@@ -35,4 +36,6 @@ public interface ChartInterface {
     public RectF getContentRect();
     
     public ValueFormatter getDefaultValueFormatter();
+
+    public ChartData getData();
 }

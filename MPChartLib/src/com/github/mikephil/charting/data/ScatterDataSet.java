@@ -9,7 +9,7 @@ import com.github.mikephil.charting.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScatterDataSet extends BarLineScatterCandleDataSet<Entry> {
+public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> {
 
     /** the size the scattershape will have, in screen pixels */
     private float mShapeSize = 15f;

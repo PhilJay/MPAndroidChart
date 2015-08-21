@@ -12,14 +12,14 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.interfaces.ScatterDataProvider;
-import com.github.mikephil.charting.utils.Highlight;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.List;
 
-public class ScatterChartRenderer extends DataRenderer {
+public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
     protected ScatterDataProvider mChart;
 
@@ -259,6 +259,7 @@ public class ScatterChartRenderer extends DataRenderer {
                 continue;
 
             mHighlightPaint.setColor(set.getHighLightColor());
+            mHighlightPaint.setStrokeWidth(set.getHighlightLineWidth());
 
             int xIndex = indices[i].getXIndex(); // get the
                                                  // x-position
@@ -266,22 +267,23 @@ public class ScatterChartRenderer extends DataRenderer {
             if (xIndex > mChart.getXChartMax() * mAnimator.getPhaseX())
                 continue;
 
-            float yValue = set.getYValForXIndex(xIndex);
-            if (yValue == Float.NaN)
+            final float yVal = set.getYValForXIndex(xIndex);
+            if (yVal == Float.NaN)
                 continue;
 
-            float y = yValue * mAnimator.getPhaseY(); // get
+            float y = yVal * mAnimator.getPhaseY(); // get
                                                                             // the
             // y-position
 
             float[] pts = new float[] {
-                    xIndex, mChart.getYChartMax(), xIndex, mChart.getYChartMin(), 0, y,
+                    xIndex, mChart.getYChartMax(), xIndex, mChart.getYChartMin(), mChart.getXChartMin(), y,
                     mChart.getXChartMax(), y
             };
 
             mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);
-            // draw the highlight lines
-            c.drawLines(pts, mHighlightPaint);
+
+            // draw the lines
+            drawHighlightLines(c, pts, set.isHorizontalHighlightIndicatorEnabled(), set.isVerticalHighlightIndicatorEnabled());
         }
     }
 }
