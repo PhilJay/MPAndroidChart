@@ -35,13 +35,11 @@ public class XAxisRenderer extends AxisRenderer {
         mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
         mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
 
-        StringBuffer a = new StringBuffer();
+        int max = Math.round(xValAverageLength + mXAxis.getSpaceBetweenLabels());
 
-        int max = (int) Math.round(xValAverageLength
-                + mXAxis.getSpaceBetweenLabels());
-
+        StringBuilder a = new StringBuilder(max);
         for (int i = 0; i < max; i++) {
-            a.append("h");
+            a.append('h');
         }
 
         mXAxis.mLabelWidth = Utils.calcTextWidth(mAxisLabelPaint, a.toString());
