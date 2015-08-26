@@ -123,7 +123,8 @@ public class XAxisRenderer extends AxisRenderer {
         List<String> labels = mXAxis.getValues();
         int labelsSize = labels.size();
 
-        for (int i = mMinX; i <= mMaxX; i += mXAxis.mAxisLabelModulus) {
+        int toSkip = mXAxis.mAxisLabelModulus;
+        for (int i = mMinX; i <= mMaxX; i += toSkip) {
 
             position[0] = i;
 
@@ -132,25 +133,30 @@ public class XAxisRenderer extends AxisRenderer {
             if (mViewPortHandler.isInBoundsX(position[0])) {
 
                 String label = labels.get(i);
+                // if the label has 0 length, we try to render the next one instead of jumping
+                if (label.length() == 0) {
+                    toSkip = 1;
+                } else {
+                    toSkip = mXAxis.mAxisLabelModulus;
 
-                if (mXAxis.isAvoidFirstLastClippingEnabled()) {
+                    if (mXAxis.isAvoidFirstLastClippingEnabled()) {
 
-                    // avoid clipping of the last
-                    if (i == labelsSize - 1 && labelsSize > 1) {
-                        float width = Utils.calcTextWidth(mAxisLabelPaint, label);
+                        // avoid clipping of the last
+                        if (i == labelsSize - 1 && labelsSize > 1) {
+                            float width = Utils.calcTextWidth(mAxisLabelPaint, label);
 
-                        if (width > mViewPortHandler.offsetRight() * 2
-                                && position[0] + width > mViewPortHandler.getChartWidth())
-                            position[0] -= width / 2;
+                            if (width > mViewPortHandler.offsetRight() * 2
+                                    && position[0] + width > mViewPortHandler.getChartWidth())
+                                position[0] -= width / 2;
 
-                        // avoid clipping of the first
-                    } else if (i == 0) {
+                            // avoid clipping of the first
+                        } else if (i == 0) {
 
-                        float width = Utils.calcTextWidth(mAxisLabelPaint, label);
-                        position[0] += width / 2;
+                            float width = Utils.calcTextWidth(mAxisLabelPaint, label);
+                            position[0] += width / 2;
+                        }
                     }
                 }
-
                 drawLabel(c, label, i, position[0], pos);
             }
         }
