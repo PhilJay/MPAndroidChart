@@ -120,6 +120,9 @@ public class XAxisRenderer extends AxisRenderer {
                 0f, 0f
         };
 
+        List<String> labels = mXAxis.getValues();
+        int labelsSize = labels.size();
+
         for (int i = mMinX; i <= mMaxX; i += mXAxis.mAxisLabelModulus) {
 
             position[0] = i;
@@ -128,12 +131,12 @@ public class XAxisRenderer extends AxisRenderer {
 
             if (mViewPortHandler.isInBoundsX(position[0])) {
 
-                String label = mXAxis.getValues().get(i);
+                String label = labels.get(i);
 
                 if (mXAxis.isAvoidFirstLastClippingEnabled()) {
 
                     // avoid clipping of the last
-                    if (i == mXAxis.getValues().size() - 1 && mXAxis.getValues().size() > 1) {
+                    if (i == labelsSize - 1 && labelsSize > 1) {
                         float width = Utils.calcTextWidth(mAxisLabelPaint, label);
 
                         if (width > mViewPortHandler.offsetRight() * 2
