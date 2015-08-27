@@ -69,11 +69,8 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
         List<CandleEntry> entries = dataSet.getYVals();
 
-        Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
-        Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
-
-        int minx = Math.max(dataSet.getEntryPosition(entryFrom), 0);
-        int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
+        int minx = Math.max(mMinX, 0);
+        int maxx = Math.min(mMaxX + 1, entries.size());
 
         int range = (maxx - minx) * 4;
         int to = (int)Math.ceil((maxx - minx) * phaseX + minx);
@@ -243,11 +240,8 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
                 List<CandleEntry> entries = dataSet.getYVals();
 
-                Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
-                Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
-
-                int minx = Math.max(dataSet.getEntryPosition(entryFrom), 0);
-                int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
+                int minx = Math.max(mMinX, 0);
+                int maxx = Math.min(mMaxX + 1, entries.size());
 
                 float[] positions = trans.generateTransformedValuesCandle(
                         entries, mAnimator.getPhaseX(), mAnimator.getPhaseY(), minx, maxx);
