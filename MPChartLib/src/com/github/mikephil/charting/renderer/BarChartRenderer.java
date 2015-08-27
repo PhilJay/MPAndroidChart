@@ -71,7 +71,7 @@ public class BarChartRenderer extends DataRenderer {
 
             BarDataSet set = barData.getDataSetByIndex(i);
 
-            if (set.isVisible()) {
+            if (set.isVisible() && set.getEntryCount() > 0) {
                 drawDataSet(c, set, i);
             }
         }
@@ -187,7 +187,7 @@ public class BarChartRenderer extends DataRenderer {
 
                 BarDataSet dataSet = dataSets.get(i);
 
-                if (!dataSet.isDrawValuesEnabled())
+                if (!dataSet.isDrawValuesEnabled() || dataSet.getEntryCount() == 0)
                     continue;
 
                 // apply the text-styling defined by the DataSet

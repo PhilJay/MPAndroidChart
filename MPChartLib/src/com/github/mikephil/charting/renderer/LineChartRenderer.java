@@ -94,7 +94,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
         for (LineDataSet set : lineData.getDataSets()) {
 
-            if (set.isVisible())
+            if (set.isVisible() && set.getEntryCount() > 0)
                 drawDataSet(c, set);
         }
 
@@ -410,7 +410,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
                 LineDataSet dataSet = dataSets.get(i);
 
-                if (!dataSet.isDrawValuesEnabled())
+                if (!dataSet.isDrawValuesEnabled() || dataSet.getEntryCount() == 0)
                     continue;
 
                 // apply the text-styling defined by the DataSet

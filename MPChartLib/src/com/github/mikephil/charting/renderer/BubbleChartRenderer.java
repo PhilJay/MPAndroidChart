@@ -49,7 +49,7 @@ public class BubbleChartRenderer extends DataRenderer {
 
         for (BubbleDataSet set : bubbleData.getDataSets()) {
 
-            if (set.isVisible())
+            if (set.isVisible() && set.getEntryCount() > 0)
                 drawDataSet(c, set);
         }
     }
@@ -133,7 +133,7 @@ public class BubbleChartRenderer extends DataRenderer {
 
             for (BubbleDataSet dataSet : dataSets) {
 
-                if (!dataSet.isDrawValuesEnabled())
+                if (!dataSet.isDrawValuesEnabled() || dataSet.getEntryCount() == 0)
                     continue;
 
                 // apply the text-styling defined by the DataSet

@@ -53,7 +53,7 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
         for (CandleDataSet set : candleData.getDataSets()) {
 
-            if (set.isVisible())
+            if (set.isVisible() && set.getEntryCount() > 0)
                 drawDataSet(c, set);
         }
     }
@@ -233,7 +233,7 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
                 CandleDataSet dataSet = dataSets.get(i);
 
-                if (!dataSet.isDrawValuesEnabled())
+                if (!dataSet.isDrawValuesEnabled() || dataSet.getEntryCount() == 0)
                     continue;
 
                 // apply the text-styling defined by the DataSet
