@@ -56,7 +56,7 @@ public class RadarChartRenderer extends LineScatterCandleRadarRenderer {
 
         for (RadarDataSet set : radarData.getDataSets()) {
 
-            if (set.isVisible())
+            if (set.isVisible() && set.getEntryCount() > 0)
                 drawDataSet(c, set);
         }
     }
@@ -131,7 +131,7 @@ public class RadarChartRenderer extends LineScatterCandleRadarRenderer {
 
             RadarDataSet dataSet = mChart.getData().getDataSetByIndex(i);
 
-            if (!dataSet.isDrawValuesEnabled())
+            if (!dataSet.isDrawValuesEnabled() || dataSet.getEntryCount() == 0)
                 continue;
 
             // apply the text-styling defined by the DataSet
