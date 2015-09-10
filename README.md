@@ -37,6 +37,8 @@ Donations
 
 Follow me on **Twitter**: [**@PhilippJahoda**](https://twitter.com/PhilippJahoda)
 
+Contact me on **LinkedIn**: [**PhilippJahoda**](https://www.linkedin.com/in/philippjahoda/en)
+
 Look me up on **StackOverflow**: [**Philipp Jahoda**](http://stackoverflow.com/users/1590502/philipp-jahoda)
 
 
