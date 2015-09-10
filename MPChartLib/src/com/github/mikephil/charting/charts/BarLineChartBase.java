@@ -548,15 +548,34 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
             BarData bd = (BarData) mData;
             float space = bd.getGroupSpace();
+            int setCount = mData.getDataSetCount();
+            int i = e.getXIndex();
 
-            float x = e.getXIndex() * (mData.getDataSetCount() - 1) + dataSetIndex + space * e.getXIndex() + space
-                    / 2f;
+            if(this instanceof HorizontalBarChart) {
 
-            xPos += x;
+                // calculate the x-position, depending on datasetcount
+                float y = i + i * (setCount - 1) + dataSetIndex + space * i + space / 2f ;
 
-            BarEntry entry = (BarEntry) e;
-            if(entry.getVals() != null) {
-                yPos = highlight.getRange().to;
+                yPos = y;
+
+                BarEntry entry = (BarEntry) e;
+                if(entry.getVals() != null) {
+                    xPos = highlight.getRange().to;
+                } else {
+                    xPos = e.getVal();
+                }
+            } else {
+
+                float x = i + i * (setCount - 1) + dataSetIndex + space * i + space / 2f;
+
+                xPos = x;
+
+                BarEntry entry = (BarEntry) e;
+                if(entry.getVals() != null) {
+                    yPos = highlight.getRange().to;
+                } else {
+                    yPos = e.getVal();
+                }
             }
         }
 
