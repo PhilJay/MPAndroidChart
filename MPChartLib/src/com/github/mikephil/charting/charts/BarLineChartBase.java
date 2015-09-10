@@ -564,6 +564,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 } else {
                     xPos = e.getVal();
                 }
+
+                xPos *= mAnimator.getPhaseY();
             } else {
 
                 float x = i + i * (setCount - 1) + dataSetIndex + space * i + space / 2f;
@@ -576,12 +578,16 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
                 } else {
                     yPos = e.getVal();
                 }
+
+                yPos *= mAnimator.getPhaseY();
             }
+        } else {
+            yPos *= mAnimator.getPhaseY();
         }
 
         // position of the marker depends on selected value index and value
         float[] pts = new float[] {
-                xPos, yPos * mAnimator.getPhaseY()
+                xPos, yPos
         };
 
         getTransformer(mData.getDataSetByIndex(dataSetIndex).getAxisDependency())
