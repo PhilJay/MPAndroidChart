@@ -31,7 +31,6 @@ import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.xxmassdeveloper.mpchartexample.custom.MyMarkerView;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -105,11 +104,6 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         yr.setDrawAxisLine(true);
         yr.setDrawGridLines(false);
 //        yr.setInverted(true);
-
-        MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
-
-        // set the marker to the chart
-        mChart.setMarkerView(mv);
 
         setData(12, 50);
         mChart.animateY(2500);
