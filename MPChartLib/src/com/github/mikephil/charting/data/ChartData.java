@@ -149,7 +149,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      */
     protected void init() {
 
-        isLegal();
+        checkLegal();
 
         calcMinMax(mLastStart, mLastEnd);
         calcYValueSum();
@@ -181,9 +181,12 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * Checks if the combination of x-values array and DataSet array is legal or
      * not.
      */
-    private void isLegal() {
+    private void checkLegal() {
 
         if (mDataSets == null)
+            return;
+
+        if(this instanceof ScatterData)
             return;
 
         for (int i = 0; i < mDataSets.size(); i++) {
