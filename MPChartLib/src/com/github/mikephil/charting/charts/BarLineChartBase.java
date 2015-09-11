@@ -785,6 +785,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
     /**
      * Moves the left side of the current viewport to the specified x-index.
+     * This also refreshes the chart by calling invalidate().
      * 
      * @param xIndex
      */
@@ -798,18 +799,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         } else {
             mJobs.add(job);
         }
-
-        // float[] pts = new float[] {
-        // xIndex, 0f
-        // };
-        //
-        // getTransformer(AxisDependency.LEFT).pointValuesToPixel(pts);
-        //
-        // mViewPortHandler.centerViewPort(pts, this);
     }
 
     /**
      * Centers the viewport to the specified y-value on the y-axis.
+     * This also refreshes the chart by calling invalidate().
      * 
      * @param yValue
      * @param axis - which axis should be used as a reference for the y-axis
@@ -832,6 +826,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * This will move the left side of the current viewport to the specified
      * x-index on the x-axis, and center the viewport to the specified y-value
      * on the y-axis.
+     * This also refreshes the chart by calling invalidate().
      * 
      * @param xIndex
      * @param yValue
@@ -854,6 +849,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     /**
      * This will move the center of the current viewport to the specified
      * x-index and y-value.
+     * This also refreshes the chart by calling invalidate().
      *
      * @param xIndex
      * @param yValue

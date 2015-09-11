@@ -91,5 +91,7 @@ public class CombinedData extends BarLineScatterCandleData<BarLineScatterCandleD
             mScatterData.notifyDataChanged();
         if (mBubbleData != null)
             mBubbleData.notifyDataChanged();
+
+        init(); // recalculate everything
     }
 }
