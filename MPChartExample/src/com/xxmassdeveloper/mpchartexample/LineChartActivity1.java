@@ -103,7 +103,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         llXAxis.setTextSize(10f);
 
         XAxis xAxis = mChart.getXAxis();
-        xAxis.addLimitLine(llXAxis);
+        //xAxis.addLimitLine(llXAxis); // add x-axis limit line
         
         LimitLine ll1 = new LimitLine(130f, "Upper Limit");
         ll1.setLineWidth(4f);
@@ -345,6 +345,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
         // set the line to be drawn like this "- - - - - -"
         set1.enableDashedLine(10f, 5f, 0f);
+        set1.enableDashedHighlightLine(10f, 5f, 0f);
         set1.setColor(Color.BLACK);
         set1.setCircleColor(Color.BLACK);
         set1.setLineWidth(1f);

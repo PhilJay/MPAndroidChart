@@ -25,9 +25,8 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
 
     /** if true, the data will also be drawn filled */
     private boolean mDrawFilled = false;
-    
-//    private Shader mShader;
-    
+
+
     public LineRadarDataSet(List<T> yVals, String label) {
         super(yVals, label);
     }

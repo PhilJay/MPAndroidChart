@@ -219,9 +219,6 @@ public class RadarChartRenderer extends LineScatterCandleRadarRenderer {
             if (set == null || !set.isHighlightEnabled())
                 continue;
 
-            mHighlightPaint.setColor(set.getHighLightColor());
-            mHighlightPaint.setStrokeWidth(set.getHighlightLineWidth());
-
             // get the index to highlight
             int xIndex = indices[i].getXIndex();
 
@@ -239,12 +236,11 @@ public class RadarChartRenderer extends LineScatterCandleRadarRenderer {
                     sliceangle * j + mChart.getRotationAngle());
 
             float[] pts = new float[] {
-                    p.x, 0, p.x, mViewPortHandler.getChartHeight(), 0, p.y,
-                    mViewPortHandler.getChartWidth(), p.y
+                    p.x, p.y
             };
 
             // draw the lines
-            drawHighlightLines(c, pts, set.isHorizontalHighlightIndicatorEnabled(), set.isVerticalHighlightIndicatorEnabled());
+            drawHighlightLines(c, pts, set);
         }
     }
 

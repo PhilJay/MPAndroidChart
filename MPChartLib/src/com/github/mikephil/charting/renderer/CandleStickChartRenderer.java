@@ -286,9 +286,6 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
             if (set == null || !set.isHighlightEnabled())
                 continue;
 
-            mHighlightPaint.setColor(set.getHighLightColor());
-            mHighlightPaint.setStrokeWidth(set.getHighlightLineWidth());
-
             CandleEntry e = set.getEntryForXIndex(xIndex);
 
             if (e == null || e.getXIndex() != xIndex)
@@ -303,14 +300,13 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
 
             float[] pts = new float[] {
-                    xIndex, mChart.getYChartMax(), xIndex, mChart.getYChartMin(), mChart.getXChartMin(), y,
-                    mChart.getXChartMax(), y
+                    xIndex, y
             };
 
             mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);
 
             // draw the lines
-            drawHighlightLines(c, pts, set.isHorizontalHighlightIndicatorEnabled(), set.isVerticalHighlightIndicatorEnabled());
+            drawHighlightLines(c, pts, set);
         }
     }
 

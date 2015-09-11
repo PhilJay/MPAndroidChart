@@ -258,11 +258,9 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
             if (set == null || !set.isHighlightEnabled())
                 continue;
 
-            mHighlightPaint.setColor(set.getHighLightColor());
-            mHighlightPaint.setStrokeWidth(set.getHighlightLineWidth());
-
             int xIndex = indices[i].getXIndex(); // get the
                                                  // x-position
+
 
             if (xIndex > mChart.getXChartMax() * mAnimator.getPhaseX())
                 continue;
@@ -271,19 +269,16 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
             if (yVal == Float.NaN)
                 continue;
 
-            float y = yVal * mAnimator.getPhaseY(); // get
-                                                                            // the
-            // y-position
+            float y = yVal * mAnimator.getPhaseY();
 
             float[] pts = new float[] {
-                    xIndex, mChart.getYChartMax(), xIndex, mChart.getYChartMin(), mChart.getXChartMin(), y,
-                    mChart.getXChartMax(), y
+                    xIndex, y
             };
 
             mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);
 
             // draw the lines
-            drawHighlightLines(c, pts, set.isHorizontalHighlightIndicatorEnabled(), set.isVerticalHighlightIndicatorEnabled());
+            drawHighlightLines(c, pts, set);
         }
     }
 }
