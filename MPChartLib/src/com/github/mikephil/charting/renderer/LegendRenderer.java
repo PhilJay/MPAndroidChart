@@ -230,12 +230,12 @@ public class LegendRenderer extends Renderer {
                 int lineIndex = 0;
 
                 for (int i = 0, count = labels.length; i < count; i++) {
-                    if (calculatedLabelBreakPoints[i]) {
+                    if (i < calculatedLabelBreakPoints.length && calculatedLabelBreakPoints[i]) {
                         posX = originPosX;
                         posY += labelLineHeight + labelLineSpacing;
                     }
 
-                    if (posX == originPosX && legendPosition == Legend.LegendPosition.BELOW_CHART_CENTER) {
+                    if (posX == originPosX && legendPosition == Legend.LegendPosition.BELOW_CHART_CENTER && lineIndex < calculatedLineSizes.length) {
                         posX += (direction == Legend.LegendDirection.RIGHT_TO_LEFT ? calculatedLineSizes[lineIndex].width : -calculatedLineSizes[lineIndex].width) / 2.f;
                         lineIndex++;
                     }
