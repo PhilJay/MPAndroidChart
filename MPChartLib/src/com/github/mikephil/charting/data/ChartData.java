@@ -15,15 +15,19 @@ import java.util.List;
 /**
  * Class that holds all relevant data that represents the chart. That involves
  * at least one (or more) DataSets, and an array of x-values.
- * 
+ *
  * @author Philipp Jahoda
  */
 public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
-    /** maximum y-value in the y-value array across all axes */
+    /**
+     * maximum y-value in the y-value array across all axes
+     */
     protected float mYMax = 0.0f;
 
-    /** the minimum y-value in the y-value array across all axes */
+    /**
+     * the minimum y-value in the y-value array across all axes
+     */
     protected float mYMin = 0.0f;
 
     protected float mLeftAxisMax = 0.0f;
@@ -34,16 +38,24 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     protected float mRightAxisMin = 0.0f;
 
-    /** the total sum of all y-values */
+    /**
+     * the total sum of all y-values
+     */
     private float mYValueSum = 0f;
 
-    /** total number of y-values across all DataSet objects */
+    /**
+     * total number of y-values across all DataSet objects
+     */
     private int mYValCount = 0;
 
-    /** the last start value used for calcMinMax */
+    /**
+     * the last start value used for calcMinMax
+     */
     protected int mLastStart = 0;
 
-    /** the last end value used for calcMinMax */
+    /**
+     * the last end value used for calcMinMax
+     */
     protected int mLastEnd = 0;
 
     /**
@@ -52,10 +64,14 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      */
     private float mXValAverageLength = 0;
 
-    /** holds all x-values the chart represents */
+    /**
+     * holds all x-values the chart represents
+     */
     protected List<String> mXVals;
 
-    /** array that holds all DataSets the ChartData object represents */
+    /**
+     * array that holds all DataSets the ChartData object represents
+     */
     protected List<T> mDataSets;
 
     public ChartData() {
@@ -66,7 +82,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /**
      * Constructor for only x-values. This constructor can be used for setting
      * up an empty chart without data.
-     * 
+     *
      * @param xVals
      */
     public ChartData(List<String> xVals) {
@@ -78,7 +94,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /**
      * Constructor for only x-values. This constructor can be used for setting
      * up an empty chart without data.
-     * 
+     *
      * @param xVals
      */
     public ChartData(String[] xVals) {
@@ -89,11 +105,11 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /**
      * constructor for chart data
-     * 
+     *
      * @param xVals The values describing the x-axis. Must be at least as long
-     *            as the highest xIndex in the Entry objects across all
-     *            DataSets.
-     * @param sets the dataset array
+     *              as the highest xIndex in the Entry objects across all
+     *              DataSets.
+     * @param sets  the dataset array
      */
     public ChartData(List<String> xVals, List<T> sets) {
         this.mXVals = xVals;
@@ -104,11 +120,11 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /**
      * constructor that takes string array instead of List string
-     * 
+     *
      * @param xVals The values describing the x-axis. Must be at least as long
-     *            as the highest xIndex in the Entry objects across all
-     *            DataSets.
-     * @param sets the dataset array
+     *              as the highest xIndex in the Entry objects across all
+     *              DataSets.
+     * @param sets  the dataset array
      */
     public ChartData(String[] xVals, List<T> sets) {
         this.mXVals = arrayToList(xVals);
@@ -119,7 +135,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /**
      * Turns an array of strings into an List of strings.
-     * 
+     *
      * @param array
      * @return
      */
@@ -282,7 +298,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /**
      * Calculates the total number of y-values across all DataSets the ChartData
      * represents.
-     * 
+     *
      * @return
      */
     protected void calcYValueCount() {
@@ -305,7 +321,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /**
      * returns the number of LineDataSets this object contains
-     * 
+     *
      * @return
      */
     public int getDataSetCount() {
@@ -315,8 +331,17 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     }
 
     /**
+     * Returns the average value across all entries in this Data object
+     * (all entries from the DataSets this data object holds)
+     * @return
+     */
+    public float getAverage() {
+        return (float ) getYValueSum() / (float) getYValCount();
+    }
+
+    /**
      * Returns the smallest y-value the data object contains.
-     * 
+     *
      * @return
      */
     public float getYMin() {
@@ -325,7 +350,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /**
      * Returns the minimum y-value for the specified axis.
-     * 
+     *
      * @param axis
      * @return
      */
@@ -338,7 +363,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /**
      * Returns the greatest y-value the data object contains.
-     * 
+     *
      * @return
      */
     public float getYMax() {
@@ -347,7 +372,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /**
      * Returns the maximum y-value for the specified axis.
-     * 
+     *
      * @param axis
      * @return
      */
@@ -361,7 +386,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /**
      * returns the average length (in characters) across all values in the
      * x-vals array
-     * 
+     *
      * @return
      */
     public float getXValAverageLength() {
@@ -371,7 +396,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /**
      * Returns the total y-value sum across all DataSet objects the this object
      * represents.
-     * 
+     *
      * @return
      */
     public float getYValueSum() {
@@ -381,7 +406,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /**
      * Returns the total number of y-values across all DataSet objects the this
      * object represents.
-     * 
+     *
      * @return
      */
     public int getYValCount() {
@@ -390,7 +415,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /**
      * returns the x-values the chart represents
-     * 
+     *
      * @return
      */
     public List<String> getXVals() {
@@ -399,7 +424,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /**
      * Adds a new x-value to the chart data.
-     * 
+     *
      * @param xVal
      */
     public void addXValue(String xVal) {
@@ -410,7 +435,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /**
      * Removes the x-value at the specified index.
-     * 
+     *
      * @param index
      */
     public void removeXValue(int index) {
@@ -419,7 +444,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /**
      * Returns an the array of DataSets this object holds.
-     * 
+     *
      * @return
      */
     public List<T> getDataSets() {
@@ -431,14 +456,14 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * Search can be case sensitive or not. IMPORTANT: This method does
      * calculations at runtime, do not over-use in performance critical
      * situations.
-     * 
-     * @param dataSets the DataSet array to search
+     *
+     * @param dataSets   the DataSet array to search
      * @param label
      * @param ignorecase if true, the search is not case-sensitive
      * @return
      */
     protected int getDataSetIndexByLabel(List<T> dataSets, String label,
-            boolean ignorecase) {
+                                         boolean ignorecase) {
 
         if (ignorecase) {
             for (int i = 0; i < dataSets.size(); i++)
@@ -456,7 +481,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /**
      * returns the total number of x-values this ChartData object represents
      * (the size of the x-values array)
-     * 
+     *
      * @return
      */
     public int getXValCount() {
@@ -465,7 +490,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /**
      * Returns the labels of all DataSets as a string array.
-     * 
+     *
      * @return
      */
     protected String[] getDataSetLabels() {
@@ -481,23 +506,23 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /**
      * Get the Entry for a corresponding highlight object
-     * 
+     *
      * @param highlight
      * @return the entry that is highlighted
      */
     public Entry getEntryForHighlight(Highlight highlight) {
-        if(highlight.getDataSetIndex() >= mDataSets.size())
+        if (highlight.getDataSetIndex() >= mDataSets.size())
             return null;
         else
             return mDataSets.get(highlight.getDataSetIndex()).getEntryForXIndex(
-                highlight.getXIndex());
+                    highlight.getXIndex());
     }
 
     /**
      * Returns the DataSet object with the given label. Search can be case
      * sensitive or not. IMPORTANT: This method does calculations at runtime.
      * Use with care in performance critical situations.
-     * 
+     *
      * @param label
      * @param ignorecase
      * @return
@@ -514,7 +539,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /**
      * Returns the DataSet object at the given index.
-     * 
+     *
      * @param index
      * @return
      */
@@ -528,7 +553,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /**
      * Adds a DataSet dynamically.
-     * 
+     *
      * @param d
      */
     public void addDataSet(T d) {
@@ -580,7 +605,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /**
      * This adjusts the other axis if one axis is empty and the other is not.
-     * 
+     *
      * @param firstLeft
      * @param firstRight
      */
@@ -600,7 +625,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * Removes the given DataSet from this data object. Also recalculates all
      * minimum and maximum values. Returns true if a DataSet was removed, false
      * if no DataSet could be removed.
-     * 
+     *
      * @param d
      */
     public boolean removeDataSet(T d) {
@@ -626,7 +651,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * Removes the DataSet at the given index in the DataSet array from the data
      * object. Also recalculates all minimum and maximum values. Returns true if
      * a DataSet was removed, false if no DataSet could be removed.
-     * 
+     *
      * @param index
      */
     public boolean removeDataSet(int index) {
@@ -641,7 +666,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /**
      * Adds an Entry to the DataSet at the specified index.
      * Entries are added to the end of the list.
-     * 
+     *
      * @param e
      * @param dataSetIndex
      */
@@ -699,7 +724,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /**
      * Removes the given Entry object from the DataSet at the specified index.
-     * 
+     *
      * @param e
      * @param dataSetIndex
      */
@@ -729,7 +754,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * Removes the Entry object at the given xIndex from the DataSet at the
      * specified index. Returns true if an Entry was removed, false if no Entry
      * was found that meets the specified requirements.
-     * 
+     *
      * @param xIndex
      * @param dataSetIndex
      * @return
@@ -751,7 +776,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /**
      * Returns the DataSet that contains the provided Entry, or null, if no
      * DataSet contains this Entry.
-     * 
+     *
      * @param e
      * @return
      */
@@ -776,7 +801,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /**
      * Returns all colors used across all DataSet objects this object
      * represents.
-     * 
+     *
      * @return
      */
     public int[] getColors() {
@@ -809,7 +834,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /**
      * Returns the index of the provided DataSet inside the DataSets array of
      * this data object. Returns -1 if the DataSet was not found.
-     * 
+     *
      * @param dataSet
      * @return
      */
@@ -823,6 +848,12 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         return -1;
     }
 
+    /**
+     * Returns the first DataSet from the datasets-array that has it's dependency on the left axis.
+     * Returns null if no DataSet with left dependency could be found.
+     *
+     * @return
+     */
     public T getFirstLeft() {
         for (T dataSet : mDataSets) {
             if (dataSet.getAxisDependency() == AxisDependency.LEFT)
@@ -832,6 +863,12 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         return null;
     }
 
+    /**
+     * Returns the first DataSet from the datasets-array that has it's dependency on the right axis.
+     * Returns null if no DataSet with right dependency could be found.
+     *
+     * @return
+     */
     public T getFirstRight() {
         for (T dataSet : mDataSets) {
             if (dataSet.getAxisDependency() == AxisDependency.RIGHT)
@@ -844,7 +881,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /**
      * Generates an x-values array filled with numbers in range specified by the
      * parameters. Can be used for convenience.
-     * 
+     *
      * @return
      */
     public static List<String> generateXVals(int from, int to) {
@@ -860,7 +897,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /**
      * Sets a custom ValueFormatter for all DataSets this data object contains.
-     * 
+     *
      * @param f
      */
     public void setValueFormatter(ValueFormatter f) {
@@ -876,7 +913,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /**
      * Sets the color of the value-text (color in which the value-labels are
      * drawn) for all DataSets this data object contains.
-     * 
+     *
      * @param color
      */
     public void setValueTextColor(int color) {
@@ -888,8 +925,8 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /**
      * Sets the Typeface for all value-labels for all DataSets this data object
      * contains.
-     * 
-     * @param color
+     *
+     * @param tf
      */
     public void setValueTypeface(Typeface tf) {
         for (DataSet<?> set : mDataSets) {
@@ -900,8 +937,8 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /**
      * Sets the size (in dp) of the value-text for all DataSets this data object
      * contains.
-     * 
-     * @param color
+     *
+     * @param size
      */
     public void setValueTextSize(float size) {
         for (DataSet<?> set : mDataSets) {
@@ -912,7 +949,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /**
      * Enables / disables drawing values (value-text) for all DataSets this data
      * object contains.
-     * 
+     *
      * @param enabled
      */
     public void setDrawValues(boolean enabled) {
@@ -958,7 +995,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * Checks if this data object contains the specified Entry. Returns true if
      * so, false if not. NOTE: Performance is pretty bad on this one, do not
      * over-use in performance critical situations.
-     * 
+     *
      * @param e
      * @return
      */
@@ -975,7 +1012,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     /**
      * Checks if this data object contains the specified DataSet. Returns true
      * if so, false if not.
-     * 
+     *
      * @param dataSet
      * @return
      */

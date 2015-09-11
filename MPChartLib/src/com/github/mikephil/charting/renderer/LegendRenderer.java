@@ -377,8 +377,8 @@ public class LegendRenderer extends Renderer {
      * index.
      * 
      * @param c canvas to draw with
-     * @param x
-     * @param y
+     * @param x position
+     * @param y position
      * @param index the index of the color to use (in the colors array)
      */
     protected void drawForm(Canvas c, float x, float y, int index, Legend legend) {

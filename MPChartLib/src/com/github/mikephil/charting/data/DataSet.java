@@ -162,6 +162,14 @@ public abstract class DataSet<T extends Entry> {
     }
 
     /**
+     * Returns the average value across all entries in this DataSet.
+     * @return
+     */
+    public float getAverage() {
+        return (float ) getYValueSum() / (float) getValueCount();
+    }
+
+    /**
      * returns the number of y-values this DataSet represents
      * 
      * @return

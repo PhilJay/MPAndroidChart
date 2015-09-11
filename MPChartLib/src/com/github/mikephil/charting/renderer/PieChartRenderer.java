@@ -206,7 +206,7 @@ public class PieChartRenderer extends DataRenderer {
                                 * mAnimator.getPhaseY())) + center.y);
 
                 float value = mChart.isUsePercentValuesEnabled() ? entries.get(j).getVal()
-                        / mChart.getYValueSum() * 100f : entries.get(j).getVal();
+                        / data.getYValueSum() * 100f : entries.get(j).getVal();
 
                 String val = dataSet.getValueFormatter().getFormattedValue(value);
 
