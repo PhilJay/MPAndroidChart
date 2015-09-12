@@ -24,7 +24,6 @@ Donations
  - [**Donate 25 $**] (https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=H9JA4QX7UHXCY): That's some awesome stuff you did right there, dinner is on me!
  - [**Donate 50 $**] (https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZPQVJ2XRBSBYY): I really really want to support this project, great job!
  - [**Donate 100 $**] (https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=KY7F59RYPCYCQ): You are the man! This project saved me hours (if not days) of struggle and hard work, simply awesome!
- - [**Donate 300 $**] (https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PGW8CXUHZS2T2): I can afford it and want to assure the further development and maintenance of this project. Furthermore, I also want to show my gratitude to it's creator.
  - Of course, you can also [**choose what you want to donate**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EGBENAC5XBCKS), all donations are awesome!
 
 **Spread the word**
