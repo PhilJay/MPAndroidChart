@@ -266,19 +266,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                     mChart.disableFiltering();
                 }
                 mChart.invalidate();
-
-                //
-                // for(int i = 0; i < 10; i++) {
-                // mChart.addEntry(new Entry((float) (Math.random() * 100),
-                // i+2), 0);
-                // mChart.invalidate();
-                // }
-                //
-                // Toast.makeText(getApplicationContext(), "valcount: " +
-                // mChart.getDataOriginal().getYValCount() + ", valsum: " +
-                // mChart.getDataOriginal().getYValueSum(),
-                // Toast.LENGTH_SHORT).show();
-                //
                 break;
             }
             case R.id.actionSave: {

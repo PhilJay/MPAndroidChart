@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -77,6 +78,27 @@ public class CombinedData extends BarLineScatterCandleData<BarLineScatterCandleD
 
     public CandleData getCandleData() {
         return mCandleData;
+    }
+
+    /**
+     * Returns all data objects in row: line-bar-scatter-candle-bubble if not null.
+     * @return
+     */
+    public List<ChartData> getAllData() {
+
+        List<ChartData> data = new ArrayList<>();
+        if(mLineData != null)
+            data.add(mLineData);
+        if(mBarData != null)
+            data.add(mBarData);
+        if(mScatterData != null)
+            data.add(mScatterData);
+        if(mCandleData != null)
+            data.add(mCandleData);
+        if(mBubbleData != null)
+            data.add(mBubbleData);
+
+        return data;
     }
 
     @Override

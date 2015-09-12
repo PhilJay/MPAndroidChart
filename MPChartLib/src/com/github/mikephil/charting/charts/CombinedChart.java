@@ -11,6 +11,7 @@ import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.ScatterData;
+import com.github.mikephil.charting.highlight.CombinedHighlighter;
 import com.github.mikephil.charting.interfaces.BarDataProvider;
 import com.github.mikephil.charting.interfaces.BubbleDataProvider;
 import com.github.mikephil.charting.interfaces.CandleDataProvider;
@@ -74,6 +75,8 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
     protected void init() {
         super.init();
 
+        mHighlighter = new CombinedHighlighter(this);
+
         mFillFormatter = new DefaultFillFormatter();
         // mRenderer = new CombinedChartRenderer(this, mAnimator,
         // mViewPortHandler);
@@ -118,7 +121,7 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
     public void setFillFormatter(FillFormatter formatter) {
 
         if (formatter == null)
-            formatter = new DefaultFillFormatter();
+            mFillFormatter = new DefaultFillFormatter();
         else
             mFillFormatter = formatter;
     }

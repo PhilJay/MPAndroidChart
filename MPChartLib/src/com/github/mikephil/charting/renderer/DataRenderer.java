@@ -20,13 +20,19 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
  */
 public abstract class DataRenderer extends Renderer {
 
-    /** the animator object used to perform animations on the chart data */
+    /**
+     * the animator object used to perform animations on the chart data
+     */
     protected ChartAnimator mAnimator;
 
-    /** main paint object used for rendering */
+    /**
+     * main paint object used for rendering
+     */
     protected Paint mRenderPaint;
 
-    /** paint used for highlighting values */
+    /**
+     * paint used for highlighting values
+     */
     protected Paint mHighlightPaint;
 
     protected Paint mDrawPaint;
@@ -60,7 +66,7 @@ public abstract class DataRenderer extends Renderer {
     /**
      * Returns the Paint object this renderer uses for drawing the values
      * (value-text).
-     * 
+     *
      * @return
      */
     public Paint getPaintValues() {
@@ -70,7 +76,7 @@ public abstract class DataRenderer extends Renderer {
     /**
      * Returns the Paint object this renderer uses for drawing highlight
      * indicators.
-     * 
+     *
      * @return
      */
     public Paint getPaintHighlight() {
@@ -79,7 +85,7 @@ public abstract class DataRenderer extends Renderer {
 
     /**
      * Returns the Paint object used for rendering.
-     * 
+     *
      * @return
      */
     public Paint getPaintRender() {
@@ -89,7 +95,7 @@ public abstract class DataRenderer extends Renderer {
     /**
      * Applies the required styling (provided by the DataSet) to the value-paint
      * object.
-     * 
+     *
      * @param set
      */
     protected void applyValueTextStyle(DataSet<?> set) {
@@ -112,5 +118,11 @@ public abstract class DataRenderer extends Renderer {
 
     public abstract void drawExtras(Canvas c);
 
+    /**
+     * Draws all highlight indicators for the values that are currently highlighted.
+     *
+     * @param c
+     * @param indices the highlighted values
+     */
     public abstract void drawHighlighted(Canvas c, Highlight[] indices);
 }
