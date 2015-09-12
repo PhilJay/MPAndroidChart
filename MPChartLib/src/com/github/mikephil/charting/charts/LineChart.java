@@ -50,7 +50,7 @@ public class LineChart extends BarLineChartBase<LineData> implements LineDataPro
     public void setFillFormatter(FillFormatter formatter) {
 
         if (formatter == null)
-            formatter = new DefaultFillFormatter();
+            mFillFormatter = new DefaultFillFormatter();
         else
             mFillFormatter = formatter;
     }
