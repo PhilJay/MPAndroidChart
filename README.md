@@ -90,9 +90,6 @@ Features
  - **LineChart (cubic lines)**
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/cubiclinechart.png)
 
- - **LineChart (single DataSet)**
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/linechart.png)
-
  - **Combined-Chart (bar- and linechart in this case)**
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/combined_chart.png)
 
@@ -172,19 +169,11 @@ dependencies {
 **4. clone whole repository**
  - Open your **commandline-input** and navigate to your desired destination folder (where you want to put the library)
  - Use the command `git clone https://github.com/PhilJay/MPAndroidChart.git` to download the full MPAndroidChart repository to your computer (this includes the folder of the library project as well as the example project)
- - Import the library folder (`MPChartLib`) into your Eclipse workspace
- - Add it as a reference to your project: [referencing library projects in Eclipse](http://developer.android.com/tools/projects/projects-eclipse.html#ReferencingLibraryProject)
+ - Import the library folder (`MPChartLib`) into Android Studio or your Eclipse workspace
+ - Add it as a reference to your project: 
+   - [referencing library projects in Eclipse](http://developer.android.com/tools/projects/projects-eclipse.html#ReferencingLibraryProject)
+   - [managing projects from Android Studio](https://developer.android.com/sdk/installing/create-project.html)
 
-Proguard
-=======
-
-In case you are using Proguard, you will need to **whitelist MPAndroidChart**, which requires to add the following line to your Proguard configuration file.
-
-```
--keep class com.github.mikephil.charting.** { *; }
-```
-
-If you don't do this, animations might not work.
 
 Documentation
 =======
