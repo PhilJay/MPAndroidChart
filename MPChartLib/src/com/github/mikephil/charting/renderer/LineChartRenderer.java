@@ -237,9 +237,8 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
     protected void drawCubicFill(LineDataSet dataSet, Path spline, Transformer trans,
             int from, int to) {
 
-        float fillMin = mChart.getFillFormatter()
-                .getFillLinePosition(dataSet, mChart.getLineData(), mChart.getYChartMax(),
-                        mChart.getYChartMin());
+        float fillMin = dataSet.getFillFormatter()
+                .getFillLinePosition(dataSet, mChart);
 
         spline.lineTo(to - 1, fillMin);
         spline.lineTo(from, fillMin);
@@ -353,8 +352,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
         Path filled = generateFilledPath(
                 entries,
-                mChart.getFillFormatter().getFillLinePosition(dataSet, mChart.getLineData(),
-                        mChart.getYChartMax(), mChart.getYChartMin()), minx, maxx);
+                dataSet.getFillFormatter().getFillLinePosition(dataSet, mChart), minx, maxx);
 
         trans.pathValueToPixel(filled);
 

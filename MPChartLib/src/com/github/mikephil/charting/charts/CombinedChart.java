@@ -29,9 +29,6 @@ import com.github.mikephil.charting.utils.FillFormatter;
 public class CombinedChart extends BarLineChartBase<CombinedData> implements LineDataProvider,
         BarDataProvider, ScatterDataProvider, CandleDataProvider, BubbleDataProvider {
 
-    /** the fill-formatter used for determining the position of the fill-line */
-    protected FillFormatter mFillFormatter;
-
     /** flag that enables or disables the highlighting arrow */
     private boolean mDrawHighlightArrow = false;
 
@@ -77,7 +74,6 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
 
         mHighlighter = new CombinedHighlighter(this);
 
-        mFillFormatter = new DefaultFillFormatter();
         // mRenderer = new CombinedChartRenderer(this, mAnimator,
         // mViewPortHandler);
     }
@@ -116,19 +112,6 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
         super.setData(data);
         mRenderer = new CombinedChartRenderer(this, mAnimator, mViewPortHandler);
         mRenderer.initBuffers();
-    }
-
-    public void setFillFormatter(FillFormatter formatter) {
-
-        if (formatter == null)
-            mFillFormatter = new DefaultFillFormatter();
-        else
-            mFillFormatter = formatter;
-    }
-
-    @Override
-    public FillFormatter getFillFormatter() {
-        return mFillFormatter;
     }
 
     @Override

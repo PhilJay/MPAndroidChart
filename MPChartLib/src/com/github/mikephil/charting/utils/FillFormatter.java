@@ -3,6 +3,7 @@ package com.github.mikephil.charting.utils;
 
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.LineDataProvider;
 
 /**
  * Interface for providing a custom logic to where the filling line of a LineDataSet
@@ -16,12 +17,9 @@ public interface FillFormatter {
      * Returns the vertical (y-axis) position where the filled-line of the
      * LineDataSet should end.
      * 
-     * @param dataSet
-     * @param data
-     * @param chartMaxY
-     * @param chartMinY
+     * @param dataSet the LineDataSet that is currently drawn
+     * @param dataProvider
      * @return
      */
-    public float getFillLinePosition(LineDataSet dataSet, LineData data, float chartMaxY,
-            float chartMinY);
+    public float getFillLinePosition(LineDataSet dataSet, LineDataProvider dataProvider);
 }

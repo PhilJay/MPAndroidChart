@@ -1497,45 +1497,4 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         return null;
     }
-
-    /**
-     * Default formatter that calculates the position of the filled line.
-     * 
-     * @author Philipp Jahoda
-     */
-    protected class DefaultFillFormatter implements FillFormatter {
-
-        @Override
-        public float getFillLinePosition(LineDataSet dataSet, LineData data,
-                float chartMaxY, float chartMinY) {
-
-            float fillMin = 0f;
-
-            if (dataSet.getYMax() > 0 && dataSet.getYMin() < 0) {
-                fillMin = 0f;
-            } else {
-
-                if (!getAxis(dataSet.getAxisDependency()).isStartAtZeroEnabled()) {
-
-                    float max, min;
-
-                    if (data.getYMax() > 0)
-                        max = 0f;
-                    else
-                        max = chartMaxY;
-                    if (data.getYMin() < 0)
-                        min = 0f;
-                    else
-                        min = chartMinY;
-
-                    fillMin = dataSet.getYMin() >= 0 ? min : max;
-                } else {
-                    fillMin = 0f;
-                }
-
-            }
-
-            return fillMin;
-        }
-    }
 }

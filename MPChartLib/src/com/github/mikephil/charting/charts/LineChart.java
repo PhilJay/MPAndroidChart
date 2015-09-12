@@ -16,8 +16,6 @@ import com.github.mikephil.charting.utils.FillFormatter;
  */
 public class LineChart extends BarLineChartBase<LineData> implements LineDataProvider {
 
-    private FillFormatter mFillFormatter;
-
     public LineChart(Context context) {
         super(context);
     }
@@ -35,7 +33,6 @@ public class LineChart extends BarLineChartBase<LineData> implements LineDataPro
         super.init();
 
         mRenderer = new LineChartRenderer(this, mAnimator, mViewPortHandler);
-        mFillFormatter = new DefaultFillFormatter();
     }
 
     @Override
@@ -44,20 +41,6 @@ public class LineChart extends BarLineChartBase<LineData> implements LineDataPro
 
         if (mDeltaX == 0 && mData.getYValCount() > 0)
             mDeltaX = 1;
-    }
-
-    @Override
-    public void setFillFormatter(FillFormatter formatter) {
-
-        if (formatter == null)
-            mFillFormatter = new DefaultFillFormatter();
-        else
-            mFillFormatter = formatter;
-    }
-
-    @Override
-    public FillFormatter getFillFormatter() {
-        return mFillFormatter;
     }
     
     @Override

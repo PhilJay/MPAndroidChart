@@ -5,7 +5,10 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 
+import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.DefaultFillFormatter;
+import com.github.mikephil.charting.utils.FillFormatter;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
@@ -27,6 +30,9 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
 
     /** the path effect of this DataSet that makes dashed lines possible */
     private DashPathEffect mDashPathEffect = null;
+
+    /** formatter for customizing the position of the fill-line */
+    private FillFormatter mFillFormatter = new DefaultFillFormatter();
 
     /** if true, drawing circles is enabled */
     private boolean mDrawCircles = true;
@@ -307,5 +313,27 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
 
     public boolean isDrawCircleHoleEnabled() {
         return mDrawCircleHole;
+    }
+
+    /**
+     * Sets a custom FillFormatter to the chart that handles the position of the
+     * filled-line for each DataSet. Set this to null to use the default logic.
+     *
+     * @param formatter
+     */
+    public void setFillFormatter(FillFormatter formatter) {
+
+        if (formatter == null)
+            mFillFormatter = new DefaultFillFormatter();
+        else
+            mFillFormatter = formatter;
+    }
+
+    /**
+     * Returns the FillFormatter that is set for this DataSet.
+     * @return
+     */
+    public FillFormatter getFillFormatter() {
+        return mFillFormatter;
     }
 }
