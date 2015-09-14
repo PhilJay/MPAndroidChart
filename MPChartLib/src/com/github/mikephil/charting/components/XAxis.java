@@ -139,8 +139,6 @@ public class XAxis extends AxisBase {
     /**
      * Returns the space (in characters) that should be left out between the
      * x-axis labels
-     * 
-     * @param space
      */
     public int getSpaceBetweenLabels() {
         return mSpaceBetweenLabels;
