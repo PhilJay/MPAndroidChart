@@ -1,4 +1,3 @@
-
 package com.github.mikephil.charting.utils;
 
 /**
@@ -19,5 +18,5 @@ public interface ValueFormatter {
      * @param value the value to be formatted
      * @return the formatted label ready for being drawn
      */
-    public String getFormattedValue(float value);
+    String getFormattedValue(float value);
 }
