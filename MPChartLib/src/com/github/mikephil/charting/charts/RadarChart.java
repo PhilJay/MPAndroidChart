@@ -45,6 +45,8 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     /** flag indicating if the web lines should be drawn or not */
     private boolean mDrawWeb = true;
 
+    private int mWebModulus = 1;
+
     /** the object reprsenting the y-axis labels */
     private YAxis mYAxis;
 
@@ -330,6 +332,26 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      */
     public void setDrawWeb(boolean enabled) {
         mDrawWeb = enabled;
+    }
+
+    /**
+     * Sets the number of lines that should be skipped on the web before the
+     * next line is drawn.
+     *
+     * @param count
+     */
+    public void setSkipWebLines(int count) {
+        if (count >0) {
+            mWebModulus = count;
+        }
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getWebModulus() {
+        return mWebModulus;
     }
 
     @Override
