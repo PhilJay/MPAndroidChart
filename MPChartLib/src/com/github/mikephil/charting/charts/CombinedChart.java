@@ -18,7 +18,8 @@ import com.github.mikephil.charting.interfaces.CandleDataProvider;
 import com.github.mikephil.charting.interfaces.LineDataProvider;
 import com.github.mikephil.charting.interfaces.ScatterDataProvider;
 import com.github.mikephil.charting.renderer.CombinedChartRenderer;
-import com.github.mikephil.charting.utils.FillFormatter;
+
+import java.util.List;
 
 /**
  * This chart class allows the combination of lines, bars, scatter and candle
@@ -87,8 +88,10 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
             mXChartMax = mData.getXVals().size() - 0.5f;
 
             if (getBubbleData() != null) {
-
-                for (BubbleDataSet set : getBubbleData().getDataSets()) {
+                List<BubbleDataSet> dataSets = getBubbleData().getDataSets();
+                int size = dataSets.size();
+                for (int i = 0; i < size; ++i) {
+                    BubbleDataSet set = dataSets.get(i);
 
                     final float xmin = set.getXMin();
                     final float xmax = set.getXMax();

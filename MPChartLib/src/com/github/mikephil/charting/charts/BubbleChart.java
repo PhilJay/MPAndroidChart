@@ -9,6 +9,8 @@ import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.interfaces.BubbleDataProvider;
 import com.github.mikephil.charting.renderer.BubbleChartRenderer;
 
+import java.util.List;
+
 /**
  * The BubbleChart. Draws bubbles. Bubble chart implementation: Copyright 2015
  * Pierre-Marc Airoldi Licensed under Apache License 2.0. In the BubbleChart, it
@@ -49,7 +51,10 @@ public class BubbleChart extends BarLineChartBase<BubbleData> implements BubbleD
         mXChartMax = (float) mData.getXValCount() - 0.5f;
 
         if (mRenderer != null) {
-            for (BubbleDataSet set : mData.getDataSets()) {
+            List<BubbleDataSet> dataSets = mData.getDataSets();
+            int size = dataSets.size();
+            for (int i = 0; i < size; ++i) {
+                BubbleDataSet set = dataSets.get(i);
 
                 final float xmin = set.getXMin();
                 final float xmax = set.getXMax();

@@ -280,7 +280,10 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         // calculate how many digits are needed
         calculateFormatter(data.getYMin(), data.getYMax());
 
-        for (DataSet<?> set : mData.getDataSets()) {
+        List<? extends DataSet<? extends Entry>> dataSets = mData.getDataSets();
+        int size = dataSets.size();
+        for (int i = 0; i < size; ++i) {
+            DataSet<?> set = dataSets.get(i);
             if (set.needsDefaultFormatter())
                 set.setValueFormatter(mDefaultFormatter);
         }
@@ -1563,8 +1566,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             if (mLogEnabled)
                 Log.i(LOG_TAG, "Setting chart dimens, width: " + w + ", height: " + h);
 
-            for (Runnable r : mJobs) {
-                post(r);
+            int size = mJobs.size();
+            for (int i = 0; i < size; ++i) {
+                post(mJobs.get(i));
             }
 
             mJobs.clear();
