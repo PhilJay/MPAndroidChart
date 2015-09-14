@@ -1,4 +1,3 @@
-
 package com.github.mikephil.charting.utils;
 
 import com.github.mikephil.charting.data.LineData;
@@ -21,5 +20,5 @@ public interface FillFormatter {
      * @param dataProvider
      * @return
      */
-    public float getFillLinePosition(LineDataSet dataSet, LineDataProvider dataProvider);
+    float getFillLinePosition(LineDataSet dataSet, LineDataProvider dataProvider);
 }
