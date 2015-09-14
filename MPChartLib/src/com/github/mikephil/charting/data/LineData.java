@@ -9,7 +9,7 @@ import java.util.List;
  * 
  * @author Philipp Jahoda
  */
-public class LineData extends BarLineScatterCandleData<LineDataSet> {
+public class LineData extends BarLineScatterCandleBubbleData<LineDataSet> {
 
     public LineData() {
         super();

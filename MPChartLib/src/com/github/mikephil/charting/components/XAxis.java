@@ -1,6 +1,9 @@
 
 package com.github.mikephil.charting.components;
 
+import com.github.mikephil.charting.utils.DefaultXValueFormatter;
+import com.github.mikephil.charting.utils.XValueFormatter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +62,11 @@ public class XAxis extends AxisBase {
      * in the chart "clip" off the edge of the chart
      */
     private boolean mAvoidFirstLastClipping = false;
+
+    /**
+     * Custom formatter for adjusting x-value strings
+     */
+    protected XValueFormatter mXValueFormatter = new DefaultXValueFormatter();
 
     /** the position of the x-labels relative to the chart */
     private XAxisPosition mPosition = XAxisPosition.TOP;
@@ -179,6 +187,29 @@ public class XAxis extends AxisBase {
      */
     public List<String> getValues() {
         return mValues;
+    }
+
+
+    /**
+     * Sets a custom XValueFormatter for the data object that allows custom-formatting
+     * of all x-values before rendering them. Provide null to reset back to the
+     * default formatting.
+     *
+     * @param formatter
+     */
+    public void setXValueFormatter(XValueFormatter formatter) {
+        if(formatter == null)
+            mXValueFormatter = new DefaultXValueFormatter();
+        else
+            mXValueFormatter = formatter;
+    }
+
+    /**
+     * Returns the custom XValueFormatter that is set for this data object.
+     * @return
+     */
+    public XValueFormatter getXValueFormatter() {
+        return mXValueFormatter;
     }
 
     @Override

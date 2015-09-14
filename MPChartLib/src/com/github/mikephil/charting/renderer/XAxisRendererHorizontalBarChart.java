@@ -108,8 +108,7 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
             if (mViewPortHandler.isInBoundsY(position[1])) {
 
                 String label = mXAxis.getValues().get(i);
-                c.drawText(label, pos, position[1] + mXAxis.mLabelHeight / 2f,
-                        mAxisLabelPaint);
+                drawLabel(c, label, i, pos, position[1] + mXAxis.mLabelHeight / 2f);
             }
         }
     }

@@ -72,9 +72,7 @@ public class XAxisRendererBarChart extends XAxisRenderer {
                     }
                 }
 
-                c.drawText(label, position[0],
-                        pos,
-                        mAxisLabelPaint);
+                drawLabel(c, label, i, position[0], pos);
             }
         }
     }

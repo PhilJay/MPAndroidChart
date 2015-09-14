@@ -10,7 +10,7 @@ import java.util.List;
  * 
  * @author Philipp Jahoda
  */
-public class CombinedData extends BarLineScatterCandleData<BarLineScatterCandleDataSet<?>> {
+public class CombinedData extends BarLineScatterCandleBubbleData<BarLineScatterCandleBubbleDataSet<?>> {
 
     private LineData mLineData;
     private BarData mBarData;

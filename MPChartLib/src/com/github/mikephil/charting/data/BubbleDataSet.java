@@ -8,7 +8,7 @@ import com.github.mikephil.charting.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BubbleDataSet extends BarLineScatterCandleDataSet<BubbleEntry> {
+public class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry> {
 
     // NOTE: Do not initialize these, as the calcMinMax is called by the super,
     // and the initializers are called after that and can reset the values

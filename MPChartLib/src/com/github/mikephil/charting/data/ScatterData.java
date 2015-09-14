@@ -4,7 +4,7 @@ package com.github.mikephil.charting.data;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScatterData extends BarLineScatterCandleData<ScatterDataSet> {
+public class ScatterData extends BarLineScatterCandleBubbleData<ScatterDataSet> {
 
     public ScatterData() {
         super();

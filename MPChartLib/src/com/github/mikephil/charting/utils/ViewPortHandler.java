@@ -32,6 +32,10 @@ public class ViewPortHandler {
     /** contains the current scale factor of the y-axis */
     private float mScaleY = 1f;
 
+    private float mTransX = 0f;
+
+    private float mTransY = 0f;
+
     /** offset that allows the chart to be dragged over its bounds on the x-axis */
     private float mTransOffsetX = 0f;
 
@@ -293,6 +297,7 @@ public class ViewPortHandler {
 
         float maxTransX = -width * (mScaleX - 1f);
         float newTransX = Math.min(Math.max(curTransX, maxTransX - mTransOffsetX), mTransOffsetX);
+        mTransX = newTransX;
 
         // if(curScaleX < mMinScaleX) {
         // newTransX = (-width * (mScaleX - 1f)) / 2f;
@@ -300,6 +305,7 @@ public class ViewPortHandler {
 
         float maxTransY = height * (mScaleY - 1f);
         float newTransY = Math.max(Math.min(curTransY, maxTransY + mTransOffsetY), -mTransOffsetY);
+        mTransY = newTransY;
 
         // if(curScaleY < mMinScaleY) {
         // newTransY = (height * (mScaleY - 1f)) / 2f;
@@ -417,6 +423,14 @@ public class ViewPortHandler {
      */
     public float getScaleY() {
         return mScaleY;
+    }
+
+    public float getTransX() {
+        return mTransX;
+    }
+
+    public float getTransY() {
+        return mTransY;
     }
 
     /**
