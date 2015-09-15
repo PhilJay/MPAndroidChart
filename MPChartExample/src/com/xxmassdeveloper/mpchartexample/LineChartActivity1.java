@@ -133,6 +133,9 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
         mChart.getAxisRight().setEnabled(false);
 
+        mChart.getViewPortHandler().setMaximumScaleY(2f);
+        mChart.getViewPortHandler().setMaximumScaleX(2f);
+
         // add data
         setData(45, 100);
 

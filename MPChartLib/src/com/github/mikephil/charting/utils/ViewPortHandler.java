@@ -20,6 +20,9 @@ public class ViewPortHandler {
     /** minimum scale value on the y-axis */
     private float mMinScaleY = 1f;
 
+    /** maximum scale value on the y-axis */
+    private float mMaxScaleY = Float.MAX_VALUE;
+
     /** minimum scale value on the x-axis */
     private float mMinScaleX = 1f;
 
@@ -285,7 +288,7 @@ public class ViewPortHandler {
         mScaleX = Math.min(Math.max(mMinScaleX, curScaleX), mMaxScaleX);
 
         // min scale-y is 1f
-        mScaleY = Math.max(mMinScaleY, curScaleY);
+        mScaleY = Math.min(Math.max(mMinScaleY, curScaleY), mMaxScaleY);
 
         float width = 0f;
         float height = 0f;
@@ -306,10 +309,6 @@ public class ViewPortHandler {
         float maxTransY = height * (mScaleY - 1f);
         float newTransY = Math.max(Math.min(curTransY, maxTransY + mTransOffsetY), -mTransOffsetY);
         mTransY = newTransY;
-
-        // if(curScaleY < mMinScaleY) {
-        // newTransY = (height * (mScaleY - 1f)) / 2f;
-        // }
 
         vals[Matrix.MTRANS_X] = newTransX;
         vals[Matrix.MSCALE_X] = mScaleX;
@@ -354,6 +353,13 @@ public class ViewPortHandler {
             yScale = 1f;
 
         mMinScaleY = yScale;
+
+        limitTransAndScale(mMatrixTouch, mContentRect);
+    }
+
+    public void setMaximumScaleY(float yScale) {
+
+        mMaxScaleY = yScale;
 
         limitTransAndScale(mMatrixTouch, mContentRect);
     }
