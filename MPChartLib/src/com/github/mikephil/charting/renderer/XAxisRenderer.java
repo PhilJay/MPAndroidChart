@@ -156,8 +156,9 @@ public class XAxisRenderer extends AxisRenderer {
                             position[0] += width / 2;
                         }
                     }
+
+                    drawLabel(c, label, i, position[0], pos);
                 }
-                drawLabel(c, label, i, position[0], pos);
             }
         }
     }
