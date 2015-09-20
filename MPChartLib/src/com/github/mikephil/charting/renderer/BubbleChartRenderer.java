@@ -131,7 +131,9 @@ public class BubbleChartRenderer extends DataRenderer {
 
             float lineHeight = Utils.calcTextHeight(mValuePaint, "1");
 
-            for (BubbleDataSet dataSet : dataSets) {
+            for (int i = 0; i < dataSets.size(); i++) {
+
+                BubbleDataSet dataSet = dataSets.get(i);
 
                 if (!dataSet.isDrawValuesEnabled() || dataSet.getEntryCount() == 0)
                     continue;
@@ -171,14 +173,10 @@ public class BubbleChartRenderer extends DataRenderer {
                     if ((!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y)))
                         continue;
 
-                    final BubbleEntry entry = entries.get(j / 2 + minx);
+                    BubbleEntry entry = entries.get(j / 2 + minx);
 
-                    final float val = entry.getSize();
-
-                    c.drawText(dataSet.getValueFormatter().getFormattedValue(val),
-                            x,
-                            y + (0.5f * lineHeight),
-                            mValuePaint);
+                    drawValue(c, dataSet.getValueFormatter(), entry.getSize(), entry, i, x,
+                            y + (0.5f * lineHeight));
                 }
             }
         }

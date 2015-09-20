@@ -17,7 +17,6 @@ import com.github.mikephil.charting.interfaces.BarDataProvider;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
-import com.github.mikephil.charting.utils.ValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.List;
@@ -206,8 +205,6 @@ public class BarChartRenderer extends DataRenderer {
                     negOffset = -negOffset - valueTextHeight;
                 }
 
-                ValueFormatter formatter = dataSet.getValueFormatter();
-
                 Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
                 List<BarEntry> entries = dataSet.getYVals();
@@ -226,9 +223,10 @@ public class BarChartRenderer extends DataRenderer {
                                 || !mViewPortHandler.isInBoundsLeft(valuePoints[j]))
                             continue;
 
-                        float val = entries.get(j / 2).getVal();
+                        BarEntry entry = entries.get(j / 2);
+                        float val = entry.getVal();
 
-                        drawValue(c, formatter.getFormattedValue(val), valuePoints[j],
+                        drawValue(c, dataSet.getValueFormatter(), val, entry, i, valuePoints[j],
                                 valuePoints[j + 1] + (val >= 0 ? posOffset : negOffset));
                     }
 
@@ -237,9 +235,9 @@ public class BarChartRenderer extends DataRenderer {
 
                     for (int j = 0; j < (valuePoints.length - 1) * mAnimator.getPhaseX(); j += 2) {
 
-                        BarEntry e = entries.get(j / 2);
+                        BarEntry entry = entries.get(j / 2);
 
-                        float[] vals = e.getVals();
+                        float[] vals = entry.getVals();
 
                         // we still draw stacked bars, but there is one
                         // non-stacked
@@ -253,8 +251,8 @@ public class BarChartRenderer extends DataRenderer {
                                     || !mViewPortHandler.isInBoundsLeft(valuePoints[j]))
                                 continue;
 
-                            drawValue(c, formatter.getFormattedValue(e.getVal()), valuePoints[j],
-                                    valuePoints[j + 1] + (e.getVal() >= 0 ? posOffset : negOffset));
+                            drawValue(c, dataSet.getValueFormatter(), entry.getVal(), entry, i, valuePoints[j],
+                                    valuePoints[j + 1] + (entry.getVal() >= 0 ? posOffset : negOffset));
 
                             // draw stack values
                         } else {
@@ -262,7 +260,7 @@ public class BarChartRenderer extends DataRenderer {
                             float[] transformed = new float[vals.length * 2];
 
                             float posY = 0f;
-                            float negY = -e.getNegativeSum();
+                            float negY = -entry.getNegativeSum();
 
                             for (int k = 0, idx = 0; k < transformed.length; k += 2, idx++) {
 
@@ -295,26 +293,13 @@ public class BarChartRenderer extends DataRenderer {
                                         || !mViewPortHandler.isInBoundsLeft(x))
                                     continue;
 
-                                drawValue(c, formatter.getFormattedValue(vals[k / 2]), x, y);
+                                drawValue(c, dataSet.getValueFormatter(), vals[k / 2], entry, i, x, y);
                             }
                         }
                     }
                 }
             }
         }
-    }
-
-    /**
-     * Draws a value at the specified x and y position.
-     * 
-     * @param value
-     * @param xPos
-     * @param yPos
-     * @formatter
-     */
-    protected void drawValue(Canvas c, String value, float xPos, float yPos) {
-        c.drawText(value, xPos, yPos,
-                mValuePaint);
     }
 
     @Override

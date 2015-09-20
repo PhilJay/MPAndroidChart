@@ -33,8 +33,8 @@ import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.utils.ValueFormatter;
-import com.xxmassdeveloper.mpchartexample.custom.MyValueFormatter;
+import com.github.mikephil.charting.formatter.YAxisValueFormatter;
+import com.xxmassdeveloper.mpchartexample.custom.MyYAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -92,7 +92,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         xAxis.setDrawGridLines(false);
         xAxis.setSpaceBetweenLabels(2);
 
-        ValueFormatter custom = new MyValueFormatter();
+        YAxisValueFormatter custom = new MyYAxisValueFormatter();
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(mTf);
@@ -267,7 +267,6 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         dataSets.add(set1);
 
         BarData data = new BarData(xVals, dataSets);
-        // data.setValueFormatter(new MyValueFormatter());
         data.setValueTextSize(10f);
         data.setValueTypeface(mTf);
 

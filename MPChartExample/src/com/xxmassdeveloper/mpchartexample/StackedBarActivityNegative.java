@@ -24,7 +24,9 @@ import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.utils.ValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.utils.ViewPortHandler;
+import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.text.DecimalFormat;
@@ -211,7 +213,7 @@ public class StackedBarActivityNegative extends DemoBase implements
 
     }
 
-    private class CustomFormatter implements ValueFormatter {
+    private class CustomFormatter implements ValueFormatter, YAxisValueFormatter {
 
         private DecimalFormat mFormat;
 
@@ -219,8 +221,15 @@ public class StackedBarActivityNegative extends DemoBase implements
             mFormat = new DecimalFormat("###");
         }
 
+        // data
         @Override
-        public String getFormattedValue(float value) {
+        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+            return mFormat.format(Math.abs(value)) + "m";
+        }
+
+        // YAxis
+        @Override
+        public String getFormattedValue(float value, YAxis yAxis) {
             return mFormat.format(Math.abs(value)) + "m";
         }
     }

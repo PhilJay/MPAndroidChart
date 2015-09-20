@@ -103,7 +103,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         llXAxis.setTextSize(10f);
 
         XAxis xAxis = mChart.getXAxis();
-        //xAxis.setXValueFormatter(new MyCustomXValueFormatter());
+        //xAxis.setValueFormatter(new MyCustomXAxisValueFormatter());
         //xAxis.addLimitLine(llXAxis); // add x-axis limit line
 
         LimitLine ll1 = new LimitLine(130f, "Upper Limit");
@@ -133,8 +133,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
         mChart.getAxisRight().setEnabled(false);
 
-        mChart.getViewPortHandler().setMaximumScaleY(2f);
-        mChart.getViewPortHandler().setMaximumScaleX(2f);
+        //mChart.getViewPortHandler().setMaximumScaleY(2f);
+        //mChart.getViewPortHandler().setMaximumScaleX(2f);
 
         // add data
         setData(45, 100);

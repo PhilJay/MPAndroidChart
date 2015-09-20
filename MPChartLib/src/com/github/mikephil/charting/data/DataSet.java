@@ -7,9 +7,9 @@ import android.graphics.Typeface;
 
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.DefaultValueFormatter;
+import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.utils.Utils;
-import com.github.mikephil.charting.utils.ValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -4,7 +4,7 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 
 import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.utils.ValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
 /**
  * Interface that provides everything there is to know about the dimensions,

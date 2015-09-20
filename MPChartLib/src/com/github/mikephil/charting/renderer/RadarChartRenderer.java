@@ -22,11 +22,13 @@ public class RadarChartRenderer extends LineScatterCandleRadarRenderer {
 
     protected RadarChart mChart;
 
-    /** paint for drawing the web */
+    /**
+     * paint for drawing the web
+     */
     protected Paint mWebPaint;
 
     public RadarChartRenderer(RadarChart chart, ChartAnimator animator,
-            ViewPortHandler viewPortHandler) {
+                              ViewPortHandler viewPortHandler) {
         super(animator, viewPortHandler);
         mChart = chart;
 
@@ -46,9 +48,9 @@ public class RadarChartRenderer extends LineScatterCandleRadarRenderer {
     @Override
     public void initBuffers() {
         // TODO Auto-generated method stub
-        
+
     }
-    
+
     @Override
     public void drawData(Canvas c) {
 
@@ -141,13 +143,12 @@ public class RadarChartRenderer extends LineScatterCandleRadarRenderer {
 
             for (int j = 0; j < entries.size(); j++) {
 
-                Entry e = entries.get(j);
+                Entry entry = entries.get(j);
 
-                PointF p = Utils.getPosition(center, (e.getVal() - mChart.getYChartMin()) * factor,
+                PointF p = Utils.getPosition(center, (entry.getVal() - mChart.getYChartMin()) * factor,
                         sliceangle * j + mChart.getRotationAngle());
 
-                c.drawText(dataSet.getValueFormatter().getFormattedValue(e.getVal()),
-                        p.x, p.y - yoffset, mValuePaint);
+                drawValue(c, dataSet.getValueFormatter(), entry.getVal(), entry, i, p.x, p.y - yoffset);
             }
         }
     }
@@ -235,7 +236,7 @@ public class RadarChartRenderer extends LineScatterCandleRadarRenderer {
             PointF p = Utils.getPosition(center, y * factor,
                     sliceangle * j + mChart.getRotationAngle());
 
-            float[] pts = new float[] {
+            float[] pts = new float[]{
                     p.x, p.y
             };
 

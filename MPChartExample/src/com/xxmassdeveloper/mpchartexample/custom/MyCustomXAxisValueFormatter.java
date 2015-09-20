@@ -1,14 +1,14 @@
 package com.xxmassdeveloper.mpchartexample.custom;
 
 import com.github.mikephil.charting.utils.ViewPortHandler;
-import com.github.mikephil.charting.utils.XValueFormatter;
+import com.github.mikephil.charting.formatter.XAxisValueFormatter;
 
 /**
  * Created by Philipp Jahoda on 14/09/15.
  */
-public class MyCustomXValueFormatter implements XValueFormatter {
+public class MyCustomXAxisValueFormatter implements XAxisValueFormatter {
 
-    public MyCustomXValueFormatter() {
+    public MyCustomXAxisValueFormatter() {
         // maybe do something here or provide parameters in constructor
     }
 

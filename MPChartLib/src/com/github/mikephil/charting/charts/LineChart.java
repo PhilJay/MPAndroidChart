@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.interfaces.LineDataProvider;
 import com.github.mikephil.charting.renderer.LineChartRenderer;
-import com.github.mikephil.charting.utils.FillFormatter;
 
 /**
  * Chart that draws lines, surfaces, circles, ...

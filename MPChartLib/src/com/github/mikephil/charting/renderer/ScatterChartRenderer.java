@@ -233,11 +233,10 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
                             || !mViewPortHandler.isInBoundsY(positions[j + 1])))
                         continue;
 
-                    float val = entries.get(j / 2).getVal();
+                    Entry entry = entries.get(j / 2);
 
-                    c.drawText(dataSet.getValueFormatter().getFormattedValue(val), positions[j],
-                            positions[j + 1] - shapeSize,
-                            mValuePaint);
+                    drawValue(c, dataSet.getValueFormatter(), entry.getVal(), entry, i, positions[j],
+                            positions[j + 1] - shapeSize);
                 }
             }
         }

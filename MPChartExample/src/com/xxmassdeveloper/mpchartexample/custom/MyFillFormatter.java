@@ -2,7 +2,7 @@ package com.xxmassdeveloper.mpchartexample.custom;
 
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.LineDataProvider;
-import com.github.mikephil.charting.utils.FillFormatter;
+import com.github.mikephil.charting.formatter.FillFormatter;
 
 /**
  * Created by Philipp Jahoda on 12/09/15.

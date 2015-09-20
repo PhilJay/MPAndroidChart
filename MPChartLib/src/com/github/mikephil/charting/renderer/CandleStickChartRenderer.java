@@ -259,10 +259,9 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
                     if (!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y))
                         continue;
 
-                    float val = entries.get(j / 2 + minx).getHigh();
+                    CandleEntry entry = entries.get(j / 2 + minx);
 
-                    c.drawText(dataSet.getValueFormatter().getFormattedValue(val), x, y - yOffset,
-                            mValuePaint);
+                    drawValue(c, dataSet.getValueFormatter(), entry.getHigh(), entry, i, x, y - yOffset);
                 }
             }
         }

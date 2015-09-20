@@ -1,5 +1,9 @@
 
-package com.github.mikephil.charting.utils;
+package com.github.mikephil.charting.formatter;
+
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DecimalFormat;
 
@@ -13,7 +17,7 @@ import java.text.DecimalFormat;
  * @author Philipp Jahoda
  * @author Oleksandr Tyshkovets <olexandr.tyshkovets@gmail.com>
  */
-public class LargeValueFormatter implements ValueFormatter {
+public class LargeValueFormatter implements ValueFormatter, YAxisValueFormatter {
 
     private static final String[] SUFFIX = new String[] {
             "", "k", "m", "b", "t"
@@ -29,15 +33,22 @@ public class LargeValueFormatter implements ValueFormatter {
 
     /**
      * Creates a formatter that appends a specified text to the result string
-     * @param text a text that will be appended
+     * @param appendix a text that will be appended
      */
     public LargeValueFormatter(String appendix) {
         this();
         mText = appendix;
     }
 
+    // ValueFormatter
     @Override
-    public String getFormattedValue(float value) {
+    public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+        return makePretty(value) + mText;
+    }
+
+    // YAxisValueFormatter
+    @Override
+    public String getFormattedValue(float value, YAxis yAxis) {
         return makePretty(value) + mText;
     }
 

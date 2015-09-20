@@ -24,7 +24,7 @@ import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.utils.LargeValueFormatter;
+import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.xxmassdeveloper.mpchartexample.custom.MyMarkerView;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 

@@ -18,7 +18,6 @@ import com.github.mikephil.charting.interfaces.CandleDataProvider;
 import com.github.mikephil.charting.interfaces.LineDataProvider;
 import com.github.mikephil.charting.interfaces.ScatterDataProvider;
 import com.github.mikephil.charting.renderer.CombinedChartRenderer;
-import com.github.mikephil.charting.utils.FillFormatter;
 
 /**
  * This chart class allows the combination of lines, bars, scatter and candle

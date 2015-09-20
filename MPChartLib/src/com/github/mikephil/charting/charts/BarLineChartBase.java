@@ -306,10 +306,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         calcMinMax();
 
-        if (mAxisLeft.needsDefaultFormatter())
-            mAxisLeft.setValueFormatter(mDefaultFormatter);
-        if (mAxisRight.needsDefaultFormatter())
-            mAxisRight.setValueFormatter(mDefaultFormatter);
+//        if (mAxisLeft.needsDefaultFormatter())
+//            mAxisLeft.setValueFormatter(mDefaultFormatter);
+//        if (mAxisRight.needsDefaultFormatter())
+//            mAxisRight.setValueFormatter(mDefaultFormatter);
 
         mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum);
         mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum);

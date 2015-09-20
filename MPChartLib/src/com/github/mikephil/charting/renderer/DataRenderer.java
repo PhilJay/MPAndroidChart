@@ -9,8 +9,10 @@ import android.graphics.Paint.Style;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**
@@ -112,10 +114,40 @@ public abstract class DataRenderer extends Renderer {
      */
     public abstract void initBuffers();
 
+    /**
+     * Draws the actual data in form of lines, bars, ... depending on Renderer subclass.
+     *
+     * @param c
+     */
     public abstract void drawData(Canvas c);
 
+    /**
+     * Loops over all Entrys and draws their values.
+     *
+     * @param c
+     */
     public abstract void drawValues(Canvas c);
 
+    /**
+     * Draws the value of the given entry by using the provided ValueFormatter.
+     *
+     * @param c            canvas
+     * @param formatter    formatter for custom value-formatting
+     * @param value        the value to be drawn
+     * @param entry        the entry the value belongs to
+     * @param dataSetIndex the index of the DataSet the drawn Entry belongs to
+     * @param x            position
+     * @param y            position
+     */
+    public void drawValue(Canvas c, ValueFormatter formatter, float value, Entry entry, int dataSetIndex, float x, float y) {
+        c.drawText(formatter.getFormattedValue(value, entry, dataSetIndex, mViewPortHandler), x, y, mValuePaint);
+    }
+
+    /**
+     * Draws any kind of additional information (e.g. line-circles).
+     *
+     * @param c
+     */
     public abstract void drawExtras(Canvas c);
 
     /**

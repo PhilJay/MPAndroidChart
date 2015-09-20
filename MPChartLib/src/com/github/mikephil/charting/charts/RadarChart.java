@@ -166,9 +166,9 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
         calcMinMax();
 
-        if (mYAxis.needsDefaultFormatter()) {
-            mYAxis.setValueFormatter(mDefaultFormatter);
-        }
+//        if (mYAxis.needsDefaultFormatter()) {
+//            mYAxis.setValueFormatter(mDefaultFormatter);
+//        }
 
         mYAxisRenderer.computeAxis(mYAxis.mAxisMinimum, mYAxis.mAxisMaximum);
         mXAxisRenderer.computeAxis(mData.getXValAverageLength(), mData.getXVals());

@@ -29,6 +29,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.custom.MyValueFormatter;
+import com.xxmassdeveloper.mpchartexample.custom.MyYAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListener, OnChartValueSelectedListener {
@@ -71,7 +72,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 
 		// change the position of the y-labels
 		YAxis yLabels = mChart.getAxisLeft();
-		yLabels.setValueFormatter(new MyValueFormatter());
+		yLabels.setValueFormatter(new MyYAxisValueFormatter());
 		mChart.getAxisRight().setEnabled(false);
 
 		XAxis xLabels = mChart.getXAxis();

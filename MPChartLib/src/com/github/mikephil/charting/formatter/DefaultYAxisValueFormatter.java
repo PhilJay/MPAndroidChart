@@ -1,15 +1,15 @@
+package com.github.mikephil.charting.formatter;
 
-package com.github.mikephil.charting.utils;
+import com.github.mikephil.charting.components.YAxis;
 
 import java.text.DecimalFormat;
 
 /**
- * Default formatter used for formatting values. Uses a DecimalFormat with
+ * Created by Philipp Jahoda on 20/09/15.
+ * Default formatter used for formatting labels of the YAxis. Uses a DecimalFormat with
  * pre-calculated number of digits (depending on max and min value).
- *
- * @author Philipp Jahoda
  */
-public class DefaultValueFormatter implements ValueFormatter {
+public class DefaultYAxisValueFormatter implements YAxisValueFormatter {
 
     /** decimalformat for formatting */
     private DecimalFormat mFormat;
@@ -17,10 +17,10 @@ public class DefaultValueFormatter implements ValueFormatter {
     /**
      * Constructor that specifies to how many digits the value should be
      * formatted.
-     * 
+     *
      * @param digits
      */
-    public DefaultValueFormatter(int digits) {
+    public DefaultYAxisValueFormatter(int digits) {
 
         StringBuffer b = new StringBuffer();
         for (int i = 0; i < digits; i++) {
@@ -33,7 +33,7 @@ public class DefaultValueFormatter implements ValueFormatter {
     }
 
     @Override
-    public String getFormattedValue(float value) {
+    public String getFormattedValue(float value, YAxis yAxis) {
         // avoid memory allocations here (for performance)
         return mFormat.format(value);
     }

@@ -2,9 +2,10 @@ package com.github.mikephil.charting.components;
 
 import android.graphics.Paint;
 
-import com.github.mikephil.charting.utils.DefaultValueFormatter;
+import com.github.mikephil.charting.formatter.DefaultValueFormatter;
+import com.github.mikephil.charting.formatter.DefaultYAxisValueFormatter;
 import com.github.mikephil.charting.utils.Utils;
-import com.github.mikephil.charting.utils.ValueFormatter;
+import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 
 /**
  * Class representing the y-axis labels settings and its entries. Only use the setter methods to modify it. Do not
@@ -17,7 +18,7 @@ import com.github.mikephil.charting.utils.ValueFormatter;
 public class YAxis extends AxisBase {
 
 	/** custom formatter that is used instead of the auto-formatter if set */
-	protected ValueFormatter mValueFormatter;
+	protected YAxisValueFormatter mYAxisValueFormatter;
 
 	/** the actual array of entries */
 	public float[] mEntries = new float[] {};
@@ -358,42 +359,46 @@ public class YAxis extends AxisBase {
 		if (index < 0 || index >= mEntries.length)
 			return "";
 		else
-			return getValueFormatter().getFormattedValue(mEntries[index]);
+			return getValueFormatter().getFormattedValue(mEntries[index], this);
 	}
 
 	/**
-	 * Sets the formatter to be used for drawing the values inside the chart. If no formatter is set, the chart will
+	 * Sets the formatter to be used for formatting the axis labels. If no formatter is set, the chart will
 	 * automatically determine a reasonable formatting (concerning decimals) for all the values that are drawn inside
 	 * the chart. Use chart.getDefaultValueFormatter() to use the formatter calculated by the chart.
 	 *
 	 * @param f
 	 */
-	public void setValueFormatter(ValueFormatter f) {
+	public void setValueFormatter(YAxisValueFormatter f) {
 
 		if (f == null)
-			return;
+			mYAxisValueFormatter = new DefaultYAxisValueFormatter(mDecimals);
 		else
-			mValueFormatter = f;
+			mYAxisValueFormatter = f;
 	}
 
 	/**
-	 * Returns the formatter used for drawing the values inside the chart.
+	 * Returns the formatter used for formatting the axis labels.
 	 *
 	 * @return
 	 */
-	public ValueFormatter getValueFormatter() {
-		return mValueFormatter;
+	public YAxisValueFormatter getValueFormatter() {
+
+		if(mYAxisValueFormatter == null)
+			mYAxisValueFormatter = new DefaultYAxisValueFormatter(mDecimals);
+
+		return mYAxisValueFormatter;
 	}
 
 	/**
-	 * If this component has no ValueFormatter or is only equipped with the default one (no custom set), return true.
+	 * If this component has no YAxisValueFormatter or is only equipped with the default one (no custom set), return true.
 	 * 
 	 * @return
 	 */
 	public boolean needsDefaultFormatter() {
-		if (mValueFormatter == null)
+		if (mYAxisValueFormatter == null)
 			return true;
-		if (mValueFormatter instanceof DefaultValueFormatter)
+		if (mYAxisValueFormatter instanceof DefaultValueFormatter)
 			return true;
 
 		return false;

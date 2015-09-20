@@ -5,10 +5,9 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 
-import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.DefaultFillFormatter;
-import com.github.mikephil.charting.utils.FillFormatter;
+import com.github.mikephil.charting.formatter.DefaultFillFormatter;
+import com.github.mikephil.charting.formatter.FillFormatter;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;

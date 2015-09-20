@@ -1,8 +1,8 @@
 
 package com.github.mikephil.charting.components;
 
-import com.github.mikephil.charting.utils.DefaultXValueFormatter;
-import com.github.mikephil.charting.utils.XValueFormatter;
+import com.github.mikephil.charting.formatter.DefaultXAxisAxisValueFormatter;
+import com.github.mikephil.charting.formatter.XAxisValueFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +66,7 @@ public class XAxis extends AxisBase {
     /**
      * Custom formatter for adjusting x-value strings
      */
-    protected XValueFormatter mXValueFormatter = new DefaultXValueFormatter();
+    protected XAxisValueFormatter mXAxisValueFormatter = new DefaultXAxisAxisValueFormatter();
 
     /** the position of the x-labels relative to the chart */
     private XAxisPosition mPosition = XAxisPosition.TOP;
@@ -101,7 +101,7 @@ public class XAxis extends AxisBase {
      * labels, default 4. This only applies if the number of labels that will be
      * skipped in between drawn axis labels is not custom set.
      * 
-     * @param space
+     * @param spaceCharacters
      */
     public void setSpaceBetweenLabels(int spaceCharacters) {
         mSpaceBetweenLabels = spaceCharacters;
@@ -191,25 +191,25 @@ public class XAxis extends AxisBase {
 
 
     /**
-     * Sets a custom XValueFormatter for the data object that allows custom-formatting
+     * Sets a custom XAxisValueFormatter for the data object that allows custom-formatting
      * of all x-values before rendering them. Provide null to reset back to the
      * default formatting.
      *
      * @param formatter
      */
-    public void setXValueFormatter(XValueFormatter formatter) {
+    public void setValueFormatter(XAxisValueFormatter formatter) {
         if(formatter == null)
-            mXValueFormatter = new DefaultXValueFormatter();
+            mXAxisValueFormatter = new DefaultXAxisAxisValueFormatter();
         else
-            mXValueFormatter = formatter;
+            mXAxisValueFormatter = formatter;
     }
 
     /**
-     * Returns the custom XValueFormatter that is set for this data object.
+     * Returns the custom XAxisValueFormatter that is set for this data object.
      * @return
      */
-    public XValueFormatter getXValueFormatter() {
-        return mXValueFormatter;
+    public XAxisValueFormatter getValueFormatter() {
+        return mXAxisValueFormatter;
     }
 
     @Override

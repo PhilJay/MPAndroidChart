@@ -156,7 +156,7 @@ public class XAxisRenderer extends AxisRenderer {
     }
 
     protected void drawLabel(Canvas c, String label, int xIndex, float x, float y) {
-        String formattedLabel = mXAxis.getXValueFormatter().getXValue(label, xIndex, mViewPortHandler);
+        String formattedLabel = mXAxis.getValueFormatter().getXValue(label, xIndex, mViewPortHandler);
         c.drawText(formattedLabel, x, y, mAxisLabelPaint);
     }
 
