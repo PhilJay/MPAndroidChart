@@ -1,7 +1,7 @@
 
 package com.github.mikephil.charting.components;
 
-import com.github.mikephil.charting.formatter.DefaultXAxisAxisValueFormatter;
+import com.github.mikephil.charting.formatter.DefaultXAxisValueFormatter;
 import com.github.mikephil.charting.formatter.XAxisValueFormatter;
 
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ public class XAxis extends AxisBase {
     /**
      * Custom formatter for adjusting x-value strings
      */
-    protected XAxisValueFormatter mXAxisValueFormatter = new DefaultXAxisAxisValueFormatter();
+    protected XAxisValueFormatter mXAxisValueFormatter = new DefaultXAxisValueFormatter();
 
     /** the position of the x-labels relative to the chart */
     private XAxisPosition mPosition = XAxisPosition.TOP;
@@ -199,7 +199,7 @@ public class XAxis extends AxisBase {
      */
     public void setValueFormatter(XAxisValueFormatter formatter) {
         if(formatter == null)
-            mXAxisValueFormatter = new DefaultXAxisAxisValueFormatter();
+            mXAxisValueFormatter = new DefaultXAxisValueFormatter();
         else
             mXAxisValueFormatter = formatter;
     }
