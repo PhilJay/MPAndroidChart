@@ -4,6 +4,7 @@ package com.github.mikephil.charting.components;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 
 import com.github.mikephil.charting.utils.Utils;
 
@@ -36,6 +37,9 @@ public class LimitLine {
 
     /** label string that is drawn next to the limit line */
     private String mLabel = "";
+
+    /** the typeface used for the labels */
+    private Typeface mTypeface = null;
 
     /** the path effect of this LimitLine that makes dashed lines possible */
     private DashPathEffect mDashPathEffect = null;
@@ -252,5 +256,23 @@ public class LimitLine {
      */
     public float getTextSize() {
         return mTextSize;
+    }
+
+    /**
+     * returns the Typeface used for the limitline label, returns null if none is set
+     *
+     * @return
+     */
+    public Typeface getTypeface() {
+        return mTypeface;
+    }
+
+    /**
+     * Sets a specific Typeface to be used for the limitline label
+     *
+     * @param tf
+     */
+    public void setTypeface(Typeface tf) {
+        mTypeface = tf;
     }
 }
