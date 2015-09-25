@@ -1,4 +1,5 @@
-[![Twitter](https://img.shields.io/badge/Twitter-@PhilippJahoda-blue.svg?style=flat)](http://twitter.com/philippjahoda) [![Android Arsenal](http://img.shields.io/badge/Android%20Arsenal-MPAndroidChart-orange.svg?style=flat)](http://android-arsenal.com/details/1/741)  [![Release](https://img.shields.io/github/release/PhilJay/MPAndroidChart.svg?label=maven central)](https://jitpack.io/#PhilJay/MPAndroidChart)      [![API](https://img.shields.io/badge/API-8%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=8)
+[![Twitter](https://img.shields.io/badge/Twitter-@PhilippJahoda-blue.svg?style=flat)](http://twitter.com/philippjahoda)
+[![Twitter](https://img.shields.io/badge/Twitter-@mpandroidchart-blue.svg?style=flat)](http://twitter.com/mpandroidchart)[![Android Arsenal](http://img.shields.io/badge/Android%20Arsenal-MPAndroidChart-orange.svg?style=flat)](http://android-arsenal.com/details/1/741)  [![Release](https://img.shields.io/github/release/PhilJay/MPAndroidChart.svg?label=maven central)](https://jitpack.io/#PhilJay/MPAndroidChart)      [![API](https://img.shields.io/badge/API-8%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=8)
 
 Remember: *It's all about the looks.*
 
