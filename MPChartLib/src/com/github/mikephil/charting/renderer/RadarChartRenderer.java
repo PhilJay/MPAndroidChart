@@ -174,7 +174,9 @@ public class RadarChartRenderer extends LineScatterCandleRadarRenderer {
         mWebPaint.setColor(mChart.getWebColor());
         mWebPaint.setAlpha(mChart.getWebAlpha());
 
-        for (int i = 0; i < mChart.getData().getXValCount(); i += mChart.getSkipWebLineCount()) {
+        final int xIncrements = 1 + mChart.getSkipWebLineCount();
+
+        for (int i = 0; i < mChart.getData().getXValCount(); i += xIncrements) {
 
             PointF p = Utils.getPosition(center, mChart.getYRange() * factor, sliceangle * i
                     + rotationangle);
