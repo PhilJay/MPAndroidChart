@@ -346,7 +346,7 @@ public class BarChartRenderer extends DataRenderer {
 
                 if (isStack) {
                     y1 = h.getRange().from;
-                    y2 = h.getRange().to * mAnimator.getPhaseY();
+                    y2 = h.getRange().to;
                 } else {
                     y1 = e.getVal();
                     y2 = 0.f;
@@ -370,7 +370,7 @@ public class BarChartRenderer extends DataRenderer {
                     final float arrowWidth = set.getBarSpace() / 2.f;
                     final float arrowHeight = arrowWidth * xToYRel;
 
-                    final float yArrow = y1 > -y2 ? y1 : y1;
+                    final float yArrow = (y1 > -y2 ? y1 : y1) * mAnimator.getPhaseY();
 
                     Path arrow = new Path();
                     arrow.moveTo(x + 0.4f, yArrow + offsetY);
