@@ -9,7 +9,7 @@ import java.util.List;
  * 
  * @author Philipp Jahoda
  */
-public class BarData extends BarLineScatterCandleData<BarDataSet> {
+public class BarData extends BarLineScatterCandleBubbleData<BarDataSet> {
 
     /** the space that is left between groups of bars */
     private float mGroupSpace = 0.8f;

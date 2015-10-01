@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  * 
  * @author Philipp Jahoda
  */
-public class CombinedData extends BarLineScatterCandleData<BarLineScatterCandleDataSet<?>> {
+public class CombinedData extends BarLineScatterCandleBubbleData<BarLineScatterCandleBubbleDataSet<?>> {
 
     private LineData mLineData;
     private BarData mBarData;
@@ -79,6 +80,27 @@ public class CombinedData extends BarLineScatterCandleData<BarLineScatterCandleD
         return mCandleData;
     }
 
+    /**
+     * Returns all data objects in row: line-bar-scatter-candle-bubble if not null.
+     * @return
+     */
+    public List<ChartData> getAllData() {
+
+        List<ChartData> data = new ArrayList<ChartData>();
+        if(mLineData != null)
+            data.add(mLineData);
+        if(mBarData != null)
+            data.add(mBarData);
+        if(mScatterData != null)
+            data.add(mScatterData);
+        if(mCandleData != null)
+            data.add(mCandleData);
+        if(mBubbleData != null)
+            data.add(mBubbleData);
+
+        return data;
+    }
+
     @Override
     public void notifyDataChanged() {
         if (mLineData != null)
@@ -91,5 +113,7 @@ public class CombinedData extends BarLineScatterCandleData<BarLineScatterCandleD
             mScatterData.notifyDataChanged();
         if (mBubbleData != null)
             mBubbleData.notifyDataChanged();
+
+        init(); // recalculate everything
     }
 }

@@ -8,27 +8,39 @@ import com.github.mikephil.charting.utils.Utils;
 
 /**
  * This class encapsulates everything both Axis and Legend have in common.
- * 
+ *
  * @author Philipp Jahoda
  */
 public abstract class ComponentBase {
 
-    /** flag that indicates if this axis / legend is enabled or not */
+    /**
+     * flag that indicates if this axis / legend is enabled or not
+     */
     protected boolean mEnabled = true;
 
-    /** the offset in pixels this axis labels have on the x-axis */
+    /**
+     * the offset in pixels this axis labels have on the x-axis
+     */
     protected float mXOffset = 5f;
 
-    /** the offset in pixels this axis labels have on the Y-axis */
+    /**
+     * the offset in pixels this axis labels have on the Y-axis
+     */
     protected float mYOffset = 5f;
 
-    /** the typeface used for the labels */
+    /**
+     * the typeface used for the labels
+     */
     protected Typeface mTypeface = null;
 
-    /** the text size of the labels */
+    /**
+     * the text size of the labels
+     */
     protected float mTextSize = 10f;
 
-    /** the text color to use for the labels */
+    /**
+     * the text color to use for the labels
+     */
     protected int mTextColor = Color.BLACK;
 
     public ComponentBase() {
@@ -38,7 +50,7 @@ public abstract class ComponentBase {
     /**
      * Returns the used offset on the x-axis for drawing the axis or legend
      * labels. This offset is applied before and after the label.
-     * 
+     *
      * @return
      */
     public float getXOffset() {
@@ -47,7 +59,7 @@ public abstract class ComponentBase {
 
     /**
      * Sets the used x-axis offset for the labels on this axis.
-     * 
+     *
      * @param xOffset
      */
     public void setXOffset(float xOffset) {
@@ -57,7 +69,7 @@ public abstract class ComponentBase {
     /**
      * Returns the used offset on the x-axis for drawing the axis labels. This
      * offset is applied before and after the label.
-     * 
+     *
      * @return
      */
     public float getYOffset() {
@@ -68,8 +80,8 @@ public abstract class ComponentBase {
      * Sets the used y-axis offset for the labels on this axis. For the legend,
      * higher offset means the legend as a whole will be placed further away
      * from the top.
-     * 
-     * @param xOffset
+     *
+     * @param yOffset
      */
     public void setYOffset(float yOffset) {
         mYOffset = Utils.convertDpToPixel(yOffset);
@@ -77,7 +89,7 @@ public abstract class ComponentBase {
 
     /**
      * returns the Typeface used for the labels, returns null if none is set
-     * 
+     *
      * @return
      */
     public Typeface getTypeface() {
@@ -86,7 +98,7 @@ public abstract class ComponentBase {
 
     /**
      * sets a specific Typeface for the labels
-     * 
+     *
      * @param tf
      */
     public void setTypeface(Typeface tf) {
@@ -96,7 +108,7 @@ public abstract class ComponentBase {
     /**
      * sets the size of the label text in pixels min = 6f, max = 24f, default
      * 10f
-     * 
+     *
      * @param size
      */
     public void setTextSize(float size) {
@@ -111,7 +123,7 @@ public abstract class ComponentBase {
 
     /**
      * returns the text size that is currently set for the labels
-     * 
+     *
      * @return
      */
     public float getTextSize() {
@@ -121,7 +133,7 @@ public abstract class ComponentBase {
     /**
      * Sets the text color to use for the labels. Make sure to use
      * getResources().getColor(...) when using a color from the resources.
-     * 
+     *
      * @param color
      */
     public void setTextColor(int color) {
@@ -130,7 +142,7 @@ public abstract class ComponentBase {
 
     /**
      * Returns the text color that is set for the labels.
-     * 
+     *
      * @return
      */
     public int getTextColor() {
@@ -141,7 +153,7 @@ public abstract class ComponentBase {
      * Set this to true if this component should be enabled (should be drawn),
      * false if not. If disabled, nothing of this component will be drawn.
      * Default: true
-     * 
+     *
      * @param enabled
      */
     public void setEnabled(boolean enabled) {
@@ -150,7 +162,7 @@ public abstract class ComponentBase {
 
     /**
      * Returns true if this comonent is enabled (should be drawn), false if not.
-     * 
+     *
      * @return
      */
     public boolean isEnabled() {

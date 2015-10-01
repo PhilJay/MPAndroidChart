@@ -11,13 +11,13 @@ import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.ScatterData;
+import com.github.mikephil.charting.highlight.CombinedHighlighter;
 import com.github.mikephil.charting.interfaces.BarDataProvider;
 import com.github.mikephil.charting.interfaces.BubbleDataProvider;
 import com.github.mikephil.charting.interfaces.CandleDataProvider;
 import com.github.mikephil.charting.interfaces.LineDataProvider;
 import com.github.mikephil.charting.interfaces.ScatterDataProvider;
 import com.github.mikephil.charting.renderer.CombinedChartRenderer;
-import com.github.mikephil.charting.utils.FillFormatter;
 
 /**
  * This chart class allows the combination of lines, bars, scatter and candle
@@ -27,9 +27,6 @@ import com.github.mikephil.charting.utils.FillFormatter;
  */
 public class CombinedChart extends BarLineChartBase<CombinedData> implements LineDataProvider,
         BarDataProvider, ScatterDataProvider, CandleDataProvider, BubbleDataProvider {
-
-    /** the fill-formatter used for determining the position of the fill-line */
-    protected FillFormatter mFillFormatter;
 
     /** flag that enables or disables the highlighting arrow */
     private boolean mDrawHighlightArrow = false;
@@ -74,7 +71,8 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
     protected void init() {
         super.init();
 
-        mFillFormatter = new DefaultFillFormatter();
+        mHighlighter = new CombinedHighlighter(this);
+
         // mRenderer = new CombinedChartRenderer(this, mAnimator,
         // mViewPortHandler);
     }
@@ -101,9 +99,6 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
                         mXChartMax = xmax;
                 }
             }
-        } else {
-            mXChartMin = 0f;
-            mXChartMax = mData.getXValCount()-1;
         }
 
         mDeltaX = Math.abs(mXChartMax - mXChartMin);
@@ -116,19 +111,6 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
         super.setData(data);
         mRenderer = new CombinedChartRenderer(this, mAnimator, mViewPortHandler);
         mRenderer.initBuffers();
-    }
-
-    public void setFillFormatter(FillFormatter formatter) {
-
-        if (formatter == null)
-            formatter = new DefaultFillFormatter();
-        else
-            mFillFormatter = formatter;
-    }
-
-    @Override
-    public FillFormatter getFillFormatter() {
-        return mFillFormatter;
     }
 
     @Override

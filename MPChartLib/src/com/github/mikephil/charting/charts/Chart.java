@@ -40,10 +40,10 @@ import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.renderer.DataRenderer;
 import com.github.mikephil.charting.renderer.LegendRenderer;
-import com.github.mikephil.charting.utils.DefaultValueFormatter;
+import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.Utils;
-import com.github.mikephil.charting.utils.ValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.io.File;
@@ -299,6 +299,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public void clear() {
         mData = null;
         mDataNotSet = true;
+        mIndicesToHightlight = null;
         invalidate();
     }
 
@@ -332,7 +333,9 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
     /**
      * Lets the chart know its underlying data has changed and performs all
-     * necessary recalculations.
+     * necessary recalculations. It is crucial that this method is called
+     * everytime data is changed dynamically. Not calling this method can lead
+     * to crashes or unexpected behaviour.
      */
     public abstract void notifyDataSetChanged();
 
@@ -438,11 +441,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * array of Highlight objects that reference the highlighted slices in the
      * chart
      */
-    protected Highlight[] mIndicesToHightlight = new Highlight[0];
+    protected Highlight[] mIndicesToHightlight;
 
     /**
-     * Returns the array of currently highlighted values. This might be null or
-     * empty if nothing is highlighted.
+     * Returns the array of currently highlighted values. This might a null or
+     * empty array if nothing is highlighted.
      * 
      * @return
      */
@@ -896,15 +899,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
-     * returns the total value (sum) of all y-values across all DataSets
-     *
-     * @return
-     */
-    public float getYValueSum() {
-        return mData.getYValueSum();
-    }
-
-    /**
      * returns the current y-max value across all DataSets
      *
      * @return
@@ -938,31 +932,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
-     * returns the average value of all values the chart holds
-     *
-     * @return
-     */
-    public float getAverage() {
-        return getYValueSum() / mData.getYValCount();
-    }
-
-    /**
-     * returns the average value for a specific DataSet (with a specific label)
-     * in the chart
-     *
-     * @param dataSetLabel
-     * @return
-     */
-    public float getAverage(String dataSetLabel) {
-
-        DataSet<? extends Entry> ds = mData.getDataSetByLabel(dataSetLabel, true);
-
-        return ds.getYValueSum()
-                / ds.getEntryCount();
-    }
-
-    /**
-     * returns the total number of values the chart holds (across all DataSets)
+     * Returns the total number of (y) values the chart holds (across all DataSets).
      *
      * @return
      */
@@ -1118,8 +1088,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
-     * Set this to true to enable logcat outputs for the chart. Default:
-     * disabled
+     * Set this to true to enable logcat outputs for the chart. Beware that
+     * logcat output decreases rendering performance. Default: disabled.
      *
      * @param enabled
      */

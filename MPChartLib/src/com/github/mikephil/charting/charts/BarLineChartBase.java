@@ -20,11 +20,9 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.BarLineScatterCandleData;
-import com.github.mikephil.charting.data.BarLineScatterCandleDataSet;
+import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData;
+import com.github.mikephil.charting.data.BarLineScatterCandleBubbleDataSet;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.highlight.ChartHighlighter;
 import com.github.mikephil.charting.interfaces.BarLineScatterCandleBubbleDataProvider;
@@ -33,14 +31,10 @@ import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.listener.OnDrawListener;
 import com.github.mikephil.charting.renderer.XAxisRenderer;
 import com.github.mikephil.charting.renderer.YAxisRenderer;
-import com.github.mikephil.charting.utils.FillFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Base-class of LineChart, BarChart, ScatterChart and CandleStickChart.
@@ -48,7 +42,7 @@ import java.util.List;
  * @author Philipp Jahoda
  */
 @SuppressLint("RtlHardcoded")
-public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? extends BarLineScatterCandleDataSet<? extends Entry>>>
+public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<? extends BarLineScatterCandleBubbleDataSet<? extends Entry>>>
         extends Chart<T> implements BarLineScatterCandleBubbleDataProvider {
 
     /** the maximum number of entried to which values will be drawn */
@@ -312,10 +306,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
         calcMinMax();
 
-        if (mAxisLeft.needsDefaultFormatter())
-            mAxisLeft.setValueFormatter(mDefaultFormatter);
-        if (mAxisRight.needsDefaultFormatter())
-            mAxisRight.setValueFormatter(mDefaultFormatter);
+//        if (mAxisLeft.needsDefaultFormatter())
+//            mAxisLeft.setValueFormatter(mDefaultFormatter);
+//        if (mAxisRight.needsDefaultFormatter())
+//            mAxisRight.setValueFormatter(mDefaultFormatter);
 
         mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum);
         mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum);
@@ -363,34 +357,51 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         mXChartMax = mData.getXVals().size() - 1;
         mDeltaX = Math.abs(mXChartMax - mXChartMin);
 
-        mAxisLeft.mAxisMaximum = !Float.isNaN(mAxisLeft.getAxisMaxValue()) ? mAxisLeft
-                .getAxisMaxValue() : maxLeft + topSpaceLeft;
-        mAxisRight.mAxisMaximum = !Float.isNaN(mAxisRight.getAxisMaxValue()) ? mAxisRight
-                .getAxisMaxValue() : maxRight + topSpaceRight;
-        mAxisLeft.mAxisMinimum = !Float.isNaN(mAxisLeft.getAxisMinValue()) ? mAxisLeft
-                .getAxisMinValue() : minLeft - bottomSpaceLeft;
-        mAxisRight.mAxisMinimum = !Float.isNaN(mAxisRight.getAxisMinValue()) ? mAxisRight
-                .getAxisMinValue() : minRight - bottomSpaceRight;
+        // Consider sticking one of the edges of the axis to zero (0.0)
 
-        // consider starting at zero (0)
         if (mAxisLeft.isStartAtZeroEnabled()) {
-            if (mAxisLeft.mAxisMinimum < 0f && mAxisLeft.mAxisMaximum < 0f) {
+            if (minLeft < 0.f && maxLeft < 0.f) {
                 // If the values are all negative, let's stay in the negative zone
-                mAxisLeft.mAxisMaximum = 0f;
-            } else if (mAxisLeft.mAxisMinimum >= 0f) {
-                // We have positive values only, stay in the positive zone
-                mAxisLeft.mAxisMinimum = 0f;
+                mAxisLeft.mAxisMinimum = Math.min(0.f, !Float.isNaN(mAxisLeft.getAxisMinValue()) ? mAxisLeft.getAxisMinValue() : (minLeft - bottomSpaceLeft));
+                mAxisLeft.mAxisMaximum = 0.f;
             }
+            else if (minLeft >= 0.0) {
+                // We have positive values only, stay in the positive zone
+                mAxisLeft.mAxisMinimum = 0.f;
+                mAxisLeft.mAxisMaximum = Math.max(0.f, !Float.isNaN(mAxisLeft.getAxisMaxValue()) ? mAxisLeft.getAxisMaxValue() : (maxLeft + topSpaceLeft));
+            }
+            else {
+                // Stick the minimum to 0.0 or less, and maximum to 0.0 or more (startAtZero for negative/positive at the same time)
+                mAxisLeft.mAxisMinimum = Math.min(0.f, !Float.isNaN(mAxisLeft.getAxisMinValue()) ? mAxisLeft.getAxisMinValue() : (minLeft - bottomSpaceLeft));
+                mAxisLeft.mAxisMaximum = Math.max(0.f, !Float.isNaN(mAxisLeft.getAxisMaxValue()) ? mAxisLeft.getAxisMaxValue() : (maxLeft + topSpaceLeft));
+            }
+        }
+        else {
+            // Use the values as they are
+            mAxisLeft.mAxisMinimum = !Float.isNaN(mAxisLeft.getAxisMinValue()) ? mAxisLeft.getAxisMinValue() : (minLeft - bottomSpaceLeft);
+            mAxisLeft.mAxisMaximum = !Float.isNaN(mAxisLeft.getAxisMaxValue()) ? mAxisLeft.getAxisMaxValue() : (maxLeft + topSpaceLeft);
         }
 
         if (mAxisRight.isStartAtZeroEnabled()) {
-            if (mAxisRight.mAxisMinimum < 0.0 && mAxisRight.mAxisMaximum < 0.0) {
+            if (minRight < 0.f && maxRight < 0.f) {
                 // If the values are all negative, let's stay in the negative zone
-                mAxisRight.mAxisMaximum = 0f;
-            } else if (mAxisRight.mAxisMinimum >= 0f) {
-                // We have positive values only, stay in the positive zone
-                mAxisRight.mAxisMinimum = 0f;
+                mAxisRight.mAxisMinimum = Math.min(0.f, !Float.isNaN(mAxisRight.getAxisMinValue()) ? mAxisRight.getAxisMinValue() : (minRight - bottomSpaceRight));
+                mAxisRight.mAxisMaximum = 0.f;
             }
+            else if (minRight >= 0.f) {
+                // We have positive values only, stay in the positive zone
+                mAxisRight.mAxisMinimum = 0.f;
+                mAxisRight.mAxisMaximum = Math.max(0.f, !Float.isNaN(mAxisRight.getAxisMaxValue()) ? mAxisRight.getAxisMaxValue() : (maxRight + topSpaceRight));
+            }
+            else {
+                // Stick the minimum to 0.0 or less, and maximum to 0.0 or more (startAtZero for negative/positive at the same time)
+                mAxisRight.mAxisMinimum = Math.min(0.f, !Float.isNaN(mAxisRight.getAxisMinValue()) ? mAxisRight.getAxisMinValue() : (minRight - bottomSpaceRight));
+                mAxisRight.mAxisMaximum = Math.max(0.f, !Float.isNaN(mAxisRight.getAxisMaxValue()) ? mAxisRight.getAxisMaxValue() : (maxRight + topSpaceRight));
+            }
+        }
+        else {
+            mAxisRight.mAxisMinimum = !Float.isNaN(mAxisRight.getAxisMinValue()) ? mAxisRight.getAxisMinValue() : (minRight - bottomSpaceRight);
+            mAxisRight.mAxisMaximum = !Float.isNaN(mAxisRight.getAxisMaxValue()) ? mAxisRight.getAxisMaxValue() : (maxRight + topSpaceRight);
         }
 
         mAxisLeft.mAxisRange = Math.abs(mAxisLeft.mAxisMaximum - mAxisLeft.mAxisMinimum);
@@ -531,21 +542,46 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
             BarData bd = (BarData) mData;
             float space = bd.getGroupSpace();
+            int setCount = mData.getDataSetCount();
+            int i = e.getXIndex();
 
-            float x = e.getXIndex() * (mData.getDataSetCount() - 1) + dataSetIndex + space * e.getXIndex() + space
-                    / 2f;
+            if(this instanceof HorizontalBarChart) {
 
-            xPos += x;
+                // calculate the x-position, depending on datasetcount
+                float y = i + i * (setCount - 1) + dataSetIndex + space * i + space / 2f ;
 
-            BarEntry entry = (BarEntry) e;
-            if(entry.getVals() != null) {
-                yPos = highlight.getRange().to;
+                yPos = y;
+
+                BarEntry entry = (BarEntry) e;
+                if(entry.getVals() != null) {
+                    xPos = highlight.getRange().to;
+                } else {
+                    xPos = e.getVal();
+                }
+
+                xPos *= mAnimator.getPhaseY();
+            } else {
+
+                float x = i + i * (setCount - 1) + dataSetIndex + space * i + space / 2f;
+
+                xPos = x;
+
+                BarEntry entry = (BarEntry) e;
+                if(entry.getVals() != null) {
+                    yPos = highlight.getRange().to;
+                } else {
+                    yPos = e.getVal();
+                }
+
+                yPos *= mAnimator.getPhaseY();
             }
+        } else {
+            yPos *= mAnimator.getPhaseY();
         }
 
         // position of the marker depends on selected value index and value
         float[] pts = new float[] {
-                xPos, yPos * mAnimator.getPhaseY()
+                xPos, yPos
         };
 
         getTransformer(mData.getDataSetByIndex(dataSetIndex).getAxisDependency())
@@ -743,6 +779,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
 
     /**
      * Moves the left side of the current viewport to the specified x-index.
+     * This also refreshes the chart by calling invalidate().
      * 
      * @param xIndex
      */
@@ -756,18 +793,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         } else {
             mJobs.add(job);
         }
-
-        // float[] pts = new float[] {
-        // xIndex, 0f
-        // };
-        //
-        // getTransformer(AxisDependency.LEFT).pointValuesToPixel(pts);
-        //
-        // mViewPortHandler.centerViewPort(pts, this);
     }
 
     /**
      * Centers the viewport to the specified y-value on the y-axis.
+     * This also refreshes the chart by calling invalidate().
      * 
      * @param yValue
      * @param axis - which axis should be used as a reference for the y-axis
@@ -790,6 +820,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * This will move the left side of the current viewport to the specified
      * x-index on the x-axis, and center the viewport to the specified y-value
      * on the y-axis.
+     * This also refreshes the chart by calling invalidate().
      * 
      * @param xIndex
      * @param yValue
@@ -812,6 +843,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
     /**
      * This will move the center of the current viewport to the specified
      * x-index and y-value.
+     * This also refreshes the chart by calling invalidate().
      *
      * @param xIndex
      * @param yValue
@@ -1166,7 +1198,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
      * @param y
      * @return
      */
-    public BarLineScatterCandleDataSet<? extends Entry> getDataSetByTouchPoint(float x, float y) {
+    public BarLineScatterCandleBubbleDataSet<? extends Entry> getDataSetByTouchPoint(float x, float y) {
         Highlight h = getHighlightByTouchPoint(x, y);
         if (h != null) {
             return mData.getDataSetByIndex(h.getDataSetIndex());
@@ -1458,46 +1490,5 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleData<? exte
         }
 
         return null;
-    }
-
-    /**
-     * Default formatter that calculates the position of the filled line.
-     * 
-     * @author Philipp Jahoda
-     */
-    protected class DefaultFillFormatter implements FillFormatter {
-
-        @Override
-        public float getFillLinePosition(LineDataSet dataSet, LineData data,
-                float chartMaxY, float chartMinY) {
-
-            float fillMin = 0f;
-
-            if (dataSet.getYMax() > 0 && dataSet.getYMin() < 0) {
-                fillMin = 0f;
-            } else {
-
-                if (!getAxis(dataSet.getAxisDependency()).isStartAtZeroEnabled()) {
-
-                    float max, min;
-
-                    if (data.getYMax() > 0)
-                        max = 0f;
-                    else
-                        max = chartMaxY;
-                    if (data.getYMin() < 0)
-                        min = 0f;
-                    else
-                        min = chartMinY;
-
-                    fillMin = dataSet.getYMin() >= 0 ? min : max;
-                } else {
-                    fillMin = 0f;
-                }
-
-            }
-
-            return fillMin;
-        }
     }
 }

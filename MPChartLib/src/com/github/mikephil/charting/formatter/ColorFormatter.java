@@ -1,5 +1,4 @@
-
-package com.github.mikephil.charting.utils;
+package com.github.mikephil.charting.formatter;
 
 import com.github.mikephil.charting.data.Entry;
 
@@ -11,5 +10,5 @@ import com.github.mikephil.charting.data.Entry;
  */
 public interface ColorFormatter {
 
-    public int getColor(Entry e, int index);
+    int getColor(Entry e, int index);
 }

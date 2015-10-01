@@ -209,7 +209,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
                 ScatterDataSet dataSet = dataSets.get(i);
 
-                if (!dataSet.isDrawValuesEnabled())
+                if (!dataSet.isDrawValuesEnabled() || dataSet.getEntryCount() == 0)
                     continue;
 
                 // apply the text-styling defined by the DataSet
@@ -233,11 +233,10 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
                             || !mViewPortHandler.isInBoundsY(positions[j + 1])))
                         continue;
 
-                    float val = entries.get(j / 2).getVal();
+                    Entry entry = entries.get(j / 2);
 
-                    c.drawText(dataSet.getValueFormatter().getFormattedValue(val), positions[j],
-                            positions[j + 1] - shapeSize,
-                            mValuePaint);
+                    drawValue(c, dataSet.getValueFormatter(), entry.getVal(), entry, i, positions[j],
+                            positions[j + 1] - shapeSize);
                 }
             }
         }
@@ -258,11 +257,9 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
             if (set == null || !set.isHighlightEnabled())
                 continue;
 
-            mHighlightPaint.setColor(set.getHighLightColor());
-            mHighlightPaint.setStrokeWidth(set.getHighlightLineWidth());
-
             int xIndex = indices[i].getXIndex(); // get the
                                                  // x-position
+
 
             if (xIndex > mChart.getXChartMax() * mAnimator.getPhaseX())
                 continue;
@@ -271,19 +268,16 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
             if (yVal == Float.NaN)
                 continue;
 
-            float y = yVal * mAnimator.getPhaseY(); // get
-                                                                            // the
-            // y-position
+            float y = yVal * mAnimator.getPhaseY();
 
             float[] pts = new float[] {
-                    xIndex, mChart.getYChartMax(), xIndex, mChart.getYChartMin(), mChart.getXChartMin(), y,
-                    mChart.getXChartMax(), y
+                    xIndex, y
             };
 
             mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);
 
             // draw the lines
-            drawHighlightLines(c, pts, set.isHorizontalHighlightIndicatorEnabled(), set.isVerticalHighlightIndicatorEnabled());
+            drawHighlightLines(c, pts, set);
         }
     }
 }

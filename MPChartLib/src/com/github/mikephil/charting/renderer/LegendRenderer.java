@@ -23,13 +23,19 @@ import java.util.List;
 
 public class LegendRenderer extends Renderer {
 
-    /** paint for the legend labels */
+    /**
+     * paint for the legend labels
+     */
     protected Paint mLegendLabelPaint;
 
-    /** paint used for the legend forms */
+    /**
+     * paint used for the legend forms
+     */
     protected Paint mLegendFormPaint;
 
-    /** the legend object this renderer renders */
+    /**
+     * the legend object this renderer renders
+     */
     protected Legend mLegend;
 
     public LegendRenderer(ViewPortHandler viewPortHandler, Legend legend) {
@@ -48,7 +54,7 @@ public class LegendRenderer extends Renderer {
 
     /**
      * Returns the Paint object used for drawing the Legend labels.
-     * 
+     *
      * @return
      */
     public Paint getLabelPaint() {
@@ -57,7 +63,7 @@ public class LegendRenderer extends Renderer {
 
     /**
      * Returns the Paint object used for drawing the Legend forms.
-     * 
+     *
      * @return
      */
     public Paint getFormPaint() {
@@ -66,7 +72,7 @@ public class LegendRenderer extends Renderer {
 
     /**
      * Prepares the legend and calculates all needed forms, labels and colors.
-     * 
+     *
      * @param data
      */
     public void computeLegend(ChartData<?> data) {
@@ -198,26 +204,22 @@ public class LegendRenderer extends Renderer {
         switch (legendPosition) {
             case BELOW_CHART_LEFT:
             case BELOW_CHART_RIGHT:
-            case BELOW_CHART_CENTER:
-            {
+            case BELOW_CHART_CENTER: {
                 float contentWidth = mViewPortHandler.contentWidth();
 
                 float originPosX;
 
-                if (legendPosition == Legend.LegendPosition.BELOW_CHART_LEFT)
-                {
+                if (legendPosition == Legend.LegendPosition.BELOW_CHART_LEFT) {
                     originPosX = mViewPortHandler.contentLeft() + xoffset;
 
                     if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
                         originPosX += mLegend.mNeededWidth;
-                }
-                else if (legendPosition == Legend.LegendPosition.BELOW_CHART_RIGHT) {
+                } else if (legendPosition == Legend.LegendPosition.BELOW_CHART_RIGHT) {
                     originPosX = mViewPortHandler.contentRight() - xoffset;
 
                     if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
                         originPosX -= mLegend.mNeededWidth;
-                }
-                else // if (legendPosition == Legend.LegendPosition.BELOW_CHART_CENTER)
+                } else // if (legendPosition == Legend.LegendPosition.BELOW_CHART_CENTER)
                     originPosX = mViewPortHandler.contentLeft() + contentWidth / 2.f;
 
                 FSize[] calculatedLineSizes = mLegend.getCalculatedLineSizes();
@@ -230,12 +232,12 @@ public class LegendRenderer extends Renderer {
                 int lineIndex = 0;
 
                 for (int i = 0, count = labels.length; i < count; i++) {
-                    if (calculatedLabelBreakPoints[i]) {
+                    if (i < calculatedLabelBreakPoints.length && calculatedLabelBreakPoints[i]) {
                         posX = originPosX;
                         posY += labelLineHeight + labelLineSpacing;
                     }
 
-                    if (posX == originPosX && legendPosition == Legend.LegendPosition.BELOW_CHART_CENTER) {
+                    if (posX == originPosX && legendPosition == Legend.LegendPosition.BELOW_CHART_CENTER && lineIndex < calculatedLineSizes.length) {
                         posX += (direction == Legend.LegendDirection.RIGHT_TO_LEFT ? calculatedLineSizes[lineIndex].width : -calculatedLineSizes[lineIndex].width) / 2.f;
                         lineIndex++;
                     }
@@ -266,13 +268,12 @@ public class LegendRenderer extends Renderer {
                             posX += calculatedLabelSizes[i].width;
 
                         posX += direction == Legend.LegendDirection.RIGHT_TO_LEFT ? -xEntrySpace : xEntrySpace;
-                    }
-                    else
+                    } else
                         posX += direction == Legend.LegendDirection.RIGHT_TO_LEFT ? -stackSpace : stackSpace;
                 }
 
             }
-                break;
+            break;
 
             case PIECHART_CENTER:
             case RIGHT_OF_CHART:
@@ -280,8 +281,7 @@ public class LegendRenderer extends Renderer {
             case RIGHT_OF_CHART_INSIDE:
             case LEFT_OF_CHART:
             case LEFT_OF_CHART_CENTER:
-            case LEFT_OF_CHART_INSIDE:
-            {
+            case LEFT_OF_CHART_INSIDE: {
                 // contains the stacked legend size in pixels
                 float stack = 0f;
                 boolean wasStacked = false;
@@ -319,7 +319,7 @@ public class LegendRenderer extends Renderer {
                             * Legend.LegendPosition.RIGHT_OF_CHART_INSIDE ||
                             * legendPosition ==
                             * Legend.LegendPosition.LEFT_OF_CHART_INSIDE)
-                            */{
+                            */ {
                         posY = mViewPortHandler.contentTop() + yoffset;
                     }
                 }
@@ -375,10 +375,10 @@ public class LegendRenderer extends Renderer {
     /**
      * Draws the Legend-form at the given position with the color at the given
      * index.
-     * 
-     * @param c canvas to draw with
-     * @param x
-     * @param y
+     *
+     * @param c     canvas to draw with
+     * @param x     position
+     * @param y     position
      * @param index the index of the color to use (in the colors array)
      */
     protected void drawForm(Canvas c, float x, float y, int index, Legend legend) {
@@ -406,8 +406,8 @@ public class LegendRenderer extends Renderer {
 
     /**
      * Draws the provided label at the given position.
-     * 
-     * @param c canvas to draw with
+     *
+     * @param c     canvas to draw with
      * @param x
      * @param y
      * @param label the label to draw

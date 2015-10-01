@@ -199,7 +199,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
         if (this instanceof RadarChart) {
             XAxis x = ((RadarChart) this).getXAxis();
 
-            if (x.isEnabled()) {
+            if (x.isEnabled() && x.isDrawLabelsEnabled()) {
                 min = Math.max(Utils.convertDpToPixel(10f), x.mLabelWidth);
             }
         }

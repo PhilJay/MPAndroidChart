@@ -150,11 +150,14 @@ public class XAxisRenderer extends AxisRenderer {
                     }
                 }
 
-                c.drawText(label, position[0],
-                        pos,
-                        mAxisLabelPaint);
+                drawLabel(c, label, i, position[0], pos);
             }
         }
+    }
+
+    protected void drawLabel(Canvas c, String label, int xIndex, float x, float y) {
+        String formattedLabel = mXAxis.getValueFormatter().getXValue(label, xIndex, mViewPortHandler);
+        c.drawText(formattedLabel, x, y, mAxisLabelPaint);
     }
 
     @Override

@@ -79,7 +79,7 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> {
 
         int endValue;
 
-        if (end == 0)
+        if (end == 0 || end >= mYVals.size())
             endValue = mYVals.size() - 1;
         else
             endValue = end;

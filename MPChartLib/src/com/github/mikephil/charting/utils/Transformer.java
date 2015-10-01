@@ -262,7 +262,7 @@ public class Transformer {
             int i = e.getXIndex();
 
             // calculate the x-position, depending on datasetcount
-            float x = e.getXIndex() + i * (setCount - 1) + dataSet + space * i
+            float x = i + i * (setCount - 1) + dataSet + space * i
                     + space / 2f ;
             float y = e.getVal();
 

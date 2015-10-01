@@ -83,7 +83,7 @@ public class RealtimeLineChartActivity extends DemoBase implements
         xl.setDrawGridLines(false);
         xl.setAvoidFirstLastClipping(true);
         xl.setSpaceBetweenLabels(5);
-        xl.setEnabled(false);
+        xl.setEnabled(true);
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(tf);
@@ -145,6 +145,7 @@ public class RealtimeLineChartActivity extends DemoBase implements
             data.addXValue(mMonths[data.getXValCount() % 12] + " "
                     + (year + data.getXValCount() / 12));
             data.addEntry(new Entry((float) (Math.random() * 40) + 30f, set.getEntryCount()), 0);
+
 
             // let the chart know it's data has changed
             mChart.notifyDataSetChanged();

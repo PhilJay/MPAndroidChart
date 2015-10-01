@@ -1,4 +1,3 @@
-
 package com.github.mikephil.charting.animation;
 
 import android.animation.TimeInterpolator;
@@ -12,5 +11,5 @@ import android.annotation.SuppressLint;
 public interface EasingFunction extends TimeInterpolator {
 
     @Override
-    public float getInterpolation(float input);
+    float getInterpolation(float input);
 }

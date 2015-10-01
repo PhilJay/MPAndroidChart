@@ -94,7 +94,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
         for (LineDataSet set : lineData.getDataSets()) {
 
-            if (set.isVisible())
+            if (set.isVisible() && set.getEntryCount() > 0)
                 drawDataSet(c, set);
         }
 
@@ -237,9 +237,8 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
     protected void drawCubicFill(LineDataSet dataSet, Path spline, Transformer trans,
             int from, int to) {
 
-        float fillMin = mChart.getFillFormatter()
-                .getFillLinePosition(dataSet, mChart.getLineData(), mChart.getYChartMax(),
-                        mChart.getYChartMin());
+        float fillMin = dataSet.getFillFormatter()
+                .getFillLinePosition(dataSet, mChart);
 
         spline.lineTo(to - 1, fillMin);
         spline.lineTo(from, fillMin);
@@ -353,8 +352,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
         Path filled = generateFilledPath(
                 entries,
-                mChart.getFillFormatter().getFillLinePosition(dataSet, mChart.getLineData(),
-                        mChart.getYChartMax(), mChart.getYChartMin()), minx, maxx);
+                dataSet.getFillFormatter().getFillLinePosition(dataSet, mChart), minx, maxx);
 
         trans.pathValueToPixel(filled);
 
@@ -410,7 +408,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
                 LineDataSet dataSet = dataSets.get(i);
 
-                if (!dataSet.isDrawValuesEnabled())
+                if (!dataSet.isDrawValuesEnabled() || dataSet.getEntryCount() == 0)
                     continue;
 
                 // apply the text-styling defined by the DataSet
@@ -446,11 +444,10 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
                     if (!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y))
                         continue;
 
-                    float val = entries.get(j / 2 + minx).getVal();
+                    Entry entry = entries.get(j / 2 + minx);
 
-                    c.drawText(dataSet.getValueFormatter().getFormattedValue(val), x,
-                            y - valOffset,
-                            mValuePaint);
+                    drawValue(c, dataSet.getValueFormatter(), entry.getVal(), entry, i, x,
+                            y - valOffset);
                 }
             }
         }
@@ -538,9 +535,6 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
             if (set == null || !set.isHighlightEnabled())
                 continue;
 
-            mHighlightPaint.setColor(set.getHighLightColor());
-            mHighlightPaint.setStrokeWidth(set.getHighlightLineWidth());
-
             int xIndex = indices[i].getXIndex(); // get the
                                                  // x-position
 
@@ -556,14 +550,13 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
             // y-position
 
             float[] pts = new float[] {
-                    xIndex, mChart.getYChartMax(), xIndex, mChart.getYChartMin(), mChart.getXChartMin(), y,
-                    mChart.getXChartMax(), y
+                    xIndex, y
             };
 
             mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);
 
             // draw the lines
-            drawHighlightLines(c, pts, set.isHorizontalHighlightIndicatorEnabled(), set.isVerticalHighlightIndicatorEnabled());
+            drawHighlightLines(c, pts, set);
         }
     }
 }

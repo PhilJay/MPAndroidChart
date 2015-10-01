@@ -9,19 +9,32 @@ import android.graphics.Paint.Style;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
+/**
+ * Superclass of all render classes for the different data types (line, bar, ...).
+ *
+ * @author Philipp Jahoda
+ */
 public abstract class DataRenderer extends Renderer {
 
-    /** the animator object used to perform animations on the chart data */
+    /**
+     * the animator object used to perform animations on the chart data
+     */
     protected ChartAnimator mAnimator;
 
-    /** main paint object used for rendering */
+    /**
+     * main paint object used for rendering
+     */
     protected Paint mRenderPaint;
 
-    /** paint used for highlighting values */
+    /**
+     * paint used for highlighting values
+     */
     protected Paint mHighlightPaint;
 
     protected Paint mDrawPaint;
@@ -55,7 +68,7 @@ public abstract class DataRenderer extends Renderer {
     /**
      * Returns the Paint object this renderer uses for drawing the values
      * (value-text).
-     * 
+     *
      * @return
      */
     public Paint getPaintValues() {
@@ -65,7 +78,7 @@ public abstract class DataRenderer extends Renderer {
     /**
      * Returns the Paint object this renderer uses for drawing highlight
      * indicators.
-     * 
+     *
      * @return
      */
     public Paint getPaintHighlight() {
@@ -74,7 +87,7 @@ public abstract class DataRenderer extends Renderer {
 
     /**
      * Returns the Paint object used for rendering.
-     * 
+     *
      * @return
      */
     public Paint getPaintRender() {
@@ -84,7 +97,7 @@ public abstract class DataRenderer extends Renderer {
     /**
      * Applies the required styling (provided by the DataSet) to the value-paint
      * object.
-     * 
+     *
      * @param set
      */
     protected void applyValueTextStyle(DataSet<?> set) {
@@ -101,11 +114,47 @@ public abstract class DataRenderer extends Renderer {
      */
     public abstract void initBuffers();
 
+    /**
+     * Draws the actual data in form of lines, bars, ... depending on Renderer subclass.
+     *
+     * @param c
+     */
     public abstract void drawData(Canvas c);
 
+    /**
+     * Loops over all Entrys and draws their values.
+     *
+     * @param c
+     */
     public abstract void drawValues(Canvas c);
 
+    /**
+     * Draws the value of the given entry by using the provided ValueFormatter.
+     *
+     * @param c            canvas
+     * @param formatter    formatter for custom value-formatting
+     * @param value        the value to be drawn
+     * @param entry        the entry the value belongs to
+     * @param dataSetIndex the index of the DataSet the drawn Entry belongs to
+     * @param x            position
+     * @param y            position
+     */
+    public void drawValue(Canvas c, ValueFormatter formatter, float value, Entry entry, int dataSetIndex, float x, float y) {
+        c.drawText(formatter.getFormattedValue(value, entry, dataSetIndex, mViewPortHandler), x, y, mValuePaint);
+    }
+
+    /**
+     * Draws any kind of additional information (e.g. line-circles).
+     *
+     * @param c
+     */
     public abstract void drawExtras(Canvas c);
 
+    /**
+     * Draws all highlight indicators for the values that are currently highlighted.
+     *
+     * @param c
+     * @param indices the highlighted values
+     */
     public abstract void drawHighlighted(Canvas c, Highlight[] indices);
 }

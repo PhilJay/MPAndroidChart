@@ -18,14 +18,14 @@ public interface OnDrawListener {
 	 * @param entry
 	 *            the last drawn entry
 	 */
-	public void onEntryAdded(Entry entry);
+	void onEntryAdded(Entry entry);
 
 	/**
 	 * Called whenever an entry is moved by the user after beeing highlighted
 	 * 
 	 * @param entry
 	 */
-	public void onEntryMoved(Entry entry);
+	void onEntryMoved(Entry entry);
 
 	/**
 	 * Called when drawing finger is lifted and the draw is finished.
@@ -33,6 +33,6 @@ public interface OnDrawListener {
 	 * @param dataSet
 	 *            the last drawn DataSet
 	 */
-	public void onDrawFinished(DataSet<?> dataSet);
+	void onDrawFinished(DataSet<?> dataSet);
 
 }
