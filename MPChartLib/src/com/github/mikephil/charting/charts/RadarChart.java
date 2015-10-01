@@ -60,7 +60,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     /**
      * modulus that determines how many labels and web-lines are skipped before the next is drawn
      */
-    private int mWebModulus = 1;
+    private int mSkipWebLineCount = 1;
 
     /**
      * the object reprsenting the y-axis labels
@@ -358,10 +358,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      */
     public void setSkipWebLineCount(int count) {
 
-        if (count < 0)
-            count = 0;
-
-        mWebModulus = count + 1;
+        mSkipWebLineCount = Math.max(0, count);
     }
 
     /**
@@ -370,7 +367,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      * @return
      */
     public int getSkipWebLineCount() {
-        return mWebModulus;
+        return mSkipWebLineCount;
     }
 
     @Override
