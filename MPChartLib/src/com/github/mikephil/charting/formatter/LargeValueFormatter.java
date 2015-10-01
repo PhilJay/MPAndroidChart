@@ -19,14 +19,10 @@ import java.text.DecimalFormat;
  */
 public class LargeValueFormatter implements ValueFormatter, YAxisValueFormatter {
 
-    private static final String[] SUFFIX = new String[] {
+    private static String[] SUFFIX = new String[] {
             "", "k", "m", "b", "t"
     };
     private static final int MAX_LENGTH = 4;
-    private static String[] customSUFFIX = null;
-    private static boolean useCustomSuffix = false;
-
-
     private DecimalFormat mFormat;
     private String mText = "";
 
@@ -59,27 +55,10 @@ public class LargeValueFormatter implements ValueFormatter, YAxisValueFormatter 
      * Set custom Suffix for the language of the country
      * @param suff new suffix
      */
-    public void setCustomSuffix(String[] suff) {
+    public void setSuffix(String[] suff) {
         if (suff.length == 5) {
-            useCustomSuffix = true;
-            customSUFFIX = suff;
+            SUFFIX = suff;
         }
-    }
-
-    /**
-     * Remove custom Suffix
-     */
-    public void removeCustomSuffix() {
-        useCustomSuffix = false;
-        customSUFFIX = null;
-    }
-
-    /**
-     * Check state for custom Suffix
-     * @return state
-     */
-    public boolean isUseCustomSuffix(){
-        return useCustomSuffix;
     }
 
     /**
@@ -90,8 +69,7 @@ public class LargeValueFormatter implements ValueFormatter, YAxisValueFormatter 
 
         String r = mFormat.format(number);
 
-        if (useCustomSuffix) r = r.replaceAll("E[0-9]", customSUFFIX[Character.getNumericValue(r.charAt(r.length() - 1)) / 3]);
-        else r = r.replaceAll("E[0-9]", SUFFIX[Character.getNumericValue(r.charAt(r.length() - 1)) / 3]);
+        r = r.replaceAll("E[0-9]", SUFFIX[Character.getNumericValue(r.charAt(r.length() - 1)) / 3]);
 
         while (r.length() > MAX_LENGTH || r.matches("[0-9]+\\.[a-z]")) {
             r = r.substring(0, r.length() - 2) + r.substring(r.length() - 1);
