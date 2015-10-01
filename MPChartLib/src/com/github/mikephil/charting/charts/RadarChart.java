@@ -374,7 +374,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     }
 
     @Override
-    protected float getRequiredBottomOffset() {
+    protected float getRequiredLegendOffset() {
         return mLegendRenderer.getLabelPaint().getTextSize() * 4.f;
     }
 

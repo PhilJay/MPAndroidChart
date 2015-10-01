@@ -439,17 +439,24 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
                         || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
                         || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
 
-                    float yOffset = mLegend.mTextHeightMax; // It's
-                                                            // possible
-                                                            // that we do
-                                                            // not need
-                                                            // this offset
-                                                            // anymore as
-                                                            // it is
-                                                            // available
-                                                            // through the
-                                                            // extraOffsets
+                    // It's possible that we do not need this offset anymore as it
+                    //   is available through the extraOffsets, but changing it can mean
+                    //   changing default visibility for existing apps.
+                    float yOffset = mLegend.mTextHeightMax;
+
                     offsetBottom += Math.min(mLegend.mNeededHeight + yOffset,
+                            mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent());
+
+                } else if (mLegend.getPosition() == LegendPosition.ABOVE_CHART_LEFT
+                        || mLegend.getPosition() == LegendPosition.ABOVE_CHART_RIGHT
+                        || mLegend.getPosition() == LegendPosition.ABOVE_CHART_CENTER) {
+
+                    // It's possible that we do not need this offset anymore as it
+                    //   is available through the extraOffsets, but changing it can mean
+                    //   changing default visibility for existing apps.
+                    float yOffset = mLegend.mTextHeightMax;
+
+                    offsetTop += Math.min(mLegend.mNeededHeight + yOffset,
                             mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent());
 
                 }
