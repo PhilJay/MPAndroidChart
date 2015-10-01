@@ -19,6 +19,9 @@ public class LargeValueFormatter implements ValueFormatter {
             "", "k", "m", "b", "t"
     };
     private static final int MAX_LENGTH = 4;
+    private static String[] customSUFFIX = null;
+    private static boolean useCustomSuffix = false;
+
 
     private DecimalFormat mFormat;
     private String mText = "";
@@ -29,7 +32,7 @@ public class LargeValueFormatter implements ValueFormatter {
 
     /**
      * Creates a formatter that appends a specified text to the result string
-     * @param text a text that will be appended
+     * @param appendix a text that will be appended
      */
     public LargeValueFormatter(String appendix) {
         this();
@@ -42,6 +45,33 @@ public class LargeValueFormatter implements ValueFormatter {
     }
 
     /**
+     * Set custom Suffix for the language of the country
+     * @param suff new suffix
+     */
+    public void setCustomSuffix(String[] suff) {
+        if (suff.length == 5) {
+            useCustomSuffix = true;
+            customSUFFIX = suff;
+        }
+    }
+
+    /**
+     * Remove custom Suffix
+     */
+    public void removeCustomSuffix() {
+        useCustomSuffix = false;
+        customSUFFIX = null;
+    }
+
+    /**
+     * Check state for custom Suffix
+     * @return state
+     */
+    public boolean isUseCustomSuffix(){
+        return useCustomSuffix;
+    }
+
+    /**
      * Formats each number properly. Special thanks to Roman Gromov
      * (https://github.com/romangromov) for this piece of code.
      */
@@ -49,7 +79,8 @@ public class LargeValueFormatter implements ValueFormatter {
 
         String r = mFormat.format(number);
 
-        r = r.replaceAll("E[0-9]", SUFFIX[Character.getNumericValue(r.charAt(r.length() - 1)) / 3]);
+        if (useCustomSuffix) r = r.replaceAll("E[0-9]", customSUFFIX[Character.getNumericValue(r.charAt(r.length() - 1)) / 3]);
+        else r = r.replaceAll("E[0-9]", SUFFIX[Character.getNumericValue(r.charAt(r.length() - 1)) / 3]);
 
         while (r.length() > MAX_LENGTH || r.matches("[0-9]+\\.[a-z]")) {
             r = r.substring(0, r.length() - 2) + r.substring(r.length() - 1);
