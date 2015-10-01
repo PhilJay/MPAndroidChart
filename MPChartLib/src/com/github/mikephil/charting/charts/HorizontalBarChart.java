@@ -79,9 +79,23 @@ public class HorizontalBarChart extends BarChart {
 					|| mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
 					|| mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
 
-				float yOffset = mLegend.mTextHeightMax * 2.f; // It's possible that we do not need this offset anymore
-																// as it is available through the extraOffsets
+				// It's possible that we do not need this offset anymore as it
+				//   is available through the extraOffsets, but changing it can mean
+				//   changing default visibility for existing apps.
+				float yOffset = mLegend.mTextHeightMax * 2.f;
+
 				offsetBottom += Math.min(mLegend.mNeededHeight + yOffset, mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent());
+
+			} else if (mLegend.getPosition() == LegendPosition.ABOVE_CHART_LEFT
+					|| mLegend.getPosition() == LegendPosition.ABOVE_CHART_RIGHT
+					|| mLegend.getPosition() == LegendPosition.ABOVE_CHART_CENTER) {
+
+				// It's possible that we do not need this offset anymore as it
+				//   is available through the extraOffsets, but changing it can mean
+				//   changing default visibility for existing apps.
+				float yOffset = mLegend.mTextHeightMax * 2.f;
+
+				offsetTop += Math.min(mLegend.mNeededHeight + yOffset, mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent());
 			}
 		}
 
@@ -119,10 +133,13 @@ public class HorizontalBarChart extends BarChart {
 		offsetBottom += getExtraBottomOffset();
 		offsetLeft += getExtraLeftOffset();
 
-		float min = Utils.convertDpToPixel(10f);
+		float minOffset = Utils.convertDpToPixel(mMinOffset);
 
-		mViewPortHandler.restrainViewPort(Math.max(min, offsetLeft), Math.max(min, offsetTop), Math.max(min, offsetRight),
-				Math.max(min, offsetBottom));
+		mViewPortHandler.restrainViewPort(
+				Math.max(minOffset, offsetLeft),
+				Math.max(minOffset, offsetTop),
+				Math.max(minOffset, offsetRight),
+				Math.max(minOffset, offsetBottom));
 
 		if (mLogEnabled) {
 			Log.i(LOG_TAG, "offsetLeft: " + offsetLeft + ", offsetTop: " + offsetTop + ", offsetRight: " + offsetRight + ", offsetBottom: "
