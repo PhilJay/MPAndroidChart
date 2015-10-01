@@ -88,6 +88,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     protected boolean mDrawBorders = false;
 
+    /** Sets the minimum offset (padding) around the chart, defaults to 10 */
+    protected float mMinOffset = 10.f;
+
     /** the listener for user drawing on the chart */
     protected OnDrawListener mDrawListener;
 
@@ -488,10 +491,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             offsetBottom += getExtraBottomOffset();
             offsetLeft += getExtraLeftOffset();
 
-            float min = Utils.convertDpToPixel(10f);
+            float minOffset = Utils.convertDpToPixel(mMinOffset);
 
-            mViewPortHandler.restrainViewPort(Math.max(min, offsetLeft), Math.max(min, offsetTop),
-                    Math.max(min, offsetRight), Math.max(min, offsetBottom));
+            mViewPortHandler.restrainViewPort(
+                    Math.max(minOffset, offsetLeft),
+                    Math.max(minOffset, offsetTop),
+                    Math.max(minOffset, offsetRight),
+                    Math.max(minOffset, offsetBottom));
 
             if (mLogEnabled) {
                 Log.i(LOG_TAG, "offsetLeft: " + offsetLeft + ", offsetTop: " + offsetTop

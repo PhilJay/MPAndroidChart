@@ -42,6 +42,9 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     /** flag that indicates if rotation is enabled or not */
     protected boolean mRotateEnabled = true;
 
+    /** Sets the minimum offset (padding) around the chart, defaults to 10 */
+    protected float mMinOffset = 10.f;
+
     public PieRadarChartBase(Context context) {
         super(context);
     }
@@ -194,13 +197,13 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
             legendTop += getRequiredBaseOffset();
         }
 
-        float min = Utils.convertDpToPixel(10f);
+        float minOffset = Utils.convertDpToPixel(mMinOffset);
 
         if (this instanceof RadarChart) {
             XAxis x = ((RadarChart) this).getXAxis();
 
             if (x.isEnabled() && x.isDrawLabelsEnabled()) {
-                min = Math.max(Utils.convertDpToPixel(10f), x.mLabelWidth);
+                minOffset = Math.max(minOffset, x.mLabelWidth);
             }
         }
 
@@ -209,10 +212,10 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
         legendBottom += getExtraBottomOffset();
         legendLeft += getExtraLeftOffset();
 
-        float offsetLeft = Math.max(min, legendLeft);
-        float offsetTop = Math.max(min, legendTop);
-        float offsetRight = Math.max(min, legendRight);
-        float offsetBottom = Math.max(min, Math.max(getRequiredBaseOffset(), legendBottom));
+        float offsetLeft = Math.max(minOffset, legendLeft);
+        float offsetTop = Math.max(minOffset, legendTop);
+        float offsetRight = Math.max(minOffset, legendRight);
+        float offsetBottom = Math.max(minOffset, Math.max(getRequiredBaseOffset(), legendBottom));
 
         mViewPortHandler.restrainViewPort(offsetLeft, offsetTop, offsetRight, offsetBottom);
 

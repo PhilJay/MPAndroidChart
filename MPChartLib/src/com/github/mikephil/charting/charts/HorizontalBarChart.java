@@ -119,10 +119,13 @@ public class HorizontalBarChart extends BarChart {
 		offsetBottom += getExtraBottomOffset();
 		offsetLeft += getExtraLeftOffset();
 
-		float min = Utils.convertDpToPixel(10f);
+		float minOffset = Utils.convertDpToPixel(mMinOffset);
 
-		mViewPortHandler.restrainViewPort(Math.max(min, offsetLeft), Math.max(min, offsetTop), Math.max(min, offsetRight),
-				Math.max(min, offsetBottom));
+		mViewPortHandler.restrainViewPort(
+				Math.max(minOffset, offsetLeft),
+				Math.max(minOffset, offsetTop),
+				Math.max(minOffset, offsetRight),
+				Math.max(minOffset, offsetBottom));
 
 		if (mLogEnabled) {
 			Log.i(LOG_TAG, "offsetLeft: " + offsetLeft + ", offsetTop: " + offsetTop + ", offsetRight: " + offsetRight + ", offsetBottom: "
