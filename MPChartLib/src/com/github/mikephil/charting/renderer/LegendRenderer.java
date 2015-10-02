@@ -204,22 +204,27 @@ public class LegendRenderer extends Renderer {
         switch (legendPosition) {
             case BELOW_CHART_LEFT:
             case BELOW_CHART_RIGHT:
-            case BELOW_CHART_CENTER: {
+            case BELOW_CHART_CENTER:
+            case ABOVE_CHART_LEFT:
+            case ABOVE_CHART_RIGHT:
+            case ABOVE_CHART_CENTER: {
                 float contentWidth = mViewPortHandler.contentWidth();
 
                 float originPosX;
 
-                if (legendPosition == Legend.LegendPosition.BELOW_CHART_LEFT) {
+                if (legendPosition == Legend.LegendPosition.BELOW_CHART_LEFT
+                        || legendPosition == Legend.LegendPosition.ABOVE_CHART_LEFT) {
                     originPosX = mViewPortHandler.contentLeft() + xoffset;
 
                     if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
                         originPosX += mLegend.mNeededWidth;
-                } else if (legendPosition == Legend.LegendPosition.BELOW_CHART_RIGHT) {
+                } else if (legendPosition == Legend.LegendPosition.BELOW_CHART_RIGHT
+                        || legendPosition == Legend.LegendPosition.ABOVE_CHART_RIGHT) {
                     originPosX = mViewPortHandler.contentRight() - xoffset;
 
                     if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
                         originPosX -= mLegend.mNeededWidth;
-                } else // if (legendPosition == Legend.LegendPosition.BELOW_CHART_CENTER)
+                } else // BELOW_CHART_CENTER || ABOVE_CHART_CENTER
                     originPosX = mViewPortHandler.contentLeft() + contentWidth / 2.f;
 
                 FSize[] calculatedLineSizes = mLegend.getCalculatedLineSizes();
@@ -227,7 +232,14 @@ public class LegendRenderer extends Renderer {
                 Boolean[] calculatedLabelBreakPoints = mLegend.getCalculatedLabelBreakPoints();
 
                 posX = originPosX;
-                posY = mViewPortHandler.getChartHeight() - yoffset - mLegend.mNeededHeight;
+
+                if (legendPosition == Legend.LegendPosition.ABOVE_CHART_LEFT ||
+                        legendPosition == Legend.LegendPosition.ABOVE_CHART_RIGHT ||
+                        legendPosition == Legend.LegendPosition.ABOVE_CHART_CENTER) {
+                    posY = 0.f;
+                } else {
+                    posY = mViewPortHandler.getChartHeight() - yoffset - mLegend.mNeededHeight;
+                }
 
                 int lineIndex = 0;
 

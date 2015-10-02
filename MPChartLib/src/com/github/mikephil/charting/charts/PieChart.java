@@ -420,7 +420,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     @Override
-    protected float getRequiredBottomOffset() {
+    protected float getRequiredLegendOffset() {
         return mLegendRenderer.getLabelPaint().getTextSize() * 2.f;
     }
 

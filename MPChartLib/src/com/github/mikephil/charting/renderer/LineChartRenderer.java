@@ -237,6 +237,9 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
     protected void drawCubicFill(LineDataSet dataSet, Path spline, Transformer trans,
             int from, int to) {
 
+        if (to - from <= 1)
+            return;
+        
         float fillMin = dataSet.getFillFormatter()
                 .getFillLinePosition(dataSet, mChart);
 
