@@ -347,22 +347,19 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
             int maxx,
             Transformer trans) {
 
-        mRenderPaint.setStyle(Paint.Style.FILL);
-
-        mRenderPaint.setColor(dataSet.getFillColor());
-        // filled is drawn with less alpha
-        mRenderPaint.setAlpha(dataSet.getFillAlpha());
-
         Path filled = generateFilledPath(
                 entries,
                 dataSet.getFillFormatter().getFillLinePosition(dataSet, mChart), minx, maxx);
 
         trans.pathValueToPixel(filled);
 
-        c.drawPath(filled, mRenderPaint);
+        c.save();
+        c.clipPath(filled);
 
-        // restore alpha
-        mRenderPaint.setAlpha(255);
+        int color = (dataSet.getFillAlpha() << 24) | (dataSet.getFillColor() & 0xffffff);
+        c.drawColor(color);
+
+        c.restore();
     }
 
     /**
