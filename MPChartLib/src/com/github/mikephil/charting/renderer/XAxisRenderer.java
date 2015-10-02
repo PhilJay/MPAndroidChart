@@ -166,7 +166,7 @@ public class XAxisRenderer extends AxisRenderer {
             LimitLine l = limitLines.get(i);
 
             renderOneLimitLine(c, pts, limitLinePath, l);
-            renderLimitLineLabel(c, pts, l);
+            renderLimitLineLabel(c, pts, l, 0f, 0f);
 
             limitLinePath.reset();
         }
@@ -256,7 +256,7 @@ public class XAxisRenderer extends AxisRenderer {
      * @param pts
      * @param l
      */
-    protected void renderLimitLineLabel(Canvas c, float[] pts, LimitLine l) {
+    protected void renderLimitLineLabel(Canvas c, float[] pts, LimitLine l, float xOffsetFromLine, float yOffsetFromAxis) {
         String label = l.getLabel();
 
         // if drawing the limit-value label is enabled
@@ -268,9 +268,9 @@ public class XAxisRenderer extends AxisRenderer {
             mLimitLinePaint.setStrokeWidth(0.5f);
             mLimitLinePaint.setTextSize(l.getTextSize());
 
-            float xOffset = l.getLineWidth();
+            float xOffset = l.getLineWidth() + xOffsetFromLine;
             float add = Utils.convertDpToPixel(4f);
-            float yOffset = add / 2f;
+            float yOffset = add / 2f + yOffsetFromAxis;
 
             final LimitLine.LimitLabelPosition position = l.getLabelPosition();
 
