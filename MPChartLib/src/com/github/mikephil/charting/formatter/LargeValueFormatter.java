@@ -52,7 +52,7 @@ public class LargeValueFormatter implements ValueFormatter, YAxisValueFormatter 
     }
 
     /**
-     * Set custom Suffix for the language of the country
+     * Set custom suffix to be appended after the values
      * @param suff new suffix
      */
     public void setSuffix(String[] suff) {
