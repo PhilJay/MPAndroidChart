@@ -41,7 +41,6 @@ public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChart
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        super.onTouch(v, event);
 
         if (mGestureDetector.onTouchEvent(event))
             return true;
@@ -55,6 +54,8 @@ public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChart
             switch (event.getAction()) {
 
                 case MotionEvent.ACTION_DOWN:
+
+                    startAction(event);
 
                     stopDeceleration();
 
@@ -76,12 +77,15 @@ public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChart
                     if (mTouchMode == NONE
                             && distance(x, mTouchStartPoint.x, y, mTouchStartPoint.y)
                             > Utils.convertDpToPixel(8f)) {
+                        mLastGesture = ChartGesture.ROTATE;
                         mTouchMode = ROTATE;
                         mChart.disableScroll();
                     } else if (mTouchMode == ROTATE) {
                         updateGestureRotation(x, y);
                         mChart.invalidate();
                     }
+
+                    endAction(event);
 
                     break;
                 case MotionEvent.ACTION_UP:
@@ -104,6 +108,8 @@ public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChart
                     mChart.enableScroll();
                     mTouchMode = NONE;
 
+                    endAction(event);
+
                     break;
             }
         }
@@ -113,6 +119,9 @@ public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChart
 
     @Override
     public void onLongPress(MotionEvent me) {
+
+        mLastGesture = ChartGesture.LONG_PRESS;
+
         OnChartGestureListener l = mChart.getOnChartGestureListener();
 
         if (l != null) {
@@ -127,6 +136,8 @@ public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChart
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
+
+        mLastGesture = ChartGesture.SINGLE_TAP;
 
         OnChartGestureListener l = mChart.getOnChartGestureListener();
 

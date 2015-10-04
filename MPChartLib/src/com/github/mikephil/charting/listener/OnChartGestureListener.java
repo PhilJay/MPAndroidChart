@@ -13,15 +13,17 @@ public interface OnChartGestureListener {
      * Callbacks when a touch-gesture has started on the chart (ACTION_DOWN)
      *
      * @param me
+     * @param lastPerformedGesture
      */
-    void onChartGestureStart(MotionEvent me);
+    void onChartGestureStart(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture);
 
     /**
      * Callbacks when a touch-gesture has ended on the chart (ACTION_UP, ACTION_CANCEL)
      *
      * @param me
+     * @param lastPerformedGesture
      */
-    void onChartGestureEnd(MotionEvent me);
+    void onChartGestureEnd(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture);
 
     /**
      * Callbacks when the chart is longpressed.

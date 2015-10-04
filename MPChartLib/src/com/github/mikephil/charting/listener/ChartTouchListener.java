@@ -12,6 +12,15 @@ import com.github.mikephil.charting.highlight.Highlight;
  */
 public abstract class ChartTouchListener<T extends Chart<?>> extends GestureDetector.SimpleOnGestureListener implements View.OnTouchListener {
 
+    public enum ChartGesture {
+        NONE, DRAG, X_ZOOM, Y_ZOOM, PINCH_ZOOM, ROTATE, SINGLE_TAP, DOUBLE_TAP, LONG_PRESS, FLING
+    }
+
+    /**
+     * the last touch gesture that has been performed
+     **/
+    protected ChartGesture mLastGesture = ChartGesture.NONE;
+
     // states
     protected static final int NONE = 0;
     protected static final int DRAG = 1;
@@ -47,26 +56,30 @@ public abstract class ChartTouchListener<T extends Chart<?>> extends GestureDete
         mGestureDetector = new GestureDetector(chart.getContext(), this);
     }
 
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
+    /**
+     * Calls the OnChartGestureListener to do the start callback
+     *
+     * @param me
+     */
+    public void startAction(MotionEvent me) {
 
         OnChartGestureListener l = mChart.getOnChartGestureListener();
 
-        if (l != null) {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    l.onChartGestureStart(event);
-                    break;
-                case MotionEvent.ACTION_CANCEL:
-                    l.onChartGestureEnd(event);
-                    break;
-                case MotionEvent.ACTION_UP:
-                    l.onChartGestureEnd(event);
-                    break;
-            }
-        }
+        if (l != null)
+            l.onChartGestureStart(me, mLastGesture);
+    }
 
-        return false;
+    /**
+     * Calls the OnChartGestureListener to do the end callback
+     *
+     * @param me
+     */
+    public void endAction(MotionEvent me) {
+
+        OnChartGestureListener l = mChart.getOnChartGestureListener();
+
+        if (l != null)
+            l.onChartGestureEnd(me, mLastGesture);
     }
 
     /**
@@ -85,6 +98,15 @@ public abstract class ChartTouchListener<T extends Chart<?>> extends GestureDete
      */
     public int getTouchMode() {
         return mTouchMode;
+    }
+
+    /**
+     * Returns the last gesture that has been performed on the chart.
+     *
+     * @return
+     */
+    public ChartGesture getLastGesture() {
+        return mLastGesture;
     }
 
     /**
