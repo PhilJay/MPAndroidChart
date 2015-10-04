@@ -365,6 +365,17 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
     }
 
     @Override
+    public void onChartGestureStart(MotionEvent me) {
+        Log.i("Gesture", "START");
+    }
+
+    @Override
+    public void onChartGestureEnd(MotionEvent me) {
+        Log.i("Gesture", "END");
+        mChart.highlightValues(null);
+    }
+
+    @Override
     public void onChartLongPressed(MotionEvent me) {
         Log.i("LongPress", "Chart longpressed.");
     }

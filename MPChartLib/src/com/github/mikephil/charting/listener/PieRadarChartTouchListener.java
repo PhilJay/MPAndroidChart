@@ -41,6 +41,7 @@ public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChart
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        super.onTouch(v, event);
 
         if (mGestureDetector.onTouchEvent(event))
             return true;

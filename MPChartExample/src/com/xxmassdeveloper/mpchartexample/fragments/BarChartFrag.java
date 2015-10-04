@@ -67,6 +67,16 @@ public class BarChartFrag extends SimpleFragment implements OnChartGestureListen
     }
 
     @Override
+    public void onChartGestureStart(MotionEvent me) {
+        Log.i("Gesture", "START");
+    }
+
+    @Override
+    public void onChartGestureEnd(MotionEvent me) {
+        Log.i("Gesture", "END");
+    }
+
+    @Override
     public void onChartLongPressed(MotionEvent me) {
         Log.i("LongPress", "Chart longpressed.");
     }

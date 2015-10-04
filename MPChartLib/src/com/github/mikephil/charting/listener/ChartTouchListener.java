@@ -1,6 +1,7 @@
 package com.github.mikephil.charting.listener;
 
 import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.github.mikephil.charting.charts.Chart;
@@ -20,16 +21,24 @@ public abstract class ChartTouchListener<T extends Chart<?>> extends GestureDete
     protected static final int POST_ZOOM = 5;
     protected static final int ROTATE = 6;
 
-    /** integer field that holds the current touch-state */
+    /**
+     * integer field that holds the current touch-state
+     */
     protected int mTouchMode = NONE;
 
-    /** the last highlighted object (via touch) */
+    /**
+     * the last highlighted object (via touch)
+     */
     protected Highlight mLastHighlighted;
 
-    /** the gesturedetector used for detecting taps and longpresses, ... */
+    /**
+     * the gesturedetector used for detecting taps and longpresses, ...
+     */
     protected GestureDetector mGestureDetector;
 
-    /** the chart the listener represents */
+    /**
+     * the chart the listener represents
+     */
     protected T mChart;
 
     public ChartTouchListener(T chart) {
@@ -38,8 +47,31 @@ public abstract class ChartTouchListener<T extends Chart<?>> extends GestureDete
         mGestureDetector = new GestureDetector(chart.getContext(), this);
     }
 
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+
+        OnChartGestureListener l = mChart.getOnChartGestureListener();
+
+        if (l != null) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    l.onChartGestureStart(event);
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                    l.onChartGestureEnd(event);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    l.onChartGestureEnd(event);
+                    break;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Sets the last value that was highlighted via touch.
+     *
      * @param high
      */
     public void setLastHighlighted(Highlight high) {

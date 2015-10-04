@@ -61,6 +61,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        super.onTouch(v, event);
 
         if (mVelocityTracker == null) {
             mVelocityTracker = VelocityTracker.obtain();
