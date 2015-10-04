@@ -6,43 +6,74 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.view.View;
 
+/**
+ * Class that contains information about the charts current viewport settings, including offsets, scale & translation levels, ...
+ *
+ * @author Philipp Jahoda
+ */
 public class ViewPortHandler {
 
-    /** matrix used for touch events */
+    /**
+     * matrix used for touch events
+     */
     protected final Matrix mMatrixTouch = new Matrix();
 
-    /** this rectangle defines the area in which graph values can be drawn */
+    /**
+     * this rectangle defines the area in which graph values can be drawn
+     */
     protected RectF mContentRect = new RectF();
 
     protected float mChartWidth = 0f;
     protected float mChartHeight = 0f;
 
-    /** minimum scale value on the y-axis */
+    /**
+     * minimum scale value on the y-axis
+     */
     private float mMinScaleY = 1f;
 
-    /** maximum scale value on the y-axis */
+    /**
+     * maximum scale value on the y-axis
+     */
     private float mMaxScaleY = Float.MAX_VALUE;
 
-    /** minimum scale value on the x-axis */
+    /**
+     * minimum scale value on the x-axis
+     */
     private float mMinScaleX = 1f;
 
-    /** maximum scale value on the x-axis */
+    /**
+     * maximum scale value on the x-axis
+     */
     private float mMaxScaleX = Float.MAX_VALUE;
 
-    /** contains the current scale factor of the x-axis */
+    /**
+     * contains the current scale factor of the x-axis
+     */
     private float mScaleX = 1f;
 
-    /** contains the current scale factor of the y-axis */
+    /**
+     * contains the current scale factor of the y-axis
+     */
     private float mScaleY = 1f;
 
+    /**
+     * current translation (drag distance) on the x-axis
+     */
     private float mTransX = 0f;
 
+    /**
+     * current translation (drag distance) on the y-axis
+     */
     private float mTransY = 0f;
 
-    /** offset that allows the chart to be dragged over its bounds on the x-axis */
+    /**
+     * offset that allows the chart to be dragged over its bounds on the x-axis
+     */
     private float mTransOffsetX = 0f;
 
-    /** offset that allows the chart to be dragged over its bounds on the x-axis */
+    /**
+     * offset that allows the chart to be dragged over its bounds on the x-axis
+     */
     private float mTransOffsetY = 0f;
 
     public ViewPortHandler() {
@@ -51,7 +82,7 @@ public class ViewPortHandler {
 
     /**
      * Sets the width and height of the chart.
-     * 
+     *
      * @param width
      * @param height
      */
@@ -78,7 +109,7 @@ public class ViewPortHandler {
     }
 
     public void restrainViewPort(float offsetLeft, float offsetTop, float offsetRight,
-            float offsetBottom) {
+                                 float offsetBottom) {
         mContentRect.set(offsetLeft, offsetTop, mChartWidth - offsetRight, mChartHeight
                 - offsetBottom);
     }
@@ -147,7 +178,7 @@ public class ViewPortHandler {
     /**
      * Zooms in by 1.4f, x and y are the coordinates (in pixels) of the zoom
      * center.
-     * 
+     *
      * @param x
      * @param y
      */
@@ -178,7 +209,7 @@ public class ViewPortHandler {
     /**
      * Zooms in or out by the given scale factor. x and y are the coordinates
      * (in pixels) of the zoom center.
-     * 
+     *
      * @param scaleX if < 1f --> zoom out, if > 1f --> zoom in
      * @param scaleY if < 1f --> zoom out, if > 1f --> zoom in
      * @param x
@@ -201,7 +232,7 @@ public class ViewPortHandler {
      * bounds.
      */
     public Matrix fitScreen() {
-        
+
         mMinScaleX = 1f;
         mMinScaleY = 1f;
 
@@ -228,7 +259,7 @@ public class ViewPortHandler {
      * in the chart. Centering the viewport outside the bounds of the chart is
      * not possible. Makes most sense in combination with the
      * setScaleMinima(...) method.
-     * 
+     *
      * @param transformedPts the position to center view viewport to
      * @param view
      * @return save
@@ -250,7 +281,7 @@ public class ViewPortHandler {
 
     /**
      * call this method to refresh the graph with a given matrix
-     * 
+     *
      * @param newMatrix
      * @return
      */
@@ -270,7 +301,7 @@ public class ViewPortHandler {
 
     /**
      * limits the maximum scale and X translation of the given matrix
-     * 
+     *
      * @param matrix
      */
     public void limitTransAndScale(Matrix matrix, RectF content) {
@@ -331,7 +362,7 @@ public class ViewPortHandler {
 
         limitTransAndScale(mMatrixTouch, mContentRect);
     }
-    
+
     public void setMinMaxScaleX(float minScaleX, float maxScaleX) {
 
         if (minScaleX < 1f)
@@ -362,7 +393,7 @@ public class ViewPortHandler {
 
     /**
      * Returns the charts-touch matrix used for translation and scale on touch.
-     * 
+     *
      * @return
      */
     public Matrix getMatrixTouch() {
@@ -372,7 +403,9 @@ public class ViewPortHandler {
     /**
      * ################ ################ ################ ################
      */
-    /** BELOW METHODS FOR BOUNDS CHECK */
+    /**
+     * BELOW METHODS FOR BOUNDS CHECK
+     */
 
     public boolean isInBoundsX(float x) {
         if (isInBoundsLeft(x) && isInBoundsRight(x))
@@ -400,7 +433,7 @@ public class ViewPortHandler {
     }
 
     public boolean isInBoundsRight(float x) {
-        x = (float)((int)(x * 100.f)) / 100.f;
+        x = (float) ((int) (x * 100.f)) / 100.f;
         return mContentRect.right >= x ? true : false;
     }
 
@@ -409,7 +442,7 @@ public class ViewPortHandler {
     }
 
     public boolean isInBoundsBottom(float y) {
-        y = (float)((int)(y * 100.f)) / 100.f;
+        y = (float) ((int) (y * 100.f)) / 100.f;
         return mContentRect.bottom >= y ? true : false;
     }
 
@@ -437,7 +470,7 @@ public class ViewPortHandler {
 
     /**
      * if the chart is fully zoomed out, return true
-     * 
+     *
      * @return
      */
     public boolean isFullyZoomedOut() {
@@ -450,7 +483,7 @@ public class ViewPortHandler {
 
     /**
      * Returns true if the chart is fully zoomed out on it's y-axis (vertical).
-     * 
+     *
      * @return
      */
     public boolean isFullyZoomedOutY() {
@@ -463,7 +496,7 @@ public class ViewPortHandler {
     /**
      * Returns true if the chart is fully zoomed out on it's x-axis
      * (horizontal).
-     * 
+     *
      * @return
      */
     public boolean isFullyZoomedOutX() {
@@ -476,7 +509,7 @@ public class ViewPortHandler {
     /**
      * Set an offset in dp that allows the user to drag the chart over it's
      * bounds on the x-axis.
-     * 
+     *
      * @param offset
      */
     public void setDragOffsetX(float offset) {
@@ -486,7 +519,7 @@ public class ViewPortHandler {
     /**
      * Set an offset in dp that allows the user to drag the chart over it's
      * bounds on the y-axis.
-     * 
+     *
      * @param offset
      */
     public void setDragOffsetY(float offset) {
@@ -495,7 +528,7 @@ public class ViewPortHandler {
 
     /**
      * Returns true if both drag offsets (x and y) are zero or smaller.
-     * 
+     *
      * @return
      */
     public boolean hasNoDragOffset() {

@@ -216,6 +216,9 @@ public class XAxisRenderer extends AxisRenderer {
 
 			LimitLine l = limitLines.get(i);
 
+            if(!l.isEnabled())
+                continue;
+
 			pts[0] = l.getLimit();
 			pts[2] = l.getLimit();
 
@@ -246,9 +249,8 @@ public class XAxisRenderer extends AxisRenderer {
 				mLimitLinePaint.setStrokeWidth(0.5f);
 				mLimitLinePaint.setTextSize(l.getTextSize());
 
-                float xOffset = l.getLineWidth();
-                float add = Utils.convertDpToPixel(4f);
-                float yOffset = add / 2f;
+                float xOffset = l.getLineWidth() + l.getXOffset();
+                float yOffset = Utils.convertDpToPixel(2f) + l.getYOffset();
 
                 final LimitLine.LimitLabelPosition position = l.getLabelPosition();
 
@@ -260,7 +262,7 @@ public class XAxisRenderer extends AxisRenderer {
 				} else if (position == LimitLine.LimitLabelPosition.RIGHT_BOTTOM) {
 
                     mLimitLinePaint.setTextAlign(Align.LEFT);
-                    c.drawText(label, pts[0] + xOffset, mViewPortHandler.contentBottom() - add, mLimitLinePaint);
+                    c.drawText(label, pts[0] + xOffset, mViewPortHandler.contentBottom() - yOffset, mLimitLinePaint);
                 } else if (position == LimitLine.LimitLabelPosition.LEFT_TOP) {
 
                     mLimitLinePaint.setTextAlign(Align.RIGHT);

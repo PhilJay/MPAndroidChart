@@ -16,7 +16,6 @@ public final class FSize {
         this.height = height;
     }
 
-
     @Override
     public boolean equals(final Object obj) {
         if (obj == null) {

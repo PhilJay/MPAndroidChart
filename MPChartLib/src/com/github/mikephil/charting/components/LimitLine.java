@@ -15,7 +15,7 @@ import com.github.mikephil.charting.utils.Utils;
  * 
  * @author Philipp Jahoda
  */
-public class LimitLine {
+public class LimitLine extends ComponentBase {
 
     /** limit / maximum (the y-value or xIndex) */
     private float mLimit = 0f;
@@ -26,20 +26,11 @@ public class LimitLine {
     /** the color of the limit line */
     private int mLineColor = Color.rgb(237, 91, 91);
 
-    /** the color of the value-text */
-    private int mValueTextColor = Color.BLACK;
-
-    /** the size of the label text */
-    private float mTextSize = 13f;
-
     /** the style of the label text */
     private Paint.Style mTextStyle = Paint.Style.FILL_AND_STROKE;
 
     /** label string that is drawn next to the limit line */
     private String mLabel = "";
-
-    /** the typeface used for the labels */
-    private Typeface mTypeface = null;
 
     /** the path effect of this LimitLine that makes dashed lines possible */
     private DashPathEffect mDashPathEffect = null;
@@ -167,24 +158,6 @@ public class LimitLine {
 
     /**
      * Sets the color of the value-text that is drawn next to the LimitLine.
-     * 
-     * @param color
-     */
-    public void setTextColor(int color) {
-        mValueTextColor = color;
-    }
-
-    /**
-     * Returns the color of the value-text that is drawn next to the LimitLine.
-     * 
-     * @return
-     */
-    public int getTextColor() {
-        return mValueTextColor;
-    }
-
-    /**
-     * Sets the color of the value-text that is drawn next to the LimitLine.
      * Default: Paint.Style.FILL_AND_STROKE
      *
      * @param style
@@ -238,41 +211,5 @@ public class LimitLine {
      */
     public String getLabel() {
         return mLabel;
-    }
-
-    /**
-     * Sets the size of the label-text.
-     * 
-     * @param size
-     */
-    public void setTextSize(float size) {
-        mTextSize = Utils.convertDpToPixel(size);
-    }
-
-    /**
-     * Returns the size of the label text.
-     * 
-     * @return
-     */
-    public float getTextSize() {
-        return mTextSize;
-    }
-
-    /**
-     * returns the Typeface used for the limitline label, returns null if none is set
-     *
-     * @return
-     */
-    public Typeface getTypeface() {
-        return mTypeface;
-    }
-
-    /**
-     * Sets a specific Typeface to be used for the limitline label
-     *
-     * @param tf
-     */
-    public void setTypeface(Typeface tf) {
-        mTypeface = tf;
     }
 }

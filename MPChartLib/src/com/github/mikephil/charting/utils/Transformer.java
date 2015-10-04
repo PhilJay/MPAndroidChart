@@ -14,15 +14,19 @@ import java.util.List;
 /**
  * Transformer class that contains all matrices and is responsible for
  * transforming values into pixels on the screen and backwards.
- * 
+ *
  * @author Philipp Jahoda
  */
 public class Transformer {
 
-    /** matrix to map the values to the screen pixels */
+    /**
+     * matrix to map the values to the screen pixels
+     */
     protected Matrix mMatrixValueToPx = new Matrix();
 
-    /** matrix for handling the different offsets of the chart */
+    /**
+     * matrix for handling the different offsets of the chart
+     */
     protected Matrix mMatrixOffset = new Matrix();
 
     protected ViewPortHandler mViewPortHandler;
@@ -34,8 +38,11 @@ public class Transformer {
     /**
      * Prepares the matrix that transforms values to pixels. Calculates the
      * scale factors from the charts size and offsets.
-     * 
-     * @param chart
+     *
+     * @param xChartMin
+     * @param deltaX
+     * @param deltaY
+     * @param yChartMin
      */
     public void prepareMatrixValuePx(float xChartMin, float deltaX, float deltaY, float yChartMin) {
 
@@ -48,24 +55,9 @@ public class Transformer {
         mMatrixValueToPx.postScale(scaleX, -scaleY);
     }
 
-    // /**
-    // * Prepares the transformation matrix with the specified scales.
-    // *
-    // * @param chart
-    // * @param scaleX
-    // * @param scaleY
-    // */
-    // public void prepareMatrixValuePx(ChartInterface chart, float scaleX,
-    // float scaleY) {
-    //
-    // mMatrixValueToPx.reset();
-    // mMatrixValueToPx.postTranslate(0, -chart.getYChartMin());
-    // mMatrixValueToPx.postScale(scaleX, -scaleY);
-    // }
-
     /**
      * Prepares the matrix that contains all offsets.
-     * 
+     *
      * @param inverted
      */
     public void prepareMatrixOffset(boolean inverted) {
@@ -94,12 +86,12 @@ public class Transformer {
     /**
      * Transforms an List of Entry into a float array containing the x and
      * y values transformed with all matrices for the SCATTERCHART.
-     * 
+     *
      * @param entries
      * @return
      */
     public float[] generateTransformedValuesScatter(List<? extends Entry> entries,
-            float phaseY) {
+                                                    float phaseY) {
 
         float[] valuePoints = new float[entries.size() * 2];
 
@@ -126,7 +118,7 @@ public class Transformer {
      * @return
      */
     public float[] generateTransformedValuesBubble(List<? extends Entry> entries,
-                                                 float phaseX, float phaseY, int from, int to) {
+                                                   float phaseX, float phaseY, int from, int to) {
 
         final int count = (int) Math.ceil(to - from) * 2; // (int) Math.ceil((to - from) * phaseX) * 2;
 
@@ -146,18 +138,18 @@ public class Transformer {
 
         return valuePoints;
     }
-    
+
     /**
      * Transforms an List of Entry into a float array containing the x and
      * y values transformed with all matrices for the LINECHART.
-     * 
+     *
      * @param entries
      * @return
      */
     public float[] generateTransformedValuesLine(List<? extends Entry> entries,
-            float phaseX, float phaseY, int from, int to) {
+                                                 float phaseX, float phaseY, int from, int to) {
 
-        final int count = (int)Math.ceil((to - from) * phaseX) * 2;
+        final int count = (int) Math.ceil((to - from) * phaseX) * 2;
 
         float[] valuePoints = new float[count];
 
@@ -175,18 +167,18 @@ public class Transformer {
 
         return valuePoints;
     }
-    
+
     /**
      * Transforms an List of Entry into a float array containing the x and
      * y values transformed with all matrices for the CANDLESTICKCHART.
-     * 
+     *
      * @param entries
      * @return
      */
     public float[] generateTransformedValuesCandle(List<CandleEntry> entries,
-           float phaseX, float phaseY, int from, int to) {
+                                                   float phaseX, float phaseY, int from, int to) {
 
-        final int count = (int)Math.ceil((to - from) * phaseX) * 2;
+        final int count = (int) Math.ceil((to - from) * phaseX) * 2;
 
         float[] valuePoints = new float[count];
 
@@ -208,13 +200,13 @@ public class Transformer {
     /**
      * Transforms an List of Entry into a float array containing the x and
      * y values transformed with all matrices for the BARCHART.
-     * 
+     *
      * @param entries
      * @param dataSet the dataset index
      * @return
      */
     public float[] generateTransformedValuesBarChart(List<? extends Entry> entries,
-            int dataSet, BarData bd, float phaseY) {
+                                                     int dataSet, BarData bd, float phaseY) {
 
         float[] valuePoints = new float[entries.size() * 2];
 
@@ -239,17 +231,17 @@ public class Transformer {
 
         return valuePoints;
     }
-    
+
     /**
      * Transforms an List of Entry into a float array containing the x and
      * y values transformed with all matrices for the BARCHART.
-     * 
+     *
      * @param entries
      * @param dataSet the dataset index
      * @return
      */
     public float[] generateTransformedValuesHorizontalBarChart(List<? extends Entry> entries,
-            int dataSet, BarData bd, float phaseY) {
+                                                               int dataSet, BarData bd, float phaseY) {
 
         float[] valuePoints = new float[entries.size() * 2];
 
@@ -263,7 +255,7 @@ public class Transformer {
 
             // calculate the x-position, depending on datasetcount
             float x = i + i * (setCount - 1) + dataSet + space * i
-                    + space / 2f ;
+                    + space / 2f;
             float y = e.getVal();
 
             valuePoints[j] = y * phaseY;
@@ -278,7 +270,7 @@ public class Transformer {
     /**
      * transform a path with all the given matrices VERY IMPORTANT: keep order
      * to value-touch-offset
-     * 
+     *
      * @param path
      */
     public void pathValueToPixel(Path path) {
@@ -290,7 +282,7 @@ public class Transformer {
 
     /**
      * Transforms multiple paths will all matrices.
-     * 
+     *
      * @param paths
      */
     public void pathValuesToPixel(List<Path> paths) {
@@ -303,7 +295,7 @@ public class Transformer {
     /**
      * Transform an array of points with all matrices. VERY IMPORTANT: Keep
      * matrix order "value-touch-offset" when transforming.
-     * 
+     *
      * @param pts
      */
     public void pointValuesToPixel(float[] pts) {
@@ -315,7 +307,7 @@ public class Transformer {
 
     /**
      * Transform a rectangle with all matrices.
-     * 
+     *
      * @param r
      */
     public void rectValueToPixel(RectF r) {
@@ -327,7 +319,7 @@ public class Transformer {
 
     /**
      * Transform a rectangle with all matrices with potential animation phases.
-     * 
+     *
      * @param r
      * @param phaseY
      */
@@ -346,7 +338,6 @@ public class Transformer {
      * Transform a rectangle with all matrices with potential animation phases.
      *
      * @param r
-
      */
     public void rectValueToPixelHorizontal(RectF r) {
 
@@ -354,10 +345,10 @@ public class Transformer {
         mViewPortHandler.getMatrixTouch().mapRect(r);
         mMatrixOffset.mapRect(r);
     }
-    
+
     /**
      * Transform a rectangle with all matrices with potential animation phases.
-     * 
+     *
      * @param r
      * @param phaseY
      */
@@ -374,7 +365,7 @@ public class Transformer {
 
     /**
      * transforms multiple rects with all matrices
-     * 
+     *
      * @param rects
      */
     public void rectValuesToPixel(List<RectF> rects) {
@@ -388,7 +379,7 @@ public class Transformer {
     /**
      * Transforms the given array of touch positions (pixels) (x, y, x, y, ...)
      * into values on the chart.
-     * 
+     *
      * @param pixels
      */
     public void pixelsToValue(float[] pixels) {
@@ -411,7 +402,7 @@ public class Transformer {
      * (encapsulated in a PointD). This method transforms pixel coordinates to
      * coordinates / values in the chart. This is the opposite method to
      * getPixelsForValues(...).
-     * 
+     *
      * @param x
      * @param y
      * @return
@@ -431,33 +422,16 @@ public class Transformer {
         return new PointD(xTouchVal, yTouchVal);
     }
 
-    // /**
-    // * transforms the given rect objects with the touch matrix only
-    // *
-    // * @param paths
-    // */
-    // public void transformRectsTouch(List<RectF> rects) {
-    // for (int i = 0; i < rects.size(); i++) {
-    // mMatrixTouch.mapRect(rects.get(i));
-    // }
-    // }
-    //
-    // /**
-    // * transforms the given path objects with the touch matrix only
-    // *
-    // * @param paths
-    // */
-    // public void transformPathsTouch(List<Path> paths) {
-    // for (int i = 0; i < paths.size(); i++) {
-    // paths.get(i).transform(mMatrixTouch);
-    // }
-    // }
-
     public Matrix getValueMatrix() {
         return mMatrixValueToPx;
     }
 
+    public Matrix getOffsetMatrix() {
+        return mMatrixOffset;
+    }
+
     private Matrix mMBuffer1 = new Matrix();
+
     public Matrix getValueToPixelMatrix() {
         mMBuffer1.set(mMatrixValueToPx);
         mMBuffer1.postConcat(mViewPortHandler.mMatrixTouch);
@@ -466,12 +440,9 @@ public class Transformer {
     }
 
     private Matrix mMBuffer2 = new Matrix();
+
     public Matrix getPixelToValueMatrix() {
         getValueToPixelMatrix().invert(mMBuffer2);
         return mMBuffer2;
-    }
-
-    public Matrix getOffsetMatrix() {
-        return mMatrixOffset;
     }
 }

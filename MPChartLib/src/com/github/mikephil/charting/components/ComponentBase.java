@@ -7,7 +7,7 @@ import android.graphics.Typeface;
 import com.github.mikephil.charting.utils.Utils;
 
 /**
- * This class encapsulates everything both Axis and Legend have in common.
+ * This class encapsulates everything both Axis, Legend and LimitLines have in common.
  *
  * @author Philipp Jahoda
  */

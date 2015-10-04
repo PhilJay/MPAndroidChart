@@ -13,13 +13,13 @@ import java.text.DecimalFormat;
  * 2000000 = 2m; 7800000 = 7.8m; 92150000 = 92m; 123200000 = 123m; 9999999 =
  * 10m; 1000000000 = 1b; Special thanks to Roman Gromov
  * (https://github.com/romangromov) for this piece of code.
- * 
+ *
  * @author Philipp Jahoda
  * @author Oleksandr Tyshkovets <olexandr.tyshkovets@gmail.com>
  */
 public class LargeValueFormatter implements ValueFormatter, YAxisValueFormatter {
 
-    private static String[] SUFFIX = new String[] {
+    private static String[] SUFFIX = new String[]{
             "", "k", "m", "b", "t"
     };
     private static final int MAX_LENGTH = 4;
@@ -32,6 +32,7 @@ public class LargeValueFormatter implements ValueFormatter, YAxisValueFormatter 
 
     /**
      * Creates a formatter that appends a specified text to the result string
+     *
      * @param appendix a text that will be appended
      */
     public LargeValueFormatter(String appendix) {
@@ -52,7 +53,18 @@ public class LargeValueFormatter implements ValueFormatter, YAxisValueFormatter 
     }
 
     /**
-     * Set custom suffix to be appended after the values
+     * Set an appendix text to be added at the end of the formatted value.
+     *
+     * @param appendix
+     */
+    public void setAppendix(String appendix) {
+        this.mText = appendix;
+    }
+
+    /**
+     * Set custom suffix to be appended after the values.
+     * Default suffix: ["", "k", "m", "b", "t"]
+     *
      * @param suff new suffix
      */
     public void setSuffix(String[] suff) {
