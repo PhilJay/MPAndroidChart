@@ -37,7 +37,7 @@ public abstract class Utils {
     /**
      * initialize method, called inside the Chart.init() method.
      * 
-     * @param res
+     * @param context
      */
     @SuppressWarnings("deprecation")
     public static void init(Context context) {
@@ -48,7 +48,8 @@ public abstract class Utils {
             // noinspection deprecation
             mMaximumFlingVelocity = ViewConfiguration.getMaximumFlingVelocity();
 
-            Log.e("MPAndroidChart, Utils.init(...)", "PROVIDED CONTEXT OBJECT IS NULL");
+            Log.e("MPChartLib-Utils"
+                    ,"Utils.init(...) PROVIDED CONTEXT OBJECT IS NULL");
 
         } else {
             ViewConfiguration viewConfiguration = ViewConfiguration.get(context);
@@ -225,7 +226,7 @@ public abstract class Utils {
     /**
      * returns the appropriate number of format digits for a legend value
      * 
-     * @param delta
+     * @param step
      * @param bonus - additional digits
      * @return
      */
@@ -256,16 +257,30 @@ public abstract class Utils {
             1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000
     };
 
+	/**
+	 * Formats the given number to the given number of decimals, and returns the
+	 * number as a string, maximum 35 characters.
+	 *
+	 * @param number
+	 * @param digitCount
+	 * @param separateThousands set this to true to separate thousands values
+	 * @return
+	 */
+	public static String formatNumber(float number, int digitCount, boolean separateThousands) {
+		return formatNumber(number, digitCount, separateThousands, '.');
+	}
+
     /**
      * Formats the given number to the given number of decimals, and returns the
      * number as a string, maximum 35 characters.
      * 
      * @param number
      * @param digitCount
-     * @param separateTousands set this to true to separate thousands values
+     * @param separateThousands set this to true to separate thousands values
+     * @param separateChar
      * @return
      */
-    public static String formatNumber(float number, int digitCount, boolean separateThousands) {
+    public static String formatNumber(float number, int digitCount, boolean separateThousands, char separateChar) {
 
         char[] out = new char[35];
 
@@ -312,14 +327,14 @@ public abstract class Utils {
                 if (decimalPointAdded) {
 
                     if ((charCount - digitCount) % 4 == 0) {
-                        out[ind--] = '.';
+                        out[ind--] = separateChar;
                         charCount++;
                     }
 
                 } else {
 
                     if ((charCount - digitCount) % 4 == 3) {
-                        out[ind--] = '.';
+                        out[ind--] = separateChar;
                         charCount++;
                     }
                 }
@@ -391,7 +406,7 @@ public abstract class Utils {
     /**
      * Converts the provided String List to a String array.
      * 
-     * @param labels
+     * @param strings
      * @return
      */
     public static String[] convertStrings(List<String> strings) {

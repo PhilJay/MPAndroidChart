@@ -19,11 +19,10 @@ import java.text.DecimalFormat;
  */
 public class LargeValueFormatter implements ValueFormatter, YAxisValueFormatter {
 
-    private static final String[] SUFFIX = new String[] {
+    private static String[] SUFFIX = new String[] {
             "", "k", "m", "b", "t"
     };
     private static final int MAX_LENGTH = 4;
-
     private DecimalFormat mFormat;
     private String mText = "";
 
@@ -50,6 +49,16 @@ public class LargeValueFormatter implements ValueFormatter, YAxisValueFormatter 
     @Override
     public String getFormattedValue(float value, YAxis yAxis) {
         return makePretty(value) + mText;
+    }
+
+    /**
+     * Set custom Suffix for the language of the country
+     * @param suff new suffix
+     */
+    public void setSuffix(String[] suff) {
+        if (suff.length == 5) {
+            SUFFIX = suff;
+        }
     }
 
     /**
