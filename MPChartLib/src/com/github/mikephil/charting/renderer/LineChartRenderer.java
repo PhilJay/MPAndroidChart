@@ -10,6 +10,7 @@ import android.graphics.Path;
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.buffer.CircleBuffer;
 import com.github.mikephil.charting.buffer.LineBuffer;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -101,6 +102,16 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
         }
 
         c.drawBitmap(mDrawBitmap, 0, 0, mRenderPaint);
+    }
+
+    /**
+     * Releases bitmap. This should be called when {@link LineChart#onDetachedFromWindow()}.
+     */
+    public void releaseBitmap() {
+        if (mDrawBitmap != null) {
+            mDrawBitmap.recycle();
+            mDrawBitmap = null;
+        }
     }
 
     protected void drawDataSet(Canvas c, LineDataSet dataSet) {
