@@ -41,7 +41,7 @@ public class XAxisRenderer extends AxisRenderer {
                 + mXAxis.getSpaceBetweenLabels());
 
         for (int i = 0; i < max; i++) {
-            a.append("h");
+            a.append('h');
         }
 
         mXAxis.mLabelWidth = Utils.calcTextWidth(mAxisLabelPaint, a.toString());

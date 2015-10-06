@@ -124,16 +124,6 @@ public class PieChartRenderer extends DataRenderer {
         }
     }
 
-    /**
-     * Releases bitmap. This should be called when {@link LineChart#onDetachedFromWindow()}.
-     */
-    public void releaseBitmap() {
-        if (mDrawBitmap != null) {
-            mDrawBitmap.recycle();
-            mDrawBitmap = null;
-        }
-    }
-
     protected void drawDataSet(Canvas c, PieDataSet dataSet) {
 
         float angle = mChart.getRotationAngle();
@@ -486,6 +476,16 @@ public class PieChartRenderer extends DataRenderer {
             }
 
             angle += newangle * mAnimator.getPhaseX();
+        }
+    }
+
+    /**
+     * Releases the drawing bitmap. This should be called when {@link LineChart#onDetachedFromWindow()}.
+     */
+    public void releaseBitmap() {
+        if (mDrawBitmap != null) {
+            mDrawBitmap.recycle();
+            mDrawBitmap = null;
         }
     }
 }

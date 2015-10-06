@@ -203,12 +203,6 @@ public class PieChart extends PieRadarChartBase<PieData> {
         return new float[]{x, y};
     }
 
-    @Override protected void onDetachedFromWindow() {
-        // releases the bitmap in the renderer to avoid oom error
-        ((PieChartRenderer) mRenderer).releaseBitmap();
-        super.onDetachedFromWindow();
-    }
-
     /**
      * calculates the needed angles for the chart slices
      */
@@ -637,4 +631,15 @@ public class PieChart extends PieRadarChartBase<PieData> {
     public float getCenterTextRadiusPercent() {
         return mCenterTextRadiusPercent;
     }
+
+
+    @Override
+    protected void onDetachedFromWindow() {
+        // releases the bitmap in the renderer to avoid oom error
+        if(mRenderer != null && mRenderer instanceof PieChartRenderer) {
+            ((PieChartRenderer) mRenderer).releaseBitmap();
+        }
+        super.onDetachedFromWindow();
+    }
+
 }

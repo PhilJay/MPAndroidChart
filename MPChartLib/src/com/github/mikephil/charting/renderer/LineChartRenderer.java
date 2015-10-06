@@ -104,16 +104,6 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
         c.drawBitmap(mDrawBitmap, 0, 0, mRenderPaint);
     }
 
-    /**
-     * Releases bitmap. This should be called when {@link LineChart#onDetachedFromWindow()}.
-     */
-    public void releaseBitmap() {
-        if (mDrawBitmap != null) {
-            mDrawBitmap.recycle();
-            mDrawBitmap = null;
-        }
-    }
-
     protected void drawDataSet(Canvas c, LineDataSet dataSet) {
 
         List<Entry> entries = dataSet.getYVals();
@@ -583,6 +573,16 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
             // draw the lines
             drawHighlightLines(c, pts, set);
+        }
+    }
+
+    /**
+     * Releases the drawing bitmap. This should be called when {@link LineChart#onDetachedFromWindow()}.
+     */
+    public void releaseBitmap() {
+        if (mDrawBitmap != null) {
+            mDrawBitmap.recycle();
+            mDrawBitmap = null;
         }
     }
 }
