@@ -203,6 +203,12 @@ public class PieChart extends PieRadarChartBase<PieData> {
         return new float[]{x, y};
     }
 
+    @Override protected void onDetachedFromWindow() {
+        // releases the bitmap in the renderer to avoid oom error
+        ((PieChartRenderer) mRenderer).releaseBitmap();
+        super.onDetachedFromWindow();
+    }
+
     /**
      * calculates the needed angles for the chart slices
      */

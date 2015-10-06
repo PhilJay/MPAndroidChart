@@ -14,6 +14,7 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
@@ -120,6 +121,16 @@ public class PieChartRenderer extends DataRenderer {
 
             if (set.isVisible() && set.getEntryCount() > 0)
                 drawDataSet(c, set);
+        }
+    }
+
+    /**
+     * Releases bitmap. This should be called when {@link LineChart#onDetachedFromWindow()}.
+     */
+    public void releaseBitmap() {
+        if (mDrawBitmap != null) {
+            mDrawBitmap.recycle();
+            mDrawBitmap = null;
         }
     }
 
