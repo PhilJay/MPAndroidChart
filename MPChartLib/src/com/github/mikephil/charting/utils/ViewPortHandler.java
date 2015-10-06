@@ -76,6 +76,9 @@ public class ViewPortHandler {
      */
     private float mTransOffsetY = 0f;
 
+    /**
+     * Constructor - don't forget calling setChartDimens(...)
+     */
     public ViewPortHandler() {
 
     }
@@ -346,6 +349,11 @@ public class ViewPortHandler {
         matrix.setValues(vals);
     }
 
+    /**
+     * Sets the minimum scale factor for the x-axis
+     *
+     * @param xScale
+     */
     public void setMinimumScaleX(float xScale) {
 
         if (xScale < 1f)
@@ -356,6 +364,11 @@ public class ViewPortHandler {
         limitTransAndScale(mMatrixTouch, mContentRect);
     }
 
+    /**
+     * Sets the maximum scale factor for the x-axis
+     *
+     * @param xScale
+     */
     public void setMaximumScaleX(float xScale) {
 
         mMaxScaleX = xScale;
@@ -363,6 +376,12 @@ public class ViewPortHandler {
         limitTransAndScale(mMatrixTouch, mContentRect);
     }
 
+    /**
+     * Sets the minimum and maximum scale factors for the x-axis
+     *
+     * @param minScaleX
+     * @param maxScaleX
+     */
     public void setMinMaxScaleX(float minScaleX, float maxScaleX) {
 
         if (minScaleX < 1f)
@@ -374,6 +393,11 @@ public class ViewPortHandler {
         limitTransAndScale(mMatrixTouch, mContentRect);
     }
 
+    /**
+     * Sets the minimum scale factor for the y-axis
+     *
+     * @param yScale
+     */
     public void setMinimumScaleY(float yScale) {
 
         if (yScale < 1f)
@@ -384,6 +408,11 @@ public class ViewPortHandler {
         limitTransAndScale(mMatrixTouch, mContentRect);
     }
 
+    /**
+     * Sets the maximum scale factor for the y-axis
+     *
+     * @param yScale
+     */
     public void setMaximumScaleY(float yScale) {
 
         mMaxScaleY = yScale;
@@ -460,10 +489,20 @@ public class ViewPortHandler {
         return mScaleY;
     }
 
+    /**
+     * Returns the translation (drag / pan) distance on the x-axis
+     *
+     * @return
+     */
     public float getTransX() {
         return mTransX;
     }
 
+    /**
+     * Returns the translation (drag / pan) distance on the y-axis
+     *
+     * @return
+     */
     public float getTransY() {
         return mTransY;
     }
@@ -535,10 +574,20 @@ public class ViewPortHandler {
         return mTransOffsetX <= 0 && mTransOffsetY <= 0 ? true : false;
     }
 
+    /**
+     * Returns true if the chart is not yet fully zoomed out on the x-axis
+     *
+     * @return
+     */
     public boolean canZoomOutMoreX() {
         return (mScaleX > mMinScaleX);
     }
 
+    /**
+     * Returns true if the chart is not yet fully zoomed in on the x-axis
+     *
+     * @return
+     */
     public boolean canZoomInMoreX() {
         return (mScaleX < mMaxScaleX);
     }
