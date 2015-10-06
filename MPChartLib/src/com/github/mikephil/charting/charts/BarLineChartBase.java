@@ -257,7 +257,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         // if highlighting is enabled
         if (valuesToHighlight())
-            mRenderer.drawHighlighted(canvas, mIndicesToHightlight);
+            mRenderer.drawHighlighted(canvas, mIndicesToHighlight);
 
         // Removes clipping rectangle
         canvas.restoreToCount(clipRestoreCount);

@@ -299,7 +299,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public void clear() {
         mData = null;
         mDataNotSet = true;
-        mIndicesToHightlight = null;
+        mIndicesToHighlight = null;
         invalidate();
     }
 
@@ -441,7 +441,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * array of Highlight objects that reference the highlighted slices in the
      * chart
      */
-    protected Highlight[] mIndicesToHightlight;
+    protected Highlight[] mIndicesToHighlight;
 
     /**
      * Returns the array of currently highlighted values. This might a null or
@@ -450,7 +450,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @return
      */
     public Highlight[] getHighlighted() {
-        return mIndicesToHightlight;
+        return mIndicesToHighlight;
     }
 
     /**
@@ -461,8 +461,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @return
      */
     public boolean valuesToHighlight() {
-        return mIndicesToHightlight == null || mIndicesToHightlight.length <= 0
-                || mIndicesToHightlight[0] == null ? false
+        return mIndicesToHighlight == null || mIndicesToHighlight.length <= 0
+                || mIndicesToHighlight[0] == null ? false
                 : true;
     }
 
@@ -477,7 +477,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public void highlightValues(Highlight[] highs) {
 
         // set the indices to highlight
-        mIndicesToHightlight = highs;
+        mIndicesToHighlight = highs;
 
         if(highs == null || highs.length == 0)
             mChartTouchListener.setLastHighlighted(null);
@@ -518,7 +518,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         Entry e = null;
 
         if (high == null)
-            mIndicesToHightlight = null;
+            mIndicesToHighlight = null;
         else {
 
             if (mLogEnabled)
@@ -526,19 +526,16 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
             e = mData.getEntryForHighlight(high);
             if (e == null || e.getXIndex() != high.getXIndex()) {
-                mIndicesToHightlight = null;
+                mIndicesToHighlight = null;
                 high = null;
             }
             else {
                 // set the indices to highlight
-                mIndicesToHightlight = new Highlight[] {
+                mIndicesToHighlight = new Highlight[] {
                         high
                 };
             }
         }
-
-        // redraw the chart
-        invalidate();
 
         if (mSelectionListener != null) {
 
@@ -549,6 +546,8 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 mSelectionListener.onValueSelected(e, high.getDataSetIndex(), high);
             }
         }
+        // redraw the chart
+        invalidate();
     }
 
     /**
@@ -581,18 +580,18 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         if (mMarkerView == null || !mDrawMarkerViews || !valuesToHighlight())
             return;
 
-        for (int i = 0; i < mIndicesToHightlight.length; i++) {
+        for (int i = 0; i < mIndicesToHighlight.length; i++) {
 
-            Highlight highlight = mIndicesToHightlight[i];
+            Highlight highlight = mIndicesToHighlight[i];
             int xIndex = highlight.getXIndex();
             int dataSetIndex = highlight.getDataSetIndex();
 
             if (xIndex <= mDeltaX && xIndex <= mDeltaX * mAnimator.getPhaseX()) {
 
-                Entry e = mData.getEntryForHighlight(mIndicesToHightlight[i]);
+                Entry e = mData.getEntryForHighlight(mIndicesToHighlight[i]);
 
                 // make sure entry not null
-                if (e == null || e.getXIndex() != mIndicesToHightlight[i].getXIndex())
+                if (e == null || e.getXIndex() != mIndicesToHighlight[i].getXIndex())
                     continue;
 
                 float[] pos = getMarkerPosition(e, highlight);

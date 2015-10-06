@@ -119,7 +119,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
         mRenderer.drawData(canvas);
 
         if (valuesToHighlight())
-            mRenderer.drawHighlighted(canvas, mIndicesToHightlight);
+            mRenderer.drawHighlighted(canvas, mIndicesToHighlight);
 
         mRenderer.drawExtras(canvas);
 
@@ -250,11 +250,11 @@ public class PieChart extends PieRadarChartBase<PieData> {
         if (!valuesToHighlight() || dataSetIndex < 0)
             return false;
 
-        for (int i = 0; i < mIndicesToHightlight.length; i++)
+        for (int i = 0; i < mIndicesToHighlight.length; i++)
 
             // check if the xvalue for the given dataset needs highlight
-            if (mIndicesToHightlight[i].getXIndex() == xIndex
-                    && mIndicesToHightlight[i].getDataSetIndex() == dataSetIndex)
+            if (mIndicesToHighlight[i].getXIndex() == xIndex
+                    && mIndicesToHighlight[i].getDataSetIndex() == dataSetIndex)
                 return true;
 
         return false;
@@ -467,7 +467,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     /**
      * Sets the size of the center text of the PieChart in dp.
      *
-     * @param size
+     * @param sizeDp
      */
     public void setCenterTextSize(float sizeDp) {
         ((PieChartRenderer) mRenderer).getPaintCenterText().setTextSize(
@@ -477,7 +477,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     /**
      * Sets the size of the center text of the PieChart in pixels.
      *
-     * @param size
+     * @param sizePixels
      */
     public void setCenterTextSizePixels(float sizePixels) {
         ((PieChartRenderer) mRenderer).getPaintCenterText().setTextSize(sizePixels);
@@ -496,7 +496,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
      * sets the radius of the hole in the center of the piechart in percent of
      * the maximum radius (max = the radius of the whole chart), default 50%
      *
-     * @param size
+     * @param percent
      */
     public void setHoleRadius(final float percent) {
         mHoleRadiusPercent = percent;
