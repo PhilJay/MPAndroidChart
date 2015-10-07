@@ -12,7 +12,7 @@ Remember: *It's all about the looks.*
 
 An **iOS** version of this library is now available, go check it out: [**ios-charts**](https://github.com/danielgindi/ios-charts)
 
-Are you using this library? Add your project to the [**references**](https://github.com/PhilJay/MPAndroidChart/edit/master/Projects_using_MPAndroidChart.txt).
+Are you using this library? Let me know about it and I will add your project to the [**references**](https://github.com/PhilJay/MPAndroidChart/wiki/References).
 
 Donations
 -----
