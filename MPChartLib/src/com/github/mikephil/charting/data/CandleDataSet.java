@@ -87,10 +87,10 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> {
         mLastStart = start;
         mLastEnd = endValue;
 
-        mYMin = start < mYVals.size() ? mYVals.get(start).getLow() : Float.MAX_VALUE;
-        mYMax = start < mYVals.size() ? mYVals.get(start).getHigh() : -Float.MAX_VALUE;
+        mYMin = Float.MAX_VALUE;
+        mYMax = -Float.MAX_VALUE;
 
-        for (int i = start + 1; i <= endValue; i++) {
+        for (int i = start; i <= endValue; i++) {
 
             CandleEntry e = entries.get(i);
 
