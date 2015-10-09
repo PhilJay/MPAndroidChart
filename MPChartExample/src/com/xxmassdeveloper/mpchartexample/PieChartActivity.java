@@ -217,6 +217,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         colors.add(ColorTemplate.getHoloBlue());
 
         dataSet.setColors(colors);
+        //dataSet.setSelectionShift(0f);
 
         PieData data = new PieData(xVals, dataSet);
         data.setValueFormatter(new PercentFormatter());

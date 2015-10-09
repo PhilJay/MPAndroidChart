@@ -42,9 +42,6 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
     /** flag that indicates if rotation is enabled or not */
     protected boolean mRotateEnabled = true;
 
-    /** Sets the minimum offset (padding) around the chart, defaults to 10 */
-    protected float mMinOffset = 10.f;
-
     public PieRadarChartBase(Context context) {
         super(context);
     }
@@ -212,13 +209,13 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
             legendTop += getRequiredBaseOffset();
         }
 
-        float minOffset = Utils.convertDpToPixel(mMinOffset);
+        float minOffset = 0f;
 
         if (this instanceof RadarChart) {
             XAxis x = ((RadarChart) this).getXAxis();
 
             if (x.isEnabled() && x.isDrawLabelsEnabled()) {
-                minOffset = Math.max(minOffset, x.mLabelWidth);
+                minOffset = x.mLabelWidth;
             }
         }
 

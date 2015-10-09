@@ -143,25 +143,16 @@ public class PieChart extends PieRadarChartBase<PieData> {
         float diameter = getDiameter();
         float radius = diameter / 2f;
 
-        PointF c = getCenterOffsets();
+        PointF c = getCenter();
 
-        final List<PieDataSet> dataSets = mData.getDataSets();
-
-        float maxShift = 0.f;
-        for (int i = 0; i < dataSets.size(); i++) {
-            final float shift = dataSets.get(i).getSelectionShift();
-            if (shift > maxShift)
-                maxShift = shift;
-        }
-
-        final float halfMaxShift = maxShift / 2.f;
+        float shift = mData.getDataSet().getSelectionShift();
 
         // create the circle box that will contain the pie-chart (the bounds of
         // the pie-chart)
-        mCircleBox.set(c.x - radius + halfMaxShift,
-                c.y - radius + halfMaxShift,
-                c.x + radius - halfMaxShift,
-                c.y + radius - halfMaxShift);
+        mCircleBox.set(c.x - radius + shift,
+                c.y - radius + shift,
+                c.x + radius - shift,
+                c.y + radius - shift);
     }
 
     @Override
