@@ -143,7 +143,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
         float diameter = getDiameter();
         float radius = diameter / 2f;
 
-        PointF c = getCenter();
+        PointF c = getCenterOffsets();
 
         float shift = mData.getDataSet().getSelectionShift();
 
