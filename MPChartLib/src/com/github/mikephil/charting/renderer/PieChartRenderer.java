@@ -10,8 +10,10 @@ import android.graphics.Paint.Style;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.text.Layout;
+import android.text.SpannableString;
 import android.text.StaticLayout;
 import android.text.TextPaint;
+import android.util.Log;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.LineChart;
@@ -44,17 +46,19 @@ public class PieChartRenderer extends DataRenderer {
     private TextPaint mCenterTextPaint;
 
     private StaticLayout mCenterTextLayout;
-    private String mCenterTextLastValue;
+    private SpannableString mCenterTextLastValue;
     private RectF mCenterTextLastBounds = new RectF();
-    private RectF[] mRectBuffer = { new RectF(), new RectF(), new RectF() };
+    private RectF[] mRectBuffer = {new RectF(), new RectF(), new RectF()};
 
-    /** Bitmap for drawing the center hole */
+    /**
+     * Bitmap for drawing the center hole
+     */
     protected Bitmap mDrawBitmap;
 
     protected Canvas mBitmapCanvas;
 
     public PieChartRenderer(PieChart chart, ChartAnimator animator,
-            ViewPortHandler viewPortHandler) {
+                            ViewPortHandler viewPortHandler) {
         super(animator, viewPortHandler);
         mChart = chart;
 
@@ -92,7 +96,6 @@ public class PieChartRenderer extends DataRenderer {
     @Override
     public void initBuffers() {
         // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -210,7 +213,7 @@ public class PieChartRenderer extends DataRenderer {
                         * mAnimator.getPhaseY())) + center.x);
                 float y = (float) (r
                         * Math.sin(Math.toRadians((rotationAngle + absoluteAngles[cnt] - offset)
-                                * mAnimator.getPhaseY())) + center.y);
+                        * mAnimator.getPhaseY())) + center.y);
 
                 float value = mChart.isUsePercentValuesEnabled() ? entry.getVal()
                         / data.getYValueSum() * 100f : entry.getVal();
@@ -290,87 +293,92 @@ public class PieChartRenderer extends DataRenderer {
      */
     protected void drawCenterText(Canvas c) {
 
-        String centerText = mChart.getCenterText();
+        SpannableString centerText = mChart.getCenterText();
 
         if (mChart.isDrawCenterTextEnabled() && centerText != null) {
 
             PointF center = mChart.getCenterCircleBox();
 
-            if (mChart.isCenterTextWordWrapEnabled()) {
+            float innerRadius = mChart.isDrawHoleEnabled() && mChart.isHoleTransparent() ? mChart.getRadius() * (mChart.getHoleRadius() / 100f) : mChart.getRadius();
 
-                float innerRadius = mChart.isDrawHoleEnabled() && mChart.isHoleTransparent() ? mChart.getRadius() * (mChart.getHoleRadius() / 100f) : mChart.getRadius();
+            RectF holeRect = mRectBuffer[0];
+            holeRect.left = center.x - innerRadius;
+            holeRect.top = center.y - innerRadius;
+            holeRect.right = center.x + innerRadius;
+            holeRect.bottom = center.y + innerRadius;
+            RectF boundingRect = mRectBuffer[1];
+            boundingRect.set(holeRect);
 
-                RectF holeRect = mRectBuffer[0];
-                holeRect.left = center.x - innerRadius;
-                holeRect.top = center.y - innerRadius;
-                holeRect.right = center.x + innerRadius;
-                holeRect.bottom = center.y + innerRadius;
-                RectF boundingRect = mRectBuffer[1];
-                boundingRect.set(holeRect);
-
-                float radiusPercent = mChart.getCenterTextRadiusPercent();
-                if (radiusPercent > 0.0) {
-                    boundingRect.inset((boundingRect.width() - boundingRect.width() * radiusPercent) / 2.f,
-                            (boundingRect.height() - boundingRect.height() * radiusPercent) / 2.f);
-                }
-
-                if (!centerText.equals(mCenterTextLastValue) || !boundingRect.equals(mCenterTextLastBounds)) {
-
-                    // Next time we won't recalculate StaticLayout...
-                    mCenterTextLastBounds.set(boundingRect);
-                    mCenterTextLastValue = centerText;
-
-                    // If width is 0, it will crash. Always have a minimum of 1
-                    mCenterTextLayout = new StaticLayout(centerText, 0, centerText.length(),
-                            mCenterTextPaint,
-                            (int)Math.max(Math.ceil(mCenterTextLastBounds.width()), 1.f),
-                            Layout.Alignment.ALIGN_NORMAL, 1.f, 0.f, false);
-                }
-
-                // I wish we could make an ellipse clipping path on Android to clip to the hole...
-                // If we ever find out how, this is the place to add it, based on holeRect
-
-                //float layoutWidth = Utils.getStaticLayoutMaxWidth(mCenterTextLayout);
-                float layoutHeight = mCenterTextLayout.getHeight();
-
-                c.save();
-                c.translate(boundingRect.centerX(), boundingRect.top + (boundingRect.height() - layoutHeight) / 2.f);
-                mCenterTextLayout.draw(c);
-                c.restore();
-
-            } else {
-
-                // get all lines from the text
-                String[] lines = centerText.split("\n");
-
-                float maxlineheight = 0f;
-
-                // calc the maximum line height
-                for (String line : lines) {
-                    float curHeight = Utils.calcTextHeight(mCenterTextPaint, line);
-                    if (curHeight > maxlineheight)
-                        maxlineheight = curHeight;
-                }
-
-                float linespacing = maxlineheight * 0.25f;
-
-                float totalheight = maxlineheight * lines.length - linespacing * (lines.length - 1);
-
-                int cnt = lines.length;
-
-                float y = center.y;
-
-                for (int i = 0; i < lines.length; i++) {
-
-                    String line = lines[lines.length - i - 1];
-
-                    c.drawText(line, center.x, y
-                                    + maxlineheight * cnt - totalheight / 2f,
-                            mCenterTextPaint);
-                    cnt--;
-                    y -= linespacing;
-                }
+            float radiusPercent = mChart.getCenterTextRadiusPercent();
+            if (radiusPercent > 0.0) {
+                boundingRect.inset((boundingRect.width() - boundingRect.width() * radiusPercent) / 2.f,
+                        (boundingRect.height() - boundingRect.height() * radiusPercent) / 2.f);
             }
+
+            if (!centerText.equals(mCenterTextLastValue) || !boundingRect.equals(mCenterTextLastBounds)) {
+
+                // Next time we won't recalculate StaticLayout...
+                mCenterTextLastBounds.set(boundingRect);
+                mCenterTextLastValue = centerText;
+
+                float width = mCenterTextLastBounds.width();
+
+                // If width is 0, it will crash. Always have a minimum of 1
+                mCenterTextLayout = new StaticLayout(centerText, 0, centerText.length(),
+                        mCenterTextPaint,
+                        (int) Math.max(Math.ceil(width), 1.f),
+                        Layout.Alignment.ALIGN_NORMAL, 1.f, 0.f, false);
+            }
+
+            // I wish we could make an ellipse clipping path on Android to clip to the hole...
+            // If we ever find out how, this is the place to add it, based on holeRect
+
+            //float layoutWidth = Utils.getStaticLayoutMaxWidth(mCenterTextLayout);
+            float layoutHeight = mCenterTextLayout.getHeight();
+
+            c.save();
+            c.translate(boundingRect.centerX(), boundingRect.top + (boundingRect.height() - layoutHeight) / 2.f);
+            mCenterTextLayout.draw(c);
+            c.restore();
+
+//            }
+//
+//        else {
+//
+//
+//                // get all lines from the text
+//                String[] lines = centerText.toString().split("\n");
+//
+//                float maxlineheight = 0f;
+//
+//                // calc the maximum line height
+//                for (String line : lines) {
+//                    float curHeight = Utils.calcTextHeight(mCenterTextPaint, line);
+//                    if (curHeight > maxlineheight)
+//                        maxlineheight = curHeight;
+//                }
+//
+//                float linespacing = maxlineheight * 0.25f;
+//
+//                float totalheight = maxlineheight * lines.length - linespacing * (lines.length - 1);
+//
+//                int cnt = lines.length;
+//
+//                float y = center.y;
+//
+//                for (int i = 0; i < lines.length; i++) {
+//
+//                    String line = lines[lines.length - i - 1];
+//
+//
+//
+//                    c.drawText(line, center.x, y
+//                                    + maxlineheight * cnt - totalheight / 2f,
+//                            mCenterTextPaint);
+//                    cnt--;
+//                    y -= linespacing;
+//                }
+//            }
         }
     }
 
@@ -412,7 +420,7 @@ public class PieChartRenderer extends DataRenderer {
             /**
              * Make the box containing current arc larger equally in every
              * dimension, to preserve shape of arc. Code provided by:
-             * 
+             *
              * @link https://github.com/wogg
              */
             RectF highlighted = new RectF(circleBox.left - shift,
@@ -432,7 +440,7 @@ public class PieChartRenderer extends DataRenderer {
 
     /**
      * This gives all pie-slices a rounded edge.
-     * 
+     *
      * @param c
      */
     protected void drawRoundedSlices(Canvas c) {
@@ -444,7 +452,7 @@ public class PieChartRenderer extends DataRenderer {
 
         if (!dataSet.isVisible())
             return;
-        
+
         PointF center = mChart.getCenterCircleBox();
         float r = mChart.getRadius();
 
@@ -466,10 +474,10 @@ public class PieChartRenderer extends DataRenderer {
 
                 float x = (float) ((r - circleRadius)
                         * Math.cos(Math.toRadians((angle + newangle)
-                                * mAnimator.getPhaseY())) + center.x);
+                        * mAnimator.getPhaseY())) + center.x);
                 float y = (float) ((r - circleRadius)
                         * Math.sin(Math.toRadians((angle + newangle)
-                                * mAnimator.getPhaseY())) + center.y);
+                        * mAnimator.getPhaseY())) + center.y);
 
                 mRenderPaint.setColor(dataSet.getColor(j));
                 mBitmapCanvas.drawCircle(x, y, circleRadius, mRenderPaint);

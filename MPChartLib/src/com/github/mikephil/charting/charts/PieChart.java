@@ -9,6 +9,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.text.SpannableString;
 import android.util.AttributeSet;
 
 import com.github.mikephil.charting.data.DataSet;
@@ -65,10 +66,9 @@ public class PieChart extends PieRadarChartBase<PieData> {
     private boolean mDrawRoundedSlices = false;
 
     /**
-     * variable for the text that is drawn in the center of the pie-chart. If
-     * this value is null, the default is "Total Value\n + getYValueSum()"
+     * variable for the text that is drawn in the center of the pie-chart
      */
-    private String mCenterText = "";
+    private SpannableString mCenterText = new SpannableString("");
 
     /**
      * indicates the size of the hole in the center of the piechart, default:
@@ -85,8 +85,6 @@ public class PieChart extends PieRadarChartBase<PieData> {
      * if enabled, centertext is drawn
      */
     private boolean mDrawCenterText = true;
-
-    private boolean mCenterTextWordWrapEnabled = false;
 
     private float mCenterTextRadiusPercent = 1.f;
 
@@ -373,13 +371,25 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * sets the text that is displayed in the center of the pie-chart. By
-     * default, the text is "Total Value + sumofallvalues"
+     * Sets the text SpannableString that is displayed in the center of the PieChart.
+     *
+     * @param text
+     */
+    public void setCenterText(SpannableString text) {
+
+        if (text == null)
+            mCenterText = new SpannableString("");
+        else
+            mCenterText = text;
+    }
+
+    /**
+     * Sets the text String that is displayed in the center of the PieChart.
      *
      * @param text
      */
     public void setCenterText(String text) {
-        mCenterText = text;
+        setCenterText(new SpannableString(text));
     }
 
     /**
@@ -387,7 +397,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
      *
      * @return
      */
-    public String getCenterText() {
+    public SpannableString getCenterText() {
         return mCenterText;
     }
 
@@ -590,24 +600,6 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * should the center text be word wrapped?
-     * note that word wrapping takes a toll on performance
-     * if word wrapping is disabled, newlines are still respected
-     */
-    public void setCenterTextWordWrapEnabled(boolean enabled) {
-        mCenterTextWordWrapEnabled = enabled;
-    }
-
-    /**
-     * should the center text be word wrapped?
-     * note that word wrapping takes a toll on performance
-     * if word wrapping is disabled, newlines are still respected
-     */
-    public boolean isCenterTextWordWrapEnabled() {
-        return mCenterTextWordWrapEnabled;
-    }
-
-    /**
      * the rectangular radius of the bounding box for the center text, as a percentage of the pie hole
      * default 1.f (100%)
      */
@@ -627,7 +619,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     @Override
     protected void onDetachedFromWindow() {
         // releases the bitmap in the renderer to avoid oom error
-        if(mRenderer != null && mRenderer instanceof PieChartRenderer) {
+        if (mRenderer != null && mRenderer instanceof PieChartRenderer) {
             ((PieChartRenderer) mRenderer).releaseBitmap();
         }
         super.onDetachedFromWindow();
