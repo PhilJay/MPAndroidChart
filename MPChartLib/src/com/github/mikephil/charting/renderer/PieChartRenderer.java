@@ -74,7 +74,7 @@ public class PieChartRenderer extends DataRenderer {
         mCenterTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
         mCenterTextPaint.setColor(Color.BLACK);
         mCenterTextPaint.setTextSize(Utils.convertDpToPixel(12f));
-        mCenterTextPaint.setTextAlign(Align.CENTER);
+        //mCenterTextPaint.setTextAlign(Align.CENTER);
 
         mValuePaint.setTextSize(Utils.convertDpToPixel(13f));
         mValuePaint.setColor(Color.WHITE);
@@ -327,7 +327,7 @@ public class PieChartRenderer extends DataRenderer {
                 mCenterTextLayout = new StaticLayout(centerText, 0, centerText.length(),
                         mCenterTextPaint,
                         (int) Math.max(Math.ceil(width), 1.f),
-                        Layout.Alignment.ALIGN_NORMAL, 1.f, 0.f, false);
+                        Layout.Alignment.ALIGN_CENTER, 1.f, 0.f, false);
             }
 
             // I wish we could make an ellipse clipping path on Android to clip to the hole...
@@ -337,7 +337,7 @@ public class PieChartRenderer extends DataRenderer {
             float layoutHeight = mCenterTextLayout.getHeight();
 
             c.save();
-            c.translate(boundingRect.centerX(), boundingRect.top + (boundingRect.height() - layoutHeight) / 2.f);
+            c.translate(boundingRect.left, boundingRect.top + (boundingRect.height() - layoutHeight) / 2.f);
             mCenterTextLayout.draw(c);
             c.restore();
 
