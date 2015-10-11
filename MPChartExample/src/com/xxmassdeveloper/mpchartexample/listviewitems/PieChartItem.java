@@ -4,6 +4,9 @@ package com.xxmassdeveloper.mpchartexample.listviewitems;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -13,16 +16,19 @@ import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.R;
 
 public class PieChartItem extends ChartItem {
 
     private Typeface mTf;
+    private SpannableString mCenterText;
 
     public PieChartItem(ChartData<?> cd, Context c) {
         super(cd);
 
         mTf = Typeface.createFromAsset(c.getAssets(), "OpenSans-Regular.ttf");
+        mCenterText = generateCenterText();
     }
 
     @Override
@@ -53,9 +59,9 @@ public class PieChartItem extends ChartItem {
         holder.chart.setDescription("");
         holder.chart.setHoleRadius(52f);
         holder.chart.setTransparentCircleRadius(57f);
-        holder.chart.setCenterText("MPChart\nAndroid");
+        holder.chart.setCenterText(mCenterText);
         holder.chart.setCenterTextTypeface(mTf);
-        holder.chart.setCenterTextSize(18f);
+        holder.chart.setCenterTextSize(9f);
         holder.chart.setUsePercentValues(true);
         holder.chart.setExtraOffsets(5, 10, 50, 10);
 
@@ -76,6 +82,17 @@ public class PieChartItem extends ChartItem {
         holder.chart.animateXY(900, 900);
 
         return convertView;
+    }
+
+    private SpannableString generateCenterText() {
+        SpannableString s = new SpannableString("MPAndroidChart\ncreated by\nPhilipp Jahoda");
+        s.setSpan(new RelativeSizeSpan(1.6f), 0, 14, 0);
+        s.setSpan(new ForegroundColorSpan(ColorTemplate.VORDIPLOM_COLORS[0]), 0, 14, 0);
+        s.setSpan(new RelativeSizeSpan(.9f), 14, 25, 0);
+        s.setSpan(new ForegroundColorSpan(Color.GRAY), 14, 25, 0);
+        s.setSpan(new RelativeSizeSpan(1.4f), 25, s.length(), 0);
+        s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), 25, s.length(), 0);
+        return s;
     }
 
     private static class ViewHolder {
