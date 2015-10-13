@@ -1131,6 +1131,16 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         mBorderPaint.setColor(color);
     }
 
+    /** Gets the minimum offset (padding) around the chart, defaults to 10.f */
+    public float getMinOffset() {
+        return mMinOffset;
+    }
+
+    /** Sets the minimum offset (padding) around the chart, defaults to 10.f */
+    public void setMinOffset(float minOffset) {
+        mMinOffset = minOffset;
+    }
+
     /**
      * Returns the Highlight object (contains x-index and DataSet index) of the
      * selected value at the given touch point inside the Line-, Scatter-, or
