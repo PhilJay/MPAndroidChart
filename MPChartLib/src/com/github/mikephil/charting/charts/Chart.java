@@ -479,8 +479,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         // set the indices to highlight
         mIndicesToHighlight = highs;
 
-        if(highs == null || highs.length == 0)
+        if(highs == null || highs.length <= 0 || highs[0] == null) {
             mChartTouchListener.setLastHighlighted(null);
+        } else {
+            mChartTouchListener.setLastHighlighted(highs[0]);
+        }
 
         // redraw the chart
         invalidate();
