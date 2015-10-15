@@ -72,9 +72,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         mChart.setDescription("");
         mChart.setNoDataTextDescription("You need to provide data for the chart.");
 
-        // enable value highlighting
-        mChart.setHighlightEnabled(true);
-
         // enable touch gestures
         mChart.setTouchEnabled(true);
 
@@ -186,11 +183,10 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                 break;
             }
             case R.id.actionToggleHighlight: {
-                if (mChart.isHighlightEnabled())
-                    mChart.setHighlightEnabled(false);
-                else
-                    mChart.setHighlightEnabled(true);
-                mChart.invalidate();
+                if(mChart.getData() != null) {
+                    mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
+                    mChart.invalidate();
+                }
                 break;
             }
             case R.id.actionToggleFilled: {

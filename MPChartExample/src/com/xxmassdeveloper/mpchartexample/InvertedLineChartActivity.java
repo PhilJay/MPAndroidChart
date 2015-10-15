@@ -62,9 +62,6 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
         // no description text
         mChart.setDescription("");
 
-        // enable value highlighting
-        mChart.setHighlightEnabled(true);
-
         // enable touch gestures
         mChart.setTouchEnabled(true);
 
@@ -84,10 +81,6 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
 
         // set the marker to the chart
         mChart.setMarkerView(mv);
-
-        // enable/disable highlight indicators (the lines that indicate the
-        // highlighted Entry)
-        mChart.setHighlightEnabled(false);
         
         XAxis xl = mChart.getXAxis();
         xl.setAvoidFirstLastClipping(true);
@@ -136,11 +129,10 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
                 break;
             }
             case R.id.actionToggleHighlight: {
-                if (mChart.isHighlightEnabled())
-                    mChart.setHighlightEnabled(false);
-                else
-                    mChart.setHighlightEnabled(true);
-                mChart.invalidate();
+                if(mChart.getData() != null) {
+                    mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
+                    mChart.invalidate();
+                }
                 break;
             }
             case R.id.actionToggleFilled: {

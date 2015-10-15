@@ -47,14 +47,6 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
         mChart.setOnChartValueSelectedListener(this);
         mChart.setOnDrawListener(this);
 
-        // enable drawing with the finger
-        // mChart.setDrawingEnabled(true);
-
-        // mChart.setLineWidth(5f);
-        // mChart.setCircleSize(5f);
-
-        mChart.setHighlightEnabled(true);
-
         // if disabled, drawn datasets with the finger will not be automatically
         // finished
         // mChart.setAutoFinish(true);
@@ -119,11 +111,10 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
                 break;
             }
             case R.id.actionToggleHighlight: {
-                if (mChart.isHighlightEnabled())
-                    mChart.setHighlightEnabled(false);
-                else
-                    mChart.setHighlightEnabled(true);
-                mChart.invalidate();
+                if(mChart.getData() != null) {
+                    mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
+                    mChart.invalidate();
+                }
                 break;
             }
             case R.id.actionToggleStartzero: {

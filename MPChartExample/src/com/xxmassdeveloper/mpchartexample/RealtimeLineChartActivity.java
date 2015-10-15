@@ -43,9 +43,6 @@ public class RealtimeLineChartActivity extends DemoBase implements
         mChart.setDescription("");
         mChart.setNoDataTextDescription("You need to provide data for the chart.");
 
-        // enable value highlighting
-        mChart.setHighlightEnabled(true);
-
         // enable touch gestures
         mChart.setTouchEnabled(true);
 

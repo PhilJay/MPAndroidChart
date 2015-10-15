@@ -65,7 +65,6 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         mChart.setDrawGridBackground(false);
 
         mChart.setTouchEnabled(true);
-        mChart.setHighlightEnabled(true);
 
         // enable scaling and dragging
         mChart.setDragEnabled(true);
@@ -109,11 +108,10 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
                 break;
             }
             case R.id.actionToggleHighlight: {
-                if (mChart.isHighlightEnabled())
-                    mChart.setHighlightEnabled(false);
-                else
-                    mChart.setHighlightEnabled(true);
-                mChart.invalidate();
+                if(mChart.getData() != null) {
+                    mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
+                    mChart.invalidate();
+                }
                 break;
             }
             case R.id.actionTogglePinch: {

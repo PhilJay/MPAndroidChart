@@ -875,27 +875,27 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     public OnChartGestureListener getOnChartGestureListener() {
         return mGestureListener;
     }
-
-    /**
-     * If set to true, value highlighting is enabled for all underlying data of
-     * the chart which means that all values can be highlighted programmatically
-     * or by touch gesture.
-     *
-     * @param enabled
-     */
-    public void setHighlightEnabled(boolean enabled) {
-        if (mData != null)
-            mData.setHighlightEnabled(enabled);
-    }
-
-    /**
-     * Returns true if highlighting of values is enabled, false if not
-     *
-     * @return
-     */
-    public boolean isHighlightEnabled() {
-        return mData == null ? true : mData.isHighlightEnabled();
-    }
+//
+//    /**
+//     * If set to true, value highlighting is enabled for all underlying data of
+//     * the chart which means that all values can be highlighted programmatically
+//     * or by touch gesture.
+//     *
+//     * @param enabled
+//     */
+//    public void setHighlightEnabled(boolean enabled) {
+//        if (mData != null)
+//            mData.setHighlightEnabled(enabled);
+//    }
+//
+//    /**
+//     * Returns true if highlighting of values is enabled, false if not
+//     *
+//     * @return
+//     */
+//    public boolean isHighlightEnabled() {
+//        return mData == null ? true : mData.isHighlightEnabled();
+//    }
 
     /**
      * returns the current y-max value across all DataSets
