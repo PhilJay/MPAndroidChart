@@ -370,8 +370,9 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
     public void onChartGestureEnd(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
         Log.i("Gesture", "END, lastGesture: " + lastPerformedGesture);
 
+        // un-highlight values after the gesture is finished and no single-tap
         if(lastPerformedGesture != ChartTouchListener.ChartGesture.SINGLE_TAP)
-            mChart.highlightValues(null);
+            mChart.highlightValues(null); // or highlightTouch(null) for callback to onNothingSelected(...)
     }
 
     @Override

@@ -77,6 +77,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     protected T mData = null;
 
     /**
+     * Flag that indicates if highlighting per tap (touch) is enabled
+     */
+    protected boolean mHighLightPerTapEnabled = true;
+
+    /**
      * If set to true, chart continues to scroll after touch up
      */
     private boolean mDragDecelerationEnabled = true;
@@ -493,6 +498,14 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public Highlight[] getHighlighted() {
         return mIndicesToHighlight;
+    }
+
+    public boolean isHighLightPerTapEnabled() {
+        return mHighLightPerTapEnabled;
+    }
+
+    public void setHighLightPerTapEnabled(boolean enabled) {
+        mHighLightPerTapEnabled = enabled;
     }
 
     /**

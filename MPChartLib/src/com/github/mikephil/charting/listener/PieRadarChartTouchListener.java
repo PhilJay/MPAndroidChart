@@ -147,6 +147,10 @@ public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChart
             l.onChartSingleTapped(e);
         }
 
+        if(!mChart.isHighLightPerTapEnabled()) {
+            return false;
+        }
+
         float distance = mChart.distanceToCenter(e.getX(), e.getY());
 
         // check if a slice was touched
