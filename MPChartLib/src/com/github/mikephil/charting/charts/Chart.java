@@ -122,11 +122,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     protected boolean mDataNotSet = true;
 
     /**
-     * if true, units are drawn next to the values in the chart
-     */
-    protected boolean mDrawUnitInChart = false;
-
-    /**
      * the number of x-values the chart displays
      */
     protected float mDeltaX = 1f;
