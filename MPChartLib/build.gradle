@@ -1,18 +1,14 @@
 apply plugin: 'com.android.library'
-apply plugin: 'android-maven'
+apply plugin: 'maven'
 
 repositories {
-    mavenCentral()
+    jcenter()
     mavenLocal()
 }
 
 buildscript {
     repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.github.dcendents:android-maven-plugin:1.0'
+        jcenter()
     }
 }
 
@@ -21,13 +17,12 @@ version = '1.0-SNAPSHOT'
 
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion '19.1.0'
+    compileSdkVersion 23
+    buildToolsVersion '23.0.1'
     // resourcePrefix 'mpcht'
     defaultConfig {
-        applicationId 'com.github.mikephil.charting'
         minSdkVersion 9
-        targetSdkVersion 19
+        targetSdkVersion 23
         versionCode 1
         versionName '1.0'
 
@@ -42,7 +37,7 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -52,6 +47,14 @@ android {
 }
 
 dependencies {
-    //compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-v4:19.+'
+    compile 'com.android.support:support-v4:23.0.1'
+}
+
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: String.format("file:%s/.m2/repository", System.getProperty("user.home")))
+        }
+    }
 }
