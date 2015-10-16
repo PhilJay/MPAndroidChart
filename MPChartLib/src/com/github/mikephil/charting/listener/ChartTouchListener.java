@@ -109,6 +109,23 @@ public abstract class ChartTouchListener<T extends Chart<?>> extends GestureDete
         return mLastGesture;
     }
 
+
+    /**
+     * Perform a highlight operation.
+     *
+     * @param e
+     */
+    protected void performHighlight(Highlight h, MotionEvent e) {
+
+        if (h == null || h.equalTo(mLastHighlighted)) {
+            mChart.highlightTouch(null);
+            mLastHighlighted = null;
+        } else {
+            mLastHighlighted = h;
+            mChart.highlightTouch(h);
+        }
+    }
+
     /**
      * returns the distance between two points
      *

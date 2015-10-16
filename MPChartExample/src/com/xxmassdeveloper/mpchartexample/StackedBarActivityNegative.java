@@ -209,7 +209,7 @@ public class StackedBarActivityNegative extends DemoBase implements
     @Override
     public void onNothingSelected() {
         // TODO Auto-generated method stub
-
+        Log.i("NOTING SELECTED", "");
     }
 
     private class CustomFormatter implements ValueFormatter, YAxisValueFormatter {

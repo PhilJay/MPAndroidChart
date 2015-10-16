@@ -373,24 +373,6 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
     }
 
     /**
-     * Perform a highlight operation.
-     * 
-     * @param e
-     */
-    private void performHighlight(MotionEvent e) {
-
-        Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
-
-        if (h == null || h.equalTo(mLastHighlighted)) {
-            mChart.highlightTouch(null);
-            mLastHighlighted = null;
-        } else {
-            mLastHighlighted = h;
-            mChart.highlightTouch(h);
-        }
-    }
-
-    /**
      * Highlights upon dragging, generates callbacks for the selection-listener.
      * 
      * @param e
@@ -554,7 +536,9 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
             return false;
         }
 
-        performHighlight(e);
+
+        Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
+        performHighlight(h, e);
 
         return super.onSingleTapUp(e);
     }

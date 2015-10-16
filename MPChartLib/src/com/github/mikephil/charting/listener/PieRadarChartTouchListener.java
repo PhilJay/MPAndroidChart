@@ -201,16 +201,7 @@ public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChart
                     mLastHighlighted = null;
                 } else {
                     Highlight h = new Highlight(index, dataSetIndex);
-
-                    if (h.equalTo(mLastHighlighted)) {
-
-                        mChart.highlightTouch(null);
-                        mLastHighlighted = null;
-                    } else {
-
-                        mChart.highlightTouch(h);
-                        mLastHighlighted = h;
-                    }
+                    performHighlight(h, e);
                 }
             }
         }
