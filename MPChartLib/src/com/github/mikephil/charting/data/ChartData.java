@@ -963,7 +963,8 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
     /**
      * Enables / disables highlighting values for all DataSets this data object
-     * contains.
+     * contains. If set to true, this means that values can
+     * be highlighted programmatically or by touch gesture.
      */
     public void setHighlightEnabled(boolean enabled) {
         for (DataSet<?> set : mDataSets) {
