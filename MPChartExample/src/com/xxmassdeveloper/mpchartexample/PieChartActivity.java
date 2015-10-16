@@ -85,7 +85,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart.setRotationAngle(0);
         // enable rotation of the chart by touch
         mChart.setRotationEnabled(true);
-        mChart.setHighLightPerTapEnabled(false);
+        mChart.setHighlightPerTapEnabled(true);
 
         // mChart.setUnit(" €");
         // mChart.setDrawUnitsInChart(true);

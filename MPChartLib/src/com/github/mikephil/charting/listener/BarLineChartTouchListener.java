@@ -532,7 +532,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
             l.onChartSingleTapped(e);
         }
 
-        if(!mChart.isHighLightPerTapEnabled()) {
+        if(!mChart.isHighlightPerTapEnabled()) {
             return false;
         }
 

@@ -495,11 +495,22 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         return mIndicesToHighlight;
     }
 
-    public boolean isHighLightPerTapEnabled() {
+    /**
+     * Returns true if values can be highlighted via tap gesture, false if not.
+     *
+     * @return
+     */
+    public boolean isHighlightPerTapEnabled() {
         return mHighLightPerTapEnabled;
     }
 
-    public void setHighLightPerTapEnabled(boolean enabled) {
+    /**
+     * Set this to false to prevent values from being highlighted by tap gesture.
+     * Values can still be highlighted via drag or programmatically. Default: true
+     *
+     * @param enabled
+     */
+    public void setHighlightPerTapEnabled(boolean enabled) {
         mHighLightPerTapEnabled = enabled;
     }
 

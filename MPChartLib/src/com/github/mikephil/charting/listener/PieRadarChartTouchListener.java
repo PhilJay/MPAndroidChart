@@ -147,7 +147,7 @@ public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChart
             l.onChartSingleTapped(e);
         }
 
-        if(!mChart.isHighLightPerTapEnabled()) {
+        if(!mChart.isHighlightPerTapEnabled()) {
             return false;
         }
 
