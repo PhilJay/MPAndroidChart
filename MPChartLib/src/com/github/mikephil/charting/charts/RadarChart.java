@@ -60,7 +60,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     /**
      * modulus that determines how many labels and web-lines are skipped before the next is drawn
      */
-    private int mSkipWebLineCount = 1;
+    private int mSkipWebLineCount = 0;
 
     /**
      * the object reprsenting the y-axis labels
