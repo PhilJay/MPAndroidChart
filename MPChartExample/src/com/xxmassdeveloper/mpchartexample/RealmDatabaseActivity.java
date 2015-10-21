@@ -10,7 +10,6 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.realm.RealmLineData;
 import com.github.mikephil.charting.data.realm.RealmLineDataSet;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -86,16 +85,16 @@ public class RealmDatabaseActivity extends DemoBase {
         RealmLineDataSet set1 = new RealmLineDataSet();
 
         // set the line to be drawn like this "- - - - - -"
-        set1.enableDashedLine(10f, 5f, 0f);
-        set1.enableDashedHighlightLine(10f, 5f, 0f);
-        set1.setColor(Color.BLACK);
-        set1.setCircleColor(Color.BLACK);
-        set1.setLineWidth(1f);
-        set1.setCircleSize(3f);
-        set1.setDrawCircleHole(false);
-        set1.setValueTextSize(9f);
-        set1.setFillAlpha(65);
-        set1.setFillColor(Color.BLACK);
+//        set1.enableDashedLine(10f, 5f, 0f);
+//        set1.enableDashedHighlightLine(10f, 5f, 0f);
+//        set1.setColor(Color.BLACK);
+//        set1.setCircleColor(Color.BLACK);
+//        set1.setLineWidth(1f);
+//        set1.setCircleSize(3f);
+//        set1.setDrawCircleHole(false);
+//        set1.setValueTextSize(9f);
+//        set1.setFillAlpha(65);
+//        set1.setFillColor(Color.BLACK);
 //        set1.setDrawFilled(true);
         // set1.setShader(new LinearGradient(0, 0, 0, mChart.getHeight(),
         // Color.BLACK, Color.WHITE, Shader.TileMode.MIRROR));

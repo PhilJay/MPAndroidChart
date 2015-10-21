@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by Philipp Jahoda on 21/10/15.
  */
-public interface IDataSet<T extends Entry> {
+public interface IDataSet<T extends Entry> extends IBaseDataSet<Entry> {
 
     /**
      * Returns the label string that describes the DataSet.
@@ -103,26 +103,6 @@ public interface IDataSet<T extends Entry> {
      * @param enabled
      */
     void setHighlightEnabled(boolean enabled);
-
-    /**
-     * Adds an Entry to the DataSet dynamically.
-     * Entries are added to the end of the list.
-     * This will also recalculate the current minimum and maximum
-     * values of the DataSet and the value-sum.
-     *
-     * @param e
-     */
-    void addEntry(T e);
-
-    /**
-     * Removes an Entry from the DataSets entries array. This will also
-     * recalculate the current minimum and maximum values of the DataSet and the
-     * value-sum. Returns true if an Entry was removed, false if no Entry could
-     * be removed.
-     *
-     * @param e
-     */
-    boolean removeEntry(T e);
 
     /**
      * If this component has no ValueFormatter or is only equipped with the

@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @author Philipp Jahoda
  */
-public abstract class ChartData<T extends IDataSet<Entry>> {
+public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
     /**
      * maximum y-value in the y-value array across all axes
