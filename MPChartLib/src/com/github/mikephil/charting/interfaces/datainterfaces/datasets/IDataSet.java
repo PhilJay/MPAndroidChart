@@ -39,13 +39,6 @@ public interface IDataSet<T extends Entry> {
     float getYMax();
 
     /**
-     * gets the sum of all y-values
-     *
-     * @return
-     */
-    float getYValueSum();
-
-    /**
      * returns the number of y-values this DataSet represents -> yvals.size()
      *
      * @return

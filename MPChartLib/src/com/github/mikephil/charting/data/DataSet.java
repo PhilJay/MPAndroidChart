@@ -36,11 +36,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     protected List<Integer> mColors = null;
 
     /**
-     * the total sum of all y-values
-     */
-    private float mYValueSum = 0f;
-
-    /**
      * label that describes the DataSet or the data the DataSet represents
      */
     private String mLabel = "DataSet";
@@ -107,7 +102,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         mColors.add(Color.rgb(140, 234, 255));
 
         calcMinMax(mYVals, mLastStart, mLastEnd);
-        calcYValueSum();
     }
 
     /**
@@ -115,21 +109,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
      */
     public void notifyDataSetChanged() {
         calcMinMax(mYVals, mLastStart, mLastEnd);
-        calcYValueSum();
-    }
-
-    /**
-     * calculates the sum of all y-values
-     */
-    private void calcYValueSum() {
-
-        mYValueSum = 0;
-
-        for (int i = 0; i < mYVals.size(); i++) {
-            Entry e = mYVals.get(i);
-            if (e != null)
-                mYValueSum += Math.abs(e.getVal());
-        }
     }
 
     /**
@@ -257,11 +236,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     @Override
     public List<T> getYVals() {
         return mYVals;
-    }
-
-    @Override
-    public float getYValueSum() {
-        return mYValueSum;
     }
 
     @Override
@@ -430,8 +404,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
                 mYMin = val;
         }
 
-        mYValueSum += val;
-
         // add the entry
         mYVals.add((T) e);
     }
@@ -466,8 +438,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
                 mYMin = val;
         }
 
-        mYValueSum += val;
-
         if (mYVals.size() > 0 && mYVals.get(mYVals.size() - 1).getXIndex() > e.getXIndex()) {
             int closestIndex = getEntryIndex(e.getXIndex());
             if (mYVals.get(closestIndex).getXIndex() < e.getXIndex())
@@ -496,10 +466,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         boolean removed = mYVals.remove(e);
 
         if (removed) {
-
-            float val = e.getVal();
-            mYValueSum -= val;
-
             calcMinMax(mYVals, mLastStart, mLastEnd);
         }
 
@@ -531,10 +497,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         boolean removed = entry != null;
 
         if (removed) {
-
-            float val = entry.getVal();
-            mYValueSum -= val;
-
             calcMinMax(mYVals, mLastStart, mLastEnd);
         }
 
@@ -557,10 +519,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         boolean removed = entry != null;
 
         if (removed) {
-
-            float val = entry.getVal();
-            mYValueSum -= val;
-
             calcMinMax(mYVals, mLastStart, mLastEnd);
         }
 
