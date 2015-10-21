@@ -44,6 +44,16 @@ public class LimitLine extends ComponentBase {
     }
 
     /**
+     * the drawable of the limit line icon
+     */
+    protected int mLimitLineIcon;
+
+    /**
+     * flag indicating whether the limit line icon should be drawn
+     */
+    private boolean mDrawLimitLineIcon;
+
+    /**
      * Constructor with limit.
      * 
      * @param limit - the position (the value) on the y-axis (y-value) or x-axis
@@ -211,5 +221,25 @@ public class LimitLine extends ComponentBase {
      */
     public String getLabel() {
         return mLabel;
+    }
+
+    public void setDrawLimitIconDrawable(boolean enabled)
+    {
+        mDrawLimitLineIcon = enabled;
+    }
+
+    public boolean isLimitLineIconEnabled()
+    {
+        return mDrawLimitLineIcon;
+    }
+
+    public void setLimitLineIconDrawable(int drawable)
+    {
+        mLimitLineIcon = drawable;
+    }
+
+    public int getLimitLineIconDrawable()
+    {
+        return mLimitLineIcon;
     }
 }

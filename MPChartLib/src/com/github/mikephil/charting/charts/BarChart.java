@@ -59,7 +59,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 		super.init();
 
 		mRenderer = new BarChartRenderer(this, mAnimator, mViewPortHandler);
-		mXAxisRenderer = new XAxisRendererBarChart(mViewPortHandler, mXAxis, mLeftAxisTransformer, this);
+		mXAxisRenderer = new XAxisRendererBarChart(mViewPortHandler, mXAxis, mLeftAxisTransformer, this, getContext());
 
 		mHighlighter = new BarHighlighter(this);
 

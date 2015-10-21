@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.renderer;
 
+import android.content.Context;
 import android.graphics.Canvas;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -15,8 +16,8 @@ public class XAxisRendererBarChart extends XAxisRenderer {
     protected BarChart mChart;
 
     public XAxisRendererBarChart(ViewPortHandler viewPortHandler, XAxis xAxis, Transformer trans,
-            BarChart chart) {
-        super(viewPortHandler, xAxis, trans);
+            BarChart chart, Context context) {
+        super(viewPortHandler, xAxis, trans, context);
 
         this.mChart = chart;
     }
