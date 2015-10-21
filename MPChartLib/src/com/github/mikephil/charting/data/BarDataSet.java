@@ -100,8 +100,9 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> {
     }
 
     @Override
-    protected void calcMinMax(int start, int end) {
-        final int yValCount = mYVals.size();
+    public void calcMinMax(List<BarEntry> values, int start, int end) {
+
+        final int yValCount = values.size();
 
         if (yValCount == 0)
             return;
@@ -121,7 +122,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> {
 
         for (int i = start; i <= endValue; i++) {
 
-            BarEntry e = mYVals.get(i);
+            BarEntry e = values.get(i);
 
             if (e != null && !Float.isNaN(e.getVal())) {
 

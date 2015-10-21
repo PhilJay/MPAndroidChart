@@ -1,6 +1,8 @@
 
 package com.github.mikephil.charting.data;
 
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IBarDataSet;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +11,7 @@ import java.util.List;
  * 
  * @author Philipp Jahoda
  */
-public class BarData extends BarLineScatterCandleBubbleData<BarDataSet> {
+public class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
 
     /** the space that is left between groups of bars */
     private float mGroupSpace = 0.8f;
@@ -31,24 +33,24 @@ public class BarData extends BarLineScatterCandleBubbleData<BarDataSet> {
         super(xVals);
     }
 
-    public BarData(List<String> xVals, List<BarDataSet> dataSets) {
+    public BarData(List<String> xVals, List<IBarDataSet> dataSets) {
         super(xVals, dataSets);
     }
 
-    public BarData(String[] xVals, List<BarDataSet> dataSets) {
+    public BarData(String[] xVals, List<IBarDataSet> dataSets) {
         super(xVals, dataSets);
     }
 
-    public BarData(List<String> xVals, BarDataSet dataSet) {
+    public BarData(List<String> xVals, IBarDataSet dataSet) {
         super(xVals, toList(dataSet));
     }
 
-    public BarData(String[] xVals, BarDataSet dataSet) {
+    public BarData(String[] xVals, IBarDataSet dataSet) {
         super(xVals, toList(dataSet));
     }
 
-    private static List<BarDataSet> toList(BarDataSet dataSet) {
-        List<BarDataSet> sets = new ArrayList<BarDataSet>();
+    private static List<IBarDataSet> toList(IBarDataSet dataSet) {
+        List<IBarDataSet> sets = new ArrayList<IBarDataSet>();
         sets.add(dataSet);
         return sets;
     }

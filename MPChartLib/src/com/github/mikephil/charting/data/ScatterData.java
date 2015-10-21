@@ -1,10 +1,12 @@
 
 package com.github.mikephil.charting.data;
 
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IScatterDataSet;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScatterData extends BarLineScatterCandleBubbleData<ScatterDataSet> {
+public class ScatterData extends BarLineScatterCandleBubbleData<IScatterDataSet> {
 
     public ScatterData() {
         super();
@@ -18,24 +20,24 @@ public class ScatterData extends BarLineScatterCandleBubbleData<ScatterDataSet> 
         super(xVals);
     }
 
-    public ScatterData(List<String> xVals, List<ScatterDataSet> dataSets) {
+    public ScatterData(List<String> xVals, List<IScatterDataSet> dataSets) {
         super(xVals, dataSets);
     }
 
-    public ScatterData(String[] xVals, List<ScatterDataSet> dataSets) {
+    public ScatterData(String[] xVals, List<IScatterDataSet> dataSets) {
         super(xVals, dataSets);
     }
 
-    public ScatterData(List<String> xVals, ScatterDataSet dataSet) {
+    public ScatterData(List<String> xVals, IScatterDataSet dataSet) {
         super(xVals, toList(dataSet));
     }
 
-    public ScatterData(String[] xVals, ScatterDataSet dataSet) {
+    public ScatterData(String[] xVals, IScatterDataSet dataSet) {
         super(xVals, toList(dataSet));
     }
 
-    private static List<ScatterDataSet> toList(ScatterDataSet dataSet) {
-        List<ScatterDataSet> sets = new ArrayList<ScatterDataSet>();
+    private static List<IScatterDataSet> toList(IScatterDataSet dataSet) {
+        List<IScatterDataSet> sets = new ArrayList<IScatterDataSet>();
         sets.add(dataSet);
         return sets;
     }
@@ -49,7 +51,7 @@ public class ScatterData extends BarLineScatterCandleBubbleData<ScatterDataSet> 
 
         float max = 0f;
 
-        for (ScatterDataSet set : mDataSets) {
+        for (IScatterDataSet set : mDataSets) {
             float size = set.getScatterShapeSize();
 
             if (size > max)

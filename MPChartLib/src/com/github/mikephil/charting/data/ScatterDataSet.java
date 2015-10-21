@@ -4,12 +4,13 @@ package com.github.mikephil.charting.data;
 import android.graphics.Path;
 
 import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> {
+public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> implements IScatterDataSet {
 
     /** the size the scattershape will have, in screen pixels */
     private float mShapeSize = 15f;
@@ -61,11 +62,7 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> {
         mShapeSize = Utils.convertDpToPixel(size);
     }
 
-    /**
-     * returns the currently set scatter shape size
-     * 
-     * @return
-     */
+    @Override
     public float getScatterShapeSize() {
         return mShapeSize;
     }

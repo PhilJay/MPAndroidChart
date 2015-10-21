@@ -3,6 +3,7 @@ package com.github.mikephil.charting.data;
 
 import android.graphics.Paint;
 
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.ICandleDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
 
@@ -14,7 +15,7 @@ import java.util.List;
  * 
  * @author Philipp Jahoda
  */
-public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> {
+public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> implements ICandleDataSet {
 
     /** the width of the shadow of the candle */
     private float mShadowWidth = 3f;
@@ -69,18 +70,16 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> {
     }
 
     @Override
-    protected void calcMinMax(int start, int end) {
+    public void calcMinMax(List<CandleEntry> values, int start, int end) {
         // super.calcMinMax();
 
-        if (mYVals.size() == 0)
+        if (values.size() == 0)
             return;
-
-        List<CandleEntry> entries = mYVals;
 
         int endValue;
 
-        if (end == 0 || end >= mYVals.size())
-            endValue = mYVals.size() - 1;
+        if (end == 0 || end >= values.size())
+            endValue = values.size() - 1;
         else
             endValue = end;
 
@@ -92,7 +91,7 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> {
 
         for (int i = start; i <= endValue; i++) {
 
-            CandleEntry e = entries.get(i);
+            CandleEntry e = values.get(i);
 
             if (e.getLow() < mYMin)
                 mYMin = e.getLow();

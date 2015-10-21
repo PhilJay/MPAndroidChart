@@ -3,12 +3,14 @@ package com.github.mikephil.charting.data;
 
 import android.graphics.Color;
 
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IBarLineScatterCandleBubbleDataSet;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IBubbleDataSet;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry> {
+public class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry> implements IBubbleDataSet {
 
     // NOTE: Do not initialize these, as the calcMinMax is called by the super,
     // and the initializers are called after that and can reset the values
@@ -22,12 +24,7 @@ public class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry
         super(yVals, label);
     }
 
-    /**
-     * Sets the width of the circle that surrounds the bubble when highlighted,
-     * in dp.
-     * 
-     * @param width
-     */
+    @Override
     public void setHighlightCircleWidth(float width) {
         mHighlightCircleWidth = Utils.convertDpToPixel(width);
     }
@@ -46,30 +43,28 @@ public class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry
     }
 
     @Override
-    protected void calcMinMax(int start, int end) {
-        if (mYVals.size() == 0)
+    public void calcMinMax(List<BubbleEntry> values, int start, int end) {
+        if (values.size() == 0)
             return;
-
-        final List<BubbleEntry> entries = getYVals();
 
         int endValue;
 
         if (end == 0)
-            endValue = mYVals.size() - 1;
+            endValue = values.size() - 1;
         else
             endValue = end;
 
         mLastStart = start;
         mLastEnd = endValue;
 
-        mYMin = yMin(entries.get(start));
-        mYMax = yMax(entries.get(start));
+        mYMin = yMin(values.get(start));
+        mYMax = yMax(values.get(start));
 
         // need chart width to guess this properly
 
         for (int i = start; i <= endValue; i++) {
 
-            final BubbleEntry entry = entries.get(i);
+            final BubbleEntry entry = values.get(i);
             
             final float ymin = yMin(entry);
             final float ymax = yMax(entry);
