@@ -1,6 +1,8 @@
 
 package com.github.mikephil.charting.data;
 
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.ILineDataSet;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +11,7 @@ import java.util.List;
  * 
  * @author Philipp Jahoda
  */
-public class LineData extends BarLineScatterCandleBubbleData<LineDataSet> {
+public class LineData extends BarLineScatterCandleBubbleData<ILineDataSet> {
 
     public LineData() {
         super();
@@ -23,24 +25,24 @@ public class LineData extends BarLineScatterCandleBubbleData<LineDataSet> {
         super(xVals);
     }
 
-    public LineData(List<String> xVals, List<LineDataSet> dataSets) {
+    public LineData(List<String> xVals, List<ILineDataSet> dataSets) {
         super(xVals, dataSets);
     }
 
-    public LineData(String[] xVals, List<LineDataSet> dataSets) {
+    public LineData(String[] xVals, List<ILineDataSet> dataSets) {
         super(xVals, dataSets);
     }
 
-    public LineData(List<String> xVals, LineDataSet dataSet) {
+    public LineData(List<String> xVals, ILineDataSet dataSet) {
         super(xVals, toList(dataSet));
     }
 
-    public LineData(String[] xVals, LineDataSet dataSet) {
+    public LineData(String[] xVals, ILineDataSet dataSet) {
         super(xVals, toList(dataSet));
     }
 
-    private static List<LineDataSet> toList(LineDataSet dataSet) {
-        List<LineDataSet> sets = new ArrayList<LineDataSet>();
+    private static List<ILineDataSet> toList(ILineDataSet dataSet) {
+        List<ILineDataSet> sets = new ArrayList<ILineDataSet>();
         sets.add(dataSet);
         return sets;
     }

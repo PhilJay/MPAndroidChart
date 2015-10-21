@@ -9,6 +9,7 @@ import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.realm.RealmLineData;
 import com.github.mikephil.charting.data.realm.RealmLineDataSet;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -103,7 +104,7 @@ public class RealmDatabaseActivity extends DemoBase {
         dataSets.add(set1); // add the datasets
 
         // create a data object with the datasets
-        RealmLineData data = new RealmLineData();
+        LineData data = new LineData(null, dataSets);
 
         // set data
         mChart.setData(data);

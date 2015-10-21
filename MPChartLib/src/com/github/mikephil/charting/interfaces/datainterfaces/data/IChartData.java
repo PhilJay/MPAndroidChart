@@ -2,13 +2,14 @@ package com.github.mikephil.charting.interfaces.datainterfaces.data;
 
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IDataSet;
 
 import java.util.List;
 
 /**
  * Created by Philipp Jahoda on 21/10/15.
  */
-public interface IChartData<T extends DataSet<? extends Entry>> {
+public interface IChartData<T extends IDataSet<? extends Entry>> {
 
     /**
      * Returns an the array of DataSets this object holds.

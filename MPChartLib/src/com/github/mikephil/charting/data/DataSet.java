@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.utils.Utils;
@@ -22,12 +23,7 @@ import java.util.List;
  *
  * @author Philipp Jahoda
  */
-public abstract class DataSet<T extends Entry> {
-
-    /**
-     * List representing all colors that are used for this DataSet
-     */
-    protected List<Integer> mColors = null;
+public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
     /**
      * the entries that this dataset represents / holds together
@@ -35,29 +31,14 @@ public abstract class DataSet<T extends Entry> {
     protected List<T> mYVals = null;
 
     /**
-     * maximum y-value in the y-value array
+     * List representing all colors that are used for this DataSet
      */
-    protected float mYMax = 0.0f;
-
-    /**
-     * the minimum y-value in the y-value array
-     */
-    protected float mYMin = 0.0f;
+    protected List<Integer> mColors = null;
 
     /**
      * the total sum of all y-values
      */
     private float mYValueSum = 0f;
-
-    /**
-     * the last start value used for calcMinMax
-     */
-    protected int mLastStart = 0;
-
-    /**
-     * the last end value used for calcMinMax
-     */
-    protected int mLastEnd = 0;
 
     /**
      * label that describes the DataSet or the data the DataSet represents
@@ -125,7 +106,7 @@ public abstract class DataSet<T extends Entry> {
         // default color
         mColors.add(Color.rgb(140, 234, 255));
 
-        calcMinMax(mLastStart, mLastEnd);
+        calcMinMax(mYVals, mLastStart, mLastEnd);
         calcYValueSum();
     }
 
@@ -133,50 +114,8 @@ public abstract class DataSet<T extends Entry> {
      * Use this method to tell the data set that the underlying data has changed
      */
     public void notifyDataSetChanged() {
-        calcMinMax(mLastStart, mLastEnd);
+        calcMinMax(mYVals, mLastStart, mLastEnd);
         calcYValueSum();
-    }
-
-    /**
-     * calc minimum and maximum y value
-     */
-    protected void calcMinMax(int start, int end) {
-        final int yValCount = mYVals.size();
-
-        if (yValCount == 0)
-            return;
-
-        int endValue;
-
-        if (end == 0 || end >= yValCount)
-            endValue = yValCount - 1;
-        else
-            endValue = end;
-
-        mLastStart = start;
-        mLastEnd = endValue;
-
-        mYMin = Float.MAX_VALUE;
-        mYMax = -Float.MAX_VALUE;
-
-        for (int i = start; i <= endValue; i++) {
-
-            Entry e = mYVals.get(i);
-
-            if (e != null && !Float.isNaN(e.getVal())) {
-
-                if (e.getVal() < mYMin)
-                    mYMin = e.getVal();
-
-                if (e.getVal() > mYMax)
-                    mYMax = e.getVal();
-            }
-        }
-
-        if (mYMin == Float.MAX_VALUE) {
-            mYMin = 0.f;
-            mYMax = 0.f;
-        }
     }
 
     /**
@@ -202,11 +141,7 @@ public abstract class DataSet<T extends Entry> {
         return (float) getYValueSum() / (float) getValueCount();
     }
 
-    /**
-     * returns the number of y-values this DataSet represents
-     *
-     * @return
-     */
+    @Override
     public int getEntryCount() {
         return mYVals.size();
     }
@@ -230,16 +165,7 @@ public abstract class DataSet<T extends Entry> {
             return Float.NaN;
     }
 
-    /**
-     * Returns the first Entry object found at the given xIndex with binary
-     * search. If the no Entry at the specified x-index is found, this method
-     * returns the index at the closest x-index. Returns null if no Entry object
-     * at that index. INFORMATION: This method does calculations at runtime. Do
-     * not over-use in performance critical situations.
-     *
-     * @param x
-     * @return
-     */
+    @Override
     public T getEntryForXIndex(int x) {
 
         int index = getEntryIndex(x);
@@ -328,38 +254,22 @@ public abstract class DataSet<T extends Entry> {
         return entries;
     }
 
-    /**
-     * returns the DataSets Entry array
-     *
-     * @return
-     */
+    @Override
     public List<T> getYVals() {
         return mYVals;
     }
 
-    /**
-     * gets the sum of all y-values
-     *
-     * @return
-     */
+    @Override
     public float getYValueSum() {
         return mYValueSum;
     }
 
-    /**
-     * returns the minimum y-value this DataSet holds
-     *
-     * @return
-     */
+    @Override
     public float getYMin() {
         return mYMin;
     }
 
-    /**
-     * returns the maximum y-value this DataSet holds
-     *
-     * @return
-     */
+    @Override
     public float getYMax() {
         return mYMax;
     }
@@ -430,11 +340,7 @@ public abstract class DataSet<T extends Entry> {
         mLabel = label;
     }
 
-    /**
-     * Returns the label string that describes the DataSet.
-     *
-     * @return
-     */
+    @Override
     public String getLabel() {
         return mLabel;
     }
@@ -459,11 +365,7 @@ public abstract class DataSet<T extends Entry> {
         return mVisible;
     }
 
-    /**
-     * Returns the axis this DataSet should be plotted against.
-     *
-     * @return
-     */
+    @Override
     public AxisDependency getAxisDependency() {
         return mAxisDependency;
     }
@@ -598,7 +500,7 @@ public abstract class DataSet<T extends Entry> {
             float val = e.getVal();
             mYValueSum -= val;
 
-            calcMinMax(mLastStart, mLastEnd);
+            calcMinMax(mYVals, mLastStart, mLastEnd);
         }
 
         return removed;
@@ -633,7 +535,7 @@ public abstract class DataSet<T extends Entry> {
             float val = entry.getVal();
             mYValueSum -= val;
 
-            calcMinMax(mLastStart, mLastEnd);
+            calcMinMax(mYVals, mLastStart, mLastEnd);
         }
 
         return removed;
@@ -659,7 +561,7 @@ public abstract class DataSet<T extends Entry> {
             float val = entry.getVal();
             mYValueSum -= val;
 
-            calcMinMax(mLastStart, mLastEnd);
+            calcMinMax(mYVals, mLastStart, mLastEnd);
         }
 
         return removed;
@@ -736,11 +638,7 @@ public abstract class DataSet<T extends Entry> {
         mColors.add(color);
     }
 
-    /**
-     * returns all the colors that are set for this DataSet
-     *
-     * @return
-     */
+    @Override
     public List<Integer> getColors() {
         return mColors;
     }
@@ -783,11 +681,7 @@ public abstract class DataSet<T extends Entry> {
         mHighlightEnabled = enabled;
     }
 
-    /**
-     * returns true if highlighting of values is enabled, false if not
-     *
-     * @return
-     */
+    @Override
     public boolean isHighlightEnabled() {
         return mHighlightEnabled;
     }
@@ -896,14 +790,7 @@ public abstract class DataSet<T extends Entry> {
         return mValueTextSize;
     }
 
-    /**
-     * Checks if this DataSet contains the specified Entry. Returns true if so,
-     * false if not. NOTE: Performance is pretty bad on this one, do not
-     * over-use in performance critical situations.
-     *
-     * @param e
-     * @return
-     */
+    @Override
     public boolean contains(Entry e) {
 
         for (Entry entry : mYVals) {

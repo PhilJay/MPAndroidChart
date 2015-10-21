@@ -8,6 +8,7 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datainterfaces.data.IChartData;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IDataSet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +20,7 @@ import java.util.List;
  *
  * @author Philipp Jahoda
  */
-public abstract class ChartData<T extends DataSet<? extends Entry>> implements IChartData<T> {
+public abstract class ChartData<T extends IDataSet<? extends Entry>> implements IChartData<T> {
 
     /**
      * maximum y-value in the y-value array across all axes
@@ -249,7 +250,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> implements I
                 mLeftAxisMax = firstLeft.getYMax();
                 mLeftAxisMin = firstLeft.getYMin();
 
-                for (DataSet<?> dataSet : mDataSets) {
+                for (IDataSet dataSet : mDataSets) {
                     if (dataSet.getAxisDependency() == AxisDependency.LEFT) {
                         if (dataSet.getYMin() < mLeftAxisMin)
                             mLeftAxisMin = dataSet.getYMin();
@@ -268,7 +269,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> implements I
                 mRightAxisMax = firstRight.getYMax();
                 mRightAxisMin = firstRight.getYMin();
 
-                for (DataSet<?> dataSet : mDataSets) {
+                for (IDataSet dataSet : mDataSets) {
                     if (dataSet.getAxisDependency() == AxisDependency.RIGHT) {
                         if (dataSet.getYMin() < mRightAxisMin)
                             mRightAxisMin = dataSet.getYMin();
@@ -887,7 +888,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> implements I
         if (f == null)
             return;
         else {
-            for (DataSet<?> set : mDataSets) {
+            for (IDataSet<?> set : mDataSets) {
                 set.setValueFormatter(f);
             }
         }
@@ -900,7 +901,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> implements I
      * @param color
      */
     public void setValueTextColor(int color) {
-        for (DataSet<?> set : mDataSets) {
+        for (IDataSet<?> set : mDataSets) {
             set.setValueTextColor(color);
         }
     }
@@ -912,7 +913,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> implements I
      * @param tf
      */
     public void setValueTypeface(Typeface tf) {
-        for (DataSet<?> set : mDataSets) {
+        for (IDataSet<?> set : mDataSets) {
             set.setValueTypeface(tf);
         }
     }
@@ -924,7 +925,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> implements I
      * @param size
      */
     public void setValueTextSize(float size) {
-        for (DataSet<?> set : mDataSets) {
+        for (IDataSet<?> set : mDataSets) {
             set.setValueTextSize(size);
         }
     }
@@ -936,7 +937,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> implements I
      * @param enabled
      */
     public void setDrawValues(boolean enabled) {
-        for (DataSet<?> set : mDataSets) {
+        for (IDataSet<?> set : mDataSets) {
             set.setDrawValues(enabled);
         }
     }
@@ -947,7 +948,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> implements I
      * be highlighted programmatically or by touch gesture.
      */
     public void setHighlightEnabled(boolean enabled) {
-        for (DataSet<?> set : mDataSets) {
+        for (IDataSet<?> set : mDataSets) {
             set.setHighlightEnabled(enabled);
         }
     }
@@ -959,7 +960,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> implements I
      * @return
      */
     public boolean isHighlightEnabled() {
-        for (DataSet<?> set : mDataSets) {
+        for (IDataSet<?> set : mDataSets) {
             if (!set.isHighlightEnabled())
                 return false;
         }
