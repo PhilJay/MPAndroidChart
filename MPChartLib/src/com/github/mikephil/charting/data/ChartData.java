@@ -8,6 +8,7 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datainterfaces.data.IChartData;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IBaseDataSet;
 import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IDataSet;
 
 import java.util.ArrayList;
@@ -622,7 +623,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         if (mDataSets.size() > dataSetIndex && dataSetIndex >= 0) {
 
             float val = e.getVal();
-            T set = mDataSets.get(dataSetIndex);
+            IDataSet set = mDataSets.get(dataSetIndex);
 
             if (mYValCount == 0) {
                 mYMin = val;
@@ -680,16 +681,21 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         if (e == null || dataSetIndex >= mDataSets.size())
             return false;
 
-        // remove the entry from the dataset
-        boolean removed = mDataSets.get(dataSetIndex).removeEntry(e);
+        IDataSet set = mDataSets.get(dataSetIndex);
 
-        if (removed) {
-            mYValCount -= 1;
+        if(set != null) {
+            // remove the entry from the dataset
+            boolean removed = set.removeEntry(e);
 
-            calcMinMax(mLastStart, mLastEnd);
-        }
+            if (removed) {
+                mYValCount -= 1;
 
-        return removed;
+                calcMinMax(mLastStart, mLastEnd);
+            }
+
+            return removed;
+        } else
+            return false;
     }
 
     /**
@@ -706,7 +712,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         if (dataSetIndex >= mDataSets.size())
             return false;
 
-        T dataSet = mDataSets.get(dataSetIndex);
+        IDataSet dataSet = mDataSets.get(dataSetIndex);
         Entry e = dataSet.getEntryForXIndex(xIndex);
 
         if (e == null || e.getXIndex() != xIndex)
