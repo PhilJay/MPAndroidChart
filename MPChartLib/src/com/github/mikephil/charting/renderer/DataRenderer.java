@@ -11,6 +11,7 @@ import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -100,7 +101,7 @@ public abstract class DataRenderer extends Renderer {
      *
      * @param set
      */
-    protected void applyValueTextStyle(DataSet<?> set) {
+    protected void applyValueTextStyle(IDataSet<?> set) {
 
         mValuePaint.setColor(set.getValueTextColor());
         mValuePaint.setTypeface(set.getValueTypeface());

@@ -35,11 +35,6 @@ public class RealmLineDataSet extends BaseDataSet<Entry> implements ILineDataSet
     }
 
     @Override
-    public float getYValueSum() {
-        return 0;
-    }
-
-    @Override
     public int getEntryCount() {
         return 0;
     }

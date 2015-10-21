@@ -34,6 +34,7 @@ import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.ChartHighlighter;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
@@ -59,7 +60,7 @@ import java.util.List;
  * @author Philipp Jahoda
  */
 @SuppressLint("NewApi")
-public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entry>>> extends
+public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Entry>>> extends
         ViewGroup
         implements ChartInterface {
 
@@ -316,7 +317,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         // calculate how many digits are needed
         calculateFormatter(data.getYMin(), data.getYMax());
 
-        for (DataSet<?> set : mData.getDataSets()) {
+        for (IDataSet set : mData.getDataSets()) {
             if (set.needsDefaultFormatter())
                 set.setValueFormatter(mDefaultFormatter);
         }
@@ -1398,7 +1399,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         for (int i = 0; i < mData.getDataSetCount(); i++) {
 
-            DataSet<? extends Entry> set = mData.getDataSetByIndex(i);
+            IDataSet set = mData.getDataSetByIndex(i);
 
             Entry e = set.getEntryForXIndex(xIndex);
 
@@ -1417,16 +1418,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public T getData() {
         return mData;
-    }
-
-    /**
-     * returns the percentage the given value has of the total y-value sum
-     *
-     * @param val
-     * @return
-     */
-    public float getPercentOfTotal(float val) {
-        return val / mData.getYValueSum() * 100f;
     }
 
     /**

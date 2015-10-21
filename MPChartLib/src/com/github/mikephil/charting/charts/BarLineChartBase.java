@@ -25,6 +25,7 @@ import com.github.mikephil.charting.data.BarLineScatterCandleBubbleDataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.highlight.ChartHighlighter;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IBarLineScatterCandleBubbleDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider;
 import com.github.mikephil.charting.jobs.MoveViewJob;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
@@ -42,7 +43,7 @@ import com.github.mikephil.charting.utils.Utils;
  * @author Philipp Jahoda
  */
 @SuppressLint("RtlHardcoded")
-public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<? extends BarLineScatterCandleBubbleDataSet<? extends Entry>>>
+public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<? extends IBarLineScatterCandleBubbleDataSet<? extends Entry>>>
         extends Chart<T> implements BarLineScatterCandleBubbleDataProvider {
 
     /**
@@ -1237,7 +1238,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param y
      * @return
      */
-    public BarLineScatterCandleBubbleDataSet<? extends Entry> getDataSetByTouchPoint(float x, float y) {
+    public IBarLineScatterCandleBubbleDataSet getDataSetByTouchPoint(float x, float y) {
         Highlight h = getHighlightByTouchPoint(x, y);
         if (h != null) {
             return mData.getDataSetByIndex(h.getDataSetIndex());

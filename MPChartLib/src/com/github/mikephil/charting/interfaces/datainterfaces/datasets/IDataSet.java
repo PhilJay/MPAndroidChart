@@ -1,7 +1,10 @@
 package com.github.mikephil.charting.interfaces.datainterfaces.datasets;
 
+import android.graphics.Typeface;
+
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.util.List;
 
@@ -60,6 +63,11 @@ public interface IDataSet<T extends Entry> {
     List<Integer> getColors();
 
     /**
+     * calc minimum and maximum y value
+     */
+    void calcMinMax(List<T> values, int start, int end);
+
+    /**
      * Returns the first Entry object found at the given xIndex with binary
      * search. If the no Entry at the specified x-index is found, this method
      * returns the index at the closest x-index. Returns null if no Entry object
@@ -87,4 +95,81 @@ public interface IDataSet<T extends Entry> {
      * @return
      */
     boolean isHighlightEnabled();
+
+    /**
+     * If set to true, value highlighting is enabled which means that values can
+     * be highlighted programmatically or by touch gesture.
+     *
+     * @param enabled
+     */
+    void setHighlightEnabled(boolean enabled);
+
+    /**
+     * Adds an Entry to the DataSet dynamically.
+     * Entries are added to the end of the list.
+     * This will also recalculate the current minimum and maximum
+     * values of the DataSet and the value-sum.
+     *
+     * @param e
+     */
+    void addEntry(T e);
+
+    /**
+     * Removes an Entry from the DataSets entries array. This will also
+     * recalculate the current minimum and maximum values of the DataSet and the
+     * value-sum. Returns true if an Entry was removed, false if no Entry could
+     * be removed.
+     *
+     * @param e
+     */
+    boolean removeEntry(T e);
+
+    /**
+     * If this component has no ValueFormatter or is only equipped with the
+     * default one (no custom set), return true.
+     *
+     * @return
+     */
+    boolean needsDefaultFormatter();
+
+    /**
+     * Sets the formatter to be used for drawing the values inside the chart. If
+     * no formatter is set, the chart will automatically determine a reasonable
+     * formatting (concerning decimals) for all the values that are drawn inside
+     * the chart. Use chart.getDefaultValueFormatter() to use the formatter
+     * calculated by the chart.
+     *
+     * @param f
+     */
+    void setValueFormatter(ValueFormatter f);
+
+    /**
+     * Sets the color the value-labels of this DataSet should have.
+     *
+     * @param color
+     */
+    void setValueTextColor(int color);
+
+    /**
+     * Sets a Typeface for the value-labels of this DataSet.
+     *
+     * @param tf
+     */
+    void setValueTypeface(Typeface tf);
+
+    /**
+     * Sets the text-size of the value-labels of this DataSet in dp.
+     *
+     * @param size
+     */
+    void setValueTextSize(float size);
+
+    /**
+     * set this to true to draw y-values on the chart NOTE (for bar and
+     * linechart): if "maxvisiblecount" is reached, no values will be drawn even
+     * if this is enabled
+     *
+     * @param enabled
+     */
+    void setDrawValues(boolean enabled);
 }

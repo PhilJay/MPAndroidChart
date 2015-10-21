@@ -46,39 +46,10 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     private boolean mVisible = true;
 
     /**
-     * if true, y-values are drawn on the chart
-     */
-    protected boolean mDrawValues = true;
-
-    /**
-     * the color used for the value-text
-     */
-    private int mValueColor = Color.BLACK;
-
-    /**
-     * the size of the value-text labels
-     */
-    private float mValueTextSize = 17f;
-
-    /**
-     * the typeface used for the value text
-     */
-    private Typeface mValueTypeface;
-
-    /**
-     * custom formatter that is used instead of the auto-formatter if set
-     */
-    protected transient ValueFormatter mValueFormatter;
-
-    /**
      * this specifies which axis this DataSet should be plotted against
      */
     protected AxisDependency mAxisDependency = AxisDependency.LEFT;
 
-    /**
-     * if true, value highlightning is enabled
-     */
-    protected boolean mHighlightEnabled = true;
 
     /**
      * Creates a new DataSet object with the given values it represents. Also, a
@@ -109,15 +80,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
      */
     public void notifyDataSetChanged() {
         calcMinMax(mYVals, mLastStart, mLastEnd);
-    }
-
-    /**
-     * Returns the average value across all entries in this DataSet.
-     *
-     * @return
-     */
-    public float getAverage() {
-        return (float) getYValueSum() / (float) getValueCount();
     }
 
     @Override
@@ -355,57 +317,12 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     /**
-     * set this to true to draw y-values on the chart NOTE (for bar and
-     * linechart): if "maxvisiblecount" is reached, no values will be drawn even
-     * if this is enabled
-     *
-     * @param enabled
-     */
-    public void setDrawValues(boolean enabled) {
-        this.mDrawValues = enabled;
-    }
-
-    /**
      * returns true if y-value drawing is enabled, false if not
      *
      * @return
      */
     public boolean isDrawValuesEnabled() {
         return mDrawValues;
-    }
-
-    /**
-     * Adds an Entry to the DataSet dynamically.
-     * Entries are added to the end of the list.
-     * This will also recalculate the current minimum and maximum
-     * values of the DataSet and the value-sum.
-     *
-     * @param e
-     */
-    @SuppressWarnings("unchecked")
-    public void addEntry(Entry e) {
-
-        if (e == null)
-            return;
-
-        float val = e.getVal();
-
-        if (mYVals == null) {
-            mYVals = new ArrayList<T>();
-        }
-
-        if (mYVals.size() == 0) {
-            mYMax = val;
-            mYMin = val;
-        } else {
-            if (mYMax < val)
-                mYMax = val;
-            if (mYMin > val)
-                mYMin = val;
-        }
-
-        // add the entry
-        mYVals.add((T) e);
     }
 
     /**
@@ -447,41 +364,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         }
 
         mYVals.add((T) e);
-    }
-
-    /**
-     * Removes an Entry from the DataSets entries array. This will also
-     * recalculate the current minimum and maximum values of the DataSet and the
-     * value-sum. Returns true if an Entry was removed, false if no Entry could
-     * be removed.
-     *
-     * @param e
-     */
-    public boolean removeEntry(T e) {
-
-        if (e == null)
-            return false;
-
-        // remove the entry
-        boolean removed = mYVals.remove(e);
-
-        if (removed) {
-            calcMinMax(mYVals, mLastStart, mLastEnd);
-        }
-
-        return removed;
-    }
-
-    /**
-     * Removes the Entry object that has the given xIndex from the DataSet.
-     * Returns true if an Entry was removed, false if no Entry could be removed.
-     *
-     * @param xIndex
-     */
-    public boolean removeEntry(int xIndex) {
-
-        T e = getEntryForXIndex(xIndex);
-        return removeEntry(e);
     }
 
     /**
@@ -630,21 +512,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     /**
-     * If set to true, value highlighting is enabled which means that values can
-     * be highlighted programmatically or by touch gesture.
-     *
-     * @param enabled
-     */
-    public void setHighlightEnabled(boolean enabled) {
-        mHighlightEnabled = enabled;
-    }
-
-    @Override
-    public boolean isHighlightEnabled() {
-        return mHighlightEnabled;
-    }
-
-    /**
      * Returns the position of the provided entry in the DataSets Entry array.
      * Returns -1 if doesn't exist.
      *
@@ -662,23 +529,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     /**
-     * Sets the formatter to be used for drawing the values inside the chart. If
-     * no formatter is set, the chart will automatically determine a reasonable
-     * formatting (concerning decimals) for all the values that are drawn inside
-     * the chart. Use chart.getDefaultValueFormatter() to use the formatter
-     * calculated by the chart.
-     *
-     * @param f
-     */
-    public void setValueFormatter(ValueFormatter f) {
-
-        if (f == null)
-            return;
-        else
-            mValueFormatter = f;
-    }
-
-    /**
      * Returns the formatter used for drawing the values inside the chart.
      *
      * @return
@@ -689,54 +539,12 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         return mValueFormatter;
     }
 
-    /**
-     * If this component has no ValueFormatter or is only equipped with the
-     * default one (no custom set), return true.
-     *
-     * @return
-     */
-    public boolean needsDefaultFormatter() {
-        if (mValueFormatter == null)
-            return true;
-        if (mValueFormatter instanceof DefaultValueFormatter)
-            return true;
-
-        return false;
-    }
-
-    /**
-     * Sets the color the value-labels of this DataSet should have.
-     *
-     * @param color
-     */
-    public void setValueTextColor(int color) {
-        mValueColor = color;
-    }
-
     public int getValueTextColor() {
         return mValueColor;
     }
 
-    /**
-     * Sets a Typeface for the value-labels of this DataSet.
-     *
-     * @param tf
-     */
-    public void setValueTypeface(Typeface tf) {
-        mValueTypeface = tf;
-    }
-
     public Typeface getValueTypeface() {
         return mValueTypeface;
-    }
-
-    /**
-     * Sets the text-size of the value-labels of this DataSet in dp.
-     *
-     * @param size
-     */
-    public void setValueTextSize(float size) {
-        mValueTextSize = Utils.convertDpToPixel(size);
     }
 
     /**

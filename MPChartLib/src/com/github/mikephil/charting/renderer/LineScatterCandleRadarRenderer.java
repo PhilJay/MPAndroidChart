@@ -5,6 +5,7 @@ import android.graphics.Path;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.LineScatterCandleRadarDataSet;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.ILineScatterCandleRadarDataSet;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**
@@ -28,7 +29,7 @@ public abstract class LineScatterCandleRadarRenderer extends DataRenderer {
      * @param pts the transformed x- and y-position of the lines
      * @param set the currently drawn dataset
      */
-    protected void drawHighlightLines(Canvas c, float[] pts, LineScatterCandleRadarDataSet set) {
+    protected void drawHighlightLines(Canvas c, float[] pts, ILineScatterCandleRadarDataSet set) {
 
         // set color and stroke-width
         mHighlightPaint.setColor(set.getHighLightColor());
