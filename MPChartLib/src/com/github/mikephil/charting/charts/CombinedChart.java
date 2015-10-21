@@ -12,11 +12,11 @@ import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.highlight.CombinedHighlighter;
-import com.github.mikephil.charting.interfaces.BarDataProvider;
-import com.github.mikephil.charting.interfaces.BubbleDataProvider;
-import com.github.mikephil.charting.interfaces.CandleDataProvider;
-import com.github.mikephil.charting.interfaces.LineDataProvider;
-import com.github.mikephil.charting.interfaces.ScatterDataProvider;
+import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
+import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
+import com.github.mikephil.charting.interfaces.dataprovider.CandleDataProvider;
+import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
+import com.github.mikephil.charting.interfaces.dataprovider.ScatterDataProvider;
 import com.github.mikephil.charting.renderer.CombinedChartRenderer;
 
 /**

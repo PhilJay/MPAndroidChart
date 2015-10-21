@@ -7,6 +7,7 @@ import android.util.Log;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datainterfaces.data.IChartData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +19,7 @@ import java.util.List;
  *
  * @author Philipp Jahoda
  */
-public abstract class ChartData<T extends DataSet<? extends Entry>> {
+public abstract class ChartData<T extends DataSet<? extends Entry>> implements IChartData<T> {
 
     /**
      * maximum y-value in the y-value array across all axes
@@ -406,12 +407,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         return mYValueSum;
     }
 
-    /**
-     * Returns the total number of y-values across all DataSet objects the this
-     * object represents.
-     *
-     * @return
-     */
+    @Override
     public int getYValCount() {
         return mYValCount;
     }
@@ -445,11 +441,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         mXVals.remove(index);
     }
 
-    /**
-     * Returns an the array of DataSets this object holds.
-     *
-     * @return
-     */
+    @Override
     public List<T> getDataSets() {
         return mDataSets;
     }
@@ -540,12 +532,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             return mDataSets.get(index);
     }
 
-    /**
-     * Returns the DataSet object at the given index.
-     *
-     * @param index
-     * @return
-     */
+    @Override
     public T getDataSetByIndex(int index) {
 
         if (mDataSets == null || index < 0 || index >= mDataSets.size())
@@ -834,15 +821,8 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         return colors;
     }
 
-    /**
-     * Returns the index of the provided DataSet inside the DataSets array of
-     * this data object. Returns -1 if the DataSet was not found.
-     *
-     * @param dataSet
-     * @return
-     */
+    @Override
     public int getIndexOfDataSet(T dataSet) {
-
         for (int i = 0; i < mDataSets.size(); i++) {
             if (mDataSets.get(i) == dataSet)
                 return i;

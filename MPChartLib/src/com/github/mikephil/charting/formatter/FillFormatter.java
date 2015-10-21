@@ -1,8 +1,7 @@
 package com.github.mikephil.charting.formatter;
 
-import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.LineDataProvider;
+import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 
 /**
  * Interface for providing a custom logic to where the filling line of a LineDataSet
