@@ -16,6 +16,9 @@ import java.util.List;
  */
 public class RealmLineDataSet extends BaseDataSet<Entry> implements ILineDataSet {
 
+    public RealmLineDataSet() {
+
+    }
 
     @Override
     public float getCubicIntensity() {
