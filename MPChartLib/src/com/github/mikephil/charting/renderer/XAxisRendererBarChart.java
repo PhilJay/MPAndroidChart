@@ -68,7 +68,7 @@ public class XAxisRendererBarChart extends XAxisRenderer {
                     } else if (i == 0) {
 
                         float width = Utils.calcTextWidth(mAxisLabelPaint, label);
-                        position[0] += width / 2;
+                        position[0] = mViewPortHandler.offsetLeft() + (width / 2);
                     }
                 }
 
