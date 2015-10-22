@@ -16,6 +16,7 @@ import java.util.List;
 
 import io.realm.RealmObject;
 import io.realm.RealmResults;
+import io.realm.dynamic.DynamicRealmObject;
 
 /**
  * Created by Philipp Jahoda on 21/10/15.
@@ -23,12 +24,23 @@ import io.realm.RealmResults;
 public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> implements ILineDataSet {
 
     private List<Integer> mColors = new ArrayList<>();
-
     private List<Entry> mValues = new ArrayList<>();
 
-    public RealmLineDataSet(RealmResults<T> result) {
-        mColors.add(Color.WHITE);
-        
+    private FillFormatter mFillFormatter = new DefaultFillFormatter();
+
+    public RealmLineDataSet(RealmResults<T> result, String yValuesField, String xIndexField) {
+        mColors.add(Color.BLACK);
+
+        result.sort(xIndexField, true);
+
+        for(T object : result) {
+
+            DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
+
+            mValues.add(new Entry(dynamicObject.getFloat(yValuesField), dynamicObject.getInt(xIndexField)));
+        }
+
+        //calcMinMax(mValues, mLastStart, mLastEnd);
     }
 
     @Override
@@ -43,12 +55,12 @@ public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> 
 
     @Override
     public float getCircleSize() {
-        return 5f;
+        return 8f;
     }
 
     @Override
     public int getCircleColor(int index) {
-        return Color.WHITE;
+        return Color.BLACK;
     }
 
     @Override
@@ -58,7 +70,7 @@ public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> 
 
     @Override
     public int getCircleHoleColor() {
-        return Color.WHITE;
+        return Color.BLACK;
     }
 
     @Override
@@ -78,7 +90,7 @@ public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> 
 
     @Override
     public FillFormatter getFillFormatter() {
-        return new DefaultFillFormatter();
+        return mFillFormatter;
     }
 
     @Override
@@ -93,7 +105,7 @@ public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> 
 
     @Override
     public float getLineWidth() {
-        return 3f;
+        return 4f;
     }
 
     @Override

@@ -17,7 +17,9 @@ import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 import java.util.ArrayList;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmObject;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 /**
@@ -49,7 +51,7 @@ public class RealmDatabaseActivity extends DemoBase {
         mChart.setScaleEnabled(true);
 
         // if disabled, scaling can be done on x- and y-axis separately
-        mChart.setPinchZoom(true);
+        mChart.setPinchZoom(false);
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
@@ -58,26 +60,63 @@ public class RealmDatabaseActivity extends DemoBase {
         leftAxis.setAxisMaxValue(220f);
         leftAxis.setAxisMinValue(-50f);
         leftAxis.setStartAtZero(false);
-        leftAxis.enableGridDashedLine(10f, 10f, 0f);
+        leftAxis.setTypeface(tf);
+
+        mChart.getXAxis().setTypeface(tf);
 
         mChart.getAxisRight().setEnabled(false);
 
+        // write some demo-data into the realm.io database
+        writeToDB(400);
+
         // add data
-        setData(45, 100);
+        setData();
 
         mChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
     }
 
-    private void setData(int count, float range) {
+    private void writeToDB(int objectCount) {
+
+        RealmConfiguration config = new RealmConfiguration.Builder(this)
+                .name("myrealm.realm")
+                .build();
+
+        Realm.deleteRealm(config);
+
+        Realm.setDefaultConfiguration(config);
+
+        Realm realm = Realm.getInstance(config);
+
+        realm.beginTransaction();
+
+        realm.clear(RealmDemoData.class);
+
+        for(int i = 0; i < objectCount; i++) {
+
+            RealmDemoData d = new RealmDemoData(30f + (float) (Math.random() * 100.0), i);
+            realm.copyToRealm(d);
+        }
+
+        realm.commitTransaction();
+        realm.close();
+    }
+
+    private void setData() {
+
+        RealmConfiguration config = new RealmConfiguration.Builder(this)
+                .name("myrealm.realm")
+                .build();
+
+        Realm realm = Realm.getInstance(config);
+        RealmResults<RealmDemoData> result = realm.allObjects(RealmDemoData.class);
 
         ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < result.size(); i++) {
             xVals.add((i) + "");
         }
 
-        RealmResults<RealmDemoData> result = Realm.getDefaultInstance().allObjects(RealmDemoData.class);
-
-        RealmLineDataSet<RealmDemoData> set = new RealmLineDataSet<RealmDemoData>(result);
+        RealmLineDataSet<RealmDemoData> set = new RealmLineDataSet<RealmDemoData>(result, "value", "xIndex");
+        set.setValueTextSize(9f);
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         dataSets.add(set); // add the dataset
@@ -87,5 +126,7 @@ public class RealmDatabaseActivity extends DemoBase {
 
         // set data
         mChart.setData(data);
+
+        realm.close();
     }
 }
