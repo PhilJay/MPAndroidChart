@@ -14,18 +14,20 @@ import com.github.mikephil.charting.interfaces.datainterfaces.datasets.ILineData
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmObject;
+import io.realm.RealmResults;
+
 /**
  * Created by Philipp Jahoda on 21/10/15.
  */
-public class RealmLineDataSet extends BaseDataSet<Entry> implements ILineDataSet {
+public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> implements ILineDataSet {
 
     private List<Integer> mColors = new ArrayList<>();
 
     private List<Entry> mValues = new ArrayList<>();
 
-    public RealmLineDataSet() {
+    public RealmLineDataSet(RealmResults<T> result) {
         mColors.add(Color.WHITE);
-
         
     }
 
