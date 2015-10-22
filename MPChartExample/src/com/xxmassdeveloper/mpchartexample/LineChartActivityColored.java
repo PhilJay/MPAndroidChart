@@ -11,6 +11,7 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.ILineDataSet;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -118,7 +119,7 @@ public class LineChartActivityColored extends DemoBase {
         set1.setHighLightColor(Color.WHITE);
         set1.setDrawValues(false);
 
-        ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
+        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         dataSets.add(set1); // add the datasets
 
         // create a data object with the datasets

@@ -27,13 +27,14 @@ import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.formatter.YAxisValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IDataSet;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.xxmassdeveloper.mpchartexample.custom.MyYAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -137,7 +138,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         switch (item.getItemId()) {
             case R.id.actionToggleValues: {
-                for (DataSet<?> set : mChart.getData().getDataSets())
+                for (IDataSet set : mChart.getData().getDataSets())
                     set.setDrawValues(!set.isDrawValuesEnabled());
 
                 mChart.invalidate();
@@ -257,7 +258,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         BarDataSet set1 = new BarDataSet(yVals1, "DataSet");
         set1.setBarSpacePercent(35f);
 
-        ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
+        ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
         dataSets.add(set1);
 
         BarData data = new BarData(xVals, dataSets);

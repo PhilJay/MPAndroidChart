@@ -22,13 +22,13 @@ import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
@@ -36,6 +36,7 @@ import com.xxmassdeveloper.mpchartexample.custom.MyMarkerView;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListener,
         OnChartGestureListener, OnChartValueSelectedListener {
@@ -176,8 +177,14 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
         switch (item.getItemId()) {
             case R.id.actionToggleValues: {
-                for (DataSet<?> set : mChart.getData().getDataSets())
+                List<ILineDataSet> sets = mChart.getData()
+                        .getDataSets();
+
+                for (ILineDataSet iSet : sets) {
+
+                    LineDataSet set = (LineDataSet) iSet;
                     set.setDrawValues(!set.isDrawValuesEnabled());
+                }
 
                 mChart.invalidate();
                 break;
@@ -191,10 +198,12 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
             }
             case R.id.actionToggleFilled: {
 
-                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getData()
+                List<ILineDataSet> sets = mChart.getData()
                         .getDataSets();
 
-                for (LineDataSet set : sets) {
+                for (ILineDataSet iSet : sets) {
+
+                    LineDataSet set = (LineDataSet) iSet;
                     if (set.isDrawFilledEnabled())
                         set.setDrawFilled(false);
                     else
@@ -204,10 +213,12 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                 break;
             }
             case R.id.actionToggleCircles: {
-                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getData()
+                List<ILineDataSet> sets = mChart.getData()
                         .getDataSets();
 
-                for (LineDataSet set : sets) {
+                for (ILineDataSet iSet : sets) {
+
+                    LineDataSet set = (LineDataSet) iSet;
                     if (set.isDrawCirclesEnabled())
                         set.setDrawCircles(false);
                     else
@@ -217,10 +228,12 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                 break;
             }
             case R.id.actionToggleCubic: {
-                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getData()
+                List<ILineDataSet> sets = mChart.getData()
                         .getDataSets();
 
-                for (LineDataSet set : sets) {
+                for (ILineDataSet iSet : sets) {
+
+                    LineDataSet set = (LineDataSet) iSet;
                     if (set.isDrawCubicEnabled())
                         set.setDrawCubic(false);
                     else
@@ -351,7 +364,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         // set1.setShader(new LinearGradient(0, 0, 0, mChart.getHeight(),
         // Color.BLACK, Color.WHITE, Shader.TileMode.MIRROR));
 
-        ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
+        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         dataSets.add(set1); // add the datasets
 
         // create a data object with the datasets

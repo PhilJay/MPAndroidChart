@@ -26,14 +26,18 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarChangeListener,
         OnChartValueSelectedListener {
@@ -134,8 +138,14 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
         switch (item.getItemId()) {
             case R.id.actionToggleValues: {
-                for (DataSet<?> set : mChart.getData().getDataSets())
+                List<IBarDataSet> sets = mChart.getData()
+                        .getDataSets();
+
+                for (IBarDataSet iSet : sets) {
+
+                    IBarDataSet set = (BarDataSet) iSet;
                     set.setDrawValues(!set.isDrawValuesEnabled());
+                }
 
                 mChart.invalidate();
                 break;
@@ -247,7 +257,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
         BarDataSet set1 = new BarDataSet(yVals1, "DataSet 1");
 
-        ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
+        ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
         dataSets.add(set1);
 
         BarData data = new BarData(xVals, dataSets);

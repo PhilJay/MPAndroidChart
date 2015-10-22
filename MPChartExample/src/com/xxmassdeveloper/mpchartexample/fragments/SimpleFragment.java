@@ -21,6 +21,9 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.FileUtils;
 
@@ -42,7 +45,7 @@ public abstract class SimpleFragment extends Fragment {
 
     protected BarData generateBarData(int dataSets, float range, int count) {
         
-        ArrayList<BarDataSet> sets = new ArrayList<BarDataSet>();
+        ArrayList<IBarDataSet> sets = new ArrayList<IBarDataSet>();
         
         for(int i = 0; i < dataSets; i++) {
            
@@ -66,7 +69,7 @@ public abstract class SimpleFragment extends Fragment {
     
     protected ScatterData generateScatterData(int dataSets, float range, int count) {
         
-        ArrayList<ScatterDataSet> sets = new ArrayList<ScatterDataSet>();
+        ArrayList<IScatterDataSet> sets = new ArrayList<IScatterDataSet>();
         
         ScatterShape[] shapes = ScatterChart.getAllPossibleShapes();
         
@@ -132,7 +135,7 @@ public abstract class SimpleFragment extends Fragment {
 //        DataSet ds3 = new DataSet(nsquare, "O(n\u00B2)");
 //        DataSet ds4 = new DataSet(nthree, "O(n\u00B3)");
         
-        ArrayList<LineDataSet> sets = new ArrayList<LineDataSet>();
+        ArrayList<ILineDataSet> sets = new ArrayList<ILineDataSet>();
         
         LineDataSet ds1 = new LineDataSet(FileUtils.loadEntriesFromAssets(getActivity().getAssets(), "sine.txt"), "Sine function");
         LineDataSet ds2 = new LineDataSet(FileUtils.loadEntriesFromAssets(getActivity().getAssets(), "cosine.txt"), "Cosine function");
@@ -164,7 +167,7 @@ public abstract class SimpleFragment extends Fragment {
     
     protected LineData getComplexity() {
         
-        ArrayList<LineDataSet> sets = new ArrayList<LineDataSet>();
+        ArrayList<ILineDataSet> sets = new ArrayList<ILineDataSet>();
         
         LineDataSet ds1 = new LineDataSet(FileUtils.loadEntriesFromAssets(getActivity().getAssets(), "n.txt"), "O(n)");
         LineDataSet ds2 = new LineDataSet(FileUtils.loadEntriesFromAssets(getActivity().getAssets(), "nlogn.txt"), "O(nlogn)");

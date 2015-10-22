@@ -13,18 +13,19 @@ import android.widget.TextView;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.highlight.Highlight;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeListener,
         OnChartValueSelectedListener {
@@ -91,8 +92,14 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
 
         switch (item.getItemId()) {
             case R.id.actionToggleValues: {
-                for (DataSet<?> set : mChart.getData().getDataSets())
+                List<ILineDataSet> sets = mChart.getData()
+                        .getDataSets();
+
+                for (ILineDataSet iSet : sets) {
+
+                    LineDataSet set = (LineDataSet) iSet;
                     set.setDrawValues(!set.isDrawValuesEnabled());
+                }
 
                 mChart.invalidate();
                 break;
@@ -119,10 +126,12 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
                 break;
             }
             case R.id.actionToggleFilled: {
-                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getData()
+                List<ILineDataSet> sets = mChart.getData()
                         .getDataSets();
 
-                for (LineDataSet set : sets) {
+                for (ILineDataSet iSet : sets) {
+
+                    LineDataSet set = (LineDataSet) iSet;
                     if (set.isDrawFilledEnabled())
                         set.setDrawFilled(false);
                     else
@@ -132,10 +141,12 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
                 break;
             }
             case R.id.actionToggleCircles: {
-                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getData()
+                List<ILineDataSet> sets = mChart.getData()
                         .getDataSets();
 
-                for (LineDataSet set : sets) {
+                for (ILineDataSet iSet : sets) {
+
+                    LineDataSet set = (LineDataSet) iSet;
                     if (set.isDrawCirclesEnabled())
                         set.setDrawCircles(false);
                     else
@@ -204,7 +215,7 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
             xVals.add((i) + "");
         }
  
-        ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
+        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
 
         for (int z = 0; z < 3; z++) {
 
@@ -226,9 +237,9 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
         }
 
         // make the first DataSet dashed
-        dataSets.get(0).enableDashedLine(10, 10, 0);
-        dataSets.get(0).setColors(ColorTemplate.VORDIPLOM_COLORS);
-        dataSets.get(0).setCircleColors(ColorTemplate.VORDIPLOM_COLORS);
+        ((LineDataSet) dataSets.get(0)).enableDashedLine(10, 10, 0);
+        ((LineDataSet) dataSets.get(0)).setColors(ColorTemplate.VORDIPLOM_COLORS);
+        ((LineDataSet) dataSets.get(0)).setCircleColors(ColorTemplate.VORDIPLOM_COLORS);
 
         LineData data = new LineData(xVals, dataSets);
         mChart.setData(data);

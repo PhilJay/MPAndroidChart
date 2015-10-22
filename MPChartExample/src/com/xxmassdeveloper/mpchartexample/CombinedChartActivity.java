@@ -28,6 +28,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -198,7 +199,7 @@ public class CombinedChartActivity extends DemoBase {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.actionToggleLineValues: {
-                for (DataSet<?> set : mChart.getData().getDataSets()) {
+                for (IDataSet set : mChart.getData().getDataSets()) {
                     if (set instanceof LineDataSet)
                         set.setDrawValues(!set.isDrawValuesEnabled());
                 }
@@ -207,7 +208,7 @@ public class CombinedChartActivity extends DemoBase {
                 break;
             }
             case R.id.actionToggleBarValues: {
-                for (DataSet<?> set : mChart.getData().getDataSets()) {
+                for (IDataSet set : mChart.getData().getDataSets()) {
                     if (set instanceof BarDataSet)
                         set.setDrawValues(!set.isDrawValuesEnabled());
                 }

@@ -1,7 +1,5 @@
 package com.xxmassdeveloper.mpchartexample;
 
-import java.util.ArrayList;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -21,16 +19,19 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.custom.MyValueFormatter;
 import com.xxmassdeveloper.mpchartexample.custom.MyYAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListener, OnChartValueSelectedListener {
 
@@ -105,8 +106,14 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 
 		switch (item.getItemId()) {
 		case R.id.actionToggleValues: {
-			for (DataSet<?> set : mChart.getData().getDataSets())
+			List<IBarDataSet> sets = mChart.getData()
+					.getDataSets();
+
+			for (IBarDataSet iSet : sets) {
+
+				BarDataSet set = (BarDataSet) iSet;
 				set.setDrawValues(!set.isDrawValuesEnabled());
+			}
 
 			mChart.invalidate();
 			break;
@@ -208,7 +215,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 		set1.setColors(getColors());
 		set1.setStackLabels(new String[] { "Births", "Divorces", "Marriages" });
 
-		ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
+		ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
 		dataSets.add(set1);
 
 		BarData data = new BarData(xVals, dataSets);
