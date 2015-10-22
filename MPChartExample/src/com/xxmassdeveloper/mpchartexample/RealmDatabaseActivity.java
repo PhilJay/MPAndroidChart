@@ -75,18 +75,9 @@ public class RealmDatabaseActivity extends DemoBase {
             xVals.add((i) + "");
         }
 
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
-
-        for (int i = 0; i < count; i++) {
-
-            float mult = (range + 1);
-            float val = (float) (Math.random() * mult) + 3;
-            yVals.add(new Entry(val, i));
-        }
-
         RealmResults<RealmDemoData> result = Realm.getDefaultInstance().allObjects(RealmDemoData.class);
 
-        RealmLineDataSet set = new RealmLineDataSet(result);
+        RealmLineDataSet<RealmDemoData> set = new RealmLineDataSet<RealmDemoData>(result);
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         dataSets.add(set); // add the dataset

@@ -8,6 +8,8 @@ public class RealmDemoData extends RealmObject {
     private float value;
     private int xIndex;
 
+    // ofc there could me more fields here...
+
     public float getValue() {
         return value;
     }
