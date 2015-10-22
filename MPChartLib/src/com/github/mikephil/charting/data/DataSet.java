@@ -130,16 +130,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         return mYVals;
     }
 
-    @Override
-    public float getYMin() {
-        return mYMin;
-    }
-
-    @Override
-    public float getYMax() {
-        return mYMax;
-    }
-
     /**
      * The xIndex of an Entry object is provided. This method returns the actual
      * index in the Entry array of the DataSet. IMPORTANT: This method does
@@ -390,17 +380,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
      */
     public void resetColors() {
         mColors = new ArrayList<Integer>();
-    }
-
-    @Override
-    public boolean contains(Entry e) {
-
-        for (Entry entry : mYVals) {
-            if (entry.equals(e))
-                return true;
-        }
-
-        return false;
     }
 
     /**

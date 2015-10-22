@@ -1,14 +1,17 @@
 package com.github.mikephil.charting.data.realm;
 
+import android.graphics.Color;
 import android.graphics.DashPathEffect;
 
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BaseDataSet;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.DefaultFillFormatter;
 import com.github.mikephil.charting.formatter.FillFormatter;
 import com.github.mikephil.charting.interfaces.datainterfaces.datasets.ILineDataSet;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,13 +19,19 @@ import java.util.List;
  */
 public class RealmLineDataSet extends BaseDataSet<Entry> implements ILineDataSet {
 
-    public RealmLineDataSet() {
+    private List<Integer> mColors = new ArrayList<>();
 
+    private List<Entry> mValues = new ArrayList<>();
+
+    public RealmLineDataSet() {
+        mColors.add(Color.WHITE);
+
+        
     }
 
     @Override
     public float getCubicIntensity() {
-        return 0;
+        return .2f;
     }
 
     @Override
@@ -32,22 +41,22 @@ public class RealmLineDataSet extends BaseDataSet<Entry> implements ILineDataSet
 
     @Override
     public float getCircleSize() {
-        return 0;
+        return 5f;
     }
 
     @Override
     public int getCircleColor(int index) {
-        return 0;
+        return Color.WHITE;
     }
 
     @Override
     public boolean isDrawCirclesEnabled() {
-        return false;
+        return true;
     }
 
     @Override
     public int getCircleHoleColor() {
-        return 0;
+        return Color.WHITE;
     }
 
     @Override
@@ -67,22 +76,22 @@ public class RealmLineDataSet extends BaseDataSet<Entry> implements ILineDataSet
 
     @Override
     public FillFormatter getFillFormatter() {
-        return null;
+        return new DefaultFillFormatter();
     }
 
     @Override
     public int getFillColor() {
-        return 0;
+        return Color.WHITE;
     }
 
     @Override
     public int getFillAlpha() {
-        return 0;
+        return 100;
     }
 
     @Override
     public float getLineWidth() {
-        return 0;
+        return 3f;
     }
 
     @Override
@@ -112,56 +121,41 @@ public class RealmLineDataSet extends BaseDataSet<Entry> implements ILineDataSet
 
     @Override
     public int getHighLightColor() {
-        return 0;
+        return Color.WHITE;
     }
 
     @Override
     public String getLabel() {
-        return null;
+        return "Realm Data";
     }
 
     @Override
     public List<Entry> getYVals() {
-        return null;
-    }
-
-    @Override
-    public float getYMin() {
-        return 0;
-    }
-
-    @Override
-    public float getYMax() {
-        return 0;
+        return mValues;
     }
 
     @Override
     public int getEntryCount() {
-        return 0;
+        return mValues.size();
     }
 
     @Override
     public YAxis.AxisDependency getAxisDependency() {
-        return null;
+        return YAxis.AxisDependency.LEFT;
     }
 
     @Override
     public List<Integer> getColors() {
-        return null;
+        return mColors;
     }
 
     @Override
     public int getColor() {
-        return 0;
+        return mColors.get(0);
     }
 
     @Override
     public int getColor(int index) {
-        return 0;
-    }
-
-    @Override
-    public boolean contains(Entry e) {
-        return false;
+        return mColors.get(index % mColors.size());
     }
 }

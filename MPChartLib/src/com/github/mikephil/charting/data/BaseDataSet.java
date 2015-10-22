@@ -73,6 +73,16 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      */
     protected boolean mVisible = true;
 
+    @Override
+    public float getYMin() {
+        return mYMin;
+    }
+
+    @Override
+    public float getYMax() {
+        return mYMax;
+    }
+
 
     @Override
     public void calcMinMax(List<T> values, int start, int end) {
@@ -317,5 +327,18 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
             return e.getVal();
         else
             return Float.NaN;
+    }
+
+    @Override
+    public boolean contains(Entry e) {
+
+        List<T> values = getYVals();
+
+        for (Entry entry : values) {
+            if (entry.equals(e))
+                return true;
+        }
+
+        return false;
     }
 }
