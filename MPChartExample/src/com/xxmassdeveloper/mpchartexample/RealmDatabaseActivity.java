@@ -11,9 +11,14 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.realm.RealmLineDataSet;
 import com.github.mikephil.charting.interfaces.datainterfaces.datasets.ILineDataSet;
+import com.xxmassdeveloper.mpchartexample.custom.RealmDemoData;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
+
+import io.realm.Realm;
+import io.realm.RealmObject;
+import io.realm.RealmResults;
 
 /**
  * Created by Philipp Jahoda on 21/10/15.
@@ -79,7 +84,9 @@ public class RealmDatabaseActivity extends DemoBase {
             yVals.add(new Entry(val, i));
         }
 
-        RealmLineDataSet set = new RealmLineDataSet();
+        RealmResults<RealmDemoData> result = Realm.getDefaultInstance().allObjects(RealmDemoData.class);
+
+        RealmLineDataSet set = new RealmLineDataSet(result);
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         dataSets.add(set); // add the dataset

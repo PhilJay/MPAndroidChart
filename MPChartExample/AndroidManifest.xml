@@ -26,7 +26,6 @@
         </activity>
         <activity android:name="LineChartActivity1"></activity> <!--  android:configChanges="keyboardHidden|orientation|screenSize"  -->
         <activity android:name="LineChartActivity2"></activity>
-        <activity android:screenOrientation="landscape" android:name="MultipleChartsActivity"></activity>
         <activity android:name="BarChartActivity"></activity>
 		<activity android:name="HorizontalBarChartActivity"></activity>
         <activity android:name="PieChartActivity"></activity>
@@ -46,6 +45,7 @@
         <activity android:name="RadarChartActivitry"></activity>
         <activity android:name="LineChartActivityColored"></activity>
         <activity android:name="DynamicalAddingActivity"></activity>
+        <activity android:name="RealmDatabaseActivity"></activity>
         <activity android:name="RealtimeLineChartActivity"></activity>
         <activity android:name="CombinedChartActivity"></activity>
         <activity android:name="PerformanceLineChart"></activity>

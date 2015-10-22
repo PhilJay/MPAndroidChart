@@ -41,15 +41,19 @@ import com.xxmassdeveloper.mpchartexample.PerformanceLineChart;
 import com.xxmassdeveloper.mpchartexample.PieChartActivity;
 import com.xxmassdeveloper.mpchartexample.R;
 import com.xxmassdeveloper.mpchartexample.RadarChartActivitry;
+import com.xxmassdeveloper.mpchartexample.RealmDatabaseActivity;
 import com.xxmassdeveloper.mpchartexample.RealtimeLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.ScatterChartActivity;
 import com.xxmassdeveloper.mpchartexample.ScrollViewActivity;
 import com.xxmassdeveloper.mpchartexample.StackedBarActivity;
 import com.xxmassdeveloper.mpchartexample.StackedBarActivityNegative;
+import com.xxmassdeveloper.mpchartexample.custom.RealmDemoData;
 import com.xxmassdeveloper.mpchartexample.fragments.SimpleChartDemo;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.Realm;
 
 public class MainActivity extends Activity implements OnItemClickListener {
 
@@ -62,6 +66,28 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
         // initialize the utilities
         Utils.init(this);
+
+//        Realm realm = Realm.getInstance(this);
+//
+//        realm.beginTransaction();
+//
+//        RealmDemoData d1 = realm.createObject(RealmDemoData.class);
+//        d1.setValue(10f);
+//        d1.setxIndex(0);
+//        RealmDemoData d2 = realm.createObject(RealmDemoData.class);
+//        d1.setValue(20f);
+//        d1.setxIndex(1);
+//        RealmDemoData d3 = realm.createObject(RealmDemoData.class);
+//        d1.setValue(30f);
+//        d1.setxIndex(2);
+//        RealmDemoData d4 = realm.createObject(RealmDemoData.class);
+//        d1.setValue(40f);
+//        d1.setxIndex(3);
+//        RealmDemoData d5 = realm.createObject(RealmDemoData.class);
+//        d1.setValue(50f);
+//        d1.setxIndex(4);
+//
+//        realm.commitTransaction();
 
         ArrayList<ContentItem> objects = new ArrayList<ContentItem>();
 
@@ -125,6 +151,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
         objects.add(new ContentItem(
                 "Chart in ScrollView",
                 "This demonstrates how to use a chart inside a ScrollView."));
+        objects.add(new ContentItem(
+                "Realm.io Database",
+                "This demonstrates how to use this library with Realm.io mobile database."));
 
         MyAdapter adapter = new MyAdapter(this, objects);
 
@@ -242,6 +271,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 break;
             case 25:
                 i = new Intent(this, ScrollViewActivity.class);
+                startActivity(i);
+                break;
+            case 26:
+                i = new Intent(this, RealmDatabaseActivity.class);
                 startActivity(i);
                 break;
         }
