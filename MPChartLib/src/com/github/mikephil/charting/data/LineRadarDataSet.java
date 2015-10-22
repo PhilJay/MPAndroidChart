@@ -3,6 +3,7 @@ package com.github.mikephil.charting.data;
 
 import android.graphics.Color;
 
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.ILineRadarDataSet;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  * 
  * @author Philipp Jahoda
  */
-public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandleRadarDataSet<T> {
+public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandleRadarDataSet<T> implements ILineRadarDataSet<T> {
 
     /** the color that is used for filling the line surface */
     private int mFillColor = Color.rgb(140, 234, 255);
@@ -31,11 +32,7 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
         super(yVals, label);
     }
 
-    /**
-     * returns the color that is used for filling the line surface
-     * 
-     * @return
-     */
+    @Override
     public int getFillColor() {
         return mFillColor;
     }
@@ -49,12 +46,7 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
         mFillColor = color;
     }
 
-    /**
-     * returns the alpha value that is used for filling the line surface,
-     * default: 85
-     * 
-     * @return
-     */
+    @Override
     public int getFillAlpha() {
         return mFillAlpha;
     }
@@ -84,11 +76,7 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
         mLineWidth = Utils.convertDpToPixel(width);
     }
 
-    /**
-     * returns the width of the drawn chart line
-     * 
-     * @return
-     */
+    @Override
     public float getLineWidth() {
         return mLineWidth;
     }
@@ -104,11 +92,7 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
         mDrawFilled = filled;
     }
 
-    /**
-     * returns true if filled drawing is enabled, false if not
-     * 
-     * @return
-     */
+    @Override
     public boolean isDrawFilledEnabled() {
         return mDrawFilled;
     }

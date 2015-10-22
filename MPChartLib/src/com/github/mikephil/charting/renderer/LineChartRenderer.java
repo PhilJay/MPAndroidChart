@@ -240,7 +240,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
         mRenderPaint.setPathEffect(null);
     }
 
-    protected void drawCubicFill(Canvas c, LineDataSet dataSet, Path spline, Transformer trans,
+    protected void drawCubicFill(Canvas c, ILineDataSet dataSet, Path spline, Transformer trans,
                                  int from, int to) {
 
         if (to - from <= 1)

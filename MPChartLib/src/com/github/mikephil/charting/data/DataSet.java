@@ -41,11 +41,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     private String mLabel = "DataSet";
 
     /**
-     * flag that indicates if the DataSet is visible or not
-     */
-    private boolean mVisible = true;
-
-    /**
      * this specifies which axis this DataSet should be plotted against
      */
     protected AxisDependency mAxisDependency = AxisDependency.LEFT;
@@ -85,71 +80,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     @Override
     public int getEntryCount() {
         return mYVals.size();
-    }
-
-    /**
-     * Returns the value of the Entry object at the given xIndex. Returns
-     * Float.NaN if no value is at the given x-index. INFORMATION: This method
-     * does calculations at runtime. Do not over-use in performance critical
-     * situations.
-     *
-     * @param xIndex
-     * @return
-     */
-    public float getYValForXIndex(int xIndex) {
-
-        Entry e = getEntryForXIndex(xIndex);
-
-        if (e != null && e.getXIndex() == xIndex)
-            return e.getVal();
-        else
-            return Float.NaN;
-    }
-
-    @Override
-    public T getEntryForXIndex(int x) {
-
-        int index = getEntryIndex(x);
-        if (index > -1)
-            return mYVals.get(index);
-        return null;
-    }
-
-    /**
-     * Returns the first Entry index found at the given xIndex with binary
-     * search. If the no Entry at the specified x-index is found, this method
-     * returns the index at the closest x-index. Returns -1 if no Entry object
-     * at that index. INFORMATION: This method does calculations at runtime. Do
-     * not over-use in performance critical situations.
-     *
-     * @param x
-     * @return
-     */
-    public int getEntryIndex(int x) {
-
-        int low = 0;
-        int high = mYVals.size() - 1;
-        int closest = -1;
-
-        while (low <= high) {
-            int m = (high + low) / 2;
-
-            if (x == mYVals.get(m).getXIndex()) {
-                while (m > 0 && mYVals.get(m - 1).getXIndex() == x)
-                    m--;
-
-                return m;
-            }
-
-            if (x > mYVals.get(m).getXIndex())
-                low = m + 1;
-            else
-                high = m - 1;
-
-            closest = m;
-        }
-
-        return closest;
     }
 
     /**
@@ -281,26 +211,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         return mLabel;
     }
 
-    /**
-     * Set the visibility of this DataSet. If not visible, the DataSet will not
-     * be drawn to the chart upon refreshing it.
-     *
-     * @param visible
-     */
-    public void setVisible(boolean visible) {
-        mVisible = visible;
-    }
-
-    /**
-     * Returns true if this DataSet is visible inside the chart, or false if it
-     * is currently hidden.
-     *
-     * @return
-     */
-    public boolean isVisible() {
-        return mVisible;
-    }
-
     @Override
     public AxisDependency getAxisDependency() {
         return mAxisDependency;
@@ -314,15 +224,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
      */
     public void setAxisDependency(AxisDependency dependency) {
         mAxisDependency = dependency;
-    }
-
-    /**
-     * returns true if y-value drawing is enabled, false if not
-     *
-     * @return
-     */
-    public boolean isDrawValuesEnabled() {
-        return mDrawValues;
     }
 
     /**
@@ -483,25 +384,14 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         return mColors;
     }
 
-    /**
-     * Returns the color at the given index of the DataSet's color array.
-     * Performs a IndexOutOfBounds check by modulus.
-     *
-     * @param index
-     * @return
-     */
-    public int getColor(int index) {
-        return mColors.get(index % mColors.size());
-    }
-
-    /**
-     * Returns the first color (index 0) of the colors-array this DataSet
-     * contains.
-     *
-     * @return
-     */
+    @Override
     public int getColor() {
         return mColors.get(0);
+    }
+
+    @Override
+    public int getColor(int index) {
+        return mColors.get(index % mColors.size());
     }
 
     /**
@@ -509,51 +399,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
      */
     public void resetColors() {
         mColors = new ArrayList<Integer>();
-    }
-
-    /**
-     * Returns the position of the provided entry in the DataSets Entry array.
-     * Returns -1 if doesn't exist.
-     *
-     * @param e
-     * @return
-     */
-    public int getEntryPosition(Entry e) {
-
-        for (int i = 0; i < mYVals.size(); i++) {
-            if (e.equalTo(mYVals.get(i)))
-                return i;
-        }
-
-        return -1;
-    }
-
-    /**
-     * Returns the formatter used for drawing the values inside the chart.
-     *
-     * @return
-     */
-    public ValueFormatter getValueFormatter() {
-        if (mValueFormatter == null)
-            return new DefaultValueFormatter(1);
-        return mValueFormatter;
-    }
-
-    public int getValueTextColor() {
-        return mValueColor;
-    }
-
-    public Typeface getValueTypeface() {
-        return mValueTypeface;
-    }
-
-    /**
-     * Returns the text-size of the labels that are displayed above the values.
-     *
-     * @return
-     */
-    public float getValueTextSize() {
-        return mValueTextSize;
     }
 
     @Override

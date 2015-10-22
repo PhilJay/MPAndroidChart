@@ -4,6 +4,7 @@ import android.graphics.Typeface;
 
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.util.List;
@@ -63,6 +64,23 @@ public interface IDataSet<T extends Entry> {
     List<Integer> getColors();
 
     /**
+     * Returns the first color (index 0) of the colors-array this DataSet
+     * contains. This is only used for performance reasons when only one color is in the colors array (size == 1)
+     *
+     * @return
+     */
+    int getColor();
+
+    /**
+     * Returns the color at the given index of the DataSet's color array.
+     * Performs a IndexOutOfBounds check by modulus.
+     *
+     * @param index
+     * @return
+     */
+    int getColor(int index);
+
+    /**
      * calc minimum and maximum y value
      */
     void calcMinMax(List<T> values, int start, int end);
@@ -78,6 +96,29 @@ public interface IDataSet<T extends Entry> {
      * @return
      */
     T getEntryForXIndex(int x);
+
+    /**
+     * Returns the first Entry index found at the given xIndex with binary
+     * search. If the no Entry at the specified x-index is found, this method
+     * returns the index at the closest x-index. Returns -1 if no Entry object
+     * at that index. INFORMATION: This method does calculations at runtime. Do
+     * not over-use in performance critical situations.
+     *
+     * @param x
+     * @return
+     */
+    int getEntryIndex(int x);
+
+    /**
+     * Returns the value of the Entry object at the given xIndex. Returns
+     * Float.NaN if no value is at the given x-index. INFORMATION: This method
+     * does calculations at runtime. Do not over-use in performance critical
+     * situations.
+     *
+     * @param xIndex
+     * @return
+     */
+    float getYValForXIndex(int xIndex);
 
     /**
      * Checks if this DataSet contains the specified Entry. Returns true if so,
@@ -125,12 +166,13 @@ public interface IDataSet<T extends Entry> {
     boolean removeEntry(T e);
 
     /**
-     * If this component has no ValueFormatter or is only equipped with the
-     * default one (no custom set), return true.
+     * Returns the position of the provided entry in the DataSets Entry array.
+     * Returns -1 if doesn't exist.
      *
+     * @param e
      * @return
      */
-    boolean needsDefaultFormatter();
+    int getEntryPosition(T e);
 
     /**
      * Sets the formatter to be used for drawing the values inside the chart. If
@@ -142,6 +184,13 @@ public interface IDataSet<T extends Entry> {
      * @param f
      */
     void setValueFormatter(ValueFormatter f);
+
+    /**
+     * Returns the formatter used for drawing the values inside the chart.
+     *
+     * @return
+     */
+    ValueFormatter getValueFormatter();
 
     /**
      * Sets the color the value-labels of this DataSet should have.
@@ -165,6 +214,27 @@ public interface IDataSet<T extends Entry> {
     void setValueTextSize(float size);
 
     /**
+     * Returns the color that is used for drawing the values inside the chart
+     *
+     * @return
+     */
+    int getValueTextColor();
+
+    /**
+     * Returns the typeface that is used for drawing the values inside the chart
+     *
+     * @return
+     */
+    Typeface getValueTypeface();
+
+    /**
+     * Returns the text size that is used for drawing the values inside the chart
+     *
+     * @return
+     */
+    float getValueTextSize();
+
+    /**
      * set this to true to draw y-values on the chart NOTE (for bar and
      * linechart): if "maxvisiblecount" is reached, no values will be drawn even
      * if this is enabled
@@ -172,4 +242,27 @@ public interface IDataSet<T extends Entry> {
      * @param enabled
      */
     void setDrawValues(boolean enabled);
+
+    /**
+     * Returns true if y-value drawing is enabled, false if not
+     *
+     * @return
+     */
+    boolean isDrawValuesEnabled();
+
+    /**
+     * Set the visibility of this DataSet. If not visible, the DataSet will not
+     * be drawn to the chart upon refreshing it.
+     *
+     * @param visible
+     */
+    void setVisible(boolean visible);
+
+    /**
+     * Returns true if this DataSet is visible inside the chart, or false if it
+     * is currently hidden.
+     *
+     * @return
+     */
+    boolean isVisible();
 }

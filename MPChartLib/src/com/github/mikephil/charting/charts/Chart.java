@@ -318,7 +318,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         calculateFormatter(data.getYMin(), data.getYMax());
 
         for (IDataSet set : mData.getDataSets()) {
-            if (set.needsDefaultFormatter())
+            if (Utils.needsDefaultFormatter(set.getValueFormatter()))
                 set.setValueFormatter(mDefaultFormatter);
         }
 

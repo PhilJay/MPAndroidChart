@@ -101,7 +101,7 @@ public abstract class DataRenderer extends Renderer {
      *
      * @param set
      */
-    protected void applyValueTextStyle(IDataSet<?> set) {
+    protected void applyValueTextStyle(IDataSet set) {
 
         mValuePaint.setColor(set.getValueTextColor());
         mValuePaint.setTypeface(set.getValueTypeface());

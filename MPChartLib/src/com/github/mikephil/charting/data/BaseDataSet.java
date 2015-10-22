@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IBaseDataSet;
 import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.Utils;
 
@@ -13,7 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by philipp on 21/10/15.
+ * Created by Philipp Jahoda on 21/10/15.
+ * This is the base dataset of all DataSets. It's purpose is to implement critical methods
+ * provided by the IDataSet interface.
  */
 public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
 
@@ -66,6 +67,11 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      * the size of the value-text labels
      */
     protected float mValueTextSize = 17f;
+
+    /**
+     * flag that indicates if the DataSet is visible or not
+     */
+    protected boolean mVisible = true;
 
 
     @Override
@@ -183,13 +189,16 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     }
 
     @Override
-    public boolean needsDefaultFormatter() {
-        if (mValueFormatter == null)
-            return true;
-        if (mValueFormatter instanceof DefaultValueFormatter)
-            return true;
+    public int getEntryPosition(T e) {
 
-        return false;
+        List<T> values = getYVals();
+
+        for (int i = 0; i < values.size(); i++) {
+            if (e.equalTo(values.get(i)))
+                return i;
+        }
+
+        return -1;
     }
 
     @Override
@@ -199,6 +208,13 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
             return;
         else
             mValueFormatter = f;
+    }
+
+    @Override
+    public ValueFormatter getValueFormatter() {
+        if (mValueFormatter == null)
+            return new DefaultValueFormatter(1);
+        return mValueFormatter;
     }
 
     @Override
@@ -217,7 +233,89 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     }
 
     @Override
+    public int getValueTextColor() {
+        return mValueColor;
+    }
+
+    @Override
+    public Typeface getValueTypeface() {
+        return mValueTypeface;
+    }
+
+    @Override
+    public float getValueTextSize() {
+        return mValueTextSize;
+    }
+
+    @Override
     public void setDrawValues(boolean enabled) {
         this.mDrawValues = enabled;
+    }
+
+    @Override
+    public boolean isDrawValuesEnabled() {
+        return mDrawValues;
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        mVisible = visible;
+    }
+
+    @Override
+    public boolean isVisible() {
+        return mVisible;
+    }
+
+    @Override
+    public T getEntryForXIndex(int x) {
+
+        List<T> values = getYVals();
+
+        int index = getEntryIndex(x);
+        if (index > -1)
+            return values.get(index);
+        return null;
+    }
+
+    @Override
+    public int getEntryIndex(int x) {
+
+        List<T> values = getYVals();
+
+        int low = 0;
+        int high = values.size() - 1;
+        int closest = -1;
+
+        while (low <= high) {
+            int m = (high + low) / 2;
+
+            if (x == values.get(m).getXIndex()) {
+                while (m > 0 && values.get(m - 1).getXIndex() == x)
+                    m--;
+
+                return m;
+            }
+
+            if (x > values.get(m).getXIndex())
+                low = m + 1;
+            else
+                high = m - 1;
+
+            closest = m;
+        }
+
+        return closest;
+    }
+
+    @Override
+    public float getYValForXIndex(int xIndex) {
+
+        Entry e = getEntryForXIndex(xIndex);
+
+        if (e != null && e.getXIndex() == xIndex)
+            return e.getVal();
+        else
+            return Float.NaN;
     }
 }
