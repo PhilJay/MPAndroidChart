@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.utils.Utils;
 
@@ -46,7 +47,7 @@ public class LimitLine extends ComponentBase {
     /**
      * the drawable of the limit line icon
      */
-    protected int mLimitLineIcon;
+    protected Drawable mLimitLineIcon;
 
     /**
      * flag indicating whether the limit line icon should be drawn
@@ -233,12 +234,12 @@ public class LimitLine extends ComponentBase {
         return mDrawLimitLineIcon;
     }
 
-    public void setLimitLineIconDrawable(int drawable)
+    public void setLimitLineIconDrawable(Drawable drawable)
     {
         mLimitLineIcon = drawable;
     }
 
-    public int getLimitLineIconDrawable()
+    public Drawable getLimitLineIconDrawable()
     {
         return mLimitLineIcon;
     }

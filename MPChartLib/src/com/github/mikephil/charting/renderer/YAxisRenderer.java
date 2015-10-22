@@ -1,13 +1,12 @@
 package com.github.mikephil.charting.renderer;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Path;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.github.mikephil.charting.components.LimitLine;
@@ -448,12 +447,13 @@ public class YAxisRenderer extends AxisRenderer
         }
     }
 
-    public void renderLimitLineIcon(Canvas canvas, int drawableResource)
+    public void renderLimitLineIcon(Canvas canvas, Drawable icon)
     {
-        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), drawableResource);
+        icon.setBounds((int) (mLimitLineEndX - icon.getIntrinsicWidth()),
+                       (int) (mLimitLineY - icon.getIntrinsicHeight() / 2),
+                       (int) ((mLimitLineEndX - icon.getIntrinsicWidth()) + icon.getIntrinsicWidth()),
+                       (int) (mLimitLineY + icon.getIntrinsicHeight() / 2));
 
-        Paint paint = new Paint();
-
-        canvas.drawBitmap(bitmap, mLimitLineEndX - bitmap.getWidth(), mLimitLineY - bitmap.getHeight() / 2, paint);
+        icon.draw(canvas);
     }
 }
