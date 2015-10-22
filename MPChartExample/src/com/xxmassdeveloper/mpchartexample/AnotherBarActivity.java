@@ -1,7 +1,11 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -74,7 +78,7 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
 
         LimitLine limitLine = new LimitLine(20);
         limitLine.setLineColor(Color.WHITE);
-        limitLine.setLimitLineIconDrawable(R.drawable.marker);
+        limitLine.setLimitLineIconDrawable(createTrophyIcon());
 
         yAxis.addLimitLine(limitLine);
 
@@ -96,6 +100,20 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
         // l.setXEntrySpace(6f);
 
         // mChart.setDrawLegend(false);
+    }
+
+    private Drawable createTrophyIcon()
+    {
+        Drawable thumbDrawable = ContextCompat.getDrawable(this, R.drawable.ic_launcher).mutate();
+//        thumbDrawable.setColorFilter(this.getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_IN);
+
+        LayerDrawable thumbContainerDrawable = (LayerDrawable) ContextCompat.getDrawable(this,
+                                                                                         R.drawable.thumb);
+
+
+        thumbContainerDrawable.setDrawableByLayerId(R.id.thumb, thumbDrawable);
+
+        return thumbContainerDrawable;
     }
 
     @Override
