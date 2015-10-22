@@ -10,6 +10,7 @@ import com.github.mikephil.charting.buffer.CandleShadowBuffer;
 import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CandleDataSet;
 import com.github.mikephil.charting.data.CandleEntry;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.ICandleDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.CandleDataProvider;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.highlight.Highlight;
@@ -39,9 +40,9 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
         mBodyBuffers = new CandleBodyBuffer[candleData.getDataSetCount()];
 
         for (int i = 0; i < mShadowBuffers.length; i++) {
-            CandleDataSet set = candleData.getDataSetByIndex(i);
-            mShadowBuffers[i] = new CandleShadowBuffer(set.getValueCount() * 4);
-            mBodyBuffers[i] = new CandleBodyBuffer(set.getValueCount() * 4);
+            ICandleDataSet set = candleData.getDataSetByIndex(i);
+            mShadowBuffers[i] = new CandleShadowBuffer(set.getEntryCount() * 4);
+            mBodyBuffers[i] = new CandleBodyBuffer(set.getEntryCount() * 4);
         }
     }
 
@@ -50,14 +51,14 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
         CandleData candleData = mChart.getCandleData();
 
-        for (CandleDataSet set : candleData.getDataSets()) {
+        for (ICandleDataSet set : candleData.getDataSets()) {
 
             if (set.isVisible() && set.getEntryCount() > 0)
                 drawDataSet(c, set);
         }
     }
 
-    protected void drawDataSet(Canvas c, CandleDataSet dataSet) {
+    protected void drawDataSet(Canvas c, ICandleDataSet dataSet) {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
@@ -177,45 +178,6 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
         }
     }
 
-    // /**
-    // * Transforms the values of an entry in order to draw the candle-body.
-    // *
-    // * @param bodyPoints
-    // * @param e
-    // * @param bodySpace
-    // */
-    // private void transformBody(float[] bodyPoints, CandleEntry e, float
-    // bodySpace, Transformer trans) {
-    //
-    // float phase = mAnimator.getPhaseY();
-    //
-    // bodyPoints[0] = e.getXIndex() - 0.5f + bodySpace;
-    // bodyPoints[1] = e.getClose() * phase;
-    // bodyPoints[2] = e.getXIndex() + 0.5f - bodySpace;
-    // bodyPoints[3] = e.getOpen() * phase;
-    //
-    // trans.pointValuesToPixel(bodyPoints);
-    // }
-    //
-    // /**
-    // * Transforms the values of an entry in order to draw the candle-shadow.
-    // *
-    // * @param shadowPoints
-    // * @param e
-    // */
-    // private void transformShadow(float[] shadowPoints, CandleEntry e,
-    // Transformer trans) {
-    //
-    // float phase = mAnimator.getPhaseY();
-    //
-    // shadowPoints[0] = e.getXIndex();
-    // shadowPoints[1] = e.getHigh() * phase;
-    // shadowPoints[2] = e.getXIndex();
-    // shadowPoints[3] = e.getLow() * phase;
-    //
-    // trans.pointValuesToPixel(shadowPoints);
-    // }
-
     @Override
     public void drawValues(Canvas c) {
 
@@ -223,11 +185,11 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
         if (mChart.getCandleData().getYValCount() < mChart.getMaxVisibleCount()
                 * mViewPortHandler.getScaleX()) {
 
-            List<CandleDataSet> dataSets = mChart.getCandleData().getDataSets();
+            List<ICandleDataSet> dataSets = mChart.getCandleData().getDataSets();
 
             for (int i = 0; i < dataSets.size(); i++) {
 
-                CandleDataSet dataSet = dataSets.get(i);
+                ICandleDataSet dataSet = dataSets.get(i);
 
                 if (!dataSet.isDrawValuesEnabled() || dataSet.getEntryCount() == 0)
                     continue;
@@ -278,7 +240,7 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
             int xIndex = indices[i].getXIndex(); // get the
                                                  // x-position
 
-            CandleDataSet set = mChart.getCandleData().getDataSetByIndex(
+            ICandleDataSet set = mChart.getCandleData().getDataSetByIndex(
                     indices[i].getDataSetIndex());
 
             if (set == null || !set.isHighlightEnabled())

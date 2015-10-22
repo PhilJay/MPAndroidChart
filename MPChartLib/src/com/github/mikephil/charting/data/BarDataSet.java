@@ -3,10 +3,12 @@ package com.github.mikephil.charting.data;
 
 import android.graphics.Color;
 
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IBarDataSet;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> {
+public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> implements IBarDataSet {
 
     /** space indicator between the bars 0.1f == 10 % */
     private float mBarSpace = 0.15f;
@@ -150,21 +152,12 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> {
         }
     }
 
-    /**
-     * Returns the maximum number of bars that can be stacked upon another in
-     * this DataSet.
-     * 
-     * @return
-     */
+    @Override
     public int getStackSize() {
         return mStackSize;
     }
 
-    /**
-     * Returns true if this DataSet is stacked (stacksize > 1) or not.
-     * 
-     * @return
-     */
+    @Override
     public boolean isStacked() {
         return mStackSize > 1 ? true : false;
     }
@@ -188,11 +181,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> {
         return mBarSpace * 100f;
     }
 
-    /**
-     * returns the space between bars as the actual value (0 - 1.0f)
-     * 
-     * @return
-     */
+    @Override
     public float getBarSpace() {
         return mBarSpace;
     }
@@ -217,12 +206,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> {
         mBarShadowColor = color;
     }
 
-    /**
-     * Returns the color used for drawing the bar-shadows. The bar shadows is a
-     * surface behind the bar that indicates the maximum value.
-     * 
-     * @return
-     */
+    @Override
     public int getBarShadowColor() {
         return mBarShadowColor;
     }
@@ -237,12 +221,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> {
         mHighLightAlpha = alpha;
     }
 
-    /**
-     * Returns the alpha value (transparency) that is used for drawing the
-     * highlight indicator.
-     * 
-     * @return
-     */
+    @Override
     public int getHighLightAlpha() {
         return mHighLightAlpha;
     }

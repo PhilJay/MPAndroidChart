@@ -12,6 +12,7 @@ import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.FSize;
 import com.github.mikephil.charting.utils.Utils;
@@ -85,7 +86,7 @@ public class LegendRenderer extends Renderer {
             // loop for building up the colors and labels used in the legend
             for (int i = 0; i < data.getDataSetCount(); i++) {
 
-                DataSet<? extends Entry> dataSet = data.getDataSetByIndex(i);
+                IDataSet dataSet = data.getDataSetByIndex(i);
 
                 List<Integer> clrs = dataSet.getColors();
                 int entryCount = dataSet.getEntryCount();

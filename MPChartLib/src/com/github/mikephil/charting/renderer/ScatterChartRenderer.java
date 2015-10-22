@@ -10,9 +10,9 @@ import com.github.mikephil.charting.buffer.ScatterBuffer;
 import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.ScatterData;
-import com.github.mikephil.charting.data.ScatterDataSet;
-import com.github.mikephil.charting.interfaces.dataprovider.ScatterDataProvider;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IScatterDataSet;
+import com.github.mikephil.charting.interfaces.dataprovider.ScatterDataProvider;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -41,7 +41,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
         mScatterBuffers = new ScatterBuffer[scatterData.getDataSetCount()];
 
         for (int i = 0; i < mScatterBuffers.length; i++) {
-            ScatterDataSet set = scatterData.getDataSetByIndex(i);
+            IScatterDataSet set = scatterData.getDataSetByIndex(i);
             mScatterBuffers[i] = new ScatterBuffer(set.getEntryCount() * 2);
         }
     }
@@ -51,14 +51,14 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
         ScatterData scatterData = mChart.getScatterData();
 
-        for (ScatterDataSet set : scatterData.getDataSets()) {
+        for (IScatterDataSet set : scatterData.getDataSets()) {
 
             if (set.isVisible())
                 drawDataSet(c, set);
         }
     }
 
-    protected void drawDataSet(Canvas c, ScatterDataSet dataSet) {
+    protected void drawDataSet(Canvas c, IScatterDataSet dataSet) {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
@@ -203,11 +203,11 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
         if (mChart.getScatterData().getYValCount() < mChart.getMaxVisibleCount()
                 * mViewPortHandler.getScaleX()) {
 
-            List<ScatterDataSet> dataSets = mChart.getScatterData().getDataSets();
+            List<IScatterDataSet> dataSets = mChart.getScatterData().getDataSets();
 
             for (int i = 0; i < mChart.getScatterData().getDataSetCount(); i++) {
 
-                ScatterDataSet dataSet = dataSets.get(i);
+                IScatterDataSet dataSet = dataSets.get(i);
 
                 if (!dataSet.isDrawValuesEnabled() || dataSet.getEntryCount() == 0)
                     continue;
@@ -251,7 +251,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
         for (int i = 0; i < indices.length; i++) {
 
-            ScatterDataSet set = mChart.getScatterData().getDataSetByIndex(indices[i]
+            IScatterDataSet set = mChart.getScatterData().getDataSetByIndex(indices[i]
                     .getDataSetIndex());
 
             if (set == null || !set.isHighlightEnabled())

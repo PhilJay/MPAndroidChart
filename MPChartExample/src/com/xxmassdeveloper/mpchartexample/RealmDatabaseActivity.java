@@ -103,7 +103,7 @@ public class RealmDatabaseActivity extends DemoBase {
         dataSets.add(set1); // add the datasets
 
         // create a data object with the datasets
-        LineData data = new LineData(null, dataSets);
+        LineData data = new LineData();
 
         // set data
         mChart.setData(data);

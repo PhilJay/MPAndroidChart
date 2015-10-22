@@ -13,12 +13,4 @@ public interface IBarLineScatterCandleBubbleDataSet<T extends Entry> extends IDa
      * @return
      */
     int getHighLightColor();
-
-    /**
-     * Returns true if the dashed-line effect is enabled, false if not.
-     * If the DashPathEffect object is null, also return false here.
-     *
-     * @return
-     */
-    boolean isDashedLineEnabled();
 }

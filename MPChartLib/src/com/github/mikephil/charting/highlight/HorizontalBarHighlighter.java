@@ -1,7 +1,7 @@
 package com.github.mikephil.charting.highlight;
 
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 
 /**
@@ -22,7 +22,7 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 			return h;
 		else {
 
-			BarDataSet set = mChart.getBarData().getDataSetByIndex(h.getDataSetIndex());
+			IBarDataSet set = mChart.getBarData().getDataSetByIndex(h.getDataSetIndex());
 
 			if (set.isStacked()) {
 

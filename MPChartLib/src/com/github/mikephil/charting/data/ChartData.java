@@ -5,10 +5,8 @@ import android.graphics.Typeface;
 import android.util.Log;
 
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
-import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.interfaces.datainterfaces.data.IChartData;
-import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IBaseDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IDataSet;
 
 import java.util.ArrayList;
@@ -223,7 +221,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
             for (int i = 0; i < mDataSets.size(); i++) {
 
-                T set = mDataSets.get(i);
+                IDataSet set = mDataSets.get(i);
                 set.calcMinMax(set.getYVals(), start, end);
 
                 if (set.getYMin() < mYMin)

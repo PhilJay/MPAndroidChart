@@ -141,15 +141,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     /**
-     * Returns the number of entries this DataSet holds.
-     *
-     * @return
-     */
-    public int getValueCount() {
-        return mYVals.size();
-    }
-
-    /**
      * The xIndex of an Entry object is provided. This method returns the actual
      * index in the Entry array of the DataSet. IMPORTANT: This method does
      * calculations at runtime, do not over-use in performance critical

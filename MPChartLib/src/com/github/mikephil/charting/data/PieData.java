@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.data;
 
+import java.nio.channels.FileLock;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,5 +71,17 @@ public class PieData extends ChartData<PieDataSet> {
     public PieDataSet getDataSetByLabel(String label, boolean ignorecase) {
         return ignorecase ? label.equalsIgnoreCase(mDataSets.get(0).getLabel()) ? mDataSets.get(0)
                 : null : label.equals(mDataSets.get(0).getLabel()) ? mDataSets.get(0) : null;
+    }
+
+    public float getYValueSum() {
+
+        float sum = 0;
+
+        List<Entry> values = getDataSet().getYVals();
+
+        for(Entry e : values)
+            sum += e.getVal();
+
+        return sum;
     }
 }

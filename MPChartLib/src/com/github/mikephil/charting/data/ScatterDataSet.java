@@ -71,18 +71,14 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
      * Sets the shape that is drawn on the position where the values are at. If
      * "CUSTOM" is chosen, you need to call setCustomScatterShape(...) and
      * provide a path object that is drawn as the custom scattershape.
-     * 
+     *
      * @param shape
      */
     public void setScatterShape(ScatterShape shape) {
         mScatterShape = shape;
     }
 
-    /**
-     * returns all the different scattershapes the chart uses
-     * 
-     * @return
-     */
+    @Override
     public ScatterShape getScatterShape() {
         return mScatterShape;
     }

@@ -2,7 +2,7 @@ package com.github.mikephil.charting.formatter;
 
 
 import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 
 /**
@@ -13,7 +13,7 @@ import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 public class DefaultFillFormatter implements FillFormatter {
 
     @Override
-    public float getFillLinePosition(LineDataSet dataSet, LineDataProvider dataProvider) {
+    public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
 
         float fillMin = 0f;
         float chartMaxY = dataProvider.getYChartMax();

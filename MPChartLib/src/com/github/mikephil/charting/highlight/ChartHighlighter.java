@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider;
 import com.github.mikephil.charting.utils.SelectionDetail;
 import com.github.mikephil.charting.utils.Utils;
@@ -95,7 +96,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
 
 		for (int i = 0; i < mChart.getData().getDataSetCount(); i++) {
 
-			DataSet<?> dataSet = mChart.getData().getDataSetByIndex(i);
+			IDataSet dataSet = mChart.getData().getDataSetByIndex(i);
 
 			// dont include datasets that cannot be highlighted
 			if (!dataSet.isHighlightEnabled())

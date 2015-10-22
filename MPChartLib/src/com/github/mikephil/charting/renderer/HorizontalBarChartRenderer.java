@@ -10,10 +10,11 @@ import com.github.mikephil.charting.buffer.HorizontalBarBuffer;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.List;
@@ -39,8 +40,8 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
         mBarBuffers = new HorizontalBarBuffer[barData.getDataSetCount()];
 
         for (int i = 0; i < mBarBuffers.length; i++) {
-            BarDataSet set = barData.getDataSetByIndex(i);
-            mBarBuffers[i] = new HorizontalBarBuffer(set.getValueCount() * 4 * set.getStackSize(),
+            IBarDataSet set = barData.getDataSetByIndex(i);
+            mBarBuffers[i] = new HorizontalBarBuffer(set.getEntryCount() * 4 * set.getStackSize(),
                     barData.getGroupSpace(),
                     barData.getDataSetCount(), set.isStacked());
         }
@@ -96,7 +97,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
         // if values are drawn
         if (passesCheck()) {
 
-            List<BarDataSet> dataSets = mChart.getBarData().getDataSets();
+            List<IBarDataSet> dataSets = mChart.getBarData().getDataSets();
 
             final float valueOffsetPlus = Utils.convertDpToPixel(5f);
             float posOffset = 0f;
@@ -105,7 +106,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
             for (int i = 0; i < mChart.getBarData().getDataSetCount(); i++) {
 
-                BarDataSet dataSet = dataSets.get(i);
+                IBarDataSet dataSet = dataSets.get(i);
 
                 if (!dataSet.isDrawValuesEnabled() || dataSet.getEntryCount() == 0)
                     continue;

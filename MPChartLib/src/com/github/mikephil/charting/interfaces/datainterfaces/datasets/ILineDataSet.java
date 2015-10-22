@@ -61,11 +61,19 @@ public interface ILineDataSet extends ILineRadarDataSet<Entry> {
     boolean isDrawCircleHoleEnabled();
 
     /**
-     * Returns the DashPathEffect that is set for this DataSet
+     * Returns the DashPathEffect that is used for drawing the lines.
      *
      * @return
      */
     DashPathEffect getDashPathEffect();
+
+    /**
+     * Returns true if the dashed-line effect is enabled, false if not.
+     * If the DashPathEffect object is null, also return false here.
+     *
+     * @return
+     */
+    boolean isDashedLineEnabled();
 
     /**
      * Returns the FillFormatter that is set for this DataSet.

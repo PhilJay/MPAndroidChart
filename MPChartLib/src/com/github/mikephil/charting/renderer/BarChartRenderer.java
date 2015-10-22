@@ -13,6 +13,7 @@ import com.github.mikephil.charting.buffer.BarBuffer;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.Transformer;
@@ -54,8 +55,8 @@ public class BarChartRenderer extends DataRenderer {
         mBarBuffers = new BarBuffer[barData.getDataSetCount()];
 
         for (int i = 0; i < mBarBuffers.length; i++) {
-            BarDataSet set = barData.getDataSetByIndex(i);
-            mBarBuffers[i] = new BarBuffer(set.getValueCount() * 4 * set.getStackSize(),
+            IBarDataSet set = barData.getDataSetByIndex(i);
+            mBarBuffers[i] = new BarBuffer(set.getEntryCount() * 4 * set.getStackSize(),
                     barData.getGroupSpace(),
                     barData.getDataSetCount(), set.isStacked());
         }
@@ -68,7 +69,7 @@ public class BarChartRenderer extends DataRenderer {
 
         for (int i = 0; i < barData.getDataSetCount(); i++) {
 
-            BarDataSet set = barData.getDataSetByIndex(i);
+            IBarDataSet set = barData.getDataSetByIndex(i);
 
             if (set.isVisible() && set.getEntryCount() > 0) {
                 drawDataSet(c, set, i);
@@ -76,7 +77,7 @@ public class BarChartRenderer extends DataRenderer {
         }
     }
 
-    protected void drawDataSet(Canvas c, BarDataSet dataSet, int index) {
+    protected void drawDataSet(Canvas c, IBarDataSet dataSet, int index) {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
@@ -175,7 +176,7 @@ public class BarChartRenderer extends DataRenderer {
         // if values are drawn
         if (passesCheck()) {
 
-            List<BarDataSet> dataSets = mChart.getBarData().getDataSets();
+            List<IBarDataSet> dataSets = mChart.getBarData().getDataSets();
 
             final float valueOffsetPlus = Utils.convertDpToPixel(4.5f);
             float posOffset = 0f;
@@ -184,7 +185,7 @@ public class BarChartRenderer extends DataRenderer {
 
             for (int i = 0; i < mChart.getBarData().getDataSetCount(); i++) {
 
-                BarDataSet dataSet = dataSets.get(i);
+                IBarDataSet dataSet = dataSets.get(i);
 
                 if (!dataSet.isDrawValuesEnabled() || dataSet.getEntryCount() == 0)
                     continue;
@@ -313,7 +314,7 @@ public class BarChartRenderer extends DataRenderer {
             int index = h.getXIndex();
 
             int dataSetIndex = h.getDataSetIndex();
-            BarDataSet set = mChart.getBarData().getDataSetByIndex(dataSetIndex);
+            IBarDataSet set = mChart.getBarData().getDataSetByIndex(dataSetIndex);
 
             if (set == null || !set.isHighlightEnabled())
                 continue;

@@ -1,6 +1,8 @@
 
 package com.github.mikephil.charting.data;
 
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IBarLineScatterCandleBubbleDataSet;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +12,7 @@ import java.util.List;
  * 
  * @author Philipp Jahoda
  */
-public class CombinedData extends BarLineScatterCandleBubbleData<BarLineScatterCandleBubbleDataSet<?>> {
+public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<?>> {
 
     private LineData mLineData;
     private BarData mBarData;

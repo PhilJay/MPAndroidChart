@@ -10,8 +10,9 @@ import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.data.BubbleEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IBubbleDataSet;
+import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -47,7 +48,7 @@ public class BubbleChartRenderer extends DataRenderer {
 
         BubbleData bubbleData = mChart.getBubbleData();
 
-        for (BubbleDataSet set : bubbleData.getDataSets()) {
+        for (IBubbleDataSet set : bubbleData.getDataSets()) {
 
             if (set.isVisible() && set.getEntryCount() > 0)
                 drawDataSet(c, set);
@@ -63,7 +64,7 @@ public class BubbleChartRenderer extends DataRenderer {
         return shapeSize;
     }
 
-    protected void drawDataSet(Canvas c, BubbleDataSet dataSet) {
+    protected void drawDataSet(Canvas c, IBubbleDataSet dataSet) {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
@@ -72,8 +73,8 @@ public class BubbleChartRenderer extends DataRenderer {
 
         List<BubbleEntry> entries = dataSet.getYVals();
 
-        Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
-        Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
+        BubbleEntry entryFrom = dataSet.getEntryForXIndex(mMinX);
+        BubbleEntry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
         int minx = Math.max(dataSet.getEntryPosition(entryFrom), 0);
         int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
@@ -127,13 +128,13 @@ public class BubbleChartRenderer extends DataRenderer {
         if (bubbleData.getYValCount() < (int) (Math.ceil((float) (mChart.getMaxVisibleCount())
                 * mViewPortHandler.getScaleX()))) {
 
-            final List<BubbleDataSet> dataSets = bubbleData.getDataSets();
+            final List<IBubbleDataSet> dataSets = bubbleData.getDataSets();
 
             float lineHeight = Utils.calcTextHeight(mValuePaint, "1");
 
             for (int i = 0; i < dataSets.size(); i++) {
 
-                BubbleDataSet dataSet = dataSets.get(i);
+                IBubbleDataSet dataSet = dataSets.get(i);
 
                 if (!dataSet.isDrawValuesEnabled() || dataSet.getEntryCount() == 0)
                     continue;
@@ -153,8 +154,8 @@ public class BubbleChartRenderer extends DataRenderer {
 
                 final List<BubbleEntry> entries = dataSet.getYVals();
 
-                Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
-                Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
+                BubbleEntry entryFrom = dataSet.getEntryForXIndex(mMinX);
+                BubbleEntry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
                 int minx = dataSet.getEntryPosition(entryFrom);
                 int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, dataSet.getEntryCount());
@@ -199,13 +200,13 @@ public class BubbleChartRenderer extends DataRenderer {
 
         for (Highlight indice : indices) {
 
-            BubbleDataSet dataSet = bubbleData.getDataSetByIndex(indice.getDataSetIndex());
+            IBubbleDataSet dataSet = bubbleData.getDataSetByIndex(indice.getDataSetIndex());
 
             if (dataSet == null || !dataSet.isHighlightEnabled())
                 continue;
 
-            Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
-            Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
+            BubbleEntry entryFrom = dataSet.getEntryForXIndex(mMinX);
+            BubbleEntry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
             int minx = dataSet.getEntryPosition(entryFrom);
             int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, dataSet.getEntryCount());
