@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.renderer;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -20,8 +21,8 @@ public class XAxisRenderer extends AxisRenderer {
 
     protected XAxis mXAxis;
 
-    public XAxisRenderer(ViewPortHandler viewPortHandler, XAxis xAxis, Transformer trans) {
-        super(viewPortHandler, trans);
+    public XAxisRenderer(ViewPortHandler viewPortHandler, XAxis xAxis, Transformer trans, Context context) {
+        super(viewPortHandler, trans, context);
 
         this.mXAxis = xAxis;
 

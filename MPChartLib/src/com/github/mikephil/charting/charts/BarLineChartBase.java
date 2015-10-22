@@ -132,19 +132,24 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     protected XAxisRenderer mXAxisRenderer;
 
+    protected Context mContext;
+
     // /** the approximator object used for data filtering */
     // private Approximator mApproximator;
 
-    public BarLineChartBase(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+    public BarLineChartBase(Context mContext, AttributeSet attrs, int defStyle) {
+        super(mContext, attrs, defStyle);
+        this.mContext = mContext;
     }
 
-    public BarLineChartBase(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public BarLineChartBase(Context mContext, AttributeSet attrs) {
+        super(mContext, attrs);
+        this.mContext = mContext;
     }
 
-    public BarLineChartBase(Context context) {
-        super(context);
+    public BarLineChartBase(Context mContext) {
+        super(mContext);
+        this.mContext = mContext;
     }
 
     @Override
@@ -159,10 +164,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         mLeftAxisTransformer = new Transformer(mViewPortHandler);
         mRightAxisTransformer = new Transformer(mViewPortHandler);
 
-        mAxisRendererLeft = new YAxisRenderer(mViewPortHandler, mAxisLeft, mLeftAxisTransformer);
-        mAxisRendererRight = new YAxisRenderer(mViewPortHandler, mAxisRight, mRightAxisTransformer);
+        mAxisRendererLeft = new YAxisRenderer(mViewPortHandler, mAxisLeft, mLeftAxisTransformer, getContext());
+        mAxisRendererRight = new YAxisRenderer(mViewPortHandler, mAxisRight, mRightAxisTransformer, getContext());
 
-        mXAxisRenderer = new XAxisRenderer(mViewPortHandler, mXAxis, mLeftAxisTransformer);
+        mXAxisRenderer = new XAxisRenderer(mViewPortHandler, mXAxis, mLeftAxisTransformer, getContext());
 
         mHighlighter = new ChartHighlighter(this);
 

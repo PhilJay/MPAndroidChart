@@ -1,6 +1,6 @@
-
 package com.xxmassdeveloper.mpchartexample;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,8 +11,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -24,17 +26,20 @@ import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 
-public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListener {
+public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListener
+{
 
     private BarChart mChart;
+
     private SeekBar mSeekBarX, mSeekBarY;
+
     private TextView tvX, tvY;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_barchart);
 
         tvX = (TextView) findViewById(R.id.tvXMax);
@@ -64,7 +69,15 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
         xAxis.setPosition(XAxisPosition.BOTTOM);
         xAxis.setSpaceBetweenLabels(0);
         xAxis.setDrawGridLines(false);
-        
+
+        YAxis yAxis = mChart.getAxisLeft();
+
+        LimitLine limitLine = new LimitLine(20);
+        limitLine.setLineColor(Color.WHITE);
+        limitLine.setLimitLineIconDrawable(R.drawable.marker);
+
+        yAxis.addLimitLine(limitLine);
+
         mChart.getAxisLeft().setDrawGridLines(false);
 
         // setting data
@@ -73,7 +86,7 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
 
         // add a nice and smooth animation
         mChart.animateY(2500);
-        
+
         mChart.getLegend().setEnabled(false);
 
         // Legend l = mChart.getLegend();
@@ -86,92 +99,122 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         getMenuInflater().inflate(R.menu.bar, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
 
-        switch (item.getItemId()) {
-            case R.id.actionToggleValues: {
+        switch (item.getItemId())
+        {
+            case R.id.actionToggleValues:
+            {
 
                 for (DataSet<?> set : mChart.getData().getDataSets())
+                {
                     set.setDrawValues(!set.isDrawValuesEnabled());
+                }
 
                 mChart.invalidate();
                 break;
             }
-            case R.id.actionToggleHighlight: {
+            case R.id.actionToggleHighlight:
+            {
 
-                if(mChart.getData() != null) {
+                if (mChart.getData() != null)
+                {
                     mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
                     mChart.invalidate();
                 }
                 break;
             }
-            case R.id.actionTogglePinch: {
+            case R.id.actionTogglePinch:
+            {
                 if (mChart.isPinchZoomEnabled())
+                {
                     mChart.setPinchZoom(false);
+                }
                 else
+                {
                     mChart.setPinchZoom(true);
+                }
 
                 mChart.invalidate();
                 break;
             }
-            case R.id.actionToggleAutoScaleMinMax: {
+            case R.id.actionToggleAutoScaleMinMax:
+            {
                 mChart.setAutoScaleMinMaxEnabled(!mChart.isAutoScaleMinMaxEnabled());
                 mChart.notifyDataSetChanged();
                 break;
             }
-            case R.id.actionToggleHighlightArrow: {
+            case R.id.actionToggleHighlightArrow:
+            {
                 if (mChart.isDrawHighlightArrowEnabled())
+                {
                     mChart.setDrawHighlightArrow(false);
+                }
                 else
+                {
                     mChart.setDrawHighlightArrow(true);
+                }
                 mChart.invalidate();
                 break;
             }
-            case R.id.actionToggleStartzero: {
-                
+            case R.id.actionToggleStartzero:
+            {
+
                 mChart.getAxisLeft().setStartAtZero(!mChart.getAxisLeft().isStartAtZeroEnabled());
                 mChart.getAxisRight().setStartAtZero(!mChart.getAxisRight().isStartAtZeroEnabled());
                 mChart.invalidate();
                 break;
             }
-            case R.id.animateX: {
+            case R.id.animateX:
+            {
                 mChart.animateX(3000);
                 break;
             }
-            case R.id.animateY: {
+            case R.id.animateY:
+            {
                 mChart.animateY(3000);
                 break;
             }
-            case R.id.animateXY: {
+            case R.id.animateXY:
+            {
 
                 mChart.animateXY(3000, 3000);
                 break;
             }
-            case R.id.actionToggleFilter: {
+            case R.id.actionToggleFilter:
+            {
 
                 Approximator a = new Approximator(ApproximatorType.DOUGLAS_PEUCKER, 25);
 
-                if (!mChart.isFilteringEnabled()) {
+                if (!mChart.isFilteringEnabled())
+                {
                     mChart.enableFiltering(a);
-                } else {
+                }
+                else
+                {
                     mChart.disableFiltering();
                 }
                 mChart.invalidate();
                 break;
             }
-            case R.id.actionSave: {
-                if (mChart.saveToGallery("title" + System.currentTimeMillis(), 50)) {
-                    Toast.makeText(getApplicationContext(), "Saving SUCCESSFUL!",
-                            Toast.LENGTH_SHORT).show();
-                } else
-                    Toast.makeText(getApplicationContext(), "Saving FAILED!", Toast.LENGTH_SHORT)
-                            .show();
+            case R.id.actionSave:
+            {
+                if (mChart.saveToGallery("title" + System.currentTimeMillis(), 50))
+                {
+                    Toast.makeText(getApplicationContext(), "Saving SUCCESSFUL!", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), "Saving FAILED!", Toast.LENGTH_SHORT).show();
+                }
                 break;
             }
         }
@@ -179,21 +222,24 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
     }
 
     @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+    {
 
         tvX.setText("" + (mSeekBarX.getProgress() + 1));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
 
-        for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
+        for (int i = 0; i < mSeekBarX.getProgress() + 1; i++)
+        {
             float mult = (mSeekBarY.getProgress() + 1);
             float val1 = (float) (Math.random() * mult) + mult / 3;
             yVals1.add(new BarEntry((int) val1, i));
         }
 
         ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
+        for (int i = 0; i < mSeekBarX.getProgress() + 1; i++)
+        {
             xVals.add((int) yVals1.get(i).getVal() + "");
         }
 
@@ -211,13 +257,15 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
     }
 
     @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
+    public void onStartTrackingTouch(SeekBar seekBar)
+    {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
+    public void onStopTrackingTouch(SeekBar seekBar)
+    {
         // TODO Auto-generated method stub
 
     }
