@@ -485,7 +485,8 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
             LineDataSet dataSet = dataSets.get(i);
 
-            if (!dataSet.isVisible() || !dataSet.isDrawCirclesEnabled())
+            if (!dataSet.isVisible() || !dataSet.isDrawCirclesEnabled() ||
+                    dataSet.getEntryCount() == 0)
                 continue;
 
             mCirclePaintInner.setColor(dataSet.getCircleHoleColor());
