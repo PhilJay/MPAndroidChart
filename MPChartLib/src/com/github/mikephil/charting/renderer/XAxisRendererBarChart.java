@@ -60,15 +60,16 @@ public class XAxisRendererBarChart extends XAxisRenderer {
                     if (i == mXAxis.getValues().size() - 1) {
                         float width = Utils.calcTextWidth(mAxisLabelPaint, label);
 
-                        if (width > mViewPortHandler.offsetRight() * 2
-                                && position[0] + width > mViewPortHandler.getChartWidth())
-                            position[0] -= width / 2;
+                        if (position[0] + width / 2.f > mViewPortHandler.contentRight())
+                            position[0] = mViewPortHandler.contentRight() - (width / 2.f);
 
                         // avoid clipping of the first
                     } else if (i == 0) {
 
                         float width = Utils.calcTextWidth(mAxisLabelPaint, label);
-                        position[0] += width / 2;
+
+                        if (position[0] - width / 2.f < mViewPortHandler.contentLeft())
+                            position[0] = mViewPortHandler.contentLeft() + (width / 2.f);
                     }
                 }
 
