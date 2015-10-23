@@ -105,6 +105,10 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
         }
 
         mDeltaX = Math.abs(mXChartMax - mXChartMin);
+
+        if (mDeltaX == 0.f && getLineData() != null && getLineData().getYValCount() > 0) {
+            mDeltaX = 1.f;
+        }
     }
 
     @Override

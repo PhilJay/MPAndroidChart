@@ -573,14 +573,12 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
     /**
      * Highlights the values represented by the provided Highlight object
+     * This DOES NOT generate a callback to the OnChartValueSelectedListener.
      *
      * @param highlight contains information about which entry should be highlighted
      */
     public void highlightValue(Highlight highlight) {
-        if (highlight == null)
-            highlightValues(null);
-        else
-            highlightValues(new Highlight[]{highlight});
+        highlightValue(highlight);
     }
 
     /**
@@ -588,9 +586,10 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * highlightValues(...), this generates a callback to the
      * OnChartValueSelectedListener.
      *
-     * @param high
+     * @param high - the highlight object
+     * @param callListener - call the listener
      */
-    public void highlightTouch(Highlight high) {
+    public void highlightValue(Highlight high, boolean callListener) {
 
         Entry e = null;
 
@@ -613,7 +612,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             }
         }
 
-        if (mSelectionListener != null) {
+        if (callListener && mSelectionListener != null) {
 
             if (!valuesToHighlight())
                 mSelectionListener.onNothingSelected();
@@ -624,6 +623,14 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         }
         // redraw the chart
         invalidate();
+    }
+
+    /**
+     * Deprecated. Calls highlightValue(high, true)
+     */
+    @Deprecated
+    public void highlightTouch(Highlight high) {
+        highlightValue(high, true);
     }
 
     /**
