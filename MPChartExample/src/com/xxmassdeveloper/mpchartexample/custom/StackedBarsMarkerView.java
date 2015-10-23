@@ -50,13 +50,13 @@ public class StackedBarsMarkerView extends MarkerView {
     }
 
     @Override
-    public int getXOffset() {
+    public int getXOffset(float xpos) {
         // this will center the marker-view horizontally
         return -(getWidth() / 2);
     }
 
     @Override
-    public int getYOffset() {
+    public int getYOffset(float ypos) {
         // this will cause the marker-view to be above the selected value
         return -getHeight();
     }
