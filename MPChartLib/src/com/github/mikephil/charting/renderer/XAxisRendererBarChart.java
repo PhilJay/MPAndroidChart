@@ -73,6 +73,8 @@ public class XAxisRendererBarChart extends XAxisRenderer {
                     }
                 }
 
+                // find available bounds for the label at index i
+                mViewPortHandler.setXLabelRect(mChart.getBarBounds(i, pos));
                 drawLabel(c, label, i, position[0], pos);
             }
         }
