@@ -4,6 +4,7 @@ package com.github.mikephil.charting.utils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
@@ -34,6 +35,8 @@ public abstract class Utils {
     private static DisplayMetrics mMetrics;
     private static int mMinimumFlingVelocity = 50;
     private static int mMaximumFlingVelocity = 8000;
+    public final static double DEG2RAD = (Math.PI / 180.0);
+    public final static float FDEG2RAD = ((float)Math.PI / 180.f);
 
     /**
      * initialize method, called inside the Chart.init() method.
@@ -515,4 +518,93 @@ public abstract class Utils {
 
         return angle % 360.f;
     }
+
+    private static Rect mDrawTextRectBuffer = new Rect();
+
+    public static void drawText(Canvas c, String text, float x, float y, Paint paint, PointF anchor, float angleDegrees) {
+
+        float drawOffsetX = 0.f;
+        float drawOffsetY = 0.f;
+
+        paint.getTextBounds(text, 0, text.length(), mDrawTextRectBuffer);
+
+        // Android sometimes has pre-padding
+        drawOffsetX -= mDrawTextRectBuffer.left;
+
+        // Android sets the top = - (lineheight), and we want to normalize it to the center
+        drawOffsetY -= mDrawTextRectBuffer.top;
+
+        // To have a consistent point of reference, we always draw left-aligned
+        Paint.Align originalTextAlign = paint.getTextAlign();
+        paint.setTextAlign(Paint.Align.LEFT);
+
+        if (angleDegrees != 0.f) {
+
+            // Move the text drawing rect in a way that it always rotates around its center
+            drawOffsetX -= mDrawTextRectBuffer.width() * 0.5f;
+            drawOffsetY -= mDrawTextRectBuffer.height() * 0.5f;
+
+            float translateX = x;
+            float translateY = y;
+
+            // Move the "outer" rect relative to the anchor, assuming its centered
+            if (anchor.x != 0.5f || anchor.y != 0.5f) {
+                final FSize rotatedSize = getSizeOfRotatedRectangleByDegrees(
+                        mDrawTextRectBuffer.width(),
+                        mDrawTextRectBuffer.height(),
+                        angleDegrees);
+
+                translateX -= rotatedSize.width * (anchor.x - 0.5f);
+                translateY -= rotatedSize.height * (anchor.y - 0.5f);
+            }
+
+            c.save();
+            c.translate(translateX, translateY);
+            c.rotate(angleDegrees);
+
+            c.drawText(text, drawOffsetX, drawOffsetY, paint);
+
+            c.restore();
+        }
+        else {
+            if (anchor.x != 0.f || anchor.y != 0.f) {
+
+                drawOffsetX -= mDrawTextRectBuffer.width() * anchor.x;
+                drawOffsetY -= mDrawTextRectBuffer.height() * anchor.y;
+            }
+
+            drawOffsetX += x;
+            drawOffsetY += y;
+
+            c.drawText(text, drawOffsetX, drawOffsetY, paint);
+        }
+
+        paint.setTextAlign(originalTextAlign);
+    }
+
+    public static FSize getSizeOfRotatedRectangleByDegrees(FSize rectangleSize, float degrees)
+    {
+        final float radians = degrees * FDEG2RAD;
+        return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height, radians);
+    }
+
+    public static FSize getSizeOfRotatedRectangleByRadians(FSize rectangleSize, float radians)
+    {
+        return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height, radians);
+    }
+
+    public static FSize getSizeOfRotatedRectangleByDegrees(float rectangleWidth, float rectangleHeight, float degrees)
+    {
+        final float radians = degrees * FDEG2RAD;
+        return getSizeOfRotatedRectangleByRadians(rectangleWidth, rectangleHeight, radians);
+    }
+
+    public static FSize getSizeOfRotatedRectangleByRadians(float rectangleWidth, float rectangleHeight, float radians)
+    {
+        return new FSize(
+                Math.abs(rectangleWidth * (float)Math.cos(radians)) + Math.abs(rectangleHeight * (float)Math.sin(radians)),
+                Math.abs(rectangleWidth * (float)Math.sin(radians)) + Math.abs(rectangleHeight * (float)Math.cos(radians))
+        );
+    }
+
 }

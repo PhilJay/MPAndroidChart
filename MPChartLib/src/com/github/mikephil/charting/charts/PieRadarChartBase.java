@@ -218,7 +218,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
             XAxis x = ((RadarChart) this).getXAxis();
 
             if (x.isEnabled() && x.isDrawLabelsEnabled()) {
-                minOffset = Math.max(minOffset, x.mLabelWidth);
+                minOffset = Math.max(minOffset, x.mLabelRotatedWidth);
             }
         }
 

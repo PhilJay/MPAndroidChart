@@ -2,6 +2,7 @@
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
+import android.graphics.PointF;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -27,7 +28,9 @@ public class XAxisRendererBarChart extends XAxisRenderer {
      * @param pos
      */
     @Override
-    protected void drawLabels(Canvas c, float pos) {
+    protected void drawLabels(Canvas c, float pos, PointF anchor) {
+
+        final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
 
         // pre allocate to save performance (dont allocate in loop)
         float[] position = new float[] {
@@ -73,7 +76,7 @@ public class XAxisRendererBarChart extends XAxisRenderer {
                     }
                 }
 
-                drawLabel(c, label, i, position[0], pos);
+                drawLabel(c, label, i, position[0], pos, anchor, labelRotationAngleDegrees);
             }
         }
     }

@@ -578,7 +578,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * @param highlight contains information about which entry should be highlighted
      */
     public void highlightValue(Highlight highlight) {
-        highlightValue(highlight);
+        highlightValue(highlight, false);
     }
 
     /**
