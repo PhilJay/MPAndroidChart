@@ -108,7 +108,7 @@ public class HorizontalBarChart extends BarChart {
 			offsetBottom += mAxisRight.getRequiredHeightSpace(mAxisRendererRight.getPaintAxisLabels());
 		}
 
-		float xlabelwidth = mXAxis.mLabelWidth;
+		float xlabelwidth = mXAxis.mLabelRotatedWidth;
 
 		if (mXAxis.isEnabled()) {
 
@@ -162,7 +162,8 @@ public class HorizontalBarChart extends BarChart {
 		float[] values = new float[9];
 		mViewPortHandler.getMatrixTouch().getValues(values);
 
-		mXAxis.mAxisLabelModulus = (int) Math.ceil((mData.getXValCount() * mXAxis.mLabelHeight)
+		mXAxis.mAxisLabelModulus =
+				(int) Math.ceil((mData.getXValCount() * mXAxis.mLabelRotatedHeight)
 				/ (mViewPortHandler.contentHeight() * values[Matrix.MSCALE_Y]));
 
 		if (mXAxis.mAxisLabelModulus < 1)
