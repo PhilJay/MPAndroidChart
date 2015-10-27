@@ -5,12 +5,14 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Path;
+import android.graphics.PointF;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.utils.FSize;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -32,8 +34,21 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
         mXAxis.setValues(xValues);
 
         String longest = mXAxis.getLongestLabel();
-        mXAxis.mLabelWidth = (int) (Utils.calcTextWidth(mAxisLabelPaint, longest) + mXAxis.getXOffset() * 3.5f);
-        mXAxis.mLabelHeight = Utils.calcTextHeight(mAxisLabelPaint, longest);
+
+        final FSize labelSize = Utils.calcTextSize(mAxisLabelPaint, longest);
+
+        final float labelWidth = (int)(labelSize.width + mXAxis.getXOffset() * 3.5f);
+        final float labelHeight = labelSize.height;
+
+        final FSize labelRotatedSize = Utils.getSizeOfRotatedRectangleByDegrees(
+                labelSize.width,
+                labelHeight,
+                mXAxis.getLabelRotationAngle());
+
+        mXAxis.mLabelWidth = Math.round(labelWidth);
+        mXAxis.mLabelHeight = Math.round(labelHeight);
+        mXAxis.mLabelRotatedWidth = (int)(labelRotatedSize.width + mXAxis.getXOffset() * 3.5f);
+        mXAxis.mLabelRotatedHeight = Math.round(labelRotatedSize.height);
     }
 
     @Override
@@ -50,30 +65,30 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
 
         if (mXAxis.getPosition() == XAxisPosition.TOP) {
 
-            mAxisLabelPaint.setTextAlign(Align.LEFT);
-            drawLabels(c, mViewPortHandler.contentRight() + xoffset);
-
-        } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
-
-            mAxisLabelPaint.setTextAlign(Align.RIGHT);
-            drawLabels(c, mViewPortHandler.contentLeft() - xoffset);
-
-        } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM_INSIDE) {
-
-            mAxisLabelPaint.setTextAlign(Align.LEFT);
-            drawLabels(c, mViewPortHandler.contentLeft() + xoffset);
+            drawLabels(c, mViewPortHandler.contentRight() + xoffset,
+                    new PointF(0.0f, 0.5f));
 
         } else if (mXAxis.getPosition() == XAxisPosition.TOP_INSIDE) {
 
-            mAxisLabelPaint.setTextAlign(Align.RIGHT);
-            drawLabels(c, mViewPortHandler.contentRight() - xoffset);
+            drawLabels(c, mViewPortHandler.contentRight() - xoffset,
+                    new PointF(1.0f, 0.5f));
+
+        } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
+
+            drawLabels(c, mViewPortHandler.contentLeft() - xoffset,
+                    new PointF(1.0f, 0.5f));
+
+        } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM_INSIDE) {
+
+            drawLabels(c, mViewPortHandler.contentLeft() + xoffset,
+                    new PointF(0.0f, 0.5f));
 
         } else { // BOTH SIDED
 
-            mAxisLabelPaint.setTextAlign(Align.RIGHT);
-            drawLabels(c, mViewPortHandler.contentLeft() - xoffset);
-            mAxisLabelPaint.setTextAlign(Align.LEFT);
-            drawLabels(c, mViewPortHandler.contentRight() + xoffset);
+            drawLabels(c, mViewPortHandler.contentRight() + xoffset,
+                    new PointF(0.0f, 0.5f));
+            drawLabels(c, mViewPortHandler.contentLeft() - xoffset,
+                    new PointF(1.0f, 0.5f));
         }
     }
 
@@ -83,7 +98,9 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
      * @param pos
      */
     @Override
-    protected void drawLabels(Canvas c, float pos) {
+    protected void drawLabels(Canvas c, float pos, PointF anchor) {
+
+        final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
 
         // pre allocate to save performance (dont allocate in loop)
         float[] position = new float[] {
@@ -108,7 +125,7 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
             if (mViewPortHandler.isInBoundsY(position[1])) {
 
                 String label = mXAxis.getValues().get(i);
-                drawLabel(c, label, i, pos, position[1] + mXAxis.mLabelHeight / 2f);
+                drawLabel(c, label, i, pos, position[1], anchor, labelRotationAngleDegrees);
             }
         }
     }

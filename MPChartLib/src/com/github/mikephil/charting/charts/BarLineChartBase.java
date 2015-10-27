@@ -489,7 +489,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
             if (mXAxis.isEnabled() && mXAxis.isDrawLabelsEnabled()) {
 
-                float xlabelheight = mXAxis.mLabelHeight * 2f;
+                float xlabelheight = mXAxis.mLabelRotatedHeight + mXAxis.getYOffset();
 
                 // offsets for x-labels
                 if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
@@ -545,14 +545,16 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             mViewPortHandler.getMatrixTouch().getValues(values);
 
             mXAxis.mAxisLabelModulus = (int) Math
-                    .ceil((mData.getXValCount() * mXAxis.mLabelWidth)
+                    .ceil((mData.getXValCount() * mXAxis.mLabelRotatedWidth)
                             / (mViewPortHandler.contentWidth() * values[Matrix.MSCALE_X]));
 
         }
 
         if (mLogEnabled)
-            Log.i(LOG_TAG, "X-Axis modulus: " + mXAxis.mAxisLabelModulus + ", x-axis label width: "
-                    + mXAxis.mLabelWidth + ", content width: " + mViewPortHandler.contentWidth());
+            Log.i(LOG_TAG, "X-Axis modulus: " + mXAxis.mAxisLabelModulus +
+                    ", x-axis label width: " + mXAxis.mLabelWidth +
+                    ", x-axis label rotated width: " + mXAxis.mLabelRotatedWidth +
+                    ", content width: " + mViewPortHandler.contentWidth());
 
         if (mXAxis.mAxisLabelModulus < 1)
             mXAxis.mAxisLabelModulus = 1;
