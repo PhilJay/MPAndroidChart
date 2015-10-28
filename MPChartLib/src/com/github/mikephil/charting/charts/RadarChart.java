@@ -99,8 +99,8 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         mInnerWebLineWidth = Utils.convertDpToPixel(0.75f);
 
         mRenderer = new RadarChartRenderer(this, mAnimator, mViewPortHandler);
-        mYAxisRenderer = new YAxisRendererRadarChart(mViewPortHandler, mYAxis, this);
-        mXAxisRenderer = new XAxisRendererRadarChart(mViewPortHandler, mXAxis, this);
+        mYAxisRenderer = new YAxisRendererRadarChart(mViewPortHandler, mYAxis, this, getContext());
+        mXAxisRenderer = new XAxisRendererRadarChart(mViewPortHandler, mXAxis, this, getContext());
     }
 
     @Override

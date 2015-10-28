@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.renderer;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 
@@ -13,8 +14,8 @@ public class XAxisRendererRadarChart extends XAxisRenderer {
 
     private RadarChart mChart;
 
-    public XAxisRendererRadarChart(ViewPortHandler viewPortHandler, XAxis xAxis, RadarChart chart) {
-        super(viewPortHandler, xAxis, null);
+    public XAxisRendererRadarChart(ViewPortHandler viewPortHandler, XAxis xAxis, RadarChart chart, Context context) {
+        super(viewPortHandler, xAxis, null, context);
 
         mChart = chart;
     }
