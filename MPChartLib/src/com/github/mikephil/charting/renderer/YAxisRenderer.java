@@ -387,7 +387,11 @@ public class YAxisRenderer extends AxisRenderer
             limitLinePath.lineTo(mLimitLineEndX, mLimitLineY);
 
             c.drawPath(limitLinePath, mLimitLinePaint);
-            renderLimitLineIcon(c, l.getLimitLineIconDrawable());
+            Drawable icon = l.getLimitLineIconDrawable();
+            if (icon != null)
+            {
+                renderLimitLineIcon(c, icon);
+            }
 
             limitLinePath.reset();
             // c.drawLines(pts, mLimitLinePaint);
