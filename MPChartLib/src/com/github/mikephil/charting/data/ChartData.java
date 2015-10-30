@@ -930,23 +930,23 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         notifyDataChanged();
     }
 
-    /**
-     * Checks if this data object contains the specified Entry. Returns true if
-     * so, false if not. NOTE: Performance is pretty bad on this one, do not
-     * over-use in performance critical situations.
-     *
-     * @param e
-     * @return
-     */
-    public boolean contains(Entry e) {
-
-        for (T set : mDataSets) {
-            if (set.contains(e))
-                return true;
-        }
-
-        return false;
-    }
+//    /**
+//     * Checks if this data object contains the specified Entry. Returns true if
+//     * so, false if not. NOTE: Performance is pretty bad on this one, do not
+//     * over-use in performance critical situations.
+//     *
+//     * @param e
+//     * @return
+//     */
+//    public boolean contains(Entry e) {
+//
+//        for (T set : mDataSets) {
+//            if (set.contains(e))
+//                return true;
+//        }
+//
+//        return false;
+//    }
 
     /**
      * Checks if this data object contains the specified DataSet. Returns true
