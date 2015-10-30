@@ -4,7 +4,6 @@ import android.graphics.Typeface;
 
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.util.List;
@@ -14,12 +13,7 @@ import java.util.List;
  */
 public interface IDataSet<T extends Entry> {
 
-    /**
-     * Returns the label string that describes the DataSet.
-     *
-     * @return
-     */
-    String getLabel();
+    /** ###### ###### DATA RELATED METHODS ###### ###### */
 
     /**
      * returns the DataSets Entry array
@@ -43,11 +37,91 @@ public interface IDataSet<T extends Entry> {
     float getYMax();
 
     /**
-     * returns the number of y-values this DataSet represents -> yvals.size()
+     * Returns the number of y-values this DataSet represents -> the size of the y-values array
+     * -> yvals.size()
      *
      * @return
      */
     int getEntryCount();
+
+    /**
+     * Calculates the minimum and maximum y value (mYMin, mYMax)
+     */
+    void calcMinMax(List<T> values, int start, int end);
+
+    /**
+     * Returns the first Entry object found at the given xIndex with binary
+     * search. If the no Entry at the specified x-index is found, this method
+     * returns the index at the closest x-index. Returns null if no Entry object
+     * at that index. INFORMATION: This method does calculations at runtime. Do
+     * not over-use in performance critical situations.
+     *
+     * @param x
+     * @return
+     */
+    T getEntryForXIndex(int x);
+
+    /**
+     * Returns the first Entry index found at the given xIndex with binary
+     * search. If the no Entry at the specified x-index is found, this method
+     * returns the index at the closest x-index. Returns -1 if no Entry object
+     * at that index. INFORMATION: This method does calculations at runtime. Do
+     * not over-use in performance critical situations.
+     *
+     * @param x
+     * @return
+     */
+    int getEntryIndex(int x);
+
+    /**
+     * Returns the position of the provided entry in the DataSets Entry array.
+     * Returns -1 if doesn't exist.
+     *
+     * @param e
+     * @return
+     */
+    int getEntryPosition(T e);
+
+    /**
+     * Returns the value of the Entry object at the given xIndex. Returns
+     * Float.NaN if no value is at the given x-index. INFORMATION: This method
+     * does calculations at runtime. Do not over-use in performance critical
+     * situations.
+     *
+     * @param xIndex
+     * @return
+     */
+    float getYValForXIndex(int xIndex);
+
+    /**
+     * Adds an Entry to the DataSet dynamically.
+     * Entries are added to the end of the list.
+     * This will also recalculate the current minimum and maximum
+     * values of the DataSet and the value-sum.
+     *
+     * @param e
+     */
+    void addEntry(T e);
+
+    /**
+     * Removes an Entry from the DataSets entries array. This will also
+     * recalculate the current minimum and maximum values of the DataSet and the
+     * value-sum. Returns true if an Entry was removed, false if no Entry could
+     * be removed.
+     *
+     * @param e
+     */
+    boolean removeEntry(T e);
+
+
+    /** ###### ###### STYLING RELATED (& OTHER) METHODS ###### ###### */
+
+    /**
+     * Returns the label string that describes the DataSet.
+     *
+     * @return
+     */
+    String getLabel();
 
     /**
      * Returns the axis this DataSet should be plotted against.
@@ -81,56 +155,6 @@ public interface IDataSet<T extends Entry> {
     int getColor(int index);
 
     /**
-     * calc minimum and maximum y value
-     */
-    void calcMinMax(List<T> values, int start, int end);
-
-    /**
-     * Returns the first Entry object found at the given xIndex with binary
-     * search. If the no Entry at the specified x-index is found, this method
-     * returns the index at the closest x-index. Returns null if no Entry object
-     * at that index. INFORMATION: This method does calculations at runtime. Do
-     * not over-use in performance critical situations.
-     *
-     * @param x
-     * @return
-     */
-    T getEntryForXIndex(int x);
-
-    /**
-     * Returns the first Entry index found at the given xIndex with binary
-     * search. If the no Entry at the specified x-index is found, this method
-     * returns the index at the closest x-index. Returns -1 if no Entry object
-     * at that index. INFORMATION: This method does calculations at runtime. Do
-     * not over-use in performance critical situations.
-     *
-     * @param x
-     * @return
-     */
-    int getEntryIndex(int x);
-
-    /**
-     * Returns the value of the Entry object at the given xIndex. Returns
-     * Float.NaN if no value is at the given x-index. INFORMATION: This method
-     * does calculations at runtime. Do not over-use in performance critical
-     * situations.
-     *
-     * @param xIndex
-     * @return
-     */
-    float getYValForXIndex(int xIndex);
-
-    /**
-     * Checks if this DataSet contains the specified Entry. Returns true if so,
-     * false if not. NOTE: Performance is pretty bad on this one, do not
-     * over-use in performance critical situations.
-     *
-     * @param e
-     * @return
-     */
-    boolean contains(Entry e);
-
-    /**
      * returns true if highlighting of values is enabled, false if not
      *
      * @return
@@ -144,35 +168,6 @@ public interface IDataSet<T extends Entry> {
      * @param enabled
      */
     void setHighlightEnabled(boolean enabled);
-
-    /**
-     * Adds an Entry to the DataSet dynamically.
-     * Entries are added to the end of the list.
-     * This will also recalculate the current minimum and maximum
-     * values of the DataSet and the value-sum.
-     *
-     * @param e
-     */
-    void addEntry(T e);
-
-    /**
-     * Removes an Entry from the DataSets entries array. This will also
-     * recalculate the current minimum and maximum values of the DataSet and the
-     * value-sum. Returns true if an Entry was removed, false if no Entry could
-     * be removed.
-     *
-     * @param e
-     */
-    boolean removeEntry(T e);
-
-    /**
-     * Returns the position of the provided entry in the DataSets Entry array.
-     * Returns -1 if doesn't exist.
-     *
-     * @param e
-     * @return
-     */
-    int getEntryPosition(T e);
 
     /**
      * Sets the formatter to be used for drawing the values inside the chart. If

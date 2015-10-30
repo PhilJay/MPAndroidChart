@@ -3,14 +3,9 @@ package com.github.mikephil.charting.data;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
 
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
-import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.formatter.DefaultValueFormatter;
-import com.github.mikephil.charting.utils.Utils;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,19 +26,14 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     protected List<T> mYVals = null;
 
     /**
-     * List representing all colors that are used for this DataSet
+     * maximum y-value in the y-value array
      */
-    protected List<Integer> mColors = null;
+    protected float mYMax = 0.0f;
 
     /**
-     * label that describes the DataSet or the data the DataSet represents
+     * the minimum y-value in the y-value array
      */
-    private String mLabel = "DataSet";
-
-    /**
-     * this specifies which axis this DataSet should be plotted against
-     */
-    protected AxisDependency mAxisDependency = AxisDependency.LEFT;
+    protected float mYMin = 0.0f;
 
 
     /**
@@ -55,8 +45,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
      * @param label
      */
     public DataSet(List<T> yVals, String label) {
-
-        this.mLabel = label;
+        super(label);
         this.mYVals = yVals;
 
         if (mYVals == null)
@@ -70,11 +59,48 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         calcMinMax(mYVals, mLastStart, mLastEnd);
     }
 
-    /**
-     * Use this method to tell the data set that the underlying data has changed
-     */
-    public void notifyDataSetChanged() {
-        calcMinMax(mYVals, mLastStart, mLastEnd);
+    @Override
+    public void calcMinMax(List<T> values, int start, int end) {
+
+        if (values == null)
+            return;
+
+        final int yValCount = values.size();
+
+        if (yValCount == 0)
+            return;
+
+        int endValue;
+
+        if (end == 0 || end >= yValCount)
+            endValue = yValCount - 1;
+        else
+            endValue = end;
+
+        mLastStart = start;
+        mLastEnd = endValue;
+
+        mYMin = Float.MAX_VALUE;
+        mYMax = -Float.MAX_VALUE;
+
+        for (int i = start; i <= endValue; i++) {
+
+            T e = values.get(i);
+
+            if (e != null && !Float.isNaN(e.getVal())) {
+
+                if (e.getVal() < mYMin)
+                    mYMin = e.getVal();
+
+                if (e.getVal() > mYMax)
+                    mYMax = e.getVal();
+            }
+        }
+
+        if (mYMin == Float.MAX_VALUE) {
+            mYMin = 0.f;
+            mYMax = 0.f;
+        }
     }
 
     @Override
@@ -174,37 +200,18 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
      */
     public String toSimpleString() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("DataSet, label: " + (mLabel == null ? "" : mLabel) + ", entries: " + mYVals.size() + "\n");
+        buffer.append("DataSet, label: " + (getLabel() == null ? "" : getLabel()) + ", entries: " + mYVals.size() + "\n");
         return buffer.toString();
     }
 
-    /**
-     * Sets the label string that describes the DataSet.
-     *
-     * @return
-     */
-    public void setLabel(String label) {
-        mLabel = label;
+    @Override
+    public float getYMin() {
+        return mYMin;
     }
 
     @Override
-    public String getLabel() {
-        return mLabel;
-    }
-
-    @Override
-    public AxisDependency getAxisDependency() {
-        return mAxisDependency;
-    }
-
-    /**
-     * Set the y-axis this DataSet should be plotted against (either LEFT or
-     * RIGHT). Default: LEFT
-     *
-     * @param dependency
-     */
-    public void setAxisDependency(AxisDependency dependency) {
-        mAxisDependency = dependency;
+    public float getYMax() {
+        return mYMax;
     }
 
     /**
@@ -360,21 +367,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         mColors.add(color);
     }
 
-    @Override
-    public List<Integer> getColors() {
-        return mColors;
-    }
-
-    @Override
-    public int getColor() {
-        return mColors.get(0);
-    }
-
-    @Override
-    public int getColor(int index) {
-        return mColors.get(index % mColors.size());
-    }
-
     /**
      * Resets all colors of this DataSet and recreates the colors array.
      */
@@ -390,5 +382,148 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         mLastStart = 0;
         mLastEnd = 0;
         notifyDataSetChanged();
+    }
+
+    @Override
+    public void addEntry(T e) {
+
+        if (e == null)
+            return;
+
+        float val = e.getVal();
+
+        List<T> yVals = getYVals();
+        if (yVals == null) {
+            yVals = new ArrayList<T>();
+        }
+
+        if (yVals.size() == 0) {
+            mYMax = val;
+            mYMin = val;
+        } else {
+            if (mYMax < val)
+                mYMax = val;
+            if (mYMin > val)
+                mYMin = val;
+        }
+
+        // add the entry
+        yVals.add(e);
+    }
+
+    @Override
+    public boolean removeEntry(T e) {
+
+        if (e == null)
+            return false;
+
+        List<T> yVals = getYVals();
+
+        if (yVals == null)
+            return false;
+
+        // remove the entry
+        boolean removed = yVals.remove(e);
+
+        if (removed) {
+            calcMinMax(yVals, mLastStart, mLastEnd);
+        }
+
+        return removed;
+    }
+
+    /**
+     * Removes the Entry object that has the given xIndex from the DataSet.
+     * Returns true if an Entry was removed, false if no Entry could be removed.
+     *
+     * @param xIndex
+     */
+    public boolean removeEntry(int xIndex) {
+
+        T e = getEntryForXIndex(xIndex);
+        return removeEntry(e);
+    }
+
+    /**
+     * Checks if this DataSet contains the specified Entry. Returns true if so,
+     * false if not. NOTE: Performance is pretty bad on this one, do not
+     * over-use in performance critical situations.
+     *
+     * @param e
+     * @return
+     */
+    public boolean contains(Entry e) {
+
+        List<T> values = getYVals();
+
+        for (Entry entry : values) {
+            if (entry.equals(e))
+                return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public int getEntryPosition(Entry e) {
+
+        for (int i = 0; i < mYVals.size(); i++) {
+            if (e.equalTo(mYVals.get(i)))
+                return i;
+        }
+
+        return -1;
+    }
+
+    @Override
+    public T getEntryForXIndex(int x) {
+
+        List<T> values = getYVals();
+
+        int index = getEntryIndex(x);
+        if (index > -1)
+            return values.get(index);
+        return null;
+    }
+
+    @Override
+    public int getEntryIndex(int x) {
+
+        List<T> values = getYVals();
+
+        int low = 0;
+        int high = values.size() - 1;
+        int closest = -1;
+
+        while (low <= high) {
+            int m = (high + low) / 2;
+
+            if (x == values.get(m).getXIndex()) {
+                while (m > 0 && values.get(m - 1).getXIndex() == x)
+                    m--;
+
+                return m;
+            }
+
+            if (x > values.get(m).getXIndex())
+                low = m + 1;
+            else
+                high = m - 1;
+
+            closest = m;
+        }
+
+        return closest;
+    }
+
+    @Override
+    public float getYValForXIndex(int xIndex) {
+
+        Entry e = getEntryForXIndex(xIndex);
+
+        if (e != null && e.getXIndex() == xIndex)
+            return e.getVal();
+        else
+            return Float.NaN;
     }
 }

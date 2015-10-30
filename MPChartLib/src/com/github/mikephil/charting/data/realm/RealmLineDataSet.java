@@ -7,6 +7,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BaseDataSet;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineRadarDataSet;
 import com.github.mikephil.charting.formatter.DefaultFillFormatter;
 import com.github.mikephil.charting.formatter.FillFormatter;
 import com.github.mikephil.charting.interfaces.datainterfaces.datasets.ILineDataSet;
@@ -29,6 +30,7 @@ public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> 
     private FillFormatter mFillFormatter = new DefaultFillFormatter();
 
     public RealmLineDataSet(RealmResults<T> result, String yValuesField, String xIndexField) {
+        super("");
         mColors.add(Color.BLACK);
 
         result.sort(xIndexField, true);
@@ -40,12 +42,12 @@ public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> 
             mValues.add(new Entry(dynamicObject.getFloat(yValuesField), dynamicObject.getInt(xIndexField)));
         }
 
-        //calcMinMax(mValues, mLastStart, mLastEnd);
+        calcMinMax(mValues, mLastStart, mLastEnd);
     }
 
     @Override
     public float getCubicIntensity() {
-        return .2f;
+        return 0;
     }
 
     @Override
@@ -55,22 +57,22 @@ public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> 
 
     @Override
     public float getCircleSize() {
-        return 8f;
+        return 0;
     }
 
     @Override
     public int getCircleColor(int index) {
-        return Color.BLACK;
+        return 0;
     }
 
     @Override
     public boolean isDrawCirclesEnabled() {
-        return true;
+        return false;
     }
 
     @Override
     public int getCircleHoleColor() {
-        return Color.BLACK;
+        return 0;
     }
 
     @Override
@@ -90,22 +92,22 @@ public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> 
 
     @Override
     public FillFormatter getFillFormatter() {
-        return mFillFormatter;
+        return null;
     }
 
     @Override
     public int getFillColor() {
-        return Color.WHITE;
+        return 0;
     }
 
     @Override
     public int getFillAlpha() {
-        return 100;
+        return 0;
     }
 
     @Override
     public float getLineWidth() {
-        return 4f;
+        return 0;
     }
 
     @Override
@@ -135,41 +137,61 @@ public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> 
 
     @Override
     public int getHighLightColor() {
-        return Color.WHITE;
-    }
-
-    @Override
-    public String getLabel() {
-        return "Realm Data";
+        return 0;
     }
 
     @Override
     public List<Entry> getYVals() {
-        return mValues;
+        return null;
+    }
+
+    @Override
+    public float getYMin() {
+        return 0;
+    }
+
+    @Override
+    public float getYMax() {
+        return 0;
     }
 
     @Override
     public int getEntryCount() {
-        return mValues.size();
+        return 0;
     }
 
     @Override
-    public YAxis.AxisDependency getAxisDependency() {
-        return YAxis.AxisDependency.LEFT;
+    public void calcMinMax(List<Entry> values, int start, int end) {
+
     }
 
     @Override
-    public List<Integer> getColors() {
-        return mColors;
+    public Entry getEntryForXIndex(int x) {
+        return null;
     }
 
     @Override
-    public int getColor() {
-        return mColors.get(0);
+    public int getEntryIndex(int x) {
+        return 0;
     }
 
     @Override
-    public int getColor(int index) {
-        return mColors.get(index % mColors.size());
+    public int getEntryPosition(Entry e) {
+        return 0;
+    }
+
+    @Override
+    public float getYValForXIndex(int xIndex) {
+        return 0;
+    }
+
+    @Override
+    public void addEntry(Entry e) {
+
+    }
+
+    @Override
+    public boolean removeEntry(Entry e) {
+        return false;
     }
 }
