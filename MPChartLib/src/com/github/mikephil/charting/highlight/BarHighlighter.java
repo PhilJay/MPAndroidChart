@@ -131,7 +131,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 				stackIndex++;
 		}
 
-		int length = ranges.length - 1;
+		int length = Math.max(ranges.length - 1, 0);
 
 		return (value > ranges[length].to) ? length : 0;
 		//
