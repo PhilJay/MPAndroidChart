@@ -116,6 +116,11 @@ public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> 
     }
 
     @Override
+    public void setDrawFilled(boolean enabled) {
+
+    }
+
+    @Override
     public boolean isVerticalHighlightIndicatorEnabled() {
         return false;
     }

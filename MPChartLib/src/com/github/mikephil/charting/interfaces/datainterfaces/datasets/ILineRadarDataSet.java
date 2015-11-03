@@ -35,4 +35,13 @@ public interface ILineRadarDataSet<T extends Entry> extends ILineScatterCandleRa
      * @return
      */
     boolean isDrawFilledEnabled();
+
+    /**
+     * Set to true if the DataSet should be drawn filled (surface), and not just
+     * as a line, disabling this will give great performance boost! default:
+     * false
+     *
+     * @param enabled
+     */
+    void setDrawFilled(boolean enabled);
 }

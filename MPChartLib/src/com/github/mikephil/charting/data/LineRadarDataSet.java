@@ -81,13 +81,7 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
         return mLineWidth;
     }
 
-    /**
-     * Set to true if the DataSet should be drawn filled (surface), and not just
-     * as a line, disabling this will give great performance boost! default:
-     * false
-     * 
-     * @param filled
-     */
+    @Override
     public void setDrawFilled(boolean filled) {
         mDrawFilled = filled;
     }
