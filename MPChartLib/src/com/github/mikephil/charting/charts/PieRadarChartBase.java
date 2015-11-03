@@ -18,6 +18,7 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.PieRadarChartTouchListener;
 import com.github.mikephil.charting.utils.SelectionDetail;
 import com.github.mikephil.charting.utils.Utils;
@@ -30,7 +31,7 @@ import java.util.List;
  * 
  * @author Philipp Jahoda
  */
-public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? extends Entry>>>
+public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<? extends Entry>>>
         extends Chart<T> {
 
     /** holds the normalized version of the current rotation angle of the chart */
@@ -451,7 +452,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
         for (int i = 0; i < mData.getDataSetCount(); i++) {
 
-            DataSet<?> dataSet = mData.getDataSetByIndex(i);
+            IDataSet<?> dataSet = mData.getDataSetByIndex(i);
 
             // extract all y-values from all DataSets at the given x-index
             final float yVal = dataSet.getYValForXIndex(xIndex);
