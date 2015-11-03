@@ -235,11 +235,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
         mStackLabels = labels;
     }
 
-    /**
-     * returns the labels used for the different value-stacks
-     * 
-     * @return
-     */
+    @Override
     public String[] getStackLabels() {
         return mStackLabels;
     }

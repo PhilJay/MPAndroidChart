@@ -12,6 +12,7 @@ import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.FSize;
@@ -92,9 +93,9 @@ public class LegendRenderer extends Renderer {
                 int entryCount = dataSet.getEntryCount();
 
                 // if we have a barchart with stacked bars
-                if (dataSet instanceof BarDataSet && ((BarDataSet) dataSet).isStacked()) {
+                if (dataSet instanceof IBarDataSet && ((IBarDataSet) dataSet).isStacked()) {
 
-                    BarDataSet bds = (BarDataSet) dataSet;
+                    IBarDataSet bds = (IBarDataSet) dataSet;
                     String[] sLabels = bds.getStackLabels();
 
                     for (int j = 0; j < clrs.size() && j < bds.getStackSize(); j++) {
