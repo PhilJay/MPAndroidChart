@@ -166,12 +166,17 @@ public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> 
     }
 
     @Override
-    public Entry getEntryForXIndex(int x) {
+    public Entry getEntryForXIndex(int xIndex) {
         return null;
     }
 
     @Override
-    public int getEntryIndex(int x) {
+    public Entry getEntryForIndex(int index) {
+        return null;
+    }
+
+    @Override
+    public int getEntryIndex(int xIndex) {
         return 0;
     }
 

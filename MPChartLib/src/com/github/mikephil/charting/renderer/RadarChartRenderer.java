@@ -11,8 +11,8 @@ import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.RadarData;
-import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IRadarDataSet;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -56,14 +56,14 @@ public class RadarChartRenderer extends LineScatterCandleRadarRenderer {
 
         RadarData radarData = mChart.getData();
 
-        for (RadarDataSet set : radarData.getDataSets()) {
+        for (IRadarDataSet set : radarData.getDataSets()) {
 
             if (set.isVisible() && set.getEntryCount() > 0)
                 drawDataSet(c, set);
         }
     }
 
-    protected void drawDataSet(Canvas c, RadarDataSet dataSet) {
+    protected void drawDataSet(Canvas c, IRadarDataSet dataSet) {
 
         float sliceangle = mChart.getSliceAngle();
 
@@ -131,7 +131,7 @@ public class RadarChartRenderer extends LineScatterCandleRadarRenderer {
 
         for (int i = 0; i < mChart.getData().getDataSetCount(); i++) {
 
-            RadarDataSet dataSet = mChart.getData().getDataSetByIndex(i);
+            IRadarDataSet dataSet = mChart.getData().getDataSetByIndex(i);
 
             if (!dataSet.isDrawValuesEnabled() || dataSet.getEntryCount() == 0)
                 continue;
@@ -215,7 +215,7 @@ public class RadarChartRenderer extends LineScatterCandleRadarRenderer {
 
         for (int i = 0; i < indices.length; i++) {
 
-            RadarDataSet set = mChart.getData()
+            IRadarDataSet set = mChart.getData()
                     .getDataSetByIndex(indices[i]
                             .getDataSetIndex());
 

@@ -4,7 +4,6 @@ package com.github.mikephil.charting.data;
 import android.content.Context;
 import android.graphics.Color;
 
-import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;

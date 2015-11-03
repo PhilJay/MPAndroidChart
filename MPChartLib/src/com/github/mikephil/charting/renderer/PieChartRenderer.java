@@ -13,17 +13,16 @@ import android.text.Layout;
 import android.text.SpannableString;
 import android.text.StaticLayout;
 import android.text.TextPaint;
-import android.util.Log;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IPieDataSet;
+import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.List;
@@ -120,14 +119,14 @@ public class PieChartRenderer extends DataRenderer {
 
         PieData pieData = mChart.getData();
 
-        for (PieDataSet set : pieData.getDataSets()) {
+        for (IPieDataSet set : pieData.getDataSets()) {
 
             if (set.isVisible() && set.getEntryCount() > 0)
                 drawDataSet(c, set);
         }
     }
 
-    protected void drawDataSet(Canvas c, PieDataSet dataSet) {
+    protected void drawDataSet(Canvas c, IPieDataSet dataSet) {
 
         float angle = mChart.getRotationAngle();
 
@@ -179,14 +178,14 @@ public class PieChartRenderer extends DataRenderer {
         r -= off; // offset to keep things inside the chart
 
         PieData data = mChart.getData();
-        List<PieDataSet> dataSets = data.getDataSets();
+        List<IPieDataSet> dataSets = data.getDataSets();
         boolean drawXVals = mChart.isDrawSliceTextEnabled();
 
         int cnt = 0;
 
         for (int i = 0; i < dataSets.size(); i++) {
 
-            PieDataSet dataSet = dataSets.get(i);
+            IPieDataSet dataSet = dataSets.get(i);
 
             if (!dataSet.isDrawValuesEnabled() && !drawXVals)
                 continue;
@@ -398,7 +397,7 @@ public class PieChartRenderer extends DataRenderer {
             if (xIndex >= drawAngles.length)
                 continue;
 
-            PieDataSet set = mChart.getData()
+            IPieDataSet set = mChart.getData()
                     .getDataSetByIndex(indices[i]
                             .getDataSetIndex());
 
@@ -448,7 +447,7 @@ public class PieChartRenderer extends DataRenderer {
         if (!mChart.isDrawRoundedSlicesEnabled())
             return;
 
-        PieDataSet dataSet = mChart.getData().getDataSet();
+        IPieDataSet dataSet = mChart.getData().getDataSet();
 
         if (!dataSet.isVisible())
             return;
