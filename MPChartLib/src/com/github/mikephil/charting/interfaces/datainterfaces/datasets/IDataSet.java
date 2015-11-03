@@ -56,10 +56,18 @@ public interface IDataSet<T extends Entry> {
      * at that index. INFORMATION: This method does calculations at runtime. Do
      * not over-use in performance critical situations.
      *
-     * @param x
+     * @param xIndex
      * @return
      */
-    T getEntryForXIndex(int x);
+    T getEntryForXIndex(int xIndex);
+
+    /**
+     * Returns the Entry object found at the given index (NOT xIndex) in the values array.
+     *
+     * @param index
+     * @return
+     */
+    T getEntryForIndex(int index);
 
     /**
      * Returns the first Entry index found at the given xIndex with binary
@@ -68,10 +76,10 @@ public interface IDataSet<T extends Entry> {
      * at that index. INFORMATION: This method does calculations at runtime. Do
      * not over-use in performance critical situations.
      *
-     * @param x
+     * @param xIndex
      * @return
      */
-    int getEntryIndex(int x);
+    int getEntryIndex(int xIndex);
 
     /**
      * Returns the position of the provided entry in the DataSets Entry array.
@@ -80,7 +88,7 @@ public interface IDataSet<T extends Entry> {
      * @param e
      * @return
      */
-    int getEntryPosition(T e);
+    int getEntryIndex(T e);
 
     /**
      * Returns the value of the Entry object at the given xIndex. Returns

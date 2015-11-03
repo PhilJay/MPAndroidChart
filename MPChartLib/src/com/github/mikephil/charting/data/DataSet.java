@@ -465,7 +465,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     @Override
-    public int getEntryPosition(Entry e) {
+    public int getEntryIndex(Entry e) {
 
         for (int i = 0; i < mYVals.size(); i++) {
             if (e.equalTo(mYVals.get(i)))
@@ -487,7 +487,12 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     @Override
-    public int getEntryIndex(int x) {
+    public T getEntryForIndex(int index) {
+        return mYVals.get(index);
+    }
+
+    @Override
+    public int getEntryIndex(int xIndex) {
 
         List<T> values = getYVals();
 
@@ -498,14 +503,14 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         while (low <= high) {
             int m = (high + low) / 2;
 
-            if (x == values.get(m).getXIndex()) {
-                while (m > 0 && values.get(m - 1).getXIndex() == x)
+            if (xIndex == values.get(m).getXIndex()) {
+                while (m > 0 && values.get(m - 1).getXIndex() == xIndex)
                     m--;
 
                 return m;
             }
 
-            if (x > values.get(m).getXIndex())
+            if (xIndex > values.get(m).getXIndex())
                 low = m + 1;
             else
                 high = m - 1;

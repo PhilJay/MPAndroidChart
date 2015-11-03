@@ -7,9 +7,7 @@ import android.graphics.Paint.Style;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.BubbleData;
-import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.data.BubbleEntry;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IBubbleDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
@@ -76,8 +74,8 @@ public class BubbleChartRenderer extends DataRenderer {
         BubbleEntry entryFrom = dataSet.getEntryForXIndex(mMinX);
         BubbleEntry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
-        int minx = Math.max(dataSet.getEntryPosition(entryFrom), 0);
-        int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, entries.size());
+        int minx = Math.max(dataSet.getEntryIndex(entryFrom), 0);
+        int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, entries.size());
 
         sizeBuffer[0] = 0f;
         sizeBuffer[2] = 1f;
@@ -157,8 +155,8 @@ public class BubbleChartRenderer extends DataRenderer {
                 BubbleEntry entryFrom = dataSet.getEntryForXIndex(mMinX);
                 BubbleEntry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
-                int minx = dataSet.getEntryPosition(entryFrom);
-                int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, dataSet.getEntryCount());
+                int minx = dataSet.getEntryIndex(entryFrom);
+                int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, dataSet.getEntryCount());
 
                 final float[] positions = mChart.getTransformer(dataSet.getAxisDependency())
                         .generateTransformedValuesBubble(entries, phaseX, phaseY, minx, maxx);
@@ -208,8 +206,8 @@ public class BubbleChartRenderer extends DataRenderer {
             BubbleEntry entryFrom = dataSet.getEntryForXIndex(mMinX);
             BubbleEntry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
-            int minx = dataSet.getEntryPosition(entryFrom);
-            int maxx = Math.min(dataSet.getEntryPosition(entryTo) + 1, dataSet.getEntryCount());
+            int minx = dataSet.getEntryIndex(entryFrom);
+            int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, dataSet.getEntryCount());
 
             final BubbleEntry entry = (BubbleEntry) bubbleData.getEntryForHighlight(indice);
             if (entry == null || entry.getXIndex() != indice.getXIndex())

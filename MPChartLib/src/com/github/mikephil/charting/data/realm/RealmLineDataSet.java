@@ -176,7 +176,7 @@ public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> 
     }
 
     @Override
-    public int getEntryPosition(Entry e) {
+    public int getEntryIndex(Entry e) {
         return 0;
     }
 

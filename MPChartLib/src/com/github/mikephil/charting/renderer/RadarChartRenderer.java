@@ -229,7 +229,7 @@ public class RadarChartRenderer extends LineScatterCandleRadarRenderer {
             if (e == null || e.getXIndex() != xIndex)
                 continue;
 
-            int j = set.getEntryPosition(e);
+            int j = set.getEntryIndex(e);
             float y = (e.getVal() - mChart.getYChartMin());
 
             if (Float.isNaN(y))
