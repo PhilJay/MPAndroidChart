@@ -3,8 +3,7 @@ package com.github.mikephil.charting.data;
 
 import android.graphics.Color;
 
-import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IBarLineScatterCandleBubbleDataSet;
-import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IBubbleDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;

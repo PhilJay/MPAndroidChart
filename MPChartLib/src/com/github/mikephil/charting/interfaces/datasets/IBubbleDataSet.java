@@ -1,7 +1,6 @@
-package com.github.mikephil.charting.interfaces.datainterfaces.datasets;
+package com.github.mikephil.charting.interfaces.datasets;
 
 import com.github.mikephil.charting.data.BubbleEntry;
-import com.github.mikephil.charting.utils.Utils;
 
 /**
  * Created by philipp on 21/10/15.

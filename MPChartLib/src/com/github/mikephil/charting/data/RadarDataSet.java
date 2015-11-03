@@ -1,7 +1,7 @@
 
 package com.github.mikephil.charting.data;
 
-import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IRadarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 
 import java.util.ArrayList;
 import java.util.List;

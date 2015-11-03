@@ -2,7 +2,7 @@ package com.github.mikephil.charting.data;
 
 import android.graphics.DashPathEffect;
 
-import com.github.mikephil.charting.interfaces.datainterfaces.datasets.ILineScatterCandleRadarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineScatterCandleRadarDataSet;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.List;

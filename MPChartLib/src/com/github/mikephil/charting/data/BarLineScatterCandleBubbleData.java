@@ -1,8 +1,7 @@
 
 package com.github.mikephil.charting.data;
 
-import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IBarLineScatterCandleBubbleDataSet;
-import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet;
 
 import java.util.List;
 

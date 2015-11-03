@@ -1,7 +1,7 @@
 
 package com.github.mikephil.charting.data;
 
-import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IBubbleDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 
 import java.util.ArrayList;
 import java.util.List;

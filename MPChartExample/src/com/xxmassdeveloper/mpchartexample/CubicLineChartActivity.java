@@ -21,8 +21,8 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.formatter.FillFormatter;
-import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IDataSet;
-import com.github.mikephil.charting.interfaces.datainterfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 

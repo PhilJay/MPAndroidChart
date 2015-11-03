@@ -1,4 +1,4 @@
-package com.github.mikephil.charting.interfaces.datainterfaces.datasets;
+package com.github.mikephil.charting.interfaces.datasets;
 
 import com.github.mikephil.charting.data.BarEntry;
 

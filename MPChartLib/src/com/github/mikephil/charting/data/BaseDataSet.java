@@ -6,10 +6,9 @@ import android.graphics.Typeface;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.Utils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

@@ -1,4 +1,4 @@
-package com.github.mikephil.charting.interfaces.datainterfaces.datasets;
+package com.github.mikephil.charting.interfaces.datasets;
 
 import android.graphics.DashPathEffect;
 

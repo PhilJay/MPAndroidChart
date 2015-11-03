@@ -3,7 +3,7 @@ package com.github.mikephil.charting.data;
 
 import android.graphics.Paint;
 
-import com.github.mikephil.charting.interfaces.datainterfaces.datasets.ICandleDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
 

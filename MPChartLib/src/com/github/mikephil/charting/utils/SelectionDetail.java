@@ -1,7 +1,6 @@
 package com.github.mikephil.charting.utils;
 
-import com.github.mikephil.charting.data.DataSet;
-import com.github.mikephil.charting.interfaces.datainterfaces.datasets.IDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 
 /**
  * Class that encapsulates information of a value that has been
