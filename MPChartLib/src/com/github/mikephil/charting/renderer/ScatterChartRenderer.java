@@ -11,8 +11,8 @@ import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.ScatterDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -26,7 +26,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
     protected ScatterBuffer[] mScatterBuffers;
 
     public ScatterChartRenderer(ScatterDataProvider chart, ChartAnimator animator,
-            ViewPortHandler viewPortHandler) {
+                                ViewPortHandler viewPortHandler) {
         super(animator, viewPortHandler);
         mChart = chart;
 
@@ -65,8 +65,6 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
 
-        List<Entry> entries = dataSet.getYVals();
-
         float shapeHalf = dataSet.getScatterShapeSize() / 2f;
 
         ScatterShape shape = dataSet.getScatterShape();
@@ -74,7 +72,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
         ScatterBuffer buffer = mScatterBuffers[mChart.getScatterData().getIndexOfDataSet(
                 dataSet)];
         buffer.setPhases(phaseX, phaseY);
-        buffer.feed(entries);
+        buffer.feed(dataSet);
 
         trans.pointValuesToPixel(buffer.buffer);
 
@@ -215,10 +213,8 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet);
 
-                List<Entry> entries = dataSet.getYVals();
-
                 float[] positions = mChart.getTransformer(dataSet.getAxisDependency())
-                        .generateTransformedValuesScatter(entries,
+                        .generateTransformedValuesScatter(dataSet,
                                 mAnimator.getPhaseY());
 
                 float shapeSize = dataSet.getScatterShapeSize();
@@ -233,7 +229,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
                             || !mViewPortHandler.isInBoundsY(positions[j + 1])))
                         continue;
 
-                    Entry entry = entries.get(j / 2);
+                    Entry entry = dataSet.getEntryForIndex(j / 2);
 
                     drawValue(c, dataSet.getValueFormatter(), entry.getVal(), entry, i, positions[j],
                             positions[j + 1] - shapeSize);
@@ -258,7 +254,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
                 continue;
 
             int xIndex = indices[i].getXIndex(); // get the
-                                                 // x-position
+            // x-position
 
 
             if (xIndex > mChart.getXChartMax() * mAnimator.getPhaseX())
@@ -270,7 +266,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
             float y = yVal * mAnimator.getPhaseY();
 
-            float[] pts = new float[] {
+            float[] pts = new float[]{
                     xIndex, y
             };
 

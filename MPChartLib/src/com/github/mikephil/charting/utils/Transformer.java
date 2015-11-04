@@ -10,6 +10,7 @@ import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 
 import java.util.List;
 
@@ -89,17 +90,17 @@ public class Transformer {
      * Transforms an List of Entry into a float array containing the x and
      * y values transformed with all matrices for the SCATTERCHART.
      *
-     * @param entries
+     * @param data
      * @return
      */
-    public float[] generateTransformedValuesScatter(List<? extends Entry> entries,
+    public float[] generateTransformedValuesScatter(IScatterDataSet data,
                                                     float phaseY) {
 
-        float[] valuePoints = new float[entries.size() * 2];
+        float[] valuePoints = new float[data.getEntryCount() * 2];
 
         for (int j = 0; j < valuePoints.length; j += 2) {
 
-            Entry e = entries.get(j / 2);
+            Entry e = data.getEntryForIndex(j / 2);
 
             if (e != null) {
                 valuePoints[j] = e.getXIndex();
