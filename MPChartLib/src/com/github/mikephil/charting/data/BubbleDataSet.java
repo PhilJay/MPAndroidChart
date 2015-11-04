@@ -35,6 +35,7 @@ public class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry
 
     /**
      * Sets a color with a specific alpha value.
+     *
      * @param color
      * @param alpha from 0-255
      */
@@ -43,59 +44,55 @@ public class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry
     }
 
     @Override
-    public void calcMinMax(List<BubbleEntry> values, int start, int end) {
-        if (values.size() == 0)
+    public void calcMinMax(int start, int end) {
+
+        if (mYVals == null)
+            return;
+
+        if (mYVals.size() == 0)
             return;
 
         int endValue;
 
         if (end == 0)
-            endValue = values.size() - 1;
+            endValue = mYVals.size() - 1;
         else
             endValue = end;
 
-        mLastStart = start;
-        mLastEnd = endValue;
-
-        mYMin = yMin(values.get(start));
-        mYMax = yMax(values.get(start));
+        mYMin = yMin(mYVals.get(start));
+        mYMax = yMax(mYVals.get(start));
 
         // need chart width to guess this properly
 
         for (int i = start; i <= endValue; i++) {
 
-            final BubbleEntry entry = values.get(i);
-            
+            final BubbleEntry entry = mYVals.get(i);
+
             final float ymin = yMin(entry);
             final float ymax = yMax(entry);
 
-            if (ymin < mYMin)
-            {
+            if (ymin < mYMin) {
                 mYMin = ymin;
             }
 
-            if (ymax > mYMax)
-            {
+            if (ymax > mYMax) {
                 mYMax = ymax;
             }
 
             final float xmin = xMin(entry);
             final float xmax = xMax(entry);
 
-            if (xmin < mXMin)
-            {
+            if (xmin < mXMin) {
                 mXMin = xmin;
             }
 
-            if (xmax > mXMax)
-            {
+            if (xmax > mXMax) {
                 mXMax = xmax;
             }
 
             final float size = largestSize(entry);
 
-            if (size > mMaxSize)
-            {
+            if (size > mMaxSize) {
                 mMaxSize = size;
             }
         }

@@ -32,14 +32,14 @@ public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> 
 
         result.sort(xIndexField, true);
 
-        for(T object : result) {
+        for (T object : result) {
 
             DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
 
             mValues.add(new Entry(dynamicObject.getFloat(yValuesField), dynamicObject.getInt(xIndexField)));
         }
 
-        calcMinMax(mValues, mLastStart, mLastEnd);
+        calcMinMax(0, mValues.size());
     }
 
     @Override
@@ -143,11 +143,6 @@ public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> 
     }
 
     @Override
-    public List<Entry> getYVals() {
-        return null;
-    }
-
-    @Override
     public float getYMin() {
         return 0;
     }
@@ -163,7 +158,7 @@ public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> 
     }
 
     @Override
-    public void calcMinMax(List<Entry> values, int start, int end) {
+    public void calcMinMax(int start, int end) {
 
     }
 

@@ -10,7 +10,9 @@ import java.util.List;
 
 public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> implements IBarDataSet {
 
-    /** space indicator between the bars 0.1f == 10 % */
+    /**
+     * space indicator between the bars 0.1f == 10 %
+     */
     private float mBarSpace = 0.15f;
 
     /**
@@ -19,10 +21,14 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
      */
     private int mStackSize = 1;
 
-    /** the color used for drawing the bar shadows */
+    /**
+     * the color used for drawing the bar shadows
+     */
     private int mBarShadowColor = Color.rgb(215, 215, 215);
 
-    /** the alpha value used to draw the highlight indicator bar */
+    /**
+     * the alpha value used to draw the highlight indicator bar
+     */
     private int mHighLightAlpha = 120;
 
     /**
@@ -33,7 +39,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     /**
      * array of labels used to describe the different values of the stacked bars
      */
-    private String[] mStackLabels = new String[] {
+    private String[] mStackLabels = new String[]{
             "Stack"
     };
 
@@ -102,9 +108,12 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     }
 
     @Override
-    public void calcMinMax(List<BarEntry> values, int start, int end) {
+    public void calcMinMax(int start, int end) {
 
-        final int yValCount = values.size();
+        if (mYVals == null)
+            return;
+
+        final int yValCount = mYVals.size();
 
         if (yValCount == 0)
             return;
@@ -116,19 +125,16 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
         else
             endValue = end;
 
-        mLastStart = start;
-        mLastEnd = endValue;
-
         mYMin = Float.MAX_VALUE;
         mYMax = -Float.MAX_VALUE;
 
         for (int i = start; i <= endValue; i++) {
 
-            BarEntry e = values.get(i);
+            BarEntry e = mYVals.get(i);
 
             if (e != null && !Float.isNaN(e.getVal())) {
 
-                if(e.getVals() == null) {
+                if (e.getVals() == null) {
 
                     if (e.getVal() < mYMin)
                         mYMin = e.getVal();
@@ -165,7 +171,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     /**
      * returns the overall entry count, including counting each stack-value
      * individually
-     * 
+     *
      * @return
      */
     public int getEntryCountStacks() {
@@ -174,7 +180,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
 
     /**
      * returns the space between bars in percent of the whole width of one value
-     * 
+     *
      * @return
      */
     public float getBarSpacePercent() {
@@ -188,7 +194,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
 
     /**
      * sets the space between the bars in percent (0-100) of the total bar width
-     * 
+     *
      * @param percent
      */
     public void setBarSpacePercent(float percent) {
@@ -199,7 +205,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
      * Sets the color used for drawing the bar-shadows. The bar shadows is a
      * surface behind the bar that indicates the maximum value. Don't for get to
      * use getResources().getColor(...) to set this. Or Color.rgb(...).
-     * 
+     *
      * @param color
      */
     public void setBarShadowColor(int color) {
@@ -214,7 +220,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     /**
      * Set the alpha value (transparency) that is used for drawing the highlight
      * indicator bar. min = 0 (fully transparent), max = 255 (fully opaque)
-     * 
+     *
      * @param alpha
      */
     public void setHighLightAlpha(int alpha) {
@@ -228,7 +234,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
 
     /**
      * Sets labels for different values of bar-stacks, in case there are one.
-     * 
+     *
      * @param labels
      */
     public void setStackLabels(String[] labels) {

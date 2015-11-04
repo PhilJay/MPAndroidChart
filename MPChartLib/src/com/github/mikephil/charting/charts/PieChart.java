@@ -206,11 +206,10 @@ public class PieChart extends PieRadarChartBase<PieData> {
         for (int i = 0; i < mData.getDataSetCount(); i++) {
 
             IPieDataSet set = dataSets.get(i);
-            List<Entry> entries = set.getYVals();
 
-            for (int j = 0; j < entries.size(); j++) {
+            for (int j = 0; j < set.getEntryCount(); j++) {
 
-                mDrawAngles[cnt] = calcAngle(Math.abs(entries.get(j).getVal()));
+                mDrawAngles[cnt] = calcAngle(Math.abs(set.getEntryForIndex(j).getVal()));
 
                 if (cnt == 0) {
                     mAbsoluteAngles[cnt] = mDrawAngles[cnt];
