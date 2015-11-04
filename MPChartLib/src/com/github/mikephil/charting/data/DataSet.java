@@ -55,16 +55,16 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         // default color
         mColors.add(Color.rgb(140, 234, 255));
 
-        calcMinMax(mYVals, mLastStart, mLastEnd);
+        calcMinMax(0, mYVals.size());
     }
 
     @Override
-    public void calcMinMax(List<T> values, int start, int end) {
+    public void calcMinMax(int start, int end) {
 
-        if (values == null)
+        if (mYVals == null)
             return;
 
-        final int yValCount = values.size();
+        final int yValCount = mYVals.size();
 
         if (yValCount == 0)
             return;
@@ -76,15 +76,12 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         else
             endValue = end;
 
-        mLastStart = start;
-        mLastEnd = endValue;
-
         mYMin = Float.MAX_VALUE;
         mYMax = -Float.MAX_VALUE;
 
         for (int i = start; i <= endValue; i++) {
 
-            T e = values.get(i);
+            T e = mYVals.get(i);
 
             if (e != null && !Float.isNaN(e.getVal())) {
 
@@ -271,7 +268,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         boolean removed = entry != null;
 
         if (removed) {
-            calcMinMax(mYVals, mLastStart, mLastEnd);
+            calcMinMax(0, mYVals.size());
         }
 
         return removed;
@@ -293,7 +290,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         boolean removed = entry != null;
 
         if (removed) {
-            calcMinMax(mYVals, mLastStart, mLastEnd);
+            calcMinMax(0, mYVals.size());
         }
 
         return removed;
@@ -382,8 +379,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
      */
     public void clear() {
         mYVals.clear();
-        mLastStart = 0;
-        mLastEnd = 0;
         notifyDataSetChanged();
     }
 
@@ -420,16 +415,14 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         if (e == null)
             return false;
 
-        List<T> yVals = getYVals();
-
-        if (yVals == null)
+        if (mYVals == null)
             return false;
 
         // remove the entry
-        boolean removed = yVals.remove(e);
+        boolean removed = mYVals.remove(e);
 
         if (removed) {
-            calcMinMax(yVals, mLastStart, mLastEnd);
+            calcMinMax(0, mYVals.size());
         }
 
         return removed;

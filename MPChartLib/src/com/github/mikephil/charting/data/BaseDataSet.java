@@ -33,15 +33,15 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      */
     protected YAxis.AxisDependency mAxisDependency = YAxis.AxisDependency.LEFT;
 
-    /**
-     * the last start value used for calcMinMax
-     */
-    protected int mLastStart = 0;
-
-    /**
-     * the last end value used for calcMinMax
-     */
-    protected int mLastEnd = 0;
+//    /**
+//     * the last start value used for calcMinMax
+//     */
+//    protected int mLastStart = 0;
+//
+//    /**
+//     * the last end value used for calcMinMax
+//     */
+//    protected int mLastEnd = 0;
 
     /**
      * if true, value highlightning is enabled
@@ -95,10 +95,10 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     }
 
     /**
-     * Use this method to tell the data set that the underlying data has changed
+     * Use this method to tell the data set that the underlying data has changed.
      */
     public void notifyDataSetChanged() {
-        calcMinMax(getYVals(), mLastStart, mLastEnd);
+        calcMinMax( 0, getEntryCount()-1);
     }
 
 

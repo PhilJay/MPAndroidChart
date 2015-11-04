@@ -45,16 +45,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     private int mYValCount = 0;
 
     /**
-     * the last start value used for calcMinMax
-     */
-    protected int mLastStart = 0;
-
-    /**
-     * the last end value used for calcMinMax
-     */
-    protected int mLastEnd = 0;
-
-    /**
      * contains the average length (in characters) an entry in the x-vals array
      * has
      */
@@ -147,8 +137,8 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
         checkLegal();
 
-        calcMinMax(mLastStart, mLastEnd);
         calcYValueCount();
+        calcMinMax(0, mYValCount);
 
         calcXValAverageLength();
     }
@@ -181,13 +171,11 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         if (mDataSets == null)
             return;
 
-        if(this instanceof ScatterData)
+        if (this instanceof ScatterData)
             return;
 
         for (int i = 0; i < mDataSets.size(); i++) {
-            if (mDataSets.get(i)
-                    .getYVals()
-                    .size() > mXVals.size()) {
+            if (mDataSets.get(i).getEntryCount() > mXVals.size()) {
                 throw new IllegalArgumentException(
                         "One or more of the DataSet Entry arrays are longer than the x-values array of this ChartData object.");
             }
@@ -213,16 +201,13 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
             mYMin = 0f;
         } else {
 
-            mLastStart = start;
-            mLastEnd = end;
-
             mYMin = Float.MAX_VALUE;
             mYMax = -Float.MAX_VALUE;
 
             for (int i = 0; i < mDataSets.size(); i++) {
 
                 IDataSet set = mDataSets.get(i);
-                set.calcMinMax(set.getYVals(), start, end);
+                set.calcMinMax(start, end);
 
                 if (set.getYMin() < mYMin)
                     mYMin = set.getYMin();
@@ -587,7 +572,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
             mYValCount -= d.getEntryCount();
 
-            calcMinMax(mLastStart, mLastEnd);
+            calcMinMax(0, mYValCount);
         }
 
         return removed;
@@ -681,14 +666,14 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
         IDataSet set = mDataSets.get(dataSetIndex);
 
-        if(set != null) {
+        if (set != null) {
             // remove the entry from the dataset
             boolean removed = set.removeEntry(e);
 
             if (removed) {
                 mYValCount -= 1;
 
-                calcMinMax(mLastStart, mLastEnd);
+                calcMinMax(0, mYValCount);
             }
 
             return removed;
