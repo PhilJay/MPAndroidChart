@@ -16,8 +16,6 @@ import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-import java.util.List;
-
 public class RadarChartRenderer extends LineScatterCandleRadarRenderer {
 
     protected RadarChart mChart;
@@ -73,17 +71,15 @@ public class RadarChartRenderer extends LineScatterCandleRadarRenderer {
 
         PointF center = mChart.getCenterOffsets();
 
-        List<Entry> entries = dataSet.getYVals();
-
         Path surface = new Path();
 
         boolean hasMovedToPoint = false;
 
-        for (int j = 0; j < entries.size(); j++) {
+        for (int j = 0; j < dataSet.getEntryCount(); j++) {
 
             mRenderPaint.setColor(dataSet.getColor(j));
 
-            Entry e = entries.get(j);
+            Entry e = dataSet.getEntryForIndex(j);
 
             PointF p = Utils.getPosition(center, (e.getVal() - mChart.getYChartMin()) * factor,
                     sliceangle * j + mChart.getRotationAngle());
@@ -139,11 +135,9 @@ public class RadarChartRenderer extends LineScatterCandleRadarRenderer {
             // apply the text-styling defined by the DataSet
             applyValueTextStyle(dataSet);
 
-            List<Entry> entries = dataSet.getYVals();
+            for (int j = 0; j < dataSet.getEntryCount(); j++) {
 
-            for (int j = 0; j < entries.size(); j++) {
-
-                Entry entry = entries.get(j);
+                Entry entry = dataSet.getEntryForIndex(j);
 
                 PointF p = Utils.getPosition(center, (entry.getVal() - mChart.getYChartMin()) * factor,
                         sliceangle * j + mChart.getRotationAngle());

@@ -130,15 +130,14 @@ public class PieChartRenderer extends DataRenderer {
 
         float angle = mChart.getRotationAngle();
 
-        List<Entry> entries = dataSet.getYVals();
         float[] drawAngles = mChart.getDrawAngles();
 
-        for (int j = 0; j < entries.size(); j++) {
+        for (int j = 0; j < dataSet.getEntryCount(); j++) {
 
             float newangle = drawAngles[j];
             float sliceSpace = dataSet.getSliceSpace();
 
-            Entry e = entries.get(j);
+            Entry e = dataSet.getEntryForIndex(j);
 
             // draw only if the value is greater than zero
             if ((Math.abs(e.getVal()) > 0.000001)) {
@@ -196,12 +195,12 @@ public class PieChartRenderer extends DataRenderer {
             float lineHeight = Utils.calcTextHeight(mValuePaint, "Q")
                     + Utils.convertDpToPixel(4f);
 
-            List<Entry> entries = dataSet.getYVals();
+            int entryCount = dataSet.getEntryCount();
 
             for (int j = 0, maxEntry = Math.min(
-                    (int) Math.ceil(entries.size() * mAnimator.getPhaseX()), entries.size()); j < maxEntry; j++) {
+                    (int) Math.ceil(entryCount * mAnimator.getPhaseX()), entryCount); j < maxEntry; j++) {
 
-                Entry entry = entries.get(j);
+                Entry entry = dataSet.getEntryForIndex(j);
 
                 // offset needed to center the drawn text in the slice
                 float offset = drawAngles[cnt] / 2;
@@ -458,15 +457,14 @@ public class PieChartRenderer extends DataRenderer {
         // calculate the radius of the "slice-circle"
         float circleRadius = (r - (r * mChart.getHoleRadius() / 100f)) / 2f;
 
-        List<Entry> entries = dataSet.getYVals();
         float[] drawAngles = mChart.getDrawAngles();
         float angle = mChart.getRotationAngle();
 
-        for (int j = 0; j < entries.size(); j++) {
+        for (int j = 0; j < dataSet.getEntryCount(); j++) {
 
             float newangle = drawAngles[j];
 
-            Entry e = entries.get(j);
+            Entry e = dataSet.getEntryForIndex(j);
 
             // draw only if the value is greater than zero
             if ((Math.abs(e.getVal()) > 0.000001)) {
