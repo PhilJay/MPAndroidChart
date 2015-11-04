@@ -9,8 +9,8 @@ import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.BubbleEntry;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -26,7 +26,7 @@ public class BubbleChartRenderer extends DataRenderer {
     protected BubbleDataProvider mChart;
 
     public BubbleChartRenderer(BubbleDataProvider chart, ChartAnimator animator,
-            ViewPortHandler viewPortHandler) {
+                               ViewPortHandler viewPortHandler) {
         super(animator, viewPortHandler);
         mChart = chart;
 
@@ -69,13 +69,11 @@ public class BubbleChartRenderer extends DataRenderer {
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
 
-        List<BubbleEntry> entries = dataSet.getYVals();
-
         BubbleEntry entryFrom = dataSet.getEntryForXIndex(mMinX);
         BubbleEntry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
         int minx = Math.max(dataSet.getEntryIndex(entryFrom), 0);
-        int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, entries.size());
+        int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, dataSet.getEntryCount());
 
         sizeBuffer[0] = 0f;
         sizeBuffer[2] = 1f;
@@ -89,7 +87,7 @@ public class BubbleChartRenderer extends DataRenderer {
 
         for (int j = minx; j < maxx; j++) {
 
-            final BubbleEntry entry = entries.get(j);
+            final BubbleEntry entry = dataSet.getEntryForIndex(j);
 
             pointBuffer[0] = (float) (entry.getXIndex() - minx) * phaseX + (float) minx;
             pointBuffer[1] = (float) (entry.getVal()) * phaseY;
@@ -150,8 +148,6 @@ public class BubbleChartRenderer extends DataRenderer {
 
                 mValuePaint.setColor(valueTextColor);
 
-                final List<BubbleEntry> entries = dataSet.getYVals();
-
                 BubbleEntry entryFrom = dataSet.getEntryForXIndex(mMinX);
                 BubbleEntry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
@@ -159,7 +155,7 @@ public class BubbleChartRenderer extends DataRenderer {
                 int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, dataSet.getEntryCount());
 
                 final float[] positions = mChart.getTransformer(dataSet.getAxisDependency())
-                        .generateTransformedValuesBubble(entries, phaseX, phaseY, minx, maxx);
+                        .generateTransformedValuesBubble(dataSet, phaseX, phaseY, minx, maxx);
 
                 for (int j = 0; j < positions.length; j += 2) {
 
@@ -172,7 +168,7 @@ public class BubbleChartRenderer extends DataRenderer {
                     if ((!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y)))
                         continue;
 
-                    BubbleEntry entry = entries.get(j / 2 + minx);
+                    BubbleEntry entry = dataSet.getEntryForIndex(j / 2 + minx);
 
                     drawValue(c, dataSet.getValueFormatter(), entry.getSize(), entry, i, x,
                             y + (0.5f * lineHeight));
@@ -214,12 +210,12 @@ public class BubbleChartRenderer extends DataRenderer {
                 continue;
 
             Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
-            
+
             sizeBuffer[0] = 0f;
             sizeBuffer[2] = 1f;
 
             trans.pointValuesToPixel(sizeBuffer);
-            
+
             // calcualte the full width of 1 step on the x-axis
             final float maxBubbleWidth = Math.abs(sizeBuffer[2] - sizeBuffer[0]);
             final float maxBubbleHeight = Math.abs(mViewPortHandler.contentBottom() - mViewPortHandler.contentTop());

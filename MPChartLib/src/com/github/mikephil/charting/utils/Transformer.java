@@ -9,6 +9,8 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 
@@ -117,10 +119,10 @@ public class Transformer {
      * Transforms an List of Entry into a float array containing the x and
      * y values transformed with all matrices for the BUBBLECHART.
      *
-     * @param entries
+     * @param data
      * @return
      */
-    public float[] generateTransformedValuesBubble(List<? extends Entry> entries,
+    public float[] generateTransformedValuesBubble(IBubbleDataSet data,
                                                    float phaseX, float phaseY, int from, int to) {
 
         final int count = (int) Math.ceil(to - from) * 2; // (int) Math.ceil((to - from) * phaseX) * 2;
@@ -129,7 +131,7 @@ public class Transformer {
 
         for (int j = 0; j < count; j += 2) {
 
-            Entry e = entries.get(j / 2 + from);
+            Entry e = data.getEntryForIndex(j / 2 + from);
 
             if (e != null) {
                 valuePoints[j] = (float) (e.getXIndex() - from) * phaseX + from;
@@ -175,10 +177,10 @@ public class Transformer {
      * Transforms an List of Entry into a float array containing the x and
      * y values transformed with all matrices for the CANDLESTICKCHART.
      *
-     * @param entries
+     * @param data
      * @return
      */
-    public float[] generateTransformedValuesCandle(List<CandleEntry> entries,
+    public float[] generateTransformedValuesCandle(ICandleDataSet data,
                                                    float phaseX, float phaseY, int from, int to) {
 
         final int count = (int) Math.ceil((to - from) * phaseX) * 2;
@@ -187,7 +189,7 @@ public class Transformer {
 
         for (int j = 0; j < count; j += 2) {
 
-            CandleEntry e = entries.get(j / 2 + from);
+            CandleEntry e = data.getEntryForIndex(j / 2 + from);
 
             if (e != null) {
                 valuePoints[j] = e.getXIndex();

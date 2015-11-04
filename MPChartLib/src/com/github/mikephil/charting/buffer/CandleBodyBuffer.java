@@ -2,10 +2,9 @@
 package com.github.mikephil.charting.buffer;
 
 import com.github.mikephil.charting.data.CandleEntry;
+import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet;
 
-import java.util.List;
-
-public class CandleBodyBuffer extends AbstractBuffer<CandleEntry> {
+public class CandleBodyBuffer extends AbstractBuffer<ICandleDataSet> {
     
     private float mBodySpace = 0f;
 
@@ -26,13 +25,13 @@ public class CandleBodyBuffer extends AbstractBuffer<CandleEntry> {
     }
 
     @Override
-    public void feed(List<CandleEntry> entries) {
+    public void feed(ICandleDataSet data) {
 
         int size = (int)Math.ceil((mTo - mFrom) * phaseX + mFrom);
 
         for (int i = mFrom; i < size; i++) {
 
-            CandleEntry e = entries.get(i);
+            CandleEntry e = data.getEntryForIndex(i);
             addBody(e.getXIndex() - 0.5f + mBodySpace, e.getClose() * phaseY, e.getXIndex() + 0.5f - mBodySpace, e.getOpen() * phaseY);
         }
 
