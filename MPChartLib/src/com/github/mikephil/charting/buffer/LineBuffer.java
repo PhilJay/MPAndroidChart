@@ -2,10 +2,9 @@
 package com.github.mikephil.charting.buffer;
 
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
-import java.util.List;
-
-public class LineBuffer extends AbstractBuffer<Entry> {
+public class LineBuffer extends AbstractBuffer<ILineDataSet> {
 
     public LineBuffer(int size) {
         super((size < 4) ? 4 : size);
@@ -41,15 +40,15 @@ public class LineBuffer extends AbstractBuffer<Entry> {
     }
 
     @Override
-    public void feed(List<Entry> entries) {
-        moveTo(entries.get(mFrom).getXIndex(), entries.get(mFrom).getVal() * phaseY);
+    public void feed(ILineDataSet data) {
+        moveTo(data.getEntryForIndex(mFrom).getXIndex(), data.getEntryForIndex(mFrom).getVal() * phaseY);
 
         int size = (int) Math.ceil((mTo - mFrom) * phaseX + mFrom);
         int from = mFrom + 1;
 
         for (int i = from; i < size; i++) {
 
-            Entry e = entries.get(i);
+            Entry e = data.getEntryForIndex(i);
             lineTo(e.getXIndex(), e.getVal() * phaseY);
         }
 

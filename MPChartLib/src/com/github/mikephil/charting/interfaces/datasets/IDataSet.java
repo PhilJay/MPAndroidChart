@@ -16,13 +16,6 @@ public interface IDataSet<T extends Entry> {
     /** ###### ###### DATA RELATED METHODS ###### ###### */
 
     /**
-     * returns the DataSets Entry array
-     *
-     * @return
-     */
-    List<T> getYVals();
-
-    /**
      * returns the minimum y-value this DataSet holds
      *
      * @return

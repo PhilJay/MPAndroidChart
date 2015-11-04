@@ -8,6 +8,7 @@ import android.graphics.RectF;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.List;
 
@@ -143,10 +144,10 @@ public class Transformer {
      * Transforms an List of Entry into a float array containing the x and
      * y values transformed with all matrices for the LINECHART.
      *
-     * @param entries
+     * @param data
      * @return
      */
-    public float[] generateTransformedValuesLine(List<? extends Entry> entries,
+    public float[] generateTransformedValuesLine(ILineDataSet data,
                                                  float phaseX, float phaseY, int from, int to) {
 
         final int count = (int) Math.ceil((to - from) * phaseX) * 2;
@@ -155,7 +156,7 @@ public class Transformer {
 
         for (int j = 0; j < count; j += 2) {
 
-            Entry e = entries.get(j / 2 + from);
+            Entry e = data.getEntryForIndex(j / 2 + from);
 
             if (e != null) {
                 valuePoints[j] = e.getXIndex();

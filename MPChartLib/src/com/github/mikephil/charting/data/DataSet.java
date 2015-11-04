@@ -150,7 +150,11 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         return entries;
     }
 
-    @Override
+    /**
+     * Returns the array of y-values that this DataSet represents.
+     *
+     * @return
+     */
     public List<T> getYVals() {
         return mYVals;
     }
