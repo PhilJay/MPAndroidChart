@@ -2,12 +2,13 @@ package com.xxmassdeveloper.mpchartexample.custom;
 
 
 import io.realm.RealmObject;
-import io.realm.annotations.Ignore;
 
 public class RealmDemoData extends RealmObject {
 
     private float value;
     private int xIndex;
+
+    private String xValue;
 
     private String someStringField;
 
@@ -17,9 +18,10 @@ public class RealmDemoData extends RealmObject {
 
     }
 
-    public RealmDemoData(float value, int xIndex) {
+    public RealmDemoData(float value, int xIndex, String xValue) {
         this.value = value;
         this.xIndex = xIndex;
+        this.xValue = xValue;
     }
 
     public float getValue() {
@@ -36,6 +38,14 @@ public class RealmDemoData extends RealmObject {
 
     public void setxIndex(int xIndex) {
         this.xIndex = xIndex;
+    }
+
+    public String getxValue() {
+        return xValue;
+    }
+
+    public void setxValue(String xValue) {
+        this.xValue = xValue;
     }
 
     public String getSomeStringField() {

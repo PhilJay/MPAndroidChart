@@ -50,11 +50,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         if (mYVals == null)
             mYVals = new ArrayList<T>();
 
-        mColors = new ArrayList<Integer>();
-
-        // default color
-        mColors.add(Color.rgb(140, 234, 255));
-
         calcMinMax(0, mYVals.size());
     }
 

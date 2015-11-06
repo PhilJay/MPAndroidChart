@@ -21,18 +21,23 @@ import io.realm.dynamic.DynamicRealmObject;
  */
 public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> implements ILineDataSet {
 
-    private List<Integer> mColors = new ArrayList<>();
     private List<Entry> mValues = new ArrayList<>();
 
     private FillFormatter mFillFormatter = new DefaultFillFormatter();
 
+    private RealmResults<T> results;
+    private String yValuesField;
+    private String xIndexField;
+
     public RealmLineDataSet(RealmResults<T> result, String yValuesField, String xIndexField) {
         super("");
-        mColors.add(Color.BLACK);
+        this.results = result;
+        this.yValuesField = yValuesField;
+        this.xIndexField = xIndexField;
 
-        result.sort(xIndexField, true);
+        results.sort(xIndexField, true);
 
-        for (T object : result) {
+        for (T object : results) {
 
             DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
 
@@ -41,6 +46,7 @@ public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> 
 
         calcMinMax(0, mValues.size());
     }
+
 
     @Override
     public float getCubicIntensity() {
@@ -54,22 +60,22 @@ public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> 
 
     @Override
     public float getCircleSize() {
-        return 0;
+        return 10;
     }
 
     @Override
     public int getCircleColor(int index) {
-        return 0;
+        return Color.BLACK;
     }
 
     @Override
     public boolean isDrawCirclesEnabled() {
-        return false;
+        return true;
     }
 
     @Override
     public int getCircleHoleColor() {
-        return 0;
+        return Color.BLACK;
     }
 
     @Override
@@ -89,7 +95,7 @@ public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> 
 
     @Override
     public FillFormatter getFillFormatter() {
-        return null;
+        return mFillFormatter;
     }
 
     @Override
@@ -104,7 +110,7 @@ public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> 
 
     @Override
     public float getLineWidth() {
-        return 0;
+        return 5;
     }
 
     @Override
@@ -144,17 +150,17 @@ public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> 
 
     @Override
     public float getYMin() {
-        return 0;
+        return results.min(yValuesField).floatValue();
     }
 
     @Override
     public float getYMax() {
-        return 0;
+        return results.max(yValuesField).floatValue();
     }
 
     @Override
     public int getEntryCount() {
-        return 0;
+        return results.size();
     }
 
     @Override
@@ -164,12 +170,14 @@ public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> 
 
     @Override
     public Entry getEntryForXIndex(int xIndex) {
-        return null;
+
+        DynamicRealmObject o = new DynamicRealmObject(results.where().equalTo(xIndexField, xIndex).findFirst());
+        return new Entry(o.getFloat(yValuesField), o.getInt(xIndexField));
     }
 
     @Override
     public Entry getEntryForIndex(int index) {
-        return null;
+        return mValues.get(index);
     }
 
     @Override
@@ -179,12 +187,12 @@ public class RealmLineDataSet<T extends RealmObject> extends BaseDataSet<Entry> 
 
     @Override
     public int getEntryIndex(Entry e) {
-        return 0;
+        return mValues.indexOf(e);
     }
 
     @Override
     public float getYValForXIndex(int xIndex) {
-        return 0;
+        return new DynamicRealmObject(results.where().greaterThanOrEqualTo(xIndexField, xIndex).findFirst()).getFloat(yValuesField);
     }
 
     @Override

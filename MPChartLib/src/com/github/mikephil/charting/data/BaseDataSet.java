@@ -9,6 +9,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -82,7 +83,10 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      * Default constructor.
      */
     public BaseDataSet() {
+        mColors = new ArrayList<>();
 
+        // default color
+        mColors.add(Color.rgb(140, 234, 255));
     }
 
     /**
@@ -91,6 +95,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      * @param label
      */
     public BaseDataSet(String label) {
+        this();
         this.mLabel = label;
     }
 

@@ -12,6 +12,7 @@ import com.github.mikephil.charting.data.realm.RealmLineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.xxmassdeveloper.mpchartexample.custom.RealmDemoData;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
+import com.xxmassdeveloper.mpchartexample.notimportant.RealmBaseActivity;
 
 import java.util.ArrayList;
 
@@ -22,7 +23,7 @@ import io.realm.RealmResults;
 /**
  * Created by Philipp Jahoda on 21/10/15.
  */
-public class RealmDatabaseActivity extends DemoBase {
+public class RealmDatabaseActivity extends RealmBaseActivity {
 
     private LineChart mChart;
 
@@ -62,55 +63,22 @@ public class RealmDatabaseActivity extends DemoBase {
         mChart.getXAxis().setTypeface(tf);
 
         mChart.getAxisRight().setEnabled(false);
-
-        // write some demo-data into the realm.io database
-        writeToDB(400);
-
-        // add data
-        setData();
-
-        mChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
     }
 
-    private void writeToDB(int objectCount) {
+    @Override
+    protected void onResume() {
+        super.onResume(); // setup realm
 
-        RealmConfiguration config = new RealmConfiguration.Builder(this)
-                .name("myrealm.realm")
-                .build();
+        // write some demo-data into the realm.io database
+        writeToDB(200);
 
-        Realm.deleteRealm(config);
-
-        Realm.setDefaultConfiguration(config);
-
-        Realm realm = Realm.getInstance(config);
-
-        realm.beginTransaction();
-
-        realm.clear(RealmDemoData.class);
-
-        for(int i = 0; i < objectCount; i++) {
-
-            RealmDemoData d = new RealmDemoData(30f + (float) (Math.random() * 100.0), i);
-            realm.copyToRealm(d);
-        }
-
-        realm.commitTransaction();
-        realm.close();
+        // add data to the chart
+        setData();
     }
 
     private void setData() {
 
-        RealmConfiguration config = new RealmConfiguration.Builder(this)
-                .name("myrealm.realm")
-                .build();
-
-        Realm realm = Realm.getInstance(config);
-        RealmResults<RealmDemoData> result = realm.allObjects(RealmDemoData.class);
-
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < result.size(); i++) {
-            xVals.add((i) + "");
-        }
+        RealmResults<RealmDemoData> result = mRealm.allObjects(RealmDemoData.class);
 
         RealmLineDataSet<RealmDemoData> set = new RealmLineDataSet<RealmDemoData>(result, "value", "xIndex");
         set.setValueTextSize(9f);
@@ -119,11 +87,10 @@ public class RealmDatabaseActivity extends DemoBase {
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list
-        LineData data = new LineData(xVals, dataSets);
+        LineData data = new LineData(result, "xValue", dataSets);
 
         // set data
         mChart.setData(data);
-
-        realm.close();
+        mChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
     }
 }

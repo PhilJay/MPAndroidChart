@@ -6,12 +6,20 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmObject;
+import io.realm.RealmResults;
+import io.realm.dynamic.DynamicRealmObject;
+
 /**
  * Data object that encapsulates all data associated with a LineChart.
  * 
  * @author Philipp Jahoda
  */
 public class LineData extends BarLineScatterCandleBubbleData<ILineDataSet> {
+
+    public LineData(RealmResults<? extends RealmObject> result, String xValuesField, List<ILineDataSet> dataSets) {
+        super(toXVals(result, xValuesField), dataSets);
+    }
 
     public LineData() {
         super();
@@ -45,5 +53,18 @@ public class LineData extends BarLineScatterCandleBubbleData<ILineDataSet> {
         List<ILineDataSet> sets = new ArrayList<ILineDataSet>();
         sets.add(dataSet);
         return sets;
+    }
+
+    private static List<String> toXVals(RealmResults<? extends RealmObject> result, String xValuesField) {
+
+        List<String> xVals = new ArrayList<>();
+
+        for (RealmObject object : result) {
+
+            DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
+            xVals.add(dynamicObject.getString(xValuesField));
+        }
+
+        return xVals;
     }
 }
