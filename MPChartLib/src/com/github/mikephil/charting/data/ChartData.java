@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import io.realm.RealmObject;
+import io.realm.RealmResults;
+import io.realm.dynamic.DynamicRealmObject;
+
 /**
  * Class that holds all relevant data that represents the chart. That involves
  * at least one (or more) DataSets, and an array of x-values.
@@ -950,5 +954,18 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         }
 
         return false;
+    }
+
+    protected static List<String> toXVals(RealmResults<? extends RealmObject> result, String xValuesField) {
+
+        List<String> xVals = new ArrayList<>();
+
+        for (RealmObject object : result) {
+
+            DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
+            xVals.add(dynamicObject.getString(xValuesField));
+        }
+
+        return xVals;
     }
 }
