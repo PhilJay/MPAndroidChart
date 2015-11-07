@@ -117,8 +117,8 @@ public abstract class RealmBaseDataSet<T extends RealmObject> extends BaseDataSe
     }
 
     @Override
-    public void addEntry(Entry e) {
-
+    public boolean addEntry(Entry e) {
+        return false;
     }
 
     @Override

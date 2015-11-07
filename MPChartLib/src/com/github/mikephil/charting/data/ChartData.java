@@ -605,8 +605,12 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
         if (mDataSets.size() > dataSetIndex && dataSetIndex >= 0) {
 
-            float val = e.getVal();
             IDataSet set = mDataSets.get(dataSetIndex);
+            // add the entry to the dataset
+            if(!set.addEntry(e))
+                return;
+
+            float val = e.getVal();
 
             if (mYValCount == 0) {
                 mYMin = val;
@@ -645,8 +649,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
             handleEmptyAxis(getFirstLeft(), getFirstRight());
 
-            // add the entry to the dataset
-            set.addEntry(e);
         } else {
             Log.e("addEntry", "Cannot add Entry because dataSetIndex too high or too low.");
         }

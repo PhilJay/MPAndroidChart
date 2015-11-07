@@ -105,7 +105,7 @@ public interface IDataSet<T extends Entry> {
      *
      * @param e
      */
-    void addEntry(T e);
+    boolean addEntry(T e);
 
     /**
      * Removes an Entry from the DataSets entries array. This will also

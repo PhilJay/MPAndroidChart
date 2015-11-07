@@ -378,10 +378,10 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     @Override
-    public void addEntry(T e) {
+    public boolean addEntry(T e) {
 
         if (e == null)
-            return;
+            return false;
 
         float val = e.getVal();
 
@@ -402,6 +402,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
         // add the entry
         yVals.add(e);
+        return true;
     }
 
     @Override
