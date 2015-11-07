@@ -611,7 +611,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
             IDataSet set = mDataSets.get(dataSetIndex);
             // add the entry to the dataset
-            if(!set.addEntry(e))
+            if (!set.addEntry(e))
                 return;
 
             float val = e.getVal();
@@ -956,6 +956,13 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         return false;
     }
 
+    /**
+     * Transforms the given Realm-ResultSet into a String array by using the provided xValuesField.
+     *
+     * @param result
+     * @param xValuesField
+     * @return
+     */
     protected static List<String> toXVals(RealmResults<? extends RealmObject> result, String xValuesField) {
 
         List<String> xVals = new ArrayList<>();

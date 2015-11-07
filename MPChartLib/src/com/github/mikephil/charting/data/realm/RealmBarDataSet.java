@@ -51,7 +51,7 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBaseDataSet<T, 
 
     @Override
     public String[] getStackLabels() {
-        return new String[0];
+        return null;
     }
 
     @Override

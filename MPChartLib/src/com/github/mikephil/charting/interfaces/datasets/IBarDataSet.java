@@ -23,7 +23,7 @@ public interface IBarDataSet extends IBarLineScatterCandleBubbleDataSet<BarEntry
 
     /**
      * Returns the maximum number of bars that can be stacked upon another in
-     * this DataSet.
+     * this DataSet. This should return 1 for non stacked bars, and > 1 for stacked bars.
      *
      * @return
      */
