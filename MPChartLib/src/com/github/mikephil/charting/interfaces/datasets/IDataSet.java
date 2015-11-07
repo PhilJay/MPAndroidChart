@@ -128,11 +128,26 @@ public interface IDataSet<T extends Entry> {
     String getLabel();
 
     /**
+     * Sets the label string that describes the DataSet.
+     *
+     * @param label
+     */
+    void setLabel(String label);
+
+    /**
      * Returns the axis this DataSet should be plotted against.
      *
      * @return
      */
     YAxis.AxisDependency getAxisDependency();
+
+    /**
+     * Set the y-axis this DataSet should be plotted against (either LEFT or
+     * RIGHT). Default: LEFT
+     *
+     * @param dependency
+     */
+    void setAxisDependency(YAxis.AxisDependency dependency);
 
     /**
      * returns all the colors that are set for this DataSet

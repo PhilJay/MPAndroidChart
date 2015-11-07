@@ -3,6 +3,7 @@ package com.github.mikephil.charting.data.realm;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 
+import com.github.mikephil.charting.data.BaseDataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.DefaultFillFormatter;
 import com.github.mikephil.charting.formatter.FillFormatter;
@@ -13,13 +14,12 @@ import java.util.List;
 
 import io.realm.RealmObject;
 import io.realm.RealmResults;
+import io.realm.dynamic.DynamicRealmObject;
 
 /**
  * Created by Philipp Jahoda on 21/10/15.
  */
-public class RealmLineDataSet<T extends RealmObject> extends RealmBaseDataSet implements ILineDataSet {
-
-    private List<Entry> mValues = new ArrayList<>();
+public class RealmLineDataSet<T extends RealmObject> extends RealmBaseDataSet<T> implements ILineDataSet {
 
     private FillFormatter mFillFormatter = new DefaultFillFormatter();
 

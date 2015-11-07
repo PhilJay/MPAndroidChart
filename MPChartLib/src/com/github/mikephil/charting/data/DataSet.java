@@ -457,13 +457,14 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
     @Override
     public int getEntryIndex(Entry e) {
-
-        for (int i = 0; i < mYVals.size(); i++) {
-            if (e.equalTo(mYVals.get(i)))
-                return i;
-        }
-
-        return -1;
+        return mYVals.indexOf(e);
+//
+//        for (int i = 0; i < mYVals.size(); i++) {
+//            if (e.equalTo(mYVals.get(i)))
+//                return i;
+//        }
+//
+//        return -1;
     }
 
     @Override

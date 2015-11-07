@@ -34,16 +34,6 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      */
     protected YAxis.AxisDependency mAxisDependency = YAxis.AxisDependency.LEFT;
 
-//    /**
-//     * the last start value used for calcMinMax
-//     */
-//    protected int mLastStart = 0;
-//
-//    /**
-//     * the last end value used for calcMinMax
-//     */
-//    protected int mLastEnd = 0;
-
     /**
      * if true, value highlightning is enabled
      */
@@ -128,11 +118,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
 
     /** ###### ###### OTHER STYLING RELATED METHODS ##### ###### */
 
-    /**
-     * Sets the label string that describes the DataSet.
-     *
-     * @return
-     */
+    @Override
     public void setLabel(String label) {
         mLabel = label;
     }
@@ -223,12 +209,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
         return mAxisDependency;
     }
 
-    /**
-     * Set the y-axis this DataSet should be plotted against (either LEFT or
-     * RIGHT). Default: LEFT
-     *
-     * @param dependency
-     */
+    @Override
     public void setAxisDependency(YAxis.AxisDependency dependency) {
         mAxisDependency = dependency;
     }
