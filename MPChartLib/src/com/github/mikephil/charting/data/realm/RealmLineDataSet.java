@@ -19,12 +19,18 @@ import io.realm.dynamic.DynamicRealmObject;
 /**
  * Created by Philipp Jahoda on 21/10/15.
  */
-public class RealmLineDataSet<T extends RealmObject> extends RealmBaseDataSet<T> implements ILineDataSet {
+public class RealmLineDataSet<T extends RealmObject> extends RealmBaseDataSet<T, Entry> implements ILineDataSet {
 
     private FillFormatter mFillFormatter = new DefaultFillFormatter();
 
     public RealmLineDataSet(RealmResults<T> result, String yValuesField, String xIndexField) {
         super(result, yValuesField, xIndexField);
+
+        for (T object : this.results) {
+
+            DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
+            mValues.add(new Entry(dynamicObject.getFloat(yValuesField), dynamicObject.getInt(xIndexField)));
+        }
     }
 
     @Override
