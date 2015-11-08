@@ -16,11 +16,15 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBaseDataSet<T, 
 
     public RealmBarDataSet(RealmResults<T> results, String yValuesField, String xIndexField) {
         super(results, yValuesField, xIndexField);
+    }
 
-        for (T object : this.results) {
+    @Override
+    public void build(RealmResults<T> results) {
+
+        for (T object : results) {
 
             DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
-            mValues.add(new BarEntry(dynamicObject.getFloat(yValuesField), dynamicObject.getInt(xIndexField)));
+            mValues.add(new BarEntry(dynamicObject.getFloat(mValuesField), dynamicObject.getInt(mIndexField)));
         }
     }
 
@@ -46,7 +50,7 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBaseDataSet<T, 
 
     @Override
     public int getHighLightAlpha() {
-        return 0;
+        return 120;
     }
 
     @Override
@@ -56,6 +60,6 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBaseDataSet<T, 
 
     @Override
     public int getHighLightColor() {
-        return 0;
+        return Color.BLACK;
     }
 }
