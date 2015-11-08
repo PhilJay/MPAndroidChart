@@ -6,10 +6,14 @@ import android.view.WindowManager;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.realm.implementation.RealmBarDataSet;
+import com.github.mikephil.charting.data.realm.implementation.RealmLineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.xxmassdeveloper.mpchartexample.custom.RealmDemoData;
 import com.xxmassdeveloper.mpchartexample.notimportant.RealmBaseActivity;
 
@@ -22,16 +26,16 @@ import io.realm.RealmResults;
  */
 public class RealmDatabaseActivity extends RealmBaseActivity {
 
-    private BarChart mChart;
+    private LineChart mChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_barchart);
+        setContentView(R.layout.activity_linechart_noseekbar);
 
-        mChart = (BarChart) findViewById(R.id.chart1);
+        mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setDrawGridBackground(false);
 
         // no description text
@@ -77,14 +81,17 @@ public class RealmDatabaseActivity extends RealmBaseActivity {
 
         RealmResults<RealmDemoData> result = mRealm.allObjects(RealmDemoData.class);
 
-        RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "value", "xIndex");
+        RealmLineDataSet<RealmDemoData> set = new RealmLineDataSet<RealmDemoData>(result, "value", "xIndex");
         set.setValueTextSize(9f);
+        set.setDrawCubic(false);
+        set.setLabel("Realm LineDataSet");
+        set.setDrawCircleHole(false);
 
-        ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list
-        BarData data = new BarData(result, "xValue", dataSets);
+        LineData data = new LineData(result, "xValue", dataSets);
 
         // set data
         mChart.setData(data);
