@@ -1,7 +1,6 @@
 package com.github.mikephil.charting.data.realm;
 
 import android.graphics.Color;
-import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 
 import com.github.mikephil.charting.data.CandleEntry;
@@ -14,7 +13,7 @@ import io.realm.dynamic.DynamicRealmObject;
 /**
  * Created by Philipp Jahoda on 07/11/15.
  */
-public class RealmCandleDataSet<T extends RealmObject> extends RealmBaseDataSet<T, CandleEntry> implements ICandleDataSet {
+public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterCandleRadarDataSet<T, CandleEntry> implements ICandleDataSet {
 
     private String mHighField;
     private String mLowField;
@@ -77,30 +76,5 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmBaseDataSet<
     @Override
     public boolean getShadowColorSameAsCandle() {
         return false;
-    }
-
-    @Override
-    public boolean isVerticalHighlightIndicatorEnabled() {
-        return false;
-    }
-
-    @Override
-    public boolean isHorizontalHighlightIndicatorEnabled() {
-        return false;
-    }
-
-    @Override
-    public float getHighlightLineWidth() {
-        return 0;
-    }
-
-    @Override
-    public DashPathEffect getDashPathEffectHighlight() {
-        return null;
-    }
-
-    @Override
-    public int getHighLightColor() {
-        return 0;
     }
 }

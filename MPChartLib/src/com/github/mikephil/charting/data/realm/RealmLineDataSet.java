@@ -15,7 +15,7 @@ import io.realm.dynamic.DynamicRealmObject;
 /**
  * Created by Philipp Jahoda on 21/10/15.
  */
-public class RealmLineDataSet<T extends RealmObject> extends RealmBaseDataSet<T, Entry> implements ILineDataSet {
+public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataSet<T, Entry> implements ILineDataSet {
 
     private FillFormatter mFillFormatter = new DefaultFillFormatter();
 
@@ -81,55 +81,5 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmBaseDataSet<T,
     @Override
     public FillFormatter getFillFormatter() {
         return mFillFormatter;
-    }
-
-    @Override
-    public int getFillColor() {
-        return 0;
-    }
-
-    @Override
-    public int getFillAlpha() {
-        return 0;
-    }
-
-    @Override
-    public float getLineWidth() {
-        return 5;
-    }
-
-    @Override
-    public boolean isDrawFilledEnabled() {
-        return false;
-    }
-
-    @Override
-    public void setDrawFilled(boolean enabled) {
-
-    }
-
-    @Override
-    public boolean isVerticalHighlightIndicatorEnabled() {
-        return false;
-    }
-
-    @Override
-    public boolean isHorizontalHighlightIndicatorEnabled() {
-        return false;
-    }
-
-    @Override
-    public float getHighlightLineWidth() {
-        return 0;
-    }
-
-    @Override
-    public DashPathEffect getDashPathEffectHighlight() {
-        return null;
-    }
-
-    @Override
-    public int getHighLightColor() {
-        return 0;
     }
 }
