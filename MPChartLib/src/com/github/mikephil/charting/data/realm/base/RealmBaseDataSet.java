@@ -161,6 +161,14 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         return mValues;
     }
 
+    /**
+     * Clears all values from the DataSet.
+     */
+    public void clearValues() {
+        mValues.clear();
+        notifyDataSetChanged();
+    }
+
     public RealmResults<T> getResults() {
         return results;
     }
