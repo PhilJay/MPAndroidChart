@@ -1,11 +1,6 @@
 
 package com.github.mikephil.charting.data;
 
-import android.content.Context;
-import android.graphics.Color;
-
-import com.github.mikephil.charting.utils.ColorTemplate;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -289,84 +284,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         }
 
         return removed;
-    }
-
-    /** BELOW THIS COLOR HANDLING */
-
-    /**
-     * Sets the colors that should be used fore this DataSet. Colors are reused
-     * as soon as the number of Entries the DataSet represents is higher than
-     * the size of the colors array. If you are using colors from the resources,
-     * make sure that the colors are already prepared (by calling
-     * getResources().getColor(...)) before adding them to the DataSet.
-     *
-     * @param colors
-     */
-    public void setColors(List<Integer> colors) {
-        this.mColors = colors;
-    }
-
-    /**
-     * Sets the colors that should be used fore this DataSet. Colors are reused
-     * as soon as the number of Entries the DataSet represents is higher than
-     * the size of the colors array. If you are using colors from the resources,
-     * make sure that the colors are already prepared (by calling
-     * getResources().getColor(...)) before adding them to the DataSet.
-     *
-     * @param colors
-     */
-    public void setColors(int[] colors) {
-        this.mColors = ColorTemplate.createColors(colors);
-    }
-
-    /**
-     * Sets the colors that should be used fore this DataSet. Colors are reused
-     * as soon as the number of Entries the DataSet represents is higher than
-     * the size of the colors array. You can use
-     * "new int[] { R.color.red, R.color.green, ... }" to provide colors for
-     * this method. Internally, the colors are resolved using
-     * getResources().getColor(...)
-     *
-     * @param colors
-     */
-    public void setColors(int[] colors, Context c) {
-
-        List<Integer> clrs = new ArrayList<Integer>();
-
-        for (int color : colors) {
-            clrs.add(c.getResources().getColor(color));
-        }
-
-        mColors = clrs;
-    }
-
-    /**
-     * Adds a new color to the colors array of the DataSet.
-     *
-     * @param color
-     */
-    public void addColor(int color) {
-        if (mColors == null)
-            mColors = new ArrayList<Integer>();
-        mColors.add(color);
-    }
-
-    /**
-     * Sets the one and ONLY color that should be used for this DataSet.
-     * Internally, this recreates the colors array and adds the specified color.
-     *
-     * @param color
-     */
-    public void setColor(int color) {
-        resetColors();
-        mColors.add(color);
-    }
-
-    /**
-     * Resets all colors of this DataSet and recreates the colors array.
-     */
-    public void resetColors() {
-        mColors = new ArrayList<Integer>();
     }
 
     /**
