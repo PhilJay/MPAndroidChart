@@ -33,6 +33,6 @@ public class RealmPieDataSet<T extends RealmObject> extends RealmBaseDataSet<T, 
 
     @Override
     public float getSelectionShift() {
-        return 0;
+        return 10;
     }
 }

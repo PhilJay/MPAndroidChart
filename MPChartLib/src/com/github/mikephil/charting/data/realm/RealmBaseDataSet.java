@@ -19,9 +19,19 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
      */
     protected RealmResults<T> results;
 
+    /**
+     * a cached list of all data read from the database
+     */
     protected List<S> mValues;
 
+    /**
+     * fieldname of the column that contains the y-values of this dataset
+     */
     protected String mValuesField;
+
+    /**
+     * fieldname of the column that contains the x-indices of this dataset
+     */
     protected String mIndexField;
 
     /**
