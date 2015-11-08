@@ -15,6 +15,34 @@ import io.realm.dynamic.DynamicRealmObject;
  */
 public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterCandleBubbleDataSet<T, BarEntry> implements IBarDataSet {
 
+    /**
+     * space indicator between the bars 0.1f == 10 %
+     */
+    private float mBarSpace = 0.15f;
+
+    /**
+     * the maximum number of bars that are stacked upon each other, this value
+     * is calculated from the Entries that are added to the DataSet
+     */
+    private int mStackSize = 1;
+
+    /**
+     * the color used for drawing the bar shadows
+     */
+    private int mBarShadowColor = Color.rgb(215, 215, 215);
+
+    /**
+     * the alpha value used to draw the highlight indicator bar
+     */
+    private int mHighLightAlpha = 120;
+
+    /**
+     * array of labels used to describe the different values of the stacked bars
+     */
+    private String[] mStackLabels = new String[]{
+            "Stack"
+    };
+
     public RealmBarDataSet(RealmResults<T> results, String yValuesField, String xIndexField) {
         super(results, yValuesField, xIndexField);
     }
@@ -30,33 +58,87 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
     }
 
     @Override
-    public float getBarSpace() {
-        return 0;
-    }
+    public void calcMinMax(int start, int end) {
 
-    @Override
-    public boolean isStacked() {
-        return false;
+        // TODO: implement this
     }
 
     @Override
     public int getStackSize() {
-        return 0;
+        return mStackSize;
+    }
+
+    @Override
+    public boolean isStacked() {
+        return mStackSize > 1 ? true : false;
+    }
+
+    /**
+     * returns the space between bars in percent of the whole width of one value
+     *
+     * @return
+     */
+    public float getBarSpacePercent() {
+        return mBarSpace * 100f;
+    }
+
+    @Override
+    public float getBarSpace() {
+        return mBarSpace;
+    }
+
+    /**
+     * sets the space between the bars in percent (0-100) of the total bar width
+     *
+     * @param percent
+     */
+    public void setBarSpacePercent(float percent) {
+        mBarSpace = percent / 100f;
+    }
+
+    /**
+     * Sets the color used for drawing the bar-shadows. The bar shadows is a
+     * surface behind the bar that indicates the maximum value. Don't for get to
+     * use getResources().getColor(...) to set this. Or Color.rgb(...).
+     *
+     * @param color
+     */
+    public void setBarShadowColor(int color) {
+        mBarShadowColor = color;
     }
 
     @Override
     public int getBarShadowColor() {
-        return Color.BLACK;
+        return mBarShadowColor;
+    }
+
+    /**
+     * Set the alpha value (transparency) that is used for drawing the highlight
+     * indicator bar. min = 0 (fully transparent), max = 255 (fully opaque)
+     *
+     * @param alpha
+     */
+    public void setHighLightAlpha(int alpha) {
+        mHighLightAlpha = alpha;
     }
 
     @Override
     public int getHighLightAlpha() {
-        return 120;
+        return mHighLightAlpha;
+    }
+
+    /**
+     * Sets labels for different values of bar-stacks, in case there are one.
+     *
+     * @param labels
+     */
+    public void setStackLabels(String[] labels) {
+        mStackLabels = labels;
     }
 
     @Override
     public String[] getStackLabels() {
-        return null;
+        return mStackLabels;
     }
 
 }

@@ -3,6 +3,7 @@ package com.github.mikephil.charting.data.realm.implementation;
 import com.github.mikephil.charting.data.BubbleEntry;
 import com.github.mikephil.charting.data.realm.base.RealmBarLineScatterCandleBubbleDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
+import com.github.mikephil.charting.utils.Utils;
 
 import io.realm.RealmObject;
 import io.realm.RealmResults;
@@ -14,6 +15,12 @@ import io.realm.dynamic.DynamicRealmObject;
 public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatterCandleBubbleDataSet<T, BubbleEntry> implements IBubbleDataSet {
 
     private String mSizeField;
+
+    protected float mXMax;
+    protected float mXMin;
+    protected float mMaxSize;
+
+    private float mHighlightCircleWidth = 2.5f;
 
     public RealmBubbleDataSet(RealmResults<T> result, String yValuesField, String xIndexField, String sizeField) {
         super(result, yValuesField, xIndexField);
@@ -31,8 +38,9 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
     }
 
     @Override
-    public void setHighlightCircleWidth(float width) {
+    public void calcMinMax(int start, int end) {
 
+        // TODO: implement this
     }
 
     @Override
@@ -51,8 +59,13 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
     }
 
     @Override
+    public void setHighlightCircleWidth(float width) {
+        mHighlightCircleWidth = Utils.convertDpToPixel(width);
+    }
+
+    @Override
     public float getHighlightCircleWidth() {
-        return 0;
+        return mHighlightCircleWidth;
     }
 
     /**
