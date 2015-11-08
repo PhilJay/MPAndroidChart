@@ -1,6 +1,7 @@
-package com.github.mikephil.charting.data.realm;
+package com.github.mikephil.charting.data.realm.implementation;
 
 import com.github.mikephil.charting.data.BubbleEntry;
+import com.github.mikephil.charting.data.realm.base.RealmBarLineScatterCandleBubbleDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 
 import io.realm.RealmObject;

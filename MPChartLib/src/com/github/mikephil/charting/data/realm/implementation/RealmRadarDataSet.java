@@ -1,6 +1,7 @@
-package com.github.mikephil.charting.data.realm;
+package com.github.mikephil.charting.data.realm.implementation;
 
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.realm.base.RealmLineRadarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 
 import io.realm.RealmObject;

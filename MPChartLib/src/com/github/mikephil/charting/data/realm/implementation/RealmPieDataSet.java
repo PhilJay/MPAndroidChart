@@ -1,8 +1,8 @@
-package com.github.mikephil.charting.data.realm;
+package com.github.mikephil.charting.data.realm.implementation;
 
-import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
+import com.github.mikephil.charting.data.realm.base.RealmBaseDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 
 import io.realm.RealmObject;
 import io.realm.RealmResults;
@@ -11,9 +11,9 @@ import io.realm.dynamic.DynamicRealmObject;
 /**
  * Created by Philipp Jahoda on 07/11/15.
  */
-public class RealmScatterDataSet<T extends RealmObject> extends RealmLineScatterCandleRadarDataSet<T, Entry> implements IScatterDataSet {
+public class RealmPieDataSet<T extends RealmObject> extends RealmBaseDataSet<T, Entry> implements IPieDataSet {
 
-    public RealmScatterDataSet(RealmResults<T> result, String yValuesField, String xIndexField) {
+    public RealmPieDataSet(RealmResults<T> result, String yValuesField, String xIndexField) {
         super(result, yValuesField, xIndexField);
     }
 
@@ -28,12 +28,12 @@ public class RealmScatterDataSet<T extends RealmObject> extends RealmLineScatter
     }
 
     @Override
-    public float getScatterShapeSize() {
+    public float getSliceSpace() {
         return 0;
     }
 
     @Override
-    public ScatterChart.ScatterShape getScatterShape() {
-        return null;
+    public float getSelectionShift() {
+        return 10;
     }
 }
