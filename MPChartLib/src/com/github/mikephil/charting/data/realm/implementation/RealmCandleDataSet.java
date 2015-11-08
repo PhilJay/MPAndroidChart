@@ -22,7 +22,6 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
     private String mOpenField;
     private String mCloseField;
 
-
     /**
      * the width of the shadow of the candle
      */

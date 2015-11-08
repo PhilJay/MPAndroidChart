@@ -49,6 +49,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         this.results.sort(mIndexField, true);
 
         build(this.results);
+        calcMinMax(0, results.size());
     }
 
     /**
@@ -75,6 +76,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
 
     @Override
     public void calcMinMax(int start, int end) {
+
 
     }
 
@@ -149,10 +151,29 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         return false;
     }
 
+    /**
+     * Returns the List of values that has been extracted from the RealmResults
+     * using the provided fieldnames.
+     *
+     * @return
+     */
+    public List<S> getValues() {
+        return mValues;
+    }
+
+    public RealmResults<T> getResults() {
+        return results;
+    }
+
     public String getValuesField() {
         return mValuesField;
     }
 
+    /**
+     * Sets the field name that is used for getting the y-values out of the RealmResultSet.
+     *
+     * @param yValuesField
+     */
     public void setValuesField(String yValuesField) {
         this.mValuesField = yValuesField;
     }
@@ -161,6 +182,11 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         return mIndexField;
     }
 
+    /**
+     * Sets the field name that is used for getting the x-indices out of the RealmResultSet.
+     *
+     * @param xIndexField
+     */
     public void setIndexField(String xIndexField) {
         this.mIndexField = xIndexField;
     }
