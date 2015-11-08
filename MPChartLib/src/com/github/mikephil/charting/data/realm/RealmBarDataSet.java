@@ -12,7 +12,7 @@ import io.realm.dynamic.DynamicRealmObject;
 /**
  * Created by Philipp Jahoda on 07/11/15.
  */
-public class RealmBarDataSet<T extends RealmObject> extends RealmBaseDataSet<T, BarEntry> implements IBarDataSet {
+public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterCandleBubbleDataSet<T, BarEntry> implements IBarDataSet {
 
     public RealmBarDataSet(RealmResults<T> results, String yValuesField, String xIndexField) {
         super(results, yValuesField, xIndexField);
@@ -58,8 +58,4 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBaseDataSet<T, 
         return null;
     }
 
-    @Override
-    public int getHighLightColor() {
-        return Color.BLACK;
-    }
 }

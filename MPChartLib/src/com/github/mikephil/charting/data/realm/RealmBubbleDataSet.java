@@ -10,7 +10,7 @@ import io.realm.dynamic.DynamicRealmObject;
 /**
  * Created by Philipp Jahoda on 07/11/15.
  */
-public class RealmBubbleDataSet<T extends RealmObject> extends RealmBaseDataSet<T, BubbleEntry> implements IBubbleDataSet {
+public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatterCandleBubbleDataSet<T, BubbleEntry> implements IBubbleDataSet {
 
     private String mSizeField;
 
@@ -54,9 +54,13 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBaseDataSet<
         return 0;
     }
 
-    @Override
-    public int getHighLightColor() {
-        return 0;
+    /**
+     * Sets the database fieldname for the bubble size.
+     *
+     * @param sizeField
+     */
+    public void setSizeField(String sizeField) {
+        this.mSizeField = sizeField;
     }
 
     /**
