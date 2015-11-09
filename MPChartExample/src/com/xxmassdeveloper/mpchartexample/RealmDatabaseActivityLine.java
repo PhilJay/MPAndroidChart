@@ -24,7 +24,7 @@ import io.realm.RealmResults;
 /**
  * Created by Philipp Jahoda on 21/10/15.
  */
-public class RealmDatabaseActivity extends RealmBaseActivity {
+public class RealmDatabaseActivityLine extends RealmBaseActivity {
 
     private LineChart mChart;
 
@@ -36,34 +36,7 @@ public class RealmDatabaseActivity extends RealmBaseActivity {
         setContentView(R.layout.activity_linechart_noseekbar);
 
         mChart = (LineChart) findViewById(R.id.chart1);
-        mChart.setDrawGridBackground(false);
-
-        // no description text
-        mChart.setDescription("");
-        mChart.setNoDataTextDescription("You need to provide data for the chart.");
-
-        // enable touch gestures
-        mChart.setTouchEnabled(true);
-
-        // enable scaling and dragging
-        mChart.setDragEnabled(true);
-        mChart.setScaleEnabled(true);
-
-        // if disabled, scaling can be done on x- and y-axis separately
-        mChart.setPinchZoom(false);
-
-        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-
-        YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
-        leftAxis.setAxisMaxValue(220f);
-        leftAxis.setAxisMinValue(-50f);
-        leftAxis.setStartAtZero(false);
-        leftAxis.setTypeface(tf);
-
-        mChart.getXAxis().setTypeface(tf);
-
-        mChart.getAxisRight().setEnabled(false);
+        setup(mChart);
     }
 
     @Override

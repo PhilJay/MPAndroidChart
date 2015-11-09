@@ -6,8 +6,10 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.realm.base.RealmBarLineScatterCandleBubbleDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
+import io.realm.dynamic.DynamicRealmList;
 import io.realm.dynamic.DynamicRealmObject;
 
 /**
@@ -50,10 +52,30 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
     @Override
     public void build(RealmResults<T> results) {
 
-        for (T object : results) {
+        for (T realmObject : results) {
 
-            DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
-            mValues.add(new BarEntry(dynamicObject.getFloat(mValuesField), dynamicObject.getInt(mIndexField)));
+            DynamicRealmObject dynamicObject = new DynamicRealmObject(realmObject);
+
+            try {
+
+                float value = dynamicObject.getFloat(mValuesField);
+                mValues.add(new BarEntry(value, dynamicObject.getInt(mIndexField)));
+
+            } catch(IllegalArgumentException e) {
+
+                DynamicRealmList list = dynamicObject.getList(mValuesField);
+                float [] values = new float[list.size()];
+
+                int i = 0;
+                for(DynamicRealmObject o : list) {
+                    values[i] = o.getFloat("value");
+                    System.out.println("Value: " + values[i]);
+                    i++;
+                }
+                mValues.add(new BarEntry(values, dynamicObject.getInt(mIndexField)));
+
+                mStackSize = Math.max(mStackSize, values.length);
+            }
         }
     }
 

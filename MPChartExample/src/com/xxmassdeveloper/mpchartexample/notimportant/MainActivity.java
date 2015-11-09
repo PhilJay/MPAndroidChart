@@ -40,7 +40,8 @@ import com.xxmassdeveloper.mpchartexample.PerformanceLineChart;
 import com.xxmassdeveloper.mpchartexample.PieChartActivity;
 import com.xxmassdeveloper.mpchartexample.R;
 import com.xxmassdeveloper.mpchartexample.RadarChartActivitry;
-import com.xxmassdeveloper.mpchartexample.RealmDatabaseActivity;
+import com.xxmassdeveloper.mpchartexample.RealmDatabaseActivityBar;
+import com.xxmassdeveloper.mpchartexample.RealmDatabaseActivityLine;
 import com.xxmassdeveloper.mpchartexample.RealtimeLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.ScatterChartActivity;
 import com.xxmassdeveloper.mpchartexample.ScrollViewActivity;
@@ -126,7 +127,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 "Chart in ScrollView",
                 "This demonstrates how to use a chart inside a ScrollView."));
         objects.add(new ContentItem(
-                "Realm.io Database",
+                "Realm.io Database LineChart",
+                "This demonstrates how to use this library with Realm.io mobile database."));
+        objects.add(new ContentItem(
+                "Realm.io Database BarChart",
                 "This demonstrates how to use this library with Realm.io mobile database."));
 
         MyAdapter adapter = new MyAdapter(this, objects);
@@ -248,7 +252,11 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 startActivity(i);
                 break;
             case 26:
-                i = new Intent(this, RealmDatabaseActivity.class);
+                i = new Intent(this, RealmDatabaseActivityLine.class);
+                startActivity(i);
+                break;
+            case 27:
+                i = new Intent(this, RealmDatabaseActivityBar.class);
                 startActivity(i);
                 break;
         }
