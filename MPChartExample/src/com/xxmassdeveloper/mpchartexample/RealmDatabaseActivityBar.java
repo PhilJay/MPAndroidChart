@@ -45,7 +45,7 @@ public class RealmDatabaseActivityBar extends RealmBaseActivity {
         super.onResume(); // setup realm
 
         // write some demo-data into the realm.io database
-        writeToDBStack(4);
+        writeToDBStack(200);
 
         // add data to the chart
         setData();
@@ -55,13 +55,12 @@ public class RealmDatabaseActivityBar extends RealmBaseActivity {
 
         RealmResults<RealmDemoData> result = mRealm.allObjects(RealmDemoData.class);
 
-        RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "stackValues", "xIndex");
-        System.out.println("Act: " + set.getStackSize());
+        //RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "stackValues", "xIndex"); // normal entries
+        RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "stackValues", "xIndex", "floatValue"); // stacked entries
         set.setValueTextSize(9f);
         set.setColors(getColors(set.getStackSize()));
         set.setLabel("Realm BarDataSet");
         set.setStackLabels(new String[]{"Births", "Divorces", "Marriages"});
-        System.out.println("Act: " + set.getStackSize());
 
         ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
         dataSets.add(set); // add the dataset

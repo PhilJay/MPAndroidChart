@@ -16,6 +16,8 @@ import io.realm.dynamic.DynamicRealmObject;
  */
 public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterCandleBubbleDataSet<T, BarEntry> implements IBarDataSet {
 
+    private String mStackValueFieldName;
+
     /**
      * space indicator between the bars 0.1f == 10 %
      */
@@ -47,12 +49,25 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
     public RealmBarDataSet(RealmResults<T> results, String yValuesField, String xIndexField) {
         super(results, yValuesField, xIndexField);
         mHighLightColor = Color.rgb(0, 0, 0);
-        calcStackSize();
+        buildData(this.results);
     }
 
-    @Override
-    public void build(RealmResults<T> results) {
+    /**
+     * Constructor for supporting stacked values.
+     *
+     * @param results
+     * @param yValuesField
+     * @param xIndexField
+     * @param stackValueFieldName
+     */
+    public RealmBarDataSet(RealmResults<T> results, String yValuesField, String xIndexField, String stackValueFieldName) {
+        super(results, yValuesField, xIndexField);
+        this.mStackValueFieldName = stackValueFieldName;
+        mHighLightColor = Color.rgb(0, 0, 0);
+        buildData(this.results);
+    }
 
+    private void buildData(RealmResults<T> results) {
         for (T realmObject : results) {
 
             DynamicRealmObject dynamicObject = new DynamicRealmObject(realmObject);
@@ -62,14 +77,14 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
                 float value = dynamicObject.getFloat(mValuesField);
                 mValues.add(new BarEntry(value, dynamicObject.getInt(mIndexField)));
 
-            } catch(IllegalArgumentException e) {
+            } catch (IllegalArgumentException e) {
 
                 DynamicRealmList list = dynamicObject.getList(mValuesField);
-                float [] values = new float[list.size()];
+                float[] values = new float[list.size()];
 
                 int i = 0;
-                for(DynamicRealmObject o : list) {
-                    values[i] = o.getFloat("value");
+                for (DynamicRealmObject o : list) {
+                    values[i] = o.getFloat(mStackValueFieldName);
                     i++;
                 }
 
@@ -78,6 +93,11 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
         }
 
         calcStackSize();
+    }
+
+    @Override
+    public void build(RealmResults<T> results) {
+        // TODO: make this cleaner
     }
 
     @Override

@@ -7,21 +7,21 @@ import io.realm.RealmObject;
  */
 public class RealmFloat extends RealmObject {
 
-    private float value;
+    private float floatValue;
 
     public RealmFloat() {
 
     }
 
-    public RealmFloat(float value) {
-        this.value = value;
+    public RealmFloat(float floatValue) {
+        this.floatValue = floatValue;
     }
 
-    public float getValue() {
-        return value;
+    public float getFloatValue() {
+        return floatValue;
     }
 
-    public void setValue(float value) {
-        this.value = value;
+    public void setFloatValue(float value) {
+        this.floatValue = value;
     }
 }
