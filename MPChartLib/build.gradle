@@ -40,8 +40,7 @@ repositories {
 dependencies {
     //compile fileTree(dir: 'libs', include: ['*.jar'])
     //compile 'com.android.support:support-v4:19.+'
-    //compile 'com.nineoldandroids:library:2.4.+'
-    provided 'io.realm:realm-android:0.84.0-SNAPSHOT' // optional dependency to realm-database API
+    provided 'io.realm:realm-android:0.84.1-SNAPSHOT' // "optional" dependency to realm-database API
 }
 
 android.libraryVariants.all { variant ->
