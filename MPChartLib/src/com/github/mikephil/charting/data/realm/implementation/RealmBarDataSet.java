@@ -6,7 +6,6 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.realm.base.RealmBarLineScatterCandleBubbleDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
-import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 import io.realm.dynamic.DynamicRealmList;
@@ -47,6 +46,8 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
 
     public RealmBarDataSet(RealmResults<T> results, String yValuesField, String xIndexField) {
         super(results, yValuesField, xIndexField);
+        mHighLightColor = Color.rgb(0, 0, 0);
+        calcStackSize();
     }
 
     @Override
@@ -69,20 +70,31 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
                 int i = 0;
                 for(DynamicRealmObject o : list) {
                     values[i] = o.getFloat("value");
-                    System.out.println("Value: " + values[i]);
                     i++;
                 }
-                mValues.add(new BarEntry(values, dynamicObject.getInt(mIndexField)));
 
-                mStackSize = Math.max(mStackSize, values.length);
+                mValues.add(new BarEntry(values, dynamicObject.getInt(mIndexField)));
             }
         }
+
+        calcStackSize();
     }
 
     @Override
     public void calcMinMax(int start, int end) {
 
         // TODO: implement this
+    }
+
+    private void calcStackSize() {
+
+        for (int i = 0; i < mValues.size(); i++) {
+
+            float[] vals = mValues.get(i).getVals();
+
+            if (vals != null && vals.length > mStackSize)
+                mStackSize = vals.length;
+        }
     }
 
     @Override

@@ -8,9 +8,9 @@ import android.graphics.Typeface;
 
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.FSize;
 import com.github.mikephil.charting.utils.Utils;
@@ -107,10 +107,10 @@ public class LegendRenderer extends Renderer {
                         labels.add(bds.getLabel());
                     }
 
-                } else if (dataSet instanceof PieDataSet) {
+                } else if (dataSet instanceof IPieDataSet) {
 
                     List<String> xVals = data.getXVals();
-                    PieDataSet pds = (PieDataSet) dataSet;
+                    IPieDataSet pds = (IPieDataSet) dataSet;
 
                     for (int j = 0; j < clrs.size() && j < entryCount && j < xVals.size(); j++) {
 
