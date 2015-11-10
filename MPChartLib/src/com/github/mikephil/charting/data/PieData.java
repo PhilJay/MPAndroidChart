@@ -6,6 +6,9 @@ import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmObject;
+import io.realm.RealmResults;
+
 /**
  * A PieData object can only represent one DataSet. Unlike all other charts, the
  * legend labels of the PieChart are created from the x-values array, and not
@@ -15,6 +18,10 @@ import java.util.List;
  * @author Philipp Jahoda
  */
 public class PieData extends ChartData<IPieDataSet> {
+
+    public PieData(RealmResults<? extends RealmObject> result, String xValuesField, List<IPieDataSet> dataSets) {
+        super(toXVals(result, xValuesField), dataSets);
+    }
 
     public PieData() {
         super();
