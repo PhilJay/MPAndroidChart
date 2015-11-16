@@ -8,9 +8,9 @@ Remember: *It's all about the looks.*
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/design/feature_graphic.png)
 
-**MPAndroidChart** is a powerful & easy to use chart library for Android, supporting line-, bar-, scatter-, candlestick-, bubble-, pie- and radarcharts (spider web), as well as scaling, dragging (panning), selecting and animations. Works on **Android 2.2 (API level 8)** and upwards.
+**MPAndroidChart** is a powerful & easy to use chart library for Android, supporting line-, bar-, scatter-, candlestick-, bubble-, pie- and radarcharts (spider web), as well as scaling, dragging (panning), selecting and animations. Works on **Android 2.2 (API level 8)** and upwards. 
 
-An **iOS** version of this library is now available, go check it out: [**ios-charts**](https://github.com/danielgindi/ios-charts)
+This library allows **cross-platform** development between Android and iOS as an iOS version of this library is also available: [**ios-charts**](https://github.com/danielgindi/ios-charts)
 
 Are you using this library? Let me know about it and I will add your project to the [**references**](https://github.com/PhilJay/MPAndroidChart/wiki/References).
 
@@ -134,9 +134,9 @@ Features
 Usage
 =======
 
-In order to use the library, there are 4 options:
+In order to use the library, there are 4 different options:
 
-**1. Gradle dependency**
+**1. Gradle dependency** (recommended)
 
  - 	Add the following to your `build.gradle`:
  ```gradle
@@ -170,9 +170,9 @@ dependencies {
  - Start using the library
 	
 **4. clone whole repository**
- - Open your **commandline-input** and navigate to your desired destination folder (where you want to put the library)
- - Use the command `git clone https://github.com/PhilJay/MPAndroidChart.git` to download the full MPAndroidChart repository to your computer (this includes the folder of the library project as well as the example project)
- - Import the library folder (`MPChartLib`) into Android Studio or your Eclipse workspace
+ - Open your **commandline-input** and navigate to the desired destination folder on your machine (where you want to place the library)
+ - Use the command `git clone https://github.com/PhilJay/MPAndroidChart.git` to download the full MPAndroidChart repository to your computer (this includes the folder of the library as well as the folder of the example project)
+ - Import the library folder (`MPChartLib`) into Android Studio (recommended) or your Eclipse workspace
  - Add it as a reference to your project: 
    - [referencing library projects in Eclipse](http://developer.android.com/tools/projects/projects-eclipse.html#ReferencingLibraryProject)
    - [managing projects from Android Studio](https://developer.android.com/sdk/installing/create-project.html)
