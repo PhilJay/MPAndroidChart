@@ -1,9 +1,10 @@
 apply plugin: 'com.android.library'
-apply plugin: 'android-maven'
+apply plugin: 'maven'
+apply plugin: 'com.github.dcendents.android-maven'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '23.0.1'
+    buildToolsVersion '23.0.2'
     // resourcePrefix 'mpcht'
     defaultConfig {
         minSdkVersion 8
