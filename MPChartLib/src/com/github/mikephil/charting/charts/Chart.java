@@ -1532,16 +1532,18 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     }
 
     /**
-     * Saves the current state of the chart to the gallery as a JPEG image. The
-     * filename and compression can be set. 0 == maximum compression, 100 = low
+     * Saves the current state of the chart to the gallery as an image type. The
+     * compression must be set for JPEG only. 0 == maximum compression, 100 = low
      * compression (high quality). NOTE: Needs permission WRITE_EXTERNAL_STORAGE
      *
      * @param fileName e.g. "my_image"
-     * @param quality  e.g. 50, min = 0, max = 100
-     * @return returns true if saving was successfull, false if not
+     * @param subFolderPath e.g. "ChartPics"
+     * @param fileDescription e.g. "Chart details"
+     * @param format e.g. Bitmap.CompressFormat.PNG
+     * @param quality e.g. 50, min = 0, max = 100
+     * @return returns true if saving was successful, false if not
      */
-    public boolean saveToGallery(String fileName, int quality) {
-
+    public boolean saveToGallery(String fileName, String subFolderPath, String fileDescription, Bitmap.CompressFormat format, int quality) {
         // restrain quality
         if (quality < 0 || quality > 100)
             quality = 50;
@@ -1549,11 +1551,31 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         long currentTime = System.currentTimeMillis();
 
         File extBaseDir = Environment.getExternalStorageDirectory();
-        File file = new File(extBaseDir.getAbsolutePath() + "/DCIM");
+        File file = new File(extBaseDir.getAbsolutePath() + "/DCIM/" + subFolderPath);
         if (!file.exists()) {
             if (!file.mkdirs()) {
                 return false;
             }
+        }
+
+        String mimeType = "";
+        switch (format) {
+            case PNG:
+                mimeType = "image/png";
+                if (!fileName.endsWith(".png"))
+                    fileName += ".png";
+                    break;
+            case WEBP:
+                mimeType = "image/webp";
+                if (!fileName.endsWith(".webp"))
+                    fileName += ".webp";
+                break;
+            case JPEG:
+            default:
+                mimeType = "image/jpeg";
+                if (!(fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")))
+                    fileName += ".jpg";
+                break;
         }
 
         String filePath = file.getAbsolutePath() + "/" + fileName;
@@ -1562,10 +1584,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             out = new FileOutputStream(filePath);
 
             Bitmap b = getChartBitmap();
-
-            b.compress(Bitmap.CompressFormat.JPEG, quality, out); // control
-            // the jpeg
-            // quality
+            b.compress(format, quality, out);
 
             out.flush();
             out.close();
@@ -1584,14 +1603,26 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         values.put(Images.Media.TITLE, fileName);
         values.put(Images.Media.DISPLAY_NAME, fileName);
         values.put(Images.Media.DATE_ADDED, currentTime);
-        values.put(Images.Media.MIME_TYPE, "image/jpeg");
-        values.put(Images.Media.DESCRIPTION, "MPAndroidChart-Library Save");
+        values.put(Images.Media.MIME_TYPE, mimeType);
+        values.put(Images.Media.DESCRIPTION, fileDescription);
         values.put(Images.Media.ORIENTATION, 0);
         values.put(Images.Media.DATA, filePath);
         values.put(Images.Media.SIZE, size);
 
-        return getContext().getContentResolver().insert(Images.Media.EXTERNAL_CONTENT_URI, values) == null
-                ? false : true;
+        return getContext().getContentResolver().insert(Images.Media.EXTERNAL_CONTENT_URI, values) != null;
+    }
+
+    /**
+     * Saves the current state of the chart to the gallery as a JPEG image. The
+     * filename and compression can be set. 0 == maximum compression, 100 = low
+     * compression (high quality). NOTE: Needs permission WRITE_EXTERNAL_STORAGE
+     *
+     * @param fileName e.g. "my_image"
+     * @param quality  e.g. 50, min = 0, max = 100
+     * @return returns true if saving was successful, false if not
+     */
+    public boolean saveToGallery(String fileName, int quality) {
+	    return saveToGallery(fileName, "", "MPAndroidChart-Library Save", Bitmap.CompressFormat.JPEG, quality);
     }
 
     /**

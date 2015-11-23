@@ -103,9 +103,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     protected boolean mDrawBorders = false;
 
     /**
-     * Sets the minimum offset (padding) around the chart, defaults to 10
+     * Sets the minimum offset (padding) around the chart, defaults to 15
      */
-    protected float mMinOffset = 10.f;
+    protected float mMinOffset = 15.f;
 
     /**
      * the listener for user drawing on the chart
@@ -1133,12 +1133,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         mBorderPaint.setColor(color);
     }
 
-    /** Gets the minimum offset (padding) around the chart, defaults to 10.f */
+    /** Gets the minimum offset (padding) around the chart, defaults to 15.f */
     public float getMinOffset() {
         return mMinOffset;
     }
 
-    /** Sets the minimum offset (padding) around the chart, defaults to 10.f */
+    /** Sets the minimum offset (padding) around the chart, defaults to 15.f */
     public void setMinOffset(float minOffset) {
         mMinOffset = minOffset;
     }
