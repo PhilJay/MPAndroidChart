@@ -25,9 +25,6 @@ public class Entry implements Parcelable {
     private Object mData = null;
 
 
-    /** the marker view associated to the highlight */
-    private MarkerView markerView;
-
     /**
      * A Entry represents one single entry in the chart.
      * 
@@ -41,19 +38,7 @@ public class Entry implements Parcelable {
         mXIndex = xIndex;
     }
 
-    /**
-     * A Entry represents one single entry in the chart.
-     *
-     * @param val the y value (the actual value of the entry)
-     * @param xIndex the corresponding index in the x value array (index on the
-     *            x-axis of the chart, must NOT be higher than the length of the
-     *            x-values String array)
-     */
-    public Entry(float val, int xIndex, MarkerView markerView) {
-        mVal = val;
-        mXIndex = xIndex;
-        this.markerView = markerView;
-    }
+
     /**
      * A Entry represents one single entry in the chart.
      * 
@@ -205,8 +190,4 @@ public class Entry implements Parcelable {
         }
     };
 
-
-    public MarkerView getMarkerView() {
-        return markerView;
-    }
 }
