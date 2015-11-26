@@ -241,8 +241,23 @@ public abstract class DataSet<T extends Entry> {
      * @return
      */
     public T getEntryForXIndex(int x) {
+        return getEntryForXIndex(x, Rounding.CLOSEST);
+    }
 
-        int index = getEntryIndex(x);
+    /**
+     * Returns the first Entry object found at the given xIndex with binary
+     * search. If the no Entry at the specified x-index is found, this method
+     * returns the index as determined by the given rounding mode. Returns null
+     * if no Entry object at that index. INFORMATION: This method does
+     * calculations at runtime. Do not over-use in performance critical
+     * situations.
+     *
+     * @param x
+     * @return
+     */
+    public T getEntryForXIndex(int x, Rounding rounding) {
+
+        int index = getEntryIndex(x, rounding);
         if (index > -1)
             return mYVals.get(index);
         return null;
@@ -251,14 +266,14 @@ public abstract class DataSet<T extends Entry> {
     /**
      * Returns the first Entry index found at the given xIndex with binary
      * search. If the no Entry at the specified x-index is found, this method
-     * returns the index at the closest x-index. Returns -1 if no Entry object
-     * at that index. INFORMATION: This method does calculations at runtime. Do
-     * not over-use in performance critical situations.
+     * returns the index as determined by the given rounding mode. Returns -1 if
+     * no Entry object at that index. INFORMATION: This method does calculations
+     * at runtime. Do not over-use in performance critical situations.
      *
      * @param x
      * @return
      */
-    public int getEntryIndex(int x) {
+    public int getEntryIndex(int x, Rounding rounding) {
 
         int low = 0;
         int high = mYVals.size() - 1;
@@ -280,6 +295,19 @@ public abstract class DataSet<T extends Entry> {
                 high = m - 1;
 
             closest = m;
+        }
+
+        if (closest != -1) {
+            int closestXIndex = mYVals.get(closest).getXIndex();
+            if (rounding == Rounding.UP) {
+                if (closestXIndex < x && closest < mYVals.size() - 1) {
+                    ++closest;
+                }
+            } else if (rounding == Rounding.DOWN) {
+                if (closestXIndex > x && closest > 0) {
+                    --closest;
+                }
+            }
         }
 
         return closest;
@@ -567,9 +595,7 @@ public abstract class DataSet<T extends Entry> {
         mYValueSum += val;
 
         if (mYVals.size() > 0 && mYVals.get(mYVals.size() - 1).getXIndex() > e.getXIndex()) {
-            int closestIndex = getEntryIndex(e.getXIndex());
-            if (mYVals.get(closestIndex).getXIndex() < e.getXIndex())
-                closestIndex++;
+            int closestIndex = getEntryIndex(e.getXIndex(), Rounding.UP);
             mYVals.add(closestIndex, (T) e);
             return;
         }
@@ -922,5 +948,16 @@ public abstract class DataSet<T extends Entry> {
         mLastStart = 0;
         mLastEnd = 0;
         notifyDataSetChanged();
+    }
+
+    /**
+     * Determines how to round DataSet index values for
+     * {@link DataSet#getEntryIndex(int, Rounding)} DataSet.getEntryIndex()}
+     * when an exact x-index is not found.
+     */
+    public enum Rounding {
+        UP,
+        DOWN,
+        CLOSEST,
     }
 }
