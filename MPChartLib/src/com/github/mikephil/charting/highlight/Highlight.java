@@ -1,6 +1,8 @@
 
 package com.github.mikephil.charting.highlight;
 
+import com.github.mikephil.charting.components.MarkerView;
+
 /**
  * Contains information needed to determine the highlighted value.
  * 
@@ -19,7 +21,6 @@ public class Highlight {
 
     /** the range of the bar that is selected (only for stacked-barchart) */
     private Range mRange;
-
     /**
      * constructor
      * 
@@ -119,4 +120,5 @@ public class Highlight {
         return "Highlight, xIndex: " + mXIndex + ", dataSetIndex: " + mDataSetIndex
                 + ", stackIndex (only stacked barentry): " + mStackIndex;
     }
+
 }

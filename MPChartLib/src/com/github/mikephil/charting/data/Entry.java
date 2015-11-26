@@ -5,6 +5,8 @@ import android.os.Parcel;
 import android.os.ParcelFormatException;
 import android.os.Parcelable;
 
+import com.github.mikephil.charting.components.MarkerView;
+
 /**
  * Class representing one entry in the chart. Might contain multiple values.
  * Might only contain a single value depending on the used constructor.
@@ -22,6 +24,10 @@ public class Entry implements Parcelable {
     /** optional spot for additional data this Entry represents */
     private Object mData = null;
 
+
+    /** the marker view associated to the highlight */
+    private MarkerView markerView;
+
     /**
      * A Entry represents one single entry in the chart.
      * 
@@ -35,6 +41,19 @@ public class Entry implements Parcelable {
         mXIndex = xIndex;
     }
 
+    /**
+     * A Entry represents one single entry in the chart.
+     *
+     * @param val the y value (the actual value of the entry)
+     * @param xIndex the corresponding index in the x value array (index on the
+     *            x-axis of the chart, must NOT be higher than the length of the
+     *            x-values String array)
+     */
+    public Entry(float val, int xIndex, MarkerView markerView) {
+        mVal = val;
+        mXIndex = xIndex;
+        this.markerView = markerView;
+    }
     /**
      * A Entry represents one single entry in the chart.
      * 
@@ -185,4 +204,9 @@ public class Entry implements Parcelable {
             return new Entry[size];
         }
     };
+
+
+    public MarkerView getMarkerView() {
+        return markerView;
+    }
 }
