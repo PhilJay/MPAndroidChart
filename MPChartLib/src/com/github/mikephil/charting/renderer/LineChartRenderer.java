@@ -476,65 +476,50 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
     }
 
     private void drawMarkersView(Canvas c) {
-        if (mChart.getLineData().getYValCount() < mChart.getMaxVisibleCount()
-                * mViewPortHandler.getScaleX()) {
 
-            List<LineDataSet> dataSets = mChart.getLineData().getDataSets();
 
-            for (int i = 0; i < dataSets.size(); i++) {
+        List<LineDataSet> dataSets = mChart.getLineData().getDataSets();
 
-                LineDataSet dataSet = dataSets.get(i);
+        for (int i = 0; i < dataSets.size(); i++) {
 
-                if (!dataSet.isDrawValuesEnabled() || dataSet.getEntryCount() == 0)
+            LineDataSet dataSet = dataSets.get(i);
+
+            if (dataSet.getEntryCount() == 0)
+                continue;
+
+            Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
+
+            List<Entry> entries = dataSet.getYVals();
+
+            Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
+            Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
+
+            int diff = (entryFrom == entryTo) ? 1 : 0;
+            int minx = Math.max(dataSet.getEntryPosition(entryFrom) - diff, 0);
+            int maxx = Math.min(Math.max(
+                    minx + 2, dataSet.getEntryPosition(entryTo) + 1), entries.size());
+
+            float[] positions = trans.generateTransformedValuesLine(
+                    entries, mAnimator.getPhaseX(), mAnimator.getPhaseY(), minx, maxx);
+
+            for (int j = 0; j < positions.length; j += 2) {
+
+                float x = positions[j];
+                float y = positions[j + 1];
+
+                if (!mViewPortHandler.isInBoundsRight(x))
+                    break;
+
+                if (!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y))
                     continue;
 
-                // apply the text-styling defined by the DataSet
-                applyValueTextStyle(dataSet);
-
-                Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
-
-                // make sure the values do not interfear with the circles
-                int valOffset = (int) (dataSet.getCircleSize() * 1.75f);
-
-                if (!dataSet.isDrawCirclesEnabled())
-                    valOffset = valOffset / 2;
-
-                List<Entry> entries = dataSet.getYVals();
-
-                Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
-                Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
-
-                int diff = (entryFrom == entryTo) ? 1 : 0;
-                int minx = Math.max(dataSet.getEntryPosition(entryFrom) - diff, 0);
-                int maxx = Math.min(Math.max(
-                        minx + 2, dataSet.getEntryPosition(entryTo) + 1), entries.size());
-
-                float[] positions = trans.generateTransformedValuesLine(
-                        entries, mAnimator.getPhaseX(), mAnimator.getPhaseY(), minx, maxx);
-
-                for (int j = 0; j < positions.length; j += 2) {
-
-                    float x = positions[j];
-                    float y = positions[j + 1];
-
-                    if (!mViewPortHandler.isInBoundsRight(x))
-                        break;
-
-                    if (!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y))
-                        continue;
-
-                    Entry entry = entries.get(j / 2 + minx);
-                    MarkerView markerView = entry.getMarkerView();
-                    if (markerView!= null) {
-
-
-                        markerView.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-                        markerView.layout(0, 0, markerView.getMeasuredWidth(),
-                                markerView.getMeasuredHeight());
-
-                            markerView.draw(c,x, y);
-
+                Entry entry = entries.get(j / 2 + minx);
+                if (entry.getData() != null) {
+                    if (entry.getData() instanceof Bitmap) {
+                        Bitmap b = (Bitmap) entry.getData();
+                        if (b != null) {
+                            c.drawBitmap(b, x, y, null);
+                        }
                     }
                 }
             }
