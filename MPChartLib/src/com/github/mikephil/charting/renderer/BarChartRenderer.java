@@ -1,11 +1,13 @@
 
 package com.github.mikephil.charting.renderer;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.graphics.RectF;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
@@ -13,6 +15,8 @@ import com.github.mikephil.charting.buffer.BarBuffer;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.BarDataProvider;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.Transformer;
@@ -25,7 +29,9 @@ public class BarChartRenderer extends DataRenderer {
 
     protected BarDataProvider mChart;
 
-    /** the rect object that is used for drawing the bars */
+    /**
+     * the rect object that is used for drawing the bars
+     */
     protected RectF mBarRect = new RectF();
 
     protected BarBuffer[] mBarBuffers;
@@ -33,7 +39,7 @@ public class BarChartRenderer extends DataRenderer {
     protected Paint mShadowPaint;
 
     public BarChartRenderer(BarDataProvider chart, ChartAnimator animator,
-            ViewPortHandler viewPortHandler) {
+                            ViewPortHandler viewPortHandler) {
         super(animator, viewPortHandler);
         this.mChart = chart;
 
@@ -148,15 +154,15 @@ public class BarChartRenderer extends DataRenderer {
 
     /**
      * Prepares a bar for being highlighted.
-     * 
-     * @param x the x-position
-     * @param y1 the y1-position
-     * @param y2 the y2-position
+     *
+     * @param x            the x-position
+     * @param y1           the y1-position
+     * @param y2           the y2-position
      * @param barspaceHalf the space between bars
      * @param trans
      */
     protected void prepareBarHighlight(float x, float y1, float y2, float barspaceHalf,
-            Transformer trans) {
+                                       Transformer trans) {
 
         float barWidth = 0.5f;
 
@@ -319,7 +325,7 @@ public class BarChartRenderer extends DataRenderer {
                 continue;
 
             float barspaceHalf = set.getBarSpace() / 2f;
-            
+
             Transformer trans = mChart.getTransformer(set.getAxisDependency());
 
             mHighlightPaint.setColor(set.getHighLightColor());
@@ -385,7 +391,7 @@ public class BarChartRenderer extends DataRenderer {
     }
 
     public float[] getTransformedValues(Transformer trans, List<BarEntry> entries,
-            int dataSetIndex) {
+                                        int dataSetIndex) {
         return trans.generateTransformedValuesBarChart(entries, dataSetIndex,
                 mChart.getBarData(),
                 mAnimator.getPhaseY());
@@ -397,5 +403,56 @@ public class BarChartRenderer extends DataRenderer {
     }
 
     @Override
-    public void drawExtras(Canvas c) { }
+    public void drawExtras(Canvas c) {
+        drawMarkersView(c);
+    }
+
+    private void drawMarkersView(Canvas c) {
+
+
+        List<BarDataSet> dataSets = mChart.getBarData().getDataSets();
+
+        for (int i = 0; i < dataSets.size(); i++) {
+
+            BarDataSet dataSet = dataSets.get(i);
+
+            if (dataSet.getEntryCount() == 0)
+                continue;
+
+            Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
+
+            List<BarEntry> entries = dataSet.getYVals();
+
+            float[] valuePoints = getTransformedValues(trans, entries, i);
+
+            for (int j = 0; j < valuePoints.length * mAnimator.getPhaseX(); j += 2) {
+
+                float x = valuePoints[j];
+                float y = valuePoints[j + 1];
+                if (!mViewPortHandler.isInBoundsRight(x))
+                    break;
+
+                if (!mViewPortHandler.isInBoundsY(y)
+                        || !mViewPortHandler.isInBoundsLeft(x))
+                    continue;
+
+                BarEntry entry = entries.get(j / 2);
+                float val = entry.getVal();
+
+                if (entry.getData() != null) {
+                    if (entry.getData() instanceof Bitmap) {
+                        Bitmap b = (Bitmap) entry.getData();
+                        if (b != null) {
+                            int halfWidth = (int) (b.getWidth() * 0.5f);
+                            int halfHeight = (int) (b.getHeight() * 0.5f);
+                            Rect dstRectForRender = new Rect((int) (x-halfWidth), (int) (y - halfHeight), (int) (x + halfWidth), (int) (y + halfHeight));
+                            dstRectForRender.offset(0, -halfHeight);
+                            c.drawBitmap(b, null, dstRectForRender, null);
+                        }
+                    }
+                }
+
+            }
+        }
+    }
 }

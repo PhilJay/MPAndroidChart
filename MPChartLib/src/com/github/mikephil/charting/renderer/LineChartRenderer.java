@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.view.View;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
@@ -518,7 +519,11 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
                     if (entry.getData() instanceof Bitmap) {
                         Bitmap b = (Bitmap) entry.getData();
                         if (b != null) {
-                            c.drawBitmap(b, x, y, null);
+                            int halfWidth = (int) (b.getWidth() * 0.5f);
+                            int halfHeight = (int) (b.getHeight() * 0.5f);
+                            Rect dstRectForRender = new Rect((int) (x - halfWidth), (int) (y - halfHeight), (int) (x + halfWidth), (int) (y + halfHeight));
+                            dstRectForRender.offset(0, - halfHeight);
+                            c.drawBitmap(b, null, dstRectForRender, null);
                         }
                     }
                 }
