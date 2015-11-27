@@ -1,8 +1,6 @@
 
 package com.github.mikephil.charting.highlight;
 
-import com.github.mikephil.charting.components.MarkerView;
-
 /**
  * Contains information needed to determine the highlighted value.
  * 
