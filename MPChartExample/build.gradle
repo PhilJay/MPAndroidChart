@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '23.0.1'
+    buildToolsVersion '23.0.2'
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 23
@@ -38,7 +38,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.3.1'
+        classpath 'com.android.tools.build:gradle:1.5.0'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -54,7 +54,7 @@ repositories {
 dependencies {
     //compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':MPChartLib') // remove this if you only imported the example project
-    compile 'com.android.support:appcompat-v7:23.0.0'
+    compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'io.realm:realm-android:0.84.0-SNAPSHOT' // dependency for realm-database API (http://realm.io)
     //compile 'com.github.PhilJay:MPAndroidChart:v2.1.1'
 }

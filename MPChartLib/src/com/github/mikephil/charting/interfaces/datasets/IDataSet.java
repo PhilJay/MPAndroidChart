@@ -3,6 +3,7 @@ package com.github.mikephil.charting.interfaces.datasets;
 import android.graphics.Typeface;
 
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
@@ -58,6 +59,19 @@ public interface IDataSet<T extends Entry> {
     T getEntryForXIndex(int xIndex);
 
     /**
+     * Returns the first Entry object found at the given xIndex with binary
+     * search. If the no Entry at the specified x-index is found, this method
+     * returns the index at the closest x-index. Returns null if no Entry object
+     * at that index. INFORMATION: This method does calculations at runtime. Do
+     * not over-use in performance critical situations.
+     *
+     * @param xIndex
+     * @param rounding determine to round up/down/closest if there is no Entry matching the provided x-index
+     * @return
+     */
+    T getEntryForXIndex(int xIndex, DataSet.Rounding rounding);
+
+    /**
      * Returns the Entry object found at the given index (NOT xIndex) in the values array.
      *
      * @param index
@@ -73,9 +87,10 @@ public interface IDataSet<T extends Entry> {
      * not over-use in performance critical situations.
      *
      * @param xIndex
+     * @param rounding determine to round up/down/closest if there is no Entry matching the provided x-index
      * @return
      */
-    int getEntryIndex(int xIndex);
+    int getEntryIndex(int xIndex, DataSet.Rounding rounding);
 
     /**
      * Returns the position of the provided entry in the DataSets Entry array.

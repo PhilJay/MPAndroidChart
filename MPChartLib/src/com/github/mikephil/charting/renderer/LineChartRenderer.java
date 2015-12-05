@@ -1,4 +1,3 @@
-
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Bitmap;
@@ -11,6 +10,7 @@ import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.buffer.CircleBuffer;
 import com.github.mikephil.charting.buffer.LineBuffer;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.highlight.Highlight;
@@ -137,13 +137,11 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
         int entryCount = dataSet.getEntryCount();
 
-        Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
-        Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
+        Entry entryFrom = dataSet.getEntryForXIndex((mMinX < 0) ? 0 : mMinX, DataSet.Rounding.DOWN);
+        Entry entryTo = dataSet.getEntryForXIndex(mMaxX, DataSet.Rounding.UP);
 
-        int diff = (entryFrom == entryTo) ? 1 : 0;
-        int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff, 0);
-        int maxx = Math.min(Math.max(
-                minx + 2, dataSet.getEntryIndex(entryTo) + 1), entryCount);
+        int minx = Math.max(dataSet.getEntryIndex(entryFrom), 0);
+        int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, entryCount);
 
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
@@ -284,13 +282,11 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
             canvas = c;
         }
 
-        Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
-        Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
+        Entry entryFrom = dataSet.getEntryForXIndex((mMinX < 0) ? 0 : mMinX, DataSet.Rounding.DOWN);
+        Entry entryTo = dataSet.getEntryForXIndex(mMaxX, DataSet.Rounding.UP);
 
-        int diff = (entryFrom == entryTo) ? 1 : 0;
-        int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff, 0);
-        int maxx = Math.min(Math.max(
-                minx + 2, dataSet.getEntryIndex(entryTo) + 1), entryCount);
+        int minx = Math.max(dataSet.getEntryIndex(entryFrom), 0);
+        int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, entryCount);
 
         int range = (maxx - minx) * 4 - 4;
 
@@ -436,13 +432,13 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
                 if (!dataSet.isDrawCirclesEnabled())
                     valOffset = valOffset / 2;
 
-                Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
-                Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
+                int entryCount = dataSet.getEntryCount();
 
-                int diff = (entryFrom == entryTo) ? 1 : 0;
-                int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff, 0);
-                int maxx = Math.min(Math.max(
-                        minx + 2, dataSet.getEntryIndex(entryTo) + 1), dataSet.getEntryCount());
+                Entry entryFrom = dataSet.getEntryForXIndex((mMinX < 0) ? 0 : mMinX, DataSet.Rounding.DOWN);
+                Entry entryTo = dataSet.getEntryForXIndex(mMaxX, DataSet.Rounding.UP);
+
+                int minx = Math.max(dataSet.getEntryIndex(entryFrom), 0);
+                int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, entryCount);
 
                 float[] positions = trans.generateTransformedValuesLine(
                         dataSet, mAnimator.getPhaseX(), mAnimator.getPhaseY(), minx, maxx);
@@ -493,13 +489,13 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
             Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-            Entry entryFrom = dataSet.getEntryForXIndex((mMinX < 0) ? 0 : mMinX);
-            Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
+            int entryCount = dataSet.getEntryCount();
 
-            int diff = (entryFrom == entryTo) ? 1 : 0;
-            int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff, 0);
-            int maxx = Math.min(Math.max(
-                    minx + 2, dataSet.getEntryIndex(entryTo) + 1), dataSet.getEntryCount());
+            Entry entryFrom = dataSet.getEntryForXIndex((mMinX < 0) ? 0 : mMinX, DataSet.Rounding.DOWN);
+            Entry entryTo = dataSet.getEntryForXIndex(mMaxX, DataSet.Rounding.UP);
+
+            int minx = Math.max(dataSet.getEntryIndex(entryFrom), 0);
+            int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, entryCount);
 
             CircleBuffer buffer = mCircleBuffers[i];
             buffer.setPhases(phaseX, phaseY);

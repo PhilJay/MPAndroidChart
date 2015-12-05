@@ -87,6 +87,8 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
     private float mCenterTextRadiusPercent = 1.f;
 
+    protected float mMaxAngle = 360f;
+
     public PieChart(Context context) {
         super(context);
     }
@@ -254,7 +256,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
      * @return
      */
     private float calcAngle(float value) {
-        return value / mData.getYValueSum() * 360f;
+        return value / mData.getYValueSum() * mMaxAngle;
     }
 
     @Override
@@ -613,6 +615,26 @@ public class PieChart extends PieRadarChartBase<PieData> {
         return mCenterTextRadiusPercent;
     }
 
+    public float getMaxAngle() {
+        return mMaxAngle;
+    }
+
+    /**
+     * Sets the max angle that is used for calculating the pie-circle. 360f means
+     * it's a full PieChart, 180f results in a half-pie-chart. Default: 360f
+     *
+     * @param maxangle min 90, max 360
+     */
+    public void setMaxAngle(float maxangle) {
+
+        if (maxangle > 360)
+            maxangle = 360f;
+
+        if (maxangle < 90)
+            maxangle = 90f;
+
+        this.mMaxAngle = maxangle;
+    }
 
     @Override
     protected void onDetachedFromWindow() {

@@ -1,6 +1,7 @@
 package com.github.mikephil.charting.data.realm.base;
 
 import com.github.mikephil.charting.data.BaseDataSet;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
@@ -84,7 +85,12 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     public S getEntryForXIndex(int xIndex) {
         //DynamicRealmObject o = new DynamicRealmObject(results.where().equalTo(mIndexField, xIndex).findFirst());
         //return new Entry(o.getFloat(mValuesField), o.getInt(mIndexField));
-        int index = getEntryIndex(xIndex);
+        return getEntryForXIndex(xIndex, DataSet.Rounding.CLOSEST);
+    }
+
+    @Override
+    public S getEntryForXIndex(int xIndex, DataSet.Rounding rounding) {
+        int index = getEntryIndex(xIndex, rounding);
         if (index > -1)
             return mValues.get(index);
         return null;
@@ -98,7 +104,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     }
 
     @Override
-    public int getEntryIndex(int xIndex) {
+    public int getEntryIndex(int x, DataSet.Rounding rounding) {
 
         int low = 0;
         int high = mValues.size() - 1;
@@ -107,19 +113,32 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         while (low <= high) {
             int m = (high + low) / 2;
 
-            if (xIndex == mValues.get(m).getXIndex()) {
-                while (m > 0 && mValues.get(m - 1).getXIndex() == xIndex)
+            if (x == mValues.get(m).getXIndex()) {
+                while (m > 0 && mValues.get(m - 1).getXIndex() == x)
                     m--;
 
                 return m;
             }
 
-            if (xIndex > mValues.get(m).getXIndex())
+            if (x > mValues.get(m).getXIndex())
                 low = m + 1;
             else
                 high = m - 1;
 
             closest = m;
+        }
+
+        if (closest != -1) {
+            int closestXIndex = mValues.get(closest).getXIndex();
+            if (rounding == DataSet.Rounding.UP) {
+                if (closestXIndex < x && closest < mValues.size() - 1) {
+                    ++closest;
+                }
+            } else if (rounding == DataSet.Rounding.DOWN) {
+                if (closestXIndex > x && closest > 0) {
+                    --closest;
+                }
+            }
         }
 
         return closest;
