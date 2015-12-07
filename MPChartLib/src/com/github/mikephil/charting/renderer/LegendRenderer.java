@@ -9,6 +9,7 @@ import android.graphics.Typeface;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -123,6 +124,13 @@ public class LegendRenderer extends Renderer {
                         colors.add(ColorTemplate.COLOR_SKIP);
                         labels.add(pds.getLabel());
                     }
+
+                } else if(dataSet instanceof ICandleDataSet && ((ICandleDataSet) dataSet).getDecreasingColor() != ColorTemplate.COLOR_NONE) {
+
+                    colors.add(((ICandleDataSet) dataSet).getDecreasingColor());
+                    colors.add(((ICandleDataSet) dataSet).getIncreasingColor());
+                    labels.add(null);
+                    labels.add(dataSet.getLabel());
 
                 } else { // all others
 
