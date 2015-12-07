@@ -1,5 +1,6 @@
 package com.xxmassdeveloper.mpchartexample.realm;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.WindowManager;
 
@@ -33,6 +34,9 @@ public class RealmDatabaseActivityHorizontalBar extends RealmBaseActivity {
 
         mChart = (HorizontalBarChart) findViewById(R.id.chart1);
         setup(mChart);
+
+        mChart.getAxisLeft().setStartAtZero(true);
+        mChart.setDrawValueAboveBar(false);
     }
 
     @Override
@@ -40,7 +44,7 @@ public class RealmDatabaseActivityHorizontalBar extends RealmBaseActivity {
         super.onResume(); // setup realm
 
         // write some demo-data into the realm.io database
-        writeToDBStack(100);
+        writeToDBStack(50);
 
         // add data to the chart
         setData();
@@ -52,31 +56,20 @@ public class RealmDatabaseActivityHorizontalBar extends RealmBaseActivity {
 
         //RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "stackValues", "xIndex"); // normal entries
         RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "stackValues", "xIndex", "floatValue"); // stacked entries
-        set.setValueTextSize(9f);
-        set.setColors(getColors(set.getStackSize()));
-        set.setLabel("Realm BarDataSet");
-        set.setStackLabels(new String[]{"Births", "Divorces", "Marriages"});
+        set.setColors(new int[]{ColorTemplate.rgb("#8BC34A"), ColorTemplate.rgb("#FFC107"), ColorTemplate.rgb("#9E9E9E")});
+        set.setLabel("Mobile OS distribution");
+        set.setStackLabels(new String[]{"iOS", "Android", "Other"});
 
         ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list
         BarData data = new BarData(result, "xValue", dataSets);
+        styleData(data);
+        data.setValueTextColor(Color.WHITE);
 
         // set data
         mChart.setData(data);
         mChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
-    }
-
-    private int[] getColors(int stacksize) {
-
-        // have as many colors as stack-values per entry
-        int[] colors = new int[stacksize];
-
-        for (int i = 0; i < stacksize; i++) {
-            colors[i] = ColorTemplate.VORDIPLOM_COLORS[i];
-        }
-
-        return colors;
     }
 }

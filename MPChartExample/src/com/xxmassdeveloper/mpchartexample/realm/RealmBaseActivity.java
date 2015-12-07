@@ -9,6 +9,7 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.formatter.DefaultYAxisValueFormatter;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.xxmassdeveloper.mpchartexample.custom.MyValueFormatter;
 import com.xxmassdeveloper.mpchartexample.custom.MyYAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.custom.RealmDemoData;
@@ -56,7 +57,7 @@ public abstract class RealmBaseActivity extends DemoBase {
             leftAxis.setTypeface(mTf);
             leftAxis.setTextSize(8f);
             leftAxis.setTextColor(Color.DKGRAY);
-            leftAxis.setValueFormatter(new MyYAxisValueFormatter());
+            leftAxis.setValueFormatter(new PercentFormatter());
 
             XAxis xAxis = mChart.getXAxis();
             xAxis.setTypeface(mTf);
@@ -72,7 +73,7 @@ public abstract class RealmBaseActivity extends DemoBase {
         data.setValueTypeface(mTf);
         data.setValueTextSize(8f);
         data.setValueTextColor(Color.DKGRAY);
-        data.setValueFormatter(new MyValueFormatter());
+        data.setValueFormatter(new PercentFormatter());
     }
 
     @Override
@@ -121,10 +122,9 @@ public abstract class RealmBaseActivity extends DemoBase {
 
         for (int i = 0; i < objectCount; i++) {
 
-            float val1 = 20f + (float) (Math.random() * 50.0);
-            float val2 = 20f + (float) (Math.random() * 50.0);
-            float val3 = 20f + (float) (Math.random() * 50.0);
-            float[] stack = new float[]{val1, val2, val3};
+            float val1 = 34f + (float) (Math.random() * 12.0f);
+            float val2 = 34f + (float) (Math.random() * 12.0f);
+            float[] stack = new float[]{val1, val2, 100 - val1 - val2};
 
             RealmDemoData d = new RealmDemoData(stack, i, "" + i);
             mRealm.copyToRealm(d);
