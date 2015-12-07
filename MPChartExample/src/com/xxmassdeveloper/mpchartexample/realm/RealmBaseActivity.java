@@ -178,4 +178,27 @@ public abstract class RealmBaseActivity extends DemoBase {
 
         mRealm.commitTransaction();
     }
+
+    protected void writeToDBPie() {
+
+        mRealm.beginTransaction();
+
+        mRealm.clear(RealmDemoData.class);
+
+        float value1 = 15f + (float) (Math.random() * 8f);
+        float value2 = 15f + (float) (Math.random() * 8f);
+        float value3 = 15f + (float) (Math.random() * 8f);
+        float value4 = 15f + (float) (Math.random() * 8f);
+        float value5 = 100f - value1 - value2 - value3 - value4;
+
+        float[] values = new float[] { value1, value2, value3, value4, value5 };
+        String[] xValues = new String[]{ "iOS", "Android", "WP 10", "BlackBerry", "Other"};
+
+        for (int i = 0; i < values.length; i++) {
+            RealmDemoData d = new RealmDemoData(values[i], i, xValues[i]);
+            mRealm.copyToRealm(d);
+        }
+
+        mRealm.commitTransaction();
+    }
 }

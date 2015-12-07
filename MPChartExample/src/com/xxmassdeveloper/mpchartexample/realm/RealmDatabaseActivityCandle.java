@@ -43,7 +43,7 @@ public class RealmDatabaseActivityCandle extends RealmBaseActivity {
         super.onResume(); // setup realm
 
         // write some demo-data into the realm.io database
-        writeToDBCandle(200);
+        writeToDBCandle(50);
 
         // add data to the chart
         setData();

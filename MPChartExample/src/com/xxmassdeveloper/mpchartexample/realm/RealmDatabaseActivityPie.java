@@ -46,7 +46,7 @@ public class RealmDatabaseActivityPie extends RealmBaseActivity {
         super.onResume(); // setup realm
 
         // write some demo-data into the realm.io database
-        writeToDB(5);
+        writeToDBPie();
 
         // add data to the chart
         setData();
@@ -58,9 +58,8 @@ public class RealmDatabaseActivityPie extends RealmBaseActivity {
 
         //RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "stackValues", "xIndex"); // normal entries
         RealmPieDataSet<RealmDemoData> set = new RealmPieDataSet<RealmDemoData>(result, "value", "xIndex"); // stacked entries
-        set.setValueTextSize(9f);
         set.setColors(ColorTemplate.VORDIPLOM_COLORS);
-        set.setLabel("Realm PieDataSet");
+        set.setLabel("Example market share");
         set.setSliceSpace(2);
 
         ArrayList<IPieDataSet> dataSets = new ArrayList<IPieDataSet>();
@@ -69,6 +68,8 @@ public class RealmDatabaseActivityPie extends RealmBaseActivity {
         // create a data object with the dataset list
         PieData data = new PieData(result, "xValue", dataSets);
         styleData(data);
+        data.setValueTextColor(Color.WHITE);
+        data.setValueTextSize(12f);
 
         // set data
         mChart.setData(data);

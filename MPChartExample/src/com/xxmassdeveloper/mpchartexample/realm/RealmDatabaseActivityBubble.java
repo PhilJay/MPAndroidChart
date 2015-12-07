@@ -8,6 +8,7 @@ import com.github.mikephil.charting.charts.BubbleChart;
 import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.realm.implementation.RealmBubbleDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.R;
 import com.xxmassdeveloper.mpchartexample.custom.RealmDemoData;
 
@@ -31,6 +32,8 @@ public class RealmDatabaseActivityBubble extends RealmBaseActivity {
 
         mChart = (BubbleChart) findViewById(R.id.chart1);
         setup(mChart);
+
+        mChart.getXAxis().setDrawGridLines(false);
     }
 
     @Override
@@ -38,7 +41,7 @@ public class RealmDatabaseActivityBubble extends RealmBaseActivity {
         super.onResume(); // setup realm
 
         // write some demo-data into the realm.io database
-        writeToDBBubble(15);
+        writeToDBBubble(12);
 
         // add data to the chart
         setData();
@@ -50,6 +53,7 @@ public class RealmDatabaseActivityBubble extends RealmBaseActivity {
 
         RealmBubbleDataSet<RealmDemoData> set = new RealmBubbleDataSet<RealmDemoData>(result, "value", "xIndex", "bubbleSize");
         set.setLabel("Realm BubbleDataSet");
+        set.setColors(ColorTemplate.COLORFUL_COLORS);
 
         ArrayList<IBubbleDataSet> dataSets = new ArrayList<IBubbleDataSet>();
         dataSets.add(set); // add the dataset
