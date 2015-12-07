@@ -34,6 +34,8 @@ public class RealmDatabaseActivityBubble extends RealmBaseActivity {
         setup(mChart);
 
         mChart.getXAxis().setDrawGridLines(false);
+        mChart.getAxisLeft().setDrawGridLines(false);
+        mChart.setPinchZoom(true);
     }
 
     @Override
@@ -41,7 +43,7 @@ public class RealmDatabaseActivityBubble extends RealmBaseActivity {
         super.onResume(); // setup realm
 
         // write some demo-data into the realm.io database
-        writeToDBBubble(12);
+        writeToDBBubble(10);
 
         // add data to the chart
         setData();
@@ -53,7 +55,7 @@ public class RealmDatabaseActivityBubble extends RealmBaseActivity {
 
         RealmBubbleDataSet<RealmDemoData> set = new RealmBubbleDataSet<RealmDemoData>(result, "value", "xIndex", "bubbleSize");
         set.setLabel("Realm BubbleDataSet");
-        set.setColors(ColorTemplate.COLORFUL_COLORS);
+        set.setColors(ColorTemplate.COLORFUL_COLORS, 110);
 
         ArrayList<IBubbleDataSet> dataSets = new ArrayList<IBubbleDataSet>();
         dataSets.add(set); // add the dataset
