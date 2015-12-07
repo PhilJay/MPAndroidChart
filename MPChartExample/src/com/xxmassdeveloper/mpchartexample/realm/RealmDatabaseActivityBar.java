@@ -39,7 +39,7 @@ public class RealmDatabaseActivityBar extends RealmBaseActivity {
         super.onResume(); // setup realm
 
         // write some demo-data into the realm.io database
-        writeToDBStack(200);
+        writeToDB(20);
 
         // add data to the chart
         setData();
@@ -50,32 +50,19 @@ public class RealmDatabaseActivityBar extends RealmBaseActivity {
         RealmResults<RealmDemoData> result = mRealm.allObjects(RealmDemoData.class);
 
         //RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "stackValues", "xIndex"); // normal entries
-        RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "stackValues", "xIndex", "floatValue"); // stacked entries
-        set.setValueTextSize(9f);
-        set.setColors(getColors(set.getStackSize()));
+        RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "value", "xIndex"); // stacked entries
+        set.setColors(new int[] {ColorTemplate.rgb("#FF5722"), ColorTemplate.rgb("#03A9F4")});
         set.setLabel("Realm BarDataSet");
-        set.setStackLabels(new String[]{"Births", "Divorces", "Marriages"});
 
         ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list
         BarData data = new BarData(result, "xValue", dataSets);
+        styleData(data);
 
         // set data
         mChart.setData(data);
         mChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
-    }
-
-    private int[] getColors(int stacksize) {
-
-        // have as many colors as stack-values per entry
-        int[] colors = new int[stacksize];
-
-        for (int i = 0; i < stacksize; i++) {
-            colors[i] = ColorTemplate.VORDIPLOM_COLORS[i];
-        }
-
-        return colors;
     }
 }

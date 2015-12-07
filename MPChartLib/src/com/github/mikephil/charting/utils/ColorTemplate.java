@@ -58,8 +58,8 @@ public class ColorTemplate {
      * @param hex
      * @return
      */
-    public int rgb(String hex) {
-        int color = (int) Long.parseLong(hex, 16);
+    public static int rgb(String hex) {
+        int color = (int) Long.parseLong(hex.replace("#", ""), 16);
         int r = (color >> 16) & 0xFF;
         int g = (color >> 8) & 0xFF;
         int b = (color >> 0) & 0xFF;

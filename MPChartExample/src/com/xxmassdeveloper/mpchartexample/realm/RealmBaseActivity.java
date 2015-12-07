@@ -1,12 +1,16 @@
 package com.xxmassdeveloper.mpchartexample.realm;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 
 import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.CandleEntry;
+import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.formatter.DefaultYAxisValueFormatter;
+import com.xxmassdeveloper.mpchartexample.custom.MyValueFormatter;
+import com.xxmassdeveloper.mpchartexample.custom.MyYAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.custom.RealmDemoData;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -20,7 +24,11 @@ public abstract class RealmBaseActivity extends DemoBase {
 
     protected Realm mRealm;
 
+    protected Typeface mTf;
+
     protected void setup(Chart<?> chart) {
+
+        mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
         // no description text
         chart.setDescription("");
@@ -32,8 +40,6 @@ public abstract class RealmBaseActivity extends DemoBase {
         if (chart instanceof BarLineChartBase) {
 
             BarLineChartBase mChart = (BarLineChartBase) chart;
-
-            Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
             mChart.setDrawGridBackground(false);
 
@@ -47,13 +53,26 @@ public abstract class RealmBaseActivity extends DemoBase {
             YAxis leftAxis = mChart.getAxisLeft();
             leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
             leftAxis.setStartAtZero(false);
-            leftAxis.setTypeface(tf);
+            leftAxis.setTypeface(mTf);
+            leftAxis.setTextSize(8f);
+            leftAxis.setTextColor(Color.DKGRAY);
+            leftAxis.setValueFormatter(new MyYAxisValueFormatter());
 
-            mChart.getXAxis().setTypeface(tf);
-            mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+            XAxis xAxis = mChart.getXAxis();
+            xAxis.setTypeface(mTf);
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis.setTextSize(8f);
+            xAxis.setTextColor(Color.DKGRAY);
 
             mChart.getAxisRight().setEnabled(false);
         }
+    }
+
+    protected void styleData(ChartData data) {
+        data.setValueTypeface(mTf);
+        data.setValueTextSize(8f);
+        data.setValueTextColor(Color.DKGRAY);
+        data.setValueFormatter(new MyValueFormatter());
     }
 
     @Override
@@ -85,7 +104,7 @@ public abstract class RealmBaseActivity extends DemoBase {
 
         for (int i = 0; i < objectCount; i++) {
 
-            float value = 30f + (float) (Math.random() * 100.0);
+            float value = 40f + (float) (Math.random() * 60f);
 
             RealmDemoData d = new RealmDemoData(value, i, "" + i);
             mRealm.copyToRealm(d);
