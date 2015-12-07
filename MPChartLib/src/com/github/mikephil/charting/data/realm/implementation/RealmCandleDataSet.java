@@ -69,10 +69,14 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
         this.mLowField = lowField;
         this.mOpenField = openField;
         this.mCloseField = closeField;
+
+        build(this.results);
+        calcMinMax(0, this.results.size());
     }
 
     @Override
     public void build(RealmResults<T> results) {
+
         for (T object : results) {
 
             DynamicRealmObject dynamicObject = new DynamicRealmObject(object);

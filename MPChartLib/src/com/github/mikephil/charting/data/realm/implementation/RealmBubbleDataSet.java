@@ -25,6 +25,9 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
     public RealmBubbleDataSet(RealmResults<T> result, String yValuesField, String xIndexField, String sizeField) {
         super(result, yValuesField, xIndexField);
         this.mSizeField = sizeField;
+
+        build(this.results);
+        calcMinMax(0, results.size());
     }
 
     @Override

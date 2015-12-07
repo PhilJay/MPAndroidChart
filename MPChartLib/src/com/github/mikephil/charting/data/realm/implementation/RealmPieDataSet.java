@@ -22,6 +22,9 @@ public class RealmPieDataSet<T extends RealmObject> extends RealmBaseDataSet<T, 
 
     public RealmPieDataSet(RealmResults<T> result, String yValuesField, String xIndexField) {
         super(result, yValuesField, xIndexField);
+
+        build(this.results);
+        calcMinMax(0, results.size());
     }
 
     @Override

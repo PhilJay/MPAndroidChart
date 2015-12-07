@@ -56,6 +56,9 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
 
         // default color
         mCircleColors.add(Color.rgb(140, 234, 255));
+
+        build(this.results);
+        calcMinMax(0, results.size());
     }
 
     @Override

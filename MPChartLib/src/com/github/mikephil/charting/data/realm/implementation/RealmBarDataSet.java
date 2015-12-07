@@ -49,7 +49,9 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
     public RealmBarDataSet(RealmResults<T> results, String yValuesField, String xIndexField) {
         super(results, yValuesField, xIndexField);
         mHighLightColor = Color.rgb(0, 0, 0);
-        buildData(this.results);
+
+        build(this.results);
+        calcMinMax(0, results.size());
     }
 
     /**
@@ -64,10 +66,14 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
         super(results, yValuesField, xIndexField);
         this.mStackValueFieldName = stackValueFieldName;
         mHighLightColor = Color.rgb(0, 0, 0);
-        buildData(this.results);
+
+        build(this.results);
+        calcMinMax(0, results.size());
     }
 
-    private void buildData(RealmResults<T> results) {
+    @Override
+    public void build(RealmResults<T> results) {
+
         for (T realmObject : results) {
 
             DynamicRealmObject dynamicObject = new DynamicRealmObject(realmObject);
@@ -93,11 +99,6 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
         }
 
         calcStackSize();
-    }
-
-    @Override
-    public void build(RealmResults<T> results) {
-        // TODO: make this cleaner
     }
 
     @Override

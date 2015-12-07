@@ -15,6 +15,9 @@ public class RealmRadarDataSet<T extends RealmObject> extends RealmLineRadarData
 
     public RealmRadarDataSet(RealmResults<T> result, String yValuesField, String xIndexField) {
         super(result, yValuesField, xIndexField);
+
+        build(this.results);
+        calcMinMax(0, results.size());
     }
 
     @Override

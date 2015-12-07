@@ -26,6 +26,9 @@ public class RealmScatterDataSet<T extends RealmObject> extends RealmLineScatter
 
     public RealmScatterDataSet(RealmResults<T> result, String yValuesField, String xIndexField) {
         super(result, yValuesField, xIndexField);
+
+        build(this.results);
+        calcMinMax(0, results.size());
     }
 
     @Override

@@ -7,7 +7,11 @@ import io.realm.RealmObject;
 public class RealmDemoData extends RealmObject {
 
     private float value;
+
+    private float open, close, high, low;
+
     private RealmList<RealmFloat> stackValues;
+
     private int xIndex;
 
     private String xValue;
@@ -38,9 +42,28 @@ public class RealmDemoData extends RealmObject {
         this.xValue = xValue;
         this.stackValues = new RealmList<>();
 
-        for(float val : stackValues) {
+        for (float val : stackValues) {
             this.stackValues.add(new RealmFloat(val));
         }
+    }
+
+    /**
+     * Constructor for candles.
+     *
+     * @param high
+     * @param low
+     * @param open
+     * @param close
+     * @param xIndex
+     */
+    public RealmDemoData(float high, float low, float open, float close, int xIndex, String xValue) {
+        this.value = (high + low) / 2f;
+        this.high = high;
+        this.low = low;
+        this.open = open;
+        this.close = close;
+        this.xIndex = xIndex;
+        this.xValue = xValue;
     }
 
     public float getValue() {
@@ -73,6 +96,38 @@ public class RealmDemoData extends RealmObject {
 
     public void setxValue(String xValue) {
         this.xValue = xValue;
+    }
+
+    public float getOpen() {
+        return open;
+    }
+
+    public void setOpen(float open) {
+        this.open = open;
+    }
+
+    public float getClose() {
+        return close;
+    }
+
+    public void setClose(float close) {
+        this.close = close;
+    }
+
+    public float getHigh() {
+        return high;
+    }
+
+    public void setHigh(float high) {
+        this.high = high;
+    }
+
+    public float getLow() {
+        return low;
+    }
+
+    public void setLow(float low) {
+        this.low = low;
     }
 
     public String getSomeStringField() {
