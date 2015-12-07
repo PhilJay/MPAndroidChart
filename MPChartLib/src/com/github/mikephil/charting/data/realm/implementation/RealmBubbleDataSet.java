@@ -40,22 +40,91 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
     @Override
     public void calcMinMax(int start, int end) {
 
-        // TODO: implement this
+        if (mValues == null)
+            return;
+
+        if (mValues.size() == 0)
+            return;
+
+        int endValue;
+
+        if (end == 0)
+            endValue = mValues.size() - 1;
+        else
+            endValue = end;
+
+        mYMin = yMin(mValues.get(start));
+        mYMax = yMax(mValues.get(start));
+
+        // need chart width to guess this properly
+
+        for (int i = start; i <= endValue; i++) {
+
+            final BubbleEntry entry = mValues.get(i);
+
+            final float ymin = yMin(entry);
+            final float ymax = yMax(entry);
+
+            if (ymin < mYMin) {
+                mYMin = ymin;
+            }
+
+            if (ymax > mYMax) {
+                mYMax = ymax;
+            }
+
+            final float xmin = xMin(entry);
+            final float xmax = xMax(entry);
+
+            if (xmin < mXMin) {
+                mXMin = xmin;
+            }
+
+            if (xmax > mXMax) {
+                mXMax = xmax;
+            }
+
+            final float size = largestSize(entry);
+
+            if (size > mMaxSize) {
+                mMaxSize = size;
+            }
+        }
     }
 
     @Override
     public float getXMax() {
-        return 0;
+        return mXMax;
     }
 
     @Override
     public float getXMin() {
-        return 0;
+        return mXMin;
     }
 
     @Override
     public float getMaxSize() {
-        return 0;
+        return mMaxSize;
+    }
+
+    private float yMin(BubbleEntry entry) {
+        return entry.getVal();
+    }
+
+    private float yMax(BubbleEntry entry) {
+        return entry.getVal();
+    }
+
+    private float xMin(BubbleEntry entry) {
+        return (float) entry.getXIndex();
+    }
+
+    private float xMax(BubbleEntry entry) {
+        return (float) entry.getXIndex();
+    }
+
+    private float largestSize(BubbleEntry entry) {
+        return entry.getSize();
     }
 
     @Override

@@ -71,13 +71,13 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     @Override
     public float getYMin() {
         //return results.min(mValuesField).floatValue();
-        return -50;
+        return mYMin;
     }
 
     @Override
     public float getYMax() {
         //return results.max(mValuesField).floatValue();
-        return 200;
+        return mYMax;
     }
 
     @Override
@@ -88,7 +88,42 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     @Override
     public void calcMinMax(int start, int end) {
 
+        if (mValues == null)
+            return;
 
+        final int yValCount = mValues.size();
+
+        if (yValCount == 0)
+            return;
+
+        int endValue;
+
+        if (end == 0 || end >= yValCount)
+            endValue = yValCount - 1;
+        else
+            endValue = end;
+
+        mYMin = Float.MAX_VALUE;
+        mYMax = -Float.MAX_VALUE;
+
+        for (int i = start; i <= endValue; i++) {
+
+            S e = mValues.get(i);
+
+            if (e != null && !Float.isNaN(e.getVal())) {
+
+                if (e.getVal() < mYMin)
+                    mYMin = e.getVal();
+
+                if (e.getVal() > mYMax)
+                    mYMax = e.getVal();
+            }
+        }
+
+        if (mYMin == Float.MAX_VALUE) {
+            mYMin = 0.f;
+            mYMax = 0.f;
+        }
     }
 
     @Override

@@ -103,7 +103,52 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
     @Override
     public void calcMinMax(int start, int end) {
 
-        // TODO: implement this
+        if (mValues == null)
+            return;
+
+        final int yValCount = mValues.size();
+
+        if (yValCount == 0)
+            return;
+
+        int endValue;
+
+        if (end == 0 || end >= yValCount)
+            endValue = yValCount - 1;
+        else
+            endValue = end;
+
+        mYMin = Float.MAX_VALUE;
+        mYMax = -Float.MAX_VALUE;
+
+        for (int i = start; i <= endValue; i++) {
+
+            BarEntry e = mValues.get(i);
+
+            if (e != null && !Float.isNaN(e.getVal())) {
+
+                if (e.getVals() == null) {
+
+                    if (e.getVal() < mYMin)
+                        mYMin = e.getVal();
+
+                    if (e.getVal() > mYMax)
+                        mYMax = e.getVal();
+                } else {
+
+                    if (-e.getNegativeSum() < mYMin)
+                        mYMin = -e.getNegativeSum();
+
+                    if (e.getPositiveSum() > mYMax)
+                        mYMax = e.getPositiveSum();
+                }
+            }
+        }
+
+        if (mYMin == Float.MAX_VALUE) {
+            mYMin = 0.f;
+            mYMax = 0.f;
+        }
     }
 
     private void calcStackSize() {
