@@ -8,6 +8,7 @@ import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.realm.implementation.RealmScatterDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.R;
 import com.xxmassdeveloper.mpchartexample.custom.RealmDemoData;
 
@@ -31,6 +32,10 @@ public class RealmDatabaseActivityScatter extends RealmBaseActivity {
 
         mChart = (ScatterChart) findViewById(R.id.chart1);
         setup(mChart);
+
+        mChart.getAxisLeft().setDrawGridLines(false);
+        mChart.getXAxis().setDrawGridLines(false);
+        mChart.setPinchZoom(true);
     }
 
     @Override
@@ -38,7 +43,7 @@ public class RealmDatabaseActivityScatter extends RealmBaseActivity {
         super.onResume(); // setup realm
 
         // write some demo-data into the realm.io database
-        writeToDB(200);
+        writeToDB(45);
 
         // add data to the chart
         setData();
@@ -49,14 +54,17 @@ public class RealmDatabaseActivityScatter extends RealmBaseActivity {
         RealmResults<RealmDemoData> result = mRealm.allObjects(RealmDemoData.class);
 
         RealmScatterDataSet<RealmDemoData> set = new RealmScatterDataSet<RealmDemoData>(result, "value", "xIndex");
-        set.setValueTextSize(9f);
         set.setLabel("Realm ScatterDataSet");
+        set.setScatterShapeSize(9f);
+        set.setColor(ColorTemplate.rgb("#CDDC39"));
+        set.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
 
         ArrayList<IScatterDataSet> dataSets = new ArrayList<IScatterDataSet>();
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list
         ScatterData data = new ScatterData(result, "xValue", dataSets);
+        styleData(data);
 
         // set data
         mChart.setData(data);

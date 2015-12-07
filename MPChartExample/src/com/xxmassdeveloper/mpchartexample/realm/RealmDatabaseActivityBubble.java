@@ -5,13 +5,9 @@ import android.view.WindowManager;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BubbleChart;
-import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.BubbleData;
-import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.realm.implementation.RealmBubbleDataSet;
-import com.github.mikephil.charting.data.realm.implementation.RealmLineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.xxmassdeveloper.mpchartexample.R;
 import com.xxmassdeveloper.mpchartexample.custom.RealmDemoData;
 
@@ -53,7 +49,6 @@ public class RealmDatabaseActivityBubble extends RealmBaseActivity {
         RealmResults<RealmDemoData> result = mRealm.allObjects(RealmDemoData.class);
 
         RealmBubbleDataSet<RealmDemoData> set = new RealmBubbleDataSet<RealmDemoData>(result, "value", "xIndex", "bubbleSize");
-        set.setValueTextSize(9f);
         set.setLabel("Realm BubbleDataSet");
 
         ArrayList<IBubbleDataSet> dataSets = new ArrayList<IBubbleDataSet>();
@@ -61,6 +56,7 @@ public class RealmDatabaseActivityBubble extends RealmBaseActivity {
 
         // create a data object with the dataset list
         BubbleData data = new BubbleData(result, "xValue", dataSets);
+        styleData(data);
 
         // set data
         mChart.setData(data);

@@ -9,7 +9,6 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.view.WindowManager;
 
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.realm.implementation.RealmPieDataSet;
@@ -69,6 +68,7 @@ public class RealmDatabaseActivityPie extends RealmBaseActivity {
 
         // create a data object with the dataset list
         PieData data = new PieData(result, "xValue", dataSets);
+        styleData(data);
 
         // set data
         mChart.setData(data);

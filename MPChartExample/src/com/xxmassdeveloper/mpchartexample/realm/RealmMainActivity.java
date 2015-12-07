@@ -1,7 +1,10 @@
 package com.xxmassdeveloper.mpchartexample.realm;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -87,5 +90,21 @@ public class RealmMainActivity extends DemoBase implements AdapterView.OnItemCli
                 startActivity(i);
                 break;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.realm, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse("https://realm.io"));
+        startActivity(i);
+
+        return super.onOptionsItemSelected(item);
     }
 }

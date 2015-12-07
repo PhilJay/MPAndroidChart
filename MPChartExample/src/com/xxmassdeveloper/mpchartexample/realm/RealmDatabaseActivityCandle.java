@@ -1,17 +1,15 @@
 package com.xxmassdeveloper.mpchartexample.realm;
 
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.WindowManager;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.CandleStickChart;
-import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.data.CandleData;
-import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.realm.implementation.RealmCandleDataSet;
-import com.github.mikephil.charting.data.realm.implementation.RealmScatterDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.xxmassdeveloper.mpchartexample.R;
 import com.xxmassdeveloper.mpchartexample.custom.RealmDemoData;
 
@@ -35,6 +33,9 @@ public class RealmDatabaseActivityCandle extends RealmBaseActivity {
 
         mChart = (CandleStickChart) findViewById(R.id.chart1);
         setup(mChart);
+
+        mChart.getAxisLeft().setDrawGridLines(false);
+        mChart.getXAxis().setDrawGridLines(false);
     }
 
     @Override
@@ -53,14 +54,20 @@ public class RealmDatabaseActivityCandle extends RealmBaseActivity {
         RealmResults<RealmDemoData> result = mRealm.allObjects(RealmDemoData.class);
 
         RealmCandleDataSet<RealmDemoData> set = new RealmCandleDataSet<RealmDemoData>(result, "high", "low", "open", "close", "xIndex");
-        set.setValueTextSize(9f);
         set.setLabel("Realm Realm CandleDataSet");
+        set.setShadowColor(Color.DKGRAY);
+        set.setShadowWidth(0.7f);
+        set.setDecreasingColor(Color.RED);
+        set.setDecreasingPaintStyle(Paint.Style.STROKE);
+        set.setIncreasingColor(Color.rgb(122, 242, 84));
+        set.setIncreasingPaintStyle(Paint.Style.FILL);
 
         ArrayList<ICandleDataSet> dataSets = new ArrayList<ICandleDataSet>();
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list
         CandleData data = new CandleData(result, "xValue", dataSets);
+        styleData(data);
 
         // set data
         mChart.setData(data);

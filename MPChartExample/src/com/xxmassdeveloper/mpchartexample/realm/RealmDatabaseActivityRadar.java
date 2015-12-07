@@ -59,6 +59,7 @@ public class RealmDatabaseActivityRadar extends RealmBaseActivity {
 
         // create a data object with the dataset list
         RadarData data = new RadarData(result, "xValue", dataSets);
+        styleData(data);
 
         // set data
         mChart.setData(data);
