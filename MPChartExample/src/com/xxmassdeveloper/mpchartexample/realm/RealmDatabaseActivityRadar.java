@@ -1,5 +1,6 @@
 package com.xxmassdeveloper.mpchartexample.realm;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.WindowManager;
 
@@ -31,6 +32,11 @@ public class RealmDatabaseActivityRadar extends RealmBaseActivity {
 
         mChart = (RadarChart) findViewById(R.id.chart1);
         setup(mChart);
+
+        mChart.getYAxis().setEnabled(false);
+        mChart.setWebAlpha(180);
+        mChart.setWebColorInner(Color.DKGRAY);
+        mChart.setWebColor(Color.GRAY);
     }
 
     @Override
@@ -50,15 +56,18 @@ public class RealmDatabaseActivityRadar extends RealmBaseActivity {
 
         //RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "stackValues", "xIndex"); // normal entries
         RealmRadarDataSet<RealmDemoData> set = new RealmRadarDataSet<RealmDemoData>(result, "value", "xIndex"); // stacked entries
-        set.setValueTextSize(9f);
-        set.setColors(ColorTemplate.VORDIPLOM_COLORS);
         set.setLabel("Realm RadarDataSet");
+        set.setDrawFilled(true);
+        set.setColor(ColorTemplate.rgb("#009688"));
+        set.setFillColor(ColorTemplate.rgb("#009688"));
+        set.setFillAlpha(130);
+        set.setLineWidth(2f);
 
         ArrayList<IRadarDataSet> dataSets = new ArrayList<IRadarDataSet>();
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list
-        RadarData data = new RadarData(result, "xValue", dataSets);
+        RadarData data = new RadarData(new String[] {"2013", "2014", "2015", "2016", "2017", "2018", "2019"}, dataSets);
         styleData(data);
 
         // set data
