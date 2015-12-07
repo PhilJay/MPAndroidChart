@@ -26,6 +26,16 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     protected List<S> mValues;
 
     /**
+     * maximum y-value in the y-value array
+     */
+    protected float mYMax = 0.0f;
+
+    /**
+     * the minimum y-value in the y-value array
+     */
+    protected float mYMin = 0.0f;
+
+    /**
      * fieldname of the column that contains the y-values of this dataset
      */
     protected String mValuesField;
@@ -162,12 +172,48 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
 
     @Override
     public boolean addEntry(S e) {
-        return false;
+
+        if (e == null)
+            return false;
+
+        float val = e.getVal();
+
+        if (mValues == null) {
+            mValues = new ArrayList<S>();
+        }
+
+        if (mValues.size() == 0) {
+            mYMax = val;
+            mYMin = val;
+        } else {
+            if (mYMax < val)
+                mYMax = val;
+            if (mYMin > val)
+                mYMin = val;
+        }
+
+        // add the entry
+        mValues.add(e);
+        return true;
     }
 
     @Override
     public boolean removeEntry(S e) {
-        return false;
+
+        if (e == null)
+            return false;
+
+        if (mValues == null)
+            return false;
+
+        // remove the entry
+        boolean removed = mValues.remove(e);
+
+        if (removed) {
+            calcMinMax(0, mValues.size());
+        }
+
+        return removed;
     }
 
     /**
