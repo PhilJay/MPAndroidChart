@@ -62,6 +62,10 @@ public class RealmMainActivity extends DemoBase implements AdapterView.OnItemCli
                 i = new Intent(this, RealmDatabaseActivityBar.class);
                 startActivity(i);
                 break;
+            case 2:
+                i = new Intent(this, RealmDatabaseActivityHorizontalBar.class);
+                startActivity(i);
+                break;
             case 3:
                 i = new Intent(this, RealmDatabaseActivityScatter.class);
                 startActivity(i);
@@ -70,8 +74,16 @@ public class RealmMainActivity extends DemoBase implements AdapterView.OnItemCli
                 i = new Intent(this, RealmDatabaseActivityCandle.class);
                 startActivity(i);
                 break;
+            case 5:
+                i = new Intent(this, RealmDatabaseActivityBubble.class);
+                startActivity(i);
+                break;
             case 6:
                 i = new Intent(this, RealmDatabaseActivityPie.class);
+                startActivity(i);
+                break;
+            case 7:
+                i = new Intent(this, RealmDatabaseActivityRadar.class);
                 startActivity(i);
                 break;
         }

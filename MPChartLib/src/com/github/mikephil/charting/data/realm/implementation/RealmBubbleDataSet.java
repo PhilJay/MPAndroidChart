@@ -61,7 +61,7 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
 
         // need chart width to guess this properly
 
-        for (int i = start; i <= endValue; i++) {
+        for (int i = start; i < endValue; i++) {
 
             final BubbleEntry entry = mValues.get(i);
 

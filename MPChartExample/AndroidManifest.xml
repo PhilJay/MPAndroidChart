@@ -47,9 +47,12 @@
         <activity android:name="DynamicalAddingActivity"></activity>
         <activity android:name=".realm.RealmDatabaseActivityLine"></activity>
         <activity android:name=".realm.RealmDatabaseActivityBar"></activity>
+        <activity android:name=".realm.RealmDatabaseActivityHorizontalBar"></activity>
         <activity android:name=".realm.RealmDatabaseActivityScatter"></activity>
         <activity android:name=".realm.RealmDatabaseActivityCandle"></activity>
+        <activity android:name=".realm.RealmDatabaseActivityBubble"></activity>
         <activity android:name=".realm.RealmDatabaseActivityPie"></activity>
+        <activity android:name=".realm.RealmDatabaseActivityRadar"></activity>
         <activity android:name=".realm.RealmMainActivity"></activity>
         <activity android:name="RealtimeLineChartActivity"></activity>
         <activity android:name="CombinedChartActivity"></activity>

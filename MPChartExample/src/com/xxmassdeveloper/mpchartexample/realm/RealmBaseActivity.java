@@ -4,6 +4,7 @@ import android.graphics.Typeface;
 
 import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.charts.Chart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.CandleEntry;
 import com.xxmassdeveloper.mpchartexample.custom.RealmDemoData;
@@ -49,6 +50,7 @@ public abstract class RealmBaseActivity extends DemoBase {
             leftAxis.setTypeface(tf);
 
             mChart.getXAxis().setTypeface(tf);
+            mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
 
             mChart.getAxisRight().setEnabled(false);
         }
@@ -134,6 +136,24 @@ public abstract class RealmBaseActivity extends DemoBase {
             RealmDemoData d = new RealmDemoData(val + high, val - low, even ? val + open : val - open,
                     even ? val - close : val + close, i, i + "");
 
+            mRealm.copyToRealm(d);
+        }
+
+        mRealm.commitTransaction();
+    }
+
+    protected void writeToDBBubble(int objectCount) {
+
+        mRealm.beginTransaction();
+
+        mRealm.clear(RealmDemoData.class);
+
+        for (int i = 0; i < objectCount; i++) {
+
+            float value = 30f + (float) (Math.random() * 100.0);
+            float size = 15f + (float) (Math.random() * 20.0);
+
+            RealmDemoData d = new RealmDemoData(value, i, size, "" + i);
             mRealm.copyToRealm(d);
         }
 

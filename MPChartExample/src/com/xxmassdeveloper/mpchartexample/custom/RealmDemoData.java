@@ -4,11 +4,17 @@ package com.xxmassdeveloper.mpchartexample.custom;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 
+/**
+ * Demo class that encapsulates data stored in realm.io database.
+ * This class represents data suitable for all chart-types.
+ */
 public class RealmDemoData extends RealmObject {
 
     private float value;
 
     private float open, close, high, low;
+
+    private float bubbleSize;
 
     private RealmList<RealmFloat> stackValues;
 
@@ -63,6 +69,21 @@ public class RealmDemoData extends RealmObject {
         this.open = open;
         this.close = close;
         this.xIndex = xIndex;
+        this.xValue = xValue;
+    }
+
+    /**
+     * Constructor for bubbles.
+     *
+     * @param value
+     * @param xIndex
+     * @param bubbleSize
+     * @param xValue
+     */
+    public RealmDemoData(float value, int xIndex, float bubbleSize, String xValue) {
+        this.value = value;
+        this.xIndex = xIndex;
+        this.bubbleSize = bubbleSize;
         this.xValue = xValue;
     }
 
@@ -128,6 +149,14 @@ public class RealmDemoData extends RealmObject {
 
     public void setLow(float low) {
         this.low = low;
+    }
+
+    public float getBubbleSize() {
+        return bubbleSize;
+    }
+
+    public void setBubbleSize(float bubbleSize) {
+        this.bubbleSize = bubbleSize;
     }
 
     public String getSomeStringField() {
