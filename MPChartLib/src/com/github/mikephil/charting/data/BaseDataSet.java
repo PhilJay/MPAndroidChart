@@ -95,7 +95,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      * Use this method to tell the data set that the underlying data has changed.
      */
     public void notifyDataSetChanged() {
-        calcMinMax( 0, getEntryCount()-1);
+        calcMinMax(0, getEntryCount() - 1);
     }
 
 
@@ -189,6 +189,28 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     public void setColor(int color) {
         resetColors();
         mColors.add(color);
+    }
+
+    /**
+     * Sets a color with a specific alpha value.
+     *
+     * @param color
+     * @param alpha from 0-255
+     */
+    public void setColor(int color, int alpha) {
+        setColor(Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color)));
+    }
+
+    /**
+     * Sets colors with a specific alpha value.
+     *
+     * @param colors
+     * @param alpha
+     */
+    public void setColors(int[] colors, int alpha) {
+        for (int color : colors) {
+            addColor(Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color)));
+        }
     }
 
     /**

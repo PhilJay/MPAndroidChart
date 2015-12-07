@@ -33,16 +33,6 @@ public class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry
         return mHighlightCircleWidth;
     }
 
-    /**
-     * Sets a color with a specific alpha value.
-     *
-     * @param color
-     * @param alpha from 0-255
-     */
-    public void setColor(int color, int alpha) {
-        super.setColor(Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color)));
-    }
-
     @Override
     public void calcMinMax(int start, int end) {
 
