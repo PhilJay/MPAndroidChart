@@ -121,9 +121,12 @@ public class MainActivity extends Activity implements OnItemClickListener {
         objects.add(new ContentItem(
                 "Chart in ScrollView",
                 "This demonstrates how to use a chart inside a ScrollView."));
-        objects.add(new ContentItem(
+
+        ContentItem realm = new ContentItem(
                 "Realm.io Database",
-                "This demonstrates how to use this library with Realm.io mobile database."));
+                "This demonstrates how to use this library with Realm.io mobile database.");
+        realm.isNew = true;
+        objects.add(realm);
 
         MyAdapter adapter = new MyAdapter(this, objects);
 

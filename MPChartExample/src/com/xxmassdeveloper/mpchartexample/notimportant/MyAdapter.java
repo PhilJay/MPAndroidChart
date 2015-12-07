@@ -34,6 +34,7 @@ public class MyAdapter extends ArrayAdapter<ContentItem> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, null);
             holder.tvName = (TextView) convertView.findViewById(R.id.tvName);
             holder.tvDesc = (TextView) convertView.findViewById(R.id.tvDesc);
+            holder.tvNew = (TextView) convertView.findViewById(R.id.tvNew);
 
             convertView.setTag(holder);
 
@@ -44,11 +45,17 @@ public class MyAdapter extends ArrayAdapter<ContentItem> {
         holder.tvName.setText(c.name);
         holder.tvDesc.setText(c.desc);
 
+        if(c.isNew)
+            holder.tvNew.setVisibility(View.VISIBLE);
+        else
+            holder.tvNew.setVisibility(View.GONE);
+
         return convertView;
     }
 
     private class ViewHolder {
 
         TextView tvName, tvDesc;
+        TextView tvNew;
     }
 }
