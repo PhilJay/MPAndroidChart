@@ -3,20 +3,12 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 23
     buildToolsVersion '23.0.2'
+
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 23
         versionCode 46
         versionName '2.1.6'
-
-        sourceSets {
-            main {
-                java.srcDirs = ['src']
-                res.srcDirs = ['res']
-                assets.srcDirs = ['assets']
-                manifest.srcFile 'AndroidManifest.xml'
-            }
-        }
     }
 
     buildTypes {
@@ -26,31 +18,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
+        lintOptions {
+            abortOnError false
+        }
     }
-
-    lintOptions {
-        abortOnError false
-    }
-}
-
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.5.0'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
-}
-
-repositories {
-    maven { url "https://jitpack.io" }
 }
 
 dependencies {
-    //compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':MPChartLib') // remove this if you only imported the example project
     compile 'com.android.support:appcompat-v7:23.1.1'
     //compile 'com.github.PhilJay:MPAndroidChart:v2.1.1'
