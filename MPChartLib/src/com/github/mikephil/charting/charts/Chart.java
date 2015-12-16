@@ -117,11 +117,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     protected String mDescription = "Description";
 
     /**
-     * flag that indicates if the chart has been fed with data yet
-     */
-    protected boolean mDataNotSet = true;
-
-    /**
      * the number of x-values the chart displays
      */
     protected float mDeltaX = 1f;
@@ -309,7 +304,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         }
 
         // LET THE CHART KNOW THERE IS DATA
-        mDataNotSet = false;
         mOffsetsCalculated = false;
         mData = data;
 
@@ -334,7 +328,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public void clear() {
         mData = null;
-        mDataNotSet = true;
         mIndicesToHighlight = null;
         invalidate();
     }
@@ -420,11 +413,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     protected void onDraw(Canvas canvas) {
         // super.onDraw(canvas);
 
-        if (mDataNotSet || mData == null || mData.getYValCount() <= 0) { // check
-            // if
-            // there
-            // is
-            // data
+        if (mData == null) {
 
             // if no data, inform the user
             canvas.drawText(mNoDataText, getWidth() / 2, getHeight() / 2, mInfoPaint);

@@ -87,7 +87,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends DataSet<? 
 
     @Override
     public void notifyDataSetChanged() {
-        if (mDataNotSet)
+        if (mData == null)
             return;
 
         calcMinMax();
