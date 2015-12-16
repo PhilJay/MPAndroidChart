@@ -410,7 +410,7 @@ public class PieChartRenderer extends DataRenderer {
             else
                 angle = rotationAngle + absoluteAngles[xIndex - 1];
 
-            angle *= mAnimator.getPhaseY();
+            angle *= mAnimator.getPhaseX();
 
             float sliceDegrees = drawAngles[xIndex];
 
