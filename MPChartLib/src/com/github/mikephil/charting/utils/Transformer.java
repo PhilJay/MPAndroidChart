@@ -49,6 +49,15 @@ public class Transformer {
         float scaleX = (float) ((mViewPortHandler.contentWidth()) / deltaX);
         float scaleY = (float) ((mViewPortHandler.contentHeight()) / deltaY);
 
+        if (Float.isInfinite(scaleX))
+        {
+            scaleX = 0;
+        }
+        if (Float.isInfinite(scaleY))
+        {
+            scaleY = 0;
+        }
+
         // setup all matrices
         mMatrixValueToPx.reset();
         mMatrixValueToPx.postTranslate(-xChartMin, -yChartMin);
