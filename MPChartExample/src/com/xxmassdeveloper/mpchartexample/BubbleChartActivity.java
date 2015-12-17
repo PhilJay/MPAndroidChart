@@ -20,13 +20,14 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.data.BubbleEntry;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.highlight.Highlight;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -108,7 +109,7 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
 
         switch (item.getItemId()) {
             case R.id.actionToggleValues: {
-                for (DataSet<?> set : mChart.getData().getDataSets())
+                for (IDataSet set : mChart.getData().getDataSets())
                     set.setDrawValues(!set.isDrawValuesEnabled());
 
                 mChart.invalidate();
@@ -225,7 +226,7 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
         set3.setColor(ColorTemplate.COLORFUL_COLORS[2], 130);
         set3.setDrawValues(true);
 
-        ArrayList<BubbleDataSet> dataSets = new ArrayList<BubbleDataSet>();
+        ArrayList<IBubbleDataSet> dataSets = new ArrayList<IBubbleDataSet>();
         dataSets.add(set1); // add the datasets
         dataSets.add(set2);
         dataSets.add(set3);

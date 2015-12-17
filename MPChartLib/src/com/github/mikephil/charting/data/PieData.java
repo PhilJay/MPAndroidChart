@@ -1,18 +1,27 @@
 
 package com.github.mikephil.charting.data;
 
+import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.RealmObject;
+import io.realm.RealmResults;
 
 /**
  * A PieData object can only represent one DataSet. Unlike all other charts, the
  * legend labels of the PieChart are created from the x-values array, and not
  * from the DataSet labels. Each PieData object can only represent one
  * PieDataSet (multiple PieDataSets inside a single PieChart are not possible).
- * 
+ *
  * @author Philipp Jahoda
  */
-public class PieData extends ChartData<PieDataSet> {
+public class PieData extends ChartData<IPieDataSet> {
+
+    public PieData(RealmResults<? extends RealmObject> result, String xValuesField, List<IPieDataSet> dataSets) {
+        super(toXVals(result, xValuesField), dataSets);
+    }
 
     public PieData() {
         super();
@@ -26,26 +35,26 @@ public class PieData extends ChartData<PieDataSet> {
         super(xVals);
     }
 
-    public PieData(List<String> xVals, PieDataSet dataSet) {
+    public PieData(List<String> xVals, IPieDataSet dataSet) {
         super(xVals, toList(dataSet));
     }
 
-    public PieData(String[] xVals, PieDataSet dataSet) {
+    public PieData(String[] xVals, IPieDataSet dataSet) {
         super(xVals, toList(dataSet));
     }
 
-    private static List<PieDataSet> toList(PieDataSet dataSet) {
-        List<PieDataSet> sets = new ArrayList<PieDataSet>();
+    private static List<IPieDataSet> toList(IPieDataSet dataSet) {
+        List<IPieDataSet> sets = new ArrayList<IPieDataSet>();
         sets.add(dataSet);
         return sets;
     }
 
     /**
      * Sets the PieDataSet this data object should represent.
-     * 
+     *
      * @param dataSet
      */
-    public void setDataSet(PieDataSet dataSet) {
+    public void setDataSet(IPieDataSet dataSet) {
         mDataSets.clear();
         mDataSets.add(dataSet);
         init();
@@ -54,21 +63,37 @@ public class PieData extends ChartData<PieDataSet> {
     /**
      * Returns the DataSet this PieData object represents. A PieData object can
      * only contain one DataSet.
-     * 
+     *
      * @return
      */
-    public PieDataSet getDataSet() {
+    public IPieDataSet getDataSet() {
         return mDataSets.get(0);
     }
 
     @Override
-    public PieDataSet getDataSetByIndex(int index) {
+    public IPieDataSet getDataSetByIndex(int index) {
         return index == 0 ? getDataSet() : null;
     }
 
     @Override
-    public PieDataSet getDataSetByLabel(String label, boolean ignorecase) {
+    public IPieDataSet getDataSetByLabel(String label, boolean ignorecase) {
         return ignorecase ? label.equalsIgnoreCase(mDataSets.get(0).getLabel()) ? mDataSets.get(0)
                 : null : label.equals(mDataSets.get(0).getLabel()) ? mDataSets.get(0) : null;
+    }
+
+    /**
+     * Returns the sum of all values in this PieData object.
+     *
+     * @return
+     */
+    public float getYValueSum() {
+
+        float sum = 0;
+
+        for (int i = 0; i < getDataSet().getEntryCount(); i++)
+            sum += getDataSet().getEntryForIndex(i).getVal();
+
+
+        return sum;
     }
 }

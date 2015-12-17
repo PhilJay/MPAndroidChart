@@ -11,7 +11,7 @@ import java.util.List;
  * Class that holds predefined color integer arrays (e.g.
  * ColorTemplate.VORDIPLOM_COLORS) and convenience methods for loading colors
  * from resources.
- * 
+ *
  * @author Philipp Jahoda
  */
 public class ColorTemplate {
@@ -53,8 +53,22 @@ public class ColorTemplate {
     };
 
     /**
+     * Converts the given hex-color-string to rgb.
+     *
+     * @param hex
+     * @return
+     */
+    public static int rgb(String hex) {
+        int color = (int) Long.parseLong(hex.replace("#", ""), 16);
+        int r = (color >> 16) & 0xFF;
+        int g = (color >> 8) & 0xFF;
+        int b = (color >> 0) & 0xFF;
+        return Color.rgb(r, g, b);
+    }
+
+    /**
      * Returns the Android ICS holo blue light color.
-     * 
+     *
      * @return
      */
     public static int getHoloBlue() {
@@ -64,7 +78,7 @@ public class ColorTemplate {
     /**
      * turn an array of resource-colors (contains resource-id integers) into an
      * array list of actual color integers
-     * 
+     *
      * @param r
      * @param colors an integer array of resource id's of colors
      * @return
@@ -83,7 +97,7 @@ public class ColorTemplate {
     /**
      * Turns an array of colors (integer color values) into an ArrayList of
      * colors.
-     * 
+     *
      * @param colors
      * @return
      */

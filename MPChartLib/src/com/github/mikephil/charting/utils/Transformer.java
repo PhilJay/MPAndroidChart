@@ -8,6 +8,11 @@ import android.graphics.RectF;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 
 import java.util.List;
 
@@ -87,17 +92,17 @@ public class Transformer {
      * Transforms an List of Entry into a float array containing the x and
      * y values transformed with all matrices for the SCATTERCHART.
      *
-     * @param entries
+     * @param data
      * @return
      */
-    public float[] generateTransformedValuesScatter(List<? extends Entry> entries,
+    public float[] generateTransformedValuesScatter(IScatterDataSet data,
                                                     float phaseY) {
 
-        float[] valuePoints = new float[entries.size() * 2];
+        float[] valuePoints = new float[data.getEntryCount() * 2];
 
         for (int j = 0; j < valuePoints.length; j += 2) {
 
-            Entry e = entries.get(j / 2);
+            Entry e = data.getEntryForIndex(j / 2);
 
             if (e != null) {
                 valuePoints[j] = e.getXIndex();
@@ -114,10 +119,10 @@ public class Transformer {
      * Transforms an List of Entry into a float array containing the x and
      * y values transformed with all matrices for the BUBBLECHART.
      *
-     * @param entries
+     * @param data
      * @return
      */
-    public float[] generateTransformedValuesBubble(List<? extends Entry> entries,
+    public float[] generateTransformedValuesBubble(IBubbleDataSet data,
                                                    float phaseX, float phaseY, int from, int to) {
 
         final int count = (int) Math.ceil(to - from) * 2; // (int) Math.ceil((to - from) * phaseX) * 2;
@@ -126,7 +131,7 @@ public class Transformer {
 
         for (int j = 0; j < count; j += 2) {
 
-            Entry e = entries.get(j / 2 + from);
+            Entry e = data.getEntryForIndex(j / 2 + from);
 
             if (e != null) {
                 valuePoints[j] = (float) (e.getXIndex() - from) * phaseX + from;
@@ -143,10 +148,10 @@ public class Transformer {
      * Transforms an List of Entry into a float array containing the x and
      * y values transformed with all matrices for the LINECHART.
      *
-     * @param entries
+     * @param data
      * @return
      */
-    public float[] generateTransformedValuesLine(List<? extends Entry> entries,
+    public float[] generateTransformedValuesLine(ILineDataSet data,
                                                  float phaseX, float phaseY, int from, int to) {
 
         final int count = (int) Math.ceil((to - from) * phaseX) * 2;
@@ -155,7 +160,7 @@ public class Transformer {
 
         for (int j = 0; j < count; j += 2) {
 
-            Entry e = entries.get(j / 2 + from);
+            Entry e = data.getEntryForIndex(j / 2 + from);
 
             if (e != null) {
                 valuePoints[j] = e.getXIndex();
@@ -172,10 +177,10 @@ public class Transformer {
      * Transforms an List of Entry into a float array containing the x and
      * y values transformed with all matrices for the CANDLESTICKCHART.
      *
-     * @param entries
+     * @param data
      * @return
      */
-    public float[] generateTransformedValuesCandle(List<CandleEntry> entries,
+    public float[] generateTransformedValuesCandle(ICandleDataSet data,
                                                    float phaseX, float phaseY, int from, int to) {
 
         final int count = (int) Math.ceil((to - from) * phaseX) * 2;
@@ -184,7 +189,7 @@ public class Transformer {
 
         for (int j = 0; j < count; j += 2) {
 
-            CandleEntry e = entries.get(j / 2 + from);
+            CandleEntry e = data.getEntryForIndex(j / 2 + from);
 
             if (e != null) {
                 valuePoints[j] = e.getXIndex();
@@ -201,25 +206,27 @@ public class Transformer {
      * Transforms an List of Entry into a float array containing the x and
      * y values transformed with all matrices for the BARCHART.
      *
-     * @param entries
-     * @param dataSet the dataset index
+     * @param data
+     * @param dataSetIndex the dataset index
+     * @param bd
+     * @param phaseY
      * @return
      */
-    public float[] generateTransformedValuesBarChart(List<? extends Entry> entries,
-                                                     int dataSet, BarData bd, float phaseY) {
+    public float[] generateTransformedValuesBarChart(IBarDataSet data,
+                                                     int dataSetIndex, BarData bd, float phaseY) {
 
-        float[] valuePoints = new float[entries.size() * 2];
+        float[] valuePoints = new float[data.getEntryCount() * 2];
 
         int setCount = bd.getDataSetCount();
         float space = bd.getGroupSpace();
 
         for (int j = 0; j < valuePoints.length; j += 2) {
 
-            Entry e = entries.get(j / 2);
+            Entry e = data.getEntryForIndex(j / 2);
             int i = e.getXIndex();
 
             // calculate the x-position, depending on datasetcount
-            float x = e.getXIndex() + i * (setCount - 1) + dataSet + space * i
+            float x = e.getXIndex() + i * (setCount - 1) + dataSetIndex + space * i
                     + space / 2f;
             float y = e.getVal();
 
@@ -236,21 +243,21 @@ public class Transformer {
      * Transforms an List of Entry into a float array containing the x and
      * y values transformed with all matrices for the BARCHART.
      *
-     * @param entries
+     * @param data
      * @param dataSet the dataset index
      * @return
      */
-    public float[] generateTransformedValuesHorizontalBarChart(List<? extends Entry> entries,
+    public float[] generateTransformedValuesHorizontalBarChart(IBarDataSet data,
                                                                int dataSet, BarData bd, float phaseY) {
 
-        float[] valuePoints = new float[entries.size() * 2];
+        float[] valuePoints = new float[data.getEntryCount() * 2];
 
         int setCount = bd.getDataSetCount();
         float space = bd.getGroupSpace();
 
         for (int j = 0; j < valuePoints.length; j += 2) {
 
-            Entry e = entries.get(j / 2);
+            Entry e = data.getEntryForIndex(j / 2);
             int i = e.getXIndex();
 
             // calculate the x-position, depending on datasetcount

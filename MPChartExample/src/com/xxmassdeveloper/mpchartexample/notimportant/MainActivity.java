@@ -2,22 +2,16 @@
 package com.xxmassdeveloper.mpchartexample.notimportant;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.github.mikephil.charting.utils.Utils;
 import com.xxmassdeveloper.mpchartexample.AnotherBarActivity;
@@ -47,9 +41,11 @@ import com.xxmassdeveloper.mpchartexample.ScrollViewActivity;
 import com.xxmassdeveloper.mpchartexample.StackedBarActivity;
 import com.xxmassdeveloper.mpchartexample.StackedBarActivityNegative;
 import com.xxmassdeveloper.mpchartexample.fragments.SimpleChartDemo;
+import com.xxmassdeveloper.mpchartexample.realm.RealmDatabaseActivityBar;
+import com.xxmassdeveloper.mpchartexample.realm.RealmDatabaseActivityLine;
+import com.xxmassdeveloper.mpchartexample.realm.RealmMainActivity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends Activity implements OnItemClickListener {
 
@@ -125,6 +121,12 @@ public class MainActivity extends Activity implements OnItemClickListener {
         objects.add(new ContentItem(
                 "Chart in ScrollView",
                 "This demonstrates how to use a chart inside a ScrollView."));
+
+        ContentItem realm = new ContentItem(
+                "Realm.io Database",
+                "This demonstrates how to use this library with Realm.io mobile database.");
+        realm.isNew = true;
+        objects.add(realm);
 
         MyAdapter adapter = new MyAdapter(this, objects);
 
@@ -244,6 +246,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 i = new Intent(this, ScrollViewActivity.class);
                 startActivity(i);
                 break;
+            case 26:
+                i = new Intent(this, RealmMainActivity.class);
+                startActivity(i);
+                break;
         }
 
         overridePendingTransition(R.anim.move_right_in_activity, R.anim.move_left_out_activity);
@@ -286,54 +292,5 @@ public class MainActivity extends Activity implements OnItemClickListener {
         }
 
         return true;
-    }
-
-    private class ContentItem {
-        String name;
-        String desc;
-
-        public ContentItem(String n, String d) {
-            name = n;
-            desc = d;
-        }
-    }
-
-    private class MyAdapter extends ArrayAdapter<ContentItem> {
-
-        public MyAdapter(Context context, List<ContentItem> objects) {
-            super(context, 0, objects);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            ContentItem c = getItem(position);
-
-            ViewHolder holder = null;
-
-            if (convertView == null) {
-
-                holder = new ViewHolder();
-
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, null);
-                holder.tvName = (TextView) convertView.findViewById(R.id.tvName);
-                holder.tvDesc = (TextView) convertView.findViewById(R.id.tvDesc);
-
-                convertView.setTag(holder);
-
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-
-            holder.tvName.setText(c.name);
-            holder.tvDesc.setText(c.desc);
-
-            return convertView;
-        }
-
-        private class ViewHolder {
-
-            TextView tvName, tvDesc;
-        }
     }
 }

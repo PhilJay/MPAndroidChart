@@ -13,17 +13,16 @@ import android.text.Layout;
 import android.text.SpannableString;
 import android.text.StaticLayout;
 import android.text.TextPaint;
-import android.util.Log;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
+import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.List;
@@ -120,26 +119,25 @@ public class PieChartRenderer extends DataRenderer {
 
         PieData pieData = mChart.getData();
 
-        for (PieDataSet set : pieData.getDataSets()) {
+        for (IPieDataSet set : pieData.getDataSets()) {
 
             if (set.isVisible() && set.getEntryCount() > 0)
                 drawDataSet(c, set);
         }
     }
 
-    protected void drawDataSet(Canvas c, PieDataSet dataSet) {
+    protected void drawDataSet(Canvas c, IPieDataSet dataSet) {
 
         float angle = mChart.getRotationAngle();
 
-        List<Entry> entries = dataSet.getYVals();
         float[] drawAngles = mChart.getDrawAngles();
 
-        for (int j = 0; j < entries.size(); j++) {
+        for (int j = 0; j < dataSet.getEntryCount(); j++) {
 
             float newangle = drawAngles[j];
             float sliceSpace = dataSet.getSliceSpace();
 
-            Entry e = entries.get(j);
+            Entry e = dataSet.getEntryForIndex(j);
 
             // draw only if the value is greater than zero
             if ((Math.abs(e.getVal()) > 0.000001)) {
@@ -179,14 +177,14 @@ public class PieChartRenderer extends DataRenderer {
         r -= off; // offset to keep things inside the chart
 
         PieData data = mChart.getData();
-        List<PieDataSet> dataSets = data.getDataSets();
+        List<IPieDataSet> dataSets = data.getDataSets();
         boolean drawXVals = mChart.isDrawSliceTextEnabled();
 
         int cnt = 0;
 
         for (int i = 0; i < dataSets.size(); i++) {
 
-            PieDataSet dataSet = dataSets.get(i);
+            IPieDataSet dataSet = dataSets.get(i);
 
             if (!dataSet.isDrawValuesEnabled() && !drawXVals)
                 continue;
@@ -197,12 +195,12 @@ public class PieChartRenderer extends DataRenderer {
             float lineHeight = Utils.calcTextHeight(mValuePaint, "Q")
                     + Utils.convertDpToPixel(4f);
 
-            List<Entry> entries = dataSet.getYVals();
+            int entryCount = dataSet.getEntryCount();
 
             for (int j = 0, maxEntry = Math.min(
-                    (int) Math.ceil(entries.size() * mAnimator.getPhaseX()), entries.size()); j < maxEntry; j++) {
+                    (int) Math.ceil(entryCount * mAnimator.getPhaseX()), entryCount); j < maxEntry; j++) {
 
-                Entry entry = entries.get(j);
+                Entry entry = dataSet.getEntryForIndex(j);
 
                 // offset needed to center the drawn text in the slice
                 float offset = drawAngles[cnt] / 2;
@@ -400,7 +398,7 @@ public class PieChartRenderer extends DataRenderer {
             if (xIndex >= drawAngles.length)
                 continue;
 
-            PieDataSet set = mChart.getData()
+            IPieDataSet set = mChart.getData()
                     .getDataSetByIndex(indices[i]
                             .getDataSetIndex());
 
@@ -450,7 +448,7 @@ public class PieChartRenderer extends DataRenderer {
         if (!mChart.isDrawRoundedSlicesEnabled())
             return;
 
-        PieDataSet dataSet = mChart.getData().getDataSet();
+        IPieDataSet dataSet = mChart.getData().getDataSet();
 
         if (!dataSet.isVisible())
             return;
@@ -461,15 +459,14 @@ public class PieChartRenderer extends DataRenderer {
         // calculate the radius of the "slice-circle"
         float circleRadius = (r - (r * mChart.getHoleRadius() / 100f)) / 2f;
 
-        List<Entry> entries = dataSet.getYVals();
         float[] drawAngles = mChart.getDrawAngles();
         float angle = mChart.getRotationAngle();
 
-        for (int j = 0; j < entries.size(); j++) {
+        for (int j = 0; j < dataSet.getEntryCount(); j++) {
 
             float newangle = drawAngles[j];
 
-            Entry e = entries.get(j);
+            Entry e = dataSet.getEntryForIndex(j);
 
             // draw only if the value is greater than zero
             if ((Math.abs(e.getVal()) > 0.000001)) {

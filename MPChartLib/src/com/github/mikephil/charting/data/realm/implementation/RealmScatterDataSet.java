@@ -1,0 +1,74 @@
+package com.github.mikephil.charting.data.realm.implementation;
+
+import com.github.mikephil.charting.charts.ScatterChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.realm.base.RealmLineScatterCandleRadarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
+import com.github.mikephil.charting.utils.Utils;
+
+import io.realm.RealmObject;
+import io.realm.RealmResults;
+import io.realm.dynamic.DynamicRealmObject;
+
+/**
+ * Created by Philipp Jahoda on 07/11/15.
+ */
+public class RealmScatterDataSet<T extends RealmObject> extends RealmLineScatterCandleRadarDataSet<T, Entry> implements IScatterDataSet {
+
+    /** the size the scattershape will have, in screen pixels */
+    private float mShapeSize = 15f;
+
+    /**
+     * the type of shape that is set to be drawn where the values are at,
+     * default ScatterShape.SQUARE
+     */
+    private ScatterChart.ScatterShape mScatterShape = ScatterChart.ScatterShape.SQUARE;
+
+    public RealmScatterDataSet(RealmResults<T> result, String yValuesField, String xIndexField) {
+        super(result, yValuesField, xIndexField);
+
+        build(this.results);
+        calcMinMax(0, results.size());
+    }
+
+    @Override
+    public void build(RealmResults<T> results) {
+
+        for (T object : results) {
+
+            DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
+            mValues.add(new Entry(dynamicObject.getFloat(mValuesField), dynamicObject.getInt(mIndexField)));
+        }
+    }
+
+    /**
+     * Sets the size in density pixels the drawn scattershape will have. This
+     * only applies for non custom shapes.
+     *
+     * @param size
+     */
+    public void setScatterShapeSize(float size) {
+        mShapeSize = Utils.convertDpToPixel(size);
+    }
+
+    @Override
+    public float getScatterShapeSize() {
+        return mShapeSize;
+    }
+
+    /**
+     * Sets the shape that is drawn on the position where the values are at. If
+     * "CUSTOM" is chosen, you need to call setCustomScatterShape(...) and
+     * provide a path object that is drawn as the custom scattershape.
+     *
+     * @param shape
+     */
+    public void setScatterShape(ScatterChart.ScatterShape shape) {
+        mScatterShape = shape;
+    }
+
+    @Override
+    public ScatterChart.ScatterShape getScatterShape() {
+        return mScatterShape;
+    }
+}

@@ -1,6 +1,6 @@
 package com.github.mikephil.charting.utils;
 
-import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 
 /**
  * Class that encapsulates information of a value that has been
@@ -14,9 +14,9 @@ public class SelectionDetail {
 
     public float val;
     public int dataSetIndex;
-    public DataSet<?> dataSet;
+    public IDataSet dataSet;
 
-    public SelectionDetail(float val, int dataSetIndex, DataSet<?> set) {
+    public SelectionDetail(float val, int dataSetIndex, IDataSet set) {
         this.val = val;
         this.dataSetIndex = dataSetIndex;
         this.dataSet = set;

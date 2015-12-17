@@ -1,10 +1,19 @@
 
 package com.github.mikephil.charting.data;
 
+import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class BubbleData extends BarLineScatterCandleBubbleData<BubbleDataSet> {
+import io.realm.RealmObject;
+import io.realm.RealmResults;
+
+public class BubbleData extends BarLineScatterCandleBubbleData<IBubbleDataSet> {
+
+    public BubbleData(RealmResults<? extends RealmObject> result, String xValuesField, List<IBubbleDataSet> dataSets) {
+        super(toXVals(result, xValuesField), dataSets);
+    }
 
     public BubbleData() {
         super();
@@ -18,24 +27,24 @@ public class BubbleData extends BarLineScatterCandleBubbleData<BubbleDataSet> {
         super(xVals);
     }
 
-    public BubbleData(List<String> xVals, List<BubbleDataSet> dataSets) {
+    public BubbleData(List<String> xVals, List<IBubbleDataSet> dataSets) {
         super(xVals, dataSets);
     }
 
-    public BubbleData(String[] xVals, List<BubbleDataSet> dataSets) {
+    public BubbleData(String[] xVals, List<IBubbleDataSet> dataSets) {
         super(xVals, dataSets);
     }
 
-    public BubbleData(List<String> xVals, BubbleDataSet dataSet) {
+    public BubbleData(List<String> xVals, IBubbleDataSet dataSet) {
         super(xVals, toList(dataSet));
     }
 
-    public BubbleData(String[] xVals, BubbleDataSet dataSet) {
+    public BubbleData(String[] xVals, IBubbleDataSet dataSet) {
         super(xVals, toList(dataSet));
     }
 
-    private static List<BubbleDataSet> toList(BubbleDataSet dataSet) {
-        List<BubbleDataSet> sets = new ArrayList<BubbleDataSet>();
+    private static List<IBubbleDataSet> toList(IBubbleDataSet dataSet) {
+        List<IBubbleDataSet> sets = new ArrayList<IBubbleDataSet>();
         sets.add(dataSet);
         return sets;
     }
@@ -47,7 +56,7 @@ public class BubbleData extends BarLineScatterCandleBubbleData<BubbleDataSet> {
      * @param width
      */
     public void setHighlightCircleWidth(float width) {
-        for (BubbleDataSet set : mDataSets) {
+        for (IBubbleDataSet set : mDataSets) {
             set.setHighlightCircleWidth(width);
         }
     }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.formatter.DefaultFillFormatter;
 import com.github.mikephil.charting.formatter.FillFormatter;
@@ -13,7 +14,7 @@ import com.github.mikephil.charting.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LineDataSet extends LineRadarDataSet<Entry> {
+public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
 
     /** List representing all colors that are used for the circles */
     private List<Integer> mCircleColors = null;
@@ -92,11 +93,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
         mCubicIntensity = intensity;
     }
 
-    /**
-     * Returns the intensity of the cubic lines (the effect intensity).
-     * 
-     * @return
-     */
+    @Override
     public float getCubicIntensity() {
         return mCubicIntensity;
     }
@@ -111,9 +108,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
         mCircleSize = Utils.convertDpToPixel(size);
     }
 
-    /**
-     * returns the circlesize
-     */
+    @Override
     public float getCircleSize() {
         return mCircleSize;
     }
@@ -140,20 +135,12 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
         mDashPathEffect = null;
     }
 
-    /**
-     * Returns true if the dashed-line effect is enabled, false if not.
-     * 
-     * @return
-     */
+    @Override
     public boolean isDashedLineEnabled() {
         return mDashPathEffect == null ? false : true;
     }
 
-    /**
-     * returns the DashPathEffect that is set for this DataSet
-     * 
-     * @return
-     */
+    @Override
     public DashPathEffect getDashPathEffect() {
         return mDashPathEffect;
     }
@@ -168,11 +155,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
         this.mDrawCircles = enabled;
     }
 
-    /**
-     * returns true if drawing circles for this DataSet is enabled, false if not
-     * 
-     * @return
-     */
+    @Override
     public boolean isDrawCirclesEnabled() {
         return mDrawCircles;
     }
@@ -187,11 +170,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
         mDrawCubic = enabled;
     }
 
-    /**
-     * returns true if drawing cubic lines is enabled, false if not.
-     * 
-     * @return
-     */
+    @Override
     public boolean isDrawCubicEnabled() {
         return mDrawCubic;
     }
@@ -207,13 +186,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
         return mCircleColors;
     }
 
-    /**
-     * Returns the color at the given index of the DataSet's circle-color array.
-     * Performs a IndexOutOfBounds check by modulus.
-     * 
-     * @param index
-     * @return
-     */
+    @Override
     public int getCircleColor(int index) {
         return mCircleColors.get(index % mCircleColors.size());
     }
@@ -292,11 +265,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
         mCircleColorHole = color;
     }
 
-    /**
-     * Returns the color of the inner circle.
-     * 
-     * @return
-     */
+    @Override
     public int getCircleHoleColor() {
         return mCircleColorHole;
     }
@@ -310,6 +279,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
         mDrawCircleHole = enabled;
     }
 
+    @Override
     public boolean isDrawCircleHoleEnabled() {
         return mDrawCircleHole;
     }
@@ -328,10 +298,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> {
             mFillFormatter = formatter;
     }
 
-    /**
-     * Returns the FillFormatter that is set for this DataSet.
-     * @return
-     */
+    @Override
     public FillFormatter getFillFormatter() {
         return mFillFormatter;
     }

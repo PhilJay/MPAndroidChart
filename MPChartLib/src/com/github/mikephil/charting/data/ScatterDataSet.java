@@ -4,14 +4,17 @@ package com.github.mikephil.charting.data;
 import android.graphics.Path;
 
 import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
+import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> {
+public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> implements IScatterDataSet {
 
-    /** the size the scattershape will have, in screen pixels */
+    /**
+     * the size the scattershape will have, in screen pixels
+     */
     private float mShapeSize = 15f;
 
     /**
@@ -25,7 +28,6 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> {
      * are at. This is used when ScatterShape.CUSTOM is set for a DataSet.
      */
     //private Path mCustomScatterPath = null;
-
     public ScatterDataSet(List<Entry> yVals, String label) {
         super(yVals, label);
 
@@ -54,36 +56,28 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> {
     /**
      * Sets the size in density pixels the drawn scattershape will have. This
      * only applies for non custom shapes.
-     * 
+     *
      * @param size
      */
     public void setScatterShapeSize(float size) {
         mShapeSize = Utils.convertDpToPixel(size);
     }
 
-    /**
-     * returns the currently set scatter shape size
-     * 
-     * @return
-     */
+    @Override
     public float getScatterShapeSize() {
         return mShapeSize;
     }
 
     /**
      * Sets the shape that is drawn on the position where the values are at.
-     * 
+     *
      * @param shape
      */
     public void setScatterShape(ScatterShape shape) {
         mScatterShape = shape;
     }
 
-    /**
-     * returns all the different scattershapes the chart uses
-     * 
-     * @return
-     */
+    @Override
     public ScatterShape getScatterShape() {
         return mScatterShape;
     }

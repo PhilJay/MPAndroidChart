@@ -1,15 +1,21 @@
 
 package com.github.mikephil.charting.data;
 
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.RealmObject;
+import io.realm.RealmResults;
 
 /**
  * Data object that represents all data for the BarChart.
  * 
  * @author Philipp Jahoda
  */
-public class BarData extends BarLineScatterCandleBubbleData<BarDataSet> {
+public class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
 
     /** the space that is left between groups of bars */
     private float mGroupSpace = 0.8f;
@@ -18,6 +24,10 @@ public class BarData extends BarLineScatterCandleBubbleData<BarDataSet> {
     // * The maximum space (in pixels on the screen) a single bar can consume.
     // */
     // private float mMaximumBarWidth = 100f;
+
+    public BarData(RealmResults<? extends RealmObject> result, String xValuesField, List<IBarDataSet> dataSets) {
+        super(toXVals(result, xValuesField), dataSets);
+    }
 
     public BarData() {
         super();
@@ -31,24 +41,24 @@ public class BarData extends BarLineScatterCandleBubbleData<BarDataSet> {
         super(xVals);
     }
 
-    public BarData(List<String> xVals, List<BarDataSet> dataSets) {
+    public BarData(List<String> xVals, List<IBarDataSet> dataSets) {
         super(xVals, dataSets);
     }
 
-    public BarData(String[] xVals, List<BarDataSet> dataSets) {
+    public BarData(String[] xVals, List<IBarDataSet> dataSets) {
         super(xVals, dataSets);
     }
 
-    public BarData(List<String> xVals, BarDataSet dataSet) {
+    public BarData(List<String> xVals, IBarDataSet dataSet) {
         super(xVals, toList(dataSet));
     }
 
-    public BarData(String[] xVals, BarDataSet dataSet) {
+    public BarData(String[] xVals, IBarDataSet dataSet) {
         super(xVals, toList(dataSet));
     }
 
-    private static List<BarDataSet> toList(BarDataSet dataSet) {
-        List<BarDataSet> sets = new ArrayList<BarDataSet>();
+    private static List<IBarDataSet> toList(IBarDataSet dataSet) {
+        List<IBarDataSet> sets = new ArrayList<IBarDataSet>();
         sets.add(dataSet);
         return sets;
     }

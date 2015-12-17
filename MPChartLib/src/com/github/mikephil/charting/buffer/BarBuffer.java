@@ -2,10 +2,9 @@
 package com.github.mikephil.charting.buffer;
 
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
-import java.util.List;
-
-public class BarBuffer extends AbstractBuffer<BarEntry> {
+public class BarBuffer extends AbstractBuffer<IBarDataSet> {
 
     protected float mBarSpace = 0f;
     protected float mGroupSpace = 0f;
@@ -42,9 +41,9 @@ public class BarBuffer extends AbstractBuffer<BarEntry> {
     }
 
     @Override
-    public void feed(List<BarEntry> entries) {
+    public void feed(IBarDataSet data) {
 
-        float size = entries.size() * phaseX;
+        float size = data.getEntryCount() * phaseX;
 
         int dataSetOffset = (mDataSetCount - 1);
         float barSpaceHalf = mBarSpace / 2f;
@@ -53,7 +52,7 @@ public class BarBuffer extends AbstractBuffer<BarEntry> {
 
         for (int i = 0; i < size; i++) {
 
-            BarEntry e = entries.get(i);
+            BarEntry e = data.getEntryForIndex(i);
 
             // calculate the x-position, depending on datasetcount
             float x = e.getXIndex() + e.getXIndex() * dataSetOffset + mDataSetIndex
