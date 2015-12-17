@@ -309,8 +309,10 @@ public class PieChartRenderer extends DataRenderer {
 
             float radiusPercent = mChart.getCenterTextRadiusPercent();
             if (radiusPercent > 0.0) {
-                boundingRect.inset((boundingRect.width() - boundingRect.width() * radiusPercent) / 2.f,
-                        (boundingRect.height() - boundingRect.height() * radiusPercent) / 2.f);
+                boundingRect.inset(
+                        (boundingRect.width() - boundingRect.width() * (radiusPercent / 100.f)) / 2.f,
+                        (boundingRect.height() - boundingRect.height() * (radiusPercent / 100.f)) / 2.f
+                );
             }
 
             if (!centerText.equals(mCenterTextLastValue) || !boundingRect.equals(mCenterTextLastBounds)) {
@@ -408,7 +410,7 @@ public class PieChartRenderer extends DataRenderer {
             else
                 angle = rotationAngle + absoluteAngles[xIndex - 1];
 
-            angle *= mAnimator.getPhaseY();
+            angle *= mAnimator.getPhaseX();
 
             float sliceDegrees = drawAngles[xIndex];
 

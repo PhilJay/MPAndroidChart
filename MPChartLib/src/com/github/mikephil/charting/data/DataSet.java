@@ -89,7 +89,11 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         }
     }
 
-    @Override
+    /**
+     * returns the number of y-values this DataSet represents
+     *
+     * @return
+     */
     public int getEntryCount() {
         return mYVals.size();
     }

@@ -112,7 +112,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (mDataNotSet)
+        if (mData == null)
             return;
 
         mRenderer.drawData(canvas);
@@ -136,7 +136,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
         super.calculateOffsets();
 
         // prevent nullpointer when no data set
-        if (mDataNotSet)
+        if (mData == null)
             return;
 
         float diameter = getDiameter();

@@ -90,7 +90,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 	@Override
 	public Highlight getHighlightByTouchPoint(float x, float y) {
 
-		if (mDataNotSet || mData == null) {
+		if (mData == null) {
 			Log.e(LOG_TAG, "Can't select by touch. No data set.");
 			return null;
 		} else

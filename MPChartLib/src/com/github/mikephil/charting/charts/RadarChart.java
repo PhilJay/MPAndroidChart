@@ -161,7 +161,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
     @Override
     public void notifyDataSetChanged() {
-        if (mDataNotSet)
+        if (mData == null)
             return;
 
         calcMinMax();
@@ -183,7 +183,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (mDataNotSet)
+        if (mData == null)
             return;
 
         mXAxisRenderer.renderAxisLabels(canvas);

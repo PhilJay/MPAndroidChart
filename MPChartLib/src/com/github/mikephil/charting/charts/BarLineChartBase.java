@@ -188,7 +188,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (mDataNotSet)
+        if (mData == null)
             return;
 
         long starttime = System.currentTimeMillis();
@@ -315,7 +315,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     @Override
     public void notifyDataSetChanged() {
 
-        if (mDataNotSet) {
+        if (mData == null) {
             if (mLogEnabled)
                 Log.i(LOG_TAG, "Preparing... DATA NOT SET.");
             return;
@@ -653,7 +653,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
 
-        if (mChartTouchListener == null || mDataNotSet)
+        if (mChartTouchListener == null || mData == null)
             return false;
 
         // check if touch gestures are enabled
@@ -1154,7 +1154,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      */
     public Highlight getHighlightByTouchPoint(float x, float y) {
 
-        if (mDataNotSet || mData == null) {
+        if (mData == null) {
             Log.e(LOG_TAG, "Can't select by touch. No data set.");
             return null;
         } else
