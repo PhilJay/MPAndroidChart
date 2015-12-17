@@ -45,11 +45,6 @@ public abstract class DataSet<T extends Entry> {
     protected float mYMin = 0.0f;
 
     /**
-     * the total sum of all y-values
-     */
-    private float mYValueSum = 0f;
-
-    /**
      * the last start value used for calcMinMax
      */
     protected int mLastStart = 0;
@@ -126,7 +121,6 @@ public abstract class DataSet<T extends Entry> {
         mColors.add(Color.rgb(140, 234, 255));
 
         calcMinMax(mLastStart, mLastEnd);
-        calcYValueSum();
     }
 
     /**
@@ -134,7 +128,6 @@ public abstract class DataSet<T extends Entry> {
      */
     public void notifyDataSetChanged() {
         calcMinMax(mLastStart, mLastEnd);
-        calcYValueSum();
     }
 
     /**
@@ -177,29 +170,6 @@ public abstract class DataSet<T extends Entry> {
             mYMin = 0.f;
             mYMax = 0.f;
         }
-    }
-
-    /**
-     * calculates the sum of all y-values
-     */
-    private void calcYValueSum() {
-
-        mYValueSum = 0;
-
-        for (int i = 0; i < mYVals.size(); i++) {
-            Entry e = mYVals.get(i);
-            if (e != null)
-                mYValueSum += e.getVal();
-        }
-    }
-
-    /**
-     * Returns the average value across all entries in this DataSet.
-     *
-     * @return
-     */
-    public float getAverage() {
-        return (float) getYValueSum() / (float) getValueCount();
     }
 
     /**
@@ -363,15 +333,6 @@ public abstract class DataSet<T extends Entry> {
      */
     public List<T> getYVals() {
         return mYVals;
-    }
-
-    /**
-     * gets the sum of all y-values
-     *
-     * @return
-     */
-    public float getYValueSum() {
-        return mYValueSum;
     }
 
     /**
@@ -556,8 +517,6 @@ public abstract class DataSet<T extends Entry> {
                 mYMin = val;
         }
 
-        mYValueSum += val;
-
         // add the entry
         mYVals.add((T) e);
     }
@@ -592,8 +551,6 @@ public abstract class DataSet<T extends Entry> {
                 mYMin = val;
         }
 
-        mYValueSum += val;
-
         if (mYVals.size() > 0 && mYVals.get(mYVals.size() - 1).getXIndex() > e.getXIndex()) {
             int closestIndex = getEntryIndex(e.getXIndex(), Rounding.UP);
             mYVals.add(closestIndex, (T) e);
@@ -622,7 +579,6 @@ public abstract class DataSet<T extends Entry> {
         if (removed) {
 
             float val = e.getVal();
-            mYValueSum -= val;
 
             calcMinMax(mLastStart, mLastEnd);
         }
@@ -657,7 +613,6 @@ public abstract class DataSet<T extends Entry> {
         if (removed) {
 
             float val = entry.getVal();
-            mYValueSum -= val;
 
             calcMinMax(mLastStart, mLastEnd);
         }
@@ -683,7 +638,6 @@ public abstract class DataSet<T extends Entry> {
         if (removed) {
 
             float val = entry.getVal();
-            mYValueSum -= val;
 
             calcMinMax(mLastStart, mLastEnd);
         }

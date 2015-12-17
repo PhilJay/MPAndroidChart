@@ -39,11 +39,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     protected float mRightAxisMin = 0.0f;
 
     /**
-     * the total sum of all y-values
-     */
-    private float mYValueSum = 0f;
-
-    /**
      * total number of y-values across all DataSet objects
      */
     private int mYValCount = 0;
@@ -152,7 +147,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         checkLegal();
 
         calcMinMax(mLastStart, mLastEnd);
-        calcYValueSum();
         calcYValueCount();
 
         calcXValAverageLength();
@@ -284,21 +278,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     }
 
     /**
-     * calculates the sum of all y-values in all datasets
-     */
-    protected void calcYValueSum() {
-
-        mYValueSum = 0;
-
-        if (mDataSets == null)
-            return;
-
-        for (int i = 0; i < mDataSets.size(); i++) {
-            mYValueSum += mDataSets.get(i).getYValueSum();
-        }
-    }
-
-    /**
      * Calculates the total number of y-values across all DataSets the ChartData
      * represents.
      *
@@ -331,15 +310,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         if (mDataSets == null)
             return 0;
         return mDataSets.size();
-    }
-
-    /**
-     * Returns the average value across all entries in this Data object
-     * (all entries from the DataSets this data object holds)
-     * @return
-     */
-    public float getAverage() {
-        return (float ) getYValueSum() / (float) getYValCount();
     }
 
     /**
@@ -394,16 +364,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      */
     public float getXValAverageLength() {
         return mXValAverageLength;
-    }
-
-    /**
-     * Returns the total y-value sum across all DataSet objects the this object
-     * represents.
-     *
-     * @return
-     */
-    public float getYValueSum() {
-        return mYValueSum;
     }
 
     /**
@@ -565,7 +525,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             return;
 
         mYValCount += d.getEntryCount();
-        mYValueSum += d.getYValueSum();
 
         if (mDataSets.size() <= 0) {
 
@@ -642,7 +601,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         if (removed) {
 
             mYValCount -= d.getEntryCount();
-            mYValueSum -= d.getYValueSum();
 
             calcMinMax(mLastStart, mLastEnd);
         }
@@ -714,7 +672,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             }
 
             mYValCount += 1;
-            mYValueSum += val;
 
             handleEmptyAxis(getFirstLeft(), getFirstRight());
 
@@ -745,7 +702,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             float val = e.getVal();
 
             mYValCount -= 1;
-            mYValueSum -= val;
 
             calcMinMax(mLastStart, mLastEnd);
         }
