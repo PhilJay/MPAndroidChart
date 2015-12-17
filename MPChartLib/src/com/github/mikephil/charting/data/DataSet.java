@@ -189,7 +189,7 @@ public abstract class DataSet<T extends Entry> {
         for (int i = 0; i < mYVals.size(); i++) {
             Entry e = mYVals.get(i);
             if (e != null)
-                mYValueSum += Math.abs(e.getVal());
+                mYValueSum += e.getVal();
         }
     }
 
