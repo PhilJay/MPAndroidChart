@@ -294,7 +294,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             return;
 
         for (int i = 0; i < mDataSets.size(); i++) {
-            mYValueSum += Math.abs(mDataSets.get(i).getYValueSum());
+            mYValueSum += mDataSets.get(i).getYValueSum();
         }
     }
 
