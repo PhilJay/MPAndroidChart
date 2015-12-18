@@ -42,6 +42,7 @@ public class RealmMainActivity extends DemoBase implements AdapterView.OnItemCli
         objects.add(new ContentItem("Bubble Chart", "Creating a BubbleChart with Realm.io database"));
         objects.add(new ContentItem("Pie Chart", "Creating a PieChart with Realm.io database"));
         objects.add(new ContentItem("Radar Chart", "Creating a RadarChart with Realm.io database"));
+        objects.add(new ContentItem("Realm Wiki", "This is the code related to the wiki entry about realm.io on the MPAndroidChart github page."));
 
         MyAdapter adapter = new MyAdapter(this, objects);
 
@@ -87,6 +88,10 @@ public class RealmMainActivity extends DemoBase implements AdapterView.OnItemCli
                 break;
             case 7:
                 i = new Intent(this, RealmDatabaseActivityRadar.class);
+                startActivity(i);
+                break;
+            case 8:
+                i = new Intent(this, RealmWikiExample.class);
                 startActivity(i);
                 break;
         }
