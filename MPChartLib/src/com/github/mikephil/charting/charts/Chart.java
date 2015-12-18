@@ -353,10 +353,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
             return true;
         else {
 
-            if (mData.getYValCount() <= 0)
-                return true;
-            else
-                return false;
+            return mData.getYValCount() <= 0;
         }
     }
 
@@ -1423,6 +1420,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public float getPercentOfTotal(float val) {
         return val / mData.getYValueSum() * 100f;
+        System.out.println("2222222222222");
     }
 
     /**
