@@ -1,6 +1,7 @@
 package com.xxmassdeveloper.mpchartexample.notimportant;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +13,18 @@ import com.xxmassdeveloper.mpchartexample.R;
 import java.util.List;
 
 /**
- * Created by philipp on 07/12/15.
+ * Created by Philipp Jahoda on 07/12/15.
  */
 public class MyAdapter extends ArrayAdapter<ContentItem> {
 
+    private Typeface mTypeFaceLight;
+    private Typeface mTypeFaceRegular;
+
     public MyAdapter(Context context, List<ContentItem> objects) {
         super(context, 0, objects);
+
+        mTypeFaceLight = Typeface.createFromAsset(context.getAssets(), "OpenSans-Light.ttf");
+        mTypeFaceRegular = Typeface.createFromAsset(context.getAssets(), "OpenSans-Regular.ttf");
     }
 
     @Override
@@ -41,6 +48,10 @@ public class MyAdapter extends ArrayAdapter<ContentItem> {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+
+        holder.tvNew.setTypeface(mTypeFaceRegular);
+        holder.tvName.setTypeface(mTypeFaceLight);
+        holder.tvDesc.setTypeface(mTypeFaceLight);
 
         holder.tvName.setText(c.name);
         holder.tvDesc.setText(c.desc);

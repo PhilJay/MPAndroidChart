@@ -28,13 +28,15 @@
         android:layout_toStartOf="@+id/tvNew" />
 
     <TextView
+        android:padding="7dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="NEW"
-        android:textColor="#FA6185"
+        android:background="@drawable/new_background"
+        android:textColor="@android:color/white"
         android:id="@+id/tvNew"
-        android:textSize="12dp"
+        android:textSize="11dp"
         android:layout_marginRight="5dp"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"

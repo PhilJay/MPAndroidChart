@@ -2,6 +2,7 @@ package com.xxmassdeveloper.mpchartexample.realm;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Bundle;
 
 import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.charts.Chart;
@@ -26,6 +27,12 @@ public abstract class RealmBaseActivity extends DemoBase {
     protected Realm mRealm;
 
     protected Typeface mTf;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setTitle("Realm.io Examples");
+    }
 
     protected void setup(Chart<?> chart) {
 

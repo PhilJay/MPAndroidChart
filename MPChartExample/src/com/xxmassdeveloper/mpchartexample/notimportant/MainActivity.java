@@ -56,6 +56,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
+        setTitle("MPAndroidChart Example");
+
         // initialize the utilities
         Utils.init(this);
 

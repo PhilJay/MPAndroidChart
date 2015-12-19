@@ -29,6 +29,8 @@ public class RealmMainActivity extends DemoBase implements AdapterView.OnItemCli
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
+        setTitle("Realm.io Examples");
+
         ArrayList<ContentItem> objects = new ArrayList<ContentItem>();
 
         objects.add(new ContentItem("Line Chart", "Creating a LineChart with Realm.io database"));
@@ -95,6 +97,8 @@ public class RealmMainActivity extends DemoBase implements AdapterView.OnItemCli
                 startActivity(i);
                 break;
         }
+
+        overridePendingTransition(R.anim.move_right_in_activity, R.anim.move_left_out_activity);
     }
 
     @Override
