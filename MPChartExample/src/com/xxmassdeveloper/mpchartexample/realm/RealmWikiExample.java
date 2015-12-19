@@ -6,8 +6,8 @@ import android.view.WindowManager;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.realm.implementation.RealmBarData;
 import com.github.mikephil.charting.data.realm.implementation.RealmBarDataSet;
 import com.github.mikephil.charting.data.realm.implementation.RealmLineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
@@ -102,7 +102,7 @@ public class RealmWikiExample extends RealmBaseActivity {
         ArrayList<IBarDataSet> barDataSets = new ArrayList<IBarDataSet>();
         barDataSets.add(barDataSet);
 
-        BarData barData = new BarData(results, "playerName", barDataSets);
+        RealmBarData barData = new RealmBarData(results, "playerName", barDataSets);
         styleData(barData);
 
         barChart.setData(barData);

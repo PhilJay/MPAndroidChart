@@ -2,13 +2,9 @@
 package com.github.mikephil.charting.data;
 
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.realm.RealmObject;
-import io.realm.RealmResults;
 
 /**
  * Data object that represents all data for the BarChart.
@@ -24,10 +20,6 @@ public class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
     // * The maximum space (in pixels on the screen) a single bar can consume.
     // */
     // private float mMaximumBarWidth = 100f;
-
-    public BarData(RealmResults<? extends RealmObject> result, String xValuesField, List<IBarDataSet> dataSets) {
-        super(toXVals(result, xValuesField), dataSets);
-    }
 
     public BarData() {
         super();

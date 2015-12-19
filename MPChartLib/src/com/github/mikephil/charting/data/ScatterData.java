@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.data;
 
+import com.github.mikephil.charting.data.realm.base.RealmUtils;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import io.realm.RealmResults;
 public class ScatterData extends BarLineScatterCandleBubbleData<IScatterDataSet> {
 
     public ScatterData(RealmResults<? extends RealmObject> result, String xValuesField, List<IScatterDataSet> dataSets) {
-        super(toXVals(result, xValuesField), dataSets);
+        super(RealmUtils.toXVals(result, xValuesField), dataSets);
     }
 
     public ScatterData() {

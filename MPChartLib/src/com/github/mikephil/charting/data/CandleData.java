@@ -5,14 +5,7 @@ import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.realm.RealmObject;
-import io.realm.RealmResults;
-
 public class CandleData extends BarLineScatterCandleBubbleData<ICandleDataSet> {
-
-    public CandleData(RealmResults<? extends RealmObject> result, String xValuesField, List<ICandleDataSet> dataSets) {
-        super(toXVals(result, xValuesField), dataSets);
-    }
 
     public CandleData() {
         super();
