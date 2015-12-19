@@ -7,7 +7,7 @@ import android.view.WindowManager;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.CandleStickChart;
-import com.github.mikephil.charting.data.CandleData;
+import com.github.mikephil.charting.data.realm.implementation.RealmCandleData;
 import com.github.mikephil.charting.data.realm.implementation.RealmCandleDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet;
 import com.xxmassdeveloper.mpchartexample.R;
@@ -66,7 +66,7 @@ public class RealmDatabaseActivityCandle extends RealmBaseActivity {
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list
-        CandleData data = new CandleData(result, "xValue", dataSets);
+        RealmCandleData data = new RealmCandleData(result, "xValue", dataSets);
         styleData(data);
 
         // set data

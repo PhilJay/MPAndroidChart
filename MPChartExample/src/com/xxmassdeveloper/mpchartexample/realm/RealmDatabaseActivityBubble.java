@@ -5,7 +5,7 @@ import android.view.WindowManager;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BubbleChart;
-import com.github.mikephil.charting.data.BubbleData;
+import com.github.mikephil.charting.data.realm.implementation.RealmBubbleData;
 import com.github.mikephil.charting.data.realm.implementation.RealmBubbleDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -61,7 +61,7 @@ public class RealmDatabaseActivityBubble extends RealmBaseActivity {
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list
-        BubbleData data = new BubbleData(result, "xValue", dataSets);
+        RealmBubbleData data = new RealmBubbleData(result, "xValue", dataSets);
         styleData(data);
 
         // set data

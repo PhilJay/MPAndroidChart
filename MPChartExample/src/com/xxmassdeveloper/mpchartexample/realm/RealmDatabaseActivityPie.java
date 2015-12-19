@@ -10,14 +10,11 @@ import android.text.style.StyleSpan;
 import android.view.WindowManager;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.realm.implementation.RealmPieData;
 import com.github.mikephil.charting.data.realm.implementation.RealmPieDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.R;
 import com.xxmassdeveloper.mpchartexample.custom.RealmDemoData;
-
-import java.util.ArrayList;
 
 import io.realm.RealmResults;
 
@@ -62,11 +59,8 @@ public class RealmDatabaseActivityPie extends RealmBaseActivity {
         set.setLabel("Example market share");
         set.setSliceSpace(2);
 
-        ArrayList<IPieDataSet> dataSets = new ArrayList<IPieDataSet>();
-        dataSets.add(set); // add the dataset
-
         // create a data object with the dataset list
-        PieData data = new PieData(result, "xValue", dataSets);
+        RealmPieData data = new RealmPieData(result, "xValue", set);
         styleData(data);
         data.setValueTextColor(Color.WHITE);
         data.setValueTextSize(12f);
