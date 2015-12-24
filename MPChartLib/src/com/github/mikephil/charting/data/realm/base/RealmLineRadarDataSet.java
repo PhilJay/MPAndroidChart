@@ -26,6 +26,11 @@ public abstract class RealmLineRadarDataSet<T extends RealmObject, S extends Ent
     /** if true, the data will also be drawn filled */
     private boolean mDrawFilled = false;
 
+
+    public RealmLineRadarDataSet(RealmResults<T> results, String yValuesField) {
+        super(results, yValuesField);
+    }
+
     /**
      * Constructor that takes the realm RealmResults, sorts & stores them.
      *

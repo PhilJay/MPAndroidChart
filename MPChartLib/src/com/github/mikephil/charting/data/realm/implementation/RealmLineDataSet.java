@@ -24,32 +24,73 @@ import io.realm.dynamic.DynamicRealmObject;
  */
 public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataSet<T, Entry> implements ILineDataSet {
 
-    /** List representing all colors that are used for the circles */
+    /**
+     * List representing all colors that are used for the circles
+     */
     private List<Integer> mCircleColors = null;
 
-    /** the color of the inner circles */
+    /**
+     * the color of the inner circles
+     */
     private int mCircleColorHole = Color.WHITE;
 
-    /** the radius of the circle-shaped value indicators */
+    /**
+     * the radius of the circle-shaped value indicators
+     */
     private float mCircleSize = 8f;
 
-    /** sets the intensity of the cubic lines */
+    /**
+     * sets the intensity of the cubic lines
+     */
     private float mCubicIntensity = 0.2f;
 
-    /** the path effect of this DataSet that makes dashed lines possible */
+    /**
+     * the path effect of this DataSet that makes dashed lines possible
+     */
     private DashPathEffect mDashPathEffect = null;
 
-    /** formatter for customizing the position of the fill-line */
+    /**
+     * formatter for customizing the position of the fill-line
+     */
     private FillFormatter mFillFormatter = new DefaultFillFormatter();
 
-    /** if true, drawing circles is enabled */
+    /**
+     * if true, drawing circles is enabled
+     */
     private boolean mDrawCircles = true;
 
-    /** if true, cubic lines are drawn instead of linear */
+    /**
+     * if true, cubic lines are drawn instead of linear
+     */
     private boolean mDrawCubic = false;
 
     private boolean mDrawCircleHole = true;
 
+
+    /**
+     * Constructor for creating a LineDataSet with realm data.
+     *
+     * @param result       the queried results from the realm database
+     * @param yValuesField the name of the field in your data object that represents the y-value
+     */
+    public RealmLineDataSet(RealmResults<T> result, String yValuesField) {
+        super(result, yValuesField);
+        mCircleColors = new ArrayList<Integer>();
+
+        // default color
+        mCircleColors.add(Color.rgb(140, 234, 255));
+
+        build(this.results);
+        calcMinMax(0, results.size());
+    }
+
+    /**
+     * Constructor for creating a LineDataSet with realm data.
+     *
+     * @param result       the queried results from the realm database
+     * @param yValuesField the name of the field in your data object that represents the y-value
+     * @param xIndexField  the name of the field in your data object that represents the x-index
+     */
     public RealmLineDataSet(RealmResults<T> result, String yValuesField, String xIndexField) {
         super(result, yValuesField, xIndexField);
         mCircleColors = new ArrayList<Integer>();
@@ -64,13 +105,26 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
     @Override
     public void build(RealmResults<T> results) {
 
-        for (T object : results) {
+        if (mIndexField == null) { // x-index not available
 
-            DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
-            mValues.add(new Entry(dynamicObject.getFloat(mValuesField), dynamicObject.getInt(mIndexField)));
+            int xIndex = 0;
+
+            for (T object : results) {
+
+                DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
+                mValues.add(new Entry(dynamicObject.getFloat(mValuesField), xIndex));
+                xIndex++;
+            }
+
+        } else {
+
+            for (T object : results) {
+
+                DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
+                mValues.add(new Entry(dynamicObject.getFloat(mValuesField), dynamicObject.getInt(mIndexField)));
+            }
         }
     }
-
 
     /**
      * Sets the intensity for cubic lines (if enabled). Max = 1f = very cubic,
@@ -113,12 +167,12 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
      * "- - - - - -". THIS ONLY WORKS IF HARDWARE-ACCELERATION IS TURNED OFF.
      * Keep in mind that hardware acceleration boosts performance.
      *
-     * @param lineLength the length of the line pieces
+     * @param lineLength  the length of the line pieces
      * @param spaceLength the length of space in between the pieces
-     * @param phase offset, in degrees (normally, use 0)
+     * @param phase       offset, in degrees (normally, use 0)
      */
     public void enableDashedLine(float lineLength, float spaceLength, float phase) {
-        mDashPathEffect = new DashPathEffect(new float[] {
+        mDashPathEffect = new DashPathEffect(new float[]{
                 lineLength, spaceLength
         }, phase);
     }

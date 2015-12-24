@@ -23,6 +23,11 @@ public abstract class RealmLineScatterCandleRadarDataSet<T extends RealmObject, 
     /** the path effect for dashed highlight-lines */
     protected DashPathEffect mHighlightDashPathEffect = null;
 
+
+    public RealmLineScatterCandleRadarDataSet(RealmResults<T> results, String yValuesField) {
+        super(results, yValuesField);
+    }
+
     /**
      * Constructor that takes the realm RealmResults, sorts & stores them.
      *

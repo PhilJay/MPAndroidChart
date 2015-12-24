@@ -16,6 +16,11 @@ public abstract class RealmBarLineScatterCandleBubbleDataSet<T extends RealmObje
     /** default highlight color */
     protected int mHighLightColor = Color.rgb(255, 187, 115);
 
+
+    public RealmBarLineScatterCandleBubbleDataSet(RealmResults<T> results, String yValuesField) {
+        super(results, yValuesField);
+    }
+
     /**
      * Constructor that takes the realm RealmResults, sorts & stores them.
      *

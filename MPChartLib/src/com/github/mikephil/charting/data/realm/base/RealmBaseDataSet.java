@@ -45,6 +45,14 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
      */
     protected String mIndexField;
 
+
+    public RealmBaseDataSet(RealmResults<T> results, String yValuesField) {
+        this.results = results;
+        this.mValuesField = yValuesField;
+        this.mValues = new ArrayList<S>();
+        this.results.sort(mIndexField, true);
+    }
+
     /**
      * Constructor that takes the realm RealmResults, sorts & stores them.
      *
