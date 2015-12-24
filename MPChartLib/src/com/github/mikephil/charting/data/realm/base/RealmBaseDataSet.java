@@ -45,7 +45,6 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
      */
     protected String mIndexField;
 
-
     public RealmBaseDataSet(RealmResults<T> results, String yValuesField) {
         this.results = results;
         this.mValuesField = yValuesField;
