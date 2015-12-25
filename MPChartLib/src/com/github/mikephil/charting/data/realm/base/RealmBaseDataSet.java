@@ -68,7 +68,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         this.mValues = new ArrayList<S>();
 
         if (mIndexField != null) ;
-            this.results.sort(mIndexField, true);
+        this.results.sort(mIndexField, true);
     }
 
     /**
@@ -281,6 +281,11 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         return results;
     }
 
+    /**
+     * Returns the fieldname that represents the "y-values" in the realm-data.
+     *
+     * @return
+     */
     public String getValuesField() {
         return mValuesField;
     }
@@ -294,6 +299,11 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         this.mValuesField = yValuesField;
     }
 
+    /**
+     * Returns the fieldname that represents the "x-index" in the realm-data.
+     *
+     * @return
+     */
     public String getIndexField() {
         return mIndexField;
     }
