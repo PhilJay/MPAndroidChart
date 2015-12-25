@@ -11,8 +11,28 @@ import io.realm.dynamic.DynamicRealmObject;
 /**
  * Created by Philipp Jahoda on 07/11/15.
  */
-public class RealmRadarDataSet<T extends RealmObject> extends RealmLineRadarDataSet<T, Entry> implements IRadarDataSet {
+public class RealmRadarDataSet<T extends RealmObject> extends RealmLineRadarDataSet<T> implements IRadarDataSet {
 
+    /**
+     * Constructor for creating a RadarDataSet with realm data.
+     *
+     * @param result       the queried results from the realm database
+     * @param yValuesField the name of the field in your data object that represents the y-value
+     */
+    public RealmRadarDataSet(RealmResults<T> result, String yValuesField) {
+        super(result, yValuesField);
+
+        build(this.results);
+        calcMinMax(0, results.size());
+    }
+
+    /**
+     * Constructor for creating a RadarDataSet with realm data.
+     *
+     * @param result       the queried results from the realm database
+     * @param yValuesField the name of the field in your data object that represents the y-value
+     * @param xIndexField  the name of the field in your data object that represents the x-index
+     */
     public RealmRadarDataSet(RealmResults<T> result, String yValuesField, String xIndexField) {
         super(result, yValuesField, xIndexField);
 
@@ -22,11 +42,6 @@ public class RealmRadarDataSet<T extends RealmObject> extends RealmLineRadarData
 
     @Override
     public void build(RealmResults<T> results) {
-
-        for (T object : results) {
-
-            DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
-            mValues.add(new Entry(dynamicObject.getFloat(mValuesField), dynamicObject.getInt(mIndexField)));
-        }
+        super.build(results);
     }
 }

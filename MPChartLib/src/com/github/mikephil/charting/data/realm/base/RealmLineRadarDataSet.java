@@ -8,11 +8,12 @@ import com.github.mikephil.charting.utils.Utils;
 
 import io.realm.RealmObject;
 import io.realm.RealmResults;
+import io.realm.dynamic.DynamicRealmObject;
 
 /**
  * Created by Philipp Jahoda on 08/11/15.
  */
-public abstract class RealmLineRadarDataSet<T extends RealmObject, S extends Entry> extends RealmLineScatterCandleRadarDataSet<T, S> implements ILineRadarDataSet<S> {
+public abstract class RealmLineRadarDataSet<T extends RealmObject> extends RealmLineScatterCandleRadarDataSet<T, Entry> implements ILineRadarDataSet<Entry> {
 
     /** the color that is used for filling the line surface */
     private int mFillColor = Color.rgb(140, 234, 255);
@@ -40,6 +41,30 @@ public abstract class RealmLineRadarDataSet<T extends RealmObject, S extends Ent
      */
     public RealmLineRadarDataSet(RealmResults<T> results, String yValuesField, String xIndexField) {
         super(results, yValuesField, xIndexField);
+    }
+
+    @Override
+    public void build(RealmResults<T> results) {
+
+        if (mIndexField == null) { // x-index not available
+
+            int xIndex = 0;
+
+            for (T object : results) {
+
+                DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
+                mValues.add(new Entry(dynamicObject.getFloat(mValuesField), xIndex));
+                xIndex++;
+            }
+
+        } else {
+
+            for (T object : results) {
+
+                DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
+                mValues.add(new Entry(dynamicObject.getFloat(mValuesField), dynamicObject.getInt(mIndexField)));
+            }
+        }
     }
 
     @Override

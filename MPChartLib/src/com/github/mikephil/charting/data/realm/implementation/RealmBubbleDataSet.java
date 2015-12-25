@@ -24,6 +24,29 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
 
     private float mHighlightCircleWidth = 2.5f;
 
+    /**
+     * Constructor for creating a CandleDataSet with realm data.
+     *
+     * @param result       the queried results from the realm database
+     * @param yValuesField the name of the field in your data object that represents the y-value
+     * @param sizeField    the name of the field in your data object that represents the bubble size
+     */
+    public RealmBubbleDataSet(RealmResults<T> result, String yValuesField, String sizeField) {
+        super(result, yValuesField);
+        this.mSizeField = sizeField;
+
+        build(this.results);
+        calcMinMax(0, results.size());
+    }
+
+    /**
+     * Constructor for creating a CandleDataSet with realm data.
+     *
+     * @param result       the queried results from the realm database
+     * @param yValuesField the name of the field in your data object that represents the y-value
+     * @param xIndexField  the name of the field in your data object that represents the x-index
+     * @param sizeField    the name of the field in your data object that represents the bubble size
+     */
     public RealmBubbleDataSet(RealmResults<T> result, String yValuesField, String xIndexField, String sizeField) {
         super(result, yValuesField, xIndexField);
         this.mSizeField = sizeField;
@@ -35,10 +58,23 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
     @Override
     public void build(RealmResults<T> results) {
 
-        for (T object : results) {
+        if(mIndexField == null) {
 
-            DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
-            mValues.add(new BubbleEntry(dynamicObject.getInt(mIndexField), dynamicObject.getFloat(mValuesField), dynamicObject.getFloat(mSizeField)));
+            int xIndex = 0;
+
+            for (T object : results) {
+
+                DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
+                mValues.add(new BubbleEntry(xIndex, dynamicObject.getFloat(mValuesField), dynamicObject.getFloat(mSizeField)));
+                xIndex++;
+            }
+        } else {
+
+            for (T object : results) {
+
+                DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
+                mValues.add(new BubbleEntry(dynamicObject.getInt(mIndexField), dynamicObject.getFloat(mValuesField), dynamicObject.getFloat(mSizeField)));
+            }
         }
     }
 

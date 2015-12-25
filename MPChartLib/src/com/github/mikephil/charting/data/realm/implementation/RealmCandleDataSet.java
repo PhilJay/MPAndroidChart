@@ -63,8 +63,38 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
      */
     protected int mShadowColor = ColorTemplate.COLOR_NONE;
 
+    /**
+     * Constructor for creating a LineDataSet with realm data.
+     *
+     * @param result     the queried results from the realm database
+     * @param highField  the name of the field in your data object that represents the "high" value
+     * @param lowField   the name of the field in your data object that represents the "low" value
+     * @param openField  the name of the field in your data object that represents the "open" value
+     * @param closeField the name of the field in your data object that represents the "close" value
+     */
+    public RealmCandleDataSet(RealmResults<T> result, String highField, String lowField, String openField, String closeField) {
+        super(result, null);
+        this.mHighField = highField;
+        this.mLowField = lowField;
+        this.mOpenField = openField;
+        this.mCloseField = closeField;
+
+        build(this.results);
+        calcMinMax(0, this.results.size());
+    }
+
+    /**
+     * Constructor for creating a LineDataSet with realm data.
+     *
+     * @param result      the queried results from the realm database
+     * @param highField   the name of the field in your data object that represents the "high" value
+     * @param lowField    the name of the field in your data object that represents the "low" value
+     * @param openField   the name of the field in your data object that represents the "open" value
+     * @param closeField  the name of the field in your data object that represents the "close" value
+     * @param xIndexField the name of the field in your data object that represents the x-index
+     */
     public RealmCandleDataSet(RealmResults<T> result, String highField, String lowField, String openField, String closeField, String xIndexField) {
-        super(result, "", xIndexField);
+        super(result, null, xIndexField);
         this.mHighField = highField;
         this.mLowField = lowField;
         this.mOpenField = openField;
@@ -77,11 +107,25 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
     @Override
     public void build(RealmResults<T> results) {
 
-        for (T object : results) {
+        if (mIndexField == null) {
 
-            DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
-            mValues.add(new CandleEntry(dynamicObject.getInt(mIndexField), dynamicObject.getFloat(mHighField), dynamicObject.getFloat(mLowField),
-                    dynamicObject.getFloat(mOpenField), dynamicObject.getFloat(mCloseField)));
+            int xIndex = 0;
+
+            for (T object : results) {
+
+                DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
+                mValues.add(new CandleEntry(xIndex, dynamicObject.getFloat(mHighField), dynamicObject.getFloat(mLowField),
+                        dynamicObject.getFloat(mOpenField), dynamicObject.getFloat(mCloseField)));
+                xIndex++;
+            }
+        } else {
+
+            for (T object : results) {
+
+                DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
+                mValues.add(new CandleEntry(dynamicObject.getInt(mIndexField), dynamicObject.getFloat(mHighField), dynamicObject.getFloat(mLowField),
+                        dynamicObject.getFloat(mOpenField), dynamicObject.getFloat(mCloseField)));
+            }
         }
     }
 

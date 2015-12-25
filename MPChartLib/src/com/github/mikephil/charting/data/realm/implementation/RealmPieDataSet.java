@@ -14,12 +14,37 @@ import io.realm.dynamic.DynamicRealmObject;
  */
 public class RealmPieDataSet<T extends RealmObject> extends RealmBaseDataSet<T, Entry> implements IPieDataSet {
 
-    /** the space in degrees between the chart-slices, default 0f */
+    /**
+     * the space in degrees between the chart-slices, default 0f
+     */
     private float mSliceSpace = 0f;
 
-    /** indicates the selection distance of a pie slice */
+    /**
+     * indicates the selection distance of a pie slice
+     */
     private float mShift = 18f;
 
+
+    /**
+     * Constructor for creating a PieDataSet with realm data.
+     *
+     * @param result       the queried results from the realm database
+     * @param yValuesField the name of the field in your data object that represents the y-value
+     */
+    public RealmPieDataSet(RealmResults<T> result, String yValuesField) {
+        super(result, yValuesField);
+
+        build(this.results);
+        calcMinMax(0, results.size());
+    }
+
+    /**
+     * Constructor for creating a PieDataSet with realm data.
+     *
+     * @param result       the queried results from the realm database
+     * @param yValuesField the name of the field in your data object that represents the y-value
+     * @param xIndexField  the name of the field in your data object that represents the x-index
+     */
     public RealmPieDataSet(RealmResults<T> result, String yValuesField, String xIndexField) {
         super(result, yValuesField, xIndexField);
 
@@ -30,12 +55,27 @@ public class RealmPieDataSet<T extends RealmObject> extends RealmBaseDataSet<T, 
     @Override
     public void build(RealmResults<T> results) {
 
-        for (T object : results) {
+        if (mIndexField == null) { // x-index not available
 
-            DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
-            mValues.add(new Entry(dynamicObject.getFloat(mValuesField), dynamicObject.getInt(mIndexField)));
+            int xIndex = 0;
+
+            for (T object : results) {
+
+                DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
+                mValues.add(new Entry(dynamicObject.getFloat(mValuesField), xIndex));
+                xIndex++;
+            }
+
+        } else {
+
+            for (T object : results) {
+
+                DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
+                mValues.add(new Entry(dynamicObject.getFloat(mValuesField), dynamicObject.getInt(mIndexField)));
+            }
         }
     }
+
     /**
      * sets the space that is left out between the piechart-slices, default: 0°
      * --> no space, maximum 45, minimum 0 (no space)
