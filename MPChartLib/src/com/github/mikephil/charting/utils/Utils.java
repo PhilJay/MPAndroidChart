@@ -520,19 +520,26 @@ public abstract class Utils {
     }
 
     private static Rect mDrawTextRectBuffer = new Rect();
+    private static Paint.FontMetrics mFontMetricsBuffer = new Paint.FontMetrics();
 
-    public static void drawText(Canvas c, String text, float x, float y, Paint paint, PointF anchor, float angleDegrees) {
+    public static void drawText(Canvas c, String text, float x, float y,
+                                Paint paint,
+                                PointF anchor, float angleDegrees) {
 
         float drawOffsetX = 0.f;
         float drawOffsetY = 0.f;
+
+        final float lineHeight = paint.getFontMetrics(mFontMetricsBuffer);
 
         paint.getTextBounds(text, 0, text.length(), mDrawTextRectBuffer);
 
         // Android sometimes has pre-padding
         drawOffsetX -= mDrawTextRectBuffer.left;
 
-        // Android sets the top = - (lineheight), and we want to normalize it to the center
-        drawOffsetY -= mDrawTextRectBuffer.top;
+        // Android does not snap the bounds to line boundaries,
+        //  and draws from bottom to top.
+        // And we want to normalize it.
+        drawOffsetY += lineHeight;
 
         // To have a consistent point of reference, we always draw left-aligned
         Paint.Align originalTextAlign = paint.getTextAlign();
@@ -542,7 +549,7 @@ public abstract class Utils {
 
             // Move the text drawing rect in a way that it always rotates around its center
             drawOffsetX -= mDrawTextRectBuffer.width() * 0.5f;
-            drawOffsetY -= mDrawTextRectBuffer.height() * 0.5f;
+            drawOffsetY -= lineHeight * 0.5f;
 
             float translateX = x;
             float translateY = y;
@@ -551,7 +558,7 @@ public abstract class Utils {
             if (anchor.x != 0.5f || anchor.y != 0.5f) {
                 final FSize rotatedSize = getSizeOfRotatedRectangleByDegrees(
                         mDrawTextRectBuffer.width(),
-                        mDrawTextRectBuffer.height(),
+                        lineHeight,
                         angleDegrees);
 
                 translateX -= rotatedSize.width * (anchor.x - 0.5f);
@@ -570,7 +577,7 @@ public abstract class Utils {
             if (anchor.x != 0.f || anchor.y != 0.f) {
 
                 drawOffsetX -= mDrawTextRectBuffer.width() * anchor.x;
-                drawOffsetY -= mDrawTextRectBuffer.height() * anchor.y;
+                drawOffsetY -= lineHeight * anchor.y;
             }
 
             drawOffsetX += x;
