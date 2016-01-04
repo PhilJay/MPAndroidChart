@@ -9,7 +9,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.graphics.Typeface;
-import android.text.SpannableString;
 import android.util.AttributeSet;
 
 import com.github.mikephil.charting.data.Entry;
@@ -67,7 +66,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     /**
      * variable for the text that is drawn in the center of the pie-chart
      */
-    private SpannableString mCenterText = new SpannableString("");
+    private CharSequence mCenterText = "";
 
     /**
      * indicates the size of the hole in the center of the piechart, default:
@@ -371,25 +370,15 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * Sets the text SpannableString that is displayed in the center of the PieChart.
-     *
-     * @param text
-     */
-    public void setCenterText(SpannableString text) {
-
-        if (text == null)
-            mCenterText = new SpannableString("");
-        else
-            mCenterText = text;
-    }
-
-    /**
      * Sets the text String that is displayed in the center of the PieChart.
      *
      * @param text
      */
-    public void setCenterText(String text) {
-        setCenterText(new SpannableString(text));
+    public void setCenterText(CharSequence text) {
+        if (text == null)
+            mCenterText = "";
+        else
+            mCenterText = text;
     }
 
     /**
@@ -397,7 +386,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
      *
      * @return
      */
-    public SpannableString getCenterText() {
+    public CharSequence getCenterText() {
         return mCenterText;
     }
 

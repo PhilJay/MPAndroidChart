@@ -10,7 +10,6 @@ import android.graphics.Paint.Style;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.text.Layout;
-import android.text.SpannableString;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 
@@ -45,7 +44,7 @@ public class PieChartRenderer extends DataRenderer {
     private TextPaint mCenterTextPaint;
 
     private StaticLayout mCenterTextLayout;
-    private SpannableString mCenterTextLastValue;
+    private CharSequence mCenterTextLastValue;
     private RectF mCenterTextLastBounds = new RectF();
     private RectF[] mRectBuffer = {new RectF(), new RectF(), new RectF()};
 
@@ -291,7 +290,7 @@ public class PieChartRenderer extends DataRenderer {
      */
     protected void drawCenterText(Canvas c) {
 
-        SpannableString centerText = mChart.getCenterText();
+        CharSequence centerText = mChart.getCenterText();
 
         if (mChart.isDrawCenterTextEnabled() && centerText != null) {
 
