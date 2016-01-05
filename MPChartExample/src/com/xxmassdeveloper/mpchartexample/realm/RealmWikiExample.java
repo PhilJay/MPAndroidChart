@@ -39,6 +39,9 @@ public class RealmWikiExample extends RealmBaseActivity {
         setup(lineChart);
         setup(barChart);
 
+        lineChart.setExtraBottomOffset(5f);
+        barChart.setExtraBottomOffset(5f);
+
         lineChart.getAxisLeft().setDrawGridLines(false);
         lineChart.getXAxis().setDrawGridLines(false);
         barChart.getAxisLeft().setDrawGridLines(false);
