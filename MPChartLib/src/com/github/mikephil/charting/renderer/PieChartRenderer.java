@@ -127,7 +127,8 @@ public class PieChartRenderer extends DataRenderer {
 
     protected void drawDataSet(Canvas c, IPieDataSet dataSet) {
 
-        float angle = mChart.getRotationAngle();
+        float angle = 0;
+        float rotationAngle = mChart.getRotationAngle();
 
         float[] drawAngles = mChart.getDrawAngles();
 
@@ -146,7 +147,7 @@ public class PieChartRenderer extends DataRenderer {
 
                     mRenderPaint.setColor(dataSet.getColor(j));
                     mBitmapCanvas.drawArc(mChart.getCircleBox(),
-                            (angle + sliceSpace / 2f) * mAnimator.getPhaseY(),
+                            rotationAngle + (angle + sliceSpace / 2f) * mAnimator.getPhaseY(),
                             (newangle - sliceSpace / 2f) * mAnimator.getPhaseY(),
                             true, mRenderPaint);
                 }
@@ -204,13 +205,14 @@ public class PieChartRenderer extends DataRenderer {
                 // offset needed to center the drawn text in the slice
                 float offset = drawAngles[cnt] / 2;
 
+                float angle = (absoluteAngles[cnt] - offset) * mAnimator.getPhaseY();
                 // calculate the text position
                 float x = (float) (r
-                        * Math.cos(Math.toRadians((rotationAngle + absoluteAngles[cnt] - offset)
-                        * mAnimator.getPhaseY())) + center.x);
+                        * Math.cos(Math.toRadians(rotationAngle) + Math.toRadians(angle))
+                        + center.x);
                 float y = (float) (r
-                        * Math.sin(Math.toRadians((rotationAngle + absoluteAngles[cnt] - offset)
-                        * mAnimator.getPhaseY())) + center.y);
+                        * Math.sin(Math.toRadians(rotationAngle) + Math.toRadians(angle))
+                        + center.y);
 
                 float value = mChart.isUsePercentValuesEnabled() ? entry.getVal()
                         / data.getYValueSum() * 100f : entry.getVal();
