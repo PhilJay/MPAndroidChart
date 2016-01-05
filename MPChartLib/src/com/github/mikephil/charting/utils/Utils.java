@@ -9,6 +9,9 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.os.Build;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -520,19 +523,26 @@ public abstract class Utils {
     }
 
     private static Rect mDrawTextRectBuffer = new Rect();
+    private static Paint.FontMetrics mFontMetricsBuffer = new Paint.FontMetrics();
 
-    public static void drawText(Canvas c, String text, float x, float y, Paint paint, PointF anchor, float angleDegrees) {
+    public static void drawText(Canvas c, String text, float x, float y,
+                                Paint paint,
+                                PointF anchor, float angleDegrees) {
 
         float drawOffsetX = 0.f;
         float drawOffsetY = 0.f;
+
+        final float lineHeight = paint.getFontMetrics(mFontMetricsBuffer);
 
         paint.getTextBounds(text, 0, text.length(), mDrawTextRectBuffer);
 
         // Android sometimes has pre-padding
         drawOffsetX -= mDrawTextRectBuffer.left;
 
-        // Android sets the top = - (lineheight), and we want to normalize it to the center
-        drawOffsetY -= mDrawTextRectBuffer.top;
+        // Android does not snap the bounds to line boundaries,
+        //  and draws from bottom to top.
+        // And we want to normalize it.
+        drawOffsetY += lineHeight;
 
         // To have a consistent point of reference, we always draw left-aligned
         Paint.Align originalTextAlign = paint.getTextAlign();
@@ -542,7 +552,7 @@ public abstract class Utils {
 
             // Move the text drawing rect in a way that it always rotates around its center
             drawOffsetX -= mDrawTextRectBuffer.width() * 0.5f;
-            drawOffsetY -= mDrawTextRectBuffer.height() * 0.5f;
+            drawOffsetY -= lineHeight * 0.5f;
 
             float translateX = x;
             float translateY = y;
@@ -551,7 +561,7 @@ public abstract class Utils {
             if (anchor.x != 0.5f || anchor.y != 0.5f) {
                 final FSize rotatedSize = getSizeOfRotatedRectangleByDegrees(
                         mDrawTextRectBuffer.width(),
-                        mDrawTextRectBuffer.height(),
+                        lineHeight,
                         angleDegrees);
 
                 translateX -= rotatedSize.width * (anchor.x - 0.5f);
@@ -570,7 +580,7 @@ public abstract class Utils {
             if (anchor.x != 0.f || anchor.y != 0.f) {
 
                 drawOffsetX -= mDrawTextRectBuffer.width() * anchor.x;
-                drawOffsetY -= mDrawTextRectBuffer.height() * anchor.y;
+                drawOffsetY -= lineHeight * anchor.y;
             }
 
             drawOffsetX += x;
@@ -580,6 +590,99 @@ public abstract class Utils {
         }
 
         paint.setTextAlign(originalTextAlign);
+    }
+
+    public static void drawMultilineText(Canvas c, StaticLayout textLayout,
+                                         float x, float y,
+                                         TextPaint paint,
+                                         PointF anchor, float angleDegrees) {
+
+        float drawOffsetX = 0.f;
+        float drawOffsetY = 0.f;
+        float drawWidth;
+        float drawHeight;
+
+        final float lineHeight = paint.getFontMetrics(mFontMetricsBuffer);
+
+        drawWidth = textLayout.getWidth();
+        drawHeight = textLayout.getLineCount() * lineHeight;
+
+        // Android sometimes has pre-padding
+        drawOffsetX -= mDrawTextRectBuffer.left;
+
+        // Android does not snap the bounds to line boundaries,
+        //  and draws from bottom to top.
+        // And we want to normalize it.
+        drawOffsetY += drawHeight;
+
+        // To have a consistent point of reference, we always draw left-aligned
+        Paint.Align originalTextAlign = paint.getTextAlign();
+        paint.setTextAlign(Paint.Align.LEFT);
+
+        if (angleDegrees != 0.f) {
+
+            // Move the text drawing rect in a way that it always rotates around its center
+            drawOffsetX -= drawWidth * 0.5f;
+            drawOffsetY -= drawHeight * 0.5f;
+
+            float translateX = x;
+            float translateY = y;
+
+            // Move the "outer" rect relative to the anchor, assuming its centered
+            if (anchor.x != 0.5f || anchor.y != 0.5f) {
+                final FSize rotatedSize = getSizeOfRotatedRectangleByDegrees(
+                        drawWidth,
+                        drawHeight,
+                        angleDegrees);
+
+                translateX -= rotatedSize.width * (anchor.x - 0.5f);
+                translateY -= rotatedSize.height * (anchor.y - 0.5f);
+            }
+
+            c.save();
+            c.translate(translateX, translateY);
+            c.rotate(angleDegrees);
+
+            c.translate(drawOffsetX, drawOffsetY);
+            textLayout.draw(c);
+
+            c.restore();
+        }
+        else {
+            if (anchor.x != 0.f || anchor.y != 0.f) {
+
+                drawOffsetX -= drawWidth * anchor.x;
+                drawOffsetY -= drawHeight * anchor.y;
+            }
+
+            drawOffsetX += x;
+            drawOffsetY += y;
+
+            c.save();
+
+            c.translate(drawOffsetX, drawOffsetY);
+            textLayout.draw(c);
+
+            c.restore();
+        }
+
+        paint.setTextAlign(originalTextAlign);
+    }
+
+    public static void drawMultilineText(Canvas c, String text,
+                                         float x, float y,
+                                         TextPaint paint,
+                                         FSize constrainedToSize,
+                                         PointF anchor, float angleDegrees) {
+
+        StaticLayout textLayout = new StaticLayout(
+                text, 0, text.length(),
+                paint,
+                (int) Math.max(Math.ceil(constrainedToSize.width), 1.f),
+                Layout.Alignment.ALIGN_NORMAL, 1.f, 0.f, false);
+
+
+        drawMultilineText(c, textLayout, x, y, paint, anchor, angleDegrees);
     }
 
     public static FSize getSizeOfRotatedRectangleByDegrees(FSize rectangleSize, float degrees)
