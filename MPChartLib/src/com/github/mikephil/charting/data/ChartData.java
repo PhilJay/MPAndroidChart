@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import io.realm.DynamicRealmObject;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
-import io.realm.dynamic.DynamicRealmObject;
 
 /**
  * Class that holds all relevant data that represents the chart. That involves

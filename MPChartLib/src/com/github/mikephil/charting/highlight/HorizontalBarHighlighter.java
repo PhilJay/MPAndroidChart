@@ -1,8 +1,8 @@
 package com.github.mikephil.charting.highlight;
 
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 /**
  * Created by Philipp Jahoda on 22/07/15.

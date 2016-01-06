@@ -15,9 +15,9 @@ import com.github.mikephil.charting.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.DynamicRealmObject;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
-import io.realm.dynamic.DynamicRealmObject;
 
 /**
  * Created by Philipp Jahoda on 21/10/15.

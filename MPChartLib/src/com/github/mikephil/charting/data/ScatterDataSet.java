@@ -1,8 +1,6 @@
 
 package com.github.mikephil.charting.data;
 
-import android.graphics.Path;
-
 import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.utils.Utils;

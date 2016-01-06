@@ -4,8 +4,8 @@ import android.graphics.Paint;
 
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.DefaultYAxisValueFormatter;
-import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.formatter.YAxisValueFormatter;
+import com.github.mikephil.charting.utils.Utils;
 
 /**
  * Class representing the y-axis labels settings and its entries. Only use the setter methods to modify it. Do not

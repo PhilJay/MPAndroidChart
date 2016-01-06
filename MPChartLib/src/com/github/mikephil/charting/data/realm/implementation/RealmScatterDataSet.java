@@ -6,9 +6,9 @@ import com.github.mikephil.charting.data.realm.base.RealmLineScatterCandleRadarD
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.utils.Utils;
 
+import io.realm.DynamicRealmObject;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
-import io.realm.dynamic.DynamicRealmObject;
 
 /**
  * Created by Philipp Jahoda on 07/11/15.
