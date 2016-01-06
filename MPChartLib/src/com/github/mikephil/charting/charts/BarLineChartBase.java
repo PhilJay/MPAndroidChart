@@ -21,11 +21,11 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData;
-import com.github.mikephil.charting.data.BarLineScatterCandleBubbleDataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.highlight.ChartHighlighter;
-import com.github.mikephil.charting.interfaces.BarLineScatterCandleBubbleDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet;
+import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider;
 import com.github.mikephil.charting.jobs.MoveViewJob;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.listener.OnDrawListener;
@@ -42,7 +42,7 @@ import com.github.mikephil.charting.utils.Utils;
  * @author Philipp Jahoda
  */
 @SuppressLint("RtlHardcoded")
-public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<? extends BarLineScatterCandleBubbleDataSet<? extends Entry>>>
+public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<? extends IBarLineScatterCandleBubbleDataSet<? extends Entry>>>
         extends Chart<T> implements BarLineScatterCandleBubbleDataProvider {
 
     /**
@@ -188,7 +188,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (mDataNotSet)
+        if (mData == null)
             return;
 
         long starttime = System.currentTimeMillis();
@@ -315,7 +315,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     @Override
     public void notifyDataSetChanged() {
 
-        if (mDataNotSet) {
+        if (mData == null) {
             if (mLogEnabled)
                 Log.i(LOG_TAG, "Preparing... DATA NOT SET.");
             return;
@@ -653,7 +653,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
 
-        if (mChartTouchListener == null || mDataNotSet)
+        if (mChartTouchListener == null || mData == null)
             return false;
 
         // check if touch gestures are enabled
@@ -1154,7 +1154,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      */
     public Highlight getHighlightByTouchPoint(float x, float y) {
 
-        if (mDataNotSet || mData == null) {
+        if (mData == null) {
             Log.e(LOG_TAG, "Can't select by touch. No data set.");
             return null;
         } else
@@ -1239,7 +1239,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param y
      * @return
      */
-    public BarLineScatterCandleBubbleDataSet<? extends Entry> getDataSetByTouchPoint(float x, float y) {
+    public IBarLineScatterCandleBubbleDataSet getDataSetByTouchPoint(float x, float y) {
         Highlight h = getHighlightByTouchPoint(x, y);
         if (h != null) {
             return mData.getDataSetByIndex(h.getDataSetIndex());
@@ -1259,7 +1259,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
                 mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom()
         };
         getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
-        return (pts[0] <= 0) ? 0 : (int) Math.round(pts[0] + 1.0f);
+        return (pts[0] <= 0) ? 0 : (int) (pts[0] + 1.0f);
     }
 
     /**
@@ -1274,9 +1274,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
                 mViewPortHandler.contentRight(), mViewPortHandler.contentBottom()
         };
         getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
-        return (Math.round(pts[0]) >= mData.getXValCount()) ? 
-                mData.getXValCount() - 1 : 
-                (int) Math.round(pts[0]);
+        return (pts[0] >= mData.getXValCount()) ? mData.getXValCount() - 1 : (int) pts[0];
     }
 
     /**

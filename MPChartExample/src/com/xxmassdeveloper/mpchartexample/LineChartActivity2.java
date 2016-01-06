@@ -20,19 +20,19 @@ import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.xxmassdeveloper.mpchartexample.custom.MyFillFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListener,
         OnChartValueSelectedListener {
@@ -136,8 +136,14 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
 
         switch (item.getItemId()) {
             case R.id.actionToggleValues: {
-                for (DataSet<?> set : mChart.getData().getDataSets())
+                List<ILineDataSet> sets = mChart.getData()
+                        .getDataSets();
+
+                for (ILineDataSet iSet : sets) {
+
+                    LineDataSet set = (LineDataSet) iSet;
                     set.setDrawValues(!set.isDrawValuesEnabled());
+                }
 
                 mChart.invalidate();
                 break;
@@ -151,10 +157,12 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             }
             case R.id.actionToggleFilled: {
 
-                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getData()
+                List<ILineDataSet> sets = mChart.getData()
                         .getDataSets();
 
-                for (LineDataSet set : sets) {
+                for (ILineDataSet iSet : sets) {
+
+                    LineDataSet set = (LineDataSet) iSet;
                     if (set.isDrawFilledEnabled())
                         set.setDrawFilled(false);
                     else
@@ -164,10 +172,12 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
                 break;
             }
             case R.id.actionToggleCircles: {
-                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getData()
+                List<ILineDataSet> sets = mChart.getData()
                         .getDataSets();
 
-                for (LineDataSet set : sets) {
+                for (ILineDataSet iSet : sets) {
+
+                    LineDataSet set = (LineDataSet) iSet;
                     if (set.isDrawCirclesEnabled())
                         set.setDrawCircles(false);
                     else
@@ -177,10 +187,12 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
                 break;
             }
             case R.id.actionToggleCubic: {
-                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getData()
+                List<ILineDataSet> sets = mChart.getData()
                         .getDataSets();
 
-                for (LineDataSet set : sets) {
+                for (ILineDataSet iSet : sets) {
+
+                    LineDataSet set = (LineDataSet) iSet;
                     if (set.isDrawCubicEnabled())
                         set.setDrawCubic(false);
                     else
@@ -317,7 +329,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         set2.setHighLightColor(Color.rgb(244, 117, 117));
         //set2.setFillFormatter(new MyFillFormatter(900f));
 
-        ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
+        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         dataSets.add(set2);
         dataSets.add(set1); // add the datasets
 

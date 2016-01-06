@@ -82,6 +82,7 @@ Features
  - Limit lines (providing additional information, maximums, ...)
  - Fully customizeable (paints, typefaces, legends, colors, background, gestures, dashed lines, ...)
  - Smooth zooming and scrolling for up to 30.000 data points in Line- and BarChart
+ - Plotting data directly from [**Realm.io**](https://realm.io) mobile database
  
 **Chart types:**
 

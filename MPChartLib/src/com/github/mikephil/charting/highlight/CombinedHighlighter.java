@@ -2,8 +2,8 @@ package com.github.mikephil.charting.highlight;
 
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.CombinedData;
-import com.github.mikephil.charting.data.DataSet;
-import com.github.mikephil.charting.interfaces.BarLineScatterCandleBubbleDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider;
 import com.github.mikephil.charting.utils.SelectionDetail;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class CombinedHighlighter extends ChartHighlighter<BarLineScatterCandleBu
 
             for(int j = 0; j < dataObjects.get(i).getDataSetCount(); j++) {
 
-                DataSet<?> dataSet = dataObjects.get(i).getDataSetByIndex(j);
+                IDataSet dataSet = dataObjects.get(i).getDataSetByIndex(j);
 
                 // dont include datasets that cannot be highlighted
                 if (!dataSet.isHighlightEnabled())

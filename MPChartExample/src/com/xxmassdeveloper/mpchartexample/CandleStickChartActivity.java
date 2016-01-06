@@ -20,6 +20,7 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CandleDataSet;
 import com.github.mikephil.charting.data.CandleEntry;
+import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -122,9 +123,8 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
                 break;
             }
             case R.id.actionToggleMakeShadowSameColorAsCandle: {
-                for (CandleDataSet set : mChart.getData().getDataSets())
-                {
-                    set.setShadowColorSameAsCandle(!set.getShadowColorSameAsCandle());
+                for (ICandleDataSet set : mChart.getData().getDataSets()) {
+                   //TODO: set.setShadowColorSameAsCandle(!set.getShadowColorSameAsCandle());
                 }
 
                 mChart.invalidate();

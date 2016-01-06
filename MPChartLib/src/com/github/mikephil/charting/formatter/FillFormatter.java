@@ -1,8 +1,7 @@
 package com.github.mikephil.charting.formatter;
 
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.LineDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 
 /**
  * Interface for providing a custom logic to where the filling line of a LineDataSet
@@ -16,9 +15,9 @@ public interface FillFormatter {
      * Returns the vertical (y-axis) position where the filled-line of the
      * LineDataSet should end.
      * 
-     * @param dataSet the LineDataSet that is currently drawn
+     * @param dataSet the ILineDataSet that is currently drawn
      * @param dataProvider
      * @return
      */
-    float getFillLinePosition(LineDataSet dataSet, LineDataProvider dataProvider);
+    float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider);
 }

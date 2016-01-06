@@ -1,12 +1,13 @@
 
 package com.github.mikephil.charting.data;
 
+import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PieDataSet extends DataSet<Entry> {
+public class PieDataSet extends DataSet<Entry> implements IPieDataSet {
 
     /** the space in degrees between the chart-slices, default 0f */
     private float mSliceSpace = 0f;
@@ -38,7 +39,7 @@ public class PieDataSet extends DataSet<Entry> {
     /**
      * sets the space that is left out between the piechart-slices, default: 0°
      * --> no space, maximum 45, minimum 0 (no space)
-     * 
+     *
      * @param degrees
      */
     public void setSliceSpace(float degrees) {
@@ -51,12 +52,7 @@ public class PieDataSet extends DataSet<Entry> {
         mSliceSpace = degrees;
     }
 
-    /**
-     * returns the space that is set to be between the piechart-slices of this
-     * DataSet, in degrees
-     * 
-     * @return
-     */
+    @Override
     public float getSliceSpace() {
         return mSliceSpace;
     }
@@ -71,12 +67,7 @@ public class PieDataSet extends DataSet<Entry> {
         mShift = Utils.convertDpToPixel(shift);
     }
 
-    /**
-     * returns the distance a highlighted piechart slice is "shifted" away from
-     * the chart-center
-     * 
-     * @return
-     */
+    @Override
     public float getSelectionShift() {
         return mShift;
     }

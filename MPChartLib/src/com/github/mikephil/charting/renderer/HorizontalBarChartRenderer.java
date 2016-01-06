@@ -10,10 +10,11 @@ import com.github.mikephil.charting.buffer.HorizontalBarBuffer;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.interfaces.BarDataProvider;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.List;
@@ -39,8 +40,8 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
         mBarBuffers = new HorizontalBarBuffer[barData.getDataSetCount()];
 
         for (int i = 0; i < mBarBuffers.length; i++) {
-            BarDataSet set = barData.getDataSetByIndex(i);
-            mBarBuffers[i] = new HorizontalBarBuffer(set.getValueCount() * 4 * set.getStackSize(),
+            IBarDataSet set = barData.getDataSetByIndex(i);
+            mBarBuffers[i] = new HorizontalBarBuffer(set.getEntryCount() * 4 * (set.isStacked() ? set.getStackSize() : 1),
                     barData.getGroupSpace(),
                     barData.getDataSetCount(), set.isStacked());
         }
@@ -64,7 +65,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
         buffer.setDataSet(index);
         buffer.setInverted(mChart.isInverted(dataSet.getAxisDependency()));
 
-        buffer.feed(entries);
+        buffer.feed(dataSet);
 
         trans.pointValuesToPixel(buffer.buffer);
 
@@ -96,7 +97,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
         // if values are drawn
         if (passesCheck()) {
 
-            List<BarDataSet> dataSets = mChart.getBarData().getDataSets();
+            List<IBarDataSet> dataSets = mChart.getBarData().getDataSets();
 
             final float valueOffsetPlus = Utils.convertDpToPixel(5f);
             float posOffset = 0f;
@@ -105,7 +106,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
             for (int i = 0; i < mChart.getBarData().getDataSetCount(); i++) {
 
-                BarDataSet dataSet = dataSets.get(i);
+                IBarDataSet dataSet = dataSets.get(i);
 
                 if (!dataSet.isDrawValuesEnabled() || dataSet.getEntryCount() == 0)
                     continue;
@@ -120,9 +121,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
                 Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-                List<BarEntry> entries = dataSet.getYVals();
-
-                float[] valuePoints = getTransformedValues(trans, entries, i);
+                float[] valuePoints = getTransformedValues(trans, dataSet, i);
 
                 // if only single values are drawn (sum)
                 if (!dataSet.isStacked()) {
@@ -138,7 +137,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                         if (!mViewPortHandler.isInBoundsBottom(valuePoints[j + 1]))
                             continue;
 
-                        BarEntry e = entries.get(j / 2);
+                        BarEntry e = dataSet.getEntryForIndex(j / 2);
                         float val = e.getVal();
                         String formattedValue = formatter.getFormattedValue(val, e, i, mViewPortHandler);
 
@@ -161,7 +160,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
                     for (int j = 0; j < (valuePoints.length - 1) * mAnimator.getPhaseX(); j += 2) {
 
-                        BarEntry e = entries.get(j / 2);
+                        BarEntry e = dataSet.getEntryForIndex(j / 2);
 
                         float[] vals = e.getVals();
 
@@ -277,9 +276,9 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
     }
 
     @Override
-    public float[] getTransformedValues(Transformer trans, List<BarEntry> entries,
+    public float[] getTransformedValues(Transformer trans, IBarDataSet data,
             int dataSetIndex) {
-        return trans.generateTransformedValuesHorizontalBarChart(entries, dataSetIndex,
+        return trans.generateTransformedValuesHorizontalBarChart(data, dataSetIndex,
                 mChart.getBarData(), mAnimator.getPhaseY());
     }
 

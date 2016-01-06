@@ -4,14 +4,17 @@ package com.github.mikephil.charting.data;
 import android.graphics.Path;
 
 import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
+import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> {
+public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> implements IScatterDataSet {
 
-    /** the size the scattershape will have, in screen pixels */
+    /**
+     * the size the scattershape will have, in screen pixels
+     */
     private float mShapeSize = 15f;
 
     /**
@@ -24,8 +27,7 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> {
      * Custom path object the user can provide that is drawn where the values
      * are at. This is used when ScatterShape.CUSTOM is set for a DataSet.
      */
-    private Path mCustomScatterPath = null;
-
+    //private Path mCustomScatterPath = null;
     public ScatterDataSet(List<Entry> yVals, String label) {
         super(yVals, label);
 
@@ -45,7 +47,7 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> {
         copied.mColors = mColors;
         copied.mShapeSize = mShapeSize;
         copied.mScatterShape = mScatterShape;
-        copied.mCustomScatterPath = mCustomScatterPath;
+        //copied.mCustomScatterPath = mCustomScatterPath;
         copied.mHighLightColor = mHighLightColor;
 
         return copied;
@@ -54,60 +56,50 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> {
     /**
      * Sets the size in density pixels the drawn scattershape will have. This
      * only applies for non custom shapes.
-     * 
+     *
      * @param size
      */
     public void setScatterShapeSize(float size) {
         mShapeSize = Utils.convertDpToPixel(size);
     }
 
-    /**
-     * returns the currently set scatter shape size
-     * 
-     * @return
-     */
+    @Override
     public float getScatterShapeSize() {
         return mShapeSize;
     }
 
     /**
-     * Sets the shape that is drawn on the position where the values are at. If
-     * "CUSTOM" is chosen, you need to call setCustomScatterShape(...) and
-     * provide a path object that is drawn as the custom scattershape.
-     * 
+     * Sets the shape that is drawn on the position where the values are at.
+     *
      * @param shape
      */
     public void setScatterShape(ScatterShape shape) {
         mScatterShape = shape;
     }
 
-    /**
-     * returns all the different scattershapes the chart uses
-     * 
-     * @return
-     */
+    @Override
     public ScatterShape getScatterShape() {
         return mScatterShape;
     }
 
-    /**
-     * Sets a path object as the shape to be drawn where the values are at. Do
-     * not forget to call setScatterShape(...) and set the shape to
-     * ScatterShape.CUSTOM.
-     * 
-     * @param shape
-     */
-    public void setCustomScatterShape(Path shape) {
-        mCustomScatterPath = shape;
-    }
-
-    /**
-     * returns the custom path / shape that is specified to be drawn where the
-     * values are at
-     * 
-     * @return
-     */
-    public Path getCustomScatterShape() {
-        return mCustomScatterPath;
-    }
+//    /**
+//     * Sets a path object as the shape to be drawn where the values are at. Do
+//     * not forget to call setScatterShape(...) and set the shape to
+//     * ScatterShape.CUSTOM.
+//     *
+//     * @param shape
+//     */
+//    public void setCustomScatterShape(Path shape) {
+//        mCustomScatterPath = shape;
+//    }
+//
+//    /**
+//     * returns the custom path / shape that is specified to be drawn where the
+//     * values are at
+//     *
+//     * @return
+//     */
+//    public Path getCustomScatterShape() {
+//        return mCustomScatterPath;
+//    }
 }

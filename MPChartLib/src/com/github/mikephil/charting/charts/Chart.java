@@ -31,10 +31,10 @@ import com.github.mikephil.charting.animation.EasingFunction;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.ChartHighlighter;
-import com.github.mikephil.charting.interfaces.ChartInterface;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
@@ -59,7 +59,7 @@ import java.util.List;
  * @author Philipp Jahoda
  */
 @SuppressLint("NewApi")
-public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entry>>> extends
+public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Entry>>> extends
         ViewGroup
         implements ChartInterface {
 
@@ -115,11 +115,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * description text that appears in the bottom right corner of the chart
      */
     protected String mDescription = "Description";
-
-    /**
-     * flag that indicates if the chart has been fed with data yet
-     */
-    protected boolean mDataNotSet = true;
 
     /**
      * the number of x-values the chart displays
@@ -309,15 +304,14 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         }
 
         // LET THE CHART KNOW THERE IS DATA
-        mDataNotSet = false;
         mOffsetsCalculated = false;
         mData = data;
 
         // calculate how many digits are needed
         calculateFormatter(data.getYMin(), data.getYMax());
 
-        for (DataSet<?> set : mData.getDataSets()) {
-            if (set.needsDefaultFormatter())
+        for (IDataSet set : mData.getDataSets()) {
+            if (Utils.needsDefaultFormatter(set.getValueFormatter()))
                 set.setValueFormatter(mDefaultFormatter);
         }
 
@@ -334,7 +328,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public void clear() {
         mData = null;
-        mDataNotSet = true;
         mIndicesToHighlight = null;
         invalidate();
     }
@@ -420,11 +413,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     protected void onDraw(Canvas canvas) {
         // super.onDraw(canvas);
 
-        if (mDataNotSet || mData == null || mData.getYValCount() <= 0) { // check
-            // if
-            // there
-            // is
-            // data
+        if (mData == null) {
 
             // if no data, inform the user
             canvas.drawText(mNoDataText, getWidth() / 2, getHeight() / 2, mInfoPaint);
@@ -1405,7 +1394,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         for (int i = 0; i < mData.getDataSetCount(); i++) {
 
-            DataSet<? extends Entry> set = mData.getDataSetByIndex(i);
+            IDataSet set = mData.getDataSetByIndex(i);
 
             Entry e = set.getEntryForXIndex(xIndex);
 
@@ -1424,16 +1413,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public T getData() {
         return mData;
-    }
-
-    /**
-     * returns the percentage the given value has of the total y-value sum
-     *
-     * @param val
-     * @return
-     */
-    public float getPercentOfTotal(float val) {
-        return val / mData.getYValueSum() * 100f;
     }
 
     /**

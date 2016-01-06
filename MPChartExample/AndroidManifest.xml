@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xxmassdeveloper.mpchartexample"
-    android:versionCode="46"
+    android:versionCode="47"
     android:versionName="2.1.6" >
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="22" />
+        android:targetSdkVersion="23" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
@@ -26,7 +26,6 @@
         </activity>
         <activity android:name="LineChartActivity1"></activity> <!--  android:configChanges="keyboardHidden|orientation|screenSize"  -->
         <activity android:name="LineChartActivity2"></activity>
-        <activity android:screenOrientation="landscape" android:name="MultipleChartsActivity"></activity>
         <activity android:name="BarChartActivity"></activity>
 		<activity android:name="HorizontalBarChartActivity"></activity>
         <activity android:name="PieChartActivity"></activity>
@@ -46,12 +45,22 @@
         <activity android:name="RadarChartActivitry"></activity>
         <activity android:name="LineChartActivityColored"></activity>
         <activity android:name="DynamicalAddingActivity"></activity>
+        <activity android:name=".realm.RealmDatabaseActivityLine"></activity>
+        <activity android:name=".realm.RealmDatabaseActivityBar"></activity>
+        <activity android:name=".realm.RealmDatabaseActivityHorizontalBar"></activity>
+        <activity android:name=".realm.RealmDatabaseActivityScatter"></activity>
+        <activity android:name=".realm.RealmDatabaseActivityCandle"></activity>
+        <activity android:name=".realm.RealmDatabaseActivityBubble"></activity>
+        <activity android:name=".realm.RealmDatabaseActivityPie"></activity>
+        <activity android:name=".realm.RealmDatabaseActivityRadar"></activity>
+        <activity android:name=".realm.RealmMainActivity"></activity>
         <activity android:name="RealtimeLineChartActivity"></activity>
         <activity android:name="CombinedChartActivity"></activity>
         <activity android:name="PerformanceLineChart"></activity>
         <activity android:name="BarChartActivitySinus"></activity>
         <activity android:name="ScrollViewActivity"></activity>
         <activity android:name="StackedBarActivityNegative"></activity>
+        <activity android:name=".realm.RealmWikiExample"></activity>
     </application>
 
 </manifest>
