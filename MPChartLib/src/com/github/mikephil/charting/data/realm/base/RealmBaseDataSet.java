@@ -57,7 +57,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         this.mValuesField = yValuesField;
         this.mIndexField = xIndexField;
         this.mValues = new ArrayList<S>();
-        this.results.sort(mIndexField, true);
+        this.results.sort(mIndexField);
     }
 
     /**
