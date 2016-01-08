@@ -414,6 +414,7 @@ public class PieChartRenderer extends DataRenderer {
             angle *= mAnimator.getPhaseX();
 
             float sliceAngle = drawAngles[xIndex];
+            float sliceSpace = set.getSliceSpace();
 
             float shift = set.getSelectionShift();
             RectF circleBox = mChart.getCircleBox();
@@ -433,9 +434,10 @@ public class PieChartRenderer extends DataRenderer {
 
             // redefine the rect that contains the arc so that the
             // highlighted pie is not cut off
-            mBitmapCanvas.drawArc(highlighted, angle + set.getSliceSpace() / 2f, sliceAngle
-                    * mAnimator.getPhaseY()
-                    - set.getSliceSpace() / 2f, true, mRenderPaint);
+            mBitmapCanvas.drawArc(highlighted,
+                    rotationAngle + (angle + sliceSpace / 2f) * mAnimator.getPhaseY(),
+                    (sliceAngle - sliceSpace / 2f) * mAnimator.getPhaseY(),
+                    true, mRenderPaint);
         }
     }
 
