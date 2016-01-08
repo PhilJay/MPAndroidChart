@@ -208,10 +208,10 @@ public class PieChartRenderer extends DataRenderer {
                 float angle = (absoluteAngles[cnt] - offset) * mAnimator.getPhaseY();
                 // calculate the text position
                 float x = (float) (r
-                        * Math.cos(Math.toRadians(rotationAngle) + Math.toRadians(angle))
+                        * Math.cos(Math.toRadians(rotationAngle + angle))
                         + center.x);
                 float y = (float) (r
-                        * Math.sin(Math.toRadians(rotationAngle) + Math.toRadians(angle))
+                        * Math.sin(Math.toRadians(rotationAngle + angle))
                         + center.y);
 
                 float value = mChart.isUsePercentValuesEnabled() ? entry.getVal()
