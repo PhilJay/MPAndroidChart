@@ -134,7 +134,7 @@ public class PieChartRenderer extends DataRenderer {
 
         for (int j = 0; j < dataSet.getEntryCount(); j++) {
 
-            float newangle = drawAngles[j];
+            float sliceAngle = drawAngles[j];
             float sliceSpace = dataSet.getSliceSpace();
 
             Entry e = dataSet.getEntryForIndex(j);
@@ -148,12 +148,12 @@ public class PieChartRenderer extends DataRenderer {
                     mRenderPaint.setColor(dataSet.getColor(j));
                     mBitmapCanvas.drawArc(mChart.getCircleBox(),
                             rotationAngle + (angle + sliceSpace / 2f) * mAnimator.getPhaseY(),
-                            (newangle - sliceSpace / 2f) * mAnimator.getPhaseY(),
+                            (sliceAngle - sliceSpace / 2f) * mAnimator.getPhaseY(),
                             true, mRenderPaint);
                 }
             }
 
-            angle += newangle * mAnimator.getPhaseX();
+            angle += sliceAngle * mAnimator.getPhaseX();
         }
     }
 
@@ -208,10 +208,10 @@ public class PieChartRenderer extends DataRenderer {
                 float angle = (absoluteAngles[cnt] - offset) * mAnimator.getPhaseY();
                 // calculate the text position
                 float x = (float) (r
-                        * Math.cos(Math.toRadians(rotationAngle) + Math.toRadians(angle))
+                        * Math.cos(Math.toRadians(rotationAngle + angle))
                         + center.x);
                 float y = (float) (r
-                        * Math.sin(Math.toRadians(rotationAngle) + Math.toRadians(angle))
+                        * Math.sin(Math.toRadians(rotationAngle + angle))
                         + center.y);
 
                 float value = mChart.isUsePercentValuesEnabled() ? entry.getVal()
@@ -413,7 +413,8 @@ public class PieChartRenderer extends DataRenderer {
 
             angle *= mAnimator.getPhaseX();
 
-            float sliceDegrees = drawAngles[xIndex];
+            float sliceAngle = drawAngles[xIndex];
+            float sliceSpace = set.getSliceSpace();
 
             float shift = set.getSelectionShift();
             RectF circleBox = mChart.getCircleBox();
@@ -433,9 +434,10 @@ public class PieChartRenderer extends DataRenderer {
 
             // redefine the rect that contains the arc so that the
             // highlighted pie is not cut off
-            mBitmapCanvas.drawArc(highlighted, angle + set.getSliceSpace() / 2f, sliceDegrees
-                    * mAnimator.getPhaseY()
-                    - set.getSliceSpace() / 2f, true, mRenderPaint);
+            mBitmapCanvas.drawArc(highlighted,
+                    rotationAngle + (angle + sliceSpace / 2f) * mAnimator.getPhaseY(),
+                    (sliceAngle - sliceSpace / 2f) * mAnimator.getPhaseY(),
+                    true, mRenderPaint);
         }
     }
 
@@ -465,7 +467,7 @@ public class PieChartRenderer extends DataRenderer {
 
         for (int j = 0; j < dataSet.getEntryCount(); j++) {
 
-            float newangle = drawAngles[j];
+            float sliceAngle = drawAngles[j];
 
             Entry e = dataSet.getEntryForIndex(j);
 
@@ -473,17 +475,17 @@ public class PieChartRenderer extends DataRenderer {
             if ((Math.abs(e.getVal()) > 0.000001)) {
 
                 float x = (float) ((r - circleRadius)
-                        * Math.cos(Math.toRadians((angle + newangle)
+                        * Math.cos(Math.toRadians((angle + sliceAngle)
                         * mAnimator.getPhaseY())) + center.x);
                 float y = (float) ((r - circleRadius)
-                        * Math.sin(Math.toRadians((angle + newangle)
+                        * Math.sin(Math.toRadians((angle + sliceAngle)
                         * mAnimator.getPhaseY())) + center.y);
 
                 mRenderPaint.setColor(dataSet.getColor(j));
                 mBitmapCanvas.drawCircle(x, y, circleRadius, mRenderPaint);
             }
 
-            angle += newangle * mAnimator.getPhaseX();
+            angle += sliceAngle * mAnimator.getPhaseX();
         }
     }
 
