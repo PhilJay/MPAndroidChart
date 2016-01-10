@@ -1445,6 +1445,15 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             mRenderer = renderer;
     }
 
+    public ChartHighlighter getHighlighter() {
+        return mHighlighter;
+    }
+
+    public void setHighlighter(ChartHighlighter highlighter) {
+
+        mHighlighter = highlighter;
+    }
+
     @Override
     public PointF getCenterOfView() {
         return getCenter();

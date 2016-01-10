@@ -49,7 +49,7 @@ public class HorizontalBarChart extends BarChart {
 		mRightAxisTransformer = new TransformerHorizontalBarChart(mViewPortHandler);
 
 		mRenderer = new HorizontalBarChartRenderer(this, mAnimator, mViewPortHandler);
-		mHighlighter = new HorizontalBarHighlighter(this);
+		setHighlighter(new HorizontalBarHighlighter(this));
 
 		mAxisRendererLeft = new YAxisRendererHorizontalBarChart(mViewPortHandler, mAxisLeft, mLeftAxisTransformer);
 		mAxisRendererRight = new YAxisRendererHorizontalBarChart(mViewPortHandler, mAxisRight, mRightAxisTransformer);
@@ -224,7 +224,7 @@ public class HorizontalBarChart extends BarChart {
 			Log.e(LOG_TAG, "Can't select by touch. No data set.");
 			return null;
 		} else
-			return mHighlighter.getHighlight(y, x); // switch x and y
+			return getHighlighter().getHighlight(y, x); // switch x and y
 	}
 
 	/**

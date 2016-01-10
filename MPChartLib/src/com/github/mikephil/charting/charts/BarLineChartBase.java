@@ -164,7 +164,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         mXAxisRenderer = new XAxisRenderer(mViewPortHandler, mXAxis, mLeftAxisTransformer);
 
-        mHighlighter = new ChartHighlighter(this);
+        setHighlighter(new ChartHighlighter(this));
 
         mChartTouchListener = new BarLineChartTouchListener(this, mViewPortHandler.getMatrixTouch());
 
@@ -1158,7 +1158,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             Log.e(LOG_TAG, "Can't select by touch. No data set.");
             return null;
         } else
-            return mHighlighter.getHighlight(x, y);
+            return getHighlighter().getHighlight(x, y);
     }
 
     /**
