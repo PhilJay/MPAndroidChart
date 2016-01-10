@@ -574,7 +574,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * highlightValues(...), this generates a callback to the
      * OnChartValueSelectedListener.
      *
-     * @param high - the highlight object
+     * @param high         - the highlight object
      * @param callListener - call the listener
      */
     public void highlightValue(Highlight high, boolean callListener) {
@@ -1449,6 +1449,12 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         return mHighlighter;
     }
 
+    /**
+     * Sets a custom highligher object for the chart that handles / processes
+     * all highlight touch events performed on the chart-view.
+     *
+     * @param highlighter
+     */
     public void setHighlighter(ChartHighlighter highlighter) {
 
         mHighlighter = highlighter;
@@ -1524,11 +1530,11 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * compression must be set for JPEG only. 0 == maximum compression, 100 = low
      * compression (high quality). NOTE: Needs permission WRITE_EXTERNAL_STORAGE
      *
-     * @param fileName e.g. "my_image"
-     * @param subFolderPath e.g. "ChartPics"
+     * @param fileName        e.g. "my_image"
+     * @param subFolderPath   e.g. "ChartPics"
      * @param fileDescription e.g. "Chart details"
-     * @param format e.g. Bitmap.CompressFormat.PNG
-     * @param quality e.g. 50, min = 0, max = 100
+     * @param format          e.g. Bitmap.CompressFormat.PNG
+     * @param quality         e.g. 50, min = 0, max = 100
      * @return returns true if saving was successful, false if not
      */
     public boolean saveToGallery(String fileName, String subFolderPath, String fileDescription, Bitmap.CompressFormat format, int quality) {
@@ -1552,7 +1558,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
                 mimeType = "image/png";
                 if (!fileName.endsWith(".png"))
                     fileName += ".png";
-                    break;
+                break;
             case WEBP:
                 mimeType = "image/webp";
                 if (!fileName.endsWith(".webp"))
@@ -1610,7 +1616,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * @return returns true if saving was successful, false if not
      */
     public boolean saveToGallery(String fileName, int quality) {
-	    return saveToGallery(fileName, "", "MPAndroidChart-Library Save", Bitmap.CompressFormat.JPEG, quality);
+        return saveToGallery(fileName, "", "MPAndroidChart-Library Save", Bitmap.CompressFormat.JPEG, quality);
     }
 
     /**
