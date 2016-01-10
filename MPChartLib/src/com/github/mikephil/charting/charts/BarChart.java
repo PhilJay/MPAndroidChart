@@ -59,7 +59,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 		mRenderer = new BarChartRenderer(this, mAnimator, mViewPortHandler);
 		mXAxisRenderer = new XAxisRendererBarChart(mViewPortHandler, mXAxis, mLeftAxisTransformer, this);
 
-		mHighlighter = new BarHighlighter(this);
+		setHighlighter(new BarHighlighter(this));
 
 		mXChartMin = -0.5f;
 	}
@@ -94,7 +94,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 			Log.e(LOG_TAG, "Can't select by touch. No data set.");
 			return null;
 		} else
-			return mHighlighter.getHighlight(x, y);
+			return getHighlighter().getHighlight(x, y);
 	}
 
 	/**
