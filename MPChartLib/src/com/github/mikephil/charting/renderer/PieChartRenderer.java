@@ -407,12 +407,10 @@ public class PieChartRenderer extends DataRenderer {
                 continue;
 
             if (xIndex == 0)
-                angle = rotationAngle;
+                angle = 0.f;
             else
-                angle = rotationAngle + absoluteAngles[xIndex - 1];
-
-            angle *= mAnimator.getPhaseX();
-
+                angle = absoluteAngles[xIndex - 1] * mAnimator.getPhaseX();
+            
             float sliceAngle = drawAngles[xIndex];
             float sliceSpace = set.getSliceSpace();
 
