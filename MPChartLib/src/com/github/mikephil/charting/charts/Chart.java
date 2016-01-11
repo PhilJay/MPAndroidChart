@@ -31,10 +31,10 @@ import com.github.mikephil.charting.animation.EasingFunction;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.ChartHighlighter;
-import com.github.mikephil.charting.interfaces.ChartInterface;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
@@ -59,7 +59,7 @@ import java.util.List;
  * @author Philipp Jahoda
  */
 @SuppressLint("NewApi")
-public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entry>>> extends
+public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Entry>>> extends
         ViewGroup
         implements ChartInterface {
 
@@ -115,11 +115,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * description text that appears in the bottom right corner of the chart
      */
     protected String mDescription = "Description";
-
-    /**
-     * flag that indicates if the chart has been fed with data yet
-     */
-    protected boolean mDataNotSet = true;
 
     /**
      * the number of x-values the chart displays
@@ -309,15 +304,14 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
         }
 
         // LET THE CHART KNOW THERE IS DATA
-        mDataNotSet = false;
         mOffsetsCalculated = false;
         mData = data;
 
         // calculate how many digits are needed
         calculateFormatter(data.getYMin(), data.getYMax());
 
-        for (DataSet<?> set : mData.getDataSets()) {
-            if (set.needsDefaultFormatter())
+        for (IDataSet set : mData.getDataSets()) {
+            if (Utils.needsDefaultFormatter(set.getValueFormatter()))
                 set.setValueFormatter(mDefaultFormatter);
         }
 
@@ -334,7 +328,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public void clear() {
         mData = null;
-        mDataNotSet = true;
         mIndicesToHighlight = null;
         invalidate();
     }
@@ -420,11 +413,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
     protected void onDraw(Canvas canvas) {
         // super.onDraw(canvas);
 
-        if (mDataNotSet || mData == null || mData.getYValCount() <= 0) { // check
-            // if
-            // there
-            // is
-            // data
+        if (mData == null) {
 
             // if no data, inform the user
             canvas.drawText(mNoDataText, getWidth() / 2, getHeight() / 2, mInfoPaint);
@@ -585,7 +574,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * highlightValues(...), this generates a callback to the
      * OnChartValueSelectedListener.
      *
-     * @param high - the highlight object
+     * @param high         - the highlight object
      * @param callListener - call the listener
      */
     public void highlightValue(Highlight high, boolean callListener) {
@@ -1405,7 +1394,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         for (int i = 0; i < mData.getDataSetCount(); i++) {
 
-            DataSet<? extends Entry> set = mData.getDataSetByIndex(i);
+            IDataSet set = mData.getDataSetByIndex(i);
 
             Entry e = set.getEntryForXIndex(xIndex);
 
@@ -1424,16 +1413,6 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      */
     public T getData() {
         return mData;
-    }
-
-    /**
-     * returns the percentage the given value has of the total y-value sum
-     *
-     * @param val
-     * @return
-     */
-    public float getPercentOfTotal(float val) {
-        return val / mData.getYValueSum() * 100f;
     }
 
     /**
@@ -1464,6 +1443,21 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
 
         if (renderer != null)
             mRenderer = renderer;
+    }
+
+    public ChartHighlighter getHighlighter() {
+        return mHighlighter;
+    }
+
+    /**
+     * Sets a custom highligher object for the chart that handles / processes
+     * all highlight touch events performed on the chart-view.
+     *
+     * @param highlighter
+     */
+    public void setHighlighter(ChartHighlighter highlighter) {
+
+        mHighlighter = highlighter;
     }
 
     @Override
@@ -1536,11 +1530,11 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * compression must be set for JPEG only. 0 == maximum compression, 100 = low
      * compression (high quality). NOTE: Needs permission WRITE_EXTERNAL_STORAGE
      *
-     * @param fileName e.g. "my_image"
-     * @param subFolderPath e.g. "ChartPics"
+     * @param fileName        e.g. "my_image"
+     * @param subFolderPath   e.g. "ChartPics"
      * @param fileDescription e.g. "Chart details"
-     * @param format e.g. Bitmap.CompressFormat.PNG
-     * @param quality e.g. 50, min = 0, max = 100
+     * @param format          e.g. Bitmap.CompressFormat.PNG
+     * @param quality         e.g. 50, min = 0, max = 100
      * @return returns true if saving was successful, false if not
      */
     public boolean saveToGallery(String fileName, String subFolderPath, String fileDescription, Bitmap.CompressFormat format, int quality) {
@@ -1564,7 +1558,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
                 mimeType = "image/png";
                 if (!fileName.endsWith(".png"))
                     fileName += ".png";
-                    break;
+                break;
             case WEBP:
                 mimeType = "image/webp";
                 if (!fileName.endsWith(".webp"))
@@ -1622,7 +1616,7 @@ public abstract class Chart<T extends ChartData<? extends DataSet<? extends Entr
      * @return returns true if saving was successful, false if not
      */
     public boolean saveToGallery(String fileName, int quality) {
-	    return saveToGallery(fileName, "", "MPAndroidChart-Library Save", Bitmap.CompressFormat.JPEG, quality);
+        return saveToGallery(fileName, "", "MPAndroidChart-Library Save", Bitmap.CompressFormat.JPEG, quality);
     }
 
     /**

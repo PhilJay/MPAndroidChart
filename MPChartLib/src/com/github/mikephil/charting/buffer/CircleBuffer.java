@@ -2,10 +2,9 @@
 package com.github.mikephil.charting.buffer;
 
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
-import java.util.List;
-
-public class CircleBuffer extends AbstractBuffer<Entry> {
+public class CircleBuffer extends AbstractBuffer<ILineDataSet> {
 
     public CircleBuffer(int size) {
         super(size);
@@ -17,13 +16,13 @@ public class CircleBuffer extends AbstractBuffer<Entry> {
     }
 
     @Override
-    public void feed(List<Entry> entries) {
+    public void feed(ILineDataSet data) {
 
         int size = (int)Math.ceil((mTo - mFrom) * phaseX + mFrom);
 
         for (int i = mFrom; i < size; i++) {
 
-            Entry e = entries.get(i);
+            Entry e = data.getEntryForIndex(i);
             addCircle(e.getXIndex(), e.getVal() * phaseY);
         }
         

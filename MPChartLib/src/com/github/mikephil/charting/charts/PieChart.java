@@ -9,14 +9,12 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.graphics.Typeface;
-import android.text.SpannableString;
 import android.util.AttributeSet;
 
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.renderer.PieChartRenderer;
 import com.github.mikephil.charting.utils.Utils;
 
@@ -68,7 +66,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     /**
      * variable for the text that is drawn in the center of the pie-chart
      */
-    private SpannableString mCenterText = new SpannableString("");
+    private CharSequence mCenterText = "";
 
     /**
      * indicates the size of the hole in the center of the piechart, default:
@@ -87,6 +85,8 @@ public class PieChart extends PieRadarChartBase<PieData> {
     private boolean mDrawCenterText = true;
 
     private float mCenterTextRadiusPercent = 1.f;
+
+    protected float mMaxAngle = 360f;
 
     public PieChart(Context context) {
         super(context);
@@ -111,7 +111,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (mDataNotSet)
+        if (mData == null)
             return;
 
         mRenderer.drawData(canvas);
@@ -135,7 +135,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
         super.calculateOffsets();
 
         // prevent nullpointer when no data set
-        if (mDataNotSet)
+        if (mData == null)
             return;
 
         float diameter = getDiameter();
@@ -200,18 +200,17 @@ public class PieChart extends PieRadarChartBase<PieData> {
         mDrawAngles = new float[mData.getYValCount()];
         mAbsoluteAngles = new float[mData.getYValCount()];
 
-        List<PieDataSet> dataSets = mData.getDataSets();
+        List<IPieDataSet> dataSets = mData.getDataSets();
 
         int cnt = 0;
 
         for (int i = 0; i < mData.getDataSetCount(); i++) {
 
-            PieDataSet set = dataSets.get(i);
-            List<Entry> entries = set.getYVals();
+            IPieDataSet set = dataSets.get(i);
 
-            for (int j = 0; j < entries.size(); j++) {
+            for (int j = 0; j < set.getEntryCount(); j++) {
 
-                mDrawAngles[cnt] = calcAngle(Math.abs(entries.get(j).getVal()));
+                mDrawAngles[cnt] = calcAngle(Math.abs(set.getEntryForIndex(j).getVal()));
 
                 if (cnt == 0) {
                     mAbsoluteAngles[cnt] = mDrawAngles[cnt];
@@ -256,7 +255,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
      * @return
      */
     private float calcAngle(float value) {
-        return value / mData.getYValueSum() * 360f;
+        return value / mData.getYValueSum() * mMaxAngle;
     }
 
     @Override
@@ -281,7 +280,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
      */
     public int getDataSetIndexForIndex(int xIndex) {
 
-        List<? extends DataSet<? extends Entry>> dataSets = mData.getDataSets();
+        List<IPieDataSet> dataSets = mData.getDataSets();
 
         for (int i = 0; i < dataSets.size(); i++) {
             if (dataSets.get(i).getEntryForXIndex(xIndex) != null)
@@ -371,25 +370,15 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * Sets the text SpannableString that is displayed in the center of the PieChart.
-     *
-     * @param text
-     */
-    public void setCenterText(SpannableString text) {
-
-        if (text == null)
-            mCenterText = new SpannableString("");
-        else
-            mCenterText = text;
-    }
-
-    /**
      * Sets the text String that is displayed in the center of the PieChart.
      *
      * @param text
      */
-    public void setCenterText(String text) {
-        setCenterText(new SpannableString(text));
+    public void setCenterText(CharSequence text) {
+        if (text == null)
+            mCenterText = "";
+        else
+            mCenterText = text;
     }
 
     /**
@@ -397,7 +386,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
      *
      * @return
      */
-    public SpannableString getCenterText() {
+    public CharSequence getCenterText() {
         return mCenterText;
     }
 
@@ -615,6 +604,26 @@ public class PieChart extends PieRadarChartBase<PieData> {
         return mCenterTextRadiusPercent;
     }
 
+    public float getMaxAngle() {
+        return mMaxAngle;
+    }
+
+    /**
+     * Sets the max angle that is used for calculating the pie-circle. 360f means
+     * it's a full PieChart, 180f results in a half-pie-chart. Default: 360f
+     *
+     * @param maxangle min 90, max 360
+     */
+    public void setMaxAngle(float maxangle) {
+
+        if (maxangle > 360)
+            maxangle = 360f;
+
+        if (maxangle < 90)
+            maxangle = 90f;
+
+        this.mMaxAngle = maxangle;
+    }
 
     @Override
     protected void onDetachedFromWindow() {

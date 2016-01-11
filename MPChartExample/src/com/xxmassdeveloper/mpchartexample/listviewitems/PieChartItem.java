@@ -79,7 +79,7 @@ public class PieChartItem extends ChartItem {
 
         // do not forget to refresh the chart
         // holder.chart.invalidate();
-        holder.chart.animateXY(900, 900);
+        holder.chart.animateY(900);
 
         return convertView;
     }

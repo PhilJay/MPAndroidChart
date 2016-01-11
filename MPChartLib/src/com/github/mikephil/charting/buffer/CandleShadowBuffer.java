@@ -2,10 +2,9 @@
 package com.github.mikephil.charting.buffer;
 
 import com.github.mikephil.charting.data.CandleEntry;
+import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet;
 
-import java.util.List;
-
-public class CandleShadowBuffer extends AbstractBuffer<CandleEntry> {
+public class CandleShadowBuffer extends AbstractBuffer<ICandleDataSet> {
 
     public CandleShadowBuffer(int size) {
         super(size);
@@ -20,13 +19,13 @@ public class CandleShadowBuffer extends AbstractBuffer<CandleEntry> {
     }
 
     @Override
-    public void feed(List<CandleEntry> entries) {
+    public void feed(ICandleDataSet data) {
 
         int size = (int)Math.ceil((mTo - mFrom) * phaseX + mFrom);
 
         for (int i = mFrom; i < size; i++) {
 
-            CandleEntry e = entries.get(i);
+            CandleEntry e = data.getEntryForIndex(i);
             addShadow(e.getXIndex(), e.getHigh() * phaseY, e.getXIndex(), e.getLow() * phaseY);
         }
 

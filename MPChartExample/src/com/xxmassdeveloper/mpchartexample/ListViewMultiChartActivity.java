@@ -18,6 +18,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.listviewitems.BarChartItem;
 import com.xxmassdeveloper.mpchartexample.listviewitems.ChartItem;
@@ -120,7 +121,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         d2.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0]);
         d2.setDrawValues(false);
         
-        ArrayList<LineDataSet> sets = new ArrayList<LineDataSet>();
+        ArrayList<ILineDataSet> sets = new ArrayList<ILineDataSet>();
         sets.add(d1);
         sets.add(d2);
         

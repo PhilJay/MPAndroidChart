@@ -7,13 +7,11 @@ import android.util.Log;
 
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.DataSet;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.BarHighlighter;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.BarDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.renderer.BarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererBarChart;
 
@@ -61,7 +59,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 		mRenderer = new BarChartRenderer(this, mAnimator, mViewPortHandler);
 		mXAxisRenderer = new XAxisRendererBarChart(mViewPortHandler, mXAxis, mLeftAxisTransformer, this);
 
-		mHighlighter = new BarHighlighter(this);
+		setHighlighter(new BarHighlighter(this));
 
 		mXChartMin = -0.5f;
 	}
@@ -92,11 +90,11 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 	@Override
 	public Highlight getHighlightByTouchPoint(float x, float y) {
 
-		if (mDataNotSet || mData == null) {
+		if (mData == null) {
 			Log.e(LOG_TAG, "Can't select by touch. No data set.");
 			return null;
 		} else
-			return mHighlighter.getHighlight(x, y);
+			return getHighlighter().getHighlight(x, y);
 	}
 
 	/**
@@ -108,7 +106,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 	 */
 	public RectF getBarBounds(BarEntry e) {
 
-		BarDataSet set = mData.getDataSetForEntry(e);
+		IBarDataSet set = mData.getDataSetForEntry(e);
 
 		if (set == null)
 			return null;
