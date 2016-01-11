@@ -200,6 +200,8 @@ public class PieChart extends PieRadarChartBase<PieData> {
         mDrawAngles = new float[mData.getYValCount()];
         mAbsoluteAngles = new float[mData.getYValCount()];
 
+        float yValueSum = mData.getYValueSum();
+
         List<IPieDataSet> dataSets = mData.getDataSets();
 
         int cnt = 0;
@@ -210,7 +212,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
             for (int j = 0; j < set.getEntryCount(); j++) {
 
-                mDrawAngles[cnt] = calcAngle(Math.abs(set.getEntryForIndex(j).getVal()));
+                mDrawAngles[cnt] = calcAngle(Math.abs(set.getEntryForIndex(j).getVal()), yValueSum);
 
                 if (cnt == 0) {
                     mAbsoluteAngles[cnt] = mDrawAngles[cnt];
@@ -255,7 +257,18 @@ public class PieChart extends PieRadarChartBase<PieData> {
      * @return
      */
     private float calcAngle(float value) {
-        return value / mData.getYValueSum() * mMaxAngle;
+        return calcAngle(value, mData.getYValueSum());
+    }
+
+    /**
+     * calculates the needed angle for a given value
+     *
+     * @param value
+     * @param yValueSum
+     * @return
+     */
+    private float calcAngle(float value, float yValueSum) {
+        return value / yValueSum * mMaxAngle;
     }
 
     @Override
