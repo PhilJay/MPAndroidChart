@@ -178,6 +178,9 @@ public class PieChartRenderer extends DataRenderer {
 
         PieData data = mChart.getData();
         List<IPieDataSet> dataSets = data.getDataSets();
+
+        float yValueSum = data.getYValueSum();
+
         boolean drawXVals = mChart.isDrawSliceTextEnabled();
 
         int cnt = 0;
@@ -215,7 +218,7 @@ public class PieChartRenderer extends DataRenderer {
                         + center.y);
 
                 float value = mChart.isUsePercentValuesEnabled() ? entry.getVal()
-                        / data.getYValueSum() * 100f : entry.getVal();
+                        / yValueSum * 100f : entry.getVal();
 
                 ValueFormatter formatter = dataSet.getValueFormatter();
 
