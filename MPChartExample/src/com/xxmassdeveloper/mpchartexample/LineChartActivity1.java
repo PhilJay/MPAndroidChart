@@ -355,7 +355,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         set1.setColor(Color.BLACK);
         set1.setCircleColor(Color.BLACK);
         set1.setLineWidth(1f);
-        set1.setCircleSize(3f);
+        set1.setCircleRadius(3f);
         set1.setDrawCircleHole(false);
         set1.setValueTextSize(9f);
         set1.setFillAlpha(65);

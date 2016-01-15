@@ -126,7 +126,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 
             LineDataSet set = new LineDataSet(yVals, "DataSet " + count);
             set.setLineWidth(2.5f);
-            set.setCircleSize(4.5f);
+            set.setCircleRadius(4.5f);
 
             int color = mColors[count % mColors.length];
 
@@ -209,7 +209,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 
         LineDataSet set = new LineDataSet(null, "DataSet 1");
         set.setLineWidth(2.5f);
-        set.setCircleSize(4.5f);
+        set.setCircleRadius(4.5f);
         set.setColor(Color.rgb(240, 99, 99));
         set.setCircleColor(Color.rgb(240, 99, 99));
         set.setHighLightColor(Color.rgb(190, 190, 190));
