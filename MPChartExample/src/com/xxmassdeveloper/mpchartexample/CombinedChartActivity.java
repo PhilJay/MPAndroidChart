@@ -90,7 +90,7 @@ public class CombinedChartActivity extends DemoBase {
         set.setColor(Color.rgb(240, 238, 70));
         set.setLineWidth(2.5f);
         set.setCircleColor(Color.rgb(240, 238, 70));
-        set.setCircleSize(5f);
+        set.setCircleRadius(5f);
         set.setFillColor(Color.rgb(240, 238, 70));
         set.setDrawCubic(true);
         set.setDrawValues(true);

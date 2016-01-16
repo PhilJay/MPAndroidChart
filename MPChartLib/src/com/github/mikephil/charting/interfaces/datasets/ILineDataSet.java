@@ -28,7 +28,7 @@ public interface ILineDataSet extends ILineRadarDataSet<Entry> {
     /**
      * Returns the size of the drawn circles.
      */
-    float getCircleSize();
+    float getCircleRadius();
 
     /**
      * Returns the color at the given index of the DataSet's circle-color array.
