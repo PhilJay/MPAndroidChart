@@ -139,7 +139,7 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
     }
 
     @Override
-    public float getCircleSize() {
+    public float getCircleRadius() {
         return mCircleSize;
     }
 

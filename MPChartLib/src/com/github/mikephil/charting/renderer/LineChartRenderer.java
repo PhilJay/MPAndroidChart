@@ -428,7 +428,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
                 Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
                 // make sure the values do not interfear with the circles
-                int valOffset = (int) (dataSet.getCircleSize() * 1.75f);
+                int valOffset = (int) (dataSet.getCircleRadius() * 1.75f);
 
                 if (!dataSet.isDrawCirclesEnabled())
                     valOffset = valOffset / 2;
@@ -506,7 +506,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
             trans.pointValuesToPixel(buffer.buffer);
 
-            float halfsize = dataSet.getCircleSize() / 2f;
+            float halfsize = dataSet.getCircleRadius() / 2f;
 
             for (int j = 0, count = (int) Math.ceil((maxx - minx) * phaseX + minx) * 2; j < count; j += 2) {
 
@@ -525,7 +525,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
                 mRenderPaint.setColor(circleColor);
 
-                c.drawCircle(x, y, dataSet.getCircleSize(),
+                c.drawCircle(x, y, dataSet.getCircleRadius(),
                         mRenderPaint);
 
                 if (dataSet.isDrawCircleHoleEnabled()

@@ -292,7 +292,7 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
         LineDataSet set1 = new LineDataSet(yVals, "DataSet 1");
 
         set1.setLineWidth(1.5f);
-        set1.setCircleSize(4f);
+        set1.setCircleRadius(4f);
 
         // create a data object with the datasets
         LineData data = new LineData(xVals, set1);

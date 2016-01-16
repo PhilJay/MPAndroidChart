@@ -185,13 +185,13 @@ public abstract class SimpleFragment extends Fragment {
         ds4.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[3]);
         
         ds1.setLineWidth(2.5f);
-        ds1.setCircleSize(3f);
+        ds1.setCircleRadius(3f);
         ds2.setLineWidth(2.5f);
-        ds2.setCircleSize(3f);
+        ds2.setCircleRadius(3f);
         ds3.setLineWidth(2.5f);
-        ds3.setCircleSize(3f);
+        ds3.setCircleRadius(3f);
         ds4.setLineWidth(2.5f);
-        ds4.setCircleSize(3f);
+        ds4.setCircleRadius(3f);
         
         
         // load DataSets from textfiles in assets folders
