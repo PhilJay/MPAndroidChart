@@ -145,7 +145,7 @@ repositories {
 }
 
 dependencies {
-	    compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
+	    compile 'com.github.PhilJay:MPAndroidChart:v2.2.0'
 }
 ```
 
@@ -160,7 +160,7 @@ dependencies {
 <dependency>
 	    <groupId>com.github.PhilJay</groupId>
 	    <artifactId>MPAndroidChart</artifactId>
-	    <version>v2.1.6</version>
+	    <version>v2.2.0</version>
 </dependency>
 ```
 
@@ -180,7 +180,7 @@ dependencies {
 
 Documentation
 =======
-For a **detailed documentation**, please have a look at the [**Wiki**](https://github.com/PhilJay/MPAndroidChart/wiki) or the [javadocs](https://jitpack.io/com/github/PhilJay/MPAndroidChart/v2.1.6/javadoc/).
+For a **detailed documentation**, please have a look at the [**Wiki**](https://github.com/PhilJay/MPAndroidChart/wiki) or the [javadocs](https://jitpack.io/com/github/PhilJay/MPAndroidChart/v2.2.0/javadoc/).
 
 Furthermore, you can also rely on the [**MPChartExample**](https://github.com/PhilJay/MPAndroidChart/tree/master/MPChartExample) folder and check out the example code in that project. The corresponding application to the example project is also  [**available in the Google PlayStore**](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample). 
 
