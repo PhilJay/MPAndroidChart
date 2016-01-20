@@ -24,6 +24,7 @@ import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 public class PieChartRenderer extends DataRenderer {
@@ -51,7 +52,7 @@ public class PieChartRenderer extends DataRenderer {
     /**
      * Bitmap for drawing the center hole
      */
-    protected Bitmap mDrawBitmap;
+    protected WeakReference<Bitmap> mDrawBitmap;
 
     protected Canvas mBitmapCanvas;
 
@@ -103,18 +104,18 @@ public class PieChartRenderer extends DataRenderer {
         int height = (int) mViewPortHandler.getChartHeight();
 
         if (mDrawBitmap == null
-                || (mDrawBitmap.getWidth() != width)
-                || (mDrawBitmap.getHeight() != height)) {
+                || (mDrawBitmap.get().getWidth() != width)
+                || (mDrawBitmap.get().getHeight() != height)) {
 
             if (width > 0 && height > 0) {
 
-                mDrawBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
-                mBitmapCanvas = new Canvas(mDrawBitmap);
+                mDrawBitmap = new WeakReference<Bitmap>(Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444));
+                mBitmapCanvas = new Canvas(mDrawBitmap.get());
             } else
                 return;
         }
 
-        mDrawBitmap.eraseColor(Color.TRANSPARENT);
+        mDrawBitmap.get().eraseColor(Color.TRANSPARENT);
 
         PieData pieData = mChart.getData();
 
@@ -250,7 +251,7 @@ public class PieChartRenderer extends DataRenderer {
     public void drawExtras(Canvas c) {
         // drawCircles(c);
         drawHole(c);
-        c.drawBitmap(mDrawBitmap, 0, 0, null);
+        c.drawBitmap(mDrawBitmap.get(), 0, 0, null);
         drawCenterText(c);
     }
 
@@ -495,7 +496,8 @@ public class PieChartRenderer extends DataRenderer {
      */
     public void releaseBitmap() {
         if (mDrawBitmap != null) {
-            mDrawBitmap.recycle();
+            mDrawBitmap.get().recycle();
+            mDrawBitmap.clear();
             mDrawBitmap = null;
         }
     }

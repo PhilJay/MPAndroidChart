@@ -19,6 +19,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 public class LineChartRenderer extends LineScatterCandleRadarRenderer {
@@ -34,7 +35,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
      * Bitmap object used for drawing the paths (otherwise they are too long if
      * rendered directly on the canvas)
      */
-    protected Bitmap mDrawBitmap;
+    protected WeakReference<Bitmap> mDrawBitmap;
 
     /**
      * on this canvas, the paths are rendered, it is initialized with the
@@ -80,18 +81,18 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
         int height = (int) mViewPortHandler.getChartHeight();
 
         if (mDrawBitmap == null
-                || (mDrawBitmap.getWidth() != width)
-                || (mDrawBitmap.getHeight() != height)) {
+                || (mDrawBitmap.get().getWidth() != width)
+                || (mDrawBitmap.get().getHeight() != height)) {
 
             if (width > 0 && height > 0) {
 
-                mDrawBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
-                mBitmapCanvas = new Canvas(mDrawBitmap);
+                mDrawBitmap = new WeakReference<Bitmap>(Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444));
+                mBitmapCanvas = new Canvas(mDrawBitmap.get());
             } else
                 return;
         }
 
-        mDrawBitmap.eraseColor(Color.TRANSPARENT);
+        mDrawBitmap.get().eraseColor(Color.TRANSPARENT);
 
         LineData lineData = mChart.getLineData();
 
@@ -101,7 +102,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
                 drawDataSet(c, set);
         }
 
-        c.drawBitmap(mDrawBitmap, 0, 0, mRenderPaint);
+        c.drawBitmap(mDrawBitmap.get(), 0, 0, mRenderPaint);
     }
 
     protected void drawDataSet(Canvas c, ILineDataSet dataSet) {
@@ -578,7 +579,8 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
      */
     public void releaseBitmap() {
         if (mDrawBitmap != null) {
-            mDrawBitmap.recycle();
+            mDrawBitmap.get().recycle();
+            mDrawBitmap.clear();
             mDrawBitmap = null;
         }
     }
