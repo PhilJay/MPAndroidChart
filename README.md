@@ -57,7 +57,7 @@ Questions & Issues
 If you are having questions or problems, you should:
 
  - Make sure you are using the latest version of the library. Check the [**release-section**](https://github.com/PhilJay/MPAndroidChart/releases).
- - Study the [**Documentation-Wiki**](https://github.com/PhilJay/MPAndroidChart/wiki) or the [javadocs](https://jitpack.io/com/github/PhilJay/MPAndroidChart/v2.1.6/javadoc/)
+ - Study the [**Documentation-Wiki**](https://github.com/PhilJay/MPAndroidChart/wiki) or the [javadocs](https://jitpack.io/com/github/PhilJay/MPAndroidChart/v2.2.0/javadoc/)
  - Search or open questions on [**stackoverflow**](https://stackoverflow.com/search?q=mpandroidchart) with the `mpandroidchart` tag
  - Search [**known issues**](https://github.com/PhilJay/MPAndroidChart/issues) for your problem (open and closed)
  - Create new issues (please **search known issues before**, do not create duplicate issues)
@@ -70,18 +70,17 @@ Features
  - Scaling on both axes (with touch-gesture, axes separately or pinch-zoom)
  - Dragging / Panning (with touch-gesture)
  - Combined-Charts (line-, bar-, scatter-, candle-data)
- - Dual (separate) Y-Axis
- - Finger drawing (draw values into the chart with touch-gesture)
+ - Dual (separate) Axes
+ - Customizeable Axes (both x- and y-axis)
  - Highlighting values (with customizeable popup-views)
- - Multiple / Separate Axes
  - Save chart to SD-Card (as image, or as .txt file)
  - Predefined color templates
  - Legends (generated automatically, customizeable)
- - Customizeable Axes (both x- and y-axis)
  - Animations (build up animations, on both x- and y-axis)
  - Limit lines (providing additional information, maximums, ...)
  - Fully customizeable (paints, typefaces, legends, colors, background, gestures, dashed lines, ...)
  - Smooth zooming and scrolling for up to 30.000 data points in Line- and BarChart
+ - Gradle support
  - Plotting data directly from [**Realm.io**](https://realm.io) mobile database
  
 **Chart types:**
@@ -146,7 +145,7 @@ repositories {
 }
 
 dependencies {
-	    compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
+	    compile 'com.github.PhilJay:MPAndroidChart:v2.2.0'
 }
 ```
 
@@ -161,7 +160,7 @@ dependencies {
 <dependency>
 	    <groupId>com.github.PhilJay</groupId>
 	    <artifactId>MPAndroidChart</artifactId>
-	    <version>v2.1.6</version>
+	    <version>v2.2.0</version>
 </dependency>
 ```
 
@@ -181,7 +180,7 @@ dependencies {
 
 Documentation
 =======
-For a **detailed documentation**, please have a look at the [**Wiki**](https://github.com/PhilJay/MPAndroidChart/wiki) or the [javadocs](https://jitpack.io/com/github/PhilJay/MPAndroidChart/v2.1.6/javadoc/).
+For a **detailed documentation**, please have a look at the [**Wiki**](https://github.com/PhilJay/MPAndroidChart/wiki) or the [javadocs](https://jitpack.io/com/github/PhilJay/MPAndroidChart/v2.2.0/javadoc/).
 
 Furthermore, you can also rely on the [**MPChartExample**](https://github.com/PhilJay/MPAndroidChart/tree/master/MPChartExample) folder and check out the example code in that project. The corresponding application to the example project is also  [**available in the Google PlayStore**](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample). 
 
@@ -190,7 +189,7 @@ No problem, let's talk: [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](ht
 
 License
 =======
-Copyright 2015 Philipp Jahoda
+Copyright 2016 Philipp Jahoda
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

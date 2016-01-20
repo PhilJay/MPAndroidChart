@@ -75,7 +75,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      * Default constructor.
      */
     public BaseDataSet() {
-        mColors = new ArrayList<>();
+        mColors = new ArrayList<Integer>();
 
         // default color
         mColors.add(Color.rgb(140, 234, 255));
@@ -316,5 +316,51 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     @Override
     public void setAxisDependency(YAxis.AxisDependency dependency) {
         mAxisDependency = dependency;
+    }
+
+
+    /** ###### ###### DATA RELATED METHODS ###### ###### */
+
+    @Override
+    public int getIndexInEntries(int xIndex) {
+
+        for (int i = 0; i < getEntryCount(); i++) {
+            if (xIndex == getEntryForIndex(i).getXIndex())
+                return i;
+        }
+
+        return -1;
+    }
+
+    @Override
+    public boolean removeFirst() {
+
+        T entry = getEntryForIndex(0);
+        return removeEntry(entry);
+    }
+
+    @Override
+    public boolean removeLast() {
+
+        T entry = getEntryForIndex(getEntryCount() - 1);
+        return removeEntry(entry);
+    }
+
+    @Override
+    public boolean removeEntry(int xIndex) {
+
+        T e = getEntryForXIndex(xIndex);
+        return removeEntry(e);
+    }
+
+    @Override
+    public boolean contains(T e) {
+
+        for(int i = 0; i < getEntryCount(); i++) {
+            if(getEntryForIndex(i).equals(e))
+                return true;
+        }
+
+        return false;
     }
 }
