@@ -442,8 +442,6 @@ public abstract class Utils {
     public static boolean needsDefaultFormatter(ValueFormatter formatter) {
         if (formatter == null)
             return true;
-        if (formatter instanceof DefaultValueFormatter)
-            return true;
 
         return false;
     }
