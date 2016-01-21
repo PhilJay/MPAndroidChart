@@ -65,7 +65,8 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
         while (low <= high) {
             int m = (high + low) / 2;
 
-            if (xIndex == ((Entry) dataSet.getYVals().get(m)).getXIndex()) {
+            if (m > 0 && m < dataSet.getYVals().size() && xIndex == ((Entry) dataSet.getYVals().get(m)).getXIndex()) {
+                //Sanity check
                 if (m < dataSet.getYVals().size() - 1) {
                     return ((Entry) dataSet.getYVals().get(m - 1)).getXIndex() == xIndex ||
                             ((Entry) dataSet.getYVals().get(m + 1)).getXIndex() == xIndex;
