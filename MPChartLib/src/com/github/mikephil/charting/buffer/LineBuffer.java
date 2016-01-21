@@ -43,15 +43,24 @@ public class LineBuffer extends AbstractBuffer<ILineDataSet> {
     public void feed(ILineDataSet data) {
         moveTo(data.getEntryForIndex(mFrom).getXIndex(), data.getEntryForIndex(mFrom).getVal() * phaseY);
 
-        int size = (int) Math.ceil((mTo - mFrom) * phaseX + mFrom);
+        float realSize = (mTo - mFrom) * phaseX + mFrom;
+        int size = (int) Math.ceil(realSize);
+
         int from = mFrom + 1;
 
-        for (int i = from; i < size; i++) {
-
-            Entry e = data.getEntryForIndex(i);
-            lineTo(e.getXIndex(), e.getVal() * phaseY);
+        int i;
+        Entry entry = data.getEntryForIndex(mFrom);
+        for (i = from; i < size; i++) {
+            entry = data.getEntryForIndex(i);
+            lineTo(entry.getXIndex(), entry.getVal() * phaseY);
         }
-
+        if (entry != null && i < data.getEntryCount()) {
+            Entry e = data.getEntryForIndex(i);
+            float progress = realSize - (size - 1F);
+            float xIndex = (e.getXIndex() - entry.getXIndex()) * progress + entry.getXIndex();
+            float yIndex = ((e.getVal() - entry.getVal()) * progress + entry.getVal()) * phaseY;
+            lineTo(xIndex, yIndex);
+        }
         reset();
     }
 }
