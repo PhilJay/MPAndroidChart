@@ -1,4 +1,3 @@
-
 package com.github.mikephil.charting.data;
 
 import java.util.ArrayList;
@@ -241,8 +240,23 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     @Override
+    public T getEntryForXIndex(int xIndex, int yIndex, Rounding rounding) {
+        int index = getEntryIndex(xIndex, yIndex, rounding);
+
+        if (index > -1)
+            return mYVals.get(index);
+
+        return null;
+    }
+
+    @Override
     public T getEntryForXIndex(int xIndex) {
         return getEntryForXIndex(xIndex, Rounding.CLOSEST);
+    }
+
+    @Override
+    public T getEntryForXIndex(int xIndex, int yIndex) {
+        return getEntryForXIndex(xIndex, yIndex, Rounding.CLOSEST);
     }
 
     @Override
@@ -263,7 +277,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
             if (xIndex == mYVals.get(m).getXIndex()) {
                 while (m > 0 && mYVals.get(m - 1).getXIndex() == xIndex)
                     m--;
-
                 return m;
             }
 
@@ -292,9 +305,72 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     @Override
-    public float getYValForXIndex(int xIndex) {
+    public int getEntryIndex(int xIndex, int yIndex, Rounding rounding) {
+        int low = 0;
+        int high = mYVals.size() - 1;
+        int closest = -1;
 
+        while (low <= high) {
+            int m = (high + low) / 2;
+
+            if (xIndex == mYVals.get(m).getXIndex()) {
+                while (m > 0 && mYVals.get(m - 1).getXIndex() == xIndex)
+                    m--;
+
+
+                int newIndex = m;
+                float nearestYValue = Float.MAX_VALUE;
+                while (m < mYVals.size() && mYVals.get(m).getXIndex() == xIndex) {
+                    int cNearesYValue = (int) Math.abs(mYVals.get(m).getVal() - yIndex);
+                    if(cNearesYValue < nearestYValue) {
+                        nearestYValue = cNearesYValue;
+                        newIndex = m;
+                    }
+
+                    m++;
+
+                }
+
+                return newIndex;
+            }
+
+            if (xIndex > mYVals.get(m).getXIndex())
+                low = m + 1;
+            else
+                high = m - 1;
+
+            closest = m;
+        }
+
+        if (closest != -1) {
+            int closestXIndex = mYVals.get(closest).getXIndex();
+            if (rounding == Rounding.UP) {
+                if (closestXIndex < xIndex && closest < mYVals.size() - 1) {
+                    ++closest;
+                }
+            } else if (rounding == Rounding.DOWN) {
+                if (closestXIndex > xIndex && closest > 0) {
+                    --closest;
+                }
+            }
+        }
+
+        return closest;
+    }
+
+    @Override
+    public float getYValForXIndex(int xIndex) {
         Entry e = getEntryForXIndex(xIndex);
+
+        if (e != null && e.getXIndex() == xIndex)
+            return e.getVal();
+        else
+            return Float.NaN;
+    }
+
+    @Override
+    public float getYValForXIndex(int xIndex, int yIndex) {
+        Entry e = getEntryForXIndex(xIndex, yIndex);
 
         if (e != null && e.getXIndex() == xIndex)
             return e.getVal();

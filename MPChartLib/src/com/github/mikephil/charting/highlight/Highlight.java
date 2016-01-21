@@ -11,6 +11,9 @@ public class Highlight {
     /** the x-index of the highlighted value */
     private int mXIndex;
 
+    /** the y-index of the highlighted value */
+    private int mYIndex = Integer.MIN_VALUE;
+
     /** the index of the dataset the highlighted value is in */
     private int mDataSetIndex;
 
@@ -30,6 +33,7 @@ public class Highlight {
         this.mXIndex = x;
         this.mDataSetIndex = dataSet;
     }
+
 
     /**
      * Constructor, only used for stacked-barchart.
@@ -92,6 +96,22 @@ public class Highlight {
      */
     public Range getRange() {
         return mRange;
+    }
+
+    /**
+     * Returns the index of the highlighted value on the y-axis
+     * @return
+     */
+    public int getYIndex() {
+        return mYIndex;
+    }
+
+    /**
+     * Set the y-axis index for this highlight
+     * @param YIndex the y-axis index to set.
+     */
+    public void setYIndex(int YIndex) {
+        mYIndex = YIndex;
     }
 
     /**

@@ -1,120 +1,180 @@
 package com.github.mikephil.charting.highlight;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.SelectionDetail;
 import com.github.mikephil.charting.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Philipp Jahoda on 21/07/15.
  */
 public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> {
 
-	/** instance of the data-provider */
-	protected T mChart;
+    /**
+     * instance of the data-provider
+     */
+    protected T mChart;
 
-	public ChartHighlighter(T chart) {
-		this.mChart = chart;
-	}
+    public ChartHighlighter(T chart) {
+        this.mChart = chart;
+    }
 
-	/**
-	 * Returns a Highlight object corresponding to the given x- and y- touch positions in pixels.
-	 * 
-	 * @param x
-	 * @param y
-	 * @return
-	 */
-	public Highlight getHighlight(float x, float y) {
+    /**
+     * Returns a Highlight object corresponding to the given x- and y- touch positions in pixels.
+     *
+     * @param x
+     * @param y
+     * @return
+     */
+    public Highlight getHighlight(float x, float y) {
 
-		int xIndex = getXIndex(x);
-		if (xIndex == -Integer.MAX_VALUE)
-			return null;
+        int xIndex = getXIndex(x);
+        if (xIndex == -Integer.MAX_VALUE)
+            return null;
 
-		int dataSetIndex = getDataSetIndex(xIndex, x, y);
-		if (dataSetIndex == -Integer.MAX_VALUE)
-			return null;
+        int dataSetIndex = getDataSetIndex(xIndex, x, y);
 
-		return new Highlight(xIndex, dataSetIndex);
-	}
+        if (dataSetIndex == -Integer.MAX_VALUE)
+            return null;
 
-	/**
-	 * Returns the corresponding x-index for a given touch-position in pixels.
-	 * 
-	 * @param x
-	 * @return
-	 */
-	protected int getXIndex(float x) {
+        IDataSet dataSet = mChart.getData().getDataSetByIndex(dataSetIndex);
+        //Check for Scatter/Bubble special case
+        if (isSpecialBubbleSelectionCase(xIndex, (DataSet) dataSet)) {
+            //Get the Y value
+            int yIndex = getYIndex(x, y);
+            Highlight highlight = new Highlight(xIndex, dataSetIndex);
+            highlight.setYIndex(yIndex);
+            return highlight;
+        }
 
-		// create an array of the touch-point
-		float[] pts = new float[2];
-		pts[0] = x;
 
-		// take any transformer to determine the x-axis value
-		mChart.getTransformer(YAxis.AxisDependency.LEFT).pixelsToValue(pts);
+        return new Highlight(xIndex, dataSetIndex);
+    }
 
-		return (int) Math.round(pts[0]);
-	}
+    private boolean isSpecialBubbleSelectionCase(int xIndex, DataSet dataSet) {
 
-	/**
-	 * Returns the corresponding dataset-index for a given xIndex and xy-touch position in pixels.
-	 * 
-	 * @param xIndex
-	 * @param x
-	 * @param y
-	 * @return
-	 */
-	protected int getDataSetIndex(int xIndex, float x, float y) {
+        int low = 0;
+        int high = dataSet.getYVals().size() - 1;
 
-		List<SelectionDetail> valsAtIndex = getSelectionDetailsAtIndex(xIndex);
+        while (low <= high) {
+            int m = (high + low) / 2;
 
-		float leftdist = Utils.getMinimumDistance(valsAtIndex, y, YAxis.AxisDependency.LEFT);
-		float rightdist = Utils.getMinimumDistance(valsAtIndex, y, YAxis.AxisDependency.RIGHT);
+            if (xIndex == ((Entry) dataSet.getYVals().get(m)).getXIndex()) {
+                if (m < dataSet.getYVals().size() - 1) {
+                    return ((Entry) dataSet.getYVals().get(m - 1)).getXIndex() == xIndex ||
+                            ((Entry) dataSet.getYVals().get(m + 1)).getXIndex() == xIndex;
+                } else {
+                    return ((Entry) dataSet.getYVals().get(m - 1)).getXIndex() == xIndex;
+                }
+            }
 
-		YAxis.AxisDependency axis = leftdist < rightdist ? YAxis.AxisDependency.LEFT : YAxis.AxisDependency.RIGHT;
+            if (xIndex > ((Entry) dataSet.getYVals().get(m)).getXIndex())
+                low = m + 1;
+            else
+                high = m - 1;
+        }
 
-		int dataSetIndex = Utils.getClosestDataSetIndex(valsAtIndex, y, axis);
+        return false;
+    }
 
-		return dataSetIndex;
-	}
+    /**
+     * Returns the corresponding x-index for a given touch-position in pixels.
+     *
+     * @param x
+     * @return
+     */
+    protected int getXIndex(float x) {
 
-	/**
-	 * Returns a list of SelectionDetail object corresponding to the given xIndex.
-	 * 
-	 * @param xIndex
-	 * @return
-	 */
-	protected List<SelectionDetail> getSelectionDetailsAtIndex(int xIndex) {
+        // create an array of the touch-point
+        float[] pts = new float[2];
+        pts[0] = x;
 
-		List<SelectionDetail> vals = new ArrayList<SelectionDetail>();
+        // take any transformer to determine the x-axis value
+        mChart.getTransformer(YAxis.AxisDependency.LEFT).pixelsToValue(pts);
 
-		float[] pts = new float[2];
+        return (int) Math.round(pts[0]);
+    }
 
-		for (int i = 0; i < mChart.getData().getDataSetCount(); i++) {
+    protected int getYIndex(float x, float y) {
 
-			IDataSet dataSet = mChart.getData().getDataSetByIndex(i);
+        // create an array of the touch-point
+        float[] pts = {x, y};
 
-			// dont include datasets that cannot be highlighted
-			if (!dataSet.isHighlightEnabled())
-				continue;
+        // take any transformer to determine the y-axis value
+        mChart.getTransformer(YAxis.AxisDependency.LEFT).pixelsToValue(pts);
 
-			// extract all y-values from all DataSets at the given x-index
-			final float yVal = dataSet.getYValForXIndex(xIndex);
-			if (yVal == Float.NaN)
-				continue;
+        return Math.round(pts[1]);
+    }
 
-			pts[1] = yVal;
+    /**
+     * Returns the corresponding dataset-index for a given xIndex and xy-touch position in pixels.
+     *
+     * @param xIndex
+     * @param x
+     * @param y
+     * @return
+     */
+    protected int getDataSetIndex(int xIndex, float x, float y) {
 
-			mChart.getTransformer(dataSet.getAxisDependency()).pointValuesToPixel(pts);
+        List<SelectionDetail> valsAtIndex = getSelectionDetailsAtIndex(xIndex, x, y);
 
-			if (!Float.isNaN(pts[1])) {
-				vals.add(new SelectionDetail(pts[1], i, dataSet));
-			}
-		}
+        float leftdist = Utils.getMinimumDistance(valsAtIndex, y, YAxis.AxisDependency.LEFT);
+        float rightdist = Utils.getMinimumDistance(valsAtIndex, y, YAxis.AxisDependency.RIGHT);
 
-		return vals;
-	}
+        YAxis.AxisDependency axis = leftdist < rightdist ? YAxis.AxisDependency.LEFT : YAxis.AxisDependency.RIGHT;
+
+        int dataSetIndex = Utils.getClosestDataSetIndex(valsAtIndex, y, axis);
+
+        return dataSetIndex;
+    }
+
+    /**
+     * Returns a list of SelectionDetail object corresponding to the given xIndex.
+     *
+     * @param xIndex
+     * @return
+     */
+    protected List<SelectionDetail> getSelectionDetailsAtIndex(int xIndex, float x, float y) {
+
+        List<SelectionDetail> vals = new ArrayList<>();
+
+        float[] pts = new float[2];
+
+        for (int i = 0; i < mChart.getData().getDataSetCount(); i++) {
+
+            IDataSet dataSet = mChart.getData().getDataSetByIndex(i);
+
+            // dont include datasets that cannot be highlighted
+            if (!dataSet.isHighlightEnabled())
+                continue;
+
+            // extract all y-values from all DataSets at the given x-index
+
+            //Get the Y value
+            int yIndex = getYIndex(x, y);
+
+            final float yVal = dataSet.getYValForXIndex(xIndex, yIndex);
+
+            if (yVal == Float.NaN)
+                continue;
+
+            pts[1] = yVal;
+
+            mChart.getTransformer(dataSet.getAxisDependency()).pointValuesToPixel(pts);
+
+
+            if (!Float.isNaN(pts[1])) {
+                vals.add(new SelectionDetail(pts[1], i, dataSet));
+            }
+
+        }
+
+        return vals;
+    }
 }

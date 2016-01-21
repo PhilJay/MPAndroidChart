@@ -1,5 +1,6 @@
 package com.github.mikephil.charting.data.realm.base;
 
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.BaseDataSet;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -344,5 +345,26 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
      */
     public void setIndexField(String xIndexField) {
         this.mIndexField = xIndexField;
+    }
+
+    //Dummy Overridden methods, that only are used on Bubble/Scatter Chart
+    @Override
+    public S getEntryForXIndex(int xIndex, int yIndex) {
+        return null;
+    }
+
+    @Override
+    public S getEntryForXIndex(int xIndex, int yIndex, DataSet.Rounding rounding) {
+        return null;
+    }
+
+    @Override
+    public int getEntryIndex(int xIndex, int yIndex, DataSet.Rounding rounding) {
+        return 0;
+    }
+
+    @Override
+    public float getYValForXIndex(int xIndex, int yIndex) {
+        return 0;
     }
 }
