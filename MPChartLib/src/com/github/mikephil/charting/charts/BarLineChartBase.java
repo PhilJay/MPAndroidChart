@@ -98,7 +98,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     /**
      * flag indicating if the grid background should be drawn or not
      */
-    protected boolean mDrawGridBackground = true;
+    protected boolean mDrawGridBackground = false;
 
     protected boolean mDrawBorders = false;
 
