@@ -46,7 +46,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         extends Chart<T> implements BarLineScatterCandleBubbleDataProvider {
 
     /**
-     * the maximum number of entried to which values will be drawn
+     * the maximum number of entries to which values will be drawn
+     * (entry numbers greater than this value will cause value-labels to disappear)
      */
     protected int mMaxVisibleCount = 100;
 
@@ -113,10 +114,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     protected OnDrawListener mDrawListener;
 
     /**
-     * the object representing the labels on the y-axis, this object is prepared
-     * in the pepareYLabels() method
+     * the object representing the labels on the left y-axis
      */
     protected YAxis mAxisLeft;
+
+    /**
+     * the object representing the labels on the right y-axis
+     */
     protected YAxis mAxisRight;
 
     /**
@@ -1133,12 +1137,16 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         mBorderPaint.setColor(color);
     }
 
-    /** Gets the minimum offset (padding) around the chart, defaults to 15.f */
+    /**
+     * Gets the minimum offset (padding) around the chart, defaults to 15.f
+     */
     public float getMinOffset() {
         return mMinOffset;
     }
 
-    /** Sets the minimum offset (padding) around the chart, defaults to 15.f */
+    /**
+     * Sets the minimum offset (padding) around the chart, defaults to 15.f
+     */
     public void setMinOffset(float minOffset) {
         mMinOffset = minOffset;
     }
