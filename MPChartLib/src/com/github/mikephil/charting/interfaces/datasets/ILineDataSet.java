@@ -1,6 +1,7 @@
 package com.github.mikephil.charting.interfaces.datasets;
 
 import android.graphics.DashPathEffect;
+import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.FillFormatter;
@@ -81,4 +82,16 @@ public interface ILineDataSet extends ILineRadarDataSet<Entry> {
      * @return
      */
     FillFormatter getFillFormatter();
+
+
+    /**
+     * Sets the drawable to be used for filling
+     * @param drawable
+     */
+    void setFillDrawable(Drawable drawable);
+
+    /**
+     * @return the drawable used for filling
+     */
+    Drawable getFillDrawable();
 }
