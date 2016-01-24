@@ -6,10 +6,10 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.realm.base.RealmBarLineScatterCandleBubbleDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
+import io.realm.DynamicRealmObject;
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
-import io.realm.dynamic.DynamicRealmList;
-import io.realm.dynamic.DynamicRealmObject;
 
 /**
  * Created by Philipp Jahoda on 07/11/15.
@@ -85,7 +85,7 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
 
             } catch (IllegalArgumentException e) {
 
-                DynamicRealmList list = dynamicObject.getList(mValuesField);
+                RealmList<DynamicRealmObject> list = dynamicObject.getList(mValuesField);
                 float[] values = new float[list.size()];
 
                 int i = 0;

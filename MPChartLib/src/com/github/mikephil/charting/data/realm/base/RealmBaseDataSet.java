@@ -9,6 +9,7 @@ import java.util.List;
 
 import io.realm.RealmObject;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * Created by Philipp Jahoda on 06/11/15.
@@ -51,7 +52,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         this.mValues = new ArrayList<S>();
 
         if (mIndexField != null)
-            this.results.sort(mIndexField, true);
+            this.results.sort(mIndexField, Sort.ASCENDING);
     }
 
     /**
@@ -68,7 +69,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         this.mValues = new ArrayList<S>();
 
         if (mIndexField != null)
-            this.results.sort(mIndexField, true);
+            this.results.sort(mIndexField, Sort.ASCENDING);
     }
 
     /**
