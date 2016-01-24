@@ -1,6 +1,7 @@
 package com.github.mikephil.charting.data.realm.base;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.datasets.ILineRadarDataSet;
@@ -17,6 +18,9 @@ public abstract class RealmLineRadarDataSet<T extends RealmObject> extends Realm
 
     /** the color that is used for filling the line surface */
     private int mFillColor = Color.rgb(140, 234, 255);
+
+    /** the drawable to be used for filling the line surface*/
+    protected Drawable mFillDrawable;
 
     /** transparency used for filling line surface */
     private int mFillAlpha = 85;
@@ -79,6 +83,20 @@ public abstract class RealmLineRadarDataSet<T extends RealmObject> extends Realm
      */
     public void setFillColor(int color) {
         mFillColor = color;
+    }
+
+    @Override
+    public Drawable getFillDrawable() {
+        return mFillDrawable;
+    }
+
+    /**
+     * Sets the drawable to be used to fill the area below the line.
+     *
+     * @param drawable
+     */
+    public void setFillDrawable(Drawable drawable) {
+        this.mFillDrawable = drawable;
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.buffer.CircleBuffer;
@@ -86,7 +87,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
             if (width > 0 && height > 0) {
 
-                mDrawBitmap = new WeakReference<Bitmap>(Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444));
+                mDrawBitmap = new WeakReference<Bitmap>(Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565));
                 mBitmapCanvas = new Canvas(mDrawBitmap.get());
             } else
                 return;
@@ -124,6 +125,22 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
         }
 
         mRenderPaint.setPathEffect(null);
+    }
+
+    /**
+     * Draws the provided path in filled mode with the provided drawable.
+     */
+    protected void drawFilledPath(Canvas c, Path filledPath, Drawable drawable) {
+        c.save();
+        c.clipPath(filledPath);
+
+        drawable.setBounds((int) mViewPortHandler.contentLeft(),
+                (int) mViewPortHandler.contentTop(),
+                (int) mViewPortHandler.contentRight(),
+                (int) mViewPortHandler.contentBottom());
+        drawable.draw(c);
+
+        c.restore();
     }
 
     /**
@@ -253,7 +270,14 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
         trans.pathValueToPixel(spline);
 
-        drawFilledPath(c, spline, dataSet.getFillColor(), dataSet.getFillAlpha());
+        final Drawable drawable = dataSet.getFillDrawable();
+        if (dataSet.getFillDrawable() != null) {
+
+            drawFilledPath(c, spline, drawable);
+        } else {
+
+            drawFilledPath(c, spline, dataSet.getFillColor(), dataSet.getFillAlpha());
+        }
     }
 
     /**
@@ -350,7 +374,14 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
         trans.pathValueToPixel(filled);
 
-        drawFilledPath(c, filled, dataSet.getFillColor(), dataSet.getFillAlpha());
+        final Drawable drawable = dataSet.getFillDrawable();
+        if (drawable != null) {
+
+            drawFilledPath(c, filled, drawable);
+        } else {
+
+            drawFilledPath(c, filled, dataSet.getFillColor(), dataSet.getFillAlpha());
+        }
     }
 
     /**
