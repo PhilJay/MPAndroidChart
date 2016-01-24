@@ -78,12 +78,12 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
 
             DynamicRealmObject dynamicObject = new DynamicRealmObject(realmObject);
 
-            try {
+            try { // normal entry
 
                 float value = dynamicObject.getFloat(mValuesField);
                 mValues.add(new BarEntry(value, dynamicObject.getInt(mIndexField)));
 
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException e) { // stacked entry
 
                 RealmList<DynamicRealmObject> list = dynamicObject.getList(mValuesField);
                 float[] values = new float[list.size()];
