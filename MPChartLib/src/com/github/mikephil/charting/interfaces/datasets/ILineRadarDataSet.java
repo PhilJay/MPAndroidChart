@@ -1,5 +1,7 @@
 package com.github.mikephil.charting.interfaces.datasets;
 
+import android.graphics.drawable.Drawable;
+
 import com.github.mikephil.charting.data.Entry;
 
 /**
@@ -13,6 +15,13 @@ public interface ILineRadarDataSet<T extends Entry> extends ILineScatterCandleRa
      * @return
      */
     int getFillColor();
+
+    /**
+     * Returns the drawable used for filling the area below the line.
+     *
+     * @return
+     */
+    Drawable getFillDrawable();
 
     /**
      * Returns the alpha value that is used for filling the line surface,
