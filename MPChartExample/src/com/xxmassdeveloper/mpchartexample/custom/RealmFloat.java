@@ -21,7 +21,7 @@ public class RealmFloat extends RealmObject {
         return floatValue;
     }
 
-    public void setFloatValue(Float value) {
+    public void setFloatValue(float value) {
         this.floatValue = value;
     }
 }
