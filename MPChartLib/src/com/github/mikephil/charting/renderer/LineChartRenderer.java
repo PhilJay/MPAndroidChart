@@ -87,7 +87,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
             if (width > 0 && height > 0) {
 
-                mDrawBitmap = new WeakReference<Bitmap>(Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565));
+                mDrawBitmap = new WeakReference<Bitmap>(Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888));
                 mBitmapCanvas = new Canvas(mDrawBitmap.get());
             } else
                 return;
