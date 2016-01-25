@@ -44,6 +44,11 @@ public class LineChartRenderer extends LineRadarRenderer {
      */
     protected Canvas mBitmapCanvas;
 
+    /**
+     * the bitmap configuration to be used
+     */
+    protected Bitmap.Config mBitmapConfig = Bitmap.Config.ARGB_8888;
+
     protected Path cubicPath = new Path();
     protected Path cubicFillPath = new Path();
 
@@ -87,7 +92,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             if (width > 0 && height > 0) {
 
-                mDrawBitmap = new WeakReference<Bitmap>(Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888));
+                mDrawBitmap = new WeakReference<Bitmap>(Bitmap.createBitmap(width, height, mBitmapConfig));
                 mBitmapCanvas = new Canvas(mDrawBitmap.get());
             } else
                 return;
@@ -569,6 +574,27 @@ public class LineChartRenderer extends LineRadarRenderer {
             // draw the lines
             drawHighlightLines(c, pts, set);
         }
+    }
+
+    /**
+     * Sets the Bitmap.Config to be used by this renderer.
+     * Default: Bitmap.Config.ARGB_8888
+     * Use Bitmap.Config.ARGB_4444 to consume less memory.
+     *
+     * @param config
+     */
+    public void setBitmapConfig(Bitmap.Config config) {
+        mBitmapConfig = config;
+        releaseBitmap();
+    }
+
+    /**
+     * Returns the Bitmap.Config that is used by this renderer.
+     *
+     * @return
+     */
+    public Bitmap.Config getBitmapConfig() {
+        return mBitmapConfig;
     }
 
     /**
