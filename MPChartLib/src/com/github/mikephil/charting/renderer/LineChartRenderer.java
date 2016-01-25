@@ -23,7 +23,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-public class LineChartRenderer extends LineScatterCandleRadarRenderer {
+public class LineChartRenderer extends LineRadarRenderer {
 
     protected LineDataProvider mChart;
 
@@ -125,22 +125,6 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
         }
 
         mRenderPaint.setPathEffect(null);
-    }
-
-    /**
-     * Draws the provided path in filled mode with the provided drawable.
-     */
-    protected void drawFilledPath(Canvas c, Path filledPath, Drawable drawable) {
-        c.save();
-        c.clipPath(filledPath);
-
-        drawable.setBounds((int) mViewPortHandler.contentLeft(),
-                (int) mViewPortHandler.contentTop(),
-                (int) mViewPortHandler.contentRight(),
-                (int) mViewPortHandler.contentBottom());
-        drawable.draw(c);
-
-        c.restore();
     }
 
     /**
@@ -271,7 +255,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
         trans.pathValueToPixel(spline);
 
         final Drawable drawable = dataSet.getFillDrawable();
-        if (dataSet.getFillDrawable() != null) {
+        if (drawable != null) {
 
             drawFilledPath(c, spline, drawable);
         } else {
@@ -382,24 +366,6 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
             drawFilledPath(c, filled, dataSet.getFillColor(), dataSet.getFillAlpha());
         }
-    }
-
-    /**
-     * Draws the provided path in filled mode with the provided color and alpha.
-     * Special thanks to Angelo Suzuki (https://github.com/tinsukE) for this.
-     *
-     * @param c
-     * @param filledPath
-     * @param fillColor
-     * @param fillAlpha
-     */
-    protected void drawFilledPath(Canvas c, Path filledPath, int fillColor, int fillAlpha) {
-        c.save();
-        c.clipPath(filledPath);
-
-        int color = (fillAlpha << 24) | (fillColor & 0xffffff);
-        c.drawColor(color);
-        c.restore();
     }
 
     /**

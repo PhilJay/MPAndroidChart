@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.RadarChart;
@@ -16,7 +17,7 @@ import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-public class RadarChartRenderer extends LineScatterCandleRadarRenderer {
+public class RadarChartRenderer extends LineRadarRenderer {
 
     protected RadarChart mChart;
 
@@ -96,20 +97,29 @@ public class RadarChartRenderer extends LineScatterCandleRadarRenderer {
 
         surface.close();
 
-        // draw filled
-        if (dataSet.isDrawFilledEnabled()) {
-            mRenderPaint.setStyle(Paint.Style.FILL);
-            mRenderPaint.setAlpha(dataSet.getFillAlpha());
-            c.drawPath(surface, mRenderPaint);
-            mRenderPaint.setAlpha(255);
-        }
-
         mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
         mRenderPaint.setStyle(Paint.Style.STROKE);
 
         // draw the line (only if filled is disabled or alpha is below 255)
         if (!dataSet.isDrawFilledEnabled() || dataSet.getFillAlpha() < 255)
             c.drawPath(surface, mRenderPaint);
+
+        final Drawable drawable = dataSet.getFillDrawable();
+        if (drawable != null) {
+
+            drawFilledPath(c, surface, drawable);
+        } else {
+
+            drawFilledPath(c, surface, dataSet.getFillColor(), dataSet.getFillAlpha());
+        }
+//
+//        // draw filled
+//        if (dataSet.isDrawFilledEnabled()) {
+//            mRenderPaint.setStyle(Paint.Style.FILL);
+//            mRenderPaint.setAlpha(dataSet.getFillAlpha());
+//            c.drawPath(surface, mRenderPaint);
+//            mRenderPaint.setAlpha(255);
+//        }
     }
 
     @Override
