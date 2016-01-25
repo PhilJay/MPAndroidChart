@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.buffer.CircleBuffer;
@@ -22,7 +23,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-public class LineChartRenderer extends LineScatterCandleRadarRenderer {
+public class LineChartRenderer extends LineRadarRenderer {
 
     protected LineDataProvider mChart;
 
@@ -42,6 +43,11 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
      * pathBitmap
      */
     protected Canvas mBitmapCanvas;
+
+    /**
+     * the bitmap configuration to be used
+     */
+    protected Bitmap.Config mBitmapConfig = Bitmap.Config.ARGB_8888;
 
     protected Path cubicPath = new Path();
     protected Path cubicFillPath = new Path();
@@ -86,7 +92,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
             if (width > 0 && height > 0) {
 
-                mDrawBitmap = new WeakReference<Bitmap>(Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444));
+                mDrawBitmap = new WeakReference<Bitmap>(Bitmap.createBitmap(width, height, mBitmapConfig));
                 mBitmapCanvas = new Canvas(mDrawBitmap.get());
             } else
                 return;
@@ -253,7 +259,14 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
         trans.pathValueToPixel(spline);
 
-        drawFilledPath(c, spline, dataSet.getFillColor(), dataSet.getFillAlpha());
+        final Drawable drawable = dataSet.getFillDrawable();
+        if (drawable != null) {
+
+            drawFilledPath(c, spline, drawable);
+        } else {
+
+            drawFilledPath(c, spline, dataSet.getFillColor(), dataSet.getFillAlpha());
+        }
     }
 
     /**
@@ -350,25 +363,14 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
         trans.pathValueToPixel(filled);
 
-        drawFilledPath(c, filled, dataSet.getFillColor(), dataSet.getFillAlpha());
-    }
+        final Drawable drawable = dataSet.getFillDrawable();
+        if (drawable != null) {
 
-    /**
-     * Draws the provided path in filled mode with the provided color and alpha.
-     * Special thanks to Angelo Suzuki (https://github.com/tinsukE) for this.
-     *
-     * @param c
-     * @param filledPath
-     * @param fillColor
-     * @param fillAlpha
-     */
-    protected void drawFilledPath(Canvas c, Path filledPath, int fillColor, int fillAlpha) {
-        c.save();
-        c.clipPath(filledPath);
+            drawFilledPath(c, filled, drawable);
+        } else {
 
-        int color = (fillAlpha << 24) | (fillColor & 0xffffff);
-        c.drawColor(color);
-        c.restore();
+            drawFilledPath(c, filled, dataSet.getFillColor(), dataSet.getFillAlpha());
+        }
     }
 
     /**
@@ -572,6 +574,27 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
             // draw the lines
             drawHighlightLines(c, pts, set);
         }
+    }
+
+    /**
+     * Sets the Bitmap.Config to be used by this renderer.
+     * Default: Bitmap.Config.ARGB_8888
+     * Use Bitmap.Config.ARGB_4444 to consume less memory.
+     *
+     * @param config
+     */
+    public void setBitmapConfig(Bitmap.Config config) {
+        mBitmapConfig = config;
+        releaseBitmap();
+    }
+
+    /**
+     * Returns the Bitmap.Config that is used by this renderer.
+     *
+     * @return
+     */
+    public Bitmap.Config getBitmapConfig() {
+        return mBitmapConfig;
     }
 
     /**

@@ -1,12 +1,10 @@
 package com.github.mikephil.charting.data.realm.implementation;
 
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.realm.base.RealmLineRadarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 
 import io.realm.RealmObject;
 import io.realm.RealmResults;
-import io.realm.dynamic.DynamicRealmObject;
 
 /**
  * Created by Philipp Jahoda on 07/11/15.
