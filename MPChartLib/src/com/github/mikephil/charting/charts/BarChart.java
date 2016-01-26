@@ -155,6 +155,23 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 		return bounds;
 	}
 
+	public RectF getBarBounds(int xIndex, float xPos, float yPos) {
+		float barspace = 0.15f;
+		float barWidth = 0.95f;
+
+		float spaceThird = barspace / 6.0f;
+
+		float left = xIndex - barWidth + spaceThird; //xPos;
+		float right = xIndex + barWidth - spaceThird - 0.15f;
+		float top = yPos >= 0 ? yPos : 0;
+		float bottom = yPos <= 0 ? yPos : 0;
+
+		RectF bounds = new RectF(left, top, right, bottom);
+
+		getTransformer(AxisDependency.LEFT).rectValueToPixel(bounds);
+		return bounds;
+	}
+
 	/**
 	 * set this to true to draw the highlightning arrow
 	 * 
