@@ -161,7 +161,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 
 		float spaceThird = barspace / 6.0f;
 
-		float left = xIndex - barWidth + spaceThird; //xPos;
+		float left = xIndex - barWidth + spaceThird; 
 		float right = xIndex + barWidth - spaceThird - 0.15f;
 		float top = yPos >= 0 ? yPos : 0;
 		float bottom = yPos <= 0 ? yPos : 0;
