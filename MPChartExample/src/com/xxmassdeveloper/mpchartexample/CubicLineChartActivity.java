@@ -15,16 +15,19 @@ import android.widget.Toast;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
-import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.formatter.FillFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeListener {
 
@@ -54,13 +57,11 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         mSeekBarX.setOnSeekBarChangeListener(this);
 
         mChart = (LineChart) findViewById(R.id.chart1);
-        // if enabled, the chart will always start at zero on the y-axis
+        mChart.setViewPortOffsets(0, 20, 0, 0);
+        mChart.setBackgroundColor(Color.rgb(104, 241, 175));
 
         // no description text
         mChart.setDescription("");
-
-        // enable value highlighting
-        mChart.setHighlightEnabled(true);
 
         // enable touch gestures
         mChart.setTouchEnabled(true);
@@ -77,13 +78,16 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
         
         XAxis x = mChart.getXAxis();
-        x.setTypeface(tf);
         x.setEnabled(false);
         
         YAxis y = mChart.getAxisLeft();
         y.setTypeface(tf);
-        y.setLabelCount(5, false);
-        y.setEnabled(false);
+        y.setLabelCount(6, false);
+        y.setStartAtZero(false);
+        y.setTextColor(Color.WHITE);
+        y.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
+        y.setDrawGridLines(false);
+        y.setAxisLineColor(Color.WHITE);
         
         mChart.getAxisRight().setEnabled(false);
 
@@ -109,26 +113,28 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
 
         switch (item.getItemId()) {
             case R.id.actionToggleValues: {
-                for (DataSet<?> set : mChart.getData().getDataSets())
+                for (IDataSet set : mChart.getData().getDataSets())
                     set.setDrawValues(!set.isDrawValuesEnabled());
 
                 mChart.invalidate();
                 break;
             }
             case R.id.actionToggleHighlight: {
-                if (mChart.isHighlightEnabled())
-                    mChart.setHighlightEnabled(false);
-                else
-                    mChart.setHighlightEnabled(true);
-                mChart.invalidate();
+                if(mChart.getData() != null) {
+                    mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
+                    mChart.invalidate();
+                }
                 break;
             }
             case R.id.actionToggleFilled: {
 
-                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getData()
+                List<ILineDataSet> sets = mChart.getData()
                         .getDataSets();
 
-                for (LineDataSet set : sets) {
+                for (ILineDataSet iSet : sets) {
+
+                    LineDataSet set = (LineDataSet) iSet;
+
                     if (set.isDrawFilledEnabled())
                         set.setDrawFilled(false);
                     else
@@ -138,10 +144,12 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
                 break;
             }
             case R.id.actionToggleCircles: {
-                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getData()
+                List<ILineDataSet> sets = mChart.getData()
                         .getDataSets();
 
-                for (LineDataSet set : sets) {
+                for (ILineDataSet iSet : sets) {
+
+                    LineDataSet set = (LineDataSet) iSet;
                     if (set.isDrawCirclesEnabled())
                         set.setDrawCircles(false);
                     else
@@ -151,10 +159,12 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
                 break;
             }
             case R.id.actionToggleCubic: {
-                ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getData()
+                List<ILineDataSet> sets = mChart.getData()
                         .getDataSets();
 
-                for (LineDataSet set : sets) {
+                for (ILineDataSet iSet : sets) {
+
+                    LineDataSet set = (LineDataSet) iSet;
                     if (set.isDrawCubicEnabled())
                         set.setDrawCubic(false);
                     else
@@ -270,12 +280,20 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         set1.setCubicIntensity(0.2f);
         //set1.setDrawFilled(true);
         set1.setDrawCircles(false); 
-        set1.setLineWidth(2f);
-        set1.setCircleSize(5f);
+        set1.setLineWidth(1.8f);
+        set1.setCircleRadius(4f);
+        set1.setCircleColor(Color.WHITE);
         set1.setHighLightColor(Color.rgb(244, 117, 117));
-        set1.setColor(Color.rgb(104, 241, 175));
-        set1.setFillColor(ColorTemplate.getHoloBlue());
+        set1.setColor(Color.WHITE);
+        set1.setFillColor(Color.WHITE);
+        set1.setFillAlpha(100);
         set1.setDrawHorizontalHighlightIndicator(false);
+        set1.setFillFormatter(new FillFormatter() {
+            @Override
+            public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
+                return -10;
+            }
+        });
         
         // create a data object with the datasets
         LineData data = new LineData(xVals, set1);

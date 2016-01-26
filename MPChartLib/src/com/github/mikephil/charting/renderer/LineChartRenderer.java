@@ -1,4 +1,3 @@
-
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Bitmap;
@@ -6,22 +5,25 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.buffer.CircleBuffer;
 import com.github.mikephil.charting.buffer.LineBuffer;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.LineDataProvider;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
-public class LineChartRenderer extends LineScatterCandleRadarRenderer {
+public class LineChartRenderer extends LineRadarRenderer {
 
     protected LineDataProvider mChart;
 
@@ -34,13 +36,18 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
      * Bitmap object used for drawing the paths (otherwise they are too long if
      * rendered directly on the canvas)
      */
-    protected Bitmap mDrawBitmap;
+    protected WeakReference<Bitmap> mDrawBitmap;
 
     /**
      * on this canvas, the paths are rendered, it is initialized with the
      * pathBitmap
      */
     protected Canvas mBitmapCanvas;
+
+    /**
+     * the bitmap configuration to be used
+     */
+    protected Bitmap.Config mBitmapConfig = Bitmap.Config.ARGB_8888;
 
     protected Path cubicPath = new Path();
     protected Path cubicFillPath = new Path();
@@ -67,7 +74,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
         mCircleBuffers = new CircleBuffer[lineData.getDataSetCount()];
 
         for (int i = 0; i < mLineBuffers.length; i++) {
-            LineDataSet set = lineData.getDataSetByIndex(i);
+            ILineDataSet set = lineData.getDataSetByIndex(i);
             mLineBuffers[i] = new LineBuffer(set.getEntryCount() * 4 - 4);
             mCircleBuffers[i] = new CircleBuffer(set.getEntryCount() * 2);
         }
@@ -80,35 +87,33 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
         int height = (int) mViewPortHandler.getChartHeight();
 
         if (mDrawBitmap == null
-                || (mDrawBitmap.getWidth() != width)
-                || (mDrawBitmap.getHeight() != height)) {
+                || (mDrawBitmap.get().getWidth() != width)
+                || (mDrawBitmap.get().getHeight() != height)) {
 
             if (width > 0 && height > 0) {
 
-                mDrawBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
-                mBitmapCanvas = new Canvas(mDrawBitmap);
+                mDrawBitmap = new WeakReference<Bitmap>(Bitmap.createBitmap(width, height, mBitmapConfig));
+                mBitmapCanvas = new Canvas(mDrawBitmap.get());
             } else
                 return;
         }
 
-        mDrawBitmap.eraseColor(Color.TRANSPARENT);
+        mDrawBitmap.get().eraseColor(Color.TRANSPARENT);
 
         LineData lineData = mChart.getLineData();
 
-        for (LineDataSet set : lineData.getDataSets()) {
+        for (ILineDataSet set : lineData.getDataSets()) {
 
             if (set.isVisible() && set.getEntryCount() > 0)
                 drawDataSet(c, set);
         }
 
-        c.drawBitmap(mDrawBitmap, 0, 0, mRenderPaint);
+        c.drawBitmap(mDrawBitmap.get(), 0, 0, mRenderPaint);
     }
 
-    protected void drawDataSet(Canvas c, LineDataSet dataSet) {
+    protected void drawDataSet(Canvas c, ILineDataSet dataSet) {
 
-        List<Entry> entries = dataSet.getYVals();
-
-        if (entries.size() < 1)
+        if (dataSet.getEntryCount() < 1)
             return;
 
         mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
@@ -117,11 +122,11 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
         // if drawing cubic lines is enabled
         if (dataSet.isDrawCubicEnabled()) {
 
-            drawCubic(c, dataSet, entries);
+            drawCubic(c, dataSet);
 
             // draw normal (straight) lines
         } else {
-            drawLinear(c, dataSet, entries);
+            drawLinear(c, dataSet);
         }
 
         mRenderPaint.setPathEffect(null);
@@ -132,19 +137,19 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
      *
      * @param c
      * @param dataSet
-     * @param entries
      */
-    protected void drawCubic(Canvas c, LineDataSet dataSet, List<Entry> entries) {
+    protected void drawCubic(Canvas c, ILineDataSet dataSet) {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-        Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
-        Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
+        int entryCount = dataSet.getEntryCount();
+
+        Entry entryFrom = dataSet.getEntryForXIndex((mMinX < 0) ? 0 : mMinX, DataSet.Rounding.DOWN);
+        Entry entryTo = dataSet.getEntryForXIndex(mMaxX, DataSet.Rounding.UP);
 
         int diff = (entryFrom == entryTo) ? 1 : 0;
-        int minx = Math.max(dataSet.getEntryPosition(entryFrom) - diff, 0);
-        int maxx = Math.min(Math.max(
-                minx + 2, dataSet.getEntryPosition(entryTo) + 1), entries.size());
+        int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff, 0);
+        int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, entryCount);
 
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
@@ -162,10 +167,10 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
             float curDx = 0f;
             float curDy = 0f;
 
-            Entry prevPrev = entries.get(minx);
-            Entry prev = entries.get(minx);
-            Entry cur = entries.get(minx);
-            Entry next = entries.get(minx + 1);
+            Entry prevPrev = dataSet.getEntryForIndex(minx);
+            Entry prev = prevPrev;
+            Entry cur = prev;
+            Entry next = dataSet.getEntryForIndex(minx + 1);
 
             // let the spline start
             cubicPath.moveTo(cur.getXIndex(), cur.getVal() * phaseY);
@@ -181,12 +186,12 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
                     cur.getXIndex() - curDx,
                     (cur.getVal() - curDy) * phaseY, cur.getXIndex(), cur.getVal() * phaseY);
 
-            for (int j = minx + 1, count = Math.min(size, entries.size() - 1); j < count; j++) {
+            for (int j = minx + 1, count = Math.min(size, entryCount - 1); j < count; j++) {
 
-                prevPrev = entries.get(j == 1 ? 0 : j - 2);
-                prev = entries.get(j - 1);
-                cur = entries.get(j);
-                next = entries.get(j + 1);
+                prevPrev = dataSet.getEntryForIndex(j == 1 ? 0 : j - 2);
+                prev = dataSet.getEntryForIndex(j - 1);
+                cur = dataSet.getEntryForIndex(j);
+                next = dataSet.getEntryForIndex(j + 1);
 
                 prevDx = (cur.getXIndex() - prevPrev.getXIndex()) * intensity;
                 prevDy = (cur.getVal() - prevPrev.getVal()) * intensity;
@@ -198,12 +203,12 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
                         (cur.getVal() - curDy) * phaseY, cur.getXIndex(), cur.getVal() * phaseY);
             }
 
-            if (size > entries.size() - 1) {
+            if (size > entryCount - 1) {
 
-                prevPrev = entries.get((entries.size() >= 3) ? entries.size() - 3
-                        : entries.size() - 2);
-                prev = entries.get(entries.size() - 2);
-                cur = entries.get(entries.size() - 1);
+                prevPrev = dataSet.getEntryForIndex((entryCount >= 3) ? entryCount - 3
+                        : entryCount - 2);
+                prev = dataSet.getEntryForIndex(entryCount - 2);
+                cur = dataSet.getEntryForIndex(entryCount - 1);
                 next = cur;
 
                 prevDx = (cur.getXIndex() - prevPrev.getXIndex()) * intensity;
@@ -239,7 +244,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
         mRenderPaint.setPathEffect(null);
     }
 
-    protected void drawCubicFill(Canvas c, LineDataSet dataSet, Path spline, Transformer trans,
+    protected void drawCubicFill(Canvas c, ILineDataSet dataSet, Path spline, Transformer trans,
                                  int from, int to) {
 
         if (to - from <= 1)
@@ -254,7 +259,14 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
         trans.pathValueToPixel(spline);
 
-        drawFilledPath(c, spline, dataSet.getFillColor(), dataSet.getFillAlpha());
+        final Drawable drawable = dataSet.getFillDrawable();
+        if (drawable != null) {
+
+            drawFilledPath(c, spline, drawable);
+        } else {
+
+            drawFilledPath(c, spline, dataSet.getFillColor(), dataSet.getFillAlpha());
+        }
     }
 
     /**
@@ -262,9 +274,10 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
      *
      * @param c
      * @param dataSet
-     * @param entries
      */
-    protected void drawLinear(Canvas c, LineDataSet dataSet, List<Entry> entries) {
+    protected void drawLinear(Canvas c, ILineDataSet dataSet) {
+
+        int entryCount = dataSet.getEntryCount();
 
         int dataSetIndex = mChart.getLineData().getIndexOfDataSet(dataSet);
 
@@ -284,13 +297,11 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
             canvas = c;
         }
 
-        Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
-        Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
+        Entry entryFrom = dataSet.getEntryForXIndex((mMinX < 0) ? 0 : mMinX, DataSet.Rounding.DOWN);
+        Entry entryTo = dataSet.getEntryForXIndex(mMaxX, DataSet.Rounding.UP);
 
-        int diff = (entryFrom == entryTo) ? 1 : 0;
-        int minx = Math.max(dataSet.getEntryPosition(entryFrom) - diff, 0);
-        int maxx = Math.min(Math.max(
-                minx + 2, dataSet.getEntryPosition(entryTo) + 1), entries.size());
+        int minx = Math.max(dataSet.getEntryIndex(entryFrom), 0);
+        int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, entryCount);
 
         int range = (maxx - minx) * 4 - 4;
 
@@ -298,7 +309,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
         buffer.setPhases(phaseX, phaseY);
         buffer.limitFrom(minx);
         buffer.limitTo(maxx);
-        buffer.feed(entries);
+        buffer.feed(dataSet);
 
         trans.pointValuesToPixel(buffer.buffer);
 
@@ -338,70 +349,61 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
         mRenderPaint.setPathEffect(null);
 
         // if drawing filled is enabled
-        if (dataSet.isDrawFilledEnabled() && entries.size() > 0) {
-            drawLinearFill(c, dataSet, entries, minx, maxx, trans);
+        if (dataSet.isDrawFilledEnabled() && entryCount > 0) {
+            drawLinearFill(c, dataSet, minx, maxx, trans);
         }
     }
 
-    protected void drawLinearFill(Canvas c, LineDataSet dataSet, List<Entry> entries, int minx,
+    protected void drawLinearFill(Canvas c, ILineDataSet dataSet, int minx,
                                   int maxx,
                                   Transformer trans) {
 
         Path filled = generateFilledPath(
-                entries,
-                dataSet.getFillFormatter().getFillLinePosition(dataSet, mChart), minx, maxx);
+                dataSet, minx, maxx);
 
         trans.pathValueToPixel(filled);
 
-        drawFilledPath(c, filled, dataSet.getFillColor(), dataSet.getFillAlpha());
-    }
+        final Drawable drawable = dataSet.getFillDrawable();
+        if (drawable != null) {
 
-    /**
-     * Draws the provided path in filled mode with the provided color and alpha.
-     * Special thanks to Angelo Suzuki (https://github.com/tinsukE) for this.
-     *
-     * @param c
-     * @param filledPath
-     * @param fillColor
-     * @param fillAlpha
-     */
-    protected void drawFilledPath(Canvas c, Path filledPath, int fillColor, int fillAlpha) {
-        c.save();
-        c.clipPath(filledPath);
+            drawFilledPath(c, filled, drawable);
+        } else {
 
-        int color = (fillAlpha << 24) | (fillColor & 0xffffff);
-        c.drawColor(color);
-        c.restore();
+            drawFilledPath(c, filled, dataSet.getFillColor(), dataSet.getFillAlpha());
+        }
     }
 
     /**
      * Generates the path that is used for filled drawing.
      *
-     * @param entries
+     * @param dataSet
      * @return
      */
-    private Path generateFilledPath(List<Entry> entries, float fillMin, int from, int to) {
+    private Path generateFilledPath(ILineDataSet dataSet, int from, int to) {
 
+        float fillMin = dataSet.getFillFormatter().getFillLinePosition(dataSet, mChart);
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
 
         Path filled = new Path();
-        filled.moveTo(entries.get(from).getXIndex(), fillMin);
-        filled.lineTo(entries.get(from).getXIndex(), entries.get(from).getVal() * phaseY);
+        Entry entry = dataSet.getEntryForIndex(from);
+
+        filled.moveTo(entry.getXIndex(), fillMin);
+        filled.lineTo(entry.getXIndex(), entry.getVal() * phaseY);
 
         // create a new path
         for (int x = from + 1, count = (int) Math.ceil((to - from) * phaseX + from); x < count; x++) {
 
-            Entry e = entries.get(x);
+            Entry e = dataSet.getEntryForIndex(x);
             filled.lineTo(e.getXIndex(), e.getVal() * phaseY);
         }
 
         // close up
         filled.lineTo(
-                entries.get(
+                dataSet.getEntryForIndex(
                         Math.max(
                                 Math.min((int) Math.ceil((to - from) * phaseX + from) - 1,
-                                        entries.size() - 1), 0)).getXIndex(), fillMin);
+                                        dataSet.getEntryCount() - 1), 0)).getXIndex(), fillMin);
 
         filled.close();
 
@@ -414,11 +416,11 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
         if (mChart.getLineData().getYValCount() < mChart.getMaxVisibleCount()
                 * mViewPortHandler.getScaleX()) {
 
-            List<LineDataSet> dataSets = mChart.getLineData().getDataSets();
+            List<ILineDataSet> dataSets = mChart.getLineData().getDataSets();
 
             for (int i = 0; i < dataSets.size(); i++) {
 
-                LineDataSet dataSet = dataSets.get(i);
+                ILineDataSet dataSet = dataSets.get(i);
 
                 if (!dataSet.isDrawValuesEnabled() || dataSet.getEntryCount() == 0)
                     continue;
@@ -429,23 +431,21 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
                 Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
                 // make sure the values do not interfear with the circles
-                int valOffset = (int) (dataSet.getCircleSize() * 1.75f);
+                int valOffset = (int) (dataSet.getCircleRadius() * 1.75f);
 
                 if (!dataSet.isDrawCirclesEnabled())
                     valOffset = valOffset / 2;
 
-                List<Entry> entries = dataSet.getYVals();
+                int entryCount = dataSet.getEntryCount();
 
-                Entry entryFrom = dataSet.getEntryForXIndex(mMinX);
-                Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
+                Entry entryFrom = dataSet.getEntryForXIndex((mMinX < 0) ? 0 : mMinX, DataSet.Rounding.DOWN);
+                Entry entryTo = dataSet.getEntryForXIndex(mMaxX, DataSet.Rounding.UP);
 
-                int diff = (entryFrom == entryTo) ? 1 : 0;
-                int minx = Math.max(dataSet.getEntryPosition(entryFrom) - diff, 0);
-                int maxx = Math.min(Math.max(
-                        minx + 2, dataSet.getEntryPosition(entryTo) + 1), entries.size());
+                int minx = Math.max(dataSet.getEntryIndex(entryFrom), 0);
+                int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, entryCount);
 
                 float[] positions = trans.generateTransformedValuesLine(
-                        entries, mAnimator.getPhaseX(), mAnimator.getPhaseY(), minx, maxx);
+                        dataSet, mAnimator.getPhaseX(), mAnimator.getPhaseY(), minx, maxx);
 
                 for (int j = 0; j < positions.length; j += 2) {
 
@@ -458,7 +458,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
                     if (!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y))
                         continue;
 
-                    Entry entry = entries.get(j / 2 + minx);
+                    Entry entry = dataSet.getEntryForIndex(j / 2 + minx);
 
                     drawValue(c, dataSet.getValueFormatter(), entry.getVal(), entry, i, x,
                             y - valOffset);
@@ -479,37 +479,37 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
 
-        List<LineDataSet> dataSets = mChart.getLineData().getDataSets();
+        List<ILineDataSet> dataSets = mChart.getLineData().getDataSets();
 
         for (int i = 0; i < dataSets.size(); i++) {
 
-            LineDataSet dataSet = dataSets.get(i);
+            ILineDataSet dataSet = dataSets.get(i);
 
-            if (!dataSet.isVisible() || !dataSet.isDrawCirclesEnabled())
+            if (!dataSet.isVisible() || !dataSet.isDrawCirclesEnabled() ||
+                    dataSet.getEntryCount() == 0)
                 continue;
 
             mCirclePaintInner.setColor(dataSet.getCircleHoleColor());
 
             Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
-            List<Entry> entries = dataSet.getYVals();
 
-            Entry entryFrom = dataSet.getEntryForXIndex((mMinX < 0) ? 0 : mMinX);
-            Entry entryTo = dataSet.getEntryForXIndex(mMaxX);
+            int entryCount = dataSet.getEntryCount();
 
-            int diff = (entryFrom == entryTo) ? 1 : 0;
-            int minx = Math.max(dataSet.getEntryPosition(entryFrom) - diff, 0);
-            int maxx = Math.min(Math.max(
-                    minx + 2, dataSet.getEntryPosition(entryTo) + 1), entries.size());
+            Entry entryFrom = dataSet.getEntryForXIndex((mMinX < 0) ? 0 : mMinX, DataSet.Rounding.DOWN);
+            Entry entryTo = dataSet.getEntryForXIndex(mMaxX, DataSet.Rounding.UP);
+
+            int minx = Math.max(dataSet.getEntryIndex(entryFrom), 0);
+            int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, entryCount);
 
             CircleBuffer buffer = mCircleBuffers[i];
             buffer.setPhases(phaseX, phaseY);
             buffer.limitFrom(minx);
             buffer.limitTo(maxx);
-            buffer.feed(entries);
+            buffer.feed(dataSet);
 
             trans.pointValuesToPixel(buffer.buffer);
 
-            float halfsize = dataSet.getCircleSize() / 2f;
+            float halfsize = dataSet.getCircleRadius() / 2f;
 
             for (int j = 0, count = (int) Math.ceil((maxx - minx) * phaseX + minx) * 2; j < count; j += 2) {
 
@@ -528,7 +528,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
                 mRenderPaint.setColor(circleColor);
 
-                c.drawCircle(x, y, dataSet.getCircleSize(),
+                c.drawCircle(x, y, dataSet.getCircleRadius(),
                         mRenderPaint);
 
                 if (dataSet.isDrawCircleHoleEnabled()
@@ -545,7 +545,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
         for (int i = 0; i < indices.length; i++) {
 
-            LineDataSet set = mChart.getLineData().getDataSetByIndex(indices[i]
+            ILineDataSet set = mChart.getLineData().getDataSetByIndex(indices[i]
                     .getDataSetIndex());
 
             if (set == null || !set.isHighlightEnabled())
@@ -577,11 +577,33 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
     }
 
     /**
+     * Sets the Bitmap.Config to be used by this renderer.
+     * Default: Bitmap.Config.ARGB_8888
+     * Use Bitmap.Config.ARGB_4444 to consume less memory.
+     *
+     * @param config
+     */
+    public void setBitmapConfig(Bitmap.Config config) {
+        mBitmapConfig = config;
+        releaseBitmap();
+    }
+
+    /**
+     * Returns the Bitmap.Config that is used by this renderer.
+     *
+     * @return
+     */
+    public Bitmap.Config getBitmapConfig() {
+        return mBitmapConfig;
+    }
+
+    /**
      * Releases the drawing bitmap. This should be called when {@link LineChart#onDetachedFromWindow()}.
      */
     public void releaseBitmap() {
         if (mDrawBitmap != null) {
-            mDrawBitmap.recycle();
+            mDrawBitmap.get().recycle();
+            mDrawBitmap.clear();
             mDrawBitmap = null;
         }
     }

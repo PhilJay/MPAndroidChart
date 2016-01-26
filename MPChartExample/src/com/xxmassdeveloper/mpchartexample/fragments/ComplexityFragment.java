@@ -28,15 +28,11 @@ public class ComplexityFragment extends SimpleFragment {
         mChart = (LineChart) v.findViewById(R.id.lineChart1);
         
         mChart.setDescription("");
-        
-        mChart.setHighlightEnabled(false);
+
         mChart.setDrawGridBackground(false);
         
         mChart.setData(getComplexity());
         mChart.animateX(3000);
-        
-//        mChart.setScaleMinima(3f, 3f);
-//        mChart.centerViewPort(300, 0);
         
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"OpenSans-Light.ttf");
         

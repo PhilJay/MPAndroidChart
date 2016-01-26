@@ -2,22 +2,16 @@
 package com.xxmassdeveloper.mpchartexample.notimportant;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.github.mikephil.charting.utils.Utils;
 import com.xxmassdeveloper.mpchartexample.AnotherBarActivity;
@@ -47,9 +41,11 @@ import com.xxmassdeveloper.mpchartexample.ScrollViewActivity;
 import com.xxmassdeveloper.mpchartexample.StackedBarActivity;
 import com.xxmassdeveloper.mpchartexample.StackedBarActivityNegative;
 import com.xxmassdeveloper.mpchartexample.fragments.SimpleChartDemo;
+import com.xxmassdeveloper.mpchartexample.realm.RealmDatabaseActivityBar;
+import com.xxmassdeveloper.mpchartexample.realm.RealmDatabaseActivityLine;
+import com.xxmassdeveloper.mpchartexample.realm.RealmMainActivity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends Activity implements OnItemClickListener {
 
@@ -59,6 +55,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+
+        setTitle("MPAndroidChart Example");
 
         // initialize the utilities
         Utils.init(this);
@@ -86,8 +84,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 "A line chart with multiple DataSet objects. One color per DataSet."));
         objects.add(new ContentItem("Multiple Bars Chart",
                 "A bar chart with multiple DataSet objects. One multiple colors per DataSet."));
-        objects.add(new ContentItem("Draw Chart",
-                "Demonstration of drawing values into the chart per touch-gesture. With callbacks."));
         objects.add(new ContentItem(
                 "Charts in ViewPager Fragments",
                 "Demonstration of charts inside ViewPager Fragments. In this example the focus was on the design and look and feel of the chart."));
@@ -127,6 +123,12 @@ public class MainActivity extends Activity implements OnItemClickListener {
         objects.add(new ContentItem(
                 "Chart in ScrollView",
                 "This demonstrates how to use a chart inside a ScrollView."));
+
+        ContentItem realm = new ContentItem(
+                "Realm.io Database",
+                "This demonstrates how to use this library with Realm.io mobile database.");
+        realm.isNew = true;
+        objects.add(realm);
 
         MyAdapter adapter = new MyAdapter(this, objects);
 
@@ -195,65 +197,59 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 startActivity(i);
                 break;
             case 13:
-                // i = new Intent(this, DrawChartActivity.class);
-                // startActivity(i);
-
-                AlertDialog.Builder b = new AlertDialog.Builder(this);
-                b.setTitle("Feature not available");
-                b.setMessage("Due to recent changes to the data model of the library, this feature is temporarily not available.");
-                b.setPositiveButton("OK", null);
-                b.create().show();
-                break;
-            case 14:
                 i = new Intent(this, SimpleChartDemo.class);
                 startActivity(i);
                 break;
-            case 15:
+            case 14:
                 i = new Intent(this, ListViewBarChartActivity.class);
                 startActivity(i);
                 break;
-            case 16:
+            case 15:
                 i = new Intent(this, ListViewMultiChartActivity.class);
                 startActivity(i);
                 break;
-            case 17:
+            case 16:
                 i = new Intent(this, InvertedLineChartActivity.class);
                 startActivity(i);
                 break;
-            case 18:
+            case 17:
                 i = new Intent(this, CandleStickChartActivity.class);
                 startActivity(i);
                 break;
-            case 19:
+            case 18:
                 i = new Intent(this, CubicLineChartActivity.class);
                 startActivity(i);
                 break;
-            case 20:
+            case 19:
                 i = new Intent(this, RadarChartActivitry.class);
                 startActivity(i);
                 break;
-            case 21:
+            case 20:
                 i = new Intent(this, LineChartActivityColored.class);
                 startActivity(i);
                 break;
-            case 22:
+            case 21:
                 i = new Intent(this, RealtimeLineChartActivity.class);
                 startActivity(i);
                 break;
-            case 23:
+            case 22:
                 i = new Intent(this, DynamicalAddingActivity.class);
                 startActivity(i);
                 break;
-            case 24:
+            case 23:
                 i = new Intent(this, PerformanceLineChart.class);
                 startActivity(i);
                 break;
-            case 25:
+            case 24:
                 i = new Intent(this, BarChartActivitySinus.class);
                 startActivity(i);
                 break;
-            case 26:
+            case 25:
                 i = new Intent(this, ScrollViewActivity.class);
+                startActivity(i);
+                break;
+            case 26:
+                i = new Intent(this, RealmMainActivity.class);
                 startActivity(i);
                 break;
         }
@@ -298,54 +294,5 @@ public class MainActivity extends Activity implements OnItemClickListener {
         }
 
         return true;
-    }
-
-    private class ContentItem {
-        String name;
-        String desc;
-
-        public ContentItem(String n, String d) {
-            name = n;
-            desc = d;
-        }
-    }
-
-    private class MyAdapter extends ArrayAdapter<ContentItem> {
-
-        public MyAdapter(Context context, List<ContentItem> objects) {
-            super(context, 0, objects);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            ContentItem c = getItem(position);
-
-            ViewHolder holder = null;
-
-            if (convertView == null) {
-
-                holder = new ViewHolder();
-
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, null);
-                holder.tvName = (TextView) convertView.findViewById(R.id.tvName);
-                holder.tvDesc = (TextView) convertView.findViewById(R.id.tvDesc);
-
-                convertView.setTag(holder);
-
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-
-            holder.tvName.setText(c.name);
-            holder.tvDesc.setText(c.desc);
-
-            return convertView;
-        }
-
-        private class ViewHolder {
-
-            TextView tvName, tvDesc;
-        }
     }
 }

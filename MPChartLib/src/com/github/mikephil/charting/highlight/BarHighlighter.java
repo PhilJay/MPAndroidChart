@@ -1,9 +1,9 @@
 package com.github.mikephil.charting.highlight;
 
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.interfaces.BarDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 
 /**
  * Created by Philipp Jahoda on 22/07/15.
@@ -23,7 +23,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 			return h;
 		else {
 
-			BarDataSet set = mChart.getBarData().getDataSetByIndex(h.getDataSetIndex());
+			IBarDataSet set = mChart.getBarData().getDataSetByIndex(h.getDataSetIndex());
 
 			if (set.isStacked()) {
 
@@ -95,7 +95,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 	 * @param yValue
 	 * @return
 	 */
-	protected Highlight getStackedHighlight(Highlight old, BarDataSet set, int xIndex, int dataSetIndex, double yValue) {
+	protected Highlight getStackedHighlight(Highlight old, IBarDataSet set, int xIndex, int dataSetIndex, double yValue) {
 
 		BarEntry entry = set.getEntryForXIndex(xIndex);
 
@@ -119,7 +119,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 	 */
 	protected int getClosestStackIndex(Range[] ranges, float value) {
 
-		if (ranges == null)
+		if (ranges == null || ranges.length == 0)
 			return 0;
 
 		int stackIndex = 0;
@@ -131,7 +131,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 				stackIndex++;
 		}
 
-		int length = ranges.length - 1;
+		int length = Math.max(ranges.length - 1, 0);
 
 		return (value > ranges[length].to) ? length : 0;
 		//
@@ -188,7 +188,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 
 		float[] values = entry.getVals();
 
-		if (values == null)
+		if (values == null || values.length == 0)
 			return null;
 
 		float negRemain = -entry.getNegativeSum();

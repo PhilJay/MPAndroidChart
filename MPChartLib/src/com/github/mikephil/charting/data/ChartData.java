@@ -5,8 +5,9 @@ import android.graphics.Typeface;
 import android.util.Log;
 
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
-import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +19,7 @@ import java.util.List;
  *
  * @author Philipp Jahoda
  */
-public abstract class ChartData<T extends DataSet<? extends Entry>> {
+public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
     /**
      * maximum y-value in the y-value array across all axes
@@ -39,24 +40,9 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     protected float mRightAxisMin = 0.0f;
 
     /**
-     * the total sum of all y-values
-     */
-    private float mYValueSum = 0f;
-
-    /**
      * total number of y-values across all DataSet objects
      */
     private int mYValCount = 0;
-
-    /**
-     * the last start value used for calcMinMax
-     */
-    protected int mLastStart = 0;
-
-    /**
-     * the last end value used for calcMinMax
-     */
-    protected int mLastEnd = 0;
 
     /**
      * contains the average length (in characters) an entry in the x-vals array
@@ -150,10 +136,8 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     protected void init() {
 
         checkLegal();
-
-        calcMinMax(mLastStart, mLastEnd);
-        calcYValueSum();
         calcYValueCount();
+        calcMinMax(0, mYValCount);
 
         calcXValAverageLength();
     }
@@ -186,13 +170,11 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         if (mDataSets == null)
             return;
 
-        if(this instanceof ScatterData)
+        if (this instanceof ScatterData)
             return;
 
         for (int i = 0; i < mDataSets.size(); i++) {
-            if (mDataSets.get(i)
-                    .getYVals()
-                    .size() > mXVals.size()) {
+            if (mDataSets.get(i).getEntryCount() > mXVals.size()) {
                 throw new IllegalArgumentException(
                         "One or more of the DataSet Entry arrays are longer than the x-values array of this ChartData object.");
             }
@@ -218,21 +200,19 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             mYMin = 0f;
         } else {
 
-            mLastStart = start;
-            mLastEnd = end;
-
             mYMin = Float.MAX_VALUE;
             mYMax = -Float.MAX_VALUE;
 
             for (int i = 0; i < mDataSets.size(); i++) {
 
-                mDataSets.get(i).calcMinMax(start, end);
+                IDataSet set = mDataSets.get(i);
+                set.calcMinMax(start, end);
 
-                if (mDataSets.get(i).getYMin() < mYMin)
-                    mYMin = mDataSets.get(i).getYMin();
+                if (set.getYMin() < mYMin)
+                    mYMin = set.getYMin();
 
-                if (mDataSets.get(i).getYMax() > mYMax)
-                    mYMax = mDataSets.get(i).getYMax();
+                if (set.getYMax() > mYMax)
+                    mYMax = set.getYMax();
             }
 
             if (mYMin == Float.MAX_VALUE) {
@@ -248,7 +228,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
                 mLeftAxisMax = firstLeft.getYMax();
                 mLeftAxisMin = firstLeft.getYMin();
 
-                for (DataSet<?> dataSet : mDataSets) {
+                for (IDataSet dataSet : mDataSets) {
                     if (dataSet.getAxisDependency() == AxisDependency.LEFT) {
                         if (dataSet.getYMin() < mLeftAxisMin)
                             mLeftAxisMin = dataSet.getYMin();
@@ -267,7 +247,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
                 mRightAxisMax = firstRight.getYMax();
                 mRightAxisMin = firstRight.getYMin();
 
-                for (DataSet<?> dataSet : mDataSets) {
+                for (IDataSet dataSet : mDataSets) {
                     if (dataSet.getAxisDependency() == AxisDependency.RIGHT) {
                         if (dataSet.getYMin() < mRightAxisMin)
                             mRightAxisMin = dataSet.getYMin();
@@ -280,21 +260,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
             // in case there is only one axis, adjust the second axis
             handleEmptyAxis(firstLeft, firstRight);
-        }
-    }
-
-    /**
-     * calculates the sum of all y-values in all datasets
-     */
-    protected void calcYValueSum() {
-
-        mYValueSum = 0;
-
-        if (mDataSets == null)
-            return;
-
-        for (int i = 0; i < mDataSets.size(); i++) {
-            mYValueSum += Math.abs(mDataSets.get(i).getYValueSum());
         }
     }
 
@@ -331,15 +296,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         if (mDataSets == null)
             return 0;
         return mDataSets.size();
-    }
-
-    /**
-     * Returns the average value across all entries in this Data object
-     * (all entries from the DataSets this data object holds)
-     * @return
-     */
-    public float getAverage() {
-        return (float ) getYValueSum() / (float) getYValCount();
     }
 
     /**
@@ -397,16 +353,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
     }
 
     /**
-     * Returns the total y-value sum across all DataSet objects the this object
-     * represents.
-     *
-     * @return
-     */
-    public float getYValueSum() {
-        return mYValueSum;
-    }
-
-    /**
      * Returns the total number of y-values across all DataSet objects the this
      * object represents.
      *
@@ -445,11 +391,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         mXVals.remove(index);
     }
 
-    /**
-     * Returns an the array of DataSets this object holds.
-     *
-     * @return
-     */
     public List<T> getDataSets() {
         return mDataSets;
     }
@@ -540,12 +481,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             return mDataSets.get(index);
     }
 
-    /**
-     * Returns the DataSet object at the given index.
-     *
-     * @param index
-     * @return
-     */
     public T getDataSetByIndex(int index) {
 
         if (mDataSets == null || index < 0 || index >= mDataSets.size())
@@ -565,7 +500,6 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             return;
 
         mYValCount += d.getEntryCount();
-        mYValueSum += d.getYValueSum();
 
         if (mDataSets.size() <= 0) {
 
@@ -642,9 +576,8 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         if (removed) {
 
             mYValCount -= d.getEntryCount();
-            mYValueSum -= d.getYValueSum();
 
-            calcMinMax(mLastStart, mLastEnd);
+            calcMinMax(0, mYValCount);
         }
 
         return removed;
@@ -677,8 +610,12 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
 
         if (mDataSets.size() > dataSetIndex && dataSetIndex >= 0) {
 
+            IDataSet set = mDataSets.get(dataSetIndex);
+            // add the entry to the dataset
+            if (!set.addEntry(e))
+                return;
+
             float val = e.getVal();
-            T set = mDataSets.get(dataSetIndex);
 
             if (mYValCount == 0) {
                 mYMin = val;
@@ -714,12 +651,9 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
             }
 
             mYValCount += 1;
-            mYValueSum += val;
 
             handleEmptyAxis(getFirstLeft(), getFirstRight());
 
-            // add the entry to the dataset
-            set.addEntry(e);
         } else {
             Log.e("addEntry", "Cannot add Entry because dataSetIndex too high or too low.");
         }
@@ -737,20 +671,21 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         if (e == null || dataSetIndex >= mDataSets.size())
             return false;
 
-        // remove the entry from the dataset
-        boolean removed = mDataSets.get(dataSetIndex).removeEntry(e.getXIndex());
+        IDataSet set = mDataSets.get(dataSetIndex);
 
-        if (removed) {
+        if (set != null) {
+            // remove the entry from the dataset
+            boolean removed = set.removeEntry(e);
 
-            float val = e.getVal();
+            if (removed) {
+                mYValCount -= 1;
 
-            mYValCount -= 1;
-            mYValueSum -= val;
+                calcMinMax(0, mYValCount);
+            }
 
-            calcMinMax(mLastStart, mLastEnd);
-        }
-
-        return removed;
+            return removed;
+        } else
+            return false;
     }
 
     /**
@@ -767,7 +702,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         if (dataSetIndex >= mDataSets.size())
             return false;
 
-        T dataSet = mDataSets.get(dataSetIndex);
+        IDataSet dataSet = mDataSets.get(dataSetIndex);
         Entry e = dataSet.getEntryForXIndex(xIndex);
 
         if (e == null || e.getXIndex() != xIndex)
@@ -834,15 +769,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         return colors;
     }
 
-    /**
-     * Returns the index of the provided DataSet inside the DataSets array of
-     * this data object. Returns -1 if the DataSet was not found.
-     *
-     * @param dataSet
-     * @return
-     */
     public int getIndexOfDataSet(T dataSet) {
-
         for (int i = 0; i < mDataSets.size(); i++) {
             if (mDataSets.get(i) == dataSet)
                 return i;
@@ -907,7 +834,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         if (f == null)
             return;
         else {
-            for (DataSet<?> set : mDataSets) {
+            for (IDataSet set : mDataSets) {
                 set.setValueFormatter(f);
             }
         }
@@ -920,7 +847,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * @param color
      */
     public void setValueTextColor(int color) {
-        for (DataSet<?> set : mDataSets) {
+        for (IDataSet set : mDataSets) {
             set.setValueTextColor(color);
         }
     }
@@ -932,7 +859,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * @param tf
      */
     public void setValueTypeface(Typeface tf) {
-        for (DataSet<?> set : mDataSets) {
+        for (IDataSet set : mDataSets) {
             set.setValueTypeface(tf);
         }
     }
@@ -944,7 +871,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * @param size
      */
     public void setValueTextSize(float size) {
-        for (DataSet<?> set : mDataSets) {
+        for (IDataSet set : mDataSets) {
             set.setValueTextSize(size);
         }
     }
@@ -956,17 +883,18 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * @param enabled
      */
     public void setDrawValues(boolean enabled) {
-        for (DataSet<?> set : mDataSets) {
+        for (IDataSet set : mDataSets) {
             set.setDrawValues(enabled);
         }
     }
 
     /**
      * Enables / disables highlighting values for all DataSets this data object
-     * contains.
+     * contains. If set to true, this means that values can
+     * be highlighted programmatically or by touch gesture.
      */
     public void setHighlightEnabled(boolean enabled) {
-        for (DataSet<?> set : mDataSets) {
+        for (IDataSet set : mDataSets) {
             set.setHighlightEnabled(enabled);
         }
     }
@@ -978,7 +906,7 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
      * @return
      */
     public boolean isHighlightEnabled() {
-        for (DataSet<?> set : mDataSets) {
+        for (IDataSet set : mDataSets) {
             if (!set.isHighlightEnabled())
                 return false;
         }
@@ -994,23 +922,23 @@ public abstract class ChartData<T extends DataSet<? extends Entry>> {
         notifyDataChanged();
     }
 
-    /**
-     * Checks if this data object contains the specified Entry. Returns true if
-     * so, false if not. NOTE: Performance is pretty bad on this one, do not
-     * over-use in performance critical situations.
-     *
-     * @param e
-     * @return
-     */
-    public boolean contains(Entry e) {
-
-        for (T set : mDataSets) {
-            if (set.contains(e))
-                return true;
-        }
-
-        return false;
-    }
+//    /**
+//     * Checks if this data object contains the specified Entry. Returns true if
+//     * so, false if not. NOTE: Performance is pretty bad on this one, do not
+//     * over-use in performance critical situations.
+//     *
+//     * @param e
+//     * @return
+//     */
+//    public boolean contains(Entry e) {
+//
+//        for (T set : mDataSets) {
+//            if (set.contains(e))
+//                return true;
+//        }
+//
+//        return false;
+//    }
 
     /**
      * Checks if this data object contains the specified DataSet. Returns true

@@ -2,10 +2,9 @@
 package com.github.mikephil.charting.buffer;
 
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 
-import java.util.List;
-
-public class ScatterBuffer extends AbstractBuffer<Entry> {
+public class ScatterBuffer extends AbstractBuffer<IScatterDataSet> {
     
     public ScatterBuffer(int size) {
         super(size);
@@ -17,13 +16,13 @@ public class ScatterBuffer extends AbstractBuffer<Entry> {
     }
 
     @Override
-    public void feed(List<Entry> entries) {
+    public void feed(IScatterDataSet data) {
         
-        float size = entries.size() * phaseX;
+        float size = data.getEntryCount() * phaseX;
         
         for (int i = 0; i < size; i++) {
 
-            Entry e = entries.get(i);
+            Entry e = data.getEntryForIndex(i);
             addForm(e.getXIndex(), e.getVal() * phaseY);
         }
         

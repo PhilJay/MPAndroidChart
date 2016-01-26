@@ -4,10 +4,14 @@ package com.github.mikephil.charting.utils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.os.Build;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -16,6 +20,8 @@ import android.view.View;
 import android.view.ViewConfiguration;
 
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
+import com.github.mikephil.charting.formatter.DefaultValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.util.List;
 
@@ -32,6 +38,8 @@ public abstract class Utils {
     private static DisplayMetrics mMetrics;
     private static int mMinimumFlingVelocity = 50;
     private static int mMaximumFlingVelocity = 8000;
+    public final static double DEG2RAD = (Math.PI / 180.0);
+    public final static float FDEG2RAD = ((float)Math.PI / 180.f);
 
     /**
      * initialize method, called inside the Chart.init() method.
@@ -426,6 +434,21 @@ public abstract class Utils {
     }
 
     /**
+     * If this component has no ValueFormatter or is only equipped with the
+     * default one (no custom set), return true.
+     *
+     * @return
+     */
+    public static boolean needsDefaultFormatter(ValueFormatter formatter) {
+        if (formatter == null)
+            return true;
+        if (formatter instanceof DefaultValueFormatter)
+            return true;
+
+        return false;
+    }
+
+    /**
      * Calculates the position around a center point, depending on the distance
      * from the center, and the angle of the position around the center.
      *
@@ -498,4 +521,193 @@ public abstract class Utils {
 
         return angle % 360.f;
     }
+
+    private static Rect mDrawTextRectBuffer = new Rect();
+    private static Paint.FontMetrics mFontMetricsBuffer = new Paint.FontMetrics();
+
+    public static void drawText(Canvas c, String text, float x, float y,
+                                Paint paint,
+                                PointF anchor, float angleDegrees) {
+
+        float drawOffsetX = 0.f;
+        float drawOffsetY = 0.f;
+
+        paint.getTextBounds(text, 0, text.length(), mDrawTextRectBuffer);
+
+        final float lineHeight = mDrawTextRectBuffer.height();
+
+                // Android sometimes has pre-padding
+        drawOffsetX -= mDrawTextRectBuffer.left;
+
+        // Android does not snap the bounds to line boundaries,
+        //  and draws from bottom to top.
+        // And we want to normalize it.
+        drawOffsetY += lineHeight;
+
+        // To have a consistent point of reference, we always draw left-aligned
+        Paint.Align originalTextAlign = paint.getTextAlign();
+        paint.setTextAlign(Paint.Align.LEFT);
+
+        if (angleDegrees != 0.f) {
+
+            // Move the text drawing rect in a way that it always rotates around its center
+            drawOffsetX -= mDrawTextRectBuffer.width() * 0.5f;
+            drawOffsetY -= lineHeight * 0.5f;
+
+            float translateX = x;
+            float translateY = y;
+
+            // Move the "outer" rect relative to the anchor, assuming its centered
+            if (anchor.x != 0.5f || anchor.y != 0.5f) {
+                final FSize rotatedSize = getSizeOfRotatedRectangleByDegrees(
+                        mDrawTextRectBuffer.width(),
+                        lineHeight,
+                        angleDegrees);
+
+                translateX -= rotatedSize.width * (anchor.x - 0.5f);
+                translateY -= rotatedSize.height * (anchor.y - 0.5f);
+            }
+
+            c.save();
+            c.translate(translateX, translateY);
+            c.rotate(angleDegrees);
+
+            c.drawText(text, drawOffsetX, drawOffsetY, paint);
+
+            c.restore();
+        }
+        else {
+            if (anchor.x != 0.f || anchor.y != 0.f) {
+
+                drawOffsetX -= mDrawTextRectBuffer.width() * anchor.x;
+                drawOffsetY -= lineHeight * anchor.y;
+            }
+
+            drawOffsetX += x;
+            drawOffsetY += y;
+
+            c.drawText(text, drawOffsetX, drawOffsetY, paint);
+        }
+
+        paint.setTextAlign(originalTextAlign);
+    }
+
+    public static void drawMultilineText(Canvas c, StaticLayout textLayout,
+                                         float x, float y,
+                                         TextPaint paint,
+                                         PointF anchor, float angleDegrees) {
+
+        float drawOffsetX = 0.f;
+        float drawOffsetY = 0.f;
+        float drawWidth;
+        float drawHeight;
+
+        final float lineHeight = paint.getFontMetrics(mFontMetricsBuffer);
+
+        drawWidth = textLayout.getWidth();
+        drawHeight = textLayout.getLineCount() * lineHeight;
+
+        // Android sometimes has pre-padding
+        drawOffsetX -= mDrawTextRectBuffer.left;
+
+        // Android does not snap the bounds to line boundaries,
+        //  and draws from bottom to top.
+        // And we want to normalize it.
+        drawOffsetY += drawHeight;
+
+        // To have a consistent point of reference, we always draw left-aligned
+        Paint.Align originalTextAlign = paint.getTextAlign();
+        paint.setTextAlign(Paint.Align.LEFT);
+
+        if (angleDegrees != 0.f) {
+
+            // Move the text drawing rect in a way that it always rotates around its center
+            drawOffsetX -= drawWidth * 0.5f;
+            drawOffsetY -= drawHeight * 0.5f;
+
+            float translateX = x;
+            float translateY = y;
+
+            // Move the "outer" rect relative to the anchor, assuming its centered
+            if (anchor.x != 0.5f || anchor.y != 0.5f) {
+                final FSize rotatedSize = getSizeOfRotatedRectangleByDegrees(
+                        drawWidth,
+                        drawHeight,
+                        angleDegrees);
+
+                translateX -= rotatedSize.width * (anchor.x - 0.5f);
+                translateY -= rotatedSize.height * (anchor.y - 0.5f);
+            }
+
+            c.save();
+            c.translate(translateX, translateY);
+            c.rotate(angleDegrees);
+
+            c.translate(drawOffsetX, drawOffsetY);
+            textLayout.draw(c);
+
+            c.restore();
+        }
+        else {
+            if (anchor.x != 0.f || anchor.y != 0.f) {
+
+                drawOffsetX -= drawWidth * anchor.x;
+                drawOffsetY -= drawHeight * anchor.y;
+            }
+
+            drawOffsetX += x;
+            drawOffsetY += y;
+
+            c.save();
+
+            c.translate(drawOffsetX, drawOffsetY);
+            textLayout.draw(c);
+
+            c.restore();
+        }
+
+        paint.setTextAlign(originalTextAlign);
+    }
+
+    public static void drawMultilineText(Canvas c, String text,
+                                         float x, float y,
+                                         TextPaint paint,
+                                         FSize constrainedToSize,
+                                         PointF anchor, float angleDegrees) {
+
+        StaticLayout textLayout = new StaticLayout(
+                text, 0, text.length(),
+                paint,
+                (int) Math.max(Math.ceil(constrainedToSize.width), 1.f),
+                Layout.Alignment.ALIGN_NORMAL, 1.f, 0.f, false);
+
+
+        drawMultilineText(c, textLayout, x, y, paint, anchor, angleDegrees);
+    }
+
+    public static FSize getSizeOfRotatedRectangleByDegrees(FSize rectangleSize, float degrees)
+    {
+        final float radians = degrees * FDEG2RAD;
+        return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height, radians);
+    }
+
+    public static FSize getSizeOfRotatedRectangleByRadians(FSize rectangleSize, float radians)
+    {
+        return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height, radians);
+    }
+
+    public static FSize getSizeOfRotatedRectangleByDegrees(float rectangleWidth, float rectangleHeight, float degrees)
+    {
+        final float radians = degrees * FDEG2RAD;
+        return getSizeOfRotatedRectangleByRadians(rectangleWidth, rectangleHeight, radians);
+    }
+
+    public static FSize getSizeOfRotatedRectangleByRadians(float rectangleWidth, float rectangleHeight, float radians)
+    {
+        return new FSize(
+                Math.abs(rectangleWidth * (float)Math.cos(radians)) + Math.abs(rectangleHeight * (float)Math.sin(radians)),
+                Math.abs(rectangleWidth * (float)Math.sin(radians)) + Math.abs(rectangleHeight * (float)Math.cos(radians))
+        );
+    }
+
 }

@@ -16,12 +16,14 @@ import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.listener.OnDrawListener;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This Activity demonstrates drawing into the Chart with the finger. Both line,
@@ -46,14 +48,6 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
         // listener for selecting and drawing
         mChart.setOnChartValueSelectedListener(this);
         mChart.setOnDrawListener(this);
-
-        // enable drawing with the finger
-        // mChart.setDrawingEnabled(true);
-
-        // mChart.setLineWidth(5f);
-        // mChart.setCircleSize(5f);
-
-        mChart.setHighlightEnabled(true);
 
         // if disabled, drawn datasets with the finger will not be automatically
         // finished
@@ -90,9 +84,9 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
         // create a dataset and give it a type (0)
         LineDataSet set1 = new LineDataSet(yVals, "DataSet");
         set1.setLineWidth(3f);
-        set1.setCircleSize(5f);
+        set1.setCircleRadius(5f);
 
-        ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
+        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         dataSets.add(set1); // add the datasets
 
         // create a data object with the datasets
@@ -112,18 +106,23 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
 
         switch (item.getItemId()) {
             case R.id.actionToggleValues: {
-                for (DataSet<?> set : mChart.getData().getDataSets())
+                List<ILineDataSet> sets = mChart.getData()
+                        .getDataSets();
+
+                for (ILineDataSet iSet : sets) {
+
+                    LineDataSet set = (LineDataSet) iSet;
                     set.setDrawValues(!set.isDrawValuesEnabled());
+                }
 
                 mChart.invalidate();
                 break;
             }
             case R.id.actionToggleHighlight: {
-                if (mChart.isHighlightEnabled())
-                    mChart.setHighlightEnabled(false);
-                else
-                    mChart.setHighlightEnabled(true);
-                mChart.invalidate();
+                if(mChart.getData() != null) {
+                    mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
+                    mChart.invalidate();
+                }
                 break;
             }
             case R.id.actionToggleStartzero: {

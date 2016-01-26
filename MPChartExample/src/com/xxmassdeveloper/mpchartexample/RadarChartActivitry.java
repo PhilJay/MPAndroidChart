@@ -14,10 +14,11 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.custom.MyMarkerView;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -83,18 +84,17 @@ public class RadarChartActivitry extends DemoBase {
 
         switch (item.getItemId()) {
             case R.id.actionToggleValues: {
-                for (DataSet<?> set : mChart.getData().getDataSets())
+                for (IDataSet<?> set : mChart.getData().getDataSets())
                     set.setDrawValues(!set.isDrawValuesEnabled());
 
                 mChart.invalidate();
                 break;
             }
             case R.id.actionToggleHighlight: {
-                if (mChart.isHighlightEnabled())
-                    mChart.setHighlightEnabled(false);
-                else
-                    mChart.setHighlightEnabled(true);
-                mChart.invalidate();
+                if (mChart.getData() != null) {
+                    mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
+                    mChart.invalidate();
+                }
                 break;
             }
             case R.id.actionToggleRotate: {
@@ -107,10 +107,10 @@ public class RadarChartActivitry extends DemoBase {
             }
             case R.id.actionToggleFilled: {
 
-                ArrayList<RadarDataSet> sets = (ArrayList<RadarDataSet>) mChart.getData()
+                ArrayList<IRadarDataSet> sets = (ArrayList<IRadarDataSet>) mChart.getData()
                         .getDataSets();
 
-                for (RadarDataSet set : sets) {
+                for (IRadarDataSet set : sets) {
                     if (set.isDrawFilledEnabled())
                         set.setDrawFilled(false);
                     else
@@ -148,7 +148,7 @@ public class RadarChartActivitry extends DemoBase {
         return true;
     }
 
-    private String[] mParties = new String[] {
+    private String[] mParties = new String[]{
             "Party A", "Party B", "Party C", "Party D", "Party E", "Party F", "Party G", "Party H",
             "Party I"
     };
@@ -179,15 +179,17 @@ public class RadarChartActivitry extends DemoBase {
 
         RadarDataSet set1 = new RadarDataSet(yVals1, "Set 1");
         set1.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
+        set1.setFillColor(ColorTemplate.VORDIPLOM_COLORS[0]);
         set1.setDrawFilled(true);
         set1.setLineWidth(2f);
 
         RadarDataSet set2 = new RadarDataSet(yVals2, "Set 2");
         set2.setColor(ColorTemplate.VORDIPLOM_COLORS[4]);
+        set2.setFillColor(ColorTemplate.VORDIPLOM_COLORS[4]);
         set2.setDrawFilled(true);
         set2.setLineWidth(2f);
 
-        ArrayList<RadarDataSet> sets = new ArrayList<RadarDataSet>();
+        ArrayList<IRadarDataSet> sets = new ArrayList<IRadarDataSet>();
         sets.add(set1);
         sets.add(set2);
 

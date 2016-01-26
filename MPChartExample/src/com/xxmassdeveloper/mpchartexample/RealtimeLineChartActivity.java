@@ -19,6 +19,7 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.highlight.Highlight;
@@ -42,9 +43,6 @@ public class RealtimeLineChartActivity extends DemoBase implements
         // no description text
         mChart.setDescription("");
         mChart.setNoDataTextDescription("You need to provide data for the chart.");
-
-        // enable value highlighting
-        mChart.setHighlightEnabled(true);
 
         // enable touch gestures
         mChart.setTouchEnabled(true);
@@ -133,7 +131,7 @@ public class RealtimeLineChartActivity extends DemoBase implements
 
         if (data != null) {
 
-            LineDataSet set = data.getDataSetByIndex(0);
+            ILineDataSet set = data.getDataSetByIndex(0);
             // set.addEntry(...); // can be called as well
 
             if (set == null) {
@@ -170,7 +168,7 @@ public class RealtimeLineChartActivity extends DemoBase implements
         set.setColor(ColorTemplate.getHoloBlue());
         set.setCircleColor(Color.WHITE);
         set.setLineWidth(2f);
-        set.setCircleSize(4f);
+        set.setCircleRadius(4f);
         set.setFillAlpha(65);
         set.setFillColor(ColorTemplate.getHoloBlue());
         set.setHighLightColor(Color.rgb(244, 117, 117));

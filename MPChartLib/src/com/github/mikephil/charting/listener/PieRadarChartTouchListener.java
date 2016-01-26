@@ -147,6 +147,10 @@ public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChart
             l.onChartSingleTapped(e);
         }
 
+        if(!mChart.isHighlightPerTapEnabled()) {
+            return false;
+        }
+
         float distance = mChart.distanceToCenter(e.getX(), e.getY());
 
         // check if a slice was touched
@@ -197,16 +201,7 @@ public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChart
                     mLastHighlighted = null;
                 } else {
                     Highlight h = new Highlight(index, dataSetIndex);
-
-                    if (h.equalTo(mLastHighlighted)) {
-
-                        mChart.highlightTouch(null);
-                        mLastHighlighted = null;
-                    } else {
-
-                        mChart.highlightTouch(h);
-                        mLastHighlighted = h;
-                    }
+                    performHighlight(h, e);
                 }
             }
         }

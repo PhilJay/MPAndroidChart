@@ -45,9 +45,6 @@ public class PerformanceLineChart extends DemoBase implements OnSeekBarChangeLis
         mChart.setDescription("");
         mChart.setNoDataTextDescription("You need to provide data for the chart.");
 
-        // disable value highlighting
-        mChart.setHighlightEnabled(false);
-
         // enable touch gestures
         mChart.setTouchEnabled(true);
 
@@ -57,10 +54,6 @@ public class PerformanceLineChart extends DemoBase implements OnSeekBarChangeLis
 
         // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(false);
-
-        // enable/disable highlight indicators (the lines that indicate the
-        // highlighted Entry)
-        mChart.setHighlightEnabled(false);
               
         mChart.getAxisLeft().setDrawGridLines(false);
         mChart.getAxisRight().setEnabled(false);

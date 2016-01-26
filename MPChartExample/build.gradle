@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '23.0.1'
+    buildToolsVersion '23.0.2'
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 23
-        versionCode 44
-        versionName '2.1.3'
+        versionCode 47
+        versionName '2.1.6'
 
         sourceSets {
             main {
@@ -25,7 +25,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-
     }
 
     lintOptions {
@@ -38,8 +37,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.3.1'
-
+        classpath 'com.android.tools.build:gradle:1.5.0'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -47,11 +45,15 @@ buildscript {
 
 repositories {
     maven { url "https://jitpack.io" }
+    maven { // this is for realm-db
+        url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
+    }
 }
 
 dependencies {
     //compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':MPChartLib') // remove this if you only imported the example project
-    compile 'com.android.support:appcompat-v7:23.0.0'
-    //compile 'com.github.PhilJay:MPAndroidChart:v2.1.1'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'io.realm:realm-android:0.87.3' // dependency for realm-database API (http://realm.io)
+    //compile 'com.github.PhilJay:MPAndroidChart:v2.2.0'
 }

@@ -108,7 +108,7 @@ public class Legend extends ComponentBase {
         mTextSize = Utils.convertDpToPixel(10f);
         mStackSpace = Utils.convertDpToPixel(3f);
         this.mXOffset = Utils.convertDpToPixel(5f);
-        this.mYOffset = Utils.convertDpToPixel(7f);
+        this.mYOffset = Utils.convertDpToPixel(4f);
     }
 
     /**

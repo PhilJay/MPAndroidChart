@@ -7,11 +7,11 @@ import android.graphics.Paint.Align;
 import android.graphics.Typeface;
 
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.data.DataSet;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.FSize;
 import com.github.mikephil.charting.utils.Utils;
@@ -85,15 +85,15 @@ public class LegendRenderer extends Renderer {
             // loop for building up the colors and labels used in the legend
             for (int i = 0; i < data.getDataSetCount(); i++) {
 
-                DataSet<? extends Entry> dataSet = data.getDataSetByIndex(i);
+                IDataSet dataSet = data.getDataSetByIndex(i);
 
                 List<Integer> clrs = dataSet.getColors();
                 int entryCount = dataSet.getEntryCount();
 
                 // if we have a barchart with stacked bars
-                if (dataSet instanceof BarDataSet && ((BarDataSet) dataSet).isStacked()) {
+                if (dataSet instanceof IBarDataSet && ((IBarDataSet) dataSet).isStacked()) {
 
-                    BarDataSet bds = (BarDataSet) dataSet;
+                    IBarDataSet bds = (IBarDataSet) dataSet;
                     String[] sLabels = bds.getStackLabels();
 
                     for (int j = 0; j < clrs.size() && j < bds.getStackSize(); j++) {
@@ -108,10 +108,10 @@ public class LegendRenderer extends Renderer {
                         labels.add(bds.getLabel());
                     }
 
-                } else if (dataSet instanceof PieDataSet) {
+                } else if (dataSet instanceof IPieDataSet) {
 
                     List<String> xVals = data.getXVals();
-                    PieDataSet pds = (PieDataSet) dataSet;
+                    IPieDataSet pds = (IPieDataSet) dataSet;
 
                     for (int j = 0; j < clrs.size() && j < entryCount && j < xVals.size(); j++) {
 
@@ -124,6 +124,13 @@ public class LegendRenderer extends Renderer {
                         colors.add(ColorTemplate.COLOR_SKIP);
                         labels.add(pds.getLabel());
                     }
+
+                } else if(dataSet instanceof ICandleDataSet && ((ICandleDataSet) dataSet).getDecreasingColor() != ColorTemplate.COLOR_NONE) {
+
+                    colors.add(((ICandleDataSet) dataSet).getDecreasingColor());
+                    colors.add(((ICandleDataSet) dataSet).getIncreasingColor());
+                    labels.add(null);
+                    labels.add(dataSet.getLabel());
 
                 } else { // all others
 

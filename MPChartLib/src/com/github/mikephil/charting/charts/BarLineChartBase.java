@@ -21,11 +21,11 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData;
-import com.github.mikephil.charting.data.BarLineScatterCandleBubbleDataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.highlight.ChartHighlighter;
-import com.github.mikephil.charting.interfaces.BarLineScatterCandleBubbleDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet;
+import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider;
 import com.github.mikephil.charting.jobs.MoveViewJob;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.listener.OnDrawListener;
@@ -42,11 +42,12 @@ import com.github.mikephil.charting.utils.Utils;
  * @author Philipp Jahoda
  */
 @SuppressLint("RtlHardcoded")
-public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<? extends BarLineScatterCandleBubbleDataSet<? extends Entry>>>
+public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<? extends IBarLineScatterCandleBubbleDataSet<? extends Entry>>>
         extends Chart<T> implements BarLineScatterCandleBubbleDataProvider {
 
     /**
-     * the maximum number of entried to which values will be drawn
+     * the maximum number of entries to which values will be drawn
+     * (entry numbers greater than this value will cause value-labels to disappear)
      */
     protected int mMaxVisibleCount = 100;
 
@@ -98,14 +99,14 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     /**
      * flag indicating if the grid background should be drawn or not
      */
-    protected boolean mDrawGridBackground = true;
+    protected boolean mDrawGridBackground = false;
 
     protected boolean mDrawBorders = false;
 
     /**
-     * Sets the minimum offset (padding) around the chart, defaults to 10
+     * Sets the minimum offset (padding) around the chart, defaults to 15
      */
-    protected float mMinOffset = 10.f;
+    protected float mMinOffset = 15.f;
 
     /**
      * the listener for user drawing on the chart
@@ -113,10 +114,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     protected OnDrawListener mDrawListener;
 
     /**
-     * the object representing the labels on the y-axis, this object is prepared
-     * in the pepareYLabels() method
+     * the object representing the labels on the left y-axis
      */
     protected YAxis mAxisLeft;
+
+    /**
+     * the object representing the labels on the right y-axis
+     */
     protected YAxis mAxisRight;
 
     /**
@@ -164,7 +168,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         mXAxisRenderer = new XAxisRenderer(mViewPortHandler, mXAxis, mLeftAxisTransformer);
 
-        mHighlighter = new ChartHighlighter(this);
+        setHighlighter(new ChartHighlighter(this));
 
         mChartTouchListener = new BarLineChartTouchListener(this, mViewPortHandler.getMatrixTouch());
 
@@ -188,7 +192,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (mDataNotSet)
+        if (mData == null)
             return;
 
         long starttime = System.currentTimeMillis();
@@ -315,7 +319,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     @Override
     public void notifyDataSetChanged() {
 
-        if (mDataNotSet) {
+        if (mData == null) {
             if (mLogEnabled)
                 Log.i(LOG_TAG, "Preparing... DATA NOT SET.");
             return;
@@ -489,7 +493,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
             if (mXAxis.isEnabled() && mXAxis.isDrawLabelsEnabled()) {
 
-                float xlabelheight = mXAxis.mLabelHeight * 2f;
+                float xlabelheight = mXAxis.mLabelRotatedHeight + mXAxis.getYOffset();
 
                 // offsets for x-labels
                 if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
@@ -545,14 +549,16 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             mViewPortHandler.getMatrixTouch().getValues(values);
 
             mXAxis.mAxisLabelModulus = (int) Math
-                    .ceil((mData.getXValCount() * mXAxis.mLabelWidth)
+                    .ceil((mData.getXValCount() * mXAxis.mLabelRotatedWidth)
                             / (mViewPortHandler.contentWidth() * values[Matrix.MSCALE_X]));
 
         }
 
         if (mLogEnabled)
-            Log.i(LOG_TAG, "X-Axis modulus: " + mXAxis.mAxisLabelModulus + ", x-axis label width: "
-                    + mXAxis.mLabelWidth + ", content width: " + mViewPortHandler.contentWidth());
+            Log.i(LOG_TAG, "X-Axis modulus: " + mXAxis.mAxisLabelModulus +
+                    ", x-axis label width: " + mXAxis.mLabelWidth +
+                    ", x-axis label rotated width: " + mXAxis.mLabelRotatedWidth +
+                    ", content width: " + mViewPortHandler.contentWidth());
 
         if (mXAxis.mAxisLabelModulus < 1)
             mXAxis.mAxisLabelModulus = 1;
@@ -651,7 +657,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
 
-        if (mChartTouchListener == null || mDataNotSet)
+        if (mChartTouchListener == null || mData == null)
             return false;
 
         // check if touch gestures are enabled
@@ -767,7 +773,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     /**
      * Sets the size of the area (range on the x-axis) that should be minimum
      * visible at once (no further zooming in allowed). If this is e.g. set to
-     * 10, no more than 10 values on the x-axis can be viewed at once without
+     * 10, no less than 10 values on the x-axis can be viewed at once without
      * scrolling.
      *
      * @param minXRange The minimum visible range of x-values.
@@ -1132,6 +1138,20 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
+     * Gets the minimum offset (padding) around the chart, defaults to 15.f
+     */
+    public float getMinOffset() {
+        return mMinOffset;
+    }
+
+    /**
+     * Sets the minimum offset (padding) around the chart, defaults to 15.f
+     */
+    public void setMinOffset(float minOffset) {
+        mMinOffset = minOffset;
+    }
+
+    /**
      * Returns the Highlight object (contains x-index and DataSet index) of the
      * selected value at the given touch point inside the Line-, Scatter-, or
      * CandleStick-Chart.
@@ -1142,11 +1162,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      */
     public Highlight getHighlightByTouchPoint(float x, float y) {
 
-        if (mDataNotSet || mData == null) {
+        if (mData == null) {
             Log.e(LOG_TAG, "Can't select by touch. No data set.");
             return null;
         } else
-            return mHighlighter.getHighlight(x, y);
+            return getHighlighter().getHighlight(x, y);
     }
 
     /**
@@ -1227,7 +1247,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param y
      * @return
      */
-    public BarLineScatterCandleBubbleDataSet<? extends Entry> getDataSetByTouchPoint(float x, float y) {
+    public IBarLineScatterCandleBubbleDataSet getDataSetByTouchPoint(float x, float y) {
         Highlight h = getHighlightByTouchPoint(x, y);
         if (h != null) {
             return mData.getDataSetByIndex(h.getDataSetIndex());
@@ -1247,7 +1267,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
                 mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom()
         };
         getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
-        return (pts[0] <= 0) ? 0 : (int) (pts[0] + 1);
+        return (pts[0] <= 0) ? 0 : (int) (pts[0] + 1.0f);
     }
 
     /**

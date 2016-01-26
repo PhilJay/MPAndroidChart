@@ -1,4 +1,4 @@
-package com.github.mikephil.charting.interfaces;
+package com.github.mikephil.charting.interfaces.dataprovider;
 
 import android.graphics.PointF;
 import android.graphics.RectF;

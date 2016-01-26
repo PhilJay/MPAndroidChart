@@ -85,7 +85,7 @@ public abstract class AbstractBuffer<T> {
      * Builds up the buffer with the provided data and resets the buffer-index
      * after feed-completion. This needs to run FAST.
      * 
-     * @param entries
+     * @param data
      */
-    public abstract void feed(List<T> entries);
+    public abstract void feed(T data);
 }
