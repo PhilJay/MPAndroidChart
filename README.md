@@ -94,7 +94,7 @@ Features
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/cubiclinechart.png)
 
  - **LineChart (gradient fill)**
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/line_chart_gradient.png)
+![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/line_chart_gradient.png)
 
  - **Combined-Chart (bar- and linechart in this case)**
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/combined_chart.png)
