@@ -33,14 +33,14 @@ public class XAxisRenderer extends AxisRenderer {
         mAxisLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
     }
 
-    public void computeAxis(float xValAverageLength, List<String> xValues) {
+    public void computeAxis(float xValMaximumLength, List<String> xValues) {
 
         mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
         mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
 
         StringBuilder widthText = new StringBuilder();
 
-        int xValChars = Math.round(xValAverageLength);
+        int xValChars = Math.round(xValMaximumLength);
 
         for (int i = 0; i < xValChars; i++) {
             widthText.append('h');

@@ -382,7 +382,9 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      */
     public void addXValue(String xVal) {
 
-        mXValMaximumLength = (mXValMaximumLength + xVal.length()) / 2f;
+        if(xVal != null && xVal.length() > mXValMaximumLength)
+            mXValMaximumLength = xVal.length();
+
         mXVals.add(xVal);
     }
 
