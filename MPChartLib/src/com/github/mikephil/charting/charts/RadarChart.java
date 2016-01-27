@@ -171,7 +171,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 //        }
 
         mYAxisRenderer.computeAxis(mYAxis.mAxisMinimum, mYAxis.mAxisMaximum);
-        mXAxisRenderer.computeAxis(mData.getXValAverageLength(), mData.getXVals());
+        mXAxisRenderer.computeAxis(mData.getXValMaximumLength(), mData.getXVals());
 
         if (mLegend != null && !mLegend.isLegendCustom())
             mLegendRenderer.computeLegend(mData);
