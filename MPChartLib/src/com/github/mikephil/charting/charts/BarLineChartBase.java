@@ -341,7 +341,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum);
         mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum);
 
-        mXAxisRenderer.computeAxis(mData.getXValAverageLength(), mData.getXVals());
+        mXAxisRenderer.computeAxis(mData.getXValMaximumLength(), mData.getXVals());
 
         if (mLegend != null)
             mLegendRenderer.computeLegend(mData);

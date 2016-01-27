@@ -45,10 +45,10 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     private int mYValCount = 0;
 
     /**
-     * contains the average length (in characters) an entry in the x-vals array
+     * contains the maximum length (in characters) an entry in the x-vals array
      * has
      */
-    private float mXValAverageLength = 0;
+    private float mXValMaximumLength = 0;
 
     /**
      * holds all x-values the chart represents
@@ -139,26 +139,30 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         calcYValueCount();
         calcMinMax(0, mYValCount);
 
-        calcXValAverageLength();
+        calcXValMaximumLength();
     }
 
     /**
      * calculates the average length (in characters) across all x-value strings
      */
-    private void calcXValAverageLength() {
+    private void calcXValMaximumLength() {
 
         if (mXVals.size() <= 0) {
-            mXValAverageLength = 1;
+            mXValMaximumLength = 1;
             return;
         }
 
-        float sum = 1f;
+        int max = 1;
 
         for (int i = 0; i < mXVals.size(); i++) {
-            sum += mXVals.get(i).length();
+
+            int length = mXVals.get(i).length();
+
+            if(length > max)
+                max = length;
         }
 
-        mXValAverageLength = sum / (float) mXVals.size();
+        mXValMaximumLength = max;
     }
 
     /**
@@ -343,13 +347,13 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * returns the average length (in characters) across all values in the
+     * returns the maximum length (in characters) across all values in the
      * x-vals array
      *
      * @return
      */
-    public float getXValAverageLength() {
-        return mXValAverageLength;
+    public float getXValMaximumLength() {
+        return mXValMaximumLength;
     }
 
     /**
@@ -378,7 +382,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      */
     public void addXValue(String xVal) {
 
-        mXValAverageLength = (mXValAverageLength + xVal.length()) / 2f;
+        mXValMaximumLength = (mXValMaximumLength + xVal.length()) / 2f;
         mXVals.add(xVal);
     }
 
