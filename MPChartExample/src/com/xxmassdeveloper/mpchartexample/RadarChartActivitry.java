@@ -64,7 +64,7 @@ public class RadarChartActivitry extends DemoBase {
         yAxis.setTypeface(tf);
         yAxis.setLabelCount(5, false);
         yAxis.setTextSize(9f);
-        yAxis.setStartAtZero(true);
+        yAxis.setAxisMinValue(0f);
 
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART);

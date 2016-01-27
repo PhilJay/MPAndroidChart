@@ -75,9 +75,6 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
         mChart.setMaxVisibleValueCount(200);
         mChart.setPinchZoom(true);
 
-        mChart.getAxisLeft().setStartAtZero(false);
-        mChart.getAxisRight().setStartAtZero(false);
-
         mSeekBarX.setProgress(5);
         mSeekBarY.setProgress(50);
 
@@ -88,7 +85,6 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
         YAxis yl = mChart.getAxisLeft();
         yl.setTypeface(tf);
         yl.setSpaceTop(30f);
-        yl.setStartAtZero(false);
         yl.setSpaceBottom(30f);
         
         mChart.getAxisRight().setEnabled(false);
@@ -134,12 +130,6 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
             case R.id.actionToggleAutoScaleMinMax: {
                 mChart.setAutoScaleMinMaxEnabled(!mChart.isAutoScaleMinMaxEnabled());
                 mChart.notifyDataSetChanged();
-                break;
-            }
-            case R.id.actionToggleStartzero: {
-                mChart.getAxisLeft().setStartAtZero(!mChart.getAxisLeft().isStartAtZeroEnabled());
-                mChart.getAxisRight().setStartAtZero(!mChart.getAxisRight().isStartAtZeroEnabled());
-                mChart.invalidate();
                 break;
             }
             case R.id.actionToggleFilter: {

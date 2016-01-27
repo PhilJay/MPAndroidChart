@@ -4,8 +4,8 @@ import android.graphics.Paint;
 
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.DefaultYAxisValueFormatter;
-import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.formatter.YAxisValueFormatter;
+import com.github.mikephil.charting.utils.Utils;
 
 /**
  * Class representing the y-axis labels settings and its entries. Only use the setter methods to modify it. Do not
@@ -58,11 +58,6 @@ public class YAxis extends AxisBase {
     protected boolean mInverted = false;
 
     /**
-     * if true, the y-label entries will always start at zero
-     */
-    protected boolean mStartAtZero = true;
-
-    /**
      * if true, the set number of y-labels will be forced
      */
     protected boolean mForceLabels = false;
@@ -70,7 +65,7 @@ public class YAxis extends AxisBase {
     /**
      * custom minimum value this axis represents
      */
-    protected float mCustomAxisMin = Float.NaN;
+    protected float mCustomAxisMin = 0f;
 
     /**
      * custom maximum value this axis represents
@@ -248,21 +243,16 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * enable this to force the y-axis labels to always start at zero
+     * Use setAxisMinValue(...) instead.
      *
-     * @param enabled
+     * @param startAtZero
      */
-    public void setStartAtZero(boolean enabled) {
-        this.mStartAtZero = enabled;
-    }
-
-    /**
-     * returns true if the chart is set to start at zero, false otherwise
-     *
-     * @return
-     */
-    public boolean isStartAtZeroEnabled() {
-        return mStartAtZero;
+    @Deprecated
+    public void setStartAtZero(boolean startAtZero) {
+        if (startAtZero)
+            setAxisMinValue(0f);
+        else
+            resetAxisMinValue();
     }
 
     public float getAxisMinValue() {
