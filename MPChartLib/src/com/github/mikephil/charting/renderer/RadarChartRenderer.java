@@ -97,13 +97,6 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         surface.close();
 
-        mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
-        mRenderPaint.setStyle(Paint.Style.STROKE);
-
-        // draw the line (only if filled is disabled or alpha is below 255)
-        if (!dataSet.isDrawFilledEnabled() || dataSet.getFillAlpha() < 255)
-            c.drawPath(surface, mRenderPaint);
-
         final Drawable drawable = dataSet.getFillDrawable();
         if (drawable != null) {
 
@@ -112,6 +105,13 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
             drawFilledPath(c, surface, dataSet.getFillColor(), dataSet.getFillAlpha());
         }
+
+        mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
+        mRenderPaint.setStyle(Paint.Style.STROKE);
+
+        // draw the line (only if filled is disabled or alpha is below 255)
+        if (!dataSet.isDrawFilledEnabled() || dataSet.getFillAlpha() < 255)
+            c.drawPath(surface, mRenderPaint);
 //
 //        // draw filled
 //        if (dataSet.isDrawFilledEnabled()) {

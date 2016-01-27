@@ -83,6 +83,7 @@ public abstract class RealmLineRadarDataSet<T extends RealmObject> extends Realm
      */
     public void setFillColor(int color) {
         mFillColor = color;
+        mFillDrawable = null;
     }
 
     @Override
