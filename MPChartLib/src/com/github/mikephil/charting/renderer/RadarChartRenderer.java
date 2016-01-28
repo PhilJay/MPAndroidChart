@@ -64,6 +64,9 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
     protected void drawDataSet(Canvas c, IRadarDataSet dataSet) {
 
+        float phaseX = mAnimator.getPhaseX();
+        float phaseY = mAnimator.getPhaseY();
+
         float sliceangle = mChart.getSliceAngle();
 
         // calculate the factor that is needed for transforming the value to
@@ -82,8 +85,10 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
             Entry e = dataSet.getEntryForIndex(j);
 
-            PointF p = Utils.getPosition(center, (e.getVal() - mChart.getYChartMin()) * factor,
-                    sliceangle * j + mChart.getRotationAngle());
+            PointF p = Utils.getPosition(
+                    center,
+                    (e.getVal() - mChart.getYChartMin()) * factor * phaseY,
+                    sliceangle * j * phaseX + mChart.getRotationAngle());
 
             if (Float.isNaN(p.x))
                 continue;
@@ -125,6 +130,9 @@ public class RadarChartRenderer extends LineRadarRenderer {
     @Override
     public void drawValues(Canvas c) {
 
+        float phaseX = mAnimator.getPhaseX();
+        float phaseY = mAnimator.getPhaseY();
+
         float sliceangle = mChart.getSliceAngle();
 
         // calculate the factor that is needed for transforming the value to
@@ -149,8 +157,10 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
                 Entry entry = dataSet.getEntryForIndex(j);
 
-                PointF p = Utils.getPosition(center, (entry.getVal() - mChart.getYChartMin()) * factor,
-                        sliceangle * j + mChart.getRotationAngle());
+                PointF p = Utils.getPosition(
+                        center,
+                        (entry.getVal() - mChart.getYChartMin()) * factor * phaseY,
+                        sliceangle * j * phaseX + mChart.getRotationAngle());
 
                 drawValue(c, dataSet.getValueFormatter(), entry.getVal(), entry, i, p.x, p.y - yoffset);
             }
@@ -182,8 +192,10 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         for (int i = 0; i < mChart.getData().getXValCount(); i += xIncrements) {
 
-            PointF p = Utils.getPosition(center, mChart.getYRange() * factor, sliceangle * i
-                    + rotationangle);
+            PointF p = Utils.getPosition(
+                    center,
+                    mChart.getYRange() * factor,
+                    sliceangle * i + rotationangle);
 
             c.drawLine(center.x, center.y, p.x, p.y, mWebPaint);
         }
@@ -212,6 +224,9 @@ public class RadarChartRenderer extends LineRadarRenderer {
     @Override
     public void drawHighlighted(Canvas c, Highlight[] indices) {
 
+        float phaseX = mAnimator.getPhaseX();
+        float phaseY = mAnimator.getPhaseY();
+
         float sliceangle = mChart.getSliceAngle();
         float factor = mChart.getFactor();
 
@@ -239,8 +254,10 @@ public class RadarChartRenderer extends LineRadarRenderer {
             if (Float.isNaN(y))
                 continue;
 
-            PointF p = Utils.getPosition(center, y * factor,
-                    sliceangle * j + mChart.getRotationAngle());
+            PointF p = Utils.getPosition(
+                    center,
+                    y * factor * phaseY,
+                    sliceangle * j * phaseX + mChart.getRotationAngle());
 
             float[] pts = new float[]{
                     p.x, p.y

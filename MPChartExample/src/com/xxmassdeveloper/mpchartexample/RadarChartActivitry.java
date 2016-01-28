@@ -56,6 +56,11 @@ public class RadarChartActivitry extends DemoBase {
 
         setData();
 
+        mChart.animateXY(
+                1400, 1400,
+                Easing.EasingOption.EaseInOutQuad,
+                Easing.EasingOption.EaseInOutQuad);
+
         XAxis xAxis = mChart.getXAxis();
         xAxis.setTypeface(tf);
         xAxis.setTextSize(9f);
@@ -138,6 +143,18 @@ public class RadarChartActivitry extends DemoBase {
 
                 mChart.getYAxis().setEnabled(!mChart.getYAxis().isEnabled());
                 mChart.invalidate();
+                break;
+            }
+            case R.id.animateX: {
+                mChart.animateX(1400);
+                break;
+            }
+            case R.id.animateY: {
+                mChart.animateY(1400);
+                break;
+            }
+            case R.id.animateXY: {
+                mChart.animateXY(1400, 1400);
                 break;
             }
             case R.id.actionToggleSpin: {
