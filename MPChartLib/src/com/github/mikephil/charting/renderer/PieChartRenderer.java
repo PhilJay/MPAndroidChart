@@ -250,10 +250,10 @@ public class PieChartRenderer extends DataRenderer {
                         c.drawText(data.getXVals().get(j), x, y + lineHeight,
                                 mValuePaint);
 
-                } else if (drawXVals && !drawYVals) {
+                } else if (drawXVals) {
                     if (j < data.getXValCount())
                         c.drawText(data.getXVals().get(j), x, y + lineHeight / 2f, mValuePaint);
-                } else if (!drawXVals && drawYVals) {
+                } else if (drawYVals) {
 
                     drawValue(c, formatter, value, entry, 0, x, y + lineHeight / 2f);
                 }
