@@ -318,7 +318,9 @@ public class PieChartRenderer extends DataRenderer {
 
             PointF center = mChart.getCenterCircleBox();
 
-            float innerRadius = mChart.isDrawHoleEnabled() && mChart.isHoleTransparent() ? mChart.getRadius() * (mChart.getHoleRadius() / 100f) : mChart.getRadius();
+            float innerRadius = mChart.isDrawHoleEnabled()
+                    ? mChart.getRadius() * (mChart.getHoleRadius() / 100f)
+                    : mChart.getRadius();
 
             RectF holeRect = mRectBuffer[0];
             holeRect.left = center.x - innerRadius;
