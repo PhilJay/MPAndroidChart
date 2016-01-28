@@ -190,7 +190,8 @@ public class PieChartRenderer extends DataRenderer {
 
         boolean drawXVals = mChart.isDrawSliceTextEnabled();
 
-        int cnt = 0;
+        float angle;
+        int xIndex = 0;
 
         for (int i = 0; i < dataSets.size(); i++) {
 
@@ -212,10 +213,19 @@ public class PieChartRenderer extends DataRenderer {
 
                 Entry entry = dataSet.getEntryForIndex(j);
 
-                // offset needed to center the drawn text in the slice
-                float offset = drawAngles[cnt] / 2;
+                if (xIndex == 0)
+                    angle = 0.f;
+                else
+                    angle = absoluteAngles[xIndex - 1] * phaseX;
 
-                float angle = (absoluteAngles[cnt] - offset) * phaseY;
+                final float sliceAngle = drawAngles[xIndex];
+                final float sliceSpace = dataSet.getSliceSpace();
+
+                // offset needed to center the drawn text in the slice
+                final float offset = (sliceAngle - sliceSpace / 2.f) / 2.f;
+
+                angle = angle + offset;
+
                 // calculate the text position
                 float x = (float) (r
                         * Math.cos(Math.toRadians(rotationAngle + angle))
@@ -248,7 +258,7 @@ public class PieChartRenderer extends DataRenderer {
                     drawValue(c, formatter, value, entry, 0, x, y + lineHeight / 2f);
                 }
 
-                cnt++;
+                xIndex++;
             }
         }
     }
