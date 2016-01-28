@@ -328,7 +328,7 @@ public class PieChartRenderer extends DataRenderer {
             RectF boundingRect = mRectBuffer[1];
             boundingRect.set(holeRect);
 
-            float radiusPercent = mChart.getCenterTextRadiusPercent();
+            float radiusPercent = mChart.getCenterTextRadiusPercent() / 100f;
             if (radiusPercent > 0.0) {
                 boundingRect.inset(
                         (boundingRect.width() - boundingRect.width() * radiusPercent) / 2.f,
