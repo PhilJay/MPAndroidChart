@@ -50,22 +50,25 @@ public class StackedValueFormatter implements ValueFormatter {
     @Override
     public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
 
-        if (entry instanceof BarEntry && !mDrawWholeStack) {
+        if (!mDrawWholeStack && entry instanceof BarEntry) {
 
             BarEntry barEntry = (BarEntry) entry;
             float[] vals = barEntry.getVals();
 
             if (vals != null) {
 
-                // find out if we are on top
+                // find out if we are on top of the stack
                 if (vals[vals.length - 1] == value) {
+
+                    // return the "sum" across all stack values
                     return mFormat.format(barEntry.getVal()) + mAppendix;
                 } else {
-                    return "";
+                    return ""; // return empty
                 }
             }
         }
 
+        // return the "proposed" value
         return mFormat.format(value) + mAppendix;
     }
 }
