@@ -208,6 +208,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      * @param alpha
      */
     public void setColors(int[] colors, int alpha) {
+        resetColors();
         for (int color : colors) {
             addColor(Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color)));
         }
