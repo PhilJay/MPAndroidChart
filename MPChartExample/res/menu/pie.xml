@@ -37,5 +37,9 @@
         android:id="@+id/actionSave"
         android:title="Save to Gallery">
     </item>
+    <item
+        android:id="@+id/actionToggleSpin"
+        android:title="Spin Animation">
+    </item>
 
 </menu>
