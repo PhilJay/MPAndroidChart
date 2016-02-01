@@ -59,17 +59,50 @@ public interface IDataSet<T extends Entry> {
     T getEntryForXIndex(int xIndex);
 
     /**
+     * Returns the first Entry object found at the given xIndex & yIndex with binary
+     * search. If the no Entry at the specified indexes is found, this method
+     * returns the index at the closest to x & y indexes. Returns null if no Entry object
+     * at that point is found. INFORMATION: This method does calculations at runtime. Do
+     * not over-use in performance critical situations.
+     * SIDE NOTE: this method is an special case for Bubble/Scatter Chart where a set can
+     * have multiple values at a given x-index.
+     *
+     * @param xIndex
+     * @param yIndex
+     * @return
+     */
+    T getEntryForXIndex(int xIndex, int yIndex);
+
+    /**
      * Returns the first Entry object found at the given xIndex with binary
      * search. If the no Entry at the specified x-index is found, this method
      * returns the index at the closest x-index. Returns null if no Entry object
      * at that index. INFORMATION: This method does calculations at runtime. Do
      * not over-use in performance critical situations.
+     * SIDE NOTE: this method is an special case for Bubble/Scatter Chart where a set can
+     * have multiple values at a given x-index.
      *
      * @param xIndex
      * @param rounding determine to round up/down/closest if there is no Entry matching the provided x-index
      * @return
      */
     T getEntryForXIndex(int xIndex, DataSet.Rounding rounding);
+
+    /**
+     * Returns the first Entry object found at the given xIndex with binary
+     * search. If the no Entry at the specified x-index is found, this method
+     * returns the index at the closest x-index. Returns null if no Entry object
+     * at that index. INFORMATION: This method does calculations at runtime. Do
+     * not over-use in performance critical situations.
+     * SIDE NOTE: this method is an special case for Bubble/Scatter Chart where a set can
+     * have multiple values at a given x-index.
+     *
+     * @param xIndex
+     * @param yIndex
+     * @param rounding determine to round up/down/closest if there is no Entry matching the provided x-index
+     * @return
+     */
+    T getEntryForXIndex(int xIndex, int yIndex, DataSet.Rounding rounding);
 
     /**
      * Returns the Entry object found at the given index (NOT xIndex) in the values array.
@@ -93,6 +126,22 @@ public interface IDataSet<T extends Entry> {
     int getEntryIndex(int xIndex, DataSet.Rounding rounding);
 
     /**
+     * Returns the first Entry index found at the given point (xIndex, yIndex) with binary
+     * search. If the no Entry at the specified point is found, this method
+     * returns the index at the closest point. Returns -1 if no Entry object
+     * at that index. INFORMATION: This method does calculations at runtime. Do
+     * not over-use in performance critical situations.
+     * SIDE NOTE: this method is an special case for Bubble/Scatter Chart where a set can
+     * have multiple values at a given x-index.
+     *
+     * @param xIndex
+     * @param yIndex
+     * @param rounding determine to round up/down/closest if there is no Entry matching the provided x-index
+     * @return
+     */
+    int getEntryIndex(int xIndex, int yIndex, DataSet.Rounding rounding);
+
+    /**
      * Returns the position of the provided entry in the DataSets Entry array.
      * Returns -1 if doesn't exist.
      *
@@ -111,6 +160,18 @@ public interface IDataSet<T extends Entry> {
      * @return
      */
     float getYValForXIndex(int xIndex);
+
+    /**
+     * Returns the value of the Entry object at the given xIndex & yIndex. Returns
+     * Float.NaN if no value is at the given x-index & y-index. INFORMATION: This method
+     * does calculations at runtime. Do not over-use in performance critical
+     * situations.
+     *
+     * @param xIndex
+     * @param yIndex
+     * @return
+     */
+    float getYValForXIndex(int xIndex, int yIndex);
 
     /**
      * This method returns the actual
@@ -264,6 +325,13 @@ public interface IDataSet<T extends Entry> {
     void setHighlightEnabled(boolean enabled);
 
     /**
+     * Returns the formatter used for drawing the values inside the chart.
+     *
+     * @return
+     */
+    ValueFormatter getValueFormatter();
+
+    /**
      * Sets the formatter to be used for drawing the values inside the chart. If
      * no formatter is set, the chart will automatically determine a reasonable
      * formatting (concerning decimals) for all the values that are drawn inside
@@ -275,11 +343,11 @@ public interface IDataSet<T extends Entry> {
     void setValueFormatter(ValueFormatter f);
 
     /**
-     * Returns the formatter used for drawing the values inside the chart.
+     * Returns the color that is used for drawing the values inside the chart
      *
      * @return
      */
-    ValueFormatter getValueFormatter();
+    int getValueTextColor();
 
     /**
      * Sets the color the value-labels of this DataSet should have.
@@ -289,27 +357,6 @@ public interface IDataSet<T extends Entry> {
     void setValueTextColor(int color);
 
     /**
-     * Sets a Typeface for the value-labels of this DataSet.
-     *
-     * @param tf
-     */
-    void setValueTypeface(Typeface tf);
-
-    /**
-     * Sets the text-size of the value-labels of this DataSet in dp.
-     *
-     * @param size
-     */
-    void setValueTextSize(float size);
-
-    /**
-     * Returns the color that is used for drawing the values inside the chart
-     *
-     * @return
-     */
-    int getValueTextColor();
-
-    /**
      * Returns the typeface that is used for drawing the values inside the chart
      *
      * @return
@@ -317,11 +364,25 @@ public interface IDataSet<T extends Entry> {
     Typeface getValueTypeface();
 
     /**
+     * Sets a Typeface for the value-labels of this DataSet.
+     *
+     * @param tf
+     */
+    void setValueTypeface(Typeface tf);
+
+    /**
      * Returns the text size that is used for drawing the values inside the chart
      *
      * @return
      */
     float getValueTextSize();
+
+    /**
+     * Sets the text-size of the value-labels of this DataSet in dp.
+     *
+     * @param size
+     */
+    void setValueTextSize(float size);
 
     /**
      * set this to true to draw y-values on the chart NOTE (for bar and
@@ -340,18 +401,18 @@ public interface IDataSet<T extends Entry> {
     boolean isDrawValuesEnabled();
 
     /**
-     * Set the visibility of this DataSet. If not visible, the DataSet will not
-     * be drawn to the chart upon refreshing it.
-     *
-     * @param visible
-     */
-    void setVisible(boolean visible);
-
-    /**
      * Returns true if this DataSet is visible inside the chart, or false if it
      * is currently hidden.
      *
      * @return
      */
     boolean isVisible();
+
+    /**
+     * Set the visibility of this DataSet. If not visible, the DataSet will not
+     * be drawn to the chart upon refreshing it.
+     *
+     * @param visible
+     */
+    void setVisible(boolean visible);
 }
