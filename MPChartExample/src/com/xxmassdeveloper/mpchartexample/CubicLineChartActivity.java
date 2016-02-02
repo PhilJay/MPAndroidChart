@@ -281,7 +281,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         //set1.setDrawFilled(true);
         set1.setDrawCircles(false); 
         set1.setLineWidth(1.8f);
-        set1.setCircleSize(4f);
+        set1.setCircleRadius(4f);
         set1.setCircleColor(Color.WHITE);
         set1.setHighLightColor(Color.rgb(244, 117, 117));
         set1.setColor(Color.WHITE);

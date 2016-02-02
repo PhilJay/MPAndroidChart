@@ -56,6 +56,11 @@ public class RadarChartActivitry extends DemoBase {
 
         setData();
 
+        mChart.animateXY(
+                1400, 1400,
+                Easing.EasingOption.EaseInOutQuad,
+                Easing.EasingOption.EaseInOutQuad);
+
         XAxis xAxis = mChart.getXAxis();
         xAxis.setTypeface(tf);
         xAxis.setTextSize(9f);
@@ -140,6 +145,18 @@ public class RadarChartActivitry extends DemoBase {
                 mChart.invalidate();
                 break;
             }
+            case R.id.animateX: {
+                mChart.animateX(1400);
+                break;
+            }
+            case R.id.animateY: {
+                mChart.animateY(1400);
+                break;
+            }
+            case R.id.animateXY: {
+                mChart.animateXY(1400, 1400);
+                break;
+            }
             case R.id.actionToggleSpin: {
                 mChart.spin(2000, mChart.getRotationAngle(), mChart.getRotationAngle() + 360, Easing.EasingOption.EaseInCubic);
                 break;
@@ -179,11 +196,13 @@ public class RadarChartActivitry extends DemoBase {
 
         RadarDataSet set1 = new RadarDataSet(yVals1, "Set 1");
         set1.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
+        set1.setFillColor(ColorTemplate.VORDIPLOM_COLORS[0]);
         set1.setDrawFilled(true);
         set1.setLineWidth(2f);
 
         RadarDataSet set2 = new RadarDataSet(yVals2, "Set 2");
         set2.setColor(ColorTemplate.VORDIPLOM_COLORS[4]);
+        set2.setFillColor(ColorTemplate.VORDIPLOM_COLORS[4]);
         set2.setDrawFilled(true);
         set2.setLineWidth(2f);
 

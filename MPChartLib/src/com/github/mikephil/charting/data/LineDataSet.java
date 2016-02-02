@@ -4,6 +4,7 @@ package com.github.mikephil.charting.data;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
+import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -23,7 +24,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
     private int mCircleColorHole = Color.WHITE;
 
     /** the radius of the circle-shaped value indicators */
-    private float mCircleSize = 8f;
+    private float mCircleRadius = 8f;
 
     /** sets the intensity of the cubic lines */
     private float mCubicIntensity = 0.2f;
@@ -42,10 +43,11 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
 
     private boolean mDrawCircleHole = true;
 
+
     public LineDataSet(List<Entry> yVals, String label) {
         super(yVals, label);
 
-        // mCircleSize = Utils.convertDpToPixel(4f);
+        // mCircleRadius = Utils.convertDpToPixel(4f);
         // mLineWidth = Utils.convertDpToPixel(1f);
 
         mCircleColors = new ArrayList<Integer>();
@@ -67,7 +69,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
 
         LineDataSet copied = new LineDataSet(yVals, getLabel());
         copied.mColors = mColors;
-        copied.mCircleSize = mCircleSize;
+        copied.mCircleRadius = mCircleRadius;
         copied.mCircleColors = mCircleColors;
         copied.mDashPathEffect = mDashPathEffect;
         copied.mDrawCircles = mDrawCircles;
@@ -98,19 +100,43 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
         return mCubicIntensity;
     }
 
+
     /**
-     * sets the size (radius) of the circle shpaed value indicators, default
-     * size = 4f
-     * 
-     * @param size
+     * sets the radius of the drawn circles.
+     * Default radius = 4f
+     *
+     * @param radius
      */
-    public void setCircleSize(float size) {
-        mCircleSize = Utils.convertDpToPixel(size);
+    public void setCircleRadius(float radius) {
+        mCircleRadius = Utils.convertDpToPixel(radius);
     }
 
     @Override
+    public float getCircleRadius() {
+        return mCircleRadius;
+    }
+
+    /**
+     * sets the size (radius) of the circle shpaed value indicators,
+     * default size = 4f
+     *
+     * This method is deprecated because of unclarity. Use setCircleRadius instead.
+     *
+     * @param size
+     */
+    @Deprecated
+    public void setCircleSize(float size) {
+        setCircleRadius(size);
+    }
+
+    /**
+     *
+     * This function is deprecated because of unclarity. Use getCircleRadius instead.
+     *
+     */
+    @Deprecated
     public float getCircleSize() {
-        return mCircleSize;
+        return getCircleRadius();
     }
 
     /**

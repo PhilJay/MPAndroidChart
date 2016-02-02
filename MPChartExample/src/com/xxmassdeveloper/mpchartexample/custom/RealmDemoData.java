@@ -46,7 +46,7 @@ public class RealmDemoData extends RealmObject {
     public RealmDemoData(float[] stackValues, int xIndex, String xValue) {
         this.xIndex = xIndex;
         this.xValue = xValue;
-        this.stackValues = new RealmList<>();
+        this.stackValues = new RealmList<RealmFloat>();
 
         for (float val : stackValues) {
             this.stackValues.add(new RealmFloat(val));

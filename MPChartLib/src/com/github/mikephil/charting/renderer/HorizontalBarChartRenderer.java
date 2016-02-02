@@ -8,11 +8,10 @@ import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.buffer.BarBuffer;
 import com.github.mikephil.charting.buffer.HorizontalBarBuffer;
 import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -21,13 +20,13 @@ import java.util.List;
 
 /**
  * Renderer for the HorizontalBarChart.
- * 
+ *
  * @author Philipp Jahoda
  */
 public class HorizontalBarChartRenderer extends BarChartRenderer {
 
     public HorizontalBarChartRenderer(BarDataProvider chart, ChartAnimator animator,
-            ViewPortHandler viewPortHandler) {
+                                      ViewPortHandler viewPortHandler) {
         super(chart, animator, viewPortHandler);
 
         mValuePaint.setTextAlign(Align.LEFT);
@@ -47,7 +46,8 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
         }
     }
 
-    protected void drawDataSet(Canvas c, BarDataSet dataSet, int index) {
+    @Override
+    protected void drawDataSet(Canvas c, IBarDataSet dataSet, int index) {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
@@ -55,8 +55,6 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
-
-        List<BarEntry> entries = dataSet.getYVals();
 
         // initialize the buffer
         BarBuffer buffer = mBarBuffers[index];
@@ -192,7 +190,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                             }
 
                             drawValue(c, formattedValue, valuePoints[j]
-                                    + (e.getVal() >= 0 ? posOffset : negOffset),
+                                            + (e.getVal() >= 0 ? posOffset : negOffset),
                                     valuePoints[j + 1] + halfTextHeight);
 
                         } else {
@@ -263,7 +261,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
     @Override
     protected void prepareBarHighlight(float x, float y1, float y2, float barspaceHalf,
-            Transformer trans) {
+                                       Transformer trans) {
 
         float top = x - 0.5f + barspaceHalf;
         float bottom = x + 0.5f - barspaceHalf;
@@ -277,7 +275,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
     @Override
     public float[] getTransformedValues(Transformer trans, IBarDataSet data,
-            int dataSetIndex) {
+                                        int dataSetIndex) {
         return trans.generateTransformedValuesHorizontalBarChart(data, dataSetIndex,
                 mChart.getBarData(), mAnimator.getPhaseY());
     }

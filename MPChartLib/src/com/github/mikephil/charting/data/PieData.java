@@ -63,6 +63,12 @@ public class PieData extends ChartData<IPieDataSet> {
         return mDataSets.get(0);
     }
 
+    /**
+     * The PieData object can only have one DataSet. Use getDataSet() method instead.
+     *
+     * @param index
+     * @return
+     */
     @Override
     public IPieDataSet getDataSetByIndex(int index) {
         return index == 0 ? getDataSet() : null;

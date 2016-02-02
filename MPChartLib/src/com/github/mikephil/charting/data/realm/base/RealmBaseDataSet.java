@@ -9,6 +9,7 @@ import java.util.List;
 
 import io.realm.RealmObject;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * Created by Philipp Jahoda on 06/11/15.
@@ -51,7 +52,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         this.mValues = new ArrayList<S>();
 
         if (mIndexField != null)
-            this.results.sort(mIndexField, true);
+            this.results.sort(mIndexField, Sort.ASCENDING);
     }
 
     /**
@@ -67,8 +68,8 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         this.mIndexField = xIndexField;
         this.mValues = new ArrayList<S>();
 
-        if (mIndexField != null) ;
-        this.results.sort(mIndexField, true);
+        if (mIndexField != null)
+            this.results.sort(mIndexField, Sort.ASCENDING);
     }
 
     /**
@@ -259,6 +260,37 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         return removed;
     }
 
+    @Override
+    public void addEntryOrdered(S e) {
+
+        if (e == null)
+            return;
+
+        float val = e.getVal();
+
+        if (mValues == null) {
+            mValues = new ArrayList<S>();
+        }
+
+        if (mValues.size() == 0) {
+            mYMax = val;
+            mYMin = val;
+        } else {
+            if (mYMax < val)
+                mYMax = val;
+            if (mYMin > val)
+                mYMin = val;
+        }
+
+        if (mValues.size() > 0 && mValues.get(mValues.size() - 1).getXIndex() > e.getXIndex()) {
+            int closestIndex = getEntryIndex(e.getXIndex(), DataSet.Rounding.UP);
+            mValues.add(closestIndex, e);
+            return;
+        }
+
+        mValues.add(e);
+    }
+
     /**
      * Returns the List of values that has been extracted from the RealmResults
      * using the provided fieldnames.
@@ -269,10 +301,8 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         return mValues;
     }
 
-    /**
-     * Clears all values from the DataSet.
-     */
-    public void clearValues() {
+    @Override
+    public void clear() {
         mValues.clear();
         notifyDataSetChanged();
     }

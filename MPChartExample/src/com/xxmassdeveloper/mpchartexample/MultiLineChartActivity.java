@@ -228,7 +228,7 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
 
             LineDataSet d = new LineDataSet(values, "DataSet " + (z + 1));
             d.setLineWidth(2.5f);
-            d.setCircleSize(4f);
+            d.setCircleRadius(4f);
 
             int color = mColors[z % mColors.length];
             d.setColor(color);

@@ -490,7 +490,6 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
 
         if (l != null) {
             l.onChartDoubleTapped(e);
-            return super.onDoubleTap(e);
         }
 
         // check if double-tap zooming is enabled

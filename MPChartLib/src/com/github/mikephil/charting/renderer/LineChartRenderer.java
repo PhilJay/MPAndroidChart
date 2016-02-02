@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.buffer.CircleBuffer;
@@ -19,9 +20,10 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
-public class LineChartRenderer extends LineScatterCandleRadarRenderer {
+public class LineChartRenderer extends LineRadarRenderer {
 
     protected LineDataProvider mChart;
 
@@ -34,13 +36,18 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
      * Bitmap object used for drawing the paths (otherwise they are too long if
      * rendered directly on the canvas)
      */
-    protected Bitmap mDrawBitmap;
+    protected WeakReference<Bitmap> mDrawBitmap;
 
     /**
      * on this canvas, the paths are rendered, it is initialized with the
      * pathBitmap
      */
     protected Canvas mBitmapCanvas;
+
+    /**
+     * the bitmap configuration to be used
+     */
+    protected Bitmap.Config mBitmapConfig = Bitmap.Config.ARGB_8888;
 
     protected Path cubicPath = new Path();
     protected Path cubicFillPath = new Path();
@@ -80,18 +87,18 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
         int height = (int) mViewPortHandler.getChartHeight();
 
         if (mDrawBitmap == null
-                || (mDrawBitmap.getWidth() != width)
-                || (mDrawBitmap.getHeight() != height)) {
+                || (mDrawBitmap.get().getWidth() != width)
+                || (mDrawBitmap.get().getHeight() != height)) {
 
             if (width > 0 && height > 0) {
 
-                mDrawBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
-                mBitmapCanvas = new Canvas(mDrawBitmap);
+                mDrawBitmap = new WeakReference<Bitmap>(Bitmap.createBitmap(width, height, mBitmapConfig));
+                mBitmapCanvas = new Canvas(mDrawBitmap.get());
             } else
                 return;
         }
 
-        mDrawBitmap.eraseColor(Color.TRANSPARENT);
+        mDrawBitmap.get().eraseColor(Color.TRANSPARENT);
 
         LineData lineData = mChart.getLineData();
 
@@ -101,7 +108,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
                 drawDataSet(c, set);
         }
 
-        c.drawBitmap(mDrawBitmap, 0, 0, mRenderPaint);
+        c.drawBitmap(mDrawBitmap.get(), 0, 0, mRenderPaint);
     }
 
     protected void drawDataSet(Canvas c, ILineDataSet dataSet) {
@@ -252,7 +259,14 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
         trans.pathValueToPixel(spline);
 
-        drawFilledPath(c, spline, dataSet.getFillColor(), dataSet.getFillAlpha());
+        final Drawable drawable = dataSet.getFillDrawable();
+        if (drawable != null) {
+
+            drawFilledPath(c, spline, drawable);
+        } else {
+
+            drawFilledPath(c, spline, dataSet.getFillColor(), dataSet.getFillAlpha());
+        }
     }
 
     /**
@@ -349,25 +363,14 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
         trans.pathValueToPixel(filled);
 
-        drawFilledPath(c, filled, dataSet.getFillColor(), dataSet.getFillAlpha());
-    }
+        final Drawable drawable = dataSet.getFillDrawable();
+        if (drawable != null) {
 
-    /**
-     * Draws the provided path in filled mode with the provided color and alpha.
-     * Special thanks to Angelo Suzuki (https://github.com/tinsukE) for this.
-     *
-     * @param c
-     * @param filledPath
-     * @param fillColor
-     * @param fillAlpha
-     */
-    protected void drawFilledPath(Canvas c, Path filledPath, int fillColor, int fillAlpha) {
-        c.save();
-        c.clipPath(filledPath);
+            drawFilledPath(c, filled, drawable);
+        } else {
 
-        int color = (fillAlpha << 24) | (fillColor & 0xffffff);
-        c.drawColor(color);
-        c.restore();
+            drawFilledPath(c, filled, dataSet.getFillColor(), dataSet.getFillAlpha());
+        }
     }
 
     /**
@@ -428,7 +431,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
                 Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
                 // make sure the values do not interfear with the circles
-                int valOffset = (int) (dataSet.getCircleSize() * 1.75f);
+                int valOffset = (int) (dataSet.getCircleRadius() * 1.75f);
 
                 if (!dataSet.isDrawCirclesEnabled())
                     valOffset = valOffset / 2;
@@ -506,7 +509,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
             trans.pointValuesToPixel(buffer.buffer);
 
-            float halfsize = dataSet.getCircleSize() / 2f;
+            float halfsize = dataSet.getCircleRadius() / 2f;
 
             for (int j = 0, count = (int) Math.ceil((maxx - minx) * phaseX + minx) * 2; j < count; j += 2) {
 
@@ -525,7 +528,7 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
 
                 mRenderPaint.setColor(circleColor);
 
-                c.drawCircle(x, y, dataSet.getCircleSize(),
+                c.drawCircle(x, y, dataSet.getCircleRadius(),
                         mRenderPaint);
 
                 if (dataSet.isDrawCircleHoleEnabled()
@@ -574,11 +577,33 @@ public class LineChartRenderer extends LineScatterCandleRadarRenderer {
     }
 
     /**
+     * Sets the Bitmap.Config to be used by this renderer.
+     * Default: Bitmap.Config.ARGB_8888
+     * Use Bitmap.Config.ARGB_4444 to consume less memory.
+     *
+     * @param config
+     */
+    public void setBitmapConfig(Bitmap.Config config) {
+        mBitmapConfig = config;
+        releaseBitmap();
+    }
+
+    /**
+     * Returns the Bitmap.Config that is used by this renderer.
+     *
+     * @return
+     */
+    public Bitmap.Config getBitmapConfig() {
+        return mBitmapConfig;
+    }
+
+    /**
      * Releases the drawing bitmap. This should be called when {@link LineChart#onDetachedFromWindow()}.
      */
     public void releaseBitmap() {
         if (mDrawBitmap != null) {
-            mDrawBitmap.recycle();
+            mDrawBitmap.get().recycle();
+            mDrawBitmap.clear();
             mDrawBitmap = null;
         }
     }

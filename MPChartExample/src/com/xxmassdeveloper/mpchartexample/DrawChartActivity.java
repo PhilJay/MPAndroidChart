@@ -84,7 +84,7 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
         // create a dataset and give it a type (0)
         LineDataSet set1 = new LineDataSet(yVals, "DataSet");
         set1.setLineWidth(3f);
-        set1.setCircleSize(5f);
+        set1.setCircleRadius(5f);
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         dataSets.add(set1); // add the datasets

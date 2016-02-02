@@ -1716,4 +1716,50 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
                     "Cannot enable/disable hardware acceleration for devices below API level 11.");
         }
     }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
+        //Log.i(LOG_TAG, "Detaching...");
+
+        if(mUnbind)
+            unbindDrawables(this);
+    }
+
+    /**
+     * unbind flag
+     */
+    private boolean mUnbind = false;
+
+    /**
+     * Unbind all drawables to avoid memory leaks.
+     * Link: http://stackoverflow.com/a/6779164/1590502
+     *
+     * @param view
+     */
+    private void unbindDrawables(View view) {
+
+        if (view.getBackground() != null) {
+            view.getBackground().setCallback(null);
+        }
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                unbindDrawables(((ViewGroup) view).getChildAt(i));
+            }
+            ((ViewGroup) view).removeAllViews();
+        }
+    }
+
+    /**
+     * Set this to true to enable "unbinding" of drawables. When a View is detached
+     * from a window. This helps avoid memory leaks.
+     * Default: false
+     * Link: http://stackoverflow.com/a/6779164/1590502
+     *
+     * @param enabled
+     */
+    public void setUnbindEnabled(boolean enabled) {
+        this.mUnbind = enabled;
+    }
 }

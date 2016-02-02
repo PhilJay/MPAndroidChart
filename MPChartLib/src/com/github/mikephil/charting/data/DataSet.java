@@ -95,74 +95,12 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     /**
-     * Returns all Entry objects at the given xIndex. INFORMATION: This method
-     * does calculations at runtime. Do not over-use in performance critical
-     * situations.
-     *
-     * @param x
-     * @return
-     */
-    public List<T> getEntriesForXIndex(int x) {
-
-        List<T> entries = new ArrayList<T>();
-
-        int low = 0;
-        int high = mYVals.size() - 1;
-
-        while (low <= high) {
-            int m = (high + low) / 2;
-            T entry = mYVals.get(m);
-
-            if (x == entry.getXIndex()) {
-                while (m > 0 && mYVals.get(m - 1).getXIndex() == x)
-                    m--;
-
-                high = mYVals.size();
-                for (; m < high; m++) {
-                    entry = mYVals.get(m);
-                    if (entry.getXIndex() == x) {
-                        entries.add(entry);
-                    } else {
-                        break;
-                    }
-                }
-            }
-
-            if (x > entry.getXIndex())
-                low = m + 1;
-            else
-                high = m - 1;
-        }
-
-        return entries;
-    }
-
-    /**
      * Returns the array of y-values that this DataSet represents.
      *
      * @return
      */
     public List<T> getYVals() {
         return mYVals;
-    }
-
-    /**
-     * The xIndex of an Entry object is provided. This method returns the actual
-     * index in the Entry array of the DataSet. IMPORTANT: This method does
-     * calculations at runtime, do not over-use in performance critical
-     * situations.
-     *
-     * @param xIndex
-     * @return
-     */
-    public int getIndexInEntries(int xIndex) {
-
-        for (int i = 0; i < mYVals.size(); i++) {
-            if (xIndex == mYVals.get(i).getXIndex())
-                return i;
-        }
-
-        return -1;
     }
 
     /**
@@ -204,16 +142,8 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         return mYMax;
     }
 
-    /**
-     * Adds an Entry to the DataSet dynamically.
-     * Entries are added to their appropriate index respective to it's x-index.
-     * This will also recalculate the current minimum and maximum
-     * values of the DataSet and the value-sum.
-     *
-     * @param e
-     */
-    @SuppressWarnings("unchecked")
-    public void addEntryOrdered(Entry e) {
+    @Override
+    public void addEntryOrdered(T e) {
 
         if (e == null)
             return;
@@ -236,57 +166,14 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
         if (mYVals.size() > 0 && mYVals.get(mYVals.size() - 1).getXIndex() > e.getXIndex()) {
             int closestIndex = getEntryIndex(e.getXIndex(), Rounding.UP);
-            mYVals.add(closestIndex, (T) e);
+            mYVals.add(closestIndex, e);
             return;
         }
 
-        mYVals.add((T) e);
+        mYVals.add(e);
     }
 
-    /**
-     * Removes the first Entry (at index 0) of this DataSet from the entries array.
-     * Returns true if successful, false if not.
-     *
-     * @return
-     */
-    public boolean removeFirst() {
-
-        T entry = mYVals.remove(0);
-
-        boolean removed = entry != null;
-
-        if (removed) {
-            calcMinMax(0, mYVals.size());
-        }
-
-        return removed;
-    }
-
-    /**
-     * Removes the last Entry (at index size-1) of this DataSet from the entries array.
-     * Returns true if successful, false if not.
-     *
-     * @return
-     */
-    public boolean removeLast() {
-
-        if (mYVals.size() <= 0)
-            return false;
-
-        T entry = mYVals.remove(mYVals.size() - 1);
-
-        boolean removed = entry != null;
-
-        if (removed) {
-            calcMinMax(0, mYVals.size());
-        }
-
-        return removed;
-    }
-
-    /**
-     * Removes all values from this DataSet and recalculates min and max value.
-     */
+    @Override
     public void clear() {
         mYVals.clear();
         notifyDataSetChanged();
@@ -339,48 +226,9 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         return removed;
     }
 
-    /**
-     * Removes the Entry object that has the given xIndex from the DataSet.
-     * Returns true if an Entry was removed, false if no Entry could be removed.
-     *
-     * @param xIndex
-     */
-    public boolean removeEntry(int xIndex) {
-
-        T e = getEntryForXIndex(xIndex);
-        return removeEntry(e);
-    }
-
-    /**
-     * Checks if this DataSet contains the specified Entry. Returns true if so,
-     * false if not. NOTE: Performance is pretty bad on this one, do not
-     * over-use in performance critical situations.
-     *
-     * @param e
-     * @return
-     */
-    public boolean contains(Entry e) {
-
-        List<T> values = getYVals();
-
-        for (Entry entry : values) {
-            if (entry.equals(e))
-                return true;
-        }
-
-        return false;
-    }
-
     @Override
     public int getEntryIndex(Entry e) {
         return mYVals.indexOf(e);
-//
-//        for (int i = 0; i < mYVals.size(); i++) {
-//            if (e.equalTo(mYVals.get(i)))
-//                return i;
-//        }
-//
-//        return -1;
     }
 
     @Override
@@ -452,6 +300,49 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
             return e.getVal();
         else
             return Float.NaN;
+    }
+
+    /**
+     * Returns all Entry objects at the given xIndex. INFORMATION: This method
+     * does calculations at runtime. Do not over-use in performance critical
+     * situations.
+     *
+     * @param xIndex
+     * @return
+     */
+    public List<T> getEntriesForXIndex(int xIndex) {
+
+        List<T> entries = new ArrayList<T>();
+
+        int low = 0;
+        int high = mYVals.size() - 1;
+
+        while (low <= high) {
+            int m = (high + low) / 2;
+            T entry = mYVals.get(m);
+
+            if (xIndex == entry.getXIndex()) {
+                while (m > 0 && mYVals.get(m - 1).getXIndex() == xIndex)
+                    m--;
+
+                high = mYVals.size();
+                for (; m < high; m++) {
+                    entry = mYVals.get(m);
+                    if (entry.getXIndex() == xIndex) {
+                        entries.add(entry);
+                    } else {
+                        break;
+                    }
+                }
+            }
+
+            if (xIndex > entry.getXIndex())
+                low = m + 1;
+            else
+                high = m - 1;
+        }
+
+        return entries;
     }
 
     /**
