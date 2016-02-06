@@ -7,9 +7,6 @@ import android.os.Bundle;
 import android.view.WindowManager;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.Legend.LegendForm;
-import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
@@ -17,8 +14,6 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -42,6 +37,8 @@ public class BarChartPositiveNegative extends DemoBase {
         mChart = (BarChart) findViewById(R.id.chart1);
         mChart.setExtraTopOffset(-30f);
         mChart.setExtraBottomOffset(10f);
+        mChart.setExtraLeftOffset(70f);
+        mChart.setExtraRightOffset(70f);
 
         mChart.setDrawBarShadow(false);
         mChart.setDrawValueAboveBar(true);
@@ -60,7 +57,7 @@ public class BarChartPositiveNegative extends DemoBase {
         xAxis.setDrawAxisLine(false);
         xAxis.setSpaceBetweenLabels(2);
         xAxis.setTextColor(Color.LTGRAY);
-        xAxis.setTextSize(12f);
+        xAxis.setTextSize(13f);
 
         YAxis left = mChart.getAxisLeft();
         left.setDrawLabels(false);
@@ -85,42 +82,35 @@ public class BarChartPositiveNegative extends DemoBase {
 
     private void setData(List<Data> dataList) {
 
-        ArrayList<BarEntry> positiveValues = new ArrayList<BarEntry>();
-        ArrayList<BarEntry> negativeValues = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> values = new ArrayList<BarEntry>();
         String[] dates = new String[dataList.size()];
+        List<Integer> colors = new ArrayList<Integer>();
+
+        int green = Color.rgb(110, 190, 102);
+        int red = Color.rgb(211, 74, 88);
 
         for (int i = 0; i < dataList.size(); i++) {
 
             Data d = dataList.get(i);
             BarEntry entry = new BarEntry(d.yValue, d.xIndex);
-
-            if (d.yValue >= 0)
-                positiveValues.add(entry);
-            else
-                negativeValues.add(entry);
+            values.add(entry);
 
             dates[i] = dataList.get(i).xAxisValue;
+
+            // specific colors
+            if (d.yValue >= 0)
+                colors.add(red);
+            else
+                colors.add(green);
         }
 
-        int green = Color.rgb(110, 190, 102);
-        int red = Color.rgb(211, 74, 88);
+        BarDataSet set = new BarDataSet(values, "Values");
+        set.setBarSpacePercent(40f);
+        set.setColors(colors);
+        set.setValueTextColor(red);
 
-        BarDataSet positive = new BarDataSet(positiveValues, "Positive");
-        positive.setBarSpacePercent(35f);
-        positive.setColor(red);
-        positive.setValueTextColor(red);
-
-        BarDataSet negative = new BarDataSet(negativeValues, "Negative");
-        negative.setBarSpacePercent(35f);
-        negative.setColor(green);
-        negative.setValueTextColor(green);
-
-        ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-        dataSets.add(positive);
-        dataSets.add(negative);
-
-        BarData data = new BarData(dates, dataSets);
-        data.setValueTextSize(12f);
+        BarData data = new BarData(dates, set);
+        data.setValueTextSize(13f);
         data.setValueTypeface(mTf);
         data.setValueFormatter(new ValueFormatter());
 
