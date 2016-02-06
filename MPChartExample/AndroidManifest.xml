@@ -61,6 +61,7 @@
         <activity android:name="ScrollViewActivity"></activity>
         <activity android:name="StackedBarActivityNegative"></activity>
         <activity android:name=".realm.RealmWikiExample"></activity>
+        <activity android:name=".BarChartPositiveNegative"></activity>
     </application>
 
 </manifest>
