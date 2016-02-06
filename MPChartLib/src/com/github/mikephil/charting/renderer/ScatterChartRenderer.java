@@ -232,7 +232,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
                     Entry entry = dataSet.getEntryForIndex(j / 2);
 
                     drawValue(c, dataSet.getValueFormatter(), entry.getVal(), entry, i, positions[j],
-                            positions[j + 1] - shapeSize);
+                            positions[j + 1] - shapeSize, dataSet.getValueTextColor(j / 2));
                 }
             }
         }

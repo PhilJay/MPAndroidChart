@@ -27,6 +27,11 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     protected List<Integer> mColors = null;
 
     /**
+     * List representing all colors that are used for drawing the actual values for this DataSet
+     */
+    protected List<Integer> mValueColors = null;
+
+    /**
      * label that describes the DataSet or the data the DataSet represents
      */
     private String mLabel = "DataSet";
@@ -45,11 +50,6 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      * custom formatter that is used instead of the auto-formatter if set
      */
     protected transient ValueFormatter mValueFormatter;
-
-    /**
-     * the color used for the value-text
-     */
-    protected int mValueColor = Color.BLACK;
 
     /**
      * the typeface used for the value text
@@ -76,9 +76,11 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      */
     public BaseDataSet() {
         mColors = new ArrayList<Integer>();
+        mValueColors = new ArrayList<Integer>();
 
         // default color
         mColors.add(Color.rgb(140, 234, 255));
+        mValueColors.add(Color.BLACK);
     }
 
     /**
@@ -261,7 +263,13 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
 
     @Override
     public void setValueTextColor(int color) {
-        mValueColor = color;
+        mValueColors.clear();
+        mValueColors.add(color);
+    }
+
+    @Override
+    public void setValueTextColors(List<Integer> colors) {
+        mValueColors = colors;
     }
 
     @Override
@@ -275,8 +283,8 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     }
 
     @Override
-    public int getValueTextColor() {
-        return mValueColor;
+    public int getValueTextColor(int index) {
+        return mValueColors.get(index % mValueColors.size());
     }
 
     @Override

@@ -244,7 +244,7 @@ public class PieChartRenderer extends DataRenderer {
                 // draw everything, depending on settings
                 if (drawXVals && drawYVals) {
 
-                    drawValue(c, formatter, value, entry, 0, x, y);
+                    drawValue(c, formatter, value, entry, 0, x, y, dataSet.getValueTextColor(j));
 
                     if (j < data.getXValCount())
                         c.drawText(data.getXVals().get(j), x, y + lineHeight,
@@ -255,7 +255,7 @@ public class PieChartRenderer extends DataRenderer {
                         c.drawText(data.getXVals().get(j), x, y + lineHeight / 2f, mValuePaint);
                 } else if (drawYVals) {
 
-                    drawValue(c, formatter, value, entry, 0, x, y + lineHeight / 2f);
+                    drawValue(c, formatter, value, entry, 0, x, y + lineHeight / 2f, dataSet.getValueTextColor(j));
                 }
 
                 xIndex++;

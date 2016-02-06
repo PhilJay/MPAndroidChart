@@ -223,7 +223,7 @@ public class BarChartRenderer extends DataRenderer {
                         float val = entry.getVal();
 
                         drawValue(c, dataSet.getValueFormatter(), val, entry, i, valuePoints[j],
-                                valuePoints[j + 1] + (val >= 0 ? posOffset : negOffset));
+                                valuePoints[j + 1] + (val >= 0 ? posOffset : negOffset), dataSet.getValueTextColor(j / 2));
                     }
 
                     // if we have stacks
@@ -248,10 +248,12 @@ public class BarChartRenderer extends DataRenderer {
                                 continue;
 
                             drawValue(c, dataSet.getValueFormatter(), entry.getVal(), entry, i, valuePoints[j],
-                                    valuePoints[j + 1] + (entry.getVal() >= 0 ? posOffset : negOffset));
+                                    valuePoints[j + 1] + (entry.getVal() >= 0 ? posOffset : negOffset), dataSet.getValueTextColor(j / 2));
 
                             // draw stack values
                         } else {
+
+                            int color = dataSet.getValueTextColor(j / 2);
 
                             float[] transformed = new float[vals.length * 2];
 
@@ -289,7 +291,7 @@ public class BarChartRenderer extends DataRenderer {
                                         || !mViewPortHandler.isInBoundsLeft(x))
                                     continue;
 
-                                drawValue(c, dataSet.getValueFormatter(), vals[k / 2], entry, i, x, y);
+                                drawValue(c, dataSet.getValueFormatter(), vals[k / 2], entry, i, x, y, color);
                             }
                         }
                     }

@@ -217,7 +217,7 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
                     CandleEntry entry = dataSet.getEntryForIndex(j / 2 + minx);
 
-                    drawValue(c, dataSet.getValueFormatter(), entry.getHigh(), entry, i, x, y - yOffset);
+                    drawValue(c, dataSet.getValueFormatter(), entry.getHigh(), entry, i, x, y - yOffset, dataSet.getValueTextColor(j / 2));
                 }
             }
         }

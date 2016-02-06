@@ -461,7 +461,7 @@ public class LineChartRenderer extends LineRadarRenderer {
                     Entry entry = dataSet.getEntryForIndex(j / 2 + minx);
 
                     drawValue(c, dataSet.getValueFormatter(), entry.getVal(), entry, i, x,
-                            y - valOffset);
+                            y - valOffset, dataSet.getValueTextColor(j / 2));
                 }
             }
         }
