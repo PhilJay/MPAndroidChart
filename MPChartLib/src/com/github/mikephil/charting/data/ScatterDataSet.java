@@ -12,7 +12,7 @@ import java.util.List;
 public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> implements IScatterDataSet {
 
     /**
-     * the size the scattershape will have, in screen pixels
+     * the size the scattershape will have, in density pixels
      */
     private float mShapeSize = 15f;
 
@@ -42,8 +42,6 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
     //private Path mCustomScatterPath = null;
     public ScatterDataSet(List<Entry> yVals, String label) {
         super(yVals, label);
-
-        // mShapeSize = Utils.convertDpToPixel(8f);
     }
 
     @Override
@@ -74,7 +72,7 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
      * @param size
      */
     public void setScatterShapeSize(float size) {
-        mShapeSize = Utils.convertDpToPixel(size);
+        mShapeSize = size;
     }
 
     @Override
@@ -102,7 +100,7 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
      * @param holeRadius
      */
     public void setScatterShapeHoleRadius(float holeRadius) {
-        mScatterShapeHoleRadius = Utils.convertDpToPixel(holeRadius);
+        mScatterShapeHoleRadius = holeRadius;
     }
 
     @Override

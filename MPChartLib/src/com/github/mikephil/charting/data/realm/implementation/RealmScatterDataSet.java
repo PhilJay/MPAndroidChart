@@ -17,9 +17,9 @@ import io.realm.RealmResults;
 public class RealmScatterDataSet<T extends RealmObject> extends RealmLineScatterCandleRadarDataSet<T, Entry> implements IScatterDataSet {
 
     /**
-     * the size the scattershape will have, in screen pixels
+     * the size the scattershape will have, in density pixels
      */
-    private float mShapeSize = 15f;
+    private float mShapeSize = 10f;
 
     /**
      * the type of shape that is set to be drawn where the values are at,
@@ -98,7 +98,7 @@ public class RealmScatterDataSet<T extends RealmObject> extends RealmLineScatter
      * @param size
      */
     public void setScatterShapeSize(float size) {
-        mShapeSize = Utils.convertDpToPixel(size);
+        mShapeSize = size;
     }
 
     @Override
@@ -128,7 +128,7 @@ public class RealmScatterDataSet<T extends RealmObject> extends RealmLineScatter
      * @param holeRadius
      */
     public void setScatterShapeHoleRadius(float holeRadius) {
-        mScatterShapeHoleRadius = Utils.convertDpToPixel(holeRadius);
+        mScatterShapeHoleRadius = holeRadius;
     }
 
     @Override
