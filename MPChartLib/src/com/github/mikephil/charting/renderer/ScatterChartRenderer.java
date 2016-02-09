@@ -249,12 +249,49 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
                     mRenderPaint.setColor(dataSet.getColor(i / 2));
 
-                    c.drawLine(buffer.buffer[i] - shapeHalf, buffer.buffer[i + 1],
+                    c.drawLine(
+                            buffer.buffer[i] - shapeHalf,
+                            buffer.buffer[i + 1],
                             buffer.buffer[i] + shapeHalf,
-                            buffer.buffer[i + 1], mRenderPaint);
-                    c.drawLine(buffer.buffer[i], buffer.buffer[i + 1] - shapeHalf,
-                            buffer.buffer[i], buffer.buffer[i + 1]
-                                    + shapeHalf, mRenderPaint);
+                            buffer.buffer[i + 1],
+                            mRenderPaint);
+                    c.drawLine(
+                            buffer.buffer[i],
+                            buffer.buffer[i + 1] - shapeHalf,
+                            buffer.buffer[i],
+                            buffer.buffer[i + 1] + shapeHalf,
+                            mRenderPaint);
+                }
+                break;
+
+            case X:
+
+                mRenderPaint.setStyle(Style.STROKE);
+                mRenderPaint.setStrokeWidth(Utils.convertDpToPixel(1f));
+
+                for (int i = 0; i < buffer.size(); i += 2) {
+
+                    if (!mViewPortHandler.isInBoundsRight(buffer.buffer[i]))
+                        break;
+
+                    if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[i])
+                            || !mViewPortHandler.isInBoundsY(buffer.buffer[i + 1]))
+                        continue;
+
+                    mRenderPaint.setColor(dataSet.getColor(i / 2));
+
+                    c.drawLine(
+                            buffer.buffer[i] - shapeHalf,
+                            buffer.buffer[i + 1] - shapeHalf,
+                            buffer.buffer[i] + shapeHalf,
+                            buffer.buffer[i + 1] + shapeHalf,
+                            mRenderPaint);
+                    c.drawLine(
+                            buffer.buffer[i] + shapeHalf,
+                            buffer.buffer[i + 1] - shapeHalf,
+                            buffer.buffer[i] - shapeHalf,
+                            buffer.buffer[i + 1] + shapeHalf,
+                            mRenderPaint);
                 }
                 break;
 
