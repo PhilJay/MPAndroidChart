@@ -310,6 +310,13 @@ public interface IDataSet<T extends Entry> {
     void setValueTextSize(float size);
 
     /**
+     * Returns only the first color of all colors that are set to be used for the values.
+     *
+     * @return
+     */
+    int getValueTextColor();
+
+    /**
      * Returns the color at the specified index that is used for drawing the values inside the chart.
      * Uses modulus internally.
      *

@@ -283,6 +283,11 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     }
 
     @Override
+    public int getValueTextColor() {
+        return mValueColors.get(0);
+    }
+
+    @Override
     public int getValueTextColor(int index) {
         return mValueColors.get(index % mValueColors.size());
     }

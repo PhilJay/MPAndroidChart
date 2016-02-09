@@ -150,10 +150,11 @@ public class BubbleChartRenderer extends DataRenderer {
                 final float[] positions = mChart.getTransformer(dataSet.getAxisDependency())
                         .generateTransformedValuesBubble(dataSet, phaseX, phaseY, minx, maxx);
 
+                final float alpha = phaseX == 1 ? phaseY : phaseX;
+
                 for (int j = 0; j < positions.length; j += 2) {
 
-                    final float alpha = phaseX == 1 ? phaseY : phaseX;
-                    int valueTextColor = dataSet.getValueTextColor(j / 2);
+                    int valueTextColor = dataSet.getValueTextColor(j / 2 + minx);
                     valueTextColor = Color.argb(Math.round(255.f * alpha), Color.red(valueTextColor),
                             Color.green(valueTextColor), Color.blue(valueTextColor));
 
@@ -173,7 +174,6 @@ public class BubbleChartRenderer extends DataRenderer {
                 }
             }
         }
-
     }
 
     @Override

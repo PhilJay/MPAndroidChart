@@ -158,7 +158,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
             int length = mXVals.get(i).length();
 
-            if(length > max)
+            if (length > max)
                 max = length;
         }
 
@@ -382,7 +382,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      */
     public void addXValue(String xVal) {
 
-        if(xVal != null && xVal.length() > mXValMaximumLength)
+        if (xVal != null && xVal.length() > mXValMaximumLength)
             mXValMaximumLength = xVal.length();
 
         mXVals.add(xVal);
@@ -855,6 +855,18 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     public void setValueTextColor(int color) {
         for (IDataSet set : mDataSets) {
             set.setValueTextColor(color);
+        }
+    }
+
+    /**
+     * Sets the same list of value-colors for all DataSets this
+     * data object contains.
+     *
+     * @param colors
+     */
+    public void setValueTextColors(List<Integer> colors) {
+        for (IDataSet set : mDataSets) {
+            set.setValueTextColors(colors);
         }
     }
 

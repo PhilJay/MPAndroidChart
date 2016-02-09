@@ -246,13 +246,16 @@ public class PieChartRenderer extends DataRenderer {
 
                     drawValue(c, formatter, value, entry, 0, x, y, dataSet.getValueTextColor(j));
 
-                    if (j < data.getXValCount())
+                    if (j < data.getXValCount()) {
                         c.drawText(data.getXVals().get(j), x, y + lineHeight,
                                 mValuePaint);
+                    }
 
                 } else if (drawXVals) {
-                    if (j < data.getXValCount())
+                    if (j < data.getXValCount()) {
+                        mValuePaint.setColor(dataSet.getValueTextColor(j));
                         c.drawText(data.getXVals().get(j), x, y + lineHeight / 2f, mValuePaint);
+                    }
                 } else if (drawYVals) {
 
                     drawValue(c, formatter, value, entry, 0, x, y + lineHeight / 2f, dataSet.getValueTextColor(j));
