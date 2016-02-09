@@ -366,45 +366,6 @@ public class PieChartRenderer extends DataRenderer {
             c.translate(boundingRect.left, boundingRect.top + (boundingRect.height() - layoutHeight) / 2.f);
             mCenterTextLayout.draw(c);
             c.restore();
-
-//            }
-//
-//        else {
-//
-//
-//                // get all lines from the text
-//                String[] lines = centerText.toString().split("\n");
-//
-//                float maxlineheight = 0f;
-//
-//                // calc the maximum line height
-//                for (String line : lines) {
-//                    float curHeight = Utils.calcTextHeight(mCenterTextPaint, line);
-//                    if (curHeight > maxlineheight)
-//                        maxlineheight = curHeight;
-//                }
-//
-//                float linespacing = maxlineheight * 0.25f;
-//
-//                float totalheight = maxlineheight * lines.length - linespacing * (lines.length - 1);
-//
-//                int cnt = lines.length;
-//
-//                float y = center.y;
-//
-//                for (int i = 0; i < lines.length; i++) {
-//
-//                    String line = lines[lines.length - i - 1];
-//
-//
-//
-//                    c.drawText(line, center.x, y
-//                                    + maxlineheight * cnt - totalheight / 2f,
-//                            mCenterTextPaint);
-//                    cnt--;
-//                    y -= linespacing;
-//                }
-//            }
         }
     }
 
