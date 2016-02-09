@@ -84,7 +84,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
      */
     private boolean mDrawCenterText = true;
 
-    private float mCenterTextRadiusPercent = 1.f;
+    private float mCenterTextRadiusPercent = 100.f;
 
     protected float mMaxAngle = 360f;
 
