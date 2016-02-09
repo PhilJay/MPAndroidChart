@@ -4,6 +4,7 @@ import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.realm.base.RealmLineScatterCandleRadarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
 
 import io.realm.DynamicRealmObject;
@@ -26,6 +27,18 @@ public class RealmScatterDataSet<T extends RealmObject> extends RealmLineScatter
      */
     private ScatterChart.ScatterShape mScatterShape = ScatterChart.ScatterShape.SQUARE;
 
+    /**
+     * The radius of the hole in the shape (applies to Square, Circle and Triangle)
+     * - default: 0.0
+     */
+    private float mScatterShapeHoleRadius = 0f;
+
+    /**
+     * Color for the hole in the shape.
+     * Setting to `ColorTemplate.COLOR_NONE` will behave as transparent.
+     * - default: ColorTemplate.COLOR_NONE
+     */
+    private int mScatterShapeHoleColor = ColorTemplate.COLOR_NONE;
 
     /**
      * Constructor for creating a ScatterDataSet with realm data.
@@ -107,5 +120,33 @@ public class RealmScatterDataSet<T extends RealmObject> extends RealmLineScatter
     @Override
     public ScatterChart.ScatterShape getScatterShape() {
         return mScatterShape;
+    }
+
+    /**
+     * Sets the radius of the hole in the shape
+     *
+     * @param holeRadius
+     */
+    public void setScatterShapeHoleRadius(float holeRadius) {
+        mScatterShapeHoleRadius = Utils.convertDpToPixel(holeRadius);
+    }
+
+    @Override
+    public float getScatterShapeHoleRadius() {
+        return mScatterShapeHoleRadius;
+    }
+
+    /**
+     * Sets the color for the hole in the shape
+     *
+     * @param holeColor
+     */
+    public void setScatterShapeHoleColor(int holeColor) {
+        mScatterShapeHoleColor = holeColor;
+    }
+
+    @Override
+    public int getScatterShapeHoleColor() {
+        return mScatterShapeHoleColor;
     }
 }
