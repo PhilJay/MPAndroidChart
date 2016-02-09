@@ -7,8 +7,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
+import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.os.Build;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -356,15 +358,19 @@ public class PieChartRenderer extends DataRenderer {
                         Layout.Alignment.ALIGN_CENTER, 1.f, 0.f, false);
             }
 
-            // I wish we could make an ellipse clipping path on Android to clip to the hole...
-            // If we ever find out how, this is the place to add it, based on holeRect
-
             //float layoutWidth = Utils.getStaticLayoutMaxWidth(mCenterTextLayout);
             float layoutHeight = mCenterTextLayout.getHeight();
 
             c.save();
+            if (Build.VERSION.SDK_INT >= 18) {
+                Path path = new Path();
+                path.addOval(holeRect, Path.Direction.CW);
+                c.clipPath(path);
+            }
+
             c.translate(boundingRect.left, boundingRect.top + (boundingRect.height() - layoutHeight) / 2.f);
             mCenterTextLayout.draw(c);
+
             c.restore();
         }
     }
