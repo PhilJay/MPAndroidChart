@@ -21,6 +21,8 @@ public class YAxisRenderer extends AxisRenderer {
 
     protected YAxis mYAxis;
 
+    protected Paint mZeroLinePaint;
+
     public YAxisRenderer(ViewPortHandler viewPortHandler, YAxis yAxis, Transformer trans) {
         super(viewPortHandler, trans);
 
@@ -28,6 +30,11 @@ public class YAxisRenderer extends AxisRenderer {
 
         mAxisLabelPaint.setColor(Color.BLACK);
         mAxisLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
+
+        mZeroLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mZeroLinePaint.setColor(Color.GRAY);
+        mZeroLinePaint.setStrokeWidth(1f);
+        mZeroLinePaint.setStyle(Paint.Style.STROKE);
     }
 
     /**
@@ -283,7 +290,7 @@ public class YAxisRenderer extends AxisRenderer {
             position[1] = 0f;
             mTrans.pointValuesToPixel(position);
 
-            drawZeroLine(c, mViewPortHandler.offsetLeft(), mViewPortHandler.contentRight(), position[1], position[1]);
+            drawZeroLine(c, mViewPortHandler.offsetLeft(), mViewPortHandler.contentRight(), position[1]-1, position[1]-1);
         }
     }
 
@@ -298,13 +305,16 @@ public class YAxisRenderer extends AxisRenderer {
      */
     protected void drawZeroLine(Canvas c, float x1, float x2, float y1, float y2) {
 
+        mZeroLinePaint.setColor(mYAxis.getZeroLineColor());
+        mZeroLinePaint.setStrokeWidth(mYAxis.getZeroLineWidth());
+
         Path zeroLinePath = new Path();
 
         zeroLinePath.moveTo(x1, y1);
         zeroLinePath.lineTo(x2, y2);
 
         // draw a path because lines don't support dashing on lower android versions
-        c.drawPath(zeroLinePath, mGridPaint);
+        c.drawPath(zeroLinePath, mZeroLinePaint);
     }
 
     /**

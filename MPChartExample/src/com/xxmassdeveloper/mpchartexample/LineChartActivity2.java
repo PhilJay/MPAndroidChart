@@ -123,6 +123,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         rightAxis.setStartAtZero(false);
         rightAxis.setAxisMinValue(-200);
         rightAxis.setDrawGridLines(false);
+        rightAxis.setDrawZeroLine(false);
     }
 
     @Override

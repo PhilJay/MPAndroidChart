@@ -185,7 +185,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
             position[0] = 0f;
             mTrans.pointValuesToPixel(position);
 
-            drawZeroLine(c, position[0], position[0], mViewPortHandler.contentTop(), mViewPortHandler.contentBottom());
+            drawZeroLine(c, position[0]+1, position[0]+1, mViewPortHandler.contentTop(), mViewPortHandler.contentBottom());
         }
     }
 

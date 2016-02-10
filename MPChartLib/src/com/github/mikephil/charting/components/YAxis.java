@@ -1,5 +1,6 @@
 package com.github.mikephil.charting.components;
 
+import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
@@ -71,6 +72,16 @@ public class YAxis extends AxisBase {
      * flag that indicates if the zero-line should be drawn regardless of other grid lines
      */
     protected boolean mDrawZeroLine = true;
+
+    /**
+     * Color of the zero line
+     */
+    protected int mZeroLineColor = Color.GRAY;
+
+    /**
+     * Width of the zero line in pixels
+     */
+    protected float mZeroLineWidth = 1f;
 
     /**
      * custom minimum value this axis represents
@@ -363,6 +374,32 @@ public class YAxis extends AxisBase {
      */
     public void setDrawZeroLine(boolean mDrawZeroLine) {
         this.mDrawZeroLine = mDrawZeroLine;
+    }
+
+    public int getZeroLineColor() {
+        return mZeroLineColor;
+    }
+
+    /**
+     * Sets the color of the zero line
+     *
+     * @param color
+     */
+    public void setZeroLineColor(int color) {
+        mZeroLineColor = color;
+    }
+
+    public float getZeroLineWidth() {
+        return mZeroLineWidth;
+    }
+
+    /**
+     * Sets the width of the zero line in dp
+     *
+     * @param width
+     */
+    public void setZeroLineWidth(float width) {
+        this.mZeroLineWidth = Utils.convertDpToPixel(width);
     }
 
     /**

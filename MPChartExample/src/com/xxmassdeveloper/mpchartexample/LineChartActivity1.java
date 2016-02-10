@@ -133,6 +133,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         leftAxis.setStartAtZero(false);
         //leftAxis.setYOffset(20f);
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
+        leftAxis.setDrawZeroLine(false);
 
         // limit lines are drawn behind data (and not on top)
         leftAxis.setDrawLimitLinesBehindData(true);
