@@ -7,8 +7,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
+import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.os.Build;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -356,55 +358,20 @@ public class PieChartRenderer extends DataRenderer {
                         Layout.Alignment.ALIGN_CENTER, 1.f, 0.f, false);
             }
 
-            // I wish we could make an ellipse clipping path on Android to clip to the hole...
-            // If we ever find out how, this is the place to add it, based on holeRect
-
             //float layoutWidth = Utils.getStaticLayoutMaxWidth(mCenterTextLayout);
             float layoutHeight = mCenterTextLayout.getHeight();
 
             c.save();
+            if (Build.VERSION.SDK_INT >= 18) {
+                Path path = new Path();
+                path.addOval(holeRect, Path.Direction.CW);
+                c.clipPath(path);
+            }
+
             c.translate(boundingRect.left, boundingRect.top + (boundingRect.height() - layoutHeight) / 2.f);
             mCenterTextLayout.draw(c);
-            c.restore();
 
-//            }
-//
-//        else {
-//
-//
-//                // get all lines from the text
-//                String[] lines = centerText.toString().split("\n");
-//
-//                float maxlineheight = 0f;
-//
-//                // calc the maximum line height
-//                for (String line : lines) {
-//                    float curHeight = Utils.calcTextHeight(mCenterTextPaint, line);
-//                    if (curHeight > maxlineheight)
-//                        maxlineheight = curHeight;
-//                }
-//
-//                float linespacing = maxlineheight * 0.25f;
-//
-//                float totalheight = maxlineheight * lines.length - linespacing * (lines.length - 1);
-//
-//                int cnt = lines.length;
-//
-//                float y = center.y;
-//
-//                for (int i = 0; i < lines.length; i++) {
-//
-//                    String line = lines[lines.length - i - 1];
-//
-//
-//
-//                    c.drawText(line, center.x, y
-//                                    + maxlineheight * cnt - totalheight / 2f,
-//                            mCenterTextPaint);
-//                    cnt--;
-//                    y -= linespacing;
-//                }
-//            }
+            c.restore();
         }
     }
 
