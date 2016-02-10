@@ -66,6 +66,7 @@ public class BarChartPositiveNegative extends DemoBase {
         left.setSpaceBottom(25f);
         left.setDrawAxisLine(false);
         left.setDrawGridLines(false);
+        left.setDrawZeroLine(true); // draw a zero line
         mChart.getAxisRight().setEnabled(false);
         mChart.getLegend().setEnabled(false);
 

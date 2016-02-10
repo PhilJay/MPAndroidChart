@@ -68,6 +68,11 @@ public class YAxis extends AxisBase {
     protected boolean mForceLabels = false;
 
     /**
+     * flag that indicates if the zero-line should be drawn regardless of other grid lines
+     */
+    protected boolean mDrawZeroLine = true;
+
+    /**
      * custom minimum value this axis represents
      */
     protected float mCustomAxisMin = Float.NaN;
@@ -344,6 +349,20 @@ public class YAxis extends AxisBase {
      */
     public float getSpaceBottom() {
         return mSpacePercentBottom;
+    }
+
+    public boolean isDrawZeroLineEnabled() {
+        return mDrawZeroLine;
+    }
+
+    /**
+     * Set this to true to draw the zero-line regardless of weather other
+     * grid-lines are enabled or not.
+     *
+     * @param mDrawZeroLine
+     */
+    public void setDrawZeroLine(boolean mDrawZeroLine) {
+        this.mDrawZeroLine = mDrawZeroLine;
     }
 
     /**
