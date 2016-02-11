@@ -15,7 +15,7 @@ public interface ICandleDataSet extends ILineScatterCandleRadarDataSet<CandleEnt
      *
      * @return
      */
-    float getBodySpace();
+    float getBarSpace();
 
     /**
      * Returns whether the candle bars should show?

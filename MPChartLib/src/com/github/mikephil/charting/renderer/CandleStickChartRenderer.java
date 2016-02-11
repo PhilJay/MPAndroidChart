@@ -56,7 +56,7 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
-        float bodySpace = dataSet.getBodySpace();
+        float barSpace = dataSet.getBarSpace();
         boolean showCandleBar = dataSet.getShowCandleBar();
 
         int minx = Math.max(mMinX, 0);
@@ -149,9 +149,9 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
                 // calculate the body
 
-                mBodyBuffers[0] = xIndex - 0.5f + bodySpace;
+                mBodyBuffers[0] = xIndex - 0.5f + barSpace;
                 mBodyBuffers[1] = close * phaseY;
-                mBodyBuffers[2] = (xIndex + 0.5f - bodySpace);
+                mBodyBuffers[2] = (xIndex + 0.5f - barSpace);
                 mBodyBuffers[3] = open * phaseY;
 
                 trans.pointValuesToPixel(mBodyBuffers);
@@ -206,12 +206,12 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
                 mRangeBuffers[2] = xIndex;
                 mRangeBuffers[3] = low * phaseY;
 
-                mOpenBuffers[0] = xIndex - 0.5f + bodySpace;
+                mOpenBuffers[0] = xIndex - 0.5f + barSpace;
                 mOpenBuffers[1] = open * phaseY;
                 mOpenBuffers[2] = xIndex;
                 mOpenBuffers[3] = open * phaseY;
 
-                mCloseBuffers[0] = xIndex + 0.5f - bodySpace;
+                mCloseBuffers[0] = xIndex + 0.5f - barSpace;
                 mCloseBuffers[1] = close * phaseY;
                 mCloseBuffers[2] = xIndex;
                 mCloseBuffers[3] = close * phaseY;

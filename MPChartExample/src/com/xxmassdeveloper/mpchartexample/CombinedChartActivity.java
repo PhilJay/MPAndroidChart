@@ -154,7 +154,7 @@ public class CombinedChartActivity extends DemoBase {
 
         CandleDataSet set = new CandleDataSet(entries, "Candle DataSet");
         set.setColor(Color.rgb(80, 80, 80));
-        set.setBodySpace(0.3f);
+        set.setBarSpace(0.3f);
         set.setValueTextSize(10f);
         set.setDrawValues(false);
         d.addDataSet(set);

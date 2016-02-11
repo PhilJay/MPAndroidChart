@@ -38,7 +38,7 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
     /**
      * the space between the candle entries, default 0.1f (10%)
      */
-    private float mBodySpace = 0.1f;
+    private float mBarSpace = 0.1f;
 
     /**
      * use candle color for the shadow
@@ -181,19 +181,19 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
      *
      * @param space
      */
-    public void setBodySpace(float space) {
+    public void setBarSpace(float space) {
 
         if (space < 0f)
             space = 0f;
         if (space > 0.45f)
             space = 0.45f;
 
-        mBodySpace = space;
+        mBarSpace = space;
     }
 
     @Override
-    public float getBodySpace() {
-        return mBodySpace;
+    public float getBarSpace() {
+        return mBarSpace;
     }
 
     /**
