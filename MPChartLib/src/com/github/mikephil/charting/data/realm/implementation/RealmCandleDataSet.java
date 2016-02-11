@@ -28,6 +28,14 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
     private float mShadowWidth = 3f;
 
     /**
+     * should the candle bars show?
+     * when false, only "ticks" will show
+     *
+     * - default: true
+     */
+    private boolean mShowCandleBar = true;
+
+    /**
      * the space between the candle entries, default 0.1f (10%)
      */
     private float mBodySpace = 0.1f;
@@ -200,6 +208,20 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
     @Override
     public float getShadowWidth() {
         return mShadowWidth;
+    }
+
+    /**
+     * Sets whether the candle bars should show?
+     *
+     * @param showCandleBar
+     */
+    public void setShadowWidth(boolean showCandleBar) {
+        mShowCandleBar = showCandleBar;
+    }
+
+    @Override
+    public boolean getShowCandleBar() {
+        return mShowCandleBar;
     }
 
 

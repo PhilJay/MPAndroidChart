@@ -18,6 +18,16 @@ public interface ICandleDataSet extends ILineScatterCandleRadarDataSet<CandleEnt
     float getBodySpace();
 
     /**
+     * Returns whether the candle bars should show?
+     * When false, only "ticks" will show
+     *
+     * - default: true
+     *
+     * @return
+     */
+    boolean getShowCandleBar();
+
+    /**
      * Returns the width of the candle-shadow-line in pixels.
      *
      * @return

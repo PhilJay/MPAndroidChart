@@ -23,6 +23,14 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
     private float mShadowWidth = 3f;
 
     /**
+     * should the candle bars show?
+     * when false, only "ticks" will show
+     *
+     * - default: true
+     */
+    private boolean mShowCandleBar = true;
+
+    /**
      * the space between the candle entries, default 0.1f (10%)
      */
     private float mBodySpace = 0.1f;
@@ -81,6 +89,7 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
         CandleDataSet copied = new CandleDataSet(yVals, getLabel());
         copied.mColors = mColors;
         copied.mShadowWidth = mShadowWidth;
+        copied.mShowCandleBar = mShowCandleBar;
         copied.mBodySpace = mBodySpace;
         copied.mHighLightColor = mHighLightColor;
         copied.mIncreasingPaintStyle = mIncreasingPaintStyle;
@@ -155,6 +164,20 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
     @Override
     public float getShadowWidth() {
         return mShadowWidth;
+    }
+
+    /**
+     * Sets whether the candle bars should show?
+     *
+     * @param showCandleBar
+     */
+    public void setShadowWidth(boolean showCandleBar) {
+        mShowCandleBar = showCandleBar;
+    }
+
+    @Override
+    public boolean getShowCandleBar() {
+        return mShowCandleBar;
     }
 
     // TODO
