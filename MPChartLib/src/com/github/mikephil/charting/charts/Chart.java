@@ -415,13 +415,29 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
         if (mData == null) {
 
-            // if no data, inform the user
-            canvas.drawText(mNoDataText, getWidth() / 2, getHeight() / 2, mInfoPaint);
+            boolean hasText = !TextUtils.isEmpty(mNoDataText);
+            boolean hasDescription = !TextUtils.isEmpty(mNoDataTextDescription);
+            float line1height = hasText ? Utils.calcTextHeight(mInfoPaint, mNoDataText) : 0.f;
+            float line2height = hasDescription ? Utils.calcTextHeight(mInfoPaint, mNoDataTextDescription) : 0.f;
+            float lineSpacing = (hasText && hasDescription) ?
+                    (mInfoPaint.getFontSpacing() - line1height) : 0.f;
 
-            if (!TextUtils.isEmpty(mNoDataTextDescription)) {
-                float textOffset = -mInfoPaint.ascent() + mInfoPaint.descent();
-                canvas.drawText(mNoDataTextDescription, getWidth() / 2, (getHeight() / 2)
-                        + textOffset, mInfoPaint);
+            // if no data, inform the user
+
+            float y = (getHeight() -
+                    (line1height + lineSpacing + line2height)) / 2.f
+                    + line1height;
+
+            if (hasText) {
+                canvas.drawText(mNoDataText, getWidth() / 2, y, mInfoPaint);
+
+                if (hasDescription) {
+                    y = y + line1height + lineSpacing;
+                }
+            }
+
+            if (hasDescription) {
+                canvas.drawText(mNoDataTextDescription, getWidth() / 2, y, mInfoPaint);
             }
             return;
         }
