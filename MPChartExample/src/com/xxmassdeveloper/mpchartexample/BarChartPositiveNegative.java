@@ -35,6 +35,7 @@ public class BarChartPositiveNegative extends DemoBase {
 
         mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
         mChart = (BarChart) findViewById(R.id.chart1);
+        mChart.setBackgroundColor(Color.WHITE);
         mChart.setExtraTopOffset(-30f);
         mChart.setExtraBottomOffset(10f);
         mChart.setExtraLeftOffset(70f);
