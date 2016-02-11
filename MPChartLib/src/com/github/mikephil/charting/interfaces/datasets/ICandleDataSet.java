@@ -39,13 +39,6 @@ public interface ICandleDataSet extends ILineScatterCandleRadarDataSet<CandleEnt
     int getNeutralColor();
 
     /**
-     * Returns the decreasing color (for open > close).
-     *
-     * @return
-     */
-    int getDecreasingColor();
-
-    /**
      * Returns the increasing color (for open < close).
      *
      * @return
@@ -53,18 +46,25 @@ public interface ICandleDataSet extends ILineScatterCandleRadarDataSet<CandleEnt
     int getIncreasingColor();
 
     /**
+     * Returns the decreasing color (for open > close).
+     *
+     * @return
+     */
+    int getDecreasingColor();
+
+    /**
+     * Returns paint style when open < close
+     *
+     * @return
+     */
+    Paint.Style getIncreasingPaintStyle();
+
+    /**
      * Returns paint style when open > close
      *
      * @return
      */
     Paint.Style getDecreasingPaintStyle();
-
-    /**
-     * Returns paint style when open <= close
-     *
-     * @return
-     */
-    Paint.Style getIncreasingPaintStyle();
 
     /**
      * Is the shadow color same as the candle color?

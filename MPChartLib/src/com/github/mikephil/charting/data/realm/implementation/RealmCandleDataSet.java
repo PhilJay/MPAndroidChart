@@ -38,7 +38,7 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
     private boolean mShadowColorSameAsCandle = false;
 
     /**
-     * paint style when open <= close
+     * paint style when open < close
      * increasing candlesticks are traditionally hollow
      */
     protected Paint.Style mIncreasingPaintStyle = Paint.Style.STROKE;
@@ -222,6 +222,21 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
 
     /**
      * Sets the one and ONLY color that should be used for this DataSet when
+     * open < close.
+     *
+     * @param color
+     */
+    public void setIncreasingColor(int color) {
+        mIncreasingColor = color;
+    }
+
+    @Override
+    public int getIncreasingColor() {
+        return mIncreasingColor;
+    }
+
+    /**
+     * Sets the one and ONLY color that should be used for this DataSet when
      * open > close.
      *
      * @param color
@@ -235,19 +250,18 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
         return mDecreasingColor;
     }
 
-    /**
-     * Sets the one and ONLY color that should be used for this DataSet when
-     * open < close.
-     *
-     * @param color
-     */
-    public void setIncreasingColor(int color) {
-        mIncreasingColor = color;
+    @Override
+    public Paint.Style getIncreasingPaintStyle() {
+        return mIncreasingPaintStyle;
     }
 
-    @Override
-    public int getIncreasingColor() {
-        return mIncreasingColor;
+    /**
+     * Sets paint style when open < close
+     *
+     * @param paintStyle
+     */
+    public void setIncreasingPaintStyle(Paint.Style paintStyle) {
+        this.mIncreasingPaintStyle = paintStyle;
     }
 
     @Override
@@ -262,20 +276,6 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
      */
     public void setDecreasingPaintStyle(Paint.Style decreasingPaintStyle) {
         this.mDecreasingPaintStyle = decreasingPaintStyle;
-    }
-
-    @Override
-    public Paint.Style getIncreasingPaintStyle() {
-        return mIncreasingPaintStyle;
-    }
-
-    /**
-     * Sets paint style when open <= close
-     *
-     * @param paintStyle
-     */
-    public void setIncreasingPaintStyle(Paint.Style paintStyle) {
-        this.mIncreasingPaintStyle = paintStyle;
     }
 
     @Override
