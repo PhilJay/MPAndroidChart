@@ -129,9 +129,9 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
                 else
                     mRenderPaint.setColor(
-                            dataSet.getShadowColor() == ColorTemplate.COLOR_NONE ?
+                            dataSet.getNeutralColor() == ColorTemplate.COLOR_NONE ?
                                     dataSet.getColor(j) :
-                                    dataSet.getShadowColor()
+                                    dataSet.getNeutralColor()
                     );
 
             } else {
@@ -187,7 +187,11 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
                         mRenderPaint);
             } else { // equal values
 
-                mRenderPaint.setColor(dataSet.getShadowColor());
+                if (dataSet.getNeutralColor() == ColorTemplate.COLOR_NONE) {
+                    mRenderPaint.setColor(dataSet.getColor(j / 4 + minx));
+                } else {
+                    mRenderPaint.setColor(dataSet.getNeutralColor());
+                }
 
                 c.drawLine(
                         mBodyBuffers[0], mBodyBuffers[1],

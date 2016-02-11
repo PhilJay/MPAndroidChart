@@ -29,17 +29,24 @@ public interface ICandleDataSet extends ILineScatterCandleRadarDataSet<CandleEnt
      *
      * @return
      */
-    public int getShadowColor();
+    int getShadowColor();
 
     /**
-     * Returns the decreasing color.
+     * Returns the neutral color (for open == close)
+     *
+     * @return
+     */
+    int getNeutralColor();
+
+    /**
+     * Returns the decreasing color (for open > close).
      *
      * @return
      */
     int getDecreasingColor();
 
     /**
-     * Returns the increasing color.
+     * Returns the increasing color (for open < close).
      *
      * @return
      */

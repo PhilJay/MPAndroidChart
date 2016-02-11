@@ -50,7 +50,12 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
     protected Paint.Style mDecreasingPaintStyle = Paint.Style.FILL;
 
     /**
-     * color for open <= close
+     * color for open == close
+     */
+    protected int mNeutralColor = ColorTemplate.COLOR_NONE;
+
+    /**
+     * color for open < close
      */
     protected int mIncreasingColor = ColorTemplate.COLOR_NONE;
 
@@ -202,6 +207,21 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
 
     /**
      * Sets the one and ONLY color that should be used for this DataSet when
+     * open == close.
+     *
+     * @param color
+     */
+    public void setNeutralColor(int color) {
+        mNeutralColor = color;
+    }
+
+    @Override
+    public int getNeutralColor() {
+        return mNeutralColor;
+    }
+
+    /**
+     * Sets the one and ONLY color that should be used for this DataSet when
      * open > close.
      *
      * @param color
@@ -217,7 +237,7 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
 
     /**
      * Sets the one and ONLY color that should be used for this DataSet when
-     * open <= close.
+     * open < close.
      *
      * @param color
      */
