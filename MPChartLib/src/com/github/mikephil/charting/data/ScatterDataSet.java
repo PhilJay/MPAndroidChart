@@ -1,10 +1,9 @@
 
 package com.github.mikephil.charting.data;
 
-import android.graphics.Path;
-
 import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ import java.util.List;
 public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> implements IScatterDataSet {
 
     /**
-     * the size the scattershape will have, in screen pixels
+     * the size the scattershape will have, in density pixels
      */
     private float mShapeSize = 15f;
 
@@ -24,14 +23,25 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
     private ScatterShape mScatterShape = ScatterShape.SQUARE;
 
     /**
+     * The radius of the hole in the shape (applies to Square, Circle and Triangle)
+     * - default: 0.0
+     */
+    private float mScatterShapeHoleRadius = 0f;
+
+    /**
+     * Color for the hole in the shape.
+     * Setting to `ColorTemplate.COLOR_NONE` will behave as transparent.
+     * - default: ColorTemplate.COLOR_NONE
+     */
+    private int mScatterShapeHoleColor = ColorTemplate.COLOR_NONE;
+
+    /**
      * Custom path object the user can provide that is drawn where the values
      * are at. This is used when ScatterShape.CUSTOM is set for a DataSet.
      */
     //private Path mCustomScatterPath = null;
     public ScatterDataSet(List<Entry> yVals, String label) {
         super(yVals, label);
-
-        // mShapeSize = Utils.convertDpToPixel(8f);
     }
 
     @Override
@@ -47,6 +57,8 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
         copied.mColors = mColors;
         copied.mShapeSize = mShapeSize;
         copied.mScatterShape = mScatterShape;
+        copied.mScatterShapeHoleRadius = mScatterShapeHoleRadius;
+        copied.mScatterShapeHoleColor = mScatterShapeHoleColor;
         //copied.mCustomScatterPath = mCustomScatterPath;
         copied.mHighLightColor = mHighLightColor;
 
@@ -60,7 +72,7 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
      * @param size
      */
     public void setScatterShapeSize(float size) {
-        mShapeSize = Utils.convertDpToPixel(size);
+        mShapeSize = size;
     }
 
     @Override
@@ -80,6 +92,34 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
     @Override
     public ScatterShape getScatterShape() {
         return mScatterShape;
+    }
+
+    /**
+     * Sets the radius of the hole in the shape
+     *
+     * @param holeRadius
+     */
+    public void setScatterShapeHoleRadius(float holeRadius) {
+        mScatterShapeHoleRadius = holeRadius;
+    }
+
+    @Override
+    public float getScatterShapeHoleRadius() {
+        return mScatterShapeHoleRadius;
+    }
+
+    /**
+     * Sets the color for the hole in the shape
+     *
+     * @param holeColor
+     */
+    public void setScatterShapeHoleColor(int holeColor) {
+        mScatterShapeHoleColor = holeColor;
+    }
+
+    @Override
+    public int getScatterShapeHoleColor() {
+        return mScatterShapeHoleColor;
     }
 
 //    /**

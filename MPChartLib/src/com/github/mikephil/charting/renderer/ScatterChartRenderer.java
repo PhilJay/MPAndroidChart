@@ -13,6 +13,7 @@ import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.ScatterDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -29,8 +30,6 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
                                 ViewPortHandler viewPortHandler) {
         super(animator, viewPortHandler);
         mChart = chart;
-
-        mRenderPaint.setStrokeWidth(Utils.convertDpToPixel(1f));
     }
 
     @Override
@@ -65,7 +64,13 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
 
-        float shapeHalf = dataSet.getScatterShapeSize() / 2f;
+        final float shapeSize = Utils.convertDpToPixel(dataSet.getScatterShapeSize());
+        final float shapeHalf = shapeSize / 2f;
+        final float shapeHoleSizeHalf = Utils.convertDpToPixel(dataSet.getScatterShapeHoleRadius());
+        final float shapeHoleSize = shapeHoleSizeHalf * 2.f;
+        final int shapeHoleColor = dataSet.getScatterShapeHoleColor();
+        final float shapeStrokeSize = (shapeSize - shapeHoleSize) / 2.f;
+        final float shapeStrokeSizeHalf = shapeStrokeSize / 2.f;
 
         ScatterShape shape = dataSet.getScatterShape();
 
@@ -79,8 +84,6 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
         switch (shape) {
             case SQUARE:
 
-                mRenderPaint.setStyle(Style.FILL);
-
                 for (int i = 0; i < buffer.size(); i += 2) {
 
                     if (!mViewPortHandler.isInBoundsRight(buffer.buffer[i]))
@@ -91,16 +94,43 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
                         continue;
 
                     mRenderPaint.setColor(dataSet.getColor(i / 2));
-                    c.drawRect(buffer.buffer[i] - shapeHalf,
-                            buffer.buffer[i + 1] - shapeHalf, buffer.buffer[i]
-                                    + shapeHalf, buffer.buffer[i + 1]
-                                    + shapeHalf, mRenderPaint);
+
+                    if (shapeHoleSize > 0.0) {
+                        mRenderPaint.setStyle(Style.STROKE);
+                        mRenderPaint.setStrokeWidth(shapeStrokeSize);
+
+                        c.drawRect(buffer.buffer[i] - shapeHoleSizeHalf - shapeStrokeSizeHalf,
+                                buffer.buffer[i + 1] - shapeHoleSizeHalf - shapeStrokeSizeHalf,
+                                buffer.buffer[i] + shapeHoleSizeHalf + shapeStrokeSizeHalf,
+                                buffer.buffer[i + 1] + shapeHoleSizeHalf + shapeStrokeSizeHalf,
+                                mRenderPaint);
+
+                        if (shapeHoleColor != ColorTemplate.COLOR_NONE) {
+                            mRenderPaint.setStyle(Style.FILL);
+
+                            mRenderPaint.setColor(shapeHoleColor);
+                            c.drawRect(buffer.buffer[i] - shapeHoleSizeHalf,
+                                    buffer.buffer[i + 1] - shapeHoleSizeHalf,
+                                    buffer.buffer[i] + shapeHoleSizeHalf,
+                                    buffer.buffer[i + 1] + shapeHoleSizeHalf,
+                                    mRenderPaint);
+                        }
+
+                    } else {
+                        mRenderPaint.setStyle(Style.FILL);
+
+                        c.drawRect(buffer.buffer[i] - shapeHalf,
+                                buffer.buffer[i + 1] - shapeHalf,
+                                buffer.buffer[i] + shapeHalf,
+                                buffer.buffer[i + 1] + shapeHalf,
+                                mRenderPaint);
+                    }
                 }
+
                 break;
+
             case CIRCLE:
 
-                mRenderPaint.setStyle(Style.FILL);
-
                 for (int i = 0; i < buffer.size(); i += 2) {
 
                     if (!mViewPortHandler.isInBoundsRight(buffer.buffer[i]))
@@ -111,10 +141,39 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
                         continue;
 
                     mRenderPaint.setColor(dataSet.getColor(i / 2));
-                    c.drawCircle(buffer.buffer[i], buffer.buffer[i + 1], shapeHalf,
-                            mRenderPaint);
+
+                    if (shapeHoleSize > 0.0) {
+                        mRenderPaint.setStyle(Style.STROKE);
+                        mRenderPaint.setStrokeWidth(shapeStrokeSize);
+
+                        c.drawCircle(
+                                buffer.buffer[i],
+                                buffer.buffer[i + 1],
+                                shapeHoleSizeHalf + shapeStrokeSizeHalf,
+                                mRenderPaint);
+
+                        if (shapeHoleColor != ColorTemplate.COLOR_NONE) {
+                            mRenderPaint.setStyle(Style.FILL);
+
+                            mRenderPaint.setColor(shapeHoleColor);
+                            c.drawCircle(
+                                    buffer.buffer[i],
+                                    buffer.buffer[i + 1],
+                                    shapeHoleSizeHalf,
+                                    mRenderPaint);
+                        }
+                    } else {
+                        mRenderPaint.setStyle(Style.FILL);
+
+                        c.drawCircle(
+                                buffer.buffer[i],
+                                buffer.buffer[i + 1],
+                                shapeHalf,
+                                mRenderPaint);
+                    }
                 }
                 break;
+
             case TRIANGLE:
 
                 mRenderPaint.setStyle(Style.FILL);
@@ -132,18 +191,52 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
                         continue;
 
                     mRenderPaint.setColor(dataSet.getColor(i / 2));
+
                     tri.moveTo(buffer.buffer[i], buffer.buffer[i + 1] - shapeHalf);
                     tri.lineTo(buffer.buffer[i] + shapeHalf, buffer.buffer[i + 1] + shapeHalf);
                     tri.lineTo(buffer.buffer[i] - shapeHalf, buffer.buffer[i + 1] + shapeHalf);
+
+                    if (shapeHoleSize > 0.0) {
+                        tri.lineTo(buffer.buffer[i], buffer.buffer[i + 1] - shapeHalf);
+
+                        tri.moveTo(buffer.buffer[i] - shapeHalf + shapeStrokeSize,
+                                buffer.buffer[i + 1] + shapeHalf - shapeStrokeSize);
+                        tri.lineTo(buffer.buffer[i] + shapeHalf - shapeStrokeSize,
+                                buffer.buffer[i + 1] + shapeHalf - shapeStrokeSize);
+                        tri.lineTo(buffer.buffer[i],
+                                buffer.buffer[i + 1] - shapeHalf + shapeStrokeSize);
+                        tri.lineTo(buffer.buffer[i] - shapeHalf + shapeStrokeSize,
+                                buffer.buffer[i + 1] + shapeHalf - shapeStrokeSize);
+                    }
+
                     tri.close();
 
                     c.drawPath(tri, mRenderPaint);
                     tri.reset();
+
+                    if (shapeHoleSize > 0.0 &&
+                            shapeHoleColor != ColorTemplate.COLOR_NONE) {
+
+                        mRenderPaint.setColor(shapeHoleColor);
+
+                        tri.moveTo(buffer.buffer[i],
+                                buffer.buffer[i + 1] - shapeHalf + shapeStrokeSize);
+                        tri.lineTo(buffer.buffer[i] + shapeHalf - shapeStrokeSize,
+                                buffer.buffer[i + 1] + shapeHalf - shapeStrokeSize);
+                        tri.lineTo(buffer.buffer[i] - shapeHalf + shapeStrokeSize,
+                                buffer.buffer[i + 1] + shapeHalf - shapeStrokeSize);
+                        tri.close();
+
+                        c.drawPath(tri, mRenderPaint);
+                        tri.reset();
+                    }
                 }
                 break;
+
             case CROSS:
 
                 mRenderPaint.setStyle(Style.STROKE);
+                mRenderPaint.setStrokeWidth(Utils.convertDpToPixel(1f));
 
                 for (int i = 0; i < buffer.size(); i += 2) {
 
@@ -156,14 +249,52 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
                     mRenderPaint.setColor(dataSet.getColor(i / 2));
 
-                    c.drawLine(buffer.buffer[i] - shapeHalf, buffer.buffer[i + 1],
+                    c.drawLine(
+                            buffer.buffer[i] - shapeHalf,
+                            buffer.buffer[i + 1],
                             buffer.buffer[i] + shapeHalf,
-                            buffer.buffer[i + 1], mRenderPaint);
-                    c.drawLine(buffer.buffer[i], buffer.buffer[i + 1] - shapeHalf,
-                            buffer.buffer[i], buffer.buffer[i + 1]
-                                    + shapeHalf, mRenderPaint);
+                            buffer.buffer[i + 1],
+                            mRenderPaint);
+                    c.drawLine(
+                            buffer.buffer[i],
+                            buffer.buffer[i + 1] - shapeHalf,
+                            buffer.buffer[i],
+                            buffer.buffer[i + 1] + shapeHalf,
+                            mRenderPaint);
                 }
                 break;
+
+            case X:
+
+                mRenderPaint.setStyle(Style.STROKE);
+                mRenderPaint.setStrokeWidth(Utils.convertDpToPixel(1f));
+
+                for (int i = 0; i < buffer.size(); i += 2) {
+
+                    if (!mViewPortHandler.isInBoundsRight(buffer.buffer[i]))
+                        break;
+
+                    if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[i])
+                            || !mViewPortHandler.isInBoundsY(buffer.buffer[i + 1]))
+                        continue;
+
+                    mRenderPaint.setColor(dataSet.getColor(i / 2));
+
+                    c.drawLine(
+                            buffer.buffer[i] - shapeHalf,
+                            buffer.buffer[i + 1] - shapeHalf,
+                            buffer.buffer[i] + shapeHalf,
+                            buffer.buffer[i + 1] + shapeHalf,
+                            mRenderPaint);
+                    c.drawLine(
+                            buffer.buffer[i] + shapeHalf,
+                            buffer.buffer[i + 1] - shapeHalf,
+                            buffer.buffer[i] - shapeHalf,
+                            buffer.buffer[i + 1] + shapeHalf,
+                            mRenderPaint);
+                }
+                break;
+
             default:
                 break;
         }
@@ -217,7 +348,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
                         .generateTransformedValuesScatter(dataSet,
                                 mAnimator.getPhaseY());
 
-                float shapeSize = dataSet.getScatterShapeSize();
+                float shapeSize = Utils.convertDpToPixel(dataSet.getScatterShapeSize());
 
                 for (int j = 0; j < positions.length * mAnimator.getPhaseX(); j += 2) {
 
