@@ -105,7 +105,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
                                 buffer.buffer[i + 1] + shapeHoleSizeHalf + shapeStrokeSizeHalf,
                                 mRenderPaint);
 
-                        if (shapeHoleColor != ColorTemplate.COLOR_NONE) {
+                        if (shapeHoleColor != ColorTemplate.COLOR_NONE && shapeHoleSize > 0f) {
                             mRenderPaint.setStyle(Style.FILL);
 
                             mRenderPaint.setColor(shapeHoleColor);
@@ -152,7 +152,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
                                 shapeHoleSizeHalf + shapeStrokeSizeHalf,
                                 mRenderPaint);
 
-                        if (shapeHoleColor != ColorTemplate.COLOR_NONE) {
+                        if (shapeHoleColor != ColorTemplate.COLOR_NONE && shapeHoleSize > 0f) {
                             mRenderPaint.setStyle(Style.FILL);
 
                             mRenderPaint.setColor(shapeHoleColor);

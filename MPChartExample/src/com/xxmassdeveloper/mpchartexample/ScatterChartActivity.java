@@ -1,6 +1,7 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -211,6 +212,8 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         set1.setColor(ColorTemplate.COLORFUL_COLORS[0]);
         ScatterDataSet set2 = new ScatterDataSet(yVals2, "DS 2");
         set2.setScatterShape(ScatterShape.CIRCLE);
+        set2.setScatterShapeHoleColor(Color.WHITE);
+        set2.setScatterShapeHoleRadius(5f);
         set2.setColor(ColorTemplate.COLORFUL_COLORS[1]);
         ScatterDataSet set3 = new ScatterDataSet(yVals3, "DS 3");
         set3.setScatterShape(ScatterShape.CROSS);

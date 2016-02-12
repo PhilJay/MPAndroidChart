@@ -4,7 +4,6 @@ package com.github.mikephil.charting.data;
 import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,7 +94,7 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
     }
 
     /**
-     * Sets the radius of the hole in the shape
+     * Sets the radius of the hole in the shape. Set this to <= 0 to remove holes.
      *
      * @param holeRadius
      */
@@ -109,7 +108,7 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
     }
 
     /**
-     * Sets the color for the hole in the shape
+     * Sets the color for the hole in the shape. Set to ColorTemplate.COLOR_NONE (-1) to remove holes.
      *
      * @param holeColor
      */
