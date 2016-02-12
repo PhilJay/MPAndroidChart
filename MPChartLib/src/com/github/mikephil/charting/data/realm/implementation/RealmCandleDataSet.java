@@ -28,9 +28,17 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
     private float mShadowWidth = 3f;
 
     /**
+     * should the candle bars show?
+     * when false, only "ticks" will show
+     *
+     * - default: true
+     */
+    private boolean mShowCandleBar = true;
+
+    /**
      * the space between the candle entries, default 0.1f (10%)
      */
-    private float mBodySpace = 0.1f;
+    private float mBarSpace = 0.1f;
 
     /**
      * use candle color for the shadow
@@ -38,17 +46,24 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
     private boolean mShadowColorSameAsCandle = false;
 
     /**
-     * paint style when open <= close
+     * paint style when open < close
+     * increasing candlesticks are traditionally hollow
      */
-    protected Paint.Style mIncreasingPaintStyle = Paint.Style.FILL;
+    protected Paint.Style mIncreasingPaintStyle = Paint.Style.STROKE;
 
     /**
      * paint style when open > close
+     * descreasing candlesticks are traditionally filled
      */
-    protected Paint.Style mDecreasingPaintStyle = Paint.Style.STROKE;
+    protected Paint.Style mDecreasingPaintStyle = Paint.Style.FILL;
 
     /**
-     * color for open <= close
+     * color for open == close
+     */
+    protected int mNeutralColor = ColorTemplate.COLOR_NONE;
+
+    /**
+     * color for open < close
      */
     protected int mIncreasingColor = ColorTemplate.COLOR_NONE;
 
@@ -166,19 +181,19 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
      *
      * @param space
      */
-    public void setBodySpace(float space) {
+    public void setBarSpace(float space) {
 
         if (space < 0f)
             space = 0f;
         if (space > 0.45f)
             space = 0.45f;
 
-        mBodySpace = space;
+        mBarSpace = space;
     }
 
     @Override
-    public float getBodySpace() {
-        return mBodySpace;
+    public float getBarSpace() {
+        return mBarSpace;
     }
 
     /**
@@ -195,8 +210,52 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
         return mShadowWidth;
     }
 
+    /**
+     * Sets whether the candle bars should show?
+     *
+     * @param showCandleBar
+     */
+    public void setShadowWidth(boolean showCandleBar) {
+        mShowCandleBar = showCandleBar;
+    }
+
+    @Override
+    public boolean getShowCandleBar() {
+        return mShowCandleBar;
+    }
+
 
     /** BELOW THIS COLOR HANDLING */
+
+    /**
+     * Sets the one and ONLY color that should be used for this DataSet when
+     * open == close.
+     *
+     * @param color
+     */
+    public void setNeutralColor(int color) {
+        mNeutralColor = color;
+    }
+
+    @Override
+    public int getNeutralColor() {
+        return mNeutralColor;
+    }
+
+    /**
+     * Sets the one and ONLY color that should be used for this DataSet when
+     * open < close.
+     *
+     * @param color
+     */
+    public void setIncreasingColor(int color) {
+        mIncreasingColor = color;
+    }
+
+    @Override
+    public int getIncreasingColor() {
+        return mIncreasingColor;
+    }
 
     /**
      * Sets the one and ONLY color that should be used for this DataSet when
@@ -213,19 +272,18 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
         return mDecreasingColor;
     }
 
-    /**
-     * Sets the one and ONLY color that should be used for this DataSet when
-     * open <= close.
-     *
-     * @param color
-     */
-    public void setIncreasingColor(int color) {
-        mIncreasingColor = color;
+    @Override
+    public Paint.Style getIncreasingPaintStyle() {
+        return mIncreasingPaintStyle;
     }
 
-    @Override
-    public int getIncreasingColor() {
-        return mIncreasingColor;
+    /**
+     * Sets paint style when open < close
+     *
+     * @param paintStyle
+     */
+    public void setIncreasingPaintStyle(Paint.Style paintStyle) {
+        this.mIncreasingPaintStyle = paintStyle;
     }
 
     @Override
@@ -240,20 +298,6 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
      */
     public void setDecreasingPaintStyle(Paint.Style decreasingPaintStyle) {
         this.mDecreasingPaintStyle = decreasingPaintStyle;
-    }
-
-    @Override
-    public Paint.Style getIncreasingPaintStyle() {
-        return mIncreasingPaintStyle;
-    }
-
-    /**
-     * Sets paint style when open <= close
-     *
-     * @param paintStyle
-     */
-    public void setIncreasingPaintStyle(Paint.Style paintStyle) {
-        this.mIncreasingPaintStyle = paintStyle;
     }
 
     @Override

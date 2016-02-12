@@ -23,9 +23,17 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
     private float mShadowWidth = 3f;
 
     /**
+     * should the candle bars show?
+     * when false, only "ticks" will show
+     *
+     * - default: true
+     */
+    private boolean mShowCandleBar = true;
+
+    /**
      * the space between the candle entries, default 0.1f (10%)
      */
-    private float mBodySpace = 0.1f;
+    private float mBarSpace = 0.1f;
 
     /**
      * use candle color for the shadow
@@ -33,17 +41,24 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
     private boolean mShadowColorSameAsCandle = false;
 
     /**
-     * paint style when open <= close
+     * paint style when open < close
+     * increasing candlesticks are traditionally hollow
      */
-    protected Paint.Style mIncreasingPaintStyle = Paint.Style.FILL;
+    protected Paint.Style mIncreasingPaintStyle = Paint.Style.STROKE;
 
     /**
      * paint style when open > close
+     * descreasing candlesticks are traditionally filled
      */
-    protected Paint.Style mDecreasingPaintStyle = Paint.Style.STROKE;
+    protected Paint.Style mDecreasingPaintStyle = Paint.Style.FILL;
 
     /**
-     * color for open <= close
+     * color for open == close
+     */
+    protected int mNeutralColor = ColorTemplate.COLOR_NONE;
+
+    /**
+     * color for open < close
      */
     protected int mIncreasingColor = ColorTemplate.COLOR_NONE;
 
@@ -74,7 +89,8 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
         CandleDataSet copied = new CandleDataSet(yVals, getLabel());
         copied.mColors = mColors;
         copied.mShadowWidth = mShadowWidth;
-        copied.mBodySpace = mBodySpace;
+        copied.mShowCandleBar = mShowCandleBar;
+        copied.mBarSpace = mBarSpace;
         copied.mHighLightColor = mHighLightColor;
         copied.mIncreasingPaintStyle = mIncreasingPaintStyle;
         copied.mDecreasingPaintStyle = mDecreasingPaintStyle;
@@ -121,19 +137,19 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
      *
      * @param space
      */
-    public void setBodySpace(float space) {
+    public void setBarSpace(float space) {
 
         if (space < 0f)
             space = 0f;
         if (space > 0.45f)
             space = 0.45f;
 
-        mBodySpace = space;
+        mBarSpace = space;
     }
 
     @Override
-    public float getBodySpace() {
-        return mBodySpace;
+    public float getBarSpace() {
+        return mBarSpace;
     }
 
     /**
@@ -150,6 +166,20 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
         return mShadowWidth;
     }
 
+    /**
+     * Sets whether the candle bars should show?
+     *
+     * @param showCandleBar
+     */
+    public void setShadowWidth(boolean showCandleBar) {
+        mShowCandleBar = showCandleBar;
+    }
+
+    @Override
+    public boolean getShowCandleBar() {
+        return mShowCandleBar;
+    }
+
     // TODO
     /**
      * It is necessary to implement ColorsList class that will encapsulate
@@ -164,17 +194,17 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
 
     /**
      * Sets the one and ONLY color that should be used for this DataSet when
-     * open > close.
+     * open == close.
      *
      * @param color
      */
-    public void setDecreasingColor(int color) {
-        mDecreasingColor = color;
+    public void setNeutralColor(int color) {
+        mNeutralColor = color;
     }
 
     @Override
-    public int getDecreasingColor() {
-        return mDecreasingColor;
+    public int getNeutralColor() {
+        return mNeutralColor;
     }
 
     /**
@@ -192,6 +222,35 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
         return mIncreasingColor;
     }
 
+    /**
+     * Sets the one and ONLY color that should be used for this DataSet when
+     * open > close.
+     *
+     * @param color
+     */
+    public void setDecreasingColor(int color) {
+        mDecreasingColor = color;
+    }
+
+    @Override
+    public int getDecreasingColor() {
+        return mDecreasingColor;
+    }
+
+    @Override
+    public Paint.Style getIncreasingPaintStyle() {
+        return mIncreasingPaintStyle;
+    }
+
+    /**
+     * Sets paint style when open < close
+     *
+     * @param paintStyle
+     */
+    public void setIncreasingPaintStyle(Paint.Style paintStyle) {
+        this.mIncreasingPaintStyle = paintStyle;
+    }
+
     @Override
     public Paint.Style getDecreasingPaintStyle() {
         return mDecreasingPaintStyle;
@@ -204,20 +263,6 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
      */
     public void setDecreasingPaintStyle(Paint.Style decreasingPaintStyle) {
         this.mDecreasingPaintStyle = decreasingPaintStyle;
-    }
-
-    @Override
-    public Paint.Style getIncreasingPaintStyle() {
-        return mIncreasingPaintStyle;
-    }
-
-    /**
-     * Sets paint style when open <= close
-     *
-     * @param paintStyle
-     */
-    public void setIncreasingPaintStyle(Paint.Style paintStyle) {
-        this.mIncreasingPaintStyle = paintStyle;
     }
 
     @Override
