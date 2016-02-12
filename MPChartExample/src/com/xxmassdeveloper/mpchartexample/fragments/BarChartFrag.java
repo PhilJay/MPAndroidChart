@@ -52,6 +52,7 @@ public class BarChartFrag extends SimpleFragment implements OnChartGestureListen
         
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(tf);
+        leftAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
 
         mChart.getAxisRight().setEnabled(false);
         

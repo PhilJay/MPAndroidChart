@@ -86,6 +86,7 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
         yl.setTypeface(tf);
         yl.setSpaceTop(30f);
         yl.setSpaceBottom(30f);
+        yl.setDrawZeroLine(false);
         
         mChart.getAxisRight().setEnabled(false);
 
