@@ -85,11 +85,6 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
                 final double rawCount = yMin / interval;
                 double first = rawCount < 0.0 ? Math.floor(rawCount) * interval : Math.ceil(rawCount) * interval;
 
-                if (first < yMin && mYAxis.isStartAtZeroEnabled()) {
-                    // Force the first label to be at the 0 (or smallest negative value)
-                    first = yMin;
-                }
-
                 if (first == 0.0) // Fix for IEEE negative zero case (Where value == -0.0, and 0.0 == -0.0)
                     first = 0.0;
 
@@ -124,7 +119,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
             mYAxis.mDecimals = 0;
         }
 
-        if (!mYAxis.isStartAtZeroEnabled() && mYAxis.mEntries[0] < yMin) {
+        if (mYAxis.mEntries[0] < yMin) {
             // If startAtZero is disabled, and the first label is lower that the axis minimum,
             // Then adjust the axis minimum
             mYAxis.mAxisMinimum = mYAxis.mEntries[0];

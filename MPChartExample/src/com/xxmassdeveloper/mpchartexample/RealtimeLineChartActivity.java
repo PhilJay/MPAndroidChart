@@ -88,7 +88,6 @@ public class RealtimeLineChartActivity extends DemoBase implements
         leftAxis.setTextColor(Color.WHITE);
         leftAxis.setAxisMaxValue(100f);
         leftAxis.setAxisMinValue(0f);
-        leftAxis.setStartAtZero(false);
         leftAxis.setDrawGridLines(true);
 
         YAxis rightAxis = mChart.getAxisRight();

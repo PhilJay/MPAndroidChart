@@ -143,7 +143,14 @@ public class YAxisRenderer extends AxisRenderer {
                     mYAxis.mEntries = new float[n];
                 }
 
-                for (f = first, i = 0; i < n; f += interval, ++i) {
+                f = first;
+                Double d = new Double(f);
+
+                // check negative zero
+                mYAxis.mEntries[0] = (float) (d.equals(-0.0) ? Math.abs(f) : f);
+                f += interval;
+
+                for (i = 1; i < n; f += interval, ++i) {
                     mYAxis.mEntries[i] = (float) f;
                 }
             }

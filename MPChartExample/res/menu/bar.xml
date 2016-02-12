@@ -26,10 +26,6 @@
         android:title="Animate XY">
     </item>
     <item
-        android:id="@+id/actionToggleStartzero"
-        android:title="Toggle StartZero">
-    </item>
-    <item
         android:id="@+id/actionToggleAdjustXLegend"
         android:title="Toggle AdjustXLegend">
     </item>

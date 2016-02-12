@@ -114,13 +114,13 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         leftAxis.setTypeface(tf);
         leftAxis.setTextColor(ColorTemplate.getHoloBlue());
         leftAxis.setAxisMaxValue(200f);
+        leftAxis.setAxisMinValue(0f);
         leftAxis.setDrawGridLines(true);
         
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setTypeface(tf);
         rightAxis.setTextColor(Color.RED);
         rightAxis.setAxisMaxValue(900);
-        rightAxis.setStartAtZero(false);
         rightAxis.setAxisMinValue(-200);
         rightAxis.setDrawGridLines(false);
         rightAxis.setDrawZeroLine(false);
@@ -199,12 +199,6 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
                     else
                         set.setDrawCubic(true);
                 }
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleStartzero: {
-                mChart.getAxisLeft().setStartAtZero(!mChart.getAxisLeft().isStartAtZeroEnabled());
-                mChart.getAxisRight().setStartAtZero(!mChart.getAxisRight().isStartAtZeroEnabled());
                 mChart.invalidate();
                 break;
             }

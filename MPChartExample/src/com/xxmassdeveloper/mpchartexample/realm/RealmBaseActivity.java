@@ -60,7 +60,6 @@ public abstract class RealmBaseActivity extends DemoBase {
 
             YAxis leftAxis = mChart.getAxisLeft();
             leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
-            leftAxis.setStartAtZero(false);
             leftAxis.setTypeface(mTf);
             leftAxis.setTextSize(8f);
             leftAxis.setTextColor(Color.DKGRAY);
