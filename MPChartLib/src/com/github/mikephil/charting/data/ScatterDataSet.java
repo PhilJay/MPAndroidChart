@@ -108,7 +108,7 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
     }
 
     /**
-     * Sets the color for the hole in the shape. Set to ColorTemplate.COLOR_NONE (-1) to remove holes.
+     * Sets the color for the hole in the shape.
      *
      * @param holeColor
      */
@@ -120,25 +120,4 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
     public int getScatterShapeHoleColor() {
         return mScatterShapeHoleColor;
     }
-
-//    /**
-//     * Sets a path object as the shape to be drawn where the values are at. Do
-//     * not forget to call setScatterShape(...) and set the shape to
-//     * ScatterShape.CUSTOM.
-//     *
-//     * @param shape
-//     */
-//    public void setCustomScatterShape(Path shape) {
-//        mCustomScatterPath = shape;
-//    }
-//
-//    /**
-//     * returns the custom path / shape that is specified to be drawn where the
-//     * values are at
-//     *
-//     * @return
-//     */
-//    public Path getCustomScatterShape() {
-//        return mCustomScatterPath;
-//    }
 }
