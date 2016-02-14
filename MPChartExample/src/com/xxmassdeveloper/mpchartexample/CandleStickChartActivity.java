@@ -48,6 +48,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         mSeekBarY.setOnSeekBarChangeListener(this);
 
         mChart = (CandleStickChart) findViewById(R.id.chart1);
+        mChart.setBackgroundColor(Color.WHITE);
 
         mChart.setDescription("");
 
