@@ -259,7 +259,8 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * This method is deprecated - Use setAxisMinValue(...) instead.
+     * This method is deprecated.
+     * Use setAxisMinValue(...) / setAxisMaxValue(...) instead.
      *
      * @param startAtZero
      */
