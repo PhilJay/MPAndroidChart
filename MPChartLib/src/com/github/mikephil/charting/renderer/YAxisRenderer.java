@@ -143,14 +143,11 @@ public class YAxisRenderer extends AxisRenderer {
                     mYAxis.mEntries = new float[n];
                 }
 
-                f = first;
-                Double d = new Double(f);
+                for (f = first, i = 0; i < n; f += interval, ++i) {
 
-                // check negative zero
-                mYAxis.mEntries[0] = (float) (d.equals(-0.0) ? Math.abs(f) : f);
-                f += interval;
+                    if (f == 0.0) // Fix for negative zero case (Where value == -0.0, and 0.0 == -0.0)
+                        f = 0.0;
 
-                for (i = 1; i < n; f += interval, ++i) {
                     mYAxis.mEntries[i] = (float) f;
                 }
             }
@@ -297,7 +294,7 @@ public class YAxisRenderer extends AxisRenderer {
             position[1] = 0f;
             mTrans.pointValuesToPixel(position);
 
-            drawZeroLine(c, mViewPortHandler.offsetLeft(), mViewPortHandler.contentRight(), position[1]-1, position[1]-1);
+            drawZeroLine(c, mViewPortHandler.offsetLeft(), mViewPortHandler.contentRight(), position[1] - 1, position[1] - 1);
         }
     }
 
