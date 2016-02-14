@@ -9,7 +9,7 @@ public interface IPieDataSet extends IDataSet<Entry> {
 
     /**
      * Returns the space that is set to be between the piechart-slices of this
-     * DataSet, in degrees.
+     * DataSet, in pixels.
      *
      * @return
      */

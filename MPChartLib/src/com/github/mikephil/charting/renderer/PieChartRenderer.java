@@ -9,6 +9,8 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.os.Build;
 import android.text.Layout;
@@ -39,6 +41,8 @@ public class PieChartRenderer extends DataRenderer {
      */
     protected Paint mHolePaint;
     protected Paint mTransparentCirclePaint;
+
+    protected Paint mSliceSpacePaint;
 
     /**
      * paint object for the text that can be displayed in the center of the
@@ -75,11 +79,15 @@ public class PieChartRenderer extends DataRenderer {
         mCenterTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
         mCenterTextPaint.setColor(Color.BLACK);
         mCenterTextPaint.setTextSize(Utils.convertDpToPixel(12f));
-        //mCenterTextPaint.setTextAlign(Align.CENTER);
 
         mValuePaint.setTextSize(Utils.convertDpToPixel(13f));
         mValuePaint.setColor(Color.WHITE);
         mValuePaint.setTextAlign(Align.CENTER);
+
+        mSliceSpacePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mSliceSpacePaint.setStyle(Style.STROKE);
+        mSliceSpacePaint.setColor(0xFFFFFFFF); // transparent
+        mSliceSpacePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
     }
 
     public Paint getPaintHole() {
@@ -130,6 +138,11 @@ public class PieChartRenderer extends DataRenderer {
 
     protected void drawDataSet(Canvas c, IPieDataSet dataSet) {
 
+        float sliceSpace = dataSet.getSliceSpace();
+        mSliceSpacePaint.setStrokeWidth(sliceSpace);
+
+        PointF center = mChart.getCenterOffsets();
+
         float angle = 0;
         float rotationAngle = mChart.getRotationAngle();
 
@@ -141,7 +154,6 @@ public class PieChartRenderer extends DataRenderer {
         for (int j = 0; j < dataSet.getEntryCount(); j++) {
 
             float sliceAngle = drawAngles[j];
-            float sliceSpace = dataSet.getSliceSpace();
 
             Entry e = dataSet.getEntryForIndex(j);
 
@@ -153,13 +165,27 @@ public class PieChartRenderer extends DataRenderer {
 
                     mRenderPaint.setColor(dataSet.getColor(j));
                     mBitmapCanvas.drawArc(mChart.getCircleBox(),
-                            rotationAngle + (angle + sliceSpace / 2f) * phaseY,
-                            (sliceAngle - sliceSpace / 2f) * phaseY,
+                            rotationAngle + angle * phaseY,
+                            sliceAngle * phaseY,
                             true, mRenderPaint);
                 }
             }
 
+            // draw the slice space
+            if(sliceSpace > 0 && dataSet.getEntryCount() > 1) {
+
+                PointF pos = Utils.getPosition(center, mChart.getRadius(), rotationAngle * phaseX + angle * phaseY);
+                mBitmapCanvas.drawLine(center.x, center.y, pos.x, pos.y, mSliceSpacePaint);
+            }
+
             angle += sliceAngle * phaseX;
+        }
+
+        // cover the final slice with slice space
+        if(sliceSpace > 0 && dataSet.getEntryCount() > 1) {
+
+            PointF pos = Utils.getPosition(center, mChart.getRadius(), rotationAngle * phaseX + angle * phaseY);
+            mBitmapCanvas.drawLine(center.x, center.y, pos.x, pos.y, mSliceSpacePaint);
         }
     }
 
@@ -221,10 +247,9 @@ public class PieChartRenderer extends DataRenderer {
                     angle = absoluteAngles[xIndex - 1] * phaseX;
 
                 final float sliceAngle = drawAngles[xIndex];
-                final float sliceSpace = dataSet.getSliceSpace();
 
                 // offset needed to center the drawn text in the slice
-                final float offset = (sliceAngle - sliceSpace / 2.f) / 2.f;
+                final float offset = (sliceAngle) / 2.f;
 
                 angle = angle + offset;
 
@@ -407,7 +432,6 @@ public class PieChartRenderer extends DataRenderer {
                 angle = absoluteAngles[xIndex - 1] * phaseX;
             
             float sliceAngle = drawAngles[xIndex];
-            float sliceSpace = set.getSliceSpace();
 
             float shift = set.getSelectionShift();
             RectF circleBox = mChart.getCircleBox();
@@ -428,8 +452,8 @@ public class PieChartRenderer extends DataRenderer {
             // redefine the rect that contains the arc so that the
             // highlighted pie is not cut off
             mBitmapCanvas.drawArc(highlighted,
-                    rotationAngle + (angle + sliceSpace / 2f) * phaseY,
-                    (sliceAngle - sliceSpace / 2f) * phaseY,
+                    rotationAngle + angle * phaseY,
+                    sliceAngle * phaseY,
                     true, mRenderPaint);
         }
     }

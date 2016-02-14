@@ -9,7 +9,7 @@ import java.util.List;
 
 public class PieDataSet extends DataSet<Entry> implements IPieDataSet {
 
-    /** the space in degrees between the chart-slices, default 0f */
+    /** the space in pixels between the chart-slices, default 0f */
     private float mSliceSpace = 0f;
 
     /** indicates the selection distance of a pie slice */
@@ -37,19 +37,19 @@ public class PieDataSet extends DataSet<Entry> implements IPieDataSet {
     }
 
     /**
-     * sets the space that is left out between the piechart-slices, default: 0°
-     * --> no space, maximum 45, minimum 0 (no space)
+     * Sets the space that is left out between the piechart-slices in dp.
+     * Default: 0 --> no space, maximum 20f
      *
-     * @param degrees
+     * @param spaceDp
      */
-    public void setSliceSpace(float degrees) {
+    public void setSliceSpace(float spaceDp) {
 
-        if (degrees > 45)
-            degrees = 45f;
-        if (degrees < 0)
-            degrees = 0f;
+        if (spaceDp > 20)
+            spaceDp = 20f;
+        if (spaceDp < 0)
+            spaceDp = 0f;
 
-        mSliceSpace = degrees;
+        mSliceSpace = Utils.convertDpToPixel(spaceDp);
     }
 
     @Override
