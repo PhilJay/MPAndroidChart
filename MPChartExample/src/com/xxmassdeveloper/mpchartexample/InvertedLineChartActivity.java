@@ -88,6 +88,7 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
         
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setInverted(true);
+        leftAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
         
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setEnabled(false);
@@ -170,12 +171,6 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
                     else
                         set.setDrawCircles(true);
                 }
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleStartzero: {
-                mChart.getAxisLeft().setStartAtZero(!mChart.getAxisLeft().isStartAtZeroEnabled());
-                mChart.getAxisRight().setStartAtZero(!mChart.getAxisRight().isStartAtZeroEnabled());
                 mChart.invalidate();
                 break;
             }

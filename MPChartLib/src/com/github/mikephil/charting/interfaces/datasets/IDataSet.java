@@ -289,6 +289,13 @@ public interface IDataSet<T extends Entry> {
     void setValueTextColor(int color);
 
     /**
+     * Sets a list of colors to be used as the colors for the drawn values.
+     *
+     * @param colors
+     */
+    void setValueTextColors(List<Integer> colors);
+
+    /**
      * Sets a Typeface for the value-labels of this DataSet.
      *
      * @param tf
@@ -303,11 +310,20 @@ public interface IDataSet<T extends Entry> {
     void setValueTextSize(float size);
 
     /**
-     * Returns the color that is used for drawing the values inside the chart
+     * Returns only the first color of all colors that are set to be used for the values.
      *
      * @return
      */
     int getValueTextColor();
+
+    /**
+     * Returns the color at the specified index that is used for drawing the values inside the chart.
+     * Uses modulus internally.
+     *
+     * @param index
+     * @return
+     */
+    int getValueTextColor(int index);
 
     /**
      * Returns the typeface that is used for drawing the values inside the chart

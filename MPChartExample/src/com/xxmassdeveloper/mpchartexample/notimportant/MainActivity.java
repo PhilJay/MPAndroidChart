@@ -18,6 +18,7 @@ import com.xxmassdeveloper.mpchartexample.AnotherBarActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivity;
 import com.xxmassdeveloper.mpchartexample.BarChartActivityMultiDataset;
 import com.xxmassdeveloper.mpchartexample.BarChartActivitySinus;
+import com.xxmassdeveloper.mpchartexample.BarChartPositiveNegative;
 import com.xxmassdeveloper.mpchartexample.BubbleChartActivity;
 import com.xxmassdeveloper.mpchartexample.CandleStickChartActivity;
 import com.xxmassdeveloper.mpchartexample.CombinedChartActivity;
@@ -123,6 +124,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
         objects.add(new ContentItem(
                 "Chart in ScrollView",
                 "This demonstrates how to use a chart inside a ScrollView."));
+        objects.add(new ContentItem(
+                "BarChart positive / negative",
+                "This demonstrates how to create a BarChart with positive and negative values in different colors."));
 
         ContentItem realm = new ContentItem(
                 "Realm.io Database",
@@ -249,6 +253,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 startActivity(i);
                 break;
             case 26:
+                i = new Intent(this, BarChartPositiveNegative.class);
+                startActivity(i);
+                break;
+            case 27:
                 i = new Intent(this, RealmMainActivity.class);
                 startActivity(i);
                 break;

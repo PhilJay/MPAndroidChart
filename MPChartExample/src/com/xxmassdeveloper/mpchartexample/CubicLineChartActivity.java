@@ -83,7 +83,6 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         YAxis y = mChart.getAxisLeft();
         y.setTypeface(tf);
         y.setLabelCount(6, false);
-        y.setStartAtZero(false);
         y.setTextColor(Color.WHITE);
         y.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
         y.setDrawGridLines(false);
@@ -170,12 +169,6 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
                     else
                         set.setDrawCubic(true);
                 }
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleStartzero: {
-                mChart.getAxisLeft().setStartAtZero(!mChart.getAxisLeft().isStartAtZeroEnabled());
-                mChart.getAxisRight().setStartAtZero(!mChart.getAxisRight().isStartAtZeroEnabled());
                 mChart.invalidate();
                 break;
             }

@@ -15,7 +15,17 @@ public interface ICandleDataSet extends ILineScatterCandleRadarDataSet<CandleEnt
      *
      * @return
      */
-    float getBodySpace();
+    float getBarSpace();
+
+    /**
+     * Returns whether the candle bars should show?
+     * When false, only "ticks" will show
+     *
+     * - default: true
+     *
+     * @return
+     */
+    boolean getShowCandleBar();
 
     /**
      * Returns the width of the candle-shadow-line in pixels.
@@ -29,21 +39,35 @@ public interface ICandleDataSet extends ILineScatterCandleRadarDataSet<CandleEnt
      *
      * @return
      */
-    public int getShadowColor();
+    int getShadowColor();
 
     /**
-     * Returns the decreasing color.
+     * Returns the neutral color (for open == close)
+     *
+     * @return
+     */
+    int getNeutralColor();
+
+    /**
+     * Returns the increasing color (for open < close).
+     *
+     * @return
+     */
+    int getIncreasingColor();
+
+    /**
+     * Returns the decreasing color (for open > close).
      *
      * @return
      */
     int getDecreasingColor();
 
     /**
-     * Returns the increasing color.
+     * Returns paint style when open < close
      *
      * @return
      */
-    int getIncreasingColor();
+    Paint.Style getIncreasingPaintStyle();
 
     /**
      * Returns paint style when open > close
@@ -51,13 +75,6 @@ public interface ICandleDataSet extends ILineScatterCandleRadarDataSet<CandleEnt
      * @return
      */
     Paint.Style getDecreasingPaintStyle();
-
-    /**
-     * Returns paint style when open <= close
-     *
-     * @return
-     */
-    Paint.Style getIncreasingPaintStyle();
 
     /**
      * Is the shadow color same as the candle color?

@@ -72,8 +72,9 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 		mChart.setDrawValueAboveBar(false);
 
 		// change the position of the y-labels
-		YAxis yLabels = mChart.getAxisLeft();
-		yLabels.setValueFormatter(new MyYAxisValueFormatter());
+		YAxis leftAxis = mChart.getAxisLeft();
+		leftAxis.setValueFormatter(new MyYAxisValueFormatter());
+		leftAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
 		mChart.getAxisRight().setEnabled(false);
 
 		XAxis xLabels = mChart.getXAxis();
@@ -144,12 +145,6 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 				mChart.setDrawHighlightArrow(false);
 			else
 				mChart.setDrawHighlightArrow(true);
-			mChart.invalidate();
-			break;
-		}
-		case R.id.actionToggleStartzero: {
-			mChart.getAxisLeft().setStartAtZero(!mChart.getAxisLeft().isStartAtZeroEnabled());
-			mChart.getAxisRight().setStartAtZero(!mChart.getAxisRight().isStartAtZeroEnabled());
 			mChart.invalidate();
 			break;
 		}

@@ -141,13 +141,6 @@ public class BubbleChartRenderer extends DataRenderer {
                 final float phaseX = mAnimator.getPhaseX();
                 final float phaseY = mAnimator.getPhaseY();
 
-                final float alpha = phaseX == 1 ? phaseY : phaseX;
-                int valueTextColor = dataSet.getValueTextColor();
-                valueTextColor = Color.argb(Math.round(255.f * alpha), Color.red(valueTextColor),
-                        Color.green(valueTextColor), Color.blue(valueTextColor));
-
-                mValuePaint.setColor(valueTextColor);
-
                 BubbleEntry entryFrom = dataSet.getEntryForXIndex(mMinX);
                 BubbleEntry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
@@ -157,7 +150,13 @@ public class BubbleChartRenderer extends DataRenderer {
                 final float[] positions = mChart.getTransformer(dataSet.getAxisDependency())
                         .generateTransformedValuesBubble(dataSet, phaseX, phaseY, minx, maxx);
 
+                final float alpha = phaseX == 1 ? phaseY : phaseX;
+
                 for (int j = 0; j < positions.length; j += 2) {
+
+                    int valueTextColor = dataSet.getValueTextColor(j / 2 + minx);
+                    valueTextColor = Color.argb(Math.round(255.f * alpha), Color.red(valueTextColor),
+                            Color.green(valueTextColor), Color.blue(valueTextColor));
 
                     float x = positions[j];
                     float y = positions[j + 1];
@@ -171,11 +170,10 @@ public class BubbleChartRenderer extends DataRenderer {
                     BubbleEntry entry = dataSet.getEntryForIndex(j / 2 + minx);
 
                     drawValue(c, dataSet.getValueFormatter(), entry.getSize(), entry, i, x,
-                            y + (0.5f * lineHeight));
+                            y + (0.5f * lineHeight), valueTextColor);
                 }
             }
         }
-
     }
 
     @Override

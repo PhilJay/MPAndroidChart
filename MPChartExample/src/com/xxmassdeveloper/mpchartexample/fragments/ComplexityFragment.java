@@ -41,6 +41,7 @@ public class ComplexityFragment extends SimpleFragment {
         
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(tf);
+        leftAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
         
         mChart.getAxisRight().setEnabled(false);
         

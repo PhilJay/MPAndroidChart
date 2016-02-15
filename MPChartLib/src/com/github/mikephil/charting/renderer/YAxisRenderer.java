@@ -21,6 +21,8 @@ public class YAxisRenderer extends AxisRenderer {
 
     protected YAxis mYAxis;
 
+    protected Paint mZeroLinePaint;
+
     public YAxisRenderer(ViewPortHandler viewPortHandler, YAxis yAxis, Transformer trans) {
         super(viewPortHandler, trans);
 
@@ -28,6 +30,11 @@ public class YAxisRenderer extends AxisRenderer {
 
         mAxisLabelPaint.setColor(Color.BLACK);
         mAxisLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
+
+        mZeroLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mZeroLinePaint.setColor(Color.GRAY);
+        mZeroLinePaint.setStrokeWidth(1f);
+        mZeroLinePaint.setStyle(Paint.Style.STROKE);
     }
 
     /**
@@ -137,6 +144,10 @@ public class YAxisRenderer extends AxisRenderer {
                 }
 
                 for (f = first, i = 0; i < n; f += interval, ++i) {
+
+                    if (f == 0.0) // Fix for negative zero case (Where value == -0.0, and 0.0 == -0.0)
+                        f = 0.0;
+
                     mYAxis.mEntries[i] = (float) f;
                 }
             }
@@ -247,32 +258,67 @@ public class YAxisRenderer extends AxisRenderer {
     @Override
     public void renderGridLines(Canvas c) {
 
-        if (!mYAxis.isDrawGridLinesEnabled() || !mYAxis.isEnabled())
+        if (!mYAxis.isEnabled())
             return;
 
         // pre alloc
         float[] position = new float[2];
 
-        mGridPaint.setColor(mYAxis.getGridColor());
-        mGridPaint.setStrokeWidth(mYAxis.getGridLineWidth());
-        mGridPaint.setPathEffect(mYAxis.getGridDashPathEffect());
+        if (mYAxis.isDrawGridLinesEnabled()) {
 
-        Path gridLinePath = new Path();
+            mGridPaint.setColor(mYAxis.getGridColor());
+            mGridPaint.setStrokeWidth(mYAxis.getGridLineWidth());
+            mGridPaint.setPathEffect(mYAxis.getGridDashPathEffect());
 
-        // draw the horizontal grid
-        for (int i = 0; i < mYAxis.mEntryCount; i++) {
+            Path gridLinePath = new Path();
 
-            position[1] = mYAxis.mEntries[i];
+            // draw the horizontal grid
+            for (int i = 0; i < mYAxis.mEntryCount; i++) {
+
+                position[1] = mYAxis.mEntries[i];
+                mTrans.pointValuesToPixel(position);
+
+                gridLinePath.moveTo(mViewPortHandler.offsetLeft(), position[1]);
+                gridLinePath.lineTo(mViewPortHandler.contentRight(), position[1]);
+
+                // draw a path because lines don't support dashing on lower android versions
+                c.drawPath(gridLinePath, mGridPaint);
+
+                gridLinePath.reset();
+            }
+        }
+
+        if (mYAxis.isDrawZeroLineEnabled()) {
+
+            // draw zero line
+            position[1] = 0f;
             mTrans.pointValuesToPixel(position);
 
-            gridLinePath.moveTo(mViewPortHandler.offsetLeft(), position[1]);
-            gridLinePath.lineTo(mViewPortHandler.contentRight(), position[1]);
-
-            // draw a path because lines don't support dashing on lower android versions
-            c.drawPath(gridLinePath, mGridPaint);
-
-            gridLinePath.reset();
+            drawZeroLine(c, mViewPortHandler.offsetLeft(), mViewPortHandler.contentRight(), position[1] - 1, position[1] - 1);
         }
+    }
+
+    /**
+     * Draws the zero line at the specified position.
+     *
+     * @param c
+     * @param x1
+     * @param x2
+     * @param y1
+     * @param y2
+     */
+    protected void drawZeroLine(Canvas c, float x1, float x2, float y1, float y2) {
+
+        mZeroLinePaint.setColor(mYAxis.getZeroLineColor());
+        mZeroLinePaint.setStrokeWidth(mYAxis.getZeroLineWidth());
+
+        Path zeroLinePath = new Path();
+
+        zeroLinePath.moveTo(x1, y1);
+        zeroLinePath.lineTo(x2, y2);
+
+        // draw a path because lines don't support dashing on lower android versions
+        c.drawPath(zeroLinePath, mZeroLinePaint);
     }
 
     /**
@@ -295,7 +341,7 @@ public class YAxisRenderer extends AxisRenderer {
 
             LimitLine l = limitLines.get(i);
 
-            if(!l.isEnabled())
+            if (!l.isEnabled())
                 continue;
 
             mLimitLinePaint.setStyle(Paint.Style.STROKE);

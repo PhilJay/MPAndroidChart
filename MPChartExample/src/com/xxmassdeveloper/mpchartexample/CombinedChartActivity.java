@@ -58,9 +58,11 @@ public class CombinedChartActivity extends DemoBase {
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
+        rightAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setDrawGridLines(false);
+        leftAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxisPosition.BOTH_SIDED);
@@ -154,7 +156,7 @@ public class CombinedChartActivity extends DemoBase {
 
         CandleDataSet set = new CandleDataSet(entries, "Candle DataSet");
         set.setColor(Color.rgb(80, 80, 80));
-        set.setBodySpace(0.3f);
+        set.setBarSpace(0.3f);
         set.setValueTextSize(10f);
         set.setDrawValues(false);
         d.addDataSet(set);

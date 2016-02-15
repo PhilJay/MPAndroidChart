@@ -162,7 +162,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
                         (entry.getVal() - mChart.getYChartMin()) * factor * phaseY,
                         sliceangle * j * phaseX + mChart.getRotationAngle());
 
-                drawValue(c, dataSet.getValueFormatter(), entry.getVal(), entry, i, p.x, p.y - yoffset);
+                drawValue(c, dataSet.getValueFormatter(), entry.getVal(), entry, i, p.x, p.y - yoffset, dataSet.getValueTextColor(j));
             }
         }
     }

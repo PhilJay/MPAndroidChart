@@ -1,11 +1,12 @@
 package com.github.mikephil.charting.components;
 
+import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.DefaultYAxisValueFormatter;
-import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.formatter.YAxisValueFormatter;
+import com.github.mikephil.charting.utils.Utils;
 
 /**
  * Class representing the y-axis labels settings and its entries. Only use the setter methods to modify it. Do not
@@ -58,14 +59,24 @@ public class YAxis extends AxisBase {
     protected boolean mInverted = false;
 
     /**
-     * if true, the y-label entries will always start at zero
-     */
-    protected boolean mStartAtZero = true;
-
-    /**
      * if true, the set number of y-labels will be forced
      */
     protected boolean mForceLabels = false;
+
+    /**
+     * flag that indicates if the zero-line should be drawn regardless of other grid lines
+     */
+    protected boolean mDrawZeroLine = true;
+
+    /**
+     * Color of the zero line
+     */
+    protected int mZeroLineColor = Color.GRAY;
+
+    /**
+     * Width of the zero line in pixels
+     */
+    protected float mZeroLineWidth = 1f;
 
     /**
      * custom minimum value this axis represents
@@ -248,21 +259,17 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * enable this to force the y-axis labels to always start at zero
+     * This method is deprecated.
+     * Use setAxisMinValue(...) / setAxisMaxValue(...) instead.
      *
-     * @param enabled
+     * @param startAtZero
      */
-    public void setStartAtZero(boolean enabled) {
-        this.mStartAtZero = enabled;
-    }
-
-    /**
-     * returns true if the chart is set to start at zero, false otherwise
-     *
-     * @return
-     */
-    public boolean isStartAtZeroEnabled() {
-        return mStartAtZero;
+    @Deprecated
+    public void setStartAtZero(boolean startAtZero) {
+        if (startAtZero)
+            setAxisMinValue(0f);
+        else
+            resetAxisMinValue();
     }
 
     public float getAxisMinValue() {
@@ -344,6 +351,46 @@ public class YAxis extends AxisBase {
      */
     public float getSpaceBottom() {
         return mSpacePercentBottom;
+    }
+
+    public boolean isDrawZeroLineEnabled() {
+        return mDrawZeroLine;
+    }
+
+    /**
+     * Set this to true to draw the zero-line regardless of weather other
+     * grid-lines are enabled or not.
+     *
+     * @param mDrawZeroLine
+     */
+    public void setDrawZeroLine(boolean mDrawZeroLine) {
+        this.mDrawZeroLine = mDrawZeroLine;
+    }
+
+    public int getZeroLineColor() {
+        return mZeroLineColor;
+    }
+
+    /**
+     * Sets the color of the zero line
+     *
+     * @param color
+     */
+    public void setZeroLineColor(int color) {
+        mZeroLineColor = color;
+    }
+
+    public float getZeroLineWidth() {
+        return mZeroLineWidth;
+    }
+
+    /**
+     * Sets the width of the zero line in dp
+     *
+     * @param width
+     */
+    public void setZeroLineWidth(float width) {
+        this.mZeroLineWidth = Utils.convertDpToPixel(width);
     }
 
     /**

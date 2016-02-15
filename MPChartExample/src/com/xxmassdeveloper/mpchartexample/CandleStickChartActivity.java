@@ -48,6 +48,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         mSeekBarY.setOnSeekBarChangeListener(this);
 
         mChart = (CandleStickChart) findViewById(R.id.chart1);
+        mChart.setBackgroundColor(Color.WHITE);
 
         mChart.setDescription("");
 
@@ -70,7 +71,6 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         leftAxis.setLabelCount(7, false);
         leftAxis.setDrawGridLines(false);
         leftAxis.setDrawAxisLine(false);
-        leftAxis.setStartAtZero(false);
         
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setEnabled(false);
@@ -127,12 +127,6 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
                    //TODO: set.setShadowColorSameAsCandle(!set.getShadowColorSameAsCandle());
                 }
 
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleStartzero: {
-                mChart.getAxisLeft().setStartAtZero(!mChart.getAxisLeft().isStartAtZeroEnabled());
-                mChart.getAxisRight().setStartAtZero(!mChart.getAxisRight().isStartAtZeroEnabled());
                 mChart.invalidate();
                 break;
             }
@@ -201,9 +195,10 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         set1.setShadowColor(Color.DKGRAY);
         set1.setShadowWidth(0.7f);
         set1.setDecreasingColor(Color.RED);
-        set1.setDecreasingPaintStyle(Paint.Style.STROKE);
+        set1.setDecreasingPaintStyle(Paint.Style.FILL);
         set1.setIncreasingColor(Color.rgb(122, 242, 84));
-        set1.setIncreasingPaintStyle(Paint.Style.FILL);
+        set1.setIncreasingPaintStyle(Paint.Style.STROKE);
+        set1.setNeutralColor(Color.BLUE);
         //set1.setHighlightLineWidth(1f);
 
         CandleData data = new CandleData(xVals, set1);

@@ -97,12 +97,14 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         yl.setDrawAxisLine(true);
         yl.setDrawGridLines(true);
         yl.setGridLineWidth(0.3f);
+        yl.setAxisMinValue(0f); // this replaces setStartAtZero(true)
 //        yl.setInverted(true);
 
         YAxis yr = mChart.getAxisRight();
         yr.setTypeface(tf);
         yr.setDrawAxisLine(true);
         yr.setDrawGridLines(false);
+        yr.setAxisMinValue(0f); // this replaces setStartAtZero(true)
 //        yr.setInverted(true);
 
         setData(12, 50);
@@ -172,12 +174,6 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
                     mChart.setDrawHighlightArrow(false);
                 else
                     mChart.setDrawHighlightArrow(true);
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleStartzero: {
-                mChart.getAxisLeft().setStartAtZero(!mChart.getAxisLeft().isStartAtZeroEnabled());
-                mChart.getAxisRight().setStartAtZero(!mChart.getAxisRight().isStartAtZeroEnabled());
                 mChart.invalidate();
                 break;
             }

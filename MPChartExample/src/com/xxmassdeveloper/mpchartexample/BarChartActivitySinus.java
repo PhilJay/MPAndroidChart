@@ -87,7 +87,6 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(mTf);
         leftAxis.setLabelCount(6, false);
-        leftAxis.setStartAtZero(false);
         leftAxis.setAxisMinValue(-2.5f);
         leftAxis.setAxisMaxValue(2.5f);
 
@@ -95,7 +94,6 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
         rightAxis.setDrawGridLines(false);
         rightAxis.setTypeface(mTf);
         rightAxis.setLabelCount(6, false);
-        rightAxis.setStartAtZero(false);
         rightAxis.setAxisMinValue(-2.5f);
         rightAxis.setAxisMaxValue(2.5f);
 
@@ -155,13 +153,6 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
                     mChart.setDrawHighlightArrow(false);
                 else
                     mChart.setDrawHighlightArrow(true);
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleStartzero: {
-                mChart.getAxisLeft().setStartAtZero(!mChart.getAxisLeft().isStartAtZeroEnabled());
-                mChart.getAxisRight().setStartAtZero(!mChart.getAxisRight().isStartAtZeroEnabled());
-                mChart.notifyDataSetChanged();
                 mChart.invalidate();
                 break;
             }

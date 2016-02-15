@@ -62,11 +62,13 @@ public class LineChartItem extends ChartItem {
         YAxis leftAxis = holder.chart.getAxisLeft();
         leftAxis.setTypeface(mTf);
         leftAxis.setLabelCount(5, false);
+        leftAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
         
         YAxis rightAxis = holder.chart.getAxisRight();
         rightAxis.setTypeface(mTf);
         rightAxis.setLabelCount(5, false);
         rightAxis.setDrawGridLines(false);
+        rightAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
 
         // set data
         holder.chart.setData((LineData) mChartData);

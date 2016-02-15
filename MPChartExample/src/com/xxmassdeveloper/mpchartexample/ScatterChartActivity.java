@@ -1,6 +1,7 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -83,6 +84,7 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
 
         YAxis yl = mChart.getAxisLeft();
         yl.setTypeface(tf);
+        yl.setAxisMinValue(0f); // this replaces setStartAtZero(true)
         
         mChart.getAxisRight().setEnabled(false);
 
@@ -133,12 +135,6 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
             case R.id.actionToggleAutoScaleMinMax: {
                 mChart.setAutoScaleMinMaxEnabled(!mChart.isAutoScaleMinMaxEnabled());
                 mChart.notifyDataSetChanged();
-                break;
-            }
-            case R.id.actionToggleStartzero: {
-                mChart.getAxisLeft().setStartAtZero(!mChart.getAxisLeft().isStartAtZeroEnabled());
-                mChart.getAxisRight().setStartAtZero(!mChart.getAxisRight().isStartAtZeroEnabled());
-                mChart.invalidate();
                 break;
             }
             case R.id.actionToggleFilter: {
@@ -211,6 +207,8 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         set1.setColor(ColorTemplate.COLORFUL_COLORS[0]);
         ScatterDataSet set2 = new ScatterDataSet(yVals2, "DS 2");
         set2.setScatterShape(ScatterShape.CIRCLE);
+        set2.setScatterShapeHoleColor(Color.WHITE);
+        set2.setScatterShapeHoleRadius(5f);
         set2.setColor(ColorTemplate.COLORFUL_COLORS[1]);
         ScatterDataSet set3 = new ScatterDataSet(yVals3, "DS 3");
         set3.setScatterShape(ScatterShape.CROSS);

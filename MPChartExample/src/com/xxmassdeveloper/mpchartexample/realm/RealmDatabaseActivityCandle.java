@@ -58,9 +58,10 @@ public class RealmDatabaseActivityCandle extends RealmBaseActivity {
         set.setShadowColor(Color.DKGRAY);
         set.setShadowWidth(0.7f);
         set.setDecreasingColor(Color.RED);
-        set.setDecreasingPaintStyle(Paint.Style.STROKE);
+        set.setDecreasingPaintStyle(Paint.Style.FILL);
         set.setIncreasingColor(Color.rgb(122, 242, 84));
-        set.setIncreasingPaintStyle(Paint.Style.FILL);
+        set.setIncreasingPaintStyle(Paint.Style.STROKE);
+        set.setNeutralColor(Color.BLUE);
 
         ArrayList<ICandleDataSet> dataSets = new ArrayList<ICandleDataSet>();
         dataSets.add(set); // add the dataset
