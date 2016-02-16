@@ -34,9 +34,24 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 				mChart.getTransformer(set.getAxisDependency()).pixelsToValue(pts);
 
 				return getStackedHighlight(h, set, h.getXIndex(), h.getDataSetIndex(), pts[0]);
-			} else
-				return h;
+			} else {
+				// create an array of the touch-point
+				float[] pts = new float[2];
+				pts[0] = y;
+
+				// take any transformer to determine the x-axis value
+				mChart.getTransformer(set.getAxisDependency()).pixelsToValue(pts);
+                if(isEmptySpaceSelected(set, h.getXIndex(), pts[0])) {
+                    return null;
+                }
+                return h;
+            }
 		}
+	}
+
+	private boolean isEmptySpaceSelected(IBarDataSet set, int xIndex, float y) {
+		float yPoint = set.getYValForXIndex(xIndex);
+		return y > yPoint;
 	}
 
 	@Override

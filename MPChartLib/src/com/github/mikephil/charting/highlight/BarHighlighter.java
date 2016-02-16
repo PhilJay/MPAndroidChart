@@ -33,11 +33,26 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 
 				// take any transformer to determine the x-axis value
 				mChart.getTransformer(set.getAxisDependency()).pixelsToValue(pts);
+                return getStackedHighlight(h, set, h.getXIndex(), h.getDataSetIndex(), pts[1]);
+			} else {
+                float[] pts = new float[2];
+                pts[1] = y;
 
-				return getStackedHighlight(h, set, h.getXIndex(), h.getDataSetIndex(), pts[1]);
-			} else
-				return h;
+                // take any transformer to determine the x-axis value
+                mChart.getTransformer(set.getAxisDependency()).pixelsToValue(pts);
+
+                if(isEmptySpaceSelected(set, h.getXIndex(), pts[1])) {
+                    return null;
+                }
+
+                return h;
+            }
 		}
+	}
+
+	private boolean isEmptySpaceSelected(IBarDataSet set, int xIndex, float y) {
+		float yPoint = set.getYValForXIndex(xIndex);
+		return y > yPoint;
 	}
 
 	@Override
@@ -104,8 +119,10 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 
 		Range[] ranges = getRanges(entry);
 		int stackIndex = getClosestStackIndex(ranges, (float) yValue);
-
-		Highlight h = new Highlight(xIndex, dataSetIndex, stackIndex, ranges[stackIndex]);
+        Highlight h = null;
+        if(stackIndex >= 0) {
+            h = new Highlight(xIndex, dataSetIndex, stackIndex, ranges[stackIndex]);
+        }
 		return h;
 	}
 
@@ -133,7 +150,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 
 		int length = Math.max(ranges.length - 1, 0);
 
-		return (value > ranges[length].to) ? length : 0;
+		return (value > ranges[length].to) ? -1 : 0;
 		//
 		// float[] vals = e.getVals();
 		//
