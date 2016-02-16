@@ -101,6 +101,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
             float posOffset = 0f;
             float negOffset = 0f;
             final boolean drawValueAboveBar = mChart.isDrawValueAboveBarEnabled();
+            final float xLabel = mChart.getContentRect().left + valueOffsetPlus;
 
             for (int i = 0; i < mChart.getBarData().getDataSetCount(); i++) {
 
@@ -149,7 +150,8 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                             negOffset = -negOffset - valueTextWidth;
                         }
 
-                        drawValue(c, formattedValue, valuePoints[j] + (val >= 0 ? posOffset : negOffset),
+                        drawValue(c, formattedValue,
+                                drawValueAboveBar ? (valuePoints[j] + (val >= 0 ? posOffset : negOffset)) : xLabel,
                                 valuePoints[j + 1] + halfTextHeight);
                     }
 
