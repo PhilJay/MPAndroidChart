@@ -22,7 +22,6 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.highlight.ChartHighlighter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider;
@@ -83,11 +82,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     private boolean mScaleXEnabled = true;
     private boolean mScaleYEnabled = true;
-
-    /**
-     * if true, data filtering is enabled
-     */
-    protected boolean mFilterData = false;
 
     /**
      * paint object for the (by default) lightgrey background of the grid
@@ -332,11 +326,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             mRenderer.initBuffers();
 
         calcMinMax();
-
-//        if (mAxisLeft.needsDefaultFormatter())
-//            mAxisLeft.setValueFormatter(mDefaultFormatter);
-//        if (mAxisRight.needsDefaultFormatter())
-//            mAxisRight.setValueFormatter(mDefaultFormatter);
 
         mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum);
         mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum);
@@ -1330,33 +1319,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Enables data filtering for the chart data, filtering will use the user
-     * customized Approximator handed over to this method.
-     *
-     * @param a
-     */
-    public void enableFiltering(Approximator a) {
-        mFilterData = true;
-        // mApproximator = a;
-    }
-
-    /**
-     * Disables data filtering for the chart.
-     */
-    public void disableFiltering() {
-        mFilterData = false;
-    }
-
-    /**
-     * returns true if data filtering is enabled, false if not
-     *
-     * @return
-     */
-    public boolean isFilteringEnabled() {
-        return mFilterData;
-    }
-
-    /**
      * If set to true, both x and y axis can be scaled simultaneously with 2 fingers, if false,
      * x and y axis can be scaled separately. default: false
      *
@@ -1443,10 +1405,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         mAxisRendererRight = rendererRightYAxis;
     }
 
+    @Override
     public float getYChartMax() {
         return Math.max(mAxisLeft.mAxisMaximum, mAxisRight.mAxisMaximum);
     }
 
+    @Override
     public float getYChartMin() {
         return Math.min(mAxisLeft.mAxisMinimum, mAxisRight.mAxisMinimum);
     }
