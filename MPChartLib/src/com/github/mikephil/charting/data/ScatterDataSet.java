@@ -94,7 +94,8 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
     }
 
     /**
-     * Sets the radius of the hole in the shape. Set this to <= 0 to remove holes.
+     * Sets the radius of the hole in the shape (applies to Square, Circle and Triangle)
+     * Set this to <= 0 to remove holes.
      *
      * @param holeRadius
      */
