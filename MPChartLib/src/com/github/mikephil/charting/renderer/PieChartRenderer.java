@@ -160,7 +160,7 @@ public class PieChartRenderer extends DataRenderer {
             float sliceAngle = drawAngles[j];
             float sliceSpace = dataSet.getSliceSpace();
             final float sliceSpaceOuterAngle = sliceSpace / (Utils.FDEG2RAD * radius);
-            final float sliceSpaceInnerAngle = sliceSpace / (Utils.FDEG2RAD * innerRadius);
+            final float sliceSpaceInnerAngle = innerRadius == 0.f ? 0.f : sliceSpace / (Utils.FDEG2RAD * innerRadius);
 
             Entry e = dataSet.getEntryForIndex(j);
 
@@ -210,6 +210,11 @@ public class PieChartRenderer extends DataRenderer {
                                 endAngleInner,
                                 -sweepAngleInner
                         );
+                    }
+                    else {
+                        mPathBuffer.lineTo(
+                                center.x,
+                                center.y);
                     }
 
                     mPathBuffer.close();
@@ -336,6 +341,8 @@ public class PieChartRenderer extends DataRenderer {
         drawCenterText(c);
     }
 
+    private Path mHoleCirclePath = new Path();
+
     /**
      * draws the hole in the center of the chart and the transparent circle /
      * hole
@@ -344,30 +351,35 @@ public class PieChartRenderer extends DataRenderer {
 
         if (mChart.isDrawHoleEnabled()) {
 
-            float transparentCircleRadius = mChart.getTransparentCircleRadius();
-            float holeRadius = mChart.getHoleRadius();
             float radius = mChart.getRadius();
-
+            float holeRadius = radius * (mChart.getHoleRadius() / 100);
             PointF center = mChart.getCenterCircleBox();
+            boolean hasHoleColor = mHolePaint.getColor() != 0;
+
+            if (hasHoleColor) {
+                // draw the hole-circle
+                mBitmapCanvas.drawCircle(
+                        center.x, center.y,
+                        holeRadius, mHolePaint);
+            }
 
             // only draw the circle if it can be seen (not covered by the hole)
-            if (transparentCircleRadius > holeRadius) {
+            if (hasHoleColor && mChart.getTransparentCircleRadius() > mChart.getHoleRadius()) {
 
-                // get original alpha
                 int alpha = mTransparentCirclePaint.getAlpha();
+                float secondHoleRadius = radius * (mChart.getTransparentCircleRadius() / 100);
+
                 mTransparentCirclePaint.setAlpha((int) ((float) alpha * mAnimator.getPhaseX() * mAnimator.getPhaseY()));
 
                 // draw the transparent-circle
-                mBitmapCanvas.drawCircle(center.x, center.y,
-                        radius / 100 * transparentCircleRadius, mTransparentCirclePaint);
+                mHoleCirclePath.reset();
+                mHoleCirclePath.addCircle(center.x, center.y, secondHoleRadius, Path.Direction.CW);
+                mHoleCirclePath.addCircle(center.x, center.y, holeRadius, Path.Direction.CCW);
+                mBitmapCanvas.drawPath(mHoleCirclePath, mTransparentCirclePaint);
 
                 // reset alpha
                 mTransparentCirclePaint.setAlpha(alpha);
             }
-
-            // draw the hole-circle
-            mBitmapCanvas.drawCircle(center.x, center.y,
-                    radius / 100 * holeRadius, mHolePaint);
         }
     }
 
@@ -476,7 +488,7 @@ public class PieChartRenderer extends DataRenderer {
             float sliceAngle = drawAngles[xIndex];
             float sliceSpace = set.getSliceSpace();
             final float sliceSpaceOuterAngle = sliceSpace / (Utils.FDEG2RAD * radius);
-            final float sliceSpaceInnerAngle = sliceSpace / (Utils.FDEG2RAD * innerRadius);
+            final float sliceSpaceInnerAngle = innerRadius == 0.f ? 0.f : sliceSpace / (Utils.FDEG2RAD * innerRadius);
 
             float shift = set.getSelectionShift();
             final float highlightedRadius = radius + shift;
@@ -504,8 +516,7 @@ public class PieChartRenderer extends DataRenderer {
                     sweepAngleOuter
             );
 
-            if (innerRadius > 0.0)
-            {
+            if (innerRadius > 0.0) {
                 final float startAngleInner = rotationAngle + (angle + sliceSpaceInnerAngle / 2.f) * phaseY;
                 float sweepAngleInner = (sliceAngle - sliceSpaceInnerAngle) * phaseY;
                 if (sweepAngleInner < 0.f)
@@ -523,6 +534,11 @@ public class PieChartRenderer extends DataRenderer {
                         endAngleInner,
                         -sweepAngleInner
                 );
+            }
+            else {
+                mPathBuffer.lineTo(
+                        center.x,
+                        center.y);
             }
 
             mPathBuffer.close();
