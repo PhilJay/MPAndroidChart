@@ -142,6 +142,7 @@ public class PieChartRenderer extends DataRenderer {
 
         final int entryCount = dataSet.getEntryCount();
         final float[] drawAngles = mChart.getDrawAngles();
+        float sliceSpace = dataSet.getSliceSpace();
         final PointF center = mChart.getCenterCircleBox();
         final float radius = mChart.getRadius();
         final float innerRadius = mChart.isDrawHoleEnabled() && mChart.isHoleTransparent()
@@ -155,12 +156,17 @@ public class PieChartRenderer extends DataRenderer {
                 center.x + innerRadius,
                 center.y + innerRadius);
 
+        int visibleAngleCount = 0;
+        for (int j = 0; j < entryCount; j++) {
+            // draw only if the value is greater than zero
+            if ((Math.abs(dataSet.getEntryForIndex(j).getVal()) > 0.000001)) {
+                visibleAngleCount++;
+            }
+        }
+
         for (int j = 0; j < entryCount; j++) {
 
             float sliceAngle = drawAngles[j];
-            float sliceSpace = dataSet.getSliceSpace();
-            final float sliceSpaceOuterAngle = sliceSpace / (Utils.FDEG2RAD * radius);
-            final float sliceSpaceInnerAngle = innerRadius == 0.f ? 0.f : sliceSpace / (Utils.FDEG2RAD * innerRadius);
 
             Entry e = dataSet.getEntryForIndex(j);
 
@@ -172,6 +178,9 @@ public class PieChartRenderer extends DataRenderer {
 
                     mRenderPaint.setColor(dataSet.getColor(j));
 
+                    final float sliceSpaceOuterAngle = visibleAngleCount == 1 ?
+                            0.f :
+                            sliceSpace / (Utils.FDEG2RAD * radius);
                     final float startAngleOuter = rotationAngle + (angle + sliceSpaceOuterAngle / 2.f) * phaseY;
                     float sweepAngleOuter = (sliceAngle - sliceSpaceOuterAngle) * phaseY;
                     if (sweepAngleOuter < 0.f)
@@ -181,18 +190,27 @@ public class PieChartRenderer extends DataRenderer {
 
                     mPathBuffer.reset();
 
-                    mPathBuffer.moveTo(
-                            center.x + radius * (float)Math.cos(startAngleOuter * Utils.FDEG2RAD),
-                            center.y + radius * (float)Math.sin(startAngleOuter * Utils.FDEG2RAD));
+                    if (sweepAngleOuter % 360f == 0.f) {
+                        // Android is doing "mod 360"
+                        mPathBuffer.addCircle(center.x, center.y, radius, Path.Direction.CW);
+                    } else {
 
-                    mPathBuffer.arcTo(
-                            circleBox,
-                            startAngleOuter,
-                            sweepAngleOuter
-                    );
+                        mPathBuffer.moveTo(
+                                center.x + radius * (float) Math.cos(startAngleOuter * Utils.FDEG2RAD),
+                                center.y + radius * (float) Math.sin(startAngleOuter * Utils.FDEG2RAD));
+
+                        mPathBuffer.arcTo(
+                                circleBox,
+                                startAngleOuter,
+                                sweepAngleOuter
+                        );
+                    }
 
                     if (innerRadius > 0.0)
                     {
+                        final float sliceSpaceInnerAngle = visibleAngleCount == 1 ?
+                                0.f :
+                                sliceSpace / (Utils.FDEG2RAD * innerRadius);
                         final float startAngleInner = rotationAngle + (angle + sliceSpaceInnerAngle / 2.f) * phaseY;
                         float sweepAngleInner = (sliceAngle - sliceSpaceInnerAngle) * phaseY;
                         if (sweepAngleInner < 0.f)
@@ -201,20 +219,30 @@ public class PieChartRenderer extends DataRenderer {
                         }
                         final float endAngleInner = startAngleInner + sweepAngleInner;
 
-                        mPathBuffer.lineTo(
-                                center.x + innerRadius * (float) Math.cos(endAngleInner * Utils.FDEG2RAD),
-                                center.y + innerRadius * (float) Math.sin(endAngleInner * Utils.FDEG2RAD));
+                        if (sweepAngleOuter % 360f == 0.f) {
+                            // Android is doing "mod 360"
+                            mPathBuffer.addCircle(center.x, center.y, innerRadius, Path.Direction.CCW);
+                        } else {
 
-                        mPathBuffer.arcTo(
-                                mInnerRectBuffer,
-                                endAngleInner,
-                                -sweepAngleInner
-                        );
+                            mPathBuffer.lineTo(
+                                    center.x + innerRadius * (float) Math.cos(endAngleInner * Utils.FDEG2RAD),
+                                    center.y + innerRadius * (float) Math.sin(endAngleInner * Utils.FDEG2RAD));
+
+                            mPathBuffer.arcTo(
+                                    mInnerRectBuffer,
+                                    endAngleInner,
+                                    -sweepAngleInner
+                            );
+                        }
                     }
                     else {
-                        mPathBuffer.lineTo(
-                                center.x,
-                                center.y);
+
+                        if (sweepAngleOuter % 360f != 0.f) {
+                            mPathBuffer.lineTo(
+                                    center.x,
+                                    center.y);
+                        }
+
                     }
 
                     mPathBuffer.close();
@@ -480,15 +508,26 @@ public class PieChartRenderer extends DataRenderer {
             if (set == null || !set.isHighlightEnabled())
                 continue;
 
+            final int entryCount = set.getEntryCount();
+            int visibleAngleCount = 0;
+            for (int j = 0; j < entryCount; j++) {
+                // draw only if the value is greater than zero
+                if ((Math.abs(set.getEntryForIndex(j).getVal()) > 0.000001)) {
+                    visibleAngleCount++;
+                }
+            }
+
             if (xIndex == 0)
                 angle = 0.f;
             else
                 angle = absoluteAngles[xIndex - 1] * phaseX;
 
-            float sliceAngle = drawAngles[xIndex];
             float sliceSpace = set.getSliceSpace();
-            final float sliceSpaceOuterAngle = sliceSpace / (Utils.FDEG2RAD * radius);
-            final float sliceSpaceInnerAngle = innerRadius == 0.f ? 0.f : sliceSpace / (Utils.FDEG2RAD * innerRadius);
+
+            float sliceAngle = drawAngles[xIndex];
+            final float sliceSpaceOuterAngle = visibleAngleCount == 1 ?
+                    0.f :
+                    sliceSpace / (Utils.FDEG2RAD * radius);
 
             float shift = set.getSelectionShift();
             final float highlightedRadius = radius + shift;
@@ -506,17 +545,26 @@ public class PieChartRenderer extends DataRenderer {
 
             mPathBuffer.reset();
 
-            mPathBuffer.moveTo(
-                    center.x + highlightedRadius * (float)Math.cos(startAngleOuter * Utils.FDEG2RAD),
-                    center.y + highlightedRadius * (float)Math.sin(startAngleOuter * Utils.FDEG2RAD));
+            if (sweepAngleOuter % 360f == 0.f) {
+                // Android is doing "mod 360"
+                mPathBuffer.addCircle(center.x, center.y, highlightedRadius, Path.Direction.CW);
+            } else {
 
-            mPathBuffer.arcTo(
-                    highlightedCircleBox,
-                    startAngleOuter,
-                    sweepAngleOuter
-            );
+                mPathBuffer.moveTo(
+                        center.x + highlightedRadius * (float) Math.cos(startAngleOuter * Utils.FDEG2RAD),
+                        center.y + highlightedRadius * (float) Math.sin(startAngleOuter * Utils.FDEG2RAD));
+
+                mPathBuffer.arcTo(
+                        highlightedCircleBox,
+                        startAngleOuter,
+                        sweepAngleOuter
+                );
+            }
 
             if (innerRadius > 0.0) {
+                final float sliceSpaceInnerAngle = visibleAngleCount == 1 ?
+                        0.f :
+                        sliceSpace / (Utils.FDEG2RAD * innerRadius);
                 final float startAngleInner = rotationAngle + (angle + sliceSpaceInnerAngle / 2.f) * phaseY;
                 float sweepAngleInner = (sliceAngle - sliceSpaceInnerAngle) * phaseY;
                 if (sweepAngleInner < 0.f)
@@ -525,20 +573,30 @@ public class PieChartRenderer extends DataRenderer {
                 }
                 final float endAngleInner = startAngleInner + sweepAngleInner;
 
-                mPathBuffer.lineTo(
-                        center.x + innerRadius * (float) Math.cos(endAngleInner * Utils.FDEG2RAD),
-                        center.y + innerRadius * (float) Math.sin(endAngleInner * Utils.FDEG2RAD));
+                if (sweepAngleOuter % 360f == 0.f) {
+                    // Android is doing "mod 360"
+                    mPathBuffer.addCircle(center.x, center.y, innerRadius, Path.Direction.CCW);
+                } else {
 
-                mPathBuffer.arcTo(
-                        mInnerRectBuffer,
-                        endAngleInner,
-                        -sweepAngleInner
-                );
+                    mPathBuffer.lineTo(
+                            center.x + innerRadius * (float) Math.cos(endAngleInner * Utils.FDEG2RAD),
+                            center.y + innerRadius * (float) Math.sin(endAngleInner * Utils.FDEG2RAD));
+
+                    mPathBuffer.arcTo(
+                            mInnerRectBuffer,
+                            endAngleInner,
+                            -sweepAngleInner
+                    );
+                }
             }
             else {
-                mPathBuffer.lineTo(
-                        center.x,
-                        center.y);
+
+                if (sweepAngleOuter % 360f != 0.f) {
+                    mPathBuffer.lineTo(
+                            center.x,
+                            center.y);
+                }
+
             }
 
             mPathBuffer.close();
