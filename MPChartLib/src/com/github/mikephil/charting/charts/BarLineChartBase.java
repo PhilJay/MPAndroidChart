@@ -26,6 +26,8 @@ import com.github.mikephil.charting.highlight.ChartHighlighter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet;
+import com.github.mikephil.charting.jobs.AnimatedMoveViewJob;
+import com.github.mikephil.charting.jobs.AnimatedZoomJob;
 import com.github.mikephil.charting.jobs.MoveViewJob;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.listener.OnDrawListener;
@@ -684,6 +686,28 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
+     * Zooms by the specified scale factor to the specified values on the specified axis.
+     * STILL WORK IN PROGRESS
+     *
+     * @param scaleX
+     * @param scaleY
+     * @param xValue
+     * @param yValue
+     * @param axis
+     * @param duration
+     */
+    private void zoomAndCenterAnimated(float scaleX, float scaleY, float xValue, float yValue, AxisDependency axis, long duration) {
+
+        PointD bounds = getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop(), axis);
+
+        float valsInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
+        float xsInView = getXAxis().getValues().size() / mViewPortHandler.getScaleX();
+
+        Runnable job = new AnimatedZoomJob(mViewPortHandler, this, getTransformer(axis), scaleX, scaleY, mViewPortHandler.getScaleX(), mViewPortHandler.getScaleY(), xValue - xsInView / 2f, yValue + valsInView / 2f, (float) bounds.x, (float) bounds.y, duration);
+        postJob(job);
+    }
+
+    /**
      * Resets all zooming and dragging and makes the chart fit exactly it's
      * bounds.
      */
@@ -774,11 +798,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         Runnable job = new MoveViewJob(mViewPortHandler, xIndex, 0f,
                 getTransformer(AxisDependency.LEFT), this);
 
-        if (mViewPortHandler.hasChartDimens()) {
-            post(job);
-        } else {
-            mJobs.add(job);
-        }
+        postJob(job);
     }
 
     /**
@@ -795,16 +815,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         Runnable job = new MoveViewJob(mViewPortHandler, 0f, yValue + valsInView / 2f,
                 getTransformer(axis), this);
 
-        if (mViewPortHandler.hasChartDimens()) {
-            post(job);
-        } else {
-            mJobs.add(job);
-        }
+        postJob(job);
     }
 
     /**
      * This will move the left side of the current viewport to the specified
-     * x-index on the x-axis, and center the viewport to the specified y-value
+     * x-value on the x-axis, and center the viewport to the specified y-value
      * on the y-axis.
      * This also refreshes the chart by calling invalidate().
      *
@@ -819,23 +835,41 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         Runnable job = new MoveViewJob(mViewPortHandler, xIndex, yValue + valsInView / 2f,
                 getTransformer(axis), this);
 
-        if (mViewPortHandler.hasChartDimens()) {
-            post(job);
-        } else {
-            mJobs.add(job);
-        }
+        postJob(job);
+    }
+
+    /**
+     * This will move the left side of the current viewport to the specified x-position
+     * and center the viewport to the specified y-position animated.
+     * This also refreshes the chart by calling invalidate().
+     *
+     * @param xIndex
+     * @param yValue
+     * @param axis
+     * @param duration the duration of the animation in milliseconds
+     */
+    public void moveViewToAnimated(float xIndex, float yValue, AxisDependency axis, long duration) {
+
+        PointD bounds = getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop(), axis);
+
+        float valsInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
+
+        Runnable job = new AnimatedMoveViewJob(mViewPortHandler, xIndex, yValue + valsInView / 2f,
+                getTransformer(axis), this, (float) bounds.x, (float) bounds.y, duration);
+
+        postJob(job);
     }
 
     /**
      * This will move the center of the current viewport to the specified
-     * x-index and y-value.
+     * x-value and y-value.
      * This also refreshes the chart by calling invalidate().
      *
      * @param xIndex
      * @param yValue
      * @param axis   - which axis should be used as a reference for the y-axis
      */
-    public void centerViewTo(int xIndex, float yValue, AxisDependency axis) {
+    public void centerViewTo(float xIndex, float yValue, AxisDependency axis) {
 
         float valsInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
         float xsInView = getXAxis().getValues().size() / mViewPortHandler.getScaleX();
@@ -844,11 +878,30 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
                 xIndex - xsInView / 2f, yValue + valsInView / 2f,
                 getTransformer(axis), this);
 
-        if (mViewPortHandler.hasChartDimens()) {
-            post(job);
-        } else {
-            mJobs.add(job);
-        }
+        postJob(job);
+    }
+
+    /**
+     * This will move the center of the current viewport to the specified
+     * x-value and y-value animated.
+     *
+     * @param xIndex
+     * @param yValue
+     * @param axis
+     * @param duration the duration of the animation in milliseconds
+     */
+    public void centerViewToAnimated(float xIndex, float yValue, AxisDependency axis, long duration) {
+
+        PointD bounds = getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop(), axis);
+
+        float valsInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
+        float xsInView = getXAxis().getValues().size() / mViewPortHandler.getScaleX();
+
+        Runnable job = new AnimatedMoveViewJob(mViewPortHandler,
+                xIndex - xsInView / 2f, yValue + valsInView / 2f,
+                getTransformer(axis), this, (float) bounds.x, (float) bounds.y, duration);
+
+        postJob(job);
     }
 
     /**

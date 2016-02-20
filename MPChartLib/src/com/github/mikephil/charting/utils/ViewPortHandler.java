@@ -223,11 +223,44 @@ public class ViewPortHandler {
         Matrix save = new Matrix();
         save.set(mMatrixTouch);
 
-        // Log.i(LOG_TAG, "Zooming, x: " + x + ", y: " + y);
-
         save.postScale(scaleX, scaleY, x, y);
 
         return save;
+    }
+
+    public Matrix zoom(float scaleX, float scaleY) {
+
+        Matrix save = new Matrix();
+        save.set(mMatrixTouch);
+
+        save.setScale(scaleX, scaleY);
+
+        return save;
+    }
+
+    /**
+     * Zooms by the specified scale factors and moves the viewport to the specified values.
+     *
+     * @param scaleX
+     * @param scaleY
+     * @param pts
+     * @param view
+     * @return
+     */
+    public synchronized Matrix zoomAndCenter(float scaleX, float scaleY, float[] pts, final View view) {
+
+        Matrix save = new Matrix();
+        save.set(mMatrixTouch);
+
+        final float x = pts[0] - offsetLeft();
+        final float y = pts[1] - offsetTop();
+
+        PointF center = getContentCenter();
+
+        save.setScale(scaleX, scaleY, center.x, center.y);
+        save.postTranslate(-x, -y);
+
+        return refresh(save, view, true);
     }
 
     /**

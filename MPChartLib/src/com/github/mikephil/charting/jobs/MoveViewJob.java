@@ -7,36 +7,19 @@ import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**
- * Runnable that is used for viewport modifications since they cannot be
- * executed at any time. This can be used to delay the execution of viewport
- * modifications until the onSizeChanged(...) method of the chartview is called.
- * 
- * @author Philipp Jahoda
+ * Created by Philipp Jahoda on 19/02/16.
  */
-public class MoveViewJob implements Runnable {
+public class MoveViewJob extends Job {
 
-    protected ViewPortHandler mViewPortHandler;
-    protected float xIndex = 0f;
-    protected float yValue = 0f;
-    protected Transformer mTrans;
-    protected View view;
-
-    public MoveViewJob(ViewPortHandler viewPortHandler, float xIndex, float yValue,
-            Transformer trans, View v) {
-
-        this.mViewPortHandler = viewPortHandler;
-        this.xIndex = xIndex;
-        this.yValue = yValue;
-        this.mTrans = trans;
-        this.view = v;
+    public MoveViewJob(ViewPortHandler viewPortHandler, float xIndex, float yValue, Transformer trans, View v) {
+        super(viewPortHandler, xIndex, yValue, trans, v);
     }
 
     @Override
     public void run() {
 
-        float[] pts = new float[] {
-                xIndex, yValue
-        };
+        pts[0] = xValue;
+        pts[1] = yValue;
 
         mTrans.pointValuesToPixel(pts);
         mViewPortHandler.centerViewPort(pts, view);

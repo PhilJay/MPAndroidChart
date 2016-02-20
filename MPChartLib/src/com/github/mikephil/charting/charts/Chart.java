@@ -1631,6 +1631,21 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
+     * Either posts a job immediately if the chart has already setup it's
+     * dimensions or adds the job to the execution queue.
+     *
+     * @param job
+     */
+    protected void postJob(Runnable job) {
+
+        if (mViewPortHandler.hasChartDimens()) {
+            post(job);
+        } else {
+            mJobs.add(job);
+        }
+    }
+
+    /**
      * Returns all jobs that are scheduled to be executed after
      * onSizeChanged(...).
      *
