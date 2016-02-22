@@ -16,6 +16,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.renderer.PieChartRenderer;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.List;
@@ -52,6 +53,11 @@ public class PieChart extends PieRadarChartBase<PieData> {
      * if true, the white hole inside the chart will be drawn
      */
     private boolean mDrawHole = true;
+
+    /**
+     * if true, the hole will see-through to the inner ends of the slices
+     */
+    private boolean mDrawHoleTransparent = true;
 
     /**
      * if true, the values inside the piechart are drawn as percent values
@@ -332,25 +338,17 @@ public class PieChart extends PieRadarChartBase<PieData> {
      * @param color
      */
     public void setHoleColor(int color) {
-        ((PieChartRenderer) mRenderer).getPaintHole().setXfermode(null);
+        if (color == ColorTemplate.COLOR_NONE || color == ColorTemplate.COLOR_SKIP) {
+            color = 0; // Transparent
+        }
         ((PieChartRenderer) mRenderer).getPaintHole().setColor(color);
     }
 
     /**
-     * Set the hole in the center of the PieChart transparent. Thank you, code
-     * provided by:
-     *
-     * @param enable
-     * @link https://github.com/tbarthel-fr
+     * Set the hole in the center of the PieChart transparent.
      */
     public void setHoleColorTransparent(boolean enable) {
-        if (enable) {
-            ((PieChartRenderer) mRenderer).getPaintHole().setColor(0xFFFFFFFF);
-            ((PieChartRenderer) mRenderer).getPaintHole().setXfermode(
-                    new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        } else {
-            ((PieChartRenderer) mRenderer).getPaintHole().setXfermode(null);
-        }
+        mDrawHoleTransparent = enable;
     }
 
     /**
@@ -360,7 +358,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
      * @return true if hole is transparent.
      */
     public boolean isHoleTransparent() {
-        return ((PieChartRenderer) mRenderer).getPaintHole().getXfermode() != null;
+        return mDrawHoleTransparent;
     }
 
     /**
