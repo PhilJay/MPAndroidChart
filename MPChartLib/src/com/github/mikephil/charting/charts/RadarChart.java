@@ -107,8 +107,12 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     protected void calcMinMax() {
         super.calcMinMax();
 
-        float minLeft = mData.getYMin(AxisDependency.LEFT);
-        float maxLeft = mData.getYMax(AxisDependency.LEFT);
+        float minLeft = !Float.isNaN(mYAxis.getAxisMinValue())
+                ? mYAxis.getAxisMinValue()
+                : mData.getYMin(AxisDependency.LEFT);
+        float maxLeft = !Float.isNaN(mYAxis.getAxisMaxValue())
+                ? mYAxis.getAxisMaxValue()
+                : mData.getYMax(AxisDependency.LEFT);
 
         mXChartMax = mData.getXVals().size() - 1;
         mDeltaX = Math.abs(mXChartMax - mXChartMin);
@@ -122,8 +126,12 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         mDeltaX = Math.abs(mXChartMax - mXChartMin);
 
         // Use the values as they are
-        mYAxis.mAxisMinimum = !Float.isNaN(mYAxis.getAxisMinValue()) ? mYAxis.getAxisMinValue() : (minLeft - bottomSpaceLeft);
-        mYAxis.mAxisMaximum = !Float.isNaN(mYAxis.getAxisMaxValue()) ? mYAxis.getAxisMaxValue() : (maxLeft + topSpaceLeft);
+        mYAxis.mAxisMinimum = !Float.isNaN(mYAxis.getAxisMinValue())
+                ? mYAxis.getAxisMinValue()
+                : (minLeft - bottomSpaceLeft);
+        mYAxis.mAxisMaximum = !Float.isNaN(mYAxis.getAxisMaxValue())
+                ? mYAxis.getAxisMaxValue()
+                : (maxLeft + topSpaceLeft);
 
         mYAxis.mAxisRange = Math.abs(mYAxis.mAxisMaximum - mYAxis.mAxisMinimum);
     }
