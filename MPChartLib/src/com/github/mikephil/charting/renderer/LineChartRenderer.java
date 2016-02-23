@@ -148,7 +148,7 @@ public class LineChartRenderer extends LineRadarRenderer {
         Entry entryTo = dataSet.getEntryForXIndex(mMaxX, DataSet.Rounding.UP);
 
         int diff = (entryFrom == entryTo) ? 1 : 0;
-        int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff, 0);
+        int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff - 1, 0);
         int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, entryCount);
 
         float phaseX = mAnimator.getPhaseX();
