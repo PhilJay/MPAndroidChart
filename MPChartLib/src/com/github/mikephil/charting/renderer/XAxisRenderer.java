@@ -265,7 +265,7 @@ public class XAxisRenderer extends AxisRenderer {
 
             final LimitLine.LimitLabelPosition labelPosition = limitLine.getLabelPosition();
             final float labelLineHeight = Utils.calcTextHeight(mLimitLinePaint, label);
-            final int lineSpacing = 5;
+            final int lineSpacing = 20;
             if (labelPosition == LimitLine.LimitLabelPosition.RIGHT_TOP) {
                 mLimitLinePaint.setTextAlign(Align.LEFT);
                 int lineCount = 1;
