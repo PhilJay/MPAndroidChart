@@ -118,7 +118,7 @@ public class XAxisRenderer extends AxisRenderer {
     protected void drawLabels(Canvas c, float pos) {
 
         // pre allocate to save performance (dont allocate in loop)
-        float[] position = new float[] {
+        float[] position = new float[]{
                 0f, 0f
         };
 
@@ -167,7 +167,7 @@ public class XAxisRenderer extends AxisRenderer {
             return;
 
         // pre alloc
-        float[] position = new float[] {
+        float[] position = new float[]{
                 0f, 0f
         };
 
@@ -196,26 +196,26 @@ public class XAxisRenderer extends AxisRenderer {
         }
     }
 
-	/**
-	 * Draws the LimitLines associated with this axis to the screen.
-	 *
-	 * @param c
-	 */
-	@Override
-	public void renderLimitLines(Canvas c) {
+    /**
+     * Draws the LimitLines associated with this axis to the screen.
+     *
+     * @param c
+     */
+    @Override
+    public void renderLimitLines(Canvas c) {
 
-		List<LimitLine> limitLines = mXAxis.getLimitLines();
+        List<LimitLine> limitLines = mXAxis.getLimitLines();
 
-		if (limitLines == null || limitLines.size() <= 0)
-			return;
+        if (limitLines == null || limitLines.size() <= 0)
+            return;
 
         float[] position = new float[2];
 
-		for (int i = 0; i < limitLines.size(); i++) {
+        for (int i = 0; i < limitLines.size(); i++) {
 
-			LimitLine l = limitLines.get(i);
+            LimitLine l = limitLines.get(i);
 
-            if(!l.isEnabled())
+            if (!l.isEnabled())
                 continue;
 
             position[0] = l.getLimit();
@@ -225,14 +225,13 @@ public class XAxisRenderer extends AxisRenderer {
 
             renderLimitLineLine(c, l, position);
             renderLimitLineLabel(c, l, position, 2.f + l.getYOffset());
-		}
-	}
+        }
+    }
 
     float[] mLimitLineSegmentsBuffer = new float[4];
     private Path mLimitLinePath = new Path();
 
-    public void renderLimitLineLine(Canvas c, LimitLine limitLine, float[] position)
-    {
+    public void renderLimitLineLine(Canvas c, LimitLine limitLine, float[] position) {
         mLimitLineSegmentsBuffer[0] = position[0];
         mLimitLineSegmentsBuffer[1] = mViewPortHandler.contentTop();
         mLimitLineSegmentsBuffer[2] = position[0];
@@ -250,8 +249,7 @@ public class XAxisRenderer extends AxisRenderer {
         c.drawPath(mLimitLinePath, mLimitLinePaint);
     }
 
-    public void renderLimitLineLabel(Canvas c, LimitLine limitLine, float[] position, float yOffset)
-    {
+    public void renderLimitLineLabel(Canvas c, LimitLine limitLine, float[] position, float yOffset) {
         String label = limitLine.getLabel();
 
         // if drawing the limit-value label is enabled
@@ -266,25 +264,38 @@ public class XAxisRenderer extends AxisRenderer {
             float xOffset = limitLine.getLineWidth() + limitLine.getXOffset();
 
             final LimitLine.LimitLabelPosition labelPosition = limitLine.getLabelPosition();
+            final float labelLineHeight = Utils.calcTextHeight(mLimitLinePaint, label);
 
             if (labelPosition == LimitLine.LimitLabelPosition.RIGHT_TOP) {
-
-                final float labelLineHeight = Utils.calcTextHeight(mLimitLinePaint, label);
                 mLimitLinePaint.setTextAlign(Align.LEFT);
-                c.drawText(label, position[0] + xOffset, mViewPortHandler.contentTop() + yOffset + labelLineHeight, mLimitLinePaint);
+                int lineCount = 1;
+                for (String line : label.split("\n")) {
+                    c.drawText(line, position[0] + xOffset, mViewPortHandler.contentTop() + yOffset + labelLineHeight * lineCount, mLimitLinePaint);
+                    lineCount++;
+                }
             } else if (labelPosition == LimitLine.LimitLabelPosition.RIGHT_BOTTOM) {
 
                 mLimitLinePaint.setTextAlign(Align.LEFT);
-                c.drawText(label, position[0] + xOffset, mViewPortHandler.contentBottom() - yOffset, mLimitLinePaint);
+                int lineCount = label.split("\n").length;
+                for (String line : label.split("\n")) {
+                    c.drawText(line, position[0] + xOffset, mViewPortHandler.contentBottom() - yOffset - labelLineHeight * (lineCount - 1), mLimitLinePaint);
+                    lineCount--;
+                }
             } else if (labelPosition == LimitLine.LimitLabelPosition.LEFT_TOP) {
 
                 mLimitLinePaint.setTextAlign(Align.RIGHT);
-                final float labelLineHeight = Utils.calcTextHeight(mLimitLinePaint, label);
-                c.drawText(label, position[0] - xOffset, mViewPortHandler.contentTop() + yOffset + labelLineHeight, mLimitLinePaint);
+                int lineCount = 1;
+                for (String line : label.split("\n")) {
+                    c.drawText(line, position[0] - xOffset, mViewPortHandler.contentTop() + yOffset + labelLineHeight * lineCount, mLimitLinePaint);
+                    lineCount++;
+                }
             } else {
-
+                int lineCount = label.split("\n").length;
                 mLimitLinePaint.setTextAlign(Align.RIGHT);
-                c.drawText(label, position[0] - xOffset, mViewPortHandler.contentBottom() - yOffset, mLimitLinePaint);
+                for (String line : label.split("\n")) {
+                    c.drawText(line, position[0] - xOffset, mViewPortHandler.contentBottom() - yOffset - labelLineHeight * (lineCount - 1), mLimitLinePaint);
+                    lineCount--;
+                }
             }
         }
     }
