@@ -278,7 +278,7 @@ public class XAxisRenderer extends AxisRenderer {
                 mLimitLinePaint.setTextAlign(Align.LEFT);
                 int lineCount = label.split("\n").length;
                 for (String line : label.split("\n")) {
-                    c.drawText(line, position[0] + xOffset, mViewPortHandler.contentBottom() - yOffset - (labelLineHeight + lineSpacing) * (lineCount - 1) + lineSpacing, mLimitLinePaint);
+                    c.drawText(line, position[0] + xOffset, mViewPortHandler.contentBottom() - yOffset - (labelLineHeight + lineSpacing) * (lineCount - 1), mLimitLinePaint);
                     lineCount--;
                 }
             } else if (labelPosition == LimitLine.LimitLabelPosition.LEFT_TOP) {
@@ -293,7 +293,7 @@ public class XAxisRenderer extends AxisRenderer {
                 int lineCount = label.split("\n").length;
                 mLimitLinePaint.setTextAlign(Align.RIGHT);
                 for (String line : label.split("\n")) {
-                    c.drawText(line, position[0] - xOffset, mViewPortHandler.contentBottom() - yOffset - (labelLineHeight + lineSpacing) * (lineCount - 1) + lineSpacing, mLimitLinePaint);
+                    c.drawText(line, position[0] - xOffset, mViewPortHandler.contentBottom() - yOffset - (labelLineHeight + lineSpacing) * (lineCount - 1), mLimitLinePaint);
                     lineCount--;
                 }
             }
