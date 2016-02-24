@@ -658,8 +658,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * Zooms in by 1.4f, into the charts center. center.
      */
     public void zoomIn() {
-        Matrix save = mViewPortHandler.zoomIn(getWidth() / 2f, -(getHeight() / 2f));
-        mViewPortHandler.refresh(save, this, true);
+
+        PointF center = mViewPortHandler.getContentCenter();
+
+        Matrix save = mViewPortHandler.zoomIn(center.x, -center.y);
+        mViewPortHandler.refresh(save, this, false);
 
         // Range might have changed, which means that Y-axis labels
         // could have changed in size, affecting Y-axis size.
@@ -672,8 +675,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * Zooms out by 0.7f, from the charts center. center.
      */
     public void zoomOut() {
-        Matrix save = mViewPortHandler.zoomOut(getWidth() / 2f, -(getHeight() / 2f));
-        mViewPortHandler.refresh(save, this, true);
+
+        PointF center = mViewPortHandler.getContentCenter();
+
+        Matrix save = mViewPortHandler.zoomOut(center.x, -center.y);
+        mViewPortHandler.refresh(save, this, false);
 
         // Range might have changed, which means that Y-axis labels
         // could have changed in size, affecting Y-axis size.
@@ -693,7 +699,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      */
     public void zoom(float scaleX, float scaleY, float x, float y) {
         Matrix save = mViewPortHandler.zoom(scaleX, scaleY, x, -y);
-        mViewPortHandler.refresh(save, this, true);
+        mViewPortHandler.refresh(save, this, false);
 
         // Range might have changed, which means that Y-axis labels
         // could have changed in size, affecting Y-axis size.
@@ -704,7 +710,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     /**
      * Zooms in or out by the given scale factor.
-     * x and y are the values to or which to zoom from (the values of the zoom center).
+     * x and y are the values (NOT PIXELS) to or which to zoom from (the values of the zoom center).
      *
      * @param scaleX
      * @param scaleY
@@ -742,11 +748,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      */
     public void fitScreen() {
         Matrix save = mViewPortHandler.fitScreen();
-        mViewPortHandler.refresh(save, this, true);
+        mViewPortHandler.refresh(save, this, false);
 
-        // Range might have changed, which means that Y-axis labels
-        // could have changed in size, affecting Y-axis size.
-        // So we need to recalculate offsets.
         calculateOffsets();
         postInvalidate();
     }
