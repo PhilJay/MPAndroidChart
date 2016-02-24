@@ -265,12 +265,12 @@ public class XAxisRenderer extends AxisRenderer {
 
             final LimitLine.LimitLabelPosition labelPosition = limitLine.getLabelPosition();
             final float labelLineHeight = Utils.calcTextHeight(mLimitLinePaint, label);
-
+            final int lineSpacing = 5;
             if (labelPosition == LimitLine.LimitLabelPosition.RIGHT_TOP) {
                 mLimitLinePaint.setTextAlign(Align.LEFT);
                 int lineCount = 1;
                 for (String line : label.split("\n")) {
-                    c.drawText(line, position[0] + xOffset, mViewPortHandler.contentTop() + yOffset + labelLineHeight * lineCount, mLimitLinePaint);
+                    c.drawText(line, position[0] + xOffset, mViewPortHandler.contentTop() + yOffset + labelLineHeight * lineCount + lineSpacing, mLimitLinePaint);
                     lineCount++;
                 }
             } else if (labelPosition == LimitLine.LimitLabelPosition.RIGHT_BOTTOM) {
@@ -278,7 +278,7 @@ public class XAxisRenderer extends AxisRenderer {
                 mLimitLinePaint.setTextAlign(Align.LEFT);
                 int lineCount = label.split("\n").length;
                 for (String line : label.split("\n")) {
-                    c.drawText(line, position[0] + xOffset, mViewPortHandler.contentBottom() - yOffset - labelLineHeight * (lineCount - 1), mLimitLinePaint);
+                    c.drawText(line, position[0] + xOffset, mViewPortHandler.contentBottom() - yOffset - labelLineHeight * (lineCount - 1) - lineSpacing, mLimitLinePaint);
                     lineCount--;
                 }
             } else if (labelPosition == LimitLine.LimitLabelPosition.LEFT_TOP) {
@@ -286,14 +286,14 @@ public class XAxisRenderer extends AxisRenderer {
                 mLimitLinePaint.setTextAlign(Align.RIGHT);
                 int lineCount = 1;
                 for (String line : label.split("\n")) {
-                    c.drawText(line, position[0] - xOffset, mViewPortHandler.contentTop() + yOffset + labelLineHeight * lineCount, mLimitLinePaint);
+                    c.drawText(line, position[0] - xOffset, mViewPortHandler.contentTop() + yOffset + labelLineHeight * lineCount + lineSpacing, mLimitLinePaint);
                     lineCount++;
                 }
             } else {
                 int lineCount = label.split("\n").length;
                 mLimitLinePaint.setTextAlign(Align.RIGHT);
                 for (String line : label.split("\n")) {
-                    c.drawText(line, position[0] - xOffset, mViewPortHandler.contentBottom() - yOffset - labelLineHeight * (lineCount - 1), mLimitLinePaint);
+                    c.drawText(line, position[0] - xOffset, mViewPortHandler.contentBottom() - yOffset - labelLineHeight * (lineCount - 1) - lineSpacing, mLimitLinePaint);
                     lineCount--;
                 }
             }
