@@ -9,10 +9,10 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 /**
  * Created by Philipp Jahoda on 19/02/16.
  */
-public class MoveViewJob extends Job {
+public class MoveViewJob extends ViewPortJob {
 
-    public MoveViewJob(ViewPortHandler viewPortHandler, float xIndex, float yValue, Transformer trans, View v) {
-        super(viewPortHandler, xIndex, yValue, trans, v);
+    public MoveViewJob(ViewPortHandler viewPortHandler, float xValue, float yValue, Transformer trans, View v) {
+        super(viewPortHandler, xValue, yValue, trans, v);
     }
 
     @Override

@@ -12,7 +12,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
  * Created by Philipp Jahoda on 19/02/16.
  */
 @SuppressLint("NewApi")
-public abstract class AnimatedJob extends Job implements ValueAnimator.AnimatorUpdateListener {
+public abstract class AnimatedJob extends ViewPortJob implements ValueAnimator.AnimatorUpdateListener {
 
     protected ObjectAnimator animator;
 
@@ -42,5 +42,13 @@ public abstract class AnimatedJob extends Job implements ValueAnimator.AnimatorU
 
     public void setPhase(float phase) {
         this.phase = phase;
+    }
+
+    public float getXOrigin() {
+        return xOrigin;
+    }
+
+    public float getYOrigin() {
+        return yOrigin;
     }
 }

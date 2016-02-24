@@ -29,6 +29,7 @@ import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBub
 import com.github.mikephil.charting.jobs.AnimatedMoveViewJob;
 import com.github.mikephil.charting.jobs.AnimatedZoomJob;
 import com.github.mikephil.charting.jobs.MoveViewJob;
+import com.github.mikephil.charting.jobs.ZoomJob;
 import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.listener.OnDrawListener;
 import com.github.mikephil.charting.renderer.XAxisRenderer;
@@ -702,8 +703,23 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
+     * Zooms in or out by the given scale factor.
+     * x and y are the values to or which to zoom from (the values of the zoom center).
+     *
+     * @param scaleX
+     * @param scaleY
+     * @param xValue
+     * @param yValue
+     * @param axis   the axis relative to which the zoom should take place
+     */
+    public void zoom(float scaleX, float scaleY, float xValue, float yValue, AxisDependency axis) {
+
+        Runnable job = new ZoomJob(mViewPortHandler, scaleX, scaleY, xValue, yValue, getTransformer(axis), axis, this);
+        postJob(job);
+    }
+
+    /**
      * Zooms by the specified scale factor to the specified values on the specified axis.
-     * STILL WORK IN PROGRESS
      *
      * @param scaleX
      * @param scaleY
@@ -712,14 +728,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param axis
      * @param duration
      */
-    private void zoomAndCenterAnimated(float scaleX, float scaleY, float xValue, float yValue, AxisDependency axis, long duration) {
+    public void zoomAndCenterAnimated(float scaleX, float scaleY, float xValue, float yValue, AxisDependency axis, long duration) {
 
-        PointD bounds = getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop(), axis);
+        PointD origin = getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop(), axis);
 
-        float valsInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
-        float xsInView = getXAxis().getValues().size() / mViewPortHandler.getScaleX();
-
-        Runnable job = new AnimatedZoomJob(mViewPortHandler, this, getTransformer(axis), scaleX, scaleY, mViewPortHandler.getScaleX(), mViewPortHandler.getScaleY(), xValue - xsInView / 2f, yValue + valsInView / 2f, (float) bounds.x, (float) bounds.y, duration);
+        Runnable job = new AnimatedZoomJob(mViewPortHandler, this, getTransformer(axis), getAxis(axis), mXAxis.getValues().size(), scaleX, scaleY, mViewPortHandler.getScaleX(), mViewPortHandler.getScaleY(), xValue, yValue, (float) origin.x, (float) origin.y, duration);
         postJob(job);
     }
 
