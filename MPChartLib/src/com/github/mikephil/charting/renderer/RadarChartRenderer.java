@@ -55,18 +55,17 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         RadarData radarData = mChart.getData();
 
+        int mostEntries = 0;
+
+        for (IRadarDataSet set : radarData.getDataSets()) {
+            if (set.getEntryCount() > mostEntries) {
+                mostEntries = set.getEntryCount();
+            }
+        }
+
         for (IRadarDataSet set : radarData.getDataSets()) {
 
             if (set.isVisible() && set.getEntryCount() > 0) {
-
-                int mostEntries = 0;
-
-                for (IRadarDataSet radarSet : radarData.getDataSets()) {
-                    if (set != radarSet && radarSet.getEntryCount() > mostEntries) {
-                        mostEntries = radarSet.getEntryCount();
-                    }
-                }
-
                 drawDataSet(c, set, mostEntries);
             }
         }
