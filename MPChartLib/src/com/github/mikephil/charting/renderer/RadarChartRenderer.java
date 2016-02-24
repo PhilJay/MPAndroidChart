@@ -57,12 +57,29 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         for (IRadarDataSet set : radarData.getDataSets()) {
 
-            if (set.isVisible() && set.getEntryCount() > 0)
-                drawDataSet(c, set);
+            if (set.isVisible() && set.getEntryCount() > 0) {
+
+                int mostEntries = 0;
+
+                for (IRadarDataSet radarSet : radarData.getDataSets()) {
+                    if (set != radarSet && radarSet.getEntryCount() > mostEntries) {
+                        mostEntries = radarSet.getEntryCount();
+                    }
+                }
+
+                drawDataSet(c, set, mostEntries);
+            }
         }
     }
 
-    protected void drawDataSet(Canvas c, IRadarDataSet dataSet) {
+    /**
+     * Draws the RadarDataSet
+     *
+     * @param c
+     * @param dataSet
+     * @param mostEntries the entry count of the dataset with the most entries
+     */
+    protected void drawDataSet(Canvas c, IRadarDataSet dataSet, int mostEntries) {
 
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
@@ -100,7 +117,15 @@ public class RadarChartRenderer extends LineRadarRenderer {
                 surface.lineTo(p.x, p.y);
         }
 
-        surface.close();
+        // if this is the largest set, close it
+        if (dataSet.getEntryCount() >= mostEntries) {
+            surface.close();
+        } else {
+
+            // if this is not the largest set, draw a line to the center and then close it
+            surface.lineTo(center.x, center.y);
+            surface.close();
+        }
 
         final Drawable drawable = dataSet.getFillDrawable();
         if (drawable != null) {
