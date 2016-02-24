@@ -72,7 +72,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart.setCenterText(generateCenterSpannableText());
 
         mChart.setDrawHoleEnabled(true);
-        mChart.setHoleColorTransparent(true);
+        mChart.setHoleColor(Color.TRANSPARENT);
 
         mChart.setTransparentCircleColor(Color.WHITE);
         mChart.setTransparentCircleAlpha(110);

@@ -187,7 +187,7 @@ public class PieChartRenderer extends DataRenderer {
         float sliceSpace = dataSet.getSliceSpace();
         final PointF center = mChart.getCenterCircleBox();
         final float radius = mChart.getRadius();
-        final float userInnerRadius = mChart.isDrawHoleEnabled() && mChart.isHoleTransparent()
+        final float userInnerRadius = mChart.isDrawHoleEnabled() && isHoleTransparent()
                 ? radius * (mChart.getHoleRadius() / 100.f)
                 : 0.f;
 
@@ -447,8 +447,8 @@ public class PieChartRenderer extends DataRenderer {
                         holeRadius, mHolePaint);
             }
 
-            // only draw the circle if it can be seen (not covered by the hole)
-            if (hasHoleColor && mChart.getTransparentCircleRadius() > mChart.getHoleRadius()) {
+            // only draw the circle if it can be seen (not covered by the hole), circle is independent of hole
+            if (mChart.getTransparentCircleRadius() > mChart.getHoleRadius()) {
 
                 int alpha = mTransparentCirclePaint.getAlpha();
                 float secondHoleRadius = radius * (mChart.getTransparentCircleRadius() / 100);
@@ -479,7 +479,7 @@ public class PieChartRenderer extends DataRenderer {
 
             PointF center = mChart.getCenterCircleBox();
 
-            float innerRadius = mChart.isDrawHoleEnabled() && mChart.isHoleTransparent()
+            float innerRadius = mChart.isDrawHoleEnabled() && isHoleTransparent()
                     ? mChart.getRadius() * (mChart.getHoleRadius() / 100f)
                     : mChart.getRadius();
 
@@ -544,7 +544,7 @@ public class PieChartRenderer extends DataRenderer {
         float[] absoluteAngles = mChart.getAbsoluteAngles();
         final PointF center = mChart.getCenterCircleBox();
         final float radius = mChart.getRadius();
-        final float userInnerRadius = mChart.isDrawHoleEnabled() && mChart.isHoleTransparent()
+        final float userInnerRadius = mChart.isDrawHoleEnabled() && isHoleTransparent()
                 ? radius * (mChart.getHoleRadius() / 100.f)
                 : 0.f;
 
@@ -678,6 +678,16 @@ public class PieChartRenderer extends DataRenderer {
 
             mBitmapCanvas.drawPath(mPathBuffer, mRenderPaint);
         }
+    }
+
+    /**
+     * Returns true if the hole in the center of the PieChart is transparent,
+     * false if not.
+     *
+     * @return true if hole is transparent.
+     */
+    private boolean isHoleTransparent() {
+        return Color.alpha(mHolePaint.getColor()) <= 0;
     }
 
     /**

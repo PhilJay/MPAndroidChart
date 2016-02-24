@@ -332,37 +332,16 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
     /**
      * Sets the color for the hole that is drawn in the center of the PieChart
-     * (if enabled). NOTE: Use setHoleColorTransparent(boolean enabled) to make
-     * the hole transparent.
+     * (if enabled). Use transparent colors to make things beneath the hole visible.
      *
      * @param color
      */
     public void setHoleColor(int color) {
-        if (color == ColorTemplate.COLOR_NONE || color == ColorTemplate.COLOR_SKIP) {
-            color = 0; // Transparent
-        }
         ((PieChartRenderer) mRenderer).getPaintHole().setColor(color);
     }
 
     /**
-     * Set the hole in the center of the PieChart transparent.
-     */
-    public void setHoleColorTransparent(boolean enable) {
-        mDrawHoleTransparent = enable;
-    }
-
-    /**
-     * Returns true if the hole in the center of the PieChart is transparent,
-     * false if not.
-     *
-     * @return true if hole is transparent.
-     */
-    public boolean isHoleTransparent() {
-        return mDrawHoleTransparent;
-    }
-
-    /**
-     * set this to true to draw the pie center empty
+     * Set this to true to draw a hole in the pie center (the pie center is empty).
      *
      * @param enabled
      */
