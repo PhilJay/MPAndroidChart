@@ -126,13 +126,16 @@ public class RadarChartRenderer extends LineRadarRenderer {
             surface.close();
         }
 
-        final Drawable drawable = dataSet.getFillDrawable();
-        if (drawable != null) {
+        if(dataSet.isDrawFilledEnabled()) {
 
-            drawFilledPath(c, surface, drawable);
-        } else {
+            final Drawable drawable = dataSet.getFillDrawable();
+            if (drawable != null) {
 
-            drawFilledPath(c, surface, dataSet.getFillColor(), dataSet.getFillAlpha());
+                drawFilledPath(c, surface, drawable);
+            } else {
+
+                drawFilledPath(c, surface, dataSet.getFillColor(), dataSet.getFillAlpha());
+            }
         }
 
         mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
