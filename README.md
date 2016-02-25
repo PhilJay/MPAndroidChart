@@ -60,6 +60,8 @@ If you are having questions or problems, you should:
  - Search or open questions on [**stackoverflow**](https://stackoverflow.com/search?q=mpandroidchart) with the `mpandroidchart` tag
  - Search [**known issues**](https://github.com/PhilJay/MPAndroidChart/issues) for your problem (open and closed)
  - Create new issues (please :fire: **search known issues before** :fire:, do not create duplicate issues)
+ 
+Please do not expect answers to your questions if you have not considered all above mentioned points in advance.
 
 Features
 =======
