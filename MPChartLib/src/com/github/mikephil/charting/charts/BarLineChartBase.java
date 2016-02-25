@@ -2,6 +2,7 @@
 package com.github.mikephil.charting.charts;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -734,6 +735,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param axis
      * @param duration
      */
+    @TargetApi(11)
     public void zoomAndCenterAnimated(float scaleX, float scaleY, float xValue, float yValue, AxisDependency axis, long duration) {
 
         if (android.os.Build.VERSION.SDK_INT >= 11) {
@@ -886,6 +888,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param axis
      * @param duration the duration of the animation in milliseconds
      */
+    @TargetApi(11)
     public void moveViewToAnimated(float xIndex, float yValue, AxisDependency axis, long duration) {
 
         if (android.os.Build.VERSION.SDK_INT >= 11) {
@@ -933,6 +936,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param axis
      * @param duration the duration of the animation in milliseconds
      */
+    @TargetApi(11)
     public void centerViewToAnimated(float xIndex, float yValue, AxisDependency axis, long duration) {
 
         if (android.os.Build.VERSION.SDK_INT >= 11) {
