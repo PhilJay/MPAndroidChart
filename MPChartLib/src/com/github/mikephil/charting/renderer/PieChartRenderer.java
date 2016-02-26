@@ -438,17 +438,17 @@ public class PieChartRenderer extends DataRenderer {
             float radius = mChart.getRadius();
             float holeRadius = radius * (mChart.getHoleRadius() / 100);
             PointF center = mChart.getCenterCircleBox();
-            boolean hasHoleColor = mHolePaint.getColor() != 0;
 
-            if (hasHoleColor) {
+            if (Color.alpha(mHolePaint.getColor()) > 0) {
                 // draw the hole-circle
                 mBitmapCanvas.drawCircle(
                         center.x, center.y,
                         holeRadius, mHolePaint);
             }
 
-            // only draw the circle if it can be seen (not covered by the hole), circle is independent of hole
-            if (mChart.getTransparentCircleRadius() > mChart.getHoleRadius()) {
+            // only draw the circle if it can be seen (not covered by the hole)
+            if (Color.alpha(mTransparentCirclePaint.getColor()) > 0 &&
+                    mChart.getTransparentCircleRadius() > mChart.getHoleRadius()) {
 
                 int alpha = mTransparentCirclePaint.getAlpha();
                 float secondHoleRadius = radius * (mChart.getTransparentCircleRadius() / 100);
