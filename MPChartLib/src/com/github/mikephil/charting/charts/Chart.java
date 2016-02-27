@@ -1626,7 +1626,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      *
      * @param job
      */
-    protected void addViewportJob(Runnable job) {
+    public void addViewportJob(Runnable job) {
 
         if (mViewPortHandler.hasChartDimens()) {
             post(job);
