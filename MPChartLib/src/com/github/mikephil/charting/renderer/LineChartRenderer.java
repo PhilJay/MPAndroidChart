@@ -148,7 +148,7 @@ public class LineChartRenderer extends LineRadarRenderer {
         Entry entryTo = dataSet.getEntryForXIndex(mMaxX, DataSet.Rounding.UP);
 
         int diff = (entryFrom == entryTo) ? 1 : 0;
-        int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff, 0);
+        int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff - 1, 0);
         int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, entryCount);
 
         float phaseX = mAnimator.getPhaseX();
@@ -252,9 +252,18 @@ public class LineChartRenderer extends LineRadarRenderer {
 
         float fillMin = dataSet.getFillFormatter()
                 .getFillLinePosition(dataSet, mChart);
+        
+        // Take the from/to xIndex from the entries themselves,
+        // so missing entries won't screw up the filling.
+        // What we need to draw is line from points of the xIndexes - not arbitrary entry indexes!
 
-        spline.lineTo(to - 1, fillMin);
-        spline.lineTo(from, fillMin);
+        final Entry toEntry = dataSet.getEntryForIndex(to - 1);
+        final Entry fromEntry = dataSet.getEntryForIndex(from);
+        final float xTo = toEntry == null ? 0 : toEntry.getXIndex();
+        final float xFrom = fromEntry == null ? 0 : fromEntry.getXIndex();
+
+        spline.lineTo(xTo, fillMin);
+        spline.lineTo(xFrom, fillMin);
         spline.close();
 
         trans.pathValueToPixel(spline);
