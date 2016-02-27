@@ -722,7 +722,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     public void zoom(float scaleX, float scaleY, float xValue, float yValue, AxisDependency axis) {
 
         Runnable job = new ZoomJob(mViewPortHandler, scaleX, scaleY, xValue, yValue, getTransformer(axis), axis, this);
-        postJob(job);
+        addViewportJob(job);
     }
 
     /**
@@ -743,7 +743,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             PointD origin = getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop(), axis);
 
             Runnable job = new AnimatedZoomJob(mViewPortHandler, this, getTransformer(axis), getAxis(axis), mXAxis.getValues().size(), scaleX, scaleY, mViewPortHandler.getScaleX(), mViewPortHandler.getScaleY(), xValue, yValue, (float) origin.x, (float) origin.y, duration);
-            postJob(job);
+            addViewportJob(job);
 
         } else {
             Log.e(LOG_TAG, "Unable to execute zoomAndCenterAnimated(...) on API level < 11");
@@ -838,7 +838,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         Runnable job = new MoveViewJob(mViewPortHandler, xIndex, 0f,
                 getTransformer(AxisDependency.LEFT), this);
 
-        postJob(job);
+        addViewportJob(job);
     }
 
     /**
@@ -855,7 +855,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         Runnable job = new MoveViewJob(mViewPortHandler, 0f, yValue + valsInView / 2f,
                 getTransformer(axis), this);
 
-        postJob(job);
+        addViewportJob(job);
     }
 
     /**
@@ -875,7 +875,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         Runnable job = new MoveViewJob(mViewPortHandler, xIndex, yValue + valsInView / 2f,
                 getTransformer(axis), this);
 
-        postJob(job);
+        addViewportJob(job);
     }
 
     /**
@@ -900,7 +900,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             Runnable job = new AnimatedMoveViewJob(mViewPortHandler, xIndex, yValue + valsInView / 2f,
                     getTransformer(axis), this, (float) bounds.x, (float) bounds.y, duration);
 
-            postJob(job);
+            addViewportJob(job);
         } else {
             Log.e(LOG_TAG, "Unable to execute moveViewToAnimated(...) on API level < 11");
         }
@@ -924,7 +924,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
                 xIndex - xsInView / 2f, yValue + valsInView / 2f,
                 getTransformer(axis), this);
 
-        postJob(job);
+        addViewportJob(job);
     }
 
     /**
@@ -950,7 +950,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
                     xIndex - xsInView / 2f, yValue + valsInView / 2f,
                     getTransformer(axis), this, (float) bounds.x, (float) bounds.y, duration);
 
-            postJob(job);
+            addViewportJob(job);
         } else {
             Log.e(LOG_TAG, "Unable to execute centerViewToAnimated(...) on API level < 11");
         }

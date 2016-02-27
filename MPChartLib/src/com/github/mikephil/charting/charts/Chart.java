@@ -1622,11 +1622,11 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         mJobs.add(job);
     }
 
-    public void removeJob(Runnable job) {
+    public void removeViewportJob(Runnable job) {
         mJobs.remove(job);
     }
 
-    public void clearAllJobs() {
+    public void clearAllViewportJobs() {
         mJobs.clear();
     }
 
@@ -1636,7 +1636,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      *
      * @param job
      */
-    protected void postJob(Runnable job) {
+    protected void addViewportJob(Runnable job) {
 
         if (mViewPortHandler.hasChartDimens()) {
             post(job);
