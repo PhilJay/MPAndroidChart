@@ -711,7 +711,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     /**
      * Zooms in or out by the given scale factor.
-     * x and y are the values (NOT PIXELS) to or which to zoom from (the values of the zoom center).
+     * x and y are the values (NOT PIXELS) which to zoom to or from (the values of the zoom center).
      *
      * @param scaleX
      * @param scaleY
