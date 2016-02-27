@@ -116,15 +116,12 @@ public class RadarChartRenderer extends LineRadarRenderer {
                 surface.lineTo(p.x, p.y);
         }
 
-        // if this is the largest set, close it
-        if (dataSet.getEntryCount() >= mostEntries) {
-            surface.close();
-        } else {
-
-            // if this is not the largest set, draw a line to the center and then close it
+        if (dataSet.getEntryCount() > mostEntries) {
+            // if this is not the largest set, draw a line to the center before closing
             surface.lineTo(center.x, center.y);
-            surface.close();
         }
+
+        surface.close();
 
         if(dataSet.isDrawFilledEnabled()) {
 
