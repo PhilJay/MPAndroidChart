@@ -8,7 +8,7 @@ Remember: *It's all about the looks.*
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/design/feature_graphic.png)
 
-[**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart) :zap: is a powerful & easy to use chart library for Android. It runs on **Android 2.2 (API level 8)** and upwards. 
+[**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart) :zap: is a powerful & easy to use chart library for Android. It runs on [API level 8](http://developer.android.com/guide/topics/manifest/uses-sdk-element.html#ApiLevels) and upwards. 
 
 As an additional feature, this library allows cross-platform development between Android and iOS as an iOS version of this library is also available: [**ios-charts**](https://github.com/danielgindi/ios-charts) :zap:.
 
