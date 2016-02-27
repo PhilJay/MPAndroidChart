@@ -1612,16 +1612,6 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     protected ArrayList<Runnable> mJobs = new ArrayList<Runnable>();
 
-    /**
-     * Adds a job to be executed after the chart-view is setup (after
-     * onSizeChanged(...) is called).
-     *
-     * @param job
-     */
-    public void addJob(Runnable job) {
-        mJobs.add(job);
-    }
-
     public void removeViewportJob(Runnable job) {
         mJobs.remove(job);
     }
