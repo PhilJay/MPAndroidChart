@@ -5,8 +5,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
@@ -55,9 +53,9 @@ public class PieChart extends PieRadarChartBase<PieData> {
     private boolean mDrawHole = true;
 
     /**
-     * if true, the hole will see-through to the inner ends of the slices
+     * if true, the hole will see-through to the inner tips of the slices
      */
-    private boolean mDrawHoleTransparent = true;
+    private boolean mDrawSlicesUnderHole = false;
 
     /**
      * if true, the values inside the piechart are drawn as percent values
@@ -332,7 +330,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
     /**
      * Sets the color for the hole that is drawn in the center of the PieChart
-     * (if enabled). Use transparent colors to make things beneath the hole visible.
+     * (if enabled).
      *
      * @param color
      */
@@ -341,7 +339,24 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * Set this to true to draw a hole in the pie center (the pie center is empty).
+     * Enable or disable the visibility of the inner tips of the slices behind the hole
+     */
+    public void setDrawSlicesUnderHole(boolean enable) {
+        mDrawSlicesUnderHole = enable;
+    }
+
+    /**
+     * Returns true if the inner tips of the slices are visible behind the hole,
+     * false if not.
+     *
+     * @return true if slices are visible behind the hole.
+     */
+    public boolean isDrawSlicesUnderHoleEnabled() {
+        return mDrawSlicesUnderHole;
+    }
+
+    /**
+     * set this to true to draw the pie center empty
      *
      * @param enabled
      */
