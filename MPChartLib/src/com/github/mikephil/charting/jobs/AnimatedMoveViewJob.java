@@ -11,7 +11,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 /**
  * Created by Philipp Jahoda on 19/02/16.
  */
-public class AnimatedMoveViewJob extends AnimatedJob {
+public class AnimatedMoveViewJob extends AnimatedViewPortJob {
 
     public AnimatedMoveViewJob(ViewPortHandler viewPortHandler, float xValue, float yValue, Transformer trans, View v, float xOrigin, float yOrigin, long duration) {
         super(viewPortHandler, xValue, yValue, trans, v, xOrigin, yOrigin, duration);
