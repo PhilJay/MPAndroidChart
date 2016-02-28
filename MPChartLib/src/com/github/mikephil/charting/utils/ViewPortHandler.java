@@ -4,6 +4,7 @@ package com.github.mikephil.charting.utils;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -351,6 +352,11 @@ public class ViewPortHandler {
     }
 
     /**
+     * buffer for storing matrix values
+     */
+    protected final float[] matrixBuffer = new float[9];
+
+    /**
      * call this method to refresh the graph with a given matrix
      *
      * @param newMatrix
@@ -377,14 +383,13 @@ public class ViewPortHandler {
      */
     public void limitTransAndScale(Matrix matrix, RectF content) {
 
-        float[] vals = new float[9];
-        matrix.getValues(vals);
+        matrix.getValues(matrixBuffer);
 
-        float curTransX = vals[Matrix.MTRANS_X];
-        float curScaleX = vals[Matrix.MSCALE_X];
+        float curTransX = matrixBuffer[Matrix.MTRANS_X];
+        float curScaleX = matrixBuffer[Matrix.MSCALE_X];
 
-        float curTransY = vals[Matrix.MTRANS_Y];
-        float curScaleY = vals[Matrix.MSCALE_Y];
+        float curTransY = matrixBuffer[Matrix.MTRANS_Y];
+        float curScaleY = matrixBuffer[Matrix.MSCALE_Y];
 
         // min scale-x is 1f, max is the max float
         mScaleX = Math.min(Math.max(mMinScaleX, curScaleX), mMaxScaleX);
@@ -408,13 +413,13 @@ public class ViewPortHandler {
         float newTransY = Math.max(Math.min(curTransY, maxTransY + mTransOffsetY), -mTransOffsetY);
         mTransY = newTransY;
 
-        vals[Matrix.MTRANS_X] = mTransX;
-        vals[Matrix.MSCALE_X] = mScaleX;
+        matrixBuffer[Matrix.MTRANS_X] = mTransX;
+        matrixBuffer[Matrix.MSCALE_X] = mScaleX;
 
-        vals[Matrix.MTRANS_Y] = mTransY;
-        vals[Matrix.MSCALE_Y] = mScaleY;
+        matrixBuffer[Matrix.MTRANS_Y] = mTransY;
+        matrixBuffer[Matrix.MSCALE_Y] = mScaleY;
 
-        matrix.setValues(vals);
+        matrix.setValues(matrixBuffer);
     }
 
     /**
