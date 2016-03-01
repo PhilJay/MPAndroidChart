@@ -149,7 +149,6 @@ public class PieChartRenderer extends DataRenderer {
         float arcMidPointX = center.x + radius * (float) Math.cos(angleMiddle * Utils.FDEG2RAD);
         float arcMidPointY = center.y + radius * (float) Math.sin(angleMiddle * Utils.FDEG2RAD);
 
-        // Middle point on straight line between the two point.
         // This is the base of the contained triangle
         double basePointsDistance = Math.sqrt(
                 Math.pow(arcEndPointX - arcStartPointX, 2) +
@@ -187,7 +186,8 @@ public class PieChartRenderer extends DataRenderer {
         float sliceSpace = dataSet.getSliceSpace();
         final PointF center = mChart.getCenterCircleBox();
         final float radius = mChart.getRadius();
-        final float userInnerRadius = mChart.isDrawHoleEnabled() && !mChart.isDrawSlicesUnderHoleEnabled()
+        final boolean drawInnerArc = mChart.isDrawHoleEnabled() && !mChart.isDrawSlicesUnderHoleEnabled();
+        final float userInnerRadius = drawInnerArc
                 ? radius * (mChart.getHoleRadius() / 100.f)
                 : 0.f;
 
@@ -214,11 +214,11 @@ public class PieChartRenderer extends DataRenderer {
 
                     mRenderPaint.setColor(dataSet.getColor(j));
 
-                    final float sliceSpaceOuterAngle = visibleAngleCount == 1 ?
+                    final float sliceSpaceAngleOuter = visibleAngleCount == 1 ?
                             0.f :
                             sliceSpace / (Utils.FDEG2RAD * radius);
-                    final float startAngleOuter = rotationAngle + (angle + sliceSpaceOuterAngle / 2.f) * phaseY;
-                    float sweepAngleOuter = (sliceAngle - sliceSpaceOuterAngle) * phaseY;
+                    final float startAngleOuter = rotationAngle + (angle + sliceSpaceAngleOuter / 2.f) * phaseY;
+                    float sweepAngleOuter = (sliceAngle - sliceSpaceAngleOuter) * phaseY;
                     if (sweepAngleOuter < 0.f)
                     {
                         sweepAngleOuter = 0.f;
@@ -245,16 +245,6 @@ public class PieChartRenderer extends DataRenderer {
                         );
                     }
 
-                    if (sliceSpace > 0.f) {
-                        innerRadius = Math.max(innerRadius,
-                                calculateMinimumRadiusForSpacedSlice(
-                                        center, radius,
-                                        sliceAngle * phaseY,
-                                        arcStartPointX, arcStartPointY,
-                                        startAngleOuter,
-                                        sweepAngleOuter));
-                    }
-
                     // API < 21 does not receive floats in addArc, but a RectF
                     mInnerRectBuffer.set(
                             center.x - innerRadius,
@@ -262,13 +252,29 @@ public class PieChartRenderer extends DataRenderer {
                             center.x + innerRadius,
                             center.y + innerRadius);
 
-                    if (innerRadius > 0.0)
-                    {
-                        final float sliceSpaceInnerAngle = visibleAngleCount == 1 ?
+                    if (drawInnerArc &&
+                            (innerRadius > 0.f || sliceSpace > 0.f)) {
+
+                        if (sliceSpace > 0.f) {
+                            float minSpacedRadius =
+                                    calculateMinimumRadiusForSpacedSlice(
+                                            center, radius,
+                                            sliceAngle * phaseY,
+                                            arcStartPointX, arcStartPointY,
+                                            startAngleOuter,
+                                            sweepAngleOuter);
+
+                            if (minSpacedRadius < 0.f)
+                                minSpacedRadius = -minSpacedRadius;
+
+                            innerRadius = Math.max(innerRadius, minSpacedRadius);
+                        }
+
+                        final float sliceSpaceAngleInner = visibleAngleCount == 1 || innerRadius == 0.f ?
                                 0.f :
                                 sliceSpace / (Utils.FDEG2RAD * innerRadius);
-                        final float startAngleInner = rotationAngle + (angle + sliceSpaceInnerAngle / 2.f) * phaseY;
-                        float sweepAngleInner = (sliceAngle - sliceSpaceInnerAngle) * phaseY;
+                        final float startAngleInner = rotationAngle + (angle + sliceSpaceAngleInner / 2.f) * phaseY;
+                        float sweepAngleInner = (sliceAngle - sliceSpaceAngleInner) * phaseY;
                         if (sweepAngleInner < 0.f)
                         {
                             sweepAngleInner = 0.f;
@@ -294,9 +300,34 @@ public class PieChartRenderer extends DataRenderer {
                     else {
 
                         if (sweepAngleOuter % 360f != 0.f) {
-                            mPathBuffer.lineTo(
-                                    center.x,
-                                    center.y);
+                            if (sliceSpace > 0.f) {
+
+                                float angleMiddle = startAngleOuter + sweepAngleOuter / 2.f;
+
+                                float sliceSpaceOffset =
+                                        calculateMinimumRadiusForSpacedSlice(
+                                                center,
+                                                radius,
+                                                sliceAngle * phaseY,
+                                                arcStartPointX,
+                                                arcStartPointY,
+                                                startAngleOuter,
+                                                sweepAngleOuter);
+
+                                float arcEndPointX = center.x +
+                                        sliceSpaceOffset * (float) Math.cos(angleMiddle * Utils.FDEG2RAD);
+                                float arcEndPointY = center.y +
+                                        sliceSpaceOffset * (float) Math.sin(angleMiddle * Utils.FDEG2RAD);
+
+                                mPathBuffer.lineTo(
+                                        arcEndPointX,
+                                        arcEndPointY);
+
+                            } else {
+                                mPathBuffer.lineTo(
+                                        center.x,
+                                        center.y);
+                            }
                         }
 
                     }
@@ -544,7 +575,8 @@ public class PieChartRenderer extends DataRenderer {
         float[] absoluteAngles = mChart.getAbsoluteAngles();
         final PointF center = mChart.getCenterCircleBox();
         final float radius = mChart.getRadius();
-        final float userInnerRadius = mChart.isDrawHoleEnabled() && !mChart.isDrawSlicesUnderHoleEnabled()
+        final boolean drawInnerArc = mChart.isDrawHoleEnabled() && !mChart.isDrawSlicesUnderHoleEnabled();
+        final float userInnerRadius = drawInnerArc
                 ? radius * (mChart.getHoleRadius() / 100.f)
                 : 0.f;
 
@@ -581,9 +613,6 @@ public class PieChartRenderer extends DataRenderer {
             float sliceSpace = set.getSliceSpace();
 
             float sliceAngle = drawAngles[xIndex];
-            final float sliceSpaceOuterAngle = visibleAngleCount == 1 ?
-                    0.f :
-                    sliceSpace / (Utils.FDEG2RAD * radius);
             float innerRadius = userInnerRadius;
 
             float shift = set.getSelectionShift();
@@ -593,11 +622,26 @@ public class PieChartRenderer extends DataRenderer {
 
             mRenderPaint.setColor(set.getColor(xIndex));
 
-            final float startAngleOuter = rotationAngle + (angle + sliceSpaceOuterAngle / 2.f) * phaseY;
-            float sweepAngleOuter = (sliceAngle - sliceSpaceOuterAngle) * phaseY;
+            final float sliceSpaceAngleOuter = visibleAngleCount == 1 ?
+                    0.f :
+                    sliceSpace / (Utils.FDEG2RAD * radius);
+
+            final float sliceSpaceAngleShifted = visibleAngleCount == 1 ?
+                    0.f :
+                    sliceSpace / (Utils.FDEG2RAD * highlightedRadius);
+
+            final float startAngleOuter = rotationAngle + (angle + sliceSpaceAngleOuter / 2.f) * phaseY;
+            float sweepAngleOuter = (sliceAngle - sliceSpaceAngleOuter) * phaseY;
             if (sweepAngleOuter < 0.f)
             {
                 sweepAngleOuter = 0.f;
+            }
+
+            final float startAngleShifted = rotationAngle + (angle + sliceSpaceAngleShifted / 2.f) * phaseY;
+            float sweepAngleShifted = (sliceAngle - sliceSpaceAngleShifted) * phaseY;
+            if (sweepAngleShifted < 0.f)
+            {
+                sweepAngleShifted = 0.f;
             }
 
             mPathBuffer.reset();
@@ -608,25 +652,26 @@ public class PieChartRenderer extends DataRenderer {
             } else {
 
                 mPathBuffer.moveTo(
-                        center.x + highlightedRadius * (float) Math.cos(startAngleOuter * Utils.FDEG2RAD),
-                        center.y + highlightedRadius * (float) Math.sin(startAngleOuter * Utils.FDEG2RAD));
+                        center.x + highlightedRadius * (float) Math.cos(startAngleShifted * Utils.FDEG2RAD),
+                        center.y + highlightedRadius * (float) Math.sin(startAngleShifted * Utils.FDEG2RAD));
 
                 mPathBuffer.arcTo(
                         highlightedCircleBox,
-                        startAngleOuter,
-                        sweepAngleOuter
+                        startAngleShifted,
+                        sweepAngleShifted
                 );
             }
 
+            float sliceSpaceRadius = 0.f;
             if (sliceSpace > 0.f) {
-                innerRadius = Math.max(innerRadius,
+                sliceSpaceRadius =
                         calculateMinimumRadiusForSpacedSlice(
                                 center, radius,
                                 sliceAngle * phaseY,
                                 center.x + radius * (float) Math.cos(startAngleOuter * Utils.FDEG2RAD),
                                 center.y + radius * (float) Math.sin(startAngleOuter * Utils.FDEG2RAD),
                                 startAngleOuter,
-                                sweepAngleOuter));
+                                sweepAngleOuter);
             }
 
             // API < 21 does not receive floats in addArc, but a RectF
@@ -636,12 +681,23 @@ public class PieChartRenderer extends DataRenderer {
                     center.x + innerRadius,
                     center.y + innerRadius);
 
-            if (innerRadius > 0.0) {
-                final float sliceSpaceInnerAngle = visibleAngleCount == 1 ?
+            if (drawInnerArc &&
+                    (innerRadius > 0.f || sliceSpace > 0.f)) {
+
+                if (sliceSpace > 0.f) {
+                    float minSpacedRadius = sliceSpaceRadius;
+
+                    if (minSpacedRadius < 0.f)
+                        minSpacedRadius = -minSpacedRadius;
+
+                    innerRadius = Math.max(innerRadius, minSpacedRadius);
+                }
+
+                final float sliceSpaceAngleInner = visibleAngleCount == 1 || innerRadius == 0.f ?
                         0.f :
                         sliceSpace / (Utils.FDEG2RAD * innerRadius);
-                final float startAngleInner = rotationAngle + (angle + sliceSpaceInnerAngle / 2.f) * phaseY;
-                float sweepAngleInner = (sliceAngle - sliceSpaceInnerAngle) * phaseY;
+                final float startAngleInner = rotationAngle + (angle + sliceSpaceAngleInner / 2.f) * phaseY;
+                float sweepAngleInner = (sliceAngle - sliceSpaceAngleInner) * phaseY;
                 if (sweepAngleInner < 0.f)
                 {
                     sweepAngleInner = 0.f;
@@ -667,9 +723,26 @@ public class PieChartRenderer extends DataRenderer {
             else {
 
                 if (sweepAngleOuter % 360f != 0.f) {
-                    mPathBuffer.lineTo(
-                            center.x,
-                            center.y);
+
+                    if (sliceSpace > 0.0) {
+                        final float angleMiddle = startAngleOuter + sweepAngleOuter / 2.f;
+
+                        final float arcEndPointX = center.x +
+                                sliceSpaceRadius * (float) Math.cos(angleMiddle * Utils.FDEG2RAD);
+                        final float arcEndPointY = center.y +
+                                sliceSpaceRadius * (float) Math.sin(angleMiddle * Utils.FDEG2RAD);
+
+                        mPathBuffer.lineTo(
+                                arcEndPointX,
+                                arcEndPointY);
+
+                    } else {
+
+                        mPathBuffer.lineTo(
+                                center.x,
+                                center.y);
+                    }
+
                 }
 
             }
