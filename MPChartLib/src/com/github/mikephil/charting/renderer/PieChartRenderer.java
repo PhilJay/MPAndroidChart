@@ -183,7 +183,6 @@ public class PieChartRenderer extends DataRenderer {
 
         final int entryCount = dataSet.getEntryCount();
         final float[] drawAngles = mChart.getDrawAngles();
-        float sliceSpace = dataSet.getSliceSpace();
         final PointF center = mChart.getCenterCircleBox();
         final float radius = mChart.getRadius();
         final boolean drawInnerArc = mChart.isDrawHoleEnabled() && !mChart.isDrawSlicesUnderHoleEnabled();
@@ -198,6 +197,8 @@ public class PieChartRenderer extends DataRenderer {
                 visibleAngleCount++;
             }
         }
+
+        final float sliceSpace = visibleAngleCount <= 1 ? 0.f : dataSet.getSliceSpace();
 
         for (int j = 0; j < entryCount; j++) {
 
@@ -610,7 +611,7 @@ public class PieChartRenderer extends DataRenderer {
             else
                 angle = absoluteAngles[xIndex - 1] * phaseX;
 
-            float sliceSpace = set.getSliceSpace();
+            final float sliceSpace = visibleAngleCount <= 1 ? 0.f : set.getSliceSpace();
 
             float sliceAngle = drawAngles[xIndex];
             float innerRadius = userInnerRadius;
