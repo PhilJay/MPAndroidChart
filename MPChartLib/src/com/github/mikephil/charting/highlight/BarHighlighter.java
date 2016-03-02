@@ -189,10 +189,11 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 	protected Range[] getRanges(BarEntry entry) {
 
 		float[] values = entry.getVals();
-		Range[] ranges = new Range[values.length];
 
 		if (values == null || values.length == 0)
-			return ranges;
+			return new Range[0];
+
+		Range[] ranges = new Range[values.length];
 
 		float negRemain = -entry.getNegativeSum();
 		float posRemain = 0f;
