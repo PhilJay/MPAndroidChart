@@ -59,14 +59,14 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
 
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
-        
+
         // no description text
         mChart.setDescription("");
         mChart.setNoDataTextDescription("You need to provide data for the chart.");
 
         // enable touch gestures
         mChart.setTouchEnabled(true);
-        
+
         mChart.setDragDecelerationFrictionCoef(0.9f);
 
         // enable scaling and dragging
@@ -114,7 +114,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         leftAxis.setAxisMaxValue(200f);
         leftAxis.setAxisMinValue(0f);
         leftAxis.setDrawGridLines(true);
-        
+
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setTypeface(tf);
         rightAxis.setTextColor(Color.RED);
@@ -148,7 +148,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
                 break;
             }
             case R.id.actionToggleHighlight: {
-                if(mChart.getData() != null) {
+                if (mChart.getData() != null) {
                     mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
                     mChart.invalidate();
                 }
@@ -266,8 +266,8 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         for (int i = 0; i < count; i++) {
             float mult = range / 2f;
             float val = (float) (Math.random() * mult) + 50;// + (float)
-                                                           // ((mult *
-                                                           // 0.1) / 10);
+            // ((mult *
+            // 0.1) / 10);
             yVals1.add(new Entry(val, i));
         }
 
@@ -292,8 +292,8 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         for (int i = 0; i < count; i++) {
             float mult = range;
             float val = (float) (Math.random() * mult) + 450;// + (float)
-                                                           // ((mult *
-                                                           // 0.1) / 10);
+            // ((mult *
+            // 0.1) / 10);
             yVals2.add(new Entry(val, i));
         }
 
