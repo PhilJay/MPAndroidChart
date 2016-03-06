@@ -84,57 +84,6 @@ Features
  - Gradle support
  - Plotting data directly from [**Realm.io**](https://realm.io) mobile database
  
-**Chart types:**
-
- - **LineChart (with legend, simple design)**
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_linechart4.png)
- - **LineChart (with legend, simple design)**
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_linechart3.png)
-
- - **LineChart (cubic lines)**
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/cubiclinechart.png)
-
- - **LineChart (gradient fill)**
-![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/line_chart_gradient.png)
-
- - **Combined-Chart (bar- and linechart in this case)**
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/combined_chart.png)
-
- - **BarChart (with legend, simple design)**
-
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_barchart3.png)
-
- - **BarChart (grouped DataSets)**
-
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/groupedbarchart.png)
-
- - **Horizontal-BarChart**
-
-![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/horizontal_barchart.png)
-
-
- - **PieChart (with selection, ...)**
-
-![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/simpledesign_piechart1.png)
-
- - **ScatterChart** (with squares, triangles, circles, ... and more)
-
-![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/scatterchart.png)
-
- - **CandleStickChart** (for financial data)
-
-![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/candlestickchart.png)
-
- - **BubbleChart** (area covered by bubbles indicates the value)
-
-![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/bubblechart.png)
-
- - **RadarChart** (spider web chart)
-
-![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/radarchart.png)
-
-
-
 Usage
 =======
 
@@ -190,6 +139,56 @@ Furthermore, you can also rely on the [**MPChartExample**](https://github.com/Ph
 
 You have a problem that cannot be solved by having a look at the example project and documentation?
 No problem, let's talk: [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PhilJay/MPAndroidChart?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
+ 
+**Chart types:**
+
+ - **LineChart (with legend, simple design)**
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_linechart4.png)
+ - **LineChart (with legend, simple design)**
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_linechart3.png)
+
+ - **LineChart (cubic lines)**
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/cubiclinechart.png)
+
+ - **LineChart (gradient fill)**
+![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/line_chart_gradient.png)
+
+ - **Combined-Chart (bar- and linechart in this case)**
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/combined_chart.png)
+
+ - **BarChart (with legend, simple design)**
+
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_barchart3.png)
+
+ - **BarChart (grouped DataSets)**
+
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/groupedbarchart.png)
+
+ - **Horizontal-BarChart**
+
+![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/horizontal_barchart.png)
+
+
+ - **PieChart (with selection, ...)**
+
+![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/simpledesign_piechart1.png)
+
+ - **ScatterChart** (with squares, triangles, circles, ... and more)
+
+![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/scatterchart.png)
+
+ - **CandleStickChart** (for financial data)
+
+![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/candlestickchart.png)
+
+ - **BubbleChart** (area covered by bubbles indicates the value)
+
+![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/bubblechart.png)
+
+ - **RadarChart** (spider web chart)
+
+![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/radarchart.png)
+
 
 License
 =======
