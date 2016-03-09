@@ -200,6 +200,21 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
                 mChart.invalidate();
                 break;
             }
+            case R.id.actionToggleStepped: {
+                List<ILineDataSet> sets = mChart.getData()
+                        .getDataSets();
+
+                for (ILineDataSet iSet : sets) {
+
+                    LineDataSet set = (LineDataSet) iSet;
+                    if (set.isDrawSteppedEnabled())
+                        set.setDrawStepped(false);
+                    else
+                        set.setDrawStepped(true);
+                }
+                mChart.invalidate();
+                break;
+            }
             case R.id.actionTogglePinch: {
                 if (mChart.isPinchZoomEnabled())
                     mChart.setPinchZoom(false);
