@@ -62,6 +62,13 @@ public interface ILineDataSet extends ILineRadarDataSet<Entry> {
     boolean isDrawCircleHoleEnabled();
 
     /**
+     * Returns the ratio of the inner circle (the circle-hole) to the outer circle.
+     *
+     * @return
+     */
+    float getCircleHoleRatio();
+
+    /**
      * Returns the DashPathEffect that is used for drawing the lines.
      *
      * @return

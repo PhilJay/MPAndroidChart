@@ -43,6 +43,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
 
     private boolean mDrawCircleHole = true;
 
+    private float mCircleHoleRatio = 0.5f;
 
     public LineDataSet(List<Entry> yVals, String label) {
         super(yVals, label);
@@ -308,6 +309,20 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
     @Override
     public boolean isDrawCircleHoleEnabled() {
         return mDrawCircleHole;
+    }
+
+    /**
+     * Sets the ratio between the inner and outer circle.
+     *
+     * @param ratio
+     */
+    public void setCircleHoleRatio(float ratio) {
+        mCircleHoleRatio = ratio;
+    }
+    
+    @Override
+    public float getCircleHoleRatio() {
+        return mCircleHoleRatio;
     }
 
     /**

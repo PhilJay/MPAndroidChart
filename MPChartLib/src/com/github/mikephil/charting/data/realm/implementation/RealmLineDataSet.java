@@ -65,6 +65,8 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
 
     private boolean mDrawCircleHole = true;
 
+    private float mCircleHoleRatio = 0.5f;
+
     /**
      * Constructor for creating a LineDataSet with realm data.
      *
@@ -310,6 +312,20 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
     @Override
     public boolean isDrawCircleHoleEnabled() {
         return mDrawCircleHole;
+    }
+
+    /**
+     * Sets the ratio between the inner and outer circle.
+     *
+     * @param ratio
+     */
+    public void setCircleHoleRatio(float ratio) {
+        mCircleHoleRatio = ratio;
+    }
+
+    @Override
+    public float getCircleHoleRatio() {
+        return mCircleHoleRatio;
     }
 
     /**

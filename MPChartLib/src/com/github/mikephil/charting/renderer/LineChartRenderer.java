@@ -518,7 +518,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             trans.pointValuesToPixel(buffer.buffer);
 
-            float halfsize = dataSet.getCircleRadius() / 2f;
+            float circleHoleSize = dataSet.getCircleRadius() * dataSet.getCircleHoleRatio();
 
             for (int j = 0, count = (int) Math.ceil((maxx - minx) * phaseX + minx) * 2; j < count; j += 2) {
 
@@ -543,7 +543,7 @@ public class LineChartRenderer extends LineRadarRenderer {
                 if (dataSet.isDrawCircleHoleEnabled()
                         && circleColor != mCirclePaintInner.getColor())
                     c.drawCircle(x, y,
-                            halfsize,
+                            circleHoleSize,
                             mCirclePaintInner);
             }
         }
