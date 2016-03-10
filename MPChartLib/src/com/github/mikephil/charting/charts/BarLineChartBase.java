@@ -304,9 +304,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         //Superclass transforms chart.
         super.onSizeChanged(w, h, oldw, oldh);
 
-        //Restoring old position of chart.
-        getTransformer(AxisDependency.LEFT).pointValuesToPixel(pts);
-        mViewPortHandler.centerViewPort(pts, this);
+        if(mKeepPositionOnRotation) {
+
+            //Restoring old position of chart.
+            getTransformer(AxisDependency.LEFT).pointValuesToPixel(pts);
+            mViewPortHandler.centerViewPort(pts, this);
+        }
     }
 
     /**
@@ -1238,7 +1241,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Sets the whether the chart should keep its position after a rotation.
+     * Sets whether the chart should keep its position (zoom / scroll) after a rotation (orientation change)
      */
     public void setKeepPositionOnRotation(boolean keepPositionOnRotation) {
         mKeepPositionOnRotation = keepPositionOnRotation;
