@@ -107,6 +107,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     protected float mMinOffset = 15.f;
 
     /**
+     * flag indicating if the chart should stay at the same position after a rotation. Default is false.
+     */
+    protected boolean mKeepPositionOnRotation = false;
+
+    /**
      * the listener for user drawing on the chart
      */
     protected OnDrawListener mDrawListener;
@@ -286,6 +291,22 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             Log.i(LOG_TAG, "Drawtime: " + drawtime + " ms, average: " + average + " ms, cycles: "
                     + drawCycles);
         }
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        //Saving current position of chart.
+        float[] pts = new float[2];
+        pts[0] = mViewPortHandler.contentLeft();
+        pts[1] = mViewPortHandler.contentTop();
+        getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
+
+        //Superclass transforms chart.
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        //Restoring old position of chart.
+        getTransformer(AxisDependency.LEFT).pointValuesToPixel(pts);
+        mViewPortHandler.centerViewPort(pts, this);
     }
 
     /**
@@ -1207,6 +1228,20 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      */
     public void setMinOffset(float minOffset) {
         mMinOffset = minOffset;
+    }
+
+    /**
+     * Returns true if keeping the position on rotation is enabled and false if not.
+     */
+    public boolean isKeepPositionOnRotation() {
+        return mKeepPositionOnRotation;
+    }
+
+    /**
+     * Sets the whether the chart should keep its position after a rotation.
+     */
+    public void setKeepPositionOnRotation(boolean keepPositionOnRotation) {
+        mKeepPositionOnRotation = keepPositionOnRotation;
     }
 
     /**
