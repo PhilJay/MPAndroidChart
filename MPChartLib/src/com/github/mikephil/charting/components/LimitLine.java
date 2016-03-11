@@ -44,6 +44,26 @@ public class LimitLine extends ComponentBase {
     }
 
     /**
+     * Returns the Line spacing (number of pixels that separates each line of the label)
+     * @return
+     */
+    public int getLabelLineSpacing() {
+        return mLabelLineSpacing;
+    }
+    /**
+     * Sets the Line spacing (number of pixels that separates each line of the label)
+     * for this LimitLine's Label.
+     *
+     * @param spacing - number of pixels that separates each line of the label
+     */
+    public void setLabelLineSpacing(int spacing) {
+        this.mLabelLineSpacing = spacing;
+    }
+
+    /** number of pixels that separates each line of the label */
+    private int mLabelLineSpacing = 8;
+
+    /**
      * Constructor with limit.
      * 
      * @param limit - the position (the value) on the y-axis (y-value) or x-axis
