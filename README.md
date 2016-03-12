@@ -72,14 +72,14 @@ Features
  - Dragging / Panning (with touch-gesture)
  - Combined-Charts (line-, bar-, scatter-, candle-data)
  - Dual (separate) Axes
- - Customizeable Axes (both x- and y-axis)
- - Highlighting values (with customizeable popup-views)
+ - Customizable Axes (both x- and y-axis)
+ - Highlighting values (with customizable popup-views)
  - Save chart to SD-Card (as image, or as .txt file)
  - Predefined color templates
- - Legends (generated automatically, customizeable)
+ - Legends (generated automatically, customizable)
  - Animations (build up animations, on both x- and y-axis)
  - Limit lines (providing additional information, maximums, ...)
- - Fully customizeable (paints, typefaces, legends, colors, background, gestures, dashed lines, ...)
+ - Fully customizable (paints, typefaces, legends, colors, background, gestures, dashed lines, ...)
  - Smooth zooming and scrolling for up to 30.000 data points in Line- and BarChart
  - Gradle support
  - Plotting data directly from [**Realm.io**](https://realm.io) mobile database
