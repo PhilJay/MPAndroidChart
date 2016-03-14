@@ -10,7 +10,7 @@ android {
         minSdkVersion 8
         targetSdkVersion 23
         versionCode 1
-        versionName '1.0'
+        versionName '2.2.3'
 
         sourceSets {
             main {
