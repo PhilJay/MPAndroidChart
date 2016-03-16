@@ -171,7 +171,7 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
      *
      * @param showCandleBar
      */
-    public void setShadowWidth(boolean showCandleBar) {
+    public void setShowCandleBar(boolean showCandleBar) {
         mShowCandleBar = showCandleBar;
     }
 
