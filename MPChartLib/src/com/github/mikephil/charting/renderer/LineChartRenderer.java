@@ -155,7 +155,7 @@ public class LineChartRenderer extends LineRadarRenderer {
             Entry prevPrev = dataSet.getEntryForIndex(minx);
             Entry prev = prevPrev;
             Entry cur = prev;
-            Entry next = dataSet.getEntryForIndex(minx + 1);
+            Entry next;
 
             // let the spline start
             cubicPath.moveTo(cur.getXIndex(), cur.getVal() * phaseY);
@@ -163,13 +163,10 @@ public class LineChartRenderer extends LineRadarRenderer {
             prevDx = (cur.getXIndex() - prev.getXIndex()) * intensity;
             prevDy = (cur.getVal() - prev.getVal()) * intensity;
 
-            curDx = (next.getXIndex() - cur.getXIndex()) * intensity;
-            curDy = (next.getVal() - cur.getVal()) * intensity;
-
             // the first cubic
             cubicPath.cubicTo(prev.getXIndex() + prevDx, (prev.getVal() + prevDy) * phaseY,
-                    cur.getXIndex() - curDx,
-                    (cur.getVal() - curDy) * phaseY, cur.getXIndex(), cur.getVal() * phaseY);
+                prev.getXIndex() - prevDx, (prev.getVal() - prevDy) * phaseY,
+                cur.getXIndex(), cur.getVal() * phaseY);
 
             for (int j = minx + 1, count = Math.min(size, entryCount - 1); j < count; j++) {
 
