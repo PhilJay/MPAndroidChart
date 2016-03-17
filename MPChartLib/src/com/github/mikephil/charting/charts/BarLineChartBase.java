@@ -1598,20 +1598,25 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        //Saving current position of chart.
+            
+        // Saving current position of chart.
         float[] pts = new float[2];
-        pts[0] = mViewPortHandler.contentLeft();
-        pts[1] = mViewPortHandler.contentTop();
-        getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
+        if (mKeepPositionOnRotation) {
+            pts[0] = mViewPortHandler.contentLeft();
+            pts[1] = mViewPortHandler.contentTop();
+            getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
+        }
 
         //Superclass transforms chart.
         super.onSizeChanged(w, h, oldw, oldh);
 
-        if(mKeepPositionOnRotation) {
+        if (mKeepPositionOnRotation) {
 
             //Restoring old position of chart.
             getTransformer(AxisDependency.LEFT).pointValuesToPixel(pts);
             mViewPortHandler.centerViewPort(pts, this);
+        } else {
+            mViewPortHandler.refresh(mViewPortHandler.getMatrixTouch(), this, true);
         }
     }
 }
