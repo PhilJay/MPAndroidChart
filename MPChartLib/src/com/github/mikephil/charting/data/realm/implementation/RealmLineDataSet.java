@@ -39,6 +39,11 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
     private float mCircleSize = 8f;
 
     /**
+     * the radius of the inner circle in the circle-shaped value indicators
+     */
+    private float mInnerCircleSize = mCircleSize / 2f;
+
+    /**
      * sets the intensity of the cubic lines
      */
     private float mCubicIntensity = 0.2f;
@@ -132,7 +137,7 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
     }
 
     /**
-     * sets the size (radius) of the circle shpaed value indicators, default
+     * sets the size (radius) of the circle shaped value indicators, default
      * size = 4f
      *
      * @param size
@@ -144,6 +149,21 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
     @Override
     public float getCircleRadius() {
         return mCircleSize;
+    }
+
+    /**
+     * sets the radius of the inner circle in the circle shaped value indicators, default
+     * size = mCircleSize/2f
+     *
+     * @param size
+     */
+    public void setInnerCircleSize(float size) {
+        mInnerCircleSize = Utils.convertDpToPixel(size);
+    }
+
+    @Override
+    public float getInnerCircleRadius() {
+        return mInnerCircleSize;
     }
 
     /**
