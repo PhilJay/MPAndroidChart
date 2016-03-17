@@ -5,8 +5,8 @@ apply plugin: 'git-repo'
 apply plugin: 'maven-publish'
 
 archivesBaseName = 'MPAndroidChart'
-version = '1.0.0'
-def versionCodeInt = 1
+version = '2.2.3'
+def versionCodeInt = 223
 
 android {
     compileSdkVersion 23
