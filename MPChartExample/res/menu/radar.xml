@@ -14,6 +14,10 @@
         android:title="Toggle Highlight">
     </item>
     <item
+        android:id="@+id/actionToggleHighlightCircle"
+        android:title="Toggle highlight circle">
+    </item>
+    <item
         android:id="@+id/animateX"
         android:title="Animate X">
     </item>

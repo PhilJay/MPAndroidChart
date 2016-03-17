@@ -124,6 +124,17 @@ public class RadarChartActivitry extends DemoBase {
                 mChart.invalidate();
                 break;
             }
+            case R.id.actionToggleHighlightCircle: {
+
+                ArrayList<IRadarDataSet> sets = (ArrayList<IRadarDataSet>) mChart.getData()
+                        .getDataSets();
+
+                for (IRadarDataSet set : sets) {
+                    set.setDrawHighlightCircleEnabled(!set.isDrawHighlightCircleEnabled());
+                }
+                mChart.invalidate();
+                break;
+            }
             case R.id.actionSave: {
                 if (mChart.saveToPath("title" + System.currentTimeMillis(), "")) {
                     Toast.makeText(getApplicationContext(), "Saving SUCCESSFUL!",

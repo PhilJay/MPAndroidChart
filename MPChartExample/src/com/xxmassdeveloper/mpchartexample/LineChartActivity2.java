@@ -114,6 +114,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         leftAxis.setAxisMaxValue(200f);
         leftAxis.setAxisMinValue(0f);
         leftAxis.setDrawGridLines(true);
+        leftAxis.setGranularityEnabled(true);
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setTypeface(tf);
@@ -122,6 +123,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         rightAxis.setAxisMinValue(-200);
         rightAxis.setDrawGridLines(false);
         rightAxis.setDrawZeroLine(false);
+        rightAxis.setGranularityEnabled(false);
     }
 
     @Override

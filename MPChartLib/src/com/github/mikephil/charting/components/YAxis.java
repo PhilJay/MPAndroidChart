@@ -124,6 +124,19 @@ public class YAxis extends AxisBase {
     private AxisDependency mAxisDependency;
 
     /**
+     * When true, axis labels are controlled by the `granularity` property.
+     * When false, axis values could possibly be repeated.
+     * This could happen if two adjacent axis values are rounded to same value.
+     * If using granularity this could be avoided by having fewer axis values visible.
+     */
+    protected boolean mGranularityEnabled = true;
+
+    /**
+     * the minimum interval between axis values
+     */
+    protected float mGranularity = 1.0f;
+
+    /**
      * Enum that specifies the axis a DataSet should be plotted against, either LEFT or RIGHT.
      *
      * @author Philipp Jahoda
@@ -146,6 +159,36 @@ public class YAxis extends AxisBase {
 
     public AxisDependency getAxisDependency() {
         return mAxisDependency;
+    }
+
+    /**
+     * @return true if granularity is enabled
+     */
+    public boolean isGranularityEnabled() {
+        return mGranularityEnabled;
+    }
+
+    /**
+     * Enabled/disable granularity control on axis value intervals
+     * @param enabled
+     */
+    public void setGranularityEnabled(boolean enabled) {
+        mGranularityEnabled = true;
+    }
+
+    /**
+     * @return the minimum interval between axis values
+     */
+    public float getGranularity() {
+        return mGranularity;
+    }
+
+    /**
+     * set the minimum interval between axis values
+     * @param granularity
+     */
+    public void setGranularity(float granularity) {
+        mGranularity = granularity;
     }
 
     /**
