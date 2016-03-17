@@ -26,6 +26,9 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
     /** the radius of the circle-shaped value indicators */
     private float mCircleRadius = 8f;
 
+    /** the radius of the circular hole in the circle-shaped value indicators */
+    private float mInnerCircleRadius = mCircleRadius / 2;
+
     /** sets the intensity of the cubic lines */
     private float mCubicIntensity = 0.2f;
 
@@ -117,6 +120,21 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
     @Override
     public float getCircleRadius() {
         return mCircleRadius;
+    }
+
+    /**
+     * sets the radius of the inner circle of the drawn circles.
+     * Default radius = mCircleRadius/2
+     *
+     * @param radius
+     */
+    public void setInnerCircleRadius(float radius) {
+        mInnerCircleRadius = Utils.convertDpToPixel(radius);
+    }
+
+    @Override
+    public float getInnerCircleRadius() {
+        return mInnerCircleRadius;
     }
 
     /**
