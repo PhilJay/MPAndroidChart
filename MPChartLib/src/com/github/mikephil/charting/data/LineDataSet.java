@@ -27,7 +27,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
     private float mCircleRadius = 8f;
 
     /** the radius of the circular hole in the circle-shaped value indicators */
-    private float mInnerCircleRadius = mCircleRadius / 2;
+    private float mInnerCircleRadius = Utils.convertDpToPixel(mCircleRadius) / 2;
 
     /** sets the intensity of the cubic lines */
     private float mCubicIntensity = 0.2f;
@@ -76,6 +76,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
         LineDataSet copied = new LineDataSet(yVals, getLabel());
         copied.mColors = mColors;
         copied.mCircleRadius = mCircleRadius;
+        copied.mInnerCircleRadius = mInnerCircleRadius;
         copied.mCircleColors = mCircleColors;
         copied.mDashPathEffect = mDashPathEffect;
         copied.mDrawCircles = mDrawCircles;

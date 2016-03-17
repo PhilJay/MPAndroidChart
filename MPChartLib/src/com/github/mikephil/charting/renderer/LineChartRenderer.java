@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.LineChart;
@@ -570,6 +571,12 @@ public class LineChartRenderer extends LineRadarRenderer {
             int maxx = Math.min(Math.max(minx + 2, dataSet.getEntryIndex(entryTo) + 1), entryCount);
 
             float innerCircleRadius = dataSet.getInnerCircleRadius();
+
+            if (innerCircleRadius >= dataSet.getCircleRadius()) {
+                Log.e("MPAndroidChart", "mInnerCircleRadius must be less than mCircleRadius." +
+                        " Setting mInnerCircleRadius to mCircleRadius/2.");
+                innerCircleRadius = dataSet.getCircleRadius() / 2f;
+            }
 
             for (int j = minx,
                  count = (int) Math.ceil((maxx - minx) * phaseX + minx);
