@@ -124,6 +124,20 @@ public class YAxis extends AxisBase {
     private AxisDependency mAxisDependency;
 
     /**
+     * the minimum width that the axis should take (in dp).
+     *
+     * default: 0.0
+     */
+    protected float mMinWidth = 0.f;
+
+    /**
+     * the maximum width that the axis can take (in dp).
+     * use Inifinity for disabling the maximum
+     * default: Float.POSITIVE_INFINITY (no maximum specified)
+     */
+    protected float mMaxWidth = Float.POSITIVE_INFINITY;
+
+    /**
      * When true, axis labels are controlled by the `granularity` property.
      * When false, axis values could possibly be repeated.
      * This could happen if two adjacent axis values are rounded to same value.
@@ -159,6 +173,36 @@ public class YAxis extends AxisBase {
 
     public AxisDependency getAxisDependency() {
         return mAxisDependency;
+    }
+
+    /**
+     * @return the minimum width that the axis should take (in dp).
+     */
+    public float getMinWidth() {
+        return mMinWidth;
+    }
+
+    /**
+     * Sets the minimum width that the axis should take (in dp).
+     * @param minWidth
+     */
+    public void setMinWidth(float minWidth) {
+        mMinWidth = minWidth;
+    }
+
+    /**
+     * @return the maximum width that the axis can take (in dp).
+     */
+    public float getMaxWidth() {
+        return mMaxWidth;
+    }
+
+    /**
+     * Sets the maximum width that the axis can take (in dp).
+     * @param maxWidth
+     */
+    public void setMaxWidth(float maxWidth) {
+        mMaxWidth = maxWidth;
     }
 
     /**
@@ -447,7 +491,20 @@ public class YAxis extends AxisBase {
         p.setTextSize(mTextSize);
 
         String label = getLongestLabel();
-        return (float) Utils.calcTextWidth(p, label) + getXOffset() * 2f;
+        float width = (float) Utils.calcTextWidth(p, label) + getXOffset() * 2f;
+
+        float minWidth = getMinWidth();
+        float maxWidth = getMaxWidth();
+
+        if (minWidth > 0.f)
+            minWidth = Utils.convertDpToPixel(minWidth);
+
+        if (maxWidth > 0.f && maxWidth != Float.POSITIVE_INFINITY)
+            maxWidth = Utils.convertDpToPixel(maxWidth);
+
+        width = Math.max(minWidth, Math.min(width, maxWidth > 0.0 ? maxWidth : width));
+        
+        return width;
     }
 
     /**
