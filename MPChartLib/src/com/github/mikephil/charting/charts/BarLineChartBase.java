@@ -1615,6 +1615,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             //Restoring old position of chart.
             getTransformer(AxisDependency.LEFT).pointValuesToPixel(pts);
             mViewPortHandler.centerViewPort(pts, this);
+        } else {
+            mViewPortHandler.refresh(mViewPortHandler.getMatrixTouch(), this, true);
         }
     }
 }
