@@ -213,6 +213,8 @@ public class PieChartRenderer extends DataRenderer {
                 if (!mChart.needsHighlight(e.getXIndex(),
                         mChart.getData().getIndexOfDataSet(dataSet))) {
 
+                    final boolean accountForSliceSpacing = sliceSpace > 0.f && sliceAngle <= 180.f;
+
                     mRenderPaint.setColor(dataSet.getColor(j));
 
                     final float sliceSpaceAngleOuter = visibleAngleCount == 1 ?
@@ -254,9 +256,9 @@ public class PieChartRenderer extends DataRenderer {
                             center.y + innerRadius);
 
                     if (drawInnerArc &&
-                            (innerRadius > 0.f || sliceSpace > 0.f)) {
+                            (innerRadius > 0.f || accountForSliceSpacing)) {
 
-                        if (sliceSpace > 0.f) {
+                        if (accountForSliceSpacing) {
                             float minSpacedRadius =
                                     calculateMinimumRadiusForSpacedSlice(
                                             center, radius,
@@ -301,7 +303,7 @@ public class PieChartRenderer extends DataRenderer {
                     else {
 
                         if (sweepAngleOuter % 360f != 0.f) {
-                            if (sliceSpace > 0.f) {
+                            if (accountForSliceSpacing) {
 
                                 float angleMiddle = startAngleOuter + sweepAngleOuter / 2.f;
 
@@ -621,6 +623,8 @@ public class PieChartRenderer extends DataRenderer {
             highlightedCircleBox.set(mChart.getCircleBox());
             highlightedCircleBox.inset(-shift, -shift);
 
+            final boolean accountForSliceSpacing = sliceSpace > 0.f && sliceAngle <= 180.f;
+
             mRenderPaint.setColor(set.getColor(xIndex));
 
             final float sliceSpaceAngleOuter = visibleAngleCount == 1 ?
@@ -664,7 +668,7 @@ public class PieChartRenderer extends DataRenderer {
             }
 
             float sliceSpaceRadius = 0.f;
-            if (sliceSpace > 0.f) {
+            if (accountForSliceSpacing) {
                 sliceSpaceRadius =
                         calculateMinimumRadiusForSpacedSlice(
                                 center, radius,
@@ -683,9 +687,9 @@ public class PieChartRenderer extends DataRenderer {
                     center.y + innerRadius);
 
             if (drawInnerArc &&
-                    (innerRadius > 0.f || sliceSpace > 0.f)) {
+                    (innerRadius > 0.f || accountForSliceSpacing)) {
 
-                if (sliceSpace > 0.f) {
+                if (accountForSliceSpacing) {
                     float minSpacedRadius = sliceSpaceRadius;
 
                     if (minSpacedRadius < 0.f)
@@ -725,7 +729,7 @@ public class PieChartRenderer extends DataRenderer {
 
                 if (sweepAngleOuter % 360f != 0.f) {
 
-                    if (sliceSpace > 0.0) {
+                    if (accountForSliceSpacing) {
                         final float angleMiddle = startAngleOuter + sweepAngleOuter / 2.f;
 
                         final float arcEndPointX = center.x +
