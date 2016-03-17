@@ -1,6 +1,12 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven'
-apply plugin: 'com.github.dcendents.android-maven'
+//apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'git-repo'
+apply plugin: 'maven-publish'
+
+archivesBaseName = 'MPAndroidChart'
+version = '1.0.0'
+def versionCodeInt = 1
 
 android {
     compileSdkVersion 23
@@ -9,8 +15,8 @@ android {
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 23
-        versionCode 1
-        versionName '1.0'
+        versionCode versionCodeInt
+        versionName "${version}"
 
         sourceSets {
             main {
@@ -27,14 +33,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    libraryVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+
+            if (outputFile != null && outputFile.name.endsWith('.aar')) {
+                output.outputFile = new File(outputFile.parent, "${archivesBaseName}-${variant.buildType.name}.aar")
+            }
+        }
+    }
     lintOptions {
         abortOnError false
-    }
-}
-
-repositories {
-    maven {
-        url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
     }
 }
 
@@ -50,6 +63,79 @@ android.libraryVariants.all { variant ->
     task.dependsOn variant.javaCompile
     task.from variant.javaCompile.destinationDir
     artifacts.add('archives', task);
+}
+
+publish.dependsOn assembleRelease
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId 'com.weightwatchers.mpandroidchart'
+            artifactId "${archivesBaseName}"
+            version "${version}"
+
+            artifact sourcesJar {
+                classifier 'sources'
+            }
+
+            artifact ("${buildDir}/outputs/aar/${archivesBaseName}-release.aar") {
+                extension = 'aar'
+            }
+
+            // http://stackoverflow.com/a/24764713
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                configurations.compile.allDependencies.each {
+                    if (it.group) {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+
+                        if (it instanceof ModuleDependency) {
+                            def depExclusionsNode = dependencyNode.appendNode('exclusions')
+
+                            ((ModuleDependency) it).excludeRules.each {
+                                def exclusionNode = depExclusionsNode.appendNode('exclusion')
+                                exclusionNode.appendNode('groupId', it.group)
+                                exclusionNode.appendNode('artifactId', it.module)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url "file://${gitPublishConfig.home}/${gitPublishConfig.org}/${gitPublishConfig.repo}/releases"
+        }
+    }
+}
+
+gitPublishConfig {
+    org = 'WW-Digital'
+    repo = 'android-gradle-repo'
+}
+
+repositories {
+    flatDir {
+        dirs 'aar'
+    }
+
+    github("${gitPublishConfig.org}", "${gitPublishConfig.repo}")
+
+    maven {
+        url 'https://repo.commonsware.com.s3.amazonaws.com'
+    }
+    maven {
+        url 'https://jitpack.io'
+    }
+    maven {
+        url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
+    }
 }
 
 task sourcesJar(type: Jar) {
