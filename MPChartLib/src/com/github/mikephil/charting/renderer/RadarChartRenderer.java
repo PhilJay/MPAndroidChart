@@ -14,6 +14,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -25,6 +26,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
      * paint for drawing the web
      */
     protected Paint mWebPaint;
+    protected Paint mHighlightCirclePaint;
 
     public RadarChartRenderer(RadarChart chart, ChartAnimator animator,
                               ViewPortHandler viewPortHandler) {
@@ -38,6 +40,8 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         mWebPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mWebPaint.setStyle(Paint.Style.STROKE);
+
+        mHighlightCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     }
 
     public Paint getWebPaint() {
@@ -289,7 +293,62 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
             // draw the lines
             drawHighlightLines(c, pts, set);
+
+            if (set.isDrawHighlightCircleEnabled()) {
+
+                if (!Float.isNaN(pts[0]) && !Float.isNaN(pts[1])) {
+
+                    int strokeColor = set.getHighlightCircleStrokeColor();
+                    if (strokeColor == ColorTemplate.COLOR_NONE) {
+                        strokeColor = set.getColor(0);
+                    }
+
+                    if (set.getHighlightCircleStrokeAlpha() < 255) {
+                        strokeColor = ColorTemplate.getColorWithAlphaComponent(strokeColor, set.getHighlightCircleStrokeAlpha());
+                    }
+
+                    drawHighlightCircle(c,
+                            p,
+                            set.getHighlightCircleInnerRadius(),
+                            set.getHighlightCircleOuterRadius(),
+                            set.getHighlightCircleFillColor(),
+                            strokeColor,
+                            set.getHighlightCircleStrokeWidth());
+                }
+            }
         }
     }
 
+    public void drawHighlightCircle(Canvas c,
+                                PointF point,
+                                float innerRadius,
+                                float outerRadius,
+                                int fillColor,
+                                int strokeColor,
+                                float strokeWidth) {
+        c.save();
+
+        outerRadius = Utils.convertDpToPixel(outerRadius);
+        innerRadius = Utils.convertDpToPixel(innerRadius);
+
+        if (fillColor != ColorTemplate.COLOR_NONE) {
+            Path p = new Path();
+            p.addCircle(point.x, point.y, outerRadius, Path.Direction.CW);
+            if (innerRadius > 0.f) {
+                p.addCircle(point.x, point.y, innerRadius, Path.Direction.CCW);
+            }
+            mHighlightCirclePaint.setColor(fillColor);
+            mHighlightCirclePaint.setStyle(Paint.Style.FILL);
+            c.drawPath(p, mHighlightCirclePaint);
+        }
+
+        if (strokeColor != ColorTemplate.COLOR_NONE) {
+            mHighlightCirclePaint.setColor(strokeColor);
+            mHighlightCirclePaint.setStyle(Paint.Style.STROKE);
+            mHighlightCirclePaint.setStrokeWidth(Utils.convertDpToPixel(strokeWidth));
+            c.drawCircle(point.x, point.y, outerRadius, mHighlightCirclePaint);
+        }
+
+        c.restore();
+    }
 }

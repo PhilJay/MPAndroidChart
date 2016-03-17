@@ -75,6 +75,10 @@ public class ColorTemplate {
         return Color.rgb(51, 181, 229);
     }
 
+    public static int getColorWithAlphaComponent(int color, int alpha) {
+        return (color & 0xffffff) | ((alpha & 0xff) << 24);
+    }
+
     /**
      * turn an array of resource-colors (contains resource-id integers) into an
      * array list of actual color integers
