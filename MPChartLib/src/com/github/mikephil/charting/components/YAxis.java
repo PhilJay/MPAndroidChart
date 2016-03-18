@@ -66,7 +66,7 @@ public class YAxis extends AxisBase {
     /**
      * flag that indicates if the zero-line should be drawn regardless of other grid lines
      */
-    protected boolean mDrawZeroLine = true;
+    protected boolean mDrawZeroLine = false;
 
     /**
      * Color of the zero line
@@ -446,7 +446,7 @@ public class YAxis extends AxisBase {
 
     /**
      * Set this to true to draw the zero-line regardless of weather other
-     * grid-lines are enabled or not.
+     * grid-lines are enabled or not. Default: false
      *
      * @param mDrawZeroLine
      */
