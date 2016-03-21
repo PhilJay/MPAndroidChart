@@ -107,6 +107,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     protected float mMinOffset = 15.f;
 
     /**
+     * flag indicating if the chart should stay at the same position after a rotation. Default is false.
+     */
+    protected boolean mKeepPositionOnRotation = false;
+
+    /**
      * the listener for user drawing on the chart
      */
     protected OnDrawListener mDrawListener;
@@ -1210,6 +1215,20 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
+     * Returns true if keeping the position on rotation is enabled and false if not.
+     */
+    public boolean isKeepPositionOnRotation() {
+        return mKeepPositionOnRotation;
+    }
+
+    /**
+     * Sets whether the chart should keep its position (zoom / scroll) after a rotation (orientation change)
+     */
+    public void setKeepPositionOnRotation(boolean keepPositionOnRotation) {
+        mKeepPositionOnRotation = keepPositionOnRotation;
+    }
+
+    /**
      * Returns the Highlight object (contains x-index and DataSet index) of the
      * selected value at the given touch point inside the Line-, Scatter-, or
      * CandleStick-Chart.
@@ -1575,5 +1594,29 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         }
 
         return null;
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+            
+        // Saving current position of chart.
+        float[] pts = new float[2];
+        if (mKeepPositionOnRotation) {
+            pts[0] = mViewPortHandler.contentLeft();
+            pts[1] = mViewPortHandler.contentTop();
+            getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
+        }
+
+        //Superclass transforms chart.
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        if (mKeepPositionOnRotation) {
+
+            //Restoring old position of chart.
+            getTransformer(AxisDependency.LEFT).pointValuesToPixel(pts);
+            mViewPortHandler.centerViewPort(pts, this);
+        } else {
+            mViewPortHandler.refresh(mViewPortHandler.getMatrixTouch(), this, true);
+        }
     }
 }

@@ -96,6 +96,23 @@ public class BarChartRenderer extends DataRenderer {
 
         trans.pointValuesToPixel(buffer.buffer);
 
+        // draw the bar shadow before the values
+        if (mChart.isDrawBarShadowEnabled()) {
+
+            for (int j = 0; j < buffer.size(); j += 4) {
+
+                if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[j + 2]))
+                    continue;
+
+                if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j]))
+                    break;
+
+                c.drawRect(buffer.buffer[j], mViewPortHandler.contentTop(),
+                        buffer.buffer[j + 2],
+                        mViewPortHandler.contentBottom(), mShadowPaint);
+            }
+        }
+
         // if multiple colors
         if (dataSet.getColors().size() > 1) {
 
@@ -106,12 +123,6 @@ public class BarChartRenderer extends DataRenderer {
 
                 if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j]))
                     break;
-
-                if (mChart.isDrawBarShadowEnabled()) {
-                    c.drawRect(buffer.buffer[j], mViewPortHandler.contentTop(),
-                            buffer.buffer[j + 2],
-                            mViewPortHandler.contentBottom(), mShadowPaint);
-                }
 
                 // Set the color for the currently drawn value. If the index
                 // is
@@ -131,12 +142,6 @@ public class BarChartRenderer extends DataRenderer {
 
                 if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j]))
                     break;
-
-                if (mChart.isDrawBarShadowEnabled()) {
-                    c.drawRect(buffer.buffer[j], mViewPortHandler.contentTop(),
-                            buffer.buffer[j + 2],
-                            mViewPortHandler.contentBottom(), mShadowPaint);
-                }
 
                 c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                         buffer.buffer[j + 3], mRenderPaint);

@@ -10,14 +10,14 @@ Remember: *It's all about the looks.*
 
 [**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart) :zap: is a powerful & easy to use chart library for Android. It runs on [API level 8](http://developer.android.com/guide/topics/manifest/uses-sdk-element.html#ApiLevels) and upwards. 
 
-As an additional feature, this library allows cross-platform development between Android and iOS as an iOS version of this library is also available: [**ios-charts**](https://github.com/danielgindi/ios-charts) :zap:.
+As an additional feature, this library allows cross-platform development between Android and iOS as an iOS version of this library is also available: [**ios-charts**](https://github.com/danielgindi/ios-charts) :zap:
 
 Are you using this library? Let me know about it and I will add your project to the [**references**](https://github.com/PhilJay/MPAndroidChart/wiki/References).
 
 Spread the word
 -----
 
-If you like this library, please tell others about it :two_hearts:
+If you like this library, please tell others about it :two_hearts: :two_hearts:
 
 <a href="https://twitter.com/intent/tweet?text=Check%20out%20the%20awesome%20MPAndroidChart%20library%20on%20Github:%20https://github.com/PhilJay/MPAndroidChart" target="_blank" title="share to twitter" style="width:100%"><img src="https://github.com/PhilJay/MPAndroidChart/blob/master/design/twitter_icon.png" title="Share on Twitter" width="35" height=35 />
 <a href="https://plus.google.com/share?url=https://github.com/PhilJay/MPAndroidChart" target="_blank" title="share to twitter" style="width:100%"><img src="https://github.com/PhilJay/MPAndroidChart/blob/master/design/googleplus_icon.png" title="Share on Google+" width="35" height=35 />
@@ -55,16 +55,17 @@ Questions & Issues
 
 If you are having questions or problems, you should:
 
- - Make sure you are using the latest version of the library. Check the [**release-section**](https://github.com/PhilJay/MPAndroidChart/releases).
+ - **Review your code**. Make absolutely sure that everything is correct on your side.
+ - Make sure you are using the **latest version** of the library. Check the [**release-section**](https://github.com/PhilJay/MPAndroidChart/releases).
  - Study the [**Documentation-Wiki**](https://github.com/PhilJay/MPAndroidChart/wiki) or the [javadocs](https://jitpack.io/com/github/PhilJay/MPAndroidChart/v2.2.3/javadoc/)
  - Search or open questions on [**stackoverflow**](https://stackoverflow.com/search?q=mpandroidchart) with the `mpandroidchart` tag
  - Search [**known issues**](https://github.com/PhilJay/MPAndroidChart/issues) for your problem (open and closed)
  - Create new issues (please :fire: **search known issues before** :fire:, do not create duplicate issues)
  
-Please do not expect answers to your questions if you have not considered all above mentioned points in advance.
+Please do not expect answers to your questions if you have not considered all above mentioned approaches in advance.
 
 Features
-=======
+-----
 
 **Core features:**
  - 8 different chart types
@@ -72,19 +73,76 @@ Features
  - Dragging / Panning (with touch-gesture)
  - Combined-Charts (line-, bar-, scatter-, candle-data)
  - Dual (separate) Axes
- - Customizeable Axes (both x- and y-axis)
- - Highlighting values (with customizeable popup-views)
+ - Customizable Axes (both x- and y-axis)
+ - Highlighting values (with customizable popup-views)
  - Save chart to SD-Card (as image, or as .txt file)
  - Predefined color templates
- - Legends (generated automatically, customizeable)
+ - Legends (generated automatically, customizable)
  - Animations (build up animations, on both x- and y-axis)
  - Limit lines (providing additional information, maximums, ...)
- - Fully customizeable (paints, typefaces, legends, colors, background, gestures, dashed lines, ...)
+ - Fully customizable (paints, typefaces, legends, colors, background, gestures, dashed lines, ...)
  - Smooth zooming and scrolling for up to 30.000 data points in Line- and BarChart
  - Gradle support
  - Plotting data directly from [**Realm.io**](https://realm.io) mobile database
  
-**Chart types:**
+Usage
+-----
+
+In order to use the library, there are 4 different options:
+
+**1. Gradle dependency** (recommended)
+
+ - 	Add the following to your `build.gradle`:
+ ```gradle
+repositories {
+	    maven { url "https://jitpack.io" }
+}
+
+dependencies {
+	    compile 'com.github.PhilJay:MPAndroidChart:v2.2.3'
+}
+```
+
+**2. Maven**
+- Add the following to your `pom.xml`:
+ ```xml
+<repository>
+       	<id>jitpack.io</id>
+	    <url>https://jitpack.io</url>
+</repository>
+
+<dependency>
+	    <groupId>com.github.PhilJay</groupId>
+	    <artifactId>MPAndroidChart</artifactId>
+	    <version>v2.2.3</version>
+</dependency>
+```
+
+**3. jar file only**
+ - Download the [**latest .jar file**](https://github.com/PhilJay/MPAndroidChart/releases) from the releases section
+ - Copy the **mpandroidchartlibrary-version.jar** file into the `libs` folder of your Android application project
+ - Start using the library
+	
+**4. clone whole repository**
+ - Open your **commandline-input** and navigate to the desired destination folder on your machine (where you want to place the library)
+ - Use the command `git clone https://github.com/PhilJay/MPAndroidChart.git` to download the full MPAndroidChart repository to your computer (this includes the folder of the library as well as the folder of the example project)
+ - Import the library folder (`MPChartLib`) into Android Studio (recommended) or your Eclipse workspace
+ - Add it as a reference to your project: 
+   - [referencing library projects in Eclipse](http://developer.android.com/tools/projects/projects-eclipse.html#ReferencingLibraryProject)
+   - [managing projects from Android Studio](https://developer.android.com/sdk/installing/create-project.html)
+
+
+Documentation
+-----
+For a **detailed documentation** :notebook_with_decorative_cover:, please have a look at the [**Wiki**](https://github.com/PhilJay/MPAndroidChart/wiki) or the [javadocs](https://jitpack.io/com/github/PhilJay/MPAndroidChart/v2.2.3/javadoc/).
+
+Furthermore, you can also rely on the [**MPChartExample**](https://github.com/PhilJay/MPAndroidChart/tree/master/MPChartExample) folder and check out the example code in that project. The corresponding application to the example project is also  [**available in the Google PlayStore**](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample). 
+
+You have a problem that cannot be solved by having a look at the example project and documentation?
+No problem, let's talk: [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PhilJay/MPAndroidChart?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
+ 
+Chart types
+-----
 
  - **LineChart (with legend, simple design)**
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/screenshots/simpledesign_linechart4.png)
@@ -133,63 +191,6 @@ Features
 
 ![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/radarchart.png)
 
-
-
-Usage
-=======
-
-In order to use the library, there are 4 different options:
-
-**1. Gradle dependency** (recommended)
-
- - 	Add the following to your `build.gradle`:
- ```gradle
-repositories {
-	    maven { url "https://jitpack.io" }
-}
-
-dependencies {
-	    compile 'com.github.PhilJay:MPAndroidChart:v2.2.3'
-}
-```
-
-**2. Maven**
-- Add the following to your `pom.xml`:
- ```xml
-<repository>
-       	<id>jitpack.io</id>
-	    <url>https://jitpack.io</url>
-</repository>
-
-<dependency>
-	    <groupId>com.github.PhilJay</groupId>
-	    <artifactId>MPAndroidChart</artifactId>
-	    <version>v2.2.3</version>
-</dependency>
-```
-
-**3. jar file only**
- - Download the [**latest .jar file**](https://github.com/PhilJay/MPAndroidChart/releases) from the releases section
- - Copy the **mpandroidchartlibrary-version.jar** file into the `libs` folder of your Android application project
- - Start using the library
-	
-**4. clone whole repository**
- - Open your **commandline-input** and navigate to the desired destination folder on your machine (where you want to place the library)
- - Use the command `git clone https://github.com/PhilJay/MPAndroidChart.git` to download the full MPAndroidChart repository to your computer (this includes the folder of the library as well as the folder of the example project)
- - Import the library folder (`MPChartLib`) into Android Studio (recommended) or your Eclipse workspace
- - Add it as a reference to your project: 
-   - [referencing library projects in Eclipse](http://developer.android.com/tools/projects/projects-eclipse.html#ReferencingLibraryProject)
-   - [managing projects from Android Studio](https://developer.android.com/sdk/installing/create-project.html)
-
-
-Documentation
-=======
-For a **detailed documentation** :notebook_with_decorative_cover:, please have a look at the [**Wiki**](https://github.com/PhilJay/MPAndroidChart/wiki) or the [javadocs](https://jitpack.io/com/github/PhilJay/MPAndroidChart/v2.2.3/javadoc/).
-
-Furthermore, you can also rely on the [**MPChartExample**](https://github.com/PhilJay/MPAndroidChart/tree/master/MPChartExample) folder and check out the example code in that project. The corresponding application to the example project is also  [**available in the Google PlayStore**](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample). 
-
-You have a problem that cannot be solved by having a look at the example project and documentation?
-No problem, let's talk: [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PhilJay/MPAndroidChart?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 
 License
 =======

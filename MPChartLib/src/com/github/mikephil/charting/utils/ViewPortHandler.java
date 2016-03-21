@@ -352,7 +352,7 @@ public class ViewPortHandler {
     }
 
     /**
-     * buffer for storing matrix values
+     * buffer for storing the 9 matrix values of a 3x3 matrix
      */
     protected final float[] matrixBuffer = new float[9];
 
@@ -391,7 +391,7 @@ public class ViewPortHandler {
         float curTransY = matrixBuffer[Matrix.MTRANS_Y];
         float curScaleY = matrixBuffer[Matrix.MSCALE_Y];
 
-        // min scale-x is 1f, max is the max float
+        // min scale-x is 1f
         mScaleX = Math.min(Math.max(mMinScaleX, curScaleX), mMaxScaleX);
 
         // min scale-y is 1f
@@ -406,12 +406,10 @@ public class ViewPortHandler {
         }
 
         float maxTransX = -width * (mScaleX - 1f);
-        float newTransX = Math.min(Math.max(curTransX, maxTransX - mTransOffsetX), mTransOffsetX);
-        mTransX = newTransX;
+        mTransX = Math.min(Math.max(curTransX, maxTransX - mTransOffsetX), mTransOffsetX);
 
         float maxTransY = height * (mScaleY - 1f);
-        float newTransY = Math.max(Math.min(curTransY, maxTransY + mTransOffsetY), -mTransOffsetY);
-        mTransY = newTransY;
+        mTransY = Math.max(Math.min(curTransY, maxTransY + mTransOffsetY), -mTransOffsetY);
 
         matrixBuffer[Matrix.MTRANS_X] = mTransX;
         matrixBuffer[Matrix.MSCALE_X] = mScaleX;
@@ -562,6 +560,22 @@ public class ViewPortHandler {
         return mScaleY;
     }
 
+    public float getMinScaleX() {
+        return mMinScaleX;
+    }
+
+    public float getMaxScaleX() {
+        return mMaxScaleX;
+    }
+
+    public float getMinScaleY() {
+        return mMinScaleY;
+    }
+
+    public float getMaxScaleY() {
+        return mMaxScaleY;
+    }
+
     /**
      * Returns the translation (drag / pan) distance on the x-axis
      *
@@ -665,4 +679,21 @@ public class ViewPortHandler {
         return (mScaleX < mMaxScaleX);
     }
 
+    /**
+     * Returns true if the chart is not yet fully zoomed out on the y-axis
+     *
+     * @return
+     */
+    public boolean canZoomOutMoreY() {
+        return (mScaleY > mMinScaleY);
+    }
+
+    /**
+     * Returns true if the chart is not yet fully zoomed in on the y-axis
+     *
+     * @return
+     */
+    public boolean canZoomInMoreY() {
+        return (mScaleY < mMaxScaleY);
+    }
 }
