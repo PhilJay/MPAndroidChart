@@ -228,7 +228,7 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * set the minimum interval between axis values
+     * Set the minimum interval between axis values. This can be used to avoid label duplicating when zooming in.
      * @param granularity
      */
     public void setGranularity(float granularity) {
