@@ -204,7 +204,7 @@ public class LineChartRenderer extends LineRadarRenderer {
             cubicFillPath.addPath(cubicPath);
             // create a new path, this is bad for performance
             drawCubicFill(mBitmapCanvas, dataSet, cubicFillPath, trans,
-                    minx, size);
+                    minx, maxx);
         }
 
         mRenderPaint.setColor(dataSet.getColor());
