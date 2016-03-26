@@ -8,6 +8,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
+import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**
@@ -41,7 +42,8 @@ public abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
 
             c.restore();
         } else {
-            throw new RuntimeException("Fill-drawables not (yet) supported below API level 18");
+            throw new RuntimeException("Fill-drawables not (yet) supported below API level 18, " +
+                    "this code was run on API level " + Utils.getSDKInt() + ".");
         }
     }
 
@@ -83,7 +85,12 @@ public abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
         }
     }
 
+    /**
+     * Clip path with hardware acceleration only working properly on API level 18 and above.
+     *
+     * @return
+     */
     private boolean clipPathSupported() {
-        return android.os.Build.VERSION.SDK_INT >= 18;
+        return Utils.getSDKInt() >= 18;
     }
 }
