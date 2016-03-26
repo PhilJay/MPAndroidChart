@@ -41,18 +41,18 @@ public class ScatterChart extends BarLineChartBase<ScatterData> implements Scatt
         super.init();
 
         mRenderer = new ScatterChartRenderer(this, mAnimator, mViewPortHandler);
-        mXChartMin = -0.5f;
+        mXAxis.mAxisMinimum = -0.5f;
     }
 
     @Override
     protected void calcMinMax() {
         super.calcMinMax();
 
-        if (mDeltaX == 0 && mData.getYValCount() > 0)
-            mDeltaX = 1;
+        if (mXAxis.mAxisRange == 0 && mData.getYValCount() > 0)
+            mXAxis.mAxisRange = 1;
 
-        mXChartMax += 0.5f;
-        mDeltaX = Math.abs(mXChartMax - mXChartMin);
+        mXAxis.mAxisMaximum += 0.5f;
+        mXAxis.mAxisRange = Math.abs(mXAxis.mAxisMaximum - mXAxis.mAxisMinimum);
     }
 
     /**

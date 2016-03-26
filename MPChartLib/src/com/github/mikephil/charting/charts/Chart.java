@@ -30,6 +30,7 @@ import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.animation.EasingFunction;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.MarkerView;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
@@ -117,12 +118,9 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     protected String mDescription = "Description";
 
     /**
-     * the number of x-values the chart displays
+     * the object representing the labels on the x-axis
      */
-    protected float mDeltaX = 1f;
-
-    protected float mXChartMin = 0f;
-    protected float mXChartMax = 0f;
+    protected XAxis mXAxis;
 
     /**
      * if true, touch gestures are enabled on the chart
@@ -238,6 +236,8 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         mLegend = new Legend();
 
         mLegendRenderer = new LegendRenderer(mViewPortHandler, mLegend);
+
+        mXAxis = new XAxis();
 
         mDescPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mDescPaint.setColor(Color.BLACK);
@@ -670,7 +670,9 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             int xIndex = highlight.getXIndex();
             int dataSetIndex = highlight.getDataSetIndex();
 
-            if (xIndex <= mDeltaX && xIndex <= mDeltaX * mAnimator.getPhaseX()) {
+            float deltaX = mXAxis.mAxisRange;
+
+            if (xIndex <= deltaX && xIndex <= deltaX * mAnimator.getPhaseX()) {
 
                 Entry e = mData.getEntryForHighlight(mIndicesToHighlight[i]);
 
@@ -980,12 +982,12 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
     @Override
     public float getXChartMax() {
-        return mXChartMax;
+        return mXAxis.mAxisMaximum;
     }
 
     @Override
     public float getXChartMin() {
-        return mXChartMin;
+        return mXAxis.mAxisMinimum;
     }
 
     @Override

@@ -126,11 +126,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      */
     protected YAxis mAxisRight;
 
-    /**
-     * the object representing the labels on the x-axis
-     */
-    protected XAxis mXAxis;
-
     protected YAxisRenderer mAxisRendererLeft;
     protected YAxisRenderer mAxisRendererRight;
 
@@ -160,8 +155,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         mAxisLeft = new YAxis(AxisDependency.LEFT);
         mAxisRight = new YAxis(AxisDependency.RIGHT);
-
-        mXAxis = new XAxis();
 
         mLeftAxisTransformer = new Transformer(mViewPortHandler);
         mRightAxisTransformer = new Transformer(mViewPortHandler);
@@ -304,12 +297,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     protected void prepareValuePxMatrix() {
 
         if (mLogEnabled)
-            Log.i(LOG_TAG, "Preparing Value-Px Matrix, xmin: " + mXChartMin + ", xmax: "
-                    + mXChartMax + ", xdelta: " + mDeltaX);
+            Log.i(LOG_TAG, "Preparing Value-Px Matrix, xmin: " + mXAxis.mAxisMinimum + ", xmax: "
+                    + mXAxis.mAxisMaximum + ", xdelta: " + mXAxis.mAxisRange);
 
-        mRightAxisTransformer.prepareMatrixValuePx(mXChartMin, mDeltaX, mAxisRight.mAxisRange,
+        mRightAxisTransformer.prepareMatrixValuePx(mXAxis.mAxisMinimum, mXAxis.mAxisRange, mAxisRight.mAxisRange,
                 mAxisRight.mAxisMinimum);
-        mLeftAxisTransformer.prepareMatrixValuePx(mXChartMin, mDeltaX, mAxisLeft.mAxisRange,
+        mLeftAxisTransformer.prepareMatrixValuePx(mXAxis.mAxisMinimum, mXAxis.mAxisRange, mAxisLeft.mAxisRange,
                 mAxisLeft.mAxisMinimum);
     }
 
@@ -353,8 +346,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         if (mAutoScaleMinMaxEnabled)
             mData.calcMinMax(getLowestVisibleXIndex(), getHighestVisibleXIndex());
 
-        mXChartMax = mData.getXVals().size() - 1;
-        mDeltaX = Math.abs(mXChartMax - mXChartMin);
+        // calculate / set x-axis range
+        mXAxis.mAxisMaximum = mData.getXVals().size() - 1;
+        mXAxis.mAxisRange = Math.abs(mXAxis.mAxisMaximum - mXAxis.mAxisMinimum);
 
         // calculate axis range (min / max) according to provided data
         mAxisLeft.calcMinMax(mData.getYMin(AxisDependency.LEFT), mData.getYMax(AxisDependency.LEFT));
@@ -742,7 +736,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param maxXRange The maximum visible range of x-values.
      */
     public void setVisibleXRangeMaximum(float maxXRange) {
-        float xScale = mDeltaX / (maxXRange);
+        float xScale = mXAxis.mAxisRange / (maxXRange);
         mViewPortHandler.setMinimumScaleX(xScale);
     }
 
@@ -755,7 +749,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param minXRange The minimum visible range of x-values.
      */
     public void setVisibleXRangeMinimum(float minXRange) {
-        float xScale = mDeltaX / (minXRange);
+        float xScale = mXAxis.mAxisRange / (minXRange);
         mViewPortHandler.setMaximumScaleX(xScale);
     }
 
@@ -769,8 +763,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param maxXRange
      */
     public void setVisibleXRange(float minXRange, float maxXRange) {
-        float maxScale = mDeltaX / minXRange;
-        float minScale = mDeltaX / maxXRange;
+        float maxScale = mXAxis.mAxisRange / minXRange;
+        float minScale = mXAxis.mAxisRange / maxXRange;
         mViewPortHandler.setMinMaxScaleX(minScale, maxScale);
     }
 
