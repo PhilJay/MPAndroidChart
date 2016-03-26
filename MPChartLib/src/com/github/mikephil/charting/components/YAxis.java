@@ -79,14 +79,14 @@ public class YAxis extends AxisBase {
     protected float mZeroLineWidth = 1f;
 
     /**
-     * custom minimum value this axis represents
+     * flag indicating that the axis-min value has been customized
      */
-    protected float mCustomAxisMin = Float.NaN;
+    protected boolean mCustomAxisMin = false;
 
     /**
-     * custom maximum value this axis represents
+     * flag indicating that the axis-max value has been customized
      */
-    protected float mCustomAxisMax = Float.NaN;
+    protected boolean mCustomAxisMax = false;
 
     /**
      * axis space from the largest value to the top in percent of the total axis range
@@ -359,10 +359,6 @@ public class YAxis extends AxisBase {
             resetAxisMinValue();
     }
 
-    public float getAxisMinValue() {
-        return mCustomAxisMin;
-    }
-
     /**
      * Set a custom minimum value for this axis. If set, this value will not be calculated automatically depending on
      * the provided data. Use resetAxisMinValue() to undo this. Do not forget to call setStartAtZero(false) if you use
@@ -371,7 +367,8 @@ public class YAxis extends AxisBase {
      * @param min
      */
     public void setAxisMinValue(float min) {
-        mCustomAxisMin = min;
+        mCustomAxisMin = true;
+        mAxisMinimum = min;
     }
 
     /**
@@ -379,11 +376,11 @@ public class YAxis extends AxisBase {
      * done automatically.
      */
     public void resetAxisMinValue() {
-        mCustomAxisMin = Float.NaN;
+        mCustomAxisMin = false;
     }
 
-    public float getAxisMaxValue() {
-        return mCustomAxisMax;
+    public boolean isAxisMinCustom() {
+        return mCustomAxisMin;
     }
 
     /**
@@ -393,7 +390,8 @@ public class YAxis extends AxisBase {
      * @param max
      */
     public void setAxisMaxValue(float max) {
-        mCustomAxisMax = max;
+        mCustomAxisMax = true;
+        mAxisMaximum = max;
     }
 
     /**
@@ -401,7 +399,11 @@ public class YAxis extends AxisBase {
      * done automatically.
      */
     public void resetAxisMaxValue() {
-        mCustomAxisMax = Float.NaN;
+        mCustomAxisMax = false;
+    }
+
+    public boolean isAxisMaxCustom() {
+        return mCustomAxisMax;
     }
 
     /**
@@ -603,5 +605,44 @@ public class YAxis extends AxisBase {
             return true;
         else
             return false;
+    }
+
+    /**
+     * Calculates the minimum, maximum and range values of the YAxis with the given
+     * minimum and maximum values from the chart data.
+     * @param dataMin the y-min value according to chart data
+     * @param dataMax the y-max value according to chart data
+     */
+    public void calcMinMax(float dataMin, float dataMax) {
+
+        // if custom, use value as is, else use data value
+        float min = mCustomAxisMin ? mAxisMinimum : dataMin;
+        float max = mCustomAxisMax ? mAxisMaximum : dataMax;
+
+        // temporary range (before calculations)
+        float range = Math.abs(max - min);
+
+        // in case all values are equal
+        if (range == 0f) {
+            max = max + 1f;
+            min = min - 1f;
+        }
+
+        // bottom-space only effects non-custom min
+        if(!mCustomAxisMin) {
+
+            float bottomSpace = range / 100f * getSpaceBottom();
+            this.mAxisMinimum = (min - bottomSpace);
+        }
+
+        // top-space only effects non-custom max
+        if(!mCustomAxisMax) {
+
+            float topSpace = range / 100f * getSpaceTop();
+            this.mAxisMaximum = (max + topSpace);
+        }
+
+        // calc actual range
+        this.mAxisRange = Math.abs(this.mAxisMaximum - this.mAxisMinimum);
     }
 }

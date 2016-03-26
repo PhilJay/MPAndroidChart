@@ -353,58 +353,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         if (mAutoScaleMinMaxEnabled)
             mData.calcMinMax(getLowestVisibleXIndex(), getHighestVisibleXIndex());
 
-        float minLeft = !Float.isNaN(mAxisLeft.getAxisMinValue())
-                ? mAxisLeft.getAxisMinValue()
-                : mData.getYMin(AxisDependency.LEFT);
-        float maxLeft = !Float.isNaN(mAxisLeft.getAxisMaxValue())
-                ? mAxisLeft.getAxisMaxValue()
-                : mData.getYMax(AxisDependency.LEFT);
-        float minRight = !Float.isNaN(mAxisRight.getAxisMinValue())
-                ? mAxisRight.getAxisMinValue()
-                : mData.getYMin(AxisDependency.RIGHT);
-        float maxRight = !Float.isNaN(mAxisRight.getAxisMaxValue())
-                ? mAxisRight.getAxisMaxValue()
-                : mData.getYMax(AxisDependency.RIGHT);
-
-        float leftRange = Math.abs(maxLeft - minLeft);
-        float rightRange = Math.abs(maxRight - minRight);
-
-        // in case all values are equal
-        if (leftRange == 0f) {
-            maxLeft = maxLeft + 1f;
-            minLeft = minLeft - 1f;
-        }
-
-        if (rightRange == 0f) {
-            maxRight = maxRight + 1f;
-            minRight = minRight - 1f;
-        }
-
-        float topSpaceLeft = leftRange / 100f * mAxisLeft.getSpaceTop();
-        float topSpaceRight = rightRange / 100f * mAxisRight.getSpaceTop();
-        float bottomSpaceLeft = leftRange / 100f * mAxisLeft.getSpaceBottom();
-        float bottomSpaceRight = rightRange / 100f * mAxisRight.getSpaceBottom();
-
         mXChartMax = mData.getXVals().size() - 1;
         mDeltaX = Math.abs(mXChartMax - mXChartMin);
 
-        // Use the values as they are
-        mAxisLeft.mAxisMinimum = !Float.isNaN(mAxisLeft.getAxisMinValue())
-                ? mAxisLeft.getAxisMinValue()
-                : (minLeft - bottomSpaceLeft);
-        mAxisLeft.mAxisMaximum = !Float.isNaN(mAxisLeft.getAxisMaxValue())
-                ? mAxisLeft.getAxisMaxValue()
-                : (maxLeft + topSpaceLeft);
-
-        mAxisRight.mAxisMinimum = !Float.isNaN(mAxisRight.getAxisMinValue())
-                ? mAxisRight.getAxisMinValue()
-                : (minRight - bottomSpaceRight);
-        mAxisRight.mAxisMaximum = !Float.isNaN(mAxisRight.getAxisMaxValue())
-                ? mAxisRight.getAxisMaxValue()
-                : (maxRight + topSpaceRight);
-
-        mAxisLeft.mAxisRange = Math.abs(mAxisLeft.mAxisMaximum - mAxisLeft.mAxisMinimum);
-        mAxisRight.mAxisRange = Math.abs(mAxisRight.mAxisMaximum - mAxisRight.mAxisMinimum);
+        // calculate axis range (min / max) according to provided data
+        mAxisLeft.calcMinMax(mData.getYMin(AxisDependency.LEFT), mData.getYMax(AxisDependency.LEFT));
+        mAxisRight.calcMinMax(mData.getYMin(AxisDependency.RIGHT), mData.getYMax(AxisDependency.RIGHT));
     }
 
     @Override
