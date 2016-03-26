@@ -56,6 +56,24 @@ public abstract class AxisBase extends ComponentBase {
     protected boolean mDrawLimitLineBehindData = false;
 
     /**
+     * flag indicating that the axis-min value has been customized
+     */
+    protected boolean mCustomAxisMin = false;
+
+    /**
+     * flag indicating that the axis-max value has been customized
+     */
+    protected boolean mCustomAxisMax = false;
+
+    public float mAxisMaximum = 0f;
+    public float mAxisMinimum = 0f;
+
+    /**
+     * the total range of values this axis covers
+     */
+    public float mAxisRange = 0f;
+
+    /**
      * default constructor
      */
     public AxisBase() {
@@ -206,7 +224,8 @@ public abstract class AxisBase extends ComponentBase {
 
         if (mLimitLines.size() > 6) {
             Log.e("MPAndroiChart",
-                    "Warning! You have more than 6 LimitLines on your axis, do you really want that?");
+                    "Warning! You have more than 6 LimitLines on your axis, do you really want " +
+                            "that?");
         }
     }
 
@@ -295,5 +314,68 @@ public abstract class AxisBase extends ComponentBase {
      */
     public DashPathEffect getGridDashPathEffect() {
         return mGridDashPathEffect;
+    }
+
+    /**
+     * ###### BELOW CODE RELATED TO CUSTOM AXIS VALUES ######
+     */
+
+    /**
+     * By calling this method, any custom maximum value that has been previously set is reseted,
+     * and the calculation is
+     * done automatically.
+     */
+    public void resetAxisMaxValue() {
+        mCustomAxisMax = false;
+    }
+
+    /**
+     * Returns true if the axis max value has been customized (and is not calculated automatically)
+     *
+     * @return
+     */
+    public boolean isAxisMaxCustom() {
+        return mCustomAxisMax;
+    }
+
+    /**
+     * By calling this method, any custom minimum value that has been previously set is reseted,
+     * and the calculation is
+     * done automatically.
+     */
+    public void resetAxisMinValue() {
+        mCustomAxisMin = false;
+    }
+
+    /**
+     * Returns true if the axis min value has been customized (and is not calculated automatically)
+     *
+     * @return
+     */
+    public boolean isAxisMinCustom() {
+        return mCustomAxisMin;
+    }
+
+    /**
+     * Set a custom minimum value for this axis. If set, this value will not be calculated automatically depending on
+     * the provided data. Use resetAxisMinValue() to undo this. Do not forget to call setStartAtZero(false) if you use
+     * this method. Otherwise, the axis-minimum value will still be forced to 0.
+     *
+     * @param min
+     */
+    public void setAxisMinValue(float min) {
+        mCustomAxisMin = true;
+        mAxisMinimum = min;
+    }
+
+    /**
+     * Set a custom maximum value for this axis. If set, this value will not be calculated automatically depending on
+     * the provided data. Use resetAxisMaxValue() to undo this.
+     *
+     * @param max
+     */
+    public void setAxisMaxValue(float max) {
+        mCustomAxisMax = true;
+        mAxisMaximum = max;
     }
 }

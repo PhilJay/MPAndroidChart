@@ -79,16 +79,6 @@ public class YAxis extends AxisBase {
     protected float mZeroLineWidth = 1f;
 
     /**
-     * flag indicating that the axis-min value has been customized
-     */
-    protected boolean mCustomAxisMin = false;
-
-    /**
-     * flag indicating that the axis-max value has been customized
-     */
-    protected boolean mCustomAxisMax = false;
-
-    /**
      * axis space from the largest value to the top in percent of the total axis range
      */
     protected float mSpacePercentTop = 10f;
@@ -97,14 +87,6 @@ public class YAxis extends AxisBase {
      * axis space from the smallest value to the bottom in percent of the total axis range
      */
     protected float mSpacePercentBottom = 10f;
-
-    public float mAxisMaximum = 0f;
-    public float mAxisMinimum = 0f;
-
-    /**
-     * the total range of values this axis covers
-     */
-    public float mAxisRange = 0f;
 
     /**
      * the position of the y-labels relative to the chart
@@ -357,53 +339,6 @@ public class YAxis extends AxisBase {
             setAxisMinValue(0f);
         else
             resetAxisMinValue();
-    }
-
-    /**
-     * Set a custom minimum value for this axis. If set, this value will not be calculated automatically depending on
-     * the provided data. Use resetAxisMinValue() to undo this. Do not forget to call setStartAtZero(false) if you use
-     * this method. Otherwise, the axis-minimum value will still be forced to 0.
-     *
-     * @param min
-     */
-    public void setAxisMinValue(float min) {
-        mCustomAxisMin = true;
-        mAxisMinimum = min;
-    }
-
-    /**
-     * By calling this method, any custom minimum value that has been previously set is reseted, and the calculation is
-     * done automatically.
-     */
-    public void resetAxisMinValue() {
-        mCustomAxisMin = false;
-    }
-
-    public boolean isAxisMinCustom() {
-        return mCustomAxisMin;
-    }
-
-    /**
-     * Set a custom maximum value for this axis. If set, this value will not be calculated automatically depending on
-     * the provided data. Use resetAxisMaxValue() to undo this.
-     *
-     * @param max
-     */
-    public void setAxisMaxValue(float max) {
-        mCustomAxisMax = true;
-        mAxisMaximum = max;
-    }
-
-    /**
-     * By calling this method, any custom maximum value that has been previously set is reseted, and the calculation is
-     * done automatically.
-     */
-    public void resetAxisMaxValue() {
-        mCustomAxisMax = false;
-    }
-
-    public boolean isAxisMaxCustom() {
-        return mCustomAxisMax;
     }
 
     /**
