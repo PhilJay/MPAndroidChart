@@ -652,7 +652,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param y
      */
     public void zoom(float scaleX, float scaleY, float x, float y) {
-        Matrix save = mViewPortHandler.zoom(scaleX, scaleY, x, -y);
+        Matrix save = mViewPortHandler.zoom(scaleX, scaleY, x, y);
         mViewPortHandler.refresh(save, this, false);
 
         // Range might have changed, which means that Y-axis labels
