@@ -219,16 +219,6 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     }
 
     /**
-     * Returns the object that represents all x-labels that are placed around
-     * the RadarChart.
-     *
-     * @return
-     */
-    public XAxis getXAxis() {
-        return mXAxis;
-    }
-
-    /**
      * Sets the width of the web lines that come from the center.
      *
      * @param width

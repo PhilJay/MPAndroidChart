@@ -1379,17 +1379,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Returns the object representing all x-labels, this method can be used to
-     * acquire the XAxis object and modify it (e.g. change the position of the
-     * labels)
-     *
-     * @return
-     */
-    public XAxis getXAxis() {
-        return mXAxis;
-    }
-
-    /**
      * If set to true, both x and y axis can be scaled simultaneously with 2 fingers, if false,
      * x and y axis can be scaled separately. default: false
      *

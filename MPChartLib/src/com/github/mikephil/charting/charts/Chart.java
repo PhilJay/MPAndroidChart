@@ -924,6 +924,18 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     /** BELOW THIS ONLY GETTERS AND SETTERS */
 
+
+    /**
+     * Returns the object representing all x-labels, this method can be used to
+     * acquire the XAxis object and modify it (e.g. change the position of the
+     * labels, styling, etc.)
+     *
+     * @return
+     */
+    public XAxis getXAxis() {
+        return mXAxis;
+    }
+
     /**
      * Returns the default ValueFormatter that has been determined by the chart
      * considering the provided minimum and maximum values.

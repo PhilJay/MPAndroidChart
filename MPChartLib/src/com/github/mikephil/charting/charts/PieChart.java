@@ -9,6 +9,7 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.highlight.Highlight;
@@ -109,6 +110,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
         super.init();
 
         mRenderer = new PieChartRenderer(this, mAnimator, mViewPortHandler);
+        mXAxis = null;
     }
 
     @Override
@@ -273,6 +275,17 @@ public class PieChart extends PieRadarChartBase<PieData> {
      */
     private float calcAngle(float value, float yValueSum) {
         return value / yValueSum * mMaxAngle;
+    }
+
+    /**
+     * This will throw an exception, PieChart has no XAxis object.
+     *
+     * @return
+     */
+    @Deprecated
+    @Override
+    public XAxis getXAxis() {
+        throw new RuntimeException("PieChart has no XAxis");
     }
 
     @Override
@@ -536,7 +549,8 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * Sets the amount of transparency the transparent circle should have 0 = fully transparent, 255 = fully opaque.
+     * Sets the amount of transparency the transparent circle should have 0 = fully transparent,
+     * 255 = fully opaque.
      * Default value is 100.
      *
      * @param alpha 0-255
@@ -594,7 +608,8 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * the rectangular radius of the bounding box for the center text, as a percentage of the pie hole
+     * the rectangular radius of the bounding box for the center text, as a percentage of the pie
+     * hole
      * default 1.f (100%)
      */
     public void setCenterTextRadiusPercent(float percent) {
@@ -602,7 +617,8 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * the rectangular radius of the bounding box for the center text, as a percentage of the pie hole
+     * the rectangular radius of the bounding box for the center text, as a percentage of the pie
+     * hole
      * default 1.f (100%)
      */
     public float getCenterTextRadiusPercent() {
