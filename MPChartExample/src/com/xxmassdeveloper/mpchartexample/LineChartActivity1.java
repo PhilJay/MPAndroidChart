@@ -361,6 +361,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
             // fill drawable only supported on api level 18 and above
             Drawable drawable = ContextCompat.getDrawable(this, R.drawable.fade_red);
             set1.setFillDrawable(drawable);
+        } else {
+            set1.setFillColor(Color.BLACK);
         }
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
