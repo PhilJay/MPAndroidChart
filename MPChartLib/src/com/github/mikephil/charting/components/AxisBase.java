@@ -320,6 +320,14 @@ public abstract class AxisBase extends ComponentBase {
      * ###### BELOW CODE RELATED TO CUSTOM AXIS VALUES ######
      */
 
+    public float getAxisMaximum() {
+        return mAxisMaximum;
+    }
+
+    public float getAxisMinimum() {
+        return mAxisMinimum;
+    }
+
     /**
      * By calling this method, any custom maximum value that has been previously set is reseted,
      * and the calculation is
