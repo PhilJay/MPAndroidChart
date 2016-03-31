@@ -95,7 +95,7 @@ public class YAxisRenderer extends AxisRenderer {
             interval = interval < mYAxis.getGranularity() ? mYAxis.getGranularity() : interval;
 
         // Normalize interval
-        double intervalMagnitude = Math.pow(10, (int) Math.log10(interval));
+        double intervalMagnitude = Utils.roundToNextSignificant(Math.pow(10, (int) Math.log10(interval)));
         int intervalSigDigit = (int) (interval / intervalMagnitude);
         if (intervalSigDigit > 5) {
             // Use one order of magnitude higher, to avoid intervals like 0.9 or

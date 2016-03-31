@@ -38,8 +38,8 @@ public class LineChart extends BarLineChartBase<LineData> implements LineDataPro
     protected void calcMinMax() {
         super.calcMinMax();
 
-        if (mDeltaX == 0 && mData.getYValCount() > 0)
-            mDeltaX = 1;
+        if (mXAxis.mAxisRange == 0 && mData.getYValCount() > 0)
+            mXAxis.mAxisRange = 1;
     }
     
     @Override

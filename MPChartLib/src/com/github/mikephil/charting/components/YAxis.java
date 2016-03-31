@@ -79,16 +79,6 @@ public class YAxis extends AxisBase {
     protected float mZeroLineWidth = 1f;
 
     /**
-     * custom minimum value this axis represents
-     */
-    protected float mCustomAxisMin = Float.NaN;
-
-    /**
-     * custom maximum value this axis represents
-     */
-    protected float mCustomAxisMax = Float.NaN;
-
-    /**
      * axis space from the largest value to the top in percent of the total axis range
      */
     protected float mSpacePercentTop = 10f;
@@ -97,14 +87,6 @@ public class YAxis extends AxisBase {
      * axis space from the smallest value to the bottom in percent of the total axis range
      */
     protected float mSpacePercentBottom = 10f;
-
-    public float mAxisMaximum = 0f;
-    public float mAxisMinimum = 0f;
-
-    /**
-     * the total range of values this axis covers
-     */
-    public float mAxisRange = 0f;
 
     /**
      * the position of the y-labels relative to the chart
@@ -228,7 +210,7 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * set the minimum interval between axis values
+     * Set the minimum interval between axis values. This can be used to avoid label duplicating when zooming in.
      * @param granularity
      */
     public void setGranularity(float granularity) {
@@ -357,51 +339,6 @@ public class YAxis extends AxisBase {
             setAxisMinValue(0f);
         else
             resetAxisMinValue();
-    }
-
-    public float getAxisMinValue() {
-        return mCustomAxisMin;
-    }
-
-    /**
-     * Set a custom minimum value for this axis. If set, this value will not be calculated automatically depending on
-     * the provided data. Use resetAxisMinValue() to undo this. Do not forget to call setStartAtZero(false) if you use
-     * this method. Otherwise, the axis-minimum value will still be forced to 0.
-     *
-     * @param min
-     */
-    public void setAxisMinValue(float min) {
-        mCustomAxisMin = min;
-    }
-
-    /**
-     * By calling this method, any custom minimum value that has been previously set is reseted, and the calculation is
-     * done automatically.
-     */
-    public void resetAxisMinValue() {
-        mCustomAxisMin = Float.NaN;
-    }
-
-    public float getAxisMaxValue() {
-        return mCustomAxisMax;
-    }
-
-    /**
-     * Set a custom maximum value for this axis. If set, this value will not be calculated automatically depending on
-     * the provided data. Use resetAxisMaxValue() to undo this.
-     *
-     * @param max
-     */
-    public void setAxisMaxValue(float max) {
-        mCustomAxisMax = max;
-    }
-
-    /**
-     * By calling this method, any custom maximum value that has been previously set is reseted, and the calculation is
-     * done automatically.
-     */
-    public void resetAxisMaxValue() {
-        mCustomAxisMax = Float.NaN;
     }
 
     /**
@@ -603,5 +540,44 @@ public class YAxis extends AxisBase {
             return true;
         else
             return false;
+    }
+
+    /**
+     * Calculates the minimum, maximum and range values of the YAxis with the given
+     * minimum and maximum values from the chart data.
+     * @param dataMin the y-min value according to chart data
+     * @param dataMax the y-max value according to chart data
+     */
+    public void calcMinMax(float dataMin, float dataMax) {
+
+        // if custom, use value as is, else use data value
+        float min = mCustomAxisMin ? mAxisMinimum : dataMin;
+        float max = mCustomAxisMax ? mAxisMaximum : dataMax;
+
+        // temporary range (before calculations)
+        float range = Math.abs(max - min);
+
+        // in case all values are equal
+        if (range == 0f) {
+            max = max + 1f;
+            min = min - 1f;
+        }
+
+        // bottom-space only effects non-custom min
+        if(!mCustomAxisMin) {
+
+            float bottomSpace = range / 100f * getSpaceBottom();
+            this.mAxisMinimum = (min - bottomSpace);
+        }
+
+        // top-space only effects non-custom max
+        if(!mCustomAxisMax) {
+
+            float topSpace = range / 100f * getSpaceTop();
+            this.mAxisMaximum = (max + topSpace);
+        }
+
+        // calc actual range
+        this.mAxisRange = Math.abs(this.mAxisMaximum - this.mAxisMinimum);
     }
 }

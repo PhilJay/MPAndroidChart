@@ -174,7 +174,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         if (mDataSets == null)
             return;
 
-        if (this instanceof ScatterData)
+        if (this instanceof ScatterData || this instanceof CombinedData)
             return;
 
         for (int i = 0; i < mDataSets.size(); i++) {

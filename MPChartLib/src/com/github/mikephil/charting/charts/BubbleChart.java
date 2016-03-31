@@ -5,8 +5,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import com.github.mikephil.charting.data.BubbleData;
-import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 import com.github.mikephil.charting.renderer.BubbleChartRenderer;
 
 /**
@@ -42,11 +42,11 @@ public class BubbleChart extends BarLineChartBase<BubbleData> implements BubbleD
     protected void calcMinMax() {
         super.calcMinMax();
 
-        if (mDeltaX == 0 && mData.getYValCount() > 0)
-            mDeltaX = 1;
+        if (mXAxis.mAxisRange == 0 && mData.getYValCount() > 0)
+            mXAxis.mAxisRange = 1;
 
-        mXChartMin = -0.5f;
-        mXChartMax = (float) mData.getXValCount() - 0.5f;
+        mXAxis.mAxisMinimum = -0.5f;
+        mXAxis.mAxisMaximum = (float) mData.getXValCount() - 0.5f;
 
         if (mRenderer != null) {
             for (IBubbleDataSet set : mData.getDataSets()) {
@@ -54,15 +54,15 @@ public class BubbleChart extends BarLineChartBase<BubbleData> implements BubbleD
                 final float xmin = set.getXMin();
                 final float xmax = set.getXMax();
 
-                if (xmin < mXChartMin)
-                    mXChartMin = xmin;
+                if (xmin < mXAxis.mAxisMinimum)
+                    mXAxis.mAxisMinimum = xmin;
 
-                if (xmax > mXChartMax)
-                    mXChartMax = xmax;
+                if (xmax > mXAxis.mAxisMaximum)
+                    mXAxis.mAxisMaximum = xmax;
             }
         }
 
-        mDeltaX = Math.abs(mXChartMax - mXChartMin);
+        mXAxis.mAxisRange = Math.abs(mXAxis.mAxisMaximum - mXAxis.mAxisMinimum);
     }
 
     public BubbleData getBubbleData() {
