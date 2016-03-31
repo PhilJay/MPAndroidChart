@@ -126,6 +126,46 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 	}
 
 	/**
+	 * Returns the bounding box of the specified label on the X-axis
+	 * @param xIndex index of the label
+	 * @param yPos y coordinate of the label on the x-axis
+	 * @return bounding box reference
+	 */
+	public RectF getBarBounds(int xIndex, float yPos) {
+		float barspace = 0.6f;
+		float barWidth = 0.5f;
+
+		float spaceThird = barWidth / 2.8f;
+
+		float left = xIndex;
+		float right = xIndex + barspace - spaceThird;
+		float top = yPos >= 0 ? yPos : 0;
+		float bottom = yPos <= 0 ? yPos : 0;
+
+		RectF bounds = new RectF(left, top, right, bottom);
+
+		getTransformer(AxisDependency.LEFT).rectValueToPixel(bounds);
+		return bounds;
+	}
+
+	public RectF getBarBounds(int xIndex, float xPos, float yPos) {
+		float barspace = 0.15f;
+		float barWidth = 0.95f;
+
+		float spaceThird = barspace / 6.0f;
+
+		float left = xIndex - barWidth + spaceThird; 
+		float right = xIndex + barWidth - spaceThird - 0.15f;
+		float top = yPos >= 0 ? yPos : 0;
+		float bottom = yPos <= 0 ? yPos : 0;
+
+		RectF bounds = new RectF(left, top, right, bottom);
+
+		getTransformer(AxisDependency.LEFT).rectValueToPixel(bounds);
+		return bounds;
+	}
+
+	/**
 	 * set this to true to draw the highlightning arrow
 	 * 
 	 * @param enabled

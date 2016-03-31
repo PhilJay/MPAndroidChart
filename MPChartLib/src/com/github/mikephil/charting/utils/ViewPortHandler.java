@@ -24,6 +24,9 @@ public class ViewPortHandler {
      */
     protected RectF mContentRect = new RectF();
 
+    /** this rectangle defines the area in which X-axis labels can be drawn */
+    protected RectF mXLabelRect = new RectF();
+
     protected float mChartWidth = 0f;
     protected float mChartHeight = 0f;
 
@@ -164,6 +167,14 @@ public class ViewPortHandler {
 
     public PointF getContentCenter() {
         return new PointF(mContentRect.centerX(), mContentRect.centerY());
+    }
+
+    public RectF getXLabelRect() {
+        return mXLabelRect;
+    }
+
+    public void setXLabelRect(RectF xLabelRect) {
+        mXLabelRect = xLabelRect;
     }
 
     public float getChartHeight() {

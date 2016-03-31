@@ -40,43 +40,61 @@ public class XAxisRendererBarChart extends XAxisRenderer {
         BarData bd = mChart.getData();
         int step = bd.getDataSetCount();
 
-        for (int i = mMinX; i <= mMaxX; i += mXAxis.mAxisLabelModulus) {
-
-            position[0] = i * step + i * bd.getGroupSpace()
-                    + bd.getGroupSpace() / 2f;
-
-            // consider groups (center label for each group)
-            if (step > 1) {
+        /**
+         * Modified source to workaround text truncate on multiple datasets
+         */
+        if(step > 1) {
+            for(int i = 0; i < mXAxis.getValues().size(); i++){
+                position[0] = i * step + i * bd.getGroupSpace()
+                        + bd.getGroupSpace() / 2f;
                 position[0] += ((float) step - 1f) / 2f;
-            }
-
-            mTrans.pointValuesToPixel(position);
-
-            if (mViewPortHandler.isInBoundsX(position[0]) && i >= 0
-                    && i < mXAxis.getValues().size()) {
+                mTrans.pointValuesToPixel(position);
 
                 String label = mXAxis.getValues().get(i);
+                mViewPortHandler.setXLabelRect(mChart.getBarBounds(i, position[0], pos));
+                drawLabel(c, label, i, position[0], pos);
+            }
+        } else {
+            for (int i = mMinX; i <= mMaxX; i += mXAxis.mAxisLabelModulus) {
 
-                if (mXAxis.isAvoidFirstLastClippingEnabled()) {
+                position[0] = i * step + i * bd.getGroupSpace()
+                        + bd.getGroupSpace() / 2f;
 
-                    // avoid clipping of the last
-                    if (i == mXAxis.getValues().size() - 1) {
-                        float width = Utils.calcTextWidth(mAxisLabelPaint, label);
-
-                        if (position[0] + width / 2.f > mViewPortHandler.contentRight())
-                            position[0] = mViewPortHandler.contentRight() - (width / 2.f);
-
-                        // avoid clipping of the first
-                    } else if (i == 0) {
-
-                        float width = Utils.calcTextWidth(mAxisLabelPaint, label);
-
-                        if (position[0] - width / 2.f < mViewPortHandler.contentLeft())
-                            position[0] = mViewPortHandler.contentLeft() + (width / 2.f);
-                    }
+                // consider groups (center label for each group)
+                if (step > 1) {
+                    position[0] += ((float) step - 1f) / 2f;
                 }
 
-                drawLabel(c, label, i, position[0], pos, anchor, labelRotationAngleDegrees);
+                mTrans.pointValuesToPixel(position);
+
+                if (mViewPortHandler.isInBoundsX(position[0]) && i >= 0
+                        && i < mXAxis.getValues().size()) {
+
+                    String label = mXAxis.getValues().get(i);
+
+                    if (mXAxis.isAvoidFirstLastClippingEnabled()) {
+
+                        // avoid clipping of the last
+                        if (i == mXAxis.getValues().size() - 1) {
+                            float width = Utils.calcTextWidth(mAxisLabelPaint, label);
+
+                            if (width > mViewPortHandler.offsetRight() * 2
+                                    && position[0] + width > mViewPortHandler.getChartWidth())
+                                position[0] -= width / 2;
+
+                            // avoid clipping of the first
+                        } else if (i == 0) {
+
+                            float width = Utils.calcTextWidth(mAxisLabelPaint, label);
+                            position[0] += width / 2;
+                        if (position[0] - width / 2.f < mViewPortHandler.contentLeft())
+                            position[0] = mViewPortHandler.contentLeft() + (width / 2.f);
+                        }
+                    }
+
+                    mViewPortHandler.setXLabelRect(mChart.getBarBounds(i, pos));
+                    drawLabel(c, label, i, position[0], pos);
+                }
             }
         }
     }
