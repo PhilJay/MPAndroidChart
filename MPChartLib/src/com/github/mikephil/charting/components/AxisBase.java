@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Baseclass of all labels.
+ * Base-class of all axes (previously called labels).
  *
  * @author Philipp Jahoda
  */
@@ -65,7 +65,14 @@ public abstract class AxisBase extends ComponentBase {
      */
     protected boolean mCustomAxisMax = false;
 
+    /**
+     * don't touch this direclty, use setter
+     */
     public float mAxisMaximum = 0f;
+
+    /**
+     * don't touch this directly, use setter
+     */
     public float mAxisMinimum = 0f;
 
     /**
@@ -365,8 +372,10 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
-     * Set a custom minimum value for this axis. If set, this value will not be calculated automatically depending on
-     * the provided data. Use resetAxisMinValue() to undo this. Do not forget to call setStartAtZero(false) if you use
+     * Set a custom minimum value for this axis. If set, this value will not be calculated
+     * automatically depending on
+     * the provided data. Use resetAxisMinValue() to undo this. Do not forget to call
+     * setStartAtZero(false) if you use
      * this method. Otherwise, the axis-minimum value will still be forced to 0.
      *
      * @param min
@@ -377,7 +386,8 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
-     * Set a custom maximum value for this axis. If set, this value will not be calculated automatically depending on
+     * Set a custom maximum value for this axis. If set, this value will not be calculated
+     * automatically depending on
      * the provided data. Use resetAxisMaxValue() to undo this.
      *
      * @param max
