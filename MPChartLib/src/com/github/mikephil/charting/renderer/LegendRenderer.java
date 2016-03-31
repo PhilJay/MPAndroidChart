@@ -232,7 +232,7 @@ public class LegendRenderer extends Renderer {
                     if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
                         originPosX -= mLegend.mNeededWidth;
                 } else // BELOW_CHART_CENTER || ABOVE_CHART_CENTER
-                    originPosX = mViewPortHandler.contentLeft() + contentWidth / 2.f - mLegend.mNeededWidth / 2f;
+                    originPosX = mViewPortHandler.contentLeft() + contentWidth / 2.f;
 
                 FSize[] calculatedLineSizes = mLegend.getCalculatedLineSizes();
                 FSize[] calculatedLabelSizes = mLegend.getCalculatedLabelSizes();
@@ -256,7 +256,10 @@ public class LegendRenderer extends Renderer {
                         posY += labelLineHeight + labelLineSpacing;
                     }
 
-                    if (posX == originPosX && legendPosition == Legend.LegendPosition.BELOW_CHART_CENTER && lineIndex < calculatedLineSizes.length) {
+                    if (posX == originPosX &&
+                        (legendPosition == Legend.LegendPosition.BELOW_CHART_CENTER ||
+                        legendPosition == Legend.LegendPosition.ABOVE_CHART_CENTER) &&
+                        lineIndex < calculatedLineSizes.length) {
                         posX += (direction == Legend.LegendDirection.RIGHT_TO_LEFT ? calculatedLineSizes[lineIndex].width : -calculatedLineSizes[lineIndex].width) / 2.f;
                         lineIndex++;
                     }
