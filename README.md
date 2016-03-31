@@ -57,7 +57,7 @@ If you are having questions or problems, you should:
 
  - **Review your code**. Make absolutely sure that everything is correct on your side.
  - Make sure you are using the **latest version** of the library. Check the [**release-section**](https://github.com/PhilJay/MPAndroidChart/releases).
- - Study the [**Documentation-Wiki**](https://github.com/PhilJay/MPAndroidChart/wiki) or the [javadocs](https://jitpack.io/com/github/PhilJay/MPAndroidChart/v2.2.3/javadoc/)
+ - Study the [**Documentation-Wiki**](https://github.com/PhilJay/MPAndroidChart/wiki) or the [javadocs](https://jitpack.io/com/github/PhilJay/MPAndroidChart/v2.2.4/javadoc/)
  - Search or open questions on [**stackoverflow**](https://stackoverflow.com/search?q=mpandroidchart) with the `mpandroidchart` tag
  - Search [**known issues**](https://github.com/PhilJay/MPAndroidChart/issues) for your problem (open and closed)
  - Create new issues (please :fire: **search known issues before** :fire:, do not create duplicate issues)
@@ -99,7 +99,7 @@ repositories {
 }
 
 dependencies {
-	    compile 'com.github.PhilJay:MPAndroidChart:v2.2.3'
+	    compile 'com.github.PhilJay:MPAndroidChart:v2.2.4'
 }
 ```
 
@@ -114,7 +114,7 @@ dependencies {
 <dependency>
 	    <groupId>com.github.PhilJay</groupId>
 	    <artifactId>MPAndroidChart</artifactId>
-	    <version>v2.2.3</version>
+	    <version>v2.2.4</version>
 </dependency>
 ```
 
