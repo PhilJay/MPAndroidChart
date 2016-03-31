@@ -246,15 +246,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         mRenderer.drawData(canvas);
 
-        if (!mXAxis.isDrawLimitLinesBehindDataEnabled())
-            mXAxisRenderer.renderLimitLines(canvas);
-
-        if (!mAxisLeft.isDrawLimitLinesBehindDataEnabled())
-            mAxisRendererLeft.renderLimitLines(canvas);
-
-        if (!mAxisRight.isDrawLimitLinesBehindDataEnabled())
-            mAxisRendererRight.renderLimitLines(canvas);
-
         // if highlighting is enabled
         if (valuesToHighlight())
             mRenderer.drawHighlighted(canvas, mIndicesToHighlight);
@@ -263,6 +254,15 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         canvas.restoreToCount(clipRestoreCount);
 
         mRenderer.drawExtras(canvas);
+
+        if (!mXAxis.isDrawLimitLinesBehindDataEnabled())
+            mXAxisRenderer.renderLimitLines(canvas);
+
+        if (!mAxisLeft.isDrawLimitLinesBehindDataEnabled())
+            mAxisRendererLeft.renderLimitLines(canvas);
+
+        if (!mAxisRight.isDrawLimitLinesBehindDataEnabled())
+            mAxisRendererRight.renderLimitLines(canvas);
 
         mXAxisRenderer.renderAxisLabels(canvas);
         mAxisRendererLeft.renderAxisLabels(canvas);
