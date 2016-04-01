@@ -400,6 +400,10 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
      */
     public float getDiameter() {
         RectF content = mViewPortHandler.getContentRect();
+        content.left += getExtraLeftOffset();
+        content.top += getExtraTopOffset();
+        content.right -= getExtraRightOffset();
+        content.bottom -= getExtraBottomOffset();
         return Math.min(content.width(), content.height());
     }
 

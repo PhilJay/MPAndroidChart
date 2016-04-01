@@ -20,9 +20,11 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -39,6 +41,7 @@ public class PieChartRenderer extends DataRenderer {
      */
     protected Paint mHolePaint;
     protected Paint mTransparentCirclePaint;
+    protected Paint mValueLinePaint;
 
     /**
      * paint object for the text that can be displayed in the center of the
@@ -79,6 +82,9 @@ public class PieChartRenderer extends DataRenderer {
         mValuePaint.setTextSize(Utils.convertDpToPixel(13f));
         mValuePaint.setColor(Color.WHITE);
         mValuePaint.setTextAlign(Align.CENTER);
+
+        mValueLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mValueLinePaint.setStyle(Style.STROKE);
     }
 
     public Paint getPaintHole() {
@@ -351,7 +357,7 @@ public class PieChartRenderer extends DataRenderer {
         PointF center = mChart.getCenterCircleBox();
 
         // get whole the radius
-        float r = mChart.getRadius();
+        float radius = mChart.getRadius();
         float rotationAngle = mChart.getRotationAngle();
         float[] drawAngles = mChart.getDrawAngles();
         float[] absoluteAngles = mChart.getAbsoluteAngles();
@@ -359,13 +365,14 @@ public class PieChartRenderer extends DataRenderer {
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
 
-        float off = r / 10f * 3.6f;
+        final float holeRadiusPercent = mChart.getHoleRadius() / 100.f;
+        float labelRadiusOffset = radius / 10f * 3.6f;
 
         if (mChart.isDrawHoleEnabled()) {
-            off = (r - (r / 100f * mChart.getHoleRadius())) / 2f;
+            labelRadiusOffset = (radius - (radius * holeRadiusPercent)) / 2f;
         }
 
-        r -= off; // offset to keep things inside the chart
+        final float labelRadius = radius - labelRadiusOffset;
 
         PieData data = mChart.getData();
         List<IPieDataSet> dataSets = data.getDataSets();
@@ -377,12 +384,19 @@ public class PieChartRenderer extends DataRenderer {
         float angle;
         int xIndex = 0;
 
+        c.save();
+
         for (int i = 0; i < dataSets.size(); i++) {
 
             IPieDataSet dataSet = dataSets.get(i);
 
-            if (!dataSet.isDrawValuesEnabled() && !drawXVals)
+            final boolean drawYVals = dataSet.isDrawValuesEnabled();
+
+            if (!drawYVals && !drawXVals)
                 continue;
+
+            final PieDataSet.ValuePosition xValuePosition = dataSet.getXValuePosition();
+            final PieDataSet.ValuePosition yValuePosition = dataSet.getYValuePosition();
 
             // apply the text-styling defined by the DataSet
             applyValueTextStyle(dataSet);
@@ -390,10 +404,14 @@ public class PieChartRenderer extends DataRenderer {
             float lineHeight = Utils.calcTextHeight(mValuePaint, "Q")
                     + Utils.convertDpToPixel(4f);
 
+            ValueFormatter formatter = dataSet.getValueFormatter();
+
             int entryCount = dataSet.getEntryCount();
 
-            for (int j = 0, maxEntry = Math.min(
-                    (int) Math.ceil(entryCount * phaseX), entryCount); j < maxEntry; j++) {
+            mValueLinePaint.setColor(dataSet.getValueLineColor());
+            mValueLinePaint.setStrokeWidth(Utils.convertDpToPixel(dataSet.getValueLineWidth()));
+
+            for (int j = 0; j < entryCount; j++) {
 
                 Entry entry = dataSet.getEntryForIndex(j);
 
@@ -404,51 +422,139 @@ public class PieChartRenderer extends DataRenderer {
 
                 final float sliceAngle = drawAngles[xIndex];
                 final float sliceSpace = dataSet.getSliceSpace();
-                final float sliceSpaceMiddleAngle = sliceSpace / (Utils.FDEG2RAD * r);
+                final float sliceSpaceMiddleAngle = sliceSpace / (Utils.FDEG2RAD * labelRadius);
 
                 // offset needed to center the drawn text in the slice
-                final float offset = (sliceAngle - sliceSpaceMiddleAngle / 2.f) / 2.f;
+                final float angleOffset = (sliceAngle - sliceSpaceMiddleAngle / 2.f) / 2.f;
 
-                angle = angle + offset;
+                angle = angle + angleOffset;
 
-                // calculate the text position
-                float x = (float) (r
-                        * Math.cos(Math.toRadians(rotationAngle + angle))
-                        + center.x);
-                float y = (float) (r
-                        * Math.sin(Math.toRadians(rotationAngle + angle))
-                        + center.y);
+                final float transformedAngle = rotationAngle + angle * phaseY;
 
                 float value = mChart.isUsePercentValuesEnabled() ? entry.getVal()
                         / yValueSum * 100f : entry.getVal();
 
-                ValueFormatter formatter = dataSet.getValueFormatter();
+                final float sliceXBase = (float)Math.cos(transformedAngle * Utils.FDEG2RAD);
+                final float sliceYBase = (float)Math.sin(transformedAngle * Utils.FDEG2RAD);
 
-                boolean drawYVals = dataSet.isDrawValuesEnabled();
+                final boolean drawXOutside = drawXVals &&
+                        xValuePosition == PieDataSet.ValuePosition.OUTSIDE_SLICE;
+                final boolean drawYOutside = drawYVals &&
+                        yValuePosition == PieDataSet.ValuePosition.OUTSIDE_SLICE;
+                final boolean drawXInside = drawXVals &&
+                        xValuePosition == PieDataSet.ValuePosition.INSIDE_SLICE;
+                final boolean drawYInside = drawYVals &&
+                        yValuePosition == PieDataSet.ValuePosition.INSIDE_SLICE;
 
-                // draw everything, depending on settings
-                if (drawXVals && drawYVals) {
+                if (drawXOutside || drawYOutside) {
 
-                    drawValue(c, formatter, value, entry, 0, x, y, dataSet.getValueTextColor(j));
+                    final float valueLineLength1 = dataSet.getValueLinePart1Length();
+                    final float valueLineLength2 = dataSet.getValueLinePart2Length();
+                    final float valueLinePart1OffsetPercentage = dataSet.getValueLinePart1OffsetPercentage() / 100.f;
 
-                    if (j < data.getXValCount()) {
-                        c.drawText(data.getXVals().get(j), x, y + lineHeight,
-                                mValuePaint);
+                    float pt2x, pt2y;
+                    float labelPtx, labelPty;
+
+                    float line1Radius;
+
+                    if (mChart.isDrawHoleEnabled())
+                        line1Radius = (radius - (radius * holeRadiusPercent))
+                                * valueLinePart1OffsetPercentage
+                                + (radius * holeRadiusPercent);
+                    else
+                        line1Radius = radius * valueLinePart1OffsetPercentage;
+
+                    final float polyline2Width = dataSet.isValueLineVariableLength()
+                        ? labelRadius * valueLineLength2 * (float)Math.abs(Math.sin(
+                            transformedAngle * Utils.FDEG2RAD))
+                        : labelRadius * valueLineLength2;
+
+                    final float pt0x = line1Radius * sliceXBase + center.x;
+                    final float pt0y = line1Radius * sliceYBase + center.y;
+
+                    final float pt1x = labelRadius * (1 + valueLineLength1) * sliceXBase + center.x;
+                    final float pt1y = labelRadius * (1 + valueLineLength1) * sliceYBase + center.y;
+
+                    if (transformedAngle % 360.0 >= 90.0 && transformedAngle % 360.0 <= 270.0) {
+                        pt2x = pt1x - polyline2Width;
+                        pt2y = pt1y;
+                        mValuePaint.setTextAlign(Align.RIGHT);
+                        labelPtx = pt2x - Utils.convertDpToPixel(5.f);
+                        labelPty = pt2y;
+                    } else {
+                        pt2x = pt1x + polyline2Width;
+                        pt2y = pt1y;
+                        mValuePaint.setTextAlign(Align.LEFT);
+                        labelPtx = pt2x + Utils.convertDpToPixel(5.f);
+                        labelPty = pt2y;
                     }
 
-                } else if (drawXVals) {
-                    if (j < data.getXValCount()) {
-                        mValuePaint.setColor(dataSet.getValueTextColor(j));
-                        c.drawText(data.getXVals().get(j), x, y + lineHeight / 2f, mValuePaint);
+                    if (dataSet.getValueLineColor() != ColorTemplate.COLOR_NONE) {
+                        c.drawLine(pt0x, pt0y, pt1x, pt1y, mValueLinePaint);
+                        c.drawLine(pt1x, pt1y, pt2x, pt2y, mValueLinePaint);
                     }
-                } else if (drawYVals) {
 
-                    drawValue(c, formatter, value, entry, 0, x, y + lineHeight / 2f, dataSet.getValueTextColor(j));
+                    // draw everything, depending on settings
+                    if (drawXOutside && drawYOutside) {
+
+                        drawValue(c,
+                                formatter,
+                                value,
+                                entry,
+                                0,
+                                labelPtx,
+                                labelPty,
+                                dataSet.getValueTextColor(j));
+
+                        if (j < data.getXValCount()) {
+                            c.drawText(data.getXVals().get(j), labelPtx, labelPty + lineHeight,
+                                    mValuePaint);
+                        }
+
+                    } else if (drawXOutside) {
+                        if (j < data.getXValCount()) {
+                            mValuePaint.setColor(dataSet.getValueTextColor(j));
+                            c.drawText(data.getXVals().get(j), labelPtx, labelPty + lineHeight / 2.f, mValuePaint);
+                        }
+                    } else if (drawYOutside) {
+
+                        drawValue(c, formatter, value, entry, 0, labelPtx, labelPty + lineHeight / 2.f, dataSet.getValueTextColor(j));
+                    }
+                }
+
+                if (drawXInside || drawYInside) {
+                    // calculate the text position
+                    float x = labelRadius * sliceXBase + center.x;
+                    float y = labelRadius * sliceYBase + center.y;
+
+                    mValuePaint.setTextAlign(Align.CENTER);
+
+                    // draw everything, depending on settings
+                    if (drawXInside && drawYInside) {
+
+                        drawValue(c, formatter, value, entry, 0, x, y, dataSet.getValueTextColor(j));
+
+                        if (j < data.getXValCount()) {
+                            c.drawText(data.getXVals().get(j), x, y + lineHeight,
+                                    mValuePaint);
+                        }
+
+                    } else if (drawXInside) {
+                        if (j < data.getXValCount()) {
+                            mValuePaint.setColor(dataSet.getValueTextColor(j));
+                            c.drawText(data.getXVals().get(j), x, y + lineHeight / 2f, mValuePaint);
+                        }
+                    } else if (drawYInside) {
+
+                        drawValue(c, formatter, value, entry, 0, x, y + lineHeight / 2f, dataSet.getValueTextColor(j));
+                    }
                 }
 
                 xIndex++;
             }
         }
+
+        c.restore();
     }
 
     @Override
