@@ -243,7 +243,7 @@ public class LegendRenderer extends Renderer {
                 if (legendPosition == Legend.LegendPosition.ABOVE_CHART_LEFT ||
                         legendPosition == Legend.LegendPosition.ABOVE_CHART_RIGHT ||
                         legendPosition == Legend.LegendPosition.ABOVE_CHART_CENTER) {
-                    posY = 0.f;
+                    posY = yoffset;
                 } else {
                     posY = mViewPortHandler.getChartHeight() - yoffset - mLegend.mNeededHeight;
                 }
