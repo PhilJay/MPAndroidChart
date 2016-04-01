@@ -29,9 +29,9 @@ public class RealmPieDataSet<T extends RealmObject> extends RealmBaseDataSet<T, 
     private PieDataSet.ValuePosition mYValuePosition = PieDataSet.ValuePosition.INSIDE_SLICE;
     private int mValueLineColor = 0xff000000;
     private float mValueLineWidth = 1.0f;
-    private float mValueLinePart1OffsetPercentage = 50.f;
-    private float mValueLinePart1Length = 0.1f;
-    private float mValueLinePart2Length = 0.2f;
+    private float mValueLinePart1OffsetPercentage = 75.f;
+    private float mValueLinePart1Length = 0.3f;
+    private float mValueLinePart2Length = 0.4f;
     private boolean mValueLineVariableLength = true;
 
     /**
