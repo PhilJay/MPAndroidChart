@@ -66,7 +66,7 @@ public class YAxis extends AxisBase {
     /**
      * flag that indicates if the zero-line should be drawn regardless of other grid lines
      */
-    protected boolean mDrawZeroLine = true;
+    protected boolean mDrawZeroLine = false;
 
     /**
      * Color of the zero line
@@ -79,16 +79,6 @@ public class YAxis extends AxisBase {
     protected float mZeroLineWidth = 1f;
 
     /**
-     * custom minimum value this axis represents
-     */
-    protected float mCustomAxisMin = Float.NaN;
-
-    /**
-     * custom maximum value this axis represents
-     */
-    protected float mCustomAxisMax = Float.NaN;
-
-    /**
      * axis space from the largest value to the top in percent of the total axis range
      */
     protected float mSpacePercentTop = 10f;
@@ -97,14 +87,6 @@ public class YAxis extends AxisBase {
      * axis space from the smallest value to the bottom in percent of the total axis range
      */
     protected float mSpacePercentBottom = 10f;
-
-    public float mAxisMaximum = 0f;
-    public float mAxisMinimum = 0f;
-
-    /**
-     * the total range of values this axis covers
-     */
-    public float mAxisRange = 0f;
 
     /**
      * the position of the y-labels relative to the chart
@@ -122,6 +104,33 @@ public class YAxis extends AxisBase {
      * the side this axis object represents
      */
     private AxisDependency mAxisDependency;
+
+    /**
+     * the minimum width that the axis should take (in dp).
+     *
+     * default: 0.0
+     */
+    protected float mMinWidth = 0.f;
+
+    /**
+     * the maximum width that the axis can take (in dp).
+     * use Inifinity for disabling the maximum
+     * default: Float.POSITIVE_INFINITY (no maximum specified)
+     */
+    protected float mMaxWidth = Float.POSITIVE_INFINITY;
+
+    /**
+     * When true, axis labels are controlled by the `granularity` property.
+     * When false, axis values could possibly be repeated.
+     * This could happen if two adjacent axis values are rounded to same value.
+     * If using granularity this could be avoided by having fewer axis values visible.
+     */
+    protected boolean mGranularityEnabled = true;
+
+    /**
+     * the minimum interval between axis values
+     */
+    protected float mGranularity = 1.0f;
 
     /**
      * Enum that specifies the axis a DataSet should be plotted against, either LEFT or RIGHT.
@@ -146,6 +155,66 @@ public class YAxis extends AxisBase {
 
     public AxisDependency getAxisDependency() {
         return mAxisDependency;
+    }
+
+    /**
+     * @return the minimum width that the axis should take (in dp).
+     */
+    public float getMinWidth() {
+        return mMinWidth;
+    }
+
+    /**
+     * Sets the minimum width that the axis should take (in dp).
+     * @param minWidth
+     */
+    public void setMinWidth(float minWidth) {
+        mMinWidth = minWidth;
+    }
+
+    /**
+     * @return the maximum width that the axis can take (in dp).
+     */
+    public float getMaxWidth() {
+        return mMaxWidth;
+    }
+
+    /**
+     * Sets the maximum width that the axis can take (in dp).
+     * @param maxWidth
+     */
+    public void setMaxWidth(float maxWidth) {
+        mMaxWidth = maxWidth;
+    }
+
+    /**
+     * @return true if granularity is enabled
+     */
+    public boolean isGranularityEnabled() {
+        return mGranularityEnabled;
+    }
+
+    /**
+     * Enabled/disable granularity control on axis value intervals
+     * @param enabled
+     */
+    public void setGranularityEnabled(boolean enabled) {
+        mGranularityEnabled = true;
+    }
+
+    /**
+     * @return the minimum interval between axis values
+     */
+    public float getGranularity() {
+        return mGranularity;
+    }
+
+    /**
+     * Set the minimum interval between axis values. This can be used to avoid label duplicating when zooming in.
+     * @param granularity
+     */
+    public void setGranularity(float granularity) {
+        mGranularity = granularity;
     }
 
     /**
@@ -272,51 +341,6 @@ public class YAxis extends AxisBase {
             resetAxisMinValue();
     }
 
-    public float getAxisMinValue() {
-        return mCustomAxisMin;
-    }
-
-    /**
-     * Set a custom minimum value for this axis. If set, this value will not be calculated automatically depending on
-     * the provided data. Use resetAxisMinValue() to undo this. Do not forget to call setStartAtZero(false) if you use
-     * this method. Otherwise, the axis-minimum value will still be forced to 0.
-     *
-     * @param min
-     */
-    public void setAxisMinValue(float min) {
-        mCustomAxisMin = min;
-    }
-
-    /**
-     * By calling this method, any custom minimum value that has been previously set is reseted, and the calculation is
-     * done automatically.
-     */
-    public void resetAxisMinValue() {
-        mCustomAxisMin = Float.NaN;
-    }
-
-    public float getAxisMaxValue() {
-        return mCustomAxisMax;
-    }
-
-    /**
-     * Set a custom maximum value for this axis. If set, this value will not be calculated automatically depending on
-     * the provided data. Use resetAxisMaxValue() to undo this.
-     *
-     * @param max
-     */
-    public void setAxisMaxValue(float max) {
-        mCustomAxisMax = max;
-    }
-
-    /**
-     * By calling this method, any custom maximum value that has been previously set is reseted, and the calculation is
-     * done automatically.
-     */
-    public void resetAxisMaxValue() {
-        mCustomAxisMax = Float.NaN;
-    }
-
     /**
      * Sets the top axis space in percent of the full range. Default 10f
      *
@@ -359,7 +383,7 @@ public class YAxis extends AxisBase {
 
     /**
      * Set this to true to draw the zero-line regardless of weather other
-     * grid-lines are enabled or not.
+     * grid-lines are enabled or not. Default: false
      *
      * @param mDrawZeroLine
      */
@@ -404,7 +428,20 @@ public class YAxis extends AxisBase {
         p.setTextSize(mTextSize);
 
         String label = getLongestLabel();
-        return (float) Utils.calcTextWidth(p, label) + getXOffset() * 2f;
+        float width = (float) Utils.calcTextWidth(p, label) + getXOffset() * 2f;
+
+        float minWidth = getMinWidth();
+        float maxWidth = getMaxWidth();
+
+        if (minWidth > 0.f)
+            minWidth = Utils.convertDpToPixel(minWidth);
+
+        if (maxWidth > 0.f && maxWidth != Float.POSITIVE_INFINITY)
+            maxWidth = Utils.convertDpToPixel(maxWidth);
+
+        width = Math.max(minWidth, Math.min(width, maxWidth > 0.0 ? maxWidth : width));
+        
+        return width;
     }
 
     /**
@@ -503,5 +540,44 @@ public class YAxis extends AxisBase {
             return true;
         else
             return false;
+    }
+
+    /**
+     * Calculates the minimum, maximum and range values of the YAxis with the given
+     * minimum and maximum values from the chart data.
+     * @param dataMin the y-min value according to chart data
+     * @param dataMax the y-max value according to chart data
+     */
+    public void calcMinMax(float dataMin, float dataMax) {
+
+        // if custom, use value as is, else use data value
+        float min = mCustomAxisMin ? mAxisMinimum : dataMin;
+        float max = mCustomAxisMax ? mAxisMaximum : dataMax;
+
+        // temporary range (before calculations)
+        float range = Math.abs(max - min);
+
+        // in case all values are equal
+        if (range == 0f) {
+            max = max + 1f;
+            min = min - 1f;
+        }
+
+        // bottom-space only effects non-custom min
+        if(!mCustomAxisMin) {
+
+            float bottomSpace = range / 100f * getSpaceBottom();
+            this.mAxisMinimum = (min - bottomSpace);
+        }
+
+        // top-space only effects non-custom max
+        if(!mCustomAxisMax) {
+
+            float topSpace = range / 100f * getSpaceTop();
+            this.mAxisMaximum = (max + topSpace);
+        }
+
+        // calc actual range
+        this.mAxisRange = Math.abs(this.mAxisMaximum - this.mAxisMinimum);
     }
 }

@@ -188,18 +188,6 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
                 mChart.animateXY(3000, 3000);
                 break;
             }
-            case R.id.actionToggleFilter: {
-
-                Approximator a = new Approximator(ApproximatorType.DOUGLAS_PEUCKER, 25);
-
-                if (!mChart.isFilteringEnabled()) {
-                    mChart.enableFiltering(a);
-                } else {
-                    mChart.disableFiltering();
-                }
-                mChart.invalidate();
-                break;
-            }
             case R.id.actionSave: {
                 if (mChart.saveToGallery("title" + System.currentTimeMillis(), 50)) {
                     Toast.makeText(getApplicationContext(), "Saving SUCCESSFUL!",

@@ -11,7 +11,6 @@ import android.annotation.SuppressLint;
  * 
  * @author Philipp Jahoda
  */
-@SuppressLint("NewApi")
 public class ChartAnimator {
 
     /** object that is updated upon animation update */

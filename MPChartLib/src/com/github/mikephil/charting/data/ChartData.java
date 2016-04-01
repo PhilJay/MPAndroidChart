@@ -174,7 +174,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         if (mDataSets == null)
             return;
 
-        if (this instanceof ScatterData)
+        if (this instanceof ScatterData || this instanceof CombinedData)
             return;
 
         for (int i = 0; i < mDataSets.size(); i++) {
@@ -186,8 +186,9 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Call this method to let the CartData know that the underlying data has
-     * changed.
+     * Call this method to let the ChartData know that the underlying data has
+     * changed. Calling this performs all necessary recalculations needed when
+     * the contained data has changed.
      */
     public void notifyDataChanged() {
         init();

@@ -27,13 +27,12 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.Utils;
 import com.xxmassdeveloper.mpchartexample.custom.MyMarkerView;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -244,6 +243,21 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                 mChart.invalidate();
                 break;
             }
+            case R.id.actionToggleStepped: {
+                List<ILineDataSet> sets = mChart.getData()
+                        .getDataSets();
+
+                for (ILineDataSet iSet : sets) {
+
+                    LineDataSet set = (LineDataSet) iSet;
+                    if (set.isDrawSteppedEnabled())
+                        set.setDrawStepped(false);
+                    else
+                        set.setDrawStepped(true);
+                }
+                mChart.invalidate();
+                break;
+            }
             case R.id.actionTogglePinch: {
                 if (mChart.isPinchZoomEnabled())
                     mChart.setPinchZoom(false);
@@ -268,19 +282,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
             }
             case R.id.animateXY: {
                 mChart.animateXY(3000, 3000);
-                break;
-            }
-            case R.id.actionToggleFilter: {
-
-                // the angle of filtering is 35°
-                Approximator a = new Approximator(ApproximatorType.DOUGLAS_PEUCKER, 35);
-
-                if (!mChart.isFilteringEnabled()) {
-                    mChart.enableFiltering(a);
-                } else {
-                    mChart.disableFiltering();
-                }
-                mChart.invalidate();
                 break;
             }
             case R.id.actionSave: {
@@ -354,9 +355,15 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         set1.setCircleRadius(3f);
         set1.setDrawCircleHole(false);
         set1.setValueTextSize(9f);
-        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.fade_red);
-        set1.setFillDrawable(drawable);
         set1.setDrawFilled(true);
+
+        if(Utils.getSDKInt() >= 18) {
+            // fill drawable only supported on api level 18 and above
+            Drawable drawable = ContextCompat.getDrawable(this, R.drawable.fade_red);
+            set1.setFillDrawable(drawable);
+        } else {
+            set1.setFillColor(Color.BLACK);
+        }
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         dataSets.add(set1); // add the datasets
@@ -370,7 +377,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
     @Override
     public void onChartGestureStart(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
-        Log.i("Gesture", "START");
+        Log.i("Gesture", "START, x: " + me.getX() + ", y: " + me.getY());
     }
 
     @Override
@@ -415,7 +422,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
     @Override
     public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
         Log.i("Entry selected", e.toString());
-        Log.i("", "low: " + mChart.getLowestVisibleXIndex() + ", high: " + mChart.getHighestVisibleXIndex());
+        Log.i("LOWHIGH", "low: " + mChart.getLowestVisibleXIndex() + ", high: " + mChart.getHighestVisibleXIndex());
+        Log.i("MIN MAX", "xmin: " + mChart.getXChartMin() + ", xmax: " + mChart.getXChartMax() + ", ymin: " + mChart.getYChartMin() + ", ymax: " + mChart.getYChartMax());
     }
 
     @Override

@@ -105,8 +105,10 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 		Range[] ranges = getRanges(entry);
 		int stackIndex = getClosestStackIndex(ranges, (float) yValue);
 
-		Highlight h = new Highlight(xIndex, dataSetIndex, stackIndex, ranges[stackIndex]);
-		return h;
+		if(ranges.length > 0)
+			return new Highlight(xIndex, dataSetIndex, stackIndex, ranges[stackIndex]);
+		else
+			return null;
 	}
 
 	/**
@@ -189,12 +191,12 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 		float[] values = entry.getVals();
 
 		if (values == null || values.length == 0)
-			return null;
+			return new Range[0];
+
+		Range[] ranges = new Range[values.length];
 
 		float negRemain = -entry.getNegativeSum();
 		float posRemain = 0f;
-
-		Range[] ranges = new Range[values.length];
 
 		for (int i = 0; i < ranges.length; i++) {
 

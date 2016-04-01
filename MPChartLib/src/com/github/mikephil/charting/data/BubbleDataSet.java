@@ -54,12 +54,12 @@ public class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry
 
         // need chart width to guess this properly
 
-        for (int i = start; i < endValue; i++) {
+        for (int i = start; i <= endValue; i++) {
 
             final BubbleEntry entry = mYVals.get(i);
 
-            final float ymin = yMin(entry);
-            final float ymax = yMax(entry);
+            float ymin = yMin(entry);
+            float ymax = yMax(entry);
 
             if (ymin < mYMin) {
                 mYMin = ymin;

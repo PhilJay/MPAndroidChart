@@ -27,6 +27,13 @@ public interface ILineDataSet extends ILineRadarDataSet<Entry> {
     boolean isDrawCubicEnabled();
 
     /**
+     * Returns true if drawing stepped lines is enabled, false if not.
+     *
+     * @return
+     */
+    boolean isDrawSteppedEnabled();
+
+    /**
      * Returns the size of the drawn circles.
      */
     float getCircleRadius();

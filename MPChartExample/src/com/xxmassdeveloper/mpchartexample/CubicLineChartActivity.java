@@ -3,7 +3,9 @@ package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -57,7 +59,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         mSeekBarX.setOnSeekBarChangeListener(this);
 
         mChart = (LineChart) findViewById(R.id.chart1);
-        mChart.setViewPortOffsets(0, 20, 0, 0);
+        mChart.setViewPortOffsets(0, 0, 0, 0);
         mChart.setBackgroundColor(Color.rgb(104, 241, 175));
 
         // no description text
@@ -198,19 +200,6 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
                 mChart.animateXY(3000, 3000);
                 break;
             }
-            case R.id.actionToggleFilter: {
-
-                // the angle of filtering is 35°
-                Approximator a = new Approximator(ApproximatorType.DOUGLAS_PEUCKER, 35);
-
-                if (!mChart.isFilteringEnabled()) {
-                    mChart.enableFiltering(a);
-                } else {
-                    mChart.disableFiltering();
-                }
-                mChart.invalidate();            
-                break;
-            }
             case R.id.actionSave: {
                 if (mChart.saveToPath("title" + System.currentTimeMillis(), "")) {
                     Toast.makeText(getApplicationContext(), "Saving SUCCESSFUL!",
@@ -287,7 +276,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
                 return -10;
             }
         });
-        
+
         // create a data object with the datasets
         LineData data = new LineData(xVals, set1);
         data.setValueTypeface(tf);

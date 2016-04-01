@@ -110,6 +110,8 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
         return mColors;
     }
 
+    public List<Integer> getValueColors() { return mValueColors; }
+
     @Override
     public int getColor() {
         return mColors.get(0);

@@ -1,10 +1,14 @@
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
+import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**
@@ -24,16 +28,23 @@ public abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
      * @param drawable
      */
     protected void drawFilledPath(Canvas c, Path filledPath, Drawable drawable) {
-        c.save();
-        c.clipPath(filledPath);
 
-        drawable.setBounds((int) mViewPortHandler.contentLeft(),
-                (int) mViewPortHandler.contentTop(),
-                (int) mViewPortHandler.contentRight(),
-                (int) mViewPortHandler.contentBottom());
-        drawable.draw(c);
+        if (clipPathSupported()) {
 
-        c.restore();
+            c.save();
+            c.clipPath(filledPath);
+
+            drawable.setBounds((int) mViewPortHandler.contentLeft(),
+                    (int) mViewPortHandler.contentTop(),
+                    (int) mViewPortHandler.contentRight(),
+                    (int) mViewPortHandler.contentBottom());
+            drawable.draw(c);
+
+            c.restore();
+        } else {
+            throw new RuntimeException("Fill-drawables not (yet) supported below API level 18, " +
+                    "this code was run on API level " + Utils.getSDKInt() + ".");
+        }
     }
 
     /**
@@ -46,11 +57,40 @@ public abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
      * @param fillAlpha
      */
     protected void drawFilledPath(Canvas c, Path filledPath, int fillColor, int fillAlpha) {
-        c.save();
-        c.clipPath(filledPath);
 
         int color = (fillAlpha << 24) | (fillColor & 0xffffff);
-        c.drawColor(color);
-        c.restore();
+
+        if (clipPathSupported()) {
+
+            c.save();
+            c.clipPath(filledPath);
+
+            c.drawColor(color);
+            c.restore();
+        } else {
+
+            // save
+            Paint.Style previous = mRenderPaint.getStyle();
+            int previousColor = mRenderPaint.getColor();
+
+            // set
+            mRenderPaint.setStyle(Paint.Style.FILL);
+            mRenderPaint.setColor(color);
+
+            c.drawPath(filledPath, mRenderPaint);
+
+            // restore
+            mRenderPaint.setColor(previousColor);
+            mRenderPaint.setStyle(previous);
+        }
+    }
+
+    /**
+     * Clip path with hardware acceleration only working properly on API level 18 and above.
+     *
+     * @return
+     */
+    private boolean clipPathSupported() {
+        return Utils.getSDKInt() >= 18;
     }
 }

@@ -97,7 +97,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
                     ++n;
                 }
 
-                if (Float.isNaN(mYAxis.getAxisMaxValue()))
+                if (!mYAxis.isAxisMaxCustom())
                     n += 1;
 
                 mYAxis.mEntryCount = n;

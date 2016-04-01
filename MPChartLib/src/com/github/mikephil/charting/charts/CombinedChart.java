@@ -11,12 +11,12 @@ import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.highlight.CombinedHighlighter;
-import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
 import com.github.mikephil.charting.interfaces.dataprovider.CandleDataProvider;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.dataprovider.ScatterDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 import com.github.mikephil.charting.renderer.CombinedChartRenderer;
 
 /**
@@ -84,8 +84,8 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
         super.calcMinMax();
 
         if (getBarData() != null || getCandleData() != null || getBubbleData() != null) {
-            mXChartMin = -0.5f;
-            mXChartMax = mData.getXVals().size() - 0.5f;
+            mXAxis.mAxisMinimum = -0.5f;
+            mXAxis.mAxisMaximum = mData.getXVals().size() - 0.5f;
 
             if (getBubbleData() != null) {
 
@@ -94,19 +94,19 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
                     final float xmin = set.getXMin();
                     final float xmax = set.getXMax();
 
-                    if (xmin < mXChartMin)
-                        mXChartMin = xmin;
+                    if (xmin < mXAxis.mAxisMinimum)
+                        mXAxis.mAxisMinimum = xmin;
 
-                    if (xmax > mXChartMax)
-                        mXChartMax = xmax;
+                    if (xmax > mXAxis.mAxisMaximum)
+                        mXAxis.mAxisMaximum = xmax;
                 }
             }
         }
 
-        mDeltaX = Math.abs(mXChartMax - mXChartMin);
+        mXAxis.mAxisRange = Math.abs(mXAxis.mAxisMaximum - mXAxis.mAxisMinimum);
 
-        if (mDeltaX == 0.f && getLineData() != null && getLineData().getYValCount() > 0) {
-            mDeltaX = 1.f;
+        if (mXAxis.mAxisRange == 0.f && getLineData() != null && getLineData().getYValCount() > 0) {
+            mXAxis.mAxisRange = 1.f;
         }
     }
 

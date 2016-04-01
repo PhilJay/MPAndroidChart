@@ -268,7 +268,6 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
                     mLimitLinePaint.setTextAlign(Align.RIGHT);
                     c.drawText(label, pts[0] - xOffset, mViewPortHandler.contentBottom() - yOffset, mLimitLinePaint);
                 }
-
             }
         }
     }

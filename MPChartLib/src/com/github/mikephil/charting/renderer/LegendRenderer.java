@@ -256,7 +256,10 @@ public class LegendRenderer extends Renderer {
                         posY += labelLineHeight + labelLineSpacing;
                     }
 
-                    if (posX == originPosX && legendPosition == Legend.LegendPosition.BELOW_CHART_CENTER && lineIndex < calculatedLineSizes.length) {
+                    if (posX == originPosX &&
+                        (legendPosition == Legend.LegendPosition.BELOW_CHART_CENTER ||
+                        legendPosition == Legend.LegendPosition.ABOVE_CHART_CENTER) &&
+                        lineIndex < calculatedLineSizes.length) {
                         posX += (direction == Legend.LegendDirection.RIGHT_TO_LEFT ? calculatedLineSizes[lineIndex].width : -calculatedLineSizes[lineIndex].width) / 2.f;
                         lineIndex++;
                     }

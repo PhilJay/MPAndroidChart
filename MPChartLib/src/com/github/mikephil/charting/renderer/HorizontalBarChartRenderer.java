@@ -150,7 +150,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                         }
 
                         drawValue(c, formattedValue, valuePoints[j] + (val >= 0 ? posOffset : negOffset),
-                                valuePoints[j + 1] + halfTextHeight);
+                                valuePoints[j + 1] + halfTextHeight, dataSet.getValueTextColor(j / 2));
                     }
 
                     // if each value of a potential stack should be drawn
@@ -191,7 +191,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
                             drawValue(c, formattedValue, valuePoints[j]
                                             + (e.getVal() >= 0 ? posOffset : negOffset),
-                                    valuePoints[j + 1] + halfTextHeight);
+                                    valuePoints[j + 1] + halfTextHeight, dataSet.getValueTextColor(j / 2));
 
                         } else {
 
@@ -246,7 +246,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                                 if (!mViewPortHandler.isInBoundsBottom(y))
                                     continue;
 
-                                drawValue(c, formattedValue, x, y + halfTextHeight);
+                                drawValue(c, formattedValue, x, y + halfTextHeight, dataSet.getValueTextColor(j / 2));
                             }
                         }
                     }
@@ -255,7 +255,8 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
         }
     }
 
-    protected void drawValue(Canvas c, String valueText, float x, float y) {
+    protected void drawValue(Canvas c, String valueText, float x, float y, int color) {
+        mValuePaint.setColor(color);
         c.drawText(valueText, x, y, mValuePaint);
     }
 

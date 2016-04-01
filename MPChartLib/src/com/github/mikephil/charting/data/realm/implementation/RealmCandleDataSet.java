@@ -215,7 +215,7 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
      *
      * @param showCandleBar
      */
-    public void setShadowWidth(boolean showCandleBar) {
+    public void setShowCandleBar(boolean showCandleBar) {
         mShowCandleBar = showCandleBar;
     }
 

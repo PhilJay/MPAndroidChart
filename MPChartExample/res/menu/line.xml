@@ -13,9 +13,13 @@
         android:id="@+id/actionToggleCircles"
         android:title="Toggle Circles">
     </item>
-        <item
+    <item
         android:id="@+id/actionToggleCubic"
         android:title="Toggle Cubic">
+    </item>
+    <item
+        android:id="@+id/actionToggleStepped"
+        android:title="Toggle Stepped">
     </item>
     <item
         android:id="@+id/actionToggleHighlight"
@@ -36,10 +40,6 @@
     <item
         android:id="@+id/actionToggleAdjustXLegend"
         android:title="Toggle AdjustXLegend">
-    </item>
-    <item
-        android:id="@+id/actionToggleFilter"
-        android:title="Toggle filter">
     </item>
     <item
         android:id="@+id/actionSave"

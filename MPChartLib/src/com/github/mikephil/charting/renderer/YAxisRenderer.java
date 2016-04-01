@@ -85,9 +85,17 @@ public class YAxisRenderer extends AxisRenderer {
             return;
         }
 
+        // Find out how much spacing (in y value space) between axis values
         double rawInterval = range / labelCount;
         double interval = Utils.roundToNextSignificant(rawInterval);
-        double intervalMagnitude = Math.pow(10, (int) Math.log10(interval));
+
+        // If granularity is enabled, then do not allow the interval to go below specified granularity.
+        // This is used to avoid repeated values when rounding values for display.
+        if (mYAxis.isGranularityEnabled())
+            interval = interval < mYAxis.getGranularity() ? mYAxis.getGranularity() : interval;
+
+        // Normalize interval
+        double intervalMagnitude = Utils.roundToNextSignificant(Math.pow(10, (int) Math.log10(interval)));
         int intervalSigDigit = (int) (interval / intervalMagnitude);
         if (intervalSigDigit > 5) {
             // Use one order of magnitude higher, to avoid intervals like 0.9 or

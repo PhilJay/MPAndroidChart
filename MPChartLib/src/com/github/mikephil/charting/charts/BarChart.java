@@ -10,8 +10,8 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.highlight.BarHighlighter;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.renderer.BarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererBarChart;
 
@@ -29,11 +29,6 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 	 * if set to true, all values are drawn above their bars, instead of below their top
 	 */
 	private boolean mDrawValueAboveBar = true;
-
-	/**
-	 * if set to true, all values of a stack are drawn individually, and not just their sum
-	 */
-	// private boolean mDrawValuesForWholeStack = true;
 
 	/**
 	 * if set to true, a grey area is drawn behind each bar that indicates the maximum value
@@ -61,7 +56,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 
 		setHighlighter(new BarHighlighter(this));
 
-		mXChartMin = -0.5f;
+		mXAxis.mAxisMinimum = -0.5f;
 	}
 
 	@Override
@@ -69,14 +64,14 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 		super.calcMinMax();
 
 		// increase deltax by 1 because the bars have a width of 1
-		mDeltaX += 0.5f;
+		mXAxis.mAxisRange += 0.5f;
 
 		// extend xDelta to make space for multiple datasets (if ther are one)
-		mDeltaX *= mData.getDataSetCount();
+		mXAxis.mAxisRange *= mData.getDataSetCount();
 
 		float groupSpace = mData.getGroupSpace();
-		mDeltaX += mData.getXValCount() * groupSpace;
-		mXChartMax = mDeltaX - mXChartMin;
+		mXAxis.mAxisRange += mData.getXValCount() * groupSpace;
+		mXAxis.mAxisMaximum = mXAxis.mAxisRange - mXAxis.mAxisMinimum;
 	}
 
 	/**
@@ -165,25 +160,6 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 	public boolean isDrawValueAboveBarEnabled() {
 		return mDrawValueAboveBar;
 	}
-
-	// /**
-	// * if set to true, all values of a stack are drawn individually, and not
-	// * just their sum
-	// *
-	// * @param enabled
-	// */
-	// public void setDrawValuesForWholeStack(boolean enabled) {
-	// mDrawValuesForWholeStack = enabled;
-	// }
-	//
-	// /**
-	// * returns true if all values of a stack are drawn, and not just their sum
-	// *
-	// * @return
-	// */
-	// public boolean isDrawValuesForWholeStackEnabled() {
-	// return mDrawValuesForWholeStack;
-	// }
 
 	/**
 	 * If set to true, a grey area is drawn behind each bar that indicates the maximum value. Enabling his will reduce

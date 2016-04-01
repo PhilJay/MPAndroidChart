@@ -23,12 +23,10 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.highlight.Highlight;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -61,14 +59,14 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
 
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
-        
+
         // no description text
         mChart.setDescription("");
         mChart.setNoDataTextDescription("You need to provide data for the chart.");
 
         // enable touch gestures
         mChart.setTouchEnabled(true);
-        
+
         mChart.setDragDecelerationFrictionCoef(0.9f);
 
         // enable scaling and dragging
@@ -116,7 +114,8 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         leftAxis.setAxisMaxValue(200f);
         leftAxis.setAxisMinValue(0f);
         leftAxis.setDrawGridLines(true);
-        
+        leftAxis.setGranularityEnabled(true);
+
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setTypeface(tf);
         rightAxis.setTextColor(Color.RED);
@@ -124,6 +123,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         rightAxis.setAxisMinValue(-200);
         rightAxis.setDrawGridLines(false);
         rightAxis.setDrawZeroLine(false);
+        rightAxis.setGranularityEnabled(false);
     }
 
     @Override
@@ -150,7 +150,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
                 break;
             }
             case R.id.actionToggleHighlight: {
-                if(mChart.getData() != null) {
+                if (mChart.getData() != null) {
                     mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
                     mChart.invalidate();
                 }
@@ -202,6 +202,21 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
                 mChart.invalidate();
                 break;
             }
+            case R.id.actionToggleStepped: {
+                List<ILineDataSet> sets = mChart.getData()
+                        .getDataSets();
+
+                for (ILineDataSet iSet : sets) {
+
+                    LineDataSet set = (LineDataSet) iSet;
+                    if (set.isDrawSteppedEnabled())
+                        set.setDrawStepped(false);
+                    else
+                        set.setDrawStepped(true);
+                }
+                mChart.invalidate();
+                break;
+            }
             case R.id.actionTogglePinch: {
                 if (mChart.isPinchZoomEnabled())
                     mChart.setPinchZoom(false);
@@ -228,19 +243,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
                 mChart.animateXY(3000, 3000);
                 break;
             }
-            case R.id.actionToggleFilter: {
 
-                // the angle of filtering is 35°
-                Approximator a = new Approximator(ApproximatorType.DOUGLAS_PEUCKER, 35);
-
-                if (!mChart.isFilteringEnabled()) {
-                    mChart.enableFiltering(a);
-                } else {
-                    mChart.disableFiltering();
-                }
-                mChart.invalidate();
-                break;
-            }
             case R.id.actionSave: {
                 if (mChart.saveToPath("title" + System.currentTimeMillis(), "")) {
                     Toast.makeText(getApplicationContext(), "Saving SUCCESSFUL!",
@@ -280,8 +283,8 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         for (int i = 0; i < count; i++) {
             float mult = range / 2f;
             float val = (float) (Math.random() * mult) + 50;// + (float)
-                                                           // ((mult *
-                                                           // 0.1) / 10);
+            // ((mult *
+            // 0.1) / 10);
             yVals1.add(new Entry(val, i));
         }
 
@@ -306,8 +309,8 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         for (int i = 0; i < count; i++) {
             float mult = range;
             float val = (float) (Math.random() * mult) + 450;// + (float)
-                                                           // ((mult *
-                                                           // 0.1) / 10);
+            // ((mult *
+            // 0.1) / 10);
             yVals2.add(new Entry(val, i));
         }
 
@@ -340,6 +343,10 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
     @Override
     public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
         Log.i("Entry selected", e.toString());
+
+        mChart.centerViewToAnimated(e.getXIndex(), e.getVal(), mChart.getData().getDataSetByIndex(dataSetIndex).getAxisDependency(), 500);
+        //mChart.zoomAndCenterAnimated(2.5f, 2.5f, e.getXIndex(), e.getVal(), mChart.getData().getDataSetByIndex(dataSetIndex).getAxisDependency(), 1000);
+        //mChart.zoomAndCenterAnimated(1.8f, 1.8f, e.getXIndex(), e.getVal(), mChart.getData().getDataSetByIndex(dataSetIndex).getAxisDependency(), 1000);
     }
 
     @Override

@@ -67,11 +67,6 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      */
     private YAxis mYAxis;
 
-    /**
-     * the object representing the x-axis labels
-     */
-    private XAxis mXAxis;
-
     protected YAxisRendererRadarChart mYAxisRenderer;
     protected XAxisRendererRadarChart mXAxisRenderer;
 
@@ -92,7 +87,6 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         super.init();
 
         mYAxis = new YAxis(AxisDependency.LEFT);
-        mXAxis = new XAxis();
         mXAxis.setSpaceBetweenLabels(0);
 
         mWebLineWidth = Utils.convertDpToPixel(1.5f);
@@ -107,25 +101,11 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     protected void calcMinMax() {
         super.calcMinMax();
 
-        float minLeft = mData.getYMin(AxisDependency.LEFT);
-        float maxLeft = mData.getYMax(AxisDependency.LEFT);
+        // calculate / set x-axis range
+        mXAxis.mAxisMaximum = mData.getXVals().size() - 1;
+        mXAxis.mAxisRange = Math.abs(mXAxis.mAxisMaximum - mXAxis.mAxisMinimum);
 
-        mXChartMax = mData.getXVals().size() - 1;
-        mDeltaX = Math.abs(mXChartMax - mXChartMin);
-
-        float leftRange = Math.abs(maxLeft - minLeft);
-
-        float topSpaceLeft = leftRange / 100f * mYAxis.getSpaceTop();
-        float bottomSpaceLeft = leftRange / 100f * mYAxis.getSpaceBottom();
-
-        mXChartMax = mData.getXVals().size() - 1;
-        mDeltaX = Math.abs(mXChartMax - mXChartMin);
-
-        // Use the values as they are
-        mYAxis.mAxisMinimum = !Float.isNaN(mYAxis.getAxisMinValue()) ? mYAxis.getAxisMinValue() : (minLeft - bottomSpaceLeft);
-        mYAxis.mAxisMaximum = !Float.isNaN(mYAxis.getAxisMaxValue()) ? mYAxis.getAxisMaxValue() : (maxLeft + topSpaceLeft);
-
-        mYAxis.mAxisRange = Math.abs(mYAxis.mAxisMaximum - mYAxis.mAxisMinimum);
+        mYAxis.calcMinMax(mData.getYMin(AxisDependency.LEFT), mData.getYMax(AxisDependency.LEFT));
     }
 
     @Override
@@ -236,16 +216,6 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      */
     public YAxis getYAxis() {
         return mYAxis;
-    }
-
-    /**
-     * Returns the object that represents all x-labels that are placed around
-     * the RadarChart.
-     *
-     * @return
-     */
-    public XAxis getXAxis() {
-        return mXAxis;
     }
 
     /**
