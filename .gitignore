@@ -11,6 +11,10 @@
 # generated files
 bin/
 gen/
+generatedJar/
+docs/
+
+build.xml
 
 # Local configuration file (sdk path, etc)
 local.properties
