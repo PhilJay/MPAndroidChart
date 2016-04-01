@@ -11,8 +11,9 @@
 # generated files
 bin/
 gen/
-generatedJar/
+generated/
 docs/
+finalOutput/
 
 build.xml
 
