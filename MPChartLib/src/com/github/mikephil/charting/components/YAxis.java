@@ -136,11 +136,6 @@ public class YAxis extends AxisBase {
     protected float mGranularity = 1.0f;
 
     /**
-     * flag indicating if a custom-granularity was set - if false, granularity is auto calculated
-     */
-    protected boolean mCustomGranularity = false;
-
-    /**
      * Enum that specifies the axis a DataSet should be plotted against, either LEFT or RIGHT.
      *
      * @author Philipp Jahoda
@@ -151,6 +146,8 @@ public class YAxis extends AxisBase {
 
     public YAxis() {
         super();
+
+        // default left
         this.mAxisDependency = AxisDependency.LEFT;
         this.mYOffset = 0f;
     }
@@ -206,8 +203,7 @@ public class YAxis extends AxisBase {
 
     /**
      * Enabled/disable granularity control on axis value intervals. If enabled, the axis
-     * interval is not allowed to go below a certain granularity (which is either
-     * auto-calculated, or custom set). Default: false
+     * interval is not allowed to go below a certain granularity. Default: false
      *
      * @param enabled
      */
@@ -223,25 +219,15 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * Set a custom minimum interval between axis values (instead of auto-calculation). The axis
-     * interval can then not go below the specified limit. Use resetGranularity() to re-enable
-     * auto calculation. This will automatically enable granularity.
-     * This can be used to avoid label duplicating when zooming in.
+     * Set a minimum interval for the axis when zooming in. The axis is not allowed to go below
+     * that limit. This can be used to avoid label duplicating when zooming in.
      *
      * @param granularity
      */
     public void setGranularity(float granularity) {
         mGranularity = granularity;
+        // set this to true if it was disabled, as it makes no sense to call this method with granularity disabled
         mGranularityEnabled = true;
-        mCustomGranularity = true;
-    }
-
-    /**
-     * Reset the custom-set granularity. If this method is called, granularity
-     * is again auto calculated (if enabled).
-     */
-    public void resetGranularity() {
-        mCustomGranularity = false;
     }
 
     /**
@@ -619,11 +605,11 @@ public class YAxis extends AxisBase {
         // calc actual range
         this.mAxisRange = Math.abs(this.mAxisMaximum - this.mAxisMinimum);
 
-        // in case granularity is not customized, auto-calculate it
-        if (!mCustomGranularity && mGranularityEnabled) {
-
-            double granularity = Utils.granularity(mAxisRange, mLabelCount);
-            this.mGranularity = (float) granularity;
-        }
+//        // in case granularity is not customized, auto-calculate it
+//        if (!mCustomGranularity && mGranularityEnabled) {
+//
+//            double granularity = Utils.granularity(mAxisRange, mLabelCount);
+//            this.mGranularity = (float) granularity;
+//        }
     }
 }
