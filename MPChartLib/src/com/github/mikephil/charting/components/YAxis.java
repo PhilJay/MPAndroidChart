@@ -128,7 +128,7 @@ public class YAxis extends AxisBase {
      * This could happen if two adjacent axis values are rounded to same value.
      * If using granularity this could be avoided by having fewer axis values visible.
      */
-    protected boolean mGranularityEnabled = true;
+    protected boolean mGranularityEnabled = false;
 
     /**
      * the minimum interval between axis values
@@ -207,7 +207,7 @@ public class YAxis extends AxisBase {
     /**
      * Enabled/disable granularity control on axis value intervals. If enabled, the axis
      * interval is not allowed to go below a certain granularity (which is either
-     * auto-calculated, or custom set)
+     * auto-calculated, or custom set). Default: false
      *
      * @param enabled
      */
@@ -224,20 +224,21 @@ public class YAxis extends AxisBase {
 
     /**
      * Set a custom minimum interval between axis values (instead of auto-calculation). The axis
-     * interval can then not go below
-     * the specified limit. Use resetGranularity() to re-enable auto calculation.
+     * interval can then not go below the specified limit. Use resetGranularity() to re-enable
+     * auto calculation. This will automatically enable granularity.
      * This can be used to avoid label duplicating when zooming in.
      *
      * @param granularity
      */
     public void setGranularity(float granularity) {
         mGranularity = granularity;
+        mGranularityEnabled = true;
         mCustomGranularity = true;
     }
 
     /**
      * Reset the custom-set granularity. If this method is called, granularity
-     * is again auto calculated.
+     * is again auto calculated (if enabled).
      */
     public void resetGranularity() {
         mCustomGranularity = false;
