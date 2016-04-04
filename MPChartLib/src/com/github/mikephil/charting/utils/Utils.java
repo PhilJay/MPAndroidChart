@@ -39,7 +39,7 @@ public abstract class Utils {
     private static int mMinimumFlingVelocity = 50;
     private static int mMaximumFlingVelocity = 8000;
     public final static double DEG2RAD = (Math.PI / 180.0);
-    public final static float FDEG2RAD = ((float)Math.PI / 180.f);
+    public final static float FDEG2RAD = ((float) Math.PI / 180.f);
 
     /**
      * initialize method, called inside the Chart.init() method.
@@ -99,10 +99,13 @@ public abstract class Utils {
         if (mMetrics == null) {
 
             Log.e("MPChartLib-Utils",
-                    "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertDpToPixel(...). Otherwise conversion does not take place.");
+                    "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before" +
+                            " calling Utils.convertDpToPixel(...). Otherwise conversion does not " +
+                            "take place.");
             return dp;
             // throw new IllegalStateException(
-            // "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertDpToPixel(...).");
+            // "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before
+            // calling Utils.convertDpToPixel(...).");
         }
 
         DisplayMetrics metrics = mMetrics;
@@ -122,10 +125,13 @@ public abstract class Utils {
         if (mMetrics == null) {
 
             Log.e("MPChartLib-Utils",
-                    "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertPixelsToDp(...). Otherwise conversion does not take place.");
+                    "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before" +
+                            " calling Utils.convertPixelsToDp(...). Otherwise conversion does not" +
+                            " take place.");
             return px;
             // throw new IllegalStateException(
-            // "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertPixelsToDp(...).");
+            // "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before
+            // calling Utils.convertPixelsToDp(...).");
         }
 
         DisplayMetrics metrics = mMetrics;
@@ -195,7 +201,8 @@ public abstract class Utils {
 
     /**
      * Formats the given number to the given number of decimals, and returns the
-     * number as a string, maximum 35 characters. If thousands are separated, the separating character is a dot (".").
+     * number as a string, maximum 35 characters. If thousands are separated, the separating
+     * character is a dot (".").
      *
      * @param number
      * @param digitCount
@@ -216,7 +223,8 @@ public abstract class Utils {
      * @param separateChar      a caracter to be paced between the "thousands"
      * @return
      */
-    public static String formatNumber(float number, int digitCount, boolean separateThousands, char separateChar) {
+    public static String formatNumber(float number, int digitCount, boolean separateThousands,
+                                      char separateChar) {
 
         char[] out = new char[35];
 
@@ -536,7 +544,7 @@ public abstract class Utils {
 
         final float lineHeight = mDrawTextRectBuffer.height();
 
-                // Android sometimes has pre-padding
+        // Android sometimes has pre-padding
         drawOffsetX -= mDrawTextRectBuffer.left;
 
         // Android does not snap the bounds to line boundaries,
@@ -575,8 +583,7 @@ public abstract class Utils {
             c.drawText(text, drawOffsetX, drawOffsetY, paint);
 
             c.restore();
-        }
-        else {
+        } else {
             if (anchor.x != 0.f || anchor.y != 0.f) {
 
                 drawOffsetX -= mDrawTextRectBuffer.width() * anchor.x;
@@ -647,8 +654,7 @@ public abstract class Utils {
             textLayout.draw(c);
 
             c.restore();
-        }
-        else {
+        } else {
             if (anchor.x != 0.f || anchor.y != 0.f) {
 
                 drawOffsetX -= drawWidth * anchor.x;
@@ -685,32 +691,60 @@ public abstract class Utils {
         drawMultilineText(c, textLayout, x, y, paint, anchor, angleDegrees);
     }
 
-    public static FSize getSizeOfRotatedRectangleByDegrees(FSize rectangleSize, float degrees)
-    {
+    public static FSize getSizeOfRotatedRectangleByDegrees(FSize rectangleSize, float degrees) {
         final float radians = degrees * FDEG2RAD;
-        return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height, radians);
+        return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height,
+                radians);
     }
 
-    public static FSize getSizeOfRotatedRectangleByRadians(FSize rectangleSize, float radians)
-    {
-        return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height, radians);
+    public static FSize getSizeOfRotatedRectangleByRadians(FSize rectangleSize, float radians) {
+        return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height,
+                radians);
     }
 
-    public static FSize getSizeOfRotatedRectangleByDegrees(float rectangleWidth, float rectangleHeight, float degrees)
-    {
+    public static FSize getSizeOfRotatedRectangleByDegrees(float rectangleWidth, float
+            rectangleHeight, float degrees) {
         final float radians = degrees * FDEG2RAD;
         return getSizeOfRotatedRectangleByRadians(rectangleWidth, rectangleHeight, radians);
     }
 
-    public static FSize getSizeOfRotatedRectangleByRadians(float rectangleWidth, float rectangleHeight, float radians)
-    {
+    public static FSize getSizeOfRotatedRectangleByRadians(float rectangleWidth, float
+            rectangleHeight, float radians) {
         return new FSize(
-                Math.abs(rectangleWidth * (float)Math.cos(radians)) + Math.abs(rectangleHeight * (float)Math.sin(radians)),
-                Math.abs(rectangleWidth * (float)Math.sin(radians)) + Math.abs(rectangleHeight * (float)Math.cos(radians))
+                Math.abs(rectangleWidth * (float) Math.cos(radians)) + Math.abs(rectangleHeight *
+                        (float) Math.sin(radians)),
+                Math.abs(rectangleWidth * (float) Math.sin(radians)) + Math.abs(rectangleHeight *
+                        (float) Math.cos(radians))
         );
     }
 
     public static int getSDKInt() {
         return android.os.Build.VERSION.SDK_INT;
+    }
+
+    /**
+     * Calculates the granularity (minimum axis interval) based on axis range and labelcount.
+     * Default granularity is 1/10th of interval.
+     *
+     * @param range
+     * @param labelCount
+     * @return
+     */
+    public static double granularity(float range, int labelCount) {
+
+        // Find out how much spacing (in y value space) between axis values
+        double rawInterval = range / labelCount;
+        double interval = Utils.roundToNextSignificant(rawInterval);
+
+        // Normalize interval
+        double intervalMagnitude = Utils.roundToNextSignificant(Math.pow(10, (int) Math.log10
+                (interval)));
+        int intervalSigDigit = (int) (interval / intervalMagnitude);
+
+        if (intervalSigDigit > 5) {
+            interval = Math.floor(10 * intervalMagnitude);
+        }
+
+        return interval * 0.1; // granularity is 1/10th of interval
     }
 }

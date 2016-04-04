@@ -101,7 +101,7 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
 
     @Override
     public void calcMinMax(int start, int end) {
-        // super.calcMinMax();
+        // super.calculate();
 
         if (mYVals == null)
             return;

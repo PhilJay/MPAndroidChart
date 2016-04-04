@@ -11,7 +11,7 @@ import java.util.List;
 
 public class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry> implements IBubbleDataSet {
 
-    // NOTE: Do not initialize these, as the calcMinMax is called by the super,
+    // NOTE: Do not initialize these, as the calculate is called by the super,
     // and the initializers are called after that and can reset the values
     protected float mXMax;
     protected float mXMin;
