@@ -16,6 +16,7 @@ import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
@@ -174,9 +175,11 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
             yVals1.add(new BarEntry((int) val1, i));
         }
 
-        ArrayList<String> xVals = new ArrayList<String>();
+        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
         for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
-            xVals.add((int) yVals1.get(i).getVal() + "");
+
+            XAxisValue xValue = new XAxisValue(i, (int) yVals1.get(i).getVal() + "");
+            xVals.add(xValue);
         }
 
         BarDataSet set1 = new BarDataSet(yVals1, "Data Set");
