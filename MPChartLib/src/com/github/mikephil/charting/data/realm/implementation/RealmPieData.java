@@ -12,7 +12,7 @@ import io.realm.RealmResults;
  */
 public class RealmPieData extends PieData {
 
-    public RealmPieData(RealmResults<? extends RealmObject> result, String xValuesField, IPieDataSet dataSet) {
-        super(RealmUtils.toXVals(result, xValuesField), dataSet);
+    public RealmPieData(RealmResults<? extends RealmObject> result,String xPositionField, String xLabelField, IPieDataSet dataSet) {
+        super(RealmUtils.toXVals(result, xPositionField, xLabelField), dataSet);
     }
 }

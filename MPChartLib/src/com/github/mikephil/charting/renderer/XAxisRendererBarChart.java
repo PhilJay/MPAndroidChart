@@ -55,7 +55,7 @@ public class XAxisRendererBarChart extends XAxisRenderer {
             if (mViewPortHandler.isInBoundsX(position[0]) && i >= 0
                     && i < mXAxis.getValues().size()) {
 
-                String label = mXAxis.getValues().get(i);
+                String label = mXAxis.getValues().get(i).getLabel();
 
                 if (mXAxis.isAvoidFirstLastClippingEnabled()) {
 

@@ -17,27 +17,27 @@ public class LineData extends BarLineScatterCandleBubbleData<ILineDataSet> {
         super();
     }
 
-    public LineData(List<String> xVals) {
+    public LineData(List<XAxisValue> xVals) {
         super(xVals);
     }
 
-    public LineData(String[] xVals) {
+    public LineData(XAxisValue[] xVals) {
         super(xVals);
     }
 
-    public LineData(List<String> xVals, List<ILineDataSet> dataSets) {
+    public LineData(List<XAxisValue> xVals, List<ILineDataSet> dataSets) {
         super(xVals, dataSets);
     }
 
-    public LineData(String[] xVals, List<ILineDataSet> dataSets) {
+    public LineData(XAxisValue[] xVals, List<ILineDataSet> dataSets) {
         super(xVals, dataSets);
     }
 
-    public LineData(List<String> xVals, ILineDataSet dataSet) {
+    public LineData(List<XAxisValue> xVals, ILineDataSet dataSet) {
         super(xVals, toList(dataSet));
     }
 
-    public LineData(String[] xVals, ILineDataSet dataSet) {
+    public LineData(XAxisValue[] xVals, ILineDataSet dataSet) {
         super(xVals, toList(dataSet));
     }
 

@@ -12,27 +12,27 @@ public class BubbleData extends BarLineScatterCandleBubbleData<IBubbleDataSet> {
         super();
     }
 
-    public BubbleData(List<String> xVals) {
+    public BubbleData(List<XAxisValue> xVals) {
         super(xVals);
     }
 
-    public BubbleData(String[] xVals) {
+    public BubbleData(XAxisValue[] xVals) {
         super(xVals);
     }
 
-    public BubbleData(List<String> xVals, List<IBubbleDataSet> dataSets) {
+    public BubbleData(List<XAxisValue> xVals, List<IBubbleDataSet> dataSets) {
         super(xVals, dataSets);
     }
 
-    public BubbleData(String[] xVals, List<IBubbleDataSet> dataSets) {
+    public BubbleData(XAxisValue[] xVals, List<IBubbleDataSet> dataSets) {
         super(xVals, dataSets);
     }
 
-    public BubbleData(List<String> xVals, IBubbleDataSet dataSet) {
+    public BubbleData(List<XAxisValue> xVals, IBubbleDataSet dataSet) {
         super(xVals, toList(dataSet));
     }
 
-    public BubbleData(String[] xVals, IBubbleDataSet dataSet) {
+    public BubbleData(XAxisValue[] xVals, IBubbleDataSet dataSet) {
         super(xVals, toList(dataSet));
     }
 

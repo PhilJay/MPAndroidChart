@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
@@ -110,12 +111,12 @@ public class LegendRenderer extends Renderer {
 
                 } else if (dataSet instanceof IPieDataSet) {
 
-                    List<String> xVals = data.getXVals();
+                    List<XAxisValue> xVals = data.getXVals();
                     IPieDataSet pds = (IPieDataSet) dataSet;
 
                     for (int j = 0; j < clrs.size() && j < entryCount && j < xVals.size(); j++) {
 
-                        labels.add(xVals.get(j));
+                        labels.add(xVals.get(j).getLabel());
                         colors.add(clrs.get(j));
                     }
 

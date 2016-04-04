@@ -1,5 +1,7 @@
 package com.github.mikephil.charting.data.realm.base;
 
+import com.github.mikephil.charting.data.XAxisValue;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,17 +17,20 @@ public final class RealmUtils {
      * Transforms the given Realm-ResultSet into a String array by using the provided xValuesField.
      *
      * @param result
-     * @param xValuesField
+     * @param xPositionField
+     * @param xLabelField
      * @return
      */
-    public static List<String> toXVals(RealmResults<? extends RealmObject> result, String xValuesField) {
+    public static List<XAxisValue> toXVals(RealmResults<? extends RealmObject> result, String xPositionField, String xLabelField) {
 
-        List<String> xVals = new ArrayList<String>();
+        List<XAxisValue> xVals = new ArrayList<XAxisValue>();
 
         for (RealmObject object : result) {
 
             DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
-            xVals.add(dynamicObject.getString(xValuesField));
+
+            XAxisValue val = new XAxisValue(dynamicObject.getDouble(xPositionField), dynamicObject.getString(xLabelField));
+            xVals.add(val);
         }
 
         return xVals;

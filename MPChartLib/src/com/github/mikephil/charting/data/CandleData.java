@@ -11,27 +11,27 @@ public class CandleData extends BarLineScatterCandleBubbleData<ICandleDataSet> {
         super();
     }
     
-    public CandleData(List<String> xVals) {
+    public CandleData(List<XAxisValue> xVals) {
         super(xVals);
     }
     
-    public CandleData(String[] xVals) {
+    public CandleData(XAxisValue[] xVals) {
         super(xVals);
     }
     
-    public CandleData(List<String> xVals, List<ICandleDataSet> dataSets) {
+    public CandleData(List<XAxisValue> xVals, List<ICandleDataSet> dataSets) {
         super(xVals, dataSets);
     }
 
-    public CandleData(String[] xVals, List<ICandleDataSet> dataSets) {
+    public CandleData(XAxisValue[] xVals, List<ICandleDataSet> dataSets) {
         super(xVals, dataSets);
     }
     
-    public CandleData(List<String> xVals, ICandleDataSet dataSet) {
+    public CandleData(List<XAxisValue> xVals, ICandleDataSet dataSet) {
         super(xVals, toList(dataSet));        
     }
     
-    public CandleData(String[] xVals, ICandleDataSet dataSet) {
+    public CandleData(XAxisValue[] xVals, ICandleDataSet dataSet) {
         super(xVals, toList(dataSet));
     }
     

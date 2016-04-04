@@ -20,19 +20,19 @@ public class PieData extends ChartData<IPieDataSet> {
         super();
     }
 
-    public PieData(List<String> xVals) {
+    public PieData(List<XAxisValue> xVals) {
         super(xVals);
     }
 
-    public PieData(String[] xVals) {
+    public PieData(XAxisValue[] xVals) {
         super(xVals);
     }
 
-    public PieData(List<String> xVals, IPieDataSet dataSet) {
+    public PieData(List<XAxisValue> xVals, IPieDataSet dataSet) {
         super(xVals, toList(dataSet));
     }
 
-    public PieData(String[] xVals, IPieDataSet dataSet) {
+    public PieData(XAxisValue[] xVals, IPieDataSet dataSet) {
         super(xVals, toList(dataSet));
     }
 

@@ -33,6 +33,7 @@ import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.ChartHighlighter;
@@ -1375,7 +1376,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * @param index
      * @return
      */
-    public String getXValue(int index) {
+    public XAxisValue getXValue(int index) {
         if (mData == null || mData.getXValCount() <= index)
             return null;
         else
