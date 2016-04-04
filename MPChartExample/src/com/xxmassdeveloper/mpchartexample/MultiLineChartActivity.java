@@ -16,6 +16,7 @@ import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.highlight.Highlight;
@@ -191,9 +192,9 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
         tvX.setText("" + (mSeekBarX.getProgress()));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
-        ArrayList<String> xVals = new ArrayList<String>();
+        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-            xVals.add((i) + "");
+            xVals.add(new XAxisValue(i, i+""));
         }
  
         ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();

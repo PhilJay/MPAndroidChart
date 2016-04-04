@@ -21,6 +21,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
+import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
@@ -103,16 +104,14 @@ public abstract class SimpleFragment extends Fragment {
         int count = 4;
         
         ArrayList<Entry> entries1 = new ArrayList<Entry>();
-        ArrayList<String> xVals = new ArrayList<String>();
+        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
         
-        xVals.add("Quarter 1");
-        xVals.add("Quarter 2");
-        xVals.add("Quarter 3");
-        xVals.add("Quarter 4");
+        xVals.add(new XAxisValue("Quarter 1"));
+        xVals.add(new XAxisValue("Quarter 2"));
+        xVals.add(new XAxisValue("Quarter 3"));
+        xVals.add(new XAxisValue("Quarter 4"));
         
         for(int i = 0; i < count; i++) {
-            xVals.add("entry" + (i+1));
-    
             entries1.add(new Entry((float) (Math.random() * 60) + 40, i));
         }
         

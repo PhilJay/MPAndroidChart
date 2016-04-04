@@ -19,6 +19,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
@@ -103,7 +104,12 @@ public class StackedBarActivityNegative extends DemoBase implements
                 "Men", "Women"
         });
 
-        String []xVals = new String[]{"0-10", "10-20", "20-30", "30-40", "40-50", "50-60", "60-70", "70-80", "80-90", "90-100", "100+"};
+        String []xLabels = new String[]{"0-10", "10-20", "20-30", "30-40", "40-50", "50-60", "60-70", "70-80", "80-90", "90-100", "100+"};
+        List<XAxisValue> xVals = new ArrayList<XAxisValue>();
+
+        for(int i = 0; i < xLabels.length; i++) {
+            xVals.add(new XAxisValue(i, xLabels[i]));
+        }
 
         BarData data = new BarData(xVals, set);
         mChart.setData(data);

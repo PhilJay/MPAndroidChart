@@ -16,6 +16,10 @@ public abstract class BarLineScatterCandleBubbleData<T extends IBarLineScatterCa
     public BarLineScatterCandleBubbleData() {
         super();
     }
+
+    public BarLineScatterCandleBubbleData(T... sets) {
+        super(sets);
+    }
     
     public BarLineScatterCandleBubbleData(List<XAxisValue> xVals) {
         super(xVals);

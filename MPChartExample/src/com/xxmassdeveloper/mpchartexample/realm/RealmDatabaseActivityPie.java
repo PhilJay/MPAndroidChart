@@ -60,7 +60,7 @@ public class RealmDatabaseActivityPie extends RealmBaseActivity {
         set.setSliceSpace(2);
 
         // create a data object with the dataset list
-        RealmPieData data = new RealmPieData(result, "xValue", set);
+        RealmPieData data = new RealmPieData(result, "xAxisPosition", "xAxisLabel", set);
         styleData(data);
         data.setValueTextColor(Color.WHITE);
         data.setValueTextSize(12f);

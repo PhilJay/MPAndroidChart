@@ -10,6 +10,7 @@ import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -51,12 +52,12 @@ public class ScrollViewActivity extends DemoBase {
     private void setData(int count) {
         
         ArrayList<BarEntry> yVals = new ArrayList<BarEntry>();
-        ArrayList<String> xVals = new ArrayList<String>();
+        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
 
         for (int i = 0; i < count; i++) {
             float val = (float) (Math.random() * count) + 15;
             yVals.add(new BarEntry((int) val, i));
-            xVals.add((int) val + "");
+            xVals.add(new XAxisValue(i, (int) val + ""));
         }
 
         BarDataSet set = new BarDataSet(yVals, "Data Set");

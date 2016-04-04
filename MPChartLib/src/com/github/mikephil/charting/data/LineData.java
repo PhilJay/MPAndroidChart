@@ -17,6 +17,10 @@ public class LineData extends BarLineScatterCandleBubbleData<ILineDataSet> {
         super();
     }
 
+    public LineData(ILineDataSet... dataSets) {
+        super(dataSets);
+    }
+
     public LineData(List<XAxisValue> xVals) {
         super(xVals);
     }

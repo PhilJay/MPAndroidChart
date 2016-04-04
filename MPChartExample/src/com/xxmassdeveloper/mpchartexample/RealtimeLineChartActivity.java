@@ -19,6 +19,7 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -139,8 +140,8 @@ public class RealtimeLineChartActivity extends DemoBase implements
             }
 
             // add a new x-value first
-            data.addXValue(mMonths[data.getXValCount() % 12] + " "
-                    + (year + data.getXValCount() / 12));
+            data.addXValue(new XAxisValue(data.getXValCount() ,mMonths[data.getXValCount() % 12] + " "
+                    + (year + data.getXValCount() / 12)));
             data.addEntry(new Entry((float) (Math.random() * 40) + 30f, set.getEntryCount()), 0);
 
 

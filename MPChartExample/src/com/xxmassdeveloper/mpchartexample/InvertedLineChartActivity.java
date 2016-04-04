@@ -19,6 +19,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
@@ -255,11 +256,7 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
 
     private void setData(int count, float range) {
 
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < count; i++) {
-            xVals.add((i % 30) + "/" + (i % 12) + "/14");
-        }
-
+        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
         ArrayList<Entry> yVals = new ArrayList<Entry>();
 
         for (int i = 0; i < count; i++) {
@@ -268,6 +265,7 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
                                                            // ((mult *
                                                            // 0.1) / 10);
             yVals.add(new Entry(val, i));
+            xVals.add(new XAxisValue(i, (i % 30) + "/" + (i % 12) + "/14"));
         }
 
         // create a dataset and give it a type

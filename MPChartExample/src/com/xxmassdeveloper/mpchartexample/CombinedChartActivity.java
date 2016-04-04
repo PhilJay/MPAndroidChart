@@ -27,6 +27,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
+import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -52,7 +53,7 @@ public class CombinedChartActivity extends DemoBase {
         mChart.setDrawBarShadow(false);
         
         // draw bars behind lines
-        mChart.setDrawOrder(new DrawOrder[] {
+        mChart.setDrawOrder(new DrawOrder[]{
                 DrawOrder.BAR, DrawOrder.BUBBLE, DrawOrder.CANDLE, DrawOrder.LINE, DrawOrder.SCATTER
         });
 
@@ -67,7 +68,13 @@ public class CombinedChartActivity extends DemoBase {
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxisPosition.BOTH_SIDED);
 
-        CombinedData data = new CombinedData(mMonths);
+        XAxisValue[] xVals = new XAxisValue[mMonths.length];
+
+        for(int i = 0; i < mMonths.length; i++) {
+            xVals[i] = new XAxisValue(i, mMonths[i]);
+        }
+
+        CombinedData data = new CombinedData(xVals);
 
         data.setData(generateLineData());
         data.setData(generateBarData());

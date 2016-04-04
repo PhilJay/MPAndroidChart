@@ -23,6 +23,7 @@ import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -191,10 +192,10 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
             yVals1.add(new Entry((float) (Math.random() * mult) + mult / 5, i));
         }
 
-        ArrayList<String> xVals = new ArrayList<String>();
+        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
 
         for (int i = 0; i < count + 1; i++)
-            xVals.add(mParties[i % mParties.length]);
+            xVals.add(new XAxisValue(mParties[i % mParties.length]));
 
         PieDataSet dataSet = new PieDataSet(yVals1, "Election Results");
         dataSet.setSliceSpace(3f);

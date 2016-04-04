@@ -63,7 +63,7 @@ public class RealmDatabaseActivityScatter extends RealmBaseActivity {
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list
-        RealmScatterData data = new RealmScatterData(result, "xValue", dataSets);
+        RealmScatterData data = new RealmScatterData(result, "xAxisPosition", "xAxisLabel", dataSets);
         styleData(data);
 
         // set data

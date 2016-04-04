@@ -67,7 +67,7 @@ public class RealmDatabaseActivityCandle extends RealmBaseActivity {
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list
-        RealmCandleData data = new RealmCandleData(result, "xValue", dataSets);
+        RealmCandleData data = new RealmCandleData(result, "xAxisPosition", "xAxisLabel", dataSets);
         styleData(data);
 
         // set data

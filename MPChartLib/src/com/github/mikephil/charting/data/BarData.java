@@ -4,6 +4,7 @@ package com.github.mikephil.charting.data;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,6 +24,10 @@ public class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
 
     public BarData() {
         super();
+    }
+
+    public BarData(IBarDataSet... dataSets) {
+        super(dataSets);
     }
 
     public BarData(List<XAxisValue> xVals) {

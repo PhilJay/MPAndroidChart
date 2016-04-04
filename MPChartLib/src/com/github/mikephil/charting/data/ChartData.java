@@ -65,6 +65,11 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         mDataSets = new ArrayList<T>();
     }
 
+    public ChartData(T... dataSets) {
+        mDataSets = Arrays.asList(dataSets);
+        init();
+    }
+
     /**
      * Constructor for only x-values. This constructor can be used for setting
      * up an empty chart without data.
@@ -821,12 +826,12 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      *
      * @return
      */
-    public static List<String> generateXVals(int from, int to) {
+    public static List<XAxisValue> generateXVals(int from, int to) {
 
-        List<String> xvals = new ArrayList<String>();
+        List<XAxisValue> xvals = new ArrayList<XAxisValue>();
 
         for (int i = from; i < to; i++) {
-            xvals.add("" + i);
+            xvals.add(new XAxisValue(i, i + ""));
         }
 
         return xvals;

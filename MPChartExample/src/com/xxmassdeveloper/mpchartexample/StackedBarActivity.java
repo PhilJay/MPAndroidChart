@@ -20,6 +20,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.highlight.Highlight;
@@ -178,11 +179,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 		tvX.setText("" + (mSeekBarX.getProgress() + 1));
 		tvY.setText("" + (mSeekBarY.getProgress()));
 
-		ArrayList<String> xVals = new ArrayList<String>();
-		for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
-			xVals.add(mMonths[i % mMonths.length]);
-		}
-
+		ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
 		ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
 
 		for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
@@ -192,6 +189,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 			float val3 = (float) (Math.random() * mult) + mult / 3;
 
 			yVals1.add(new BarEntry(new float[] { val1, val2, val3 }, i));
+			xVals.add(new XAxisValue(i, mMonths[i % mMonths.length]));
 		}
 
 		BarDataSet set1 = new BarDataSet(yVals1, "Statistics Vienna 2014");

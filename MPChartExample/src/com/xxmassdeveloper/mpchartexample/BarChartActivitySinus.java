@@ -216,7 +216,7 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
         set.setBarSpacePercent(40f);
         set.setColor(Color.rgb(240, 120, 124));
 
-        BarData data = new BarData(null, set);
+        BarData data = new BarData(set);
         data.setValueTextSize(10f);
         data.setValueTypeface(mTf);
         data.setDrawValues(false);

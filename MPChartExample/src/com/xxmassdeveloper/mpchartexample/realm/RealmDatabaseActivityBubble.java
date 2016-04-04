@@ -61,7 +61,7 @@ public class RealmDatabaseActivityBubble extends RealmBaseActivity {
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list
-        RealmBubbleData data = new RealmBubbleData(result, "xValue", dataSets);
+        RealmBubbleData data = new RealmBubbleData(result, "xAxisPosition", "xAxisLabel", dataSets);
         styleData(data);
 
         // set data
