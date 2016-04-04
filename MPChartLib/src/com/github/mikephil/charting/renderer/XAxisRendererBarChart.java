@@ -16,7 +16,7 @@ public class XAxisRendererBarChart extends XAxisRenderer {
     protected BarChart mChart;
 
     public XAxisRendererBarChart(ViewPortHandler viewPortHandler, XAxis xAxis, Transformer trans,
-            BarChart chart) {
+                                 BarChart chart) {
         super(viewPortHandler, xAxis, trans);
 
         this.mChart = chart;
@@ -24,7 +24,7 @@ public class XAxisRendererBarChart extends XAxisRenderer {
 
     /**
      * draws the x-labels on the specified y-position
-     * 
+     *
      * @param pos
      */
     @Override
@@ -76,7 +76,8 @@ public class XAxisRendererBarChart extends XAxisRenderer {
                     }
                 }
 
-                drawLabel(c, label, i, position[0], pos, anchor, labelRotationAngleDegrees);
+                drawLabel(c, label, 0, i, position[0], pos, anchor, labelRotationAngleDegrees);
+
             }
         }
     }

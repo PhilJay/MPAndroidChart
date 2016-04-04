@@ -49,18 +49,18 @@ public class XAxisRendererRadarChart extends XAxisRenderer {
             PointF p = Utils.getPosition(center, mChart.getYRange() * factor
                     + mXAxis.mLabelRotatedWidth / 2f, angle);
 
-            drawLabel(c, label, i, p.x, p.y - mXAxis.mLabelRotatedHeight / 2.f,
+            drawLabel(c, label,0, i, p.x, p.y - mXAxis.mLabelRotatedHeight / 2.f,
                     drawLabelAnchor, labelRotationAngleDegrees);
         }
     }
 
-	/**
-	 * XAxis LimitLines on RadarChart not yet supported.
-	 *
-	 * @param c
-	 */
-	@Override
-	public void renderLimitLines(Canvas c) {
-		// this space intentionally left blank
-	}
+    /**
+     * XAxis LimitLines on RadarChart not yet supported.
+     *
+     * @param c
+     */
+    @Override
+    public void renderLimitLines(Canvas c) {
+        // this space intentionally left blank
+    }
 }

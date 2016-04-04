@@ -11,7 +11,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**
  * Baseclass of all axis renderers.
- * 
+ *
  * @author Philipp Jahoda
  */
 public abstract class AxisRenderer extends Renderer {
@@ -27,10 +27,13 @@ public abstract class AxisRenderer extends Renderer {
     /** paint for the line surrounding the chart */
     protected Paint mAxisLinePaint;
 
-	/** paint used for the limit lines */
-	protected Paint mLimitLinePaint;
+    /** paint used for the limit lines */
+    protected Paint mLimitLinePaint;
 
-	public AxisRenderer(ViewPortHandler viewPortHandler, Transformer trans) {
+    /** renderer to render custom labels **/
+    protected AxisLabelRenderer mAxisLabelRenderer = null;
+
+    public AxisRenderer(ViewPortHandler viewPortHandler, Transformer trans) {
         super(viewPortHandler);
 
         this.mTrans = trans;
@@ -48,13 +51,29 @@ public abstract class AxisRenderer extends Renderer {
         mAxisLinePaint.setStrokeWidth(1f);
         mAxisLinePaint.setStyle(Style.STROKE);
 
-		mLimitLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		mLimitLinePaint.setStyle(Paint.Style.STROKE);
-	}
+        mLimitLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mLimitLinePaint.setStyle(Paint.Style.STROKE);
+    }
+
+    /**
+     * Sets axis label renderer
+     *
+     */
+    public void setAxisLabelRenderer( AxisLabelRenderer axisLabelRenderer ) {
+        mAxisLabelRenderer = axisLabelRenderer;
+    }
+
+    /**
+     * Gets axis label renderer
+     *
+     */
+    public AxisLabelRenderer getAxisLabelRenderer() {
+        return mAxisLabelRenderer;
+    }
 
     /**
      * Returns the Paint object used for drawing the axis (labels).
-     * 
+     *
      * @return
      */
     public Paint getPaintAxisLabels() {
@@ -64,7 +83,7 @@ public abstract class AxisRenderer extends Renderer {
     /**
      * Returns the Paint object that is used for drawing the grid-lines of the
      * axis.
-     * 
+     *
      * @return
      */
     public Paint getPaintGrid() {
@@ -74,7 +93,7 @@ public abstract class AxisRenderer extends Renderer {
     /**
      * Returns the Paint object that is used for drawing the axis-line that goes
      * alongside the axis.
-     * 
+     *
      * @return
      */
     public Paint getPaintAxisLine() {
@@ -83,7 +102,7 @@ public abstract class AxisRenderer extends Renderer {
 
     /**
      * Returns the Transformer object used for transforming the axis values.
-     * 
+     *
      * @return
      */
     public Transformer getTransformer() {
@@ -92,29 +111,29 @@ public abstract class AxisRenderer extends Renderer {
 
     /**
      * Draws the axis labels to the screen.
-     * 
+     *
      * @param c
      */
     public abstract void renderAxisLabels(Canvas c);
 
     /**
      * Draws the grid lines belonging to the axis.
-     * 
+     *
      * @param c
      */
     public abstract void renderGridLines(Canvas c);
 
     /**
      * Draws the line that goes alongside the axis.
-     * 
+     *
      * @param c
      */
     public abstract void renderAxisLine(Canvas c);
 
-	/**
-	 * Draws the LimitLines associated with this axis to the screen.
-	 *
-	 * @param c
-	 */
-	public abstract void renderLimitLines(Canvas c);
+    /**
+     * Draws the LimitLines associated with this axis to the screen.
+     *
+     * @param c
+     */
+    public abstract void renderLimitLines(Canvas c);
 }

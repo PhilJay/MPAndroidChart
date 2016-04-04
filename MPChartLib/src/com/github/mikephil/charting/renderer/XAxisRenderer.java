@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Path;
 import android.graphics.PointF;
-import android.util.Size;
 
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
@@ -154,6 +153,10 @@ public class XAxisRenderer extends AxisRenderer {
                 0f, 0f
         };
 
+        String label;
+        float width = Utils.calcTextWidth(mAxisLabelPaint, "A");
+        float height = Utils.calcTextHeight(mAxisLabelPaint, "A");
+        int counter = -1;
         for (int i = mMinX; i <= mMaxX; i += mXAxis.mAxisLabelModulus) {
 
             position[0] = i;
@@ -161,14 +164,14 @@ public class XAxisRenderer extends AxisRenderer {
             mTrans.pointValuesToPixel(position);
 
             if (mViewPortHandler.isInBoundsX(position[0])) {
+                counter++;
 
-                String label = mXAxis.getValues().get(i);
+                label = mXAxis.getValues().get(i);
 
                 if (mXAxis.isAvoidFirstLastClippingEnabled()) {
 
                     // avoid clipping of the last
                     if (i == mXAxis.getValues().size() - 1 && mXAxis.getValues().size() > 1) {
-                        float width = Utils.calcTextWidth(mAxisLabelPaint, label);
 
                         if (width > mViewPortHandler.offsetRight() * 2
                                 && position[0] + width > mViewPortHandler.getChartWidth())
@@ -177,19 +180,41 @@ public class XAxisRenderer extends AxisRenderer {
                         // avoid clipping of the first
                     } else if (i == 0) {
 
-                        float width = Utils.calcTextWidth(mAxisLabelPaint, label);
                         position[0] += width / 2;
                     }
                 }
 
-                drawLabel(c, label, i, position[0], pos, anchor, labelRotationAngleDegrees);
+                // pass 0 to value param b/c value and label should be identical
+                drawLabel(c, label, 0, counter, position[0], pos, width, height, anchor, labelRotationAngleDegrees);
             }
         }
     }
 
-    protected void drawLabel(Canvas c, String label, int xIndex, float x, float y, PointF anchor, float angleDegrees) {
+    protected void drawLabel(Canvas c, String label, float value, int xIndex, float x, float y, PointF anchor, float angleDegrees) {
+
+        float width = Utils.calcTextWidth(mAxisLabelPaint, label);
+        float height = Utils.calcTextHeight(mAxisLabelPaint, label);
+
+        this.drawLabel(c, label, value, xIndex, x, y, width, height, anchor, angleDegrees);
+    }
+
+    protected void drawLabel(Canvas c, String label, float value, int xIndex, float x, float y, float w, float h, PointF anchor, float angleDegrees) {
+
         String formattedLabel = mXAxis.getValueFormatter().getXValue(label, xIndex, mViewPortHandler);
-        Utils.drawText(c, formattedLabel, x, y, mAxisLabelPaint, anchor, angleDegrees);
+
+        if(mAxisLabelRenderer == null) {
+
+            Utils.drawText(c, formattedLabel, x, y, mAxisLabelPaint, anchor, angleDegrees);
+
+        } else {
+
+            // returned xIndex doesn't seem accurate - only returning even numbers
+            // is this because it skips indices?
+
+            //XXX
+            mAxisLabelRenderer.drawLabel(c, mAxisLabelPaint, formattedLabel, value, xIndex, x, y, w, h, anchor, angleDegrees);
+        }
+
     }
 
     @Override
@@ -228,24 +253,24 @@ public class XAxisRenderer extends AxisRenderer {
         }
     }
 
-	/**
-	 * Draws the LimitLines associated with this axis to the screen.
-	 *
-	 * @param c
-	 */
-	@Override
-	public void renderLimitLines(Canvas c) {
+    /**
+     * Draws the LimitLines associated with this axis to the screen.
+     *
+     * @param c
+     */
+    @Override
+    public void renderLimitLines(Canvas c) {
 
-		List<LimitLine> limitLines = mXAxis.getLimitLines();
+        List<LimitLine> limitLines = mXAxis.getLimitLines();
 
-		if (limitLines == null || limitLines.size() <= 0)
-			return;
+        if (limitLines == null || limitLines.size() <= 0)
+            return;
 
         float[] position = new float[2];
 
-		for (int i = 0; i < limitLines.size(); i++) {
+        for (int i = 0; i < limitLines.size(); i++) {
 
-			LimitLine l = limitLines.get(i);
+            LimitLine l = limitLines.get(i);
 
             if(!l.isEnabled())
                 continue;
@@ -257,8 +282,8 @@ public class XAxisRenderer extends AxisRenderer {
 
             renderLimitLineLine(c, l, position);
             renderLimitLineLabel(c, l, position, 2.f + l.getYOffset());
-		}
-	}
+        }
+    }
 
     float[] mLimitLineSegmentsBuffer = new float[4];
     private Path mLimitLinePath = new Path();
