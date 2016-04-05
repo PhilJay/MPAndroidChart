@@ -33,6 +33,14 @@ public class LineChart extends BarLineChartBase<LineData> implements LineDataPro
 
         mRenderer = new LineChartRenderer(this, mAnimator, mViewPortHandler);
     }
+
+//    @Override
+//    protected void calcMinMax() {
+//        super.calcMinMax();
+//
+//        if (mXAxis.mAxisRange == 0 && mData.getYValCount() > 0)
+//            mXAxis.mAxisRange = 1;
+//    }
     
     @Override
     public LineData getLineData() {

@@ -39,6 +39,7 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
     private LineChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
+    private long curTime = System.currentTimeMillis();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +107,10 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
         xAxis.setTextColor(Color.WHITE);
         xAxis.setDrawAxisLine(false);
         xAxis.setSpaceBetweenLabels(1);
+
+        // custom x-axis min / max
+        xAxis.setAxisMinValue(curTime);
+        xAxis.setAxisMaxValue(curTime + 100000);
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(tf);
@@ -268,7 +273,9 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
 
         ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
         for (int i = 0; i < count; i++) {
-            xVals.add(new XAxisValue(i, i + ""));
+
+            long timeLong = curTime + i * 1000;
+            xVals.add(new XAxisValue(timeLong, new Date(timeLong).toString()));
         }
 
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
