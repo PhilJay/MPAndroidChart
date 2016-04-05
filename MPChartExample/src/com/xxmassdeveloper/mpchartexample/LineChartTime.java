@@ -60,6 +60,7 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
         mSeekBarX.setOnSeekBarChangeListener(this);
 
         mChart = (LineChart) findViewById(R.id.chart1);
+        mChart.setLogEnabled(true);
 
         // no description text
         mChart.setDescription("");
@@ -84,8 +85,7 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
 
         // add data
         setData(20, 30);
-
-        mChart.animateX(2500);
+        mChart.invalidate();
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
@@ -109,8 +109,8 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
         xAxis.setSpaceBetweenLabels(1);
 
         // custom x-axis min / max
-        xAxis.setAxisMinValue(curTime);
-        xAxis.setAxisMaxValue(curTime + 100000);
+        xAxis.setAxisMinValue(5000);
+        xAxis.setAxisMaxValue(30000);
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(tf);
@@ -272,10 +272,10 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
     private void setData(int count, float range) {
 
         ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < 10; i++) {
 
-            long timeLong = curTime + i * 1000;
-            xVals.add(new XAxisValue(timeLong, new Date(timeLong).toString()));
+            long timeLong = 10000 + i * 1000;
+            xVals.add(new XAxisValue(timeLong, i + ""));
         }
 
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
