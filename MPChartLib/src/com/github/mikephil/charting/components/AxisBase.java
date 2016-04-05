@@ -404,5 +404,22 @@ public abstract class AxisBase extends ComponentBase {
      * @param dataMin the min value according to chart data
      * @param dataMax the max value according to chart data
      */
-    public abstract void calculate(float dataMin, float dataMax);
+    public void calculate(float dataMin, float dataMax) {
+
+        // if custom, use value as is, else use data value
+        float min = mCustomAxisMin ? mAxisMinimum : dataMin;
+        float max = mCustomAxisMax ? mAxisMaximum : dataMax;
+
+        // temporary range (before calculations)
+        float range = Math.abs(max - min);
+
+        // in case all values are equal
+        if (range == 0f) {
+            max = max + 1f;
+            min = min - 1f;
+        }
+
+        // actual range
+        this.mAxisRange = Math.abs(max - min);
+    }
 }
