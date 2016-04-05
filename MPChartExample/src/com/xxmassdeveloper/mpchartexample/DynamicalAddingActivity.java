@@ -13,6 +13,7 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -62,7 +63,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
             }
 
             // add a new x-value first
-            data.addXValue(set.getEntryCount() + "");
+            data.addXValue(new XAxisValue(set.getEntryCount(), set.getEntryCount() + ""));
             
             // choose a random dataSet
             int randomDataSetIndex = (int) (Math.random() * data.getDataSetCount());
@@ -116,7 +117,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
             if(data.getXValCount() == 0) {
                 // add 10 x-entries
                 for (int i = 0; i < 10; i++) {
-                    data.addXValue("" + (i+1));
+                    data.addXValue(new XAxisValue(i, i + ""));
                 }
             }
 

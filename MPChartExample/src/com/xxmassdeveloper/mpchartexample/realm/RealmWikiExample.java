@@ -89,7 +89,7 @@ public class RealmWikiExample extends RealmBaseActivity {
         ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         dataSets.add(lineDataSet);
 
-        RealmLineData lineData = new RealmLineData(results, "playerName", dataSets);
+        RealmLineData lineData = new RealmLineData(results, "scoreNr", "playerName", dataSets);
         styleData(lineData);
 
         // set data
@@ -105,7 +105,7 @@ public class RealmWikiExample extends RealmBaseActivity {
         ArrayList<IBarDataSet> barDataSets = new ArrayList<IBarDataSet>();
         barDataSets.add(barDataSet);
 
-        RealmBarData barData = new RealmBarData(results, "playerName", barDataSets);
+        RealmBarData barData = new RealmBarData(results, "scoreNr", "playerName", barDataSets);
         styleData(barData);
 
         barChart.setData(barData);

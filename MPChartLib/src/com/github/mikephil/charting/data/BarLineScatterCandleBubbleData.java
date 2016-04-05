@@ -16,20 +16,24 @@ public abstract class BarLineScatterCandleBubbleData<T extends IBarLineScatterCa
     public BarLineScatterCandleBubbleData() {
         super();
     }
+
+    public BarLineScatterCandleBubbleData(T... sets) {
+        super(sets);
+    }
     
-    public BarLineScatterCandleBubbleData(List<String> xVals) {
+    public BarLineScatterCandleBubbleData(List<XAxisValue> xVals) {
         super(xVals);
     }
     
-    public BarLineScatterCandleBubbleData(String[] xVals) {
+    public BarLineScatterCandleBubbleData(XAxisValue[] xVals) {
         super(xVals);
     }
 
-    public BarLineScatterCandleBubbleData(List<String> xVals, List<T> sets) {
+    public BarLineScatterCandleBubbleData(List<XAxisValue> xVals, List<T> sets) {
         super(xVals, sets);
     }
 
-    public BarLineScatterCandleBubbleData(String[] xVals, List<T> sets) {
+    public BarLineScatterCandleBubbleData(XAxisValue[] xVals, List<T> sets) {
         super(xVals, sets);
     }
 }

@@ -14,7 +14,7 @@ import io.realm.RealmResults;
  */
 public class RealmRadarData extends RadarData{
 
-    public RealmRadarData(RealmResults<? extends RealmObject> result, String xValuesField, List<IRadarDataSet> dataSets) {
-        super(RealmUtils.toXVals(result, xValuesField), dataSets);
+    public RealmRadarData(RealmResults<? extends RealmObject> result, String xPositionField, String xLabelField, List<IRadarDataSet> dataSets) {
+        super(RealmUtils.toXVals(result, xPositionField, xLabelField), dataSets);
     }
 }

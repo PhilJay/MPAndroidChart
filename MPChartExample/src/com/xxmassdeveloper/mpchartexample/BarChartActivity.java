@@ -28,6 +28,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.formatter.YAxisValueFormatter;
@@ -225,17 +226,16 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
     private void setData(int count, float range) {
 
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < count; i++) {
-            xVals.add(mMonths[i % 12]);
-        }
-
+        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
 
         for (int i = 0; i < count; i++) {
             float mult = (range + 1);
             float val = (float) (Math.random() * mult);
             yVals1.add(new BarEntry(val, i));
+
+            XAxisValue value = new XAxisValue(i, mMonths[i % 12]);
+            xVals.add(value);
         }
 
         BarDataSet set1 = new BarDataSet(yVals1, "DataSet");

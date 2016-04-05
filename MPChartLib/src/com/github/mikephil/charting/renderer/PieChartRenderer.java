@@ -507,14 +507,14 @@ public class PieChartRenderer extends DataRenderer {
                                 dataSet.getValueTextColor(j));
 
                         if (j < data.getXValCount()) {
-                            c.drawText(data.getXVals().get(j), labelPtx, labelPty + lineHeight,
+                            c.drawText(data.getXVals().get(j).getLabel(), labelPtx, labelPty + lineHeight,
                                     mValuePaint);
                         }
 
                     } else if (drawXOutside) {
                         if (j < data.getXValCount()) {
                             mValuePaint.setColor(dataSet.getValueTextColor(j));
-                            c.drawText(data.getXVals().get(j), labelPtx, labelPty + lineHeight / 2.f, mValuePaint);
+                            c.drawText(data.getXVals().get(j).getLabel(), labelPtx, labelPty + lineHeight / 2.f, mValuePaint);
                         }
                     } else if (drawYOutside) {
 
@@ -535,14 +535,14 @@ public class PieChartRenderer extends DataRenderer {
                         drawValue(c, formatter, value, entry, 0, x, y, dataSet.getValueTextColor(j));
 
                         if (j < data.getXValCount()) {
-                            c.drawText(data.getXVals().get(j), x, y + lineHeight,
+                            c.drawText(data.getXVals().get(j).getLabel(), x, y + lineHeight,
                                     mValuePaint);
                         }
 
                     } else if (drawXInside) {
                         if (j < data.getXValCount()) {
                             mValuePaint.setColor(dataSet.getValueTextColor(j));
-                            c.drawText(data.getXVals().get(j), x, y + lineHeight / 2f, mValuePaint);
+                            c.drawText(data.getXVals().get(j).getLabel(), x, y + lineHeight / 2f, mValuePaint);
                         }
                     } else if (drawYInside) {
 

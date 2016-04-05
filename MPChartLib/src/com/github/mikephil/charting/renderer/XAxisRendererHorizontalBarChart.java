@@ -12,6 +12,7 @@ import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.utils.FSize;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
@@ -27,7 +28,7 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
     }
     
     @Override
-    public void computeAxis(float xValAverageLength, List<String> xValues) {
+    public void computeAxis(float xValAverageLength, List<XAxisValue> xValues) {
         
         mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
         mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
@@ -124,7 +125,7 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
 
             if (mViewPortHandler.isInBoundsY(position[1])) {
 
-                String label = mXAxis.getValues().get(i);
+                String label = mXAxis.getValues().get(i).getLabel();
                 drawLabel(c, label, i, pos, position[1], anchor, labelRotationAngleDegrees);
             }
         }

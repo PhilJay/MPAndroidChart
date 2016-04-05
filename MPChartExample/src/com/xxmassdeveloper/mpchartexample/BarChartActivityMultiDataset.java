@@ -21,6 +21,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
@@ -178,9 +179,11 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         tvX.setText("" + (mSeekBarX.getProgress() * 3));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
-        ArrayList<String> xVals = new ArrayList<String>();
+        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-            xVals.add((i+1990) + "");
+
+            XAxisValue value = new XAxisValue(i, (i+1990) + "");
+            xVals.add(value);
         }
 
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();

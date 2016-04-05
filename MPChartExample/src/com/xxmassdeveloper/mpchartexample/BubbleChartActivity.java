@@ -21,6 +21,7 @@ import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.data.BubbleEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.highlight.Highlight;
@@ -164,9 +165,10 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
         tvX.setText("" + count);
         tvY.setText("" + range);
 
-        ArrayList<String> xVals = new ArrayList<String>();
+        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
         for (int i = 0; i < count; i++) {
-            xVals.add((i) + "");
+            XAxisValue xVal = new XAxisValue(i,(i) + "");
+            xVals.add(xVal);
         }
 
         ArrayList<BubbleEntry> yVals1 = new ArrayList<BubbleEntry>();

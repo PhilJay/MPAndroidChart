@@ -53,7 +53,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     /**
      * holds all x-values the chart represents
      */
-    protected List<String> mXVals;
+    protected List<XAxisValue> mXVals;
 
     /**
      * array that holds all DataSets the ChartData object represents
@@ -61,8 +61,13 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     protected List<T> mDataSets;
 
     public ChartData() {
-        mXVals = new ArrayList<String>();
+        mXVals = new ArrayList<XAxisValue>();
         mDataSets = new ArrayList<T>();
+    }
+
+    public ChartData(T... dataSets) {
+        mDataSets = Arrays.asList(dataSets);
+        init();
     }
 
     /**
@@ -71,7 +76,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      *
      * @param xVals
      */
-    public ChartData(List<String> xVals) {
+    public ChartData(List<XAxisValue> xVals) {
         this.mXVals = xVals;
         this.mDataSets = new ArrayList<T>();
         init();
@@ -83,7 +88,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      *
      * @param xVals
      */
-    public ChartData(String[] xVals) {
+    public ChartData(XAxisValue[] xVals) {
         this.mXVals = arrayToList(xVals);
         this.mDataSets = new ArrayList<T>();
         init();
@@ -97,7 +102,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      *              DataSets.
      * @param sets  the dataset array
      */
-    public ChartData(List<String> xVals, List<T> sets) {
+    public ChartData(List<XAxisValue> xVals, List<T> sets) {
         this.mXVals = xVals;
         this.mDataSets = sets;
 
@@ -112,7 +117,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      *              DataSets.
      * @param sets  the dataset array
      */
-    public ChartData(String[] xVals, List<T> sets) {
+    public ChartData(XAxisValue[] xVals, List<T> sets) {
         this.mXVals = arrayToList(xVals);
         this.mDataSets = sets;
 
@@ -125,7 +130,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      * @param array
      * @return
      */
-    private List<String> arrayToList(String[] array) {
+    private List<XAxisValue> arrayToList(XAxisValue[] array) {
         return Arrays.asList(array);
     }
 
@@ -156,7 +161,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
         for (int i = 0; i < mXVals.size(); i++) {
 
-            int length = mXVals.get(i).length();
+            int length = mXVals.get(i).getLabel().length();
 
             if (length > max)
                 max = length;
@@ -372,7 +377,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      *
      * @return
      */
-    public List<String> getXVals() {
+    public List<XAxisValue> getXVals() {
         return mXVals;
     }
 
@@ -381,10 +386,10 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      *
      * @param xVal
      */
-    public void addXValue(String xVal) {
+    public void addXValue(XAxisValue xVal) {
 
-        if (xVal != null && xVal.length() > mXValMaximumLength)
-            mXValMaximumLength = xVal.length();
+        if (xVal != null && xVal.getLabel().length() > mXValMaximumLength)
+            mXValMaximumLength = xVal.getLabel().length();
 
         mXVals.add(xVal);
     }
@@ -821,12 +826,12 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      *
      * @return
      */
-    public static List<String> generateXVals(int from, int to) {
+    public static List<XAxisValue> generateXVals(int from, int to) {
 
-        List<String> xvals = new ArrayList<String>();
+        List<XAxisValue> xvals = new ArrayList<XAxisValue>();
 
         for (int i = from; i < to; i++) {
-            xvals.add("" + i);
+            xvals.add(new XAxisValue(i, i + ""));
         }
 
         return xvals;

@@ -22,6 +22,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
@@ -79,9 +80,6 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
         mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
         XAxis xAxis = mChart.getXAxis();
-        xAxis.setPosition(XAxisPosition.BOTTOM);
-        xAxis.setTypeface(mTf);
-        xAxis.setDrawGridLines(false);
         xAxis.setEnabled(false);
 
         YAxis leftAxis = mChart.getAxisLeft();
@@ -208,12 +206,9 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
 
     private void setData(int count) {
 
-        ArrayList<String> xVals = new ArrayList<String>();
-        
         ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
         
         for (int i = 0; i < count; i++) {
-            xVals.add(i+"");
             entries.add(mSinusData.get(i));
         }
         
@@ -221,7 +216,7 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
         set.setBarSpacePercent(40f);
         set.setColor(Color.rgb(240, 120, 124));
 
-        BarData data = new BarData(xVals, set);
+        BarData data = new BarData(set);
         data.setValueTextSize(10f);
         data.setValueTypeface(mTf);
         data.setDrawValues(false);

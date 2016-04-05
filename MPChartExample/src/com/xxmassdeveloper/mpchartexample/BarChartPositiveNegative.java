@@ -14,6 +14,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -87,7 +88,7 @@ public class BarChartPositiveNegative extends DemoBase {
     private void setData(List<Data> dataList) {
 
         ArrayList<BarEntry> values = new ArrayList<BarEntry>();
-        String[] dates = new String[dataList.size()];
+        XAxisValue[] dates = new XAxisValue[dataList.size()];
         List<Integer> colors = new ArrayList<Integer>();
 
         int green = Color.rgb(110, 190, 102);
@@ -99,7 +100,7 @@ public class BarChartPositiveNegative extends DemoBase {
             BarEntry entry = new BarEntry(d.yValue, d.xIndex);
             values.add(entry);
 
-            dates[i] = dataList.get(i).xAxisValue;
+            dates[i] = new XAxisValue(i, dataList.get(i).xAxisValue);
 
             // specific colors
             if (d.yValue >= 0)

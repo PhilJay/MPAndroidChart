@@ -20,6 +20,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.data.filter.Approximator;
 import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.formatter.FillFormatter;
@@ -241,11 +242,6 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
 
     private void setData(int count, float range) {
 
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < count; i++) {
-            xVals.add((1990 +i) + "");
-        }
-
         ArrayList<Entry> vals1 = new ArrayList<Entry>();
 
         for (int i = 0; i < count; i++) {
@@ -278,7 +274,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         });
 
         // create a data object with the datasets
-        LineData data = new LineData(xVals, set1);
+        LineData data = new LineData(set1);
         data.setValueTypeface(tf);
         data.setValueTextSize(9f);
         data.setDrawValues(false);

@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.components;
 
+import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.formatter.DefaultXAxisValueFormatter;
 import com.github.mikephil.charting.formatter.XAxisValueFormatter;
 import com.github.mikephil.charting.utils.Utils;
@@ -18,7 +19,7 @@ import java.util.List;
 public class XAxis extends AxisBase {
 
     /** the arraylist containing all the x-axis labels */
-    protected List<String> mValues = new ArrayList<String>();
+    protected List<XAxisValue> mValues = new ArrayList<XAxisValue>();
 
     /**
      * width of the x-axis labels in pixels - this is automatically
@@ -204,7 +205,7 @@ public class XAxis extends AxisBase {
      * 
      * @param values
      */
-    public void setValues(List<String> values) {
+    public void setValues(List<XAxisValue> values) {
         mValues = values;
     }
 
@@ -213,7 +214,7 @@ public class XAxis extends AxisBase {
      * 
      * @return
      */
-    public List<String> getValues() {
+    public List<XAxisValue> getValues() {
         return mValues;
     }
 
@@ -246,7 +247,7 @@ public class XAxis extends AxisBase {
         String longest = "";
 
         for (int i = 0; i < mValues.size(); i++) {
-            String text = mValues.get(i);
+            String text = mValues.get(i).getLabel();
 
             if (longest.length() < text.length())
                 longest = text;

@@ -67,7 +67,7 @@ public class RealmDatabaseActivityRadar extends RealmBaseActivity {
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list
-        RadarData data = new RadarData(new String[] {"2013", "2014", "2015", "2016", "2017", "2018", "2019"}, dataSets);
+        RadarData data = new RadarData(getYears(), dataSets);
         styleData(data);
 
         // set data

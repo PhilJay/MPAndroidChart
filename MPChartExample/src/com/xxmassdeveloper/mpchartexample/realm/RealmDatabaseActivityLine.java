@@ -67,7 +67,7 @@ public class RealmDatabaseActivityLine extends RealmBaseActivity {
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list
-        RealmLineData data = new RealmLineData(result, "xValue", dataSets);
+        RealmLineData data = new RealmLineData(result, "xAxisPosition", "xAxisLabel", dataSets);
         styleData(data);
 
         // set data

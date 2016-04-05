@@ -14,7 +14,7 @@ import io.realm.RealmResults;
  */
 public class RealmBarData extends BarData {
 
-    public RealmBarData(RealmResults<? extends RealmObject> result, String xValuesField, List<IBarDataSet> dataSets) {
-        super(RealmUtils.toXVals(result, xValuesField), dataSets);
+    public RealmBarData(RealmResults<? extends RealmObject> result, String xPositionField, String xLabelField, List<IBarDataSet> dataSets) {
+        super(RealmUtils.toXVals(result, xPositionField, xLabelField), dataSets);
     }
 }

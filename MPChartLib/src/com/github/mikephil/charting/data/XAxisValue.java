@@ -16,6 +16,15 @@ public class XAxisValue {
     private double mPosition;
 
     /**
+     * Constructor only with label. This is relevant for pie and radarchart.
+     *
+     * @param label the x-axis label of this value
+     */
+    public XAxisValue(String label) {
+        this.mLabel = label;
+    }
+
+    /**
      * Constructor.
      *
      * @param xPosition the position of this value on the x-axis

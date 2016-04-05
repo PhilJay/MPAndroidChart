@@ -63,7 +63,7 @@ public class RealmDatabaseActivityHorizontalBar extends RealmBaseActivity {
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list
-        RealmBarData data = new RealmBarData(result, "xValue", dataSets);
+        RealmBarData data = new RealmBarData(result, "xAxisPosition", "xAxisLabel", dataSets);
         styleData(data);
         data.setValueTextColor(Color.WHITE);
 

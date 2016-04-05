@@ -20,6 +20,7 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CandleDataSet;
 import com.github.mikephil.charting.data.CandleEntry;
+import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -166,6 +167,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         
         mChart.resetTracking();
 
+        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
         ArrayList<CandleEntry> yVals1 = new ArrayList<CandleEntry>();
 
         for (int i = 0; i < prog; i++) {
@@ -182,11 +184,9 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
 
             yVals1.add(new CandleEntry(i, val + high, val - low, even ? val + open : val - open,
                     even ? val - close : val + close));
-        }
 
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < prog; i++) {
-            xVals.add("" + (1990 + i));
+            XAxisValue xVal = new XAxisValue(i,(i) + "");
+            xVals.add(xVal);
         }
 
         CandleDataSet set1 = new CandleDataSet(yVals1, "Data Set");

@@ -13,6 +13,7 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.XAxisValue;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -92,9 +93,9 @@ public class PerformanceLineChart extends DemoBase implements OnSeekBarChangeLis
 
     private void setData(int count, float range) {
 
-        ArrayList<String> xVals = new ArrayList<String>();
+        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
         for (int i = 0; i < count; i++) {
-            xVals.add((i) + "");
+            xVals.add(new XAxisValue(i, i + ""));
         }
 
         ArrayList<Entry> yVals = new ArrayList<Entry>();

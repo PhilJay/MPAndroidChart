@@ -4,6 +4,7 @@ package com.github.mikephil.charting.data;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -25,27 +26,31 @@ public class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
         super();
     }
 
-    public BarData(List<String> xVals) {
+    public BarData(IBarDataSet... dataSets) {
+        super(dataSets);
+    }
+
+    public BarData(List<XAxisValue> xVals) {
         super(xVals);
     }
 
-    public BarData(String[] xVals) {
+    public BarData(XAxisValue[] xVals) {
         super(xVals);
     }
 
-    public BarData(List<String> xVals, List<IBarDataSet> dataSets) {
+    public BarData(List<XAxisValue> xVals, List<IBarDataSet> dataSets) {
         super(xVals, dataSets);
     }
 
-    public BarData(String[] xVals, List<IBarDataSet> dataSets) {
+    public BarData(XAxisValue[] xVals, List<IBarDataSet> dataSets) {
         super(xVals, dataSets);
     }
 
-    public BarData(List<String> xVals, IBarDataSet dataSet) {
+    public BarData(List<XAxisValue> xVals, IBarDataSet dataSet) {
         super(xVals, toList(dataSet));
     }
 
-    public BarData(String[] xVals, IBarDataSet dataSet) {
+    public BarData(XAxisValue[] xVals, IBarDataSet dataSet) {
         super(xVals, toList(dataSet));
     }
 
