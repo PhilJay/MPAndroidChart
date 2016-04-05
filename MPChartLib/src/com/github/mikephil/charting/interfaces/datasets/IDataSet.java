@@ -31,6 +31,20 @@ public interface IDataSet<T extends Entry> {
     float getYMax();
 
     /**
+     * returns the minimum x-value this DataSet holds
+     *
+     * @return
+     */
+    float getXMin();
+
+    /**
+     * returns the maximum x-value this DataSet holds
+     *
+     * @return
+     */
+    float getXMax();
+
+    /**
      * Returns the number of y-values this DataSet represents -> the size of the y-values array
      * -> yvals.size()
      *

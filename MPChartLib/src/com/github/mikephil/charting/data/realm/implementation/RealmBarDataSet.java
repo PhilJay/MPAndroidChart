@@ -122,6 +122,9 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
         mYMin = Float.MAX_VALUE;
         mYMax = -Float.MAX_VALUE;
 
+        mXMin = Float.MAX_VALUE;
+        mXMax = -Float.MAX_VALUE;
+
         for (int i = start; i <= endValue; i++) {
 
             BarEntry e = mValues.get(i);
@@ -143,6 +146,12 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
                     if (e.getPositiveSum() > mYMax)
                         mYMax = e.getPositiveSum();
                 }
+
+                if (e.getXIndex() < mXMin)
+                    mXMin = e.getXIndex();
+
+                if (e.getXIndex() > mXMax)
+                    mXMax = e.getXIndex();
             }
         }
 

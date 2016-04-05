@@ -118,8 +118,8 @@ public class RadarDataSet extends LineRadarDataSet<Entry> implements IRadarDataS
 
         List<Entry> yVals = new ArrayList<Entry>();
 
-        for (int i = 0; i < mYVals.size(); i++) {
-            yVals.add(mYVals.get(i).copy());
+        for (int i = 0; i < mValues.size(); i++) {
+            yVals.add(mValues.get(i).copy());
         }
 
         RadarDataSet copied = new RadarDataSet(yVals, getLabel());

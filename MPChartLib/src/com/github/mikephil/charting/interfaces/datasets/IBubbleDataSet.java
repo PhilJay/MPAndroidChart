@@ -15,10 +15,6 @@ public interface IBubbleDataSet extends IBarLineScatterCandleBubbleDataSet<Bubbl
      */
     void setHighlightCircleWidth(float width);
 
-    float getXMax();
-
-    float getXMin();
-
     float getMaxSize();
 
     /**

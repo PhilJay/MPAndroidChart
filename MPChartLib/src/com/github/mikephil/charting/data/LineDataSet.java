@@ -4,7 +4,6 @@ package com.github.mikephil.charting.data;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
-import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -66,8 +65,8 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
 
         List<Entry> yVals = new ArrayList<Entry>();
 
-        for (int i = 0; i < mYVals.size(); i++) {
-            yVals.add(mYVals.get(i).copy());
+        for (int i = 0; i < mValues.size(); i++) {
+            yVals.add(mValues.get(i).copy());
         }
 
         LineDataSet copied = new LineDataSet(yVals, getLabel());

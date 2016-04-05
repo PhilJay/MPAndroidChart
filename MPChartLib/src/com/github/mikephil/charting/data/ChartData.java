@@ -22,14 +22,24 @@ import java.util.List;
 public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
     /**
-     * maximum y-value in the y-value array across all axes
+     * maximum y-value in the value array across all axes
      */
     protected float mYMax = 0.0f;
 
     /**
-     * the minimum y-value in the y-value array across all axes
+     * the minimum y-value in the value array across all axes
      */
     protected float mYMin = 0.0f;
+
+    /**
+     * maximum x-value in the value array
+     */
+    protected float mXMax = 0f;
+
+    /**
+     * minimum x-value in the value array
+     */
+    protected float mXMin = 0f;
 
     protected float mLeftAxisMax = 0.0f;
 
@@ -200,7 +210,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * calc minimum and maximum y value over all datasets
+     * calc minimum and maximum values (both x and y) over all DataSets
      */
     public void calcMinMax(int start, int end) {
 
@@ -208,10 +218,17 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
             mYMax = 0f;
             mYMin = 0f;
+
+            mXMax = 0f;
+            mXMin = 0f;
+
         } else {
 
             mYMin = Float.MAX_VALUE;
             mYMax = -Float.MAX_VALUE;
+
+            mXMin = Float.MAX_VALUE;
+            mXMax = -Float.MAX_VALUE;
 
             for (int i = 0; i < mDataSets.size(); i++) {
 
@@ -223,6 +240,12 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
                 if (set.getYMax() > mYMax)
                     mYMax = set.getYMax();
+
+                if (set.getXMin() < mXMin)
+                    mXMin = set.getXMin();
+
+                if (set.getXMax() > mXMax)
+                    mXMax = set.getXMax();
             }
 
             if (mYMin == Float.MAX_VALUE) {
@@ -350,6 +373,24 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
             return mLeftAxisMax;
         else
             return mRightAxisMax;
+    }
+
+    /**
+     * Returns the minimum x-value this data object contains.
+     *
+     * @return
+     */
+    public float getXMin() {
+        return mXMin;
+    }
+
+    /**
+     * Returns the maximum x-value this data object contains.
+     *
+     * @return
+     */
+    public float getXMax() {
+        return mXMax;
     }
 
     /**

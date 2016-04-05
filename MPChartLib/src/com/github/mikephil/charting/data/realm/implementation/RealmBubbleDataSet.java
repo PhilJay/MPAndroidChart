@@ -16,8 +16,6 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
 
     private String mSizeField;
 
-    protected float mXMax;
-    protected float mXMin;
     protected float mMaxSize;
 
     private float mHighlightCircleWidth = 2.5f;
@@ -129,16 +127,6 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
                 mMaxSize = size;
             }
         }
-    }
-
-    @Override
-    public float getXMax() {
-        return mXMax;
-    }
-
-    @Override
-    public float getXMin() {
-        return mXMin;
     }
 
     @Override

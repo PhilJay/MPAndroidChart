@@ -82,8 +82,8 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
 
         List<CandleEntry> yVals = new ArrayList<CandleEntry>();
 
-        for (int i = 0; i < mYVals.size(); i++) {
-            yVals.add(((CandleEntry) mYVals.get(i)).copy());
+        for (int i = 0; i < mValues.size(); i++) {
+            yVals.add(((CandleEntry) mValues.get(i)).copy());
         }
 
         CandleDataSet copied = new CandleDataSet(yVals, getLabel());
@@ -103,31 +103,40 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
     public void calcMinMax(int start, int end) {
         // super.calculate();
 
-        if (mYVals == null)
+        if (mValues == null)
             return;
 
-        if (mYVals.size() == 0)
+        if (mValues.size() == 0)
             return;
 
         int endValue;
 
-        if (end == 0 || end >= mYVals.size())
-            endValue = mYVals.size() - 1;
+        if (end == 0 || end >= mValues.size())
+            endValue = mValues.size() - 1;
         else
             endValue = end;
 
         mYMin = Float.MAX_VALUE;
         mYMax = -Float.MAX_VALUE;
 
+        mXMin = Float.MAX_VALUE;
+        mXMax = -Float.MAX_VALUE;
+
         for (int i = start; i <= endValue; i++) {
 
-            CandleEntry e = mYVals.get(i);
+            CandleEntry e = mValues.get(i);
 
             if (e.getLow() < mYMin)
                 mYMin = e.getLow();
 
             if (e.getHigh() > mYMax)
                 mYMax = e.getHigh();
+
+            if (e.getXIndex() < mXMin)
+                mXMin = e.getXIndex();
+
+            if (e.getXIndex() > mXMax)
+                mXMax = e.getXIndex();
         }
     }
 

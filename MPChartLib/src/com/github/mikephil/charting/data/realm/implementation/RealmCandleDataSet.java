@@ -163,6 +163,9 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
         mYMin = Float.MAX_VALUE;
         mYMax = -Float.MAX_VALUE;
 
+        mXMin = Float.MAX_VALUE;
+        mXMax = -Float.MAX_VALUE;
+
         for (int i = start; i <= endValue; i++) {
 
             CandleEntry e = mValues.get(i);
@@ -172,6 +175,12 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
 
             if (e.getHigh() > mYMax)
                 mYMax = e.getHigh();
+
+            if (e.getXIndex() < mXMin)
+                mXMin = e.getXIndex();
+
+            if (e.getXIndex() > mXMax)
+                mXMax = e.getXIndex();
         }
     }
 

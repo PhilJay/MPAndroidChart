@@ -37,6 +37,16 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     protected float mYMin = 0.0f;
 
     /**
+     * maximum x-value in the value array
+     */
+    protected float mXMax = 0.0f;
+
+    /**
+     * minimum x-value in the value array
+     */
+    protected float mXMin = 0.0f;
+
+    /**
      * fieldname of the column that contains the y-values of this dataset
      */
     protected String mValuesField;
@@ -90,6 +100,16 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     }
 
     @Override
+    public float getXMin() {
+        return mXMin;
+    }
+
+    @Override
+    public float getXMax() {
+        return mXMax;
+    }
+
+    @Override
     public int getEntryCount() {
         return mValues.size();
     }
@@ -115,6 +135,9 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         mYMin = Float.MAX_VALUE;
         mYMax = -Float.MAX_VALUE;
 
+        mXMin = Float.MAX_VALUE;
+        mXMax = -Float.MAX_VALUE;
+
         for (int i = start; i <= endValue; i++) {
 
             S e = mValues.get(i);
@@ -126,6 +149,12 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
 
                 if (e.getVal() > mYMax)
                     mYMax = e.getVal();
+
+                if (e.getXIndex() < mXMin)
+                    mXMin = e.getXIndex();
+
+                if (e.getXIndex() > mXMax)
+                    mXMax = e.getXIndex();
             }
         }
 
