@@ -566,13 +566,7 @@ public class YAxis extends AxisBase {
             return false;
     }
 
-    /**
-     * Calculates the minimum, maximum, granularity and range values of the YAxis with the given
-     * minimum and maximum values from the chart data.
-     *
-     * @param dataMin the y-min value according to chart data
-     * @param dataMax the y-max value according to chart data
-     */
+    @Override
     public void calculate(float dataMin, float dataMax) {
 
         // if custom, use value as is, else use data value

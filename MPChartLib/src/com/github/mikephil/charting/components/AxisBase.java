@@ -396,4 +396,13 @@ public abstract class AxisBase extends ComponentBase {
         mCustomAxisMax = true;
         mAxisMaximum = max;
     }
+
+    /**
+     * Calculates the minimum / maximum  and range values of the axis with the given
+     * minimum and maximum values from the chart data.
+     *
+     * @param dataMin the min value according to chart data
+     * @param dataMax the max value according to chart data
+     */
+    public abstract void calculate(float dataMin, float dataMax);
 }
