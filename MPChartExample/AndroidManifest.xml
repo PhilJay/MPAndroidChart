@@ -26,6 +26,7 @@
         </activity>
         <activity android:name="LineChartActivity1"></activity> <!--  android:configChanges="keyboardHidden|orientation|screenSize"  -->
         <activity android:name="LineChartActivity2"></activity>
+        <activity android:name=".LineChartTime"></activity>
         <activity android:name="BarChartActivity"></activity>
 		<activity android:name="HorizontalBarChartActivity"></activity>
         <activity android:name="PieChartActivity"></activity>
