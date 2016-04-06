@@ -80,6 +80,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     protected boolean mHighlightPerDragEnabled = true;
 
     /**
+     * Flag that indicates if highlighting will be enabled for x index with values.
+     * INFORMATION: If enabled then chart will do some calculations at runtime. Performance issues can occur.
+     */
+    protected boolean mHighlightXIndexWithValues = false;
+
+    /**
      * if true, dragging is enabled for the chart
      */
     private boolean mDragEnabled = true;
@@ -1086,6 +1092,20 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     public boolean isHighlightPerDragEnabled() {
         return mHighlightPerDragEnabled;
+    }
+
+    /**
+     * Set it to true to allow highlighting index with values and ignore empty x indexes.
+     * INFORMATION: If enabled then chart will do some calculations at runtime. Performance issues can occur.
+     * @param enabled
+     */
+    public void setHighlightXIndexWithValues(boolean enabled) {
+        mHighlightXIndexWithValues = enabled;
+    }
+
+    @Override
+    public boolean isHighlightXIndexWithValue() {
+        return mHighlightXIndexWithValues;
     }
 
     /**
