@@ -104,6 +104,16 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     /**
+     * Sets the array of y-values that this DataSet represents, and calls notifyDataSetChanged()
+     *
+     * @return
+     */
+    public void setYVals(List<T> yVals) {
+        mYVals = yVals;
+        notifyDataSetChanged();
+    }
+
+    /**
      * Provides an exact copy of the DataSet this method is used on.
      *
      * @return
