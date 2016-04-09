@@ -232,37 +232,18 @@ public class LineChartRenderer extends LineRadarRenderer {
             // let the spline start
             cubicPath.moveTo(cur.getXIndex(), cur.getVal() * phaseY);
 
-            for (int j = minx + 1, count = Math.min(size, entryCount - 1); j < count; j++) {
+            for (int j = minx + 1, count = Math.min(size, entryCount); j < count; j++) {
 
                 prevPrev = dataSet.getEntryForIndex(j == 1 ? 0 : j - 2);
                 prev = dataSet.getEntryForIndex(j - 1);
                 cur = dataSet.getEntryForIndex(j);
-                next = dataSet.getEntryForIndex(j + 1);
+                next = entryCount > j + 1 ? dataSet.getEntryForIndex(j + 1) : cur;
 
                 prevDx = (cur.getXIndex() - prevPrev.getXIndex()) * intensity;
                 prevDy = (cur.getVal() - prevPrev.getVal()) * intensity;
                 curDx = (next.getXIndex() - prev.getXIndex()) * intensity;
                 curDy = (next.getVal() - prev.getVal()) * intensity;
 
-                cubicPath.cubicTo(prev.getXIndex() + prevDx, (prev.getVal() + prevDy) * phaseY,
-                        cur.getXIndex() - curDx,
-                        (cur.getVal() - curDy) * phaseY, cur.getXIndex(), cur.getVal() * phaseY);
-            }
-
-            if (size > entryCount - 1) {
-
-                prevPrev = dataSet.getEntryForIndex((entryCount >= 3) ? entryCount - 3
-                        : entryCount - 2);
-                prev = dataSet.getEntryForIndex(entryCount - 2);
-                cur = dataSet.getEntryForIndex(entryCount - 1);
-                next = cur;
-
-                prevDx = (cur.getXIndex() - prevPrev.getXIndex()) * intensity;
-                prevDy = (cur.getVal() - prevPrev.getVal()) * intensity;
-                curDx = (next.getXIndex() - prev.getXIndex()) * intensity;
-                curDy = (next.getVal() - prev.getVal()) * intensity;
-
-                // the last cubic
                 cubicPath.cubicTo(prev.getXIndex() + prevDx, (prev.getVal() + prevDy) * phaseY,
                         cur.getXIndex() - curDx,
                         (cur.getVal() - curDy) * phaseY, cur.getXIndex(), cur.getVal() * phaseY);
