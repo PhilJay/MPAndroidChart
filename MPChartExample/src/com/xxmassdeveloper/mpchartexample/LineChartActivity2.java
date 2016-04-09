@@ -194,10 +194,9 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
                 for (ILineDataSet iSet : sets) {
 
                     LineDataSet set = (LineDataSet) iSet;
-                    if (set.isDrawCubicEnabled())
-                        set.setDrawCubic(false);
-                    else
-                        set.setDrawCubic(true);
+                    set.setMode(set.getMode() == LineDataSet.Mode.CUBIC_BEZIER
+                            ? LineDataSet.Mode.LINEAR
+                            :  LineDataSet.Mode.CUBIC_BEZIER);
                 }
                 mChart.invalidate();
                 break;
@@ -209,10 +208,23 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
                 for (ILineDataSet iSet : sets) {
 
                     LineDataSet set = (LineDataSet) iSet;
-                    if (set.isDrawSteppedEnabled())
-                        set.setDrawStepped(false);
-                    else
-                        set.setDrawStepped(true);
+                    set.setMode(set.getMode() == LineDataSet.Mode.STEPPED
+                            ? LineDataSet.Mode.LINEAR
+                            :  LineDataSet.Mode.STEPPED);
+                }
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleHorizontalCubic: {
+                List<ILineDataSet> sets = mChart.getData()
+                        .getDataSets();
+
+                for (ILineDataSet iSet : sets) {
+
+                    LineDataSet set = (LineDataSet) iSet;
+                    set.setMode(set.getMode() == LineDataSet.Mode.HORIZONTAL_BEZIER
+                            ? LineDataSet.Mode.LINEAR
+                            :  LineDataSet.Mode.HORIZONTAL_BEZIER);
                 }
                 mChart.invalidate();
                 break;
@@ -288,22 +300,6 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             yVals1.add(new Entry(val, i));
         }
 
-        // create a dataset and give it a type
-        LineDataSet set1 = new LineDataSet(yVals1, "DataSet 1");
-        set1.setAxisDependency(AxisDependency.LEFT);
-        set1.setColor(ColorTemplate.getHoloBlue());
-        set1.setCircleColor(Color.WHITE);
-        set1.setLineWidth(2f);
-        set1.setCircleRadius(3f);
-        set1.setFillAlpha(65);
-        set1.setFillColor(ColorTemplate.getHoloBlue());
-        set1.setHighLightColor(Color.rgb(244, 117, 117));
-        set1.setDrawCircleHole(false);
-        //set1.setFillFormatter(new MyFillFormatter(0f));
-//        set1.setDrawHorizontalHighlightIndicator(false);
-//        set1.setVisible(false);
-//        set1.setCircleHoleColor(Color.WHITE);
-
         ArrayList<Entry> yVals2 = new ArrayList<Entry>();
 
         for (int i = 0; i < count; i++) {
@@ -314,30 +310,58 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             yVals2.add(new Entry(val, i));
         }
 
-        // create a dataset and give it a type
-        LineDataSet set2 = new LineDataSet(yVals2, "DataSet 2");
-        set2.setAxisDependency(AxisDependency.RIGHT);
-        set2.setColor(Color.RED);
-        set2.setCircleColor(Color.WHITE);
-        set2.setLineWidth(2f);
-        set2.setCircleRadius(3f);
-        set2.setFillAlpha(65);
-        set2.setFillColor(Color.RED);
-        set2.setDrawCircleHole(false);
-        set2.setHighLightColor(Color.rgb(244, 117, 117));
-        //set2.setFillFormatter(new MyFillFormatter(900f));
+        LineDataSet set1, set2;
 
-        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-        dataSets.add(set2);
-        dataSets.add(set1); // add the datasets
+        if (mChart.getData() != null &&
+                mChart.getData().getDataSetCount() > 0) {
+            set1 = (LineDataSet)mChart.getData().getDataSetByIndex(0);
+            set2 = (LineDataSet)mChart.getData().getDataSetByIndex(1);
+            set1.setYVals(yVals1);
+            set2.setYVals(yVals2);
+            mChart.notifyDataSetChanged();
+        } else {
+            // create a dataset and give it a type
+            set1 = new LineDataSet(yVals1, "DataSet 1");
 
-        // create a data object with the datasets
-        LineData data = new LineData(xVals, dataSets);
-        data.setValueTextColor(Color.WHITE);
-        data.setValueTextSize(9f);
+            set1.setAxisDependency(AxisDependency.LEFT);
+            set1.setColor(ColorTemplate.getHoloBlue());
+            set1.setCircleColor(Color.WHITE);
+            set1.setLineWidth(2f);
+            set1.setCircleRadius(3f);
+            set1.setFillAlpha(65);
+            set1.setFillColor(ColorTemplate.getHoloBlue());
+            set1.setHighLightColor(Color.rgb(244, 117, 117));
+            set1.setDrawCircleHole(false);
+            //set1.setFillFormatter(new MyFillFormatter(0f));
+            //set1.setDrawHorizontalHighlightIndicator(false);
+            //set1.setVisible(false);
+            //set1.setCircleHoleColor(Color.WHITE);
 
-        // set data
-        mChart.setData(data);
+            // create a dataset and give it a type
+            set2 = new LineDataSet(yVals2, "DataSet 2");
+            set2.setAxisDependency(AxisDependency.RIGHT);
+            set2.setColor(Color.RED);
+            set2.setCircleColor(Color.WHITE);
+            set2.setLineWidth(2f);
+            set2.setCircleRadius(3f);
+            set2.setFillAlpha(65);
+            set2.setFillColor(Color.RED);
+            set2.setDrawCircleHole(false);
+            set2.setHighLightColor(Color.rgb(244, 117, 117));
+            //set2.setFillFormatter(new MyFillFormatter(900f));
+
+            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+            dataSets.add(set2);
+            dataSets.add(set1); // add the datasets
+
+            // create a data object with the datasets
+            LineData data = new LineData(xVals, dataSets);
+            data.setValueTextColor(Color.WHITE);
+            data.setValueTextSize(9f);
+
+            // set data
+            mChart.setData(data);
+        }
     }
 
     @Override
