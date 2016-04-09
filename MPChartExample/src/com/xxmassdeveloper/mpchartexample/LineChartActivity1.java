@@ -235,10 +235,9 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                 for (ILineDataSet iSet : sets) {
 
                     LineDataSet set = (LineDataSet) iSet;
-                    if (set.isDrawCubicEnabled())
-                        set.setDrawCubic(false);
-                    else
-                        set.setDrawCubic(true);
+                    set.setMode(set.getMode() == LineDataSet.Mode.CUBIC_BEZIER
+                            ? LineDataSet.Mode.LINEAR
+                            :  LineDataSet.Mode.CUBIC_BEZIER);
                 }
                 mChart.invalidate();
                 break;
@@ -250,10 +249,9 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                 for (ILineDataSet iSet : sets) {
 
                     LineDataSet set = (LineDataSet) iSet;
-                    if (set.isDrawSteppedEnabled())
-                        set.setDrawStepped(false);
-                    else
-                        set.setDrawStepped(true);
+                    set.setMode(set.getMode() == LineDataSet.Mode.STEPPED
+                            ? LineDataSet.Mode.LINEAR
+                            :  LineDataSet.Mode.STEPPED);
                 }
                 mChart.invalidate();
                 break;

@@ -166,10 +166,9 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
                 for (ILineDataSet iSet : sets) {
 
                     LineDataSet set = (LineDataSet) iSet;
-                    if (set.isDrawCubicEnabled())
-                        set.setDrawCubic(false);
-                    else
-                        set.setDrawCubic(true);
+                    set.setMode(set.getMode() == LineDataSet.Mode.CUBIC_BEZIER
+                            ? LineDataSet.Mode.LINEAR
+                            :  LineDataSet.Mode.CUBIC_BEZIER);
                 }
                 mChart.invalidate();
                 break;
