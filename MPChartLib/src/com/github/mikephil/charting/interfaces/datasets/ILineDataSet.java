@@ -4,12 +4,20 @@ import android.graphics.DashPathEffect;
 import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.FillFormatter;
 
 /**
  * Created by Philpp Jahoda on 21/10/15.
  */
 public interface ILineDataSet extends ILineRadarDataSet<Entry> {
+
+    /**
+     * Returns the drawing mode for this line dataset
+     *
+     * @return
+     */
+    LineDataSet.Mode getMode();
 
     /**
      * Returns the intensity of the cubic lines (the effect intensity).
@@ -19,18 +27,10 @@ public interface ILineDataSet extends ILineRadarDataSet<Entry> {
      */
     float getCubicIntensity();
 
-    /**
-     * Returns true if drawing cubic lines is enabled, false if not.
-     *
-     * @return
-     */
+    @Deprecated
     boolean isDrawCubicEnabled();
 
-    /**
-     * Returns true if drawing stepped lines is enabled, false if not.
-     *
-     * @return
-     */
+    @Deprecated
     boolean isDrawSteppedEnabled();
 
     /**

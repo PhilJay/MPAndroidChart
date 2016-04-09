@@ -233,7 +233,7 @@ public class LegendRenderer extends Renderer {
                     if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
                         originPosX -= mLegend.mNeededWidth;
                 } else // BELOW_CHART_CENTER || ABOVE_CHART_CENTER
-                    originPosX = mViewPortHandler.contentLeft() + contentWidth / 2.f;
+                    originPosX = mViewPortHandler.contentLeft() + contentWidth / 2.f + xoffset;
 
                 FSize[] calculatedLineSizes = mLegend.getCalculatedLineSizes();
                 FSize[] calculatedLabelSizes = mLegend.getCalculatedLabelSizes();
