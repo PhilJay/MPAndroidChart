@@ -38,6 +38,21 @@ public interface IBarDataSet extends IBarLineScatterCandleBubbleDataSet<BarEntry
     int getBarShadowColor();
 
     /**
+     * Returns the width used for drawing borders around the bars.
+     * If borderWidth == 0, no border will be drawn.
+     *
+     * @return
+     */
+    float getBarBorderWidth();
+
+    /**
+     * Returns the color drawing borders around the bars.
+     *
+     * @return
+     */
+    int getBarBorderColor();
+
+    /**
      * Returns the alpha value (transparency) that is used for drawing the
      * highlight indicator.
      *

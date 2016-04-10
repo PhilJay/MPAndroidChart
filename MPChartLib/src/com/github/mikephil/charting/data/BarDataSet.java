@@ -26,6 +26,10 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
      */
     private int mBarShadowColor = Color.rgb(215, 215, 215);
 
+    private float mBarBorderWidth = 0.0f;
+
+    private int mBarBorderColor = Color.BLACK;
+
     /**
      * the alpha value used to draw the highlight indicator bar
      */
@@ -215,6 +219,46 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     @Override
     public int getBarShadowColor() {
         return mBarShadowColor;
+    }
+
+    /**
+     * Sets the width used for drawing borders around the bars.
+     * If borderWidth == 0, no border will be drawn.
+     *
+     * @return
+     */
+    public void setBarBorderWidth(float width) {
+        mBarBorderWidth = width;
+    }
+
+    /**
+     * Returns the width used for drawing borders around the bars.
+     * If borderWidth == 0, no border will be drawn.
+     *
+     * @return
+     */
+    @Override
+    public float getBarBorderWidth() {
+        return mBarBorderWidth;
+    }
+
+    /**
+     * Sets the color drawing borders around the bars.
+     *
+     * @return
+     */
+    public void setBarBorderColor(int color) {
+        mBarBorderColor = color;
+    }
+
+    /**
+     * Returns the color drawing borders around the bars.
+     *
+     * @return
+     */
+    @Override
+    public int getBarBorderColor() {
+        return mBarBorderColor;
     }
 
     /**
