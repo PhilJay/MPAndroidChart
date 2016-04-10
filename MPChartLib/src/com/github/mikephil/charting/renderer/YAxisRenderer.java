@@ -134,8 +134,8 @@ public class YAxisRenderer extends AxisRenderer {
 
             } else {
 
-                double first = Math.ceil(yMin / interval) * interval;
-                double last = Utils.nextUp(Math.floor(yMax / interval) * interval);
+                double first = interval == 0.0 ? 0.0 : Math.ceil(yMin / interval) * interval;
+                double last = interval == 0.0 ? 0.0 : Utils.nextUp(Math.floor(yMax / interval) * interval);
 
                 double f;
                 int i;
