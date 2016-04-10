@@ -242,16 +242,25 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
             yVals1.add(new BarEntry((float) (Math.random() * range), i));
         }
 
-        BarDataSet set1 = new BarDataSet(yVals1, "DataSet 1");
+        BarDataSet set1;
 
-        ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-        dataSets.add(set1);
+        if (mChart.getData() != null &&
+                mChart.getData().getDataSetCount() > 0) {
+            set1 = (BarDataSet)mChart.getData().getDataSetByIndex(0);
+            set1.setYVals(yVals1);
+            mChart.notifyDataSetChanged();
+        } else {
+            set1 = new BarDataSet(yVals1, "DataSet 1");
 
-        BarData data = new BarData(xVals, dataSets);
-        data.setValueTextSize(10f);
-        data.setValueTypeface(tf);
+            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+            dataSets.add(set1);
 
-        mChart.setData(data);
+            BarData data = new BarData(xVals, dataSets);
+            data.setValueTextSize(10f);
+            data.setValueTypeface(tf);
+
+            mChart.setData(data);
+        }
     }
 
     @SuppressLint("NewApi")

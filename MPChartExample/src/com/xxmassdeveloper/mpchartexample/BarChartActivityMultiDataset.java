@@ -211,30 +211,43 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
             yVals3.add(new BarEntry(val, i));
         }
 
-        // create 3 datasets with different types
-        BarDataSet set1 = new BarDataSet(yVals1, "Company A");
-        // set1.setColors(ColorTemplate.createColors(getApplicationContext(),
-        // ColorTemplate.FRESH_COLORS));
-        set1.setColor(Color.rgb(104, 241, 175));
-        BarDataSet set2 = new BarDataSet(yVals2, "Company B");
-        set2.setColor(Color.rgb(164, 228, 251));
-        BarDataSet set3 = new BarDataSet(yVals3, "Company C");
-        set3.setColor(Color.rgb(242, 247, 158));
+        BarDataSet set1, set2, set3;
 
-        ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-        dataSets.add(set1);
-        dataSets.add(set2);
-        dataSets.add(set3);
+        if (mChart.getData() != null &&
+                mChart.getData().getDataSetCount() > 0) {
+            set1 = (BarDataSet)mChart.getData().getDataSetByIndex(0);
+            set2 = (BarDataSet)mChart.getData().getDataSetByIndex(1);
+            set3 = (BarDataSet)mChart.getData().getDataSetByIndex(2);
+            set1.setYVals(yVals1);
+            set2.setYVals(yVals2);
+            set3.setYVals(yVals3);
+            mChart.notifyDataSetChanged();
+        } else {
+            // create 3 datasets with different types
+            set1 = new BarDataSet(yVals1, "Company A");
+            // set1.setColors(ColorTemplate.createColors(getApplicationContext(),
+            // ColorTemplate.FRESH_COLORS));
+            set1.setColor(Color.rgb(104, 241, 175));
+            set2 = new BarDataSet(yVals2, "Company B");
+            set2.setColor(Color.rgb(164, 228, 251));
+            set3 = new BarDataSet(yVals3, "Company C");
+            set3.setColor(Color.rgb(242, 247, 158));
 
-        BarData data = new BarData(xVals, dataSets);
+            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+            dataSets.add(set1);
+            dataSets.add(set2);
+            dataSets.add(set3);
+
+            BarData data = new BarData(xVals, dataSets);
 //        data.setValueFormatter(new LargeValueFormatter());
-        
-        // add space between the dataset groups in percent of bar-width
-        data.setGroupSpace(80f);
-        data.setValueTypeface(tf);
 
-        mChart.setData(data);
-        mChart.invalidate();
+            // add space between the dataset groups in percent of bar-width
+            data.setGroupSpace(80f);
+            data.setValueTypeface(tf);
+
+            mChart.setData(data);
+            mChart.invalidate();
+        }
     }
 
     @Override
