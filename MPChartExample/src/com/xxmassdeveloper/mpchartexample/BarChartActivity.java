@@ -167,6 +167,13 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
                 mChart.notifyDataSetChanged();
                 break;
             }
+            case R.id.actionToggleBarBorders: {
+                for (IBarDataSet set : mChart.getData().getDataSets())
+                    ((BarDataSet)set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
+
+                mChart.invalidate();
+                break;
+            }
             case R.id.actionToggleHighlightArrow: {
                 if (mChart.isDrawHighlightArrowEnabled())
                     mChart.setDrawHighlightArrow(false);

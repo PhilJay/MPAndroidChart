@@ -41,5 +41,9 @@
         android:id="@+id/actionToggleAutoScaleMinMax"
         android:title="Toggle auto scale min/max">
     </item>
+    <item
+        android:id="@+id/actionToggleBarBorders"
+        android:title="Show Bar Borders">
+    </item>
 
 </menu>

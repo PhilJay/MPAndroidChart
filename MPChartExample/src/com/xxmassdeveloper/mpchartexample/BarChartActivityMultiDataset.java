@@ -135,6 +135,13 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
                 mChart.notifyDataSetChanged();
                 break;
             }
+            case R.id.actionToggleBarBorders: {
+                for (IBarDataSet set : mChart.getData().getDataSets())
+                    ((BarDataSet)set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
+
+                mChart.invalidate();
+                break;
+            }
             case R.id.actionToggleHighlight: {
                 if(mChart.getData() != null) {
                     mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
