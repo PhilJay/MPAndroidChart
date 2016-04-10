@@ -20,6 +20,9 @@ import java.util.List;
  */
 public class Legend extends ComponentBase {
 
+    /**
+     * This property is deprecated - Use `position`, `horizontalAlignment`, `verticalAlignment`, `orientation`, `drawInside`, `direction`.
+     */
     public enum LegendPosition {
         RIGHT_OF_CHART, RIGHT_OF_CHART_CENTER, RIGHT_OF_CHART_INSIDE,
         LEFT_OF_CHART, LEFT_OF_CHART_CENTER, LEFT_OF_CHART_INSIDE,
@@ -30,6 +33,21 @@ public class Legend extends ComponentBase {
 
     public enum LegendForm {
         SQUARE, CIRCLE, LINE
+    }
+
+    public enum LegendHorizontalAlignment
+    {
+        LEFT, CENTER, RIGHT
+    }
+
+    public enum LegendVerticalAlignment
+    {
+        TOP, CENTER, BOTTOM
+    }
+
+    public enum LegendOrientation
+    {
+        HORIZONTAL, VERTICAL
     }
 
     public enum LegendDirection {
@@ -63,8 +81,10 @@ public class Legend extends ComponentBase {
      */
     private boolean mIsLegendCustom = false;
 
-    /** the position relative to the chart the legend is drawn on */
-    private LegendPosition mPosition = LegendPosition.BELOW_CHART_LEFT;
+    private LegendHorizontalAlignment mHorizontalAlignment = LegendHorizontalAlignment.LEFT;
+    private LegendVerticalAlignment mVerticalAlignment = LegendVerticalAlignment.BOTTOM;
+    private LegendOrientation mOrientation = LegendOrientation.HORIZONTAL;
+    private boolean mDrawInside = false;
 
     /** the text direction for the legend */
     private LegendDirection mDirection = LegendDirection.LEFT_TO_RIGHT;
@@ -351,16 +371,175 @@ public class Legend extends ComponentBase {
      * @return
      */
     public LegendPosition getPosition() {
-        return mPosition;
+
+        if (mOrientation == LegendOrientation.VERTICAL
+                && mHorizontalAlignment == LegendHorizontalAlignment.CENTER
+                && mVerticalAlignment == LegendVerticalAlignment.CENTER) {
+            return LegendPosition.PIECHART_CENTER;
+        }
+        else if (mOrientation == LegendOrientation.HORIZONTAL) {
+            if (mVerticalAlignment == LegendVerticalAlignment.TOP)
+                return mHorizontalAlignment == LegendHorizontalAlignment.LEFT
+                        ? LegendPosition.ABOVE_CHART_LEFT
+                        : (mHorizontalAlignment == LegendHorizontalAlignment.RIGHT
+                        ? LegendPosition.ABOVE_CHART_RIGHT
+                        : LegendPosition.ABOVE_CHART_CENTER);
+            else
+                return mHorizontalAlignment == LegendHorizontalAlignment.LEFT
+                        ? LegendPosition.BELOW_CHART_LEFT
+                        : (mHorizontalAlignment == LegendHorizontalAlignment.RIGHT
+                        ? LegendPosition.BELOW_CHART_RIGHT
+                        : LegendPosition.BELOW_CHART_CENTER);
+        }
+        else {
+            if (mHorizontalAlignment == LegendHorizontalAlignment.LEFT)
+                return mVerticalAlignment == LegendVerticalAlignment.TOP && mDrawInside
+                        ? LegendPosition.LEFT_OF_CHART_INSIDE
+                        : (mVerticalAlignment == LegendVerticalAlignment.CENTER
+                        ? LegendPosition.LEFT_OF_CHART_CENTER
+                        : LegendPosition.LEFT_OF_CHART);
+            else
+                return mVerticalAlignment == LegendVerticalAlignment.TOP && mDrawInside
+                        ? LegendPosition.RIGHT_OF_CHART_INSIDE
+                        : (mVerticalAlignment == LegendVerticalAlignment.CENTER
+                        ? LegendPosition.RIGHT_OF_CHART_CENTER
+                        : LegendPosition.RIGHT_OF_CHART);
+        }
     }
 
     /**
      * sets the position of the legend relative to the whole chart
      * 
-     * @param pos
+     * @param newValue
      */
-    public void setPosition(LegendPosition pos) {
-        mPosition = pos;
+    public void setPosition(LegendPosition newValue) {
+
+        switch (newValue) {
+            case LEFT_OF_CHART:
+            case LEFT_OF_CHART_INSIDE:
+            case LEFT_OF_CHART_CENTER:
+                mHorizontalAlignment = LegendHorizontalAlignment.LEFT;
+                mVerticalAlignment = newValue == LegendPosition.LEFT_OF_CHART_CENTER
+                        ? LegendVerticalAlignment.CENTER
+                        : LegendVerticalAlignment.TOP;
+                mOrientation = LegendOrientation.VERTICAL;
+                break;
+
+            case RIGHT_OF_CHART:
+            case RIGHT_OF_CHART_INSIDE:
+            case RIGHT_OF_CHART_CENTER:
+                mHorizontalAlignment = LegendHorizontalAlignment.RIGHT;
+                mVerticalAlignment = newValue == LegendPosition.RIGHT_OF_CHART_CENTER
+                        ? LegendVerticalAlignment.CENTER
+                        : LegendVerticalAlignment.TOP;
+                mOrientation = LegendOrientation.VERTICAL;
+                break;
+
+            case ABOVE_CHART_LEFT:
+            case ABOVE_CHART_CENTER:
+            case ABOVE_CHART_RIGHT:
+                mHorizontalAlignment = newValue == LegendPosition.ABOVE_CHART_LEFT
+                        ? LegendHorizontalAlignment.LEFT
+                        : (newValue == LegendPosition.ABOVE_CHART_RIGHT
+                        ? LegendHorizontalAlignment.RIGHT
+                        : LegendHorizontalAlignment.CENTER);
+                mVerticalAlignment = LegendVerticalAlignment.TOP;
+                mOrientation = LegendOrientation.HORIZONTAL;
+                break;
+
+            case BELOW_CHART_LEFT:
+            case BELOW_CHART_CENTER:
+            case BELOW_CHART_RIGHT:
+                mHorizontalAlignment = newValue == LegendPosition.BELOW_CHART_LEFT
+                        ? LegendHorizontalAlignment.LEFT
+                        : (newValue == LegendPosition.BELOW_CHART_RIGHT
+                        ? LegendHorizontalAlignment.RIGHT
+                        : LegendHorizontalAlignment.CENTER);
+                mVerticalAlignment = LegendVerticalAlignment.BOTTOM;
+                mOrientation = LegendOrientation.HORIZONTAL;
+                break;
+
+            case PIECHART_CENTER:
+                mHorizontalAlignment = LegendHorizontalAlignment.CENTER;
+                mVerticalAlignment = LegendVerticalAlignment.CENTER;
+                mOrientation = LegendOrientation.VERTICAL;
+                break;
+        }
+
+        mDrawInside = newValue == LegendPosition.LEFT_OF_CHART_INSIDE
+                || newValue == LegendPosition.RIGHT_OF_CHART_INSIDE;
+    }
+
+    /**
+     * returns the horizontal alignment of the legend
+     *
+     * @return
+     */
+    public LegendHorizontalAlignment getHorizontalAlignment() {
+        return mHorizontalAlignment;
+    }
+
+    /**
+     * sets the horizontal alignment of the legend
+     *
+     * @param value
+     */
+    public void setHorizontalAlignment(LegendHorizontalAlignment value) {
+        mHorizontalAlignment = value;
+    }
+
+    /**
+     * returns the vertical alignment of the legend
+     *
+     * @return
+     */
+    public LegendVerticalAlignment getVerticalAlignment() {
+        return mVerticalAlignment;
+    }
+
+    /**
+     * sets the vertical alignment of the legend
+     *
+     * @param value
+     */
+    public void setVerticalAlignment(LegendVerticalAlignment value) {
+        mVerticalAlignment = value;
+    }
+
+    /**
+     * returns the orientation of the legend
+     *
+     * @return
+     */
+    public LegendOrientation getOrientation() {
+        return mOrientation;
+    }
+
+    /**
+     * sets the orientation of the legend
+     *
+     * @param value
+     */
+    public void setOrientation(LegendOrientation value) {
+        mOrientation = value;
+    }
+
+    /**
+     * returns whether the legend will draw inside the chart or outside
+     *
+     * @return
+     */
+    public boolean isDrawInsideEnabled() {
+        return mDrawInside;
+    }
+
+    /**
+     * sets whether the legend will draw inside the chart or outside
+     *
+     * @param value
+     */
+    public void setDrawInside(boolean value) {
+        mDrawInside = value;
     }
 
     /**
@@ -605,9 +784,7 @@ public class Legend extends ComponentBase {
      * The maximum relative size out of the whole chart view. / If
      * the legend is to the right/left of the chart, then this affects the width
      * of the legend. / If the legend is to the top/bottom of the chart, then
-     * this affects the height of the legend. / If the legend is the center of
-     * the PieChart, then this defines the size of the rectangular bounds out of
-     * the size of the "hole". / default: 0.95f (95%)
+     * this affects the height of the legend. / default: 0.95f (95%)
      * 
      * @param maxSize
      */
@@ -640,132 +817,168 @@ public class Legend extends ComponentBase {
      */
     public void calculateDimensions(Paint labelpaint, ViewPortHandler viewPortHandler) {
 
-        if (mPosition == LegendPosition.RIGHT_OF_CHART
-                || mPosition == LegendPosition.RIGHT_OF_CHART_CENTER
-                || mPosition == LegendPosition.LEFT_OF_CHART
-                || mPosition == LegendPosition.LEFT_OF_CHART_CENTER
-                || mPosition == LegendPosition.PIECHART_CENTER) {
-            mNeededWidth = getMaximumEntryWidth(labelpaint);
-            mNeededHeight = getFullHeight(labelpaint);
-            mTextWidthMax = mNeededWidth;
-            mTextHeightMax = getMaximumEntryHeight(labelpaint);
+        mTextWidthMax = getMaximumEntryWidth(labelpaint);
+        mTextHeightMax = getMaximumEntryHeight(labelpaint);
 
-        } else if (mPosition == LegendPosition.BELOW_CHART_LEFT
-                || mPosition == LegendPosition.BELOW_CHART_RIGHT
-                || mPosition == LegendPosition.BELOW_CHART_CENTER
-                || mPosition == LegendPosition.ABOVE_CHART_LEFT
-                || mPosition == LegendPosition.ABOVE_CHART_RIGHT
-                || mPosition == LegendPosition.ABOVE_CHART_CENTER) {
+        switch (mOrientation) {
+            case VERTICAL: {
 
-            int labelCount = mLabels.length;
-            float labelLineHeight = Utils.getLineHeight(labelpaint);
-            float labelLineSpacing = Utils.getLineSpacing(labelpaint) + mYEntrySpace;
-            float contentWidth = viewPortHandler.contentWidth();
+                float maxWidth = 0f, maxHeight = 0f, width = 0f;
+                float labelLineHeight = Utils.getLineHeight(labelpaint);
+                final int count = mLabels.length;
+                boolean wasStacked = false;
 
-            // Prepare arrays for calculated layout
-            ArrayList<FSize> calculatedLabelSizes = new ArrayList<FSize>(labelCount);
-            ArrayList<Boolean> calculatedLabelBreakPoints = new ArrayList<Boolean>(labelCount);
-            ArrayList<FSize> calculatedLineSizes = new ArrayList<FSize>();
+                for (int i = 0; i < count; i++) {
 
-            // Start calculating layout
-            float maxLineWidth = 0.f;
-            float currentLineWidth = 0.f;
-            float requiredWidth = 0.f;
-            int stackedStartIndex = -1;
+                    boolean drawingForm = mColors[i] != ColorTemplate.COLOR_SKIP;
 
-            for (int i = 0; i < labelCount; i++) {
+                    if (!wasStacked)
+                        width = 0.f;
 
-                boolean drawingForm = mColors[i] != ColorTemplate.COLOR_SKIP;
+                    if (drawingForm) {
+                        if (wasStacked)
+                            width += mStackSpace;
+                        width += mFormSize;
+                    }
 
-                calculatedLabelBreakPoints.add(false);
+                    // grouped forms have null labels
+                    if (mLabels[i] != null) {
 
-                if (stackedStartIndex == -1)
-                {
-                    // we are not stacking, so required width is for this label
-                    // only
-                    requiredWidth = 0.f;
-                } else {
-                    // add the spacing appropriate for stacked labels/forms
-                    requiredWidth += mStackSpace;
+                        // make a step to the left
+                        if (drawingForm && !wasStacked)
+                            width += mFormToTextSpace;
+                        else if (wasStacked) {
+                            maxWidth = Math.max(maxWidth, width);
+                            maxHeight += labelLineHeight + mYEntrySpace;
+                            width = 0.f;
+                            wasStacked = false;
+                        }
+
+                        width += Utils.calcTextWidth(labelpaint, mLabels[i]);
+
+                        if (i < count - 1)
+                            maxHeight += labelLineHeight + mYEntrySpace;
+                    }
+                    else {
+                        wasStacked = true;
+                        width += mFormSize;
+                        if (i < count - 1)
+                            width += mStackSpace;
+                    }
+
+                    maxWidth = Math.max(maxWidth, width);
                 }
 
-                // grouped forms have null labels
-                if (mLabels[i] != null) {
+                mNeededWidth = maxWidth;
+                mNeededHeight = maxHeight;
 
-                    calculatedLabelSizes.add(Utils.calcTextSize(labelpaint, mLabels[i]));
-                    requiredWidth += drawingForm ? mFormToTextSpace + mFormSize : 0.f;
-                    requiredWidth += calculatedLabelSizes.get(i).width;
-                } else {
+                break;
+            }
+            case HORIZONTAL: {
 
-                    calculatedLabelSizes.add(new FSize(0.f, 0.f));
-                    requiredWidth += drawingForm ? mFormSize : 0.f;
+                int labelCount = mLabels.length;
+                float labelLineHeight = Utils.getLineHeight(labelpaint);
+                float labelLineSpacing = Utils.getLineSpacing(labelpaint) + mYEntrySpace;
+                float contentWidth = viewPortHandler.contentWidth() * mMaxSizePercent;
+
+                // Prepare arrays for calculated layout
+                ArrayList<FSize> calculatedLabelSizes = new ArrayList<FSize>(labelCount);
+                ArrayList<Boolean> calculatedLabelBreakPoints = new ArrayList<Boolean>(labelCount);
+                ArrayList<FSize> calculatedLineSizes = new ArrayList<FSize>();
+
+                // Start calculating layout
+                float maxLineWidth = 0.f;
+                float currentLineWidth = 0.f;
+                float requiredWidth = 0.f;
+                int stackedStartIndex = -1;
+
+                for (int i = 0; i < labelCount; i++) {
+
+                    boolean drawingForm = mColors[i] != ColorTemplate.COLOR_SKIP;
+
+                    calculatedLabelBreakPoints.add(false);
 
                     if (stackedStartIndex == -1) {
-                        // mark this index as we might want to break here later
-                        stackedStartIndex = i;
+                        // we are not stacking, so required width is for this label
+                        // only
+                        requiredWidth = 0.f;
                     }
+                    else {
+                        // add the spacing appropriate for stacked labels/forms
+                        requiredWidth += mStackSpace;
+                    }
+
+                    // grouped forms have null labels
+                    if (mLabels[i] != null) {
+
+                        calculatedLabelSizes.add(Utils.calcTextSize(labelpaint, mLabels[i]));
+                        requiredWidth += drawingForm ? mFormToTextSpace + mFormSize : 0.f;
+                        requiredWidth += calculatedLabelSizes.get(i).width;
+                    }
+                    else {
+
+                        calculatedLabelSizes.add(new FSize(0.f, 0.f));
+                        requiredWidth += drawingForm ? mFormSize : 0.f;
+
+                        if (stackedStartIndex == -1) {
+                            // mark this index as we might want to break here later
+                            stackedStartIndex = i;
+                        }
+                    }
+
+                    if (mLabels[i] != null || i == labelCount - 1) {
+
+                        float requiredSpacing = currentLineWidth == 0.f ? 0.f : mXEntrySpace;
+
+                        if (!mWordWrapEnabled // No word wrapping, it must fit.
+                                // The line is empty, it must fit
+                                || currentLineWidth == 0.f
+                                // It simply fits
+                                || (contentWidth - currentLineWidth >=
+                                requiredSpacing + requiredWidth)) {
+                            // Expand current line
+                            currentLineWidth += requiredSpacing + requiredWidth;
+                        }
+                        else { // It doesn't fit, we need to wrap a line
+
+                            // Add current line size to array
+                            calculatedLineSizes.add(new FSize(currentLineWidth, labelLineHeight));
+                            maxLineWidth = Math.max(maxLineWidth, currentLineWidth);
+
+                            // Start a new line
+                            calculatedLabelBreakPoints.set(
+                                    stackedStartIndex > -1 ? stackedStartIndex
+                                            : i, true);
+                            currentLineWidth = requiredWidth;
+                        }
+
+                        if (i == labelCount - 1) {
+                            // Add last line size to array
+                            calculatedLineSizes.add(new FSize(currentLineWidth, labelLineHeight));
+                            maxLineWidth = Math.max(maxLineWidth, currentLineWidth);
+                        }
+                    }
+
+                    stackedStartIndex = mLabels[i] != null ? -1 : stackedStartIndex;
                 }
 
-                if (mLabels[i] != null || i == labelCount - 1) {
+                mCalculatedLabelSizes = calculatedLabelSizes.toArray(
+                        new FSize[calculatedLabelSizes.size()]);
+                mCalculatedLabelBreakPoints = calculatedLabelBreakPoints
+                        .toArray(new Boolean[calculatedLabelBreakPoints.size()]);
+                mCalculatedLineSizes = calculatedLineSizes
+                        .toArray(new FSize[calculatedLineSizes.size()]);
 
-                    float requiredSpacing = currentLineWidth == 0.f ? 0.f : mXEntrySpace;
+                mNeededWidth = maxLineWidth;
+                mNeededHeight = labelLineHeight
+                        * (float) (mCalculatedLineSizes.length)
+                        + labelLineSpacing *
+                        (float) (mCalculatedLineSizes.length == 0
+                                ? 0
+                                : (mCalculatedLineSizes.length - 1));
 
-                    if (!mWordWrapEnabled || // No word wrapping, it must fit.
-                            currentLineWidth == 0.f || // The line is empty, it
-                                                       // must fit.
-                            (contentWidth - currentLineWidth >= requiredSpacing + requiredWidth)) // It
-                                                                                                  // simply
-                                                                                                  // fits
-                    {
-                        // Expand current line
-                        currentLineWidth += requiredSpacing + requiredWidth;
-
-                    } else { // It doesn't fit, we need to wrap a line
-
-                        // Add current line size to array
-                        calculatedLineSizes.add(new FSize(currentLineWidth, labelLineHeight));
-                        maxLineWidth = Math.max(maxLineWidth, currentLineWidth);
-
-                        // Start a new line
-                        calculatedLabelBreakPoints.set(stackedStartIndex > -1 ? stackedStartIndex
-                                : i, true);
-                        currentLineWidth = requiredWidth;
-                    }
-
-                    if (i == labelCount - 1) {
-                        // Add last line size to array
-                        calculatedLineSizes.add(new FSize(currentLineWidth, labelLineHeight));
-                        maxLineWidth = Math.max(maxLineWidth, currentLineWidth);
-                    }
-                }
-
-                stackedStartIndex = mLabels[i] != null ? -1 : stackedStartIndex;
+                break;
             }
-
-            mCalculatedLabelSizes = calculatedLabelSizes.toArray(
-                    new FSize[calculatedLabelSizes.size()]);
-            mCalculatedLabelBreakPoints = calculatedLabelBreakPoints
-                    .toArray(new Boolean[calculatedLabelBreakPoints.size()]);
-            mCalculatedLineSizes = calculatedLineSizes
-                    .toArray(new FSize[calculatedLineSizes.size()]);
-
-            mTextWidthMax = getMaximumEntryWidth(labelpaint);
-            mTextHeightMax = getMaximumEntryHeight(labelpaint);
-            mNeededWidth = maxLineWidth;
-            mNeededHeight = labelLineHeight
-                    * (float) (mCalculatedLineSizes.length)
-                    + labelLineSpacing *
-                    (float) (mCalculatedLineSizes.length == 0
-                            ? 0
-                            : (mCalculatedLineSizes.length - 1));
-
-        } else {
-            /* RIGHT_OF_CHART_INSIDE, LEFT_OF_CHART_INSIDE */
-
-            mNeededWidth = getFullWidth(labelpaint);
-            mNeededHeight = getMaximumEntryHeight(labelpaint);
-            mTextWidthMax = getMaximumEntryWidth(labelpaint);
-            mTextHeightMax = mNeededHeight;
         }
     }
 }

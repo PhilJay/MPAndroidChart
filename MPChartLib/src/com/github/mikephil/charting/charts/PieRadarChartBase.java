@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.ChartData;
@@ -103,119 +104,118 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
 
         float legendLeft = 0f, legendRight = 0f, legendBottom = 0f, legendTop = 0f;
 
-        if (mLegend != null && mLegend.isEnabled()) {
-            
-            float fullLegendWidth = Math.min(mLegend.mNeededWidth, 
-                    mViewPortHandler.getChartWidth() * mLegend.getMaxSizePercent()) + 
+        if (mLegend != null && mLegend.isEnabled() && !mLegend.isDrawInsideEnabled()) {
+
+            float fullLegendWidth = Math.min(mLegend.mNeededWidth,
+                    mViewPortHandler.getChartWidth() * mLegend.getMaxSizePercent()) +
                     mLegend.getFormSize() + mLegend.getFormToTextSpace();
 
-            if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART_CENTER) {
+            switch (mLegend.getOrientation()) {
+                case VERTICAL:
+                {
+                    float xLegendOffset = 0.f;
 
-                // this is the space between the legend and the chart
-                float spacing = Utils.convertDpToPixel(13f);
+                    if (mLegend.getHorizontalAlignment() == Legend.LegendHorizontalAlignment.LEFT
+                            || mLegend.getHorizontalAlignment() == Legend.LegendHorizontalAlignment.RIGHT) {
+                        if (mLegend.getVerticalAlignment() == Legend.LegendVerticalAlignment.CENTER) {
+                            // this is the space between the legend and the chart
+                            final float spacing = Utils.convertDpToPixel(13f);
 
-                legendRight = fullLegendWidth + spacing;
+                            xLegendOffset = fullLegendWidth + spacing;
 
-            } else if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
+                        } else {
+                            // this is the space between the legend and the chart
+                            float spacing = Utils.convertDpToPixel(8f);
 
-                // this is the space between the legend and the chart
-                float spacing = Utils.convertDpToPixel(8f);
+                            float legendWidth = fullLegendWidth + spacing;
+                            float legendHeight = mLegend.mNeededHeight + mLegend.mTextHeightMax;
 
-                float legendWidth = fullLegendWidth + spacing;
+                            PointF c = getCenter();
 
-                float legendHeight = mLegend.mNeededHeight + mLegend.mTextHeightMax;
+                            float bottomX = mLegend.getHorizontalAlignment() ==
+                                    Legend.LegendHorizontalAlignment.RIGHT
+                                    ? getWidth() - legendWidth + 15.f
+                                    : legendWidth - 15.f;
+                            float bottomY = legendHeight + 15.f;
+                            float distLegend = distanceToCenter(bottomX, bottomY);
 
-                PointF c = getCenter();
+                            PointF reference = getPosition(c, getRadius(),
+                                    getAngleForPoint(bottomX, bottomY));
 
-                PointF bottomRight = new PointF(getWidth() - legendWidth + 15, legendHeight + 15);
-                float distLegend = distanceToCenter(bottomRight.x, bottomRight.y);
+                            float distReference = distanceToCenter(reference.x, reference.y);
+                            float minOffset = Utils.convertDpToPixel(5f);
 
-                PointF reference = getPosition(c, getRadius(),
-                        getAngleForPoint(bottomRight.x, bottomRight.y));
+                            if (bottomY >= c.y && getHeight() - legendWidth > getWidth()) {
+                                xLegendOffset = legendWidth;
+                            } else if (distLegend < distReference) {
 
-                float distReference = distanceToCenter(reference.x, reference.y);
-                float min = Utils.convertDpToPixel(5f);
+                                float diff = distReference - distLegend;
+                                xLegendOffset = minOffset + diff;
+                            }
+                        }
+                    }
 
-                if (distLegend < distReference) {
+                    switch (mLegend.getHorizontalAlignment()) {
+                        case LEFT:
+                            legendLeft = xLegendOffset;
+                            break;
 
-                    float diff = distReference - distLegend;
-                    legendRight = min + diff;
+                        case RIGHT:
+                            legendRight = xLegendOffset;
+                            break;
+
+                        case CENTER:
+                            switch (mLegend.getVerticalAlignment()) {
+                                case TOP:
+                                    legendTop = Math.min(mLegend.mNeededHeight,
+                                            mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent());
+                                    break;
+                                case BOTTOM:
+                                    legendBottom = Math.min(mLegend.mNeededHeight,
+                                            mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent());
+                                    break;
+                            }
+                            break;
+                    }
                 }
+                    break;
 
-                if (bottomRight.y >= c.y && getHeight() - legendWidth > getWidth()) {
-                    legendRight = legendWidth;
-                }
+                case HORIZONTAL:
+                    float yLegendOffset = 0.f;
 
-            } else if (mLegend.getPosition() == LegendPosition.LEFT_OF_CHART_CENTER) {
+                    if (mLegend.getVerticalAlignment() == Legend.LegendVerticalAlignment.TOP ||
+                            mLegend.getVerticalAlignment() == Legend.LegendVerticalAlignment.BOTTOM) {
 
-                // this is the space between the legend and the chart
-                float spacing = Utils.convertDpToPixel(13f);
+                        // It's possible that we do not need this offset anymore as it
+                        //   is available through the extraOffsets, but changing it can mean
+                        //   changing default visibility for existing apps.
+                        float yOffset = getRequiredLegendOffset();
 
-                legendLeft = fullLegendWidth + spacing;
+                        yLegendOffset = Math.min(mLegend.mNeededHeight + yOffset,
+                                mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent());
 
-            } else if (mLegend.getPosition() == LegendPosition.LEFT_OF_CHART) {
-
-                // this is the space between the legend and the chart
-                float spacing = Utils.convertDpToPixel(8f);
-
-                float legendWidth = fullLegendWidth + spacing;
-
-                float legendHeight = mLegend.mNeededHeight + mLegend.mTextHeightMax;
-
-                PointF c = getCenter();
-
-                PointF bottomLeft = new PointF(legendWidth - 15, legendHeight + 15);
-                float distLegend = distanceToCenter(bottomLeft.x, bottomLeft.y);
-
-                PointF reference = getPosition(c, getRadius(),
-                        getAngleForPoint(bottomLeft.x, bottomLeft.y));
-
-                float distReference = distanceToCenter(reference.x, reference.y);
-                float min = Utils.convertDpToPixel(5f);
-
-                if (distLegend < distReference) {
-
-                    float diff = distReference - distLegend;
-                    legendLeft = min + diff;
-                }
-
-                if (bottomLeft.y >= c.y && getHeight() - legendWidth > getWidth()) {
-                    legendLeft = legendWidth;
-                }
-
-            } else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
-                    || mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
-                    || mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
-
-                // It's possible that we do not need this offset anymore as it
-                //   is available through the extraOffsets, but changing it can mean
-                //   changing default visibility for existing apps.
-                float yOffset = getRequiredLegendOffset();
-
-                legendBottom = Math.min(mLegend.mNeededHeight + yOffset, mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent());
-
-            } else if (mLegend.getPosition() == LegendPosition.ABOVE_CHART_LEFT
-                    || mLegend.getPosition() == LegendPosition.ABOVE_CHART_RIGHT
-                    || mLegend.getPosition() == LegendPosition.ABOVE_CHART_CENTER) {
-
-                // It's possible that we do not need this offset anymore as it
-                //   is available through the extraOffsets, but changing it can mean
-                //   changing default visibility for existing apps.
-                float yOffset = getRequiredLegendOffset();
-
-                legendTop = Math.min(mLegend.mNeededHeight + yOffset, mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent());
-
+                        switch (mLegend.getVerticalAlignment()) {
+                            case TOP:
+                                legendTop = yLegendOffset;
+                                break;
+                            case BOTTOM:
+                                legendBottom = yLegendOffset;
+                                break;
+                        }
+                    }
+                    break;
             }
 
             legendLeft += getRequiredBaseOffset();
             legendRight += getRequiredBaseOffset();
             legendTop += getRequiredBaseOffset();
+            legendBottom += getRequiredBaseOffset();
         }
 
         float minOffset = Utils.convertDpToPixel(mMinOffset);
 
         if (this instanceof RadarChart) {
-            XAxis x = ((RadarChart) this).getXAxis();
+            XAxis x = this.getXAxis();
 
             if (x.isEnabled() && x.isDrawLabelsEnabled()) {
                 minOffset = Math.max(minOffset, x.mLabelRotatedWidth);
