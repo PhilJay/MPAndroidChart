@@ -52,6 +52,10 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
         mShadowPaint.setColor(dataSet.getBarShadowColor());
+        mBarBorderPaint.setColor(dataSet.getBarBorderColor());
+        mBarBorderPaint.setStrokeWidth(dataSet.getBarBorderWidth());
+
+        final boolean drawBorder = dataSet.getBarBorderWidth() > 0.f;
 
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
@@ -82,11 +86,15 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
             }
 
             // Set the color for the currently drawn value. If the index
-            // is
-            // out of bounds, reuse colors.
+            // is out of bounds, reuse colors.
             mRenderPaint.setColor(dataSet.getColor(j / 4));
             c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                     buffer.buffer[j + 3], mRenderPaint);
+
+            if (drawBorder) {
+                c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+                        buffer.buffer[j + 3], mBarBorderPaint);
+            }
         }
     }
 

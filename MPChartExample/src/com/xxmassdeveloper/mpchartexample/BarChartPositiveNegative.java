@@ -109,18 +109,27 @@ public class BarChartPositiveNegative extends DemoBase {
                 colors.add(green);
         }
 
-        BarDataSet set = new BarDataSet(values, "Values");
-        set.setBarSpacePercent(40f);
-        set.setColors(colors);
-        set.setValueTextColors(colors);
+        BarDataSet set;
 
-        BarData data = new BarData(dates, set);
-        data.setValueTextSize(13f);
-        data.setValueTypeface(mTf);
-        data.setValueFormatter(new ValueFormatter());
+        if (mChart.getData() != null &&
+                mChart.getData().getDataSetCount() > 0) {
+            set = (BarDataSet)mChart.getData().getDataSetByIndex(0);
+            set.setYVals(values);
+            mChart.notifyDataSetChanged();
+        } else {
+            set = new BarDataSet(values, "Values");
+            set.setBarSpacePercent(40f);
+            set.setColors(colors);
+            set.setValueTextColors(colors);
 
-        mChart.setData(data);
-        mChart.invalidate();
+            BarData data = new BarData(dates, set);
+            data.setValueTextSize(13f);
+            data.setValueTypeface(mTf);
+            data.setValueFormatter(new ValueFormatter());
+
+            mChart.setData(data);
+            mChart.invalidate();
+        }
     }
 
     /**

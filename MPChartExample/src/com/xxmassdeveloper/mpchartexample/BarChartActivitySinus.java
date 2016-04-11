@@ -17,14 +17,11 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.XAxisValue;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.FileUtils;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -37,9 +34,9 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
     protected BarChart mChart;
     private SeekBar mSeekBarX;
     private TextView tvX;
-    
+
     private Typeface mTf;
-    
+
     private List<BarEntry> mSinusData;
 
     @Override
@@ -48,8 +45,8 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_barchart_sinus);
-        
-        mSinusData = FileUtils.loadBarEntriesFromAssets(getAssets(),"othersine.txt");
+
+        mSinusData = FileUtils.loadBarEntriesFromAssets(getAssets(), "othersine.txt");
 
         tvX = (TextView) findViewById(R.id.tvValueCount);
 
@@ -129,7 +126,7 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
                 break;
             }
             case R.id.actionToggleHighlight: {
-                if(mChart.getData() != null) {
+                if (mChart.getData() != null) {
                     mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
                     mChart.invalidate();
                 }
@@ -147,6 +144,13 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
             case R.id.actionToggleAutoScaleMinMax: {
                 mChart.setAutoScaleMinMaxEnabled(!mChart.isAutoScaleMinMaxEnabled());
                 mChart.notifyDataSetChanged();
+                break;
+            }
+            case R.id.actionToggleBarBorders: {
+                for (IBarDataSet set : mChart.getData().getDataSets())
+                    ((BarDataSet) set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
+
+                mChart.invalidate();
                 break;
             }
             case R.id.actionToggleHighlightArrow: {
@@ -206,17 +210,28 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
 
     private void setData(int count) {
 
+        List<XAxisValue> xVals = new ArrayList<XAxisValue>();
         ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
-        
+
         for (int i = 0; i < count; i++) {
             entries.add(mSinusData.get(i));
+            xVals.add(new XAxisValue(i, i+""));
         }
-        
-        BarDataSet set = new BarDataSet(entries, "Sinus Function");
-        set.setBarSpacePercent(40f);
-        set.setColor(Color.rgb(240, 120, 124));
 
-        BarData data = new BarData(set);
+        BarDataSet set;
+
+        if (mChart.getData() != null &&
+                mChart.getData().getDataSetCount() > 0) {
+            set = (BarDataSet) mChart.getData().getDataSetByIndex(0);
+            set.setYVals(entries);
+            mChart.notifyDataSetChanged();
+        } else {
+            set = new BarDataSet(entries, "Sinus Function");
+            set.setBarSpacePercent(40f);
+            set.setColor(Color.rgb(240, 120, 124));
+        }
+
+        BarData data = new BarData(xVals, set);
         data.setValueTextSize(10f);
         data.setValueTypeface(mTf);
         data.setDrawValues(false);
