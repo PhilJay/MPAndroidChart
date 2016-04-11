@@ -126,6 +126,13 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
                 mChart.notifyDataSetChanged();
                 break;
             }
+            case R.id.actionToggleBarBorders: {
+                for (IBarDataSet set : mChart.getData().getDataSets())
+                    ((BarDataSet)set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
+
+                mChart.invalidate();
+                break;
+            }
             case R.id.actionToggleHighlightArrow: {
                 if (mChart.isDrawHighlightArrowEnabled())
                     mChart.setDrawHighlightArrow(false);
@@ -179,17 +186,26 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
             xVals.add((int) yVals1.get(i).getVal() + "");
         }
 
-        BarDataSet set1 = new BarDataSet(yVals1, "Data Set");
-        set1.setColors(ColorTemplate.VORDIPLOM_COLORS);
-        set1.setDrawValues(false);
+        BarDataSet set1;
 
-        ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-        dataSets.add(set1);
+        if (mChart.getData() != null &&
+                mChart.getData().getDataSetCount() > 0) {
+            set1 = (BarDataSet)mChart.getData().getDataSetByIndex(0);
+            set1.setYVals(yVals1);
+            mChart.notifyDataSetChanged();
+        } else {
+            set1 = new BarDataSet(yVals1, "Data Set");
+            set1.setColors(ColorTemplate.VORDIPLOM_COLORS);
+            set1.setDrawValues(false);
 
-        BarData data = new BarData(xVals, dataSets);
+            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+            dataSets.add(set1);
 
-        mChart.setData(data);
-        mChart.invalidate();
+            BarData data = new BarData(xVals, dataSets);
+
+            mChart.setData(data);
+            mChart.invalidate();
+        }
     }
 
     @Override
