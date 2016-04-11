@@ -140,8 +140,10 @@ public class YAxisRenderer extends AxisRenderer {
                 double f;
                 int i;
                 int n = 0;
-                for (f = first; f <= last; f += interval) {
-                    ++n;
+                if (interval != 0.0) {
+                    for (f = first; f <= last; f += interval) {
+                        ++n;
+                    }
                 }
 
                 mYAxis.mEntryCount = n;
