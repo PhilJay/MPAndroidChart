@@ -195,57 +195,89 @@ public class LegendRenderer extends Renderer {
 
         float formToTextSpace = mLegend.getFormToTextSpace();
         float xEntrySpace = mLegend.getXEntrySpace();
+        Legend.LegendOrientation orientation = mLegend.getOrientation();
+        Legend.LegendHorizontalAlignment horizontalAlignment = mLegend.getHorizontalAlignment();
+        Legend.LegendVerticalAlignment verticalAlignment = mLegend.getVerticalAlignment();
         Legend.LegendDirection direction = mLegend.getDirection();
         float formSize = mLegend.getFormSize();
 
         // space between the entries
         float stackSpace = mLegend.getStackSpace();
 
-        float posX, posY;
-
         float yoffset = mLegend.getYOffset();
         float xoffset = mLegend.getXOffset();
+        float originPosX = 0.f;
 
-        Legend.LegendPosition legendPosition = mLegend.getPosition();
+        switch (horizontalAlignment) {
+            case LEFT:
 
-        switch (legendPosition) {
-            case BELOW_CHART_LEFT:
-            case BELOW_CHART_RIGHT:
-            case BELOW_CHART_CENTER:
-            case ABOVE_CHART_LEFT:
-            case ABOVE_CHART_RIGHT:
-            case ABOVE_CHART_CENTER: {
-                float contentWidth = mViewPortHandler.contentWidth();
-
-                float originPosX;
-
-                if (legendPosition == Legend.LegendPosition.BELOW_CHART_LEFT
-                        || legendPosition == Legend.LegendPosition.ABOVE_CHART_LEFT) {
+                if (orientation == Legend.LegendOrientation.VERTICAL)
+                    originPosX = xoffset;
+                else
                     originPosX = mViewPortHandler.contentLeft() + xoffset;
 
-                    if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
-                        originPosX += mLegend.mNeededWidth;
-                } else if (legendPosition == Legend.LegendPosition.BELOW_CHART_RIGHT
-                        || legendPosition == Legend.LegendPosition.ABOVE_CHART_RIGHT) {
+                if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
+                    originPosX += mLegend.mNeededWidth;
+
+                break;
+
+            case RIGHT:
+
+                if (orientation == Legend.LegendOrientation.VERTICAL)
+                    originPosX = mViewPortHandler.getChartWidth() - xoffset;
+                else
                     originPosX = mViewPortHandler.contentRight() - xoffset;
 
-                    if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
-                        originPosX -= mLegend.mNeededWidth;
-                } else // BELOW_CHART_CENTER || ABOVE_CHART_CENTER
-                    originPosX = mViewPortHandler.contentLeft() + contentWidth / 2.f + xoffset;
+                if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
+                    originPosX -= mLegend.mNeededWidth;
+
+                break;
+
+            case CENTER:
+
+                if (orientation == Legend.LegendOrientation.VERTICAL)
+                    originPosX = mViewPortHandler.getChartWidth() / 2.f;
+                else
+                    originPosX = mViewPortHandler.contentLeft()
+                            + mViewPortHandler.contentWidth() / 2.f;
+
+                originPosX += (direction == Legend.LegendDirection.LEFT_TO_RIGHT
+                        ? +xoffset
+                        : -xoffset);
+
+                // Horizontally layed out legends do the center offset on a line basis,
+                // So here we offset the vertical ones only.
+                if (orientation == Legend.LegendOrientation.VERTICAL) {
+                    originPosX += (direction == Legend.LegendDirection.LEFT_TO_RIGHT
+                            ? -mLegend.mNeededWidth / 2.0 + xoffset
+                            : mLegend.mNeededWidth / 2.0 - xoffset);
+                }
+
+            break;
+        }
+
+        switch (orientation) {
+            case HORIZONTAL: {
 
                 FSize[] calculatedLineSizes = mLegend.getCalculatedLineSizes();
                 FSize[] calculatedLabelSizes = mLegend.getCalculatedLabelSizes();
                 Boolean[] calculatedLabelBreakPoints = mLegend.getCalculatedLabelBreakPoints();
 
-                posX = originPosX;
+                float posX = originPosX;
+                float posY = 0.f;
 
-                if (legendPosition == Legend.LegendPosition.ABOVE_CHART_LEFT ||
-                        legendPosition == Legend.LegendPosition.ABOVE_CHART_RIGHT ||
-                        legendPosition == Legend.LegendPosition.ABOVE_CHART_CENTER) {
-                    posY = yoffset;
-                } else {
-                    posY = mViewPortHandler.getChartHeight() - yoffset - mLegend.mNeededHeight;
+                switch (verticalAlignment) {
+                    case TOP:
+                        posY = yoffset;
+                        break;
+
+                    case BOTTOM:
+                        posY = mViewPortHandler.getChartHeight() - yoffset - mLegend.mNeededHeight;
+                        break;
+
+                    case CENTER:
+                        posY = (mViewPortHandler.getChartHeight() - mLegend.mNeededHeight) / 2.f + yoffset;
+                        break;
                 }
 
                 int lineIndex = 0;
@@ -257,10 +289,11 @@ public class LegendRenderer extends Renderer {
                     }
 
                     if (posX == originPosX &&
-                        (legendPosition == Legend.LegendPosition.BELOW_CHART_CENTER ||
-                        legendPosition == Legend.LegendPosition.ABOVE_CHART_CENTER) &&
+                        horizontalAlignment == Legend.LegendHorizontalAlignment.CENTER &&
                         lineIndex < calculatedLineSizes.length) {
-                        posX += (direction == Legend.LegendDirection.RIGHT_TO_LEFT ? calculatedLineSizes[lineIndex].width : -calculatedLineSizes[lineIndex].width) / 2.f;
+                        posX += (direction == Legend.LegendDirection.RIGHT_TO_LEFT
+                                ? calculatedLineSizes[lineIndex].width
+                                : -calculatedLineSizes[lineIndex].width) / 2.f;
                         lineIndex++;
                     }
 
@@ -294,91 +327,70 @@ public class LegendRenderer extends Renderer {
                         posX += direction == Legend.LegendDirection.RIGHT_TO_LEFT ? -stackSpace : stackSpace;
                 }
 
+                break;
             }
-            break;
 
-            case PIECHART_CENTER:
-            case RIGHT_OF_CHART:
-            case RIGHT_OF_CHART_CENTER:
-            case RIGHT_OF_CHART_INSIDE:
-            case LEFT_OF_CHART:
-            case LEFT_OF_CHART_CENTER:
-            case LEFT_OF_CHART_INSIDE: {
+            case VERTICAL: {
                 // contains the stacked legend size in pixels
                 float stack = 0f;
                 boolean wasStacked = false;
+                float posY = 0.f;
 
-                if (legendPosition == Legend.LegendPosition.PIECHART_CENTER) {
-                    posX = mViewPortHandler.getChartWidth() / 2f
-                            + (direction == Legend.LegendDirection.LEFT_TO_RIGHT ? -mLegend.mTextWidthMax / 2f
-                            : mLegend.mTextWidthMax / 2f);
-                    posY = mViewPortHandler.getChartHeight() / 2f - mLegend.mNeededHeight / 2f
-                            + mLegend.getYOffset();
-                } else {
-                    boolean isRightAligned = legendPosition == Legend.LegendPosition.RIGHT_OF_CHART
-                            ||
-                            legendPosition == Legend.LegendPosition.RIGHT_OF_CHART_CENTER ||
-                            legendPosition == Legend.LegendPosition.RIGHT_OF_CHART_INSIDE;
+                switch (verticalAlignment) {
+                    case TOP:
+                        posY = (horizontalAlignment == Legend.LegendHorizontalAlignment.CENTER
+                                ? 0.f
+                                : mViewPortHandler.contentTop());
+                        posY += yoffset;
+                        break;
 
-                    if (isRightAligned) {
-                        posX = mViewPortHandler.getChartWidth() - xoffset;
-                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
-                            posX -= mLegend.mTextWidthMax;
-                    } else {
-                        posX = xoffset;
-                        if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
-                            posX += mLegend.mTextWidthMax;
-                    }
+                    case BOTTOM:
+                        posY = (horizontalAlignment == Legend.LegendHorizontalAlignment.CENTER
+                                ? mViewPortHandler.getChartHeight()
+                                : mViewPortHandler.contentBottom());
+                        posY -= mLegend.mNeededHeight + yoffset;
+                        break;
 
-                    if (legendPosition == Legend.LegendPosition.RIGHT_OF_CHART ||
-                            legendPosition == Legend.LegendPosition.LEFT_OF_CHART) {
-                        posY = mViewPortHandler.contentTop() + yoffset;
-                    } else if (legendPosition == Legend.LegendPosition.RIGHT_OF_CHART_CENTER ||
-                            legendPosition == Legend.LegendPosition.LEFT_OF_CHART_CENTER) {
-                        posY = mViewPortHandler.getChartHeight() / 2f - mLegend.mNeededHeight / 2f;
-                    } else /*
-                            * if (legendPosition ==
-                            * Legend.LegendPosition.RIGHT_OF_CHART_INSIDE ||
-                            * legendPosition ==
-                            * Legend.LegendPosition.LEFT_OF_CHART_INSIDE)
-                            */ {
-                        posY = mViewPortHandler.contentTop() + yoffset;
-                    }
+                    case CENTER:
+                        posY = mViewPortHandler.getChartHeight() / 2.f
+                                - mLegend.mNeededHeight / 2.f
+                                + mLegend.getYOffset();
+                        break;
                 }
 
                 for (int i = 0; i < labels.length; i++) {
 
                     Boolean drawingForm = colors[i] != ColorTemplate.COLOR_SKIP;
-                    float x = posX;
+                    float posX = originPosX;
 
                     if (drawingForm) {
                         if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
-                            x += stack;
+                            posX += stack;
                         else
-                            x -= formSize - stack;
+                            posX -= formSize - stack;
 
-                        drawForm(c, x, posY + formYOffset, i, mLegend);
+                        drawForm(c, posX, posY + formYOffset, i, mLegend);
 
                         if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
-                            x += formSize;
+                            posX += formSize;
                     }
 
                     if (labels[i] != null) {
 
                         if (drawingForm && !wasStacked)
-                            x += direction == Legend.LegendDirection.LEFT_TO_RIGHT ? formToTextSpace
+                            posX += direction == Legend.LegendDirection.LEFT_TO_RIGHT ? formToTextSpace
                                     : -formToTextSpace;
                         else if (wasStacked)
-                            x = posX;
+                            posX = originPosX;
 
                         if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
-                            x -= Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
+                            posX -= Utils.calcTextWidth(mLegendLabelPaint, labels[i]);
 
                         if (!wasStacked) {
-                            drawLabel(c, x, posY + labelLineHeight, labels[i]);
+                            drawLabel(c, posX, posY + labelLineHeight, labels[i]);
                         } else {
                             posY += labelLineHeight + labelLineSpacing;
-                            drawLabel(c, x, posY + labelLineHeight, labels[i]);
+                            drawLabel(c, posX, posY + labelLineHeight, labels[i]);
                         }
 
                         // make a step down
@@ -389,8 +401,10 @@ public class LegendRenderer extends Renderer {
                         wasStacked = true;
                     }
                 }
+
+                break;
+
             }
-            break;
         }
     }
 

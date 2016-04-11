@@ -56,48 +56,19 @@ public class HorizontalBarChart extends BarChart {
 		mXAxisRenderer = new XAxisRendererHorizontalBarChart(mViewPortHandler, mXAxis, mLeftAxisTransformer, this);
 	}
 
+	private RectF mOffsetsBuffer = new RectF();
+
 	@Override
 	public void calculateOffsets() {
 
 		float offsetLeft = 0f, offsetRight = 0f, offsetTop = 0f, offsetBottom = 0f;
 
-		// setup offsets for legend
-		if (mLegend != null && mLegend.isEnabled()) {
+		calculateLegendOffsets(mOffsetsBuffer);
 
-			if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART || mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART_CENTER) {
-
-				offsetRight += Math.min(mLegend.mNeededWidth, mViewPortHandler.getChartWidth() * mLegend.getMaxSizePercent())
-						+ mLegend.getXOffset() * 2f;
-
-			} else if (mLegend.getPosition() == LegendPosition.LEFT_OF_CHART
-					|| mLegend.getPosition() == LegendPosition.LEFT_OF_CHART_CENTER) {
-
-				offsetLeft += Math.min(mLegend.mNeededWidth, mViewPortHandler.getChartWidth() * mLegend.getMaxSizePercent())
-						+ mLegend.getXOffset() * 2f;
-
-			} else if (mLegend.getPosition() == LegendPosition.BELOW_CHART_LEFT
-					|| mLegend.getPosition() == LegendPosition.BELOW_CHART_RIGHT
-					|| mLegend.getPosition() == LegendPosition.BELOW_CHART_CENTER) {
-
-				// It's possible that we do not need this offset anymore as it
-				//   is available through the extraOffsets, but changing it can mean
-				//   changing default visibility for existing apps.
-				float yOffset = mLegend.mTextHeightMax;
-
-				offsetBottom += Math.min(mLegend.mNeededHeight + yOffset, mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent());
-
-			} else if (mLegend.getPosition() == LegendPosition.ABOVE_CHART_LEFT
-					|| mLegend.getPosition() == LegendPosition.ABOVE_CHART_RIGHT
-					|| mLegend.getPosition() == LegendPosition.ABOVE_CHART_CENTER) {
-
-				// It's possible that we do not need this offset anymore as it
-				//   is available through the extraOffsets, but changing it can mean
-				//   changing default visibility for existing apps.
-				float yOffset = mLegend.mTextHeightMax * 2.f;
-
-				offsetTop += Math.min(mLegend.mNeededHeight + yOffset, mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent());
-			}
-		}
+		offsetLeft += mOffsetsBuffer.left;
+		offsetTop += mOffsetsBuffer.top;
+		offsetRight += mOffsetsBuffer.right;
+		offsetBottom += mOffsetsBuffer.bottom;
 
 		// offsets for y-labels
 		if (mAxisLeft.needsOffset()) {
