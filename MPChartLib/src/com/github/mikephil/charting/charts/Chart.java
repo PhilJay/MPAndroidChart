@@ -670,7 +670,9 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             int xIndex = highlight.getXIndex();
             int dataSetIndex = highlight.getDataSetIndex();
 
-            float deltaX = mXAxis.mAxisRange;
+            float deltaX = mXAxis != null 
+                ? mXAxis.mAxisRange
+                : ((mData == null ? 0.f : mData.getXValCount()) - 1.f);
 
             if (xIndex <= deltaX && xIndex <= deltaX * mAnimator.getPhaseX()) {
 
