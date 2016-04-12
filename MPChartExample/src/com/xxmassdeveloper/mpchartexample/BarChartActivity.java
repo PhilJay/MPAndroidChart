@@ -35,6 +35,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.custom.MyYAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -255,16 +256,18 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         } else {
             set1 = new BarDataSet(yVals1, "DataSet");
             set1.setBarSpacePercent(35f);
-
-            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-            dataSets.add(set1);
-
-            BarData data = new BarData(xVals, dataSets);
-            data.setValueTextSize(10f);
-            data.setValueTypeface(mTf);
-
-            mChart.setData(data);
+            set1.setColors(ColorTemplate.MATERIAL_COLORS);
         }
+
+
+        ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+        dataSets.add(set1);
+
+        BarData data = new BarData(xVals, dataSets);
+        data.setValueTextSize(10f);
+        data.setValueTypeface(mTf);
+
+        mChart.setData(data);
     }
 
     @SuppressLint("NewApi")
