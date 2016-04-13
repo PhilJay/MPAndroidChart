@@ -442,6 +442,9 @@ public class ViewPortHandler {
      */
     public void setMaximumScaleX(float xScale) {
 
+        if (xScale == 0.f)
+            xScale = Float.MAX_VALUE;
+
         mMaxScaleX = xScale;
 
         limitTransAndScale(mMatrixTouch, mContentRect);
@@ -457,6 +460,9 @@ public class ViewPortHandler {
 
         if (minScaleX < 1f)
             minScaleX = 1f;
+
+        if (maxScaleX == 0.f)
+            maxScaleX = Float.MAX_VALUE;
 
         mMinScaleX = minScaleX;
         mMaxScaleX = maxScaleX;
@@ -485,6 +491,9 @@ public class ViewPortHandler {
      * @param yScale
      */
     public void setMaximumScaleY(float yScale) {
+
+        if (yScale == 0.f)
+            yScale = Float.MAX_VALUE;
 
         mMaxScaleY = yScale;
 
