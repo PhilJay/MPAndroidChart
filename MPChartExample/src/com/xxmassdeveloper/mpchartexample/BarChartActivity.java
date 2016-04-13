@@ -257,17 +257,16 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
             set1 = new BarDataSet(yVals1, "DataSet");
             set1.setBarSpacePercent(35f);
             set1.setColors(ColorTemplate.MATERIAL_COLORS);
+
+            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+            dataSets.add(set1);
+
+            BarData data = new BarData(xVals, dataSets);
+            data.setValueTextSize(10f);
+            data.setValueTypeface(mTf);
+
+            mChart.setData(data);
         }
-
-
-        ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-        dataSets.add(set1);
-
-        BarData data = new BarData(xVals, dataSets);
-        data.setValueTextSize(10f);
-        data.setValueTypeface(mTf);
-
-        mChart.setData(data);
     }
 
     @SuppressLint("NewApi")
