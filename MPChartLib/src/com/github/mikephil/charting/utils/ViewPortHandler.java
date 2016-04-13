@@ -667,7 +667,7 @@ public class ViewPortHandler {
      * @return
      */
     public boolean hasNoDragOffset() {
-        return mTransOffsetX <= 0 && mTransOffsetY <= 0 ? true : false;
+        return mTransOffsetX <= 0 && mTransOffsetY <= 0;
     }
 
     /**
