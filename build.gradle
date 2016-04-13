@@ -11,6 +11,7 @@ buildscript {
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
         classpath 'com.layer:gradle-git-repo-plugin:2.0.2'
     }
+    System.properties['com.android.build.gradle.overrideVersionCheck'] = 'true'
 }
 
 allprojects {
