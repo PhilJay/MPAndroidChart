@@ -727,10 +727,15 @@ public class LineChartRenderer extends LineRadarRenderer {
      * Releases the drawing bitmap. This should be called when {@link LineChart#onDetachedFromWindow()}.
      */
     public void releaseBitmap() {
+        if (mBitmapCanvas != null) {
+            mBitmapCanvas.setBitmap(null);
+            mBitmapCanvas = null;
+        }
         if (mDrawBitmap != null) {
             mDrawBitmap.get().recycle();
             mDrawBitmap.clear();
             mDrawBitmap = null;
         }
+        System.gc();
     }
 }
