@@ -145,8 +145,6 @@ public class LineChartRenderer extends LineRadarRenderer {
         float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
         float phaseY = mAnimator.getPhaseY();
 
-        float intensity = dataSet.getCubicIntensity();
-
         cubicPath.reset();
 
         int size = (int) Math.ceil((maxx - minx) * phaseX + minx);
@@ -420,7 +418,8 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             if (e1 != null) {
 
-                for (int x = count > 1 ? minx + 1 : minx, j = 0; x < count; x++) {
+                int j = 0;
+                for (int x = count > 1 ? minx + 1 : minx; x < count; x++) {
 
                     e1 = dataSet.getEntryForIndex(x == 0 ? 0 : (x - 1));
                     e2 = dataSet.getEntryForIndex(x);
@@ -441,14 +440,18 @@ public class LineChartRenderer extends LineRadarRenderer {
                     mLineBuffer[j++] = e2.getVal() * phaseY;
                 }
 
-                trans.pointValuesToPixel(mLineBuffer);
+                if (j > 0) {
+                    trans.pointValuesToPixel(mLineBuffer);
 
-                final int size = Math.max((count - minx - 1) * pointsPerEntryPair, pointsPerEntryPair) * 2;
+                    final int size =
+                            Math.max((count - minx - 1) * pointsPerEntryPair, pointsPerEntryPair) *
+                                    2;
 
-                mRenderPaint.setColor(dataSet.getColor());
+                    mRenderPaint.setColor(dataSet.getColor());
 
-                canvas.drawLines(mLineBuffer, 0, size,
-                        mRenderPaint);
+                    canvas.drawLines(mLineBuffer, 0, size,
+                            mRenderPaint);
+                }
             }
         }
 
