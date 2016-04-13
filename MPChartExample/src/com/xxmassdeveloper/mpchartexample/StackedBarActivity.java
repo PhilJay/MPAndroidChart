@@ -208,6 +208,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 				mChart.getData().getDataSetCount() > 0) {
 			set1 = (BarDataSet)mChart.getData().getDataSetByIndex(0);
 			set1.setYVals(yVals1);
+			mChart.getData().setXVals(xVals);
 			mChart.notifyDataSetChanged();
 		} else {
 			set1 = new BarDataSet(yVals1, "Statistics Vienna 2014");

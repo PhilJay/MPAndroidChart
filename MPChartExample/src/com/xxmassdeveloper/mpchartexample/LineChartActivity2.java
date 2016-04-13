@@ -318,6 +318,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             set2 = (LineDataSet)mChart.getData().getDataSetByIndex(1);
             set1.setYVals(yVals1);
             set2.setYVals(yVals2);
+            mChart.getData().setXVals(xVals);
             mChart.notifyDataSetChanged();
         } else {
             // create a dataset and give it a type

@@ -248,6 +248,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
                 mChart.getData().getDataSetCount() > 0) {
             set1 = (BarDataSet)mChart.getData().getDataSetByIndex(0);
             set1.setYVals(yVals1);
+            mChart.getData().setXVals(xVals);
             mChart.notifyDataSetChanged();
         } else {
             set1 = new BarDataSet(yVals1, "DataSet 1");
