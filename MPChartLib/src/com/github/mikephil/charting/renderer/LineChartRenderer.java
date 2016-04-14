@@ -736,6 +736,5 @@ public class LineChartRenderer extends LineRadarRenderer {
             mDrawBitmap.clear();
             mDrawBitmap = null;
         }
-        System.gc();
     }
 }

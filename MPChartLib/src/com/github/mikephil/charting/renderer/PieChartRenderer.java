@@ -928,6 +928,5 @@ public class PieChartRenderer extends DataRenderer {
             mDrawBitmap.clear();
             mDrawBitmap = null;
         }
-        System.gc();
     }
 }
