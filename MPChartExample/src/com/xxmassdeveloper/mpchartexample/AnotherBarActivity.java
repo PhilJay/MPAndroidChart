@@ -30,7 +30,6 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
     private BarChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
-    private TextView teste;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
