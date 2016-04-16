@@ -56,8 +56,13 @@ public class BubbleChartRenderer extends DataRenderer {
     private float[] sizeBuffer = new float[4];
     private float[] pointBuffer = new float[2];
 
-    protected float getShapeSize(float entrySize, float maxSize, float reference) {
-        final float factor = (maxSize == 0f) ? 1f : (float) Math.sqrt(entrySize / maxSize);
+    protected float getShapeSize(float entrySize,
+                                 float maxSize,
+                                 float reference,
+                                 boolean normalizeSize) {
+        final float factor = normalizeSize
+                ? ((maxSize == 0f) ? 1f : (float) Math.sqrt(entrySize / maxSize))
+                : entrySize;
         final float shapeSize = reference * factor;
         return shapeSize;
     }
@@ -66,7 +71,7 @@ public class BubbleChartRenderer extends DataRenderer {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-        float phaseX = mAnimator.getPhaseX();
+        float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
         float phaseY = mAnimator.getPhaseY();
 
         BubbleEntry entryFrom = dataSet.getEntryForXIndex(mMinX);
@@ -79,6 +84,8 @@ public class BubbleChartRenderer extends DataRenderer {
         sizeBuffer[2] = 1f;
 
         trans.pointValuesToPixel(sizeBuffer);
+
+        boolean normalizeSize = dataSet.isNormalizeSizeEnabled();
 
         // calcualte the full width of 1 step on the x-axis
         final float maxBubbleWidth = Math.abs(sizeBuffer[2] - sizeBuffer[0]);
@@ -93,7 +100,7 @@ public class BubbleChartRenderer extends DataRenderer {
             pointBuffer[1] = (float) (entry.getVal()) * phaseY;
             trans.pointValuesToPixel(pointBuffer);
 
-            float shapeHalf = getShapeSize(entry.getSize(), dataSet.getMaxSize(), referenceSize) / 2f;
+            float shapeHalf = getShapeSize(entry.getSize(), dataSet.getMaxSize(), referenceSize, normalizeSize) / 2f;
 
             if (!mViewPortHandler.isInBoundsTop(pointBuffer[1] + shapeHalf)
                     || !mViewPortHandler.isInBoundsBottom(pointBuffer[1] - shapeHalf))
@@ -138,7 +145,7 @@ public class BubbleChartRenderer extends DataRenderer {
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet);
 
-                final float phaseX = mAnimator.getPhaseX();
+                final float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
                 final float phaseY = mAnimator.getPhaseY();
 
                 BubbleEntry entryFrom = dataSet.getEntryForXIndex(mMinX);
@@ -187,7 +194,7 @@ public class BubbleChartRenderer extends DataRenderer {
 
         BubbleData bubbleData = mChart.getBubbleData();
 
-        float phaseX = mAnimator.getPhaseX();
+        float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
         float phaseY = mAnimator.getPhaseY();
 
         for (Highlight indice : indices) {
@@ -214,6 +221,8 @@ public class BubbleChartRenderer extends DataRenderer {
 
             trans.pointValuesToPixel(sizeBuffer);
 
+            boolean normalizeSize = dataSet.isNormalizeSizeEnabled();
+
             // calcualte the full width of 1 step on the x-axis
             final float maxBubbleWidth = Math.abs(sizeBuffer[2] - sizeBuffer[0]);
             final float maxBubbleHeight = Math.abs(mViewPortHandler.contentBottom() - mViewPortHandler.contentTop());
@@ -223,7 +232,7 @@ public class BubbleChartRenderer extends DataRenderer {
             pointBuffer[1] = (float) (entry.getVal()) * phaseY;
             trans.pointValuesToPixel(pointBuffer);
 
-            float shapeHalf = getShapeSize(entry.getSize(), dataSet.getMaxSize(), referenceSize) / 2f;
+            float shapeHalf = getShapeSize(entry.getSize(), dataSet.getMaxSize(), referenceSize, normalizeSize) / 2f;
 
             if (!mViewPortHandler.isInBoundsTop(pointBuffer[1] + shapeHalf)
                     || !mViewPortHandler.isInBoundsBottom(pointBuffer[1] - shapeHalf))

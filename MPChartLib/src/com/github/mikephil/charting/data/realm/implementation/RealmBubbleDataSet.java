@@ -17,6 +17,7 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
     private String mSizeField;
 
     protected float mMaxSize;
+    protected boolean mNormalizeSize = true;
 
     private float mHighlightCircleWidth = 2.5f;
 
@@ -132,6 +133,15 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
     @Override
     public float getMaxSize() {
         return mMaxSize;
+    }
+
+    @Override
+    public boolean isNormalizeSizeEnabled() {
+        return mNormalizeSize;
+    }
+
+    public void setNormalizeSizeEnabled(boolean normalizeSize) {
+        mNormalizeSize = normalizeSize;
     }
 
     private float yMin(BubbleEntry entry) {

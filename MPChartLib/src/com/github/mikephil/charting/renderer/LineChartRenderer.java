@@ -142,10 +142,8 @@ public class LineChartRenderer extends LineRadarRenderer {
         int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff, 0);
         int maxx = Math.min(Math.max(minx + 2, dataSet.getEntryIndex(entryTo) + 1), entryCount);
 
-        float phaseX = mAnimator.getPhaseX();
+        float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
         float phaseY = mAnimator.getPhaseY();
-
-        float intensity = dataSet.getCubicIntensity();
 
         cubicPath.reset();
 
@@ -208,7 +206,7 @@ public class LineChartRenderer extends LineRadarRenderer {
         int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff, 0);
         int maxx = Math.min(Math.max(minx + 2, dataSet.getEntryIndex(entryTo) + 1), entryCount);
 
-        float phaseX = mAnimator.getPhaseX();
+        float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
         float phaseY = mAnimator.getPhaseY();
 
         float intensity = dataSet.getCubicIntensity();
@@ -322,7 +320,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-        float phaseX = mAnimator.getPhaseX();
+        float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
         float phaseY = mAnimator.getPhaseY();
 
         mRenderPaint.setStyle(Paint.Style.STROKE);
@@ -420,7 +418,8 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             if (e1 != null) {
 
-                for (int x = count > 1 ? minx + 1 : minx, j = 0; x < count; x++) {
+                int j = 0;
+                for (int x = count > 1 ? minx + 1 : minx; x < count; x++) {
 
                     e1 = dataSet.getEntryForIndex(x == 0 ? 0 : (x - 1));
                     e2 = dataSet.getEntryForIndex(x);
@@ -441,14 +440,18 @@ public class LineChartRenderer extends LineRadarRenderer {
                     mLineBuffer[j++] = e2.getVal() * phaseY;
                 }
 
-                trans.pointValuesToPixel(mLineBuffer);
+                if (j > 0) {
+                    trans.pointValuesToPixel(mLineBuffer);
 
-                final int size = Math.max((count - minx - 1) * pointsPerEntryPair, pointsPerEntryPair) * 2;
+                    final int size =
+                            Math.max((count - minx - 1) * pointsPerEntryPair, pointsPerEntryPair) *
+                                    2;
 
-                mRenderPaint.setColor(dataSet.getColor());
+                    mRenderPaint.setColor(dataSet.getColor());
 
-                canvas.drawLines(mLineBuffer, 0, size,
-                        mRenderPaint);
+                    canvas.drawLines(mLineBuffer, 0, size,
+                            mRenderPaint);
+                }
             }
         }
 
@@ -488,7 +491,7 @@ public class LineChartRenderer extends LineRadarRenderer {
     private Path generateFilledPath(ILineDataSet dataSet, int from, int to) {
 
         float fillMin = dataSet.getFillFormatter().getFillLinePosition(dataSet, mChart);
-        float phaseX = mAnimator.getPhaseX();
+        float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
         float phaseY = mAnimator.getPhaseY();
         final boolean isDrawSteppedEnabled = dataSet.isDrawSteppedEnabled();
 
@@ -593,7 +596,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
         mRenderPaint.setStyle(Paint.Style.FILL);
 
-        float phaseX = mAnimator.getPhaseX();
+        float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
         float phaseY = mAnimator.getPhaseY();
 
         float[] circlesBuffer = new float[2];
@@ -724,6 +727,10 @@ public class LineChartRenderer extends LineRadarRenderer {
      * Releases the drawing bitmap. This should be called when {@link LineChart#onDetachedFromWindow()}.
      */
     public void releaseBitmap() {
+        if (mBitmapCanvas != null) {
+            mBitmapCanvas.setBitmap(null);
+            mBitmapCanvas = null;
+        }
         if (mDrawBitmap != null) {
             mDrawBitmap.get().recycle();
             mDrawBitmap.clear();

@@ -10,6 +10,7 @@ import java.util.List;
 public class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry> implements IBubbleDataSet {
 
     protected float mMaxSize;
+    protected boolean mNormalizeSize = true;
 
     private float mHighlightCircleWidth = 2.5f;
 
@@ -101,6 +102,15 @@ public class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry
     @Override
     public float getMaxSize() {
         return mMaxSize;
+    }
+
+    @Override
+    public boolean isNormalizeSizeEnabled() {
+        return mNormalizeSize;
+    }
+
+    public void setNormalizeSizeEnabled(boolean normalizeSize) {
+        mNormalizeSize = normalizeSize;
     }
 
     private float yMin(BubbleEntry entry) {
