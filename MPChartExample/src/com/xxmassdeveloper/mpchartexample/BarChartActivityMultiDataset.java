@@ -225,6 +225,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
             set2.setYVals(yVals2);
             set3.setYVals(yVals3);
             mChart.getData().setXVals(xVals);
+            mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
             // create 3 datasets with different types
@@ -250,8 +251,9 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
             data.setValueTypeface(tf);
 
             mChart.setData(data);
-            mChart.invalidate();
         }
+
+        mChart.invalidate();
     }
 
     @Override

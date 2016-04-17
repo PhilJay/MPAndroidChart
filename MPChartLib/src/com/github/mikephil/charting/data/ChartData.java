@@ -426,7 +426,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      * sets the x-values the chart represents
      *
      */
-    public void setXVals(List<String> xVals) {
+    public void setXVals(List<XAxisValue> xVals) {
         mXVals = xVals;
     }
 

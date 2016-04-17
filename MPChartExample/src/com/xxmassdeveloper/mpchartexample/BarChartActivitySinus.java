@@ -225,6 +225,7 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
             set = (BarDataSet) mChart.getData().getDataSetByIndex(0);
             set.setYVals(entries);
             mChart.getData().setXVals(xVals);
+            mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
             set = new BarDataSet(entries, "Sinus Function");
