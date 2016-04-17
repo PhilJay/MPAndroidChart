@@ -223,8 +223,9 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 			data.setValueFormatter(new MyValueFormatter());
 
 			mChart.setData(data);
-			mChart.invalidate();
 		}
+
+		mChart.invalidate();
 	}
 
 	@Override
