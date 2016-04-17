@@ -71,7 +71,7 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
         mChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
         mChart.setCenterText(generateCenterSpannableText());
 
-        mChart.setExtraOffsets(0.f, 50.f, 0.f, 50.f);
+        mChart.setExtraOffsets(5.f, 5.f, 5.f, 5.f);
 
         mChart.setDrawHoleEnabled(true);
         mChart.setHoleColor(Color.WHITE);

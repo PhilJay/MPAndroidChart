@@ -546,6 +546,7 @@ public abstract class Utils {
         if(mDrawTextRectBuffer.height() < mLineHeight){
             mLineHeight = mDrawTextRectBuffer.height();
         }
+
         final float lineHeight = mLineHeight;
 
         // Android sometimes has pre-padding
