@@ -532,7 +532,7 @@ public abstract class Utils {
 
     private static Rect mDrawTextRectBuffer = new Rect();
     private static Paint.FontMetrics mFontMetricsBuffer = new Paint.FontMetrics();
-    private static float mLineHeight = 9999.0f;
+    private static float mLineHeight = 0.0f;
 
     public static void drawText(Canvas c, String text, float x, float y,
                                 Paint paint,
@@ -543,11 +543,15 @@ public abstract class Utils {
 
         paint.getTextBounds(text, 0, text.length(), mDrawTextRectBuffer);
 
-        if(mDrawTextRectBuffer.height() < mLineHeight){
+        //the method paint.getTextBounds return different values height for letter.
+        //so we need get only one lineHeight for textAlign
+        if(mDrawTextRectBuffer.height() > mLineHeight){
             mLineHeight = mDrawTextRectBuffer.height();
         }
-        final float lineHeight = mLineHeight;
 
+        mLineHeight = mDrawTextRectBuffer.bottom + mLineHeight / 2;
+
+        final float lineHeight = mLineHeight;
         // Android sometimes has pre-padding
         drawOffsetX -= mDrawTextRectBuffer.left;
 
