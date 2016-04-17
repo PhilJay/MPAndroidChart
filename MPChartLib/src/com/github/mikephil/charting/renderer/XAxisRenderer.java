@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.text.TextPaint;
 import android.util.Size;
 
 import com.github.mikephil.charting.components.LimitLine;
@@ -298,25 +299,25 @@ public class XAxisRenderer extends AxisRenderer {
             float xOffset = limitLine.getLineWidth() + limitLine.getXOffset();
 
             final LimitLine.LimitLabelPosition labelPosition = limitLine.getLabelPosition();
-
             if (labelPosition == LimitLine.LimitLabelPosition.RIGHT_TOP) {
 
                 final float labelLineHeight = Utils.calcTextHeight(mLimitLinePaint, label);
                 mLimitLinePaint.setTextAlign(Align.LEFT);
-                c.drawText(label, position[0] + xOffset, mViewPortHandler.contentTop() + yOffset + labelLineHeight, mLimitLinePaint);
+                Utils.drawMultilineText(c, label, position[0] + xOffset, mViewPortHandler.contentTop() + yOffset + labelLineHeight, new TextPaint(mLimitLinePaint), new FSize(c.getWidth(), c.getHeight()), new PointF(0f, 0f), 0);
             } else if (labelPosition == LimitLine.LimitLabelPosition.RIGHT_BOTTOM) {
 
                 mLimitLinePaint.setTextAlign(Align.LEFT);
-                c.drawText(label, position[0] + xOffset, mViewPortHandler.contentBottom() - yOffset, mLimitLinePaint);
+                Utils.drawMultilineText(c, label, position[0] + xOffset, mViewPortHandler.contentBottom() - yOffset, new TextPaint(mLimitLinePaint), new FSize(c.getWidth(), c.getHeight()), new PointF(0f, 0f), 0);
             } else if (labelPosition == LimitLine.LimitLabelPosition.LEFT_TOP) {
 
-                mLimitLinePaint.setTextAlign(Align.RIGHT);
                 final float labelLineHeight = Utils.calcTextHeight(mLimitLinePaint, label);
-                c.drawText(label, position[0] - xOffset, mViewPortHandler.contentTop() + yOffset + labelLineHeight, mLimitLinePaint);
+                mLimitLinePaint.setTextAlign(Align.RIGHT);
+                Utils.drawMultilineText(c, label, position[0] - xOffset, mViewPortHandler.contentTop() + yOffset + labelLineHeight, new TextPaint(mLimitLinePaint), new FSize(c.getWidth(), c.getHeight()), new PointF(0f, 0f), 0);
+
             } else {
 
                 mLimitLinePaint.setTextAlign(Align.RIGHT);
-                c.drawText(label, position[0] - xOffset, mViewPortHandler.contentBottom() - yOffset, mLimitLinePaint);
+                Utils.drawMultilineText(c, label, position[0] - xOffset, mViewPortHandler.contentBottom() - yOffset, new TextPaint(mLimitLinePaint), new FSize(c.getWidth(), c.getHeight()), new PointF(0f, 0f), 0);
             }
         }
     }
