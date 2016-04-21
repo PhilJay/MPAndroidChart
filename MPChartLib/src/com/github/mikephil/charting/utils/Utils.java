@@ -547,6 +547,7 @@ public abstract class Utils {
         // Android sometimes has pre-padding
         drawOffsetX -= mDrawTextRectBuffer.left;
 
+
         // Android does not snap the bounds to line boundaries,
         //  and draws from bottom to top.
         // And we want to normalize it.
