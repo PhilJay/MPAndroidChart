@@ -193,6 +193,7 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
             set1 = (BarDataSet)mChart.getData().getDataSetByIndex(0);
             set1.setYVals(yVals1);
             mChart.getData().setXVals(xVals);
+            mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
             set1 = new BarDataSet(yVals1, "Data Set");
