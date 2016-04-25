@@ -533,9 +533,9 @@ public abstract class Utils {
     private static Rect mDrawTextRectBuffer = new Rect();
     private static Paint.FontMetrics mFontMetricsBuffer = new Paint.FontMetrics();
 
-    public static void drawText(Canvas c, String text, float x, float y,
-                                Paint paint,
-                                PointF anchor, float angleDegrees) {
+    public static void drawXAxisValue(Canvas c, String text, float x, float y,
+                                      Paint paint,
+                                      PointF anchor, float angleDegrees) {
 
         float drawOffsetX = 0.f;
         float drawOffsetY = 0.f;
