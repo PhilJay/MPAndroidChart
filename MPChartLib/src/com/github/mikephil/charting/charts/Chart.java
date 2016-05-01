@@ -556,15 +556,24 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * @param dataSetIndex
      */
     public void highlightValue(int xIndex, int dataSetIndex) {
+        highlightValue(xIndex, dataSetIndex, true);
+    }
+
+    /**
+     * Highlights the value at the given x-index in the given DataSet. Provide
+     * -1 as the x-index or dataSetIndex to undo all highlighting.
+     *
+     * @param xIndex
+     * @param dataSetIndex
+     */
+    public void highlightValue(int xIndex, int dataSetIndex, boolean callListener) {
 
         if (xIndex < 0 || dataSetIndex < 0 || xIndex >= mData.getXValCount()
                 || dataSetIndex >= mData.getDataSetCount()) {
 
-            highlightValues(null);
+            highlightValue(null, callListener);
         } else {
-            highlightValues(new Highlight[]{
-                    new Highlight(xIndex, dataSetIndex)
-            });
+            highlightValue(new Highlight(xIndex, dataSetIndex), callListener);
         }
     }
 
@@ -598,7 +607,10 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
                 Log.i(LOG_TAG, "Highlighted: " + high.toString());
 
             e = mData.getEntryForHighlight(high);
-            if (e == null || e.getXIndex() != high.getXIndex()) {
+            if (e == null ||
+                    e.getXIndex() != high.getXIndex() ||
+                    (!Float.isNaN(high.getValue()) &&
+                            e.getVal() != high.getValue())) {
                 mIndicesToHighlight = null;
                 high = null;
             } else {

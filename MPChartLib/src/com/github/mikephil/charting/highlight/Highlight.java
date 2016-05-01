@@ -11,6 +11,12 @@ public class Highlight {
     /** the x-index of the highlighted value */
     private int mXIndex;
 
+    /** the y-value of the highlighted value */
+    private float mValue = Float.NaN;
+
+    /** the index of the data object - in case it refers to more than one */
+    private int mDataIndex;
+
     /** the index of the dataset the highlighted value is in */
     private int mDataSetIndex;
 
@@ -22,25 +28,30 @@ public class Highlight {
 
     /**
      * constructor
-     * 
+     *
      * @param x the index of the highlighted value on the x-axis
-     * @param dataSet the index of the DataSet the highlighted value belongs to
+     * @param value the y-value of the highlighted value
+     * @param dataIndex the index of the Data the highlighted value belongs to
+     * @param dataSetIndex the index of the DataSet the highlighted value belongs to
      */
-    public Highlight(int x, int dataSet) {
+    public Highlight(int x, float value, int dataIndex, int dataSetIndex) {
         this.mXIndex = x;
-        this.mDataSetIndex = dataSet;
+        this.mValue = value;
+        this.mDataIndex = dataIndex;
+        this.mDataSetIndex = dataSetIndex;
     }
-
     /**
      * Constructor, only used for stacked-barchart.
      * 
      * @param x the index of the highlighted value on the x-axis
-     * @param dataSet the index of the DataSet the highlighted value belongs to
+     * @param value the y-value of the highlighted value
+     * @param dataIndex the index of the Data the highlighted value belongs to
+     * @param dataSetIndex the index of the DataSet the highlighted value belongs to
      * @param stackIndex references which value of a stacked-bar entry has been
      *            selected
      */
-    public Highlight(int x, int dataSet, int stackIndex) {
-        this(x, dataSet);
+    public Highlight(int x, float value, int dataIndex, int dataSetIndex, int stackIndex) {
+        this(x, value, dataIndex, dataSetIndex);
         mStackIndex = stackIndex;
     }
 
@@ -48,32 +59,62 @@ public class Highlight {
      * Constructor, only used for stacked-barchart.
      *
      * @param x the index of the highlighted value on the x-axis
-     * @param dataSet the index of the DataSet the highlighted value belongs to
+     * @param value the y-value of the highlighted value
+     * @param dataIndex the index of the Data the highlighted value belongs to
+     * @param dataSetIndex the index of the DataSet the highlighted value belongs to
      * @param stackIndex references which value of a stacked-bar entry has been
      *            selected
      * @param range the range the selected stack-value is in
      */
-    public Highlight(int x, int dataSet, int stackIndex, Range range) {
-        this(x, dataSet, stackIndex);
+    public Highlight(int x, float value, int dataIndex, int dataSetIndex, int stackIndex, Range range) {
+        this(x, value, dataIndex, dataSetIndex, stackIndex);
         this.mRange = range;
     }
 
     /**
-     * returns the index of the DataSet the highlighted value is in
-     * 
-     * @return
+     * Constructor, only used for stacked-barchart.
+     *
+     * @param x the index of the highlighted value on the x-axis
+     * @param dataSetIndex the index of the DataSet the highlighted value belongs to
      */
-    public int getDataSetIndex() {
-        return mDataSetIndex;
+    public Highlight(int x, int dataSetIndex) {
+        this(x, Float.NaN, 0, dataSetIndex, -1);
     }
 
     /**
      * returns the index of the highlighted value on the x-axis
-     * 
+     *
      * @return
      */
     public int getXIndex() {
         return mXIndex;
+    }
+
+    /**
+     * returns the y-value of the highlighted value
+     *
+     * @return
+     */
+    public float getValue() {
+        return mValue;
+    }
+
+    /**
+     * the index of the data object - in case it refers to more than one
+     *
+     * @return
+     */
+    public int getDataIndex() {
+        return mDataIndex;
+    }
+
+    /**
+     * returns the index of the DataSet the highlighted value is in
+     *
+     * @return
+     */
+    public int getDataSetIndex() {
+        return mDataSetIndex;
     }
 
     /**

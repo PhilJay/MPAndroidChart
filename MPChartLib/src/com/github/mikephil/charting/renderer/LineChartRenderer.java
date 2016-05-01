@@ -684,7 +684,7 @@ public class LineChartRenderer extends LineRadarRenderer {
                 continue;
 
             final float yVal = set.getYValForXIndex(xIndex);
-            if (yVal == Float.NaN)
+            if (Float.isNaN(yVal))
                 continue;
 
             float y = yVal * mAnimator.getPhaseY(); // get

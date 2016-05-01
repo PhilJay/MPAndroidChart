@@ -166,6 +166,25 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     }
 
     @Override
+    public List<S> getEntriesForXIndex(int xIndex) {
+
+        List<S> entries = new ArrayList<>();
+
+        if (mIndexField == null) {
+            T object = results.get(xIndex);
+            if (object != null)
+                entries.add(buildEntryFromResultObject(object, xIndex));
+        } else {
+            RealmResults<T> foundObjects = results.where().equalTo(mIndexField, xIndex).findAll();
+
+            for (T e : foundObjects)
+                entries.add(buildEntryFromResultObject(e, xIndex));
+        }
+
+        return entries;
+    }
+
+    @Override
     public S getEntryForIndex(int index) {
         //DynamicRealmObject o = new DynamicRealmObject(results.get(index));
         //return new Entry(o.getFloat(mValuesField), o.getInt(mIndexField));
@@ -229,6 +248,20 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
             return e.getVal();
         else
             return Float.NaN;
+    }
+
+    @Override
+    public float[] getYValsForXIndex(int xIndex) {
+
+        List<S> entries = getEntriesForXIndex(xIndex);
+
+        float[] yVals = new float[entries.size()];
+        int i = 0;
+
+        for (S e : entries)
+            yVals[i++] = e.getVal();
+
+        return yVals;
     }
 
     @Override
