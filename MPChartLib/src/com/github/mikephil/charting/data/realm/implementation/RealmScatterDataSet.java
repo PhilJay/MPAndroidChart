@@ -67,30 +67,6 @@ public class RealmScatterDataSet<T extends RealmObject> extends RealmLineScatter
         calcMinMax(0, results.size());
     }
 
-    @Override
-    public void build(RealmResults<T> results) {
-
-        if (mIndexField == null) { // x-index not available
-
-            int xIndex = 0;
-
-            for (T object : results) {
-
-                DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
-                mValues.add(new Entry(dynamicObject.getFloat(mValuesField), xIndex));
-                xIndex++;
-            }
-
-        } else {
-
-            for (T object : results) {
-
-                DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
-                mValues.add(new Entry(dynamicObject.getFloat(mValuesField), dynamicObject.getInt(mIndexField)));
-            }
-        }
-    }
-
     /**
      * Sets the size in density pixels the drawn scattershape will have. This
      * only applies for non custom shapes.

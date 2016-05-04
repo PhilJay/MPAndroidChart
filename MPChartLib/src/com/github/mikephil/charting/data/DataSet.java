@@ -312,6 +312,20 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
             return Float.NaN;
     }
 
+    @Override
+    public float[] getYValsForXIndex(int xIndex) {
+
+        List<T> entries = getEntriesForXIndex(xIndex);
+
+        float[] yVals = new float[entries.size()];
+        int i = 0;
+
+        for (T e : entries)
+            yVals[i++] = e.getVal();
+
+        return yVals;
+    }
+
     /**
      * Returns all Entry objects at the given xIndex. INFORMATION: This method
      * does calculations at runtime. Do not over-use in performance critical
@@ -320,6 +334,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
      * @param xIndex
      * @return
      */
+    @Override
     public List<T> getEntriesForXIndex(int xIndex) {
 
         List<T> entries = new ArrayList<T>();
@@ -344,12 +359,14 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
                         break;
                     }
                 }
-            }
 
-            if (xIndex > entry.getXIndex())
-                low = m + 1;
-            else
-                high = m - 1;
+                break;
+            } else {
+                if (xIndex > entry.getXIndex())
+                    low = m + 1;
+                else
+                    high = m - 1;
+            }
         }
 
         return entries;

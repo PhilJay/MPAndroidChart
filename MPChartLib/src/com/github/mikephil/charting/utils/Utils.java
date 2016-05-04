@@ -388,10 +388,48 @@ public abstract class Utils {
      * @param valsAtIndex all the values at a specific index
      * @return
      */
-    public static int getClosestDataSetIndex(List<SelectionDetail> valsAtIndex, float val,
+    public static int getClosestDataSetIndexByValue(List<SelectionDetail> valsAtIndex, float value,
                                              AxisDependency axis) {
 
-        int index = -Integer.MAX_VALUE;
+        SelectionDetail sel = getClosestSelectionDetailByValue(valsAtIndex, value, axis);
+
+        if (sel == null)
+            return -Integer.MAX_VALUE;
+
+        return sel.dataSetIndex;
+    }
+
+    /**
+     * Returns the index of the DataSet that contains the closest value on the
+     * y-axis. This is needed for highlighting. This will return -Integer.MAX_VALUE if failure.
+     *
+     * @param valsAtIndex all the values at a specific index
+     * @return
+     */
+    public static int getClosestDataSetIndexByPixelY(List<SelectionDetail> valsAtIndex, float y,
+                                                    AxisDependency axis) {
+
+        SelectionDetail sel = getClosestSelectionDetailByPixelY(valsAtIndex, y, axis);
+
+        if (sel == null)
+            return -Integer.MAX_VALUE;
+
+        return sel.dataSetIndex;
+    }
+
+    /**
+     * Returns the SelectionDetail of the DataSet that contains the closest value on the
+     * y-axis.
+     *
+     * @param valsAtIndex all the values at a specific index
+     * @return
+     */
+    public static SelectionDetail getClosestSelectionDetailByValue(
+            List<SelectionDetail> valsAtIndex,
+            float value,
+            AxisDependency axis) {
+
+        SelectionDetail closest = null;
         float distance = Float.MAX_VALUE;
 
         for (int i = 0; i < valsAtIndex.size(); i++) {
@@ -400,15 +438,47 @@ public abstract class Utils {
 
             if (axis == null || sel.dataSet.getAxisDependency() == axis) {
 
-                float cdistance = Math.abs((float) sel.val - val);
+                float cdistance = Math.abs(sel.value - value);
                 if (cdistance < distance) {
-                    index = valsAtIndex.get(i).dataSetIndex;
+                    closest = sel;
                     distance = cdistance;
                 }
             }
         }
 
-        return index;
+        return closest;
+    }
+
+    /**
+     * Returns the SelectionDetail of the DataSet that contains the closest value on the
+     * y-axis.
+     *
+     * @param valsAtIndex all the values at a specific index
+     * @return
+     */
+    public static SelectionDetail getClosestSelectionDetailByPixelY(
+            List<SelectionDetail> valsAtIndex,
+            float y,
+            AxisDependency axis) {
+
+        SelectionDetail closest = null;
+        float distance = Float.MAX_VALUE;
+
+        for (int i = 0; i < valsAtIndex.size(); i++) {
+
+            SelectionDetail sel = valsAtIndex.get(i);
+
+            if (axis == null || sel.dataSet.getAxisDependency() == axis) {
+
+                float cdistance = Math.abs(sel.y - y);
+                if (cdistance < distance) {
+                    closest = sel;
+                    distance = cdistance;
+                }
+            }
+        }
+
+        return closest;
     }
 
     /**
@@ -416,11 +486,12 @@ public abstract class Utils {
      * closest y-value (in pixels) that is displayed in the chart.
      *
      * @param valsAtIndex
-     * @param val
+     * @param y
      * @param axis
      * @return
      */
-    public static float getMinimumDistance(List<SelectionDetail> valsAtIndex, float val,
+    public static float getMinimumDistance(List<SelectionDetail> valsAtIndex,
+                                           float y,
                                            AxisDependency axis) {
 
         float distance = Float.MAX_VALUE;
@@ -431,7 +502,7 @@ public abstract class Utils {
 
             if (sel.dataSet.getAxisDependency() == axis) {
 
-                float cdistance = Math.abs(sel.val - val);
+                float cdistance = Math.abs(sel.y - y);
                 if (cdistance < distance) {
                     distance = cdistance;
                 }

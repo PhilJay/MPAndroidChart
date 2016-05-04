@@ -61,30 +61,6 @@ public class RealmPieDataSet<T extends RealmObject> extends RealmBaseDataSet<T, 
         calcMinMax(0, results.size());
     }
 
-    @Override
-    public void build(RealmResults<T> results) {
-
-        if (mIndexField == null) { // x-index not available
-
-            int xIndex = 0;
-
-            for (T object : results) {
-
-                DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
-                mValues.add(new Entry(dynamicObject.getFloat(mValuesField), xIndex));
-                xIndex++;
-            }
-
-        } else {
-
-            for (T object : results) {
-
-                DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
-                mValues.add(new Entry(dynamicObject.getFloat(mValuesField), dynamicObject.getInt(mIndexField)));
-            }
-        }
-    }
-
     /**
      * Sets the space that is left out between the piechart-slices in dp.
      * Default: 0 --> no space, maximum 20f

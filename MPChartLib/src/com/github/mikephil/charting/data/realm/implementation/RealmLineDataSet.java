@@ -99,11 +99,6 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
         calcMinMax(0, results.size());
     }
 
-    @Override
-    public void build(RealmResults<T> results) {
-        super.build(results);
-    }
-
     /**
      * Returns the drawing mode for this line dataset
      *
