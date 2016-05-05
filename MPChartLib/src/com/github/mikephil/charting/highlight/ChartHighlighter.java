@@ -31,14 +31,15 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
 	public Highlight getHighlight(float x, float y) {
 
 		int xIndex = getXIndex(x);
-		if (xIndex == -Integer.MAX_VALUE)
+
+		SelectionDetail selectionDetail = getSelectionDetail(xIndex, y, -1);
+		if (selectionDetail == null)
 			return null;
 
-		int dataSetIndex = getDataSetIndex(xIndex, x, y);
-		if (dataSetIndex == -Integer.MAX_VALUE)
-			return null;
-
-		return new Highlight(xIndex, dataSetIndex);
+		return new Highlight(xIndex,
+				selectionDetail.value,
+				selectionDetail.dataIndex,
+				selectionDetail.dataSetIndex);
 	}
 
 	/**
@@ -60,40 +61,48 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
 	}
 
 	/**
-	 * Returns the corresponding dataset-index for a given xIndex and xy-touch position in pixels.
+	 * Returns the corresponding SelectionDetail for a given xIndex and y-touch position in pixels.
 	 * 
 	 * @param xIndex
-	 * @param x
 	 * @param y
+	 * @param dataSetIndex
 	 * @return
 	 */
-	protected int getDataSetIndex(int xIndex, float x, float y) {
+	protected SelectionDetail getSelectionDetail(int xIndex, float y, int dataSetIndex) {
 
-		List<SelectionDetail> valsAtIndex = getSelectionDetailsAtIndex(xIndex);
+		List<SelectionDetail> valsAtIndex = getSelectionDetailsAtIndex(xIndex, dataSetIndex);
 
 		float leftdist = Utils.getMinimumDistance(valsAtIndex, y, YAxis.AxisDependency.LEFT);
 		float rightdist = Utils.getMinimumDistance(valsAtIndex, y, YAxis.AxisDependency.RIGHT);
 
 		YAxis.AxisDependency axis = leftdist < rightdist ? YAxis.AxisDependency.LEFT : YAxis.AxisDependency.RIGHT;
 
-		int dataSetIndex = Utils.getClosestDataSetIndex(valsAtIndex, y, axis);
+		SelectionDetail detail = Utils.getClosestSelectionDetailByPixelY(valsAtIndex, y, axis);
 
-		return dataSetIndex;
+		return detail;
 	}
 
 	/**
 	 * Returns a list of SelectionDetail object corresponding to the given xIndex.
-	 * 
+	 *
 	 * @param xIndex
+	 * @param dataSetIndex dataSet index to look at. -1 if unspecified.
 	 * @return
 	 */
-	protected List<SelectionDetail> getSelectionDetailsAtIndex(int xIndex) {
+	protected List<SelectionDetail> getSelectionDetailsAtIndex(int xIndex, int dataSetIndex) {
 
 		List<SelectionDetail> vals = new ArrayList<SelectionDetail>();
 
+		if (mChart.getData() == null) return vals;
+
 		float[] pts = new float[2];
 
-		for (int i = 0; i < mChart.getData().getDataSetCount(); i++) {
+		for (int i = 0, dataSetCount = mChart.getData().getDataSetCount();
+			 i < dataSetCount;
+			 i++) {
+
+			if (dataSetIndex > -1 && dataSetIndex != i)
+				continue;
 
 			IDataSet dataSet = mChart.getData().getDataSetByIndex(i);
 
@@ -102,16 +111,19 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
 				continue;
 
 			// extract all y-values from all DataSets at the given x-index
-			final float yVal = dataSet.getYValForXIndex(xIndex);
-			if (yVal == Float.NaN)
-				continue;
+			final float[] yVals = dataSet.getYValsForXIndex(xIndex);
+			for (float yVal : yVals) {
+				if (Float.isNaN(yVal))
+					continue;
 
-			pts[1] = yVal;
+				pts[1] = yVal;
 
-			mChart.getTransformer(dataSet.getAxisDependency()).pointValuesToPixel(pts);
+				mChart.getTransformer(dataSet.getAxisDependency()).pointValuesToPixel(pts);
 
-			if (!Float.isNaN(pts[1])) {
-				vals.add(new SelectionDetail(pts[1], i, dataSet));
+				if (!Float.isNaN(pts[1]))
+				{
+					vals.add(new SelectionDetail(pts[1], yVal, i, dataSet));
+				}
 			}
 		}
 

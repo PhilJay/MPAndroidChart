@@ -138,9 +138,4 @@ public class RealmRadarDataSet<T extends RealmObject> extends RealmLineRadarData
     {
         mHighlightCircleStrokeWidth = strokeWidth;
     }
-
-    @Override
-    public void build(RealmResults<T> results) {
-        super.build(results);
-    }
 }

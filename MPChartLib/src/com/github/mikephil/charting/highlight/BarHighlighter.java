@@ -1,9 +1,12 @@
 package com.github.mikephil.charting.highlight;
 
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+import com.github.mikephil.charting.utils.SelectionDetail;
 
 /**
  * Created by Philipp Jahoda on 22/07/15.
@@ -17,27 +20,44 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 	@Override
 	public Highlight getHighlight(float x, float y) {
 
-		Highlight h = super.getHighlight(x, y);
+		BarData barData = mChart.getBarData();
 
-		if (h == null)
-			return h;
-		else {
+		final int xIndex = getXIndex(x);
+		final float baseNoSpace = getBase(x);
+		final int setCount = barData.getDataSetCount();
+		int dataSetIndex = ((int)baseNoSpace) % setCount;
 
-			IBarDataSet set = mChart.getBarData().getDataSetByIndex(h.getDataSetIndex());
-
-			if (set.isStacked()) {
-
-				// create an array of the touch-point
-				float[] pts = new float[2];
-				pts[1] = y;
-
-				// take any transformer to determine the x-axis value
-				mChart.getTransformer(set.getAxisDependency()).pixelsToValue(pts);
-
-				return getStackedHighlight(h, set, h.getXIndex(), h.getDataSetIndex(), pts[1]);
-			} else
-				return h;
+		if (dataSetIndex < 0) {
+			dataSetIndex = 0;
+		} else if (dataSetIndex >= setCount) {
+			dataSetIndex = setCount - 1;
 		}
+
+		SelectionDetail selectionDetail = getSelectionDetail(xIndex, y, dataSetIndex);
+		if (selectionDetail == null)
+			return null;
+
+		IBarDataSet set = barData.getDataSetByIndex(dataSetIndex);
+		if (set.isStacked()) {
+
+			float[] pts = new float[2];
+			pts[1] = y;
+
+			// take any transformer to determine the x-axis value
+			mChart.getTransformer(set.getAxisDependency()).pixelsToValue(pts);
+
+			return getStackedHighlight(selectionDetail,
+					set,
+					xIndex,
+					pts[1]);
+		}
+
+		return new Highlight(
+				xIndex,
+				selectionDetail.value,
+				selectionDetail.dataIndex,
+				selectionDetail.dataSetIndex,
+				-1);
 	}
 
 	@Override
@@ -64,51 +84,68 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 	}
 
 	@Override
-	protected int getDataSetIndex(int xIndex, float x, float y) {
+	protected SelectionDetail getSelectionDetail(int xIndex, float y, int dataSetIndex) {
 
-		if (!mChart.getBarData().isGrouped()) {
-			return 0;
-		} else {
+		dataSetIndex = Math.max(dataSetIndex, 0);
 
-			float baseNoSpace = getBase(x);
+		BarData barData = mChart.getBarData();
+		IDataSet dataSet = barData.getDataSetCount() > dataSetIndex
+				? barData.getDataSetByIndex(dataSetIndex)
+				: null;
+		if (dataSet == null)
+			return null;
 
-			int setCount = mChart.getBarData().getDataSetCount();
-			int dataSetIndex = (int) baseNoSpace % setCount;
+		final float yValue = dataSet.getYValForXIndex(xIndex);
 
-			if (dataSetIndex < 0)
-				dataSetIndex = 0;
-			else if (dataSetIndex >= setCount)
-				dataSetIndex = setCount - 1;
+		if (yValue == Double.NaN) return null;
 
-			return dataSetIndex;
-		}
+		return new SelectionDetail(
+				yValue,
+				dataSetIndex,
+				dataSet);
 	}
 
 	/**
 	 * This method creates the Highlight object that also indicates which value of a stacked BarEntry has been selected.
 	 *
-	 * @param old
-	 *            the old highlight object before looking for stacked values
+	 * @param selectionDetail the selection detail to work with looking for stacked values
 	 * @param set
 	 * @param xIndex
-	 * @param dataSetIndex
 	 * @param yValue
 	 * @return
 	 */
-	protected Highlight getStackedHighlight(Highlight old, IBarDataSet set, int xIndex, int dataSetIndex, double yValue) {
+	protected Highlight getStackedHighlight(
+			SelectionDetail selectionDetail,
+			IBarDataSet set,
+			int xIndex,
+			double yValue) {
 
 		BarEntry entry = set.getEntryForXIndex(xIndex);
 
-		if (entry == null || entry.getVals() == null)
-			return old;
+		if (entry == null)
+			return null;
+
+		if (entry.getVals() == null) {
+			return new Highlight(xIndex,
+					entry.getVal(),
+					selectionDetail.dataIndex,
+					selectionDetail.dataSetIndex);
+		}
 
 		Range[] ranges = getRanges(entry);
-		int stackIndex = getClosestStackIndex(ranges, (float) yValue);
+		if (ranges.length > 0) {
+			int stackIndex = getClosestStackIndex(ranges, (float)yValue);
+			return new Highlight(
+					xIndex,
+					entry.getPositiveSum() - entry.getNegativeSum(),
+					selectionDetail.dataIndex,
+					selectionDetail.dataSetIndex,
+					stackIndex,
+					ranges[stackIndex]
+			);
+		}
 
-		if(ranges.length > 0)
-			return new Highlight(xIndex, dataSetIndex, stackIndex, ranges[stackIndex]);
-		else
-			return null;
+		return null;
 	}
 
 	/**

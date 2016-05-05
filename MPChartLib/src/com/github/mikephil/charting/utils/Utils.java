@@ -39,7 +39,7 @@ public abstract class Utils {
     private static int mMinimumFlingVelocity = 50;
     private static int mMaximumFlingVelocity = 8000;
     public final static double DEG2RAD = (Math.PI / 180.0);
-    public final static float FDEG2RAD = ((float)Math.PI / 180.f);
+    public final static float FDEG2RAD = ((float) Math.PI / 180.f);
 
     /**
      * initialize method, called inside the Chart.init() method.
@@ -99,10 +99,13 @@ public abstract class Utils {
         if (mMetrics == null) {
 
             Log.e("MPChartLib-Utils",
-                    "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertDpToPixel(...). Otherwise conversion does not take place.");
+                    "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before" +
+                            " calling Utils.convertDpToPixel(...). Otherwise conversion does not " +
+                            "take place.");
             return dp;
             // throw new IllegalStateException(
-            // "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertDpToPixel(...).");
+            // "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before
+            // calling Utils.convertDpToPixel(...).");
         }
 
         DisplayMetrics metrics = mMetrics;
@@ -122,10 +125,13 @@ public abstract class Utils {
         if (mMetrics == null) {
 
             Log.e("MPChartLib-Utils",
-                    "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertPixelsToDp(...). Otherwise conversion does not take place.");
+                    "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before" +
+                            " calling Utils.convertPixelsToDp(...). Otherwise conversion does not" +
+                            " take place.");
             return px;
             // throw new IllegalStateException(
-            // "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertPixelsToDp(...).");
+            // "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before
+            // calling Utils.convertPixelsToDp(...).");
         }
 
         DisplayMetrics metrics = mMetrics;
@@ -195,7 +201,8 @@ public abstract class Utils {
 
     /**
      * Formats the given number to the given number of decimals, and returns the
-     * number as a string, maximum 35 characters. If thousands are separated, the separating character is a dot (".").
+     * number as a string, maximum 35 characters. If thousands are separated, the separating
+     * character is a dot (".").
      *
      * @param number
      * @param digitCount
@@ -216,7 +223,8 @@ public abstract class Utils {
      * @param separateChar      a caracter to be paced between the "thousands"
      * @return
      */
-    public static String formatNumber(float number, int digitCount, boolean separateThousands, char separateChar) {
+    public static String formatNumber(float number, int digitCount, boolean separateThousands,
+                                      char separateChar) {
 
         char[] out = new char[35];
 
@@ -380,10 +388,48 @@ public abstract class Utils {
      * @param valsAtIndex all the values at a specific index
      * @return
      */
-    public static int getClosestDataSetIndex(List<SelectionDetail> valsAtIndex, float val,
+    public static int getClosestDataSetIndexByValue(List<SelectionDetail> valsAtIndex, float value,
                                              AxisDependency axis) {
 
-        int index = -Integer.MAX_VALUE;
+        SelectionDetail sel = getClosestSelectionDetailByValue(valsAtIndex, value, axis);
+
+        if (sel == null)
+            return -Integer.MAX_VALUE;
+
+        return sel.dataSetIndex;
+    }
+
+    /**
+     * Returns the index of the DataSet that contains the closest value on the
+     * y-axis. This is needed for highlighting. This will return -Integer.MAX_VALUE if failure.
+     *
+     * @param valsAtIndex all the values at a specific index
+     * @return
+     */
+    public static int getClosestDataSetIndexByPixelY(List<SelectionDetail> valsAtIndex, float y,
+                                                    AxisDependency axis) {
+
+        SelectionDetail sel = getClosestSelectionDetailByPixelY(valsAtIndex, y, axis);
+
+        if (sel == null)
+            return -Integer.MAX_VALUE;
+
+        return sel.dataSetIndex;
+    }
+
+    /**
+     * Returns the SelectionDetail of the DataSet that contains the closest value on the
+     * y-axis.
+     *
+     * @param valsAtIndex all the values at a specific index
+     * @return
+     */
+    public static SelectionDetail getClosestSelectionDetailByValue(
+            List<SelectionDetail> valsAtIndex,
+            float value,
+            AxisDependency axis) {
+
+        SelectionDetail closest = null;
         float distance = Float.MAX_VALUE;
 
         for (int i = 0; i < valsAtIndex.size(); i++) {
@@ -392,15 +438,47 @@ public abstract class Utils {
 
             if (axis == null || sel.dataSet.getAxisDependency() == axis) {
 
-                float cdistance = Math.abs((float) sel.val - val);
+                float cdistance = Math.abs(sel.value - value);
                 if (cdistance < distance) {
-                    index = valsAtIndex.get(i).dataSetIndex;
+                    closest = sel;
                     distance = cdistance;
                 }
             }
         }
 
-        return index;
+        return closest;
+    }
+
+    /**
+     * Returns the SelectionDetail of the DataSet that contains the closest value on the
+     * y-axis.
+     *
+     * @param valsAtIndex all the values at a specific index
+     * @return
+     */
+    public static SelectionDetail getClosestSelectionDetailByPixelY(
+            List<SelectionDetail> valsAtIndex,
+            float y,
+            AxisDependency axis) {
+
+        SelectionDetail closest = null;
+        float distance = Float.MAX_VALUE;
+
+        for (int i = 0; i < valsAtIndex.size(); i++) {
+
+            SelectionDetail sel = valsAtIndex.get(i);
+
+            if (axis == null || sel.dataSet.getAxisDependency() == axis) {
+
+                float cdistance = Math.abs(sel.y - y);
+                if (cdistance < distance) {
+                    closest = sel;
+                    distance = cdistance;
+                }
+            }
+        }
+
+        return closest;
     }
 
     /**
@@ -408,11 +486,12 @@ public abstract class Utils {
      * closest y-value (in pixels) that is displayed in the chart.
      *
      * @param valsAtIndex
-     * @param val
+     * @param y
      * @param axis
      * @return
      */
-    public static float getMinimumDistance(List<SelectionDetail> valsAtIndex, float val,
+    public static float getMinimumDistance(List<SelectionDetail> valsAtIndex,
+                                           float y,
                                            AxisDependency axis) {
 
         float distance = Float.MAX_VALUE;
@@ -423,7 +502,7 @@ public abstract class Utils {
 
             if (sel.dataSet.getAxisDependency() == axis) {
 
-                float cdistance = Math.abs(sel.val - val);
+                float cdistance = Math.abs(sel.y - y);
                 if (cdistance < distance) {
                     distance = cdistance;
                 }
@@ -525,9 +604,9 @@ public abstract class Utils {
     private static Rect mDrawTextRectBuffer = new Rect();
     private static Paint.FontMetrics mFontMetricsBuffer = new Paint.FontMetrics();
 
-    public static void drawText(Canvas c, String text, float x, float y,
-                                Paint paint,
-                                PointF anchor, float angleDegrees) {
+    public static void drawXAxisValue(Canvas c, String text, float x, float y,
+                                      Paint paint,
+                                      PointF anchor, float angleDegrees) {
 
         float drawOffsetX = 0.f;
         float drawOffsetY = 0.f;
@@ -536,7 +615,7 @@ public abstract class Utils {
 
         final float lineHeight = mDrawTextRectBuffer.height();
 
-                // Android sometimes has pre-padding
+        // Android sometimes has pre-padding
         drawOffsetX -= mDrawTextRectBuffer.left;
 
         // Android does not snap the bounds to line boundaries,
@@ -575,8 +654,7 @@ public abstract class Utils {
             c.drawText(text, drawOffsetX, drawOffsetY, paint);
 
             c.restore();
-        }
-        else {
+        } else {
             if (anchor.x != 0.f || anchor.y != 0.f) {
 
                 drawOffsetX -= mDrawTextRectBuffer.width() * anchor.x;
@@ -647,8 +725,7 @@ public abstract class Utils {
             textLayout.draw(c);
 
             c.restore();
-        }
-        else {
+        } else {
             if (anchor.x != 0.f || anchor.y != 0.f) {
 
                 drawOffsetX -= drawWidth * anchor.x;
@@ -685,32 +762,60 @@ public abstract class Utils {
         drawMultilineText(c, textLayout, x, y, paint, anchor, angleDegrees);
     }
 
-    public static FSize getSizeOfRotatedRectangleByDegrees(FSize rectangleSize, float degrees)
-    {
+    public static FSize getSizeOfRotatedRectangleByDegrees(FSize rectangleSize, float degrees) {
         final float radians = degrees * FDEG2RAD;
-        return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height, radians);
+        return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height,
+                radians);
     }
 
-    public static FSize getSizeOfRotatedRectangleByRadians(FSize rectangleSize, float radians)
-    {
-        return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height, radians);
+    public static FSize getSizeOfRotatedRectangleByRadians(FSize rectangleSize, float radians) {
+        return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height,
+                radians);
     }
 
-    public static FSize getSizeOfRotatedRectangleByDegrees(float rectangleWidth, float rectangleHeight, float degrees)
-    {
+    public static FSize getSizeOfRotatedRectangleByDegrees(float rectangleWidth, float
+            rectangleHeight, float degrees) {
         final float radians = degrees * FDEG2RAD;
         return getSizeOfRotatedRectangleByRadians(rectangleWidth, rectangleHeight, radians);
     }
 
-    public static FSize getSizeOfRotatedRectangleByRadians(float rectangleWidth, float rectangleHeight, float radians)
-    {
+    public static FSize getSizeOfRotatedRectangleByRadians(float rectangleWidth, float
+            rectangleHeight, float radians) {
         return new FSize(
-                Math.abs(rectangleWidth * (float)Math.cos(radians)) + Math.abs(rectangleHeight * (float)Math.sin(radians)),
-                Math.abs(rectangleWidth * (float)Math.sin(radians)) + Math.abs(rectangleHeight * (float)Math.cos(radians))
+                Math.abs(rectangleWidth * (float) Math.cos(radians)) + Math.abs(rectangleHeight *
+                        (float) Math.sin(radians)),
+                Math.abs(rectangleWidth * (float) Math.sin(radians)) + Math.abs(rectangleHeight *
+                        (float) Math.cos(radians))
         );
     }
 
     public static int getSDKInt() {
         return android.os.Build.VERSION.SDK_INT;
+    }
+
+    /**
+     * Calculates the granularity (minimum axis interval) based on axis range and labelcount.
+     * Default granularity is 1/10th of interval.
+     *
+     * @param range
+     * @param labelCount
+     * @return
+     */
+    public static double granularity(float range, int labelCount) {
+
+        // Find out how much spacing (in y value space) between axis values
+        double rawInterval = range / labelCount;
+        double interval = Utils.roundToNextSignificant(rawInterval);
+
+        // Normalize interval
+        double intervalMagnitude = Utils.roundToNextSignificant(Math.pow(10, (int) Math.log10
+                (interval)));
+        int intervalSigDigit = (int) (interval / intervalMagnitude);
+
+        if (intervalSigDigit > 5) {
+            interval = Math.floor(10 * intervalMagnitude);
+        }
+
+        return interval * 0.1; // granularity is 1/10th of interval
     }
 }

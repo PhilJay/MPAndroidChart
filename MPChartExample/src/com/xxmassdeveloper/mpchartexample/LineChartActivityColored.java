@@ -35,12 +35,14 @@ public class LineChartActivityColored extends DemoBase {
 
         mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Bold.ttf");
 
-        LineData data = getData(36, 100);
-        data.setValueTypeface(mTf);
+        for (int i = 0; i < mCharts.length; i++) {
 
-        for (int i = 0; i < mCharts.length; i++)
+            LineData data = getData(36, 100);
+            data.setValueTypeface(mTf);
+
             // add some transparency to the color with "& 0x90FFFFFF"
             setupChart(mCharts[i], data, mColors[i % mColors.length]);
+        }
     }
 
     private int[] mColors = new int[] {
@@ -51,6 +53,8 @@ public class LineChartActivityColored extends DemoBase {
     };
 
     private void setupChart(LineChart chart, LineData data, int color) {
+
+        ((LineDataSet) data.getDataSetByIndex(0)).setCircleColor(color);
 
         // no description text
         chart.setDescription("");
@@ -85,6 +89,8 @@ public class LineChartActivityColored extends DemoBase {
         l.setEnabled(false);
 
         chart.getAxisLeft().setEnabled(false);
+        chart.getAxisLeft().setSpaceTop(40);
+        chart.getAxisLeft().setSpaceBottom(40);
         chart.getAxisRight().setEnabled(false);
 
         chart.getXAxis().setEnabled(false);
@@ -113,9 +119,9 @@ public class LineChartActivityColored extends DemoBase {
         // set1.setFillColor(Color.RED);
 
         set1.setLineWidth(1.75f);
-        set1.setCircleRadius(3f);
+        set1.setCircleRadius(5f);
         set1.setColor(Color.WHITE);
-        set1.setCircleColor(Color.WHITE);
+        set1.setCircleColorHole(Color.WHITE);
         set1.setHighLightColor(Color.WHITE);
         set1.setDrawValues(false);
 

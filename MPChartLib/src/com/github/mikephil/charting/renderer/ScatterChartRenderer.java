@@ -61,7 +61,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-        float phaseX = mAnimator.getPhaseX();
+        float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
         float phaseY = mAnimator.getPhaseY();
 
         final float shapeSize = Utils.convertDpToPixel(dataSet.getScatterShapeSize());
@@ -392,7 +392,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
                 continue;
 
             final float yVal = set.getYValForXIndex(xIndex);
-            if (yVal == Float.NaN)
+            if (Float.isNaN(yVal))
                 continue;
 
             float y = yVal * mAnimator.getPhaseY();

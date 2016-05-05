@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.data;
 
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet;
 
 import java.util.ArrayList;
@@ -117,5 +118,38 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
             mBubbleData.notifyDataChanged();
 
         init(); // recalculate everything
+    }
+
+    /**
+     * Get the Entry for a corresponding highlight object
+     *
+     * @param highlight
+     * @return the entry that is highlighted
+     */
+    @Override
+    public Entry getEntryForHighlight(Highlight highlight) {
+
+        List<ChartData> dataObjects = getAllData();
+
+        if (highlight.getDataIndex() >= dataObjects.size())
+            return null;
+
+        ChartData data = dataObjects.get(highlight.getDataIndex());
+
+        if (highlight.getDataSetIndex() >= data.getDataSetCount())
+            return null;
+        else {
+            // The value of the highlighted entry could be NaN -
+            //   if we are not interested in highlighting a specific value.
+
+            List<?> entries = data.getDataSetByIndex(highlight.getDataSetIndex())
+                    .getEntriesForXIndex(highlight.getXIndex());
+            for (Object entry : entries)
+                if (((Entry)entry).getVal() == highlight.getValue() ||
+                        Float.isNaN(highlight.getValue()))
+                    return (Entry)entry;
+
+            return null;
+        }
     }
 }

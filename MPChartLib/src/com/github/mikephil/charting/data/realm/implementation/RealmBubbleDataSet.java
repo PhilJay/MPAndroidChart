@@ -1,6 +1,7 @@
 package com.github.mikephil.charting.data.realm.implementation;
 
 import com.github.mikephil.charting.data.BubbleEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.realm.base.RealmBarLineScatterCandleBubbleDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 import com.github.mikephil.charting.utils.Utils;
@@ -19,6 +20,7 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
     protected float mXMax;
     protected float mXMin;
     protected float mMaxSize;
+    protected boolean mNormalizeSize = true;
 
     private float mHighlightCircleWidth = 2.5f;
 
@@ -54,26 +56,13 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
     }
 
     @Override
-    public void build(RealmResults<T> results) {
+    public BubbleEntry buildEntryFromResultObject(T realmObject, int xIndex) {
+        DynamicRealmObject dynamicObject = new DynamicRealmObject(realmObject);
 
-        if(mIndexField == null) {
-
-            int xIndex = 0;
-
-            for (T object : results) {
-
-                DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
-                mValues.add(new BubbleEntry(xIndex, dynamicObject.getFloat(mValuesField), dynamicObject.getFloat(mSizeField)));
-                xIndex++;
-            }
-        } else {
-
-            for (T object : results) {
-
-                DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
-                mValues.add(new BubbleEntry(dynamicObject.getInt(mIndexField), dynamicObject.getFloat(mValuesField), dynamicObject.getFloat(mSizeField)));
-            }
-        }
+        return new BubbleEntry(
+                mIndexField == null ? xIndex : dynamicObject.getInt(mIndexField),
+                dynamicObject.getFloat(mValuesField),
+                dynamicObject.getFloat(mSizeField));
     }
 
     @Override
@@ -144,6 +133,15 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
     @Override
     public float getMaxSize() {
         return mMaxSize;
+    }
+
+    @Override
+    public boolean isNormalizeSizeEnabled() {
+        return mNormalizeSize;
+    }
+
+    public void setNormalizeSizeEnabled(boolean normalizeSize) {
+        mNormalizeSize = normalizeSize;
     }
 
     private float yMin(BubbleEntry entry) {
