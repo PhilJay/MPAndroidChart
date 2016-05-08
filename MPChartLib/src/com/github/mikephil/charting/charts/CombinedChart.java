@@ -75,6 +75,9 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
 
         setHighlighter(new CombinedHighlighter(this));
 
+        // Old default behaviour
+        setHighlightFullBarEnabled(true);
+
         // mRenderer = new CombinedChartRenderer(this, mAnimator,
         // mViewPortHandler);
     }

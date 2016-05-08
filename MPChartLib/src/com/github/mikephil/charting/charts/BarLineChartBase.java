@@ -81,6 +81,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     protected boolean mHighlightPerDragEnabled = true;
 
     /**
+     * flag that indicates whether the highlight should be full-bar oriented, or single-value?
+     */
+    protected boolean mHighlightFullBarEnabled = false;
+
+    /**
      * if true, dragging is enabled for the chart
      */
     private boolean mDragEnabled = true;
@@ -1087,6 +1092,23 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     public boolean isHighlightPerDragEnabled() {
         return mHighlightPerDragEnabled;
+    }
+
+    /**
+     * Set this to true to make the highlight full-bar oriented,
+     * false to make it highlight single values
+     *
+     * @param enabled
+     */
+    public void setHighlightFullBarEnabled(boolean enabled) {
+        mHighlightFullBarEnabled = enabled;
+    }
+
+    /**
+     * @return true the highlight is be full-bar oriented, false if single-value
+     */
+    public boolean isHighlightFullBarEnabled() {
+        return mHighlightFullBarEnabled;
     }
 
     /**

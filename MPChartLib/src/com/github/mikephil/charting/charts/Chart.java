@@ -607,13 +607,14 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
                 Log.i(LOG_TAG, "Highlighted: " + high.toString());
 
             e = mData.getEntryForHighlight(high);
-            if (e == null ||
-                    e.getXIndex() != high.getXIndex() ||
-                    (!Float.isNaN(high.getValue()) &&
-                            e.getVal() != high.getValue())) {
+            if (e == null) {
                 mIndicesToHighlight = null;
                 high = null;
             } else {
+                if (this instanceof BarLineChartBase
+                        && ((BarLineChartBase)this).isHighlightFullBarEnabled())
+                    high = new Highlight(high.getXIndex(), Float.NaN, -1, -1, -1);
+
                 // set the indices to highlight
                 mIndicesToHighlight = new Highlight[]{
                         high

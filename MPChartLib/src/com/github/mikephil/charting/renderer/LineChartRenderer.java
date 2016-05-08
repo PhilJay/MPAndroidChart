@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -669,36 +670,50 @@ public class LineChartRenderer extends LineRadarRenderer {
     @Override
     public void drawHighlighted(Canvas c, Highlight[] indices) {
 
-        for (int i = 0; i < indices.length; i++) {
+        LineData lineData = mChart.getLineData();
 
-            ILineDataSet set = mChart.getLineData().getDataSetByIndex(indices[i]
-                    .getDataSetIndex());
+        for (Highlight high : indices) {
 
-            if (set == null || !set.isHighlightEnabled())
-                continue;
+            final int minDataSetIndex = high.getDataSetIndex() == -1
+                    ? 0
+                    : high.getDataSetIndex();
+            final int maxDataSetIndex = high.getDataSetIndex() == -1
+                    ? lineData.getDataSetCount()
+                    : (high.getDataSetIndex() + 1);
+            if (maxDataSetIndex - minDataSetIndex < 1) continue;
 
-            int xIndex = indices[i].getXIndex(); // get the
-            // x-position
+            for (int dataSetIndex = minDataSetIndex;
+                 dataSetIndex < maxDataSetIndex;
+                 dataSetIndex++) {
 
-            if (xIndex > mChart.getXChartMax() * mAnimator.getPhaseX())
-                continue;
+                ILineDataSet set = lineData.getDataSetByIndex(dataSetIndex);
 
-            final float yVal = set.getYValForXIndex(xIndex);
-            if (Float.isNaN(yVal))
-                continue;
+                if (set == null || !set.isHighlightEnabled())
+                    continue;
 
-            float y = yVal * mAnimator.getPhaseY(); // get
-            // the
-            // y-position
+                int xIndex = high.getXIndex(); // get the
+                // x-position
 
-            float[] pts = new float[]{
-                    xIndex, y
-            };
+                if (xIndex > mChart.getXChartMax() * mAnimator.getPhaseX())
+                    continue;
 
-            mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);
+                final float yVal = set.getYValForXIndex(xIndex);
+                if (Float.isNaN(yVal))
+                    continue;
 
-            // draw the lines
-            drawHighlightLines(c, pts, set);
+                float y = yVal * mAnimator.getPhaseY(); // get
+                // the
+                // y-position
+
+                float[] pts = new float[]{
+                        xIndex, y
+                };
+
+                mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);
+
+                // draw the lines
+                drawHighlightLines(c, pts, set);
+            }
         }
     }
 

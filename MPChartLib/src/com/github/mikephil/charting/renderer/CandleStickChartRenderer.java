@@ -309,38 +309,48 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
     @Override
     public void drawHighlighted(Canvas c, Highlight[] indices) {
 
-        for (int i = 0; i < indices.length; i++) {
+        CandleData candleData = mChart.getCandleData();
 
-            int xIndex = indices[i].getXIndex(); // get the
-            // x-position
+        for (Highlight high : indices) {
 
-            ICandleDataSet set = mChart.getCandleData().getDataSetByIndex(
-                    indices[i].getDataSetIndex());
+            final int minDataSetIndex = high.getDataSetIndex() == -1
+                    ? 0
+                    : high.getDataSetIndex();
+            final int maxDataSetIndex = high.getDataSetIndex() == -1
+                    ? candleData.getDataSetCount()
+                    : (high.getDataSetIndex() + 1);
+            if (maxDataSetIndex - minDataSetIndex < 1) continue;
 
-            if (set == null || !set.isHighlightEnabled())
-                continue;
+            for (int dataSetIndex = minDataSetIndex;
+                 dataSetIndex < maxDataSetIndex;
+                 dataSetIndex++) {
 
-            CandleEntry e = set.getEntryForXIndex(xIndex);
+                int xIndex = high.getXIndex(); // get the
+                // x-position
 
-            if (e == null || e.getXIndex() != xIndex)
-                continue;
+                ICandleDataSet set = mChart.getCandleData().getDataSetByIndex(dataSetIndex);
 
-            float low = e.getLow() * mAnimator.getPhaseY();
-            float high = e.getHigh() * mAnimator.getPhaseY();
-            float y = (low + high) / 2f;
+                if (set == null || !set.isHighlightEnabled())
+                    continue;
 
-            float min = mChart.getYChartMin();
-            float max = mChart.getYChartMax();
+                CandleEntry e = set.getEntryForXIndex(xIndex);
 
+                if (e == null || e.getXIndex() != xIndex)
+                    continue;
 
-            float[] pts = new float[]{
-                    xIndex, y
-            };
+                float lowValue = e.getLow() * mAnimator.getPhaseY();
+                float highValue = e.getHigh() * mAnimator.getPhaseY();
+                float y = (lowValue + highValue) / 2f;
 
-            mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);
+                float[] pts = new float[]{
+                        xIndex, y
+                };
 
-            // draw the lines
-            drawHighlightLines(c, pts, set);
+                mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);
+
+                // draw the lines
+                drawHighlightLines(c, pts, set);
+            }
         }
     }
 

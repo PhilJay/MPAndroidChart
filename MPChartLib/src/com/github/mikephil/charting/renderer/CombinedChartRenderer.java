@@ -129,7 +129,7 @@ public class CombinedChartRenderer extends DataRenderer {
 
             ArrayList<Highlight> dataIndices = new ArrayList<>();
             for (Highlight h : indices) {
-                if (h.getDataIndex() == dataIndex)
+                if (h.getDataIndex() == dataIndex || h.getDataIndex() == -1)
                     dataIndices.add(h);
             }
 

@@ -325,80 +325,93 @@ public class BarChartRenderer extends DataRenderer {
     @Override
     public void drawHighlighted(Canvas c, Highlight[] indices) {
 
-        int setCount = mChart.getBarData().getDataSetCount();
+        BarData barData = mChart.getBarData();
+        int setCount = barData.getDataSetCount();
 
-        for (int i = 0; i < indices.length; i++) {
+        for (Highlight high : indices) {
 
-            Highlight h = indices[i];
-            int index = h.getXIndex();
+            final int minDataSetIndex = high.getDataSetIndex() == -1
+                    ? 0
+                    : high.getDataSetIndex();
+            final int maxDataSetIndex = high.getDataSetIndex() == -1
+                    ? barData.getDataSetCount()
+                    : (high.getDataSetIndex() + 1);
+            if (maxDataSetIndex - minDataSetIndex < 1) continue;
 
-            int dataSetIndex = h.getDataSetIndex();
-            IBarDataSet set = mChart.getBarData().getDataSetByIndex(dataSetIndex);
+            for (int dataSetIndex = minDataSetIndex;
+                    dataSetIndex < maxDataSetIndex;
+                    dataSetIndex++) {
 
-            if (set == null || !set.isHighlightEnabled())
-                continue;
+                IBarDataSet set = barData.getDataSetByIndex(dataSetIndex);
 
-            float barspaceHalf = set.getBarSpace() / 2f;
-            
-            Transformer trans = mChart.getTransformer(set.getAxisDependency());
-
-            mHighlightPaint.setColor(set.getHighLightColor());
-            mHighlightPaint.setAlpha(set.getHighLightAlpha());
-
-            // check outofbounds
-            if (index >= 0
-                    && index < (mChart.getXChartMax() * mAnimator.getPhaseX()) / setCount) {
-
-                BarEntry e = set.getEntryForXIndex(index);
-
-                if (e == null || e.getXIndex() != index)
+                if (set == null || !set.isHighlightEnabled())
                     continue;
 
-                float groupspace = mChart.getBarData().getGroupSpace();
-                boolean isStack = h.getStackIndex() < 0 ? false : true;
+                float barspaceHalf = set.getBarSpace() / 2f;
 
-                // calculate the correct x-position
-                float x = index * setCount + dataSetIndex + groupspace / 2f
-                        + groupspace * index;
+                Transformer trans = mChart.getTransformer(set.getAxisDependency());
 
-                final float y1;
-                final float y2;
+                mHighlightPaint.setColor(set.getHighLightColor());
+                mHighlightPaint.setAlpha(set.getHighLightAlpha());
 
-                if (isStack) {
-                    y1 = h.getRange().from;
-                    y2 = h.getRange().to;
-                } else {
-                    y1 = e.getVal();
-                    y2 = 0.f;
-                }
+                int index = high.getXIndex();
 
-                prepareBarHighlight(x, y1, y2, barspaceHalf, trans);
+                // check outofbounds
+                if (index >= 0
+                        && index < (mChart.getXChartMax() * mAnimator.getPhaseX()) / setCount) {
 
-                c.drawRect(mBarRect, mHighlightPaint);
+                    BarEntry e = set.getEntryForXIndex(index);
 
-                if (mChart.isDrawHighlightArrowEnabled()) {
+                    if (e == null || e.getXIndex() != index)
+                        continue;
 
-                    mHighlightPaint.setAlpha(255);
+                    float groupspace = barData.getGroupSpace();
+                    boolean isStack = high.getStackIndex() < 0 ? false : true;
 
-                    // distance between highlight arrow and bar
-                    float offsetY = mAnimator.getPhaseY() * 0.07f;
+                    // calculate the correct x-position
+                    float x = index * setCount + dataSetIndex + groupspace / 2f
+                            + groupspace * index;
 
-                    float[] values = new float[9];
-                    trans.getPixelToValueMatrix().getValues(values);
-                    final float xToYRel = Math.abs(values[Matrix.MSCALE_Y] / values[Matrix.MSCALE_X]);
+                    final float y1;
+                    final float y2;
 
-                    final float arrowWidth = set.getBarSpace() / 2.f;
-                    final float arrowHeight = arrowWidth * xToYRel;
+                    if (isStack) {
+                        y1 = high.getRange().from;
+                        y2 = high.getRange().to;
+                    } else {
+                        y1 = e.getVal();
+                        y2 = 0.f;
+                    }
 
-                    final float yArrow = (y1 > -y2 ? y1 : y1) * mAnimator.getPhaseY();
+                    prepareBarHighlight(x, y1, y2, barspaceHalf, trans);
 
-                    Path arrow = new Path();
-                    arrow.moveTo(x + 0.4f, yArrow + offsetY);
-                    arrow.lineTo(x + 0.4f + arrowWidth, yArrow + offsetY - arrowHeight);
-                    arrow.lineTo(x + 0.4f + arrowWidth, yArrow + offsetY + arrowHeight);
+                    c.drawRect(mBarRect, mHighlightPaint);
 
-                    trans.pathValueToPixel(arrow);
-                    c.drawPath(arrow, mHighlightPaint);
+                    if (mChart.isDrawHighlightArrowEnabled()) {
+
+                        mHighlightPaint.setAlpha(255);
+
+                        // distance between highlight arrow and bar
+                        float offsetY = mAnimator.getPhaseY() * 0.07f;
+
+                        float[] values = new float[9];
+                        trans.getPixelToValueMatrix().getValues(values);
+                        final float xToYRel = Math.abs(
+                                values[Matrix.MSCALE_Y] / values[Matrix.MSCALE_X]);
+
+                        final float arrowWidth = set.getBarSpace() / 2.f;
+                        final float arrowHeight = arrowWidth * xToYRel;
+
+                        final float yArrow = (y1 > -y2 ? y1 : y1) * mAnimator.getPhaseY();
+
+                        Path arrow = new Path();
+                        arrow.moveTo(x + 0.4f, yArrow + offsetY);
+                        arrow.lineTo(x + 0.4f + arrowWidth, yArrow + offsetY - arrowHeight);
+                        arrow.lineTo(x + 0.4f + arrowWidth, yArrow + offsetY + arrowHeight);
+
+                        trans.pathValueToPixel(arrow);
+                        c.drawPath(arrow, mHighlightPaint);
+                    }
                 }
             }
         }
