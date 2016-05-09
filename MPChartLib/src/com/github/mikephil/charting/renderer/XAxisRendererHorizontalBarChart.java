@@ -142,10 +142,13 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
         
         mGridPaint.setColor(mXAxis.getGridColor());
         mGridPaint.setStrokeWidth(mXAxis.getGridLineWidth());
+        mGridPaint.setPathEffect(mXAxis.getGridDashPathEffect());
 
         BarData bd = mChart.getData();
         // take into consideration that multiple DataSets increase mDeltaX
         int step = bd.getDataSetCount();
+
+        Path gridLinePath = new Path();
 
         for (int i = mMinX; i <= mMaxX; i += mXAxis.mAxisLabelModulus) {
 
@@ -155,8 +158,11 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
 
             if (mViewPortHandler.isInBoundsY(position[1])) {
 
-                c.drawLine(mViewPortHandler.contentLeft(), position[1],
-                        mViewPortHandler.contentRight(), position[1], mGridPaint);
+                gridLinePath.moveTo(position[1], mViewPortHandler.contentBottom());
+                gridLinePath.lineTo(position[1], mViewPortHandler.contentTop());
+
+                // draw a path because lines don't support dashing on lower android versions
+                c.drawPath(gridLinePath, mGridPaint);
             }
         }
     }
