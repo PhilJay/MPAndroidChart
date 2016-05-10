@@ -119,23 +119,23 @@ public class XAxisRenderer extends AxisRenderer {
         if (!mXAxis.isDrawAxisLineEnabled() || !mXAxis.isEnabled())
             return;
 
+        float axisLineWidth = mXAxis.getAxisLineWidth();
+
         mAxisLinePaint.setColor(mXAxis.getAxisLineColor());
-        mAxisLinePaint.setStrokeWidth(mXAxis.getAxisLineWidth());
+        mAxisLinePaint.setStrokeWidth(axisLineWidth);
 
         if (mXAxis.getPosition() == XAxisPosition.TOP
                 || mXAxis.getPosition() == XAxisPosition.TOP_INSIDE
                 || mXAxis.getPosition() == XAxisPosition.BOTH_SIDED) {
-            c.drawLine(mViewPortHandler.contentLeft(),
-                    mViewPortHandler.contentTop(), mViewPortHandler.contentRight(),
-                    mViewPortHandler.contentTop(), mAxisLinePaint);
+            c.drawLine(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop() + axisLineWidth / 2,
+                    mViewPortHandler.contentRight(), mViewPortHandler.contentTop() + axisLineWidth / 2, mAxisLinePaint);
         }
 
         if (mXAxis.getPosition() == XAxisPosition.BOTTOM
                 || mXAxis.getPosition() == XAxisPosition.BOTTOM_INSIDE
                 || mXAxis.getPosition() == XAxisPosition.BOTH_SIDED) {
-            c.drawLine(mViewPortHandler.contentLeft(),
-                    mViewPortHandler.contentBottom(), mViewPortHandler.contentRight(),
-                    mViewPortHandler.contentBottom(), mAxisLinePaint);
+            c.drawLine(mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom() - axisLineWidth / 2,
+                    mViewPortHandler.contentRight(), mViewPortHandler.contentBottom() - axisLineWidth / 2, mAxisLinePaint);
         }
     }
 
