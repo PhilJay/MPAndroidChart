@@ -119,24 +119,60 @@ public class XAxisRenderer extends AxisRenderer {
         if (!mXAxis.isDrawAxisLineEnabled() || !mXAxis.isEnabled())
             return;
 
+        float axisLineWidth = mXAxis.getAxisLineWidth();
+
         mAxisLinePaint.setColor(mXAxis.getAxisLineColor());
-        mAxisLinePaint.setStrokeWidth(mXAxis.getAxisLineWidth());
+        mAxisLinePaint.setStrokeWidth(axisLineWidth);
 
         if (mXAxis.getPosition() == XAxisPosition.TOP
                 || mXAxis.getPosition() == XAxisPosition.TOP_INSIDE
                 || mXAxis.getPosition() == XAxisPosition.BOTH_SIDED) {
-            c.drawLine(mViewPortHandler.contentLeft(),
-                    mViewPortHandler.contentTop(), mViewPortHandler.contentRight(),
-                    mViewPortHandler.contentTop(), mAxisLinePaint);
+            drawAxisLine(c, mViewPortHandler.contentLeft(), mViewPortHandler.contentRight(), mViewPortHandler.contentTop() - axisLineWidth / 2);
         }
 
         if (mXAxis.getPosition() == XAxisPosition.BOTTOM
                 || mXAxis.getPosition() == XAxisPosition.BOTTOM_INSIDE
                 || mXAxis.getPosition() == XAxisPosition.BOTH_SIDED) {
-            c.drawLine(mViewPortHandler.contentLeft(),
-                    mViewPortHandler.contentBottom(), mViewPortHandler.contentRight(),
-                    mViewPortHandler.contentBottom(), mAxisLinePaint);
+            drawAxisLine(c, mViewPortHandler.contentLeft(), mViewPortHandler.contentRight(), mViewPortHandler.contentBottom() + axisLineWidth / 2);
         }
+    }
+
+    /**
+     * Draw the axis line and its arrow heads if required
+     *
+     * @param c c The canvas where the arrow head will be drawn
+     * @param x1 The start x position
+     * @param x2 The final x position
+     * @param y The y position
+     */
+    protected void drawAxisLine(Canvas c, float x1, float x2, float y) {
+        c.drawLine(x1, y, x2, y, mAxisLinePaint);
+
+        float arrowHeadWidth = mXAxis.getArrowHeadWidth();
+
+        if (mXAxis.isDrawNegativeArrowHeadEnabled())
+            drawArrowHead(c, x1, x1 + arrowHeadWidth, y, arrowHeadWidth);
+
+        if (mXAxis.isDrawPositiveArrowHeadEnabled())
+            drawArrowHead(c, x2, x2 - arrowHeadWidth, y, arrowHeadWidth);
+    }
+
+    /**
+     * Draw the arrow head to the appropriate position
+     *
+     * @param c The canvas where the arrow head will be drawn
+     * @param x1 The start x position
+     * @param x2 The final x position
+     * @param y The y position
+     * @param arrowHeadWidth The width of the arrow head
+     */
+    protected void drawArrowHead(Canvas c, float x1, float x2, float y, float arrowHeadWidth) {
+        Path path = new Path();
+        path.moveTo(x2, y - arrowHeadWidth);
+        path.lineTo(x1, y);
+        path.lineTo(x2, y + arrowHeadWidth);
+
+        c.drawPath(path, mAxisLinePaint);
     }
 
     /**
