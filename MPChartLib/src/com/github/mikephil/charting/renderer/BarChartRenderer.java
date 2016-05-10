@@ -86,7 +86,7 @@ public class BarChartRenderer extends DataRenderer {
 
         mShadowPaint.setColor(dataSet.getBarShadowColor());
         mBarBorderPaint.setColor(dataSet.getBarBorderColor());
-        mBarBorderPaint.setStrokeWidth(dataSet.getBarBorderWidth());
+        mBarBorderPaint.setStrokeWidth(Util.convertDpToPixel(dataSet.getBarBorderWidth()));
 
         final boolean drawBorder = dataSet.getBarBorderWidth() > 0.f;
 
