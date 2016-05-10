@@ -7,7 +7,6 @@ import android.graphics.Paint.Align;
 import android.graphics.Path;
 
 import com.github.mikephil.charting.components.LimitLine;
-import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
@@ -166,6 +165,9 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
 
             mGridPaint.setColor(mYAxis.getGridColor());
             mGridPaint.setStrokeWidth(mYAxis.getGridLineWidth());
+            mGridPaint.setPathEffect(mYAxis.getGridDashPathEffect());
+
+            Path gridLinePath = new Path();
 
             // draw the horizontal grid
             for (int i = 0; i < mYAxis.mEntryCount; i++) {
@@ -173,9 +175,11 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
                 position[0] = mYAxis.mEntries[i];
                 mTrans.pointValuesToPixel(position);
 
-                c.drawLine(position[0], mViewPortHandler.contentTop(), position[0],
-                        mViewPortHandler.contentBottom(),
-                        mGridPaint);
+                gridLinePath.moveTo(position[0], mViewPortHandler.contentBottom());
+                gridLinePath.lineTo(position[0], mViewPortHandler.contentTop());
+
+                // draw a path because lines don't support dashing on lower android versions
+                c.drawPath(gridLinePath, mGridPaint);
             }
         }
 

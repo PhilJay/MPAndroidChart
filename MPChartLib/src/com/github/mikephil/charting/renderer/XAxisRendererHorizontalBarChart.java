@@ -158,8 +158,8 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
 
             if (mViewPortHandler.isInBoundsY(position[1])) {
 
-                gridLinePath.moveTo(position[1], mViewPortHandler.contentBottom());
-                gridLinePath.lineTo(position[1], mViewPortHandler.contentTop());
+                gridLinePath.moveTo(mViewPortHandler.offsetLeft(), position[1]);
+                gridLinePath.lineTo(mViewPortHandler.contentRight(), position[1]);
 
                 // draw a path because lines don't support dashing on lower android versions
                 c.drawPath(gridLinePath, mGridPaint);
