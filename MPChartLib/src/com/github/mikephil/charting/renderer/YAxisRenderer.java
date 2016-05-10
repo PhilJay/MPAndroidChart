@@ -259,10 +259,10 @@ public class YAxisRenderer extends AxisRenderer {
         float arrowHeadWidth = mYAxis.getArrowHeadWidth();
 
         if (mYAxis.isDrawNegativeArrowHeadEnabled())
-            drawArrowHead(c, x, y1, y1 + arrowHeadWidth, arrowHeadWidth);
+            drawArrowHead(c, x, y2, y2 - arrowHeadWidth, arrowHeadWidth);
 
         if (mYAxis.isDrawPositiveArrowHeadEnabled())
-            drawArrowHead(c, x, y2, y2 - arrowHeadWidth, arrowHeadWidth);
+            drawArrowHead(c, x, y1, y1 + arrowHeadWidth, arrowHeadWidth);
     }
 
     /**
