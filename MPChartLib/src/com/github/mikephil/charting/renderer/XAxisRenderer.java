@@ -254,8 +254,10 @@ public class XAxisRenderer extends AxisRenderer {
 
             mTrans.pointValuesToPixel(position);
 
-            renderLimitLineLine(c, l, position);
-            renderLimitLineLabel(c, l, position, 2.f + l.getYOffset());
+            if (mViewPortHandler.isInBoundsX(position[0])) {
+                renderLimitLineLine(c, l, position);
+                renderLimitLineLabel(c, l, position, 2.f + l.getYOffset());
+            }
 		}
 	}
 
