@@ -216,6 +216,7 @@ public class LegendRenderer extends Renderer {
 
         String[] labels = mLegend.getLabels();
         int[] colors = mLegend.getColors();
+        int[] borderColors = mLegend.getBorderColors();
 
         float formToTextSpace = mLegend.getFormToTextSpace();
         float xEntrySpace = mLegend.getXEntrySpace();
@@ -224,6 +225,7 @@ public class LegendRenderer extends Renderer {
         Legend.LegendVerticalAlignment verticalAlignment = mLegend.getVerticalAlignment();
         Legend.LegendDirection direction = mLegend.getDirection();
         float formSize = mLegend.getFormSize();
+        float formBorderSize = mLegend.getFormBorderSize();
 
         // space between the entries
         float stackSpace = mLegend.getStackSpace();
@@ -322,16 +324,23 @@ public class LegendRenderer extends Renderer {
                     }
 
                     boolean drawingForm = colors[i] != ColorTemplate.COLOR_SKIP;
+                    boolean drawingFormBorder = borderColors != null && borderColors.length > i && borderColors[i] != ColorTemplate.COLOR_SKIP;
                     boolean isStacked = labels[i] == null; // grouped forms have null labels
 
                     if (drawingForm) {
-                        if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
+                        if (direction == Legend.LegendDirection.RIGHT_TO_LEFT) {
                             posX -= formSize;
+                            if (drawingFormBorder)
+                                posX -= formBorderSize * 2;
+                        }
 
                         drawForm(c, posX, posY + formYOffset, i, mLegend);
 
-                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
+                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT) {
                             posX += formSize;
+                            if (drawingFormBorder)
+                                posX += formBorderSize * 2;
+                        }
                     }
 
                     if (!isStacked) {
@@ -384,19 +393,27 @@ public class LegendRenderer extends Renderer {
 
                 for (int i = 0; i < labels.length; i++) {
 
-                    Boolean drawingForm = colors[i] != ColorTemplate.COLOR_SKIP;
+                    boolean drawingForm = colors[i] != ColorTemplate.COLOR_SKIP;
+                    boolean drawingFormBorder = borderColors != null && borderColors[i] != ColorTemplate.COLOR_SKIP;
                     float posX = originPosX;
 
                     if (drawingForm) {
                         if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
                             posX += stack;
-                        else
+                        else {
                             posX -= formSize - stack;
+                            if (drawingFormBorder)
+                                posX -= formBorderSize * 2;
+
+                        }
 
                         drawForm(c, posX, posY + formYOffset, i, mLegend);
 
-                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
+                        if (direction == Legend.LegendDirection.LEFT_TO_RIGHT) {
                             posX += formSize;
+                            if (drawingFormBorder)
+                                posX += formBorderSize * 2;
+                        }
                     }
 
                     if (labels[i] != null) {
@@ -421,7 +438,7 @@ public class LegendRenderer extends Renderer {
                         posY += labelLineHeight + labelLineSpacing;
                         stack = 0f;
                     } else {
-                        stack += formSize + stackSpace;
+                        stack += formSize + formBorderSize * 2 + stackSpace;
                         wasStacked = true;
                     }
                 }
@@ -476,8 +493,6 @@ public class LegendRenderer extends Renderer {
                 break;
             case LINE:
                 c.drawLine(x, y, x + formsize, y, mLegendFormPaint);
-                if (drawBorder)
-                    c.drawLine(x, y, x + formsize, y, mLegendFormBorderPaint);
                 break;
         }
     }

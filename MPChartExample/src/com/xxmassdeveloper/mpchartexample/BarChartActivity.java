@@ -28,8 +28,6 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
@@ -108,11 +106,12 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         rightAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
-        l.setForm(LegendForm.SQUARE);
-        l.setFormSize(9f);
-        l.setTextSize(11f);
-        l.setXEntrySpace(4f);
+        l.setPosition(LegendPosition.ABOVE_CHART_CENTER);
+        l.setForm(LegendForm.CIRCLE);
+        l.setFormSize(15f);
+        l.setTextSize(15f);
+        l.setXEntrySpace(20f);
+        l.setFormBorderSize(1);
         // l.setExtra(ColorTemplate.VORDIPLOM_COLORS, new String[] { "abc",
         // "def", "ghj", "ikl", "mno" });
         // l.setCustom(ColorTemplate.VORDIPLOM_COLORS, new String[] { "abc",
@@ -259,6 +258,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
             set1 = new BarDataSet(yVals1, "DataSet");
             set1.setBarSpacePercent(35f);
             set1.setColors(ColorTemplate.MATERIAL_COLORS);
+            set1.setBorderColors(ColorTemplate.MATERIAL_COLORS_DARK);
 
             ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
             dataSets.add(set1);
