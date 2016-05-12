@@ -106,13 +106,11 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         rightAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.ABOVE_CHART_CENTER);
+        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
         l.setForm(LegendForm.SQUARE);
-        l.setFormSize(15f);
-        l.setTextSize(15f);
-        l.setXEntrySpace(20f);
-        l.setFormBorderSize(1);
-        l.setFormRadius(2);
+        l.setFormSize(9f);
+        l.setTextSize(11f);
+        l.setXEntrySpace(4f);
         // l.setExtra(ColorTemplate.VORDIPLOM_COLORS, new String[] { "abc",
         // "def", "ghj", "ikl", "mno" });
         // l.setCustom(ColorTemplate.VORDIPLOM_COLORS, new String[] { "abc",
@@ -259,7 +257,6 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
             set1 = new BarDataSet(yVals1, "DataSet");
             set1.setBarSpacePercent(35f);
             set1.setColors(ColorTemplate.MATERIAL_COLORS);
-            set1.setBorderColors(ColorTemplate.MATERIAL_COLORS_DARK);
 
             ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
             dataSets.add(set1);
