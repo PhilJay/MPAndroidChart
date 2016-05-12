@@ -113,6 +113,9 @@ public class Legend extends ComponentBase {
     /** the size of the legend forms/shapes' border */
     private float mFormBorderSize = 0f;
 
+    /** the size of the legend forms/shapes' radius */
+    private float mFormRadius = 0f;
+
     /**
      * the space between the legend entries on a horizontal axis, default 6f
      */
@@ -732,6 +735,26 @@ public class Legend extends ComponentBase {
      */
     public void setFormBorderSize(float size) {
         mFormBorderSize = Utils.convertDpToPixel(size);
+    }
+
+    /**
+     * returns the radius in dp of the legend forms
+     *
+     * @return
+     */
+    public float getFormRadius() {
+        return mFormRadius;
+    }
+
+    /**
+     * sets the radius in pixels of the legend forms, this is internally converted
+     * in dp, default 0f
+     * This will only be interpreted for the SQUARE form as it has no meaning for the other available forms.
+     *
+     * @param radius
+     */
+    public void setFormRadius(float radius) {
+        this.mFormRadius = Utils.convertDpToPixel(radius);
     }
 
     /**

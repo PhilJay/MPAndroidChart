@@ -107,11 +107,12 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.ABOVE_CHART_CENTER);
-        l.setForm(LegendForm.CIRCLE);
+        l.setForm(LegendForm.SQUARE);
         l.setFormSize(15f);
         l.setTextSize(15f);
         l.setXEntrySpace(20f);
         l.setFormBorderSize(1);
+        l.setFormRadius(2);
         // l.setExtra(ColorTemplate.VORDIPLOM_COLORS, new String[] { "abc",
         // "def", "ghj", "ikl", "mno" });
         // l.setCustom(ColorTemplate.VORDIPLOM_COLORS, new String[] { "abc",

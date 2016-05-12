@@ -4,6 +4,7 @@ package com.github.mikephil.charting.renderer;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 
 import com.github.mikephil.charting.components.Legend;
@@ -487,9 +488,11 @@ public class LegendRenderer extends Renderer {
                     c.drawCircle(x + half, y, half, mLegendFormBorderPaint);
                 break;
             case SQUARE:
-                c.drawRect(x, y - half, x + formsize, y + half, mLegendFormPaint);
+                float radius = legend.getFormRadius();
+                RectF formRect = new RectF(x, y - half, x + formsize, y + half);
+                c.drawRoundRect(formRect, radius, radius, mLegendFormPaint);
                 if (drawBorder)
-                    c.drawRect(x, y - half, x + formsize, y + half, mLegendFormBorderPaint);
+                    c.drawRoundRect(formRect, radius, radius, mLegendFormBorderPaint);
                 break;
             case LINE:
                 c.drawLine(x, y, x + formsize, y, mLegendFormPaint);
