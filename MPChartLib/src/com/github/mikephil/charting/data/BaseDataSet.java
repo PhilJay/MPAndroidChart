@@ -311,7 +311,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      * @param color
      */
     public void setBorderColor(int color) {
-        resetColors();
+        resetBorderColors();
         mBorderColors.add(color);
     }
 
@@ -322,7 +322,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      * @param alpha from 0-255
      */
     public void setBorderColor(int color, int alpha) {
-        setColor(Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color)));
+        setBorderColor(Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color)));
     }
 
     /**
@@ -332,9 +332,9 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      * @param alpha
      */
     public void setBorderColors(int[] colors, int alpha) {
-        resetColors();
+        resetBorderColors();
         for (int color : colors) {
-            addColor(Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color)));
+            addBorderColor(Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color)));
         }
     }
 
