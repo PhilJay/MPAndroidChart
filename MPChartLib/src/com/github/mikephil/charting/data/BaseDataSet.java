@@ -27,6 +27,11 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     protected List<Integer> mColors = null;
 
     /**
+     * List representing all colors that are used for this DataSet
+     */
+    protected List<Integer> mBorderColors = null;
+
+    /**
      * List representing all colors that are used for drawing the actual values for this DataSet
      */
     protected List<Integer> mValueColors = null;
@@ -76,6 +81,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      */
     public BaseDataSet() {
         mColors = new ArrayList<Integer>();
+        mBorderColors = new ArrayList<Integer>();
         mValueColors = new ArrayList<Integer>();
 
         // default color
@@ -120,6 +126,21 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     @Override
     public int getColor(int index) {
         return mColors.get(index % mColors.size());
+    }
+
+    @Override
+    public List<Integer> getBorderColors() {
+        return mBorderColors;
+    }
+
+    @Override
+    public int getBorderColor() {
+        return !mBorderColors.isEmpty() ? mBorderColors.get(0) : ColorTemplate.COLOR_SKIP;
+    }
+
+    @Override
+    public int getBorderColor(int index) {
+        return !mBorderColors.isEmpty() ? mBorderColors.get(index % mBorderColors.size()) : ColorTemplate.COLOR_SKIP;
     }
 
     /**
@@ -223,6 +244,105 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      */
     public void resetColors() {
         mColors = new ArrayList<Integer>();
+    }
+
+    /**
+     * Sets the border colors that should be used fore this DataSet. Colors are reused
+     * as soon as the number of Entries the DataSet represents is higher than
+     * the size of the colors array. If you are using colors from the resources,
+     * make sure that the colors are already prepared (by calling
+     * getResources().getColor(...)) before adding them to the DataSet.
+     *
+     * @param borderColors
+     */
+    public void setBorderColors(List<Integer> borderColors) {
+        this.mBorderColors = borderColors;
+    }
+
+    /**
+     * Sets the border colors that should be used fore this DataSet. Colors are reused
+     * as soon as the number of Entries the DataSet represents is higher than
+     * the size of the colors array. If you are using colors from the resources,
+     * make sure that the colors are already prepared (by calling
+     * getResources().getColor(...)) before adding them to the DataSet.
+     *
+     * @param borderColors
+     */
+    public void setBorderColors(int[] borderColors) {
+        this.mBorderColors = ColorTemplate.createColors(borderColors);
+    }
+
+    /**
+     * Sets the border colors that should be used fore this DataSet. Colors are reused
+     * as soon as the number of Entries the DataSet represents is higher than
+     * the size of the colors array. You can use
+     * "new int[] { R.color.red, R.color.green, ... }" to provide colors for
+     * this method. Internally, the colors are resolved using
+     * getResources().getColor(...)
+     *
+     * @param borderColors
+     */
+    public void setBorderColors(int[] borderColors, Context c) {
+
+        List<Integer> clrs = new ArrayList<Integer>();
+
+        for (int color : borderColors) {
+            clrs.add(c.getResources().getColor(color));
+        }
+
+        mBorderColors = clrs;
+    }
+
+    /**
+     * Adds a new border color to the colors array of the DataSet.
+     *
+     * @param color
+     */
+    public void addBorderColor(int color) {
+        if (mBorderColors == null)
+            mBorderColors = new ArrayList<Integer>();
+        mBorderColors.add(color);
+    }
+
+    /**
+     * Sets the one and ONLY border color that should be used for this DataSet.
+     * Internally, this recreates the colors array and adds the specified color.
+     *
+     * @param color
+     */
+    public void setBorderColor(int color) {
+        resetColors();
+        mBorderColors.add(color);
+    }
+
+    /**
+     * Sets a color with a specific alpha value.
+     *
+     * @param color
+     * @param alpha from 0-255
+     */
+    public void setBorderColor(int color, int alpha) {
+        setColor(Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color)));
+    }
+
+    /**
+     * Sets border colors with a specific alpha value.
+     *
+     * @param colors
+     * @param alpha
+     */
+    public void setBorderColors(int[] colors, int alpha) {
+        resetColors();
+        for (int color : colors) {
+            addColor(Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color)));
+        }
+    }
+
+    /**
+     * Resets all border colors of this DataSet and recreates the colors array.
+     */
+    public void resetBorderColors() {
+        mBorderColors = new ArrayList<Integer>();
     }
 
     /** ###### ###### OTHER STYLING RELATED METHODS ##### ###### */

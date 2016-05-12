@@ -34,6 +34,11 @@ public class LegendRenderer extends Renderer {
     protected Paint mLegendFormPaint;
 
     /**
+     * paint used for the legend forms' border
+     */
+    protected Paint mLegendFormBorderPaint;
+
+    /**
      * the legend object this renderer renders
      */
     protected Legend mLegend;
@@ -50,6 +55,9 @@ public class LegendRenderer extends Renderer {
         mLegendFormPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mLegendFormPaint.setStyle(Paint.Style.FILL);
         mLegendFormPaint.setStrokeWidth(3f);
+
+        mLegendFormBorderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mLegendFormBorderPaint.setStyle(Paint.Style.STROKE);
     }
 
     /**
@@ -81,6 +89,7 @@ public class LegendRenderer extends Renderer {
 
             List<String> labels = new ArrayList<String>();
             List<Integer> colors = new ArrayList<Integer>();
+            List<Integer> borderColors = new ArrayList<Integer>();
 
             // loop for building up the colors and labels used in the legend
             for (int i = 0; i < data.getDataSetCount(); i++) {
@@ -88,6 +97,7 @@ public class LegendRenderer extends Renderer {
                 IDataSet dataSet = data.getDataSetByIndex(i);
 
                 List<Integer> clrs = dataSet.getColors();
+                List<Integer> borderclrs = dataSet.getBorderColors();
                 int entryCount = dataSet.getEntryCount();
 
                 // if we have a barchart with stacked bars
@@ -100,11 +110,14 @@ public class LegendRenderer extends Renderer {
 
                         labels.add(sLabels[j % sLabels.length]);
                         colors.add(clrs.get(j));
+                        if (borderclrs != null && borderclrs.size() >= j)
+                            borderColors.add(borderclrs.get(j));
                     }
 
                     if (bds.getLabel() != null) {
                         // add the legend description label
                         colors.add(ColorTemplate.COLOR_SKIP);
+                        borderColors.add(ColorTemplate.COLOR_SKIP);
                         labels.add(bds.getLabel());
                     }
 
@@ -117,11 +130,14 @@ public class LegendRenderer extends Renderer {
 
                         labels.add(xVals.get(j));
                         colors.add(clrs.get(j));
+                        if (borderclrs != null && borderclrs.size() >= j)
+                            borderColors.add(borderclrs.get(j));
                     }
 
                     if (pds.getLabel() != null) {
                         // add the legend description label
                         colors.add(ColorTemplate.COLOR_SKIP);
+                        borderColors.add(ColorTemplate.COLOR_SKIP);
                         labels.add(pds.getLabel());
                     }
 
@@ -147,6 +163,8 @@ public class LegendRenderer extends Renderer {
                         }
 
                         colors.add(clrs.get(j));
+                        if (borderclrs != null && borderclrs.size() > j)
+                            borderColors.add(borderclrs.get(j));
                     }
                 }
             }
@@ -154,10 +172,16 @@ public class LegendRenderer extends Renderer {
             if (mLegend.getExtraColors() != null && mLegend.getExtraLabels() != null) {
                 for (int color : mLegend.getExtraColors())
                     colors.add(color);
+
+                if (mLegend.getExtraBorderColors() != null) {
+                    for (int color : mLegend.getExtraBorderColors())
+                        borderColors.add(color);
+                }
                 Collections.addAll(labels, mLegend.getExtraLabels());
             }
 
             mLegend.setComputedColors(colors);
+            mLegend.setComputedBorderColors(borderColors);
             mLegend.setComputedLabels(labels);
         }
 
@@ -419,10 +443,22 @@ public class LegendRenderer extends Renderer {
      */
     protected void drawForm(Canvas c, float x, float y, int index, Legend legend) {
 
-        if (legend.getColors()[index] == ColorTemplate.COLOR_SKIP)
+        int color = legend.getColors()[index];
+        if (color == ColorTemplate.COLOR_SKIP)
             return;
 
-        mLegendFormPaint.setColor(legend.getColors()[index]);
+        mLegendFormPaint.setColor(color);
+
+        float borderSize = legend.getFormBorderSize();
+        boolean drawBorder = borderSize > 0.f;
+        int[] borderColors = legend.getBorderColors();
+        if (drawBorder && borderColors != null && borderColors.length > 0) {
+            int borderColor = legend.getBorderColors()[index];
+            mLegendFormBorderPaint.setColor(borderColor);
+            mLegendFormBorderPaint.setStrokeWidth(borderSize);
+
+            drawBorder = (borderColor != ColorTemplate.COLOR_SKIP);
+        }
 
         float formsize = legend.getFormSize();
         float half = formsize / 2f;
@@ -430,12 +466,18 @@ public class LegendRenderer extends Renderer {
         switch (legend.getForm()) {
             case CIRCLE:
                 c.drawCircle(x + half, y, half, mLegendFormPaint);
+                if (drawBorder)
+                    c.drawCircle(x + half, y, half, mLegendFormBorderPaint);
                 break;
             case SQUARE:
                 c.drawRect(x, y - half, x + formsize, y + half, mLegendFormPaint);
+                if (drawBorder)
+                    c.drawRect(x, y - half, x + formsize, y + half, mLegendFormBorderPaint);
                 break;
             case LINE:
                 c.drawLine(x, y, x + formsize, y, mLegendFormPaint);
+                if (drawBorder)
+                    c.drawLine(x, y, x + formsize, y, mLegendFormBorderPaint);
                 break;
         }
     }

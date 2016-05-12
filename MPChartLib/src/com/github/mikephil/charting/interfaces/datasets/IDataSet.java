@@ -271,6 +271,30 @@ public interface IDataSet<T extends Entry> {
     int getColor(int index);
 
     /**
+     * returns all the border colors that are set for this DataSet
+     *
+     * @return
+     */
+    List<Integer> getBorderColors();
+
+    /**
+     * Returns the first border color (index 0) of the colors-array this DataSet
+     * contains. This is only used for performance reasons when only one color is in the colors array (size == 1)
+     *
+     * @return
+     */
+    int getBorderColor();
+
+    /**
+     * Returns the border color at the given index of the DataSet's color array.
+     * Performs a IndexOutOfBounds check by modulus.
+     *
+     * @param index
+     * @return
+     */
+    int getBorderColor(int index);
+
+    /**
      * returns true if highlighting of values is enabled, false if not
      *
      * @return

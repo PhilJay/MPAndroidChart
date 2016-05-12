@@ -60,6 +60,12 @@ public class Legend extends ComponentBase {
      */
     private int[] mColors;
 
+    /**
+     * the legend border colors array, each color is for the form's border drawn at the same
+     * index
+     */
+    private int[] mBorderColors;
+
     /** the legend text array. a null label will start a group. */
     private String[] mLabels;
 
@@ -68,6 +74,12 @@ public class Legend extends ComponentBase {
      * calculating the legend.
      */
     private int[] mExtraColors;
+
+    /**
+     * border colors that will be appended to the end of the colors array after
+     * calculating the legend.
+     */
+    private int[] mExtraBorderColors;
 
     /**
      * labels that will be appended to the end of the labels array after
@@ -94,6 +106,12 @@ public class Legend extends ComponentBase {
 
     /** the size of the legend forms/shapes */
     private float mFormSize = 8f;
+
+    /** the size of the legend forms/shapes' border */
+    private int mFormBorderColor;
+
+    /** the size of the legend forms/shapes' border */
+    private float mFormBorderSize = 0f;
 
     /**
      * the space between the legend entries on a horizontal axis, default 6f
@@ -138,6 +156,17 @@ public class Legend extends ComponentBase {
      * @param labels
      */
     public Legend(int[] colors, String[] labels) {
+        this(colors, null, labels);
+    }
+
+    /**
+     * Constructor. Provide colors, border colors and labels for the legend.
+     *
+     * @param colors
+     * @param borderColors
+     * @param labels
+     */
+    public Legend(int[] colors, int[] borderColors, String[] labels) {
         this();
 
         if (colors == null || labels == null) {
@@ -150,6 +179,7 @@ public class Legend extends ComponentBase {
         }
 
         this.mColors = colors;
+        this.mBorderColors = borderColors;
         this.mLabels = labels;
     }
 
@@ -160,6 +190,17 @@ public class Legend extends ComponentBase {
      * @param labels
      */
     public Legend(List<Integer> colors, List<String> labels) {
+        this(colors, null, labels);
+    }
+
+    /**
+     * Constructor. Provide colors, border colors and labels for the legend.
+     *
+     * @param colors
+     * @param borderColors
+     * @param labels
+     */
+    public Legend(List<Integer> colors, List<Integer> borderColors, List<String> labels) {
         this();
 
         if (colors == null || labels == null) {
@@ -172,6 +213,7 @@ public class Legend extends ComponentBase {
         }
 
         this.mColors = Utils.convertIntegers(colors);
+        this.mBorderColors = borderColors != null ? Utils.convertIntegers(borderColors) : null;
         this.mLabels = Utils.convertStrings(labels);
     }
 
@@ -181,6 +223,14 @@ public class Legend extends ComponentBase {
      */
     public void setComputedColors(List<Integer> colors) {
         mColors = Utils.convertIntegers(colors);
+    }
+
+    /**
+     * This method sets the automatically computed border colors for the legend.
+     * @param colors
+     */
+    public void setComputedBorderColors(List<Integer> colors) {
+        mBorderColors = Utils.convertIntegers(colors);
     }
 
     /**
@@ -250,6 +300,15 @@ public class Legend extends ComponentBase {
     }
 
     /**
+     * returns all the border colors the legend uses
+     *
+     * @return
+     */
+    public int[] getBorderColors() {
+        return mBorderColors;
+    }
+
+    /**
      * returns all the labels the legend uses
      * 
      * @return
@@ -277,6 +336,15 @@ public class Legend extends ComponentBase {
     }
 
     /**
+     * border colors that will be appended to the end of the colors array after
+     * calculating the legend.
+     */
+    public int[] getExtraBorderColors() {
+        return mExtraBorderColors;
+    }
+
+
+    /**
      * labels that will be appended to the end of the labels array after
      * calculating the legend. a null label will start a group.
      */
@@ -291,7 +359,18 @@ public class Legend extends ComponentBase {
      * let the changes take effect)
      */
     public void setExtra(List<Integer> colors, List<String> labels) {
+        setExtra(colors, null, labels);
+    }
+
+    /**
+     * Colors, border colors and labels that will be appended to the end of the auto calculated
+     * colors, border colors and labels arrays after calculating the legend. (if the legend has
+     * already been calculated, you will need to call notifyDataSetChanged() to
+     * let the changes take effect)
+     */
+    public void setExtra(List<Integer> colors, List<Integer> borderColors, List<String> labels) {
         this.mExtraColors = Utils.convertIntegers(colors);
+        this.mExtraBorderColors = borderColors != null ? Utils.convertIntegers(borderColors) : null;
         this.mExtraLabels = Utils.convertStrings(labels);
     }
 
@@ -302,7 +381,18 @@ public class Legend extends ComponentBase {
      * let the changes take effect)
      */
     public void setExtra(int[] colors, String[] labels) {
+        setExtra(colors, null, labels);
+    }
+
+    /**
+     * Colors, border colors and labels that will be appended to the end of the auto calculated
+     * colors, border colors and labels arrays after calculating the legend. (if the legend has
+     * already been calculated, you will need to call notifyDataSetChanged() to
+     * let the changes take effect)
+     */
+    public void setExtra(int[] colors, int[] borderColors, String[] labels) {
         this.mExtraColors = colors;
+        this.mExtraBorderColors = borderColors;
         this.mExtraLabels = labels;
     }
 
@@ -316,6 +406,19 @@ public class Legend extends ComponentBase {
      * notifyDataSetChanged() is needed to auto-calculate the legend again)
      */
     public void setCustom(int[] colors, String[] labels) {
+        setCustom(colors, null, labels);
+    }
+
+    /**
+     * Sets a custom legend's labels, color and border colors arrays. The colors count should
+     * match the labels count. * Each color is for the form drawn at the same
+     * index. * A null label will start a group. * A ColorTemplate.COLOR_SKIP
+     * color will avoid drawing a form This will disable the feature that
+     * automatically calculates the legend labels and colors from the datasets.
+     * Call resetCustom() to re-enable automatic calculation (and then
+     * notifyDataSetChanged() is needed to auto-calculate the legend again)
+     */
+    public void setCustom(int[] colors, int[] borderColors, String[] labels) {
 
         if (colors.length != labels.length) {
             throw new IllegalArgumentException(
@@ -324,6 +427,7 @@ public class Legend extends ComponentBase {
 
         mLabels = labels;
         mColors = colors;
+        mBorderColors = borderColors;
         mIsLegendCustom = true;
     }
 
@@ -337,6 +441,19 @@ public class Legend extends ComponentBase {
      * notifyDataSetChanged() is needed to auto-calculate the legend again)
      */
     public void setCustom(List<Integer> colors, List<String> labels) {
+        setCustom(colors, null, labels);
+    }
+
+    /**
+     * Sets a custom legend's labels, color and border colors arrays. The colors count should
+     * match the labels count. * Each color is for the form drawn at the same
+     * index. * A null label will start a group. * A ColorTemplate.COLOR_SKIP
+     * color will avoid drawing a form This will disable the feature that
+     * automatically calculates the legend labels and colors from the datasets.
+     * Call resetCustom() to re-enable automatic calculation (and then
+     * notifyDataSetChanged() is needed to auto-calculate the legend again)
+     */
+    public void setCustom(List<Integer> colors, List<Integer> borderColors, List<String> labels) {
 
         if (colors.size() != labels.size()) {
             throw new IllegalArgumentException(
@@ -344,6 +461,7 @@ public class Legend extends ComponentBase {
         }
 
         mColors = Utils.convertIntegers(colors);
+        mBorderColors = borderColors != null ? Utils.convertIntegers(borderColors) : null;
         mLabels = Utils.convertStrings(labels);
         mIsLegendCustom = true;
     }
@@ -598,6 +716,25 @@ public class Legend extends ComponentBase {
     }
 
     /**
+     * returns the size in dp of the legend forms' border
+     *
+     * @return
+     */
+    public float getFormBorderSize() {
+        return mFormBorderSize;
+    }
+
+    /**
+     * sets the size in pixels of the legend forms' border, this is internally converted
+     * in dp, default 0f
+     *
+     * @param size
+     */
+    public void setFormBorderSize(float size) {
+        mFormBorderSize = Utils.convertDpToPixel(size);
+    }
+
+    /**
      * returns the space between the legend entries on a horizontal axis in
      * pixels
      * 
@@ -649,7 +786,7 @@ public class Legend extends ComponentBase {
      * sets the space between the form and the actual label/text, converts to dp
      * internally
      * 
-     * @param mFormToTextSpace
+     * @param space
      */
     public void setFormToTextSpace(float space) {
         this.mFormToTextSpace = Utils.convertDpToPixel(space);
@@ -691,6 +828,9 @@ public class Legend extends ComponentBase {
                 if (mColors[i] != ColorTemplate.COLOR_SKIP)
                     width += mFormSize + mFormToTextSpace;
 
+                if (mBorderColors != null && mBorderColors[i] != ColorTemplate.COLOR_SKIP)
+                    width += mFormBorderSize * 2;
+
                 width += Utils.calcTextWidth(labelpaint, mLabels[i]);
 
                 if (i < mLabels.length - 1)
@@ -708,7 +848,7 @@ public class Legend extends ComponentBase {
     /**
      * Calculates the full height of the drawn legend.
      * 
-     * @param mLegendLabelPaint
+     * @param labelpaint
      * @return
      */
     public float getFullHeight(Paint labelpaint) {
@@ -831,6 +971,7 @@ public class Legend extends ComponentBase {
                 for (int i = 0; i < count; i++) {
 
                     boolean drawingForm = mColors[i] != ColorTemplate.COLOR_SKIP;
+                    boolean drawingFormBorder = mColors != null && mColors[i] != ColorTemplate.COLOR_SKIP;
 
                     if (!wasStacked)
                         width = 0.f;
@@ -839,6 +980,9 @@ public class Legend extends ComponentBase {
                         if (wasStacked)
                             width += mStackSpace;
                         width += mFormSize;
+
+                        if (drawingFormBorder)
+                            width += mFormBorderSize * 2;
                     }
 
                     // grouped forms have null labels
@@ -895,6 +1039,7 @@ public class Legend extends ComponentBase {
                 for (int i = 0; i < labelCount; i++) {
 
                     boolean drawingForm = mColors[i] != ColorTemplate.COLOR_SKIP;
+                    boolean drawingFormBorder = mColors != null && mColors[i] != ColorTemplate.COLOR_SKIP;
 
                     calculatedLabelBreakPoints.add(false);
 
@@ -913,12 +1058,14 @@ public class Legend extends ComponentBase {
 
                         calculatedLabelSizes.add(Utils.calcTextSize(labelpaint, mLabels[i]));
                         requiredWidth += drawingForm ? mFormToTextSpace + mFormSize : 0.f;
+                        requiredWidth += drawingFormBorder ? mFormBorderSize * 2 : 0.f;
                         requiredWidth += calculatedLabelSizes.get(i).width;
                     }
                     else {
 
                         calculatedLabelSizes.add(new FSize(0.f, 0.f));
                         requiredWidth += drawingForm ? mFormSize : 0.f;
+                        requiredWidth += drawingFormBorder ? mFormBorderSize * 2 : 0.f;
 
                         if (stackedStartIndex == -1) {
                             // mark this index as we might want to break here later
