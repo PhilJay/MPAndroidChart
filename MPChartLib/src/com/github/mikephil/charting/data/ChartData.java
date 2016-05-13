@@ -8,6 +8,7 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,6 +55,11 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      * holds all x-values the chart represents
      */
     protected List<String> mXVals;
+
+    /**
+     * holds all x-form colors the chart represents
+     */
+    protected List<Integer> mXFormColors;
 
     /**
      * array that holds all DataSets the ChartData object represents
@@ -167,7 +173,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
     /**
      * Checks if the combination of x-values array and DataSet array is legal or
-     * not.
+     * not. Also check whether the form colors array match the x-values array size if any.
      */
     private void checkLegal() {
 
@@ -176,6 +182,11 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
         if (this instanceof ScatterData || this instanceof CombinedData)
             return;
+
+        if (mXFormColors != null && mXFormColors.size() != mXVals.size()) {
+            throw new IllegalArgumentException(
+                    "Form colors size must match the x-values size. Use ColorTemplate.COLOR_SKIP if you do not want to associate a form to a specific xVal.");
+        }
 
         for (int i = 0; i < mDataSets.size(); i++) {
             if (mDataSets.get(i).getEntryCount() > mXVals.size()) {
@@ -385,16 +396,48 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
+     * returns the x-form colors the chart represents
+     *
+     * @return
+     */
+    public List<Integer> getXFormColors() {
+        return mXFormColors;
+    }
+
+    /**
+     * sets the x-form colors the chart represents
+     *
+     */
+    public void setXFormColors(List<Integer> xFormColors) {
+        this.mXFormColors = xFormColors;
+    }
+
+    /**
      * Adds a new x-value to the chart data.
      *
      * @param xVal
      */
     public void addXValue(String xVal) {
+        addXValue(xVal, ColorTemplate.COLOR_SKIP);
+    }
+
+    /**
+     * Adds a new x-value to the chart data and associate a form color with it.
+     *
+     * @param xVal
+     * @param xFormColor
+     */
+    public void addXValue(String xVal, Integer xFormColor) {
 
         if (xVal != null && xVal.length() > mXValMaximumLength)
             mXValMaximumLength = xVal.length();
 
         mXVals.add(xVal);
+
+        if (mXFormColors == null)
+            mXFormColors = new ArrayList<Integer>();
+
+        mXFormColors.add(xFormColor);
     }
 
     /**
@@ -404,6 +447,8 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      */
     public void removeXValue(int index) {
         mXVals.remove(index);
+        if (mXFormColors != null)
+            mXFormColors.remove(index);
     }
 
     public List<T> getDataSets() {

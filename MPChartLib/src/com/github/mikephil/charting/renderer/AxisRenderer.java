@@ -24,6 +24,9 @@ public abstract class AxisRenderer extends Renderer {
     /** paint for the x-label values */
     protected Paint mAxisLabelPaint;
 
+    /** paint for the x-label values */
+    protected Paint mAxisFormPaint;
+
     /** paint for the line surrounding the chart */
     protected Paint mAxisLinePaint;
 
@@ -48,6 +51,9 @@ public abstract class AxisRenderer extends Renderer {
         mAxisLinePaint.setStrokeWidth(1f);
         mAxisLinePaint.setStyle(Style.STROKE);
 
+        mAxisFormPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mAxisFormPaint.setStyle(Style.FILL);
+
 		mLimitLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		mLimitLinePaint.setStyle(Paint.Style.STROKE);
 	}
@@ -59,6 +65,15 @@ public abstract class AxisRenderer extends Renderer {
      */
     public Paint getPaintAxisLabels() {
         return mAxisLabelPaint;
+    }
+
+    /**
+     * Returns the Paint object used for drawing the axis (forms).
+     *
+     * @return
+     */
+    public Paint getPaintAxisForms() {
+        return mAxisFormPaint;
     }
 
     /**

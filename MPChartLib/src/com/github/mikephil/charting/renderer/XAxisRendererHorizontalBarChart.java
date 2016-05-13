@@ -27,7 +27,7 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
     }
     
     @Override
-    public void computeAxis(float xValAverageLength, List<String> xValues) {
+    public void computeAxis(float xValAverageLength, List<String> xValues, List<Integer> xFormColors) {
         
         mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
         mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
@@ -63,32 +63,34 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
         mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
         mAxisLabelPaint.setColor(mXAxis.getTextColor());
 
-        if (mXAxis.getPosition() == XAxisPosition.TOP) {
+        XAxisPosition axisPosition = mXAxis.getPosition();
+
+        if (axisPosition == XAxisPosition.TOP) {
 
             drawLabels(c, mViewPortHandler.contentRight() + xoffset,
-                    new PointF(0.0f, 0.5f));
+                    new PointF(0.0f, 0.5f), axisPosition);
 
-        } else if (mXAxis.getPosition() == XAxisPosition.TOP_INSIDE) {
+        } else if (axisPosition == XAxisPosition.TOP_INSIDE) {
 
             drawLabels(c, mViewPortHandler.contentRight() - xoffset,
-                    new PointF(1.0f, 0.5f));
+                    new PointF(1.0f, 0.5f), axisPosition);
 
-        } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
+        } else if (axisPosition == XAxisPosition.BOTTOM) {
 
             drawLabels(c, mViewPortHandler.contentLeft() - xoffset,
-                    new PointF(1.0f, 0.5f));
+                    new PointF(1.0f, 0.5f), axisPosition);
 
-        } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM_INSIDE) {
+        } else if (axisPosition == XAxisPosition.BOTTOM_INSIDE) {
 
             drawLabels(c, mViewPortHandler.contentLeft() + xoffset,
-                    new PointF(0.0f, 0.5f));
+                    new PointF(0.0f, 0.5f), axisPosition);
 
         } else { // BOTH SIDED
 
             drawLabels(c, mViewPortHandler.contentRight() + xoffset,
-                    new PointF(0.0f, 0.5f));
+                    new PointF(0.0f, 0.5f), XAxisPosition.TOP);
             drawLabels(c, mViewPortHandler.contentLeft() - xoffset,
-                    new PointF(1.0f, 0.5f));
+                    new PointF(1.0f, 0.5f), XAxisPosition.BOTTOM);
         }
     }
 
@@ -98,7 +100,7 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
      * @param pos
      */
     @Override
-    protected void drawLabels(Canvas c, float pos, PointF anchor) {
+    protected void drawLabels(Canvas c, float pos, PointF anchor, XAxis.XAxisPosition axisPosition) {
 
         final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
 

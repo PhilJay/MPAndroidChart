@@ -20,6 +20,9 @@ public class XAxis extends AxisBase {
     /** the arraylist containing all the x-axis labels */
     protected List<String> mValues = new ArrayList<String>();
 
+    /** the arraylist containing all the x-axis form colors */
+    protected List<Integer> mFormColors = new ArrayList<Integer>();
+
     /**
      * width of the x-axis labels in pixels - this is automatically
      * calculated by the computeAxis() methods in the renderers
@@ -63,6 +66,21 @@ public class XAxis extends AxisBase {
     public int mAxisLabelModulus = 1;
 
     /**
+     * the form radius that will be applied to each form if any.
+     */
+    private float mFormRadius = 0.f;
+
+    /**
+     * the form size that will be applied to each form if any.
+     */
+    private float mFormSize = 0.f;
+
+    /**
+     * the form x-offset that will be applied to each form if any.
+     */
+    private float mFormOffset = 10.f;
+
+    /**
      * Is axisLabelModulus a custom value or auto calculated? If false, then
      * it's auto, if true, then custom. default: false (automatic modulus)
      */
@@ -90,6 +108,7 @@ public class XAxis extends AxisBase {
         super();
 
         mYOffset = Utils.convertDpToPixel(4.f); // -3
+        mFormOffset = Utils.convertDpToPixel(5.f);
     }
 
     /**
@@ -197,6 +216,78 @@ public class XAxis extends AxisBase {
      */
     public boolean isAvoidFirstLastClippingEnabled() {
         return mAvoidFirstLastClipping;
+    }
+
+    /**
+     * the form radius
+     *
+     * @return
+     */
+    public float getFormRadius() {
+        return mFormRadius;
+    }
+
+    /**
+     * Set the form radius
+     *
+     * @param radius
+     */
+    public void setFormRadius(float radius) {
+        this.mFormRadius = Utils.convertDpToPixel(radius);
+    }
+
+    /**
+     * the form size
+     *
+     * @return
+     */
+    public float getFormSize() {
+        return mFormSize;
+    }
+
+    /**
+     * Set the size that will be applied to forms
+     *
+     * @param size
+     */
+    public void setFormSize(float size) {
+        this.mFormSize = Utils.convertDpToPixel(size);
+    }
+
+    /**
+     * the form offset
+     *
+     * @return
+     */
+    public float getFormOffset() {
+        return mFormOffset;
+    }
+
+    /**
+     * Set the form x-offset between the form and the label
+     *
+     * @param offset
+     */
+    public void setFormOffset(float offset) {
+        this.mFormOffset = Utils.convertDpToPixel(offset);
+    }
+
+    /**
+     * Sets the form colors for this axis.
+     *
+     * @param formColors
+     */
+    public void setFormColors(List<Integer> formColors) {
+        mFormColors = formColors;
+    }
+
+    /**
+     * Returns the form colors for this axis.
+     *
+     * @return
+     */
+    public List<Integer> getFormColors() {
+        return mFormColors;
     }
 
     /**

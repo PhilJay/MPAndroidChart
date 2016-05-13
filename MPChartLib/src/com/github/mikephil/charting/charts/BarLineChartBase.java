@@ -15,8 +15,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
@@ -337,7 +335,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum);
         mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum);
 
-        mXAxisRenderer.computeAxis(mData.getXValMaximumLength(), mData.getXVals());
+        mXAxisRenderer.computeAxis(mData.getXValMaximumLength(), mData.getXVals(), mData.getXFormColors());
 
         if (mLegend != null)
             mLegendRenderer.computeLegend(mData);
@@ -472,7 +470,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
             if (mXAxis.isEnabled() && mXAxis.isDrawLabelsEnabled()) {
 
-                float xlabelheight = mXAxis.mLabelRotatedHeight + mXAxis.getYOffset();
+                float xlabelheight = Math.max(mXAxis.mLabelRotatedHeight, mXAxis.getFormSize()) + mXAxis.getYOffset() * 2;
 
                 // offsets for x-labels
                 if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {

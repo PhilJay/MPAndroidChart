@@ -7,10 +7,12 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.RectF;
 
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.FSize;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
@@ -32,7 +34,7 @@ public class XAxisRenderer extends AxisRenderer {
         mAxisLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
     }
 
-    public void computeAxis(float xValMaximumLength, List<String> xValues) {
+    public void computeAxis(float xValMaximumLength, List<String> xValues, List<Integer> xFormColors) {
 
         mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
         mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
@@ -70,6 +72,7 @@ public class XAxisRenderer extends AxisRenderer {
         mXAxis.mLabelRotatedHeight = Math.round(labelRotatedSize.height);
 
         mXAxis.setValues(xValues);
+        mXAxis.setFormColors(xFormColors);
     }
 
     @Override
@@ -84,32 +87,33 @@ public class XAxisRenderer extends AxisRenderer {
         mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
         mAxisLabelPaint.setColor(mXAxis.getTextColor());
 
-        if (mXAxis.getPosition() == XAxisPosition.TOP) {
+        XAxisPosition axisPosition = mXAxis.getPosition();
+        if (axisPosition == XAxisPosition.TOP) {
 
             drawLabels(c, mViewPortHandler.contentTop() - yoffset,
-                    new PointF(0.5f, 1.0f));
+                    new PointF(0.5f, 1.0f), axisPosition);
 
-        } else if (mXAxis.getPosition() == XAxisPosition.TOP_INSIDE) {
+        } else if (axisPosition == XAxisPosition.TOP_INSIDE) {
 
             drawLabels(c, mViewPortHandler.contentTop() + yoffset + mXAxis.mLabelRotatedHeight,
-                    new PointF(0.5f, 1.0f));
+                    new PointF(0.5f, 1.0f), axisPosition);
 
-        } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
+        } else if (axisPosition == XAxisPosition.BOTTOM) {
 
             drawLabels(c, mViewPortHandler.contentBottom() + yoffset,
-                    new PointF(0.5f, 0.0f));
+                    new PointF(0.5f, 0.0f), axisPosition);
 
-        } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM_INSIDE) {
+        } else if (axisPosition == XAxisPosition.BOTTOM_INSIDE) {
 
             drawLabels(c, mViewPortHandler.contentBottom() - yoffset - mXAxis.mLabelRotatedHeight,
-                    new PointF(0.5f, 0.0f));
+                    new PointF(0.5f, 0.0f), axisPosition);
 
         } else { // BOTH SIDED
 
             drawLabels(c, mViewPortHandler.contentTop() - yoffset,
-                    new PointF(0.5f, 1.0f));
+                    new PointF(0.5f, 1.0f), XAxisPosition.TOP);
             drawLabels(c, mViewPortHandler.contentBottom() + yoffset,
-                    new PointF(0.5f, 0.0f));
+                    new PointF(0.5f, 0.0f), XAxisPosition.BOTTOM);
         }
     }
 
@@ -144,7 +148,7 @@ public class XAxisRenderer extends AxisRenderer {
      *
      * @param pos
      */
-    protected void drawLabels(Canvas c, float pos, PointF anchor) {
+    protected void drawLabels(Canvas c, float pos, PointF anchor, XAxisPosition axisPosition) {
 
         final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
 
@@ -162,26 +166,69 @@ public class XAxisRenderer extends AxisRenderer {
             if (mViewPortHandler.isInBoundsX(position[0])) {
 
                 String label = mXAxis.getValues().get(i);
+                float width = Utils.calcTextWidth(mAxisLabelPaint, label);
 
                 if (mXAxis.isAvoidFirstLastClippingEnabled()) {
 
+
                     // avoid clipping of the last
                     if (i == mXAxis.getValues().size() - 1 && mXAxis.getValues().size() > 1) {
-                        float width = Utils.calcTextWidth(mAxisLabelPaint, label);
-
                         if (width > mViewPortHandler.offsetRight() * 2
                                 && position[0] + width > mViewPortHandler.getChartWidth())
                             position[0] -= width / 2;
 
                         // avoid clipping of the first
                     } else if (i == 0) {
-
-                        float width = Utils.calcTextWidth(mAxisLabelPaint, label);
                         position[0] += width / 2;
                     }
                 }
 
-                drawLabel(c, label, i, position[0], pos, anchor, labelRotationAngleDegrees);
+                List<Integer> formColors = mXAxis.getFormColors();
+                if (formColors != null) {
+                    int formColor = formColors.get(i);
+                    float formSize = mXAxis.getFormSize();
+                    float formRadius = mXAxis.getFormRadius();
+                    float formOffset = mXAxis.getFormOffset();
+                    float textHeight = Utils.calcTextHeight(mAxisLabelPaint, label);
+                    float height = Math.max(formSize, textHeight);
+
+                    float formYPos = pos;
+                    float textYPos = pos;
+                    switch (axisPosition) {
+                        case TOP:
+                            formYPos = pos - height + (height - formSize) / 2;
+                            textYPos = pos - height + (height - textHeight) / 2 + textHeight;
+                            break;
+
+                        case BOTTOM_INSIDE:
+                            formYPos = pos - height + (height - formSize) / 2;
+                            textYPos = pos - height + (height - textHeight) / 2;
+                            break;
+
+                        case TOP_INSIDE:
+                            formYPos = pos + (height - formSize) / 2;
+                            textYPos = pos + (height - textHeight) / 2 + textHeight;
+                            break;
+
+                        case BOTTOM:
+                            formYPos = pos + (height - formSize) / 2;
+                            textYPos = pos + (height - textHeight) / 2;
+                            break;
+                    }
+
+                    mAxisFormPaint.setColor(formColor);
+
+                    if (formColor != ColorTemplate.COLOR_SKIP) {
+                        position[0] -= width + formOffset / 2;
+
+                        c.drawRoundRect(new RectF(position[0], formYPos, position[0] + formSize, formYPos + formSize), formRadius, formRadius, mAxisFormPaint);
+                        drawLabel(c, label, i, position[0] + formSize + formOffset + width / 2, textYPos, anchor, labelRotationAngleDegrees);
+                    } else {
+                        drawLabel(c, label, i, position[0], textYPos, anchor, labelRotationAngleDegrees);
+                    }
+                } else {
+                    drawLabel(c, label, i, position[0], pos, anchor, labelRotationAngleDegrees);
+                }
             }
         }
     }
