@@ -12,7 +12,6 @@ public interface BarLineScatterCandleBubbleDataProvider extends ChartInterface {
     
     int getLowestVisibleXIndex();
     int getHighestVisibleXIndex();
-    boolean isHighlightXIndexWithValue();
 
     BarLineScatterCandleBubbleData getData();
 }

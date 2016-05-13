@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.DataSet;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider;
 import com.github.mikephil.charting.utils.SelectionDetail;
@@ -32,7 +30,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
 	 */
 	public Highlight getHighlight(float x, float y) {
 
-		int xIndex = mChart.isHighlightXIndexWithValue() ? getXIndexWithValue(x) : getXIndex(x);
+		int xIndex = getXIndex(x);
 		if (xIndex == -Integer.MAX_VALUE)
 			return null;
 
@@ -60,21 +58,6 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
 
 		return (int) Math.round(pts[0]);
 	}
-
-	protected int getXIndexWithValue(float x) {
-        int xIndex = getXIndex(x);
-        int xIndexWithValue = xIndex;
-        int delta = Integer.MAX_VALUE;
-        List<DataSet> dataSets = mChart.getData().getDataSets();
-        for(DataSet set : dataSets) {
-            Entry entry = set.getEntryForXIndex(xIndex);
-            if(entry != null && delta > Math.abs(xIndex - entry.getXIndex())) {
-                xIndexWithValue = entry.getXIndex();
-                delta = Math.abs(xIndex - entry.getXIndex());
-            }
-        }
-        return xIndexWithValue;
-    }
 
 	/**
 	 * Returns the corresponding dataset-index for a given xIndex and xy-touch position in pixels.
