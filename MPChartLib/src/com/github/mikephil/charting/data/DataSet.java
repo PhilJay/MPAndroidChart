@@ -267,14 +267,10 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
                 return m;
             }
 
-            int nextIndex = m + 1 <= high ? m + 1 : m;
-            int previousIndex = m - 1 >= 0 ? m - 1 : 0;
-
-            if(mYVals.get(previousIndex).getXIndex() - xIndex < mYVals.get(nextIndex).getXIndex() - xIndex) {
-                high = m - 1;
-            } else {
+            if (xIndex > mYVals.get(m).getXIndex())
                 low = m + 1;
-            }
+            else
+                high = m - 1;
 
             closest = m;
         }
