@@ -459,7 +459,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
 
             // extract all y-values from all DataSets at the given x-index
             final float yVal = dataSet.getYValForXIndex(xIndex);
-            if (yVal == Float.NaN)
+            if (Float.isNaN(yVal))
                 continue;
 
             vals.add(new SelectionDetail(yVal, i, dataSet));

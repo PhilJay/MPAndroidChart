@@ -1,8 +1,10 @@
 package com.github.mikephil.charting.highlight;
 
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
+import com.github.mikephil.charting.utils.SelectionDetail;
 
 /**
  * Created by Philipp Jahoda on 22/07/15.
@@ -16,27 +18,44 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 	@Override
 	public Highlight getHighlight(float x, float y) {
 
-		Highlight h = super.getHighlight(x, y);
+		BarData barData = mChart.getBarData();
 
-		if (h == null)
-			return h;
-		else {
+		final int xIndex = getXIndex(x);
+		final float baseNoSpace = getBase(x);
+		final int setCount = barData.getDataSetCount();
+		int dataSetIndex = ((int)baseNoSpace) % setCount;
 
-			IBarDataSet set = mChart.getBarData().getDataSetByIndex(h.getDataSetIndex());
-
-			if (set.isStacked()) {
-
-				// create an array of the touch-point
-				float[] pts = new float[2];
-				pts[0] = y;
-
-				// take any transformer to determine the x-axis value
-				mChart.getTransformer(set.getAxisDependency()).pixelsToValue(pts);
-
-				return getStackedHighlight(h, set, h.getXIndex(), h.getDataSetIndex(), pts[0]);
-			} else
-				return h;
+		if (dataSetIndex < 0) {
+			dataSetIndex = 0;
+		} else if (dataSetIndex >= setCount) {
+			dataSetIndex = setCount - 1;
 		}
+
+		SelectionDetail selectionDetail = getSelectionDetail(xIndex, y, dataSetIndex);
+		if (selectionDetail == null)
+			return null;
+
+		IBarDataSet set = barData.getDataSetByIndex(dataSetIndex);
+		if (set.isStacked()) {
+
+			float[] pts = new float[2];
+			pts[0] = y;
+
+			// take any transformer to determine the x-axis value
+			mChart.getTransformer(set.getAxisDependency()).pixelsToValue(pts);
+
+			return getStackedHighlight(selectionDetail,
+					set,
+					xIndex,
+					pts[0]);
+		}
+
+		return new Highlight(
+				xIndex,
+				selectionDetail.value,
+				selectionDetail.dataIndex,
+				selectionDetail.dataSetIndex,
+				-1);
 	}
 
 	@Override
