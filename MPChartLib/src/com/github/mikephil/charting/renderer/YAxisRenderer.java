@@ -233,15 +233,17 @@ public class YAxisRenderer extends AxisRenderer {
         if (!mYAxis.isEnabled() || !mYAxis.isDrawAxisLineEnabled())
             return;
 
+        float axisLineWidth = mYAxis.getAxisLineWidth();
+
         mAxisLinePaint.setColor(mYAxis.getAxisLineColor());
-        mAxisLinePaint.setStrokeWidth(mYAxis.getAxisLineWidth());
+        mAxisLinePaint.setStrokeWidth(axisLineWidth);
 
         if (mYAxis.getAxisDependency() == AxisDependency.LEFT) {
-            c.drawLine(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop(), mViewPortHandler.contentLeft(),
-                    mViewPortHandler.contentBottom(), mAxisLinePaint);
+            c.drawLine(mViewPortHandler.contentLeft() + axisLineWidth / 2, mViewPortHandler.contentTop(),
+                    mViewPortHandler.contentLeft() + axisLineWidth / 2, mViewPortHandler.contentBottom(), mAxisLinePaint);
         } else {
-            c.drawLine(mViewPortHandler.contentRight(), mViewPortHandler.contentTop(), mViewPortHandler.contentRight(),
-                    mViewPortHandler.contentBottom(), mAxisLinePaint);
+            c.drawLine(mViewPortHandler.contentRight() - axisLineWidth / 2, mViewPortHandler.contentTop(),
+                    mViewPortHandler.contentRight() - axisLineWidth / 2, mViewPortHandler.contentBottom(), mAxisLinePaint);
         }
     }
 
