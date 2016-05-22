@@ -120,6 +120,7 @@ public class LineChartActivityColored extends DemoBase {
 
         set1.setLineWidth(1.75f);
         set1.setCircleRadius(5f);
+        set1.setCircleHoleRadius(2.5f);
         set1.setColor(Color.WHITE);
         set1.setCircleColorHole(Color.WHITE);
         set1.setHighLightColor(Color.WHITE);

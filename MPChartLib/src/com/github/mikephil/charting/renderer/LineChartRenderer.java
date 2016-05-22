@@ -626,7 +626,9 @@ public class LineChartRenderer extends LineRadarRenderer {
             int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff, 0);
             int maxx = Math.min(Math.max(minx + 2, dataSet.getEntryIndex(entryTo) + 1), entryCount);
 
-            float halfsize = dataSet.getCircleRadius() / 2f;
+            float circleRadius = dataSet.getCircleRadius();
+            float circleHoleRadius = dataSet.getCircleHoleRadius();
+            boolean isDrawCircleHoleEnabled = dataSet.isDrawCircleHoleEnabled();
 
             for (int j = minx,
                  count = (int) Math.ceil((maxx - minx) * phaseX + minx);
@@ -658,10 +660,11 @@ public class LineChartRenderer extends LineRadarRenderer {
                 c.drawCircle(circlesBuffer[0], circlesBuffer[1], dataSet.getCircleRadius(),
                         mRenderPaint);
 
-                if (dataSet.isDrawCircleHoleEnabled()
-                        && circleColor != mCirclePaintInner.getColor())
+                if (isDrawCircleHoleEnabled &&
+                        circleHoleRadius < circleRadius &&
+                        circleHoleRadius > 0.f)
                     c.drawCircle(circlesBuffer[0], circlesBuffer[1],
-                            halfsize,
+                            circleHoleRadius,
                             mCirclePaintInner);
             }
         }
