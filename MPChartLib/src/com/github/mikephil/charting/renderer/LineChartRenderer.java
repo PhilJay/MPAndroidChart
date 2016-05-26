@@ -13,6 +13,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
@@ -205,7 +206,7 @@ public class LineChartRenderer extends LineRadarRenderer {
         Entry entryTo = dataSet.getEntryForXIndex(mMaxX, DataSet.Rounding.UP);
 
         int diff = (entryFrom == entryTo) ? 1 : 0;
-        int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff, 0);
+        int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff - 1, 0);
         int maxx = Math.min(Math.max(minx + 2, dataSet.getEntryIndex(entryTo) + 1), entryCount);
 
         float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
@@ -563,6 +564,9 @@ public class LineChartRenderer extends LineRadarRenderer {
                 Entry entryTo = dataSet.getEntryForXIndex(mMaxX, DataSet.Rounding.UP);
 
                 int diff = (entryFrom == entryTo) ? 1 : 0;
+                if (dataSet.getMode() == LineDataSet.Mode.CUBIC_BEZIER)
+                    diff += 1;
+
                 int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff, 0);
                 int maxx = Math.min(Math.max(minx + 2, dataSet.getEntryIndex(entryTo) + 1), entryCount);
 
@@ -626,6 +630,9 @@ public class LineChartRenderer extends LineRadarRenderer {
             Entry entryTo = dataSet.getEntryForXIndex(mMaxX, DataSet.Rounding.UP);
 
             int diff = (entryFrom == entryTo) ? 1 : 0;
+            if (dataSet.getMode() == LineDataSet.Mode.CUBIC_BEZIER)
+                diff += 1;
+
             int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff, 0);
             int maxx = Math.min(Math.max(minx + 2, dataSet.getEntryIndex(entryTo) + 1), entryCount);
 
