@@ -206,8 +206,9 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
             BarData data = new BarData(xVals, dataSets);
 
             mChart.setData(data);
-            mChart.invalidate();
         }
+
+        mChart.invalidate();
     }
 
     @Override
