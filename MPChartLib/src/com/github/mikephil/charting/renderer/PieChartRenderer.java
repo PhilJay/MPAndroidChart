@@ -14,6 +14,7 @@ import android.os.Build;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
+import android.util.Log;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.LineChart;
@@ -353,8 +354,9 @@ public class PieChartRenderer extends DataRenderer {
 
     @Override
     public void drawValues(Canvas c) {
-
         PointF center = mChart.getCenterCircleBox();
+
+        boolean isDrawEmptyXLabel = mChart.isDrawEmptyXLabel();
 
         // get whole the radius
         float radius = mChart.getRadius();
@@ -465,9 +467,9 @@ public class PieChartRenderer extends DataRenderer {
                         line1Radius = radius * valueLinePart1OffsetPercentage;
 
                     final float polyline2Width = dataSet.isValueLineVariableLength()
-                        ? labelRadius * valueLineLength2 * (float)Math.abs(Math.sin(
+                            ? labelRadius * valueLineLength2 * (float)Math.abs(Math.sin(
                             transformedAngle * Utils.FDEG2RAD))
-                        : labelRadius * valueLineLength2;
+                            : labelRadius * valueLineLength2;
 
                     final float pt0x = line1Radius * sliceXBase + center.x;
                     final float pt0y = line1Radius * sliceYBase + center.y;
@@ -490,35 +492,74 @@ public class PieChartRenderer extends DataRenderer {
                     }
 
                     if (dataSet.getValueLineColor() != ColorTemplate.COLOR_NONE) {
-                        c.drawLine(pt0x, pt0y, pt1x, pt1y, mValueLinePaint);
-                        c.drawLine(pt1x, pt1y, pt2x, pt2y, mValueLinePaint);
+                        if(isDrawEmptyXLabel) {
+                            c.drawLine(pt0x, pt0y, pt1x, pt1y, mValueLinePaint);
+                            c.drawLine(pt1x, pt1y, pt2x, pt2y, mValueLinePaint);
+                        }else{
+                            if(entry.getVal() != 0.0){
+                                c.drawLine(pt0x, pt0y, pt1x, pt1y, mValueLinePaint);
+                                c.drawLine(pt1x, pt1y, pt2x, pt2y, mValueLinePaint);
+                            }
+                        }
                     }
 
                     // draw everything, depending on settings
                     if (drawXOutside && drawYOutside) {
+                        if(isDrawEmptyXLabel){
+                            drawValue(c,
+                                    formatter,
+                                    value,
+                                    entry,
+                                    0,
+                                    labelPtx,
+                                    labelPty,
+                                    dataSet.getValueTextColor(j));
 
-                        drawValue(c,
-                                formatter,
-                                value,
-                                entry,
-                                0,
-                                labelPtx,
-                                labelPty,
-                                dataSet.getValueTextColor(j));
+                            if (j < data.getXValCount()) {
+                                c.drawText(data.getXVals().get(j), labelPtx, labelPty + lineHeight,
+                                        mValuePaint);
+                            }
+                        }else{
+                            if(entry.getVal() != 0.0 ) {
+                                drawValue(c,
+                                        formatter,
+                                        value,
+                                        entry,
+                                        0,
+                                        labelPtx,
+                                        labelPty,
+                                        dataSet.getValueTextColor(j));
 
-                        if (j < data.getXValCount()) {
-                            c.drawText(data.getXVals().get(j), labelPtx, labelPty + lineHeight,
-                                    mValuePaint);
+                                if (j < data.getXValCount()) {
+                                    c.drawText(data.getXVals().get(j), labelPtx, labelPty + lineHeight,
+                                            mValuePaint);
+                                }
+                            }
                         }
+
 
                     } else if (drawXOutside) {
-                        if (j < data.getXValCount()) {
-                            mValuePaint.setColor(dataSet.getValueTextColor(j));
-                            c.drawText(data.getXVals().get(j), labelPtx, labelPty + lineHeight / 2.f, mValuePaint);
+                        if(isDrawEmptyXLabel) {
+                            if (j < data.getXValCount()) {
+                                mValuePaint.setColor(dataSet.getValueTextColor(j));
+                                c.drawText(data.getXVals().get(j), labelPtx, labelPty + lineHeight / 2.f, mValuePaint);
+                            }
+                        }else{
+                            if(entry.getVal() != 0.0){
+                                if (j < data.getXValCount()) {
+                                    mValuePaint.setColor(dataSet.getValueTextColor(j));
+                                    c.drawText(data.getXVals().get(j), labelPtx, labelPty + lineHeight / 2.f, mValuePaint);
+                                }
+                            }
                         }
                     } else if (drawYOutside) {
-
-                        drawValue(c, formatter, value, entry, 0, labelPtx, labelPty + lineHeight / 2.f, dataSet.getValueTextColor(j));
+                        if(isDrawEmptyXLabel) {
+                            drawValue(c, formatter, value, entry, 0, labelPtx, labelPty + lineHeight / 2.f, dataSet.getValueTextColor(j));
+                        }else{
+                            if(entry.getVal() != 0.0){
+                                drawValue(c, formatter, value, entry, 0, labelPtx, labelPty + lineHeight / 2.f, dataSet.getValueTextColor(j));
+                            }
+                        }
                     }
                 }
 
@@ -531,22 +572,46 @@ public class PieChartRenderer extends DataRenderer {
 
                     // draw everything, depending on settings
                     if (drawXInside && drawYInside) {
+                        if(isDrawEmptyXLabel) {
+                            drawValue(c, formatter, value, entry, 0, x, y, dataSet.getValueTextColor(j));
 
-                        drawValue(c, formatter, value, entry, 0, x, y, dataSet.getValueTextColor(j));
+                            if (j < data.getXValCount()) {
+                                c.drawText(data.getXVals().get(j), x, y + lineHeight,
+                                        mValuePaint);
+                            }
+                        }else{
+                            if(entry.getVal() != 0.0){
+                                drawValue(c, formatter, value, entry, 0, x, y, dataSet.getValueTextColor(j));
 
-                        if (j < data.getXValCount()) {
-                            c.drawText(data.getXVals().get(j), x, y + lineHeight,
-                                    mValuePaint);
+                                if (j < data.getXValCount()) {
+                                    c.drawText(data.getXVals().get(j), x, y + lineHeight,
+                                            mValuePaint);
+                                }
+                            }
                         }
 
                     } else if (drawXInside) {
-                        if (j < data.getXValCount()) {
-                            mValuePaint.setColor(dataSet.getValueTextColor(j));
-                            c.drawText(data.getXVals().get(j), x, y + lineHeight / 2f, mValuePaint);
+                        if(isDrawEmptyXLabel) {
+                            if (j < data.getXValCount()) {
+                                mValuePaint.setColor(dataSet.getValueTextColor(j));
+                                c.drawText(data.getXVals().get(j), x, y + lineHeight / 2f, mValuePaint);
+                            }
+                        }else{
+                            if(entry.getVal() != 0.0){
+                                if (j < data.getXValCount()) {
+                                    mValuePaint.setColor(dataSet.getValueTextColor(j));
+                                    c.drawText(data.getXVals().get(j), x, y + lineHeight / 2f, mValuePaint);
+                                }
+                            }
                         }
                     } else if (drawYInside) {
-
-                        drawValue(c, formatter, value, entry, 0, x, y + lineHeight / 2f, dataSet.getValueTextColor(j));
+                        if(isDrawEmptyXLabel) {
+                            drawValue(c, formatter, value, entry, 0, x, y + lineHeight / 2f, dataSet.getValueTextColor(j));
+                        }else{
+                            if(entry.getVal() != 0.0){
+                                drawValue(c, formatter, value, entry, 0, x, y + lineHeight / 2f, dataSet.getValueTextColor(j));
+                            }
+                        }
                     }
                 }
 
@@ -756,7 +821,7 @@ public class PieChartRenderer extends DataRenderer {
             }
 
             mPathBuffer.reset();
-            
+
             if (sweepAngleOuter % 360f == 0.f) {
                 // Android is doing "mod 360"
                 mPathBuffer.addCircle(center.x, center.y, highlightedRadius, Path.Direction.CW);

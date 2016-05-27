@@ -1,4 +1,5 @@
 
+
 package com.github.mikephil.charting.charts;
 
 import android.content.Context;
@@ -93,6 +94,8 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
     protected float mMaxAngle = 360f;
 
+    private boolean mDrawEmptyXLabel = true;
+
     public PieChart(Context context) {
         super(context);
     }
@@ -126,7 +129,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
             mRenderer.drawHighlighted(canvas, mIndicesToHighlight);
 
         mRenderer.drawExtras(canvas);
-
+        //draw the values on the center of PieChart
         mRenderer.drawValues(canvas);
 
         mLegendRenderer.renderLegend(canvas);
@@ -161,7 +164,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
     @Override
     protected void calcMinMax() {
-        
+
         calcAngles();
     }
 
@@ -654,4 +657,21 @@ public class PieChart extends PieRadarChartBase<PieData> {
         super.onDetachedFromWindow();
     }
 
+    /**
+     * Returns true if to draw the x-value text with value equals 0 .
+     *
+     * @return
+     */
+    public boolean isDrawEmptyXLabel() {
+        return mDrawEmptyXLabel;
+    }
+
+    /**
+     * set this to fase to dont draw the x-value text into the pie slices when value equals 0
+     *
+     * @param enabled
+     */
+    public void setDrawEmptyXLabel(boolean enabled) {
+        this.mDrawEmptyXLabel = enabled;
+    }
 }
