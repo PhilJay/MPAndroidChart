@@ -143,8 +143,7 @@ public class PieChartRenderer extends DataRenderer {
             float arcStartPointX,
             float arcStartPointY,
             float startAngle,
-            float sweepAngle)
-    {
+            float sweepAngle) {
         final float angleMiddle = startAngle + sweepAngle / 2.f;
 
         // Other point of the arc
@@ -163,7 +162,7 @@ public class PieChartRenderer extends DataRenderer {
         // After reducing space from both sides of the "slice",
         //   the angle of the contained triangle should stay the same.
         // So let's find out the height of that triangle.
-        float containedTriangleHeight = (float)(basePointsDistance / 2.0 *
+        float containedTriangleHeight = (float) (basePointsDistance / 2.0 *
                 Math.tan((180.0 - angle) / 2.0 * Utils.DEG2RAD));
 
         // Now we subtract that from the radius
@@ -228,8 +227,7 @@ public class PieChartRenderer extends DataRenderer {
                             sliceSpace / (Utils.FDEG2RAD * radius);
                     final float startAngleOuter = rotationAngle + (angle + sliceSpaceAngleOuter / 2.f) * phaseY;
                     float sweepAngleOuter = (sliceAngle - sliceSpaceAngleOuter) * phaseY;
-                    if (sweepAngleOuter < 0.f)
-                    {
+                    if (sweepAngleOuter < 0.f) {
                         sweepAngleOuter = 0.f;
                     }
 
@@ -284,8 +282,7 @@ public class PieChartRenderer extends DataRenderer {
                                 sliceSpace / (Utils.FDEG2RAD * innerRadius);
                         final float startAngleInner = rotationAngle + (angle + sliceSpaceAngleInner / 2.f) * phaseY;
                         float sweepAngleInner = (sliceAngle - sliceSpaceAngleInner) * phaseY;
-                        if (sweepAngleInner < 0.f)
-                        {
+                        if (sweepAngleInner < 0.f) {
                             sweepAngleInner = 0.f;
                         }
                         final float endAngleInner = startAngleInner + sweepAngleInner;
@@ -305,8 +302,7 @@ public class PieChartRenderer extends DataRenderer {
                                     -sweepAngleInner
                             );
                         }
-                    }
-                    else {
+                    } else {
 
                         if (sweepAngleOuter % 360f != 0.f) {
                             if (accountForSliceSpacing) {
@@ -411,6 +407,8 @@ public class PieChartRenderer extends DataRenderer {
             mValueLinePaint.setColor(dataSet.getValueLineColor());
             mValueLinePaint.setStrokeWidth(Utils.convertDpToPixel(dataSet.getValueLineWidth()));
 
+            float offset = Utils.convertDpToPixel(5.f);
+
             for (int j = 0; j < entryCount; j++) {
 
                 Entry entry = dataSet.getEntryForIndex(j);
@@ -434,8 +432,8 @@ public class PieChartRenderer extends DataRenderer {
                 float value = mChart.isUsePercentValuesEnabled() ? entry.getVal()
                         / yValueSum * 100f : entry.getVal();
 
-                final float sliceXBase = (float)Math.cos(transformedAngle * Utils.FDEG2RAD);
-                final float sliceYBase = (float)Math.sin(transformedAngle * Utils.FDEG2RAD);
+                final float sliceXBase = (float) Math.cos(transformedAngle * Utils.FDEG2RAD);
+                final float sliceYBase = (float) Math.sin(transformedAngle * Utils.FDEG2RAD);
 
                 final boolean drawXOutside = drawXVals &&
                         xValuePosition == PieDataSet.ValuePosition.OUTSIDE_SLICE;
@@ -465,9 +463,9 @@ public class PieChartRenderer extends DataRenderer {
                         line1Radius = radius * valueLinePart1OffsetPercentage;
 
                     final float polyline2Width = dataSet.isValueLineVariableLength()
-                        ? labelRadius * valueLineLength2 * (float)Math.abs(Math.sin(
+                            ? labelRadius * valueLineLength2 * (float) Math.abs(Math.sin(
                             transformedAngle * Utils.FDEG2RAD))
-                        : labelRadius * valueLineLength2;
+                            : labelRadius * valueLineLength2;
 
                     final float pt0x = line1Radius * sliceXBase + center.x;
                     final float pt0y = line1Radius * sliceYBase + center.y;
@@ -479,13 +477,13 @@ public class PieChartRenderer extends DataRenderer {
                         pt2x = pt1x - polyline2Width;
                         pt2y = pt1y;
                         mValuePaint.setTextAlign(Align.RIGHT);
-                        labelPtx = pt2x - Utils.convertDpToPixel(5.f);
+                        labelPtx = pt2x - offset;
                         labelPty = pt2y;
                     } else {
                         pt2x = pt1x + polyline2Width;
                         pt2y = pt1y;
                         mValuePaint.setTextAlign(Align.LEFT);
-                        labelPtx = pt2x + Utils.convertDpToPixel(5.f);
+                        labelPtx = pt2x + offset;
                         labelPty = pt2y;
                     }
 
@@ -518,7 +516,8 @@ public class PieChartRenderer extends DataRenderer {
                         }
                     } else if (drawYOutside) {
 
-                        drawValue(c, formatter, value, entry, 0, labelPtx, labelPty + lineHeight / 2.f, dataSet.getValueTextColor(j));
+                        drawValue(c, formatter, value, entry, 0, labelPtx, labelPty + lineHeight / 2.f, dataSet
+                                .getValueTextColor(j));
                     }
                 }
 
@@ -743,20 +742,18 @@ public class PieChartRenderer extends DataRenderer {
 
             final float startAngleOuter = rotationAngle + (angle + sliceSpaceAngleOuter / 2.f) * phaseY;
             float sweepAngleOuter = (sliceAngle - sliceSpaceAngleOuter) * phaseY;
-            if (sweepAngleOuter < 0.f)
-            {
+            if (sweepAngleOuter < 0.f) {
                 sweepAngleOuter = 0.f;
             }
 
             final float startAngleShifted = rotationAngle + (angle + sliceSpaceAngleShifted / 2.f) * phaseY;
             float sweepAngleShifted = (sliceAngle - sliceSpaceAngleShifted) * phaseY;
-            if (sweepAngleShifted < 0.f)
-            {
+            if (sweepAngleShifted < 0.f) {
                 sweepAngleShifted = 0.f;
             }
 
             mPathBuffer.reset();
-            
+
             if (sweepAngleOuter % 360f == 0.f) {
                 // Android is doing "mod 360"
                 mPathBuffer.addCircle(center.x, center.y, highlightedRadius, Path.Direction.CW);
@@ -809,8 +806,7 @@ public class PieChartRenderer extends DataRenderer {
                         sliceSpace / (Utils.FDEG2RAD * innerRadius);
                 final float startAngleInner = rotationAngle + (angle + sliceSpaceAngleInner / 2.f) * phaseY;
                 float sweepAngleInner = (sliceAngle - sliceSpaceAngleInner) * phaseY;
-                if (sweepAngleInner < 0.f)
-                {
+                if (sweepAngleInner < 0.f) {
                     sweepAngleInner = 0.f;
                 }
                 final float endAngleInner = startAngleInner + sweepAngleInner;
@@ -830,8 +826,7 @@ public class PieChartRenderer extends DataRenderer {
                             -sweepAngleInner
                     );
                 }
-            }
-            else {
+            } else {
 
                 if (sweepAngleOuter % 360f != 0.f) {
 
