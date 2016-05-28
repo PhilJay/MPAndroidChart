@@ -376,35 +376,49 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
     @Override
     public void drawHighlighted(Canvas c, Highlight[] indices) {
 
-        for (int i = 0; i < indices.length; i++) {
+        ScatterData scatterData = mChart.getScatterData();
 
-            IScatterDataSet set = mChart.getScatterData().getDataSetByIndex(indices[i]
-                    .getDataSetIndex());
+        for (Highlight high : indices) {
 
-            if (set == null || !set.isHighlightEnabled())
-                continue;
+            final int minDataSetIndex = high.getDataSetIndex() == -1
+                    ? 0
+                    : high.getDataSetIndex();
+            final int maxDataSetIndex = high.getDataSetIndex() == -1
+                    ? scatterData.getDataSetCount()
+                    : (high.getDataSetIndex() + 1);
+            if (maxDataSetIndex - minDataSetIndex < 1) continue;
 
-            int xIndex = indices[i].getXIndex(); // get the
-            // x-position
+            for (int dataSetIndex = minDataSetIndex;
+                 dataSetIndex < maxDataSetIndex;
+                 dataSetIndex++) {
+
+                IScatterDataSet set = scatterData.getDataSetByIndex(dataSetIndex);
+
+                if (set == null || !set.isHighlightEnabled())
+                    continue;
+
+                int xIndex = high.getXIndex(); // get the
+                // x-position
 
 
-            if (xIndex > mChart.getXChartMax() * mAnimator.getPhaseX())
-                continue;
+                if (xIndex > mChart.getXChartMax() * mAnimator.getPhaseX())
+                    continue;
 
-            final float yVal = set.getYValForXIndex(xIndex);
-            if (yVal == Float.NaN)
-                continue;
+                final float yVal = set.getYValForXIndex(xIndex);
+                if (Float.isNaN(yVal))
+                    continue;
 
-            float y = yVal * mAnimator.getPhaseY();
+                float y = yVal * mAnimator.getPhaseY();
 
-            float[] pts = new float[]{
-                    xIndex, y
-            };
+                float[] pts = new float[]{
+                        xIndex, y
+                };
 
-            mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);
+                mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);
 
-            // draw the lines
-            drawHighlightLines(c, pts, set);
+                // draw the lines
+                drawHighlightLines(c, pts, set);
+            }
         }
     }
 }

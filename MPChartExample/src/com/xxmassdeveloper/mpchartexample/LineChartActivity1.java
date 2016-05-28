@@ -346,7 +346,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
             float mult = (range + 1);
             float val = (float) (Math.random() * mult) + 3;// + (float)
             // ((mult *
-            // 0.1) / 10);
+            // 0.1) / 10);x
             yVals.add(new Entry(val, i));
             xVals.add(new XAxisValue(i, i + ""));
         }
@@ -358,6 +358,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
             set1 = (LineDataSet)mChart.getData().getDataSetByIndex(0);
             set1.setYVals(yVals);
             mChart.getData().setXVals(xVals);
+            mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
             // create a dataset and give it a type

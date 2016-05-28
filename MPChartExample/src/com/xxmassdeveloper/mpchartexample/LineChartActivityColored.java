@@ -12,6 +12,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class LineChartActivityColored extends DemoBase {
 
     private void setupChart(LineChart chart, LineData data, int color) {
 
-        ((LineDataSet) data.getDataSetByIndex(0)).setCircleColor(color);
+        ((LineDataSet) data.getDataSetByIndex(0)).setCircleColorHole(color);
 
         // no description text
         chart.setDescription("");
@@ -115,8 +116,9 @@ public class LineChartActivityColored extends DemoBase {
 
         set1.setLineWidth(1.75f);
         set1.setCircleRadius(5f);
+        set1.setCircleHoleRadius(2.5f);
         set1.setColor(Color.WHITE);
-        set1.setCircleColorHole(Color.WHITE);
+        set1.setCircleColor(Color.WHITE);
         set1.setHighLightColor(Color.WHITE);
         set1.setDrawValues(false);
 

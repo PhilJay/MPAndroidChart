@@ -1,5 +1,6 @@
 package com.github.mikephil.charting.data.realm.base;
 
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.BaseDataSet;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -7,6 +8,7 @@ import com.github.mikephil.charting.data.Entry;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.DynamicRealmObject;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -85,7 +87,20 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     /**
      * Rebuilds the DataSet based on the given RealmResults.
      */
-    public abstract void build(RealmResults<T> results);
+    public void build(RealmResults<T> results) {
+
+        int xIndex = 0;
+        for (T object : results) {
+            mValues.add(buildEntryFromResultObject(object, xIndex++));
+        }
+    }
+
+    public S buildEntryFromResultObject(T realmObject, int xIndex) {
+        DynamicRealmObject dynamicObject = new DynamicRealmObject(realmObject);
+
+        return (S)new Entry(dynamicObject.getFloat(mValuesField),
+                mIndexField == null ? xIndex : dynamicObject.getInt(mIndexField));
+    }
 
     @Override
     public float getYMin() {
@@ -180,6 +195,25 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     }
 
     @Override
+    public List<S> getEntriesForXIndex(int xIndex) {
+
+        List<S> entries = new ArrayList<>();
+
+        if (mIndexField == null) {
+            T object = results.get(xIndex);
+            if (object != null)
+                entries.add(buildEntryFromResultObject(object, xIndex));
+        } else {
+            RealmResults<T> foundObjects = results.where().equalTo(mIndexField, xIndex).findAll();
+
+            for (T e : foundObjects)
+                entries.add(buildEntryFromResultObject(e, xIndex));
+        }
+
+        return entries;
+    }
+
+    @Override
     public S getEntryForIndex(int index) {
         //DynamicRealmObject o = new DynamicRealmObject(results.get(index));
         //return new Entry(o.getFloat(mValuesField), o.getInt(mIndexField));
@@ -196,14 +230,16 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         while (low <= high) {
             int m = (high + low) / 2;
 
-            if (x == mValues.get(m).getXIndex()) {
+            S entry = mValues.get(m);
+
+            if (x == entry.getXIndex()) {
                 while (m > 0 && mValues.get(m - 1).getXIndex() == x)
                     m--;
 
                 return m;
             }
 
-            if (x > mValues.get(m).getXIndex())
+            if (x > entry.getXIndex())
                 low = m + 1;
             else
                 high = m - 1;
@@ -241,6 +277,20 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
             return e.getVal();
         else
             return Float.NaN;
+    }
+
+    @Override
+    public float[] getYValsForXIndex(int xIndex) {
+
+        List<S> entries = getEntriesForXIndex(xIndex);
+
+        float[] yVals = new float[entries.size()];
+        int i = 0;
+
+        for (S e : entries)
+            yVals[i++] = e.getVal();
+
+        return yVals;
     }
 
     @Override

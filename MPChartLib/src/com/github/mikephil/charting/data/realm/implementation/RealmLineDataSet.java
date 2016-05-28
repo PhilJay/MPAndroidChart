@@ -3,7 +3,6 @@ package com.github.mikephil.charting.data.realm.implementation;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
-import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.realm.base.RealmLineRadarDataSet;
@@ -40,7 +39,10 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
     /**
      * the radius of the circle-shaped value indicators
      */
-    private float mCircleSize = 8f;
+    private float mCircleRadius = 8f;
+
+    /** the hole radius of the circle-shaped value indicators */
+    private float mCircleHoleRadius = 4f;
 
     /**
      * sets the intensity of the cubic lines
@@ -99,11 +101,6 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
         calcMinMax(0, results.size());
     }
 
-    @Override
-    public void build(RealmResults<T> results) {
-        super.build(results);
-    }
-
     /**
      * Returns the drawing mode for this line dataset
      *
@@ -151,12 +148,27 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
      * @param size
      */
     public void setCircleSize(float size) {
-        mCircleSize = Utils.convertDpToPixel(size);
+        mCircleRadius = Utils.convertDpToPixel(size);
     }
 
     @Override
     public float getCircleRadius() {
-        return mCircleSize;
+        return mCircleRadius;
+    }
+
+    /**
+     * sets the hole radius of the drawn circles.
+     * Default radius = 2f
+     *
+     * @param holeRadius
+     */
+    public void setCircleHoleRadius(float holeRadius) {
+        mCircleHoleRadius = Utils.convertDpToPixel(holeRadius);
+    }
+
+    @Override
+    public float getCircleHoleRadius() {
+        return mCircleHoleRadius;
     }
 
     /**

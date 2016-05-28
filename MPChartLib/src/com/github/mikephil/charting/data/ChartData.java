@@ -518,9 +518,19 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     public Entry getEntryForHighlight(Highlight highlight) {
         if (highlight.getDataSetIndex() >= mDataSets.size())
             return null;
-        else
-            return mDataSets.get(highlight.getDataSetIndex()).getEntryForXIndex(
-                    highlight.getXIndex());
+        else {
+            // The value of the highlighted entry could be NaN -
+            //   if we are not interested in highlighting a specific value.
+
+            List<?> entries = mDataSets.get(highlight.getDataSetIndex())
+                    .getEntriesForXIndex(highlight.getXIndex());
+            for (Object entry : entries)
+                if (((Entry)entry).getVal() == highlight.getValue() ||
+                        Float.isNaN(highlight.getValue()))
+                    return (Entry)entry;
+
+            return null;
+        }
     }
 
     /**

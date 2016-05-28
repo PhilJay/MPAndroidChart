@@ -6,8 +6,8 @@ android {
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 23
-        versionCode 50
-        versionName '2.2.4'
+        versionCode 51
+        versionName '2.2.5'
 
         sourceSets {
             main {
@@ -37,7 +37,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.0.0'
+        classpath 'com.android.tools.build:gradle:2.1.0'
         //classpath 'io.realm:realm-gradle-plugin:0.88.2'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

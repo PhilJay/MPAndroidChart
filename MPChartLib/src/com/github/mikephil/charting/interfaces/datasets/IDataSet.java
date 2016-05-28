@@ -68,9 +68,10 @@ public interface IDataSet<T extends Entry> {
      * not over-use in performance critical situations.
      *
      * @param xIndex
+     * @param rounding determine to round up/down/closest if there is no Entry matching the provided x-index
      * @return
      */
-    T getEntryForXIndex(int xIndex);
+    T getEntryForXIndex(int xIndex, DataSet.Rounding rounding);
 
     /**
      * Returns the first Entry object found at the given xIndex with binary
@@ -80,10 +81,20 @@ public interface IDataSet<T extends Entry> {
      * not over-use in performance critical situations.
      *
      * @param xIndex
-     * @param rounding determine to round up/down/closest if there is no Entry matching the provided x-index
      * @return
      */
-    T getEntryForXIndex(int xIndex, DataSet.Rounding rounding);
+    T getEntryForXIndex(int xIndex);
+
+    /**
+     * Returns all Entry objects found at the given xIndex with binary
+     * search. An empty array if no Entry object at that index.
+     * INFORMATION: This method does calculations at runtime. Do
+     * not over-use in performance critical situations.
+     *
+     * @param xIndex
+     * @return
+     */
+    List<T> getEntriesForXIndex(int xIndex);
 
     /**
      * Returns the Entry object found at the given index (NOT xIndex) in the values array.
@@ -125,6 +136,17 @@ public interface IDataSet<T extends Entry> {
      * @return
      */
     float getYValForXIndex(int xIndex);
+
+    /**
+     * Returns all of the y values of the Entry objects at the given xIndex. Returns
+     * Float.NaN if no value is at the given x-index. INFORMATION: This method
+     * does calculations at runtime. Do not over-use in performance critical
+     * situations.
+     *
+     * @param xIndex
+     * @return
+     */
+    float[] getYValsForXIndex(int xIndex);
 
     /**
      * This method returns the actual
