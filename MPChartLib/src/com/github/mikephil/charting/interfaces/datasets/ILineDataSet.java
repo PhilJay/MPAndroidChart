@@ -39,9 +39,9 @@ public interface ILineDataSet extends ILineRadarDataSet<Entry> {
     float getCircleRadius();
 
     /**
-     * Returns the radius of the inner circle of the drawn circles.
+     * Returns the hole radius of the drawn circles.
      */
-    float getInnerCircleRadius();
+    float getCircleHoleRadius();
 
     /**
      * Returns the color at the given index of the DataSet's circle-color array.

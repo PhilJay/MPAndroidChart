@@ -57,8 +57,7 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
         mChart.setDescription("");
         mChart.setDrawBorders(false);
 
-        mChart.getAxisLeft().setDrawAxisLine(false);
-        mChart.getAxisLeft().setDrawGridLines(false);
+        mChart.getAxisLeft().setEnabled(false);
         mChart.getAxisRight().setDrawAxisLine(false);
         mChart.getAxisRight().setDrawGridLines(false);
         mChart.getXAxis().setDrawAxisLine(false);

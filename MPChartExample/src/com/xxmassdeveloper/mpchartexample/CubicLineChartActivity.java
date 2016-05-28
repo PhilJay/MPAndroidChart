@@ -290,6 +290,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
             set1 = (LineDataSet)mChart.getData().getDataSetByIndex(0);
             set1.setYVals(yVals);
             mChart.getData().setXVals(xVals);
+            mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
             // create a dataset and give it a type

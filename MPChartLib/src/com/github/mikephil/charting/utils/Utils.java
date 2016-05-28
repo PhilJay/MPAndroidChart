@@ -611,9 +611,8 @@ public abstract class Utils {
         float drawOffsetX = 0.f;
         float drawOffsetY = 0.f;
 
+        final float lineHeight = paint.getFontMetrics(mFontMetricsBuffer);
         paint.getTextBounds(text, 0, text.length(), mDrawTextRectBuffer);
-
-        final float lineHeight = mDrawTextRectBuffer.height();
 
         // Android sometimes has pre-padding
         drawOffsetX -= mDrawTextRectBuffer.left;
@@ -621,7 +620,7 @@ public abstract class Utils {
         // Android does not snap the bounds to line boundaries,
         //  and draws from bottom to top.
         // And we want to normalize it.
-        drawOffsetY += lineHeight;
+        drawOffsetY += -mFontMetricsBuffer.ascent;
 
         // To have a consistent point of reference, we always draw left-aligned
         Paint.Align originalTextAlign = paint.getTextAlign();

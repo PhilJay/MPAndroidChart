@@ -319,6 +319,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             set1.setYVals(yVals1);
             set2.setYVals(yVals2);
             mChart.getData().setXVals(xVals);
+            mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
             // create a dataset and give it a type
@@ -352,8 +353,8 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             //set2.setFillFormatter(new MyFillFormatter(900f));
 
             ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-            dataSets.add(set2);
             dataSets.add(set1); // add the datasets
+            dataSets.add(set2);
 
             // create a data object with the datasets
             LineData data = new LineData(xVals, dataSets);

@@ -14,9 +14,11 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -205,7 +207,7 @@ public class LineChartRenderer extends LineRadarRenderer {
         Entry entryTo = dataSet.getEntryForXIndex(mMaxX, DataSet.Rounding.UP);
 
         int diff = (entryFrom == entryTo) ? 1 : 0;
-        int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff, 0);
+        int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff - 1, 0);
         int maxx = Math.min(Math.max(minx + 2, dataSet.getEntryIndex(entryTo) + 1), entryCount);
 
         float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
@@ -563,6 +565,9 @@ public class LineChartRenderer extends LineRadarRenderer {
                 Entry entryTo = dataSet.getEntryForXIndex(mMaxX, DataSet.Rounding.UP);
 
                 int diff = (entryFrom == entryTo) ? 1 : 0;
+                if (dataSet.getMode() == LineDataSet.Mode.CUBIC_BEZIER)
+                    diff += 1;
+
                 int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff, 0);
                 int maxx = Math.min(Math.max(minx + 2, dataSet.getEntryIndex(entryTo) + 1), entryCount);
 
@@ -594,6 +599,8 @@ public class LineChartRenderer extends LineRadarRenderer {
         drawCircles(c);
     }
 
+    private Path mCirclePathBuffer = new Path();
+
     protected void drawCircles(Canvas c) {
 
         mRenderPaint.setStyle(Paint.Style.FILL);
@@ -624,16 +631,19 @@ public class LineChartRenderer extends LineRadarRenderer {
             Entry entryTo = dataSet.getEntryForXIndex(mMaxX, DataSet.Rounding.UP);
 
             int diff = (entryFrom == entryTo) ? 1 : 0;
+            if (dataSet.getMode() == LineDataSet.Mode.CUBIC_BEZIER)
+                diff += 1;
+
             int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff, 0);
             int maxx = Math.min(Math.max(minx + 2, dataSet.getEntryIndex(entryTo) + 1), entryCount);
 
-            float innerCircleRadius = dataSet.getInnerCircleRadius();
-
-            if (innerCircleRadius >= dataSet.getCircleRadius()) {
-                Log.e("MPAndroidChart", "mInnerCircleRadius must be less than mCircleRadius." +
-                        " Setting mInnerCircleRadius to mCircleRadius/2.");
-                innerCircleRadius = dataSet.getCircleRadius() / 2f;
-            }
+            float circleRadius = dataSet.getCircleRadius();
+            float circleHoleRadius = dataSet.getCircleHoleRadius();
+            boolean drawCircleHole = dataSet.isDrawCircleHoleEnabled() &&
+                    circleHoleRadius < circleRadius &&
+                    circleHoleRadius > 0.f;
+            boolean drawTransparentCircleHole = drawCircleHole &&
+                    dataSet.getCircleHoleColor() == ColorTemplate.COLOR_NONE;
 
             for (int j = minx,
                  count = (int) Math.ceil((maxx - minx) * phaseX + minx);
@@ -658,18 +668,37 @@ public class LineChartRenderer extends LineRadarRenderer {
                         !mViewPortHandler.isInBoundsY(circlesBuffer[1]))
                     continue;
 
-                int circleColor = dataSet.getCircleColor(j);
+                mRenderPaint.setColor(dataSet.getCircleColor(j));
 
-                mRenderPaint.setColor(circleColor);
+                if (drawTransparentCircleHole) {
 
-                c.drawCircle(circlesBuffer[0], circlesBuffer[1], dataSet.getCircleRadius(),
-                        mRenderPaint);
+                    // Begin path for circle with hole
+                    mCirclePathBuffer.reset();
 
-                if (dataSet.isDrawCircleHoleEnabled()
-                        && circleColor != mCirclePaintInner.getColor())
+                    mCirclePathBuffer.addCircle(circlesBuffer[0], circlesBuffer[1],
+                            circleRadius,
+                            Path.Direction.CW);
+
+                    // Cut hole in path
+                    mCirclePathBuffer.addCircle(circlesBuffer[0], circlesBuffer[1],
+                            circleHoleRadius,
+                            Path.Direction.CCW);
+
+                    // Fill in-between
+                    c.drawPath(mCirclePathBuffer, mRenderPaint);
+
+                } else {
+
                     c.drawCircle(circlesBuffer[0], circlesBuffer[1],
-                            innerCircleRadius,
-                            mCirclePaintInner);
+                            circleRadius,
+                            mRenderPaint);
+
+                    if (drawCircleHole) {
+                        c.drawCircle(circlesBuffer[0], circlesBuffer[1],
+                                circleHoleRadius,
+                                mCirclePaintInner);
+                    }
+                }
             }
         }
     }
