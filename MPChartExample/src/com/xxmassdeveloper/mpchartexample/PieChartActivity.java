@@ -166,6 +166,10 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
                 mChart.animateXY(1400, 1400);
                 break;
             }
+            case R.id.actionToggleSpin: {
+                mChart.spin(1000, mChart.getRotationAngle(), mChart.getRotationAngle() + 360, Easing.EasingOption.EaseInCubic);
+                break;
+            }
         }
         return true;
     }
