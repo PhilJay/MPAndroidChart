@@ -5,7 +5,7 @@ apply plugin: 'git-repo'
 apply plugin: 'maven-publish'
 
 archivesBaseName = 'MPAndroidChart'
-version = '2.2.4.3'
+version = '2.2.5'
 def versionCodeInt = 228
 
 android {
