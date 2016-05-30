@@ -28,6 +28,8 @@ public interface ChartInterface {
      */
     float getXChartMax();
 
+    float getXRange();
+
     /**
      * Returns the minimum y-value of the chart, regardless of zoom or translation.
      *

@@ -24,6 +24,7 @@ import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.custom.MyValueFormatter;
 import com.xxmassdeveloper.mpchartexample.custom.MyYAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -59,7 +60,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 
 		// if more than 60 entries are displayed in the chart, no values will be
 		// drawn
-		mChart.setMaxVisibleValueCount(60);
+		mChart.setMaxVisibleValueCount(40);
 
 		// scaling can now only be done on x- and y-axis separately
 		mChart.setPinchZoom(false);
@@ -260,6 +261,10 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 
 		// have as many colors as stack-values per entry
 		int[] colors = new int[stacksize];
+
+		for(int i = 0; i < colors.length; i++) {
+			colors[i] = ColorTemplate.MATERIAL_COLORS[i];
+		}
 
         return colors;
     }

@@ -13,7 +13,9 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
     protected boolean mContainsStacks = false;
     protected boolean mInverted = false;
 
-    /** interval on the x-axis per group */
+    /**
+     * interval on the x-axis per group
+     */
     protected float mInterval = 0f;
 
     public BarBuffer(int size, float groupspace, int dataSetCount, boolean containsStacks) {
@@ -73,13 +75,14 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
             float x = mInterval * i + dataSetSpace;
 
             float y = e.getY();
-            float [] vals = e.getYVals();
+            float[] vals = e.getYVals();
 
             if (!mContainsStacks || vals == null) {
 
                 float left = x + groupSpaceWidthHalf + barSpaceWidthHalf;
                 float right = left + newBarWidth - barSpaceWidth;
                 float bottom, top;
+
                 if (mInverted) {
                     bottom = y >= 0 ? y : 0;
                     top = y <= 0 ? y : 0;
@@ -107,7 +110,7 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
 
                     float value = vals[k];
 
-                    if(value >= 0f) {
+                    if (value >= 0f) {
                         y = posY;
                         yStart = posY + value;
                         posY = yStart;
@@ -120,6 +123,7 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
                     float left = x + groupSpaceWidthHalf + barSpaceWidthHalf;
                     float right = left + newBarWidth - barSpaceWidth;
                     float bottom, top;
+
                     if (mInverted) {
                         bottom = y >= yStart ? y : yStart;
                         top = y <= yStart ? y : yStart;

@@ -1019,6 +1019,11 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     @Override
+    public float getXRange() {
+        return mXAxis.mAxisRange;
+    }
+
+    @Override
     public int getXValCount() {
         return mData.getXValCount();
     }
