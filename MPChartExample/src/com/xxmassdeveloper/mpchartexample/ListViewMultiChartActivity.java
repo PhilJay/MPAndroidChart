@@ -110,7 +110,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         ArrayList<Entry> e2 = new ArrayList<Entry>();
 
         for (int i = 0; i < 12; i++) {
-            e2.add(new Entry(e1.get(i).getVal() - 30, i));
+            e2.add(new Entry(e1.get(i).getY() - 30, i));
         }
 
         LineDataSet d2 = new LineDataSet(e2, "New DataSet " + cnt + ", (2)");

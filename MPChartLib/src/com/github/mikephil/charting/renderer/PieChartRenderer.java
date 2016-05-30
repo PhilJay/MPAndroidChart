@@ -198,7 +198,7 @@ public class PieChartRenderer extends DataRenderer {
         int visibleAngleCount = 0;
         for (int j = 0; j < entryCount; j++) {
             // draw only if the value is greater than zero
-            if ((Math.abs(dataSet.getEntryForIndex(j).getVal()) > 0.000001)) {
+            if ((Math.abs(dataSet.getEntryForIndex(j).getY()) > 0.000001)) {
                 visibleAngleCount++;
             }
         }
@@ -213,9 +213,9 @@ public class PieChartRenderer extends DataRenderer {
             Entry e = dataSet.getEntryForIndex(j);
 
             // draw only if the value is greater than zero
-            if ((Math.abs(e.getVal()) > 0.000001)) {
+            if ((Math.abs(e.getY()) > 0.000001)) {
 
-                if (!mChart.needsHighlight(e.getXIndex(),
+                if (!mChart.needsHighlight(e.getX(),
                         mChart.getData().getIndexOfDataSet(dataSet))) {
 
                     final boolean accountForSliceSpacing = sliceSpace > 0.f && sliceAngle <= 180.f;
@@ -429,8 +429,8 @@ public class PieChartRenderer extends DataRenderer {
 
                 final float transformedAngle = rotationAngle + angle * phaseY;
 
-                float value = mChart.isUsePercentValuesEnabled() ? entry.getVal()
-                        / yValueSum * 100f : entry.getVal();
+                float value = mChart.isUsePercentValuesEnabled() ? entry.getY()
+                        / yValueSum * 100f : entry.getY();
 
                 final float sliceXBase = (float) Math.cos(transformedAngle * Utils.FDEG2RAD);
                 final float sliceYBase = (float) Math.sin(transformedAngle * Utils.FDEG2RAD);
@@ -708,7 +708,7 @@ public class PieChartRenderer extends DataRenderer {
             int visibleAngleCount = 0;
             for (int j = 0; j < entryCount; j++) {
                 // draw only if the value is greater than zero
-                if ((Math.abs(set.getEntryForIndex(j).getVal()) > 0.000001)) {
+                if ((Math.abs(set.getEntryForIndex(j).getY()) > 0.000001)) {
                     visibleAngleCount++;
                 }
             }
@@ -893,7 +893,7 @@ public class PieChartRenderer extends DataRenderer {
             Entry e = dataSet.getEntryForIndex(j);
 
             // draw only if the value is greater than zero
-            if ((Math.abs(e.getVal()) > 0.000001)) {
+            if ((Math.abs(e.getY()) > 0.000001)) {
 
                 float x = (float) ((r - circleRadius)
                         * Math.cos(Math.toRadians((angle + sliceAngle)

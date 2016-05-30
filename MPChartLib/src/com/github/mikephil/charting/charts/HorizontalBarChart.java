@@ -7,7 +7,6 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 
-import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.BarEntry;
@@ -150,8 +149,8 @@ public class HorizontalBarChart extends BarChart {
 			return null;
 
 		float barspace = set.getBarSpace();
-		float y = e.getVal();
-		float x = e.getXIndex();
+		float y = e.getY();
+		float x = e.getX();
 
 		float spaceHalf = barspace / 2f;
 
@@ -173,7 +172,7 @@ public class HorizontalBarChart extends BarChart {
 		if (e == null)
 			return null;
 
-		float[] vals = new float[] { e.getVal(), e.getXIndex() };
+		float[] vals = new float[] { e.getY(), e.getX() };
 
 		getTransformer(axis).pointValuesToPixel(vals);
 
@@ -204,7 +203,7 @@ public class HorizontalBarChart extends BarChart {
 	 * @return
 	 */
 	@Override
-	public int getLowestVisibleXIndex() {
+	public float getLowestVisibleX() {
 
 		float step = mData.getDataSetCount();
 		float div = (step <= 1) ? 1 : step + mData.getGroupSpace();
@@ -212,7 +211,7 @@ public class HorizontalBarChart extends BarChart {
 		float[] pts = new float[] { mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom() };
 
 		getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
-		return (int) (((pts[1] <= 0) ? 0 : ((pts[1])) / div) + 1);
+		return (((pts[1] <= 0) ? 0 : ((pts[1])) / div) + 1);
 	}
 
 	/**
@@ -221,7 +220,7 @@ public class HorizontalBarChart extends BarChart {
 	 * @return
 	 */
 	@Override
-	public int getHighestVisibleXIndex() {
+	public float getHighestVisibleX() {
 
 		float step = mData.getDataSetCount();
 		float div = (step <= 1) ? 1 : step + mData.getGroupSpace();
@@ -229,6 +228,6 @@ public class HorizontalBarChart extends BarChart {
 		float[] pts = new float[] { mViewPortHandler.contentLeft(), mViewPortHandler.contentTop() };
 
 		getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
-		return (int) ((pts[1] >= getXChartMax()) ? getXChartMax() / div : (pts[1] / div));
+		return ((pts[1] >= getXChartMax()) ? getXChartMax() / div : (pts[1] / div));
 	}
 }

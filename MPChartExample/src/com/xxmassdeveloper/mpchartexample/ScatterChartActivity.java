@@ -1,7 +1,6 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,8 +21,6 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.data.XAxisValue;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
@@ -223,7 +220,7 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
     @Override
     public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
         Log.i("VAL SELECTED",
-                "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
+                "Value: " + e.getY() + ", xIndex: " + e.getX()
                         + ", DataSet index: " + dataSetIndex);
     }
 

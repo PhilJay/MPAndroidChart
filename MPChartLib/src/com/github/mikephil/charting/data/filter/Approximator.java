@@ -152,7 +152,7 @@ public class Approximator {
         for (int i = 0; i < entries.size(); i++) {
             if (keep[i]) {
                 Entry curEntry = entries.get(i);
-                reducedEntries.add(new Entry(curEntry.getVal(), curEntry.getXIndex()));
+                reducedEntries.add(new Entry(curEntry.getY(), curEntry.getX()));
             }
         }
         return reducedEntries;
@@ -215,16 +215,16 @@ public class Approximator {
      */
     public double calcPointToLineDistance(Entry startEntry, Entry endEntry, Entry entryPoint) {
 
-        float xDiffEndStart = (float) endEntry.getXIndex() - (float) startEntry.getXIndex();
-        float xDiffEntryStart = (float) entryPoint.getXIndex() - (float) startEntry.getXIndex();
+        float xDiffEndStart = (float) endEntry.getX() - (float) startEntry.getX();
+        float xDiffEntryStart = (float) entryPoint.getX() - (float) startEntry.getX();
 
         double normalLength = Math.sqrt((xDiffEndStart)
                 * (xDiffEndStart)
-                + (endEntry.getVal() - startEntry.getVal())
-                * (endEntry.getVal() - startEntry.getVal()));
+                + (endEntry.getY() - startEntry.getY())
+                * (endEntry.getY() - startEntry.getY()));
         return Math.abs((xDiffEntryStart)
-                * (endEntry.getVal() - startEntry.getVal())
-                - (entryPoint.getVal() - startEntry.getVal())
+                * (endEntry.getY() - startEntry.getY())
+                - (entryPoint.getY() - startEntry.getY())
                 * (xDiffEndStart))
                 / normalLength;
     }
@@ -257,8 +257,8 @@ public class Approximator {
      */
     public double calcAngleWithRatios(Entry p1, Entry p2) {
 
-        float dx = p2.getXIndex() * mDeltaRatio - p1.getXIndex() * mDeltaRatio;
-        float dy = p2.getVal() * mScaleRatio - p1.getVal() * mScaleRatio;
+        float dx = p2.getX() * mDeltaRatio - p1.getX() * mDeltaRatio;
+        float dy = p2.getY() * mScaleRatio - p1.getY() * mScaleRatio;
         double angle = Math.atan2(dy, dx) * 180.0 / Math.PI;
 
         return angle;
@@ -273,8 +273,8 @@ public class Approximator {
      */
     public double calcAngle(Entry p1, Entry p2) {
 
-        float dx = p2.getXIndex() - p1.getXIndex();
-        float dy = p2.getVal() - p1.getVal();
+        float dx = p2.getX() - p1.getX();
+        float dy = p2.getY() - p1.getY();
         double angle = Math.atan2(dy, dx) * 180.0 / Math.PI;
 
         return angle;

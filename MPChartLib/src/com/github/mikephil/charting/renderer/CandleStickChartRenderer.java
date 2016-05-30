@@ -74,7 +74,7 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
             // get the entry
             CandleEntry e = dataSet.getEntryForIndex(j);
 
-            final int xIndex = e.getXIndex();
+            final int xIndex = e.getX();
 
             if (xIndex < minx || xIndex >= maxx)
                 continue;
@@ -336,7 +336,7 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
                 CandleEntry e = set.getEntryForXIndex(xIndex);
 
-                if (e == null || e.getXIndex() != xIndex)
+                if (e == null || e.getX() != xIndex)
                     continue;
 
                 float lowValue = e.getLow() * mAnimator.getPhaseY();

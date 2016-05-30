@@ -23,7 +23,7 @@ public class ScatterBuffer extends AbstractBuffer<IScatterDataSet> {
         for (int i = 0; i < size; i++) {
 
             Entry e = data.getEntryForIndex(i);
-            addForm(e.getXIndex(), e.getVal() * phaseY);
+            addForm(e.getX(), e.getY() * phaseY);
         }
         
         reset();

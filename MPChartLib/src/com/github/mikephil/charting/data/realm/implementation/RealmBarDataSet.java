@@ -3,7 +3,6 @@ package com.github.mikephil.charting.data.realm.implementation;
 import android.graphics.Color;
 
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.realm.base.RealmBarLineScatterCandleBubbleDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
@@ -57,7 +56,7 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
         mHighLightColor = Color.rgb(0, 0, 0);
 
         build(this.results);
-        calcMinMax(0, results.size());
+        calcMinMax();
     }
 
     /**
@@ -74,7 +73,7 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
         mHighLightColor = Color.rgb(0, 0, 0);
 
         build(this.results);
-        calcMinMax(0, results.size());
+        calcMinMax();
     }
 
     @Override
@@ -110,22 +109,13 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
     }
 
     @Override
-    public void calcMinMax(int start, int end) {
+    public void calcMinMax() {
 
         if (mValues == null)
             return;
 
-        final int yValCount = mValues.size();
-
-        if (yValCount == 0)
+        if (mValues.size() == 0)
             return;
-
-        int endValue;
-
-        if (end == 0 || end >= yValCount)
-            endValue = yValCount - 1;
-        else
-            endValue = end;
 
         mYMin = Float.MAX_VALUE;
         mYMax = -Float.MAX_VALUE;
@@ -133,19 +123,17 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
         mXMin = Float.MAX_VALUE;
         mXMax = -Float.MAX_VALUE;
 
-        for (int i = start; i <= endValue; i++) {
+        for (BarEntry e : mValues) {
 
-            BarEntry e = mValues.get(i);
+            if (e != null && !Float.isNaN(e.getY())) {
 
-            if (e != null && !Float.isNaN(e.getVal())) {
+                if (e.getYVals() == null) {
 
-                if (e.getVals() == null) {
+                    if (e.getY() < mYMin)
+                        mYMin = e.getY();
 
-                    if (e.getVal() < mYMin)
-                        mYMin = e.getVal();
-
-                    if (e.getVal() > mYMax)
-                        mYMax = e.getVal();
+                    if (e.getY() > mYMax)
+                        mYMax = e.getY();
                 } else {
 
                     if (-e.getNegativeSum() < mYMin)
@@ -155,11 +143,11 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
                         mYMax = e.getPositiveSum();
                 }
 
-                if (e.getXIndex() < mXMin)
-                    mXMin = e.getXIndex();
+                if (e.getX() < mXMin)
+                    mXMin = e.getX();
 
-                if (e.getXIndex() > mXMax)
-                    mXMax = e.getXIndex();
+                if (e.getX() > mXMax)
+                    mXMax = e.getX();
             }
         }
 
@@ -167,13 +155,18 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
             mYMin = 0.f;
             mYMax = 0.f;
         }
+
+        if(mXMin == Float.MAX_VALUE) {
+            mXMin = 0.f;
+            mXMax = 0.f;
+        }
     }
 
     private void calcStackSize() {
 
         for (int i = 0; i < mValues.size(); i++) {
 
-            float[] vals = mValues.get(i).getVals();
+            float[] vals = mValues.get(i).getYVals();
 
             if (vals != null && vals.length > mStackSize)
                 mStackSize = vals.length;

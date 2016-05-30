@@ -53,7 +53,7 @@ public class StackedValueFormatter implements ValueFormatter {
         if (!mDrawWholeStack && entry instanceof BarEntry) {
 
             BarEntry barEntry = (BarEntry) entry;
-            float[] vals = barEntry.getVals();
+            float[] vals = barEntry.getYVals();
 
             if (vals != null) {
 
@@ -61,7 +61,7 @@ public class StackedValueFormatter implements ValueFormatter {
                 if (vals[vals.length - 1] == value) {
 
                     // return the "sum" across all stack values
-                    return mFormat.format(barEntry.getVal()) + mAppendix;
+                    return mFormat.format(barEntry.getY()) + mAppendix;
                 } else {
                     return ""; // return empty
                 }

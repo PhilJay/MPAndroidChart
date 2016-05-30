@@ -263,7 +263,7 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
         if (e == null)
             return;
         Log.i("VAL SELECTED",
-                "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
+                "Value: " + e.getY() + ", xIndex: " + e.getX()
                         + ", DataSet index: " + dataSetIndex);
     }
 

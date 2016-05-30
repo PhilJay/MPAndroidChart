@@ -242,7 +242,7 @@ public class BarChartRenderer extends DataRenderer {
                             continue;
 
                         BarEntry entry = dataSet.getEntryForIndex(j / 2);
-                        float val = entry.getVal();
+                        float val = entry.getY();
 
                         drawValue(c, dataSet.getValueFormatter(), val, entry, i, valuePoints[j],
                                 valuePoints[j + 1] + (val >= 0 ? posOffset : negOffset), dataSet.getValueTextColor(j / 2));
@@ -255,7 +255,7 @@ public class BarChartRenderer extends DataRenderer {
 
                         BarEntry entry = dataSet.getEntryForIndex(j / 2);
 
-                        float[] vals = entry.getVals();
+                        float[] vals = entry.getYVals();
 
                         // we still draw stacked bars, but there is one
                         // non-stacked
@@ -269,8 +269,8 @@ public class BarChartRenderer extends DataRenderer {
                                     || !mViewPortHandler.isInBoundsLeft(valuePoints[j]))
                                 continue;
 
-                            drawValue(c, dataSet.getValueFormatter(), entry.getVal(), entry, i, valuePoints[j],
-                                    valuePoints[j + 1] + (entry.getVal() >= 0 ? posOffset : negOffset), dataSet.getValueTextColor(j / 2));
+                            drawValue(c, dataSet.getValueFormatter(), entry.getY(), entry, i, valuePoints[j],
+                                    valuePoints[j + 1] + (entry.getY() >= 0 ? posOffset : negOffset), dataSet.getValueTextColor(j / 2));
 
                             // draw stack values
                         } else {
@@ -362,7 +362,7 @@ public class BarChartRenderer extends DataRenderer {
 
                     BarEntry e = set.getEntryForXIndex(index);
 
-                    if (e == null || e.getXIndex() != index)
+                    if (e == null || e.getX() != index)
                         continue;
 
                     float groupspace = barData.getGroupSpace();
@@ -379,7 +379,7 @@ public class BarChartRenderer extends DataRenderer {
                         y1 = high.getRange().from;
                         y2 = high.getRange().to;
                     } else {
-                        y1 = e.getVal();
+                        y1 = e.getY();
                         y2 = 0.f;
                     }
 

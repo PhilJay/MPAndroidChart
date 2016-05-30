@@ -107,8 +107,8 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 			return null;
 
 		float barspace = set.getBarSpace();
-		float y = e.getVal();
-		float x = e.getXIndex();
+		float y = e.getY();
+		float x = e.getX();
 
 		float barWidth = 0.5f;
 
@@ -191,7 +191,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 	 * @return
 	 */
 	@Override
-	public int getLowestVisibleXIndex() {
+	public float getLowestVisibleX() {
 
 		float step = mData.getDataSetCount();
 		float div = (step <= 1) ? 1 : step + mData.getGroupSpace();
@@ -199,7 +199,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 		float[] pts = new float[] { mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom() };
 
 		getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
-		return (int) ((pts[0] <= getXChartMin()) ? 0 : (pts[0] / div) + 1);
+		return ((pts[0] <= getXChartMin()) ? 0 : (pts[0] / div) + 1);
 	}
 
 	/**
@@ -208,7 +208,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 	 * @return
 	 */
 	@Override
-	public int getHighestVisibleXIndex() {
+	public float getHighestVisibleX() {
 
 		float step = mData.getDataSetCount();
 		float div = (step <= 1) ? 1 : step + mData.getGroupSpace();
@@ -216,6 +216,6 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 		float[] pts = new float[] { mViewPortHandler.contentRight(), mViewPortHandler.contentBottom() };
 
 		getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
-		return (int) ((pts[0] >= getXChartMax()) ? getXChartMax() / div : (pts[0] / div));
+		return ((pts[0] >= getXChartMax()) ? getXChartMax() / div : (pts[0] / div));
 	}
 }

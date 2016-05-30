@@ -125,9 +125,9 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 		if (entry == null)
 			return null;
 
-		if (entry.getVals() == null) {
+		if (entry.getYVals() == null) {
 			return new Highlight(xIndex,
-					entry.getVal(),
+					entry.getY(),
 					selectionDetail.dataIndex,
 					selectionDetail.dataSetIndex);
 		}
@@ -174,7 +174,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 
 		return (value > ranges[length].to) ? length : 0;
 		//
-		// float[] vals = e.getVals();
+		// float[] vals = e.getYVals();
 		//
 		// if (vals == null)
 		// return -1;
@@ -225,7 +225,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 	 */
 	protected Range[] getRanges(BarEntry entry) {
 
-		float[] values = entry.getVals();
+		float[] values = entry.getYVals();
 
 		if (values == null || values.length == 0)
 			return new Range[0];

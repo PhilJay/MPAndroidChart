@@ -50,7 +50,7 @@ public class RealmScatterDataSet<T extends RealmObject> extends RealmLineScatter
         super(result, yValuesField);
 
         build(this.results);
-        calcMinMax(0, results.size());
+        calcMinMax();
     }
 
     /**
@@ -64,7 +64,7 @@ public class RealmScatterDataSet<T extends RealmObject> extends RealmLineScatter
         super(result, yValuesField, xIndexField);
 
         build(this.results);
-        calcMinMax(0, results.size());
+        calcMinMax();
     }
 
     /**

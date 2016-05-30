@@ -307,7 +307,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
         //
         // Entry e = entries.get(j / 2);
         //
-        // if (!fitsBounds(e.getXIndex(), mMinX, mMaxX))
+        // if (!fitsBounds(e.getX(), mMinX, mMaxX))
         // continue;
         //
         // if (customShape == null)
@@ -316,7 +316,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
         // mRenderPaint.setColor(dataSet.getColor(j));
         //
         // Path newPath = new Path(customShape);
-        // newPath.offset(e.getXIndex(), e.getVal());
+        // newPath.offset(e.getX(), e.getY());
         //
         // // transform the provided custom path
         // trans.pathValueToPixel(newPath);
@@ -362,7 +362,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
                     Entry entry = dataSet.getEntryForIndex(j / 2);
 
-                    drawValue(c, dataSet.getValueFormatter(), entry.getVal(), entry, i, positions[j],
+                    drawValue(c, dataSet.getValueFormatter(), entry.getY(), entry, i, positions[j],
                             positions[j + 1] - shapeSize, dataSet.getValueTextColor(j / 2));
                 }
             }

@@ -38,7 +38,7 @@ public class RealmRadarDataSet<T extends RealmObject> extends RealmLineRadarData
         super(result, yValuesField);
 
         build(this.results);
-        calcMinMax(0, results.size());
+        calcMinMax();
     }
 
     /**
@@ -52,7 +52,7 @@ public class RealmRadarDataSet<T extends RealmObject> extends RealmLineRadarData
         super(result, yValuesField, xIndexField);
 
         build(this.results);
-        calcMinMax(0, results.size());
+        calcMinMax();
     }
 
     /// Returns true if highlight circle should be drawn, false if not

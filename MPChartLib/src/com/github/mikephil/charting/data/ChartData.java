@@ -152,7 +152,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
         checkLegal();
         calcYValueCount();
-        calcMinMax(0, mYValCount);
+        calcMinMax();
 
         calcXValMaximumLength();
     }
@@ -194,8 +194,8 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
         for (int i = 0; i < mDataSets.size(); i++) {
             if (mDataSets.get(i).getEntryCount() > mXVals.size()) {
-                throw new IllegalArgumentException(
-                        "One or more of the DataSet Entry arrays are longer than the x-values array of this ChartData object.");
+//                throw new IllegalArgumentException(
+//                        "One or more of the DataSet Entry arrays are longer than the x-values array of this ChartData object.");
             }
         }
     }
@@ -212,7 +212,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     /**
      * calc minimum and maximum values (both x and y) over all DataSets
      */
-    public void calcMinMax(int start, int end) {
+    public void calcMinMax() {
 
         if (mDataSets == null || mDataSets.size() < 1) {
 
@@ -233,7 +233,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
             for (int i = 0; i < mDataSets.size(); i++) {
 
                 IDataSet set = mDataSets.get(i);
-                set.calcMinMax(start, end);
+                set.calcMinMax();
 
                 if (set.getYMin() < mYMin)
                     mYMin = set.getYMin();
@@ -525,7 +525,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
             List<?> entries = mDataSets.get(highlight.getDataSetIndex())
                     .getEntriesForXIndex(highlight.getXIndex());
             for (Object entry : entries)
-                if (((Entry)entry).getVal() == highlight.getValue() ||
+                if (((Entry)entry).getY() == highlight.getValue() ||
                         Float.isNaN(highlight.getValue()))
                     return (Entry)entry;
 
@@ -648,7 +648,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
             mYValCount -= d.getEntryCount();
 
-            calcMinMax(0, mYValCount);
+            calcMinMax();
         }
 
         return removed;
@@ -686,7 +686,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
             if (!set.addEntry(e))
                 return;
 
-            float val = e.getVal();
+            float val = e.getY();
 
             if (mYValCount == 0) {
                 mYMin = val;
@@ -694,11 +694,11 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
                 if (set.getAxisDependency() == AxisDependency.LEFT) {
 
-                    mLeftAxisMax = e.getVal();
-                    mLeftAxisMin = e.getVal();
+                    mLeftAxisMax = e.getY();
+                    mLeftAxisMin = e.getY();
                 } else {
-                    mRightAxisMax = e.getVal();
-                    mRightAxisMin = e.getVal();
+                    mRightAxisMax = e.getY();
+                    mRightAxisMin = e.getY();
                 }
             } else {
 
@@ -709,15 +709,15 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
                 if (set.getAxisDependency() == AxisDependency.LEFT) {
 
-                    if (mLeftAxisMax < e.getVal())
-                        mLeftAxisMax = e.getVal();
-                    if (mLeftAxisMin > e.getVal())
-                        mLeftAxisMin = e.getVal();
+                    if (mLeftAxisMax < e.getY())
+                        mLeftAxisMax = e.getY();
+                    if (mLeftAxisMin > e.getY())
+                        mLeftAxisMin = e.getY();
                 } else {
-                    if (mRightAxisMax < e.getVal())
-                        mRightAxisMax = e.getVal();
-                    if (mRightAxisMin > e.getVal())
-                        mRightAxisMin = e.getVal();
+                    if (mRightAxisMax < e.getY())
+                        mRightAxisMax = e.getY();
+                    if (mRightAxisMin > e.getY())
+                        mRightAxisMin = e.getY();
                 }
             }
 
@@ -751,7 +751,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
             if (removed) {
                 mYValCount -= 1;
 
-                calcMinMax(0, mYValCount);
+                calcMinMax();
             }
 
             return removed;
@@ -776,7 +776,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         IDataSet dataSet = mDataSets.get(dataSetIndex);
         Entry e = dataSet.getEntryForXIndex(xIndex);
 
-        if (e == null || e.getXIndex() != xIndex)
+        if (e == null || e.getX() != xIndex)
             return false;
 
         return removeEntry(e, dataSetIndex);
@@ -799,7 +799,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
             T set = mDataSets.get(i);
 
             for (int j = 0; j < set.getEntryCount(); j++) {
-                if (e.equalTo(set.getEntryForXIndex(e.getXIndex())))
+                if (e.equalTo(set.getEntryForXIndex(e.getX())))
                     return set;
             }
         }

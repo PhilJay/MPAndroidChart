@@ -20,8 +20,6 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.XAxisValue;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.highlight.Highlight;
@@ -206,7 +204,7 @@ public class StackedBarActivityNegative extends DemoBase implements
 
         BarEntry entry = (BarEntry) e;
         Log.i("VAL SELECTED",
-                "Value: " + Math.abs(entry.getVals()[h.getStackIndex()]));
+                "Value: " + Math.abs(entry.getYVals()[h.getStackIndex()]));
     }
 
     @Override

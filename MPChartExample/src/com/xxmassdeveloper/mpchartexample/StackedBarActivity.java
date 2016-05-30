@@ -24,7 +24,6 @@ import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.custom.MyValueFormatter;
 import com.xxmassdeveloper.mpchartexample.custom.MyYAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -243,10 +242,10 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 
 		BarEntry entry = (BarEntry) e;
 
-		if (entry.getVals() != null)
-			Log.i("VAL SELECTED", "Value: " + entry.getVals()[h.getStackIndex()]);
+		if (entry.getYVals() != null)
+			Log.i("VAL SELECTED", "Value: " + entry.getYVals()[h.getStackIndex()]);
 		else
-			Log.i("VAL SELECTED", "Value: " + entry.getVal());
+			Log.i("VAL SELECTED", "Value: " + entry.getY());
 	}
 
 	@Override

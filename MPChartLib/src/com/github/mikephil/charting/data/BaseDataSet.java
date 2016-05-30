@@ -97,7 +97,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      * Use this method to tell the data set that the underlying data has changed.
      */
     public void notifyDataSetChanged() {
-        calcMinMax(0, getEntryCount() - 1);
+        calcMinMax();
     }
 
 
@@ -341,7 +341,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     public int getIndexInEntries(int xIndex) {
 
         for (int i = 0; i < getEntryCount(); i++) {
-            if (xIndex == getEntryForIndex(i).getXIndex())
+            if (xIndex == getEntryForIndex(i).getX())
                 return i;
         }
 

@@ -107,7 +107,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
             PointF p = Utils.getPosition(
                     center,
-                    (e.getVal() - mChart.getYChartMin()) * factor * phaseY,
+                    (e.getY() - mChart.getYChartMin()) * factor * phaseY,
                     sliceangle * j * phaseX + mChart.getRotationAngle());
 
             if (Float.isNaN(p.x))
@@ -187,10 +187,10 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
                 PointF p = Utils.getPosition(
                         center,
-                        (entry.getVal() - mChart.getYChartMin()) * factor * phaseY,
+                        (entry.getY() - mChart.getYChartMin()) * factor * phaseY,
                         sliceangle * j * phaseX + mChart.getRotationAngle());
 
-                drawValue(c, dataSet.getValueFormatter(), entry.getVal(), entry, i, p.x, p.y - yoffset, dataSet.getValueTextColor(j));
+                drawValue(c, dataSet.getValueFormatter(), entry.getY(), entry, i, p.x, p.y - yoffset, dataSet.getValueTextColor(j));
             }
         }
     }
@@ -273,11 +273,11 @@ public class RadarChartRenderer extends LineRadarRenderer {
             int xIndex = indices[i].getXIndex();
 
             Entry e = set.getEntryForXIndex(xIndex);
-            if (e == null || e.getXIndex() != xIndex)
+            if (e == null || e.getX() != xIndex)
                 continue;
 
             int j = set.getEntryIndex(e);
-            float y = (e.getVal() - mChart.getYChartMin());
+            float y = (e.getY() - mChart.getYChartMin());
 
             if (Float.isNaN(y))
                 continue;

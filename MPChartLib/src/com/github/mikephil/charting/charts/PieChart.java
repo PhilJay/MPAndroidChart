@@ -15,7 +15,6 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.renderer.PieChartRenderer;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.List;
@@ -181,7 +180,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
         float rotationAngle = getRotationAngle();
 
-        int i = e.getXIndex();
+        int i = e.getX();
 
         // offset needed to center the drawn text in the slice
         float offset = mDrawAngles[i] / 2;
@@ -217,7 +216,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
             for (int j = 0; j < set.getEntryCount(); j++) {
 
-                mDrawAngles[cnt] = calcAngle(Math.abs(set.getEntryForIndex(j).getVal()), yValueSum);
+                mDrawAngles[cnt] = calcAngle(Math.abs(set.getEntryForIndex(j).getY()), yValueSum);
 
                 if (cnt == 0) {
                     mAbsoluteAngles[cnt] = mDrawAngles[cnt];

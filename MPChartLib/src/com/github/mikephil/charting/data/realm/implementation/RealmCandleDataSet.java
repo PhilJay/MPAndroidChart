@@ -3,7 +3,6 @@ package com.github.mikephil.charting.data.realm.implementation;
 import android.graphics.Paint;
 
 import com.github.mikephil.charting.data.CandleEntry;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.realm.base.RealmLineScatterCandleRadarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -96,7 +95,7 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
         this.mCloseField = closeField;
 
         build(this.results);
-        calcMinMax(0, this.results.size());
+        calcMinMax();
     }
 
     /**
@@ -117,7 +116,7 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
         this.mCloseField = closeField;
 
         build(this.results);
-        calcMinMax(0, this.results.size());
+        calcMinMax();
     }
 
     public CandleEntry buildEntryFromResultObject(T realmObject, int xIndex) {
@@ -132,7 +131,7 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
     }
 
     @Override
-    public void calcMinMax(int start, int end) {
+    public void calcMinMax() {
 
         if (mValues == null)
             return;
@@ -140,22 +139,13 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
         if (mValues.size() == 0)
             return;
 
-        int endValue;
-
-        if (end == 0 || end >= mValues.size())
-            endValue = mValues.size() - 1;
-        else
-            endValue = end;
-
         mYMin = Float.MAX_VALUE;
         mYMax = -Float.MAX_VALUE;
 
         mXMin = Float.MAX_VALUE;
         mXMax = -Float.MAX_VALUE;
 
-        for (int i = start; i <= endValue; i++) {
-
-            CandleEntry e = mValues.get(i);
+        for (CandleEntry e : mValues) {
 
             if (e.getLow() < mYMin)
                 mYMin = e.getLow();
@@ -163,11 +153,21 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
             if (e.getHigh() > mYMax)
                 mYMax = e.getHigh();
 
-            if (e.getXIndex() < mXMin)
-                mXMin = e.getXIndex();
+            if (e.getX() < mXMin)
+                mXMin = e.getX();
 
-            if (e.getXIndex() > mXMax)
-                mXMax = e.getXIndex();
+            if (e.getX() > mXMax)
+                mXMax = e.getX();
+        }
+
+        if (mYMin == Float.MAX_VALUE) {
+            mYMin = 0.f;
+            mYMax = 0.f;
+        }
+
+        if(mXMin == Float.MAX_VALUE) {
+            mXMin = 0.f;
+            mXMax = 0.f;
         }
     }
 

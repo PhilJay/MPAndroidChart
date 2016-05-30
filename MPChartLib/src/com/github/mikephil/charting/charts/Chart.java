@@ -693,7 +693,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
                 Entry e = mData.getEntryForHighlight(mIndicesToHighlight[i]);
 
                 // make sure entry not null
-                if (e == null || e.getXIndex() != mIndicesToHighlight[i].getXIndex())
+                if (e == null || e.getX() != mIndicesToHighlight[i].getXIndex())
                     continue;
 
                 float[] pos = getMarkerPosition(e, highlight);

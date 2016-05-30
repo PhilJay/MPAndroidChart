@@ -419,6 +419,9 @@ public abstract class AxisBase extends ComponentBase {
             min = min - 1f;
         }
 
+        this.mAxisMinimum = min;
+        this.mAxisMaximum = max;
+
         // actual range
         this.mAxisRange = Math.abs(max - min);
     }

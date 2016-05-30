@@ -154,15 +154,17 @@ public class XAxisRenderer extends AxisRenderer {
                 0f, 0f
         };
 
-        for (int i = mMinX; i <= mMaxX; i += mXAxis.mAxisLabelModulus) {
+        for (int i = 0; i < mXAxis.getValues().size(); i++) {
 
-            position[0] = i;
+            XAxisValue xVal = mXAxis.getValues().get(i);
+
+            position[0] = (float) xVal.getPosition();
 
             mTrans.pointValuesToPixel(position);
 
             if (mViewPortHandler.isInBoundsX(position[0])) {
 
-                String label = mXAxis.getValues().get(i).getLabel();
+                String label = xVal.getLabel();
 
                 if (mXAxis.isAvoidFirstLastClippingEnabled()) {
 

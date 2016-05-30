@@ -114,8 +114,8 @@ public class Transformer {
             Entry e = data.getEntryForIndex(j / 2);
 
             if (e != null) {
-                valuePoints[j] = e.getXIndex();
-                valuePoints[j + 1] = e.getVal() * phaseY;
+                valuePoints[j] = e.getX();
+                valuePoints[j + 1] = e.getY() * phaseY;
             }
         }
 
@@ -143,8 +143,8 @@ public class Transformer {
             Entry e = data.getEntryForIndex(j / 2 + from);
 
             if (e != null) {
-                valuePoints[j] = (float) (e.getXIndex() - from) * phaseX + from;
-                valuePoints[j + 1] = e.getVal() * phaseY;
+                valuePoints[j] = (float) (e.getX() - from) * phaseX + from;
+                valuePoints[j + 1] = e.getY() * phaseY;
             }
         }
 
@@ -172,8 +172,8 @@ public class Transformer {
             Entry e = data.getEntryForIndex(j / 2 + from);
 
             if (e != null) {
-                valuePoints[j] = e.getXIndex();
-                valuePoints[j + 1] = e.getVal() * phaseY;
+                valuePoints[j] = e.getX();
+                valuePoints[j + 1] = e.getY() * phaseY;
             }
         }
 
@@ -201,7 +201,7 @@ public class Transformer {
             CandleEntry e = data.getEntryForIndex(j / 2 + from);
 
             if (e != null) {
-                valuePoints[j] = e.getXIndex();
+                valuePoints[j] = e.getX();
                 valuePoints[j + 1] = e.getHigh() * phaseY;
             }
         }
@@ -232,12 +232,12 @@ public class Transformer {
         for (int j = 0; j < valuePoints.length; j += 2) {
 
             Entry e = data.getEntryForIndex(j / 2);
-            int i = e.getXIndex();
+            int i = e.getX();
 
             // calculate the x-position, depending on datasetcount
-            float x = e.getXIndex() + i * (setCount - 1) + dataSetIndex + space * i
+            float x = e.getX() + i * (setCount - 1) + dataSetIndex + space * i
                     + space / 2f;
-            float y = e.getVal();
+            float y = e.getY();
 
             valuePoints[j] = x;
             valuePoints[j + 1] = y * phaseY;
@@ -267,12 +267,12 @@ public class Transformer {
         for (int j = 0; j < valuePoints.length; j += 2) {
 
             Entry e = data.getEntryForIndex(j / 2);
-            int i = e.getXIndex();
+            int i = e.getX();
 
             // calculate the x-position, depending on datasetcount
             float x = i + i * (setCount - 1) + dataSet + space * i
                     + space / 2f;
-            float y = e.getVal();
+            float y = e.getY();
 
             valuePoints[j] = y * phaseY;
             valuePoints[j + 1] = x;

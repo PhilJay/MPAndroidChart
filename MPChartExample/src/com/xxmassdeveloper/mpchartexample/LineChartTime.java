@@ -1,8 +1,9 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -14,27 +15,27 @@ import android.widget.Toast;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
+import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.xxmassdeveloper.mpchartexample.custom.MyMarkerView;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChangeListener,
-        OnChartValueSelectedListener {
+public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
 
     private LineChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
+    private long curTime = System.currentTimeMillis();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,6 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
 
         tvX = (TextView) findViewById(R.id.tvXMax);
         tvY = (TextView) findViewById(R.id.tvYMax);
-
         mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
         mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
 
@@ -56,50 +56,34 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
         mSeekBarX.setOnSeekBarChangeListener(this);
 
         mChart = (LineChart) findViewById(R.id.chart1);
-        mChart.setOnChartValueSelectedListener(this);
-        mChart.setDrawGridBackground(false);
-        
+        mChart.setLogEnabled(true);
+
         // no description text
         mChart.setDescription("");
+        mChart.setNoDataTextDescription("You need to provide data for the chart.");
 
         // enable touch gestures
         mChart.setTouchEnabled(true);
 
+        mChart.setDragDecelerationFrictionCoef(0.9f);
+
         // enable scaling and dragging
         mChart.setDragEnabled(true);
         mChart.setScaleEnabled(true);
+        mChart.setDrawGridBackground(false);
+        mChart.setHighlightPerDragEnabled(true);
 
         // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(true);
 
         // set an alternative background color
-        // mChart.setBackgroundColor(Color.GRAY);
-
-        // create a custom MarkerView (extend MarkerView) and specify the layout
-        // to use for it
-        MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
-
-        // set the marker to the chart
-        mChart.setMarkerView(mv);
-        
-        XAxis xl = mChart.getXAxis();
-        xl.setAvoidFirstLastClipping(true);
-        
-        YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setInverted(true);
-        leftAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
-        
-        YAxis rightAxis = mChart.getAxisRight();
-        rightAxis.setEnabled(false);
+        mChart.setBackgroundColor(Color.LTGRAY);
 
         // add data
-        setData(25, 50);
+        setData(20, 30);
+        mChart.invalidate();
 
-        // // restrain the maximum scale-out factor
-        // mChart.setScaleMinima(3f, 3f);
-        //
-        // // center the view to a specific position inside the chart
-        // mChart.centerViewPort(10, 50);
+        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
         // get the legend (only possible after setting data)
         Legend l = mChart.getLegend();
@@ -107,9 +91,33 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
         // modify the legend ...
         // l.setPosition(LegendPosition.LEFT_OF_CHART);
         l.setForm(LegendForm.LINE);
+        l.setTypeface(tf);
+        l.setTextSize(11f);
+        l.setTextColor(Color.WHITE);
+        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
+//        l.setYOffset(11f);
 
-        // dont forget to refresh the drawing
-        mChart.invalidate();
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setTypeface(tf);
+        xAxis.setTextSize(12f);
+        xAxis.setTextColor(Color.WHITE);
+        xAxis.setDrawAxisLine(false);
+        xAxis.setSpaceBetweenLabels(1);
+
+        // custom x-axis min / max
+        xAxis.setAxisMinValue(5000);
+        xAxis.setAxisMaxValue(30000);
+
+        YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.setTypeface(tf);
+        leftAxis.setTextColor(ColorTemplate.getHoloBlue());
+        leftAxis.setAxisMaxValue(200f);
+        leftAxis.setAxisMinValue(0f);
+        leftAxis.setDrawGridLines(true);
+        leftAxis.setGranularityEnabled(true);
+
+        YAxis rightAxis = mChart.getAxisRight();
+        rightAxis.setEnabled(false);
     }
 
     @Override
@@ -136,7 +144,7 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
                 break;
             }
             case R.id.actionToggleHighlight: {
-                if(mChart.getData() != null) {
+                if (mChart.getData() != null) {
                     mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
                     mChart.invalidate();
                 }
@@ -173,17 +181,34 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
                 mChart.invalidate();
                 break;
             }
-            case R.id.animateX: {
-                mChart.animateX(3000);
-                break;
-            }
-            case R.id.animateY: {
-                mChart.animateY(3000);
-                break;
-            }
-            case R.id.animateXY: {
+            case R.id.actionToggleCubic: {
+                List<ILineDataSet> sets = mChart.getData()
+                        .getDataSets();
 
-                mChart.animateXY(3000, 3000);
+                for (ILineDataSet iSet : sets) {
+
+                    LineDataSet set = (LineDataSet) iSet;
+                    if (set.isDrawCubicEnabled())
+                        set.setDrawCubic(false);
+                    else
+                        set.setDrawCubic(true);
+                }
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleStepped: {
+                List<ILineDataSet> sets = mChart.getData()
+                        .getDataSets();
+
+                for (ILineDataSet iSet : sets) {
+
+                    LineDataSet set = (LineDataSet) iSet;
+                    if (set.isDrawSteppedEnabled())
+                        set.setDrawStepped(false);
+                    else
+                        set.setDrawStepped(true);
+                }
+                mChart.invalidate();
                 break;
             }
             case R.id.actionTogglePinch: {
@@ -200,6 +225,19 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
                 mChart.notifyDataSetChanged();
                 break;
             }
+            case R.id.animateX: {
+                mChart.animateX(3000);
+                break;
+            }
+            case R.id.animateY: {
+                mChart.animateY(3000);
+                break;
+            }
+            case R.id.animateXY: {
+                mChart.animateXY(3000, 3000);
+                break;
+            }
+
             case R.id.actionSave: {
                 if (mChart.saveToPath("title" + System.currentTimeMillis(), "")) {
                     Toast.makeText(getApplicationContext(), "Saving SUCCESSFUL!",
@@ -225,19 +263,55 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
 
         // redraw
         mChart.invalidate();
+
+        System.out.println("xmin: " + mChart.getXAxis().getAxisMinimum());
+        System.out.println("xmax: " + mChart.getXAxis().getAxisMaximum());
+        System.out.println("lvx: " + mChart.getLowestVisibleX());
+        System.out.println("hvx: " + mChart.getHighestVisibleX());
     }
 
-    @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
-        Log.i("VAL SELECTED",
-                "Value: " + e.getY() + ", xIndex: " + e.getX()
-                        + ", DataSet index: " + dataSetIndex);
-    }
+    private void setData(int count, float range) {
 
-    @Override
-    public void onNothingSelected() {
-        // TODO Auto-generated method stub
+        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
+        for (int i = 0; i < 10; i++) {
 
+            long timeLong = 10000 + i * 1000;
+            xVals.add(new XAxisValue(timeLong, i + ""));
+        }
+
+        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+
+        for (int i = 0; i < count; i++) {
+            float mult = range / 2f;
+            float val = (float) (Math.random() * mult) + 50;// + (float)
+            // ((mult *
+            // 0.1) / 10);
+            //yVals1.add(new Entry(val, 10000 + i * 1000));
+        }
+
+        yVals1.add(new Entry(100, 10000));
+        yVals1.add(new Entry(130, 15000));
+        yVals1.add(new Entry(120, 20000));
+
+        // create a dataset and give it a type
+        LineDataSet set1 = new LineDataSet(yVals1, "DataSet 1");
+        set1.setAxisDependency(AxisDependency.LEFT);
+        set1.setColor(ColorTemplate.getHoloBlue());
+        set1.setCircleColor(Color.WHITE);
+        set1.setLineWidth(2f);
+        set1.setCircleRadius(3f);
+        set1.setFillAlpha(65);
+        set1.setFillColor(ColorTemplate.getHoloBlue());
+        set1.setHighLightColor(Color.rgb(244, 117, 117));
+        set1.setDrawCircleHole(false);
+
+        // create a data object with the datasets
+        LineData data = new LineData(xVals, set1);
+        data.setValueTextColor(Color.WHITE);
+        data.setValueTextSize(9f);
+
+        // set data
+        mChart.setData(data);
     }
 
     @Override
@@ -250,32 +324,5 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
     public void onStopTrackingTouch(SeekBar seekBar) {
         // TODO Auto-generated method stub
 
-    }
-
-    private void setData(int count, float range) {
-
-        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
-
-        for (int i = 0; i < count; i++) {
-            float mult = (range + 1);
-            float val = (float) (Math.random() * mult) + 3;// + (float)
-                                                           // ((mult *
-                                                           // 0.1) / 10);
-            yVals.add(new Entry(val, i));
-            xVals.add(new XAxisValue(i, (i % 30) + "/" + (i % 12) + "/14"));
-        }
-
-        // create a dataset and give it a type
-        LineDataSet set1 = new LineDataSet(yVals, "DataSet 1");
-
-        set1.setLineWidth(1.5f);
-        set1.setCircleRadius(4f);
-
-        // create a data object with the datasets
-        LineData data = new LineData(xVals, set1);
-
-        // set data
-        mChart.setData(data);
     }
 }

@@ -17,10 +17,10 @@ public abstract class Renderer {
     protected ViewPortHandler mViewPortHandler;
 
     /** the minimum value on the x-axis that should be plotted */
-    protected int mMinX = 0;
+    protected float mMinX = 0;
 
     /** the maximum value on the x-axis that should be plotted */
-    protected int mMaxX = 0;
+    protected float mMaxX = 0;
 
     public Renderer(ViewPortHandler viewPortHandler) {
         this.mViewPortHandler = viewPortHandler;
@@ -52,12 +52,12 @@ public abstract class Renderer {
      */
     public void calcXBounds(BarLineScatterCandleBubbleDataProvider dataProvider, int xAxisModulus) {
         
-        int low = dataProvider.getLowestVisibleXIndex();
-        int high = dataProvider.getHighestVisibleXIndex();
+        float low = dataProvider.getLowestVisibleX();
+        float high = dataProvider.getHighestVisibleX();
         
         int subLow = (low % xAxisModulus == 0) ? xAxisModulus : 0;
         
         mMinX = Math.max((low / xAxisModulus) * (xAxisModulus) - subLow, 0);
-        mMaxX = Math.min((high / xAxisModulus) * (xAxisModulus) + xAxisModulus, (int) dataProvider.getXChartMax());
+        mMaxX = Math.min((high / xAxisModulus) * (xAxisModulus) + xAxisModulus, dataProvider.getXChartMax());
     }
 }

@@ -10,8 +10,8 @@ public interface BarLineScatterCandleBubbleDataProvider extends ChartInterface {
     int getMaxVisibleCount();
     boolean isInverted(AxisDependency axis);
     
-    int getLowestVisibleXIndex();
-    int getHighestVisibleXIndex();
+    float getLowestVisibleX();
+    float getHighestVisibleX();
 
     BarLineScatterCandleBubbleData getData();
 }

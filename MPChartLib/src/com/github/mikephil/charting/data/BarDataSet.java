@@ -87,7 +87,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
 
         for (int i = 0; i < yVals.size(); i++) {
 
-            float[] vals = yVals.get(i).getVals();
+            float[] vals = yVals.get(i).getYVals();
 
             if (vals == null)
                 mEntryCountStacks++;
@@ -104,7 +104,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
 
         for (int i = 0; i < yVals.size(); i++) {
 
-            float[] vals = yVals.get(i).getVals();
+            float[] vals = yVals.get(i).getYVals();
 
             if (vals != null && vals.length > mStackSize)
                 mStackSize = vals.length;
@@ -112,22 +112,13 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     }
 
     @Override
-    public void calcMinMax(int start, int end) {
+    public void calcMinMax() {
 
         if (mValues == null)
             return;
 
-        final int yValCount = mValues.size();
-
-        if (yValCount == 0)
+        if (mValues.size() == 0)
             return;
-
-        int endValue;
-
-        if (end == 0 || end >= yValCount)
-            endValue = yValCount - 1;
-        else
-            endValue = end;
 
         mYMin = Float.MAX_VALUE;
         mYMax = -Float.MAX_VALUE;
@@ -135,19 +126,17 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
         mXMin = Float.MAX_VALUE;
         mXMax = -Float.MAX_VALUE;
 
-        for (int i = start; i <= endValue; i++) {
+        for (BarEntry e : mValues) {
 
-            BarEntry e = mValues.get(i);
+            if (e != null && !Float.isNaN(e.getY())) {
 
-            if (e != null && !Float.isNaN(e.getVal())) {
+                if (e.getYVals() == null) {
 
-                if (e.getVals() == null) {
+                    if (e.getY() < mYMin)
+                        mYMin = e.getY();
 
-                    if (e.getVal() < mYMin)
-                        mYMin = e.getVal();
-
-                    if (e.getVal() > mYMax)
-                        mYMax = e.getVal();
+                    if (e.getY() > mYMax)
+                        mYMax = e.getY();
                 } else {
 
                     if (-e.getNegativeSum() < mYMin)
@@ -157,17 +146,22 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
                         mYMax = e.getPositiveSum();
                 }
 
-                if (e.getXIndex() < mXMin)
-                    mXMin = e.getXIndex();
+                if (e.getX() < mXMin)
+                    mXMin = e.getX();
 
-                if (e.getXIndex() > mXMax)
-                    mXMax = e.getXIndex();
+                if (e.getX() > mXMax)
+                    mXMax = e.getX();
             }
         }
 
         if (mYMin == Float.MAX_VALUE) {
             mYMin = 0.f;
             mYMax = 0.f;
+        }
+
+        if(mXMin == Float.MAX_VALUE) {
+            mXMin = 0.f;
+            mXMax = 0.f;
         }
     }
 

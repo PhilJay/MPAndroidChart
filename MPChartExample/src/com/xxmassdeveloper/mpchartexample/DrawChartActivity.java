@@ -144,7 +144,7 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
     @Override
     public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
         Log.i("VAL SELECTED",
-                "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
+                "Value: " + e.getY() + ", xIndex: " + e.getX()
                         + ", DataSet index: " + dataSetIndex);
     }
 

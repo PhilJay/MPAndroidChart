@@ -29,8 +29,6 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.XAxisValue;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
@@ -285,8 +283,8 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         Log.i("position", position.toString());
 
         Log.i("x-index",
-                "low: " + mChart.getLowestVisibleXIndex() + ", high: "
-                        + mChart.getHighestVisibleXIndex());
+                "low: " + mChart.getLowestVisibleX() + ", high: "
+                        + mChart.getHighestVisibleX());
     }
 
     public void onNothingSelected() {

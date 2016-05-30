@@ -1,7 +1,6 @@
 package com.github.mikephil.charting.data.realm.implementation;
 
 import com.github.mikephil.charting.data.BubbleEntry;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.realm.base.RealmBarLineScatterCandleBubbleDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 import com.github.mikephil.charting.utils.Utils;
@@ -34,7 +33,7 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
         this.mSizeField = sizeField;
 
         build(this.results);
-        calcMinMax(0, results.size());
+        calcMinMax();
     }
 
     /**
@@ -50,7 +49,7 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
         this.mSizeField = sizeField;
 
         build(this.results);
-        calcMinMax(0, results.size());
+        calcMinMax();
     }
 
     @Override
@@ -64,7 +63,7 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
     }
 
     @Override
-    public void calcMinMax(int start, int end) {
+    public void calcMinMax() {
 
         if (mValues == null)
             return;
@@ -72,24 +71,18 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
         if (mValues.size() == 0)
             return;
 
-        int endValue;
+        mYMin = Float.MAX_VALUE;
+        mYMax = -Float.MAX_VALUE;
 
-        if (end == 0 || end >= mValues.size())
-            endValue = mValues.size() - 1;
-        else
-            endValue = end;
-
-        mYMin = yMin(mValues.get(start));
-        mYMax = yMax(mValues.get(start));
+        mXMin = Float.MAX_VALUE;
+        mXMax = -Float.MAX_VALUE;
 
         // need chart width to guess this properly
 
-        for (int i = start; i < endValue; i++) {
+        for (BubbleEntry entry : mValues) {
 
-            final BubbleEntry entry = mValues.get(i);
-
-            final float ymin = yMin(entry);
-            final float ymax = yMax(entry);
+            float ymin = entry.getY();
+            float ymax = entry.getY();
 
             if (ymin < mYMin) {
                 mYMin = ymin;
@@ -99,8 +92,8 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
                 mYMax = ymax;
             }
 
-            final float xmin = xMin(entry);
-            final float xmax = xMax(entry);
+            final float xmin = entry.getX();
+            final float xmax = entry.getX();
 
             if (xmin < mXMin) {
                 mXMin = xmin;
@@ -110,11 +103,21 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
                 mXMax = xmax;
             }
 
-            final float size = largestSize(entry);
+            final float size = entry.getSize();
 
             if (size > mMaxSize) {
                 mMaxSize = size;
             }
+        }
+
+        if (mYMin == Float.MAX_VALUE) {
+            mYMin = 0.f;
+            mYMax = 0.f;
+        }
+
+        if(mXMin == Float.MAX_VALUE) {
+            mXMin = 0.f;
+            mXMax = 0.f;
         }
     }
 
@@ -130,26 +133,6 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
 
     public void setNormalizeSizeEnabled(boolean normalizeSize) {
         mNormalizeSize = normalizeSize;
-    }
-
-    private float yMin(BubbleEntry entry) {
-        return entry.getVal();
-    }
-
-    private float yMax(BubbleEntry entry) {
-        return entry.getVal();
-    }
-
-    private float xMin(BubbleEntry entry) {
-        return (float) entry.getXIndex();
-    }
-
-    private float xMax(BubbleEntry entry) {
-        return (float) entry.getXIndex();
-    }
-
-    private float largestSize(BubbleEntry entry) {
-        return entry.getSize();
     }
 
     @Override

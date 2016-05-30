@@ -144,7 +144,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                             continue;
 
                         BarEntry e = dataSet.getEntryForIndex(j / 2);
-                        float val = e.getVal();
+                        float val = e.getY();
                         String formattedValue = formatter.getFormattedValue(val, e, i, mViewPortHandler);
 
                         // calculate the correct offset depending on the draw position of the value
@@ -168,7 +168,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
                         BarEntry e = dataSet.getEntryForIndex(j / 2);
 
-                        float[] vals = e.getVals();
+                        float[] vals = e.getYVals();
 
                         // we still draw stacked bars, but there is one
                         // non-stacked
@@ -184,7 +184,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                             if (!mViewPortHandler.isInBoundsBottom(valuePoints[j + 1]))
                                 continue;
 
-                            float val = e.getVal();
+                            float val = e.getY();
                             String formattedValue = formatter.getFormattedValue(val, e, i, mViewPortHandler);
 
                             // calculate the correct offset depending on the draw position of the value
@@ -198,7 +198,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                             }
 
                             drawValue(c, formattedValue, valuePoints[j]
-                                            + (e.getVal() >= 0 ? posOffset : negOffset),
+                                            + (e.getY() >= 0 ? posOffset : negOffset),
                                     valuePoints[j + 1] + halfTextHeight, dataSet.getValueTextColor(j / 2));
 
                         } else {

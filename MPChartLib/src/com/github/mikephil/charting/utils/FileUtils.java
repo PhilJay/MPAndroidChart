@@ -216,7 +216,7 @@ public class FileUtils {
 
             for (Entry e : entries) {
 
-                buf.append(e.getVal() + "#" + e.getXIndex());
+                buf.append(e.getY() + "#" + e.getX());
                 buf.newLine();
             }
 

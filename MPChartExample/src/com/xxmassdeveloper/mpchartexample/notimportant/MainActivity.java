@@ -29,6 +29,7 @@ import com.xxmassdeveloper.mpchartexample.InvertedLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.LineChartActivity1;
 import com.xxmassdeveloper.mpchartexample.LineChartActivity2;
 import com.xxmassdeveloper.mpchartexample.LineChartActivityColored;
+import com.xxmassdeveloper.mpchartexample.LineChartTime;
 import com.xxmassdeveloper.mpchartexample.ListViewBarChartActivity;
 import com.xxmassdeveloper.mpchartexample.ListViewMultiChartActivity;
 import com.xxmassdeveloper.mpchartexample.MultiLineChartActivity;
@@ -135,6 +136,12 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 "This demonstrates how to use this library with Realm.io mobile database.");
         realm.isNew = true;
         objects.add(realm);
+
+        ContentItem time = new ContentItem(
+                "Time Chart",
+                "Simple demonstration of a time-chart.");
+        time.isNew = true;
+        objects.add(time);
 
         MyAdapter adapter = new MyAdapter(this, objects);
 
@@ -266,6 +273,11 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 i = new Intent(this, RealmMainActivity.class);
                 startActivity(i);
                 break;
+            case 29:
+                i = new Intent(this, LineChartTime.class);
+                startActivity(i);
+                break;
+
         }
 
         overridePendingTransition(R.anim.move_right_in_activity, R.anim.move_left_out_activity);

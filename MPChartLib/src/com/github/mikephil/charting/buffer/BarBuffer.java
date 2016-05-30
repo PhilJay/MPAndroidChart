@@ -55,10 +55,10 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
             BarEntry e = data.getEntryForIndex(i);
 
             // calculate the x-position, depending on datasetcount
-            float x = e.getXIndex() + e.getXIndex() * dataSetOffset + mDataSetIndex
-                    + mGroupSpace * e.getXIndex() + groupSpaceHalf;
-            float y = e.getVal();
-            float [] vals = e.getVals();
+            float x = e.getX() + e.getX() * dataSetOffset + mDataSetIndex
+                    + mGroupSpace * e.getX() + groupSpaceHalf;
+            float y = e.getY();
+            float [] vals = e.getYVals();
                 
             if (!mContainsStacks || vals == null) {
 

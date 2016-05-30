@@ -80,7 +80,7 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
         mCircleColors.add(Color.rgb(140, 234, 255));
 
         build(this.results);
-        calcMinMax(0, results.size());
+        calcMinMax();
     }
 
     /**
@@ -98,7 +98,7 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
         mCircleColors.add(Color.rgb(140, 234, 255));
 
         build(this.results);
-        calcMinMax(0, results.size());
+        calcMinMax();
     }
 
     /**

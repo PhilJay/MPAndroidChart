@@ -218,6 +218,24 @@ public class XAxis extends AxisBase {
         return mValues;
     }
 
+    /**
+     * Adds a new x-value to the chart data.
+     *
+     * @param xVal
+     */
+    public void addXValue(XAxisValue xVal) {
+        mValues.add(xVal);
+    }
+
+    /**
+     * Removes the x-value at the specified index.
+     *
+     * @param index
+     */
+    public void removeXValue(int index) {
+        mValues.remove(index);
+    }
+
 
     /**
      * Sets a custom XAxisValueFormatter for the data object that allows custom-formatting

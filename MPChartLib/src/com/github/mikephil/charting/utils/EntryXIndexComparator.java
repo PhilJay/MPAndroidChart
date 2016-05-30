@@ -11,6 +11,6 @@ import java.util.Comparator;
 public class EntryXIndexComparator implements Comparator<Entry> {
     @Override
     public int compare(Entry entry1, Entry entry2) {
-        return entry1.getXIndex() - entry2.getXIndex();
+        return entry1.getX() - entry2.getX();
     }
 }

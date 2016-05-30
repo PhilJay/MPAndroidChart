@@ -15,8 +15,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
@@ -59,8 +57,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * flag that indicates if auto scaling on the y axis is enabled
      */
     private boolean mAutoScaleMinMaxEnabled = false;
-    private Integer mAutoScaleLastLowestVisibleXIndex = null;
-    private Integer mAutoScaleLastHighestVisibleXIndex = null;
+    private Float mAutoScaleLastLowestVisibleXIndex = null;
+    private Float mAutoScaleLastHighestVisibleXIndex = null;
 
     /**
      * flag that indicates if pinch-zoom is enabled. if true, both x and y axis
@@ -216,8 +214,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         mAxisRendererRight.renderAxisLine(canvas);
 
         if (mAutoScaleMinMaxEnabled) {
-            final int lowestVisibleXIndex = getLowestVisibleXIndex();
-            final int highestVisibleXIndex = getHighestVisibleXIndex();
+            final float lowestVisibleXIndex = getLowestVisibleX();
+            final float highestVisibleXIndex = getHighestVisibleX();
 
             if (mAutoScaleLastLowestVisibleXIndex == null ||
                     mAutoScaleLastLowestVisibleXIndex != lowestVisibleXIndex ||
@@ -359,11 +357,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     protected void calcMinMax() {
 
         if (mAutoScaleMinMaxEnabled)
-            mData.calcMinMax(getLowestVisibleXIndex(), getHighestVisibleXIndex());
+            mData.calcMinMax();
 
-        // calculate / set x-axis range
-        mXAxis.mAxisMaximum = mData.getXVals().size() - 1;
-        mXAxis.mAxisRange = Math.abs(mXAxis.mAxisMaximum - mXAxis.mAxisMinimum);
+//        // calculate / set x-axis range
+//        mXAxis.mAxisMaximum = mData.getXVals().size() - 1;
+//        mXAxis.mAxisRange = Math.abs(mXAxis.mAxisMaximum - mXAxis.mAxisMinimum);
+
+        mXAxis.calculate(mData.getXMin(), mData.getXMax());
 
         // calculate axis range (min / max) according to provided data
         mAxisLeft.calculate(mData.getYMin(AxisDependency.LEFT), mData.getYMax(AxisDependency.LEFT));
@@ -557,15 +557,15 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     protected float[] getMarkerPosition(Entry e, Highlight highlight) {
 
         int dataSetIndex = highlight.getDataSetIndex();
-        float xPos = e.getXIndex();
-        float yPos = e.getVal();
+        float xPos = e.getX();
+        float yPos = e.getY();
 
         if (this instanceof BarChart) {
 
             BarData bd = (BarData) mData;
             float space = bd.getGroupSpace();
             int setCount = mData.getDataSetCount();
-            int i = e.getXIndex();
+            int i = e.getX();
 
             if (this instanceof HorizontalBarChart) {
 
@@ -575,10 +575,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
                 yPos = y;
 
                 BarEntry entry = (BarEntry) e;
-                if (entry.getVals() != null) {
+                if (entry.getYVals() != null) {
                     xPos = highlight.getRange().to;
                 } else {
-                    xPos = e.getVal();
+                    xPos = e.getY();
                 }
 
                 xPos *= mAnimator.getPhaseY();
@@ -589,10 +589,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
                 xPos = x;
 
                 BarEntry entry = (BarEntry) e;
-                if (entry.getVals() != null) {
+                if (entry.getYVals() != null) {
                     yPos = highlight.getRange().to;
                 } else {
-                    yPos = e.getVal();
+                    yPos = e.getY();
                 }
 
                 yPos *= mAnimator.getPhaseY();
@@ -1063,7 +1063,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             return null;
 
         float[] vals = new float[]{
-                e.getXIndex(), e.getVal()
+                e.getX(), e.getY()
         };
 
         getTransformer(axis).pointValuesToPixel(vals);
@@ -1367,12 +1367,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @return
      */
     @Override
-    public int getLowestVisibleXIndex() {
+    public float getLowestVisibleX() {
         float[] pts = new float[]{
                 mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom()
         };
         getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
-        return (pts[0] <= 0) ? 0 : (int)Math.ceil(pts[0]);
+        return (pts[0] <= 0) ? 0 : (float) Math.ceil(pts[0]);
     }
 
     /**
@@ -1382,12 +1382,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @return
      */
     @Override
-    public int getHighestVisibleXIndex() {
+    public float getHighestVisibleX() {
         float[] pts = new float[]{
                 mViewPortHandler.contentRight(), mViewPortHandler.contentBottom()
         };
         getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
-        return Math.min(mData.getXValCount() - 1, (int)Math.floor(pts[0]));
+        return (float) Math.min(mXAxis.mAxisMaximum, Math.floor(pts[0]));
     }
 
     /**

@@ -260,7 +260,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         if (e == null)
             return;
         Log.i("VAL SELECTED",
-                "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
+                "Value: " + e.getY() + ", xIndex: " + e.getX()
                         + ", DataSet index: " + dataSetIndex);
     }
 

@@ -53,12 +53,9 @@ public interface IDataSet<T extends Entry> {
     int getEntryCount();
 
     /**
-     * Calculates the minimum and maximum y value (mYMin, mYMax). From the specified starting to ending index.
-     *
-     * @param start starting index in your data list
-     * @param end   ending index in your data list
+     * Calculates the minimum and maximum x and y values (mXMin, mXMax, mYMin, mYMax).
      */
-    void calcMinMax(int start, int end);
+    void calcMinMax();
 
     /**
      * Returns the first Entry object found at the given xIndex with binary

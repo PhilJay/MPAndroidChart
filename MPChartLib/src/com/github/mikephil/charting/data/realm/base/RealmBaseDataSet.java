@@ -1,6 +1,5 @@
 package com.github.mikephil.charting.data.realm.base;
 
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.BaseDataSet;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -98,7 +97,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     public S buildEntryFromResultObject(T realmObject, int xIndex) {
         DynamicRealmObject dynamicObject = new DynamicRealmObject(realmObject);
 
-        return (S)new Entry(dynamicObject.getFloat(mValuesField),
+        return (S) new Entry(dynamicObject.getFloat(mValuesField),
                 mIndexField == null ? xIndex : dynamicObject.getInt(mIndexField));
     }
 
@@ -130,22 +129,13 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     }
 
     @Override
-    public void calcMinMax(int start, int end) {
+    public void calcMinMax() {
 
         if (mValues == null)
             return;
 
-        final int yValCount = mValues.size();
-
-        if (yValCount == 0)
+        if (mValues.size() == 0)
             return;
-
-        int endValue;
-
-        if (end == 0 || end >= yValCount)
-            endValue = yValCount - 1;
-        else
-            endValue = end;
 
         mYMin = Float.MAX_VALUE;
         mYMax = -Float.MAX_VALUE;
@@ -153,29 +143,32 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         mXMin = Float.MAX_VALUE;
         mXMax = -Float.MAX_VALUE;
 
-        for (int i = start; i <= endValue; i++) {
+        for (S e : mValues) {
 
-            S e = mValues.get(i);
+            if (e != null && !Float.isNaN(e.getY())) {
 
-            if (e != null && !Float.isNaN(e.getVal())) {
+                if (e.getY() < mYMin)
+                    mYMin = e.getY();
 
-                if (e.getVal() < mYMin)
-                    mYMin = e.getVal();
+                if (e.getY() > mYMax)
+                    mYMax = e.getY();
 
-                if (e.getVal() > mYMax)
-                    mYMax = e.getVal();
+                if (e.getX() < mXMin)
+                    mXMin = e.getX();
 
-                if (e.getXIndex() < mXMin)
-                    mXMin = e.getXIndex();
-
-                if (e.getXIndex() > mXMax)
-                    mXMax = e.getXIndex();
+                if (e.getX() > mXMax)
+                    mXMax = e.getX();
             }
         }
 
         if (mYMin == Float.MAX_VALUE) {
             mYMin = 0.f;
             mYMax = 0.f;
+        }
+
+        if (mXMin == Float.MAX_VALUE) {
+            mXMin = 0.f;
+            mXMax = 0.f;
         }
     }
 
@@ -232,14 +225,14 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
 
             S entry = mValues.get(m);
 
-            if (x == entry.getXIndex()) {
-                while (m > 0 && mValues.get(m - 1).getXIndex() == x)
+            if (x == entry.getX()) {
+                while (m > 0 && mValues.get(m - 1).getX() == x)
                     m--;
 
                 return m;
             }
 
-            if (x > entry.getXIndex())
+            if (x > entry.getX())
                 low = m + 1;
             else
                 high = m - 1;
@@ -248,7 +241,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         }
 
         if (closest != -1) {
-            int closestXIndex = mValues.get(closest).getXIndex();
+            int closestXIndex = mValues.get(closest).getX();
             if (rounding == DataSet.Rounding.UP) {
                 if (closestXIndex < x && closest < mValues.size() - 1) {
                     ++closest;
@@ -270,11 +263,12 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
 
     @Override
     public float getYValForXIndex(int xIndex) {
-        //return new DynamicRealmObject(results.where().greaterThanOrEqualTo(mIndexField, xIndex).findFirst()).getFloat(mValuesField);
+        //return new DynamicRealmObject(results.where().greaterThanOrEqualTo(mIndexField, xIndex).findFirst())
+        // .getFloat(mValuesField);
         Entry e = getEntryForXIndex(xIndex);
 
-        if (e != null && e.getXIndex() == xIndex)
-            return e.getVal();
+        if (e != null && e.getX() == xIndex)
+            return e.getY();
         else
             return Float.NaN;
     }
@@ -288,7 +282,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         int i = 0;
 
         for (S e : entries)
-            yVals[i++] = e.getVal();
+            yVals[i++] = e.getY();
 
         return yVals;
     }
@@ -299,7 +293,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         if (e == null)
             return false;
 
-        float val = e.getVal();
+        float val = e.getY();
 
         if (mValues == null) {
             mValues = new ArrayList<S>();
@@ -333,7 +327,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         boolean removed = mValues.remove(e);
 
         if (removed) {
-            calcMinMax(0, mValues.size());
+            calcMinMax();
         }
 
         return removed;
@@ -345,7 +339,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         if (e == null)
             return;
 
-        float val = e.getVal();
+        float val = e.getY();
 
         if (mValues == null) {
             mValues = new ArrayList<S>();
@@ -361,8 +355,8 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
                 mYMin = val;
         }
 
-        if (mValues.size() > 0 && mValues.get(mValues.size() - 1).getXIndex() > e.getXIndex()) {
-            int closestIndex = getEntryIndex(e.getXIndex(), DataSet.Rounding.UP);
+        if (mValues.size() > 0 && mValues.get(mValues.size() - 1).getX() > e.getX()) {
+            int closestIndex = getEntryIndex(e.getX(), DataSet.Rounding.UP);
             mValues.add(closestIndex, e);
             return;
         }

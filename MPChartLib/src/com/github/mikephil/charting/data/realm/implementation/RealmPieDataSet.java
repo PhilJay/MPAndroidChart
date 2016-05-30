@@ -44,7 +44,7 @@ public class RealmPieDataSet<T extends RealmObject> extends RealmBaseDataSet<T, 
         super(result, yValuesField);
 
         build(this.results);
-        calcMinMax(0, results.size());
+        calcMinMax();
     }
 
     /**
@@ -58,7 +58,7 @@ public class RealmPieDataSet<T extends RealmObject> extends RealmBaseDataSet<T, 
         super(result, yValuesField, xIndexField);
 
         build(this.results);
-        calcMinMax(0, results.size());
+        calcMinMax();
     }
 
     /**

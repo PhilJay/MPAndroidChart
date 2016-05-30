@@ -17,8 +17,6 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.XAxisValue;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
@@ -230,7 +228,7 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
     @Override
     public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
         Log.i("VAL SELECTED",
-                "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
+                "Value: " + e.getY() + ", xIndex: " + e.getX()
                         + ", DataSet index: " + dataSetIndex);
     }
 

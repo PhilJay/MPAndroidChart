@@ -13,77 +13,72 @@ import android.os.Parcelable;
  */
 public class Entry implements Parcelable {
 
-    /** the actual value */
-    private float mVal = 0f;
+    /** the y value */
+    private float y = 0f;
 
-    /** the index on the x-axis */
-    private int mXIndex = 0;
+    /** the x value */
+    private float x = 0f;
 
     /** optional spot for additional data this Entry represents */
     private Object mData = null;
 
     /**
      * A Entry represents one single entry in the chart.
-     * 
-     * @param val the y value (the actual value of the entry)
-     * @param xIndex the corresponding index in the x value array (index on the
-     *            x-axis of the chart, must NOT be higher than the length of the
-     *            x-values String array)
+     *
+     * @param x the x value
+     * @param y the y value (the actual value of the entry)
      */
-    public Entry(float val, int xIndex) {
-        mVal = val;
-        mXIndex = xIndex;
+    public Entry(float x, float y) {
+        this.y = y;
+        this.x = x;
     }
 
     /**
      * A Entry represents one single entry in the chart.
-     * 
-     * @param val the y value (the actual value of the entry)
-     * @param xIndex the corresponding index in the x value array (index on the
-     *            x-axis of the chart, must NOT be higher than the length of the
-     *            x-values String array)
+     *
+     * @param x the x value
+     * @param y the y value (the actual value of the entry)
      * @param data Spot for additional data this Entry represents.
      */
-    public Entry(float val, int xIndex, Object data) {
-        this(val, xIndex);
-
+    public Entry(float x, float y, Object data) {
+        this(x, y);
         this.mData = data;
     }
 
     /**
-     * returns the x-index the value of this object is mapped to
+     * Returns the x-value of this Entry object.
      * 
      * @return
      */
-    public int getXIndex() {
-        return mXIndex;
+    public float getX() {
+        return x;
     }
 
     /**
-     * sets the x-index for the entry
+     * Sets the x-value of this Entry object.
      * 
      * @param x
      */
-    public void setXIndex(int x) {
-        this.mXIndex = x;
+    public void setX(float x) {
+        this.x = x;
     }
 
     /**
-     * Returns the total value the entry represents.
+     * Returns the y value of this Entry.
      * 
      * @return
      */
-    public float getVal() {
-        return mVal;
+    public float getY() {
+        return y;
     }
 
     /**
-     * Sets the value for the entry.
+     * Sets the y-value for the Entry.
      * 
-     * @param val
+     * @param y
      */
-    public void setVal(float val) {
-        this.mVal = val;
+    public void setY(float y) {
+        this.y = y;
     }
 
     /**
@@ -111,7 +106,7 @@ public class Entry implements Parcelable {
      * @return
      */
     public Entry copy() {
-        Entry e = new Entry(mVal, mXIndex, mData);
+        Entry e = new Entry(x, y, mData);
         return e;
     }
 
@@ -130,10 +125,11 @@ public class Entry implements Parcelable {
 
         if (e.mData != this.mData)
             return false;
-        if (e.mXIndex != this.mXIndex)
+
+        if (Math.abs(e.x - this.x) > 0.000001f)
             return false;
 
-        if (Math.abs(e.mVal - this.mVal) > 0.00001f)
+        if (Math.abs(e.y - this.y) > 0.000001f)
             return false;
 
         return true;
@@ -144,7 +140,7 @@ public class Entry implements Parcelable {
      */
     @Override
     public String toString() {
-        return "Entry, xIndex: " + mXIndex + " val (sum): " + getVal();
+        return "Entry, xIndex: " + x + " val (sum): " + getY();
     }
 
     @Override
@@ -154,8 +150,8 @@ public class Entry implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeFloat(this.mVal);
-        dest.writeInt(this.mXIndex);
+        dest.writeFloat(this.x);
+        dest.writeFloat(this.y);
         if (mData != null) {
             if (mData instanceof Parcelable) {
                 dest.writeInt(1);
@@ -169,8 +165,8 @@ public class Entry implements Parcelable {
     }
 
     protected Entry(Parcel in) {
-        this.mVal = in.readFloat();
-        this.mXIndex = in.readInt();
+        this.x = in.readFloat();
+        this.y = in.readFloat();
         if (in.readInt() == 1) {
             this.mData = in.readParcelable(Object.class.getClassLoader());
         }
