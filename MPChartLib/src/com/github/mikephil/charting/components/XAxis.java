@@ -23,25 +23,25 @@ public class XAxis extends AxisBase {
 
     /**
      * width of the x-axis labels in pixels - this is automatically
-     * calculated by the computeAxis() methods in the renderers
+     * calculated by the computeSize() methods in the renderers
      */
     public int mLabelWidth = 1;
 
     /**
      * height of the x-axis labels in pixels - this is automatically
-     * calculated by the computeAxis() methods in the renderers
+     * calculated by the computeSize() methods in the renderers
      */
     public int mLabelHeight = 1;
 
     /**
      * width of the (rotated) x-axis labels in pixels - this is automatically
-     * calculated by the computeAxis() methods in the renderers
+     * calculated by the computeSize() methods in the renderers
      */
     public int mLabelRotatedWidth = 1;
 
     /**
      * height of the (rotated) x-axis labels in pixels - this is automatically
-     * calculated by the computeAxis() methods in the renderers
+     * calculated by the computeSize() methods in the renderers
      */
     public int mLabelRotatedHeight = 1;
 

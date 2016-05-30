@@ -99,6 +99,7 @@ public class BarChartRenderer extends DataRenderer {
         buffer.setBarSpace(dataSet.getBarSpace());
         buffer.setDataSet(index);
         buffer.setInverted(mChart.isInverted(dataSet.getAxisDependency()));
+        buffer.setInterval(mChart.getXChartMax() / dataSet.getEntryCount());
 
         buffer.feed(dataSet);
 
@@ -192,6 +193,7 @@ public class BarChartRenderer extends DataRenderer {
 
     @Override
     public void drawValues(Canvas c) {
+
         // if values are drawn
         if (passesCheck()) {
 

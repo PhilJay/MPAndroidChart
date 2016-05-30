@@ -11,8 +11,8 @@ import android.graphics.PointF;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
-import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.utils.FSize;
+import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -34,6 +34,30 @@ public class XAxisRenderer extends AxisRenderer {
     }
 
     @Override
+    public void computeAxis(float min, float max, boolean inverted) {
+
+        // calculate the starting and entry point of the y-labels (depending on
+        // zoom / contentrect bounds)
+        if (mViewPortHandler.contentWidth() > 10 && !mViewPortHandler.isFullyZoomedOutX()) {
+
+            PointD p1 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop());
+            PointD p2 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentRight(), mViewPortHandler.contentTop());
+
+            if (inverted) {
+
+                min = (float) p2.x;
+                max = (float) p1.x;
+            } else {
+
+                min = (float) p1.x;
+                max = (float) p2.x;
+            }
+        }
+
+        computeAxisValues(min, max);
+    }
+
+    @Override
     protected void computeAxisValues(float min, float max) {
 
         int labelCount = mXAxis.getLabelCount();
@@ -43,12 +67,13 @@ public class XAxisRenderer extends AxisRenderer {
 
         if (mXAxis.mEntries == null || mXAxis.mEntries.length != labelCount) {
             mXAxis.mEntries = new float[labelCount];
+            mXAxis.mEntryCount = labelCount;
         }
 
-        mXAxis.mEntries[0] = 0f;
+        mXAxis.mEntries[0] = min;
 
         for (int i = 1; i < labelCount; i++) {
-            mXAxis.mEntries[i] = interval * (float) i;
+            mXAxis.mEntries[i] = min + interval * (float) i;
         }
 
         // set decimals
@@ -58,12 +83,10 @@ public class XAxisRenderer extends AxisRenderer {
             mXAxis.mDecimals = 0;
         }
 
-        if (mXAxis.getValues() != null && !mXAxis.getValues().isEmpty()) {
-            computeAxis();
-        }
+        computeSize();
     }
 
-    protected void computeAxis() {
+    protected void computeSize() {
 
         String longest = mXAxis.getLongestLabel();
 
@@ -171,7 +194,7 @@ public class XAxisRenderer extends AxisRenderer {
 
         final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
 
-        float[] positions = new float[mXAxis.mEntryCount * 2];
+        float[] positions = new float[mXAxis.mEntries.length * 2];
 
         for (int i = 0; i < positions.length; i += 2) {
             // only fill x values
@@ -222,7 +245,7 @@ public class XAxisRenderer extends AxisRenderer {
         if (!mXAxis.isDrawGridLinesEnabled() || !mXAxis.isEnabled())
             return;
 
-        float[] positions = new float[mXAxis.mEntryCount * 2];
+        float[] positions = new float[mXAxis.mEntries.length * 2];
 
         for (int i = 0; i < positions.length; i += 2) {
             // only fill x values
@@ -347,5 +370,4 @@ public class XAxisRenderer extends AxisRenderer {
             }
         }
     }
-
 }

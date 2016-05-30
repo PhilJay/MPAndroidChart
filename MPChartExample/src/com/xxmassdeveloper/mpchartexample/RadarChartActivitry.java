@@ -170,7 +170,8 @@ public class RadarChartActivitry extends DemoBase {
                 break;
             }
             case R.id.actionToggleSpin: {
-                mChart.spin(2000, mChart.getRotationAngle(), mChart.getRotationAngle() + 360, Easing.EasingOption.EaseInCubic);
+                mChart.spin(2000, mChart.getRotationAngle(), mChart.getRotationAngle() + 360, Easing.EasingOption
+                        .EaseInCubic);
                 break;
             }
         }
@@ -194,11 +195,13 @@ public class RadarChartActivitry extends DemoBase {
         // xIndex (even if from different DataSets), since no values can be
         // drawn above each other.
         for (int i = 0; i < cnt; i++) {
-            yVals1.add(new Entry((float) (Math.random() * mult) + mult / 2, i));
+            float val = (float) (Math.random() * mult) + mult / 2;
+            yVals1.add(new Entry(i, val));
         }
 
         for (int i = 0; i < cnt; i++) {
-            yVals2.add(new Entry((float) (Math.random() * mult) + mult / 2, i));
+            float val = (float) (Math.random() * mult) + mult / 2;
+            yVals2.add(new Entry(i, val));
         }
 
         ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
@@ -228,7 +231,6 @@ public class RadarChartActivitry extends DemoBase {
         data.setDrawValues(false);
 
         mChart.setData(data);
-
         mChart.invalidate();
     }
 }

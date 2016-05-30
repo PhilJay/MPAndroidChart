@@ -233,7 +233,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
         mWebPaint.setColor(mChart.getWebColorInner());
         mWebPaint.setAlpha(mChart.getWebAlpha());
 
-        int labelCount = mChart.getYAxis().mEntryCount;
+        int labelCount = mChart.getYAxis().mEntries.length;
 
         for (int j = 0; j < labelCount; j++) {
 
