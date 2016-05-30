@@ -614,7 +614,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             } else {
                 if (this instanceof BarLineChartBase
                         && ((BarLineChartBase)this).isHighlightFullBarEnabled())
-                    high = new Highlight(high.getXIndex(), Float.NaN, -1, -1, -1);
+                    high = new Highlight(high.getX(), Float.NaN, -1, -1, -1);
 
                 // set the indices to highlight
                 mIndicesToHighlight = new Highlight[]{
@@ -681,19 +681,19 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         for (int i = 0; i < mIndicesToHighlight.length; i++) {
 
             Highlight highlight = mIndicesToHighlight[i];
-            int xIndex = highlight.getXIndex();
+            float xVal = highlight.getX();
             int dataSetIndex = highlight.getDataSetIndex();
 
             float deltaX = mXAxis != null 
                 ? mXAxis.mAxisRange
                 : ((mData == null ? 0.f : mData.getXValCount()) - 1.f);
 
-            if (xIndex <= deltaX && xIndex <= deltaX * mAnimator.getPhaseX()) {
+            if (xVal <= deltaX && xVal <= deltaX * mAnimator.getPhaseX()) {
 
                 Entry e = mData.getEntryForHighlight(mIndicesToHighlight[i]);
 
                 // make sure entry not null
-                if (e == null || e.getX() != mIndicesToHighlight[i].getXIndex())
+                if (e == null || e.getX() != mIndicesToHighlight[i].getX())
                     continue;
 
                 float[] pos = getMarkerPosition(e, highlight);

@@ -15,7 +15,8 @@ import io.realm.RealmResults;
 /**
  * Created by Philipp Jahoda on 07/11/15.
  */
-public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterCandleBubbleDataSet<T, BarEntry> implements IBarDataSet {
+public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterCandleBubbleDataSet<T, BarEntry>
+        implements IBarDataSet {
 
     private String mStackValueFieldName;
 
@@ -67,7 +68,8 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
      * @param xIndexField
      * @param stackValueFieldName
      */
-    public RealmBarDataSet(RealmResults<T> results, String yValuesField, String xIndexField, String stackValueFieldName) {
+    public RealmBarDataSet(RealmResults<T> results, String yValuesField, String xIndexField, String
+            stackValueFieldName) {
         super(results, yValuesField, xIndexField);
         this.mStackValueFieldName = stackValueFieldName;
         mHighLightColor = Color.rgb(0, 0, 0);
@@ -85,12 +87,12 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
     }
 
     @Override
-    public BarEntry buildEntryFromResultObject(T realmObject, int xIndex) {
+    public BarEntry buildEntryFromResultObject(T realmObject, float x) {
         DynamicRealmObject dynamicObject = new DynamicRealmObject(realmObject);
 
-        if (dynamicObject.getFieldType(mValuesField) == RealmFieldType.LIST) {
+        if (dynamicObject.getFieldType(mYValuesField) == RealmFieldType.LIST) {
 
-            RealmList<DynamicRealmObject> list = dynamicObject.getList(mValuesField);
+            RealmList<DynamicRealmObject> list = dynamicObject.getList(mYValuesField);
             float[] values = new float[list.size()];
 
             int i = 0;
@@ -99,12 +101,11 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
                 i++;
             }
 
-            return new BarEntry(values,
-                    mIndexField == null ? xIndex : dynamicObject.getInt(mIndexField));
+            return new BarEntry(
+                    mXValuesField == null ? x : dynamicObject.getInt(mXValuesField), values);
         } else {
-            float value = dynamicObject.getFloat(mValuesField);
-            return new BarEntry(value,
-                    mIndexField == null ? xIndex : dynamicObject.getInt(mIndexField));
+            float value = dynamicObject.getFloat(mYValuesField);
+            return new BarEntry(mXValuesField == null ? x : dynamicObject.getInt(mXValuesField), value);
         }
     }
 
@@ -156,7 +157,7 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
             mYMax = 0.f;
         }
 
-        if(mXMin == Float.MAX_VALUE) {
+        if (mXMin == Float.MAX_VALUE) {
             mXMin = 0.f;
             mXMax = 0.f;
         }

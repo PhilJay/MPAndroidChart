@@ -18,6 +18,7 @@ import android.text.TextPaint;
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -693,13 +694,16 @@ public class PieChartRenderer extends DataRenderer {
         for (int i = 0; i < indices.length; i++) {
 
             // get the index to highlight
-            int xIndex = indices[i].getXIndex();
-            if (xIndex >= drawAngles.length)
+            float x = indices[i].getX();
+
+            if (x >= drawAngles.length)
                 continue;
 
             IPieDataSet set = mChart.getData()
                     .getDataSetByIndex(indices[i]
                             .getDataSetIndex());
+
+            int entryIndex = set.getEntryIndex(x, DataSet.Rounding.CLOSEST);
 
             if (set == null || !set.isHighlightEnabled())
                 continue;
@@ -713,14 +717,14 @@ public class PieChartRenderer extends DataRenderer {
                 }
             }
 
-            if (xIndex == 0)
+            if (x == 0)
                 angle = 0.f;
             else
-                angle = absoluteAngles[xIndex - 1] * phaseX;
+                angle = absoluteAngles[entryIndex - 1] * phaseX;
 
             final float sliceSpace = visibleAngleCount <= 1 ? 0.f : set.getSliceSpace();
 
-            float sliceAngle = drawAngles[xIndex];
+            float sliceAngle = drawAngles[entryIndex];
             float innerRadius = userInnerRadius;
 
             float shift = set.getSelectionShift();
@@ -730,7 +734,7 @@ public class PieChartRenderer extends DataRenderer {
 
             final boolean accountForSliceSpacing = sliceSpace > 0.f && sliceAngle <= 180.f;
 
-            mRenderPaint.setColor(set.getColor(xIndex));
+            mRenderPaint.setColor(set.getColor(entryIndex));
 
             final float sliceSpaceAngleOuter = visibleAngleCount == 1 ?
                     0.f :

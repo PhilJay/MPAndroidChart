@@ -14,7 +14,6 @@ import android.view.MotionEvent;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
@@ -458,7 +457,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
             IDataSet<?> dataSet = mData.getDataSetByIndex(i);
 
             // extract all y-values from all DataSets at the given x-index
-            final float yVal = dataSet.getYValForXIndex(xIndex);
+            final float yVal = dataSet.getYValueForXValue(xIndex);
             if (Float.isNaN(yVal))
                 continue;
 

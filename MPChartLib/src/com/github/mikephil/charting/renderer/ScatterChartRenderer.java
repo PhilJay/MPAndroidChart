@@ -397,21 +397,21 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
                 if (set == null || !set.isHighlightEnabled())
                     continue;
 
-                int xIndex = high.getXIndex(); // get the
+                float x = high.getX(); // get the
                 // x-position
 
 
-                if (xIndex > mChart.getXChartMax() * mAnimator.getPhaseX())
+                if (x > mChart.getXChartMax() * mAnimator.getPhaseX())
                     continue;
 
-                final float yVal = set.getYValForXIndex(xIndex);
+                final float yVal = set.getYValueForXValue(x);
                 if (Float.isNaN(yVal))
                     continue;
 
                 float y = yVal * mAnimator.getPhaseY();
 
                 float[] pts = new float[]{
-                        xIndex, y
+                        x, y
                 };
 
                 mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);

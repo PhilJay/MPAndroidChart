@@ -20,7 +20,7 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 
 		BarData barData = mChart.getBarData();
 
-		final int xIndex = getXIndex(x);
+		final float xVal = getXForTouch(x);
 		final float baseNoSpace = getBase(x);
 		final int setCount = barData.getDataSetCount();
 		int dataSetIndex = ((int)baseNoSpace) % setCount;
@@ -31,7 +31,7 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 			dataSetIndex = setCount - 1;
 		}
 
-		SelectionDetail selectionDetail = getSelectionDetail(xIndex, y, dataSetIndex);
+		SelectionDetail selectionDetail = getSelectionDetail(xVal, y, dataSetIndex);
 		if (selectionDetail == null)
 			return null;
 
@@ -46,12 +46,12 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 
 			return getStackedHighlight(selectionDetail,
 					set,
-					xIndex,
+					xVal,
 					pts[0]);
 		}
 
 		return new Highlight(
-				xIndex,
+				xVal,
 				selectionDetail.value,
 				selectionDetail.dataIndex,
 				selectionDetail.dataSetIndex,
@@ -59,7 +59,7 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 	}
 
 	@Override
-	protected int getXIndex(float x) {
+	protected float getXForTouch(float x) {
 
 		if (!mChart.getBarData().isGrouped()) {
 

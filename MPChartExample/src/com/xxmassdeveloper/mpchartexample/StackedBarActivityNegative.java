@@ -80,17 +80,17 @@ public class StackedBarActivityNegative extends DemoBase implements
 
         // IMPORTANT: When using negative values in stacked bars, always make sure the negative values are in the array first
         ArrayList<BarEntry> yValues = new ArrayList<BarEntry>();
-        yValues.add(new BarEntry(new float[]{ -10, 10 }, 0));
-        yValues.add(new BarEntry(new float[]{ -12, 13 }, 1));
-        yValues.add(new BarEntry(new float[]{ -15, 15 }, 2));
-        yValues.add(new BarEntry(new float[]{ -17, 17 }, 3));
-        yValues.add(new BarEntry(new float[]{ -19, 20 }, 4));
-        yValues.add(new BarEntry(new float[]{ -19, 19 }, 5));
-        yValues.add(new BarEntry(new float[]{ -16, 16 }, 6));
-        yValues.add(new BarEntry(new float[]{ -13, 14 }, 7));
-        yValues.add(new BarEntry(new float[]{ -10, 11 }, 8));
-        yValues.add(new BarEntry(new float[]{ -5, 6 }, 9));
-        yValues.add(new BarEntry(new float[]{ -1, 2 }, 10));
+        yValues.add(new BarEntry(0, new float[]{ -10, 10 }));
+        yValues.add(new BarEntry(1, new float[]{ -12, 13 }));
+        yValues.add(new BarEntry(2, new float[]{ -15, 15 }));
+        yValues.add(new BarEntry(3, new float[]{ -17, 17 }));
+        yValues.add(new BarEntry(4, new float[]{ -19, 20 }));
+        yValues.add(new BarEntry(5, new float[]{ -19, 19 }));
+        yValues.add(new BarEntry(6, new float[]{ -16, 16 }));
+        yValues.add(new BarEntry(7, new float[]{ -13, 14 }));
+        yValues.add(new BarEntry(8, new float[]{ -10, 11 }));
+        yValues.add(new BarEntry(9, new float[]{ -5, 6 }));
+        yValues.add(new BarEntry(10, new float[]{ -1, 2 }));
 
         BarDataSet set = new BarDataSet(yValues, "Age Distribution");
         set.setValueFormatter(new CustomFormatter());

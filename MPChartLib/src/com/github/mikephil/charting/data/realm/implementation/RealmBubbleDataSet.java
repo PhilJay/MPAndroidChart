@@ -53,12 +53,12 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
     }
 
     @Override
-    public BubbleEntry buildEntryFromResultObject(T realmObject, int xIndex) {
+    public BubbleEntry buildEntryFromResultObject(T realmObject, float x) {
         DynamicRealmObject dynamicObject = new DynamicRealmObject(realmObject);
 
         return new BubbleEntry(
-                mIndexField == null ? xIndex : dynamicObject.getInt(mIndexField),
-                dynamicObject.getFloat(mValuesField),
+                mXValuesField == null ? x : dynamicObject.getInt(mXValuesField),
+                dynamicObject.getFloat(mYValuesField),
                 dynamicObject.getFloat(mSizeField));
     }
 

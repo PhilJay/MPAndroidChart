@@ -61,7 +61,7 @@ public class FileUtils {
                         vals[i] = Float.parseFloat(split[i]);
                     }
 
-                    entries.add(new BarEntry(vals, Integer.parseInt(split[split.length - 1])));
+                    entries.add(new BarEntry(Integer.parseInt(split[split.length - 1]), vals));
                 }
             }
         } catch (IOException e) {
@@ -131,7 +131,7 @@ public class FileUtils {
                         vals[i] = Float.parseFloat(split[i]);
                     }
 
-                    entries.add(new BarEntry(vals, Integer.parseInt(split[split.length - 1])));
+                    entries.add(new BarEntry(Integer.parseInt(split[split.length - 1]), vals));
                 }
                 line = reader.readLine();
             }

@@ -9,7 +9,6 @@ import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.BubbleEntry;
 import com.github.mikephil.charting.data.DataSet;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
@@ -225,7 +224,7 @@ public class BubbleChartRenderer extends DataRenderer {
                     continue;
 
                 final BubbleEntry entry = (BubbleEntry) bubbleData.getEntryForHighlight(high);
-                if (entry == null || entry.getX() != high.getXIndex())
+                if (entry == null || entry.getX() != high.getX())
                     continue;
 
                 float low = mChart.getLowestVisibleX();
@@ -271,7 +270,7 @@ public class BubbleChartRenderer extends DataRenderer {
                 if (!mViewPortHandler.isInBoundsRight(pointBuffer[0] - shapeHalf))
                     break;
 
-                if (high.getXIndex() < minx || high.getXIndex() >= maxx)
+                if (high.getX() < minx || high.getX() >= maxx)
                     continue;
 
                 final int originalColor = dataSet.getColor((int) entry.getX());

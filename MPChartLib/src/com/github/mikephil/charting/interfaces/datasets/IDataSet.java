@@ -83,15 +83,15 @@ public interface IDataSet<T extends Entry> {
     T getEntryForXPos(float xPos);
 
     /**
-     * Returns all Entry objects found at the given xIndex with binary
-     * search. An empty array if no Entry object at that index.
+     * Returns all Entry objects found at the given xPos with binary
+     * search. An empty array if no Entry object at that xPos.
      * INFORMATION: This method does calculations at runtime. Do
      * not over-use in performance critical situations.
      *
-     * @param xIndex
+     * @param xPos
      * @return
      */
-    List<T> getEntriesForXIndex(int xIndex);
+    List<T> getEntriesForXPos(float xPos);
 
     /**
      * Returns the Entry object found at the given index (NOT xIndex) in the values array.
@@ -124,26 +124,26 @@ public interface IDataSet<T extends Entry> {
     int getEntryIndex(T e);
 
     /**
-     * Returns the value of the Entry object at the given xIndex. Returns
-     * Float.NaN if no value is at the given x-index. INFORMATION: This method
+     * Returns the value of the Entry object at the given xVal. Returns
+     * Float.NaN if no value is at the given xVal. INFORMATION: This method
      * does calculations at runtime. Do not over-use in performance critical
      * situations.
      *
-     * @param xIndex
+     * @param xVal
      * @return
      */
-    float getYValForXIndex(int xIndex);
+    float getYValueForXValue(float xVal);
 
     /**
-     * Returns all of the y values of the Entry objects at the given xIndex. Returns
-     * Float.NaN if no value is at the given x-index. INFORMATION: This method
+     * Returns all of the y values of the Entry objects at the given xPos. Returns
+     * Float.NaN if no value is at the given xPos. INFORMATION: This method
      * does calculations at runtime. Do not over-use in performance critical
      * situations.
      *
-     * @param xIndex
+     * @param xPos
      * @return
      */
-    float[] getYValsForXIndex(int xIndex);
+    float[] getYValuesForXPos(float xPos);
 
     /**
      * This method returns the actual

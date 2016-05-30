@@ -22,7 +22,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 
 		BarData barData = mChart.getBarData();
 
-		final int xIndex = getXIndex(x);
+		final float xVal = getXForTouch(x);
 		final float baseNoSpace = getBase(x);
 		final int setCount = barData.getDataSetCount();
 		int dataSetIndex = ((int)baseNoSpace) % setCount;
@@ -33,7 +33,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 			dataSetIndex = setCount - 1;
 		}
 
-		SelectionDetail selectionDetail = getSelectionDetail(xIndex, y, dataSetIndex);
+		SelectionDetail selectionDetail = getSelectionDetail(xVal, y, dataSetIndex);
 		if (selectionDetail == null)
 			return null;
 
@@ -48,12 +48,12 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 
 			return getStackedHighlight(selectionDetail,
 					set,
-					xIndex,
+					xVal,
 					pts[1]);
 		}
 
 		return new Highlight(
-				xIndex,
+				xVal,
 				selectionDetail.value,
 				selectionDetail.dataIndex,
 				selectionDetail.dataSetIndex,
@@ -61,10 +61,10 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 	}
 
 	@Override
-	protected int getXIndex(float x) {
+	protected float getXForTouch(float x) {
 
 		if (!mChart.getBarData().isGrouped()) {
-			return super.getXIndex(x);
+			return super.getXForTouch(x);
 		} else {
 
 			float baseNoSpace = getBase(x);
@@ -84,7 +84,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 	}
 
 	@Override
-	protected SelectionDetail getSelectionDetail(int xIndex, float y, int dataSetIndex) {
+	protected SelectionDetail getSelectionDetail(float xVal, float y, int dataSetIndex) {
 
 		dataSetIndex = Math.max(dataSetIndex, 0);
 
@@ -95,7 +95,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 		if (dataSet == null)
 			return null;
 
-		final float yValue = dataSet.getYValForXIndex(xIndex);
+		final float yValue = dataSet.getYValueForXValue(xVal);
 
 		if (yValue == Double.NaN) return null;
 
@@ -110,23 +110,23 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 	 *
 	 * @param selectionDetail the selection detail to work with looking for stacked values
 	 * @param set
-	 * @param xIndex
+	 * @param xVal
 	 * @param yValue
 	 * @return
 	 */
 	protected Highlight getStackedHighlight(
 			SelectionDetail selectionDetail,
 			IBarDataSet set,
-			int xIndex,
+			float xVal,
 			double yValue) {
 
-		BarEntry entry = set.getEntryForXPos(xIndex);
+		BarEntry entry = set.getEntryForXPos(xVal);
 
 		if (entry == null)
 			return null;
 
 		if (entry.getYVals() == null) {
-			return new Highlight(xIndex,
+			return new Highlight(xVal,
 					entry.getY(),
 					selectionDetail.dataIndex,
 					selectionDetail.dataSetIndex);
@@ -136,7 +136,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 		if (ranges.length > 0) {
 			int stackIndex = getClosestStackIndex(ranges, (float)yValue);
 			return new Highlight(
-					xIndex,
+					xVal,
 					entry.getPositiveSum() - entry.getNegativeSum(),
 					selectionDetail.dataIndex,
 					selectionDetail.dataSetIndex,

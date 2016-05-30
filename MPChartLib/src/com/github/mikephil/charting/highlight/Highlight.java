@@ -8,11 +8,11 @@ package com.github.mikephil.charting.highlight;
  */
 public class Highlight {
 
-    /** the x-index of the highlighted value */
-    private int mXIndex;
+    /** the x-value of the highlighted value */
+    private float mX = Float.NaN;
 
     /** the y-value of the highlighted value */
-    private float mValue = Float.NaN;
+    private float mY = Float.NaN;
 
     /** the index of the data object - in case it refers to more than one */
     private int mDataIndex;
@@ -29,29 +29,29 @@ public class Highlight {
     /**
      * constructor
      *
-     * @param x the index of the highlighted value on the x-axis
-     * @param value the y-value of the highlighted value
+     * @param x the x-value of the highlighted value
+     * @param y the y-value of the highlighted value
      * @param dataIndex the index of the Data the highlighted value belongs to
      * @param dataSetIndex the index of the DataSet the highlighted value belongs to
      */
-    public Highlight(int x, float value, int dataIndex, int dataSetIndex) {
-        this.mXIndex = x;
-        this.mValue = value;
+    public Highlight(float x, float y, int dataIndex, int dataSetIndex) {
+        this.mX = x;
+        this.mY = y;
         this.mDataIndex = dataIndex;
         this.mDataSetIndex = dataSetIndex;
     }
     /**
      * Constructor, only used for stacked-barchart.
      * 
-     * @param x the index of the highlighted value on the x-axis
-     * @param value the y-value of the highlighted value
+     * @param x the x-value of the highlighted value on the x-axis
+     * @param y the y-value of the highlighted value
      * @param dataIndex the index of the Data the highlighted value belongs to
      * @param dataSetIndex the index of the DataSet the highlighted value belongs to
      * @param stackIndex references which value of a stacked-bar entry has been
      *            selected
      */
-    public Highlight(int x, float value, int dataIndex, int dataSetIndex, int stackIndex) {
-        this(x, value, dataIndex, dataSetIndex);
+    public Highlight(float x, float y, int dataIndex, int dataSetIndex, int stackIndex) {
+        this(x, y, dataIndex, dataSetIndex);
         mStackIndex = stackIndex;
     }
 
@@ -59,15 +59,15 @@ public class Highlight {
      * Constructor, only used for stacked-barchart.
      *
      * @param x the index of the highlighted value on the x-axis
-     * @param value the y-value of the highlighted value
+     * @param y the y-value of the highlighted value
      * @param dataIndex the index of the Data the highlighted value belongs to
      * @param dataSetIndex the index of the DataSet the highlighted value belongs to
      * @param stackIndex references which value of a stacked-bar entry has been
      *            selected
      * @param range the range the selected stack-value is in
      */
-    public Highlight(int x, float value, int dataIndex, int dataSetIndex, int stackIndex, Range range) {
-        this(x, value, dataIndex, dataSetIndex, stackIndex);
+    public Highlight(float x, float y, int dataIndex, int dataSetIndex, int stackIndex, Range range) {
+        this(x, y, dataIndex, dataSetIndex, stackIndex);
         this.mRange = range;
     }
 
@@ -82,12 +82,12 @@ public class Highlight {
     }
 
     /**
-     * returns the index of the highlighted value on the x-axis
+     * returns the x-value of the highlighted value
      *
      * @return
      */
-    public int getXIndex() {
-        return mXIndex;
+    public float getX() {
+        return mX;
     }
 
     /**
@@ -95,8 +95,8 @@ public class Highlight {
      *
      * @return
      */
-    public float getValue() {
-        return mValue;
+    public float getY() {
+        return mY;
     }
 
     /**
@@ -136,7 +136,7 @@ public class Highlight {
     }
 
     /**
-     * returns true if this highlight object is equal to the other (compares
+     * Returns true if this highlight object is equal to the other (compares
      * xIndex and dataSetIndex)
      * 
      * @param h
@@ -147,7 +147,7 @@ public class Highlight {
         if (h == null)
             return false;
         else {
-            if (this.mDataSetIndex == h.mDataSetIndex && this.mXIndex == h.mXIndex
+            if (this.mDataSetIndex == h.mDataSetIndex && this.mX == h.mX
                     && this.mStackIndex == h.mStackIndex)
                 return true;
             else
@@ -157,7 +157,7 @@ public class Highlight {
 
     @Override
     public String toString() {
-        return "Highlight, xIndex: " + mXIndex + ", dataSetIndex: " + mDataSetIndex
+        return "Highlight, x: " + mX + "y: " + mY + ", dataSetIndex: " + mDataSetIndex
                 + ", stackIndex (only stacked barentry): " + mStackIndex;
     }
 }

@@ -270,10 +270,10 @@ public class RadarChartRenderer extends LineRadarRenderer {
                 continue;
 
             // get the index to highlight
-            int xIndex = indices[i].getXIndex();
+            float x = indices[i].getX();
 
-            Entry e = set.getEntryForXPos(xIndex);
-            if (e == null || e.getX() != xIndex)
+            Entry e = set.getEntryForXPos(x);
+            if (e == null || e.getX() != x)
                 continue;
 
             int j = set.getEntryIndex(e);

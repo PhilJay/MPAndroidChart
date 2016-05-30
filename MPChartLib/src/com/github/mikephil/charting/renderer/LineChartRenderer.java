@@ -738,13 +738,13 @@ public class LineChartRenderer extends LineRadarRenderer {
                 if (set == null || !set.isHighlightEnabled())
                     continue;
 
-                int xIndex = high.getXIndex(); // get the
+                float x = high.getX(); // get the
                 // x-position
 
-                if (xIndex > mChart.getXChartMax() * mAnimator.getPhaseX())
+                if (x > mChart.getXChartMax() * mAnimator.getPhaseX())
                     continue;
 
-                final float yVal = set.getYValForXIndex(xIndex);
+                final float yVal = set.getYValueForXValue(x);
                 if (Float.isNaN(yVal))
                     continue;
 
@@ -753,7 +753,7 @@ public class LineChartRenderer extends LineRadarRenderer {
                 // y-position
 
                 float[] pts = new float[]{
-                        xIndex, y
+                        x, y
                 };
 
                 mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);

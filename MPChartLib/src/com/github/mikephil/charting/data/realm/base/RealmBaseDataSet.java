@@ -50,20 +50,20 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     /**
      * fieldname of the column that contains the y-values of this dataset
      */
-    protected String mValuesField;
+    protected String mYValuesField;
 
     /**
-     * fieldname of the column that contains the x-indices of this dataset
+     * fieldname of the column that contains the x-values of this dataset
      */
-    protected String mIndexField;
+    protected String mXValuesField;
 
     public RealmBaseDataSet(RealmResults<T> results, String yValuesField) {
         this.results = results;
-        this.mValuesField = yValuesField;
+        this.mYValuesField = yValuesField;
         this.mValues = new ArrayList<S>();
 
-        if (mIndexField != null)
-            this.results.sort(mIndexField, Sort.ASCENDING);
+        if (mXValuesField != null)
+            this.results.sort(mXValuesField, Sort.ASCENDING);
     }
 
     /**
@@ -75,12 +75,12 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
      */
     public RealmBaseDataSet(RealmResults<T> results, String yValuesField, String xIndexField) {
         this.results = results;
-        this.mValuesField = yValuesField;
-        this.mIndexField = xIndexField;
+        this.mYValuesField = yValuesField;
+        this.mXValuesField = xIndexField;
         this.mValues = new ArrayList<S>();
 
-        if (mIndexField != null)
-            this.results.sort(mIndexField, Sort.ASCENDING);
+        if (mXValuesField != null)
+            this.results.sort(mXValuesField, Sort.ASCENDING);
     }
 
     /**
@@ -94,22 +94,22 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         }
     }
 
-    public S buildEntryFromResultObject(T realmObject, int xIndex) {
+    public S buildEntryFromResultObject(T realmObject, float x) {
         DynamicRealmObject dynamicObject = new DynamicRealmObject(realmObject);
 
-        return (S) new Entry(dynamicObject.getFloat(mValuesField),
-                mIndexField == null ? xIndex : dynamicObject.getInt(mIndexField));
+        return (S) new Entry(dynamicObject.getFloat(mYValuesField),
+                mXValuesField == null ? x : dynamicObject.getInt(mXValuesField));
     }
 
     @Override
     public float getYMin() {
-        //return results.min(mValuesField).floatValue();
+        //return results.min(mYValuesField).floatValue();
         return mYMin;
     }
 
     @Override
     public float getYMax() {
-        //return results.max(mValuesField).floatValue();
+        //return results.max(mYValuesField).floatValue();
         return mYMax;
     }
 
@@ -174,8 +174,8 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
 
     @Override
     public S getEntryForXPos(float xPos) {
-        //DynamicRealmObject o = new DynamicRealmObject(results.where().equalTo(mIndexField, xIndex).findFirst());
-        //return new Entry(o.getFloat(mValuesField), o.getInt(mIndexField));
+        //DynamicRealmObject o = new DynamicRealmObject(results.where().equalTo(mXValuesField, xIndex).findFirst());
+        //return new Entry(o.getFloat(mYValuesField), o.getInt(mXValuesField));
         return getEntryForXPos(xPos, DataSet.Rounding.CLOSEST);
     }
 
@@ -188,19 +188,21 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     }
 
     @Override
-    public List<S> getEntriesForXIndex(int xIndex) {
+    public List<S> getEntriesForXPos(float xVal) {
 
         List<S> entries = new ArrayList<>();
 
-        if (mIndexField == null) {
-            T object = results.get(xIndex);
-            if (object != null)
-                entries.add(buildEntryFromResultObject(object, xIndex));
-        } else {
-            RealmResults<T> foundObjects = results.where().equalTo(mIndexField, xIndex).findAll();
+//        {
+//            T object = results.get(xVal);
+//            if (object != null)
+//                entries.add(buildEntryFromResultObject(object, xVal));
+//        } else
+
+        if (mXValuesField != null) {
+            RealmResults<T> foundObjects = results.where().equalTo(mXValuesField, xVal).findAll();
 
             for (T e : foundObjects)
-                entries.add(buildEntryFromResultObject(e, xIndex));
+                entries.add(buildEntryFromResultObject(e, xVal));
         }
 
         return entries;
@@ -209,7 +211,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     @Override
     public S getEntryForIndex(int index) {
         //DynamicRealmObject o = new DynamicRealmObject(results.get(index));
-        //return new Entry(o.getFloat(mValuesField), o.getInt(mIndexField));
+        //return new Entry(o.getFloat(mYValuesField), o.getInt(mXValuesField));
         return mValues.get(index);
     }
 
@@ -260,21 +262,21 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     }
 
     @Override
-    public float getYValForXIndex(int xIndex) {
-        //return new DynamicRealmObject(results.where().greaterThanOrEqualTo(mIndexField, xIndex).findFirst())
-        // .getFloat(mValuesField);
-        Entry e = getEntryForXPos(xIndex);
+    public float getYValueForXValue(float xVal) {
+        //return new DynamicRealmObject(results.where().greaterThanOrEqualTo(mXValuesField, xIndex).findFirst())
+        // .getFloat(mYValuesField);
+        Entry e = getEntryForXPos(xVal);
 
-        if (e != null && e.getX() == xIndex)
+        if (e != null && e.getX() == xVal)
             return e.getY();
         else
             return Float.NaN;
     }
 
     @Override
-    public float[] getYValsForXIndex(int xIndex) {
+    public float[] getYValuesForXPos(float xVal) {
 
-        List<S> entries = getEntriesForXIndex(xIndex);
+        List<S> entries = getEntriesForXPos(xVal);
 
         float[] yVals = new float[entries.size()];
         int i = 0;
@@ -387,8 +389,8 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
      *
      * @return
      */
-    public String getValuesField() {
-        return mValuesField;
+    public String getYValuesField() {
+        return mYValuesField;
     }
 
     /**
@@ -396,25 +398,25 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
      *
      * @param yValuesField
      */
-    public void setValuesField(String yValuesField) {
-        this.mValuesField = yValuesField;
+    public void setYValuesField(String yValuesField) {
+        this.mYValuesField = yValuesField;
     }
 
     /**
-     * Returns the fieldname that represents the "x-index" in the realm-data.
+     * Returns the fieldname that represents the "x-values" in the realm-data.
      *
      * @return
      */
-    public String getIndexField() {
-        return mIndexField;
+    public String getXValuesField() {
+        return mXValuesField;
     }
 
     /**
-     * Sets the field name that is used for getting the x-indices out of the RealmResultSet.
+     * Sets the field name that is used for getting the x-values out of the RealmResultSet.
      *
-     * @param xIndexField
+     * @param xValuesField
      */
-    public void setIndexField(String xIndexField) {
-        this.mIndexField = xIndexField;
+    public void setXValuesField(String xValuesField) {
+        this.mXValuesField = xValuesField;
     }
 }

@@ -21,11 +21,11 @@ public class CombinedHighlighter extends ChartHighlighter<BarLineScatterCandleBu
     /**
      * Returns a list of SelectionDetail object corresponding to the given xIndex.
      *
-     * @param xIndex
+     * @param xVal
      * @return
      */
     @Override
-    protected List<SelectionDetail> getSelectionDetailsAtIndex(int xIndex, int dataSetIndex) {
+    protected List<SelectionDetail> getSelectionDetailsAtIndex(float xVal, int dataSetIndex) {
 
         List<SelectionDetail> vals = new ArrayList<SelectionDetail>();
         float[] pts = new float[2];
@@ -46,7 +46,7 @@ public class CombinedHighlighter extends ChartHighlighter<BarLineScatterCandleBu
                     continue;
 
                 // extract all y-values from all DataSets at the given x-index
-                final float yVals[] = dataSet.getYValsForXIndex(xIndex);
+                final float yVals[] = dataSet.getYValuesForXPos(xVal);
                 for (float yVal : yVals) {
                     pts[1] = yVal;
 

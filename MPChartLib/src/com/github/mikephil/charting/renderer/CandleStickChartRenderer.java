@@ -326,7 +326,7 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
                  dataSetIndex < maxDataSetIndex;
                  dataSetIndex++) {
 
-                int xIndex = high.getXIndex(); // get the
+                float x = high.getX(); // get the
                 // x-position
 
                 ICandleDataSet set = mChart.getCandleData().getDataSetByIndex(dataSetIndex);
@@ -334,9 +334,9 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
                 if (set == null || !set.isHighlightEnabled())
                     continue;
 
-                CandleEntry e = set.getEntryForXPos(xIndex);
+                CandleEntry e = set.getEntryForXPos(x);
 
-                if (e == null || e.getX() != xIndex)
+                if (e == null || e.getX() != x)
                     continue;
 
                 float lowValue = e.getLow() * mAnimator.getPhaseY();
@@ -344,7 +344,7 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
                 float y = (lowValue + highValue) / 2f;
 
                 float[] pts = new float[]{
-                        xIndex, y
+                        x, y
                 };
 
                 mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);

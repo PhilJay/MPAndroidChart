@@ -326,20 +326,20 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     @Override
-    public float getYValForXIndex(int xIndex) {
+    public float getYValueForXValue(float xVal) {
 
-        Entry e = getEntryForXPos(xIndex);
+        Entry e = getEntryForXPos(xVal);
 
-        if (e != null && e.getX() == xIndex)
+        if (e != null && e.getX() == xVal)
             return e.getY();
         else
             return Float.NaN;
     }
 
     @Override
-    public float[] getYValsForXIndex(int xIndex) {
+    public float[] getYValuesForXPos(float xVal) {
 
-        List<T> entries = getEntriesForXIndex(xIndex);
+        List<T> entries = getEntriesForXPos(xVal);
 
         float[] yVals = new float[entries.size()];
         int i = 0;
@@ -355,11 +355,11 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
      * does calculations at runtime. Do not over-use in performance critical
      * situations.
      *
-     * @param xIndex
+     * @param xVal
      * @return
      */
     @Override
-    public List<T> getEntriesForXIndex(int xIndex) {
+    public List<T> getEntriesForXPos(float xVal) {
 
         List<T> entries = new ArrayList<T>();
 
@@ -370,14 +370,14 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
             int m = (high + low) / 2;
             T entry = mValues.get(m);
 
-            if (xIndex == entry.getX()) {
-                while (m > 0 && mValues.get(m - 1).getX() == xIndex)
+            if (xVal == entry.getX()) {
+                while (m > 0 && mValues.get(m - 1).getX() == xVal)
                     m--;
 
                 high = mValues.size();
                 for (; m < high; m++) {
                     entry = mValues.get(m);
-                    if (entry.getX() == xIndex) {
+                    if (entry.getX() == xVal) {
                         entries.add(entry);
                     } else {
                         break;
@@ -386,7 +386,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
                 break;
             } else {
-                if (xIndex > entry.getX())
+                if (xVal > entry.getX())
                     low = m + 1;
                 else
                     high = m - 1;

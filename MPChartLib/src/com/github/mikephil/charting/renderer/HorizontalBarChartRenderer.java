@@ -268,7 +268,6 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
         c.drawText(valueText, x, y, mValuePaint);
     }
 
-    @Override
     protected void prepareBarHighlight(float x, float y1, float y2, float barspaceHalf,
                                        Transformer trans) {
 

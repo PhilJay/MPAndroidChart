@@ -143,10 +143,10 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
             //   if we are not interested in highlighting a specific value.
 
             List<?> entries = data.getDataSetByIndex(highlight.getDataSetIndex())
-                    .getEntriesForXIndex(highlight.getXIndex());
+                    .getEntriesForXPos(highlight.getX());
             for (Object entry : entries)
-                if (((Entry)entry).getY() == highlight.getValue() ||
-                        Float.isNaN(highlight.getValue()))
+                if (((Entry)entry).getY() == highlight.getY() ||
+                        Float.isNaN(highlight.getY()))
                     return (Entry)entry;
 
             return null;

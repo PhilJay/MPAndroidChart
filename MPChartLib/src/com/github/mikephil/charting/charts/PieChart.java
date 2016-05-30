@@ -10,6 +10,7 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.highlight.Highlight;
@@ -180,17 +181,17 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
         float rotationAngle = getRotationAngle();
 
-        int i = highlight.getXIndex();
+        int entryIndex = getData().getDataSet().getEntryIndex(highlight.getX(), DataSet.Rounding.CLOSEST);
 
         // offset needed to center the drawn text in the slice
-        float offset = mDrawAngles[i] / 2;
+        float offset = mDrawAngles[entryIndex] / 2;
 
         // calculate the text position
         float x = (float) (r
-                * Math.cos(Math.toRadians((rotationAngle + mAbsoluteAngles[i] - offset)
+                * Math.cos(Math.toRadians((rotationAngle + mAbsoluteAngles[entryIndex] - offset)
                 * mAnimator.getPhaseY())) + center.x);
         float y = (float) (r
-                * Math.sin(Math.toRadians((rotationAngle + mAbsoluteAngles[i] - offset)
+                * Math.sin(Math.toRadians((rotationAngle + mAbsoluteAngles[entryIndex] - offset)
                 * mAnimator.getPhaseY())) + center.y);
 
         return new float[]{x, y};
@@ -247,7 +248,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
         for (int i = 0; i < mIndicesToHighlight.length; i++)
 
             // check if the xvalue for the given dataset needs highlight
-            if (mIndicesToHighlight[i].getXIndex() == xIndex
+            if (mIndicesToHighlight[i].getX() == xIndex
                     && mIndicesToHighlight[i].getDataSetIndex() == dataSetIndex)
                 return true;
 
