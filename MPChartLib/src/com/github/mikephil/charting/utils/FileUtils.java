@@ -191,7 +191,7 @@ public class FileUtils {
     /**
      * Saves an Array of Entries to the specified location on the sdcard
      * 
-     * @param ds
+     * @param entries
      * @param path
      */
     public static void saveToSdCard(List<Entry> entries, String path) {
@@ -242,7 +242,7 @@ public class FileUtils {
                 // process line
                 String[] split = line.split("#");
 
-                entries.add(new BarEntry(Float.parseFloat(split[0]), Integer.parseInt(split[1])));
+                entries.add(new BarEntry(Float.parseFloat(split[1]), Integer.parseInt(split[0])));
 
                 line = reader.readLine();
             }

@@ -37,40 +37,7 @@ public class YAxisRenderer extends AxisRenderer {
         mZeroLinePaint.setStyle(Paint.Style.STROKE);
     }
 
-    /**
-     * Computes the axis values.
-     *
-     * @param yMin - the minimum y-value in the data object for this axis
-     * @param yMax - the maximum y-value in the data object for this axis
-     */
-    public void computeAxis(float yMin, float yMax) {
-
-        // calculate the starting and entry point of the y-labels (depending on
-        // zoom / contentrect bounds)
-        if (mViewPortHandler.contentWidth() > 10 && !mViewPortHandler.isFullyZoomedOutY()) {
-
-            PointD p1 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop());
-            PointD p2 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom());
-
-            if (!mYAxis.isInverted()) {
-                yMin = (float) p2.y;
-                yMax = (float) p1.y;
-            } else {
-
-                yMin = (float) p1.y;
-                yMax = (float) p2.y;
-            }
-        }
-
-        computeAxisValues(yMin, yMax);
-    }
-
-    /**
-     * Sets up the y-axis labels. Computes the desired number of labels between the two given extremes. Unlike the
-     * papareXLabels() method, this method needs to be called upon every refresh of the view.
-     *
-     * @return
-     */
+    @Override
     protected void computeAxisValues(float min, float max) {
 
         float yMin = min;

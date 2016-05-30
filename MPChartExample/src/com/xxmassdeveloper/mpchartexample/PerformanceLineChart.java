@@ -105,7 +105,7 @@ public class PerformanceLineChart extends DemoBase implements OnSeekBarChangeLis
             float val = (float) (Math.random() * mult) + 3;// + (float)
                                                            // ((mult *
                                                            // 0.1) / 10);
-            yVals.add(new Entry(val, i));
+            yVals.add(new Entry(i, val));
         }
 
         // create a dataset and give it a type

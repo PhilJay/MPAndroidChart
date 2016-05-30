@@ -1414,7 +1414,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
             IDataSet set = mData.getDataSetByIndex(i);
 
-            Entry e = set.getEntryForXIndex(xIndex);
+            Entry e = set.getEntryForXPos(xIndex);
 
             if (e != null) {
                 vals.add(e);

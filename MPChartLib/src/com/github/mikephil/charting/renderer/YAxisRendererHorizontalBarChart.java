@@ -33,7 +33,8 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
      * @param yMin - the minimum y-value in the data object for this axis
      * @param yMax - the maximum y-value in the data object for this axis
      */
-    public void computeAxis(float yMin, float yMax) {
+    @Override
+    public void computeAxis(float yMin, float yMax, boolean inverted) {
 
         // calculate the starting and entry point of the y-labels (depending on
         // zoom / contentrect bounds)
@@ -44,7 +45,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
             PointD p2 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentRight(),
                     mViewPortHandler.contentTop());
 
-            if (!mYAxis.isInverted()) {
+            if (!inverted) {
                 yMin = (float) p1.x;
                 yMax = (float) p2.x;
             } else {

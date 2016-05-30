@@ -298,7 +298,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             float val = (float) (Math.random() * mult) + 50;// + (float)
             // ((mult *
             // 0.1) / 10);
-            yVals1.add(new Entry(val, i));
+            yVals1.add(new Entry(i, val));
         }
 
         ArrayList<Entry> yVals2 = new ArrayList<Entry>();
@@ -308,7 +308,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             float val = (float) (Math.random() * mult) + 450;// + (float)
             // ((mult *
             // 0.1) / 10);
-            yVals2.add(new Entry(val, i));
+            yVals2.add(new Entry(i, val));
         }
 
         LineDataSet set1, set2;

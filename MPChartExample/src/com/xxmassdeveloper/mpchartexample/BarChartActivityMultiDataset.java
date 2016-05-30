@@ -201,17 +201,17 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             float val = (float) (Math.random() * mult) + 3;
-            yVals1.add(new BarEntry(val, i));
+            yVals1.add(new BarEntry(i, val));
         }
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             float val = (float) (Math.random() * mult) + 3;
-            yVals2.add(new BarEntry(val, i));
+            yVals2.add(new BarEntry(i, val));
         }
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             float val = (float) (Math.random() * mult) + 3;
-            yVals3.add(new BarEntry(val, i));
+            yVals3.add(new BarEntry(i, val));
         }
 
         BarDataSet set1, set2, set3;

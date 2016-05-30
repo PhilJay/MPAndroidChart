@@ -774,7 +774,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
             return false;
 
         IDataSet dataSet = mDataSets.get(dataSetIndex);
-        Entry e = dataSet.getEntryForXIndex(xIndex);
+        Entry e = dataSet.getEntryForXPos(xIndex);
 
         if (e == null || e.getX() != xIndex)
             return false;
@@ -799,7 +799,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
             T set = mDataSets.get(i);
 
             for (int j = 0; j < set.getEntryCount(); j++) {
-                if (e.equalTo(set.getEntryForXIndex(e.getX())))
+                if (e.equalTo(set.getEntryForXPos(e.getX())))
                     return set;
             }
         }

@@ -137,8 +137,11 @@ public class LineChartRenderer extends LineRadarRenderer {
 
         int entryCount = dataSet.getEntryCount();
 
-        Entry entryFrom = dataSet.getEntryForXIndex((mMinX < 0) ? 0 : mMinX, DataSet.Rounding.DOWN);
-        Entry entryTo = dataSet.getEntryForXIndex(mMaxX, DataSet.Rounding.UP);
+        float low = mChart.getLowestVisibleX();
+        float high = mChart.getHighestVisibleX();
+
+        Entry entryFrom = dataSet.getEntryForXPos(low, DataSet.Rounding.DOWN);
+        Entry entryTo = dataSet.getEntryForXPos(high, DataSet.Rounding.UP);
 
         int diff = (entryFrom == entryTo) ? 1 : 0;
         int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff, 0);
@@ -164,8 +167,8 @@ public class LineChartRenderer extends LineRadarRenderer {
                 prev = dataSet.getEntryForIndex(j - 1);
                 cur = dataSet.getEntryForIndex(j);
 
-                final float cpx = (float)(prev.getX())
-                        + (float)(cur.getX() - prev.getX()) / 2.0f;
+                final float cpx = (prev.getX())
+                        + (cur.getX() - prev.getX()) / 2.0f;
 
                 cubicPath.cubicTo(
                         cpx, prev.getY() * phaseY,
@@ -201,8 +204,11 @@ public class LineChartRenderer extends LineRadarRenderer {
 
         int entryCount = dataSet.getEntryCount();
 
-        Entry entryFrom = dataSet.getEntryForXIndex((mMinX < 0) ? 0 : mMinX, DataSet.Rounding.DOWN);
-        Entry entryTo = dataSet.getEntryForXIndex(mMaxX, DataSet.Rounding.UP);
+        float low = mChart.getLowestVisibleX();
+        float high = mChart.getHighestVisibleX();
+
+        Entry entryFrom = dataSet.getEntryForXPos(low, DataSet.Rounding.DOWN);
+        Entry entryTo = dataSet.getEntryForXPos(high, DataSet.Rounding.UP);
 
         int diff = (entryFrom == entryTo) ? 1 : 0;
         int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff - 1, 0);
@@ -336,8 +342,11 @@ public class LineChartRenderer extends LineRadarRenderer {
             canvas = c;
         }
 
-        Entry entryFrom = dataSet.getEntryForXIndex((mMinX < 0) ? 0 : mMinX, DataSet.Rounding.DOWN);
-        Entry entryTo = dataSet.getEntryForXIndex(mMaxX, DataSet.Rounding.UP);
+        float low = mChart.getLowestVisibleX();
+        float high = mChart.getHighestVisibleX();
+
+        Entry entryFrom = dataSet.getEntryForXPos(low, DataSet.Rounding.DOWN);
+        Entry entryTo = dataSet.getEntryForXPos(high, DataSet.Rounding.UP);
 
         int diff = (entryFrom == entryTo) ? 1 : 0;
         int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff, 0);
@@ -558,9 +567,11 @@ public class LineChartRenderer extends LineRadarRenderer {
 
                 int entryCount = dataSet.getEntryCount();
 
-                Entry entryFrom = dataSet.getEntryForXIndex((mMinX < 0) ? 0 : mMinX,
-                        DataSet.Rounding.DOWN);
-                Entry entryTo = dataSet.getEntryForXIndex(mMaxX, DataSet.Rounding.UP);
+                float low = mChart.getLowestVisibleX();
+                float high = mChart.getHighestVisibleX();
+
+                Entry entryFrom = dataSet.getEntryForXPos(low, DataSet.Rounding.DOWN);
+                Entry entryTo = dataSet.getEntryForXPos(high, DataSet.Rounding.UP);
 
                 int diff = (entryFrom == entryTo) ? 1 : 0;
                 if (dataSet.getMode() == LineDataSet.Mode.CUBIC_BEZIER)
@@ -624,9 +635,11 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             int entryCount = dataSet.getEntryCount();
 
-            Entry entryFrom = dataSet.getEntryForXIndex((mMinX < 0) ? 0 : mMinX,
-                    DataSet.Rounding.DOWN);
-            Entry entryTo = dataSet.getEntryForXIndex(mMaxX, DataSet.Rounding.UP);
+            float low = mChart.getLowestVisibleX();
+            float high = mChart.getHighestVisibleX();
+
+            Entry entryFrom = dataSet.getEntryForXPos(low, DataSet.Rounding.DOWN);
+            Entry entryTo = dataSet.getEntryForXPos(high, DataSet.Rounding.UP);
 
             int diff = (entryFrom == entryTo) ? 1 : 0;
             if (dataSet.getMode() == LineDataSet.Mode.CUBIC_BEZIER)

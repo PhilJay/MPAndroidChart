@@ -215,7 +215,7 @@ public class PieChartRenderer extends DataRenderer {
             // draw only if the value is greater than zero
             if ((Math.abs(e.getY()) > 0.000001)) {
 
-                if (!mChart.needsHighlight(e.getX(),
+                if (!mChart.needsHighlight((int) e.getX(),
                         mChart.getData().getIndexOfDataSet(dataSet))) {
 
                     final boolean accountForSliceSpacing = sliceSpace > 0.f && sliceAngle <= 180.f;

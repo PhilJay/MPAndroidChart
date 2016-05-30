@@ -120,7 +120,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 			int xIndex,
 			double yValue) {
 
-		BarEntry entry = set.getEntryForXIndex(xIndex);
+		BarEntry entry = set.getEntryForXPos(xIndex);
 
 		if (entry == null)
 			return null;

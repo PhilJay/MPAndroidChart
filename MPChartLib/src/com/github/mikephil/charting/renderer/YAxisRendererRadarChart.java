@@ -23,7 +23,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
     }
 
     @Override
-    public void computeAxis(float yMin, float yMax) {
+    public void computeAxis(float yMin, float yMax, boolean inverted) {
         computeAxisValues(yMin, yMax);
     }
 

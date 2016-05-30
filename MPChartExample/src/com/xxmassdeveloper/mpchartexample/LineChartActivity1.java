@@ -347,7 +347,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
             float val = (float) (Math.random() * mult) + 3;// + (float)
             // ((mult *
             // 0.1) / 10);x
-            yVals.add(new Entry(val, i));
+            yVals.add(new Entry(i, val));
             xVals.add(new XAxisValue(i, i + ""));
         }
 

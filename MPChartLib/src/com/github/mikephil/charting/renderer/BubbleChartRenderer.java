@@ -8,6 +8,8 @@ import android.graphics.Paint.Style;
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.BubbleEntry;
+import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
@@ -74,8 +76,11 @@ public class BubbleChartRenderer extends DataRenderer {
         float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
         float phaseY = mAnimator.getPhaseY();
 
-        BubbleEntry entryFrom = dataSet.getEntryForXIndex(mMinX);
-        BubbleEntry entryTo = dataSet.getEntryForXIndex(mMaxX);
+        float low = mChart.getLowestVisibleX();
+        float high = mChart.getHighestVisibleX();
+
+        BubbleEntry entryFrom = dataSet.getEntryForXPos(low, DataSet.Rounding.DOWN);
+        BubbleEntry entryTo = dataSet.getEntryForXPos(high, DataSet.Rounding.UP);
 
         int minx = Math.max(dataSet.getEntryIndex(entryFrom), 0);
         int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, dataSet.getEntryCount());
@@ -112,7 +117,7 @@ public class BubbleChartRenderer extends DataRenderer {
             if (!mViewPortHandler.isInBoundsRight(pointBuffer[0] - shapeHalf))
                 break;
 
-            final int color = dataSet.getColor(entry.getX());
+            final int color = dataSet.getColor((int) entry.getX());
 
             mRenderPaint.setColor(color);
             c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, mRenderPaint);
@@ -148,8 +153,11 @@ public class BubbleChartRenderer extends DataRenderer {
                 final float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
                 final float phaseY = mAnimator.getPhaseY();
 
-                BubbleEntry entryFrom = dataSet.getEntryForXIndex(mMinX);
-                BubbleEntry entryTo = dataSet.getEntryForXIndex(mMaxX);
+                float low = mChart.getLowestVisibleX();
+                float high = mChart.getHighestVisibleX();
+
+                BubbleEntry entryFrom = dataSet.getEntryForXPos(low, DataSet.Rounding.DOWN);
+                BubbleEntry entryTo = dataSet.getEntryForXPos(high, DataSet.Rounding.UP);
 
                 int minx = dataSet.getEntryIndex(entryFrom);
                 int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, dataSet.getEntryCount());
@@ -220,8 +228,11 @@ public class BubbleChartRenderer extends DataRenderer {
                 if (entry == null || entry.getX() != high.getXIndex())
                     continue;
 
-                BubbleEntry entryFrom = dataSet.getEntryForXIndex(mMinX);
-                BubbleEntry entryTo = dataSet.getEntryForXIndex(mMaxX);
+                float low = mChart.getLowestVisibleX();
+                float highX = mChart.getHighestVisibleX();
+
+                BubbleEntry entryFrom = dataSet.getEntryForXPos(low, DataSet.Rounding.DOWN);
+                BubbleEntry entryTo = dataSet.getEntryForXPos(highX, DataSet.Rounding.UP);
 
                 int minx = dataSet.getEntryIndex(entryFrom);
                 int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, dataSet.getEntryCount());
@@ -263,7 +274,7 @@ public class BubbleChartRenderer extends DataRenderer {
                 if (high.getXIndex() < minx || high.getXIndex() >= maxx)
                     continue;
 
-                final int originalColor = dataSet.getColor(entry.getX());
+                final int originalColor = dataSet.getColor((int) entry.getX());
 
                 Color.RGBToHSV(Color.red(originalColor), Color.green(originalColor),
                         Color.blue(originalColor), _hsvBuffer);

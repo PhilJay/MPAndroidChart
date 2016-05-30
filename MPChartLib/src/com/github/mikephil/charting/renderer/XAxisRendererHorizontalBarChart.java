@@ -28,11 +28,10 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
     }
     
     @Override
-    public void computeAxis(float xValAverageLength, List<XAxisValue> xValues) {
+    protected void computeAxis() {
         
         mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
         mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
-        mXAxis.setValues(xValues);
 
         String longest = mXAxis.getLongestLabel();
 
@@ -111,24 +110,24 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
         BarData bd = mChart.getData();
         int step = bd.getDataSetCount();
 
-        for (int i = mMinX; i <= mMaxX; i += mXAxis.mAxisLabelModulus) {
-
-            position[1] = i * step + i * bd.getGroupSpace()
-                    + bd.getGroupSpace() / 2f;
-            
-            // consider groups (center label for each group)
-            if (step > 1) {
-                position[1] += ((float) step - 1f) / 2f;
-            }
-
-            mTrans.pointValuesToPixel(position);
-
-            if (mViewPortHandler.isInBoundsY(position[1])) {
-
-                String label = mXAxis.getValues().get(i).getLabel();
-                drawLabel(c, label, i, pos, position[1], anchor, labelRotationAngleDegrees);
-            }
-        }
+//        for (int i = mMinX; i <= mMaxX; i += mXAxis.mAxisLabelModulus) {
+//
+//            position[1] = i * step + i * bd.getGroupSpace()
+//                    + bd.getGroupSpace() / 2f;
+//
+//            // consider groups (center label for each group)
+//            if (step > 1) {
+//                position[1] += ((float) step - 1f) / 2f;
+//            }
+//
+//            mTrans.pointValuesToPixel(position);
+//
+//            if (mViewPortHandler.isInBoundsY(position[1])) {
+//
+//                String label = mXAxis.getValues().get(i).getLabel();
+//                drawLabel(c, label, i, pos, position[1], anchor, labelRotationAngleDegrees);
+//            }
+//        }
     }
 
     @Override
@@ -148,18 +147,18 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
         // take into consideration that multiple DataSets increase mDeltaX
         int step = bd.getDataSetCount();
 
-        for (int i = mMinX; i <= mMaxX; i += mXAxis.mAxisLabelModulus) {
-
-            position[1] = i * step + i * bd.getGroupSpace() - 0.5f;
-
-            mTrans.pointValuesToPixel(position);
-
-            if (mViewPortHandler.isInBoundsY(position[1])) {
-
-                c.drawLine(mViewPortHandler.contentLeft(), position[1],
-                        mViewPortHandler.contentRight(), position[1], mGridPaint);
-            }
-        }
+//        for (int i = mMinX; i <= mMaxX; i += mXAxis.mAxisLabelModulus) {
+//
+//            position[1] = i * step + i * bd.getGroupSpace() - 0.5f;
+//
+//            mTrans.pointValuesToPixel(position);
+//
+//            if (mViewPortHandler.isInBoundsY(position[1])) {
+//
+//                c.drawLine(mViewPortHandler.contentLeft(), position[1],
+//                        mViewPortHandler.contentRight(), position[1], mGridPaint);
+//            }
+//        }
     }
 
     @Override

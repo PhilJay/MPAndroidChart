@@ -238,7 +238,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         for (int i = 0; i < count; i++) {
             float mult = (range + 1);
             float val = (float) (Math.random() * mult);
-            yVals1.add(new BarEntry(val, i));
+            yVals1.add(new BarEntry(i, val));
 
             XAxisValue value = new XAxisValue(i, mMonths[i % 12]);
             xVals.add(value);

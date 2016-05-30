@@ -360,7 +360,7 @@ public class BarChartRenderer extends DataRenderer {
                 if (index >= 0
                         && index < (mChart.getXChartMax() * mAnimator.getPhaseX()) / setCount) {
 
-                    BarEntry e = set.getEntryForXIndex(index);
+                    BarEntry e = set.getEntryForXPos(index);
 
                     if (e == null || e.getX() != index)
                         continue;

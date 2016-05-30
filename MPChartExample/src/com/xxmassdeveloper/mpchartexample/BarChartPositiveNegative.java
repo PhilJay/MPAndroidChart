@@ -97,7 +97,7 @@ public class BarChartPositiveNegative extends DemoBase {
         for (int i = 0; i < dataList.size(); i++) {
 
             Data d = dataList.get(i);
-            BarEntry entry = new BarEntry(d.yValue, d.xIndex);
+            BarEntry entry = new BarEntry(d.xValue, d.yValue);
             values.add(entry);
 
             dates[i] = new XAxisValue(i, dataList.get(i).xAxisValue);
@@ -140,12 +140,12 @@ public class BarChartPositiveNegative extends DemoBase {
 
         public String xAxisValue;
         public float yValue;
-        public int xIndex;
+        public float xValue;
 
-        public Data(int xIndex, float yValue, String xAxisValue) {
+        public Data(float xValue, float yValue, String xAxisValue) {
             this.xAxisValue = xAxisValue;
             this.yValue = yValue;
-            this.xIndex = xIndex;
+            this.xValue = xValue;
         }
     }
 

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 
+import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -89,6 +90,42 @@ public abstract class AxisRenderer extends Renderer {
     public Transformer getTransformer() {
         return mTrans;
     }
+
+    /**
+     * Computes the axis values.
+     *
+     * @param min - the minimum value in the data object for this axis
+     * @param max - the maximum value in the data object for this axis
+     */
+    public void computeAxis(float min, float max, boolean inverted) {
+
+        // calculate the starting and entry point of the y-labels (depending on
+        // zoom / contentrect bounds)
+        if (mViewPortHandler.contentWidth() > 10 && !mViewPortHandler.isFullyZoomedOutY()) {
+
+            PointD p1 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop());
+            PointD p2 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom());
+
+            if (!inverted) {
+
+                min = (float) p2.y;
+                max = (float) p1.y;
+            } else {
+
+                min = (float) p1.y;
+                max = (float) p2.y;
+            }
+        }
+
+        computeAxisValues(min, max);
+    }
+
+    /**
+     * Sets up the axis values. Computes the desired number of labels between the two given extremes.
+     *
+     * @return
+     */
+    protected abstract void computeAxisValues(float min, float max);
 
     /**
      * Draws the axis labels to the screen.

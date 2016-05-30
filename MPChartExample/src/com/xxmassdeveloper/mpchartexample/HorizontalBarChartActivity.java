@@ -240,7 +240,8 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
         for (int i = 0; i < count; i++) {
             xVals.add(new XAxisValue(i, mMonths[i % 12]));
-            yVals1.add(new BarEntry((float) (Math.random() * range), i));
+            float val = (float) (Math.random() * range);
+            yVals1.add(new BarEntry(i, val));
         }
 
         BarDataSet set1;

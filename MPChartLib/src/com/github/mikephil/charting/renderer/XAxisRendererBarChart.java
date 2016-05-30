@@ -40,45 +40,45 @@ public class XAxisRendererBarChart extends XAxisRenderer {
         BarData bd = mChart.getData();
         int step = bd.getDataSetCount();
 
-        for (int i = mMinX; i <= mMaxX; i += mXAxis.mAxisLabelModulus) {
-
-            position[0] = i * step + i * bd.getGroupSpace()
-                    + bd.getGroupSpace() / 2f;
-
-            // consider groups (center label for each group)
-            if (step > 1) {
-                position[0] += ((float) step - 1f) / 2f;
-            }
-
-            mTrans.pointValuesToPixel(position);
-
-            if (mViewPortHandler.isInBoundsX(position[0]) && i >= 0
-                    && i < mXAxis.getValues().size()) {
-
-                String label = mXAxis.getValues().get(i).getLabel();
-
-                if (mXAxis.isAvoidFirstLastClippingEnabled()) {
-
-                    // avoid clipping of the last
-                    if (i == mXAxis.getValues().size() - 1) {
-                        float width = Utils.calcTextWidth(mAxisLabelPaint, label);
-
-                        if (position[0] + width / 2.f > mViewPortHandler.contentRight())
-                            position[0] = mViewPortHandler.contentRight() - (width / 2.f);
-
-                        // avoid clipping of the first
-                    } else if (i == 0) {
-
-                        float width = Utils.calcTextWidth(mAxisLabelPaint, label);
-
-                        if (position[0] - width / 2.f < mViewPortHandler.contentLeft())
-                            position[0] = mViewPortHandler.contentLeft() + (width / 2.f);
-                    }
-                }
-
-                drawLabel(c, label, i, position[0], pos, anchor, labelRotationAngleDegrees);
-            }
-        }
+//        for (int i = mMinX; i <= mMaxX; i += mXAxis.mAxisLabelModulus) {
+//
+//            position[0] = i * step + i * bd.getGroupSpace()
+//                    + bd.getGroupSpace() / 2f;
+//
+//            // consider groups (center label for each group)
+//            if (step > 1) {
+//                position[0] += ((float) step - 1f) / 2f;
+//            }
+//
+//            mTrans.pointValuesToPixel(position);
+//
+//            if (mViewPortHandler.isInBoundsX(position[0]) && i >= 0
+//                    && i < mXAxis.getValues().size()) {
+//
+//                String label = mXAxis.getValues().get(i).getLabel();
+//
+//                if (mXAxis.isAvoidFirstLastClippingEnabled()) {
+//
+//                    // avoid clipping of the last
+//                    if (i == mXAxis.getValues().size() - 1) {
+//                        float width = Utils.calcTextWidth(mAxisLabelPaint, label);
+//
+//                        if (position[0] + width / 2.f > mViewPortHandler.contentRight())
+//                            position[0] = mViewPortHandler.contentRight() - (width / 2.f);
+//
+//                        // avoid clipping of the first
+//                    } else if (i == 0) {
+//
+//                        float width = Utils.calcTextWidth(mAxisLabelPaint, label);
+//
+//                        if (position[0] - width / 2.f < mViewPortHandler.contentLeft())
+//                            position[0] = mViewPortHandler.contentLeft() + (width / 2.f);
+//                    }
+//                }
+//
+//                drawLabel(c, label, i, position[0], pos, anchor, labelRotationAngleDegrees);
+//            }
+//        }
     }
 
     @Override
@@ -97,17 +97,17 @@ public class XAxisRendererBarChart extends XAxisRenderer {
         BarData bd = mChart.getData();
         int step = bd.getDataSetCount();
 
-        for (int i = mMinX; i < mMaxX; i += mXAxis.mAxisLabelModulus) {
-
-            position[0] = i * step + i * bd.getGroupSpace() - 0.5f;
-
-            mTrans.pointValuesToPixel(position);
-
-            if (mViewPortHandler.isInBoundsX(position[0])) {
-
-                c.drawLine(position[0], mViewPortHandler.offsetTop(), position[0],
-                        mViewPortHandler.contentBottom(), mGridPaint);
-            }
-        }
+//        for (int i = mMinX; i < mMaxX; i += mXAxis.mAxisLabelModulus) {
+//
+//            position[0] = i * step + i * bd.getGroupSpace() - 0.5f;
+//
+//            mTrans.pointValuesToPixel(position);
+//
+//            if (mViewPortHandler.isInBoundsX(position[0])) {
+//
+//                c.drawLine(position[0], mViewPortHandler.offsetTop(), position[0],
+//                        mViewPortHandler.contentBottom(), mGridPaint);
+//            }
+//        }
     }
 }

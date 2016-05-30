@@ -173,15 +173,15 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     }
 
     @Override
-    public S getEntryForXIndex(int xIndex) {
+    public S getEntryForXPos(float xPos) {
         //DynamicRealmObject o = new DynamicRealmObject(results.where().equalTo(mIndexField, xIndex).findFirst());
         //return new Entry(o.getFloat(mValuesField), o.getInt(mIndexField));
-        return getEntryForXIndex(xIndex, DataSet.Rounding.CLOSEST);
+        return getEntryForXPos(xPos, DataSet.Rounding.CLOSEST);
     }
 
     @Override
-    public S getEntryForXIndex(int xIndex, DataSet.Rounding rounding) {
-        int index = getEntryIndex(xIndex, rounding);
+    public S getEntryForXPos(float xPos, DataSet.Rounding rounding) {
+        int index = getEntryIndex(xPos, rounding);
         if (index > -1)
             return mValues.get(index);
         return null;
@@ -214,7 +214,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     }
 
     @Override
-    public int getEntryIndex(int x, DataSet.Rounding rounding) {
+    public int getEntryIndex(float xPos, DataSet.Rounding rounding) {
 
         int low = 0;
         int high = mValues.size() - 1;
@@ -223,16 +223,14 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         while (low <= high) {
             int m = (high + low) / 2;
 
-            S entry = mValues.get(m);
-
-            if (x == entry.getX()) {
-                while (m > 0 && mValues.get(m - 1).getX() == x)
+            if (xPos == mValues.get(m).getX()) {
+                while (m > 0 && mValues.get(m - 1).getX() == xPos)
                     m--;
 
                 return m;
             }
 
-            if (x > entry.getX())
+            if (xPos > mValues.get(m).getX())
                 low = m + 1;
             else
                 high = m - 1;
@@ -241,13 +239,13 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         }
 
         if (closest != -1) {
-            int closestXIndex = mValues.get(closest).getX();
+            float closestXPos = mValues.get(closest).getX();
             if (rounding == DataSet.Rounding.UP) {
-                if (closestXIndex < x && closest < mValues.size() - 1) {
+                if (closestXPos < xPos && closest < mValues.size() - 1) {
                     ++closest;
                 }
             } else if (rounding == DataSet.Rounding.DOWN) {
-                if (closestXIndex > x && closest > 0) {
+                if (closestXPos > xPos && closest > 0) {
                     --closest;
                 }
             }
@@ -265,7 +263,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     public float getYValForXIndex(int xIndex) {
         //return new DynamicRealmObject(results.where().greaterThanOrEqualTo(mIndexField, xIndex).findFirst())
         // .getFloat(mValuesField);
-        Entry e = getEntryForXIndex(xIndex);
+        Entry e = getEntryForXPos(xIndex);
 
         if (e != null && e.getX() == xIndex)
             return e.getY();

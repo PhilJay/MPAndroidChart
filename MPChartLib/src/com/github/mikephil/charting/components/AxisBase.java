@@ -26,6 +26,26 @@ public abstract class AxisBase extends ComponentBase {
     private float mAxisLineWidth = 1f;
 
     /**
+     * the actual array of entries
+     */
+    public float[] mEntries = new float[]{};
+
+    /**
+     * the number of entries the legend contains
+     */
+    public int mEntryCount;
+
+    /**
+     * the number of decimal digits to use
+     */
+    public int mDecimals;
+
+    /**
+     * the number of label entries the axis should have, default 6
+     */
+    private int mLabelCount = 6;
+
+    /**
      * flag indicating if the grid lines for this axis should be drawn
      */
     protected boolean mDrawGridLines = true;
@@ -219,6 +239,31 @@ public abstract class AxisBase extends ComponentBase {
      */
     public boolean isDrawLabelsEnabled() {
         return mDrawLabels;
+    }
+
+    /**
+     * Sets the number of label entries for the y-axis max = 25, min = 2, default: 6, be aware
+     * that this number is not fixed.
+     *
+     * @param count the number of y-axis labels that sould be displayed
+     */
+    public void setLabelCount(int count) {
+
+        if (count > 25)
+            count = 25;
+        if (count < 2)
+            count = 2;
+
+        mLabelCount = count;
+    }
+
+    /**
+     * Returns the number of label entries the y-axis should have
+     *
+     * @return
+     */
+    public int getLabelCount() {
+        return mLabelCount;
     }
 
     /**

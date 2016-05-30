@@ -27,26 +27,6 @@ public class YAxis extends AxisBase {
     protected YAxisValueFormatter mYAxisValueFormatter;
 
     /**
-     * the actual array of entries
-     */
-    public float[] mEntries = new float[]{};
-
-    /**
-     * the number of entries the legend contains
-     */
-    public int mEntryCount;
-
-    /**
-     * the number of decimal digits to use
-     */
-    public int mDecimals;
-
-    /**
-     * the number of y-label entries the y-labels should have, default 6
-     */
-    private int mLabelCount = 6;
-
-    /**
      * indicates if the top y-label entry is drawn or not
      */
     private boolean mDrawTopYLabelEntry = true;
@@ -279,22 +259,8 @@ public class YAxis extends AxisBase {
      */
     public void setLabelCount(int count, boolean force) {
 
-        if (count > 25)
-            count = 25;
-        if (count < 2)
-            count = 2;
-
-        mLabelCount = count;
+        setLabelCount(count);
         mForceLabels = force;
-    }
-
-    /**
-     * Returns the number of label entries the y-axis should have
-     *
-     * @return
-     */
-    public int getLabelCount() {
-        return mLabelCount;
     }
 
     /**

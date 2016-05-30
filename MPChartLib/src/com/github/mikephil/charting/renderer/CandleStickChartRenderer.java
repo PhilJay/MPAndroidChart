@@ -60,8 +60,8 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
         float barSpace = dataSet.getBarSpace();
         boolean showCandleBar = dataSet.getShowCandleBar();
 
-        int minx = Math.max(mMinX, 0);
-        int maxx = Math.min(mMaxX + 1, dataSet.getEntryCount());
+        int minx = Math.max((int) mChart.getLowestVisibleX(), 0);
+        int maxx = Math.min((int) mChart.getHighestVisibleX(), dataSet.getEntryCount());
 
         mRenderPaint.setStrokeWidth(dataSet.getShadowWidth());
 
@@ -74,9 +74,9 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
             // get the entry
             CandleEntry e = dataSet.getEntryForIndex(j);
 
-            final int xIndex = e.getX();
+            final float xPos = e.getX();
 
-            if (xIndex < minx || xIndex >= maxx)
+            if (xPos < minx || xPos >= maxx)
                 continue;
 
             final float open = e.getOpen();
@@ -87,10 +87,10 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
             if (showCandleBar) {
                 // calculate the shadow
 
-                mShadowBuffers[0] = xIndex;
-                mShadowBuffers[2] = xIndex;
-                mShadowBuffers[4] = xIndex;
-                mShadowBuffers[6] = xIndex;
+                mShadowBuffers[0] = xPos;
+                mShadowBuffers[2] = xPos;
+                mShadowBuffers[4] = xPos;
+                mShadowBuffers[6] = xPos;
 
                 if (open > close) {
                     mShadowBuffers[1] = high * phaseY;
@@ -150,9 +150,9 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
                 // calculate the body
 
-                mBodyBuffers[0] = xIndex - 0.5f + barSpace;
+                mBodyBuffers[0] = xPos - 0.5f + barSpace;
                 mBodyBuffers[1] = close * phaseY;
-                mBodyBuffers[2] = (xIndex + 0.5f - barSpace);
+                mBodyBuffers[2] = (xPos + 0.5f - barSpace);
                 mBodyBuffers[3] = open * phaseY;
 
                 trans.pointValuesToPixel(mBodyBuffers);
@@ -202,19 +202,19 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
                 }
             } else {
 
-                mRangeBuffers[0] = xIndex;
+                mRangeBuffers[0] = xPos;
                 mRangeBuffers[1] = high * phaseY;
-                mRangeBuffers[2] = xIndex;
+                mRangeBuffers[2] = xPos;
                 mRangeBuffers[3] = low * phaseY;
 
-                mOpenBuffers[0] = xIndex - 0.5f + barSpace;
+                mOpenBuffers[0] = xPos - 0.5f + barSpace;
                 mOpenBuffers[1] = open * phaseY;
-                mOpenBuffers[2] = xIndex;
+                mOpenBuffers[2] = xPos;
                 mOpenBuffers[3] = open * phaseY;
 
-                mCloseBuffers[0] = xIndex + 0.5f - barSpace;
+                mCloseBuffers[0] = xPos + 0.5f - barSpace;
                 mCloseBuffers[1] = close * phaseY;
-                mCloseBuffers[2] = xIndex;
+                mCloseBuffers[2] = xPos;
                 mCloseBuffers[3] = close * phaseY;
 
                 trans.pointValuesToPixel(mRangeBuffers);
@@ -276,8 +276,8 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
                 Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-                int minx = Math.max(mMinX, 0);
-                int maxx = Math.min(mMaxX + 1, dataSet.getEntryCount());
+                int minx = Math.max((int) mChart.getLowestVisibleX(), 0);
+                int maxx = Math.min((int) mChart.getHighestVisibleX() + 1, dataSet.getEntryCount());
 
                 float[] positions = trans.generateTransformedValuesCandle(
                         dataSet, mAnimator.getPhaseX(), mAnimator.getPhaseY(), minx, maxx);
@@ -334,7 +334,7 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
                 if (set == null || !set.isHighlightEnabled())
                     continue;
 
-                CandleEntry e = set.getEntryForXIndex(xIndex);
+                CandleEntry e = set.getEntryForXPos(xIndex);
 
                 if (e == null || e.getX() != xIndex)
                     continue;
