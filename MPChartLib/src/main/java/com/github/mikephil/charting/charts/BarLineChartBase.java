@@ -563,47 +563,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         float xPos = e.getX();
         float yPos = e.getY();
 
-        if (this instanceof BarChart) {
-
-            BarData bd = (BarData) mData;
-            float space = bd.getGroupSpace();
-            int setCount = mData.getDataSetCount();
-            float i = e.getX();
-
-            if (this instanceof HorizontalBarChart) {
-
-                // calculate the xPx-position, depending on datasetcount
-                float y = i + i * (setCount - 1) + dataSetIndex + space * i + space / 2f;
-
-                yPos = y;
-
-                BarEntry entry = (BarEntry) e;
-                if (entry.getYVals() != null) {
-                    xPos = highlight.getRange().to;
-                } else {
-                    xPos = e.getY();
-                }
-
-                xPos *= mAnimator.getPhaseY();
-            } else {
-
-                float x = i + i * (setCount - 1) + dataSetIndex + space * i + space / 2f;
-
-                xPos = x;
-
-                BarEntry entry = (BarEntry) e;
-                if (entry.getYVals() != null) {
-                    yPos = highlight.getRange().to;
-                } else {
-                    yPos = e.getY();
-                }
-
-                yPos *= mAnimator.getPhaseY();
-            }
-        } else {
-            yPos *= mAnimator.getPhaseY();
-        }
-
         // position of the marker depends on selected yValue index and yValue
         float[] pts = new float[]{
                 xPos, yPos

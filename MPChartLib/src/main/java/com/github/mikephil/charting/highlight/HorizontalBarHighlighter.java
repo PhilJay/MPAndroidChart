@@ -20,7 +20,7 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 
 		BarData barData = mChart.getBarData();
 
-		final float xVal = getXForTouch(x);
+		final float xVal = (float) getValsForTouch(x, y).x;
 		final float baseNoSpace = getBase(x);
 		final int setCount = barData.getDataSetCount();
 		int dataSetIndex = ((int)baseNoSpace) % setCount;
@@ -31,7 +31,7 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 			dataSetIndex = setCount - 1;
 		}
 
-		SelectionDetail selectionDetail = getSelectionDetail(xVal, x, y, dataSetIndex);
+		SelectionDetail selectionDetail = getSelectionDetail(xVal, x, y);
 		if (selectionDetail == null)
 			return null;
 
@@ -95,7 +95,6 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 	 * @param y
 	 * @return
 	 */
-	@Override
 	protected float getBase(float y) {
 
 		// create an array of the touch-point

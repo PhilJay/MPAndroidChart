@@ -35,9 +35,9 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      */
     public Highlight getHighlight(float x, float y) {
 
-        float xVal = getXForTouch(x);
+        float xVal = (float) getValsForTouch(x, y).x;
 
-        SelectionDetail selectionDetail = getSelectionDetail(xVal, x, y, -1);
+        SelectionDetail selectionDetail = getSelectionDetail(xVal, x, y);
         if (selectionDetail == null)
             return null;
 
@@ -53,11 +53,11 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      * @param x
      * @return
      */
-    protected float getXForTouch(float x) {
+    protected PointD getValsForTouch(float x, float y) {
 
         // take any transformer to determine the xPx-axis yValue
-        PointD pos = mChart.getTransformer(YAxis.AxisDependency.LEFT).getValuesByTouchPoint(x, 0f);
-        return (float) pos.x;
+        PointD pos = mChart.getTransformer(YAxis.AxisDependency.LEFT).getValuesByTouchPoint(x, y);
+        return pos;
     }
 
     /**
@@ -65,12 +65,11 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      *
      * @param xVal
      * @param y
-     * @param dataSetIndex
      * @return
      */
-    protected SelectionDetail getSelectionDetail(float xVal, float x, float y, int dataSetIndex) {
+    protected SelectionDetail getSelectionDetail(float xVal, float x, float y) {
 
-        List<SelectionDetail> valsAtIndex = getSelectionDetailsAtIndex(xVal, dataSetIndex);
+        List<SelectionDetail> valsAtIndex = getSelectionDetailsAtIndex(xVal);
 
         float leftdist = Utils.getMinimumDistance(valsAtIndex, y, YAxis.AxisDependency.LEFT);
         float rightdist = Utils.getMinimumDistance(valsAtIndex, y, YAxis.AxisDependency.RIGHT);
@@ -86,19 +85,15 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      * Returns a list of SelectionDetail object corresponding to the given xIndex.
      *
      * @param xVal
-     * @param dataSetIndex dataSet index to look at. -1 if unspecified.
      * @return
      */
-    protected List<SelectionDetail> getSelectionDetailsAtIndex(float xVal, int dataSetIndex) {
+    protected List<SelectionDetail> getSelectionDetailsAtIndex(float xVal) {
 
         List<SelectionDetail> vals = new ArrayList<SelectionDetail>();
 
         if (mChart.getData() == null) return vals;
 
         for (int i = 0, dataSetCount = mChart.getData().getDataSetCount(); i < dataSetCount; i++) {
-
-            if (dataSetIndex > -1 && dataSetIndex != i)
-                continue;
 
             IDataSet dataSet = mChart.getData().getDataSetByIndex(i);
 

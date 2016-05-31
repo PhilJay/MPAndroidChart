@@ -382,34 +382,31 @@ public class BarChartRenderer extends DataRenderer {
 
                 float x = high.getX();
 
-                // check outofbounds
-                if (x >= 0
-                        && x < (mChart.getXChartMax() * mAnimator.getPhaseX()) / setCount) {
+                BarEntry e = set.getEntryForXPos(x);
+                int entryIndex = set.getEntryIndex(e);
 
-                    BarEntry e = set.getEntryForXPos(x);
-                    int entryIndex = set.getEntryIndex(e);
+                if (e == null)
+                    continue;
 
-                    if (e == null)
-                        continue;
+                boolean isStack = high.getStackIndex() < 0 ? false : true;
 
-                    boolean isStack = high.getStackIndex() < 0 ? false : true;
+                final float y1;
+                final float y2;
 
-                    final float y1;
-                    final float y2;
+                if (isStack) {
+                    y1 = high.getRange().from;
+                    y2 = high.getRange().to;
+                } else {
+                    y1 = e.getY();
+                    y2 = 0.f;
+                }
 
-                    if (isStack) {
-                        y1 = high.getRange().from;
-                        y2 = high.getRange().to;
-                    } else {
-                        y1 = e.getY();
-                        y2 = 0.f;
-                    }
+                prepareBarHighlight(e.getX(), y1, y2, barData.getBarWidth() / 2f, trans);
 
-                    prepareBarHighlight(e.getX(), y1, y2, barData.getBarWidth() / 2f, trans);
+                //prepareBarHighlight(y1, y2, interval, entryIndex, dataSetIndex, setCount, barSpace, groupSpace,
+                // trans);
 
-                    //prepareBarHighlight(y1, y2, interval, entryIndex, dataSetIndex, setCount, barSpace, groupSpace, trans);
-
-                    c.drawRect(mBarRect, mHighlightPaint);
+                c.drawRect(mBarRect, mHighlightPaint);
 
 //                    if (mChart.isDrawHighlightArrowEnabled()) {
 //
@@ -436,9 +433,10 @@ public class BarChartRenderer extends DataRenderer {
 //                        trans.pathValueToPixel(arrow);
 //                        c.drawPath(arrow, mHighlightPaint);
 //                    }
-                }
+
             }
         }
+
     }
 
     public float[] getTransformedValues(Transformer trans, IBarDataSet data,

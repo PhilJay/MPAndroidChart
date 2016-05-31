@@ -24,34 +24,19 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 
         BarData barData = mChart.getBarData();
 
-        final float xVal = getXForTouch(x);
-        final float baseNoSpace = getBase(x);
-        final int setCount = barData.getDataSetCount();
-        int dataSetIndex = ((int) baseNoSpace) % setCount;
+        PointD pos = getValsForTouch(x, y);
 
-        if (dataSetIndex < 0) {
-            dataSetIndex = 0;
-        } else if (dataSetIndex >= setCount) {
-            dataSetIndex = setCount - 1;
-        }
-
-        SelectionDetail selectionDetail = getSelectionDetail(xVal, x, y, dataSetIndex);
+        SelectionDetail selectionDetail = getSelectionDetail((float) pos.x, x, y);
         if (selectionDetail == null)
             return null;
 
-        IBarDataSet set = barData.getDataSetByIndex(dataSetIndex);
+        IBarDataSet set = barData.getDataSetByIndex(selectionDetail.dataSetIndex);
         if (set.isStacked()) {
-
-            float[] pts = new float[2];
-            pts[1] = y;
-
-            // take any transformer to determine the xPx-axis yValue
-            mChart.getTransformer(set.getAxisDependency()).pixelsToValue(pts);
 
             return getStackedHighlight(selectionDetail,
                     set,
-                    xVal,
-                    pts[1]);
+                    (float) pos.x,
+                    (float) pos.y);
         }
 
         return new Highlight(
@@ -87,24 +72,33 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 //    }
 
     @Override
-    protected SelectionDetail getSelectionDetail(float xVal, float x, float y, int dataSetIndex) {
-
-        dataSetIndex = Math.max(dataSetIndex, 0);
+    protected SelectionDetail getSelectionDetail(float xVal, float x, float y) {
 
         BarData barData = mChart.getBarData();
-        IDataSet dataSet = barData.getDataSetCount() > dataSetIndex
-                ? barData.getDataSetByIndex(dataSetIndex)
-                : null;
 
-        if (dataSet == null)
-            return null;
+        int closestDataSetIndex = 0;
+        float closestDistance = Float.MAX_VALUE;
+        Entry closestEntry = null;
 
-        final Entry entry = dataSet.getEntryForXPos(xVal);
+        for(int i = 0; i < barData.getDataSets().size(); i++) {
 
-        return new SelectionDetail(entry.getX(),
-                entry.getY(),
-                dataSetIndex,
-                dataSet);
+            IBarDataSet dataSet = barData.getDataSetByIndex(i);
+
+            final Entry entry = dataSet.getEntryForXPos(xVal);
+
+            final float distance = Math.abs(xVal - entry.getX());
+
+            if(distance < closestDistance) {
+                closestDataSetIndex = i;
+                closestDistance = distance;
+                closestEntry = entry;
+            }
+        }
+
+        return new SelectionDetail(x, y, closestEntry.getX(),
+                closestEntry.getY(),
+                closestDataSetIndex,
+                barData.getDataSetByIndex(closestDataSetIndex));
     }
 
     /**
@@ -179,30 +173,6 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
         int length = Math.max(ranges.length - 1, 0);
 
         return (value > ranges[length].to) ? length : 0;
-    }
-
-    /**
-     * Returns the base xPx-yValue to the given xPx-touch value in pixels.
-     *
-     * @param x
-     * @return
-     */
-    protected float getBase(float x) {
-
-        // take any transformer to determine the x-axis value
-        PointD val = mChart.getTransformer(YAxis.AxisDependency.LEFT).getValuesByTouchPoint(x, 0f);
-        int setCount = mChart.getBarData().getDataSetCount();
-        return (float) val.x;
-//
-//
-//
-//        // calculate how often the group-space appears
-//        int steps = (int) ((float) xVal / ((float) setCount + mChart.getBarData().getGroupSpace()));
-//
-//        float groupSpaceSum = mChart.getBarData().getGroupSpace() * (float) steps;
-//
-//        float baseNoSpace = (float) xVal - groupSpaceSum;
-//        return baseNoSpace;
     }
 
     /**

@@ -567,7 +567,6 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
             return false;
         }
 
-
         Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
         performHighlight(h, e);
 

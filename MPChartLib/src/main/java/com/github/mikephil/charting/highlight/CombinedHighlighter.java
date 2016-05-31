@@ -25,7 +25,7 @@ public class CombinedHighlighter extends ChartHighlighter<BarLineScatterCandleBu
      * @return
      */
     @Override
-    protected List<SelectionDetail> getSelectionDetailsAtIndex(float xVal, int dataSetIndex) {
+    protected List<SelectionDetail> getSelectionDetailsAtIndex(float xVal) {
 
         List<SelectionDetail> vals = new ArrayList<SelectionDetail>();
         float[] pts = new float[2];
