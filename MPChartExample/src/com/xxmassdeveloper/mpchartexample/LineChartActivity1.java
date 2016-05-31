@@ -357,7 +357,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                 mChart.getData().getDataSetCount() > 0) {
             set1 = (LineDataSet)mChart.getData().getDataSetByIndex(0);
             set1.setYVals(yVals);
-            mChart.getData().setXVals(xVals);
             mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
@@ -391,7 +390,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
             dataSets.add(set1); // add the datasets
 
             // create a data object with the datasets
-            LineData data = new LineData(xVals, dataSets);
+            LineData data = new LineData(dataSets);
 
             // set data
             mChart.setData(data);

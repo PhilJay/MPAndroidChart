@@ -63,7 +63,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
             }
 
             // add a new xPx-yValue first
-            data.addXValue(new XAxisValue(set.getEntryCount(), set.getEntryCount() + ""));
+            //data.addXValue(new XAxisValue(set.getEntryCount(), set.getEntryCount() + ""));
             
             // choose a random dataSet
             int randomDataSetIndex = (int) (Math.random() * data.getDataSetCount());
@@ -77,7 +77,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
             mChart.setVisibleYRangeMaximum(15, AxisDependency.LEFT);
 //            
 //            // this automatically refreshes the chart (calls invalidate())
-            mChart.moveViewTo(data.getXValCount()-7, 50f, AxisDependency.LEFT);
+            mChart.moveViewTo(data.getEntryCount()-7, 50f, AxisDependency.LEFT);
         }
     }
 
@@ -114,14 +114,14 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
             // create 10 yPx-vals
             ArrayList<Entry> yVals = new ArrayList<Entry>();
             
-            if(data.getXValCount() == 0) {
+            if(data.getEntryCount() == 0) {
                 // add 10 xPx-entries
                 for (int i = 0; i < 10; i++) {
-                    data.addXValue(new XAxisValue(i, i + ""));
+                    //data.addXValue(new XAxisValue(i, i + ""));
                 }
             }
 
-            for (int i = 0; i < data.getXValCount(); i++) {
+            for (int i = 0; i < data.getEntryCount(); i++) {
                 yVals.add(new Entry((float) (Math.random() * 50f) + 50f * count, i));
             }
 

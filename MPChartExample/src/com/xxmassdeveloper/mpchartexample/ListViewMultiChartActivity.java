@@ -18,6 +18,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.listviewitems.BarChartItem;
@@ -125,7 +126,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         sets.add(d1);
         sets.add(d2);
         
-        LineData cd = new LineData(getMonths(), sets);
+        LineData cd = new LineData(sets);
         return cd;
     }
     
@@ -146,7 +147,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         d.setColors(ColorTemplate.VORDIPLOM_COLORS);
         d.setHighLightAlpha(255);
         
-        BarData cd = new BarData(getMonths(), d);
+        BarData cd = new BarData(d);
         cd.setBarWidth(0.9f);
         return cd;
     }
@@ -158,10 +159,10 @@ public class ListViewMultiChartActivity extends DemoBase {
      */
     private PieData generateDataPie(int cnt) {
 
-        ArrayList<Entry> entries = new ArrayList<Entry>();
+        ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
 
         for (int i = 0; i < 4; i++) {
-            entries.add(new Entry(i, (int) (Math.random() * 70) + 30));
+            entries.add(new PieEntry((float) ((Math.random() * 70) + 30), "Quarter " + (i+1)));
         }
 
         PieDataSet d = new PieDataSet(entries, "");
@@ -170,7 +171,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         d.setSliceSpace(2f);
         d.setColors(ColorTemplate.VORDIPLOM_COLORS);
         
-        PieData cd = new PieData(getQuarters(), d);
+        PieData cd = new PieData(d);
         return cd;
     }
 }

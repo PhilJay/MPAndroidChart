@@ -185,11 +185,6 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         tvX.setText("" + (mSeekBarX.getProgress() + 1));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
-        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
-        for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
-            xVals.add(new XAxisValue(i, mMonths[i % mMonths.length]));
-        }
-
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
 
         for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
@@ -207,7 +202,6 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
                 mChart.getData().getDataSetCount() > 0) {
             set1 = (BarDataSet) mChart.getData().getDataSetByIndex(0);
             set1.setYVals(yVals1);
-            mChart.getData().setXVals(xVals);
             mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
@@ -218,7 +212,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
             ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
             dataSets.add(set1);
 
-            BarData data = new BarData(xVals, dataSets);
+            BarData data = new BarData(dataSets);
             data.setValueFormatter(new MyValueFormatter());
             data.setValueTextColor(Color.WHITE);
 

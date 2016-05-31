@@ -68,13 +68,7 @@ public class CombinedChartActivity extends DemoBase {
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxisPosition.BOTH_SIDED);
 
-        XAxisValue[] xVals = new XAxisValue[mMonths.length];
-
-        for(int i = 0; i < mMonths.length; i++) {
-            xVals[i] = new XAxisValue(i, mMonths[i]);
-        }
-
-        CombinedData data = new CombinedData(xVals);
+        CombinedData data = new CombinedData();
 
         data.setData(generateLineData());
         data.setData(generateBarData());

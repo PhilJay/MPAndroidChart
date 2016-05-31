@@ -224,7 +224,6 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
                 mChart.getData().getDataSetCount() > 0) {
             set = (BarDataSet) mChart.getData().getDataSetByIndex(0);
             set.setYVals(entries);
-            mChart.getData().setXVals(xVals);
             mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
@@ -232,7 +231,7 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
             set.setColor(Color.rgb(240, 120, 124));
         }
 
-        BarData data = new BarData(xVals, set);
+        BarData data = new BarData(set);
         data.setValueTextSize(10f);
         data.setValueTypeface(mTf);
         data.setDrawValues(false);

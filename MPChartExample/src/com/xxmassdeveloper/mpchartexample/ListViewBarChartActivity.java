@@ -142,7 +142,7 @@ public class ListViewBarChartActivity extends DemoBase {
         ArrayList<IBarDataSet> sets = new ArrayList<IBarDataSet>();
         sets.add(d);
         
-        BarData cd = new BarData(getMonths(), sets);
+        BarData cd = new BarData(sets);
         cd.setBarWidth(0.9f);
         return cd;
     }

@@ -167,7 +167,6 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         
         mChart.resetTracking();
 
-        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
         ArrayList<CandleEntry> yVals1 = new ArrayList<CandleEntry>();
 
         for (int i = 0; i < prog; i++) {
@@ -184,9 +183,6 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
 
             yVals1.add(new CandleEntry(i, val + high, val - low, even ? val + open : val - open,
                     even ? val - close : val + close));
-
-            XAxisValue xVal = new XAxisValue(i,(i) + "");
-            xVals.add(xVal);
         }
 
         CandleDataSet set1 = new CandleDataSet(yVals1, "Data Set");
@@ -201,7 +197,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         set1.setNeutralColor(Color.BLUE);
         //set1.setHighlightLineWidth(1f);
 
-        CandleData data = new CandleData(xVals, set1);
+        CandleData data = new CandleData(set1);
         
         mChart.setData(data);
         mChart.invalidate();

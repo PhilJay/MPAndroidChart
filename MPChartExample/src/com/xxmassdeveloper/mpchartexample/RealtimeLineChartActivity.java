@@ -140,8 +140,8 @@ public class RealtimeLineChartActivity extends DemoBase implements
             }
 
             // add a new xPx-yValue first
-            data.addXValue(new XAxisValue(data.getXValCount() ,mMonths[data.getXValCount() % 12] + " "
-                    + (year + data.getXValCount() / 12)));
+//            data.addXValue(new XAxisValue(data.getXValCount() ,mMonths[data.getXValCount() % 12] + " "
+//                    + (year + data.getXValCount() / 12)));
             data.addEntry(new Entry((float) (Math.random() * 40) + 30f, set.getEntryCount()), 0);
 
 
@@ -153,7 +153,7 @@ public class RealtimeLineChartActivity extends DemoBase implements
             // mChart.setVisibleYRange(30, AxisDependency.LEFT);
 
             // move to the latest entry
-            mChart.moveViewToX(data.getXValCount() - 121);
+            mChart.moveViewToX(data.getEntryCount() - 121);
 
             // this automatically refreshes the chart (calls invalidate())
             // mChart.moveViewTo(data.getXValCount()-7, 55f,

@@ -88,7 +88,6 @@ public class BarChartPositiveNegative extends DemoBase {
     private void setData(List<Data> dataList) {
 
         ArrayList<BarEntry> values = new ArrayList<BarEntry>();
-        XAxisValue[] dates = new XAxisValue[dataList.size()];
         List<Integer> colors = new ArrayList<Integer>();
 
         int green = Color.rgb(110, 190, 102);
@@ -99,8 +98,6 @@ public class BarChartPositiveNegative extends DemoBase {
             Data d = dataList.get(i);
             BarEntry entry = new BarEntry(d.xValue, d.yValue);
             values.add(entry);
-
-            dates[i] = new XAxisValue(i, dataList.get(i).xAxisValue);
 
             // specific colors
             if (d.yValue >= 0)
@@ -122,7 +119,7 @@ public class BarChartPositiveNegative extends DemoBase {
             set.setColors(colors);
             set.setValueTextColors(colors);
 
-            BarData data = new BarData(dates, set);
+            BarData data = new BarData(set);
             data.setValueTextSize(13f);
             data.setValueTypeface(mTf);
             data.setValueFormatter(new ValueFormatter());

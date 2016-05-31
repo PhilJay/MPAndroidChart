@@ -52,19 +52,17 @@ public class ScrollViewActivity extends DemoBase {
     private void setData(int count) {
         
         ArrayList<BarEntry> yVals = new ArrayList<BarEntry>();
-        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
 
         for (int i = 0; i < count; i++) {
             float val = (float) (Math.random() * count) + 15;
             yVals.add(new BarEntry(i, (int) val));
-            xVals.add(new XAxisValue(i, (int) val + ""));
         }
 
         BarDataSet set = new BarDataSet(yVals, "Data Set");
         set.setColors(ColorTemplate.VORDIPLOM_COLORS);
         set.setDrawValues(false);
 
-        BarData data = new BarData(xVals, set);
+        BarData data = new BarData(set);
 
         mChart.setData(data);
         mChart.invalidate();

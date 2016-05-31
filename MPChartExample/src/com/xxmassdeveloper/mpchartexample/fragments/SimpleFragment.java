@@ -19,6 +19,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.data.XAxisValue;
@@ -63,7 +64,7 @@ public abstract class SimpleFragment extends Fragment {
             sets.add(ds);
         }
         
-        BarData d = new BarData(ChartData.generateXVals(0, count), sets);
+        BarData d = new BarData(sets);
         d.setValueTypeface(tf);
         return d;
     }
@@ -90,7 +91,7 @@ public abstract class SimpleFragment extends Fragment {
             sets.add(ds);
         }
         
-        ScatterData d = new ScatterData(ChartData.generateXVals(0, count), sets);
+        ScatterData d = new ScatterData(sets);
         d.setValueTypeface(tf);
         return d;
     }
@@ -103,16 +104,10 @@ public abstract class SimpleFragment extends Fragment {
         
         int count = 4;
         
-        ArrayList<Entry> entries1 = new ArrayList<Entry>();
-        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
-        
-        xVals.add(new XAxisValue("Quarter 1"));
-        xVals.add(new XAxisValue("Quarter 2"));
-        xVals.add(new XAxisValue("Quarter 3"));
-        xVals.add(new XAxisValue("Quarter 4"));
+        ArrayList<PieEntry> entries1 = new ArrayList<PieEntry>();
         
         for(int i = 0; i < count; i++) {
-            entries1.add(new Entry((float) (Math.random() * 60) + 40, i));
+            entries1.add(new PieEntry((float) ((Math.random() * 60) + 40), "Quarter " + (i+1)));
         }
         
         PieDataSet ds1 = new PieDataSet(entries1, "Quarterly Revenues 2015");
@@ -121,7 +116,7 @@ public abstract class SimpleFragment extends Fragment {
         ds1.setValueTextColor(Color.WHITE);
         ds1.setValueTextSize(12f);
         
-        PieData d = new PieData(xVals, ds1);
+        PieData d = new PieData(ds1);
         d.setValueTypeface(tf);
 
         return d;
@@ -159,7 +154,7 @@ public abstract class SimpleFragment extends Fragment {
         
         int max = Math.max(sets.get(0).getEntryCount(), sets.get(1).getEntryCount());
         
-        LineData d = new LineData(ChartData.generateXVals(0, max),  sets);
+        LineData d = new LineData(sets);
         d.setValueTypeface(tf);
         return d;
     }
@@ -199,7 +194,7 @@ public abstract class SimpleFragment extends Fragment {
         sets.add(ds3);
         sets.add(ds4);
         
-        LineData d = new LineData(ChartData.generateXVals(0, ds1.getEntryCount()), sets);
+        LineData d = new LineData(sets);
         d.setValueTypeface(tf);
         return d;
     }

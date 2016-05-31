@@ -258,7 +258,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
             ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
             dataSets.add(set1);
 
-            BarData data = new BarData(new ArrayList<XAxisValue>(), dataSets);
+            BarData data = new BarData(dataSets);
             data.setValueTextSize(10f);
             data.setValueTypeface(mTf);
             data.setBarWidth(0.9f);

@@ -93,11 +93,6 @@ public class PerformanceLineChart extends DemoBase implements OnSeekBarChangeLis
 
     private void setData(int count, float range) {
 
-        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
-        for (int i = 0; i < count; i++) {
-            xVals.add(new XAxisValue(i, i + ""));
-        }
-
         ArrayList<Entry> yVals = new ArrayList<Entry>();
 
         for (int i = 0; i < count; i++) {
@@ -119,7 +114,7 @@ public class PerformanceLineChart extends DemoBase implements OnSeekBarChangeLis
         set1.setDrawFilled(false);
 
         // create a data object with the datasets
-        LineData data = new LineData(xVals, set1);
+        LineData data = new LineData(set1);
 
         // set data
         mChart.setData(data);

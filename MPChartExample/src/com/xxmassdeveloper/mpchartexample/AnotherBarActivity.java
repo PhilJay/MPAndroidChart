@@ -180,20 +180,12 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
             yVals1.add(new BarEntry(i, val));
         }
 
-        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
-        for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
-
-            XAxisValue xValue = new XAxisValue(i, (int) yVals1.get(i).getY() + "");
-            xVals.add(xValue);
-        }
-
         BarDataSet set1;
 
         if (mChart.getData() != null &&
                 mChart.getData().getDataSetCount() > 0) {
             set1 = (BarDataSet)mChart.getData().getDataSetByIndex(0);
             set1.setYVals(yVals1);
-            mChart.getData().setXVals(xVals);
             mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
@@ -204,8 +196,7 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
             ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
             dataSets.add(set1);
 
-            BarData data = new BarData(xVals, dataSets);
-
+            BarData data = new BarData(dataSets);
             mChart.setData(data);
         }
 

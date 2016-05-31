@@ -250,7 +250,6 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
                 mChart.getData().getDataSetCount() > 0) {
             set1 = (BarDataSet)mChart.getData().getDataSetByIndex(0);
             set1.setYVals(yVals1);
-            mChart.getData().setXVals(xVals);
             mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
@@ -259,7 +258,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
             ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
             dataSets.add(set1);
 
-            BarData data = new BarData(xVals, dataSets);
+            BarData data = new BarData(dataSets);
             data.setValueTextSize(10f);
             data.setValueTypeface(tf);
 

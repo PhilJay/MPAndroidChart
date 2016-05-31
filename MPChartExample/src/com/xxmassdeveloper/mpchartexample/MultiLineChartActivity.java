@@ -189,11 +189,6 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
         tvX.setText("" + (mSeekBarX.getProgress()));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
-        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
-        for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-            xVals.add(new XAxisValue(i, i+""));
-        }
- 
         ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
 
         for (int z = 0; z < 3; z++) {
@@ -220,7 +215,7 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
         ((LineDataSet) dataSets.get(0)).setColors(ColorTemplate.VORDIPLOM_COLORS);
         ((LineDataSet) dataSets.get(0)).setCircleColors(ColorTemplate.VORDIPLOM_COLORS);
 
-        LineData data = new LineData(xVals, dataSets);
+        LineData data = new LineData(dataSets);
         mChart.setData(data);
         mChart.invalidate();
     }

@@ -23,6 +23,7 @@ import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
@@ -183,19 +184,14 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
 
         float mult = range;
 
-        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+        ArrayList<PieEntry> yVals1 = new ArrayList<PieEntry>();
 
         // IMPORTANT: In a PieChart, no values (Entry) should have the same
         // xIndex (even if from different DataSets), since no values can be
         // drawn above each other.
         for (int i = 0; i < count + 1; i++) {
-            yVals1.add(new Entry((float) (Math.random() * mult) + mult / 5, i));
+            yVals1.add(new PieEntry((float) (Math.random() * mult) + mult / 5, mParties[i % mParties.length]));
         }
-
-        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
-
-        for (int i = 0; i < count + 1; i++)
-            xVals.add(new XAxisValue(mParties[i % mParties.length]));
 
         PieDataSet dataSet = new PieDataSet(yVals1, "Election Results");
         dataSet.setSliceSpace(3f);
@@ -232,7 +228,7 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
         // dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
         dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
 
-        PieData data = new PieData(xVals, dataSet);
+        PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(11f);
         data.setValueTextColor(Color.BLACK);

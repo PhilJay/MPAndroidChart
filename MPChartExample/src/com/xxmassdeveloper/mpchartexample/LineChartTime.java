@@ -272,13 +272,6 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
 
     private void setData(int count, float range) {
 
-        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
-        for (int i = 0; i < 10; i++) {
-
-            long timeLong = 10000 + i * 1000;
-            xVals.add(new XAxisValue(timeLong, i + ""));
-        }
-
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
 
         for (int i = 0; i < count; i++) {
@@ -306,7 +299,7 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
         set1.setDrawCircleHole(false);
 
         // create a data object with the datasets
-        LineData data = new LineData(xVals, set1);
+        LineData data = new LineData(set1);
         data.setValueTextColor(Color.WHITE);
         data.setValueTextSize(9f);
 

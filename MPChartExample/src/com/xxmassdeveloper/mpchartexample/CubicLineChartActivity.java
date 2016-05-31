@@ -269,12 +269,6 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
 
     private void setData(int count, float range) {
 
-        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
-
-        for (int i = 0; i < count; i++) {
-            xVals.add(new XAxisValue(1990 + i, (1990 +i) + ""));
-        }
-
         ArrayList<Entry> yVals = new ArrayList<Entry>();
 
         for (int i = 0; i < count; i++) {
@@ -291,7 +285,6 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
                 mChart.getData().getDataSetCount() > 0) {
             set1 = (LineDataSet)mChart.getData().getDataSetByIndex(0);
             set1.setYVals(yVals);
-            mChart.getData().setXVals(xVals);
             mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
@@ -318,7 +311,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
             });
 
             // create a data object with the datasets
-            LineData data = new LineData(xVals, set1);
+            LineData data = new LineData(set1);
             data.setValueTypeface(tf);
             data.setValueTextSize(9f);
             data.setDrawValues(false);
