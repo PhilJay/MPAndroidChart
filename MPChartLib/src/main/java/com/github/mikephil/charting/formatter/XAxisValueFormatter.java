@@ -11,14 +11,15 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 public interface XAxisValueFormatter {
 
     /**
-     * Returns the customized label that is drawn on the xPx-axis.
+     * Returns the customized label that is drawn on the x-axis.
      * For performance reasons, avoid excessive calculations
      * and memory allocations inside this method.
      *
-     * @param original        the original xPx-axis label to be drawn
-     * @param index           the xPx-index that is currently being drawn
+     * @param xValue          the original x-value
+     * @param xRange          the total range of the x-values
+     * @param xPosition       the position on the x-axis where the value is drawn (in pixels)
      * @param viewPortHandler provides information about the current chart state (scale, translation, ...)
      * @return
      */
-    String getXValue(String original, int index, ViewPortHandler viewPortHandler);
+    String getXValue(float xValue, float xRange, float xPosition, ViewPortHandler viewPortHandler);
 }

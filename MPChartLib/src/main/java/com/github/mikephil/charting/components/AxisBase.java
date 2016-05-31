@@ -428,6 +428,7 @@ public abstract class AxisBase extends ComponentBase {
     public void setAxisMinValue(float min) {
         mCustomAxisMin = true;
         mAxisMinimum = min;
+        this.mAxisRange = Math.abs(mAxisMaximum - min);
     }
 
     /**
@@ -440,6 +441,7 @@ public abstract class AxisBase extends ComponentBase {
     public void setAxisMaxValue(float max) {
         mCustomAxisMax = true;
         mAxisMaximum = max;
+        this.mAxisRange = Math.abs(max - mAxisMinimum);
     }
 
     /**

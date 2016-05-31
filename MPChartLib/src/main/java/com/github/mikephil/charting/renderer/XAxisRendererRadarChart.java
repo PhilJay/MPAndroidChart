@@ -49,7 +49,7 @@ public class XAxisRendererRadarChart extends XAxisRenderer {
             PointF p = Utils.getPosition(center, mChart.getYRange() * factor
                     + mXAxis.mLabelRotatedWidth / 2f, angle);
 
-            drawLabel(c, label, i, p.x, p.y - mXAxis.mLabelRotatedHeight / 2.f,
+            drawLabel(c, 0f, p.x, p.y - mXAxis.mLabelRotatedHeight / 2.f,
                     drawLabelAnchor, labelRotationAngleDegrees);
         }
     }

@@ -229,13 +229,13 @@ public class XAxisRenderer extends AxisRenderer {
                     }
                 }
 
-                drawLabel(c, label, i, x, pos, anchor, labelRotationAngleDegrees);
+                drawLabel(c, mXAxis.mEntries[i / 2], x, pos, anchor, labelRotationAngleDegrees);
             }
         }
     }
 
-    protected void drawLabel(Canvas c, String label, int xIndex, float x, float y, PointF anchor, float angleDegrees) {
-        String formattedLabel = mXAxis.getValueFormatter().getXValue(label, xIndex, mViewPortHandler);
+    protected void drawLabel(Canvas c, float xValue, float x, float y, PointF anchor, float angleDegrees) {
+        String formattedLabel = mXAxis.getValueFormatter().getXValue(xValue, mXAxis.mAxisRange, x, mViewPortHandler);
         Utils.drawXAxisValue(c, formattedLabel, x, y, mAxisLabelPaint, anchor, angleDegrees);
     }
 

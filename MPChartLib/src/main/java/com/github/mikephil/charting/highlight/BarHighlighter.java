@@ -80,20 +80,26 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
         float closestDistance = Float.MAX_VALUE;
         Entry closestEntry = null;
 
-        for(int i = 0; i < barData.getDataSets().size(); i++) {
+        for (int i = 0; i < barData.getDataSets().size(); i++) {
 
             IBarDataSet dataSet = barData.getDataSetByIndex(i);
 
             final Entry entry = dataSet.getEntryForXPos(xVal);
 
-            final float distance = Math.abs(xVal - entry.getX());
+            if (entry != null) {
 
-            if(distance < closestDistance) {
-                closestDataSetIndex = i;
-                closestDistance = distance;
-                closestEntry = entry;
+                final float distance = Math.abs(xVal - entry.getX());
+
+                if (distance < closestDistance) {
+                    closestDataSetIndex = i;
+                    closestDistance = distance;
+                    closestEntry = entry;
+                }
             }
         }
+
+        if(closestEntry == null)
+            return null;
 
         return new SelectionDetail(x, y, closestEntry.getX(),
                 closestEntry.getY(),
