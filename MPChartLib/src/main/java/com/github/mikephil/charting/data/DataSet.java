@@ -96,7 +96,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
             mYMax = 0.f;
         }
 
-        if(mXMin == Float.MAX_VALUE) {
+        if (mXMin == Float.MAX_VALUE) {
             mXMin = 0.f;
             mXMax = 0.f;
         }
@@ -287,42 +287,39 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     @Override
     public int getEntryIndex(float xPos, Rounding rounding) {
 
+        if (mValues == null || mValues.isEmpty())
+            return -1;
+
         int low = 0;
         int high = mValues.size() - 1;
-        int closest = -1;
 
-        while (low <= high) {
-            int m = (high + low) / 2;
+        while (low < high) {
+            int m = (low + high) / 2;
 
-            if (xPos == mValues.get(m).getX()) {
-                while (m > 0 && mValues.get(m - 1).getX() == xPos)
-                    m--;
+            float d1 = Math.abs(mValues.get(m).getX() - xPos);
+            float d2 = Math.abs(mValues.get(m + 1).getX() - xPos);
 
-                return m;
-            }
-
-            if (xPos > mValues.get(m).getX())
+            if (d2 <= d1) {
                 low = m + 1;
-            else
-                high = m - 1;
-
-            closest = m;
+            } else {
+                high = m;
+            }
         }
 
-        if (closest != -1) {
-            float closestXPos = mValues.get(closest).getX();
+        if (high != -1) {
+            float closestXPos = mValues.get(high).getX();
             if (rounding == Rounding.UP) {
-                if (closestXPos < xPos && closest < mValues.size() - 1) {
-                    ++closest;
+                if (closestXPos < xPos && high < mValues.size() - 1) {
+                    ++high;
                 }
             } else if (rounding == Rounding.DOWN) {
-                if (closestXPos > xPos && closest > 0) {
-                    --closest;
+                if (closestXPos > xPos && high > 0) {
+                    --high;
                 }
             }
         }
 
-        return closest;
+        return high;
     }
 
     @Override
