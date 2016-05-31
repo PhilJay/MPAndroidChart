@@ -1,13 +1,9 @@
 
 package com.github.mikephil.charting.components;
 
-import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.formatter.DefaultXAxisValueFormatter;
 import com.github.mikephil.charting.formatter.XAxisValueFormatter;
 import com.github.mikephil.charting.utils.Utils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class representing the xPx-axis labels settings. Only use the setter methods to
@@ -17,9 +13,6 @@ import java.util.List;
  * @author Philipp Jahoda
  */
 public class XAxis extends AxisBase {
-
-    /** the arraylist containing all the xPx-axis labels */
-    protected List<XAxisValue> mValues = new ArrayList<XAxisValue>();
 
     /**
      * width of the xPx-axis labels in pixels - this is automatically
@@ -200,41 +193,41 @@ public class XAxis extends AxisBase {
         return mAvoidFirstLastClipping;
     }
 
-    /**
-     * Sets the labels for this axis.
-     * 
-     * @param values
-     */
-    public void setValues(List<XAxisValue> values) {
-        mValues = values;
-    }
-
-    /**
-     * Returns the labels for this axis.
-     * 
-     * @return
-     */
-    public List<XAxisValue> getValues() {
-        return mValues;
-    }
-
-    /**
-     * Adds a new xPx-yValue to the chart data.
-     *
-     * @param xVal
-     */
-    public void addXValue(XAxisValue xVal) {
-        mValues.add(xVal);
-    }
-
-    /**
-     * Removes the xPx-yValue at the specified index.
-     *
-     * @param index
-     */
-    public void removeXValue(int index) {
-        mValues.remove(index);
-    }
+//    /**
+//     * Sets the labels for this axis.
+//     *
+//     * @param values
+//     */
+//    public void setValues(List<XAxisValue> values) {
+//        mValues = values;
+//    }
+//
+//    /**
+//     * Returns the labels for this axis.
+//     *
+//     * @return
+//     */
+//    public List<XAxisValue> getValues() {
+//        return mValues;
+//    }
+//
+//    /**
+//     * Adds a new xPx-yValue to the chart data.
+//     *
+//     * @param xVal
+//     */
+//    public void addXValue(XAxisValue xVal) {
+//        mValues.add(xVal);
+//    }
+//
+//    /**
+//     * Removes the xPx-yValue at the specified index.
+//     *
+//     * @param index
+//     */
+//    public void removeXValue(int index) {
+//        mValues.remove(index);
+//    }
 
 
     /**
@@ -264,12 +257,12 @@ public class XAxis extends AxisBase {
 
         String longest = "";
 
-        for (int i = 0; i < mValues.size(); i++) {
-            String text = mValues.get(i).getLabel();
-
-            if (longest.length() < text.length())
-                longest = text;
-        }
+//        for (int i = 0; i < mValues.size(); i++) {
+//            String text = mValues.get(i).getLabel();
+//
+//            if (longest.length() < text.length())
+//                longest = text;
+//        }
 
         return longest;
     }

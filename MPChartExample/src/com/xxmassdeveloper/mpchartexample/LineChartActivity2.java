@@ -23,7 +23,6 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
@@ -285,11 +284,6 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
     }
 
     private void setData(int count, float range) {
-
-        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
-        for (int i = 0; i < count; i++) {
-            xVals.add(new XAxisValue(i, i + ""));
-        }
 
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
 

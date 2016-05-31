@@ -21,7 +21,6 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.FileUtils;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -210,12 +209,10 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
 
     private void setData(int count) {
 
-        List<XAxisValue> xVals = new ArrayList<XAxisValue>();
         ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
 
         for (int i = 0; i < count; i++) {
             entries.add(mSinusData.get(i));
-            xVals.add(new XAxisValue(i, i+""));
         }
 
         BarDataSet set;

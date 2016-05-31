@@ -27,7 +27,6 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.XAxisValue;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.ChartTouchListener;
@@ -338,7 +337,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
     private void setData(int count, float range) {
 
-        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
         ArrayList<Entry> yVals = new ArrayList<Entry>();
 
         for (int i = 0; i < count; i++) {
@@ -348,7 +346,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
             // ((mult *
             // 0.1) / 10);xPx
             yVals.add(new Entry(i, val));
-            xVals.add(new XAxisValue(i, i + ""));
         }
 
         LineDataSet set1;

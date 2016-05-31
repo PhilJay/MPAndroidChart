@@ -3,11 +3,7 @@ package com.xxmassdeveloper.mpchartexample.notimportant;
 
 import android.support.v4.app.FragmentActivity;
 
-import com.github.mikephil.charting.data.XAxisValue;
 import com.xxmassdeveloper.mpchartexample.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Baseclass of all Activities of the Demo Application.
@@ -28,50 +24,50 @@ public abstract class DemoBase extends FragmentActivity {
     };
 
 
-    protected ArrayList<XAxisValue> getMonths() {
-
-        ArrayList<XAxisValue> m = new ArrayList<XAxisValue>();
-        m.add(new XAxisValue(0, "Jan"));
-        m.add(new XAxisValue(1, "Feb"));
-        m.add(new XAxisValue(2, "Mar"));
-        m.add(new XAxisValue(3, "Apr"));
-        m.add(new XAxisValue(4, "May"));
-        m.add(new XAxisValue(5, "Jun"));
-        m.add(new XAxisValue(6, "Jul"));
-        m.add(new XAxisValue(7, "Aug"));
-        m.add(new XAxisValue(8, "Sep"));
-        m.add(new XAxisValue(9, "Okt"));
-        m.add(new XAxisValue(10, "Nov"));
-        m.add(new XAxisValue(11, "Dec"));
-
-        return m;
-    }
-
-
-    protected ArrayList<XAxisValue> getQuarters() {
-
-        ArrayList<XAxisValue> q = new ArrayList<XAxisValue>();
-        q.add(new XAxisValue(0, "Quarter 1"));
-        q.add(new XAxisValue(1, "Quarter 2"));
-        q.add(new XAxisValue(2, "Quarter 3"));
-        q.add(new XAxisValue(3, "Quarter 4"));
-
-        return q;
-    }
-
-    protected List<XAxisValue> getYears() {
-        ArrayList<XAxisValue> years = new ArrayList<XAxisValue>();
-
-        years.add(new XAxisValue(0, "2013"));
-        years.add(new XAxisValue(1, "2014"));
-        years.add(new XAxisValue(2, "2015"));
-        years.add(new XAxisValue(3, "2016"));
-        years.add(new XAxisValue(4, "2017"));
-        years.add(new XAxisValue(5, "2018"));
-        years.add(new XAxisValue(6, "2019"));
-
-        return years;
-    }
+//    protected ArrayList<XAxisValue> getMonths() {
+//
+//        ArrayList<XAxisValue> m = new ArrayList<XAxisValue>();
+//        m.add(new XAxisValue(0, "Jan"));
+//        m.add(new XAxisValue(1, "Feb"));
+//        m.add(new XAxisValue(2, "Mar"));
+//        m.add(new XAxisValue(3, "Apr"));
+//        m.add(new XAxisValue(4, "May"));
+//        m.add(new XAxisValue(5, "Jun"));
+//        m.add(new XAxisValue(6, "Jul"));
+//        m.add(new XAxisValue(7, "Aug"));
+//        m.add(new XAxisValue(8, "Sep"));
+//        m.add(new XAxisValue(9, "Okt"));
+//        m.add(new XAxisValue(10, "Nov"));
+//        m.add(new XAxisValue(11, "Dec"));
+//
+//        return m;
+//    }
+//
+//
+//    protected ArrayList<XAxisValue> getQuarters() {
+//
+//        ArrayList<XAxisValue> q = new ArrayList<XAxisValue>();
+//        q.add(new XAxisValue(0, "Quarter 1"));
+//        q.add(new XAxisValue(1, "Quarter 2"));
+//        q.add(new XAxisValue(2, "Quarter 3"));
+//        q.add(new XAxisValue(3, "Quarter 4"));
+//
+//        return q;
+//    }
+//
+//    protected List<XAxisValue> getYears() {
+//        ArrayList<XAxisValue> years = new ArrayList<XAxisValue>();
+//
+//        years.add(new XAxisValue(0, "2013"));
+//        years.add(new XAxisValue(1, "2014"));
+//        years.add(new XAxisValue(2, "2015"));
+//        years.add(new XAxisValue(3, "2016"));
+//        years.add(new XAxisValue(4, "2017"));
+//        years.add(new XAxisValue(5, "2018"));
+//        years.add(new XAxisValue(6, "2019"));
+//
+//        return years;
+//    }
 
     @Override
     public void onBackPressed() {

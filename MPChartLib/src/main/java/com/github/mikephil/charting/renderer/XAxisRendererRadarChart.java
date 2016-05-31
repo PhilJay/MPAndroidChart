@@ -41,8 +41,8 @@ public class XAxisRendererRadarChart extends XAxisRenderer {
         PointF center = mChart.getCenterOffsets();
 
         int mod = mXAxis.mAxisLabelModulus;
-        for (int i = 0; i < mXAxis.getValues().size(); i += mod) {
-            String label = mXAxis.getValues().get(i).getLabel();
+        for (int i = 0; i < mXAxis.mEntryCount; i += mod) {
+            String label = String.valueOf(mXAxis.mEntries[i]);
 
             float angle = (sliceangle * i + mChart.getRotationAngle()) % 360f;
 

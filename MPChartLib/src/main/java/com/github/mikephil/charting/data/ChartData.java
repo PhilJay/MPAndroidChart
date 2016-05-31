@@ -732,22 +732,22 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         return null;
     }
 
-    /**
-     * Generates an xPx-values array filled with numbers in range specified by the
-     * parameters. Can be used for convenience.
-     *
-     * @return
-     */
-    public static List<XAxisValue> generateXVals(int from, int to) {
-
-        List<XAxisValue> xvals = new ArrayList<XAxisValue>();
-
-        for (int i = from; i < to; i++) {
-            xvals.add(new XAxisValue(i, i + ""));
-        }
-
-        return xvals;
-    }
+//    /**
+//     * Generates an xPx-values array filled with numbers in range specified by the
+//     * parameters. Can be used for convenience.
+//     *
+//     * @return
+//     */
+//    public static List<XAxisValue> generateXVals(int from, int to) {
+//
+//        List<XAxisValue> xvals = new ArrayList<XAxisValue>();
+//
+//        for (int i = from; i < to; i++) {
+//            xvals.add(new XAxisValue(i, i + ""));
+//        }
+//
+//        return xvals;
+//    }
 
     /**
      * Sets a custom ValueFormatter for all DataSets this data object contains.

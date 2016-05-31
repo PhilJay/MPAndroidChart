@@ -1,7 +1,7 @@
 package com.xxmassdeveloper.mpchartexample.custom;
 
-import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.github.mikephil.charting.formatter.XAxisValueFormatter;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**
  * Created by Philipp Jahoda on 14/09/15.
