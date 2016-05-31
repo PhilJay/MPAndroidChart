@@ -22,6 +22,7 @@ import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
@@ -412,7 +413,7 @@ public class PieChartRenderer extends DataRenderer {
 
             for (int j = 0; j < entryCount; j++) {
 
-                Entry entry = dataSet.getEntryForIndex(j);
+                PieEntry entry = dataSet.getEntryForIndex(j);
 
                 if (xIndex == 0)
                     angle = 0.f;
@@ -505,15 +506,15 @@ public class PieChartRenderer extends DataRenderer {
                                 labelPty,
                                 dataSet.getValueTextColor(j));
 
-                        if (j < data.getXValCount()) {
-                            c.drawText(data.getXVals().get(j).getLabel(), labelPtx, labelPty + lineHeight,
+                        if (j < data.getEntryCount()) {
+                            c.drawText(entry.getLabel(), labelPtx, labelPty + lineHeight,
                                     mValuePaint);
                         }
 
                     } else if (drawXOutside) {
-                        if (j < data.getXValCount()) {
+                        if (j < data.getEntryCount()) {
                             mValuePaint.setColor(dataSet.getValueTextColor(j));
-                            c.drawText(data.getXVals().get(j).getLabel(), labelPtx, labelPty + lineHeight / 2.f, mValuePaint);
+                            c.drawText(entry.getLabel(), labelPtx, labelPty + lineHeight / 2.f, mValuePaint);
                         }
                     } else if (drawYOutside) {
 
@@ -534,15 +535,15 @@ public class PieChartRenderer extends DataRenderer {
 
                         drawValue(c, formatter, value, entry, 0, x, y, dataSet.getValueTextColor(j));
 
-                        if (j < data.getXValCount()) {
-                            c.drawText(data.getXVals().get(j).getLabel(), x, y + lineHeight,
+                        if (j < data.getEntryCount()) {
+                            c.drawText(entry.getLabel(), x, y + lineHeight,
                                     mValuePaint);
                         }
 
                     } else if (drawXInside) {
-                        if (j < data.getXValCount()) {
+                        if (j < data.getEntryCount()) {
                             mValuePaint.setColor(dataSet.getValueTextColor(j));
-                            c.drawText(data.getXVals().get(j).getLabel(), x, y + lineHeight / 2f, mValuePaint);
+                            c.drawText(entry.getLabel(), x, y + lineHeight / 2f, mValuePaint);
                         }
                     } else if (drawYInside) {
 

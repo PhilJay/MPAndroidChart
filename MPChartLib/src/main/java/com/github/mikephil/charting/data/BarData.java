@@ -32,34 +32,8 @@ public class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
         super(dataSets);
     }
 
-    public BarData(List<XAxisValue> xVals) {
-        super(xVals);
-    }
-
-    public BarData(XAxisValue[] xVals) {
-        super(xVals);
-    }
-
-    public BarData(List<XAxisValue> xVals, List<IBarDataSet> dataSets) {
-        super(xVals, dataSets);
-    }
-
-    public BarData(XAxisValue[] xVals, List<IBarDataSet> dataSets) {
-        super(xVals, dataSets);
-    }
-
-    public BarData(List<XAxisValue> xVals, IBarDataSet dataSet) {
-        super(xVals, toList(dataSet));
-    }
-
-    public BarData(XAxisValue[] xVals, IBarDataSet dataSet) {
-        super(xVals, toList(dataSet));
-    }
-
-    private static List<IBarDataSet> toList(IBarDataSet dataSet) {
-        List<IBarDataSet> sets = new ArrayList<IBarDataSet>();
-        sets.add(dataSet);
-        return sets;
+    public BarData(List<IBarDataSet> dataSets) {
+        super(dataSets);
     }
 
     /**
@@ -148,19 +122,6 @@ public class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
 
     public float getIntervalWidth(float groupSpace, float barSpace) {
         return mDataSets.size() * (mBarWidth + barSpace) + groupSpace;
-    }
-
-    protected IBarDataSet getMaxEntryCountSet() {
-
-        IBarDataSet max = mDataSets.get(0);
-
-        for (IBarDataSet set : mDataSets) {
-
-            if (set.getEntryCount() > max.getEntryCount())
-                max = set;
-        }
-
-        return max;
     }
 
     //

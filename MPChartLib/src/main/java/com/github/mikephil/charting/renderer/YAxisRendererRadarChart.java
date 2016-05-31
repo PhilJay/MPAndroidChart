@@ -185,7 +185,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
 
             Path limitPath = new Path();
 
-            for (int j = 0; j < mChart.getData().getXValCount(); j++) {
+            for (int j = 0; j < mChart.getData().getMaxEntryCountSet().getEntryCount(); j++) {
 
                 PointF p = Utils.getPosition(center, r, sliceangle * j + mChart.getRotationAngle());
 

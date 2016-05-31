@@ -111,12 +111,11 @@ public class LegendRenderer extends Renderer {
 
                 } else if (dataSet instanceof IPieDataSet) {
 
-                    List<XAxisValue> xVals = data.getXVals();
                     IPieDataSet pds = (IPieDataSet) dataSet;
 
-                    for (int j = 0; j < clrs.size() && j < entryCount && j < xVals.size(); j++) {
+                    for (int j = 0; j < clrs.size() && j < entryCount; j++) {
 
-                        labels.add(xVals.get(j).getLabel());
+                        labels.add(pds.getEntryForIndex(j).getLabel());
                         colors.add(clrs.get(j));
                     }
 

@@ -20,26 +20,8 @@ public class PieData extends ChartData<IPieDataSet> {
         super();
     }
 
-    public PieData(List<XAxisValue> xVals) {
-        super(xVals);
-    }
-
-    public PieData(XAxisValue[] xVals) {
-        super(xVals);
-    }
-
-    public PieData(List<XAxisValue> xVals, IPieDataSet dataSet) {
-        super(xVals, toList(dataSet));
-    }
-
-    public PieData(XAxisValue[] xVals, IPieDataSet dataSet) {
-        super(xVals, toList(dataSet));
-    }
-
-    private static List<IPieDataSet> toList(IPieDataSet dataSet) {
-        List<IPieDataSet> sets = new ArrayList<IPieDataSet>();
-        sets.add(dataSet);
-        return sets;
+    public PieData(IPieDataSet dataSet) {
+        super(dataSet);
     }
 
     /**

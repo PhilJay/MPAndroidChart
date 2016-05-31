@@ -22,6 +22,10 @@ public class Entry implements Parcelable {
     /** optional spot for additional data this Entry represents */
     private Object mData = null;
 
+    public Entry() {
+
+    }
+
     /**
      * A Entry represents one single entry in the chart.
      *

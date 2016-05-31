@@ -218,7 +218,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         final int xIncrements = 1 + mChart.getSkipWebLineCount();
 
-        for (int i = 0; i < mChart.getData().getXValCount(); i += xIncrements) {
+        for (int i = 0; i < mChart.getData().getEntryCount(); i += xIncrements) {
 
             PointF p = Utils.getPosition(
                     center,
@@ -237,7 +237,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         for (int j = 0; j < labelCount; j++) {
 
-            for (int i = 0; i < mChart.getData().getXValCount(); i++) {
+            for (int i = 0; i < mChart.getData().getEntryCount(); i++) {
 
                 float r = (mChart.getYAxis().mEntries[j] - mChart.getYChartMin()) * factor;
 

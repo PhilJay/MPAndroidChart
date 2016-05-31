@@ -74,10 +74,10 @@ public class Highlight {
     /**
      * Constructor, only used for stacked-barchart.
      *
-     * @param x the index of the highlighted yValue on the xPx-axis
+     * @param x the x-value of the highlighted value on the x-axis
      * @param dataSetIndex the index of the DataSet the highlighted yValue belongs to
      */
-    public Highlight(int x, int dataSetIndex) {
+    public Highlight(float x, int dataSetIndex) {
         this(x, Float.NaN, 0, dataSetIndex, -1);
     }
 

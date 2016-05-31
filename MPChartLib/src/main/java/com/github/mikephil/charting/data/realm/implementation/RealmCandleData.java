@@ -15,6 +15,7 @@ import io.realm.RealmResults;
 public class RealmCandleData extends CandleData {
 
     public RealmCandleData(RealmResults<? extends RealmObject> result,String xPositionField, String xLabelField, List<ICandleDataSet> dataSets) {
-        super(RealmUtils.toXVals(result, xPositionField, xLabelField), dataSets);
+        super(dataSets);
+        //RealmUtils.toXVals(result, xPositionField, xLabelField)
     }
 }

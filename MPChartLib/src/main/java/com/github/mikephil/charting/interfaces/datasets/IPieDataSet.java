@@ -2,11 +2,12 @@ package com.github.mikephil.charting.interfaces.datasets;
 
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 
 /**
  * Created by Philipp Jahoda on 03/11/15.
  */
-public interface IPieDataSet extends IDataSet<Entry> {
+public interface IPieDataSet extends IDataSet<PieEntry> {
 
     /**
      * Returns the space that is set to be between the piechart-slices of this

@@ -15,6 +15,7 @@ import io.realm.RealmResults;
 public class RealmLineData extends LineData {
 
     public RealmLineData(RealmResults<? extends RealmObject> result, String xPositionField, String xLabelField, List<ILineDataSet> dataSets) {
-        super(RealmUtils.toXVals(result, xPositionField, xLabelField), dataSets);
+        super(dataSets);
+        //RealmUtils.toXVals(result, xPositionField, xLabelField)
     }
 }

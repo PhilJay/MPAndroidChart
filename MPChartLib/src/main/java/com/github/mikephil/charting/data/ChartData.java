@@ -7,6 +7,7 @@ import android.util.Log;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 
 import java.util.ArrayList;
@@ -61,17 +62,11 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     private float mXValMaximumLength = 0;
 
     /**
-     * holds all xPx-values the chart represents
-     */
-    protected List<XAxisValue> mXVals;
-
-    /**
      * array that holds all DataSets the ChartData object represents
      */
     protected List<T> mDataSets;
 
     public ChartData() {
-        mXVals = new ArrayList<XAxisValue>();
         mDataSets = new ArrayList<T>();
     }
 
@@ -81,67 +76,13 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Constructor for only xPx-values. This constructor can be used for setting
-     * up an empty chart without data.
-     *
-     * @param xVals
-     */
-    public ChartData(List<XAxisValue> xVals) {
-        this.mXVals = xVals;
-        this.mDataSets = new ArrayList<T>();
-        init();
-    }
-
-    /**
-     * Constructor for only xPx-values. This constructor can be used for setting
-     * up an empty chart without data.
-     *
-     * @param xVals
-     */
-    public ChartData(XAxisValue[] xVals) {
-        this.mXVals = arrayToList(xVals);
-        this.mDataSets = new ArrayList<T>();
-        init();
-    }
-
-    /**
      * constructor for chart data
      *
-     * @param xVals The values describing the xPx-axis. Must be at least as long
-     *              as the highest xIndex in the Entry objects across all
-     *              DataSets.
-     * @param sets  the dataset array
+     * @param sets the dataset array
      */
-    public ChartData(List<XAxisValue> xVals, List<T> sets) {
-        this.mXVals = xVals;
+    public ChartData(List<T> sets) {
         this.mDataSets = sets;
-
         init();
-    }
-
-    /**
-     * constructor that takes string array instead of List string
-     *
-     * @param xVals The values describing the xPx-axis. Must be at least as long
-     *              as the highest xIndex in the Entry objects across all
-     *              DataSets.
-     * @param sets  the dataset array
-     */
-    public ChartData(XAxisValue[] xVals, List<T> sets) {
-        this.mXVals = arrayToList(xVals);
-        this.mDataSets = sets;
-
-        init();
-    }
-
-    /**
-     * Turns an array of strings into an List of strings.
-     *
-     * @param array
-     * @return
-     */
-    private List<XAxisValue> arrayToList(XAxisValue[] array) {
-        return Arrays.asList(array);
     }
 
     /**
@@ -150,54 +91,8 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      */
     protected void init() {
 
-        checkLegal();
         calcYValueCount();
         calcMinMax();
-
-        calcXValMaximumLength();
-    }
-
-    /**
-     * calculates the average length (in characters) across all xPx-yValue strings
-     */
-    private void calcXValMaximumLength() {
-
-        if (mXVals.size() <= 0) {
-            mXValMaximumLength = 1;
-            return;
-        }
-
-        int max = 1;
-
-        for (int i = 0; i < mXVals.size(); i++) {
-
-            int length = mXVals.get(i).getLabel().length();
-
-            if (length > max)
-                max = length;
-        }
-
-        mXValMaximumLength = max;
-    }
-
-    /**
-     * Checks if the combination of xPx-values array and DataSet array is legal or
-     * not.
-     */
-    private void checkLegal() {
-
-        if (mDataSets == null)
-            return;
-
-        if (this instanceof ScatterData || this instanceof CombinedData)
-            return;
-
-        for (int i = 0; i < mDataSets.size(); i++) {
-            if (mDataSets.get(i).getEntryCount() > mXVals.size()) {
-//                throw new IllegalArgumentException(
-//                        "One or more of the DataSet Entry arrays are longer than the xPx-values array of this ChartData object.");
-            }
-        }
     }
 
     /**
@@ -413,45 +308,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         return mYValCount;
     }
 
-    /**
-     * returns the xPx-values the chart represents
-     *
-     * @return
-     */
-    public List<XAxisValue> getXVals() {
-        return mXVals;
-    }
-
-    /**
-     * sets the xPx-values the chart represents
-     *
-     */
-    public void setXVals(List<XAxisValue> xVals) {
-        mXVals = xVals;
-    }
-
-    /**
-     * Adds a new xPx-yValue to the chart data.
-     *
-     * @param xVal
-     */
-    public void addXValue(XAxisValue xVal) {
-
-        if (xVal != null && xVal.getLabel().length() > mXValMaximumLength)
-            mXValMaximumLength = xVal.getLabel().length();
-
-        mXVals.add(xVal);
-    }
-
-    /**
-     * Removes the xPx-yValue at the specified index.
-     *
-     * @param index
-     */
-    public void removeXValue(int index) {
-        mXVals.remove(index);
-    }
-
     public List<T> getDataSets() {
         return mDataSets;
     }
@@ -481,16 +337,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         }
 
         return -1;
-    }
-
-    /**
-     * returns the total number of xPx-values this ChartData object represents
-     * (the size of the xPx-values array)
-     *
-     * @return
-     */
-    public int getXValCount() {
-        return mXVals.size();
     }
 
     /**
@@ -1045,5 +891,39 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         }
 
         return false;
+    }
+
+    /**
+     * Returns the total entry count across all DataSet objects this data object contains.
+     *
+     * @return
+     */
+    public int getEntryCount() {
+
+        int count = 0;
+
+        for (T set : mDataSets) {
+            count += set.getEntryCount();
+        }
+
+        return count;
+    }
+
+    /**
+     * Returns the DataSet object with the maximum number of entries.
+     *
+     * @return
+     */
+    public T getMaxEntryCountSet() {
+
+        T max = mDataSets.get(0);
+
+        for (T set : mDataSets) {
+
+            if (set.getEntryCount() > max.getEntryCount())
+                max = set;
+        }
+
+        return max;
     }
 }

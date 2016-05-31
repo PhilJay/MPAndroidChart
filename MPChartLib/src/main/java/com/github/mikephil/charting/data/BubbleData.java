@@ -12,35 +12,14 @@ public class BubbleData extends BarLineScatterCandleBubbleData<IBubbleDataSet> {
         super();
     }
 
-    public BubbleData(List<XAxisValue> xVals) {
-        super(xVals);
+    public BubbleData(IBubbleDataSet... dataSets) {
+        super(dataSets);
     }
 
-    public BubbleData(XAxisValue[] xVals) {
-        super(xVals);
+    public BubbleData(List<IBubbleDataSet> dataSets) {
+        super(dataSets);
     }
 
-    public BubbleData(List<XAxisValue> xVals, List<IBubbleDataSet> dataSets) {
-        super(xVals, dataSets);
-    }
-
-    public BubbleData(XAxisValue[] xVals, List<IBubbleDataSet> dataSets) {
-        super(xVals, dataSets);
-    }
-
-    public BubbleData(List<XAxisValue> xVals, IBubbleDataSet dataSet) {
-        super(xVals, toList(dataSet));
-    }
-
-    public BubbleData(XAxisValue[] xVals, IBubbleDataSet dataSet) {
-        super(xVals, toList(dataSet));
-    }
-
-    private static List<IBubbleDataSet> toList(IBubbleDataSet dataSet) {
-        List<IBubbleDataSet> sets = new ArrayList<IBubbleDataSet>();
-        sets.add(dataSet);
-        return sets;
-    }
 
     /**
      * Sets the width of the circle that surrounds the bubble when highlighted

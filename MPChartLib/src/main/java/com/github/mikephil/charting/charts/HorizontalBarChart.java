@@ -133,15 +133,15 @@ public class HorizontalBarChart extends BarChart {
 
     @Override
     protected void calcModulus() {
-        float[] values = new float[9];
-        mViewPortHandler.getMatrixTouch().getValues(values);
-
-        mXAxis.mAxisLabelModulus =
-                (int) Math.ceil((mData.getXValCount() * mXAxis.mLabelRotatedHeight)
-                        / (mViewPortHandler.contentHeight() * values[Matrix.MSCALE_Y]));
-
-        if (mXAxis.mAxisLabelModulus < 1)
-            mXAxis.mAxisLabelModulus = 1;
+//        float[] values = new float[9];
+//        mViewPortHandler.getMatrixTouch().getValues(values);
+//
+//        mXAxis.mAxisLabelModulus =
+//                (int) Math.ceil((mData.getXValCount() * mXAxis.mLabelRotatedHeight)
+//                        / (mViewPortHandler.contentHeight() * values[Matrix.MSCALE_Y]));
+//
+//        if (mXAxis.mAxisLabelModulus < 1)
+//            mXAxis.mAxisLabelModulus = 1;
     }
 
     @Override

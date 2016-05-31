@@ -25,14 +25,6 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
         super();
     }
 
-    public CombinedData(List<XAxisValue> xVals) {
-        super(xVals);
-    }
-
-    public CombinedData(XAxisValue[] xVals) {
-        super(xVals);
-    }
-
     public void setData(LineData data) {
         mLineData = data;
         mDataSets.addAll(data.getDataSets());

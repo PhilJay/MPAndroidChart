@@ -66,7 +66,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
 
     @Override
     protected void calcMinMax() {
-        mXAxis.mAxisRange = mData.getXVals().size() - 1;
+        //mXAxis.mAxisRange = mData.getXVals().size() - 1;
     }
 
     @Override

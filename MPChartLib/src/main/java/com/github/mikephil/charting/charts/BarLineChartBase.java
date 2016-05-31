@@ -532,28 +532,28 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      */
     protected void calcModulus() {
 
-        if (mXAxis == null || !mXAxis.isEnabled())
-            return;
-
-        if (!mXAxis.isAxisModulusCustom()) {
-
-            float[] values = new float[9];
-            mViewPortHandler.getMatrixTouch().getValues(values);
-
-            mXAxis.mAxisLabelModulus = (int) Math
-                    .ceil((mData.getXValCount() * mXAxis.mLabelRotatedWidth)
-                            / (mViewPortHandler.contentWidth() * values[Matrix.MSCALE_X]));
-
-        }
-
-        if (mLogEnabled)
-            Log.i(LOG_TAG, "X-Axis modulus: " + mXAxis.mAxisLabelModulus +
-                    ", xPx-axis label width: " + mXAxis.mLabelWidth +
-                    ", xPx-axis label rotated width: " + mXAxis.mLabelRotatedWidth +
-                    ", content width: " + mViewPortHandler.contentWidth());
-
-        if (mXAxis.mAxisLabelModulus < 1)
-            mXAxis.mAxisLabelModulus = 1;
+//        if (mXAxis == null || !mXAxis.isEnabled())
+//            return;
+//
+//        if (!mXAxis.isAxisModulusCustom()) {
+//
+//            float[] values = new float[9];
+//            mViewPortHandler.getMatrixTouch().getValues(values);
+//
+//            mXAxis.mAxisLabelModulus = (int) Math
+//                    .ceil((mData.getXValCount() * mXAxis.mLabelRotatedWidth)
+//                            / (mViewPortHandler.contentWidth() * values[Matrix.MSCALE_X]));
+//
+//        }
+//
+//        if (mLogEnabled)
+//            Log.i(LOG_TAG, "X-Axis modulus: " + mXAxis.mAxisLabelModulus +
+//                    ", xPx-axis label width: " + mXAxis.mLabelWidth +
+//                    ", xPx-axis label rotated width: " + mXAxis.mLabelRotatedWidth +
+//                    ", content width: " + mViewPortHandler.contentWidth());
+//
+//        if (mXAxis.mAxisLabelModulus < 1)
+//            mXAxis.mAxisLabelModulus = 1;
     }
 
     @Override

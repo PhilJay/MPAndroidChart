@@ -7,7 +7,7 @@ import com.github.mikephil.charting.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PieDataSet extends DataSet<Entry> implements IPieDataSet {
+public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
 
     /** the space in pixels between the chart-slices, default 0f */
     private float mSliceSpace = 0f;
@@ -24,15 +24,15 @@ public class PieDataSet extends DataSet<Entry> implements IPieDataSet {
     private float mValueLinePart2Length = 0.4f;
     private boolean mValueLineVariableLength = true;
 
-    public PieDataSet(List<Entry> yVals, String label) {
+    public PieDataSet(List<PieEntry> yVals, String label) {
         super(yVals, label);
 //        mShift = Utils.convertDpToPixel(12f);
     }
 
     @Override
-    public DataSet<Entry> copy() {
+    public DataSet<PieEntry> copy() {
 
-        List<Entry> yVals = new ArrayList<Entry>();
+        List<PieEntry> yVals = new ArrayList<>();
 
         for (int i = 0; i < mValues.size(); i++) {
             yVals.add(mValues.get(i).copy());

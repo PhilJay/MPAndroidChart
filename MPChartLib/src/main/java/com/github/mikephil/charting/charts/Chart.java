@@ -389,7 +389,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
         float reference = 0f;
 
-        if (mData == null || mData.getXValCount() < 2) {
+        if (mData == null || mData.getEntryCount() < 2) {
 
             reference = Math.max(Math.abs(min), Math.abs(max));
         } else {
@@ -561,20 +561,18 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * Highlights the yValue at the given xPx-index in the given DataSet. Provide
-     * -1 as the xPx-index or dataSetIndex to undo all highlighting.
+     * Highlights the yValue at the given x position in the given DataSet. Provide
+     * -1 as the dataSetIndex to undo all highlighting.
      *
-     * @param xIndex
+     * @param x
      * @param dataSetIndex
      */
-    public void highlightValue(int xIndex, int dataSetIndex, boolean callListener) {
+    public void highlightValue(float x, int dataSetIndex, boolean callListener) {
 
-        if (xIndex < 0 || dataSetIndex < 0 || xIndex >= mData.getXValCount()
-                || dataSetIndex >= mData.getDataSetCount()) {
-
+        if (dataSetIndex < 0 || dataSetIndex >= mData.getDataSetCount()) {
             highlightValue(null, callListener);
         } else {
-            highlightValue(new Highlight(xIndex, dataSetIndex), callListener);
+            highlightValue(new Highlight(x, dataSetIndex), callListener);
         }
     }
 
@@ -686,7 +684,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
             float deltaX = mXAxis != null 
                 ? mXAxis.mAxisRange
-                : ((mData == null ? 0.f : mData.getXValCount()) - 1.f);
+                : 1f;
 
             if (xVal <= deltaX && xVal <= deltaX * mAnimator.getPhaseX()) {
 
@@ -1021,11 +1019,6 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     @Override
     public float getXRange() {
         return mXAxis.mAxisRange;
-    }
-
-    @Override
-    public int getXValCount() {
-        return mData.getXValCount();
     }
 
     /**
@@ -1388,19 +1381,6 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     public void setDrawMarkerViews(boolean enabled) {
         mDrawMarkerViews = enabled;
-    }
-
-    /**
-     * returns the xPx-yValue at the given index
-     *
-     * @param index
-     * @return
-     */
-    public XAxisValue getXValue(int index) {
-        if (mData == null || mData.getXValCount() <= index)
-            return null;
-        else
-            return mData.getXVals().get(index);
     }
 
     /**

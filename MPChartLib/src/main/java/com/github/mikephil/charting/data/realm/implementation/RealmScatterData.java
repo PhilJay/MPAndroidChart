@@ -15,6 +15,7 @@ import io.realm.RealmResults;
 public class RealmScatterData extends ScatterData {
 
     public RealmScatterData(RealmResults<? extends RealmObject> result, String xPositionField, String xLabelField, List<IScatterDataSet> dataSets) {
-        super(RealmUtils.toXVals(result, xPositionField, xLabelField), dataSets);
+        super(dataSets);
+        //RealmUtils.toXVals(result, xPositionField, xLabelField)
     }
 }

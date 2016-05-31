@@ -101,8 +101,8 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         super.calcMinMax();
 
         // calculate / set xPx-axis range
-        mXAxis.mAxisMaximum = mData.getXVals().size() - 1;
-        mXAxis.mAxisRange = Math.abs(mXAxis.mAxisMaximum - mXAxis.mAxisMinimum);
+//        mXAxis.mAxisMaximum = mData.getXVals().size() - 1;
+//        mXAxis.mAxisRange = Math.abs(mXAxis.mAxisMaximum - mXAxis.mAxisMinimum);
 
         mYAxis.calculate(mData.getYMin(AxisDependency.LEFT), mData.getYMax(AxisDependency.LEFT));
     }
@@ -190,7 +190,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      * @return
      */
     public float getSliceAngle() {
-        return 360f / (float) mData.getXValCount();
+        return 360f / (float) mData.getEntryCount();
     }
 
     @Override
@@ -201,7 +201,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
         float sliceangle = getSliceAngle();
 
-        for (int i = 0; i < mData.getXValCount(); i++) {
+        for (int i = 0; i < mData.getEntryCount(); i++) {
             if (sliceangle * (i + 1) - sliceangle / 2f > a)
                 return i;
         }

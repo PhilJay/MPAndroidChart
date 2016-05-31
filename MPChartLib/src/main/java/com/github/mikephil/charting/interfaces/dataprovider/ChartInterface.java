@@ -44,8 +44,6 @@ public interface ChartInterface {
      */
     float getYChartMax();
 
-    int getXValCount();
-
     int getWidth();
 
     int getHeight();

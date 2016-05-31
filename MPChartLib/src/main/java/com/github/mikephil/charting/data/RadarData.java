@@ -17,33 +17,11 @@ public class RadarData extends ChartData<IRadarDataSet> {
         super();
     }
 
-    public RadarData(List<XAxisValue> xVals) {
-        super(xVals);
+    public RadarData(List<IRadarDataSet> dataSets) {
+        super(dataSets);
     }
 
-    public RadarData(XAxisValue[] xVals) {
-        super(xVals);
-    }
-
-    public RadarData(List<XAxisValue> xVals, List<IRadarDataSet> dataSets) {
-        super(xVals, dataSets);
-    }
-
-    public RadarData(XAxisValue[] xVals, List<IRadarDataSet> dataSets) {
-        super(xVals, dataSets);
-    }
-
-    public RadarData(List<XAxisValue> xVals, IRadarDataSet dataSet) {
-        super(xVals, toList(dataSet));
-    }
-
-    public RadarData(XAxisValue[] xVals, IRadarDataSet dataSet) {
-        super(xVals, toList(dataSet));
-    }
-
-    private static List<IRadarDataSet> toList(IRadarDataSet dataSet) {
-        List<IRadarDataSet> sets = new ArrayList<IRadarDataSet>();
-        sets.add(dataSet);
-        return sets;
+    public RadarData(IRadarDataSet... dataSets) {
+        super(dataSets);
     }
 }

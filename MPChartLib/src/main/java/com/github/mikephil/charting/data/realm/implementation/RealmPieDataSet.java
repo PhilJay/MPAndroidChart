@@ -2,6 +2,7 @@ package com.github.mikephil.charting.data.realm.implementation;
 
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.data.realm.base.RealmBaseDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.utils.Utils;
@@ -13,7 +14,7 @@ import io.realm.RealmResults;
 /**
  * Created by Philipp Jahoda on 07/11/15.
  */
-public class RealmPieDataSet<T extends RealmObject> extends RealmBaseDataSet<T, Entry> implements IPieDataSet {
+public class RealmPieDataSet<T extends RealmObject> extends RealmBaseDataSet<T, PieEntry> implements IPieDataSet {
 
     /**
      * the space in pixels between the chart-slices, default 0f
