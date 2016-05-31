@@ -8,6 +8,7 @@ android {
         targetSdkVersion 23
         versionCode 51
         versionName '2.2.5'
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         sourceSets {
             main {
@@ -57,4 +58,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'io.realm:realm-android:0.87.5' // dependency for realm-database API (http://realm.io)
     //compile 'com.github.PhilJay:MPAndroidChart:v2.2.0'
+
+    testCompile 'junit:junit:4.12'
 }

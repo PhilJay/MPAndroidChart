@@ -13,12 +13,14 @@ import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 public class SelectionDetail {
 
     public float y;
+    public float x;
     public float value;
     public int dataIndex;
     public int dataSetIndex;
     public IDataSet dataSet;
 
-    public SelectionDetail(float y, float value, int dataIndex, int dataSetIndex, IDataSet set) {
+    public SelectionDetail(float x, float y, float value, int dataIndex, int dataSetIndex, IDataSet set) {
+        this.x = x;
         this.y = y;
         this.value = value;
         this.dataIndex = dataIndex;
@@ -26,8 +28,8 @@ public class SelectionDetail {
         this.dataSet = set;
     }
 
-    public SelectionDetail(float y, float value, int dataSetIndex, IDataSet set) {
-        this(y, value, 0, dataSetIndex, set);
+    public SelectionDetail(float x, float y, float value, int dataSetIndex, IDataSet set) {
+        this(x, y, value, 0, dataSetIndex, set);
     }
 
     public SelectionDetail(float value, int dataSetIndex, IDataSet set) {

@@ -31,7 +31,7 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 			dataSetIndex = setCount - 1;
 		}
 
-		SelectionDetail selectionDetail = getSelectionDetail(xVal, y, dataSetIndex);
+		SelectionDetail selectionDetail = getSelectionDetail(xVal, x, y, dataSetIndex);
 		if (selectionDetail == null)
 			return null;
 

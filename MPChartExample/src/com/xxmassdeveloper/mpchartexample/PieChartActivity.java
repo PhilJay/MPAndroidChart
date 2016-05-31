@@ -193,7 +193,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         // xIndex (even if from different DataSets), since no values can be
         // drawn above each other.
         for (int i = 0; i < count + 1; i++) {
-            yVals1.add(new Entry((float) (Math.random() * mult) + mult / 5, i));
+            yVals1.add(new Entry(i, (float) (Math.random() * mult) + mult / 5));
         }
 
         ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();

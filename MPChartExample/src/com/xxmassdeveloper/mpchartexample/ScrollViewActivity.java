@@ -56,7 +56,7 @@ public class ScrollViewActivity extends DemoBase {
 
         for (int i = 0; i < count; i++) {
             float val = (float) (Math.random() * count) + 15;
-            yVals.add(new BarEntry((int) val, i));
+            yVals.add(new BarEntry(i, (int) val));
             xVals.add(new XAxisValue(i, (int) val + ""));
         }
 

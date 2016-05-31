@@ -33,7 +33,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 			dataSetIndex = setCount - 1;
 		}
 
-		SelectionDetail selectionDetail = getSelectionDetail(xVal, y, dataSetIndex);
+		SelectionDetail selectionDetail = getSelectionDetail(xVal, x, y, dataSetIndex);
 		if (selectionDetail == null)
 			return null;
 
@@ -84,7 +84,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 	}
 
 	@Override
-	protected SelectionDetail getSelectionDetail(float xVal, float y, int dataSetIndex) {
+	protected SelectionDetail getSelectionDetail(float xVal, float x, float y, int dataSetIndex) {
 
 		dataSetIndex = Math.max(dataSetIndex, 0);
 

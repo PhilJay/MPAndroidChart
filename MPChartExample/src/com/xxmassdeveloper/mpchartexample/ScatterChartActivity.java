@@ -174,17 +174,17 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             float val = (float) (Math.random() * mSeekBarY.getProgress()) + 3;
-            yVals1.add(new Entry(val, i));
+            yVals1.add(new Entry(i, val));
         }
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             float val = (float) (Math.random() * mSeekBarY.getProgress()) + 3;
-            yVals2.add(new Entry(val, i));
+            yVals2.add(new Entry(i+0.33f, val));
         }
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             float val = (float) (Math.random() * mSeekBarY.getProgress()) + 3;
-            yVals3.add(new Entry(val, i));
+            yVals3.add(new Entry(i+0.66f, val));
         }
 
         // create a dataset and give it a type

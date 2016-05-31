@@ -400,24 +400,6 @@ public abstract class Utils {
     }
 
     /**
-     * Returns the index of the DataSet that contains the closest value on the
-     * y-axis. This is needed for highlighting. This will return -Integer.MAX_VALUE if failure.
-     *
-     * @param valsAtIndex all the values at a specific index
-     * @return
-     */
-    public static int getClosestDataSetIndexByPixelY(List<SelectionDetail> valsAtIndex, float y,
-                                                    AxisDependency axis) {
-
-        SelectionDetail sel = getClosestSelectionDetailByPixelY(valsAtIndex, y, axis);
-
-        if (sel == null)
-            return -Integer.MAX_VALUE;
-
-        return sel.dataSetIndex;
-    }
-
-    /**
      * Returns the SelectionDetail of the DataSet that contains the closest value on the
      * y-axis.
      *
@@ -456,9 +438,9 @@ public abstract class Utils {
      * @param valsAtIndex all the values at a specific index
      * @return
      */
-    public static SelectionDetail getClosestSelectionDetailByPixelY(
+    public static SelectionDetail getClosestSelectionDetailByPixel(
             List<SelectionDetail> valsAtIndex,
-            float y,
+            float x, float y,
             AxisDependency axis) {
 
         SelectionDetail closest = null;
@@ -470,10 +452,11 @@ public abstract class Utils {
 
             if (axis == null || sel.dataSet.getAxisDependency() == axis) {
 
-                float cdistance = Math.abs(sel.y - y);
-                if (cdistance < distance) {
+                float cDistance = (float) Math.hypot(x - sel.x, y - sel.y);
+
+                if (cDistance < distance) {
                     closest = sel;
-                    distance = cdistance;
+                    distance = cDistance;
                 }
             }
         }
