@@ -29,8 +29,8 @@ public class HorizontalBarBuffer extends BarBuffer {
 
             if (!mContainsStacks || vals == null) {
 
-                float top = x - barWidthHalf;
-                float bottom = x + barWidthHalf;
+                float bottom = x - barWidthHalf;
+                float top = x + barWidthHalf;
                 float left, right;
                 if (mInverted) {
                     left = y >= 0 ? y : 0;
@@ -69,8 +69,8 @@ public class HorizontalBarBuffer extends BarBuffer {
                         negY += Math.abs(value);
                     }
 
-                    float top = x - barWidthHalf;
-                    float bottom = x + barWidthHalf;
+                    float bottom = x - barWidthHalf;
+                    float top = x + barWidthHalf;
                     float left, right;
                     if (mInverted) {
                         left = y >= yStart ? y : yStart;
