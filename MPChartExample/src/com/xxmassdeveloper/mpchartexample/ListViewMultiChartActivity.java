@@ -98,7 +98,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         ArrayList<Entry> e1 = new ArrayList<Entry>();
 
         for (int i = 0; i < 12; i++) {
-            e1.add(new Entry((int) (Math.random() * 65) + 40, i));
+            e1.add(new Entry(i, (int) (Math.random() * 65) + 40));
         }
 
         LineDataSet d1 = new LineDataSet(e1, "New DataSet " + cnt + ", (1)");
@@ -110,7 +110,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         ArrayList<Entry> e2 = new ArrayList<Entry>();
 
         for (int i = 0; i < 12; i++) {
-            e2.add(new Entry(e1.get(i).getY() - 30, i));
+            e2.add(new Entry(i, e1.get(i).getY() - 30));
         }
 
         LineDataSet d2 = new LineDataSet(e2, "New DataSet " + cnt + ", (2)");
@@ -139,11 +139,11 @@ public class ListViewMultiChartActivity extends DemoBase {
         ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
 
         for (int i = 0; i < 12; i++) {
-            entries.add(new BarEntry((int) (Math.random() * 70) + 30, i));
+            entries.add(new BarEntry(i, (int) (Math.random() * 70) + 30));
         }
 
         BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);
-        d.setBarSpacePercent(20f);
+        d.setBarSpace(20f);
         d.setColors(ColorTemplate.VORDIPLOM_COLORS);
         d.setHighLightAlpha(255);
         
@@ -161,7 +161,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         ArrayList<Entry> entries = new ArrayList<Entry>();
 
         for (int i = 0; i < 4; i++) {
-            entries.add(new Entry((int) (Math.random() * 70) + 30, i));
+            entries.add(new Entry(i, (int) (Math.random() * 70) + 30));
         }
 
         PieDataSet d = new PieDataSet(entries, "");

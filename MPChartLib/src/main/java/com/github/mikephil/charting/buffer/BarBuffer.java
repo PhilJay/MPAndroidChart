@@ -13,10 +13,8 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
     protected boolean mContainsStacks = false;
     protected boolean mInverted = false;
 
-    /**
-     * interval on the xPx-axis per group
-     */
-    protected float mInterval = 0f;
+    /** width of the bar on the x-axis, in values (not pixels) */
+    protected float mBarWidth = 1f;
 
     public BarBuffer(int size, float groupspace, int dataSetCount, boolean containsStacks) {
         super(size);
@@ -25,8 +23,8 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
         this.mContainsStacks = containsStacks;
     }
 
-    public void setInterval(float interval) {
-        this.mInterval = interval;
+    public void setBarWidth(float barWidth) {
+        this.mBarWidth = barWidth;
     }
 
     public void setBarSpace(float barspace) {
@@ -53,34 +51,23 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
     public void feed(IBarDataSet data) {
 
         float size = data.getEntryCount() * phaseX;
-
-        float barWidth = mInterval / mDataSetCount;
-
-        float groupSpaceWidth = mDataSetCount <= 1 ? 0 : barWidth * mGroupSpace;
-        float newInterval = (mInterval - groupSpaceWidth);
-        float newBarWidth = newInterval / mDataSetCount;
-
-        float barSpaceWidth = newBarWidth * mBarSpace;
-        float barSpaceWidthHalf = barSpaceWidth / 2f;
-
-        float groupSpaceWidthHalf = groupSpaceWidth / 2f;
-        float dataSetSpace = mDataSetCount <= 1 ? 0 : (newInterval / mDataSetCount) * mDataSetIndex;
-
+        float barWidthHalf = mBarWidth / 2f;
 
         for (int i = 0; i < size; i++) {
 
             BarEntry e = data.getEntryForIndex(i);
 
-            // calculate the xPx-position, depending on interval
-            float x = mInterval * i + dataSetSpace;
+            if(e == null)
+                continue;
 
+            float x = e.getX();
             float y = e.getY();
             float[] vals = e.getYVals();
 
             if (!mContainsStacks || vals == null) {
 
-                float left = x + groupSpaceWidthHalf + barSpaceWidthHalf;
-                float right = left + newBarWidth - barSpaceWidth;
+                float left = x - barWidthHalf;
+                float right = x + barWidthHalf;
                 float bottom, top;
 
                 if (mInverted) {
@@ -120,8 +107,8 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
                         negY += Math.abs(value);
                     }
 
-                    float left = x + groupSpaceWidthHalf + barSpaceWidthHalf;
-                    float right = left + newBarWidth - barSpaceWidth;
+                    float left = x - barWidthHalf;
+                    float right = x + barWidthHalf;
                     float bottom, top;
 
                     if (mInverted) {

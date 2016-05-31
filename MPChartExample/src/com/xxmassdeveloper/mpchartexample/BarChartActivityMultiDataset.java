@@ -183,6 +183,9 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
+        float groupSpace = 0.8f;
+        float barSpace = 0.15f;
+
         tvX.setText("" + (mSeekBarX.getProgress() * 3));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
@@ -247,12 +250,14 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
 //        data.setValueFormatter(new LargeValueFormatter());
 
             // add space between the dataset groups in percent of bar-width
-            data.setGroupSpace(80f);
             data.setValueTypeface(tf);
 
             mChart.setData(data);
         }
 
+        mChart.getBarData().groupBars(0, groupSpace, barSpace);
+        mChart.getXAxis().setAxisMinValue(0f);
+        mChart.getXAxis().setAxisMaxValue(mChart.getBarData().getIntervalWidth(groupSpace, barSpace) * mSeekBarX.getProgress());
         mChart.invalidate();
     }
 

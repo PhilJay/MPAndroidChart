@@ -58,36 +58,36 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 				-1);
 	}
 
-	@Override
-	protected float getXForTouch(float x) {
-
-		if (!mChart.getBarData().isGrouped()) {
-
-			// create an array of the touch-point
-			float[] pts = new float[2];
-			pts[1] = x;
-
-			// take any transformer to determine the xPx-axis yValue
-			mChart.getTransformer(YAxis.AxisDependency.LEFT).pixelsToValue(pts);
-
-			return (int) Math.round(pts[1]);
-		} else {
-
-			float baseNoSpace = getBase(x);
-
-			int setCount = mChart.getBarData().getDataSetCount();
-			int xIndex = (int) baseNoSpace / setCount;
-
-			int valCount = mChart.getData().getXValCount();
-
-			if (xIndex < 0)
-				xIndex = 0;
-			else if (xIndex >= valCount)
-				xIndex = valCount - 1;
-
-			return xIndex;
-		}
-	}
+//	@Override
+//	protected float getXForTouch(float x) {
+//
+//		if (!mChart.getBarData().isGrouped()) {
+//
+//			// create an array of the touch-point
+//			float[] pts = new float[2];
+//			pts[1] = x;
+//
+//			// take any transformer to determine the xPx-axis yValue
+//			mChart.getTransformer(YAxis.AxisDependency.LEFT).pixelsToValue(pts);
+//
+//			return (int) Math.round(pts[1]);
+//		} else {
+//
+//			float baseNoSpace = getBase(x);
+//
+//			int setCount = mChart.getBarData().getDataSetCount();
+//			int xIndex = (int) baseNoSpace / setCount;
+//
+//			int valCount = mChart.getData().getXValCount();
+//
+//			if (xIndex < 0)
+//				xIndex = 0;
+//			else if (xIndex >= valCount)
+//				xIndex = valCount - 1;
+//
+//			return xIndex;
+//		}
+//	}
 
 	/**
 	 * Returns the base yPx-yValue to the corresponding xPx-touch yValue in pixels.

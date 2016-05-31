@@ -140,7 +140,7 @@ public class Entry implements Parcelable {
      */
     @Override
     public String toString() {
-        return "Entry, xIndex: " + x + " val (sum): " + getY();
+        return "Entry, x: " + x + " y (sum): " + getY();
     }
 
     @Override

@@ -99,7 +99,8 @@ public class BarChartRenderer extends DataRenderer {
         buffer.setBarSpace(dataSet.getBarSpace());
         buffer.setDataSet(index);
         buffer.setInverted(mChart.isInverted(dataSet.getAxisDependency()));
-        buffer.setInterval(mChart.getXRange() / dataSet.getEntryCount());
+        buffer.setBarWidth(mChart.getBarData().getBarWidth());
+        //buffer.setInterval(mChart.getXRange() / dataSet.getEntryCount());
 
         buffer.feed(dataSet);
 
@@ -186,6 +187,18 @@ public class BarChartRenderer extends DataRenderer {
 
         float left = x + groupSpaceWidthHalf + barSpaceWidthHalf;
         float right = left + newBarWidth - barSpaceWidth;
+        float top = y1;
+        float bottom = y2;
+
+        mBarRect.set(left, top, right, bottom);
+
+        trans.rectValueToPixel(mBarRect, mAnimator.getPhaseY());
+    }
+
+    protected void prepareBarHighlight(float x, float y1, float y2, float barWidthHalf, Transformer trans) {
+
+        float left = x - barWidthHalf;
+        float right = x + barWidthHalf;
         float top = y1;
         float bottom = y2;
 
@@ -377,13 +390,10 @@ public class BarChartRenderer extends DataRenderer {
                     BarEntry e = set.getEntryForXPos(x);
                     int entryIndex = set.getEntryIndex(e);
 
-                    if (e == null || e.getX() != x)
+                    if (e == null)
                         continue;
 
-                    float interval = mChart.getXRange() / set.getEntryCount();
-                    float groupSpace = barData.getGroupSpace();
                     boolean isStack = high.getStackIndex() < 0 ? false : true;
-                    float barSpace = set.getBarSpace();
 
                     final float y1;
                     final float y2;
@@ -396,7 +406,9 @@ public class BarChartRenderer extends DataRenderer {
                         y2 = 0.f;
                     }
 
-                    prepareBarHighlight(y1, y2, interval, entryIndex, dataSetIndex, setCount, barSpace, groupSpace, trans);
+                    prepareBarHighlight(e.getX(), y1, y2, barData.getBarWidth() / 2f, trans);
+
+                    //prepareBarHighlight(y1, y2, interval, entryIndex, dataSetIndex, setCount, barSpace, groupSpace, trans);
 
                     c.drawRect(mBarRect, mHighlightPaint);
 

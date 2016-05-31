@@ -232,16 +232,15 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
     private void setData(int count, float range) {
 
-        ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
+        mChart.getXAxis().setAxisMinValue(0f);
+        mChart.getXAxis().setAxisMaxValue(count);
+
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
 
         for (int i = 0; i < count; i++) {
             float mult = (range + 1);
             float val = (float) (Math.random() * mult);
-            yVals1.add(new BarEntry(i, val));
-
-            XAxisValue value = new XAxisValue(i, mMonths[i % 12]);
-            xVals.add(value);
+            yVals1.add(new BarEntry(i + 0.5f, val));
         }
 
         BarDataSet set1;
@@ -250,20 +249,19 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
                 mChart.getData().getDataSetCount() > 0) {
             set1 = (BarDataSet)mChart.getData().getDataSetByIndex(0);
             set1.setYVals(yVals1);
-            mChart.getData().setXVals(xVals);
             mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
             set1 = new BarDataSet(yVals1, "DataSet");
-            set1.setBarSpacePercent(35f);
             set1.setColors(ColorTemplate.MATERIAL_COLORS);
 
             ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
             dataSets.add(set1);
 
-            BarData data = new BarData(xVals, dataSets);
+            BarData data = new BarData(new ArrayList<XAxisValue>(), dataSets);
             data.setValueTextSize(10f);
             data.setValueTypeface(mTf);
+            data.setBarWidth(0.9f);
 
             mChart.setData(data);
         }

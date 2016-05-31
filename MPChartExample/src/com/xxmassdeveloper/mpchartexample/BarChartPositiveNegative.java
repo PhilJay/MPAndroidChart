@@ -119,7 +119,7 @@ public class BarChartPositiveNegative extends DemoBase {
             mChart.notifyDataSetChanged();
         } else {
             set = new BarDataSet(values, "Values");
-            set.setBarSpacePercent(40f);
+            set.setBarSpace(40f);
             set.setColors(colors);
             set.setValueTextColors(colors);
 

@@ -200,12 +200,13 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     }
 
     /**
-     * sets the space between the bars in percent (0-100) of the total bar width
+     * Sets the space between the bars in values (not pixels).
+     * Default 0.15f
      *
-     * @param percent
+     * @param barSpace
      */
-    public void setBarSpacePercent(float percent) {
-        mBarSpace = percent / 100f;
+    public void setBarSpace(float barSpace) {
+        mBarSpace = barSpace;
     }
 
     /**

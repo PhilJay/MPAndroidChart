@@ -96,7 +96,7 @@ public class StackedBarActivityNegative extends DemoBase implements
         set.setValueFormatter(new CustomFormatter());
         set.setValueTextSize(7f);
         set.setAxisDependency(YAxis.AxisDependency.RIGHT);
-        set.setBarSpacePercent(40f);
+        set.setBarSpace(40f);
         set.setColors(new int[] {Color.rgb(67,67,72), Color.rgb(124,181,236)});
         set.setStackLabels(new String[]{
                 "Men", "Women"

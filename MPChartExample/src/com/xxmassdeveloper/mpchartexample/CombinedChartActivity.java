@@ -93,7 +93,7 @@ public class CombinedChartActivity extends DemoBase {
         ArrayList<Entry> entries = new ArrayList<Entry>();
 
         for (int index = 0; index < itemcount; index++)
-            entries.add(new Entry(getRandom(15, 10), index));
+            entries.add(new Entry(index, getRandom(15, 10)));
 
         LineDataSet set = new LineDataSet(entries, "Line DataSet");
         set.setColor(Color.rgb(240, 238, 70));
@@ -116,11 +116,12 @@ public class CombinedChartActivity extends DemoBase {
     private BarData generateBarData() {
 
         BarData d = new BarData();
+        d.setBarWidth(0.9f);
 
         ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
 
         for (int index = 0; index < itemcount; index++)
-            entries.add(new BarEntry(getRandom(15, 30), index));
+            entries.add(new BarEntry(index, getRandom(15, 30)));
 
         BarDataSet set = new BarDataSet(entries, "Bar DataSet");
         set.setColor(Color.rgb(60, 220, 78));
@@ -140,7 +141,7 @@ public class CombinedChartActivity extends DemoBase {
         ArrayList<Entry> entries = new ArrayList<Entry>();
 
         for (int index = 0; index < itemcount; index++)
-            entries.add(new Entry(getRandom(20, 15), index));
+            entries.add(new Entry(index, getRandom(20, 15)));
 
         ScatterDataSet set = new ScatterDataSet(entries, "Scatter DataSet");
         set.setColor(Color.GREEN);

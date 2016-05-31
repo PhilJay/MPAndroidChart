@@ -62,13 +62,13 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
                 -1);
     }
 
-    @Override
-    protected float getXForTouch(float x) {
-
-        if (!mChart.getBarData().isGrouped()) {
-            return super.getXForTouch(x);
-        } else {
-            return getBase(x);
+//    @Override
+//    protected float getXForTouch(float x) {
+//
+//        if (!mChart.getBarData().isGrouped()) {
+//            return super.getXForTouch(x);
+//        } else {
+//            return getBase(x);
 //
 //            float baseNoSpace = getBase(x);
 //
@@ -83,8 +83,8 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 //                xIndex = valCount - 1;
 //
 //            return xIndex;
-        }
-    }
+//        }
+//    }
 
     @Override
     protected SelectionDetail getSelectionDetail(float xVal, float x, float y, int dataSetIndex) {
