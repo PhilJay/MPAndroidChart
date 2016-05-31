@@ -17,6 +17,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -744,10 +745,10 @@ public class LineChartRenderer extends LineRadarRenderer {
                 if (x > mChart.getXChartMax() * mAnimator.getPhaseX())
                     continue;
 
-                mChart.getTransformer(set.getAxisDependency()).getPixelsForValues(x, y);
+                PointD pix = mChart.getTransformer(set.getAxisDependency()).getPixelsForValues(x, y);
 
                 // draw the lines
-                drawHighlightLines(c, x, y, set);
+                drawHighlightLines(c, (float) pix.x, (float) pix.y, set);
             }
         }
     }

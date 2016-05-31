@@ -3,9 +3,11 @@ package com.github.mikephil.charting.highlight;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.SelectionDetail;
 
 /**
@@ -13,241 +15,227 @@ import com.github.mikephil.charting.utils.SelectionDetail;
  */
 public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 
-	public BarHighlighter(BarDataProvider chart) {
-		super(chart);
-	}
+    public BarHighlighter(BarDataProvider chart) {
+        super(chart);
+    }
 
-	@Override
-	public Highlight getHighlight(float x, float y) {
+    @Override
+    public Highlight getHighlight(float x, float y) {
 
-		BarData barData = mChart.getBarData();
+        BarData barData = mChart.getBarData();
 
-		final float xVal = getXForTouch(x);
-		final float baseNoSpace = getBase(x);
-		final int setCount = barData.getDataSetCount();
-		int dataSetIndex = ((int)baseNoSpace) % setCount;
+        final float xVal = getXForTouch(x);
+        final float baseNoSpace = getBase(x);
+        final int setCount = barData.getDataSetCount();
+        int dataSetIndex = ((int) baseNoSpace) % setCount;
 
-		if (dataSetIndex < 0) {
-			dataSetIndex = 0;
-		} else if (dataSetIndex >= setCount) {
-			dataSetIndex = setCount - 1;
-		}
+        if (dataSetIndex < 0) {
+            dataSetIndex = 0;
+        } else if (dataSetIndex >= setCount) {
+            dataSetIndex = setCount - 1;
+        }
 
-		SelectionDetail selectionDetail = getSelectionDetail(xVal, x, y, dataSetIndex);
-		if (selectionDetail == null)
-			return null;
+        SelectionDetail selectionDetail = getSelectionDetail(xVal, x, y, dataSetIndex);
+        if (selectionDetail == null)
+            return null;
 
-		IBarDataSet set = barData.getDataSetByIndex(dataSetIndex);
-		if (set.isStacked()) {
+        IBarDataSet set = barData.getDataSetByIndex(dataSetIndex);
+        if (set.isStacked()) {
 
-			float[] pts = new float[2];
-			pts[1] = y;
+            float[] pts = new float[2];
+            pts[1] = y;
 
-			// take any transformer to determine the xPx-axis yValue
-			mChart.getTransformer(set.getAxisDependency()).pixelsToValue(pts);
+            // take any transformer to determine the xPx-axis yValue
+            mChart.getTransformer(set.getAxisDependency()).pixelsToValue(pts);
 
-			return getStackedHighlight(selectionDetail,
-					set,
-					xVal,
-					pts[1]);
-		}
+            return getStackedHighlight(selectionDetail,
+                    set,
+                    xVal,
+                    pts[1]);
+        }
 
-		return new Highlight(
-				xVal,
-				selectionDetail.yValue,
-				selectionDetail.dataIndex,
-				selectionDetail.dataSetIndex,
-				-1);
-	}
+        return new Highlight(
+                selectionDetail.xValue,
+                selectionDetail.yValue,
+                selectionDetail.dataIndex,
+                selectionDetail.dataSetIndex,
+                -1);
+    }
 
-	@Override
-	protected float getXForTouch(float x) {
+    @Override
+    protected float getXForTouch(float x) {
 
-		if (!mChart.getBarData().isGrouped()) {
-			return super.getXForTouch(x);
-		} else {
+        if (!mChart.getBarData().isGrouped()) {
+            return super.getXForTouch(x);
+        } else {
+            return getBase(x);
+//
+//            float baseNoSpace = getBase(x);
+//
+//            int setCount = mChart.getBarData().getDataSetCount();
+//            int xIndex = (int) baseNoSpace / setCount;
+//
+//            int valCount = mChart.getData().getXValCount();
+//
+//            if (xIndex < 0)
+//                xIndex = 0;
+//            else if (xIndex >= valCount)
+//                xIndex = valCount - 1;
+//
+//            return xIndex;
+        }
+    }
 
-			float baseNoSpace = getBase(x);
+    @Override
+    protected SelectionDetail getSelectionDetail(float xVal, float x, float y, int dataSetIndex) {
 
-			int setCount = mChart.getBarData().getDataSetCount();
-			int xIndex = (int) baseNoSpace / setCount;
+        dataSetIndex = Math.max(dataSetIndex, 0);
 
-			int valCount = mChart.getData().getXValCount();
+        BarData barData = mChart.getBarData();
+        IDataSet dataSet = barData.getDataSetCount() > dataSetIndex
+                ? barData.getDataSetByIndex(dataSetIndex)
+                : null;
 
-			if (xIndex < 0)
-				xIndex = 0;
-			else if (xIndex >= valCount)
-				xIndex = valCount - 1;
+        if (dataSet == null)
+            return null;
 
-			return xIndex;
-		}
-	}
+        final Entry entry = dataSet.getEntryForXPos(xVal);
 
-	@Override
-	protected SelectionDetail getSelectionDetail(float xVal, float x, float y, int dataSetIndex) {
+        return new SelectionDetail(entry.getX(),
+                entry.getY(),
+                dataSetIndex,
+                dataSet);
+    }
 
-		dataSetIndex = Math.max(dataSetIndex, 0);
+    /**
+     * This method creates the Highlight object that also indicates which yValue of a stacked BarEntry has been
+     * selected.
+     *
+     * @param selectionDetail the selection detail to work with looking for stacked values
+     * @param set
+     * @param xVal
+     * @param yValue
+     * @return
+     */
+    protected Highlight getStackedHighlight(
+            SelectionDetail selectionDetail,
+            IBarDataSet set,
+            float xVal,
+            double yValue) {
 
-		BarData barData = mChart.getBarData();
-		IDataSet dataSet = barData.getDataSetCount() > dataSetIndex
-				? barData.getDataSetByIndex(dataSetIndex)
-				: null;
-		if (dataSet == null)
-			return null;
+        BarEntry entry = set.getEntryForXPos(xVal);
 
-		final float yValue = dataSet.getYValueForXValue(xVal);
+        if (entry == null)
+            return null;
 
-		if (yValue == Double.NaN) return null;
+        // not stacked
+        if (entry.getYVals() == null) {
+            return new Highlight(entry.getX(),
+                    entry.getY(),
+                    selectionDetail.dataIndex,
+                    selectionDetail.dataSetIndex);
+        } else {
+            Range[] ranges = getRanges(entry);
 
-		return new SelectionDetail(0f,
-				yValue,
-				dataSetIndex,
-				dataSet);
-	}
+            if (ranges.length > 0) {
+                int stackIndex = getClosestStackIndex(ranges, (float) yValue);
+                return new Highlight(
+                        entry.getX(),
+                        entry.getPositiveSum() - entry.getNegativeSum(),
+                        selectionDetail.dataIndex,
+                        selectionDetail.dataSetIndex,
+                        stackIndex,
+                        ranges[stackIndex]
+                );
+            }
+        }
 
-	/**
-	 * This method creates the Highlight object that also indicates which yValue of a stacked BarEntry has been selected.
-	 *
-	 * @param selectionDetail the selection detail to work with looking for stacked values
-	 * @param set
-	 * @param xVal
-	 * @param yValue
-	 * @return
-	 */
-	protected Highlight getStackedHighlight(
-			SelectionDetail selectionDetail,
-			IBarDataSet set,
-			float xVal,
-			double yValue) {
+        return null;
+    }
 
-		BarEntry entry = set.getEntryForXPos(xVal);
+    /**
+     * Returns the index of the closest yValue inside the values array / ranges (stacked barchart) to the yValue
+     * given as
+     * a parameter.
+     *
+     * @param ranges
+     * @param value
+     * @return
+     */
+    protected int getClosestStackIndex(Range[] ranges, float value) {
 
-		if (entry == null)
-			return null;
+        if (ranges == null || ranges.length == 0)
+            return 0;
 
-		if (entry.getYVals() == null) {
-			return new Highlight(xVal,
-					entry.getY(),
-					selectionDetail.dataIndex,
-					selectionDetail.dataSetIndex);
-		}
+        int stackIndex = 0;
 
-		Range[] ranges = getRanges(entry);
-		if (ranges.length > 0) {
-			int stackIndex = getClosestStackIndex(ranges, (float)yValue);
-			return new Highlight(
-					xVal,
-					entry.getPositiveSum() - entry.getNegativeSum(),
-					selectionDetail.dataIndex,
-					selectionDetail.dataSetIndex,
-					stackIndex,
-					ranges[stackIndex]
-			);
-		}
+        for (Range range : ranges) {
+            if (range.contains(value))
+                return stackIndex;
+            else
+                stackIndex++;
+        }
 
-		return null;
-	}
+        int length = Math.max(ranges.length - 1, 0);
 
-	/**
-	 * Returns the index of the closest yValue inside the values array / ranges (stacked barchart) to the yValue given as
-	 * a parameter.
-	 *
-	 * @param ranges
-	 * @param value
-	 * @return
-	 */
-	protected int getClosestStackIndex(Range[] ranges, float value) {
+        return (value > ranges[length].to) ? length : 0;
+    }
 
-		if (ranges == null || ranges.length == 0)
-			return 0;
+    /**
+     * Returns the base xPx-yValue to the given xPx-touch value in pixels.
+     *
+     * @param x
+     * @return
+     */
+    protected float getBase(float x) {
 
-		int stackIndex = 0;
+        // take any transformer to determine the x-axis value
+        PointD val = mChart.getTransformer(YAxis.AxisDependency.LEFT).getValuesByTouchPoint(x, 0f);
+        int setCount = mChart.getBarData().getDataSetCount();
+        return (float) val.x;
+//
+//
+//
+//        // calculate how often the group-space appears
+//        int steps = (int) ((float) xVal / ((float) setCount + mChart.getBarData().getGroupSpace()));
+//
+//        float groupSpaceSum = mChart.getBarData().getGroupSpace() * (float) steps;
+//
+//        float baseNoSpace = (float) xVal - groupSpaceSum;
+//        return baseNoSpace;
+    }
 
-		for (Range range : ranges) {
-			if (range.contains(value))
-				return stackIndex;
-			else
-				stackIndex++;
-		}
+    /**
+     * Splits up the stack-values of the given bar-entry into Range objects.
+     *
+     * @param entry
+     * @return
+     */
+    protected Range[] getRanges(BarEntry entry) {
 
-		int length = Math.max(ranges.length - 1, 0);
+        float[] values = entry.getYVals();
 
-		return (value > ranges[length].to) ? length : 0;
-		//
-		// float[] vals = e.getYVals();
-		//
-		// if (vals == null)
-		// return -1;
-		//
-		// int index = 0;
-		// float remainder = e.getNegativeSum();
-		//
-		// while (index < vals.length - 1 && yValue > vals[index] + remainder) {
-		// remainder += vals[index];
-		// index++;
-		// }
-		//
-		// return index;
-	}
+        if (values == null || values.length == 0)
+            return new Range[0];
 
-	/**
-	 * Returns the base xPx-yValue to the corresponding xPx-touch yValue in pixels.
-	 * 
-	 * @param x
-	 * @return
-	 */
-	protected float getBase(float x) {
+        Range[] ranges = new Range[values.length];
 
-		// create an array of the touch-point
-		float[] pts = new float[2];
-		pts[0] = x;
+        float negRemain = -entry.getNegativeSum();
+        float posRemain = 0f;
 
-		// take any transformer to determine the xPx-axis yValue
-		mChart.getTransformer(YAxis.AxisDependency.LEFT).pixelsToValue(pts);
-		float xVal = pts[0];
+        for (int i = 0; i < ranges.length; i++) {
 
-		int setCount = mChart.getBarData().getDataSetCount();
+            float value = values[i];
 
-		// calculate how often the group-space appears
-		int steps = (int) ((float) xVal / ((float) setCount + mChart.getBarData().getGroupSpace()));
+            if (value < 0) {
+                ranges[i] = new Range(negRemain, negRemain + Math.abs(value));
+                negRemain += Math.abs(value);
+            } else {
+                ranges[i] = new Range(posRemain, posRemain + value);
+                posRemain += value;
+            }
+        }
 
-		float groupSpaceSum = mChart.getBarData().getGroupSpace() * (float) steps;
-
-		float baseNoSpace = (float) xVal - groupSpaceSum;
-		return baseNoSpace;
-	}
-
-	/**
-	 * Splits up the stack-values of the given bar-entry into Range objects.
-	 * 
-	 * @param entry
-	 * @return
-	 */
-	protected Range[] getRanges(BarEntry entry) {
-
-		float[] values = entry.getYVals();
-
-		if (values == null || values.length == 0)
-			return new Range[0];
-
-		Range[] ranges = new Range[values.length];
-
-		float negRemain = -entry.getNegativeSum();
-		float posRemain = 0f;
-
-		for (int i = 0; i < ranges.length; i++) {
-
-			float value = values[i];
-
-			if (value < 0) {
-				ranges[i] = new Range(negRemain, negRemain + Math.abs(value));
-				negRemain += Math.abs(value);
-			} else {
-				ranges[i] = new Range(posRemain, posRemain + value);
-				posRemain += value;
-			}
-		}
-
-		return ranges;
-	}
+        return ranges;
+    }
 }

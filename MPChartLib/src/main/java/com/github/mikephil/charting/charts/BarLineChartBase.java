@@ -940,7 +940,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     public void centerViewTo(float xIndex, float yValue, AxisDependency axis) {
 
         float valsInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
-        float xsInView = getXAxis().getValues().size() / mViewPortHandler.getScaleX();
+        float xsInView = getXAxis().mAxisRange / mViewPortHandler.getScaleX();
 
         Runnable job = new MoveViewJob(mViewPortHandler,
                 xIndex - xsInView / 2f, yValue + valsInView / 2f,
@@ -966,7 +966,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             PointD bounds = getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop(), axis);
 
             float valsInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
-            float xsInView = getXAxis().getValues().size() / mViewPortHandler.getScaleX();
+            float xsInView = getXAxis().mAxisRange / mViewPortHandler.getScaleX();
 
             Runnable job = new AnimatedMoveViewJob(mViewPortHandler,
                     xIndex - xsInView / 2f, yValue + valsInView / 2f,
