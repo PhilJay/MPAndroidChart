@@ -282,7 +282,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
             float val = (float) (Math.random() * mult) + 20;// + (float)
                                                            // ((mult *
                                                            // 0.1) / 10);
-            yVals.add(new Entry(val, i));
+            yVals.add(new Entry(i, val));
         }
 
         LineDataSet set1;

@@ -376,6 +376,9 @@ public class Transformer {
         tmp.mapPoints(pixels);
     }
 
+    /** buffer for performance */
+    float[] ptsBuffer = new float[2];
+
     /**
      * Returns the x and y values in the chart at the given touch point
      * (encapsulated in a PointD). This method transforms pixel coordinates to
@@ -388,15 +391,13 @@ public class Transformer {
      */
     public PointD getValuesByTouchPoint(float x, float y) {
 
-        // create an array of the touch-point
-        float[] pts = new float[2];
-        pts[0] = x;
-        pts[1] = y;
+        ptsBuffer[0] = x;
+        ptsBuffer[1] = y;
 
-        pixelsToValue(pts);
+        pixelsToValue(ptsBuffer);
 
-        double xTouchVal = pts[0];
-        double yTouchVal = pts[1];
+        double xTouchVal = ptsBuffer[0];
+        double yTouchVal = ptsBuffer[1];
 
         return new PointD(xTouchVal, yTouchVal);
     }

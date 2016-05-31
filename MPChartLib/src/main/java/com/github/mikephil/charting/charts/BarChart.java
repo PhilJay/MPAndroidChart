@@ -185,37 +185,37 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 		return mData;
 	}
 
-	/**
-	 * Returns the lowest x-index (value on the x-axis) that is still visible on the chart.
-	 * 
-	 * @return
-	 */
-	@Override
-	public float getLowestVisibleX() {
-
-		float step = mData.getDataSetCount();
-		float div = (step <= 1) ? 1 : step + mData.getGroupSpace();
-
-		float[] pts = new float[] { mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom() };
-
-		getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
-		return ((pts[0] <= getXChartMin()) ? 0 : (pts[0] / div) + 1);
-	}
-
-	/**
-	 * Returns the highest x-index (value on the x-axis) that is still visible on the chart.
-	 * 
-	 * @return
-	 */
-	@Override
-	public float getHighestVisibleX() {
-
-		float step = mData.getDataSetCount();
-		float div = (step <= 1) ? 1 : step + mData.getGroupSpace();
-
-		float[] pts = new float[] { mViewPortHandler.contentRight(), mViewPortHandler.contentBottom() };
-
-		getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
-		return ((pts[0] >= getXChartMax()) ? getXChartMax() / div : (pts[0] / div));
-	}
+//	/**
+//	 * Returns the lowest x-index (value on the x-axis) that is still visible on the chart.
+//	 *
+//	 * @return
+//	 */
+//	@Override
+//	public float getLowestVisibleX() {
+//
+//		float step = mData.getDataSetCount();
+//		float div = (step <= 1) ? 1 : step + mData.getGroupSpace();
+//
+//		float[] pts = new float[] { mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom() };
+//
+//		getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
+//		return ((pts[0] <= getXChartMin()) ? 0 : (pts[0] / div) + 1);
+//	}
+//
+//	/**
+//	 * Returns the highest x-index (value on the x-axis) that is still visible on the chart.
+//	 *
+//	 * @return
+//	 */
+//	@Override
+//	public float getHighestVisibleX() {
+//
+//		float step = mData.getDataSetCount();
+//		float div = (step <= 1) ? 1 : step + mData.getGroupSpace();
+//
+//		float[] pts = new float[] { mViewPortHandler.contentRight(), mViewPortHandler.contentBottom() };
+//
+//		getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
+//		return ((pts[0] >= getXChartMax()) ? getXChartMax() / div : (pts[0] / div));
+//	}
 }
