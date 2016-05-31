@@ -135,8 +135,7 @@ public class ListViewBarChartActivity extends DemoBase {
             entries.add(new BarEntry((int) (Math.random() * 70) + 30, i));
         }
 
-        BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);    
-        d.setBarSpace(20f);
+        BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);
         d.setColors(ColorTemplate.VORDIPLOM_COLORS);
         d.setBarShadowColor(Color.rgb(203, 203, 203));
         
@@ -144,6 +143,7 @@ public class ListViewBarChartActivity extends DemoBase {
         sets.add(d);
         
         BarData cd = new BarData(getMonths(), sets);
+        cd.setBarWidth(0.9f);
         return cd;
     }
 }

@@ -106,15 +106,13 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 		if (set == null)
 			return null;
 
-		float barspace = set.getBarSpace();
 		float y = e.getY();
 		float x = e.getX();
 
-		float barWidth = 0.5f;
+		float barWidth = mData.getBarWidth();
 
-		float spaceHalf = barspace / 2f;
-		float left = x - barWidth + spaceHalf;
-		float right = x + barWidth - spaceHalf;
+		float left = x - barWidth / 2f;
+		float right = x + barWidth / 2f;
 		float top = y >= 0 ? y : 0;
 		float bottom = y <= 0 ? y : 0;
 

@@ -11,11 +11,6 @@ import java.util.List;
 public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> implements IBarDataSet {
 
     /**
-     * space indicator between the bars 0.1f == 10 %
-     */
-    private float mBarSpace = 0.15f;
-
-    /**
      * the maximum number of bars that are stacked upon each other, this yValue
      * is calculated from the Entries that are added to the DataSet
      */
@@ -68,7 +63,6 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
         BarDataSet copied = new BarDataSet(yVals, getLabel());
         copied.mColors = mColors;
         copied.mStackSize = mStackSize;
-        copied.mBarSpace = mBarSpace;
         copied.mBarShadowColor = mBarShadowColor;
         copied.mStackLabels = mStackLabels;
         copied.mHighLightColor = mHighLightColor;
@@ -183,30 +177,6 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
      */
     public int getEntryCountStacks() {
         return mEntryCountStacks;
-    }
-
-    /**
-     * returns the space between bars in percent of the whole width of one yValue
-     *
-     * @return
-     */
-    public float getBarSpacePercent() {
-        return mBarSpace * 100f;
-    }
-
-    @Override
-    public float getBarSpace() {
-        return mBarSpace;
-    }
-
-    /**
-     * Sets the space between the bars in values (not pixels).
-     * Default 0.15f
-     *
-     * @param barSpace
-     */
-    public void setBarSpace(float barSpace) {
-        mBarSpace = barSpace;
     }
 
     /**

@@ -8,13 +8,6 @@ import com.github.mikephil.charting.data.BarEntry;
 public interface IBarDataSet extends IBarLineScatterCandleBubbleDataSet<BarEntry> {
 
     /**
-     * Returns the space between bars as the actual yValue (0 - 1.0f)
-     *
-     * @return
-     */
-    float getBarSpace();
-
-    /**
      * Returns true if this DataSet is stacked (stacksize > 1) or not.
      *
      * @return

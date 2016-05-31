@@ -143,11 +143,11 @@ public class ListViewMultiChartActivity extends DemoBase {
         }
 
         BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);
-        d.setBarSpace(20f);
         d.setColors(ColorTemplate.VORDIPLOM_COLORS);
         d.setHighLightAlpha(255);
         
         BarData cd = new BarData(getMonths(), d);
+        cd.setBarWidth(0.9f);
         return cd;
     }
     

@@ -21,11 +21,6 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
     private String mStackValueFieldName;
 
     /**
-     * space indicator between the bars 0.1f == 10 %
-     */
-    private float mBarSpace = 0.15f;
-
-    /**
      * the maximum number of bars that are stacked upon each other, this yValue
      * is calculated from the Entries that are added to the DataSet
      */
@@ -182,29 +177,6 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
     @Override
     public boolean isStacked() {
         return mStackSize > 1 ? true : false;
-    }
-
-    /**
-     * returns the space between bars in percent of the whole width of one yValue
-     *
-     * @return
-     */
-    public float getBarSpacePercent() {
-        return mBarSpace * 100f;
-    }
-
-    @Override
-    public float getBarSpace() {
-        return mBarSpace;
-    }
-
-    /**
-     * sets the space between the bars in percent (0-100) of the total bar width
-     *
-     * @param percent
-     */
-    public void setBarSpacePercent(float percent) {
-        mBarSpace = percent / 100f;
     }
 
     /**

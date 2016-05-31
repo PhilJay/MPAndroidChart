@@ -152,14 +152,13 @@ public class HorizontalBarChart extends BarChart {
         if (set == null)
             return null;
 
-        float barspace = set.getBarSpace();
         float y = e.getY();
         float x = e.getX();
 
-        float spaceHalf = barspace / 2f;
+        float barWidth = mData.getBarWidth();
 
-        float top = x - 0.5f + spaceHalf;
-        float bottom = x + 0.5f - spaceHalf;
+        float top = x - barWidth / 2f;
+        float bottom = x + barWidth / 2f;
         float left = y >= 0 ? y : 0;
         float right = y <= 0 ? y : 0;
 

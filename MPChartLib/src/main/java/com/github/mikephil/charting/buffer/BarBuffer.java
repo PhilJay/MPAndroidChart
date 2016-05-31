@@ -6,7 +6,6 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 public class BarBuffer extends AbstractBuffer<IBarDataSet> {
 
-    protected float mBarSpace = 0f;
     protected float mGroupSpace = 0f;
     protected int mDataSetIndex = 0;
     protected int mDataSetCount = 1;
@@ -25,10 +24,6 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
 
     public void setBarWidth(float barWidth) {
         this.mBarWidth = barWidth;
-    }
-
-    public void setBarSpace(float barspace) {
-        this.mBarSpace = barspace;
     }
 
     public void setDataSet(int index) {

@@ -96,7 +96,6 @@ public class StackedBarActivityNegative extends DemoBase implements
         set.setValueFormatter(new CustomFormatter());
         set.setValueTextSize(7f);
         set.setAxisDependency(YAxis.AxisDependency.RIGHT);
-        set.setBarSpace(40f);
         set.setColors(new int[] {Color.rgb(67,67,72), Color.rgb(124,181,236)});
         set.setStackLabels(new String[]{
                 "Men", "Women"
@@ -110,6 +109,7 @@ public class StackedBarActivityNegative extends DemoBase implements
         }
 
         BarData data = new BarData(xVals, set);
+        data.setBarWidth(0.8f);
         mChart.setData(data);
         mChart.invalidate();
     }
