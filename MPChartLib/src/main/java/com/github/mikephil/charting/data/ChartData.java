@@ -15,29 +15,29 @@ import java.util.List;
 
 /**
  * Class that holds all relevant data that represents the chart. That involves
- * at least one (or more) DataSets, and an array of x-values.
+ * at least one (or more) DataSets, and an array of xPx-values.
  *
  * @author Philipp Jahoda
  */
 public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
     /**
-     * maximum y-value in the value array across all axes
+     * maximum yPx-yValue in the yValue array across all axes
      */
     protected float mYMax = 0.0f;
 
     /**
-     * the minimum y-value in the value array across all axes
+     * the minimum yPx-yValue in the yValue array across all axes
      */
     protected float mYMin = 0.0f;
 
     /**
-     * maximum x-value in the value array
+     * maximum xPx-yValue in the yValue array
      */
     protected float mXMax = 0f;
 
     /**
-     * minimum x-value in the value array
+     * minimum xPx-yValue in the yValue array
      */
     protected float mXMin = 0f;
 
@@ -50,18 +50,18 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     protected float mRightAxisMin = 0.0f;
 
     /**
-     * total number of y-values across all DataSet objects
+     * total number of yPx-values across all DataSet objects
      */
     private int mYValCount = 0;
 
     /**
-     * contains the maximum length (in characters) an entry in the x-vals array
+     * contains the maximum length (in characters) an entry in the xPx-vals array
      * has
      */
     private float mXValMaximumLength = 0;
 
     /**
-     * holds all x-values the chart represents
+     * holds all xPx-values the chart represents
      */
     protected List<XAxisValue> mXVals;
 
@@ -81,7 +81,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Constructor for only x-values. This constructor can be used for setting
+     * Constructor for only xPx-values. This constructor can be used for setting
      * up an empty chart without data.
      *
      * @param xVals
@@ -93,7 +93,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Constructor for only x-values. This constructor can be used for setting
+     * Constructor for only xPx-values. This constructor can be used for setting
      * up an empty chart without data.
      *
      * @param xVals
@@ -107,7 +107,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     /**
      * constructor for chart data
      *
-     * @param xVals The values describing the x-axis. Must be at least as long
+     * @param xVals The values describing the xPx-axis. Must be at least as long
      *              as the highest xIndex in the Entry objects across all
      *              DataSets.
      * @param sets  the dataset array
@@ -122,7 +122,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     /**
      * constructor that takes string array instead of List string
      *
-     * @param xVals The values describing the x-axis. Must be at least as long
+     * @param xVals The values describing the xPx-axis. Must be at least as long
      *              as the highest xIndex in the Entry objects across all
      *              DataSets.
      * @param sets  the dataset array
@@ -146,7 +146,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
     /**
      * performs all kinds of initialization calculations, such as min-max and
-     * value count and sum
+     * yValue count and sum
      */
     protected void init() {
 
@@ -158,7 +158,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * calculates the average length (in characters) across all x-value strings
+     * calculates the average length (in characters) across all xPx-yValue strings
      */
     private void calcXValMaximumLength() {
 
@@ -181,7 +181,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Checks if the combination of x-values array and DataSet array is legal or
+     * Checks if the combination of xPx-values array and DataSet array is legal or
      * not.
      */
     private void checkLegal() {
@@ -195,7 +195,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         for (int i = 0; i < mDataSets.size(); i++) {
             if (mDataSets.get(i).getEntryCount() > mXVals.size()) {
 //                throw new IllegalArgumentException(
-//                        "One or more of the DataSet Entry arrays are longer than the x-values array of this ChartData object.");
+//                        "One or more of the DataSet Entry arrays are longer than the xPx-values array of this ChartData object.");
             }
         }
     }
@@ -210,7 +210,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * calc minimum and maximum values (both x and y) over all DataSets
+     * calc minimum and maximum values (both xPx and yPx) over all DataSets
      */
     public void calcMinMax() {
 
@@ -297,7 +297,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Calculates the total number of y-values across all DataSets the ChartData
+     * Calculates the total number of yPx-values across all DataSets the ChartData
      * represents.
      *
      * @return
@@ -332,7 +332,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Returns the smallest y-value the data object contains.
+     * Returns the smallest yPx-yValue the data object contains.
      *
      * @return
      */
@@ -341,7 +341,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Returns the minimum y-value for the specified axis.
+     * Returns the minimum yPx-yValue for the specified axis.
      *
      * @param axis
      * @return
@@ -354,7 +354,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Returns the greatest y-value the data object contains.
+     * Returns the greatest yPx-yValue the data object contains.
      *
      * @return
      */
@@ -363,7 +363,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Returns the maximum y-value for the specified axis.
+     * Returns the maximum yPx-yValue for the specified axis.
      *
      * @param axis
      * @return
@@ -376,7 +376,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Returns the minimum x-value this data object contains.
+     * Returns the minimum xPx-yValue this data object contains.
      *
      * @return
      */
@@ -385,7 +385,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Returns the maximum x-value this data object contains.
+     * Returns the maximum xPx-yValue this data object contains.
      *
      * @return
      */
@@ -395,7 +395,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
     /**
      * returns the maximum length (in characters) across all values in the
-     * x-vals array
+     * xPx-vals array
      *
      * @return
      */
@@ -404,7 +404,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Returns the total number of y-values across all DataSet objects the this
+     * Returns the total number of yPx-values across all DataSet objects the this
      * object represents.
      *
      * @return
@@ -414,7 +414,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * returns the x-values the chart represents
+     * returns the xPx-values the chart represents
      *
      * @return
      */
@@ -423,7 +423,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * sets the x-values the chart represents
+     * sets the xPx-values the chart represents
      *
      */
     public void setXVals(List<XAxisValue> xVals) {
@@ -431,7 +431,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Adds a new x-value to the chart data.
+     * Adds a new xPx-yValue to the chart data.
      *
      * @param xVal
      */
@@ -444,7 +444,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Removes the x-value at the specified index.
+     * Removes the xPx-yValue at the specified index.
      *
      * @param index
      */
@@ -484,8 +484,8 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * returns the total number of x-values this ChartData object represents
-     * (the size of the x-values array)
+     * returns the total number of xPx-values this ChartData object represents
+     * (the size of the xPx-values array)
      *
      * @return
      */
@@ -519,19 +519,26 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         if (highlight.getDataSetIndex() >= mDataSets.size())
             return null;
         else {
-            // The value of the highlighted entry could be NaN -
-            //   if we are not interested in highlighting a specific value.
-
-            List<?> entries = mDataSets.get(highlight.getDataSetIndex())
-                    .getEntriesForXPos(highlight.getX());
-            for (Object entry : entries)
-                if (((Entry)entry).getY() == highlight.getY() ||
-                        Float.isNaN(highlight.getY()))
-                    return (Entry)entry;
-
-            return null;
+            return mDataSets.get(highlight.getDataSetIndex()).getEntryForXPos(highlight.getX());
         }
     }
+//    public Entry getEntryForHighlight(Highlight highlight) {
+//        if (highlight.getDataSetIndex() >= mDataSets.size())
+//            return null;
+//        else {
+//            // The yValue of the highlighted entry could be NaN -
+//            //   if we are not interested in highlighting a specific yValue.
+//
+//            List<?> entries = mDataSets.get(highlight.getDataSetIndex())
+//                    .getEntriesForXPos(highlight.getX());
+//            for (Object entry : entries)
+//                if (((Entry)entry).getY() == highlight.getY() ||
+//                        Float.isNaN(highlight.getY()))
+//                    return (Entry)entry;
+//
+//            return null;
+//        }
+//    }
 
     /**
      * Returns the DataSet object with the given label. Search can be case
@@ -880,7 +887,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Generates an x-values array filled with numbers in range specified by the
+     * Generates an xPx-values array filled with numbers in range specified by the
      * parameters. Can be used for convenience.
      *
      * @return
@@ -912,7 +919,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Sets the color of the value-text (color in which the value-labels are
+     * Sets the color of the yValue-text (color in which the yValue-labels are
      * drawn) for all DataSets this data object contains.
      *
      * @param color
@@ -924,7 +931,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Sets the same list of value-colors for all DataSets this
+     * Sets the same list of yValue-colors for all DataSets this
      * data object contains.
      *
      * @param colors
@@ -936,7 +943,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Sets the Typeface for all value-labels for all DataSets this data object
+     * Sets the Typeface for all yValue-labels for all DataSets this data object
      * contains.
      *
      * @param tf
@@ -948,7 +955,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Sets the size (in dp) of the value-text for all DataSets this data object
+     * Sets the size (in dp) of the yValue-text for all DataSets this data object
      * contains.
      *
      * @param size
@@ -960,7 +967,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Enables / disables drawing values (value-text) for all DataSets this data
+     * Enables / disables drawing values (yValue-text) for all DataSets this data
      * object contains.
      *
      * @param enabled

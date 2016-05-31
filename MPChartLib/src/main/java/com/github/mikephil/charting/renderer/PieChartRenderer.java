@@ -198,7 +198,7 @@ public class PieChartRenderer extends DataRenderer {
 
         int visibleAngleCount = 0;
         for (int j = 0; j < entryCount; j++) {
-            // draw only if the value is greater than zero
+            // draw only if the yValue is greater than zero
             if ((Math.abs(dataSet.getEntryForIndex(j).getY()) > 0.000001)) {
                 visibleAngleCount++;
             }
@@ -213,7 +213,7 @@ public class PieChartRenderer extends DataRenderer {
 
             Entry e = dataSet.getEntryForIndex(j);
 
-            // draw only if the value is greater than zero
+            // draw only if the yValue is greater than zero
             if ((Math.abs(e.getY()) > 0.000001)) {
 
                 if (!mChart.needsHighlight((int) e.getX(),
@@ -711,7 +711,7 @@ public class PieChartRenderer extends DataRenderer {
             final int entryCount = set.getEntryCount();
             int visibleAngleCount = 0;
             for (int j = 0; j < entryCount; j++) {
-                // draw only if the value is greater than zero
+                // draw only if the yValue is greater than zero
                 if ((Math.abs(set.getEntryForIndex(j).getY()) > 0.000001)) {
                     visibleAngleCount++;
                 }
@@ -896,7 +896,7 @@ public class PieChartRenderer extends DataRenderer {
 
             Entry e = dataSet.getEntryForIndex(j);
 
-            // draw only if the value is greater than zero
+            // draw only if the yValue is greater than zero
             if ((Math.abs(e.getY()) > 0.000001)) {
 
                 float x = (float) ((r - circleRadius)

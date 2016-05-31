@@ -69,7 +69,7 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
         mChart.getLegend().setEnabled(false);
 
         // mChart.setYRange(-40f, 40f, true);
-        // call this to reset the changed y-range
+        // call this to reset the changed yPx-range
         // mChart.resetYRange(true);
     }
 

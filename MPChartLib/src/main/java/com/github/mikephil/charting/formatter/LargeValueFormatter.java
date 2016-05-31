@@ -8,7 +8,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 import java.text.DecimalFormat;
 
 /**
- * Predefined value-formatter that formats large numbers in a pretty way.
+ * Predefined yValue-formatter that formats large numbers in a pretty way.
  * Outputs: 856 = 856; 1000 = 1k; 5821 = 5.8k; 10500 = 10k; 101800 = 102k;
  * 2000000 = 2m; 7800000 = 7.8m; 92150000 = 92m; 123200000 = 123m; 9999999 =
  * 10m; 1000000000 = 1b; Special thanks to Roman Gromov
@@ -53,7 +53,7 @@ public class LargeValueFormatter implements ValueFormatter, YAxisValueFormatter 
     }
 
     /**
-     * Set an appendix text to be added at the end of the formatted value.
+     * Set an appendix text to be added at the end of the formatted yValue.
      *
      * @param appendix
      */

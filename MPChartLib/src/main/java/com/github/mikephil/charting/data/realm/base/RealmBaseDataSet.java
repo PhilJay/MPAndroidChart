@@ -28,32 +28,32 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     protected List<S> mValues;
 
     /**
-     * maximum y-value in the y-value array
+     * maximum yPx-yValue in the yPx-yValue array
      */
     protected float mYMax = 0.0f;
 
     /**
-     * the minimum y-value in the y-value array
+     * the minimum yPx-yValue in the yPx-yValue array
      */
     protected float mYMin = 0.0f;
 
     /**
-     * maximum x-value in the value array
+     * maximum xPx-yValue in the yValue array
      */
     protected float mXMax = 0.0f;
 
     /**
-     * minimum x-value in the value array
+     * minimum xPx-yValue in the yValue array
      */
     protected float mXMin = 0.0f;
 
     /**
-     * fieldname of the column that contains the y-values of this dataset
+     * fieldname of the column that contains the yPx-values of this dataset
      */
     protected String mYValuesField;
 
     /**
-     * fieldname of the column that contains the x-values of this dataset
+     * fieldname of the column that contains the xPx-values of this dataset
      */
     protected String mXValuesField;
 
@@ -385,7 +385,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     }
 
     /**
-     * Returns the fieldname that represents the "y-values" in the realm-data.
+     * Returns the fieldname that represents the "yPx-values" in the realm-data.
      *
      * @return
      */
@@ -394,7 +394,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     }
 
     /**
-     * Sets the field name that is used for getting the y-values out of the RealmResultSet.
+     * Sets the field name that is used for getting the yPx-values out of the RealmResultSet.
      *
      * @param yValuesField
      */
@@ -403,7 +403,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     }
 
     /**
-     * Returns the fieldname that represents the "x-values" in the realm-data.
+     * Returns the fieldname that represents the "xPx-values" in the realm-data.
      *
      * @return
      */
@@ -412,7 +412,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     }
 
     /**
-     * Sets the field name that is used for getting the x-values out of the RealmResultSet.
+     * Sets the field name that is used for getting the xPx-values out of the RealmResultSet.
      *
      * @param xValuesField
      */

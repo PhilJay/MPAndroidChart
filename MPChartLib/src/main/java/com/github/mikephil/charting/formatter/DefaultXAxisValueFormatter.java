@@ -4,8 +4,8 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**
  * Created by Philipp Jahoda on 14/09/15.
- * Default formatter class for adjusting x-values before drawing them.
- * This simply returns the original value unmodified.
+ * Default formatter class for adjusting xPx-values before drawing them.
+ * This simply returns the original yValue unmodified.
  */
 public class DefaultXAxisValueFormatter implements XAxisValueFormatter {
 

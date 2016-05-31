@@ -50,7 +50,7 @@ public class MyMarkerView extends MarkerView {
 
     @Override
     public int getYOffset(float ypos) {
-        // this will cause the marker-view to be above the selected value
+        // this will cause the marker-view to be above the selected yValue
         return -getHeight();
     }
 }

@@ -68,14 +68,14 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
         objects.add(new ContentItem("Line Chart", "A simple demonstration of the linechart."));
         objects.add(new ContentItem("Line Chart (Dual YAxis)",
-                "Demonstration of the linechart with dual y-axis."));
+                "Demonstration of the linechart with dual yPx-axis."));
         objects.add(new ContentItem("Bar Chart", "A simple demonstration of the bar chart."));
         objects.add(new ContentItem("Horizontal Bar Chart",
                 "A simple demonstration of the horizontal bar chart."));
         objects.add(new ContentItem("Combined Chart",
                 "Demonstrates how to create a combined chart (bar and line in this case)."));
         objects.add(new ContentItem("Pie Chart", "A simple demonstration of the pie chart."));
-        objects.add(new ContentItem("Pie Chart with value lines", "A simple demonstration of the pie chart with polyline notes."));
+        objects.add(new ContentItem("Pie Chart with yValue lines", "A simple demonstration of the pie chart with polyline notes."));
         objects.add(new ContentItem("Scatter Chart", "A simple demonstration of the scatter chart."));
         objects.add(new ContentItem("Bubble Chart", "A simple demonstration of the bubble chart."));
         objects.add(new ContentItem("Stacked Bar Chart",
@@ -99,7 +99,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 "Demonstrates the usage of different chart types inside a ListView."));
         objects.add(new ContentItem(
                 "Inverted Line Chart",
-                "Demonstrates the feature of inverting the y-axis."));
+                "Demonstrates the feature of inverting the yPx-axis."));
         objects.add(new ContentItem(
                 "Candle Stick Chart",
                 "Demonstrates usage of the CandleStickChart."));
@@ -114,7 +114,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 "Shows a LineChart with different background and line color."));
         objects.add(new ContentItem(
                 "Realtime Chart",
-                "This chart is fed with new data in realtime. It also restrains the view on the x-axis."));
+                "This chart is fed with new data in realtime. It also restrains the view on the xPx-axis."));
         objects.add(new ContentItem(
                 "Dynamical data adding",
                 "This Activity demonstrates dynamical adding of Entries and DataSets (real time graph)."));

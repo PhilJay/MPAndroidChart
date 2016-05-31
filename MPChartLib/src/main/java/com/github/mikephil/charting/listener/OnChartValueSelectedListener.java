@@ -12,7 +12,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 public interface OnChartValueSelectedListener {
 
     /**
-     * Called when a value has been selected inside the chart.
+     * Called when a yValue has been selected inside the chart.
      * 
      * @param e The selected Entry.
      * @param dataSetIndex The index in the datasets array of the data object

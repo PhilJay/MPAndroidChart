@@ -74,7 +74,7 @@ public class LineChartActivityColored extends DemoBase {
         chart.setDragEnabled(true);
         chart.setScaleEnabled(true);
 
-        // if disabled, scaling can be done on x- and y-axis separately
+        // if disabled, scaling can be done on xPx- and yPx-axis separately
         chart.setPinchZoom(false);
 
         chart.setBackgroundColor(color);

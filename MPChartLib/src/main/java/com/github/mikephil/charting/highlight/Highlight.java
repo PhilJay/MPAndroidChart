@@ -2,25 +2,25 @@
 package com.github.mikephil.charting.highlight;
 
 /**
- * Contains information needed to determine the highlighted value.
+ * Contains information needed to determine the highlighted yValue.
  * 
  * @author Philipp Jahoda
  */
 public class Highlight {
 
-    /** the x-value of the highlighted value */
+    /** the xPx-yValue of the highlighted yValue */
     private float mX = Float.NaN;
 
-    /** the y-value of the highlighted value */
+    /** the yPx-yValue of the highlighted yValue */
     private float mY = Float.NaN;
 
     /** the index of the data object - in case it refers to more than one */
     private int mDataIndex;
 
-    /** the index of the dataset the highlighted value is in */
+    /** the index of the dataset the highlighted yValue is in */
     private int mDataSetIndex;
 
-    /** index which value of a stacked bar entry is highlighted, default -1 */
+    /** index which yValue of a stacked bar entry is highlighted, default -1 */
     private int mStackIndex = -1;
 
     /** the range of the bar that is selected (only for stacked-barchart) */
@@ -29,10 +29,10 @@ public class Highlight {
     /**
      * constructor
      *
-     * @param x the x-value of the highlighted value
-     * @param y the y-value of the highlighted value
-     * @param dataIndex the index of the Data the highlighted value belongs to
-     * @param dataSetIndex the index of the DataSet the highlighted value belongs to
+     * @param x the xPx-yValue of the highlighted yValue
+     * @param y the yPx-yValue of the highlighted yValue
+     * @param dataIndex the index of the Data the highlighted yValue belongs to
+     * @param dataSetIndex the index of the DataSet the highlighted yValue belongs to
      */
     public Highlight(float x, float y, int dataIndex, int dataSetIndex) {
         this.mX = x;
@@ -43,11 +43,11 @@ public class Highlight {
     /**
      * Constructor, only used for stacked-barchart.
      * 
-     * @param x the x-value of the highlighted value on the x-axis
-     * @param y the y-value of the highlighted value
-     * @param dataIndex the index of the Data the highlighted value belongs to
-     * @param dataSetIndex the index of the DataSet the highlighted value belongs to
-     * @param stackIndex references which value of a stacked-bar entry has been
+     * @param x the xPx-yValue of the highlighted yValue on the xPx-axis
+     * @param y the yPx-yValue of the highlighted yValue
+     * @param dataIndex the index of the Data the highlighted yValue belongs to
+     * @param dataSetIndex the index of the DataSet the highlighted yValue belongs to
+     * @param stackIndex references which yValue of a stacked-bar entry has been
      *            selected
      */
     public Highlight(float x, float y, int dataIndex, int dataSetIndex, int stackIndex) {
@@ -58,13 +58,13 @@ public class Highlight {
     /**
      * Constructor, only used for stacked-barchart.
      *
-     * @param x the index of the highlighted value on the x-axis
-     * @param y the y-value of the highlighted value
-     * @param dataIndex the index of the Data the highlighted value belongs to
-     * @param dataSetIndex the index of the DataSet the highlighted value belongs to
-     * @param stackIndex references which value of a stacked-bar entry has been
+     * @param x the index of the highlighted yValue on the xPx-axis
+     * @param y the yPx-yValue of the highlighted yValue
+     * @param dataIndex the index of the Data the highlighted yValue belongs to
+     * @param dataSetIndex the index of the DataSet the highlighted yValue belongs to
+     * @param stackIndex references which yValue of a stacked-bar entry has been
      *            selected
-     * @param range the range the selected stack-value is in
+     * @param range the range the selected stack-yValue is in
      */
     public Highlight(float x, float y, int dataIndex, int dataSetIndex, int stackIndex, Range range) {
         this(x, y, dataIndex, dataSetIndex, stackIndex);
@@ -74,15 +74,15 @@ public class Highlight {
     /**
      * Constructor, only used for stacked-barchart.
      *
-     * @param x the index of the highlighted value on the x-axis
-     * @param dataSetIndex the index of the DataSet the highlighted value belongs to
+     * @param x the index of the highlighted yValue on the xPx-axis
+     * @param dataSetIndex the index of the DataSet the highlighted yValue belongs to
      */
     public Highlight(int x, int dataSetIndex) {
         this(x, Float.NaN, 0, dataSetIndex, -1);
     }
 
     /**
-     * returns the x-value of the highlighted value
+     * returns the xPx-yValue of the highlighted yValue
      *
      * @return
      */
@@ -91,7 +91,7 @@ public class Highlight {
     }
 
     /**
-     * returns the y-value of the highlighted value
+     * returns the yPx-yValue of the highlighted yValue
      *
      * @return
      */
@@ -109,7 +109,7 @@ public class Highlight {
     }
 
     /**
-     * returns the index of the DataSet the highlighted value is in
+     * returns the index of the DataSet the highlighted yValue is in
      *
      * @return
      */
@@ -119,7 +119,7 @@ public class Highlight {
 
     /**
      * Only needed if a stacked-barchart entry was highlighted. References the
-     * selected value within the stacked-entry.
+     * selected yValue within the stacked-entry.
      * 
      * @return
      */
@@ -128,7 +128,7 @@ public class Highlight {
     }
 
     /**
-     * Returns the range of values the selected value of a stacked bar is in. (this is only relevant for stacked-barchart)
+     * Returns the range of values the selected yValue of a stacked bar is in. (this is only relevant for stacked-barchart)
      * @return
      */
     public Range getRange() {
@@ -157,7 +157,7 @@ public class Highlight {
 
     @Override
     public String toString() {
-        return "Highlight, x: " + mX + "y: " + mY + ", dataSetIndex: " + mDataSetIndex
+        return "Highlight, xPx: " + mX + "yPx: " + mY + ", dataSetIndex: " + mDataSetIndex
                 + ", stackIndex (only stacked barentry): " + mStackIndex;
     }
 }

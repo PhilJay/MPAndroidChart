@@ -53,7 +53,7 @@ public class RealtimeLineChartActivity extends DemoBase implements
         mChart.setScaleEnabled(true);
         mChart.setDrawGridBackground(false);
 
-        // if disabled, scaling can be done on x- and y-axis separately
+        // if disabled, scaling can be done on xPx- and yPx-axis separately
         mChart.setPinchZoom(true);
 
         // set an alternative background color
@@ -139,7 +139,7 @@ public class RealtimeLineChartActivity extends DemoBase implements
                 data.addDataSet(set);
             }
 
-            // add a new x-value first
+            // add a new xPx-yValue first
             data.addXValue(new XAxisValue(data.getXValCount() ,mMonths[data.getXValCount() % 12] + " "
                     + (year + data.getXValCount() / 12)));
             data.addEntry(new Entry((float) (Math.random() * 40) + 30f, set.getEntryCount()), 0);

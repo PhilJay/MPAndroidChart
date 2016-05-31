@@ -55,7 +55,7 @@ public class RealmDatabaseActivityRadar extends RealmBaseActivity {
         RealmResults<RealmDemoData> result = mRealm.allObjects(RealmDemoData.class);
 
         //RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "stackValues", "xIndex"); // normal entries
-        RealmRadarDataSet<RealmDemoData> set = new RealmRadarDataSet<RealmDemoData>(result, "value", "xIndex"); // stacked entries
+        RealmRadarDataSet<RealmDemoData> set = new RealmRadarDataSet<RealmDemoData>(result, "yValue", "xIndex"); // stacked entries
         set.setLabel("Realm RadarDataSet");
         set.setDrawFilled(true);
         set.setColor(ColorTemplate.rgb("#009688"));

@@ -20,22 +20,22 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     protected List<T> mValues = null;
 
     /**
-     * maximum y-value in the value array
+     * maximum yPx-yValue in the yValue array
      */
     protected float mYMax = 0.0f;
 
     /**
-     * minimum y-value in the value array
+     * minimum yPx-yValue in the yValue array
      */
     protected float mYMin = 0.0f;
 
     /**
-     * maximum x-value in the value array
+     * maximum xPx-yValue in the yValue array
      */
     protected float mXMax = 0.0f;
 
     /**
-     * minimum x-value in the value array
+     * minimum xPx-yValue in the yValue array
      */
     protected float mXMin = 0.0f;
 
@@ -108,7 +108,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     /**
-     * Returns the array of y-values that this DataSet represents.
+     * Returns the array of yPx-values that this DataSet represents.
      *
      * @return
      */
@@ -117,7 +117,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     /**
-     * Sets the array of y-values that this DataSet represents, and calls notifyDataSetChanged()
+     * Sets the array of yPx-values that this DataSet represents, and calls notifyDataSetChanged()
      *
      * @return
      */
@@ -396,7 +396,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     /**
      * Determines how to round DataSet index values for
      * {@link DataSet#getEntryIndex(float, Rounding)} DataSet.getEntryIndex()}
-     * when an exact x-index is not found.
+     * when an exact xPx-index is not found.
      */
     public enum Rounding {
         UP,

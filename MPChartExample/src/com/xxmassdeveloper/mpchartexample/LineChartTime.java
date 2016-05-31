@@ -73,7 +73,7 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
         mChart.setDrawGridBackground(false);
         mChart.setHighlightPerDragEnabled(true);
 
-        // if disabled, scaling can be done on x- and y-axis separately
+        // if disabled, scaling can be done on xPx- and yPx-axis separately
         mChart.setPinchZoom(true);
 
         // set an alternative background color
@@ -104,7 +104,7 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
         xAxis.setDrawAxisLine(false);
         xAxis.setSpaceBetweenLabels(1);
 
-        // custom x-axis min / max
+        // custom xPx-axis min / max
         xAxis.setAxisMinValue(5000);
         xAxis.setAxisMaxValue(30000);
 

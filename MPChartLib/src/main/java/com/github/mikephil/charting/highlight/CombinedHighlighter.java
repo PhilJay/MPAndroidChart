@@ -45,7 +45,7 @@ public class CombinedHighlighter extends ChartHighlighter<BarLineScatterCandleBu
                 if (!dataSet.isHighlightEnabled())
                     continue;
 
-                // extract all y-values from all DataSets at the given x-index
+                // extract all yPx-values from all DataSets at the given xPx-index
                 final float yVals[] = dataSet.getYValuesForXPos(xVal);
                 for (float yVal : yVals) {
                     pts[1] = yVal;
@@ -53,7 +53,7 @@ public class CombinedHighlighter extends ChartHighlighter<BarLineScatterCandleBu
                     mChart.getTransformer(dataSet.getAxisDependency()).pointValuesToPixel(pts);
 
                     if (!Float.isNaN(pts[1])) {
-                        vals.add(new SelectionDetail(pts[1], yVal, i, j, dataSet));
+                        vals.add(new SelectionDetail(0f, pts[1], yVal, i, j, dataSet));
                     }
                 }
             }

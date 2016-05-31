@@ -16,10 +16,10 @@ public abstract class Renderer {
      */
     protected ViewPortHandler mViewPortHandler;
 
-    /** the minimum value on the x-axis that should be plotted */
+    /** the minimum yValue on the xPx-axis that should be plotted */
     protected float mMinX = 0;
 
-    /** the maximum value on the x-axis that should be plotted */
+    /** the maximum yValue on the xPx-axis that should be plotted */
     protected float mMaxX = 0;
 
     public Renderer(ViewPortHandler viewPortHandler) {
@@ -27,7 +27,7 @@ public abstract class Renderer {
     }
 
     /**
-     * Returns true if the specified value fits in between the provided min
+     * Returns true if the specified yValue fits in between the provided min
      * and max bounds, false if not.
      * 
      * @param val
@@ -44,7 +44,7 @@ public abstract class Renderer {
     }
 
     /**
-     * Calculates the minimum and maximum x-value the chart can currently
+     * Calculates the minimum and maximum xPx-yValue the chart can currently
      * display (with the given zoom level). -> mMinX, mMaxX
      * 
      * @param dataProvider

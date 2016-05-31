@@ -47,7 +47,7 @@ public class BarChartPositiveNegative extends DemoBase {
 
         mChart.setDescription("");
 
-        // scaling can now only be done on x- and y-axis separately
+        // scaling can now only be done on xPx- and yPx-axis separately
         mChart.setPinchZoom(false);
 
         mChart.setDrawGridBackground(false);

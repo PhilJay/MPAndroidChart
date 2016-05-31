@@ -38,7 +38,7 @@ public class RealmPieDataSet<T extends RealmObject> extends RealmBaseDataSet<T, 
      * Constructor for creating a PieDataSet with realm data.
      *
      * @param result       the queried results from the realm database
-     * @param yValuesField the name of the field in your data object that represents the y-value
+     * @param yValuesField the name of the field in your data object that represents the yPx-yValue
      */
     public RealmPieDataSet(RealmResults<T> result, String yValuesField) {
         super(result, yValuesField);
@@ -51,8 +51,8 @@ public class RealmPieDataSet<T extends RealmObject> extends RealmBaseDataSet<T, 
      * Constructor for creating a PieDataSet with realm data.
      *
      * @param result       the queried results from the realm database
-     * @param yValuesField the name of the field in your data object that represents the y-value
-     * @param xIndexField  the name of the field in your data object that represents the x-index
+     * @param yValuesField the name of the field in your data object that represents the yPx-yValue
+     * @param xIndexField  the name of the field in your data object that represents the xPx-index
      */
     public RealmPieDataSet(RealmResults<T> result, String yValuesField, String xIndexField) {
         super(result, yValuesField, xIndexField);

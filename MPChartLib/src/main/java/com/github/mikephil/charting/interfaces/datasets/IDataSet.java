@@ -17,35 +17,35 @@ public interface IDataSet<T extends Entry> {
     /** ###### ###### DATA RELATED METHODS ###### ###### */
 
     /**
-     * returns the minimum y-value this DataSet holds
+     * returns the minimum yPx-yValue this DataSet holds
      *
      * @return
      */
     float getYMin();
 
     /**
-     * returns the maximum y-value this DataSet holds
+     * returns the maximum yPx-yValue this DataSet holds
      *
      * @return
      */
     float getYMax();
 
     /**
-     * returns the minimum x-value this DataSet holds
+     * returns the minimum xPx-yValue this DataSet holds
      *
      * @return
      */
     float getXMin();
 
     /**
-     * returns the maximum x-value this DataSet holds
+     * returns the maximum xPx-yValue this DataSet holds
      *
      * @return
      */
     float getXMax();
 
     /**
-     * Returns the number of y-values this DataSet represents -> the size of the y-values array
+     * Returns the number of yPx-values this DataSet represents -> the size of the yPx-values array
      * -> yvals.size()
      *
      * @return
@@ -53,7 +53,7 @@ public interface IDataSet<T extends Entry> {
     int getEntryCount();
 
     /**
-     * Calculates the minimum and maximum x and y values (mXMin, mXMax, mYMin, mYMax).
+     * Calculates the minimum and maximum xPx and yPx values (mXMin, mXMax, mYMin, mYMax).
      */
     void calcMinMax();
 
@@ -65,7 +65,7 @@ public interface IDataSet<T extends Entry> {
      * not over-use in performance critical situations.
      *
      * @param xPos
-     * @param rounding determine to round up/down/closest if there is no Entry matching the provided x-index
+     * @param rounding determine to round up/down/closest if there is no Entry matching the provided xPx-index
      * @return
      */
     T getEntryForXPos(float xPos, DataSet.Rounding rounding);
@@ -109,7 +109,7 @@ public interface IDataSet<T extends Entry> {
      * not over-use in performance critical situations.
      *
      * @param xPos
-     * @param rounding determine to round up/down/closest if there is no Entry matching the provided x-index
+     * @param rounding determine to round up/down/closest if there is no Entry matching the provided xPx-index
      * @return
      */
     int getEntryIndex(float xPos, DataSet.Rounding rounding);
@@ -124,8 +124,8 @@ public interface IDataSet<T extends Entry> {
     int getEntryIndex(T e);
 
     /**
-     * Returns the value of the Entry object at the given xVal. Returns
-     * Float.NaN if no value is at the given xVal. INFORMATION: This method
+     * Returns the yValue of the Entry object at the given xVal. Returns
+     * Float.NaN if no yValue is at the given xVal. INFORMATION: This method
      * does calculations at runtime. Do not over-use in performance critical
      * situations.
      *
@@ -135,8 +135,8 @@ public interface IDataSet<T extends Entry> {
     float getYValueForXValue(float xVal);
 
     /**
-     * Returns all of the y values of the Entry objects at the given xPos. Returns
-     * Float.NaN if no value is at the given xPos. INFORMATION: This method
+     * Returns all of the yPx values of the Entry objects at the given xPos. Returns
+     * Float.NaN if no yValue is at the given xPos. INFORMATION: This method
      * does calculations at runtime. Do not over-use in performance critical
      * situations.
      *
@@ -160,7 +160,7 @@ public interface IDataSet<T extends Entry> {
      * Adds an Entry to the DataSet dynamically.
      * Entries are added to the end of the list.
      * This will also recalculate the current minimum and maximum
-     * values of the DataSet and the value-sum.
+     * values of the DataSet and the yValue-sum.
      *
      * @param e
      */
@@ -169,7 +169,7 @@ public interface IDataSet<T extends Entry> {
     /**
      * Removes an Entry from the DataSets entries array. This will also
      * recalculate the current minimum and maximum values of the DataSet and the
-     * value-sum. Returns true if an Entry was removed, false if no Entry could
+     * yValue-sum. Returns true if an Entry was removed, false if no Entry could
      * be removed.
      *
      * @param e
@@ -178,9 +178,9 @@ public interface IDataSet<T extends Entry> {
 
     /**
      * Adds an Entry to the DataSet dynamically.
-     * Entries are added to their appropriate index respective to it's x-index.
+     * Entries are added to their appropriate index respective to it's xPx-index.
      * This will also recalculate the current minimum and maximum
-     * values of the DataSet and the value-sum.
+     * values of the DataSet and the yValue-sum.
      *
      * @param e
      */
@@ -250,7 +250,7 @@ public interface IDataSet<T extends Entry> {
     YAxis.AxisDependency getAxisDependency();
 
     /**
-     * Set the y-axis this DataSet should be plotted against (either LEFT or
+     * Set the yPx-axis this DataSet should be plotted against (either LEFT or
      * RIGHT). Default: LEFT
      *
      * @param dependency
@@ -289,7 +289,7 @@ public interface IDataSet<T extends Entry> {
     boolean isHighlightEnabled();
 
     /**
-     * If set to true, value highlighting is enabled which means that values can
+     * If set to true, yValue highlighting is enabled which means that values can
      * be highlighted programmatically or by touch gesture.
      *
      * @param enabled
@@ -315,7 +315,7 @@ public interface IDataSet<T extends Entry> {
     ValueFormatter getValueFormatter();
 
     /**
-     * Sets the color the value-labels of this DataSet should have.
+     * Sets the color the yValue-labels of this DataSet should have.
      *
      * @param color
      */
@@ -329,14 +329,14 @@ public interface IDataSet<T extends Entry> {
     void setValueTextColors(List<Integer> colors);
 
     /**
-     * Sets a Typeface for the value-labels of this DataSet.
+     * Sets a Typeface for the yValue-labels of this DataSet.
      *
      * @param tf
      */
     void setValueTypeface(Typeface tf);
 
     /**
-     * Sets the text-size of the value-labels of this DataSet in dp.
+     * Sets the text-size of the yValue-labels of this DataSet in dp.
      *
      * @param size
      */
@@ -373,7 +373,7 @@ public interface IDataSet<T extends Entry> {
     float getValueTextSize();
 
     /**
-     * set this to true to draw y-values on the chart NOTE (for bar and
+     * set this to true to draw yPx-values on the chart NOTE (for bar and
      * linechart): if "maxvisiblecount" is reached, no values will be drawn even
      * if this is enabled
      *
@@ -382,7 +382,7 @@ public interface IDataSet<T extends Entry> {
     void setDrawValues(boolean enabled);
 
     /**
-     * Returns true if y-value drawing is enabled, false if not
+     * Returns true if yPx-yValue drawing is enabled, false if not
      *
      * @return
      */

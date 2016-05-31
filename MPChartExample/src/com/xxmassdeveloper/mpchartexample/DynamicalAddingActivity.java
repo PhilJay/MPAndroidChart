@@ -62,7 +62,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
                 data.addDataSet(set);
             }
 
-            // add a new x-value first
+            // add a new xPx-yValue first
             data.addXValue(new XAxisValue(set.getEntryCount(), set.getEntryCount() + ""));
             
             // choose a random dataSet
@@ -111,11 +111,11 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 
             int count = (data.getDataSetCount() + 1);
 
-            // create 10 y-vals
+            // create 10 yPx-vals
             ArrayList<Entry> yVals = new ArrayList<Entry>();
             
             if(data.getXValCount() == 0) {
-                // add 10 x-entries
+                // add 10 xPx-entries
                 for (int i = 0; i < 10; i++) {
                     data.addXValue(new XAxisValue(i, i + ""));
                 }

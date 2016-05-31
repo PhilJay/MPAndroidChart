@@ -6,19 +6,19 @@ package com.github.mikephil.charting.data;
 public class XAxisValue {
 
     /**
-     * the label that describes this value
+     * the label that describes this yValue
      */
     private String mLabel = "";
 
     /**
-     * the position of this value on the x-axis
+     * the position of this yValue on the xPx-axis
      */
     private double mPosition;
 
     /**
      * Constructor only with label. This is relevant for pie and radarchart.
      *
-     * @param label the x-axis label of this value
+     * @param label the xPx-axis label of this yValue
      */
     public XAxisValue(String label) {
         this.mLabel = label;
@@ -27,8 +27,8 @@ public class XAxisValue {
     /**
      * Constructor.
      *
-     * @param xPosition the position of this value on the x-axis
-     * @param label     the x-axis label of this value
+     * @param xPosition the position of this yValue on the xPx-axis
+     * @param label     the xPx-axis label of this yValue
      */
     public XAxisValue(double xPosition, String label) {
         this.mLabel = label;
@@ -36,7 +36,7 @@ public class XAxisValue {
     }
 
     /**
-     * Sets both x-position and label.
+     * Sets both xPx-position and label.
      *
      * @param xPosition
      * @param label
@@ -47,7 +47,7 @@ public class XAxisValue {
     }
 
     /**
-     * Returns the position (x) of the value on the x-axis.
+     * Returns the position (xPx) of the yValue on the xPx-axis.
      *
      * @return
      */
@@ -56,7 +56,7 @@ public class XAxisValue {
     }
 
     /**
-     * Returns the x-axis label of this value.
+     * Returns the xPx-axis label of this yValue.
      *
      * @return
      */

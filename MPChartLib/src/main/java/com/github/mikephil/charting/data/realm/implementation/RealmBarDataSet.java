@@ -26,7 +26,7 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
     private float mBarSpace = 0.15f;
 
     /**
-     * the maximum number of bars that are stacked upon each other, this value
+     * the maximum number of bars that are stacked upon each other, this yValue
      * is calculated from the Entries that are added to the DataSet
      */
     private int mStackSize = 1;
@@ -41,7 +41,7 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
     private int mBarBorderColor = Color.BLACK;
 
     /**
-     * the alpha value used to draw the highlight indicator bar
+     * the alpha yValue used to draw the highlight indicator bar
      */
     private int mHighLightAlpha = 120;
 
@@ -185,7 +185,7 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
     }
 
     /**
-     * returns the space between bars in percent of the whole width of one value
+     * returns the space between bars in percent of the whole width of one yValue
      *
      * @return
      */
@@ -209,7 +209,7 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
 
     /**
      * Sets the color used for drawing the bar-shadows. The bar shadows is a
-     * surface behind the bar that indicates the maximum value. Don't for get to
+     * surface behind the bar that indicates the maximum yValue. Don't for get to
      * use getResources().getColor(...) to set this. Or Color.rgb(...).
      *
      * @param color
@@ -264,7 +264,7 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
     }
 
     /**
-     * Set the alpha value (transparency) that is used for drawing the highlight
+     * Set the alpha yValue (transparency) that is used for drawing the highlight
      * indicator bar. min = 0 (fully transparent), max = 255 (fully opaque)
      *
      * @param alpha

@@ -41,7 +41,7 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 			float[] pts = new float[2];
 			pts[0] = y;
 
-			// take any transformer to determine the x-axis value
+			// take any transformer to determine the xPx-axis yValue
 			mChart.getTransformer(set.getAxisDependency()).pixelsToValue(pts);
 
 			return getStackedHighlight(selectionDetail,
@@ -52,7 +52,7 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 
 		return new Highlight(
 				xVal,
-				selectionDetail.value,
+				selectionDetail.yValue,
 				selectionDetail.dataIndex,
 				selectionDetail.dataSetIndex,
 				-1);
@@ -67,7 +67,7 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 			float[] pts = new float[2];
 			pts[1] = x;
 
-			// take any transformer to determine the x-axis value
+			// take any transformer to determine the xPx-axis yValue
 			mChart.getTransformer(YAxis.AxisDependency.LEFT).pixelsToValue(pts);
 
 			return (int) Math.round(pts[1]);
@@ -90,7 +90,7 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 	}
 
 	/**
-	 * Returns the base y-value to the corresponding x-touch value in pixels.
+	 * Returns the base yPx-yValue to the corresponding xPx-touch yValue in pixels.
 	 * 
 	 * @param y
 	 * @return
@@ -102,7 +102,7 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 		float[] pts = new float[2];
 		pts[1] = y;
 
-		// take any transformer to determine the x-axis value
+		// take any transformer to determine the xPx-axis yValue
 		mChart.getTransformer(YAxis.AxisDependency.LEFT).pixelsToValue(pts);
 		float yVal = pts[1];
 

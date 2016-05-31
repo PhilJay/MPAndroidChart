@@ -9,11 +9,11 @@ import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.github.mikephil.charting.utils.Utils;
 
 /**
- * Class representing the y-axis labels settings and its entries. Only use the setter methods to
+ * Class representing the yPx-axis labels settings and its entries. Only use the setter methods to
  * modify it. Do not
  * access public variables directly. Be aware that not all features the YLabels class provides
  * are suitable for the
- * RadarChart. Customizations that affect the value range of the axis need to be applied before
+ * RadarChart. Customizations that affect the yValue range of the axis need to be applied before
  * setting data for the
  * chart.
  *
@@ -27,12 +27,12 @@ public class YAxis extends AxisBase {
     protected YAxisValueFormatter mYAxisValueFormatter;
 
     /**
-     * indicates if the top y-label entry is drawn or not
+     * indicates if the top yPx-label entry is drawn or not
      */
     private boolean mDrawTopYLabelEntry = true;
 
     /**
-     * if true, the y-labels show only the minimum and maximum value
+     * if true, the yPx-labels show only the minimum and maximum yValue
      */
     protected boolean mShowOnlyMinMax = false;
 
@@ -42,7 +42,7 @@ public class YAxis extends AxisBase {
     protected boolean mInverted = false;
 
     /**
-     * if true, the set number of y-labels will be forced
+     * if true, the set number of yPx-labels will be forced
      */
     protected boolean mForceLabels = false;
 
@@ -62,22 +62,22 @@ public class YAxis extends AxisBase {
     protected float mZeroLineWidth = 1f;
 
     /**
-     * axis space from the largest value to the top in percent of the total axis range
+     * axis space from the largest yValue to the top in percent of the total axis range
      */
     protected float mSpacePercentTop = 10f;
 
     /**
-     * axis space from the smallest value to the bottom in percent of the total axis range
+     * axis space from the smallest yValue to the bottom in percent of the total axis range
      */
     protected float mSpacePercentBottom = 10f;
 
     /**
-     * the position of the y-labels relative to the chart
+     * the position of the yPx-labels relative to the chart
      */
     private YAxisLabelPosition mPosition = YAxisLabelPosition.OUTSIDE_CHART;
 
     /**
-     * enum for the position of the y-labels relative to the chart
+     * enum for the position of the yPx-labels relative to the chart
      */
     public enum YAxisLabelPosition {
         OUTSIDE_CHART, INSIDE_CHART
@@ -105,7 +105,7 @@ public class YAxis extends AxisBase {
     /**
      * When true, axis labels are controlled by the `granularity` property.
      * When false, axis values could possibly be repeated.
-     * This could happen if two adjacent axis values are rounded to same value.
+     * This could happen if two adjacent axis values are rounded to same yValue.
      * If using granularity this could be avoided by having fewer axis values visible.
      */
     protected boolean mGranularityEnabled = false;
@@ -182,7 +182,7 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * Enabled/disable granularity control on axis value intervals. If enabled, the axis
+     * Enabled/disable granularity control on axis yValue intervals. If enabled, the axis
      * interval is not allowed to go below a certain granularity. Default: false
      *
      * @param enabled
@@ -211,14 +211,14 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * returns the position of the y-labels
+     * returns the position of the yPx-labels
      */
     public YAxisLabelPosition getLabelPosition() {
         return mPosition;
     }
 
     /**
-     * sets the position of the y-labels
+     * sets the position of the yPx-labels
      *
      * @param pos
      */
@@ -227,7 +227,7 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * returns true if drawing the top y-axis label entry is enabled
+     * returns true if drawing the top yPx-axis label entry is enabled
      *
      * @return
      */
@@ -236,9 +236,9 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * set this to true to enable drawing the top y-label entry. Disabling this can be helpful
-     * when the top y-label and
-     * left x-label interfere with each other. default: true
+     * set this to true to enable drawing the top yPx-label entry. Disabling this can be helpful
+     * when the top yPx-label and
+     * left xPx-label interfere with each other. default: true
      *
      * @param enabled
      */
@@ -247,11 +247,11 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * sets the number of label entries for the y-axis max = 25, min = 2, default: 6, be aware
+     * sets the number of label entries for the yPx-axis max = 25, min = 2, default: 6, be aware
      * that this number is not
      * fixed (if force == false) and can only be approximated.
      *
-     * @param count the number of y-axis labels that sould be displayed
+     * @param count the number of yPx-axis labels that sould be displayed
      * @param force if enabled, the set label count will be forced, meaning that the exact
      *              specified count of labels will
      *              be drawn and evenly distributed alongside the axis - this might cause labels
@@ -264,7 +264,7 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * Returns true if focing the y-label count is enabled. Default: false
+     * Returns true if focing the yPx-label count is enabled. Default: false
      *
      * @return
      */
@@ -273,7 +273,7 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * If enabled, the YLabels will only show the minimum and maximum value of the chart. This
+     * If enabled, the YLabels will only show the minimum and maximum yValue of the chart. This
      * will ignore/override the
      * set label count.
      *
@@ -284,7 +284,7 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * Returns true if showing only min and max value is enabled.
+     * Returns true if showing only min and max yValue is enabled.
      *
      * @return
      */
@@ -293,7 +293,7 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * If this is set to true, the y-axis is inverted which means that low values are on top of
+     * If this is set to true, the yPx-axis is inverted which means that low values are on top of
      * the chart, high values
      * on bottom.
      *
@@ -304,7 +304,7 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * If this returns true, the y-axis is inverted.
+     * If this returns true, the yPx-axis is inverted.
      *
      * @return
      */
@@ -459,7 +459,7 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * Returns the formatted y-label at the specified index. This will either use the
+     * Returns the formatted yPx-label at the specified index. This will either use the
      * auto-formatter or the custom
      * formatter (if one is set).
      *
@@ -535,7 +535,7 @@ public class YAxis extends AxisBase {
     @Override
     public void calculate(float dataMin, float dataMax) {
 
-        // if custom, use value as is, else use data value
+        // if custom, use yValue as is, else use data yValue
         float min = mCustomAxisMin ? mAxisMinimum : dataMin;
         float max = mCustomAxisMax ? mAxisMaximum : dataMax;
 

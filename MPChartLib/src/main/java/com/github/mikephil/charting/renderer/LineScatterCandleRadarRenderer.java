@@ -25,10 +25,11 @@ public abstract class LineScatterCandleRadarRenderer extends DataRenderer {
      * Draws vertical & horizontal highlight-lines if enabled.
      *
      * @param c
-     * @param pts the transformed x- and y-position of the lines
+     * @param x xPx-position of the highlight line intersection
+     * @param y yPx-position of the highlight line intersection
      * @param set the currently drawn dataset
      */
-    protected void drawHighlightLines(Canvas c, float[] pts, ILineScatterCandleRadarDataSet set) {
+    protected void drawHighlightLines(Canvas c, float x, float y, ILineScatterCandleRadarDataSet set) {
 
         // set color and stroke-width
         mHighlightPaint.setColor(set.getHighLightColor());
@@ -42,8 +43,8 @@ public abstract class LineScatterCandleRadarRenderer extends DataRenderer {
 
             // create vertical path
             mHighlightLinePath.reset();
-            mHighlightLinePath.moveTo(pts[0], mViewPortHandler.contentTop());
-            mHighlightLinePath.lineTo(pts[0], mViewPortHandler.contentBottom());
+            mHighlightLinePath.moveTo(x, mViewPortHandler.contentTop());
+            mHighlightLinePath.lineTo(x, mViewPortHandler.contentBottom());
 
             c.drawPath(mHighlightLinePath, mHighlightPaint);
         }
@@ -53,8 +54,8 @@ public abstract class LineScatterCandleRadarRenderer extends DataRenderer {
 
             // create horizontal path
             mHighlightLinePath.reset();
-            mHighlightLinePath.moveTo(mViewPortHandler.contentLeft(), pts[1]);
-            mHighlightLinePath.lineTo(mViewPortHandler.contentRight(), pts[1]);
+            mHighlightLinePath.moveTo(mViewPortHandler.contentLeft(), y);
+            mHighlightLinePath.lineTo(mViewPortHandler.contentRight(), y);
 
             c.drawPath(mHighlightLinePath, mHighlightPaint);
         }

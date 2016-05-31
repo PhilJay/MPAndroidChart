@@ -89,7 +89,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         float sliceangle = mChart.getSliceAngle();
 
-        // calculate the factor that is needed for transforming the value to
+        // calculate the factor that is needed for transforming the yValue to
         // pixels
         float factor = mChart.getFactor();
 
@@ -163,7 +163,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         float sliceangle = mChart.getSliceAngle();
 
-        // calculate the factor that is needed for transforming the value to
+        // calculate the factor that is needed for transforming the yValue to
         // pixels
         float factor = mChart.getFactor();
 
@@ -204,7 +204,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         float sliceangle = mChart.getSliceAngle();
 
-        // calculate the factor that is needed for transforming the value to
+        // calculate the factor that is needed for transforming the yValue to
         // pixels
         float factor = mChart.getFactor();
         float rotationangle = mChart.getRotationAngle();
@@ -287,16 +287,13 @@ public class RadarChartRenderer extends LineRadarRenderer {
                     y * factor * phaseY,
                     sliceangle * j * phaseX + mChart.getRotationAngle());
 
-            float[] pts = new float[]{
-                    p.x, p.y
-            };
 
             // draw the lines
-            drawHighlightLines(c, pts, set);
+            drawHighlightLines(c, p.x, p.y, set);
 
             if (set.isDrawHighlightCircleEnabled()) {
 
-                if (!Float.isNaN(pts[0]) && !Float.isNaN(pts[1])) {
+                if (!Float.isNaN(p.x) && !Float.isNaN(p.y)) {
 
                     int strokeColor = set.getHighlightCircleStrokeColor();
                     if (strokeColor == ColorTemplate.COLOR_NONE) {

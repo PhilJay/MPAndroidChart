@@ -24,7 +24,7 @@ public interface ILineRadarDataSet<T extends Entry> extends ILineScatterCandleRa
     Drawable getFillDrawable();
 
     /**
-     * Returns the alpha value that is used for filling the line surface,
+     * Returns the alpha yValue that is used for filling the line surface,
      * default: 85
      *
      * @return

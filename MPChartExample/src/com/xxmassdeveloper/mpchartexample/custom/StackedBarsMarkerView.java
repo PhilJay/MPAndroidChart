@@ -37,7 +37,7 @@ public class StackedBarsMarkerView extends MarkerView {
 
             if(be.getYVals() != null) {
 
-                // draw the stack value
+                // draw the stack yValue
                 tvContent.setText("" + Utils.formatNumber(be.getYVals()[highlight.getStackIndex()], 0, true));
             } else {
                 tvContent.setText("" + Utils.formatNumber(be.getY(), 0, true));
@@ -56,7 +56,7 @@ public class StackedBarsMarkerView extends MarkerView {
 
     @Override
     public int getYOffset(float ypos) {
-        // this will cause the marker-view to be above the selected value
+        // this will cause the marker-view to be above the selected yValue
         return -getHeight();
     }
 }

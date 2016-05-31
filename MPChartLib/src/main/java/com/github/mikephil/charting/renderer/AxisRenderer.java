@@ -22,7 +22,7 @@ public abstract class AxisRenderer extends Renderer {
     /** paint object for the grid lines */
     protected Paint mGridPaint;
 
-    /** paint for the x-label values */
+    /** paint for the xPx-label values */
     protected Paint mAxisLabelPaint;
 
     /** paint for the line surrounding the chart */
@@ -94,12 +94,12 @@ public abstract class AxisRenderer extends Renderer {
     /**
      * Computes the axis values.
      *
-     * @param min - the minimum value in the data object for this axis
-     * @param max - the maximum value in the data object for this axis
+     * @param min - the minimum yValue in the data object for this axis
+     * @param max - the maximum yValue in the data object for this axis
      */
     public void computeAxis(float min, float max, boolean inverted) {
 
-        // calculate the starting and entry point of the y-labels (depending on
+        // calculate the starting and entry point of the yPx-labels (depending on
         // zoom / contentrect bounds)
         if (mViewPortHandler.contentWidth() > 10 && !mViewPortHandler.isFullyZoomedOutY()) {
 

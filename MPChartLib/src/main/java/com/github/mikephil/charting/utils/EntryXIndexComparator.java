@@ -5,7 +5,7 @@ import com.github.mikephil.charting.data.Entry;
 import java.util.Comparator;
 
 /**
- * Comparator for comparing Entry-objects by their x-index.
+ * Comparator for comparing Entry-objects by their xPx-index.
  * Created by philipp on 17/06/15.
  */
 public class EntryXIndexComparator implements Comparator<Entry> {

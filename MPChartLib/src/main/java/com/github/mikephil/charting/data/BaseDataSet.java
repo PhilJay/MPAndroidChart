@@ -42,7 +42,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     protected YAxis.AxisDependency mAxisDependency = YAxis.AxisDependency.LEFT;
 
     /**
-     * if true, value highlightning is enabled
+     * if true, yValue highlightning is enabled
      */
     protected boolean mHighlightEnabled = true;
 
@@ -52,17 +52,17 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     protected transient ValueFormatter mValueFormatter;
 
     /**
-     * the typeface used for the value text
+     * the typeface used for the yValue text
      */
     protected Typeface mValueTypeface;
 
     /**
-     * if true, y-values are drawn on the chart
+     * if true, yPx-values are drawn on the chart
      */
     protected boolean mDrawValues = true;
 
     /**
-     * the size of the value-text labels
+     * the size of the yValue-text labels
      */
     protected float mValueTextSize = 17f;
 
@@ -196,7 +196,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     }
 
     /**
-     * Sets a color with a specific alpha value.
+     * Sets a color with a specific alpha yValue.
      *
      * @param color
      * @param alpha from 0-255
@@ -206,7 +206,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     }
 
     /**
-     * Sets colors with a specific alpha value.
+     * Sets colors with a specific alpha yValue.
      *
      * @param colors
      * @param alpha

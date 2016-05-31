@@ -15,19 +15,19 @@ public abstract class AbstractBuffer<T> {
     /** index in the buffer */
     protected int index = 0;
 
-    /** float-buffer that holds the data points to draw, order: x,y,x,y,... */
+    /** float-buffer that holds the data points to draw, order: xPx,yPx,xPx,yPx,... */
     public final float[] buffer;
 
-    /** animation phase x-axis */
+    /** animation phase xPx-axis */
     protected float phaseX = 1f;
 
-    /** animation phase y-axis */
+    /** animation phase yPx-axis */
     protected float phaseY = 1f;
 
-    /** indicates from which x-index the visible data begins */
+    /** indicates from which xPx-index the visible data begins */
     protected int mFrom = 0;
 
-    /** indicates to which x-index the visible data ranges */
+    /** indicates to which xPx-index the visible data ranges */
     protected int mTo = 0;
 
     /**
@@ -40,14 +40,14 @@ public abstract class AbstractBuffer<T> {
         buffer = new float[size];
     }
 
-    /** limits the drawing on the x-axis */
+    /** limits the drawing on the xPx-axis */
     public void limitFrom(int from) {
         if (from < 0)
             from = 0;
         mFrom = from;
     }
 
-    /** limits the drawing on the x-axis */
+    /** limits the drawing on the xPx-axis */
     public void limitTo(int to) {
         if (to < 0)
             to = 0;

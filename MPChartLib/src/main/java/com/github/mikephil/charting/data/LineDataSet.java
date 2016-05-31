@@ -25,10 +25,10 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
     /** the color of the inner circles */
     private int mCircleColorHole = Color.WHITE;
 
-    /** the radius of the circle-shaped value indicators */
+    /** the radius of the circle-shaped yValue indicators */
     private float mCircleRadius = 8f;
 
-    /** the hole radius of the circle-shaped value indicators */
+    /** the hole radius of the circle-shaped yValue indicators */
     private float mCircleHoleRadius = 4f;
 
     /** sets the intensity of the cubic lines */
@@ -155,7 +155,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
     }
 
     /**
-     * sets the size (radius) of the circle shpaed value indicators,
+     * sets the size (radius) of the circle shpaed yValue indicators,
      * default size = 4f
      *
      * This method is deprecated because of unclarity. Use setCircleRadius instead.

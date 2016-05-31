@@ -4,6 +4,7 @@ package com.github.mikephil.charting.renderer;
 import android.graphics.Canvas;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
+import android.graphics.Point;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.buffer.ScatterBuffer;
@@ -14,6 +15,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.ScatterDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -397,27 +399,16 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
                 if (set == null || !set.isHighlightEnabled())
                     continue;
 
-                float x = high.getX(); // get the
-                // x-position
-
+                float x = high.getX();
+                float y = high.getY() * mAnimator.getPhaseY();
 
                 if (x > mChart.getXChartMax() * mAnimator.getPhaseX())
                     continue;
 
-                final float yVal = set.getYValueForXValue(x);
-                if (Float.isNaN(yVal))
-                    continue;
-
-                float y = yVal * mAnimator.getPhaseY();
-
-                float[] pts = new float[]{
-                        x, y
-                };
-
-                mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);
+                PointD px = mChart.getTransformer(set.getAxisDependency()).getPixelsForValues(x, y);
 
                 // draw the lines
-                drawHighlightLines(c, pts, set);
+                drawHighlightLines(c, (float) px.x, (float) px.y, set);
             }
         }
     }

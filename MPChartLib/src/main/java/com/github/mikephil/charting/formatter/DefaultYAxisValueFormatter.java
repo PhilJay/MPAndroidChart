@@ -7,7 +7,7 @@ import java.text.DecimalFormat;
 /**
  * Created by Philipp Jahoda on 20/09/15.
  * Default formatter used for formatting labels of the YAxis. Uses a DecimalFormat with
- * pre-calculated number of digits (depending on max and min value).
+ * pre-calculated number of digits (depending on max and min yValue).
  */
 public class DefaultYAxisValueFormatter implements YAxisValueFormatter {
 
@@ -15,7 +15,7 @@ public class DefaultYAxisValueFormatter implements YAxisValueFormatter {
     private DecimalFormat mFormat;
 
     /**
-     * Constructor that specifies to how many digits the value should be
+     * Constructor that specifies to how many digits the yValue should be
      * formatted.
      *
      * @param digits

@@ -36,7 +36,7 @@ public class XAxisRenderer extends AxisRenderer {
     @Override
     public void computeAxis(float min, float max, boolean inverted) {
 
-        // calculate the starting and entry point of the y-labels (depending on
+        // calculate the starting and entry point of the yPx-labels (depending on
         // zoom / contentrect bounds)
         if (mViewPortHandler.contentWidth() > 10 && !mViewPortHandler.isFullyZoomedOutX()) {
 
@@ -186,7 +186,7 @@ public class XAxisRenderer extends AxisRenderer {
     }
 
     /**
-     * draws the x-labels on the specified y-position
+     * draws the xPx-labels on the specified yPx-position
      *
      * @param pos
      */
@@ -197,7 +197,7 @@ public class XAxisRenderer extends AxisRenderer {
         float[] positions = new float[mXAxis.mEntries.length * 2];
 
         for (int i = 0; i < positions.length; i += 2) {
-            // only fill x values
+            // only fill xPx values
             positions[i] = mXAxis.mEntries[i / 2];
         }
 
@@ -248,7 +248,7 @@ public class XAxisRenderer extends AxisRenderer {
         float[] positions = new float[mXAxis.mEntries.length * 2];
 
         for (int i = 0; i < positions.length; i += 2) {
-            // only fill x values
+            // only fill xPx values
             positions[i] = mXAxis.mEntries[i / 2];
         }
 
@@ -334,7 +334,7 @@ public class XAxisRenderer extends AxisRenderer {
     public void renderLimitLineLabel(Canvas c, LimitLine limitLine, float[] position, float yOffset) {
         String label = limitLine.getLabel();
 
-        // if drawing the limit-value label is enabled
+        // if drawing the limit-yValue label is enabled
         if (label != null && !label.equals("")) {
 
             mLimitLinePaint.setStyle(limitLine.getTextStyle());

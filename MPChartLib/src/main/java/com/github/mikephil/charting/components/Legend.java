@@ -76,7 +76,7 @@ public class Legend extends ComponentBase {
     private String[] mExtraLabels;
 
     /**
-     * Are the legend labels/colors a custom value or auto calculated? If false,
+     * Are the legend labels/colors a custom yValue or auto calculated? If false,
      * then it's auto, if true, then custom. default false (automatic legend)
      */
     private boolean mIsLegendCustom = false;

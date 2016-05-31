@@ -15,9 +15,9 @@ public class MyCustomXAxisValueFormatter implements XAxisValueFormatter {
     @Override
     public String getXValue(String original, int index, ViewPortHandler viewPortHandler) {
 
-        //Log.i("TRANS", "x: " + viewPortHandler.getTransX() + ", y: " + viewPortHandler.getTransY());
+        //Log.i("TRANS", "xPx: " + viewPortHandler.getTransX() + ", yPx: " + viewPortHandler.getTransY());
 
-        // e.g. adjust the x-axis values depending on scale / zoom level
+        // e.g. adjust the xPx-axis values depending on scale / zoom level
         if (viewPortHandler.getScaleX() > 5)
             return "4";
         else if (viewPortHandler.getScaleX() > 3)

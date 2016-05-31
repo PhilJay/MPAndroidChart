@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider;
+import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.SelectionDetail;
 import com.github.mikephil.charting.utils.Utils;
 
@@ -25,7 +27,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
     }
 
     /**
-     * Returns a Highlight object corresponding to the given x- and y- touch positions in pixels.
+     * Returns a Highlight object corresponding to the given xPx- and yPx- touch positions in pixels.
      *
      * @param x
      * @param y
@@ -39,32 +41,27 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
         if (selectionDetail == null)
             return null;
 
-        return new Highlight(xVal,
-                selectionDetail.value,
+        return new Highlight(selectionDetail.xValue,
+                selectionDetail.yValue,
                 selectionDetail.dataIndex,
                 selectionDetail.dataSetIndex);
     }
 
     /**
-     * Returns the corresponding x-index for a given touch-position in pixels.
+     * Returns the corresponding xPos for a given touch-position in pixels.
      *
      * @param x
      * @return
      */
     protected float getXForTouch(float x) {
 
-        // create an array of the touch-point
-        float[] pts = new float[2];
-        pts[0] = x;
-
-        // take any transformer to determine the x-axis value
-        mChart.getTransformer(YAxis.AxisDependency.LEFT).pixelsToValue(pts);
-
-        return Math.round(pts[0]);
+        // take any transformer to determine the xPx-axis yValue
+        PointD pos = mChart.getTransformer(YAxis.AxisDependency.LEFT).getValuesByTouchPoint(x, 0f);
+        return (float) pos.x;
     }
 
     /**
-     * Returns the corresponding SelectionDetail for a given xVal and y-touch position in pixels.
+     * Returns the corresponding SelectionDetail for a given xVal and yPx-touch position in pixels.
      *
      * @param xVal
      * @param y
@@ -98,8 +95,6 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
 
         if (mChart.getData() == null) return vals;
 
-        float[] pts = new float[2];
-
         for (int i = 0, dataSetCount = mChart.getData().getDataSetCount(); i < dataSetCount; i++) {
 
             if (dataSetIndex > -1 && dataSetIndex != i)
@@ -111,19 +106,19 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
             if (!dataSet.isHighlightEnabled())
                 continue;
 
-            // extract all y-values from all DataSets at the given x-index
-            final Entry e = dataSet.getEntryForXPos(xVal);
-
-            pts[0] = e.getX();
-            pts[1] = e.getY();
-
-            mChart.getTransformer(dataSet.getAxisDependency()).pointValuesToPixel(pts);
-
-            if (!Float.isNaN(pts[1])) {
-                vals.add(new SelectionDetail(pts[0], pts[1], e.getY(), i, dataSet));
-            }
+            vals.add(getDetails(dataSet, i, xVal, DataSet.Rounding.UP));
+            vals.add(getDetails(dataSet, i, xVal, DataSet.Rounding.DOWN));
         }
 
         return vals;
+    }
+
+    private SelectionDetail getDetails(IDataSet set, int dataSetIndex, float xVal, DataSet.Rounding rounding) {
+
+        final Entry e = set.getEntryForXPos(xVal, rounding);
+
+        PointD pixels = mChart.getTransformer(set.getAxisDependency()).getPixelsForValues(e.getX(), e.getY());
+
+        return new SelectionDetail((float) pixels.x, (float) pixels.y, e.getX(), e.getY(), dataSetIndex, set);
     }
 }

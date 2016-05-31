@@ -20,6 +20,6 @@ public class PointD {
      * returns a string representation of the object
      */
     public String toString() {
-        return "PointD, x: " + x + ", y: " + y;
+        return "PointD, xPx: " + x + ", yPx: " + y;
     }
 }

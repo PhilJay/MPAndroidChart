@@ -54,7 +54,7 @@ public class RealmDatabaseActivityPie extends RealmBaseActivity {
         RealmResults<RealmDemoData> result = mRealm.allObjects(RealmDemoData.class);
 
         //RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "stackValues", "xIndex"); // normal entries
-        RealmPieDataSet<RealmDemoData> set = new RealmPieDataSet<RealmDemoData>(result, "value", "xIndex"); // stacked entries
+        RealmPieDataSet<RealmDemoData> set = new RealmPieDataSet<RealmDemoData>(result, "yValue", "xIndex"); // stacked entries
         set.setColors(ColorTemplate.VORDIPLOM_COLORS);
         set.setLabel("Example market share");
         set.setSliceSpace(2);

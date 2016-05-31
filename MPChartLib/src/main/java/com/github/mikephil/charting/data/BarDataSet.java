@@ -16,7 +16,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     private float mBarSpace = 0.15f;
 
     /**
-     * the maximum number of bars that are stacked upon each other, this value
+     * the maximum number of bars that are stacked upon each other, this yValue
      * is calculated from the Entries that are added to the DataSet
      */
     private int mStackSize = 1;
@@ -31,12 +31,12 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     private int mBarBorderColor = Color.BLACK;
 
     /**
-     * the alpha value used to draw the highlight indicator bar
+     * the alpha yValue used to draw the highlight indicator bar
      */
     private int mHighLightAlpha = 120;
 
     /**
-     * the overall entry count, including counting each stack-value individually
+     * the overall entry count, including counting each stack-yValue individually
      */
     private int mEntryCountStacks = 0;
 
@@ -176,7 +176,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     }
 
     /**
-     * returns the overall entry count, including counting each stack-value
+     * returns the overall entry count, including counting each stack-yValue
      * individually
      *
      * @return
@@ -186,7 +186,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     }
 
     /**
-     * returns the space between bars in percent of the whole width of one value
+     * returns the space between bars in percent of the whole width of one yValue
      *
      * @return
      */
@@ -210,7 +210,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
 
     /**
      * Sets the color used for drawing the bar-shadows. The bar shadows is a
-     * surface behind the bar that indicates the maximum value. Don't for get to
+     * surface behind the bar that indicates the maximum yValue. Don't for get to
      * use getResources().getColor(...) to set this. Or Color.rgb(...).
      *
      * @param color
@@ -265,7 +265,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     }
 
     /**
-     * Set the alpha value (transparency) that is used for drawing the highlight
+     * Set the alpha yValue (transparency) that is used for drawing the highlight
      * indicator bar. min = 0 (fully transparent), max = 255 (fully opaque)
      *
      * @param alpha

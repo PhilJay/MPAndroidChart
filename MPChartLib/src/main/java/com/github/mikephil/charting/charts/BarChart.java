@@ -31,7 +31,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 	private boolean mDrawValueAboveBar = true;
 
 	/**
-	 * if set to true, a grey area is drawn behind each bar that indicates the maximum value
+	 * if set to true, a grey area is drawn behind each bar that indicates the maximum yValue
 	 */
 	private boolean mDrawBarShadow = false;
 
@@ -75,7 +75,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 	}
 
 	/**
-	 * Returns the Highlight object (contains x-index and DataSet index) of the selected value at the given touch point
+	 * Returns the Highlight object (contains xPx-index and DataSet index) of the selected yValue at the given touch point
 	 * inside the BarChart.
 	 * 
 	 * @param x
@@ -162,7 +162,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 	}
 
 	/**
-	 * If set to true, a grey area is drawn behind each bar that indicates the maximum value. Enabling his will reduce
+	 * If set to true, a grey area is drawn behind each bar that indicates the maximum yValue. Enabling his will reduce
 	 * performance by about 50%.
 	 * 
 	 * @param enabled
@@ -186,7 +186,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 	}
 
 //	/**
-//	 * Returns the lowest x-index (value on the x-axis) that is still visible on the chart.
+//	 * Returns the lowest xPx-index (yValue on the xPx-axis) that is still visible on the chart.
 //	 *
 //	 * @return
 //	 */
@@ -203,7 +203,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 //	}
 //
 //	/**
-//	 * Returns the highest x-index (value on the x-axis) that is still visible on the chart.
+//	 * Returns the highest xPx-index (yValue on the xPx-axis) that is still visible on the chart.
 //	 *
 //	 * @return
 //	 */

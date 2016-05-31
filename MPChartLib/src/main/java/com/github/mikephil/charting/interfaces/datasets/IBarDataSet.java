@@ -8,7 +8,7 @@ import com.github.mikephil.charting.data.BarEntry;
 public interface IBarDataSet extends IBarLineScatterCandleBubbleDataSet<BarEntry> {
 
     /**
-     * Returns the space between bars as the actual value (0 - 1.0f)
+     * Returns the space between bars as the actual yValue (0 - 1.0f)
      *
      * @return
      */
@@ -31,7 +31,7 @@ public interface IBarDataSet extends IBarLineScatterCandleBubbleDataSet<BarEntry
 
     /**
      * Returns the color used for drawing the bar-shadows. The bar shadows is a
-     * surface behind the bar that indicates the maximum value.
+     * surface behind the bar that indicates the maximum yValue.
      *
      * @return
      */
@@ -53,7 +53,7 @@ public interface IBarDataSet extends IBarLineScatterCandleBubbleDataSet<BarEntry
     int getBarBorderColor();
 
     /**
-     * Returns the alpha value (transparency) that is used for drawing the
+     * Returns the alpha yValue (transparency) that is used for drawing the
      * highlight indicator.
      *
      * @return
@@ -62,7 +62,7 @@ public interface IBarDataSet extends IBarLineScatterCandleBubbleDataSet<BarEntry
 
 
     /**
-     * Returns the labels used for the different value-stacks in the legend.
+     * Returns the labels used for the different yValue-stacks in the legend.
      * This is only relevant for stacked bar entries.
      *
      * @return

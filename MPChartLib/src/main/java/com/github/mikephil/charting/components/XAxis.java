@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class representing the x-axis labels settings. Only use the setter methods to
+ * Class representing the xPx-axis labels settings. Only use the setter methods to
  * modify it. Do not access public variables directly. Be aware that not all
  * features the XLabels class provides are suitable for the RadarChart.
  * 
@@ -18,29 +18,29 @@ import java.util.List;
  */
 public class XAxis extends AxisBase {
 
-    /** the arraylist containing all the x-axis labels */
+    /** the arraylist containing all the xPx-axis labels */
     protected List<XAxisValue> mValues = new ArrayList<XAxisValue>();
 
     /**
-     * width of the x-axis labels in pixels - this is automatically
+     * width of the xPx-axis labels in pixels - this is automatically
      * calculated by the computeSize() methods in the renderers
      */
     public int mLabelWidth = 1;
 
     /**
-     * height of the x-axis labels in pixels - this is automatically
+     * height of the xPx-axis labels in pixels - this is automatically
      * calculated by the computeSize() methods in the renderers
      */
     public int mLabelHeight = 1;
 
     /**
-     * width of the (rotated) x-axis labels in pixels - this is automatically
+     * width of the (rotated) xPx-axis labels in pixels - this is automatically
      * calculated by the computeSize() methods in the renderers
      */
     public int mLabelRotatedWidth = 1;
 
     /**
-     * height of the (rotated) x-axis labels in pixels - this is automatically
+     * height of the (rotated) xPx-axis labels in pixels - this is automatically
      * calculated by the computeSize() methods in the renderers
      */
     public int mLabelRotatedHeight = 1;
@@ -51,20 +51,20 @@ public class XAxis extends AxisBase {
     protected float mLabelRotationAngle = 0f;
 
     /**
-     * the space that should be left out (in characters) between the x-axis
+     * the space that should be left out (in characters) between the xPx-axis
      * labels
      */
     private int mSpaceBetweenLabels = 4;
 
     /**
-     * the modulus that indicates if a value at a specified index in an
-     * array(list) for the x-axis-labels is drawn or not. If index % modulus ==
+     * the modulus that indicates if a yValue at a specified index in an
+     * array(list) for the xPx-axis-labels is drawn or not. If index % modulus ==
      * 0 DRAW, else dont draw.
      */
     public int mAxisLabelModulus = 1;
 
     /**
-     * Is axisLabelModulus a custom value or auto calculated? If false, then
+     * Is axisLabelModulus a custom yValue or auto calculated? If false, then
      * it's auto, if true, then custom. default: false (automatic modulus)
      */
     private boolean mIsAxisModulusCustom = false;
@@ -75,14 +75,14 @@ public class XAxis extends AxisBase {
     private boolean mAvoidFirstLastClipping = false;
 
     /**
-     * Custom formatter for adjusting x-value strings
+     * Custom formatter for adjusting xPx-yValue strings
      */
     protected XAxisValueFormatter mXAxisValueFormatter = new DefaultXAxisValueFormatter();
 
-    /** the position of the x-labels relative to the chart */
+    /** the position of the xPx-labels relative to the chart */
     private XAxisPosition mPosition = XAxisPosition.TOP;
 
-    /** enum for the position of the x-labels relative to the chart */
+    /** enum for the position of the xPx-labels relative to the chart */
     public enum XAxisPosition {
         TOP, BOTTOM, BOTH_SIDED, TOP_INSIDE, BOTTOM_INSIDE
     }
@@ -94,14 +94,14 @@ public class XAxis extends AxisBase {
     }
 
     /**
-     * returns the position of the x-labels
+     * returns the position of the xPx-labels
      */
     public XAxisPosition getPosition() {
         return mPosition;
     }
 
     /**
-     * sets the position of the x-labels
+     * sets the position of the xPx-labels
      * 
      * @param pos
      */
@@ -126,7 +126,7 @@ public class XAxis extends AxisBase {
     }
 
     /**
-     * Sets the space (in characters) that should be left out between the x-axis
+     * Sets the space (in characters) that should be left out between the xPx-axis
      * labels, default 4. This only applies if the number of labels that will be
      * skipped in between drawn axis labels is not custom set.
      * 
@@ -156,7 +156,7 @@ public class XAxis extends AxisBase {
 
     /**
      * Calling this will disable a custom number of labels to be skipped (set by
-     * setLabelsToSkip(...)) while drawing the x-axis. Instead, the number of
+     * setLabelsToSkip(...)) while drawing the xPx-axis. Instead, the number of
      * values to skip will again be calculated automatically.
      */
     public void resetLabelsToSkip() {
@@ -175,7 +175,7 @@ public class XAxis extends AxisBase {
 
     /**
      * Returns the space (in characters) that should be left out between the
-     * x-axis labels
+     * xPx-axis labels
      */
     public int getSpaceBetweenLabels() {
         return mSpaceBetweenLabels;
@@ -219,7 +219,7 @@ public class XAxis extends AxisBase {
     }
 
     /**
-     * Adds a new x-value to the chart data.
+     * Adds a new xPx-yValue to the chart data.
      *
      * @param xVal
      */
@@ -228,7 +228,7 @@ public class XAxis extends AxisBase {
     }
 
     /**
-     * Removes the x-value at the specified index.
+     * Removes the xPx-yValue at the specified index.
      *
      * @param index
      */
@@ -239,7 +239,7 @@ public class XAxis extends AxisBase {
 
     /**
      * Sets a custom XAxisValueFormatter for the data object that allows custom-formatting
-     * of all x-values before rendering them. Provide null to reset back to the
+     * of all xPx-values before rendering them. Provide null to reset back to the
      * default formatting.
      *
      * @param formatter

@@ -73,7 +73,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         mChart.setDragEnabled(true);
         mChart.setScaleEnabled(true);
 
-        // if disabled, scaling can be done on x- and y-axis separately
+        // if disabled, scaling can be done on xPx- and yPx-axis separately
         mChart.setPinchZoom(false);
 
         mChart.setDrawGridBackground(false);

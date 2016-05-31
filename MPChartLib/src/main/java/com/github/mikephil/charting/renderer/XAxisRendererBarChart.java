@@ -23,7 +23,7 @@ public class XAxisRendererBarChart extends XAxisRenderer {
     }
 
     /**
-     * draws the x-labels on the specified y-position
+     * draws the xPx-labels on the specified yPx-position
      * 
      * @param pos
      */

@@ -28,7 +28,7 @@ public class LineChartRenderer extends LineRadarRenderer {
     protected LineDataProvider mChart;
 
     /**
-     * paint for the inner circle of the value indicators
+     * paint for the inner circle of the yValue indicators
      */
     protected Paint mCirclePaintInner;
 
@@ -738,28 +738,16 @@ public class LineChartRenderer extends LineRadarRenderer {
                 if (set == null || !set.isHighlightEnabled())
                     continue;
 
-                float x = high.getX(); // get the
-                // x-position
+                float x = high.getX();
+                float y = high.getY() * mAnimator.getPhaseY();
 
                 if (x > mChart.getXChartMax() * mAnimator.getPhaseX())
                     continue;
 
-                final float yVal = set.getYValueForXValue(x);
-                if (Float.isNaN(yVal))
-                    continue;
-
-                float y = yVal * mAnimator.getPhaseY(); // get
-                // the
-                // y-position
-
-                float[] pts = new float[]{
-                        x, y
-                };
-
-                mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);
+                mChart.getTransformer(set.getAxisDependency()).getPixelsForValues(x, y);
 
                 // draw the lines
-                drawHighlightLines(c, pts, set);
+                drawHighlightLines(c, x, y, set);
             }
         }
     }

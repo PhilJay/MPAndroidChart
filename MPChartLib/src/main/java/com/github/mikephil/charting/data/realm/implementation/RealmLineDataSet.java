@@ -37,11 +37,11 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
     private int mCircleColorHole = Color.WHITE;
 
     /**
-     * the radius of the circle-shaped value indicators
+     * the radius of the circle-shaped yValue indicators
      */
     private float mCircleRadius = 8f;
 
-    /** the hole radius of the circle-shaped value indicators */
+    /** the hole radius of the circle-shaped yValue indicators */
     private float mCircleHoleRadius = 4f;
 
     /**
@@ -70,7 +70,7 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
      * Constructor for creating a LineDataSet with realm data.
      *
      * @param result       the queried results from the realm database
-     * @param yValuesField the name of the field in your data object that represents the y-value
+     * @param yValuesField the name of the field in your data object that represents the yPx-yValue
      */
     public RealmLineDataSet(RealmResults<T> result, String yValuesField) {
         super(result, yValuesField);
@@ -87,8 +87,8 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
      * Constructor for creating a LineDataSet with realm data.
      *
      * @param result       the queried results from the realm database
-     * @param yValuesField the name of the field in your data object that represents the y-value
-     * @param xIndexField  the name of the field in your data object that represents the x-index
+     * @param yValuesField the name of the field in your data object that represents the yPx-yValue
+     * @param xIndexField  the name of the field in your data object that represents the xPx-index
      */
     public RealmLineDataSet(RealmResults<T> result, String yValuesField, String xIndexField) {
         super(result, yValuesField, xIndexField);
@@ -142,7 +142,7 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
     }
 
     /**
-     * sets the size (radius) of the circle shpaed value indicators, default
+     * sets the size (radius) of the circle shpaed yValue indicators, default
      * size = 4f
      *
      * @param size

@@ -82,10 +82,10 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
      * Constructor for creating a LineDataSet with realm data.
      *
      * @param result     the queried results from the realm database
-     * @param highField  the name of the field in your data object that represents the "high" value
-     * @param lowField   the name of the field in your data object that represents the "low" value
-     * @param openField  the name of the field in your data object that represents the "open" value
-     * @param closeField the name of the field in your data object that represents the "close" value
+     * @param highField  the name of the field in your data object that represents the "high" yValue
+     * @param lowField   the name of the field in your data object that represents the "low" yValue
+     * @param openField  the name of the field in your data object that represents the "open" yValue
+     * @param closeField the name of the field in your data object that represents the "close" yValue
      */
     public RealmCandleDataSet(RealmResults<T> result, String highField, String lowField, String openField, String closeField) {
         super(result, null);
@@ -102,11 +102,11 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
      * Constructor for creating a LineDataSet with realm data.
      *
      * @param result      the queried results from the realm database
-     * @param highField   the name of the field in your data object that represents the "high" value
-     * @param lowField    the name of the field in your data object that represents the "low" value
-     * @param openField   the name of the field in your data object that represents the "open" value
-     * @param closeField  the name of the field in your data object that represents the "close" value
-     * @param xIndexField the name of the field in your data object that represents the x-index
+     * @param highField   the name of the field in your data object that represents the "high" yValue
+     * @param lowField    the name of the field in your data object that represents the "low" yValue
+     * @param openField   the name of the field in your data object that represents the "open" yValue
+     * @param closeField  the name of the field in your data object that represents the "close" yValue
+     * @param xIndexField the name of the field in your data object that represents the xPx-index
      */
     public RealmCandleDataSet(RealmResults<T> result, String highField, String lowField, String openField, String closeField, String xIndexField) {
         super(result, null, xIndexField);

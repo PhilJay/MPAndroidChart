@@ -32,7 +32,7 @@ public class RealmRadarDataSet<T extends RealmObject> extends RealmLineRadarData
      * Constructor for creating a RadarDataSet with realm data.
      *
      * @param result       the queried results from the realm database
-     * @param yValuesField the name of the field in your data object that represents the y-value
+     * @param yValuesField the name of the field in your data object that represents the yPx-yValue
      */
     public RealmRadarDataSet(RealmResults<T> result, String yValuesField) {
         super(result, yValuesField);
@@ -45,8 +45,8 @@ public class RealmRadarDataSet<T extends RealmObject> extends RealmLineRadarData
      * Constructor for creating a RadarDataSet with realm data.
      *
      * @param result       the queried results from the realm database
-     * @param yValuesField the name of the field in your data object that represents the y-value
-     * @param xIndexField  the name of the field in your data object that represents the x-index
+     * @param yValuesField the name of the field in your data object that represents the yPx-yValue
+     * @param xIndexField  the name of the field in your data object that represents the xPx-index
      */
     public RealmRadarDataSet(RealmResults<T> result, String yValuesField, String xIndexField) {
         super(result, yValuesField, xIndexField);

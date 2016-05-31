@@ -12,7 +12,7 @@ import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 public interface FillFormatter {
 
     /**
-     * Returns the vertical (y-axis) position where the filled-line of the
+     * Returns the vertical (yPx-axis) position where the filled-line of the
      * LineDataSet should end.
      * 
      * @param dataSet the ILineDataSet that is currently drawn

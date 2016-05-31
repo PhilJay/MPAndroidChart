@@ -3,36 +3,38 @@ package com.github.mikephil.charting.utils;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 
 /**
- * Class that encapsulates information of a value that has been
+ * Class that encapsulates information of a yValue that has been
  * selected/highlighted and its DataSet index. The SelectionDetail objects give
- * information about the value at the selected index and the DataSet it belongs
+ * information about the yValue at the selected index and the DataSet it belongs
  * to. Needed only for highlighting onTouch().
  *
  * @author Philipp Jahoda
  */
 public class SelectionDetail {
 
-    public float y;
-    public float x;
-    public float value;
+    public float yPx;
+    public float xPx;
+    public float yValue;
+    public float xValue;
     public int dataIndex;
     public int dataSetIndex;
     public IDataSet dataSet;
 
-    public SelectionDetail(float x, float y, float value, int dataIndex, int dataSetIndex, IDataSet set) {
-        this.x = x;
-        this.y = y;
-        this.value = value;
+    public SelectionDetail(float xPx, float yPx, float xValue, float yValue, int dataIndex, int dataSetIndex, IDataSet set) {
+        this.xPx = xPx;
+        this.yPx = yPx;
+        this.xValue = xValue;
+        this.yValue = yValue;
         this.dataIndex = dataIndex;
         this.dataSetIndex = dataSetIndex;
         this.dataSet = set;
     }
 
-    public SelectionDetail(float x, float y, float value, int dataSetIndex, IDataSet set) {
-        this(x, y, value, 0, dataSetIndex, set);
+    public SelectionDetail(float xPx, float yPx, float xValue, float yValue, int dataSetIndex, IDataSet set) {
+        this(xPx, yPx, xValue, yValue, 0, dataSetIndex, set);
     }
 
-    public SelectionDetail(float value, int dataSetIndex, IDataSet set) {
-        this(Float.NaN, value, 0, dataSetIndex, set);
+    public SelectionDetail(float xValue, float yValue, int dataSetIndex, IDataSet set) {
+        this(Float.NaN, Float.NaN, xValue, yValue, 0, dataSetIndex, set);
     }
 }

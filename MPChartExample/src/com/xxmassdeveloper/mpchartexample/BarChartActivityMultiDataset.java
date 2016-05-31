@@ -62,7 +62,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
 
 //        mChart.setDrawBorders(true);
         
-        // scaling can now only be done on x- and y-axis separately
+        // scaling can now only be done on xPx- and yPx-axis separately
         mChart.setPinchZoom(false);
 
         mChart.setDrawBarShadow(false);

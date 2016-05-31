@@ -24,7 +24,7 @@ public class HorizontalBarBuffer extends BarBuffer {
 
             BarEntry e = data.getEntryForIndex(i);
 
-            // calculate the x-position, depending on datasetcount
+            // calculate the xPx-position, depending on datasetcount
             float x = e.getX() + e.getX() * dataSetOffset + mDataSetIndex
                     + mGroupSpace * e.getX() + groupSpaceHalf;
             float y = e.getY();

@@ -11,6 +11,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.CandleDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -327,7 +328,7 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
                  dataSetIndex++) {
 
                 float x = high.getX(); // get the
-                // x-position
+                // xPx-position
 
                 ICandleDataSet set = mChart.getCandleData().getDataSetByIndex(dataSetIndex);
 
@@ -343,14 +344,10 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
                 float highValue = e.getHigh() * mAnimator.getPhaseY();
                 float y = (lowValue + highValue) / 2f;
 
-                float[] pts = new float[]{
-                        x, y
-                };
-
-                mChart.getTransformer(set.getAxisDependency()).pointValuesToPixel(pts);
+                PointD px = mChart.getTransformer(set.getAxisDependency()).getPixelsForValues(x, y);
 
                 // draw the lines
-                drawHighlightLines(c, pts, set);
+                drawHighlightLines(c, (float) px.x, (float) px.y, set);
             }
         }
     }

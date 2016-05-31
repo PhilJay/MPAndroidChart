@@ -62,7 +62,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     private int mSkipWebLineCount = 0;
 
     /**
-     * the object reprsenting the y-axis labels
+     * the object reprsenting the yPx-axis labels
      */
     private YAxis mYAxis;
 
@@ -100,7 +100,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     protected void calcMinMax() {
         super.calcMinMax();
 
-        // calculate / set x-axis range
+        // calculate / set xPx-axis range
         mXAxis.mAxisMaximum = mData.getXVals().size() - 1;
         mXAxis.mAxisRange = Math.abs(mXAxis.mAxisMaximum - mXAxis.mAxisMinimum);
 
@@ -210,7 +210,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     }
 
     /**
-     * Returns the object that represents all y-labels of the RadarChart.
+     * Returns the object that represents all yPx-labels of the RadarChart.
      *
      * @return
      */
@@ -246,7 +246,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     }
 
     /**
-     * Sets the transparency (alpha) value for all web lines, default: 150, 255
+     * Sets the transparency (alpha) yValue for all web lines, default: 150, 255
      * = 100% opaque, 0 = 100% transparent
      *
      * @param alpha
@@ -256,7 +256,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     }
 
     /**
-     * Returns the alpha value for all web lines.
+     * Returns the alpha yValue for all web lines.
      *
      * @return
      */
@@ -343,21 +343,21 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     }
 
     /**
-     * Returns the maximum value this chart can display on it's y-axis.
+     * Returns the maximum yValue this chart can display on it's yPx-axis.
      */
     public float getYChartMax() {
         return mYAxis.mAxisMaximum;
     }
 
     /**
-     * Returns the minimum value this chart can display on it's y-axis.
+     * Returns the minimum yValue this chart can display on it's yPx-axis.
      */
     public float getYChartMin() {
         return mYAxis.mAxisMinimum;
     }
 
     /**
-     * Returns the range of y-values this chart can display.
+     * Returns the range of yPx-values this chart can display.
      *
      * @return
      */

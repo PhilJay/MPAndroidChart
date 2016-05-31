@@ -43,7 +43,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 			float[] pts = new float[2];
 			pts[1] = y;
 
-			// take any transformer to determine the x-axis value
+			// take any transformer to determine the xPx-axis yValue
 			mChart.getTransformer(set.getAxisDependency()).pixelsToValue(pts);
 
 			return getStackedHighlight(selectionDetail,
@@ -54,7 +54,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 
 		return new Highlight(
 				xVal,
-				selectionDetail.value,
+				selectionDetail.yValue,
 				selectionDetail.dataIndex,
 				selectionDetail.dataSetIndex,
 				-1);
@@ -99,14 +99,14 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 
 		if (yValue == Double.NaN) return null;
 
-		return new SelectionDetail(
+		return new SelectionDetail(0f,
 				yValue,
 				dataSetIndex,
 				dataSet);
 	}
 
 	/**
-	 * This method creates the Highlight object that also indicates which value of a stacked BarEntry has been selected.
+	 * This method creates the Highlight object that also indicates which yValue of a stacked BarEntry has been selected.
 	 *
 	 * @param selectionDetail the selection detail to work with looking for stacked values
 	 * @param set
@@ -149,7 +149,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 	}
 
 	/**
-	 * Returns the index of the closest value inside the values array / ranges (stacked barchart) to the value given as
+	 * Returns the index of the closest yValue inside the values array / ranges (stacked barchart) to the yValue given as
 	 * a parameter.
 	 *
 	 * @param ranges
@@ -182,7 +182,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 		// int index = 0;
 		// float remainder = e.getNegativeSum();
 		//
-		// while (index < vals.length - 1 && value > vals[index] + remainder) {
+		// while (index < vals.length - 1 && yValue > vals[index] + remainder) {
 		// remainder += vals[index];
 		// index++;
 		// }
@@ -191,7 +191,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 	}
 
 	/**
-	 * Returns the base x-value to the corresponding x-touch value in pixels.
+	 * Returns the base xPx-yValue to the corresponding xPx-touch yValue in pixels.
 	 * 
 	 * @param x
 	 * @return
@@ -202,7 +202,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 		float[] pts = new float[2];
 		pts[0] = x;
 
-		// take any transformer to determine the x-axis value
+		// take any transformer to determine the xPx-axis yValue
 		mChart.getTransformer(YAxis.AxisDependency.LEFT).pixelsToValue(pts);
 		float xVal = pts[0];
 

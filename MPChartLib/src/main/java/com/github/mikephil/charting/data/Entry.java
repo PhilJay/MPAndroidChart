@@ -7,16 +7,16 @@ import android.os.Parcelable;
 
 /**
  * Class representing one entry in the chart. Might contain multiple values.
- * Might only contain a single value depending on the used constructor.
+ * Might only contain a single yValue depending on the used constructor.
  * 
  * @author Philipp Jahoda
  */
 public class Entry implements Parcelable {
 
-    /** the y value */
+    /** the yPx yValue */
     private float y = 0f;
 
-    /** the x value */
+    /** the xPx yValue */
     private float x = 0f;
 
     /** optional spot for additional data this Entry represents */
@@ -25,8 +25,8 @@ public class Entry implements Parcelable {
     /**
      * A Entry represents one single entry in the chart.
      *
-     * @param x the x value
-     * @param y the y value (the actual value of the entry)
+     * @param x the xPx yValue
+     * @param y the yPx yValue (the actual yValue of the entry)
      */
     public Entry(float x, float y) {
         this.y = y;
@@ -36,8 +36,8 @@ public class Entry implements Parcelable {
     /**
      * A Entry represents one single entry in the chart.
      *
-     * @param x the x value
-     * @param y the y value (the actual value of the entry)
+     * @param x the xPx yValue
+     * @param y the yPx yValue (the actual yValue of the entry)
      * @param data Spot for additional data this Entry represents.
      */
     public Entry(float x, float y, Object data) {
@@ -46,7 +46,7 @@ public class Entry implements Parcelable {
     }
 
     /**
-     * Returns the x-value of this Entry object.
+     * Returns the xPx-yValue of this Entry object.
      * 
      * @return
      */
@@ -55,7 +55,7 @@ public class Entry implements Parcelable {
     }
 
     /**
-     * Sets the x-value of this Entry object.
+     * Sets the xPx-yValue of this Entry object.
      * 
      * @param x
      */
@@ -64,7 +64,7 @@ public class Entry implements Parcelable {
     }
 
     /**
-     * Returns the y value of this Entry.
+     * Returns the yPx yValue of this Entry.
      * 
      * @return
      */
@@ -73,7 +73,7 @@ public class Entry implements Parcelable {
     }
 
     /**
-     * Sets the y-value for the Entry.
+     * Sets the yPx-yValue for the Entry.
      * 
      * @param y
      */
@@ -111,7 +111,7 @@ public class Entry implements Parcelable {
     }
 
     /**
-     * Compares value, xIndex and data of the entries. Returns true if entries
+     * Compares yValue, xIndex and data of the entries. Returns true if entries
      * are equal in those points, false if not. Does not check by hash-code like
      * it's done by the "equals" method.
      * 
@@ -136,7 +136,7 @@ public class Entry implements Parcelable {
     }
 
     /**
-     * returns a string representation of the entry containing x-index and value
+     * returns a string representation of the entry containing xPx-index and yValue
      */
     @Override
     public String toString() {

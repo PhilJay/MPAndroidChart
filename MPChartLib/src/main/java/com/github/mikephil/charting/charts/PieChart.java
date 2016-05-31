@@ -34,7 +34,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     private RectF mCircleBox = new RectF();
 
     /**
-     * flag indicating if the x-labels should be drawn or not
+     * flag indicating if the xPx-labels should be drawn or not
      */
     private boolean mDrawXLabels = true;
 
@@ -256,7 +256,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * calculates the needed angle for a given value
+     * calculates the needed angle for a given yValue
      *
      * @param value
      * @return
@@ -266,7 +266,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * calculates the needed angle for a given value
+     * calculates the needed angle for a given yValue
      *
      * @param value
      * @param yValueSum
@@ -302,7 +302,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * Returns the index of the DataSet this x-index belongs to.
+     * Returns the index of the DataSet this xPx-index belongs to.
      *
      * @param xIndex
      * @return
@@ -550,7 +550,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     /**
      * Sets the amount of transparency the transparent circle should have 0 = fully transparent,
      * 255 = fully opaque.
-     * Default value is 100.
+     * Default yValue is 100.
      *
      * @param alpha 0-255
      */
@@ -559,7 +559,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * set this to true to draw the x-value text into the pie slices
+     * set this to true to draw the xPx-yValue text into the pie slices
      *
      * @param enabled
      */
@@ -568,7 +568,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * returns true if drawing x-values is enabled, false if not
+     * returns true if drawing xPx-values is enabled, false if not
      *
      * @return
      */
@@ -588,7 +588,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
     /**
      * If this is enabled, values inside the PieChart are drawn in percent and
-     * not with their original value. Values provided for the ValueFormatter to
+     * not with their original yValue. Values provided for the ValueFormatter to
      * format are then provided in percent.
      *
      * @param enabled

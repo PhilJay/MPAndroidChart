@@ -81,7 +81,7 @@ public class Approximator {
     }
 
     /**
-     * Sets the ratios for x- and y-axis, as well as the ratio of the scale
+     * Sets the ratios for xPx- and yPx-axis, as well as the ratio of the scale
      * levels
      * 
      * @param deltaRatio
@@ -163,7 +163,7 @@ public class Approximator {
      * epsilon (tolerance)
      * 
      * @param entries
-     * @param epsilon as y-value
+     * @param epsilon as yPx-yValue
      * @param start
      * @param end
      */

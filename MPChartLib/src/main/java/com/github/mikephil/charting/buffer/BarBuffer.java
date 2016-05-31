@@ -14,7 +14,7 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
     protected boolean mInverted = false;
 
     /**
-     * interval on the x-axis per group
+     * interval on the xPx-axis per group
      */
     protected float mInterval = 0f;
 
@@ -71,7 +71,7 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
 
             BarEntry e = data.getEntryForIndex(i);
 
-            // calculate the x-position, depending on interval
+            // calculate the xPx-position, depending on interval
             float x = mInterval * i + dataSetSpace;
 
             float y = e.getY();

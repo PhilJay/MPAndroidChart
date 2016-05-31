@@ -93,7 +93,7 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
     }
 
     /**
-     * draws the x-labels on the specified y-position
+     * draws the xPx-labels on the specified yPx-position
      * 
      * @param pos
      */
@@ -229,7 +229,7 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
 
 			String label = l.getLabel();
 
-			// if drawing the limit-value label is enabled
+			// if drawing the limit-yValue label is enabled
 			if (label != null && !label.equals("")) {
 
 				mLimitLinePaint.setStyle(l.getTextStyle());

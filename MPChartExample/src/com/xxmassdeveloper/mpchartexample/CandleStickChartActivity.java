@@ -57,7 +57,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         // drawn
         mChart.setMaxVisibleValueCount(60);
 
-        // scaling can now only be done on x- and y-axis separately
+        // scaling can now only be done on xPx- and yPx-axis separately
         mChart.setPinchZoom(false);
 
         mChart.setDrawGridBackground(false);

@@ -78,12 +78,12 @@ Features
  - Dragging / Panning (with touch-gesture)
  - Combined-Charts (line-, bar-, scatter-, candle-data)
  - Dual (separate) Axes
- - Customizable Axes (both x- and y-axis)
+ - Customizable Axes (both xPx- and yPx-axis)
  - Highlighting values (with customizable popup-views)
  - Save chart to SD-Card (as image, or as .txt file)
  - Predefined color templates
  - Legends (generated automatically, customizable)
- - Animations (build up animations, on both x- and y-axis)
+ - Animations (build up animations, on both xPx- and yPx-axis)
  - Limit lines (providing additional information, maximums, ...)
  - Fully customizable (paints, typefaces, legends, colors, background, gestures, dashed lines, ...)
  - Smooth zooming and scrolling for up to 30.000 data points in Line- and BarChart
@@ -188,7 +188,7 @@ Chart types
 
 ![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/candlestickchart.png)
 
- - **BubbleChart** (area covered by bubbles indicates the value)
+ - **BubbleChart** (area covered by bubbles indicates the yValue)
 
 ![alt tag](https://raw.github.com/PhilJay/MPAndroidChart/master/screenshots/bubblechart.png)
 

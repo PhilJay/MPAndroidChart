@@ -50,7 +50,7 @@ public class RealmDatabaseActivityBar extends RealmBaseActivity {
         RealmResults<RealmDemoData> result = mRealm.allObjects(RealmDemoData.class);
 
         //RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "stackValues", "xIndex"); // normal entries
-        RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "value", "xIndex"); // stacked entries
+        RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "yValue", "xIndex"); // stacked entries
         set.setColors(new int[] {ColorTemplate.rgb("#FF5722"), ColorTemplate.rgb("#03A9F4")});
         set.setLabel("Realm BarDataSet");
 

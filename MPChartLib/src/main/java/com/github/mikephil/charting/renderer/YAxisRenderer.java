@@ -52,7 +52,7 @@ public class YAxisRenderer extends AxisRenderer {
             return;
         }
 
-        // Find out how much spacing (in y value space) between axis values
+        // Find out how much spacing (in yPx yValue space) between axis values
         double rawInterval = range / labelCount;
         double interval = Utils.roundToNextSignificant(rawInterval);
 
@@ -122,7 +122,7 @@ public class YAxisRenderer extends AxisRenderer {
 
                 for (f = first, i = 0; i < n; f += interval, ++i) {
 
-                    if (f == 0.0) // Fix for negative zero case (Where value == -0.0, and 0.0 == -0.0)
+                    if (f == 0.0) // Fix for negative zero case (Where yValue == -0.0, and 0.0 == -0.0)
                         f = 0.0;
 
                     mYAxis.mEntries[i] = (float) f;
@@ -139,7 +139,7 @@ public class YAxisRenderer extends AxisRenderer {
     }
 
     /**
-     * draws the y-axis labels to the screen
+     * draws the yPx-axis labels to the screen
      */
     @Override
     public void renderAxisLabels(Canvas c) {
@@ -150,9 +150,9 @@ public class YAxisRenderer extends AxisRenderer {
         float[] positions = new float[mYAxis.mEntryCount * 2];
 
         for (int i = 0; i < positions.length; i += 2) {
-            // only fill y values, x values are not needed since the y-labels
+            // only fill yPx values, xPx values are not needed since the yPx-labels
             // are
-            // static on the x-axis
+            // static on the xPx-axis
             positions[i + 1] = mYAxis.mEntries[i / 2];
         }
 
@@ -213,7 +213,7 @@ public class YAxisRenderer extends AxisRenderer {
     }
 
     /**
-     * draws the y-labels on the specified x-position
+     * draws the yPx-labels on the specified xPx-position
      *
      * @param fixedPosition
      * @param positions
@@ -339,7 +339,7 @@ public class YAxisRenderer extends AxisRenderer {
 
             String label = l.getLabel();
 
-            // if drawing the limit-value label is enabled
+            // if drawing the limit-yValue label is enabled
             if (label != null && !label.equals("")) {
 
                 mLimitLinePaint.setStyle(l.getTextStyle());

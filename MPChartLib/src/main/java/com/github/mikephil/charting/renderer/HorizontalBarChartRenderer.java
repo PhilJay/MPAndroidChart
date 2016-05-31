@@ -85,7 +85,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                         buffer.buffer[j + 3], mShadowPaint);
             }
 
-            // Set the color for the currently drawn value. If the index
+            // Set the color for the currently drawn yValue. If the index
             // is out of bounds, reuse colors.
             mRenderPaint.setColor(dataSet.getColor(j / 4));
             c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
@@ -147,7 +147,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                         float val = e.getY();
                         String formattedValue = formatter.getFormattedValue(val, e, i, mViewPortHandler);
 
-                        // calculate the correct offset depending on the draw position of the value
+                        // calculate the correct offset depending on the draw position of the yValue
                         float valueTextWidth = Utils.calcTextWidth(mValuePaint, formattedValue);
                         posOffset = (drawValueAboveBar ? valueOffsetPlus : -(valueTextWidth + valueOffsetPlus));
                         negOffset = (drawValueAboveBar ? -(valueTextWidth + valueOffsetPlus) : valueOffsetPlus);
@@ -161,7 +161,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                                 valuePoints[j + 1] + halfTextHeight, dataSet.getValueTextColor(j / 2));
                     }
 
-                    // if each value of a potential stack should be drawn
+                    // if each yValue of a potential stack should be drawn
                 } else {
 
                     for (int j = 0; j < (valuePoints.length - 1) * mAnimator.getPhaseX(); j += 2) {
@@ -187,7 +187,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                             float val = e.getY();
                             String formattedValue = formatter.getFormattedValue(val, e, i, mViewPortHandler);
 
-                            // calculate the correct offset depending on the draw position of the value
+                            // calculate the correct offset depending on the draw position of the yValue
                             float valueTextWidth = Utils.calcTextWidth(mValuePaint, formattedValue);
                             posOffset = (drawValueAboveBar ? valueOffsetPlus : -(valueTextWidth + valueOffsetPlus));
                             negOffset = (drawValueAboveBar ? -(valueTextWidth + valueOffsetPlus) : valueOffsetPlus);
@@ -231,7 +231,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                                 float val = vals[k / 2];
                                 String formattedValue = formatter.getFormattedValue(val, e, i, mViewPortHandler);
 
-                                // calculate the correct offset depending on the draw position of the value
+                                // calculate the correct offset depending on the draw position of the yValue
                                 float valueTextWidth = Utils.calcTextWidth(mValuePaint, formattedValue);
                                 posOffset = (drawValueAboveBar ? valueOffsetPlus : -(valueTextWidth + valueOffsetPlus));
                                 negOffset = (drawValueAboveBar ? -(valueTextWidth + valueOffsetPlus) : valueOffsetPlus);

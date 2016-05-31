@@ -80,7 +80,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
                 final double rawCount = yMin / interval;
                 double first = rawCount < 0.0 ? Math.floor(rawCount) * interval : Math.ceil(rawCount) * interval;
 
-                if (first == 0.0) // Fix for IEEE negative zero case (Where value == -0.0, and 0.0 == -0.0)
+                if (first == 0.0) // Fix for IEEE negative zero case (Where yValue == -0.0, and 0.0 == -0.0)
                     first = 0.0;
 
                 double last = Utils.nextUp(Math.floor(yMax / interval) * interval);
@@ -164,7 +164,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
 
         float sliceangle = mChart.getSliceAngle();
 
-        // calculate the factor that is needed for transforming the value to
+        // calculate the factor that is needed for transforming the yValue to
         // pixels
         float factor = mChart.getFactor();
 
