@@ -47,30 +47,6 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
                 -1);
     }
 
-//    @Override
-//    protected float getXForTouch(float x) {
-//
-//        if (!mChart.getBarData().isGrouped()) {
-//            return super.getXForTouch(x);
-//        } else {
-//            return getBase(x);
-//
-//            float baseNoSpace = getBase(x);
-//
-//            int setCount = mChart.getBarData().getDataSetCount();
-//            int xIndex = (int) baseNoSpace / setCount;
-//
-//            int valCount = mChart.getData().getXValCount();
-//
-//            if (xIndex < 0)
-//                xIndex = 0;
-//            else if (xIndex >= valCount)
-//                xIndex = valCount - 1;
-//
-//            return xIndex;
-//        }
-//    }
-
     @Override
     protected SelectionDetail getSelectionDetail(float xVal, float x, float y) {
 

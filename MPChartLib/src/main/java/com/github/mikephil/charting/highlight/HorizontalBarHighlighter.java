@@ -20,7 +20,7 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 
 		BarData barData = mChart.getBarData();
 
-		PointD pos = getValsForTouch(x, y);
+		PointD pos = getValsForTouch(y, x);
 
 		SelectionDetail selectionDetail = getSelectionDetail((float) pos.y, x, y);
 		if (selectionDetail == null)
