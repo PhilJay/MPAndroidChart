@@ -205,7 +205,7 @@ public class HorizontalBarChart extends BarChart {
     public float getLowestVisibleX() {
         PointD pos = getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentLeft(),
 				mViewPortHandler.contentBottom());
-        return (float) Math.min(mXAxis.mAxisMinimum, pos.y);
+        return (float) Math.max(mXAxis.mAxisMinimum, pos.y);
     }
 
     @Override

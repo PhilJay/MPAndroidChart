@@ -242,7 +242,7 @@ public class FileUtils {
                 // process line
                 String[] split = line.split("#");
 
-                entries.add(new BarEntry(Float.parseFloat(split[1]), Integer.parseInt(split[0])));
+                entries.add(new BarEntry(Float.parseFloat(split[1]), Float.parseFloat(split[0])));
 
                 line = reader.readLine();
             }

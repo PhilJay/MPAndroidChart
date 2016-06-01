@@ -1312,7 +1312,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     public float getLowestVisibleX() {
         PointD pos = getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentLeft(),
                 mViewPortHandler.contentBottom());
-        return (float) Math.min(mXAxis.mAxisMinimum, pos.x);
+        return (float) Math.max(mXAxis.mAxisMinimum, pos.x);
     }
 
     /**
