@@ -16,12 +16,6 @@ public abstract class Renderer {
      */
     protected ViewPortHandler mViewPortHandler;
 
-    /** the minimum yValue on the xPx-axis that should be plotted */
-    protected float mMinX = 0;
-
-    /** the maximum yValue on the xPx-axis that should be plotted */
-    protected float mMaxX = 0;
-
     public Renderer(ViewPortHandler viewPortHandler) {
         this.mViewPortHandler = viewPortHandler;
     }
@@ -41,23 +35,5 @@ public abstract class Renderer {
             return false;
         else
             return true;
-    }
-
-    /**
-     * Calculates the minimum and maximum xPx-yValue the chart can currently
-     * display (with the given zoom level). -> mMinX, mMaxX
-     * 
-     * @param dataProvider
-     * @param xAxisModulus
-     */
-    public void calcXBounds(BarLineScatterCandleBubbleDataProvider dataProvider, int xAxisModulus) {
-        
-        float low = dataProvider.getLowestVisibleX();
-        float high = dataProvider.getHighestVisibleX();
-        
-        int subLow = (low % xAxisModulus == 0) ? xAxisModulus : 0;
-        
-        mMinX = Math.max((low / xAxisModulus) * (xAxisModulus) - subLow, 0);
-        mMaxX = Math.min((high / xAxisModulus) * (xAxisModulus) + xAxisModulus, dataProvider.getXChartMax());
     }
 }

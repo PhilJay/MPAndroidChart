@@ -199,9 +199,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         long starttime = System.currentTimeMillis();
         calcModulus();
 
-        mXAxisRenderer.calcXBounds(this, mXAxis.mAxisLabelModulus);
-        mRenderer.calcXBounds(this, mXAxis.mAxisLabelModulus);
-
         // execute all drawing commands
         drawGridBackground(canvas);
 

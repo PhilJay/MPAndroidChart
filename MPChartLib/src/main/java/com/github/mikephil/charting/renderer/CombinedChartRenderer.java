@@ -134,14 +134,7 @@ public class CombinedChartRenderer extends DataRenderer {
             }
 
             renderer.drawHighlighted(c, dataIndices.toArray(new Highlight[dataIndices.size()]));
-
         }
-    }
-
-    @Override
-    public void calcXBounds(BarLineScatterCandleBubbleDataProvider chart, int xAxisModulus) {
-        for (DataRenderer renderer : mRenderers)
-            renderer.calcXBounds(chart, xAxisModulus);
     }
 
     /**
