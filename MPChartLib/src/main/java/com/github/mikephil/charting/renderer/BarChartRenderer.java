@@ -167,33 +167,6 @@ public class BarChartRenderer extends DataRenderer {
         }
     }
 
-    protected void prepareBarHighlight(float y1, float y2, float interval, int entryIndex, int dataSetIndex, int
-            dataSetCount, float barSpace, float groupSpace, Transformer trans) {
-
-        float barWidth = interval / dataSetCount;
-
-        float groupSpaceWidth = dataSetCount <= 1 ? 0 : barWidth * groupSpace;
-        float newInterval = (interval - groupSpaceWidth);
-        float newBarWidth = newInterval / dataSetCount;
-
-        float barSpaceWidth = newBarWidth * barSpace;
-        float barSpaceWidthHalf = barSpaceWidth / 2f;
-
-        float groupSpaceWidthHalf = groupSpaceWidth / 2f;
-        float dataSetSpace = dataSetCount <= 1 ? 0 : (newInterval / dataSetCount) * dataSetIndex;
-
-        float x = interval * entryIndex + dataSetSpace;
-
-        float left = x + groupSpaceWidthHalf + barSpaceWidthHalf;
-        float right = left + newBarWidth - barSpaceWidth;
-        float top = y1;
-        float bottom = y2;
-
-        mBarRect.set(left, top, right, bottom);
-
-        trans.rectValueToPixel(mBarRect, mAnimator.getPhaseY());
-    }
-
     protected void prepareBarHighlight(float x, float y1, float y2, float barWidthHalf, Transformer trans) {
 
         float left = x - barWidthHalf;
@@ -437,14 +410,6 @@ public class BarChartRenderer extends DataRenderer {
             }
         }
 
-    }
-
-    public float[] getTransformedValues(Transformer trans, IBarDataSet data,
-                                        int dataSetIndex) {
-//        return trans.generateTransformedValuesBarChart(data, dataSetIndex,
-//                mChart.getBarData(),
-//                mAnimator.getPhaseY());
-        return null;
     }
 
     protected boolean passesCheck() {

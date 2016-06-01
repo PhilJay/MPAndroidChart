@@ -234,6 +234,11 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
 
+        for (int i = 0; i < count; i++) {
+            float val = (float) (Math.random() * range);
+            yVals1.add(new BarEntry(i, val));
+        }
+
         BarDataSet set1;
 
         if (mChart.getData() != null &&
