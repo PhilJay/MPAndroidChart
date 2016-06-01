@@ -133,7 +133,7 @@ public class XAxisRenderer extends AxisRenderer {
         if (mXAxis.getPosition() == XAxisPosition.TOP) {
 
             drawLabels(c, mViewPortHandler.contentTop() - yoffset,
-                    new PointF(0.5f, 1.0f));
+                    new PointF(0.5f, 0.9f));
 
         } else if (mXAxis.getPosition() == XAxisPosition.TOP_INSIDE) {
 
