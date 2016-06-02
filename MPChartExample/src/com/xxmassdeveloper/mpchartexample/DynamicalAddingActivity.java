@@ -36,7 +36,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
         mChart.setOnChartValueSelectedListener(this);
         mChart.setDrawGridBackground(false);
         mChart.setDescription("");
-        
+
         // add an empty data object
         mChart.setData(new LineData());
 //        mChart.getXAxis().setDrawLabels(false);
@@ -50,42 +50,39 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
     private void addEntry() {
 
         LineData data = mChart.getData();
-        
-        if(data != null) {
 
-            ILineDataSet set = data.getDataSetByIndex(0);
-            // set.addEntry(...); // can be called as well
+        ILineDataSet set = data.getDataSetByIndex(0);
+        // set.addEntry(...); // can be called as well
 
-            if (set == null) {
-                set = createSet();
-                data.addDataSet(set);
-            }
+        if (set == null) {
+            set = createSet();
+            data.addDataSet(set);
+        }
 
-            // add a new xPx-yValue first
-            //data.addXValue(new XAxisValue(set.getEntryCount(), set.getEntryCount() + ""));
-            
-            // choose a random dataSet
-            int randomDataSetIndex = (int) (Math.random() * data.getDataSetCount());
-            
-            data.addEntry(new Entry((float) (Math.random() * 10) + 50f, set.getEntryCount()), randomDataSetIndex);
+        // choose a random dataSet
+        int randomDataSetIndex = (int) (Math.random() * data.getDataSetCount());
+        float yValue = (float) (Math.random() * 10) + 50f;
 
-            // let the chart know it's data has changed
-            mChart.notifyDataSetChanged();
-            
-            mChart.setVisibleXRangeMaximum(6);
-            mChart.setVisibleYRangeMaximum(15, AxisDependency.LEFT);
+        data.addEntry(new Entry(data.getDataSetByIndex(randomDataSetIndex).getEntryCount(), yValue), randomDataSetIndex);
+        data.notifyDataChanged();
+
+        // let the chart know it's data has changed
+        mChart.notifyDataSetChanged();
+
+        mChart.setVisibleXRangeMaximum(6);
+        //mChart.setVisibleYRangeMaximum(15, AxisDependency.LEFT);
 //            
 //            // this automatically refreshes the chart (calls invalidate())
-            mChart.moveViewTo(data.getEntryCount()-7, 50f, AxisDependency.LEFT);
-        }
+        mChart.moveViewTo(data.getEntryCount() - 7, 50f, AxisDependency.LEFT);
+
     }
 
     private void removeLastEntry() {
 
         LineData data = mChart.getData();
-        
-        if(data != null) {
-         
+
+        if (data != null) {
+
             ILineDataSet set = data.getDataSetByIndex(0);
 
             if (set != null) {
@@ -95,7 +92,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
                 data.removeEntry(e, 0);
                 // or remove by index
                 // mData.removeEntry(xIndex, dataSetIndex);
-
+                data.notifyDataChanged();
                 mChart.notifyDataSetChanged();
                 mChart.invalidate();
             }
@@ -105,23 +102,15 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
     private void addDataSet() {
 
         LineData data = mChart.getData();
-        
-        if(data != null) {
+
+        if (data != null) {
 
             int count = (data.getDataSetCount() + 1);
 
-            // create 10 yPx-vals
             ArrayList<Entry> yVals = new ArrayList<Entry>();
-            
-            if(data.getEntryCount() == 0) {
-                // add 10 xPx-entries
-                for (int i = 0; i < 10; i++) {
-                    //data.addXValue(new XAxisValue(i, i + ""));
-                }
-            }
 
             for (int i = 0; i < data.getEntryCount(); i++) {
-                yVals.add(new Entry((float) (Math.random() * 50f) + 50f * count, i));
+                yVals.add(new Entry(i, (float) (Math.random() * 50f) + 50f * count));
             }
 
             LineDataSet set = new LineDataSet(yVals, "DataSet " + count);
@@ -137,21 +126,22 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
             set.setValueTextColor(color);
 
             data.addDataSet(set);
+            data.notifyDataChanged();
             mChart.notifyDataSetChanged();
-            mChart.invalidate();   
+            mChart.invalidate();
         }
     }
 
     private void removeDataSet() {
 
         LineData data = mChart.getData();
-        
-        if(data != null) {
+
+        if (data != null) {
 
             data.removeDataSet(data.getDataSetByIndex(data.getDataSetCount() - 1));
 
             mChart.notifyDataSetChanged();
-            mChart.invalidate();   
+            mChart.invalidate();
         }
     }
 

@@ -121,8 +121,6 @@ public class RealtimeLineChartActivity extends DemoBase implements
         return true;
     }
 
-    private int year = 2015;
-
     private void addEntry() {
 
         LineData data = mChart.getData();
@@ -137,11 +135,8 @@ public class RealtimeLineChartActivity extends DemoBase implements
                 data.addDataSet(set);
             }
 
-            // add a new xPx-yValue first
-//            data.addXValue(new XAxisValue(data.getXValCount() ,mMonths[data.getXValCount() % 12] + " "
-//                    + (year + data.getXValCount() / 12)));
-            data.addEntry(new Entry((float) (Math.random() * 40) + 30f, set.getEntryCount()), 0);
-
+            data.addEntry(new Entry(set.getEntryCount(), (float) (Math.random() * 40) + 30f), 0);
+            data.notifyDataChanged();
 
             // let the chart know it's data has changed
             mChart.notifyDataSetChanged();
@@ -176,13 +171,18 @@ public class RealtimeLineChartActivity extends DemoBase implements
         return set;
     }
 
+    private Thread thread;
+
     private void feedMultiple() {
 
-        new Thread(new Runnable() {
+        if(thread != null)
+            thread.interrupt();
+
+       thread = new Thread(new Runnable() {
 
             @Override
             public void run() {
-                for(int i = 0; i < 500; i++) {
+                for(int i = 0; i < 1000; i++) {
 
                     runOnUiThread(new Runnable() {
 
@@ -193,14 +193,16 @@ public class RealtimeLineChartActivity extends DemoBase implements
                     });
 
                     try {
-                        Thread.sleep(35);
+                        Thread.sleep(25);
                     } catch (InterruptedException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                 }
             }
-        }).start();
+        });
+
+        thread.start();
     }
 
     @Override
@@ -211,5 +213,14 @@ public class RealtimeLineChartActivity extends DemoBase implements
     @Override
     public void onNothingSelected() {
         Log.i("Nothing selected", "Nothing selected.");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if(thread != null) {
+            thread.interrupt();
+        }
     }
 }
