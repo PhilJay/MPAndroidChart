@@ -80,7 +80,6 @@ public class RealtimeLineChartActivity extends DemoBase implements
         xl.setTextColor(Color.WHITE);
         xl.setDrawGridLines(false);
         xl.setAvoidFirstLastClipping(true);
-        xl.setSpaceBetweenLabels(5);
         xl.setEnabled(true);
 
         YAxis leftAxis = mChart.getAxisLeft();

@@ -15,7 +15,7 @@ import java.text.DecimalFormat;
 public class DefaultValueFormatter implements ValueFormatter {
 
     /** decimalformat for formatting */
-    private DecimalFormat mFormat;
+    protected DecimalFormat mFormat;
 
     /**
      * Constructor that specifies to how many digits the yValue should be

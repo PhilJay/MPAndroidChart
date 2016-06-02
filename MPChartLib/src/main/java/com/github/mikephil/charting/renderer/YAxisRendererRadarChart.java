@@ -67,44 +67,33 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
             // no forced count
         } else {
 
-            // if the labels should only show min and max
-            if (mYAxis.isShowOnlyMinMaxEnabled()) {
+            final double rawCount = yMin / interval;
+            double first = rawCount < 0.0 ? Math.floor(rawCount) * interval : Math.ceil(rawCount) * interval;
 
-                mYAxis.mEntryCount = 2;
-                mYAxis.mEntries = new float[2];
-                mYAxis.mEntries[0] = yMin;
-                mYAxis.mEntries[1] = yMax;
+            if (first == 0.0) // Fix for IEEE negative zero case (Where yValue == -0.0, and 0.0 == -0.0)
+                first = 0.0;
 
-            } else {
+            double last = Utils.nextUp(Math.floor(yMax / interval) * interval);
 
-                final double rawCount = yMin / interval;
-                double first = rawCount < 0.0 ? Math.floor(rawCount) * interval : Math.ceil(rawCount) * interval;
+            double f;
+            int i;
+            int n = 0;
+            for (f = first; f <= last; f += interval) {
+                ++n;
+            }
 
-                if (first == 0.0) // Fix for IEEE negative zero case (Where yValue == -0.0, and 0.0 == -0.0)
-                    first = 0.0;
+            if (!mYAxis.isAxisMaxCustom())
+                n += 1;
 
-                double last = Utils.nextUp(Math.floor(yMax / interval) * interval);
+            mYAxis.mEntryCount = n;
 
-                double f;
-                int i;
-                int n = 0;
-                for (f = first; f <= last; f += interval) {
-                    ++n;
-                }
+            if (mYAxis.mEntries.length < n) {
+                // Ensure stops contains at least numStops elements.
+                mYAxis.mEntries = new float[n];
+            }
 
-                if (!mYAxis.isAxisMaxCustom())
-                    n += 1;
-
-                mYAxis.mEntryCount = n;
-
-                if (mYAxis.mEntries.length < n) {
-                    // Ensure stops contains at least numStops elements.
-                    mYAxis.mEntries = new float[n];
-                }
-
-                for (f = first, i = 0; i < n; f += interval, ++i) {
-                    mYAxis.mEntries[i] = (float) f;
-                }
+            for (f = first, i = 0; i < n; f += interval, ++i) {
+                mYAxis.mEntries[i] = (float) f;
             }
         }
 

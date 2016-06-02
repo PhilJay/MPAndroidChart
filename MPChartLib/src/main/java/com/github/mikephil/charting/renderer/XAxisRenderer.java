@@ -24,7 +24,7 @@ public class XAxisRenderer extends AxisRenderer {
     protected XAxis mXAxis;
 
     public XAxisRenderer(ViewPortHandler viewPortHandler, XAxis xAxis, Transformer trans) {
-        super(viewPortHandler, trans);
+        super(viewPortHandler, trans, xAxis);
 
         this.mXAxis = xAxis;
 
@@ -60,28 +60,30 @@ public class XAxisRenderer extends AxisRenderer {
     @Override
     protected void computeAxisValues(float min, float max) {
 
-        int labelCount = mXAxis.getLabelCount();
-        float range = Math.abs(max - min);
+//        int labelCount = mXAxis.getLabelCount();
+//        float range = Math.abs(max - min);
+//
+//        float interval = range / (labelCount - 1);
+//
+//        if (mXAxis.mEntries == null || mXAxis.mEntries.length != labelCount) {
+//            mXAxis.mEntries = new float[labelCount];
+//            mXAxis.mEntryCount = labelCount;
+//        }
+//
+//        mXAxis.mEntries[0] = min;
+//
+//        for (int i = 1; i < labelCount; i++) {
+//            mXAxis.mEntries[i] = min + interval * (float) i;
+//        }
+//
+//        // set decimals
+//        if (interval < 1) {
+//            mXAxis.mDecimals = (int) Math.ceil(-Math.log10(interval));
+//        } else {
+//            mXAxis.mDecimals = 0;
+//        }
 
-        float interval = range / (labelCount - 1);
-
-        if (mXAxis.mEntries == null || mXAxis.mEntries.length != labelCount) {
-            mXAxis.mEntries = new float[labelCount];
-            mXAxis.mEntryCount = labelCount;
-        }
-
-        mXAxis.mEntries[0] = min;
-
-        for (int i = 1; i < labelCount; i++) {
-            mXAxis.mEntries[i] = min + interval * (float) i;
-        }
-
-        // set decimals
-        if (interval < 1) {
-            mXAxis.mDecimals = (int) Math.ceil(-Math.log10(interval));
-        } else {
-            mXAxis.mDecimals = 0;
-        }
+        super.computeAxisValues(min, max);
 
         computeSize();
     }
@@ -103,18 +105,10 @@ public class XAxisRenderer extends AxisRenderer {
                 labelHeight,
                 mXAxis.getLabelRotationAngle());
 
-        StringBuilder space = new StringBuilder();
-        int xValSpaceChars = mXAxis.getSpaceBetweenLabels();
 
-        for (int i = 0; i < xValSpaceChars; i++) {
-            space.append('h');
-        }
-
-        final FSize spaceSize = Utils.calcTextSize(mAxisLabelPaint, space.toString());
-
-        mXAxis.mLabelWidth = Math.round(labelWidth + spaceSize.width);
+        mXAxis.mLabelWidth = Math.round(labelWidth);
         mXAxis.mLabelHeight = Math.round(labelHeight);
-        mXAxis.mLabelRotatedWidth = Math.round(labelRotatedSize.width + spaceSize.width);
+        mXAxis.mLabelRotatedWidth = Math.round(labelRotatedSize.width);
         mXAxis.mLabelRotatedHeight = Math.round(labelRotatedSize.height);
     }
 
@@ -194,7 +188,7 @@ public class XAxisRenderer extends AxisRenderer {
 
         final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
 
-        float[] positions = new float[mXAxis.mEntries.length * 2];
+        float[] positions = new float[mXAxis.mEntryCount * 2];
 
         for (int i = 0; i < positions.length; i += 2) {
             // only fill xPx values
@@ -245,7 +239,7 @@ public class XAxisRenderer extends AxisRenderer {
         if (!mXAxis.isDrawGridLinesEnabled() || !mXAxis.isEnabled())
             return;
 
-        float[] positions = new float[mXAxis.mEntries.length * 2];
+        float[] positions = new float[mXAxis.mEntryCount * 2];
 
         for (int i = 0; i < positions.length; i += 2) {
             // only fill xPx values

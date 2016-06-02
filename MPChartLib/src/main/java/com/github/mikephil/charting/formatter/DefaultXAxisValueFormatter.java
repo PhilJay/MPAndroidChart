@@ -9,9 +9,11 @@ import java.text.DecimalFormat;
  * Default formatter class for adjusting xPx-values before drawing them.
  * This simply returns the original yValue unmodified.
  */
-public class DefaultXAxisValueFormatter implements XAxisValueFormatter {
+public class DefaultXAxisValueFormatter extends DefaultAxisValueFormatter implements XAxisValueFormatter {
 
-    private DecimalFormat mFormat = new DecimalFormat("###,###,###,##0.0");
+    public DefaultXAxisValueFormatter(int digits) {
+        super(digits);
+    }
 
     @Override
     public String getXValue(float xValue, float xRange, float xPosition, ViewPortHandler viewPortHandler) {

@@ -6,8 +6,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.Transformer;
+import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**
@@ -16,6 +18,8 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
  * @author Philipp Jahoda
  */
 public abstract class AxisRenderer extends Renderer {
+
+    private AxisBase mAxis;
 
     protected Transformer mTrans;
 
@@ -31,10 +35,11 @@ public abstract class AxisRenderer extends Renderer {
 	/** paint used for the limit lines */
 	protected Paint mLimitLinePaint;
 
-	public AxisRenderer(ViewPortHandler viewPortHandler, Transformer trans) {
+	public AxisRenderer(ViewPortHandler viewPortHandler, Transformer trans, AxisBase axis) {
         super(viewPortHandler);
 
         this.mTrans = trans;
+        this.mAxis = axis;
 
         mAxisLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
@@ -125,7 +130,95 @@ public abstract class AxisRenderer extends Renderer {
      *
      * @return
      */
-    protected abstract void computeAxisValues(float min, float max);
+    protected void computeAxisValues(float min, float max) {
+
+        float yMin = min;
+        float yMax = max;
+
+        int labelCount = mAxis.getLabelCount();
+        double range = Math.abs(yMax - yMin);
+
+        if (labelCount == 0 || range <= 0) {
+            mAxis.mEntries = new float[]{};
+            mAxis.mEntryCount = 0;
+            return;
+        }
+
+        // Find out how much spacing (in yPx yValue space) between axis values
+        double rawInterval = range / labelCount;
+        double interval = Utils.roundToNextSignificant(rawInterval);
+
+        // If granularity is enabled, then do not allow the interval to go below specified granularity.
+        // This is used to avoid repeated values when rounding values for display.
+        if (mAxis.isGranularityEnabled())
+            interval = interval < mAxis.getGranularity() ? mAxis.getGranularity() : interval;
+
+        // Normalize interval
+        double intervalMagnitude = Utils.roundToNextSignificant(Math.pow(10, (int) Math.log10(interval)));
+        int intervalSigDigit = (int) (interval / intervalMagnitude);
+        if (intervalSigDigit > 5) {
+            // Use one order of magnitude higher, to avoid intervals like 0.9 or
+            // 90
+            interval = Math.floor(10 * intervalMagnitude);
+        }
+
+        // force label count
+        if (mAxis.isForceLabelsEnabled()) {
+
+            float step = (float) range / (float) (labelCount - 1);
+            mAxis.mEntryCount = labelCount;
+
+            if (mAxis.mEntries.length < labelCount) {
+                // Ensure stops contains at least numStops elements.
+                mAxis.mEntries = new float[labelCount];
+            }
+
+            float v = min;
+
+            for (int i = 0; i < labelCount; i++) {
+                mAxis.mEntries[i] = v;
+                v += step;
+            }
+
+            // no forced count
+        } else {
+
+
+            double first = interval == 0.0 ? 0.0 : Math.ceil(yMin / interval) * interval;
+            double last = interval == 0.0 ? 0.0 : Utils.nextUp(Math.floor(yMax / interval) * interval);
+
+            double f;
+            int i;
+            int n = 0;
+            if (interval != 0.0) {
+                for (f = first; f <= last; f += interval) {
+                    ++n;
+                }
+            }
+
+            mAxis.mEntryCount = n;
+
+            if (mAxis.mEntries.length < n) {
+                // Ensure stops contains at least numStops elements.
+                mAxis.mEntries = new float[n];
+            }
+
+            for (f = first, i = 0; i < n; f += interval, ++i) {
+
+                if (f == 0.0) // Fix for negative zero case (Where yValue == -0.0, and 0.0 == -0.0)
+                    f = 0.0;
+
+                mAxis.mEntries[i] = (float) f;
+            }
+        }
+
+        // set decimals
+        if (interval < 1) {
+            mAxis.mDecimals = (int) Math.ceil(-Math.log10(interval));
+        } else {
+            mAxis.mDecimals = 0;
+        }
+    }
 
     /**
      * Draws the axis labels to the screen.

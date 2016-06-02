@@ -101,7 +101,6 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
         xAxis.setTextSize(12f);
         xAxis.setTextColor(Color.WHITE);
         xAxis.setDrawAxisLine(false);
-        xAxis.setSpaceBetweenLabels(1);
 
         // custom xPx-axis min / max
         xAxis.setAxisMinValue(5000);

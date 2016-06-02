@@ -56,7 +56,6 @@ public class BarChartPositiveNegative extends DemoBase {
         xAxis.setTypeface(mTf);
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(false);
-        xAxis.setSpaceBetweenLabels(2);
         xAxis.setTextColor(Color.LTGRAY);
         xAxis.setTextSize(13f);
 

@@ -9,27 +9,10 @@ import java.text.DecimalFormat;
  * Default formatter used for formatting labels of the YAxis. Uses a DecimalFormat with
  * pre-calculated number of digits (depending on max and min yValue).
  */
-public class DefaultYAxisValueFormatter implements YAxisValueFormatter {
+public class DefaultYAxisValueFormatter extends DefaultAxisValueFormatter implements YAxisValueFormatter {
 
-    /** decimalformat for formatting */
-    private DecimalFormat mFormat;
-
-    /**
-     * Constructor that specifies to how many digits the yValue should be
-     * formatted.
-     *
-     * @param digits
-     */
     public DefaultYAxisValueFormatter(int digits) {
-
-        StringBuffer b = new StringBuffer();
-        for (int i = 0; i < digits; i++) {
-            if (i == 0)
-                b.append(".");
-            b.append("0");
-        }
-
-        mFormat = new DecimalFormat("###,###,###,##0" + b.toString());
+        super(digits);
     }
 
     @Override

@@ -32,19 +32,9 @@ public class YAxis extends AxisBase {
     private boolean mDrawTopYLabelEntry = true;
 
     /**
-     * if true, the yPx-labels show only the minimum and maximum yValue
-     */
-    protected boolean mShowOnlyMinMax = false;
-
-    /**
      * flag that indicates if the axis is inverted or not
      */
     protected boolean mInverted = false;
-
-    /**
-     * if true, the set number of yPx-labels will be forced
-     */
-    protected boolean mForceLabels = false;
 
     /**
      * flag that indicates if the zero-line should be drawn regardless of other grid lines
@@ -101,19 +91,6 @@ public class YAxis extends AxisBase {
      * default: Float.POSITIVE_INFINITY (no maximum specified)
      */
     protected float mMaxWidth = Float.POSITIVE_INFINITY;
-
-    /**
-     * When true, axis labels are controlled by the `granularity` property.
-     * When false, axis values could possibly be repeated.
-     * This could happen if two adjacent axis values are rounded to same yValue.
-     * If using granularity this could be avoided by having fewer axis values visible.
-     */
-    protected boolean mGranularityEnabled = false;
-
-    /**
-     * the minimum interval between axis values
-     */
-    protected float mGranularity = 1.0f;
 
     /**
      * Enum that specifies the axis a DataSet should be plotted against, either LEFT or RIGHT.
@@ -175,42 +152,6 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * @return true if granularity is enabled
-     */
-    public boolean isGranularityEnabled() {
-        return mGranularityEnabled;
-    }
-
-    /**
-     * Enabled/disable granularity control on axis yValue intervals. If enabled, the axis
-     * interval is not allowed to go below a certain granularity. Default: false
-     *
-     * @param enabled
-     */
-    public void setGranularityEnabled(boolean enabled) {
-        mGranularityEnabled = true;
-    }
-
-    /**
-     * @return the minimum interval between axis values
-     */
-    public float getGranularity() {
-        return mGranularity;
-    }
-
-    /**
-     * Set a minimum interval for the axis when zooming in. The axis is not allowed to go below
-     * that limit. This can be used to avoid label duplicating when zooming in.
-     *
-     * @param granularity
-     */
-    public void setGranularity(float granularity) {
-        mGranularity = granularity;
-        // set this to true if it was disabled, as it makes no sense to call this method with granularity disabled
-        mGranularityEnabled = true;
-    }
-
-    /**
      * returns the position of the yPx-labels
      */
     public YAxisLabelPosition getLabelPosition() {
@@ -244,52 +185,6 @@ public class YAxis extends AxisBase {
      */
     public void setDrawTopYLabelEntry(boolean enabled) {
         mDrawTopYLabelEntry = enabled;
-    }
-
-    /**
-     * sets the number of label entries for the yPx-axis max = 25, min = 2, default: 6, be aware
-     * that this number is not
-     * fixed (if force == false) and can only be approximated.
-     *
-     * @param count the number of yPx-axis labels that sould be displayed
-     * @param force if enabled, the set label count will be forced, meaning that the exact
-     *              specified count of labels will
-     *              be drawn and evenly distributed alongside the axis - this might cause labels
-     *              to have uneven values
-     */
-    public void setLabelCount(int count, boolean force) {
-
-        setLabelCount(count);
-        mForceLabels = force;
-    }
-
-    /**
-     * Returns true if focing the yPx-label count is enabled. Default: false
-     *
-     * @return
-     */
-    public boolean isForceLabelsEnabled() {
-        return mForceLabels;
-    }
-
-    /**
-     * If enabled, the YLabels will only show the minimum and maximum yValue of the chart. This
-     * will ignore/override the
-     * set label count.
-     *
-     * @param enabled
-     */
-    public void setShowOnlyMinMax(boolean enabled) {
-        mShowOnlyMinMax = enabled;
-    }
-
-    /**
-     * Returns true if showing only min and max yValue is enabled.
-     *
-     * @return
-     */
-    public boolean isShowOnlyMinMaxEnabled() {
-        return mShowOnlyMinMax;
     }
 
     /**

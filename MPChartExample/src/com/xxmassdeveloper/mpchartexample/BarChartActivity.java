@@ -85,7 +85,6 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         xAxis.setPosition(XAxisPosition.BOTTOM);
         xAxis.setTypeface(mTf);
         xAxis.setDrawGridLines(false);
-        xAxis.setSpaceBetweenLabels(2);
 
         YAxisValueFormatter custom = new MyYAxisValueFormatter();
 

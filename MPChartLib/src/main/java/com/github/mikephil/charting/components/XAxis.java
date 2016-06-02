@@ -9,7 +9,7 @@ import com.github.mikephil.charting.utils.Utils;
  * Class representing the xPx-axis labels settings. Only use the setter methods to
  * modify it. Do not access public variables directly. Be aware that not all
  * features the XLabels class provides are suitable for the RadarChart.
- * 
+ *
  * @author Philipp Jahoda
  */
 public class XAxis extends AxisBase {
@@ -70,12 +70,16 @@ public class XAxis extends AxisBase {
     /**
      * Custom formatter for adjusting xPx-yValue strings
      */
-    protected XAxisValueFormatter mXAxisValueFormatter = new DefaultXAxisValueFormatter();
+    protected XAxisValueFormatter mXAxisValueFormatter;
 
-    /** the position of the xPx-labels relative to the chart */
+    /**
+     * the position of the xPx-labels relative to the chart
+     */
     private XAxisPosition mPosition = XAxisPosition.TOP;
 
-    /** enum for the position of the xPx-labels relative to the chart */
+    /**
+     * enum for the position of the xPx-labels relative to the chart
+     */
     public enum XAxisPosition {
         TOP, BOTTOM, BOTH_SIDED, TOP_INSIDE, BOTTOM_INSIDE
     }
@@ -95,7 +99,7 @@ public class XAxis extends AxisBase {
 
     /**
      * sets the position of the xPx-labels
-     * 
+     *
      * @param pos
      */
     public void setPosition(XAxisPosition pos) {
@@ -119,23 +123,12 @@ public class XAxis extends AxisBase {
     }
 
     /**
-     * Sets the space (in characters) that should be left out between the xPx-axis
-     * labels, default 4. This only applies if the number of labels that will be
-     * skipped in between drawn axis labels is not custom set.
-     * 
-     * @param spaceCharacters
-     */
-    public void setSpaceBetweenLabels(int spaceCharacters) {
-        mSpaceBetweenLabels = spaceCharacters;
-    }
-
-    /**
      * Sets the number of labels that should be skipped on the axis before the
      * next label is drawn. This will disable the feature that automatically
      * calculates an adequate space between the axis labels and set the number
      * of labels to be skipped to the fixed number provided by this method. Call
      * resetLabelsToSkip(...) to re-enable automatic calculation.
-     * 
+     *
      * @param count
      */
     public void setLabelsToSkip(int count) {
@@ -159,7 +152,7 @@ public class XAxis extends AxisBase {
     /**
      * Returns true if a custom axis-modulus has been set that determines the
      * number of labels to skip when drawing.
-     * 
+     *
      * @return
      */
     public boolean isAxisModulusCustom() {
@@ -167,17 +160,9 @@ public class XAxis extends AxisBase {
     }
 
     /**
-     * Returns the space (in characters) that should be left out between the
-     * xPx-axis labels
-     */
-    public int getSpaceBetweenLabels() {
-        return mSpaceBetweenLabels;
-    }
-
-    /**
      * if set to true, the chart will avoid that the first and last label entry
      * in the chart "clip" off the edge of the chart or the screen
-     * 
+     *
      * @param enabled
      */
     public void setAvoidFirstLastClipping(boolean enabled) {
@@ -186,7 +171,7 @@ public class XAxis extends AxisBase {
 
     /**
      * returns true if avoid-first-lastclipping is enabled, false if not
-     * 
+     *
      * @return
      */
     public boolean isAvoidFirstLastClippingEnabled() {
@@ -238,17 +223,22 @@ public class XAxis extends AxisBase {
      * @param formatter
      */
     public void setValueFormatter(XAxisValueFormatter formatter) {
-        if(formatter == null)
-            mXAxisValueFormatter = new DefaultXAxisValueFormatter();
+        if (formatter == null)
+            mXAxisValueFormatter = new DefaultXAxisValueFormatter(mDecimals);
         else
             mXAxisValueFormatter = formatter;
     }
 
     /**
      * Returns the custom XAxisValueFormatter that is set for this data object.
+     *
      * @return
      */
     public XAxisValueFormatter getValueFormatter() {
+
+        if (mXAxisValueFormatter == null)
+            mXAxisValueFormatter = new DefaultXAxisValueFormatter(mDecimals);
+
         return mXAxisValueFormatter;
     }
 
