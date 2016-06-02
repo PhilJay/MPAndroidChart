@@ -24,7 +24,6 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.xxmassdeveloper.mpchartexample.custom.MonthXAxisFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -89,7 +88,6 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         XAxis xl = mChart.getXAxis();
         xl.setTypeface(tf);
         xl.setDrawGridLines(false);
-        xl.setValueFormatter(new MonthXAxisFormatter());
     }
 
     @Override

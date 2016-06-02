@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
@@ -85,6 +86,8 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         xAxis.setPosition(XAxisPosition.BOTTOM);
         xAxis.setTypeface(mTf);
         xAxis.setDrawGridLines(false);
+        xAxis.setGranularity(1f); // only intervals of 1 day
+        xAxis.setValueFormatter(new DayAxisFormatter());
 
         AxisValueFormatter custom = new MyAxisValueFormatter();
 
@@ -145,7 +148,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
                 break;
             }
             case R.id.actionToggleHighlight: {
-                if(mChart.getData() != null) {
+                if (mChart.getData() != null) {
                     mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
                     mChart.invalidate();
                 }
@@ -167,7 +170,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
             }
             case R.id.actionToggleBarBorders: {
                 for (IBarDataSet set : mChart.getData().getDataSets())
-                    ((BarDataSet)set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
+                    ((BarDataSet) set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
 
                 mChart.invalidate();
                 break;
@@ -230,12 +233,14 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
     private void setData(int count, float range) {
 
-        mChart.getXAxis().setAxisMinValue(0f);
-        mChart.getXAxis().setAxisMaxValue(count+1f);
+        float start = 0.5f;
+
+        mChart.getXAxis().setAxisMinValue(start);
+        mChart.getXAxis().setAxisMaxValue(start + count);
 
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
 
-        for (int i = 0; i < count; i++) {
+        for (int i = (int) start; i < start + count; i++) {
             float mult = (range + 1);
             float val = (float) (Math.random() * mult);
             yVals1.add(new BarEntry(i + 1f, val));
@@ -245,12 +250,12 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         if (mChart.getData() != null &&
                 mChart.getData().getDataSetCount() > 0) {
-            set1 = (BarDataSet)mChart.getData().getDataSetByIndex(0);
+            set1 = (BarDataSet) mChart.getData().getDataSetByIndex(0);
             set1.setYVals(yVals1);
             mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
-            set1 = new BarDataSet(yVals1, "DataSet");
+            set1 = new BarDataSet(yVals1, "The year 2017");
             set1.setColors(ColorTemplate.MATERIAL_COLORS);
 
             ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
@@ -284,5 +289,92 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
     }
 
     public void onNothingSelected() {
-    };
+    }
+
+    private class DayAxisFormatter implements AxisValueFormatter {
+
+        protected String[] mMonths = new String[]{
+                "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"
+        };
+
+        @Override
+        public String getFormattedValue(float value, AxisBase axis) {
+            
+            int dayOfYear = (int) value;
+
+            int month = determineMonth(dayOfYear);
+            int dayOfMonth = determineDayOfMonth(dayOfYear, month);
+
+            String appendix = "th";
+
+            switch (dayOfMonth) {
+                case 1:
+                    appendix = "st";
+                    break;
+                case 2:
+                    appendix = "nd";
+                    break;
+                case 3:
+                    appendix = "rd";
+                    break;
+                case 21:
+                    appendix = "st";
+                    break;
+                case 22:
+                    appendix = "nd";
+                    break;
+                case 23:
+                    appendix = "rd";
+                    break;
+                case 31:
+                    appendix = "st";
+                    break;
+            }
+
+            return dayOfMonth + appendix + " " + mMonths[month % mMonths.length];
+        }
+
+        private int getDaysForMonth(int month) {
+
+            if (month == 1) {
+                return 28;
+            }
+
+            if (month == 3 || month == 5 || month == 8 || month == 10)
+                return 30;
+            else
+                return 31;
+        }
+
+        private int determineMonth(int dayOfYear) {
+
+            int month = -1;
+            int days = 0;
+
+            while (days < dayOfYear) {
+                month++;
+                days += getDaysForMonth(month);
+            }
+
+            return month;
+        }
+
+        private int determineDayOfMonth(int dayOfYear, int month) {
+
+            int count = 0;
+            int days = 0;
+
+            while (count < month) {
+                days += getDaysForMonth(count);
+                count++;
+            }
+
+            return dayOfYear - days;
+        }
+
+        @Override
+        public int getDecimalDigits() {
+            return 0;
+        }
+    }
 }
