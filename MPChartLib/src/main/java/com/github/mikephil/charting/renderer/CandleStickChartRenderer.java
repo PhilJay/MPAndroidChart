@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CandleEntry;
+import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.CandleDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet;
@@ -54,6 +56,8 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
     @SuppressWarnings("ResourceAsColor")
     protected void drawDataSet(Canvas c, ICandleDataSet dataSet) {
 
+        int entryCount = dataSet.getEntryCount();
+
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
         float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
@@ -61,8 +65,15 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
         float barSpace = dataSet.getBarSpace();
         boolean showCandleBar = dataSet.getShowCandleBar();
 
-        int minx = Math.max((int) mChart.getLowestVisibleX(), 0);
-        int maxx = Math.min((int) mChart.getHighestVisibleX(), dataSet.getEntryCount());
+        float lowX = mChart.getLowestVisibleX();
+        float highX = mChart.getHighestVisibleX();
+
+        CandleEntry entryFrom = dataSet.getEntryForXPos(lowX, DataSet.Rounding.DOWN);
+        CandleEntry entryTo = dataSet.getEntryForXPos(highX, DataSet.Rounding.UP);
+
+        int diff = (entryFrom == entryTo) ? 1 : 0;
+        int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff, 0);
+        int maxx = Math.min(Math.max(minx + 2, dataSet.getEntryIndex(entryTo) + 1), entryCount);
 
         mRenderPaint.setStrokeWidth(dataSet.getShadowWidth());
 
