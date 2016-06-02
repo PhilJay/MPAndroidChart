@@ -108,7 +108,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
         return vals;
     }
 
-    private SelectionDetail getDetails(IDataSet set, int dataSetIndex, float xVal, DataSet.Rounding rounding) {
+    protected SelectionDetail getDetails(IDataSet set, int dataSetIndex, float xVal, DataSet.Rounding rounding) {
 
         final Entry e = set.getEntryForXPos(xVal, rounding);
 

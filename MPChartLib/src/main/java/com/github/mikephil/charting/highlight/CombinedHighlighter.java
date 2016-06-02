@@ -2,6 +2,7 @@ package com.github.mikephil.charting.highlight;
 
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.CombinedData;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider;
 import com.github.mikephil.charting.utils.SelectionDetail;
@@ -19,7 +20,7 @@ public class CombinedHighlighter extends ChartHighlighter<BarLineScatterCandleBu
     }
 
     /**
-     * Returns a list of SelectionDetail object corresponding to the given xIndex.
+     * Returns a list of SelectionDetail object corresponding to the given xValue.
      *
      * @param xVal
      * @return
@@ -28,7 +29,6 @@ public class CombinedHighlighter extends ChartHighlighter<BarLineScatterCandleBu
     protected List<SelectionDetail> getSelectionDetailsAtIndex(float xVal) {
 
         List<SelectionDetail> vals = new ArrayList<SelectionDetail>();
-        float[] pts = new float[2];
 
         CombinedData data = (CombinedData) mChart.getData();
 
@@ -37,25 +37,21 @@ public class CombinedHighlighter extends ChartHighlighter<BarLineScatterCandleBu
 
         for (int i = 0; i < dataObjects.size(); i++) {
 
-            for(int j = 0; j < dataObjects.get(i).getDataSetCount(); j++) {
+            for (int j = 0, dataSetCount = dataObjects.get(i).getDataSetCount(); j < dataSetCount; j++) {
 
                 IDataSet dataSet = dataObjects.get(i).getDataSetByIndex(j);
 
-                // dont include datasets that cannot be highlighted
+                // don't include datasets that cannot be highlighted
                 if (!dataSet.isHighlightEnabled())
                     continue;
 
-                // extract all yPx-values from all DataSets at the given xPx-index
-                final float yVals[] = dataSet.getYValuesForXPos(xVal);
-                for (float yVal : yVals) {
-                    pts[1] = yVal;
+                SelectionDetail s1 = getDetails(dataSet, j, xVal, DataSet.Rounding.UP);
+                s1.dataIndex = i;
+                vals.add(s1);
 
-                    mChart.getTransformer(dataSet.getAxisDependency()).pointValuesToPixel(pts);
-
-                    if (!Float.isNaN(pts[1])) {
-                        vals.add(new SelectionDetail(0f, pts[1], yVal, i, j, dataSet));
-                    }
-                }
+                SelectionDetail s2 = getDetails(dataSet, j, xVal, DataSet.Rounding.DOWN);
+                s2.dataIndex = i;
+                vals.add(s2);
             }
         }
 
