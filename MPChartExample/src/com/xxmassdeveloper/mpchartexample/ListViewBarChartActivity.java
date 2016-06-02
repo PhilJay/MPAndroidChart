@@ -132,7 +132,7 @@ public class ListViewBarChartActivity extends DemoBase {
         ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
 
         for (int i = 0; i < 12; i++) {
-            entries.add(new BarEntry((int) (Math.random() * 70) + 30, i));
+            entries.add(new BarEntry(i, (float) (Math.random() * 70) + 30));
         }
 
         BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);

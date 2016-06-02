@@ -71,6 +71,25 @@ public class StackedBarActivityNegative extends DemoBase implements
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(false);
         xAxis.setTextSize(9f);
+        xAxis.setAxisMinValue(0f);
+        xAxis.setAxisMaxValue(110f);
+        xAxis.setCenterAxisLabels(true);
+        xAxis.setLabelCount(12);
+        xAxis.setGranularity(10f);
+        xAxis.setValueFormatter(new AxisValueFormatter() {
+
+            private DecimalFormat format = new DecimalFormat("###");
+
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return format.format(value) + "-" + format.format(value + 10);
+            }
+
+            @Override
+            public int getDecimalDigits() {
+                return 0;
+            }
+        });
 
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.BELOW_CHART_RIGHT);
@@ -80,17 +99,17 @@ public class StackedBarActivityNegative extends DemoBase implements
 
         // IMPORTANT: When using negative values in stacked bars, always make sure the negative values are in the array first
         ArrayList<BarEntry> yValues = new ArrayList<BarEntry>();
-        yValues.add(new BarEntry(0, new float[]{ -10, 10 }));
-        yValues.add(new BarEntry(1, new float[]{ -12, 13 }));
-        yValues.add(new BarEntry(2, new float[]{ -15, 15 }));
-        yValues.add(new BarEntry(3, new float[]{ -17, 17 }));
-        yValues.add(new BarEntry(4, new float[]{ -19, 20 }));
-        yValues.add(new BarEntry(5, new float[]{ -19, 19 }));
-        yValues.add(new BarEntry(6, new float[]{ -16, 16 }));
-        yValues.add(new BarEntry(7, new float[]{ -13, 14 }));
-        yValues.add(new BarEntry(8, new float[]{ -10, 11 }));
-        yValues.add(new BarEntry(9, new float[]{ -5, 6 }));
-        yValues.add(new BarEntry(10, new float[]{ -1, 2 }));
+        yValues.add(new BarEntry(5, new float[]{ -10, 10 }));
+        yValues.add(new BarEntry(15, new float[]{ -12, 13 }));
+        yValues.add(new BarEntry(25, new float[]{ -15, 15 }));
+        yValues.add(new BarEntry(35, new float[]{ -17, 17 }));
+        yValues.add(new BarEntry(45, new float[]{ -19, 20 }));
+        yValues.add(new BarEntry(55, new float[]{ -19, 19 }));
+        yValues.add(new BarEntry(65, new float[]{ -16, 16 }));
+        yValues.add(new BarEntry(75, new float[]{ -13, 14 }));
+        yValues.add(new BarEntry(85, new float[]{ -10, 11 }));
+        yValues.add(new BarEntry(95, new float[]{ -5, 6 }));
+        yValues.add(new BarEntry(105, new float[]{ -1, 2 }));
 
         BarDataSet set = new BarDataSet(yValues, "Age Distribution");
         set.setValueFormatter(new CustomFormatter());
@@ -104,7 +123,7 @@ public class StackedBarActivityNegative extends DemoBase implements
         String []xLabels = new String[]{"0-10", "10-20", "20-30", "30-40", "40-50", "50-60", "60-70", "70-80", "80-90", "90-100", "100+"};
 
         BarData data = new BarData(set);
-        data.setBarWidth(0.8f);
+        data.setBarWidth(8.5f);
         mChart.setData(data);
         mChart.invalidate();
     }

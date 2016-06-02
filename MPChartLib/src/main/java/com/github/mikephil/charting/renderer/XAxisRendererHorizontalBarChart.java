@@ -13,17 +13,46 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.utils.FSize;
+import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.List;
 
-public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
+public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
+
+    protected BarChart mChart;
 
     public XAxisRendererHorizontalBarChart(ViewPortHandler viewPortHandler, XAxis xAxis,
             Transformer trans, BarChart chart) {
-        super(viewPortHandler, xAxis, trans, chart);
+        super(viewPortHandler, xAxis, trans);
+
+        this.mChart = chart;
+    }
+
+    @Override
+    public void computeAxis(float min, float max, boolean inverted) {
+
+        // calculate the starting and entry point of the yPx-labels (depending on
+        // zoom / contentrect bounds)
+        if (mViewPortHandler.contentWidth() > 10 && !mViewPortHandler.isFullyZoomedOutY()) {
+
+            PointD p1 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom());
+            PointD p2 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop());
+
+            if (inverted) {
+
+                min = (float) p2.y;
+                max = (float) p1.y;
+            } else {
+
+                min = (float) p1.y;
+                max = (float) p2.y;
+            }
+        }
+
+        computeAxisValues(min, max);
     }
     
     @Override
@@ -91,24 +120,56 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
         }
     }
 
-    /**
-     * draws the xPx-labels on the specified yPx-position
-     * 
-     * @param pos
-     */
     @Override
     protected void drawLabels(Canvas c, float pos, PointF anchor) {
 
         final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
+        boolean centeringEnabled = mXAxis.isCenterAxisLabelsEnabled();
 
-        // pre allocate to save performance (dont allocate in loop)
-        float[] position = new float[] {
-                0f, 0f
-        };
+        float[] positions = new float[mXAxis.mEntryCount * 2];
 
-        BarData bd = mChart.getData();
-        int step = bd.getDataSetCount();
+        for (int i = 0; i < positions.length; i += 2) {
 
+            // only fill xPx values
+            if (centeringEnabled) {
+                positions[i + 1] = mXAxis.mCenteredEntries[i / 2];
+            } else {
+                positions[i + 1] = mXAxis.mEntries[i / 2];
+            }
+        }
+
+        mTrans.pointValuesToPixel(positions);
+
+        for (int i = 0; i < positions.length; i += 2) {
+
+            float y = positions[i + 1];
+
+            if (mViewPortHandler.isInBoundsY(y)) {
+
+                String label = mXAxis.getValueFormatter().getFormattedValue(mXAxis.mEntries[i / 2], mXAxis);
+                drawLabel(c, label, pos, y, anchor, labelRotationAngleDegrees);
+            }
+        }
+    }
+
+//    /**
+//     * draws the xPx-labels on the specified yPx-position
+//     *
+//     * @param pos
+//     */
+//    @Override
+//    protected void drawLabels(Canvas c, float pos, PointF anchor) {
+//
+//        final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
+//
+//        // pre allocate to save performance (dont allocate in loop)
+//        float[] position = new float[] {
+//                0f, 0f
+//        };
+//
+//        BarData bd = mChart.getData();
+//        int step = bd.getDataSetCount();
+//
 //        for (int i = mMinX; i <= mMaxX; i += mXAxis.mAxisLabelModulus) {
 //
 //            position[1] = i * step + i * bd.getGroupSpace()
@@ -127,7 +188,7 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
 //                drawLabel(c, label, i, pos, position[1], anchor, labelRotationAngleDegrees);
 //            }
 //        }
-    }
+//    }
 
     @Override
     public void renderGridLines(Canvas c) {

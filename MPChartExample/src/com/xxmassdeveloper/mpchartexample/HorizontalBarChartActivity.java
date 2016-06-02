@@ -75,11 +75,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         // draw shadows for each bar that show the maximum yValue
         // mChart.setDrawBarShadow(true);
 
-        // mChart.setDrawXLabels(false);
-
         mChart.setDrawGridBackground(false);
-
-        // mChart.setDrawYLabels(false);
 
         tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
@@ -89,6 +85,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         xl.setDrawAxisLine(true);
         xl.setDrawGridLines(true);
         xl.setGridLineWidth(0.3f);
+        xl.setGranularity(10f);
 
         YAxis yl = mChart.getAxisLeft();
         yl.setTypeface(tf);
@@ -232,11 +229,13 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
     private void setData(int count, float range) {
 
+        float barWidth = 9f;
+        float spaceForBar = 10f;
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
 
         for (int i = 0; i < count; i++) {
             float val = (float) (Math.random() * range);
-            yVals1.add(new BarEntry(i, val));
+            yVals1.add(new BarEntry(i * spaceForBar, val));
         }
 
         BarDataSet set1;
@@ -256,7 +255,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
             BarData data = new BarData(dataSets);
             data.setValueTextSize(10f);
             data.setValueTypeface(tf);
-
+            data.setBarWidth(barWidth);
             mChart.setData(data);
         }
     }
@@ -276,6 +275,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         Log.i("position", position.toString());
     }
 
+    @Override
     public void onNothingSelected() {
     };
 }

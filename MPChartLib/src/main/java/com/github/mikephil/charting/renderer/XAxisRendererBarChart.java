@@ -1,27 +1,17 @@
 
 package com.github.mikephil.charting.renderer;
 
-import android.graphics.Canvas;
-import android.graphics.PointF;
-
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.utils.Transformer;
-import com.github.mikephil.charting.utils.Utils;
-import com.github.mikephil.charting.utils.ViewPortHandler;
-
-public class XAxisRendererBarChart extends XAxisRenderer {
-
-    protected BarChart mChart;
-
-    public XAxisRendererBarChart(ViewPortHandler viewPortHandler, XAxis xAxis, Transformer trans,
-            BarChart chart) {
-        super(viewPortHandler, xAxis, trans);
-
-        this.mChart = chart;
-    }
-
+//public class XAxisRendererBarChart extends XAxisRenderer {
+//
+//    protected BarChart mChart;
+//
+//    public XAxisRendererBarChart(ViewPortHandler viewPortHandler, XAxis xAxis, Transformer trans,
+//            BarChart chart) {
+//        super(viewPortHandler, xAxis, trans);
+//
+//        this.mChart = chart;
+//    }
+//
 //    /**
 //     * draws the xPx-labels on the specified yPx-position
 //     *
@@ -80,4 +70,4 @@ public class XAxisRendererBarChart extends XAxisRenderer {
 ////            }
 ////        }
 //    }
-}
+//}
