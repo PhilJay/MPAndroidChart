@@ -94,7 +94,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
     }
 
     /**
-     * Returns the drawing mode for this line dataset
+     * Returns the drawing mode for this LineDataSet
      *
      * @return
      */
@@ -225,19 +225,9 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
     }
 
     @Deprecated
-    public void setDrawCubic(boolean enabled) {
-        mMode = enabled ? Mode.CUBIC_BEZIER : Mode.LINEAR;
-    }
-
-    @Deprecated
     @Override
     public boolean isDrawCubicEnabled() {
         return mMode == Mode.CUBIC_BEZIER;
-    }
-
-    @Deprecated
-    public void setDrawStepped(boolean enabled) {
-        mMode = enabled ? Mode.STEPPED : Mode.LINEAR;
     }
 
     @Deprecated

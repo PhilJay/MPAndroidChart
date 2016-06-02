@@ -109,7 +109,7 @@ public class PerformanceLineChart extends DemoBase implements OnSeekBarChangeLis
         set1.setLineWidth(0.5f);
         set1.setDrawValues(false);
         set1.setDrawCircles(false);
-        set1.setDrawCubic(false);
+        set1.setMode(LineDataSet.Mode.LINEAR);
         set1.setDrawFilled(false);
 
         // create a data object with the datasets

@@ -186,10 +186,10 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
                 for (ILineDataSet iSet : sets) {
 
                     LineDataSet set = (LineDataSet) iSet;
-                    if (set.isDrawCubicEnabled())
-                        set.setDrawCubic(false);
+                    if (set.getMode() == LineDataSet.Mode.CUBIC_BEZIER)
+                        set.setMode(LineDataSet.Mode.LINEAR);
                     else
-                        set.setDrawCubic(true);
+                        set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
                 }
                 mChart.invalidate();
                 break;
@@ -201,10 +201,10 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
                 for (ILineDataSet iSet : sets) {
 
                     LineDataSet set = (LineDataSet) iSet;
-                    if (set.isDrawSteppedEnabled())
-                        set.setDrawStepped(false);
+                    if (set.getMode() == LineDataSet.Mode.STEPPED)
+                        set.setMode(LineDataSet.Mode.LINEAR);
                     else
-                        set.setDrawStepped(true);
+                        set.setMode(LineDataSet.Mode.STEPPED);
                 }
                 mChart.invalidate();
                 break;

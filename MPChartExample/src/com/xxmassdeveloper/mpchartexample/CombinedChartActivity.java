@@ -94,7 +94,7 @@ public class CombinedChartActivity extends DemoBase {
         set.setCircleColor(Color.rgb(240, 238, 70));
         set.setCircleRadius(5f);
         set.setFillColor(Color.rgb(240, 238, 70));
-        set.setDrawCubic(true);
+        set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         set.setDrawValues(true);
         set.setValueTextSize(10f);
         set.setValueTextColor(Color.rgb(240, 238, 70));

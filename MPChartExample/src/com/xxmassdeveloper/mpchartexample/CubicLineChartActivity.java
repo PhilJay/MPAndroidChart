@@ -286,7 +286,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
             // create a dataset and give it a type
             set1 = new LineDataSet(yVals, "DataSet 1");
 
-            set1.setDrawCubic(true);
+            set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
             set1.setCubicIntensity(0.2f);
             //set1.setDrawFilled(true);
             set1.setDrawCircles(false);
