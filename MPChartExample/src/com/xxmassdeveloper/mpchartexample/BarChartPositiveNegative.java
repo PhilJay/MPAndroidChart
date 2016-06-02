@@ -68,7 +68,6 @@ public class BarChartPositiveNegative extends DemoBase {
 
         YAxis left = mChart.getAxisLeft();
         left.setDrawLabels(false);
-        left.setStartAtZero(false);
         left.setSpaceTop(25f);
         left.setSpaceBottom(25f);
         left.setDrawAxisLine(false);

@@ -179,8 +179,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      */
     public float getFactor() {
         RectF content = mViewPortHandler.getContentRect();
-        return (float) Math.min(content.width() / 2f, content.height() / 2f)
-                / mYAxis.mAxisRange;
+        return Math.min(content.width() / 2f, content.height() / 2f) / mYAxis.mAxisRange;
     }
 
     /**
@@ -189,7 +188,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      * @return
      */
     public float getSliceAngle() {
-        return 360f / (float) mData.getEntryCount();
+        return 360f / (float) mData.getMaxEntryCountSet().getEntryCount();
     }
 
     @Override

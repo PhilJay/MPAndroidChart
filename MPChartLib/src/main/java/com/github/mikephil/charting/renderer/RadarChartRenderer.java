@@ -59,13 +59,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         RadarData radarData = mChart.getData();
 
-        int mostEntries = 0;
-
-        for (IRadarDataSet set : radarData.getDataSets()) {
-            if (set.getEntryCount() > mostEntries) {
-                mostEntries = set.getEntryCount();
-            }
-        }
+        int mostEntries = radarData.getMaxEntryCountSet().getEntryCount();
 
         for (IRadarDataSet set : radarData.getDataSets()) {
 
@@ -217,8 +211,9 @@ public class RadarChartRenderer extends LineRadarRenderer {
         mWebPaint.setAlpha(mChart.getWebAlpha());
 
         final int xIncrements = 1 + mChart.getSkipWebLineCount();
+        int maxEntryCount = mChart.getData().getMaxEntryCountSet().getEntryCount();
 
-        for (int i = 0; i < mChart.getData().getEntryCount(); i += xIncrements) {
+        for (int i = 0; i < maxEntryCount; i += xIncrements) {
 
             PointF p = Utils.getPosition(
                     center,
