@@ -717,7 +717,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
             PointD origin = getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop(), axis);
 
-            Runnable job = new AnimatedZoomJob(mViewPortHandler, this, getTransformer(axis), getAxis(axis), mXAxis.mAxisRange, scaleX, scaleY, mViewPortHandler.getScaleX(), mViewPortHandler.getScaleY(),
+            Runnable job = new AnimatedZoomJob(mViewPortHandler, this, getTransformer(axis), getAxis(axis), mXAxis
+                    .mAxisRange, scaleX, scaleY, mViewPortHandler.getScaleX(), mViewPortHandler.getScaleY(),
                     xValue, yValue, (float) origin.x, (float) origin.y, duration);
             addViewportJob(job);
 
@@ -1326,6 +1327,15 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         PointD pos = getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentRight(),
                 mViewPortHandler.contentBottom());
         return (float) Math.min(mXAxis.mAxisMaximum, pos.x);
+    }
+
+    /**
+     * Returns the range visible on the x-axis.
+     *
+     * @return
+     */
+    public float getVisibleXRange() {
+        return Math.abs(getHighestVisibleX() - getLowestVisibleX());
     }
 
     /**

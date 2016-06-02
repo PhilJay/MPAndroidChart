@@ -35,6 +35,7 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.xxmassdeveloper.mpchartexample.custom.MyAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -87,6 +88,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         xAxis.setTypeface(mTf);
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f); // only intervals of 1 day
+        xAxis.setLabelCount(7);
         xAxis.setValueFormatter(new DayAxisFormatter());
 
         AxisValueFormatter custom = new MyAxisValueFormatter();
@@ -233,7 +235,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
     private void setData(int count, float range) {
 
-        float start = 0.5f;
+        float start = 0f;
 
         mChart.getXAxis().setAxisMinValue(start);
         mChart.getXAxis().setAxisMaxValue(start + count);
@@ -299,39 +301,47 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         @Override
         public String getFormattedValue(float value, AxisBase axis) {
-            
+
             int dayOfYear = (int) value;
 
             int month = determineMonth(dayOfYear);
-            int dayOfMonth = determineDayOfMonth(dayOfYear, month);
+            String monthName = mMonths[month % mMonths.length];
 
-            String appendix = "th";
+            if (mChart.getVisibleXRange() > 30 * axis.getLabelCount()) {
 
-            switch (dayOfMonth) {
-                case 1:
-                    appendix = "st";
-                    break;
-                case 2:
-                    appendix = "nd";
-                    break;
-                case 3:
-                    appendix = "rd";
-                    break;
-                case 21:
-                    appendix = "st";
-                    break;
-                case 22:
-                    appendix = "nd";
-                    break;
-                case 23:
-                    appendix = "rd";
-                    break;
-                case 31:
-                    appendix = "st";
-                    break;
+                return monthName;
+            } else {
+
+                int dayOfMonth = determineDayOfMonth(dayOfYear, month);
+
+                String appendix = "th";
+
+                switch (dayOfMonth) {
+                    case 1:
+                        appendix = "st";
+                        break;
+                    case 2:
+                        appendix = "nd";
+                        break;
+                    case 3:
+                        appendix = "rd";
+                        break;
+                    case 21:
+                        appendix = "st";
+                        break;
+                    case 22:
+                        appendix = "nd";
+                        break;
+                    case 23:
+                        appendix = "rd";
+                        break;
+                    case 31:
+                        appendix = "st";
+                        break;
+                }
+
+                return dayOfMonth + appendix + " " + monthName;
             }
-
-            return dayOfMonth + appendix + " " + mMonths[month % mMonths.length];
         }
 
         private int getDaysForMonth(int month) {
@@ -356,7 +366,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
                 days += getDaysForMonth(month);
             }
 
-            return month;
+            return Math.max(month, 0);
         }
 
         private int determineDayOfMonth(int dayOfYear, int month) {
