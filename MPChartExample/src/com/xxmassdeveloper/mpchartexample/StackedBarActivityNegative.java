@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
@@ -20,7 +21,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.formatter.YAxisValueFormatter;
+import com.github.mikephil.charting.formatter.AxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
@@ -207,7 +208,7 @@ public class StackedBarActivityNegative extends DemoBase implements
         Log.i("NOTING SELECTED", "");
     }
 
-    private class CustomFormatter implements ValueFormatter, YAxisValueFormatter {
+    private class CustomFormatter implements ValueFormatter, AxisValueFormatter {
 
         private DecimalFormat mFormat;
 
@@ -223,7 +224,7 @@ public class StackedBarActivityNegative extends DemoBase implements
 
         // YAxis
         @Override
-        public String getFormattedValue(float value, YAxis yAxis) {
+        public String getFormattedValue(float value, AxisBase axis) {
             return mFormat.format(Math.abs(value)) + "m";
         }
 

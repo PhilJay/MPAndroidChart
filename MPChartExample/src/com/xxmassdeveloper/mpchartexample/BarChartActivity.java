@@ -28,13 +28,13 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.YAxisValueFormatter;
+import com.github.mikephil.charting.formatter.AxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.xxmassdeveloper.mpchartexample.custom.MyYAxisValueFormatter;
+import com.xxmassdeveloper.mpchartexample.custom.MyAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -86,7 +86,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         xAxis.setTypeface(mTf);
         xAxis.setDrawGridLines(false);
 
-        YAxisValueFormatter custom = new MyYAxisValueFormatter();
+        AxisValueFormatter custom = new MyAxisValueFormatter();
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(mTf);

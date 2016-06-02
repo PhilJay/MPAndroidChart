@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.util.Log;
 
+import com.github.mikephil.charting.formatter.AxisValueFormatter;
 import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
 import com.github.mikephil.charting.utils.Utils;
 
@@ -17,6 +18,11 @@ import java.util.List;
  * @author Philipp Jahoda
  */
 public abstract class AxisBase extends ComponentBase {
+
+    /**
+     * custom formatter that is used instead of the auto-formatter if set
+     */
+    protected AxisValueFormatter mAxisValueFormatter;
 
     private int mGridColor = Color.GRAY;
 
@@ -408,7 +414,61 @@ public abstract class AxisBase extends ComponentBase {
      *
      * @return
      */
-    public abstract String getLongestLabel();
+    public String getLongestLabel() {
+
+        String longest = "";
+
+        for (int i = 0; i < mEntries.length; i++) {
+            String text = getFormattedLabel(i);
+
+            if (longest.length() < text.length())
+                longest = text;
+        }
+
+        return longest;
+    }
+
+    public String getFormattedLabel(int index) {
+
+        if (index < 0 || index >= mEntries.length)
+            return "";
+        else
+            return getValueFormatter().getFormattedValue(mEntries[index], this);
+    }
+
+    /**
+     * Sets the formatter to be used for formatting the axis labels. If no formatter is set, the
+     * chart will
+     * automatically determine a reasonable formatting (concerning decimals) for all the values
+     * that are drawn inside
+     * the chart. Use chart.getDefaultValueFormatter() to use the formatter calculated by the chart.
+     *
+     * @param f
+     */
+    public void setValueFormatter(AxisValueFormatter f) {
+
+        if (f == null)
+            mAxisValueFormatter = new DefaultAxisValueFormatter(mDecimals);
+        else
+            mAxisValueFormatter = f;
+    }
+
+    /**
+     * Returns the formatter used for formatting the axis labels.
+     *
+     * @return
+     */
+    public AxisValueFormatter getValueFormatter() {
+
+        if (mAxisValueFormatter == null) {
+            mAxisValueFormatter = new DefaultAxisValueFormatter(mDecimals);
+        } else if (mAxisValueFormatter.getDecimalDigits() != mDecimals && mAxisValueFormatter instanceof
+                DefaultAxisValueFormatter) {
+            mAxisValueFormatter = new DefaultAxisValueFormatter(mDecimals);
+        }
+
+        return mAxisValueFormatter;
+    }
 
     /**
      * Enables the grid line to be drawn in dashed mode, e.g. like this

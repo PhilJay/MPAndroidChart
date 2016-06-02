@@ -1,7 +1,7 @@
 
 package com.github.mikephil.charting.formatter;
 
-import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -17,7 +17,7 @@ import java.text.DecimalFormat;
  * @author Philipp Jahoda
  * @author Oleksandr Tyshkovets <olexandr.tyshkovets@gmail.com>
  */
-public class LargeValueFormatter implements ValueFormatter, YAxisValueFormatter {
+public class LargeValueFormatter implements ValueFormatter, AxisValueFormatter {
 
     private static String[] SUFFIX = new String[]{
             "", "k", "m", "b", "t"
@@ -46,9 +46,9 @@ public class LargeValueFormatter implements ValueFormatter, YAxisValueFormatter 
         return makePretty(value) + mText;
     }
 
-    // YAxisValueFormatter
+    // AxisValueFormatter
     @Override
-    public String getFormattedValue(float value, YAxis yAxis) {
+    public String getFormattedValue(float value, AxisBase axis) {
         return makePretty(value) + mText;
     }
 

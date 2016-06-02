@@ -1,5 +1,7 @@
 package com.github.mikephil.charting.formatter;
 
+import com.github.mikephil.charting.components.AxisBase;
+
 import java.text.DecimalFormat;
 
 /**
@@ -12,6 +14,9 @@ public class DefaultAxisValueFormatter implements AxisValueFormatter {
      */
     protected DecimalFormat mFormat;
 
+    /**
+     * the number of decimal digits this formatter uses
+     */
     protected int digits = 0;
 
     /**
@@ -31,6 +36,12 @@ public class DefaultAxisValueFormatter implements AxisValueFormatter {
         }
 
         mFormat = new DecimalFormat("###,###,###,##0" + b.toString());
+    }
+
+    @Override
+    public String getFormattedValue(float value, AxisBase axis) {
+        // avoid memory allocations here (for performance)
+        return mFormat.format(value);
     }
 
     @Override

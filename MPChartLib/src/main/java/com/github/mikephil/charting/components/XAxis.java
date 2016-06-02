@@ -1,8 +1,6 @@
 
 package com.github.mikephil.charting.components;
 
-import com.github.mikephil.charting.formatter.DefaultXAxisValueFormatter;
-import com.github.mikephil.charting.formatter.XAxisValueFormatter;
 import com.github.mikephil.charting.utils.Utils;
 
 /**
@@ -66,11 +64,6 @@ public class XAxis extends AxisBase {
      * in the chart "clip" off the edge of the chart
      */
     private boolean mAvoidFirstLastClipping = false;
-
-    /**
-     * Custom formatter for adjusting xPx-yValue strings
-     */
-    protected XAxisValueFormatter mXAxisValueFormatter;
 
     /**
      * the position of the xPx-labels relative to the chart
@@ -213,51 +206,4 @@ public class XAxis extends AxisBase {
 //    public void removeXValue(int index) {
 //        mValues.remove(index);
 //    }
-
-
-    /**
-     * Sets a custom XAxisValueFormatter for the data object that allows custom-formatting
-     * of all xPx-values before rendering them. Provide null to reset back to the
-     * default formatting.
-     *
-     * @param formatter
-     */
-    public void setValueFormatter(XAxisValueFormatter formatter) {
-        if (formatter == null)
-            mXAxisValueFormatter = new DefaultXAxisValueFormatter(mDecimals);
-        else
-            mXAxisValueFormatter = formatter;
-    }
-
-    /**
-     * Returns the custom XAxisValueFormatter that is set for this data object.
-     *
-     * @return
-     */
-    public XAxisValueFormatter getValueFormatter() {
-
-        if (mXAxisValueFormatter == null) {
-            mXAxisValueFormatter = new DefaultXAxisValueFormatter(mDecimals);
-        } else if (mXAxisValueFormatter.getDecimalDigits() != mDecimals && mXAxisValueFormatter instanceof
-                DefaultXAxisValueFormatter) {
-            mXAxisValueFormatter = new DefaultXAxisValueFormatter(mDecimals);
-        }
-
-        return mXAxisValueFormatter;
-    }
-
-    @Override
-    public String getLongestLabel() {
-
-        String longest = "";
-
-//        for (int i = 0; i < mValues.size(); i++) {
-//            String text = mValues.get(i).getLabel();
-//
-//            if (longest.length() < text.length())
-//                longest = text;
-//        }
-
-        return longest;
-    }
 }

@@ -1,7 +1,7 @@
 
 package com.github.mikephil.charting.formatter;
 
-import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -13,7 +13,7 @@ import java.text.DecimalFormat;
  *
  * @author Philipp Jahoda
  */
-public class PercentFormatter implements ValueFormatter, YAxisValueFormatter {
+public class PercentFormatter implements ValueFormatter, AxisValueFormatter {
 
     protected DecimalFormat mFormat;
 
@@ -36,9 +36,9 @@ public class PercentFormatter implements ValueFormatter, YAxisValueFormatter {
         return mFormat.format(value) + " %";
     }
 
-    // YAxisValueFormatter
+    // AxisValueFormatter
     @Override
-    public String getFormattedValue(float value, YAxis yAxis) {
+    public String getFormattedValue(float value, AxisBase axis) {
         return mFormat.format(value) + " %";
     }
 

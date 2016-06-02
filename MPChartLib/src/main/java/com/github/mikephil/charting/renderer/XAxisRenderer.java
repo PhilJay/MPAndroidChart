@@ -229,7 +229,7 @@ public class XAxisRenderer extends AxisRenderer {
     }
 
     protected void drawLabel(Canvas c, float xValue, float x, float y, PointF anchor, float angleDegrees) {
-        String formattedLabel = mXAxis.getValueFormatter().getXValue(xValue, mXAxis.mAxisRange, x, mViewPortHandler);
+        String formattedLabel = mXAxis.getValueFormatter().getFormattedValue(xValue, mXAxis);
         Utils.drawXAxisValue(c, formattedLabel, x, y, mAxisLabelPaint, anchor, angleDegrees);
     }
 

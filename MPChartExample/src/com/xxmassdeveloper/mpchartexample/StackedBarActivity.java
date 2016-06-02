@@ -25,8 +25,8 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.xxmassdeveloper.mpchartexample.custom.MyAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.custom.MyValueFormatter;
-import com.xxmassdeveloper.mpchartexample.custom.MyYAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -72,7 +72,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 
         // change the position of the yPx-labels
         YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setValueFormatter(new MyYAxisValueFormatter());
+        leftAxis.setValueFormatter(new MyAxisValueFormatter());
         leftAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
         mChart.getAxisRight().setEnabled(false);
 
