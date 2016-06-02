@@ -19,8 +19,10 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
  */
 public abstract class AxisRenderer extends Renderer {
 
-    private AxisBase mAxis;
+    /** base axis this axis renderer works with */
+    protected AxisBase mAxis;
 
+    /** transformer to transform values to screen pixels and return */
     protected Transformer mTrans;
 
     /**

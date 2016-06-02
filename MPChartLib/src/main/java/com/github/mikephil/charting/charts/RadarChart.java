@@ -149,8 +149,8 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         if (mData == null)
             return;
 
-        if (mYAxis.isEnabled())
-            mYAxisRenderer.computeAxis(mYAxis.mAxisMinimum, mYAxis.mAxisMaximum, mYAxis.isInverted());
+//        if (mYAxis.isEnabled())
+//            mYAxisRenderer.computeAxis(mYAxis.mAxisMinimum, mYAxis.mAxisMaximum, mYAxis.isInverted());
 
         if (mXAxis.isEnabled())
             mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);

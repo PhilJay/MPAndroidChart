@@ -24,21 +24,30 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
 
     @Override
     protected void computeAxisValues(float min, float max) {
+
         float yMin = min;
         float yMax = max;
 
-        int labelCount = mYAxis.getLabelCount();
+        int labelCount = mAxis.getLabelCount();
         double range = Math.abs(yMax - yMin);
 
         if (labelCount == 0 || range <= 0) {
-            mYAxis.mEntries = new float[]{};
-            mYAxis.mEntryCount = 0;
+            mAxis.mEntries = new float[]{};
+            mAxis.mEntryCount = 0;
             return;
         }
 
+        // Find out how much spacing (in yPx yValue space) between axis values
         double rawInterval = range / labelCount;
         double interval = Utils.roundToNextSignificant(rawInterval);
-        double intervalMagnitude = Math.pow(10, (int) Math.log10(interval));
+
+        // If granularity is enabled, then do not allow the interval to go below specified granularity.
+        // This is used to avoid repeated values when rounding values for display.
+        if (mAxis.isGranularityEnabled())
+            interval = interval < mAxis.getGranularity() ? mAxis.getGranularity() : interval;
+
+        // Normalize interval
+        double intervalMagnitude = Utils.roundToNextSignificant(Math.pow(10, (int) Math.log10(interval)));
         int intervalSigDigit = (int) (interval / intervalMagnitude);
         if (intervalSigDigit > 5) {
             // Use one order of magnitude higher, to avoid intervals like 0.9 or
@@ -46,71 +55,89 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
             interval = Math.floor(10 * intervalMagnitude);
         }
 
+        boolean centeringEnabled = mAxis.isCenterAxisLabelsEnabled();
+        int n = centeringEnabled ? 1 : 0;
+
         // force label count
-        if (mYAxis.isForceLabelsEnabled()) {
+        if (mAxis.isForceLabelsEnabled()) {
 
             float step = (float) range / (float) (labelCount - 1);
-            mYAxis.mEntryCount = labelCount;
+            mAxis.mEntryCount = labelCount;
 
-            if (mYAxis.mEntries.length < labelCount) {
+            if (mAxis.mEntries.length < labelCount) {
                 // Ensure stops contains at least numStops elements.
-                mYAxis.mEntries = new float[labelCount];
+                mAxis.mEntries = new float[labelCount];
             }
 
             float v = min;
 
             for (int i = 0; i < labelCount; i++) {
-                mYAxis.mEntries[i] = v;
+                mAxis.mEntries[i] = v;
                 v += step;
             }
+
+            n = labelCount;
 
             // no forced count
         } else {
 
-            final double rawCount = yMin / interval;
-            double first = rawCount < 0.0 ? Math.floor(rawCount) * interval : Math.ceil(rawCount) * interval;
+            double first = interval == 0.0 ? 0.0 : Math.ceil(yMin / interval) * interval;
+            if (centeringEnabled) {
+                first -= interval;
+            }
 
-            if (first == 0.0) // Fix for IEEE negative zero case (Where yValue == -0.0, and 0.0 == -0.0)
-                first = 0.0;
-
-            double last = Utils.nextUp(Math.floor(yMax / interval) * interval);
+            double last = interval == 0.0 ? 0.0 : Utils.nextUp(Math.floor(yMax / interval) * interval);
 
             double f;
             int i;
-            int n = 0;
-            for (f = first; f <= last; f += interval) {
-                ++n;
+
+            if (interval != 0.0) {
+                for (f = first; f <= last; f += interval) {
+                    ++n;
+                }
             }
 
-            if (!mYAxis.isAxisMaxCustom())
-                n += 1;
+            n++;
 
-            mYAxis.mEntryCount = n;
+            mAxis.mEntryCount = n;
 
-            if (mYAxis.mEntries.length < n) {
+            if (mAxis.mEntries.length < n) {
                 // Ensure stops contains at least numStops elements.
-                mYAxis.mEntries = new float[n];
+                mAxis.mEntries = new float[n];
             }
 
             for (f = first, i = 0; i < n; f += interval, ++i) {
-                mYAxis.mEntries[i] = (float) f;
+
+                if (f == 0.0) // Fix for negative zero case (Where yValue == -0.0, and 0.0 == -0.0)
+                    f = 0.0;
+
+                mAxis.mEntries[i] = (float) f;
             }
         }
 
+        // set decimals
         if (interval < 1) {
-            mYAxis.mDecimals = (int) Math.ceil(-Math.log10(interval));
+            mAxis.mDecimals = (int) Math.ceil(-Math.log10(interval));
         } else {
-            mYAxis.mDecimals = 0;
+            mAxis.mDecimals = 0;
         }
 
-        if (mYAxis.mEntries[0] < yMin) {
-            // If startAtZero is disabled, and the first label is lower that the axis minimum,
-            // Then adjust the axis minimum
-            mYAxis.mAxisMinimum = mYAxis.mEntries[0];
+        if (centeringEnabled) {
+
+            if (mAxis.mCenteredEntries.length < n) {
+                mAxis.mCenteredEntries = new float[n];
+            }
+
+            float offset = (mAxis.mEntries[1] - mAxis.mEntries[0]) / 2f;
+
+            for (int i = 0; i < n; i++) {
+                mAxis.mCenteredEntries[i] = mAxis.mEntries[i] + offset;
+            }
         }
 
-        mYAxis.mAxisMaximum = mYAxis.mEntries[mYAxis.mEntryCount - 1];
-        mYAxis.mAxisRange = Math.abs(mYAxis.mAxisMaximum - mYAxis.mAxisMinimum);
+        mAxis.mAxisMinimum = mAxis.mEntries[0];
+        mAxis.mAxisMaximum = mAxis.mEntries[n-1];
+        mAxis.mAxisRange = Math.abs(mAxis.mAxisMaximum - mAxis.mAxisMinimum);
     }
 
     @Override
