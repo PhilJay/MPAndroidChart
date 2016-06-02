@@ -104,6 +104,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 //        mXAxis.mAxisRange = Math.abs(mXAxis.mAxisMaximum - mXAxis.mAxisMinimum);
 
         mYAxis.calculate(mData.getYMin(AxisDependency.LEFT), mData.getYMax(AxisDependency.LEFT));
+        mXAxis.calculate(0, mData.getMaxEntryCountSet().getEntryCount());
     }
 
     @Override
@@ -134,7 +135,6 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
         mYAxisRenderer.computeAxis(mYAxis.mAxisMinimum, mYAxis.mAxisMaximum, mYAxis.isInverted());
         mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
-        //mXAxisRenderer.computeSize(mData.getXValMaximumLength(), mData.getXVals());
 
         if (mLegend != null && !mLegend.isLegendCustom())
             mLegendRenderer.computeLegend(mData);
@@ -148,6 +148,12 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
         if (mData == null)
             return;
+
+        if (mYAxis.isEnabled())
+            mYAxisRenderer.computeAxis(mYAxis.mAxisMinimum, mYAxis.mAxisMaximum, mYAxis.isInverted());
+
+        if (mXAxis.isEnabled())
+            mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
 
         mXAxisRenderer.renderAxisLabels(canvas);
 

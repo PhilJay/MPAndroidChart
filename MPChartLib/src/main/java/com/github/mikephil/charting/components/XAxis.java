@@ -42,18 +42,6 @@ public class XAxis extends AxisBase {
     protected float mLabelRotationAngle = 0f;
 
     /**
-     * the modulus that indicates if a yValue at a specified index in an
-     * array(list) for the xPx-axis-labels is drawn or not. If index % modulus ==
-     * 0 DRAW, else dont draw.
-     */
-    public int mAxisLabelModulus = 1;
-
-    /**
-     * Is axisLabelModulus a custom yValue or auto calculated? If false, then
-     * it's auto, if true, then custom. default: false (automatic modulus)
-     */
-    private boolean mIsAxisModulusCustom = false;
-    /**
      * if set to true, the chart will avoid that the first and last label entry
      * in the chart "clip" off the edge of the chart
      */
@@ -107,43 +95,6 @@ public class XAxis extends AxisBase {
      */
     public void setLabelRotationAngle(float angle) {
         mLabelRotationAngle = angle;
-    }
-
-    /**
-     * Sets the number of labels that should be skipped on the axis before the
-     * next label is drawn. This will disable the feature that automatically
-     * calculates an adequate space between the axis labels and set the number
-     * of labels to be skipped to the fixed number provided by this method. Call
-     * resetLabelsToSkip(...) to re-enable automatic calculation.
-     *
-     * @param count
-     */
-    public void setLabelsToSkip(int count) {
-
-        if (count < 0)
-            count = 0;
-
-        mIsAxisModulusCustom = true;
-        mAxisLabelModulus = count + 1;
-    }
-
-    /**
-     * Calling this will disable a custom number of labels to be skipped (set by
-     * setLabelsToSkip(...)) while drawing the xPx-axis. Instead, the number of
-     * values to skip will again be calculated automatically.
-     */
-    public void resetLabelsToSkip() {
-        mIsAxisModulusCustom = false;
-    }
-
-    /**
-     * Returns true if a custom axis-modulus has been set that determines the
-     * number of labels to skip when drawing.
-     *
-     * @return
-     */
-    public boolean isAxisModulusCustom() {
-        return mIsAxisModulusCustom;
     }
 
     /**

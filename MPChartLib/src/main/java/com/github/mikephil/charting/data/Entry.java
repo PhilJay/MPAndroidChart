@@ -11,16 +11,10 @@ import android.os.Parcelable;
  * 
  * @author Philipp Jahoda
  */
-public class Entry implements Parcelable {
+public class Entry extends BaseEntry implements Parcelable {
 
-    /** the yPx yValue */
-    private float y = 0f;
-
-    /** the xPx yValue */
+    /** the x value */
     private float x = 0f;
-
-    /** optional spot for additional data this Entry represents */
-    private Object mData = null;
 
     public Entry() {
 
@@ -33,7 +27,7 @@ public class Entry implements Parcelable {
      * @param y the yPx yValue (the actual yValue of the entry)
      */
     public Entry(float x, float y) {
-        this.y = y;
+        super(y);
         this.x = x;
     }
 
@@ -45,8 +39,8 @@ public class Entry implements Parcelable {
      * @param data Spot for additional data this Entry represents.
      */
     public Entry(float x, float y, Object data) {
-        this(x, y);
-        this.mData = data;
+        super(y, data);
+        this.x = x;
     }
 
     /**
@@ -68,49 +62,12 @@ public class Entry implements Parcelable {
     }
 
     /**
-     * Returns the yPx yValue of this Entry.
-     * 
-     * @return
-     */
-    public float getY() {
-        return y;
-    }
-
-    /**
-     * Sets the yPx-yValue for the Entry.
-     * 
-     * @param y
-     */
-    public void setY(float y) {
-        this.y = y;
-    }
-
-    /**
-     * Returns the data, additional information that this Entry represents, or
-     * null, if no data has been specified.
-     * 
-     * @return
-     */
-    public Object getData() {
-        return mData;
-    }
-
-    /**
-     * Sets additional data this Entry should represent.
-     * 
-     * @param data
-     */
-    public void setData(Object data) {
-        this.mData = data;
-    }
-
-    /**
      * returns an exact copy of the entry
      * 
      * @return
      */
     public Entry copy() {
-        Entry e = new Entry(x, y, mData);
+        Entry e = new Entry(x, getY(), getData());
         return e;
     }
 
@@ -127,13 +84,13 @@ public class Entry implements Parcelable {
         if (e == null)
             return false;
 
-        if (e.mData != this.mData)
+        if (e.getData() != this.getData())
             return false;
 
         if (Math.abs(e.x - this.x) > 0.000001f)
             return false;
 
-        if (Math.abs(e.y - this.y) > 0.000001f)
+        if (Math.abs(e.getY() - this.getY()) > 0.000001f)
             return false;
 
         return true;
@@ -155,11 +112,11 @@ public class Entry implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeFloat(this.x);
-        dest.writeFloat(this.y);
-        if (mData != null) {
-            if (mData instanceof Parcelable) {
+        dest.writeFloat(this.getY());
+        if (getData() != null) {
+            if (getData() instanceof Parcelable) {
                 dest.writeInt(1);
-                dest.writeParcelable((Parcelable) this.mData, flags);
+                dest.writeParcelable((Parcelable) this.getData(), flags);
             } else {
                 throw new ParcelFormatException("Cannot parcel an Entry with non-parcelable data");
             }
@@ -170,9 +127,9 @@ public class Entry implements Parcelable {
 
     protected Entry(Parcel in) {
         this.x = in.readFloat();
-        this.y = in.readFloat();
+        this.setY(in.readFloat());
         if (in.readInt() == 1) {
-            this.mData = in.readParcelable(Object.class.getClassLoader());
+            this.setData(in.readParcelable(Object.class.getClassLoader()));
         }
     }
 

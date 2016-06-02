@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.RadarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
@@ -17,6 +18,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
+import com.github.mikephil.charting.formatter.AxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -64,6 +66,17 @@ public class RadarChartActivitry extends DemoBase {
         XAxis xAxis = mChart.getXAxis();
         xAxis.setTypeface(tf);
         xAxis.setTextSize(9f);
+        xAxis.setValueFormatter(new AxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return mMonths[(int) value % mMonths.length];
+            }
+
+            @Override
+            public int getDecimalDigits() {
+                return 0;
+            }
+        });
 
         YAxis yAxis = mChart.getYAxis();
         yAxis.setTypeface(tf);

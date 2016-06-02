@@ -38,7 +38,6 @@ public class ScrollViewActivity extends DemoBase {
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxisPosition.BOTTOM);
-        xAxis.setLabelsToSkip(0);
         xAxis.setDrawGridLines(false);
 
         mChart.getAxisLeft().setDrawGridLines(false);

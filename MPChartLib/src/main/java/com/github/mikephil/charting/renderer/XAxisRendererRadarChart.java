@@ -26,7 +26,7 @@ public class XAxisRendererRadarChart extends XAxisRenderer {
             return;
 
         final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
-        final PointF drawLabelAnchor = new PointF(0.5f, 0.0f);
+        final PointF drawLabelAnchor = new PointF(0.5f, 0.25f);
 
         mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
         mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
@@ -40,14 +40,14 @@ public class XAxisRendererRadarChart extends XAxisRenderer {
 
         PointF center = mChart.getCenterOffsets();
 
-        int mod = mXAxis.mAxisLabelModulus;
-        for (int i = 0; i < mXAxis.mEntryCount; i += mod) {
-            String label = mXAxis.getValueFormatter().getFormattedValue(mXAxis.mEntries[i], mXAxis);
+        for (int i = 0; i < mChart.getData().getMaxEntryCountSet().getEntryCount(); i++) {
+
+            String label = mXAxis.getValueFormatter().getFormattedValue(i, mXAxis);
 
             float angle = (sliceangle * i + mChart.getRotationAngle()) % 360f;
 
             PointF p = Utils.getPosition(center, mChart.getYRange() * factor
-                    + mXAxis.mLabelRotatedWidth / 2f, angle);
+                    + mXAxis.mLabelRotatedWidth, angle);
 
             drawLabel(c, label, p.x, p.y - mXAxis.mLabelRotatedHeight / 2.f,
                     drawLabelAnchor, labelRotationAngleDegrees);

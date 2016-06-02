@@ -59,30 +59,6 @@ public class XAxisRenderer extends AxisRenderer {
 
     @Override
     protected void computeAxisValues(float min, float max) {
-
-//        int labelCount = mXAxis.getLabelCount();
-//        float range = Math.abs(max - min);
-//
-//        float interval = range / (labelCount - 1);
-//
-//        if (mXAxis.mEntries == null || mXAxis.mEntries.length != labelCount) {
-//            mXAxis.mEntries = new float[labelCount];
-//            mXAxis.mEntryCount = labelCount;
-//        }
-//
-//        mXAxis.mEntries[0] = min;
-//
-//        for (int i = 1; i < labelCount; i++) {
-//            mXAxis.mEntries[i] = min + interval * (float) i;
-//        }
-//
-//        // set decimals
-//        if (interval < 1) {
-//            mXAxis.mDecimals = (int) Math.ceil(-Math.log10(interval));
-//        } else {
-//            mXAxis.mDecimals = 0;
-//        }
-
         super.computeAxisValues(min, max);
 
         computeSize();
