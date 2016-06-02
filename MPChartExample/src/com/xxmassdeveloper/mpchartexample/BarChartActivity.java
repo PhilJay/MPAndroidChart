@@ -231,14 +231,14 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
     private void setData(int count, float range) {
 
         mChart.getXAxis().setAxisMinValue(0f);
-        mChart.getXAxis().setAxisMaxValue(count);
+        mChart.getXAxis().setAxisMaxValue(count+1f);
 
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
 
         for (int i = 0; i < count; i++) {
             float mult = (range + 1);
             float val = (float) (Math.random() * mult);
-            yVals1.add(new BarEntry(i + 0.5f, val));
+            yVals1.add(new BarEntry(i + 1f, val));
         }
 
         BarDataSet set1;

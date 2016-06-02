@@ -14,7 +14,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**
  * Baseclass of all axis renderers.
- * 
+ *
  * @author Philipp Jahoda
  */
 public abstract class AxisRenderer extends Renderer {
@@ -23,19 +23,27 @@ public abstract class AxisRenderer extends Renderer {
 
     protected Transformer mTrans;
 
-    /** paint object for the grid lines */
+    /**
+     * paint object for the grid lines
+     */
     protected Paint mGridPaint;
 
-    /** paint for the xPx-label values */
+    /**
+     * paint for the xPx-label values
+     */
     protected Paint mAxisLabelPaint;
 
-    /** paint for the line surrounding the chart */
+    /**
+     * paint for the line surrounding the chart
+     */
     protected Paint mAxisLinePaint;
 
-	/** paint used for the limit lines */
-	protected Paint mLimitLinePaint;
+    /**
+     * paint used for the limit lines
+     */
+    protected Paint mLimitLinePaint;
 
-	public AxisRenderer(ViewPortHandler viewPortHandler, Transformer trans, AxisBase axis) {
+    public AxisRenderer(ViewPortHandler viewPortHandler, Transformer trans, AxisBase axis) {
         super(viewPortHandler);
 
         this.mTrans = trans;
@@ -54,13 +62,13 @@ public abstract class AxisRenderer extends Renderer {
         mAxisLinePaint.setStrokeWidth(1f);
         mAxisLinePaint.setStyle(Style.STROKE);
 
-		mLimitLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		mLimitLinePaint.setStyle(Paint.Style.STROKE);
-	}
+        mLimitLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mLimitLinePaint.setStyle(Paint.Style.STROKE);
+    }
 
     /**
      * Returns the Paint object used for drawing the axis (labels).
-     * 
+     *
      * @return
      */
     public Paint getPaintAxisLabels() {
@@ -70,7 +78,7 @@ public abstract class AxisRenderer extends Renderer {
     /**
      * Returns the Paint object that is used for drawing the grid-lines of the
      * axis.
-     * 
+     *
      * @return
      */
     public Paint getPaintGrid() {
@@ -80,7 +88,7 @@ public abstract class AxisRenderer extends Renderer {
     /**
      * Returns the Paint object that is used for drawing the axis-line that goes
      * alongside the axis.
-     * 
+     *
      * @return
      */
     public Paint getPaintAxisLine() {
@@ -89,7 +97,7 @@ public abstract class AxisRenderer extends Renderer {
 
     /**
      * Returns the Transformer object used for transforming the axis values.
-     * 
+     *
      * @return
      */
     public Transformer getTransformer() {
@@ -162,6 +170,9 @@ public abstract class AxisRenderer extends Renderer {
             interval = Math.floor(10 * intervalMagnitude);
         }
 
+        boolean centeringEnabled = mAxis.isCenterAxisLabelsEnabled();
+        int n = centeringEnabled ? 1 : 0;
+
         // force label count
         if (mAxis.isForceLabelsEnabled()) {
 
@@ -180,16 +191,21 @@ public abstract class AxisRenderer extends Renderer {
                 v += step;
             }
 
+            n = labelCount;
+
             // no forced count
         } else {
 
-
             double first = interval == 0.0 ? 0.0 : Math.ceil(yMin / interval) * interval;
+            if(centeringEnabled) {
+                first -= interval;
+            }
+
             double last = interval == 0.0 ? 0.0 : Utils.nextUp(Math.floor(yMax / interval) * interval);
 
             double f;
             int i;
-            int n = 0;
+
             if (interval != 0.0) {
                 for (f = first; f <= last; f += interval) {
                     ++n;
@@ -218,33 +234,46 @@ public abstract class AxisRenderer extends Renderer {
         } else {
             mAxis.mDecimals = 0;
         }
+
+        if (centeringEnabled) {
+
+            if (mAxis.mCenteredEntries.length < n) {
+                mAxis.mCenteredEntries = new float[n];
+            }
+
+            float offset = (mAxis.mEntries[1] - mAxis.mEntries[0]) / 2f;
+
+            for (int i = 0; i < n; i++) {
+                mAxis.mCenteredEntries[i] = mAxis.mEntries[i] + offset;
+            }
+        }
     }
 
     /**
      * Draws the axis labels to the screen.
-     * 
+     *
      * @param c
      */
     public abstract void renderAxisLabels(Canvas c);
 
     /**
      * Draws the grid lines belonging to the axis.
-     * 
+     *
      * @param c
      */
     public abstract void renderGridLines(Canvas c);
 
     /**
      * Draws the line that goes alongside the axis.
-     * 
+     *
      * @param c
      */
     public abstract void renderAxisLine(Canvas c);
 
-	/**
-	 * Draws the LimitLines associated with this axis to the screen.
-	 *
-	 * @param c
-	 */
-	public abstract void renderLimitLines(Canvas c);
+    /**
+     * Draws the LimitLines associated with this axis to the screen.
+     *
+     * @param c
+     */
+    public abstract void renderLimitLines(Canvas c);
 }

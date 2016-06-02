@@ -92,8 +92,11 @@ public class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
         float barSpaceHalf = barSpace / 2f;
         float barWidthHalf = mBarWidth / 2f;
 
+        float interval = getIntervalWidth(groupSpace, barSpace);
+
         for (int i = 0; i < maxEntryCount; i++) {
 
+            float start = fromX;
             fromX += groupSpaceWidthHalf;
 
             for (IBarDataSet set : mDataSets) {
@@ -115,6 +118,14 @@ public class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
             }
 
             fromX += groupSpaceWidthHalf;
+            float end = fromX;
+            float innerInterval = end - start;
+            float diff = interval - innerInterval;
+
+            // correct rounding errors
+            if (diff > 0 || diff < 0) {
+                fromX += diff;
+            }
         }
 
         notifyDataChanged();

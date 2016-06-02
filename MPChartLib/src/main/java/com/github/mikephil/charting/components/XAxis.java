@@ -42,12 +42,6 @@ public class XAxis extends AxisBase {
     protected float mLabelRotationAngle = 0f;
 
     /**
-     * the space that should be left out (in characters) between the xPx-axis
-     * labels
-     */
-    private int mSpaceBetweenLabels = 4;
-
-    /**
      * the modulus that indicates if a yValue at a specified index in an
      * array(list) for the xPx-axis-labels is drawn or not. If index % modulus ==
      * 0 DRAW, else dont draw.

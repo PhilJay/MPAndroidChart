@@ -38,6 +38,11 @@ public abstract class AxisBase extends ComponentBase {
     public float[] mEntries = new float[]{};
 
     /**
+     * axis label entries only used for centered labels
+     */
+    public float[] mCenteredEntries = new float[]{};
+
+    /**
      * the number of entries the legend contains
      */
     public int mEntryCount;
@@ -84,6 +89,8 @@ public abstract class AxisBase extends ComponentBase {
      * flag that indicates of the labels of this axis should be drawn or not
      */
     protected boolean mDrawLabels = true;
+
+    protected boolean mCenterAxisLabels = false;
 
     /**
      * the path effect of the grid lines that makes dashed lines possible
@@ -169,6 +176,14 @@ public abstract class AxisBase extends ComponentBase {
      */
     public boolean isDrawAxisLineEnabled() {
         return mDrawAxisLine;
+    }
+
+    public void setCenterAxisLabels(boolean enabled) {
+        mCenterAxisLabels = enabled;
+    }
+
+    public boolean isCenterAxisLabelsEnabled() {
+        return mCenterAxisLabels && mEntryCount > 1;
     }
 
     /**

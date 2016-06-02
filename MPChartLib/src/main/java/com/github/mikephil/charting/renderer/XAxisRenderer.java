@@ -187,12 +187,18 @@ public class XAxisRenderer extends AxisRenderer {
     protected void drawLabels(Canvas c, float pos, PointF anchor) {
 
         final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
+        boolean centeringEnabled = mXAxis.isCenterAxisLabelsEnabled();
 
         float[] positions = new float[mXAxis.mEntryCount * 2];
 
         for (int i = 0; i < positions.length; i += 2) {
+
             // only fill xPx values
-            positions[i] = mXAxis.mEntries[i / 2];
+            if (centeringEnabled) {
+                positions[i] = mXAxis.mCenteredEntries[i / 2];
+            } else {
+                positions[i] = mXAxis.mEntries[i / 2];
+            }
         }
 
         mTrans.pointValuesToPixel(positions);
@@ -203,7 +209,7 @@ public class XAxisRenderer extends AxisRenderer {
 
             if (mViewPortHandler.isInBoundsX(x)) {
 
-                String label = String.valueOf(mXAxis.mEntries[i / 2]);
+                String label = mXAxis.getValueFormatter().getFormattedValue(mXAxis.mEntries[i / 2], mXAxis);
 
                 if (mXAxis.isAvoidFirstLastClippingEnabled()) {
 
@@ -223,13 +229,12 @@ public class XAxisRenderer extends AxisRenderer {
                     }
                 }
 
-                drawLabel(c, mXAxis.mEntries[i / 2], x, pos, anchor, labelRotationAngleDegrees);
+                drawLabel(c, label, x, pos, anchor, labelRotationAngleDegrees);
             }
         }
     }
 
-    protected void drawLabel(Canvas c, float xValue, float x, float y, PointF anchor, float angleDegrees) {
-        String formattedLabel = mXAxis.getValueFormatter().getFormattedValue(xValue, mXAxis);
+    protected void drawLabel(Canvas c, String formattedLabel, float x, float y, PointF anchor, float angleDegrees) {
         Utils.drawXAxisValue(c, formattedLabel, x, y, mAxisLabelPaint, anchor, angleDegrees);
     }
 

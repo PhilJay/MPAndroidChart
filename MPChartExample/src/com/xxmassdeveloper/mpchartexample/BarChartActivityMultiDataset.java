@@ -93,6 +93,8 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
 
         XAxis xl = mChart.getXAxis();
         xl.setTypeface(tf);
+        xl.setGranularity(1f);
+        xl.setCenterAxisLabels(true);
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(tf);
@@ -182,10 +184,13 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-        float groupSpace = 0.8f;
-        float barSpace = 0.15f;
+        float groupSpace = 0.04f;
+        float barSpace = 0.02f;
+        float barWidth = 0.3f;
+        int startYear = 1980;
+        int endYear = startYear + mSeekBarX.getProgress();
 
-        tvX.setText("" + (mSeekBarX.getProgress() * 3));
+        tvX.setText(startYear + "\n-" + endYear);
         tvY.setText("" + (mSeekBarY.getProgress()));
 
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
@@ -194,17 +199,17 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
 
         float mult = mSeekBarY.getProgress() * 1000f;
 
-        for (int i = 0; i < mSeekBarX.getProgress(); i++) {
+        for (int i = startYear; i < endYear; i++) {
             float val = (float) (Math.random() * mult) + 3;
             yVals1.add(new BarEntry(i, val));
         }
 
-        for (int i = 0; i < mSeekBarX.getProgress(); i++) {
+        for (int i = startYear; i < endYear; i++) {
             float val = (float) (Math.random() * mult) + 3;
             yVals2.add(new BarEntry(i, val));
         }
 
-        for (int i = 0; i < mSeekBarX.getProgress(); i++) {
+        for (int i = startYear; i < endYear; i++) {
             float val = (float) (Math.random() * mult) + 3;
             yVals3.add(new BarEntry(i, val));
         }
@@ -246,9 +251,10 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
             mChart.setData(data);
         }
 
-        mChart.getBarData().groupBars(0, groupSpace, barSpace);
-        mChart.getXAxis().setAxisMinValue(0f);
-        mChart.getXAxis().setAxisMaxValue(mChart.getBarData().getIntervalWidth(groupSpace, barSpace) * mSeekBarX.getProgress());
+        mChart.getBarData().setBarWidth(barWidth);
+        mChart.getBarData().groupBars(startYear, groupSpace, barSpace);
+        mChart.getXAxis().setAxisMinValue(startYear);
+        mChart.getXAxis().setAxisMaxValue(mChart.getBarData().getIntervalWidth(groupSpace, barSpace) * mSeekBarX.getProgress() + startYear);
         mChart.invalidate();
     }
 
