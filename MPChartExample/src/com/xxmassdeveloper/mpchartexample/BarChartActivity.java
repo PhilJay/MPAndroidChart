@@ -36,6 +36,7 @@ import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.ViewPortHandler;
+import com.xxmassdeveloper.mpchartexample.custom.DayAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.custom.MyAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -89,7 +90,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f); // only intervals of 1 day
         xAxis.setLabelCount(7);
-        xAxis.setValueFormatter(new DayAxisFormatter());
+        xAxis.setValueFormatter(new DayAxisValueFormatter(mChart));
 
         AxisValueFormatter custom = new MyAxisValueFormatter();
 
@@ -214,23 +215,21 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-        tvX.setText("" + (mSeekBarX.getProgress() + 1));
+        tvX.setText("" + (mSeekBarX.getProgress() + 2));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
-        setData(mSeekBarX.getProgress() + 1, mSeekBarY.getProgress());
+        setData(mSeekBarX.getProgress() + 1 , mSeekBarY.getProgress());
         mChart.invalidate();
     }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         // TODO Auto-generated method stub
-
     }
 
     private void setData(int count, float range) {
@@ -238,11 +237,11 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         float start = 0f;
 
         mChart.getXAxis().setAxisMinValue(start);
-        mChart.getXAxis().setAxisMaxValue(start + count);
+        mChart.getXAxis().setAxisMaxValue(start + count + 2);
 
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
 
-        for (int i = (int) start; i < start + count; i++) {
+        for (int i = (int) start; i < start + count + 1; i++) {
             float mult = (range + 1);
             float val = (float) (Math.random() * mult);
             yVals1.add(new BarEntry(i + 1f, val));
@@ -290,101 +289,6 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
                         + mChart.getHighestVisibleX());
     }
 
-    public void onNothingSelected() {
-    }
-
-    private class DayAxisFormatter implements AxisValueFormatter {
-
-        protected String[] mMonths = new String[]{
-                "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"
-        };
-
-        @Override
-        public String getFormattedValue(float value, AxisBase axis) {
-
-            int dayOfYear = (int) value;
-
-            int month = determineMonth(dayOfYear);
-            String monthName = mMonths[month % mMonths.length];
-
-            if (mChart.getVisibleXRange() > 30 * axis.getLabelCount()) {
-
-                return monthName;
-            } else {
-
-                int dayOfMonth = determineDayOfMonth(dayOfYear, month);
-
-                String appendix = "th";
-
-                switch (dayOfMonth) {
-                    case 1:
-                        appendix = "st";
-                        break;
-                    case 2:
-                        appendix = "nd";
-                        break;
-                    case 3:
-                        appendix = "rd";
-                        break;
-                    case 21:
-                        appendix = "st";
-                        break;
-                    case 22:
-                        appendix = "nd";
-                        break;
-                    case 23:
-                        appendix = "rd";
-                        break;
-                    case 31:
-                        appendix = "st";
-                        break;
-                }
-
-                return dayOfMonth + appendix + " " + monthName;
-            }
-        }
-
-        private int getDaysForMonth(int month) {
-
-            if (month == 1) {
-                return 28;
-            }
-
-            if (month == 3 || month == 5 || month == 8 || month == 10)
-                return 30;
-            else
-                return 31;
-        }
-
-        private int determineMonth(int dayOfYear) {
-
-            int month = -1;
-            int days = 0;
-
-            while (days < dayOfYear) {
-                month++;
-                days += getDaysForMonth(month);
-            }
-
-            return Math.max(month, 0);
-        }
-
-        private int determineDayOfMonth(int dayOfYear, int month) {
-
-            int count = 0;
-            int days = 0;
-
-            while (count < month) {
-                days += getDaysForMonth(count);
-                count++;
-            }
-
-            return dayOfYear - days;
-        }
-
-        @Override
-        public int getDecimalDigits() {
-            return 0;
-        }
-    }
+    @Override
+    public void onNothingSelected() { }
 }
