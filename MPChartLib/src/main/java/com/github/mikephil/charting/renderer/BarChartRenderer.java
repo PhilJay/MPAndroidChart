@@ -236,7 +236,7 @@ public class BarChartRenderer extends DataRenderer {
                         float val = entry.getY();
 
                         drawValue(c, dataSet.getValueFormatter(), val, entry, i, x,
-                                buffer.buffer[j + 1] + (val >= 0 ? posOffset : negOffset), dataSet.getValueTextColor
+                                val >= 0 ? (buffer.buffer[j + 1] +  posOffset) : (buffer.buffer[j + 3] + negOffset), dataSet.getValueTextColor
                                         (j / 4));
                     }
 
@@ -327,7 +327,6 @@ public class BarChartRenderer extends DataRenderer {
     public void drawHighlighted(Canvas c, Highlight[] indices) {
 
         BarData barData = mChart.getBarData();
-        int setCount = barData.getDataSetCount();
 
         for (Highlight high : indices) {
 

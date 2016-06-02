@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.WindowManager;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
@@ -14,6 +15,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.AxisValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -58,6 +60,11 @@ public class BarChartPositiveNegative extends DemoBase {
         xAxis.setDrawAxisLine(false);
         xAxis.setTextColor(Color.LTGRAY);
         xAxis.setTextSize(13f);
+        xAxis.setAxisMinValue(0f);
+        xAxis.setAxisMaxValue(5f);
+        xAxis.setLabelCount(5);
+        xAxis.setCenterAxisLabels(true);
+        xAxis.setGranularity(1f);
 
         YAxis left = mChart.getAxisLeft();
         left.setDrawLabels(false);
@@ -73,12 +80,24 @@ public class BarChartPositiveNegative extends DemoBase {
         mChart.getLegend().setEnabled(false);
 
         // THIS IS THE ORIGINAL DATA YOU WANT TO PLOT
-        List<Data> data = new ArrayList<>();
-        data.add(new Data(0, -224.1f, "12-29"));
-        data.add(new Data(1, 238.5f, "12-30"));
-        data.add(new Data(2, 1280.1f, "12-31"));
-        data.add(new Data(3, -442.3f, "01-01"));
-        data.add(new Data(4, -2280.1f, "01-02"));
+        final List<Data> data = new ArrayList<>();
+        data.add(new Data(0.5f, -224.1f, "12-29"));
+        data.add(new Data(1.5f, 238.5f, "12-30"));
+        data.add(new Data(2.5f, 1280.1f, "12-31"));
+        data.add(new Data(3.5f, -442.3f, "01-01"));
+        data.add(new Data(4.5f, -2280.1f, "01-02"));
+
+        xAxis.setValueFormatter(new AxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return data.get(Math.min(Math.max((int) value, 0), data.size()-1)).xAxisValue;
+            }
+
+            @Override
+            public int getDecimalDigits() {
+                return 0;
+            }
+        });
 
         setData(data);
     }
