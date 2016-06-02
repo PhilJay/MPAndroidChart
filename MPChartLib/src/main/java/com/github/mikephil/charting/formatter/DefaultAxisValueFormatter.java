@@ -5,10 +5,14 @@ import java.text.DecimalFormat;
 /**
  * Created by philipp on 02/06/16.
  */
-public class DefaultAxisValueFormatter {
+public class DefaultAxisValueFormatter implements AxisValueFormatter {
 
-    /** decimalformat for formatting */
+    /**
+     * decimalformat for formatting
+     */
     protected DecimalFormat mFormat;
+
+    protected int digits = 0;
 
     /**
      * Constructor that specifies to how many digits the yValue should be
@@ -17,6 +21,7 @@ public class DefaultAxisValueFormatter {
      * @param digits
      */
     public DefaultAxisValueFormatter(int digits) {
+        this.digits = digits;
 
         StringBuffer b = new StringBuffer();
         for (int i = 0; i < digits; i++) {
@@ -26,5 +31,10 @@ public class DefaultAxisValueFormatter {
         }
 
         mFormat = new DecimalFormat("###,###,###,##0" + b.toString());
+    }
+
+    @Override
+    public int getDecimalDigits() {
+        return digits;
     }
 }

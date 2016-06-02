@@ -41,4 +41,9 @@ public class PercentFormatter implements ValueFormatter, YAxisValueFormatter {
     public String getFormattedValue(float value, YAxis yAxis) {
         return mFormat.format(value) + " %";
     }
+
+    @Override
+    public int getDecimalDigits() {
+        return 1;
+    }
 }

@@ -32,4 +32,9 @@ public class MyCustomXAxisValueFormatter implements XAxisValueFormatter {
         else
             return mFormat.format(xValue);
     }
+
+    @Override
+    public int getDecimalDigits() {
+        return 1;
+    }
 }

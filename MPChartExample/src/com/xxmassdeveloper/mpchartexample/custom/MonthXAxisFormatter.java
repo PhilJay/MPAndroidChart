@@ -25,4 +25,9 @@ public class MonthXAxisFormatter implements XAxisValueFormatter {
         float percent = xValue / xRange;
         return mMonths[(int) (mMonths.length * percent)];
     }
+
+    @Override
+    public int getDecimalDigits() {
+        return 0;
+    }
 }

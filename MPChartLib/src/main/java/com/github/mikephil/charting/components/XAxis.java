@@ -236,8 +236,12 @@ public class XAxis extends AxisBase {
      */
     public XAxisValueFormatter getValueFormatter() {
 
-        if (mXAxisValueFormatter == null)
+        if (mXAxisValueFormatter == null) {
             mXAxisValueFormatter = new DefaultXAxisValueFormatter(mDecimals);
+        } else if (mXAxisValueFormatter.getDecimalDigits() != mDecimals && mXAxisValueFormatter instanceof
+                DefaultXAxisValueFormatter) {
+            mXAxisValueFormatter = new DefaultXAxisValueFormatter(mDecimals);
+        }
 
         return mXAxisValueFormatter;
     }

@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
+import com.github.mikephil.charting.formatter.DefaultXAxisValueFormatter;
 import com.github.mikephil.charting.formatter.DefaultYAxisValueFormatter;
 import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.github.mikephil.charting.utils.Utils;
@@ -393,8 +394,12 @@ public class YAxis extends AxisBase {
      */
     public YAxisValueFormatter getValueFormatter() {
 
-        if (mYAxisValueFormatter == null)
+        if (mYAxisValueFormatter == null) {
             mYAxisValueFormatter = new DefaultYAxisValueFormatter(mDecimals);
+        } else if (mYAxisValueFormatter.getDecimalDigits() != mDecimals && mYAxisValueFormatter instanceof
+                DefaultYAxisValueFormatter) {
+            mYAxisValueFormatter = new DefaultYAxisValueFormatter(mDecimals);
+        }
 
         return mYAxisValueFormatter;
     }

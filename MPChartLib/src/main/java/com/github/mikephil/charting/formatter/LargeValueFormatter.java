@@ -89,4 +89,9 @@ public class LargeValueFormatter implements ValueFormatter, YAxisValueFormatter 
 
         return r;
     }
+
+    @Override
+    public int getDecimalDigits() {
+        return 0;
+    }
 }

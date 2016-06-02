@@ -7,7 +7,7 @@ import com.github.mikephil.charting.components.YAxis;
  * Custom formatter interface that allows formatting of
  * YAxis labels before they are being drawn.
  */
-public interface YAxisValueFormatter {
+public interface YAxisValueFormatter extends AxisValueFormatter {
 
     /**
      * Called when a yValue from the YAxis is formatted

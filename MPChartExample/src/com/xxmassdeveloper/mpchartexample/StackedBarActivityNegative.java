@@ -226,5 +226,10 @@ public class StackedBarActivityNegative extends DemoBase implements
         public String getFormattedValue(float value, YAxis yAxis) {
             return mFormat.format(Math.abs(value)) + "m";
         }
+
+        @Override
+        public int getDecimalDigits() {
+            return 0;
+        }
     }
 }

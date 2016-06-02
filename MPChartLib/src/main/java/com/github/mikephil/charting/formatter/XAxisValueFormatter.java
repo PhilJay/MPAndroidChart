@@ -8,7 +8,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
  *
  * @author Philipp Jahoda
  */
-public interface XAxisValueFormatter {
+public interface XAxisValueFormatter extends AxisValueFormatter {
 
     /**
      * Returns the customized label that is drawn on the x-axis.
