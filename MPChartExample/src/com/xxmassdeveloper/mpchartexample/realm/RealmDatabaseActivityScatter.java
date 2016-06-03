@@ -5,6 +5,7 @@ import android.view.WindowManager;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.ScatterChart;
+import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.realm.implementation.RealmScatterData;
 import com.github.mikephil.charting.data.realm.implementation.RealmScatterDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
@@ -53,7 +54,7 @@ public class RealmDatabaseActivityScatter extends RealmBaseActivity {
 
         RealmResults<RealmDemoData> result = mRealm.allObjects(RealmDemoData.class);
 
-        RealmScatterDataSet<RealmDemoData> set = new RealmScatterDataSet<RealmDemoData>(result, "yValue", "xIndex");
+        RealmScatterDataSet<RealmDemoData> set = new RealmScatterDataSet<RealmDemoData>(result, "xValue", "yValue");
         set.setLabel("Realm ScatterDataSet");
         set.setScatterShapeSize(9f);
         set.setColor(ColorTemplate.rgb("#CDDC39"));
@@ -63,7 +64,7 @@ public class RealmDatabaseActivityScatter extends RealmBaseActivity {
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list
-        RealmScatterData data = new RealmScatterData(result, "xAxisPosition", "xAxisLabel", dataSets);
+        ScatterData data = new ScatterData(dataSets);
         styleData(data);
 
         // set data

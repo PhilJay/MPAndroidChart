@@ -47,8 +47,8 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
             "Stack"
     };
 
-    public RealmBarDataSet(RealmResults<T> results, String yValuesField, String xIndexField) {
-        super(results, yValuesField, xIndexField);
+    public RealmBarDataSet(RealmResults<T> results, String xValuesField, String yValuesField) {
+        super(results, xValuesField, yValuesField);
         mHighLightColor = Color.rgb(0, 0, 0);
 
         build(this.results);
@@ -59,13 +59,13 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
      * Constructor for supporting stacked values.
      *
      * @param results
+     * @param xValuesField
      * @param yValuesField
-     * @param xIndexField
      * @param stackValueFieldName
      */
-    public RealmBarDataSet(RealmResults<T> results, String yValuesField, String xIndexField, String
+    public RealmBarDataSet(RealmResults<T> results,  String xValuesField, String yValuesField, String
             stackValueFieldName) {
-        super(results, yValuesField, xIndexField);
+        super(results, xValuesField, yValuesField);
         this.mStackValueFieldName = stackValueFieldName;
         mHighLightColor = Color.rgb(0, 0, 0);
 
@@ -97,10 +97,10 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
             }
 
             return new BarEntry(
-                    mXValuesField == null ? x : dynamicObject.getInt(mXValuesField), values);
+                    mXValuesField == null ? x : dynamicObject.getFloat(mXValuesField), values);
         } else {
             float value = dynamicObject.getFloat(mYValuesField);
-            return new BarEntry(mXValuesField == null ? x : dynamicObject.getInt(mXValuesField), value);
+            return new BarEntry(mXValuesField == null ? x : dynamicObject.getFloat(mXValuesField), value);
         }
     }
 

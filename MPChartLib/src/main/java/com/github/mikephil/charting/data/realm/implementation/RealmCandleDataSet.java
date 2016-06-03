@@ -123,7 +123,7 @@ public class RealmCandleDataSet<T extends RealmObject> extends RealmLineScatterC
         DynamicRealmObject dynamicObject = new DynamicRealmObject(realmObject);
 
         return new CandleEntry(
-                mXValuesField == null ? xIndex : dynamicObject.getInt(mXValuesField),
+                mXValuesField == null ? xIndex : dynamicObject.getFloat(mXValuesField),
                 dynamicObject.getFloat(mHighField),
                 dynamicObject.getFloat(mLowField),
                 dynamicObject.getFloat(mOpenField),

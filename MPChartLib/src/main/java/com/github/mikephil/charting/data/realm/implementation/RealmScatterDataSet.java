@@ -57,11 +57,11 @@ public class RealmScatterDataSet<T extends RealmObject> extends RealmLineScatter
      * Constructor for creating a ScatterDataSet with realm data.
      *
      * @param result       the queried results from the realm database
-     * @param yValuesField the name of the field in your data object that represents the yPx-yValue
-     * @param xIndexField  the name of the field in your data object that represents the xPx-index
+     * @param xValuesField the name of the field in your data object that represents the x value
+     * @param yValuesField  the name of the field in your data object that represents the y value
      */
-    public RealmScatterDataSet(RealmResults<T> result, String yValuesField, String xIndexField) {
-        super(result, yValuesField, xIndexField);
+    public RealmScatterDataSet(RealmResults<T> result, String xValuesField, String yValuesField) {
+        super(result, xValuesField, yValuesField);
 
         build(this.results);
         calcMinMax();

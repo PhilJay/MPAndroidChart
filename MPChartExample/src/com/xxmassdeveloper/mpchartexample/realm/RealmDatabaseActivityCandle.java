@@ -7,7 +7,7 @@ import android.view.WindowManager;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.CandleStickChart;
-import com.github.mikephil.charting.data.realm.implementation.RealmCandleData;
+import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.realm.implementation.RealmCandleDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet;
 import com.xxmassdeveloper.mpchartexample.R;
@@ -53,7 +53,7 @@ public class RealmDatabaseActivityCandle extends RealmBaseActivity {
 
         RealmResults<RealmDemoData> result = mRealm.allObjects(RealmDemoData.class);
 
-        RealmCandleDataSet<RealmDemoData> set = new RealmCandleDataSet<RealmDemoData>(result, "high", "low", "open", "close", "xIndex");
+        RealmCandleDataSet<RealmDemoData> set = new RealmCandleDataSet<RealmDemoData>(result, "xValue", "high", "low", "open", "close");
         set.setLabel("Realm Realm CandleDataSet");
         set.setShadowColor(Color.DKGRAY);
         set.setShadowWidth(0.7f);
@@ -67,7 +67,7 @@ public class RealmDatabaseActivityCandle extends RealmBaseActivity {
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list
-        RealmCandleData data = new RealmCandleData(result, "xAxisPosition", "xAxisLabel", dataSets);
+        CandleData data = new CandleData(dataSets);
         styleData(data);
 
         // set data

@@ -48,12 +48,12 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     protected float mXMin = 0.0f;
 
     /**
-     * fieldname of the column that contains the yPx-values of this dataset
+     * fieldname of the column that contains the y-values of this dataset
      */
     protected String mYValuesField;
 
     /**
-     * fieldname of the column that contains the xPx-values of this dataset
+     * fieldname of the column that contains the x-values of this dataset
      */
     protected String mXValuesField;
 
@@ -70,13 +70,13 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
      * Constructor that takes the realm RealmResults, sorts & stores them.
      *
      * @param results
+     * @param xValuesField
      * @param yValuesField
-     * @param xIndexField
      */
-    public RealmBaseDataSet(RealmResults<T> results, String yValuesField, String xIndexField) {
+    public RealmBaseDataSet(RealmResults<T> results, String xValuesField, String yValuesField) {
         this.results = results;
         this.mYValuesField = yValuesField;
-        this.mXValuesField = xIndexField;
+        this.mXValuesField = xValuesField;
         this.mValues = new ArrayList<S>();
 
         if (mXValuesField != null)
@@ -97,8 +97,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     public S buildEntryFromResultObject(T realmObject, float x) {
         DynamicRealmObject dynamicObject = new DynamicRealmObject(realmObject);
 
-        return (S) new Entry(dynamicObject.getFloat(mYValuesField),
-                mXValuesField == null ? x : dynamicObject.getInt(mXValuesField));
+        return (S) new Entry(mXValuesField == null ? x : dynamicObject.getFloat(mXValuesField), dynamicObject.getFloat(mYValuesField));
     }
 
     @Override

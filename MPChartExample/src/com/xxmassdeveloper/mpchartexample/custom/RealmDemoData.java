@@ -10,15 +10,14 @@ import io.realm.RealmObject;
  */
 public class RealmDemoData extends RealmObject {
 
-    private float value;
+    private float yValue;
+    private float xValue;
 
     private float open, close, high, low;
 
     private float bubbleSize;
 
     private RealmList<RealmFloat> stackValues;
-
-    private int xIndex;
 
     private String xAxisLabel;
     private double xAxisPosition;
@@ -31,9 +30,9 @@ public class RealmDemoData extends RealmObject {
 
     }
 
-    public RealmDemoData(float value, int xIndex, double xAxisPosition, String xAxisLabel) {
-        this.value = value;
-        this.xIndex = xIndex;
+    public RealmDemoData(float xValue, float yValue, double xAxisPosition, String xAxisLabel) {
+        this.xValue = xValue;
+        this.yValue = yValue;
         this.xAxisPosition = xAxisPosition;
         this.xAxisLabel = xAxisLabel;
     }
@@ -41,13 +40,13 @@ public class RealmDemoData extends RealmObject {
     /**
      * Constructor for stacked bars.
      *
+     * @param xValue
      * @param stackValues
-     * @param xIndex
      * @param xAxisPosition
      * @param xAxisLabel
      */
-    public RealmDemoData(float[] stackValues, int xIndex, double xAxisPosition, String xAxisLabel) {
-        this.xIndex = xIndex;
+    public RealmDemoData(float xValue, float[] stackValues, double xAxisPosition, String xAxisLabel) {
+        this.xValue = xValue;
         this.xAxisPosition = xAxisPosition;
         this.xAxisLabel = xAxisLabel;
         this.stackValues = new RealmList<RealmFloat>();
@@ -60,21 +59,22 @@ public class RealmDemoData extends RealmObject {
     /**
      * Constructor for candles.
      *
+     * @param xValue
      * @param high
      * @param low
      * @param open
      * @param close
-     * @param xIndex
      * @param xAxisPosition
      * @param xAxisLabel
      */
-    public RealmDemoData(float high, float low, float open, float close, int xIndex, double xAxisPosition, String xAxisLabel) {
-        this.value = (high + low) / 2f;
+    public RealmDemoData(float xValue, float high, float low, float open, float close, double xAxisPosition, String
+            xAxisLabel) {
+        this.yValue = (high + low) / 2f;
         this.high = high;
         this.low = low;
         this.open = open;
         this.close = close;
-        this.xIndex = xIndex;
+        this.xValue = xValue;
         this.xAxisPosition = xAxisPosition;
         this.xAxisLabel = xAxisLabel;
     }
@@ -82,26 +82,34 @@ public class RealmDemoData extends RealmObject {
     /**
      * Constructor for bubbles.
      *
-     * @param value
-     * @param xIndex
+     * @param xValue
+     * @param yValue
      * @param bubbleSize
      * @param xAxisPosition
      * @param xAxisLabel
      */
-    public RealmDemoData(float value, int xIndex, float bubbleSize, double xAxisPosition, String xAxisLabel) {
-        this.value = value;
-        this.xIndex = xIndex;
+    public RealmDemoData(float xValue, float yValue, float bubbleSize, double xAxisPosition, String xAxisLabel) {
+        this.xValue = xValue;
+        this.yValue = yValue;
         this.bubbleSize = bubbleSize;
         this.xAxisPosition = xAxisPosition;
         this.xAxisLabel = xAxisLabel;
     }
 
-    public float getValue() {
-        return value;
+    public float getyValue() {
+        return yValue;
     }
 
-    public void setValue(float value) {
-        this.value = value;
+    public void setyValue(float yValue) {
+        this.yValue = yValue;
+    }
+
+    public float getxValue() {
+        return xValue;
+    }
+
+    public void setxValue(float xValue) {
+        this.xValue = xValue;
     }
 
     public RealmList<RealmFloat> getStackValues() {
@@ -110,14 +118,6 @@ public class RealmDemoData extends RealmObject {
 
     public void setStackValues(RealmList<RealmFloat> stackValues) {
         this.stackValues = stackValues;
-    }
-
-    public int getxIndex() {
-        return xIndex;
-    }
-
-    public void setxIndex(int xIndex) {
-        this.xIndex = xIndex;
     }
 
     public float getOpen() {

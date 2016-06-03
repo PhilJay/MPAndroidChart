@@ -57,7 +57,7 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
         DynamicRealmObject dynamicObject = new DynamicRealmObject(realmObject);
 
         return new BubbleEntry(
-                mXValuesField == null ? x : dynamicObject.getInt(mXValuesField),
+                mXValuesField == null ? x : dynamicObject.getFloat(mXValuesField),
                 dynamicObject.getFloat(mYValuesField),
                 dynamicObject.getFloat(mSizeField));
     }

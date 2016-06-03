@@ -24,11 +24,11 @@ public abstract class RealmBarLineScatterCandleBubbleDataSet<T extends RealmObje
      * Constructor that takes the realm RealmResults, sorts & stores them.
      *
      * @param results
+     * @param xValuesField
      * @param yValuesField
-     * @param xIndexField
      */
-    public RealmBarLineScatterCandleBubbleDataSet(RealmResults<T> results, String yValuesField, String xIndexField) {
-        super(results, yValuesField, xIndexField);
+    public RealmBarLineScatterCandleBubbleDataSet(RealmResults<T> results, String xValuesField, String yValuesField) {
+        super(results, xValuesField, yValuesField);
     }
 
     /**

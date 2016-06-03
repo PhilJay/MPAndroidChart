@@ -6,7 +6,7 @@ import android.view.WindowManager;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
-import com.github.mikephil.charting.data.realm.implementation.RealmBarData;
+import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.realm.implementation.RealmBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -54,7 +54,7 @@ public class RealmDatabaseActivityHorizontalBar extends RealmBaseActivity {
         RealmResults<RealmDemoData> result = mRealm.allObjects(RealmDemoData.class);
 
         //RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "stackValues", "xIndex"); // normal entries
-        RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "stackValues", "xIndex", "floatValue"); // stacked entries
+        RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "xValue", "stackValues", "floatValue"); // stacked entries
         set.setColors(new int[]{ColorTemplate.rgb("#8BC34A"), ColorTemplate.rgb("#FFC107"), ColorTemplate.rgb("#9E9E9E")});
         set.setLabel("Mobile OS distribution");
         set.setStackLabels(new String[]{"iOS", "Android", "Other"});
@@ -63,7 +63,7 @@ public class RealmDatabaseActivityHorizontalBar extends RealmBaseActivity {
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list
-        RealmBarData data = new RealmBarData(result, "xAxisPosition", "xAxisLabel", dataSets);
+        BarData data = new BarData(dataSets);
         styleData(data);
         data.setValueTextColor(Color.WHITE);
 

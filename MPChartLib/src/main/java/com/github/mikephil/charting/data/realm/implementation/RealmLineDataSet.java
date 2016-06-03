@@ -87,11 +87,11 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
      * Constructor for creating a LineDataSet with realm data.
      *
      * @param result       the queried results from the realm database
-     * @param yValuesField the name of the field in your data object that represents the yPx-yValue
-     * @param xIndexField  the name of the field in your data object that represents the xPx-index
+     * @param xValuesField the name of the field in your data object that represents the x-axis value
+     * @param yValuesField  the name of the field in your data object that represents the y-axis value
      */
-    public RealmLineDataSet(RealmResults<T> result, String yValuesField, String xIndexField) {
-        super(result, yValuesField, xIndexField);
+    public RealmLineDataSet(RealmResults<T> result, String xValuesField, String yValuesField) {
+        super(result, xValuesField, yValuesField);
         mCircleColors = new ArrayList<Integer>();
 
         // default color
