@@ -110,7 +110,7 @@ public abstract class RealmBaseActivity extends DemoBase {
 
             float value = 40f + (float) (Math.random() * 60f);
 
-            RealmDemoData d = new RealmDemoData(i, value, i, "" + i);
+            RealmDemoData d = new RealmDemoData(i, value);
             mRealm.copyToRealm(d);
         }
 
@@ -129,7 +129,7 @@ public abstract class RealmBaseActivity extends DemoBase {
             float val2 = 34f + (float) (Math.random() * 12.0f);
             float[] stack = new float[]{val1, val2, 100 - val1 - val2};
 
-            RealmDemoData d = new RealmDemoData(i, stack, i, "" + i);
+            RealmDemoData d = new RealmDemoData(i, stack);
             mRealm.copyToRealm(d);
         }
 
@@ -156,7 +156,7 @@ public abstract class RealmBaseActivity extends DemoBase {
             boolean even = i % 2 == 0;
 
             RealmDemoData d = new RealmDemoData(i, val + high, val - low, even ? val + open : val - open,
-                    even ? val - close : val + close, i, i + "");
+                    even ? val - close : val + close);
 
             mRealm.copyToRealm(d);
         }
@@ -175,7 +175,7 @@ public abstract class RealmBaseActivity extends DemoBase {
             float value = 30f + (float) (Math.random() * 100.0);
             float size = 15f + (float) (Math.random() * 20.0);
 
-            RealmDemoData d = new RealmDemoData(i, value, size, "" + i);
+            RealmDemoData d = new RealmDemoData(i, value, size);
             mRealm.copyToRealm(d);
         }
 
@@ -198,7 +198,7 @@ public abstract class RealmBaseActivity extends DemoBase {
         String[] xValues = new String[]{ "iOS", "Android", "WP 10", "BlackBerry", "Other"};
 
         for (int i = 0; i < values.length; i++) {
-            RealmDemoData d = new RealmDemoData(i, values[i], i, xValues[i]);
+            RealmDemoData d = new RealmDemoData(i, values[i]);
             mRealm.copyToRealm(d);
         }
 

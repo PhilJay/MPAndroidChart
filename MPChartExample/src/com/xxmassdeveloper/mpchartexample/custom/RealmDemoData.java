@@ -19,9 +19,6 @@ public class RealmDemoData extends RealmObject {
 
     private RealmList<RealmFloat> stackValues;
 
-    private String xAxisLabel;
-    private double xAxisPosition;
-
     private String someStringField;
 
     // ofc there could me more fields here...
@@ -30,11 +27,9 @@ public class RealmDemoData extends RealmObject {
 
     }
 
-    public RealmDemoData(float xValue, float yValue, double xAxisPosition, String xAxisLabel) {
+    public RealmDemoData(float xValue, float yValue) {
         this.xValue = xValue;
         this.yValue = yValue;
-        this.xAxisPosition = xAxisPosition;
-        this.xAxisLabel = xAxisLabel;
     }
 
     /**
@@ -42,13 +37,9 @@ public class RealmDemoData extends RealmObject {
      *
      * @param xValue
      * @param stackValues
-     * @param xAxisPosition
-     * @param xAxisLabel
      */
-    public RealmDemoData(float xValue, float[] stackValues, double xAxisPosition, String xAxisLabel) {
+    public RealmDemoData(float xValue, float[] stackValues) {
         this.xValue = xValue;
-        this.xAxisPosition = xAxisPosition;
-        this.xAxisLabel = xAxisLabel;
         this.stackValues = new RealmList<RealmFloat>();
 
         for (float val : stackValues) {
@@ -64,19 +55,14 @@ public class RealmDemoData extends RealmObject {
      * @param low
      * @param open
      * @param close
-     * @param xAxisPosition
-     * @param xAxisLabel
      */
-    public RealmDemoData(float xValue, float high, float low, float open, float close, double xAxisPosition, String
-            xAxisLabel) {
+    public RealmDemoData(float xValue, float high, float low, float open, float close) {
         this.yValue = (high + low) / 2f;
         this.high = high;
         this.low = low;
         this.open = open;
         this.close = close;
         this.xValue = xValue;
-        this.xAxisPosition = xAxisPosition;
-        this.xAxisLabel = xAxisLabel;
     }
 
     /**
@@ -85,15 +71,11 @@ public class RealmDemoData extends RealmObject {
      * @param xValue
      * @param yValue
      * @param bubbleSize
-     * @param xAxisPosition
-     * @param xAxisLabel
      */
-    public RealmDemoData(float xValue, float yValue, float bubbleSize, double xAxisPosition, String xAxisLabel) {
+    public RealmDemoData(float xValue, float yValue, float bubbleSize) {
         this.xValue = xValue;
         this.yValue = yValue;
         this.bubbleSize = bubbleSize;
-        this.xAxisPosition = xAxisPosition;
-        this.xAxisLabel = xAxisLabel;
     }
 
     public float getyValue() {
@@ -168,19 +150,4 @@ public class RealmDemoData extends RealmObject {
         this.someStringField = someStringField;
     }
 
-    public double getxAxisPosition() {
-        return xAxisPosition;
-    }
-
-    public void setxAxisPosition(double xAxisPosition) {
-        this.xAxisPosition = xAxisPosition;
-    }
-
-    public String getxAxisLabel() {
-        return xAxisLabel;
-    }
-
-    public void setxAxisLabel(String xAxisLabel) {
-        this.xAxisLabel = xAxisLabel;
-    }
 }

@@ -108,6 +108,7 @@ public class ListViewBarChartActivity extends DemoBase {
 
             // set data
             holder.chart.setData(data);
+            holder.chart.setFitBars(true);
             
             // do not forget to refresh the chart
 //            holder.chart.invalidate();

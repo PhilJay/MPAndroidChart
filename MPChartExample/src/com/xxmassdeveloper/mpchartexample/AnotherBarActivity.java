@@ -196,6 +196,7 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
 
             BarData data = new BarData(dataSets);
             mChart.setData(data);
+            mChart.setFitBars(true);
         }
 
         mChart.invalidate();

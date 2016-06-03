@@ -5,6 +5,7 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.highlight.BarHighlighter;
@@ -15,170 +16,191 @@ import com.github.mikephil.charting.renderer.BarChartRenderer;
 
 /**
  * Chart that draws bars.
- * 
+ *
  * @author Philipp Jahoda
  */
 public class BarChart extends BarLineChartBase<BarData> implements BarDataProvider {
 
-	/** flag that enables or disables the highlighting arrow */
-	private boolean mDrawHighlightArrow = false;
+    /**
+     * flag that enables or disables the highlighting arrow
+     */
+    private boolean mDrawHighlightArrow = false;
 
-	/**
-	 * if set to true, all values are drawn above their bars, instead of below their top
-	 */
-	private boolean mDrawValueAboveBar = true;
+    /**
+     * if set to true, all values are drawn above their bars, instead of below their top
+     */
+    private boolean mDrawValueAboveBar = true;
 
-	/**
-	 * if set to true, a grey area is drawn behind each bar that indicates the maximum yValue
-	 */
-	private boolean mDrawBarShadow = false;
+    /**
+     * if set to true, a grey area is drawn behind each bar that indicates the maximum yValue
+     */
+    private boolean mDrawBarShadow = false;
 
-	public BarChart(Context context) {
-		super(context);
-	}
+    private boolean mFitBars = false;
 
-	public BarChart(Context context, AttributeSet attrs) {
-		super(context, attrs);
-	}
+    public BarChart(Context context) {
+        super(context);
+    }
 
-	public BarChart(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-	}
+    public BarChart(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
 
-	@Override
-	protected void init() {
-		super.init();
+    public BarChart(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
 
-		mRenderer = new BarChartRenderer(this, mAnimator, mViewPortHandler);
+    @Override
+    protected void init() {
+        super.init();
 
-		setHighlighter(new BarHighlighter(this));
+        mRenderer = new BarChartRenderer(this, mAnimator, mViewPortHandler);
 
-		//mXAxis.mAxisMinimum = -0.5f;
-	}
+        setHighlighter(new BarHighlighter(this));
 
-	@Override
-	protected void calcMinMax() {
-		super.calcMinMax();
-//
-//		// increase deltax by 1 because the bars have a width of 1
-//		mXAxis.mAxisRange += 0.5f;
-//
-//		// extend xDelta to make space for multiple datasets (if ther are one)
-//		mXAxis.mAxisRange *= mData.getDataSetCount();
-//
-//		float groupSpace = mData.getGroupSpace();
-//		mXAxis.mAxisRange += mData.getXValCount() * groupSpace;
-//		mXAxis.mAxisMaximum = mXAxis.mAxisRange - mXAxis.mAxisMinimum;
-	}
+        //mXAxis.mAxisMinimum = -0.5f;
+    }
 
-	/**
-	 * Returns the Highlight object (contains xPx-index and DataSet index) of the selected yValue at the given touch point
-	 * inside the BarChart.
-	 * 
-	 * @param x
-	 * @param y
-	 * @return
-	 */
-	@Override
-	public Highlight getHighlightByTouchPoint(float x, float y) {
+    @Override
+    protected void calcMinMax() {
 
-		if (mData == null) {
-			Log.e(LOG_TAG, "Can't select by touch. No data set.");
-			return null;
-		} else
-			return getHighlighter().getHighlight(x, y);
-	}
+        if (mAutoScaleMinMaxEnabled)
+            mData.calcMinMax();
 
-	/**
-	 * Returns the bounding box of the specified Entry in the specified DataSet. Returns null if the Entry could not be
-	 * found in the charts data.
-	 * 
-	 * @param e
-	 * @return
-	 */
-	public RectF getBarBounds(BarEntry e) {
+        if (mFitBars) {
+            mXAxis.calculate(mData.getXMin() - mData.getBarWidth() / 2f, mData.getXMax() + mData.getBarWidth() / 2f);
+        } else {
+            mXAxis.calculate(mData.getXMin(), mData.getXMax());
+        }
 
-		IBarDataSet set = mData.getDataSetForEntry(e);
+        // calculate axis range (min / max) according to provided data
+        mAxisLeft.calculate(mData.getYMin(YAxis.AxisDependency.LEFT), mData.getYMax(YAxis.AxisDependency.LEFT));
+        mAxisRight.calculate(mData.getYMin(YAxis.AxisDependency.RIGHT), mData.getYMax(YAxis.AxisDependency
+                .RIGHT));
+    }
 
-		if (set == null)
-			return null;
+    /**
+     * Returns the Highlight object (contains xPx-index and DataSet index) of the selected yValue at the given touch
+     * point
+     * inside the BarChart.
+     *
+     * @param x
+     * @param y
+     * @return
+     */
+    @Override
+    public Highlight getHighlightByTouchPoint(float x, float y) {
 
-		float y = e.getY();
-		float x = e.getX();
+        if (mData == null) {
+            Log.e(LOG_TAG, "Can't select by touch. No data set.");
+            return null;
+        } else
+            return getHighlighter().getHighlight(x, y);
+    }
 
-		float barWidth = mData.getBarWidth();
+    /**
+     * Returns the bounding box of the specified Entry in the specified DataSet. Returns null if the Entry could not be
+     * found in the charts data.
+     *
+     * @param e
+     * @return
+     */
+    public RectF getBarBounds(BarEntry e) {
 
-		float left = x - barWidth / 2f;
-		float right = x + barWidth / 2f;
-		float top = y >= 0 ? y : 0;
-		float bottom = y <= 0 ? y : 0;
+        IBarDataSet set = mData.getDataSetForEntry(e);
 
-		RectF bounds = new RectF(left, top, right, bottom);
+        if (set == null)
+            return null;
 
-		getTransformer(set.getAxisDependency()).rectValueToPixel(bounds);
+        float y = e.getY();
+        float x = e.getX();
 
-		return bounds;
-	}
+        float barWidth = mData.getBarWidth();
 
-	/**
-	 * set this to true to draw the highlightning arrow
-	 * 
-	 * @param enabled
-	 */
-	public void setDrawHighlightArrow(boolean enabled) {
-		mDrawHighlightArrow = enabled;
-	}
+        float left = x - barWidth / 2f;
+        float right = x + barWidth / 2f;
+        float top = y >= 0 ? y : 0;
+        float bottom = y <= 0 ? y : 0;
 
-	/**
-	 * returns true if drawing the highlighting arrow is enabled, false if not
-	 * 
-	 * @return
-	 */
-	public boolean isDrawHighlightArrowEnabled() {
-		return mDrawHighlightArrow;
-	}
+        RectF bounds = new RectF(left, top, right, bottom);
 
-	/**
-	 * If set to true, all values are drawn above their bars, instead of below their top.
-	 * 
-	 * @param enabled
-	 */
-	public void setDrawValueAboveBar(boolean enabled) {
-		mDrawValueAboveBar = enabled;
-	}
+        getTransformer(set.getAxisDependency()).rectValueToPixel(bounds);
 
-	/**
-	 * returns true if drawing values above bars is enabled, false if not
-	 * 
-	 * @return
-	 */
-	public boolean isDrawValueAboveBarEnabled() {
-		return mDrawValueAboveBar;
-	}
+        return bounds;
+    }
 
-	/**
-	 * If set to true, a grey area is drawn behind each bar that indicates the maximum yValue. Enabling his will reduce
-	 * performance by about 50%.
-	 * 
-	 * @param enabled
-	 */
-	public void setDrawBarShadow(boolean enabled) {
-		mDrawBarShadow = enabled;
-	}
+    /**
+     * set this to true to draw the highlightning arrow
+     *
+     * @param enabled
+     */
+    public void setDrawHighlightArrow(boolean enabled) {
+        mDrawHighlightArrow = enabled;
+    }
 
-	/**
-	 * returns true if drawing shadows (maxvalue) for each bar is enabled, false if not
-	 * 
-	 * @return
-	 */
-	public boolean isDrawBarShadowEnabled() {
-		return mDrawBarShadow;
-	}
+    /**
+     * returns true if drawing the highlighting arrow is enabled, false if not
+     *
+     * @return
+     */
+    public boolean isDrawHighlightArrowEnabled() {
+        return mDrawHighlightArrow;
+    }
 
-	@Override
-	public BarData getBarData() {
-		return mData;
-	}
+    /**
+     * If set to true, all values are drawn above their bars, instead of below their top.
+     *
+     * @param enabled
+     */
+    public void setDrawValueAboveBar(boolean enabled) {
+        mDrawValueAboveBar = enabled;
+    }
+
+    /**
+     * returns true if drawing values above bars is enabled, false if not
+     *
+     * @return
+     */
+    public boolean isDrawValueAboveBarEnabled() {
+        return mDrawValueAboveBar;
+    }
+
+    /**
+     * If set to true, a grey area is drawn behind each bar that indicates the maximum yValue. Enabling his will reduce
+     * performance by about 50%.
+     *
+     * @param enabled
+     */
+    public void setDrawBarShadow(boolean enabled) {
+        mDrawBarShadow = enabled;
+    }
+
+    /**
+     * returns true if drawing shadows (maxvalue) for each bar is enabled, false if not
+     *
+     * @return
+     */
+    public boolean isDrawBarShadowEnabled() {
+        return mDrawBarShadow;
+    }
+
+    @Override
+    public BarData getBarData() {
+        return mData;
+    }
+
+
+    /**
+     * Adds half of the bar width to each side of the x-axis range in order to allow the bars of the barchart to be
+     * fully displayed.
+     * Default: false
+     *
+     * @param enabled
+     */
+    public void setFitBars(boolean enabled) {
+        mFitBars = enabled;
+    }
+
 
 //	/**
 //	 * Returns the lowest xPx-index (yValue on the xPx-axis) that is still visible on the chart.

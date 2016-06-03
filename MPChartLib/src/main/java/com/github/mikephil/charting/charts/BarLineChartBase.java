@@ -57,7 +57,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     /**
      * flag that indicates if auto scaling on the yPx axis is enabled
      */
-    private boolean mAutoScaleMinMaxEnabled = false;
+    protected boolean mAutoScaleMinMaxEnabled = false;
     private Float mAutoScaleLastLowestVisibleXIndex = null;
     private Float mAutoScaleLastHighestVisibleXIndex = null;
 
