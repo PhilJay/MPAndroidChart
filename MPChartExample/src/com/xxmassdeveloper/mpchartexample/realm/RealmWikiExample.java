@@ -48,9 +48,12 @@ public class RealmWikiExample extends RealmBaseActivity {
 
         lineChart.getAxisLeft().setDrawGridLines(false);
         lineChart.getXAxis().setDrawGridLines(false);
+        lineChart.getXAxis().setLabelCount(5);
+        lineChart.getXAxis().setGranularity(1f);
         barChart.getAxisLeft().setDrawGridLines(false);
         barChart.getXAxis().setDrawGridLines(false);
-        barChart.getXAxis().setCenterAxisLabels(true);
+        barChart.getXAxis().setLabelCount(5);
+        barChart.getXAxis().setGranularity(1f);
     }
 
     @Override
@@ -130,6 +133,7 @@ public class RealmWikiExample extends RealmBaseActivity {
         styleData(barData);
 
         barChart.setData(barData);
+        barChart.setFitBars(true);
         barChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
     }
 }

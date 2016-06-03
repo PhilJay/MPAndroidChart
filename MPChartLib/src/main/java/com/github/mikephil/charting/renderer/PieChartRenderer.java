@@ -506,13 +506,13 @@ public class PieChartRenderer extends DataRenderer {
                                 labelPty,
                                 dataSet.getValueTextColor(j));
 
-                        if (j < data.getEntryCount()) {
+                        if (j < data.getEntryCount() && entry.getLabel() != null) {
                             c.drawText(entry.getLabel(), labelPtx, labelPty + lineHeight,
                                     mValuePaint);
                         }
 
                     } else if (drawXOutside) {
-                        if (j < data.getEntryCount()) {
+                        if (j < data.getEntryCount() && entry.getLabel() != null) {
                             mValuePaint.setColor(dataSet.getValueTextColor(j));
                             c.drawText(entry.getLabel(), labelPtx, labelPty + lineHeight / 2.f, mValuePaint);
                         }
@@ -535,13 +535,13 @@ public class PieChartRenderer extends DataRenderer {
 
                         drawValue(c, formatter, value, entry, 0, x, y, dataSet.getValueTextColor(j));
 
-                        if (j < data.getEntryCount()) {
+                        if (j < data.getEntryCount() && entry.getLabel() != null) {
                             c.drawText(entry.getLabel(), x, y + lineHeight,
                                     mValuePaint);
                         }
 
                     } else if (drawXInside) {
-                        if (j < data.getEntryCount()) {
+                        if (j < data.getEntryCount() && entry.getLabel() != null) {
                             mValuePaint.setColor(dataSet.getValueTextColor(j));
                             c.drawText(entry.getLabel(), x, y + lineHeight / 2f, mValuePaint);
                         }

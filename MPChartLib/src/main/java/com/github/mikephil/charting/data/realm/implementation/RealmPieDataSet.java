@@ -1,5 +1,6 @@
 package com.github.mikephil.charting.data.realm.implementation;
 
+import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -35,6 +36,8 @@ public class RealmPieDataSet<T extends RealmObject> extends RealmBaseDataSet<T, 
     private float mValueLinePart2Length = 0.4f;
     private boolean mValueLineVariableLength = true;
 
+    private String mLabelField;
+
     /**
      * Constructor for creating a PieDataSet with realm data.
      *
@@ -46,6 +49,24 @@ public class RealmPieDataSet<T extends RealmObject> extends RealmBaseDataSet<T, 
 
         build(this.results);
         calcMinMax();
+    }
+
+    public RealmPieDataSet(RealmResults<T> result, String yValuesField, String labelField) {
+        super(result, yValuesField);
+        this.mLabelField = labelField;
+        build(this.results);
+        calcMinMax();
+    }
+
+    @Override
+    public PieEntry buildEntryFromResultObject(T realmObject, float x) {
+        DynamicRealmObject dynamicObject = new DynamicRealmObject(realmObject);
+
+        if(mLabelField == null) {
+            return new PieEntry(dynamicObject.getFloat(mYValuesField));
+        } else {
+            return new PieEntry(dynamicObject.getFloat(mYValuesField), dynamicObject.getString(mLabelField));
+        }
     }
 
     /**

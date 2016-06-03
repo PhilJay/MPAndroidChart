@@ -34,6 +34,7 @@ public class RealmDatabaseActivityRadar extends RealmBaseActivity {
         setup(mChart);
 
         mChart.getYAxis().setEnabled(false);
+        mChart.getXAxis().setEnabled(false);
         mChart.setWebAlpha(180);
         mChart.setWebColorInner(Color.DKGRAY);
         mChart.setWebColor(Color.GRAY);

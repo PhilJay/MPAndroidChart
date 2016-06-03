@@ -21,10 +21,19 @@ public class RealmDemoData extends RealmObject {
 
     private String someStringField;
 
+    /**
+     * label for pie entries
+     */
+    private String label;
+
     // ofc there could me more fields here...
 
     public RealmDemoData() {
 
+    }
+
+    public RealmDemoData(float yValue) {
+        this.yValue = yValue;
     }
 
     public RealmDemoData(float xValue, float yValue) {
@@ -76,6 +85,17 @@ public class RealmDemoData extends RealmObject {
         this.xValue = xValue;
         this.yValue = yValue;
         this.bubbleSize = bubbleSize;
+    }
+
+    /**
+     * Constructor for pie chart.
+     *
+     * @param yValue
+     * @param label
+     */
+    public RealmDemoData(float yValue, String label) {
+        this.yValue = yValue;
+        this.label = label;
     }
 
     public float getyValue() {
@@ -150,4 +170,11 @@ public class RealmDemoData extends RealmObject {
         this.someStringField = someStringField;
     }
 
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
 }

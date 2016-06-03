@@ -195,10 +195,10 @@ public abstract class RealmBaseActivity extends DemoBase {
         float value5 = 100f - value1 - value2 - value3 - value4;
 
         float[] values = new float[] { value1, value2, value3, value4, value5 };
-        String[] xValues = new String[]{ "iOS", "Android", "WP 10", "BlackBerry", "Other"};
+        String[] labels = new String[]{ "iOS", "Android", "WP 10", "BlackBerry", "Other"};
 
         for (int i = 0; i < values.length; i++) {
-            RealmDemoData d = new RealmDemoData(i, values[i]);
+            RealmDemoData d = new RealmDemoData(values[i], labels[i]);
             mRealm.copyToRealm(d);
         }
 

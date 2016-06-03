@@ -31,11 +31,11 @@ public abstract class RealmLineScatterCandleRadarDataSet<T extends RealmObject, 
      * Constructor that takes the realm RealmResults, sorts & stores them.
      *
      * @param results
+     * @param xValueField
      * @param yValuesField
-     * @param xIndexField
      */
-    public RealmLineScatterCandleRadarDataSet(RealmResults<T> results, String yValuesField, String xIndexField) {
-        super(results, yValuesField, xIndexField);
+    public RealmLineScatterCandleRadarDataSet(RealmResults<T> results, String xValueField, String yValuesField) {
+        super(results, xValueField, yValuesField);
     }
 
     /**
