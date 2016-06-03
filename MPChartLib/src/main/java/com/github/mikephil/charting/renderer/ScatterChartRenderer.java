@@ -300,31 +300,6 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
             default:
                 break;
         }
-
-        // else { // draw the custom-shape
-        //
-        // Path customShape = dataSet.getCustomScatterShape();
-        //
-        // for (int j = 0; j < entries.size() * mAnimator.getPhaseX(); j += 2) {
-        //
-        // Entry e = entries.get(j / 2);
-        //
-        // if (!fitsBounds(e.getX(), mMinX, mMaxX))
-        // continue;
-        //
-        // if (customShape == null)
-        // return;
-        //
-        // mRenderPaint.setColor(dataSet.getColor(j));
-        //
-        // Path newPath = new Path(customShape);
-        // newPath.offset(e.getX(), e.getY());
-        //
-        // // transform the provided custom path
-        // trans.pathValueToPixel(newPath);
-        // c.drawPath(newPath, mRenderPaint);
-        // }
-        // }
     }
 
     @Override

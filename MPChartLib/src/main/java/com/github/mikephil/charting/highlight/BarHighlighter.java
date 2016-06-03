@@ -9,6 +9,9 @@ import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.SelectionDetail;
+import com.github.mikephil.charting.utils.Utils;
+
+import java.util.List;
 
 /**
  * Created by Philipp Jahoda on 22/07/15.
@@ -45,42 +48,6 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
                 selectionDetail.dataIndex,
                 selectionDetail.dataSetIndex,
                 -1);
-    }
-
-    @Override
-    protected SelectionDetail getSelectionDetail(float xVal, float x, float y) {
-
-        BarData barData = mChart.getBarData();
-
-        int closestDataSetIndex = 0;
-        float closestDistance = Float.MAX_VALUE;
-        Entry closestEntry = null;
-
-        for (int i = 0; i < barData.getDataSets().size(); i++) {
-
-            IBarDataSet dataSet = barData.getDataSetByIndex(i);
-
-            final Entry entry = dataSet.getEntryForXPos(xVal);
-
-            if (entry != null) {
-
-                final float distance = Math.abs(xVal - entry.getX());
-
-                if (distance < closestDistance) {
-                    closestDataSetIndex = i;
-                    closestDistance = distance;
-                    closestEntry = entry;
-                }
-            }
-        }
-
-        if(closestEntry == null)
-            return null;
-
-        return new SelectionDetail(x, y, closestEntry.getX(),
-                closestEntry.getY(),
-                closestDataSetIndex,
-                barData.getDataSetByIndex(closestDataSetIndex));
     }
 
     /**
@@ -189,5 +156,10 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
         }
 
         return ranges;
+    }
+
+    @Override
+    protected float getDistance(float x, float y, float selX, float selY) {
+        return Math.abs(x - selX);
     }
 }

@@ -228,6 +228,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
         // initialize the utils
         Utils.init(getContext());
+        mMaxHighlightDistance = Utils.convertDpToPixel(70f);
 
         mDefaultFormatter = new DefaultValueFormatter(1);
 
@@ -484,6 +485,26 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     protected Highlight[] mIndicesToHighlight;
 
     /**
+     * The maximum distance in screen pixels away from an entry causing it to highlight.
+     */
+    protected float mMaxHighlightDistance = 0f;
+
+    @Override
+    public float getMaxHighlightDistance() {
+        return mMaxHighlightDistance;
+    }
+
+    /**
+     * Sets the maximum distance in screen dp a touch can be away from an entry to cause it to get highlighted.
+     * Default: 70dp
+     *
+     * @param distDp
+     */
+    public void setMaxHighlightDistance(float distDp) {
+        mMaxHighlightDistance = Utils.convertDpToPixel(distDp);
+    }
+
+    /**
      * Returns the array of currently highlighted values. This might a null or
      * empty array if nothing is highlighted.
      *
@@ -610,7 +631,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
                 high = null;
             } else {
                 if (this instanceof BarLineChartBase
-                        && ((BarLineChartBase)this).isHighlightFullBarEnabled())
+                        && ((BarLineChartBase) this).isHighlightFullBarEnabled())
                     high = new Highlight(high.getX(), Float.NaN, -1, -1, -1);
 
                 // set the indices to highlight
@@ -681,9 +702,9 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             float xVal = highlight.getX();
             int dataSetIndex = highlight.getDataSetIndex();
 
-            float deltaX = mXAxis != null 
-                ? mXAxis.mAxisRange
-                : 1f;
+            float deltaX = mXAxis != null
+                    ? mXAxis.mAxisRange
+                    : 1f;
 
             if (xVal <= deltaX && xVal <= deltaX * mAnimator.getPhaseX()) {
 
@@ -1539,7 +1560,8 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * @param quality         e.g. 50, min = 0, max = 100
      * @return returns true if saving was successful, false if not
      */
-    public boolean saveToGallery(String fileName, String subFolderPath, String fileDescription, Bitmap.CompressFormat format, int quality) {
+    public boolean saveToGallery(String fileName, String subFolderPath, String fileDescription, Bitmap.CompressFormat
+            format, int quality) {
         // restrain quality
         if (quality < 0 || quality > 100)
             quality = 50;

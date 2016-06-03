@@ -5,6 +5,7 @@ import android.graphics.RectF;
 
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.utils.Utils;
 
 /**
  * Interface that provides everything there is to know about the dimensions,
@@ -43,6 +44,13 @@ public interface ChartInterface {
      * @return
      */
     float getYChartMax();
+
+    /**
+     * Returns the maximum distance in scren dp a touch can be away from an entry to cause it to get highlighted.
+     *
+     * @return
+     */
+    float getMaxHighlightDistance();
 
     int getWidth();
 
