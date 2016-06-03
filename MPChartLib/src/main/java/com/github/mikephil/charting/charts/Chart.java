@@ -699,48 +699,39 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         for (int i = 0; i < mIndicesToHighlight.length; i++) {
 
             Highlight highlight = mIndicesToHighlight[i];
-            float xVal = highlight.getX();
-            int dataSetIndex = highlight.getDataSetIndex();
 
-            float deltaX = mXAxis != null
-                    ? mXAxis.mAxisRange
-                    : 1f;
+            Entry e = mData.getEntryForHighlight(mIndicesToHighlight[i]);
 
-            if (xVal <= deltaX && xVal <= deltaX * mAnimator.getPhaseX()) {
+            // make sure entry not null
+            if (e == null || e.getX() != mIndicesToHighlight[i].getX())
+                continue;
 
-                Entry e = mData.getEntryForHighlight(mIndicesToHighlight[i]);
+            float[] pos = getMarkerPosition(e, highlight);
 
-                // make sure entry not null
-                if (e == null || e.getX() != mIndicesToHighlight[i].getX())
-                    continue;
+            // check bounds
+            if (!mViewPortHandler.isInBounds(pos[0], pos[1]))
+                continue;
 
-                float[] pos = getMarkerPosition(e, highlight);
+            // callbacks to update the content
+            mMarkerView.refreshContent(e, highlight);
 
-                // check bounds
-                if (!mViewPortHandler.isInBounds(pos[0], pos[1]))
-                    continue;
+            // mMarkerView.measure(MeasureSpec.makeMeasureSpec(0,
+            // MeasureSpec.UNSPECIFIED),
+            // MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+            // mMarkerView.layout(0, 0, mMarkerView.getMeasuredWidth(),
+            // mMarkerView.getMeasuredHeight());
+            // mMarkerView.draw(mDrawCanvas, pos[0], pos[1]);
 
-                // callbacks to update the content
-                mMarkerView.refreshContent(e, highlight);
+            mMarkerView.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
+                    MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+            mMarkerView.layout(0, 0, mMarkerView.getMeasuredWidth(),
+                    mMarkerView.getMeasuredHeight());
 
-                // mMarkerView.measure(MeasureSpec.makeMeasureSpec(0,
-                // MeasureSpec.UNSPECIFIED),
-                // MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-                // mMarkerView.layout(0, 0, mMarkerView.getMeasuredWidth(),
-                // mMarkerView.getMeasuredHeight());
-                // mMarkerView.draw(mDrawCanvas, pos[0], pos[1]);
-
-                mMarkerView.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
-                        MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-                mMarkerView.layout(0, 0, mMarkerView.getMeasuredWidth(),
-                        mMarkerView.getMeasuredHeight());
-
-                if (pos[1] - mMarkerView.getHeight() <= 0) {
-                    float y = mMarkerView.getHeight() - pos[1];
-                    mMarkerView.draw(canvas, pos[0], pos[1] + y);
-                } else {
-                    mMarkerView.draw(canvas, pos[0], pos[1]);
-                }
+            if (pos[1] - mMarkerView.getHeight() <= 0) {
+                float y = mMarkerView.getHeight() - pos[1];
+                mMarkerView.draw(canvas, pos[0], pos[1] + y);
+            } else {
+                mMarkerView.draw(canvas, pos[0], pos[1]);
             }
         }
     }
