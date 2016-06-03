@@ -15,6 +15,7 @@ import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
+import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -25,6 +26,7 @@ import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.custom.MyMarkerView;
+import com.xxmassdeveloper.mpchartexample.custom.RadarMarkerView;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -41,7 +43,7 @@ public class RadarChartActivitry extends DemoBase {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_radarchart_noseekbar);
 
-        tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+        tf = Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf");
 
         TextView tv = (TextView) findViewById(R.id.textView);
         tv.setTypeface(tf);
@@ -56,11 +58,12 @@ public class RadarChartActivitry extends DemoBase {
         mChart.setWebLineWidth(1f);
         mChart.setWebColor(Color.LTGRAY);
         mChart.setWebLineWidthInner(1f);
+        mChart.setWebColorInner(Color.LTGRAY);
         mChart.setWebAlpha(100);
 
         // create a custom MarkerView (extend MarkerView) and specify the layout
         // to use for it
-        MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
+        MarkerView mv = new RadarMarkerView(this, R.layout.radar_markerview);
 
         // set the marker to the chart
         mChart.setMarkerView(mv);
@@ -97,6 +100,7 @@ public class RadarChartActivitry extends DemoBase {
         yAxis.setLabelCount(5, false);
         yAxis.setTextSize(9f);
         yAxis.setAxisMinValue(0f);
+        yAxis.setAxisMaxValue(80f);
         yAxis.setDrawLabels(false);
 
         Legend l = mChart.getLegend();
@@ -234,6 +238,8 @@ public class RadarChartActivitry extends DemoBase {
         set1.setDrawFilled(true);
         set1.setFillAlpha(180);
         set1.setLineWidth(2f);
+        set1.setDrawHighlightCircleEnabled(true);
+        set1.setDrawHighlightIndicators(false);
 
         RadarDataSet set2 = new RadarDataSet(yVals2, "This Week");
         set2.setColor(Color.rgb(121, 162, 175));
@@ -241,6 +247,8 @@ public class RadarChartActivitry extends DemoBase {
         set2.setDrawFilled(true);
         set2.setFillAlpha(180);
         set2.setLineWidth(2f);
+        set2.setDrawHighlightCircleEnabled(true);
+        set2.setDrawHighlightIndicators(false);
 
         ArrayList<IRadarDataSet> sets = new ArrayList<IRadarDataSet>();
         sets.add(set1);
