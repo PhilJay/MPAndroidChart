@@ -47,7 +47,7 @@ public class XAxisRendererRadarChart extends XAxisRenderer {
             float angle = (sliceangle * i + mChart.getRotationAngle()) % 360f;
 
             PointF p = Utils.getPosition(center, mChart.getYRange() * factor
-                    + mXAxis.mLabelRotatedWidth, angle);
+                    + mXAxis.mLabelRotatedWidth / 2f, angle);
 
             drawLabel(c, label, p.x, p.y - mXAxis.mLabelRotatedHeight / 2.f,
                     drawLabelAnchor, labelRotationAngleDegrees);

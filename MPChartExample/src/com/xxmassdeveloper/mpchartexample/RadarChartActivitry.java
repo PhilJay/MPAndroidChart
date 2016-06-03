@@ -1,11 +1,13 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -37,16 +39,23 @@ public class RadarChartActivitry extends DemoBase {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_radarchart);
-
-        mChart = (RadarChart) findViewById(R.id.chart1);
+        setContentView(R.layout.activity_radarchart_noseekbar);
 
         tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
+        TextView tv = (TextView) findViewById(R.id.textView);
+        tv.setTypeface(tf);
+        tv.setTextColor(Color.WHITE);
+        tv.setBackgroundColor(Color.rgb(60, 65, 82));
+
+        mChart = (RadarChart) findViewById(R.id.chart1);
+        mChart.setBackgroundColor(Color.rgb(60, 65, 82));
+
         mChart.setDescription("");
 
-        mChart.setWebLineWidth(1.5f);
-        mChart.setWebLineWidthInner(0.75f);
+        mChart.setWebLineWidth(1f);
+        mChart.setWebColor(Color.LTGRAY);
+        mChart.setWebLineWidthInner(1f);
         mChart.setWebAlpha(100);
 
         // create a custom MarkerView (extend MarkerView) and specify the layout
@@ -66,10 +75,14 @@ public class RadarChartActivitry extends DemoBase {
         XAxis xAxis = mChart.getXAxis();
         xAxis.setTypeface(tf);
         xAxis.setTextSize(9f);
+        xAxis.setYOffset(0f);
+        xAxis.setXOffset(0f);
         xAxis.setValueFormatter(new AxisValueFormatter() {
+
+            private String[] mActivities = new String[]{"Burger", "Steak", "Salad", "Pasta", "Pizza"};
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return mMonths[(int) value % mMonths.length];
+                return mActivities[(int) value % mActivities.length];
             }
 
             @Override
@@ -77,18 +90,21 @@ public class RadarChartActivitry extends DemoBase {
                 return 0;
             }
         });
+        xAxis.setTextColor(Color.WHITE);
 
         YAxis yAxis = mChart.getYAxis();
         yAxis.setTypeface(tf);
         yAxis.setLabelCount(5, false);
         yAxis.setTextSize(9f);
         yAxis.setAxisMinValue(0f);
+        yAxis.setDrawLabels(false);
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.RIGHT_OF_CHART);
+        l.setPosition(LegendPosition.ABOVE_CHART_CENTER);
         l.setTypeface(tf);
         l.setXEntrySpace(7f);
         l.setYEntrySpace(5f);
+        l.setTextColor(Color.WHITE);
     }
 
     @Override
@@ -190,15 +206,11 @@ public class RadarChartActivitry extends DemoBase {
         return true;
     }
 
-    private String[] mParties = new String[]{
-            "Party A", "Party B", "Party C", "Party D", "Party E", "Party F", "Party G", "Party H",
-            "Party I"
-    };
-
     public void setData() {
 
-        float mult = 150;
-        int cnt = 9;
+        float mult = 80;
+        float min = 20;
+        int cnt = 5;
 
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
         ArrayList<Entry> yVals2 = new ArrayList<Entry>();
@@ -207,25 +219,27 @@ public class RadarChartActivitry extends DemoBase {
         // xIndex (even if from different DataSets), since no values can be
         // drawn above each other.
         for (int i = 0; i < cnt; i++) {
-            float val = (float) (Math.random() * mult) + mult / 2;
+            float val = (float) (Math.random() * mult) + min;
             yVals1.add(new Entry(i, val));
         }
 
         for (int i = 0; i < cnt; i++) {
-            float val = (float) (Math.random() * mult) + mult / 2;
+            float val = (float) (Math.random() * mult) + min;
             yVals2.add(new Entry(i, val));
         }
 
-        RadarDataSet set1 = new RadarDataSet(yVals1, "Set 1");
-        set1.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
-        set1.setFillColor(ColorTemplate.VORDIPLOM_COLORS[0]);
+        RadarDataSet set1 = new RadarDataSet(yVals1, "Last Week");
+        set1.setColor(Color.rgb(103, 110, 129));
+        set1.setFillColor(Color.rgb(103, 110, 129));
         set1.setDrawFilled(true);
+        set1.setFillAlpha(180);
         set1.setLineWidth(2f);
 
-        RadarDataSet set2 = new RadarDataSet(yVals2, "Set 2");
-        set2.setColor(ColorTemplate.VORDIPLOM_COLORS[4]);
-        set2.setFillColor(ColorTemplate.VORDIPLOM_COLORS[4]);
+        RadarDataSet set2 = new RadarDataSet(yVals2, "This Week");
+        set2.setColor(Color.rgb(121, 162, 175));
+        set2.setFillColor(Color.rgb(121, 162, 175));
         set2.setDrawFilled(true);
+        set2.setFillAlpha(180);
         set2.setLineWidth(2f);
 
         ArrayList<IRadarDataSet> sets = new ArrayList<IRadarDataSet>();
@@ -236,6 +250,7 @@ public class RadarChartActivitry extends DemoBase {
         data.setValueTypeface(tf);
         data.setValueTextSize(8f);
         data.setDrawValues(false);
+        data.setValueTextColor(Color.WHITE);
 
         mChart.setData(data);
         mChart.invalidate();
