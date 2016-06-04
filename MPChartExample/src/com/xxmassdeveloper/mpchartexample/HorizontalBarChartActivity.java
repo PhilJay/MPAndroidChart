@@ -91,7 +91,6 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         yl.setTypeface(tf);
         yl.setDrawAxisLine(true);
         yl.setDrawGridLines(true);
-        yl.setGridLineWidth(0.3f);
         yl.setAxisMinValue(0f); // this replaces setStartAtZero(true)
 //        yl.setInverted(true);
 

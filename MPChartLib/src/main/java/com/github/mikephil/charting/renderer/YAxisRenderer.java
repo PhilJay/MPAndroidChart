@@ -147,16 +147,7 @@ public class YAxisRenderer extends AxisRenderer {
         if (!mYAxis.isEnabled() || !mYAxis.isDrawLabelsEnabled())
             return;
 
-        float[] positions = new float[mYAxis.mEntryCount * 2];
-
-        for (int i = 0; i < positions.length; i += 2) {
-            // only fill yPx values, xPx values are not needed since the yPx-labels
-            // are
-            // static on the xPx-axis
-            positions[i + 1] = mYAxis.mEntries[i / 2];
-        }
-
-        mTrans.pointValuesToPixel(positions);
+        float[] positions = getTransformedPositions();
 
         mAxisLabelPaint.setTypeface(mYAxis.getTypeface());
         mAxisLabelPaint.setTextSize(mYAxis.getTextSize());
@@ -238,10 +229,9 @@ public class YAxisRenderer extends AxisRenderer {
         if (!mYAxis.isEnabled())
             return;
 
-        // pre alloc
-        float[] position = new float[2];
-
         if (mYAxis.isDrawGridLinesEnabled()) {
+
+            float[] positions = getTransformedPositions();
 
             mGridPaint.setColor(mYAxis.getGridColor());
             mGridPaint.setStrokeWidth(mYAxis.getGridLineWidth());
@@ -249,50 +239,70 @@ public class YAxisRenderer extends AxisRenderer {
 
             Path gridLinePath = new Path();
 
-            // draw the horizontal grid
-            for (int i = 0; i < mYAxis.mEntryCount; i++) {
-
-                position[1] = mYAxis.mEntries[i];
-                mTrans.pointValuesToPixel(position);
-
-                gridLinePath.moveTo(mViewPortHandler.offsetLeft(), position[1]);
-                gridLinePath.lineTo(mViewPortHandler.contentRight(), position[1]);
+            // draw the grid
+            for (int i = 0; i < positions.length; i += 2) {
 
                 // draw a path because lines don't support dashing on lower android versions
-                c.drawPath(gridLinePath, mGridPaint);
-
+                c.drawPath(linePath(gridLinePath, i, positions), mGridPaint);
                 gridLinePath.reset();
             }
         }
 
         if (mYAxis.isDrawZeroLineEnabled()) {
-
-            // draw zero line
-            position[1] = 0f;
-            mTrans.pointValuesToPixel(position);
-
-            drawZeroLine(c, mViewPortHandler.offsetLeft(), mViewPortHandler.contentRight(), position[1] - 1, position[1] - 1);
+            drawZeroLine(c);
         }
     }
 
     /**
-     * Draws the zero line at the specified position.
+     * Calculates the path for a grid line.
      *
-     * @param c
-     * @param x1
-     * @param x2
-     * @param y1
-     * @param y2
+     * @param p
+     * @param i
+     * @param positions
+     * @return
      */
-    protected void drawZeroLine(Canvas c, float x1, float x2, float y1, float y2) {
+    protected Path linePath(Path p, int i, float[] positions) {
+
+        p.moveTo(mViewPortHandler.offsetLeft(), positions[i + 1]);
+        p.lineTo(mViewPortHandler.contentRight(), positions[i + 1]);
+
+        return p;
+    }
+
+    /**
+     * Transforms the values contained in the axis entries to screen pixels and returns them in form of a float array
+     * of x- and y-coordinates.
+     *
+     * @return
+     */
+    protected float[] getTransformedPositions() {
+
+        float[] positions = new float[mYAxis.mEntryCount * 2];
+
+        for (int i = 0; i < positions.length; i += 2) {
+            // only fill y values, x values are not needed for y-labels
+            positions[i + 1] = mYAxis.mEntries[i / 2];
+        }
+
+        mTrans.pointValuesToPixel(positions);
+        return positions;
+    }
+
+    /**
+     * Draws the zero line.
+     */
+    protected void drawZeroLine(Canvas c) {
+
+        // draw zero line
+        PointD pos = mTrans.getPixelsForValues(0f, 0f);
 
         mZeroLinePaint.setColor(mYAxis.getZeroLineColor());
         mZeroLinePaint.setStrokeWidth(mYAxis.getZeroLineWidth());
 
         Path zeroLinePath = new Path();
 
-        zeroLinePath.moveTo(x1, y1);
-        zeroLinePath.lineTo(x2, y2);
+        zeroLinePath.moveTo(mViewPortHandler.contentLeft(), (float) pos.y - 1);
+        zeroLinePath.lineTo(mViewPortHandler.contentRight(), (float) pos.y - 1);
 
         // draw a path because lines don't support dashing on lower android versions
         c.drawPath(zeroLinePath, mZeroLinePaint);
