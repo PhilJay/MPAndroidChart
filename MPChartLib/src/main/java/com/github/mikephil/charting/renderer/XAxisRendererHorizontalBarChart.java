@@ -152,73 +152,33 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
         }
     }
 
-//    /**
-//     * draws the xPx-labels on the specified yPx-position
-//     *
-//     * @param pos
-//     */
-//    @Override
-//    protected void drawLabels(Canvas c, float pos, PointF anchor) {
-//
-//        final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
-//
-//        // pre allocate to save performance (dont allocate in loop)
-//        float[] position = new float[] {
-//                0f, 0f
-//        };
-//
-//        BarData bd = mChart.getData();
-//        int step = bd.getDataSetCount();
-//
-//        for (int i = mMinX; i <= mMaxX; i += mXAxis.mAxisLabelModulus) {
-//
-//            position[1] = i * step + i * bd.getGroupSpace()
-//                    + bd.getGroupSpace() / 2f;
-//
-//            // consider groups (center label for each group)
-//            if (step > 1) {
-//                position[1] += ((float) step - 1f) / 2f;
-//            }
-//
-//            mTrans.pointValuesToPixel(position);
-//
-//            if (mViewPortHandler.isInBoundsY(position[1])) {
-//
-//                String label = mXAxis.getValues().get(i).getLabel();
-//                drawLabel(c, label, i, pos, position[1], anchor, labelRotationAngleDegrees);
-//            }
-//        }
-//    }
-
     @Override
     public void renderGridLines(Canvas c) {
 
         if (!mXAxis.isDrawGridLinesEnabled() || !mXAxis.isEnabled())
             return;
-
-        float[] position = new float[] {
-                0f, 0f
-        };
         
         mGridPaint.setColor(mXAxis.getGridColor());
         mGridPaint.setStrokeWidth(mXAxis.getGridLineWidth());
 
-        BarData bd = mChart.getData();
-        // take into consideration that multiple DataSets increase mDeltaX
-        int step = bd.getDataSetCount();
+        float[] positions = new float[mXAxis.mEntryCount * 2];
 
-//        for (int i = mMinX; i <= mMaxX; i += mXAxis.mAxisLabelModulus) {
-//
-//            position[1] = i * step + i * bd.getGroupSpace() - 0.5f;
-//
-//            mTrans.pointValuesToPixel(position);
-//
-//            if (mViewPortHandler.isInBoundsY(position[1])) {
-//
-//                c.drawLine(mViewPortHandler.contentLeft(), position[1],
-//                        mViewPortHandler.contentRight(), position[1], mGridPaint);
-//            }
-//        }
+        for (int i = 0; i < positions.length; i += 2) {
+            positions[i + 1] = mXAxis.mEntries[i / 2];
+        }
+
+        mTrans.pointValuesToPixel(positions);
+
+        for (int i = 0; i < positions.length; i += 2) {
+
+            float y = positions[i + 1];
+
+            if (mViewPortHandler.isInBoundsY(y)) {
+
+                c.drawLine(mViewPortHandler.contentLeft(), y,
+                        mViewPortHandler.contentRight(), y, mGridPaint);
+            }
+        }
     }
 
     @Override

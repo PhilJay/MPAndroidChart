@@ -83,7 +83,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         xl.setPosition(XAxisPosition.BOTTOM);
         xl.setTypeface(tf);
         xl.setDrawAxisLine(true);
-        xl.setDrawGridLines(true);
+        xl.setDrawGridLines(false);
         xl.setGridLineWidth(0.3f);
         xl.setGranularity(10f);
 
@@ -103,6 +103,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 //        yr.setInverted(true);
 
         setData(12, 50);
+        mChart.setFitBars(true);
         mChart.animateY(2500);
 
         // setting data
@@ -212,6 +213,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         tvY.setText("" + (mSeekBarY.getProgress()));
 
         setData(mSeekBarX.getProgress() + 1, mSeekBarY.getProgress());
+        mChart.setFitBars(true);
         mChart.invalidate();
     }
 
