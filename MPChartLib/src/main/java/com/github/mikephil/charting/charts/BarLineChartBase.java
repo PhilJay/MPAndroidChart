@@ -655,7 +655,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     /**
      * Zooms in or out by the given scale factor.
-     * xPx and yPx are the values (NOT PIXELS) which to zoom to or from (the values of the zoom center).
+     * x and y are the values (NOT PIXELS) which to zoom to or from (the values of the zoom center).
      *
      * @param scaleX
      * @param scaleY
@@ -789,11 +789,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Centers the viewport to the specified yPx-yValue on the yPx-axis.
+     * Centers the viewport to the specified y value on the y-axis.
      * This also refreshes the chart by calling invalidate().
      *
      * @param yValue
-     * @param axis   - which axis should be used as a reference for the yPx-axis
+     * @param axis   - which axis should be used as a reference for the y-axis
      */
     public void moveViewToY(float yValue, AxisDependency axis) {
 
@@ -807,36 +807,35 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     /**
      * This will move the left side of the current viewport to the specified
-     * xPx-yValue on the xPx-axis, and center the viewport to the specified yPx-yValue
-     * on the yPx-axis.
+     * x value on the x-axis, and center the viewport to the specified y value on the y-axis.
      * This also refreshes the chart by calling invalidate().
      *
-     * @param xIndex
+     * @param xValue
      * @param yValue
-     * @param axis   - which axis should be used as a reference for the yPx-axis
+     * @param axis   - which axis should be used as a reference for the y-axis
      */
-    public void moveViewTo(float xIndex, float yValue, AxisDependency axis) {
+    public void moveViewTo(float xValue, float yValue, AxisDependency axis) {
 
         float valsInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
 
-        Runnable job = new MoveViewJob(mViewPortHandler, xIndex, yValue + valsInView / 2f,
+        Runnable job = new MoveViewJob(mViewPortHandler, xValue, yValue + valsInView / 2f,
                 getTransformer(axis), this);
 
         addViewportJob(job);
     }
 
     /**
-     * This will move the left side of the current viewport to the specified xPx-position
-     * and center the viewport to the specified yPx-position animated.
+     * This will move the left side of the current viewport to the specified x value
+     * and center the viewport to the y value animated.
      * This also refreshes the chart by calling invalidate().
      *
-     * @param xIndex
+     * @param xValue
      * @param yValue
      * @param axis
      * @param duration the duration of the animation in milliseconds
      */
     @TargetApi(11)
-    public void moveViewToAnimated(float xIndex, float yValue, AxisDependency axis, long duration) {
+    public void moveViewToAnimated(float xValue, float yValue, AxisDependency axis, long duration) {
 
         if (android.os.Build.VERSION.SDK_INT >= 11) {
 
@@ -844,7 +843,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
             float valsInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
 
-            Runnable job = new AnimatedMoveViewJob(mViewPortHandler, xIndex, yValue + valsInView / 2f,
+            Runnable job = new AnimatedMoveViewJob(mViewPortHandler, xValue, yValue + valsInView / 2f,
                     getTransformer(axis), this, (float) bounds.x, (float) bounds.y, duration);
 
             addViewportJob(job);
@@ -855,20 +854,20 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     /**
      * This will move the center of the current viewport to the specified
-     * xPx-yValue and yPx-yValue.
+     * x and y value.
      * This also refreshes the chart by calling invalidate().
      *
-     * @param xIndex
+     * @param xValue
      * @param yValue
-     * @param axis   - which axis should be used as a reference for the yPx-axis
+     * @param axis   - which axis should be used as a reference for the y axis
      */
-    public void centerViewTo(float xIndex, float yValue, AxisDependency axis) {
+    public void centerViewTo(float xValue, float yValue, AxisDependency axis) {
 
         float valsInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
         float xsInView = getXAxis().mAxisRange / mViewPortHandler.getScaleX();
 
         Runnable job = new MoveViewJob(mViewPortHandler,
-                xIndex - xsInView / 2f, yValue + valsInView / 2f,
+                xValue - xsInView / 2f, yValue + valsInView / 2f,
                 getTransformer(axis), this);
 
         addViewportJob(job);
@@ -876,15 +875,15 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     /**
      * This will move the center of the current viewport to the specified
-     * xPx-yValue and yPx-yValue animated.
+     * x and y value animated.
      *
-     * @param xIndex
+     * @param xValue
      * @param yValue
      * @param axis
      * @param duration the duration of the animation in milliseconds
      */
     @TargetApi(11)
-    public void centerViewToAnimated(float xIndex, float yValue, AxisDependency axis, long duration) {
+    public void centerViewToAnimated(float xValue, float yValue, AxisDependency axis, long duration) {
 
         if (android.os.Build.VERSION.SDK_INT >= 11) {
 
@@ -894,7 +893,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             float xsInView = getXAxis().mAxisRange / mViewPortHandler.getScaleX();
 
             Runnable job = new AnimatedMoveViewJob(mViewPortHandler,
-                    xIndex - xsInView / 2f, yValue + valsInView / 2f,
+                    xValue - xsInView / 2f, yValue + valsInView / 2f,
                     getTransformer(axis), this, (float) bounds.x, (float) bounds.y, duration);
 
             addViewportJob(job);
@@ -1206,7 +1205,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Returns the xPx and yPx values in the chart at the given touch point
+     * Returns the x and y values in the chart at the given touch point
      * (encapsulated in a PointD). This method transforms pixel coordinates to
      * coordinates / values in the chart. This is the opposite method to
      * getPixelsForValues(...).
@@ -1232,7 +1231,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * returns the yPx-yValue at the given touch position (must not necessarily be
+     * Returns y value at the given touch position (must not necessarily be
      * a yValue contained in one of the datasets)
      *
      * @param x

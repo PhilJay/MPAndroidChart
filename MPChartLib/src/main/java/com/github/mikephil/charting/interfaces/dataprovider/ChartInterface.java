@@ -16,14 +16,14 @@ import com.github.mikephil.charting.utils.Utils;
 public interface ChartInterface {
 
     /**
-     * Returns the minimum xPx-yValue of the chart, regardless of zoom or translation.
+     * Returns the minimum x value of the chart, regardless of zoom or translation.
      *
      * @return
      */
     float getXChartMin();
 
     /**
-     * Returns the maximum xPx-yValue of the chart, regardless of zoom or translation.
+     * Returns the maximum x value of the chart, regardless of zoom or translation.
      *
      * @return
      */
@@ -32,14 +32,14 @@ public interface ChartInterface {
     float getXRange();
 
     /**
-     * Returns the minimum yPx-yValue of the chart, regardless of zoom or translation.
+     * Returns the minimum y value of the chart, regardless of zoom or translation.
      *
      * @return
      */
     float getYChartMin();
 
     /**
-     * Returns the maximum yPx-yValue of the chart, regardless of zoom or translation.
+     * Returns the maximum y value of the chart, regardless of zoom or translation.
      *
      * @return
      */
