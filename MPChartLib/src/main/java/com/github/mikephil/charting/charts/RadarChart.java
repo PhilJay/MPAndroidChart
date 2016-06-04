@@ -99,10 +99,6 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     protected void calcMinMax() {
         super.calcMinMax();
 
-        // calculate / set x-axis range
-//        mXAxis.mAxisMaximum = mData.getXVals().size() - 1;
-//        mXAxis.mAxisRange = Math.abs(mXAxis.mAxisMaximum - mXAxis.mAxisMinimum);
-
         mYAxis.calculate(mData.getYMin(AxisDependency.LEFT), mData.getYMax(AxisDependency.LEFT));
         mXAxis.calculate(0, mData.getMaxEntryCountSet().getEntryCount());
     }
@@ -110,8 +106,8 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     @Override
     protected float[] getMarkerPosition(Entry e, Highlight highlight) {
 
-        float angle = getSliceAngle() * e.getX() + getRotationAngle();
-        float val = e.getY() * getFactor();
+        float angle = getSliceAngle() * e.getX() * mAnimator.getPhaseX() + getRotationAngle();
+        float val = e.getY() * getFactor() * mAnimator.getPhaseY();
         PointF c = getCenterOffsets();
 
         PointF p = new PointF((float) (c.x + val * Math.cos(Math.toRadians(angle))),
@@ -128,10 +124,6 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
             return;
 
         calcMinMax();
-
-//        if (mYAxis.needsDefaultFormatter()) {
-//            mYAxis.setValueFormatter(mDefaultFormatter);
-//        }
 
         mYAxisRenderer.computeAxis(mYAxis.mAxisMinimum, mYAxis.mAxisMaximum, mYAxis.isInverted());
         mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
