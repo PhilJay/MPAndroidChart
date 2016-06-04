@@ -149,7 +149,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 //        mChart.centerViewTo(20, 50, AxisDependency.LEFT);
 
         mChart.animateX(2500, Easing.EasingOption.EaseInOutQuart);
-//        mChart.invalidate();
+        //mChart.invalidate();
 
         // get the legend (only possible after setting data)
         Legend l = mChart.getLegend();

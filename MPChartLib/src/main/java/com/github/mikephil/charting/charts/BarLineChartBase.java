@@ -663,7 +663,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param yValue
      * @param axis   the axis relative to which the zoom should take place
      */
-    public void zoom(float scaleX, float scaleY, float xValue, float yValue, AxisDependency axis) {
+    public void zoomAndCenter(float scaleX, float scaleY, float xValue, float yValue, AxisDependency axis) {
 
         Runnable job = new ZoomJob(mViewPortHandler, scaleX, scaleY, xValue, yValue, getTransformer(axis), axis, this);
         addViewportJob(job);
