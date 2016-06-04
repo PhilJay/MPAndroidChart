@@ -178,7 +178,7 @@ public class BarChartRenderer extends DataRenderer {
 
         mBarRect.set(left, top, right, bottom);
 
-        trans.rectValueToPixel(mBarRect, mAnimator.getPhaseY());
+        trans.rectToPixelPhase(mBarRect, mAnimator.getPhaseY());
     }
 
     @Override
@@ -358,8 +358,9 @@ public class BarChartRenderer extends DataRenderer {
                 float x = high.getX();
 
                 BarEntry e = set.getEntryForXPos(x);
+                float entryIndex = set.getEntryIndex(e);
 
-                if (e == null)
+                if (e == null || entryIndex > set.getEntryCount() * mAnimator.getPhaseX())
                     continue;
 
                 boolean isStack = high.getStackIndex() < 0 ? false : true;

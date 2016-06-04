@@ -300,11 +300,22 @@ public class Transformer {
      * @param r
      * @param phaseY
      */
-    public void rectValueToPixel(RectF r, float phaseY) {
+    public void rectToPixelPhase(RectF r, float phaseY) {
 
         // multiply the height of the rect with the phase
         r.top *= phaseY;
         r.bottom *= phaseY;
+
+        mMatrixValueToPx.mapRect(r);
+        mViewPortHandler.getMatrixTouch().mapRect(r);
+        mMatrixOffset.mapRect(r);
+    }
+
+    public void rectToPixelPhaseHorizontal(RectF r, float phaseY) {
+
+        // multiply the height of the rect with the phase
+        r.left *= phaseY;
+        r.right *= phaseY;
 
         mMatrixValueToPx.mapRect(r);
         mViewPortHandler.getMatrixTouch().mapRect(r);

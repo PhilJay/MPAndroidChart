@@ -288,7 +288,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
         mBarRect.set(left, top, right, bottom);
 
-        trans.rectValueToPixel(mBarRect, mAnimator.getPhaseY());
+        trans.rectToPixelPhaseHorizontal(mBarRect, mAnimator.getPhaseY());
     }
 
     @Override
