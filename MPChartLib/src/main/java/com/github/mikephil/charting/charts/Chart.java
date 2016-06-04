@@ -700,10 +700,13 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
             Highlight highlight = mIndicesToHighlight[i];
 
+            IDataSet set = mData.getDataSetByIndex(highlight.getDataSetIndex());
+
             Entry e = mData.getEntryForHighlight(mIndicesToHighlight[i]);
+            int entryIndex = set.getEntryIndex(e);
 
             // make sure entry not null
-            if (e == null || e.getX() != mIndicesToHighlight[i].getX())
+            if (e == null || entryIndex > set.getEntryCount() * mAnimator.getPhaseX())
                 continue;
 
             float[] pos = getMarkerPosition(e, highlight);
@@ -714,13 +717,6 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
             // callbacks to update the content
             mMarkerView.refreshContent(e, highlight);
-
-            // mMarkerView.measure(MeasureSpec.makeMeasureSpec(0,
-            // MeasureSpec.UNSPECIFIED),
-            // MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-            // mMarkerView.layout(0, 0, mMarkerView.getMeasuredWidth(),
-            // mMarkerView.getMeasuredHeight());
-            // mMarkerView.draw(mDrawCanvas, pos[0], pos[1]);
 
             mMarkerView.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
                     MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));

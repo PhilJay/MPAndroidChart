@@ -527,7 +527,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         int dataSetIndex = highlight.getDataSetIndex();
         float xPos = e.getX();
-        float yPos = e.getY();
+        float yPos = e.getY() * mAnimator.getPhaseY();
 
         // position of the marker depends on selected value index and value
         float[] pts = new float[]{
