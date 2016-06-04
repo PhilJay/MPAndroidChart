@@ -131,8 +131,8 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
         if (highlight.getDataSetIndex() >= data.getDataSetCount())
             return null;
         else {
-            // The yValue of the highlighted entry could be NaN -
-            //   if we are not interested in highlighting a specific yValue.
+            // The value of the highlighted entry could be NaN -
+            //   if we are not interested in highlighting a specific value.
 
             List<?> entries = data.getDataSetByIndex(highlight.getDataSetIndex())
                     .getEntriesForXPos(highlight.getX());

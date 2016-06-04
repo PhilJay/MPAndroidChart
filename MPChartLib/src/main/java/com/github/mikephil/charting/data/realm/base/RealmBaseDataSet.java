@@ -28,22 +28,22 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     protected List<S> mValues;
 
     /**
-     * maximum y-yValue in the y-yValue array
+     * maximum y-value in the y-value array
      */
     protected float mYMax = 0.0f;
 
     /**
-     * the minimum y-yValue in the y-yValue array
+     * the minimum y-value in the y-value array
      */
     protected float mYMin = 0.0f;
 
     /**
-     * maximum x-yValue in the yValue array
+     * maximum x-value in the value array
      */
     protected float mXMax = 0.0f;
 
     /**
-     * minimum x-yValue in the yValue array
+     * minimum x-value in the value array
      */
     protected float mXMin = 0.0f;
 

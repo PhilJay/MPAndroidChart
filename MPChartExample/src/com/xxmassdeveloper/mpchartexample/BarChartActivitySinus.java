@@ -65,7 +65,7 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
 
-        // draw shadows for each bar that show the maximum yValue
+        // draw shadows for each bar that show the maximum value
         // mChart.setDrawBarShadow(true);
 
         // mChart.setDrawXLabels(false);

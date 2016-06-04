@@ -28,22 +28,22 @@ public class ViewPortHandler {
     protected float mChartHeight = 0f;
 
     /**
-     * minimum scale yValue on the y-axis
+     * minimum scale value on the y-axis
      */
     private float mMinScaleY = 1f;
 
     /**
-     * maximum scale yValue on the y-axis
+     * maximum scale value on the y-axis
      */
     private float mMaxScaleY = Float.MAX_VALUE;
 
     /**
-     * minimum scale yValue on the x-axis
+     * minimum scale value on the x-axis
      */
     private float mMinScaleX = 1f;
 
     /**
-     * maximum scale yValue on the x-axis
+     * maximum scale value on the x-axis
      */
     private float mMaxScaleX = Float.MAX_VALUE;
 
@@ -329,7 +329,7 @@ public class ViewPortHandler {
     }
 
     /**
-     * Centers the viewport around the specified position (x-index and y-yValue)
+     * Centers the viewport around the specified position (x-index and y-value)
      * in the chart. Centering the viewport outside the bounds of the chart is
      * not possible. Makes most sense in combination with the
      * setScaleMinima(...) method.

@@ -83,7 +83,7 @@ public abstract class ChartTouchListener<T extends Chart<?>> extends GestureDete
     }
 
     /**
-     * Sets the last yValue that was highlighted via touch.
+     * Sets the last value that was highlighted via touch.
      *
      * @param high
      */

@@ -10,7 +10,7 @@ import java.text.DecimalFormat;
  * Created by Philipp Jahoda on 28/01/16.
  * <p/>
  * A formatter specifically for stacked BarChart that allows to specify whether the all stack values
- * or just the top yValue should be drawn.
+ * or just the top value should be drawn.
  */
 public class StackedValueFormatter implements ValueFormatter {
 
@@ -20,7 +20,7 @@ public class StackedValueFormatter implements ValueFormatter {
     private boolean mDrawWholeStack;
 
     /**
-     * a string that should be appended behind the yValue
+     * a string that should be appended behind the value
      */
     private String mAppendix;
 
@@ -30,7 +30,7 @@ public class StackedValueFormatter implements ValueFormatter {
      * Constructor.
      *
      * @param drawWholeStack if true, all stack values of the stacked bar entry are drawn, else only top
-     * @param appendix       a string that should be appended behind the yValue
+     * @param appendix       a string that should be appended behind the value
      * @param decimals       the number of decimal digits to use
      */
     public StackedValueFormatter(boolean drawWholeStack, String appendix, int decimals) {
@@ -68,7 +68,7 @@ public class StackedValueFormatter implements ValueFormatter {
             }
         }
 
-        // return the "proposed" yValue
+        // return the "proposed" value
         return mFormat.format(value) + mAppendix;
     }
 }

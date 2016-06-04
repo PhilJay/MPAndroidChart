@@ -246,7 +246,7 @@ public class Transformer {
 
     /**
      * transform a path with all the given matrices VERY IMPORTANT: keep order
-     * to yValue-touch-offset
+     * to value-touch-offset
      *
      * @param path
      */
@@ -271,7 +271,7 @@ public class Transformer {
 
     /**
      * Transform an array of points with all matrices. VERY IMPORTANT: Keep
-     * matrix order "yValue-touch-offset" when transforming.
+     * matrix order "value-touch-offset" when transforming.
      *
      * @param pts
      */
@@ -374,7 +374,7 @@ public class Transformer {
 
         Matrix tmp = new Matrix();
 
-        // invert all matrixes to convert back to the original yValue
+        // invert all matrixes to convert back to the original value
         mMatrixOffset.invert(tmp);
         tmp.mapPoints(pixels);
 
@@ -414,7 +414,7 @@ public class Transformer {
     }
 
     /**
-     * Returns the x and y coordinates (pixels) for a given x and y yValue in the chart.
+     * Returns the x and y coordinates (pixels) for a given x and y value in the chart.
      *
      * @param x
      * @param y

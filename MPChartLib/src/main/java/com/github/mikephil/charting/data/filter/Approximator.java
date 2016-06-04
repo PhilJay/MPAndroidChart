@@ -163,7 +163,7 @@ public class Approximator {
      * epsilon (tolerance)
      * 
      * @param entries
-     * @param epsilon as y-yValue
+     * @param epsilon as y-value
      * @param start
      * @param end
      */

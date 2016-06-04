@@ -53,7 +53,7 @@ public class RealmDatabaseActivityBubble extends RealmBaseActivity {
 
         RealmResults<RealmDemoData> result = mRealm.allObjects(RealmDemoData.class);
 
-        RealmBubbleDataSet<RealmDemoData> set = new RealmBubbleDataSet<RealmDemoData>(result, "xValue", "yValue", "bubbleSize");
+        RealmBubbleDataSet<RealmDemoData> set = new RealmBubbleDataSet<RealmDemoData>(result, "xValue", "value", "bubbleSize");
         set.setLabel("Realm BubbleDataSet");
         set.setColors(ColorTemplate.COLORFUL_COLORS, 110);
 

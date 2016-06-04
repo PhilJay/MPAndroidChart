@@ -17,28 +17,28 @@ public interface IDataSet<T extends Entry> {
     /** ###### ###### DATA RELATED METHODS ###### ###### */
 
     /**
-     * returns the minimum y-yValue this DataSet holds
+     * returns the minimum y-value this DataSet holds
      *
      * @return
      */
     float getYMin();
 
     /**
-     * returns the maximum y-yValue this DataSet holds
+     * returns the maximum y-value this DataSet holds
      *
      * @return
      */
     float getYMax();
 
     /**
-     * returns the minimum x-yValue this DataSet holds
+     * returns the minimum x-value this DataSet holds
      *
      * @return
      */
     float getXMin();
 
     /**
-     * returns the maximum x-yValue this DataSet holds
+     * returns the maximum x-value this DataSet holds
      *
      * @return
      */
@@ -124,8 +124,8 @@ public interface IDataSet<T extends Entry> {
     int getEntryIndex(T e);
 
     /**
-     * Returns the yValue of the Entry object at the given xVal. Returns
-     * Float.NaN if no yValue is at the given xVal. INFORMATION: This method
+     * Returns the value of the Entry object at the given xVal. Returns
+     * Float.NaN if no value is at the given xVal. INFORMATION: This method
      * does calculations at runtime. Do not over-use in performance critical
      * situations.
      *
@@ -136,7 +136,7 @@ public interface IDataSet<T extends Entry> {
 
     /**
      * Returns all of the y values of the Entry objects at the given xPos. Returns
-     * Float.NaN if no yValue is at the given xPos. INFORMATION: This method
+     * Float.NaN if no value is at the given xPos. INFORMATION: This method
      * does calculations at runtime. Do not over-use in performance critical
      * situations.
      *
@@ -160,7 +160,7 @@ public interface IDataSet<T extends Entry> {
      * Adds an Entry to the DataSet dynamically.
      * Entries are added to the end of the list.
      * This will also recalculate the current minimum and maximum
-     * values of the DataSet and the yValue-sum.
+     * values of the DataSet and the value-sum.
      *
      * @param e
      */
@@ -169,7 +169,7 @@ public interface IDataSet<T extends Entry> {
     /**
      * Removes an Entry from the DataSets entries array. This will also
      * recalculate the current minimum and maximum values of the DataSet and the
-     * yValue-sum. Returns true if an Entry was removed, false if no Entry could
+     * value-sum. Returns true if an Entry was removed, false if no Entry could
      * be removed.
      *
      * @param e
@@ -180,7 +180,7 @@ public interface IDataSet<T extends Entry> {
      * Adds an Entry to the DataSet dynamically.
      * Entries are added to their appropriate index respective to it's x-index.
      * This will also recalculate the current minimum and maximum
-     * values of the DataSet and the yValue-sum.
+     * values of the DataSet and the value-sum.
      *
      * @param e
      */
@@ -289,7 +289,7 @@ public interface IDataSet<T extends Entry> {
     boolean isHighlightEnabled();
 
     /**
-     * If set to true, yValue highlighting is enabled which means that values can
+     * If set to true, value highlighting is enabled which means that values can
      * be highlighted programmatically or by touch gesture.
      *
      * @param enabled
@@ -315,7 +315,7 @@ public interface IDataSet<T extends Entry> {
     ValueFormatter getValueFormatter();
 
     /**
-     * Sets the color the yValue-labels of this DataSet should have.
+     * Sets the color the value-labels of this DataSet should have.
      *
      * @param color
      */
@@ -329,14 +329,14 @@ public interface IDataSet<T extends Entry> {
     void setValueTextColors(List<Integer> colors);
 
     /**
-     * Sets a Typeface for the yValue-labels of this DataSet.
+     * Sets a Typeface for the value-labels of this DataSet.
      *
      * @param tf
      */
     void setValueTypeface(Typeface tf);
 
     /**
-     * Sets the text-size of the yValue-labels of this DataSet in dp.
+     * Sets the text-size of the value-labels of this DataSet in dp.
      *
      * @param size
      */
@@ -382,7 +382,7 @@ public interface IDataSet<T extends Entry> {
     void setDrawValues(boolean enabled);
 
     /**
-     * Returns true if y-yValue drawing is enabled, false if not
+     * Returns true if y-value drawing is enabled, false if not
      *
      * @return
      */

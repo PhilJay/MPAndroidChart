@@ -242,7 +242,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     }
 
     /**
-     * Sets the transparency (alpha) yValue for all web lines, default: 150, 255
+     * Sets the transparency (alpha) value for all web lines, default: 150, 255
      * = 100% opaque, 0 = 100% transparent
      *
      * @param alpha
@@ -252,7 +252,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     }
 
     /**
-     * Returns the alpha yValue for all web lines.
+     * Returns the alpha value for all web lines.
      *
      * @return
      */
@@ -339,14 +339,14 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     }
 
     /**
-     * Returns the maximum yValue this chart can display on it's y-axis.
+     * Returns the maximum value this chart can display on it's y-axis.
      */
     public float getYChartMax() {
         return mYAxis.mAxisMaximum;
     }
 
     /**
-     * Returns the minimum yValue this chart can display on it's y-axis.
+     * Returns the minimum value this chart can display on it's y-axis.
      */
     public float getYChartMin() {
         return mYAxis.mAxisMinimum;

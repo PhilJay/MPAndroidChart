@@ -112,8 +112,8 @@ public abstract class AxisRenderer extends Renderer {
     /**
      * Computes the axis values.
      *
-     * @param min - the minimum yValue in the data object for this axis
-     * @param max - the maximum yValue in the data object for this axis
+     * @param min - the minimum value in the data object for this axis
+     * @param max - the maximum value in the data object for this axis
      */
     public void computeAxis(float min, float max, boolean inverted) {
 
@@ -157,7 +157,7 @@ public abstract class AxisRenderer extends Renderer {
             return;
         }
 
-        // Find out how much spacing (in y yValue space) between axis values
+        // Find out how much spacing (in y value space) between axis values
         double rawInterval = range / labelCount;
         double interval = Utils.roundToNextSignificant(rawInterval);
 
@@ -226,7 +226,7 @@ public abstract class AxisRenderer extends Renderer {
 
             for (f = first, i = 0; i < n; f += interval, ++i) {
 
-                if (f == 0.0) // Fix for negative zero case (Where yValue == -0.0, and 0.0 == -0.0)
+                if (f == 0.0) // Fix for negative zero case (Where value == -0.0, and 0.0 == -0.0)
                     f = 0.0;
 
                 mAxis.mEntries[i] = (float) f;

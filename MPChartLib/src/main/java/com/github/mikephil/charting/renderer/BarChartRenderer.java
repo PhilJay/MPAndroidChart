@@ -135,7 +135,7 @@ public class BarChartRenderer extends DataRenderer {
                 if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j]))
                     break;
 
-                // Set the color for the currently drawn yValue. If the index
+                // Set the color for the currently drawn value. If the index
                 // is out of bounds, reuse colors.
                 mRenderPaint.setColor(dataSet.getColor(j / 4));
                 c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
@@ -207,7 +207,7 @@ public class BarChartRenderer extends DataRenderer {
                 boolean isInverted = mChart.isInverted(dataSet.getAxisDependency());
 
                 // calculate the correct offset depending on the draw position of
-                // the yValue
+                // the value
                 float valueTextHeight = Utils.calcTextHeight(mValuePaint, "8");
                 posOffset = (drawValueAboveBar ? -valueOffsetPlus : valueTextHeight + valueOffsetPlus);
                 negOffset = (drawValueAboveBar ? valueTextHeight + valueOffsetPlus : -valueOffsetPlus);

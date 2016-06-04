@@ -65,7 +65,7 @@ public abstract class AxisBase extends ComponentBase {
     /**
      * When true, axis labels are controlled by the `granularity` property.
      * When false, axis values could possibly be repeated.
-     * This could happen if two adjacent axis values are rounded to same yValue.
+     * This could happen if two adjacent axis values are rounded to same value.
      * If using granularity this could be avoided by having fewer axis values visible.
      */
     protected boolean mGranularityEnabled = false;
@@ -108,12 +108,12 @@ public abstract class AxisBase extends ComponentBase {
     protected boolean mDrawLimitLineBehindData = false;
 
     /**
-     * flag indicating that the axis-min yValue has been customized
+     * flag indicating that the axis-min value has been customized
      */
     protected boolean mCustomAxisMin = false;
 
     /**
-     * flag indicating that the axis-max yValue has been customized
+     * flag indicating that the axis-max value has been customized
      */
     protected boolean mCustomAxisMax = false;
 
@@ -341,7 +341,7 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
-     * Enabled/disable granularity control on axis yValue intervals. If enabled, the axis
+     * Enabled/disable granularity control on axis value intervals. If enabled, the axis
      * interval is not allowed to go below a certain granularity. Default: false
      *
      * @param enabled
@@ -538,7 +538,7 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
-     * By calling this method, any custom maximum yValue that has been previously set is reseted,
+     * By calling this method, any custom maximum value that has been previously set is reseted,
      * and the calculation is
      * done automatically.
      */
@@ -547,7 +547,7 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
-     * Returns true if the axis max yValue has been customized (and is not calculated automatically)
+     * Returns true if the axis max value has been customized (and is not calculated automatically)
      *
      * @return
      */
@@ -556,7 +556,7 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
-     * By calling this method, any custom minimum yValue that has been previously set is reseted,
+     * By calling this method, any custom minimum value that has been previously set is reseted,
      * and the calculation is
      * done automatically.
      */
@@ -565,7 +565,7 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
-     * Returns true if the axis min yValue has been customized (and is not calculated automatically)
+     * Returns true if the axis min value has been customized (and is not calculated automatically)
      *
      * @return
      */
@@ -574,11 +574,11 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
-     * Set a custom minimum yValue for this axis. If set, this yValue will not be calculated
+     * Set a custom minimum value for this axis. If set, this value will not be calculated
      * automatically depending on
      * the provided data. Use resetAxisMinValue() to undo this. Do not forget to call
      * setStartAtZero(false) if you use
-     * this method. Otherwise, the axis-minimum yValue will still be forced to 0.
+     * this method. Otherwise, the axis-minimum value will still be forced to 0.
      *
      * @param min
      */
@@ -589,7 +589,7 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
-     * Set a custom maximum yValue for this axis. If set, this yValue will not be calculated
+     * Set a custom maximum value for this axis. If set, this value will not be calculated
      * automatically depending on
      * the provided data. Use resetAxisMaxValue() to undo this.
      *
@@ -605,12 +605,12 @@ public abstract class AxisBase extends ComponentBase {
      * Calculates the minimum / maximum  and range values of the axis with the given
      * minimum and maximum values from the chart data.
      *
-     * @param dataMin the min yValue according to chart data
-     * @param dataMax the max yValue according to chart data
+     * @param dataMin the min value according to chart data
+     * @param dataMax the max value according to chart data
      */
     public void calculate(float dataMin, float dataMax) {
 
-        // if custom, use yValue as is, else use data yValue
+        // if custom, use value as is, else use data value
         float min = mCustomAxisMin ? mAxisMinimum : dataMin;
         float max = mCustomAxisMax ? mAxisMaximum : dataMax;
 

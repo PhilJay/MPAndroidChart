@@ -73,7 +73,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
         objects.add(new ContentItem("Combined Chart",
                 "Demonstrates how to create a combined chart (bar and line in this case)."));
         objects.add(new ContentItem("Pie Chart", "A simple demonstration of the pie chart."));
-        objects.add(new ContentItem("Pie Chart with yValue lines", "A simple demonstration of the pie chart with polyline notes."));
+        objects.add(new ContentItem("Pie Chart with value lines", "A simple demonstration of the pie chart with polyline notes."));
         objects.add(new ContentItem("Scatter Chart", "A simple demonstration of the scatter chart."));
         objects.add(new ContentItem("Bubble Chart", "A simple demonstration of the bubble chart."));
         objects.add(new ContentItem("Stacked Bar Chart",

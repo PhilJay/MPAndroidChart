@@ -29,7 +29,7 @@ public class LineChartRenderer extends LineRadarRenderer {
     protected LineDataProvider mChart;
 
     /**
-     * paint for the inner circle of the yValue indicators
+     * paint for the inner circle of the value indicators
      */
     protected Paint mCirclePaintInner;
 

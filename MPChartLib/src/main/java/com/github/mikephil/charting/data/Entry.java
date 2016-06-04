@@ -7,7 +7,7 @@ import android.os.Parcelable;
 
 /**
  * Class representing one entry in the chart. Might contain multiple values.
- * Might only contain a single yValue depending on the used constructor.
+ * Might only contain a single value depending on the used constructor.
  * 
  * @author Philipp Jahoda
  */
@@ -23,8 +23,8 @@ public class Entry extends BaseEntry implements Parcelable {
     /**
      * A Entry represents one single entry in the chart.
      *
-     * @param x the x yValue
-     * @param y the y yValue (the actual yValue of the entry)
+     * @param x the x value
+     * @param y the y value (the actual value of the entry)
      */
     public Entry(float x, float y) {
         super(y);
@@ -34,8 +34,8 @@ public class Entry extends BaseEntry implements Parcelable {
     /**
      * A Entry represents one single entry in the chart.
      *
-     * @param x the x yValue
-     * @param y the y yValue (the actual yValue of the entry)
+     * @param x the x value
+     * @param y the y value (the actual value of the entry)
      * @param data Spot for additional data this Entry represents.
      */
     public Entry(float x, float y, Object data) {
@@ -44,7 +44,7 @@ public class Entry extends BaseEntry implements Parcelable {
     }
 
     /**
-     * Returns the x-yValue of this Entry object.
+     * Returns the x-value of this Entry object.
      * 
      * @return
      */
@@ -53,7 +53,7 @@ public class Entry extends BaseEntry implements Parcelable {
     }
 
     /**
-     * Sets the x-yValue of this Entry object.
+     * Sets the x-value of this Entry object.
      * 
      * @param x
      */
@@ -72,7 +72,7 @@ public class Entry extends BaseEntry implements Parcelable {
     }
 
     /**
-     * Compares yValue, xIndex and data of the entries. Returns true if entries
+     * Compares value, xIndex and data of the entries. Returns true if entries
      * are equal in those points, false if not. Does not check by hash-code like
      * it's done by the "equals" method.
      * 
@@ -97,7 +97,7 @@ public class Entry extends BaseEntry implements Parcelable {
     }
 
     /**
-     * returns a string representation of the entry containing x-index and yValue
+     * returns a string representation of the entry containing x-index and value
      */
     @Override
     public String toString() {

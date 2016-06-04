@@ -23,22 +23,22 @@ import java.util.List;
 public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
     /**
-     * maximum y-yValue in the yValue array across all axes
+     * maximum y-value in the value array across all axes
      */
     protected float mYMax = 0.0f;
 
     /**
-     * the minimum y-yValue in the yValue array across all axes
+     * the minimum y-value in the value array across all axes
      */
     protected float mYMin = 0.0f;
 
     /**
-     * maximum x-yValue in the yValue array
+     * maximum x-value in the value array
      */
     protected float mXMax = 0f;
 
     /**
-     * minimum x-yValue in the yValue array
+     * minimum x-value in the value array
      */
     protected float mXMin = 0f;
 
@@ -87,7 +87,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
     /**
      * performs all kinds of initialization calculations, such as min-max and
-     * yValue count and sum
+     * value count and sum
      */
     protected void init() {
 
@@ -227,7 +227,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Returns the smallest y-yValue the data object contains.
+     * Returns the smallest y-value the data object contains.
      *
      * @return
      */
@@ -236,7 +236,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Returns the minimum y-yValue for the specified axis.
+     * Returns the minimum y-value for the specified axis.
      *
      * @param axis
      * @return
@@ -249,7 +249,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Returns the greatest y-yValue the data object contains.
+     * Returns the greatest y-value the data object contains.
      *
      * @return
      */
@@ -258,7 +258,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Returns the maximum y-yValue for the specified axis.
+     * Returns the maximum y-value for the specified axis.
      *
      * @param axis
      * @return
@@ -271,7 +271,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Returns the minimum x-yValue this data object contains.
+     * Returns the minimum x-value this data object contains.
      *
      * @return
      */
@@ -280,7 +280,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Returns the maximum x-yValue this data object contains.
+     * Returns the maximum x-value this data object contains.
      *
      * @return
      */
@@ -372,8 +372,8 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 //        if (highlight.getDataSetIndex() >= mDataSets.size())
 //            return null;
 //        else {
-//            // The yValue of the highlighted entry could be NaN -
-//            //   if we are not interested in highlighting a specific yValue.
+//            // The value of the highlighted entry could be NaN -
+//            //   if we are not interested in highlighting a specific value.
 //
 //            List<?> entries = mDataSets.get(highlight.getDataSetIndex())
 //                    .getEntriesForXPos(highlight.getX());
@@ -765,7 +765,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Sets the color of the yValue-text (color in which the yValue-labels are
+     * Sets the color of the value-text (color in which the value-labels are
      * drawn) for all DataSets this data object contains.
      *
      * @param color
@@ -777,7 +777,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Sets the same list of yValue-colors for all DataSets this
+     * Sets the same list of value-colors for all DataSets this
      * data object contains.
      *
      * @param colors
@@ -789,7 +789,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Sets the Typeface for all yValue-labels for all DataSets this data object
+     * Sets the Typeface for all value-labels for all DataSets this data object
      * contains.
      *
      * @param tf
@@ -801,7 +801,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Sets the size (in dp) of the yValue-text for all DataSets this data object
+     * Sets the size (in dp) of the value-text for all DataSets this data object
      * contains.
      *
      * @param size
@@ -813,7 +813,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Enables / disables drawing values (yValue-text) for all DataSets this data
+     * Enables / disables drawing values (value-text) for all DataSets this data
      * object contains.
      *
      * @param enabled

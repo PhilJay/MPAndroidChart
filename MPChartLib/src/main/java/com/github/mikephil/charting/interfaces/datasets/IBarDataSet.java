@@ -24,7 +24,7 @@ public interface IBarDataSet extends IBarLineScatterCandleBubbleDataSet<BarEntry
 
     /**
      * Returns the color used for drawing the bar-shadows. The bar shadows is a
-     * surface behind the bar that indicates the maximum yValue.
+     * surface behind the bar that indicates the maximum value.
      *
      * @return
      */
@@ -46,7 +46,7 @@ public interface IBarDataSet extends IBarLineScatterCandleBubbleDataSet<BarEntry
     int getBarBorderColor();
 
     /**
-     * Returns the alpha yValue (transparency) that is used for drawing the
+     * Returns the alpha value (transparency) that is used for drawing the
      * highlight indicator.
      *
      * @return
@@ -55,7 +55,7 @@ public interface IBarDataSet extends IBarLineScatterCandleBubbleDataSet<BarEntry
 
 
     /**
-     * Returns the labels used for the different yValue-stacks in the legend.
+     * Returns the labels used for the different value-stacks in the legend.
      * This is only relevant for stacked bar entries.
      *
      * @return

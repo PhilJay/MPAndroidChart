@@ -83,7 +83,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         float sliceangle = mChart.getSliceAngle();
 
-        // calculate the factor that is needed for transforming the yValue to
+        // calculate the factor that is needed for transforming the value to
         // pixels
         float factor = mChart.getFactor();
 
@@ -157,7 +157,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         float sliceangle = mChart.getSliceAngle();
 
-        // calculate the factor that is needed for transforming the yValue to
+        // calculate the factor that is needed for transforming the value to
         // pixels
         float factor = mChart.getFactor();
 
@@ -198,7 +198,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         float sliceangle = mChart.getSliceAngle();
 
-        // calculate the factor that is needed for transforming the yValue to
+        // calculate the factor that is needed for transforming the value to
         // pixels
         float factor = mChart.getFactor();
         float rotationangle = mChart.getRotationAngle();

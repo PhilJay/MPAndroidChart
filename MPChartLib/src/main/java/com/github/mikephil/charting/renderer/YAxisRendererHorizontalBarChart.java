@@ -30,8 +30,8 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
     /**
      * Computes the axis values.
      *
-     * @param yMin - the minimum y-yValue in the data object for this axis
-     * @param yMax - the maximum y-yValue in the data object for this axis
+     * @param yMin - the minimum y-value in the data object for this axis
+     * @param yMax - the maximum y-value in the data object for this axis
      */
     @Override
     public void computeAxis(float yMin, float yMax, boolean inverted) {
@@ -231,7 +231,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
 
             String label = l.getLabel();
 
-            // if drawing the limit-yValue label is enabled
+            // if drawing the limit-value label is enabled
             if (label != null && !label.equals("")) {
 
                 mLimitLinePaint.setStyle(l.getTextStyle());

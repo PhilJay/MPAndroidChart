@@ -37,7 +37,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
             return;
         }
 
-        // Find out how much spacing (in y yValue space) between axis values
+        // Find out how much spacing (in y value space) between axis values
         double rawInterval = range / labelCount;
         double interval = Utils.roundToNextSignificant(rawInterval);
 
@@ -108,7 +108,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
 
             for (f = first, i = 0; i < n; f += interval, ++i) {
 
-                if (f == 0.0) // Fix for negative zero case (Where yValue == -0.0, and 0.0 == -0.0)
+                if (f == 0.0) // Fix for negative zero case (Where value == -0.0, and 0.0 == -0.0)
                     f = 0.0;
 
                 mAxis.mEntries[i] = (float) f;
@@ -180,7 +180,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
 
         float sliceangle = mChart.getSliceAngle();
 
-        // calculate the factor that is needed for transforming the yValue to
+        // calculate the factor that is needed for transforming the value to
         // pixels
         float factor = mChart.getFactor();
 

@@ -82,7 +82,7 @@ public abstract class RealmLineRadarDataSet<T extends RealmObject> extends Realm
     }
 
     /**
-     * sets the alpha yValue (transparency) that is used for filling the line
+     * sets the alpha value (transparency) that is used for filling the line
      * surface (0-255), default: 85
      *
      * @param alpha

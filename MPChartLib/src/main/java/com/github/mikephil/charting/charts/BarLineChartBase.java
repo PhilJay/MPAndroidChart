@@ -50,7 +50,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     /**
      * the maximum number of entries to which values will be drawn
-     * (entry numbers greater than this yValue will cause yValue-labels to disappear)
+     * (entry numbers greater than this value will cause value-labels to disappear)
      */
     protected int mMaxVisibleCount = 100;
 
@@ -80,7 +80,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     protected boolean mHighlightPerDragEnabled = true;
 
     /**
-     * flag that indicates whether the highlight should be full-bar oriented, or single-yValue?
+     * flag that indicates whether the highlight should be full-bar oriented, or single-value?
      */
     protected boolean mHighlightFullBarEnabled = false;
 
@@ -529,7 +529,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         float xPos = e.getX();
         float yPos = e.getY();
 
-        // position of the marker depends on selected yValue index and yValue
+        // position of the marker depends on selected value index and value
         float[] pts = new float[]{
                 xPos, yPos
         };
@@ -710,7 +710,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Sets the minimum scale factor yValue to which can be zoomed out. 1f =
+     * Sets the minimum scale factor value to which can be zoomed out. 1f =
      * fitScreen
      *
      * @param scaleX
@@ -748,7 +748,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Limits the maximum and minimum yValue count that can be visible by
+     * Limits the maximum and minimum value count that can be visible by
      * pinching and zooming. e.g. minRange=10, maxRange=100 no less than 10
      * values and no more that 100 values can be viewed at once without
      * scrolling
@@ -950,7 +950,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     /** CODE BELOW IS GETTERS AND SETTERS */
 
     /**
-     * Returns the delta-y yValue (y-yValue range) of the specified axis.
+     * Returns the delta-y value (y-value range) of the specified axis.
      *
      * @param axis
      * @return
@@ -1040,7 +1040,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * @return true the highlight is be full-bar oriented, false if single-yValue
+     * @return true the highlight is be full-bar oriented, false if single-value
      */
     public boolean isHighlightFullBarEnabled() {
         return mHighlightFullBarEnabled;
@@ -1188,7 +1188,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     /**
      * Returns the Highlight object (contains x-index and DataSet index) of the
-     * selected yValue at the given touch point inside the Line-, Scatter-, or
+     * selected value at the given touch point inside the Line-, Scatter-, or
      * CandleStick-Chart.
      *
      * @param x
@@ -1232,7 +1232,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     /**
      * Returns y value at the given touch position (must not necessarily be
-     * a yValue contained in one of the datasets)
+     * a value contained in one of the datasets)
      *
      * @param x
      * @param y
@@ -1273,7 +1273,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Returns the lowest x-index (yValue on the x-axis) that is still visible on
+     * Returns the lowest x-index (value on the x-axis) that is still visible on
      * the chart.
      *
      * @return
@@ -1286,7 +1286,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Returns the highest x-index (yValue on the x-axis) that is still visible
+     * Returns the highest x-index (value on the x-axis) that is still visible
      * on the chart.
      *
      * @return

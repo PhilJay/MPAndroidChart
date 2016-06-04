@@ -20,22 +20,22 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     protected List<T> mValues = null;
 
     /**
-     * maximum y-yValue in the yValue array
+     * maximum y-value in the value array
      */
     protected float mYMax = 0.0f;
 
     /**
-     * minimum y-yValue in the yValue array
+     * minimum y-value in the value array
      */
     protected float mYMin = 0.0f;
 
     /**
-     * maximum x-yValue in the yValue array
+     * maximum x-value in the value array
      */
     protected float mXMax = 0.0f;
 
     /**
-     * minimum x-yValue in the yValue array
+     * minimum x-value in the value array
      */
     protected float mXMin = 0.0f;
 

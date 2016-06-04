@@ -21,7 +21,7 @@ public abstract class Renderer {
     }
 
     /**
-     * Returns true if the specified yValue fits in between the provided min
+     * Returns true if the specified value fits in between the provided min
      * and max bounds, false if not.
      * 
      * @param val

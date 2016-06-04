@@ -67,7 +67,7 @@ public abstract class DataRenderer extends Renderer {
 
     /**
      * Returns the Paint object this renderer uses for drawing the values
-     * (yValue-text).
+     * (value-text).
      *
      * @return
      */
@@ -95,7 +95,7 @@ public abstract class DataRenderer extends Renderer {
     }
 
     /**
-     * Applies the required styling (provided by the DataSet) to the yValue-paint
+     * Applies the required styling (provided by the DataSet) to the value-paint
      * object.
      *
      * @param set
@@ -128,12 +128,12 @@ public abstract class DataRenderer extends Renderer {
     public abstract void drawValues(Canvas c);
 
     /**
-     * Draws the yValue of the given entry by using the provided ValueFormatter.
+     * Draws the value of the given entry by using the provided ValueFormatter.
      *
      * @param c            canvas
-     * @param formatter    formatter for custom yValue-formatting
-     * @param value        the yValue to be drawn
-     * @param entry        the entry the yValue belongs to
+     * @param formatter    formatter for custom value-formatting
+     * @param value        the value to be drawn
+     * @param entry        the entry the value belongs to
      * @param dataSetIndex the index of the DataSet the drawn Entry belongs to
      * @param x            position
      * @param y            position

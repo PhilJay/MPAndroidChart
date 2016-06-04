@@ -170,7 +170,7 @@ public class HorizontalBarChart extends BarChart {
     }
 
     /**
-     * Returns the Highlight object (contains x-index and DataSet index) of the selected yValue at the given touch point
+     * Returns the Highlight object (contains x-index and DataSet index) of the selected value at the given touch point
      * inside the BarChart.
      *
      * @param x
@@ -203,7 +203,7 @@ public class HorizontalBarChart extends BarChart {
     }
 
 //	/**
-//	 * Returns the lowest x-index (yValue on the x-axis) that is still visible on the chart.
+//	 * Returns the lowest x-index (value on the x-axis) that is still visible on the chart.
 //	 *
 //	 * @return
 //	 */
@@ -220,7 +220,7 @@ public class HorizontalBarChart extends BarChart {
 //	}
 //
 //	/**
-//	 * Returns the highest x-index (yValue on the x-axis) that is still visible on the chart.
+//	 * Returns the highest x-index (value on the x-axis) that is still visible on the chart.
 //	 *
 //	 * @return
 //	 */

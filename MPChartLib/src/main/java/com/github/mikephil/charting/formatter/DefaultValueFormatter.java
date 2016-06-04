@@ -8,7 +8,7 @@ import java.text.DecimalFormat;
 
 /**
  * Default formatter used for formatting values inside the chart. Uses a DecimalFormat with
- * pre-calculated number of digits (depending on max and min yValue).
+ * pre-calculated number of digits (depending on max and min value).
  *
  * @author Philipp Jahoda
  */
@@ -18,7 +18,7 @@ public class DefaultValueFormatter implements ValueFormatter {
     protected DecimalFormat mFormat;
 
     /**
-     * Constructor that specifies to how many digits the yValue should be
+     * Constructor that specifies to how many digits the value should be
      * formatted.
      * 
      * @param digits

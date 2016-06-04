@@ -55,7 +55,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      */
     protected PointD getValsForTouch(float x, float y) {
 
-        // take any transformer to determine the x-axis yValue
+        // take any transformer to determine the x-axis value
         PointD pos = mChart.getTransformer(YAxis.AxisDependency.LEFT).getValuesByTouchPoint(x, y);
         return pos;
     }
@@ -154,7 +154,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
     }
 
     /**
-     * Returns the SelectionDetail of the DataSet that contains the closest yValue on the
+     * Returns the SelectionDetail of the DataSet that contains the closest value on the
      * y-axis.
      *
      * @param valsAtIndex all the values at a specific index

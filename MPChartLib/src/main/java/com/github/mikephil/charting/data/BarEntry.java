@@ -84,7 +84,7 @@ public class BarEntry extends Entry {
     }
 
     /**
-     * Returns the stacked values this BarEntry represents, or null, if only a single yValue is represented (then, use
+     * Returns the stacked values this BarEntry represents, or null, if only a single value is represented (then, use
      * getY()).
      *
      * @return
@@ -105,7 +105,7 @@ public class BarEntry extends Entry {
     }
 
     /**
-     * Returns the yValue of this BarEntry. If the entry is stacked, it returns the positive sum of all values.
+     * Returns the value of this BarEntry. If the entry is stacked, it returns the positive sum of all values.
      *
      * @return
      */

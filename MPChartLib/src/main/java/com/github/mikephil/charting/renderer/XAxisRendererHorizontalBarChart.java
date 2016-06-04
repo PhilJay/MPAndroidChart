@@ -249,7 +249,7 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
 
 			String label = l.getLabel();
 
-			// if drawing the limit-yValue label is enabled
+			// if drawing the limit-value label is enabled
 			if (label != null && !label.equals("")) {
 
 				mLimitLinePaint.setStyle(l.getTextStyle());

@@ -10,7 +10,7 @@ import com.github.mikephil.charting.utils.Utils;
  * modify it. Do not
  * access public variables directly. Be aware that not all features the YLabels class provides
  * are suitable for the
- * RadarChart. Customizations that affect the yValue range of the axis need to be applied before
+ * RadarChart. Customizations that affect the value range of the axis need to be applied before
  * setting data for the
  * chart.
  *
@@ -44,12 +44,12 @@ public class YAxis extends AxisBase {
     protected float mZeroLineWidth = 1f;
 
     /**
-     * axis space from the largest yValue to the top in percent of the total axis range
+     * axis space from the largest value to the top in percent of the total axis range
      */
     protected float mSpacePercentTop = 10f;
 
     /**
-     * axis space from the smallest yValue to the bottom in percent of the total axis range
+     * axis space from the smallest value to the bottom in percent of the total axis range
      */
     protected float mSpacePercentBottom = 10f;
 
@@ -346,7 +346,7 @@ public class YAxis extends AxisBase {
     @Override
     public void calculate(float dataMin, float dataMax) {
 
-        // if custom, use yValue as is, else use data yValue
+        // if custom, use value as is, else use data value
         float min = mCustomAxisMin ? mAxisMinimum : dataMin;
         float max = mCustomAxisMax ? mAxisMaximum : dataMax;
 

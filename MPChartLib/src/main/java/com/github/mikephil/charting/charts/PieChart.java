@@ -256,7 +256,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * calculates the needed angle for a given yValue
+     * calculates the needed angle for a given value
      *
      * @param value
      * @return
@@ -266,7 +266,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * calculates the needed angle for a given yValue
+     * calculates the needed angle for a given value
      *
      * @param value
      * @param yValueSum
@@ -550,7 +550,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     /**
      * Sets the amount of transparency the transparent circle should have 0 = fully transparent,
      * 255 = fully opaque.
-     * Default yValue is 100.
+     * Default value is 100.
      *
      * @param alpha 0-255
      */
@@ -559,7 +559,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * set this to true to draw the x-yValue text into the pie slices
+     * set this to true to draw the x-value text into the pie slices
      *
      * @param enabled
      */
@@ -588,7 +588,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
     /**
      * If this is enabled, values inside the PieChart are drawn in percent and
-     * not with their original yValue. Values provided for the ValueFormatter to
+     * not with their original value. Values provided for the ValueFormatter to
      * format are then provided in percent.
      *
      * @param enabled

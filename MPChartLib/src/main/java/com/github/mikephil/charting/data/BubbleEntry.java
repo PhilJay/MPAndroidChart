@@ -4,7 +4,7 @@ package com.github.mikephil.charting.data;
 import android.annotation.SuppressLint;
 
 /**
- * Subclass of Entry that holds a yValue for one entry in a BubbleChart. Bubble
+ * Subclass of Entry that holds a value for one entry in a BubbleChart. Bubble
  * chart implementation: Copyright 2015 Pierre-Marc Airoldi Licensed under
  * Apache License 2.0
  *
@@ -13,14 +13,14 @@ import android.annotation.SuppressLint;
 @SuppressLint("ParcelCreator")
 public class BubbleEntry extends Entry {
 
-    /** size yValue */
+    /** size value */
     private float mSize = 0f;
 
     /**
      * Constructor.
      *
-     * @param x The yValue on the x-axis.
-     * @param y The yValue on the y-axis.
+     * @param x The value on the x-axis.
+     * @param y The value on the y-axis.
      * @param size The size of the bubble.
      */
     public BubbleEntry(float x, float y, float size) {
@@ -31,8 +31,8 @@ public class BubbleEntry extends Entry {
     /**
      * Constructor.
      *
-     * @param x The yValue on the x-axis.
-     * @param y The yValue on the y-axis.
+     * @param x The value on the x-axis.
+     * @param y The value on the y-axis.
      * @param size The size of the bubble.
      * @param data Spot for additional data this Entry represents.
      */

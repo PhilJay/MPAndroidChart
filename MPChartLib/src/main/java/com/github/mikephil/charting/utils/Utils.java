@@ -89,9 +89,9 @@ public abstract class Utils {
      * This method converts dp unit to equivalent pixels, depending on device
      * density. NEEDS UTILS TO BE INITIALIZED BEFORE USAGE.
      *
-     * @param dp A yValue in dp (density independent pixels) unit. Which we need
+     * @param dp A value in dp (density independent pixels) unit. Which we need
      *           to convert into pixels
-     * @return A float yValue to represent px equivalent to dp depending on
+     * @return A float value to represent px equivalent to dp depending on
      * device density
      */
     public static float convertDpToPixel(float dp) {
@@ -117,8 +117,8 @@ public abstract class Utils {
      * This method converts device specific pixels to density independent
      * pixels. NEEDS UTILS TO BE INITIALIZED BEFORE USAGE.
      *
-     * @param px A yValue in px (pixels) unit. Which we need to convert into db
-     * @return A float yValue to represent dp equivalent to px yValue
+     * @param px A value in px (pixels) unit. Which we need to convert into db
+     * @return A float value to represent dp equivalent to px value
      */
     public static float convertPixelsToDp(float px) {
 
@@ -382,7 +382,7 @@ public abstract class Utils {
     }
 
     /**
-     * Returns the index of the DataSet that contains the closest yValue on the
+     * Returns the index of the DataSet that contains the closest value on the
      * y-axis. This is needed for highlighting. This will return -Integer.MAX_VALUE if failure.
      *
      * @param valsAtIndex all the values at a specific index
@@ -400,7 +400,7 @@ public abstract class Utils {
     }
 
     /**
-     * Returns the SelectionDetail of the DataSet that contains the closest yValue on the
+     * Returns the SelectionDetail of the DataSet that contains the closest value on the
      * y-axis.
      *
      * @param valsAtIndex all the values at a specific index
@@ -721,7 +721,7 @@ public abstract class Utils {
      */
     public static double granularity(float range, int labelCount) {
 
-        // Find out how much spacing (in y yValue space) between axis values
+        // Find out how much spacing (in y value space) between axis values
         double rawInterval = range / labelCount;
         double interval = Utils.roundToNextSignificant(rawInterval);
 

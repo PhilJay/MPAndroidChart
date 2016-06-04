@@ -20,7 +20,7 @@ public class DefaultAxisValueFormatter implements AxisValueFormatter {
     protected int digits = 0;
 
     /**
-     * Constructor that specifies to how many digits the yValue should be
+     * Constructor that specifies to how many digits the value should be
      * formatted.
      *
      * @param digits

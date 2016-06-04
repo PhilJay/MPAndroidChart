@@ -42,7 +42,7 @@ public class RealmPieDataSet<T extends RealmObject> extends RealmBaseDataSet<T, 
      * Constructor for creating a PieDataSet with realm data.
      *
      * @param result       the queried results from the realm database
-     * @param yValuesField the name of the field in your data object that represents the y-yValue
+     * @param yValuesField the name of the field in your data object that represents the y-value
      */
     public RealmPieDataSet(RealmResults<T> result, String yValuesField) {
         super(result, yValuesField);

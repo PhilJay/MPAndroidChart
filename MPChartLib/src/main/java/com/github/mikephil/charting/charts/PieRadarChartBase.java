@@ -343,7 +343,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
 
     /**
      * gets the raw version of the current rotation angle of the pie chart the
-     * returned yValue could be any yValue, negative or positive, outside of the
+     * returned value could be any value, negative or positive, outside of the
      * 360 degrees. this is used when working with rotation direction, mainly by
      * gestures and animations.
      *
@@ -442,7 +442,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
 
     /**
      * Returns an array of SelectionDetail objects for the given x-index. The SelectionDetail
-     * objects give information about the yValue at the selected index and the
+     * objects give information about the value at the selected index and the
      * DataSet it belongs to. INFORMATION: This method does calculations at
      * runtime. Do not over-use in performance critical situations.
      *

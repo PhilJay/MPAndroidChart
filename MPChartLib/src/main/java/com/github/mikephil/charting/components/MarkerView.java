@@ -68,7 +68,7 @@ public abstract class MarkerView extends RelativeLayout {
      *
      * @param e         The Entry the MarkerView belongs to. This can also be any subclass of Entry, like BarEntry or
      *                  CandleEntry, simply cast it at runtime.
-     * @param highlight the highlight object contains information about the highlighted yValue such as it's dataset-index, the
+     * @param highlight the highlight object contains information about the highlighted value such as it's dataset-index, the
      *                  selected range or stack-index (only stacked bar entries).
      */
     public abstract void refreshContent(Entry e, Highlight highlight);
@@ -84,7 +84,7 @@ public abstract class MarkerView extends RelativeLayout {
 
     /**
      * Use this to return the desired position offset you wish the MarkerView to have on the y-axis. By returning
-     * -getHeight() you will cause the MarkerView to be above the selected yValue.
+     * -getHeight() you will cause the MarkerView to be above the selected value.
      *
      * @param ypos the position on the y-axis in pixels where the marker is drawn
      * @return

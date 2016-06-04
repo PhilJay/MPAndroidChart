@@ -11,26 +11,26 @@ import android.annotation.SuppressLint;
 @SuppressLint("ParcelCreator")
 public class CandleEntry extends Entry {
 
-    /** shadow-high yValue */
+    /** shadow-high value */
     private float mShadowHigh = 0f;
 
-    /** shadow-low yValue */
+    /** shadow-low value */
     private float mShadowLow = 0f;
 
-    /** close yValue */
+    /** close value */
     private float mClose = 0f;
 
-    /** open yValue */
+    /** open value */
     private float mOpen = 0f;
 
     /**
      * Constructor.
      * 
-     * @param x The yValue on the x-axis.
-     * @param shadowH The (shadow) high yValue.
-     * @param shadowL The (shadow) low yValue.
-     * @param open The open yValue.
-     * @param close The close yValue.
+     * @param x The value on the x-axis.
+     * @param shadowH The (shadow) high value.
+     * @param shadowL The (shadow) low value.
+     * @param open The open value.
+     * @param close The close value.
      */
     public CandleEntry(float x, float shadowH, float shadowL, float open, float close) {
         super(x, (shadowH + shadowL) / 2f);
@@ -44,9 +44,9 @@ public class CandleEntry extends Entry {
     /**
      * Constructor.
      * 
-     * @param x The yValue on the x-axis.
-     * @param shadowH The (shadow) high yValue.
-     * @param shadowL The (shadow) low yValue.
+     * @param x The value on the x-axis.
+     * @param shadowH The (shadow) high value.
+     * @param shadowL The (shadow) low value.
      * @param open
      * @param close
      * @param data Spot for additional data this Entry represents.
@@ -81,7 +81,7 @@ public class CandleEntry extends Entry {
     }
 
     /**
-     * Returns the center yValue of the candle. (Middle yValue between high and
+     * Returns the center value of the candle. (Middle value between high and
      * low)
      */
     @Override
@@ -98,7 +98,7 @@ public class CandleEntry extends Entry {
     }
 
     /**
-     * Returns the upper shadows highest yValue.
+     * Returns the upper shadows highest value.
      * 
      * @return
      */
@@ -111,7 +111,7 @@ public class CandleEntry extends Entry {
     }
 
     /**
-     * Returns the lower shadows lowest yValue.
+     * Returns the lower shadows lowest value.
      * 
      * @return
      */
@@ -124,7 +124,7 @@ public class CandleEntry extends Entry {
     }
 
     /**
-     * Returns the bodys close yValue.
+     * Returns the bodys close value.
      * 
      * @return
      */
@@ -137,7 +137,7 @@ public class CandleEntry extends Entry {
     }
 
     /**
-     * Returns the bodys open yValue.
+     * Returns the bodys open value.
      * 
      * @return
      */

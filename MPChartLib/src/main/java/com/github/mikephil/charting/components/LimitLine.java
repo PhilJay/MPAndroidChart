@@ -17,7 +17,7 @@ import com.github.mikephil.charting.utils.Utils;
  */
 public class LimitLine extends ComponentBase {
 
-    /** limit / maximum (the y-yValue or xIndex) */
+    /** limit / maximum (the y-value or xIndex) */
     private float mLimit = 0f;
 
     /** the width of the limit line */
@@ -46,7 +46,7 @@ public class LimitLine extends ComponentBase {
     /**
      * Constructor with limit.
      * 
-     * @param limit - the position (the yValue) on the y-axis (y-yValue) or x-axis
+     * @param limit - the position (the value) on the y-axis (y-value) or x-axis
      *            (xIndex) where this line should appear
      */
     public LimitLine(float limit) {
@@ -56,7 +56,7 @@ public class LimitLine extends ComponentBase {
     /**
      * Constructor with limit and label.
      * 
-     * @param limit - the position (the yValue) on the y-axis (y-yValue) or x-axis
+     * @param limit - the position (the value) on the y-axis (y-value) or x-axis
      *            (xIndex) where this line should appear
      * @param label - provide "" if no label is required
      */
@@ -157,7 +157,7 @@ public class LimitLine extends ComponentBase {
     }
 
     /**
-     * Sets the color of the yValue-text that is drawn next to the LimitLine.
+     * Sets the color of the value-text that is drawn next to the LimitLine.
      * Default: Paint.Style.FILL_AND_STROKE
      *
      * @param style
@@ -167,7 +167,7 @@ public class LimitLine extends ComponentBase {
     }
 
     /**
-     * Returns the color of the yValue-text that is drawn next to the LimitLine.
+     * Returns the color of the value-text that is drawn next to the LimitLine.
      *
      * @return
      */
@@ -176,7 +176,7 @@ public class LimitLine extends ComponentBase {
     }
 
     /**
-     * Sets the position of the LimitLine yValue label (either on the right or on
+     * Sets the position of the LimitLine value label (either on the right or on
      * the left edge of the chart). Not supported for RadarChart.
      * 
      * @param pos
@@ -186,7 +186,7 @@ public class LimitLine extends ComponentBase {
     }
 
     /**
-     * Returns the position of the LimitLine label (yValue).
+     * Returns the position of the LimitLine label (value).
      * 
      * @return
      */

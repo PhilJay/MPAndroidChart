@@ -90,13 +90,13 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     /**
      * Deceleration friction coefficient in [0 ; 1] interval, higher values
      * indicate that speed will decrease slowly, for example if it set to 0, it
-     * will stop immediately. 1 is an invalid yValue, and will be converted to
+     * will stop immediately. 1 is an invalid value, and will be converted to
      * 0.999f automatically.
      */
     private float mDragDecelerationFrictionCoef = 0.9f;
 
     /**
-     * default yValue-formatter, number of digits depends on provided chart-data
+     * default value-formatter, number of digits depends on provided chart-data
      */
     protected ValueFormatter mDefaultFormatter;
 
@@ -133,7 +133,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     protected Legend mLegend;
 
     /**
-     * listener that is called when a yValue on the chart is selected
+     * listener that is called when a value on the chart is selected
      */
     protected OnChartValueSelectedListener mSelectionListener;
 
@@ -377,13 +377,13 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     protected abstract void calculateOffsets();
 
     /**
-     * calcualtes the y-min and y-max yValue and the y-delta and x-delta yValue
+     * calcualtes the y-min and y-max value and the y-delta and x-delta value
      */
     protected abstract void calcMinMax();
 
     /**
      * calculates the required number of digits for the values that might be
-     * drawn in the chart (if enabled), and creates the default-yValue-formatter
+     * drawn in the chart (if enabled), and creates the default-value-formatter
      */
     protected void calculateFormatter(float min, float max) {
 
@@ -570,7 +570,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * Highlights the yValue at the given x-index in the given DataSet. Provide
+     * Highlights the value at the given x-index in the given DataSet. Provide
      * -1 as the x-index or dataSetIndex to undo all highlighting.
      *
      * @param xIndex
@@ -581,7 +581,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * Highlights the yValue at the given x position in the given DataSet. Provide
+     * Highlights the value at the given x position in the given DataSet. Provide
      * -1 as the dataSetIndex to undo all highlighting.
      *
      * @param x
@@ -607,7 +607,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * Highlights the yValue selected by touch gesture. Unlike
+     * Highlights the value selected by touch gesture. Unlike
      * highlightValues(...), this generates a callback to the
      * OnChartValueSelectedListener.
      *
@@ -678,7 +678,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     /** BELOW CODE IS FOR THE MARKER VIEW */
 
     /**
-     * if set to true, the marker view is drawn when a yValue is clicked
+     * if set to true, the marker view is drawn when a value is clicked
      */
     protected boolean mDrawMarkerViews = true;
 
@@ -789,7 +789,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     /**
      * Deceleration friction coefficient in [0 ; 1] interval, higher values
      * indicate that speed will decrease slowly, for example if it set to 0, it
-     * will stop immediately. 1 is an invalid yValue, and will be converted to
+     * will stop immediately. 1 is an invalid value, and will be converted to
      * 0.999f automatically.
      *
      * @param newValue
@@ -1000,7 +1000,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * returns the current y-max yValue across all DataSets
+     * returns the current y-max value across all DataSets
      *
      * @return
      */
@@ -1009,7 +1009,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * returns the current y-min yValue across all DataSets
+     * returns the current y-min value across all DataSets
      *
      * @return
      */
@@ -1238,7 +1238,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * sets the view that is displayed when a yValue is clicked on the chart
+     * sets the view that is displayed when a value is clicked on the chart
      *
      * @param v
      */
@@ -1277,7 +1277,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * Returns the rectangle that defines the borders of the chart-yValue surface
+     * Returns the rectangle that defines the borders of the chart-value surface
      * (into which the actual values are drawn).
      *
      * @return

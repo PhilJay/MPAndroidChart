@@ -309,7 +309,7 @@ public class XAxisRenderer extends AxisRenderer {
     public void renderLimitLineLabel(Canvas c, LimitLine limitLine, float[] position, float yOffset) {
         String label = limitLine.getLabel();
 
-        // if drawing the limit-yValue label is enabled
+        // if drawing the limit-value label is enabled
         if (label != null && !label.equals("")) {
 
             mLimitLinePaint.setStyle(limitLine.getTextStyle());

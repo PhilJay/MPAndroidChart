@@ -37,11 +37,11 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
     private int mCircleColorHole = Color.WHITE;
 
     /**
-     * the radius of the circle-shaped yValue indicators
+     * the radius of the circle-shaped value indicators
      */
     private float mCircleRadius = 8f;
 
-    /** the hole radius of the circle-shaped yValue indicators */
+    /** the hole radius of the circle-shaped value indicators */
     private float mCircleHoleRadius = 4f;
 
     /**
@@ -70,7 +70,7 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
      * Constructor for creating a LineDataSet with realm data.
      *
      * @param result       the queried results from the realm database
-     * @param yValuesField the name of the field in your data object that represents the y-yValue
+     * @param yValuesField the name of the field in your data object that represents the y-value
      */
     public RealmLineDataSet(RealmResults<T> result, String yValuesField) {
         super(result, yValuesField);
@@ -142,7 +142,7 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
     }
 
     /**
-     * sets the size (radius) of the circle shpaed yValue indicators, default
+     * sets the size (radius) of the circle shpaed value indicators, default
      * size = 4f
      *
      * @param size

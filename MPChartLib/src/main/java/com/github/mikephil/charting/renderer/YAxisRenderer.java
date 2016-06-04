@@ -55,7 +55,7 @@ public class YAxisRenderer extends AxisRenderer {
 //            return;
 //        }
 //
-//        // Find out how much spacing (in y yValue space) between axis values
+//        // Find out how much spacing (in y value space) between axis values
 //        double rawInterval = range / labelCount;
 //        double interval = Utils.roundToNextSignificant(rawInterval);
 //
@@ -125,7 +125,7 @@ public class YAxisRenderer extends AxisRenderer {
 //
 //                for (f = first, i = 0; i < n; f += interval, ++i) {
 //
-//                    if (f == 0.0) // Fix for negative zero case (Where yValue == -0.0, and 0.0 == -0.0)
+//                    if (f == 0.0) // Fix for negative zero case (Where value == -0.0, and 0.0 == -0.0)
 //                        f = 0.0;
 //
 //                    mYAxis.mEntries[i] = (float) f;
@@ -352,7 +352,7 @@ public class YAxisRenderer extends AxisRenderer {
 
             String label = l.getLabel();
 
-            // if drawing the limit-yValue label is enabled
+            // if drawing the limit-value label is enabled
             if (label != null && !label.equals("")) {
 
                 mLimitLinePaint.setStyle(l.getTextStyle());

@@ -72,7 +72,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
 
-        // draw shadows for each bar that show the maximum yValue
+        // draw shadows for each bar that show the maximum value
         // mChart.setDrawBarShadow(true);
 
         mChart.setDrawGridBackground(false);

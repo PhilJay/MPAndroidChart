@@ -41,7 +41,7 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
 
     /**
      * if set to true, a grey area is drawn behind each bar that indicates the
-     * maximum yValue
+     * maximum value
      */
     private boolean mDrawBarShadow = false;
 
@@ -189,7 +189,7 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
 
     /**
      * If set to true, a grey area is drawn behind each bar that indicates the
-     * maximum yValue. Enabling his will reduce performance by about 50%.
+     * maximum value. Enabling his will reduce performance by about 50%.
      *
      * @param enabled
      */
