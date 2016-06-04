@@ -27,7 +27,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
     }
 
     /**
-     * Returns a Highlight object corresponding to the given xPx- and yPx- touch positions in pixels.
+     * Returns a Highlight object corresponding to the given x- and y- touch positions in pixels.
      *
      * @param x
      * @param y
@@ -55,13 +55,13 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      */
     protected PointD getValsForTouch(float x, float y) {
 
-        // take any transformer to determine the xPx-axis yValue
+        // take any transformer to determine the x-axis yValue
         PointD pos = mChart.getTransformer(YAxis.AxisDependency.LEFT).getValuesByTouchPoint(x, y);
         return pos;
     }
 
     /**
-     * Returns the corresponding SelectionDetail for a given xVal and yPx-touch position in pixels.
+     * Returns the corresponding SelectionDetail for a given xVal and y-touch position in pixels.
      *
      * @param xVal
      * @param y
@@ -155,7 +155,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
 
     /**
      * Returns the SelectionDetail of the DataSet that contains the closest yValue on the
-     * yPx-axis.
+     * y-axis.
      *
      * @param valsAtIndex all the values at a specific index
      * @return

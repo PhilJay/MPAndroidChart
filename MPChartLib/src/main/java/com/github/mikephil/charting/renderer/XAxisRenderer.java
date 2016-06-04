@@ -36,7 +36,7 @@ public class XAxisRenderer extends AxisRenderer {
     @Override
     public void computeAxis(float min, float max, boolean inverted) {
 
-        // calculate the starting and entry point of the yPx-labels (depending on
+        // calculate the starting and entry point of the y-labels (depending on
         // zoom / contentrect bounds)
         if (mViewPortHandler.contentWidth() > 10 && !mViewPortHandler.isFullyZoomedOutX()) {
 
@@ -156,7 +156,7 @@ public class XAxisRenderer extends AxisRenderer {
     }
 
     /**
-     * draws the xPx-labels on the specified yPx-position
+     * draws the x-labels on the specified y-position
      *
      * @param pos
      */
@@ -169,7 +169,7 @@ public class XAxisRenderer extends AxisRenderer {
 
         for (int i = 0; i < positions.length; i += 2) {
 
-            // only fill xPx values
+            // only fill x values
             if (centeringEnabled) {
                 positions[i] = mXAxis.mCenteredEntries[i / 2];
             } else {
@@ -223,7 +223,7 @@ public class XAxisRenderer extends AxisRenderer {
         float[] positions = new float[mXAxis.mEntryCount * 2];
 
         for (int i = 0; i < positions.length; i += 2) {
-            // only fill xPx values
+            // only fill x values
             positions[i] = mXAxis.mEntries[i / 2];
         }
 

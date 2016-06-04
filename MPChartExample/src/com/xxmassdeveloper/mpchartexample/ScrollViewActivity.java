@@ -30,7 +30,7 @@ public class ScrollViewActivity extends DemoBase {
 
         mChart.setDescription("");
 
-        // scaling can now only be done on xPx- and yPx-axis separately
+        // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
 
         mChart.setDrawBarShadow(false);

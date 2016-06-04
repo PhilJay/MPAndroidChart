@@ -70,7 +70,7 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
      * Constructor for creating a LineDataSet with realm data.
      *
      * @param result       the queried results from the realm database
-     * @param yValuesField the name of the field in your data object that represents the yPx-yValue
+     * @param yValuesField the name of the field in your data object that represents the y-yValue
      */
     public RealmLineDataSet(RealmResults<T> result, String yValuesField) {
         super(result, yValuesField);

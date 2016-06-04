@@ -23,8 +23,8 @@ public class Entry extends BaseEntry implements Parcelable {
     /**
      * A Entry represents one single entry in the chart.
      *
-     * @param x the xPx yValue
-     * @param y the yPx yValue (the actual yValue of the entry)
+     * @param x the x yValue
+     * @param y the y yValue (the actual yValue of the entry)
      */
     public Entry(float x, float y) {
         super(y);
@@ -34,8 +34,8 @@ public class Entry extends BaseEntry implements Parcelable {
     /**
      * A Entry represents one single entry in the chart.
      *
-     * @param x the xPx yValue
-     * @param y the yPx yValue (the actual yValue of the entry)
+     * @param x the x yValue
+     * @param y the y yValue (the actual yValue of the entry)
      * @param data Spot for additional data this Entry represents.
      */
     public Entry(float x, float y, Object data) {
@@ -44,7 +44,7 @@ public class Entry extends BaseEntry implements Parcelable {
     }
 
     /**
-     * Returns the xPx-yValue of this Entry object.
+     * Returns the x-yValue of this Entry object.
      * 
      * @return
      */
@@ -53,7 +53,7 @@ public class Entry extends BaseEntry implements Parcelable {
     }
 
     /**
-     * Sets the xPx-yValue of this Entry object.
+     * Sets the x-yValue of this Entry object.
      * 
      * @param x
      */
@@ -97,7 +97,7 @@ public class Entry extends BaseEntry implements Parcelable {
     }
 
     /**
-     * returns a string representation of the entry containing xPx-index and yValue
+     * returns a string representation of the entry containing x-index and yValue
      */
     @Override
     public String toString() {

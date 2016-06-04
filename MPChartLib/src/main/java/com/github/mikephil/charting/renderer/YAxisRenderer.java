@@ -55,7 +55,7 @@ public class YAxisRenderer extends AxisRenderer {
 //            return;
 //        }
 //
-//        // Find out how much spacing (in yPx yValue space) between axis values
+//        // Find out how much spacing (in y yValue space) between axis values
 //        double rawInterval = range / labelCount;
 //        double interval = Utils.roundToNextSignificant(rawInterval);
 //
@@ -142,7 +142,7 @@ public class YAxisRenderer extends AxisRenderer {
 //    }
 
     /**
-     * draws the yPx-axis labels to the screen
+     * draws the y-axis labels to the screen
      */
     @Override
     public void renderAxisLabels(Canvas c) {
@@ -207,7 +207,7 @@ public class YAxisRenderer extends AxisRenderer {
     }
 
     /**
-     * draws the yPx-labels on the specified xPx-position
+     * draws the y-labels on the specified x-position
      *
      * @param fixedPosition
      * @param positions

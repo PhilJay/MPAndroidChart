@@ -55,15 +55,15 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     protected int mMaxVisibleCount = 100;
 
     /**
-     * flag that indicates if auto scaling on the yPx axis is enabled
+     * flag that indicates if auto scaling on the y axis is enabled
      */
     protected boolean mAutoScaleMinMaxEnabled = false;
     private Float mAutoScaleLastLowestVisibleXIndex = null;
     private Float mAutoScaleLastHighestVisibleXIndex = null;
 
     /**
-     * flag that indicates if pinch-zoom is enabled. if true, both xPx and yPx axis
-     * can be scaled with 2 fingers, if false, xPx and yPx axis can be scaled
+     * flag that indicates if pinch-zoom is enabled. if true, both x and y axis
+     * can be scaled with 2 fingers, if false, x and y axis can be scaled
      * separately
      */
     protected boolean mPinchZoomEnabled = false;
@@ -122,12 +122,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     protected OnDrawListener mDrawListener;
 
     /**
-     * the object representing the labels on the left yPx-axis
+     * the object representing the labels on the left y-axis
      */
     protected YAxis mAxisLeft;
 
     /**
-     * the object representing the labels on the right yPx-axis
+     * the object representing the labels on the right y-axis
      */
     protected YAxis mAxisRight;
 
@@ -357,7 +357,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         if (mAutoScaleMinMaxEnabled)
             mData.calcMinMax();
 
-//        // calculate / set xPx-axis range
+//        // calculate / set x-axis range
 //        mXAxis.mAxisMaximum = mData.getXVals().size() - 1;
 //        mXAxis.mAxisRange = Math.abs(mXAxis.mAxisMaximum - mXAxis.mAxisMinimum);
 
@@ -467,7 +467,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             offsetRight += mOffsetsBuffer.right;
             offsetBottom += mOffsetsBuffer.bottom;
 
-            // offsets for yPx-labels
+            // offsets for y-labels
             if (mAxisLeft.needsOffset()) {
                 offsetLeft += mAxisLeft.getRequiredWidthSpace(mAxisRendererLeft
                         .getPaintAxisLabels());
@@ -482,7 +482,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
                 float xlabelheight = mXAxis.mLabelRotatedHeight + mXAxis.getYOffset();
 
-                // offsets for xPx-labels
+                // offsets for x-labels
                 if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
 
                     offsetBottom += xlabelheight;
@@ -634,7 +634,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Zooms in or out by the given scale factor. xPx and yPx are the coordinates
+     * Zooms in or out by the given scale factor. x and y are the coordinates
      * (in pixels) of the zoom center.
      *
      * @param scaleX if < 1f --> zoom out, if > 1f --> zoom in
@@ -722,12 +722,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Sets the size of the area (range on the xPx-axis) that should be maximum
+     * Sets the size of the area (range on the x-axis) that should be maximum
      * visible at once (no further zooming out allowed). If this is e.g. set to
-     * 10, no more than 10 values on the xPx-axis can be viewed at once without
+     * 10, no more than 10 values on the x-axis can be viewed at once without
      * scrolling.
      *
-     * @param maxXRange The maximum visible range of xPx-values.
+     * @param maxXRange The maximum visible range of x-values.
      */
     public void setVisibleXRangeMaximum(float maxXRange) {
         float xScale = mXAxis.mAxisRange / (maxXRange);
@@ -735,12 +735,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Sets the size of the area (range on the xPx-axis) that should be minimum
+     * Sets the size of the area (range on the x-axis) that should be minimum
      * visible at once (no further zooming in allowed). If this is e.g. set to
-     * 10, no less than 10 values on the xPx-axis can be viewed at once without
+     * 10, no less than 10 values on the x-axis can be viewed at once without
      * scrolling.
      *
-     * @param minXRange The minimum visible range of xPx-values.
+     * @param minXRange The minimum visible range of x-values.
      */
     public void setVisibleXRangeMinimum(float minXRange) {
         float xScale = mXAxis.mAxisRange / (minXRange);
@@ -763,10 +763,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Sets the size of the area (range on the yPx-axis) that should be maximum
+     * Sets the size of the area (range on the y-axis) that should be maximum
      * visible at once.
      *
-     * @param maxYRange the maximum visible range on the yPx-axis
+     * @param maxYRange the maximum visible range on the y-axis
      * @param axis      - the axis for which this limit should apply
      */
     public void setVisibleYRangeMaximum(float maxYRange, AxisDependency axis) {
@@ -775,7 +775,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Moves the left side of the current viewport to the specified xPx-index.
+     * Moves the left side of the current viewport to the specified x-index.
      * This also refreshes the chart by calling invalidate().
      *
      * @param xIndex
@@ -950,7 +950,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     /** CODE BELOW IS GETTERS AND SETTERS */
 
     /**
-     * Returns the delta-yPx yValue (yPx-yValue range) of the specified axis.
+     * Returns the delta-y yValue (y-yValue range) of the specified axis.
      *
      * @param axis
      * @return
@@ -1132,7 +1132,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     /**
      * Sets drawing the borders rectangle to true. If this is enabled, there is
-     * no point drawing the axis-lines of xPx- and yPx-axis.
+     * no point drawing the axis-lines of x- and y-axis.
      *
      * @param enabled
      */
@@ -1187,7 +1187,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Returns the Highlight object (contains xPx-index and DataSet index) of the
+     * Returns the Highlight object (contains x-index and DataSet index) of the
      * selected yValue at the given touch point inside the Line-, Scatter-, or
      * CandleStick-Chart.
      *
@@ -1273,7 +1273,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Returns the lowest xPx-index (yValue on the xPx-axis) that is still visible on
+     * Returns the lowest x-index (yValue on the x-axis) that is still visible on
      * the chart.
      *
      * @return
@@ -1286,7 +1286,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Returns the highest xPx-index (yValue on the xPx-axis) that is still visible
+     * Returns the highest x-index (yValue on the x-axis) that is still visible
      * on the chart.
      *
      * @return
@@ -1308,7 +1308,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * returns the current xPx-scale factor
+     * returns the current x-scale factor
      */
     public float getScaleX() {
         if (mViewPortHandler == null)
@@ -1318,7 +1318,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * returns the current yPx-scale factor
+     * returns the current y-scale factor
      */
     public float getScaleY() {
         if (mViewPortHandler == null)
@@ -1337,7 +1337,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Returns the left yPx-axis object. In the horizontal bar-chart, this is the
+     * Returns the left y-axis object. In the horizontal bar-chart, this is the
      * top axis.
      *
      * @return
@@ -1347,7 +1347,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Returns the right yPx-axis object. In the horizontal bar-chart, this is the
+     * Returns the right y-axis object. In the horizontal bar-chart, this is the
      * bottom axis.
      *
      * @return
@@ -1357,7 +1357,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Returns the yPx-axis object to the corresponding AxisDependency. In the
+     * Returns the y-axis object to the corresponding AxisDependency. In the
      * horizontal bar-chart, LEFT == top, RIGHT == BOTTOM
      *
      * @param axis
@@ -1376,8 +1376,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * If set to true, both xPx and yPx axis can be scaled simultaneously with 2 fingers, if false,
-     * xPx and yPx axis can be scaled separately. default: false
+     * If set to true, both x and y axis can be scaled simultaneously with 2 fingers, if false,
+     * x and y axis can be scaled separately. default: false
      *
      * @param enabled
      */
@@ -1396,7 +1396,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     /**
      * Set an offset in dp that allows the user to drag the chart over it's
-     * bounds on the xPx-axis.
+     * bounds on the x-axis.
      *
      * @param offset
      */
@@ -1406,7 +1406,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     /**
      * Set an offset in dp that allows the user to drag the chart over it's
-     * bounds on the yPx-axis.
+     * bounds on the y-axis.
      *
      * @param offset
      */
@@ -1415,7 +1415,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Returns true if both drag offsets (xPx and yPx) are zero or smaller.
+     * Returns true if both drag offsets (x and y) are zero or smaller.
      *
      * @return
      */
@@ -1486,11 +1486,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Flag that indicates if auto scaling on the yPx axis is enabled. This is
+     * Flag that indicates if auto scaling on the y axis is enabled. This is
      * especially interesting for charts displaying financial data.
      *
-     * @param enabled the yPx axis automatically adjusts to the min and max yPx
-     *                values of the current xPx axis range whenever the viewport
+     * @param enabled the y axis automatically adjusts to the min and max y
+     *                values of the current x axis range whenever the viewport
      *                changes
      */
     public void setAutoScaleMinMaxEnabled(boolean enabled) {
@@ -1498,7 +1498,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * @return true if auto scaling on the yPx axis is enabled.
+     * @return true if auto scaling on the y axis is enabled.
      * @default false
      */
     public boolean isAutoScaleMinMaxEnabled() {

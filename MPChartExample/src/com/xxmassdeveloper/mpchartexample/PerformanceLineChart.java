@@ -52,7 +52,7 @@ public class PerformanceLineChart extends DemoBase implements OnSeekBarChangeLis
         mChart.setDragEnabled(true);
         mChart.setScaleEnabled(true);
 
-        // if disabled, scaling can be done on xPx- and yPx-axis separately
+        // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(false);
               
         mChart.getAxisLeft().setDrawGridLines(false);

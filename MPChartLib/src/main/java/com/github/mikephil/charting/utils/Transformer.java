@@ -96,8 +96,8 @@ public class Transformer {
     }
 
     /**
-     * Transforms an List of Entry into a float array containing the xPx and
-     * yPx values transformed with all matrices for the SCATTERCHART.
+     * Transforms an List of Entry into a float array containing the x and
+     * y values transformed with all matrices for the SCATTERCHART.
      *
      * @param data
      * @return
@@ -123,8 +123,8 @@ public class Transformer {
     }
 
     /**
-     * Transforms an List of Entry into a float array containing the xPx and
-     * yPx values transformed with all matrices for the BUBBLECHART.
+     * Transforms an List of Entry into a float array containing the x and
+     * y values transformed with all matrices for the BUBBLECHART.
      *
      * @param data
      * @return
@@ -152,8 +152,8 @@ public class Transformer {
     }
 
     /**
-     * Transforms an List of Entry into a float array containing the xPx and
-     * yPx values transformed with all matrices for the LINECHART.
+     * Transforms an List of Entry into a float array containing the x and
+     * y values transformed with all matrices for the LINECHART.
      *
      * @param data
      * @return
@@ -181,8 +181,8 @@ public class Transformer {
     }
 
     /**
-     * Transforms an List of Entry into a float array containing the xPx and
-     * yPx values transformed with all matrices for the CANDLESTICKCHART.
+     * Transforms an List of Entry into a float array containing the x and
+     * y values transformed with all matrices for the CANDLESTICKCHART.
      *
      * @param data
      * @return
@@ -210,8 +210,8 @@ public class Transformer {
     }
 
     /**
-     * Transforms an List of Entry into a float array containing the xPx and
-     * yPx values transformed with all matrices for the BARCHART.
+     * Transforms an List of Entry into a float array containing the x and
+     * y values transformed with all matrices for the BARCHART.
      *
      * @param data
      * @param dataSet the dataset index
@@ -230,7 +230,7 @@ public class Transformer {
             Entry e = data.getEntryForIndex(j / 2);
             float i = e.getX();
 
-            // calculate the xPx-position, depending on datasetcount
+            // calculate the x-position, depending on datasetcount
             float x = i + i * (setCount - 1) + dataSet + space * i
                     + space / 2f;
             float y = e.getY();
@@ -365,7 +365,7 @@ public class Transformer {
     }
 
     /**
-     * Transforms the given array of touch positions (pixels) (xPx, yPx, xPx, yPx, ...)
+     * Transforms the given array of touch positions (pixels) (x, y, x, y, ...)
      * into values on the chart.
      *
      * @param pixels
@@ -391,7 +391,7 @@ public class Transformer {
     float[] ptsBuffer = new float[2];
 
     /**
-     * Returns the xPx and yPx values in the chart at the given touch point
+     * Returns the x and y values in the chart at the given touch point
      * (encapsulated in a PointD). This method transforms pixel coordinates to
      * coordinates / values in the chart. This is the opposite method to
      * getPixelsForValues(...).
@@ -414,7 +414,7 @@ public class Transformer {
     }
 
     /**
-     * Returns the xPx and yPx coordinates (pixels) for a given xPx and yPx yValue in the chart.
+     * Returns the x and y coordinates (pixels) for a given x and y yValue in the chart.
      *
      * @param x
      * @param y

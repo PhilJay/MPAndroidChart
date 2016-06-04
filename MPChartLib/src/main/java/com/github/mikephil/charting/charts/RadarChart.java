@@ -62,7 +62,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     private int mSkipWebLineCount = 0;
 
     /**
-     * the object reprsenting the yPx-axis labels
+     * the object reprsenting the y-axis labels
      */
     private YAxis mYAxis;
 
@@ -99,7 +99,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     protected void calcMinMax() {
         super.calcMinMax();
 
-        // calculate / set xPx-axis range
+        // calculate / set x-axis range
 //        mXAxis.mAxisMaximum = mData.getXVals().size() - 1;
 //        mXAxis.mAxisRange = Math.abs(mXAxis.mAxisMaximum - mXAxis.mAxisMinimum);
 
@@ -214,7 +214,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     }
 
     /**
-     * Returns the object that represents all yPx-labels of the RadarChart.
+     * Returns the object that represents all y-labels of the RadarChart.
      *
      * @return
      */
@@ -347,21 +347,21 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     }
 
     /**
-     * Returns the maximum yValue this chart can display on it's yPx-axis.
+     * Returns the maximum yValue this chart can display on it's y-axis.
      */
     public float getYChartMax() {
         return mYAxis.mAxisMaximum;
     }
 
     /**
-     * Returns the minimum yValue this chart can display on it's yPx-axis.
+     * Returns the minimum yValue this chart can display on it's y-axis.
      */
     public float getYChartMin() {
         return mYAxis.mAxisMinimum;
     }
 
     /**
-     * Returns the range of yPx-values this chart can display.
+     * Returns the range of y-values this chart can display.
      *
      * @return
      */

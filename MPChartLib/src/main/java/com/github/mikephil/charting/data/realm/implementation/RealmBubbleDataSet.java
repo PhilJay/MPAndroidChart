@@ -25,7 +25,7 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
      * Constructor for creating a CandleDataSet with realm data.
      *
      * @param result       the queried results from the realm database
-     * @param yValuesField the name of the field in your data object that represents the yPx-yValue
+     * @param yValuesField the name of the field in your data object that represents the y-yValue
      * @param sizeField    the name of the field in your data object that represents the bubble size
      */
     public RealmBubbleDataSet(RealmResults<T> result, String yValuesField, String sizeField) {
@@ -40,8 +40,8 @@ public class RealmBubbleDataSet<T extends RealmObject> extends RealmBarLineScatt
      * Constructor for creating a CandleDataSet with realm data.
      *
      * @param result       the queried results from the realm database
-     * @param yValuesField the name of the field in your data object that represents the yPx-yValue
-     * @param xIndexField  the name of the field in your data object that represents the xPx-index
+     * @param yValuesField the name of the field in your data object that represents the y-yValue
+     * @param xIndexField  the name of the field in your data object that represents the x-index
      * @param sizeField    the name of the field in your data object that represents the bubble size
      */
     public RealmBubbleDataSet(RealmResults<T> result, String yValuesField, String xIndexField, String sizeField) {

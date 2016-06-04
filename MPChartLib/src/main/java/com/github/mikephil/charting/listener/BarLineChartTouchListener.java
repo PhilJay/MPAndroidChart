@@ -126,10 +126,10 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
 
                     saveTouchStart(event);
 
-                    // get the distance between the pointers on the xPx-axis
+                    // get the distance between the pointers on the x-axis
                     mSavedXDist = getXDist(event);
 
-                    // get the distance between the pointers on the yPx-axis
+                    // get the distance between the pointers on the y-axis
                     mSavedYDist = getYDist(event);
 
                     // get the total distance between the pointers
@@ -363,7 +363,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                     mLastGesture = ChartGesture.X_ZOOM;
 
                     float xDist = getXDist(event);
-                    float scaleX = xDist / mSavedXDist; // xPx-axis scale
+                    float scaleX = xDist / mSavedXDist; // x-axis scale
 
                     boolean isZoomingOut = (scaleX < 1);
                     boolean canZoomMoreX = isZoomingOut ?
@@ -384,7 +384,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                     mLastGesture = ChartGesture.Y_ZOOM;
 
                     float yDist = getYDist(event);
-                    float scaleY = yDist / mSavedYDist; // yPx-axis scale
+                    float scaleY = yDist / mSavedYDist; // y-axis scale
 
                     boolean isZoomingOut = (scaleY < 1);
                     boolean canZoomMoreY = isZoomingOut ?
@@ -450,7 +450,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
     }
 
     /**
-     * calculates the distance on the xPx-axis between two pointers (fingers on
+     * calculates the distance on the x-axis between two pointers (fingers on
      * the display)
      *
      * @param e
@@ -462,7 +462,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
     }
 
     /**
-     * calculates the distance on the yPx-axis between two pointers (fingers on
+     * calculates the distance on the y-axis between two pointers (fingers on
      * the display)
      *
      * @param e
@@ -474,7 +474,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
     }
 
     /**
-     * returns the correct translation depending on the provided xPx and yPx touch
+     * returns the correct translation depending on the provided x and y touch
      * points
      *
      * @param x
@@ -532,7 +532,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
             mChart.zoom(mChart.isScaleXEnabled() ? 1.4f : 1f, mChart.isScaleYEnabled() ? 1.4f : 1f, trans.x, trans.y);
 
             if (mChart.isLogEnabled())
-                Log.i("BarlineChartTouch", "Double-Tap, Zooming In, xPx: " + trans.x + ", yPx: "
+                Log.i("BarlineChartTouch", "Double-Tap, Zooming In, x: " + trans.x + ", y: "
                         + trans.y);
         }
 

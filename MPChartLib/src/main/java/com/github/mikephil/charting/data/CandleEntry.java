@@ -26,7 +26,7 @@ public class CandleEntry extends Entry {
     /**
      * Constructor.
      * 
-     * @param x The yValue on the xPx-axis.
+     * @param x The yValue on the x-axis.
      * @param shadowH The (shadow) high yValue.
      * @param shadowL The (shadow) low yValue.
      * @param open The open yValue.
@@ -44,7 +44,7 @@ public class CandleEntry extends Entry {
     /**
      * Constructor.
      * 
-     * @param x The yValue on the xPx-axis.
+     * @param x The yValue on the x-axis.
      * @param shadowH The (shadow) high yValue.
      * @param shadowL The (shadow) low yValue.
      * @param open

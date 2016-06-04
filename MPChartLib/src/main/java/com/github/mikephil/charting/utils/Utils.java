@@ -383,7 +383,7 @@ public abstract class Utils {
 
     /**
      * Returns the index of the DataSet that contains the closest yValue on the
-     * yPx-axis. This is needed for highlighting. This will return -Integer.MAX_VALUE if failure.
+     * y-axis. This is needed for highlighting. This will return -Integer.MAX_VALUE if failure.
      *
      * @param valsAtIndex all the values at a specific index
      * @return
@@ -401,7 +401,7 @@ public abstract class Utils {
 
     /**
      * Returns the SelectionDetail of the DataSet that contains the closest yValue on the
-     * yPx-axis.
+     * y-axis.
      *
      * @param valsAtIndex all the values at a specific index
      * @return
@@ -721,7 +721,7 @@ public abstract class Utils {
      */
     public static double granularity(float range, int labelCount) {
 
-        // Find out how much spacing (in yPx yValue space) between axis values
+        // Find out how much spacing (in y yValue space) between axis values
         double rawInterval = range / labelCount;
         double interval = Utils.roundToNextSignificant(rawInterval);
 

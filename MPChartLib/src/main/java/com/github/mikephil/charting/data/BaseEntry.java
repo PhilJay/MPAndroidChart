@@ -25,7 +25,7 @@ public abstract class BaseEntry {
     }
 
     /**
-     * Returns the yPx yValue of this Entry.
+     * Returns the y yValue of this Entry.
      *
      * @return
      */
@@ -34,7 +34,7 @@ public abstract class BaseEntry {
     }
 
     /**
-     * Sets the yPx-yValue for the Entry.
+     * Sets the y-yValue for the Entry.
      *
      * @param y
      */

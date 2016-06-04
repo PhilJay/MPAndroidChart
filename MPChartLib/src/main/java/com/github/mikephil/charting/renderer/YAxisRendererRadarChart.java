@@ -37,7 +37,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
             return;
         }
 
-        // Find out how much spacing (in yPx yValue space) between axis values
+        // Find out how much spacing (in y yValue space) between axis values
         double rawInterval = range / labelCount;
         double interval = Utils.roundToNextSignificant(rawInterval);
 

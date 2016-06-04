@@ -25,8 +25,8 @@ public abstract class LineScatterCandleRadarRenderer extends DataRenderer {
      * Draws vertical & horizontal highlight-lines if enabled.
      *
      * @param c
-     * @param x xPx-position of the highlight line intersection
-     * @param y yPx-position of the highlight line intersection
+     * @param x x-position of the highlight line intersection
+     * @param y y-position of the highlight line intersection
      * @param set the currently drawn dataset
      */
     protected void drawHighlightLines(Canvas c, float x, float y, ILineScatterCandleRadarDataSet set) {

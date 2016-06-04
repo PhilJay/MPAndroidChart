@@ -339,7 +339,7 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
                  dataSetIndex++) {
 
                 float x = high.getX(); // get the
-                // xPx-position
+                // x-position
 
                 ICandleDataSet set = mChart.getCandleData().getDataSetByIndex(dataSetIndex);
 

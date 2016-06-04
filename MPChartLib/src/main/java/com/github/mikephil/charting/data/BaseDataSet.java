@@ -57,7 +57,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     protected Typeface mValueTypeface;
 
     /**
-     * if true, yPx-values are drawn on the chart
+     * if true, y-values are drawn on the chart
      */
     protected boolean mDrawValues = true;
 

@@ -8,10 +8,10 @@ package com.github.mikephil.charting.highlight;
  */
 public class Highlight {
 
-    /** the xPx-yValue of the highlighted yValue */
+    /** the x-yValue of the highlighted yValue */
     private float mX = Float.NaN;
 
-    /** the yPx-yValue of the highlighted yValue */
+    /** the y-yValue of the highlighted yValue */
     private float mY = Float.NaN;
 
     /** the index of the data object - in case it refers to more than one */
@@ -29,8 +29,8 @@ public class Highlight {
     /**
      * constructor
      *
-     * @param x the xPx-yValue of the highlighted yValue
-     * @param y the yPx-yValue of the highlighted yValue
+     * @param x the x-yValue of the highlighted yValue
+     * @param y the y-yValue of the highlighted yValue
      * @param dataIndex the index of the Data the highlighted yValue belongs to
      * @param dataSetIndex the index of the DataSet the highlighted yValue belongs to
      */
@@ -43,8 +43,8 @@ public class Highlight {
     /**
      * Constructor, only used for stacked-barchart.
      * 
-     * @param x the xPx-yValue of the highlighted yValue on the xPx-axis
-     * @param y the yPx-yValue of the highlighted yValue
+     * @param x the x-yValue of the highlighted yValue on the x-axis
+     * @param y the y-yValue of the highlighted yValue
      * @param dataIndex the index of the Data the highlighted yValue belongs to
      * @param dataSetIndex the index of the DataSet the highlighted yValue belongs to
      * @param stackIndex references which yValue of a stacked-bar entry has been
@@ -58,8 +58,8 @@ public class Highlight {
     /**
      * Constructor, only used for stacked-barchart.
      *
-     * @param x the index of the highlighted yValue on the xPx-axis
-     * @param y the yPx-yValue of the highlighted yValue
+     * @param x the index of the highlighted yValue on the x-axis
+     * @param y the y-yValue of the highlighted yValue
      * @param dataIndex the index of the Data the highlighted yValue belongs to
      * @param dataSetIndex the index of the DataSet the highlighted yValue belongs to
      * @param stackIndex references which yValue of a stacked-bar entry has been
@@ -82,7 +82,7 @@ public class Highlight {
     }
 
     /**
-     * returns the xPx-yValue of the highlighted yValue
+     * returns the x-yValue of the highlighted yValue
      *
      * @return
      */
@@ -91,7 +91,7 @@ public class Highlight {
     }
 
     /**
-     * returns the yPx-yValue of the highlighted yValue
+     * returns the y-yValue of the highlighted yValue
      *
      * @return
      */
@@ -157,7 +157,7 @@ public class Highlight {
 
     @Override
     public String toString() {
-        return "Highlight, xPx: " + mX + "yPx: " + mY + ", dataSetIndex: " + mDataSetIndex
+        return "Highlight, x: " + mX + "y: " + mY + ", dataSetIndex: " + mDataSetIndex
                 + ", stackIndex (only stacked barentry): " + mStackIndex;
     }
 }

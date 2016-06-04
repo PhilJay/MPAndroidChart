@@ -28,52 +28,52 @@ public class ViewPortHandler {
     protected float mChartHeight = 0f;
 
     /**
-     * minimum scale yValue on the yPx-axis
+     * minimum scale yValue on the y-axis
      */
     private float mMinScaleY = 1f;
 
     /**
-     * maximum scale yValue on the yPx-axis
+     * maximum scale yValue on the y-axis
      */
     private float mMaxScaleY = Float.MAX_VALUE;
 
     /**
-     * minimum scale yValue on the xPx-axis
+     * minimum scale yValue on the x-axis
      */
     private float mMinScaleX = 1f;
 
     /**
-     * maximum scale yValue on the xPx-axis
+     * maximum scale yValue on the x-axis
      */
     private float mMaxScaleX = Float.MAX_VALUE;
 
     /**
-     * contains the current scale factor of the xPx-axis
+     * contains the current scale factor of the x-axis
      */
     private float mScaleX = 1f;
 
     /**
-     * contains the current scale factor of the yPx-axis
+     * contains the current scale factor of the y-axis
      */
     private float mScaleY = 1f;
 
     /**
-     * current translation (drag distance) on the xPx-axis
+     * current translation (drag distance) on the x-axis
      */
     private float mTransX = 0f;
 
     /**
-     * current translation (drag distance) on the yPx-axis
+     * current translation (drag distance) on the y-axis
      */
     private float mTransY = 0f;
 
     /**
-     * offset that allows the chart to be dragged over its bounds on the xPx-axis
+     * offset that allows the chart to be dragged over its bounds on the x-axis
      */
     private float mTransOffsetX = 0f;
 
     /**
-     * offset that allows the chart to be dragged over its bounds on the xPx-axis
+     * offset that allows the chart to be dragged over its bounds on the x-axis
      */
     private float mTransOffsetY = 0f;
 
@@ -180,7 +180,7 @@ public class ViewPortHandler {
     /** CODE BELOW THIS RELATED TO SCALING AND GESTURES */
 
     /**
-     * Zooms in by 1.4f, xPx and yPx are the coordinates (in pixels) of the zoom
+     * Zooms in by 1.4f, x and y are the coordinates (in pixels) of the zoom
      * center.
      *
      * @param x
@@ -197,7 +197,7 @@ public class ViewPortHandler {
     }
 
     /**
-     * Zooms out by 0.7f, xPx and yPx are the coordinates (in pixels) of the zoom
+     * Zooms out by 0.7f, x and y are the coordinates (in pixels) of the zoom
      * center.
      */
     public Matrix zoomOut(float x, float y) {
@@ -228,7 +228,7 @@ public class ViewPortHandler {
     }
 
     /**
-     * Post-scales by the specified scale factors. xPx and yPx is pivot.
+     * Post-scales by the specified scale factors. x and y is pivot.
      *
      * @param scaleX
      * @param scaleY
@@ -264,7 +264,7 @@ public class ViewPortHandler {
     }
 
     /**
-     * Sets the scale factor to the specified values. xPx and yPx is pivot.
+     * Sets the scale factor to the specified values. x and y is pivot.
      *
      * @param scaleX
      * @param scaleY
@@ -329,7 +329,7 @@ public class ViewPortHandler {
     }
 
     /**
-     * Centers the viewport around the specified position (xPx-index and yPx-yValue)
+     * Centers the viewport around the specified position (x-index and y-yValue)
      * in the chart. Centering the viewport outside the bounds of the chart is
      * not possible. Makes most sense in combination with the
      * setScaleMinima(...) method.
@@ -391,10 +391,10 @@ public class ViewPortHandler {
         float curTransY = matrixBuffer[Matrix.MTRANS_Y];
         float curScaleY = matrixBuffer[Matrix.MSCALE_Y];
 
-        // min scale-xPx is 1f
+        // min scale-x is 1f
         mScaleX = Math.min(Math.max(mMinScaleX, curScaleX), mMaxScaleX);
 
-        // min scale-yPx is 1f
+        // min scale-y is 1f
         mScaleY = Math.min(Math.max(mMinScaleY, curScaleY), mMaxScaleY);
 
         float width = 0f;
@@ -421,7 +421,7 @@ public class ViewPortHandler {
     }
 
     /**
-     * Sets the minimum scale factor for the xPx-axis
+     * Sets the minimum scale factor for the x-axis
      *
      * @param xScale
      */
@@ -436,7 +436,7 @@ public class ViewPortHandler {
     }
 
     /**
-     * Sets the maximum scale factor for the xPx-axis
+     * Sets the maximum scale factor for the x-axis
      *
      * @param xScale
      */
@@ -451,7 +451,7 @@ public class ViewPortHandler {
     }
 
     /**
-     * Sets the minimum and maximum scale factors for the xPx-axis
+     * Sets the minimum and maximum scale factors for the x-axis
      *
      * @param minScaleX
      * @param maxScaleX
@@ -471,7 +471,7 @@ public class ViewPortHandler {
     }
 
     /**
-     * Sets the minimum scale factor for the yPx-axis
+     * Sets the minimum scale factor for the y-axis
      *
      * @param yScale
      */
@@ -486,7 +486,7 @@ public class ViewPortHandler {
     }
 
     /**
-     * Sets the maximum scale factor for the yPx-axis
+     * Sets the maximum scale factor for the y-axis
      *
      * @param yScale
      */
@@ -556,14 +556,14 @@ public class ViewPortHandler {
     }
 
     /**
-     * returns the current xPx-scale factor
+     * returns the current x-scale factor
      */
     public float getScaleX() {
         return mScaleX;
     }
 
     /**
-     * returns the current yPx-scale factor
+     * returns the current y-scale factor
      */
     public float getScaleY() {
         return mScaleY;
@@ -586,7 +586,7 @@ public class ViewPortHandler {
     }
 
     /**
-     * Returns the translation (drag / pan) distance on the xPx-axis
+     * Returns the translation (drag / pan) distance on the x-axis
      *
      * @return
      */
@@ -595,7 +595,7 @@ public class ViewPortHandler {
     }
 
     /**
-     * Returns the translation (drag / pan) distance on the yPx-axis
+     * Returns the translation (drag / pan) distance on the y-axis
      *
      * @return
      */
@@ -617,7 +617,7 @@ public class ViewPortHandler {
     }
 
     /**
-     * Returns true if the chart is fully zoomed out on it's yPx-axis (vertical).
+     * Returns true if the chart is fully zoomed out on it's y-axis (vertical).
      *
      * @return
      */
@@ -629,7 +629,7 @@ public class ViewPortHandler {
     }
 
     /**
-     * Returns true if the chart is fully zoomed out on it's xPx-axis
+     * Returns true if the chart is fully zoomed out on it's x-axis
      * (horizontal).
      *
      * @return
@@ -643,7 +643,7 @@ public class ViewPortHandler {
 
     /**
      * Set an offset in dp that allows the user to drag the chart over it's
-     * bounds on the xPx-axis.
+     * bounds on the x-axis.
      *
      * @param offset
      */
@@ -653,7 +653,7 @@ public class ViewPortHandler {
 
     /**
      * Set an offset in dp that allows the user to drag the chart over it's
-     * bounds on the yPx-axis.
+     * bounds on the y-axis.
      *
      * @param offset
      */
@@ -662,7 +662,7 @@ public class ViewPortHandler {
     }
 
     /**
-     * Returns true if both drag offsets (xPx and yPx) are zero or smaller.
+     * Returns true if both drag offsets (x and y) are zero or smaller.
      *
      * @return
      */
@@ -671,7 +671,7 @@ public class ViewPortHandler {
     }
 
     /**
-     * Returns true if the chart is not yet fully zoomed out on the xPx-axis
+     * Returns true if the chart is not yet fully zoomed out on the x-axis
      *
      * @return
      */
@@ -680,7 +680,7 @@ public class ViewPortHandler {
     }
 
     /**
-     * Returns true if the chart is not yet fully zoomed in on the xPx-axis
+     * Returns true if the chart is not yet fully zoomed in on the x-axis
      *
      * @return
      */
@@ -689,7 +689,7 @@ public class ViewPortHandler {
     }
 
     /**
-     * Returns true if the chart is not yet fully zoomed out on the yPx-axis
+     * Returns true if the chart is not yet fully zoomed out on the y-axis
      *
      * @return
      */
@@ -698,7 +698,7 @@ public class ViewPortHandler {
     }
 
     /**
-     * Returns true if the chart is not yet fully zoomed in on the yPx-axis
+     * Returns true if the chart is not yet fully zoomed in on the y-axis
      *
      * @return
      */

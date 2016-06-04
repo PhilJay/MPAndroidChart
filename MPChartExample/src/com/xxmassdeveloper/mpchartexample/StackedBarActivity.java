@@ -62,7 +62,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         // drawn
         mChart.setMaxVisibleValueCount(40);
 
-        // scaling can now only be done on xPx- and yPx-axis separately
+        // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
 
         mChart.setDrawGridBackground(false);
@@ -70,7 +70,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 
         mChart.setDrawValueAboveBar(false);
 
-        // change the position of the yPx-labels
+        // change the position of the y-labels
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setValueFormatter(new MyAxisValueFormatter());
         leftAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)

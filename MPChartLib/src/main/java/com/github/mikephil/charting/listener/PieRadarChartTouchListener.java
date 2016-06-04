@@ -283,7 +283,7 @@ public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChart
 
     /**
      * sets the starting angle of the rotation, this is only used by the touch
-     * listener, xPx and yPx is the touch position
+     * listener, x and y is the touch position
      *
      * @param x
      * @param y

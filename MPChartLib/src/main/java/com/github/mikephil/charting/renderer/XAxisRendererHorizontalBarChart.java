@@ -34,7 +34,7 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
     @Override
     public void computeAxis(float min, float max, boolean inverted) {
 
-        // calculate the starting and entry point of the yPx-labels (depending on
+        // calculate the starting and entry point of the y-labels (depending on
         // zoom / contentrect bounds)
         if (mViewPortHandler.contentWidth() > 10 && !mViewPortHandler.isFullyZoomedOutY()) {
 
@@ -130,7 +130,7 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
 
         for (int i = 0; i < positions.length; i += 2) {
 
-            // only fill xPx values
+            // only fill x values
             if (centeringEnabled) {
                 positions[i + 1] = mXAxis.mCenteredEntries[i / 2];
             } else {

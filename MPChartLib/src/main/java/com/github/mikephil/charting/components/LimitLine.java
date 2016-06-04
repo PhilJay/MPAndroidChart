@@ -11,13 +11,13 @@ import com.github.mikephil.charting.utils.Utils;
 /**
  * The limit line is an additional feature for all Line-, Bar- and
  * ScatterCharts. It allows the displaying of an additional line in the chart
- * that marks a certain maximum / limit on the specified axis (xPx- or yPx-axis).
+ * that marks a certain maximum / limit on the specified axis (x- or y-axis).
  * 
  * @author Philipp Jahoda
  */
 public class LimitLine extends ComponentBase {
 
-    /** limit / maximum (the yPx-yValue or xIndex) */
+    /** limit / maximum (the y-yValue or xIndex) */
     private float mLimit = 0f;
 
     /** the width of the limit line */
@@ -46,7 +46,7 @@ public class LimitLine extends ComponentBase {
     /**
      * Constructor with limit.
      * 
-     * @param limit - the position (the yValue) on the yPx-axis (yPx-yValue) or xPx-axis
+     * @param limit - the position (the yValue) on the y-axis (y-yValue) or x-axis
      *            (xIndex) where this line should appear
      */
     public LimitLine(float limit) {
@@ -56,7 +56,7 @@ public class LimitLine extends ComponentBase {
     /**
      * Constructor with limit and label.
      * 
-     * @param limit - the position (the yValue) on the yPx-axis (yPx-yValue) or xPx-axis
+     * @param limit - the position (the yValue) on the y-axis (y-yValue) or x-axis
      *            (xIndex) where this line should appear
      * @param label - provide "" if no label is required
      */

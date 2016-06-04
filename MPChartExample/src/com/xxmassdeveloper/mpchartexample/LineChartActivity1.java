@@ -83,7 +83,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         // mChart.setScaleXEnabled(true);
         // mChart.setScaleYEnabled(true);
 
-        // if disabled, scaling can be done on xPx- and yPx-axis separately
+        // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(true);
 
         // set an alternative background color
@@ -96,7 +96,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         // set the marker to the chart
         mChart.setMarkerView(mv);
 
-        // xPx-axis limit line
+        // x-axis limit line
         LimitLine llXAxis = new LimitLine(10f, "Index 10");
         llXAxis.setLineWidth(4f);
         llXAxis.enableDashedLine(10f, 10f, 0f);
@@ -105,7 +105,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
         XAxis xAxis = mChart.getXAxis();
         //xAxis.setValueFormatter(new MyCustomXAxisValueFormatter());
-        //xAxis.addLimitLine(llXAxis); // add xPx-axis limit line
+        //xAxis.addLimitLine(llXAxis); // add x-axis limit line
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
@@ -344,7 +344,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
             float mult = (range + 1);
             float val = (float) (Math.random() * mult) + 3;// + (float)
             // ((mult *
-            // 0.1) / 10);xPx
+            // 0.1) / 10);x
             yVals.add(new Entry(i, val));
         }
 
@@ -396,7 +396,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
     @Override
     public void onChartGestureStart(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
-        Log.i("Gesture", "START, xPx: " + me.getX() + ", yPx: " + me.getY());
+        Log.i("Gesture", "START, x: " + me.getX() + ", y: " + me.getY());
     }
 
     @Override

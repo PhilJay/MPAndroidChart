@@ -7,7 +7,7 @@ import android.annotation.SuppressLint;
 
 /**
  * Object responsible for all animations in the Chart. ANIMATIONS ONLY WORK FOR
- * API LEVEL 11 (Android 3.0.xPx) AND HIGHER.
+ * API LEVEL 11 (Android 3.0.x) AND HIGHER.
  * 
  * @author Philipp Jahoda
  */
@@ -29,10 +29,10 @@ public class ChartAnimator {
      */
     /** CODE BELOW THIS RELATED TO ANIMATION */
 
-    /** the phase that is animated and influences the drawn values on the yPx-axis */
+    /** the phase that is animated and influences the drawn values on the y-axis */
     protected float mPhaseY = 1f;
 
-    /** the phase that is animated and influences the drawn values on the xPx-axis */
+    /** the phase that is animated and influences the drawn values on the x-axis */
     protected float mPhaseX = 1f;
 
     /**
@@ -41,7 +41,7 @@ public class ChartAnimator {
     /** METHODS FOR CUSTOM EASING */
 
     /**
-     * Animates the drawing / rendering of the chart on both xPx- and yPx-axis with
+     * Animates the drawing / rendering of the chart on both x- and y-axis with
      * the specified animation time. If animate(...) is called, no further
      * calling of invalidate() is necessary to refresh the chart.
      *
@@ -78,7 +78,7 @@ public class ChartAnimator {
     }
 
     /**
-     * Animates the rendering of the chart on the xPx-axis with the specified
+     * Animates the rendering of the chart on the x-axis with the specified
      * animation time. If animate(...) is called, no further calling of
      * invalidate() is necessary to refresh the chart.
      *
@@ -98,7 +98,7 @@ public class ChartAnimator {
     }
 
     /**
-     * Animates the rendering of the chart on the yPx-axis with the specified
+     * Animates the rendering of the chart on the y-axis with the specified
      * animation time. If animate(...) is called, no further calling of
      * invalidate() is necessary to refresh the chart.
      *
@@ -123,7 +123,7 @@ public class ChartAnimator {
     /** METHODS FOR PREDEFINED EASING */
 
     /**
-     * Animates the drawing / rendering of the chart on both xPx- and yPx-axis with
+     * Animates the drawing / rendering of the chart on both x- and y-axis with
      * the specified animation time. If animate(...) is called, no further
      * calling of invalidate() is necessary to refresh the chart.
      *
@@ -160,7 +160,7 @@ public class ChartAnimator {
     }
 
     /**
-     * Animates the rendering of the chart on the xPx-axis with the specified
+     * Animates the rendering of the chart on the x-axis with the specified
      * animation time. If animate(...) is called, no further calling of
      * invalidate() is necessary to refresh the chart.
      *
@@ -180,7 +180,7 @@ public class ChartAnimator {
     }
 
     /**
-     * Animates the rendering of the chart on the yPx-axis with the specified
+     * Animates the rendering of the chart on the y-axis with the specified
      * animation time. If animate(...) is called, no further calling of
      * invalidate() is necessary to refresh the chart.
      *
@@ -205,7 +205,7 @@ public class ChartAnimator {
     /** METHODS FOR ANIMATION WITHOUT EASING */
 
     /**
-     * Animates the drawing / rendering of the chart on both xPx- and yPx-axis with
+     * Animates the drawing / rendering of the chart on both x- and y-axis with
      * the specified animation time. If animate(...) is called, no further
      * calling of invalidate() is necessary to refresh the chart.
      *
@@ -237,7 +237,7 @@ public class ChartAnimator {
     }
 
     /**
-     * Animates the rendering of the chart on the xPx-axis with the specified
+     * Animates the rendering of the chart on the x-axis with the specified
      * animation time. If animate(...) is called, no further calling of
      * invalidate() is necessary to refresh the chart.
      *
@@ -255,7 +255,7 @@ public class ChartAnimator {
     }
 
     /**
-     * Animates the rendering of the chart on the yPx-axis with the specified
+     * Animates the rendering of the chart on the y-axis with the specified
      * animation time. If animate(...) is called, no further calling of
      * invalidate() is necessary to refresh the chart.
      *
@@ -273,7 +273,7 @@ public class ChartAnimator {
     }
 
     /**
-     * This gets the yPx-phase that is used to animate the values.
+     * This gets the y-phase that is used to animate the values.
      *
      * @return
      */
@@ -282,7 +282,7 @@ public class ChartAnimator {
     }
 
     /**
-     * This modifys the yPx-phase that is used to animate the values.
+     * This modifys the y-phase that is used to animate the values.
      *
      * @param phase
      */
@@ -291,7 +291,7 @@ public class ChartAnimator {
     }
 
     /**
-     * This gets the xPx-phase that is used to animate the values.
+     * This gets the x-phase that is used to animate the values.
      *
      * @return
      */
@@ -300,7 +300,7 @@ public class ChartAnimator {
     }
 
     /**
-     * This modifys the xPx-phase that is used to animate the values.
+     * This modifys the x-phase that is used to animate the values.
      *
      * @param phase
      */

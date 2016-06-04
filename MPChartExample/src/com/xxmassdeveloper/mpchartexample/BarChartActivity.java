@@ -76,7 +76,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         // drawn
         mChart.setMaxVisibleValueCount(60);
 
-        // scaling can now only be done on xPx- and yPx-axis separately
+        // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
 
         mChart.setDrawGridBackground(false);
@@ -276,7 +276,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         Log.i("bounds", bounds.toString());
         Log.i("position", position.toString());
 
-        Log.i("xPx-index",
+        Log.i("x-index",
                 "low: " + mChart.getLowestVisibleX() + ", high: "
                         + mChart.getHighestVisibleX());
     }

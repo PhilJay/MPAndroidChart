@@ -52,7 +52,7 @@ public class RealtimeLineChartActivity extends DemoBase implements
         mChart.setScaleEnabled(true);
         mChart.setDrawGridBackground(false);
 
-        // if disabled, scaling can be done on xPx- and yPx-axis separately
+        // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(true);
 
         // set an alternative background color

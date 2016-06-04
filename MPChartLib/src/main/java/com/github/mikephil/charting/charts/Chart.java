@@ -118,7 +118,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     protected String mDescription = "Description";
 
     /**
-     * the object representing the labels on the xPx-axis
+     * the object representing the labels on the x-axis
      */
     protected XAxis mXAxis;
 
@@ -335,7 +335,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
     /**
      * Removes all DataSets (and thereby Entries) from the chart. Does not
-     * remove the xPx-values. Also refreshes the chart by calling invalidate().
+     * remove the x-values. Also refreshes the chart by calling invalidate().
      */
     public void clearValues() {
         mData.clearValues();
@@ -371,13 +371,13 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
     /**
      * calculates the offsets of the chart to the border depending on the
-     * position of an eventual legend or depending on the length of the yPx-axis
-     * and xPx-axis labels and their position
+     * position of an eventual legend or depending on the length of the y-axis
+     * and x-axis labels and their position
      */
     protected abstract void calculateOffsets();
 
     /**
-     * calcualtes the yPx-min and yPx-max yValue and the yPx-delta and xPx-delta yValue
+     * calcualtes the y-min and y-max yValue and the y-delta and x-delta yValue
      */
     protected abstract void calcMinMax();
 
@@ -570,8 +570,8 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * Highlights the yValue at the given xPx-index in the given DataSet. Provide
-     * -1 as the xPx-index or dataSetIndex to undo all highlighting.
+     * Highlights the yValue at the given x-index in the given DataSet. Provide
+     * -1 as the x-index or dataSetIndex to undo all highlighting.
      *
      * @param xIndex
      * @param dataSetIndex
@@ -748,7 +748,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
     /**
      * ################ ################ ################ ################
-     * ANIMATIONS ONLY WORK FOR API LEVEL 11 (Android 3.0.xPx) AND HIGHER.
+     * ANIMATIONS ONLY WORK FOR API LEVEL 11 (Android 3.0.x) AND HIGHER.
      */
     /** CODE BELOW THIS RELATED TO ANIMATION */
 
@@ -807,15 +807,15 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
     /**
      * ################ ################ ################ ################
-     * ANIMATIONS ONLY WORK FOR API LEVEL 11 (Android 3.0.xPx) AND HIGHER.
+     * ANIMATIONS ONLY WORK FOR API LEVEL 11 (Android 3.0.x) AND HIGHER.
      */
     /** CODE BELOW FOR PROVIDING EASING FUNCTIONS */
 
     /**
-     * Animates the drawing / rendering of the chart on both xPx- and yPx-axis with
+     * Animates the drawing / rendering of the chart on both x- and y-axis with
      * the specified animation time. If animate(...) is called, no further
      * calling of invalidate() is necessary to refresh the chart. ANIMATIONS
-     * ONLY WORK FOR API LEVEL 11 (Android 3.0.xPx) AND HIGHER.
+     * ONLY WORK FOR API LEVEL 11 (Android 3.0.x) AND HIGHER.
      *
      * @param durationMillisX
      * @param durationMillisY
@@ -828,10 +828,10 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * Animates the rendering of the chart on the xPx-axis with the specified
+     * Animates the rendering of the chart on the x-axis with the specified
      * animation time. If animate(...) is called, no further calling of
      * invalidate() is necessary to refresh the chart. ANIMATIONS ONLY WORK FOR
-     * API LEVEL 11 (Android 3.0.xPx) AND HIGHER.
+     * API LEVEL 11 (Android 3.0.x) AND HIGHER.
      *
      * @param durationMillis
      * @param easing         a custom easing function to be used on the animation phase
@@ -841,10 +841,10 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * Animates the rendering of the chart on the yPx-axis with the specified
+     * Animates the rendering of the chart on the y-axis with the specified
      * animation time. If animate(...) is called, no further calling of
      * invalidate() is necessary to refresh the chart. ANIMATIONS ONLY WORK FOR
-     * API LEVEL 11 (Android 3.0.xPx) AND HIGHER.
+     * API LEVEL 11 (Android 3.0.x) AND HIGHER.
      *
      * @param durationMillis
      * @param easing         a custom easing function to be used on the animation phase
@@ -855,15 +855,15 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
     /**
      * ################ ################ ################ ################
-     * ANIMATIONS ONLY WORK FOR API LEVEL 11 (Android 3.0.xPx) AND HIGHER.
+     * ANIMATIONS ONLY WORK FOR API LEVEL 11 (Android 3.0.x) AND HIGHER.
      */
     /** CODE BELOW FOR PREDEFINED EASING OPTIONS */
 
     /**
-     * Animates the drawing / rendering of the chart on both xPx- and yPx-axis with
+     * Animates the drawing / rendering of the chart on both x- and y-axis with
      * the specified animation time. If animate(...) is called, no further
      * calling of invalidate() is necessary to refresh the chart. ANIMATIONS
-     * ONLY WORK FOR API LEVEL 11 (Android 3.0.xPx) AND HIGHER.
+     * ONLY WORK FOR API LEVEL 11 (Android 3.0.x) AND HIGHER.
      *
      * @param durationMillisX
      * @param durationMillisY
@@ -876,10 +876,10 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * Animates the rendering of the chart on the xPx-axis with the specified
+     * Animates the rendering of the chart on the x-axis with the specified
      * animation time. If animate(...) is called, no further calling of
      * invalidate() is necessary to refresh the chart. ANIMATIONS ONLY WORK FOR
-     * API LEVEL 11 (Android 3.0.xPx) AND HIGHER.
+     * API LEVEL 11 (Android 3.0.x) AND HIGHER.
      *
      * @param durationMillis
      * @param easing         a predefined easing option
@@ -889,10 +889,10 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * Animates the rendering of the chart on the yPx-axis with the specified
+     * Animates the rendering of the chart on the y-axis with the specified
      * animation time. If animate(...) is called, no further calling of
      * invalidate() is necessary to refresh the chart. ANIMATIONS ONLY WORK FOR
-     * API LEVEL 11 (Android 3.0.xPx) AND HIGHER.
+     * API LEVEL 11 (Android 3.0.x) AND HIGHER.
      *
      * @param durationMillis
      * @param easing         a predefined easing option
@@ -903,15 +903,15 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
     /**
      * ################ ################ ################ ################
-     * ANIMATIONS ONLY WORK FOR API LEVEL 11 (Android 3.0.xPx) AND HIGHER.
+     * ANIMATIONS ONLY WORK FOR API LEVEL 11 (Android 3.0.x) AND HIGHER.
      */
     /** CODE BELOW FOR ANIMATIONS WITHOUT EASING */
 
     /**
-     * Animates the rendering of the chart on the xPx-axis with the specified
+     * Animates the rendering of the chart on the x-axis with the specified
      * animation time. If animate(...) is called, no further calling of
      * invalidate() is necessary to refresh the chart. ANIMATIONS ONLY WORK FOR
-     * API LEVEL 11 (Android 3.0.xPx) AND HIGHER.
+     * API LEVEL 11 (Android 3.0.x) AND HIGHER.
      *
      * @param durationMillis
      */
@@ -920,10 +920,10 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * Animates the rendering of the chart on the yPx-axis with the specified
+     * Animates the rendering of the chart on the y-axis with the specified
      * animation time. If animate(...) is called, no further calling of
      * invalidate() is necessary to refresh the chart. ANIMATIONS ONLY WORK FOR
-     * API LEVEL 11 (Android 3.0.xPx) AND HIGHER.
+     * API LEVEL 11 (Android 3.0.x) AND HIGHER.
      *
      * @param durationMillis
      */
@@ -932,10 +932,10 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * Animates the drawing / rendering of the chart on both xPx- and yPx-axis with
+     * Animates the drawing / rendering of the chart on both x- and y-axis with
      * the specified animation time. If animate(...) is called, no further
      * calling of invalidate() is necessary to refresh the chart. ANIMATIONS
-     * ONLY WORK FOR API LEVEL 11 (Android 3.0.xPx) AND HIGHER.
+     * ONLY WORK FOR API LEVEL 11 (Android 3.0.x) AND HIGHER.
      *
      * @param durationMillisX
      * @param durationMillisY
@@ -951,7 +951,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
 
     /**
-     * Returns the object representing all xPx-labels, this method can be used to
+     * Returns the object representing all x-labels, this method can be used to
      * acquire the XAxis object and modify it (e.g. change the position of the
      * labels, styling, etc.)
      *
@@ -1000,7 +1000,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * returns the current yPx-max yValue across all DataSets
+     * returns the current y-max yValue across all DataSets
      *
      * @return
      */
@@ -1009,7 +1009,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * returns the current yPx-min yValue across all DataSets
+     * returns the current y-min yValue across all DataSets
      *
      * @return
      */
@@ -1033,7 +1033,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * Returns the total number of (yPx) values the chart holds (across all DataSets).
+     * Returns the total number of (y) values the chart holds (across all DataSets).
      *
      * @return
      */

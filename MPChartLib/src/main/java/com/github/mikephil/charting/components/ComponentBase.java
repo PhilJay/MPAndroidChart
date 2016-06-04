@@ -19,7 +19,7 @@ public abstract class ComponentBase {
     protected boolean mEnabled = true;
 
     /**
-     * the offset in pixels this axis labels have on the xPx-axis
+     * the offset in pixels this axis labels have on the x-axis
      */
     protected float mXOffset = 5f;
 
@@ -48,7 +48,7 @@ public abstract class ComponentBase {
     }
 
     /**
-     * Returns the used offset on the xPx-axis for drawing the axis or legend
+     * Returns the used offset on the x-axis for drawing the axis or legend
      * labels. This offset is applied before and after the label.
      *
      * @return
@@ -58,7 +58,7 @@ public abstract class ComponentBase {
     }
 
     /**
-     * Sets the used xPx-axis offset for the labels on this axis.
+     * Sets the used x-axis offset for the labels on this axis.
      *
      * @param xOffset
      */
@@ -67,7 +67,7 @@ public abstract class ComponentBase {
     }
 
     /**
-     * Returns the used offset on the xPx-axis for drawing the axis labels. This
+     * Returns the used offset on the x-axis for drawing the axis labels. This
      * offset is applied before and after the label.
      *
      * @return
@@ -77,7 +77,7 @@ public abstract class ComponentBase {
     }
 
     /**
-     * Sets the used yPx-axis offset for the labels on this axis. For the legend,
+     * Sets the used y-axis offset for the labels on this axis. For the legend,
      * higher offset means the legend as a whole will be placed further away
      * from the top.
      *

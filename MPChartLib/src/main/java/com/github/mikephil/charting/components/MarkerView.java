@@ -74,19 +74,19 @@ public abstract class MarkerView extends RelativeLayout {
     public abstract void refreshContent(Entry e, Highlight highlight);
 
     /**
-     * Use this to return the desired offset you wish the MarkerView to have on the xPx-axis. By returning -(getWidth() /
+     * Use this to return the desired offset you wish the MarkerView to have on the x-axis. By returning -(getWidth() /
      * 2) you will center the MarkerView horizontally.
      *
-     * @param xpos the position on the xPx-axis in pixels where the marker is drawn
+     * @param xpos the position on the x-axis in pixels where the marker is drawn
      * @return
      */
     public abstract int getXOffset(float xpos);
 
     /**
-     * Use this to return the desired position offset you wish the MarkerView to have on the yPx-axis. By returning
+     * Use this to return the desired position offset you wish the MarkerView to have on the y-axis. By returning
      * -getHeight() you will cause the MarkerView to be above the selected yValue.
      *
-     * @param ypos the position on the yPx-axis in pixels where the marker is drawn
+     * @param ypos the position on the y-axis in pixels where the marker is drawn
      * @return
      */
     public abstract int getYOffset(float ypos);

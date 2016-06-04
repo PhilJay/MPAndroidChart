@@ -16,29 +16,29 @@ import java.util.List;
 
 /**
  * Class that holds all relevant data that represents the chart. That involves
- * at least one (or more) DataSets, and an array of xPx-values.
+ * at least one (or more) DataSets, and an array of x-values.
  *
  * @author Philipp Jahoda
  */
 public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
     /**
-     * maximum yPx-yValue in the yValue array across all axes
+     * maximum y-yValue in the yValue array across all axes
      */
     protected float mYMax = 0.0f;
 
     /**
-     * the minimum yPx-yValue in the yValue array across all axes
+     * the minimum y-yValue in the yValue array across all axes
      */
     protected float mYMin = 0.0f;
 
     /**
-     * maximum xPx-yValue in the yValue array
+     * maximum x-yValue in the yValue array
      */
     protected float mXMax = 0f;
 
     /**
-     * minimum xPx-yValue in the yValue array
+     * minimum x-yValue in the yValue array
      */
     protected float mXMin = 0f;
 
@@ -51,12 +51,12 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     protected float mRightAxisMin = 0.0f;
 
     /**
-     * total number of yPx-values across all DataSet objects
+     * total number of y-values across all DataSet objects
      */
     private int mYValCount = 0;
 
     /**
-     * contains the maximum length (in characters) an entry in the xPx-vals array
+     * contains the maximum length (in characters) an entry in the x-vals array
      * has
      */
     private float mXValMaximumLength = 0;
@@ -105,7 +105,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * calc minimum and maximum values (both xPx and yPx) over all DataSets
+     * calc minimum and maximum values (both x and y) over all DataSets
      */
     public void calcMinMax() {
 
@@ -192,7 +192,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Calculates the total number of yPx-values across all DataSets the ChartData
+     * Calculates the total number of y-values across all DataSets the ChartData
      * represents.
      *
      * @return
@@ -227,7 +227,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Returns the smallest yPx-yValue the data object contains.
+     * Returns the smallest y-yValue the data object contains.
      *
      * @return
      */
@@ -236,7 +236,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Returns the minimum yPx-yValue for the specified axis.
+     * Returns the minimum y-yValue for the specified axis.
      *
      * @param axis
      * @return
@@ -249,7 +249,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Returns the greatest yPx-yValue the data object contains.
+     * Returns the greatest y-yValue the data object contains.
      *
      * @return
      */
@@ -258,7 +258,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Returns the maximum yPx-yValue for the specified axis.
+     * Returns the maximum y-yValue for the specified axis.
      *
      * @param axis
      * @return
@@ -271,7 +271,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Returns the minimum xPx-yValue this data object contains.
+     * Returns the minimum x-yValue this data object contains.
      *
      * @return
      */
@@ -280,7 +280,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Returns the maximum xPx-yValue this data object contains.
+     * Returns the maximum x-yValue this data object contains.
      *
      * @return
      */
@@ -290,7 +290,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
     /**
      * returns the maximum length (in characters) across all values in the
-     * xPx-vals array
+     * x-vals array
      *
      * @return
      */
@@ -299,7 +299,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Returns the total number of yPx-values across all DataSet objects the this
+     * Returns the total number of y-values across all DataSet objects the this
      * object represents.
      *
      * @return
@@ -733,7 +733,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
 //    /**
-//     * Generates an xPx-values array filled with numbers in range specified by the
+//     * Generates an x-values array filled with numbers in range specified by the
 //     * parameters. Can be used for convenience.
 //     *
 //     * @return

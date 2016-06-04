@@ -32,7 +32,7 @@ public final class FSize {
 
     @Override
     public String toString() {
-        return width + "xPx" + height;
+        return width + "x" + height;
     }
 
     /**

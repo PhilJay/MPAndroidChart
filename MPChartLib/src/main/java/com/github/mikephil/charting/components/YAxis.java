@@ -6,7 +6,7 @@ import android.graphics.Paint;
 import com.github.mikephil.charting.utils.Utils;
 
 /**
- * Class representing the yPx-axis labels settings and its entries. Only use the setter methods to
+ * Class representing the y-axis labels settings and its entries. Only use the setter methods to
  * modify it. Do not
  * access public variables directly. Be aware that not all features the YLabels class provides
  * are suitable for the
@@ -19,7 +19,7 @@ import com.github.mikephil.charting.utils.Utils;
 public class YAxis extends AxisBase {
 
     /**
-     * indicates if the top yPx-label entry is drawn or not
+     * indicates if the top y-label entry is drawn or not
      */
     private boolean mDrawTopYLabelEntry = true;
 
@@ -54,12 +54,12 @@ public class YAxis extends AxisBase {
     protected float mSpacePercentBottom = 10f;
 
     /**
-     * the position of the yPx-labels relative to the chart
+     * the position of the y-labels relative to the chart
      */
     private YAxisLabelPosition mPosition = YAxisLabelPosition.OUTSIDE_CHART;
 
     /**
-     * enum for the position of the yPx-labels relative to the chart
+     * enum for the position of the y-labels relative to the chart
      */
     public enum YAxisLabelPosition {
         OUTSIDE_CHART, INSIDE_CHART
@@ -144,14 +144,14 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * returns the position of the yPx-labels
+     * returns the position of the y-labels
      */
     public YAxisLabelPosition getLabelPosition() {
         return mPosition;
     }
 
     /**
-     * sets the position of the yPx-labels
+     * sets the position of the y-labels
      *
      * @param pos
      */
@@ -160,7 +160,7 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * returns true if drawing the top yPx-axis label entry is enabled
+     * returns true if drawing the top y-axis label entry is enabled
      *
      * @return
      */
@@ -169,9 +169,9 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * set this to true to enable drawing the top yPx-label entry. Disabling this can be helpful
-     * when the top yPx-label and
-     * left xPx-label interfere with each other. default: true
+     * set this to true to enable drawing the top y-label entry. Disabling this can be helpful
+     * when the top y-label and
+     * left x-label interfere with each other. default: true
      *
      * @param enabled
      */
@@ -180,7 +180,7 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * If this is set to true, the yPx-axis is inverted which means that low values are on top of
+     * If this is set to true, the y-axis is inverted which means that low values are on top of
      * the chart, high values
      * on bottom.
      *
@@ -191,7 +191,7 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * If this returns true, the yPx-axis is inverted.
+     * If this returns true, the y-axis is inverted.
      *
      * @return
      */

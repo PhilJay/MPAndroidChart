@@ -66,7 +66,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
         objects.add(new ContentItem("Line Chart", "A simple demonstration of the linechart."));
         objects.add(new ContentItem("Line Chart (Dual YAxis)",
-                "Demonstration of the linechart with dual yPx-axis."));
+                "Demonstration of the linechart with dual y-axis."));
         objects.add(new ContentItem("Bar Chart", "A simple demonstration of the bar chart."));
         objects.add(new ContentItem("Horizontal Bar Chart",
                 "A simple demonstration of the horizontal bar chart."));
@@ -97,7 +97,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 "Demonstrates the usage of different chart types inside a ListView."));
         objects.add(new ContentItem(
                 "Inverted Line Chart",
-                "Demonstrates the feature of inverting the yPx-axis."));
+                "Demonstrates the feature of inverting the y-axis."));
         objects.add(new ContentItem(
                 "Candle Stick Chart",
                 "Demonstrates usage of the CandleStickChart."));
@@ -112,7 +112,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 "Shows a LineChart with different background and line color."));
         objects.add(new ContentItem(
                 "Realtime Chart",
-                "This chart is fed with new data in realtime. It also restrains the view on the xPx-axis."));
+                "This chart is fed with new data in realtime. It also restrains the view on the x-axis."));
         objects.add(new ContentItem(
                 "Dynamical data adding",
                 "This Activity demonstrates dynamical adding of Entries and DataSets (real time graph)."));

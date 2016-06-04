@@ -31,7 +31,7 @@ public abstract class AxisRenderer extends Renderer {
     protected Paint mGridPaint;
 
     /**
-     * paint for the xPx-label values
+     * paint for the x-label values
      */
     protected Paint mAxisLabelPaint;
 
@@ -117,7 +117,7 @@ public abstract class AxisRenderer extends Renderer {
      */
     public void computeAxis(float min, float max, boolean inverted) {
 
-        // calculate the starting and entry point of the yPx-labels (depending on
+        // calculate the starting and entry point of the y-labels (depending on
         // zoom / contentrect bounds)
         if (mViewPortHandler != null && mViewPortHandler.contentWidth() > 10 && !mViewPortHandler.isFullyZoomedOutY()) {
 
@@ -157,7 +157,7 @@ public abstract class AxisRenderer extends Renderer {
             return;
         }
 
-        // Find out how much spacing (in yPx yValue space) between axis values
+        // Find out how much spacing (in y yValue space) between axis values
         double rawInterval = range / labelCount;
         double interval = Utils.roundToNextSignificant(rawInterval);
 

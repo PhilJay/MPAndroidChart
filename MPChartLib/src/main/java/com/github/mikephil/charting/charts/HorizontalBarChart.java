@@ -22,7 +22,7 @@ import com.github.mikephil.charting.utils.TransformerHorizontalBarChart;
 import com.github.mikephil.charting.utils.Utils;
 
 /**
- * BarChart with horizontal bar orientation. In this implementation, xPx- and yPx-axis are switched, meaning the YAxis class
+ * BarChart with horizontal bar orientation. In this implementation, x- and y-axis are switched, meaning the YAxis class
  * represents the horizontal values and the XAxis class represents the vertical values.
  *
  * @author Philipp Jahoda
@@ -70,7 +70,7 @@ public class HorizontalBarChart extends BarChart {
         offsetRight += mOffsetsBuffer.right;
         offsetBottom += mOffsetsBuffer.bottom;
 
-        // offsets for yPx-labels
+        // offsets for y-labels
         if (mAxisLeft.needsOffset()) {
             offsetTop += mAxisLeft.getRequiredHeightSpace(mAxisRendererLeft.getPaintAxisLabels());
         }
@@ -83,7 +83,7 @@ public class HorizontalBarChart extends BarChart {
 
         if (mXAxis.isEnabled()) {
 
-            // offsets for xPx-labels
+            // offsets for x-labels
             if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
 
                 offsetLeft += xlabelwidth;
@@ -170,7 +170,7 @@ public class HorizontalBarChart extends BarChart {
     }
 
     /**
-     * Returns the Highlight object (contains xPx-index and DataSet index) of the selected yValue at the given touch point
+     * Returns the Highlight object (contains x-index and DataSet index) of the selected yValue at the given touch point
      * inside the BarChart.
      *
      * @param x
@@ -185,7 +185,7 @@ public class HorizontalBarChart extends BarChart {
                 Log.e(LOG_TAG, "Can't select by touch. No data set.");
             return null;
         } else
-            return getHighlighter().getHighlight(y, x); // switch xPx and yPx
+            return getHighlighter().getHighlight(y, x); // switch x and y
     }
 
     @Override
@@ -203,7 +203,7 @@ public class HorizontalBarChart extends BarChart {
     }
 
 //	/**
-//	 * Returns the lowest xPx-index (yValue on the xPx-axis) that is still visible on the chart.
+//	 * Returns the lowest x-index (yValue on the x-axis) that is still visible on the chart.
 //	 *
 //	 * @return
 //	 */
@@ -220,7 +220,7 @@ public class HorizontalBarChart extends BarChart {
 //	}
 //
 //	/**
-//	 * Returns the highest xPx-index (yValue on the xPx-axis) that is still visible on the chart.
+//	 * Returns the highest x-index (yValue on the x-axis) that is still visible on the chart.
 //	 *
 //	 * @return
 //	 */

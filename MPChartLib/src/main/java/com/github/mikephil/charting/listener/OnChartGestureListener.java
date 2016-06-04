@@ -60,8 +60,8 @@ public interface OnChartGestureListener {
      * Callbacks when the chart is scaled / zoomed via pinch zoom gesture.
      *
      * @param me
-     * @param scaleX scalefactor on the xPx-axis
-     * @param scaleY scalefactor on the yPx-axis
+     * @param scaleX scalefactor on the x-axis
+     * @param scaleY scalefactor on the y-axis
      */
     void onChartScale(MotionEvent me, float scaleX, float scaleY);
 
@@ -69,8 +69,8 @@ public interface OnChartGestureListener {
      * Callbacks when the chart is moved / translated via drag gesture.
      *
      * @param me
-     * @param dX translation distance on the xPx-axis
-     * @param dY translation distance on the yPx-axis
+     * @param dX translation distance on the x-axis
+     * @param dY translation distance on the y-axis
      */
     void onChartTranslate(MotionEvent me, float dX, float dY);
 }

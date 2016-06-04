@@ -4,7 +4,7 @@ package com.github.mikephil.charting.components;
 import com.github.mikephil.charting.utils.Utils;
 
 /**
- * Class representing the xPx-axis labels settings. Only use the setter methods to
+ * Class representing the x-axis labels settings. Only use the setter methods to
  * modify it. Do not access public variables directly. Be aware that not all
  * features the XLabels class provides are suitable for the RadarChart.
  *
@@ -13,25 +13,25 @@ import com.github.mikephil.charting.utils.Utils;
 public class XAxis extends AxisBase {
 
     /**
-     * width of the xPx-axis labels in pixels - this is automatically
+     * width of the x-axis labels in pixels - this is automatically
      * calculated by the computeSize() methods in the renderers
      */
     public int mLabelWidth = 1;
 
     /**
-     * height of the xPx-axis labels in pixels - this is automatically
+     * height of the x-axis labels in pixels - this is automatically
      * calculated by the computeSize() methods in the renderers
      */
     public int mLabelHeight = 1;
 
     /**
-     * width of the (rotated) xPx-axis labels in pixels - this is automatically
+     * width of the (rotated) x-axis labels in pixels - this is automatically
      * calculated by the computeSize() methods in the renderers
      */
     public int mLabelRotatedWidth = 1;
 
     /**
-     * height of the (rotated) xPx-axis labels in pixels - this is automatically
+     * height of the (rotated) x-axis labels in pixels - this is automatically
      * calculated by the computeSize() methods in the renderers
      */
     public int mLabelRotatedHeight = 1;
@@ -48,12 +48,12 @@ public class XAxis extends AxisBase {
     private boolean mAvoidFirstLastClipping = false;
 
     /**
-     * the position of the xPx-labels relative to the chart
+     * the position of the x-labels relative to the chart
      */
     private XAxisPosition mPosition = XAxisPosition.TOP;
 
     /**
-     * enum for the position of the xPx-labels relative to the chart
+     * enum for the position of the x-labels relative to the chart
      */
     public enum XAxisPosition {
         TOP, BOTTOM, BOTH_SIDED, TOP_INSIDE, BOTTOM_INSIDE
@@ -66,14 +66,14 @@ public class XAxis extends AxisBase {
     }
 
     /**
-     * returns the position of the xPx-labels
+     * returns the position of the x-labels
      */
     public XAxisPosition getPosition() {
         return mPosition;
     }
 
     /**
-     * sets the position of the xPx-labels
+     * sets the position of the x-labels
      *
      * @param pos
      */

@@ -52,7 +52,7 @@ public abstract class RealmBaseActivity extends DemoBase {
             mChart.setDragEnabled(true);
             mChart.setScaleEnabled(true);
 
-            // if disabled, scaling can be done on xPx- and yPx-axis separately
+            // if disabled, scaling can be done on x- and y-axis separately
             mChart.setPinchZoom(false);
 
             YAxis leftAxis = mChart.getAxisLeft();

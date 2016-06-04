@@ -34,7 +34,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     private RectF mCircleBox = new RectF();
 
     /**
-     * flag indicating if the xPx-labels should be drawn or not
+     * flag indicating if the x-labels should be drawn or not
      */
     private boolean mDrawXLabels = true;
 
@@ -302,7 +302,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * Returns the index of the DataSet this xPx-index belongs to.
+     * Returns the index of the DataSet this x-index belongs to.
      *
      * @param xIndex
      * @return
@@ -559,7 +559,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * set this to true to draw the xPx-yValue text into the pie slices
+     * set this to true to draw the x-yValue text into the pie slices
      *
      * @param enabled
      */
@@ -568,7 +568,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * returns true if drawing xPx-values is enabled, false if not
+     * returns true if drawing x-values is enabled, false if not
      *
      * @return
      */

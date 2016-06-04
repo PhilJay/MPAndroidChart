@@ -17,35 +17,35 @@ public interface IDataSet<T extends Entry> {
     /** ###### ###### DATA RELATED METHODS ###### ###### */
 
     /**
-     * returns the minimum yPx-yValue this DataSet holds
+     * returns the minimum y-yValue this DataSet holds
      *
      * @return
      */
     float getYMin();
 
     /**
-     * returns the maximum yPx-yValue this DataSet holds
+     * returns the maximum y-yValue this DataSet holds
      *
      * @return
      */
     float getYMax();
 
     /**
-     * returns the minimum xPx-yValue this DataSet holds
+     * returns the minimum x-yValue this DataSet holds
      *
      * @return
      */
     float getXMin();
 
     /**
-     * returns the maximum xPx-yValue this DataSet holds
+     * returns the maximum x-yValue this DataSet holds
      *
      * @return
      */
     float getXMax();
 
     /**
-     * Returns the number of yPx-values this DataSet represents -> the size of the yPx-values array
+     * Returns the number of y-values this DataSet represents -> the size of the y-values array
      * -> yvals.size()
      *
      * @return
@@ -53,7 +53,7 @@ public interface IDataSet<T extends Entry> {
     int getEntryCount();
 
     /**
-     * Calculates the minimum and maximum xPx and yPx values (mXMin, mXMax, mYMin, mYMax).
+     * Calculates the minimum and maximum x and y values (mXMin, mXMax, mYMin, mYMax).
      */
     void calcMinMax();
 
@@ -65,7 +65,7 @@ public interface IDataSet<T extends Entry> {
      * not over-use in performance critical situations.
      *
      * @param xPos
-     * @param rounding determine to round up/down/closest if there is no Entry matching the provided xPx-index
+     * @param rounding determine to round up/down/closest if there is no Entry matching the provided x-index
      * @return
      */
     T getEntryForXPos(float xPos, DataSet.Rounding rounding);
@@ -109,7 +109,7 @@ public interface IDataSet<T extends Entry> {
      * not over-use in performance critical situations.
      *
      * @param xPos
-     * @param rounding determine to round up/down/closest if there is no Entry matching the provided xPx-index
+     * @param rounding determine to round up/down/closest if there is no Entry matching the provided x-index
      * @return
      */
     int getEntryIndex(float xPos, DataSet.Rounding rounding);
@@ -135,7 +135,7 @@ public interface IDataSet<T extends Entry> {
     float getYValueForXValue(float xVal);
 
     /**
-     * Returns all of the yPx values of the Entry objects at the given xPos. Returns
+     * Returns all of the y values of the Entry objects at the given xPos. Returns
      * Float.NaN if no yValue is at the given xPos. INFORMATION: This method
      * does calculations at runtime. Do not over-use in performance critical
      * situations.
@@ -178,7 +178,7 @@ public interface IDataSet<T extends Entry> {
 
     /**
      * Adds an Entry to the DataSet dynamically.
-     * Entries are added to their appropriate index respective to it's xPx-index.
+     * Entries are added to their appropriate index respective to it's x-index.
      * This will also recalculate the current minimum and maximum
      * values of the DataSet and the yValue-sum.
      *
@@ -250,7 +250,7 @@ public interface IDataSet<T extends Entry> {
     YAxis.AxisDependency getAxisDependency();
 
     /**
-     * Set the yPx-axis this DataSet should be plotted against (either LEFT or
+     * Set the y-axis this DataSet should be plotted against (either LEFT or
      * RIGHT). Default: LEFT
      *
      * @param dependency
@@ -373,7 +373,7 @@ public interface IDataSet<T extends Entry> {
     float getValueTextSize();
 
     /**
-     * set this to true to draw yPx-values on the chart NOTE (for bar and
+     * set this to true to draw y-values on the chart NOTE (for bar and
      * linechart): if "maxvisiblecount" is reached, no values will be drawn even
      * if this is enabled
      *
@@ -382,7 +382,7 @@ public interface IDataSet<T extends Entry> {
     void setDrawValues(boolean enabled);
 
     /**
-     * Returns true if yPx-yValue drawing is enabled, false if not
+     * Returns true if y-yValue drawing is enabled, false if not
      *
      * @return
      */

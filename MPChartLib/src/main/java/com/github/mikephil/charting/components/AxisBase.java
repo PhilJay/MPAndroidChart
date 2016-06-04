@@ -71,7 +71,7 @@ public abstract class AxisBase extends ComponentBase {
     protected boolean mGranularityEnabled = false;
 
     /**
-     * if true, the set number of yPx-labels will be forced
+     * if true, the set number of y-labels will be forced
      */
     protected boolean mForceLabels = false;
 
@@ -282,10 +282,10 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
-     * Sets the number of label entries for the yPx-axis max = 25, min = 2, default: 6, be aware
+     * Sets the number of label entries for the y-axis max = 25, min = 2, default: 6, be aware
      * that this number is not fixed.
      *
-     * @param count the number of yPx-axis labels that sould be displayed
+     * @param count the number of y-axis labels that sould be displayed
      */
     public void setLabelCount(int count) {
 
@@ -299,11 +299,11 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
-     * sets the number of label entries for the yPx-axis max = 25, min = 2, default: 6, be aware
+     * sets the number of label entries for the y-axis max = 25, min = 2, default: 6, be aware
      * that this number is not
      * fixed (if force == false) and can only be approximated.
      *
-     * @param count the number of yPx-axis labels that sould be displayed
+     * @param count the number of y-axis labels that sould be displayed
      * @param force if enabled, the set label count will be forced, meaning that the exact
      *              specified count of labels will
      *              be drawn and evenly distributed alongside the axis - this might cause labels
@@ -316,7 +316,7 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
-     * Returns true if focing the yPx-label count is enabled. Default: false
+     * Returns true if focing the y-label count is enabled. Default: false
      *
      * @return
      */
@@ -325,7 +325,7 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
-     * Returns the number of label entries the yPx-axis should have
+     * Returns the number of label entries the y-axis should have
      *
      * @return
      */

@@ -441,7 +441,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
     }
 
     /**
-     * Returns an array of SelectionDetail objects for the given xPx-index. The SelectionDetail
+     * Returns an array of SelectionDetail objects for the given x-index. The SelectionDetail
      * objects give information about the yValue at the selected index and the
      * DataSet it belongs to. INFORMATION: This method does calculations at
      * runtime. Do not over-use in performance critical situations.
@@ -456,7 +456,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
 
             IDataSet<?> dataSet = mData.getDataSetByIndex(i);
 
-            // extract all yPx-values from all DataSets at the given xPx-index
+            // extract all y-values from all DataSets at the given x-index
             final float yVal = dataSet.getYValueForXValue(xIndex);
             if (Float.isNaN(yVal))
                 continue;

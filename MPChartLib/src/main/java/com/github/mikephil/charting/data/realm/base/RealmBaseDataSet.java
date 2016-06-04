@@ -28,22 +28,22 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     protected List<S> mValues;
 
     /**
-     * maximum yPx-yValue in the yPx-yValue array
+     * maximum y-yValue in the y-yValue array
      */
     protected float mYMax = 0.0f;
 
     /**
-     * the minimum yPx-yValue in the yPx-yValue array
+     * the minimum y-yValue in the y-yValue array
      */
     protected float mYMin = 0.0f;
 
     /**
-     * maximum xPx-yValue in the yValue array
+     * maximum x-yValue in the yValue array
      */
     protected float mXMax = 0.0f;
 
     /**
-     * minimum xPx-yValue in the yValue array
+     * minimum x-yValue in the yValue array
      */
     protected float mXMin = 0.0f;
 
@@ -384,7 +384,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     }
 
     /**
-     * Returns the fieldname that represents the "yPx-values" in the realm-data.
+     * Returns the fieldname that represents the "y-values" in the realm-data.
      *
      * @return
      */
@@ -393,7 +393,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     }
 
     /**
-     * Sets the field name that is used for getting the yPx-values out of the RealmResultSet.
+     * Sets the field name that is used for getting the y-values out of the RealmResultSet.
      *
      * @param yValuesField
      */
@@ -402,7 +402,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     }
 
     /**
-     * Returns the fieldname that represents the "xPx-values" in the realm-data.
+     * Returns the fieldname that represents the "x-values" in the realm-data.
      *
      * @return
      */
@@ -411,7 +411,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     }
 
     /**
-     * Sets the field name that is used for getting the xPx-values out of the RealmResultSet.
+     * Sets the field name that is used for getting the x-values out of the RealmResultSet.
      *
      * @param xValuesField
      */

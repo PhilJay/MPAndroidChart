@@ -30,13 +30,13 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
     /**
      * Computes the axis values.
      *
-     * @param yMin - the minimum yPx-yValue in the data object for this axis
-     * @param yMax - the maximum yPx-yValue in the data object for this axis
+     * @param yMin - the minimum y-yValue in the data object for this axis
+     * @param yMax - the maximum y-yValue in the data object for this axis
      */
     @Override
     public void computeAxis(float yMin, float yMax, boolean inverted) {
 
-        // calculate the starting and entry point of the yPx-labels (depending on
+        // calculate the starting and entry point of the y-labels (depending on
         // zoom / contentrect bounds)
         if (mViewPortHandler.contentHeight() > 10 && !mViewPortHandler.isFullyZoomedOutX()) {
 
@@ -58,7 +58,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
     }
 
     /**
-     * draws the yPx-axis labels to the screen
+     * draws the y-axis labels to the screen
      */
     @Override
     public void renderAxisLabels(Canvas c) {
@@ -122,7 +122,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
     }
 
     /**
-     * draws the yPx-labels on the specified xPx-position
+     * draws the y-labels on the specified x-position
      *
      * @param fixedPosition
      * @param positions

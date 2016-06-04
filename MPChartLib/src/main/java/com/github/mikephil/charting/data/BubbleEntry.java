@@ -19,8 +19,8 @@ public class BubbleEntry extends Entry {
     /**
      * Constructor.
      *
-     * @param x The yValue on the xPx-axis.
-     * @param y The yValue on the yPx-axis.
+     * @param x The yValue on the x-axis.
+     * @param y The yValue on the y-axis.
      * @param size The size of the bubble.
      */
     public BubbleEntry(float x, float y, float size) {
@@ -31,8 +31,8 @@ public class BubbleEntry extends Entry {
     /**
      * Constructor.
      *
-     * @param x The yValue on the xPx-axis.
-     * @param y The yValue on the yPx-axis.
+     * @param x The yValue on the x-axis.
+     * @param y The yValue on the y-axis.
      * @param size The size of the bubble.
      * @param data Spot for additional data this Entry represents.
      */
