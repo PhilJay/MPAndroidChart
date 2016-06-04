@@ -115,40 +115,4 @@ public class XAxis extends AxisBase {
     public boolean isAvoidFirstLastClippingEnabled() {
         return mAvoidFirstLastClipping;
     }
-
-//    /**
-//     * Sets the labels for this axis.
-//     *
-//     * @param values
-//     */
-//    public void setValues(List<XAxisValue> values) {
-//        mValues = values;
-//    }
-//
-//    /**
-//     * Returns the labels for this axis.
-//     *
-//     * @return
-//     */
-//    public List<XAxisValue> getValues() {
-//        return mValues;
-//    }
-//
-//    /**
-//     * Adds a new xPx-yValue to the chart data.
-//     *
-//     * @param xVal
-//     */
-//    public void addXValue(XAxisValue xVal) {
-//        mValues.add(xVal);
-//    }
-//
-//    /**
-//     * Removes the xPx-yValue at the specified index.
-//     *
-//     * @param index
-//     */
-//    public void removeXValue(int index) {
-//        mValues.remove(index);
-//    }
 }

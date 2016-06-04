@@ -51,21 +51,24 @@ public abstract class AxisRenderer extends Renderer {
         this.mTrans = trans;
         this.mAxis = axis;
 
-        mAxisLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        if(mTrans != null) {
 
-        mGridPaint = new Paint();
-        mGridPaint.setColor(Color.GRAY);
-        mGridPaint.setStrokeWidth(1f);
-        mGridPaint.setStyle(Style.STROKE);
-        mGridPaint.setAlpha(90);
+            mAxisLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-        mAxisLinePaint = new Paint();
-        mAxisLinePaint.setColor(Color.BLACK);
-        mAxisLinePaint.setStrokeWidth(1f);
-        mAxisLinePaint.setStyle(Style.STROKE);
+            mGridPaint = new Paint();
+            mGridPaint.setColor(Color.GRAY);
+            mGridPaint.setStrokeWidth(1f);
+            mGridPaint.setStyle(Style.STROKE);
+            mGridPaint.setAlpha(90);
 
-        mLimitLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mLimitLinePaint.setStyle(Paint.Style.STROKE);
+            mAxisLinePaint = new Paint();
+            mAxisLinePaint.setColor(Color.BLACK);
+            mAxisLinePaint.setStrokeWidth(1f);
+            mAxisLinePaint.setStyle(Style.STROKE);
+
+            mLimitLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            mLimitLinePaint.setStyle(Paint.Style.STROKE);
+        }
     }
 
     /**
@@ -116,7 +119,7 @@ public abstract class AxisRenderer extends Renderer {
 
         // calculate the starting and entry point of the yPx-labels (depending on
         // zoom / contentrect bounds)
-        if (mViewPortHandler.contentWidth() > 10 && !mViewPortHandler.isFullyZoomedOutY()) {
+        if (mViewPortHandler != null && mViewPortHandler.contentWidth() > 10 && !mViewPortHandler.isFullyZoomedOutY()) {
 
             PointD p1 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop());
             PointD p2 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom());

@@ -28,13 +28,16 @@ public class YAxisRenderer extends AxisRenderer {
 
         this.mYAxis = yAxis;
 
-        mAxisLabelPaint.setColor(Color.BLACK);
-        mAxisLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
+        if(mTrans != null) {
 
-        mZeroLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mZeroLinePaint.setColor(Color.GRAY);
-        mZeroLinePaint.setStrokeWidth(1f);
-        mZeroLinePaint.setStyle(Paint.Style.STROKE);
+            mAxisLabelPaint.setColor(Color.BLACK);
+            mAxisLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
+
+            mZeroLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            mZeroLinePaint.setColor(Color.GRAY);
+            mZeroLinePaint.setStrokeWidth(1f);
+            mZeroLinePaint.setStyle(Paint.Style.STROKE);
+        }
     }
 
 //    @Override
