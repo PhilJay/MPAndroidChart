@@ -130,14 +130,6 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
                 mChart.invalidate();
                 break;
             }
-            case R.id.actionToggleHighlightArrow: {
-                if (mChart.isDrawHighlightArrowEnabled())
-                    mChart.setDrawHighlightArrow(false);
-                else
-                    mChart.setDrawHighlightArrow(true);
-                mChart.invalidate();
-                break;
-            }
             case R.id.animateX: {
                 mChart.animateX(3000);
                 break;

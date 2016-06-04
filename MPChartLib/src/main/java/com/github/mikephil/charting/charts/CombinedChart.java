@@ -167,11 +167,6 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
         return mDrawValueAboveBar;
     }
 
-    @Override
-    public boolean isDrawHighlightArrowEnabled() {
-        return mDrawHighlightArrow;
-    }
-
     /**
      * set this to true to draw the highlightning arrow
      *

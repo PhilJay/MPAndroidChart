@@ -151,14 +151,6 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
                 }
                 break;
             }
-            case R.id.actionToggleHighlightArrow: {
-                if (mChart.isDrawHighlightArrowEnabled())
-                    mChart.setDrawHighlightArrow(false);
-                else
-                    mChart.setDrawHighlightArrow(true);
-                mChart.invalidate();
-                break;
-            }
             case R.id.actionSave: {
                 // mChart.saveToGallery("title"+System.currentTimeMillis());
                 mChart.saveToPath("title" + System.currentTimeMillis(), "");

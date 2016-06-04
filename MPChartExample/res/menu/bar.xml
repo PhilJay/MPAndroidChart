@@ -10,10 +10,6 @@
         android:title="Toggle Highlight">
     </item>
     <item
-        android:id="@+id/actionToggleHighlightArrow"
-        android:title="Toggle Highlight Arrow">
-    </item>
-    <item
         android:id="@+id/animateX"
         android:title="Animate X">
     </item>

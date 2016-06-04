@@ -3,7 +3,9 @@ package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.RectF;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
@@ -236,7 +238,8 @@ public class BarChartRenderer extends DataRenderer {
                         float val = entry.getY();
 
                         drawValue(c, dataSet.getValueFormatter(), val, entry, i, x,
-                                val >= 0 ? (buffer.buffer[j + 1] +  posOffset) : (buffer.buffer[j + 3] + negOffset), dataSet.getValueTextColor
+                                val >= 0 ? (buffer.buffer[j + 1] + posOffset) : (buffer.buffer[j + 3] + negOffset),
+                                dataSet.getValueTextColor
                                         (j / 4));
                     }
 
@@ -355,7 +358,6 @@ public class BarChartRenderer extends DataRenderer {
                 float x = high.getX();
 
                 BarEntry e = set.getEntryForXPos(x);
-                int entryIndex = set.getEntryIndex(e);
 
                 if (e == null)
                     continue;
@@ -375,37 +377,34 @@ public class BarChartRenderer extends DataRenderer {
 
                 prepareBarHighlight(e.getX(), y1, y2, barData.getBarWidth() / 2f, trans);
 
-                //prepareBarHighlight(y1, y2, interval, entryIndex, dataSetIndex, setCount, barSpace, groupSpace,
-                // trans);
-
                 c.drawRect(mBarRect, mHighlightPaint);
 
-//                    if (mChart.isDrawHighlightArrowEnabled()) {
+//                if (mChart.isDrawHighlightArrowEnabled()) {
 //
-//                        mHighlightPaint.setAlpha(255);
+//                    mHighlightPaint.setAlpha(255);
 //
-//                        // distance between highlight arrow and bar
-//                        float offsetY = mAnimator.getPhaseY() * 0.07f;
+//                    // distance between highlight arrow and bar
+//                    float offsetY = mAnimator.getPhaseY() * 0.07f;
 //
-//                        float[] values = new float[9];
-//                        trans.getPixelToValueMatrix().getValues(values);
-//                        final float xToYRel = Math.abs(
-//                                values[Matrix.MSCALE_Y] / values[Matrix.MSCALE_X]);
+//                    float[] values = new float[9];
+//                    trans.getPixelToValueMatrix().getValues(values);
+//                    final float xToYRel = Math.abs(
+//                            values[Matrix.MSCALE_Y] / values[Matrix.MSCALE_X]);
 //
-//                        final float arrowWidth = set.getBarSpace() / 2.f;
-//                        final float arrowHeight = arrowWidth * xToYRel;
+//                    final float arrowWidth = barData.getBarWidth();
+//                    final float arrowWidthHalf = arrowWidth / 2f;
+//                    final float arrowHeight = arrowWidth * xToYRel;
 //
-//                        final float yArrow = (y1 > -y2 ? y1 : y1) * mAnimator.getPhaseY();
+//                    final float yArrow = (y1 > -y2 ? y1 : y1) * mAnimator.getPhaseY();
 //
-//                        Path arrow = new Path();
-//                        arrow.moveTo(xPx + 0.4f, yArrow + offsetY);
-//                        arrow.lineTo(xPx + 0.4f + arrowWidth, yArrow + offsetY - arrowHeight);
-//                        arrow.lineTo(xPx + 0.4f + arrowWidth, yArrow + offsetY + arrowHeight);
+//                    Path arrow = new Path();
+//                    arrow.moveTo(e.getX() - arrowWidthHalf, yArrow + offsetY + arrowHeight);
+//                    arrow.lineTo(e.getX(), yArrow + offsetY);
+//                    arrow.lineTo(e.getX() + arrowWidthHalf, yArrow + offsetY + arrowHeight);
 //
-//                        trans.pathValueToPixel(arrow);
-//                        c.drawPath(arrow, mHighlightPaint);
-//                    }
-
+//                    trans.pathValueToPixel(arrow);
+//                    c.drawPath(arrow, mHighlightPaint);
+//                }
             }
         }
 

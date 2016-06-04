@@ -129,23 +129,23 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         return bounds;
     }
 
-    /**
-     * set this to true to draw the highlightning arrow
-     *
-     * @param enabled
-     */
-    public void setDrawHighlightArrow(boolean enabled) {
-        mDrawHighlightArrow = enabled;
-    }
-
-    /**
-     * returns true if drawing the highlighting arrow is enabled, false if not
-     *
-     * @return
-     */
-    public boolean isDrawHighlightArrowEnabled() {
-        return mDrawHighlightArrow;
-    }
+//    /**
+//     * set this to true to draw the highlightning arrow
+//     *
+//     * @param enabled
+//     */
+//    public void setDrawHighlightArrow(boolean enabled) {
+//        mDrawHighlightArrow = enabled;
+//    }
+//
+//    /**
+//     * returns true if drawing the highlighting arrow is enabled, false if not
+//     *
+//     * @return
+//     */
+//    public boolean isDrawHighlightArrowEnabled() {
+//        return mDrawHighlightArrow;
+//    }
 
     /**
      * If set to true, all values are drawn above their bars, instead of below their top.

@@ -152,14 +152,6 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
                 mChart.invalidate();
                 break;
             }
-            case R.id.actionToggleHighlightArrow: {
-                if (mChart.isDrawHighlightArrowEnabled())
-                    mChart.setDrawHighlightArrow(false);
-                else
-                    mChart.setDrawHighlightArrow(true);
-                mChart.invalidate();
-                break;
-            }
             case R.id.animateX: {
                 mChart.animateX(1500);
                 break;
