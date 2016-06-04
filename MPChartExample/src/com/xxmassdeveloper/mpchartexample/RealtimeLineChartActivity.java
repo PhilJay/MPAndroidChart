@@ -146,7 +146,7 @@ public class RealtimeLineChartActivity extends DemoBase implements
             // mChart.setVisibleYRange(30, AxisDependency.LEFT);
 
             // move to the latest entry
-            mChart.moveViewToX(data.getEntryCount() - 121);
+            mChart.moveViewToX(data.getEntryCount());
 
             // this automatically refreshes the chart (calls invalidate())
             // mChart.moveViewTo(data.getXValCount()-7, 55f,
@@ -175,14 +175,14 @@ public class RealtimeLineChartActivity extends DemoBase implements
 
     private void feedMultiple() {
 
-        if(thread != null)
+        if (thread != null)
             thread.interrupt();
 
-       thread = new Thread(new Runnable() {
+        thread = new Thread(new Runnable() {
 
             @Override
             public void run() {
-                for(int i = 0; i < 1000; i++) {
+                for (int i = 0; i < 1000; i++) {
 
                     runOnUiThread(new Runnable() {
 
@@ -219,7 +219,7 @@ public class RealtimeLineChartActivity extends DemoBase implements
     protected void onPause() {
         super.onPause();
 
-        if(thread != null) {
+        if (thread != null) {
             thread.interrupt();
         }
     }

@@ -168,8 +168,6 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
         SelectionDetail closest = null;
         float distance = minSelectionDistance;
 
-        System.out.println(distance);
-
         for (int i = 0; i < valsAtIndex.size(); i++) {
 
             SelectionDetail sel = valsAtIndex.get(i);
