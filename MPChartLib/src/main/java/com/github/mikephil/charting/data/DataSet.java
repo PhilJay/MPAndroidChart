@@ -200,10 +200,9 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         if (mValues.size() > 0 && mValues.get(mValues.size() - 1).getX() > e.getX()) {
             int closestIndex = getEntryIndex(e.getX(), Rounding.UP);
             mValues.add(closestIndex, e);
-            return;
+        } else {
+            mValues.add(e);
         }
-
-        mValues.add(e);
     }
 
     @Override
@@ -320,20 +319,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
             return e.getY();
         else
             return Float.NaN;
-    }
-
-    @Override
-    public float[] getYValuesForXPos(float xVal) {
-
-        List<T> entries = getEntriesForXPos(xVal);
-
-        float[] yVals = new float[entries.size()];
-        int i = 0;
-
-        for (T e : entries)
-            yVals[i++] = e.getY();
-
-        return yVals;
     }
 
     /**

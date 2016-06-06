@@ -282,20 +282,6 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     }
 
     @Override
-    public float[] getYValuesForXPos(float xVal) {
-
-        List<S> entries = getEntriesForXPos(xVal);
-
-        float[] yVals = new float[entries.size()];
-        int i = 0;
-
-        for (S e : entries)
-            yVals[i++] = e.getY();
-
-        return yVals;
-    }
-
-    @Override
     public boolean addEntry(S e) {
 
         if (e == null)

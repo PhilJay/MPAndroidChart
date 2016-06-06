@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 
 /**
  * Created by philipp on 31/05/16.
@@ -77,6 +79,57 @@ public class DataSetTest {
         assertEquals(20, set.getEntryForIndex(3).getX(), 0.01f);
         assertEquals(50, set.getEntryForIndex(3).getY(), 0.01f);
 
+        assertTrue(set.removeEntry(3));
+
+        assertEquals(4, set.getEntryCount());
+
+        assertEquals(21, set.getEntryForIndex(3).getX(), 0.01f);
+        assertEquals(5, set.getEntryForIndex(3).getY(), 0.01f);
+
+        assertEquals(5, set.getEntryForIndex(0).getX(), 0.01f);
+        assertEquals(1, set.getEntryForIndex(0).getY(), 0.01f);
+
+        assertTrue(set.removeFirst());
+
+        assertEquals(3, set.getEntryCount());
+
+        assertEquals(10, set.getEntryForIndex(0).getX(), 0.01f);
+        assertEquals(10, set.getEntryForIndex(0).getY(), 0.01f);
+
+        set.addEntryOrdered(new Entry(15, 3));
+
+        assertEquals(4, set.getEntryCount());
+
+        assertEquals(15, set.getEntryForIndex(1).getX(), 0.01f);
+        assertEquals(3, set.getEntryForIndex(1).getY(), 0.01f);
+
+        assertEquals(21, set.getEntryForIndex(3).getX(), 0.01f);
+        assertEquals(5, set.getEntryForIndex(3).getY(), 0.01f);
+
+        assertTrue(set.removeLast());
+
+        assertEquals(3, set.getEntryCount());
+
+        assertEquals(15, set.getEntryForIndex(2).getX(), 0.01f);
+        assertEquals(2, set.getEntryForIndex(2).getY(), 0.01f);
+
+        assertTrue(set.removeLast());
+
+        assertEquals(2, set.getEntryCount());
+
+        assertTrue(set.removeLast());
+
+        assertEquals(1, set.getEntryCount());
+
+        assertEquals(10, set.getEntryForIndex(0).getX(), 0.01f);
+        assertEquals(10, set.getEntryForIndex(0).getY(), 0.01f);
+
+        assertTrue(set.removeLast());
+
+        assertEquals(0, set.getEntryCount());
+
+        assertFalse(set.removeLast());
+        assertFalse(set.removeFirst());
     }
 
     @Test
