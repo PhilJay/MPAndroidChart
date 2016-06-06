@@ -1,16 +1,10 @@
 package com.github.mikephil.charting.test;
 
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.DataSet;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.renderer.AxisRenderer;
 import com.github.mikephil.charting.renderer.YAxisRenderer;
 
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 

@@ -102,7 +102,6 @@ public class ViewPortHandler {
         mChartWidth = width;
 
         restrainViewPort(offsetLeft, offsetTop, offsetRight, offsetBottom);
-
     }
 
     public boolean hasChartDimens() {

@@ -247,6 +247,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         mChart.getBarData().groupBars(startYear, groupSpace, barSpace);
         mChart.getXAxis().setAxisMinValue(startYear);
         mChart.getXAxis().setAxisMaxValue(mChart.getBarData().getIntervalWidth(groupSpace, barSpace) * mSeekBarX.getProgress() + startYear);
+        mChart.notifyDataSetChanged();
         mChart.invalidate();
     }
 
