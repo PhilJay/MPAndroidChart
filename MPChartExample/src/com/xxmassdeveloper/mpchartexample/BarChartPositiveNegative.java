@@ -127,7 +127,7 @@ public class BarChartPositiveNegative extends DemoBase {
         if (mChart.getData() != null &&
                 mChart.getData().getDataSetCount() > 0) {
             set = (BarDataSet)mChart.getData().getDataSetByIndex(0);
-            set.setYVals(values);
+            set.setValues(values);
             mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {

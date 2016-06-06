@@ -15,7 +15,7 @@ import java.util.List;
 public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
     /**
-     * the entries that this dataset represents / holds together
+     * the entries that this DataSet represents / holds together
      */
     protected List<T> mValues = null;
 
@@ -41,16 +41,16 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
 
     /**
-     * Creates a new DataSet object with the given values it represents. Also, a
+     * Creates a new DataSet object with the given values (entries) it represents. Also, a
      * label that describes the DataSet can be specified. The label can also be
      * used to retrieve the DataSet from a ChartData object.
      *
-     * @param yVals
+     * @param values
      * @param label
      */
-    public DataSet(List<T> yVals, String label) {
+    public DataSet(List<T> values, String label) {
         super(label);
-        this.mValues = yVals;
+        this.mValues = values;
 
         if (mValues == null)
             mValues = new ArrayList<T>();
@@ -108,21 +108,21 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     /**
-     * Returns the array of y-values that this DataSet represents.
+     * Returns the array of entries that this DataSet represents.
      *
      * @return
      */
-    public List<T> getYVals() {
+    public List<T> getValues() {
         return mValues;
     }
 
     /**
-     * Sets the array of y-values that this DataSet represents, and calls notifyDataSetChanged()
+     * Sets the array of entries that this DataSet represents, and calls notifyDataSetChanged()
      *
      * @return
      */
-    public void setYVals(List<T> yVals) {
-        mValues = yVals;
+    public void setValues(List<T> values) {
+        mValues = values;
         notifyDataSetChanged();
     }
 
@@ -221,7 +221,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
         float val = e.getY();
 
-        List<T> yVals = getYVals();
+        List<T> yVals = getValues();
         if (yVals == null) {
             yVals = new ArrayList<T>();
         }

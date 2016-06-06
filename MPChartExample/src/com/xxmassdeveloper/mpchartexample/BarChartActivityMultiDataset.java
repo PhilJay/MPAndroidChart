@@ -13,6 +13,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
@@ -21,6 +22,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.AxisValueFormatter;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
@@ -95,6 +97,17 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         xl.setTypeface(tf);
         xl.setGranularity(1f);
         xl.setCenterAxisLabels(true);
+        xl.setValueFormatter(new AxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return String.valueOf((int) value);
+            }
+
+            @Override
+            public int getDecimalDigits() {
+                return 0;
+            }
+        });
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(tf);
@@ -177,8 +190,9 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
         float groupSpace = 0.04f;
-        float barSpace = 0.02f;
-        float barWidth = 0.3f;
+        float barSpace = 0.02f; // x3
+        float barWidth = 0.3f; // x3
+        // (0.3 + 0.02) * 3 + 0.04 = 1.00
         int startYear = 1980;
         int endYear = startYear + mSeekBarX.getProgress();
 
@@ -213,9 +227,9 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
             set1 = (BarDataSet)mChart.getData().getDataSetByIndex(0);
             set2 = (BarDataSet)mChart.getData().getDataSetByIndex(1);
             set3 = (BarDataSet)mChart.getData().getDataSetByIndex(2);
-            set1.setYVals(yVals1);
-            set2.setYVals(yVals2);
-            set3.setYVals(yVals3);
+            set1.setValues(yVals1);
+            set2.setValues(yVals2);
+            set3.setValues(yVals3);
             mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
@@ -235,7 +249,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
             dataSets.add(set3);
 
             BarData data = new BarData(dataSets);
-//        data.setValueFormatter(new LargeValueFormatter());
+            data.setValueFormatter(new LargeValueFormatter());
 
             // add space between the dataset groups in percent of bar-width
             data.setValueTypeface(tf);

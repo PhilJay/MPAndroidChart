@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
@@ -35,7 +34,6 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.xxmassdeveloper.mpchartexample.custom.DayAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.custom.MyAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -244,7 +242,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         if (mChart.getData() != null &&
                 mChart.getData().getDataSetCount() > 0) {
             set1 = (BarDataSet) mChart.getData().getDataSetByIndex(0);
-            set1.setYVals(yVals1);
+            set1.setValues(yVals1);
             mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
