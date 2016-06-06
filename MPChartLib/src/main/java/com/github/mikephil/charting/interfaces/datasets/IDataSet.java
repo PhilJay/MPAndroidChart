@@ -124,18 +124,7 @@ public interface IDataSet<T extends Entry> {
     int getEntryIndex(T e);
 
     /**
-     * Returns the value of the Entry object at the given xVal. Returns
-     * Float.NaN if no value is at the given xVal. INFORMATION: This method
-     * does calculations at runtime. Do not over-use in performance critical
-     * situations.
-     *
-     * @param xVal
-     * @return
-     */
-    float getYValueForXValue(float xVal);
-
-    /**
-     * Returns all of the y values of the Entry objects at the given xPos. Returns
+     * Returns the value of the Entry object at the given xPos. Returns
      * Float.NaN if no value is at the given xPos. INFORMATION: This method
      * does calculations at runtime. Do not over-use in performance critical
      * situations.
@@ -143,7 +132,8 @@ public interface IDataSet<T extends Entry> {
      * @param xPos
      * @return
      */
-    float[] getYValuesForXPos(float xPos);
+    float getYValueForXValue(float xPos);
+
 
     /**
      * This method returns the actual
@@ -204,7 +194,7 @@ public interface IDataSet<T extends Entry> {
     boolean removeEntry(T e);
 
     /**
-     * Removes the Entry object that has the given xPos from the DataSet.
+     * Removes the Entry object closest to the given xPos from the DataSet.
      * Returns true if an Entry was removed, false if no Entry could be removed.
      *
      * @param xPos
