@@ -6,7 +6,6 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 public class BarBuffer extends AbstractBuffer<IBarDataSet> {
 
-    protected float mGroupSpace = 0f;
     protected int mDataSetIndex = 0;
     protected int mDataSetCount = 1;
     protected boolean mContainsStacks = false;
@@ -15,9 +14,8 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
     /** width of the bar on the x-axis, in values (not pixels) */
     protected float mBarWidth = 1f;
 
-    public BarBuffer(int size, float groupspace, int dataSetCount, boolean containsStacks) {
+    public BarBuffer(int size, int dataSetCount, boolean containsStacks) {
         super(size);
-        this.mGroupSpace = groupspace;
         this.mDataSetCount = dataSetCount;
         this.mContainsStacks = containsStacks;
     }

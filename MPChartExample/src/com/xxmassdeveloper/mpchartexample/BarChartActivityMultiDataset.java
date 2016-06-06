@@ -190,9 +190,10 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
         float groupSpace = 0.04f;
-        float barSpace = 0.02f; // x3
-        float barWidth = 0.3f; // x3
-        // (0.3 + 0.02) * 3 + 0.04 = 1.00
+        float barSpace = 0.02f; // x3 dataset
+        float barWidth = 0.3f; // x3 dataset
+        // (0.3 + 0.02) * 3 + 0.04 = 1.00 -> interval per "group"
+
         int startYear = 1980;
         int endYear = startYear + mSeekBarX.getProgress();
 
@@ -258,10 +259,9 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         }
 
         mChart.getBarData().setBarWidth(barWidth);
-        mChart.getBarData().groupBars(startYear, groupSpace, barSpace);
         mChart.getXAxis().setAxisMinValue(startYear);
-        mChart.getXAxis().setAxisMaxValue(mChart.getBarData().getIntervalWidth(groupSpace, barSpace) * mSeekBarX.getProgress() + startYear);
-        mChart.notifyDataSetChanged();
+        mChart.getXAxis().setAxisMaxValue(mChart.getBarData().getGroupWidth(groupSpace, barSpace) * mSeekBarX.getProgress() + startYear);
+        mChart.groupBars(startYear, groupSpace, barSpace);
         mChart.invalidate();
     }
 
