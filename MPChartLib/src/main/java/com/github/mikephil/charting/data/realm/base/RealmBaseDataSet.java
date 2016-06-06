@@ -145,18 +145,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
         for (S e : mValues) {
 
             if (e != null && !Float.isNaN(e.getY())) {
-
-                if (e.getY() < mYMin)
-                    mYMin = e.getY();
-
-                if (e.getY() > mYMax)
-                    mYMax = e.getY();
-
-                if (e.getX() < mXMin)
-                    mXMin = e.getX();
-
-                if (e.getX() > mXMax)
-                    mXMax = e.getX();
+                calcMinMax(e);
             }
         }
 
@@ -169,6 +158,26 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
             mXMin = 0.f;
             mXMax = 0.f;
         }
+    }
+
+    /**
+     * Updates the min and max x and y value of this DataSet based on the given Entry.
+     *
+     * @param e
+     */
+    protected void calcMinMax(S e) {
+
+        if (e.getY() < mYMin)
+            mYMin = e.getY();
+
+        if (e.getY() > mYMax)
+            mYMax = e.getY();
+
+        if (e.getX() < mXMin)
+            mXMin = e.getX();
+
+        if (e.getX() > mXMax)
+            mXMax = e.getX();
     }
 
     @Override
@@ -298,15 +307,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
             mValues = new ArrayList<S>();
         }
 
-        if (mValues.size() == 0) {
-            mYMax = val;
-            mYMin = val;
-        } else {
-            if (mYMax < val)
-                mYMax = val;
-            if (mYMin > val)
-                mYMin = val;
-        }
+        calcMinMax(e);
 
         // add the entry
         mValues.add(e);

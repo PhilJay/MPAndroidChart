@@ -166,19 +166,10 @@ public interface IDataSet<T extends Entry> {
      */
     boolean addEntry(T e);
 
-    /**
-     * Removes an Entry from the DataSets entries array. This will also
-     * recalculate the current minimum and maximum values of the DataSet and the
-     * value-sum. Returns true if an Entry was removed, false if no Entry could
-     * be removed.
-     *
-     * @param e
-     */
-    boolean removeEntry(T e);
 
     /**
      * Adds an Entry to the DataSet dynamically.
-     * Entries are added to their appropriate index respective to it's x-index.
+     * Entries are added to their appropriate index in the values array respective to their x-position.
      * This will also recalculate the current minimum and maximum
      * values of the DataSet and the value-sum.
      *
@@ -203,12 +194,31 @@ public interface IDataSet<T extends Entry> {
     boolean removeLast();
 
     /**
-     * Removes the Entry object that has the given xIndex from the DataSet.
+     * Removes an Entry from the DataSets entries array. This will also
+     * recalculate the current minimum and maximum values of the DataSet and the
+     * value-sum. Returns true if an Entry was removed, false if no Entry could
+     * be removed.
+     *
+     * @param e
+     */
+    boolean removeEntry(T e);
+
+    /**
+     * Removes the Entry object that has the given xPos from the DataSet.
      * Returns true if an Entry was removed, false if no Entry could be removed.
      *
-     * @param xIndex
+     * @param xPos
      */
-    boolean removeEntry(int xIndex);
+    boolean removeEntryByXPos(float xPos);
+
+    /**
+     * Removes the Entry object at the given index in the values array from the DataSet.
+     * Returns true if an Entry was removed, false if no Entry could be removed.
+     *
+     * @param index
+     * @return
+     */
+    boolean removeEntry(int index);
 
     /**
      * Checks if this DataSet contains the specified Entry. Returns true if so,

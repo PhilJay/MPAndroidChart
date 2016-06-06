@@ -91,7 +91,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 
                 data.removeEntry(e, 0);
                 // or remove by index
-                // mData.removeEntry(xIndex, dataSetIndex);
+                // mData.removeEntryByXPos(xIndex, dataSetIndex);
                 data.notifyDataChanged();
                 mChart.notifyDataSetChanged();
                 mChart.invalidate();

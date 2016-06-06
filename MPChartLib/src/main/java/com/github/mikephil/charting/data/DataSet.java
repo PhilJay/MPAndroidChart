@@ -76,18 +76,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         for (T e : mValues) {
 
             if (e != null && !Float.isNaN(e.getY())) {
-
-                if (e.getY() < mYMin)
-                    mYMin = e.getY();
-
-                if (e.getY() > mYMax)
-                    mYMax = e.getY();
-
-                if (e.getX() < mXMin)
-                    mXMin = e.getX();
-
-                if (e.getX() > mXMax)
-                    mXMax = e.getX();
+                calcMinMax(e);
             }
         }
 
@@ -100,6 +89,26 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
             mXMin = 0.f;
             mXMax = 0.f;
         }
+    }
+
+    /**
+     * Updates the min and max x and y value of this DataSet based on the given Entry.
+     *
+     * @param e
+     */
+    protected void calcMinMax(T e) {
+
+        if (e.getY() < mYMin)
+            mYMin = e.getY();
+
+        if (e.getY() > mYMax)
+            mYMax = e.getY();
+
+        if (e.getX() < mXMin)
+            mXMin = e.getX();
+
+        if (e.getX() > mXMax)
+            mXMax = e.getX();
     }
 
     @Override
@@ -182,21 +191,11 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         if (e == null)
             return;
 
-        float val = e.getY();
-
         if (mValues == null) {
             mValues = new ArrayList<T>();
         }
 
-        if (mValues.size() == 0) {
-            mYMax = val;
-            mYMin = val;
-        } else {
-            if (mYMax < val)
-                mYMax = val;
-            if (mYMin > val)
-                mYMin = val;
-        }
+        calcMinMax(e);
 
         if (mValues.size() > 0 && mValues.get(mValues.size() - 1).getX() > e.getX()) {
             int closestIndex = getEntryIndex(e.getX(), Rounding.UP);
@@ -219,25 +218,15 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         if (e == null)
             return false;
 
-        float val = e.getY();
-
-        List<T> yVals = getValues();
-        if (yVals == null) {
-            yVals = new ArrayList<T>();
+        List<T> values = getValues();
+        if (values == null) {
+            values = new ArrayList<T>();
         }
 
-        if (yVals.size() == 0) {
-            mYMax = val;
-            mYMin = val;
-        } else {
-            if (mYMax < val)
-                mYMax = val;
-            if (mYMin > val)
-                mYMin = val;
-        }
+        calcMinMax(e);
 
         // add the entry
-        yVals.add(e);
+        values.add(e);
         return true;
     }
 
