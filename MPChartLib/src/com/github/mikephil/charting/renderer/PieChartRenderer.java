@@ -35,6 +35,12 @@ public class PieChartRenderer extends DataRenderer {
 
     protected PieChart mChart;
 
+
+    /**
+     * paint for the the circle background
+     */
+    protected Paint mCircleBackgroundPaint;
+
     /**
      * paint for the hole in the center of the pie chart and the transparent
      * circle
@@ -66,6 +72,10 @@ public class PieChartRenderer extends DataRenderer {
         super(animator, viewPortHandler);
         mChart = chart;
 
+        mCircleBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mCircleBackgroundPaint.setColor(Color.TRANSPARENT);
+        mCircleBackgroundPaint.setStyle(Style.FILL);
+
         mHolePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mHolePaint.setColor(Color.WHITE);
         mHolePaint.setStyle(Style.FILL);
@@ -85,6 +95,10 @@ public class PieChartRenderer extends DataRenderer {
 
         mValueLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mValueLinePaint.setStyle(Style.STROKE);
+    }
+
+    public Paint getPaintCircleBackground() {
+        return mCircleBackgroundPaint;
     }
 
     public Paint getPaintHole() {
@@ -554,6 +568,20 @@ public class PieChartRenderer extends DataRenderer {
         }
 
         c.restore();
+    }
+
+    /*
+     * draws the circle background of the chart
+     */
+    public void drawCircleBackground(Canvas c) {
+        if (Color.alpha(mCircleBackgroundPaint.getColor()) > 0) {
+            // draw the circle background
+            float radius = mChart.getRadius();
+            PointF center = mChart.getCenterCircleBox();
+            c.drawCircle(
+                    center.x, center.y,
+                    radius, mCircleBackgroundPaint);
+        }
     }
 
     @Override
