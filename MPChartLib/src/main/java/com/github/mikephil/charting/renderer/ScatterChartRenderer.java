@@ -306,8 +306,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
     public void drawValues(Canvas c) {
 
         // if values are drawn
-        if (mChart.getScatterData().getYValCount() < mChart.getMaxVisibleCount()
-                * mViewPortHandler.getScaleX()) {
+        if (isDrawingValuesAllowed(mChart)) {
 
             List<IScatterDataSet> dataSets = mChart.getScatterData().getDataSets();
 

@@ -354,7 +354,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             return true;
         else {
 
-            if (mData.getYValCount() <= 0)
+            if (mData.getEntryCount() <= 0)
                 return true;
             else
                 return false;
@@ -1026,15 +1026,6 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     @Override
     public float getXRange() {
         return mXAxis.mAxisRange;
-    }
-
-    /**
-     * Returns the total number of (y) values the chart holds (across all DataSets).
-     *
-     * @return
-     */
-    public int getValueCount() {
-        return mData.getYValCount();
     }
 
     /**

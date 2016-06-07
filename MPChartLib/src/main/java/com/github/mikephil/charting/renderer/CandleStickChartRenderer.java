@@ -271,8 +271,7 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
     public void drawValues(Canvas c) {
 
         // if values are drawn
-        if (mChart.getCandleData().getYValCount() < mChart.getMaxVisibleCount()
-                * mViewPortHandler.getScaleX()) {
+        if (isDrawingValuesAllowed(mChart)) {
 
             List<ICandleDataSet> dataSets = mChart.getCandleData().getDataSets();
 

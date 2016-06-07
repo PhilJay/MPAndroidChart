@@ -51,17 +51,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     protected float mRightAxisMin = Float.MAX_VALUE;
 
     /**
-     * total number of values (entries) across all DataSet objects
-     */
-    private int mValueCount = 0;
-
-    /**
-     * contains the maximum length (in characters) an entry in the x-vals array
-     * has
-     */
-    private float mXValMaximumLength = 0;
-
-    /**
      * array that holds all DataSets the ChartData object represents
      */
     protected List<T> mDataSets;
@@ -107,8 +96,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      * value count and sum
      */
     protected void init() {
-
-        calcYValueCount();
         calcMinMax();
     }
 
@@ -180,28 +167,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
                 }
             }
         }
-    }
-
-    /**
-     * Calculates the total number of y-values across all DataSets the ChartData
-     * represents.
-     *
-     * @return
-     */
-    protected void calcYValueCount() {
-
-        mValueCount = 0;
-
-        if (mDataSets == null)
-            return;
-
-        int count = 0;
-
-        for (int i = 0; i < mDataSets.size(); i++) {
-            count += mDataSets.get(i).getEntryCount();
-        }
-
-        mValueCount = count;
     }
 
     /** ONLY GETTERS AND SETTERS BELOW THIS */
@@ -293,26 +258,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      */
     public float getXMax() {
         return mXMax;
-    }
-
-    /**
-     * returns the maximum length (in characters) across all values in the
-     * x-vals array
-     *
-     * @return
-     */
-    public float getXValMaximumLength() {
-        return mXValMaximumLength;
-    }
-
-    /**
-     * Returns the total number of y-values across all DataSet objects the this
-     * object represents.
-     *
-     * @return
-     */
-    public int getYValCount() {
-        return mValueCount;
     }
 
     /**
@@ -418,8 +363,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         if (d == null)
             return;
 
-        mValueCount += d.getEntryCount();
-
         calcMinMax(d);
 
         mDataSets.add(d);
@@ -441,9 +384,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
         // if a DataSet was removed
         if (removed) {
-
-            mValueCount -= d.getEntryCount();
-
             calcMinMax();
         }
 
@@ -483,8 +423,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
                 return;
 
             calcMinMax(e, set.getAxisDependency());
-
-            mValueCount += 1;
 
         } else {
             Log.e("addEntry", "Cannot add Entry because dataSetIndex too high or too low.");
@@ -562,8 +500,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
             boolean removed = set.removeEntry(e);
 
             if (removed) {
-                mValueCount -= 1;
-
                 calcMinMax();
             }
 

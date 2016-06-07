@@ -11,6 +11,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
+import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
@@ -100,7 +101,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
     @Override
     public void drawValues(Canvas c) {
         // if values are drawn
-        if (passesCheck()) {
+        if (isDrawingValuesAllowed(mChart)) {
 
             List<IBarDataSet> dataSets = mChart.getBarData().getDataSets();
 
@@ -291,8 +292,8 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
     }
 
     @Override
-    protected boolean passesCheck() {
-        return mChart.getBarData().getYValCount() < mChart.getMaxVisibleCount()
+    protected boolean isDrawingValuesAllowed(ChartInterface chart) {
+        return chart.getData().getEntryCount() < chart.getMaxVisibleCount()
                 * mViewPortHandler.getScaleY();
     }
 }

@@ -132,8 +132,7 @@ public class BubbleChartRenderer extends DataRenderer {
             return;
 
         // if values are drawn
-        if (bubbleData.getYValCount() < (int) (Math.ceil((float) (mChart.getMaxVisibleCount())
-                * mViewPortHandler.getScaleX()))) {
+        if (isDrawingValuesAllowed(mChart)) {
 
             final List<IBubbleDataSet> dataSets = bubbleData.getDataSets();
 

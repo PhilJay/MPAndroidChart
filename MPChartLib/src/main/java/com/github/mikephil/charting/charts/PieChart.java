@@ -161,7 +161,6 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
     @Override
     protected void calcMinMax() {
-        
         calcAngles();
     }
 
@@ -202,8 +201,10 @@ public class PieChart extends PieRadarChartBase<PieData> {
      */
     private void calcAngles() {
 
-        mDrawAngles = new float[mData.getYValCount()];
-        mAbsoluteAngles = new float[mData.getYValCount()];
+        int entryCount = mData.getEntryCount();
+
+        mDrawAngles = new float[entryCount];
+        mAbsoluteAngles = new float[entryCount];
 
         float yValueSum = mData.getYValueSum();
 
@@ -653,5 +654,4 @@ public class PieChart extends PieRadarChartBase<PieData> {
         }
         super.onDetachedFromWindow();
     }
-
 }

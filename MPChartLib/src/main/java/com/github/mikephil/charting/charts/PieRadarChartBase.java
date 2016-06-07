@@ -70,6 +70,11 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
     }
 
     @Override
+    public int getMaxVisibleCount() {
+        return mData.getEntryCount();
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
         // use the pie- and radarchart listener own listener
         if (mTouchEnabled && mChartTouchListener != null)

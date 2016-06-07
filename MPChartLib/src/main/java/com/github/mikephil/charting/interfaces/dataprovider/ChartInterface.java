@@ -65,4 +65,6 @@ public interface ChartInterface {
     ValueFormatter getDefaultValueFormatter();
 
     ChartData getData();
+
+    int getMaxVisibleCount();
 }

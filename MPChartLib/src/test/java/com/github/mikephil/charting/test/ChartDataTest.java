@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
 /**
@@ -51,7 +52,6 @@ public class ChartDataTest {
         assertEquals(50f, data.getYMax(), 0.01f);
 
         assertEquals(3, data.getMaxEntryCountSet().getEntryCount());
-
 
         // now add and remove values
         data.addEntry(new Entry(-10, -10), 0);
@@ -173,5 +173,39 @@ public class ChartDataTest {
 
         assertEquals(-3000, lineData.getYMin(YAxis.AxisDependency.RIGHT), 0.01f);
         assertEquals(2000, lineData.getYMax(YAxis.AxisDependency.RIGHT), 0.01f);
+
+        assertEquals(2, lineData.getDataSetCount());
+        assertTrue(lineData.removeDataSet(lineSet2));
+        assertEquals(1, lineData.getDataSetCount());
+
+        assertEquals(10, lineData.getXMin(), 0.01f);
+        assertEquals(1000, lineData.getXMax(), 0.01f);
+
+        assertEquals(90, lineData.getYMin(), 0.01f);
+        assertEquals(1000, lineData.getYMax(), 0.01f);
+
+        assertEquals(90, lineData.getYMin(YAxis.AxisDependency.LEFT), 0.01f);
+        assertEquals(1000f, lineData.getYMax(YAxis.AxisDependency.LEFT), 0.01f);
+
+        assertEquals(90, lineData.getYMin(YAxis.AxisDependency.RIGHT), 0.01f);
+        assertEquals(1000, lineData.getYMax(YAxis.AxisDependency.RIGHT), 0.01f);
+
+        assertTrue(lineData.removeDataSet(lineSet1));
+        assertEquals(0, lineData.getDataSetCount());
+
+        assertEquals(Float.MAX_VALUE, lineData.getXMin(), 0.01f);
+        assertEquals(-Float.MAX_VALUE, lineData.getXMax(), 0.01f);
+
+        assertEquals(Float.MAX_VALUE, lineData.getYMin(), 0.01f);
+        assertEquals(-Float.MAX_VALUE, lineData.getYMax(), 0.01f);
+
+        assertEquals(Float.MAX_VALUE, lineData.getYMin(YAxis.AxisDependency.LEFT), 0.01f);
+        assertEquals(-Float.MAX_VALUE, lineData.getYMax(YAxis.AxisDependency.LEFT), 0.01f);
+
+        assertEquals(Float.MAX_VALUE, lineData.getYMin(YAxis.AxisDependency.RIGHT), 0.01f);
+        assertEquals(-Float.MAX_VALUE, lineData.getYMax(YAxis.AxisDependency.RIGHT), 0.01f);
+
+        assertFalse(lineData.removeDataSet(lineSet1));
+        assertFalse(lineData.removeDataSet(lineSet2));
     }
 }

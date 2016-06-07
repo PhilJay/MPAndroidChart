@@ -3,9 +3,7 @@ package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.RectF;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
@@ -184,7 +182,7 @@ public class BarChartRenderer extends DataRenderer {
     public void drawValues(Canvas c) {
 
         // if values are drawn
-        if (passesCheck()) {
+        if (isDrawingValuesAllowed(mChart)) {
 
             List<IBarDataSet> dataSets = mChart.getBarData().getDataSets();
 
@@ -408,11 +406,6 @@ public class BarChartRenderer extends DataRenderer {
             }
         }
 
-    }
-
-    protected boolean passesCheck() {
-        return mChart.getBarData().getYValCount() < mChart.getMaxVisibleCount()
-                * mViewPortHandler.getScaleX();
     }
 
     @Override
