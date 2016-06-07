@@ -41,7 +41,7 @@ public class ScatterChart extends BarLineChartBase<ScatterData> implements Scatt
         super.init();
 
         mRenderer = new ScatterChartRenderer(this, mAnimator, mViewPortHandler);
-        mXAxis.mAxisMinimum = -0.5f;
+//        mXAxis.mAxisMinimum = -0.5f;
     }
 
 //    @Override
