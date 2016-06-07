@@ -28,10 +28,10 @@ import com.github.mikephil.charting.renderer.CombinedChartRenderer;
 public class CombinedChart extends BarLineChartBase<CombinedData> implements LineDataProvider,
         BarDataProvider, ScatterDataProvider, CandleDataProvider, BubbleDataProvider {
 
-    /**
-     * flag that enables or disables the highlighting arrow
-     */
-    private boolean mDrawHighlightArrow = false;
+//    /**
+//     * flag that enables or disables the highlighting arrow
+//     */
+//    private boolean mDrawHighlightArrow = false;
 
     /**
      * if set to true, all values are drawn above their bars, instead of below
@@ -167,14 +167,14 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
         return mDrawValueAboveBar;
     }
 
-    /**
-     * set this to true to draw the highlightning arrow
-     *
-     * @param enabled
-     */
-    public void setDrawHighlightArrow(boolean enabled) {
-        mDrawHighlightArrow = enabled;
-    }
+//    /**
+//     * set this to true to draw the highlightning arrow
+//     *
+//     * @param enabled
+//     */
+//    public void setDrawHighlightArrow(boolean enabled) {
+//        mDrawHighlightArrow = enabled;
+//    }
 
     /**
      * If set to true, all values are drawn above their bars, instead of below
