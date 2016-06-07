@@ -22,22 +22,22 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     /**
      * maximum y-value in the value array
      */
-    protected float mYMax = 0.0f;
+    protected float mYMax = -Float.MAX_VALUE;
 
     /**
      * minimum y-value in the value array
      */
-    protected float mYMin = 0.0f;
+    protected float mYMin = Float.MAX_VALUE;
 
     /**
      * maximum x-value in the value array
      */
-    protected float mXMax = 0.0f;
+    protected float mXMax = -Float.MAX_VALUE;
 
     /**
      * minimum x-value in the value array
      */
-    protected float mXMin = 0.0f;
+    protected float mXMin = Float.MAX_VALUE;
 
 
     /**
@@ -61,33 +61,16 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     @Override
     public void calcMinMax() {
 
-        if (mValues == null)
+        if (mValues == null || mValues.isEmpty())
             return;
 
-        if (mValues.size() == 0)
-            return;
-
-        mYMin = Float.MAX_VALUE;
         mYMax = -Float.MAX_VALUE;
-
-        mXMin = Float.MAX_VALUE;
+        mYMin = Float.MAX_VALUE;
         mXMax = -Float.MAX_VALUE;
+        mXMin = Float.MAX_VALUE;
 
         for (T e : mValues) {
-
-            if (e != null && !Float.isNaN(e.getY())) {
-                calcMinMax(e);
-            }
-        }
-
-        if (mYMin == Float.MAX_VALUE) {
-            mYMin = 0.f;
-            mYMax = 0.f;
-        }
-
-        if (mXMin == Float.MAX_VALUE) {
-            mXMin = 0.f;
-            mXMax = 0.f;
+            calcMinMax(e);
         }
     }
 
@@ -97,6 +80,9 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
      * @param e
      */
     protected void calcMinMax(T e) {
+
+        if (e == null)
+            return;
 
         if (e.getY() < mYMin)
             mYMin = e.getY();
@@ -225,8 +211,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         calcMinMax(e);
 
         // add the entry
-        values.add(e);
-        return true;
+        return values.add(e);
     }
 
     @Override

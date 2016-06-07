@@ -2,6 +2,8 @@ package com.github.mikephil.charting.test;
 
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
 
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
 /**
  * Created by philipp on 06/06/16.
@@ -91,5 +94,84 @@ public class ChartDataTest {
 
         assertEquals(-50f, data.getYMin(YAxis.AxisDependency.RIGHT), 0.01f);
         assertEquals(200f, data.getYMax(YAxis.AxisDependency.RIGHT), 0.01f);
+
+        LineData lineData = new LineData();
+
+        assertEquals(Float.MAX_VALUE, lineData.getYMin(), 0.01f);
+        assertEquals(-Float.MAX_VALUE, lineData.getYMax(), 0.01f);
+
+        assertEquals(Float.MAX_VALUE, lineData.getYMin(YAxis.AxisDependency.LEFT), 0.01f);
+        assertEquals(-Float.MAX_VALUE, lineData.getYMax(YAxis.AxisDependency.LEFT), 0.01f);
+
+        assertEquals(Float.MAX_VALUE, lineData.getYMin(YAxis.AxisDependency.RIGHT), 0.01f);
+        assertEquals(-Float.MAX_VALUE, lineData.getYMax(YAxis.AxisDependency.RIGHT), 0.01f);
+
+        assertEquals(0, lineData.getDataSetCount());
+
+        List<Entry> lineEntries1 = new ArrayList<Entry>();
+        lineEntries1.add(new Entry(10, 90));
+        lineEntries1.add(new Entry(1000, 1000));
+
+        LineDataSet lineSet1 = new LineDataSet(lineEntries1, "");
+
+        lineData.addDataSet(lineSet1);
+
+        assertEquals(1, lineData.getDataSetCount());
+        assertEquals(2, lineSet1.getEntryCount());
+        assertEquals(2, lineData.getEntryCount());
+
+        assertEquals(10, lineData.getXMin(), 0.01f);
+        assertEquals(1000f, lineData.getXMax(), 0.01f);
+
+        assertEquals(90, lineData.getYMin(), 0.01f);
+        assertEquals(1000, lineData.getYMax(), 0.01f);
+
+        assertEquals(90, lineData.getYMin(YAxis.AxisDependency.LEFT), 0.01f);
+        assertEquals(1000f, lineData.getYMax(YAxis.AxisDependency.LEFT), 0.01f);
+
+        assertEquals(90, lineData.getYMin(YAxis.AxisDependency.RIGHT), 0.01f);
+        assertEquals(1000, lineData.getYMax(YAxis.AxisDependency.RIGHT), 0.01f);
+
+        List<Entry> lineEntries2 = new ArrayList<Entry>();
+        lineEntries2.add(new Entry(-1000, 2000));
+        lineEntries2.add(new Entry(2000, -3000));
+
+        Entry e = new Entry(-1000, 2500);
+        lineEntries2.add(e);
+
+        LineDataSet lineSet2 = new LineDataSet(lineEntries2, "");
+        lineSet2.setAxisDependency(YAxis.AxisDependency.RIGHT);
+
+        lineData.addDataSet(lineSet2);
+
+        assertEquals(2, lineData.getDataSetCount());
+        assertEquals(3, lineSet2.getEntryCount());
+        assertEquals(5, lineData.getEntryCount());
+
+        assertEquals(-1000, lineData.getXMin(), 0.01f);
+        assertEquals(2000, lineData.getXMax(), 0.01f);
+
+        assertEquals(-3000, lineData.getYMin(), 0.01f);
+        assertEquals(2500, lineData.getYMax(), 0.01f);
+
+        assertEquals(90, lineData.getYMin(YAxis.AxisDependency.LEFT), 0.01f);
+        assertEquals(1000f, lineData.getYMax(YAxis.AxisDependency.LEFT), 0.01f);
+
+        assertEquals(-3000, lineData.getYMin(YAxis.AxisDependency.RIGHT), 0.01f);
+        assertEquals(2500, lineData.getYMax(YAxis.AxisDependency.RIGHT), 0.01f);
+
+        assertTrue(lineData.removeEntry(e, 1));
+
+        assertEquals(-1000, lineData.getXMin(), 0.01f);
+        assertEquals(2000, lineData.getXMax(), 0.01f);
+
+        assertEquals(-3000, lineData.getYMin(), 0.01f);
+        assertEquals(2000, lineData.getYMax(), 0.01f);
+
+        assertEquals(90, lineData.getYMin(YAxis.AxisDependency.LEFT), 0.01f);
+        assertEquals(1000f, lineData.getYMax(YAxis.AxisDependency.LEFT), 0.01f);
+
+        assertEquals(-3000, lineData.getYMin(YAxis.AxisDependency.RIGHT), 0.01f);
+        assertEquals(2000, lineData.getYMax(YAxis.AxisDependency.RIGHT), 0.01f);
     }
 }

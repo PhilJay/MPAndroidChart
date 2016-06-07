@@ -45,6 +45,14 @@ public class DataSetTest {
         assertEquals(10f, set.getYMax(), 0.01f);
 
         assertEquals(4, set.getEntryCount());
+
+        set.removeEntry(3);
+
+        assertEquals(10f, set.getXMin(), 0.01f);
+        assertEquals(21, set.getXMax(), 0.01f);
+
+        assertEquals(2f, set.getYMin(), 0.01f);
+        assertEquals(10f, set.getYMax(), 0.01f);
     }
 
     @Test

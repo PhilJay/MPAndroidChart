@@ -375,12 +375,5 @@ public class YAxis extends AxisBase {
 
         // calc actual range
         this.mAxisRange = Math.abs(this.mAxisMaximum - this.mAxisMinimum);
-
-//        // in case granularity is not customized, auto-calculate it
-//        if (!mCustomGranularity && mGranularityEnabled) {
-//
-//            double granularity = Utils.granularity(mAxisRange, mLabelCount);
-//            this.mGranularity = (float) granularity;
-//        }
     }
 }
