@@ -82,37 +82,6 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
         // mViewPortHandler);
     }
 
-//    @Override
-//    protected void calcMinMax() {
-//        super.calcMinMax();
-//
-//        if (getBarData() != null || getCandleData() != null || getBubbleData() != null) {
-//            mXAxis.mAxisMinimum = -0.5f;
-//            mXAxis.mAxisMaximum = mData.getXVals().size() - 0.5f;
-//
-//            if (getBubbleData() != null) {
-//
-//                for (IBubbleDataSet set : getBubbleData().getDataSets()) {
-//
-//                    final float xmin = set.getXMin();
-//                    final float xmax = set.getXMax();
-//
-//                    if (xmin < mXAxis.mAxisMinimum)
-//                        mXAxis.mAxisMinimum = xmin;
-//
-//                    if (xmax > mXAxis.mAxisMaximum)
-//                        mXAxis.mAxisMaximum = xmax;
-//                }
-//            }
-//        }
-//
-//        mXAxis.mAxisRange = Math.abs(mXAxis.mAxisMaximum - mXAxis.mAxisMinimum);
-//
-//        if (mXAxis.mAxisRange == 0.f && getLineData() != null && getLineData().getYValCount() > 0) {
-//            mXAxis.mAxisRange = 1.f;
-//        }
-//    }
-
     @Override
     public void setData(CombinedData data) {
         mData = null;

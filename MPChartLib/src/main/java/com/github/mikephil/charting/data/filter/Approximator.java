@@ -91,7 +91,7 @@ public class Approximator {
             points = new float[]{x1, y1, x2, y2};
         }
 
-        float distance(float x, float y) {
+        public float distance(float x, float y) {
             return Math.abs(dy * x - dx * y + sxey - exsy) / length;
         }
 

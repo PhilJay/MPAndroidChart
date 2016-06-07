@@ -201,38 +201,4 @@ public class HorizontalBarChart extends BarChart {
 				mViewPortHandler.contentTop());
         return (float) Math.min(mXAxis.mAxisMaximum, pos.y);
     }
-
-//	/**
-//	 * Returns the lowest x-index (value on the x-axis) that is still visible on the chart.
-//	 *
-//	 * @return
-//	 */
-//	@Override
-//	public float getLowestVisibleX() {
-//
-//		float step = mData.getDataSetCount();
-//		float div = (step <= 1) ? 1 : step + mData.getGroupSpace();
-//
-//		float[] pts = new float[] { mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom() };
-//
-//		getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
-//		return (((pts[1] <= 0) ? 0 : ((pts[1])) / div) + 1);
-//	}
-//
-//	/**
-//	 * Returns the highest x-index (value on the x-axis) that is still visible on the chart.
-//	 *
-//	 * @return
-//	 */
-//	@Override
-//	public float getHighestVisibleX() {
-//
-//		float step = mData.getDataSetCount();
-//		float div = (step <= 1) ? 1 : step + mData.getGroupSpace();
-//
-//		float[] pts = new float[] { mViewPortHandler.contentLeft(), mViewPortHandler.contentTop() };
-//
-//		getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
-//		return ((pts[1] >= getXChartMax()) ? getXChartMax() / div : (pts[1] / div));
-//	}
 }
