@@ -56,8 +56,6 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
     @SuppressWarnings("ResourceAsColor")
     protected void drawDataSet(Canvas c, ICandleDataSet dataSet) {
 
-        int entryCount = dataSet.getEntryCount();
-
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
         float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
@@ -71,25 +69,21 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
         CandleEntry entryFrom = dataSet.getEntryForXPos(lowX, DataSet.Rounding.DOWN);
         CandleEntry entryTo = dataSet.getEntryForXPos(highX, DataSet.Rounding.UP);
 
-        int diff = (entryFrom == entryTo) ? 1 : 0;
-        int minx = Math.max(dataSet.getEntryIndex(entryFrom) - diff, 0);
-        int maxx = Math.min(Math.max(minx + 2, dataSet.getEntryIndex(entryTo) + 1), entryCount);
+        int minx = dataSet.getEntryIndex(entryFrom);
+        int maxx = dataSet.getEntryIndex(entryTo);
 
         mRenderPaint.setStrokeWidth(dataSet.getShadowWidth());
 
         // draw the body
-        for (int j = minx,
-             count = (int) Math.ceil((maxx - minx) * phaseX + (float)minx);
-             j < count;
-             j++) {
+        for (int j = minx; j <= maxx * phaseX; j++) {
 
             // get the entry
             CandleEntry e = dataSet.getEntryForIndex(j);
 
-            final float xPos = e.getX();
-
-            if (xPos < minx || xPos >= maxx)
+            if(e == null)
                 continue;
+
+            final float xPos = e.getX();
 
             final float open = e.getOpen();
             final float close = e.getClose();
@@ -287,8 +281,14 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
                 Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-                int minx = Math.max((int) mChart.getLowestVisibleX(), 0);
-                int maxx = Math.min((int) mChart.getHighestVisibleX() + 1, dataSet.getEntryCount());
+                float low = mChart.getLowestVisibleX();
+                float high = mChart.getHighestVisibleX();
+
+                CandleEntry entryFrom = dataSet.getEntryForXPos(low, DataSet.Rounding.DOWN);
+                CandleEntry entryTo = dataSet.getEntryForXPos(high, DataSet.Rounding.UP);
+
+                int minx = dataSet.getEntryIndex(entryFrom);
+                int maxx = dataSet.getEntryIndex(entryTo);
 
                 float[] positions = trans.generateTransformedValuesCandle(
                         dataSet, mAnimator.getPhaseX(), mAnimator.getPhaseY(), minx, maxx);
@@ -308,7 +308,8 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
                     CandleEntry entry = dataSet.getEntryForIndex(j / 2 + minx);
 
-                    drawValue(c, dataSet.getValueFormatter(), entry.getHigh(), entry, i, x, y - yOffset, dataSet.getValueTextColor(j / 2));
+                    drawValue(c, dataSet.getValueFormatter(), entry.getHigh(), entry, i, x, y - yOffset, dataSet
+                            .getValueTextColor(j / 2));
                 }
             }
         }

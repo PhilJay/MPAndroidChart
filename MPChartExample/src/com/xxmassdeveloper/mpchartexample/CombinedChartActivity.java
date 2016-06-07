@@ -2,6 +2,7 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,6 +10,8 @@ import android.view.WindowManager;
 
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.charts.CombinedChart.DrawOrder;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
@@ -27,6 +30,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
+import com.github.mikephil.charting.formatter.AxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -50,11 +54,15 @@ public class CombinedChartActivity extends DemoBase {
         mChart.setBackgroundColor(Color.WHITE);
         mChart.setDrawGridBackground(false);
         mChart.setDrawBarShadow(false);
-        
+
         // draw bars behind lines
         mChart.setDrawOrder(new DrawOrder[]{
                 DrawOrder.BAR, DrawOrder.BUBBLE, DrawOrder.CANDLE, DrawOrder.LINE, DrawOrder.SCATTER
         });
+
+        Legend l = mChart.getLegend();
+        l.setWordWrapEnabled(true);
+        l.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
@@ -66,14 +74,29 @@ public class CombinedChartActivity extends DemoBase {
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxisPosition.BOTH_SIDED);
+        xAxis.setAxisMinValue(0f);
+        xAxis.setGranularity(1f);
+        xAxis.setValueFormatter(new AxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return mMonths[(int) value % mMonths.length];
+            }
+
+            @Override
+            public int getDecimalDigits() {
+                return 0;
+            }
+        });
 
         CombinedData data = new CombinedData();
 
         data.setData(generateLineData());
         data.setData(generateBarData());
-//        data.setData(generateBubbleData());
-//         data.setData(generateScatterData());
-//         data.setData(generateCandleData());
+        data.setData(generateBubbleData());
+        data.setData(generateScatterData());
+        data.setData(generateCandleData());
+
+        xAxis.setAxisMaxValue(data.getXMax() + 0.25f);
 
         mChart.setData(data);
         mChart.invalidate();
@@ -86,7 +109,7 @@ public class CombinedChartActivity extends DemoBase {
         ArrayList<Entry> entries = new ArrayList<Entry>();
 
         for (int index = 0; index < itemcount; index++)
-            entries.add(new Entry(index, getRandom(15, 10)));
+            entries.add(new Entry(index + 0.5f, getRandom(15, 5)));
 
         LineDataSet set = new LineDataSet(entries, "Line DataSet");
         set.setColor(Color.rgb(240, 238, 70));
@@ -114,7 +137,7 @@ public class CombinedChartActivity extends DemoBase {
         ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
 
         for (int index = 0; index < itemcount; index++)
-            entries.add(new BarEntry(index, getRandom(15, 30)));
+            entries.add(new BarEntry(index + 0.5f, getRandom(25, 25)));
 
         BarDataSet set = new BarDataSet(entries, "Bar DataSet");
         set.setColor(Color.rgb(60, 220, 78));
@@ -133,11 +156,11 @@ public class CombinedChartActivity extends DemoBase {
 
         ArrayList<Entry> entries = new ArrayList<Entry>();
 
-        for (int index = 0; index < itemcount; index++)
-            entries.add(new Entry(index, getRandom(20, 15)));
+        for (float index = 0; index < itemcount; index += 0.5f)
+            entries.add(new Entry(index + 0.25f, getRandom(10, 55)));
 
         ScatterDataSet set = new ScatterDataSet(entries, "Scatter DataSet");
-        set.setColor(Color.GREEN);
+        set.setColors(ColorTemplate.MATERIAL_COLORS);
         set.setScatterShapeSize(7.5f);
         set.setDrawValues(false);
         set.setValueTextSize(10f);
@@ -152,11 +175,12 @@ public class CombinedChartActivity extends DemoBase {
 
         ArrayList<CandleEntry> entries = new ArrayList<CandleEntry>();
 
-        for (int index = 0; index < itemcount; index++)
-            entries.add(new CandleEntry(index, 20f, 10f, 13f, 17f));
+        for (int index = 0; index < itemcount; index += 2)
+            entries.add(new CandleEntry(index + 1f, 90, 70, 85, 75f));
 
         CandleDataSet set = new CandleDataSet(entries, "Candle DataSet");
-        set.setColor(Color.rgb(80, 80, 80));
+        set.setDecreasingColor(Color.rgb(142, 150, 175));
+        set.setShadowColor(Color.DKGRAY);
         set.setBarSpace(0.3f);
         set.setValueTextSize(10f);
         set.setDrawValues(false);
@@ -164,7 +188,7 @@ public class CombinedChartActivity extends DemoBase {
 
         return d;
     }
-    
+
     protected BubbleData generateBubbleData() {
 
         BubbleData bd = new BubbleData();
@@ -172,8 +196,9 @@ public class CombinedChartActivity extends DemoBase {
         ArrayList<BubbleEntry> entries = new ArrayList<BubbleEntry>();
 
         for (int index = 0; index < itemcount; index++) {
-            float rnd = getRandom(20, 30);
-            entries.add(new BubbleEntry(index, rnd, rnd));
+            float y = getRandom(10, 105);
+            float size = getRandom(50, 105);
+            entries.add(new BubbleEntry(index + 0.5f, y, size));
         }
 
         BubbleDataSet set = new BubbleDataSet(entries, "Bubble DataSet");
