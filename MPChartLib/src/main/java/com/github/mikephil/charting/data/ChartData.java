@@ -55,10 +55,18 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      */
     protected List<T> mDataSets;
 
+    /**
+     * Default constructor.
+     */
     public ChartData() {
         mDataSets = new ArrayList<T>();
     }
 
+    /**
+     * Constructor taking single or multiple DataSet objects.
+     *
+     * @param dataSets
+     */
     public ChartData(T... dataSets) {
         mDataSets = arrayToList(dataSets);
         init();
