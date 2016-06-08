@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
@@ -22,40 +24,37 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.AxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
 
     private LineChart mChart;
-    private SeekBar mSeekBarX, mSeekBarY;
-    private TextView tvX, tvY;
-    private long curTime = System.currentTimeMillis();
+    private SeekBar mSeekBarX;
+    private TextView tvX;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_linechart);
+        setContentView(R.layout.activity_linechart_time);
 
         tvX = (TextView) findViewById(R.id.tvXMax);
-        tvY = (TextView) findViewById(R.id.tvYMax);
         mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
-        mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
+        mSeekBarX.setProgress(100);
+        tvX.setText("100");
 
-        mSeekBarX.setProgress(45);
-        mSeekBarY.setProgress(100);
-
-        mSeekBarY.setOnSeekBarChangeListener(this);
         mSeekBarX.setOnSeekBarChangeListener(this);
 
         mChart = (LineChart) findViewById(R.id.chart1);
-        mChart.setLogEnabled(true);
 
         // no description text
         mChart.setDescription("");
@@ -72,47 +71,54 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
         mChart.setDrawGridBackground(false);
         mChart.setHighlightPerDragEnabled(true);
 
-        // if disabled, scaling can be done on x- and y-axis separately
-        mChart.setPinchZoom(true);
-
         // set an alternative background color
-        mChart.setBackgroundColor(Color.LTGRAY);
+        mChart.setBackgroundColor(Color.WHITE);
+        mChart.setViewPortOffsets(0f, 0f, 0f, 0f);
 
         // add data
-        setData(20, 30);
+        setData(100, 30);
         mChart.invalidate();
 
-        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf");
 
         // get the legend (only possible after setting data)
         Legend l = mChart.getLegend();
-
-        // modify the legend ...
-        // l.setPosition(LegendPosition.LEFT_OF_CHART);
-        l.setForm(LegendForm.LINE);
-        l.setTypeface(tf);
-        l.setTextSize(11f);
-        l.setTextColor(Color.WHITE);
-        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
-//        l.setYOffset(11f);
+        l.setEnabled(false);
 
         XAxis xAxis = mChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.TOP_INSIDE);
         xAxis.setTypeface(tf);
-        xAxis.setTextSize(12f);
+        xAxis.setTextSize(10f);
         xAxis.setTextColor(Color.WHITE);
         xAxis.setDrawAxisLine(false);
+        xAxis.setDrawGridLines(true);
+        xAxis.setTextColor(Color.rgb(255, 192, 56));
+        xAxis.setCenterAxisLabels(true);
+        xAxis.setValueFormatter(new AxisValueFormatter() {
 
-        // custom x-axis min / max
-        xAxis.setAxisMinValue(5000);
-        xAxis.setAxisMaxValue(30000);
+            private SimpleDateFormat mFormat = new SimpleDateFormat("dd MMM HH:mm");
+
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return mFormat.format(new Date((long) value));
+            }
+
+            @Override
+            public int getDecimalDigits() {
+                return 0;
+            }
+        });
 
         YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
         leftAxis.setTypeface(tf);
         leftAxis.setTextColor(ColorTemplate.getHoloBlue());
-        leftAxis.setAxisMaxValue(200f);
-        leftAxis.setAxisMinValue(0f);
         leftAxis.setDrawGridLines(true);
         leftAxis.setGranularityEnabled(true);
+        leftAxis.setAxisMinValue(0f);
+        leftAxis.setAxisMaxValue(170f);
+        leftAxis.setYOffset(-9f);
+        leftAxis.setTextColor(Color.rgb(255, 192, 56));
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setEnabled(false);
@@ -254,43 +260,38 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-        tvX.setText("" + (mSeekBarX.getProgress() + 1));
-        tvY.setText("" + (mSeekBarY.getProgress()));
+        tvX.setText("" + (mSeekBarX.getProgress()));
 
-        setData(mSeekBarX.getProgress() + 1, mSeekBarY.getProgress());
+        setData(mSeekBarX.getProgress(), 50);
 
         // redraw
         mChart.invalidate();
-
-        System.out.println("xmin: " + mChart.getXAxis().getAxisMinimum());
-        System.out.println("xmax: " + mChart.getXAxis().getAxisMaximum());
-        System.out.println("lvx: " + mChart.getLowestVisibleX());
-        System.out.println("hvx: " + mChart.getHighestVisibleX());
     }
 
     private void setData(int count, float range) {
 
-        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+        long now = System.currentTimeMillis();
+        long hourMillis = 3600000L;
 
-        for (int i = 0; i < count; i++) {
-            float mult = range / 2f;
-            float val = (float) (Math.random() * mult) + 50;// + (float)
-            // ((mult *
-            // 0.1) / 10);
-            //yVals1.add(new Entry(val, 10000 + i * 1000));
+        ArrayList<Entry> values = new ArrayList<Entry>();
+
+        float from = now - (count / 2) * hourMillis;
+        float to = now + (count / 2) * hourMillis;
+
+        for (float x = from; x < to; x += hourMillis) {
+
+            float y = getRandom(range, 50);
+            values.add(new Entry(x, y)); // add one entry per hour
         }
 
-        yVals1.add(new Entry(100, 10000));
-        yVals1.add(new Entry(130, 15000));
-        yVals1.add(new Entry(120, 20000));
-
         // create a dataset and give it a type
-        LineDataSet set1 = new LineDataSet(yVals1, "DataSet 1");
+        LineDataSet set1 = new LineDataSet(values, "DataSet 1");
         set1.setAxisDependency(AxisDependency.LEFT);
         set1.setColor(ColorTemplate.getHoloBlue());
-        set1.setCircleColor(Color.WHITE);
-        set1.setLineWidth(2f);
-        set1.setCircleRadius(3f);
+        set1.setValueTextColor(ColorTemplate.getHoloBlue());
+        set1.setLineWidth(1.5f);
+        set1.setDrawCircles(false);
+        set1.setDrawValues(false);
         set1.setFillAlpha(65);
         set1.setFillColor(ColorTemplate.getHoloBlue());
         set1.setHighLightColor(Color.rgb(244, 117, 117));

@@ -212,10 +212,6 @@ public class CombinedChartActivity extends DemoBase {
         return bd;
     }
 
-    private float getRandom(float range, float startsfrom) {
-        return (float) (Math.random() * range) + startsfrom;
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.combined, menu);

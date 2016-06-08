@@ -132,12 +132,11 @@ public class MainActivity extends Activity implements OnItemClickListener {
         ContentItem realm = new ContentItem(
                 "Realm.io Database",
                 "This demonstrates how to use this library with Realm.io mobile database.");
-        realm.isNew = true;
         objects.add(realm);
 
         ContentItem time = new ContentItem(
                 "Time Chart",
-                "Simple demonstration of a time-chart.");
+                "Simple demonstration of a time-chart. This chart draws one line entry per hour originating from the current time in milliseconds.");
         time.isNew = true;
         objects.add(time);
 
