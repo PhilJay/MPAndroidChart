@@ -54,7 +54,7 @@ public class RealmDatabaseActivityLine extends RealmBaseActivity {
 
         RealmResults<RealmDemoData> result = mRealm.allObjects(RealmDemoData.class);
 
-        RealmLineDataSet<RealmDemoData> set = new RealmLineDataSet<RealmDemoData>(result, "xValue", "value");
+        RealmLineDataSet<RealmDemoData> set = new RealmLineDataSet<RealmDemoData>(result, "xValue", "yValue");
         set.setDrawCubic(false);
         set.setLabel("Realm LineDataSet");
         set.setDrawCircleHole(false);
