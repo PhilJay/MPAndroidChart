@@ -148,7 +148,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 //        mChart.setVisibleYRange(20f, AxisDependency.LEFT);
 //        mChart.centerViewTo(20, 50, AxisDependency.LEFT);
 
-        mChart.animateX(2500, Easing.EasingOption.EaseInOutQuart);
+        mChart.animateX(2500);
         //mChart.invalidate();
 
         // get the legend (only possible after setting data)
@@ -337,15 +337,12 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
     private void setData(int count, float range) {
 
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
+        ArrayList<Entry> values = new ArrayList<Entry>();
 
         for (int i = 0; i < count; i++) {
 
-            float mult = (range + 1);
-            float val = (float) (Math.random() * mult) + 3;// + (float)
-            // ((mult *
-            // 0.1) / 10);x
-            yVals.add(new Entry(i, val));
+            float val = (float) (Math.random() * range) + 3;
+            values.add(new Entry(i, val));
         }
 
         LineDataSet set1;
@@ -353,15 +350,12 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         if (mChart.getData() != null &&
                 mChart.getData().getDataSetCount() > 0) {
             set1 = (LineDataSet)mChart.getData().getDataSetByIndex(0);
-            set1.setValues(yVals);
+            set1.setValues(values);
             mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
             // create a dataset and give it a type
-            set1 = new LineDataSet(yVals, "DataSet 1");
-
-            // set1.setFillAlpha(110);
-            // set1.setFillColor(Color.RED);
+            set1 = new LineDataSet(values, "DataSet 1");
 
             // set the line to be drawn like this "- - - - - -"
             set1.enableDashedLine(10f, 5f, 0f);

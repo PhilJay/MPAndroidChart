@@ -92,8 +92,8 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      * @return
      */
     protected float getMinimumDistance(List<SelectionDetail> valsAtIndex,
-                                            float pos,
-                                            YAxis.AxisDependency axis) {
+                                       float pos,
+                                       YAxis.AxisDependency axis) {
 
         float distance = Float.MAX_VALUE;
 
@@ -147,6 +147,9 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
     protected SelectionDetail getDetails(IDataSet set, int dataSetIndex, float xVal, DataSet.Rounding rounding) {
 
         final Entry e = set.getEntryForXPos(xVal, rounding);
+
+        if (e == null)
+            return null;
 
         PointD pixels = mChart.getTransformer(set.getAxisDependency()).getPixelsForValues(e.getX(), e.getY());
 

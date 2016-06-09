@@ -3,8 +3,6 @@ package com.github.mikephil.charting.renderer;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
@@ -31,7 +29,7 @@ public abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
 
         if (clipPathSupported()) {
 
-            c.save();
+            int save = c.save();
             c.clipPath(filledPath);
 
             drawable.setBounds((int) mViewPortHandler.contentLeft(),
@@ -40,7 +38,7 @@ public abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
                     (int) mViewPortHandler.contentBottom());
             drawable.draw(c);
 
-            c.restore();
+            c.restoreToCount(save);
         } else {
             throw new RuntimeException("Fill-drawables not (yet) supported below API level 18, " +
                     "this code was run on API level " + Utils.getSDKInt() + ".");
@@ -62,11 +60,12 @@ public abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
 
         if (clipPathSupported()) {
 
-            c.save();
+            int save = c.save();
+
             c.clipPath(filledPath);
 
             c.drawColor(color);
-            c.restore();
+            c.restoreToCount(save);
         } else {
 
             // save
