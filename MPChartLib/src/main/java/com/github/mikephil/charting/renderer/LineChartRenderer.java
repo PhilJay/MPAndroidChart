@@ -127,18 +127,13 @@ public class LineChartRenderer extends LineRadarRenderer {
         mRenderPaint.setPathEffect(null);
     }
 
-    /**
-     * Draws a cubic line.
-     *
-     * @param dataSet
-     */
     protected void drawHorizontalBezier(ILineDataSet dataSet) {
 
         float phaseY = mAnimator.getPhaseY();
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-        XBounds bounds = getXBounds(dataSet);
+        XBounds bounds = getXBounds(mChart, dataSet);
 
         cubicPath.reset();
 
@@ -192,7 +187,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-        XBounds bounds = getXBounds(dataSet);
+        XBounds bounds = getXBounds(mChart, dataSet);
 
         float intensity = dataSet.getCubicIntensity();
 
@@ -302,7 +297,7 @@ public class LineChartRenderer extends LineRadarRenderer {
             canvas = c;
         }
 
-        XBounds bounds = getXBounds(dataSet);
+        XBounds bounds = getXBounds(mChart, dataSet);
 
         // more than 1 color
         if (dataSet.getColors().size() > 1) {
@@ -414,6 +409,14 @@ public class LineChartRenderer extends LineRadarRenderer {
         }
     }
 
+    /**
+     * Draws a filled linear path on the canvas.
+     *
+     * @param c
+     * @param dataSet
+     * @param trans
+     * @param bounds
+     */
     protected void drawLinearFill(Canvas c, ILineDataSet dataSet, Transformer trans, XBounds bounds) {
 
         Path filled = generateFilledPath(dataSet, bounds);
@@ -495,7 +498,7 @@ public class LineChartRenderer extends LineRadarRenderer {
                 if (!dataSet.isDrawCirclesEnabled())
                     valOffset = valOffset / 2;
 
-                XBounds bounds = getXBounds(dataSet);
+                XBounds bounds = getXBounds(mChart, dataSet);
 
                 float[] positions = trans.generateTransformedValuesLine(dataSet, mAnimator.getPhaseX(), mAnimator
                         .getPhaseY(), bounds.min, bounds.max);
@@ -549,7 +552,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-            XBounds bounds = getXBounds(dataSet);
+            XBounds bounds = getXBounds(mChart, dataSet);
 
             float circleRadius = dataSet.getCircleRadius();
             float circleHoleRadius = dataSet.getCircleHoleRadius();
@@ -685,33 +688,6 @@ public class LineChartRenderer extends LineRadarRenderer {
             mDrawBitmap.get().recycle();
             mDrawBitmap.clear();
             mDrawBitmap = null;
-        }
-    }
-
-    private XBounds getXBounds(IBarLineScatterCandleBubbleDataSet dataSet) {
-        return new XBounds(dataSet);
-    }
-
-    private class XBounds {
-
-        public final int min;
-        public final int max;
-
-        public final int range;
-
-        public XBounds(IBarLineScatterCandleBubbleDataSet dataSet) {
-
-            float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
-
-            float low = mChart.getLowestVisibleX();
-            float high = mChart.getHighestVisibleX();
-
-            Entry entryFrom = dataSet.getEntryForXPos(low, DataSet.Rounding.DOWN);
-            Entry entryTo = dataSet.getEntryForXPos(high, DataSet.Rounding.UP);
-
-            min = dataSet.getEntryIndex(entryFrom);
-            max = dataSet.getEntryIndex(entryTo);
-            range = (int) ((max - min) * phaseX);
         }
     }
 }
