@@ -55,7 +55,6 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
         mSeekBarX.setOnSeekBarChangeListener(this);
 
         mChart = (LineChart) findViewById(R.id.chart1);
-        mChart.setHardwareAccelerationEnabled(true);
 
         // no description text
         mChart.setDescription("");
