@@ -28,24 +28,24 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     protected List<S> mValues;
 
     /**
-     * maximum y-value in the y-value array
+     * maximum y-value in the value array
      */
-    protected float mYMax = 0.0f;
+    protected float mYMax = -Float.MAX_VALUE;
 
     /**
-     * the minimum y-value in the y-value array
+     * minimum y-value in the value array
      */
-    protected float mYMin = 0.0f;
+    protected float mYMin = Float.MAX_VALUE;
 
     /**
      * maximum x-value in the value array
      */
-    protected float mXMax = 0.0f;
+    protected float mXMax = -Float.MAX_VALUE;
 
     /**
      * minimum x-value in the value array
      */
-    protected float mXMin = 0.0f;
+    protected float mXMin = Float.MAX_VALUE;
 
     /**
      * fieldname of the column that contains the y-values of this dataset
@@ -130,33 +130,16 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     @Override
     public void calcMinMax() {
 
-        if (mValues == null)
+        if (mValues == null || mValues.isEmpty())
             return;
 
-        if (mValues.size() == 0)
-            return;
-
-        mYMin = Float.MAX_VALUE;
         mYMax = -Float.MAX_VALUE;
-
-        mXMin = Float.MAX_VALUE;
+        mYMin = Float.MAX_VALUE;
         mXMax = -Float.MAX_VALUE;
+        mXMin = Float.MAX_VALUE;
 
         for (S e : mValues) {
-
-            if (e != null && !Float.isNaN(e.getY())) {
-                calcMinMax(e);
-            }
-        }
-
-        if (mYMin == Float.MAX_VALUE) {
-            mYMin = 0.f;
-            mYMax = 0.f;
-        }
-
-        if (mXMin == Float.MAX_VALUE) {
-            mXMin = 0.f;
-            mXMax = 0.f;
+            calcMinMax(e);
         }
     }
 
