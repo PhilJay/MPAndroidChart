@@ -210,6 +210,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
             mChart.setData(data);
         }
 
+        mChart.setFitBars(true);
         mChart.invalidate();
     }
 

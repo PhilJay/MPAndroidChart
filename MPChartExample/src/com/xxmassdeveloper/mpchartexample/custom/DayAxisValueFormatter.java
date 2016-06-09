@@ -26,9 +26,6 @@ public class DayAxisValueFormatter implements AxisValueFormatter {
 
         int days = (int) value;
 
-        if (days == 0)
-            return "";
-
         int year = determineYear(days);
 
         int month = determineMonth(days);
@@ -72,7 +69,7 @@ public class DayAxisValueFormatter implements AxisValueFormatter {
                     break;
             }
 
-            return dayOfMonth + appendix + " " + monthName;
+            return dayOfMonth == 0 ? "" : dayOfMonth + appendix + " " + monthName;
         }
     }
 

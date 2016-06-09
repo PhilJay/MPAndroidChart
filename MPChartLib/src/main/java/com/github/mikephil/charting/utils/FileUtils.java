@@ -122,7 +122,7 @@ public class FileUtils {
                 String[] split = line.split("#");
 
                 if (split.length <= 2) {
-                    entries.add(new Entry(Float.parseFloat(split[0]), Integer.parseInt(split[1])));
+                    entries.add(new Entry(Float.parseFloat(split[1]), Float.parseFloat(split[0])));
                 } else {
 
                     float[] vals = new float[split.length - 1];

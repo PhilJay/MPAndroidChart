@@ -45,6 +45,7 @@ public class ScrollViewActivity extends DemoBase {
         mChart.getLegend().setEnabled(false);
 
         setData(10);
+        mChart.setFitBars(true);
     }
     
     private void setData(int count) {

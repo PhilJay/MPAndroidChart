@@ -54,7 +54,7 @@ public abstract class SimpleFragment extends Fragment {
 //            entries = FileUtils.loadEntriesFromAssets(getActivity().getAssets(), "stacked_bars.txt");
             
             for(int j = 0; j < count; j++) {        
-                entries.add(new BarEntry((float) (Math.random() * range) + range / 4, j));
+                entries.add(new BarEntry(j, (float) (Math.random() * range) + range / 4));
             }
             
             BarDataSet ds = new BarDataSet(entries, getLabel(i));
@@ -78,7 +78,7 @@ public abstract class SimpleFragment extends Fragment {
             ArrayList<Entry> entries = new ArrayList<Entry>();
             
             for(int j = 0; j < count; j++) {        
-                entries.add(new Entry((float) (Math.random() * range) + range / 4, j));
+                entries.add(new Entry(j, (float) (Math.random() * range) + range / 4));
             }
             
             ScatterDataSet ds = new ScatterDataSet(entries, getLabel(i));
@@ -122,11 +122,6 @@ public abstract class SimpleFragment extends Fragment {
     
     protected LineData generateLineData() {
         
-//        DataSet ds1 = new DataSet(n, "O(n)");  
-//        DataSet ds2 = new DataSet(nlogn, "O(nlogn)"); 
-//        DataSet ds3 = new DataSet(nsquare, "O(n\u00B2)");
-//        DataSet ds4 = new DataSet(nthree, "O(n\u00B3)");
-        
         ArrayList<ILineDataSet> sets = new ArrayList<ILineDataSet>();
         
         LineDataSet ds1 = new LineDataSet(FileUtils.loadEntriesFromAssets(getActivity().getAssets(), "sine.txt"), "Sine function");
@@ -144,13 +139,6 @@ public abstract class SimpleFragment extends Fragment {
         // load DataSets from textfiles in assets folders
         sets.add(ds1);
         sets.add(ds2);
-        
-//        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "n.txt"));
-//        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "nlogn.txt"));
-//        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "square.txt"));
-//        sets.add(FileUtils.dataSetFromAssets(getActivity().getAssets(), "three.txt"));
-        
-        int max = Math.max(sets.get(0).getEntryCount(), sets.get(1).getEntryCount());
         
         LineData d = new LineData(sets);
         d.setValueTypeface(tf);
