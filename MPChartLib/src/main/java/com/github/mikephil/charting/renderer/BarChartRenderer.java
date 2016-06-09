@@ -98,7 +98,6 @@ public class BarChartRenderer extends DataRenderer {
         buffer.setDataSet(index);
         buffer.setInverted(mChart.isInverted(dataSet.getAxisDependency()));
         buffer.setBarWidth(mChart.getBarData().getBarWidth());
-        //buffer.setInterval(mChart.getXRange() / dataSet.getEntryCount());
 
         buffer.feed(dataSet);
 

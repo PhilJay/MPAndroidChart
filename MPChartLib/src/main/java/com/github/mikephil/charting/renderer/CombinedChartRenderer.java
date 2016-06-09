@@ -124,8 +124,7 @@ public class CombinedChartRenderer extends DataRenderer {
             else if (renderer instanceof BubbleChartRenderer)
                 data = ((BubbleChartRenderer)renderer).mChart.getBubbleData();
 
-            int dataIndex = data == null
-                    ? -1
+            int dataIndex = data == null ? -1
                     : ((CombinedData)chart.getData()).getAllData().indexOf(data);
 
             ArrayList<Highlight> dataIndices = new ArrayList<>();

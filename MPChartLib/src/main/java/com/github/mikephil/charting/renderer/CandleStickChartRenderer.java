@@ -7,8 +7,6 @@ import android.graphics.Paint;
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CandleEntry;
-import com.github.mikephil.charting.data.DataSet;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.CandleDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet;
@@ -58,29 +56,21 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-        float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
         float phaseY = mAnimator.getPhaseY();
         float barSpace = dataSet.getBarSpace();
         boolean showCandleBar = dataSet.getShowCandleBar();
 
-        float lowX = mChart.getLowestVisibleX();
-        float highX = mChart.getHighestVisibleX();
-
-        CandleEntry entryFrom = dataSet.getEntryForXPos(lowX, DataSet.Rounding.DOWN);
-        CandleEntry entryTo = dataSet.getEntryForXPos(highX, DataSet.Rounding.UP);
-
-        int minx = dataSet.getEntryIndex(entryFrom);
-        int maxx = dataSet.getEntryIndex(entryTo);
+        XBounds bounds = getXBounds(mChart, dataSet);
 
         mRenderPaint.setStrokeWidth(dataSet.getShadowWidth());
 
         // draw the body
-        for (int j = minx; j <= maxx * phaseX; j++) {
+        for (int j = bounds.min; j <= bounds.range + bounds.min; j++) {
 
             // get the entry
             CandleEntry e = dataSet.getEntryForIndex(j);
 
-            if(e == null)
+            if (e == null)
                 continue;
 
             final float xPos = e.getX();
@@ -256,7 +246,6 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
                         mCloseBuffers[0], mCloseBuffers[1],
                         mCloseBuffers[2], mCloseBuffers[3],
                         mRenderPaint);
-
             }
         }
     }
@@ -281,17 +270,10 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
                 Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-                float low = mChart.getLowestVisibleX();
-                float high = mChart.getHighestVisibleX();
-
-                CandleEntry entryFrom = dataSet.getEntryForXPos(low, DataSet.Rounding.DOWN);
-                CandleEntry entryTo = dataSet.getEntryForXPos(high, DataSet.Rounding.UP);
-
-                int minx = dataSet.getEntryIndex(entryFrom);
-                int maxx = dataSet.getEntryIndex(entryTo);
+                XBounds bounds = getXBounds(mChart, dataSet);
 
                 float[] positions = trans.generateTransformedValuesCandle(
-                        dataSet, mAnimator.getPhaseX(), mAnimator.getPhaseY(), minx, maxx);
+                        dataSet, mAnimator.getPhaseX(), mAnimator.getPhaseY(), bounds.min, bounds.max);
 
                 float yOffset = Utils.convertDpToPixel(5f);
 
@@ -306,7 +288,7 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
                     if (!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y))
                         continue;
 
-                    CandleEntry entry = dataSet.getEntryForIndex(j / 2 + minx);
+                    CandleEntry entry = dataSet.getEntryForIndex(j / 2 + bounds.min);
 
                     drawValue(c, dataSet.getValueFormatter(), entry.getHigh(), entry, i, x, y - yOffset, dataSet
                             .getValueTextColor(j / 2));
@@ -348,7 +330,7 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
                 CandleEntry e = set.getEntryForXPos(x);
 
-                if (e == null || e.getX() != x)
+                if (e == null)
                     continue;
 
                 float lowValue = e.getLow() * mAnimator.getPhaseY();
@@ -362,5 +344,4 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
             }
         }
     }
-
 }
