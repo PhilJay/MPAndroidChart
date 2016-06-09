@@ -2,7 +2,6 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,8 +23,6 @@ import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.formatter.AxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.xxmassdeveloper.mpchartexample.custom.MyMarkerView;
 import com.xxmassdeveloper.mpchartexample.custom.RadarMarkerView;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -34,7 +31,6 @@ import java.util.ArrayList;
 public class RadarChartActivitry extends DemoBase {
 
     private RadarChart mChart;
-    private Typeface tf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +39,8 @@ public class RadarChartActivitry extends DemoBase {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_radarchart_noseekbar);
 
-        tf = Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf");
-
         TextView tv = (TextView) findViewById(R.id.textView);
-        tv.setTypeface(tf);
+        tv.setTypeface(mTfLight);
         tv.setTextColor(Color.WHITE);
         tv.setBackgroundColor(Color.rgb(60, 65, 82));
 
@@ -76,7 +70,7 @@ public class RadarChartActivitry extends DemoBase {
                 Easing.EasingOption.EaseInOutQuad);
 
         XAxis xAxis = mChart.getXAxis();
-        xAxis.setTypeface(tf);
+        xAxis.setTypeface(mTfLight);
         xAxis.setTextSize(9f);
         xAxis.setYOffset(0f);
         xAxis.setXOffset(0f);
@@ -96,7 +90,7 @@ public class RadarChartActivitry extends DemoBase {
         xAxis.setTextColor(Color.WHITE);
 
         YAxis yAxis = mChart.getYAxis();
-        yAxis.setTypeface(tf);
+        yAxis.setTypeface(mTfLight);
         yAxis.setLabelCount(5, false);
         yAxis.setTextSize(9f);
         yAxis.setAxisMinValue(0f);
@@ -105,7 +99,7 @@ public class RadarChartActivitry extends DemoBase {
 
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.ABOVE_CHART_CENTER);
-        l.setTypeface(tf);
+        l.setTypeface(mTfLight);
         l.setXEntrySpace(7f);
         l.setYEntrySpace(5f);
         l.setTextColor(Color.WHITE);
@@ -255,7 +249,7 @@ public class RadarChartActivitry extends DemoBase {
         sets.add(set2);
 
         RadarData data = new RadarData(sets);
-        data.setValueTypeface(tf);
+        data.setValueTypeface(mTfLight);
         data.setValueTextSize(8f);
         data.setDrawValues(false);
         data.setValueTextColor(Color.WHITE);

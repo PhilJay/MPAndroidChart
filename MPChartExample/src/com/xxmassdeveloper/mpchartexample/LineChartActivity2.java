@@ -2,7 +2,6 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -86,29 +85,27 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
 
         mChart.animateX(2500);
 
-        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-
         // get the legend (only possible after setting data)
         Legend l = mChart.getLegend();
 
         // modify the legend ...
         // l.setPosition(LegendPosition.LEFT_OF_CHART);
         l.setForm(LegendForm.LINE);
-        l.setTypeface(tf);
+        l.setTypeface(mTfLight);
         l.setTextSize(11f);
         l.setTextColor(Color.WHITE);
         l.setPosition(LegendPosition.BELOW_CHART_LEFT);
 //        l.setYOffset(11f);
 
         XAxis xAxis = mChart.getXAxis();
-        xAxis.setTypeface(tf);
+        xAxis.setTypeface(mTfLight);
         xAxis.setTextSize(11f);
         xAxis.setTextColor(Color.WHITE);
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(false);
 
         YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setTypeface(tf);
+        leftAxis.setTypeface(mTfLight);
         leftAxis.setTextColor(ColorTemplate.getHoloBlue());
         leftAxis.setAxisMaxValue(200f);
         leftAxis.setAxisMinValue(0f);
@@ -116,7 +113,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         leftAxis.setGranularityEnabled(true);
 
         YAxis rightAxis = mChart.getAxisRight();
-        rightAxis.setTypeface(tf);
+        rightAxis.setTypeface(mTfLight);
         rightAxis.setTextColor(Color.RED);
         rightAxis.setAxisMaxValue(900);
         rightAxis.setAxisMinValue(-200);

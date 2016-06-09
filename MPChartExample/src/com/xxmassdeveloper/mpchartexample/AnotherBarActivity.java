@@ -73,14 +73,6 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
         mChart.animateY(2500);
         
         mChart.getLegend().setEnabled(false);
-
-        // Legend l = mChart.getLegend();
-        // l.setPosition(LegendPosition.BELOW_CHART_CENTER);
-        // l.setFormSize(8f);
-        // l.setFormToTextSpace(4f);
-        // l.setXEntrySpace(6f);
-
-        // mChart.setDrawLegend(false);
     }
 
     @Override

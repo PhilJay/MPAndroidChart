@@ -95,6 +95,7 @@ public class CombinedChartActivity extends DemoBase {
         data.setData(generateBubbleData());
         data.setData(generateScatterData());
         data.setData(generateCandleData());
+        data.setValueTypeface(mTfLight);
 
         xAxis.setAxisMaxValue(data.getXMax() + 0.25f);
 

@@ -35,8 +35,6 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
     private ScatterChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
-
-    private Typeface tf;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +55,6 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         mChart = (ScatterChart) findViewById(R.id.chart1);
         mChart.setDescription("");
 
-        tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-
         mChart.setOnChartValueSelectedListener(this);
 
         mChart.setDrawGridBackground(false);
@@ -77,16 +73,16 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
 
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART);
-        l.setTypeface(tf);
+        l.setTypeface(mTfLight);
 
         YAxis yl = mChart.getAxisLeft();
-        yl.setTypeface(tf);
+        yl.setTypeface(mTfLight);
         yl.setAxisMinValue(0f); // this replaces setStartAtZero(true)
         
         mChart.getAxisRight().setEnabled(false);
 
         XAxis xl = mChart.getXAxis();
-        xl.setTypeface(tf);
+        xl.setTypeface(mTfLight);
         xl.setDrawGridLines(false);
     }
 
@@ -205,7 +201,7 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
 
         // create a data object with the datasets
         ScatterData data = new ScatterData(dataSets);
-        data.setValueTypeface(tf);
+        data.setValueTypeface(mTfLight);
 
         mChart.setData(data);
         mChart.invalidate();

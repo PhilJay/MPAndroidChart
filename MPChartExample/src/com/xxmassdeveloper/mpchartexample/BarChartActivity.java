@@ -4,7 +4,6 @@ package com.xxmassdeveloper.mpchartexample;
 import android.annotation.SuppressLint;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -47,8 +46,6 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
 
-    private Typeface mTf;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,11 +77,9 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart.setDrawGridBackground(false);
         // mChart.setDrawYLabels(false);
 
-        mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxisPosition.BOTTOM);
-        xAxis.setTypeface(mTf);
+        xAxis.setTypeface(mTfLight);
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f); // only intervals of 1 day
         xAxis.setLabelCount(7);
@@ -93,7 +88,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         AxisValueFormatter custom = new MyAxisValueFormatter();
 
         YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setTypeface(mTf);
+        leftAxis.setTypeface(mTfLight);
         leftAxis.setLabelCount(8, false);
         leftAxis.setValueFormatter(custom);
         leftAxis.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
@@ -102,7 +97,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
-        rightAxis.setTypeface(mTf);
+        rightAxis.setTypeface(mTfLight);
         rightAxis.setLabelCount(8, false);
         rightAxis.setValueFormatter(custom);
         rightAxis.setSpaceTop(15f);
@@ -254,7 +249,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
             BarData data = new BarData(dataSets);
             data.setValueTextSize(10f);
-            data.setValueTypeface(mTf);
+            data.setValueTypeface(mTfLight);
             data.setBarWidth(0.9f);
 
             mChart.setData(data);

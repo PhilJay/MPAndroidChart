@@ -39,8 +39,6 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
     private PieChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
-    
-    private Typeface tf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +65,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         mChart.setDragDecelerationFrictionCoef(0.95f);
 
-        tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-
-        mChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
+        mChart.setCenterTextTypeface(mTfLight);
         mChart.setCenterText(generateCenterSpannableText());
 
         mChart.setDrawHoleEnabled(true);
@@ -228,7 +224,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(11f);
         data.setValueTextColor(Color.WHITE);
-        data.setValueTypeface(tf);
+        data.setValueTypeface(mTfLight);
         mChart.setData(data);
 
         // undo all highlights

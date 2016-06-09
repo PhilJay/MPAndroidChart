@@ -64,26 +64,24 @@ public class RealtimeLineChartActivity extends DemoBase implements
         // add empty data
         mChart.setData(data);
 
-        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-
         // get the legend (only possible after setting data)
         Legend l = mChart.getLegend();
 
         // modify the legend ...
         // l.setPosition(LegendPosition.LEFT_OF_CHART);
         l.setForm(LegendForm.LINE);
-        l.setTypeface(tf);
+        l.setTypeface(mTfLight);
         l.setTextColor(Color.WHITE);
 
         XAxis xl = mChart.getXAxis();
-        xl.setTypeface(tf);
+        xl.setTypeface(mTfLight);
         xl.setTextColor(Color.WHITE);
         xl.setDrawGridLines(false);
         xl.setAvoidFirstLastClipping(true);
         xl.setEnabled(true);
 
         YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setTypeface(tf);
+        leftAxis.setTypeface(mTfLight);
         leftAxis.setTextColor(Color.WHITE);
         leftAxis.setAxisMaxValue(100f);
         leftAxis.setAxisMinValue(0f);

@@ -2,7 +2,6 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -38,8 +37,6 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
     private BarChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
-    
-    private Typeface tf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,27 +71,21 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         // to use for it
         MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
 
-        // define an offset to change the original position of the marker
-        // (optional)
-        // mv.setOffsets(-mv.getMeasuredWidth() / 2, -mv.getMeasuredHeight());
-
         // set the marker to the chart
         mChart.setMarkerView(mv);
 
         mSeekBarX.setProgress(10);
         mSeekBarY.setProgress(100);
 
-        tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART_INSIDE);
-        l.setTypeface(tf);
+        l.setTypeface(mTfLight);
         l.setYOffset(0f);
         l.setYEntrySpace(0f);
         l.setTextSize(8f);
 
         XAxis xl = mChart.getXAxis();
-        xl.setTypeface(tf);
+        xl.setTypeface(mTfLight);
         xl.setGranularity(1f);
         xl.setCenterAxisLabels(true);
         xl.setValueFormatter(new AxisValueFormatter() {
@@ -110,7 +101,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         });
 
         YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setTypeface(tf);
+        leftAxis.setTypeface(mTfLight);
         leftAxis.setValueFormatter(new LargeValueFormatter());
         leftAxis.setDrawGridLines(false);
         leftAxis.setSpaceTop(30f);
@@ -253,7 +244,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
             data.setValueFormatter(new LargeValueFormatter());
 
             // add space between the dataset groups in percent of bar-width
-            data.setValueTypeface(tf);
+            data.setValueTypeface(mTfLight);
 
             mChart.setData(data);
         }

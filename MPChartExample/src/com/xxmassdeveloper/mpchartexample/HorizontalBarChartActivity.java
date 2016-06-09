@@ -4,7 +4,6 @@ package com.xxmassdeveloper.mpchartexample;
 import android.annotation.SuppressLint;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -39,8 +38,6 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
     protected HorizontalBarChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
-
-    private Typeface tf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,25 +74,23 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
         mChart.setDrawGridBackground(false);
 
-        tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-
         XAxis xl = mChart.getXAxis();
         xl.setPosition(XAxisPosition.BOTTOM);
-        xl.setTypeface(tf);
+        xl.setTypeface(mTfLight);
         xl.setDrawAxisLine(true);
         xl.setDrawGridLines(false);
         xl.setGridLineWidth(0.3f);
         xl.setGranularity(10f);
 
         YAxis yl = mChart.getAxisLeft();
-        yl.setTypeface(tf);
+        yl.setTypeface(mTfLight);
         yl.setDrawAxisLine(true);
         yl.setDrawGridLines(true);
         yl.setAxisMinValue(0f); // this replaces setStartAtZero(true)
 //        yl.setInverted(true);
 
         YAxis yr = mChart.getAxisRight();
-        yr.setTypeface(tf);
+        yr.setTypeface(mTfLight);
         yr.setDrawAxisLine(true);
         yr.setDrawGridLines(false);
         yr.setAxisMinValue(0f); // this replaces setStartAtZero(true)
@@ -247,7 +242,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
             BarData data = new BarData(dataSets);
             data.setValueTextSize(10f);
-            data.setValueTypeface(tf);
+            data.setValueTypeface(mTfLight);
             data.setBarWidth(barWidth);
             mChart.setData(data);
         }

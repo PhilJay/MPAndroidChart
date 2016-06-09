@@ -2,7 +2,6 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -36,8 +35,6 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
     private BubbleChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
-
-    private Typeface tf;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +55,6 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
         mChart = (BubbleChart) findViewById(R.id.chart1);
         mChart.setDescription("");
 
-        tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-
         mChart.setOnChartValueSelectedListener(this);
 
         mChart.setDrawGridBackground(false);
@@ -78,10 +73,10 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
 
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART);
-        l.setTypeface(tf);
+        l.setTypeface(mTfLight);
 
         YAxis yl = mChart.getAxisLeft();
-        yl.setTypeface(tf);
+        yl.setTypeface(mTfLight);
         yl.setSpaceTop(30f);
         yl.setSpaceBottom(30f);
         yl.setDrawZeroLine(false);
@@ -90,7 +85,7 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
 
         XAxis xl = mChart.getXAxis();
         xl.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xl.setTypeface(tf);
+        xl.setTypeface(mTfLight);
     }
 
     @Override
@@ -205,7 +200,7 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
         // create a data object with the datasets
         BubbleData data = new BubbleData(dataSets);
         data.setDrawValues(false);
-        data.setValueTypeface(tf);
+        data.setValueTypeface(mTfLight);
         data.setValueTextSize(8f);
         data.setValueTextColor(Color.WHITE);
         data.setHighlightCircleWidth(1.5f);

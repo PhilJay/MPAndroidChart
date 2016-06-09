@@ -2,7 +2,6 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,8 +32,6 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
     protected BarChart mChart;
     private SeekBar mSeekBarX;
     private TextView tvX;
-
-    private Typeface mTf;
 
     private List<BarEntry> mSinusData;
 
@@ -73,13 +70,11 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
         mChart.setDrawGridBackground(false);
         // mChart.setDrawYLabels(false);
 
-        mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-
         XAxis xAxis = mChart.getXAxis();
         xAxis.setEnabled(false);
 
         YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setTypeface(mTf);
+        leftAxis.setTypeface(mTfLight);
         leftAxis.setLabelCount(6, false);
         leftAxis.setAxisMinValue(-2.5f);
         leftAxis.setAxisMaxValue(2.5f);
@@ -88,7 +83,7 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
-        rightAxis.setTypeface(mTf);
+        rightAxis.setTypeface(mTfLight);
         rightAxis.setLabelCount(6, false);
         rightAxis.setAxisMinValue(-2.5f);
         rightAxis.setAxisMaxValue(2.5f);
@@ -222,7 +217,7 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
 
         BarData data = new BarData(set);
         data.setValueTextSize(10f);
-        data.setValueTypeface(mTf);
+        data.setValueTypeface(mTfLight);
         data.setDrawValues(false);
         data.setBarWidth(0.8f);
 

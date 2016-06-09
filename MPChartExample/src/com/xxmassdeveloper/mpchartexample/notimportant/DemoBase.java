@@ -1,6 +1,10 @@
 
 package com.xxmassdeveloper.mpchartexample.notimportant;
 
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.renderscript.Type;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 
 import com.xxmassdeveloper.mpchartexample.R;
@@ -22,6 +26,17 @@ public abstract class DemoBase extends FragmentActivity {
             "Party Q", "Party R", "Party S", "Party T", "Party U", "Party V", "Party W", "Party X",
             "Party Y", "Party Z"
     };
+
+    protected Typeface mTfRegular;
+    protected Typeface mTfLight;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mTfRegular = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+        mTfLight = Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf");
+    }
 
     protected float getRandom(float range, float startsfrom) {
         return (float) (Math.random() * range) + startsfrom;

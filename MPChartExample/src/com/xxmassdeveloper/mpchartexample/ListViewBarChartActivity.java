@@ -56,12 +56,8 @@ public class ListViewBarChartActivity extends DemoBase {
 
     private class ChartDataAdapter extends ArrayAdapter<BarData> {
 
-        private Typeface mTf;
-
         public ChartDataAdapter(Context context, List<BarData> objects) {
             super(context, 0, objects);
-
-            mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
         }
 
         @Override
@@ -86,23 +82,23 @@ public class ListViewBarChartActivity extends DemoBase {
             }
 
             // apply styling
-            data.setValueTypeface(mTf);
+            data.setValueTypeface(mTfLight);
             data.setValueTextColor(Color.BLACK);
             holder.chart.setDescription("");
             holder.chart.setDrawGridBackground(false);
 
             XAxis xAxis = holder.chart.getXAxis();
             xAxis.setPosition(XAxisPosition.BOTTOM);
-            xAxis.setTypeface(mTf);
+            xAxis.setTypeface(mTfLight);
             xAxis.setDrawGridLines(false);
             
             YAxis leftAxis = holder.chart.getAxisLeft();
-            leftAxis.setTypeface(mTf);
+            leftAxis.setTypeface(mTfLight);
             leftAxis.setLabelCount(5, false);
             leftAxis.setSpaceTop(15f);
             
             YAxis rightAxis = holder.chart.getAxisRight();
-            rightAxis.setTypeface(mTf);
+            rightAxis.setTypeface(mTfLight);
             rightAxis.setLabelCount(5, false);
             rightAxis.setSpaceTop(15f);
 

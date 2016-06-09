@@ -2,7 +2,6 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,8 +31,6 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
     private LineChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
-    
-    private Typeface tf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,13 +70,11 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
 
         mChart.setDrawGridBackground(false);
         
-        tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-        
         XAxis x = mChart.getXAxis();
         x.setEnabled(false);
         
         YAxis y = mChart.getAxisLeft();
-        y.setTypeface(tf);
+        y.setTypeface(mTfLight);
         y.setLabelCount(6, false);
         y.setTextColor(Color.WHITE);
         y.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
@@ -307,7 +302,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
 
             // create a data object with the datasets
             LineData data = new LineData(set1);
-            data.setValueTypeface(tf);
+            data.setValueTypeface(mTfLight);
             data.setValueTextSize(9f);
             data.setDrawValues(false);
 
