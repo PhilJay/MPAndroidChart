@@ -34,38 +34,16 @@ public class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry
         if (mValues == null || mValues.isEmpty())
             return;
 
-        mYMax = Float.MIN_VALUE;
+        mYMax = -Float.MAX_VALUE;
         mYMin = Float.MAX_VALUE;
-        mXMax = Float.MIN_VALUE;
+        mXMax = -Float.MAX_VALUE;
         mXMin = Float.MAX_VALUE;
 
-        // need chart width to guess this properly
+        for (BubbleEntry e : mValues) {
 
-        for (BubbleEntry entry : mValues) {
+            calcMinMax(e);
 
-            float ymin = entry.getY();
-            float ymax = entry.getY();
-
-            if (ymin < mYMin) {
-                mYMin = ymin;
-            }
-
-            if (ymax > mYMax) {
-                mYMax = ymax;
-            }
-
-            final float xmin = entry.getX();
-            final float xmax = entry.getX();
-
-            if (xmin < mXMin) {
-                mXMin = xmin;
-            }
-
-            if (xmax > mXMax) {
-                mXMax = xmax;
-            }
-
-            final float size = entry.getSize();
+            final float size = e.getSize();
 
             if (size > mMaxSize) {
                 mMaxSize = size;

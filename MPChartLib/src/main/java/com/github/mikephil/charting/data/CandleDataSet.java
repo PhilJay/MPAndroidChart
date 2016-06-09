@@ -105,9 +105,9 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
         if (mValues == null || mValues.isEmpty())
             return;
 
-        mYMax = Float.MIN_VALUE;
+        mYMax = -Float.MAX_VALUE;
         mYMin = Float.MAX_VALUE;
-        mXMax = Float.MIN_VALUE;
+        mXMax = -Float.MAX_VALUE;
         mXMin = Float.MAX_VALUE;
 
         for (CandleEntry e : mValues) {

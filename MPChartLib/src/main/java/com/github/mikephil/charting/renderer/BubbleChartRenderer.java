@@ -8,7 +8,6 @@ import android.graphics.Paint.Style;
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.BubbleEntry;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
@@ -22,7 +21,7 @@ import java.util.List;
  * Bubble chart implementation: Copyright 2015 Pierre-Marc Airoldi Licensed
  * under Apache License 2.0 Ported by Daniel Cohen Gindi
  */
-public class BubbleChartRenderer extends DataRenderer {
+public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
     protected BubbleDataProvider mChart;
 
@@ -57,13 +56,9 @@ public class BubbleChartRenderer extends DataRenderer {
     private float[] sizeBuffer = new float[4];
     private float[] pointBuffer = new float[2];
 
-    protected float getShapeSize(float entrySize,
-                                 float maxSize,
-                                 float reference,
-                                 boolean normalizeSize) {
-        final float factor = normalizeSize
-                ? ((maxSize == 0f) ? 1f : (float) Math.sqrt(entrySize / maxSize))
-                : entrySize;
+    protected float getShapeSize(float entrySize, float maxSize, float reference, boolean normalizeSize) {
+        final float factor = normalizeSize ? ((maxSize == 0f) ? 1f : (float) Math.sqrt(entrySize / maxSize)) :
+                entrySize;
         final float shapeSize = reference * factor;
         return shapeSize;
     }
@@ -72,17 +67,9 @@ public class BubbleChartRenderer extends DataRenderer {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-        float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
         float phaseY = mAnimator.getPhaseY();
 
-        float low = mChart.getLowestVisibleX();
-        float high = mChart.getHighestVisibleX();
-
-        BubbleEntry entryFrom = dataSet.getEntryForXPos(low, DataSet.Rounding.DOWN);
-        BubbleEntry entryTo = dataSet.getEntryForXPos(high, DataSet.Rounding.UP);
-
-        int minx = Math.max(dataSet.getEntryIndex(entryFrom), 0);
-        int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, dataSet.getEntryCount());
+        XBounds bounds = getXBounds(mChart, dataSet);
 
         sizeBuffer[0] = 0f;
         sizeBuffer[2] = 1f;
@@ -96,12 +83,12 @@ public class BubbleChartRenderer extends DataRenderer {
         final float maxBubbleHeight = Math.abs(mViewPortHandler.contentBottom() - mViewPortHandler.contentTop());
         final float referenceSize = Math.min(maxBubbleHeight, maxBubbleWidth);
 
-        for (int j = minx; j < maxx; j++) {
+        for (int j = bounds.min; j <= bounds.range + bounds.min; j++) {
 
             final BubbleEntry entry = dataSet.getEntryForIndex(j);
 
-            pointBuffer[0] = (float) (entry.getX() - minx) * phaseX + (float) minx;
-            pointBuffer[1] = (float) (entry.getY()) * phaseY;
+            pointBuffer[0] = entry.getX();
+            pointBuffer[1] = (entry.getY()) * phaseY;
             trans.pointValuesToPixel(pointBuffer);
 
             float shapeHalf = getShapeSize(entry.getSize(), dataSet.getMaxSize(), referenceSize, normalizeSize) / 2f;
@@ -151,23 +138,16 @@ public class BubbleChartRenderer extends DataRenderer {
                 final float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
                 final float phaseY = mAnimator.getPhaseY();
 
-                float low = mChart.getLowestVisibleX();
-                float high = mChart.getHighestVisibleX();
-
-                BubbleEntry entryFrom = dataSet.getEntryForXPos(low, DataSet.Rounding.DOWN);
-                BubbleEntry entryTo = dataSet.getEntryForXPos(high, DataSet.Rounding.UP);
-
-                int minx = dataSet.getEntryIndex(entryFrom);
-                int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, dataSet.getEntryCount());
+                XBounds bounds = getXBounds(mChart, dataSet);
 
                 final float[] positions = mChart.getTransformer(dataSet.getAxisDependency())
-                        .generateTransformedValuesBubble(dataSet, phaseX, phaseY, minx, maxx);
+                        .generateTransformedValuesBubble(dataSet, phaseY, bounds.min, bounds.max);
 
                 final float alpha = phaseX == 1 ? phaseY : phaseX;
 
                 for (int j = 0; j < positions.length; j += 2) {
 
-                    int valueTextColor = dataSet.getValueTextColor(j / 2 + minx);
+                    int valueTextColor = dataSet.getValueTextColor(j / 2 + bounds.min);
                     valueTextColor = Color.argb(Math.round(255.f * alpha), Color.red(valueTextColor),
                             Color.green(valueTextColor), Color.blue(valueTextColor));
 
@@ -180,7 +160,7 @@ public class BubbleChartRenderer extends DataRenderer {
                     if ((!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y)))
                         continue;
 
-                    BubbleEntry entry = dataSet.getEntryForIndex(j / 2 + minx);
+                    BubbleEntry entry = dataSet.getEntryForIndex(j / 2 + bounds.min);
 
                     drawValue(c, dataSet.getValueFormatter(), entry.getSize(), entry, i, x,
                             y + (0.5f * lineHeight), valueTextColor);
@@ -200,7 +180,6 @@ public class BubbleChartRenderer extends DataRenderer {
 
         BubbleData bubbleData = mChart.getBubbleData();
 
-        float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
         float phaseY = mAnimator.getPhaseY();
 
         for (Highlight high : indices) {
@@ -213,9 +192,7 @@ public class BubbleChartRenderer extends DataRenderer {
                     : (high.getDataSetIndex() + 1);
             if (maxDataSetIndex - minDataSetIndex < 1) continue;
 
-            for (int dataSetIndex = minDataSetIndex;
-                 dataSetIndex < maxDataSetIndex;
-                 dataSetIndex++) {
+            for (int dataSetIndex = minDataSetIndex; dataSetIndex < maxDataSetIndex; dataSetIndex++) {
 
                 IBubbleDataSet dataSet = bubbleData.getDataSetByIndex(dataSetIndex);
 
@@ -223,17 +200,11 @@ public class BubbleChartRenderer extends DataRenderer {
                     continue;
 
                 final BubbleEntry entry = (BubbleEntry) bubbleData.getEntryForHighlight(high);
-                if (entry == null || entry.getX() != high.getX())
+
+                if (entry == null)
                     continue;
 
-                float low = mChart.getLowestVisibleX();
-                float highX = mChart.getHighestVisibleX();
-
-                BubbleEntry entryFrom = dataSet.getEntryForXPos(low, DataSet.Rounding.DOWN);
-                BubbleEntry entryTo = dataSet.getEntryForXPos(highX, DataSet.Rounding.UP);
-
-                int minx = dataSet.getEntryIndex(entryFrom);
-                int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, dataSet.getEntryCount());
+                XBounds bounds = getXBounds(mChart, dataSet);
 
                 Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
@@ -250,8 +221,8 @@ public class BubbleChartRenderer extends DataRenderer {
                         mViewPortHandler.contentBottom() - mViewPortHandler.contentTop());
                 final float referenceSize = Math.min(maxBubbleHeight, maxBubbleWidth);
 
-                pointBuffer[0] = (float) (entry.getX() - minx) * phaseX + (float) minx;
-                pointBuffer[1] = (float) (entry.getY()) * phaseY;
+                pointBuffer[0] = entry.getX();
+                pointBuffer[1] = (entry.getY()) * phaseY;
                 trans.pointValuesToPixel(pointBuffer);
 
                 float shapeHalf = getShapeSize(entry.getSize(),
@@ -269,7 +240,7 @@ public class BubbleChartRenderer extends DataRenderer {
                 if (!mViewPortHandler.isInBoundsRight(pointBuffer[0] - shapeHalf))
                     break;
 
-                if (high.getX() < minx || high.getX() >= maxx)
+                if (high.getX() < bounds.min || high.getX() > bounds.max)
                     continue;
 
                 final int originalColor = dataSet.getColor((int) entry.getX());

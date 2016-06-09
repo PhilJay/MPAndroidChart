@@ -129,8 +129,7 @@ public class Transformer {
      * @param data
      * @return
      */
-    public float[] generateTransformedValuesBubble(IBubbleDataSet data,
-                                                   float phaseX, float phaseY, int from, int to) {
+    public float[] generateTransformedValuesBubble(IBubbleDataSet data, float phaseY, int from, int to) {
 
         final int count = (int) Math.ceil(to - from) * 2; // (int) Math.ceil((to - from) * phaseX) * 2;
 
@@ -141,7 +140,7 @@ public class Transformer {
             Entry e = data.getEntryForIndex(j / 2 + from);
 
             if (e != null) {
-                valuePoints[j] = (float) (e.getX() - from) * phaseX + from;
+                valuePoints[j] = e.getX();
                 valuePoints[j + 1] = e.getY() * phaseY;
             }
         }

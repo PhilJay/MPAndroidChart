@@ -73,7 +73,7 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
         mChart.setMaxVisibleValueCount(200);
         mChart.setPinchZoom(true);
 
-        mSeekBarX.setProgress(5);
+        mSeekBarX.setProgress(1);
         mSeekBarY.setProgress(50);
 
         Legend l = mChart.getLegend();
@@ -132,7 +132,6 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
                 break;
             }
             case R.id.actionSave: {
-                // mChart.saveToGallery("title"+System.currentTimeMillis());
                 mChart.saveToPath("title" + System.currentTimeMillis(), "");
                 break;
             }
@@ -156,7 +155,7 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-        int count = mSeekBarX.getProgress() + 1;
+        int count = mSeekBarX.getProgress();
         int range = mSeekBarY.getProgress();
 
         tvX.setText("" + count);
@@ -205,6 +204,7 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
 
         // create a data object with the datasets
         BubbleData data = new BubbleData(dataSets);
+        data.setDrawValues(false);
         data.setValueTypeface(tf);
         data.setValueTextSize(8f);
         data.setValueTextColor(Color.WHITE);

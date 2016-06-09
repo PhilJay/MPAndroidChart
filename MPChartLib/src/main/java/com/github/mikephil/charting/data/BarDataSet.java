@@ -111,9 +111,9 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
         if (mValues == null || mValues.isEmpty())
             return;
 
-        mYMax = Float.MIN_VALUE;
+        mYMax = -Float.MAX_VALUE;
         mYMin = Float.MAX_VALUE;
-        mXMax = Float.MIN_VALUE;
+        mXMax = -Float.MAX_VALUE;
         mXMin = Float.MAX_VALUE;
 
         for (BarEntry e : mValues) {
