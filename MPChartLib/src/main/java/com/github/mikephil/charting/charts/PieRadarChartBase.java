@@ -17,9 +17,9 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.PieRadarChartTouchListener;
-import com.github.mikephil.charting.utils.SelectionDetail;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
@@ -27,22 +27,30 @@ import java.util.List;
 
 /**
  * Baseclass of PieChart and RadarChart.
- * 
+ *
  * @author Philipp Jahoda
  */
 public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<? extends Entry>>>
         extends Chart<T> {
 
-    /** holds the normalized version of the current rotation angle of the chart */
+    /**
+     * holds the normalized version of the current rotation angle of the chart
+     */
     private float mRotationAngle = 270f;
 
-    /** holds the raw version of the current rotation angle of the chart */
+    /**
+     * holds the raw version of the current rotation angle of the chart
+     */
     private float mRawRotationAngle = 270f;
 
-    /** flag that indicates if rotation is enabled or not */
+    /**
+     * flag that indicates if rotation is enabled or not
+     */
     protected boolean mRotateEnabled = true;
 
-    /** Sets the minimum offset (padding) around the chart, defaults to 0.f */
+    /**
+     * Sets the minimum offset (padding) around the chart, defaults to 0.f
+     */
     protected float mMinOffset = 0.f;
 
     public PieRadarChartBase(Context context) {
@@ -115,8 +123,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
                     mLegend.getFormSize() + mLegend.getFormToTextSpace();
 
             switch (mLegend.getOrientation()) {
-                case VERTICAL:
-                {
+                case VERTICAL: {
                     float xLegendOffset = 0.f;
 
                     if (mLegend.getHorizontalAlignment() == Legend.LegendHorizontalAlignment.LEFT
@@ -182,7 +189,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
                             break;
                     }
                 }
-                    break;
+                break;
 
                 case HORIZONTAL:
                     float yLegendOffset = 0.f;
@@ -247,7 +254,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
      * returns the angle relative to the chart center for the given point on the
      * chart in degrees. The angle is always between 0 and 360°, 0° is NORTH,
      * 90° is EAST, ...
-     * 
+     *
      * @param x
      * @param y
      * @return
@@ -278,10 +285,10 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
     /**
      * Calculates the position around a center point, depending on the distance
      * from the center, and the angle of the position around the center.
-     * 
+     *
      * @param center
      * @param dist
-     * @param angle in degrees, converted to radians internally
+     * @param angle  in degrees, converted to radians internally
      * @return
      */
     protected PointF getPosition(PointF center, float dist, float angle) {
@@ -329,7 +336,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
     /**
      * Returns the xIndex for the given angle around the center of the chart.
      * Returns -1 if not found / outofbounds.
-     * 
+     *
      * @param angle
      * @return
      */
@@ -338,7 +345,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
     /**
      * Set an offset for the rotation of the RadarChart in degrees. Default 270f
      * --> top (NORTH)
-     * 
+     *
      * @param angle
      */
     public void setRotationAngle(float angle) {
@@ -371,7 +378,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
     /**
      * Set this to true to enable the rotation / spinning of the chart by touch.
      * Set it to false to disable it. Default: true
-     * 
+     *
      * @param enabled
      */
     public void setRotationEnabled(boolean enabled) {
@@ -380,26 +387,30 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
 
     /**
      * Returns true if rotation of the chart by touch is enabled, false if not.
-     * 
+     *
      * @return
      */
     public boolean isRotationEnabled() {
         return mRotateEnabled;
     }
 
-    /** Gets the minimum offset (padding) around the chart, defaults to 0.f */
+    /**
+     * Gets the minimum offset (padding) around the chart, defaults to 0.f
+     */
     public float getMinOffset() {
         return mMinOffset;
     }
 
-    /** Sets the minimum offset (padding) around the chart, defaults to 0.f */
+    /**
+     * Sets the minimum offset (padding) around the chart, defaults to 0.f
+     */
     public void setMinOffset(float minOffset) {
         mMinOffset = minOffset;
     }
 
     /**
      * returns the diameter of the pie- or radar-chart
-     * 
+     *
      * @return
      */
     public float getDiameter() {
@@ -413,14 +424,14 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
 
     /**
      * Returns the radius of the chart in pixels.
-     * 
+     *
      * @return
      */
     public abstract float getRadius();
 
     /**
      * Returns the required offset for the chart legend.
-     * 
+     *
      * @return
      */
     protected abstract float getRequiredLegendOffset();
@@ -428,7 +439,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
     /**
      * Returns the base offset needed for the chart without calculating the
      * legend size.
-     * 
+     *
      * @return
      */
     protected abstract float getRequiredBaseOffset();
@@ -446,16 +457,16 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
     }
 
     /**
-     * Returns an array of SelectionDetail objects for the given x-index. The SelectionDetail
+     * Returns an array of Highlight objects for the given x-index. The Highlight
      * objects give information about the value at the selected index and the
      * DataSet it belongs to. INFORMATION: This method does calculations at
      * runtime. Do not over-use in performance critical situations.
      *
      * @return
      */
-    public List<SelectionDetail> getSelectionDetailsAtIndex(int xIndex) {
+    public List<Highlight> getSelectionDetailsAtIndex(int xIndex) {
 
-        List<SelectionDetail> vals = new ArrayList<SelectionDetail>();
+        List<Highlight> vals = new ArrayList<Highlight>();
 
         for (int i = 0; i < mData.getDataSetCount(); i++) {
 
@@ -466,7 +477,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
             if (Float.isNaN(yVal))
                 continue;
 
-            vals.add(new SelectionDetail(0f, yVal, i, dataSet));
+            vals.add(new Highlight(0f, yVal, 0f, 0f, i, dataSet.getAxisDependency()));
         }
 
         return vals;
@@ -479,7 +490,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
 
     /**
      * Applys a spin animation to the Chart.
-     * 
+     *
      * @param durationmillis
      * @param fromangle
      * @param toangle

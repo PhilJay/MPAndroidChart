@@ -6,7 +6,6 @@ import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.PointD;
-import com.github.mikephil.charting.utils.SelectionDetail;
 
 /**
  * Created by Philipp Jahoda on 22/07/15.
@@ -24,37 +23,33 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 
         PointD pos = getValsForTouch(x, y);
 
-        SelectionDetail selectionDetail = getSelectionDetail((float) pos.x, x, y);
-        if (selectionDetail == null)
+        Highlight high = getHighlightForX((float) pos.x, x, y);
+        if (high == null)
             return null;
 
-        IBarDataSet set = barData.getDataSetByIndex(selectionDetail.dataSetIndex);
+        IBarDataSet set = barData.getDataSetByIndex(high.getDataSetIndex());
         if (set.isStacked()) {
 
-            return getStackedHighlight(selectionDetail,
+            return getStackedHighlight(high,
                     set,
                     (float) pos.x,
                     (float) pos.y);
         }
 
-        return new Highlight(
-                selectionDetail.xValue,
-                selectionDetail.yValue,
-                selectionDetail.dataIndex,
-                selectionDetail.dataSetIndex);
+        return high;
     }
 
     /**
      * This method creates the Highlight object that also indicates which value of a stacked BarEntry has been
      * selected.
      *
-     * @param selectionDetail the selection detail to work with looking for stacked values
+     * @param high the Highlight to work with looking for stacked values
      * @param set
      * @param xVal
-     * @param yValue
+     * @param yVal
      * @return
      */
-    protected Highlight getStackedHighlight(SelectionDetail selectionDetail, IBarDataSet set, float xVal, double yValue) {
+    protected Highlight getStackedHighlight(Highlight high, IBarDataSet set, float xVal, float yVal) {
 
         BarEntry entry = set.getEntryForXPos(xVal);
 
@@ -63,23 +58,26 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 
         // not stacked
         if (entry.getYVals() == null) {
-            return new Highlight(entry.getX(),
-                    entry.getY(),
-                    selectionDetail.dataIndex,
-                    selectionDetail.dataSetIndex);
+            return high;
         } else {
             Range[] ranges = getRanges(entry);
 
             if (ranges.length > 0) {
-                int stackIndex = getClosestStackIndex(ranges, (float) yValue);
-                return new Highlight(
+                int stackIndex = getClosestStackIndex(ranges, yVal);
+
+
+                Highlight stackedHigh = new Highlight(
                         entry.getX(),
                         entry.getPositiveSum() - entry.getNegativeSum(),
-                        selectionDetail.dataIndex,
-                        selectionDetail.dataSetIndex,
+                        high.getXPx(),
+                        high.getYPx(),
+                        high.getDataSetIndex(),
                         stackIndex,
-                        ranges[stackIndex]
+                        ranges[stackIndex],
+                        high.getAxis()
                 );
+
+                return stackedHigh;
             }
         }
 

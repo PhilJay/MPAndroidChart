@@ -31,6 +31,7 @@ import com.github.mikephil.charting.animation.EasingFunction;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
@@ -633,7 +634,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             } else {
                 if (this instanceof BarLineChartBase
                         && ((BarLineChartBase) this).isHighlightFullBarEnabled())
-                    high = new Highlight(high.getX(), Float.NaN, -1, -1);
+                    high = new Highlight(high.getX(), Float.NaN, Float.NaN, Float.NaN, -1, YAxis.AxisDependency.LEFT);
 
                 // set the indices to highlight
                 mIndicesToHighlight = new Highlight[]{

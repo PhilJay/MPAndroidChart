@@ -22,6 +22,7 @@ import android.view.ViewConfiguration;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
 
 import java.util.List;
 
@@ -388,15 +389,15 @@ public abstract class Utils {
      * @param valsAtIndex all the values at a specific index
      * @return
      */
-    public static int getClosestDataSetIndexByValue(List<SelectionDetail> valsAtIndex, float value,
-                                             AxisDependency axis) {
+    public static int getClosestDataSetIndexByValue(List<Highlight> valsAtIndex, float value,
+                                                    AxisDependency axis) {
 
-        SelectionDetail sel = getClosestSelectionDetailByValue(valsAtIndex, value, axis);
+        Highlight sel = getClosestSelectionDetailByValue(valsAtIndex, value, axis);
 
         if (sel == null)
             return -Integer.MAX_VALUE;
 
-        return sel.dataSetIndex;
+        return sel.getDataSetIndex();
     }
 
     /**
@@ -406,21 +407,21 @@ public abstract class Utils {
      * @param valsAtIndex all the values at a specific index
      * @return
      */
-    public static SelectionDetail getClosestSelectionDetailByValue(
-            List<SelectionDetail> valsAtIndex,
+    public static Highlight getClosestSelectionDetailByValue(
+            List<Highlight> valsAtIndex,
             float value,
             AxisDependency axis) {
 
-        SelectionDetail closest = null;
+        Highlight closest = null;
         float distance = Float.MAX_VALUE;
 
         for (int i = 0; i < valsAtIndex.size(); i++) {
 
-            SelectionDetail sel = valsAtIndex.get(i);
+            Highlight sel = valsAtIndex.get(i);
 
-            if (axis == null || sel.dataSet.getAxisDependency() == axis) {
+            if (axis == null || sel.getAxis() == axis) {
 
-                float cdistance = Math.abs(sel.yValue - value);
+                float cdistance = Math.abs(sel.getY() - value);
                 if (cdistance < distance) {
                     closest = sel;
                     distance = cdistance;

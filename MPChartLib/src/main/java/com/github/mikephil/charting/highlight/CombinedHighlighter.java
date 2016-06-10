@@ -6,7 +6,6 @@ import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider;
-import com.github.mikephil.charting.utils.SelectionDetail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,30 +15,47 @@ import java.util.List;
  */
 public class CombinedHighlighter extends ChartHighlighter<BarLineScatterCandleBubbleDataProvider> implements Highlighter {
 
+    /**
+     * bar highlighter for supporting stacked highlighting
+     */
     protected BarHighlighter barHighlighter;
 
     public CombinedHighlighter(BarLineScatterCandleBubbleDataProvider chart, BarDataProvider barChart) {
         super(chart);
-        barHighlighter = new BarHighlighter(barChart);
+        barHighlighter = barChart.getBarData() == null ? null : new BarHighlighter(barChart);
     }
 
     @Override
     public Highlight getHighlight(float x, float y) {
 
         Highlight h1 = super.getHighlight(x, y);
-        Highlight h2 = barHighlighter.getHighlight(x, y);
+        Highlight h2 = barHighlighter == null ? null : barHighlighter.getHighlight(x, y);
 
-        return getClosest(x, y, h1, h2);
+        return (h2 != null && h2.isStacked()) ? h2 : h1;
     }
 
-    protected Highlight getClosest(float x, float y, Highlight... highs) {
-        return null;
-    }
+//    protected Highlight getClosest(float x, float y, Highlight... highs) {
+//
+//        Highlight closest = null;
+//        float minDistance = Float.MAX_VALUE;
+//
+//        for (Highlight high : highs) {
+//
+//            float tempDistance = getDistance(x, y, high.getXPx(), high.getYPx());
+//
+//            if (tempDistance < minDistance) {
+//                minDistance = tempDistance;
+//                closest = high;
+//            }
+//        }
+//
+//        return closest;
+//    }
 
     @Override
-    protected List<SelectionDetail> getSelectionDetailsAtXPos(float xVal) {
+    protected List<Highlight> getHighlightsAtXPos(float xVal) {
 
-        List<SelectionDetail> vals = new ArrayList<SelectionDetail>();
+        List<Highlight> vals = new ArrayList<Highlight>();
 
         CombinedData data = (CombinedData) mChart.getData();
 
@@ -56,12 +72,12 @@ public class CombinedHighlighter extends ChartHighlighter<BarLineScatterCandleBu
                 if (!dataSet.isHighlightEnabled())
                     continue;
 
-                SelectionDetail s1 = getDetail(dataSet, j, xVal, DataSet.Rounding.UP);
-                s1.dataIndex = i;
+                Highlight s1 = buildHighlight(dataSet, j, xVal, DataSet.Rounding.UP);
+                s1.setDataIndex(i);
                 vals.add(s1);
 
-                SelectionDetail s2 = getDetail(dataSet, j, xVal, DataSet.Rounding.DOWN);
-                s2.dataIndex = i;
+                Highlight s2 = buildHighlight(dataSet, j, xVal, DataSet.Rounding.DOWN);
+                s2.setDataIndex(i);
                 vals.add(s2);
             }
         }

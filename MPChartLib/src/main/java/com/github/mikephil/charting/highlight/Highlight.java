@@ -1,77 +1,96 @@
 
 package com.github.mikephil.charting.highlight;
 
+import com.github.mikephil.charting.components.YAxis;
+
 /**
  * Contains information needed to determine the highlighted value.
- * 
+ *
  * @author Philipp Jahoda
  */
 public class Highlight {
 
-    /** the x-value of the highlighted value */
+    /**
+     * the x-value of the highlighted value
+     */
     private float mX = Float.NaN;
 
-    /** the y-value of the highlighted value */
+    /**
+     * the y-value of the highlighted value
+     */
     private float mY = Float.NaN;
 
-    /** the x-pixel of the highlight */
+    /**
+     * the x-pixel of the highlight
+     */
     private float mXPx;
 
-    /** the y-pixel of the highlight */
+    /**
+     * the y-pixel of the highlight
+     */
     private float mYPx;
 
-    /** the index of the data object - in case it refers to more than one */
+    /**
+     * the index of the data object - in case it refers to more than one
+     */
     private int mDataIndex;
 
-    /** the index of the dataset the highlighted value is in */
+    /**
+     * the index of the dataset the highlighted value is in
+     */
     private int mDataSetIndex;
 
-    /** index which value of a stacked bar entry is highlighted, default -1 */
+    /**
+     * index which value of a stacked bar entry is highlighted, default -1
+     */
     private int mStackIndex = -1;
 
-    /** the range of the bar that is selected (only for stacked-barchart) */
+    /**
+     * the range of the bar that is selected (only for stacked-barchart)
+     */
     private Range mRange;
 
     /**
-     * constructor
-     *
-     * @param x the x-value of the highlighted value
-     * @param y the y-value of the highlighted value
-     * @param dataIndex the index of the Data the highlighted value belongs to
-     * @param dataSetIndex the index of the DataSet the highlighted value belongs to
+     * the axis the highlighted value belongs to
      */
-    public Highlight(float x, float y, int dataIndex, int dataSetIndex) {
+    private YAxis.AxisDependency axis;
+
+    public Highlight(float x, int dataSetIndex) {
         this.mX = x;
-        this.mY = y;
-        this.mDataIndex = dataIndex;
         this.mDataSetIndex = dataSetIndex;
     }
 
     /**
-     * Constructor, only used for stacked-barchart.
+     * constructor
      *
-     * @param x the index of the highlighted value on the x-axis
-     * @param y the y-value of the highlighted value
-     * @param dataIndex the index of the Data the highlighted value belongs to
+     * @param x            the x-value of the highlighted value
+     * @param y            the y-value of the highlighted value
      * @param dataSetIndex the index of the DataSet the highlighted value belongs to
-     * @param stackIndex references which value of a stacked-bar entry has been
-     *            selected
-     * @param range the range the selected stack-value is in
      */
-    public Highlight(float x, float y, int dataIndex, int dataSetIndex, int stackIndex, Range range) {
-        this(x, y, dataIndex, dataSetIndex);
-        this.mStackIndex = stackIndex;
-        this.mRange = range;
+    public Highlight(float x, float y, float xPx, float yPx, int dataSetIndex, YAxis.AxisDependency axis) {
+        this.mX = x;
+        this.mY = y;
+        this.mXPx = xPx;
+        this.mYPx = yPx;
+        this.mDataSetIndex = dataSetIndex;
+        this.axis = axis;
     }
 
     /**
      * Constructor, only used for stacked-barchart.
      *
-     * @param x the x-value of the highlighted value on the x-axis
+     * @param x            the index of the highlighted value on the x-axis
+     * @param y            the y-value of the highlighted value
      * @param dataSetIndex the index of the DataSet the highlighted value belongs to
+     * @param stackIndex   references which value of a stacked-bar entry has been
+     *                     selected
+     * @param range        the range the selected stack-value is in
      */
-    public Highlight(float x, int dataSetIndex) {
-        this(x, Float.NaN, 0, dataSetIndex);
+    public Highlight(float x, float y, float xPx, float yPx, int dataSetIndex, int stackIndex, Range range,
+                     YAxis.AxisDependency axis) {
+        this(x, y, xPx, yPx, dataSetIndex, axis);
+        this.mStackIndex = stackIndex;
+        this.mRange = range;
     }
 
     /**
@@ -93,12 +112,30 @@ public class Highlight {
     }
 
     /**
+     * returns the x-position of the highlight in pixels
+     */
+    public float getXPx() {
+        return mXPx;
+    }
+
+    /**
+     * returns the y-position of the highlight in pixels
+     */
+    public float getYPx() {
+        return mYPx;
+    }
+
+    /**
      * the index of the data object - in case it refers to more than one
      *
      * @return
      */
     public int getDataIndex() {
         return mDataIndex;
+    }
+
+    public void setDataIndex(int mDataIndex) {
+        this.mDataIndex = mDataIndex;
     }
 
     /**
@@ -113,7 +150,7 @@ public class Highlight {
     /**
      * Only needed if a stacked-barchart entry was highlighted. References the
      * selected value within the stacked-entry.
-     * 
+     *
      * @return
      */
     public int getStackIndex() {
@@ -122,16 +159,30 @@ public class Highlight {
 
     /**
      * Returns the range of values the selected value of a stacked bar is in. (this is only relevant for stacked-barchart)
+     *
      * @return
      */
     public Range getRange() {
         return mRange;
     }
 
+    public boolean isStacked() {
+        return mStackIndex >= 0;
+    }
+
+    /**
+     * Returns the axis the highlighted value belongs to.
+     *
+     * @return
+     */
+    public YAxis.AxisDependency getAxis() {
+        return axis;
+    }
+
     /**
      * Returns true if this highlight object is equal to the other (compares
      * xIndex and dataSetIndex)
-     * 
+     *
      * @param h
      * @return
      */

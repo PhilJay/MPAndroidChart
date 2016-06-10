@@ -5,13 +5,11 @@ import java.util.List;
 
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData;
-import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider;
 import com.github.mikephil.charting.utils.PointD;
-import com.github.mikephil.charting.utils.SelectionDetail;
 
 /**
  * Created by Philipp Jahoda on 21/07/15.
@@ -32,14 +30,8 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
 
         float xVal = (float) getValsForTouch(x, y).x;
 
-        SelectionDetail selectionDetail = getSelectionDetail(xVal, x, y);
-        if (selectionDetail == null)
-            return null;
-
-        return new Highlight(selectionDetail.xValue,
-                selectionDetail.yValue,
-                selectionDetail.dataIndex,
-                selectionDetail.dataSetIndex);
+        Highlight high = getHighlightForX(xVal, x, y);
+        return high;
     }
 
     /**
@@ -56,22 +48,23 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
     }
 
     /**
-     * Returns the corresponding SelectionDetail for a given xVal and y-touch position in pixels.
+     * Returns the corresponding Highlight for a given xVal and x- and y-touch position in pixels.
      *
      * @param xVal
+     * @param x
      * @param y
      * @return
      */
-    protected SelectionDetail getSelectionDetail(float xVal, float x, float y) {
+    protected Highlight getHighlightForX(float xVal, float x, float y) {
 
-        List<SelectionDetail> closestValues = getSelectionDetailsAtXPos(xVal);
+        List<Highlight> closestValues = getHighlightsAtXPos(xVal);
 
         float leftAxisMinDist = getMinimumDistance(closestValues, y, YAxis.AxisDependency.LEFT);
         float rightAxisMinDist = getMinimumDistance(closestValues, y, YAxis.AxisDependency.RIGHT);
 
         YAxis.AxisDependency axis = leftAxisMinDist < rightAxisMinDist ? YAxis.AxisDependency.LEFT : YAxis.AxisDependency.RIGHT;
 
-        SelectionDetail detail = getClosestSelectionDetailByPixel(closestValues, x, y, axis, mChart.getMaxHighlightDistance());
+        Highlight detail = getClosestHighlightByPixel(closestValues, x, y, axis, mChart.getMaxHighlightDistance());
 
         return detail;
     }
@@ -85,17 +78,17 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      * @param axis
      * @return
      */
-    protected float getMinimumDistance(List<SelectionDetail> closestValues, float pos, YAxis.AxisDependency axis) {
+    protected float getMinimumDistance(List<Highlight> closestValues, float pos, YAxis.AxisDependency axis) {
 
         float distance = Float.MAX_VALUE;
 
         for (int i = 0; i < closestValues.size(); i++) {
 
-            SelectionDetail sel = closestValues.get(i);
+            Highlight high = closestValues.get(i);
 
-            if (sel.dataSet.getAxisDependency() == axis) {
+            if (high.getAxis() == axis) {
 
-                float tempDistance = Math.abs(getSelectionPos(sel) - pos);
+                float tempDistance = Math.abs(getHighlightPos(high) - pos);
                 if (tempDistance < distance) {
                     distance = tempDistance;
                 }
@@ -105,20 +98,20 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
         return distance;
     }
 
-    protected float getSelectionPos(SelectionDetail sel) {
-        return sel.yPx;
+    protected float getHighlightPos(Highlight h) {
+        return h.getYPx();
     }
 
     /**
-     * Returns a list of SelectionDetail objects representing the entries closest to the given xVal.
+     * Returns a list of Highlight objects representing the entries closest to the given xVal.
      * The returned list contains two objects per DataSet (closest rounding up, closest rounding down).
      *
      * @param xVal
      * @return
      */
-    protected List<SelectionDetail> getSelectionDetailsAtXPos(float xVal) {
+    protected List<Highlight> getHighlightsAtXPos(float xVal) {
 
-        List<SelectionDetail> vals = new ArrayList<SelectionDetail>();
+        List<Highlight> vals = new ArrayList<Highlight>();
 
         BarLineScatterCandleBubbleData data = getData();
 
@@ -133,15 +126,15 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
             if (!dataSet.isHighlightEnabled())
                 continue;
 
-            vals.add(getDetail(dataSet, i, xVal, DataSet.Rounding.UP));
-            vals.add(getDetail(dataSet, i, xVal, DataSet.Rounding.DOWN));
+            vals.add(buildHighlight(dataSet, i, xVal, DataSet.Rounding.UP));
+            vals.add(buildHighlight(dataSet, i, xVal, DataSet.Rounding.DOWN));
         }
 
         return vals;
     }
 
     /**
-     * Returns the SelectionDetail object corresponding to the selected xValue and dataSetIndex.
+     * Returns the Highlight object corresponding to the selected xValue and dataSetIndex.
      *
      * @param set
      * @param dataSetIndex
@@ -149,7 +142,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      * @param rounding
      * @return
      */
-    protected SelectionDetail getDetail(IDataSet set, int dataSetIndex, float xVal, DataSet.Rounding rounding) {
+    protected Highlight buildHighlight(IDataSet set, int dataSetIndex, float xVal, DataSet.Rounding rounding) {
 
         final Entry e = set.getEntryForXPos(xVal, rounding);
 
@@ -158,36 +151,37 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
 
         PointD pixels = mChart.getTransformer(set.getAxisDependency()).getPixelsForValues(e.getX(), e.getY());
 
-        return new SelectionDetail((float) pixels.x, (float) pixels.y, e.getX(), e.getY(), dataSetIndex, set);
+        return new Highlight(e.getX(), e.getY(), (float) pixels.x, (float) pixels.y, dataSetIndex, set.getAxisDependency());
     }
 
     /**
-     * Returns the SelectionDetail of the DataSet that contains the closest value on the
+     * Returns the Highlight of the DataSet that contains the closest value on the
      * y-axis.
      *
-     * @param closestValues contains two values per DataSet closest to the selected x-position (determined by rounding up and
-     *                      down)
+     * @param closestValues        contains two Highlight objects per DataSet closest to the selected x-position (determined by
+     *                             rounding up an down)
      * @param x
      * @param y
-     * @param axis          the closest axis
+     * @param axis                 the closest axis
+     * @param minSelectionDistance
      * @return
      */
-    public SelectionDetail getClosestSelectionDetailByPixel(List<SelectionDetail> closestValues, float x, float y,
-                                                            YAxis.AxisDependency axis, float minSelectionDistance) {
+    public Highlight getClosestHighlightByPixel(List<Highlight> closestValues, float x, float y,
+                                                YAxis.AxisDependency axis, float minSelectionDistance) {
 
-        SelectionDetail closest = null;
+        Highlight closest = null;
         float distance = minSelectionDistance;
 
         for (int i = 0; i < closestValues.size(); i++) {
 
-            SelectionDetail sel = closestValues.get(i);
+            Highlight high = closestValues.get(i);
 
-            if (axis == null || sel.dataSet.getAxisDependency() == axis) {
+            if (axis == null || high.getAxis() == axis) {
 
-                float cDistance = getDistance(x, y, sel.xPx, sel.yPx);
+                float cDistance = getDistance(x, y, high.getXPx(), high.getYPx());
 
                 if (cDistance < distance) {
-                    closest = sel;
+                    closest = high;
                     distance = cDistance;
                 }
             }

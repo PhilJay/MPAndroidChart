@@ -11,7 +11,6 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.charts.PieRadarChartBase;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.utils.SelectionDetail;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
@@ -183,7 +182,7 @@ public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChart
 
             } else {
 
-                List<SelectionDetail> valsAtIndex = mChart.getSelectionDetailsAtIndex(index);
+                List<Highlight> valsAtIndex = mChart.getSelectionDetailsAtIndex(index);
 
                 int dataSetIndex = 0;
 
