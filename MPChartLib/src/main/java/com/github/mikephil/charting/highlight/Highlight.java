@@ -14,6 +14,12 @@ public class Highlight {
     /** the y-value of the highlighted value */
     private float mY = Float.NaN;
 
+    /** the x-pixel of the highlight */
+    private float mXPx;
+
+    /** the y-pixel of the highlight */
+    private float mYPx;
+
     /** the index of the data object - in case it refers to more than one */
     private int mDataIndex;
 
@@ -40,20 +46,6 @@ public class Highlight {
         this.mDataIndex = dataIndex;
         this.mDataSetIndex = dataSetIndex;
     }
-    /**
-     * Constructor, only used for stacked-barchart.
-     * 
-     * @param x the x-value of the highlighted value on the x-axis
-     * @param y the y-value of the highlighted value
-     * @param dataIndex the index of the Data the highlighted value belongs to
-     * @param dataSetIndex the index of the DataSet the highlighted value belongs to
-     * @param stackIndex references which value of a stacked-bar entry has been
-     *            selected
-     */
-    public Highlight(float x, float y, int dataIndex, int dataSetIndex, int stackIndex) {
-        this(x, y, dataIndex, dataSetIndex);
-        mStackIndex = stackIndex;
-    }
 
     /**
      * Constructor, only used for stacked-barchart.
@@ -67,7 +59,8 @@ public class Highlight {
      * @param range the range the selected stack-value is in
      */
     public Highlight(float x, float y, int dataIndex, int dataSetIndex, int stackIndex, Range range) {
-        this(x, y, dataIndex, dataSetIndex, stackIndex);
+        this(x, y, dataIndex, dataSetIndex);
+        this.mStackIndex = stackIndex;
         this.mRange = range;
     }
 
@@ -78,7 +71,7 @@ public class Highlight {
      * @param dataSetIndex the index of the DataSet the highlighted value belongs to
      */
     public Highlight(float x, int dataSetIndex) {
-        this(x, Float.NaN, 0, dataSetIndex, -1);
+        this(x, Float.NaN, 0, dataSetIndex);
     }
 
     /**

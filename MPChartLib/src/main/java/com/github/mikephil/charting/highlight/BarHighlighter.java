@@ -2,6 +2,7 @@ package com.github.mikephil.charting.highlight;
 
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.PointD;
@@ -40,8 +41,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
                 selectionDetail.xValue,
                 selectionDetail.yValue,
                 selectionDetail.dataIndex,
-                selectionDetail.dataSetIndex,
-                -1);
+                selectionDetail.dataSetIndex);
     }
 
     /**
@@ -151,5 +151,10 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
     @Override
     protected float getDistance(float x1, float y1, float x2, float y2) {
         return Math.abs(x1 - x2);
+    }
+
+    @Override
+    protected BarLineScatterCandleBubbleData getData() {
+        return mChart.getBarData();
     }
 }

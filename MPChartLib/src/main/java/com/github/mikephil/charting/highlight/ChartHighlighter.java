@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData;
+import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
@@ -69,8 +71,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
 
         YAxis.AxisDependency axis = leftAxisMinDist < rightAxisMinDist ? YAxis.AxisDependency.LEFT : YAxis.AxisDependency.RIGHT;
 
-        SelectionDetail detail = getClosestSelectionDetailByPixel(closestValues, x, y, axis, mChart
-                .getMaxHighlightDistance());
+        SelectionDetail detail = getClosestSelectionDetailByPixel(closestValues, x, y, axis, mChart.getMaxHighlightDistance());
 
         return detail;
     }
@@ -119,11 +120,14 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
 
         List<SelectionDetail> vals = new ArrayList<SelectionDetail>();
 
-        if (mChart.getData() == null) return vals;
+        BarLineScatterCandleBubbleData data = getData();
 
-        for (int i = 0, dataSetCount = mChart.getData().getDataSetCount(); i < dataSetCount; i++) {
+        if (data == null)
+            return vals;
 
-            IDataSet dataSet = mChart.getData().getDataSetByIndex(i);
+        for (int i = 0, dataSetCount = data.getDataSetCount(); i < dataSetCount; i++) {
+
+            IDataSet dataSet = data.getDataSetByIndex(i);
 
             // dont include datasets that cannot be highlighted
             if (!dataSet.isHighlightEnabled())
@@ -203,5 +207,9 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      */
     protected float getDistance(float x1, float y1, float x2, float y2) {
         return (float) Math.hypot(x1 - x2, y1 - y2);
+    }
+
+    protected BarLineScatterCandleBubbleData getData() {
+        return mChart.getData();
     }
 }

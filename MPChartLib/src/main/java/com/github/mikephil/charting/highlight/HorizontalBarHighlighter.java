@@ -46,8 +46,7 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 				selectionDetail.xValue,
 				selectionDetail.yValue,
 				selectionDetail.dataIndex,
-				selectionDetail.dataSetIndex,
-				-1);
+				selectionDetail.dataSetIndex);
 	}
 
 	@Override

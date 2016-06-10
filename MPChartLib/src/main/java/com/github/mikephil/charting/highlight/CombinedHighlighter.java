@@ -29,7 +29,11 @@ public class CombinedHighlighter extends ChartHighlighter<BarLineScatterCandleBu
         Highlight h1 = super.getHighlight(x, y);
         Highlight h2 = barHighlighter.getHighlight(x, y);
 
-        return h1;
+        return getClosest(x, y, h1, h2);
+    }
+
+    protected Highlight getClosest(float x, float y, Highlight... highs) {
+        return null;
     }
 
     @Override
