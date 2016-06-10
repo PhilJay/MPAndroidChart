@@ -1,17 +1,11 @@
 package com.github.mikephil.charting.highlight;
 
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.SelectionDetail;
-import com.github.mikephil.charting.utils.Utils;
-
-import java.util.List;
 
 /**
  * Created by Philipp Jahoda on 22/07/15.
@@ -60,11 +54,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
      * @param yValue
      * @return
      */
-    protected Highlight getStackedHighlight(
-            SelectionDetail selectionDetail,
-            IBarDataSet set,
-            float xVal,
-            double yValue) {
+    protected Highlight getStackedHighlight(SelectionDetail selectionDetail, IBarDataSet set, float xVal, double yValue) {
 
         BarEntry entry = set.getEntryForXPos(xVal);
 
@@ -159,7 +149,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
     }
 
     @Override
-    protected float getDistance(float x, float y, float selX, float selY) {
-        return Math.abs(x - selX);
+    protected float getDistance(float x1, float y1, float x2, float y2) {
+        return Math.abs(x1 - x2);
     }
 }

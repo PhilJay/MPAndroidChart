@@ -51,7 +51,7 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 	}
 
 	@Override
-	protected SelectionDetail getDetails(IDataSet set, int dataSetIndex, float xVal, DataSet.Rounding rounding) {
+	protected SelectionDetail getDetail(IDataSet set, int dataSetIndex, float xVal, DataSet.Rounding rounding) {
 
 		final Entry e = set.getEntryForXPos(xVal, rounding);
 

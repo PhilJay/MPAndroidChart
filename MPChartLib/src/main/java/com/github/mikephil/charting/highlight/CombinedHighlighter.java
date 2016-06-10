@@ -19,14 +19,8 @@ public class CombinedHighlighter extends ChartHighlighter<BarLineScatterCandleBu
         super(chart);
     }
 
-    /**
-     * Returns a list of SelectionDetail object corresponding to the given xValue.
-     *
-     * @param xVal
-     * @return
-     */
     @Override
-    protected List<SelectionDetail> getSelectionDetailsAtIndex(float xVal) {
+    protected List<SelectionDetail> getSelectionDetailsAtXPos(float xVal) {
 
         List<SelectionDetail> vals = new ArrayList<SelectionDetail>();
 
@@ -45,11 +39,11 @@ public class CombinedHighlighter extends ChartHighlighter<BarLineScatterCandleBu
                 if (!dataSet.isHighlightEnabled())
                     continue;
 
-                SelectionDetail s1 = getDetails(dataSet, j, xVal, DataSet.Rounding.UP);
+                SelectionDetail s1 = getDetail(dataSet, j, xVal, DataSet.Rounding.UP);
                 s1.dataIndex = i;
                 vals.add(s1);
 
-                SelectionDetail s2 = getDetails(dataSet, j, xVal, DataSet.Rounding.DOWN);
+                SelectionDetail s2 = getDetail(dataSet, j, xVal, DataSet.Rounding.DOWN);
                 s2.dataIndex = i;
                 vals.add(s2);
             }
