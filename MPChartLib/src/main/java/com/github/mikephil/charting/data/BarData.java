@@ -45,7 +45,8 @@ public class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
 
     /**
      * Groups all BarDataSet objects this data object holds together by modifying the x-position of their entries.
-     * Leaves space as specified by the parameters.
+     * Previously set x-positions of entries will be overwritten. Leaves space between bars and groups as specified
+     * by the parameters.
      * Do not forget to call notifyDataSetChanged() on your BarChart object after calling this method.
      *
      * @param fromX      the starting point on the x-axis where the grouping should begin

@@ -132,21 +132,36 @@ public class CombinedChartActivity extends DemoBase {
 
     private BarData generateBarData() {
 
-        BarData d = new BarData();
-        d.setBarWidth(0.9f);
+        ArrayList<BarEntry> entries1 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> entries2 = new ArrayList<BarEntry>();
 
-        ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
+        for (int index = 0; index < itemcount; index++) {
+            entries1.add(new BarEntry(0, getRandom(25, 25)));
+            entries2.add(new BarEntry(0, getRandom(25, 25)));
+        }
 
-        for (int index = 0; index < itemcount; index++)
-            entries.add(new BarEntry(index + 0.5f, getRandom(25, 25)));
+        BarDataSet set1 = new BarDataSet(entries1, "Bar 1");
+        set1.setColor(Color.rgb(60, 220, 78));
+        set1.setValueTextColor(Color.rgb(60, 220, 78));
+        set1.setValueTextSize(10f);
+        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
 
-        BarDataSet set = new BarDataSet(entries, "Bar DataSet");
-        set.setColor(Color.rgb(60, 220, 78));
-        set.setValueTextColor(Color.rgb(60, 220, 78));
-        set.setValueTextSize(10f);
-        d.addDataSet(set);
+        BarDataSet set2 = new BarDataSet(entries2, "Bar 2");
+        set2.setColor(Color.rgb(61, 165, 255));
+        set2.setValueTextColor(Color.rgb(61, 165, 255));
+        set2.setValueTextSize(10f);
+        set2.setAxisDependency(YAxis.AxisDependency.LEFT);
 
-        set.setAxisDependency(YAxis.AxisDependency.LEFT);
+        float groupSpace = 0.06f;
+        float barSpace = 0.02f; // x2 dataset
+        float barWidth = 0.45f; // x2 dataset
+        // (0.45 + 0.02) * 2 + 0.06 = 1.00 -> interval per "group"
+
+        BarData d = new BarData(set1, set2);
+        d.setBarWidth(barWidth);
+
+        // make this BarData object grouped
+        d.groupBars(0, groupSpace, barSpace); // start at x = 0
 
         return d;
     }
@@ -198,7 +213,7 @@ public class CombinedChartActivity extends DemoBase {
 
         for (int index = 0; index < itemcount; index++) {
             float y = getRandom(10, 105);
-            float size = getRandom(50, 105);
+            float size = getRandom(100, 105);
             entries.add(new BubbleEntry(index + 0.5f, y, size));
         }
 
