@@ -8,7 +8,6 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
-import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;

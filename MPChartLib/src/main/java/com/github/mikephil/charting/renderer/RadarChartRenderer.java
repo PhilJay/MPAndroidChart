@@ -139,14 +139,6 @@ public class RadarChartRenderer extends LineRadarRenderer {
         // draw the line (only if filled is disabled or alpha is below 255)
         if (!dataSet.isDrawFilledEnabled() || dataSet.getFillAlpha() < 255)
             c.drawPath(surface, mRenderPaint);
-//
-//        // draw filled
-//        if (dataSet.isDrawFilledEnabled()) {
-//            mRenderPaint.setStyle(Paint.Style.FILL);
-//            mRenderPaint.setAlpha(dataSet.getFillAlpha());
-//            c.drawPath(surface, mRenderPaint);
-//            mRenderPaint.setAlpha(255);
-//        }
     }
 
     @Override

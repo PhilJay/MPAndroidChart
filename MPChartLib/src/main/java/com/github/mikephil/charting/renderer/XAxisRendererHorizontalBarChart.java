@@ -11,7 +11,6 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
-import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.utils.FSize;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.Transformer;

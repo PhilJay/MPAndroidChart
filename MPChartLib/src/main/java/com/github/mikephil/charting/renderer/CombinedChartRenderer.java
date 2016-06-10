@@ -9,8 +9,6 @@ import com.github.mikephil.charting.charts.CombinedChart.DrawOrder;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.lang.ref.WeakReference;

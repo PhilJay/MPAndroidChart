@@ -4,7 +4,6 @@ package com.github.mikephil.charting.renderer;
 import android.graphics.Canvas;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
-import android.graphics.Point;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.buffer.ScatterBuffer;
