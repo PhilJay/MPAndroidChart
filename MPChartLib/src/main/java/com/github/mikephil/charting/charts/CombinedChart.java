@@ -73,7 +73,7 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
     protected void init() {
         super.init();
 
-        setHighlighter(new CombinedHighlighter(this));
+        setHighlighter(new CombinedHighlighter(this, this));
 
         // Old default behaviour
         setHighlightFullBarEnabled(true);

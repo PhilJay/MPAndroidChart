@@ -187,7 +187,6 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         return mData;
     }
 
-
     /**
      * Adds half of the bar width to each side of the x-axis range in order to allow the bars of the barchart to be
      * fully displayed.

@@ -3,6 +3,7 @@ package com.github.mikephil.charting.highlight;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider;
 import com.github.mikephil.charting.utils.SelectionDetail;
@@ -13,10 +14,22 @@ import java.util.List;
 /**
  * Created by Philipp Jahoda on 12/09/15.
  */
-public class CombinedHighlighter extends ChartHighlighter<BarLineScatterCandleBubbleDataProvider> {
+public class CombinedHighlighter extends ChartHighlighter<BarLineScatterCandleBubbleDataProvider> implements Highlighter {
 
-    public CombinedHighlighter(BarLineScatterCandleBubbleDataProvider chart) {
+    protected BarHighlighter barHighlighter;
+
+    public CombinedHighlighter(BarLineScatterCandleBubbleDataProvider chart, BarDataProvider barChart) {
         super(chart);
+        barHighlighter = new BarHighlighter(barChart);
+    }
+
+    @Override
+    public Highlight getHighlight(float x, float y) {
+
+        Highlight h1 = super.getHighlight(x, y);
+        Highlight h2 = barHighlighter.getHighlight(x, y);
+
+        return h1;
     }
 
     @Override

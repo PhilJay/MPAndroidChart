@@ -14,7 +14,7 @@ import com.github.mikephil.charting.utils.SelectionDetail;
 /**
  * Created by Philipp Jahoda on 21/07/15.
  */
-public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> {
+public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> implements Highlighter {
 
     /**
      * instance of the data-provider
@@ -25,13 +25,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
         this.mChart = chart;
     }
 
-    /**
-     * Returns a Highlight object corresponding to the given x- and y- touch positions in pixels.
-     *
-     * @param x
-     * @param y
-     * @return
-     */
+    @Override
     public Highlight getHighlight(float x, float y) {
 
         float xVal = (float) getValsForTouch(x, y).x;

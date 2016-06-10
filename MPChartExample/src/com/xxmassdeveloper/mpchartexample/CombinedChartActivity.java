@@ -36,6 +36,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CombinedChartActivity extends DemoBase {
 
@@ -137,7 +138,9 @@ public class CombinedChartActivity extends DemoBase {
 
         for (int index = 0; index < itemcount; index++) {
             entries1.add(new BarEntry(0, getRandom(25, 25)));
-            entries2.add(new BarEntry(0, getRandom(25, 25)));
+
+            // stacked
+            entries2.add(new BarEntry(0, new float[]{getRandom(13, 12), getRandom(13, 12)}));
         }
 
         BarDataSet set1 = new BarDataSet(entries1, "Bar 1");
@@ -147,7 +150,7 @@ public class CombinedChartActivity extends DemoBase {
         set1.setAxisDependency(YAxis.AxisDependency.LEFT);
 
         BarDataSet set2 = new BarDataSet(entries2, "Bar 2");
-        set2.setColor(Color.rgb(61, 165, 255));
+        set2.setColors(new int[]{Color.rgb(61, 165, 255), Color.rgb(23, 197, 255)});
         set2.setValueTextColor(Color.rgb(61, 165, 255));
         set2.setValueTextSize(10f);
         set2.setAxisDependency(YAxis.AxisDependency.LEFT);

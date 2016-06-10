@@ -37,6 +37,7 @@ import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.ChartHighlighter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.highlight.Highlighter;
 import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.ChartTouchListener;
@@ -162,7 +163,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     protected DataRenderer mRenderer;
 
-    protected ChartHighlighter mHighlighter;
+    protected Highlighter mHighlighter;
 
     /**
      * object that manages the bounds and drawing constraints of the chart
@@ -1446,7 +1447,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             mRenderer = renderer;
     }
 
-    public ChartHighlighter getHighlighter() {
+    public Highlighter getHighlighter() {
         return mHighlighter;
     }
 
