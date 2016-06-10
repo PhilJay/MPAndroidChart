@@ -55,23 +55,23 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
     /**
      * color for open == close
      */
-    protected int mNeutralColor = ColorTemplate.COLOR_NONE;
+    protected int mNeutralColor = ColorTemplate.COLOR_SKIP;
 
     /**
      * color for open < close
      */
-    protected int mIncreasingColor = ColorTemplate.COLOR_NONE;
+    protected int mIncreasingColor = ColorTemplate.COLOR_SKIP;
 
     /**
      * color for open > close
      */
-    protected int mDecreasingColor = ColorTemplate.COLOR_NONE;
+    protected int mDecreasingColor = ColorTemplate.COLOR_SKIP;
 
     /**
      * shadow line color, set -1 for backward compatibility and uses default
      * color
      */
-    protected int mShadowColor = ColorTemplate.COLOR_NONE;
+    protected int mShadowColor = ColorTemplate.COLOR_SKIP;
 
     public CandleDataSet(List<CandleEntry> yVals, String label) {
         super(yVals, label);

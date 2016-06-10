@@ -2,6 +2,7 @@
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Typeface;
@@ -124,10 +125,15 @@ public class LegendRenderer extends Renderer {
                         labels.add(pds.getLabel());
                     }
 
-                } else if(dataSet instanceof ICandleDataSet && ((ICandleDataSet) dataSet).getDecreasingColor() != ColorTemplate.COLOR_NONE) {
+                } else if (dataSet instanceof ICandleDataSet && ((ICandleDataSet) dataSet).getDecreasingColor() !=
+                        ColorTemplate.COLOR_NONE) {
 
-                    colors.add(((ICandleDataSet) dataSet).getDecreasingColor());
-                    colors.add(((ICandleDataSet) dataSet).getIncreasingColor());
+                    int decreasingColor = ((ICandleDataSet) dataSet).getDecreasingColor();
+                    colors.add(decreasingColor);
+
+                    int increasingColor = ((ICandleDataSet) dataSet).getIncreasingColor();
+                    colors.add(increasingColor);
+
                     labels.add(null);
                     labels.add(dataSet.getLabel());
 
@@ -252,7 +258,7 @@ public class LegendRenderer extends Renderer {
                             : mLegend.mNeededWidth / 2.0 - xoffset);
                 }
 
-            break;
+                break;
         }
 
         switch (orientation) {
@@ -288,8 +294,8 @@ public class LegendRenderer extends Renderer {
                     }
 
                     if (posX == originPosX &&
-                        horizontalAlignment == Legend.LegendHorizontalAlignment.CENTER &&
-                        lineIndex < calculatedLineSizes.length) {
+                            horizontalAlignment == Legend.LegendHorizontalAlignment.CENTER &&
+                            lineIndex < calculatedLineSizes.length) {
                         posX += (direction == Legend.LegendDirection.RIGHT_TO_LEFT
                                 ? calculatedLineSizes[lineIndex].width
                                 : -calculatedLineSizes[lineIndex].width) / 2.f;
@@ -311,7 +317,8 @@ public class LegendRenderer extends Renderer {
 
                     if (!isStacked) {
                         if (drawingForm)
-                            posX += direction == Legend.LegendDirection.RIGHT_TO_LEFT ? -formToTextSpace : formToTextSpace;
+                            posX += direction == Legend.LegendDirection.RIGHT_TO_LEFT ? -formToTextSpace :
+                                    formToTextSpace;
 
                         if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
                             posX -= calculatedLabelSizes[i].width;
