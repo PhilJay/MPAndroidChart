@@ -8,7 +8,8 @@ import android.util.Log;
 import android.view.View;
 
 /**
- * Class that contains information about the charts current viewport settings, including offsets, scale & translation levels, ...
+ * Class that contains information about the charts current viewport settings, including offsets, scale & translation
+ * levels, ...
  *
  * @author Philipp Jahoda
  */
@@ -171,6 +172,15 @@ public class ViewPortHandler {
 
     public float getChartWidth() {
         return mChartWidth;
+    }
+
+    /**
+     * Returns the smallest extension of the content rect (width or height).
+     *
+     * @return
+     */
+    public float getSmallestContentExtension() {
+        return Math.min(mContentRect.width(), mContentRect.height());
     }
 
     /**

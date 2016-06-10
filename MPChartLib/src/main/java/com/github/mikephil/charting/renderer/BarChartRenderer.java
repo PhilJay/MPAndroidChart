@@ -235,8 +235,7 @@ public class BarChartRenderer extends DataRenderer {
 
                         drawValue(c, dataSet.getValueFormatter(), val, entry, i, x,
                                 val >= 0 ? (buffer.buffer[j + 1] + posOffset) : (buffer.buffer[j + 3] + negOffset),
-                                dataSet.getValueTextColor
-                                        (j / 4));
+                                dataSet.getValueTextColor(j / 4));
                     }
 
                     // if we have stacks

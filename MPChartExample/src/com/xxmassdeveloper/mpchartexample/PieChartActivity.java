@@ -163,7 +163,8 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
                 break;
             }
             case R.id.actionToggleSpin: {
-                mChart.spin(1000, mChart.getRotationAngle(), mChart.getRotationAngle() + 360, Easing.EasingOption.EaseInCubic);
+                mChart.spin(1000, mChart.getRotationAngle(), mChart.getRotationAngle() + 360, Easing.EasingOption
+                        .EaseInCubic);
                 break;
             }
         }
@@ -183,16 +184,16 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         float mult = range;
 
-        ArrayList<PieEntry> yVals1 = new ArrayList<PieEntry>();
+        ArrayList<PieEntry> values = new ArrayList<PieEntry>();
 
         // IMPORTANT: In a PieChart, no values (Entry) should have the same
         // xIndex (even if from different DataSets), since no values can be
         // drawn above each other.
         for (int i = 0; i < count + 1; i++) {
-            yVals1.add(new PieEntry((float) ((Math.random() * mult) + mult / 5), mParties[i % mParties.length]));
+            values.add(new PieEntry((float) ((Math.random() * mult) + mult / 5), mParties[i % mParties.length]));
         }
 
-        PieDataSet dataSet = new PieDataSet(yVals1, "Election Results");
+        PieDataSet dataSet = new PieDataSet(values, "Election Results");
         dataSet.setSliceSpace(3f);
         dataSet.setSelectionShift(5f);
 

@@ -178,6 +178,22 @@ public class PieChartRenderer extends DataRenderer {
         return spacedRadius;
     }
 
+    /**
+     * Calculates the sliceSpace to use based on visible values and their size compared to the set sliceSpace.
+     *
+     * @param dataSet
+     * @return
+     */
+    protected float getSliceSpace(IPieDataSet dataSet) {
+
+        float spaceSizeRatio = dataSet.getSliceSpace() / mViewPortHandler.getSmallestContentExtension();
+        float minValueRatio = dataSet.getYMin() / mChart.getData().getYValueSum() * 2;
+
+        float sliceSpace = spaceSizeRatio > minValueRatio ? 0f : dataSet.getSliceSpace();
+
+        return sliceSpace;
+    }
+
     protected void drawDataSet(Canvas c, IPieDataSet dataSet) {
 
         float angle = 0;
@@ -205,7 +221,7 @@ public class PieChartRenderer extends DataRenderer {
             }
         }
 
-        final float sliceSpace = visibleAngleCount <= 1 ? 0.f : dataSet.getSliceSpace();
+        final float sliceSpace = visibleAngleCount <= 1 ? 0.f : getSliceSpace(dataSet);
 
         for (int j = 0; j < entryCount; j++) {
 
@@ -411,6 +427,8 @@ public class PieChartRenderer extends DataRenderer {
 
             float offset = Utils.convertDpToPixel(5.f);
 
+            final float sliceSpace = getSliceSpace(dataSet);
+
             for (int j = 0; j < entryCount; j++) {
 
                 PieEntry entry = dataSet.getEntryForIndex(j);
@@ -421,7 +439,6 @@ public class PieChartRenderer extends DataRenderer {
                     angle = absoluteAngles[xIndex - 1] * phaseX;
 
                 final float sliceAngle = drawAngles[xIndex];
-                final float sliceSpace = dataSet.getSliceSpace();
                 final float sliceSpaceMiddleAngle = sliceSpace / (Utils.FDEG2RAD * labelRadius);
 
                 // offset needed to center the drawn text in the slice
