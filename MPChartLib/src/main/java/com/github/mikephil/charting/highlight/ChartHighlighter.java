@@ -1,15 +1,15 @@
 package com.github.mikephil.charting.highlight;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.PointD;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Philipp Jahoda on 21/07/15.
@@ -57,7 +57,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      */
     protected Highlight getHighlightForX(float xVal, float x, float y) {
 
-        List<Highlight> closestValues = getHighlightsAtXPos(xVal);
+        List<Highlight> closestValues = getHighlightsAtXPos(xVal, x, y);
 
         float leftAxisMinDist = getMinimumDistance(closestValues, y, YAxis.AxisDependency.LEFT);
         float rightAxisMinDist = getMinimumDistance(closestValues, y, YAxis.AxisDependency.RIGHT);
@@ -106,10 +106,12 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      * Returns a list of Highlight objects representing the entries closest to the given xVal.
      * The returned list contains two objects per DataSet (closest rounding up, closest rounding down).
      *
-     * @param xVal
+     * @param xVal the transformed x-value of the x-touch position
+     * @param x    touch position
+     * @param y    touch position
      * @return
      */
-    protected List<Highlight> getHighlightsAtXPos(float xVal) {
+    protected List<Highlight> getHighlightsAtXPos(float xVal, float x, float y) {
 
         List<Highlight> vals = new ArrayList<Highlight>();
 

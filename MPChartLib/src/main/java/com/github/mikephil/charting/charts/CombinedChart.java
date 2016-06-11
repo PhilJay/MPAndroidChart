@@ -14,6 +14,7 @@ import com.github.mikephil.charting.highlight.CombinedHighlighter;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
 import com.github.mikephil.charting.interfaces.dataprovider.CandleDataProvider;
+import com.github.mikephil.charting.interfaces.dataprovider.CombinedDataProvider;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.dataprovider.ScatterDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
@@ -25,8 +26,7 @@ import com.github.mikephil.charting.renderer.CombinedChartRenderer;
  *
  * @author Philipp Jahoda
  */
-public class CombinedChart extends BarLineChartBase<CombinedData> implements LineDataProvider,
-        BarDataProvider, ScatterDataProvider, CandleDataProvider, BubbleDataProvider {
+public class CombinedChart extends BarLineChartBase<CombinedData> implements CombinedDataProvider {
 
 //    /**
 //     * flag that enables or disables the highlighting arrow
@@ -83,10 +83,16 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
     }
 
     @Override
+    public CombinedData getCombinedData() {
+        return mData;
+    }
+
+    @Override
     public void setData(CombinedData data) {
         mData = null;
         mRenderer = null;
         super.setData(data);
+        setHighlighter(new CombinedHighlighter(this, this));
         mRenderer = new CombinedChartRenderer(this, mAnimator, mViewPortHandler);
         mRenderer.initBuffers();
     }

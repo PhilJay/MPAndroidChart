@@ -49,7 +49,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
      * @param yVal
      * @return
      */
-    protected Highlight getStackedHighlight(Highlight high, IBarDataSet set, float xVal, float yVal) {
+    public Highlight getStackedHighlight(Highlight high, IBarDataSet set, float xVal, float yVal) {
 
         BarEntry entry = set.getEntryForXPos(xVal);
 
@@ -65,15 +65,18 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
             if (ranges.length > 0) {
                 int stackIndex = getClosestStackIndex(ranges, yVal);
 
+                Range range = ranges[stackIndex];
+
+                PointD pixels = mChart.getTransformer(set.getAxisDependency()).getPixelsForValues(high.getX(), range.to);
 
                 Highlight stackedHigh = new Highlight(
                         entry.getX(),
-                        entry.getPositiveSum() - entry.getNegativeSum(),
-                        high.getXPx(),
-                        high.getYPx(),
+                        entry.getY(),
+                        (float) pixels.x,
+                        (float) pixels.y,
                         high.getDataSetIndex(),
                         stackIndex,
-                        ranges[stackIndex],
+                        range,
                         high.getAxis()
                 );
 

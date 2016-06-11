@@ -149,7 +149,8 @@ public class CombinedChartActivity extends DemoBase {
         set1.setValueTextSize(10f);
         set1.setAxisDependency(YAxis.AxisDependency.LEFT);
 
-        BarDataSet set2 = new BarDataSet(entries2, "Bar 2");
+        BarDataSet set2 = new BarDataSet(entries2, "");
+        set2.setStackLabels(new String[]{"Stack 1", "Stack 2"});
         set2.setColors(new int[]{Color.rgb(61, 165, 255), Color.rgb(23, 197, 255)});
         set2.setValueTextColor(Color.rgb(61, 165, 255));
         set2.setValueTextSize(10f);

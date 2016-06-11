@@ -33,7 +33,7 @@ public class Highlight {
     /**
      * the index of the data object - in case it refers to more than one
      */
-    private int mDataIndex;
+    private int mDataIndex = -1;
 
     /**
      * the index of the dataset the highlighted value is in

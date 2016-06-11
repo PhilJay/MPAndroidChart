@@ -97,6 +97,10 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
         return data;
     }
 
+    public ChartData getDataByIndex(int index) {
+        return getAllData().get(index);
+    }
+
     @Override
     public void notifyDataChanged() {
         if (mLineData != null)
@@ -144,5 +148,9 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
 
             return null;
         }
+    }
+
+    public int getDataIndex(ChartData data) {
+        return getAllData().indexOf(data);
     }
 }
