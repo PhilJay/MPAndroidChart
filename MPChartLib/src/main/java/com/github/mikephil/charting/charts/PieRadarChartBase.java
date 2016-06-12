@@ -22,9 +22,6 @@ import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.PieRadarChartTouchListener;
 import com.github.mikephil.charting.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Baseclass of PieChart and RadarChart.
  *
@@ -291,7 +288,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
      * @param angle  in degrees, converted to radians internally
      * @return
      */
-    protected PointF getPosition(PointF center, float dist, float angle) {
+    public PointF getPosition(PointF center, float dist, float angle) {
 
         PointF p = new PointF((float) (center.x + dist * Math.cos(Math.toRadians(angle))),
                 (float) (center.y + dist * Math.sin(Math.toRadians(angle))));
@@ -454,33 +451,6 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
     public float getYChartMin() {
         // TODO Auto-generated method stub
         return 0;
-    }
-
-    /**
-     * Returns an array of Highlight objects for the given x-index. The Highlight
-     * objects give information about the value at the selected index and the
-     * DataSet it belongs to. INFORMATION: This method does calculations at
-     * runtime. Do not over-use in performance critical situations.
-     *
-     * @return
-     */
-    public List<Highlight> getSelectionDetailsAtIndex(int xIndex) {
-
-        List<Highlight> vals = new ArrayList<Highlight>();
-
-        for (int i = 0; i < mData.getDataSetCount(); i++) {
-
-            IDataSet<?> dataSet = mData.getDataSetByIndex(i);
-
-            // extract all y-values from all DataSets at the given x-index
-            final float yVal = dataSet.getYValueForXValue(xIndex);
-            if (Float.isNaN(yVal))
-                continue;
-
-            vals.add(new Highlight(0f, yVal, 0f, 0f, i, dataSet.getAxisDependency()));
-        }
-
-        return vals;
     }
 
     /**

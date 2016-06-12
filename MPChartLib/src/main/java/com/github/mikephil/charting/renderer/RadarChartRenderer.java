@@ -239,14 +239,6 @@ public class RadarChartRenderer extends LineRadarRenderer {
     @Override
     public void drawHighlighted(Canvas c, Highlight[] indices) {
 
-        float phaseX = mAnimator.getPhaseX();
-        float phaseY = mAnimator.getPhaseY();
-
-        float sliceangle = mChart.getSliceAngle();
-        float factor = mChart.getFactor();
-
-        PointF center = mChart.getCenterOffsets();
-
         for (int i = 0; i < indices.length; i++) {
 
             IRadarDataSet set = mChart.getData()
@@ -256,24 +248,8 @@ public class RadarChartRenderer extends LineRadarRenderer {
             if (set == null || !set.isHighlightEnabled())
                 continue;
 
-            // get the index to highlight
-            float x = indices[i].getX();
-
-            Entry e = set.getEntryForXPos(x);
-            if (e == null || e.getX() != x)
-                continue;
-
-            int j = set.getEntryIndex(e);
-            float y = (e.getY() - mChart.getYChartMin());
-
-            if (Float.isNaN(y))
-                continue;
-
-            PointF p = Utils.getPosition(
-                    center,
-                    y * factor * phaseY,
-                    sliceangle * j * phaseX + mChart.getRotationAngle());
-
+            Highlight high = indices[i];
+            PointF p = new PointF(high.getXPx(), high.getYPx());
 
             // draw the lines
             drawHighlightLines(c, p.x, p.y, set);

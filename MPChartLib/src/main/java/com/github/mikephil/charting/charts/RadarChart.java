@@ -13,6 +13,7 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.highlight.RadarHighlighter;
 import com.github.mikephil.charting.renderer.RadarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererRadarChart;
 import com.github.mikephil.charting.renderer.YAxisRendererRadarChart;
@@ -93,6 +94,8 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         mRenderer = new RadarChartRenderer(this, mAnimator, mViewPortHandler);
         mYAxisRenderer = new YAxisRendererRadarChart(mViewPortHandler, mYAxis, this);
         mXAxisRenderer = new XAxisRendererRadarChart(mViewPortHandler, mXAxis, this);
+
+        mHighlighter = new RadarHighlighter(this);
     }
 
     @Override
@@ -103,20 +106,21 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         mXAxis.calculate(0, mData.getMaxEntryCountSet().getEntryCount());
     }
 
-    @Override
-    protected float[] getMarkerPosition(Entry e, Highlight highlight) {
-
-        float angle = getSliceAngle() * e.getX() * mAnimator.getPhaseX() + getRotationAngle();
-        float val = e.getY() * getFactor() * mAnimator.getPhaseY();
-        PointF c = getCenterOffsets();
-
-        PointF p = new PointF((float) (c.x + val * Math.cos(Math.toRadians(angle))),
-                (float) (c.y + val * Math.sin(Math.toRadians(angle))));
-
-        return new float[]{
-                p.x, p.y
-        };
-    }
+//    @Override
+//    protected float[] getMarkerPosition(Highlight highlight) {
+//        return null;
+//
+////        float angle = getSliceAngle() * e.getX() * mAnimator.getPhaseX() + getRotationAngle();
+////        float val = e.getY() * getFactor() * mAnimator.getPhaseY();
+////        PointF c = getCenterOffsets();
+////
+////        PointF p = new PointF((float) (c.x + val * Math.cos(Math.toRadians(angle))),
+////                (float) (c.y + val * Math.sin(Math.toRadians(angle))));
+////
+////        return new float[]{
+////                p.x, p.y
+////        };
+//    }
 
     @Override
     public void notifyDataSetChanged() {
@@ -197,7 +201,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
         float sliceangle = getSliceAngle();
 
-        for (int i = 0; i < mData.getEntryCount(); i++) {
+        for (int i = 0; i < mData.getMaxEntryCountSet().getEntryCount(); i++) {
             if (sliceangle * (i + 1) - sliceangle / 2f > a)
                 return i;
         }

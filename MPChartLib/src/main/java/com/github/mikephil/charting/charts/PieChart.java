@@ -14,6 +14,7 @@ import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.highlight.PieHighlighter;
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.renderer.PieChartRenderer;
 import com.github.mikephil.charting.utils.Utils;
@@ -111,6 +112,8 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
         mRenderer = new PieChartRenderer(this, mAnimator, mViewPortHandler);
         mXAxis = null;
+
+        mHighlighter = new PieHighlighter(this);
     }
 
     @Override
@@ -165,7 +168,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     @Override
-    protected float[] getMarkerPosition(Entry e, Highlight highlight) {
+    protected float[] getMarkerPosition(Highlight highlight) {
 
         PointF center = getCenterCircleBox();
         float r = getRadius();
@@ -233,24 +236,21 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * checks if the given index in the given DataSet is set for highlighting or
-     * not
+     * Checks if the given index is set to be highlighted.
      *
-     * @param xIndex
-     * @param dataSetIndex
+     * @param index
      * @return
      */
-    public boolean needsHighlight(int xIndex, int dataSetIndex) {
+    public boolean needsHighlight(int index) {
 
         // no highlight
-        if (!valuesToHighlight() || dataSetIndex < 0)
+        if (!valuesToHighlight())
             return false;
 
         for (int i = 0; i < mIndicesToHighlight.length; i++)
 
             // check if the xvalue for the given dataset needs highlight
-            if (mIndicesToHighlight[i].getX() == xIndex
-                    && mIndicesToHighlight[i].getDataSetIndex() == dataSetIndex)
+            if ((int) mIndicesToHighlight[i].getX() == index)
                 return true;
 
         return false;

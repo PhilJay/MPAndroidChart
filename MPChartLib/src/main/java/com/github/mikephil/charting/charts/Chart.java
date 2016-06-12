@@ -665,6 +665,24 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
+     * Returns the Highlight object (contains x-index and DataSet index) of the
+     * selected value at the given touch point inside the Line-, Scatter-, or
+     * CandleStick-Chart.
+     *
+     * @param x
+     * @param y
+     * @return
+     */
+    public Highlight getHighlightByTouchPoint(float x, float y) {
+
+        if (mData == null) {
+            Log.e(LOG_TAG, "Can't select by touch. No data set.");
+            return null;
+        } else
+            return getHighlighter().getHighlight(x, y);
+    }
+
+    /**
      * Set a new (e.g. custom) ChartTouchListener NOTE: make sure to
      * setTouchEnabled(true); if you need touch gestures on the chart
      *
@@ -711,7 +729,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             if (e == null || entryIndex > set.getEntryCount() * mAnimator.getPhaseX())
                 continue;
 
-            float[] pos = getMarkerPosition(e, highlight);
+            float[] pos = getMarkerPosition(highlight);
 
             // check bounds
             if (!mViewPortHandler.isInBounds(pos[0], pos[1]))
@@ -736,13 +754,14 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
     /**
      * Returns the actual position in pixels of the MarkerView for the given
-     * Entry in the given DataSet.
+     * Highlight object.
      *
-     * @param e
-     * @param highlight
+     * @param high
      * @return
      */
-    protected abstract float[] getMarkerPosition(Entry e, Highlight highlight);
+    protected float[] getMarkerPosition(Highlight high) {
+        return new float[]{high.getXPx(), high.getYPx()};
+    }
 
     /**
      * ################ ################ ################ ################

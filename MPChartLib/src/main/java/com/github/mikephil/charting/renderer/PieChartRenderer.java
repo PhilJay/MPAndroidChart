@@ -233,8 +233,7 @@ public class PieChartRenderer extends DataRenderer {
             // draw only if the value is greater than zero
             if ((Math.abs(e.getY()) > 0.000001)) {
 
-                if (!mChart.needsHighlight((int) e.getX(),
-                        mChart.getData().getIndexOfDataSet(dataSet))) {
+                if (!mChart.needsHighlight(j)) {
 
                     final boolean accountForSliceSpacing = sliceSpace > 0.f && sliceAngle <= 180.f;
 
@@ -712,16 +711,14 @@ public class PieChartRenderer extends DataRenderer {
         for (int i = 0; i < indices.length; i++) {
 
             // get the index to highlight
-            float x = indices[i].getX();
+            int index = (int) indices[i].getX();
 
-            if (x >= drawAngles.length)
+            if (index >= drawAngles.length)
                 continue;
 
             IPieDataSet set = mChart.getData()
                     .getDataSetByIndex(indices[i]
                             .getDataSetIndex());
-
-            int entryIndex = set.getEntryIndex(x, DataSet.Rounding.CLOSEST);
 
             if (set == null || !set.isHighlightEnabled())
                 continue;
@@ -735,14 +732,14 @@ public class PieChartRenderer extends DataRenderer {
                 }
             }
 
-            if (x == 0)
+            if (index == 0)
                 angle = 0.f;
             else
-                angle = absoluteAngles[entryIndex - 1] * phaseX;
+                angle = absoluteAngles[index - 1] * phaseX;
 
             final float sliceSpace = visibleAngleCount <= 1 ? 0.f : set.getSliceSpace();
 
-            float sliceAngle = drawAngles[entryIndex];
+            float sliceAngle = drawAngles[index];
             float innerRadius = userInnerRadius;
 
             float shift = set.getSelectionShift();
@@ -752,7 +749,7 @@ public class PieChartRenderer extends DataRenderer {
 
             final boolean accountForSliceSpacing = sliceSpace > 0.f && sliceAngle <= 180.f;
 
-            mRenderPaint.setColor(set.getColor(entryIndex));
+            mRenderPaint.setColor(set.getColor(index));
 
             final float sliceSpaceAngleOuter = visibleAngleCount == 1 ?
                     0.f :

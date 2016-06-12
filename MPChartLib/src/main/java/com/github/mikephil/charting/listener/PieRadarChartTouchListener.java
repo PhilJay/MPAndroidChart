@@ -7,14 +7,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 
-import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.charts.PieRadarChartBase;
-import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Touchlistener for the PieChart.
@@ -150,62 +147,8 @@ public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChart
             return false;
         }
 
-        float distance = mChart.distanceToCenter(e.getX(), e.getY());
-
-        // check if a slice was touched
-        if (distance > mChart.getRadius()) {
-
-            // if no slice was touched, highlight nothing
-
-            if (mLastHighlighted == null)
-                mChart.highlightValues(null); // no listener callback
-            else
-                mChart.highlightTouch(null); // listener callback
-
-            mLastHighlighted = null;
-
-        } else {
-
-            float angle = mChart.getAngleForPoint(e.getX(), e.getY());
-
-            if (mChart instanceof PieChart) {
-                angle /= mChart.getAnimator().getPhaseY();
-            }
-
-            int index = mChart.getIndexForAngle(angle);
-
-            // check if the index could be found
-            if (index < 0) {
-
-                mChart.highlightValues(null);
-                mLastHighlighted = null;
-
-            } else {
-
-                List<Highlight> valsAtIndex = mChart.getSelectionDetailsAtIndex(index);
-
-                int dataSetIndex = 0;
-
-                // get the dataset that is closest to the selection (PieChart
-                // only
-                // has one DataSet)
-                if (mChart instanceof RadarChart) {
-
-                    dataSetIndex = Utils.getClosestDataSetIndexByValue(
-                            valsAtIndex,
-                            distance / ((RadarChart) mChart).getFactor(),
-                            null);
-                }
-
-                if (dataSetIndex < 0) {
-                    mChart.highlightValues(null);
-                    mLastHighlighted = null;
-                } else {
-                    Highlight h = new Highlight(index, dataSetIndex);
-                    performHighlight(h, e);
-                }
-            }
-        }
+        Highlight high = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
+        performHighlight(high, e);
 
         return true;
     }

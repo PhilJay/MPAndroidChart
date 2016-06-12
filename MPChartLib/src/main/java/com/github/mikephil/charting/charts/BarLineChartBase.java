@@ -516,23 +516,24 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         prepareValuePxMatrix();
     }
 
-    @Override
-    protected float[] getMarkerPosition(Entry e, Highlight highlight) {
-
-        int dataSetIndex = highlight.getDataSetIndex();
-        float xPos = e.getX();
-        float yPos = e.getY() * mAnimator.getPhaseY();
-
-        // position of the marker depends on selected value index and value
-        float[] pts = new float[]{
-                xPos, yPos
-        };
-
-        getTransformer(mData.getDataSetByIndex(dataSetIndex).getAxisDependency())
-                .pointValuesToPixel(pts);
-
-        return pts;
-    }
+//    @Override
+//    protected float[] getMarkerPosition(Highlight high) {
+//        return new float[] { high.getXPx(), high.getYPx() };
+//
+//        int dataSetIndex = highlight.getDataSetIndex();
+//        float xPos = e.getX();
+//        float yPos = e.getY() * mAnimator.getPhaseY();
+//
+//        // position of the marker depends on selected value index and value
+//        float[] pts = new float[]{
+//                xPos, yPos
+//        };
+//
+//        getTransformer(mData.getDataSetByIndex(dataSetIndex).getAxisDependency())
+//                .pointValuesToPixel(pts);
+//
+//        return pts;
+//    }
 
     /**
      * draws the grid background
@@ -1178,24 +1179,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      */
     public void setKeepPositionOnRotation(boolean keepPositionOnRotation) {
         mKeepPositionOnRotation = keepPositionOnRotation;
-    }
-
-    /**
-     * Returns the Highlight object (contains x-index and DataSet index) of the
-     * selected value at the given touch point inside the Line-, Scatter-, or
-     * CandleStick-Chart.
-     *
-     * @param x
-     * @param y
-     * @return
-     */
-    public Highlight getHighlightByTouchPoint(float x, float y) {
-
-        if (mData == null) {
-            Log.e(LOG_TAG, "Can't select by touch. No data set.");
-            return null;
-        } else
-            return getHighlighter().getHighlight(x, y);
     }
 
     /**
