@@ -201,7 +201,7 @@ public class Highlight {
 
     @Override
     public String toString() {
-        return "Highlight, x: " + mX + "y: " + mY + ", dataSetIndex: " + mDataSetIndex
+        return "Highlight, x: " + mX + ", y: " + mY + ", dataSetIndex: " + mDataSetIndex
                 + ", stackIndex (only stacked barentry): " + mStackIndex;
     }
 }

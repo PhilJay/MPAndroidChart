@@ -269,8 +269,8 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
     }
 
     @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
-        Log.i("Activity", "Selected: " + e.toString() + ", dataSet: " + dataSetIndex);
+    public void onValueSelected(Entry e, Highlight h) {
+        Log.i("Activity", "Selected: " + e.toString() + ", dataSet: " + h.getDataSetIndex());
     }
 
     @Override

@@ -253,13 +253,13 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
     }
 
     @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+    public void onValueSelected(Entry e, Highlight h) {
 
         if (e == null)
             return;
         Log.i("VAL SELECTED",
                 "Value: " + e.getY() + ", xIndex: " + e.getX()
-                        + ", DataSet index: " + dataSetIndex);
+                        + ", DataSet index: " + h.getDataSetIndex());
     }
 
     @Override

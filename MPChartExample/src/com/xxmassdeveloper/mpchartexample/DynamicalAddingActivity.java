@@ -146,7 +146,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
     }
 
     @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+    public void onValueSelected(Entry e, Highlight h) {
         Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
     }
 

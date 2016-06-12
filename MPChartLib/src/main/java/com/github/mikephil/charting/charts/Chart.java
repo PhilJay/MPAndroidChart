@@ -649,7 +649,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
                 mSelectionListener.onNothingSelected();
             else {
                 // notify the listener
-                mSelectionListener.onValueSelected(e, high.getDataSetIndex(), high);
+                mSelectionListener.onValueSelected(e, high);
             }
         }
         // redraw the chart

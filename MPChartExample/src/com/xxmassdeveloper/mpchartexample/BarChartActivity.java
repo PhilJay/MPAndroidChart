@@ -258,7 +258,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
     @SuppressLint("NewApi")
     @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+    public void onValueSelected(Entry e, Highlight h) {
 
         if (e == null)
             return;

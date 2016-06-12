@@ -210,10 +210,10 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
     }
 
     @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+    public void onValueSelected(Entry e, Highlight h) {
         Log.i("VAL SELECTED",
                 "Value: " + e.getY() + ", xIndex: " + e.getX()
-                        + ", DataSet index: " + dataSetIndex);
+                        + ", DataSet index: " + h.getDataSetIndex());
     }
 
     @Override

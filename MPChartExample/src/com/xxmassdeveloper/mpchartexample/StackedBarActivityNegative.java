@@ -206,7 +206,7 @@ public class StackedBarActivityNegative extends DemoBase implements
     }
 
     @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+    public void onValueSelected(Entry e, Highlight h) {
 
         BarEntry entry = (BarEntry) e;
         Log.i("VAL SELECTED",

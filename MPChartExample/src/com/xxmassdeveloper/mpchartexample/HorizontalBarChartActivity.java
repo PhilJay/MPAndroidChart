@@ -250,13 +250,13 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
     @SuppressLint("NewApi")
     @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+    public void onValueSelected(Entry e, Highlight h) {
 
         if (e == null)
             return;
 
         RectF bounds = mChart.getBarBounds((BarEntry) e);
-        PointF position = mChart.getPosition(e, mChart.getData().getDataSetByIndex(dataSetIndex)
+        PointF position = mChart.getPosition(e, mChart.getData().getDataSetByIndex(h.getDataSetIndex())
                 .getAxisDependency());
 
         Log.i("bounds", bounds.toString());
