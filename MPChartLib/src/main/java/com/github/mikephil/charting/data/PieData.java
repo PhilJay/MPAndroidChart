@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.data;
 
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 
 import java.util.ArrayList;
@@ -60,6 +61,11 @@ public class PieData extends ChartData<IPieDataSet> {
     public IPieDataSet getDataSetByLabel(String label, boolean ignorecase) {
         return ignorecase ? label.equalsIgnoreCase(mDataSets.get(0).getLabel()) ? mDataSets.get(0)
                 : null : label.equals(mDataSets.get(0).getLabel()) ? mDataSets.get(0) : null;
+    }
+
+    @Override
+    public Entry getEntryForHighlight(Highlight highlight) {
+        return getDataSet().getEntryForIndex((int) highlight.getX());
     }
 
     /**
