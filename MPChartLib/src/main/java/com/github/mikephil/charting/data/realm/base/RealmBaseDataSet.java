@@ -253,18 +253,6 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     }
 
     @Override
-    public float getYValueForXValue(float xVal) {
-        //return new DynamicRealmObject(results.where().greaterThanOrEqualTo(mXValuesField, xIndex).findFirst())
-        // .getFloat(mYValuesField);
-        Entry e = getEntryForXPos(xVal);
-
-        if (e != null && e.getX() == xVal)
-            return e.getY();
-        else
-            return Float.NaN;
-    }
-
-    @Override
     public boolean addEntry(S e) {
 
         if (e == null)

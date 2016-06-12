@@ -19,10 +19,8 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 
-import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
 
 import java.util.List;
 
@@ -380,56 +378,6 @@ public abstract class Utils {
             return Double.longBitsToDouble(Double.doubleToRawLongBits(d) +
                     ((d >= 0.0d) ? +1L : -1L));
         }
-    }
-
-    /**
-     * Returns the index of the DataSet that contains the closest value on the
-     * y-axis. This is needed for highlighting. This will return -Integer.MAX_VALUE if failure.
-     *
-     * @param valsAtIndex all the values at a specific index
-     * @return
-     */
-    public static int getClosestDataSetIndexByValue(List<Highlight> valsAtIndex, float value,
-                                                    AxisDependency axis) {
-
-        Highlight sel = getClosestSelectionDetailByValue(valsAtIndex, value, axis);
-
-        if (sel == null)
-            return -Integer.MAX_VALUE;
-
-        return sel.getDataSetIndex();
-    }
-
-    /**
-     * Returns the SelectionDetail of the DataSet that contains the closest value on the
-     * y-axis.
-     *
-     * @param valsAtIndex all the values at a specific index
-     * @return
-     */
-    public static Highlight getClosestSelectionDetailByValue(
-            List<Highlight> valsAtIndex,
-            float value,
-            AxisDependency axis) {
-
-        Highlight closest = null;
-        float distance = Float.MAX_VALUE;
-
-        for (int i = 0; i < valsAtIndex.size(); i++) {
-
-            Highlight sel = valsAtIndex.get(i);
-
-            if (axis == null || sel.getAxis() == axis) {
-
-                float cdistance = Math.abs(sel.getY() - value);
-                if (cdistance < distance) {
-                    closest = sel;
-                    distance = cdistance;
-                }
-            }
-        }
-
-        return closest;
     }
 
     /**

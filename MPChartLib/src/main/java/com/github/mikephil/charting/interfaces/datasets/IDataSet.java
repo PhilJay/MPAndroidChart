@@ -123,17 +123,6 @@ public interface IDataSet<T extends Entry> {
      */
     int getEntryIndex(T e);
 
-    /**
-     * Returns the value of the Entry object at the given xPos. Returns
-     * Float.NaN if no value is at the given xPos. INFORMATION: This method
-     * does calculations at runtime. Do not over-use in performance critical
-     * situations.
-     *
-     * @param xPos
-     * @return
-     */
-    float getYValueForXValue(float xPos);
-
 
     /**
      * This method returns the actual

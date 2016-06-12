@@ -295,17 +295,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         return high;
     }
 
-    @Override
-    public float getYValueForXValue(float xVal) {
-
-        Entry e = getEntryForXPos(xVal);
-
-        if (e != null && e.getX() == xVal)
-            return e.getY();
-        else
-            return Float.NaN;
-    }
-
     /**
      * Returns all Entry objects at the given xIndex. INFORMATION: This method
      * does calculations at runtime. Do not over-use in performance critical
