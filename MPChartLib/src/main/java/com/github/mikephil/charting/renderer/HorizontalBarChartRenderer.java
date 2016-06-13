@@ -3,6 +3,7 @@ package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
 import android.graphics.Paint.Align;
+import android.graphics.RectF;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.buffer.BarBuffer;
@@ -10,6 +11,7 @@ import com.github.mikephil.charting.buffer.HorizontalBarBuffer;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
@@ -289,6 +291,11 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
         mBarRect.set(left, top, right, bottom);
 
         trans.rectToPixelPhaseHorizontal(mBarRect, mAnimator.getPhaseY());
+    }
+
+    @Override
+    protected void setHighlightDrawPos(Highlight high, RectF bar) {
+        high.setDraw(bar.centerY(), bar.right);
     }
 
     @Override

@@ -355,34 +355,23 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
         for (Highlight high : indices) {
 
-            final int minDataSetIndex = high.getDataSetIndex() == -1
-                    ? 0
-                    : high.getDataSetIndex();
-            final int maxDataSetIndex = high.getDataSetIndex() == -1
-                    ? scatterData.getDataSetCount()
-                    : (high.getDataSetIndex() + 1);
-            if (maxDataSetIndex - minDataSetIndex < 1) continue;
+            IScatterDataSet set = scatterData.getDataSetByIndex(high.getDataSetIndex());
 
-            for (int dataSetIndex = minDataSetIndex;
-                 dataSetIndex < maxDataSetIndex;
-                 dataSetIndex++) {
+            if (set == null || !set.isHighlightEnabled())
+                continue;
 
-                IScatterDataSet set = scatterData.getDataSetByIndex(dataSetIndex);
+            Entry e = set.getEntryForXPos(high.getX());
 
-                if (set == null || !set.isHighlightEnabled())
-                    continue;
+            if (!isInBoundsX(e, set))
+                continue;
 
-                float x = high.getX();
-                float y = high.getY() * mAnimator.getPhaseY();
+            PointD pix = mChart.getTransformer(set.getAxisDependency()).getPixelsForValues(e.getX(), e.getY() * mAnimator
+                    .getPhaseY());
 
-                if (x > mChart.getXChartMax() * mAnimator.getPhaseX())
-                    continue;
+            high.setDraw((float) pix.x, (float) pix.y);
 
-                PointD px = mChart.getTransformer(set.getAxisDependency()).getPixelsForValues(x, y);
-
-                // draw the lines
-                drawHighlightLines(c, (float) px.x, (float) px.y, set);
-            }
+            // draw the lines
+            drawHighlightLines(c, (float) pix.x, (float) pix.y, set);
         }
     }
 }

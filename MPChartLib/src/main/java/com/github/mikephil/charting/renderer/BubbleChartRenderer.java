@@ -184,76 +184,62 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
         for (Highlight high : indices) {
 
-            final int minDataSetIndex = high.getDataSetIndex() == -1
-                    ? 0
-                    : high.getDataSetIndex();
-            final int maxDataSetIndex = high.getDataSetIndex() == -1
-                    ? bubbleData.getDataSetCount()
-                    : (high.getDataSetIndex() + 1);
-            if (maxDataSetIndex - minDataSetIndex < 1) continue;
+            IBubbleDataSet set = bubbleData.getDataSetByIndex(high.getDataSetIndex());
 
-            for (int dataSetIndex = minDataSetIndex; dataSetIndex < maxDataSetIndex; dataSetIndex++) {
+            if (set == null || !set.isHighlightEnabled())
+                continue;
 
-                IBubbleDataSet dataSet = bubbleData.getDataSetByIndex(dataSetIndex);
+            final BubbleEntry entry = set.getEntryForXPos(high.getX());
 
-                if (dataSet == null || !dataSet.isHighlightEnabled())
-                    continue;
+            if (!isInBoundsX(entry, set))
+                continue;
 
-                final BubbleEntry entry = dataSet.getEntryForXPos(high.getX());
+            Transformer trans = mChart.getTransformer(set.getAxisDependency());
 
-                if (entry == null)
-                    continue;
+            sizeBuffer[0] = 0f;
+            sizeBuffer[2] = 1f;
 
-                XBounds bounds = getXBounds(mChart, dataSet);
+            trans.pointValuesToPixel(sizeBuffer);
 
-                Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
+            boolean normalizeSize = set.isNormalizeSizeEnabled();
 
-                sizeBuffer[0] = 0f;
-                sizeBuffer[2] = 1f;
+            // calcualte the full width of 1 step on the x-axis
+            final float maxBubbleWidth = Math.abs(sizeBuffer[2] - sizeBuffer[0]);
+            final float maxBubbleHeight = Math.abs(
+                    mViewPortHandler.contentBottom() - mViewPortHandler.contentTop());
+            final float referenceSize = Math.min(maxBubbleHeight, maxBubbleWidth);
 
-                trans.pointValuesToPixel(sizeBuffer);
+            pointBuffer[0] = entry.getX();
+            pointBuffer[1] = (entry.getY()) * phaseY;
+            trans.pointValuesToPixel(pointBuffer);
 
-                boolean normalizeSize = dataSet.isNormalizeSizeEnabled();
+            high.setDraw(pointBuffer[0], pointBuffer[1]);
 
-                // calcualte the full width of 1 step on the x-axis
-                final float maxBubbleWidth = Math.abs(sizeBuffer[2] - sizeBuffer[0]);
-                final float maxBubbleHeight = Math.abs(
-                        mViewPortHandler.contentBottom() - mViewPortHandler.contentTop());
-                final float referenceSize = Math.min(maxBubbleHeight, maxBubbleWidth);
+            float shapeHalf = getShapeSize(entry.getSize(),
+                    set.getMaxSize(),
+                    referenceSize,
+                    normalizeSize) / 2f;
 
-                pointBuffer[0] = entry.getX();
-                pointBuffer[1] = (entry.getY()) * phaseY;
-                trans.pointValuesToPixel(pointBuffer);
+            if (!mViewPortHandler.isInBoundsTop(pointBuffer[1] + shapeHalf)
+                    || !mViewPortHandler.isInBoundsBottom(pointBuffer[1] - shapeHalf))
+                continue;
 
-                float shapeHalf = getShapeSize(entry.getSize(),
-                        dataSet.getMaxSize(),
-                        referenceSize,
-                        normalizeSize) / 2f;
+            if (!mViewPortHandler.isInBoundsLeft(pointBuffer[0] + shapeHalf))
+                continue;
 
-                if (!mViewPortHandler.isInBoundsTop(pointBuffer[1] + shapeHalf)
-                        || !mViewPortHandler.isInBoundsBottom(pointBuffer[1] - shapeHalf))
-                    continue;
+            if (!mViewPortHandler.isInBoundsRight(pointBuffer[0] - shapeHalf))
+                break;
 
-                if (!mViewPortHandler.isInBoundsLeft(pointBuffer[0] + shapeHalf))
-                    continue;
+            final int originalColor = set.getColor((int) entry.getX());
 
-                if (!mViewPortHandler.isInBoundsRight(pointBuffer[0] - shapeHalf))
-                    break;
+            Color.RGBToHSV(Color.red(originalColor), Color.green(originalColor),
+                    Color.blue(originalColor), _hsvBuffer);
+            _hsvBuffer[2] *= 0.5f;
+            final int color = Color.HSVToColor(Color.alpha(originalColor), _hsvBuffer);
 
-                if (high.getX() < bounds.min || high.getX() > bounds.max)
-                    continue;
-
-                final int originalColor = dataSet.getColor((int) entry.getX());
-
-                Color.RGBToHSV(Color.red(originalColor), Color.green(originalColor),
-                        Color.blue(originalColor), _hsvBuffer);
-                _hsvBuffer[2] *= 0.5f;
-                final int color = Color.HSVToColor(Color.alpha(originalColor), _hsvBuffer);
-
-                mHighlightPaint.setColor(color);
-                mHighlightPaint.setStrokeWidth(dataSet.getHighlightCircleWidth());
-                c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, mHighlightPaint);
-            }
+            mHighlightPaint.setColor(color);
+            mHighlightPaint.setStrokeWidth(set.getHighlightCircleWidth());
+            c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, mHighlightPaint);
         }
     }
 }

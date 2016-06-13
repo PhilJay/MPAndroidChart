@@ -19,7 +19,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.List;
 
-public class BarChartRenderer extends DataRenderer {
+public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
     protected BarDataProvider mChart;
 
@@ -328,82 +328,48 @@ public class BarChartRenderer extends DataRenderer {
 
         for (Highlight high : indices) {
 
-            final int minDataSetIndex = high.getDataSetIndex() == -1
-                    ? 0
-                    : high.getDataSetIndex();
-            final int maxDataSetIndex = high.getDataSetIndex() == -1
-                    ? barData.getDataSetCount()
-                    : (high.getDataSetIndex() + 1);
-            if (maxDataSetIndex - minDataSetIndex < 1) continue;
+            IBarDataSet set = barData.getDataSetByIndex(high.getDataSetIndex());
 
-            for (int dataSetIndex = minDataSetIndex;
-                 dataSetIndex < maxDataSetIndex;
-                 dataSetIndex++) {
+            if (set == null || !set.isHighlightEnabled())
+                continue;
 
-                IBarDataSet set = barData.getDataSetByIndex(dataSetIndex);
+            BarEntry e = set.getEntryForXPos(high.getX());
 
-                if (set == null || !set.isHighlightEnabled())
-                    continue;
+            if (!isInBoundsX(e, set))
+                continue;
 
-                Transformer trans = mChart.getTransformer(set.getAxisDependency());
+            Transformer trans = mChart.getTransformer(set.getAxisDependency());
 
-                mHighlightPaint.setColor(set.getHighLightColor());
-                mHighlightPaint.setAlpha(set.getHighLightAlpha());
+            mHighlightPaint.setColor(set.getHighLightColor());
+            mHighlightPaint.setAlpha(set.getHighLightAlpha());
 
-                float x = high.getX();
+            boolean isStack = high.getStackIndex() < 0 ? false : true;
 
-                BarEntry e = set.getEntryForXPos(x);
-                float entryIndex = set.getEntryIndex(e);
+            final float y1;
+            final float y2;
 
-                if (e == null || entryIndex > set.getEntryCount() * mAnimator.getPhaseX())
-                    continue;
-
-                boolean isStack = high.getStackIndex() < 0 ? false : true;
-
-                final float y1;
-                final float y2;
-
-                if (isStack) {
-                    y1 = high.getRange().from;
-                    y2 = high.getRange().to;
-                } else {
-                    y1 = e.getY();
-                    y2 = 0.f;
-                }
-
-                prepareBarHighlight(e.getX(), y1, y2, barData.getBarWidth() / 2f, trans);
-
-                c.drawRect(mBarRect, mHighlightPaint);
-
-//                if (mChart.isDrawHighlightArrowEnabled()) {
-//
-//                    mHighlightPaint.setAlpha(255);
-//
-//                    // distance between highlight arrow and bar
-//                    float offsetY = mAnimator.getPhaseY() * 0.07f;
-//
-//                    float[] values = new float[9];
-//                    trans.getPixelToValueMatrix().getValues(values);
-//                    final float xToYRel = Math.abs(
-//                            values[Matrix.MSCALE_Y] / values[Matrix.MSCALE_X]);
-//
-//                    final float arrowWidth = barData.getBarWidth();
-//                    final float arrowWidthHalf = arrowWidth / 2f;
-//                    final float arrowHeight = arrowWidth * xToYRel;
-//
-//                    final float yArrow = (y1 > -y2 ? y1 : y1) * mAnimator.getPhaseY();
-//
-//                    Path arrow = new Path();
-//                    arrow.moveTo(e.getX() - arrowWidthHalf, yArrow + offsetY + arrowHeight);
-//                    arrow.lineTo(e.getX(), yArrow + offsetY);
-//                    arrow.lineTo(e.getX() + arrowWidthHalf, yArrow + offsetY + arrowHeight);
-//
-//                    trans.pathValueToPixel(arrow);
-//                    c.drawPath(arrow, mHighlightPaint);
-//                }
+            if (isStack) {
+                y1 = high.getRange().from;
+                y2 = high.getRange().to;
+            } else {
+                y1 = e.getY();
+                y2 = 0.f;
             }
-        }
 
+            prepareBarHighlight(e.getX(), y1, y2, barData.getBarWidth() / 2f, trans);
+
+            setHighlightDrawPos(high, mBarRect);
+
+            c.drawRect(mBarRect, mHighlightPaint);
+        }
+    }
+
+    /**
+     * Sets the drawing position of the highlight object based on the riven bar-rect.
+     * @param high
+     */
+    protected void setHighlightDrawPos(Highlight high, RectF bar) {
+        high.setDraw(bar.centerX(), bar.top);
     }
 
     @Override

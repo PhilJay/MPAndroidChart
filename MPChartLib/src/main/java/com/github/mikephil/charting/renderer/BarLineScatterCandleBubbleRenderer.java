@@ -1,6 +1,7 @@
 package com.github.mikephil.charting.renderer;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider;
@@ -15,6 +16,27 @@ public abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
 
     public BarLineScatterCandleBubbleRenderer(ChartAnimator animator, ViewPortHandler viewPortHandler) {
         super(animator, viewPortHandler);
+    }
+
+    /**
+     * Checks if the provided entry object is in bounds for drawing considering the current animation phase.
+     *
+     * @param e
+     * @param set
+     * @return
+     */
+    protected boolean isInBoundsX(Entry e, IBarLineScatterCandleBubbleDataSet set) {
+
+        if (e == null)
+            return false;
+
+        float entryIndex = set.getEntryIndex(e);
+
+        if (e == null || entryIndex >= set.getEntryCount() * mAnimator.getPhaseX()) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**

@@ -1,7 +1,6 @@
 package com.github.mikephil.charting.charts;
 
 import android.content.Context;
-import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.AttributeSet;
@@ -126,9 +125,14 @@ public class HorizontalBarChart extends BarChart {
     @Override
     protected void prepareValuePxMatrix() {
         mRightAxisTransformer.prepareMatrixValuePx(mAxisRight.mAxisMinimum, mAxisRight.mAxisRange, mXAxis.mAxisRange,
-				mXAxis.mAxisMinimum);
+                mXAxis.mAxisMinimum);
         mLeftAxisTransformer.prepareMatrixValuePx(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisRange, mXAxis.mAxisRange,
-				mXAxis.mAxisMinimum);
+                mXAxis.mAxisMinimum);
+    }
+
+    @Override
+    protected float[] getMarkerPosition(Highlight high) {
+        return new float[]{high.getDrawY(), high.getDrawX()};
     }
 
     @Override
@@ -181,7 +185,7 @@ public class HorizontalBarChart extends BarChart {
     public Highlight getHighlightByTouchPoint(float x, float y) {
 
         if (mData == null) {
-            if(mLogEnabled)
+            if (mLogEnabled)
                 Log.e(LOG_TAG, "Can't select by touch. No data set.");
             return null;
         } else
@@ -191,14 +195,14 @@ public class HorizontalBarChart extends BarChart {
     @Override
     public float getLowestVisibleX() {
         PointD pos = getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentLeft(),
-				mViewPortHandler.contentBottom());
+                mViewPortHandler.contentBottom());
         return (float) Math.max(mXAxis.mAxisMinimum, pos.y);
     }
 
     @Override
     public float getHighestVisibleX() {
         PointD pos = getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentLeft(),
-				mViewPortHandler.contentTop());
+                mViewPortHandler.contentTop());
         return (float) Math.min(mXAxis.mAxisMaximum, pos.y);
     }
 }

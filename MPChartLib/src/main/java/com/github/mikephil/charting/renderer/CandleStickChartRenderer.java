@@ -308,40 +308,26 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
         for (Highlight high : indices) {
 
-            final int minDataSetIndex = high.getDataSetIndex() == -1
-                    ? 0
-                    : high.getDataSetIndex();
-            final int maxDataSetIndex = high.getDataSetIndex() == -1
-                    ? candleData.getDataSetCount()
-                    : (high.getDataSetIndex() + 1);
-            if (maxDataSetIndex - minDataSetIndex < 1) continue;
+            ICandleDataSet set = candleData.getDataSetByIndex(high.getDataSetIndex());
 
-            for (int dataSetIndex = minDataSetIndex;
-                 dataSetIndex < maxDataSetIndex;
-                 dataSetIndex++) {
+            if (set == null || !set.isHighlightEnabled())
+                continue;
 
-                float x = high.getX(); // get the
-                // x-position
+            CandleEntry e = set.getEntryForXPos(high.getX());
 
-                ICandleDataSet set = mChart.getCandleData().getDataSetByIndex(dataSetIndex);
+            if (!isInBoundsX(e, set))
+                continue;
 
-                if (set == null || !set.isHighlightEnabled())
-                    continue;
+            float lowValue = e.getLow() * mAnimator.getPhaseY();
+            float highValue = e.getHigh() * mAnimator.getPhaseY();
+            float y = (lowValue + highValue) / 2f;
 
-                CandleEntry e = set.getEntryForXPos(x);
+            PointD pix = mChart.getTransformer(set.getAxisDependency()).getPixelsForValues(e.getX(), y);
 
-                if (e == null)
-                    continue;
+            high.setDraw((float) pix.x, (float) pix.y);
 
-                float lowValue = e.getLow() * mAnimator.getPhaseY();
-                float highValue = e.getHigh() * mAnimator.getPhaseY();
-                float y = (lowValue + highValue) / 2f;
-
-                PointD px = mChart.getTransformer(set.getAxisDependency()).getPixelsForValues(x, y);
-
-                // draw the lines
-                drawHighlightLines(c, (float) px.x, (float) px.y, set);
-            }
+            // draw the lines
+            drawHighlightLines(c, (float) pix.x, (float) pix.y, set);
         }
     }
 }

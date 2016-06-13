@@ -760,7 +760,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * @return
      */
     protected float[] getMarkerPosition(Highlight high) {
-        return new float[]{high.getXPx(), high.getYPx()};
+        return new float[]{high.getDrawX(), high.getDrawY()};
     }
 
     /**

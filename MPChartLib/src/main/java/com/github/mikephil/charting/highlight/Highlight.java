@@ -55,6 +55,16 @@ public class Highlight {
      */
     private YAxis.AxisDependency axis;
 
+    /**
+     * the x-position (pixels) on which this highlight object was last drawn
+     */
+    private float mDrawX;
+
+    /**
+     * the y-position (pixels) on which this highlight object was last drawn
+     */
+    private float mDrawY;
+
     public Highlight(float x, int dataSetIndex) {
         this.mX = x;
         this.mDataSetIndex = dataSetIndex;
@@ -177,6 +187,35 @@ public class Highlight {
      */
     public YAxis.AxisDependency getAxis() {
         return axis;
+    }
+
+    /**
+     * Sets the x- and y-position (pixels) where this highlight was last drawn.
+     *
+     * @param x
+     * @param y
+     */
+    public void setDraw(float x, float y) {
+        this.mDrawX = x;
+        this.mDrawY = y;
+    }
+
+    /**
+     * Returns the x-position in pixels where this highlight object was last drawn.
+     *
+     * @return
+     */
+    public float getDrawX() {
+        return mDrawX;
+    }
+
+    /**
+     * Returns the y-position in pixels where this highlight object was last drawn.
+     *
+     * @return
+     */
+    public float getDrawY() {
+        return mDrawY;
     }
 
     /**
