@@ -17,9 +17,9 @@ import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
+import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.AxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
@@ -210,20 +210,20 @@ public class RadarChartActivitry extends DemoBase {
         float min = 20;
         int cnt = 5;
 
-        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
-        ArrayList<Entry> yVals2 = new ArrayList<Entry>();
+        ArrayList<RadarEntry> yVals1 = new ArrayList<RadarEntry>();
+        ArrayList<RadarEntry> yVals2 = new ArrayList<RadarEntry>();
 
         // IMPORTANT: In a PieChart, no values (Entry) should have the same
         // xIndex (even if from different DataSets), since no values can be
         // drawn above each other.
         for (int i = 0; i < cnt; i++) {
             float val = (float) (Math.random() * mult) + min;
-            yVals1.add(new Entry(i, val));
+            yVals1.add(new RadarEntry(val));
         }
 
         for (int i = 0; i < cnt; i++) {
             float val = (float) (Math.random() * mult) + min;
-            yVals2.add(new Entry(i, val));
+            yVals2.add(new RadarEntry(val));
         }
 
         RadarDataSet set1 = new RadarDataSet(yVals1, "Last Week");

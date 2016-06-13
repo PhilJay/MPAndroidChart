@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.data;
 
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 
 import java.util.ArrayList;
@@ -48,5 +49,10 @@ public class RadarData extends ChartData<IRadarDataSet> {
 
     public List<String> getLabels() {
         return mLabels;
+    }
+
+    @Override
+    public Entry getEntryForHighlight(Highlight highlight) {
+        return getDataSetByIndex(highlight.getDataSetIndex()).getEntryForIndex((int) highlight.getX());
     }
 }

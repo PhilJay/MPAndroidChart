@@ -69,12 +69,8 @@ public class RadarHighlighter extends PieRadarHighlighter<RadarChart> {
 
             float y = (entry.getY() - mChart.getYChartMin());
 
-            if (Float.isNaN(y))
-                continue;
-
             PointF p = Utils.getPosition(
-                    mChart.getCenterOffsets(),
-                    y * factor * phaseY,
+                    mChart.getCenterOffsets(), y * factor * phaseY,
                     sliceangle * index * phaseX + mChart.getRotationAngle());
 
             vals.add(new Highlight(index, entry.getY(), p.x, p.y, i, dataSet.getAxisDependency()));

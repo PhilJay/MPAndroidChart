@@ -14,7 +14,7 @@ import io.realm.RealmResults;
 /**
  * Created by Philipp Jahoda on 08/11/15.
  */
-public abstract class RealmLineRadarDataSet<T extends RealmObject> extends RealmLineScatterCandleRadarDataSet<T, Entry> implements ILineRadarDataSet<Entry> {
+public abstract class RealmLineRadarDataSet<T extends RealmObject, S extends Entry> extends RealmLineScatterCandleRadarDataSet<T, S> implements ILineRadarDataSet<S> {
 
     /** the color that is used for filling the line surface */
     private int mFillColor = Color.rgb(140, 234, 255);

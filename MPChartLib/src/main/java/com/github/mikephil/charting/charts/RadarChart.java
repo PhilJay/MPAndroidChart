@@ -201,12 +201,21 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
         float sliceangle = getSliceAngle();
 
-        for (int i = 0; i < mData.getMaxEntryCountSet().getEntryCount(); i++) {
-            if (sliceangle * (i + 1) - sliceangle / 2f > a)
-                return i;
+        int max = mData.getMaxEntryCountSet().getEntryCount();
+
+        int index = 0;
+
+        for (int i = 0; i < max; i++) {
+
+            float referenceAngle = sliceangle * (i + 1) - sliceangle / 2f;
+
+            if (referenceAngle > a) {
+                index = i;
+                break;
+            }
         }
 
-        return 0;
+        return index;
     }
 
     /**

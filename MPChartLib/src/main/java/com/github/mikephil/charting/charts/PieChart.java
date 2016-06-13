@@ -183,7 +183,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
         float rotationAngle = getRotationAngle();
 
-        int entryIndex = getData().getDataSet().getEntryIndex(highlight.getX(), DataSet.Rounding.CLOSEST);
+        int entryIndex = (int) highlight.getX();
 
         // offset needed to center the drawn text in the slice
         float offset = mDrawAngles[entryIndex] / 2;

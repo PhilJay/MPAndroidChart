@@ -45,6 +45,18 @@ public class PieEntry extends Entry {
         this.label = label;
     }
 
+    @Deprecated
+    @Override
+    public void setX(float x) {
+        super.setX(x);
+    }
+
+    @Deprecated
+    @Override
+    public float getX() {
+        return super.getX();
+    }
+
     public PieEntry copy() {
         PieEntry e = new PieEntry(getY(), label, getData());
         return e;

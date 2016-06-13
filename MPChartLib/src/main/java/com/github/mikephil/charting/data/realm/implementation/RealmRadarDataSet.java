@@ -2,6 +2,8 @@ package com.github.mikephil.charting.data.realm.implementation;
 
 import android.graphics.Color;
 
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.data.realm.base.RealmLineRadarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -12,7 +14,7 @@ import io.realm.RealmResults;
 /**
  * Created by Philipp Jahoda on 07/11/15.
  */
-public class RealmRadarDataSet<T extends RealmObject> extends RealmLineRadarDataSet<T> implements IRadarDataSet {
+public class RealmRadarDataSet<T extends RealmObject> extends RealmLineRadarDataSet<T, RadarEntry> implements IRadarDataSet {
 
     /// flag indicating whether highlight circle should be drawn or not
     protected boolean mDrawHighlightCircleEnabled = false;

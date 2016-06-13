@@ -10,8 +10,8 @@ import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.RadarChart;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.RadarData;
+import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -97,7 +97,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
             mRenderPaint.setColor(dataSet.getColor(j));
 
-            Entry e = dataSet.getEntryForIndex(j);
+            RadarEntry e = dataSet.getEntryForIndex(j);
 
             PointF p = Utils.getPosition(
                     center,
@@ -169,7 +169,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
             for (int j = 0; j < dataSet.getEntryCount(); j++) {
 
-                Entry entry = dataSet.getEntryForIndex(j);
+                RadarEntry entry = dataSet.getEntryForIndex(j);
 
                 PointF p = Utils.getPosition(
                         center,
@@ -257,13 +257,14 @@ public class RadarChartRenderer extends LineRadarRenderer {
             if (set == null || !set.isHighlightEnabled())
                 continue;
 
-            Entry e = set.getEntryForXPos(high.getX());
+            RadarEntry e = set.getEntryForIndex((int) high.getX());
 
             if (!isInBoundsX(e, set))
                 continue;
 
-            PointF p = Utils.getPosition(center,
-                    (e.getY() - mChart.getYChartMin()) * factor * mAnimator.getPhaseY(),
+            float y = (e.getY() - mChart.getYChartMin());
+
+            PointF p = Utils.getPosition(center, y * factor * mAnimator.getPhaseY(),
                     sliceangle * high.getX() * mAnimator.getPhaseX() + mChart.getRotationAngle());
 
             high.setDraw(p.x, p.y);

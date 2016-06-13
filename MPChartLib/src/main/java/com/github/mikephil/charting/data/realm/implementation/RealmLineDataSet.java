@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.realm.base.RealmLineRadarDataSet;
 import com.github.mikephil.charting.formatter.DefaultFillFormatter;
@@ -21,7 +22,7 @@ import io.realm.RealmResults;
 /**
  * Created by Philipp Jahoda on 21/10/15.
  */
-public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataSet<T> implements ILineDataSet {
+public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataSet<T, Entry> implements ILineDataSet {
 
     /** Drawing mode for this line dataset **/
     private LineDataSet.Mode mMode = LineDataSet.Mode.LINEAR;

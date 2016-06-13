@@ -68,7 +68,7 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
         mChart.setMaxVisibleValueCount(200);
         mChart.setPinchZoom(true);
 
-        mSeekBarX.setProgress(1);
+        mSeekBarX.setProgress(10);
         mSeekBarY.setProgress(50);
 
         Legend l = mChart.getLegend();
