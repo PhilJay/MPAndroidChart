@@ -645,6 +645,30 @@ public class PieChart extends PieRadarChartBase<PieData> {
         this.mMaxAngle = maxangle;
     }
 
+    /**
+     * Set the hole in the center of the PieChart transparent.
+     *
+     * @param enable
+     */
+    public void setHoleColorTransparent(boolean enable) {
+        if (enable) {
+            ((PieChartRenderer) mRenderer).getPaintHole().setColor(0xFFFFFFFF);
+            ((PieChartRenderer) mRenderer).getPaintHole().setXfermode(
+                    new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        } else {
+            ((PieChartRenderer) mRenderer).getPaintHole().setXfermode(null);
+        }
+    }
+
+    /**
+     * Returns true if the hole in the center of the PieChart is transparent,
+     * false if not.
+     *
+     * @return true if hole is transparent.
+     */
+    public boolean isHoleTransparent() {
+        return ((PieChartRenderer) mRenderer).getPaintHole().getXfermode() != null;
+    }
     @Override
     protected void onDetachedFromWindow() {
         // releases the bitmap in the renderer to avoid oom error
