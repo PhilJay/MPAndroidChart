@@ -347,7 +347,7 @@ public abstract class AxisBase extends ComponentBase {
      * @param enabled
      */
     public void setGranularityEnabled(boolean enabled) {
-        mGranularityEnabled = true;
+        mGranularityEnabled = enabled;
     }
 
     /**
