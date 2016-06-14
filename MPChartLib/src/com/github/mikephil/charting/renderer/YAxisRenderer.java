@@ -193,6 +193,7 @@ public class YAxisRenderer extends AxisRenderer {
 
         mAxisLabelPaint.setTypeface(mYAxis.getTypeface());
         mAxisLabelPaint.setTextSize(mYAxis.getTextSize());
+        mAxisLabelPaint.setFakeBoldText(mYAxis.getTextBold());
         mAxisLabelPaint.setColor(mYAxis.getTextColor());
 
         float xoffset = mYAxis.getXOffset();
@@ -381,6 +382,7 @@ public class YAxisRenderer extends AxisRenderer {
                 mLimitLinePaint.setTypeface(l.getTypeface());
                 mLimitLinePaint.setStrokeWidth(0.5f);
                 mLimitLinePaint.setTextSize(l.getTextSize());
+                mLimitLinePaint.setFakeBoldText(l.getTextBold());
 
                 final float labelLineHeight = Utils.calcTextHeight(mLimitLinePaint, label);
                 float xOffset = Utils.convertDpToPixel(4f) + l.getXOffset();
