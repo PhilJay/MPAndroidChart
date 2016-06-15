@@ -139,7 +139,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         mRightAxisMin = Float.MAX_VALUE;
 
         // left axis
-        T firstLeft = getFirstLeft();
+        T firstLeft = getFirstLeft(mDataSets);
 
         if (firstLeft != null) {
 
@@ -158,7 +158,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         }
 
         // right axis
-        T firstRight = getFirstRight();
+        T firstRight = getFirstRight(mDataSets);
 
         if (firstRight != null) {
 
@@ -613,8 +613,8 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      *
      * @return
      */
-    public T getFirstLeft() {
-        for (T dataSet : mDataSets) {
+    protected T getFirstLeft(List<T> sets) {
+        for (T dataSet : sets) {
             if (dataSet.getAxisDependency() == AxisDependency.LEFT)
                 return dataSet;
         }
@@ -627,8 +627,8 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      *
      * @return
      */
-    public T getFirstRight() {
-        for (T dataSet : mDataSets) {
+    public T getFirstRight(List<T> sets) {
+        for (T dataSet : sets) {
             if (dataSet.getAxisDependency() == AxisDependency.RIGHT)
                 return dataSet;
         }

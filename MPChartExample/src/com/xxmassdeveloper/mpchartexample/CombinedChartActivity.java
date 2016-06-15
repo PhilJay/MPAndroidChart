@@ -125,7 +125,7 @@ public class CombinedChartActivity extends DemoBase {
         set.setValueTextColor(Color.rgb(240, 238, 70));
 
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
-
+        this.set1 = set;
         d.addDataSet(set);
 
         return d;
@@ -209,6 +209,9 @@ public class CombinedChartActivity extends DemoBase {
         return d;
     }
 
+    private LineDataSet set1;
+    private BubbleDataSet set2;
+
     protected BubbleData generateBubbleData() {
 
         BubbleData bd = new BubbleData();
@@ -227,6 +230,7 @@ public class CombinedChartActivity extends DemoBase {
         set.setValueTextColor(Color.WHITE);
         set.setHighlightCircleWidth(1.5f);
         set.setDrawValues(true);
+        this.set2 = set;
         bd.addDataSet(set);
 
         return bd;
@@ -256,6 +260,15 @@ public class CombinedChartActivity extends DemoBase {
                         set.setDrawValues(!set.isDrawValuesEnabled());
                 }
 
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionRemoveDataSet: {
+
+                int rnd = (int) getRandom(mChart.getData().getDataSetCount(), 0);
+                mChart.getData().removeDataSet(mChart.getData().getDataSetByIndex(rnd));
+                mChart.getData().notifyDataChanged();
+                mChart.notifyDataSetChanged();
                 mChart.invalidate();
                 break;
             }

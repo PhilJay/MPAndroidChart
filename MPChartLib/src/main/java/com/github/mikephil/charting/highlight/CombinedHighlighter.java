@@ -1,6 +1,7 @@
 package com.github.mikephil.charting.highlight;
 
 import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
@@ -32,7 +33,7 @@ public class CombinedHighlighter extends ChartHighlighter<CombinedDataProvider> 
 
         List<Highlight> vals = new ArrayList<Highlight>();
 
-        List<ChartData> dataObjects = mChart.getCombinedData().getAllData();
+        List<BarLineScatterCandleBubbleData> dataObjects = mChart.getCombinedData().getAllData();
 
         for (int i = 0; i < dataObjects.size(); i++) {
 

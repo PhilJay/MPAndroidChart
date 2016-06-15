@@ -572,14 +572,14 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * Highlights the value at the given x-index in the given DataSet. Provide
-     * -1 as the x-index or dataSetIndex to undo all highlighting.
+     * Highlights the value at the given x-position in the given DataSet. Provide
+     * -1 as the dataSetIndex to undo all highlighting. This will trigger a callback to the OnChartValueSelectedListener.
      *
-     * @param xIndex
+     * @param x
      * @param dataSetIndex
      */
-    public void highlightValue(int xIndex, int dataSetIndex) {
-        highlightValue(xIndex, dataSetIndex, true);
+    public void highlightValue(float x, int dataSetIndex) {
+        highlightValue(x, dataSetIndex, true);
     }
 
     /**
@@ -654,14 +654,6 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         }
         // redraw the chart
         invalidate();
-    }
-
-    /**
-     * Deprecated. Calls highlightValue(high, true)
-     */
-    @Deprecated
-    public void highlightTouch(Highlight high) {
-        highlightValue(high, true);
     }
 
     /**

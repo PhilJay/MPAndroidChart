@@ -1,6 +1,9 @@
 
 package com.github.mikephil.charting.data;
 
+import android.util.Log;
+
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
@@ -11,7 +14,7 @@ import java.util.List;
 /**
  * Data object that allows the combination of Line-, Bar-, Scatter-, Bubble- and
  * CandleData. Used in the CombinedChart class.
- * 
+ *
  * @author Philipp Jahoda
  */
 public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<? extends Entry>> {
@@ -28,32 +31,79 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
 
     public void setData(LineData data) {
         mLineData = data;
-        mDataSets.addAll(data.getDataSets());
         init();
     }
 
     public void setData(BarData data) {
         mBarData = data;
-        mDataSets.addAll(data.getDataSets());
         init();
     }
 
     public void setData(ScatterData data) {
         mScatterData = data;
-        mDataSets.addAll(data.getDataSets());
         init();
     }
 
     public void setData(CandleData data) {
         mCandleData = data;
-        mDataSets.addAll(data.getDataSets());
         init();
     }
 
     public void setData(BubbleData data) {
         mBubbleData = data;
-        mDataSets.addAll(data.getDataSets());
         init();
+    }
+
+    @Override
+    public void calcMinMax() {
+
+        mDataSets = new ArrayList<>();
+
+        mYMax = -Float.MAX_VALUE;
+        mYMin = Float.MAX_VALUE;
+        mXMax = -Float.MAX_VALUE;
+        mXMin = Float.MAX_VALUE;
+
+        mLeftAxisMax = -Float.MAX_VALUE;
+        mLeftAxisMin = Float.MAX_VALUE;
+        mRightAxisMax = -Float.MAX_VALUE;
+        mRightAxisMin = Float.MAX_VALUE;
+
+        List<BarLineScatterCandleBubbleData> allData = getAllData();
+
+        for (ChartData data : allData) {
+
+            data.calcMinMax();
+
+            List<IBarLineScatterCandleBubbleDataSet<? extends Entry>> sets = data.getDataSets();
+            mDataSets.addAll(sets);
+
+            if (data.getYMax() > mYMax)
+                mYMax = data.getYMax();
+
+            if (data.getYMin() < mYMin)
+                mYMin = data.getYMin();
+
+            if (data.getXMax() > mXMax)
+                mXMax = data.getXMax();
+
+            if (data.getXMin() < mXMin)
+                mXMin = data.getXMin();
+
+            if (data.mLeftAxisMax > mLeftAxisMax)
+                mLeftAxisMax = data.mLeftAxisMax;
+
+            if (data.mLeftAxisMin < mLeftAxisMin)
+                mLeftAxisMin = data.mLeftAxisMin;
+
+            if (data.mRightAxisMax > mRightAxisMax)
+                mRightAxisMax = data.mRightAxisMax;
+
+            if (data.mRightAxisMin < mRightAxisMin)
+                mRightAxisMin = data.mRightAxisMin;
+
+        }
+
     }
 
     public BubbleData getBubbleData() {
@@ -78,26 +128,27 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
 
     /**
      * Returns all data objects in row: line-bar-scatter-candle-bubble if not null.
+     *
      * @return
      */
-    public List<ChartData> getAllData() {
+    public List<BarLineScatterCandleBubbleData> getAllData() {
 
-        List<ChartData> data = new ArrayList<ChartData>();
-        if(mLineData != null)
+        List<BarLineScatterCandleBubbleData> data = new ArrayList<BarLineScatterCandleBubbleData>();
+        if (mLineData != null)
             data.add(mLineData);
-        if(mBarData != null)
+        if (mBarData != null)
             data.add(mBarData);
-        if(mScatterData != null)
+        if (mScatterData != null)
             data.add(mScatterData);
-        if(mCandleData != null)
+        if (mCandleData != null)
             data.add(mCandleData);
-        if(mBubbleData != null)
+        if (mBubbleData != null)
             data.add(mBubbleData);
 
         return data;
     }
 
-    public ChartData getDataByIndex(int index) {
+    public BarLineScatterCandleBubbleData getDataByIndex(int index) {
         return getAllData().get(index);
     }
 
@@ -126,7 +177,7 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
     @Override
     public Entry getEntryForHighlight(Highlight highlight) {
 
-        List<ChartData> dataObjects = getAllData();
+        List<BarLineScatterCandleBubbleData> dataObjects = getAllData();
 
         if (highlight.getDataIndex() >= dataObjects.size())
             return null;
@@ -142,9 +193,9 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
             List<?> entries = data.getDataSetByIndex(highlight.getDataSetIndex())
                     .getEntriesForXPos(highlight.getX());
             for (Object entry : entries)
-                if (((Entry)entry).getY() == highlight.getY() ||
+                if (((Entry) entry).getY() == highlight.getY() ||
                         Float.isNaN(highlight.getY()))
-                    return (Entry)entry;
+                    return (Entry) entry;
 
             return null;
         }
@@ -152,5 +203,45 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
 
     public int getDataIndex(ChartData data) {
         return getAllData().indexOf(data);
+    }
+
+    @Override
+    public boolean removeDataSet(IBarLineScatterCandleBubbleDataSet<? extends Entry> d) {
+
+        List<BarLineScatterCandleBubbleData> datas = getAllData();
+
+        boolean success = false;
+
+        for (ChartData data : datas) {
+
+            success = data.removeDataSet(d);
+
+            if (success) {
+                break;
+            }
+        }
+
+        return success;
+    }
+
+    @Deprecated
+    @Override
+    public boolean removeDataSet(int index) {
+        Log.e("MPAndroidChart", "removeDataSet(int index) not supported for CombinedData");
+        return false;
+    }
+
+    @Deprecated
+    @Override
+    public boolean removeEntry(Entry e, int dataSetIndex) {
+        Log.e("MPAndroidChart", "removeEntry(...) not supported for CombinedData");
+        return false;
+    }
+
+    @Deprecated
+    @Override
+    public boolean removeEntry(float xPos, int dataSetIndex) {
+        Log.e("MPAndroidChart", "removeEntry(...) not supported for CombinedData");
+        return false;
     }
 }

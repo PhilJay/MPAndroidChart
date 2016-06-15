@@ -11,13 +11,7 @@ import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.highlight.CombinedHighlighter;
-import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
-import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
-import com.github.mikephil.charting.interfaces.dataprovider.CandleDataProvider;
 import com.github.mikephil.charting.interfaces.dataprovider.CombinedDataProvider;
-import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
-import com.github.mikephil.charting.interfaces.dataprovider.ScatterDataProvider;
-import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 import com.github.mikephil.charting.renderer.CombinedChartRenderer;
 
 /**
@@ -27,11 +21,6 @@ import com.github.mikephil.charting.renderer.CombinedChartRenderer;
  * @author Philipp Jahoda
  */
 public class CombinedChart extends BarLineChartBase<CombinedData> implements CombinedDataProvider {
-
-//    /**
-//     * flag that enables or disables the highlighting arrow
-//     */
-//    private boolean mDrawHighlightArrow = false;
 
     /**
      * if set to true, all values are drawn above their bars, instead of below
@@ -77,9 +66,6 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Com
 
         // Old default behaviour
         setHighlightFullBarEnabled(true);
-
-        // mRenderer = new CombinedChartRenderer(this, mAnimator,
-        // mViewPortHandler);
     }
 
     @Override
@@ -141,15 +127,6 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Com
     public boolean isDrawValueAboveBarEnabled() {
         return mDrawValueAboveBar;
     }
-
-//    /**
-//     * set this to true to draw the highlightning arrow
-//     *
-//     * @param enabled
-//     */
-//    public void setDrawHighlightArrow(boolean enabled) {
-//        mDrawHighlightArrow = enabled;
-//    }
 
     /**
      * If set to true, all values are drawn above their bars, instead of below
