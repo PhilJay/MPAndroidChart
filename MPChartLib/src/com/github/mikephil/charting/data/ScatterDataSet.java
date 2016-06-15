@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.data;
 
+import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -78,6 +79,17 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
     public float getScatterShapeSize() {
         return mShapeSize;
     }
+
+
+    /**
+     * Sets the shape that is drawn on the position where the values are at.
+     *
+     * @param shape
+     */
+    public void setScatterShape(ScatterChart.ScatterShape shape) {
+        mScatterShape = shape.toString();
+    }
+
 
     /**
      * Sets the shape that is drawn on the position where the values are at.

@@ -1,5 +1,6 @@
 package com.github.mikephil.charting.data.realm.implementation;
 
+import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.realm.base.RealmLineScatterCandleRadarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
@@ -79,6 +80,17 @@ public class RealmScatterDataSet<T extends RealmObject> extends RealmLineScatter
     public float getScatterShapeSize() {
         return mShapeSize;
     }
+
+
+    /**
+     * Sets the shape that is drawn on the position where the values are at.
+     *
+     * @param shape
+     */
+    public void setScatterShape(ScatterChart.ScatterShape shape) {
+        mScatterShape = shape.toString();
+    }
+
 
     /**
      * Sets the shape that is drawn on the position where the values are at. If

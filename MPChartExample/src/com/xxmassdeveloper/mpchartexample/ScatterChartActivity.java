@@ -188,10 +188,10 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
 
         // create a dataset and give it a type
         ScatterDataSet set1 = new ScatterDataSet(yVals1, "DS 1");
-        set1.setScatterShape(ScatterShape.getScatterShapeNames().get(ScatterShape.SQUARE));
+        set1.setScatterShape(ScatterChart.ScatterShape.SQUARE);
         set1.setColor(ColorTemplate.COLORFUL_COLORS[0]);
         ScatterDataSet set2 = new ScatterDataSet(yVals2, "DS 2");
-        set2.setScatterShape(ScatterShape.getScatterShapeNames().get(ScatterShape.CIRCLE));
+        set2.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
         set2.setScatterShapeHoleColor(ColorTemplate.COLORFUL_COLORS[3]);
         set2.setScatterShapeHoleRadius(4f);
         set2.setColor(ColorTemplate.COLORFUL_COLORS[1]);
