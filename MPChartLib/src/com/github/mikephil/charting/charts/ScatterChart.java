@@ -37,7 +37,7 @@ public class ScatterChart extends BarLineChartBase<ScatterData> implements Scatt
 
     public static void registerShapeRenderer(String scatterShapeName, ShapeRenderer shapeRenderer) {
         if (shapeRendererList == null) {
-            shapeRendererList = new HashMap<>();
+           initShapeRenderer();
         }
         shapeRendererList.put(scatterShapeName, shapeRenderer);
     }
@@ -53,19 +53,20 @@ public class ScatterChart extends BarLineChartBase<ScatterData> implements Scatt
      * Init ShapeRendererList
      */
     private static void initShapeRenderer() {
-        registerShapeRenderer(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.getScatterShapeNames()
+        shapeRendererList = new HashMap<>();
+        shapeRendererList.put(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.getScatterShapeNames()
                 .get(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.SQUARE), new SquareShapeRenderer());
-        registerShapeRenderer(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.getScatterShapeNames()
+        shapeRendererList.put(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.getScatterShapeNames()
                 .get(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.CIRCLE), new CircleShapeRenderer());
-        registerShapeRenderer(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.getScatterShapeNames()
+        shapeRendererList.put(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.getScatterShapeNames()
                 .get(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.TRIANGLE), new TriangleShapeRenderer());
-        registerShapeRenderer(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.getScatterShapeNames()
+        shapeRendererList.put(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.getScatterShapeNames()
                 .get(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.CROSS), new CrossShapeRenderer());
-        registerShapeRenderer(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.getScatterShapeNames()
+        shapeRendererList.put(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.getScatterShapeNames()
                 .get(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.X), new XShapeRenderer());
-        registerShapeRenderer(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.getScatterShapeNames()
+        shapeRendererList.put(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.getScatterShapeNames()
                 .get(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.CHEVRON_UP), new ChevronUpShapeRenderer());
-        registerShapeRenderer(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.getScatterShapeNames()
+        shapeRendererList.put(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.getScatterShapeNames()
                 .get(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.CHEVRON_DOWN), new ChevronDownShapeRenderer());
     }
 
