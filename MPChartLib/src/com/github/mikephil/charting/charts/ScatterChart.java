@@ -11,7 +11,6 @@ import com.github.mikephil.charting.renderer.ShapeRenders.ChevronDownShapeRender
 import com.github.mikephil.charting.renderer.ShapeRenders.ChevronUpShapeRenderer;
 import com.github.mikephil.charting.renderer.ShapeRenders.CircleShapeRenderer;
 import com.github.mikephil.charting.renderer.ShapeRenders.CrossShapeRenderer;
-import com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape;
 import com.github.mikephil.charting.renderer.ShapeRenders.ShapeRenderer;
 import com.github.mikephil.charting.renderer.ShapeRenders.SquareShapeRenderer;
 import com.github.mikephil.charting.renderer.ShapeRenders.TriangleShapeRenderer;
@@ -38,7 +37,7 @@ public class ScatterChart extends BarLineChartBase<ScatterData> implements Scatt
 
     public static void registerShapeRenderer(String scatterShapeName, ShapeRenderer shapeRenderer) {
         if (shapeRendererList == null) {
-            shapeRendererList = new HashMap<>();
+           initShapeRenderer();
         }
         shapeRendererList.put(scatterShapeName, shapeRenderer);
     }
@@ -54,15 +53,41 @@ public class ScatterChart extends BarLineChartBase<ScatterData> implements Scatt
      * Init ShapeRendererList
      */
     private static void initShapeRenderer() {
-        registerShapeRenderer(ScatterShape.getScatterShapeNames().get(ScatterShape.SQUARE), new SquareShapeRenderer());
-        registerShapeRenderer(ScatterShape.getScatterShapeNames().get(ScatterShape.CIRCLE), new CircleShapeRenderer());
-        registerShapeRenderer(ScatterShape.getScatterShapeNames().get(ScatterShape.TRIANGLE), new TriangleShapeRenderer());
-        registerShapeRenderer(ScatterShape.getScatterShapeNames().get(ScatterShape.CROSS), new CrossShapeRenderer());
-        registerShapeRenderer(ScatterShape.getScatterShapeNames().get(ScatterShape.X), new XShapeRenderer());
-        registerShapeRenderer(ScatterShape.getScatterShapeNames().get(ScatterShape.CHEVRON_UP), new ChevronUpShapeRenderer());
-        registerShapeRenderer(ScatterShape.getScatterShapeNames().get(ScatterShape.CHEVRON_DOWN), new ChevronDownShapeRenderer());
+        shapeRendererList = new HashMap<>();
+        shapeRendererList.put(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.getScatterShapeNames()
+                .get(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.SQUARE), new SquareShapeRenderer());
+        shapeRendererList.put(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.getScatterShapeNames()
+                .get(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.CIRCLE), new CircleShapeRenderer());
+        shapeRendererList.put(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.getScatterShapeNames()
+                .get(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.TRIANGLE), new TriangleShapeRenderer());
+        shapeRendererList.put(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.getScatterShapeNames()
+                .get(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.CROSS), new CrossShapeRenderer());
+        shapeRendererList.put(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.getScatterShapeNames()
+                .get(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.X), new XShapeRenderer());
+        shapeRendererList.put(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.getScatterShapeNames()
+                .get(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.CHEVRON_UP), new ChevronUpShapeRenderer());
+        shapeRendererList.put(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.getScatterShapeNames()
+                .get(com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape.CHEVRON_DOWN), new ChevronDownShapeRenderer());
     }
 
+
+    /**
+     * enum that defines the shape that is drawn where the values are
+     */
+    public enum ScatterShape {
+        SQUARE, CIRCLE, TRIANGLE, CROSS, X,
+    }
+
+    /**
+     * Returns all possible predefined ScatterShapes.
+     *
+     * @return ScatterShape to array
+     */
+    public static ScatterShape[] getAllPossibleShapes() {
+        return new ScatterShape[] {
+                ScatterShape.SQUARE, ScatterShape.CIRCLE, ScatterShape.TRIANGLE, ScatterShape.CROSS
+        };
+    }
 
     public ScatterChart(Context context) {
         super(context);
