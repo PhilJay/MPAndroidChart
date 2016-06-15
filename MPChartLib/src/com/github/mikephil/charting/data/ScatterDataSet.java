@@ -1,8 +1,8 @@
 
 package com.github.mikephil.charting.data;
 
-import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
+import com.github.mikephil.charting.renderer.ShapeRenders.ScatterShape;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
      * the type of shape that is set to be drawn where the values are at,
      * default ScatterShape.SQUARE
      */
-    private ScatterShape mScatterShape = ScatterShape.SQUARE;
+    private String mScatterShape = ScatterShape.getScatterShapeNames().get(ScatterShape.SQUARE);
 
     /**
      * The radius of the hole in the shape (applies to Square, Circle and Triangle)
@@ -84,12 +84,12 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
      *
      * @param shape
      */
-    public void setScatterShape(ScatterShape shape) {
+    public void setScatterShape(String shape) {
         mScatterShape = shape;
     }
 
     @Override
-    public ScatterShape getScatterShape() {
+    public String getScatterShape() {
         return mScatterShape;
     }
 
