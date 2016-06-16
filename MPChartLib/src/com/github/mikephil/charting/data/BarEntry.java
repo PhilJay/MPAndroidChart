@@ -26,8 +26,7 @@ public class BarEntry extends Entry {
 	public BarEntry(float[] vals, int xIndex) {
 		super(calcSum(vals), xIndex);
 
-		this.mVals = vals;
-		calcPosNegSum();
+		setVals(vals);
 	}
 
 	/**
@@ -52,8 +51,7 @@ public class BarEntry extends Entry {
 	public BarEntry(float[] vals, int xIndex, String label) {
 		super(calcSum(vals), xIndex, label);
 
-		this.mVals = vals;
-		calcPosNegSum();
+		setVals(vals);
 	}
 
 	/**
@@ -95,8 +93,11 @@ public class BarEntry extends Entry {
 	 */
 	public void setVals(float[] vals) {
 		setVal(calcSum(vals));
-		mVals = vals;
-		calcPosNegSum();
+
+		if(vals.length > 1) {
+			mVals = vals;
+			calcPosNegSum();
+		}
 	}
 
 	/**
