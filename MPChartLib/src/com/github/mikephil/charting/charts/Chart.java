@@ -1208,6 +1208,15 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
+     * Sets the color of the no data text.
+     *
+     * @param color
+     */
+    public void setNoDataTextColor(int color) {
+        mInfoPaint.setColor(color);
+    }
+
+    /**
      * Sets descriptive text to explain to the user why there is no chart
      * available Defaults to empty if not set
      *
