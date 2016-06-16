@@ -31,7 +31,6 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
         
         mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
         mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
-        mAxisLabelPaint.setFakeBoldText(mXAxis.getTextBold());
         mXAxis.setValues(xValues);
 
         String longest = mXAxis.getLongestLabel();
@@ -62,7 +61,6 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
 
         mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
         mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
-        mAxisLabelPaint.setFakeBoldText(mXAxis.getTextBold());
         mAxisLabelPaint.setColor(mXAxis.getTextColor());
 
         if (mXAxis.getPosition() == XAxisPosition.TOP) {
@@ -239,7 +237,6 @@ public class XAxisRendererHorizontalBarChart extends XAxisRendererBarChart {
 				mLimitLinePaint.setColor(l.getTextColor());
 				mLimitLinePaint.setStrokeWidth(0.5f);
 				mLimitLinePaint.setTextSize(l.getTextSize());
-                mLimitLinePaint.setFakeBoldText(l.getTextBold());
 
                 final float labelLineHeight = Utils.calcTextHeight(mLimitLinePaint, label);
                 float xOffset = Utils.convertDpToPixel(4f) + l.getXOffset();

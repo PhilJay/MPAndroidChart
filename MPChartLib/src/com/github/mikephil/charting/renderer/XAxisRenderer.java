@@ -36,7 +36,6 @@ public class XAxisRenderer extends AxisRenderer {
 
         mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
         mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
-        mAxisLabelPaint.setFakeBoldText(mXAxis.getTextBold());
 
         StringBuilder widthText = new StringBuilder();
 
@@ -83,7 +82,6 @@ public class XAxisRenderer extends AxisRenderer {
 
         mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
         mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
-        mAxisLabelPaint.setFakeBoldText(mXAxis.getTextBold());
         mAxisLabelPaint.setColor(mXAxis.getTextColor());
 
         if (mXAxis.getPosition() == XAxisPosition.TOP) {
@@ -295,7 +293,6 @@ public class XAxisRenderer extends AxisRenderer {
             mLimitLinePaint.setColor(limitLine.getTextColor());
             mLimitLinePaint.setStrokeWidth(0.5f);
             mLimitLinePaint.setTextSize(limitLine.getTextSize());
-            mLimitLinePaint.setFakeBoldText(limitLine.getTextBold());
 
 
             float xOffset = limitLine.getLineWidth() + limitLine.getXOffset();

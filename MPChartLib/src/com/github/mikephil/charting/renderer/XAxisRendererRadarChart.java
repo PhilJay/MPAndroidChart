@@ -30,7 +30,6 @@ public class XAxisRendererRadarChart extends XAxisRenderer {
 
         mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
         mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
-        mAxisLabelPaint.setFakeBoldText(mXAxis.getTextBold());
         mAxisLabelPaint.setColor(mXAxis.getTextColor());
 
         float sliceangle = mChart.getSliceAngle();

@@ -77,7 +77,6 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
 
         mAxisLabelPaint.setTypeface(mYAxis.getTypeface());
         mAxisLabelPaint.setTextSize(mYAxis.getTextSize());
-        mAxisLabelPaint.setFakeBoldText(mYAxis.getTextBold());
         mAxisLabelPaint.setColor(mYAxis.getTextColor());
         mAxisLabelPaint.setTextAlign(Align.CENTER);
 
@@ -140,7 +139,6 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
 
         mAxisLabelPaint.setTypeface(mYAxis.getTypeface());
         mAxisLabelPaint.setTextSize(mYAxis.getTextSize());
-        mAxisLabelPaint.setFakeBoldText(mYAxis.getTextBold());
         mAxisLabelPaint.setColor(mYAxis.getTextColor());
 
         for (int i = 0; i < mYAxis.mEntryCount; i++) {
@@ -244,7 +242,6 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
                 mLimitLinePaint.setTypeface(l.getTypeface());
                 mLimitLinePaint.setStrokeWidth(0.5f);
                 mLimitLinePaint.setTextSize(l.getTextSize());
-                mLimitLinePaint.setFakeBoldText(l.getTextBold());
 
                 float xOffset = l.getLineWidth() + l.getXOffset();
                 float yOffset = Utils.convertDpToPixel(2f) + l.getYOffset();

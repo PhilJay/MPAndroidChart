@@ -167,7 +167,6 @@ public class LegendRenderer extends Renderer {
             mLegendLabelPaint.setTypeface(tf);
 
         mLegendLabelPaint.setTextSize(mLegend.getTextSize());
-        mLegendLabelPaint.setFakeBoldText(mLegend.getTextBold());
         mLegendLabelPaint.setColor(mLegend.getTextColor());
 
         // calculate all dimensions of the mLegend
@@ -185,7 +184,6 @@ public class LegendRenderer extends Renderer {
             mLegendLabelPaint.setTypeface(tf);
 
         mLegendLabelPaint.setTextSize(mLegend.getTextSize());
-        mLegendLabelPaint.setFakeBoldText(mLegend.getTextBold());
         mLegendLabelPaint.setColor(mLegend.getTextColor());
 
         float labelLineHeight = Utils.getLineHeight(mLegendLabelPaint);

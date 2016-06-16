@@ -137,7 +137,6 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
 
         mAxisLabelPaint.setTypeface(mYAxis.getTypeface());
         mAxisLabelPaint.setTextSize(mYAxis.getTextSize());
-        mAxisLabelPaint.setFakeBoldText(mYAxis.getTextBold());
         mAxisLabelPaint.setColor(mYAxis.getTextColor());
 
         PointF center = mChart.getCenterOffsets();
