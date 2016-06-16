@@ -1,6 +1,5 @@
 package com.github.mikephil.charting.interfaces.datasets;
 
-import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.data.Entry;
 
 /**
@@ -20,7 +19,7 @@ public interface IScatterDataSet extends ILineScatterCandleRadarDataSet<Entry> {
      *
      * @return
      */
-    ScatterChart.ScatterShape getScatterShape();
+    String getScatterShape();
 
     /**
      * Returns radius of the hole in the shape

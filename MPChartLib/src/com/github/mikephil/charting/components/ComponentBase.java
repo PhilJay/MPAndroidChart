@@ -43,6 +43,11 @@ public abstract class ComponentBase {
      */
     protected int mTextColor = Color.BLACK;
 
+    /**
+     * the text style boldness {Default = false}
+     */
+    protected boolean mTextBold = false;
+
     public ComponentBase() {
 
     }
@@ -128,6 +133,24 @@ public abstract class ComponentBase {
      */
     public float getTextSize() {
         return mTextSize;
+    }
+
+    /**
+     * set the text to be bold
+     *
+     * @param bold
+     */
+    public void setTextBold(boolean bold) {
+        mTextBold = bold;
+    }
+
+    /**
+     * returns the text boldness
+     *
+     * @return
+     */
+    public boolean getTextBold() {
+        return mTextBold;
     }
 
     /**
