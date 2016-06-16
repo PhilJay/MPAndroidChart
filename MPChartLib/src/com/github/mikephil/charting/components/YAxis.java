@@ -208,7 +208,7 @@ public class YAxis extends AxisBase {
      * @param enabled
      */
     public void setGranularityEnabled(boolean enabled) {
-        mGranularityEnabled = true;
+        mGranularityEnabled = enabled;
     }
 
     /**
