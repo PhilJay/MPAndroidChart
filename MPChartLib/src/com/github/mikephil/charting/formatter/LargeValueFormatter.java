@@ -22,7 +22,6 @@ public class LargeValueFormatter implements ValueFormatter, YAxisValueFormatter 
     private static String[] SUFFIX = new String[]{
             "", "k", "m", "b", "t"
     };
-    private static final int MAX_LENGTH = 4;
     private DecimalFormat mFormat;
     private String mText = "";
 
@@ -79,14 +78,8 @@ public class LargeValueFormatter implements ValueFormatter, YAxisValueFormatter 
      */
     private String makePretty(double number) {
 
-        String r = mFormat.format(number);
+        String r0 = mFormat.format(Math.round(number));
 
-        r = r.replaceAll("E[0-9]", SUFFIX[Character.getNumericValue(r.charAt(r.length() - 1)) / 3]);
-
-        while (r.length() > MAX_LENGTH || r.matches("[0-9]+\\.[a-z]")) {
-            r = r.substring(0, r.length() - 2) + r.substring(r.length() - 1);
-        }
-
-        return r;
+        return r0.replaceAll("E[0-9]", SUFFIX[Character.getNumericValue(r0.charAt(r0.length() - 1)) / 3]);
     }
 }
