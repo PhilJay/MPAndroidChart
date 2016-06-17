@@ -300,15 +300,12 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     public void setData(T data) {
 
+        mData = data;
+        mOffsetsCalculated = false;
+
         if (data == null) {
-            Log.e(LOG_TAG,
-                    "Cannot set data for chart. Provided data object is null.");
             return;
         }
-
-        // LET THE CHART KNOW THERE IS DATA
-        mOffsetsCalculated = false;
-        mData = data;
 
         // calculate how many digits are needed
         calculateFormatter(data.getYMin(), data.getYMax());
@@ -331,13 +328,14 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     public void clear() {
         mData = null;
+        mOffsetsCalculated = false;
         mIndicesToHighlight = null;
         invalidate();
     }
 
     /**
-     * Removes all DataSets (and thereby Entries) from the chart. Does not
-     * remove the x-values. Also refreshes the chart by calling invalidate().
+     * Removes all DataSets (and thereby Entries) from the chart. Does not set the data object to null. Also refreshes the
+     * chart by calling invalidate().
      */
     public void clearValues() {
         mData.clearValues();
