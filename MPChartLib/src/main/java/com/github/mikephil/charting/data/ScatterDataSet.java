@@ -53,13 +53,16 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
         }
 
         ScatterDataSet copied = new ScatterDataSet(yVals, getLabel());
+        copied.mDrawValues = mDrawValues;
+        copied.mValueColors = mValueColors;
         copied.mColors = mColors;
         copied.mShapeSize = mShapeSize;
         copied.mScatterShape = mScatterShape;
         copied.mScatterShapeHoleRadius = mScatterShapeHoleRadius;
         copied.mScatterShapeHoleColor = mScatterShapeHoleColor;
-        //copied.mCustomScatterPath = mCustomScatterPath;
+        copied.mHighlightLineWidth = mHighlightLineWidth;
         copied.mHighLightColor = mHighLightColor;
+        copied.mHighlightDashPathEffect = mHighlightDashPathEffect;
 
         return copied;
     }
