@@ -296,8 +296,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
         float dX, dY;
 
         // check if axis is inverted
-        if (mChart.isAnyAxisInverted() && mClosestDataSetToTouch != null
-                && mChart.getAxis(mClosestDataSetToTouch.getAxisDependency()).isInverted()) {
+        if (inverted()) {
 
             // if there is an inverted horizontalbarchart
             if (mChart instanceof HorizontalBarChart) {
@@ -498,14 +497,23 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
         float yTrans = 0f;
 
         // check if axis is inverted
-        if (mChart.isAnyAxisInverted() && mClosestDataSetToTouch != null
-                && mChart.isInverted(mClosestDataSetToTouch.getAxisDependency())) {
+        if (inverted()) {
             yTrans = -(y - vph.offsetTop());
         } else {
             yTrans = -(mChart.getMeasuredHeight() - y - vph.offsetBottom());
         }
 
         return new PointF(xTrans, yTrans);
+    }
+
+    /**
+     * Returns true if the current touch situation should be interpreted as inverted, false if not.
+     *
+     * @return
+     */
+    private boolean inverted() {
+        return (mClosestDataSetToTouch == null && mChart.isAnyAxisInverted()) || (mClosestDataSetToTouch != null
+                && mChart.isInverted(mClosestDataSetToTouch.getAxisDependency()));
     }
 
     /**
