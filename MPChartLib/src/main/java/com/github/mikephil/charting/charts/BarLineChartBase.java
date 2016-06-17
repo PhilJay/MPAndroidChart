@@ -169,7 +169,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         setHighlighter(new ChartHighlighter(this));
 
-        mChartTouchListener = new BarLineChartTouchListener(this, mViewPortHandler.getMatrixTouch());
+        mChartTouchListener = new BarLineChartTouchListener(this, mViewPortHandler.getMatrixTouch(), 3f);
 
         mGridBackgroundPaint = new Paint();
         mGridBackgroundPaint.setStyle(Style.FILL);

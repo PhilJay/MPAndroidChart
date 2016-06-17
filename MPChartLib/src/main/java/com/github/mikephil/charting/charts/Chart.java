@@ -685,6 +685,15 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
+     * Returns an instance of the currently active touch listener.
+     *
+     * @return
+     */
+    public ChartTouchListener getOnTouchListener() {
+        return mChartTouchListener;
+    }
+
+    /**
      * ################ ################ ################ ################
      */
     /** BELOW CODE IS FOR THE MARKER VIEW */

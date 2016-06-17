@@ -1,4 +1,3 @@
-
 package com.github.mikephil.charting.listener;
 
 import android.annotation.SuppressLint;
@@ -26,7 +25,8 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
  *
  * @author Philipp Jahoda
  */
-public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBase<? extends BarLineScatterCandleBubbleData<? extends IBarLineScatterCandleBubbleDataSet<? extends Entry>>>> {
+public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBase<? extends BarLineScatterCandleBubbleData<?
+        extends IBarLineScatterCandleBubbleDataSet<? extends Entry>>>> {
 
     /**
      * the original touch-matrix from the chart
@@ -73,12 +73,20 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
      */
     private float mMinScalePointerDistance;
 
-    public BarLineChartTouchListener(BarLineChartBase<? extends BarLineScatterCandleBubbleData<? extends IBarLineScatterCandleBubbleDataSet<? extends Entry>>> chart, Matrix touchMatrix) {
+    /**
+     * Constructor with initialization parameters.
+     *
+     * @param chart               instance of the chart
+     * @param touchMatrix         the touch-matrix of the chart
+     * @param dragTriggerDistance the minimum movement distance that will be interpreted as a "drag" gesture in dp (3dp equals
+     *                            to about 9 pixels on a 5.5" FHD screen)
+     */
+    public BarLineChartTouchListener(BarLineChartBase<? extends BarLineScatterCandleBubbleData<? extends
+            IBarLineScatterCandleBubbleDataSet<? extends Entry>>> chart, Matrix touchMatrix, float dragTriggerDistance) {
         super(chart);
         this.mMatrix = touchMatrix;
 
-        // this equals to about 9 pixels on a 5.5" FHD screen
-        this.mDragTriggerDist = Utils.convertDpToPixel(3f);
+        this.mDragTriggerDist = Utils.convertDpToPixel(dragTriggerDistance);
 
         this.mMinScalePointerDistance = Utils.convertDpToPixel(3.5f);
     }
@@ -207,7 +215,8 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                         mDecelerationCurrentPoint = new PointF(event.getX(), event.getY());
                         mDecelerationVelocity = new PointF(velocityX, velocityY);
 
-                        Utils.postInvalidateOnAnimation(mChart); // This causes computeScroll to fire, recommended for this by Google
+                        Utils.postInvalidateOnAnimation(mChart); // This causes computeScroll to fire, recommended for this by
+                        // Google
                     }
                 }
 
@@ -513,6 +522,16 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
         return mMatrix;
     }
 
+    /**
+     * Sets the minimum distance that will be interpreted as a "drag" by the chart in dp.
+     * Default: 3dp
+     *
+     * @param dragTriggerDistance
+     */
+    public void setDragTriggerDist(float dragTriggerDistance) {
+        this.mDragTriggerDist = Utils.convertDpToPixel(dragTriggerDistance);
+    }
+
     @Override
     public boolean onDoubleTap(MotionEvent e) {
 
@@ -573,21 +592,6 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
         return super.onSingleTapUp(e);
     }
 
-//    @Override
-//    public boolean onSingleTapConfirmed(MotionEvent e) {
-//
-//        mLastGesture = ChartGesture.SINGLE_TAP;
-//
-//        OnChartGestureListener l = mChart.getOnChartGestureListener();
-//
-//        if (l != null) {
-//            l.onChartSingleTapped(e);
-//            l.onChartGestureEnd(e, mLastGesture);
-//        }
-//
-//        return super.onSingleTapConfirmed(e);
-//    }
-
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 
@@ -624,7 +628,8 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
         mDecelerationCurrentPoint.x += distanceX;
         mDecelerationCurrentPoint.y += distanceY;
 
-        MotionEvent event = MotionEvent.obtain(currentTime, currentTime, MotionEvent.ACTION_MOVE, mDecelerationCurrentPoint.x, mDecelerationCurrentPoint.y, 0);
+        MotionEvent event = MotionEvent.obtain(currentTime, currentTime, MotionEvent.ACTION_MOVE, mDecelerationCurrentPoint.x,
+                mDecelerationCurrentPoint.y, 0);
         performDrag(event);
         event.recycle();
         mMatrix = mChart.getViewPortHandler().refresh(mMatrix, mChart, false);
