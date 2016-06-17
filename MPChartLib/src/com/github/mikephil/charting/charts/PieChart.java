@@ -117,6 +117,8 @@ public class PieChart extends PieRadarChartBase<PieData> {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        ((PieChartRenderer) mRenderer).drawCircleBackground(canvas);
+
         if (mData == null)
             return;
 
@@ -338,6 +340,15 @@ public class PieChart extends PieRadarChartBase<PieData> {
      */
     public float[] getAbsoluteAngles() {
         return mAbsoluteAngles;
+    }
+
+    /**
+     * Sets the color for circle background of the PieChart
+     *
+     * @param color
+     */
+    public void setCircleBackgroundColor(int color) {
+        ((PieChartRenderer) mRenderer).getPaintCircleBackground().setColor(color);
     }
 
     /**
