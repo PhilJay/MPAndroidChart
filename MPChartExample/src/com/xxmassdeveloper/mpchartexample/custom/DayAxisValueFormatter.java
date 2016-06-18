@@ -32,10 +32,6 @@ public class DayAxisValueFormatter implements AxisValueFormatter {
         String monthName = mMonths[month % mMonths.length];
         String yearName = String.valueOf(year);
 
-        if (year == 2017) {
-            System.out.println("");
-        }
-
         if (chart.getVisibleXRange() > 30 * axis.getLabelCount()) {
 
             return monthName + " " + yearName;
