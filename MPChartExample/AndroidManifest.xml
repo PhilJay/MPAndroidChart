@@ -64,6 +64,7 @@
         <activity android:name="StackedBarActivityNegative"></activity>
         <activity android:name=".realm.RealmWikiExample"></activity>
         <activity android:name=".BarChartPositiveNegative"></activity>
+        <activity android:name=".FilledLineActivity"></activity>
     </application>
 
 </manifest>

@@ -24,6 +24,7 @@ import com.xxmassdeveloper.mpchartexample.CandleStickChartActivity;
 import com.xxmassdeveloper.mpchartexample.CombinedChartActivity;
 import com.xxmassdeveloper.mpchartexample.CubicLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.DynamicalAddingActivity;
+import com.xxmassdeveloper.mpchartexample.FilledLineActivity;
 import com.xxmassdeveloper.mpchartexample.HorizontalBarChartActivity;
 import com.xxmassdeveloper.mpchartexample.InvertedLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.LineChartActivity1;
@@ -139,6 +140,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 "Simple demonstration of a time-chart. This chart draws one line entry per hour originating from the current time in milliseconds.");
         time.isNew = true;
         objects.add(time);
+        objects.add(new ContentItem(
+                "Filled LineChart",
+                "This demonstrates how to fill an area between two LineDataSets."));
 
         MyAdapter adapter = new MyAdapter(this, objects);
 
@@ -272,6 +276,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 break;
             case 29:
                 i = new Intent(this, LineChartTime.class);
+                startActivity(i);
+                break;
+            case 30:
+                i = new Intent(this, FilledLineActivity.class);
                 startActivity(i);
                 break;
 
