@@ -262,9 +262,14 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
 
     @Override
     public ValueFormatter getValueFormatter() {
-        if (mValueFormatter == null)
+        if (needsFormatter())
             return new DefaultValueFormatter(1);
         return mValueFormatter;
+    }
+
+    @Override
+    public boolean needsFormatter() {
+        return mValueFormatter == null;
     }
 
     @Override

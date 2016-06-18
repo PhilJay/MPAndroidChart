@@ -19,9 +19,6 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 
-import com.github.mikephil.charting.formatter.DefaultValueFormatter;
-import com.github.mikephil.charting.formatter.ValueFormatter;
-
 import java.util.List;
 
 /**
@@ -378,21 +375,6 @@ public abstract class Utils {
             return Double.longBitsToDouble(Double.doubleToRawLongBits(d) +
                     ((d >= 0.0d) ? +1L : -1L));
         }
-    }
-
-    /**
-     * If this component has no ValueFormatter or is only equipped with the
-     * default one (no custom set), return true.
-     *
-     * @return
-     */
-    public static boolean needsDefaultFormatter(ValueFormatter formatter) {
-        if (formatter == null)
-            return true;
-        if (formatter instanceof DefaultValueFormatter)
-            return true;
-
-        return false;
     }
 
     /**

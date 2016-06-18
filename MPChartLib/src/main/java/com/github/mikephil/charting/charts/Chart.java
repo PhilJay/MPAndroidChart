@@ -100,7 +100,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     /**
      * default value-formatter, number of digits depends on provided chart-data
      */
-    protected ValueFormatter mDefaultFormatter;
+    protected DefaultValueFormatter mDefaultFormatter = new DefaultValueFormatter(0);
 
     /**
      * paint object used for drawing the description text in the bottom right
@@ -232,8 +232,6 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         Utils.init(getContext());
         mMaxHighlightDistance = Utils.convertDpToPixel(70f);
 
-        mDefaultFormatter = new DefaultValueFormatter(1);
-
         mViewPortHandler = new ViewPortHandler();
 
         mLegend = new Legend();
@@ -308,10 +306,10 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         }
 
         // calculate how many digits are needed
-        calculateFormatter(data.getYMin(), data.getYMax());
+        setupDefaultFormatter(data.getYMin(), data.getYMax());
 
         for (IDataSet set : mData.getDataSets()) {
-            if (Utils.needsDefaultFormatter(set.getValueFormatter()))
+            if (set.needsFormatter() || set.getValueFormatter() == mDefaultFormatter)
                 set.setValueFormatter(mDefaultFormatter);
         }
 
@@ -382,10 +380,10 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     protected abstract void calcMinMax();
 
     /**
-     * calculates the required number of digits for the values that might be
+     * Calculates the required number of digits for the values that might be
      * drawn in the chart (if enabled), and creates the default-value-formatter
      */
-    protected void calculateFormatter(float min, float max) {
+    protected void setupDefaultFormatter(float min, float max) {
 
         float reference = 0f;
 
@@ -397,7 +395,9 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         }
 
         int digits = Utils.getDecimals(reference);
-        mDefaultFormatter = new DefaultValueFormatter(digits);
+
+        // setup the formatter with a new number of digits
+        mDefaultFormatter.setup(digits);
     }
 
     /**

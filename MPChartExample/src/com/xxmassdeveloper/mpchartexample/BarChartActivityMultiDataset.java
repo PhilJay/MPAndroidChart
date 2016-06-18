@@ -195,7 +195,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         ArrayList<BarEntry> yVals2 = new ArrayList<BarEntry>();
         ArrayList<BarEntry> yVals3 = new ArrayList<BarEntry>();
 
-        float mult = mSeekBarY.getProgress() * 1000f;
+        float mult = mSeekBarY.getProgress() * 100000f;
 
         for (int i = startYear; i < endYear; i++) {
             float val = (float) (Math.random() * mult) + 3;

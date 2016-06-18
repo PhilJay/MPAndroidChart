@@ -21,7 +21,7 @@ public interface AxisValueFormatter {
     String getFormattedValue(float value, AxisBase axis);
 
     /**
-     * Returns the number of decimal digits this formatter uses.
+     * Returns the number of decimal digits this formatter uses or -1, if unspecified.
      *
      * @return
      */

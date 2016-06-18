@@ -304,6 +304,13 @@ public interface IDataSet<T extends Entry> {
     ValueFormatter getValueFormatter();
 
     /**
+     * Returns true if the valueFormatter object of this DataSet is null.
+     *
+     * @return
+     */
+    boolean needsFormatter();
+
+    /**
      * Sets the color the value-labels of this DataSet should have.
      *
      * @param color
