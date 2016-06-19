@@ -590,7 +590,7 @@ public class PieChartRenderer extends DataRenderer {
      */
     protected void drawHole(Canvas c) {
 
-        if (mChart.isDrawHoleEnabled()) {
+        if (mChart.isDrawHoleEnabled() && mBitmapCanvas != null) {
 
             float radius = mChart.getRadius();
             float holeRadius = radius * (mChart.getHoleRadius() / 100);

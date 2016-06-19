@@ -202,6 +202,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      * @return
      */
     protected float getDistance(float x1, float y1, float x2, float y2) {
+        //return Math.abs(x1 - x2);
         return (float) Math.hypot(x1 - x2, y1 - y2);
     }
 
