@@ -141,7 +141,7 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
             }
             case R.id.actionToggleXVals: {
 
-                mChart.setDrawSliceText(!mChart.isDrawSliceTextEnabled());
+                mChart.setDrawEntryLabels(!mChart.isDrawEntryLabelsEnabled());
                 mChart.invalidate();
                 break;
             }

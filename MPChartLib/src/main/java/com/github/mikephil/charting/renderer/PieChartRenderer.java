@@ -18,7 +18,6 @@ import android.text.TextPaint;
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -50,6 +49,11 @@ public class PieChartRenderer extends DataRenderer {
      * chart
      */
     private TextPaint mCenterTextPaint;
+
+    /**
+     * paint object used for drwing the slice-text
+     */
+    private Paint mEntryLabelsPaint;
 
     private StaticLayout mCenterTextLayout;
     private CharSequence mCenterTextLastValue;
@@ -85,6 +89,11 @@ public class PieChartRenderer extends DataRenderer {
         mValuePaint.setColor(Color.WHITE);
         mValuePaint.setTextAlign(Align.CENTER);
 
+        mEntryLabelsPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mEntryLabelsPaint.setColor(Color.WHITE);
+        mEntryLabelsPaint.setTextAlign(Align.CENTER);
+        mEntryLabelsPaint.setTextSize(Utils.convertDpToPixel(13f));
+
         mValueLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mValueLinePaint.setStyle(Style.STROKE);
     }
@@ -99,6 +108,10 @@ public class PieChartRenderer extends DataRenderer {
 
     public TextPaint getPaintCenterText() {
         return mCenterTextPaint;
+    }
+
+    public Paint getPaintEntryLabels() {
+        return mEntryLabelsPaint;
     }
 
     @Override
@@ -392,7 +405,7 @@ public class PieChartRenderer extends DataRenderer {
 
         float yValueSum = data.getYValueSum();
 
-        boolean drawXVals = mChart.isDrawSliceTextEnabled();
+        boolean drawEntryLabels = mChart.isDrawEntryLabelsEnabled();
 
         float angle;
         int xIndex = 0;
@@ -403,9 +416,9 @@ public class PieChartRenderer extends DataRenderer {
 
             IPieDataSet dataSet = dataSets.get(i);
 
-            final boolean drawYVals = dataSet.isDrawValuesEnabled();
+            final boolean drawValues = dataSet.isDrawValuesEnabled();
 
-            if (!drawYVals && !drawXVals)
+            if (!drawValues && !drawEntryLabels)
                 continue;
 
             final PieDataSet.ValuePosition xValuePosition = dataSet.getXValuePosition();
@@ -453,13 +466,13 @@ public class PieChartRenderer extends DataRenderer {
                 final float sliceXBase = (float) Math.cos(transformedAngle * Utils.FDEG2RAD);
                 final float sliceYBase = (float) Math.sin(transformedAngle * Utils.FDEG2RAD);
 
-                final boolean drawXOutside = drawXVals &&
+                final boolean drawXOutside = drawEntryLabels &&
                         xValuePosition == PieDataSet.ValuePosition.OUTSIDE_SLICE;
-                final boolean drawYOutside = drawYVals &&
+                final boolean drawYOutside = drawValues &&
                         yValuePosition == PieDataSet.ValuePosition.OUTSIDE_SLICE;
-                final boolean drawXInside = drawXVals &&
+                final boolean drawXInside = drawEntryLabels &&
                         xValuePosition == PieDataSet.ValuePosition.INSIDE_SLICE;
-                final boolean drawYInside = drawYVals &&
+                final boolean drawYInside = drawValues &&
                         yValuePosition == PieDataSet.ValuePosition.INSIDE_SLICE;
 
                 if (drawXOutside || drawYOutside) {
@@ -523,14 +536,12 @@ public class PieChartRenderer extends DataRenderer {
                                 dataSet.getValueTextColor(j));
 
                         if (j < data.getEntryCount() && entry.getLabel() != null) {
-                            c.drawText(entry.getLabel(), labelPtx, labelPty + lineHeight,
-                                    mValuePaint);
+                            drawEntryLabel(c, entry.getLabel(), labelPtx, labelPty + lineHeight);
                         }
 
                     } else if (drawXOutside) {
                         if (j < data.getEntryCount() && entry.getLabel() != null) {
-                            mValuePaint.setColor(dataSet.getValueTextColor(j));
-                            c.drawText(entry.getLabel(), labelPtx, labelPty + lineHeight / 2.f, mValuePaint);
+                            drawEntryLabel(c, entry.getLabel(), labelPtx, labelPty + lineHeight / 2.f);
                         }
                     } else if (drawYOutside) {
 
@@ -552,14 +563,12 @@ public class PieChartRenderer extends DataRenderer {
                         drawValue(c, formatter, value, entry, 0, x, y, dataSet.getValueTextColor(j));
 
                         if (j < data.getEntryCount() && entry.getLabel() != null) {
-                            c.drawText(entry.getLabel(), x, y + lineHeight,
-                                    mValuePaint);
+                            drawEntryLabel(c, entry.getLabel(), x, y + lineHeight);
                         }
 
                     } else if (drawXInside) {
                         if (j < data.getEntryCount() && entry.getLabel() != null) {
-                            mValuePaint.setColor(dataSet.getValueTextColor(j));
-                            c.drawText(entry.getLabel(), x, y + lineHeight / 2f, mValuePaint);
+                            drawEntryLabel(c, entry.getLabel(), x, y + lineHeight / 2f);
                         }
                     } else if (drawYInside) {
 
@@ -572,6 +581,18 @@ public class PieChartRenderer extends DataRenderer {
         }
 
         c.restore();
+    }
+
+    /**
+     * Draws an entry label at the specified position.
+     *
+     * @param c
+     * @param label
+     * @param x
+     * @param y
+     */
+    protected void drawEntryLabel(Canvas c, String label, float x, float y) {
+        c.drawText(label, x, y, mEntryLabelsPaint);
     }
 
     @Override

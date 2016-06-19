@@ -100,6 +100,11 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         l.setXEntrySpace(7f);
         l.setYEntrySpace(0f);
         l.setYOffset(0f);
+
+        // entry label styling
+        mChart.setEntryLabelColor(Color.WHITE);
+        mChart.setEntryLabelTypeface(mTfRegular);
+        mChart.setEntryLabelTextSize(12f);
     }
 
     @Override
@@ -137,7 +142,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
             }
             case R.id.actionToggleXVals: {
 
-                mChart.setDrawSliceText(!mChart.isDrawSliceTextEnabled());
+                mChart.setDrawEntryLabels(!mChart.isDrawEntryLabelsEnabled());
                 mChart.invalidate();
                 break;
             }

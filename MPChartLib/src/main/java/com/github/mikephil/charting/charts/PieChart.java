@@ -10,8 +10,6 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.DataSet;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.highlight.PieHighlighter;
@@ -35,9 +33,9 @@ public class PieChart extends PieRadarChartBase<PieData> {
     private RectF mCircleBox = new RectF();
 
     /**
-     * flag indicating if the x-labels should be drawn or not
+     * flag indicating if entry labels should be drawn or not
      */
-    private boolean mDrawXLabels = true;
+    private boolean mDrawEntryLabels = true;
 
     /**
      * array that holds the width of each pie-slice in degrees
@@ -560,21 +558,59 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * set this to true to draw the x-value text into the pie slices
+     * Set this to true to draw the entry labels into the pie slices (Provided by the getLabel() method of the PieEntry class).
+     * Deprecated -> use setDrawEntryLabels(...) instead.
      *
      * @param enabled
      */
+    @Deprecated
     public void setDrawSliceText(boolean enabled) {
-        mDrawXLabels = enabled;
+        mDrawEntryLabels = enabled;
     }
 
     /**
-     * returns true if drawing x-values is enabled, false if not
+     * Set this to true to draw the entry labels into the pie slices (Provided by the getLabel() method of the PieEntry class).
+     *
+     * @param enabled
+     */
+    public void setDrawEntryLabels(boolean enabled) {
+        mDrawEntryLabels = enabled;
+    }
+
+    /**
+     * Returns true if drawing the entry labels is enabled, false if not.
      *
      * @return
      */
-    public boolean isDrawSliceTextEnabled() {
-        return mDrawXLabels;
+    public boolean isDrawEntryLabelsEnabled() {
+        return mDrawEntryLabels;
+    }
+
+    /**
+     * Sets the color the entry labels are drawn with.
+     *
+     * @param color
+     */
+    public void setEntryLabelColor(int color) {
+        ((PieChartRenderer) mRenderer).getPaintEntryLabels().setColor(color);
+    }
+
+    /**
+     * Sets a custom Typeface for the drawing of the entry labels.
+     *
+     * @param tf
+     */
+    public void setEntryLabelTypeface(Typeface tf) {
+        ((PieChartRenderer) mRenderer).getPaintEntryLabels().setTypeface(tf);
+    }
+
+    /**
+     * Sets the size of the entry labels in dp. Default: 13dp
+     *
+     * @param size
+     */
+    public void setEntryLabelTextSize(float size) {
+        ((PieChartRenderer) mRenderer).getPaintEntryLabels().setTextSize(Utils.convertDpToPixel(size));
     }
 
     /**
