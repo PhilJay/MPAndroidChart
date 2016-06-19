@@ -102,14 +102,16 @@ public class Transformer {
      * @param data
      * @return
      */
-    public float[] generateTransformedValuesScatter(IScatterDataSet data,
-                                                    float phaseY) {
+    public float[] generateTransformedValuesScatter(IScatterDataSet data, float phaseX,
+                                                    float phaseY, int from, int to) {
 
-        float[] valuePoints = new float[data.getEntryCount() * 2];
+        final int count = (int) ((to - from) * phaseX + 1) * 2;
 
-        for (int j = 0; j < valuePoints.length; j += 2) {
+        float[] valuePoints = new float[count];
 
-            Entry e = data.getEntryForIndex(j / 2);
+        for (int j = 0; j < count; j += 2) {
+
+            Entry e = data.getEntryForIndex(j / 2 + from);
 
             if (e != null) {
                 valuePoints[j] = e.getX();

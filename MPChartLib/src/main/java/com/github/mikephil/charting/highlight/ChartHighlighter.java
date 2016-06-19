@@ -59,6 +59,10 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
 
         List<Highlight> closestValues = getHighlightsAtXPos(xVal, x, y);
 
+        if(closestValues.isEmpty()) {
+            return null;
+        }
+
         float leftAxisMinDist = getMinimumDistance(closestValues, y, YAxis.AxisDependency.LEFT);
         float rightAxisMinDist = getMinimumDistance(closestValues, y, YAxis.AxisDependency.RIGHT);
 
@@ -128,7 +132,10 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
             if (!dataSet.isHighlightEnabled())
                 continue;
 
-            vals.add(buildHighlight(dataSet, i, xVal, DataSet.Rounding.CLOSEST));
+            Highlight high = buildHighlight(dataSet, i, xVal, DataSet.Rounding.CLOSEST);
+
+            if(high != null)
+                vals.add(high);
             //vals.add(buildHighlight(dataSet, i, xVal, DataSet.Rounding.DOWN));
         }
 
