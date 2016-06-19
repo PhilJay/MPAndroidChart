@@ -131,7 +131,7 @@ public class Transformer {
      */
     public float[] generateTransformedValuesBubble(IBubbleDataSet data, float phaseY, int from, int to) {
 
-        final int count = (int) Math.ceil(to - from) * 2; // (int) Math.ceil((to - from) * phaseX) * 2;
+        final int count = (to - from + 1) * 2; // (int) Math.ceil((to - from) * phaseX) * 2;
 
         float[] valuePoints = new float[count];
 
@@ -189,7 +189,7 @@ public class Transformer {
     public float[] generateTransformedValuesCandle(ICandleDataSet data,
                                                    float phaseX, float phaseY, int from, int to) {
 
-        final int count = (int) Math.ceil((to - from) * phaseX) * 2;
+        final int count = (int) ((to - from) * phaseX + 1) * 2;
 
         float[] valuePoints = new float[count];
 
