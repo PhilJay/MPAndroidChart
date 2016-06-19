@@ -128,8 +128,8 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
             if (!dataSet.isHighlightEnabled())
                 continue;
 
-            vals.add(buildHighlight(dataSet, i, xVal, DataSet.Rounding.UP));
-            vals.add(buildHighlight(dataSet, i, xVal, DataSet.Rounding.DOWN));
+            vals.add(buildHighlight(dataSet, i, xVal, DataSet.Rounding.CLOSEST));
+            //vals.add(buildHighlight(dataSet, i, xVal, DataSet.Rounding.DOWN));
         }
 
         return vals;
@@ -202,6 +202,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      * @return
      */
     protected float getDistance(float x1, float y1, float x2, float y2) {
+        //return Math.abs(y1 - y2);
         //return Math.abs(x1 - x2);
         return (float) Math.hypot(x1 - x2, y1 - y2);
     }

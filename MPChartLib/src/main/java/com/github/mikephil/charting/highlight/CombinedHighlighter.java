@@ -57,13 +57,13 @@ public class CombinedHighlighter extends ChartHighlighter<CombinedDataProvider> 
                     if (!dataSet.isHighlightEnabled())
                         continue;
 
-                    Highlight s1 = buildHighlight(dataSet, j, xVal, DataSet.Rounding.UP);
+                    Highlight s1 = buildHighlight(dataSet, j, xVal, DataSet.Rounding.CLOSEST);
                     s1.setDataIndex(i);
                     vals.add(s1);
 
-                    Highlight s2 = buildHighlight(dataSet, j, xVal, DataSet.Rounding.DOWN);
-                    s2.setDataIndex(i);
-                    vals.add(s2);
+//                    Highlight s2 = buildHighlight(dataSet, j, xVal, DataSet.Rounding.DOWN);
+//                    s2.setDataIndex(i);
+//                    vals.add(s2);
                 }
             }
         }

@@ -69,6 +69,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         mChart.setPinchZoom(false);
 
         mChart.setDrawGridBackground(false);
+        mChart.setMaxHighlightDistance(300);
         
         XAxis x = mChart.getXAxis();
         x.setEnabled(false);

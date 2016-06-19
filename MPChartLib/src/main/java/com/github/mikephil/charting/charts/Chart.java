@@ -230,7 +230,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
         // initialize the utils
         Utils.init(getContext());
-        mMaxHighlightDistance = Utils.convertDpToPixel(70f);
+        mMaxHighlightDistance = Utils.convertDpToPixel(100f);
 
         mViewPortHandler = new ViewPortHandler();
 
@@ -496,7 +496,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
     /**
      * Sets the maximum distance in screen dp a touch can be away from an entry to cause it to get highlighted.
-     * Default: 70dp
+     * Default: 100dp
      *
      * @param distDp
      */
