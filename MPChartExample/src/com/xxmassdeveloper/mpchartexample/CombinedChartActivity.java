@@ -125,7 +125,6 @@ public class CombinedChartActivity extends DemoBase {
         set.setValueTextColor(Color.rgb(240, 238, 70));
 
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
-        this.set1 = set;
         d.addDataSet(set);
 
         return d;
@@ -209,9 +208,6 @@ public class CombinedChartActivity extends DemoBase {
         return d;
     }
 
-    private LineDataSet set1;
-    private BubbleDataSet set2;
-
     protected BubbleData generateBubbleData() {
 
         BubbleData bd = new BubbleData();
@@ -230,7 +226,6 @@ public class CombinedChartActivity extends DemoBase {
         set.setValueTextColor(Color.WHITE);
         set.setHighlightCircleWidth(1.5f);
         set.setDrawValues(true);
-        this.set2 = set;
         bd.addDataSet(set);
 
         return bd;

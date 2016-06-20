@@ -552,7 +552,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
         }
 
         // check if double-tap zooming is enabled
-        if (mChart.isDoubleTapToZoomEnabled()) {
+        if (mChart.isDoubleTapToZoomEnabled() && mChart.getData().getEntryCount() > 0) {
 
             PointF trans = getTrans(e.getX(), e.getY());
 
