@@ -632,7 +632,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             } else {
                 if (this instanceof BarLineChartBase
                         && ((BarLineChartBase) this).isHighlightFullBarEnabled())
-                    high = new Highlight(high.getX(), Float.NaN, Float.NaN, Float.NaN, -1, YAxis.AxisDependency.LEFT);
+                    high = new Highlight(high.getX(), -1);
 
                 // set the indices to highlight
                 mIndicesToHighlight = new Highlight[]{

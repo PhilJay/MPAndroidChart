@@ -70,6 +70,11 @@ public class Highlight {
         this.mDataSetIndex = dataSetIndex;
     }
 
+    public Highlight(float x, int dataSetIndex, int stackIndex) {
+        this(x, dataSetIndex);
+        this.mStackIndex = stackIndex;
+    }
+
     /**
      * constructor
      *
@@ -77,7 +82,7 @@ public class Highlight {
      * @param y            the y-value of the highlighted value
      * @param dataSetIndex the index of the DataSet the highlighted value belongs to
      */
-    public Highlight(float x, float y, float xPx, float yPx, int dataSetIndex, YAxis.AxisDependency axis) {
+    protected Highlight(float x, float y, float xPx, float yPx, int dataSetIndex, YAxis.AxisDependency axis) {
         this.mX = x;
         this.mY = y;
         this.mXPx = xPx;
@@ -96,7 +101,7 @@ public class Highlight {
      *                     selected
      * @param range        the range the selected stack-value is in
      */
-    public Highlight(float x, float y, float xPx, float yPx, int dataSetIndex, int stackIndex, Range range,
+    protected Highlight(float x, float y, float xPx, float yPx, int dataSetIndex, int stackIndex, Range range,
                      YAxis.AxisDependency axis) {
         this(x, y, xPx, yPx, dataSetIndex, axis);
         this.mStackIndex = stackIndex;
