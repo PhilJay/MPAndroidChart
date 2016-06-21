@@ -2,6 +2,8 @@ package com.github.mikephil.charting.data;
 
 import android.annotation.SuppressLint;
 
+import com.github.mikephil.charting.highlight.Range;
+
 /**
  * Entry class for the BarChart. (especially stacked bars)
  *
@@ -14,6 +16,11 @@ public class BarEntry extends Entry {
      * the values the stacked barchart holds
      */
     private float[] mYVals;
+
+    /**
+     * the ranges for the individual stack values - automatically calculated
+     */
+    private Range[] mRanges;
 
     /**
      * the sum of all negative values this entry (if stacked) contains
@@ -35,6 +42,7 @@ public class BarEntry extends Entry {
         super(x, calcSum(vals));
 
         this.mYVals = vals;
+        calcRanges();
         calcPosNegSum();
     }
 
@@ -59,6 +67,7 @@ public class BarEntry extends Entry {
         super(x, calcSum(vals), label);
 
         this.mYVals = vals;
+        calcRanges();
         calcPosNegSum();
     }
 
@@ -102,6 +111,7 @@ public class BarEntry extends Entry {
         setY(calcSum(vals));
         mYVals = vals;
         calcPosNegSum();
+        calcRanges();
     }
 
     /**
@@ -112,6 +122,15 @@ public class BarEntry extends Entry {
     @Override
     public float getY() {
         return super.getY();
+    }
+
+    /**
+     * Returns the ranges of the individual stack-entries. Will return null if this entry is not stacked.
+     *
+     * @return
+     */
+    public Range[] getRanges() {
+        return mRanges;
     }
 
     /**
@@ -197,4 +216,32 @@ public class BarEntry extends Entry {
 
         return sum;
     }
+
+    protected void calcRanges() {
+
+        float[] values = getYVals();
+
+        if (values == null || values.length == 0)
+            return;
+
+        mRanges = new Range[values.length];
+
+        float negRemain = -getNegativeSum();
+        float posRemain = 0f;
+
+        for (int i = 0; i < mRanges.length; i++) {
+
+            float value = values[i];
+
+            if (value < 0) {
+                mRanges[i] = new Range(negRemain, negRemain + Math.abs(value));
+                negRemain += Math.abs(value);
+            } else {
+                mRanges[i] = new Range(posRemain, posRemain + value);
+                posRemain += value;
+            }
+        }
+    }
 }
+
+

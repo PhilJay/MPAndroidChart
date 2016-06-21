@@ -183,6 +183,18 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         return mDrawBarShadow;
     }
 
+    /**
+     * Highlights the value at the given x-position in the given DataSet. Provide
+     * -1 as the dataSetIndex to undo all highlighting.
+     *
+     * @param x
+     * @param dataSetIndex
+     * @param stackIndex the index inside the stack - only relevant for stacked entries
+     */
+    public void highlightValue(float x, int dataSetIndex, int stackIndex) {
+        highlightValue(new Highlight(x, dataSetIndex, stackIndex), false);
+    }
+
     @Override
     public BarData getBarData() {
         return mData;

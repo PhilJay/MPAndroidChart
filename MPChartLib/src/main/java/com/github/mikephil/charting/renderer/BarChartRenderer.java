@@ -11,6 +11,7 @@ import com.github.mikephil.charting.buffer.BarBuffer;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.highlight.Range;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.Transformer;
@@ -343,14 +344,17 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
             mHighlightPaint.setColor(set.getHighLightColor());
             mHighlightPaint.setAlpha(set.getHighLightAlpha());
 
-            boolean isStack = high.getStackIndex() < 0 ? false : true;
+            boolean isStack = (high.getStackIndex() >= 0  && e.isStacked()) ? true : false;
 
             final float y1;
             final float y2;
 
             if (isStack) {
-                y1 = high.getRange().from;
-                y2 = high.getRange().to;
+
+                Range range = e.getRanges()[high.getStackIndex()];
+
+                y1 = range.from;
+                y2 = range.to;
             } else {
                 y1 = e.getY();
                 y2 = 0.f;

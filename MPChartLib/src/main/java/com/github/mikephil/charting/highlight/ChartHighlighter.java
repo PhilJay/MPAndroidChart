@@ -33,7 +33,6 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
         Highlight high = getHighlightForX(xVal, x, y);
         return high;
     }
-
     /**
      * Returns the corresponding xPos for a given touch-position in pixels.
      *

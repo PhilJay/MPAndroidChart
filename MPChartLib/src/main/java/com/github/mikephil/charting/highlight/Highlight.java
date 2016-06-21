@@ -46,11 +46,6 @@ public class Highlight {
     private int mStackIndex = -1;
 
     /**
-     * the range of the bar that is selected (only for stacked-barchart)
-     */
-    private Range mRange;
-
-    /**
      * the axis the highlighted value belongs to
      */
     private YAxis.AxisDependency axis;
@@ -99,13 +94,10 @@ public class Highlight {
      * @param dataSetIndex the index of the DataSet the highlighted value belongs to
      * @param stackIndex   references which value of a stacked-bar entry has been
      *                     selected
-     * @param range        the range the selected stack-value is in
      */
-    protected Highlight(float x, float y, float xPx, float yPx, int dataSetIndex, int stackIndex, Range range,
-                     YAxis.AxisDependency axis) {
+    protected Highlight(float x, float y, float xPx, float yPx, int dataSetIndex, int stackIndex, YAxis.AxisDependency axis) {
         this(x, y, xPx, yPx, dataSetIndex, axis);
         this.mStackIndex = stackIndex;
-        this.mRange = range;
     }
 
     /**
@@ -170,15 +162,6 @@ public class Highlight {
      */
     public int getStackIndex() {
         return mStackIndex;
-    }
-
-    /**
-     * Returns the range of values the selected value of a stacked bar is in. (this is only relevant for stacked-barchart)
-     *
-     * @return
-     */
-    public Range getRange() {
-        return mRange;
     }
 
     public boolean isStacked() {
