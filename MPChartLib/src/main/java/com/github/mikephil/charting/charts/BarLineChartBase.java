@@ -719,7 +719,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     /**
      * Sets the size of the area (range on the x-axis) that should be maximum
      * visible at once (no further zooming out allowed). If this is e.g. set to
-     * 10, no more than 10 values on the x-axis can be viewed at once without
+     * 10, no more than a range of 10 on the x-axis can be viewed at once without
      * scrolling.
      *
      * @param maxXRange The maximum visible range of x-values.
@@ -732,7 +732,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     /**
      * Sets the size of the area (range on the x-axis) that should be minimum
      * visible at once (no further zooming in allowed). If this is e.g. set to
-     * 10, no less than 10 values on the x-axis can be viewed at once without
+     * 10, no less than a range of 10 on the x-axis can be viewed at once without
      * scrolling.
      *
      * @param minXRange The minimum visible range of x-values.
@@ -743,9 +743,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Limits the maximum and minimum value count that can be visible by
-     * pinching and zooming. e.g. minRange=10, maxRange=100 no less than 10
-     * values and no more that 100 values can be viewed at once without
+     * Limits the maximum and minimum x range that can be visible by pinching and zooming. e.g. minRange=10, maxRange=100 the
+     * smallest range to be displayed at once is 10, and no more than a range of 100 values can be viewed at once without
      * scrolling
      *
      * @param minXRange
@@ -770,14 +769,14 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Moves the left side of the current viewport to the specified x-index.
+     * Moves the left side of the current viewport to the specified x-position.
      * This also refreshes the chart by calling invalidate().
      *
-     * @param xIndex
+     * @param xValue
      */
-    public void moveViewToX(float xIndex) {
+    public void moveViewToX(float xValue) {
 
-        Runnable job = new MoveViewJob(mViewPortHandler, xIndex, 0f,
+        Runnable job = new MoveViewJob(mViewPortHandler, xValue, 0f,
                 getTransformer(AxisDependency.LEFT), this);
 
         addViewportJob(job);
@@ -802,7 +801,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     /**
      * This will move the left side of the current viewport to the specified
-     * x value on the x-axis, and center the viewport to the specified y value on the y-axis.
+     * x-value on the x-axis, and center the viewport to the specified y value on the y-axis.
      * This also refreshes the chart by calling invalidate().
      *
      * @param xValue
@@ -820,7 +819,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * This will move the left side of the current viewport to the specified x value
+     * This will move the left side of the current viewport to the specified x-value
      * and center the viewport to the y value animated.
      * This also refreshes the chart by calling invalidate().
      *

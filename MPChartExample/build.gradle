@@ -57,5 +57,5 @@ dependencies {
     compile project(':MPChartLib') // remove this if you only imported the example project
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'io.realm:realm-android:0.87.5' // dependency for realm-database API (http://realm.io)
-    //compile 'com.github.PhilJay:MPAndroidChart:v2.2.0'
+    //compile 'com.github.PhilJay:MPAndroidChart:v2.2.5'
 }

@@ -509,6 +509,20 @@ public class ViewPortHandler {
         limitTransAndScale(mMatrixTouch, mContentRect);
     }
 
+    public void setMinMaxScaleY(float minScaleY, float maxScaleY) {
+
+        if (minScaleY < 1f)
+            minScaleY = 1f;
+
+        if (maxScaleY == 0.f)
+            maxScaleY = Float.MAX_VALUE;
+
+        mMinScaleX = minScaleY;
+        mMaxScaleX = maxScaleY;
+
+        limitTransAndScale(mMatrixTouch, mContentRect);
+    }
+
     /**
      * Returns the charts-touch matrix used for translation and scale on touch.
      *

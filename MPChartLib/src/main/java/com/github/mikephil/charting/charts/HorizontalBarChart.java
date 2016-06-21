@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
@@ -204,5 +205,24 @@ public class HorizontalBarChart extends BarChart {
         PointD pos = getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentLeft(),
                 mViewPortHandler.contentTop());
         return (float) Math.min(mXAxis.mAxisMaximum, pos.y);
+    }
+
+    @Override
+    public void setVisibleXRangeMaximum(float maxXRange) {
+        float xScale = mXAxis.mAxisRange / (maxXRange);
+        mViewPortHandler.setMinimumScaleY(xScale);
+    }
+
+    @Override
+    public void setVisibleYRangeMaximum(float maxYRange, AxisDependency axis) {
+        float yScale = getDeltaY(axis) / maxYRange;
+        mViewPortHandler.setMinimumScaleX(yScale);
+    }
+
+    @Override
+    public void setVisibleXRange(float minXRange, float maxXRange) {
+        float maxScale = mXAxis.mAxisRange / minXRange;
+        float minScale = mXAxis.mAxisRange / maxXRange;
+        mViewPortHandler.setMinMaxScaleY(minScale, maxScale);
     }
 }
