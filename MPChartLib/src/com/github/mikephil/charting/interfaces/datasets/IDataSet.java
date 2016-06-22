@@ -392,4 +392,16 @@ public interface IDataSet<T extends Entry> {
      * @return
      */
     boolean isVisible();
+
+    /**
+     * Returns miscellaneous data stored by this IDataSet instance.
+     *
+     * @return
+     */
+    Object getUserData();
+
+    /**
+     * Set miscellaneous data in this IDataSet instance.
+     */
+    void setUserData(Object value);
 }

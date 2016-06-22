@@ -26,6 +26,11 @@ import java.util.List;
 
 public class LineChartRenderer extends LineRadarRenderer {
 
+    private class DataSetUserData{
+        Bitmap[] circleBitmaps;
+        int[] circleColors;
+    }
+
     protected LineDataProvider mChart;
 
     /**
@@ -280,7 +285,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
         float fillMin = dataSet.getFillFormatter()
                 .getFillLinePosition(dataSet, mChart);
-        
+
         // Take the from/to xIndex from the entries themselves,
         // so missing entries won't screw up the filling.
         // What we need to draw is line from points of the xIndexes - not arbitrary entry indexes!
@@ -599,21 +604,32 @@ public class LineChartRenderer extends LineRadarRenderer {
     }
 
     private Path mCirclePathBuffer = new Path();
-
-    protected void drawCircles(Canvas c) {
+    private float[] mCirclesBuffer = new float[2];
+    protected void drawCircles(Canvas c){
 
         mRenderPaint.setStyle(Paint.Style.FILL);
 
         float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
         float phaseY = mAnimator.getPhaseY();
 
-        float[] circlesBuffer = new float[2];
+        float[] circlesBuffer = mCirclesBuffer;
+        circlesBuffer[0] = 0;
+        circlesBuffer[1] = 0;
 
         List<ILineDataSet> dataSets = mChart.getLineData().getDataSets();
 
-        for (int i = 0; i < dataSets.size(); i++) {
+        int size = dataSets.size();
+        ILineDataSet dataSet;
+        for (int i = 0; i < size; i++) {
 
-            ILineDataSet dataSet = dataSets.get(i);
+            dataSet = dataSets.get(i);
+            DataSetUserData userData = (DataSetUserData) dataSet.getUserData();
+            if(userData == null){
+                userData = new DataSetUserData();
+                userData.circleBitmaps = new Bitmap[dataSet.getCircleColorCount()];
+                userData.circleColors = new int[dataSet.getCircleColorCount()];
+                dataSet.setUserData(userData);
+            }
 
             if (!dataSet.isVisible() || !dataSet.isDrawCirclesEnabled() ||
                     dataSet.getEntryCount() == 0)
@@ -667,40 +683,72 @@ public class LineChartRenderer extends LineRadarRenderer {
                         !mViewPortHandler.isInBoundsY(circlesBuffer[1]))
                     continue;
 
-                mRenderPaint.setColor(dataSet.getCircleColor(j));
+                final int circleColor = dataSet.getCircleColor(j);
+                mRenderPaint.setColor(circleColor);
 
-                if (drawTransparentCircleHole) {
 
-                    // Begin path for circle with hole
-                    mCirclePathBuffer.reset();
+                Bitmap circleBitmap = null;
 
-                    mCirclePathBuffer.addCircle(circlesBuffer[0], circlesBuffer[1],
-                            circleRadius,
-                            Path.Direction.CW);
-
-                    // Cut hole in path
-                    mCirclePathBuffer.addCircle(circlesBuffer[0], circlesBuffer[1],
-                            circleHoleRadius,
-                            Path.Direction.CCW);
-
-                    // Fill in-between
-                    c.drawPath(mCirclePathBuffer, mRenderPaint);
-
-                } else {
-
-                    c.drawCircle(circlesBuffer[0], circlesBuffer[1],
-                            circleRadius,
-                            mRenderPaint);
-
-                    if (drawCircleHole) {
-                        c.drawCircle(circlesBuffer[0], circlesBuffer[1],
-                                circleHoleRadius,
-                                mCirclePaintInner);
+                final int dataSetColorCount = userData.circleColors.length;
+                int colorIndex;
+                for(colorIndex = 0 ; colorIndex < dataSetColorCount ; colorIndex++) {
+                    int tempColor = userData.circleColors[colorIndex];
+                    Bitmap tempBitmap = userData.circleBitmaps[colorIndex];
+                    if(tempColor == circleColor) {
+                        circleBitmap = tempBitmap;
+                        break;
+                    }else if(tempBitmap == null){
+                        break;
                     }
                 }
+
+
+                if(circleBitmap == null){
+                    Bitmap.Config conf = Bitmap.Config.ARGB_8888;
+                    circleBitmap = Bitmap.createBitmap((int)circleRadius * 2, (int)circleRadius * 2, conf);
+                    Canvas canvas = new Canvas(circleBitmap);
+                    userData.circleBitmaps[colorIndex] = circleBitmap;
+                    userData.circleColors[colorIndex] = circleColor;
+
+                    if(drawTransparentCircleHole){
+                        // Begin path for circle with hole
+                        mCirclePathBuffer.reset();
+
+                        mCirclePathBuffer.addCircle(circleRadius, circleRadius,
+                                circleRadius,
+                                Path.Direction.CW);
+
+                        // Cut hole in path
+                        mCirclePathBuffer.addCircle(circleHoleRadius, circleHoleRadius,
+                                circleHoleRadius,
+                                Path.Direction.CCW);
+
+                        // Fill in-between
+                        canvas.drawPath(mCirclePathBuffer, mRenderPaint);
+                    }else{
+
+                        canvas.drawCircle(circleRadius, circleRadius,
+                                circleRadius,
+                                mRenderPaint);
+
+                        if (drawCircleHole) {
+                            canvas.drawCircle(circleRadius, circleRadius,
+                                    circleHoleRadius,
+                                    mCirclePaintInner);
+                        }
+                    }
+                }
+
+                if(circleBitmap != null){
+
+                    c.drawBitmap(circleBitmap, circlesBuffer[0] - circleRadius, circlesBuffer[1] - circleRadius, mRenderPaint);
+
+                }
+
             }
         }
     }
+
 
     @Override
     public void drawHighlighted(Canvas c, Highlight[] indices) {
