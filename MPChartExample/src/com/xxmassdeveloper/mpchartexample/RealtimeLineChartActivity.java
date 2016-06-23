@@ -165,7 +165,10 @@ public class RealtimeLineChartActivity extends DemoBase implements
         LineDataSet set = new LineDataSet(null, "Dynamic Data");
         set.setAxisDependency(AxisDependency.LEFT);
         set.setColor(ColorTemplate.getHoloBlue());
-        set.setCircleColor(Color.WHITE);
+        set.setCircleColors(new int[]{Color.RED, Color.GREEN, Color.BLUE, Color.BLACK, Color.WHITE});
+        set.setDrawCircleHole(true);
+        set.setCircleHoleRadius(2f);
+        set.setCircleColorHole(Color.parseColor("#44aaeeaa"));
         set.setLineWidth(2f);
         set.setCircleRadius(4f);
         set.setFillAlpha(65);

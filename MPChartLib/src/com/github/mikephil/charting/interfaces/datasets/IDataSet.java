@@ -392,4 +392,5 @@ public interface IDataSet<T extends Entry> {
      * @return
      */
     boolean isVisible();
+
 }
