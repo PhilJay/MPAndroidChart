@@ -2,6 +2,7 @@
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
+import android.graphics.Path;
 import android.graphics.PointF;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -93,9 +94,12 @@ public class XAxisRendererBarChart extends XAxisRenderer {
 
         mGridPaint.setColor(mXAxis.getGridColor());
         mGridPaint.setStrokeWidth(mXAxis.getGridLineWidth());
+        mGridPaint.setPathEffect(mXAxis.getGridDashPathEffect());
 
         BarData bd = mChart.getData();
         int step = bd.getDataSetCount();
+
+        Path gridLinePath = new Path();
 
         for (int i = mMinX; i < mMaxX; i += mXAxis.mAxisLabelModulus) {
 
@@ -105,8 +109,11 @@ public class XAxisRendererBarChart extends XAxisRenderer {
 
             if (mViewPortHandler.isInBoundsX(position[0])) {
 
-                c.drawLine(position[0], mViewPortHandler.offsetTop(), position[0],
-                        mViewPortHandler.contentBottom(), mGridPaint);
+                gridLinePath.moveTo(position[0], mViewPortHandler.contentBottom());
+                gridLinePath.lineTo(position[0], mViewPortHandler.contentTop());
+
+                // draw a path because lines don't support dashing on lower android versions
+                c.drawPath(gridLinePath, mGridPaint);
             }
         }
     }

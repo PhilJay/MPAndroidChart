@@ -222,8 +222,6 @@ public class XAxisRenderer extends AxisRenderer {
                 // draw a path because lines don't support dashing on lower android versions
                 c.drawPath(gridLinePath, mGridPaint);
             }
-
-            gridLinePath.reset();
         }
     }
 
