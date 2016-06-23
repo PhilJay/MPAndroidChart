@@ -22,11 +22,6 @@ import java.util.List;
 public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
 
     /**
-     * Miscellaneous user data.
-     */
-    protected Object mUserData = null;
-
-    /**
      * List representing all colors that are used for this DataSet
      */
     protected List<Integer> mColors = null;
@@ -385,13 +380,4 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
         return false;
     }
 
-    @Override
-    public Object getUserData(){
-        return mUserData;
-    }
-
-    @Override
-    public void setUserData(Object value){
-        mUserData = value;
-    }
 }
