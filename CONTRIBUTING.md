@@ -1,6 +1,6 @@
 # How to contribute
 
-Bug-fixes and features often come from users of the Charts framework, and improving it greatly. We want to keep it as easy as possible to contribute changes that improve the experience for users all around the world. There are a few guidelines that we
+Bug-fixes and features often come from users of the MPAndroidChart library and improve it greatly. We want to keep it as easy as possible to contribute changes that improve the experience for users all around the world. There are a few guidelines that we
 need contributors to follow so that we can have a chance of keeping on
 top of things.
 
