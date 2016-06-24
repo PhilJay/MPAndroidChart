@@ -349,7 +349,7 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
             final float y1;
             final float y2;
 
-            if (isStack) {
+            if (isStack && !mChart.isHighlightFullBarEnabled()) {
 
                 Range range = e.getRanges()[high.getStackIndex()];
 

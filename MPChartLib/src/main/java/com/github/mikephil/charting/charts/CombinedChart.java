@@ -28,6 +28,12 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Com
      */
     private boolean mDrawValueAboveBar = true;
 
+
+    /**
+     * flag that indicates whether the highlight should be full-bar oriented, or single-value?
+     */
+    protected boolean mHighlightFullBarEnabled = false;
+
     /**
      * if set to true, a grey area is drawn behind each bar that indicates the
      * maximum value
@@ -147,6 +153,24 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Com
      */
     public void setDrawBarShadow(boolean enabled) {
         mDrawBarShadow = enabled;
+    }
+
+    /**
+     * Set this to true to make the highlight operation full-bar oriented,
+     * false to make it highlight single values (relevant only for stacked).
+     *
+     * @param enabled
+     */
+    public void setHighlightFullBarEnabled(boolean enabled) {
+        mHighlightFullBarEnabled = enabled;
+    }
+
+    /**
+     * @return true the highlight operation is be full-bar oriented, false if single-value
+     */
+    @Override
+    public boolean isHighlightFullBarEnabled() {
+        return mHighlightFullBarEnabled;
     }
 
     /**

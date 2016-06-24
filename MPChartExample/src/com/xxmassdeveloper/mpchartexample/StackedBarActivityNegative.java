@@ -56,6 +56,7 @@ public class StackedBarActivityNegative extends DemoBase implements
 
         mChart.setDrawBarShadow(false);
         mChart.setDrawValueAboveBar(true);
+        mChart.setHighlightFullBarEnabled(false);
         
         mChart.getAxisLeft().setEnabled(false);
         mChart.getAxisRight().setAxisMaxValue(25f);

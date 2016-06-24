@@ -55,6 +55,7 @@ public class CombinedChartActivity extends DemoBase {
         mChart.setBackgroundColor(Color.WHITE);
         mChart.setDrawGridBackground(false);
         mChart.setDrawBarShadow(false);
+        mChart.setHighlightFullBarEnabled(false);
 
         // draw bars behind lines
         mChart.setDrawOrder(new DrawOrder[]{

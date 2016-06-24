@@ -28,6 +28,11 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     private boolean mDrawHighlightArrow = false;
 
     /**
+     * flag that indicates whether the highlight should be full-bar oriented, or single-value?
+     */
+    protected boolean mHighlightFullBarEnabled = false;
+
+    /**
      * if set to true, all values are drawn above their bars, instead of below their top
      */
     private boolean mDrawValueAboveBar = true;
@@ -181,6 +186,25 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
      */
     public boolean isDrawBarShadowEnabled() {
         return mDrawBarShadow;
+    }
+
+    /**
+     * Set this to true to make the highlight operation full-bar oriented,
+     * false to make it highlight single values (relevant only for stacked).
+     * Default: false
+     *
+     * @param enabled
+     */
+    public void setHighlightFullBarEnabled(boolean enabled) {
+        mHighlightFullBarEnabled = enabled;
+    }
+
+    /**
+     * @return true the highlight operation is be full-bar oriented, false if single-value
+     */
+    @Override
+    public boolean isHighlightFullBarEnabled() {
+        return mHighlightFullBarEnabled;
     }
 
     /**
