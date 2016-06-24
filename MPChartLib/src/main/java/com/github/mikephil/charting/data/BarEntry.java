@@ -234,7 +234,7 @@ public class BarEntry extends Entry {
             float value = values[i];
 
             if (value < 0) {
-                mRanges[i] = new Range(negRemain, negRemain + Math.abs(value));
+                mRanges[i] = new Range(negRemain, negRemain + value);
                 negRemain += Math.abs(value);
             } else {
                 mRanges[i] = new Range(posRemain, posRemain + value);
