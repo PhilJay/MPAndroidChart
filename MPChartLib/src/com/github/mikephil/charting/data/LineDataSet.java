@@ -263,6 +263,11 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
         return mCircleColors.get(index % mCircleColors.size());
     }
 
+    @Override
+    public int getCircleColorCount(){
+        return mCircleColors.size();
+    }
+
     /**
      * Sets the colors that should be used for the circles of this DataSet.
      * Colors are reused as soon as the number of Entries the DataSet represents

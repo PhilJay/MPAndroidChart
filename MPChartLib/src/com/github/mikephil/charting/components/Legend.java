@@ -808,6 +808,11 @@ public class Legend extends ComponentBase {
         return mCalculatedLineSizes;
     }
 
+
+    ArrayList<FSize> calculatedLabelSizes = new ArrayList<FSize>();
+    ArrayList<Boolean> calculatedLabelBreakPoints = new ArrayList<Boolean>();
+    ArrayList<FSize> calculatedLineSizes = new ArrayList<FSize>();
+
     /**
      * Calculates the dimensions of the Legend. This includes the maximum width
      * and height of a single entry, as well as the total width and height of
@@ -882,9 +887,14 @@ public class Legend extends ComponentBase {
                 float contentWidth = viewPortHandler.contentWidth() * mMaxSizePercent;
 
                 // Prepare arrays for calculated layout
-                ArrayList<FSize> calculatedLabelSizes = new ArrayList<FSize>(labelCount);
-                ArrayList<Boolean> calculatedLabelBreakPoints = new ArrayList<Boolean>(labelCount);
-                ArrayList<FSize> calculatedLineSizes = new ArrayList<FSize>();
+                //  TODO : Investigate whether ensureCapacity will help in the long run.
+                FSize.recycleInstances(calculatedLabelSizes);
+                calculatedLabelSizes.clear();
+
+                calculatedLabelBreakPoints.clear();
+
+                FSize.recycleInstances(calculatedLineSizes);
+                calculatedLineSizes.clear();
 
                 // Start calculating layout
                 float maxLineWidth = 0.f;
@@ -913,11 +923,11 @@ public class Legend extends ComponentBase {
 
                         calculatedLabelSizes.add(Utils.calcTextSize(labelpaint, mLabels[i]));
                         requiredWidth += drawingForm ? mFormToTextSpace + mFormSize : 0.f;
-                        requiredWidth += calculatedLabelSizes.get(i).width;
+                        requiredWidth += calculatedLabelSizes.get(i).getWidth();
                     }
                     else {
 
-                        calculatedLabelSizes.add(new FSize(0.f, 0.f));
+                        calculatedLabelSizes.add(FSize.getInstance(0.f, 0.f));
                         requiredWidth += drawingForm ? mFormSize : 0.f;
 
                         if (stackedStartIndex == -1) {
@@ -942,7 +952,7 @@ public class Legend extends ComponentBase {
                         else { // It doesn't fit, we need to wrap a line
 
                             // Add current line size to array
-                            calculatedLineSizes.add(new FSize(currentLineWidth, labelLineHeight));
+                            calculatedLineSizes.add(FSize.getInstance(currentLineWidth, labelLineHeight));
                             maxLineWidth = Math.max(maxLineWidth, currentLineWidth);
 
                             // Start a new line
@@ -954,7 +964,7 @@ public class Legend extends ComponentBase {
 
                         if (i == labelCount - 1) {
                             // Add last line size to array
-                            calculatedLineSizes.add(new FSize(currentLineWidth, labelLineHeight));
+                            calculatedLineSizes.add(FSize.getInstance(currentLineWidth, labelLineHeight));
                             maxLineWidth = Math.max(maxLineWidth, currentLineWidth);
                         }
                     }

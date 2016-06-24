@@ -505,7 +505,7 @@ public class YAxis extends AxisBase {
         if (index < 0 || index >= mEntries.length)
             return "";
         else
-            return getValueFormatter().getFormattedValue(mEntries[index], this);
+            return getValueFormatter().getFormattedValue(mEntries[index], this, index);
     }
 
     /**

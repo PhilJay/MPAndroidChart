@@ -60,6 +60,10 @@ public class YAxisRenderer extends AxisRenderer {
                 yMin = (float) p1.y;
                 yMax = (float) p2.y;
             }
+
+            PointD.recycleInstance(p1);
+            PointD.recycleInstance(p2);
+
         }
 
         computeAxisValues(yMin, yMax);
@@ -174,15 +178,20 @@ public class YAxisRenderer extends AxisRenderer {
     /**
      * draws the y-axis labels to the screen
      */
+    float[] positionsForRenderAxisLabels = new float[1];
     @Override
     public void renderAxisLabels(Canvas c) {
 
         if (!mYAxis.isEnabled() || !mYAxis.isDrawLabelsEnabled())
             return;
 
-        float[] positions = new float[mYAxis.mEntryCount * 2];
+        if(positionsForRenderAxisLabels.length <= mYAxis.mEntryCount * 2){
+            positionsForRenderAxisLabels = new float[mYAxis.mEntryCount * 4];
+        }
+        float[] positions = positionsForRenderAxisLabels;
 
-        for (int i = 0; i < positions.length; i += 2) {
+
+        for (int i = 0; i < mYAxis.mEntries.length; i += 2) {
             // only fill y values, x values are not needed since the y-labels
             // are
             // static on the x-axis
@@ -265,6 +274,8 @@ public class YAxisRenderer extends AxisRenderer {
         }
     }
 
+    Path pathForRenderGridLines = new Path();
+    float[] positionsForRenderGridLines = new float[2];
     @Override
     public void renderGridLines(Canvas c) {
 
@@ -272,7 +283,9 @@ public class YAxisRenderer extends AxisRenderer {
             return;
 
         // pre alloc
-        float[] position = new float[2];
+        float[] position = positionsForRenderGridLines;
+        position[0] = 0;
+        position[1] = 0;
 
         if (mYAxis.isDrawGridLinesEnabled()) {
 
@@ -280,7 +293,7 @@ public class YAxisRenderer extends AxisRenderer {
             mGridPaint.setStrokeWidth(mYAxis.getGridLineWidth());
             mGridPaint.setPathEffect(mYAxis.getGridDashPathEffect());
 
-            Path gridLinePath = new Path();
+            Path gridLinePath = pathForRenderGridLines;
 
             // draw the horizontal grid
             for (int i = 0; i < mYAxis.mEntryCount; i++) {

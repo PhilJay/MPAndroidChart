@@ -47,7 +47,7 @@ public class XAxisRenderer extends AxisRenderer {
 
         final FSize labelSize = Utils.calcTextSize(mAxisLabelPaint, widthText.toString());
 
-        final float labelWidth = labelSize.width;
+        final float labelWidth = labelSize.getWidth();
         final float labelHeight = Utils.calcTextHeight(mAxisLabelPaint, "Q");
 
         final FSize labelRotatedSize = Utils.getSizeOfRotatedRectangleByDegrees(
@@ -64,14 +64,17 @@ public class XAxisRenderer extends AxisRenderer {
 
         final FSize spaceSize = Utils.calcTextSize(mAxisLabelPaint, space.toString());
 
-        mXAxis.mLabelWidth = Math.round(labelWidth + spaceSize.width);
+        mXAxis.mLabelWidth = Math.round(labelWidth + spaceSize.getWidth());
         mXAxis.mLabelHeight = Math.round(labelHeight);
-        mXAxis.mLabelRotatedWidth = Math.round(labelRotatedSize.width + spaceSize.width);
-        mXAxis.mLabelRotatedHeight = Math.round(labelRotatedSize.height);
+        mXAxis.mLabelRotatedWidth = Math.round(labelRotatedSize.getWidth() + spaceSize.getWidth());
+        mXAxis.mLabelRotatedHeight = Math.round(labelRotatedSize.getHeight());
 
         mXAxis.setValues(xValues);
+
+        FSize.recycleInstance(labelSize);
     }
 
+    PointF pointForRenderAxisLabels = new PointF(0,0);
     @Override
     public void renderAxisLabels(Canvas c) {
 
@@ -85,31 +88,32 @@ public class XAxisRenderer extends AxisRenderer {
         mAxisLabelPaint.setColor(mXAxis.getTextColor());
 
         if (mXAxis.getPosition() == XAxisPosition.TOP) {
-
+            pointForRenderAxisLabels.set(0.5f, 1.0f);
             drawLabels(c, mViewPortHandler.contentTop() - yoffset,
-                    new PointF(0.5f, 1.0f));
+                    pointForRenderAxisLabels);
 
         } else if (mXAxis.getPosition() == XAxisPosition.TOP_INSIDE) {
-
+            pointForRenderAxisLabels.set(0.5f, 1.0f);
             drawLabels(c, mViewPortHandler.contentTop() + yoffset + mXAxis.mLabelRotatedHeight,
-                    new PointF(0.5f, 1.0f));
+                    pointForRenderAxisLabels);
 
         } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
-
+            pointForRenderAxisLabels.set(0.5f, 0.0f);
             drawLabels(c, mViewPortHandler.contentBottom() + yoffset,
-                    new PointF(0.5f, 0.0f));
+                    pointForRenderAxisLabels);
 
         } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM_INSIDE) {
-
+            pointForRenderAxisLabels.set(0.5f, 0.0f);
             drawLabels(c, mViewPortHandler.contentBottom() - yoffset - mXAxis.mLabelRotatedHeight,
-                    new PointF(0.5f, 0.0f));
+                    pointForRenderAxisLabels);
 
         } else { // BOTH SIDED
-
+            pointForRenderAxisLabels.set(0.5f, 1.0f);
             drawLabels(c, mViewPortHandler.contentTop() - yoffset,
-                    new PointF(0.5f, 1.0f));
+                    pointForRenderAxisLabels);
+            pointForRenderAxisLabels.set(0.5f, 0.0f);
             drawLabels(c, mViewPortHandler.contentBottom() + yoffset,
-                    new PointF(0.5f, 0.0f));
+                    pointForRenderAxisLabels);
         }
     }
 
@@ -144,14 +148,15 @@ public class XAxisRenderer extends AxisRenderer {
      *
      * @param pos
      */
+    float[] positionsForDrawLabels = new float[2];
     protected void drawLabels(Canvas c, float pos, PointF anchor) {
 
         final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
 
         // pre allocate to save performance (dont allocate in loop)
-        float[] position = new float[] {
-                0f, 0f
-        };
+        float[] position = positionsForDrawLabels;
+        positionsForDrawLabels[0] = 0;
+        positionsForDrawLabels[1] = 1;
 
         for (int i = mMinX; i <= mMaxX; i += mXAxis.mAxisLabelModulus) {
 

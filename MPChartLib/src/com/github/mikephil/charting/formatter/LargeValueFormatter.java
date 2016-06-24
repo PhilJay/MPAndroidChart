@@ -48,7 +48,7 @@ public class LargeValueFormatter implements ValueFormatter, YAxisValueFormatter 
 
     // YAxisValueFormatter
     @Override
-    public String getFormattedValue(float value, YAxis yAxis) {
+    public String getFormattedValue(float value, YAxis yAxis, int position) {
         return makePretty(value) + mText;
     }
 
