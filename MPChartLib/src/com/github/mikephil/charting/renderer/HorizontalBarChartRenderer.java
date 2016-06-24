@@ -109,6 +109,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
             float posOffset = 0f;
             float negOffset = 0f;
             final boolean drawValueAboveBar = mChart.isDrawValueAboveBarEnabled();
+            final float xLabel = mChart.getContentRect().left + valueOffsetPlus;
 
             for (int i = 0; i < mChart.getBarData().getDataSetCount(); i++) {
 
@@ -137,7 +138,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                         if (!mViewPortHandler.isInBoundsTop(valuePoints[j + 1]))
                             break;
 
-                        if (!mViewPortHandler.isInBoundsX(valuePoints[j]))
+                        if (!mViewPortHandler.isInBoundsLeft(valuePoints[j]))
                             continue;
 
                         if (!mViewPortHandler.isInBoundsBottom(valuePoints[j + 1]))
@@ -157,7 +158,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                             negOffset = -negOffset - valueTextWidth;
                         }
 
-                        drawValue(c, formattedValue, valuePoints[j] + (val >= 0 ? posOffset : negOffset),
+                        drawValue(c, formattedValue, drawValueAboveBar ? (valuePoints[j] + (val >= 0 ? posOffset : negOffset)) : xLabel,
                                 valuePoints[j + 1] + halfTextHeight, dataSet.getValueTextColor(j / 2));
                     }
 
@@ -178,7 +179,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                             if (!mViewPortHandler.isInBoundsTop(valuePoints[j + 1]))
                                 break;
 
-                            if (!mViewPortHandler.isInBoundsX(valuePoints[j]))
+                            if (!mViewPortHandler.isInBoundsLeft(valuePoints[j]))
                                 continue;
 
                             if (!mViewPortHandler.isInBoundsBottom(valuePoints[j + 1]))
@@ -248,7 +249,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                                 if (!mViewPortHandler.isInBoundsTop(y))
                                     break;
 
-                                if (!mViewPortHandler.isInBoundsX(x))
+                                if (!mViewPortHandler.isInBoundsLeft(x))
                                     continue;
 
                                 if (!mViewPortHandler.isInBoundsBottom(y))
