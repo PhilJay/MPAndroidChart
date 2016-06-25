@@ -111,7 +111,8 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         l.setFormSize(8f);
         l.setXEntrySpace(4f);
 
-        // mChart.setDrawLegend(false);
+//        mChart.setVisibleXRange(50, 10);
+//        mChart.moveViewToX(20);
     }
 
     @Override

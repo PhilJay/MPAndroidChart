@@ -7,13 +7,13 @@ import android.util.AttributeSet;
 import android.util.Log;
 
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.highlight.HorizontalBarHighlighter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.jobs.MoveViewJob;
 import com.github.mikephil.charting.renderer.HorizontalBarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart;
 import com.github.mikephil.charting.renderer.YAxisRendererHorizontalBarChart;
@@ -207,10 +207,27 @@ public class HorizontalBarChart extends BarChart {
         return (float) Math.min(mXAxis.mAxisMaximum, pos.y);
     }
 
+    /**
+     * ###### VIEWPORT METHODS BELOW THIS ######
+     */
+
     @Override
     public void setVisibleXRangeMaximum(float maxXRange) {
         float xScale = mXAxis.mAxisRange / (maxXRange);
         mViewPortHandler.setMinimumScaleY(xScale);
+    }
+
+    @Override
+    public void setVisibleXRangeMinimum(float minXRange) {
+        float xScale = mXAxis.mAxisRange / (minXRange);
+        mViewPortHandler.setMaximumScaleY(xScale);
+    }
+
+    @Override
+    public void setVisibleXRange(float minXRange, float maxXRange) {
+        float minScale = mXAxis.mAxisRange / minXRange;
+        float maxScale = mXAxis.mAxisRange / maxXRange;
+        mViewPortHandler.setMinMaxScaleY(minScale, maxScale);
     }
 
     @Override
@@ -220,9 +237,15 @@ public class HorizontalBarChart extends BarChart {
     }
 
     @Override
-    public void setVisibleXRange(float minXRange, float maxXRange) {
-        float maxScale = mXAxis.mAxisRange / minXRange;
-        float minScale = mXAxis.mAxisRange / maxXRange;
-        mViewPortHandler.setMinMaxScaleY(minScale, maxScale);
+    public void setVisibleYRangeMinimum(float minYRange, AxisDependency axis) {
+        float yScale = getDeltaY(axis) / minYRange;
+        mViewPortHandler.setMaximumScaleX(yScale);
+    }
+
+    @Override
+    public void setVisibleYRange(float minYRange, float maxYRange, AxisDependency axis) {
+        float minScale = getDeltaY(axis) / minYRange;
+        float maxScale = getDeltaY(axis) / maxYRange;
+        mViewPortHandler.setMinMaxScaleX(minScale, maxScale);
     }
 }

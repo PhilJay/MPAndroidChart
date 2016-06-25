@@ -746,8 +746,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param maxXRange
      */
     public void setVisibleXRange(float minXRange, float maxXRange) {
-        float maxScale = mXAxis.mAxisRange / minXRange;
-        float minScale = mXAxis.mAxisRange / maxXRange;
+        float minScale = mXAxis.mAxisRange / minXRange;
+        float maxScale = mXAxis.mAxisRange / maxXRange;
         mViewPortHandler.setMinMaxScaleX(minScale, maxScale);
     }
 
@@ -756,11 +756,35 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * visible at once.
      *
      * @param maxYRange the maximum visible range on the y-axis
-     * @param axis      - the axis for which this limit should apply
+     * @param axis      the axis for which this limit should apply
      */
     public void setVisibleYRangeMaximum(float maxYRange, AxisDependency axis) {
         float yScale = getDeltaY(axis) / maxYRange;
         mViewPortHandler.setMinimumScaleY(yScale);
+    }
+
+    /**
+     * Sets the size of the area (range on the y-axis) that should be minimum visible at once, no further zooming in possible.
+     *
+     * @param minYRange
+     * @param axis      the axis for which this limit should apply
+     */
+    public void setVisibleYRangeMinimum(float minYRange, AxisDependency axis) {
+        float yScale = getDeltaY(axis) / minYRange;
+        mViewPortHandler.setMaximumScaleY(yScale);
+    }
+
+    /**
+     * Limits the maximum and minimum y range that can be visible by pinching and zooming.
+     *
+     * @param minYRange
+     * @param maxYRange
+     * @param axis
+     */
+    public void setVisibleYRange(float minYRange, float maxYRange, AxisDependency axis) {
+        float minScale = getDeltaY(axis) / minYRange;
+        float maxScale = getDeltaY(axis) / maxYRange;
+        mViewPortHandler.setMinMaxScaleY(minScale, maxScale);
     }
 
     /**
