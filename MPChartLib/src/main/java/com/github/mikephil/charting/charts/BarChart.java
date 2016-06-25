@@ -8,7 +8,6 @@ import android.util.Log;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.BarHighlighter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
@@ -21,11 +20,6 @@ import com.github.mikephil.charting.renderer.BarChartRenderer;
  * @author Philipp Jahoda
  */
 public class BarChart extends BarLineChartBase<BarData> implements BarDataProvider {
-
-    /**
-     * flag that enables or disables the highlighting arrow
-     */
-    private boolean mDrawHighlightArrow = false;
 
     /**
      * flag that indicates whether the highlight should be full-bar oriented, or single-value?
@@ -133,24 +127,6 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         return bounds;
     }
 
-//    /**
-//     * set this to true to draw the highlightning arrow
-//     *
-//     * @param enabled
-//     */
-//    public void setDrawHighlightArrow(boolean enabled) {
-//        mDrawHighlightArrow = enabled;
-//    }
-//
-//    /**
-//     * returns true if drawing the highlighting arrow is enabled, false if not
-//     *
-//     * @return
-//     */
-//    public boolean isDrawHighlightArrowEnabled() {
-//        return mDrawHighlightArrow;
-//    }
-
     /**
      * If set to true, all values are drawn above their bars, instead of below their top.
      *
@@ -189,8 +165,9 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     }
 
     /**
-     * Set this to true to make the highlight operation full-bar oriented,
-     * false to make it highlight single values (relevant only for stacked).
+     * Set this to true to make the highlight operation full-bar oriented, false to make it highlight single values (relevant
+     * only for stacked). If enabled, highlighting operations will highlight the whole bar, even if only a single stack entry
+     * was tapped.
      * Default: false
      *
      * @param enabled
@@ -213,7 +190,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
      *
      * @param x
      * @param dataSetIndex
-     * @param stackIndex the index inside the stack - only relevant for stacked entries
+     * @param stackIndex   the index inside the stack - only relevant for stacked entries
      */
     public void highlightValue(float x, int dataSetIndex, int stackIndex) {
         highlightValue(new Highlight(x, dataSetIndex, stackIndex), false);

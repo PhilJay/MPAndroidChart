@@ -152,32 +152,15 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
     }
 
     @Override
-    public void renderGridLines(Canvas c) {
+    protected void drawGridLine(Canvas c, float x, float y, Path gridLinePath) {
 
-        if (!mXAxis.isDrawGridLinesEnabled() || !mXAxis.isEnabled())
-            return;
-        
-        mGridPaint.setColor(mXAxis.getGridColor());
-        mGridPaint.setStrokeWidth(mXAxis.getGridLineWidth());
+        gridLinePath.moveTo(mViewPortHandler.contentRight(), y);
+        gridLinePath.lineTo(mViewPortHandler.contentLeft(), y);
 
-        float[] positions = new float[mXAxis.mEntryCount * 2];
+        // draw a path because lines don't support dashing on lower android versions
+        c.drawPath(gridLinePath, mGridPaint);
 
-        for (int i = 0; i < positions.length; i += 2) {
-            positions[i + 1] = mXAxis.mEntries[i / 2];
-        }
-
-        mTrans.pointValuesToPixel(positions);
-
-        for (int i = 0; i < positions.length; i += 2) {
-
-            float y = positions[i + 1];
-
-            if (mViewPortHandler.isInBoundsY(y)) {
-
-                c.drawLine(mViewPortHandler.contentLeft(), y,
-                        mViewPortHandler.contentRight(), y, mGridPaint);
-            }
-        }
+        gridLinePath.reset();
     }
 
     @Override

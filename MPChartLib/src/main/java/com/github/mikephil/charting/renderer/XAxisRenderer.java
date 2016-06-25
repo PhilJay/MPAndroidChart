@@ -33,6 +33,12 @@ public class XAxisRenderer extends AxisRenderer {
         mAxisLabelPaint.setTextSize(Utils.convertDpToPixel(10f));
     }
 
+    protected void setupGridPaint() {
+        mGridPaint.setColor(mXAxis.getGridColor());
+        mGridPaint.setStrokeWidth(mXAxis.getGridLineWidth());
+        mGridPaint.setPathEffect(mXAxis.getGridDashPathEffect());
+    }
+
     @Override
     public void computeAxis(float min, float max, boolean inverted) {
 
@@ -223,34 +229,39 @@ public class XAxisRenderer extends AxisRenderer {
         float[] positions = new float[mXAxis.mEntryCount * 2];
 
         for (int i = 0; i < positions.length; i += 2) {
-            // only fill x values
             positions[i] = mXAxis.mEntries[i / 2];
+            positions[i + 1] = mXAxis.mEntries[i / 2];
         }
 
         mTrans.pointValuesToPixel(positions);
 
-        mGridPaint.setColor(mXAxis.getGridColor());
-        mGridPaint.setStrokeWidth(mXAxis.getGridLineWidth());
-        mGridPaint.setPathEffect(mXAxis.getGridDashPathEffect());
+        setupGridPaint();
 
         Path gridLinePath = new Path();
 
         for (int i = 0; i < positions.length; i += 2) {
 
-            float x = positions[i];
-
-            if (x >= mViewPortHandler.offsetLeft()
-                    && x <= mViewPortHandler.getChartWidth()) {
-
-                gridLinePath.moveTo(x, mViewPortHandler.contentBottom());
-                gridLinePath.lineTo(x, mViewPortHandler.contentTop());
-
-                // draw a path because lines don't support dashing on lower android versions
-                c.drawPath(gridLinePath, mGridPaint);
-            }
-
-            gridLinePath.reset();
+            drawGridLine(c, positions[i], positions[i + 1], gridLinePath);
         }
+    }
+
+    /**
+     * Draws the grid line at the specified position using the provided path.
+     *
+     * @param c
+     * @param x
+     * @param y
+     * @param gridLinePath
+     */
+    protected void drawGridLine(Canvas c, float x, float y, Path gridLinePath) {
+
+        gridLinePath.moveTo(x, mViewPortHandler.contentBottom());
+        gridLinePath.lineTo(x, mViewPortHandler.contentTop());
+
+        // draw a path because lines don't support dashing on lower android versions
+        c.drawPath(gridLinePath, mGridPaint);
+
+        gridLinePath.reset();
     }
 
     /**
