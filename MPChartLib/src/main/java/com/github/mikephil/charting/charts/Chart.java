@@ -168,7 +168,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     /**
      * object that manages the bounds and drawing constraints of the chart
      */
-    protected ViewPortHandler mViewPortHandler;
+    protected ViewPortHandler mViewPortHandler = new ViewPortHandler();
 
     /**
      * object responsible for animations
@@ -230,8 +230,6 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         // initialize the utils
         Utils.init(getContext());
         mMaxHighlightDistance = Utils.convertDpToPixel(100f);
-
-        mViewPortHandler = new ViewPortHandler();
 
         mLegend = new Legend();
 
