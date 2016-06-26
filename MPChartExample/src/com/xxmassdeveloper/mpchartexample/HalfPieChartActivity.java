@@ -124,7 +124,7 @@ public class HalfPieChartActivity extends DemoBase {
         Display display = getWindowManager().getDefaultDisplay();
         int height = display.getHeight();  // deprecated
 
-        int offset = (int)(height * 0.65); /* or whatever */
+        int offset = (int)(height * 0.65); /* percent to move */
 
         RelativeLayout.LayoutParams rlParams =
                 (RelativeLayout.LayoutParams)mChart.getLayoutParams();

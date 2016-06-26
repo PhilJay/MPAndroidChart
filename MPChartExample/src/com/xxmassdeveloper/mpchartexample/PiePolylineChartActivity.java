@@ -96,7 +96,7 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
         // add a selection listener
         mChart.setOnChartValueSelectedListener(this);
 
-        setData(3, 100);
+        setData(4, 100);
 
         mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
         // mChart.spin(2000, 0, 360);
@@ -173,7 +173,7 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-        tvX.setText("" + (mSeekBarX.getProgress() + 1));
+        tvX.setText("" + (mSeekBarX.getProgress()));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
         setData(mSeekBarX.getProgress(), mSeekBarY.getProgress());
@@ -183,16 +183,15 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
 
         float mult = range;
 
-        ArrayList<PieEntry> yVals1 = new ArrayList<PieEntry>();
+        ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
 
-        // IMPORTANT: In a PieChart, no values (Entry) should have the same
-        // xIndex (even if from different DataSets), since no values can be
-        // drawn above each other.
-        for (int i = 0; i < count + 1; i++) {
-            yVals1.add(new PieEntry((float) (Math.random() * mult) + mult / 5, mParties[i % mParties.length]));
+        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
+        // the chart.
+        for (int i = 0; i < count; i++) {
+            entries.add(new PieEntry((float) (Math.random() * mult) + mult / 5, mParties[i % mParties.length]));
         }
 
-        PieDataSet dataSet = new PieDataSet(yVals1, "Election Results");
+        PieDataSet dataSet = new PieDataSet(entries, "Election Results");
         dataSet.setSliceSpace(3f);
         dataSet.setSelectionShift(5f);
 

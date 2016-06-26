@@ -77,6 +77,7 @@ public class RadarChartActivitry extends DemoBase {
         xAxis.setValueFormatter(new AxisValueFormatter() {
 
             private String[] mActivities = new String[]{"Burger", "Steak", "Salad", "Pasta", "Pizza"};
+
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
                 return mActivities[(int) value % mActivities.length];
@@ -210,23 +211,20 @@ public class RadarChartActivitry extends DemoBase {
         float min = 20;
         int cnt = 5;
 
-        ArrayList<RadarEntry> yVals1 = new ArrayList<RadarEntry>();
-        ArrayList<RadarEntry> yVals2 = new ArrayList<RadarEntry>();
+        ArrayList<RadarEntry> entries1 = new ArrayList<RadarEntry>();
+        ArrayList<RadarEntry> entries2 = new ArrayList<RadarEntry>();
 
-        // IMPORTANT: In a PieChart, no values (Entry) should have the same
-        // xIndex (even if from different DataSets), since no values can be
-        // drawn above each other.
+        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
+        // the chart.
         for (int i = 0; i < cnt; i++) {
-            float val = (float) (Math.random() * mult) + min;
-            yVals1.add(new RadarEntry(val));
+            float val1 = (float) (Math.random() * mult) + min;
+            entries1.add(new RadarEntry(val1));
+
+            float val2 = (float) (Math.random() * mult) + min;
+            entries2.add(new RadarEntry(val2));
         }
 
-        for (int i = 0; i < cnt; i++) {
-            float val = (float) (Math.random() * mult) + min;
-            yVals2.add(new RadarEntry(val));
-        }
-
-        RadarDataSet set1 = new RadarDataSet(yVals1, "Last Week");
+        RadarDataSet set1 = new RadarDataSet(entries1, "Last Week");
         set1.setColor(Color.rgb(103, 110, 129));
         set1.setFillColor(Color.rgb(103, 110, 129));
         set1.setDrawFilled(true);
@@ -235,7 +233,7 @@ public class RadarChartActivitry extends DemoBase {
         set1.setDrawHighlightCircleEnabled(true);
         set1.setDrawHighlightIndicators(false);
 
-        RadarDataSet set2 = new RadarDataSet(yVals2, "This Week");
+        RadarDataSet set2 = new RadarDataSet(entries2, "This Week");
         set2.setColor(Color.rgb(121, 162, 175));
         set2.setFillColor(Color.rgb(121, 162, 175));
         set2.setDrawFilled(true);
