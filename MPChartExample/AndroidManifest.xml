@@ -65,6 +65,7 @@
         <activity android:name=".realm.RealmWikiExample"></activity>
         <activity android:name=".BarChartPositiveNegative"></activity>
         <activity android:name=".FilledLineActivity"></activity>
+        <activity android:name=".HalfPieChartActivity"></activity>
     </application>
 
 </manifest>

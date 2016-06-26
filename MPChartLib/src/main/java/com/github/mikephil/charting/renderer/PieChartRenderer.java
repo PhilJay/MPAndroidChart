@@ -656,16 +656,20 @@ public class PieChartRenderer extends DataRenderer {
         if (mChart.isDrawCenterTextEnabled() && centerText != null) {
 
             PointF center = mChart.getCenterCircleBox();
+            PointF offset = mChart.getCenterTextOffset();
+
+            float x = center.x + offset.x;
+            float y = center.y + offset.y;
 
             float innerRadius = mChart.isDrawHoleEnabled() && !mChart.isDrawSlicesUnderHoleEnabled()
                     ? mChart.getRadius() * (mChart.getHoleRadius() / 100f)
                     : mChart.getRadius();
 
             RectF holeRect = mRectBuffer[0];
-            holeRect.left = center.x - innerRadius;
-            holeRect.top = center.y - innerRadius;
-            holeRect.right = center.x + innerRadius;
-            holeRect.bottom = center.y + innerRadius;
+            holeRect.left = x - innerRadius;
+            holeRect.top = y - innerRadius;
+            holeRect.right = x + innerRadius;
+            holeRect.bottom = y + innerRadius;
             RectF boundingRect = mRectBuffer[1];
             boundingRect.set(holeRect);
 

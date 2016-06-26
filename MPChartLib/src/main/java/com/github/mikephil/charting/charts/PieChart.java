@@ -72,6 +72,8 @@ public class PieChart extends PieRadarChartBase<PieData> {
      */
     private CharSequence mCenterText = "";
 
+    private PointF mCenterTextOffset = new PointF(0, 0);
+
     /**
      * indicates the size of the hole in the center of the piechart, default:
      * radius / 2
@@ -487,6 +489,25 @@ public class PieChart extends PieRadarChartBase<PieData> {
      */
     public void setCenterTextSizePixels(float sizePixels) {
         ((PieChartRenderer) mRenderer).getPaintCenterText().setTextSize(sizePixels);
+    }
+
+    /**
+     * Sets the offset the center text should have from it's original position in dp. Default x = 0, y = 0
+     *
+     * @param x
+     * @param y
+     */
+    public void setCenterTextOffset(float x, float y) {
+        mCenterTextOffset = new PointF(Utils.convertDpToPixel(x), Utils.convertDpToPixel(y));
+    }
+
+    /**
+     * Returns the offset on the x- and y-axis the center text has in dp.
+     *
+     * @return
+     */
+    public PointF getCenterTextOffset() {
+        return mCenterTextOffset;
     }
 
     /**
