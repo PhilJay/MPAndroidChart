@@ -1,7 +1,6 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +12,6 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.ScatterChart;
-import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
@@ -21,12 +19,11 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.xxmassdeveloper.mpchartexample.custom.CustomScatterShapeRenderer;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -59,6 +56,7 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
 
         mChart = (ScatterChart) findViewById(R.id.chart1);
         mChart.setDescription("");
+        mChart.addShapeRenderer(new CustomScatterShapeRenderer(), CustomScatterShapeRenderer.IDENTIFIER);
 
         tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
@@ -191,15 +189,15 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
 
         // create a dataset and give it a type
         ScatterDataSet set1 = new ScatterDataSet(yVals1, "DS 1");
-        set1.setScatterShape(ScatterShape.SQUARE);
+        set1.setScatterShape(ScatterChart.ScatterShape.SQUARE);
         set1.setColor(ColorTemplate.COLORFUL_COLORS[0]);
         ScatterDataSet set2 = new ScatterDataSet(yVals2, "DS 2");
-        set2.setScatterShape(ScatterShape.CIRCLE);
+        set2.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
         set2.setScatterShapeHoleColor(ColorTemplate.COLORFUL_COLORS[3]);
         set2.setScatterShapeHoleRadius(4f);
         set2.setColor(ColorTemplate.COLORFUL_COLORS[1]);
         ScatterDataSet set3 = new ScatterDataSet(yVals3, "DS 3");
-        set3.setScatterShape(ScatterShape.CROSS);
+        set3.setScatterShape(CustomScatterShapeRenderer.IDENTIFIER);
         set3.setColor(ColorTemplate.COLORFUL_COLORS[2]);
 
         set1.setScatterShapeSize(8f);
