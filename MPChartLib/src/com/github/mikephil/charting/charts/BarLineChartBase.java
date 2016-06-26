@@ -836,10 +836,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * visible at once.
      *
      * @param maxYRange the maximum visible range on the y-axis
-     * @param axis      - the axis for which this limit should apply
      */
-    public void setVisibleYRangeMaximum(float maxYRange, AxisDependency axis) {
-        float yScale = getDeltaY(axis) / maxYRange;
+    public void setVisibleYRangeMaximum(float maxYRange) {
+        float yScale = mXAxis.mAxisRange / maxYRange;
         mViewPortHandler.setMinimumScaleY(yScale);
     }
 
