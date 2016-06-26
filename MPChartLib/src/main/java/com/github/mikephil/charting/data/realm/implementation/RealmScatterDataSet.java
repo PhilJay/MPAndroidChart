@@ -5,9 +5,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.realm.base.RealmLineScatterCandleRadarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.Utils;
 
-import io.realm.DynamicRealmObject;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 
@@ -25,7 +23,7 @@ public class RealmScatterDataSet<T extends RealmObject> extends RealmLineScatter
      * the type of shape that is set to be drawn where the values are at,
      * default ScatterShape.SQUARE
      */
-    private ScatterChart.ScatterShape mScatterShape = ScatterChart.ScatterShape.SQUARE;
+    private String mScatterShape = ScatterChart.ScatterShape.SQUARE.toString();
 
     /**
      * The radius of the hole in the shape (applies to Square, Circle and Triangle)
@@ -82,6 +80,17 @@ public class RealmScatterDataSet<T extends RealmObject> extends RealmLineScatter
         return mShapeSize;
     }
 
+
+    /**
+     * Sets the shape that is drawn on the position where the values are at.
+     *
+     * @param shape
+     */
+    public void setScatterShape(ScatterChart.ScatterShape shape) {
+        mScatterShape = shape.toString();
+    }
+
+
     /**
      * Sets the shape that is drawn on the position where the values are at. If
      * "CUSTOM" is chosen, you need to call setCustomScatterShape(...) and
@@ -89,12 +98,12 @@ public class RealmScatterDataSet<T extends RealmObject> extends RealmLineScatter
      *
      * @param shape
      */
-    public void setScatterShape(ScatterChart.ScatterShape shape) {
+    public void setScatterShape(String shape) {
         mScatterShape = shape;
     }
 
     @Override
-    public ScatterChart.ScatterShape getScatterShape() {
+    public String getScatterShape() {
         return mScatterShape;
     }
 

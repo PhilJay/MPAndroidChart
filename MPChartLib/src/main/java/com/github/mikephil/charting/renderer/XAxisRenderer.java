@@ -329,6 +329,7 @@ public class XAxisRenderer extends AxisRenderer {
             mLimitLinePaint.setStrokeWidth(0.5f);
             mLimitLinePaint.setTextSize(limitLine.getTextSize());
 
+
             float xOffset = limitLine.getLineWidth() + limitLine.getXOffset();
 
             final LimitLine.LimitLabelPosition labelPosition = limitLine.getLabelPosition();
