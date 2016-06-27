@@ -1,11 +1,12 @@
 
 package com.github.mikephil.charting.renderer;
 
+import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**
  * Abstract baseclass of all Renderers.
- * 
+ *
  * @author Philipp Jahoda
  */
 public abstract class Renderer {
@@ -18,4 +19,5 @@ public abstract class Renderer {
     public Renderer(ViewPortHandler viewPortHandler) {
         this.mViewPortHandler = viewPortHandler;
     }
+
 }

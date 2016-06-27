@@ -2,10 +2,10 @@
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
-import android.graphics.PointF;
 
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -26,7 +26,7 @@ public class XAxisRendererRadarChart extends XAxisRenderer {
             return;
 
         final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
-        final PointF drawLabelAnchor = new PointF(0.5f, 0.25f);
+        final MPPointF drawLabelAnchor = MPPointF.getInstance(0.5f, 0.25f);
 
         mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
         mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
@@ -38,20 +38,26 @@ public class XAxisRendererRadarChart extends XAxisRenderer {
         // pixels
         float factor = mChart.getFactor();
 
-        PointF center = mChart.getCenterOffsets();
+        MPPointF center = mChart.getCenterOffsets();
+        MPPointF p = MPPointF.getInstance(0,0);
+        int count = mChart.getData().getMaxEntryCountSet().getEntryCount();
+        for (int i = 0; i < count; i++) {
 
-        for (int i = 0; i < mChart.getData().getMaxEntryCountSet().getEntryCount(); i++) {
-
-            String label = mXAxis.getValueFormatter().getFormattedValue(i, mXAxis);
+            String label = mXAxis.getValueFormatter().getFormattedValue(i, mXAxis, i);
 
             float angle = (sliceangle * i + mChart.getRotationAngle()) % 360f;
 
-            PointF p = Utils.getPosition(center, mChart.getYRange() * factor
-                    + mXAxis.mLabelRotatedWidth / 2f, angle);
+            p = Utils.getPositionWithOutputPoint(center, mChart.getYRange() * factor
+                    + mXAxis.mLabelRotatedWidth / 2f, angle, p);
 
             drawLabel(c, label, p.x, p.y - mXAxis.mLabelRotatedHeight / 2.f,
                     drawLabelAnchor, labelRotationAngleDegrees);
+
         }
+
+        MPPointF.recycleInstance(drawLabelAnchor);
+        MPPointF.recycleInstance(center);
+        MPPointF.recycleInstance(p);
     }
 
 	/**

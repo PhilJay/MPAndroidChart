@@ -296,8 +296,8 @@ public class LegendRenderer extends Renderer {
                             horizontalAlignment == Legend.LegendHorizontalAlignment.CENTER &&
                             lineIndex < calculatedLineSizes.length) {
                         posX += (direction == Legend.LegendDirection.RIGHT_TO_LEFT
-                                ? calculatedLineSizes[lineIndex].width
-                                : -calculatedLineSizes[lineIndex].width) / 2.f;
+                                ? calculatedLineSizes[lineIndex].getWidth()
+                                : -calculatedLineSizes[lineIndex].getWidth()) / 2.f;
                         lineIndex++;
                     }
 
@@ -320,12 +320,12 @@ public class LegendRenderer extends Renderer {
                                     formToTextSpace;
 
                         if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
-                            posX -= calculatedLabelSizes[i].width;
+                            posX -= calculatedLabelSizes[i].getWidth();
 
                         drawLabel(c, posX, posY + labelLineHeight, labels[i]);
 
                         if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
-                            posX += calculatedLabelSizes[i].width;
+                            posX += calculatedLabelSizes[i].getWidth();
 
                         posX += direction == Legend.LegendDirection.RIGHT_TO_LEFT ? -xEntrySpace : xEntrySpace;
                     } else

@@ -189,7 +189,7 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
             if (set == null || !set.isHighlightEnabled())
                 continue;
 
-            final BubbleEntry entry = set.getEntryForXPos(high.getX());
+            final BubbleEntry entry = set.getEntryForXIndex(high.getX());
 
             if (!isInBoundsX(entry, set))
                 continue;
