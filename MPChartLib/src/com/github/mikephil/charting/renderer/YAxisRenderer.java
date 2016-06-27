@@ -233,16 +233,54 @@ public class YAxisRenderer extends AxisRenderer {
         if (!mYAxis.isEnabled() || !mYAxis.isDrawAxisLineEnabled())
             return;
 
+        float axisLineWidth = mYAxis.getAxisLineWidth();
+
         mAxisLinePaint.setColor(mYAxis.getAxisLineColor());
-        mAxisLinePaint.setStrokeWidth(mYAxis.getAxisLineWidth());
+        mAxisLinePaint.setStrokeWidth(axisLineWidth);
 
         if (mYAxis.getAxisDependency() == AxisDependency.LEFT) {
-            c.drawLine(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop(), mViewPortHandler.contentLeft(),
-                    mViewPortHandler.contentBottom(), mAxisLinePaint);
+            drawAxisLine(c, mViewPortHandler.contentLeft() + axisLineWidth / 2, mViewPortHandler.contentTop(), mViewPortHandler.contentBottom());
         } else {
-            c.drawLine(mViewPortHandler.contentRight(), mViewPortHandler.contentTop(), mViewPortHandler.contentRight(),
-                    mViewPortHandler.contentBottom(), mAxisLinePaint);
+            drawAxisLine(c, mViewPortHandler.contentRight() - axisLineWidth / 2, mViewPortHandler.contentTop(), mViewPortHandler.contentBottom());
         }
+    }
+
+    /**
+     * Draw the axis line and its arrow heads if required
+     *
+     * @param c c The canvas where the arrow head will be drawn
+     * @param x The y position
+     * @param y1 The start y position
+     * @param y2 The final y position
+     */
+    protected void drawAxisLine(Canvas c, float x, float y1, float y2) {
+        c.drawLine(x, y1, x, y2, mAxisLinePaint);
+
+        float arrowHeadWidth = mYAxis.getArrowHeadWidth();
+
+        if (mYAxis.isDrawNegativeArrowHeadEnabled())
+            drawArrowHead(c, x, y2, y2 - arrowHeadWidth, arrowHeadWidth);
+
+        if (mYAxis.isDrawPositiveArrowHeadEnabled())
+            drawArrowHead(c, x, y1, y1 + arrowHeadWidth, arrowHeadWidth);
+    }
+
+    /**
+     * Draw the arrow head to the appropriate position
+     *
+     * @param c The canvas where the arrow head will be drawn
+     * @param x The y position
+     * @param y1 The start y position
+     * @param y2 The final y position
+     * @param arrowHeadWidth The width of the arrow head
+     */
+    protected void drawArrowHead(Canvas c, float x, float y1, float y2, float arrowHeadWidth) {
+        Path path = new Path();
+        path.moveTo(x - arrowHeadWidth, y2);
+        path.lineTo(x, y1);
+        path.lineTo(x + arrowHeadWidth, y2);
+
+        c.drawPath(path, mAxisLinePaint);
     }
 
     /**

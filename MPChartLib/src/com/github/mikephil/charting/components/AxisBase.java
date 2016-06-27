@@ -41,6 +41,21 @@ public abstract class AxisBase extends ComponentBase {
     protected boolean mDrawLabels = true;
 
     /**
+     * flag that indicates of the negative arrow head (left or bottom) of this axis should be drawn or not
+     */
+    protected boolean mDrawNegativeArrowHead = false;
+
+    /**
+     * flag that indicates of the positive arrow head (right or top) of this axis should be drawn or not
+     */
+    protected boolean mDrawPositiveArrowHead = false;
+
+    /**
+     * flag that indicates the arrow head width
+     */
+    protected float mArrowHeadWidth = 10f;
+
+    /**
      * the path effect of the grid lines that makes dashed lines possible
      */
     private DashPathEffect mGridDashPathEffect = null;
@@ -219,6 +234,62 @@ public abstract class AxisBase extends ComponentBase {
      */
     public boolean isDrawLabelsEnabled() {
         return mDrawLabels;
+    }
+
+    /**
+     * Returns true if drawing the negative arrow head is enabled for this axis.
+     *
+     * @return
+     */
+    public boolean isDrawNegativeArrowHeadEnabled() {
+        return mDrawNegativeArrowHead;
+    }
+
+    /**
+     * Set this to true to enable drawing the negative arrow head of this axis (this will not
+     * affect drawing the grid lines or axis lines).
+     *
+     * @param enabled
+     */
+    public void setDrawNegativeArrowHead(boolean enabled) {
+        mDrawNegativeArrowHead = enabled;
+    }
+
+    /**
+     * Returns true if drawing the positive arrow head is enabled for this axis.
+     *
+     * @return
+     */
+    public boolean isDrawPositiveArrowHeadEnabled() {
+        return mDrawPositiveArrowHead;
+    }
+
+    /**
+     * Set this to true to enable drawing the positive arrow head of this axis (this will not
+     * affect drawing the grid lines or axis lines).
+     *
+     * @param enabled
+     */
+    public void setDrawPositiveArrowHead(boolean enabled) {
+        mDrawPositiveArrowHead = enabled;
+    }
+
+    /**
+     * Returns the width of the arrow head that are drawn at the axis' border
+     *
+     * @return
+     */
+    public float getArrowHeadWidth() {
+        return mArrowHeadWidth;
+    }
+
+    /**
+     * Sets the width of the arrow head surrounding the axis in dp.
+     *
+     * @param width
+     */
+    public void setArrowHeadWidth(float width) {
+        mArrowHeadWidth = Utils.convertDpToPixel(width);
     }
 
     /**
