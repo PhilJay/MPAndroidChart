@@ -191,6 +191,8 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
      *
      * @param c
      */
+    protected float[] ptsForRenderLimitLines = new float[4];
+    protected Path pathForRenderLimitLines = new Path();
     @Override
     public void renderLimitLines(Canvas c) {
 
@@ -199,10 +201,16 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         if (limitLines == null || limitLines.size() <= 0)
             return;
 
-        float[] pts = new float[4];
-        Path limitLinePath = new Path();
+        float[] pts = ptsForRenderLimitLines;
+        for(int i = 0 ; i < pts.length ; i++){
+            pts[i] = 0;
+        }
 
-        for (int i = 0; i < limitLines.size(); i++) {
+        Path limitLinePath = pathForRenderLimitLines;
+        limitLinePath.reset();
+
+        int count = limitLines.size();
+        for (int i = 0; i < count; i++) {
 
             LimitLine l = limitLines.get(i);
 

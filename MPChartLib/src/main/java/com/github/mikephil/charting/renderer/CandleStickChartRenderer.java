@@ -313,7 +313,7 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
             if (set == null || !set.isHighlightEnabled())
                 continue;
 
-            CandleEntry e = set.getEntryForXPos(high.getX());
+            CandleEntry e = set.getEntryForXIndex(high.getX());
 
             if (!isInBoundsX(e, set))
                 continue;

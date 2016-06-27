@@ -6,12 +6,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Path;
-import android.graphics.PointF;
 
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.utils.FSize;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
@@ -58,6 +58,9 @@ public class XAxisRenderer extends AxisRenderer {
                 min = (float) p1.x;
                 max = (float) p2.x;
             }
+
+            PointD.recycleInstance(p1);
+            PointD.recycleInstance(p2);
         }
 
         computeAxisValues(min, max);
@@ -79,8 +82,10 @@ public class XAxisRenderer extends AxisRenderer {
 
         final FSize labelSize = Utils.calcTextSize(mAxisLabelPaint, longest);
 
-        final float labelWidth = labelSize.width;
+        final float labelWidth = labelSize.getWidth();
         final float labelHeight = Utils.calcTextHeight(mAxisLabelPaint, "Q");
+
+        FSize.recycleInstance(labelSize);
 
         final FSize labelRotatedSize = Utils.getSizeOfRotatedRectangleByDegrees(
                 labelWidth,
@@ -90,8 +95,10 @@ public class XAxisRenderer extends AxisRenderer {
 
         mXAxis.mLabelWidth = Math.round(labelWidth);
         mXAxis.mLabelHeight = Math.round(labelHeight);
-        mXAxis.mLabelRotatedWidth = Math.round(labelRotatedSize.width);
-        mXAxis.mLabelRotatedHeight = Math.round(labelRotatedSize.height);
+        mXAxis.mLabelRotatedWidth = Math.round(labelRotatedSize.getWidth());
+        mXAxis.mLabelRotatedHeight = Math.round(labelRotatedSize.getHeight());
+
+        FSize.recycleInstance(labelRotatedSize);
     }
 
     @Override
@@ -106,33 +113,40 @@ public class XAxisRenderer extends AxisRenderer {
         mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
         mAxisLabelPaint.setColor(mXAxis.getTextColor());
 
+        MPPointF anchor = MPPointF.getInstance(0,0);
         if (mXAxis.getPosition() == XAxisPosition.TOP) {
-
-            drawLabels(c, mViewPortHandler.contentTop() - yoffset,
-                    new PointF(0.5f, 0.9f));
+            anchor.x = 0.5f;
+            anchor.y = 0.9f;
+            drawLabels(c, mViewPortHandler.contentTop() - yoffset, anchor);
 
         } else if (mXAxis.getPosition() == XAxisPosition.TOP_INSIDE) {
-
-            drawLabels(c, mViewPortHandler.contentTop() + yoffset + mXAxis.mLabelRotatedHeight,
-                    new PointF(0.5f, 1.0f));
+            anchor.x = 0.5f;
+            anchor.y = 1.0f;
+            drawLabels(c, mViewPortHandler.contentTop() + yoffset + mXAxis.mLabelRotatedHeight, anchor);
 
         } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
-
-            drawLabels(c, mViewPortHandler.contentBottom() + yoffset,
-                    new PointF(0.5f, 0.0f));
+            anchor.x = 0.5f;
+            anchor.y = 0.0f;
+            drawLabels(c, mViewPortHandler.contentBottom() + yoffset, anchor);
 
         } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM_INSIDE) {
-
-            drawLabels(c, mViewPortHandler.contentBottom() - yoffset - mXAxis.mLabelRotatedHeight,
-                    new PointF(0.5f, 0.0f));
+            anchor.x = 0.5f;
+            anchor.y = 0.0f;
+            drawLabels(c, mViewPortHandler.contentBottom() - yoffset - mXAxis.mLabelRotatedHeight, anchor);
 
         } else { // BOTH SIDED
 
-            drawLabels(c, mViewPortHandler.contentTop() - yoffset,
-                    new PointF(0.5f, 1.0f));
-            drawLabels(c, mViewPortHandler.contentBottom() + yoffset,
-                    new PointF(0.5f, 0.0f));
+            anchor.x = 0.5f;
+            anchor.y = 1.0f;
+            drawLabels(c, mViewPortHandler.contentTop() - yoffset, anchor);
+
+            anchor.x = 0.5f;
+            anchor.y = 0.0f;
+            drawLabels(c, mViewPortHandler.contentBottom() + yoffset, anchor);
         }
+
+        MPPointF.recycleInstance(anchor);
+
     }
 
     @Override
@@ -166,7 +180,7 @@ public class XAxisRenderer extends AxisRenderer {
      *
      * @param pos
      */
-    protected void drawLabels(Canvas c, float pos, PointF anchor) {
+    protected void drawLabels(Canvas c, float pos, MPPointF anchor) {
 
         final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
         boolean centeringEnabled = mXAxis.isCenterAxisLabelsEnabled();
@@ -191,7 +205,16 @@ public class XAxisRenderer extends AxisRenderer {
 
             if (mViewPortHandler.isInBoundsX(x)) {
 
-                String label = mXAxis.getValueFormatter().getFormattedValue(mXAxis.mEntries[i / 2], mXAxis);
+                /*
+                 TODO :
+                 This is a problem.  We can't meaningfully cache values this way.  We have to be able
+                 to associate a String with an Entry's actual ID.  Was not an issue in v2 of the library.
+
+                 Ideally the value passed here for the 3rd parameter isn't i.  It would be a reference
+                 to the actual Entry object's location in the dataset.
+                */
+
+                String label = mXAxis.getValueFormatter().getFormattedValue(mXAxis.mEntries[i / 2], mXAxis, i);
 
                 if (mXAxis.isAvoidFirstLastClippingEnabled()) {
 
@@ -216,7 +239,7 @@ public class XAxisRenderer extends AxisRenderer {
         }
     }
 
-    protected void drawLabel(Canvas c, String formattedLabel, float x, float y, PointF anchor, float angleDegrees) {
+    protected void drawLabel(Canvas c, String formattedLabel, float x, float y, MPPointF anchor, float angleDegrees) {
         Utils.drawXAxisValue(c, formattedLabel, x, y, mAxisLabelPaint, anchor, angleDegrees);
     }
 
