@@ -24,8 +24,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
     protected ScatterBuffer[] mScatterBuffers;
 
-    public ScatterChartRenderer(ScatterDataProvider chart, ChartAnimator animator,
-                                ViewPortHandler viewPortHandler) {
+    public ScatterChartRenderer(ScatterDataProvider chart, ChartAnimator animator, ViewPortHandler viewPortHandler) {
         super(animator, viewPortHandler);
         mChart = chart;
     }
@@ -64,15 +63,13 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
         final float shapeSize = Utils.convertDpToPixel(dataSet.getScatterShapeSize());
 
-        ScatterBuffer buffer = mScatterBuffers[mChart.getScatterData().getIndexOfDataSet(
-                dataSet)];
+        ScatterBuffer buffer = mScatterBuffers[mChart.getScatterData().getIndexOfDataSet(dataSet)];
         buffer.setPhases(phaseX, phaseY);
         buffer.feed(dataSet);
 
         trans.pointValuesToPixel(buffer.buffer);
 
-        String shape = dataSet.getScatterShape();
-        ShapeRenderer renderer = mChart.getShapeRenderer(shape);
+        ShapeRenderer renderer = dataSet.getShapeRenderer();
 
         if (renderer != null) {
             renderer.renderShape(c, dataSet, mViewPortHandler, buffer, mRenderPaint, shapeSize);

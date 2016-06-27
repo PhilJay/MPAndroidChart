@@ -1,6 +1,7 @@
 package com.github.mikephil.charting.interfaces.datasets;
 
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.renderer.scatter.ShapeRenderer;
 
 /**
  * Created by philipp on 21/10/15.
@@ -15,13 +16,6 @@ public interface IScatterDataSet extends ILineScatterCandleRadarDataSet<Entry> {
     float getScatterShapeSize();
 
     /**
-     * Returns all the different scattershapes the chart uses
-     *
-     * @return
-     */
-    String getScatterShape();
-
-    /**
      * Returns radius of the hole in the shape
      *
      * @return
@@ -34,4 +28,11 @@ public interface IScatterDataSet extends ILineScatterCandleRadarDataSet<Entry> {
      * @return
      */
     int getScatterShapeHoleColor();
+
+    /**
+     * Returns the ShapeRenderer responsible for rendering this DataSet.
+     *
+     * @return
+     */
+    ShapeRenderer getShapeRenderer();
 }

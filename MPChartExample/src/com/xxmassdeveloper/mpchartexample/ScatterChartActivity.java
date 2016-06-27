@@ -54,7 +54,6 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
 
         mChart = (ScatterChart) findViewById(R.id.chart1);
         mChart.setDescription("");
-        mChart.addShapeRenderer(new CustomScatterShapeRenderer(), CustomScatterShapeRenderer.IDENTIFIER);
 
         mChart.setOnChartValueSelectedListener(this);
 
@@ -188,7 +187,7 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         set2.setScatterShapeHoleRadius(3f);
         set2.setColor(ColorTemplate.COLORFUL_COLORS[1]);
         ScatterDataSet set3 = new ScatterDataSet(yVals3, "DS 3");
-        set3.setScatterShape(CustomScatterShapeRenderer.IDENTIFIER);
+        set3.setShapeRenderer(new CustomScatterShapeRenderer());
         set3.setColor(ColorTemplate.COLORFUL_COLORS[2]);
 
         set1.setScatterShapeSize(8f);

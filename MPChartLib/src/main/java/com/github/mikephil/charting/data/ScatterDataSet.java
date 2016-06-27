@@ -1,9 +1,14 @@
 
 package com.github.mikephil.charting.data;
 
+import android.graphics.drawable.shapes.Shape;
+
 import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
+import com.github.mikephil.charting.renderer.scatter.ShapeRenderer;
+import com.github.mikephil.charting.renderer.scatter.SquareShapeRenderer;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.ShapeRendererHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +21,9 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
     private float mShapeSize = 15f;
 
     /**
-     * the type of shape that is set to be drawn where the values are at,
-     * default ScatterShape.SQUARE
+     * Renderer responsible for rendering this DataSet, default: square
      */
-    private String mScatterShape = ScatterChart.ScatterShape.SQUARE.toString();
+    protected ShapeRenderer mShapeRenderer = new SquareShapeRenderer();
 
     /**
      * The radius of the hole in the shape (applies to Square, Circle and Triangle)
@@ -57,7 +61,7 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
         copied.mValueColors = mValueColors;
         copied.mColors = mColors;
         copied.mShapeSize = mShapeSize;
-        copied.mScatterShape = mScatterShape;
+        copied.mShapeRenderer = mShapeRenderer;
         copied.mScatterShapeHoleRadius = mScatterShapeHoleRadius;
         copied.mScatterShapeHoleColor = mScatterShapeHoleColor;
         copied.mHighlightLineWidth = mHighlightLineWidth;
@@ -82,30 +86,31 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
         return mShapeSize;
     }
 
-
     /**
-     * Sets the shapeIdentifier that this DataSet should be drawn with.
-     * Make sure the ScatterChart has a renderer capable of rendering the provided identifier.
+     * Sets the ScatterShape this DataSet should be drawn with. This will search for an available ShapeRenderer and set this
+     * renderer for the DataSet.
      *
      * @param shape
      */
     public void setScatterShape(ScatterChart.ScatterShape shape) {
-        mScatterShape = shape.toString();
+
+        ShapeRendererHandler handler = new ShapeRendererHandler();
+        mShapeRenderer = handler.getShapeRenderer(shape);
     }
 
     /**
-     * Sets the shapeIdentifier that this DataSet should be drawn with.
-     * Make sure the ScatterChart has a renderer capable of rendering the provided identifier.
+     * Sets a new ShapeRenderer responsible for drawing this DataSet.
+     * This can also be used to set a custom ShapeRenderer aside from the default ones.
      *
-     * @param shapeIdentifier
+     * @param shapeRenderer
      */
-    public void setScatterShape(String shapeIdentifier) {
-        mScatterShape = shapeIdentifier;
+    public void setShapeRenderer(ShapeRenderer shapeRenderer) {
+        mShapeRenderer = shapeRenderer;
     }
 
     @Override
-    public String getScatterShape() {
-        return mScatterShape;
+    public ShapeRenderer getShapeRenderer() {
+        return mShapeRenderer;
     }
 
     /**

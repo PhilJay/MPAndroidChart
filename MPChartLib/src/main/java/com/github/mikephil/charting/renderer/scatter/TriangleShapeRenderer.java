@@ -18,10 +18,8 @@ public class TriangleShapeRenderer implements ShapeRenderer {
 
 
     @Override
-    public void renderShape(
-            Canvas c, IScatterDataSet dataSet,
-            ViewPortHandler mViewPortHandler, ScatterBuffer buffer, Paint mRenderPaint, final float shapeSize) {
-
+    public void renderShape(Canvas c, IScatterDataSet dataSet, ViewPortHandler viewPortHandler, ScatterBuffer buffer, Paint
+            renderPaint, final float shapeSize) {
 
         final float shapeHalf = shapeSize / 2f;
         final float shapeHoleSizeHalf = Utils.convertDpToPixel(dataSet.getScatterShapeHoleRadius());
@@ -30,21 +28,21 @@ public class TriangleShapeRenderer implements ShapeRenderer {
 
         final int shapeHoleColor = dataSet.getScatterShapeHoleColor();
 
-        mRenderPaint.setStyle(Paint.Style.FILL);
+        renderPaint.setStyle(Paint.Style.FILL);
 
         // create a triangle path
         Path tri = new Path();
 
         for (int i = 0; i < buffer.size(); i += 2) {
 
-            if (!mViewPortHandler.isInBoundsRight(buffer.buffer[i]))
+            if (!viewPortHandler.isInBoundsRight(buffer.buffer[i]))
                 break;
 
-            if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[i])
-                    || !mViewPortHandler.isInBoundsY(buffer.buffer[i + 1]))
+            if (!viewPortHandler.isInBoundsLeft(buffer.buffer[i])
+                    || !viewPortHandler.isInBoundsY(buffer.buffer[i + 1]))
                 continue;
 
-            mRenderPaint.setColor(dataSet.getColor(i / 2));
+            renderPaint.setColor(dataSet.getColor(i / 2));
 
             tri.moveTo(buffer.buffer[i], buffer.buffer[i + 1] - shapeHalf);
             tri.lineTo(buffer.buffer[i] + shapeHalf, buffer.buffer[i + 1] + shapeHalf);
@@ -65,13 +63,13 @@ public class TriangleShapeRenderer implements ShapeRenderer {
 
             tri.close();
 
-            c.drawPath(tri, mRenderPaint);
+            c.drawPath(tri, renderPaint);
             tri.reset();
 
             if (shapeSize > 0.0 &&
                     shapeHoleColor != ColorTemplate.COLOR_NONE) {
 
-                mRenderPaint.setColor(shapeHoleColor);
+                renderPaint.setColor(shapeHoleColor);
 
                 tri.moveTo(buffer.buffer[i],
                         buffer.buffer[i + 1] - shapeHalf + shapeStrokeSize);
@@ -81,7 +79,7 @@ public class TriangleShapeRenderer implements ShapeRenderer {
                         buffer.buffer[i + 1] + shapeHalf - shapeStrokeSize);
                 tri.close();
 
-                c.drawPath(tri, mRenderPaint);
+                c.drawPath(tri, renderPaint);
                 tri.reset();
             }
         }

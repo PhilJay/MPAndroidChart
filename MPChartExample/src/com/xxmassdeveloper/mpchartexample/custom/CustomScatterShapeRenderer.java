@@ -14,8 +14,6 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
  */
 public class CustomScatterShapeRenderer implements ShapeRenderer {
 
-    public static final String IDENTIFIER = "single_line";
-
     @Override
     public void renderShape(Canvas c, IScatterDataSet dataSet, ViewPortHandler viewPortHandler, ScatterBuffer buffer, Paint
             renderPaint, float shapeSize) {

@@ -4,7 +4,10 @@ import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.realm.base.RealmLineScatterCandleRadarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
+import com.github.mikephil.charting.renderer.scatter.ShapeRenderer;
+import com.github.mikephil.charting.renderer.scatter.SquareShapeRenderer;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.ShapeRendererHandler;
 
 import io.realm.RealmObject;
 import io.realm.RealmResults;
@@ -15,15 +18,14 @@ import io.realm.RealmResults;
 public class RealmScatterDataSet<T extends RealmObject> extends RealmLineScatterCandleRadarDataSet<T, Entry> implements IScatterDataSet {
 
     /**
+     * Renderer responsible for rendering this DataSet, default: square
+     */
+    protected ShapeRenderer mShapeRenderer = new SquareShapeRenderer();
+
+    /**
      * the size the scattershape will have, in density pixels
      */
     private float mShapeSize = 10f;
-
-    /**
-     * the type of shape that is set to be drawn where the values are at,
-     * default ScatterShape.SQUARE
-     */
-    private String mScatterShape = ScatterChart.ScatterShape.SQUARE.toString();
 
     /**
      * The radius of the hole in the shape (applies to Square, Circle and Triangle)
@@ -80,31 +82,31 @@ public class RealmScatterDataSet<T extends RealmObject> extends RealmLineScatter
         return mShapeSize;
     }
 
-
     /**
-     * Sets the shape that is drawn on the position where the values are at.
+     * Sets the ScatterShape this DataSet should be drawn with. This will search for an available ShapeRenderer and set this
+     * renderer for the DataSet.
      *
      * @param shape
      */
     public void setScatterShape(ScatterChart.ScatterShape shape) {
-        mScatterShape = shape.toString();
+
+        ShapeRendererHandler handler = new ShapeRendererHandler();
+        mShapeRenderer = handler.getShapeRenderer(shape);
     }
 
-
     /**
-     * Sets the shape that is drawn on the position where the values are at. If
-     * "CUSTOM" is chosen, you need to call setCustomScatterShape(...) and
-     * provide a path object that is drawn as the custom scattershape.
+     * Sets a new ShapeRenderer responsible for drawing this DataSet.
+     * This can also be used to set a custom ShapeRenderer aside from the default ones.
      *
-     * @param shape
+     * @param shapeRenderer
      */
-    public void setScatterShape(String shape) {
-        mScatterShape = shape;
+    public void setShapeRenderer(ShapeRenderer shapeRenderer) {
+        mShapeRenderer = shapeRenderer;
     }
 
     @Override
-    public String getScatterShape() {
-        return mScatterShape;
+    public ShapeRenderer getShapeRenderer() {
+        return mShapeRenderer;
     }
 
     /**

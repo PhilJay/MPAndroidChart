@@ -16,7 +16,7 @@ public interface OnChartValueSelectedListener {
      *
      * @param e The selected Entry
      * @param h The corresponding highlight object that contains information
-     *          about the highlighted position
+     *          about the highlighted position such as dataSetIndex, ...
      */
     void onValueSelected(Entry e, Highlight h);
 

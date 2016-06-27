@@ -110,8 +110,6 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         l.setPosition(LegendPosition.BELOW_CHART_LEFT);
         l.setFormSize(8f);
         l.setXEntrySpace(4f);
-
-        mChart.setVisibleXRange(10, 50);
     }
 
     @Override

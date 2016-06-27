@@ -17,37 +17,37 @@ public class ChevronUpShapeRenderer implements ShapeRenderer {
 
     @Override
     public void renderShape(Canvas c, IScatterDataSet dataSet,
-            ViewPortHandler mViewPortHandler, ScatterBuffer buffer, Paint mRenderPaint, final float shapeSize) {
+            ViewPortHandler viewPortHandler, ScatterBuffer buffer, Paint renderPaint, final float shapeSize) {
 
         final float shapeHalf = shapeSize / 2f;
 
-        mRenderPaint.setStyle(Paint.Style.STROKE);
-        mRenderPaint.setStrokeWidth(Utils.convertDpToPixel(1f));
+        renderPaint.setStyle(Paint.Style.STROKE);
+        renderPaint.setStrokeWidth(Utils.convertDpToPixel(1f));
 
         for (int i = 0; i < buffer.size(); i += 2) {
 
-            if (!mViewPortHandler.isInBoundsRight(buffer.buffer[i]))
+            if (!viewPortHandler.isInBoundsRight(buffer.buffer[i]))
                 break;
 
-            if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[i])
-                    || !mViewPortHandler.isInBoundsY(buffer.buffer[i + 1]))
+            if (!viewPortHandler.isInBoundsLeft(buffer.buffer[i])
+                    || !viewPortHandler.isInBoundsY(buffer.buffer[i + 1]))
                 continue;
 
-            mRenderPaint.setColor(dataSet.getColor(i / 2));
+            renderPaint.setColor(dataSet.getColor(i / 2));
 
             c.drawLine(
                     buffer.buffer[i],
                     buffer.buffer[i + 1] - (2 * shapeHalf),
                     buffer.buffer[i] + (2 * shapeHalf),
                     buffer.buffer[i + 1],
-                    mRenderPaint);
+                    renderPaint);
 
             c.drawLine(
                     buffer.buffer[i],
                     buffer.buffer[i + 1] - (2 * shapeHalf),
                     buffer.buffer[i] - (2 * shapeHalf),
                     buffer.buffer[i + 1],
-                    mRenderPaint);
+                    renderPaint);
         }
 
     }
