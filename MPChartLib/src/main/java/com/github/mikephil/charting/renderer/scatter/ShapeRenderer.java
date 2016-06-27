@@ -17,11 +17,11 @@ public interface ShapeRenderer {
     /**
      * Renders the provided ScatterDataSet with a shape.
      *
-     * @param c
-     * @param dataSet
-     * @param viewPortHandler
-     * @param buffer
-     * @param renderPaint
+     * @param c               Canvas object for drawing the shape
+     * @param dataSet         the DataSet to be drawn
+     * @param viewPortHandler contains information about the current state of the view
+     * @param buffer          buffer containing the transformed values of all entries in the DataSet
+     * @param renderPaint     Paint object used for styling and drawing
      * @param shapeSize
      */
     void renderShape(Canvas c, IScatterDataSet dataSet, ViewPortHandler viewPortHandler, ScatterBuffer buffer, Paint

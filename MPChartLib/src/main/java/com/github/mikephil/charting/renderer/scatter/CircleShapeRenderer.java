@@ -15,11 +15,9 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
  */
 public class CircleShapeRenderer implements ShapeRenderer {
 
-
     @Override
-    public void renderShape(
-            Canvas c, IScatterDataSet dataSet,
-            ViewPortHandler mViewPortHandler, ScatterBuffer buffer, Paint mRenderPaint, final float shapeSize) {
+    public void renderShape(Canvas c, IScatterDataSet dataSet, ViewPortHandler viewPortHandler, ScatterBuffer buffer, Paint
+            renderPaint, final float shapeSize) {
 
         final float shapeHalf = shapeSize / 2f;
         final float shapeHoleSizeHalf = Utils.convertDpToPixel(dataSet.getScatterShapeHoleRadius());
@@ -31,43 +29,43 @@ public class CircleShapeRenderer implements ShapeRenderer {
 
         for (int i = 0; i < buffer.size(); i += 2) {
 
-            if (!mViewPortHandler.isInBoundsRight(buffer.buffer[i]))
+            if (!viewPortHandler.isInBoundsRight(buffer.buffer[i]))
                 break;
 
-            if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[i])
-                    || !mViewPortHandler.isInBoundsY(buffer.buffer[i + 1]))
+            if (!viewPortHandler.isInBoundsLeft(buffer.buffer[i])
+                    || !viewPortHandler.isInBoundsY(buffer.buffer[i + 1]))
                 continue;
 
-            mRenderPaint.setColor(dataSet.getColor(i / 2));
+            renderPaint.setColor(dataSet.getColor(i / 2));
 
             if (shapeSize > 0.0) {
-                mRenderPaint.setStyle(Paint.Style.STROKE);
-                mRenderPaint.setStrokeWidth(shapeStrokeSize);
+                renderPaint.setStyle(Paint.Style.STROKE);
+                renderPaint.setStrokeWidth(shapeStrokeSize);
 
                 c.drawCircle(
                         buffer.buffer[i],
                         buffer.buffer[i + 1],
                         shapeHoleSizeHalf + shapeStrokeSizeHalf,
-                        mRenderPaint);
+                        renderPaint);
 
                 if (shapeHoleColor != ColorTemplate.COLOR_NONE) {
-                    mRenderPaint.setStyle(Paint.Style.FILL);
+                    renderPaint.setStyle(Paint.Style.FILL);
 
-                    mRenderPaint.setColor(shapeHoleColor);
+                    renderPaint.setColor(shapeHoleColor);
                     c.drawCircle(
                             buffer.buffer[i],
                             buffer.buffer[i + 1],
                             shapeHoleSizeHalf,
-                            mRenderPaint);
+                            renderPaint);
                 }
             } else {
-                mRenderPaint.setStyle(Paint.Style.FILL);
+                renderPaint.setStyle(Paint.Style.FILL);
 
                 c.drawCircle(
                         buffer.buffer[i],
                         buffer.buffer[i + 1],
                         shapeHalf,
-                        mRenderPaint);
+                        renderPaint);
             }
         }
 

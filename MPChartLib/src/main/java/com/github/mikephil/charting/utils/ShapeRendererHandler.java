@@ -14,6 +14,7 @@ import java.util.HashMap;
 
 /**
  * Created by Philipp Jahoda on 27/06/16.
+ * Class allowing to determine the corresponding ShapeRenderer for a given ScatterShape.
  */
 public final class ShapeRendererHandler {
 
@@ -30,6 +31,7 @@ public final class ShapeRendererHandler {
     public ShapeRendererHandler() {
         initShapeRenderers();
     }
+
     /**
      * Returns the corresponding ShapeRenderer for a given ScatterShape.
      *

@@ -16,9 +16,8 @@ public class ChevronDownShapeRenderer implements ShapeRenderer {
 
 
     @Override
-    public void renderShape(
-            Canvas c, IScatterDataSet dataSet,
-            ViewPortHandler viewPortHandler, ScatterBuffer buffer, Paint renderPaint, final float shapeSize) {
+    public void renderShape(Canvas c, IScatterDataSet dataSet, ViewPortHandler viewPortHandler, ScatterBuffer buffer, Paint
+            renderPaint, final float shapeSize) {
 
         final float shapeHalf = shapeSize / 2f;
 
