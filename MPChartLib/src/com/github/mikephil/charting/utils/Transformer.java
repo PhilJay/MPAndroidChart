@@ -398,9 +398,11 @@ public class Transformer {
      *
      * @param pixels
      */
+    final Matrix matrixForPixelsToValue = new Matrix();
     public void pixelsToValue(float[] pixels) {
 
-        Matrix tmp = new Matrix();
+        matrixForPixelsToValue.reset();
+        Matrix tmp = matrixForPixelsToValue;
 
         // invert all matrixes to convert back to the original value
         mMatrixOffset.invert(tmp);
@@ -423,10 +425,11 @@ public class Transformer {
      * @param y
      * @return
      */
+    float[] ptsForGetValuesByTouchPoint = new float[2];
     public PointD getValuesByTouchPoint(float x, float y) {
 
         // create an array of the touch-point
-        float[] pts = new float[2];
+        float[] pts = ptsForGetValuesByTouchPoint;
         pts[0] = x;
         pts[1] = y;
 
@@ -435,7 +438,7 @@ public class Transformer {
         double xTouchVal = pts[0];
         double yTouchVal = pts[1];
 
-        return new PointD(xTouchVal, yTouchVal);
+        return PointD.getInstance(xTouchVal, yTouchVal);
     }
 
     public Matrix getValueMatrix() {

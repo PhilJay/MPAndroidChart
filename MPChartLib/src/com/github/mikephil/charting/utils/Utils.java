@@ -159,20 +159,26 @@ public abstract class Utils {
      * @param demoText
      * @return
      */
+    private static Rect rectForCalcTextHeight = new Rect();
     public static int calcTextHeight(Paint paint, String demoText) {
-
-        Rect r = new Rect();
+        Rect r = rectForCalcTextHeight;
+        r.set(0,0,0,0);
         paint.getTextBounds(demoText, 0, demoText.length(), r);
         return r.height();
     }
 
+
+    final static private Paint.FontMetrics fontMetricsLineHeight = new Paint.FontMetrics();
     public static float getLineHeight(Paint paint) {
-        Paint.FontMetrics metrics = paint.getFontMetrics();
+        paint.getFontMetrics(fontMetricsLineHeight);
+        Paint.FontMetrics metrics = fontMetricsLineHeight;
         return metrics.descent - metrics.ascent;
     }
 
+    final static private Paint.FontMetrics fontMetricsLineSpacing = new Paint.FontMetrics();
     public static float getLineSpacing(Paint paint) {
-        Paint.FontMetrics metrics = paint.getFontMetrics();
+        paint.getFontMetrics(fontMetricsLineSpacing);
+        Paint.FontMetrics metrics = fontMetricsLineSpacing;
         return metrics.ascent - metrics.top + metrics.bottom;
     }
 
@@ -188,7 +194,7 @@ public abstract class Utils {
 
         Rect r = new Rect();
         paint.getTextBounds(demoText, 0, demoText.length(), r);
-        return new FSize(r.width(), r.height());
+        return FSize.getInstance(r.width(), r.height());
     }
 
     /**
@@ -642,8 +648,10 @@ public abstract class Utils {
                         lineHeight,
                         angleDegrees);
 
-                translateX -= rotatedSize.width * (anchor.x - 0.5f);
-                translateY -= rotatedSize.height * (anchor.y - 0.5f);
+                translateX -= rotatedSize.getWidth() * (anchor.x - 0.5f);
+                translateY -= rotatedSize.getHeight() * (anchor.y - 0.5f);
+
+                FSize.recycleInstance(rotatedSize);
             }
 
             c.save();
@@ -712,8 +720,9 @@ public abstract class Utils {
                         drawHeight,
                         angleDegrees);
 
-                translateX -= rotatedSize.width * (anchor.x - 0.5f);
-                translateY -= rotatedSize.height * (anchor.y - 0.5f);
+                translateX -= rotatedSize.getWidth() * (anchor.x - 0.5f);
+                translateY -= rotatedSize.getHeight() * (anchor.y - 0.5f);
+                FSize.recycleInstance(rotatedSize);
             }
 
             c.save();
@@ -754,7 +763,7 @@ public abstract class Utils {
         StaticLayout textLayout = new StaticLayout(
                 text, 0, text.length(),
                 paint,
-                (int) Math.max(Math.ceil(constrainedToSize.width), 1.f),
+                (int) Math.max(Math.ceil(constrainedToSize.getWidth()), 1.f),
                 Layout.Alignment.ALIGN_NORMAL, 1.f, 0.f, false);
 
 
@@ -763,12 +772,12 @@ public abstract class Utils {
 
     public static FSize getSizeOfRotatedRectangleByDegrees(FSize rectangleSize, float degrees) {
         final float radians = degrees * FDEG2RAD;
-        return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height,
+        return getSizeOfRotatedRectangleByRadians(rectangleSize.getWidth(), rectangleSize.getHeight(),
                 radians);
     }
 
     public static FSize getSizeOfRotatedRectangleByRadians(FSize rectangleSize, float radians) {
-        return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height,
+        return getSizeOfRotatedRectangleByRadians(rectangleSize.getWidth(), rectangleSize.getHeight(),
                 radians);
     }
 
@@ -780,12 +789,10 @@ public abstract class Utils {
 
     public static FSize getSizeOfRotatedRectangleByRadians(float rectangleWidth, float
             rectangleHeight, float radians) {
-        return new FSize(
-                Math.abs(rectangleWidth * (float) Math.cos(radians)) + Math.abs(rectangleHeight *
+        return FSize.getInstance(Math.abs(rectangleWidth * (float) Math.cos(radians)) + Math.abs(rectangleHeight *
                         (float) Math.sin(radians)),
                 Math.abs(rectangleWidth * (float) Math.sin(radians)) + Math.abs(rectangleHeight *
-                        (float) Math.cos(radians))
-        );
+                        (float) Math.cos(radians)));
     }
 
     public static int getSDKInt() {

@@ -527,6 +527,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     /**
      * calculates the modulus for x-labels and grid
      */
+    float[] valuesForCalcModulus = new float[9];
     protected void calcModulus() {
 
         if (mXAxis == null || !mXAxis.isEnabled())
@@ -534,7 +535,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         if (!mXAxis.isAxisModulusCustom()) {
 
-            float[] values = new float[9];
+            float[] values = valuesForCalcModulus;
+            for(int i = 0 ; i < values.length ; i++){
+                values[i] = 0;
+            }
             mViewPortHandler.getMatrixTouch().getValues(values);
 
             mXAxis.mAxisLabelModulus = (int) Math
@@ -1284,10 +1288,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param y
      * @return
      */
+    private float[] ptsForGetValuesByTouchPoint = new float[2];
     public PointD getValuesByTouchPoint(float x, float y, AxisDependency axis) {
 
         // create an array of the touch-point
-        float[] pts = new float[2];
+        float[] pts = ptsForGetValuesByTouchPoint;
         pts[0] = x;
         pts[1] = y;
 
@@ -1296,7 +1301,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         double xTouchVal = pts[0];
         double yTouchVal = pts[1];
 
-        return new PointD(xTouchVal, yTouchVal);
+        return PointD.getInstance(xTouchVal, yTouchVal);
     }
 
     /**
@@ -1307,15 +1312,16 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param y
      * @return
      */
+    private float[] ptsForGetPixelsForValues = new float[2];
     public PointD getPixelsForValues(float x, float y, AxisDependency axis) {
 
-        float[] pts = new float[]{
-                x, y
-        };
+        float[] pts = ptsForGetPixelsForValues;
+        pts[0] = x;
+        pts[1] = y;
 
         getTransformer(axis).pointValuesToPixel(pts);
 
-        return new PointD(pts[0], pts[1]);
+        return PointD.getInstance(pts[0], pts[1]);
     }
 
     /**
@@ -1366,13 +1372,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      *
      * @return
      */
+    private float[] lowestVisibleXIndexPoints = new float[2];
     @Override
     public int getLowestVisibleXIndex() {
-        float[] pts = new float[]{
-                mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom()
-        };
-        getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
-        return (pts[0] <= 0) ? 0 : (int)Math.ceil(pts[0]);
+        lowestVisibleXIndexPoints[0] = mViewPortHandler.contentLeft();
+        lowestVisibleXIndexPoints[1] = mViewPortHandler.contentBottom();
+        getTransformer(AxisDependency.LEFT).pixelsToValue(lowestVisibleXIndexPoints);
+        return (lowestVisibleXIndexPoints[0] <= 0) ? 0 : (int)Math.ceil(lowestVisibleXIndexPoints[0]);
     }
 
     /**
@@ -1381,13 +1387,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      *
      * @return
      */
+    private float[] highestVisibleXIndexPoints = new float[2];
     @Override
     public int getHighestVisibleXIndex() {
-        float[] pts = new float[]{
-                mViewPortHandler.contentRight(), mViewPortHandler.contentBottom()
-        };
-        getTransformer(AxisDependency.LEFT).pixelsToValue(pts);
-        return Math.min(mData.getXValCount() - 1, (int)Math.floor(pts[0]));
+        highestVisibleXIndexPoints[0] = mViewPortHandler.contentRight();
+        highestVisibleXIndexPoints[1] = mViewPortHandler.contentBottom();
+        getTransformer(AxisDependency.LEFT).pixelsToValue(highestVisibleXIndexPoints);
+        return Math.min(mData.getXValCount() - 1, (int)Math.floor(highestVisibleXIndexPoints[0]));
     }
 
     /**

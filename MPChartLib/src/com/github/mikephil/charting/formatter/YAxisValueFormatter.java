@@ -16,7 +16,8 @@ public interface YAxisValueFormatter {
      *
      * @param value the YAxis value to be formatted
      * @param yAxis the YAxis object the value belongs to
+     * @param position
      * @return
      */
-    String getFormattedValue(float value, YAxis yAxis);
+    String getFormattedValue(float value, YAxis yAxis, int position);
 }

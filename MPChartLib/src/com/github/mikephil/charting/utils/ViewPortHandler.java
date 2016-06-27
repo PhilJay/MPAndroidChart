@@ -338,9 +338,11 @@ public class ViewPortHandler {
      * @param view
      * @return save
      */
+    Matrix saveMatrixForCenterViewPort = new Matrix();
     public void centerViewPort(final float[] transformedPts, final View view) {
 
-        Matrix save = new Matrix();
+        Matrix save = saveMatrixForCenterViewPort;
+        save.reset();
         save.set(mMatrixTouch);
 
         final float x = transformedPts[0] - offsetLeft();

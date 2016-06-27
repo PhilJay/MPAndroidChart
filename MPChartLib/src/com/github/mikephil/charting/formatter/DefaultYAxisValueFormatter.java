@@ -3,6 +3,7 @@ package com.github.mikephil.charting.formatter;
 import com.github.mikephil.charting.components.YAxis;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 /**
  * Created by Philipp Jahoda on 20/09/15.
@@ -32,9 +33,36 @@ public class DefaultYAxisValueFormatter implements YAxisValueFormatter {
         mFormat = new DecimalFormat("###,###,###,##0" + b.toString());
     }
 
+    private ArrayList<Float> cachedValues = new ArrayList<>();
+    private ArrayList<String> cachedStrings = new ArrayList<>();
     @Override
-    public String getFormattedValue(float value, YAxis yAxis) {
-        // avoid memory allocations here (for performance)
-        return mFormat.format(value);
+    public String getFormattedValue(float value, YAxis yAxis, int position) {
+        boolean hasValueAtPosition = true;
+        if(cachedValues.size() <= position){
+            int p = position;
+            while(p >= 0){
+                if(p == 0){
+                    cachedValues.add(value);
+                    cachedStrings.add("");
+                }else{
+                    cachedValues.add(Float.NaN);
+                    cachedStrings.add("");
+                }
+                p--;
+            }
+            hasValueAtPosition = false;
+        }
+
+        if(hasValueAtPosition) {
+            Float cachedValue = cachedValues.get(position);
+            hasValueAtPosition = !(cachedValue == null || cachedValue != value);
+        }
+
+        if(!hasValueAtPosition){
+            cachedValues.set(position, value);
+            cachedStrings.set(position, mFormat.format(value));
+        }
+
+        return cachedStrings.get(position);
     }
 }

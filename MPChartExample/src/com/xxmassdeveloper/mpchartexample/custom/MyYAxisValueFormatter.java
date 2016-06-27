@@ -14,7 +14,7 @@ public class MyYAxisValueFormatter implements YAxisValueFormatter {
     }
 
     @Override
-    public String getFormattedValue(float value, YAxis yAxis) {
+    public String getFormattedValue(float value, YAxis yAxis, int position) {
         return mFormat.format(value) + " $";
     }
 }

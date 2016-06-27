@@ -38,7 +38,7 @@ public class PercentFormatter implements ValueFormatter, YAxisValueFormatter {
 
     // YAxisValueFormatter
     @Override
-    public String getFormattedValue(float value, YAxis yAxis) {
+    public String getFormattedValue(float value, YAxis yAxis, int position) {
         return mFormat.format(value) + " %";
     }
 }

@@ -5,6 +5,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 /**
  * Default formatter used for formatting values inside the chart. Uses a DecimalFormat with
@@ -35,12 +36,37 @@ public class DefaultValueFormatter implements ValueFormatter {
         mFormat = new DecimalFormat("###,###,###,##0" + b.toString());
     }
 
+    private ArrayList<Float> cachedValues = new ArrayList<>();
+    private ArrayList<String> cachedStrings = new ArrayList<>();
     @Override
     public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
 
-        // put more logic here ...
-        // avoid memory allocations here (for performance reasons)
+        boolean hasValueAtdataSetIndex = true;
+        if(cachedValues.size() <= dataSetIndex){
+            int p = dataSetIndex;
+            while(p >= 0){
+                if(p == 0){
+                    cachedValues.add(value);
+                    cachedStrings.add("");
+                }else{
+                    cachedValues.add(Float.NaN);
+                    cachedStrings.add("");
+                }
+                p--;
+            }
+            hasValueAtdataSetIndex = false;
+        }
 
-        return mFormat.format(value);
+        if(hasValueAtdataSetIndex) {
+            Float cachedValue = cachedValues.get(dataSetIndex);
+            hasValueAtdataSetIndex = !(cachedValue == null || cachedValue != value);
+        }
+
+        if(!hasValueAtdataSetIndex){
+            cachedValues.set(dataSetIndex, value);
+            cachedStrings.set(dataSetIndex, mFormat.format(value));
+        }
+
+        return cachedStrings.get(dataSetIndex);
     }
 }
