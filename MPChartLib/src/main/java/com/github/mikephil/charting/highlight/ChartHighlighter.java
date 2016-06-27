@@ -152,7 +152,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      */
     protected Highlight buildHighlight(IDataSet set, int dataSetIndex, float xVal, DataSet.Rounding rounding) {
 
-        final Entry e = set.getEntryForXPos(xVal, rounding);
+        final Entry e = set.getEntryForXIndex(xVal, rounding);
 
         if (e == null)
             return null;

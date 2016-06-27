@@ -3,10 +3,8 @@ package com.github.mikephil.charting.data;
 
 import android.util.Log;
 
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -191,7 +189,7 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
             //   if we are not interested in highlighting a specific value.
 
             List<?> entries = data.getDataSetByIndex(highlight.getDataSetIndex())
-                    .getEntriesForXPos(highlight.getX());
+                    .getEntriesForXIndex(highlight.getX());
             for (Object entry : entries)
                 if (((Entry) entry).getY() == highlight.getY() ||
                         Float.isNaN(highlight.getY()))

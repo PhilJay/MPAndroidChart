@@ -82,7 +82,7 @@ public class StackedBarActivityNegative extends DemoBase implements
             private DecimalFormat format = new DecimalFormat("###");
 
             @Override
-            public String getFormattedValue(float value, AxisBase axis) {
+            public String getFormattedValue(float value, AxisBase axis, int position) {
                 return format.format(value) + "-" + format.format(value + 10);
             }
 
@@ -236,7 +236,7 @@ public class StackedBarActivityNegative extends DemoBase implements
 
         // YAxis
         @Override
-        public String getFormattedValue(float value, AxisBase axis) {
+        public String getFormattedValue(float value, AxisBase axis, int position) {
             return mFormat.format(Math.abs(value)) + "m";
         }
 

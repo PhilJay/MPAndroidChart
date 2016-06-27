@@ -150,31 +150,31 @@ public class DataSetTest {
 
         ScatterDataSet set = new ScatterDataSet(entries, "");
 
-        Entry closest = set.getEntryForXPos(17, DataSet.Rounding.CLOSEST);
+        Entry closest = set.getEntryForXIndex(17, DataSet.Rounding.CLOSEST);
         assertEquals(15, closest.getX(), 0.01f);
         assertEquals(5, closest.getY(), 0.01f);
 
-        closest = set.getEntryForXPos(17, DataSet.Rounding.DOWN);
+        closest = set.getEntryForXIndex(17, DataSet.Rounding.DOWN);
         assertEquals(15, closest.getX(), 0.01f);
         assertEquals(5, closest.getY(), 0.01f);
 
-        closest = set.getEntryForXPos(15, DataSet.Rounding.DOWN);
+        closest = set.getEntryForXIndex(15, DataSet.Rounding.DOWN);
         assertEquals(15, closest.getX(), 0.01f);
         assertEquals(5, closest.getY(), 0.01f);
 
-        closest = set.getEntryForXPos(14, DataSet.Rounding.DOWN);
+        closest = set.getEntryForXIndex(14, DataSet.Rounding.DOWN);
         assertEquals(10, closest.getX(), 0.01f);
         assertEquals(10, closest.getY(), 0.01f);
 
-        closest = set.getEntryForXPos(17, DataSet.Rounding.UP);
+        closest = set.getEntryForXIndex(17, DataSet.Rounding.UP);
         assertEquals(21, closest.getX(), 0.01f);
         assertEquals(5, closest.getY(), 0.01f);
 
-        closest = set.getEntryForXPos(21, DataSet.Rounding.UP);
+        closest = set.getEntryForXIndex(21, DataSet.Rounding.UP);
         assertEquals(21, closest.getX(), 0.01f);
         assertEquals(5, closest.getY(), 0.01f);
 
-        closest = set.getEntryForXPos(21, DataSet.Rounding.CLOSEST);
+        closest = set.getEntryForXIndex(21, DataSet.Rounding.CLOSEST);
         assertEquals(21, closest.getX(), 0.01f);
         assertEquals(5, closest.getY(), 0.01f);
     }

@@ -2,7 +2,6 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,7 +35,6 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class CombinedChartActivity extends DemoBase {
 
@@ -80,7 +78,7 @@ public class CombinedChartActivity extends DemoBase {
         xAxis.setGranularity(1f);
         xAxis.setValueFormatter(new AxisValueFormatter() {
             @Override
-            public String getFormattedValue(float value, AxisBase axis) {
+            public String getFormattedValue(float value, AxisBase axis, int position) {
                 return mMonths[(int) value % mMonths.length];
             }
 

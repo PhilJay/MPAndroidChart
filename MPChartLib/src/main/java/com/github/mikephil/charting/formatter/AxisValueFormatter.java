@@ -16,9 +16,10 @@ public interface AxisValueFormatter {
      *
      * @param value the value to be formatted
      * @param axis  the axis the value belongs to
+     * @param entryIndex
      * @return
      */
-    String getFormattedValue(float value, AxisBase axis);
+    String getFormattedValue(float value, AxisBase axis, int entryIndex);
 
     /**
      * Returns the number of decimal digits this formatter uses or -1, if unspecified.

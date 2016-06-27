@@ -5,6 +5,7 @@ import android.graphics.PointF;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
@@ -69,11 +70,13 @@ public class RadarHighlighter extends PieRadarHighlighter<RadarChart> {
 
             float y = (entry.getY() - mChart.getYChartMin());
 
-            PointF p = Utils.getPosition(
+            MPPointF p = Utils.getPosition(
                     mChart.getCenterOffsets(), y * factor * phaseY,
                     sliceangle * index * phaseX + mChart.getRotationAngle());
 
             vals.add(new Highlight(index, entry.getY(), p.x, p.y, i, dataSet.getAxisDependency()));
+
+            MPPointF.recycleInstance(p);
         }
 
         return vals;

@@ -100,12 +100,17 @@ public class Transformer {
      * @param data
      * @return
      */
+    protected float[] valuePointsForGenerateTransformedValuesScatter = new float[0];
     public float[] generateTransformedValuesScatter(IScatterDataSet data, float phaseX,
                                                     float phaseY, int from, int to) {
 
         final int count = (int) ((to - from) * phaseX + 1) * 2;
 
-        float[] valuePoints = new float[count];
+        float[] valuePoints;
+        if(count != valuePointsForGenerateTransformedValuesScatter.length){
+            valuePointsForGenerateTransformedValuesScatter = new float[count];
+        }
+        valuePoints = valuePointsForGenerateTransformedValuesScatter;
 
         for (int j = 0; j < count; j += 2) {
 
@@ -114,6 +119,9 @@ public class Transformer {
             if (e != null) {
                 valuePoints[j] = e.getX();
                 valuePoints[j + 1] = e.getY() * phaseY;
+            }else{
+                valuePoints[j] = 0;
+                valuePoints[j + 1] = 0;
             }
         }
 
@@ -129,11 +137,15 @@ public class Transformer {
      * @param data
      * @return
      */
+    protected float[] valuePointsForGenerateTransformedValuesBubble = new float[0];
     public float[] generateTransformedValuesBubble(IBubbleDataSet data, float phaseY, int from, int to) {
 
         final int count = (to - from + 1) * 2; // (int) Math.ceil((to - from) * phaseX) * 2;
 
-        float[] valuePoints = new float[count];
+        if(count != valuePointsForGenerateTransformedValuesBubble.length){
+            valuePointsForGenerateTransformedValuesBubble = new float[count];
+        }
+        float[] valuePoints = valuePointsForGenerateTransformedValuesBubble;
 
         for (int j = 0; j < count; j += 2) {
 
@@ -142,6 +154,9 @@ public class Transformer {
             if (e != null) {
                 valuePoints[j] = e.getX();
                 valuePoints[j + 1] = e.getY() * phaseY;
+            }else{
+                valuePoints[j] = 0;
+                valuePoints[j + 1] = 0;
             }
         }
 
@@ -157,12 +172,17 @@ public class Transformer {
      * @param data
      * @return
      */
+    protected float[] valuePointsForGenerateTransformedValuesLine = new float[0];
     public float[] generateTransformedValuesLine(ILineDataSet data,
                                                  float phaseX, float phaseY, int from, int to) {
 
         final int count = (int) ((to - from) * phaseX + 1) * 2;
 
-        float[] valuePoints = new float[count];
+        if(count != valuePointsForGenerateTransformedValuesLine.length){
+            valuePointsForGenerateTransformedValuesLine = new float[count];
+        }
+
+        float[] valuePoints = valuePointsForGenerateTransformedValuesLine;
 
         for (int j = 0; j < count; j += 2) {
 
@@ -171,6 +191,9 @@ public class Transformer {
             if (e != null) {
                 valuePoints[j] = e.getX();
                 valuePoints[j + 1] = e.getY() * phaseY;
+            }else{
+                valuePoints[j] = 0;
+                valuePoints[j + 1] = 0;
             }
         }
 
@@ -186,12 +209,16 @@ public class Transformer {
      * @param data
      * @return
      */
+    protected float[] valuePointsForGenerateTransformedValuesCandle = new float[0];
     public float[] generateTransformedValuesCandle(ICandleDataSet data,
                                                    float phaseX, float phaseY, int from, int to) {
 
         final int count = (int) ((to - from) * phaseX + 1) * 2;
 
-        float[] valuePoints = new float[count];
+        if(count != valuePointsForGenerateTransformedValuesCandle.length){
+            valuePointsForGenerateTransformedValuesCandle = new float[count];
+        }
+        float[] valuePoints = valuePointsForGenerateTransformedValuesCandle;
 
         for (int j = 0; j < count; j += 2) {
 
@@ -200,6 +227,9 @@ public class Transformer {
             if (e != null) {
                 valuePoints[j] = e.getX();
                 valuePoints[j + 1] = e.getHigh() * phaseY;
+            }else{
+                valuePoints[j] = 0;
+                valuePoints[j + 1] = 0;
             }
         }
 
@@ -334,9 +364,11 @@ public class Transformer {
      *
      * @param pixels
      */
+    protected Matrix tmpMatrixForPixelsToValue = new Matrix();
     public void pixelsToValue(float[] pixels) {
 
-        Matrix tmp = new Matrix();
+        Matrix tmp = tmpMatrixForPixelsToValue;
+        tmp.reset();
 
         // invert all matrixes to convert back to the original value
         mMatrixOffset.invert(tmp);
@@ -374,7 +406,7 @@ public class Transformer {
         double xTouchVal = ptsBuffer[0];
         double yTouchVal = ptsBuffer[1];
 
-        return new PointD(xTouchVal, yTouchVal);
+        return PointD.getInstance(xTouchVal, yTouchVal);
     }
 
     /**
@@ -394,7 +426,7 @@ public class Transformer {
         double xPx = ptsBuffer[0];
         double yPx = ptsBuffer[1];
 
-        return new PointD(xPx, yPx);
+        return PointD.getInstance(xPx, yPx);
     }
 
     public Matrix getValueMatrix() {

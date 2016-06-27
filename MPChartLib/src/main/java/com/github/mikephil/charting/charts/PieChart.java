@@ -4,7 +4,6 @@ package com.github.mikephil.charting.charts;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
@@ -15,6 +14,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.highlight.PieHighlighter;
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.renderer.PieChartRenderer;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.List;
@@ -72,7 +72,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
      */
     private CharSequence mCenterText = "";
 
-    private PointF mCenterTextOffset = new PointF(0, 0);
+    private MPPointF mCenterTextOffset = MPPointF.getInstance(0, 0);
 
     /**
      * indicates the size of the hole in the center of the piechart, default:
@@ -150,7 +150,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
         float diameter = getDiameter();
         float radius = diameter / 2f;
 
-        PointF c = getCenterOffsets();
+        MPPointF c = getCenterOffsets();
 
         float shift = mData.getDataSet().getSelectionShift();
 
@@ -160,6 +160,8 @@ public class PieChart extends PieRadarChartBase<PieData> {
                 c.y - radius + shift,
                 c.x + radius - shift,
                 c.y + radius - shift);
+
+        MPPointF.recycleInstance(c);
     }
 
     @Override
@@ -170,7 +172,9 @@ public class PieChart extends PieRadarChartBase<PieData> {
     @Override
     protected float[] getMarkerPosition(Highlight highlight) {
 
-        PointF center = getCenterCircleBox();
+        // TODO : Create a method returning recyclable MPPointF instead of a new float[];
+
+        MPPointF center = getCenterCircleBox();
         float r = getRadius();
 
         float off = r / 10f * 3.6f;
@@ -196,18 +200,28 @@ public class PieChart extends PieRadarChartBase<PieData> {
                 * Math.sin(Math.toRadians((rotationAngle + mAbsoluteAngles[entryIndex] - offset)
                 * mAnimator.getPhaseY())) + center.y);
 
+        MPPointF.recycleInstance(center);
+
         return new float[]{x, y};
     }
 
     /**
      * calculates the needed angles for the chart slices
      */
+    private float[] drawAnglesForCalcAngles = new float[1];
+    private float[] absolueAnglesForCalcAngles = new float[1];
     private void calcAngles() {
 
         int entryCount = mData.getEntryCount();
 
-        mDrawAngles = new float[entryCount];
-        mAbsoluteAngles = new float[entryCount];
+        if(drawAnglesForCalcAngles.length != entryCount){
+            drawAnglesForCalcAngles = new float[entryCount];
+        }
+        if(absolueAnglesForCalcAngles.length != entryCount){
+            absolueAnglesForCalcAngles = new float[entryCount];
+        }
+        mDrawAngles = drawAnglesForCalcAngles;
+        mAbsoluteAngles = absolueAnglesForCalcAngles;
 
         float yValueSum = mData.getYValueSum();
 
@@ -313,7 +327,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
         List<IPieDataSet> dataSets = mData.getDataSets();
 
         for (int i = 0; i < dataSets.size(); i++) {
-            if (dataSets.get(i).getEntryForXPos(xIndex) != null)
+            if (dataSets.get(i).getEntryForXIndex(xIndex) != null)
                 return i;
         }
 
@@ -455,12 +469,13 @@ public class PieChart extends PieRadarChartBase<PieData> {
     }
 
     /**
-     * returns the center of the circlebox
+     * returns a recyclable MPPointF instance, representing
+     * the center of the circlebox
      *
      * @return
      */
-    public PointF getCenterCircleBox() {
-        return new PointF(mCircleBox.centerX(), mCircleBox.centerY());
+    public MPPointF getCenterCircleBox() {
+        return MPPointF.getInstance(mCircleBox.centerX(), mCircleBox.centerY());
     }
 
     /**
@@ -498,7 +513,8 @@ public class PieChart extends PieRadarChartBase<PieData> {
      * @param y
      */
     public void setCenterTextOffset(float x, float y) {
-        mCenterTextOffset = new PointF(Utils.convertDpToPixel(x), Utils.convertDpToPixel(y));
+        mCenterTextOffset.x = Utils.convertDpToPixel(x);
+        mCenterTextOffset.y = Utils.convertDpToPixel(y);
     }
 
     /**
@@ -506,8 +522,8 @@ public class PieChart extends PieRadarChartBase<PieData> {
      *
      * @return
      */
-    public PointF getCenterTextOffset() {
-        return mCenterTextOffset;
+    public MPPointF getCenterTextOffset() {
+        return MPPointF.getInstance(mCenterTextOffset.x, mCenterTextOffset.y);
     }
 
     /**

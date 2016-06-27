@@ -155,9 +155,10 @@ public abstract class Utils {
      * @param demoText
      * @return
      */
+    private static Rect rectForCalcTextHeight = new Rect();
     public static int calcTextHeight(Paint paint, String demoText) {
-
-        Rect r = new Rect();
+        Rect r = rectForCalcTextHeight;
+        r.set(0,0,0,0);
         paint.getTextBounds(demoText, 0, demoText.length(), r);
         return r.height();
     }
@@ -173,18 +174,20 @@ public abstract class Utils {
     }
 
     /**
-     * calculates the approximate size of a text, depending on a demo text
+     * Returns a recyclable instance of FSize, derived by
+     * calculating the approximate size of a text, depending on a demo text
      * avoid repeated calls (e.g. inside drawing methods)
      *
      * @param paint
      * @param demoText
      * @return
      */
+    private static Rect rectForCalcTextSize = new Rect();
     public static FSize calcTextSize(Paint paint, String demoText) {
-
-        Rect r = new Rect();
+        Rect r = rectForCalcTextSize;
+        r.set(0,0,0,0);
         paint.getTextBounds(demoText, 0, demoText.length(), r);
-        return new FSize(r.width(), r.height());
+        return FSize.getInstance(r.width(), r.height());
     }
 
     /**
@@ -219,10 +222,14 @@ public abstract class Utils {
      * @param separateChar      a caracter to be paced between the "thousands"
      * @return
      */
+    private static char[] outForFormatNumber = new char[35];
     public static String formatNumber(float number, int digitCount, boolean separateThousands,
                                       char separateChar) {
 
-        char[] out = new char[35];
+        for(int i = 0 ; i < outForFormatNumber.length ; i++){
+            outForFormatNumber[i] = 0;
+        }
+        char[] out = outForFormatNumber;
 
         boolean neg = false;
         if (number == 0) {
@@ -386,11 +393,17 @@ public abstract class Utils {
      * @param angle  in degrees, converted to radians internally
      * @return
      */
-    public static PointF getPosition(PointF center, float dist, float angle) {
+    public static MPPointF getPosition(MPPointF center, float dist, float angle) {
 
-        PointF p = new PointF((float) (center.x + dist * Math.cos(Math.toRadians(angle))),
+        MPPointF p = MPPointF.getInstance((float) (center.x + dist * Math.cos(Math.toRadians(angle))),
                 (float) (center.y + dist * Math.sin(Math.toRadians(angle))));
         return p;
+    }
+
+    public static MPPointF getPositionWithOutputPoint(MPPointF center, float dist, float angle, MPPointF outputPoint){
+        outputPoint.x = (float) (center.x + dist * Math.cos(Math.toRadians(angle)));
+        outputPoint.y = (float) (center.y + dist * Math.sin(Math.toRadians(angle)));
+        return outputPoint;
     }
 
     public static void velocityTrackerPointerUpCleanUpIfNecessary(MotionEvent ev,
@@ -456,7 +469,7 @@ public abstract class Utils {
 
     public static void drawXAxisValue(Canvas c, String text, float x, float y,
                                       Paint paint,
-                                      PointF anchor, float angleDegrees) {
+                                      MPPointF anchor, float angleDegrees) {
 
         float drawOffsetX = 0.f;
         float drawOffsetY = 0.f;
@@ -492,8 +505,8 @@ public abstract class Utils {
                         lineHeight,
                         angleDegrees);
 
-                translateX -= rotatedSize.width * (anchor.x - 0.5f);
-                translateY -= rotatedSize.height * (anchor.y - 0.5f);
+                translateX -= rotatedSize.getWidth() * (anchor.x - 0.5f);
+                translateY -= rotatedSize.getHeight() * (anchor.y - 0.5f);
             }
 
             c.save();
@@ -522,7 +535,7 @@ public abstract class Utils {
     public static void drawMultilineText(Canvas c, StaticLayout textLayout,
                                          float x, float y,
                                          TextPaint paint,
-                                         PointF anchor, float angleDegrees) {
+                                         MPPointF anchor, float angleDegrees) {
 
         float drawOffsetX = 0.f;
         float drawOffsetY = 0.f;
@@ -562,8 +575,8 @@ public abstract class Utils {
                         drawHeight,
                         angleDegrees);
 
-                translateX -= rotatedSize.width * (anchor.x - 0.5f);
-                translateY -= rotatedSize.height * (anchor.y - 0.5f);
+                translateX -= rotatedSize.getWidth() * (anchor.x - 0.5f);
+                translateY -= rotatedSize.getHeight() * (anchor.y - 0.5f);
             }
 
             c.save();
@@ -599,12 +612,12 @@ public abstract class Utils {
                                          float x, float y,
                                          TextPaint paint,
                                          FSize constrainedToSize,
-                                         PointF anchor, float angleDegrees) {
+                                         MPPointF anchor, float angleDegrees) {
 
         StaticLayout textLayout = new StaticLayout(
                 text, 0, text.length(),
                 paint,
-                (int) Math.max(Math.ceil(constrainedToSize.width), 1.f),
+                (int) Math.max(Math.ceil(constrainedToSize.getWidth()), 1.f),
                 Layout.Alignment.ALIGN_NORMAL, 1.f, 0.f, false);
 
 
@@ -613,24 +626,42 @@ public abstract class Utils {
 
     public static FSize getSizeOfRotatedRectangleByDegrees(FSize rectangleSize, float degrees) {
         final float radians = degrees * FDEG2RAD;
-        return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height,
+        return getSizeOfRotatedRectangleByRadians(rectangleSize.getWidth(), rectangleSize.getHeight(),
                 radians);
     }
 
     public static FSize getSizeOfRotatedRectangleByRadians(FSize rectangleSize, float radians) {
-        return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height,
+        return getSizeOfRotatedRectangleByRadians(rectangleSize.getWidth(), rectangleSize.getHeight(),
                 radians);
     }
 
+    /**
+     * Returns a recyclable instance of FSize, representing the
+     * size of the rotated Rectangle by degrees.
+     *
+     * @param rectangleWidth
+     * @param rectangleHeight
+     * @param degrees
+     * @return
+     */
     public static FSize getSizeOfRotatedRectangleByDegrees(float rectangleWidth, float
             rectangleHeight, float degrees) {
         final float radians = degrees * FDEG2RAD;
         return getSizeOfRotatedRectangleByRadians(rectangleWidth, rectangleHeight, radians);
     }
 
+    /**
+     * Returns a recyclable instance of FSize, representing the
+     * size of the rotated Rectangle by radians.
+     *
+     * @param rectangleWidth
+     * @param rectangleHeight
+     * @param radians
+     * @return
+     */
     public static FSize getSizeOfRotatedRectangleByRadians(float rectangleWidth, float
             rectangleHeight, float radians) {
-        return new FSize(
+        return FSize.getInstance(
                 Math.abs(rectangleWidth * (float) Math.cos(radians)) + Math.abs(rectangleHeight *
                         (float) Math.sin(radians)),
                 Math.abs(rectangleWidth * (float) Math.sin(radians)) + Math.abs(rectangleHeight *

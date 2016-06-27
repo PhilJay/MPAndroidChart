@@ -1,16 +1,44 @@
 
 package com.github.mikephil.charting.utils;
 
+import java.util.List;
+
 /**
  * Immutable class for describing width and height dimensions in some arbitrary
  * unit. Replacement for the android.Util.SizeF which is available only on API >= 21.
  */
-public final class FSize {
+public final class FSize extends ObjectPool.Poolable {
 
-    public final float width;
-    public final float height;
+    private float width;
+    private float height;
 
-    public FSize(final float width, final float height) {
+    private static ObjectPool<FSize> pool;
+
+    static {
+        pool = ObjectPool.create(500, new FSize(0,0));
+    }
+
+
+    ObjectPool.Poolable instantiate(){
+        return new FSize(0,0);
+    }
+
+    public static FSize getInstance(final float width, final float height){
+        FSize result = pool.get();
+        result.width = width;
+        result.height = height;
+        return result;
+    }
+
+    public static void recycleInstance(FSize instance){
+        pool.recycle(instance);
+    }
+
+    public static void recycleInstances(List<FSize> instances){
+        pool.recycle(instances);
+    }
+
+    private FSize(final float width, final float height) {
         this.width = width;
         this.height = height;
     }
@@ -25,14 +53,14 @@ public final class FSize {
         }
         if (obj instanceof FSize) {
             final FSize other = (FSize) obj;
-            return width == other.width && height == other.height;
+            return getWidth() == other.getWidth() && getHeight() == other.getHeight();
         }
         return false;
     }
 
     @Override
     public String toString() {
-        return width + "x" + height;
+        return getWidth() + "x" + getHeight();
     }
 
     /**
@@ -40,6 +68,21 @@ public final class FSize {
      */
     @Override
     public int hashCode() {
-        return Float.floatToIntBits(width) ^ Float.floatToIntBits(height);
+        return Float.floatToIntBits(getWidth()) ^ Float.floatToIntBits(getHeight());
+    }
+
+
+    // 'Immutability' offered via get/set methods due to this object being poolable.
+    // Sacrifice performance gain of direct field access for offering only a getter.
+    // NOTE : Holding onto an instance that has been pooled will mean that the underlying
+    // value may change under your nose if the instance is dispensed by a second pool.get()
+    // call.
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
     }
 }

@@ -175,6 +175,12 @@ public class RealtimeLineChartActivity extends DemoBase implements
 
         if (thread != null)
             thread.interrupt();
+        final Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                addEntry();
+            }
+        };
 
         thread = new Thread(new Runnable() {
 
@@ -182,13 +188,7 @@ public class RealtimeLineChartActivity extends DemoBase implements
             public void run() {
                 for (int i = 0; i < 1000; i++) {
 
-                    runOnUiThread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            addEntry();
-                        }
-                    });
+                    runOnUiThread(r);
 
                     try {
                         Thread.sleep(25);

@@ -164,14 +164,14 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     }
 
     @Override
-    public S getEntryForXPos(float xPos) {
+    public S getEntryForXIndex(float xPos) {
         //DynamicRealmObject o = new DynamicRealmObject(results.where().equalTo(mXValuesField, xIndex).findFirst());
         //return new Entry(o.getFloat(mYValuesField), o.getInt(mXValuesField));
-        return getEntryForXPos(xPos, DataSet.Rounding.CLOSEST);
+        return getEntryForXIndex(xPos, DataSet.Rounding.CLOSEST);
     }
 
     @Override
-    public S getEntryForXPos(float xPos, DataSet.Rounding rounding) {
+    public S getEntryForXIndex(float xPos, DataSet.Rounding rounding) {
         int index = getEntryIndex(xPos, rounding);
         if (index > -1)
             return mValues.get(index);
@@ -179,7 +179,7 @@ public abstract class RealmBaseDataSet<T extends RealmObject, S extends Entry> e
     }
 
     @Override
-    public List<S> getEntriesForXPos(float xVal) {
+    public List<S> getEntriesForXIndex(float xVal) {
 
         List<S> entries = new ArrayList<>();
 

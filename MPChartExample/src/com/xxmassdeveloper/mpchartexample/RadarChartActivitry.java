@@ -79,7 +79,7 @@ public class RadarChartActivitry extends DemoBase {
             private String[] mActivities = new String[]{"Burger", "Steak", "Salad", "Pasta", "Pizza"};
 
             @Override
-            public String getFormattedValue(float value, AxisBase axis) {
+            public String getFormattedValue(float value, AxisBase axis, int position) {
                 return mActivities[(int) value % mActivities.length];
             }
 

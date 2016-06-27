@@ -38,7 +38,7 @@ public class PercentFormatter implements ValueFormatter, AxisValueFormatter {
 
     // AxisValueFormatter
     @Override
-    public String getFormattedValue(float value, AxisBase axis) {
+    public String getFormattedValue(float value, AxisBase axis, int position) {
         return mFormat.format(value) + " %";
     }
 

@@ -384,7 +384,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     @Override
     public boolean removeEntryByXPos(float xPos) {
 
-        T e = getEntryForXPos(xPos);
+        T e = getEntryForXIndex(xPos);
         return removeEntry(e);
     }
 

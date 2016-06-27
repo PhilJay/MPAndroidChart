@@ -17,6 +17,7 @@ import com.github.mikephil.charting.renderer.HorizontalBarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart;
 import com.github.mikephil.charting.renderer.YAxisRendererHorizontalBarChart;
 import com.github.mikephil.charting.utils.HorizontalViewPortHandler;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.TransformerHorizontalBarChart;
 import com.github.mikephil.charting.utils.Utils;
@@ -164,17 +165,28 @@ public class HorizontalBarChart extends BarChart {
         return bounds;
     }
 
+    /**
+     * Returns a recyclable MPPointF instance representing the entry's
+     * position in pixel values.
+     *
+     * @param e
+     * @param axis
+     * @return
+     */
+    private float[] valsForGetPosition = new float[2];
     @Override
-    public PointF getPosition(Entry e, AxisDependency axis) {
+    public MPPointF getPosition(Entry e, AxisDependency axis) {
 
         if (e == null)
             return null;
 
-        float[] vals = new float[]{e.getY(), e.getX()};
+        float[] vals = vals = valsForGetPosition;
+        vals[0] = e.getY();
+        vals[1] = e.getX();
 
         getTransformer(axis).pointValuesToPixel(vals);
 
-        return new PointF(vals[0], vals[1]);
+        return MPPointF.getInstance(vals[0], vals[1]);
     }
 
     /**

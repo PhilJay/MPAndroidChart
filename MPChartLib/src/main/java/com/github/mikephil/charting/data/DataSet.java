@@ -239,7 +239,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     @Override
-    public T getEntryForXPos(float xPos, Rounding rounding) {
+    public T getEntryForXIndex(float xPos, Rounding rounding) {
 
         int index = getEntryIndex(xPos, rounding);
         if (index > -1)
@@ -248,8 +248,8 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     @Override
-    public T getEntryForXPos(float xPos) {
-        return getEntryForXPos(xPos, Rounding.CLOSEST);
+    public T getEntryForXIndex(float xPos) {
+        return getEntryForXIndex(xPos, Rounding.CLOSEST);
     }
 
     @Override
@@ -304,7 +304,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
      * @return
      */
     @Override
-    public List<T> getEntriesForXPos(float xVal) {
+    public List<T> getEntriesForXIndex(float xVal) {
 
         List<T> entries = new ArrayList<T>();
 

@@ -58,40 +58,40 @@ public interface IDataSet<T extends Entry> {
     void calcMinMax();
 
     /**
-     * Returns the first Entry object found at the given xPos with binary
+     * Returns the first Entry object found at the given xIndex with binary
      * search. If the no Entry at the specified xPos is found, this method
      * returns the Entry at the xPos according to the rounding.
      * INFORMATION: This method does calculations at runtime. Do
      * not over-use in performance critical situations.
      *
-     * @param xPos
+     * @param xIndex
      * @param rounding determine to round up/down/closest if there is no Entry matching the provided x-index
      * @return
      */
-    T getEntryForXPos(float xPos, DataSet.Rounding rounding);
+    T getEntryForXIndex(float xIndex, DataSet.Rounding rounding);
 
     /**
-     * Returns the first Entry object found at the given xPos with binary
+     * Returns the first Entry object found at the given xIndex with binary
      * search. If the no Entry at the specified xPos is found, this method
      * returns the index at the closest xPos.
      * INFORMATION: This method does calculations at runtime. Do
      * not over-use in performance critical situations.
      *
-     * @param xPos
+     * @param xIndex
      * @return
      */
-    T getEntryForXPos(float xPos);
+    T getEntryForXIndex(float xIndex);
 
     /**
-     * Returns all Entry objects found at the given xPos with binary
+     * Returns all Entry objects found at the given xIndex with binary
      * search. An empty array if no Entry object at that xPos.
      * INFORMATION: This method does calculations at runtime. Do
      * not over-use in performance critical situations.
      *
-     * @param xPos
+     * @param xIndex
      * @return
      */
-    List<T> getEntriesForXPos(float xPos);
+    List<T> getEntriesForXIndex(float xIndex);
 
     /**
      * Returns the Entry object found at the given index (NOT xIndex) in the values array.
@@ -108,11 +108,11 @@ public interface IDataSet<T extends Entry> {
      * INFORMATION: This method does calculations at runtime. Do
      * not over-use in performance critical situations.
      *
-     * @param xPos
+     * @param xIndex
      * @param rounding determine to round up/down/closest if there is no Entry matching the provided x-index
      * @return
      */
-    int getEntryIndex(float xPos, DataSet.Rounding rounding);
+    int getEntryIndex(float xIndex, DataSet.Rounding rounding);
 
     /**
      * Returns the position of the provided entry in the DataSets Entry array.

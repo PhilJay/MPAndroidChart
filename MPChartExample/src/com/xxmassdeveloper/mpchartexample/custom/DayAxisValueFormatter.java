@@ -1,10 +1,8 @@
 package com.xxmassdeveloper.mpchartexample.custom;
 
 import com.github.mikephil.charting.charts.BarLineChartBase;
-import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.formatter.AxisValueFormatter;
-import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
 
 /**
  * Created by philipp on 02/06/16.
@@ -22,7 +20,7 @@ public class DayAxisValueFormatter implements AxisValueFormatter {
     }
 
     @Override
-    public String getFormattedValue(float value, AxisBase axis) {
+    public String getFormattedValue(float value, AxisBase axis, int position) {
 
         int days = (int) value;
 

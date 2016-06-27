@@ -94,7 +94,7 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
             private SimpleDateFormat mFormat = new SimpleDateFormat("dd MMM HH:mm");
 
             @Override
-            public String getFormattedValue(float value, AxisBase axis) {
+            public String getFormattedValue(float value, AxisBase axis, int position) {
                 return mFormat.format(new Date((long) value));
             }
 
