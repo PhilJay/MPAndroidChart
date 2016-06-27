@@ -81,7 +81,7 @@ public class RealmWikiExample extends RealmBaseActivity {
     private void setData() {
 
         // LINE-CHART
-        final RealmResults<Score> results = mRealm.allObjects(Score.class);
+        final RealmResults<Score> results = mRealm.where(Score.class).findAll();
 
 
         AxisValueFormatter formatter = new AxisValueFormatter() {

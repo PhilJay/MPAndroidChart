@@ -17,6 +17,9 @@ import com.xxmassdeveloper.mpchartexample.notimportant.MyAdapter;
 
 import java.util.ArrayList;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 /**
  * Created by Philipp Jahoda on 07/12/15.
  */
@@ -52,6 +55,15 @@ public class RealmMainActivity extends DemoBase implements AdapterView.OnItemCli
         lv.setAdapter(adapter);
 
         lv.setOnItemClickListener(this);
+
+        // Create a RealmConfiguration that saves the Realm file in the app's "files" directory.
+        RealmConfiguration realmConfig = new RealmConfiguration.Builder(getApplicationContext()).build();
+        Realm.setDefaultConfiguration(realmConfig);
+
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.deleteAll();
+        realm.commitTransaction();
     }
 
     @Override

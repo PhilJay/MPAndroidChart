@@ -1,10 +1,11 @@
 apply plugin: 'com.android.application'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 23
     buildToolsVersion '23.0.2'
     defaultConfig {
-        minSdkVersion 8
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 52
         versionName '3.0.0'
@@ -54,8 +55,8 @@ repositories {
 
 dependencies {
     //compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':MPChartLib') // remove this if you only imported the example project
+    compile project(':MPChartLib-Realm')
     compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'io.realm:realm-android:0.87.5' // dependency for realm-database API (http://realm.io)
+    //compile 'io.realm:realm-android:0.87.5' // dependency for realm-database API (http://realm.io)
     //compile 'com.github.PhilJay:MPAndroidChart:v2.2.5'
 }

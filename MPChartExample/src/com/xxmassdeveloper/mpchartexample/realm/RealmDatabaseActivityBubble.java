@@ -51,7 +51,7 @@ public class RealmDatabaseActivityBubble extends RealmBaseActivity {
 
     private void setData() {
 
-        RealmResults<RealmDemoData> result = mRealm.allObjects(RealmDemoData.class);
+        RealmResults<RealmDemoData> result = mRealm.where(RealmDemoData.class).findAll();
 
         RealmBubbleDataSet<RealmDemoData> set = new RealmBubbleDataSet<RealmDemoData>(result, "xValue", "yValue", "bubbleSize");
         set.setLabel("Realm BubbleDataSet");

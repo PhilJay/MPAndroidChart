@@ -83,15 +83,11 @@ public abstract class RealmBaseActivity extends DemoBase {
     protected void onResume() {
         super.onResume();
 
-        RealmConfiguration config = new RealmConfiguration.Builder(this)
-                .name("myrealm.realm")
-                .build();
+        // Create a RealmConfiguration that saves the Realm file in the app's "files" directory.
+        RealmConfiguration realmConfig = new RealmConfiguration.Builder(getApplicationContext()).build();
+        Realm.setDefaultConfiguration(realmConfig);
 
-        Realm.deleteRealm(config);
-
-        Realm.setDefaultConfiguration(config);
-
-        mRealm = Realm.getInstance(config);
+        mRealm = Realm.getDefaultInstance();
     }
 
     @Override
@@ -104,7 +100,7 @@ public abstract class RealmBaseActivity extends DemoBase {
 
         mRealm.beginTransaction();
 
-        mRealm.clear(RealmDemoData.class);
+        mRealm.delete(RealmDemoData.class);
 
         for (int i = 0; i < objectCount; i++) {
 
@@ -121,7 +117,7 @@ public abstract class RealmBaseActivity extends DemoBase {
 
         mRealm.beginTransaction();
 
-        mRealm.clear(RealmDemoData.class);
+        mRealm.delete(RealmDemoData.class);
 
         for (int i = 0; i < objectCount; i++) {
 
@@ -140,7 +136,7 @@ public abstract class RealmBaseActivity extends DemoBase {
 
         mRealm.beginTransaction();
 
-        mRealm.clear(RealmDemoData.class);
+        mRealm.delete(RealmDemoData.class);
 
         for (int i = 0; i < objectCount; i++) {
 
@@ -168,7 +164,7 @@ public abstract class RealmBaseActivity extends DemoBase {
 
         mRealm.beginTransaction();
 
-        mRealm.clear(RealmDemoData.class);
+        mRealm.delete(RealmDemoData.class);
 
         for (int i = 0; i < objectCount; i++) {
 
@@ -186,7 +182,7 @@ public abstract class RealmBaseActivity extends DemoBase {
 
         mRealm.beginTransaction();
 
-        mRealm.clear(RealmDemoData.class);
+        mRealm.delete(RealmDemoData.class);
 
         float value1 = 15f + (float) (Math.random() * 8f);
         float value2 = 15f + (float) (Math.random() * 8f);
