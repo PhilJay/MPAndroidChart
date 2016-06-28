@@ -12,6 +12,7 @@ import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.utils.FSize;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
@@ -95,37 +96,42 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
         mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
         mAxisLabelPaint.setColor(mXAxis.getTextColor());
 
-        if (mXAxis.getPosition() == XAxisPosition.TOP) {
+        MPPointF pointF = MPPointF.getInstance(0,0);
 
-            drawLabels(c, mViewPortHandler.contentRight() + xoffset,
-                    new PointF(0.0f, 0.5f));
+        if (mXAxis.getPosition() == XAxisPosition.TOP) {
+            pointF.x = 0.0f;
+            pointF.y = 0.5f;
+            drawLabels(c, mViewPortHandler.contentRight() + xoffset, pointF);
 
         } else if (mXAxis.getPosition() == XAxisPosition.TOP_INSIDE) {
-
-            drawLabels(c, mViewPortHandler.contentRight() - xoffset,
-                    new PointF(1.0f, 0.5f));
+            pointF.x = 1.0f;
+            pointF.y = 0.5f;
+            drawLabels(c, mViewPortHandler.contentRight() - xoffset, pointF);
 
         } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
-
-            drawLabels(c, mViewPortHandler.contentLeft() - xoffset,
-                    new PointF(1.0f, 0.5f));
+            pointF.x = 1.0f;
+            pointF.y = 0.5f;
+            drawLabels(c, mViewPortHandler.contentLeft() - xoffset, pointF);
 
         } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM_INSIDE) {
-
-            drawLabels(c, mViewPortHandler.contentLeft() + xoffset,
-                    new PointF(0.0f, 0.5f));
+            pointF.x = 1.0f;
+            pointF.y = 0.5f;
+            drawLabels(c, mViewPortHandler.contentLeft() + xoffset, pointF);
 
         } else { // BOTH SIDED
-
-            drawLabels(c, mViewPortHandler.contentRight() + xoffset,
-                    new PointF(0.0f, 0.5f));
-            drawLabels(c, mViewPortHandler.contentLeft() - xoffset,
-                    new PointF(1.0f, 0.5f));
+            pointF.x = 0.0f;
+            pointF.y = 0.5f;
+            drawLabels(c, mViewPortHandler.contentRight() + xoffset, pointF);
+            pointF.x = 1.0f;
+            pointF.y = 0.5f;
+            drawLabels(c, mViewPortHandler.contentLeft() - xoffset, pointF);
         }
+
+        MPPointF.recycleInstance(pointF);
     }
 
     @Override
-    protected void drawLabels(Canvas c, float pos, PointF anchor) {
+    protected void drawLabels(Canvas c, float pos, MPPointF anchor) {
 
         final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
         boolean centeringEnabled = mXAxis.isCenterAxisLabelsEnabled();

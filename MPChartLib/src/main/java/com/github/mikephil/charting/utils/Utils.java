@@ -397,6 +397,7 @@ public abstract class Utils {
     }
 
     /**
+     * Returns a recyclable MPPointF instance.
      * Calculates the position around a center point, depending on the distance
      * from the center, and the angle of the position around the center.
      *
@@ -405,11 +406,16 @@ public abstract class Utils {
      * @param angle  in degrees, converted to radians internally
      * @return
      */
-    public static PointF getPosition(PointF center, float dist, float angle) {
+    public static MPPointF getPosition(MPPointF center, float dist, float angle) {
 
-        PointF p = new PointF((float) (center.x + dist * Math.cos(Math.toRadians(angle))),
-                (float) (center.y + dist * Math.sin(Math.toRadians(angle))));
+        MPPointF p = MPPointF.getInstance(0,0);
+        getPosition(center, dist, angle, p);
         return p;
+    }
+
+    public static void getPosition(MPPointF center, float dist, float angle, MPPointF outputPoint){
+        outputPoint.x = (float) (center.x + dist * Math.cos(Math.toRadians(angle)));
+        outputPoint.y = (float) (center.y + dist * Math.sin(Math.toRadians(angle)));
     }
 
     public static void velocityTrackerPointerUpCleanUpIfNecessary(MotionEvent ev,
@@ -475,7 +481,7 @@ public abstract class Utils {
 
     public static void drawXAxisValue(Canvas c, String text, float x, float y,
                                       Paint paint,
-                                      PointF anchor, float angleDegrees) {
+                                      MPPointF anchor, float angleDegrees) {
 
         float drawOffsetX = 0.f;
         float drawOffsetY = 0.f;
@@ -542,7 +548,7 @@ public abstract class Utils {
     public static void drawMultilineText(Canvas c, StaticLayout textLayout,
                                          float x, float y,
                                          TextPaint paint,
-                                         PointF anchor, float angleDegrees) {
+                                         MPPointF anchor, float angleDegrees) {
 
         float drawOffsetX = 0.f;
         float drawOffsetY = 0.f;
@@ -620,7 +626,7 @@ public abstract class Utils {
                                          float x, float y,
                                          TextPaint paint,
                                          FSize constrainedToSize,
-                                         PointF anchor, float angleDegrees) {
+                                         MPPointF anchor, float angleDegrees) {
 
         StaticLayout textLayout = new StaticLayout(
                 text, 0, text.length(),

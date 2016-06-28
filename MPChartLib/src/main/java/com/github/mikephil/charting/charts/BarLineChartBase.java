@@ -32,6 +32,7 @@ import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.listener.OnDrawListener;
 import com.github.mikephil.charting.renderer.XAxisRenderer;
 import com.github.mikephil.charting.renderer.YAxisRenderer;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
@@ -594,10 +595,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      */
     public void zoomIn() {
 
-        PointF center = mViewPortHandler.getContentCenter();
+        MPPointF center = mViewPortHandler.getContentCenter();
 
         Matrix save = mViewPortHandler.zoomIn(center.x, -center.y);
         mViewPortHandler.refresh(save, this, false);
+
+        MPPointF.recycleInstance(center);
 
         // Range might have changed, which means that Y-axis labels
         // could have changed in size, affecting Y-axis size.
@@ -611,10 +614,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      */
     public void zoomOut() {
 
-        PointF center = mViewPortHandler.getContentCenter();
+        MPPointF center = mViewPortHandler.getContentCenter();
 
         Matrix save = mViewPortHandler.zoomOut(center.x, -center.y);
         mViewPortHandler.refresh(save, this, false);
+
+        MPPointF.recycleInstance(center);
 
         // Range might have changed, which means that Y-axis labels
         // could have changed in size, affecting Y-axis size.
@@ -1000,13 +1005,14 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
+     * Returns a recyclable MPPointF instance.
      * Returns the position (in pixels) the provided Entry has inside the chart
      * view or null, if the provided Entry is null.
      *
      * @param e
      * @return
      */
-    public PointF getPosition(Entry e, AxisDependency axis) {
+    public MPPointF getPosition(Entry e, AxisDependency axis) {
 
         if (e == null)
             return null;
@@ -1017,7 +1023,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         getTransformer(axis).pointValuesToPixel(vals);
 
-        return new PointF(vals[0], vals[1]);
+        return MPPointF.getInstance(vals[0], vals[1]);
     }
 
     /**

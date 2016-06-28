@@ -16,6 +16,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -41,12 +42,12 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
     /**
      * point where the touch action started
      */
-    private PointF mTouchStartPoint = new PointF();
+    private MPPointF mTouchStartPoint = MPPointF.getInstance(0,0);
 
     /**
      * center between two pointers (fingers on the display)
      */
-    private PointF mTouchPointCenter = new PointF();
+    private MPPointF mTouchPointCenter = MPPointF.getInstance(0,0);
 
     private float mSavedXDist = 1f;
     private float mSavedYDist = 1f;
@@ -60,8 +61,8 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
     private VelocityTracker mVelocityTracker;
 
     private long mDecelerationLastTime = 0;
-    private PointF mDecelerationCurrentPoint = new PointF();
-    private PointF mDecelerationVelocity = new PointF();
+    private MPPointF mDecelerationCurrentPoint = MPPointF.getInstance(0,0);
+    private MPPointF mDecelerationVelocity = MPPointF.getInstance(0,0);
 
     /**
      * the distance of movement that will be counted as a drag
@@ -212,8 +213,12 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                         stopDeceleration();
 
                         mDecelerationLastTime = AnimationUtils.currentAnimationTimeMillis();
-                        mDecelerationCurrentPoint = new PointF(event.getX(), event.getY());
-                        mDecelerationVelocity = new PointF(velocityX, velocityY);
+
+                        mDecelerationCurrentPoint.x = event.getX();
+                        mDecelerationCurrentPoint.y = event.getY();
+
+                        mDecelerationVelocity.x = velocityX;
+                        mDecelerationVelocity.y = velocityY;
 
                         Utils.postInvalidateOnAnimation(mChart); // This causes computeScroll to fire, recommended for this by
                         // Google
@@ -275,7 +280,8 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
     private void saveTouchStart(MotionEvent event) {
 
         mSavedMatrix.set(mMatrix);
-        mTouchStartPoint.set(event.getX(), event.getY());
+        mTouchStartPoint.x = event.getX();
+        mTouchStartPoint.y = event.getY();
 
         mClosestDataSetToTouch = mChart.getDataSetByTouchPoint(event.getX(), event.getY());
     }
@@ -334,7 +340,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
             if (totalDist > mMinScalePointerDistance) {
 
                 // get the translation
-                PointF t = getTrans(mTouchPointCenter.x, mTouchPointCenter.y);
+                MPPointF t = getTrans(mTouchPointCenter.x, mTouchPointCenter.y);
                 ViewPortHandler h = mChart.getViewPortHandler();
 
                 // take actions depending on the activated touch mode
@@ -408,6 +414,8 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                             l.onChartScale(event, 1f, scaleY);
                     }
                 }
+
+                MPPointF.recycleInstance(t);
             }
         }
     }
@@ -439,10 +447,11 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
      * @param point
      * @param event
      */
-    private static void midPoint(PointF point, MotionEvent event) {
+    private static void midPoint(MPPointF point, MotionEvent event) {
         float x = event.getX(0) + event.getX(1);
         float y = event.getY(0) + event.getY(1);
-        point.set(x / 2f, y / 2f);
+        point.x = (x / 2f);
+        point.y = (y / 2f);
     }
 
     /**
@@ -482,6 +491,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
     }
 
     /**
+     * Returns a recyclable MPPointF instance.
      * returns the correct translation depending on the provided x and y touch
      * points
      *
@@ -489,7 +499,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
      * @param y
      * @return
      */
-    public PointF getTrans(float x, float y) {
+    public MPPointF getTrans(float x, float y) {
 
         ViewPortHandler vph = mChart.getViewPortHandler();
 
@@ -503,7 +513,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
             yTrans = -(mChart.getMeasuredHeight() - y - vph.offsetBottom());
         }
 
-        return new PointF(xTrans, yTrans);
+        return MPPointF.getInstance(xTrans, yTrans);
     }
 
     /**
@@ -554,13 +564,15 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
         // check if double-tap zooming is enabled
         if (mChart.isDoubleTapToZoomEnabled() && mChart.getData().getEntryCount() > 0) {
 
-            PointF trans = getTrans(e.getX(), e.getY());
+            MPPointF trans = getTrans(e.getX(), e.getY());
 
             mChart.zoom(mChart.isScaleXEnabled() ? 1.4f : 1f, mChart.isScaleYEnabled() ? 1.4f : 1f, trans.x, trans.y);
 
             if (mChart.isLogEnabled())
                 Log.i("BarlineChartTouch", "Double-Tap, Zooming In, x: " + trans.x + ", y: "
                         + trans.y);
+
+            MPPointF.recycleInstance(trans);
         }
 
         return super.onDoubleTap(e);
@@ -615,7 +627,8 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
     }
 
     public void stopDeceleration() {
-        mDecelerationVelocity = new PointF(0.f, 0.f);
+        mDecelerationVelocity.x = 0;
+        mDecelerationVelocity.y = 0;
     }
 
     public void computeScroll() {

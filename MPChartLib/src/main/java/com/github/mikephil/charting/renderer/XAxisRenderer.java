@@ -12,6 +12,7 @@ import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.utils.FSize;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
@@ -111,32 +112,34 @@ public class XAxisRenderer extends AxisRenderer {
         mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
         mAxisLabelPaint.setColor(mXAxis.getTextColor());
 
+        MPPointF pointF = MPPointF.getInstance(0,0);
         if (mXAxis.getPosition() == XAxisPosition.TOP) {
-
-            drawLabels(c, mViewPortHandler.contentTop() - yoffset,
-                    new PointF(0.5f, 0.9f));
+            pointF.x = 0.5f;
+            pointF.y = 0.9f;
+            drawLabels(c, mViewPortHandler.contentTop() - yoffset, pointF);
 
         } else if (mXAxis.getPosition() == XAxisPosition.TOP_INSIDE) {
-
-            drawLabels(c, mViewPortHandler.contentTop() + yoffset + mXAxis.mLabelRotatedHeight,
-                    new PointF(0.5f, 1.0f));
+            pointF.x = 0.5f;
+            pointF.y = 1.0f;
+            drawLabels(c, mViewPortHandler.contentTop() + yoffset + mXAxis.mLabelRotatedHeight, pointF);
 
         } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
-
-            drawLabels(c, mViewPortHandler.contentBottom() + yoffset,
-                    new PointF(0.5f, 0.0f));
+            pointF.x = 0.5f;
+            pointF.y = 0.0f;
+            drawLabels(c, mViewPortHandler.contentBottom() + yoffset, pointF);
 
         } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM_INSIDE) {
-
-            drawLabels(c, mViewPortHandler.contentBottom() - yoffset - mXAxis.mLabelRotatedHeight,
-                    new PointF(0.5f, 0.0f));
+            pointF.x = 0.5f;
+            pointF.y = 0.0f;
+            drawLabels(c, mViewPortHandler.contentBottom() - yoffset - mXAxis.mLabelRotatedHeight, pointF);
 
         } else { // BOTH SIDED
-
-            drawLabels(c, mViewPortHandler.contentTop() - yoffset,
-                    new PointF(0.5f, 1.0f));
-            drawLabels(c, mViewPortHandler.contentBottom() + yoffset,
-                    new PointF(0.5f, 0.0f));
+            pointF.x = 0.5f;
+            pointF.y = 1.0f;
+            drawLabels(c, mViewPortHandler.contentTop() - yoffset, pointF);
+            pointF.x = 0.5f;
+            pointF.y = 0.0f;
+            drawLabels(c, mViewPortHandler.contentBottom() + yoffset, pointF);
         }
     }
 
@@ -171,7 +174,7 @@ public class XAxisRenderer extends AxisRenderer {
      *
      * @param pos
      */
-    protected void drawLabels(Canvas c, float pos, PointF anchor) {
+    protected void drawLabels(Canvas c, float pos, MPPointF anchor) {
 
         final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
         boolean centeringEnabled = mXAxis.isCenterAxisLabelsEnabled();
@@ -221,7 +224,7 @@ public class XAxisRenderer extends AxisRenderer {
         }
     }
 
-    protected void drawLabel(Canvas c, String formattedLabel, float x, float y, PointF anchor, float angleDegrees) {
+    protected void drawLabel(Canvas c, String formattedLabel, float x, float y, MPPointF anchor, float angleDegrees) {
         Utils.drawXAxisValue(c, formattedLabel, x, y, mAxisLabelPaint, anchor, angleDegrees);
     }
 

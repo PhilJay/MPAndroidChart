@@ -162,8 +162,8 @@ public class ViewPortHandler {
         return mContentRect;
     }
 
-    public PointF getContentCenter() {
-        return new PointF(mContentRect.centerX(), mContentRect.centerY());
+    public MPPointF getContentCenter() {
+        return MPPointF.getInstance(mContentRect.centerX(), mContentRect.centerY());
     }
 
     public float getChartHeight() {

@@ -7,6 +7,7 @@ import android.graphics.PointF;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -150,7 +151,8 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
         mAxisLabelPaint.setTextSize(mYAxis.getTextSize());
         mAxisLabelPaint.setColor(mYAxis.getTextColor());
 
-        PointF center = mChart.getCenterOffsets();
+        MPPointF center = mChart.getCenterOffsets();
+        MPPointF pOut = MPPointF.getInstance(0,0);
         float factor = mChart.getFactor();
 
         int labelCount = mYAxis.mEntryCount;
@@ -162,12 +164,14 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
 
             float r = (mYAxis.mEntries[j] - mYAxis.mAxisMinimum) * factor;
 
-            PointF p = Utils.getPosition(center, r, mChart.getRotationAngle());
+            Utils.getPosition(center, r, mChart.getRotationAngle(), pOut);
 
             String label = mYAxis.getFormattedLabel(j);
 
-            c.drawText(label, p.x + 10, p.y, mAxisLabelPaint);
+            c.drawText(label, pOut.x + 10, pOut.y, mAxisLabelPaint);
         }
+        MPPointF.recycleInstance(center);
+        MPPointF.recycleInstance(pOut);
     }
 
     @Override
@@ -184,8 +188,8 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
         // pixels
         float factor = mChart.getFactor();
 
-        PointF center = mChart.getCenterOffsets();
-
+        MPPointF center = mChart.getCenterOffsets();
+        MPPointF pOut = MPPointF.getInstance(0,0);
         for (int i = 0; i < limitLines.size(); i++) {
 
             LimitLine l = limitLines.get(i);
@@ -201,19 +205,21 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
 
             Path limitPath = new Path();
 
+
             for (int j = 0; j < mChart.getData().getMaxEntryCountSet().getEntryCount(); j++) {
 
-                PointF p = Utils.getPosition(center, r, sliceangle * j + mChart.getRotationAngle());
+                Utils.getPosition(center, r, sliceangle * j + mChart.getRotationAngle(), pOut);
 
                 if (j == 0)
-                    limitPath.moveTo(p.x, p.y);
+                    limitPath.moveTo(pOut.x, pOut.y);
                 else
-                    limitPath.lineTo(p.x, p.y);
+                    limitPath.lineTo(pOut.x, pOut.y);
             }
-
             limitPath.close();
 
             c.drawPath(limitPath, mLimitLinePaint);
         }
+        MPPointF.recycleInstance(center);
+        MPPointF.recycleInstance(pOut);
     }
 }

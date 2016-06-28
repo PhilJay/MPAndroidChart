@@ -27,6 +27,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -253,11 +254,13 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
             return;
 
         RectF bounds = mChart.getBarBounds((BarEntry) e);
-        PointF position = mChart.getPosition(e, mChart.getData().getDataSetByIndex(h.getDataSetIndex())
+        MPPointF position = mChart.getPosition(e, mChart.getData().getDataSetByIndex(h.getDataSetIndex())
                 .getAxisDependency());
 
         Log.i("bounds", bounds.toString());
         Log.i("position", position.toString());
+
+        MPPointF.recycleInstance(position);
     }
 
     @Override

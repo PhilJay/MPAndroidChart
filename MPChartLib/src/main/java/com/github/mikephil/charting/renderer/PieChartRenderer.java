@@ -26,6 +26,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -152,7 +153,7 @@ public class PieChartRenderer extends DataRenderer {
     private RectF mInnerRectBuffer = new RectF();
 
     protected float calculateMinimumRadiusForSpacedSlice(
-            PointF center,
+            MPPointF center,
             float radius,
             float angle,
             float arcStartPointX,
@@ -219,7 +220,7 @@ public class PieChartRenderer extends DataRenderer {
 
         final int entryCount = dataSet.getEntryCount();
         final float[] drawAngles = mChart.getDrawAngles();
-        final PointF center = mChart.getCenterCircleBox();
+        final MPPointF center = mChart.getCenterCircleBox();
         final float radius = mChart.getRadius();
         final boolean drawInnerArc = mChart.isDrawHoleEnabled() && !mChart.isDrawSlicesUnderHoleEnabled();
         final float userInnerRadius = drawInnerArc
@@ -375,12 +376,14 @@ public class PieChartRenderer extends DataRenderer {
 
             angle += sliceAngle * phaseX;
         }
+
+        MPPointF.recycleInstance(center);
     }
 
     @Override
     public void drawValues(Canvas c) {
 
-        PointF center = mChart.getCenterCircleBox();
+        MPPointF center = mChart.getCenterCircleBox();
 
         // get whole the radius
         float radius = mChart.getRadius();
@@ -579,7 +582,7 @@ public class PieChartRenderer extends DataRenderer {
                 xIndex++;
             }
         }
-
+        MPPointF.recycleInstance(center);
         c.restore();
     }
 
@@ -615,7 +618,7 @@ public class PieChartRenderer extends DataRenderer {
 
             float radius = mChart.getRadius();
             float holeRadius = radius * (mChart.getHoleRadius() / 100);
-            PointF center = mChart.getCenterCircleBox();
+            MPPointF center = mChart.getCenterCircleBox();
 
             if (Color.alpha(mHolePaint.getColor()) > 0) {
                 // draw the hole-circle
@@ -642,6 +645,7 @@ public class PieChartRenderer extends DataRenderer {
                 // reset alpha
                 mTransparentCirclePaint.setAlpha(alpha);
             }
+            MPPointF.recycleInstance(center);
         }
     }
 
@@ -655,8 +659,8 @@ public class PieChartRenderer extends DataRenderer {
 
         if (mChart.isDrawCenterTextEnabled() && centerText != null) {
 
-            PointF center = mChart.getCenterCircleBox();
-            PointF offset = mChart.getCenterTextOffset();
+            MPPointF center = mChart.getCenterCircleBox();
+            MPPointF offset = mChart.getCenterTextOffset();
 
             float x = center.x + offset.x;
             float y = center.y + offset.y;
@@ -710,6 +714,9 @@ public class PieChartRenderer extends DataRenderer {
             mCenterTextLayout.draw(c);
 
             c.restore();
+
+            MPPointF.recycleInstance(center);
+            MPPointF.recycleInstance(offset);
         }
     }
 
@@ -724,7 +731,7 @@ public class PieChartRenderer extends DataRenderer {
 
         float[] drawAngles = mChart.getDrawAngles();
         float[] absoluteAngles = mChart.getAbsoluteAngles();
-        final PointF center = mChart.getCenterCircleBox();
+        final MPPointF center = mChart.getCenterCircleBox();
         final float radius = mChart.getRadius();
         final boolean drawInnerArc = mChart.isDrawHoleEnabled() && !mChart.isDrawSlicesUnderHoleEnabled();
         final float userInnerRadius = drawInnerArc
@@ -901,6 +908,8 @@ public class PieChartRenderer extends DataRenderer {
 
             mBitmapCanvas.drawPath(mPathBuffer, mRenderPaint);
         }
+
+        MPPointF.recycleInstance(center);
     }
 
     /**
@@ -921,7 +930,7 @@ public class PieChartRenderer extends DataRenderer {
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
 
-        PointF center = mChart.getCenterCircleBox();
+        MPPointF center = mChart.getCenterCircleBox();
         float r = mChart.getRadius();
 
         // calculate the radius of the "slice-circle"
@@ -952,6 +961,7 @@ public class PieChartRenderer extends DataRenderer {
 
             angle += sliceAngle * phaseX;
         }
+        MPPointF.recycleInstance(center);
     }
 
     /**
