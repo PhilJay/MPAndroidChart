@@ -887,7 +887,16 @@ public class Legend extends ComponentBase {
                 //ArrayList<Boolean> calculatedLabelBreakPoints = new ArrayList<Boolean>(labelCount);
 
                 if(mCalculatedLabelSizes.length != labelCount){
-                    mCalculatedLabelSizes = new FSize[labelCount];
+                    FSize[] temp = new FSize[labelCount];
+                    int count = mCalculatedLabelSizes.length;
+                    for(int i = 0 ; i < count && i < labelCount ; i++){
+                        temp[i] = mCalculatedLabelSizes[i];
+                    }
+                    while(count > labelCount){
+                        count--;
+                        FSize.recycleInstance(mCalculatedLabelSizes[count]);
+                    }
+                    mCalculatedLabelSizes = temp;
                 }
                 int calculatedLabelSizesIndex = 0;
 
