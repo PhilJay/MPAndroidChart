@@ -54,6 +54,9 @@ public class ColorTemplate {
     public static final int[] MATERIAL_COLORS = {
             rgb("#2ecc71"), rgb("#f1c40f"), rgb("#e74c3c"), rgb("#3498db")
     };
+    public static final int[] MATERIAL_COLORS_DARK = {
+            rgb("#29b765"), rgb("#d8b00d"), rgb("#cf4436"), rgb("#2e88c5")
+    };
 
     /**
      * Converts the given hex-color-string to rgb.
