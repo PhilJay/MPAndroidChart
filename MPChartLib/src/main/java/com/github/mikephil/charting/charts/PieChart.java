@@ -41,12 +41,12 @@ public class PieChart extends PieRadarChartBase<PieData> {
     /**
      * array that holds the width of each pie-slice in degrees
      */
-    private float[] mDrawAngles;
+    private float[] mDrawAngles = new float[1];
 
     /**
      * array that holds the absolute angle in degrees of each slice
      */
-    private float[] mAbsoluteAngles;
+    private float[] mAbsoluteAngles = new float[1];
 
     /**
      * if true, the white hole inside the chart will be drawn
@@ -210,8 +210,20 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
         int entryCount = mData.getEntryCount();
 
-        mDrawAngles = new float[entryCount];
-        mAbsoluteAngles = new float[entryCount];
+        if(mDrawAngles.length != entryCount) {
+            mDrawAngles = new float[entryCount];
+        }else{
+            for(int i = 0 ; i < entryCount ; i++){
+                mDrawAngles[i] = 0;
+            }
+        }
+        if(mAbsoluteAngles.length != entryCount) {
+            mAbsoluteAngles = new float[entryCount];
+        }else{
+            for(int i = 0 ; i < entryCount ; i++){
+                mAbsoluteAngles[i] = 0;
+            }
+        }
 
         float yValueSum = mData.getYValueSum();
 

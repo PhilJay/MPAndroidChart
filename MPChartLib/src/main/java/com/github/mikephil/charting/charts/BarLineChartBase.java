@@ -1004,6 +1004,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         return mDrawListener;
     }
 
+    protected float[] mGetPositionBuffer = new float[2];
     /**
      * Returns a recyclable MPPointF instance.
      * Returns the position (in pixels) the provided Entry has inside the chart
@@ -1017,9 +1018,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         if (e == null)
             return null;
 
-        float[] vals = new float[]{
-                e.getX(), e.getY()
-        };
+        float[] vals = mGetPositionBuffer;
+        vals[0] = e.getX();
+        vals[1] = e.getY();
 
         getTransformer(axis).pointValuesToPixel(vals);
 
@@ -1535,11 +1536,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         return null;
     }
 
+    protected float[] mOnSizeChangedBuffer = new float[2];
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 
         // Saving current position of chart.
-        float[] pts = new float[2];
+        float[] pts = mOnSizeChangedBuffer;
+        pts[0] = pts[1] = 0;
         if (mKeepPositionOnRotation) {
             pts[0] = mViewPortHandler.contentLeft();
             pts[1] = mViewPortHandler.contentTop();

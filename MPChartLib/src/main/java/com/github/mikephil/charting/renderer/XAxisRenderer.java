@@ -169,6 +169,7 @@ public class XAxisRenderer extends AxisRenderer {
         }
     }
 
+    protected float[] mDrawLabelsBuffer = new float[2];
     /**
      * draws the x-labels on the specified y-position
      *
@@ -179,7 +180,10 @@ public class XAxisRenderer extends AxisRenderer {
         final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
         boolean centeringEnabled = mXAxis.isCenterAxisLabelsEnabled();
 
-        float[] positions = new float[mXAxis.mEntryCount * 2];
+        if(mDrawLabelsBuffer.length != mAxis.mEntryCount * 2){
+            mDrawLabelsBuffer = new float[mXAxis.mEntryCount * 2];
+        }
+        float[] positions = mDrawLabelsBuffer;
 
         for (int i = 0; i < positions.length; i += 2) {
 
@@ -189,6 +193,8 @@ public class XAxisRenderer extends AxisRenderer {
             } else {
                 positions[i] = mXAxis.mEntries[i / 2];
             }
+            // init to 0
+            positions[i+1] = 0;
         }
 
         mTrans.pointValuesToPixel(positions);
@@ -228,13 +234,17 @@ public class XAxisRenderer extends AxisRenderer {
         Utils.drawXAxisValue(c, formattedLabel, x, y, mAxisLabelPaint, anchor, angleDegrees);
     }
 
+    protected float[] mRenderGridLinesBuffer = new float[2];
     @Override
     public void renderGridLines(Canvas c) {
 
         if (!mXAxis.isDrawGridLinesEnabled() || !mXAxis.isEnabled())
             return;
 
-        float[] positions = new float[mXAxis.mEntryCount * 2];
+        if(mRenderGridLinesBuffer.length != mAxis.mEntryCount * 2){
+            mRenderGridLinesBuffer = new float[mXAxis.mEntryCount * 2];
+        }
+        float[] positions = mRenderGridLinesBuffer;
 
         for (int i = 0; i < positions.length; i += 2) {
             positions[i] = mXAxis.mEntries[i / 2];
@@ -272,6 +282,7 @@ public class XAxisRenderer extends AxisRenderer {
         gridLinePath.reset();
     }
 
+    protected float[] mRenderLimitLinesBuffer = new float[2];
     /**
      * Draws the LimitLines associated with this axis to the screen.
      *
@@ -285,7 +296,9 @@ public class XAxisRenderer extends AxisRenderer {
         if (limitLines == null || limitLines.size() <= 0)
             return;
 
-        float[] position = new float[2];
+        float[] position = mRenderLimitLinesBuffer;
+        position[0] = 0;
+        position[1] = 0;
 
         for (int i = 0; i < limitLines.size(); i++) {
 

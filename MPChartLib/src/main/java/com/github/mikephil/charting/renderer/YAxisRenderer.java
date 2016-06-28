@@ -171,6 +171,7 @@ public class YAxisRenderer extends AxisRenderer {
         return p;
     }
 
+    protected float[] mGetTransformedPositionsBuffer = new float[2];
     /**
      * Transforms the values contained in the axis entries to screen pixels and returns them in form of a float array
      * of x- and y-coordinates.
@@ -179,7 +180,10 @@ public class YAxisRenderer extends AxisRenderer {
      */
     protected float[] getTransformedPositions() {
 
-        float[] positions = new float[mYAxis.mEntryCount * 2];
+        if(mGetTransformedPositionsBuffer.length != mYAxis.mEntryCount * 2){
+            mGetTransformedPositionsBuffer = new float[mYAxis.mEntryCount * 2];
+        }
+        float[] positions = mGetTransformedPositionsBuffer;
 
         for (int i = 0; i < positions.length; i += 2) {
             // only fill y values, x values are not needed for y-labels
@@ -210,6 +214,7 @@ public class YAxisRenderer extends AxisRenderer {
         c.drawPath(zeroLinePath, mZeroLinePaint);
     }
 
+    protected float[] mRenderLimitLinesBuffer = new float[2];
     /**
      * Draws the LimitLines associated with this axis to the screen.
      *
@@ -223,7 +228,9 @@ public class YAxisRenderer extends AxisRenderer {
         if (limitLines == null || limitLines.size() <= 0)
             return;
 
-        float[] pts = new float[2];
+        float[] pts = mRenderLimitLinesBuffer;
+        pts[0] = 0;
+        pts[1] = 0;
         Path limitLinePath = new Path();
 
         for (int i = 0; i < limitLines.size(); i++) {

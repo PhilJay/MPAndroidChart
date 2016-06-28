@@ -150,7 +150,10 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
     @Override
     protected float[] getTransformedPositions() {
 
-        float[] positions = new float[mYAxis.mEntryCount * 2];
+        if(mGetTransformedPositionsBuffer.length != mYAxis.mEntryCount * 2) {
+            mGetTransformedPositionsBuffer = new float[mYAxis.mEntryCount * 2];
+        }
+        float[] positions = mGetTransformedPositionsBuffer;
 
         for (int i = 0; i < positions.length; i += 2) {
             // only fill x values, y values are not needed for x-labels
@@ -188,6 +191,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         c.drawPath(zeroLinePath, mZeroLinePaint);
     }
 
+    protected float[] mRenderLimitLinesBuffer = new float[4];
     /**
      * Draws the LimitLines associated with this axis to the screen.
      * This is the standard XAxis renderer using the YAxis limit lines.
@@ -202,7 +206,11 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         if (limitLines == null || limitLines.size() <= 0)
             return;
 
-        float[] pts = new float[4];
+        float[] pts = mRenderLimitLinesBuffer;
+        pts[0] = 0;
+        pts[1] = 0;
+        pts[2] = 0;
+        pts[3] = 0;
         Path limitLinePath = new Path();
 
         for (int i = 0; i < limitLines.size(); i++) {

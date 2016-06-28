@@ -291,6 +291,7 @@ public class ViewPortHandler {
         return save;
     }
 
+    protected float[] valsBufferForFitScreen = new float[9];
     /**
      * Resets all zooming and dragging and makes the chart fit exactly it's
      * bounds.
@@ -303,7 +304,10 @@ public class ViewPortHandler {
         Matrix save = new Matrix();
         save.set(mMatrixTouch);
 
-        float[] vals = new float[9];
+        float[] vals = valsBufferForFitScreen;
+        for(int i = 0 ; i < 9 ; i++){
+            vals[i] = 0;
+        }
 
         save.getValues(vals);
 

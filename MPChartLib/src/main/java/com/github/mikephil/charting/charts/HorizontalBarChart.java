@@ -165,6 +165,7 @@ public class HorizontalBarChart extends BarChart {
         return bounds;
     }
 
+    protected float[] mGetPositionBuffer = new float[2];
     /**
      * Returns a recyclable MPPointF instance.
      *
@@ -178,7 +179,9 @@ public class HorizontalBarChart extends BarChart {
         if (e == null)
             return null;
 
-        float[] vals = new float[]{e.getY(), e.getX()};
+        float[] vals = mGetPositionBuffer;
+        vals[0] = e.getY();
+        vals[1] = e.getX();
 
         getTransformer(axis).pointValuesToPixel(vals);
 

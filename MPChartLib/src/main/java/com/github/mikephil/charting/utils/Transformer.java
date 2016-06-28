@@ -93,6 +93,7 @@ public class Transformer {
         // mOffsetBottom);
     }
 
+    protected float[] valuePointsForGenerateTransformedValuesScatter = new float[1];
     /**
      * Transforms an List of Entry into a float array containing the x and
      * y values transformed with all matrices for the SCATTERCHART.
@@ -105,7 +106,10 @@ public class Transformer {
 
         final int count = (int) ((to - from) * phaseX + 1) * 2;
 
-        float[] valuePoints = new float[count];
+        if(valuePointsForGenerateTransformedValuesScatter.length != count){
+            valuePointsForGenerateTransformedValuesScatter = new float[count];
+        }
+        float[] valuePoints = valuePointsForGenerateTransformedValuesScatter;
 
         for (int j = 0; j < count; j += 2) {
 
@@ -114,6 +118,9 @@ public class Transformer {
             if (e != null) {
                 valuePoints[j] = e.getX();
                 valuePoints[j + 1] = e.getY() * phaseY;
+            }else{
+                valuePoints[j] = 0;
+                valuePoints[j + 1] = 0;
             }
         }
 
@@ -122,6 +129,7 @@ public class Transformer {
         return valuePoints;
     }
 
+    protected float[] valuePointsForGenerateTransformedValuesBubble = new float[1];
     /**
      * Transforms an List of Entry into a float array containing the x and
      * y values transformed with all matrices for the BUBBLECHART.
@@ -133,7 +141,10 @@ public class Transformer {
 
         final int count = (to - from + 1) * 2; // (int) Math.ceil((to - from) * phaseX) * 2;
 
-        float[] valuePoints = new float[count];
+        if(valuePointsForGenerateTransformedValuesBubble.length != count){
+            valuePointsForGenerateTransformedValuesBubble = new float[count];
+        }
+        float[] valuePoints = valuePointsForGenerateTransformedValuesBubble;
 
         for (int j = 0; j < count; j += 2) {
 
@@ -142,6 +153,9 @@ public class Transformer {
             if (e != null) {
                 valuePoints[j] = e.getX();
                 valuePoints[j + 1] = e.getY() * phaseY;
+            }else{
+                valuePoints[j] = 0;
+                valuePoints[j + 1] = 0;
             }
         }
 
@@ -150,6 +164,7 @@ public class Transformer {
         return valuePoints;
     }
 
+    protected float[] valuePointsForGenerateTransformedValuesLine = new float[1];
     /**
      * Transforms an List of Entry into a float array containing the x and
      * y values transformed with all matrices for the LINECHART.
@@ -162,7 +177,10 @@ public class Transformer {
 
         final int count = (int) ((to - from) * phaseX + 1) * 2;
 
-        float[] valuePoints = new float[count];
+        if(valuePointsForGenerateTransformedValuesLine.length != count){
+            valuePointsForGenerateTransformedValuesLine = new float[count];
+        }
+        float[] valuePoints = valuePointsForGenerateTransformedValuesLine;
 
         for (int j = 0; j < count; j += 2) {
 
@@ -171,6 +189,9 @@ public class Transformer {
             if (e != null) {
                 valuePoints[j] = e.getX();
                 valuePoints[j + 1] = e.getY() * phaseY;
+            }else{
+                valuePoints[j] = 0;
+                valuePoints[j + 1] = 0;
             }
         }
 
@@ -179,6 +200,7 @@ public class Transformer {
         return valuePoints;
     }
 
+    protected float[] valuePointsForGenerateTransformedValuesCandle = new float[1];
     /**
      * Transforms an List of Entry into a float array containing the x and
      * y values transformed with all matrices for the CANDLESTICKCHART.
@@ -191,7 +213,10 @@ public class Transformer {
 
         final int count = (int) ((to - from) * phaseX + 1) * 2;
 
-        float[] valuePoints = new float[count];
+        if(valuePointsForGenerateTransformedValuesCandle.length != count){
+            valuePointsForGenerateTransformedValuesCandle = new float[count];
+        }
+        float[] valuePoints = valuePointsForGenerateTransformedValuesCandle;
 
         for (int j = 0; j < count; j += 2) {
 
@@ -200,6 +225,9 @@ public class Transformer {
             if (e != null) {
                 valuePoints[j] = e.getX();
                 valuePoints[j + 1] = e.getHigh() * phaseY;
+            }else{
+                valuePoints[j] = 0;
+                valuePoints[j + 1] = 0;
             }
         }
 

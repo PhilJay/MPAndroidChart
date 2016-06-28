@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Path;
-import android.graphics.PointF;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.LimitLine;
@@ -130,13 +129,17 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
         MPPointF.recycleInstance(pointF);
     }
 
+    protected float[] mDrawLabelsBuffer = new float[2];
     @Override
     protected void drawLabels(Canvas c, float pos, MPPointF anchor) {
 
         final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
         boolean centeringEnabled = mXAxis.isCenterAxisLabelsEnabled();
 
-        float[] positions = new float[mXAxis.mEntryCount * 2];
+        if(mDrawLabelsBuffer.length != mAxis.mEntryCount * 2){
+            mDrawLabelsBuffer = new float[mXAxis.mEntryCount * 2];
+        }
+        float[] positions = mDrawLabelsBuffer;
 
         for (int i = 0; i < positions.length; i += 2) {
 
@@ -200,7 +203,7 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
         }
     }
 
-	/**
+    /**
 	 * Draws the LimitLines associated with this axis to the screen.
 	 * This is the standard YAxis renderer using the XAxis limit lines.
 	 *
@@ -214,7 +217,10 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
 		if (limitLines == null || limitLines.size() <= 0)
 			return;
 
-		float[] pts = new float[2];
+		float[] pts = mRenderLimitLinesBuffer;
+        pts[0] = 0;
+        pts[1] = 0;
+
 		Path limitLinePath = new Path();
 
 		for (int i = 0; i < limitLines.size(); i++) {

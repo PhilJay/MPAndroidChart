@@ -356,8 +356,8 @@ public class LineChartRenderer extends LineRadarRenderer {
 
         } else { // only one color per dataset
 
-            if (mLineBuffer.length != Math.max((entryCount) * pointsPerEntryPair, pointsPerEntryPair) * 2)
-                mLineBuffer = new float[Math.max((entryCount) * pointsPerEntryPair, pointsPerEntryPair) * 2];
+            if (mLineBuffer.length < Math.max((entryCount) * pointsPerEntryPair, pointsPerEntryPair) * 2)
+                mLineBuffer = new float[Math.max((entryCount) * pointsPerEntryPair, pointsPerEntryPair) * 4];
 
             Entry e1, e2;
 
@@ -527,6 +527,7 @@ public class LineChartRenderer extends LineRadarRenderer {
     }
 
     private Path mCirclePathBuffer = new Path();
+    private float[] circlesBuffer = new float[2];
 
     protected void drawCircles(Canvas c) {
 
@@ -534,7 +535,8 @@ public class LineChartRenderer extends LineRadarRenderer {
 
         float phaseY = mAnimator.getPhaseY();
 
-        float[] circlesBuffer = new float[2];
+        circlesBuffer[0] = 0;
+        circlesBuffer[1] = 0;
 
         List<ILineDataSet> dataSets = mChart.getLineData().getDataSets();
 
