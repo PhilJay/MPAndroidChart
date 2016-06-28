@@ -92,6 +92,8 @@ public class XAxisRenderer extends AxisRenderer {
         mXAxis.mLabelHeight = Math.round(labelHeight);
         mXAxis.mLabelRotatedWidth = Math.round(labelRotatedSize.width);
         mXAxis.mLabelRotatedHeight = Math.round(labelRotatedSize.height);
+
+        FSize.recycleInstance(labelRotatedSize);
     }
 
     @Override

@@ -649,7 +649,7 @@ public class Legend extends ComponentBase {
      * sets the space between the form and the actual label/text, converts to dp
      * internally
      * 
-     * @param mFormToTextSpace
+     * @param space
      */
     public void setFormToTextSpace(float space) {
         this.mFormToTextSpace = Utils.convertDpToPixel(space);
@@ -708,7 +708,7 @@ public class Legend extends ComponentBase {
     /**
      * Calculates the full height of the drawn legend.
      * 
-     * @param mLegendLabelPaint
+     * @param labelpaint
      * @return
      */
     public float getFullHeight(Paint labelpaint) {
@@ -815,6 +815,7 @@ public class Legend extends ComponentBase {
      * 
      * @param labelpaint
      */
+    ArrayList<FSize> calculatedLineSizesForCalculateDimensions = new ArrayList<>();
     public void calculateDimensions(Paint labelpaint, ViewPortHandler viewPortHandler) {
 
         mTextWidthMax = getMaximumEntryWidth(labelpaint);
@@ -882,9 +883,22 @@ public class Legend extends ComponentBase {
                 float contentWidth = viewPortHandler.contentWidth() * mMaxSizePercent;
 
                 // Prepare arrays for calculated layout
-                ArrayList<FSize> calculatedLabelSizes = new ArrayList<FSize>(labelCount);
-                ArrayList<Boolean> calculatedLabelBreakPoints = new ArrayList<Boolean>(labelCount);
-                ArrayList<FSize> calculatedLineSizes = new ArrayList<FSize>();
+
+                //ArrayList<Boolean> calculatedLabelBreakPoints = new ArrayList<Boolean>(labelCount);
+
+                if(mCalculatedLabelSizes.length != labelCount){
+                    mCalculatedLabelSizes = new FSize[labelCount];
+                }
+                int calculatedLabelSizesIndex = 0;
+
+                if(mCalculatedLabelBreakPoints.length != labelCount){
+                    mCalculatedLabelBreakPoints = new Boolean[labelCount];
+                }
+                int calculatedLabelBreakIndex = 0;
+
+                ArrayList<FSize> calculatedLineSizes = calculatedLineSizesForCalculateDimensions;
+                FSize.recycleInstances(calculatedLineSizes);
+                calculatedLineSizes.clear();
 
                 // Start calculating layout
                 float maxLineWidth = 0.f;
@@ -896,7 +910,8 @@ public class Legend extends ComponentBase {
 
                     boolean drawingForm = mColors[i] != ColorTemplate.COLOR_SKIP;
 
-                    calculatedLabelBreakPoints.add(false);
+                    mCalculatedLabelBreakPoints[calculatedLabelBreakIndex] = false;
+                    calculatedLabelBreakIndex++;
 
                     if (stackedStartIndex == -1) {
                         // we are not stacking, so required width is for this label
@@ -910,14 +925,25 @@ public class Legend extends ComponentBase {
 
                     // grouped forms have null labels
                     if (mLabels[i] != null) {
-
-                        calculatedLabelSizes.add(Utils.calcTextSize(labelpaint, mLabels[i]));
+                        if(mCalculatedLabelSizes[calculatedLabelSizesIndex] == null){
+                            mCalculatedLabelSizes[calculatedLabelSizesIndex] = Utils.calcTextSize(labelpaint, mLabels[i]);
+                        }else{
+                            Utils.calcTextSize(labelpaint, mLabels[i], mCalculatedLabelSizes[calculatedLabelSizesIndex]);
+                        }
+                        FSize labelSize = mCalculatedLabelSizes[calculatedLabelSizesIndex];
+                        calculatedLabelSizesIndex++;
                         requiredWidth += drawingForm ? mFormToTextSpace + mFormSize : 0.f;
-                        requiredWidth += calculatedLabelSizes.get(i).width;
+                        requiredWidth += labelSize.width;
                     }
                     else {
 
-                        calculatedLabelSizes.add(new FSize(0.f, 0.f));
+                        if(mCalculatedLabelSizes[calculatedLabelSizesIndex] == null){
+                            mCalculatedLabelSizes[calculatedLabelSizesIndex] = FSize.getInstance(0.f, 0.f);
+                        }else{
+                            mCalculatedLabelSizes[calculatedLabelSizesIndex].width = 0.f;
+                            mCalculatedLabelSizes[calculatedLabelSizesIndex].height = 0.f;
+                        }
+                        calculatedLabelSizesIndex++;
                         requiredWidth += drawingForm ? mFormSize : 0.f;
 
                         if (stackedStartIndex == -1) {
@@ -942,19 +968,19 @@ public class Legend extends ComponentBase {
                         else { // It doesn't fit, we need to wrap a line
 
                             // Add current line size to array
-                            calculatedLineSizes.add(new FSize(currentLineWidth, labelLineHeight));
+                            calculatedLineSizes.add(FSize.getInstance(currentLineWidth, labelLineHeight));
                             maxLineWidth = Math.max(maxLineWidth, currentLineWidth);
 
                             // Start a new line
-                            calculatedLabelBreakPoints.set(
+                            mCalculatedLabelBreakPoints[
                                     stackedStartIndex > -1 ? stackedStartIndex
-                                            : i, true);
+                                            : i] =  true;
                             currentLineWidth = requiredWidth;
                         }
 
                         if (i == labelCount - 1) {
                             // Add last line size to array
-                            calculatedLineSizes.add(new FSize(currentLineWidth, labelLineHeight));
+                            calculatedLineSizes.add(FSize.getInstance(currentLineWidth, labelLineHeight));
                             maxLineWidth = Math.max(maxLineWidth, currentLineWidth);
                         }
                     }
@@ -962,10 +988,6 @@ public class Legend extends ComponentBase {
                     stackedStartIndex = mLabels[i] != null ? -1 : stackedStartIndex;
                 }
 
-                mCalculatedLabelSizes = calculatedLabelSizes.toArray(
-                        new FSize[calculatedLabelSizes.size()]);
-                mCalculatedLabelBreakPoints = calculatedLabelBreakPoints
-                        .toArray(new Boolean[calculatedLabelBreakPoints.size()]);
                 mCalculatedLineSizes = calculatedLineSizes
                         .toArray(new FSize[calculatedLineSizes.size()]);
 

@@ -173,19 +173,38 @@ public abstract class Utils {
     }
 
     /**
+     * Returns a recyclable FSize instance.
      * calculates the approximate size of a text, depending on a demo text
      * avoid repeated calls (e.g. inside drawing methods)
      *
      * @param paint
      * @param demoText
-     * @return
+     * @return A Recyclable FSize instance
      */
     public static FSize calcTextSize(Paint paint, String demoText) {
 
+        FSize result = FSize.getInstance(0,0);
+        calcTextSize(paint, demoText, result);
+        return result;
+    }
+
+    /**
+     * calculates the approximate size of a text, depending on a demo text
+     * avoid repeated calls (e.g. inside drawing methods)
+     *
+     * @param paint
+     * @param demoText
+     * @param outputFSize An output variable, modified by the function.
+     */
+    public static void calcTextSize(Paint paint, String demoText, FSize outputFSize) {
+
         Rect r = new Rect();
         paint.getTextBounds(demoText, 0, demoText.length(), r);
-        return new FSize(r.width(), r.height());
+        outputFSize.width = r.width();
+        outputFSize.height = r.height();
+
     }
+
 
     /**
      * Math.pow(...) is very expensive, so avoid calling it and create it
@@ -494,6 +513,7 @@ public abstract class Utils {
 
                 translateX -= rotatedSize.width * (anchor.x - 0.5f);
                 translateY -= rotatedSize.height * (anchor.y - 0.5f);
+                FSize.recycleInstance(rotatedSize);
             }
 
             c.save();
@@ -564,6 +584,7 @@ public abstract class Utils {
 
                 translateX -= rotatedSize.width * (anchor.x - 0.5f);
                 translateY -= rotatedSize.height * (anchor.y - 0.5f);
+                FSize.recycleInstance(rotatedSize);
             }
 
             c.save();
@@ -611,26 +632,60 @@ public abstract class Utils {
         drawMultilineText(c, textLayout, x, y, paint, anchor, angleDegrees);
     }
 
+    /**
+     * Returns a recyclable FSize instance.
+     * Represents size of a rotated rectangle by degrees.
+     *
+     * @param rectangleSize
+     * @param degrees
+     * @return A Recyclable FSize instance
+     */
     public static FSize getSizeOfRotatedRectangleByDegrees(FSize rectangleSize, float degrees) {
         final float radians = degrees * FDEG2RAD;
         return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height,
                 radians);
     }
 
+    /**
+     * Returns a recyclable FSize instance.
+     * Represents size of a rotated rectangle by radians.
+     *
+     * @param rectangleSize
+     * @param radians
+     * @return A Recyclable FSize instance
+     */
     public static FSize getSizeOfRotatedRectangleByRadians(FSize rectangleSize, float radians) {
         return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height,
                 radians);
     }
 
+    /**
+     * Returns a recyclable FSize instance.
+     * Represents size of a rotated rectangle by degrees.
+     *
+     * @param rectangleWidth
+     * @param rectangleHeight
+     * @param degrees
+     * @return A Recyclable FSize instance
+     */
     public static FSize getSizeOfRotatedRectangleByDegrees(float rectangleWidth, float
             rectangleHeight, float degrees) {
         final float radians = degrees * FDEG2RAD;
         return getSizeOfRotatedRectangleByRadians(rectangleWidth, rectangleHeight, radians);
     }
 
+    /**
+     * Returns a recyclable FSize instance.
+     * Represents size of a rotated rectangle by radians.
+     *
+     * @param rectangleWidth
+     * @param rectangleHeight
+     * @param radians
+     * @return A Recyclable FSize instance
+     */
     public static FSize getSizeOfRotatedRectangleByRadians(float rectangleWidth, float
             rectangleHeight, float radians) {
-        return new FSize(
+        return FSize.getInstance(
                 Math.abs(rectangleWidth * (float) Math.cos(radians)) + Math.abs(rectangleHeight *
                         (float) Math.sin(radians)),
                 Math.abs(rectangleWidth * (float) Math.sin(radians)) + Math.abs(rectangleHeight *
