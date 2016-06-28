@@ -51,6 +51,9 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
                 yMin = (float) p2.x;
                 yMax = (float) p1.x;
             }
+
+            PointD.recycleInstance(p1);
+            PointD.recycleInstance(p2);
         }
 
         computeAxisValues(yMin, yMax);

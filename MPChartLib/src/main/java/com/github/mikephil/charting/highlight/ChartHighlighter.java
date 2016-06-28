@@ -28,15 +28,20 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
     @Override
     public Highlight getHighlight(float x, float y) {
 
-        float xVal = (float) getValsForTouch(x, y).x;
+        PointD pos = getValsForTouch(x, y);
+        float xVal = (float) pos.x;
+        PointD.recycleInstance(pos);
 
         Highlight high = getHighlightForX(xVal, x, y);
         return high;
     }
+
     /**
+     * Returns a recyclable PointD instance.
      * Returns the corresponding xPos for a given touch-position in pixels.
      *
      * @param x
+     * @param y
      * @return
      */
     protected PointD getValsForTouch(float x, float y) {

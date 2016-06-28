@@ -682,6 +682,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
                     xValue, yValue, (float) origin.x, (float) origin.y, duration);
             addViewportJob(job);
 
+            PointD.recycleInstance(origin);
+
         } else {
             Log.e(LOG_TAG, "Unable to execute zoomAndCenterAnimated(...) on API level < 11");
         }
@@ -843,6 +845,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
                     getTransformer(axis), this, (float) bounds.x, (float) bounds.y, duration);
 
             addViewportJob(job);
+
+            PointD.recycleInstance(bounds);
         } else {
             Log.e(LOG_TAG, "Unable to execute moveViewToAnimated(...) on API level < 11");
         }
@@ -910,6 +914,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
                     getTransformer(axis), this, (float) bounds.x, (float) bounds.y, duration);
 
             addViewportJob(job);
+
+            PointD.recycleInstance(bounds);
         } else {
             Log.e(LOG_TAG, "Unable to execute centerViewToAnimated(...) on API level < 11");
         }
@@ -1183,6 +1189,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
+     * Returns a recyclable PointD instance
      * Returns the x and y values in the chart at the given touch point
      * (encapsulated in a PointD). This method transforms pixel coordinates to
      * coordinates / values in the chart. This is the opposite method to
@@ -1193,10 +1200,17 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @return
      */
     public PointD getValuesByTouchPoint(float x, float y, AxisDependency axis) {
-        return getTransformer(axis).getValuesByTouchPoint(x, y);
+        PointD result = PointD.getInstance(0,0);
+        getValuesByTouchPoint(x,y,axis,result);
+        return result;
+    }
+
+    public void getValuesByTouchPoint(float x, float y, AxisDependency axis, PointD outputPoint){
+        getTransformer(axis).getValuesByTouchPoint(x, y, outputPoint);
     }
 
     /**
+     * Returns a recyclable PointD instance
      * Transforms the given chart values into pixels. This is the opposite
      * method to getValuesByTouchPoint(...).
      *
@@ -1208,6 +1222,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         return getTransformer(axis).getPixelsForValues(x, y);
     }
 
+    PointD pointForGetYValueByTouchPoint = PointD.getInstance(0,0);
     /**
      * Returns y value at the given touch position (must not necessarily be
      * a value contained in one of the datasets)
@@ -1217,7 +1232,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @return
      */
     public float getYValueByTouchPoint(float x, float y, AxisDependency axis) {
-        return (float) getValuesByTouchPoint(x, y, axis).y;
+        getValuesByTouchPoint(x, y, axis, pointForGetYValueByTouchPoint);
+        float result = (float) pointForGetYValueByTouchPoint.y;
+        return result;
     }
 
     /**
@@ -1250,6 +1267,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         return null;
     }
 
+    protected PointD posForGetLowestVisibleX = PointD.getInstance(0,0);
     /**
      * Returns the lowest x-index (value on the x-axis) that is still visible on
      * the chart.
@@ -1258,11 +1276,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      */
     @Override
     public float getLowestVisibleX() {
-        PointD pos = getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentLeft(),
-                mViewPortHandler.contentBottom());
-        return (float) Math.max(mXAxis.mAxisMinimum, pos.x);
+        getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentLeft(),
+                mViewPortHandler.contentBottom(), posForGetLowestVisibleX);
+        float result = (float) Math.max(mXAxis.mAxisMinimum, posForGetLowestVisibleX.x);
+        return result;
     }
 
+    protected PointD posForGetHighestVisibleX = PointD.getInstance(0,0);
     /**
      * Returns the highest x-index (value on the x-axis) that is still visible
      * on the chart.
@@ -1271,9 +1291,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      */
     @Override
     public float getHighestVisibleX() {
-        PointD pos = getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentRight(),
-                mViewPortHandler.contentBottom());
-        return (float) Math.min(mXAxis.mAxisMaximum, pos.x);
+        getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentRight(),
+                mViewPortHandler.contentBottom(), posForGetHighestVisibleX);
+        float result = (float) Math.min(mXAxis.mAxisMaximum, posForGetHighestVisibleX.x);
+        return result;
     }
 
     /**

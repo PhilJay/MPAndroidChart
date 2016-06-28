@@ -196,18 +196,22 @@ public class HorizontalBarChart extends BarChart {
             return getHighlighter().getHighlight(y, x); // switch x and y
     }
 
+    protected PointD posForGetLowestVisibleX = PointD.getInstance(0,0);
     @Override
     public float getLowestVisibleX() {
-        PointD pos = getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentLeft(),
-                mViewPortHandler.contentBottom());
-        return (float) Math.max(mXAxis.mAxisMinimum, pos.y);
+        getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentLeft(),
+                mViewPortHandler.contentBottom(), posForGetLowestVisibleX);
+        float result = (float) Math.max(mXAxis.mAxisMinimum, posForGetLowestVisibleX.y);
+        return result;
     }
 
+    protected PointD posForGetHighestVisibleX = PointD.getInstance(0,0);
     @Override
     public float getHighestVisibleX() {
-        PointD pos = getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentLeft(),
-                mViewPortHandler.contentTop());
-        return (float) Math.min(mXAxis.mAxisMaximum, pos.y);
+        getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentLeft(),
+                mViewPortHandler.contentTop(), posForGetHighestVisibleX);
+        float result = (float) Math.min(mXAxis.mAxisMaximum, posForGetHighestVisibleX.y);
+        return result;
     }
 
     /**

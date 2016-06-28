@@ -58,6 +58,9 @@ public class XAxisRenderer extends AxisRenderer {
                 min = (float) p1.x;
                 max = (float) p2.x;
             }
+
+            PointD.recycleInstance(p1);
+            PointD.recycleInstance(p2);
         }
 
         computeAxisValues(min, max);

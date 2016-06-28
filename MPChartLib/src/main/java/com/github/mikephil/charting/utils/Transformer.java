@@ -355,7 +355,8 @@ public class Transformer {
     float[] ptsBuffer = new float[2];
 
     /**
-     * Returns the x and y values in the chart at the given touch point
+     * Returns a recyclable PointD instance.
+     * returns the x and y values in the chart at the given touch point
      * (encapsulated in a PointD). This method transforms pixel coordinates to
      * coordinates / values in the chart. This is the opposite method to
      * getPixelsForValues(...).
@@ -366,18 +367,24 @@ public class Transformer {
      */
     public PointD getValuesByTouchPoint(float x, float y) {
 
+        PointD result = PointD.getInstance(0,0);
+        getValuesByTouchPoint(x,y,result);
+        return result;
+    }
+
+    public void getValuesByTouchPoint(float x, float y, PointD outputPoint){
+
         ptsBuffer[0] = x;
         ptsBuffer[1] = y;
 
         pixelsToValue(ptsBuffer);
 
-        double xTouchVal = ptsBuffer[0];
-        double yTouchVal = ptsBuffer[1];
-
-        return new PointD(xTouchVal, yTouchVal);
+        outputPoint.x = ptsBuffer[0];
+        outputPoint.y = ptsBuffer[1];
     }
 
     /**
+     * Returns a recyclable PointD instance.
      * Returns the x and y coordinates (pixels) for a given x and y value in the chart.
      *
      * @param x
@@ -394,7 +401,7 @@ public class Transformer {
         double xPx = ptsBuffer[0];
         double yPx = ptsBuffer[1];
 
-        return new PointD(xPx, yPx);
+        return PointD.getInstance(xPx, yPx);
     }
 
     public Matrix getValueMatrix() {
