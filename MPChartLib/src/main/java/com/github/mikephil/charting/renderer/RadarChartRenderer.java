@@ -19,6 +19,8 @@ import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
+import java.util.List;
+
 public class RadarChartRenderer extends LineRadarRenderer {
 
     protected RadarChart mChart;
@@ -62,7 +64,11 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         int mostEntries = radarData.getMaxEntryCountSet().getEntryCount();
 
-        for (IRadarDataSet set : radarData.getDataSets()) {
+        IRadarDataSet set;
+        List<IRadarDataSet> dataSets = radarData.getDataSets();
+        int setCount = dataSets.size();
+        for(int i = 0 ; i < setCount ; i++){
+            set = dataSets.get(i);
 
             if (set.isVisible() && set.getEntryCount() > 0) {
                 drawDataSet(c, set, mostEntries);

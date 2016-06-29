@@ -10,6 +10,7 @@ import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.BubbleEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
@@ -46,7 +47,11 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
         BubbleData bubbleData = mChart.getBubbleData();
 
-        for (IBubbleDataSet set : bubbleData.getDataSets()) {
+        IBubbleDataSet set;
+        List<IBubbleDataSet> dataSets = bubbleData.getDataSets();
+        int setCount = dataSets.size();
+        for(int i = 0 ; i < setCount ; i++){
+            set = dataSets.get(i);
 
             if (set.isVisible() && set.getEntryCount() > 0)
                 drawDataSet(c, set);

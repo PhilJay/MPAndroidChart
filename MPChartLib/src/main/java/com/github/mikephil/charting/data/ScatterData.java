@@ -29,7 +29,11 @@ public class ScatterData extends BarLineScatterCandleBubbleData<IScatterDataSet>
 
         float max = 0f;
 
-        for (IScatterDataSet set : mDataSets) {
+
+        IScatterDataSet set;
+        final int count = mDataSets.size();
+        for(int i = 0 ; i < count ; i++){
+            set = mDataSets.get(i);
             float size = set.getScatterShapeSize();
 
             if (size > max)

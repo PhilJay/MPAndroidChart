@@ -47,7 +47,10 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
         ScatterData scatterData = mChart.getScatterData();
 
-        for (IScatterDataSet set : scatterData.getDataSets()) {
+        IScatterDataSet set;
+        int setCount = scatterData.getDataSets().size();
+        for(int i = 0 ; i < setCount ; i++){
+            set = scatterData.getDataSets().get(i);
 
             if (set.isVisible())
                 drawDataSet(c, set);
