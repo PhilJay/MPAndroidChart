@@ -53,6 +53,13 @@ public interface ILineDataSet extends ILineRadarDataSet<Entry> {
     int getCircleColor(int index);
 
     /**
+     * Returns the number of colors in this DataSet's circle-color array.
+     *
+     * @return
+     */
+    int getCircleColorCount();
+
+    /**
      * Returns true if drawing circles for this DataSet is enabled, false if not
      *
      * @return

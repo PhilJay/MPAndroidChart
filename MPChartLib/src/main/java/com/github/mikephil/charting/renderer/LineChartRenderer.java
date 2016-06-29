@@ -14,6 +14,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.PointD;
@@ -21,9 +22,41 @@ import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
 import java.util.List;
 
 public class LineChartRenderer extends LineRadarRenderer {
+
+    private class DataSetImageCache {
+
+
+        private Bitmap[] circleBitmaps;
+        private int[] circleColors;
+
+        private void ensureCircleCache(int size){
+            if(circleBitmaps == null){
+                circleBitmaps = new Bitmap[size];
+            }else if(circleBitmaps.length < size){
+                Bitmap[] tmp = new Bitmap[size];
+                for(int i = 0 ; i < circleBitmaps.length ; i++){
+                    tmp[i] = circleBitmaps[size];
+                }
+                circleBitmaps = tmp;
+            }
+
+            if(circleColors == null){
+                circleColors = new int[size];
+            }else if(circleColors.length < size){
+                int[] tmp = new int[size];
+                for(int i = 0 ; i < circleColors.length ; i++){
+                    tmp[i] = circleColors[size];
+                }
+                circleColors = tmp;
+            }
+        }
+
+    }
+
 
     protected LineDataProvider mChart;
 
@@ -300,8 +333,8 @@ public class LineChartRenderer extends LineRadarRenderer {
         // more than 1 color
         if (dataSet.getColors().size() > 1) {
 
-            if (mLineBuffer.length != pointsPerEntryPair * 2)
-                mLineBuffer = new float[pointsPerEntryPair * 2];
+            if (mLineBuffer.length <= pointsPerEntryPair * 2)
+                mLineBuffer = new float[pointsPerEntryPair * 4];
 
             for (int j = bounds.min; j <= bounds.range + bounds.min; j++) {
 
@@ -529,22 +562,33 @@ public class LineChartRenderer extends LineRadarRenderer {
     }
 
     private Path mCirclePathBuffer = new Path();
-    private float[] circlesBuffer = new float[2];
-
+    private float[] mCirclesBuffer = new float[2];
+    private HashMap<IDataSet, DataSetImageCache> mImageCaches = new HashMap<>();
     protected void drawCircles(Canvas c) {
 
         mRenderPaint.setStyle(Paint.Style.FILL);
 
         float phaseY = mAnimator.getPhaseY();
+        float[] circlesBuffer = mCirclesBuffer;
 
         circlesBuffer[0] = 0;
         circlesBuffer[1] = 0;
 
         List<ILineDataSet> dataSets = mChart.getLineData().getDataSets();
-
-        for (int i = 0; i < dataSets.size(); i++) {
+        final int dataSetCount = dataSets.size();
+        for (int i = 0; i < dataSetCount ; i++) {
 
             ILineDataSet dataSet = dataSets.get(i);
+
+            DataSetImageCache imageCache;
+
+            if(mImageCaches.containsKey(dataSet)){
+                imageCache = mImageCaches.get(dataSet);
+            }else{
+                imageCache = new DataSetImageCache();
+                mImageCaches.put(dataSet, imageCache);
+            }
+            imageCache.ensureCircleCache(dataSet.getCircleColorCount());
 
             if (!dataSet.isVisible() || !dataSet.isDrawCirclesEnabled() ||
                     dataSet.getEntryCount() == 0)
@@ -555,6 +599,7 @@ public class LineChartRenderer extends LineRadarRenderer {
             Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
             XBounds bounds = getXBounds(mChart, dataSet);
+            int entryCount = dataSet.getEntryCount();
 
             float circleRadius = dataSet.getCircleRadius();
             float circleHoleRadius = dataSet.getCircleHoleRadius();
@@ -564,8 +609,8 @@ public class LineChartRenderer extends LineRadarRenderer {
             boolean drawTransparentCircleHole = drawCircleHole &&
                     dataSet.getCircleHoleColor() == ColorTemplate.COLOR_NONE;
 
-            for (int j = bounds.min; j <= bounds.range + bounds.min; j++) {
-
+            int boundsRangeCount = bounds.range + bounds.min;
+            for (int j = bounds.min; j <= boundsRangeCount; j++) {
                 Entry e = dataSet.getEntryForIndex(j);
 
                 if (e == null) break;
@@ -584,36 +629,65 @@ public class LineChartRenderer extends LineRadarRenderer {
                         !mViewPortHandler.isInBoundsY(circlesBuffer[1]))
                     continue;
 
-                mRenderPaint.setColor(dataSet.getCircleColor(j));
+                final int circleColor = dataSet.getCircleColor(j);
+                mRenderPaint.setColor(circleColor);
 
-                if (drawTransparentCircleHole) {
+                Bitmap circleBitmap = null;
 
-                    // Begin path for circle with hole
-                    mCirclePathBuffer.reset();
-
-                    mCirclePathBuffer.addCircle(circlesBuffer[0], circlesBuffer[1],
-                            circleRadius,
-                            Path.Direction.CW);
-
-                    // Cut hole in path
-                    mCirclePathBuffer.addCircle(circlesBuffer[0], circlesBuffer[1],
-                            circleHoleRadius,
-                            Path.Direction.CCW);
-
-                    // Fill in-between
-                    c.drawPath(mCirclePathBuffer, mRenderPaint);
-
-                } else {
-
-                    c.drawCircle(circlesBuffer[0], circlesBuffer[1],
-                            circleRadius,
-                            mRenderPaint);
-
-                    if (drawCircleHole) {
-                        c.drawCircle(circlesBuffer[0], circlesBuffer[1],
-                                circleHoleRadius,
-                                mCirclePaintInner);
+                final int dataSetColorCount = imageCache.circleColors.length;
+                int colorIndex;
+                for(colorIndex = 0 ; colorIndex < dataSetColorCount ; colorIndex++) {
+                    int tempColor = imageCache.circleColors[colorIndex];
+                    Bitmap tempBitmap = imageCache.circleBitmaps[colorIndex];
+                    if(tempColor == circleColor) {
+                        circleBitmap = tempBitmap;
+                        break;
+                    }else if(tempBitmap == null){
+                        break;
                     }
+                }
+
+
+                if(circleBitmap == null){
+                    Bitmap.Config conf = Bitmap.Config.ARGB_8888;
+                    circleBitmap = Bitmap.createBitmap((int)circleRadius * 2, (int)circleRadius * 2, conf);
+                    Canvas canvas = new Canvas(circleBitmap);
+                    imageCache.circleBitmaps[colorIndex] = circleBitmap;
+                    imageCache.circleColors[colorIndex] = circleColor;
+
+                    if(drawTransparentCircleHole){
+                        // Begin path for circle with hole
+                        mCirclePathBuffer.reset();
+
+                        mCirclePathBuffer.addCircle(circleRadius, circleRadius,
+                                circleRadius,
+                                Path.Direction.CW);
+
+                        // Cut hole in path
+                        mCirclePathBuffer.addCircle(circleHoleRadius, circleHoleRadius,
+                                circleHoleRadius,
+                                Path.Direction.CCW);
+
+                        // Fill in-between
+                        canvas.drawPath(mCirclePathBuffer, mRenderPaint);
+                    }else{
+
+                        canvas.drawCircle(circleRadius, circleRadius,
+                                circleRadius,
+                                mRenderPaint);
+
+                        if (drawCircleHole) {
+                            canvas.drawCircle(circleRadius, circleRadius,
+                                    circleHoleRadius,
+                                    mCirclePaintInner);
+                        }
+                    }
+                }
+
+                if(circleBitmap != null){
+
+                    c.drawBitmap(circleBitmap, circlesBuffer[0] - circleRadius, circlesBuffer[1] - circleRadius, mRenderPaint);
+
                 }
             }
         }
