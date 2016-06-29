@@ -40,13 +40,15 @@ public class AnimatedZoomJob extends AnimatedViewPortJob implements Animator.Ani
         this.xAxisRange = xAxisRange;
     }
 
+    protected Matrix mOnAnimationUpdateMatrixBuffer = new Matrix();
     @Override
     public void onAnimationUpdate(ValueAnimator animation) {
 
         float scaleX = xOrigin + (xValue - xOrigin) * phase;
         float scaleY = yOrigin + (yValue - yOrigin) * phase;
 
-        Matrix save = mViewPortHandler.setZoom(scaleX, scaleY);
+        Matrix save = mOnAnimationUpdateMatrixBuffer;
+        mViewPortHandler.setZoom(scaleX, scaleY, save);
         mViewPortHandler.refresh(save, view, false);
 
         float valsInView = yAxis.mAxisRange / mViewPortHandler.getScaleY();
@@ -57,7 +59,7 @@ public class AnimatedZoomJob extends AnimatedViewPortJob implements Animator.Ani
 
         mTrans.pointValuesToPixel(pts);
 
-        save = mViewPortHandler.translate(pts);
+        mViewPortHandler.translate(pts, save);
         mViewPortHandler.refresh(save, view, true);
     }
 

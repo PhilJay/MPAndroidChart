@@ -70,6 +70,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
         }
     }
 
+    protected Path mDrawDataSetSurfacePathBuffer = new Path();
     /**
      * Draws the RadarDataSet
      *
@@ -90,7 +91,8 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         MPPointF center = mChart.getCenterOffsets();
         MPPointF pOut = MPPointF.getInstance(0,0);
-        Path surface = new Path();
+        Path surface = mDrawDataSetSurfacePathBuffer;
+        surface.reset();
 
         boolean hasMovedToPoint = false;
 
@@ -321,6 +323,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
         MPPointF.recycleInstance(pOut);
     }
 
+    protected Path mDrawHighlightCirclePathBuffer = new Path();
     public void drawHighlightCircle(Canvas c,
                                     MPPointF point,
                                     float innerRadius,
@@ -334,7 +337,8 @@ public class RadarChartRenderer extends LineRadarRenderer {
         innerRadius = Utils.convertDpToPixel(innerRadius);
 
         if (fillColor != ColorTemplate.COLOR_NONE) {
-            Path p = new Path();
+            Path p = mDrawHighlightCirclePathBuffer;
+            p.reset();
             p.addCircle(point.x, point.y, outerRadius, Path.Direction.CW);
             if (innerRadius > 0.f) {
                 p.addCircle(point.x, point.y, innerRadius, Path.Direction.CCW);

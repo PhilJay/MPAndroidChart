@@ -356,6 +356,7 @@ public class Transformer {
             m.mapRect(rects.get(i));
     }
 
+    protected Matrix mPixelsToValueMatrixBuffer = new Matrix();
     /**
      * Transforms the given array of touch positions (pixels) (x, y, x, y, ...)
      * into values on the chart.
@@ -364,7 +365,8 @@ public class Transformer {
      */
     public void pixelsToValue(float[] pixels) {
 
-        Matrix tmp = new Matrix();
+        Matrix tmp = mPixelsToValueMatrixBuffer;
+        tmp.reset();
 
         // invert all matrixes to convert back to the original value
         mMatrixOffset.invert(tmp);

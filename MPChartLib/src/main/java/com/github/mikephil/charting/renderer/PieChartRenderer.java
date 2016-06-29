@@ -649,6 +649,7 @@ public class PieChartRenderer extends DataRenderer {
         }
     }
 
+    protected Path mDrawCenterTextPathBuffer = new Path();
     /**
      * draws the description text in the center of the pie chart makes most
      * sense when center-hole is enabled
@@ -705,7 +706,8 @@ public class PieChartRenderer extends DataRenderer {
 
             c.save();
             if (Build.VERSION.SDK_INT >= 18) {
-                Path path = new Path();
+                Path path = mDrawCenterTextPathBuffer;
+                path.reset();
                 path.addOval(holeRect, Path.Direction.CW);
                 c.clipPath(path);
             }

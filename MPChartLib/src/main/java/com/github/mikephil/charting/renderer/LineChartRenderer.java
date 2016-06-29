@@ -431,6 +431,7 @@ public class LineChartRenderer extends LineRadarRenderer {
         }
     }
 
+    protected Path mGenerateFilledPathBuffer = new Path();
     /**
      * Generates the path that is used for filled drawing.
      *
@@ -443,7 +444,8 @@ public class LineChartRenderer extends LineRadarRenderer {
         float phaseY = mAnimator.getPhaseY();
         final boolean isDrawSteppedEnabled = dataSet.getMode() == LineDataSet.Mode.STEPPED;
 
-        Path filled = new Path();
+        Path filled = mGenerateFilledPathBuffer;
+        filled.reset();
         Entry entry = dataSet.getEntryForIndex(bounds.min);
 
         filled.moveTo(entry.getX(), fillMin);

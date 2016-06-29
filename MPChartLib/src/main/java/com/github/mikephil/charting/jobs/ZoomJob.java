@@ -27,10 +27,12 @@ public class ZoomJob extends ViewPortJob {
         this.axisDependency = axis;
     }
 
+    protected Matrix mRunMatrixBuffer = new Matrix();
     @Override
     public void run() {
 
-        Matrix save = mViewPortHandler.zoom(scaleX, scaleY);
+        Matrix save = mRunMatrixBuffer;
+        mViewPortHandler.zoom(scaleX, scaleY, save);
         mViewPortHandler.refresh(save, view, false);
 
         float valsInView = ((BarLineChartBase) view).getDeltaY(axisDependency) / mViewPortHandler.getScaleY();
@@ -41,7 +43,7 @@ public class ZoomJob extends ViewPortJob {
 
         mTrans.pointValuesToPixel(pts);
 
-        save = mViewPortHandler.translate(pts);
+        mViewPortHandler.translate(pts, save);
         mViewPortHandler.refresh(save, view, false);
 
         ((BarLineChartBase) view).calculateOffsets();

@@ -233,7 +233,7 @@ public class XAxisRenderer extends AxisRenderer {
     protected void drawLabel(Canvas c, String formattedLabel, float x, float y, MPPointF anchor, float angleDegrees) {
         Utils.drawXAxisValue(c, formattedLabel, x, y, mAxisLabelPaint, anchor, angleDegrees);
     }
-
+    protected Path mRenderGridLinesPath = new Path();
     protected float[] mRenderGridLinesBuffer = new float[2];
     @Override
     public void renderGridLines(Canvas c) {
@@ -255,7 +255,8 @@ public class XAxisRenderer extends AxisRenderer {
 
         setupGridPaint();
 
-        Path gridLinePath = new Path();
+        Path gridLinePath = mRenderGridLinesPath;
+        gridLinePath.reset();
 
         for (int i = 0; i < positions.length; i += 2) {
 

@@ -173,6 +173,8 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         return p;
     }
 
+    protected Path mDrawZeroLinePathBuffer = new Path();
+
     @Override
     protected void drawZeroLine(Canvas c) {
 
@@ -182,7 +184,8 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         mZeroLinePaint.setColor(mYAxis.getZeroLineColor());
         mZeroLinePaint.setStrokeWidth(mYAxis.getZeroLineWidth());
 
-        Path zeroLinePath = new Path();
+        Path zeroLinePath = mDrawZeroLinePathBuffer;
+        zeroLinePath.reset();
 
         zeroLinePath.moveTo((float) pos.x - 1, mViewPortHandler.contentTop());
         zeroLinePath.lineTo((float) pos.x - 1, mViewPortHandler.contentBottom());
@@ -191,6 +194,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         c.drawPath(zeroLinePath, mZeroLinePaint);
     }
 
+    protected Path mRenderLimitLinesPathBuffer = new Path();
     protected float[] mRenderLimitLinesBuffer = new float[4];
     /**
      * Draws the LimitLines associated with this axis to the screen.
@@ -211,7 +215,8 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         pts[1] = 0;
         pts[2] = 0;
         pts[3] = 0;
-        Path limitLinePath = new Path();
+        Path limitLinePath = mRenderLimitLinesPathBuffer;
+        limitLinePath.reset();
 
         for (int i = 0; i < limitLines.size(); i++) {
 

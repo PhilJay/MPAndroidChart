@@ -590,6 +590,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * VIEWPORT
      */
 
+    protected Matrix mZoomInMatrixBuffer = new Matrix();
     /**
      * Zooms in by 1.4f, into the charts center. center.
      */
@@ -597,8 +598,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         MPPointF center = mViewPortHandler.getContentCenter();
 
-        Matrix save = mViewPortHandler.zoomIn(center.x, -center.y);
-        mViewPortHandler.refresh(save, this, false);
+        mViewPortHandler.zoomIn(center.x, -center.y, mZoomInMatrixBuffer);
+        mViewPortHandler.refresh(mZoomInMatrixBuffer, this, false);
 
         MPPointF.recycleInstance(center);
 
@@ -609,6 +610,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         postInvalidate();
     }
 
+    protected Matrix mZoomOutMatrixBuffer = new Matrix();
     /**
      * Zooms out by 0.7f, from the charts center. center.
      */
@@ -616,8 +618,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         MPPointF center = mViewPortHandler.getContentCenter();
 
-        Matrix save = mViewPortHandler.zoomOut(center.x, -center.y);
-        mViewPortHandler.refresh(save, this, false);
+        mViewPortHandler.zoomOut(center.x, -center.y, mZoomOutMatrixBuffer);
+        mViewPortHandler.refresh(mZoomOutMatrixBuffer, this, false);
 
         MPPointF.recycleInstance(center);
 
@@ -628,6 +630,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         postInvalidate();
     }
 
+    protected Matrix mZoomMatrixBuffer = new Matrix();
     /**
      * Zooms in or out by the given scale factor. x and y are the coordinates
      * (in pixels) of the zoom center.
@@ -638,7 +641,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param y
      */
     public void zoom(float scaleX, float scaleY, float x, float y) {
-        Matrix save = mViewPortHandler.zoom(scaleX, scaleY, x, y);
+        Matrix save = mZoomMatrixBuffer;
+        mViewPortHandler.zoom(scaleX, scaleY, x, y, save);
         mViewPortHandler.refresh(save, this, false);
 
         // Range might have changed, which means that Y-axis labels
@@ -694,12 +698,14 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         }
     }
 
+    protected Matrix mFitScreenMatrixBuffer = new Matrix();
     /**
      * Resets all zooming and dragging and makes the chart fit exactly it's
      * bounds.
      */
     public void fitScreen() {
-        Matrix save = mViewPortHandler.fitScreen();
+        Matrix save = mFitScreenMatrixBuffer;
+        mViewPortHandler.fitScreen(save);
         mViewPortHandler.refresh(save, this, false);
 
         calculateOffsets();

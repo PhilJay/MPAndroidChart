@@ -174,6 +174,7 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
         MPPointF.recycleInstance(pOut);
     }
 
+    private Path mRenderLimitLinesPathBuffer = new Path();
     @Override
     public void renderLimitLines(Canvas c) {
 
@@ -203,7 +204,8 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
 
             float r = (l.getLimit() - mChart.getYChartMin()) * factor;
 
-            Path limitPath = new Path();
+            Path limitPath = mRenderLimitLinesPathBuffer;
+            limitPath.reset();
 
 
             for (int j = 0; j < mChart.getData().getMaxEntryCountSet().getEntryCount(); j++) {
