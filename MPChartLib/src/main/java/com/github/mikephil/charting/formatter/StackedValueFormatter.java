@@ -18,6 +18,9 @@ public class StackedValueFormatter implements ValueFormatter {
      * if true, all stack values of the stacked bar entry are drawn, else only top
      */
     private boolean mDrawWholeStack;
+    private FormattedStringCache mFormattedStringCacheWholeStack;
+    private FormattedStringCache mFormattedStringCache;
+
 
     /**
      * a string that should be appended behind the value
@@ -44,12 +47,16 @@ public class StackedValueFormatter implements ValueFormatter {
             b.append("0");
         }
 
-        this.mFormat = new DecimalFormat("###,###,###,##0" + b.toString());
+        this.mFormattedStringCache = new FormattedStringCache(new DecimalFormat("###,###,###,##0" + b.toString()));
+        this.mFormattedStringCacheWholeStack = new FormattedStringCache(new DecimalFormat("###,###,###,##0" + b.toString()));
     }
 
     @Override
     public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
 
+        FormattedStringCache chosenCache = mFormattedStringCache;
+        int chosenIndex = dataSetIndex;
+        float chosenValue = value;
         if (!mDrawWholeStack && entry instanceof BarEntry) {
 
             BarEntry barEntry = (BarEntry) entry;
@@ -59,16 +66,19 @@ public class StackedValueFormatter implements ValueFormatter {
 
                 // find out if we are on top of the stack
                 if (vals[vals.length - 1] == value) {
-
-                    // return the "sum" across all stack values
-                    return mFormat.format(barEntry.getY()) + mAppendix;
+                    chosenCache = mFormattedStringCacheWholeStack;
+                    chosenValue = barEntry.getY();
                 } else {
-                    return ""; // return empty
+                    chosenCache = null;
                 }
             }
         }
 
+        if(chosenCache == null){
+            return "";
+        }
+
         // return the "proposed" value
-        return mFormat.format(value) + mAppendix;
+        return chosenCache.getFormattedString(chosenValue, chosenIndex) + mAppendix;
     }
 }

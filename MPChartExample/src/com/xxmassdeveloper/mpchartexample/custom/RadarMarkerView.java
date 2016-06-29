@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.FormattedStringCache;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.Utils;
 import com.xxmassdeveloper.mpchartexample.R;
@@ -22,7 +23,7 @@ import java.text.DecimalFormat;
 public class RadarMarkerView extends MarkerView {
 
     private TextView tvContent;
-    private DecimalFormat format = new DecimalFormat("##0");
+    private FormattedStringCache<Float, Float> mFormattedStringCache = new FormattedStringCache<>(new DecimalFormat("##0"));
 
     public RadarMarkerView(Context context, int layoutResource) {
         super(context, layoutResource);
@@ -35,7 +36,8 @@ public class RadarMarkerView extends MarkerView {
     // content (user-interface)
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
-        tvContent.setText(format.format(e.getY()) + " %");
+        float value = e.getY();
+        tvContent.setText(mFormattedStringCache.getFormattedString(value, value) + " %");
     }
 
     @Override

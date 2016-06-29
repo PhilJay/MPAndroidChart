@@ -23,11 +23,16 @@ public class LargeValueFormatter implements ValueFormatter, AxisValueFormatter {
             "", "k", "m", "b", "t"
     };
     private static final int MAX_LENGTH = 5;
-    private DecimalFormat mFormat;
     private String mText = "";
 
+
+    /**
+     * FormattedStringCache for formatting and caching.
+     */
+    protected FormattedStringCache<Double, Double> mFormattedStringCache;
+
     public LargeValueFormatter() {
-        mFormat = new DecimalFormat("###E00");
+        mFormattedStringCache = new FormattedStringCache<>(new DecimalFormat("###E00"));
     }
 
     /**
@@ -77,7 +82,8 @@ public class LargeValueFormatter implements ValueFormatter, AxisValueFormatter {
      */
     private String makePretty(double number) {
 
-        String r = mFormat.format(number);
+        // TODO : Should be better way to do this.  Double isn't the best key...
+        String r = mFormattedStringCache.getFormattedString(number,number);
 
         int numericValue1 = Character.getNumericValue(r.charAt(r.length() - 1));
         int numericValue2 = Character.getNumericValue(r.charAt(r.length() - 2));
