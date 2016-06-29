@@ -1,11 +1,12 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven'
-//apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'git-repo'
 apply plugin: 'maven-publish'
+//apply plugin: 'realm-android'
 
 archivesBaseName = 'MPAndroidChart'
-version = '2.2.5'
+version = '2.2.5.1'
 def versionCodeInt = 228
 
 android {

@@ -18,6 +18,7 @@ import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.dataprovider.ScatterDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 import com.github.mikephil.charting.renderer.CombinedChartRenderer;
+import com.github.mikephil.charting.renderer.scatter.ShapeRenderer;
 
 /**
  * This chart class allows the combination of lines, bars, scatter and candle
@@ -27,6 +28,8 @@ import com.github.mikephil.charting.renderer.CombinedChartRenderer;
  */
 public class CombinedChart extends BarLineChartBase<CombinedData> implements LineDataProvider,
         BarDataProvider, ScatterDataProvider, CandleDataProvider, BubbleDataProvider {
+
+    private ScatterChart.ShapeRendererHandler mShapeRendererHandler;
 
     /**
      * flag that enables or disables the highlighting arrow
@@ -72,6 +75,8 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
     @Override
     protected void init() {
         super.init();
+
+        mShapeRendererHandler = new ScatterChart.ShapeRendererHandler();
 
         setHighlighter(new CombinedHighlighter(this));
 
@@ -155,6 +160,16 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Lin
         if (mData == null)
             return null;
         return mData.getBubbleData();
+    }
+
+    @Override
+    public void addShapeRenderer(ShapeRenderer shapeRenderer, String shapeIdentifier) {
+        mShapeRendererHandler.addShapeRenderer(shapeRenderer, shapeIdentifier);
+    }
+
+    @Override
+    public ShapeRenderer getShapeRenderer(String shapeIdentifier) {
+        return mShapeRendererHandler.getShapeRenderer(shapeIdentifier);
     }
 
     @Override

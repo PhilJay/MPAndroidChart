@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.ScatterChart;
-import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -71,7 +70,7 @@ public abstract class SimpleFragment extends Fragment {
         
         ArrayList<IScatterDataSet> sets = new ArrayList<IScatterDataSet>();
         
-        ScatterShape[] shapes = ScatterChart.getAllPossibleShapes();
+        ScatterChart.ScatterShape[] shapes = ScatterChart.ScatterShape.getAllDefaultShapes();
         
         for(int i = 0; i < dataSets; i++) {
            

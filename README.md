@@ -10,7 +10,7 @@ Remember: *It's all about the looks.*
 
 [**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart) :zap: is a powerful & easy to use chart library for Android. It runs on [API level 8](http://developer.android.com/guide/topics/manifest/uses-sdk-element.html#ApiLevels) and upwards. 
 
-As an additional feature, this library allows cross-platform development between Android and iOS as an iOS version of this library is also available: [**ios-charts**](https://github.com/danielgindi/ios-charts) :zap:
+As an additional feature, this library allows cross-platform development between Android and iOS as an iOS version of this library is also available: [**Charts**](https://github.com/danielgindi/Charts) :zap:
 
 Are you using this library? Let me know about it and I will add your project to the [**references**](https://github.com/PhilJay/MPAndroidChart/wiki/References).
 
@@ -28,6 +28,8 @@ Donations
  - [**Donate 50 $**] (https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZPQVJ2XRBSBYY): I really really want to support this project, great job!
  - [**Donate 100 $**] (https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=KY7F59RYPCYCQ): You are the man! This project saved me hours (if not days) of struggle and hard work, simply awesome!
  - Of course, you can also [**choose what you want to donate**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EGBENAC5XBCKS), all donations are awesome!
+
+If you just want to be nice, you can check out my [**Amazon-Wishlist**]( https://www.amazon.de/registry/wishlist/2DYHJ69VMF8HM/ref=cm_sw_em_r_mt_ws_WVCyxb4KKQ2G6).
 
 
 ## 3rd party bindings
@@ -66,6 +68,7 @@ If you are having questions or problems, you should:
  - Search or open questions on [**stackoverflow**](https://stackoverflow.com/search?q=mpandroidchart) with the `mpandroidchart` tag
  - Search [**known issues**](https://github.com/PhilJay/MPAndroidChart/issues) for your problem (open and closed)
  - Create new issues (please :fire: **search known issues before** :fire:, do not create duplicate issues)
+ - Check this: ["how not to contribute"](https://github.com/PhilJay/MPAndroidChart/wiki/How-not-to-contribute)
  
 Please do not expect answers to your questions if you have not considered all above mentioned approaches in advance.
 
