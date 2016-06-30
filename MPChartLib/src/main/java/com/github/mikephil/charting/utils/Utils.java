@@ -369,11 +369,16 @@ public abstract class Utils {
 
         int[] ret = new int[integers.size()];
 
-        for (int i = 0; i < ret.length; i++) {
-            ret[i] = integers.get(i).intValue();
-        }
+        copyIntegers(integers, ret);
 
         return ret;
+    }
+
+    public static void copyIntegers(List<Integer> from, int[] to){
+        int count = to.length < from.size() ? to.length : from.size();
+        for(int i = 0 ; i < count ; i++){
+            to[i] = from.get(i);
+        }
     }
 
     /**
@@ -391,6 +396,13 @@ public abstract class Utils {
         }
 
         return ret;
+    }
+
+    public static void copyStrings(List<String> from, String[] to){
+        int count = to.length < from.size() ? to.length : from.size();
+        for(int i = 0 ; i < count ; i++){
+            to[i] = from.get(i);
+        }
     }
 
     /**

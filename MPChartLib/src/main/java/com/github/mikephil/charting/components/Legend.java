@@ -171,8 +171,8 @@ public class Legend extends ComponentBase {
                     "colors array and labels array need to be of same size");
         }
 
-        this.mColors = Utils.convertIntegers(colors);
-        this.mLabels = Utils.convertStrings(labels);
+        this.setComputedColors(colors);
+        this.setComputedLabels(labels);
     }
 
     /**
@@ -180,7 +180,11 @@ public class Legend extends ComponentBase {
      * @param colors
      */
     public void setComputedColors(List<Integer> colors) {
-        mColors = Utils.convertIntegers(colors);
+        if(mColors != null && colors.size() == mColors.length){
+            Utils.copyIntegers(colors, mColors);
+        }else {
+            mColors = Utils.convertIntegers(colors);
+        }
     }
 
     /**
@@ -188,7 +192,11 @@ public class Legend extends ComponentBase {
      * @param labels
      */
     public void setComputedLabels(List<String> labels) {
-        mLabels = Utils.convertStrings(labels);
+        if(mLabels != null && mLabels.length == labels.size()){
+            Utils.copyStrings(labels, mLabels);
+        }else {
+            mLabels = Utils.convertStrings(labels);
+        }
     }
 
     /**
@@ -291,8 +299,17 @@ public class Legend extends ComponentBase {
      * let the changes take effect)
      */
     public void setExtra(List<Integer> colors, List<String> labels) {
-        this.mExtraColors = Utils.convertIntegers(colors);
-        this.mExtraLabels = Utils.convertStrings(labels);
+        if(mExtraColors != null && mExtraColors.length == colors.size()){
+            Utils.copyIntegers(colors, mExtraColors);
+        }else {
+            this.mExtraColors = Utils.convertIntegers(colors);
+        }
+
+        if(mExtraLabels != null && mExtraLabels.length == labels.size()){
+            Utils.copyStrings(labels, mExtraLabels);
+        }else {
+            this.mExtraLabels = Utils.convertStrings(labels);
+        }
     }
 
     /**
@@ -343,8 +360,8 @@ public class Legend extends ComponentBase {
                     "colors array and labels array need to be of same size");
         }
 
-        mColors = Utils.convertIntegers(colors);
-        mLabels = Utils.convertStrings(labels);
+        this.setComputedColors(colors);
+        this.setComputedLabels(labels);
         mIsLegendCustom = true;
     }
 
@@ -791,6 +808,7 @@ public class Legend extends ComponentBase {
     public void setMaxSizePercent(float maxSize) {
         mMaxSizePercent = maxSize;
     }
+    private boolean isCalculatedLineSizesArrayListResized = true;
 
     private FSize[] mCalculatedLabelSizes = new FSize[] {};
     private Boolean[] mCalculatedLabelBreakPoints = new Boolean[] {};
@@ -805,6 +823,14 @@ public class Legend extends ComponentBase {
     }
 
     public FSize[] getCalculatedLineSizes() {
+        if(mCalculatedLineSizes == null || isCalculatedLineSizesArrayListResized){
+
+            mCalculatedLineSizes = calculatedLineSizesForCalculateDimensions
+                    .toArray(new FSize[calculatedLineSizesForCalculateDimensions.size()]);
+
+            isCalculatedLineSizesArrayListResized = false;
+
+        }
         return mCalculatedLineSizes;
     }
 
@@ -998,8 +1024,13 @@ public class Legend extends ComponentBase {
                     stackedStartIndex = mLabels[i] != null ? -1 : stackedStartIndex;
                 }
 
-                mCalculatedLineSizes = calculatedLineSizes
-                        .toArray(new FSize[calculatedLineSizes.size()]);
+                if(calculatedLineSizes.size() != mCalculatedLineSizes.length) {
+                    isCalculatedLineSizesArrayListResized = true;
+                }else{
+                    for(int i = 0 ; i < mCalculatedLineSizes.length ; i++){
+                        mCalculatedLineSizes[i] = calculatedLineSizes.get(i);
+                    }
+                }
 
                 mNeededWidth = maxLineWidth;
                 mNeededHeight = labelLineHeight
