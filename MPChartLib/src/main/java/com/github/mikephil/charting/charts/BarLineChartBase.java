@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -664,7 +663,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      */
     public void zoomAndCenter(float scaleX, float scaleY, float xValue, float yValue, AxisDependency axis) {
 
-        Runnable job = new ZoomJob(mViewPortHandler, scaleX, scaleY, xValue, yValue, getTransformer(axis), axis, this);
+        Runnable job = ZoomJob.getInstance(mViewPortHandler, scaleX, scaleY, xValue, yValue, getTransformer(axis), axis, this);
         addViewportJob(job);
     }
 
@@ -686,7 +685,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
             PointD origin = getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop(), axis);
 
-            Runnable job = new AnimatedZoomJob(mViewPortHandler, this, getTransformer(axis), getAxis(axis), mXAxis
+            Runnable job = AnimatedZoomJob.getInstance(mViewPortHandler, this, getTransformer(axis), getAxis(axis), mXAxis
                     .mAxisRange, scaleX, scaleY, mViewPortHandler.getScaleX(), mViewPortHandler.getScaleY(),
                     xValue, yValue, (float) origin.x, (float) origin.y, duration);
             addViewportJob(job);
@@ -800,6 +799,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         mViewPortHandler.setMinMaxScaleY(minScale, maxScale);
     }
 
+
     /**
      * Moves the left side of the current viewport to the specified x-position.
      * This also refreshes the chart by calling invalidate().
@@ -808,7 +808,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      */
     public void moveViewToX(float xValue) {
 
-        Runnable job = new MoveViewJob(mViewPortHandler, xValue, 0f,
+        Runnable job = MoveViewJob.getInstance(mViewPortHandler, xValue, 0f,
                 getTransformer(AxisDependency.LEFT), this);
 
         addViewportJob(job);
@@ -827,7 +827,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         float yInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
 
-        Runnable job = new MoveViewJob(mViewPortHandler, xValue, yValue + yInView / 2f,
+        Runnable job = MoveViewJob.getInstance(mViewPortHandler, xValue, yValue + yInView / 2f,
                 getTransformer(axis), this);
 
         addViewportJob(job);
@@ -852,7 +852,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
             float yInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
 
-            Runnable job = new AnimatedMoveViewJob(mViewPortHandler, xValue, yValue + yInView / 2f,
+            Runnable job = AnimatedMoveViewJob.getInstance(mViewPortHandler, xValue, yValue + yInView / 2f,
                     getTransformer(axis), this, (float) bounds.x, (float) bounds.y, duration);
 
             addViewportJob(job);
@@ -874,7 +874,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         float valsInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
 
-        Runnable job = new MoveViewJob(mViewPortHandler, 0f, yValue + valsInView / 2f,
+        Runnable job = MoveViewJob.getInstance(mViewPortHandler, 0f, yValue + valsInView / 2f,
                 getTransformer(axis), this);
 
         addViewportJob(job);
@@ -894,7 +894,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         float yInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
         float xInView = getXAxis().mAxisRange / mViewPortHandler.getScaleX();
 
-        Runnable job = new MoveViewJob(mViewPortHandler,
+        Runnable job = MoveViewJob.getInstance(mViewPortHandler,
                 xValue - xInView / 2f, yValue + yInView / 2f,
                 getTransformer(axis), this);
 
@@ -920,7 +920,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             float yInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
             float xInView = getXAxis().mAxisRange / mViewPortHandler.getScaleX();
 
-            Runnable job = new AnimatedMoveViewJob(mViewPortHandler,
+            Runnable job = AnimatedMoveViewJob.getInstance(mViewPortHandler,
                     xValue - xInView / 2f, yValue + yInView / 2f,
                     getTransformer(axis), this, (float) bounds.x, (float) bounds.y, duration);
 
