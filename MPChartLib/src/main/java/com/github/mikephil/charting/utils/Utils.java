@@ -147,6 +147,7 @@ public abstract class Utils {
         return (int) paint.measureText(demoText);
     }
 
+    private static Rect mCalcTextHeightRect = new Rect();
     /**
      * calculates the approximate height of a text, depending on a demo text
      * avoid repeated calls (e.g. inside drawing methods)
@@ -157,7 +158,8 @@ public abstract class Utils {
      */
     public static int calcTextHeight(Paint paint, String demoText) {
 
-        Rect r = new Rect();
+        Rect r = mCalcTextHeightRect;
+        r.set(0,0,0,0);
         paint.getTextBounds(demoText, 0, demoText.length(), r);
         return r.height();
     }
@@ -188,6 +190,7 @@ public abstract class Utils {
         return result;
     }
 
+    private static Rect mCalcTextSizeRect = new Rect();
     /**
      * calculates the approximate size of a text, depending on a demo text
      * avoid repeated calls (e.g. inside drawing methods)
@@ -198,7 +201,8 @@ public abstract class Utils {
      */
     public static void calcTextSize(Paint paint, String demoText, FSize outputFSize) {
 
-        Rect r = new Rect();
+        Rect r = mCalcTextSizeRect;
+        r.set(0,0,0,0);
         paint.getTextBounds(demoText, 0, demoText.length(), r);
         outputFSize.width = r.width();
         outputFSize.height = r.height();

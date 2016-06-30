@@ -141,12 +141,15 @@ public class HorizontalBarChart extends BarChart {
     }
 
     @Override
-    public RectF getBarBounds(BarEntry e) {
+    public void getBarBounds(BarEntry e, RectF outputRect) {
 
+        RectF bounds = outputRect;
         IBarDataSet set = mData.getDataSetForEntry(e);
 
-        if (set == null)
-            return null;
+        if (set == null){
+            outputRect.set(Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE);
+            return;
+        }
 
         float y = e.getY();
         float x = e.getX();
@@ -158,11 +161,10 @@ public class HorizontalBarChart extends BarChart {
         float left = y >= 0 ? y : 0;
         float right = y <= 0 ? y : 0;
 
-        RectF bounds = new RectF(left, top, right, bottom);
+        bounds.set(left, top, right, bottom);
 
         getTransformer(set.getAxisDependency()).rectValueToPixel(bounds);
 
-        return bounds;
     }
 
     protected float[] mGetPositionBuffer = new float[2];

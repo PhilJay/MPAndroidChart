@@ -725,6 +725,7 @@ public class PieChartRenderer extends DataRenderer {
         }
     }
 
+    protected RectF mDrawHighlightedRectF = new RectF();
     @Override
     public void drawHighlighted(Canvas c, Highlight[] indices) {
 
@@ -743,7 +744,8 @@ public class PieChartRenderer extends DataRenderer {
                 ? radius * (mChart.getHoleRadius() / 100.f)
                 : 0.f;
 
-        final RectF highlightedCircleBox = new RectF();
+        final RectF highlightedCircleBox = mDrawHighlightedRectF;
+        highlightedCircleBox.set(0,0,0,0);
 
         for (int i = 0; i < indices.length; i++) {
 

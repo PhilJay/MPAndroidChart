@@ -3,6 +3,7 @@ package com.xxmassdeveloper.mpchartexample;
 
 import android.annotation.SuppressLint;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.util.Log;
@@ -246,6 +247,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         }
     }
 
+    protected RectF mOnValueSelectedRectF = new RectF();
     @SuppressLint("NewApi")
     @Override
     public void onValueSelected(Entry e, Highlight h) {
@@ -253,7 +255,9 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         if (e == null)
             return;
 
-        RectF bounds = mChart.getBarBounds((BarEntry) e);
+        RectF bounds = mOnValueSelectedRectF;
+        mChart.getBarBounds((BarEntry) e, bounds);
+
         MPPointF position = mChart.getPosition(e, mChart.getData().getDataSetByIndex(h.getDataSetIndex())
                 .getAxisDependency());
 
