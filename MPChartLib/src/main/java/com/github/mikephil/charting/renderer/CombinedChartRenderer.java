@@ -33,6 +33,7 @@ public class CombinedChartRenderer extends DataRenderer {
         createRenderers(chart, animator, viewPortHandler);
     }
 
+    protected ArrayList<DataRenderer> renderersForCreateRenderers = new ArrayList<>(4);
     /**
      * Creates the renderers needed for this combined-renderer in the required order. Also takes the DrawOrder into
      * consideration.
@@ -43,7 +44,8 @@ public class CombinedChartRenderer extends DataRenderer {
      */
     protected void createRenderers(CombinedChart chart, ChartAnimator animator, ViewPortHandler viewPortHandler) {
 
-        mRenderers = new ArrayList<DataRenderer>();
+        mRenderers = renderersForCreateRenderers;
+        mRenderers.clear();
 
         DrawOrder[] orders = chart.getDrawOrder();
 
@@ -102,6 +104,7 @@ public class CombinedChartRenderer extends DataRenderer {
             renderer.drawExtras(c);
     }
 
+    protected ArrayList<Highlight> highlightsforDrawHighlighted = new ArrayList<>();
     @Override
     public void drawHighlighted(Canvas c, Highlight[] indices) {
 
@@ -125,8 +128,11 @@ public class CombinedChartRenderer extends DataRenderer {
             int dataIndex = data == null ? -1
                     : ((CombinedData)chart.getData()).getAllData().indexOf(data);
 
-            ArrayList<Highlight> dataIndices = new ArrayList<>();
-            for (Highlight h : indices) {
+            ArrayList<Highlight> dataIndices = highlightsforDrawHighlighted;
+            dataIndices.clear();
+            Highlight h;
+            for(int i = 0 ; i < dataIndices.size() ; i++){
+                h = dataIndices.get(i);
                 if (h.getDataIndex() == dataIndex || h.getDataIndex() == -1)
                     dataIndices.add(h);
             }

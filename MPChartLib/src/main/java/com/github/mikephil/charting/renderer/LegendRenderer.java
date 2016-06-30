@@ -70,6 +70,8 @@ public class LegendRenderer extends Renderer {
         return mLegendFormPaint;
     }
 
+    protected ArrayList<String> labelsForComputeLegend = new ArrayList<>(16);
+    protected ArrayList<Integer> colorsForComputeLegend = new ArrayList<>(16);
     /**
      * Prepares the legend and calculates all needed forms, labels and colors.
      *
@@ -79,8 +81,11 @@ public class LegendRenderer extends Renderer {
 
         if (!mLegend.isLegendCustom()) {
 
-            List<String> labels = new ArrayList<String>();
-            List<Integer> colors = new ArrayList<Integer>();
+            ArrayList<String> labels = labelsForComputeLegend;
+            ArrayList<Integer> colors = colorsForComputeLegend;
+
+            labels.clear();
+            colors.clear();
 
             // loop for building up the colors and labels used in the legend
             for (int i = 0; i < data.getDataSetCount(); i++) {

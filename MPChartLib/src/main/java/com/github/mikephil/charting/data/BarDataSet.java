@@ -51,10 +51,12 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
         calcEntryCountIncludingStacks(yVals);
     }
 
+    protected List<BarEntry> barEntriesForCopy = new ArrayList<>();
     @Override
     public DataSet<BarEntry> copy() {
 
-        List<BarEntry> yVals = new ArrayList<BarEntry>();
+        List<BarEntry> yVals = barEntriesForCopy;
+        yVals.clear();
 
         for (int i = 0; i < mValues.size(); i++) {
             yVals.add(mValues.get(i).copy());

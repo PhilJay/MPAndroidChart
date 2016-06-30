@@ -176,19 +176,22 @@ public class RealtimeLineChartActivity extends DemoBase implements
         if (thread != null)
             thread.interrupt();
 
+        final Runnable runnable = new Runnable() {
+
+            @Override
+            public void run() {
+                addEntry();
+            }
+        };
+
         thread = new Thread(new Runnable() {
 
             @Override
             public void run() {
                 for (int i = 0; i < 1000; i++) {
 
-                    runOnUiThread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            addEntry();
-                        }
-                    });
+                    // Don't generate garbage runnables inside the loop.
+                    runOnUiThread(runnable);
 
                     try {
                         Thread.sleep(25);

@@ -573,6 +573,7 @@ public class LineChartRenderer extends LineRadarRenderer {
     private Path mCirclePathBuffer = new Path();
     private float[] mCirclesBuffer = new float[2];
     private HashMap<IDataSet, DataSetImageCache> mImageCaches = new HashMap<>();
+    private XBounds mXBoundsBuffer;
     protected void drawCircles(Canvas c) {
 
         mRenderPaint.setStyle(Paint.Style.FILL);
@@ -607,8 +608,13 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-            XBounds bounds = getXBounds(mChart, dataSet);
-            int entryCount = dataSet.getEntryCount();
+            if(mXBoundsBuffer == null) {
+                mXBoundsBuffer = getXBounds(mChart, dataSet);
+            }else{
+                mXBoundsBuffer.set(mChart,dataSet);
+            }
+
+            XBounds bounds = mXBoundsBuffer;
 
             float circleRadius = dataSet.getCircleRadius();
             float circleHoleRadius = dataSet.getCircleHoleRadius();

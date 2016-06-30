@@ -809,7 +809,7 @@ public class Legend extends ComponentBase {
     }
 
     protected Paint.FontMetrics fontMetricsForCalculateDimensions = new Paint.FontMetrics();
-    ArrayList<FSize> calculatedLineSizesForCalculateDimensions = new ArrayList<>();
+    protected ArrayList<FSize> calculatedLineSizesForCalculateDimensions = new ArrayList<>();
     /**
      * Calculates the dimensions of the Legend. This includes the maximum width
      * and height of a single entry, as well as the total width and height of

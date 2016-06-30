@@ -28,10 +28,13 @@ public class CombinedHighlighter extends ChartHighlighter<CombinedDataProvider> 
         barHighlighter = barChart.getBarData() == null ? null : new BarHighlighter(barChart);
     }
 
+
+    protected ArrayList<Highlight> highlightsForGetHighlightsAtXPos = new ArrayList<>(2);
     @Override
     protected List<Highlight> getHighlightsAtXPos(float xVal, float x, float y) {
 
-        List<Highlight> vals = new ArrayList<Highlight>();
+        List<Highlight> vals = highlightsForGetHighlightsAtXPos;
+        vals.clear();
 
         List<BarLineScatterCandleBubbleData> dataObjects = mChart.getCombinedData().getAllData();
 

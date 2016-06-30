@@ -44,6 +44,7 @@ public class RadarHighlighter extends PieRadarHighlighter<RadarChart> {
         return closest;
     }
 
+    protected ArrayList<Highlight> highlightsForGetHighlightsAtIndex = new ArrayList<>(2);
     /**
      * Returns an array of Highlight objects for the given index. The Highlight
      * objects give information about the value at the selected index and the
@@ -55,7 +56,8 @@ public class RadarHighlighter extends PieRadarHighlighter<RadarChart> {
      */
     protected List<Highlight> getHighlightsAtIndex(int index) {
 
-        List<Highlight> vals = new ArrayList<Highlight>();
+        List<Highlight> vals = highlightsForGetHighlightsAtIndex;
+        vals.clear();
 
         float phaseX = mChart.getAnimator().getPhaseX();
         float phaseY = mChart.getAnimator().getPhaseY();

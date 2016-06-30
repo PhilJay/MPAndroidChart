@@ -110,6 +110,8 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
         return h.getYPx();
     }
 
+
+    protected ArrayList<Highlight> highlightsForGetHighlightsAtXPos = new ArrayList<>(2);
     /**
      * Returns a list of Highlight objects representing the entries closest to the given xVal.
      * The returned list contains two objects per DataSet (closest rounding up, closest rounding down).
@@ -121,7 +123,8 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      */
     protected List<Highlight> getHighlightsAtXPos(float xVal, float x, float y) {
 
-        List<Highlight> vals = new ArrayList<Highlight>();
+        List<Highlight> vals = highlightsForGetHighlightsAtXPos;
+        vals.clear();
 
         BarLineScatterCandleBubbleData data = getData();
 

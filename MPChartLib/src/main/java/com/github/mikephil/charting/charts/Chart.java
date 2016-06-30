@@ -1442,6 +1442,24 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         return vals;
     }
 
+    public void getEntriesAtIndex(int xIndex, List<Entry> entriesOutput){
+
+        List<Entry> vals = entriesOutput;
+        vals.clear();
+
+        for (int i = 0; i < mData.getDataSetCount(); i++) {
+
+            IDataSet set = mData.getDataSetByIndex(i);
+
+            Entry e = set.getEntryForXPos(xIndex);
+
+            if (e != null) {
+                vals.add(e);
+            }
+        }
+
+    }
+
     /**
      * Returns the ChartData object that has been set for the chart.
      *

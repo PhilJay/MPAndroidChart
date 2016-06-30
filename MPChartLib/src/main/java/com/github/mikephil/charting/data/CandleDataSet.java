@@ -77,10 +77,12 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
         super(yVals, label);
     }
 
+    protected ArrayList<CandleEntry> candleEntriesForCopy = new ArrayList<>();
     @Override
     public DataSet<CandleEntry> copy() {
 
-        List<CandleEntry> yVals = new ArrayList<CandleEntry>();
+        List<CandleEntry> yVals = candleEntriesForCopy;
+        yVals.clear();
 
         for (int i = 0; i < mValues.size(); i++) {
             yVals.add(((CandleEntry) mValues.get(i)).copy());
