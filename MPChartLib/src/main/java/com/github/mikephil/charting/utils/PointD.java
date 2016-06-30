@@ -14,6 +14,7 @@ public class PointD extends ObjectPool.Poolable {
 
     static {
         pool = ObjectPool.create(64, new PointD(0,0));
+        pool.setReplenishPercentage(0.5f);
     }
 
     public static PointD getInstance(double x, double y){

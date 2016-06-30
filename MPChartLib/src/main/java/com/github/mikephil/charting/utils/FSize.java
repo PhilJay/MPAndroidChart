@@ -18,6 +18,7 @@ public final class FSize extends ObjectPool.Poolable{
 
     static {
         pool = ObjectPool.create(256, new FSize(0,0));
+        pool.setReplenishPercentage(0.5f);
     }
 
 
