@@ -177,6 +177,7 @@ public class LegendRenderer extends Renderer {
         mLegend.calculateDimensions(mLegendLabelPaint, mViewPortHandler);
     }
 
+    protected Paint.FontMetrics fontMetricsForRenderLegent = new Paint.FontMetrics();
     public void renderLegend(Canvas c) {
 
         if (!mLegend.isEnabled())
@@ -190,8 +191,8 @@ public class LegendRenderer extends Renderer {
         mLegendLabelPaint.setTextSize(mLegend.getTextSize());
         mLegendLabelPaint.setColor(mLegend.getTextColor());
 
-        float labelLineHeight = Utils.getLineHeight(mLegendLabelPaint);
-        float labelLineSpacing = Utils.getLineSpacing(mLegendLabelPaint) + mLegend.getYEntrySpace();
+        float labelLineHeight = Utils.getLineHeight(mLegendLabelPaint, fontMetricsForRenderLegent);
+        float labelLineSpacing = Utils.getLineSpacing(mLegendLabelPaint, fontMetricsForRenderLegent) + mLegend.getYEntrySpace();
         float formYOffset = labelLineHeight - Utils.calcTextHeight(mLegendLabelPaint, "ABC") / 2.f;
 
         String[] labels = mLegend.getLabels();

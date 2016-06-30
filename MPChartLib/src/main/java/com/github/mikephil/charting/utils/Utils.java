@@ -165,13 +165,23 @@ public abstract class Utils {
     }
 
     public static float getLineHeight(Paint paint) {
-        Paint.FontMetrics metrics = paint.getFontMetrics();
-        return metrics.descent - metrics.ascent;
+        Paint.FontMetrics metrics = new Paint.FontMetrics();
+        return getLineHeight(paint, metrics);
+    }
+
+    public static float getLineHeight(Paint paint, Paint.FontMetrics fontMetrics){
+        paint.getFontMetrics(fontMetrics);
+        return fontMetrics.descent - fontMetrics.ascent;
     }
 
     public static float getLineSpacing(Paint paint) {
-        Paint.FontMetrics metrics = paint.getFontMetrics();
-        return metrics.ascent - metrics.top + metrics.bottom;
+        Paint.FontMetrics metrics = new Paint.FontMetrics();
+        return getLineSpacing(paint, metrics);
+    }
+
+    public static float getLineSpacing(Paint paint, Paint.FontMetrics fontMetrics){
+        paint.getFontMetrics(fontMetrics);
+        return fontMetrics.ascent - fontMetrics.top + fontMetrics.bottom;
     }
 
     /**

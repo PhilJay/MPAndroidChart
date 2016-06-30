@@ -808,6 +808,8 @@ public class Legend extends ComponentBase {
         return mCalculatedLineSizes;
     }
 
+    protected Paint.FontMetrics fontMetricsForCalculateDimensions = new Paint.FontMetrics();
+    ArrayList<FSize> calculatedLineSizesForCalculateDimensions = new ArrayList<>();
     /**
      * Calculates the dimensions of the Legend. This includes the maximum width
      * and height of a single entry, as well as the total width and height of
@@ -815,7 +817,6 @@ public class Legend extends ComponentBase {
      * 
      * @param labelpaint
      */
-    ArrayList<FSize> calculatedLineSizesForCalculateDimensions = new ArrayList<>();
     public void calculateDimensions(Paint labelpaint, ViewPortHandler viewPortHandler) {
 
         mTextWidthMax = getMaximumEntryWidth(labelpaint);
@@ -825,7 +826,7 @@ public class Legend extends ComponentBase {
             case VERTICAL: {
 
                 float maxWidth = 0f, maxHeight = 0f, width = 0f;
-                float labelLineHeight = Utils.getLineHeight(labelpaint);
+                float labelLineHeight = Utils.getLineHeight(labelpaint, fontMetricsForCalculateDimensions);
                 final int count = mLabels.length;
                 boolean wasStacked = false;
 
@@ -878,8 +879,8 @@ public class Legend extends ComponentBase {
             case HORIZONTAL: {
 
                 int labelCount = mLabels.length;
-                float labelLineHeight = Utils.getLineHeight(labelpaint);
-                float labelLineSpacing = Utils.getLineSpacing(labelpaint) + mYEntrySpace;
+                float labelLineHeight = Utils.getLineHeight(labelpaint, fontMetricsForCalculateDimensions);
+                float labelLineSpacing = Utils.getLineSpacing(labelpaint, fontMetricsForCalculateDimensions) + mYEntrySpace;
                 float contentWidth = viewPortHandler.contentWidth() * mMaxSizePercent;
 
                 // Prepare arrays for calculated layout
