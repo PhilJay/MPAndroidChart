@@ -12,13 +12,13 @@ import java.text.DecimalFormat;
  */
 public class MyCustomXAxisValueFormatter implements AxisValueFormatter {
 
-    private FormattedStringCache<Float, Float> mFormattedStringCache;
+    private FormattedStringCache.PrimFloat mFormattedStringCache;
     private ViewPortHandler mViewPortHandler;
 
     public MyCustomXAxisValueFormatter(ViewPortHandler viewPortHandler) {
         mViewPortHandler = viewPortHandler;
         // maybe do something here or provide parameters in constructor
-        mFormattedStringCache = new FormattedStringCache<>(new DecimalFormat("###,###,###,##0.0"));
+        mFormattedStringCache = new FormattedStringCache.PrimFloat(new DecimalFormat("###,###,###,##0.0"));
     }
 
     @Override
@@ -35,7 +35,7 @@ public class MyCustomXAxisValueFormatter implements AxisValueFormatter {
         else if (xScale > 1)
             return "2";
         else
-            return mFormattedStringCache.getFormattedString(value, value);
+            return mFormattedStringCache.getFormattedValue(value);
     }
 
     @Override

@@ -29,10 +29,10 @@ public class LargeValueFormatter implements ValueFormatter, AxisValueFormatter {
     /**
      * FormattedStringCache for formatting and caching.
      */
-    protected FormattedStringCache<Double, Double> mFormattedStringCache;
+    protected FormattedStringCache.PrimDouble mFormattedStringCache;
 
     public LargeValueFormatter() {
-        mFormattedStringCache = new FormattedStringCache<>(new DecimalFormat("###E00"));
+        mFormattedStringCache = new FormattedStringCache.PrimDouble(new DecimalFormat("###E00"));
     }
 
     /**
@@ -83,7 +83,7 @@ public class LargeValueFormatter implements ValueFormatter, AxisValueFormatter {
     private String makePretty(double number) {
 
         // TODO : Should be better way to do this.  Double isn't the best key...
-        String r = mFormattedStringCache.getFormattedString(number,number);
+        String r = mFormattedStringCache.getFormattedValue(number);
 
         int numericValue1 = Character.getNumericValue(r.charAt(r.length() - 1));
         int numericValue2 = Character.getNumericValue(r.charAt(r.length() - 2));

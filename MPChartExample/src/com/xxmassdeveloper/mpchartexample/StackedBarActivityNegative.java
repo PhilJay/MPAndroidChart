@@ -80,12 +80,11 @@ public class StackedBarActivityNegative extends DemoBase implements
         xAxis.setGranularity(10f);
         xAxis.setValueFormatter(new AxisValueFormatter() {
 
-            private FormattedStringCache<Float, Float> format = new FormattedStringCache<Float, Float>(new DecimalFormat("###"));
+            private FormattedStringCache.PrimFloat format = new FormattedStringCache.PrimFloat(new DecimalFormat("###"));
 
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                Float key = value + 10;
-                return format.getFormattedString(value, value) + "-" + format.getFormattedString(value, key);
+                return format.getFormattedValue(value) + "-" + format.getFormattedValue(value+10);
             }
 
             @Override
@@ -224,25 +223,25 @@ public class StackedBarActivityNegative extends DemoBase implements
 
     private class CustomFormatter implements ValueFormatter, AxisValueFormatter {
 
-        private FormattedStringCache<Integer, Float> mFormatValue;
-        private FormattedStringCache<Float, Float> mFormatAxis;
+        private FormattedStringCache.Generic<Integer, Float> mFormatValue;
+        private FormattedStringCache.PrimFloat mFormatAxis;
 
         public CustomFormatter() {
-            mFormatValue = new FormattedStringCache<>(new DecimalFormat("###"));
-            mFormatAxis = new FormattedStringCache<>(new DecimalFormat("###"));
+            mFormatValue = new FormattedStringCache.Generic<>(new DecimalFormat("###"));
+            mFormatAxis = new FormattedStringCache.PrimFloat(new DecimalFormat("###"));
         }
 
         // data
         @Override
         public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-            return mFormatValue.getFormattedString(value, dataSetIndex) + "m";
+            return mFormatValue.getFormattedValue(value, dataSetIndex) + "m";
         }
 
         // YAxis
         @Override
         public String getFormattedValue(float value, AxisBase axis) {
             Float v = Math.abs(value);
-            return mFormatAxis.getFormattedString(v,v) + "m";
+            return mFormatAxis.getFormattedValue(v) + "m";
         }
 
         @Override

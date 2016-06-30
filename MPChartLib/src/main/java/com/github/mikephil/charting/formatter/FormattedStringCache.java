@@ -16,11 +16,9 @@ import java.util.HashMap;
  *      Possibly want to make some explicit primitive enabled caches, though they can be ugly.
  *
  */
-public class FormattedStringCache<K, V> {
+public class FormattedStringCache {
 
     protected Format mFormat;
-    private HashMap<K, String> mCachedStringsHashMap = new HashMap<>();
-    private HashMap<K, V> mCachedValuesHashMap = new HashMap<>();
 
     public Format getFormat(){
         return mFormat;
@@ -30,25 +28,53 @@ public class FormattedStringCache<K, V> {
         this.mFormat = format;
     }
 
-    public String getFormattedString(V value, K key){
 
-        // If we can't find the value at all, create an entry for it, and format the string.
-        if(!mCachedValuesHashMap.containsKey(key)){
-            mCachedStringsHashMap.put(key, mFormat.format(value));
-            mCachedValuesHashMap.put(key, value);
+    /**
+     * Cache a Formatted String, derived from formatting value V in the Format passed to the constructor.
+     * Use the object K as a way to quickly look up the string in the cache.
+     * If value of V has changed since the last time the cache was accessed, re-format the string.
+     *
+     * NOTE: This version relies on auto-boxing of primitive values.  As a result, it has worse memory performance
+     * than the Prim versions.
+     *
+     * @param <K>
+     * @param <V>
+     */
+    public static class Generic<K,V> extends FormattedStringCache{
+
+        private HashMap<K, String> mCachedStringsHashMap = new HashMap<>();
+        private HashMap<K, V> mCachedValuesHashMap = new HashMap<>();
+
+        public Generic(Format format){
+            super(format);
         }
 
-        // If the old value and the new one don't match, format the string and store it, because the string's value will be different now.
-        if(!value.equals(mCachedValuesHashMap.get(key))){
-            mCachedStringsHashMap.put(key, mFormat.format(value));
-            mCachedValuesHashMap.put(key, value);
+        public String getFormattedValue(V value, K key){
+
+            // If we can't find the value at all, create an entry for it, and format the string.
+            if(!mCachedValuesHashMap.containsKey(key)){
+                mCachedStringsHashMap.put(key, mFormat.format(value));
+                mCachedValuesHashMap.put(key, value);
+            }
+
+            // If the old value and the new one don't match, format the string and store it, because the string's value will be different now.
+            if(!value.equals(mCachedValuesHashMap.get(key))){
+                mCachedStringsHashMap.put(key, mFormat.format(value));
+                mCachedValuesHashMap.put(key, value);
+            }
+
+            String result = mCachedStringsHashMap.get(key);
+
+            return result;
         }
-
-        String result = mCachedStringsHashMap.get(key);
-
-        return result;
     }
 
+    /**
+     * Cache a Formatted String, derived from formatting float value in the Format passed to the constructor.
+     * Use the integer as a way to quickly look up the string in the cache.
+     * If value of V has changed since the last time the cache was accessed, re-format the string.
+     *
+     */
     public static class PrimIntFloat extends FormattedStringCache{
 
         public PrimIntFloat(Format format){
@@ -91,6 +117,9 @@ public class FormattedStringCache<K, V> {
 
     }
 
+    /**
+     * Cache a Formatted String, derived from formatting float value in the Format passed to the constructor.
+     */
     public static class PrimFloat extends FormattedStringCache{
 
         public PrimFloat(Format format){
@@ -113,11 +142,47 @@ public class FormattedStringCache<K, V> {
                     break;
                 }
             }
-             if(!alreadyHasValue) {
-                 cachedValues.add(value);
-                 cachedStrings.add(mFormat.format(value));
-                 sIndex = cachedValues.size() - 1;
-             }
+            if(!alreadyHasValue) {
+                cachedValues.add(value);
+                cachedStrings.add(mFormat.format(value));
+                sIndex = cachedValues.size() - 1;
+            }
+
+            return cachedStrings.get(sIndex);
+        }
+
+    }
+
+    /**
+     * Cache a Formatted String, derived from formatting double value in the Format passed to the constructor.
+     */
+    public static class PrimDouble extends FormattedStringCache{
+
+        public PrimDouble(Format format){
+            super(format);
+        }
+
+
+        private ArrayList<Double> cachedValues = new ArrayList<>();
+        private ArrayList<String> cachedStrings = new ArrayList<>();
+
+        public String getFormattedValue(double value) {
+
+            boolean alreadyHasValue = false;
+            int vCount =  cachedValues.size();
+            int sIndex = -1;
+            for(int i = 0 ; i < vCount ; i++){
+                if(cachedValues.get(i) == value){
+                    sIndex = i;
+                    alreadyHasValue = true;
+                    break;
+                }
+            }
+            if(!alreadyHasValue) {
+                cachedValues.add(value);
+                cachedStrings.add(mFormat.format(value));
+                sIndex = cachedValues.size() - 1;
+            }
 
             return cachedStrings.get(sIndex);
         }

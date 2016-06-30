@@ -17,7 +17,7 @@ public class DefaultValueFormatter implements ValueFormatter {
     /**
      * FormattedStringCache for formatting and caching.
      */
-    protected FormattedStringCache<Integer, Float> mFormattedStringCache;
+    protected FormattedStringCache.Generic<Integer, Float> mFormattedStringCache;
 
     protected int mDecimalDigits;
 
@@ -47,14 +47,14 @@ public class DefaultValueFormatter implements ValueFormatter {
             b.append("0");
         }
 
-        mFormattedStringCache = new FormattedStringCache<>(new DecimalFormat("###,###,###,##0" + b.toString()));
+        mFormattedStringCache = new FormattedStringCache.Generic<>(new DecimalFormat("###,###,###,##0" + b.toString()));
 
     }
 
     @Override
     public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
 
-        return mFormattedStringCache.getFormattedString(value, dataSetIndex);
+        return mFormattedStringCache.getFormattedValue(value, dataSetIndex);
 
     }
 

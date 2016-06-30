@@ -9,15 +9,15 @@ import java.text.DecimalFormat;
 public class MyAxisValueFormatter implements AxisValueFormatter {
 
     private DecimalFormat mFormat;
-    private FormattedStringCache<Float, Float> mFormattedStringCache;
+    private FormattedStringCache.PrimFloat mFormattedStringCache;
 
     public MyAxisValueFormatter() {
-        mFormattedStringCache = new FormattedStringCache<>(new DecimalFormat("###,###,###,##0.0"));
+        mFormattedStringCache = new FormattedStringCache.PrimFloat(new DecimalFormat("###,###,###,##0.0"));
     }
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
-        return mFormattedStringCache.getFormattedString(value, value) + " $";
+        return mFormattedStringCache.getFormattedValue(value) + " $";
     }
 
     @Override

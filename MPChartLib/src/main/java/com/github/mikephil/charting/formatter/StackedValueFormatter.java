@@ -18,8 +18,8 @@ public class StackedValueFormatter implements ValueFormatter {
      * if true, all stack values of the stacked bar entry are drawn, else only top
      */
     private boolean mDrawWholeStack;
-    private FormattedStringCache mFormattedStringCacheWholeStack;
-    private FormattedStringCache mFormattedStringCache;
+    private FormattedStringCache.Generic mFormattedStringCacheWholeStack;
+    private FormattedStringCache.Generic mFormattedStringCache;
 
 
     /**
@@ -47,14 +47,14 @@ public class StackedValueFormatter implements ValueFormatter {
             b.append("0");
         }
 
-        this.mFormattedStringCache = new FormattedStringCache(new DecimalFormat("###,###,###,##0" + b.toString()));
-        this.mFormattedStringCacheWholeStack = new FormattedStringCache(new DecimalFormat("###,###,###,##0" + b.toString()));
+        this.mFormattedStringCache = new FormattedStringCache.Generic(new DecimalFormat("###,###,###,##0" + b.toString()));
+        this.mFormattedStringCacheWholeStack = new FormattedStringCache.Generic(new DecimalFormat("###,###,###,##0" + b.toString()));
     }
 
     @Override
     public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
 
-        FormattedStringCache chosenCache = mFormattedStringCache;
+        FormattedStringCache.Generic chosenCache = mFormattedStringCache;
         int chosenIndex = dataSetIndex;
         float chosenValue = value;
         if (!mDrawWholeStack && entry instanceof BarEntry) {
@@ -79,6 +79,6 @@ public class StackedValueFormatter implements ValueFormatter {
         }
 
         // return the "proposed" value
-        return chosenCache.getFormattedString(chosenValue, chosenIndex) + mAppendix;
+        return chosenCache.getFormattedValue(chosenValue, chosenIndex) + mAppendix;
     }
 }

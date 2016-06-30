@@ -23,7 +23,7 @@ import java.text.DecimalFormat;
 public class RadarMarkerView extends MarkerView {
 
     private TextView tvContent;
-    private FormattedStringCache<Float, Float> mFormattedStringCache = new FormattedStringCache<>(new DecimalFormat("##0"));
+    private FormattedStringCache.PrimFloat mFormattedStringCache = new FormattedStringCache.PrimFloat(new DecimalFormat("##0"));
 
     public RadarMarkerView(Context context, int layoutResource) {
         super(context, layoutResource);
@@ -37,7 +37,7 @@ public class RadarMarkerView extends MarkerView {
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
         float value = e.getY();
-        tvContent.setText(mFormattedStringCache.getFormattedString(value, value) + " %");
+        tvContent.setText(mFormattedStringCache.getFormattedValue(value) + " %");
     }
 
     @Override

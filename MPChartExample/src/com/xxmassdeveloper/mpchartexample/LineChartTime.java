@@ -92,12 +92,12 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
         xAxis.setGranularity(60000L); // one minute in millis
         xAxis.setValueFormatter(new AxisValueFormatter() {
 
-            private FormattedStringCache<Long, Date> mFormattedStringCache = new FormattedStringCache<Long, Date>(new SimpleDateFormat("dd MMM HH:mm"));
+            private FormattedStringCache.Generic<Long, Date> mFormattedStringCache = new FormattedStringCache.Generic<>(new SimpleDateFormat("dd MMM HH:mm"));
 
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
                 Long v = (long) value;
-                return mFormattedStringCache.getFormattedString(new Date(v), v);
+                return mFormattedStringCache.getFormattedValue(new Date(v), v);
             }
 
             @Override

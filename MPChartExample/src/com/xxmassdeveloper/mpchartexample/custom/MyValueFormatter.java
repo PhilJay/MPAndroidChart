@@ -9,14 +9,14 @@ import java.text.DecimalFormat;
 
 public class MyValueFormatter implements ValueFormatter {
 
-    private FormattedStringCache<Integer, Float> mFormattedStringCache;
+    private FormattedStringCache.Generic<Integer, Float> mFormattedStringCache;
     
     public MyValueFormatter() {
-        mFormattedStringCache = new FormattedStringCache<>(new DecimalFormat("###,###,###,##0.0"));
+        mFormattedStringCache = new FormattedStringCache.Generic<>(new DecimalFormat("###,###,###,##0.0"));
     }
 
     @Override
     public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-        return mFormattedStringCache.getFormattedString(value, dataSetIndex) + " $";
+        return mFormattedStringCache.getFormattedValue(value, dataSetIndex) + " $";
     }
 }
