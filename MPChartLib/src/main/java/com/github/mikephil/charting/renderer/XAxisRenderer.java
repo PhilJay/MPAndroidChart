@@ -180,12 +180,12 @@ public class XAxisRenderer extends AxisRenderer {
         final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
         boolean centeringEnabled = mXAxis.isCenterAxisLabelsEnabled();
 
-        if(mDrawLabelsBuffer.length != mAxis.mEntryCount * 2){
+        if(mDrawLabelsBuffer.length < mAxis.mEntryCount * 2){
             mDrawLabelsBuffer = new float[mXAxis.mEntryCount * 2];
         }
         float[] positions = mDrawLabelsBuffer;
 
-        for (int i = 0; i < positions.length; i += 2) {
+        for (int i = 0; i < positions.length && i < mXAxis.mEntries.length / 2 && i < mXAxis.mCenteredEntries.length / 2 ; i += 2) {
 
             // only fill x values
             if (centeringEnabled) {
@@ -199,7 +199,7 @@ public class XAxisRenderer extends AxisRenderer {
 
         mTrans.pointValuesToPixel(positions);
 
-        for (int i = 0; i < positions.length; i += 2) {
+        for (int i = 0; i < positions.length && i < mXAxis.mEntries.length / 2 && i < mXAxis.mCenteredEntries.length / 2 ; i += 2) {
 
             float x = positions[i];
 
