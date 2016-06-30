@@ -12,7 +12,7 @@ public class DefaultAxisValueFormatter implements AxisValueFormatter {
     /**
      * FormattedStringFormat for formatting and caching
      */
-    protected FormattedStringCache<Float, Float> mFormattedStringCache;
+    protected FormattedStringCache.PrimFloat mFormattedStringCache;
 
     /**
      * the number of decimal digits this formatter uses
@@ -35,14 +35,14 @@ public class DefaultAxisValueFormatter implements AxisValueFormatter {
             b.append("0");
         }
 
-        mFormattedStringCache = new FormattedStringCache<>(new DecimalFormat("###,###,###,##0" + b.toString()));
+        mFormattedStringCache = new FormattedStringCache.PrimFloat(new DecimalFormat("###,###,###,##0" + b.toString()));
     }
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
 
         // TODO: There should be a better way to do this.  Floats are not the best keys...
-        return mFormattedStringCache.getFormattedString(value, value);
+        return mFormattedStringCache.getFormattedValue(value);
 
     }
 

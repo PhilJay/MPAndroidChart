@@ -165,15 +165,15 @@ public class BarChartPositiveNegative extends DemoBase {
 
     private class ValueFormatter implements com.github.mikephil.charting.formatter.ValueFormatter {
 
-        private FormattedStringCache<Integer, Float> mFormattedStringCache;
+        private FormattedStringCache.PrimIntFloat mFormattedStringCache;
 
         public ValueFormatter() {
-            mFormattedStringCache = new FormattedStringCache<>(new DecimalFormat("######.0"));
+            mFormattedStringCache = new FormattedStringCache.PrimIntFloat(new DecimalFormat("######.0"));
         }
 
         @Override
         public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-            return mFormattedStringCache.getFormattedString(value, dataSetIndex);
+            return mFormattedStringCache.getFormattedValue(value, dataSetIndex);
         }
     }
 }

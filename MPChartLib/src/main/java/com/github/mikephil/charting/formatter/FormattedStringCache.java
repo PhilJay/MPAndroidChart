@@ -1,6 +1,7 @@
 package com.github.mikephil.charting.formatter;
 
 import java.text.Format;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -17,7 +18,7 @@ import java.util.HashMap;
  */
 public class FormattedStringCache<K, V> {
 
-    private Format mFormat;
+    protected Format mFormat;
     private HashMap<K, String> mCachedStringsHashMap = new HashMap<>();
     private HashMap<K, V> mCachedValuesHashMap = new HashMap<>();
 
@@ -47,5 +48,82 @@ public class FormattedStringCache<K, V> {
 
         return result;
     }
+
+    public static class PrimIntFloat extends FormattedStringCache{
+
+        public PrimIntFloat(Format format){
+            super(format);
+        }
+
+        private ArrayList<Float> cachedValues = new ArrayList<>();
+        private ArrayList<String> cachedStrings = new ArrayList<>();
+
+        public String getFormattedValue(float value, int key) {
+
+            boolean hasValueAtdataSetIndex = true;
+            if(cachedValues.size() <= key){
+                int p = key;
+                while(p >= 0){
+                    if(p == 0){
+                        cachedValues.add(value);
+                        cachedStrings.add("");
+                    }else{
+                        cachedValues.add(Float.NaN);
+                        cachedStrings.add("");
+                    }
+                    p--;
+                }
+                hasValueAtdataSetIndex = false;
+            }
+
+            if(hasValueAtdataSetIndex) {
+                Float cachedValue = cachedValues.get(key);
+                hasValueAtdataSetIndex = !(cachedValue == null || cachedValue != value);
+            }
+
+            if(!hasValueAtdataSetIndex){
+                cachedValues.set(key, value);
+                cachedStrings.set(key, mFormat.format(value));
+            }
+
+            return cachedStrings.get(key);
+        }
+
+    }
+
+    public static class PrimFloat extends FormattedStringCache{
+
+        public PrimFloat(Format format){
+            super(format);
+        }
+
+
+        private ArrayList<Float> cachedValues = new ArrayList<>();
+        private ArrayList<String> cachedStrings = new ArrayList<>();
+
+        public String getFormattedValue(float value) {
+
+            boolean alreadyHasValue = false;
+            int vCount =  cachedValues.size();
+            int sIndex = -1;
+            for(int i = 0 ; i < vCount ; i++){
+                if(cachedValues.get(i) == value){
+                    sIndex = i;
+                    alreadyHasValue = true;
+                    break;
+                }
+            }
+             if(!alreadyHasValue) {
+                 cachedValues.add(value);
+                 cachedStrings.add(mFormat.format(value));
+                 sIndex = cachedValues.size() - 1;
+             }
+
+            return cachedStrings.get(sIndex);
+        }
+
+    }
+
+
 
 }
