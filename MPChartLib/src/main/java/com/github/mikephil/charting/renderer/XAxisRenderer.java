@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Path;
-import android.graphics.PointF;
 
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
@@ -98,6 +97,7 @@ public class XAxisRenderer extends AxisRenderer {
         mXAxis.mLabelRotatedHeight = Math.round(labelRotatedSize.height);
 
         FSize.recycleInstance(labelRotatedSize);
+        FSize.recycleInstance(labelSize);
     }
 
     @Override
@@ -141,6 +141,7 @@ public class XAxisRenderer extends AxisRenderer {
             pointF.y = 0.0f;
             drawLabels(c, mViewPortHandler.contentBottom() + yoffset, pointF);
         }
+        MPPointF.recycleInstance(pointF);
     }
 
     @Override
