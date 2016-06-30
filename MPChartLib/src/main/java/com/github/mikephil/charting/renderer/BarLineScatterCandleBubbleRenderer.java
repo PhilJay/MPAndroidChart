@@ -58,17 +58,17 @@ public abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
         /**
          * minimum visible entry index
          */
-        public final int min;
+        public int min;
 
         /**
          * maximum visible entry index
          */
-        public final int max;
+        public int max;
 
         /**
          * range of visible entry indices
          */
-        public final int range;
+        public int range;
 
         /**
          * Calculates the minimum and maximum x values as well as the range between them.
@@ -77,7 +77,16 @@ public abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
          * @param dataSet
          */
         public XBounds(BarLineScatterCandleBubbleDataProvider chart, IBarLineScatterCandleBubbleDataSet dataSet) {
+            this.set(chart, dataSet);
+        }
 
+        /**
+         * Calculates the minimum and maximum x values as well as the range between them.
+         *
+         * @param chart
+         * @param dataSet
+         */
+        public void set(BarLineScatterCandleBubbleDataProvider chart, IBarLineScatterCandleBubbleDataSet dataSet){
             float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
 
             float low = chart.getLowestVisibleX();

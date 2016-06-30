@@ -302,6 +302,7 @@ public class LineChartRenderer extends LineRadarRenderer {
     }
 
     private float[] mLineBuffer = new float[4];
+    private XBounds xBoundsBuffer;
 
     /**
      * Draws a normal line.
@@ -331,7 +332,12 @@ public class LineChartRenderer extends LineRadarRenderer {
             canvas = c;
         }
 
-        XBounds bounds = getXBounds(mChart, dataSet);
+        if(xBoundsBuffer == null){
+            xBoundsBuffer = getXBounds(mChart, dataSet);
+        }else{
+            xBoundsBuffer.set(mChart, dataSet);
+        }
+        final XBounds bounds = xBoundsBuffer;
 
         // more than 1 color
         if (dataSet.getColors().size() > 1) {
