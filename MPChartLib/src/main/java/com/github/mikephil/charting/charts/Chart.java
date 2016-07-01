@@ -544,6 +544,20 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
+     * Sets the last highlighted value for the touchlistener.
+     *
+     * @param highs
+     */
+    protected void setLastHighlighted(Highlight[] highs) {
+
+        if (highs == null || highs.length <= 0 || highs[0] == null) {
+            mChartTouchListener.setLastHighlighted(null);
+        } else {
+            mChartTouchListener.setLastHighlighted(highs[0]);
+        }
+    }
+
+    /**
      * Highlights the values at the given indices in the given DataSets. Provide
      * null or an empty array to undo all highlighting. This should be used to
      * programmatically highlight values. This DOES NOT generate a callback to
@@ -556,11 +570,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         // set the indices to highlight
         mIndicesToHighlight = highs;
 
-        if (highs == null || highs.length <= 0 || highs[0] == null) {
-            mChartTouchListener.setLastHighlighted(null);
-        } else {
-            mChartTouchListener.setLastHighlighted(highs[0]);
-        }
+        setLastHighlighted(highs);
 
         // redraw the chart
         invalidate();
@@ -635,6 +645,8 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             }
         }
 
+        setLastHighlighted(mIndicesToHighlight);
+
         if (callListener && mSelectionListener != null) {
 
             if (!valuesToHighlight())
@@ -644,6 +656,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
                 mSelectionListener.onValueSelected(e, high);
             }
         }
+
         // redraw the chart
         invalidate();
     }
