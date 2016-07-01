@@ -46,6 +46,7 @@ import com.xxmassdeveloper.mpchartexample.ScrollViewActivity;
 import com.xxmassdeveloper.mpchartexample.StackedBarActivity;
 import com.xxmassdeveloper.mpchartexample.StackedBarActivityNegative;
 import com.xxmassdeveloper.mpchartexample.fragments.SimpleChartDemo;
+import com.xxmassdeveloper.mpchartexample.realm.RealmMainActivity;
 
 import java.util.ArrayList;
 
@@ -274,8 +275,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 startActivity(i);
                 break;
             case 28:
-                //i = new Intent(this, RealmMainActivity.class);
-                //startActivity(i);
+                i = new Intent(this, RealmMainActivity.class);
+                startActivity(i);
                 break;
             case 29:
                 i = new Intent(this, LineChartTime.class);
