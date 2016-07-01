@@ -18,7 +18,7 @@
         android:layout_margin="8dp"
         android:layout_toLeftOf="@+id/tvYMax"
         android:layout_marginRight="5dp"
-        android:max="150"
+        android:max="200"
         android:paddingBottom="12dp" />
 
     <SeekBar
@@ -30,7 +30,7 @@
         android:layout_marginBottom="35dp"
         android:layout_toLeftOf="@+id/tvXMax"
         android:layout_marginRight="5dp"
-        android:max="1500"
+        android:max="500"
         android:paddingBottom="12dp" />
 
     <TextView
