@@ -665,7 +665,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
                 if(circleBitmap == null){
                     Bitmap.Config conf = Bitmap.Config.ARGB_8888;
-                    circleBitmap = Bitmap.createBitmap((int)circleRadius * 2, (int)circleRadius * 2, conf);
+                    circleBitmap = Bitmap.createBitmap((int)(circleRadius * 2.1), (int)(circleRadius * 2.1), conf);
                     Canvas canvas = new Canvas(circleBitmap);
                     imageCache.circleBitmaps[colorIndex] = circleBitmap;
                     imageCache.circleColors[colorIndex] = circleColor;
@@ -674,12 +674,16 @@ public class LineChartRenderer extends LineRadarRenderer {
                         // Begin path for circle with hole
                         mCirclePathBuffer.reset();
 
-                        mCirclePathBuffer.addCircle(circleRadius, circleRadius,
+                        mCirclePathBuffer.addCircle(
+                                circleRadius,
+                                circleRadius,
                                 circleRadius,
                                 Path.Direction.CW);
 
                         // Cut hole in path
-                        mCirclePathBuffer.addCircle(circleHoleRadius, circleHoleRadius,
+                        mCirclePathBuffer.addCircle(
+                                circleRadius,
+                                circleRadius,
                                 circleHoleRadius,
                                 Path.Direction.CCW);
 
@@ -687,12 +691,16 @@ public class LineChartRenderer extends LineRadarRenderer {
                         canvas.drawPath(mCirclePathBuffer, mRenderPaint);
                     }else{
 
-                        canvas.drawCircle(circleRadius, circleRadius,
+                        canvas.drawCircle(
+                                circleRadius,
+                                circleRadius,
                                 circleRadius,
                                 mRenderPaint);
 
                         if (drawCircleHole) {
-                            canvas.drawCircle(circleRadius, circleRadius,
+                            canvas.drawCircle(
+                                    circleRadius,
+                                    circleRadius,
                                     circleHoleRadius,
                                     mCirclePaintInner);
                         }
