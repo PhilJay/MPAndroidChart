@@ -111,7 +111,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
-        LimitLine ll1 = new LimitLine(130f, "Upper Limit");
+        LimitLine ll1 = new LimitLine(150f, "Upper Limit");
         ll1.setLineWidth(4f);
         ll1.enableDashedLine(10f, 10f, 0f);
         ll1.setLabelPosition(LimitLabelPosition.RIGHT_TOP);
@@ -129,7 +129,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
         leftAxis.addLimitLine(ll1);
         leftAxis.addLimitLine(ll2);
-        leftAxis.setAxisMaxValue(220f);
+        leftAxis.setAxisMaxValue(200f);
         leftAxis.setAxisMinValue(-50f);
         //leftAxis.setYOffset(20f);
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
