@@ -157,7 +157,7 @@ public class RealtimeLineChartActivity extends DemoBase implements
         LineDataSet set = new LineDataSet(null, "Dynamic Data");
         set.setAxisDependency(AxisDependency.LEFT);
         set.setColor(ColorTemplate.getHoloBlue());
-        set.setCircleColor(Color.WHITE);
+        set.setCircleColors(ColorTemplate.COLORFUL_COLORS);
         set.setLineWidth(2f);
         set.setCircleRadius(4f);
         set.setFillAlpha(65);
