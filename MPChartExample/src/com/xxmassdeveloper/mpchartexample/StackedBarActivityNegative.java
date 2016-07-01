@@ -20,6 +20,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.FormattedStringCache;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.formatter.AxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
@@ -79,11 +80,11 @@ public class StackedBarActivityNegative extends DemoBase implements
         xAxis.setGranularity(10f);
         xAxis.setValueFormatter(new AxisValueFormatter() {
 
-            private DecimalFormat format = new DecimalFormat("###");
+            private FormattedStringCache.PrimFloat format = new FormattedStringCache.PrimFloat(new DecimalFormat("###"));
 
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return format.format(value) + "-" + format.format(value + 10);
+                return format.getFormattedValue(value) + "-" + format.getFormattedValue(value+10);
             }
 
             @Override
@@ -222,22 +223,25 @@ public class StackedBarActivityNegative extends DemoBase implements
 
     private class CustomFormatter implements ValueFormatter, AxisValueFormatter {
 
-        private DecimalFormat mFormat;
+        private FormattedStringCache.Generic<Integer, Float> mFormatValue;
+        private FormattedStringCache.PrimFloat mFormatAxis;
 
         public CustomFormatter() {
-            mFormat = new DecimalFormat("###");
+            mFormatValue = new FormattedStringCache.Generic<>(new DecimalFormat("###"));
+            mFormatAxis = new FormattedStringCache.PrimFloat(new DecimalFormat("###"));
         }
 
         // data
         @Override
         public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-            return mFormat.format(Math.abs(value)) + "m";
+            return mFormatValue.getFormattedValue(value, dataSetIndex) + "m";
         }
 
         // YAxis
         @Override
         public String getFormattedValue(float value, AxisBase axis) {
-            return mFormat.format(Math.abs(value)) + "m";
+            Float v = Math.abs(value);
+            return mFormatAxis.getFormattedValue(v) + "m";
         }
 
         @Override

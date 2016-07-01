@@ -52,8 +52,11 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
         // mCircleRadius = Utils.convertDpToPixel(4f);
         // mLineWidth = Utils.convertDpToPixel(1f);
 
-        mCircleColors = new ArrayList<Integer>();
-
+        if(mCircleColors == null) {
+            mCircleColors = new ArrayList<Integer>();
+        }
+        mCircleColors.clear();
+        
         // default colors
         // mColors.add(Color.rgb(192, 255, 140));
         // mColors.add(Color.rgb(255, 247, 140));
@@ -252,6 +255,10 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
         return mCircleColors.get(index % mCircleColors.size());
     }
 
+    public int getCircleColorCount(){
+        return mCircleColors.size();
+    }
+
     /**
      * Sets the colors that should be used for the circles of this DataSet.
      * Colors are reused as soon as the number of Entries the DataSet represents
@@ -290,7 +297,11 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
      */
     public void setCircleColors(int[] colors, Context c) {
 
-        List<Integer> clrs = new ArrayList<Integer>();
+        List<Integer> clrs = mCircleColors;
+        if(clrs == null){
+            clrs = new ArrayList<>();
+        }
+        clrs.clear();
 
         for (int color : colors) {
             clrs.add(c.getResources().getColor(color));
@@ -314,7 +325,10 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
      * resets the circle-colors array and creates a new one
      */
     public void resetCircleColors() {
-        mCircleColors = new ArrayList<Integer>();
+        if(mCircleColors == null) {
+            mCircleColors = new ArrayList<Integer>();
+        }
+        mCircleColors.clear();
     }
 
     /**

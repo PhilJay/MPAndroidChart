@@ -15,10 +15,12 @@ import java.text.DecimalFormat;
  */
 public class PercentFormatter implements ValueFormatter, AxisValueFormatter {
 
-    protected DecimalFormat mFormat;
+    protected FormattedStringCache.Generic<Integer, Float> mFormattedStringCache;
+    protected FormattedStringCache.PrimFloat mFormattedStringCacheAxis;
 
     public PercentFormatter() {
-        mFormat = new DecimalFormat("###,###,##0.0");
+        mFormattedStringCache = new FormattedStringCache.Generic<>(new DecimalFormat("###,###,##0.0"));
+        mFormattedStringCacheAxis = new FormattedStringCache.PrimFloat(new DecimalFormat("###,###,##0.0"));
     }
 
     /**
@@ -27,19 +29,21 @@ public class PercentFormatter implements ValueFormatter, AxisValueFormatter {
      * @param format
      */
     public PercentFormatter(DecimalFormat format) {
-        this.mFormat = format;
+        mFormattedStringCache = new FormattedStringCache.Generic<>(format);
+        mFormattedStringCacheAxis = new FormattedStringCache.PrimFloat(format);
     }
 
     // ValueFormatter
     @Override
     public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-        return mFormat.format(value) + " %";
+        return mFormattedStringCache.getFormattedValue(value, dataSetIndex) + " %";
     }
 
     // AxisValueFormatter
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
-        return mFormat.format(value) + " %";
+        // TODO: Find a better way to do this.  Float isn't the best key...
+        return mFormattedStringCacheAxis.getFormattedValue(value) + " %";
     }
 
     @Override

@@ -37,6 +37,8 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 					(float) pos.x);
 		}
 
+		PointD.recycleInstance(pos);
+
 		return high;
 	}
 

@@ -166,7 +166,11 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      */
     public void setColors(int[] colors, Context c) {
 
-        List<Integer> clrs = new ArrayList<Integer>();
+        if(mColors == null){
+            mColors = new ArrayList<>();
+        }
+        List<Integer> clrs = mColors;
+        clrs.clear();
 
         for (int color : colors) {
             clrs.add(c.getResources().getColor(color));
@@ -224,7 +228,10 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      * Resets all colors of this DataSet and recreates the colors array.
      */
     public void resetColors() {
-        mColors = new ArrayList<Integer>();
+        if(mColors == null) {
+            mColors = new ArrayList<Integer>();
+        }
+        mColors.clear();
     }
 
     /**

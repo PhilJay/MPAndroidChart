@@ -37,6 +37,8 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
                     (float) pos.y);
         }
 
+        PointD.recycleInstance(pos);
+
         return high;
     }
 
@@ -77,6 +79,8 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
                         stackIndex,
                         high.getAxis()
                 );
+
+                PointD.recycleInstance(pixels);
 
                 return stackedHigh;
             }

@@ -28,15 +28,20 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
     @Override
     public Highlight getHighlight(float x, float y) {
 
-        float xVal = (float) getValsForTouch(x, y).x;
+        PointD pos = getValsForTouch(x, y);
+        float xVal = (float) pos.x;
+        PointD.recycleInstance(pos);
 
         Highlight high = getHighlightForX(xVal, x, y);
         return high;
     }
+
     /**
+     * Returns a recyclable PointD instance.
      * Returns the corresponding xPos for a given touch-position in pixels.
      *
      * @param x
+     * @param y
      * @return
      */
     protected PointD getValsForTouch(float x, float y) {
@@ -105,6 +110,8 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
         return h.getYPx();
     }
 
+
+    protected ArrayList<Highlight> highlightsForGetHighlightsAtXPos = new ArrayList<>(2);
     /**
      * Returns a list of Highlight objects representing the entries closest to the given xVal.
      * The returned list contains two objects per DataSet (closest rounding up, closest rounding down).
@@ -116,7 +123,8 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      */
     protected List<Highlight> getHighlightsAtXPos(float xVal, float x, float y) {
 
-        List<Highlight> vals = new ArrayList<Highlight>();
+        List<Highlight> vals = highlightsForGetHighlightsAtXPos;
+        vals.clear();
 
         BarLineScatterCandleBubbleData data = getData();
 

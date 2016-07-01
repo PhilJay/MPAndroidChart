@@ -98,17 +98,37 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 
     /**
      * Returns the bounding box of the specified Entry in the specified DataSet. Returns null if the Entry could not be
-     * found in the charts data.
+     * found in the charts data.  Performance-intensive code should use void getBarBounds(BarEntry, RectF) instead.
      *
      * @param e
      * @return
      */
     public RectF getBarBounds(BarEntry e) {
 
+
+        RectF bounds = new RectF();
+        getBarBounds(e, bounds);
+
+        return bounds;
+    }
+
+    /**
+     * The passed outputRect will be assigned the values of the bounding box of the specified Entry in the specified DataSet.
+     * The rect will be assigned Float.MIN_VALUE in all locations if the Entry could not be found in the charts data.
+     *
+     * @param e
+     * @return
+     */
+    public void getBarBounds(BarEntry e, RectF outputRect){
+
+        RectF bounds = outputRect;
+
         IBarDataSet set = mData.getDataSetForEntry(e);
 
-        if (set == null)
-            return null;
+        if (set == null) {
+            bounds.set(Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE);
+            return;
+        }
 
         float y = e.getY();
         float x = e.getX();
@@ -120,11 +140,10 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         float top = y >= 0 ? y : 0;
         float bottom = y <= 0 ? y : 0;
 
-        RectF bounds = new RectF(left, top, right, bottom);
+        bounds.set(left, top, right, bottom);
 
-        getTransformer(set.getAxisDependency()).rectValueToPixel(bounds);
+        getTransformer(set.getAxisDependency()).rectValueToPixel(outputRect);
 
-        return bounds;
     }
 
     /**

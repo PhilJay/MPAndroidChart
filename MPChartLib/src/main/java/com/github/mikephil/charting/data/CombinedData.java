@@ -57,7 +57,10 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
     @Override
     public void calcMinMax() {
 
-        mDataSets = new ArrayList<>();
+        if(mDataSets == null){
+            mDataSets = new ArrayList<>();
+        }
+        mDataSets.clear();
 
         mYMax = -Float.MAX_VALUE;
         mYMin = Float.MAX_VALUE;

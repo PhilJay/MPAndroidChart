@@ -45,6 +45,7 @@ import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.renderer.DataRenderer;
 import com.github.mikephil.charting.renderer.LegendRenderer;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -305,7 +306,11 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         // calculate how many digits are needed
         setupDefaultFormatter(data.getYMin(), data.getYMax());
 
-        for (IDataSet set : mData.getDataSets()) {
+        IDataSet set;
+        final List sets = mData.getDataSets();
+        final int count = sets.size();
+        for(int i = 0 ; i < count ; i++){
+            set = (IDataSet)sets.get(i);
             if (set.needsFormatter() || set.getValueFormatter() == mDefaultFormatter)
                 set.setValueFormatter(mDefaultFormatter);
         }
@@ -450,7 +455,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     /**
      * the custom position of the description text
      */
-    private PointF mDescriptionPosition;
+    private MPPointF mDescriptionPosition;
 
     /**
      * draws the description text in the bottom right corner of the chart
@@ -1056,22 +1061,24 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
+     * Returns a recyclable MPPointF instance.
      * Returns the center point of the chart (the whole View) in pixels.
      *
      * @return
      */
-    public PointF getCenter() {
-        return new PointF(getWidth() / 2f, getHeight() / 2f);
+    public MPPointF getCenter() {
+        return MPPointF.getInstance(getWidth() / 2f, getHeight() / 2f);
     }
 
     /**
+     * Returns a recyclable MPPointF instance.
      * Returns the center of the chart taking offsets under consideration.
      * (returns the center of the content rectangle)
      *
      * @return
      */
     @Override
-    public PointF getCenterOffsets() {
+    public MPPointF getCenterOffsets() {
         return mViewPortHandler.getContentCenter();
     }
 
@@ -1094,7 +1101,12 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * @param y - ycoordinate
      */
     public void setDescriptionPosition(float x, float y) {
-        mDescriptionPosition = new PointF(x, y);
+        if(mDescriptionPosition == null){
+            mDescriptionPosition = MPPointF.getInstance(x,y);
+        }else {
+            mDescriptionPosition.x = x;
+            mDescriptionPosition.y = y;
+        }
     }
 
     /**
@@ -1443,6 +1455,24 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         return vals;
     }
 
+    public void getEntriesAtIndex(int xIndex, List<Entry> entriesOutput){
+
+        List<Entry> vals = entriesOutput;
+        vals.clear();
+
+        for (int i = 0; i < mData.getDataSetCount(); i++) {
+
+            IDataSet set = mData.getDataSetByIndex(i);
+
+            Entry e = set.getEntryForXPos(xIndex);
+
+            if (e != null) {
+                vals.add(e);
+            }
+        }
+
+    }
+
     /**
      * Returns the ChartData object that has been set for the chart.
      *
@@ -1497,8 +1527,12 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         mHighlighter = highlighter;
     }
 
+    /**
+     * Returns a recyclable MPPointF instance.
+     * @return
+     */
     @Override
-    public PointF getCenterOfView() {
+    public MPPointF getCenterOfView() {
         return getCenter();
     }
 

@@ -51,6 +51,9 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
                 yMin = (float) p2.x;
                 yMax = (float) p1.x;
             }
+
+            PointD.recycleInstance(p1);
+            PointD.recycleInstance(p2);
         }
 
         computeAxisValues(yMin, yMax);
@@ -147,7 +150,10 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
     @Override
     protected float[] getTransformedPositions() {
 
-        float[] positions = new float[mYAxis.mEntryCount * 2];
+        if(mGetTransformedPositionsBuffer.length != mYAxis.mEntryCount * 2) {
+            mGetTransformedPositionsBuffer = new float[mYAxis.mEntryCount * 2];
+        }
+        float[] positions = mGetTransformedPositionsBuffer;
 
         for (int i = 0; i < positions.length; i += 2) {
             // only fill x values, y values are not needed for x-labels
@@ -167,6 +173,8 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         return p;
     }
 
+    protected Path mDrawZeroLinePathBuffer = new Path();
+
     @Override
     protected void drawZeroLine(Canvas c) {
 
@@ -176,7 +184,8 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         mZeroLinePaint.setColor(mYAxis.getZeroLineColor());
         mZeroLinePaint.setStrokeWidth(mYAxis.getZeroLineWidth());
 
-        Path zeroLinePath = new Path();
+        Path zeroLinePath = mDrawZeroLinePathBuffer;
+        zeroLinePath.reset();
 
         zeroLinePath.moveTo((float) pos.x - 1, mViewPortHandler.contentTop());
         zeroLinePath.lineTo((float) pos.x - 1, mViewPortHandler.contentBottom());
@@ -185,6 +194,8 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         c.drawPath(zeroLinePath, mZeroLinePaint);
     }
 
+    protected Path mRenderLimitLinesPathBuffer = new Path();
+    protected float[] mRenderLimitLinesBuffer = new float[4];
     /**
      * Draws the LimitLines associated with this axis to the screen.
      * This is the standard XAxis renderer using the YAxis limit lines.
@@ -199,8 +210,13 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         if (limitLines == null || limitLines.size() <= 0)
             return;
 
-        float[] pts = new float[4];
-        Path limitLinePath = new Path();
+        float[] pts = mRenderLimitLinesBuffer;
+        pts[0] = 0;
+        pts[1] = 0;
+        pts[2] = 0;
+        pts[3] = 0;
+        Path limitLinePath = mRenderLimitLinesPathBuffer;
+        limitLinePath.reset();
 
         for (int i = 0; i < limitLines.size(); i++) {
 

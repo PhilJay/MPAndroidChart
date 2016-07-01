@@ -6,6 +6,7 @@ import android.graphics.PointF;
 
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -26,7 +27,7 @@ public class XAxisRendererRadarChart extends XAxisRenderer {
             return;
 
         final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
-        final PointF drawLabelAnchor = new PointF(0.5f, 0.25f);
+        final MPPointF drawLabelAnchor = MPPointF.getInstance(0.5f, 0.25f);
 
         mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
         mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
@@ -38,20 +39,24 @@ public class XAxisRendererRadarChart extends XAxisRenderer {
         // pixels
         float factor = mChart.getFactor();
 
-        PointF center = mChart.getCenterOffsets();
-
+        MPPointF center = mChart.getCenterOffsets();
+        MPPointF pOut = MPPointF.getInstance(0,0);
         for (int i = 0; i < mChart.getData().getMaxEntryCountSet().getEntryCount(); i++) {
 
             String label = mXAxis.getValueFormatter().getFormattedValue(i, mXAxis);
 
             float angle = (sliceangle * i + mChart.getRotationAngle()) % 360f;
 
-            PointF p = Utils.getPosition(center, mChart.getYRange() * factor
-                    + mXAxis.mLabelRotatedWidth / 2f, angle);
+            Utils.getPosition(center, mChart.getYRange() * factor
+                    + mXAxis.mLabelRotatedWidth / 2f, angle, pOut);
 
-            drawLabel(c, label, p.x, p.y - mXAxis.mLabelRotatedHeight / 2.f,
+            drawLabel(c, label, pOut.x, pOut.y - mXAxis.mLabelRotatedHeight / 2.f,
                     drawLabelAnchor, labelRotationAngleDegrees);
         }
+
+        MPPointF.recycleInstance(center);
+        MPPointF.recycleInstance(pOut);
+        MPPointF.recycleInstance(drawLabelAnchor);
     }
 
 	/**

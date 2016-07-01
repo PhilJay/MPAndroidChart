@@ -20,6 +20,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.PieRadarChartTouchListener;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 
 /**
@@ -138,7 +139,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
                             float legendWidth = fullLegendWidth + spacing;
                             float legendHeight = mLegend.mNeededHeight + mLegend.mTextHeightMax;
 
-                            PointF c = getCenter();
+                            MPPointF center = getCenter();
 
                             float bottomX = mLegend.getHorizontalAlignment() ==
                                     Legend.LegendHorizontalAlignment.RIGHT
@@ -147,19 +148,22 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
                             float bottomY = legendHeight + 15.f;
                             float distLegend = distanceToCenter(bottomX, bottomY);
 
-                            PointF reference = getPosition(c, getRadius(),
+                            MPPointF reference = getPosition(center, getRadius(),
                                     getAngleForPoint(bottomX, bottomY));
 
                             float distReference = distanceToCenter(reference.x, reference.y);
                             float minOffset = Utils.convertDpToPixel(5f);
 
-                            if (bottomY >= c.y && getHeight() - legendWidth > getWidth()) {
+                            if (bottomY >= center.y && getHeight() - legendWidth > getWidth()) {
                                 xLegendOffset = legendWidth;
                             } else if (distLegend < distReference) {
 
                                 float diff = distReference - distLegend;
                                 xLegendOffset = minOffset + diff;
                             }
+
+                            MPPointF.recycleInstance(center);
+                            MPPointF.recycleInstance(reference);
                         }
                     }
 
@@ -258,7 +262,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
      */
     public float getAngleForPoint(float x, float y) {
 
-        PointF c = getCenterOffsets();
+        MPPointF c = getCenterOffsets();
 
         double tx = x - c.x, ty = y - c.y;
         double length = Math.sqrt(tx * tx + ty * ty);
@@ -276,10 +280,13 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
         if (angle > 360f)
             angle = angle - 360f;
 
+        MPPointF.recycleInstance(c);
+
         return angle;
     }
 
     /**
+     * Returns a recyclable MPPointF instance.
      * Calculates the position around a center point, depending on the distance
      * from the center, and the angle of the position around the center.
      *
@@ -288,11 +295,16 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
      * @param angle  in degrees, converted to radians internally
      * @return
      */
-    public PointF getPosition(PointF center, float dist, float angle) {
+    public MPPointF getPosition(MPPointF center, float dist, float angle) {
 
-        PointF p = new PointF((float) (center.x + dist * Math.cos(Math.toRadians(angle))),
-                (float) (center.y + dist * Math.sin(Math.toRadians(angle))));
+        MPPointF p = MPPointF.getInstance(0,0);
+        getPosition(center, dist, angle, p);
         return p;
+    }
+
+    public void getPosition(MPPointF center, float dist, float angle, MPPointF outputPoint){
+        outputPoint.x = (float) (center.x + dist * Math.cos(Math.toRadians(angle)));
+        outputPoint.y = (float) (center.y + dist * Math.sin(Math.toRadians(angle)));
     }
 
     /**
@@ -305,7 +317,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
      */
     public float distanceToCenter(float x, float y) {
 
-        PointF c = getCenterOffsets();
+        MPPointF c = getCenterOffsets();
 
         float dist = 0f;
 
@@ -326,6 +338,8 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
 
         // pythagoras
         dist = (float) Math.sqrt(Math.pow(xDist, 2.0) + Math.pow(yDist, 2.0));
+
+        MPPointF.recycleInstance(c);
 
         return dist;
     }

@@ -9,6 +9,7 @@ import android.view.animation.AnimationUtils;
 
 import com.github.mikephil.charting.charts.PieRadarChartBase;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
  */
 public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChartBase<?>> {
 
-    private PointF mTouchStartPoint = new PointF();
+    private MPPointF mTouchStartPoint = MPPointF.getInstance(0,0);
 
     /**
      * the angle where the dragging started

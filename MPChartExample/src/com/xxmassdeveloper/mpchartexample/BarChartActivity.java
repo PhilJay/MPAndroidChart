@@ -3,6 +3,7 @@ package com.xxmassdeveloper.mpchartexample;
 
 import android.annotation.SuppressLint;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +34,7 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.xxmassdeveloper.mpchartexample.custom.DayAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.custom.MyAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -256,6 +258,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         }
     }
 
+    protected RectF mOnValueSelectedRectF = new RectF();
     @SuppressLint("NewApi")
     @Override
     public void onValueSelected(Entry e, Highlight h) {
@@ -263,8 +266,9 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         if (e == null)
             return;
 
-        RectF bounds = mChart.getBarBounds((BarEntry) e);
-        PointF position = mChart.getPosition(e, AxisDependency.LEFT);
+        RectF bounds = mOnValueSelectedRectF;
+        mChart.getBarBounds((BarEntry) e, bounds);
+        MPPointF position = mChart.getPosition(e, AxisDependency.LEFT);
 
         Log.i("bounds", bounds.toString());
         Log.i("position", position.toString());
@@ -272,6 +276,8 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         Log.i("x-index",
                 "low: " + mChart.getLowestVisibleX() + ", high: "
                         + mChart.getHighestVisibleX());
+
+        MPPointF.recycleInstance(position);
     }
 
     @Override

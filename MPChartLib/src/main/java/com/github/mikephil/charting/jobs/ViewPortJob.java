@@ -3,6 +3,7 @@ package com.github.mikephil.charting.jobs;
 
 import android.view.View;
 
+import com.github.mikephil.charting.utils.ObjectPool;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -15,7 +16,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
  * 
  * @author Philipp Jahoda
  */
-public abstract class ViewPortJob implements Runnable {
+public abstract class ViewPortJob extends ObjectPool.Poolable implements Runnable {
 
     protected float[] pts = new float[2];
 
@@ -33,6 +34,7 @@ public abstract class ViewPortJob implements Runnable {
         this.yValue = yValue;
         this.mTrans = trans;
         this.view = v;
+
     }
 
     public float getXValue() {

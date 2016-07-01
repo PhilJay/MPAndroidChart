@@ -133,6 +133,9 @@ public abstract class AxisRenderer extends Renderer {
                 min = (float) p1.y;
                 max = (float) p2.y;
             }
+
+            PointD.recycleInstance(p1);
+            PointD.recycleInstance(p2);
         }
 
         computeAxisValues(min, max);

@@ -16,6 +16,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
  */
 public class TriangleShapeRenderer implements ShapeRenderer {
 
+    protected Path mTrianglePathBuffer = new Path();
 
     @Override
     public void renderShape(Canvas c, IScatterDataSet dataSet, ViewPortHandler viewPortHandler, ScatterBuffer buffer, Paint
@@ -31,7 +32,8 @@ public class TriangleShapeRenderer implements ShapeRenderer {
         renderPaint.setStyle(Paint.Style.FILL);
 
         // create a triangle path
-        Path tri = new Path();
+        Path tri = mTrianglePathBuffer;
+        tri.reset();
 
         for (int i = 0; i < buffer.size(); i += 2) {
 

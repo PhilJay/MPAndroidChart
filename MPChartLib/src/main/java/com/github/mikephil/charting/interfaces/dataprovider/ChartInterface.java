@@ -5,6 +5,7 @@ import android.graphics.RectF;
 
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 
 /**
@@ -56,9 +57,9 @@ public interface ChartInterface {
 
     int getHeight();
 
-    PointF getCenterOfView();
+    MPPointF getCenterOfView();
 
-    PointF getCenterOffsets();
+    MPPointF getCenterOffsets();
 
     RectF getContentRect();
 

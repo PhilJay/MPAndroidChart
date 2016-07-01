@@ -17,6 +17,7 @@ import com.github.mikephil.charting.renderer.HorizontalBarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart;
 import com.github.mikephil.charting.renderer.YAxisRendererHorizontalBarChart;
 import com.github.mikephil.charting.utils.HorizontalViewPortHandler;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.TransformerHorizontalBarChart;
 import com.github.mikephil.charting.utils.Utils;
@@ -140,12 +141,15 @@ public class HorizontalBarChart extends BarChart {
     }
 
     @Override
-    public RectF getBarBounds(BarEntry e) {
+    public void getBarBounds(BarEntry e, RectF outputRect) {
 
+        RectF bounds = outputRect;
         IBarDataSet set = mData.getDataSetForEntry(e);
 
-        if (set == null)
-            return null;
+        if (set == null){
+            outputRect.set(Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE);
+            return;
+        }
 
         float y = e.getY();
         float x = e.getX();
@@ -157,24 +161,33 @@ public class HorizontalBarChart extends BarChart {
         float left = y >= 0 ? y : 0;
         float right = y <= 0 ? y : 0;
 
-        RectF bounds = new RectF(left, top, right, bottom);
+        bounds.set(left, top, right, bottom);
 
         getTransformer(set.getAxisDependency()).rectValueToPixel(bounds);
 
-        return bounds;
     }
 
+    protected float[] mGetPositionBuffer = new float[2];
+    /**
+     * Returns a recyclable MPPointF instance.
+     *
+     * @param e
+     * @param axis
+     * @return
+     */
     @Override
-    public PointF getPosition(Entry e, AxisDependency axis) {
+    public MPPointF getPosition(Entry e, AxisDependency axis) {
 
         if (e == null)
             return null;
 
-        float[] vals = new float[]{e.getY(), e.getX()};
+        float[] vals = mGetPositionBuffer;
+        vals[0] = e.getY();
+        vals[1] = e.getX();
 
         getTransformer(axis).pointValuesToPixel(vals);
 
-        return new PointF(vals[0], vals[1]);
+        return MPPointF.getInstance(vals[0], vals[1]);
     }
 
     /**
@@ -196,18 +209,22 @@ public class HorizontalBarChart extends BarChart {
             return getHighlighter().getHighlight(y, x); // switch x and y
     }
 
+    protected PointD posForGetLowestVisibleX = PointD.getInstance(0,0);
     @Override
     public float getLowestVisibleX() {
-        PointD pos = getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentLeft(),
-                mViewPortHandler.contentBottom());
-        return (float) Math.max(mXAxis.mAxisMinimum, pos.y);
+        getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentLeft(),
+                mViewPortHandler.contentBottom(), posForGetLowestVisibleX);
+        float result = (float) Math.max(mXAxis.mAxisMinimum, posForGetLowestVisibleX.y);
+        return result;
     }
 
+    protected PointD posForGetHighestVisibleX = PointD.getInstance(0,0);
     @Override
     public float getHighestVisibleX() {
-        PointD pos = getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentLeft(),
-                mViewPortHandler.contentTop());
-        return (float) Math.min(mXAxis.mAxisMaximum, pos.y);
+        getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentLeft(),
+                mViewPortHandler.contentTop(), posForGetHighestVisibleX);
+        float result = (float) Math.min(mXAxis.mAxisMaximum, posForGetHighestVisibleX.y);
+        return result;
     }
 
     /**

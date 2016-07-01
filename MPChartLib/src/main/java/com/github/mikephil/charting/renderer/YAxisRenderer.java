@@ -125,6 +125,7 @@ public class YAxisRenderer extends AxisRenderer {
         }
     }
 
+    protected Path mRenderGridLinesPath = new Path();
     @Override
     public void renderGridLines(Canvas c) {
 
@@ -139,7 +140,8 @@ public class YAxisRenderer extends AxisRenderer {
             mGridPaint.setStrokeWidth(mYAxis.getGridLineWidth());
             mGridPaint.setPathEffect(mYAxis.getGridDashPathEffect());
 
-            Path gridLinePath = new Path();
+            Path gridLinePath = mRenderGridLinesPath;
+            gridLinePath.reset();
 
             // draw the grid
             for (int i = 0; i < positions.length; i += 2) {
@@ -171,6 +173,7 @@ public class YAxisRenderer extends AxisRenderer {
         return p;
     }
 
+    protected float[] mGetTransformedPositionsBuffer = new float[2];
     /**
      * Transforms the values contained in the axis entries to screen pixels and returns them in form of a float array
      * of x- and y-coordinates.
@@ -179,7 +182,10 @@ public class YAxisRenderer extends AxisRenderer {
      */
     protected float[] getTransformedPositions() {
 
-        float[] positions = new float[mYAxis.mEntryCount * 2];
+        if(mGetTransformedPositionsBuffer.length != mYAxis.mEntryCount * 2){
+            mGetTransformedPositionsBuffer = new float[mYAxis.mEntryCount * 2];
+        }
+        float[] positions = mGetTransformedPositionsBuffer;
 
         for (int i = 0; i < positions.length; i += 2) {
             // only fill y values, x values are not needed for y-labels
@@ -190,6 +196,7 @@ public class YAxisRenderer extends AxisRenderer {
         return positions;
     }
 
+    protected Path mDrawZeroLinePath = new Path();
     /**
      * Draws the zero line.
      */
@@ -201,7 +208,8 @@ public class YAxisRenderer extends AxisRenderer {
         mZeroLinePaint.setColor(mYAxis.getZeroLineColor());
         mZeroLinePaint.setStrokeWidth(mYAxis.getZeroLineWidth());
 
-        Path zeroLinePath = new Path();
+        Path zeroLinePath = mDrawZeroLinePath;
+        zeroLinePath.reset();
 
         zeroLinePath.moveTo(mViewPortHandler.contentLeft(), (float) pos.y - 1);
         zeroLinePath.lineTo(mViewPortHandler.contentRight(), (float) pos.y - 1);
@@ -210,6 +218,8 @@ public class YAxisRenderer extends AxisRenderer {
         c.drawPath(zeroLinePath, mZeroLinePaint);
     }
 
+    protected Path mRenderLimitLines = new Path();
+    protected float[] mRenderLimitLinesBuffer = new float[2];
     /**
      * Draws the LimitLines associated with this axis to the screen.
      *
@@ -223,8 +233,11 @@ public class YAxisRenderer extends AxisRenderer {
         if (limitLines == null || limitLines.size() <= 0)
             return;
 
-        float[] pts = new float[2];
-        Path limitLinePath = new Path();
+        float[] pts = mRenderLimitLinesBuffer;
+        pts[0] = 0;
+        pts[1] = 0;
+        Path limitLinePath = mRenderLimitLines;
+        limitLinePath.reset();
 
         for (int i = 0; i < limitLines.size(); i++) {
 
