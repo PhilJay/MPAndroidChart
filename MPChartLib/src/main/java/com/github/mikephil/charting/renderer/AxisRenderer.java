@@ -7,7 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 
 import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.utils.PointD;
+import com.github.mikephil.charting.utils.MPPointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -121,8 +121,8 @@ public abstract class AxisRenderer extends Renderer {
         // zoom / contentrect bounds)
         if (mViewPortHandler != null && mViewPortHandler.contentWidth() > 10 && !mViewPortHandler.isFullyZoomedOutY()) {
 
-            PointD p1 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop());
-            PointD p2 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom());
+            MPPointD p1 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop());
+            MPPointD p2 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom());
 
             if (!inverted) {
 
@@ -134,8 +134,8 @@ public abstract class AxisRenderer extends Renderer {
                 max = (float) p2.y;
             }
 
-            PointD.recycleInstance(p1);
-            PointD.recycleInstance(p2);
+            MPPointD.recycleInstance(p1);
+            MPPointD.recycleInstance(p2);
         }
 
         computeAxisValues(min, max);

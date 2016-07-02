@@ -10,7 +10,7 @@ import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
-import com.github.mikephil.charting.utils.PointD;
+import com.github.mikephil.charting.utils.MPPointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -203,7 +203,7 @@ public class YAxisRenderer extends AxisRenderer {
     protected void drawZeroLine(Canvas c) {
 
         // draw zero line
-        PointD pos = mTrans.getPixelsForValues(0f, 0f);
+        MPPointD pos = mTrans.getPixelsForValues(0f, 0f);
 
         mZeroLinePaint.setColor(mYAxis.getZeroLineColor());
         mZeroLinePaint.setStrokeWidth(mYAxis.getZeroLineWidth());

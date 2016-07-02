@@ -5,7 +5,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.utils.PointD;
+import com.github.mikephil.charting.utils.MPPointD;
 
 /**
  * Created by Philipp Jahoda on 22/07/15.
@@ -24,7 +24,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
             return null;
         }
 
-        PointD pos = getValsForTouch(x, y);
+        MPPointD pos = getValsForTouch(x, y);
 
         BarData barData = mChart.getBarData();
 
@@ -37,7 +37,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
                     (float) pos.y);
         }
 
-        PointD.recycleInstance(pos);
+        MPPointD.recycleInstance(pos);
 
         return high;
     }
@@ -68,7 +68,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
             if (ranges.length > 0) {
                 int stackIndex = getClosestStackIndex(ranges, yVal);
 
-                PointD pixels = mChart.getTransformer(set.getAxisDependency()).getPixelsForValues(high.getX(), ranges[stackIndex].to);
+                MPPointD pixels = mChart.getTransformer(set.getAxisDependency()).getPixelsForValues(high.getX(), ranges[stackIndex].to);
 
                 Highlight stackedHigh = new Highlight(
                         entry.getX(),
@@ -80,7 +80,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
                         high.getAxis()
                 );
 
-                PointD.recycleInstance(pixels);
+                MPPointD.recycleInstance(pixels);
 
                 return stackedHigh;
             }

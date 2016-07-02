@@ -8,27 +8,27 @@ import java.util.List;
  *
  * @author Philipp Jahoda
  */
-public class PointD extends ObjectPool.Poolable {
+public class MPPointD extends ObjectPool.Poolable {
 
-    private static ObjectPool<PointD> pool;
+    private static ObjectPool<MPPointD> pool;
 
     static {
-        pool = ObjectPool.create(64, new PointD(0,0));
+        pool = ObjectPool.create(64, new MPPointD(0,0));
         pool.setReplenishPercentage(0.5f);
     }
 
-    public static PointD getInstance(double x, double y){
-        PointD result = pool.get();
+    public static MPPointD getInstance(double x, double y){
+        MPPointD result = pool.get();
         result.x = x;
         result.y = y;
         return result;
     }
 
-    public static void recycleInstance(PointD instance){
+    public static void recycleInstance(MPPointD instance){
         pool.recycle(instance);
     }
 
-    public static void recycleInstances(List<PointD> instances){
+    public static void recycleInstances(List<MPPointD> instances){
         pool.recycle(instances);
     }
 
@@ -36,10 +36,10 @@ public class PointD extends ObjectPool.Poolable {
     public double y;
 
     protected ObjectPool.Poolable instantiate(){
-        return new PointD(0,0);
+        return new MPPointD(0,0);
     }
 
-    private PointD(double x, double y) {
+    private MPPointD(double x, double y) {
         this.x = x;
         this.y = y;
     }
@@ -48,6 +48,6 @@ public class PointD extends ObjectPool.Poolable {
      * returns a string representation of the object
      */
     public String toString() {
-        return "PointD, x: " + x + ", y: " + y;
+        return "MPPointD, x: " + x + ", y: " + y;
     }
 }

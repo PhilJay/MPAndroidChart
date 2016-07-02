@@ -6,7 +6,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
-import com.github.mikephil.charting.utils.PointD;
+import com.github.mikephil.charting.utils.MPPointD;
 
 /**
  * Created by Philipp Jahoda on 22/07/15.
@@ -22,7 +22,7 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 
 		BarData barData = mChart.getBarData();
 
-		PointD pos = getValsForTouch(y, x);
+		MPPointD pos = getValsForTouch(y, x);
 
 		Highlight high = getHighlightForX((float) pos.y, y, x);
 		if (high == null)
@@ -37,7 +37,7 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 					(float) pos.x);
 		}
 
-		PointD.recycleInstance(pos);
+		MPPointD.recycleInstance(pos);
 
 		return high;
 	}
@@ -47,7 +47,7 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 
 		final Entry e = set.getEntryForXPos(xVal, rounding);
 
-		PointD pixels = mChart.getTransformer(set.getAxisDependency()).getPixelsForValues(e.getY(), e.getX());
+		MPPointD pixels = mChart.getTransformer(set.getAxisDependency()).getPixelsForValues(e.getY(), e.getX());
 
 		return new Highlight(e.getX(), e.getY(), (float) pixels.x, (float) pixels.y, dataSetIndex, set.getAxisDependency());
 	}

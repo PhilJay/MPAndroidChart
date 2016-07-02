@@ -31,8 +31,8 @@ import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.listener.OnDrawListener;
 import com.github.mikephil.charting.renderer.XAxisRenderer;
 import com.github.mikephil.charting.renderer.YAxisRenderer;
+import com.github.mikephil.charting.utils.MPPointD;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 
@@ -683,14 +683,14 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         if (android.os.Build.VERSION.SDK_INT >= 11) {
 
-            PointD origin = getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop(), axis);
+            MPPointD origin = getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop(), axis);
 
             Runnable job = AnimatedZoomJob.getInstance(mViewPortHandler, this, getTransformer(axis), getAxis(axis), mXAxis
                     .mAxisRange, scaleX, scaleY, mViewPortHandler.getScaleX(), mViewPortHandler.getScaleY(),
                     xValue, yValue, (float) origin.x, (float) origin.y, duration);
             addViewportJob(job);
 
-            PointD.recycleInstance(origin);
+            MPPointD.recycleInstance(origin);
 
         } else {
             Log.e(LOG_TAG, "Unable to execute zoomAndCenterAnimated(...) on API level < 11");
@@ -848,7 +848,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         if (android.os.Build.VERSION.SDK_INT >= 11) {
 
-            PointD bounds = getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop(), axis);
+            MPPointD bounds = getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop(), axis);
 
             float yInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
 
@@ -857,7 +857,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
             addViewportJob(job);
 
-            PointD.recycleInstance(bounds);
+            MPPointD.recycleInstance(bounds);
         } else {
             Log.e(LOG_TAG, "Unable to execute moveViewToAnimated(...) on API level < 11");
         }
@@ -915,7 +915,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         if (android.os.Build.VERSION.SDK_INT >= 11) {
 
-            PointD bounds = getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop(), axis);
+            MPPointD bounds = getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop(), axis);
 
             float yInView = getDeltaY(axis) / mViewPortHandler.getScaleY();
             float xInView = getXAxis().mAxisRange / mViewPortHandler.getScaleX();
@@ -926,7 +926,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
             addViewportJob(job);
 
-            PointD.recycleInstance(bounds);
+            MPPointD.recycleInstance(bounds);
         } else {
             Log.e(LOG_TAG, "Unable to execute centerViewToAnimated(...) on API level < 11");
         }
@@ -1202,9 +1202,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Returns a recyclable PointD instance
+     * Returns a recyclable MPPointD instance
      * Returns the x and y values in the chart at the given touch point
-     * (encapsulated in a PointD). This method transforms pixel coordinates to
+     * (encapsulated in a MPPointD). This method transforms pixel coordinates to
      * coordinates / values in the chart. This is the opposite method to
      * getPixelsForValues(...).
      *
@@ -1212,18 +1212,18 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param y
      * @return
      */
-    public PointD getValuesByTouchPoint(float x, float y, AxisDependency axis) {
-        PointD result = PointD.getInstance(0,0);
+    public MPPointD getValuesByTouchPoint(float x, float y, AxisDependency axis) {
+        MPPointD result = MPPointD.getInstance(0,0);
         getValuesByTouchPoint(x,y,axis,result);
         return result;
     }
 
-    public void getValuesByTouchPoint(float x, float y, AxisDependency axis, PointD outputPoint){
+    public void getValuesByTouchPoint(float x, float y, AxisDependency axis, MPPointD outputPoint){
         getTransformer(axis).getValuesByTouchPoint(x, y, outputPoint);
     }
 
     /**
-     * Returns a recyclable PointD instance
+     * Returns a recyclable MPPointD instance
      * Transforms the given chart values into pixels. This is the opposite
      * method to getValuesByTouchPoint(...).
      *
@@ -1231,11 +1231,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param y
      * @return
      */
-    public PointD getPixelsForValues(float x, float y, AxisDependency axis) {
+    public MPPointD getPixelsForValues(float x, float y, AxisDependency axis) {
         return getTransformer(axis).getPixelsForValues(x, y);
     }
 
-    PointD pointForGetYValueByTouchPoint = PointD.getInstance(0,0);
+    MPPointD pointForGetYValueByTouchPoint = MPPointD.getInstance(0,0);
     /**
      * Returns y value at the given touch position (must not necessarily be
      * a value contained in one of the datasets)
@@ -1281,7 +1281,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /** buffer for storing lowest visible x point */
-    protected PointD posForGetLowestVisibleX = PointD.getInstance(0,0);
+    protected MPPointD posForGetLowestVisibleX = MPPointD.getInstance(0,0);
 
     /**
      * Returns the lowest x-index (value on the x-axis) that is still visible on
@@ -1298,7 +1298,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /** buffer for storing highest visible x point */
-    protected PointD posForGetHighestVisibleX = PointD.getInstance(0,0);
+    protected MPPointD posForGetHighestVisibleX = MPPointD.getInstance(0,0);
 
     /**
      * Returns the highest x-index (value on the x-axis) that is still visible

@@ -9,6 +9,7 @@ import java.util.List;
  * Created by Tony Patino on 6/24/16.
  */
 public class MPPointF extends ObjectPool.Poolable {
+
     private static ObjectPool<MPPointF> pool;
 
     public float x;

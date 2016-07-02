@@ -6,7 +6,7 @@ import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
-import com.github.mikephil.charting.utils.PointD;
+import com.github.mikephil.charting.utils.MPPointD;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,26 +33,26 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
     @Override
     public Highlight getHighlight(float x, float y) {
 
-        PointD pos = getValsForTouch(x, y);
+        MPPointD pos = getValsForTouch(x, y);
         float xVal = (float) pos.x;
-        PointD.recycleInstance(pos);
+        MPPointD.recycleInstance(pos);
 
         Highlight high = getHighlightForX(xVal, x, y);
         return high;
     }
 
     /**
-     * Returns a recyclable PointD instance.
+     * Returns a recyclable MPPointD instance.
      * Returns the corresponding xPos for a given touch-position in pixels.
      *
      * @param x
      * @param y
      * @return
      */
-    protected PointD getValsForTouch(float x, float y) {
+    protected MPPointD getValsForTouch(float x, float y) {
 
         // take any transformer to determine the x-axis value
-        PointD pos = mChart.getTransformer(YAxis.AxisDependency.LEFT).getValuesByTouchPoint(x, y);
+        MPPointD pos = mChart.getTransformer(YAxis.AxisDependency.LEFT).getValuesByTouchPoint(x, y);
         return pos;
     }
 
@@ -167,7 +167,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
         if (e == null)
             return null;
 
-        PointD pixels = mChart.getTransformer(set.getAxisDependency()).getPixelsForValues(e.getX(), e.getY());
+        MPPointD pixels = mChart.getTransformer(set.getAxisDependency()).getPixelsForValues(e.getX(), e.getY());
 
         return new Highlight(e.getX(), e.getY(), (float) pixels.x, (float) pixels.y, dataSetIndex, set.getAxisDependency());
     }

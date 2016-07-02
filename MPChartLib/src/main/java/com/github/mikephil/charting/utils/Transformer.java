@@ -385,9 +385,9 @@ public class Transformer {
     float[] ptsBuffer = new float[2];
 
     /**
-     * Returns a recyclable PointD instance.
+     * Returns a recyclable MPPointD instance.
      * returns the x and y values in the chart at the given touch point
-     * (encapsulated in a PointD). This method transforms pixel coordinates to
+     * (encapsulated in a MPPointD). This method transforms pixel coordinates to
      * coordinates / values in the chart. This is the opposite method to
      * getPixelsForValues(...).
      *
@@ -395,14 +395,14 @@ public class Transformer {
      * @param y
      * @return
      */
-    public PointD getValuesByTouchPoint(float x, float y) {
+    public MPPointD getValuesByTouchPoint(float x, float y) {
 
-        PointD result = PointD.getInstance(0,0);
+        MPPointD result = MPPointD.getInstance(0,0);
         getValuesByTouchPoint(x,y,result);
         return result;
     }
 
-    public void getValuesByTouchPoint(float x, float y, PointD outputPoint){
+    public void getValuesByTouchPoint(float x, float y, MPPointD outputPoint){
 
         ptsBuffer[0] = x;
         ptsBuffer[1] = y;
@@ -414,14 +414,14 @@ public class Transformer {
     }
 
     /**
-     * Returns a recyclable PointD instance.
+     * Returns a recyclable MPPointD instance.
      * Returns the x and y coordinates (pixels) for a given x and y value in the chart.
      *
      * @param x
      * @param y
      * @return
      */
-    public PointD getPixelsForValues(float x, float y) {
+    public MPPointD getPixelsForValues(float x, float y) {
 
         ptsBuffer[0] = x;
         ptsBuffer[1] = y;
@@ -431,7 +431,7 @@ public class Transformer {
         double xPx = ptsBuffer[0];
         double yPx = ptsBuffer[1];
 
-        return PointD.getInstance(xPx, yPx);
+        return MPPointD.getInstance(xPx, yPx);
     }
 
     public Matrix getValueMatrix() {
