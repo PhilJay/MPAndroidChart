@@ -58,7 +58,6 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
 
         mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
-        mChart.setLogEnabled(true);
 
         // no description text
         mChart.setDescription("");

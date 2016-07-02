@@ -298,7 +298,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
      *
      * @param colors
      */
-    public void setCircleColors(int[] colors) {
+    public void setCircleColors(int... colors) {
         this.mCircleColors = ColorTemplate.createColors(colors);
     }
 

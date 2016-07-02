@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.PointF;
 import android.graphics.Rect;
 import android.os.Build;
 import android.text.Layout;
@@ -727,31 +726,5 @@ public abstract class Utils {
 
     public static int getSDKInt() {
         return android.os.Build.VERSION.SDK_INT;
-    }
-
-    /**
-     * Calculates the granularity (minimum axis interval) based on axis range and labelcount.
-     * Default granularity is 1/10th of interval.
-     *
-     * @param range
-     * @param labelCount
-     * @return
-     */
-    public static double granularity(float range, int labelCount) {
-
-        // Find out how much spacing (in y value space) between axis values
-        double rawInterval = range / labelCount;
-        double interval = Utils.roundToNextSignificant(rawInterval);
-
-        // Normalize interval
-        double intervalMagnitude = Utils.roundToNextSignificant(Math.pow(10, (int) Math.log10
-                (interval)));
-        int intervalSigDigit = (int) (interval / intervalMagnitude);
-
-        if (intervalSigDigit > 5) {
-            interval = Math.floor(10 * intervalMagnitude);
-        }
-
-        return interval * 0.1; // granularity is 1/10th of interval
     }
 }

@@ -15,7 +15,7 @@ public class TransformerHorizontalBarChart extends Transformer {
     /**
      * Prepares the matrix that contains all offsets.
      * 
-     * @param chart
+     * @param inverted
      */
     public void prepareMatrixOffset(boolean inverted) {
 

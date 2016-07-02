@@ -150,7 +150,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      *
      * @param colors
      */
-    public void setColors(int[] colors) {
+    public void setColors(int... colors) {
         this.mColors = ColorTemplate.createColors(colors);
     }
 
