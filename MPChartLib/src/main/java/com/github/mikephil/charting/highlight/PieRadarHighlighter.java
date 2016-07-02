@@ -1,13 +1,7 @@
 package com.github.mikephil.charting.highlight;
 
-import android.graphics.PointF;
-
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.charts.PieRadarChartBase;
-import com.github.mikephil.charting.charts.RadarChart;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
-import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +12,11 @@ import java.util.List;
 public abstract class PieRadarHighlighter<T extends PieRadarChartBase> implements Highlighter {
 
     protected T mChart;
+
+    /**
+     * buffer for storing previously highlighted values
+     */
+    protected List<Highlight> mHighlightBuffer = new ArrayList<Highlight>();
 
     public PieRadarHighlighter(T chart) {
         this.mChart = chart;

@@ -21,6 +21,11 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      */
     protected T mChart;
 
+    /**
+     * buffer for storing previously highlighted values
+     */
+    protected List<Highlight> mHighlightBuffer = new ArrayList<Highlight>();
+
     public ChartHighlighter(T chart) {
         this.mChart = chart;
     }
@@ -110,8 +115,6 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
         return h.getYPx();
     }
 
-
-    protected ArrayList<Highlight> highlightsForGetHighlightsAtXPos = new ArrayList<>(2);
     /**
      * Returns a list of Highlight objects representing the entries closest to the given xVal.
      * The returned list contains two objects per DataSet (closest rounding up, closest rounding down).
@@ -123,13 +126,12 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      */
     protected List<Highlight> getHighlightsAtXPos(float xVal, float x, float y) {
 
-        List<Highlight> vals = highlightsForGetHighlightsAtXPos;
-        vals.clear();
+        mHighlightBuffer.clear();
 
         BarLineScatterCandleBubbleData data = getData();
 
         if (data == null)
-            return vals;
+            return mHighlightBuffer;
 
         for (int i = 0, dataSetCount = data.getDataSetCount(); i < dataSetCount; i++) {
 
@@ -142,11 +144,11 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
             Highlight high = buildHighlight(dataSet, i, xVal, DataSet.Rounding.CLOSEST);
 
             if(high != null)
-                vals.add(high);
+                mHighlightBuffer.add(high);
             //vals.add(buildHighlight(dataSet, i, xVal, DataSet.Rounding.DOWN));
         }
 
-        return vals;
+        return mHighlightBuffer;
     }
 
     /**

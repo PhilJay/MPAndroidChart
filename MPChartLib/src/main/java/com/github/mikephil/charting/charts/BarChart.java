@@ -105,7 +105,6 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
      */
     public RectF getBarBounds(BarEntry e) {
 
-
         RectF bounds = new RectF();
         getBarBounds(e, bounds);
 
@@ -143,7 +142,6 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         bounds.set(left, top, right, bottom);
 
         getTransformer(set.getAxisDependency()).rectValueToPixel(outputRect);
-
     }
 
     /**

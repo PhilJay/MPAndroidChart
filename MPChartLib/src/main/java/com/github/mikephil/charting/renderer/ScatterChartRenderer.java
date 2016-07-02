@@ -100,11 +100,11 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet);
 
-                XBounds bounds = getXBounds(mChart, dataSet);
+                mXBounds.set(mChart, dataSet);
 
                 float[] positions = mChart.getTransformer(dataSet.getAxisDependency())
                         .generateTransformedValuesScatter(dataSet,
-                                mAnimator.getPhaseX(), mAnimator.getPhaseY(), bounds.min, bounds.max);
+                                mAnimator.getPhaseX(), mAnimator.getPhaseY(), mXBounds.min, mXBounds.max);
 
                 float shapeSize = Utils.convertDpToPixel(dataSet.getScatterShapeSize());
 
@@ -118,10 +118,10 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
                             || !mViewPortHandler.isInBoundsY(positions[j + 1])))
                         continue;
 
-                    Entry entry = dataSet.getEntryForIndex(j / 2 + bounds.min);
+                    Entry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);
 
                     drawValue(c, dataSet.getValueFormatter(), entry.getY(), entry, i, positions[j],
-                            positions[j + 1] - shapeSize, dataSet.getValueTextColor(j / 2 + bounds.min));
+                            positions[j + 1] - shapeSize, dataSet.getValueTextColor(j / 2 + mXBounds.min));
                 }
             }
         }

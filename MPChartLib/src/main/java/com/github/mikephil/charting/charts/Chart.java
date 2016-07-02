@@ -12,7 +12,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
-import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -1427,50 +1426,6 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     public void setDrawMarkerViews(boolean enabled) {
         mDrawMarkerViews = enabled;
-    }
-
-    /**
-     * Get all Entry objects at the given index across all DataSets.
-     * INFORMATION: This method does calculations at runtime. Do not over-use in
-     * performance critical situations.
-     *
-     * @param xIndex
-     * @return
-     */
-    public List<Entry> getEntriesAtIndex(int xIndex) {
-
-        List<Entry> vals = new ArrayList<Entry>();
-
-        for (int i = 0; i < mData.getDataSetCount(); i++) {
-
-            IDataSet set = mData.getDataSetByIndex(i);
-
-            Entry e = set.getEntryForXPos(xIndex);
-
-            if (e != null) {
-                vals.add(e);
-            }
-        }
-
-        return vals;
-    }
-
-    public void getEntriesAtIndex(int xIndex, List<Entry> entriesOutput){
-
-        List<Entry> vals = entriesOutput;
-        vals.clear();
-
-        for (int i = 0; i < mData.getDataSetCount(); i++) {
-
-            IDataSet set = mData.getDataSetByIndex(i);
-
-            Entry e = set.getEntryForXPos(xIndex);
-
-            if (e != null) {
-                vals.add(e);
-            }
-        }
-
     }
 
     /**

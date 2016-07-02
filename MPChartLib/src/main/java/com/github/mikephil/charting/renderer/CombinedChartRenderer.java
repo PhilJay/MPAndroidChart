@@ -23,7 +23,7 @@ public class CombinedChartRenderer extends DataRenderer {
     /**
      * all rederers for the different kinds of data this combined-renderer can draw
      */
-    protected List<DataRenderer> mRenderers;
+    protected List<DataRenderer> mRenderers = new ArrayList<DataRenderer>(5);
 
     protected WeakReference<Chart> mChart;
 
@@ -33,7 +33,6 @@ public class CombinedChartRenderer extends DataRenderer {
         createRenderers(chart, animator, viewPortHandler);
     }
 
-    protected ArrayList<DataRenderer> renderersForCreateRenderers = new ArrayList<>(4);
     /**
      * Creates the renderers needed for this combined-renderer in the required order. Also takes the DrawOrder into
      * consideration.
@@ -44,7 +43,6 @@ public class CombinedChartRenderer extends DataRenderer {
      */
     protected void createRenderers(CombinedChart chart, ChartAnimator animator, ViewPortHandler viewPortHandler) {
 
-        mRenderers = renderersForCreateRenderers;
         mRenderers.clear();
 
         DrawOrder[] orders = chart.getDrawOrder();
@@ -104,7 +102,8 @@ public class CombinedChartRenderer extends DataRenderer {
             renderer.drawExtras(c);
     }
 
-    protected ArrayList<Highlight> highlightsforDrawHighlighted = new ArrayList<>();
+    protected List<Highlight> mHighlightBuffer = new ArrayList<Highlight>();
+
     @Override
     public void drawHighlighted(Canvas c, Highlight[] indices) {
 
@@ -128,16 +127,14 @@ public class CombinedChartRenderer extends DataRenderer {
             int dataIndex = data == null ? -1
                     : ((CombinedData)chart.getData()).getAllData().indexOf(data);
 
-            ArrayList<Highlight> dataIndices = highlightsforDrawHighlighted;
-            dataIndices.clear();
-            Highlight h;
-            for(int i = 0 ; i < dataIndices.size() ; i++){
-                h = dataIndices.get(i);
+            mHighlightBuffer.clear();
+
+            for (Highlight h : indices) {
                 if (h.getDataIndex() == dataIndex || h.getDataIndex() == -1)
-                    dataIndices.add(h);
+                    mHighlightBuffer.add(h);
             }
 
-            renderer.drawHighlighted(c, dataIndices.toArray(new Highlight[dataIndices.size()]));
+            renderer.drawHighlighted(c, mHighlightBuffer.toArray(new Highlight[mHighlightBuffer.size()]));
         }
     }
 

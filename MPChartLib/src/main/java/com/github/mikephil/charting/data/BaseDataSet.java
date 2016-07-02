@@ -169,14 +169,12 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
         if(mColors == null){
             mColors = new ArrayList<>();
         }
-        List<Integer> clrs = mColors;
-        clrs.clear();
+
+        mColors.clear();
 
         for (int color : colors) {
-            clrs.add(c.getResources().getColor(color));
+            mColors.add(c.getResources().getColor(color));
         }
-
-        mColors = clrs;
     }
 
     /**

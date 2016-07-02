@@ -1280,7 +1280,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         return null;
     }
 
+    /** buffer for storing lowest visible x point */
     protected PointD posForGetLowestVisibleX = PointD.getInstance(0,0);
+
     /**
      * Returns the lowest x-index (value on the x-axis) that is still visible on
      * the chart.
@@ -1295,7 +1297,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         return result;
     }
 
+    /** buffer for storing highest visible x point */
     protected PointD posForGetHighestVisibleX = PointD.getInstance(0,0);
+
     /**
      * Returns the highest x-index (value on the x-axis) that is still visible
      * on the chart.

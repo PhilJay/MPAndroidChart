@@ -193,12 +193,12 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
             // The value of the highlighted entry could be NaN -
             //   if we are not interested in highlighting a specific value.
 
-            List<?> entries = data.getDataSetByIndex(highlight.getDataSetIndex())
+            List<Entry> entries = data.getDataSetByIndex(highlight.getDataSetIndex())
                     .getEntriesForXPos(highlight.getX());
-            for (Object entry : entries)
-                if (((Entry) entry).getY() == highlight.getY() ||
+            for (Entry entry : entries)
+                if (entry.getY() == highlight.getY() ||
                         Float.isNaN(highlight.getY()))
-                    return (Entry) entry;
+                    return entry;
 
             return null;
         }

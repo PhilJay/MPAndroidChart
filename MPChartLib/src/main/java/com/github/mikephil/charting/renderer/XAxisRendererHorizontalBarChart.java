@@ -129,17 +129,13 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
         MPPointF.recycleInstance(pointF);
     }
 
-    protected float[] mDrawLabelsBuffer = new float[2];
     @Override
     protected void drawLabels(Canvas c, float pos, MPPointF anchor) {
 
         final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
         boolean centeringEnabled = mXAxis.isCenterAxisLabelsEnabled();
 
-        if(mDrawLabelsBuffer.length != mAxis.mEntryCount * 2){
-            mDrawLabelsBuffer = new float[mXAxis.mEntryCount * 2];
-        }
-        float[] positions = mDrawLabelsBuffer;
+        float[] positions = new float[mXAxis.mEntryCount * 2];
 
         for (int i = 0; i < positions.length; i += 2) {
 

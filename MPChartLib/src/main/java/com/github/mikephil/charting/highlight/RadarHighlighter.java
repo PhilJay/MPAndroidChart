@@ -1,14 +1,11 @@
 package com.github.mikephil.charting.highlight;
 
-import android.graphics.PointF;
-
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,8 +40,6 @@ public class RadarHighlighter extends PieRadarHighlighter<RadarChart> {
 
         return closest;
     }
-
-    protected ArrayList<Highlight> highlightsForGetHighlightsAtIndex = new ArrayList<>(2);
     /**
      * Returns an array of Highlight objects for the given index. The Highlight
      * objects give information about the value at the selected index and the
@@ -56,8 +51,7 @@ public class RadarHighlighter extends PieRadarHighlighter<RadarChart> {
      */
     protected List<Highlight> getHighlightsAtIndex(int index) {
 
-        List<Highlight> vals = highlightsForGetHighlightsAtIndex;
-        vals.clear();
+        mHighlightBuffer.clear();
 
         float phaseX = mChart.getAnimator().getPhaseX();
         float phaseY = mChart.getAnimator().getPhaseY();
@@ -77,9 +71,9 @@ public class RadarHighlighter extends PieRadarHighlighter<RadarChart> {
                     mChart.getCenterOffsets(), y * factor * phaseY,
                     sliceangle * index * phaseX + mChart.getRotationAngle(), pOut);
 
-            vals.add(new Highlight(index, entry.getY(), pOut.x, pOut.y, i, dataSet.getAxisDependency()));
+            mHighlightBuffer.add(new Highlight(index, entry.getY(), pOut.x, pOut.y, i, dataSet.getAxisDependency()));
         }
 
-        return vals;
+        return mHighlightBuffer;
     }
 }

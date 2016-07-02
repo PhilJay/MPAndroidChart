@@ -47,7 +47,7 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
         ICandleDataSet set;
         List<ICandleDataSet> dataSets = candleData.getDataSets();
         int setCount = dataSets.size();
-        for(int i = 0 ; i < setCount ; i++){
+        for (int i = 0; i < setCount; i++) {
             set = dataSets.get(i);
 
             if (set.isVisible() && set.getEntryCount() > 0)
@@ -64,12 +64,12 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
         float barSpace = dataSet.getBarSpace();
         boolean showCandleBar = dataSet.getShowCandleBar();
 
-        XBounds bounds = getXBounds(mChart, dataSet);
+        mXBounds.set(mChart, dataSet);
 
         mRenderPaint.setStrokeWidth(dataSet.getShadowWidth());
 
         // draw the body
-        for (int j = bounds.min; j <= bounds.range + bounds.min; j++) {
+        for (int j = mXBounds.min; j <= mXBounds.range + mXBounds.min; j++) {
 
             // get the entry
             CandleEntry e = dataSet.getEntryForIndex(j);
@@ -274,10 +274,10 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
                 Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-                XBounds bounds = getXBounds(mChart, dataSet);
+                mXBounds.set(mChart, dataSet);
 
                 float[] positions = trans.generateTransformedValuesCandle(
-                        dataSet, mAnimator.getPhaseX(), mAnimator.getPhaseY(), bounds.min, bounds.max);
+                        dataSet, mAnimator.getPhaseX(), mAnimator.getPhaseY(), mXBounds.min, mXBounds.max);
 
                 float yOffset = Utils.convertDpToPixel(5f);
 
@@ -292,7 +292,7 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
                     if (!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y))
                         continue;
 
-                    CandleEntry entry = dataSet.getEntryForIndex(j / 2 + bounds.min);
+                    CandleEntry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);
 
                     drawValue(c, dataSet.getValueFormatter(), entry.getHigh(), entry, i, x, y - yOffset, dataSet
                             .getValueTextColor(j / 2));

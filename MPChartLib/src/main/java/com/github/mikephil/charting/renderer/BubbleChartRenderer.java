@@ -10,7 +10,6 @@ import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.BubbleEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
@@ -50,7 +49,7 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
         IBubbleDataSet set;
         List<IBubbleDataSet> dataSets = bubbleData.getDataSets();
         int setCount = dataSets.size();
-        for(int i = 0 ; i < setCount ; i++){
+        for (int i = 0; i < setCount; i++) {
             set = dataSets.get(i);
 
             if (set.isVisible() && set.getEntryCount() > 0)
@@ -74,7 +73,7 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
         float phaseY = mAnimator.getPhaseY();
 
-        XBounds bounds = getXBounds(mChart, dataSet);
+        mXBounds.set(mChart, dataSet);
 
         sizeBuffer[0] = 0f;
         sizeBuffer[2] = 1f;
@@ -88,7 +87,7 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
         final float maxBubbleHeight = Math.abs(mViewPortHandler.contentBottom() - mViewPortHandler.contentTop());
         final float referenceSize = Math.min(maxBubbleHeight, maxBubbleWidth);
 
-        for (int j = bounds.min; j <= bounds.range + bounds.min; j++) {
+        for (int j = mXBounds.min; j <= mXBounds.range + mXBounds.min; j++) {
 
             final BubbleEntry entry = dataSet.getEntryForIndex(j);
 
@@ -143,16 +142,16 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
                 final float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
                 final float phaseY = mAnimator.getPhaseY();
 
-                XBounds bounds = getXBounds(mChart, dataSet);
+                mXBounds.set(mChart, dataSet);
 
                 final float[] positions = mChart.getTransformer(dataSet.getAxisDependency())
-                        .generateTransformedValuesBubble(dataSet, phaseY, bounds.min, bounds.max);
+                        .generateTransformedValuesBubble(dataSet, phaseY, mXBounds.min, mXBounds.max);
 
                 final float alpha = phaseX == 1 ? phaseY : phaseX;
 
                 for (int j = 0; j < positions.length; j += 2) {
 
-                    int valueTextColor = dataSet.getValueTextColor(j / 2 + bounds.min);
+                    int valueTextColor = dataSet.getValueTextColor(j / 2 + mXBounds.min);
                     valueTextColor = Color.argb(Math.round(255.f * alpha), Color.red(valueTextColor),
                             Color.green(valueTextColor), Color.blue(valueTextColor));
 
@@ -165,7 +164,7 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
                     if ((!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y)))
                         continue;
 
-                    BubbleEntry entry = dataSet.getEntryForIndex(j / 2 + bounds.min);
+                    BubbleEntry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);
 
                     drawValue(c, dataSet.getValueFormatter(), entry.getSize(), entry, i, x,
                             y + (0.5f * lineHeight), valueTextColor);

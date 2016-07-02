@@ -295,7 +295,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         return high;
     }
 
-    protected ArrayList<T> entriesForGetEntriesForXPos = new ArrayList<>(2);
     /**
      * Returns all Entry objects at the given xIndex. INFORMATION: This method
      * does calculations at runtime. Do not over-use in performance critical
@@ -307,8 +306,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     @Override
     public List<T> getEntriesForXPos(float xVal) {
 
-        List<T> entries = entriesForGetEntriesForXPos;
-        entries.clear();
+        List<T> entries = new ArrayList<T>();
 
         int low = 0;
         int high = mValues.size() - 1;

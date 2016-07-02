@@ -3,7 +3,6 @@ package com.github.mikephil.charting.data;
 
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BubbleData extends BarLineScatterCandleBubbleData<IBubbleDataSet> {
@@ -28,11 +27,8 @@ public class BubbleData extends BarLineScatterCandleBubbleData<IBubbleDataSet> {
      * @param width
      */
     public void setHighlightCircleWidth(float width) {
-        IBubbleDataSet set;
-        final int setCount = mDataSets.size();
-        for(int i = 0 ; i < setCount ; i++){
-            set = mDataSets.get(i);
-            set.setHighlightCircleWidth(width);
+        for(int i = 0 ; i < mDataSets.size() ; i++){
+            mDataSets.get(i).setHighlightCircleWidth(width);
         }
     }
 }

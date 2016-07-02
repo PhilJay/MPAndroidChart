@@ -1,7 +1,6 @@
 package com.github.mikephil.charting.renderer;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider;
@@ -13,6 +12,8 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
  */
 public abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
 
+    /** buffer for storing the current minimum and maximum visible x */
+    protected XBounds mXBounds = new XBounds();
 
     public BarLineScatterCandleBubbleRenderer(ChartAnimator animator, ViewPortHandler viewPortHandler) {
         super(animator, viewPortHandler);
@@ -40,17 +41,6 @@ public abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
     }
 
     /**
-     * Calculates and returns the x-bounds for the given DataSet in terms of index in their values array. This
-     * includes minimum and maximum visible x, as well as range.
-     *
-     * @param dataSet
-     * @return
-     */
-    protected XBounds getXBounds(BarLineScatterCandleBubbleDataProvider chart, IBarLineScatterCandleBubbleDataSet dataSet) {
-        return new XBounds(chart, dataSet);
-    }
-
-    /**
      * Class representing the bounds of the current viewport in terms of indices in the values array of a DataSet.
      */
     protected class XBounds {
@@ -69,16 +59,6 @@ public abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
          * range of visible entry indices
          */
         public int range;
-
-        /**
-         * Calculates the minimum and maximum x values as well as the range between them.
-         *
-         * @param chart
-         * @param dataSet
-         */
-        public XBounds(BarLineScatterCandleBubbleDataProvider chart, IBarLineScatterCandleBubbleDataSet dataSet) {
-            this.set(chart, dataSet);
-        }
 
         /**
          * Calculates the minimum and maximum x values as well as the range between them.

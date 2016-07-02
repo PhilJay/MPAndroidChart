@@ -8,7 +8,6 @@ import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.interfaces.dataprovider.CombinedDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,13 +27,10 @@ public class CombinedHighlighter extends ChartHighlighter<CombinedDataProvider> 
         barHighlighter = barChart.getBarData() == null ? null : new BarHighlighter(barChart);
     }
 
-
-    protected ArrayList<Highlight> highlightsForGetHighlightsAtXPos = new ArrayList<>(2);
     @Override
     protected List<Highlight> getHighlightsAtXPos(float xVal, float x, float y) {
 
-        List<Highlight> vals = highlightsForGetHighlightsAtXPos;
-        vals.clear();
+        mHighlightBuffer.clear();
 
         List<BarLineScatterCandleBubbleData> dataObjects = mChart.getCombinedData().getAllData();
 
@@ -48,7 +44,7 @@ public class CombinedHighlighter extends ChartHighlighter<CombinedDataProvider> 
 
                 if (high != null) {
                     high.setDataIndex(i);
-                    vals.add(high);
+                    mHighlightBuffer.add(high);
                 }
             } else {
 
@@ -62,7 +58,7 @@ public class CombinedHighlighter extends ChartHighlighter<CombinedDataProvider> 
 
                     Highlight s1 = buildHighlight(dataSet, j, xVal, DataSet.Rounding.CLOSEST);
                     s1.setDataIndex(i);
-                    vals.add(s1);
+                    mHighlightBuffer.add(s1);
 
 //                    Highlight s2 = buildHighlight(dataSet, j, xVal, DataSet.Rounding.DOWN);
 //                    s2.setDataIndex(i);
@@ -71,7 +67,7 @@ public class CombinedHighlighter extends ChartHighlighter<CombinedDataProvider> 
             }
         }
 
-        return vals;
+        return mHighlightBuffer;
     }
 
 //    protected Highlight getClosest(float x, float y, Highlight... highs) {

@@ -1,7 +1,6 @@
 package com.github.mikephil.charting.charts;
 
 import android.content.Context;
-import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -18,7 +17,6 @@ import com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart;
 import com.github.mikephil.charting.renderer.YAxisRendererHorizontalBarChart;
 import com.github.mikephil.charting.utils.HorizontalViewPortHandler;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.github.mikephil.charting.utils.PointD;
 import com.github.mikephil.charting.utils.TransformerHorizontalBarChart;
 import com.github.mikephil.charting.utils.Utils;
 
@@ -209,7 +207,6 @@ public class HorizontalBarChart extends BarChart {
             return getHighlighter().getHighlight(y, x); // switch x and y
     }
 
-    protected PointD posForGetLowestVisibleX = PointD.getInstance(0,0);
     @Override
     public float getLowestVisibleX() {
         getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentLeft(),
@@ -218,7 +215,6 @@ public class HorizontalBarChart extends BarChart {
         return result;
     }
 
-    protected PointD posForGetHighestVisibleX = PointD.getInstance(0,0);
     @Override
     public float getHighestVisibleX() {
         getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentLeft(),

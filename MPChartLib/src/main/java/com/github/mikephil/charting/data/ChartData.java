@@ -10,7 +10,6 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -80,12 +79,10 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      */
     private List<T> arrayToList(T[] array) {
 
-        int setsCount = array.length;
-        List<T> list = new ArrayList<>(setsCount);
+        List<T> list = new ArrayList<T>();
 
-        T set = null;
-        for(int i = 0 ; i < setsCount ; i++){
-            set = array[i];
+        for (int i = 0; i < array.length; i++) {
+            T set = array[i];
             list.add(set);
         }
 
@@ -132,10 +129,8 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         mXMax = -Float.MAX_VALUE;
         mXMin = Float.MAX_VALUE;
 
-        T set;
-        int setCount = mDataSets.size();
-        for(int i = 0 ; i < setCount ; i++){
-            set = mDataSets.get(i);
+        for (int i = 0; i < mDataSets.size(); i++) {
+            T set = mDataSets.get(i);
             calcMinMax(set);
         }
 
@@ -152,10 +147,9 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
             mLeftAxisMax = firstLeft.getYMax();
             mLeftAxisMin = firstLeft.getYMin();
 
-            IDataSet dataSet;
-            int dataSetsCount = mDataSets.size();
-            for(int i = 0 ; i < dataSetsCount ; i++){
-                dataSet = mDataSets.get(i);
+            for (int i = 0; i < mDataSets.size(); i++) {
+
+                T dataSet = mDataSets.get(i);
                 if (dataSet.getAxisDependency() == AxisDependency.LEFT) {
                     if (dataSet.getYMin() < mLeftAxisMin)
                         mLeftAxisMin = dataSet.getYMin();
@@ -174,10 +168,9 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
             mRightAxisMax = firstRight.getYMax();
             mRightAxisMin = firstRight.getYMin();
 
-            IDataSet dataSet;
-            int dataSetsCount = mDataSets.size();
-            for(int i = 0 ; i < dataSetsCount ; i++){
-                dataSet = mDataSets.get(i);
+            for (int i = 0; i < mDataSets.size(); i++) {
+
+                T dataSet = mDataSets.get(i);
                 if (dataSet.getAxisDependency() == AxisDependency.RIGHT) {
                     if (dataSet.getYMin() < mRightAxisMin)
                         mRightAxisMin = dataSet.getYMin();
@@ -321,7 +314,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      *
      * @return
      */
-    protected String[] getDataSetLabels() {
+    public String[] getDataSetLabels() {
 
         String[] types = new String[mDataSets.size()];
 
@@ -626,10 +619,9 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      * @return
      */
     protected T getFirstLeft(List<T> sets) {
-        T dataSet;
-        int setCount = sets.size();
-        for(int i = 0 ; i < setCount ; i++){
-            dataSet = sets.get(i);
+
+        for (int i = 0; i < sets.size(); i++) {
+            T dataSet = sets.get(i);
             if (dataSet.getAxisDependency() == AxisDependency.LEFT)
                 return dataSet;
         }
@@ -643,10 +635,9 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      * @return
      */
     public T getFirstRight(List<T> sets) {
-        T dataSet;
-        int setCount = sets.size();
-        for(int i = 0 ; i < setCount ; i++){
-            dataSet = sets.get(i);
+
+        for (int i = 0; i < sets.size(); i++) {
+            T dataSet = sets.get(i);
             if (dataSet.getAxisDependency() == AxisDependency.RIGHT)
                 return dataSet;
         }
@@ -662,10 +653,9 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         if (f == null)
             return;
         else {
-            IDataSet set;
-            final int setCount = mDataSets.size();
-            for(int i = 0 ; i < setCount ; i++){
-                set = mDataSets.get(i);
+
+            for (int i = 0; i < mDataSets.size(); i++) {
+                T set = mDataSets.get(i);
                 set.setValueFormatter(f);
             }
         }
@@ -678,10 +668,9 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      * @param color
      */
     public void setValueTextColor(int color) {
-        IDataSet set;
-        final int setCount = mDataSets.size();
-        for(int i = 0 ; i < setCount ; i++){
-            set = mDataSets.get(i);
+
+        for (int i = 0; i < mDataSets.size(); i++) {
+            T set = mDataSets.get(i);
             set.setValueTextColor(color);
         }
     }
@@ -693,10 +682,9 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      * @param colors
      */
     public void setValueTextColors(List<Integer> colors) {
-        IDataSet set;
-        final int setCount = mDataSets.size();
-        for(int i = 0 ; i < setCount ; i++){
-            set = mDataSets.get(i);
+
+        for (int i = 0; i < mDataSets.size(); i++) {
+            T set = mDataSets.get(i);
             set.setValueTextColors(colors);
         }
     }
@@ -708,10 +696,9 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      * @param tf
      */
     public void setValueTypeface(Typeface tf) {
-        IDataSet set;
-        final int setCount = mDataSets.size();
-        for(int i = 0 ; i < setCount ; i++){
-            set = mDataSets.get(i);
+
+        for (int i = 0; i < mDataSets.size(); i++) {
+            T set = mDataSets.get(i);
             set.setValueTypeface(tf);
         }
     }
@@ -723,10 +710,9 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      * @param size
      */
     public void setValueTextSize(float size) {
-        IDataSet set;
-        final int setCount = mDataSets.size();
-        for(int i = 0 ; i < setCount ; i++){
-            set = mDataSets.get(i);
+
+        for (int i = 0; i < mDataSets.size(); i++) {
+            T set = mDataSets.get(i);
             set.setValueTextSize(size);
         }
     }
@@ -738,10 +724,9 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      * @param enabled
      */
     public void setDrawValues(boolean enabled) {
-        IDataSet set;
-        final int setCount = mDataSets.size();
-        for(int i = 0 ; i < setCount ; i++){
-            set = mDataSets.get(i);
+
+        for (int i = 0; i < mDataSets.size(); i++) {
+            T set = mDataSets.get(i);
             set.setDrawValues(enabled);
         }
     }
@@ -752,10 +737,9 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      * be highlighted programmatically or by touch gesture.
      */
     public void setHighlightEnabled(boolean enabled) {
-        IDataSet set;
-        final int setCount = mDataSets.size();
-        for(int i = 0 ; i < setCount ; i++){
-            set = mDataSets.get(i);
+
+        for (int i = 0; i < mDataSets.size(); i++) {
+            T set = mDataSets.get(i);
             set.setHighlightEnabled(enabled);
         }
     }
@@ -767,10 +751,9 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      * @return
      */
     public boolean isHighlightEnabled() {
-        IDataSet set;
-        final int setCount = mDataSets.size();
-        for(int i = 0 ; i < setCount ; i++){
-            set = mDataSets.get(i);
+
+        for (int i = 0; i < mDataSets.size(); i++) {
+            T set = mDataSets.get(i);
             if (!set.isHighlightEnabled())
                 return false;
         }
@@ -782,7 +765,9 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      * forget to invalidate the chart after this.
      */
     public void clearValues() {
-        mDataSets.clear();
+        if (mDataSets != null) {
+            mDataSets.clear();
+        }
         notifyDataChanged();
     }
 
@@ -795,10 +780,8 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      */
     public boolean contains(T dataSet) {
 
-        T set;
-        int setCount = mDataSets.size();
-        for(int i = 0 ; i < setCount ; i++){
-            set = mDataSets.get(i);
+        for (int i = 0; i < mDataSets.size(); i++) {
+            T set = mDataSets.get(i);
             if (set.equals(dataSet))
                 return true;
         }
@@ -815,10 +798,8 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
         int count = 0;
 
-        T set;
-        int setCount = mDataSets.size();
-        for(int i = 0 ; i < setCount ; i++){
-            set = mDataSets.get(i);
+        for (int i = 0; i < mDataSets.size(); i++) {
+            T set = mDataSets.get(i);
             count += set.getEntryCount();
         }
 
@@ -837,10 +818,8 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
 
         T max = mDataSets.get(0);
 
-        T set;
-        int setCount = mDataSets.size();
-        for(int i = 0 ; i < setCount ; i++){
-            set = mDataSets.get(i);
+        for (int i = 0; i < mDataSets.size(); i++) {
+            T set = mDataSets.get(i);
 
             if (set.getEntryCount() > max.getEntryCount())
                 max = set;
