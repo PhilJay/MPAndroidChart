@@ -21,7 +21,6 @@ public class StackedValueFormatter implements ValueFormatter {
     private FormattedStringCache.Generic mFormattedStringCacheWholeStack;
     private FormattedStringCache.Generic mFormattedStringCache;
 
-
     /**
      * a string that should be appended behind the value
      */
@@ -57,6 +56,7 @@ public class StackedValueFormatter implements ValueFormatter {
         FormattedStringCache.Generic chosenCache = mFormattedStringCache;
         int chosenIndex = dataSetIndex;
         float chosenValue = value;
+
         if (!mDrawWholeStack && entry instanceof BarEntry) {
 
             BarEntry barEntry = (BarEntry) entry;

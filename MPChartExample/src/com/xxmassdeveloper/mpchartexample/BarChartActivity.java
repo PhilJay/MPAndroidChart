@@ -259,6 +259,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
     }
 
     protected RectF mOnValueSelectedRectF = new RectF();
+
     @SuppressLint("NewApi")
     @Override
     public void onValueSelected(Entry e, Highlight h) {
