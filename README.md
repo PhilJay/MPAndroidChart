@@ -100,16 +100,16 @@ In order to use the library, there are 4 different options:
 
 **1. Gradle dependency** (recommended)
 
- - Add the following to your project level `build.gradle`:
- -
- ```gradle
+  -  Add the following to your project level `build.gradle`:
+ 
+```gradle
 allprojects {
 	repositories {
 		maven { url "https://jitpack.io" }
 	}
 }
 ```
- - Add this to your app `build.gradle`:
+  -  Add this to your app `build.gradle`:
  
 ```gradle
 dependencies {
