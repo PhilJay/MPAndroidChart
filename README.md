@@ -100,14 +100,20 @@ In order to use the library, there are 4 different options:
 
 **1. Gradle dependency** (recommended)
 
- - 	Add the following to your `build.gradle`:
+ - Add the following to your project level `build.gradle`:
+ -
  ```gradle
-repositories {
-	    maven { url "https://jitpack.io" }
+allprojects {
+	repositories {
+		maven { url "https://jitpack.io" }
+	}
 }
-
+```
+ - Add this to your app `build.gradle`:
+ 
+```gradle
 dependencies {
-	    compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
+	compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
 }
 ```
 
