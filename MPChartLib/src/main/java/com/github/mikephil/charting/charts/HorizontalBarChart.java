@@ -248,20 +248,20 @@ public class HorizontalBarChart extends BarChart {
 
     @Override
     public void setVisibleYRangeMaximum(float maxYRange, AxisDependency axis) {
-        float yScale = getDeltaY(axis) / maxYRange;
+        float yScale = getAxisRange(axis) / maxYRange;
         mViewPortHandler.setMinimumScaleX(yScale);
     }
 
     @Override
     public void setVisibleYRangeMinimum(float minYRange, AxisDependency axis) {
-        float yScale = getDeltaY(axis) / minYRange;
+        float yScale = getAxisRange(axis) / minYRange;
         mViewPortHandler.setMaximumScaleX(yScale);
     }
 
     @Override
     public void setVisibleYRange(float minYRange, float maxYRange, AxisDependency axis) {
-        float minScale = getDeltaY(axis) / minYRange;
-        float maxScale = getDeltaY(axis) / maxYRange;
+        float minScale = getAxisRange(axis) / minYRange;
+        float maxScale = getAxisRange(axis) / maxYRange;
         mViewPortHandler.setMinMaxScaleX(minScale, maxScale);
     }
 }
