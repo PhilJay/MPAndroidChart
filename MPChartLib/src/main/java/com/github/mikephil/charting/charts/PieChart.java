@@ -4,7 +4,6 @@ package com.github.mikephil.charting.charts;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
@@ -210,17 +209,17 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
         int entryCount = mData.getEntryCount();
 
-        if(mDrawAngles.length != entryCount) {
+        if (mDrawAngles.length != entryCount) {
             mDrawAngles = new float[entryCount];
-        }else{
-            for(int i = 0 ; i < entryCount ; i++){
+        } else {
+            for (int i = 0; i < entryCount; i++) {
                 mDrawAngles[i] = 0;
             }
         }
-        if(mAbsoluteAngles.length != entryCount) {
+        if (mAbsoluteAngles.length != entryCount) {
             mAbsoluteAngles = new float[entryCount];
-        }else{
-            for(int i = 0 ; i < entryCount ; i++){
+        } else {
+            for (int i = 0; i < entryCount; i++) {
                 mAbsoluteAngles[i] = 0;
             }
         }

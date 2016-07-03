@@ -4,15 +4,12 @@ package com.github.mikephil.charting.charts;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.RadarData;
-import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.highlight.RadarHighlighter;
 import com.github.mikephil.charting.renderer.RadarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererRadarChart;
@@ -105,22 +102,6 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         mYAxis.calculate(mData.getYMin(AxisDependency.LEFT), mData.getYMax(AxisDependency.LEFT));
         mXAxis.calculate(0, mData.getMaxEntryCountSet().getEntryCount());
     }
-
-//    @Override
-//    protected float[] getMarkerPosition(Highlight highlight) {
-//        return null;
-//
-////        float angle = getSliceAngle() * e.getX() * mAnimator.getPhaseX() + getRotationAngle();
-////        float val = e.getY() * getFactor() * mAnimator.getPhaseY();
-////        PointF c = getCenterOffsets();
-////
-////        PointF p = new PointF((float) (c.x + val * Math.cos(Math.toRadians(angle))),
-////                (float) (c.y + val * Math.sin(Math.toRadians(angle))));
-////
-////        return new float[]{
-////                p.x, p.y
-////        };
-//    }
 
     @Override
     public void notifyDataSetChanged() {

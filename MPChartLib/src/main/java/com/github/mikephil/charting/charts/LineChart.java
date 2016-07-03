@@ -10,7 +10,7 @@ import com.github.mikephil.charting.renderer.LineChartRenderer;
 
 /**
  * Chart that draws lines, surfaces, circles, ...
- * 
+ *
  * @author Philipp Jahoda
  */
 public class LineChart extends BarLineChartBase<LineData> implements LineDataProvider {
@@ -33,7 +33,7 @@ public class LineChart extends BarLineChartBase<LineData> implements LineDataPro
 
         mRenderer = new LineChartRenderer(this, mAnimator, mViewPortHandler);
     }
-    
+
     @Override
     public LineData getLineData() {
         return mData;
@@ -42,7 +42,7 @@ public class LineChart extends BarLineChartBase<LineData> implements LineDataPro
     @Override
     protected void onDetachedFromWindow() {
         // releases the bitmap in the renderer to avoid oom error
-        if(mRenderer != null && mRenderer instanceof LineChartRenderer) {
+        if (mRenderer != null && mRenderer instanceof LineChartRenderer) {
             ((LineChartRenderer) mRenderer).releaseBitmap();
         }
         super.onDetachedFromWindow();

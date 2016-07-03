@@ -511,25 +511,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         prepareValuePxMatrix();
     }
 
-//    @Override
-//    protected float[] getMarkerPosition(Highlight high) {
-//        return new float[] { high.getXPx(), high.getYPx() };
-//
-//        int dataSetIndex = highlight.getDataSetIndex();
-//        float xPos = e.getX();
-//        float yPos = e.getY() * mAnimator.getPhaseY();
-//
-//        // position of the marker depends on selected value index and value
-//        float[] pts = new float[]{
-//                xPos, yPos
-//        };
-//
-//        getTransformer(mData.getDataSetByIndex(dataSetIndex).getAxisDependency())
-//                .pointValuesToPixel(pts);
-//
-//        return pts;
-//    }
-
     /**
      * draws the grid background
      */
@@ -1044,13 +1025,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         if (e == null)
             return null;
 
-        float[] vals = mGetPositionBuffer;
-        vals[0] = e.getX();
-        vals[1] = e.getY();
+        mGetPositionBuffer[0] = e.getX();
+        mGetPositionBuffer[1] = e.getY();
 
-        getTransformer(axis).pointValuesToPixel(vals);
+        getTransformer(axis).pointValuesToPixel(mGetPositionBuffer);
 
-        return MPPointF.getInstance(vals[0], vals[1]);
+        return MPPointF.getInstance(mGetPositionBuffer[0], mGetPositionBuffer[1]);
     }
 
     /**
@@ -1253,22 +1233,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      */
     public MPPointD getPixelsForValues(float x, float y, AxisDependency axis) {
         return getTransformer(axis).getPixelsForValues(x, y);
-    }
-
-    MPPointD pointForGetYValueByTouchPoint = MPPointD.getInstance(0, 0);
-
-    /**
-     * Returns y value at the given touch position (must not necessarily be
-     * a value contained in one of the datasets)
-     *
-     * @param x
-     * @param y
-     * @return
-     */
-    public float getYValueByTouchPoint(float x, float y, AxisDependency axis) {
-        getValuesByTouchPoint(x, y, axis, pointForGetYValueByTouchPoint);
-        float result = (float) pointForGetYValueByTouchPoint.y;
-        return result;
     }
 
     /**

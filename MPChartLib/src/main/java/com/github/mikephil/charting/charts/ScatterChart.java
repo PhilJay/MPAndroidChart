@@ -42,6 +42,10 @@ public class ScatterChart extends BarLineChartBase<ScatterData> implements Scatt
         return mData;
     }
 
+    /**
+     * Predefined ScatterShapes that allow the specification of a shape a ScatterDataSet should be drawn with.
+     * If a ScatterShape is specified for a ScatterDataSet, the required renderer is set.
+     */
     public enum ScatterShape {
 
         SQUARE("SQUARE"), CIRCLE("CIRCLE"), TRIANGLE("TRIANGLE"), CROSS("CROSS"), X("X"), CHEVRON_UP("CHEVRON_UP"),

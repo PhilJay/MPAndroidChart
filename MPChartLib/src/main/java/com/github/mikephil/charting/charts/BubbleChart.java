@@ -6,7 +6,6 @@ import android.util.AttributeSet;
 
 import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
-import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 import com.github.mikephil.charting.renderer.BubbleChartRenderer;
 
 /**

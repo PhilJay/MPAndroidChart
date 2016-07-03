@@ -308,8 +308,8 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         IDataSet set;
         final List sets = mData.getDataSets();
         final int count = sets.size();
-        for(int i = 0 ; i < count ; i++){
-            set = (IDataSet)sets.get(i);
+        for (int i = 0; i < count; i++) {
+            set = (IDataSet) sets.get(i);
             if (set.needsFormatter() || set.getValueFormatter() == mDefaultFormatter)
                 set.setValueFormatter(mDefaultFormatter);
         }
@@ -486,7 +486,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     protected Highlight[] mIndicesToHighlight;
 
     /**
-     * The maximum distance in screen pixels away from an entry causing it to highlight.
+     * The maximum distance in dp away from an entry causing it to highlight.
      */
     protected float mMaxHighlightDistance = 0f;
 
@@ -1100,9 +1100,9 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * @param y - ycoordinate
      */
     public void setDescriptionPosition(float x, float y) {
-        if(mDescriptionPosition == null){
-            mDescriptionPosition = MPPointF.getInstance(x,y);
-        }else {
+        if (mDescriptionPosition == null) {
+            mDescriptionPosition = MPPointF.getInstance(x, y);
+        } else {
             mDescriptionPosition.x = x;
             mDescriptionPosition.y = y;
         }
@@ -1478,12 +1478,12 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * @param highlighter
      */
     public void setHighlighter(ChartHighlighter highlighter) {
-
         mHighlighter = highlighter;
     }
 
     /**
      * Returns a recyclable MPPointF instance.
+     *
      * @return
      */
     @Override

@@ -144,7 +144,7 @@ public class HorizontalBarChart extends BarChart {
         RectF bounds = outputRect;
         IBarDataSet set = mData.getDataSetForEntry(e);
 
-        if (set == null){
+        if (set == null) {
             outputRect.set(Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE);
             return;
         }
@@ -166,6 +166,7 @@ public class HorizontalBarChart extends BarChart {
     }
 
     protected float[] mGetPositionBuffer = new float[2];
+
     /**
      * Returns a recyclable MPPointF instance.
      *
