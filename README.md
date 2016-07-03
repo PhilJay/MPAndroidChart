@@ -91,7 +91,7 @@ Features
  - Fully customizable (paints, typefaces, legends, colors, background, gestures, dashed lines, ...)
  - Smooth zooming and scrolling for up to 30.000 data points in Line- and BarChart
  - Gradle support
- - Plotting data directly from [**Realm.io**](https://realm.io) mobile database: [MPAndroidChart-Realm](https://github.com/PhilJay/MPAndroidChart-Realm) :zap:
+ - Plotting data directly from [**Realm.io**](https://realm.io) mobile database: [**MPAndroidChart-Realm**](https://github.com/PhilJay/MPAndroidChart-Realm) :zap:
  
 Usage
 -----
