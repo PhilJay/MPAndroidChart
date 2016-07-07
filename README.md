@@ -32,9 +32,13 @@ Donations
 If you just want to be nice, you can check out my [**Amazon-Wishlist**]( https://www.amazon.de/registry/wishlist/2DYHJ69VMF8HM/ref=cm_sw_em_r_mt_ws_WVCyxb4KKQ2G6).
 
 
-## 3rd party bindings
+## Xamarin
 
-Xamarin (by @Flash3001): *Android* - [GitHub](https://github.com/Flash3001/MPAndroidChart.Xamarin)/[NuGet](https://www.nuget.org/packages/MPAndroidChart/). *iOS* - [GitHub](https://github.com/Flash3001/iOSCharts.Xamarin)/[NuGet](https://www.nuget.org/packages/iOSCharts/).
+Xamarin port (by [Flash3001](https://github.com/Flash3001)): *Android* - [GitHub](https://github.com/Flash3001/MPAndroidChart.Xamarin)/[NuGet](https://www.nuget.org/packages/MPAndroidChart/). *iOS* - [GitHub](https://github.com/Flash3001/iOSCharts.Xamarin)/[NuGet](https://www.nuget.org/packages/iOSCharts/).
+
+## Realm.io
+
+[MPAndroidChart-Realm](https://github.com/PhilJay/MPAndroidChart-Realm) allows to directly plot / draw data from [Realm.io](https://realm.io) mobile database.
 
 Spread the word
 -----
