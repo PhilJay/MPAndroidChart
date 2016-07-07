@@ -163,9 +163,10 @@ public abstract class Utils {
         return r.height();
     }
 
+    private static Paint.FontMetrics mFontMetrics = new Paint.FontMetrics();
+
     public static float getLineHeight(Paint paint) {
-        Paint.FontMetrics metrics = new Paint.FontMetrics();
-        return getLineHeight(paint, metrics);
+        return getLineHeight(paint, mFontMetrics);
     }
 
     public static float getLineHeight(Paint paint, Paint.FontMetrics fontMetrics){
@@ -174,8 +175,7 @@ public abstract class Utils {
     }
 
     public static float getLineSpacing(Paint paint) {
-        Paint.FontMetrics metrics = new Paint.FontMetrics();
-        return getLineSpacing(paint, metrics);
+        return getLineSpacing(paint, mFontMetrics);
     }
 
     public static float getLineSpacing(Paint paint, Paint.FontMetrics fontMetrics){

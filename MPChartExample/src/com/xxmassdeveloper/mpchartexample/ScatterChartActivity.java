@@ -74,6 +74,7 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART);
         l.setTypeface(mTfLight);
+        l.setXOffset(5f);
 
         YAxis yl = mChart.getAxisLeft();
         yl.setTypeface(mTfLight);
