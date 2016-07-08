@@ -5,6 +5,7 @@ import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**
@@ -12,11 +13,23 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
  */
 public abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
 
-    /** buffer for storing the current minimum and maximum visible x */
+    /**
+     * buffer for storing the current minimum and maximum visible x
+     */
     protected XBounds mXBounds = new XBounds();
 
     public BarLineScatterCandleBubbleRenderer(ChartAnimator animator, ViewPortHandler viewPortHandler) {
         super(animator, viewPortHandler);
+    }
+
+    /**
+     * Returns true if the DataSet values should be drawn, false if not.
+     *
+     * @param set
+     * @return
+     */
+    protected boolean shouldDrawValues(IDataSet set) {
+        return set.isVisible() && set.isDrawValuesEnabled();
     }
 
     /**
@@ -66,7 +79,7 @@ public abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
          * @param chart
          * @param dataSet
          */
-        public void set(BarLineScatterCandleBubbleDataProvider chart, IBarLineScatterCandleBubbleDataSet dataSet){
+        public void set(BarLineScatterCandleBubbleDataProvider chart, IBarLineScatterCandleBubbleDataSet dataSet) {
             float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
 
             float low = chart.getLowestVisibleX();

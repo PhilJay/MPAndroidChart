@@ -94,7 +94,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
                 IScatterDataSet dataSet = dataSets.get(i);
 
-                if (!dataSet.isDrawValuesEnabled() || dataSet.getEntryCount() == 0)
+                if (!shouldDrawValues(dataSet))
                     continue;
 
                 // apply the text-styling defined by the DataSet

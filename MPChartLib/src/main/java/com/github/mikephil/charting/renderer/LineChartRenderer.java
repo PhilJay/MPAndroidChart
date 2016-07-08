@@ -94,7 +94,7 @@ public class LineChartRenderer extends LineRadarRenderer {
         for (int i = 0; i < setCount; i++) {
             set = lineData.getDataSets().get(i);
 
-            if (set.isVisible() && set.getEntryCount() > 0)
+            if (set.isVisible())
                 drawDataSet(c, set);
         }
 
@@ -519,7 +519,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
                 ILineDataSet dataSet = dataSets.get(i);
 
-                if (!dataSet.isDrawValuesEnabled() || dataSet.getEntryCount() == 0)
+                if (!shouldDrawValues(dataSet))
                     continue;
 
                 // apply the text-styling defined by the DataSet

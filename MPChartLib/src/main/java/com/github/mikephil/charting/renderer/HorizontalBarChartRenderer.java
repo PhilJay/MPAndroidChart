@@ -116,7 +116,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
                 IBarDataSet dataSet = dataSets.get(i);
 
-                if (!dataSet.isDrawValuesEnabled() || dataSet.getEntryCount() == 0)
+                if (!shouldDrawValues(dataSet))
                     continue;
 
                 boolean isInverted = mChart.isInverted(dataSet.getAxisDependency());

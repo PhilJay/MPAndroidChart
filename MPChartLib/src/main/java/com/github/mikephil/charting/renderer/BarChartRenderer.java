@@ -74,7 +74,7 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
             IBarDataSet set = barData.getDataSetByIndex(i);
 
-            if (set.isVisible() && set.getEntryCount() > 0) {
+            if (set.isVisible()) {
                 drawDataSet(c, set, i);
             }
         }
@@ -195,7 +195,7 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
                 IBarDataSet dataSet = dataSets.get(i);
 
-                if (!dataSet.isDrawValuesEnabled() || dataSet.getEntryCount() == 0)
+                if (!shouldDrawValues(dataSet))
                     continue;
 
                 // apply the text-styling defined by the DataSet
