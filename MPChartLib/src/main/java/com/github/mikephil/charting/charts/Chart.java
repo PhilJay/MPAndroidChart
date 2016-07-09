@@ -229,7 +229,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
         // initialize the utils
         Utils.init(getContext());
-        mMaxHighlightDistance = Utils.convertDpToPixel(100f);
+        mMaxHighlightDistance = Utils.convertDpToPixel(500f);
 
         mLegend = new Legend();
 
