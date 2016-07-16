@@ -37,6 +37,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.xxmassdeveloper.mpchartexample.custom.DayAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.custom.MyAxisValueFormatter;
+import com.xxmassdeveloper.mpchartexample.custom.XYMarkerView;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -79,13 +80,15 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart.setDrawGridBackground(false);
         // mChart.setDrawYLabels(false);
 
+        AxisValueFormatter xAxisFormatter = new DayAxisValueFormatter(mChart);
+
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxisPosition.BOTTOM);
         xAxis.setTypeface(mTfLight);
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f); // only intervals of 1 day
         xAxis.setLabelCount(7);
-        xAxis.setValueFormatter(new DayAxisValueFormatter(mChart));
+        xAxis.setValueFormatter(xAxisFormatter);
 
         AxisValueFormatter custom = new MyAxisValueFormatter();
 
@@ -115,6 +118,8 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         // "def", "ghj", "ikl", "mno" });
         // l.setCustom(ColorTemplate.VORDIPLOM_COLORS, new String[] { "abc",
         // "def", "ghj", "ikl", "mno" });
+
+        mChart.setMarkerView(new XYMarkerView(this, xAxisFormatter));
 
         setData(12, 50);
 
