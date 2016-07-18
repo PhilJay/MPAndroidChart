@@ -9,5 +9,8 @@
         android:id="@+id/actionToggleBarValues"
         android:title="Toggle bar Values">
     </item>
-
+    <item
+        android:id="@+id/actionRemoveDataSet"
+        android:title="Remove random set">
+    </item>
 </menu>

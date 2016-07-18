@@ -19,10 +19,10 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.highlight.Highlight;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 public class RealtimeLineChartActivity extends DemoBase implements
@@ -64,27 +64,24 @@ public class RealtimeLineChartActivity extends DemoBase implements
         // add empty data
         mChart.setData(data);
 
-        Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-
         // get the legend (only possible after setting data)
         Legend l = mChart.getLegend();
 
         // modify the legend ...
         // l.setPosition(LegendPosition.LEFT_OF_CHART);
         l.setForm(LegendForm.LINE);
-        l.setTypeface(tf);
+        l.setTypeface(mTfLight);
         l.setTextColor(Color.WHITE);
 
         XAxis xl = mChart.getXAxis();
-        xl.setTypeface(tf);
+        xl.setTypeface(mTfLight);
         xl.setTextColor(Color.WHITE);
         xl.setDrawGridLines(false);
         xl.setAvoidFirstLastClipping(true);
-        xl.setSpaceBetweenLabels(5);
         xl.setEnabled(true);
 
         YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setTypeface(tf);
+        leftAxis.setTypeface(mTfLight);
         leftAxis.setTextColor(Color.WHITE);
         leftAxis.setAxisMaxValue(100f);
         leftAxis.setAxisMinValue(0f);
@@ -122,8 +119,6 @@ public class RealtimeLineChartActivity extends DemoBase implements
         return true;
     }
 
-    private int year = 2015;
-
     private void addEntry() {
 
         LineData data = mChart.getData();
@@ -138,11 +133,8 @@ public class RealtimeLineChartActivity extends DemoBase implements
                 data.addDataSet(set);
             }
 
-            // add a new x-value first
-            data.addXValue(mMonths[data.getXValCount() % 12] + " "
-                    + (year + data.getXValCount() / 12));
-            data.addEntry(new Entry((float) (Math.random() * 40) + 30f, set.getEntryCount()), 0);
-
+            data.addEntry(new Entry(set.getEntryCount(), (float) (Math.random() * 40) + 30f), 0);
+            data.notifyDataChanged();
 
             // let the chart know it's data has changed
             mChart.notifyDataSetChanged();
@@ -152,7 +144,7 @@ public class RealtimeLineChartActivity extends DemoBase implements
             // mChart.setVisibleYRange(30, AxisDependency.LEFT);
 
             // move to the latest entry
-            mChart.moveViewToX(data.getXValCount() - 121);
+            mChart.moveViewToX(data.getEntryCount());
 
             // this automatically refreshes the chart (calls invalidate())
             // mChart.moveViewTo(data.getXValCount()-7, 55f,
@@ -177,40 +169,59 @@ public class RealtimeLineChartActivity extends DemoBase implements
         return set;
     }
 
+    private Thread thread;
+
     private void feedMultiple() {
 
-        new Thread(new Runnable() {
+        if (thread != null)
+            thread.interrupt();
+
+        final Runnable runnable = new Runnable() {
 
             @Override
             public void run() {
-                for(int i = 0; i < 500; i++) {
+                addEntry();
+            }
+        };
 
-                    runOnUiThread(new Runnable() {
+        thread = new Thread(new Runnable() {
 
-                        @Override
-                        public void run() {
-                            addEntry();
-                        }
-                    });
+            @Override
+            public void run() {
+                for (int i = 0; i < 1000; i++) {
+
+                    // Don't generate garbage runnables inside the loop.
+                    runOnUiThread(runnable);
 
                     try {
-                        Thread.sleep(35);
+                        Thread.sleep(25);
                     } catch (InterruptedException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                 }
             }
-        }).start();
+        });
+
+        thread.start();
     }
 
     @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+    public void onValueSelected(Entry e, Highlight h) {
         Log.i("Entry selected", e.toString());
     }
 
     @Override
     public void onNothingSelected() {
         Log.i("Nothing selected", "Nothing selected.");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (thread != null) {
+            thread.interrupt();
+        }
     }
 }

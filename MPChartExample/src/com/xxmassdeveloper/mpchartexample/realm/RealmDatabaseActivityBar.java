@@ -5,7 +5,7 @@ import android.view.WindowManager;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.data.realm.implementation.RealmBarData;
+import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.realm.implementation.RealmBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -47,10 +47,10 @@ public class RealmDatabaseActivityBar extends RealmBaseActivity {
 
     private void setData() {
 
-        RealmResults<RealmDemoData> result = mRealm.allObjects(RealmDemoData.class);
+        RealmResults<RealmDemoData> result = mRealm.where(RealmDemoData.class).findAll();
 
         //RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "stackValues", "xIndex"); // normal entries
-        RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "value", "xIndex"); // stacked entries
+        RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "xValue", "yValue"); // stacked entries
         set.setColors(new int[] {ColorTemplate.rgb("#FF5722"), ColorTemplate.rgb("#03A9F4")});
         set.setLabel("Realm BarDataSet");
 
@@ -58,11 +58,12 @@ public class RealmDatabaseActivityBar extends RealmBaseActivity {
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list
-        RealmBarData data = new RealmBarData(result, "xValue", dataSets);
+        BarData data = new BarData(dataSets);
         styleData(data);
 
         // set data
         mChart.setData(data);
+        mChart.setFitBars(true);
         mChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
     }
 }

@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
@@ -19,14 +20,13 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
+import com.github.mikephil.charting.formatter.FormattedStringCache;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.formatter.AxisValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
-import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.text.DecimalFormat;
@@ -57,6 +57,7 @@ public class StackedBarActivityNegative extends DemoBase implements
 
         mChart.setDrawBarShadow(false);
         mChart.setDrawValueAboveBar(true);
+        mChart.setHighlightFullBarEnabled(false);
         
         mChart.getAxisLeft().setEnabled(false);
         mChart.getAxisRight().setAxisMaxValue(25f);
@@ -72,6 +73,25 @@ public class StackedBarActivityNegative extends DemoBase implements
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(false);
         xAxis.setTextSize(9f);
+        xAxis.setAxisMinValue(0f);
+        xAxis.setAxisMaxValue(110f);
+        xAxis.setCenterAxisLabels(true);
+        xAxis.setLabelCount(12);
+        xAxis.setGranularity(10f);
+        xAxis.setValueFormatter(new AxisValueFormatter() {
+
+            private FormattedStringCache.PrimFloat format = new FormattedStringCache.PrimFloat(new DecimalFormat("###"));
+
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return format.getFormattedValue(value) + "-" + format.getFormattedValue(value+10);
+            }
+
+            @Override
+            public int getDecimalDigits() {
+                return 0;
+            }
+        });
 
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.BELOW_CHART_RIGHT);
@@ -81,31 +101,31 @@ public class StackedBarActivityNegative extends DemoBase implements
 
         // IMPORTANT: When using negative values in stacked bars, always make sure the negative values are in the array first
         ArrayList<BarEntry> yValues = new ArrayList<BarEntry>();
-        yValues.add(new BarEntry(new float[]{ -10, 10 }, 0));
-        yValues.add(new BarEntry(new float[]{ -12, 13 }, 1));
-        yValues.add(new BarEntry(new float[]{ -15, 15 }, 2));
-        yValues.add(new BarEntry(new float[]{ -17, 17 }, 3));
-        yValues.add(new BarEntry(new float[]{ -19, 20 }, 4));
-        yValues.add(new BarEntry(new float[]{ -19, 19 }, 5));
-        yValues.add(new BarEntry(new float[]{ -16, 16 }, 6));
-        yValues.add(new BarEntry(new float[]{ -13, 14 }, 7));
-        yValues.add(new BarEntry(new float[]{ -10, 11 }, 8));
-        yValues.add(new BarEntry(new float[]{ -5, 6 }, 9));
-        yValues.add(new BarEntry(new float[]{ -1, 2 }, 10));
+        yValues.add(new BarEntry(5, new float[]{ -10, 10 }));
+        yValues.add(new BarEntry(15, new float[]{ -12, 13 }));
+        yValues.add(new BarEntry(25, new float[]{ -15, 15 }));
+        yValues.add(new BarEntry(35, new float[]{ -17, 17 }));
+        yValues.add(new BarEntry(45, new float[]{ -19, 20 }));
+        yValues.add(new BarEntry(55, new float[]{ -19, 19 }));
+        yValues.add(new BarEntry(65, new float[]{ -16, 16 }));
+        yValues.add(new BarEntry(75, new float[]{ -13, 14 }));
+        yValues.add(new BarEntry(85, new float[]{ -10, 11 }));
+        yValues.add(new BarEntry(95, new float[]{ -5, 6 }));
+        yValues.add(new BarEntry(105, new float[]{ -1, 2 }));
 
         BarDataSet set = new BarDataSet(yValues, "Age Distribution");
         set.setValueFormatter(new CustomFormatter());
         set.setValueTextSize(7f);
         set.setAxisDependency(YAxis.AxisDependency.RIGHT);
-        set.setBarSpacePercent(40f);
         set.setColors(new int[] {Color.rgb(67,67,72), Color.rgb(124,181,236)});
         set.setStackLabels(new String[]{
                 "Men", "Women"
         });
 
-        String []xVals = new String[]{"0-10", "10-20", "20-30", "30-40", "40-50", "50-60", "60-70", "70-80", "80-90", "90-100", "100+"};
+        String []xLabels = new String[]{"0-10", "10-20", "20-30", "30-40", "40-50", "50-60", "60-70", "70-80", "80-90", "90-100", "100+"};
 
-        BarData data = new BarData(xVals, set);
+        BarData data = new BarData(set);
+        data.setBarWidth(8.5f);
         mChart.setData(data);
         mChart.invalidate();
     }
@@ -161,14 +181,6 @@ public class StackedBarActivityNegative extends DemoBase implements
                 mChart.invalidate();
                 break;
             }
-            case R.id.actionToggleHighlightArrow: {
-                if (mChart.isDrawHighlightArrowEnabled())
-                    mChart.setDrawHighlightArrow(false);
-                else
-                    mChart.setDrawHighlightArrow(true);
-                mChart.invalidate();
-                break;
-            }
             case R.id.animateX: {
                 mChart.animateX(3000);
                 break;
@@ -196,11 +208,11 @@ public class StackedBarActivityNegative extends DemoBase implements
     }
 
     @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+    public void onValueSelected(Entry e, Highlight h) {
 
         BarEntry entry = (BarEntry) e;
         Log.i("VAL SELECTED",
-                "Value: " + Math.abs(entry.getVals()[h.getStackIndex()]));
+                "Value: " + Math.abs(entry.getYVals()[h.getStackIndex()]));
     }
 
     @Override
@@ -209,24 +221,32 @@ public class StackedBarActivityNegative extends DemoBase implements
         Log.i("NOTING SELECTED", "");
     }
 
-    private class CustomFormatter implements ValueFormatter, YAxisValueFormatter {
+    private class CustomFormatter implements ValueFormatter, AxisValueFormatter {
 
-        private DecimalFormat mFormat;
+        private FormattedStringCache.Generic<Integer, Float> mFormatValue;
+        private FormattedStringCache.PrimFloat mFormatAxis;
 
         public CustomFormatter() {
-            mFormat = new DecimalFormat("###");
+            mFormatValue = new FormattedStringCache.Generic<>(new DecimalFormat("###"));
+            mFormatAxis = new FormattedStringCache.PrimFloat(new DecimalFormat("###"));
         }
 
         // data
         @Override
         public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-            return mFormat.format(Math.abs(value)) + "m";
+            return mFormatValue.getFormattedValue(value, dataSetIndex) + "m";
         }
 
         // YAxis
         @Override
-        public String getFormattedValue(float value, YAxis yAxis) {
-            return mFormat.format(Math.abs(value)) + "m";
+        public String getFormattedValue(float value, AxisBase axis) {
+            Float v = Math.abs(value);
+            return mFormatAxis.getFormattedValue(v) + "m";
+        }
+
+        @Override
+        public int getDecimalDigits() {
+            return 0;
         }
     }
 }

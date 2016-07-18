@@ -16,8 +16,6 @@ import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
@@ -190,11 +188,6 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
         tvX.setText("" + (mSeekBarX.getProgress()));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < mSeekBarX.getProgress(); i++) {
-            xVals.add((i) + "");
-        }
- 
         ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
 
         for (int z = 0; z < 3; z++) {
@@ -203,7 +196,7 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
 
             for (int i = 0; i < mSeekBarX.getProgress(); i++) {
                 double val = (Math.random() * mSeekBarY.getProgress()) + 3;
-                values.add(new Entry((float) val, i));
+                values.add(new Entry(i, (float) val));
             }
 
             LineDataSet d = new LineDataSet(values, "DataSet " + (z + 1));
@@ -221,16 +214,16 @@ public class MultiLineChartActivity extends DemoBase implements OnSeekBarChangeL
         ((LineDataSet) dataSets.get(0)).setColors(ColorTemplate.VORDIPLOM_COLORS);
         ((LineDataSet) dataSets.get(0)).setCircleColors(ColorTemplate.VORDIPLOM_COLORS);
 
-        LineData data = new LineData(xVals, dataSets);
+        LineData data = new LineData(dataSets);
         mChart.setData(data);
         mChart.invalidate();
     }
 
     @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+    public void onValueSelected(Entry e, Highlight h) {
         Log.i("VAL SELECTED",
-                "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
-                        + ", DataSet index: " + dataSetIndex);
+                "Value: " + e.getY() + ", xIndex: " + e.getX()
+                        + ", DataSet index: " + h.getDataSetIndex());
     }
 
     @Override

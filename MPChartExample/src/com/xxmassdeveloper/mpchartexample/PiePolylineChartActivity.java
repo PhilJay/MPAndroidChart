@@ -23,6 +23,7 @@ import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
@@ -71,7 +72,7 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
         mChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
         mChart.setCenterText(generateCenterSpannableText());
 
-        mChart.setExtraOffsets(5.f, 5.f, 5.f, 5.f);
+        mChart.setExtraOffsets(20.f, 0.f, 20.f, 0.f);
 
         mChart.setDrawHoleEnabled(true);
         mChart.setHoleColor(Color.WHITE);
@@ -95,7 +96,7 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
         // add a selection listener
         mChart.setOnChartValueSelectedListener(this);
 
-        setData(3, 100);
+        setData(4, 100);
 
         mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
         // mChart.spin(2000, 0, 360);
@@ -140,7 +141,7 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
             }
             case R.id.actionToggleXVals: {
 
-                mChart.setDrawSliceText(!mChart.isDrawSliceTextEnabled());
+                mChart.setDrawEntryLabels(!mChart.isDrawEntryLabelsEnabled());
                 mChart.invalidate();
                 break;
             }
@@ -172,7 +173,7 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-        tvX.setText("" + (mSeekBarX.getProgress() + 1));
+        tvX.setText("" + (mSeekBarX.getProgress()));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
         setData(mSeekBarX.getProgress(), mSeekBarY.getProgress());
@@ -182,21 +183,15 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
 
         float mult = range;
 
-        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+        ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
 
-        // IMPORTANT: In a PieChart, no values (Entry) should have the same
-        // xIndex (even if from different DataSets), since no values can be
-        // drawn above each other.
-        for (int i = 0; i < count + 1; i++) {
-            yVals1.add(new Entry((float) (Math.random() * mult) + mult / 5, i));
+        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
+        // the chart.
+        for (int i = 0; i < count; i++) {
+            entries.add(new PieEntry((float) (Math.random() * mult) + mult / 5, mParties[i % mParties.length]));
         }
 
-        ArrayList<String> xVals = new ArrayList<String>();
-
-        for (int i = 0; i < count + 1; i++)
-            xVals.add(mParties[i % mParties.length]);
-
-        PieDataSet dataSet = new PieDataSet(yVals1, "Election Results");
+        PieDataSet dataSet = new PieDataSet(entries, "Election Results");
         dataSet.setSliceSpace(3f);
         dataSet.setSelectionShift(5f);
 
@@ -226,12 +221,12 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
 
 
         dataSet.setValueLinePart1OffsetPercentage(80.f);
-        dataSet.setValueLinePart1Length(0.3f);
+        dataSet.setValueLinePart1Length(0.2f);
         dataSet.setValueLinePart2Length(0.4f);
         // dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
         dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
 
-        PieData data = new PieData(xVals, dataSet);
+        PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(11f);
         data.setValueTextColor(Color.BLACK);
@@ -247,23 +242,23 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
     private SpannableString generateCenterSpannableText() {
 
         SpannableString s = new SpannableString("MPAndroidChart\ndeveloped by Philipp Jahoda");
-        s.setSpan(new RelativeSizeSpan(1.7f), 0, 14, 0);
+        s.setSpan(new RelativeSizeSpan(1.5f), 0, 14, 0);
         s.setSpan(new StyleSpan(Typeface.NORMAL), 14, s.length() - 15, 0);
         s.setSpan(new ForegroundColorSpan(Color.GRAY), 14, s.length() - 15, 0);
-        s.setSpan(new RelativeSizeSpan(.8f), 14, s.length() - 15, 0);
+        s.setSpan(new RelativeSizeSpan(.65f), 14, s.length() - 15, 0);
         s.setSpan(new StyleSpan(Typeface.ITALIC), s.length() - 14, s.length(), 0);
         s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), s.length() - 14, s.length(), 0);
         return s;
     }
 
     @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+    public void onValueSelected(Entry e, Highlight h) {
 
         if (e == null)
             return;
         Log.i("VAL SELECTED",
-                "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
-                        + ", DataSet index: " + dataSetIndex);
+                "Value: " + e.getY() + ", xIndex: " + e.getX()
+                        + ", DataSet index: " + h.getDataSetIndex());
     }
 
     @Override

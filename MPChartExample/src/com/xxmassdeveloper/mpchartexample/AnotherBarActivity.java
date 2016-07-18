@@ -16,8 +16,6 @@ import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -63,7 +61,6 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxisPosition.BOTTOM);
-        xAxis.setSpaceBetweenLabels(0);
         xAxis.setDrawGridLines(false);
         
         mChart.getAxisLeft().setDrawGridLines(false);
@@ -76,14 +73,6 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
         mChart.animateY(2500);
         
         mChart.getLegend().setEnabled(false);
-
-        // Legend l = mChart.getLegend();
-        // l.setPosition(LegendPosition.BELOW_CHART_CENTER);
-        // l.setFormSize(8f);
-        // l.setFormToTextSpace(4f);
-        // l.setXEntrySpace(6f);
-
-        // mChart.setDrawLegend(false);
     }
 
     @Override
@@ -133,14 +122,6 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
                 mChart.invalidate();
                 break;
             }
-            case R.id.actionToggleHighlightArrow: {
-                if (mChart.isDrawHighlightArrowEnabled())
-                    mChart.setDrawHighlightArrow(false);
-                else
-                    mChart.setDrawHighlightArrow(true);
-                mChart.invalidate();
-                break;
-            }
             case R.id.animateX: {
                 mChart.animateX(3000);
                 break;
@@ -177,13 +158,8 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
 
         for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
             float mult = (mSeekBarY.getProgress() + 1);
-            float val1 = (float) (Math.random() * mult) + mult / 3;
-            yVals1.add(new BarEntry((int) val1, i));
-        }
-
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
-            xVals.add((int) yVals1.get(i).getVal() + "");
+            float val = (float) (Math.random() * mult) + mult / 3;
+            yVals1.add(new BarEntry(i, val));
         }
 
         BarDataSet set1;
@@ -191,8 +167,7 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
         if (mChart.getData() != null &&
                 mChart.getData().getDataSetCount() > 0) {
             set1 = (BarDataSet)mChart.getData().getDataSetByIndex(0);
-            set1.setYVals(yVals1);
-            mChart.getData().setXVals(xVals);
+            set1.setValues(yVals1);
             mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
@@ -203,9 +178,9 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
             ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
             dataSets.add(set1);
 
-            BarData data = new BarData(xVals, dataSets);
-
+            BarData data = new BarData(dataSets);
             mChart.setData(data);
+            mChart.setFitBars(true);
         }
 
         mChart.invalidate();

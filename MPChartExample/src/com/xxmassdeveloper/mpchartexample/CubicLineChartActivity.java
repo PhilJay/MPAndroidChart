@@ -2,10 +2,7 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -20,12 +17,10 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.formatter.FillFormatter;
+import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -36,8 +31,6 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
     private LineChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
-    
-    private Typeface tf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,14 +69,13 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         mChart.setPinchZoom(false);
 
         mChart.setDrawGridBackground(false);
-        
-        tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+        mChart.setMaxHighlightDistance(300);
         
         XAxis x = mChart.getXAxis();
         x.setEnabled(false);
         
         YAxis y = mChart.getAxisLeft();
-        y.setTypeface(tf);
+        y.setTypeface(mTfLight);
         y.setLabelCount(6, false);
         y.setTextColor(Color.WHITE);
         y.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
@@ -268,11 +260,6 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
 
     private void setData(int count, float range) {
 
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < count; i++) {
-            xVals.add((1990 +i) + "");
-        }
-
         ArrayList<Entry> yVals = new ArrayList<Entry>();
 
         for (int i = 0; i < count; i++) {
@@ -280,7 +267,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
             float val = (float) (Math.random() * mult) + 20;// + (float)
                                                            // ((mult *
                                                            // 0.1) / 10);
-            yVals.add(new Entry(val, i));
+            yVals.add(new Entry(i, val));
         }
 
         LineDataSet set1;
@@ -288,15 +275,14 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         if (mChart.getData() != null &&
                 mChart.getData().getDataSetCount() > 0) {
             set1 = (LineDataSet)mChart.getData().getDataSetByIndex(0);
-            set1.setYVals(yVals);
-            mChart.getData().setXVals(xVals);
+            set1.setValues(yVals);
             mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
             // create a dataset and give it a type
             set1 = new LineDataSet(yVals, "DataSet 1");
 
-            set1.setDrawCubic(true);
+            set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
             set1.setCubicIntensity(0.2f);
             //set1.setDrawFilled(true);
             set1.setDrawCircles(false);
@@ -316,8 +302,8 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
             });
 
             // create a data object with the datasets
-            LineData data = new LineData(xVals, set1);
-            data.setValueTypeface(tf);
+            LineData data = new LineData(set1);
+            data.setValueTypeface(mTfLight);
             data.setValueTextSize(9f);
             data.setDrawValues(false);
 

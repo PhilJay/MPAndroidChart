@@ -34,6 +34,7 @@ public class RealmDatabaseActivityRadar extends RealmBaseActivity {
         setup(mChart);
 
         mChart.getYAxis().setEnabled(false);
+        mChart.getXAxis().setEnabled(false);
         mChart.setWebAlpha(180);
         mChart.setWebColorInner(Color.DKGRAY);
         mChart.setWebColor(Color.GRAY);
@@ -52,10 +53,10 @@ public class RealmDatabaseActivityRadar extends RealmBaseActivity {
 
     private void setData() {
 
-        RealmResults<RealmDemoData> result = mRealm.allObjects(RealmDemoData.class);
+        RealmResults<RealmDemoData> result = mRealm.where(RealmDemoData.class).findAll();
 
         //RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "stackValues", "xIndex"); // normal entries
-        RealmRadarDataSet<RealmDemoData> set = new RealmRadarDataSet<RealmDemoData>(result, "value", "xIndex"); // stacked entries
+        RealmRadarDataSet<RealmDemoData> set = new RealmRadarDataSet<RealmDemoData>(result, "yValue"); // stacked entries
         set.setLabel("Realm RadarDataSet");
         set.setDrawFilled(true);
         set.setColor(ColorTemplate.rgb("#009688"));
@@ -67,7 +68,7 @@ public class RealmDatabaseActivityRadar extends RealmBaseActivity {
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list
-        RadarData data = new RadarData(new String[] {"2013", "2014", "2015", "2016", "2017", "2018", "2019"}, dataSets);
+        RadarData data = new RadarData(dataSets);
         styleData(data);
 
         // set data

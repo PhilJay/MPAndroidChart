@@ -6,7 +6,6 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.Utils;
@@ -36,16 +35,16 @@ public class StackedBarsMarkerView extends MarkerView {
 
             BarEntry be = (BarEntry) e;
 
-            if(be.getVals() != null) {
+            if(be.getYVals() != null) {
 
                 // draw the stack value
-                tvContent.setText("" + Utils.formatNumber(be.getVals()[highlight.getStackIndex()], 0, true));
+                tvContent.setText("" + Utils.formatNumber(be.getYVals()[highlight.getStackIndex()], 0, true));
             } else {
-                tvContent.setText("" + Utils.formatNumber(be.getVal(), 0, true));
+                tvContent.setText("" + Utils.formatNumber(be.getY(), 0, true));
             }
         } else {
 
-            tvContent.setText("" + Utils.formatNumber(e.getVal(), 0, true));
+            tvContent.setText("" + Utils.formatNumber(e.getY(), 0, true));
         }
     }
 

@@ -42,3 +42,5 @@ build/
 
 # maven
 target/
+
+.DS_Store

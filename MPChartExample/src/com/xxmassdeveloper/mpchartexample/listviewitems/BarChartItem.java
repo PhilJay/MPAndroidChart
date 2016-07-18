@@ -74,6 +74,7 @@ public class BarChartItem extends ChartItem {
         
         // set data
         holder.chart.setData((BarData) mChartData);
+        holder.chart.setFitBars(true);
         
         // do not forget to refresh the chart
 //        holder.chart.invalidate();

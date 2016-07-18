@@ -1,7 +1,6 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +12,6 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.ScatterChart;
-import com.github.mikephil.charting.charts.ScatterChart.ScatterShape;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
@@ -21,12 +19,11 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.xxmassdeveloper.mpchartexample.custom.CustomScatterShapeRenderer;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -38,8 +35,6 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
     private ScatterChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
-
-    private Typeface tf;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,13 +55,11 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         mChart = (ScatterChart) findViewById(R.id.chart1);
         mChart.setDescription("");
 
-        tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-
         mChart.setOnChartValueSelectedListener(this);
 
         mChart.setDrawGridBackground(false);
-
         mChart.setTouchEnabled(true);
+        mChart.setMaxHighlightDistance(50f);
 
         // enable scaling and dragging
         mChart.setDragEnabled(true);
@@ -80,16 +73,17 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
 
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART);
-        l.setTypeface(tf);
+        l.setTypeface(mTfLight);
+        l.setXOffset(5f);
 
         YAxis yl = mChart.getAxisLeft();
-        yl.setTypeface(tf);
+        yl.setTypeface(mTfLight);
         yl.setAxisMinValue(0f); // this replaces setStartAtZero(true)
         
         mChart.getAxisRight().setEnabled(false);
 
         XAxis xl = mChart.getXAxis();
-        xl.setTypeface(tf);
+        xl.setTypeface(mTfLight);
         xl.setDrawGridLines(false);
     }
 
@@ -165,41 +159,36 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         tvX.setText("" + (mSeekBarX.getProgress() + 1));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
-            xVals.add((i) + "");
-        }
-
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
         ArrayList<Entry> yVals2 = new ArrayList<Entry>();
         ArrayList<Entry> yVals3 = new ArrayList<Entry>();
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             float val = (float) (Math.random() * mSeekBarY.getProgress()) + 3;
-            yVals1.add(new Entry(val, i));
+            yVals1.add(new Entry(i, val));
         }
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             float val = (float) (Math.random() * mSeekBarY.getProgress()) + 3;
-            yVals2.add(new Entry(val, i));
+            yVals2.add(new Entry(i+0.33f, val));
         }
 
         for (int i = 0; i < mSeekBarX.getProgress(); i++) {
             float val = (float) (Math.random() * mSeekBarY.getProgress()) + 3;
-            yVals3.add(new Entry(val, i));
+            yVals3.add(new Entry(i+0.66f, val));
         }
 
         // create a dataset and give it a type
         ScatterDataSet set1 = new ScatterDataSet(yVals1, "DS 1");
-        set1.setScatterShape(ScatterShape.SQUARE);
+        set1.setScatterShape(ScatterChart.ScatterShape.SQUARE);
         set1.setColor(ColorTemplate.COLORFUL_COLORS[0]);
         ScatterDataSet set2 = new ScatterDataSet(yVals2, "DS 2");
-        set2.setScatterShape(ScatterShape.CIRCLE);
+        set2.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
         set2.setScatterShapeHoleColor(ColorTemplate.COLORFUL_COLORS[3]);
-        set2.setScatterShapeHoleRadius(4f);
+        set2.setScatterShapeHoleRadius(3f);
         set2.setColor(ColorTemplate.COLORFUL_COLORS[1]);
         ScatterDataSet set3 = new ScatterDataSet(yVals3, "DS 3");
-        set3.setScatterShape(ScatterShape.CROSS);
+        set3.setShapeRenderer(new CustomScatterShapeRenderer());
         set3.setColor(ColorTemplate.COLORFUL_COLORS[2]);
 
         set1.setScatterShapeSize(8f);
@@ -212,18 +201,18 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         dataSets.add(set3);
 
         // create a data object with the datasets
-        ScatterData data = new ScatterData(xVals, dataSets);
-        data.setValueTypeface(tf);
+        ScatterData data = new ScatterData(dataSets);
+        data.setValueTypeface(mTfLight);
 
         mChart.setData(data);
         mChart.invalidate();
     }
 
     @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+    public void onValueSelected(Entry e, Highlight h) {
         Log.i("VAL SELECTED",
-                "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
-                        + ", DataSet index: " + dataSetIndex);
+                "Value: " + e.getY() + ", xIndex: " + e.getX()
+                        + ", DataSet index: " + h.getDataSetIndex());
     }
 
     @Override

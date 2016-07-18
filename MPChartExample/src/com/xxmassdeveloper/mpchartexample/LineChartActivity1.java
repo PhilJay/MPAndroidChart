@@ -104,12 +104,14 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         llXAxis.setTextSize(10f);
 
         XAxis xAxis = mChart.getXAxis();
+        xAxis.enableGridDashedLine(10f, 10f, 0f);
         //xAxis.setValueFormatter(new MyCustomXAxisValueFormatter());
         //xAxis.addLimitLine(llXAxis); // add x-axis limit line
 
+
         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
-        LimitLine ll1 = new LimitLine(130f, "Upper Limit");
+        LimitLine ll1 = new LimitLine(150f, "Upper Limit");
         ll1.setLineWidth(4f);
         ll1.enableDashedLine(10f, 10f, 0f);
         ll1.setLabelPosition(LimitLabelPosition.RIGHT_TOP);
@@ -127,7 +129,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
         leftAxis.addLimitLine(ll1);
         leftAxis.addLimitLine(ll2);
-        leftAxis.setAxisMaxValue(220f);
+        leftAxis.setAxisMaxValue(200f);
         leftAxis.setAxisMinValue(-50f);
         //leftAxis.setYOffset(20f);
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
@@ -148,8 +150,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 //        mChart.setVisibleYRange(20f, AxisDependency.LEFT);
 //        mChart.centerViewTo(20, 50, AxisDependency.LEFT);
 
-        mChart.animateX(2500, Easing.EasingOption.EaseInOutQuart);
-//        mChart.invalidate();
+        mChart.animateX(2500);
+        //mChart.invalidate();
 
         // get the legend (only possible after setting data)
         Legend l = mChart.getLegend();
@@ -337,20 +339,12 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
     private void setData(int count, float range) {
 
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < count; i++) {
-            xVals.add((i) + "");
-        }
-
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
+        ArrayList<Entry> values = new ArrayList<Entry>();
 
         for (int i = 0; i < count; i++) {
 
-            float mult = (range + 1);
-            float val = (float) (Math.random() * mult) + 3;// + (float)
-            // ((mult *
-            // 0.1) / 10);x
-            yVals.add(new Entry(val, i));
+            float val = (float) (Math.random() * range) + 3;
+            values.add(new Entry(i, val));
         }
 
         LineDataSet set1;
@@ -358,16 +352,12 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         if (mChart.getData() != null &&
                 mChart.getData().getDataSetCount() > 0) {
             set1 = (LineDataSet)mChart.getData().getDataSetByIndex(0);
-            set1.setYVals(yVals);
-            mChart.getData().setXVals(xVals);
+            set1.setValues(values);
             mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
             // create a dataset and give it a type
-            set1 = new LineDataSet(yVals, "DataSet 1");
-
-            // set1.setFillAlpha(110);
-            // set1.setFillColor(Color.RED);
+            set1 = new LineDataSet(values, "DataSet 1");
 
             // set the line to be drawn like this "- - - - - -"
             set1.enableDashedLine(10f, 5f, 0f);
@@ -393,7 +383,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
             dataSets.add(set1); // add the datasets
 
             // create a data object with the datasets
-            LineData data = new LineData(xVals, dataSets);
+            LineData data = new LineData(dataSets);
 
             // set data
             mChart.setData(data);
@@ -445,9 +435,9 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
     }
 
     @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+    public void onValueSelected(Entry e, Highlight h) {
         Log.i("Entry selected", e.toString());
-        Log.i("LOWHIGH", "low: " + mChart.getLowestVisibleXIndex() + ", high: " + mChart.getHighestVisibleXIndex());
+        Log.i("LOWHIGH", "low: " + mChart.getLowestVisibleX() + ", high: " + mChart.getHighestVisibleX());
         Log.i("MIN MAX", "xmin: " + mChart.getXChartMin() + ", xmax: " + mChart.getXChartMax() + ", ymin: " + mChart.getYChartMin() + ", ymax: " + mChart.getYChartMax());
     }
 

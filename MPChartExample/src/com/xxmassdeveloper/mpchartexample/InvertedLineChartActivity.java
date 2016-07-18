@@ -19,15 +19,15 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.utils.EntryXComparator;
 import com.xxmassdeveloper.mpchartexample.custom.MyMarkerView;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChangeListener,
@@ -85,6 +85,7 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
         
         XAxis xl = mChart.getXAxis();
         xl.setAvoidFirstLastClipping(true);
+        xl.setAxisMinValue(0f);
         
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setInverted(true);
@@ -229,10 +230,10 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
     }
 
     @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+    public void onValueSelected(Entry e, Highlight h) {
         Log.i("VAL SELECTED",
-                "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
-                        + ", DataSet index: " + dataSetIndex);
+                "Value: " + e.getY() + ", xIndex: " + e.getX()
+                        + ", DataSet index: " + h.getDataSetIndex());
     }
 
     @Override
@@ -255,29 +256,25 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
 
     private void setData(int count, float range) {
 
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < count; i++) {
-            xVals.add((i % 30) + "/" + (i % 12) + "/14");
-        }
-
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
+        ArrayList<Entry> entries = new ArrayList<Entry>();
 
         for (int i = 0; i < count; i++) {
-            float mult = (range + 1);
-            float val = (float) (Math.random() * mult) + 3;// + (float)
-                                                           // ((mult *
-                                                           // 0.1) / 10);
-            yVals.add(new Entry(val, i));
+            float xVal = (float) (Math.random() * range);
+            float yVal = (float) (Math.random() * range);
+            entries.add(new Entry(xVal, yVal));
         }
+
+        // sort by x-value
+        Collections.sort(entries, new EntryXComparator());
 
         // create a dataset and give it a type
-        LineDataSet set1 = new LineDataSet(yVals, "DataSet 1");
+        LineDataSet set1 = new LineDataSet(entries, "DataSet 1");
 
         set1.setLineWidth(1.5f);
         set1.setCircleRadius(4f);
 
         // create a data object with the datasets
-        LineData data = new LineData(xVals, set1);
+        LineData data = new LineData(set1);
 
         // set data
         mChart.setData(data);
