@@ -3,6 +3,7 @@ package com.github.mikephil.charting.data;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
@@ -12,6 +13,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -30,6 +32,11 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      * List representing all colors that are used for drawing the actual values for this DataSet
      */
     protected List<Integer> mValueColors = null;
+
+    /**
+     * List representing all drawables that are used for this DataSet
+     */
+    protected List<Drawable> mDrawables = null;
 
     /**
      * label that describes the DataSet or the data the DataSet represents
@@ -230,6 +237,102 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
             mColors = new ArrayList<Integer>();
         }
         mColors.clear();
+    }
+
+
+    /**
+     * ###### ###### DRAWABLE GETTING RELATED METHODS ##### ######
+     */
+
+    @Override
+    public Drawable getDrawable(int index) {
+        return mDrawables.get(index % mDrawables.size());
+    }
+
+    @Override
+    public List<Drawable> getDrawables() {
+        return mDrawables;
+    }
+
+    /**
+     * ###### ###### DRAWABLE SETTING RELATED METHODS ##### ######
+     */
+
+    /**
+     * Sets the drawables that should be used fore this DataSet. Drawables are reused
+     * as soon as the number of Entries the DataSet represents is higher than
+     * the size of the drawables array.
+     *
+     * @param drawables
+     */
+    public void setDrawables(List<Drawable> drawables) {
+        this.mDrawables = drawables;
+    }
+
+    /**
+     * Sets the drawables that should be used fore this DataSet. Drawables are reused
+     * as soon as the number of Entries the DataSet represents is higher than
+     * the size of the drawables array.
+     *
+     * @param drawables
+     */
+    public void setDrawables(Drawable... drawables) {
+        this.mDrawables = Arrays.asList(drawables);
+    }
+
+    /**
+     * Sets the drawables that should be used fore this DataSet. Drawables are reused
+     * as soon as the number of Entries the DataSet represents is higher than
+     * the size of the drawables array. You can use
+     * "new int[] { R.drawable.image, R.drawable.image2, ... }" to provide drawables for
+     * this method. Internally, the drawables are resolved using
+     * getResources().getDrawable(...)
+     *
+     * @param drawables
+     */
+    public void setDrawables(int[] drawables, Context c) {
+
+        if(mDrawables == null){
+            mDrawables = new ArrayList<>();
+        }
+
+        mDrawables.clear();
+
+        for (int drawable : drawables) {
+            mDrawables.add(c.getResources().getDrawable(drawable));
+        }
+    }
+
+    /**
+     * Adds a new drawable to the drawables array of the DataSet.
+     *
+     * @param drawable
+     */
+    public void addDrawable(Drawable drawable) {
+        if (mDrawables == null)
+            mDrawables = new ArrayList<Drawable>();
+        mDrawables.add(drawable);
+    }
+
+    /**
+     * Sets the one and ONLY drawable that should be used for this DataSet.
+     * Internally, this recreates the drawables array and adds the specified drawable.
+     *
+     * @param drawable
+     */
+    public void setDrawable(Drawable drawable) {
+        resetDrawables();
+        mDrawables.add(drawable);
+    }
+
+    /**
+     * Resets all colors of this DataSet and recreates the colors array.
+     */
+    public void resetDrawables() {
+        if(mDrawables == null) {
+            mDrawables = new ArrayList<Drawable>();
+        }
+        mDrawables.clear();
     }
 
     /**

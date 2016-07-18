@@ -1,6 +1,7 @@
 package com.github.mikephil.charting.interfaces.datasets;
 
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.DataSet;
@@ -269,6 +270,22 @@ public interface IDataSet<T extends Entry> {
      * @return
      */
     int getColor(int index);
+
+    /**
+     * returns all the drawables that are set for this DataSet
+     *
+     * @return
+     */
+    List<Drawable> getDrawables();
+
+    /**
+     * Returns the drawable at the given index of the DataSet's color array.
+     * Performs a IndexOutOfBounds check by modulus.
+     *
+     * @param index
+     * @return
+     */
+    Drawable getDrawable(int index);
 
     /**
      * returns true if highlighting of values is enabled, false if not

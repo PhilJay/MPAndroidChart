@@ -2,14 +2,16 @@
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
-import android.graphics.PointF;
 import android.graphics.RectF;
+import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.Layout;
 import android.text.StaticLayout;
@@ -255,6 +257,12 @@ public class PieChartRenderer extends DataRenderer {
                     final boolean accountForSliceSpacing = sliceSpace > 0.f && sliceAngle <= 180.f;
 
                     mRenderPaint.setColor(dataSet.getColor(j));
+
+                    List<Drawable> drawables = dataSet.getDrawables();
+                    if (drawables != null && !drawables.isEmpty()) {
+                        Drawable drawable = dataSet.getDrawable(j);
+                        mRenderPaint.setShader(new BitmapShader(Utils.drawableToBitmap(drawable), Shader.TileMode.REPEAT, Shader.TileMode.REPEAT));
+                    }
 
                     final float sliceSpaceAngleOuter = visibleAngleCount == 1 ?
                             0.f :
@@ -789,6 +797,12 @@ public class PieChartRenderer extends DataRenderer {
             final boolean accountForSliceSpacing = sliceSpace > 0.f && sliceAngle <= 180.f;
 
             mRenderPaint.setColor(set.getColor(index));
+
+            List<Drawable> drawables = set.getDrawables();
+            if (drawables != null && !drawables.isEmpty()) {
+                Drawable drawable = set.getDrawable(index);
+                mRenderPaint.setShader(new BitmapShader(Utils.drawableToBitmap(drawable), Shader.TileMode.REPEAT, Shader.TileMode.REPEAT));
+            }
 
             final float sliceSpaceAngleOuter = visibleAngleCount == 1 ?
                     0.f :
