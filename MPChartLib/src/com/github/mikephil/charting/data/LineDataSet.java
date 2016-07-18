@@ -17,6 +17,9 @@ import java.util.List;
 
 public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
 
+    /** Drawing mode for this line dataset **/
+    private LineDataSet.Mode mMode = Mode.LINEAR;
+
     /** List representing all colors that are used for the circles */
     private List<Integer> mCircleColors = null;
 
@@ -25,6 +28,9 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
 
     /** the radius of the circle-shaped value indicators */
     private float mCircleRadius = 8f;
+
+    /** the hole radius of the circle-shaped value indicators */
+    private float mCircleHoleRadius = 4f;
 
     /** sets the intensity of the cubic lines */
     private float mCubicIntensity = 0.2f;
@@ -37,12 +43,6 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
 
     /** if true, drawing circles is enabled */
     private boolean mDrawCircles = true;
-
-    /** if true, cubic lines are drawn instead of linear */
-    private boolean mDrawCubic = false;
-
-    /** if true, stepped lines are drawn instead of linear */
-    private boolean mDrawStepped = false;
 
     private boolean mDrawCircleHole = true;
 
@@ -71,15 +71,36 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
         }
 
         LineDataSet copied = new LineDataSet(yVals, getLabel());
+        copied.mMode = mMode;
         copied.mColors = mColors;
         copied.mCircleRadius = mCircleRadius;
+        copied.mCircleHoleRadius = mCircleHoleRadius;
         copied.mCircleColors = mCircleColors;
         copied.mDashPathEffect = mDashPathEffect;
         copied.mDrawCircles = mDrawCircles;
-        copied.mDrawCubic = mDrawCubic;
+        copied.mDrawCircleHole = mDrawCircleHole;
         copied.mHighLightColor = mHighLightColor;
 
         return copied;
+    }
+
+    /**
+     * Returns the drawing mode for this line dataset
+     *
+     * @return
+     */
+    @Override
+    public LineDataSet.Mode getMode() {
+        return mMode;
+    }
+
+    /**
+     * Returns the drawing mode for this line dataset
+     *
+     * @return
+     */
+    public void setMode(LineDataSet.Mode mode) {
+        mMode = mode;
     }
 
     /**
@@ -117,6 +138,21 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
     @Override
     public float getCircleRadius() {
         return mCircleRadius;
+    }
+
+    /**
+     * sets the hole radius of the drawn circles.
+     * Default radius = 2f
+     *
+     * @param holeRadius
+     */
+    public void setCircleHoleRadius(float holeRadius) {
+        mCircleHoleRadius = Utils.convertDpToPixel(holeRadius);
+    }
+
+    @Override
+    public float getCircleHoleRadius() {
+        return mCircleHoleRadius;
     }
 
     /**
@@ -189,36 +225,26 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
         return mDrawCircles;
     }
 
-    /**
-     * If set to true, the linechart lines are drawn in cubic-style instead of
-     * linear. This affects performance! Default: false
-     * 
-     * @param enabled
-     */
+    @Deprecated
     public void setDrawCubic(boolean enabled) {
-        mDrawCubic = enabled;
+        mMode = enabled ? Mode.CUBIC_BEZIER : Mode.LINEAR;
     }
 
+    @Deprecated
     @Override
     public boolean isDrawCubicEnabled() {
-        return mDrawCubic;
+        return mMode == Mode.CUBIC_BEZIER;
     }
 
-    /**
-     * If set to true, the linechart lines are drawn in stepped-style instead of
-     * linear.
-     * This does not work with cubic lines, of course.
-     * Default: false
-     *
-     * @param enabled
-     */
+    @Deprecated
     public void setDrawStepped(boolean enabled) {
-        mDrawStepped = enabled;
+        mMode = enabled ? Mode.STEPPED : Mode.LINEAR;
     }
 
+    @Deprecated
     @Override
     public boolean isDrawSteppedEnabled() {
-        return mDrawStepped;
+        return mMode == Mode.STEPPED;
     }
 
     /** ALL CODE BELOW RELATED TO CIRCLE-COLORS */
@@ -347,5 +373,12 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
     @Override
     public FillFormatter getFillFormatter() {
         return mFillFormatter;
+    }
+
+    public enum Mode {
+        LINEAR,
+        STEPPED,
+        CUBIC_BEZIER,
+        HORIZONTAL_BEZIER
     }
 }

@@ -25,16 +25,15 @@ public class CombinedHighlighter extends ChartHighlighter<BarLineScatterCandleBu
      * @return
      */
     @Override
-    protected List<SelectionDetail> getSelectionDetailsAtIndex(int xIndex) {
+    protected List<SelectionDetail> getSelectionDetailsAtIndex(int xIndex, int dataSetIndex) {
+
+        List<SelectionDetail> vals = new ArrayList<SelectionDetail>();
+        float[] pts = new float[2];
 
         CombinedData data = (CombinedData) mChart.getData();
 
         // get all chartdata objects
         List<ChartData> dataObjects = data.getAllData();
-
-        List<SelectionDetail> vals = new ArrayList<SelectionDetail>();
-
-        float[] pts = new float[2];
 
         for (int i = 0; i < dataObjects.size(); i++) {
 
@@ -47,16 +46,15 @@ public class CombinedHighlighter extends ChartHighlighter<BarLineScatterCandleBu
                     continue;
 
                 // extract all y-values from all DataSets at the given x-index
-                final float yVal = dataSet.getYValForXIndex(xIndex);
-                if (yVal == Float.NaN)
-                    continue;
+                final float yVals[] = dataSet.getYValsForXIndex(xIndex);
+                for (float yVal : yVals) {
+                    pts[1] = yVal;
 
-                pts[1] = yVal;
+                    mChart.getTransformer(dataSet.getAxisDependency()).pointValuesToPixel(pts);
 
-                mChart.getTransformer(dataSet.getAxisDependency()).pointValuesToPixel(pts);
-
-                if (!Float.isNaN(pts[1])) {
-                    vals.add(new SelectionDetail(pts[1], j, dataSet));
+                    if (!Float.isNaN(pts[1])) {
+                        vals.add(new SelectionDetail(pts[1], yVal, i, j, dataSet));
+                    }
                 }
             }
         }

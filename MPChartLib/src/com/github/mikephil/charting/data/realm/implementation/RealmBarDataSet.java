@@ -3,10 +3,12 @@ package com.github.mikephil.charting.data.realm.implementation;
 import android.graphics.Color;
 
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.realm.base.RealmBarLineScatterCandleBubbleDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 import io.realm.DynamicRealmObject;
+import io.realm.RealmFieldType;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
@@ -33,6 +35,10 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
      * the color used for drawing the bar shadows
      */
     private int mBarShadowColor = Color.rgb(215, 215, 215);
+
+    private float mBarBorderWidth = 0.0f;
+
+    private int mBarBorderColor = Color.BLACK;
 
     /**
      * the alpha value used to draw the highlight indicator bar
@@ -74,31 +80,33 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
     @Override
     public void build(RealmResults<T> results) {
 
-        for (T realmObject : results) {
-
-            DynamicRealmObject dynamicObject = new DynamicRealmObject(realmObject);
-
-            try { // normal entry
-
-                float value = dynamicObject.getFloat(mValuesField);
-                mValues.add(new BarEntry(value, dynamicObject.getInt(mIndexField)));
-
-            } catch (IllegalArgumentException e) { // stacked entry
-
-                RealmList<DynamicRealmObject> list = dynamicObject.getList(mValuesField);
-                float[] values = new float[list.size()];
-
-                int i = 0;
-                for (DynamicRealmObject o : list) {
-                    values[i] = o.getFloat(mStackValueFieldName);
-                    i++;
-                }
-
-                mValues.add(new BarEntry(values, dynamicObject.getInt(mIndexField)));
-            }
-        }
+        super.build(results);
 
         calcStackSize();
+    }
+
+    @Override
+    public BarEntry buildEntryFromResultObject(T realmObject, int xIndex) {
+        DynamicRealmObject dynamicObject = new DynamicRealmObject(realmObject);
+
+        if (dynamicObject.getFieldType(mValuesField) == RealmFieldType.LIST) {
+
+            RealmList<DynamicRealmObject> list = dynamicObject.getList(mValuesField);
+            float[] values = new float[list.size()];
+
+            int i = 0;
+            for (DynamicRealmObject o : list) {
+                values[i] = o.getFloat(mStackValueFieldName);
+                i++;
+            }
+
+            return new BarEntry(values,
+                    mIndexField == null ? xIndex : dynamicObject.getInt(mIndexField));
+        } else {
+            float value = dynamicObject.getFloat(mValuesField);
+            return new BarEntry(value,
+                    mIndexField == null ? xIndex : dynamicObject.getInt(mIndexField));
+        }
     }
 
     @Override
@@ -210,6 +218,46 @@ public class RealmBarDataSet<T extends RealmObject> extends RealmBarLineScatterC
     @Override
     public int getBarShadowColor() {
         return mBarShadowColor;
+    }
+
+    /**
+     * Sets the width used for drawing borders around the bars.
+     * If borderWidth == 0, no border will be drawn.
+     *
+     * @return
+     */
+    public void setBarBorderWidth(float width) {
+        mBarBorderWidth = width;
+    }
+
+    /**
+     * Returns the width used for drawing borders around the bars.
+     * If borderWidth == 0, no border will be drawn.
+     *
+     * @return
+     */
+    @Override
+    public float getBarBorderWidth() {
+        return mBarBorderWidth;
+    }
+
+    /**
+     * Sets the color drawing borders around the bars.
+     *
+     * @return
+     */
+    public void setBarBorderColor(int color) {
+        mBarBorderColor = color;
+    }
+
+    /**
+     * Returns the color drawing borders around the bars.
+     *
+     * @return
+     */
+    @Override
+    public int getBarBorderColor() {
+        return mBarBorderColor;
     }
 
     /**

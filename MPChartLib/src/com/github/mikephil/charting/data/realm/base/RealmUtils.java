@@ -20,7 +20,7 @@ public final class RealmUtils {
      */
     public static List<String> toXVals(RealmResults<? extends RealmObject> result, String xValuesField) {
 
-        List<String> xVals = new ArrayList<>();
+        List<String> xVals = new ArrayList<String>();
 
         for (RealmObject object : result) {
 

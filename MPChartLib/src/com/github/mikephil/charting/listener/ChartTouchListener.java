@@ -118,11 +118,11 @@ public abstract class ChartTouchListener<T extends Chart<?>> extends GestureDete
     protected void performHighlight(Highlight h, MotionEvent e) {
 
         if (h == null || h.equalTo(mLastHighlighted)) {
-            mChart.highlightTouch(null);
+            mChart.highlightValue(null, true);
             mLastHighlighted = null;
         } else {
+            mChart.highlightValue(h, true);
             mLastHighlighted = h;
-            mChart.highlightTouch(h);
         }
     }
 

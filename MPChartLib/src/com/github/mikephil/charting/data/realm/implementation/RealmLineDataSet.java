@@ -3,8 +3,8 @@ package com.github.mikephil.charting.data.realm.implementation;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
-import android.graphics.drawable.Drawable;
 
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.realm.base.RealmLineRadarDataSet;
 import com.github.mikephil.charting.formatter.DefaultFillFormatter;
 import com.github.mikephil.charting.formatter.FillFormatter;
@@ -23,6 +23,9 @@ import io.realm.RealmResults;
  */
 public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataSet<T> implements ILineDataSet {
 
+    /** Drawing mode for this line dataset **/
+    private LineDataSet.Mode mMode = LineDataSet.Mode.LINEAR;
+
     /**
      * List representing all colors that are used for the circles
      */
@@ -36,7 +39,10 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
     /**
      * the radius of the circle-shaped value indicators
      */
-    private float mCircleSize = 8f;
+    private float mCircleRadius = 8f;
+
+    /** the hole radius of the circle-shaped value indicators */
+    private float mCircleHoleRadius = 4f;
 
     /**
      * sets the intensity of the cubic lines
@@ -57,16 +63,6 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
      * if true, drawing circles is enabled
      */
     private boolean mDrawCircles = true;
-
-    /**
-     * if true, cubic lines are drawn instead of linear
-     */
-    private boolean mDrawCubic = false;
-
-    /**
-     * if true, stepped lines are drawn instead of linear
-     */
-    private boolean mDrawStepped = false;
 
     private boolean mDrawCircleHole = true;
 
@@ -105,9 +101,23 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
         calcMinMax(0, results.size());
     }
 
+    /**
+     * Returns the drawing mode for this line dataset
+     *
+     * @return
+     */
     @Override
-    public void build(RealmResults<T> results) {
-        super.build(results);
+    public LineDataSet.Mode getMode() {
+        return mMode;
+    }
+
+    /**
+     * Returns the drawing mode for this line dataset
+     *
+     * @return
+     */
+    public void setMode(LineDataSet.Mode mode) {
+        mMode = mode;
     }
 
     /**
@@ -138,12 +148,27 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
      * @param size
      */
     public void setCircleSize(float size) {
-        mCircleSize = Utils.convertDpToPixel(size);
+        mCircleRadius = Utils.convertDpToPixel(size);
     }
 
     @Override
     public float getCircleRadius() {
-        return mCircleSize;
+        return mCircleRadius;
+    }
+
+    /**
+     * sets the hole radius of the drawn circles.
+     * Default radius = 2f
+     *
+     * @param holeRadius
+     */
+    public void setCircleHoleRadius(float holeRadius) {
+        mCircleHoleRadius = Utils.convertDpToPixel(holeRadius);
+    }
+
+    @Override
+    public float getCircleHoleRadius() {
+        return mCircleHoleRadius;
     }
 
     /**
@@ -193,36 +218,26 @@ public class RealmLineDataSet<T extends RealmObject> extends RealmLineRadarDataS
         return mDrawCircles;
     }
 
-    /**
-     * If set to true, the linechart lines are drawn in cubic-style instead of
-     * linear. This affects performance! Default: false
-     *
-     * @param enabled
-     */
+    @Deprecated
     public void setDrawCubic(boolean enabled) {
-        mDrawCubic = enabled;
+        mMode = enabled ? LineDataSet.Mode.CUBIC_BEZIER : LineDataSet.Mode.LINEAR;
     }
 
+    @Deprecated
     @Override
     public boolean isDrawCubicEnabled() {
-        return mDrawCubic;
+        return mMode == LineDataSet.Mode.CUBIC_BEZIER;
     }
 
-    /**
-     * If set to true, the linechart lines are drawn in stepped-style instead of
-     * linear.
-     * This does not work with cubic lines, of course.
-     * Default: false
-     *
-     * @param enabled
-     */
+    @Deprecated
     public void setDrawStepped(boolean enabled) {
-        mDrawStepped = enabled;
+        mMode = enabled ? LineDataSet.Mode.STEPPED : LineDataSet.Mode.LINEAR;
     }
 
+    @Deprecated
     @Override
     public boolean isDrawSteppedEnabled() {
-        return mDrawStepped;
+        return mMode == LineDataSet.Mode.STEPPED;
     }
 
     /** ALL CODE BELOW RELATED TO CIRCLE-COLORS */

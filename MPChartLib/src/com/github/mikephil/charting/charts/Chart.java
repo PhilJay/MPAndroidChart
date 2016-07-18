@@ -30,6 +30,7 @@ import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.animation.EasingFunction;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.MarkerView;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
@@ -117,12 +118,9 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     protected String mDescription = "Description";
 
     /**
-     * the number of x-values the chart displays
+     * the object representing the labels on the x-axis
      */
-    protected float mDeltaX = 1f;
-
-    protected float mXChartMin = 0f;
-    protected float mXChartMax = 0f;
+    protected XAxis mXAxis;
 
     /**
      * if true, touch gestures are enabled on the chart
@@ -238,6 +236,8 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         mLegend = new Legend();
 
         mLegendRenderer = new LegendRenderer(mViewPortHandler, mLegend);
+
+        mXAxis = new XAxis();
 
         mDescPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mDescPaint.setColor(Color.BLACK);
@@ -556,15 +556,24 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * @param dataSetIndex
      */
     public void highlightValue(int xIndex, int dataSetIndex) {
+        highlightValue(xIndex, dataSetIndex, true);
+    }
+
+    /**
+     * Highlights the value at the given x-index in the given DataSet. Provide
+     * -1 as the x-index or dataSetIndex to undo all highlighting.
+     *
+     * @param xIndex
+     * @param dataSetIndex
+     */
+    public void highlightValue(int xIndex, int dataSetIndex, boolean callListener) {
 
         if (xIndex < 0 || dataSetIndex < 0 || xIndex >= mData.getXValCount()
                 || dataSetIndex >= mData.getDataSetCount()) {
 
-            highlightValues(null);
+            highlightValue(null, callListener);
         } else {
-            highlightValues(new Highlight[]{
-                    new Highlight(xIndex, dataSetIndex)
-            });
+            highlightValue(new Highlight(xIndex, dataSetIndex), callListener);
         }
     }
 
@@ -598,10 +607,14 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
                 Log.i(LOG_TAG, "Highlighted: " + high.toString());
 
             e = mData.getEntryForHighlight(high);
-            if (e == null || e.getXIndex() != high.getXIndex()) {
+            if (e == null) {
                 mIndicesToHighlight = null;
                 high = null;
             } else {
+                if (this instanceof BarLineChartBase
+                        && ((BarLineChartBase)this).isHighlightFullBarEnabled())
+                    high = new Highlight(high.getXIndex(), Float.NaN, -1, -1, -1);
+
                 // set the indices to highlight
                 mIndicesToHighlight = new Highlight[]{
                         high
@@ -670,7 +683,11 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             int xIndex = highlight.getXIndex();
             int dataSetIndex = highlight.getDataSetIndex();
 
-            if (xIndex <= mDeltaX && xIndex <= mDeltaX * mAnimator.getPhaseX()) {
+            float deltaX = mXAxis != null 
+                ? mXAxis.mAxisRange
+                : ((mData == null ? 0.f : mData.getXValCount()) - 1.f);
+
+            if (xIndex <= deltaX && xIndex <= deltaX * mAnimator.getPhaseX()) {
 
                 Entry e = mData.getEntryForHighlight(mIndicesToHighlight[i]);
 
@@ -922,6 +939,18 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     /** BELOW THIS ONLY GETTERS AND SETTERS */
 
+
+    /**
+     * Returns the object representing all x-labels, this method can be used to
+     * acquire the XAxis object and modify it (e.g. change the position of the
+     * labels, styling, etc.)
+     *
+     * @return
+     */
+    public XAxis getXAxis() {
+        return mXAxis;
+    }
+
     /**
      * Returns the default ValueFormatter that has been determined by the chart
      * considering the provided minimum and maximum values.
@@ -980,12 +1009,12 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
     @Override
     public float getXChartMax() {
-        return mXChartMax;
+        return mXAxis.mAxisMaximum;
     }
 
     @Override
     public float getXChartMin() {
-        return mXChartMin;
+        return mXAxis.mAxisMinimum;
     }
 
     @Override

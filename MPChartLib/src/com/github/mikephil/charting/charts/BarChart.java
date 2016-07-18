@@ -56,7 +56,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 
 		setHighlighter(new BarHighlighter(this));
 
-		mXChartMin = -0.5f;
+		mXAxis.mAxisMinimum = -0.5f;
 	}
 
 	@Override
@@ -64,14 +64,14 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 		super.calcMinMax();
 
 		// increase deltax by 1 because the bars have a width of 1
-		mDeltaX += 0.5f;
+		mXAxis.mAxisRange += 0.5f;
 
 		// extend xDelta to make space for multiple datasets (if ther are one)
-		mDeltaX *= mData.getDataSetCount();
+		mXAxis.mAxisRange *= mData.getDataSetCount();
 
 		float groupSpace = mData.getGroupSpace();
-		mDeltaX += mData.getXValCount() * groupSpace;
-		mXChartMax = mDeltaX - mXChartMin;
+		mXAxis.mAxisRange += mData.getXValCount() * groupSpace;
+		mXAxis.mAxisMaximum = mXAxis.mAxisRange - mXAxis.mAxisMinimum;
 	}
 
 	/**

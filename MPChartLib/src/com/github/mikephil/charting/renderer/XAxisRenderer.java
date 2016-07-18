@@ -196,6 +196,7 @@ public class XAxisRenderer extends AxisRenderer {
         float height = Utils.calcTextHeight(mAxisLabelPaint, label);
 
         this.drawLabel(c, label, value, xIndex, x, y, width, height, anchor, angleDegrees);
+		// Utils.drawXAxisValue(c, formattedLabel, x, y, mAxisLabelPaint, anchor, angleDegrees);
     }
 
     protected void drawLabel(Canvas c, String label, float value, int xIndex, float x, float y, float w, float h, PointF anchor, float angleDegrees) {

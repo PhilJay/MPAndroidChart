@@ -22,6 +22,10 @@
         android:title="Toggle Stepped">
     </item>
     <item
+        android:id="@+id/actionToggleHorizontalCubic"
+        android:title="Toggle Horizontal Cubic">
+    </item>
+    <item
         android:id="@+id/actionToggleHighlight"
         android:title="Toggle Highlight">
     </item>

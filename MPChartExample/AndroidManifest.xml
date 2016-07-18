@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xxmassdeveloper.mpchartexample"
-    android:versionCode="49"
-    android:versionName="2.2.3" >
+    android:versionCode="51"
+    android:versionName="2.2.5" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -29,6 +29,7 @@
         <activity android:name="BarChartActivity"></activity>
 		<activity android:name="HorizontalBarChartActivity"></activity>
         <activity android:name="PieChartActivity"></activity>
+        <activity android:name="PiePolylineChartActivity"></activity>
         <activity android:name="MultiLineChartActivity"></activity>
         <activity android:name="BarChartActivityMultiDataset"></activity>
         <activity android:name="DrawChartActivity"></activity>

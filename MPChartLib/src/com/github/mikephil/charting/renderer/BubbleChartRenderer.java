@@ -11,6 +11,7 @@ import com.github.mikephil.charting.data.BubbleEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -56,8 +57,13 @@ public class BubbleChartRenderer extends DataRenderer {
     private float[] sizeBuffer = new float[4];
     private float[] pointBuffer = new float[2];
 
-    protected float getShapeSize(float entrySize, float maxSize, float reference) {
-        final float factor = (maxSize == 0f) ? 1f : (float) Math.sqrt(entrySize / maxSize);
+    protected float getShapeSize(float entrySize,
+                                 float maxSize,
+                                 float reference,
+                                 boolean normalizeSize) {
+        final float factor = normalizeSize
+                ? ((maxSize == 0f) ? 1f : (float) Math.sqrt(entrySize / maxSize))
+                : entrySize;
         final float shapeSize = reference * factor;
         return shapeSize;
     }
@@ -66,7 +72,7 @@ public class BubbleChartRenderer extends DataRenderer {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-        float phaseX = mAnimator.getPhaseX();
+        float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
         float phaseY = mAnimator.getPhaseY();
 
         BubbleEntry entryFrom = dataSet.getEntryForXIndex(mMinX);
@@ -79,6 +85,8 @@ public class BubbleChartRenderer extends DataRenderer {
         sizeBuffer[2] = 1f;
 
         trans.pointValuesToPixel(sizeBuffer);
+
+        boolean normalizeSize = dataSet.isNormalizeSizeEnabled();
 
         // calcualte the full width of 1 step on the x-axis
         final float maxBubbleWidth = Math.abs(sizeBuffer[2] - sizeBuffer[0]);
@@ -93,7 +101,7 @@ public class BubbleChartRenderer extends DataRenderer {
             pointBuffer[1] = (float) (entry.getVal()) * phaseY;
             trans.pointValuesToPixel(pointBuffer);
 
-            float shapeHalf = getShapeSize(entry.getSize(), dataSet.getMaxSize(), referenceSize) / 2f;
+            float shapeHalf = getShapeSize(entry.getSize(), dataSet.getMaxSize(), referenceSize, normalizeSize) / 2f;
 
             if (!mViewPortHandler.isInBoundsTop(pointBuffer[1] + shapeHalf)
                     || !mViewPortHandler.isInBoundsBottom(pointBuffer[1] - shapeHalf))
@@ -138,7 +146,7 @@ public class BubbleChartRenderer extends DataRenderer {
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet);
 
-                final float phaseX = mAnimator.getPhaseX();
+                final float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
                 final float phaseY = mAnimator.getPhaseY();
 
                 BubbleEntry entryFrom = dataSet.getEntryForXIndex(mMinX);
@@ -187,67 +195,86 @@ public class BubbleChartRenderer extends DataRenderer {
 
         BubbleData bubbleData = mChart.getBubbleData();
 
-        float phaseX = mAnimator.getPhaseX();
+        float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
         float phaseY = mAnimator.getPhaseY();
 
-        for (Highlight indice : indices) {
+        for (Highlight high : indices) {
 
-            IBubbleDataSet dataSet = bubbleData.getDataSetByIndex(indice.getDataSetIndex());
+            final int minDataSetIndex = high.getDataSetIndex() == -1
+                    ? 0
+                    : high.getDataSetIndex();
+            final int maxDataSetIndex = high.getDataSetIndex() == -1
+                    ? bubbleData.getDataSetCount()
+                    : (high.getDataSetIndex() + 1);
+            if (maxDataSetIndex - minDataSetIndex < 1) continue;
 
-            if (dataSet == null || !dataSet.isHighlightEnabled())
-                continue;
+            for (int dataSetIndex = minDataSetIndex;
+                 dataSetIndex < maxDataSetIndex;
+                 dataSetIndex++) {
 
-            BubbleEntry entryFrom = dataSet.getEntryForXIndex(mMinX);
-            BubbleEntry entryTo = dataSet.getEntryForXIndex(mMaxX);
+                IBubbleDataSet dataSet = bubbleData.getDataSetByIndex(dataSetIndex);
 
-            int minx = dataSet.getEntryIndex(entryFrom);
-            int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, dataSet.getEntryCount());
+                if (dataSet == null || !dataSet.isHighlightEnabled())
+                    continue;
 
-            final BubbleEntry entry = (BubbleEntry) bubbleData.getEntryForHighlight(indice);
-            if (entry == null || entry.getXIndex() != indice.getXIndex())
-                continue;
+                final BubbleEntry entry = (BubbleEntry) bubbleData.getEntryForHighlight(high);
+                if (entry == null || entry.getXIndex() != high.getXIndex())
+                    continue;
 
-            Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
+                BubbleEntry entryFrom = dataSet.getEntryForXIndex(mMinX);
+                BubbleEntry entryTo = dataSet.getEntryForXIndex(mMaxX);
 
-            sizeBuffer[0] = 0f;
-            sizeBuffer[2] = 1f;
+                int minx = dataSet.getEntryIndex(entryFrom);
+                int maxx = Math.min(dataSet.getEntryIndex(entryTo) + 1, dataSet.getEntryCount());
 
-            trans.pointValuesToPixel(sizeBuffer);
+                Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-            // calcualte the full width of 1 step on the x-axis
-            final float maxBubbleWidth = Math.abs(sizeBuffer[2] - sizeBuffer[0]);
-            final float maxBubbleHeight = Math.abs(mViewPortHandler.contentBottom() - mViewPortHandler.contentTop());
-            final float referenceSize = Math.min(maxBubbleHeight, maxBubbleWidth);
+                sizeBuffer[0] = 0f;
+                sizeBuffer[2] = 1f;
 
-            pointBuffer[0] = (float) (entry.getXIndex() - minx) * phaseX + (float) minx;
-            pointBuffer[1] = (float) (entry.getVal()) * phaseY;
-            trans.pointValuesToPixel(pointBuffer);
+                trans.pointValuesToPixel(sizeBuffer);
 
-            float shapeHalf = getShapeSize(entry.getSize(), dataSet.getMaxSize(), referenceSize) / 2f;
+                boolean normalizeSize = dataSet.isNormalizeSizeEnabled();
 
-            if (!mViewPortHandler.isInBoundsTop(pointBuffer[1] + shapeHalf)
-                    || !mViewPortHandler.isInBoundsBottom(pointBuffer[1] - shapeHalf))
-                continue;
+                // calcualte the full width of 1 step on the x-axis
+                final float maxBubbleWidth = Math.abs(sizeBuffer[2] - sizeBuffer[0]);
+                final float maxBubbleHeight = Math.abs(
+                        mViewPortHandler.contentBottom() - mViewPortHandler.contentTop());
+                final float referenceSize = Math.min(maxBubbleHeight, maxBubbleWidth);
 
-            if (!mViewPortHandler.isInBoundsLeft(pointBuffer[0] + shapeHalf))
-                continue;
+                pointBuffer[0] = (float) (entry.getXIndex() - minx) * phaseX + (float) minx;
+                pointBuffer[1] = (float) (entry.getVal()) * phaseY;
+                trans.pointValuesToPixel(pointBuffer);
 
-            if (!mViewPortHandler.isInBoundsRight(pointBuffer[0] - shapeHalf))
-                break;
+                float shapeHalf = getShapeSize(entry.getSize(),
+                        dataSet.getMaxSize(),
+                        referenceSize,
+                        normalizeSize) / 2f;
 
-            if (indice.getXIndex() < minx || indice.getXIndex() >= maxx)
-                continue;
+                if (!mViewPortHandler.isInBoundsTop(pointBuffer[1] + shapeHalf)
+                        || !mViewPortHandler.isInBoundsBottom(pointBuffer[1] - shapeHalf))
+                    continue;
 
-            final int originalColor = dataSet.getColor(entry.getXIndex());
+                if (!mViewPortHandler.isInBoundsLeft(pointBuffer[0] + shapeHalf))
+                    continue;
 
-            Color.RGBToHSV(Color.red(originalColor), Color.green(originalColor),
-                    Color.blue(originalColor), _hsvBuffer);
-            _hsvBuffer[2] *= 0.5f;
-            final int color = Color.HSVToColor(Color.alpha(originalColor), _hsvBuffer);
+                if (!mViewPortHandler.isInBoundsRight(pointBuffer[0] - shapeHalf))
+                    break;
 
-            mHighlightPaint.setColor(color);
-            mHighlightPaint.setStrokeWidth(dataSet.getHighlightCircleWidth());
-            c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, mHighlightPaint);
+                if (high.getXIndex() < minx || high.getXIndex() >= maxx)
+                    continue;
+
+                final int originalColor = dataSet.getColor(entry.getXIndex());
+
+                Color.RGBToHSV(Color.red(originalColor), Color.green(originalColor),
+                        Color.blue(originalColor), _hsvBuffer);
+                _hsvBuffer[2] *= 0.5f;
+                final int color = Color.HSVToColor(Color.alpha(originalColor), _hsvBuffer);
+
+                mHighlightPaint.setColor(color);
+                mHighlightPaint.setStrokeWidth(dataSet.getHighlightCircleWidth());
+                c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, mHighlightPaint);
+            }
         }
     }
 }

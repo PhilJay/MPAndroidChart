@@ -192,8 +192,10 @@ public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChart
                 // has one DataSet)
                 if (mChart instanceof RadarChart) {
 
-                    dataSetIndex = Utils.getClosestDataSetIndex(valsAtIndex, distance
-                            / ((RadarChart) mChart).getFactor(), null);
+                    dataSetIndex = Utils.getClosestDataSetIndexByValue(
+                            valsAtIndex,
+                            distance / ((RadarChart) mChart).getFactor(),
+                            null);
                 }
 
                 if (dataSetIndex < 0) {

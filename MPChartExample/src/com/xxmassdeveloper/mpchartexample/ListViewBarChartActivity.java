@@ -112,7 +112,7 @@ public class ListViewBarChartActivity extends DemoBase {
             
             // do not forget to refresh the chart
 //            holder.chart.invalidate();
-            holder.chart.animateY(700, Easing.EasingOption.EaseInCubic);
+            holder.chart.animateY(700);
 
             return convertView;
         }

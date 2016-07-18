@@ -48,30 +48,6 @@ public abstract class RealmLineRadarDataSet<T extends RealmObject> extends Realm
     }
 
     @Override
-    public void build(RealmResults<T> results) {
-
-        if (mIndexField == null) { // x-index not available
-
-            int xIndex = 0;
-
-            for (T object : results) {
-
-                DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
-                mValues.add(new Entry(dynamicObject.getFloat(mValuesField), xIndex));
-                xIndex++;
-            }
-
-        } else {
-
-            for (T object : results) {
-
-                DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
-                mValues.add(new Entry(dynamicObject.getFloat(mValuesField), dynamicObject.getInt(mIndexField)));
-            }
-        }
-    }
-
-    @Override
     public int getFillColor() {
         return mFillColor;
     }
