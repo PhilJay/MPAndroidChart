@@ -109,8 +109,10 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         xAxis.setTextSize(12f);
         xAxis.setTextColor(Color.WHITE);
         xAxis.setDrawGridLines(false);
-        xAxis.setDrawAxisLine(false);
+        xAxis.setDrawAxisLine(true);
         xAxis.setSpaceBetweenLabels(1);
+        xAxis.setLinePosition(XAxis.XAxisPosition.BOTH_SIDED);
+        xAxis.setAxisLineColor(Color.BLACK);
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(tf);
