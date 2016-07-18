@@ -205,7 +205,9 @@ public class XAxisRenderer extends AxisRenderer {
 
         if(mAxisLabelRenderer == null) {
 
-            Utils.drawText(c, formattedLabel, x, y, mAxisLabelPaint, anchor, angleDegrees);
+            //Utils.drawText(c, formattedLabel, x, y, mAxisLabelPaint, anchor, angleDegrees);
+
+            mAxisLabelRenderer.drawLabel(c, mAxisLabelPaint, formattedLabel, value, xIndex, x, y, w, h, anchor, angleDegrees);
 
         } else {
 

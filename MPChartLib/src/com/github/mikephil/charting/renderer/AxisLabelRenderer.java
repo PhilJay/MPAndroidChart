@@ -15,11 +15,13 @@ public class AxisLabelRenderer {
 
 
     public void drawLabel(Canvas c, Paint axisLabelPaint, String formattedLabel, float axisValue, int axisIndex, float x, float y, float w, float h) {
-        Utils.drawText(c, formattedLabel, x, y, axisLabelPaint, null, 0);
+        //Utils.drawText(c, formattedLabel, x, y, axisLabelPaint, null, 0);
+        c.drawText(formattedLabel, 0, formattedLabel.length(), x, y, axisLabelPaint);
     }
 
     public void drawLabel(Canvas c, Paint axisLabelPaint, String formattedLabel, float axisValue, int axisIndex, float x, float y, float w, float h, PointF anchor, float angleDegrees) {
-        Utils.drawText(c, formattedLabel, x, y, axisLabelPaint, anchor, angleDegrees);
+        //Utils.drawText(c, formattedLabel, x, y, axisLabelPaint, anchor, angleDegrees);
+        c.drawText(formattedLabel, 0, formattedLabel.length(), x, y, axisLabelPaint);
     }
 
 }
