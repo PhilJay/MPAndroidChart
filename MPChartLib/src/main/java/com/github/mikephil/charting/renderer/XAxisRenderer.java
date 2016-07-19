@@ -41,6 +41,15 @@ public class XAxisRenderer extends AxisRenderer {
 
     @Override
     public void computeAxis(float min, float max, boolean inverted) {
+        mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
+        mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
+
+        StringBuilder widthText = new StringBuilder();
+        int xValChars = Math.round(xValMaximumLength);
+
+        for (int i = 0; i < xValChars; i++) {
+            widthText.append('h');
+        }
 
         // calculate the starting and entry point of the y-labels (depending on
         // zoom / contentrect bounds)
@@ -182,6 +191,11 @@ public class XAxisRenderer extends AxisRenderer {
 
         float[] positions = new float[mXAxis.mEntryCount * 2];
 
+        String label;
+        float width = Utils.calcTextWidth(mAxisLabelPaint, "A");
+        float height = Utils.calcTextHeight(mAxisLabelPaint, "A");
+        int counter = -1;
+
         for (int i = 0; i < positions.length; i += 2) {
 
             // only fill x values
@@ -225,8 +239,34 @@ public class XAxisRenderer extends AxisRenderer {
         }
     }
 
-    protected void drawLabel(Canvas c, String formattedLabel, float x, float y, MPPointF anchor, float angleDegrees) {
-        Utils.drawXAxisValue(c, formattedLabel, x, y, mAxisLabelPaint, anchor, angleDegrees);
+    protected void drawLabel(Canvas c, String label, float value, int xIndex, float x, float y, PointF anchor, float angleDegrees) {
+
+        float width = Utils.calcTextWidth(mAxisLabelPaint, label);
+        float height = Utils.calcTextHeight(mAxisLabelPaint, label);
+
+        this.drawLabel(c, label, value, xIndex, x, y, width, height, anchor, angleDegrees);
+		// Utils.drawXAxisValue(c, formattedLabel, x, y, mAxisLabelPaint, anchor, angleDegrees);
+    }
+
+    protected void drawLabel(Canvas c, String label, float value, int xIndex, float x, float y, float w, float h, PointF anchor, float angleDegrees) {
+
+        String formattedLabel = mXAxis.getValueFormatter().getXValue(label, xIndex, mViewPortHandler);
+
+        if(mAxisLabelRenderer == null) {
+
+            //Utils.drawText(c, formattedLabel, x, y, mAxisLabelPaint, anchor, angleDegrees);
+
+            mAxisLabelRenderer.drawLabel(c, mAxisLabelPaint, formattedLabel, value, xIndex, x, y, w, h, anchor, angleDegrees);
+
+        } else {
+
+            // returned xIndex doesn't seem accurate - only returning even numbers
+            // is this because it skips indices?
+
+            //XXX
+            mAxisLabelRenderer.drawLabel(c, mAxisLabelPaint, formattedLabel, value, xIndex, x, y, w, h, anchor, angleDegrees);
+        }
+
     }
     protected Path mRenderGridLinesPath = new Path();
     protected float[] mRenderGridLinesBuffer = new float[2];
@@ -241,41 +281,33 @@ public class XAxisRenderer extends AxisRenderer {
         }
         float[] positions = mRenderGridLinesBuffer;
 
+        mGridPaint.setColor(mXAxis.getGridColor());
+        mGridPaint.setStrokeWidth(mXAxis.getGridLineWidth());
+        mGridPaint.setPathEffect(mXAxis.getGridDashPathEffect());
         for (int i = 0; i < positions.length; i += 2) {
             positions[i] = mXAxis.mEntries[i / 2];
             positions[i + 1] = mXAxis.mEntries[i / 2];
         }
 
-        mTrans.pointValuesToPixel(positions);
+        Path gridLinePath = new Path();
 
-        setupGridPaint();
+        for (int i = mMinX; i <= mMaxX; i += mXAxis.mAxisLabelModulus) {
 
-        Path gridLinePath = mRenderGridLinesPath;
-        gridLinePath.reset();
+            position[0] = i;
+            mTrans.pointValuesToPixel(position);
 
-        for (int i = 0; i < positions.length; i += 2) {
+            if (position[0] >= mViewPortHandler.offsetLeft()
+                    && position[0] <= mViewPortHandler.getChartWidth()) {
 
-            drawGridLine(c, positions[i], positions[i + 1], gridLinePath);
+                gridLinePath.moveTo(position[0], mViewPortHandler.contentBottom());
+                gridLinePath.lineTo(position[0], mViewPortHandler.contentTop());
+
+                // draw a path because lines don't support dashing on lower android versions
+                c.drawPath(gridLinePath, mGridPaint);
+            }
+
+            gridLinePath.reset();
         }
-    }
-
-    /**
-     * Draws the grid line at the specified position using the provided path.
-     *
-     * @param c
-     * @param x
-     * @param y
-     * @param gridLinePath
-     */
-    protected void drawGridLine(Canvas c, float x, float y, Path gridLinePath) {
-
-        gridLinePath.moveTo(x, mViewPortHandler.contentBottom());
-        gridLinePath.lineTo(x, mViewPortHandler.contentTop());
-
-        // draw a path because lines don't support dashing on lower android versions
-        c.drawPath(gridLinePath, mGridPaint);
-
-        gridLinePath.reset();
     }
 
     protected float[] mRenderLimitLinesBuffer = new float[2];

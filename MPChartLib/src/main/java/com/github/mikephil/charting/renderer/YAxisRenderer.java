@@ -56,7 +56,8 @@ public class YAxisRenderer extends AxisRenderer {
         mAxisLabelPaint.setColor(mYAxis.getTextColor());
 
         float xoffset = mYAxis.getXOffset();
-        float yoffset = Utils.calcTextHeight(mAxisLabelPaint, "A") / 2.5f + mYAxis.getYOffset();
+        float height = Utils.calcTextHeight(mAxisLabelPaint, "A");
+        float yoffset = height / 2.5f + mYAxis.getYOffset();
 
         AxisDependency dependency = mYAxis.getAxisDependency();
         YAxisLabelPosition labelPosition = mYAxis.getLabelPosition();
@@ -84,7 +85,7 @@ public class YAxisRenderer extends AxisRenderer {
             }
         }
 
-        drawYLabels(c, xPos, positions, yoffset);
+        drawYLabels(c, xPos, positions, yoffset, height);
     }
 
     @Override
@@ -111,17 +112,31 @@ public class YAxisRenderer extends AxisRenderer {
      * @param fixedPosition
      * @param positions
      */
-    protected void drawYLabels(Canvas c, float fixedPosition, float[] positions, float offset) {
+    protected void drawYLabels(Canvas c, float fixedPosition, float[] positions, float yoffset, float height) {
 
-        // draw
+        String formattedLabel;
+        float yPos;
+        float width;
         for (int i = 0; i < mYAxis.mEntryCount; i++) {
 
-            String text = mYAxis.getFormattedLabel(i);
+            formattedLabel = mYAxis.getFormattedLabel(i);
+            yPos = positions[i * 2 + 1] + yoffset;
+            width = Utils.calcTextWidth(mAxisLabelPaint, formattedLabel);
 
-            if (!mYAxis.isDrawTopYLabelEntryEnabled() && i >= mYAxis.mEntryCount - 1)
+            if (!mYAxis.isDrawTopYLabelEntryEnabled() && i >= mYAxis.mEntryCount - 1) {
+
                 return;
 
-            c.drawText(text, fixedPosition, positions[i * 2 + 1] + offset, mAxisLabelPaint);
+            } else if(mAxisLabelRenderer == null) {
+
+                c.drawText(formattedLabel, fixedPosition, yPos, mAxisLabelPaint);
+
+            } else {
+
+                mAxisLabelRenderer.drawLabel(c, mAxisLabelPaint, formattedLabel, mYAxis.mEntries[i], i, fixedPosition, yPos, width, height );
+
+            }
+
         }
     }
 

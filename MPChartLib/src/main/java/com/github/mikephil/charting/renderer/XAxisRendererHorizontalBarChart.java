@@ -209,10 +209,10 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
 	@Override
 	public void renderLimitLines(Canvas c) {
 
-		List<LimitLine> limitLines = mXAxis.getLimitLines();
+        List<LimitLine> limitLines = mXAxis.getLimitLines();
 
-		if (limitLines == null || limitLines.size() <= 0)
-			return;
+        if (limitLines == null || limitLines.size() <= 0)
+            return;
 
 		float[] pts = mRenderLimitLinesBuffer;
         pts[0] = 0;
@@ -223,37 +223,37 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
 
 		for (int i = 0; i < limitLines.size(); i++) {
 
-			LimitLine l = limitLines.get(i);
+            LimitLine l = limitLines.get(i);
 
             if(!l.isEnabled())
                 continue;
 
-			mLimitLinePaint.setStyle(Paint.Style.STROKE);
-			mLimitLinePaint.setColor(l.getLineColor());
-			mLimitLinePaint.setStrokeWidth(l.getLineWidth());
-			mLimitLinePaint.setPathEffect(l.getDashPathEffect());
+            mLimitLinePaint.setStyle(Paint.Style.STROKE);
+            mLimitLinePaint.setColor(l.getLineColor());
+            mLimitLinePaint.setStrokeWidth(l.getLineWidth());
+            mLimitLinePaint.setPathEffect(l.getDashPathEffect());
 
-			pts[1] = l.getLimit();
+            pts[1] = l.getLimit();
 
-			mTrans.pointValuesToPixel(pts);
+            mTrans.pointValuesToPixel(pts);
 
-			limitLinePath.moveTo(mViewPortHandler.contentLeft(), pts[1]);
-			limitLinePath.lineTo(mViewPortHandler.contentRight(), pts[1]);
+            limitLinePath.moveTo(mViewPortHandler.contentLeft(), pts[1]);
+            limitLinePath.lineTo(mViewPortHandler.contentRight(), pts[1]);
 
-			c.drawPath(limitLinePath, mLimitLinePaint);
-			limitLinePath.reset();
-			// c.drawLines(pts, mLimitLinePaint);
+            c.drawPath(limitLinePath, mLimitLinePaint);
+            limitLinePath.reset();
+            // c.drawLines(pts, mLimitLinePaint);
 
-			String label = l.getLabel();
+            String label = l.getLabel();
 
-			// if drawing the limit-value label is enabled
-			if (label != null && !label.equals("")) {
+            // if drawing the limit-value label is enabled
+            if (label != null && !label.equals("")) {
 
-				mLimitLinePaint.setStyle(l.getTextStyle());
-				mLimitLinePaint.setPathEffect(null);
-				mLimitLinePaint.setColor(l.getTextColor());
-				mLimitLinePaint.setStrokeWidth(0.5f);
-				mLimitLinePaint.setTextSize(l.getTextSize());
+                mLimitLinePaint.setStyle(l.getTextStyle());
+                mLimitLinePaint.setPathEffect(null);
+                mLimitLinePaint.setColor(l.getTextColor());
+                mLimitLinePaint.setStrokeWidth(0.5f);
+                mLimitLinePaint.setTextSize(l.getTextSize());
 
                 final float labelLineHeight = Utils.calcTextHeight(mLimitLinePaint, label);
                 float xOffset = Utils.convertDpToPixel(4f) + l.getXOffset();
@@ -261,14 +261,14 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
 
                 final LimitLine.LimitLabelPosition position = l.getLabelPosition();
 
-				if (position == LimitLine.LimitLabelPosition.RIGHT_TOP) {
+                if (position == LimitLine.LimitLabelPosition.RIGHT_TOP) {
 
-					mLimitLinePaint.setTextAlign(Align.RIGHT);
-					c.drawText(label,
+                    mLimitLinePaint.setTextAlign(Align.RIGHT);
+                    c.drawText(label,
                             mViewPortHandler.contentRight() - xOffset,
-							pts[1] - yOffset + labelLineHeight, mLimitLinePaint);
+                            pts[1] - yOffset + labelLineHeight, mLimitLinePaint);
 
-				} else if (position == LimitLine.LimitLabelPosition.RIGHT_BOTTOM) {
+                } else if (position == LimitLine.LimitLabelPosition.RIGHT_BOTTOM) {
 
                     mLimitLinePaint.setTextAlign(Align.RIGHT);
                     c.drawText(label,
@@ -284,12 +284,12 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
 
                 } else {
 
-					mLimitLinePaint.setTextAlign(Align.LEFT);
-					c.drawText(label,
+                    mLimitLinePaint.setTextAlign(Align.LEFT);
+                    c.drawText(label,
                             mViewPortHandler.offsetLeft() + xOffset,
-							pts[1] + yOffset, mLimitLinePaint);
-				}
-			}
-		}
-	}
+                            pts[1] + yOffset, mLimitLinePaint);
+                }
+            }
+        }
+    }
 }
