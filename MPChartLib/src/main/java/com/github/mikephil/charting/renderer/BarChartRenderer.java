@@ -1,4 +1,3 @@
-
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
@@ -28,11 +27,11 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
      * the rect object that is used for drawing the bars
      */
     protected RectF mBarRect = new RectF();
-
     protected BarBuffer[] mBarBuffers;
-
     protected Paint mShadowPaint;
     protected Paint mBarBorderPaint;
+    //Added a radius to draw rounded rect bar charts
+    protected int mRadius;
 
     public BarChartRenderer(BarDataProvider chart, ChartAnimator animator,
                             ViewPortHandler viewPortHandler) {
@@ -115,9 +114,16 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                 if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j]))
                     break;
 
-                c.drawRect(buffer.buffer[j], mViewPortHandler.contentTop(),
-                        buffer.buffer[j + 2],
-                        mViewPortHandler.contentBottom(), mShadowPaint);
+                if (mChart.isDrawBarShadowEnabled()) {
+                    if (mRadius > 0)
+                        c.drawRoundRect(new RectF(buffer.buffer[j], mViewPortHandler.contentTop(),
+                                buffer.buffer[j + 2],
+                                mViewPortHandler.contentBottom()), mRadius, mRadius, mShadowPaint);
+                    else
+                        c.drawRect(buffer.buffer[j], mViewPortHandler.contentTop(),
+                                buffer.buffer[j + 2],
+                                mViewPortHandler.contentBottom(), mShadowPaint);
+                }
             }
         }
 
@@ -135,12 +141,22 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                 // Set the color for the currently drawn value. If the index
                 // is out of bounds, reuse colors.
                 mRenderPaint.setColor(dataSet.getColor(j / 4));
-                c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                        buffer.buffer[j + 3], mRenderPaint);
+                if (mRadius > 0) {
+                    c.drawRoundRect(new RectF(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+                            buffer.buffer[j + 3]), mRadius, mRadius, mRenderPaint);
+                } else {
+                    c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+                            buffer.buffer[j + 3], mRenderPaint);
+                }
 
                 if (drawBorder) {
-                    c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                            buffer.buffer[j + 3], mBarBorderPaint);
+                    if (mRadius > 0) {
+                        c.drawRoundRect(new RectF(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+                                buffer.buffer[j + 3]), mRadius, mRadius, mBarBorderPaint);
+                    } else {
+                        c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+                                buffer.buffer[j + 3], mBarBorderPaint);
+                    }
                 }
             }
         } else {
@@ -155,12 +171,25 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                 if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j]))
                     break;
 
-                c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                        buffer.buffer[j + 3], mRenderPaint);
+                if (mChart.isDrawBarShadowEnabled()) {
+                    if (mRadius > 0) {
+                        c.drawRoundRect(new RectF(buffer.buffer[j], mViewPortHandler.contentTop(),
+                                buffer.buffer[j + 2],
+                                mViewPortHandler.contentBottom()), mRadius, mRadius, mShadowPaint);
+                    } else {
+                        c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+                                buffer.buffer[j + 3], mRenderPaint);
+                    }
+                }
 
                 if (drawBorder) {
-                    c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                            buffer.buffer[j + 3], mBarBorderPaint);
+                    if (mRadius > 0) {
+                        c.drawRoundRect(new RectF(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+                                buffer.buffer[j + 3]), mRadius, mRadius, mBarBorderPaint);
+                    } else {
+                        c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+                                buffer.buffer[j + 3], mBarBorderPaint);
+                    }
                 }
             }
         }
@@ -344,18 +373,17 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
             mHighlightPaint.setColor(set.getHighLightColor());
             mHighlightPaint.setAlpha(set.getHighLightAlpha());
 
-            boolean isStack = (high.getStackIndex() >= 0  && e.isStacked()) ? true : false;
+            boolean isStack = (high.getStackIndex() >= 0 && e.isStacked()) ? true : false;
 
             final float y1;
             final float y2;
 
             if (isStack) {
 
-                if(mChart.isHighlightFullBarEnabled()) {
+                if (mChart.isHighlightFullBarEnabled()) {
 
                     y1 = e.getPositiveSum();
                     y2 = -e.getNegativeSum();
-
                 } else {
 
                     Range range = e.getRanges()[high.getStackIndex()];
@@ -363,7 +391,6 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                     y1 = range.from;
                     y2 = range.to;
                 }
-
             } else {
                 y1 = e.getY();
                 y2 = 0.f;
@@ -373,12 +400,16 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
             setHighlightDrawPos(high, mBarRect);
 
-            c.drawRect(mBarRect, mHighlightPaint);
+            if (mRadius > 0)
+                c.drawRoundRect(mBarRect, mRadius, mRadius, mHighlightPaint);
+            else
+                c.drawRect(mBarRect, mHighlightPaint);
         }
     }
 
     /**
      * Sets the drawing position of the highlight object based on the riven bar-rect.
+     *
      * @param high
      */
     protected void setHighlightDrawPos(Highlight high, RectF bar) {
@@ -387,5 +418,9 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
     @Override
     public void drawExtras(Canvas c) {
+    }
+
+    public void setRadius(int radius) {
+        this.mRadius = radius;
     }
 }

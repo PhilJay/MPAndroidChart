@@ -2,11 +2,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '23.0.3'
+    compileSdkVersion 24
+    buildToolsVersion '24.0.0'
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion 24
         versionCode 52
         versionName '3.0.0'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -39,7 +39,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath 'com.android.tools.build:gradle:2.2.0-alpha6'
         //classpath 'io.realm:realm-gradle-plugin:0.88.2'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
