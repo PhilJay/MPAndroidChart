@@ -44,6 +44,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 
     public BarChart(Context context, AttributeSet attrs) {
         super(context, attrs);
+        ((BarChartRenderer) mRenderer).setRadius(attrs.getAttributeIntValue("http://schemas.android.com/apk/res-auto", "radius", 0));
     }
 
     public BarChart(Context context, AttributeSet attrs, int defStyle) {
@@ -182,6 +183,14 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     }
 
     /**
+     * @return true the highlight operation is be full-bar oriented, false if single-value
+     */
+    @Override
+    public boolean isHighlightFullBarEnabled() {
+        return mHighlightFullBarEnabled;
+    }
+
+    /**
      * Set this to true to make the highlight operation full-bar oriented, false to make it highlight single values (relevant
      * only for stacked). If enabled, highlighting operations will highlight the whole bar, even if only a single stack entry
      * was tapped.
@@ -191,14 +200,6 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
      */
     public void setHighlightFullBarEnabled(boolean enabled) {
         mHighlightFullBarEnabled = enabled;
-    }
-
-    /**
-     * @return true the highlight operation is be full-bar oriented, false if single-value
-     */
-    @Override
-    public boolean isHighlightFullBarEnabled() {
-        return mHighlightFullBarEnabled;
     }
 
     /**
