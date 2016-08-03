@@ -4,27 +4,24 @@ import com.github.mikephil.charting.formatter.FormattedStringCache;
 
 import junit.framework.Assert;
 
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 /**
  * Created by Tony Patino on 6/30/16.
  */
 public class FormattedStringCacheTest {
 
+    private DecimalFormat decimalFormat;
+
     @Test
-    public void testPrimFloat(){
-        int digits = 2;
-
-        StringBuffer b = new StringBuffer();
-        for (int i = 0; i < digits; i++) {
-            if (i == 0)
-                b.append(".");
-            b.append("0");
-        }
-
-        FormattedStringCache.PrimFloat cache = new FormattedStringCache.PrimFloat(new DecimalFormat("###,###,###,##0" + b.toString()));
+    public void testPrimFloat() {
+        FormattedStringCache.PrimFloat cache = new FormattedStringCache.PrimFloat(decimalFormat);
 
         String s = null;
 
@@ -51,10 +48,10 @@ public class FormattedStringCacheTest {
 
         Assert.assertEquals("1.00", s);
 
-        for(int i = 0 ; i < 100 ; i++){
+        for (int i = 0; i < 100; i++) {
             float f = 0.75f + i;
             s = cache.getFormattedValue(f);
-            Assert.assertEquals(i+".75", s);
+            Assert.assertEquals(i + ".75", s);
         }
 
 
@@ -71,17 +68,8 @@ public class FormattedStringCacheTest {
     }
 
     @Test
-    public void testPrimDouble(){
-        int digits = 2;
-
-        StringBuffer b = new StringBuffer();
-        for (int i = 0; i < digits; i++) {
-            if (i == 0)
-                b.append(".");
-            b.append("0");
-        }
-
-        FormattedStringCache.PrimDouble cache = new FormattedStringCache.PrimDouble(new DecimalFormat("###,###,###,##0" + b.toString()));
+    public void testPrimDouble() {
+        FormattedStringCache.PrimDouble cache = new FormattedStringCache.PrimDouble(decimalFormat);
 
         String s = null;
 
@@ -108,10 +96,10 @@ public class FormattedStringCacheTest {
 
         Assert.assertEquals("1.00", s);
 
-        for(int i = 0 ; i < 100 ; i++){
+        for (int i = 0; i < 100; i++) {
             double f = 0.75f + i;
             s = cache.getFormattedValue(f);
-            Assert.assertEquals(i+".75", s);
+            Assert.assertEquals(i + ".75", s);
         }
 
 
@@ -128,18 +116,10 @@ public class FormattedStringCacheTest {
     }
 
     @Test
-    public void testPrimIntFloat(){
+    public void testPrimIntFloat() {
 
-        int digits = 2;
 
-        StringBuffer b = new StringBuffer();
-        for (int i = 0; i < digits; i++) {
-            if (i == 0)
-                b.append(".");
-            b.append("0");
-        }
-
-        FormattedStringCache.PrimIntFloat cache = new FormattedStringCache.PrimIntFloat(new DecimalFormat("###,###,###,##0" + b.toString()));
+        FormattedStringCache.PrimIntFloat cache = new FormattedStringCache.PrimIntFloat(decimalFormat);
 
         String s = null;
 
@@ -152,7 +132,7 @@ public class FormattedStringCacheTest {
         Assert.assertEquals("1.00", s);
 
 
-        s = cache.getFormattedValue(1.3f ,1);
+        s = cache.getFormattedValue(1.3f, 1);
 
         Assert.assertEquals("1.30", s);
 
@@ -171,10 +151,10 @@ public class FormattedStringCacheTest {
 
         Assert.assertEquals("1.00", s);
 
-        for(int i = 0 ; i < 100 ; i++){
+        for (int i = 0; i < 100; i++) {
             float f = 0.75f + i;
             s = cache.getFormattedValue(f, i);
-            Assert.assertEquals(i+".75", s);
+            Assert.assertEquals(i + ".75", s);
         }
 
 
@@ -209,17 +189,8 @@ public class FormattedStringCacheTest {
         Assert.assertEquals("1.31", s);
     }
 
-    @Test
-    public void testGenericKV(){
-
-        this.genericIntFloat();
-        this.genericDoubleFloat();
-        this.genericObjectFloat();
-    }
-
-    private void genericObjectFloat() {
-
-
+    @Before
+    public void initializeDecimalFormatter() {
         int digits = 2;
 
         StringBuffer b = new StringBuffer();
@@ -229,7 +200,22 @@ public class FormattedStringCacheTest {
             b.append("0");
         }
 
-        FormattedStringCache.Generic<Object, Float> cache = new FormattedStringCache.Generic<>(new DecimalFormat("###,###,###,##0" + b.toString()));
+        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.US);
+        otherSymbols.setDecimalSeparator('.');
+        otherSymbols.setGroupingSeparator(',');
+        decimalFormat = new DecimalFormat("###,###,###,##0" + b.toString(), otherSymbols);
+    }
+
+    @Test
+    public void testGenericKV() {
+
+        this.genericIntFloat();
+        this.genericDoubleFloat();
+        this.genericObjectFloat();
+    }
+
+    private void genericObjectFloat() {
+        FormattedStringCache.Generic<Object, Float> cache = new FormattedStringCache.Generic<>(decimalFormat);
 
         String s = null;
 
@@ -265,19 +251,7 @@ public class FormattedStringCacheTest {
     }
 
     private void genericDoubleFloat() {
-
-
-
-        int digits = 2;
-
-        StringBuffer b = new StringBuffer();
-        for (int i = 0; i < digits; i++) {
-            if (i == 0)
-                b.append(".");
-            b.append("0");
-        }
-
-        FormattedStringCache.Generic<Double, Float> cache = new FormattedStringCache.Generic<>(new DecimalFormat("###,###,###,##0" + b.toString()));
+        FormattedStringCache.Generic<Double, Float> cache = new FormattedStringCache.Generic<>(decimalFormat);
 
         String s = null;
 
@@ -290,7 +264,7 @@ public class FormattedStringCacheTest {
         Assert.assertEquals("1.00", s);
 
 
-        s = cache.getFormattedValue(1.3f ,1d);
+        s = cache.getFormattedValue(1.3f, 1d);
 
         Assert.assertEquals("1.30", s);
 
@@ -309,10 +283,10 @@ public class FormattedStringCacheTest {
 
         Assert.assertEquals("1.00", s);
 
-        for(int i = 0 ; i < 100 ; i++){
+        for (int i = 0; i < 100; i++) {
             float f = 0.75f + i;
-            s = cache.getFormattedValue(f, (double)i);
-            Assert.assertEquals(i+".75", s);
+            s = cache.getFormattedValue(f, (double) i);
+            Assert.assertEquals(i + ".75", s);
         }
 
 
@@ -349,18 +323,7 @@ public class FormattedStringCacheTest {
     }
 
     private void genericIntFloat() {
-
-
-        int digits = 2;
-
-        StringBuffer b = new StringBuffer();
-        for (int i = 0; i < digits; i++) {
-            if (i == 0)
-                b.append(".");
-            b.append("0");
-        }
-
-        FormattedStringCache.Generic<Integer, Float> cache = new FormattedStringCache.Generic<>(new DecimalFormat("###,###,###,##0" + b.toString()));
+        FormattedStringCache.Generic<Integer, Float> cache = new FormattedStringCache.Generic<>(decimalFormat);
 
         String s = null;
 
@@ -373,7 +336,7 @@ public class FormattedStringCacheTest {
         Assert.assertEquals("1.00", s);
 
 
-        s = cache.getFormattedValue(1.3f ,1);
+        s = cache.getFormattedValue(1.3f, 1);
 
         Assert.assertEquals("1.30", s);
 
@@ -392,10 +355,10 @@ public class FormattedStringCacheTest {
 
         Assert.assertEquals("1.00", s);
 
-        for(int i = 0 ; i < 100 ; i++){
+        for (int i = 0; i < 100; i++) {
             float f = 0.75f + i;
             s = cache.getFormattedValue(f, i);
-            Assert.assertEquals(i+".75", s);
+            Assert.assertEquals(i + ".75", s);
         }
 
 
