@@ -115,7 +115,7 @@ public class XAxisRenderer extends AxisRenderer {
         MPPointF pointF = MPPointF.getInstance(0,0);
         if (mXAxis.getPosition() == XAxisPosition.TOP) {
             pointF.x = 0.5f;
-            pointF.y = 0.9f;
+            pointF.y = 1.0f;
             drawLabels(c, mViewPortHandler.contentTop() - yoffset, pointF);
 
         } else if (mXAxis.getPosition() == XAxisPosition.TOP_INSIDE) {
