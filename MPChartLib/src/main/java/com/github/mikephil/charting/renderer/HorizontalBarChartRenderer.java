@@ -130,6 +130,8 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                 // get the buffer
                 BarBuffer buffer = mBarBuffers[i];
 
+                final float phaseY = mAnimator.getPhaseY();
+
                 // if only single values are drawn (sum)
                 if (!dataSet.isStacked()) {
 
@@ -230,7 +232,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                                     negY -= value;
                                 }
 
-                                transformed[k] = y * mAnimator.getPhaseY();
+                                transformed[k] = y * phaseY;
                             }
 
                             trans.pointValuesToPixel(transformed);

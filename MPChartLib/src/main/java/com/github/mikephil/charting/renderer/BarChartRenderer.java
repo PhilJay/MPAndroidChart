@@ -217,6 +217,8 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                 // get the buffer
                 BarBuffer buffer = mBarBuffers[i];
 
+                final float phaseY = mAnimator.getPhaseY();
+
                 // if only single values are drawn (sum)
                 if (!dataSet.isStacked()) {
 
@@ -293,7 +295,7 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                                     negY -= value;
                                 }
 
-                                transformed[k + 1] = y * mAnimator.getPhaseY();
+                                transformed[k + 1] = y * phaseY;
                             }
 
                             trans.pointValuesToPixel(transformed);
