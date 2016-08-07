@@ -73,6 +73,12 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
         trans.pointValuesToPixel(buffer.buffer);
 
+        final boolean isSingleColor = dataSet.getColors().size() == 1;
+
+        if (isSingleColor) {
+            mRenderPaint.setColor(dataSet.getColor());
+        }
+
         for (int j = 0; j < buffer.size(); j += 4) {
 
             if (!mViewPortHandler.isInBoundsTop(buffer.buffer[j + 3]))
@@ -87,9 +93,12 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                         buffer.buffer[j + 3], mShadowPaint);
             }
 
-            // Set the color for the currently drawn value. If the index
-            // is out of bounds, reuse colors.
-            mRenderPaint.setColor(dataSet.getColor(j / 4));
+            if (!isSingleColor) {
+                // Set the color for the currently drawn value. If the index
+                // is out of bounds, reuse colors.
+                mRenderPaint.setColor(dataSet.getColor(j / 4));
+            }
+
             c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                     buffer.buffer[j + 3], mRenderPaint);
 

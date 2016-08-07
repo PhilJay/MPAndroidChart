@@ -121,47 +121,32 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
             }
         }
 
-        // if multiple colors
-        if (dataSet.getColors().size() > 1) {
+        final boolean isSingleColor = dataSet.getColors().size() == 1;
 
-            for (int j = 0; j < buffer.size(); j += 4) {
+        if (isSingleColor) {
+            mRenderPaint.setColor(dataSet.getColor());
+        }
 
-                if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[j + 2]))
-                    continue;
+        for (int j = 0; j < buffer.size(); j += 4) {
 
-                if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j]))
-                    break;
+            if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[j + 2]))
+                continue;
 
+            if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j]))
+                break;
+
+            if (!isSingleColor) {
                 // Set the color for the currently drawn value. If the index
                 // is out of bounds, reuse colors.
                 mRenderPaint.setColor(dataSet.getColor(j / 4));
-                c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                        buffer.buffer[j + 3], mRenderPaint);
-
-                if (drawBorder) {
-                    c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                            buffer.buffer[j + 3], mBarBorderPaint);
-                }
             }
-        } else {
 
-            mRenderPaint.setColor(dataSet.getColor());
+            c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+                    buffer.buffer[j + 3], mRenderPaint);
 
-            for (int j = 0; j < buffer.size(); j += 4) {
-
-                if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[j + 2]))
-                    continue;
-
-                if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j]))
-                    break;
-
+            if (drawBorder) {
                 c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                        buffer.buffer[j + 3], mRenderPaint);
-
-                if (drawBorder) {
-                    c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                            buffer.buffer[j + 3], mBarBorderPaint);
-                }
+                        buffer.buffer[j + 3], mBarBorderPaint);
             }
         }
     }
