@@ -101,7 +101,7 @@ public class Entry extends BaseEntry implements Parcelable {
      */
     @Override
     public String toString() {
-        return "Entry, x: " + x + " y (sum): " + getY();
+        return "Entry, x: " + x + " y: " + getY();
     }
 
     @Override

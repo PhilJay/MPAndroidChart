@@ -497,7 +497,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
     /**
      * Sets the maximum distance in screen dp a touch can be away from an entry to cause it to get highlighted.
-     * Default: 100dp
+     * Default: 500dp
      *
      * @param distDp
      */
