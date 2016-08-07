@@ -80,11 +80,12 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
         }
     }
 
+    private RectF mBarShadowRectBuffer = new RectF();
+
     protected void drawDataSet(Canvas c, IBarDataSet dataSet, int index) {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
-        mShadowPaint.setColor(dataSet.getBarShadowColor());
         mBarBorderPaint.setColor(dataSet.getBarBorderColor());
         mBarBorderPaint.setStrokeWidth(Utils.convertDpToPixel(dataSet.getBarBorderWidth()));
 
@@ -92,6 +93,42 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
+
+        // draw the bar shadow before the values
+        if (mChart.isDrawBarShadowEnabled()) {
+            mShadowPaint.setColor(dataSet.getBarShadowColor());
+
+            BarData barData = mChart.getBarData();
+
+            final float barWidth = barData.getBarWidth();
+            final float barWidthHalf = barWidth / 2.0f;
+            float x;
+
+            for (int i = 0, count = Math.min((int)(Math.ceil((float)(dataSet.getEntryCount()) * phaseX)), dataSet.getEntryCount());
+                i < count;
+                i++) {
+
+                BarEntry e = dataSet.getEntryForIndex(i);
+
+                x = e.getX();
+
+                mBarShadowRectBuffer.left = x - barWidthHalf;
+                mBarShadowRectBuffer.right = x + barWidthHalf;
+
+                trans.rectValueToPixel(mBarShadowRectBuffer);
+
+                if (!mViewPortHandler.isInBoundsLeft(mBarShadowRectBuffer.right))
+                    continue;
+
+                if (!mViewPortHandler.isInBoundsRight(mBarShadowRectBuffer.left))
+                    break;
+
+                mBarShadowRectBuffer.top = mViewPortHandler.contentTop();
+                mBarShadowRectBuffer.bottom = mViewPortHandler.contentBottom();
+
+                c.drawRect(mBarShadowRectBuffer, mShadowPaint);
+            }
+        }
 
         // initialize the buffer
         BarBuffer buffer = mBarBuffers[index];
@@ -103,23 +140,6 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
         buffer.feed(dataSet);
 
         trans.pointValuesToPixel(buffer.buffer);
-
-        // draw the bar shadow before the values
-        if (mChart.isDrawBarShadowEnabled()) {
-
-            for (int j = 0; j < buffer.size(); j += 4) {
-
-                if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[j + 2]))
-                    continue;
-
-                if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j]))
-                    break;
-
-                c.drawRect(buffer.buffer[j], mViewPortHandler.contentTop(),
-                        buffer.buffer[j + 2],
-                        mViewPortHandler.contentBottom(), mShadowPaint);
-            }
-        }
 
         final boolean isSingleColor = dataSet.getColors().size() == 1;
 
