@@ -5,6 +5,8 @@ import android.os.Parcel;
 import android.os.ParcelFormatException;
 import android.os.Parcelable;
 
+import com.github.mikephil.charting.utils.Utils;
+
 /**
  * Class representing one entry in the chart. Might contain multiple values.
  * Might only contain a single value depending on the used constructor.
@@ -87,10 +89,10 @@ public class Entry extends BaseEntry implements Parcelable {
         if (e.getData() != this.getData())
             return false;
 
-        if (Math.abs(e.x - this.x) > 0.000001f)
+        if (Math.abs(e.x - this.x) > Utils.FLOAT_EPSILON)
             return false;
 
-        if (Math.abs(e.getY() - this.getY()) > 0.000001f)
+        if (Math.abs(e.getY() - this.getY()) > Utils.FLOAT_EPSILON)
             return false;
 
         return true;
