@@ -5,14 +5,15 @@ import android.graphics.Paint;
 
 import com.github.mikephil.charting.buffer.ScatterBuffer;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
-import com.github.mikephil.charting.renderer.scatter.ShapeRenderer;
+import com.github.mikephil.charting.renderer.scatter.IShapeRenderer;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**
  * Custom shape renderer that draws a single line.
  * Created by philipp on 26/06/16.
  */
-public class CustomScatterShapeRenderer implements ShapeRenderer {
+public class CustomScatterShapeRenderer implements IShapeRenderer
+{
 
     @Override
     public void renderShape(Canvas c, IScatterDataSet dataSet, ViewPortHandler viewPortHandler, ScatterBuffer buffer, Paint

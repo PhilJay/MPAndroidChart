@@ -5,7 +5,7 @@ import com.github.mikephil.charting.renderer.scatter.ChevronDownShapeRenderer;
 import com.github.mikephil.charting.renderer.scatter.ChevronUpShapeRenderer;
 import com.github.mikephil.charting.renderer.scatter.CircleShapeRenderer;
 import com.github.mikephil.charting.renderer.scatter.CrossShapeRenderer;
-import com.github.mikephil.charting.renderer.scatter.ShapeRenderer;
+import com.github.mikephil.charting.renderer.scatter.IShapeRenderer;
 import com.github.mikephil.charting.renderer.scatter.SquareShapeRenderer;
 import com.github.mikephil.charting.renderer.scatter.TriangleShapeRenderer;
 import com.github.mikephil.charting.renderer.scatter.XShapeRenderer;
@@ -14,16 +14,16 @@ import java.util.HashMap;
 
 /**
  * Created by Philipp Jahoda on 27/06/16.
- * Class allowing to determine the corresponding ShapeRenderer for a given ScatterShape.
+ * Class allowing to determine the corresponding IShapeRenderer for a given ScatterShape.
  */
 public final class ShapeRendererHandler {
 
     /**
-     * Dictionary of ShapeRenderer which are responsible for drawing custom shapes.
+     * Dictionary of IShapeRenderer which are responsible for drawing custom shapes.
      * Can add to it your custom shapes.
-     * CustomShapeRenderer Implements ShapeRenderer{}
+     * CustomShapeRenderer Implements IShapeRenderer{}
      */
-    protected HashMap<String, ShapeRenderer> shapeRendererList;
+    protected HashMap<String, IShapeRenderer> shapeRendererList;
 
     /**
      * Constructor
@@ -33,12 +33,12 @@ public final class ShapeRendererHandler {
     }
 
     /**
-     * Returns the corresponding ShapeRenderer for a given ScatterShape.
+     * Returns the corresponding IShapeRenderer for a given ScatterShape.
      *
      * @param shape
      * @return
      */
-    public ShapeRenderer getShapeRenderer(ScatterChart.ScatterShape shape) {
+    public IShapeRenderer getShapeRenderer(ScatterChart.ScatterShape shape) {
         return shapeRendererList.get(shape.toString());
     }
 

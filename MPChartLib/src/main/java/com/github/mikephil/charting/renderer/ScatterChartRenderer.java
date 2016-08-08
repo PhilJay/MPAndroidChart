@@ -10,7 +10,7 @@ import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.ScatterDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
-import com.github.mikephil.charting.renderer.scatter.ShapeRenderer;
+import com.github.mikephil.charting.renderer.scatter.IShapeRenderer;
 import com.github.mikephil.charting.utils.MPPointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
@@ -72,12 +72,12 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
         trans.pointValuesToPixel(buffer.buffer);
 
-        ShapeRenderer renderer = dataSet.getShapeRenderer();
+        IShapeRenderer renderer = dataSet.getShapeRenderer();
 
         if (renderer != null) {
             renderer.renderShape(c, dataSet, mViewPortHandler, buffer, mRenderPaint, shapeSize);
         } else {
-            throw new RuntimeException("No ShapeRenderer found for provided identifier. Please make sure to add a ShapeRenderer" +
+            throw new RuntimeException("No IShapeRenderer found for provided identifier. Please make sure to add a IShapeRenderer" +
                     " capable of rendering the provided shape.");
         }
     }
