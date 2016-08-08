@@ -68,7 +68,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
             if (ranges.length > 0) {
                 int stackIndex = getClosestStackIndex(ranges, yVal);
 
-                MPPointD pixels = mChart.getTransformer(set.getAxisDependency()).getPixelsForValues(high.getX(), ranges[stackIndex].to);
+                MPPointD pixels = mChart.getTransformer(set.getAxisDependency()).getPixelForValues(high.getX(), ranges[stackIndex].to);
 
                 Highlight stackedHigh = new Highlight(
                         entry.getX(),

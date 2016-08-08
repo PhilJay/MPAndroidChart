@@ -1206,7 +1206,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * Returns the x and y values in the chart at the given touch point
      * (encapsulated in a MPPointD). This method transforms pixel coordinates to
      * coordinates / values in the chart. This is the opposite method to
-     * getPixelsForValues(...).
+     * getPixelForValues(...).
      *
      * @param x
      * @param y
@@ -1231,8 +1231,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param y
      * @return
      */
-    public MPPointD getPixelsForValues(float x, float y, AxisDependency axis) {
-        return getTransformer(axis).getPixelsForValues(x, y);
+    public MPPointD getPixelForValues(float x, float y, AxisDependency axis) {
+        return getTransformer(axis).getPixelForValues(x, y);
     }
 
     /**

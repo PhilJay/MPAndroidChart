@@ -179,7 +179,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
     protected void drawZeroLine(Canvas c) {
 
         // draw zero line
-        MPPointD pos = mTrans.getPixelsForValues(0f, 0f);
+        MPPointD pos = mTrans.getPixelForValues(0f, 0f);
 
         mZeroLinePaint.setColor(mYAxis.getZeroLineColor());
         mZeroLinePaint.setStrokeWidth(mYAxis.getZeroLineWidth());

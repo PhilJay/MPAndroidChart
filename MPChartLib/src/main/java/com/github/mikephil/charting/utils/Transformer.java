@@ -353,7 +353,7 @@ public class Transformer {
             m.mapRect(rects.get(i));
     }
 
-    protected Matrix mPixelsToValueMatrixBuffer = new Matrix();
+    protected Matrix mPixelToValueMatrixBuffer = new Matrix();
 
     /**
      * Transforms the given array of touch positions (pixels) (x, y, x, y, ...)
@@ -363,7 +363,7 @@ public class Transformer {
      */
     public void pixelsToValue(float[] pixels) {
 
-        Matrix tmp = mPixelsToValueMatrixBuffer;
+        Matrix tmp = mPixelToValueMatrixBuffer;
         tmp.reset();
 
         // invert all matrixes to convert back to the original value
@@ -387,7 +387,7 @@ public class Transformer {
      * returns the x and y values in the chart at the given touch point
      * (encapsulated in a MPPointD). This method transforms pixel coordinates to
      * coordinates / values in the chart. This is the opposite method to
-     * getPixelsForValues(...).
+     * getPixelForValues(...).
      *
      * @param x
      * @param y
@@ -419,7 +419,7 @@ public class Transformer {
      * @param y
      * @return
      */
-    public MPPointD getPixelsForValues(float x, float y) {
+    public MPPointD getPixelForValues(float x, float y) {
 
         ptsBuffer[0] = x;
         ptsBuffer[1] = y;
