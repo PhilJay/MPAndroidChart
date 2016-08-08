@@ -48,7 +48,12 @@ public class ScatterChart extends BarLineChartBase<ScatterData> implements Scatt
      */
     public enum ScatterShape {
 
-        SQUARE("SQUARE"), CIRCLE("CIRCLE"), TRIANGLE("TRIANGLE"), CROSS("CROSS"), X("X"), CHEVRON_UP("CHEVRON_UP"),
+        SQUARE("SQUARE"),
+        CIRCLE("CIRCLE"),
+        TRIANGLE("TRIANGLE"),
+        CROSS("CROSS"),
+        X("X"),
+        CHEVRON_UP("CHEVRON_UP"),
         CHEVRON_DOWN("CHEVRON_DOWN");
 
         private final String shapeIdentifier;
