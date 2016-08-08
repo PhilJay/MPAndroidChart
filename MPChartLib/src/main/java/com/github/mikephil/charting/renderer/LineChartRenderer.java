@@ -206,6 +206,8 @@ public class LineChartRenderer extends LineRadarRenderer {
             Entry cur = prev;
             Entry next = dataSet.getEntryForIndex(mXBounds.min + 1);
 
+            if (cur == null || next == null) return;
+
             // let the spline start
             cubicPath.moveTo(cur.getX(), cur.getY() * phaseY);
 
