@@ -194,7 +194,7 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
                 continue;
 
             // In bubble charts - it makes sense to have multiple bubbles on the same X value in the same dataset.
-            final List<BubbleEntry> entries = set.getEntriesForXPos(high.getX());
+            final List<BubbleEntry> entries = set.getEntriesForXValue(high.getX());
 
             for (BubbleEntry entry : entries) {
 

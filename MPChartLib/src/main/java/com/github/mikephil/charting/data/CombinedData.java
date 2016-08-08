@@ -3,10 +3,8 @@ package com.github.mikephil.charting.data;
 
 import android.util.Log;
 
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -194,7 +192,7 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
             //   if we are not interested in highlighting a specific value.
 
             List<Entry> entries = data.getDataSetByIndex(highlight.getDataSetIndex())
-                    .getEntriesForXPos(highlight.getX());
+                    .getEntriesForXValue(highlight.getX());
             for (Entry entry : entries)
                 if (entry.getY() == highlight.getY() ||
                         Float.isNaN(highlight.getY()))
@@ -243,7 +241,7 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
 
     @Deprecated
     @Override
-    public boolean removeEntry(float xPos, int dataSetIndex) {
+    public boolean removeEntry(float xValue, int dataSetIndex) {
         Log.e("MPAndroidChart", "removeEntry(...) not supported for CombinedData");
         return false;
     }

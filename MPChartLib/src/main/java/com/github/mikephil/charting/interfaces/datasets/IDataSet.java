@@ -58,40 +58,40 @@ public interface IDataSet<T extends Entry> {
     void calcMinMax();
 
     /**
-     * Returns the first Entry object found at the given xPos with binary
-     * search. If the no Entry at the specified xPos is found, this method
-     * returns the Entry at the xPos according to the rounding.
+     * Returns the first Entry object found at the given x-value with binary
+     * search. If the no Entry at the specified x-value is found, this method
+     * returns the Entry at the x-value according to the rounding.
      * INFORMATION: This method does calculations at runtime. Do
      * not over-use in performance critical situations.
      *
-     * @param xPos
+     * @param xValue
      * @param rounding determine to round up/down/closest if there is no Entry matching the provided x-index
      * @return
      */
-    T getEntryForXPos(float xPos, DataSet.Rounding rounding);
+    T getEntryForXValue(float xValue, DataSet.Rounding rounding);
 
     /**
-     * Returns the first Entry object found at the given xPos with binary
-     * search. If the no Entry at the specified xPos is found, this method
-     * returns the index at the closest xPos.
+     * Returns the first Entry object found at the given x-value with binary
+     * search. If the no Entry at the specified x-value is found, this method
+     * returns the index at the closest x-value.
      * INFORMATION: This method does calculations at runtime. Do
      * not over-use in performance critical situations.
      *
-     * @param xPos
+     * @param xValue
      * @return
      */
-    T getEntryForXPos(float xPos);
+    T getEntryForXValue(float xValue);
 
     /**
-     * Returns all Entry objects found at the given xPos with binary
-     * search. An empty array if no Entry object at that xPos.
+     * Returns all Entry objects found at the given x-value with binary
+     * search. An empty array if no Entry object at that x-value.
      * INFORMATION: This method does calculations at runtime. Do
      * not over-use in performance critical situations.
      *
-     * @param xPos
+     * @param xValue
      * @return
      */
-    List<T> getEntriesForXPos(float xPos);
+    List<T> getEntriesForXValue(float xValue);
 
     /**
      * Returns the Entry object found at the given index (NOT xIndex) in the values array.
@@ -102,17 +102,17 @@ public interface IDataSet<T extends Entry> {
     T getEntryForIndex(int index);
 
     /**
-     * Returns the first Entry index found at the given xPos with binary
-     * search. If the no Entry at the specified xPos is found, this method
-     * returns the Entry at the closest xPos.
+     * Returns the first Entry index found at the given x-value with binary
+     * search. If the no Entry at the specified x-value is found, this method
+     * returns the Entry at the closest x-value.
      * INFORMATION: This method does calculations at runtime. Do
      * not over-use in performance critical situations.
      *
-     * @param xPos
+     * @param xValue
      * @param rounding determine to round up/down/closest if there is no Entry matching the provided x-index
      * @return
      */
-    int getEntryIndex(float xPos, DataSet.Rounding rounding);
+    int getEntryIndex(float xValue, DataSet.Rounding rounding);
 
     /**
      * Returns the position of the provided entry in the DataSets Entry array.
@@ -183,12 +183,12 @@ public interface IDataSet<T extends Entry> {
     boolean removeEntry(T e);
 
     /**
-     * Removes the Entry object closest to the given xPos from the DataSet.
+     * Removes the Entry object closest to the given x-value from the DataSet.
      * Returns true if an Entry was removed, false if no Entry could be removed.
      *
-     * @param xPos
+     * @param xValue
      */
-    boolean removeEntryByXPos(float xPos);
+    boolean removeEntryByXValue(float xValue);
 
     /**
      * Removes the Entry object at the given index in the values array from the DataSet.

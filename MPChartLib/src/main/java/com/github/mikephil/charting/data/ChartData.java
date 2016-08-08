@@ -335,7 +335,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         if (highlight.getDataSetIndex() >= mDataSets.size())
             return null;
         else {
-            return mDataSets.get(highlight.getDataSetIndex()).getEntryForXPos(highlight.getX());
+            return mDataSets.get(highlight.getDataSetIndex()).getEntryForXValue(highlight.getX());
         }
     }
 
@@ -526,17 +526,17 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      * specified index. Returns true if an Entry was removed, false if no Entry
      * was found that meets the specified requirements.
      *
-     * @param xPos
+     * @param xValue
      * @param dataSetIndex
      * @return
      */
-    public boolean removeEntry(float xPos, int dataSetIndex) {
+    public boolean removeEntry(float xValue, int dataSetIndex) {
 
         if (dataSetIndex >= mDataSets.size())
             return false;
 
         IDataSet dataSet = mDataSets.get(dataSetIndex);
-        Entry e = dataSet.getEntryForXPos(xPos);
+        Entry e = dataSet.getEntryForXValue(xValue);
 
         if (e == null)
             return false;
@@ -561,7 +561,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
             T set = mDataSets.get(i);
 
             for (int j = 0; j < set.getEntryCount(); j++) {
-                if (e.equalTo(set.getEntryForXPos(e.getX())))
+                if (e.equalTo(set.getEntryForXValue(e.getX())))
                     return set;
             }
         }

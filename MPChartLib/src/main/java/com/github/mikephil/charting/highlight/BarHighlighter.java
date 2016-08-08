@@ -54,7 +54,7 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
      */
     public Highlight getStackedHighlight(Highlight high, IBarDataSet set, float xVal, float yVal) {
 
-        BarEntry entry = set.getEntryForXPos(xVal);
+        BarEntry entry = set.getEntryForXValue(xVal);
 
         if (entry == null)
             return null;

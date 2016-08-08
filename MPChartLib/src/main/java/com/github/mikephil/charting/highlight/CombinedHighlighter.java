@@ -28,7 +28,7 @@ public class CombinedHighlighter extends ChartHighlighter<CombinedDataProvider> 
     }
 
     @Override
-    protected List<Highlight> getHighlightsAtXPos(float xVal, float x, float y) {
+    protected List<Highlight> getHighlightsAtXValue(float xVal, float x, float y) {
 
         mHighlightBuffer.clear();
 

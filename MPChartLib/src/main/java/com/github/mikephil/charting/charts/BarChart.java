@@ -202,7 +202,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     }
 
     /**
-     * Highlights the value at the given x-position in the given DataSet. Provide
+     * Highlights the value at the given x-value in the given DataSet. Provide
      * -1 as the dataSetIndex to undo all highlighting.
      *
      * @param x
@@ -230,8 +230,8 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     }
 
     /**
-     * Groups all BarDataSet objects this data object holds together by modifying the x-position of their entries.
-     * Previously set x-positions of entries will be overwritten. Leaves space between bars and groups as specified
+     * Groups all BarDataSet objects this data object holds together by modifying the x-value of their entries.
+     * Previously set x-values of entries will be overwritten. Leaves space between bars and groups as specified
      * by the parameters.
      * Calls notifyDataSetChanged() afterwards.
      *

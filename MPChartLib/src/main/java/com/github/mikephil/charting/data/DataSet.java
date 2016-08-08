@@ -239,17 +239,17 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     @Override
-    public T getEntryForXPos(float xPos, Rounding rounding) {
+    public T getEntryForXValue(float xValue, Rounding rounding) {
 
-        int index = getEntryIndex(xPos, rounding);
+        int index = getEntryIndex(xValue, rounding);
         if (index > -1)
             return mValues.get(index);
         return null;
     }
 
     @Override
-    public T getEntryForXPos(float xPos) {
-        return getEntryForXPos(xPos, Rounding.CLOSEST);
+    public T getEntryForXValue(float xValue) {
+        return getEntryForXValue(xValue, Rounding.CLOSEST);
     }
 
     @Override
@@ -258,7 +258,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     @Override
-    public int getEntryIndex(float xPos, Rounding rounding) {
+    public int getEntryIndex(float xValue, Rounding rounding) {
 
         if (mValues == null || mValues.isEmpty())
             return -1;
@@ -269,8 +269,8 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         while (low < high) {
             int m = (low + high) / 2;
 
-            float d1 = Math.abs(mValues.get(m).getX() - xPos);
-            float d2 = Math.abs(mValues.get(m + 1).getX() - xPos);
+            float d1 = Math.abs(mValues.get(m).getX() - xValue);
+            float d2 = Math.abs(mValues.get(m + 1).getX() - xValue);
 
             if (d2 <= d1) {
                 low = m + 1;
@@ -280,13 +280,13 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         }
 
         if (high != -1) {
-            float closestXPos = mValues.get(high).getX();
+            float closestXValue = mValues.get(high).getX();
             if (rounding == Rounding.UP) {
-                if (closestXPos < xPos && high < mValues.size() - 1) {
+                if (closestXValue < xValue && high < mValues.size() - 1) {
                     ++high;
                 }
             } else if (rounding == Rounding.DOWN) {
-                if (closestXPos > xPos && high > 0) {
+                if (closestXValue > xValue && high > 0) {
                     --high;
                 }
             }
@@ -300,11 +300,11 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
      * does calculations at runtime. Do not over-use in performance critical
      * situations.
      *
-     * @param xVal
+     * @param xValue
      * @return
      */
     @Override
-    public List<T> getEntriesForXPos(float xVal) {
+    public List<T> getEntriesForXValue(float xValue) {
 
         List<T> entries = new ArrayList<T>();
 
@@ -315,14 +315,14 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
             int m = (high + low) / 2;
             T entry = mValues.get(m);
 
-            if (xVal == entry.getX()) {
-                while (m > 0 && mValues.get(m - 1).getX() == xVal)
+            if (xValue == entry.getX()) {
+                while (m > 0 && mValues.get(m - 1).getX() == xValue)
                     m--;
 
                 high = mValues.size();
                 for (; m < high; m++) {
                     entry = mValues.get(m);
-                    if (entry.getX() == xVal) {
+                    if (entry.getX() == xValue) {
                         entries.add(entry);
                     } else {
                         break;
@@ -331,7 +331,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
                 break;
             } else {
-                if (xVal > entry.getX())
+                if (xValue > entry.getX())
                     low = m + 1;
                 else
                     high = m - 1;

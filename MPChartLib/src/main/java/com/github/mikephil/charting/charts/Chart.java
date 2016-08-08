@@ -581,7 +581,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * Highlights the value at the given x-position in the given DataSet. Provide
+     * Highlights the value at the given x-value in the given DataSet. Provide
      * -1 as the dataSetIndex to undo all highlighting. This will trigger a callback to the OnChartValueSelectedListener.
      *
      * @param x
@@ -592,7 +592,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * Highlights the value at the given x position in the given DataSet. Provide
+     * Highlights the value at the given x-value in the given DataSet. Provide
      * -1 as the dataSetIndex to undo all highlighting.
      *
      * @param x

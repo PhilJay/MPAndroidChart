@@ -66,7 +66,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      */
     protected Highlight getHighlightForX(float xVal, float x, float y) {
 
-        List<Highlight> closestValues = getHighlightsAtXPos(xVal, x, y);
+        List<Highlight> closestValues = getHighlightsAtXValue(xVal, x, y);
 
         if(closestValues.isEmpty()) {
             return null;
@@ -124,7 +124,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      * @param y    touch position
      * @return
      */
-    protected List<Highlight> getHighlightsAtXPos(float xVal, float x, float y) {
+    protected List<Highlight> getHighlightsAtXValue(float xVal, float x, float y) {
 
         mHighlightBuffer.clear();
 
@@ -162,7 +162,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      */
     protected Highlight buildHighlight(IDataSet set, int dataSetIndex, float xVal, DataSet.Rounding rounding) {
 
-        final Entry e = set.getEntryForXPos(xVal, rounding);
+        final Entry e = set.getEntryForXValue(xVal, rounding);
 
         if (e == null)
             return null;
