@@ -9,6 +9,7 @@ import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.AxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.xxmassdeveloper.mpchartexample.R;
 
@@ -40,17 +41,12 @@ public class XYMarkerView extends MarkerView {
     public void refreshContent(Entry e, Highlight highlight) {
 
         tvContent.setText("x: " + xAxisValueFormatter.getFormattedValue(e.getX(), null) + ", y: " + format.format(e.getY()));
+
+        super.refreshContent(e, highlight);
     }
 
     @Override
-    public int getXOffset(float xpos) {
-        // this will center the marker-view horizontally
-        return -(getWidth() / 2);
-    }
-
-    @Override
-    public int getYOffset(float ypos) {
-        // this will cause the marker-view to be above the selected value
-        return -getHeight();
+    public MPPointF getOffset() {
+        return new MPPointF(-(getWidth() / 2), -getHeight());
     }
 }

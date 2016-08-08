@@ -46,7 +46,6 @@ import com.xxmassdeveloper.mpchartexample.ScrollViewActivity;
 import com.xxmassdeveloper.mpchartexample.StackedBarActivity;
 import com.xxmassdeveloper.mpchartexample.StackedBarActivityNegative;
 import com.xxmassdeveloper.mpchartexample.fragments.SimpleChartDemo;
-import com.xxmassdeveloper.mpchartexample.realm.RealmMainActivity;
 
 import java.util.ArrayList;
 
@@ -131,10 +130,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 "BarChart positive / negative",
                 "This demonstrates how to create a BarChart with positive and negative values in different colors."));
 
-        ContentItem realm = new ContentItem(
-                "Realm.io Database",
-                "This demonstrates how to use this library with Realm.io mobile database.");
-        objects.add(realm);
 
         ContentItem time = new ContentItem(
                 "Time Chart",
@@ -272,10 +267,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 break;
             case 27:
                 i = new Intent(this, BarChartPositiveNegative.class);
-                startActivity(i);
-                break;
-            case 28:
-                i = new Intent(this, RealmMainActivity.class);
                 startActivity(i);
                 break;
             case 29:

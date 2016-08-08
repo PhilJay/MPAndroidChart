@@ -34,8 +34,8 @@ public class ScatterChartFrag extends SimpleFragment {
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"OpenSans-Light.ttf");
         
         MyMarkerView mv = new MyMarkerView(getActivity(), R.layout.custom_marker_view);
-
-        mChart.setMarkerView(mv);
+        mv.setChartView(mChart); // For bounds control
+        mChart.setMarker(mv);
 
         mChart.setDrawGridBackground(false);
         mChart.setData(generateScatterData(6, 10000, 200));

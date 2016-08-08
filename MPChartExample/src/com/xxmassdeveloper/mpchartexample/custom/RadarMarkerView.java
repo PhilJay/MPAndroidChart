@@ -10,6 +10,7 @@ import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.FormattedStringCache;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.xxmassdeveloper.mpchartexample.R;
 
@@ -38,17 +39,12 @@ public class RadarMarkerView extends MarkerView {
     public void refreshContent(Entry e, Highlight highlight) {
         float value = e.getY();
         tvContent.setText(mFormattedStringCache.getFormattedValue(value) + " %");
+
+        super.refreshContent(e, highlight);
     }
 
     @Override
-    public int getXOffset(float xpos) {
-        // this will center the marker-view horizontally
-        return -(getWidth() / 2);
-    }
-
-    @Override
-    public int getYOffset(float ypos) {
-        // this will cause the marker-view to be above the selected value
-        return -getHeight()-10;
+    public MPPointF getOffset() {
+        return new MPPointF(-(getWidth() / 2), -getHeight() - 10);
     }
 }

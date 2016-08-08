@@ -14,6 +14,7 @@ import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
+import com.github.mikephil.charting.components.MarkerImage;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -58,9 +59,8 @@ public class RadarChartActivitry extends DemoBase {
         // create a custom MarkerView (extend MarkerView) and specify the layout
         // to use for it
         MarkerView mv = new RadarMarkerView(this, R.layout.radar_markerview);
-
-        // set the marker to the chart
-        mChart.setMarkerView(mv);
+        mv.setChartView(mChart); // For bounds control
+        mChart.setMarker(mv); // Set the marker to the chart
 
         setData();
 

@@ -27,8 +27,8 @@ import android.view.ViewParent;
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.animation.EasingFunction;
+import com.github.mikephil.charting.components.IMarker;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
@@ -710,12 +710,12 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     /**
      * if set to true, the marker view is drawn when a value is clicked
      */
-    protected boolean mDrawMarkerViews = true;
+    protected boolean mDrawMarkers = true;
 
     /**
      * the view that represents the marker
      */
-    protected MarkerView mMarkerView;
+    protected IMarker mMarker;
 
     /**
      * draws all MarkerViews on the highlighted positions
@@ -723,7 +723,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     protected void drawMarkers(Canvas canvas) {
 
         // if there is no marker view or drawing marker is disabled
-        if (mMarkerView == null || !mDrawMarkerViews || !valuesToHighlight())
+        if (mMarker == null || !isDrawMarkersEnabled() || !valuesToHighlight())
             return;
 
         for (int i = 0; i < mIndicesToHighlight.length; i++) {
@@ -746,19 +746,10 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
                 continue;
 
             // callbacks to update the content
-            mMarkerView.refreshContent(e, highlight);
+            mMarker.refreshContent(e, highlight);
 
-            mMarkerView.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
-                    MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-            mMarkerView.layout(0, 0, mMarkerView.getMeasuredWidth(),
-                    mMarkerView.getMeasuredHeight());
-
-            if (pos[1] - mMarkerView.getHeight() <= 0) {
-                float y = mMarkerView.getHeight() - pos[1];
-                mMarkerView.draw(canvas, pos[0], pos[1] + y);
-            } else {
-                mMarkerView.draw(canvas, pos[0], pos[1]);
-            }
+            // draw the marker
+            mMarker.draw(canvas, pos[0], pos[1]);
         }
     }
 
@@ -1272,21 +1263,31 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * sets the view that is displayed when a value is clicked on the chart
+     * sets the marker that is displayed when a value is clicked on the chart
      *
-     * @param v
+     * @param marker
      */
-    public void setMarkerView(MarkerView v) {
-        mMarkerView = v;
+    public void setMarker(IMarker marker) {
+        mMarker = marker;
     }
 
     /**
-     * returns the view that is set as a marker view for the chart
+     * returns the marker that is set as a marker view for the chart
      *
      * @return
      */
-    public MarkerView getMarkerView() {
-        return mMarkerView;
+    public IMarker getMarker() {
+        return mMarker;
+    }
+
+    @Deprecated
+    public void setMarkerView(IMarker v) {
+        setMarker(v);
+    }
+
+    @Deprecated
+    public IMarker getMarkerView() {
+        return getMarker();
     }
 
     /**
@@ -1407,25 +1408,35 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         return null;
     }
 
-    /**
-     * returns true if drawing the marker-view is enabled when tapping on values
-     * (use the setMarkerView(View v) method to specify a marker view)
-     *
-     * @return
-     */
-    public boolean isDrawMarkerViewEnabled() {
-        return mDrawMarkerViews;
+    @Deprecated
+    public boolean isDrawMarkerViewsEnabled() {
+        return isDrawMarkersEnabled();
+    }
+
+    @Deprecated
+    public void setDrawMarkerViews(boolean enabled) {
+        setDrawMarkers(enabled);
     }
 
     /**
-     * Set this to true to draw a user specified marker-view when tapping on
-     * chart values (use the setMarkerView(MarkerView mv) method to specify a
-     * marker view). Default: true
+     * returns true if drawing the marker is enabled when tapping on values
+     * (use the setMarker(IMarker marker) method to specify a marker)
+     *
+     * @return
+     */
+    public boolean isDrawMarkersEnabled() {
+        return mDrawMarkers;
+    }
+
+    /**
+     * Set this to true to draw a user specified marker when tapping on
+     * chart values (use the setMarker(IMarker marker) method to specify a
+     * marker). Default: true
      *
      * @param enabled
      */
-    public void setDrawMarkerViews(boolean enabled) {
-        mDrawMarkerViews = enabled;
+    public void setDrawMarkers(boolean enabled) {
+        mDrawMarkers = enabled;
     }
 
     /**

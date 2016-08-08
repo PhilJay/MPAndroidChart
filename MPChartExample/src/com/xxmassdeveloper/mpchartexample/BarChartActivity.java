@@ -119,7 +119,9 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         // l.setCustom(ColorTemplate.VORDIPLOM_COLORS, new String[] { "abc",
         // "def", "ghj", "ikl", "mno" });
 
-        mChart.setMarkerView(new XYMarkerView(this, xAxisFormatter));
+        XYMarkerView mv = new XYMarkerView(this, xAxisFormatter);
+        mv.setChartView(mChart); // For bounds control
+        mChart.setMarker(mv); // Set the marker to the chart
 
         setData(12, 50);
 

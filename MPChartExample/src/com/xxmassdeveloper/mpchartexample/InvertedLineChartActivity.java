@@ -79,9 +79,8 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
         // create a custom MarkerView (extend MarkerView) and specify the layout
         // to use for it
         MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
-
-        // set the marker to the chart
-        mChart.setMarkerView(mv);
+        mv.setChartView(mChart); // For bounds control
+        mChart.setMarker(mv); // Set the marker to the chart
         
         XAxis xl = mChart.getXAxis();
         xl.setAvoidFirstLastClipping(true);

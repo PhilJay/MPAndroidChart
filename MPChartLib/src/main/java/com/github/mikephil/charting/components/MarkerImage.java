@@ -1,7 +1,11 @@
 package com.github.mikephil.charting.components;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -20,37 +24,35 @@ import java.lang.ref.WeakReference;
  *
  * @author Philipp Jahoda
  */
-public class MarkerView extends RelativeLayout implements IMarker {
+public class MarkerImage implements IMarker {
+
+    private Context mContext;
+    private Drawable mDrawable;
 
     private MPPointF mOffset = new MPPointF();
     private MPPointF mOffset2 = new MPPointF();
     private WeakReference<Chart> mWeakChart;
 
+    private FSize mSize = new FSize();
+    private Rect mDrawableBoundsCache = new Rect();
+
     /**
      * Constructor. Sets up the MarkerView with a custom layout resource.
      *
      * @param context
-     * @param layoutResource the layout resource to use for the MarkerView
+     * @param drawableResourceId the drawable resource to render
      */
-    public MarkerView(Context context, int layoutResource) {
-        super(context);
-        setupLayoutResource(layoutResource);
-    }
+    public MarkerImage(Context context, int drawableResourceId) {
+        mContext = context;
 
-    /**
-     * Sets the layout resource for a custom MarkerView.
-     *
-     * @param layoutResource
-     */
-    private void setupLayoutResource(int layoutResource) {
-
-        View inflated = LayoutInflater.from(getContext()).inflate(layoutResource, this);
-
-        inflated.setLayoutParams(new LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        inflated.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED), MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-
-        // measure(getWidth(), getHeight());
-        inflated.layout(0, 0, inflated.getMeasuredWidth(), inflated.getMeasuredHeight());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            mDrawable = mContext.getResources().getDrawable(drawableResourceId, null);
+        }
+        else
+        {
+            mDrawable = mContext.getResources().getDrawable(drawableResourceId);
+        }
     }
 
     public void setOffset(MPPointF offset) {
@@ -71,6 +73,18 @@ public class MarkerView extends RelativeLayout implements IMarker {
         return mOffset;
     }
 
+    public void setSize(FSize size) {
+        mSize = size;
+
+        if (mSize == null) {
+            mSize = new FSize();
+        }
+    }
+
+    public FSize getSize() {
+        return mSize;
+    }
+
     public void setChartView(Chart chart) {
         mWeakChart = new WeakReference<>(chart);
     }
@@ -88,8 +102,15 @@ public class MarkerView extends RelativeLayout implements IMarker {
 
         Chart chart = getChartView();
 
-        float width = getWidth();
-        float height = getHeight();
+        float width = mSize.width;
+        float height = mSize.height;
+
+        if (width == 0.f && mDrawable != null) {
+            width = mDrawable.getIntrinsicWidth();
+        }
+        if (height == 0.f && mDrawable != null) {
+            height = mDrawable.getIntrinsicHeight();
+        }
 
         if (posX + mOffset2.x < 0) {
             mOffset2.x = - posX;
@@ -109,21 +130,38 @@ public class MarkerView extends RelativeLayout implements IMarker {
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
 
-        measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
-                MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-        layout(0, 0, getMeasuredWidth(), getMeasuredHeight());
-
     }
 
     @Override
     public void draw(Canvas canvas, float posX, float posY) {
 
+        if (mDrawable == null) return;
+
         MPPointF offset = getOffsetForDrawingAtPos(posX, posY);
+
+        float width = mSize.width;
+        float height = mSize.height;
+
+        if (width == 0.f && mDrawable != null) {
+            width = mDrawable.getIntrinsicWidth();
+        }
+        if (height == 0.f && mDrawable != null) {
+            height = mDrawable.getIntrinsicHeight();
+        }
+
+        mDrawable.copyBounds(mDrawableBoundsCache);
+        mDrawable.setBounds(
+                mDrawableBoundsCache.left,
+                mDrawableBoundsCache.top,
+                mDrawableBoundsCache.left + (int)width,
+                mDrawableBoundsCache.top + (int)height);
 
         int saveId = canvas.save();
         // translate to the correct position and draw
         canvas.translate(posX + offset.x, posY + offset.y);
-        draw(canvas);
+        mDrawable.draw(canvas);
         canvas.restoreToCount(saveId);
+
+        mDrawable.setBounds(mDrawableBoundsCache);
     }
 }

@@ -37,8 +37,8 @@ public class BarChartFrag extends SimpleFragment implements OnChartGestureListen
         mChart.setOnChartGestureListener(this);
         
         MyMarkerView mv = new MyMarkerView(getActivity(), R.layout.custom_marker_view);
-
-        mChart.setMarkerView(mv);
+        mv.setChartView(mChart); // For bounds control
+        mChart.setMarker(mv);
 
         mChart.setDrawGridBackground(false);
         mChart.setDrawBarShadow(false);
