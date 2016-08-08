@@ -3,7 +3,6 @@ package com.github.mikephil.charting.renderer.scatter;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import com.github.mikephil.charting.buffer.ScatterBuffer;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
@@ -18,9 +17,10 @@ public class SquareShapeRenderer implements IShapeRenderer
 
 
     @Override
-    public void renderShape(Canvas c, IScatterDataSet dataSet, ViewPortHandler viewPortHandler, ScatterBuffer buffer, Paint
-            renderPaint, final float shapeSize) {
+    public void renderShape(Canvas c, IScatterDataSet dataSet, ViewPortHandler viewPortHandler,
+                            float posX, float posY, Paint renderPaint) {
 
+        final float shapeSize = dataSet.getScatterShapeSize();
         final float shapeHalf = shapeSize / 2f;
         final float shapeHoleSizeHalf = Utils.convertDpToPixel(dataSet.getScatterShapeHoleRadius());
         final float shapeHoleSize = shapeHoleSizeHalf * 2.f;
@@ -29,47 +29,35 @@ public class SquareShapeRenderer implements IShapeRenderer
 
         final int shapeHoleColor = dataSet.getScatterShapeHoleColor();
 
-        for (int i = 0; i < buffer.size(); i += 2) {
+        if (shapeSize > 0.0) {
+            renderPaint.setStyle(Paint.Style.STROKE);
+            renderPaint.setStrokeWidth(shapeStrokeSize);
 
-            if (!viewPortHandler.isInBoundsRight(buffer.buffer[i]))
-                break;
+            c.drawRect(posX - shapeHoleSizeHalf - shapeStrokeSizeHalf,
+                    posY - shapeHoleSizeHalf - shapeStrokeSizeHalf,
+                    posX + shapeHoleSizeHalf + shapeStrokeSizeHalf,
+                    posY + shapeHoleSizeHalf + shapeStrokeSizeHalf,
+                    renderPaint);
 
-            if (!viewPortHandler.isInBoundsLeft(buffer.buffer[i])
-                    || !viewPortHandler.isInBoundsY(buffer.buffer[i + 1]))
-                continue;
-
-            renderPaint.setColor(dataSet.getColor(i / 2));
-
-            if (shapeSize > 0.0) {
-                renderPaint.setStyle(Paint.Style.STROKE);
-                renderPaint.setStrokeWidth(shapeStrokeSize);
-
-                c.drawRect(buffer.buffer[i] - shapeHoleSizeHalf - shapeStrokeSizeHalf,
-                        buffer.buffer[i + 1] - shapeHoleSizeHalf - shapeStrokeSizeHalf,
-                        buffer.buffer[i] + shapeHoleSizeHalf + shapeStrokeSizeHalf,
-                        buffer.buffer[i + 1] + shapeHoleSizeHalf + shapeStrokeSizeHalf,
-                        renderPaint);
-
-                if (shapeHoleColor != ColorTemplate.COLOR_NONE) {
-                    renderPaint.setStyle(Paint.Style.FILL);
-
-                    renderPaint.setColor(shapeHoleColor);
-                    c.drawRect(buffer.buffer[i] - shapeHoleSizeHalf,
-                            buffer.buffer[i + 1] - shapeHoleSizeHalf,
-                            buffer.buffer[i] + shapeHoleSizeHalf,
-                            buffer.buffer[i + 1] + shapeHoleSizeHalf,
-                            renderPaint);
-                }
-
-            } else {
+            if (shapeHoleColor != ColorTemplate.COLOR_NONE) {
                 renderPaint.setStyle(Paint.Style.FILL);
 
-                c.drawRect(buffer.buffer[i] - shapeHalf,
-                        buffer.buffer[i + 1] - shapeHalf,
-                        buffer.buffer[i] + shapeHalf,
-                        buffer.buffer[i + 1] + shapeHalf,
+                renderPaint.setColor(shapeHoleColor);
+                c.drawRect(posX - shapeHoleSizeHalf,
+                        posY - shapeHoleSizeHalf,
+                        posX + shapeHoleSizeHalf,
+                        posY + shapeHoleSizeHalf,
                         renderPaint);
             }
+
+        } else {
+            renderPaint.setStyle(Paint.Style.FILL);
+
+            c.drawRect(posX - shapeHalf,
+                    posY - shapeHalf,
+                    posX + shapeHalf,
+                    posY + shapeHalf,
+                    renderPaint);
         }
     }
 }

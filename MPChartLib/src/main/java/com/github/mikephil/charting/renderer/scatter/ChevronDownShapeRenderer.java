@@ -3,7 +3,6 @@ package com.github.mikephil.charting.renderer.scatter;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import com.github.mikephil.charting.buffer.ScatterBuffer;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -17,39 +16,26 @@ public class ChevronDownShapeRenderer implements IShapeRenderer
 
 
     @Override
-    public void renderShape(Canvas c, IScatterDataSet dataSet, ViewPortHandler viewPortHandler, ScatterBuffer buffer, Paint
-            renderPaint, final float shapeSize) {
+    public void renderShape(Canvas c, IScatterDataSet dataSet, ViewPortHandler viewPortHandler,
+                     float posX, float posY, Paint renderPaint) {
 
-        final float shapeHalf = shapeSize / 2f;
+        final float shapeHalf = dataSet.getScatterShapeSize() / 2f;
 
         renderPaint.setStyle(Paint.Style.STROKE);
         renderPaint.setStrokeWidth(Utils.convertDpToPixel(1f));
 
-        for (int i = 0; i < buffer.size(); i += 2) {
+        c.drawLine(
+                posX,
+                posY + (2 * shapeHalf),
+                posX + (2 * shapeHalf),
+                posY,
+                renderPaint);
 
-            if (!viewPortHandler.isInBoundsRight(buffer.buffer[i]))
-                break;
-
-            if (!viewPortHandler.isInBoundsLeft(buffer.buffer[i])
-                    || !viewPortHandler.isInBoundsY(buffer.buffer[i + 1]))
-                continue;
-
-            renderPaint.setColor(dataSet.getColor(i / 2));
-
-            c.drawLine(
-                    buffer.buffer[i],
-                    buffer.buffer[i + 1] + (2 * shapeHalf),
-                    buffer.buffer[i] + (2 * shapeHalf),
-                    buffer.buffer[i + 1],
-                    renderPaint);
-
-            c.drawLine(
-                    buffer.buffer[i],
-                    buffer.buffer[i + 1] + (2 * shapeHalf),
-                    buffer.buffer[i] - (2 * shapeHalf),
-                    buffer.buffer[i + 1],
-                    renderPaint);
-        }
-
+        c.drawLine(
+                posX,
+                posY + (2 * shapeHalf),
+                posX - (2 * shapeHalf),
+                posY,
+                renderPaint);
     }
 }
