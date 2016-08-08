@@ -657,7 +657,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param scaleX
      * @param scaleY
      */
-    public void zoomCenter(float scaleX, float scaleY) {
+    public void zoomToCenter(float scaleX, float scaleY) {
 
         MPPointF center = getCenterOffsets();
 
