@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'realm-android'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 23
