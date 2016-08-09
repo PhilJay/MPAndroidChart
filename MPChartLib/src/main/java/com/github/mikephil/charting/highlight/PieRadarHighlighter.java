@@ -9,7 +9,8 @@ import java.util.List;
 /**
  * Created by philipp on 12/06/16.
  */
-public abstract class PieRadarHighlighter<T extends PieRadarChartBase> implements Highlighter {
+public abstract class PieRadarHighlighter<T extends PieRadarChartBase> implements IHighlighter
+{
 
     protected T mChart;
 

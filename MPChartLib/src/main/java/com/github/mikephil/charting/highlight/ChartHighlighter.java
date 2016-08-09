@@ -14,7 +14,8 @@ import java.util.List;
 /**
  * Created by Philipp Jahoda on 21/07/15.
  */
-public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> implements Highlighter {
+public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> implements IHighlighter
+{
 
     /**
      * instance of the data-provider
