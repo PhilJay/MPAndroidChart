@@ -662,7 +662,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
     /**
      * If this is enabled, values inside the PieChart are drawn in percent and
-     * not with their original value. Values provided for the ValueFormatter to
+     * not with their original value. Values provided for the IValueFormatter to
      * format are then provided in percent.
      *
      * @param enabled

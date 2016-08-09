@@ -1,15 +1,14 @@
 package com.xxmassdeveloper.mpchartexample.custom;
 
 import com.github.mikephil.charting.charts.BarLineChartBase;
-import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.formatter.AxisValueFormatter;
-import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 /**
  * Created by philipp on 02/06/16.
  */
-public class DayAxisValueFormatter implements AxisValueFormatter {
+public class DayAxisValueFormatter implements IAxisValueFormatter
+{
 
     protected String[] mMonths = new String[]{
             "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"

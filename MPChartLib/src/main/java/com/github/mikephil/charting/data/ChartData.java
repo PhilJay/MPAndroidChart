@@ -5,7 +5,7 @@ import android.graphics.Typeface;
 import android.util.Log;
 
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
-import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 
@@ -635,11 +635,11 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Sets a custom ValueFormatter for all DataSets this data object contains.
+     * Sets a custom IValueFormatter for all DataSets this data object contains.
      *
      * @param f
      */
-    public void setValueFormatter(ValueFormatter f) {
+    public void setValueFormatter(IValueFormatter f) {
         if (f == null)
             return;
         else {

@@ -8,7 +8,6 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
-import android.graphics.PointF;
 import android.graphics.RectF;
 import android.os.Build;
 import android.text.Layout;
@@ -22,7 +21,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -433,7 +432,7 @@ public class PieChartRenderer extends DataRenderer {
             float lineHeight = Utils.calcTextHeight(mValuePaint, "Q")
                     + Utils.convertDpToPixel(4f);
 
-            ValueFormatter formatter = dataSet.getValueFormatter();
+            IValueFormatter formatter = dataSet.getValueFormatter();
 
             int entryCount = dataSet.getEntryCount();
 

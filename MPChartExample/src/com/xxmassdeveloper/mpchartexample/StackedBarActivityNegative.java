@@ -20,8 +20,8 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.formatter.AxisValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
@@ -77,7 +77,7 @@ public class StackedBarActivityNegative extends DemoBase implements
         xAxis.setCenterAxisLabels(true);
         xAxis.setLabelCount(12);
         xAxis.setGranularity(10f);
-        xAxis.setValueFormatter(new AxisValueFormatter() {
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
 
             private DecimalFormat format = new DecimalFormat("###");
 
@@ -220,7 +220,8 @@ public class StackedBarActivityNegative extends DemoBase implements
         Log.i("NOTING SELECTED", "");
     }
 
-    private class CustomFormatter implements ValueFormatter, AxisValueFormatter {
+    private class CustomFormatter implements IValueFormatter, IAxisValueFormatter
+    {
 
         private DecimalFormat mFormat;
 

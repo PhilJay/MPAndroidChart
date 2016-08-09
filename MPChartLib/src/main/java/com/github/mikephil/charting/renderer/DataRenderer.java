@@ -9,7 +9,7 @@ import android.graphics.Paint.Style;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
@@ -134,7 +134,7 @@ public abstract class DataRenderer extends Renderer {
     public abstract void drawValues(Canvas c);
 
     /**
-     * Draws the value of the given entry by using the provided ValueFormatter.
+     * Draws the value of the given entry by using the provided IValueFormatter.
      *
      * @param c            canvas
      * @param formatter    formatter for custom value-formatting
@@ -145,7 +145,7 @@ public abstract class DataRenderer extends Renderer {
      * @param y            position
      * @param color
      */
-    public void drawValue(Canvas c, ValueFormatter formatter, float value, Entry entry, int dataSetIndex, float x, float y, int color) {
+    public void drawValue(Canvas c, IValueFormatter formatter, float value, Entry entry, int dataSetIndex, float x, float y, int color) {
         mValuePaint.setColor(color);
         c.drawText(formatter.getFormattedValue(value, entry, dataSetIndex, mViewPortHandler), x, y, mValuePaint);
     }

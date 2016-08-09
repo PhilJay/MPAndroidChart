@@ -1,7 +1,7 @@
 package com.xxmassdeveloper.mpchartexample.custom;
 
 import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.formatter.AxisValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DecimalFormat;
@@ -9,7 +9,8 @@ import java.text.DecimalFormat;
 /**
  * Created by Philipp Jahoda on 14/09/15.
  */
-public class MyCustomXAxisValueFormatter implements AxisValueFormatter {
+public class MyCustomXAxisValueFormatter implements IAxisValueFormatter
+{
 
     private DecimalFormat mFormat;
     private ViewPortHandler mViewPortHandler;

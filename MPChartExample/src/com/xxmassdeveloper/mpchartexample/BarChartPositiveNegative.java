@@ -15,7 +15,8 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.AxisValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -86,7 +87,7 @@ public class BarChartPositiveNegative extends DemoBase {
         data.add(new Data(3.5f, -442.3f, "01-01"));
         data.add(new Data(4.5f, -2280.1f, "01-02"));
 
-        xAxis.setValueFormatter(new AxisValueFormatter() {
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
                 return data.get(Math.min(Math.max((int) value, 0), data.size()-1)).xAxisValue;
@@ -162,7 +163,8 @@ public class BarChartPositiveNegative extends DemoBase {
         }
     }
 
-    private class ValueFormatter implements com.github.mikephil.charting.formatter.ValueFormatter {
+    private class ValueFormatter implements IValueFormatter
+    {
 
         private DecimalFormat mFormat;
 

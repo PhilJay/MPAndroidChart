@@ -21,7 +21,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.AxisValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
@@ -87,7 +87,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         xl.setTypeface(mTfLight);
         xl.setGranularity(1f);
         xl.setCenterAxisLabels(true);
-        xl.setValueFormatter(new AxisValueFormatter() {
+        xl.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
                 return String.valueOf((int) value);

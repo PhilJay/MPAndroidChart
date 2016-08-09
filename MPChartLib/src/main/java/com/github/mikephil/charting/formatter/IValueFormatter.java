@@ -6,12 +6,13 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 /**
  * Interface that allows custom formatting of all values inside the chart before they are
  * being drawn to the screen. Simply create your own formatting class and let
- * it implement ValueFormatter. Then override the getFormattedValue(...) method
+ * it implement IValueFormatter. Then override the getFormattedValue(...) method
  * and return whatever you want.
  *
  * @author Philipp Jahoda
  */
-public interface ValueFormatter {
+public interface IValueFormatter
+{
 
     /**
      * Called when a value (from labels inside the chart) is formatted

@@ -14,14 +14,13 @@ import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
-import com.github.mikephil.charting.components.MarkerImage;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
-import com.github.mikephil.charting.formatter.AxisValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.xxmassdeveloper.mpchartexample.custom.RadarMarkerView;
@@ -74,7 +73,7 @@ public class RadarChartActivitry extends DemoBase {
         xAxis.setTextSize(9f);
         xAxis.setYOffset(0f);
         xAxis.setXOffset(0f);
-        xAxis.setValueFormatter(new AxisValueFormatter() {
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
 
             private String[] mActivities = new String[]{"Burger", "Steak", "Salad", "Pasta", "Pizza"};
 

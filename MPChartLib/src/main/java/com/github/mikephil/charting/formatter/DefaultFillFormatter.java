@@ -10,7 +10,8 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
  *
  * @author Philipp Jahoda
  */
-public class DefaultFillFormatter implements FillFormatter {
+public class DefaultFillFormatter implements IFillFormatter
+{
 
     @Override
     public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {

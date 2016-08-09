@@ -10,7 +10,7 @@ import com.github.mikephil.charting.buffer.BarBuffer;
 import com.github.mikephil.charting.buffer.HorizontalBarBuffer;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface;
@@ -165,7 +165,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                 applyValueTextStyle(dataSet);
                 final float halfTextHeight = Utils.calcTextHeight(mValuePaint, "10") / 2f;
 
-                ValueFormatter formatter = dataSet.getValueFormatter();
+                IValueFormatter formatter = dataSet.getValueFormatter();
 
                 // get the buffer
                 BarBuffer buffer = mBarBuffers[i];

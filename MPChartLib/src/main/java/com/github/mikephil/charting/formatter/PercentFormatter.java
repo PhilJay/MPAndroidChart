@@ -8,12 +8,13 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 import java.text.DecimalFormat;
 
 /**
- * This ValueFormatter is just for convenience and simply puts a "%" sign after
+ * This IValueFormatter is just for convenience and simply puts a "%" sign after
  * each value. (Recommeded for PieChart)
  *
  * @author Philipp Jahoda
  */
-public class PercentFormatter implements ValueFormatter, AxisValueFormatter {
+public class PercentFormatter implements IValueFormatter, IAxisValueFormatter
+{
 
     protected DecimalFormat mFormat;
 
@@ -30,13 +31,13 @@ public class PercentFormatter implements ValueFormatter, AxisValueFormatter {
         this.mFormat = format;
     }
 
-    // ValueFormatter
+    // IValueFormatter
     @Override
     public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
         return mFormat.format(value) + " %";
     }
 
-    // AxisValueFormatter
+    // IAxisValueFormatter
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
         return mFormat.format(value) + " %";

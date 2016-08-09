@@ -2,8 +2,6 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.annotation.SuppressLint;
-import android.graphics.PointF;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,7 +26,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.AxisValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
@@ -80,7 +78,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart.setDrawGridBackground(false);
         // mChart.setDrawYLabels(false);
 
-        AxisValueFormatter xAxisFormatter = new DayAxisValueFormatter(mChart);
+        IAxisValueFormatter xAxisFormatter = new DayAxisValueFormatter(mChart);
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxisPosition.BOTTOM);
@@ -90,7 +88,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         xAxis.setLabelCount(7);
         xAxis.setValueFormatter(xAxisFormatter);
 
-        AxisValueFormatter custom = new MyAxisValueFormatter();
+        IAxisValueFormatter custom = new MyAxisValueFormatter();
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(mTfLight);

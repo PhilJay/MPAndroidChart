@@ -9,7 +9,8 @@ import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
  * 
  * @author Philipp Jahoda
  */
-public interface FillFormatter {
+public interface IFillFormatter
+{
 
     /**
      * Returns the vertical (y-axis) position where the filled-line of the

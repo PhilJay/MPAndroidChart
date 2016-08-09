@@ -33,7 +33,7 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
-import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.highlight.ChartHighlighter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.highlight.IHighlighter;
@@ -53,7 +53,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Baseclass of all Chart-Views.
@@ -976,12 +975,12 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * Returns the default ValueFormatter that has been determined by the chart
+     * Returns the default IValueFormatter that has been determined by the chart
      * considering the provided minimum and maximum values.
      *
      * @return
      */
-    public ValueFormatter getDefaultValueFormatter() {
+    public IValueFormatter getDefaultValueFormatter() {
         return mDefaultFormatter;
     }
 

@@ -17,7 +17,8 @@ import java.text.DecimalFormat;
  * @author Philipp Jahoda
  * @author Oleksandr Tyshkovets <olexandr.tyshkovets@gmail.com>
  */
-public class LargeValueFormatter implements ValueFormatter, AxisValueFormatter {
+public class LargeValueFormatter implements IValueFormatter, IAxisValueFormatter
+{
 
     private static String[] SUFFIX = new String[]{
             "", "k", "m", "b", "t"
@@ -40,13 +41,13 @@ public class LargeValueFormatter implements ValueFormatter, AxisValueFormatter {
         mText = appendix;
     }
 
-    // ValueFormatter
+    // IValueFormatter
     @Override
     public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
         return makePretty(value) + mText;
     }
 
-    // AxisValueFormatter
+    // IAxisValueFormatter
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
         return makePretty(value) + mText;
