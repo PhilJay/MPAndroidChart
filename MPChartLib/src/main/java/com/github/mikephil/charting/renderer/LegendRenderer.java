@@ -273,7 +273,7 @@ public class LegendRenderer extends Renderer {
                 List<FSize> calculatedLabelSizes = mLegend.getCalculatedLabelSizes();
                 List<Boolean> calculatedLabelBreakPoints = mLegend.getCalculatedLabelBreakPoints();
 
-                float posX = originPosX + xoffset;
+                float posX = originPosX;
                 float posY = 0.f;
 
                 switch (verticalAlignment) {
@@ -372,7 +372,7 @@ public class LegendRenderer extends Renderer {
                 for (int i = 0; i < labels.length; i++) {
 
                     Boolean drawingForm = colors[i] != ColorTemplate.COLOR_SKIP;
-                    float posX = originPosX + xoffset;
+                    float posX = originPosX;
 
                     if (drawingForm) {
                         if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
