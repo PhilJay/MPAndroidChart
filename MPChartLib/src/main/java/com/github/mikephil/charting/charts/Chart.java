@@ -98,7 +98,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     /**
      * default value-formatter, number of digits depends on provided chart-data
      */
-    protected DefaultValueFormatter mDefaultFormatter = new DefaultValueFormatter(0);
+    protected DefaultValueFormatter mDefaultValueFormatter = new DefaultValueFormatter(0);
 
     /**
      * paint object used for drawing the description text in the bottom right
@@ -305,8 +305,8 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         setupDefaultFormatter(data.getYMin(), data.getYMax());
 
         for (IDataSet set : mData.getDataSets()) {
-            if (set.needsFormatter() || set.getValueFormatter() == mDefaultFormatter)
-                set.setValueFormatter(mDefaultFormatter);
+            if (set.needsFormatter() || set.getValueFormatter() == mDefaultValueFormatter)
+                set.setValueFormatter(mDefaultValueFormatter);
         }
 
         // let the chart know there is new data
@@ -393,7 +393,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         int digits = Utils.getDecimals(reference);
 
         // setup the formatter with a new number of digits
-        mDefaultFormatter.setup(digits);
+        mDefaultValueFormatter.setup(digits);
     }
 
     /**
@@ -981,7 +981,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * @return
      */
     public IValueFormatter getDefaultValueFormatter() {
-        return mDefaultFormatter;
+        return mDefaultValueFormatter;
     }
 
     /**

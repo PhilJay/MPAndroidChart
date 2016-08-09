@@ -268,7 +268,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     @Override
     public IValueFormatter getValueFormatter() {
         if (needsFormatter())
-            return new DefaultValueFormatter(1);
+            return Utils.getDefaultValueFormatter();
         return mValueFormatter;
     }
 
