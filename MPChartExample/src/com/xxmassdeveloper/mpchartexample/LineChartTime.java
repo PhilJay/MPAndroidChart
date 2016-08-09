@@ -21,7 +21,6 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.AxisValueFormatter;
-import com.github.mikephil.charting.formatter.FormattedStringCache;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -92,12 +91,11 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
         xAxis.setGranularity(60000L); // one minute in millis
         xAxis.setValueFormatter(new AxisValueFormatter() {
 
-            private FormattedStringCache.Generic<Long, Date> mFormattedStringCache = new FormattedStringCache.Generic<>(new SimpleDateFormat("dd MMM HH:mm"));
+            private SimpleDateFormat mFormat = new SimpleDateFormat("dd MMM HH:mm");
 
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                Long v = (long) value;
-                return mFormattedStringCache.getFormattedValue(new Date(v), v);
+                return mFormat.format(new Date((long) value));
             }
 
             @Override

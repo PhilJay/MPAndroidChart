@@ -18,8 +18,6 @@ public class StackedValueFormatter implements ValueFormatter {
      * if true, all stack values of the stacked bar entry are drawn, else only top
      */
     private boolean mDrawWholeStack;
-    private FormattedStringCache.Generic mFormattedStringCacheWholeStack;
-    private FormattedStringCache.Generic mFormattedStringCache;
 
     /**
      * a string that should be appended behind the value
@@ -46,16 +44,11 @@ public class StackedValueFormatter implements ValueFormatter {
             b.append("0");
         }
 
-        this.mFormattedStringCache = new FormattedStringCache.Generic(new DecimalFormat("###,###,###,##0" + b.toString()));
-        this.mFormattedStringCacheWholeStack = new FormattedStringCache.Generic(new DecimalFormat("###,###,###,##0" + b.toString()));
+        this.mFormat = new DecimalFormat("###,###,###,##0" + b.toString());
     }
 
     @Override
     public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-
-        FormattedStringCache.Generic chosenCache = mFormattedStringCache;
-        int chosenIndex = dataSetIndex;
-        float chosenValue = value;
 
         if (!mDrawWholeStack && entry instanceof BarEntry) {
 
@@ -66,19 +59,16 @@ public class StackedValueFormatter implements ValueFormatter {
 
                 // find out if we are on top of the stack
                 if (vals[vals.length - 1] == value) {
-                    chosenCache = mFormattedStringCacheWholeStack;
-                    chosenValue = barEntry.getY();
+
+                    // return the "sum" across all stack values
+                    return mFormat.format(barEntry.getY()) + mAppendix;
                 } else {
-                    chosenCache = null;
+                    return ""; // return empty
                 }
             }
         }
 
-        if(chosenCache == null){
-            return "";
-        }
-
         // return the "proposed" value
-        return chosenCache.getFormattedValue(chosenValue, chosenIndex) + mAppendix;
+        return mFormat.format(value) + mAppendix;
     }
 }

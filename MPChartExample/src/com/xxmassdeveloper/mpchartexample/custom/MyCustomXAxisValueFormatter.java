@@ -2,7 +2,6 @@ package com.xxmassdeveloper.mpchartexample.custom;
 
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.formatter.AxisValueFormatter;
-import com.github.mikephil.charting.formatter.FormattedStringCache;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DecimalFormat;
@@ -12,13 +11,13 @@ import java.text.DecimalFormat;
  */
 public class MyCustomXAxisValueFormatter implements AxisValueFormatter {
 
-    private FormattedStringCache.PrimFloat mFormattedStringCache;
+    private DecimalFormat mFormat;
     private ViewPortHandler mViewPortHandler;
 
     public MyCustomXAxisValueFormatter(ViewPortHandler viewPortHandler) {
         mViewPortHandler = viewPortHandler;
         // maybe do something here or provide parameters in constructor
-        mFormattedStringCache = new FormattedStringCache.PrimFloat(new DecimalFormat("###,###,###,##0.0"));
+        mFormat = new DecimalFormat("###,###,###,##0.0");
     }
 
     @Override
@@ -35,7 +34,7 @@ public class MyCustomXAxisValueFormatter implements AxisValueFormatter {
         else if (xScale > 1)
             return "2";
         else
-            return mFormattedStringCache.getFormattedValue(value);
+            return mFormat.format(value);
     }
 
     @Override

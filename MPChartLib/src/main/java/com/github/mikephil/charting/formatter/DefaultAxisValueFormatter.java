@@ -10,9 +10,9 @@ import java.text.DecimalFormat;
 public class DefaultAxisValueFormatter implements AxisValueFormatter {
 
     /**
-     * FormattedStringFormat for formatting and caching
+     * decimalformat for formatting
      */
-    protected FormattedStringCache.PrimFloat mFormattedStringCache;
+    protected DecimalFormat mFormat;
 
     /**
      * the number of decimal digits this formatter uses
@@ -35,15 +35,13 @@ public class DefaultAxisValueFormatter implements AxisValueFormatter {
             b.append("0");
         }
 
-        mFormattedStringCache = new FormattedStringCache.PrimFloat(new DecimalFormat("###,###,###,##0" + b.toString()));
+        mFormat = new DecimalFormat("###,###,###,##0" + b.toString());
     }
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
-
-        // TODO: There should be a better way to do this.  Floats are not the best keys...
-        return mFormattedStringCache.getFormattedValue(value);
-
+        // avoid memory allocations here (for performance)
+        return mFormat.format(value);
     }
 
     @Override

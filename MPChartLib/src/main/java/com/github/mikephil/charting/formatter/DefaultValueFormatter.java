@@ -15,9 +15,9 @@ import java.text.DecimalFormat;
 public class DefaultValueFormatter implements ValueFormatter {
 
     /**
-     * FormattedStringCache for formatting and caching.
+     * DecimalFormat for formatting
      */
-    protected FormattedStringCache.Generic<Integer, Float> mFormattedStringCache;
+    protected DecimalFormat mFormat;
 
     protected int mDecimalDigits;
 
@@ -47,13 +47,16 @@ public class DefaultValueFormatter implements ValueFormatter {
             b.append("0");
         }
 
-        mFormattedStringCache = new FormattedStringCache.Generic<>(new DecimalFormat("###,###,###,##0" + b.toString()));
-
+        mFormat = new DecimalFormat("###,###,###,##0" + b.toString());
     }
 
     @Override
     public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-        return mFormattedStringCache.getFormattedValue(value, dataSetIndex);
+
+        // put more logic here ...
+        // avoid memory allocations here (for performance reasons)
+
+        return mFormat.format(value);
     }
 
     /**

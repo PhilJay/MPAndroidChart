@@ -16,7 +16,6 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.AxisValueFormatter;
-import com.github.mikephil.charting.formatter.FormattedStringCache;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -165,15 +164,15 @@ public class BarChartPositiveNegative extends DemoBase {
 
     private class ValueFormatter implements com.github.mikephil.charting.formatter.ValueFormatter {
 
-        private FormattedStringCache.PrimIntFloat mFormattedStringCache;
+        private DecimalFormat mFormat;
 
         public ValueFormatter() {
-            mFormattedStringCache = new FormattedStringCache.PrimIntFloat(new DecimalFormat("######.0"));
+            mFormat = new DecimalFormat("######.0");
         }
 
         @Override
         public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-            return mFormattedStringCache.getFormattedValue(value, dataSetIndex);
+            return mFormat.format(value);
         }
     }
 }
