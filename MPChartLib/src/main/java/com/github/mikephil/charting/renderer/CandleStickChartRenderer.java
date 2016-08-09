@@ -44,11 +44,7 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
         CandleData candleData = mChart.getCandleData();
 
-        ICandleDataSet set;
-        List<ICandleDataSet> dataSets = candleData.getDataSets();
-        int setCount = dataSets.size();
-        for (int i = 0; i < setCount; i++) {
-            set = dataSets.get(i);
+        for (ICandleDataSet set : candleData.getDataSets()) {
 
             if (set.isVisible())
                 drawDataSet(c, set);

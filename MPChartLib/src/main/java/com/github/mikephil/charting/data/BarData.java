@@ -74,10 +74,7 @@ public class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
             float start = fromX;
             fromX += groupSpaceWidthHalf;
 
-            IBarDataSet set;
-            final int setCountJ = mDataSets.size();
-            for(int j = 0 ; j < setCountJ ; j++){
-                set = mDataSets.get(j);
+            for (IBarDataSet set : mDataSets) {
 
                 fromX += barSpaceHalf;
                 fromX += barWidthHalf;

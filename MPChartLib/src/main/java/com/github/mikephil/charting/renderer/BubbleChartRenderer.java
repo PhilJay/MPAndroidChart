@@ -46,11 +46,7 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
         BubbleData bubbleData = mChart.getBubbleData();
 
-        IBubbleDataSet set;
-        List<IBubbleDataSet> dataSets = bubbleData.getDataSets();
-        int setCount = dataSets.size();
-        for (int i = 0; i < setCount; i++) {
-            set = dataSets.get(i);
+        for (IBubbleDataSet set : bubbleData.getDataSets()) {
 
             if (set.isVisible())
                 drawDataSet(c, set);

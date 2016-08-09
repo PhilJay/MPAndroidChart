@@ -305,11 +305,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         // calculate how many digits are needed
         setupDefaultFormatter(data.getYMin(), data.getYMax());
 
-        IDataSet set;
-        final List sets = mData.getDataSets();
-        final int count = sets.size();
-        for (int i = 0; i < count; i++) {
-            set = (IDataSet) sets.get(i);
+        for (IDataSet set : mData.getDataSets()) {
             if (set.needsFormatter() || set.getValueFormatter() == mDefaultFormatter)
                 set.setValueFormatter(mDefaultFormatter);
         }

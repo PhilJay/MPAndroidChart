@@ -63,11 +63,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
 
         int mostEntries = radarData.getMaxEntryCountSet().getEntryCount();
 
-        IRadarDataSet set;
-        List<IRadarDataSet> dataSets = radarData.getDataSets();
-        int setCount = dataSets.size();
-        for(int i = 0 ; i < setCount ; i++){
-            set = dataSets.get(i);
+        for (IRadarDataSet set : radarData.getDataSets()) {
 
             if (set.isVisible()) {
                 drawDataSet(c, set, mostEntries);

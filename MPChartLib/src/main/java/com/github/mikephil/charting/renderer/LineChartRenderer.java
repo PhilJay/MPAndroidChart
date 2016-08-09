@@ -89,10 +89,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
         LineData lineData = mChart.getLineData();
 
-        ILineDataSet set;
-        int setCount = lineData.getDataSets().size();
-        for (int i = 0; i < setCount; i++) {
-            set = lineData.getDataSets().get(i);
+        for (ILineDataSet set : lineData.getDataSets()) {
 
             if (set.isVisible())
                 drawDataSet(c, set);

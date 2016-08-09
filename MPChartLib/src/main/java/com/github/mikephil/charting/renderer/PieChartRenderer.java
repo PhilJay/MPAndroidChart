@@ -142,11 +142,8 @@ public class PieChartRenderer extends DataRenderer {
 
         PieData pieData = mChart.getData();
 
-        IPieDataSet set;
-        int setCount = pieData.getDataSets().size();
-        List<IPieDataSet> dataSet = pieData.getDataSets();
-        for(int i = 0 ; i < setCount ; i++){
-            set = dataSet.get(i);
+        for (IPieDataSet set : pieData.getDataSets()) {
+
             if (set.isVisible() && set.getEntryCount() > 0)
                 drawDataSet(c, set);
         }
