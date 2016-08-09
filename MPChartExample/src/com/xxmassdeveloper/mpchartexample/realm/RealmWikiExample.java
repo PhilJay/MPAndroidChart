@@ -11,7 +11,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.realm.implementation.RealmBarDataSet;
 import com.github.mikephil.charting.data.realm.implementation.RealmLineDataSet;
-import com.github.mikephil.charting.formatter.AxisValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -84,7 +84,7 @@ public class RealmWikiExample extends RealmBaseActivity {
         final RealmResults<Score> results = mRealm.where(Score.class).findAll();
 
 
-        AxisValueFormatter formatter = new AxisValueFormatter() {
+        IAxisValueFormatter formatter = new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
                 return results.get((int) value).getPlayerName();
