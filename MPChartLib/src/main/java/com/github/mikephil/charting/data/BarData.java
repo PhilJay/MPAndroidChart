@@ -15,7 +15,7 @@ public class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
     /**
      * the width of the bars on the x-axis, in values (not pixels)
      */
-    private float mBarWidth = 1f;
+    private float mBarWidth = 0.85f;
 
     public BarData() {
         super();
@@ -31,7 +31,7 @@ public class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
 
     /**
      * Sets the width each bar should have on the x-axis (in values, not pixels).
-     * Default 1f
+     * Default 0.85f
      *
      * @param mBarWidth
      */
