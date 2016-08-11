@@ -76,8 +76,8 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(mTfLight);
         leftAxis.setLabelCount(6, false);
-        leftAxis.setAxisMinValue(-2.5f);
-        leftAxis.setAxisMaxValue(2.5f);
+        leftAxis.setAxisMinimum(-2.5f);
+        leftAxis.setAxisMaximum(2.5f);
         leftAxis.setGranularityEnabled(true);
         leftAxis.setGranularity(0.1f);
 
@@ -85,8 +85,8 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
         rightAxis.setDrawGridLines(false);
         rightAxis.setTypeface(mTfLight);
         rightAxis.setLabelCount(6, false);
-        rightAxis.setAxisMinValue(-2.5f);
-        rightAxis.setAxisMaxValue(2.5f);
+        rightAxis.setAxisMinimum(-2.5f);
+        rightAxis.setAxisMaximum(2.5f);
         rightAxis.setGranularity(0.1f);
 
         mSeekBarX.setOnSeekBarChangeListener(this);

@@ -128,8 +128,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
         leftAxis.addLimitLine(ll1);
         leftAxis.addLimitLine(ll2);
-        leftAxis.setAxisMaxValue(200f);
-        leftAxis.setAxisMinValue(-50f);
+        leftAxis.setAxisMaximum(200f);
+        leftAxis.setAxisMinimum(-50f);
         //leftAxis.setYOffset(20f);
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
         leftAxis.setDrawZeroLine(false);

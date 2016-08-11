@@ -34,7 +34,7 @@ public class RealmDatabaseActivityHorizontalBar extends RealmBaseActivity {
         mChart = (HorizontalBarChart) findViewById(R.id.chart1);
         setup(mChart);
 
-        mChart.getAxisLeft().setAxisMinValue(0f);
+        mChart.getAxisLeft().setAxisMinimum(0f);
         mChart.setDrawValueAboveBar(false);
     }
 

@@ -2,7 +2,6 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -83,8 +82,8 @@ public class RealtimeLineChartActivity extends DemoBase implements
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(mTfLight);
         leftAxis.setTextColor(Color.WHITE);
-        leftAxis.setAxisMaxValue(100f);
-        leftAxis.setAxisMinValue(0f);
+        leftAxis.setAxisMaximum(100f);
+        leftAxis.setAxisMinimum(0f);
         leftAxis.setDrawGridLines(true);
 
         YAxis rightAxis = mChart.getAxisRight();

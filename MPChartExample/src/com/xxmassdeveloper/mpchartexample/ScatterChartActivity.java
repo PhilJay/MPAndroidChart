@@ -1,7 +1,6 @@
 
 package com.xxmassdeveloper.mpchartexample;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -78,7 +77,7 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
 
         YAxis yl = mChart.getAxisLeft();
         yl.setTypeface(mTfLight);
-        yl.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+        yl.setAxisMinimum(0f); // this replaces setStartAtZero(true)
         
         mChart.getAxisRight().setEnabled(false);
 

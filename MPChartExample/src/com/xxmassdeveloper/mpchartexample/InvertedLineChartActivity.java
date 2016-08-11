@@ -84,11 +84,11 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
         
         XAxis xl = mChart.getXAxis();
         xl.setAvoidFirstLastClipping(true);
-        xl.setAxisMinValue(0f);
+        xl.setAxisMinimum(0f);
         
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setInverted(true);
-        leftAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
         
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setEnabled(false);

@@ -59,8 +59,8 @@ public class StackedBarActivityNegative extends DemoBase implements
         mChart.setHighlightFullBarEnabled(false);
         
         mChart.getAxisLeft().setEnabled(false);
-        mChart.getAxisRight().setAxisMaxValue(25f);
-        mChart.getAxisRight().setAxisMinValue(-25f);
+        mChart.getAxisRight().setAxisMaximum(25f);
+        mChart.getAxisRight().setAxisMinimum(-25f);
         mChart.getAxisRight().setDrawGridLines(false);
         mChart.getAxisRight().setDrawZeroLine(true);
         mChart.getAxisRight().setLabelCount(7, false);
@@ -72,8 +72,8 @@ public class StackedBarActivityNegative extends DemoBase implements
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(false);
         xAxis.setTextSize(9f);
-        xAxis.setAxisMinValue(0f);
-        xAxis.setAxisMaxValue(110f);
+        xAxis.setAxisMinimum(0f);
+        xAxis.setAxisMaximum(110f);
         xAxis.setCenterAxisLabels(true);
         xAxis.setLabelCount(12);
         xAxis.setGranularity(10f);

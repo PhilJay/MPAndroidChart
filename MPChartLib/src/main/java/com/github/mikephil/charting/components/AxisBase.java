@@ -5,8 +5,8 @@ import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.util.Log;
 
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
@@ -542,7 +542,7 @@ public abstract class AxisBase extends ComponentBase {
      * and the calculation is
      * done automatically.
      */
-    public void resetAxisMaxValue() {
+    public void resetAxisMaximum() {
         mCustomAxisMax = false;
     }
 
@@ -560,7 +560,7 @@ public abstract class AxisBase extends ComponentBase {
      * and the calculation is
      * done automatically.
      */
-    public void resetAxisMinValue() {
+    public void resetAxisMinimum() {
         mCustomAxisMin = false;
     }
 
@@ -582,10 +582,20 @@ public abstract class AxisBase extends ComponentBase {
      *
      * @param min
      */
-    public void setAxisMinValue(float min) {
+    public void setAxisMinimum(float min) {
         mCustomAxisMin = true;
         mAxisMinimum = min;
         this.mAxisRange = Math.abs(mAxisMaximum - min);
+    }
+
+    /**
+     * Use setAxisMinimum(...) instead.
+     *
+     * @param min
+     */
+    @Deprecated
+    public void setAxisMinValue(float min) {
+        setAxisMinimum(min);
     }
 
     /**
@@ -595,10 +605,20 @@ public abstract class AxisBase extends ComponentBase {
      *
      * @param max
      */
-    public void setAxisMaxValue(float max) {
+    public void setAxisMaximum(float max) {
         mCustomAxisMax = true;
         mAxisMaximum = max;
         this.mAxisRange = Math.abs(max - mAxisMinimum);
+    }
+
+    /**
+     * Use setAxisMaximum(...) instead.
+     *
+     * @param max
+     */
+    @Deprecated
+    public void setAxisMaxValue(float max) {
+        setAxisMaximum(max);
     }
 
     /**

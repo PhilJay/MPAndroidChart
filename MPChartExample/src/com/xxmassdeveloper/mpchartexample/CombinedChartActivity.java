@@ -66,15 +66,15 @@ public class CombinedChartActivity extends DemoBase {
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
-        rightAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+        rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setDrawGridLines(false);
-        leftAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxisPosition.BOTH_SIDED);
-        xAxis.setAxisMinValue(0f);
+        xAxis.setAxisMinimum(0f);
         xAxis.setGranularity(1f);
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
@@ -97,7 +97,7 @@ public class CombinedChartActivity extends DemoBase {
         data.setData(generateCandleData());
         data.setValueTypeface(mTfLight);
 
-        xAxis.setAxisMaxValue(data.getXMax() + 0.25f);
+        xAxis.setAxisMaximum(data.getXMax() + 0.25f);
 
         mChart.setData(data);
         mChart.invalidate();

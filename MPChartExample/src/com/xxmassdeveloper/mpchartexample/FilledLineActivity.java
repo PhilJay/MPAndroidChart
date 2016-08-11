@@ -51,8 +51,8 @@ public class FilledLineActivity extends DemoBase {
         xAxis.setEnabled(false);
 
         YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setAxisMaxValue(900f);
-        leftAxis.setAxisMinValue(-250f);
+        leftAxis.setAxisMaximum(900f);
+        leftAxis.setAxisMinimum(-250f);
         leftAxis.setDrawAxisLine(false);
         leftAxis.setDrawZeroLine(false);
         leftAxis.setDrawGridLines(false);

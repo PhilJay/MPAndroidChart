@@ -110,8 +110,8 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
         leftAxis.setTextColor(ColorTemplate.getHoloBlue());
         leftAxis.setDrawGridLines(true);
         leftAxis.setGranularityEnabled(true);
-        leftAxis.setAxisMinValue(0f);
-        leftAxis.setAxisMaxValue(170f);
+        leftAxis.setAxisMinimum(0f);
+        leftAxis.setAxisMaximum(170f);
         leftAxis.setYOffset(-9f);
         leftAxis.setTextColor(Color.rgb(255, 192, 56));
 

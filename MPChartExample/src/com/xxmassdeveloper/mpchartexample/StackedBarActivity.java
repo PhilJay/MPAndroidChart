@@ -74,7 +74,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         // change the position of the y-labels
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setValueFormatter(new MyAxisValueFormatter());
-        leftAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
         mChart.getAxisRight().setEnabled(false);
 
         XAxis xLabels = mChart.getXAxis();

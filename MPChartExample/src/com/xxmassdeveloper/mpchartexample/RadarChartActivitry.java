@@ -93,8 +93,8 @@ public class RadarChartActivitry extends DemoBase {
         yAxis.setTypeface(mTfLight);
         yAxis.setLabelCount(5, false);
         yAxis.setTextSize(9f);
-        yAxis.setAxisMinValue(0f);
-        yAxis.setAxisMaxValue(80f);
+        yAxis.setAxisMinimum(0f);
+        yAxis.setAxisMaximum(80f);
         yAxis.setDrawLabels(false);
 
         Legend l = mChart.getLegend();

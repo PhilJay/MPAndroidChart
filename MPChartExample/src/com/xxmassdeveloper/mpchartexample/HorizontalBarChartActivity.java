@@ -2,8 +2,6 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.annotation.SuppressLint;
-import android.graphics.PointF;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.util.Log;
@@ -87,14 +85,14 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         yl.setTypeface(mTfLight);
         yl.setDrawAxisLine(true);
         yl.setDrawGridLines(true);
-        yl.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+        yl.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 //        yl.setInverted(true);
 
         YAxis yr = mChart.getAxisRight();
         yr.setTypeface(mTfLight);
         yr.setDrawAxisLine(true);
         yr.setDrawGridLines(false);
-        yr.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+        yr.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 //        yr.setInverted(true);
 
         setData(12, 50);
