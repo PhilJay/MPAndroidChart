@@ -1,27 +1,22 @@
 package com.github.mikephil.charting.components;
 
-import android.content.Context;
 import android.graphics.Canvas;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.RelativeLayout;
 
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.utils.FSize;
 import com.github.mikephil.charting.utils.MPPointF;
 
 public interface IMarker {
 
     /**
-     * @return The desired offset you wish the IMarker to have on the x-axis.
+     * @return The desired (general) offset you wish the IMarker to have on the x- and y-axis.
      *         By returning x: -(width / 2) you will center the IMarker horizontally.
      *         By returning y: -(height / 2) you will center the IMarker vertically.
      */
     MPPointF getOffset();
 
     /**
-     * @return The offset for drawing at the specific `point`
+     * @return The offset for drawing at the specific `point`. This allows conditional adjusting of the Marker position.
      *         If you have no adjustments to make, return getOffset().
      *
      * @param posX This is the X position at which the marker wants to be drawn.
@@ -36,7 +31,7 @@ public interface IMarker {
      *
      * @param e         The Entry the IMarker belongs to. This can also be any subclass of Entry, like BarEntry or
      *                  CandleEntry, simply cast it at runtime.
-     * @param highlight the highlight object contains information about the highlighted value such as it's dataset-index, the
+     * @param highlight The highlight object contains information about the highlighted value such as it's dataset-index, the
      *                  selected range or stack-index (only stacked bar entries).
      */
     void refreshContent(Entry e, Highlight highlight);
