@@ -414,6 +414,8 @@ public class PieChartRenderer extends DataRenderer {
 
         c.save();
 
+        float offset = Utils.convertDpToPixel(5.f);
+
         for (int i = 0; i < dataSets.size(); i++) {
 
             IPieDataSet dataSet = dataSets.get(i);
@@ -438,8 +440,6 @@ public class PieChartRenderer extends DataRenderer {
 
             mValueLinePaint.setColor(dataSet.getValueLineColor());
             mValueLinePaint.setStrokeWidth(Utils.convertDpToPixel(dataSet.getValueLineWidth()));
-
-            float offset = Utils.convertDpToPixel(5.f);
 
             final float sliceSpace = getSliceSpace(dataSet);
 
@@ -509,13 +509,22 @@ public class PieChartRenderer extends DataRenderer {
                     if (transformedAngle % 360.0 >= 90.0 && transformedAngle % 360.0 <= 270.0) {
                         pt2x = pt1x - polyline2Width;
                         pt2y = pt1y;
+
                         mValuePaint.setTextAlign(Align.RIGHT);
+
+                        if(drawXOutside)
+                            mEntryLabelsPaint.setTextAlign(Align.RIGHT);
+
                         labelPtx = pt2x - offset;
                         labelPty = pt2y;
                     } else {
                         pt2x = pt1x + polyline2Width;
                         pt2y = pt1y;
                         mValuePaint.setTextAlign(Align.LEFT);
+
+                        if(drawXOutside)
+                            mEntryLabelsPaint.setTextAlign(Align.LEFT);
+
                         labelPtx = pt2x + offset;
                         labelPty = pt2y;
                     }

@@ -223,7 +223,7 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
         dataSet.setValueLinePart1OffsetPercentage(80.f);
         dataSet.setValueLinePart1Length(0.2f);
         dataSet.setValueLinePart2Length(0.4f);
-        // dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+        //dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
         dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
 
         PieData data = new PieData(dataSet);
