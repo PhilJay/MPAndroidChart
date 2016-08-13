@@ -65,7 +65,8 @@ public class LineChartRenderer extends LineRadarRenderer {
     }
 
     @Override
-    public void initBuffers() { }
+    public void initBuffers() {
+    }
 
     @Override
     public void drawData(Canvas c) {
@@ -231,7 +232,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             cubicFillPath.reset();
             cubicFillPath.addPath(cubicPath);
-            // create a new path, this is bad for performance
+
             drawCubicFill(mBitmapCanvas, dataSet, cubicFillPath, trans, mXBounds);
         }
 
@@ -440,7 +441,6 @@ public class LineChartRenderer extends LineRadarRenderer {
             if (currentStartIndex <= currentEndIndex) {
                 generateFilledPath(dataSet, currentStartIndex, currentEndIndex, filled);
 
-
                 trans.pathValueToPixel(filled);
 
                 final Drawable drawable = dataSet.getFillDrawable();
@@ -504,7 +504,6 @@ public class LineChartRenderer extends LineRadarRenderer {
         }
 
         filled.close();
-
     }
 
     @Override
