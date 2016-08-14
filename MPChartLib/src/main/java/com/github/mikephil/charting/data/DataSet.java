@@ -74,6 +74,25 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         }
     }
 
+    @Override
+    public void calcMinMax(float fromX, float toX) {
+
+        if (mValues == null || mValues.isEmpty())
+            return;
+
+        mYMax = -Float.MAX_VALUE;
+        mYMin = Float.MAX_VALUE;
+        mXMax = -Float.MAX_VALUE;
+        mXMin = Float.MAX_VALUE;
+
+        int indexFrom = getEntryIndex(fromX, Rounding.CLOSEST);
+        int indexTo = getEntryIndex(toX, Rounding.CLOSEST);
+
+        for (int i = indexFrom; i <= indexTo; i++) {
+            calcMinMax(mValues.get(i));
+        }
+    }
+
     /**
      * Updates the min and max x and y value of this DataSet based on the given Entry.
      *

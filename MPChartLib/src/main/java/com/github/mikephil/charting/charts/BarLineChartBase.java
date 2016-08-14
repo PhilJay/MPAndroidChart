@@ -56,8 +56,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * flag that indicates if auto scaling on the y axis is enabled
      */
     protected boolean mAutoScaleMinMaxEnabled = false;
-    private Float mAutoScaleLastLowestVisibleXIndex = null;
-    private Float mAutoScaleLastHighestVisibleXIndex = null;
 
     /**
      * flag that indicates if pinch-zoom is enabled. if true, both x and y axis
@@ -206,20 +204,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         mAxisRendererRight.renderAxisLine(canvas);
 
         if (mAutoScaleMinMaxEnabled) {
-            final float lowestVisibleXIndex = getLowestVisibleX();
-            final float highestVisibleXIndex = getHighestVisibleX();
 
-            if (mAutoScaleLastLowestVisibleXIndex == null ||
-                    mAutoScaleLastLowestVisibleXIndex != lowestVisibleXIndex ||
-                    mAutoScaleLastHighestVisibleXIndex == null ||
-                    mAutoScaleLastHighestVisibleXIndex != highestVisibleXIndex) {
-
-                calcMinMax();
-                calculateOffsets();
-
-                mAutoScaleLastLowestVisibleXIndex = lowestVisibleXIndex;
-                mAutoScaleLastHighestVisibleXIndex = highestVisibleXIndex;
-            }
+            calcMinMax();
+            calculateOffsets();
         }
 
         mXAxisRenderer.renderGridLines(canvas);
@@ -258,7 +245,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         if (!mAxisRight.isDrawLimitLinesBehindDataEnabled())
             mAxisRendererRight.renderLimitLines(canvas);
-        
+
         mXAxisRenderer.renderAxisLabels(canvas);
         mAxisRendererLeft.renderAxisLabels(canvas);
         mAxisRendererRight.renderAxisLabels(canvas);
@@ -342,7 +329,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     protected void calcMinMax() {
 
         if (mAutoScaleMinMaxEnabled)
-            mData.calcMinMax();
+            mData.calcMinMax(getLowestVisibleX(), getHighestVisibleX());
 
         mXAxis.calculate(mData.getXMin(), mData.getXMax());
 

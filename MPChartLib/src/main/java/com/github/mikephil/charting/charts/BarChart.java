@@ -63,7 +63,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     protected void calcMinMax() {
 
         if (mAutoScaleMinMaxEnabled)
-            mData.calcMinMax();
+            mData.calcMinMax(getLowestVisibleX(), getHighestVisibleX());
 
         if (mFitBars) {
             mXAxis.calculate(mData.getXMin() - mData.getBarWidth() / 2f, mData.getXMax() + mData.getBarWidth() / 2f);

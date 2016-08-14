@@ -60,6 +60,14 @@ public interface IDataSet<T extends Entry> {
     void calcMinMax();
 
     /**
+     * Calculates the min and max values from the given x-value to the given x-value.
+     *
+     * @param fromX
+     * @param toX
+     */
+    void calcMinMax(float fromX, float toX);
+
+    /**
      * Returns the first Entry object found at the given x-value with binary
      * search. If the no Entry at the specified x-value is found, this method
      * returns the Entry at the x-value according to the rounding.
@@ -372,28 +380,28 @@ public interface IDataSet<T extends Entry> {
 
     /**
      * The form to draw for this dataset in the legend.
-     *
+     * <p/>
      * Return `DEFAULT` to use the default legend form.
      */
     Legend.LegendForm getForm();
 
     /**
      * The form size to draw for this dataset in the legend.
-     *
+     * <p/>
      * Return `Float.NaN` to use the default legend form size.
      */
     float getFormSize();
 
     /**
      * The line width for drawing the form of this dataset in the legend
-     *
+     * <p/>
      * Return `Float.NaN` to use the default legend form line width.
      */
     float getFormLineWidth();
 
     /**
      * The line dash path effect used for shapes that consist of lines.
-     *
+     * <p/>
      * Return `null` to use the default legend form line dash effect.
      */
     DashPathEffect getFormLineDashEffect();
