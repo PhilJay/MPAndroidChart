@@ -265,7 +265,7 @@ public class PieChartRenderer extends DataRenderer {
 
                     float arcStartPointX = 0.f, arcStartPointY = 0.f;
 
-                    if (sweepAngleOuter % 360f < Utils.FLOAT_EPSILON) {
+                    if (sweepAngleOuter % 360f <= Utils.FLOAT_EPSILON) {
                         // Android is doing "mod 360"
                         mPathBuffer.addCircle(center.x, center.y, radius, Path.Direction.CW);
                     } else {
