@@ -115,8 +115,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
         if (mLegend != null && mLegend.isEnabled() && !mLegend.isDrawInsideEnabled()) {
 
             float fullLegendWidth = Math.min(mLegend.mNeededWidth,
-                    mViewPortHandler.getChartWidth() * mLegend.getMaxSizePercent()) +
-                    mLegend.getFormSize() + mLegend.getFormToTextSpace();
+                    mViewPortHandler.getChartWidth() * mLegend.getMaxSizePercent());
 
             switch (mLegend.getOrientation()) {
                 case VERTICAL: {

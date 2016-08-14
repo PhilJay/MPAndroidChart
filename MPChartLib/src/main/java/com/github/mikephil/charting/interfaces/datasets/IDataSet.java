@@ -1,7 +1,9 @@
 package com.github.mikephil.charting.interfaces.datasets;
 
+import android.graphics.DashPathEffect;
 import android.graphics.Typeface;
 
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -367,6 +369,34 @@ public interface IDataSet<T extends Entry> {
      * @return
      */
     float getValueTextSize();
+
+    /**
+     * The form to draw for this dataset in the legend.
+     *
+     * Return `DEFAULT` to use the default legend form.
+     */
+    Legend.LegendForm getForm();
+
+    /**
+     * The form size to draw for this dataset in the legend.
+     *
+     * Return `Float.NaN` to use the default legend form size.
+     */
+    float getFormSize();
+
+    /**
+     * The line width for drawing the form of this dataset in the legend
+     *
+     * Return `Float.NaN` to use the default legend form line width.
+     */
+    float getFormLineWidth();
+
+    /**
+     * The line dash path effect used for shapes that consist of lines.
+     *
+     * Return `null` to use the default legend form line dash effect.
+     */
+    DashPathEffect getFormLineDashEffect();
 
     /**
      * set this to true to draw y-values on the chart NOTE (for bar and

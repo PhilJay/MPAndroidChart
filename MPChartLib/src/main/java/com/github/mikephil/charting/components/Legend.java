@@ -1,8 +1,10 @@
 
 package com.github.mikephil.charting.components;
 
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.FSize;
 import com.github.mikephil.charting.utils.Utils;
@@ -33,7 +35,35 @@ public class Legend extends ComponentBase {
     }
 
     public enum LegendForm {
-        SQUARE, CIRCLE, LINE
+        /**
+         * Avoid drawing a form
+         */
+        NONE,
+
+        /**
+         * Do not draw the a form, but leave space for it
+         */
+        EMPTY,
+
+        /**
+         * Use default (default dataset's form to the legend's form)
+         */
+        DEFAULT,
+
+        /**
+         * Draw a square
+         */
+        SQUARE,
+
+        /**
+         * Draw a circle
+         */
+        CIRCLE,
+
+        /**
+         * Draw a horizontal line
+         */
+        LINE
     }
 
     public enum LegendHorizontalAlignment {
@@ -53,27 +83,15 @@ public class Legend extends ComponentBase {
     }
 
     /**
-     * the legend colors array, each color is for the form drawn at the same
-     * index
+     * The legend entries array
      */
-    private int[] mColors;
+    private LegendEntry[] mEntries = new LegendEntry[]{};
 
     /**
-     * the legend text array. a null label will start a group.
+     * Entries that will be appended to the end of the auto calculated entries after calculating the legend.
+     * (if the legend has already been calculated, you will need to call notifyDataSetChanged() to let the changes take effect)
      */
-    private String[] mLabels;
-
-    /**
-     * colors that will be appended to the end of the colors array after
-     * calculating the legend.
-     */
-    private int[] mExtraColors;
-
-    /**
-     * labels that will be appended to the end of the labels array after
-     * calculating the legend. a null label will start a group.
-     */
-    private String[] mExtraLabels;
+    private LegendEntry[] mExtraEntries;
 
     /**
      * Are the legend labels/colors a custom value or auto calculated? If false,
@@ -100,6 +118,16 @@ public class Legend extends ComponentBase {
      * the size of the legend forms/shapes
      */
     private float mFormSize = 8f;
+
+    /**
+     * the size of the legend forms/shapes
+     */
+    private float mFormLineWidth = 3f;
+
+    /**
+     * Line dash path effect used for shapes that consist of lines.
+     */
+    private DashPathEffect mFormLineDashEffect = null;
 
     /**
      * the space between the legend entries on a horizontal axis, default 6f
@@ -133,22 +161,27 @@ public class Legend extends ComponentBase {
      */
     public Legend() {
 
-        mFormSize = Utils.convertDpToPixel(8f);
-        mXEntrySpace = Utils.convertDpToPixel(6f);
-        mYEntrySpace = Utils.convertDpToPixel(0f);
-        mFormToTextSpace = Utils.convertDpToPixel(5f);
-        mTextSize = Utils.convertDpToPixel(10f);
-        mStackSpace = Utils.convertDpToPixel(3f);
+        this.mTextSize = Utils.convertDpToPixel(10f);
         this.mXOffset = Utils.convertDpToPixel(5f);
         this.mYOffset = Utils.convertDpToPixel(3f); // 2
     }
 
     /**
-     * Constructor. Provide colors and labels for the legend.
+     * Constructor. Provide entries for the legend.
      *
-     * @param colors
-     * @param labels
+     * @param entries
      */
+    public Legend(LegendEntry[] entries) {
+        this();
+
+        if (entries == null) {
+            throw new IllegalArgumentException("entries array is NULL");
+        }
+
+        this.mEntries = entries;
+    }
+
+    @Deprecated
     public Legend(int[] colors, String[] labels) {
         this();
 
@@ -161,56 +194,41 @@ public class Legend extends ComponentBase {
                     "colors array and labels array need to be of same size");
         }
 
-        this.mColors = colors;
-        this.mLabels = labels;
+        List<LegendEntry> entries = new ArrayList<>();
+
+        for (int i = 0; i < Math.min(colors.length, labels.length); i++) {
+            final LegendEntry entry = new LegendEntry();
+            entry.formColor = colors[i];
+            entry.label = labels[i];
+
+            if (entry.formColor == ColorTemplate.COLOR_SKIP)
+                entry.form = LegendForm.NONE;
+            else if (entry.formColor == ColorTemplate.COLOR_NONE ||
+                    entry.formColor == 0)
+                entry.form = LegendForm.EMPTY;
+
+            entries.add(entry);
+        }
+
+        mEntries = entries.toArray(new LegendEntry[entries.size()]);
     }
 
-    /**
-     * Constructor. Provide colors and labels for the legend.
-     *
-     * @param colors
-     * @param labels
-     */
+    @Deprecated
     public Legend(List<Integer> colors, List<String> labels) {
-        this();
-
-        if (colors == null || labels == null) {
-            throw new IllegalArgumentException("colors array or labels array is NULL");
-        }
-
-        if (colors.size() != labels.size()) {
-            throw new IllegalArgumentException(
-                    "colors array and labels array need to be of same size");
-        }
-
-        this.mColors = Utils.convertIntegers(colors);
-        this.mLabels = Utils.convertStrings(labels);
+        this(Utils.convertIntegers(colors), Utils.convertStrings(labels));
     }
 
     /**
      * This method sets the automatically computed colors for the legend. Use setCustom(...) to set custom colors.
      *
-     * @param colors
+     * @param entries
      */
-    public void setComputedColors(List<Integer> colors) {
-        if (mColors != null && colors.size() == mColors.length) {
-            Utils.copyIntegers(colors, mColors);
-        } else {
-            mColors = Utils.convertIntegers(colors);
-        }
+    public void setEntries(List<LegendEntry> entries) {
+        mEntries = entries.toArray(new LegendEntry[entries.size()]);
     }
 
-    /**
-     * This method sets the automatically computed labels for the legend. Use setCustom(...) to set custom labels.
-     *
-     * @param labels
-     */
-    public void setComputedLabels(List<String> labels) {
-        if (mLabels != null && mLabels.length == labels.size()) {
-            Utils.copyStrings(labels, mLabels);
-        } else {
-            mLabels = Utils.convertStrings(labels);
-        }
+    public LegendEntry[] getEntries() {
+        return mEntries;
     }
 
     /**
@@ -223,19 +241,26 @@ public class Legend extends ComponentBase {
     public float getMaximumEntryWidth(Paint p) {
 
         float max = 0f;
+        float maxFormSize = 0f;
+        float formToTextSpace = Utils.convertDpToPixel(mFormToTextSpace);
 
-        for (int i = 0; i < mLabels.length; i++) {
+        for (LegendEntry entry : mEntries) {
+            final float formSize = Utils.convertDpToPixel(
+                    Float.isNaN(entry.formSize)
+                    ? mFormSize : entry.formSize);
+            if (formSize > maxFormSize)
+                maxFormSize = formSize;
 
-            if (mLabels[i] != null) {
+            String label = entry.label;
+            if (label == null) continue;
 
-                float length = (float) Utils.calcTextWidth(p, mLabels[i]);
+            float length = (float) Utils.calcTextWidth(p, label);
 
-                if (length > max)
-                    max = length;
-            }
+            if (length > max)
+                max = length;
         }
 
-        return max + mFormSize + mFormToTextSpace;
+        return max + maxFormSize + formToTextSpace;
     }
 
     /**
@@ -248,140 +273,141 @@ public class Legend extends ComponentBase {
 
         float max = 0f;
 
-        for (int i = 0; i < mLabels.length; i++) {
+        for (LegendEntry entry : mEntries) {
+            String label = entry.label;
+            if (label == null) continue;
 
-            if (mLabels[i] != null) {
+            float length = (float) Utils.calcTextHeight(p, label);
 
-                float length = (float) Utils.calcTextHeight(p, mLabels[i]);
-
-                if (length > max)
-                    max = length;
-            }
+            if (length > max)
+                max = length;
         }
 
         return max;
     }
 
-    /**
-     * returns all the colors the legend uses
-     *
-     * @return
-     */
+    @Deprecated
     public int[] getColors() {
-        return mColors;
+
+        int[] old = new int[mEntries.length];
+        for (int i = 0; i < mEntries.length; i++) {
+            old[i] = mEntries[i].form == LegendForm.NONE ? ColorTemplate.COLOR_SKIP :
+                    (mEntries[i].form == LegendForm.EMPTY ? ColorTemplate.COLOR_NONE :
+                            mEntries[i].formColor);
+        }
+        return old;
     }
 
-    /**
-     * returns all the labels the legend uses
-     *
-     * @return
-     */
+    @Deprecated
     public String[] getLabels() {
-        return mLabels;
+
+        String[] old = new String[mEntries.length];
+        for (int i = 0; i < mEntries.length; i++) {
+            old[i] = mEntries[i].label;
+        }
+        return old;
     }
 
-    /**
-     * Returns the legend-label at the given index.
-     *
-     * @param index
-     * @return
-     */
-    public String getLabel(int index) {
-        return mLabels[index];
-    }
-
-    /**
-     * colors that will be appended to the end of the colors array after
-     * calculating the legend.
-     */
+    @Deprecated
     public int[] getExtraColors() {
-        return mExtraColors;
+
+        int[] old = new int[mExtraEntries.length];
+        for (int i = 0; i < mExtraEntries.length; i++) {
+            old[i] = mExtraEntries[i].form == LegendForm.NONE ? ColorTemplate.COLOR_SKIP :
+                    (mExtraEntries[i].form == LegendForm.EMPTY ? ColorTemplate.COLOR_NONE :
+                            mExtraEntries[i].formColor);
+        }
+        return old;
     }
 
-    /**
-     * labels that will be appended to the end of the labels array after
-     * calculating the legend. a null label will start a group.
-     */
+    @Deprecated
     public String[] getExtraLabels() {
-        return mExtraLabels;
+
+        String[] old = new String[mExtraEntries.length];
+        for (int i = 0; i < mExtraEntries.length; i++) {
+            old[i] = mExtraEntries[i].label;
+        }
+        return old;
     }
 
-    /**
-     * Colors and labels that will be appended to the end of the auto calculated
-     * colors and labels arrays after calculating the legend. (if the legend has
-     * already been calculated, you will need to call notifyDataSetChanged() to
-     * let the changes take effect)
-     */
+    public LegendEntry[] getExtraEntries() {
+
+        return mExtraEntries;
+    }
+
+    public void setExtra(List<LegendEntry> entries) {
+        mExtraEntries = entries.toArray(new LegendEntry[entries.size()]);
+    }
+
+    public void setExtra(LegendEntry[] entries) {
+        if (entries == null)
+            entries = new LegendEntry[]{};
+        mExtraEntries = entries;
+    }
+
+    @Deprecated
     public void setExtra(List<Integer> colors, List<String> labels) {
-        if (mExtraColors != null && mExtraColors.length == colors.size()) {
-            Utils.copyIntegers(colors, mExtraColors);
-        } else {
-            this.mExtraColors = Utils.convertIntegers(colors);
-        }
-
-        if (mExtraLabels != null && mExtraLabels.length == labels.size()) {
-            Utils.copyStrings(labels, mExtraLabels);
-        } else {
-            this.mExtraLabels = Utils.convertStrings(labels);
-        }
+        setExtra(Utils.convertIntegers(colors), Utils.convertStrings(labels));
     }
 
     /**
-     * Colors and labels that will be appended to the end of the auto calculated
-     * colors and labels arrays after calculating the legend. (if the legend has
-     * already been calculated, you will need to call notifyDataSetChanged() to
-     * let the changes take effect)
+     * Entries that will be appended to the end of the auto calculated
+     *   entries after calculating the legend.
+     * (if the legend has already been calculated, you will need to call notifyDataSetChanged()
+     *   to let the changes take effect)
      */
     public void setExtra(int[] colors, String[] labels) {
-        this.mExtraColors = colors;
-        this.mExtraLabels = labels;
+
+        List<LegendEntry> entries = new ArrayList<>();
+
+        for (int i = 0; i < Math.min(colors.length, labels.length); i++) {
+            final LegendEntry entry = new LegendEntry();
+            entry.formColor = colors[i];
+            entry.label = labels[i];
+
+            if (entry.formColor == ColorTemplate.COLOR_SKIP ||
+                    entry.formColor == 0)
+                entry.form = LegendForm.NONE;
+            else if (entry.formColor == ColorTemplate.COLOR_NONE)
+                entry.form = LegendForm.EMPTY;
+
+            entries.add(entry);
+        }
+
+        mExtraEntries = entries.toArray(new LegendEntry[entries.size()]);
     }
 
     /**
-     * Sets a custom legend's labels and colors arrays. The colors count should
-     * match the labels count. * Each color is for the form drawn at the same
-     * index. * A null label will start a group. * A ColorTemplate.COLOR_SKIP
-     * color will avoid drawing a form This will disable the feature that
-     * automatically calculates the legend labels and colors from the datasets.
+     * Sets a custom legend's entries array.
+     * * A null label will start a group.
+     * This will disable the feature that automatically calculates the legend
+     *   entries from the datasets.
      * Call resetCustom() to re-enable automatic calculation (and then
-     * notifyDataSetChanged() is needed to auto-calculate the legend again)
+     *   notifyDataSetChanged() is needed to auto-calculate the legend again)
      */
-    public void setCustom(int[] colors, String[] labels) {
+    public void setCustom(LegendEntry[] entries) {
 
-        if (colors.length != labels.length) {
-            throw new IllegalArgumentException(
-                    "colors array and labels array need to be of same size");
-        }
-
-        mLabels = labels;
-        mColors = colors;
+        mEntries = entries;
         mIsLegendCustom = true;
     }
 
     /**
-     * Sets a custom legend's labels and colors arrays. The colors count should
-     * match the labels count. * Each color is for the form drawn at the same
-     * index. * A null label will start a group. * A ColorTemplate.COLOR_SKIP
-     * color will avoid drawing a form This will disable the feature that
-     * automatically calculates the legend labels and colors from the datasets.
+     * Sets a custom legend's entries array.
+     * * A null label will start a group.
+     * This will disable the feature that automatically calculates the legend
+     *   entries from the datasets.
      * Call resetCustom() to re-enable automatic calculation (and then
-     * notifyDataSetChanged() is needed to auto-calculate the legend again)
+     *   notifyDataSetChanged() is needed to auto-calculate the legend again)
      */
-    public void setCustom(List<Integer> colors, List<String> labels) {
+    public void setCustom(List<LegendEntry> entries) {
 
-        if (colors.size() != labels.size()) {
-            throw new IllegalArgumentException(
-                    "colors array and labels array need to be of same size");
-        }
-
-        mColors = Utils.convertIntegers(colors);
-        mLabels = Utils.convertStrings(labels);
+        mEntries = entries.toArray(new LegendEntry[entries.size()]);
         mIsLegendCustom = true;
     }
 
     /**
-     * Calling this will disable the custom legend labels (set by
-     * setCustom(...)). Instead, the labels will again be calculated
+     * Calling this will disable the custom legend entries (set by
+     * setCustom(...)). Instead, the entries will again be calculated
      * automatically (after notifyDataSetChanged() is called).
      */
     public void resetCustom() {
@@ -389,7 +415,7 @@ public class Legend extends ComponentBase {
     }
 
     /**
-     * @return true if a custom legend labels and colors has been set default
+     * @return true if a custom legend entries has been set default
      * false (automatic legend)
      */
     public boolean isLegendCustom() {
@@ -608,13 +634,12 @@ public class Legend extends ComponentBase {
     }
 
     /**
-     * sets the size in pixels of the legend forms, this is internally converted
-     * in dp, default 8f
+     * sets the size in dp of the legend forms, default 8f
      *
      * @param size
      */
     public void setFormSize(float size) {
-        mFormSize = Utils.convertDpToPixel(size);
+        mFormSize = size;
     }
 
     /**
@@ -624,6 +649,40 @@ public class Legend extends ComponentBase {
      */
     public float getFormSize() {
         return mFormSize;
+    }
+
+    /**
+     * sets the line width in dp for forms that consist of lines, default 3f
+     *
+     * @param size
+     */
+    public void setFormLineWidth(float size) {
+        mFormLineWidth = size;
+    }
+
+    /**
+     * returns the line width in dp for drawing forms that consist of lines
+     *
+     * @return
+     */
+    public float getFormLineWidth() {
+        return mFormLineWidth;
+    }
+
+    /**
+     * Sets the line dash path effect used for shapes that consist of lines.
+     *
+     * @param dashPathEffect
+     */
+    public void setFormLineDashEffect(DashPathEffect dashPathEffect) {
+        mFormLineDashEffect = dashPathEffect;
+    }
+
+    /**
+     * @return The line dash path effect used for shapes that consist of lines.
+     */
+    public DashPathEffect getFormLineDashEffect() {
+        return mFormLineDashEffect;
     }
 
     /**
@@ -643,7 +702,7 @@ public class Legend extends ComponentBase {
      * @param space
      */
     public void setXEntrySpace(float space) {
-        mXEntrySpace = Utils.convertDpToPixel(space);
+        mXEntrySpace = space;
     }
 
     /**
@@ -662,7 +721,7 @@ public class Legend extends ComponentBase {
      * @param space
      */
     public void setYEntrySpace(float space) {
-        mYEntrySpace = Utils.convertDpToPixel(space);
+        mYEntrySpace = space;
     }
 
     /**
@@ -681,7 +740,7 @@ public class Legend extends ComponentBase {
      * @param space
      */
     public void setFormToTextSpace(float space) {
-        this.mFormToTextSpace = Utils.convertDpToPixel(space);
+        this.mFormToTextSpace = space;
     }
 
     /**
@@ -795,6 +854,15 @@ public class Legend extends ComponentBase {
      */
     public void calculateDimensions(Paint labelpaint, ViewPortHandler viewPortHandler) {
 
+        float defaultFormSize = Utils.convertDpToPixel(mFormSize);
+        float stackSpace = Utils.convertDpToPixel(mStackSpace);
+        float formToTextSpace = Utils.convertDpToPixel(mFormToTextSpace);
+        float xEntrySpace = Utils.convertDpToPixel(mXEntrySpace);
+        float yEntrySpace = Utils.convertDpToPixel(mYEntrySpace);
+        boolean wordWrapEnabled = mWordWrapEnabled;
+        LegendEntry[] entries = mEntries;
+        int entryCount = entries.length;
+
         mTextWidthMax = getMaximumEntryWidth(labelpaint);
         mTextHeightMax = getMaximumEntryHeight(labelpaint);
 
@@ -803,44 +871,48 @@ public class Legend extends ComponentBase {
 
                 float maxWidth = 0f, maxHeight = 0f, width = 0f;
                 float labelLineHeight = Utils.getLineHeight(labelpaint);
-                final int count = mLabels.length;
                 boolean wasStacked = false;
 
-                for (int i = 0; i < count; i++) {
+                for (int i = 0; i < entryCount; i++) {
 
-                    boolean drawingForm = mColors[i] != ColorTemplate.COLOR_SKIP;
+                    LegendEntry e = entries[i];
+                    boolean drawingForm = e.form != LegendForm.NONE;
+                    float formSize = Float.isNaN(e.formSize)
+                            ? defaultFormSize
+                            : Utils.convertDpToPixel(e.formSize);
+                    String label = e.label;
 
                     if (!wasStacked)
                         width = 0.f;
 
                     if (drawingForm) {
                         if (wasStacked)
-                            width += mStackSpace;
-                        width += mFormSize;
+                            width += stackSpace;
+                        width += formSize;
                     }
 
                     // grouped forms have null labels
-                    if (mLabels[i] != null) {
+                    if (label != null) {
 
                         // make a step to the left
                         if (drawingForm && !wasStacked)
-                            width += mFormToTextSpace;
+                            width += formToTextSpace;
                         else if (wasStacked) {
                             maxWidth = Math.max(maxWidth, width);
-                            maxHeight += labelLineHeight + mYEntrySpace;
+                            maxHeight += labelLineHeight + yEntrySpace;
                             width = 0.f;
                             wasStacked = false;
                         }
 
-                        width += Utils.calcTextWidth(labelpaint, mLabels[i]);
+                        width += Utils.calcTextWidth(labelpaint, label);
 
-                        if (i < count - 1)
-                            maxHeight += labelLineHeight + mYEntrySpace;
+                        if (i < entryCount - 1)
+                            maxHeight += labelLineHeight + yEntrySpace;
                     } else {
                         wasStacked = true;
-                        width += mFormSize;
-                        if (i < count - 1)
-                            width += mStackSpace;
+                        width += formSize;
+                        if (i < entryCount - 1)
+                            width += stackSpace;
                     }
 
                     maxWidth = Math.max(maxWidth, width);
@@ -853,9 +925,8 @@ public class Legend extends ComponentBase {
             }
             case HORIZONTAL: {
 
-                int labelCount = mLabels.length;
                 float labelLineHeight = Utils.getLineHeight(labelpaint);
-                float labelLineSpacing = Utils.getLineSpacing(labelpaint) + mYEntrySpace;
+                float labelLineSpacing = Utils.getLineSpacing(labelpaint) + yEntrySpace;
                 float contentWidth = viewPortHandler.contentWidth() * mMaxSizePercent;
 
                 // Start calculating layout
@@ -868,9 +939,14 @@ public class Legend extends ComponentBase {
                 mCalculatedLabelSizes.clear();
                 mCalculatedLineSizes.clear();
 
-                for (int i = 0; i < labelCount; i++) {
+                for (int i = 0; i < entryCount; i++) {
 
-                    boolean drawingForm = mColors[i] != ColorTemplate.COLOR_SKIP;
+                    LegendEntry e = entries[i];
+                    boolean drawingForm = e.form != LegendForm.NONE;
+                    float formSize = Float.isNaN(e.formSize)
+                            ? defaultFormSize
+                            : Utils.convertDpToPixel(e.formSize);
+                    String label = e.label;
 
                     mCalculatedLabelBreakPoints.add(false);
 
@@ -880,19 +956,19 @@ public class Legend extends ComponentBase {
                         requiredWidth = 0.f;
                     } else {
                         // add the spacing appropriate for stacked labels/forms
-                        requiredWidth += mStackSpace;
+                        requiredWidth += stackSpace;
                     }
 
                     // grouped forms have null labels
-                    if (mLabels[i] != null) {
+                    if (label != null) {
 
-                        mCalculatedLabelSizes.add(Utils.calcTextSize(labelpaint, mLabels[i]));
-                        requiredWidth += drawingForm ? mFormToTextSpace + mFormSize : 0.f;
+                        mCalculatedLabelSizes.add(Utils.calcTextSize(labelpaint, label));
+                        requiredWidth += drawingForm ? formToTextSpace + formSize : 0.f;
                         requiredWidth += mCalculatedLabelSizes.get(i).width;
                     } else {
 
                         mCalculatedLabelSizes.add(FSize.getInstance(0.f, 0.f));
-                        requiredWidth += drawingForm ? mFormSize : 0.f;
+                        requiredWidth += drawingForm ? formSize : 0.f;
 
                         if (stackedStartIndex == -1) {
                             // mark this index as we might want to break here later
@@ -900,11 +976,11 @@ public class Legend extends ComponentBase {
                         }
                     }
 
-                    if (mLabels[i] != null || i == labelCount - 1) {
+                    if (label != null || i == entryCount - 1) {
 
-                        float requiredSpacing = currentLineWidth == 0.f ? 0.f : mXEntrySpace;
+                        float requiredSpacing = currentLineWidth == 0.f ? 0.f : xEntrySpace;
 
-                        if (!mWordWrapEnabled // No word wrapping, it must fit.
+                        if (!wordWrapEnabled // No word wrapping, it must fit.
                                 // The line is empty, it must fit
                                 || currentLineWidth == 0.f
                                 // It simply fits
@@ -925,14 +1001,14 @@ public class Legend extends ComponentBase {
                             currentLineWidth = requiredWidth;
                         }
 
-                        if (i == labelCount - 1) {
+                        if (i == entryCount - 1) {
                             // Add last line size to array
                             mCalculatedLineSizes.add(FSize.getInstance(currentLineWidth, labelLineHeight));
                             maxLineWidth = Math.max(maxLineWidth, currentLineWidth);
                         }
                     }
 
-                    stackedStartIndex = mLabels[i] != null ? -1 : stackedStartIndex;
+                    stackedStartIndex = label != null ? -1 : stackedStartIndex;
                 }
 
                 mNeededWidth = maxLineWidth;

@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Path;
+import android.graphics.RectF;
 
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.YAxis;
@@ -134,6 +135,9 @@ public class YAxisRenderer extends AxisRenderer {
 
         if (mYAxis.isDrawGridLinesEnabled()) {
 
+            int clipRestoreCount = c.save();
+            c.clipRect(getGridClippingRect());
+
             float[] positions = getTransformedPositions();
 
             mGridPaint.setColor(mYAxis.getGridColor());
@@ -150,11 +154,21 @@ public class YAxisRenderer extends AxisRenderer {
                 c.drawPath(linePath(gridLinePath, i, positions), mGridPaint);
                 gridLinePath.reset();
             }
+
+            c.restoreToCount(clipRestoreCount);
         }
 
         if (mYAxis.isDrawZeroLineEnabled()) {
             drawZeroLine(c);
         }
+    }
+
+    protected RectF mGridClippingRect = new RectF();
+
+    public RectF getGridClippingRect() {
+        mGridClippingRect.set(mViewPortHandler.getContentRect());
+        mGridClippingRect.inset(0.f, -mAxis.getGridLineWidth() / 2.f);
+        return mGridClippingRect;
     }
 
     /**
@@ -220,6 +234,7 @@ public class YAxisRenderer extends AxisRenderer {
 
     protected Path mRenderLimitLines = new Path();
     protected float[] mRenderLimitLinesBuffer = new float[2];
+    protected RectF mLimitLineClippingRect = new RectF();
     /**
      * Draws the LimitLines associated with this axis to the screen.
      *
@@ -245,6 +260,11 @@ public class YAxisRenderer extends AxisRenderer {
 
             if (!l.isEnabled())
                 continue;
+
+            int clipRestoreCount = c.save();
+            mLimitLineClippingRect.set(mViewPortHandler.getContentRect());
+            mLimitLineClippingRect.inset(0.f, -l.getLineWidth() / 2.f);
+            c.clipRect(mLimitLineClippingRect);
 
             mLimitLinePaint.setStyle(Paint.Style.STROKE);
             mLimitLinePaint.setColor(l.getLineColor());
@@ -309,6 +329,8 @@ public class YAxisRenderer extends AxisRenderer {
                             pts[1] + yOffset, mLimitLinePaint);
                 }
             }
+
+            c.restoreToCount(clipRestoreCount);
         }
     }
 }

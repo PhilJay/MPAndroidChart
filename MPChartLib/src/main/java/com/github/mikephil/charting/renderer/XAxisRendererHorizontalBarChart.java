@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Path;
+import android.graphics.RectF;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.LimitLine;
@@ -162,6 +163,13 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
     }
 
     @Override
+    public RectF getGridClippingRect() {
+        mGridClippingRect.set(mViewPortHandler.getContentRect());
+        mGridClippingRect.inset(0.f, -mAxis.getGridLineWidth() / 2.f);
+        return mGridClippingRect;
+    }
+
+    @Override
     protected void drawGridLine(Canvas c, float x, float y, Path gridLinePath) {
 
         gridLinePath.moveTo(mViewPortHandler.contentRight(), y);
@@ -228,6 +236,11 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
             if(!l.isEnabled())
                 continue;
 
+            int clipRestoreCount = c.save();
+            mLimitLineClippingRect.set(mViewPortHandler.getContentRect());
+            mLimitLineClippingRect.inset(0.f, -l.getLineWidth() / 2.f);
+            c.clipRect(mLimitLineClippingRect);
+
 			mLimitLinePaint.setStyle(Paint.Style.STROKE);
 			mLimitLinePaint.setColor(l.getLineColor());
 			mLimitLinePaint.setStrokeWidth(l.getLineWidth());
@@ -290,6 +303,8 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
 							pts[1] + yOffset, mLimitLinePaint);
 				}
 			}
+
+            c.restoreToCount(clipRestoreCount);
 		}
 	}
 }
