@@ -109,11 +109,7 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
         if (e.getHigh() > mYMax)
             mYMax = e.getHigh();
 
-        if (e.getX() < mXMin)
-            mXMin = e.getX();
-
-        if (e.getX() > mXMax)
-            mXMax = e.getX();
+        calcMinMaxX(e);
     }
 
     /**

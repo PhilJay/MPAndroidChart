@@ -75,21 +75,21 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     @Override
-    public void calcMinMax(float fromX, float toX) {
+    public void calcMinMaxY(float fromX, float toX) {
 
         if (mValues == null || mValues.isEmpty())
             return;
 
         mYMax = -Float.MAX_VALUE;
         mYMin = Float.MAX_VALUE;
-        mXMax = -Float.MAX_VALUE;
-        mXMin = Float.MAX_VALUE;
 
-        int indexFrom = getEntryIndex(fromX, Rounding.CLOSEST);
-        int indexTo = getEntryIndex(toX, Rounding.CLOSEST);
+        int indexFrom = getEntryIndex(fromX, Rounding.DOWN);
+        int indexTo = getEntryIndex(toX, Rounding.UP);
 
         for (int i = indexFrom; i <= indexTo; i++) {
-            calcMinMax(mValues.get(i));
+
+            // only recalculate y
+            calcMinMaxY(mValues.get(i));
         }
     }
 
@@ -103,17 +103,27 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         if (e == null)
             return;
 
-        if (e.getY() < mYMin)
-            mYMin = e.getY();
+        calcMinMaxX(e);
 
-        if (e.getY() > mYMax)
-            mYMax = e.getY();
+        calcMinMaxY(e);
+    }
+
+    protected void calcMinMaxX(T e) {
 
         if (e.getX() < mXMin)
             mXMin = e.getX();
 
         if (e.getX() > mXMax)
             mXMax = e.getX();
+    }
+
+    protected void calcMinMaxY(T e) {
+
+        if (e.getY() < mYMin)
+            mYMin = e.getY();
+
+        if (e.getY() > mYMax)
+            mYMax = e.getY();
     }
 
     @Override

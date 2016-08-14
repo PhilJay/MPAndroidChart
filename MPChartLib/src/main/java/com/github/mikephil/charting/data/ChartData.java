@@ -108,18 +108,19 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
     }
 
     /**
-     * Calc minimum and maximum values (both x and y) over all DataSets.
-     * Tell DataSets to recalculate their min and max values, this is needed for autoScaleMinMax.
+     * Calc minimum and maximum y-values over all DataSets.
+     * Tell DataSets to recalculate their min and max y-values, this is only needed for autoScaleMinMax.
      *
      * @param fromX the x-value to start the calculation from
      * @param toX   the x-value to which the calculation should be performed
      */
-    public void calcMinMax(float fromX, float toX) {
+    public void calcMinMaxY(float fromX, float toX) {
 
         for (T set : mDataSets) {
-            set.calcMinMax(fromX, toX);
+            set.calcMinMaxY(fromX, toX);
         }
 
+        // apply the new data
         calcMinMax();
     }
 

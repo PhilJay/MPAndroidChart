@@ -51,11 +51,7 @@ public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
         if (e == null)
             return;
 
-        if (e.getY() < mYMin)
-            mYMin = e.getY();
-
-        if (e.getY() > mYMax)
-            mYMax = e.getY();
+        calcMinMaxY(e);
     }
 
     /**

@@ -60,12 +60,13 @@ public interface IDataSet<T extends Entry> {
     void calcMinMax();
 
     /**
-     * Calculates the min and max values from the given x-value to the given x-value.
+     * Calculates the min and max y-values from the Entry closest to the given fromX to the Entry closest to the given toX value.
+     * This is only needed for the autoScaleMinMax feature.
      *
      * @param fromX
      * @param toX
      */
-    void calcMinMax(float fromX, float toX);
+    void calcMinMaxY(float fromX, float toX);
 
     /**
      * Returns the first Entry object found at the given x-value with binary

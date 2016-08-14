@@ -204,9 +204,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         mAxisRendererRight.renderAxisLine(canvas);
 
         if (mAutoScaleMinMaxEnabled) {
-
-            calcMinMax();
-            calculateOffsets();
+            autoScale();
         }
 
         mXAxisRenderer.renderGridLines(canvas);
@@ -325,11 +323,28 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         calculateOffsets();
     }
 
+    /**
+     * Performs auto scaling of the axis by recalculating the minimum and maximum y-values based on the entries currently in view.
+     */
+    protected void autoScale() {
+
+        final float fromX = getLowestVisibleX();
+        final float toX = getHighestVisibleX();
+
+        mData.calcMinMaxY(fromX, toX);
+
+        mXAxis.calculate(mData.getXMin(), mData.getXMax());
+
+        // calculate axis range (min / max) according to provided data
+        mAxisLeft.calculate(mData.getYMin(AxisDependency.LEFT), mData.getYMax(AxisDependency.LEFT));
+        mAxisRight.calculate(mData.getYMin(AxisDependency.RIGHT), mData.getYMax(AxisDependency
+                .RIGHT));
+
+        calculateOffsets();
+    }
+
     @Override
     protected void calcMinMax() {
-
-        if (mAutoScaleMinMaxEnabled)
-            mData.calcMinMax(getLowestVisibleX(), getHighestVisibleX());
 
         mXAxis.calculate(mData.getXMin(), mData.getXMax());
 

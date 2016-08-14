@@ -127,11 +127,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
                     mYMax = e.getPositiveSum();
             }
 
-            if (e.getX() < mXMin)
-                mXMin = e.getX();
-
-            if (e.getX() > mXMax)
-                mXMax = e.getX();
+            calcMinMaxX(e);
         }
     }
 
