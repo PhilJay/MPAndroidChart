@@ -161,13 +161,7 @@ public class Legend extends ComponentBase {
      */
     public Legend() {
 
-        mFormSize = Utils.convertDpToPixel(8f);
-        mFormLineWidth = Utils.convertDpToPixel(3f);
-        mXEntrySpace = Utils.convertDpToPixel(6f);
-        mYEntrySpace = Utils.convertDpToPixel(0f);
-        mFormToTextSpace = Utils.convertDpToPixel(5f);
-        mTextSize = Utils.convertDpToPixel(10f);
-        mStackSpace = Utils.convertDpToPixel(3f);
+        this.mTextSize = Utils.convertDpToPixel(10f);
         this.mXOffset = Utils.convertDpToPixel(5f);
         this.mYOffset = Utils.convertDpToPixel(3f); // 2
     }
@@ -248,10 +242,12 @@ public class Legend extends ComponentBase {
 
         float max = 0f;
         float maxFormSize = 0f;
+        float formToTextSpace = Utils.convertDpToPixel(mFormToTextSpace);
 
         for (LegendEntry entry : mEntries) {
-            final float formSize = Float.isNaN(entry.formSize)
-                    ? mFormSize : entry.formSize;
+            final float formSize = Utils.convertDpToPixel(
+                    Float.isNaN(entry.formSize)
+                    ? mFormSize : entry.formSize);
             if (formSize > maxFormSize)
                 maxFormSize = formSize;
 
@@ -264,7 +260,7 @@ public class Legend extends ComponentBase {
                 max = length;
         }
 
-        return max + maxFormSize + mFormToTextSpace;
+        return max + maxFormSize + formToTextSpace;
     }
 
     /**
@@ -643,7 +639,7 @@ public class Legend extends ComponentBase {
      * @param size
      */
     public void setFormSize(float size) {
-        mFormSize = Utils.convertDpToPixel(size);
+        mFormSize = size;
     }
 
     /**
@@ -661,7 +657,7 @@ public class Legend extends ComponentBase {
      * @param size
      */
     public void setFormLineWidth(float size) {
-        mFormLineWidth = Utils.convertDpToPixel(size);
+        mFormLineWidth = size;
     }
 
     /**
@@ -706,7 +702,7 @@ public class Legend extends ComponentBase {
      * @param space
      */
     public void setXEntrySpace(float space) {
-        mXEntrySpace = Utils.convertDpToPixel(space);
+        mXEntrySpace = space;
     }
 
     /**
@@ -725,7 +721,7 @@ public class Legend extends ComponentBase {
      * @param space
      */
     public void setYEntrySpace(float space) {
-        mYEntrySpace = Utils.convertDpToPixel(space);
+        mYEntrySpace = space;
     }
 
     /**
@@ -744,7 +740,7 @@ public class Legend extends ComponentBase {
      * @param space
      */
     public void setFormToTextSpace(float space) {
-        this.mFormToTextSpace = Utils.convertDpToPixel(space);
+        this.mFormToTextSpace = space;
     }
 
     /**
@@ -858,11 +854,11 @@ public class Legend extends ComponentBase {
      */
     public void calculateDimensions(Paint labelpaint, ViewPortHandler viewPortHandler) {
 
-        float defaultFormSize = mFormSize;
-        float stackSpace = mStackSpace;
-        float formToTextSpace = mFormToTextSpace;
-        float xEntrySpace = mXEntrySpace;
-        float yEntrySpace = mYEntrySpace;
+        float defaultFormSize = Utils.convertDpToPixel(mFormSize);
+        float stackSpace = Utils.convertDpToPixel(mStackSpace);
+        float formToTextSpace = Utils.convertDpToPixel(mFormToTextSpace);
+        float xEntrySpace = Utils.convertDpToPixel(mXEntrySpace);
+        float yEntrySpace = Utils.convertDpToPixel(mYEntrySpace);
         boolean wordWrapEnabled = mWordWrapEnabled;
         LegendEntry[] entries = mEntries;
         int entryCount = entries.length;
@@ -881,7 +877,9 @@ public class Legend extends ComponentBase {
 
                     LegendEntry e = entries[i];
                     boolean drawingForm = e.form != LegendForm.NONE;
-                    float formSize = Float.isNaN(e.formSize) ? defaultFormSize : e.formSize;
+                    float formSize = Float.isNaN(e.formSize)
+                            ? defaultFormSize
+                            : Utils.convertDpToPixel(e.formSize);
                     String label = e.label;
 
                     if (!wasStacked)
@@ -945,7 +943,9 @@ public class Legend extends ComponentBase {
 
                     LegendEntry e = entries[i];
                     boolean drawingForm = e.form != LegendForm.NONE;
-                    float formSize = Float.isNaN(e.formSize) ? defaultFormSize : e.formSize;
+                    float formSize = Float.isNaN(e.formSize)
+                            ? defaultFormSize
+                            : Utils.convertDpToPixel(e.formSize);
                     String label = e.label;
 
                     mCalculatedLabelBreakPoints.add(false);
@@ -963,7 +963,7 @@ public class Legend extends ComponentBase {
                     if (label != null) {
 
                         mCalculatedLabelSizes.add(Utils.calcTextSize(labelpaint, label));
-                        requiredWidth += drawingForm ? mFormToTextSpace + formSize : 0.f;
+                        requiredWidth += drawingForm ? formToTextSpace + formSize : 0.f;
                         requiredWidth += mCalculatedLabelSizes.get(i).width;
                     } else {
 

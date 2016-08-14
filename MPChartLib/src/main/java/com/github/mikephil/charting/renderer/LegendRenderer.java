@@ -236,21 +236,22 @@ public class LegendRenderer extends Renderer {
         mLegendLabelPaint.setColor(mLegend.getTextColor());
 
         float labelLineHeight = Utils.getLineHeight(mLegendLabelPaint, legendFontMetrics);
-        float labelLineSpacing = Utils.getLineSpacing(mLegendLabelPaint, legendFontMetrics) + mLegend.getYEntrySpace();
+        float labelLineSpacing = Utils.getLineSpacing(mLegendLabelPaint, legendFontMetrics)
+                + Utils.convertDpToPixel(mLegend.getYEntrySpace());
         float formYOffset = labelLineHeight - Utils.calcTextHeight(mLegendLabelPaint, "ABC") / 2.f;
 
         LegendEntry[] entries = mLegend.getEntries();
 
-        float formToTextSpace = mLegend.getFormToTextSpace();
-        float xEntrySpace = mLegend.getXEntrySpace();
+        float formToTextSpace = Utils.convertDpToPixel(mLegend.getFormToTextSpace());
+        float xEntrySpace = Utils.convertDpToPixel(mLegend.getXEntrySpace());
         Legend.LegendOrientation orientation = mLegend.getOrientation();
         Legend.LegendHorizontalAlignment horizontalAlignment = mLegend.getHorizontalAlignment();
         Legend.LegendVerticalAlignment verticalAlignment = mLegend.getVerticalAlignment();
         Legend.LegendDirection direction = mLegend.getDirection();
-        float defaultFormSize = mLegend.getFormSize();
+        float defaultFormSize = Utils.convertDpToPixel(mLegend.getFormSize());
 
         // space between the entries
-        float stackSpace = mLegend.getStackSpace();
+        float stackSpace = Utils.convertDpToPixel(mLegend.getStackSpace());
 
         float yoffset = mLegend.getYOffset();
         float xoffset = mLegend.getXOffset();
@@ -334,7 +335,7 @@ public class LegendRenderer extends Renderer {
 
                     LegendEntry e = entries[i];
                     boolean drawingForm = e.form != Legend.LegendForm.NONE;
-                    float formSize = Float.isNaN(e.formSize) ? defaultFormSize : e.formSize;
+                    float formSize = Float.isNaN(e.formSize) ? defaultFormSize : Utils.convertDpToPixel(e.formSize);
 
                     if (i < calculatedLabelBreakPoints.size() && calculatedLabelBreakPoints.get(i)) {
                         posX = originPosX;
@@ -415,7 +416,7 @@ public class LegendRenderer extends Renderer {
 
                     LegendEntry e = entries[i];
                     boolean drawingForm = e.form != Legend.LegendForm.NONE;
-                    float formSize = Float.isNaN(e.formSize) ? defaultFormSize : e.formSize;
+                    float formSize = Float.isNaN(e.formSize) ? defaultFormSize : Utils.convertDpToPixel(e.formSize);
 
                     float posX = originPosX;
 
@@ -495,7 +496,10 @@ public class LegendRenderer extends Renderer {
 
         mLegendFormPaint.setColor(entry.formColor);
 
-        final float formSize = Float.isNaN(entry.formSize) ? legend.getFormSize() : entry.formSize;
+        final float formSize = Utils.convertDpToPixel(
+                Float.isNaN(entry.formSize)
+                        ? legend.getFormSize()
+                        : entry.formSize);
         final float half = formSize / 2f;
 
         switch (form) {
@@ -520,9 +524,10 @@ public class LegendRenderer extends Renderer {
 
             case LINE:
             {
-                final float formLineWidth = Float.isNaN(entry.formLineWidth)
-                        ? legend.getFormLineWidth()
-                        : entry.formLineWidth;
+                final float formLineWidth = Utils.convertDpToPixel(
+                        Float.isNaN(entry.formLineWidth)
+                                ? legend.getFormLineWidth()
+                                : entry.formLineWidth);
                 final DashPathEffect formLineDashEffect = entry.formLineDashEffect == null
                         ? legend.getFormLineDashEffect()
                         : entry.formLineDashEffect;
