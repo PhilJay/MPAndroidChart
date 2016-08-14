@@ -33,7 +33,7 @@ public class PieData extends ChartData<IPieDataSet> {
     public void setDataSet(IPieDataSet dataSet) {
         mDataSets.clear();
         mDataSets.add(dataSet);
-        init();
+        notifyDataChanged();
     }
 
     /**

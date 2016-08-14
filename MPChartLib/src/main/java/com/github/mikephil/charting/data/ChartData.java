@@ -68,7 +68,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      */
     public ChartData(T... dataSets) {
         mDataSets = arrayToList(dataSets);
-        init();
+        notifyDataChanged();
     }
 
     /**
@@ -95,15 +95,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      */
     public ChartData(List<T> sets) {
         this.mDataSets = sets;
-        init();
-    }
-
-    /**
-     * performs all kinds of initialization calculations, such as min-max and
-     * value count and sum
-     */
-    protected void init() {
-        calcMinMax();
+        notifyDataChanged();
     }
 
     /**
@@ -112,11 +104,11 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
      * the contained data has changed.
      */
     public void notifyDataChanged() {
-        init();
+        calcMinMax();
     }
 
     /**
-     * calc minimum and maximum values (both x and y) over all DataSets
+     * Calc minimum and maximum values (both x and y) over all DataSets.
      */
     public void calcMinMax() {
 
@@ -145,7 +137,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
             mLeftAxisMax = firstLeft.getYMax();
             mLeftAxisMin = firstLeft.getYMin();
 
-            for (IDataSet dataSet : mDataSets) {
+            for (T dataSet : mDataSets) {
                 if (dataSet.getAxisDependency() == AxisDependency.LEFT) {
                     if (dataSet.getYMin() < mLeftAxisMin)
                         mLeftAxisMin = dataSet.getYMin();
@@ -164,7 +156,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
             mRightAxisMax = firstRight.getYMax();
             mRightAxisMin = firstRight.getYMin();
 
-            for (IDataSet dataSet : mDataSets) {
+            for (T dataSet : mDataSets) {
                 if (dataSet.getAxisDependency() == AxisDependency.RIGHT) {
                     if (dataSet.getYMin() < mRightAxisMin)
                         mRightAxisMin = dataSet.getYMin();
@@ -436,6 +428,12 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         }
     }
 
+    /**
+     * Adjusts the current minimum and maximum values based on the provided Entry object.
+     *
+     * @param e
+     * @param axis
+     */
     protected void calcMinMax(Entry e, AxisDependency axis) {
 
         if (mYMax < e.getY())
@@ -462,6 +460,11 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         }
     }
 
+    /**
+     * Adjusts the minimum and maximum values based on the given DataSet.
+     *
+     * @param d
+     */
     protected void calcMinMax(T d) {
 
         if (mYMax < d.getYMax())
