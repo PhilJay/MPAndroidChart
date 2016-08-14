@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Path;
+import android.graphics.RectF;
 
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
@@ -236,6 +237,9 @@ public class XAxisRenderer extends AxisRenderer {
         if (!mXAxis.isDrawGridLinesEnabled() || !mXAxis.isEnabled())
             return;
 
+        int clipRestoreCount = c.save();
+        c.clipRect(getGridClippingRect());
+
         if(mRenderGridLinesBuffer.length != mAxis.mEntryCount * 2){
             mRenderGridLinesBuffer = new float[mXAxis.mEntryCount * 2];
         }
@@ -257,6 +261,16 @@ public class XAxisRenderer extends AxisRenderer {
 
             drawGridLine(c, positions[i], positions[i + 1], gridLinePath);
         }
+
+        c.restoreToCount(clipRestoreCount);
+    }
+
+    protected RectF mGridClippingRect = new RectF();
+
+    public RectF getGridClippingRect() {
+        mGridClippingRect.set(mViewPortHandler.getContentRect());
+        mGridClippingRect.inset(-mAxis.getGridLineWidth() / 2.f, 0.f);
+        return mGridClippingRect;
     }
 
     /**
@@ -279,6 +293,8 @@ public class XAxisRenderer extends AxisRenderer {
     }
 
     protected float[] mRenderLimitLinesBuffer = new float[2];
+    protected RectF mLimitLineClippingRect = new RectF();
+
     /**
      * Draws the LimitLines associated with this axis to the screen.
      *
@@ -303,6 +319,11 @@ public class XAxisRenderer extends AxisRenderer {
             if (!l.isEnabled())
                 continue;
 
+            int clipRestoreCount = c.save();
+            mLimitLineClippingRect.set(mViewPortHandler.getContentRect());
+            mLimitLineClippingRect.inset(-l.getLineWidth() / 2.f, 0.f);
+            c.clipRect(mLimitLineClippingRect);
+
             position[0] = l.getLimit();
             position[1] = 0.f;
 
@@ -310,6 +331,8 @@ public class XAxisRenderer extends AxisRenderer {
 
             renderLimitLineLine(c, l, position);
             renderLimitLineLabel(c, l, position, 2.f + l.getYOffset());
+
+            c.restoreToCount(clipRestoreCount);
         }
     }
 

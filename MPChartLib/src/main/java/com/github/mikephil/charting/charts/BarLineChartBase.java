@@ -222,11 +222,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             }
         }
 
-        // make sure the graph values and grid cannot be drawn outside the
-        // content-rect
-        int clipRestoreCount = canvas.save();
-        canvas.clipRect(mViewPortHandler.getContentRect());
-
         mXAxisRenderer.renderGridLines(canvas);
         mAxisRendererLeft.renderGridLines(canvas);
         mAxisRendererRight.renderGridLines(canvas);
@@ -240,6 +235,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         if (mAxisRight.isDrawLimitLinesBehindDataEnabled())
             mAxisRendererRight.renderLimitLines(canvas);
 
+        // make sure the data cannot be drawn outside the content-rect
+        int clipRestoreCount = canvas.save();
+        canvas.clipRect(mViewPortHandler.getContentRect());
+
         mRenderer.drawData(canvas);
 
         // if highlighting is enabled
@@ -251,9 +250,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         mRenderer.drawExtras(canvas);
 
-        clipRestoreCount = canvas.save();
-        canvas.clipRect(mViewPortHandler.getContentRect());
-
         if (!mXAxis.isDrawLimitLinesBehindDataEnabled())
             mXAxisRenderer.renderLimitLines(canvas);
 
@@ -262,9 +258,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         if (!mAxisRight.isDrawLimitLinesBehindDataEnabled())
             mAxisRendererRight.renderLimitLines(canvas);
-
-        canvas.restoreToCount(clipRestoreCount);
-
+        
         mXAxisRenderer.renderAxisLabels(canvas);
         mAxisRendererLeft.renderAxisLabels(canvas);
         mAxisRendererRight.renderAxisLabels(canvas);
