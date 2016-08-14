@@ -229,7 +229,7 @@ public class PieChartRenderer extends DataRenderer {
         int visibleAngleCount = 0;
         for (int j = 0; j < entryCount; j++) {
             // draw only if the value is greater than zero
-            if ((Math.abs(dataSet.getEntryForIndex(j).getY()) > 0.000001)) {
+            if ((Math.abs(dataSet.getEntryForIndex(j).getY()) > Utils.FLOAT_EPSILON)) {
                 visibleAngleCount++;
             }
         }
@@ -244,7 +244,7 @@ public class PieChartRenderer extends DataRenderer {
             Entry e = dataSet.getEntryForIndex(j);
 
             // draw only if the value is greater than zero
-            if ((Math.abs(e.getY()) > 0.000001)) {
+            if ((Math.abs(e.getY()) > Utils.FLOAT_EPSILON)) {
 
                 if (!mChart.needsHighlight(j)) {
 
@@ -265,7 +265,7 @@ public class PieChartRenderer extends DataRenderer {
 
                     float arcStartPointX = 0.f, arcStartPointY = 0.f;
 
-                    if (sweepAngleOuter % 360f < 0.00001f) {
+                    if (sweepAngleOuter % 360f < Utils.FLOAT_EPSILON) {
                         // Android is doing "mod 360"
                         mPathBuffer.addCircle(center.x, center.y, radius, Path.Direction.CW);
                     } else {
@@ -771,7 +771,7 @@ public class PieChartRenderer extends DataRenderer {
             int visibleAngleCount = 0;
             for (int j = 0; j < entryCount; j++) {
                 // draw only if the value is greater than zero
-                if ((Math.abs(set.getEntryForIndex(j).getY()) > 0.000001)) {
+                if ((Math.abs(set.getEntryForIndex(j).getY()) > Utils.FLOAT_EPSILON)) {
                     visibleAngleCount++;
                 }
             }
@@ -958,7 +958,7 @@ public class PieChartRenderer extends DataRenderer {
             Entry e = dataSet.getEntryForIndex(j);
 
             // draw only if the value is greater than zero
-            if ((Math.abs(e.getY()) > 0.000001)) {
+            if ((Math.abs(e.getY()) > Utils.FLOAT_EPSILON)) {
 
                 float x = (float) ((r - circleRadius)
                         * Math.cos(Math.toRadians((angle + sliceAngle)
