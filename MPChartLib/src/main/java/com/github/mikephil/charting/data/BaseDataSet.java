@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
@@ -55,6 +56,10 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      * the typeface used for the value text
      */
     protected Typeface mValueTypeface;
+
+    private Legend.LegendForm mForm = Legend.LegendForm.DEFAULT;
+    private float mFormSize = Float.NaN;
+    private float mFormLineWidth = Float.NaN;
 
     /**
      * if true, y-values are drawn on the chart
@@ -316,6 +321,33 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     @Override
     public float getValueTextSize() {
         return mValueTextSize;
+    }
+
+    public void setForm(Legend.LegendForm form) {
+        mForm = form;
+    }
+
+    @Override
+    public Legend.LegendForm getForm() {
+        return mForm;
+    }
+
+    public void setFormSize(float formSize) {
+        mFormSize = formSize;
+    }
+
+    @Override
+    public float getFormSize() {
+        return mFormSize;
+    }
+
+    public void setFormLineWidth(float formLineWidth) {
+        mFormLineWidth = formLineWidth;
+    }
+
+    @Override
+    public float getFormLineWidth() {
+        return mFormLineWidth;
     }
 
     @Override
