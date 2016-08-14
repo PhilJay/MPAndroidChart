@@ -30,6 +30,7 @@
         <activity android:name="BarChartActivity"></activity>
 		<activity android:name="HorizontalBarChartActivity"></activity>
         <activity android:name="PieChartActivity"></activity>
+        <activity android:name="PieTextureChartActivity"></activity>
         <activity android:name="PiePolylineChartActivity"></activity>
         <activity android:name="MultiLineChartActivity"></activity>
         <activity android:name="BarChartActivityMultiDataset"></activity>

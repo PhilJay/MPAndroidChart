@@ -1,10 +1,13 @@
 
 package com.github.mikephil.charting.renderer;
 
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
+import android.graphics.Shader;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.ChartData;
@@ -73,6 +76,7 @@ public class LegendRenderer extends Renderer {
 
     protected List<String> computedLabels = new ArrayList<>(16);
     protected List<Integer> computedColors = new ArrayList<>(16);
+    protected List<Drawable> computedDrawables = new ArrayList<>(16);
 
     /**
      * Prepares the legend and calculates all needed forms, labels and colors.
@@ -85,6 +89,7 @@ public class LegendRenderer extends Renderer {
 
             computedLabels.clear();
             computedColors.clear();
+            computedDrawables.clear();
 
             // loop for building up the colors and labels used in the legend
             for (int i = 0; i < data.getDataSetCount(); i++) {
@@ -92,6 +97,7 @@ public class LegendRenderer extends Renderer {
                 IDataSet dataSet = data.getDataSetByIndex(i);
 
                 List<Integer> clrs = dataSet.getColors();
+                List<Drawable> drawables = dataSet.getDrawables();
                 int entryCount = dataSet.getEntryCount();
 
                 // if we have a barchart with stacked bars
@@ -120,6 +126,7 @@ public class LegendRenderer extends Renderer {
 
                         computedLabels.add(pds.getEntryForIndex(j).getLabel());
                         computedColors.add(clrs.get(j));
+                        if (drawables != null) computedDrawables.add(drawables.get(j));
                     }
 
                     if (pds.getLabel() != null) {
@@ -167,6 +174,7 @@ public class LegendRenderer extends Renderer {
 
             mLegend.setComputedColors(computedColors);
             mLegend.setComputedLabels(computedLabels);
+            mLegend.setComputedDrawables(computedDrawables);
         }
 
         Typeface tf = mLegend.getTypeface();
@@ -434,6 +442,10 @@ public class LegendRenderer extends Renderer {
             return;
 
         mLegendFormPaint.setColor(legend.getColors()[index]);
+        Drawable[] drawables = legend.getDrawables();
+        if (drawables != null && drawables.length > index) {
+            mLegendFormPaint.setShader(new BitmapShader(Utils.drawableToBitmap(drawables[index]), Shader.TileMode.REPEAT, Shader.TileMode.REPEAT));
+        }
 
         float formsize = legend.getFormSize();
         float half = formsize / 2f;

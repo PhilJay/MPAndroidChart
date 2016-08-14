@@ -42,6 +42,7 @@ public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
         copied.mColors = mColors;
         copied.mSliceSpace = mSliceSpace;
         copied.mShift = mShift;
+        copied.mDrawables = mDrawables;
         return copied;
     }
 

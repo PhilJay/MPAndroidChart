@@ -2,6 +2,7 @@
 package com.github.mikephil.charting.components;
 
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.FSize;
@@ -57,6 +58,12 @@ public class Legend extends ComponentBase {
      * index
      */
     private int[] mColors;
+
+    /**
+     * the legend drawable array, each color is for the form drawn at the same
+     * index
+     */
+    private Drawable[] mDrawables;
 
     /**
      * the legend text array. a null label will start a group.
@@ -149,7 +156,7 @@ public class Legend extends ComponentBase {
      * @param colors
      * @param labels
      */
-    public Legend(int[] colors, String[] labels) {
+    public Legend(int[] colors, int[] drawables, String[] labels) {
         this();
 
         if (colors == null || labels == null) {
@@ -171,7 +178,7 @@ public class Legend extends ComponentBase {
      * @param colors
      * @param labels
      */
-    public Legend(List<Integer> colors, List<String> labels) {
+    public Legend(List<Integer> colors, List<Drawable> drawables, List<String> labels) {
         this();
 
         if (colors == null || labels == null) {
@@ -185,6 +192,7 @@ public class Legend extends ComponentBase {
 
         this.mColors = Utils.convertIntegers(colors);
         this.mLabels = Utils.convertStrings(labels);
+        this.mDrawables = drawables == null ? null : drawables.toArray(new Drawable[drawables.size()]);
     }
 
     /**
@@ -198,6 +206,15 @@ public class Legend extends ComponentBase {
         } else {
             mColors = Utils.convertIntegers(colors);
         }
+    }
+
+    /**
+     * This method sets the automatically computed drawables for the legend. Use setCustom(...) to set custom drawables.
+     *
+     * @param drawables
+     */
+    public void setComputedDrawables(List<Drawable> drawables) {
+        mDrawables = drawables == null ? null : drawables.toArray(new Drawable[drawables.size()]);
     }
 
     /**
@@ -269,6 +286,15 @@ public class Legend extends ComponentBase {
      */
     public int[] getColors() {
         return mColors;
+    }
+
+    /**
+     * returns all the drawables the legend uses
+     *
+     * @return
+     */
+    public Drawable[] getDrawables() {
+        return mDrawables;
     }
 
     /**
@@ -346,7 +372,7 @@ public class Legend extends ComponentBase {
      * Call resetCustom() to re-enable automatic calculation (and then
      * notifyDataSetChanged() is needed to auto-calculate the legend again)
      */
-    public void setCustom(int[] colors, String[] labels) {
+    public void setCustom(int[] colors, Drawable[] drawables, String[] labels) {
 
         if (colors.length != labels.length) {
             throw new IllegalArgumentException(
@@ -355,6 +381,7 @@ public class Legend extends ComponentBase {
 
         mLabels = labels;
         mColors = colors;
+        mDrawables = drawables;
         mIsLegendCustom = true;
     }
 
@@ -367,7 +394,7 @@ public class Legend extends ComponentBase {
      * Call resetCustom() to re-enable automatic calculation (and then
      * notifyDataSetChanged() is needed to auto-calculate the legend again)
      */
-    public void setCustom(List<Integer> colors, List<String> labels) {
+    public void setCustom(List<Integer> colors, List<Drawable> drawables, List<String> labels) {
 
         if (colors.size() != labels.size()) {
             throw new IllegalArgumentException(
@@ -376,6 +403,7 @@ public class Legend extends ComponentBase {
 
         mColors = Utils.convertIntegers(colors);
         mLabels = Utils.convertStrings(labels);
+        mDrawables = drawables == null ? null : drawables.toArray(new Drawable[drawables.size()]);
         mIsLegendCustom = true;
     }
 
