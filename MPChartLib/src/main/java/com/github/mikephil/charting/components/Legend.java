@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.components;
 
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 
 import com.github.mikephil.charting.data.Entry;
@@ -122,6 +123,11 @@ public class Legend extends ComponentBase {
      * the size of the legend forms/shapes
      */
     private float mFormLineWidth = 3f;
+
+    /**
+     * Line dash path effect used for shapes that consist of lines.
+     */
+    private DashPathEffect mFormLineDashEffect = null;
 
     /**
      * the space between the legend entries on a horizontal axis, default 6f
@@ -665,6 +671,22 @@ public class Legend extends ComponentBase {
      */
     public float getFormLineWidth() {
         return mFormLineWidth;
+    }
+
+    /**
+     * Sets the line dash path effect used for shapes that consist of lines.
+     *
+     * @param dashPathEffect
+     */
+    public void setFormLineDashEffect(DashPathEffect dashPathEffect) {
+        mFormLineDashEffect = dashPathEffect;
+    }
+
+    /**
+     * @return The line dash path effect used for shapes that consist of lines.
+     */
+    public DashPathEffect getFormLineDashEffect() {
+        return mFormLineDashEffect;
     }
 
     /**

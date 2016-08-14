@@ -2,6 +2,7 @@ package com.github.mikephil.charting.data;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.Typeface;
 
 import com.github.mikephil.charting.components.Legend;
@@ -60,6 +61,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     private Legend.LegendForm mForm = Legend.LegendForm.DEFAULT;
     private float mFormSize = Float.NaN;
     private float mFormLineWidth = Float.NaN;
+    private DashPathEffect mFormLineDashEffect = null;
 
     /**
      * if true, y-values are drawn on the chart
@@ -348,6 +350,15 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     @Override
     public float getFormLineWidth() {
         return mFormLineWidth;
+    }
+
+    public void setFormLineDashEffect(DashPathEffect dashPathEffect) {
+        mFormLineDashEffect = dashPathEffect;
+    }
+
+    @Override
+    public DashPathEffect getFormLineDashEffect() {
+        return mFormLineDashEffect;
     }
 
     @Override

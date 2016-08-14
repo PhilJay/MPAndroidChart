@@ -2,8 +2,10 @@
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
+import android.graphics.Path;
 import android.graphics.Typeface;
 
 import com.github.mikephil.charting.components.Legend;
@@ -50,7 +52,6 @@ public class LegendRenderer extends Renderer {
 
         mLegendFormPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mLegendFormPaint.setStyle(Paint.Style.FILL);
-        mLegendFormPaint.setStrokeWidth(3f);
     }
 
     /**
@@ -106,6 +107,7 @@ public class LegendRenderer extends Renderer {
                                 dataSet.getForm(),
                                 dataSet.getFormSize(),
                                 dataSet.getFormLineWidth(),
+                                dataSet.getFormLineDashEffect(),
                                 clrs.get(j)
                         ));
                     }
@@ -117,6 +119,7 @@ public class LegendRenderer extends Renderer {
                                 Legend.LegendForm.NONE,
                                 Float.NaN,
                                 Float.NaN,
+                                null,
                                 ColorTemplate.COLOR_NONE
                         ));
                     }
@@ -132,6 +135,7 @@ public class LegendRenderer extends Renderer {
                                 dataSet.getForm(),
                                 dataSet.getFormSize(),
                                 dataSet.getFormLineWidth(),
+                                dataSet.getFormLineDashEffect(),
                                 clrs.get(j)
                         ));
                     }
@@ -143,6 +147,7 @@ public class LegendRenderer extends Renderer {
                                 Legend.LegendForm.NONE,
                                 Float.NaN,
                                 Float.NaN,
+                                null,
                                 ColorTemplate.COLOR_NONE
                         ));
                     }
@@ -158,6 +163,7 @@ public class LegendRenderer extends Renderer {
                             dataSet.getForm(),
                             dataSet.getFormSize(),
                             dataSet.getFormLineWidth(),
+                            dataSet.getFormLineDashEffect(),
                             decreasingColor
                     ));
 
@@ -166,6 +172,7 @@ public class LegendRenderer extends Renderer {
                             dataSet.getForm(),
                             dataSet.getFormSize(),
                             dataSet.getFormLineWidth(),
+                            dataSet.getFormLineDashEffect(),
                             increasingColor
                     ));
 
@@ -187,6 +194,7 @@ public class LegendRenderer extends Renderer {
                                 dataSet.getForm(),
                                 dataSet.getFormSize(),
                                 dataSet.getFormLineWidth(),
+                                dataSet.getFormLineDashEffect(),
                                 clrs.get(j)
                         ));
                     }
@@ -456,6 +464,8 @@ public class LegendRenderer extends Renderer {
         }
     }
 
+    private Path mLineFormPath = new Path();
+
     /**
      * Draws the Legend-form at the given position with the color at the given
      * index.
@@ -477,6 +487,8 @@ public class LegendRenderer extends Renderer {
                 entry.formColor == 0)
             return;
 
+        int restoreCount = c.save();
+
         Legend.LegendForm form = entry.form;
         if (form == Legend.LegendForm.DEFAULT)
             form = legend.getForm();
@@ -497,10 +509,12 @@ public class LegendRenderer extends Renderer {
 
             case DEFAULT:
             case CIRCLE:
+                mLegendFormPaint.setStyle(Paint.Style.FILL);
                 c.drawCircle(x + half, y, half, mLegendFormPaint);
                 break;
 
             case SQUARE:
+                mLegendFormPaint.setStyle(Paint.Style.FILL);
                 c.drawRect(x, y - half, x + formSize, y + half, mLegendFormPaint);
                 break;
 
@@ -509,12 +523,22 @@ public class LegendRenderer extends Renderer {
                 final float formLineWidth = Float.isNaN(entry.formLineWidth)
                         ? legend.getFormLineWidth()
                         : entry.formLineWidth;
+                final DashPathEffect formLineDashEffect = entry.formLineDashEffect == null
+                        ? legend.getFormLineDashEffect()
+                        : entry.formLineDashEffect;
+                mLegendFormPaint.setStyle(Paint.Style.STROKE);
                 mLegendFormPaint.setStrokeWidth(formLineWidth);
+                mLegendFormPaint.setPathEffect(formLineDashEffect);
 
-                c.drawLine(x, y, x + formSize, y, mLegendFormPaint);
+                mLineFormPath.reset();
+                mLineFormPath.moveTo(x, y);
+                mLineFormPath.lineTo(x + formSize, y);
+                c.drawPath(mLineFormPath, mLegendFormPaint);
             }
                 break;
         }
+
+        c.restoreToCount(restoreCount);
     }
 
     /**
