@@ -40,6 +40,10 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
 
         // Find out how much spacing (in y value space) between axis values
         double rawInterval = range / labelCount;
+        if (Double.isInfinite(rawInterval))
+        {
+            rawInterval = range > 0.0 ? range : 1.0;
+        }
         double interval = Utils.roundToNextSignificant(rawInterval);
 
         // If granularity is enabled, then do not allow the interval to go below specified granularity.
