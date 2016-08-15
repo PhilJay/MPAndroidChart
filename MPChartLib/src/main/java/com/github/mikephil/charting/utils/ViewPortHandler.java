@@ -576,42 +576,33 @@ public class ViewPortHandler {
      */
 
     public boolean isInBoundsX(float x) {
-        if (isInBoundsLeft(x) && isInBoundsRight(x))
-            return true;
-        else
-            return false;
+        return isInBoundsLeft(x) && isInBoundsRight(x);
     }
 
     public boolean isInBoundsY(float y) {
-        if (isInBoundsTop(y) && isInBoundsBottom(y))
-            return true;
-        else
-            return false;
+        return isInBoundsTop(y) && isInBoundsBottom(y);
     }
 
     public boolean isInBounds(float x, float y) {
-        if (isInBoundsX(x) && isInBoundsY(y))
-            return true;
-        else
-            return false;
+        return isInBoundsX(x) && isInBoundsY(y);
     }
 
     public boolean isInBoundsLeft(float x) {
-        return mContentRect.left <= x + 1 ? true : false;
+        return mContentRect.left <= x + 1;
     }
 
     public boolean isInBoundsRight(float x) {
         x = (float) ((int) (x * 100.f)) / 100.f;
-        return mContentRect.right >= x - 1 ? true : false;
+        return mContentRect.right >= x - 1;
     }
 
     public boolean isInBoundsTop(float y) {
-        return mContentRect.top <= y ? true : false;
+        return mContentRect.top <= y;
     }
 
     public boolean isInBoundsBottom(float y) {
         y = (float) ((int) (y * 100.f)) / 100.f;
-        return mContentRect.bottom >= y ? true : false;
+        return mContentRect.bottom >= y;
     }
 
     /**
@@ -669,10 +660,7 @@ public class ViewPortHandler {
      */
     public boolean isFullyZoomedOut() {
 
-        if (isFullyZoomedOutX() && isFullyZoomedOutY())
-            return true;
-        else
-            return false;
+        return isFullyZoomedOutX() && isFullyZoomedOutY();
     }
 
     /**
@@ -681,10 +669,7 @@ public class ViewPortHandler {
      * @return
      */
     public boolean isFullyZoomedOutY() {
-        if (mScaleY > mMinScaleY || mMinScaleY > 1f)
-            return false;
-        else
-            return true;
+        return !(mScaleY > mMinScaleY || mMinScaleY > 1f);
     }
 
     /**
@@ -694,10 +679,7 @@ public class ViewPortHandler {
      * @return
      */
     public boolean isFullyZoomedOutX() {
-        if (mScaleX > mMinScaleX || mMinScaleX > 1f)
-            return false;
-        else
-            return true;
+        return !(mScaleX > mMinScaleX || mMinScaleX > 1f);
     }
 
     /**
@@ -735,7 +717,7 @@ public class ViewPortHandler {
      * @return
      */
     public boolean canZoomOutMoreX() {
-        return (mScaleX > mMinScaleX);
+        return mScaleX > mMinScaleX;
     }
 
     /**
@@ -744,7 +726,7 @@ public class ViewPortHandler {
      * @return
      */
     public boolean canZoomInMoreX() {
-        return (mScaleX < mMaxScaleX);
+        return mScaleX < mMaxScaleX;
     }
 
     /**
@@ -753,7 +735,7 @@ public class ViewPortHandler {
      * @return
      */
     public boolean canZoomOutMoreY() {
-        return (mScaleY > mMinScaleY);
+        return mScaleY > mMinScaleY;
     }
 
     /**
@@ -762,6 +744,6 @@ public class ViewPortHandler {
      * @return
      */
     public boolean canZoomInMoreY() {
-        return (mScaleY < mMaxScaleY);
+        return mScaleY < mMaxScaleY;
     }
 }
