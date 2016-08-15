@@ -300,6 +300,11 @@ public class LineChartRenderer extends LineRadarRenderer {
 
         mXBounds.set(mChart, dataSet);
 
+        // if drawing filled is enabled
+        if (dataSet.isDrawFilledEnabled() && entryCount > 0) {
+            drawLinearFill(c, dataSet, trans, mXBounds);
+        }
+
         // more than 1 color
         if (dataSet.getColors().size() > 1) {
 
@@ -403,11 +408,6 @@ public class LineChartRenderer extends LineRadarRenderer {
         }
 
         mRenderPaint.setPathEffect(null);
-
-        // if drawing filled is enabled
-        if (dataSet.isDrawFilledEnabled() && entryCount > 0) {
-            drawLinearFill(c, dataSet, trans, mXBounds);
-        }
     }
 
     protected Path mGenerateFilledPathBuffer = new Path();
