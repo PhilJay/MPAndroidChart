@@ -164,7 +164,7 @@ public abstract class AxisRenderer extends Renderer {
         double rawInterval = range / labelCount;
         if (Double.isInfinite(rawInterval))
         {
-            rawInterval = range > 0.0 ? range : 1.0;
+            rawInterval = range > 0.0 && !Double.isInfinite(range)  ? range : 1.0;
         }
         double interval = Utils.roundToNextSignificant(rawInterval);
 
