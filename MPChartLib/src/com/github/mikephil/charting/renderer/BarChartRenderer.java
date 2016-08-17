@@ -33,6 +33,16 @@ public class BarChartRenderer extends DataRenderer {
     protected Paint mShadowPaint;
     protected Paint mBarBorderPaint;
 
+    /**
+     * if set to true, the bar chart's bars would be round on all corners instead of rectangular
+     */
+    private boolean mDrawRoundedBars;
+
+    /**
+     * the radius of the rounded bar chart bars
+     */
+    private float mRoundedBarRadius = 0f;
+
     public BarChartRenderer(BarDataProvider chart, ChartAnimator animator,
             ViewPortHandler viewPortHandler) {
         super(animator, viewPortHandler);
@@ -49,6 +59,13 @@ public class BarChartRenderer extends DataRenderer {
 
         mBarBorderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mBarBorderPaint.setStyle(Paint.Style.STROKE);
+    }
+
+    public BarChartRenderer(BarDataProvider chart, ChartAnimator animator,
+            ViewPortHandler viewPortHandler, boolean mDrawRoundedBars, float mRoundedBarRadius) {
+        this(chart, animator, viewPortHandler);
+        this.mDrawRoundedBars = mDrawRoundedBars;
+        this.mRoundedBarRadius = mRoundedBarRadius;
     }
 
     @Override
@@ -115,9 +132,15 @@ public class BarChartRenderer extends DataRenderer {
                 if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j]))
                     break;
 
-                c.drawRect(buffer.buffer[j], mViewPortHandler.contentTop(),
-                        buffer.buffer[j + 2],
-                        mViewPortHandler.contentBottom(), mShadowPaint);
+                if (mDrawRoundedBars) {
+                    c.drawRoundRect(new RectF(buffer.buffer[j], mViewPortHandler.contentTop(),
+                            buffer.buffer[j + 2],
+                            mViewPortHandler.contentBottom()), mRoundedBarRadius, mRoundedBarRadius, mShadowPaint);
+                } else {
+                    c.drawRect(buffer.buffer[j], mViewPortHandler.contentTop(),
+                            buffer.buffer[j + 2],
+                            mViewPortHandler.contentBottom(), mShadowPaint);
+                }
             }
         }
 
@@ -135,12 +158,22 @@ public class BarChartRenderer extends DataRenderer {
                 // Set the color for the currently drawn value. If the index
                 // is out of bounds, reuse colors.
                 mRenderPaint.setColor(dataSet.getColor(j / 4));
-                c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                        buffer.buffer[j + 3], mRenderPaint);
+                if (mDrawRoundedBars) {
+                    c.drawRoundRect(new RectF(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+                            buffer.buffer[j + 3]), mRoundedBarRadius, mRoundedBarRadius, mRenderPaint);
+                } else {
+                    c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+                            buffer.buffer[j + 3], mRenderPaint);
+                }
 
                 if (drawBorder) {
-                    c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                            buffer.buffer[j + 3], mBarBorderPaint);
+                    if (mDrawRoundedBars) {
+                        c.drawRoundRect(new RectF(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+                                buffer.buffer[j + 3]), mRoundedBarRadius, mRoundedBarRadius, mBarBorderPaint);
+                    } else {
+                        c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+                                buffer.buffer[j + 3], mBarBorderPaint);
+                    }
                 }
             }
         } else {
@@ -155,12 +188,22 @@ public class BarChartRenderer extends DataRenderer {
                 if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j]))
                     break;
 
-                c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                        buffer.buffer[j + 3], mRenderPaint);
+                if (mDrawRoundedBars) {
+                    c.drawRoundRect(new RectF(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+                            buffer.buffer[j + 3]), mRoundedBarRadius, mRoundedBarRadius, mRenderPaint);
+                } else {
+                    c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+                            buffer.buffer[j + 3], mRenderPaint);
+                }
 
                 if (drawBorder) {
-                    c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                            buffer.buffer[j + 3], mBarBorderPaint);
+                    if (mDrawRoundedBars) {
+                        c.drawRoundRect(new RectF(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+                                buffer.buffer[j + 3]), mRoundedBarRadius, mRoundedBarRadius, mBarBorderPaint);
+                    } else {
+                        c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+                                buffer.buffer[j + 3], mBarBorderPaint);
+                    }
                 }
             }
         }
@@ -385,7 +428,11 @@ public class BarChartRenderer extends DataRenderer {
 
                     prepareBarHighlight(x, y1, y2, barspaceHalf, trans);
 
-                    c.drawRect(mBarRect, mHighlightPaint);
+                    if (mDrawRoundedBars) {
+                        c.drawRoundRect(new RectF(mBarRect), mRoundedBarRadius, mRoundedBarRadius, mHighlightPaint);
+                    } else {
+                        c.drawRect(mBarRect, mHighlightPaint);
+                    }
 
                     if (mChart.isDrawHighlightArrowEnabled()) {
 
