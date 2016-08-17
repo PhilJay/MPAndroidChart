@@ -252,8 +252,8 @@ public class LineChartRenderer extends LineRadarRenderer {
         float fillMin = dataSet.getFillFormatter()
                 .getFillLinePosition(dataSet, mChart);
 
-        spline.lineTo(bounds.min + bounds.range, fillMin);
-        spline.lineTo(bounds.min, fillMin);
+        spline.lineTo(dataSet.getEntryForIndex(mXBounds.max).getX(), fillMin);
+        spline.lineTo(dataSet.getEntryForIndex(mXBounds.min).getX(), fillMin);
         spline.close();
 
         trans.pathValueToPixel(spline);
