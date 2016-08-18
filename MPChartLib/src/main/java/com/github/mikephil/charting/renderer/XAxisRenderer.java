@@ -153,6 +153,7 @@ public class XAxisRenderer extends AxisRenderer {
 
         mAxisLinePaint.setColor(mXAxis.getAxisLineColor());
         mAxisLinePaint.setStrokeWidth(mXAxis.getAxisLineWidth());
+        mAxisLinePaint.setPathEffect(mXAxis.getAxisLineDashPathEffect());
 
         if (mXAxis.getPosition() == XAxisPosition.TOP
                 || mXAxis.getPosition() == XAxisPosition.TOP_INSIDE

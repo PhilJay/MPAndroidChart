@@ -93,6 +93,11 @@ public abstract class AxisBase extends ComponentBase {
     protected boolean mCenterAxisLabels = false;
 
     /**
+     * the path effect of the axis line that makes dashed lines possible
+     */
+    private DashPathEffect mAxisLineDashPathEffect = null;
+
+    /**
      * the path effect of the grid lines that makes dashed lines possible
      */
     private DashPathEffect mGridDashPathEffect = null;
@@ -499,6 +504,17 @@ public abstract class AxisBase extends ComponentBase {
                 lineLength, spaceLength
         }, phase);
     }
+    
+    /**
+     * Enables the grid line to be drawn in dashed mode, e.g. like this
+     * "- - - - - -". THIS ONLY WORKS IF HARDWARE-ACCELERATION IS TURNED OFF.
+     * Keep in mind that hardware acceleration boosts performance.
+     *
+     * @param effect  the DashPathEffect
+     */
+    public void setGridDashedLine(DashPathEffect effect) {
+        mGridDashPathEffect = effect;
+    }
 
     /**
      * Disables the grid line to be drawn in dashed mode.
@@ -523,6 +539,58 @@ public abstract class AxisBase extends ComponentBase {
      */
     public DashPathEffect getGridDashPathEffect() {
         return mGridDashPathEffect;
+    }
+    
+
+    /**
+     * Enables the axis line to be drawn in dashed mode, e.g. like this
+     * "- - - - - -". THIS ONLY WORKS IF HARDWARE-ACCELERATION IS TURNED OFF.
+     * Keep in mind that hardware acceleration boosts performance.
+     *
+     * @param lineLength  the length of the line pieces
+     * @param spaceLength the length of space in between the pieces
+     * @param phase       offset, in degrees (normally, use 0)
+     */
+    public void enableAxisLineDashedLine(float lineLength, float spaceLength, float phase) {
+        mAxisLineDashPathEffect = new DashPathEffect(new float[]{
+                lineLength, spaceLength
+        }, phase);
+    }
+    
+    /**
+     * Enables the axis line to be drawn in dashed mode, e.g. like this
+     * "- - - - - -". THIS ONLY WORKS IF HARDWARE-ACCELERATION IS TURNED OFF.
+     * Keep in mind that hardware acceleration boosts performance.
+     *
+     * @param effect  the DashPathEffect
+     */
+    public void setAxisLineDashedLine(DashPathEffect effect) {
+        mAxisLineDashPathEffect = effect;
+    }
+
+    /**
+     * Disables the axis line to be drawn in dashed mode.
+     */
+    public void disableAxisLineDashedLine() {
+        mAxisLineDashPathEffect = null;
+    }
+
+    /**
+     * Returns true if the axis dashed-line effect is enabled, false if not.
+     *
+     * @return
+     */
+    public boolean isAxisLineDashedLineEnabled() {
+        return mAxisLineDashPathEffect == null ? false : true;
+    }
+
+    /**
+     * returns the DashPathEffect that is set for axis line
+     *
+     * @return
+     */
+    public DashPathEffect getAxisLineDashPathEffect() {
+        return mAxisLineDashPathEffect;
     }
 
     /**
