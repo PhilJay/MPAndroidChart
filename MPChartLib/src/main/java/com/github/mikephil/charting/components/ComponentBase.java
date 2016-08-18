@@ -107,10 +107,10 @@ public abstract class ComponentBase {
     }
 
     /**
-     * sets the size of the label text in pixels min = 6f, max = 24f, default
+     * sets the size of the label text in density pixels min = 6f, max = 24f, default
      * 10f
      *
-     * @param size
+     * @param size the text size, in DP
      */
     public void setTextSize(float size) {
 
@@ -123,7 +123,7 @@ public abstract class ComponentBase {
     }
 
     /**
-     * returns the text size that is currently set for the labels
+     * returns the text size that is currently set for the labels, in pixels
      *
      * @return
      */
