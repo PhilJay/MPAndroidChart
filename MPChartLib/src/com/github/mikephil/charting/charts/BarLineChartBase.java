@@ -241,6 +241,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         mAxisRendererLeft.renderGridLines(canvas);
         mAxisRendererRight.renderGridLines(canvas);
 
+        mXAxisRenderer.renderLimitZones(canvas);
+        mAxisRendererLeft.renderLimitZones(canvas);
+        mAxisRendererRight.renderLimitZones(canvas);
+
         if (mXAxis.isDrawLimitLinesBehindDataEnabled())
             mXAxisRenderer.renderLimitLines(canvas);
 

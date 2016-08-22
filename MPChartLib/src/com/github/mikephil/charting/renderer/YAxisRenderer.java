@@ -7,6 +7,7 @@ import android.graphics.Paint.Align;
 import android.graphics.Path;
 
 import com.github.mikephil.charting.components.LimitLine;
+import com.github.mikephil.charting.components.LimitZone;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
@@ -417,6 +418,35 @@ public class YAxisRenderer extends AxisRenderer {
                             pts[1] + yOffset, mLimitLinePaint);
                 }
             }
+        }
+    }
+
+    /**
+     * Draws the LimitZones associated with this axis to the screen.
+     * @param c
+     */
+    @Override
+    public void renderLimitZones(Canvas c) {
+        List<LimitZone> limitZones = mYAxis.getLimitZones();
+
+        if (limitZones == null || limitZones.size() <= 0)
+            return;
+
+        float[] pts = new float[4];
+
+        for (int i = 0; i < limitZones.size(); ++i) {
+            LimitZone limitZone = limitZones.get(i);
+
+            pts[1] = limitZone.getMaxValue();
+            pts[3] = limitZone.getMinValue();
+
+            mTrans.pointValuesToPixel(pts);
+
+            pts[0] = mViewPortHandler.contentLeft();
+            pts[2] = mViewPortHandler.contentRight();
+
+            mLimitZonePaint.setColor(limitZone.getBgColor());
+            c.drawRect(pts[0], pts[1], pts[2], pts[3], mLimitZonePaint);
         }
     }
 }
