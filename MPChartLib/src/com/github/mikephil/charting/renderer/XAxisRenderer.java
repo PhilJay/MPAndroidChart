@@ -259,6 +259,11 @@ public class XAxisRenderer extends AxisRenderer {
 		}
 	}
 
+    @Override
+    public void renderLimitZones(Canvas c) {
+
+    }
+
     float[] mLimitLineSegmentsBuffer = new float[4];
     private Path mLimitLinePath = new Path();
 

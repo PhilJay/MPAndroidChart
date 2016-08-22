@@ -50,6 +50,9 @@ public abstract class AxisBase extends ComponentBase {
      */
     protected List<LimitLine> mLimitLines;
 
+    /** array of limit zones that can be set for the axis */
+    protected List<LimitZone> mLimitZones;
+
     /**
      * flag indicating the limit lines layer depth
      */
@@ -88,6 +91,7 @@ public abstract class AxisBase extends ComponentBase {
         this.mXOffset = Utils.convertDpToPixel(5f);
         this.mYOffset = Utils.convertDpToPixel(5f);
         this.mLimitLines = new ArrayList<LimitLine>();
+        this.mLimitZones = new ArrayList<>();
     }
 
     /**
@@ -395,5 +399,36 @@ public abstract class AxisBase extends ComponentBase {
     public void setAxisMaxValue(float max) {
         mCustomAxisMax = true;
         mAxisMaximum = max;
+    }
+
+    /**
+     * Adds a new LimitZone to this axis.
+     * @param limitZone
+     */
+    public void addLimitZone(LimitZone limitZone) {
+        mLimitZones.add(limitZone);
+    }
+
+    /**
+     * Removes the specified LimitZone from the axis.
+     * @param limitZone
+     */
+    public void removeLimitLine(LimitZone limitZone) {
+        mLimitZones.remove(limitZone);
+    }
+
+    /**
+     * Removes all LimitZones from the axis.
+     */
+    public void removeAllLimitZones() {
+        mLimitZones.clear();
+    }
+
+    /**
+     * Returns the LimitZones of this axis.
+     * @return
+     */
+    public List<LimitZone> getLimitZones() {
+        return mLimitZones;
     }
 }
