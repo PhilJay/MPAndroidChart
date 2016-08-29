@@ -146,7 +146,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             for (int j = mXBounds.min + 1; j <= mXBounds.range + mXBounds.min; j++) {
 
-                prev = dataSet.getEntryForIndex(j - 1);
+                prev = cur;
                 cur = dataSet.getEntryForIndex(j);
 
                 final float cpx = (prev.getX())
