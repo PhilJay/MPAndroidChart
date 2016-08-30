@@ -14,6 +14,8 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
     /** width of the bar on the x-axis, in values (not pixels) */
     protected float mBarWidth = 1f;
 
+    protected float mOffsetY = 0;
+
     public BarBuffer(int size, int dataSetCount, boolean containsStacks) {
         super(size);
         this.mDataSetCount = dataSetCount;
@@ -30,6 +32,10 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
 
     public void setInverted(boolean inverted) {
         this.mInverted = inverted;
+    }
+
+    public void setOffsetY(float offsetY) {
+        this.mOffsetY = offsetY;
     }
 
     protected void addBar(float left, float top, float right, float bottom) {
@@ -58,6 +64,7 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
             float[] vals = e.getYVals();
 
             if (!mContainsStacks || vals == null) {
+                y -= mOffsetY;
 
                 float left = x - barWidthHalf;
                 float right = x + barWidthHalf;
@@ -72,10 +79,13 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
                 }
 
                 // multiply the height of the rect with the phase
-                if (top > 0)
+                if (top > 0) {
                     top *= phaseY;
-                else
+                    top += mOffsetY;
+                } else {
                     bottom *= phaseY;
+                    bottom += mOffsetY;
+                }
 
                 addBar(left, top, right, bottom);
 
