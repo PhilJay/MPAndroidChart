@@ -263,15 +263,13 @@ public class PieChartRenderer extends DataRenderer {
 
                     mPathBuffer.reset();
 
-                    float arcStartPointX = 0.f, arcStartPointY = 0.f;
+                    float arcStartPointX = center.x + radius * (float) Math.cos(startAngleOuter * Utils.FDEG2RAD);
+                    float arcStartPointY = center.y + radius * (float) Math.sin(startAngleOuter * Utils.FDEG2RAD);
 
                     if (sweepAngleOuter % 360f <= Utils.FLOAT_EPSILON) {
                         // Android is doing "mod 360"
                         mPathBuffer.addCircle(center.x, center.y, radius, Path.Direction.CW);
                     } else {
-
-                        arcStartPointX = center.x + radius * (float) Math.cos(startAngleOuter * Utils.FDEG2RAD);
-                        arcStartPointY = center.y + radius * (float) Math.sin(startAngleOuter * Utils.FDEG2RAD);
 
                         mPathBuffer.moveTo(arcStartPointX, arcStartPointY);
 
