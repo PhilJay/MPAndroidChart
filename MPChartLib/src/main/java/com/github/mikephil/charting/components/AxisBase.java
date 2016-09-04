@@ -183,6 +183,12 @@ public abstract class AxisBase extends ComponentBase {
         return mDrawAxisLine;
     }
 
+    /**
+     * Centers the axis labels instead of drawing them at their original position.
+     * This is useful especially for grouped BarChart.
+     *
+     * @param enabled
+     */
     public void setCenterAxisLabels(boolean enabled) {
         mCenterAxisLabels = enabled;
     }
@@ -504,13 +510,13 @@ public abstract class AxisBase extends ComponentBase {
                 lineLength, spaceLength
         }, phase);
     }
-    
+
     /**
      * Enables the grid line to be drawn in dashed mode, e.g. like this
      * "- - - - - -". THIS ONLY WORKS IF HARDWARE-ACCELERATION IS TURNED OFF.
      * Keep in mind that hardware acceleration boosts performance.
      *
-     * @param effect  the DashPathEffect
+     * @param effect the DashPathEffect
      */
     public void setGridDashedLine(DashPathEffect effect) {
         mGridDashPathEffect = effect;
@@ -540,7 +546,7 @@ public abstract class AxisBase extends ComponentBase {
     public DashPathEffect getGridDashPathEffect() {
         return mGridDashPathEffect;
     }
-    
+
 
     /**
      * Enables the axis line to be drawn in dashed mode, e.g. like this
@@ -556,13 +562,13 @@ public abstract class AxisBase extends ComponentBase {
                 lineLength, spaceLength
         }, phase);
     }
-    
+
     /**
      * Enables the axis line to be drawn in dashed mode, e.g. like this
      * "- - - - - -". THIS ONLY WORKS IF HARDWARE-ACCELERATION IS TURNED OFF.
      * Keep in mind that hardware acceleration boosts performance.
      *
-     * @param effect  the DashPathEffect
+     * @param effect the DashPathEffect
      */
     public void setAxisLineDashedLine(DashPathEffect effect) {
         mAxisLineDashPathEffect = effect;
