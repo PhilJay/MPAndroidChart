@@ -429,7 +429,11 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
                     + line1height;
 
             if (hasText) {
-                canvas.drawText(mNoDataText, getWidth() / 2, y, mInfoPaint);
+                // enable drawing new line if it exists
+                for (String line: mNoDataText.split("\n")) {
+                    canvas.drawText(line, getWidth() / 2, y, mInfoPaint);
+                    y += mInfoPaint.descent() - mInfoPaint.ascent();
+                }
 
                 if (hasDescription) {
                     y = y + line1height + lineSpacing;
