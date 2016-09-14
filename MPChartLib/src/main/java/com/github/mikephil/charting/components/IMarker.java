@@ -24,7 +24,7 @@ public interface IMarker {
      * @param posY This is the X position at which the marker wants to be drawn.
      *             You can adjust the offset conditionally based on this argument.
      */
-    MPPointF getOffsetForDrawingAtPos(float posX, float posY);
+    MPPointF getOffsetForDrawingAtPoint(float posX, float posY);
 
     /**
      * This method enables a specified custom IMarker to update it's content every time the IMarker is redrawn.

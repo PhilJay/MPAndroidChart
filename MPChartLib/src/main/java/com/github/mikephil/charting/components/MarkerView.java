@@ -80,7 +80,7 @@ public class MarkerView extends RelativeLayout implements IMarker {
     }
 
     @Override
-    public MPPointF getOffsetForDrawingAtPos(float posX, float posY) {
+    public MPPointF getOffsetForDrawingAtPoint(float posX, float posY) {
 
         MPPointF offset = getOffset();
         mOffset2.x = offset.x;
@@ -118,7 +118,7 @@ public class MarkerView extends RelativeLayout implements IMarker {
     @Override
     public void draw(Canvas canvas, float posX, float posY) {
 
-        MPPointF offset = getOffsetForDrawingAtPos(posX, posY);
+        MPPointF offset = getOffsetForDrawingAtPoint(posX, posY);
 
         int saveId = canvas.save();
         // translate to the correct position and draw
