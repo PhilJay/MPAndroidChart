@@ -80,14 +80,39 @@ public class LargeValueFormatter implements IValueFormatter, IAxisValueFormatter
 
         String r = mFormat.format(number);
 
-        int numericValue1 = Character.getNumericValue(r.charAt(r.length() - 1));
-        int numericValue2 = Character.getNumericValue(r.charAt(r.length() - 2));
-        int combined = Integer.valueOf(numericValue2 + "" + numericValue1);
+        int exponent = Integer.valueOf(r.substring(r.length() - 2));
 
-        r = r.replaceAll("E[0-9][0-9]", SUFFIX[combined / 3]);
+        r = r.replaceAll("E[0-9][0-9]", "");
 
-        while (r.length() > MAX_LENGTH || r.matches("[0-9]+\\.[a-z]")) {
-            r = r.substring(0, r.length() - 2) + r.substring(r.length() - 1);
+        // Check that we have an appropriate suffix.
+        if (exponent / 3 < SUFFIX.length) {
+            String suffix = SUFFIX[exponent / 3];
+            // Ensure that number will fit with the suffix and won't end with a decimal point.
+            while (r.length() + suffix.length() > MAX_LENGTH || r.charAt(r.length() - 1) == '.') {
+                r = r.substring(0, r.length() - 1);
+            }
+            r += suffix;
+        // If there's not an appropriate suffix, fallback to scientific notation.
+        } else {
+            // Assume the suffix will take up three characters.
+            int numLength = MAX_LENGTH - 3;
+
+            int decimal = r.indexOf('.');
+            // If the decimal is before the character limit, append extra digits.
+            if (decimal < numLength) {
+                String digits = r.substring(decimal + 1, numLength + 1);
+                exponent -= digits.length();
+                r = r.substring(0, decimal) + digits;
+            } else {
+                r = r.substring(0, decimal);
+            }
+
+            while (r.length() > numLength) {
+                // Remove a digit and increment the exponent.
+                r = r.substring(0, r.length() - 1);
+                exponent++;
+            }
+            r += "E" + exponent;
         }
 
         return r;
