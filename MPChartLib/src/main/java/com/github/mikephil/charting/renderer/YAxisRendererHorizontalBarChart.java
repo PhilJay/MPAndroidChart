@@ -186,6 +186,11 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
     @Override
     protected void drawZeroLine(Canvas c) {
 
+        int clipRestoreCount = c.save();
+        mZeroLineClippingRect.set(mViewPortHandler.getContentRect());
+        mZeroLineClippingRect.inset(-mYAxis.getZeroLineWidth() / 2.f, 0.f);
+        c.clipRect(mLimitLineClippingRect);
+
         // draw zero line
         MPPointD pos = mTrans.getPixelForValues(0f, 0f);
 
@@ -200,6 +205,10 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
 
         // draw a path because lines don't support dashing on lower android versions
         c.drawPath(zeroLinePath, mZeroLinePaint);
+
+        c.restoreToCount(clipRestoreCount);
+
+        c.restoreToCount(clipRestoreCount);
     }
 
     protected Path mRenderLimitLinesPathBuffer = new Path();

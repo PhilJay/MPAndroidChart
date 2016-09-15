@@ -211,10 +211,17 @@ public class YAxisRenderer extends AxisRenderer {
     }
 
     protected Path mDrawZeroLinePath = new Path();
+    protected RectF mZeroLineClippingRect = new RectF();
+
     /**
      * Draws the zero line.
      */
     protected void drawZeroLine(Canvas c) {
+
+        int clipRestoreCount = c.save();
+        mZeroLineClippingRect.set(mViewPortHandler.getContentRect());
+        mZeroLineClippingRect.inset(0.f, -mYAxis.getZeroLineWidth() / 2.f);
+        c.clipRect(mLimitLineClippingRect);
 
         // draw zero line
         MPPointD pos = mTrans.getPixelForValues(0f, 0f);
@@ -230,6 +237,8 @@ public class YAxisRenderer extends AxisRenderer {
 
         // draw a path because lines don't support dashing on lower android versions
         c.drawPath(zeroLinePath, mZeroLinePaint);
+
+        c.restoreToCount(clipRestoreCount);
     }
 
     protected Path mRenderLimitLines = new Path();
