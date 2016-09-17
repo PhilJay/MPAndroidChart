@@ -239,8 +239,6 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         mInfoPaint.setTextAlign(Align.CENTER);
         mInfoPaint.setTextSize(Utils.convertDpToPixel(12f));
 
-        mDrawPaint = new Paint(Paint.DITHER_FLAG);
-
         if (mLogEnabled)
             Log.i("", "Chart.init()");
     }
@@ -393,11 +391,6 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * flag that indicates if offsets calculation has already been done or not
      */
     private boolean mOffsetsCalculated = false;
-
-    /**
-     * paint object used for drawing the bitmap
-     */
-    protected Paint mDrawPaint;
 
     @Override
     protected void onDraw(Canvas canvas) {
