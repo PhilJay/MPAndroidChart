@@ -154,18 +154,15 @@ public abstract class AxisRenderer extends Renderer {
         int labelCount = mAxis.getLabelCount();
         double range = Math.abs(yMax - yMin);
 
-        if (labelCount == 0 || range <= 0) {
+        if (labelCount == 0 || range <= 0 || Double.isInfinite(range)) {
             mAxis.mEntries = new float[]{};
+            mAxis.mCenteredEntries = new float[]{};
             mAxis.mEntryCount = 0;
             return;
         }
 
         // Find out how much spacing (in y value space) between axis values
         double rawInterval = range / labelCount;
-        if (Double.isInfinite(rawInterval))
-        {
-            rawInterval = range > 0.0 && !Double.isInfinite(range)  ? range : 1.0;
-        }
         double interval = Utils.roundToNextSignificant(rawInterval);
 
         // If granularity is enabled, then do not allow the interval to go below specified granularity.
