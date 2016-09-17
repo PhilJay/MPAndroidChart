@@ -37,7 +37,6 @@ public abstract class RealmBaseActivity extends DemoBase {
 
         // no description text
         chart.getDescription().setEnabled(false);
-        chart.setNoDataTextDescription("You need to provide data for the chart.");
 
         // enable touch gestures
         chart.setTouchEnabled(true);

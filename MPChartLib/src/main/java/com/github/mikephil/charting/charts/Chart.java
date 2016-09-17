@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.provider.MediaStore.Images;
@@ -148,12 +149,6 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * Gesture listener for custom callbacks when making gestures on the chart.
      */
     private OnChartGestureListener mGestureListener;
-
-    /**
-     * text that is displayed when the chart is empty that describes why the
-     * chart is empty
-     */
-    private String mNoDataTextDescription;
 
     protected LegendRenderer mLegendRenderer;
 
@@ -411,29 +406,12 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         if (mData == null) {
 
             boolean hasText = !TextUtils.isEmpty(mNoDataText);
-            boolean hasDescription = !TextUtils.isEmpty(mNoDataTextDescription);
-            float line1height = hasText ? Utils.calcTextHeight(mInfoPaint, mNoDataText) : 0.f;
-            float line2height = hasDescription ? Utils.calcTextHeight(mInfoPaint, mNoDataTextDescription) : 0.f;
-            float lineSpacing = (hasText && hasDescription) ?
-                    (mInfoPaint.getFontSpacing() - line1height) : 0.f;
-
-            // if no data, inform the user
-
-            float y = (getHeight() -
-                    (line1height + lineSpacing + line2height)) / 2.f
-                    + line1height;
 
             if (hasText) {
-                canvas.drawText(mNoDataText, getWidth() / 2, y, mInfoPaint);
-
-                if (hasDescription) {
-                    y = y + line1height + lineSpacing;
-                }
+                MPPointF c = getCenter();
+                canvas.drawText(mNoDataText, c.x, c.y, mInfoPaint);
             }
 
-            if (hasDescription) {
-                canvas.drawText(mNoDataTextDescription, getWidth() / 2, y, mInfoPaint);
-            }
             return;
         }
 
@@ -1181,13 +1159,12 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * Sets descriptive text to explain to the user why there is no chart
-     * available Defaults to empty if not set
+     * Sets the typeface to be used for the no data text.
      *
-     * @param text
+     * @param tf
      */
-    public void setNoDataTextDescription(String text) {
-        mNoDataTextDescription = text;
+    public void setNoDataTextTypeface(Typeface tf) {
+        mInfoPaint.setTypeface(tf);
     }
 
     /**

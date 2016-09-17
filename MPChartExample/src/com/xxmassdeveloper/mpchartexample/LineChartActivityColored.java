@@ -57,7 +57,6 @@ public class LineChartActivityColored extends DemoBase {
 
         // no description text
         chart.getDescription().setEnabled(false);
-        chart.setNoDataTextDescription("You need to provide data for the chart.");
         
         // mChart.setDrawHorizontalGrid(false);
         //
