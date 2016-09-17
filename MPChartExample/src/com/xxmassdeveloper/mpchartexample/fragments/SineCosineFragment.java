@@ -26,8 +26,8 @@ public class SineCosineFragment extends SimpleFragment {
         View v = inflater.inflate(R.layout.frag_simple_line, container, false);
         
         mChart = (LineChart) v.findViewById(R.id.lineChart1);
-        
-        mChart.setDescription("");
+
+        mChart.getDescription().setEnabled(false);
 
         mChart.setDrawGridBackground(false);
         

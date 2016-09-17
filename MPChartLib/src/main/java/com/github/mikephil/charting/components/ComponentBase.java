@@ -19,12 +19,12 @@ public abstract class ComponentBase {
     protected boolean mEnabled = true;
 
     /**
-     * the offset in pixels this axis labels have on the x-axis
+     * the offset in pixels this component has on the x-axis
      */
     protected float mXOffset = 5f;
 
     /**
-     * the offset in pixels this axis labels have on the Y-axis
+     * the offset in pixels this component has on the Y-axis
      */
     protected float mYOffset = 5f;
 

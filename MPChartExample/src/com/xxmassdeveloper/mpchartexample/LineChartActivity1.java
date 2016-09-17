@@ -72,7 +72,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         mChart.setDrawGridBackground(false);
 
         // no description text
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
         mChart.setNoDataTextDescription("You need to provide data for the chart.");
 
         // enable touch gestures

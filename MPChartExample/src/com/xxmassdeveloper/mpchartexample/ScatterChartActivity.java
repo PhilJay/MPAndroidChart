@@ -52,8 +52,7 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
         mSeekBarY.setOnSeekBarChangeListener(this);
 
         mChart = (ScatterChart) findViewById(R.id.chart1);
-        mChart.setDescription("");
-
+        mChart.getDescription().setEnabled(false);
         mChart.setOnChartValueSelectedListener(this);
 
         mChart.setDrawGridBackground(false);

@@ -50,7 +50,7 @@ public class LineChartItem extends ChartItem {
 
         // apply styling
         // holder.chart.setValueTypeface(mTf);
-        holder.chart.setDescription("");
+        holder.chart.getDescription().setEnabled(false);
         holder.chart.setDrawGridBackground(false);
 
         XAxis xAxis = holder.chart.getXAxis();

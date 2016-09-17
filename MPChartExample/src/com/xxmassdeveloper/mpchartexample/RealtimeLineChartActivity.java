@@ -40,7 +40,7 @@ public class RealtimeLineChartActivity extends DemoBase implements
         mChart.setOnChartValueSelectedListener(this);
 
         // no description text
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
         mChart.setNoDataTextDescription("You need to provide data for the chart.");
 
         // enable touch gestures

@@ -56,7 +56,7 @@ public class LineChartActivityColored extends DemoBase {
         ((LineDataSet) data.getDataSetByIndex(0)).setCircleColorHole(color);
 
         // no description text
-        chart.setDescription("");
+        chart.getDescription().setEnabled(false);
         chart.setNoDataTextDescription("You need to provide data for the chart.");
         
         // mChart.setDrawHorizontalGrid(false);

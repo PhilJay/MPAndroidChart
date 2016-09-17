@@ -13,7 +13,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.RectF;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.provider.MediaStore.Images;
@@ -27,6 +26,7 @@ import android.view.ViewParent;
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.animation.EasingFunction;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.IMarker;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -113,11 +113,6 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     protected Paint mInfoPaint;
 
     /**
-     * description text that appears in the bottom right corner of the chart
-     */
-    protected String mDescription = "Description";
-
-    /**
      * the object representing the labels on the x-axis
      */
     protected XAxis mXAxis;
@@ -126,6 +121,11 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * if true, touch gestures are enabled on the chart
      */
     protected boolean mTouchEnabled = true;
+
+    /**
+     * the object responsible for representing the description text
+     */
+    protected Description mDescription;
 
     /**
      * the legend object containing all data associated with the legend
@@ -230,6 +230,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         Utils.init(getContext());
         mMaxHighlightDistance = Utils.convertDpToPixel(500f);
 
+        mDescription = new Description();
         mLegend = new Legend();
 
         mLegendRenderer = new LegendRenderer(mViewPortHandler, mLegend);
@@ -237,9 +238,6 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         mXAxis = new XAxis();
 
         mDescPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mDescPaint.setColor(Color.BLACK);
-        mDescPaint.setTextAlign(Align.RIGHT);
-        mDescPaint.setTextSize(Utils.convertDpToPixel(9f));
 
         mInfoPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mInfoPaint.setColor(Color.rgb(247, 189, 51)); // orange
@@ -447,24 +445,29 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * the custom position of the description text
-     */
-    private MPPointF mDescriptionPosition;
-
-    /**
-     * draws the description text in the bottom right corner of the chart
+     * Draws the description text in the bottom right corner of the chart (per default)
      */
     protected void drawDescription(Canvas c) {
 
-        if (!mDescription.equals("")) {
+        // check if description should be drawn
+        if (mDescription != null && mDescription.isEnabled()) {
 
-            if (mDescriptionPosition == null) {
+            MPPointF position = mDescription.getPosition();
 
-                c.drawText(mDescription, getWidth() - mViewPortHandler.offsetRight() - 10,
-                        getHeight() - mViewPortHandler.offsetBottom()
-                                - 10, mDescPaint);
+            mDescPaint.setTypeface(mDescription.getTypeface());
+            mDescPaint.setTextSize(mDescription.getTextSize());
+            mDescPaint.setColor(mDescription.getTextColor());
+            mDescPaint.setTextAlign(mDescription.getTextAlign());
+
+            // if no position specified, draw on default position
+            if (position == null) {
+
+                float x = getWidth() - mViewPortHandler.offsetRight() - mDescription.getXOffset();
+                float y = getHeight() - mViewPortHandler.offsetBottom() - mDescription.getYOffset();
+
+                c.drawText(mDescription.getText(), x, y, mDescPaint);
             } else {
-                c.drawText(mDescription, mDescriptionPosition.x, mDescriptionPosition.y, mDescPaint);
+                c.drawText(mDescription.getText(), position.x, position.y, mDescPaint);
             }
         }
     }
@@ -1068,66 +1071,6 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * set a description text that appears in the bottom right corner of the
-     * chart, size = Y-legend text size
-     *
-     * @param desc
-     */
-    public void setDescription(String desc) {
-        if (desc == null)
-            desc = "";
-        this.mDescription = desc;
-    }
-
-    /**
-     * Sets a custom position for the description text in pixels on the screen.
-     *
-     * @param x - xcoordinate
-     * @param y - ycoordinate
-     */
-    public void setDescriptionPosition(float x, float y) {
-        if (mDescriptionPosition == null) {
-            mDescriptionPosition = MPPointF.getInstance(x, y);
-        } else {
-            mDescriptionPosition.x = x;
-            mDescriptionPosition.y = y;
-        }
-    }
-
-    /**
-     * sets the typeface for the description paint
-     *
-     * @param t
-     */
-    public void setDescriptionTypeface(Typeface t) {
-        mDescPaint.setTypeface(t);
-    }
-
-    /**
-     * sets the size of the description text in pixels, min 6f, max 16f
-     *
-     * @param size
-     */
-    public void setDescriptionTextSize(float size) {
-
-        if (size > 16f)
-            size = 16f;
-        if (size < 6f)
-            size = 6f;
-
-        mDescPaint.setTextSize(Utils.convertDpToPixel(size));
-    }
-
-    /**
-     * Sets the color of the description text.
-     *
-     * @param color
-     */
-    public void setDescriptionColor(int color) {
-        mDescPaint.setColor(color);
-    }
-
-    /**
      * Sets extra offsets (around the chart view) to be appended to the
      * auto-calculated offsets.
      *
@@ -1283,6 +1226,24 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     @Deprecated
     public IMarker getMarkerView() {
         return getMarker();
+    }
+
+    /**
+     * Sets a new Description object for the chart.
+     *
+     * @param desc
+     */
+    public void setDescription(Description desc) {
+        this.mDescription = desc;
+    }
+
+    /**
+     * Returns the Description object of the chart.
+     *
+     * @return
+     */
+    public Description getDescription() {
+        return mDescription;
     }
 
     /**

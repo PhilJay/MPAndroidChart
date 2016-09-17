@@ -56,7 +56,7 @@ public class CubicLineChartActivity extends DemoBase implements OnSeekBarChangeL
         mChart.setBackgroundColor(Color.rgb(104, 241, 175));
 
         // no description text
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
 
         // enable touch gestures
         mChart.setTouchEnabled(true);

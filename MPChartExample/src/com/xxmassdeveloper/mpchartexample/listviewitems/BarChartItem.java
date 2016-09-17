@@ -48,7 +48,7 @@ public class BarChartItem extends ChartItem {
         }
 
         // apply styling
-        holder.chart.setDescription("");
+        holder.chart.getDescription().setEnabled(false);
         holder.chart.setDrawGridBackground(false);
         holder.chart.setDrawBarShadow(false);
 

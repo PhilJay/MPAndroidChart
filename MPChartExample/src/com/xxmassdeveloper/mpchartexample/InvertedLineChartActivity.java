@@ -61,7 +61,7 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
         mChart.setDrawGridBackground(false);
         
         // no description text
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
 
         // enable touch gestures
         mChart.setTouchEnabled(true);

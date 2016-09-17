@@ -53,7 +53,7 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
         mChart = (LineChart) findViewById(R.id.chart1);
 
         // no description text
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
         mChart.setNoDataTextDescription("You need to provide data for the chart.");
 
         // enable touch gestures

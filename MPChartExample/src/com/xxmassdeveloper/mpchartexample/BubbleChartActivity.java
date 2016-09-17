@@ -53,7 +53,7 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
         mSeekBarY.setOnSeekBarChangeListener(this);
 
         mChart = (BubbleChart) findViewById(R.id.chart1);
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
 
         mChart.setOnChartValueSelectedListener(this);
 

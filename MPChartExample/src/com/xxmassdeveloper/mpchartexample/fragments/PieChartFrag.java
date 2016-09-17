@@ -29,7 +29,7 @@ public class PieChartFrag extends SimpleFragment {
         View v = inflater.inflate(R.layout.frag_simple_pie, container, false);
         
         mChart = (PieChart) v.findViewById(R.id.pieChart1);
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
         
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf");
         

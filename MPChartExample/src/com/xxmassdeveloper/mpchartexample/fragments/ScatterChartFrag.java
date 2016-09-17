@@ -29,7 +29,7 @@ public class ScatterChartFrag extends SimpleFragment {
         View v = inflater.inflate(R.layout.frag_simple_scatter, container, false);
         
         mChart = (ScatterChart) v.findViewById(R.id.scatterChart1);
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
         
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"OpenSans-Light.ttf");
         

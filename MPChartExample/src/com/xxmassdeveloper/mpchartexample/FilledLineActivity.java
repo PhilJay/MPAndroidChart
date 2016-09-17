@@ -39,7 +39,7 @@ public class FilledLineActivity extends DemoBase {
         mChart.setDrawBorders(true);
 
         // no description text
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
 
         // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(false);

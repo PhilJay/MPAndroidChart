@@ -43,7 +43,7 @@ public class HalfPieChartActivity extends DemoBase {
         moveOffScreen();
 
         mChart.setUsePercentValues(true);
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
 
         mChart.setCenterTextTypeface(mTfLight);
         mChart.setCenterText(generateCenterSpannableText());

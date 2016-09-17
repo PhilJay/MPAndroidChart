@@ -49,7 +49,7 @@ public class CombinedChartActivity extends DemoBase {
         setContentView(R.layout.activity_combined);
 
         mChart = (CombinedChart) findViewById(R.id.chart1);
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
         mChart.setBackgroundColor(Color.WHITE);
         mChart.setDrawGridBackground(false);
         mChart.setDrawBarShadow(false);

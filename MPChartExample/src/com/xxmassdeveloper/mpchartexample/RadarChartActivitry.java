@@ -47,7 +47,7 @@ public class RadarChartActivitry extends DemoBase {
         mChart = (RadarChart) findViewById(R.id.chart1);
         mChart.setBackgroundColor(Color.rgb(60, 65, 82));
 
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
 
         mChart.setWebLineWidth(1f);
         mChart.setWebColor(Color.LTGRAY);

@@ -56,7 +56,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
 
         mChart = (BarChart) findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
 
 //        mChart.setDrawBorders(true);
         

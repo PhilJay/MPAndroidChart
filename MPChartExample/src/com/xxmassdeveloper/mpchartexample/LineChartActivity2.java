@@ -2,6 +2,7 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -60,7 +61,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         mChart.setOnChartValueSelectedListener(this);
 
         // no description text
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
         mChart.setNoDataTextDescription("You need to provide data for the chart.");
 
         // enable touch gestures

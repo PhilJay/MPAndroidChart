@@ -28,7 +28,7 @@ public class ScrollViewActivity extends DemoBase {
 
         mChart = (BarChart) findViewById(R.id.chart1);
 
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
 
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);

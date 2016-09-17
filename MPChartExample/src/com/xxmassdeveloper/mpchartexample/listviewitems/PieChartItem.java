@@ -56,7 +56,7 @@ public class PieChartItem extends ChartItem {
         }
 
         // apply styling
-        holder.chart.setDescription("");
+        holder.chart.getDescription().setEnabled(false);
         holder.chart.setHoleRadius(52f);
         holder.chart.setTransparentCircleRadius(57f);
         holder.chart.setCenterText(mCenterText);

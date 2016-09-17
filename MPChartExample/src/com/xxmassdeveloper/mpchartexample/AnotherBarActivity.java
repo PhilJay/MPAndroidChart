@@ -47,7 +47,7 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
 
         mChart = (BarChart) findViewById(R.id.chart1);
 
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn

@@ -50,7 +50,7 @@ public class CandleStickChartActivity extends DemoBase implements OnSeekBarChang
         mChart = (CandleStickChart) findViewById(R.id.chart1);
         mChart.setBackgroundColor(Color.WHITE);
 
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
