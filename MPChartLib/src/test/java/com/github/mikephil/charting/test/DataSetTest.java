@@ -178,4 +178,45 @@ public class DataSetTest {
         assertEquals(21, closest.getX(), 0.01f);
         assertEquals(5, closest.getY(), 0.01f);
     }
+
+    @Test
+    public void testGetEntryForXValueWithDuplicates() {
+
+        // sorted list of values (by x position)
+        List<Entry> values = new ArrayList<Entry>();
+        values.add(new Entry(0, 10));
+        values.add(new Entry(1, 20));
+        values.add(new Entry(2, 30));
+        values.add(new Entry(3, 40));
+        values.add(new Entry(3, 50)); // duplicate
+        values.add(new Entry(4, 60));
+        values.add(new Entry(4, 70)); // duplicate
+        values.add(new Entry(5, 80));
+        values.add(new Entry(6, 90));
+        values.add(new Entry(7, 100));
+        values.add(new Entry(8, 110));
+        values.add(new Entry(8, 120)); // duplicate
+
+        ScatterDataSet set = new ScatterDataSet(values, "");
+
+        Entry closest = set.getEntryForXValue(0, DataSet.Rounding.CLOSEST);
+        assertEquals(0, closest.getX(), 0.01f);
+        assertEquals(10, closest.getY(), 0.01f);
+
+        closest = set.getEntryForXValue(5, DataSet.Rounding.CLOSEST);
+        assertEquals(5, closest.getX(), 0.01f);
+        assertEquals(80, closest.getY(), 0.01f);
+
+        closest = set.getEntryForXValue(5.4f, DataSet.Rounding.CLOSEST);
+        assertEquals(5, closest.getX(), 0.01f);
+        assertEquals(80, closest.getY(), 0.01f);
+
+        closest = set.getEntryForXValue(4.6f, DataSet.Rounding.CLOSEST);
+        assertEquals(5, closest.getX(), 0.01f);
+        assertEquals(80, closest.getY(), 0.01f);
+
+        closest = set.getEntryForXValue(7, DataSet.Rounding.CLOSEST);
+        assertEquals(7, closest.getX(), 0.01f);
+        assertEquals(100, closest.getY(), 0.01f);
+    }
 }
