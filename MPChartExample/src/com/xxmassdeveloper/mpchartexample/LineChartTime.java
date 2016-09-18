@@ -25,10 +25,12 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
 
@@ -87,14 +89,16 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
         xAxis.setDrawGridLines(true);
         xAxis.setTextColor(Color.rgb(255, 192, 56));
         xAxis.setCenterAxisLabels(true);
-        xAxis.setGranularity(60000L); // one minute in millis
+        xAxis.setGranularity(1f); // one hour
         xAxis.setValueFormatter(new IAxisValueFormatter() {
 
             private SimpleDateFormat mFormat = new SimpleDateFormat("dd MMM HH:mm");
 
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return mFormat.format(new Date((long) value));
+
+                long millis = TimeUnit.HOURS.toMillis((long) value);
+                return mFormat.format(new Date(millis));
             }
 
             @Override
@@ -264,15 +268,18 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
 
     private void setData(int count, float range) {
 
-        long now = System.currentTimeMillis();
-        long hourMillis = 3600000L;
+        // now in hours
+        long now = TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis());
 
         ArrayList<Entry> values = new ArrayList<Entry>();
 
-        float from = now - (count / 2) * hourMillis;
-        float to = now + (count / 2) * hourMillis;
+        float from = now;
 
-        for (float x = from; x < to; x += hourMillis) {
+        // count = hours
+        float to = now + count;
+
+        // increment by 1 hour
+        for (float x = from; x < to; x++) {
 
             float y = getRandom(range, 50);
             values.add(new Entry(x, y)); // add one entry per hour
