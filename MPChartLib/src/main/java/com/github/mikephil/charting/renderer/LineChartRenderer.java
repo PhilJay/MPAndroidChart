@@ -362,8 +362,6 @@ public class LineChartRenderer extends LineRadarRenderer {
                 // bounds
                 if (!mViewPortHandler.isInBoundsLeft(mLineBuffer[2])
                         || (!mViewPortHandler.isInBoundsTop(mLineBuffer[1]) && !mViewPortHandler
-                        .isInBoundsBottom(mLineBuffer[3]))
-                        || (!mViewPortHandler.isInBoundsTop(mLineBuffer[1]) && !mViewPortHandler
                         .isInBoundsBottom(mLineBuffer[3])))
                     continue;
 
