@@ -62,7 +62,10 @@ public class CombinedChartActivity extends DemoBase {
 
         Legend l = mChart.getLegend();
         l.setWordWrapEnabled(true);
-        l.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawGridLines(false);

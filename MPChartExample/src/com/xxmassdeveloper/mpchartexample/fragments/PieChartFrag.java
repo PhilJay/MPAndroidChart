@@ -43,7 +43,10 @@ public class PieChartFrag extends SimpleFragment {
         mChart.setTransparentCircleRadius(50f);
         
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.RIGHT_OF_CHART);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setDrawInside(false);
         
         mChart.setData(generatePieData());
         
