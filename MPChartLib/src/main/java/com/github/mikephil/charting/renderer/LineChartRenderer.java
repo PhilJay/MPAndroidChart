@@ -199,22 +199,33 @@ public class LineChartRenderer extends LineRadarRenderer {
             float curDx = 0f;
             float curDy = 0f;
 
-            Entry prevPrev = dataSet.getEntryForIndex(mXBounds.min);
-            Entry prev = prevPrev;
-            Entry cur = prev;
-            Entry next = dataSet.getEntryForIndex(mXBounds.min + 1);
+            // Take an extra point from the left, and an extra from the right.
+            // That's because we need 4 points for a cubic bezier (cubic=4), otherwise we get lines moving and doing weird stuff on the edges of the chart.
+            // So in the starting `prev` and `cur`, go -2, -1
+            // And in the `lastIndex`, add +1
 
-            if (cur == null || next == null) return;
+            final int firstIndex = mXBounds.min + 1;
+            final int lastIndex = mXBounds.min + mXBounds.range;
+
+            Entry prevPrev;
+            Entry prev = dataSet.getEntryForIndex(Math.max(firstIndex - 2, 0));
+            Entry cur = dataSet.getEntryForIndex(Math.max(firstIndex - 1, 0));
+            Entry next = cur;
+            int nextIndex = -1;
+
+            if (cur == null) return;
 
             // let the spline start
             cubicPath.moveTo(cur.getX(), cur.getY() * phaseY);
 
             for (int j = mXBounds.min + 1; j <= mXBounds.range + mXBounds.min; j++) {
 
-                prevPrev = dataSet.getEntryForIndex(j == 1 ? 0 : j - 2);
-                prev = dataSet.getEntryForIndex(j - 1);
-                cur = dataSet.getEntryForIndex(j);
-                next = mXBounds.max > j + 1 ? dataSet.getEntryForIndex(j + 1) : cur;
+                prevPrev = prev;
+                prev = cur;
+                cur = nextIndex == j ? next : dataSet.getEntryForIndex(j);
+
+                nextIndex = j + 1 < dataSet.getEntryCount() ? j + 1 : j;
+                next = dataSet.getEntryForIndex(nextIndex);
 
                 prevDx = (cur.getX() - prevPrev.getX()) * intensity;
                 prevDy = (cur.getY() - prevPrev.getY()) * intensity;
