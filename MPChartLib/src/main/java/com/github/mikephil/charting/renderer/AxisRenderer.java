@@ -250,7 +250,9 @@ public abstract class AxisRenderer extends Renderer {
                 mAxis.mCenteredEntries = new float[n];
             }
 
-            float offset = (mAxis.mEntries[1] - mAxis.mEntries[0]) / 2f;
+            float offset = 0.f;
+            if (mAxis.mEntries.length > 1)
+                offset = (mAxis.mEntries[1] - mAxis.mEntries[0]) / 2f;
 
             for (int i = 0; i < n; i++) {
                 mAxis.mCenteredEntries[i] = mAxis.mEntries[i] + offset;
