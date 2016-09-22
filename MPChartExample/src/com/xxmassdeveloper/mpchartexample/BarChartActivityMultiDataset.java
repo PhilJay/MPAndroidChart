@@ -77,7 +77,10 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         mSeekBarY.setProgress(100);
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.RIGHT_OF_CHART_INSIDE);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setDrawInside(true);
         l.setTypeface(mTfLight);
         l.setYOffset(0f);
         l.setYEntrySpace(0f);

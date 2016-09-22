@@ -106,7 +106,6 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
         Legend l = mChart.getLegend();
 
         // modify the legend ...
-        // l.setPosition(LegendPosition.LEFT_OF_CHART);
         l.setForm(LegendForm.LINE);
 
         // dont forget to refresh the drawing

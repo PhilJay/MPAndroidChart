@@ -102,7 +102,10 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
         // mChart.spin(2000, 0, 360);
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.RIGHT_OF_CHART);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setDrawInside(false);
         l.setEnabled(false);
     }
 

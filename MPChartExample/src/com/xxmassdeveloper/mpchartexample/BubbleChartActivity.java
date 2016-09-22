@@ -72,7 +72,10 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
         mSeekBarY.setProgress(50);
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.RIGHT_OF_CHART);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setDrawInside(false);
         l.setTypeface(mTfLight);
 
         YAxis yl = mChart.getAxisLeft();

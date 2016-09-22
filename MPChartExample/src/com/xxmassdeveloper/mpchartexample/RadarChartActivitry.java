@@ -98,7 +98,10 @@ public class RadarChartActivitry extends DemoBase {
         yAxis.setDrawLabels(false);
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.ABOVE_CHART_CENTER);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
         l.setTypeface(mTfLight);
         l.setXEntrySpace(7f);
         l.setYEntrySpace(5f);

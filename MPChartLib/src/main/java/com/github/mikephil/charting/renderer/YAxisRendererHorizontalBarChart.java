@@ -207,8 +207,6 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         c.drawPath(zeroLinePath, mZeroLinePaint);
 
         c.restoreToCount(clipRestoreCount);
-
-        c.restoreToCount(clipRestoreCount);
     }
 
     protected Path mRenderLimitLinesPathBuffer = new Path();

@@ -430,16 +430,18 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             mDescPaint.setColor(mDescription.getTextColor());
             mDescPaint.setTextAlign(mDescription.getTextAlign());
 
+            float x, y;
+
             // if no position specified, draw on default position
             if (position == null) {
-
-                float x = getWidth() - mViewPortHandler.offsetRight() - mDescription.getXOffset();
-                float y = getHeight() - mViewPortHandler.offsetBottom() - mDescription.getYOffset();
-
-                c.drawText(mDescription.getText(), x, y, mDescPaint);
+                x = getWidth() - mViewPortHandler.offsetRight() - mDescription.getXOffset();
+                y = getHeight() - mViewPortHandler.offsetBottom() - mDescription.getYOffset();
             } else {
-                c.drawText(mDescription.getText(), position.x, position.y, mDescPaint);
+                x = position.x;
+                y = position.y;
             }
+
+            c.drawText(mDescription.getText(), x, y, mDescPaint);
         }
     }
 

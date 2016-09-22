@@ -298,13 +298,28 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         while (low < high) {
             int m = (low + high) / 2;
 
-            float d1 = Math.abs(mValues.get(m).getX() - xValue);
-            float d2 = Math.abs(mValues.get(m + 1).getX() - xValue);
+            final float d1 = mValues.get(m).getX() - xValue,
+                    d2 = mValues.get(m + 1).getX() - xValue,
+                    ad1 = Math.abs(d1), ad2 = Math.abs(d2);
 
-            if (d2 <= d1) {
+            if (ad2 < ad1) {
+                // [m + 1] is closer to xValue
+                // Search in an higher place
                 low = m + 1;
-            } else {
+            } else if (ad1 < ad2) {
+                // [m] is closer to xValue
+                // Search in a lower place
                 high = m;
+            } else {
+                // We have multiple sequential x-value with same distance
+
+                if (d1 >= 0.0) {
+                    // Search in a lower place
+                    high = m;
+                } else if (d1 < 0.0) {
+                    // Search in an higher place
+                    low = m + 1;
+                }
             }
         }
 

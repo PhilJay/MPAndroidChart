@@ -23,9 +23,10 @@ import java.util.List;
 public class Legend extends ComponentBase {
 
     /**
-     * This property is deprecated - Use `position`, `horizontalAlignment`, `verticalAlignment`, `orientation`, `drawInside`,
+     * This property is deprecated - Use `horizontalAlignment`, `verticalAlignment`, `orientation`, `drawInside`,
      * `direction`.
      */
+    @Deprecated
     public enum LegendPosition {
         RIGHT_OF_CHART, RIGHT_OF_CHART_CENTER, RIGHT_OF_CHART_INSIDE,
         LEFT_OF_CHART, LEFT_OF_CHART_CENTER, LEFT_OF_CHART_INSIDE,
@@ -423,10 +424,10 @@ public class Legend extends ComponentBase {
     }
 
     /**
-     * returns the position of the legend relative to the chart
-     *
-     * @return
+     * This property is deprecated - Use `horizontalAlignment`, `verticalAlignment`, `orientation`, `drawInside`,
+     * `direction`.
      */
+    @Deprecated
     public LegendPosition getPosition() {
 
         if (mOrientation == LegendOrientation.VERTICAL
@@ -463,10 +464,10 @@ public class Legend extends ComponentBase {
     }
 
     /**
-     * sets the position of the legend relative to the whole chart
-     *
-     * @param newValue
+     * This property is deprecated - Use `horizontalAlignment`, `verticalAlignment`, `orientation`, `drawInside`,
+     * `direction`.
      */
+    @Deprecated
     public void setPosition(LegendPosition newValue) {
 
         switch (newValue) {

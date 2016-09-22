@@ -66,7 +66,6 @@ public class RealtimeLineChartActivity extends DemoBase implements
         Legend l = mChart.getLegend();
 
         // modify the legend ...
-        // l.setPosition(LegendPosition.LEFT_OF_CHART);
         l.setForm(LegendForm.LINE);
         l.setTypeface(mTfLight);
         l.setTextColor(Color.WHITE);
