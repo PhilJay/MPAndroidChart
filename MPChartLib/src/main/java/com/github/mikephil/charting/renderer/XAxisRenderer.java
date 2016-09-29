@@ -199,8 +199,12 @@ public class XAxisRenderer extends AxisRenderer {
         for (int i = 0; i < positions.length; i += 2) {
 
             float x = positions[i];
+<<<<<<< Updated upstream
             mAxisLabelPaint.setColor(mXAxis.getTextColor((int) (x / 2)));
+=======
+>>>>>>> Stashed changes
             if (mViewPortHandler.isInBoundsX(x)) {
+                mAxisLabelPaint.setColor(mXAxis.getTextColor((int) mXAxis.mEntries[i / 2]));
 
                 String label = mXAxis.getValueFormatter().getFormattedValue(mXAxis.mEntries[i / 2], mXAxis);
 
