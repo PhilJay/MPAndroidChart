@@ -360,6 +360,11 @@ public abstract class Utils {
      * @return
      */
     public static float roundToNextSignificant(double number) {
+        if (Double.isInfinite(number) || 
+            Double.isNaN(number) || 
+            number == 0.0)
+            return 0;
+        
         final float d = (float) Math.ceil((float) Math.log10(number < 0 ? -number : number));
         final int pw = 1 - (int) d;
         final float magnitude = (float) Math.pow(10, pw);
@@ -377,6 +382,10 @@ public abstract class Utils {
     public static int getDecimals(float number) {
 
         float i = roundToNextSignificant(number);
+        
+        if (Float.isInfinite(i))
+            return 0;
+        
         return (int) Math.ceil(-Math.log10(i)) + 2;
     }
 
