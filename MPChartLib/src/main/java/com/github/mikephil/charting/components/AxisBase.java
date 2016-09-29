@@ -194,7 +194,7 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     public boolean isCenterAxisLabelsEnabled() {
-        return mCenterAxisLabels && mEntryCount > 1;
+        return mCenterAxisLabels && mEntryCount > 0;
     }
 
     /**
