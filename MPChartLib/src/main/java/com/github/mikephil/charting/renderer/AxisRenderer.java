@@ -179,13 +179,12 @@ public abstract class AxisRenderer extends Renderer {
             interval = Math.floor(10 * intervalMagnitude);
         }
 
-        boolean centeringEnabled = mAxis.isCenterAxisLabelsEnabled();
         int n = centeringEnabled ? 1 : 0;
 
         // force label count
         if (mAxis.isForceLabelsEnabled()) {
 
-            float step = (float) range / (float) (labelCount - 1);
+            interval = (float) range / (float) (labelCount - 1);
             mAxis.mEntryCount = labelCount;
 
             if (mAxis.mEntries.length < labelCount) {
@@ -197,7 +196,7 @@ public abstract class AxisRenderer extends Renderer {
 
             for (int i = 0; i < labelCount; i++) {
                 mAxis.mEntries[i] = v;
-                v += step;
+                v += interval;
             }
 
             n = labelCount;
@@ -206,7 +205,7 @@ public abstract class AxisRenderer extends Renderer {
         } else {
 
             double first = interval == 0.0 ? 0.0 : Math.ceil(yMin / interval) * interval;
-            if(centeringEnabled) {
+            if(mAxis.isCenterAxisLabelsEnabled()) {
                 first -= interval;
             }
 
@@ -244,15 +243,13 @@ public abstract class AxisRenderer extends Renderer {
             mAxis.mDecimals = 0;
         }
 
-        if (centeringEnabled) {
+        if (mAxis.isCenterAxisLabelsEnabled()) {
 
             if (mAxis.mCenteredEntries.length < n) {
                 mAxis.mCenteredEntries = new float[n];
             }
 
-            float offset = 0.f;
-            if (mAxis.mEntries.length > 1)
-                offset = (mAxis.mEntries[1] - mAxis.mEntries[0]) / 2f;
+            float offset = (float)interval / 2f;
 
             for (int i = 0; i < n; i++) {
                 mAxis.mCenteredEntries[i] = mAxis.mEntries[i] + offset;
