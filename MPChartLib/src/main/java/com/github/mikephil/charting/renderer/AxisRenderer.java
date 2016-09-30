@@ -179,7 +179,7 @@ public abstract class AxisRenderer extends Renderer {
             interval = Math.floor(10 * intervalMagnitude);
         }
 
-        int n = centeringEnabled ? 1 : 0;
+        int n = mAxis.isCenterAxisLabelsEnabled() ? 1 : 0;
 
         // force label count
         if (mAxis.isForceLabelsEnabled()) {
