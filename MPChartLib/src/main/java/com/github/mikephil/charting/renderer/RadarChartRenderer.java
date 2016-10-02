@@ -18,8 +18,6 @@ import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-import java.util.List;
-
 public class RadarChartRenderer extends LineRadarRenderer {
 
     protected RadarChart mChart;
@@ -306,7 +304,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
                     }
 
                     if (set.getHighlightCircleStrokeAlpha() < 255) {
-                        strokeColor = ColorTemplate.getColorWithAlphaComponent(strokeColor, set.getHighlightCircleStrokeAlpha());
+                        strokeColor = ColorTemplate.colorWithAlpha(strokeColor, set.getHighlightCircleStrokeAlpha());
                     }
 
                     drawHighlightCircle(c,

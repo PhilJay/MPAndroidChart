@@ -351,11 +351,14 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
             int m = (high + low) / 2;
             T entry = mValues.get(m);
 
+            // if we have a match
             if (xValue == entry.getX()) {
                 while (m > 0 && mValues.get(m - 1).getX() == xValue)
                     m--;
 
                 high = mValues.size();
+
+                // loop over all "equal" entries
                 for (; m < high; m++) {
                     entry = mValues.get(m);
                     if (entry.getX() == xValue) {
