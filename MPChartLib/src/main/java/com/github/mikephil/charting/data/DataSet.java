@@ -339,14 +339,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         return high;
     }
 
-    /**
-     * Returns all Entry objects at the given xIndex. INFORMATION: This method
-     * does calculations at runtime. Do not over-use in performance critical
-     * situations.
-     *
-     * @param xValue
-     * @return
-     */
     @Override
     public List<T> getEntriesForXValue(float xValue) {
 

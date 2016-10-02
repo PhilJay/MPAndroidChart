@@ -218,5 +218,21 @@ public class DataSetTest {
         closest = set.getEntryForXValue(7, DataSet.Rounding.CLOSEST);
         assertEquals(7, closest.getX(), 0.01f);
         assertEquals(100, closest.getY(), 0.01f);
+
+        closest = set.getEntryForXValue(4f, DataSet.Rounding.CLOSEST);
+        assertEquals(4, closest.getX(), 0.01f);
+        assertEquals(60, closest.getY(), 0.01f);
+
+        List<Entry> entries = set.getEntriesForXValue(4f);
+        assertEquals(2, entries.size());
+        assertEquals(60, entries.get(0).getY(), 0.01f);
+        assertEquals(70, entries.get(1).getY(), 0.01f);
+
+        entries = set.getEntriesForXValue(3.5f);
+        assertEquals(0, entries.size());
+
+        entries = set.getEntriesForXValue(2f);
+        assertEquals(1, entries.size());
+        assertEquals(30, entries.get(0).getY(), 0.01f);
     }
 }

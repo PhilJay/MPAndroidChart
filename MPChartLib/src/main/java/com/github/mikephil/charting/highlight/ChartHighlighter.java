@@ -138,7 +138,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
 
             IDataSet dataSet = data.getDataSetByIndex(i);
 
-            // dont include datasets that cannot be highlighted
+            // don't include DataSets that cannot be highlighted
             if (!dataSet.isHighlightEnabled())
                 continue;
 
