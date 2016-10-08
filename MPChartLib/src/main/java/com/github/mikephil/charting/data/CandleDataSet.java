@@ -112,6 +112,22 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
         calcMinMaxX(e);
     }
 
+    @Override
+    protected void calcMinMaxY(CandleEntry e) {
+
+        if (e.getHigh() < mYMin)
+            mYMin = e.getHigh();
+
+        if (e.getHigh() > mYMax)
+            mYMax = e.getHigh();
+
+        if (e.getLow() < mYMin)
+            mYMin = e.getLow();
+
+        if (e.getLow() > mYMax)
+            mYMax = e.getLow();
+    }
+
     /**
      * Sets the space that is left out on the left and right side of each
      * candle, default 0.1f (10%), max 0.45f, min 0f
