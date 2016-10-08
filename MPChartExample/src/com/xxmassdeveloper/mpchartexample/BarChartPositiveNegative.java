@@ -61,8 +61,6 @@ public class BarChartPositiveNegative extends DemoBase {
         xAxis.setDrawAxisLine(false);
         xAxis.setTextColor(Color.LTGRAY);
         xAxis.setTextSize(13f);
-        xAxis.setAxisMinimum(0f);
-        xAxis.setAxisMaximum(5f);
         xAxis.setLabelCount(5);
         xAxis.setCenterAxisLabels(true);
         xAxis.setGranularity(1f);
@@ -81,11 +79,11 @@ public class BarChartPositiveNegative extends DemoBase {
 
         // THIS IS THE ORIGINAL DATA YOU WANT TO PLOT
         final List<Data> data = new ArrayList<>();
-        data.add(new Data(0.5f, -224.1f, "12-29"));
-        data.add(new Data(1.5f, 238.5f, "12-30"));
-        data.add(new Data(2.5f, 1280.1f, "12-31"));
-        data.add(new Data(3.5f, -442.3f, "01-01"));
-        data.add(new Data(4.5f, -2280.1f, "01-02"));
+        data.add(new Data(0f, -224.1f, "12-29"));
+        data.add(new Data(1f, 238.5f, "12-30"));
+        data.add(new Data(2f, 1280.1f, "12-31"));
+        data.add(new Data(3f, -442.3f, "01-01"));
+        data.add(new Data(4f, -2280.1f, "01-02"));
 
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
