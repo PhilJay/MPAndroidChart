@@ -113,6 +113,16 @@ public abstract class AxisBase extends ComponentBase {
     protected boolean mDrawLimitLineBehindData = false;
 
     /**
+     * Extra spacing for `axisMinimum` to be added to automatically calculated `axisMinimum`
+     */
+    protected float mSpaceMin = 0.f;
+
+    /**
+     * Extra spacing for `axisMaximum` to be added to automatically calculated `axisMaximum`
+     */
+    protected float mSpaceMax = 0.f;
+
+    /**
      * flag indicating that the axis-min value has been customized
      */
     protected boolean mCustomAxisMin = false;
@@ -705,8 +715,8 @@ public abstract class AxisBase extends ComponentBase {
     public void calculate(float dataMin, float dataMax) {
 
         // if custom, use value as is, else use data value
-        float min = mCustomAxisMin ? mAxisMinimum : dataMin;
-        float max = mCustomAxisMax ? mAxisMaximum : dataMax;
+        float min = mCustomAxisMin ? mAxisMinimum : (dataMin - mSpaceMin);
+        float max = mCustomAxisMax ? mAxisMaximum : (dataMax + mSpaceMax);
 
         // temporary range (before calculations)
         float range = Math.abs(max - min);
@@ -722,5 +732,37 @@ public abstract class AxisBase extends ComponentBase {
 
         // actual range
         this.mAxisRange = Math.abs(max - min);
+    }
+
+    /**
+     * Gets extra spacing for `axisMinimum` to be added to automatically calculated `axisMinimum`
+     */
+    public float getSpaceMin()
+    {
+        return mSpaceMin;
+    }
+
+    /**
+     * Sets extra spacing for `axisMinimum` to be added to automatically calculated `axisMinimum`
+     */
+    public void setSpaceMin(float mSpaceMin)
+    {
+        this.mSpaceMin = mSpaceMin;
+    }
+
+    /**
+     * Gets extra spacing for `axisMaximum` to be added to automatically calculated `axisMaximum`
+     */
+    public float getSpaceMax()
+    {
+        return mSpaceMax;
+    }
+
+    /**
+     * Sets extra spacing for `axisMaximum` to be added to automatically calculated `axisMaximum`
+     */
+    public void setSpaceMax(float mSpaceMax)
+    {
+        this.mSpaceMax = mSpaceMax;
     }
 }
