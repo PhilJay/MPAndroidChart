@@ -171,7 +171,7 @@ public class Transformer {
     public float[] generateTransformedValuesLine(ILineDataSet data,
                                                  float phaseX, float phaseY, int from, int to) {
 
-        final int count = (int) ((to - from) * phaseX + 1) * 2;
+        final int count = (int) ((to - from) * phaseX) * 2;
 
         if (valuePointsForGenerateTransformedValuesLine.length != count) {
             valuePointsForGenerateTransformedValuesLine = new float[count];

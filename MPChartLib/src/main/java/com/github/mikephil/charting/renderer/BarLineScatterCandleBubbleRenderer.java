@@ -88,8 +88,8 @@ public abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
             Entry entryFrom = dataSet.getEntryForXValue(low, Float.NaN, DataSet.Rounding.DOWN);
             Entry entryTo = dataSet.getEntryForXValue(high, Float.NaN, DataSet.Rounding.UP);
 
-            min = dataSet.getEntryIndex(entryFrom);
-            max = dataSet.getEntryIndex(entryTo);
+            min = entryFrom == null ? 0 : dataSet.getEntryIndex(entryFrom);
+            max = entryTo == null ? 0 : dataSet.getEntryIndex(entryTo);
             range = (int) ((max - min) * phaseX);
         }
     }
