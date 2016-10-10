@@ -148,7 +148,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
             if (set == null || !set.isHighlightEnabled())
                 continue;
 
-            Entry e = set.getEntryForXValue(high.getX());
+            final Entry e = set.getEntryForXValue(high.getX(), high.getY());
 
             if (!isInBoundsX(e, set))
                 continue;

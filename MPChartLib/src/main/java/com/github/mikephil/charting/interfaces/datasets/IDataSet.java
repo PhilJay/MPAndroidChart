@@ -70,28 +70,36 @@ public interface IDataSet<T extends Entry> {
 
     /**
      * Returns the first Entry object found at the given x-value with binary
-     * search. If the no Entry at the specified x-value is found, this method
-     * returns the Entry at the x-value according to the rounding.
+     * search.
+     * If the no Entry at the specified x-value is found, this method
+     * returns the Entry at the closest x-value according to the rounding.
      * INFORMATION: This method does calculations at runtime. Do
      * not over-use in performance critical situations.
      *
-     * @param xValue
-     * @param rounding determine to round up/down/closest if there is no Entry matching the provided x-index
+     * @param xValue the x-value
+     * @param closestToY If there are multiple y-values for the specified x-value,
+     * @param rounding determine whether to round up/down/closest
+     *                 if there is no Entry matching the provided x-value
      * @return
+     *
+     *
      */
-    T getEntryForXValue(float xValue, DataSet.Rounding rounding);
+    T getEntryForXValue(float xValue, float closestToY, DataSet.Rounding rounding);
 
     /**
      * Returns the first Entry object found at the given x-value with binary
-     * search. If the no Entry at the specified x-value is found, this method
-     * returns the index at the closest x-value.
+     * search.
+     * If the no Entry at the specified x-value is found, this method
+     * returns the Entry at the closest x-value.
      * INFORMATION: This method does calculations at runtime. Do
      * not over-use in performance critical situations.
      *
-     * @param xValue
+     *
+     * @param xValue the x-value
+     * @param closestToY If there are multiple y-values for the specified x-value,
      * @return
      */
-    T getEntryForXValue(float xValue);
+    T getEntryForXValue(float xValue, float closestToY);
 
     /**
      * Returns all Entry objects found at the given x-value with binary
@@ -114,16 +122,19 @@ public interface IDataSet<T extends Entry> {
 
     /**
      * Returns the first Entry index found at the given x-value with binary
-     * search. If the no Entry at the specified x-value is found, this method
-     * returns the Entry at the closest x-value.
+     * search.
+     * If the no Entry at the specified x-value is found, this method
+     * returns the Entry at the closest x-value according to the rounding.
      * INFORMATION: This method does calculations at runtime. Do
      * not over-use in performance critical situations.
      *
-     * @param xValue
-     * @param rounding determine to round up/down/closest if there is no Entry matching the provided x-index
+     * @param xValue the x-value
+     * @param closestToY If there are multiple y-values for the specified x-value,
+     * @param rounding determine whether to round up/down/closest
+     *                 if there is no Entry matching the provided x-value
      * @return
      */
-    int getEntryIndex(float xValue, DataSet.Rounding rounding);
+    int getEntryIndex(float xValue, float closestToY, DataSet.Rounding rounding);
 
     /**
      * Returns the position of the provided entry in the DataSets Entry array.

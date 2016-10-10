@@ -150,31 +150,31 @@ public class DataSetTest {
 
         ScatterDataSet set = new ScatterDataSet(entries, "");
 
-        Entry closest = set.getEntryForXValue(17, DataSet.Rounding.CLOSEST);
+        Entry closest = set.getEntryForXValue(17, Float.NaN, DataSet.Rounding.CLOSEST);
         assertEquals(15, closest.getX(), 0.01f);
         assertEquals(5, closest.getY(), 0.01f);
 
-        closest = set.getEntryForXValue(17, DataSet.Rounding.DOWN);
+        closest = set.getEntryForXValue(17, Float.NaN, DataSet.Rounding.DOWN);
         assertEquals(15, closest.getX(), 0.01f);
         assertEquals(5, closest.getY(), 0.01f);
 
-        closest = set.getEntryForXValue(15, DataSet.Rounding.DOWN);
+        closest = set.getEntryForXValue(15, Float.NaN, DataSet.Rounding.DOWN);
         assertEquals(15, closest.getX(), 0.01f);
         assertEquals(5, closest.getY(), 0.01f);
 
-        closest = set.getEntryForXValue(14, DataSet.Rounding.DOWN);
+        closest = set.getEntryForXValue(14, Float.NaN, DataSet.Rounding.DOWN);
         assertEquals(10, closest.getX(), 0.01f);
         assertEquals(10, closest.getY(), 0.01f);
 
-        closest = set.getEntryForXValue(17, DataSet.Rounding.UP);
+        closest = set.getEntryForXValue(17, Float.NaN, DataSet.Rounding.UP);
         assertEquals(21, closest.getX(), 0.01f);
         assertEquals(5, closest.getY(), 0.01f);
 
-        closest = set.getEntryForXValue(21, DataSet.Rounding.UP);
+        closest = set.getEntryForXValue(21, Float.NaN, DataSet.Rounding.UP);
         assertEquals(21, closest.getX(), 0.01f);
         assertEquals(5, closest.getY(), 0.01f);
 
-        closest = set.getEntryForXValue(21, DataSet.Rounding.CLOSEST);
+        closest = set.getEntryForXValue(21, Float.NaN, DataSet.Rounding.CLOSEST);
         assertEquals(21, closest.getX(), 0.01f);
         assertEquals(5, closest.getY(), 0.01f);
     }
@@ -199,27 +199,27 @@ public class DataSetTest {
 
         ScatterDataSet set = new ScatterDataSet(values, "");
 
-        Entry closest = set.getEntryForXValue(0, DataSet.Rounding.CLOSEST);
+        Entry closest = set.getEntryForXValue(0, Float.NaN, DataSet.Rounding.CLOSEST);
         assertEquals(0, closest.getX(), 0.01f);
         assertEquals(10, closest.getY(), 0.01f);
 
-        closest = set.getEntryForXValue(5, DataSet.Rounding.CLOSEST);
+        closest = set.getEntryForXValue(5, Float.NaN, DataSet.Rounding.CLOSEST);
         assertEquals(5, closest.getX(), 0.01f);
         assertEquals(80, closest.getY(), 0.01f);
 
-        closest = set.getEntryForXValue(5.4f, DataSet.Rounding.CLOSEST);
+        closest = set.getEntryForXValue(5.4f, Float.NaN, DataSet.Rounding.CLOSEST);
         assertEquals(5, closest.getX(), 0.01f);
         assertEquals(80, closest.getY(), 0.01f);
 
-        closest = set.getEntryForXValue(4.6f, DataSet.Rounding.CLOSEST);
+        closest = set.getEntryForXValue(4.6f, Float.NaN, DataSet.Rounding.CLOSEST);
         assertEquals(5, closest.getX(), 0.01f);
         assertEquals(80, closest.getY(), 0.01f);
 
-        closest = set.getEntryForXValue(7, DataSet.Rounding.CLOSEST);
+        closest = set.getEntryForXValue(7, Float.NaN, DataSet.Rounding.CLOSEST);
         assertEquals(7, closest.getX(), 0.01f);
         assertEquals(100, closest.getY(), 0.01f);
 
-        closest = set.getEntryForXValue(4f, DataSet.Rounding.CLOSEST);
+        closest = set.getEntryForXValue(4f, Float.NaN, DataSet.Rounding.CLOSEST);
         assertEquals(4, closest.getX(), 0.01f);
         assertEquals(60, closest.getY(), 0.01f);
 

@@ -142,18 +142,14 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
             if (!dataSet.isHighlightEnabled())
                 continue;
 
-            Highlight high = buildHighlight(dataSet, i, xVal, DataSet.Rounding.CLOSEST);
-
-            if(high != null)
-                mHighlightBuffer.add(high);
-            //vals.add(buildHighlight(dataSet, i, xVal, DataSet.Rounding.DOWN));
+            mHighlightBuffer.addAll(buildHighlights(dataSet, i, xVal, DataSet.Rounding.CLOSEST));
         }
 
         return mHighlightBuffer;
     }
 
     /**
-     * Returns the Highlight object corresponding to the selected xValue and dataSetIndex.
+     * An array of `Highlight` objects corresponding to the selected xValue and dataSetIndex.
      *
      * @param set
      * @param dataSetIndex
@@ -161,16 +157,36 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      * @param rounding
      * @return
      */
-    protected Highlight buildHighlight(IDataSet set, int dataSetIndex, float xVal, DataSet.Rounding rounding) {
+    protected List<Highlight> buildHighlights(IDataSet set, int dataSetIndex, float xVal, DataSet.Rounding rounding) {
 
-        final Entry e = set.getEntryForXValue(xVal, rounding);
+        ArrayList<Highlight> highlights = new ArrayList<>();
 
-        if (e == null)
-            return null;
+        //noinspection unchecked
+        List<Entry> entries = set.getEntriesForXValue(xVal);
+        if (entries.size() == 0) {
+            // Try to find closest x-value and take all entries for that x-value
+            final Entry closest = set.getEntryForXValue(xVal, Float.NaN, rounding);
+            if (closest != null)
+            {
+                //noinspection unchecked
+                entries = set.getEntriesForXValue(closest.getX());
+            }
+        }
 
-        MPPointD pixels = mChart.getTransformer(set.getAxisDependency()).getPixelForValues(e.getX(), e.getY());
+        if (entries.size() == 0)
+            return highlights;
 
-        return new Highlight(e.getX(), e.getY(), (float) pixels.x, (float) pixels.y, dataSetIndex, set.getAxisDependency());
+        for (Entry e : entries) {
+            MPPointD pixels = mChart.getTransformer(
+                    set.getAxisDependency()).getPixelForValues(e.getX(), e.getY());
+
+            highlights.add(new Highlight(
+                    e.getX(), e.getY(),
+                    (float) pixels.x, (float) pixels.y,
+                    dataSetIndex, set.getAxisDependency()));
+        }
+
+        return highlights;
     }
 
     /**

@@ -87,7 +87,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 
             if (set != null) {
 
-                Entry e = set.getEntryForXValue(set.getEntryCount() - 1);
+                Entry e = set.getEntryForXValue(set.getEntryCount() - 1, Float.NaN);
 
                 data.removeEntry(e, 0);
                 // or remove by index

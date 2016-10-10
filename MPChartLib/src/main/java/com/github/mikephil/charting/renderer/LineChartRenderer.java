@@ -670,7 +670,7 @@ public class LineChartRenderer extends LineRadarRenderer {
             if (set == null || !set.isHighlightEnabled())
                 continue;
 
-            Entry e = set.getEntryForXValue(high.getX());
+            Entry e = set.getEntryForXValue(high.getX(), high.getY());
 
             if (!isInBoundsX(e, set))
                 continue;

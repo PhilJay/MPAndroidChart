@@ -60,13 +60,14 @@ public class Highlight {
      */
     private float mDrawY;
 
-    public Highlight(float x, int dataSetIndex) {
+    public Highlight(float x, float y, int dataSetIndex) {
         this.mX = x;
+        this.mY = y;
         this.mDataSetIndex = dataSetIndex;
     }
 
     public Highlight(float x, int dataSetIndex, int stackIndex) {
-        this(x, dataSetIndex);
+        this(x, Float.NaN, dataSetIndex);
         this.mStackIndex = stackIndex;
     }
 
