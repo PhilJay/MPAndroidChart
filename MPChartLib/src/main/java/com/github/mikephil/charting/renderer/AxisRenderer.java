@@ -204,12 +204,25 @@ public abstract class AxisRenderer extends Renderer {
             // no forced count
         } else {
 
-            double first = interval == 0.0 ? 0.0 : Math.ceil(yMin / interval) * interval;
-            if(mAxis.isCenterAxisLabelsEnabled()) {
-                first -= interval;
+            //for sparse data charts, always format first and last value
+            double first;
+            double last;
+            if(mAxis.getSparseData()){
+                first = yMin;
+                if(mAxis.isCenterAxisLabelsEnabled()) {
+                    first -= interval;
+                }
+
+                last = yMax;
+            }else{
+                first = interval == 0.0 ? 0.0 : Math.ceil(yMin / interval) * interval;
+                if(mAxis.isCenterAxisLabelsEnabled()) {
+                    first -= interval;
+                }
+
+                last = interval == 0.0 ? 0.0 : Utils.nextUp(Math.floor(yMax / interval) * interval);
             }
 
-            double last = interval == 0.0 ? 0.0 : Utils.nextUp(Math.floor(yMax / interval) * interval);
 
             double f;
             int i;
