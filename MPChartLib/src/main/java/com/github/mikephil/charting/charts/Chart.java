@@ -355,14 +355,14 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     public abstract void notifyDataSetChanged();
 
     /**
-     * calculates the offsets of the chart to the border depending on the
+     * Calculates the offsets of the chart to the border depending on the
      * position of an eventual legend or depending on the length of the y-axis
      * and x-axis labels and their position
      */
     protected abstract void calculateOffsets();
 
     /**
-     * calcualtes the y-min and y-max value and the y-delta and x-delta value
+     * Calculates the y-min and y-max value and the y-delta and x-delta value
      */
     protected abstract void calcMinMax();
 
