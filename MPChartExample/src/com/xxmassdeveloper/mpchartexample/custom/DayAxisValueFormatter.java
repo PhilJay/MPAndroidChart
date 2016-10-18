@@ -107,19 +107,19 @@ public class DayAxisValueFormatter implements IAxisValueFormatter
         return Math.max(month, 0);
     }
 
-    private int determineDayOfMonth(int dayOfYear, int month) {
+    private int determineDayOfMonth(int days, int month) {
 
         int count = 0;
-        int days = 0;
+        int daysForMonths = 0;
 
         while (count < month) {
 
-            int year = determineYear(days);
-            days += getDaysForMonth(count % 12, year);
+            int year = determineYear(daysForMonths);
+            daysForMonths += getDaysForMonth(count % 12, year);
             count++;
         }
 
-        return dayOfYear - days;
+        return days - daysForMonths;
     }
 
     private int determineYear(int days) {
