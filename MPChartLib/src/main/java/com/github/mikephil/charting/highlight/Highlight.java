@@ -78,7 +78,7 @@ public class Highlight {
      * @param y            the y-value of the highlighted value
      * @param dataSetIndex the index of the DataSet the highlighted value belongs to
      */
-    protected Highlight(float x, float y, float xPx, float yPx, int dataSetIndex, YAxis.AxisDependency axis) {
+    public Highlight(float x, float y, float xPx, float yPx, int dataSetIndex, YAxis.AxisDependency axis) {
         this.mX = x;
         this.mY = y;
         this.mXPx = xPx;
@@ -96,7 +96,7 @@ public class Highlight {
      * @param stackIndex   references which value of a stacked-bar entry has been
      *                     selected
      */
-    protected Highlight(float x, float y, float xPx, float yPx, int dataSetIndex, int stackIndex, YAxis.AxisDependency axis) {
+    public Highlight(float x, float y, float xPx, float yPx, int dataSetIndex, int stackIndex, YAxis.AxisDependency axis) {
         this(x, y, xPx, yPx, dataSetIndex, axis);
         this.mStackIndex = stackIndex;
     }

@@ -92,8 +92,15 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         if (mData == null) {
             Log.e(LOG_TAG, "Can't select by touch. No data set.");
             return null;
-        } else
-            return getHighlighter().getHighlight(x, y);
+        } else {
+            Highlight h = getHighlighter().getHighlight(x, y);
+            if (h == null || !isHighlightFullBarEnabled()) return h;
+
+            // For isHighlightFullBarEnabled, remove stackIndex
+            return new Highlight(h.getX(), h.getY(),
+                    h.getXPx(), h.getYPx(),
+                    h.getDataSetIndex(), -1, h.getAxis());
+        }
     }
 
     /**
