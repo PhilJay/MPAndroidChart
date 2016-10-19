@@ -85,7 +85,7 @@ Features
  - Dragging / Panning (with touch-gesture)
  - Combined-Charts (line-, bar-, scatter-, candle-data)
  - Dual (separate) Axes
- - Customizable Axes (both xPx- and yPx-axis)
+ - Customizable Axes (both x- and y-axis)
  - Highlighting values (with customizable popup-views)
  - Save chart to SD-Card (as image, or as .txt file)
  - Predefined color templates
