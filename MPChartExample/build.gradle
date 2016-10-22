@@ -56,7 +56,7 @@ repositories {
 dependencies {
     //compile fileTree(dir: 'libs', include: ['*.jar'])
     //compile project(':MPChartLib-Realm') // clone "https://github.com/PhilJay/MPAndroidChart-Realm" to get this or uncomment the gradle dependency below:
-    compile 'com.github.PhilJay:MPAndroidChart-Realm:v1.1.0@aar'
+    compile 'com.github.PhilJay:MPAndroidChart-Realm:v2.0.2@aar'
 
     compile project(':MPChartLib')
     compile 'com.android.support:appcompat-v7:24.2.1'
