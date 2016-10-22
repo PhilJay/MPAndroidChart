@@ -83,7 +83,7 @@ public abstract class RealmBaseActivity extends DemoBase {
         super.onResume();
 
         // Create a RealmConfiguration that saves the Realm file in the app's "files" directory.
-        RealmConfiguration realmConfig = new RealmConfiguration.Builder(getApplicationContext()).build();
+        RealmConfiguration realmConfig = new RealmConfiguration.Builder().build();
         Realm.setDefaultConfiguration(realmConfig);
 
         mRealm = Realm.getDefaultInstance();
@@ -189,8 +189,8 @@ public abstract class RealmBaseActivity extends DemoBase {
         float value4 = 15f + (float) (Math.random() * 8f);
         float value5 = 100f - value1 - value2 - value3 - value4;
 
-        float[] values = new float[] { value1, value2, value3, value4, value5 };
-        String[] labels = new String[]{ "iOS", "Android", "WP 10", "BlackBerry", "Other"};
+        float[] values = new float[]{value1, value2, value3, value4, value5};
+        String[] labels = new String[]{"iOS", "Android", "WP 10", "BlackBerry", "Other"};
 
         for (int i = 0; i < values.length; i++) {
             RealmDemoData d = new RealmDemoData(values[i], labels[i]);
