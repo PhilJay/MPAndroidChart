@@ -122,17 +122,21 @@ dependencies {
 ```
 
 **2. Maven**
-- Add the following to your `pom.xml`:
+- Add the following to the `<repositories>` section of your `pom.xml`:
+
  ```xml
 <repository>
-       	<id>jitpack.io</id>
-	    <url>https://jitpack.io</url>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
 </repository>
+```
+- Add the following to the `<dependencies>` section of your `pom.xml`:
 
+ ```xml
 <dependency>
-	    <groupId>com.github.PhilJay</groupId>
-	    <artifactId>MPAndroidChart</artifactId>
-	    <version>v3.0.0</version>
+        <groupId>com.github.PhilJay</groupId>
+        <artifactId>MPAndroidChart</artifactId>
+        <version>v3.0.0</version>
 </dependency>
 ```
 
