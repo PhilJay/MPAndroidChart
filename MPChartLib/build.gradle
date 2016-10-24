@@ -6,8 +6,8 @@ apply plugin: 'maven-publish'
 //apply plugin: 'realm-android'
 
 archivesBaseName = 'MPAndroidChart'
-version = '2.2.5.3'
-def versionCodeInt = 230
+version = '2.2.5.4'
+def versionCodeInt = 231
 
 android {
     compileSdkVersion 23
