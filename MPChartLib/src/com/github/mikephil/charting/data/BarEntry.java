@@ -1,11 +1,14 @@
 package com.github.mikephil.charting.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Entry class for the BarChart. (especially stacked bars)
  * 
  * @author Philipp Jahoda
  */
-public class BarEntry extends Entry {
+public class BarEntry extends Entry implements Parcelable {
 
 	/** the values the stacked barchart holds */
 	private float[] mVals;
@@ -192,4 +195,36 @@ public class BarEntry extends Entry {
 
 		return sum;
 	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		super.writeToParcel(dest, flags);
+		dest.writeFloatArray(this.mVals);
+		dest.writeFloat(this.mNegativeSum);
+		dest.writeFloat(this.mPositiveSum);
+	}
+
+	protected BarEntry(Parcel in) {
+		super(in);
+		this.mVals = in.createFloatArray();
+		this.mNegativeSum = in.readFloat();
+		this.mPositiveSum = in.readFloat();
+	}
+
+	public static final Creator<BarEntry> CREATOR = new Creator<BarEntry>() {
+		@Override
+		public BarEntry createFromParcel(Parcel source) {
+			return new BarEntry(source);
+		}
+
+		@Override
+		public BarEntry[] newArray(int size) {
+			return new BarEntry[size];
+		}
+	};
 }
