@@ -11,6 +11,7 @@ public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
 
     /** the space in pixels between the chart-slices, default 0f */
     private float mSliceSpace = 0f;
+    private boolean mAutomaticallyDisableSliceSpacing;
 
     /** indicates the selection distance of a pie slice */
     private float mShift = 18f;
@@ -73,6 +74,27 @@ public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
     @Override
     public float getSliceSpace() {
         return mSliceSpace;
+    }
+
+    /**
+     * When enabled, slice spacing will be 0.0 when the smallest value is going to be
+     *   smaller than the slice spacing itself.
+     *
+     * @param autoDisable
+     */
+    public void setAutomaticallyDisableSliceSpacing(boolean autoDisable) {
+        mAutomaticallyDisableSliceSpacing = autoDisable;
+    }
+
+    /**
+     * When enabled, slice spacing will be 0.0 when the smallest value is going to be
+     *   smaller than the slice spacing itself.
+     *
+     * @return
+     */
+    @Override
+    public boolean isAutomaticallyDisableSliceSpacing() {
+        return mAutomaticallyDisableSliceSpacing;
     }
 
     /**

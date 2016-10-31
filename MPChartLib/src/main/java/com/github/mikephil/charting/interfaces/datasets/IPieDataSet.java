@@ -18,6 +18,14 @@ public interface IPieDataSet extends IDataSet<PieEntry> {
     float getSliceSpace();
 
     /**
+     * When enabled, slice spacing will be 0.0 when the smallest value is going to be
+     *   smaller than the slice spacing itself.
+     *
+     * @return
+     */
+    boolean isAutomaticallyDisableSliceSpacing();
+
+    /**
      * Returns the distance a highlighted piechart slice is "shifted" away from
      * the chart-center in dp.
      *

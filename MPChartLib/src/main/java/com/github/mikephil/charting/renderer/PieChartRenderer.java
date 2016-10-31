@@ -199,6 +199,9 @@ public class PieChartRenderer extends DataRenderer {
      */
     protected float getSliceSpace(IPieDataSet dataSet) {
 
+        if (!dataSet.isAutomaticallyDisableSliceSpacing())
+            return dataSet.getSliceSpace();
+
         float spaceSizeRatio = dataSet.getSliceSpace() / mViewPortHandler.getSmallestContentExtension();
         float minValueRatio = dataSet.getYMin() / mChart.getData().getYValueSum() * 2;
 
