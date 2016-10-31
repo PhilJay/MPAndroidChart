@@ -221,7 +221,7 @@ public class YAxisRenderer extends AxisRenderer {
         int clipRestoreCount = c.save();
         mZeroLineClippingRect.set(mViewPortHandler.getContentRect());
         mZeroLineClippingRect.inset(0.f, -mYAxis.getZeroLineWidth() / 2.f);
-        c.clipRect(mLimitLineClippingRect);
+        c.clipRect(mZeroLineClippingRect);
 
         // draw zero line
         MPPointD pos = mTrans.getPixelForValues(0f, 0f);
