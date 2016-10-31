@@ -1153,13 +1153,23 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
     /**
-     * Sets drawing the borders rectangle to true. If this is enabled, there is
-     * no point drawing the axis-lines of x- and y-axis.
+     * When enabled, the borders rectangle will be rendered.
+     * If this is enabled, there is no point drawing the axis-lines of x- and y-axis.
      *
      * @param enabled
      */
     public void setDrawBorders(boolean enabled) {
         mDrawBorders = enabled;
+    }
+
+    /**
+     * When enabled, the borders rectangle will be rendered.
+     * If this is enabled, there is no point drawing the axis-lines of x- and y-axis.
+     *
+     * @return
+     */
+    public boolean isDrawBordersEnabled() {
+        return mDrawBorders;
     }
 
     /**
