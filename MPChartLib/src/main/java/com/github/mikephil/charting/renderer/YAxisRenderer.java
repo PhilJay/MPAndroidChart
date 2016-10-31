@@ -167,7 +167,7 @@ public class YAxisRenderer extends AxisRenderer {
 
     public RectF getGridClippingRect() {
         mGridClippingRect.set(mViewPortHandler.getContentRect());
-        mGridClippingRect.inset(0.f, -mAxis.getGridLineWidth() / 2.f);
+        mGridClippingRect.inset(0.f, -mAxis.getGridLineWidth());
         return mGridClippingRect;
     }
 
@@ -220,7 +220,7 @@ public class YAxisRenderer extends AxisRenderer {
 
         int clipRestoreCount = c.save();
         mZeroLineClippingRect.set(mViewPortHandler.getContentRect());
-        mZeroLineClippingRect.inset(0.f, -mYAxis.getZeroLineWidth() / 2.f);
+        mZeroLineClippingRect.inset(0.f, -mYAxis.getZeroLineWidth());
         c.clipRect(mZeroLineClippingRect);
 
         // draw zero line
@@ -232,8 +232,8 @@ public class YAxisRenderer extends AxisRenderer {
         Path zeroLinePath = mDrawZeroLinePath;
         zeroLinePath.reset();
 
-        zeroLinePath.moveTo(mViewPortHandler.contentLeft(), (float) pos.y - 1);
-        zeroLinePath.lineTo(mViewPortHandler.contentRight(), (float) pos.y - 1);
+        zeroLinePath.moveTo(mViewPortHandler.contentLeft(), (float) pos.y);
+        zeroLinePath.lineTo(mViewPortHandler.contentRight(), (float) pos.y);
 
         // draw a path because lines don't support dashing on lower android versions
         c.drawPath(zeroLinePath, mZeroLinePaint);
@@ -272,7 +272,7 @@ public class YAxisRenderer extends AxisRenderer {
 
             int clipRestoreCount = c.save();
             mLimitLineClippingRect.set(mViewPortHandler.getContentRect());
-            mLimitLineClippingRect.inset(0.f, -l.getLineWidth() / 2.f);
+            mLimitLineClippingRect.inset(0.f, -l.getLineWidth());
             c.clipRect(mLimitLineClippingRect);
 
             mLimitLinePaint.setStyle(Paint.Style.STROKE);

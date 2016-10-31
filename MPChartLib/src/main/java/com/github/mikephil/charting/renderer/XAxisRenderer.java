@@ -270,7 +270,7 @@ public class XAxisRenderer extends AxisRenderer {
 
     public RectF getGridClippingRect() {
         mGridClippingRect.set(mViewPortHandler.getContentRect());
-        mGridClippingRect.inset(-mAxis.getGridLineWidth() / 2.f, 0.f);
+        mGridClippingRect.inset(-mAxis.getGridLineWidth(), 0.f);
         return mGridClippingRect;
     }
 
@@ -322,7 +322,7 @@ public class XAxisRenderer extends AxisRenderer {
 
             int clipRestoreCount = c.save();
             mLimitLineClippingRect.set(mViewPortHandler.getContentRect());
-            mLimitLineClippingRect.inset(-l.getLineWidth() / 2.f, 0.f);
+            mLimitLineClippingRect.inset(-l.getLineWidth(), 0.f);
             c.clipRect(mLimitLineClippingRect);
 
             position[0] = l.getLimit();

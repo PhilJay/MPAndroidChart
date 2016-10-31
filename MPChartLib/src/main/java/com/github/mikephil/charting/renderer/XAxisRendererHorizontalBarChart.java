@@ -165,7 +165,7 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
     @Override
     public RectF getGridClippingRect() {
         mGridClippingRect.set(mViewPortHandler.getContentRect());
-        mGridClippingRect.inset(0.f, -mAxis.getGridLineWidth() / 2.f);
+        mGridClippingRect.inset(0.f, -mAxis.getGridLineWidth());
         return mGridClippingRect;
     }
 
@@ -238,7 +238,7 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
 
             int clipRestoreCount = c.save();
             mLimitLineClippingRect.set(mViewPortHandler.getContentRect());
-            mLimitLineClippingRect.inset(0.f, -l.getLineWidth() / 2.f);
+            mLimitLineClippingRect.inset(0.f, -l.getLineWidth());
             c.clipRect(mLimitLineClippingRect);
 
 			mLimitLinePaint.setStyle(Paint.Style.STROKE);

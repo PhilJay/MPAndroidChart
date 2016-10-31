@@ -168,7 +168,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
     @Override
     public RectF getGridClippingRect() {
         mGridClippingRect.set(mViewPortHandler.getContentRect());
-        mGridClippingRect.inset(-mAxis.getGridLineWidth() / 2.f, 0.f);
+        mGridClippingRect.inset(-mAxis.getGridLineWidth(), 0.f);
         return mGridClippingRect;
     }
 
@@ -188,7 +188,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
 
         int clipRestoreCount = c.save();
         mZeroLineClippingRect.set(mViewPortHandler.getContentRect());
-        mZeroLineClippingRect.inset(-mYAxis.getZeroLineWidth() / 2.f, 0.f);
+        mZeroLineClippingRect.inset(-mYAxis.getZeroLineWidth(), 0.f);
         c.clipRect(mLimitLineClippingRect);
 
         // draw zero line
@@ -242,7 +242,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
 
             int clipRestoreCount = c.save();
             mLimitLineClippingRect.set(mViewPortHandler.getContentRect());
-            mLimitLineClippingRect.inset(-l.getLineWidth() / 2.f, 0.f);
+            mLimitLineClippingRect.inset(-l.getLineWidth(), 0.f);
             c.clipRect(mLimitLineClippingRect);
 
             pts[0] = l.getLimit();
