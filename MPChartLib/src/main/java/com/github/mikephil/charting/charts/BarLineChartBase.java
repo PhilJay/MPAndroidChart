@@ -97,6 +97,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     protected boolean mDrawBorders = false;
 
+    protected boolean mClipValuesToContent = false;
+
     /**
      * Sets the minimum offset (padding) around the chart, defaults to 15
      */
@@ -248,7 +250,16 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         mAxisRendererLeft.renderAxisLabels(canvas);
         mAxisRendererRight.renderAxisLabels(canvas);
 
-        mRenderer.drawValues(canvas);
+        if (isClipValuesToContentEnabled()) {
+            clipRestoreCount = canvas.save();
+            canvas.clipRect(mViewPortHandler.getContentRect());
+
+            mRenderer.drawValues(canvas);
+
+            canvas.restoreToCount(clipRestoreCount);
+        } else {
+            mRenderer.drawValues(canvas);
+        }
 
         mLegendRenderer.renderLegend(canvas);
 
@@ -1149,6 +1160,26 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      */
     public void setDrawBorders(boolean enabled) {
         mDrawBorders = enabled;
+    }
+
+    /**
+     * When enabled, the values will be clipped to contentRect,
+     *   otherwise they can bleed outside the content rect.
+     *
+     * @param enabled
+     */
+    public void setClipValuesToContent(boolean enabled) {
+        mClipValuesToContent = enabled;
+    }
+
+    /**
+     * When enabled, the values will be clipped to contentRect,
+     *   otherwise they can bleed outside the content rect.
+     *
+     * @return
+     */
+    public boolean isClipValuesToContentEnabled() {
+        return mClipValuesToContent;
     }
 
     /**
