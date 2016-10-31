@@ -93,7 +93,7 @@ public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
      * @return
      */
     @Override
-    public boolean isAutomaticallyDisableSliceSpacing() {
+    public boolean isAutomaticallyDisableSliceSpacingEnabled() {
         return mAutomaticallyDisableSliceSpacing;
     }
 

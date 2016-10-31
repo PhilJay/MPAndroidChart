@@ -23,7 +23,7 @@ public interface IPieDataSet extends IDataSet<PieEntry> {
      *
      * @return
      */
-    boolean isAutomaticallyDisableSliceSpacing();
+    boolean isAutomaticallyDisableSliceSpacingEnabled();
 
     /**
      * Returns the distance a highlighted piechart slice is "shifted" away from
