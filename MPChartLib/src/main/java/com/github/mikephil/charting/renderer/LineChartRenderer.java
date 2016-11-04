@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.LineChart;
@@ -711,7 +712,9 @@ public class LineChartRenderer extends LineRadarRenderer {
      */
     public void releaseBitmap() {
         if (mBitmapCanvas != null) {
-            mBitmapCanvas.setBitmap(null);
+            if(Build.VERSION.SDK_INT>Build.VERSION_CODES.GINGERBREAD_MR1){
+                mBitmapCanvas.setBitmap(null);
+            }
             mBitmapCanvas = null;
         }
         if (mDrawBitmap != null) {

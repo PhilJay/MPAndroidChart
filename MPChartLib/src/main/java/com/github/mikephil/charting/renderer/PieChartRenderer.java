@@ -982,7 +982,9 @@ public class PieChartRenderer extends DataRenderer {
      */
     public void releaseBitmap() {
         if (mBitmapCanvas != null) {
-            mBitmapCanvas.setBitmap(null);
+            if(Build.VERSION.SDK_INT>Build.VERSION_CODES.GINGERBREAD_MR1){
+                mBitmapCanvas.setBitmap(null);
+            }
             mBitmapCanvas = null;
         }
         if (mDrawBitmap != null) {
