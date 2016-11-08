@@ -397,18 +397,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
                                     offsets.top += Math.min(mLegend.mNeededHeight,
                                             mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent())
                                             + mLegend.getYOffset();
-
-                                    if (getXAxis().isEnabled() && getXAxis().isDrawLabelsEnabled())
-                                        offsets.top += getXAxis().mLabelRotatedHeight;
                                     break;
 
                                 case BOTTOM:
                                     offsets.bottom += Math.min(mLegend.mNeededHeight,
                                             mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent())
                                             + mLegend.getYOffset();
-
-                                    if (getXAxis().isEnabled() && getXAxis().isDrawLabelsEnabled())
-                                        offsets.bottom += getXAxis().mLabelRotatedHeight;
                                     break;
 
                                 default:
