@@ -120,7 +120,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (mData == null)
+        if (isEmpty())
             return;
 
         mRenderer.drawData(canvas);
