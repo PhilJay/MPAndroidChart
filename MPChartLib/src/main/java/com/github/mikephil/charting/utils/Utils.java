@@ -40,10 +40,10 @@ public abstract class Utils {
     public final static float FDEG2RAD = ((float) Math.PI / 180.f);
 
     @SuppressWarnings("unused")
-    public final static double DOUBLE_EPSILON = Double.longBitsToDouble(Double.doubleToLongBits(1.0) + 1);
+    public final static double DOUBLE_EPSILON = Double.longBitsToDouble(1);
 
     @SuppressWarnings("unused")
-    public final static float FLOAT_EPSILON = Float.intBitsToFloat(Float.floatToIntBits(1f) + 1);
+    public final static float FLOAT_EPSILON = Float.intBitsToFloat(1);
 
     /**
      * initialize method, called inside the Chart.init() method.
