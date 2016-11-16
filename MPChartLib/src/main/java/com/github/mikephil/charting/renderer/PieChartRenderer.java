@@ -232,7 +232,7 @@ public class PieChartRenderer extends DataRenderer {
         int visibleAngleCount = 0;
         for (int j = 0; j < entryCount; j++) {
             // draw only if the value is greater than zero
-            if ((Math.abs(dataSet.getEntryForIndex(j).getY()) > Utils.FLOAT_EPSILON)) {
+            if ((Math.abs(dataSet.getEntryForIndex(j).getY()) > 0)) {
                 visibleAngleCount++;
             }
         }
@@ -247,7 +247,7 @@ public class PieChartRenderer extends DataRenderer {
             Entry e = dataSet.getEntryForIndex(j);
 
             // draw only if the value is greater than zero
-            if ((Math.abs(e.getY()) > Utils.FLOAT_EPSILON)) {
+            if ((Math.abs(e.getY()) > 0)) {
 
                 if (!mChart.needsHighlight(j)) {
 
@@ -269,7 +269,7 @@ public class PieChartRenderer extends DataRenderer {
                     float arcStartPointX = center.x + radius * (float) Math.cos(startAngleOuter * Utils.FDEG2RAD);
                     float arcStartPointY = center.y + radius * (float) Math.sin(startAngleOuter * Utils.FDEG2RAD);
 
-                    if (sweepAngleOuter % 360f <= Utils.FLOAT_EPSILON) {
+                    if (sweepAngleOuter % 360f == 0.f) {
                         // Android is doing "mod 360"
                         mPathBuffer.addCircle(center.x, center.y, radius, Path.Direction.CW);
                     } else {
@@ -772,7 +772,7 @@ public class PieChartRenderer extends DataRenderer {
             int visibleAngleCount = 0;
             for (int j = 0; j < entryCount; j++) {
                 // draw only if the value is greater than zero
-                if ((Math.abs(set.getEntryForIndex(j).getY()) > Utils.FLOAT_EPSILON)) {
+                if ((Math.abs(set.getEntryForIndex(j).getY()) > 0)) {
                     visibleAngleCount++;
                 }
             }
