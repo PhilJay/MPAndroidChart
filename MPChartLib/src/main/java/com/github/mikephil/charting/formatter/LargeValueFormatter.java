@@ -93,7 +93,6 @@ public class LargeValueFormatter implements IValueFormatter, IAxisValueFormatter
         return r;
     }
 
-    @Override
     public int getDecimalDigits() {
         return 0;
     }

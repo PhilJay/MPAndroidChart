@@ -81,11 +81,6 @@ public class RadarChartActivitry extends DemoBase {
             public String getFormattedValue(float value, AxisBase axis) {
                 return mActivities[(int) value % mActivities.length];
             }
-
-            @Override
-            public int getDecimalDigits() {
-                return 0;
-            }
         });
         xAxis.setTextColor(Color.WHITE);
 

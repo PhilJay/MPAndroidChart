@@ -84,11 +84,6 @@ public class CombinedChartActivity extends DemoBase {
             public String getFormattedValue(float value, AxisBase axis) {
                 return mMonths[(int) value % mMonths.length];
             }
-
-            @Override
-            public int getDecimalDigits() {
-                return 0;
-            }
         });
 
         CombinedData data = new CombinedData();

@@ -37,9 +37,4 @@ public class MyCustomXAxisValueFormatter implements IAxisValueFormatter
         else
             return mFormat.format(value);
     }
-
-    @Override
-    public int getDecimalDigits() {
-        return 1;
-    }
 }

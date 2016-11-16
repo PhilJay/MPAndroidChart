@@ -90,11 +90,6 @@ public class BarChartPositiveNegative extends DemoBase {
             public String getFormattedValue(float value, AxisBase axis) {
                 return data.get(Math.min(Math.max((int) value, 0), data.size()-1)).xAxisValue;
             }
-
-            @Override
-            public int getDecimalDigits() {
-                return 0;
-            }
         });
 
         setData(data);

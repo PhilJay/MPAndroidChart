@@ -100,11 +100,6 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
                 long millis = TimeUnit.HOURS.toMillis((long) value);
                 return mFormat.format(new Date(millis));
             }
-
-            @Override
-            public int getDecimalDigits() {
-                return 0;
-            }
         });
 
         YAxis leftAxis = mChart.getAxisLeft();

@@ -96,11 +96,6 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
             public String getFormattedValue(float value, AxisBase axis) {
                 return String.valueOf((int) value);
             }
-
-            @Override
-            public int getDecimalDigits() {
-                return 0;
-            }
         });
 
         YAxis leftAxis = mChart.getAxisLeft();

@@ -496,12 +496,10 @@ public abstract class AxisBase extends ComponentBase {
      */
     public IAxisValueFormatter getValueFormatter() {
 
-        if (mAxisValueFormatter == null) {
+        if (mAxisValueFormatter == null ||
+                (mAxisValueFormatter instanceof DefaultAxisValueFormatter &&
+                        ((DefaultAxisValueFormatter)mAxisValueFormatter).getDecimalDigits() != mDecimals))
             mAxisValueFormatter = new DefaultAxisValueFormatter(mDecimals);
-        } else if (mAxisValueFormatter.getDecimalDigits() != mDecimals && mAxisValueFormatter instanceof
-                DefaultAxisValueFormatter) {
-            mAxisValueFormatter = new DefaultAxisValueFormatter(mDecimals);
-        }
 
         return mAxisValueFormatter;
     }

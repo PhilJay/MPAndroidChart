@@ -90,11 +90,6 @@ public class RealmWikiExample extends RealmBaseActivity {
             public String getFormattedValue(float value, AxisBase axis) {
                 return results.get((int) value).getPlayerName();
             }
-
-            @Override
-            public int getDecimalDigits() {
-                return 0;
-            }
         };
 
         lineChart.getXAxis().setValueFormatter(formatter);

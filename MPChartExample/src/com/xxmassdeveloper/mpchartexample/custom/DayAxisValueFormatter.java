@@ -136,9 +136,4 @@ public class DayAxisValueFormatter implements IAxisValueFormatter
             return 2020;
 
     }
-
-    @Override
-    public int getDecimalDigits() {
-        return 0;
-    }
 }
