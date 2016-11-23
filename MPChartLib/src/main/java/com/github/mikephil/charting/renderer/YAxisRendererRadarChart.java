@@ -225,4 +225,14 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
         MPPointF.recycleInstance(center);
         MPPointF.recycleInstance(pOut);
     }
+
+    /**
+     * YAxis LimitRectangles on RadarChart not yet supported.
+     *
+     * @param c
+     */
+    @Override
+    public void renderLimitRectangles(Canvas c) {
+        // this space intentionally left blank
+    }
 }

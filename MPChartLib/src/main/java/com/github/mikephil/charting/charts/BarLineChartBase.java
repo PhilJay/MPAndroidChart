@@ -213,6 +213,17 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         mAxisRendererLeft.renderGridLines(canvas);
         mAxisRendererRight.renderGridLines(canvas);
 
+        // render limit rectangles first
+        if (mXAxis.isDrawLimitRectanglesBehindDataEnabled())
+            mXAxisRenderer.renderLimitRectangles(canvas);
+
+        if (mAxisLeft.isDrawLimitRectanglesBehindDataEnabled())
+            mAxisRendererLeft.renderLimitRectangles(canvas);
+
+        if (mAxisRight.isDrawLimitRectanglesBehindDataEnabled())
+            mAxisRendererRight.renderLimitRectangles(canvas);
+
+        // now render limit lines
         if (mXAxis.isDrawLimitLinesBehindDataEnabled())
             mXAxisRenderer.renderLimitLines(canvas);
 
@@ -236,6 +247,15 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         canvas.restoreToCount(clipRestoreCount);
 
         mRenderer.drawExtras(canvas);
+
+        if (!mXAxis.isDrawLimitRectanglesBehindDataEnabled())
+            mXAxisRenderer.renderLimitRectangles(canvas);
+
+        if (!mAxisLeft.isDrawLimitRectanglesBehindDataEnabled())
+            mAxisRendererLeft.renderLimitRectangles(canvas);
+
+        if (!mAxisRight.isDrawLimitRectanglesBehindDataEnabled())
+            mAxisRendererRight.renderLimitRectangles(canvas);
 
         if (!mXAxis.isDrawLimitLinesBehindDataEnabled())
             mXAxisRenderer.renderLimitLines(canvas);

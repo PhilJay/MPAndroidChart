@@ -68,4 +68,14 @@ public class XAxisRendererRadarChart extends XAxisRenderer {
 	public void renderLimitLines(Canvas c) {
 		// this space intentionally left blank
 	}
+
+    /**
+     * XAxis LimitRectangles on RadarChart not yet supported.
+     *
+     * @param c
+     */
+    @Override
+    public void renderLimitRectangles(Canvas c) {
+        // this space intentionally left blank
+    }
 }

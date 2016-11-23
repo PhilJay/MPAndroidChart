@@ -9,6 +9,7 @@ import android.graphics.RectF;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.LimitLine;
+import com.github.mikephil.charting.components.LimitRectangle;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.utils.FSize;
@@ -307,4 +308,51 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
             c.restoreToCount(clipRestoreCount);
 		}
 	}
+
+    /**
+     * Draws the LimitRectangles associated with this axis to the screen.
+     * This is the standard YAxis renderer using the XAxis limit lines.
+     *
+     * @param c
+     */
+    @Override
+    public void renderLimitRectangles(Canvas c) {
+        List<LimitRectangle> limitRects = mXAxis.getLimitRectangles();
+
+        if (limitRects == null || limitRects.size() <= 0)
+            return;
+
+        RectF drawRect = mLimitRectangleRect;
+        drawRect.left = mViewPortHandler.contentLeft();
+        drawRect.right = mViewPortHandler.contentRight();
+
+        // reuse temp buffers from limit lines, no need to create new
+        float[] position = mRenderLimitLinesBuffer;
+        position[0] = 0;
+        position[1] = 0;
+
+        int clipRestoreCount = c.save();
+        mLimitLineClippingRect.set(mViewPortHandler.getContentRect());
+        c.clipRect(mLimitLineClippingRect);
+
+        for (int i = 0; i < limitRects.size(); i++) {
+
+            LimitRectangle l = limitRects.get(i);
+
+            if (!l.isEnabled())
+                continue;
+
+            position[0] = l.getLimitStart();
+            position[1] = l.getLimitEnd();
+            mTrans.pointValuesToPixel(position);
+            drawRect.bottom = position[0];
+            drawRect.top = position[1];
+
+            mLimitRectanglePaint.setColor(l.getRectColor());
+            mLimitRectanglePaint.setAlpha(l.getAlpha());
+            c.drawRect( drawRect, mLimitRectanglePaint);
+        }
+
+        c.restoreToCount(clipRestoreCount);
+    }
 }
