@@ -435,10 +435,12 @@ public class XAxisRenderer extends AxisRenderer {
                 continue;
 
             position[0] = l.getLimitStart();
-            position[1] = l.getLimitEnd();
             mTrans.pointValuesToPixel(position);
             drawRect.left = position[0];
-            drawRect.right = position[1];
+
+            position[0] = l.getLimitEnd();
+            mTrans.pointValuesToPixel(position);
+            drawRect.right = position[0];
 
             mLimitRectanglePaint.setColor(l.getRectColor());
             mLimitRectanglePaint.setAlpha(l.getAlpha());

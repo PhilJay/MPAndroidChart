@@ -342,10 +342,12 @@ public class XAxisRendererHorizontalBarChart extends XAxisRenderer {
             if (!l.isEnabled())
                 continue;
 
-            position[0] = l.getLimitStart();
+            position[1] = l.getLimitStart();
+            mTrans.pointValuesToPixel(position);
+            drawRect.bottom = position[1];
+
             position[1] = l.getLimitEnd();
             mTrans.pointValuesToPixel(position);
-            drawRect.bottom = position[0];
             drawRect.top = position[1];
 
             mLimitRectanglePaint.setColor(l.getRectColor());
