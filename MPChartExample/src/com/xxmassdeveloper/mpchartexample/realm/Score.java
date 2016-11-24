@@ -10,14 +10,14 @@ public class Score extends RealmObject {
 
     private float totalScore;
 
-    private int scoreNr;
+    private float scoreNr;
 
     private String playerName;
 
     public Score() {
     }
 
-    public Score(float totalScore, int scoreNr, String playerName) {
+    public Score(float totalScore, float scoreNr, String playerName) {
         this.scoreNr = scoreNr;
         this.playerName = playerName;
         this.totalScore = totalScore;
@@ -33,11 +33,11 @@ public class Score extends RealmObject {
         this.totalScore = totalScore;
     }
 
-    public int getScoreNr() {
+    public float getScoreNr() {
         return scoreNr;
     }
 
-    public void setScoreNr(int scoreNr) {
+    public void setScoreNr(float scoreNr) {
         this.scoreNr = scoreNr;
     }
 

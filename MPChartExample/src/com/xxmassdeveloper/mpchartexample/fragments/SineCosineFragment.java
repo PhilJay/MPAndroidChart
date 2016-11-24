@@ -26,8 +26,8 @@ public class SineCosineFragment extends SimpleFragment {
         View v = inflater.inflate(R.layout.frag_simple_line, container, false);
         
         mChart = (LineChart) v.findViewById(R.id.lineChart1);
-        
-        mChart.setDescription("");
+
+        mChart.getDescription().setEnabled(false);
 
         mChart.setDrawGridBackground(false);
         
@@ -41,8 +41,8 @@ public class SineCosineFragment extends SimpleFragment {
         
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(tf);
-        leftAxis.setAxisMaxValue(1.2f);
-        leftAxis.setAxisMinValue(-1.2f);
+        leftAxis.setAxisMaximum(1.2f);
+        leftAxis.setAxisMinimum(-1.2f);
         
         mChart.getAxisRight().setEnabled(false);
         

@@ -33,12 +33,12 @@ public class BarChartFrag extends SimpleFragment implements OnChartGestureListen
         
         // create a new chart object
         mChart = new BarChart(getActivity());
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
         mChart.setOnChartGestureListener(this);
         
         MyMarkerView mv = new MyMarkerView(getActivity(), R.layout.custom_marker_view);
-
-        mChart.setMarkerView(mv);
+        mv.setChartView(mChart); // For bounds control
+        mChart.setMarker(mv);
 
         mChart.setDrawGridBackground(false);
         mChart.setDrawBarShadow(false);
@@ -52,7 +52,7 @@ public class BarChartFrag extends SimpleFragment implements OnChartGestureListen
         
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(tf);
-        leftAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
         mChart.getAxisRight().setEnabled(false);
         

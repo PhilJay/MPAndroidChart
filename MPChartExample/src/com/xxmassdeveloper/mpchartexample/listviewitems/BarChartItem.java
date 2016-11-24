@@ -48,7 +48,7 @@ public class BarChartItem extends ChartItem {
         }
 
         // apply styling
-        holder.chart.setDescription("");
+        holder.chart.getDescription().setEnabled(false);
         holder.chart.setDrawGridBackground(false);
         holder.chart.setDrawBarShadow(false);
 
@@ -62,18 +62,19 @@ public class BarChartItem extends ChartItem {
         leftAxis.setTypeface(mTf);
         leftAxis.setLabelCount(5, false);
         leftAxis.setSpaceTop(20f);
-        leftAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
        
         YAxis rightAxis = holder.chart.getAxisRight();
         rightAxis.setTypeface(mTf);
         rightAxis.setLabelCount(5, false);
         rightAxis.setSpaceTop(20f);
-        rightAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+        rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
         mChartData.setValueTypeface(mTf);
         
         // set data
         holder.chart.setData((BarData) mChartData);
+        holder.chart.setFitBars(true);
         
         // do not forget to refresh the chart
 //        holder.chart.invalidate();

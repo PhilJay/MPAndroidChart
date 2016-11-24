@@ -10,7 +10,7 @@ import android.text.style.StyleSpan;
 import android.view.WindowManager;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.realm.implementation.RealmPieData;
+import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.realm.implementation.RealmPieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.R;
@@ -51,16 +51,15 @@ public class RealmDatabaseActivityPie extends RealmBaseActivity {
 
     private void setData() {
 
-        RealmResults<RealmDemoData> result = mRealm.allObjects(RealmDemoData.class);
+        RealmResults<RealmDemoData> result = mRealm.where(RealmDemoData.class).findAll();
 
-        //RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "stackValues", "xIndex"); // normal entries
-        RealmPieDataSet<RealmDemoData> set = new RealmPieDataSet<RealmDemoData>(result, "value", "xIndex"); // stacked entries
+        RealmPieDataSet<RealmDemoData> set = new RealmPieDataSet<RealmDemoData>(result, "yValue", "label");
         set.setColors(ColorTemplate.VORDIPLOM_COLORS);
         set.setLabel("Example market share");
         set.setSliceSpace(2);
 
         // create a data object with the dataset list
-        RealmPieData data = new RealmPieData(result, "xValue", set);
+        PieData data = new PieData(set);
         styleData(data);
         data.setValueTextColor(Color.WHITE);
         data.setValueTextSize(12f);

@@ -10,7 +10,8 @@ import io.realm.RealmObject;
  */
 public class RealmDemoData extends RealmObject {
 
-    private float value;
+    private float yValue;
+    private float xValue;
 
     private float open, close, high, low;
 
@@ -18,11 +19,12 @@ public class RealmDemoData extends RealmObject {
 
     private RealmList<RealmFloat> stackValues;
 
-    private int xIndex;
-
-    private String xValue;
-
     private String someStringField;
+
+    /**
+     * label for pie entries
+     */
+    private String label;
 
     // ofc there could me more fields here...
 
@@ -30,21 +32,22 @@ public class RealmDemoData extends RealmObject {
 
     }
 
-    public RealmDemoData(float value, int xIndex, String xValue) {
-        this.value = value;
-        this.xIndex = xIndex;
+    public RealmDemoData(float yValue) {
+        this.yValue = yValue;
+    }
+
+    public RealmDemoData(float xValue, float yValue) {
         this.xValue = xValue;
+        this.yValue = yValue;
     }
 
     /**
      * Constructor for stacked bars.
      *
-     * @param stackValues
-     * @param xIndex
      * @param xValue
+     * @param stackValues
      */
-    public RealmDemoData(float[] stackValues, int xIndex, String xValue) {
-        this.xIndex = xIndex;
+    public RealmDemoData(float xValue, float[] stackValues) {
         this.xValue = xValue;
         this.stackValues = new RealmList<RealmFloat>();
 
@@ -56,43 +59,59 @@ public class RealmDemoData extends RealmObject {
     /**
      * Constructor for candles.
      *
+     * @param xValue
      * @param high
      * @param low
      * @param open
      * @param close
-     * @param xIndex
      */
-    public RealmDemoData(float high, float low, float open, float close, int xIndex, String xValue) {
-        this.value = (high + low) / 2f;
+    public RealmDemoData(float xValue, float high, float low, float open, float close) {
+        this.yValue = (high + low) / 2f;
         this.high = high;
         this.low = low;
         this.open = open;
         this.close = close;
-        this.xIndex = xIndex;
         this.xValue = xValue;
     }
 
     /**
      * Constructor for bubbles.
      *
-     * @param value
-     * @param xIndex
-     * @param bubbleSize
      * @param xValue
+     * @param yValue
+     * @param bubbleSize
      */
-    public RealmDemoData(float value, int xIndex, float bubbleSize, String xValue) {
-        this.value = value;
-        this.xIndex = xIndex;
-        this.bubbleSize = bubbleSize;
+    public RealmDemoData(float xValue, float yValue, float bubbleSize) {
         this.xValue = xValue;
+        this.yValue = yValue;
+        this.bubbleSize = bubbleSize;
     }
 
-    public float getValue() {
-        return value;
+    /**
+     * Constructor for pie chart.
+     *
+     * @param yValue
+     * @param label
+     */
+    public RealmDemoData(float yValue, String label) {
+        this.yValue = yValue;
+        this.label = label;
     }
 
-    public void setValue(float value) {
-        this.value = value;
+    public float getyValue() {
+        return yValue;
+    }
+
+    public void setyValue(float yValue) {
+        this.yValue = yValue;
+    }
+
+    public float getxValue() {
+        return xValue;
+    }
+
+    public void setxValue(float xValue) {
+        this.xValue = xValue;
     }
 
     public RealmList<RealmFloat> getStackValues() {
@@ -101,22 +120,6 @@ public class RealmDemoData extends RealmObject {
 
     public void setStackValues(RealmList<RealmFloat> stackValues) {
         this.stackValues = stackValues;
-    }
-
-    public int getxIndex() {
-        return xIndex;
-    }
-
-    public void setxIndex(int xIndex) {
-        this.xIndex = xIndex;
-    }
-
-    public String getxValue() {
-        return xValue;
-    }
-
-    public void setxValue(String xValue) {
-        this.xValue = xValue;
     }
 
     public float getOpen() {
@@ -165,5 +168,13 @@ public class RealmDemoData extends RealmObject {
 
     public void setSomeStringField(String someStringField) {
         this.someStringField = someStringField;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 }

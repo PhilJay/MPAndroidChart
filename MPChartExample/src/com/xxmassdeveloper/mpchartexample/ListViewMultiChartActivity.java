@@ -18,6 +18,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.listviewitems.BarChartItem;
@@ -98,7 +99,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         ArrayList<Entry> e1 = new ArrayList<Entry>();
 
         for (int i = 0; i < 12; i++) {
-            e1.add(new Entry((int) (Math.random() * 65) + 40, i));
+            e1.add(new Entry(i, (int) (Math.random() * 65) + 40));
         }
 
         LineDataSet d1 = new LineDataSet(e1, "New DataSet " + cnt + ", (1)");
@@ -110,7 +111,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         ArrayList<Entry> e2 = new ArrayList<Entry>();
 
         for (int i = 0; i < 12; i++) {
-            e2.add(new Entry(e1.get(i).getVal() - 30, i));
+            e2.add(new Entry(i, e1.get(i).getY() - 30));
         }
 
         LineDataSet d2 = new LineDataSet(e2, "New DataSet " + cnt + ", (2)");
@@ -125,7 +126,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         sets.add(d1);
         sets.add(d2);
         
-        LineData cd = new LineData(getMonths(), sets);
+        LineData cd = new LineData(sets);
         return cd;
     }
     
@@ -139,15 +140,15 @@ public class ListViewMultiChartActivity extends DemoBase {
         ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
 
         for (int i = 0; i < 12; i++) {
-            entries.add(new BarEntry((int) (Math.random() * 70) + 30, i));
+            entries.add(new BarEntry(i, (int) (Math.random() * 70) + 30));
         }
 
         BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);
-        d.setBarSpacePercent(20f);
         d.setColors(ColorTemplate.VORDIPLOM_COLORS);
         d.setHighLightAlpha(255);
         
-        BarData cd = new BarData(getMonths(), d);
+        BarData cd = new BarData(d);
+        cd.setBarWidth(0.9f);
         return cd;
     }
     
@@ -158,10 +159,10 @@ public class ListViewMultiChartActivity extends DemoBase {
      */
     private PieData generateDataPie(int cnt) {
 
-        ArrayList<Entry> entries = new ArrayList<Entry>();
+        ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
 
         for (int i = 0; i < 4; i++) {
-            entries.add(new Entry((int) (Math.random() * 70) + 30, i));
+            entries.add(new PieEntry((float) ((Math.random() * 70) + 30), "Quarter " + (i+1)));
         }
 
         PieDataSet d = new PieDataSet(entries, "");
@@ -170,37 +171,7 @@ public class ListViewMultiChartActivity extends DemoBase {
         d.setSliceSpace(2f);
         d.setColors(ColorTemplate.VORDIPLOM_COLORS);
         
-        PieData cd = new PieData(getQuarters(), d);
+        PieData cd = new PieData(d);
         return cd;
-    }
-    
-    private ArrayList<String> getQuarters() {
-        
-        ArrayList<String> q = new ArrayList<String>();
-        q.add("1st Quarter");
-        q.add("2nd Quarter");
-        q.add("3rd Quarter");
-        q.add("4th Quarter");
-        
-        return q;
-    }
-
-    private ArrayList<String> getMonths() {
-
-        ArrayList<String> m = new ArrayList<String>();
-        m.add("Jan");
-        m.add("Feb");
-        m.add("Mar");
-        m.add("Apr");
-        m.add("May");
-        m.add("Jun");
-        m.add("Jul");
-        m.add("Aug");
-        m.add("Sep");
-        m.add("Okt");
-        m.add("Nov");
-        m.add("Dec");
-
-        return m;
     }
 }

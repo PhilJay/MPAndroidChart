@@ -5,7 +5,8 @@ import android.view.WindowManager;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.realm.implementation.RealmLineData;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.realm.implementation.RealmLineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -33,8 +34,8 @@ public class RealmDatabaseActivityLine extends RealmBaseActivity {
         mChart = (LineChart) findViewById(R.id.chart1);
         setup(mChart);
 
-        mChart.getAxisLeft().setAxisMaxValue(150f);
-        mChart.getAxisLeft().setAxisMinValue(0f);
+        mChart.getAxisLeft().setAxisMaximum(150f);
+        mChart.getAxisLeft().setAxisMinimum(0f);
         mChart.getAxisLeft().setDrawGridLines(false);
         mChart.getXAxis().setDrawGridLines(false);
     }
@@ -52,22 +53,22 @@ public class RealmDatabaseActivityLine extends RealmBaseActivity {
 
     private void setData() {
 
-        RealmResults<RealmDemoData> result = mRealm.allObjects(RealmDemoData.class);
+        RealmResults<RealmDemoData> result = mRealm.where(RealmDemoData.class).findAll();
 
-        RealmLineDataSet<RealmDemoData> set = new RealmLineDataSet<RealmDemoData>(result, "value", "xIndex");
-        set.setDrawCubic(false);
+        RealmLineDataSet<RealmDemoData> set = new RealmLineDataSet<RealmDemoData>(result, "xValue", "yValue");
+        set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         set.setLabel("Realm LineDataSet");
         set.setDrawCircleHole(false);
         set.setColor(ColorTemplate.rgb("#FF5722"));
         set.setCircleColor(ColorTemplate.rgb("#FF5722"));
         set.setLineWidth(1.8f);
-        set.setCircleSize(3.6f);
+        set.setCircleRadius(3.6f);
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         dataSets.add(set); // add the dataset
 
         // create a data object with the dataset list
-        RealmLineData data = new RealmLineData(result, "xValue", dataSets);
+        LineData data = new LineData(dataSets);
         styleData(data);
 
         // set data

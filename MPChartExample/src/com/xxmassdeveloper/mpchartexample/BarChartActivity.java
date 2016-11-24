@@ -2,9 +2,7 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.annotation.SuppressLint;
-import android.graphics.PointF;
 import android.graphics.RectF;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -28,14 +26,16 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
-import com.github.mikephil.charting.formatter.YAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.xxmassdeveloper.mpchartexample.custom.MyYAxisValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.MPPointF;
+import com.xxmassdeveloper.mpchartexample.custom.DayAxisValueFormatter;
+import com.xxmassdeveloper.mpchartexample.custom.MyAxisValueFormatter;
+import com.xxmassdeveloper.mpchartexample.custom.XYMarkerView;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -46,8 +46,6 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
     protected BarChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
-
-    private Typeface mTf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +66,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart.setDrawBarShadow(false);
         mChart.setDrawValueAboveBar(true);
 
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
@@ -80,34 +78,39 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart.setDrawGridBackground(false);
         // mChart.setDrawYLabels(false);
 
-        mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+        IAxisValueFormatter xAxisFormatter = new DayAxisValueFormatter(mChart);
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxisPosition.BOTTOM);
-        xAxis.setTypeface(mTf);
+        xAxis.setTypeface(mTfLight);
         xAxis.setDrawGridLines(false);
-        xAxis.setSpaceBetweenLabels(2);
+        xAxis.setGranularity(1f); // only intervals of 1 day
+        xAxis.setLabelCount(7);
+        xAxis.setValueFormatter(xAxisFormatter);
 
-        YAxisValueFormatter custom = new MyYAxisValueFormatter();
+        IAxisValueFormatter custom = new MyAxisValueFormatter();
 
         YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setTypeface(mTf);
+        leftAxis.setTypeface(mTfLight);
         leftAxis.setLabelCount(8, false);
         leftAxis.setValueFormatter(custom);
         leftAxis.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
         leftAxis.setSpaceTop(15f);
-        leftAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
-        rightAxis.setTypeface(mTf);
+        rightAxis.setTypeface(mTfLight);
         rightAxis.setLabelCount(8, false);
         rightAxis.setValueFormatter(custom);
         rightAxis.setSpaceTop(15f);
-        rightAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+        rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
         l.setForm(LegendForm.SQUARE);
         l.setFormSize(9f);
         l.setTextSize(11f);
@@ -116,6 +119,10 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         // "def", "ghj", "ikl", "mno" });
         // l.setCustom(ColorTemplate.VORDIPLOM_COLORS, new String[] { "abc",
         // "def", "ghj", "ikl", "mno" });
+
+        XYMarkerView mv = new XYMarkerView(this, xAxisFormatter);
+        mv.setChartView(mChart); // For bounds control
+        mChart.setMarker(mv); // Set the marker to the chart
 
         setData(12, 50);
 
@@ -147,7 +154,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
                 break;
             }
             case R.id.actionToggleHighlight: {
-                if(mChart.getData() != null) {
+                if (mChart.getData() != null) {
                     mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
                     mChart.invalidate();
                 }
@@ -167,11 +174,10 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
                 mChart.notifyDataSetChanged();
                 break;
             }
-            case R.id.actionToggleHighlightArrow: {
-                if (mChart.isDrawHighlightArrowEnabled())
-                    mChart.setDrawHighlightArrow(false);
-                else
-                    mChart.setDrawHighlightArrow(true);
+            case R.id.actionToggleBarBorders: {
+                for (IBarDataSet set : mChart.getData().getDataSets())
+                    ((BarDataSet) set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
+
                 mChart.invalidate();
                 break;
             }
@@ -204,71 +210,82 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-        tvX.setText("" + (mSeekBarX.getProgress() + 1));
+        tvX.setText("" + (mSeekBarX.getProgress() + 2));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
-        setData(mSeekBarX.getProgress() + 1, mSeekBarY.getProgress());
+        setData(mSeekBarX.getProgress() + 1 , mSeekBarY.getProgress());
         mChart.invalidate();
     }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         // TODO Auto-generated method stub
-
     }
 
     private void setData(int count, float range) {
 
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < count; i++) {
-            xVals.add(mMonths[i % 12]);
-        }
+        float start = 1f;
 
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
 
-        for (int i = 0; i < count; i++) {
+        for (int i = (int) start; i < start + count + 1; i++) {
             float mult = (range + 1);
             float val = (float) (Math.random() * mult);
-            yVals1.add(new BarEntry(val, i));
+            yVals1.add(new BarEntry(i, val));
         }
 
-        BarDataSet set1 = new BarDataSet(yVals1, "DataSet");
-        set1.setBarSpacePercent(35f);
+        BarDataSet set1;
 
-        ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-        dataSets.add(set1);
+        if (mChart.getData() != null &&
+                mChart.getData().getDataSetCount() > 0) {
+            set1 = (BarDataSet) mChart.getData().getDataSetByIndex(0);
+            set1.setValues(yVals1);
+            mChart.getData().notifyDataChanged();
+            mChart.notifyDataSetChanged();
+        } else {
+            set1 = new BarDataSet(yVals1, "The year 2017");
+            set1.setColors(ColorTemplate.MATERIAL_COLORS);
 
-        BarData data = new BarData(xVals, dataSets);
-        data.setValueTextSize(10f);
-        data.setValueTypeface(mTf);
+            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+            dataSets.add(set1);
 
-        mChart.setData(data);
+            BarData data = new BarData(dataSets);
+            data.setValueTextSize(10f);
+            data.setValueTypeface(mTfLight);
+            data.setBarWidth(0.9f);
+
+            mChart.setData(data);
+        }
     }
+
+    protected RectF mOnValueSelectedRectF = new RectF();
 
     @SuppressLint("NewApi")
     @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+    public void onValueSelected(Entry e, Highlight h) {
 
         if (e == null)
             return;
 
-        RectF bounds = mChart.getBarBounds((BarEntry) e);
-        PointF position = mChart.getPosition(e, AxisDependency.LEFT);
+        RectF bounds = mOnValueSelectedRectF;
+        mChart.getBarBounds((BarEntry) e, bounds);
+        MPPointF position = mChart.getPosition(e, AxisDependency.LEFT);
 
         Log.i("bounds", bounds.toString());
         Log.i("position", position.toString());
 
         Log.i("x-index",
-                "low: " + mChart.getLowestVisibleXIndex() + ", high: "
-                        + mChart.getHighestVisibleXIndex());
+                "low: " + mChart.getLowestVisibleX() + ", high: "
+                        + mChart.getHighestVisibleX());
+
+        MPPointF.recycleInstance(position);
     }
 
-    public void onNothingSelected() {
-    };
+    @Override
+    public void onNothingSelected() { }
 }

@@ -2,7 +2,6 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,13 +16,10 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.FileUtils;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -36,9 +32,7 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
     protected BarChart mChart;
     private SeekBar mSeekBarX;
     private TextView tvX;
-    
-    private Typeface mTf;
-    
+
     private List<BarEntry> mSinusData;
 
     @Override
@@ -47,8 +41,8 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_barchart_sinus);
-        
-        mSinusData = FileUtils.loadBarEntriesFromAssets(getAssets(),"othersine.txt");
+
+        mSinusData = FileUtils.loadBarEntriesFromAssets(getAssets(), "othersine.txt");
 
         tvX = (TextView) findViewById(R.id.tvValueCount);
 
@@ -59,7 +53,7 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
         mChart.setDrawBarShadow(false);
         mChart.setDrawValueAboveBar(true);
 
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
@@ -76,32 +70,33 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
         mChart.setDrawGridBackground(false);
         // mChart.setDrawYLabels(false);
 
-        mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-
         XAxis xAxis = mChart.getXAxis();
-        xAxis.setPosition(XAxisPosition.BOTTOM);
-        xAxis.setTypeface(mTf);
-        xAxis.setDrawGridLines(false);
         xAxis.setEnabled(false);
 
         YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setTypeface(mTf);
+        leftAxis.setTypeface(mTfLight);
         leftAxis.setLabelCount(6, false);
-        leftAxis.setAxisMinValue(-2.5f);
-        leftAxis.setAxisMaxValue(2.5f);
+        leftAxis.setAxisMinimum(-2.5f);
+        leftAxis.setAxisMaximum(2.5f);
+        leftAxis.setGranularityEnabled(true);
+        leftAxis.setGranularity(0.1f);
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
-        rightAxis.setTypeface(mTf);
+        rightAxis.setTypeface(mTfLight);
         rightAxis.setLabelCount(6, false);
-        rightAxis.setAxisMinValue(-2.5f);
-        rightAxis.setAxisMaxValue(2.5f);
+        rightAxis.setAxisMinimum(-2.5f);
+        rightAxis.setAxisMaximum(2.5f);
+        rightAxis.setGranularity(0.1f);
 
         mSeekBarX.setOnSeekBarChangeListener(this);
         mSeekBarX.setProgress(150); // set data
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
         l.setForm(LegendForm.SQUARE);
         l.setFormSize(9f);
         l.setTextSize(11f);
@@ -128,7 +123,7 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
                 break;
             }
             case R.id.actionToggleHighlight: {
-                if(mChart.getData() != null) {
+                if (mChart.getData() != null) {
                     mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
                     mChart.invalidate();
                 }
@@ -148,11 +143,10 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
                 mChart.notifyDataSetChanged();
                 break;
             }
-            case R.id.actionToggleHighlightArrow: {
-                if (mChart.isDrawHighlightArrowEnabled())
-                    mChart.setDrawHighlightArrow(false);
-                else
-                    mChart.setDrawHighlightArrow(true);
+            case R.id.actionToggleBarBorders: {
+                for (IBarDataSet set : mChart.getData().getDataSets())
+                    ((BarDataSet) set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
+
                 mChart.invalidate();
                 break;
             }
@@ -205,23 +199,30 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
 
     private void setData(int count) {
 
-        ArrayList<String> xVals = new ArrayList<String>();
-        
         ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
-        
+
         for (int i = 0; i < count; i++) {
-            xVals.add(i+"");
             entries.add(mSinusData.get(i));
         }
-        
-        BarDataSet set = new BarDataSet(entries, "Sinus Function");
-        set.setBarSpacePercent(40f);
-        set.setColor(Color.rgb(240, 120, 124));
 
-        BarData data = new BarData(xVals, set);
+        BarDataSet set;
+
+        if (mChart.getData() != null &&
+                mChart.getData().getDataSetCount() > 0) {
+            set = (BarDataSet) mChart.getData().getDataSetByIndex(0);
+            set.setValues(entries);
+            mChart.getData().notifyDataChanged();
+            mChart.notifyDataSetChanged();
+        } else {
+            set = new BarDataSet(entries, "Sinus Function");
+            set.setColor(Color.rgb(240, 120, 124));
+        }
+
+        BarData data = new BarData(set);
         data.setValueTextSize(10f);
-        data.setValueTypeface(mTf);
+        data.setValueTypeface(mTfLight);
         data.setDrawValues(false);
+        data.setBarWidth(0.8f);
 
         mChart.setData(data);
     }

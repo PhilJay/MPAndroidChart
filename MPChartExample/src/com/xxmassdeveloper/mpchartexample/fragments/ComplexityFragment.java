@@ -26,8 +26,8 @@ public class ComplexityFragment extends SimpleFragment {
         View v = inflater.inflate(R.layout.frag_simple_line, container, false);
         
         mChart = (LineChart) v.findViewById(R.id.lineChart1);
-        
-        mChart.setDescription("");
+
+        mChart.getDescription().setEnabled(false);
 
         mChart.setDrawGridBackground(false);
         
@@ -41,7 +41,6 @@ public class ComplexityFragment extends SimpleFragment {
         
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(tf);
-        leftAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
         
         mChart.getAxisRight().setEnabled(false);
         

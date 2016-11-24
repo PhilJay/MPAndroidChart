@@ -11,7 +11,6 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -35,12 +34,14 @@ public class LineChartActivityColored extends DemoBase {
 
         mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Bold.ttf");
 
-        LineData data = getData(36, 100);
-        data.setValueTypeface(mTf);
+        for (int i = 0; i < mCharts.length; i++) {
 
-        for (int i = 0; i < mCharts.length; i++)
+            LineData data = getData(36, 100);
+            data.setValueTypeface(mTf);
+
             // add some transparency to the color with "& 0x90FFFFFF"
             setupChart(mCharts[i], data, mColors[i % mColors.length]);
+        }
     }
 
     private int[] mColors = new int[] {
@@ -52,9 +53,10 @@ public class LineChartActivityColored extends DemoBase {
 
     private void setupChart(LineChart chart, LineData data, int color) {
 
+        ((LineDataSet) data.getDataSetByIndex(0)).setCircleColorHole(color);
+
         // no description text
-        chart.setDescription("");
-        chart.setNoDataTextDescription("You need to provide data for the chart.");
+        chart.getDescription().setEnabled(false);
         
         // mChart.setDrawHorizontalGrid(false);
         //
@@ -85,6 +87,8 @@ public class LineChartActivityColored extends DemoBase {
         l.setEnabled(false);
 
         chart.getAxisLeft().setEnabled(false);
+        chart.getAxisLeft().setSpaceTop(40);
+        chart.getAxisLeft().setSpaceBottom(40);
         chart.getAxisRight().setEnabled(false);
 
         chart.getXAxis().setEnabled(false);
@@ -95,16 +99,11 @@ public class LineChartActivityColored extends DemoBase {
     
     private LineData getData(int count, float range) {
 
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < count; i++) {
-            xVals.add(mMonths[i % 12]);
-        }
-
         ArrayList<Entry> yVals = new ArrayList<Entry>();
 
         for (int i = 0; i < count; i++) {
             float val = (float) (Math.random() * range) + 3;
-            yVals.add(new Entry(val, i));
+            yVals.add(new Entry(i, val));
         }
 
         // create a dataset and give it a type
@@ -113,17 +112,15 @@ public class LineChartActivityColored extends DemoBase {
         // set1.setFillColor(Color.RED);
 
         set1.setLineWidth(1.75f);
-        set1.setCircleRadius(3f);
+        set1.setCircleRadius(5f);
+        set1.setCircleHoleRadius(2.5f);
         set1.setColor(Color.WHITE);
         set1.setCircleColor(Color.WHITE);
         set1.setHighLightColor(Color.WHITE);
         set1.setDrawValues(false);
 
-        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-        dataSets.add(set1); // add the datasets
-
         // create a data object with the datasets
-        LineData data = new LineData(xVals, dataSets);
+        LineData data = new LineData(set1);
 
         return data;
     }

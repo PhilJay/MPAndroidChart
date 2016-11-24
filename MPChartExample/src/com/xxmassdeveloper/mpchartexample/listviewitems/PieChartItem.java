@@ -56,7 +56,7 @@ public class PieChartItem extends ChartItem {
         }
 
         // apply styling
-        holder.chart.setDescription("");
+        holder.chart.getDescription().setEnabled(false);
         holder.chart.setHoleRadius(52f);
         holder.chart.setTransparentCircleRadius(57f);
         holder.chart.setCenterText(mCenterText);
@@ -73,7 +73,10 @@ public class PieChartItem extends ChartItem {
         holder.chart.setData((PieData) mChartData);
 
         Legend l = holder.chart.getLegend();
-        l.setPosition(LegendPosition.RIGHT_OF_CHART);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setDrawInside(false);
         l.setYEntrySpace(0f);
         l.setYOffset(0f);
 

@@ -12,7 +12,6 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
@@ -57,12 +56,8 @@ public class ListViewBarChartActivity extends DemoBase {
 
     private class ChartDataAdapter extends ArrayAdapter<BarData> {
 
-        private Typeface mTf;
-
         public ChartDataAdapter(Context context, List<BarData> objects) {
             super(context, 0, objects);
-
-            mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
         }
 
         @Override
@@ -87,32 +82,33 @@ public class ListViewBarChartActivity extends DemoBase {
             }
 
             // apply styling
-            data.setValueTypeface(mTf);
+            data.setValueTypeface(mTfLight);
             data.setValueTextColor(Color.BLACK);
-            holder.chart.setDescription("");
+            holder.chart.getDescription().setEnabled(false);
             holder.chart.setDrawGridBackground(false);
 
             XAxis xAxis = holder.chart.getXAxis();
             xAxis.setPosition(XAxisPosition.BOTTOM);
-            xAxis.setTypeface(mTf);
+            xAxis.setTypeface(mTfLight);
             xAxis.setDrawGridLines(false);
             
             YAxis leftAxis = holder.chart.getAxisLeft();
-            leftAxis.setTypeface(mTf);
+            leftAxis.setTypeface(mTfLight);
             leftAxis.setLabelCount(5, false);
             leftAxis.setSpaceTop(15f);
             
             YAxis rightAxis = holder.chart.getAxisRight();
-            rightAxis.setTypeface(mTf);
+            rightAxis.setTypeface(mTfLight);
             rightAxis.setLabelCount(5, false);
             rightAxis.setSpaceTop(15f);
 
             // set data
             holder.chart.setData(data);
+            holder.chart.setFitBars(true);
             
             // do not forget to refresh the chart
 //            holder.chart.invalidate();
-            holder.chart.animateY(700, Easing.EasingOption.EaseInCubic);
+            holder.chart.animateY(700);
 
             return convertView;
         }
@@ -133,37 +129,18 @@ public class ListViewBarChartActivity extends DemoBase {
         ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
 
         for (int i = 0; i < 12; i++) {
-            entries.add(new BarEntry((int) (Math.random() * 70) + 30, i));
+            entries.add(new BarEntry(i, (float) (Math.random() * 70) + 30));
         }
 
-        BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);    
-        d.setBarSpacePercent(20f);
+        BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);
         d.setColors(ColorTemplate.VORDIPLOM_COLORS);
         d.setBarShadowColor(Color.rgb(203, 203, 203));
         
         ArrayList<IBarDataSet> sets = new ArrayList<IBarDataSet>();
         sets.add(d);
         
-        BarData cd = new BarData(getMonths(), sets);
+        BarData cd = new BarData(sets);
+        cd.setBarWidth(0.9f);
         return cd;
-    }
-
-    private ArrayList<String> getMonths() {
-
-        ArrayList<String> m = new ArrayList<String>();
-        m.add("Jan");
-        m.add("Feb");
-        m.add("Mar");
-        m.add("Apr");
-        m.add("May");
-        m.add("Jun");
-        m.add("Jul");
-        m.add("Aug");
-        m.add("Sep");
-        m.add("Okt");
-        m.add("Nov");
-        m.add("Dec");
-
-        return m;
     }
 }

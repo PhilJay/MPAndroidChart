@@ -2,7 +2,6 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -21,8 +20,6 @@ import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.data.BubbleEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
@@ -38,8 +35,6 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
     private BubbleChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
-
-    private Typeface tf;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +53,7 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
         mSeekBarY.setOnSeekBarChangeListener(this);
 
         mChart = (BubbleChart) findViewById(R.id.chart1);
-        mChart.setDescription("");
-
-        tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+        mChart.getDescription().setEnabled(false);
 
         mChart.setOnChartValueSelectedListener(this);
 
@@ -75,15 +68,18 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
         mChart.setMaxVisibleValueCount(200);
         mChart.setPinchZoom(true);
 
-        mSeekBarX.setProgress(5);
+        mSeekBarX.setProgress(10);
         mSeekBarY.setProgress(50);
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.RIGHT_OF_CHART);
-        l.setTypeface(tf);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setDrawInside(false);
+        l.setTypeface(mTfLight);
 
         YAxis yl = mChart.getAxisLeft();
-        yl.setTypeface(tf);
+        yl.setTypeface(mTfLight);
         yl.setSpaceTop(30f);
         yl.setSpaceBottom(30f);
         yl.setDrawZeroLine(false);
@@ -92,7 +88,7 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
 
         XAxis xl = mChart.getXAxis();
         xl.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xl.setTypeface(tf);
+        xl.setTypeface(mTfLight);
     }
 
     @Override
@@ -134,7 +130,6 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
                 break;
             }
             case R.id.actionSave: {
-                // mChart.saveToGallery("title"+System.currentTimeMillis());
                 mChart.saveToPath("title" + System.currentTimeMillis(), "");
                 break;
             }
@@ -158,16 +153,11 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-        int count = mSeekBarX.getProgress() + 1;
+        int count = mSeekBarX.getProgress();
         int range = mSeekBarY.getProgress();
 
         tvX.setText("" + count);
         tvY.setText("" + range);
-
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < count; i++) {
-            xVals.add((i) + "");
-        }
 
         ArrayList<BubbleEntry> yVals1 = new ArrayList<BubbleEntry>();
         ArrayList<BubbleEntry> yVals2 = new ArrayList<BubbleEntry>();
@@ -211,8 +201,9 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
         dataSets.add(set3);
 
         // create a data object with the datasets
-        BubbleData data = new BubbleData(xVals, dataSets);
-        data.setValueTypeface(tf);
+        BubbleData data = new BubbleData(dataSets);
+        data.setDrawValues(false);
+        data.setValueTypeface(mTfLight);
         data.setValueTextSize(8f);
         data.setValueTextColor(Color.WHITE);
         data.setHighlightCircleWidth(1.5f);
@@ -222,10 +213,10 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
     }
 
     @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+    public void onValueSelected(Entry e, Highlight h) {
         Log.i("VAL SELECTED",
-                "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
-                        + ", DataSet index: " + dataSetIndex);
+                "Value: " + e.getY() + ", xIndex: " + e.getX()
+                        + ", DataSet index: " + h.getDataSetIndex());
     }
 
     @Override

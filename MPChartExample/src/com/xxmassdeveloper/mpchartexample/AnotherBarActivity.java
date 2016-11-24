@@ -16,8 +16,6 @@ import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -49,7 +47,7 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
 
         mChart = (BarChart) findViewById(R.id.chart1);
 
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
@@ -63,7 +61,6 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxisPosition.BOTTOM);
-        xAxis.setSpaceBetweenLabels(0);
         xAxis.setDrawGridLines(false);
         
         mChart.getAxisLeft().setDrawGridLines(false);
@@ -76,14 +73,6 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
         mChart.animateY(2500);
         
         mChart.getLegend().setEnabled(false);
-
-        // Legend l = mChart.getLegend();
-        // l.setPosition(LegendPosition.BELOW_CHART_CENTER);
-        // l.setFormSize(8f);
-        // l.setFormToTextSpace(4f);
-        // l.setXEntrySpace(6f);
-
-        // mChart.setDrawLegend(false);
     }
 
     @Override
@@ -126,11 +115,10 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
                 mChart.notifyDataSetChanged();
                 break;
             }
-            case R.id.actionToggleHighlightArrow: {
-                if (mChart.isDrawHighlightArrowEnabled())
-                    mChart.setDrawHighlightArrow(false);
-                else
-                    mChart.setDrawHighlightArrow(true);
+            case R.id.actionToggleBarBorders: {
+                for (IBarDataSet set : mChart.getData().getDataSets())
+                    ((BarDataSet)set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
+
                 mChart.invalidate();
                 break;
             }
@@ -170,25 +158,31 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
 
         for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
             float mult = (mSeekBarY.getProgress() + 1);
-            float val1 = (float) (Math.random() * mult) + mult / 3;
-            yVals1.add(new BarEntry((int) val1, i));
+            float val = (float) (Math.random() * mult) + mult / 3;
+            yVals1.add(new BarEntry(i, val));
         }
 
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < mSeekBarX.getProgress() + 1; i++) {
-            xVals.add((int) yVals1.get(i).getVal() + "");
+        BarDataSet set1;
+
+        if (mChart.getData() != null &&
+                mChart.getData().getDataSetCount() > 0) {
+            set1 = (BarDataSet)mChart.getData().getDataSetByIndex(0);
+            set1.setValues(yVals1);
+            mChart.getData().notifyDataChanged();
+            mChart.notifyDataSetChanged();
+        } else {
+            set1 = new BarDataSet(yVals1, "Data Set");
+            set1.setColors(ColorTemplate.VORDIPLOM_COLORS);
+            set1.setDrawValues(false);
+
+            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+            dataSets.add(set1);
+
+            BarData data = new BarData(dataSets);
+            mChart.setData(data);
+            mChart.setFitBars(true);
         }
 
-        BarDataSet set1 = new BarDataSet(yVals1, "Data Set");
-        set1.setColors(ColorTemplate.VORDIPLOM_COLORS);
-        set1.setDrawValues(false);
-
-        ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-        dataSets.add(set1);
-
-        BarData data = new BarData(xVals, dataSets);
-
-        mChart.setData(data);
         mChart.invalidate();
     }
 

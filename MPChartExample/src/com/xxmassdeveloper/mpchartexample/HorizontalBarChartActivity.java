@@ -2,9 +2,7 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.annotation.SuppressLint;
-import android.graphics.PointF;
 import android.graphics.RectF;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -25,11 +23,10 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -41,8 +38,6 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
     protected HorizontalBarChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
-
-    private Typeface tf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +60,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
         mChart.setDrawValueAboveBar(true);
 
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
@@ -77,37 +72,31 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         // draw shadows for each bar that show the maximum value
         // mChart.setDrawBarShadow(true);
 
-        // mChart.setDrawXLabels(false);
-
         mChart.setDrawGridBackground(false);
-
-        // mChart.setDrawYLabels(false);
-
-        tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
         XAxis xl = mChart.getXAxis();
         xl.setPosition(XAxisPosition.BOTTOM);
-        xl.setTypeface(tf);
+        xl.setTypeface(mTfLight);
         xl.setDrawAxisLine(true);
-        xl.setDrawGridLines(true);
-        xl.setGridLineWidth(0.3f);
+        xl.setDrawGridLines(false);
+        xl.setGranularity(10f);
 
         YAxis yl = mChart.getAxisLeft();
-        yl.setTypeface(tf);
+        yl.setTypeface(mTfLight);
         yl.setDrawAxisLine(true);
         yl.setDrawGridLines(true);
-        yl.setGridLineWidth(0.3f);
-        yl.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+        yl.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 //        yl.setInverted(true);
 
         YAxis yr = mChart.getAxisRight();
-        yr.setTypeface(tf);
+        yr.setTypeface(mTfLight);
         yr.setDrawAxisLine(true);
         yr.setDrawGridLines(false);
-        yr.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+        yr.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 //        yr.setInverted(true);
 
         setData(12, 50);
+        mChart.setFitBars(true);
         mChart.animateY(2500);
 
         // setting data
@@ -118,11 +107,12 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         mSeekBarX.setOnSeekBarChangeListener(this);
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
         l.setFormSize(8f);
         l.setXEntrySpace(4f);
-
-        // mChart.setDrawLegend(false);
     }
 
     @Override
@@ -169,11 +159,10 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
                 mChart.notifyDataSetChanged();
                 break;
             }
-            case R.id.actionToggleHighlightArrow: {
-                if (mChart.isDrawHighlightArrowEnabled())
-                    mChart.setDrawHighlightArrow(false);
-                else
-                    mChart.setDrawHighlightArrow(true);
+            case R.id.actionToggleBarBorders: {
+                for (IBarDataSet set : mChart.getData().getDataSets())
+                    ((BarDataSet)set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
+
                 mChart.invalidate();
                 break;
             }
@@ -210,6 +199,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         tvY.setText("" + (mSeekBarY.getProgress()));
 
         setData(mSeekBarX.getProgress() + 1, mSeekBarY.getProgress());
+        mChart.setFitBars(true);
         mChart.invalidate();
     }
 
@@ -227,41 +217,58 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
     private void setData(int count, float range) {
 
+        float barWidth = 9f;
+        float spaceForBar = 10f;
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
-        ArrayList<String> xVals = new ArrayList<String>();
 
         for (int i = 0; i < count; i++) {
-            xVals.add(mMonths[i % 12]);
-            yVals1.add(new BarEntry((float) (Math.random() * range), i));
+            float val = (float) (Math.random() * range);
+            yVals1.add(new BarEntry(i * spaceForBar, val));
         }
 
-        BarDataSet set1 = new BarDataSet(yVals1, "DataSet 1");
+        BarDataSet set1;
 
-        ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-        dataSets.add(set1);
+        if (mChart.getData() != null &&
+                mChart.getData().getDataSetCount() > 0) {
+            set1 = (BarDataSet)mChart.getData().getDataSetByIndex(0);
+            set1.setValues(yVals1);
+            mChart.getData().notifyDataChanged();
+            mChart.notifyDataSetChanged();
+        } else {
+            set1 = new BarDataSet(yVals1, "DataSet 1");
 
-        BarData data = new BarData(xVals, dataSets);
-        data.setValueTextSize(10f);
-        data.setValueTypeface(tf);
+            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+            dataSets.add(set1);
 
-        mChart.setData(data);
+            BarData data = new BarData(dataSets);
+            data.setValueTextSize(10f);
+            data.setValueTypeface(mTfLight);
+            data.setBarWidth(barWidth);
+            mChart.setData(data);
+        }
     }
 
+    protected RectF mOnValueSelectedRectF = new RectF();
     @SuppressLint("NewApi")
     @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+    public void onValueSelected(Entry e, Highlight h) {
 
         if (e == null)
             return;
 
-        RectF bounds = mChart.getBarBounds((BarEntry) e);
-        PointF position = mChart.getPosition(e, mChart.getData().getDataSetByIndex(dataSetIndex)
+        RectF bounds = mOnValueSelectedRectF;
+        mChart.getBarBounds((BarEntry) e, bounds);
+
+        MPPointF position = mChart.getPosition(e, mChart.getData().getDataSetByIndex(h.getDataSetIndex())
                 .getAxisDependency());
 
         Log.i("bounds", bounds.toString());
         Log.i("position", position.toString());
+
+        MPPointF.recycleInstance(position);
     }
 
+    @Override
     public void onNothingSelected() {
     };
 }

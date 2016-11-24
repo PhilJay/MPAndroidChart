@@ -28,7 +28,7 @@ public class ScrollViewActivity extends DemoBase {
 
         mChart = (BarChart) findViewById(R.id.chart1);
 
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
 
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
@@ -38,7 +38,6 @@ public class ScrollViewActivity extends DemoBase {
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxisPosition.BOTTOM);
-        xAxis.setLabelsToSkip(0);
         xAxis.setDrawGridLines(false);
 
         mChart.getAxisLeft().setDrawGridLines(false);
@@ -46,24 +45,23 @@ public class ScrollViewActivity extends DemoBase {
         mChart.getLegend().setEnabled(false);
 
         setData(10);
+        mChart.setFitBars(true);
     }
     
     private void setData(int count) {
         
         ArrayList<BarEntry> yVals = new ArrayList<BarEntry>();
-        ArrayList<String> xVals = new ArrayList<String>();
 
         for (int i = 0; i < count; i++) {
             float val = (float) (Math.random() * count) + 15;
-            yVals.add(new BarEntry((int) val, i));
-            xVals.add((int) val + "");
+            yVals.add(new BarEntry(i, (int) val));
         }
 
         BarDataSet set = new BarDataSet(yVals, "Data Set");
         set.setColors(ColorTemplate.VORDIPLOM_COLORS);
         set.setDrawValues(false);
 
-        BarData data = new BarData(xVals, set);
+        BarData data = new BarData(set);
 
         mChart.setData(data);
         mChart.invalidate();

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xxmassdeveloper.mpchartexample"
-    android:versionCode="49"
-    android:versionName="2.2.3" >
+    android:versionCode="54"
+    android:versionName="3.0.1" >
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="23" />
+        android:minSdkVersion="16"
+        android:targetSdkVersion="24" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
@@ -26,9 +26,11 @@
         </activity>
         <activity android:name="LineChartActivity1"></activity> <!--  android:configChanges="keyboardHidden|orientation|screenSize"  -->
         <activity android:name="LineChartActivity2"></activity>
+        <activity android:name=".LineChartTime"></activity>
         <activity android:name="BarChartActivity"></activity>
 		<activity android:name="HorizontalBarChartActivity"></activity>
         <activity android:name="PieChartActivity"></activity>
+        <activity android:name="PiePolylineChartActivity"></activity>
         <activity android:name="MultiLineChartActivity"></activity>
         <activity android:name="BarChartActivityMultiDataset"></activity>
         <activity android:name="DrawChartActivity"></activity>
@@ -62,6 +64,8 @@
         <activity android:name="StackedBarActivityNegative"></activity>
         <activity android:name=".realm.RealmWikiExample"></activity>
         <activity android:name=".BarChartPositiveNegative"></activity>
+        <activity android:name=".FilledLineActivity"></activity>
+        <activity android:name=".HalfPieChartActivity"></activity>
     </application>
 
 </manifest>
