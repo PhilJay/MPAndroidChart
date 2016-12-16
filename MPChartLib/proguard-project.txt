@@ -1,0 +1,5 @@
+-dontwarn com.github.mikephil.**
+
+-keep public class com.github.mikephil.charting.animation.* {
+    public protected *;
+}
