@@ -292,7 +292,10 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                                 float value = vals[idx];
                                 float y;
 
-                                if (value >= 0f) {
+                                if (value == 0.0f && (posY == 0.0f || negY == 0.0f)) {
+                                    // Take care of the situation of a 0.0 value, which overlaps a non-zero bar
+                                    y = value;
+                                } else if (value >= 0.0f) {
                                     posY += value;
                                     y = posY;
                                 } else {
@@ -307,8 +310,12 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
                             for (int k = 0; k < transformed.length; k += 2) {
 
+                                final float val = vals[k / 2];
+                                final boolean drawBelow =
+                                        (val == 0.0f && negY == 0.0f && posY > 0.0f) ||
+                                                val < 0.0f;
                                 float y = transformed[k + 1]
-                                        + (vals[k / 2] >= 0 ? posOffset : negOffset);
+                                        + (drawBelow ? negOffset : posOffset);
 
                                 if (!mViewPortHandler.isInBoundsRight(x))
                                     break;

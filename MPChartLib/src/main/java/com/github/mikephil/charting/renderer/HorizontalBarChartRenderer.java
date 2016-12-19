@@ -264,7 +264,10 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                                 float value = vals[idx];
                                 float y;
 
-                                if (value >= 0f) {
+                                if (value == 0.0f && (posY == 0.0f || negY == 0.0f)) {
+                                    // Take care of the situation of a 0.0 value, which overlaps a non-zero bar
+                                    y = value;
+                                } else if (value >= 0.0f) {
                                     posY += value;
                                     y = posY;
                                 } else {
@@ -279,7 +282,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 
                             for (int k = 0; k < transformed.length; k += 2) {
 
-                                float val = vals[k / 2];
+                                final float val = vals[k / 2];
                                 String formattedValue = formatter.getFormattedValue(val, e, i, mViewPortHandler);
 
                                 // calculate the correct offset depending on the draw position of the value
@@ -292,8 +295,12 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
                                     negOffset = -negOffset - valueTextWidth;
                                 }
 
+                                final boolean drawBelow =
+                                        (val == 0.0f && negY == 0.0f && posY > 0.0f) ||
+                                                val < 0.0f;
+
                                 float x = transformed[k]
-                                        + (val >= 0 ? posOffset : negOffset);
+                                        + (drawBelow ? negOffset : posOffset);
                                 float y = (buffer.buffer[bufferIndex + 1] + buffer.buffer[bufferIndex + 3]) / 2f;
 
                                 if (!mViewPortHandler.isInBoundsTop(y))
