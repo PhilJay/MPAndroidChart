@@ -156,12 +156,12 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
         MPPointF pOut = MPPointF.getInstance(0,0);
         float factor = mChart.getFactor();
 
-        int labelCount = mYAxis.mEntryCount;
+        final int from = mYAxis.isDrawBottomYLabelEntryEnabled() ? 0 : 1;
+        final int to = mYAxis.isDrawTopYLabelEntryEnabled()
+                ? mYAxis.mEntryCount
+                : (mYAxis.mEntryCount - 1);
 
-        for (int j = 0; j < labelCount; j++) {
-
-            if (j == labelCount - 1 && mYAxis.isDrawTopYLabelEntryEnabled() == false)
-                break;
+        for (int j = from; j < to; j++) {
 
             float r = (mYAxis.mEntries[j] - mYAxis.mAxisMinimum) * factor;
 

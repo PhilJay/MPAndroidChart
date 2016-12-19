@@ -114,13 +114,15 @@ public class YAxisRenderer extends AxisRenderer {
      */
     protected void drawYLabels(Canvas c, float fixedPosition, float[] positions, float offset) {
 
+        final int from = mYAxis.isDrawBottomYLabelEntryEnabled() ? 0 : 1;
+        final int to = mYAxis.isDrawTopYLabelEntryEnabled()
+                ? mYAxis.mEntryCount
+                : (mYAxis.mEntryCount - 1);
+
         // draw
-        for (int i = 0; i < mYAxis.mEntryCount; i++) {
+        for (int i = from; i < to; i++) {
 
             String text = mYAxis.getFormattedLabel(i);
-
-            if (!mYAxis.isDrawTopYLabelEntryEnabled() && i >= mYAxis.mEntryCount - 1)
-                return;
 
             c.drawText(text, fixedPosition, positions[i * 2 + 1] + offset, mAxisLabelPaint);
         }
