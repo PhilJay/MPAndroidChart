@@ -202,7 +202,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
 
         mXAxisRenderer.renderAxisLine(canvas);
+        mXAxisRenderer.renderAxisTitle(canvas);
         mAxisRendererLeft.renderAxisLine(canvas);
+        mAxisRendererLeft.renderAxisTitle(canvas);
         mAxisRendererRight.renderAxisLine(canvas);
 
         if (mAutoScaleMinMaxEnabled) {
@@ -486,6 +488,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
                     offsetBottom += xlabelheight;
                     offsetTop += xlabelheight;
                 }
+            }
+
+            if (mXAxis.isEnabled() && !mXAxis.getTitle().isEmpty()) {
+
+                float xTitleHeight = mXAxis.mTitleHeight + mXAxis.getYOffset();
+                offsetBottom += xTitleHeight;
             }
 
             offsetTop += getExtraTopOffset();

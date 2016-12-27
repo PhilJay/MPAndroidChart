@@ -85,6 +85,7 @@ public class XAxisRenderer extends AxisRenderer {
 
         final float labelWidth = labelSize.width;
         final float labelHeight = Utils.calcTextHeight(mAxisLabelPaint, "Q");
+        final float titleHeight = Utils.calcTextHeight(mAxisTitlePaint, "Q");
 
         final FSize labelRotatedSize = Utils.getSizeOfRotatedRectangleByDegrees(
                 labelWidth,
@@ -96,6 +97,8 @@ public class XAxisRenderer extends AxisRenderer {
         mXAxis.mLabelHeight = Math.round(labelHeight);
         mXAxis.mLabelRotatedWidth = Math.round(labelRotatedSize.width);
         mXAxis.mLabelRotatedHeight = Math.round(labelRotatedSize.height);
+
+        mXAxis.mTitleHeight = Math.round(titleHeight);
 
         FSize.recycleInstance(labelRotatedSize);
         FSize.recycleInstance(labelSize);
@@ -170,6 +173,26 @@ public class XAxisRenderer extends AxisRenderer {
                     mViewPortHandler.contentBottom(), mViewPortHandler.contentRight(),
                     mViewPortHandler.contentBottom(), mAxisLinePaint);
         }
+    }
+
+    @Override
+    public void renderAxisTitle(Canvas c) {
+
+        if (!mXAxis.isEnabled() || mXAxis.getTitle().isEmpty())
+            return;
+
+        mAxisTitlePaint.setTypeface(mXAxis.getTypeface());
+        mAxisTitlePaint.setTextSize(mXAxis.getTextSize());
+        mAxisTitlePaint.setColor(mXAxis.getTextColor());
+        mAxisTitlePaint.setTextAlign(Paint.Align.LEFT);
+        float yOffset = mXAxis.getYOffset()*3;
+
+        final FSize titleSize = Utils.calcTextSize(mAxisLabelPaint, mXAxis.getTitle());
+        float posX = (mViewPortHandler.getChartWidth() / 2.f) - (titleSize.width/2);
+
+        float posY = mViewPortHandler.contentBottom() + yOffset + mXAxis.mLabelRotatedHeight + mXAxis.mTitleHeight;//mLegend.mNeededHeight;
+
+        c.drawText(mXAxis.getTitle(), posX, posY, mAxisTitlePaint);
     }
 
     /**
