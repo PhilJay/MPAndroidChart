@@ -400,8 +400,7 @@ public class XAxisRenderer extends AxisRenderer {
 
                 mLimitLinePaint.setTextAlign(Align.CENTER);
                 c.drawText(label, position[0], mViewPortHandler.contentBottom() - yOffset, mLimitLinePaint);
-            }
-            else {
+            } else {
 
                 mLimitLinePaint.setTextAlign(Align.RIGHT);
                 c.drawText(label, position[0] - xOffset, mViewPortHandler.contentBottom() - yOffset, mLimitLinePaint);
