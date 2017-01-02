@@ -66,6 +66,7 @@
         <activity android:name=".BarChartPositiveNegative"></activity>
         <activity android:name=".FilledLineActivity"></activity>
         <activity android:name=".HalfPieChartActivity"></activity>
+        <activity android:name=".SpecificXLabelsLineChartActivity"></activity>
     </application>
 
 </manifest>
