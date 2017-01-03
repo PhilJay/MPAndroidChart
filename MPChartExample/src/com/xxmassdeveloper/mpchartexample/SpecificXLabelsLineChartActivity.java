@@ -136,6 +136,9 @@ public class SpecificXLabelsLineChartActivity extends DemoBase implements OnSeek
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
         leftAxis.setDrawZeroLine(false);
 
+        leftAxis.setShowSpecificLabelPositions(true);
+        leftAxis.setSpecificLabelPositions(new float[]{0, 10, 20, 50, 100, 300});
+
         // limit lines are drawn behind data (and not on top)
         leftAxis.setDrawLimitLinesBehindData(true);
 

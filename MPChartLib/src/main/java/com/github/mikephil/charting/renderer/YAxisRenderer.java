@@ -114,6 +114,24 @@ public class YAxisRenderer extends AxisRenderer {
      */
     protected void drawYLabels(Canvas c, float fixedPosition, float[] positions, float offset) {
 
+        if(mYAxis.isShowSpecificLabelPositions()){
+            float[] specificLabelsPositions = new float[mYAxis.getSpecificLabelPositions().length * 2];
+            for (int i = 0; i < mYAxis.getSpecificLabelPositions().length; i++) {
+                specificLabelsPositions[i * 2 + 1] = mYAxis.getSpecificLabelPositions()[i];
+            }
+            mTrans.pointValuesToPixel(specificLabelsPositions);
+
+            for (int i = 0; i < mYAxis.getSpecificLabelPositions().length; i++) {
+                float y = specificLabelsPositions[i * 2 + 1];
+                if (mViewPortHandler.isInBoundsY(y)) {
+                    String text = mYAxis.getValueFormatter().getFormattedValue(mYAxis.getSpecificLabelPositions()[i], mYAxis);
+                    c.drawText(text, fixedPosition, y + offset, mAxisLabelPaint);
+                }
+            }
+
+            return;
+        }
+
         final int from = mYAxis.isDrawBottomYLabelEntryEnabled() ? 0 : 1;
         final int to = mYAxis.isDrawTopYLabelEntryEnabled()
                 ? mYAxis.mEntryCount
