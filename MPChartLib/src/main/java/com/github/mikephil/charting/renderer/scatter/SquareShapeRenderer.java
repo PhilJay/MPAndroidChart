@@ -3,6 +3,7 @@ package com.github.mikephil.charting.renderer.scatter;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
@@ -18,7 +19,7 @@ public class SquareShapeRenderer implements IShapeRenderer
 
     @Override
     public void renderShape(Canvas c, IScatterDataSet dataSet, ViewPortHandler viewPortHandler,
-                            float posX, float posY, Paint renderPaint) {
+                            float posX, float posY, Paint renderPaint, Entry e) {
 
         final float shapeSize = dataSet.getScatterShapeSize();
         final float shapeHalf = shapeSize / 2f;
