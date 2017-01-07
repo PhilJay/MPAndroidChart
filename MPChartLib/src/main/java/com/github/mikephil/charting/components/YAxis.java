@@ -90,6 +90,20 @@ public class YAxis extends AxisBase {
     protected float mMaxWidth = Float.POSITIVE_INFINITY;
 
     /**
+     * flag that is need to draw different color to up and down color
+     */
+    protected  boolean ismDrawDifferentUpDownColorToLable=false;
+    /**
+     * the text color to use for the up labels
+     */
+    protected int upTextColor=Color.BLACK;
+
+    /**
+     * the text color to use for the down labels
+     */
+    protected int downTextColor=Color.BLACK;
+
+    /**
      * Enum that specifies the axis a DataSet should be plotted against, either LEFT or RIGHT.
      *
      * @author Philipp Jahoda
@@ -389,5 +403,61 @@ public class YAxis extends AxisBase {
 
         // calc actual range
         this.mAxisRange = Math.abs(this.mAxisMaximum - this.mAxisMinimum);
+    }
+
+    /**
+     * Sets the text color to use for the up labels. Make sure to use
+     * getResources().getColor(...) when using a color from the resources.
+     *
+     * @param color
+     */
+    public void setUpTextColor(int color) {
+        upTextColor = color;
+    }
+
+    /**
+     * Returns the text color that is set for the up labels.
+     *
+     * @return
+     */
+    public int getUpTextColor() {
+        return upTextColor;
+    }
+
+    /**
+     * Sets the text color to use for the down labels. Make sure to use
+     * getResources().getColor(...) when using a color from the resources.
+     *
+     * @param color
+     */
+    public void setDownTextColor(int color) {
+        downTextColor = color;
+    }
+
+    /**
+     * Returns the text color that is set for the down labels.
+     *
+     * @return
+     */
+    public int getDownTextColor() {
+        return downTextColor;
+    }
+
+    /**
+     * Returns is need to draw different color of up and dow lable.
+     *
+     * @return
+     */
+    public boolean drawDifferentUpDownColorToLableEnabled() {
+        return ismDrawDifferentUpDownColorToLable;
+    }
+
+    /**
+     * Sets is need to draw different color of up and dow lable.
+     *
+     * @return
+     */
+    public void setDrawDifferentUpDownColorToLableEnabled(boolean ismDrawDifferentUpDownColorToLa7ble) {
+        this.ismDrawDifferentUpDownColorToLable = ismDrawDifferentUpDownColorToLa7ble;
     }
 }

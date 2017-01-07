@@ -134,6 +134,10 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
         leftAxis.setDrawZeroLine(false);
 
+        leftAxis.setDrawDifferentUpDownColorToLableEnabled(true);
+        leftAxis.setUpTextColor(Color.RED);
+        leftAxis.setDownTextColor(Color.GREEN);
+
         // limit lines are drawn behind data (and not on top)
         leftAxis.setDrawLimitLinesBehindData(true);
 
