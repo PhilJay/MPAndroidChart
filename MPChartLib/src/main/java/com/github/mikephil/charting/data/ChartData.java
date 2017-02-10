@@ -9,6 +9,7 @@ import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
  *
  * @author Philipp Jahoda
  */
-public abstract class ChartData<T extends IDataSet<? extends Entry>> {
+public abstract class ChartData<T extends IDataSet<? extends Entry>> implements Serializable {
 
     /**
      * maximum y-value in the value array across all axes
