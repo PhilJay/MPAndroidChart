@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  *
  * @author Philipp Jahoda
  */
-public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
+public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements Serializable {
 
     /**
      * the entries that this DataSet represents / holds together

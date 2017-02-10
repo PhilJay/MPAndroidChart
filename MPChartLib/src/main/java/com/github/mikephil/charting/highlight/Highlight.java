@@ -3,12 +3,14 @@ package com.github.mikephil.charting.highlight;
 
 import com.github.mikephil.charting.components.YAxis;
 
+import java.io.Serializable;
+
 /**
  * Contains information needed to determine the highlighted value.
  *
  * @author Philipp Jahoda
  */
-public class Highlight {
+public class Highlight implements Serializable {
 
     /**
      * the x-value of the highlighted value
