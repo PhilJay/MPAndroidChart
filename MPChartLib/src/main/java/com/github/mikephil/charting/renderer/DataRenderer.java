@@ -67,8 +67,9 @@ public abstract class DataRenderer extends Renderer {
     }
 
     protected boolean isDrawingValuesAllowed(ChartInterface chart) {
-        return chart.getData().getEntryCount() < chart.getMaxVisibleCount()
-                * mViewPortHandler.getScaleX();
+        return chart.getXRange() < chart.getMaxVisibleCount() * mViewPortHandler.getScaleX();
+        /*return chart.getData().getEntryCount() < chart.getMaxVisibleCount()
+                * mViewPortHandler.getScaleX();*/
     }
 
     /**
