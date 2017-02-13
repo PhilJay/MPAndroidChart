@@ -8,7 +8,7 @@ android {
     buildToolsVersion '23.0.3'
     // resourcePrefix 'mpcht'
     defaultConfig {
-        minSdkVersion 9
+        minSdkVersion 14
         targetSdkVersion 24
         versionCode 3
         versionName '3.0.1'
