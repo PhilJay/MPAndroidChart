@@ -73,14 +73,14 @@ public class DayAxisValueFormatter implements IAxisValueFormatter
         // month is 0-based
 
         if (month == 1) {
-            int x400 = month % 400;
-            if (x400 < 0)
-            {
-                x400 = -x400;
-            }
-            boolean is29 = (month % 4) == 0 && x400 != 100 && x400 != 200 && x400 != 300;
+            boolean is29Feb = false;
 
-            return is29 ? 29 : 28;
+            if (year < 1582)
+                is29Feb = (year < 1 ? year + 1 : year) % 4 == 0;
+            else if (year > 1582)
+                is29Feb = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+
+            return is29Feb ? 29 : 28;
         }
 
         if (month == 3 || month == 5 || month == 8 || month == 10)
