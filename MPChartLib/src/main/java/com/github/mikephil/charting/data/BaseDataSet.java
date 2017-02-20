@@ -11,8 +11,11 @@ import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.Inherited;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +70,16 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      * if true, y-values are drawn on the chart
      */
     protected boolean mDrawValues = true;
+
+    /**
+     * if true, y-icons are drawn on the chart
+     */
+    protected boolean mDrawIcons = true;
+
+    /**
+     * the offset for drawing icons (in dp)
+     */
+    protected MPPointF mIconsOffset = new MPPointF();
 
     /**
      * the size of the value-text labels
@@ -369,6 +382,28 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     @Override
     public boolean isDrawValuesEnabled() {
         return mDrawValues;
+    }
+
+    @Override
+    public void setDrawIcons(boolean enabled) {
+        mDrawIcons = enabled;
+    }
+
+    @Override
+    public boolean isDrawIconsEnabled() {
+        return mDrawIcons;
+    }
+
+    @Override
+    public void setIconsOffset(MPPointF offsetDp) {
+
+        mIconsOffset.x = offsetDp.x;
+        mIconsOffset.y = offsetDp.y;
+    }
+
+    @Override
+    public MPPointF getIconsOffset() {
+        return mIconsOffset;
     }
 
     @Override

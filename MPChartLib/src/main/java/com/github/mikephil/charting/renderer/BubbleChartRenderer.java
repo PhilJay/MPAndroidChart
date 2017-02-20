@@ -4,6 +4,7 @@ package com.github.mikephil.charting.renderer;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint.Style;
+import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.BubbleData;
@@ -11,6 +12,7 @@ import com.github.mikephil.charting.data.BubbleEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -145,6 +147,10 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
                 final float alpha = phaseX == 1 ? phaseY : phaseX;
 
+                MPPointF iconsOffset = MPPointF.getInstance(dataSet.getIconsOffset());
+                iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
+                iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y);
+
                 for (int j = 0; j < positions.length; j += 2) {
 
                     int valueTextColor = dataSet.getValueTextColor(j / 2 + mXBounds.min);
@@ -162,9 +168,26 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
                     BubbleEntry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);
 
-                    drawValue(c, dataSet.getValueFormatter(), entry.getSize(), entry, i, x,
-                            y + (0.5f * lineHeight), valueTextColor);
+                    if (dataSet.isDrawValuesEnabled()) {
+                        drawValue(c, dataSet.getValueFormatter(), entry.getSize(), entry, i, x,
+                                y + (0.5f * lineHeight), valueTextColor);
+                    }
+
+                    if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
+
+                        Drawable icon = entry.getIcon();
+
+                        Utils.drawImage(
+                                c,
+                                icon,
+                                (int)(x + iconsOffset.x),
+                                (int)(y + iconsOffset.y),
+                                icon.getIntrinsicWidth(),
+                                icon.getIntrinsicHeight());
+                    }
                 }
+
+                MPPointF.recycleInstance(iconsOffset);
             }
         }
     }

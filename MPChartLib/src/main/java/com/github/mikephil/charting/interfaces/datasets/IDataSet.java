@@ -1,6 +1,7 @@
 package com.github.mikephil.charting.interfaces.datasets;
 
 import android.graphics.DashPathEffect;
+import android.graphics.PointF;
 import android.graphics.Typeface;
 
 import com.github.mikephil.charting.components.Legend;
@@ -8,6 +9,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.utils.MPPointF;
 
 import java.util.List;
 
@@ -419,10 +421,10 @@ public interface IDataSet<T extends Entry> {
     DashPathEffect getFormLineDashEffect();
 
     /**
-     * set this to true to draw y-values on the chart NOTE (for bar and
-     * linechart): if "maxvisiblecount" is reached, no values will be drawn even
-     * if this is enabled
+     * set this to true to draw y-values on the chart.
      *
+     * NOTE (for bar and line charts): if `maxVisibleCount` is reached, no values will be drawn even
+     * if this is enabled
      * @param enabled
      */
     void setDrawValues(boolean enabled);
@@ -433,6 +435,38 @@ public interface IDataSet<T extends Entry> {
      * @return
      */
     boolean isDrawValuesEnabled();
+
+    /**
+     * Set this to true to draw y-icons on the chart.
+     *
+     * NOTE (for bar and line charts): if `maxVisibleCount` is reached, no icons will be drawn even
+     * if this is enabled
+     *
+     * @param enabled
+     */
+    void setDrawIcons(boolean enabled);
+
+    /**
+     * Returns true if y-icon drawing is enabled, false if not
+     *
+     * @return
+     */
+    boolean isDrawIconsEnabled();
+
+    /**
+     * Offset of icons drawn on the chart.
+     *
+     * For all charts except Pie and Radar it will be ordinary (x offset,y offset).
+     *
+     * For Pie and Radar chart it will be (y offset, distance from center offset); so if you want icon to be rendered under value, you should increase X component of CGPoint, and if you want icon to be rendered closet to center, you should decrease height component of CGPoint.
+     * @param offset
+     */
+    void setIconsOffset(MPPointF offset);
+
+    /**
+     * Get the offset for drawing icons.
+     */
+    MPPointF getIconsOffset();
 
     /**
      * Set the visibility of this DataSet. If not visible, the DataSet will not
