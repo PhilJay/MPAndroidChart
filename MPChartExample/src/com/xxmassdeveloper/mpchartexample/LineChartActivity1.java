@@ -190,6 +190,19 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                 mChart.invalidate();
                 break;
             }
+            case R.id.actionToggleIcons: {
+                List<ILineDataSet> sets = mChart.getData()
+                        .getDataSets();
+
+                for (ILineDataSet iSet : sets) {
+
+                    LineDataSet set = (LineDataSet) iSet;
+                    set.setDrawIcons(!set.isDrawIconsEnabled());
+                }
+
+                mChart.invalidate();
+                break;
+            }
             case R.id.actionToggleHighlight: {
                 if(mChart.getData() != null) {
                     mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
@@ -342,7 +355,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         for (int i = 0; i < count; i++) {
 
             float val = (float) (Math.random() * range) + 3;
-            values.add(new Entry(i, val));
+            values.add(new Entry(i, val, getResources().getDrawable(R.drawable.star)));
         }
 
         LineDataSet set1;
@@ -356,6 +369,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         } else {
             // create a dataset and give it a type
             set1 = new LineDataSet(values, "DataSet 1");
+
+            set1.setDrawIcons(false);
 
             // set the line to be drawn like this "- - - - - -"
             set1.enableDashedLine(10f, 5f, 0f);
