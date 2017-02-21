@@ -481,7 +481,8 @@ public class LineChartRenderer extends LineRadarRenderer {
      */
     private void generateFilledPath(final ILineDataSet dataSet, final int startIndex, final int endIndex, final Path outputPath) {
 
-        final float fillMin = dataSet.getFillFormatter().getFillLinePosition(dataSet, mChart);
+        // TODO just to check my skills with git+gradle :)
+        final float fillMin = 30;//dataSet.getFillFormatter().getFillLinePosition(dataSet, mChart);
         final float phaseY = mAnimator.getPhaseY();
         final boolean isDrawSteppedEnabled = dataSet.getMode() == LineDataSet.Mode.STEPPED;
 
@@ -489,6 +490,8 @@ public class LineChartRenderer extends LineRadarRenderer {
         filled.reset();
 
         final Entry entry = dataSet.getEntryForIndex(startIndex);
+
+
 
         filled.moveTo(entry.getX(), fillMin);
         filled.lineTo(entry.getX(), entry.getY() * phaseY);
