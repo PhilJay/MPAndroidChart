@@ -113,6 +113,16 @@ public abstract class AxisBase extends ComponentBase {
     protected boolean mDrawLimitLineBehindData = false;
 
     /**
+     * array of limit rectangles that can be set for the axis
+     */
+    protected List<LimitRectangle> mLimitRectangles;
+
+    /**
+     * flag indicating the limit retangles layer depth
+     */
+    protected boolean mDrawLimitRectangleBehindData = true;
+
+    /**
      * Extra spacing for `axisMinimum` to be added to automatically calculated `axisMinimum`
      */
     protected float mSpaceMin = 0.f;
@@ -155,6 +165,7 @@ public abstract class AxisBase extends ComponentBase {
         this.mXOffset = Utils.convertDpToPixel(5f);
         this.mYOffset = Utils.convertDpToPixel(5f);
         this.mLimitLines = new ArrayList<LimitLine>();
+        this.mLimitRectangles = new ArrayList<LimitRectangle>();
     }
 
     /**
@@ -442,6 +453,60 @@ public abstract class AxisBase extends ComponentBase {
 
     public boolean isDrawLimitLinesBehindDataEnabled() {
         return mDrawLimitLineBehindData;
+    }
+
+    /**
+     * If this is set to true, the LimitRectangles are drawn behind the actual data,
+     * otherwise on top. Default: false
+     *
+     * @param enabled
+     */
+    public void setDrawLimitRectanglesBehindData(boolean enabled) {
+        mDrawLimitRectangleBehindData = enabled;
+    }
+
+    public boolean isDrawLimitRectanglesBehindDataEnabled() {
+        return mDrawLimitRectangleBehindData;
+    }
+
+    /**
+     * Adds a new LimitRectangle to this axis.
+     *
+     * @param l
+     */
+    public void addLimitRectangle(LimitRectangle l) {
+        mLimitRectangles.add(l);
+
+        if (mLimitRectangles.size() > 6) {
+            Log.e("MPAndroiChart",
+                    "Warning! You have more than 6 LimitRectangle on your axis, do you really want " +
+                            "that?");
+        }
+    }
+
+    /**
+     * Removes the specified LimitRectangle from the axis.
+     *
+     * @param l
+     */
+    public void removeLimitRectangle(LimitRectangle l) {
+        mLimitRectangles.remove(l);
+    }
+
+    /**
+     * Removes all LimitRectangles from the axis.
+     */
+    public void removeAllLimitRectangles() {
+        mLimitRectangles.clear();
+    }
+
+    /**
+     * Returns the LimitRectangles of this axis.
+     *
+     * @return
+     */
+    public List<LimitRectangle> getLimitRectangles() {
+        return mLimitRectangles;
     }
 
     /**

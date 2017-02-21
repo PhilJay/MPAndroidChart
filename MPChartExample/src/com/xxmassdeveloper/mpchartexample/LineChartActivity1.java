@@ -23,6 +23,7 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition;
+import com.github.mikephil.charting.components.LimitRectangle;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -136,6 +137,11 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
         // limit lines are drawn behind data (and not on top)
         leftAxis.setDrawLimitLinesBehindData(true);
+
+        // add limit rectangle
+        LimitRectangle lr = new LimitRectangle( -30, 150, Color.rgb(91, 237, 91), 110 );
+        leftAxis.removeAllLimitRectangles();
+        leftAxis.addLimitRectangle( lr );
 
         mChart.getAxisRight().setEnabled(false);
 

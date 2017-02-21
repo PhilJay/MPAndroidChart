@@ -8,6 +8,7 @@ import android.graphics.Path;
 import android.graphics.RectF;
 
 import com.github.mikephil.charting.components.LimitLine;
+import com.github.mikephil.charting.components.LimitRectangle;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
@@ -343,5 +344,55 @@ public class YAxisRenderer extends AxisRenderer {
 
             c.restoreToCount(clipRestoreCount);
         }
+    }
+
+    protected RectF mLimitRectangleRect = new RectF();
+
+    /**
+     * Draws the LimitRectangles associated with this axis to the screen.
+     *
+     * @param c
+     */
+    @Override
+    public void renderLimitRectangles(Canvas c) {
+        List<LimitRectangle> limitRects = mYAxis.getLimitRectangles();
+
+        if (limitRects == null || limitRects.size() <= 0)
+            return;
+
+        RectF drawRect = mLimitRectangleRect;
+        drawRect.left = mViewPortHandler.contentLeft();
+        drawRect.right = mViewPortHandler.contentRight();
+
+        // reuse temp buffers from limit lines, no need to create new
+        float[] position = mRenderLimitLinesBuffer;
+        position[0] = 0;
+        position[1] = 0;
+
+        int clipRestoreCount = c.save();
+        mLimitLineClippingRect.set(mViewPortHandler.getContentRect());
+        c.clipRect(mLimitLineClippingRect);
+
+        for (int i = 0; i < limitRects.size(); i++) {
+
+            LimitRectangle l = limitRects.get(i);
+
+            if (!l.isEnabled())
+                continue;
+
+            position[1] = l.getLimitStart();
+            mTrans.pointValuesToPixel(position);
+            drawRect.bottom = position[1];
+
+            position[1] = l.getLimitEnd();
+            mTrans.pointValuesToPixel(position);
+            drawRect.top = position[1];
+
+            mLimitRectanglePaint.setColor(l.getRectColor());
+            mLimitRectanglePaint.setAlpha(l.getAlpha());
+            c.drawRect( drawRect, mLimitRectanglePaint);
+        }
+
+        c.restoreToCount(clipRestoreCount);
     }
 }
