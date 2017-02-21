@@ -502,17 +502,15 @@ public class LineChartRenderer extends LineRadarRenderer {
         Entry currentEntry = null;
         Entry previousEntry = null;
         for (int x = sIdx + 1; x <= endIndex; x++) {
+            // Leave float.NaNs out
+            if(Float.isNaN(dataSet.getEntryForIndex(x).getY())) continue;
 
             currentEntry = dataSet.getEntryForIndex(x);
-
-            // Leave float.NaNs out
-            if(!Float.isNaN(currentEntry.getY())) {
-                if (isDrawSteppedEnabled && previousEntry != null) {
-                    filled.lineTo(currentEntry.getX(), previousEntry.getY() * phaseY);
-                }
-
-                filled.lineTo(currentEntry.getX(), currentEntry.getY() * phaseY);
+            if (isDrawSteppedEnabled && previousEntry != null) {
+                filled.lineTo(currentEntry.getX(), previousEntry.getY() * phaseY);
             }
+
+            filled.lineTo(currentEntry.getX(), currentEntry.getY() * phaseY);
 
             previousEntry = currentEntry;
         }
