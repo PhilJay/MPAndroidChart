@@ -481,17 +481,19 @@ public class LineChartRenderer extends LineRadarRenderer {
      */
     private void generateFilledPath(final ILineDataSet dataSet, final int startIndex, final int endIndex, final Path outputPath) {
 
-        // TODO just to check my skills with git+gradle :)
-        final float fillMin = 30;//dataSet.getFillFormatter().getFillLinePosition(dataSet, mChart);
+        final float fillMin = dataSet.getFillFormatter().getFillLinePosition(dataSet, mChart);
         final float phaseY = mAnimator.getPhaseY();
         final boolean isDrawSteppedEnabled = dataSet.getMode() == LineDataSet.Mode.STEPPED;
 
         final Path filled = outputPath;
         filled.reset();
 
-        final Entry entry = dataSet.getEntryForIndex(startIndex);
+        // Semirke: we must skip Float.NaNs first
+        int sIdx = startIndex;
+        while(Float.isNaN(dataSet.getEntryForIndex(sIdx).getY())
+            && sIdx < endIndex ) sIdx++;
 
-
+        final Entry entry = dataSet.getEntryForIndex(sIdx);
 
         filled.moveTo(entry.getX(), fillMin);
         filled.lineTo(entry.getX(), entry.getY() * phaseY);
@@ -499,10 +501,11 @@ public class LineChartRenderer extends LineRadarRenderer {
         // create a new path
         Entry currentEntry = null;
         Entry previousEntry = null;
-        for (int x = startIndex + 1; x <= endIndex; x++) {
+        for (int x = sIdx + 1; x <= endIndex; x++) {
 
             currentEntry = dataSet.getEntryForIndex(x);
 
+            // Leave float.NaNs out
             if(!Float.isNaN(currentEntry.getY())) {
                 if (isDrawSteppedEnabled && previousEntry != null) {
                     filled.lineTo(currentEntry.getX(), previousEntry.getY() * phaseY);
@@ -515,7 +518,7 @@ public class LineChartRenderer extends LineRadarRenderer {
         }
 
         // close up
-        if (currentEntry != null) {
+        if (currentEntry != null && !Float.isNaN(currentEntry.getY())) {
             filled.lineTo(currentEntry.getX(), fillMin);
         }
 
