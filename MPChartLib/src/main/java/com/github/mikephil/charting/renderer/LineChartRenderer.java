@@ -500,11 +500,13 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             currentEntry = dataSet.getEntryForIndex(x);
 
-            if (isDrawSteppedEnabled && previousEntry != null) {
-                filled.lineTo(currentEntry.getX(), previousEntry.getY() * phaseY);
-            }
+            if(!Float.isNaN(currentEntry.getY())) {
+                if (isDrawSteppedEnabled && previousEntry != null) {
+                    filled.lineTo(currentEntry.getX(), previousEntry.getY() * phaseY);
+                }
 
-            filled.lineTo(currentEntry.getX(), currentEntry.getY() * phaseY);
+                filled.lineTo(currentEntry.getX(), currentEntry.getY() * phaseY);
+            }
 
             previousEntry = currentEntry;
         }
