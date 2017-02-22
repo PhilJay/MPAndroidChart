@@ -170,4 +170,45 @@ public class Entry extends BaseEntry implements Parcelable {
             return new Entry[size];
         }
     };
+
+
+
+  /**
+   * Check if another object <code>obj</code> is equal to this instance.
+   *
+   * @param obj The object "this" should be compared with.
+   * @return true if both objects are equal, false otherwise.
+   */
+    @Override
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+
+        if (!obj.getClass().equals(getClass())) {
+            return false;
+        }
+
+        Entry other = (Entry) obj;
+
+        if (Math.abs(other.getX() - this.getX()) > Utils.FLOAT_EPSILON) {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
+   * Compute hashcode for Entry instance.
+   *
+   * @return The hashcode for this instance.
+   */
+  @Override
+    public int hashCode() {
+        int multiplier = 17;
+        int hashCode = super.hashCode();
+        hashCode = multiplier * hashCode + ((getX() == 0.0f) ? 0 : Float.floatToIntBits(getX()));
+        return hashCode;
+    }
 }
