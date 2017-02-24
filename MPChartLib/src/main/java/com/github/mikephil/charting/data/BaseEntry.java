@@ -129,11 +129,19 @@ public abstract class BaseEntry {
         return false;
       }
 
-      if ((other.getData() != null && getData() == null) && !other.getData().equals(getData())) {
+      if (getData() != null && !getData().equals(other.getData())) {
         return false;
       }
 
-      if ((other.getIcon() != null && getIcon() != null) && !other.getIcon().equals(getIcon())) {
+      if (other.getData() != null && !other.getData().equals(getData())) {
+        return false;
+      }
+
+      if (getIcon() != null && !getIcon().equals(other.getIcon())) {
+        return false;
+      }
+
+      if (other.getIcon() != null && !other.getIcon().equals(getIcon())) {
         return false;
       }
 
