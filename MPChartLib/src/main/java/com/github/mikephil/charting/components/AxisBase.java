@@ -309,14 +309,13 @@ public abstract class AxisBase extends ComponentBase {
      * @param count the number of y-axis labels that should be displayed
      */
     public void setLabelCount(int count) {
-
-        if (count > 25)
-            count = 25;
-        if (count < 2)
-            count = 2;
-
-        mLabelCount = count;
-        mForceLabels = false;
+        if (mForceLabels) {
+            mLabelCount = count;
+        } else if (count > 25){
+            mLabelCount = 25;
+        } else if (count < 2) {
+            mLabelCount = 2;
+        }
     }
 
     /**
@@ -331,9 +330,8 @@ public abstract class AxisBase extends ComponentBase {
      *              to have uneven values
      */
     public void setLabelCount(int count, boolean force) {
-
-        setLabelCount(count);
         mForceLabels = force;
+        setLabelCount(count);
     }
 
     /**
@@ -442,6 +440,20 @@ public abstract class AxisBase extends ComponentBase {
 
     public boolean isDrawLimitLinesBehindDataEnabled() {
         return mDrawLimitLineBehindData;
+    }
+
+    private List<Float> getEntriesAsList() {
+        List<Float> floatList = new ArrayList<>();
+        for (float mEntry : mEntries) {floatList.add(mEntry);}
+        return floatList;
+    }
+
+    /**
+     *  Verifies which index the value given has in mEntries
+     *  @param value - value
+     */
+    public int indexOf(float value) {
+        return getEntriesAsList().indexOf(value);
     }
 
     /**
