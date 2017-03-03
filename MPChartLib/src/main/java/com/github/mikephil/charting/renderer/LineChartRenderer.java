@@ -327,7 +327,11 @@ public class LineChartRenderer extends LineRadarRenderer {
             for (int j = mXBounds.min; j <= mXBounds.range + mXBounds.min; j++) {
 
                 Entry e = dataSet.getEntryForIndex(j);
+
                 if (e == null) continue;
+
+                //skip NaNs
+                if (Float.isNaN(e.getY())) continue;
 
                 mLineBuffer[0] = e.getX();
                 mLineBuffer[1] = e.getY() * phaseY;
@@ -391,6 +395,10 @@ public class LineChartRenderer extends LineRadarRenderer {
                     e2 = dataSet.getEntryForIndex(x);
 
                     if (e1 == null || e2 == null) continue;
+
+                    //skip NaNs
+                    if (Float.isNaN(e1.getY())) continue;
+                    if (Float.isNaN(e2.getY())) continue;
 
                     mLineBuffer[j++] = e1.getX();
                     mLineBuffer[j++] = e1.getY() * phaseY;
