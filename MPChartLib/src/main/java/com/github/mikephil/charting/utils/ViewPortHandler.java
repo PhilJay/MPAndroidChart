@@ -482,7 +482,7 @@ public class ViewPortHandler {
      */
     public void setMinimumScaleX(float xScale) {
 
-        if (xScale < 1f)
+        if (xScale <= 0.f)
             xScale = 1f;
 
         mMinScaleX = xScale;
@@ -513,7 +513,7 @@ public class ViewPortHandler {
      */
     public void setMinMaxScaleX(float minScaleX, float maxScaleX) {
 
-        if (minScaleX < 1f)
+        if (minScaleX <= 0.f)
             minScaleX = 1f;
 
         if (maxScaleX == 0.f)
@@ -532,7 +532,7 @@ public class ViewPortHandler {
      */
     public void setMinimumScaleY(float yScale) {
 
-        if (yScale < 1f)
+        if (yScale <= 0.f)
             yScale = 1f;
 
         mMinScaleY = yScale;
@@ -557,7 +557,7 @@ public class ViewPortHandler {
 
     public void setMinMaxScaleY(float minScaleY, float maxScaleY) {
 
-        if (minScaleY < 1f)
+        if (minScaleY <= 0.f)
             minScaleY = 1f;
 
         if (maxScaleY == 0.f)
