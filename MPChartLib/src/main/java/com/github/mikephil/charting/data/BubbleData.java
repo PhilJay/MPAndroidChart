@@ -7,6 +7,8 @@ import java.util.List;
 
 public class BubbleData extends BarLineScatterCandleBubbleData<IBubbleDataSet> {
 
+    protected int mMinReference;
+
     public BubbleData() {
         super();
     }
@@ -30,5 +32,13 @@ public class BubbleData extends BarLineScatterCandleBubbleData<IBubbleDataSet> {
         for (IBubbleDataSet set : mDataSets) {
             set.setHighlightCircleWidth(width);
         }
+    }
+
+    public int getMinReference() {
+        return mMinReference;
+    }
+
+    public void setMinReference(int mMinReference) {
+        this.mMinReference = mMinReference;
     }
 }

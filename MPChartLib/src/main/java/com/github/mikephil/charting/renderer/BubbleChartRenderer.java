@@ -24,6 +24,7 @@ import java.util.List;
 public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
     protected BubbleDataProvider mChart;
+    protected int mMinReference = 0;
 
     public BubbleChartRenderer(BubbleDataProvider chart, ChartAnimator animator,
                                ViewPortHandler viewPortHandler) {
@@ -34,6 +35,8 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
         mHighlightPaint.setStyle(Style.STROKE);
         mHighlightPaint.setStrokeWidth(Utils.convertDpToPixel(1.5f));
+
+        mMinReference = mChart.getBubbleData().getMinReference();
     }
 
     @Override
@@ -81,7 +84,7 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
         // calcualte the full width of 1 step on the x-axis
         final float maxBubbleWidth = Math.abs(sizeBuffer[2] - sizeBuffer[0]);
         final float maxBubbleHeight = Math.abs(mViewPortHandler.contentBottom() - mViewPortHandler.contentTop());
-        final float referenceSize = Math.min(maxBubbleHeight, maxBubbleWidth);
+        final float referenceSize = Math.min(maxBubbleHeight, maxBubbleWidth) + mMinReference;
 
         for (int j = mXBounds.min; j <= mXBounds.range + mXBounds.min; j++) {
 
@@ -210,7 +213,7 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
             final float maxBubbleWidth = Math.abs(sizeBuffer[2] - sizeBuffer[0]);
             final float maxBubbleHeight = Math.abs(
                     mViewPortHandler.contentBottom() - mViewPortHandler.contentTop());
-            final float referenceSize = Math.min(maxBubbleHeight, maxBubbleWidth);
+            final float referenceSize = Math.min(maxBubbleHeight, maxBubbleWidth) + mMinReference;
 
             pointBuffer[0] = entry.getX();
             pointBuffer[1] = (entry.getY()) * phaseY;
