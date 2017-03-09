@@ -35,8 +35,6 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
         mHighlightPaint.setStyle(Style.STROKE);
         mHighlightPaint.setStrokeWidth(Utils.convertDpToPixel(1.5f));
-
-        mMinReference = mChart.getBubbleData().getMinReference();
     }
 
     @Override
@@ -68,6 +66,7 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
     protected void drawDataSet(Canvas c, IBubbleDataSet dataSet) {
 
+        mMinReference = mChart.getBubbleData().getMinReference();
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
         float phaseY = mAnimator.getPhaseY();
@@ -182,6 +181,7 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
     public void drawHighlighted(Canvas c, Highlight[] indices) {
 
         BubbleData bubbleData = mChart.getBubbleData();
+        mMinReference = bubbleData.getMinReference();
 
         float phaseY = mAnimator.getPhaseY();
 
