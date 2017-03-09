@@ -137,12 +137,14 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         mAxisLabelPaint.setTextSize(mYAxis.getTextSize());
         mAxisLabelPaint.setColor(mYAxis.getTextColor());
 
-        for (int i = 0; i < mYAxis.mEntryCount; i++) {
+        final int from = mYAxis.isDrawBottomYLabelEntryEnabled() ? 0 : 1;
+        final int to = mYAxis.isDrawTopYLabelEntryEnabled()
+                ? mYAxis.mEntryCount
+                : (mYAxis.mEntryCount - 1);
+
+        for (int i = from; i < to; i++) {
 
             String text = mYAxis.getFormattedLabel(i);
-
-            if (!mYAxis.isDrawTopYLabelEntryEnabled() && i >= mYAxis.mEntryCount - 1)
-                return;
 
             c.drawText(text, positions[i * 2], fixedPosition - offset, mAxisLabelPaint);
         }

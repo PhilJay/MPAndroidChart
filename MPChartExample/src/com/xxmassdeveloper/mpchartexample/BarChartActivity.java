@@ -153,6 +153,13 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
                 mChart.invalidate();
                 break;
             }
+            case R.id.actionToggleIcons: {
+                for (IDataSet set : mChart.getData().getDataSets())
+                    set.setDrawIcons(!set.isDrawIconsEnabled());
+
+                mChart.invalidate();
+                break;
+            }
             case R.id.actionToggleHighlight: {
                 if (mChart.getData() != null) {
                     mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
@@ -236,7 +243,12 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         for (int i = (int) start; i < start + count + 1; i++) {
             float mult = (range + 1);
             float val = (float) (Math.random() * mult);
-            yVals1.add(new BarEntry(i, val));
+
+            if (Math.random() * 100 < 25) {
+                yVals1.add(new BarEntry(i, val, getResources().getDrawable(R.drawable.star)));
+            } else {
+                yVals1.add(new BarEntry(i, val));
+            }
         }
 
         BarDataSet set1;
@@ -249,6 +261,9 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
             mChart.notifyDataSetChanged();
         } else {
             set1 = new BarDataSet(yVals1, "The year 2017");
+
+            set1.setDrawIcons(false);
+
             set1.setColors(ColorTemplate.MATERIAL_COLORS);
 
             ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();

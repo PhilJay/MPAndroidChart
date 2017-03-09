@@ -194,10 +194,16 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         // execute all drawing commands
         drawGridBackground(canvas);
 
+        if (mAutoScaleMinMaxEnabled) {
+            autoScale();
+        }
+
         if (mAxisLeft.isEnabled())
             mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum, mAxisLeft.isInverted());
+
         if (mAxisRight.isEnabled())
             mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum, mAxisRight.isInverted());
+
         if (mXAxis.isEnabled())
             mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
 
@@ -205,21 +211,17 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         mAxisRendererLeft.renderAxisLine(canvas);
         mAxisRendererRight.renderAxisLine(canvas);
 
-        if (mAutoScaleMinMaxEnabled) {
-            autoScale();
-        }
-
         mXAxisRenderer.renderGridLines(canvas);
         mAxisRendererLeft.renderGridLines(canvas);
         mAxisRendererRight.renderGridLines(canvas);
 
-        if (mXAxis.isDrawLimitLinesBehindDataEnabled())
+        if (mXAxis.isEnabled() && mXAxis.isDrawLimitLinesBehindDataEnabled())
             mXAxisRenderer.renderLimitLines(canvas);
 
-        if (mAxisLeft.isDrawLimitLinesBehindDataEnabled())
+        if (mAxisLeft.isEnabled() && mAxisLeft.isDrawLimitLinesBehindDataEnabled())
             mAxisRendererLeft.renderLimitLines(canvas);
 
-        if (mAxisRight.isDrawLimitLinesBehindDataEnabled())
+        if (mAxisRight.isEnabled() && mAxisRight.isDrawLimitLinesBehindDataEnabled())
             mAxisRendererRight.renderLimitLines(canvas);
 
         // make sure the data cannot be drawn outside the content-rect
@@ -237,13 +239,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         mRenderer.drawExtras(canvas);
 
-        if (!mXAxis.isDrawLimitLinesBehindDataEnabled())
+        if (mXAxis.isEnabled() && !mXAxis.isDrawLimitLinesBehindDataEnabled())
             mXAxisRenderer.renderLimitLines(canvas);
 
-        if (!mAxisLeft.isDrawLimitLinesBehindDataEnabled())
+        if (mAxisLeft.isEnabled() && !mAxisLeft.isDrawLimitLinesBehindDataEnabled())
             mAxisRendererLeft.renderLimitLines(canvas);
 
-        if (!mAxisRight.isDrawLimitLinesBehindDataEnabled())
+        if (mAxisRight.isEnabled() && !mAxisRight.isDrawLimitLinesBehindDataEnabled())
             mAxisRendererRight.renderLimitLines(canvas);
 
         mXAxisRenderer.renderAxisLabels(canvas);
@@ -347,9 +349,14 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         mXAxis.calculate(mData.getXMin(), mData.getXMax());
 
         // calculate axis range (min / max) according to provided data
-        mAxisLeft.calculate(mData.getYMin(AxisDependency.LEFT), mData.getYMax(AxisDependency.LEFT));
-        mAxisRight.calculate(mData.getYMin(AxisDependency.RIGHT), mData.getYMax(AxisDependency
-                .RIGHT));
+
+        if (mAxisLeft.isEnabled())
+            mAxisLeft.calculate(mData.getYMin(AxisDependency.LEFT),
+                    mData.getYMax(AxisDependency.LEFT));
+
+        if (mAxisRight.isEnabled())
+            mAxisRight.calculate(mData.getYMin(AxisDependency.RIGHT),
+                    mData.getYMax(AxisDependency.RIGHT));
 
         calculateOffsets();
     }
@@ -571,17 +578,17 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * VIEWPORT
      */
 
-    protected Matrix mZoomInMatrixBuffer = new Matrix();
+    protected Matrix mZoomMatrixBuffer = new Matrix();
 
     /**
-     * Zooms in by 1.4f, into the charts center. center.
+     * Zooms in by 1.4f, into the charts center.
      */
     public void zoomIn() {
 
         MPPointF center = mViewPortHandler.getContentCenter();
 
-        mViewPortHandler.zoomIn(center.x, -center.y, mZoomInMatrixBuffer);
-        mViewPortHandler.refresh(mZoomInMatrixBuffer, this, false);
+        mViewPortHandler.zoomIn(center.x, -center.y, mZoomMatrixBuffer);
+        mViewPortHandler.refresh(mZoomMatrixBuffer, this, false);
 
         MPPointF.recycleInstance(center);
 
@@ -592,17 +599,15 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         postInvalidate();
     }
 
-    protected Matrix mZoomOutMatrixBuffer = new Matrix();
-
     /**
-     * Zooms out by 0.7f, from the charts center. center.
+     * Zooms out by 0.7f, from the charts center.
      */
     public void zoomOut() {
 
         MPPointF center = mViewPortHandler.getContentCenter();
 
-        mViewPortHandler.zoomOut(center.x, -center.y, mZoomOutMatrixBuffer);
-        mViewPortHandler.refresh(mZoomOutMatrixBuffer, this, false);
+        mViewPortHandler.zoomOut(center.x, -center.y, mZoomMatrixBuffer);
+        mViewPortHandler.refresh(mZoomMatrixBuffer, this, false);
 
         MPPointF.recycleInstance(center);
 
@@ -613,7 +618,20 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         postInvalidate();
     }
 
-    protected Matrix mZoomMatrixBuffer = new Matrix();
+    /**
+     * Zooms out to original size.
+     */
+    public void resetZoom() {
+
+        mViewPortHandler.resetZoom(mZoomMatrixBuffer);
+        mViewPortHandler.refresh(mZoomMatrixBuffer, this, false);
+
+        // Range might have changed, which means that Y-axis labels
+        // could have changed in size, affecting Y-axis size.
+        // So we need to recalculate offsets.
+        calculateOffsets();
+        postInvalidate();
+    }
 
     /**
      * Zooms in or out by the given scale factor. x and y are the coordinates
@@ -625,9 +643,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param y
      */
     public void zoom(float scaleX, float scaleY, float x, float y) {
-        Matrix save = mZoomMatrixBuffer;
-        mViewPortHandler.zoom(scaleX, scaleY, x, -y, save);
-        mViewPortHandler.refresh(save, this, false);
+
+        mViewPortHandler.zoom(scaleX, scaleY, x, -y, mZoomMatrixBuffer);
+        mViewPortHandler.refresh(mZoomMatrixBuffer, this, false);
 
         // Range might have changed, which means that Y-axis labels
         // could have changed in size, affecting Y-axis size.

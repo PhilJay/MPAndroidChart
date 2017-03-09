@@ -19,6 +19,11 @@ import com.github.mikephil.charting.utils.Utils;
 public class YAxis extends AxisBase {
 
     /**
+     * indicates if the bottom y-label entry is drawn or not
+     */
+    private boolean mDrawBottomYLabelEntry = true;
+
+    /**
      * indicates if the top y-label entry is drawn or not
      */
     private boolean mDrawTopYLabelEntry = true;
@@ -166,6 +171,15 @@ public class YAxis extends AxisBase {
      */
     public boolean isDrawTopYLabelEntryEnabled() {
         return mDrawTopYLabelEntry;
+    }
+
+    /**
+     * returns true if drawing the bottom y-axis label entry is enabled
+     *
+     * @return
+     */
+    public boolean isDrawBottomYLabelEntryEnabled() {
+        return mDrawBottomYLabelEntry;
     }
 
     /**
