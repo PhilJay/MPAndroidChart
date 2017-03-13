@@ -6,6 +6,10 @@
         android:title="Toggle Values">
     </item>
     <item
+        android:id="@+id/actionToggleIcons"
+        android:title="Toggle Icons">
+    </item>
+    <item
         android:id="@+id/actionToggleFilled"
         android:title="Toggle Filled">
     </item>

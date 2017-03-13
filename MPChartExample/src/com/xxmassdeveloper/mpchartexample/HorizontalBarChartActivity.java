@@ -138,6 +138,19 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
                 mChart.invalidate();
                 break;
             }
+            case R.id.actionToggleIcons: {
+                List<IBarDataSet> sets = mChart.getData()
+                        .getDataSets();
+
+                for (IBarDataSet iSet : sets) {
+
+                    IBarDataSet set = (BarDataSet) iSet;
+                    set.setDrawIcons(!set.isDrawIconsEnabled());
+                }
+
+                mChart.invalidate();
+                break;
+            }
             case R.id.actionToggleHighlight: {
                 if(mChart.getData() != null) {
                     mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
@@ -223,7 +236,8 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
         for (int i = 0; i < count; i++) {
             float val = (float) (Math.random() * range);
-            yVals1.add(new BarEntry(i * spaceForBar, val));
+            yVals1.add(new BarEntry(i * spaceForBar, val,
+                    getResources().getDrawable(R.drawable.star)));
         }
 
         BarDataSet set1;
@@ -236,6 +250,8 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
             mChart.notifyDataSetChanged();
         } else {
             set1 = new BarDataSet(yVals1, "DataSet 1");
+
+            set1.setDrawIcons(false);
 
             ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
             dataSets.add(set1);

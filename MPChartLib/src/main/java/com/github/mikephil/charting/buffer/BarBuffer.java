@@ -90,7 +90,11 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
 
                     float value = vals[k];
 
-                    if (value >= 0f) {
+                    if (value == 0.0f && (posY == 0.0f || negY == 0.0f)) {
+                        // Take care of the situation of a 0.0 value, which overlaps a non-zero bar
+                        y = value;
+                        yStart = y;
+                    } else if (value >= 0.0f) {
                         y = posY;
                         yStart = posY + value;
                         posY = yStart;

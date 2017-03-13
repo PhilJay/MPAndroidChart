@@ -29,6 +29,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -127,6 +128,13 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
                 mChart.invalidate();
                 break;
             }
+            case R.id.actionToggleIcons: {
+                for (IDataSet<?> set : mChart.getData().getDataSets())
+                    set.setDrawIcons(!set.isDrawIconsEnabled());
+
+                mChart.invalidate();
+                break;
+            }
             case R.id.actionToggleHole: {
                 if (mChart.isDrawHoleEnabled())
                     mChart.setDrawHoleEnabled(false);
@@ -197,11 +205,17 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
         for (int i = 0; i < count ; i++) {
-            entries.add(new PieEntry((float) ((Math.random() * mult) + mult / 5), mParties[i % mParties.length]));
+            entries.add(new PieEntry((float) ((Math.random() * mult) + mult / 5),
+                    mParties[i % mParties.length],
+                    getResources().getDrawable(R.drawable.star)));
         }
 
         PieDataSet dataSet = new PieDataSet(entries, "Election Results");
+
+        dataSet.setDrawIcons(false);
+
         dataSet.setSliceSpace(3f);
+        dataSet.setIconsOffset(new MPPointF(0, 40));
         dataSet.setSelectionShift(5f);
 
         // add a lot of colors

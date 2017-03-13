@@ -9,6 +9,7 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.Layout;
 import android.text.StaticLayout;
@@ -444,6 +445,10 @@ public class PieChartRenderer extends DataRenderer {
 
             final float sliceSpace = getSliceSpace(dataSet);
 
+            MPPointF iconsOffset = MPPointF.getInstance(dataSet.getIconsOffset());
+            iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
+            iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y);
+
             for (int j = 0; j < entryCount; j++) {
 
                 PieEntry entry = dataSet.getEntryForIndex(j);
@@ -588,8 +593,27 @@ public class PieChartRenderer extends DataRenderer {
                     }
                 }
 
+                if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
+
+                    Drawable icon = entry.getIcon();
+
+                    float x = (labelRadius + iconsOffset.y) * sliceXBase + center.x;
+                    float y = (labelRadius + iconsOffset.y) * sliceYBase + center.y;
+                    y += iconsOffset.x;
+
+                    Utils.drawImage(
+                            c,
+                            icon,
+                            (int)x,
+                            (int)y,
+                            icon.getIntrinsicWidth(),
+                            icon.getIntrinsicHeight());
+                }
+
                 xIndex++;
             }
+
+            MPPointF.recycleInstance(iconsOffset);
         }
         MPPointF.recycleInstance(center);
         c.restore();

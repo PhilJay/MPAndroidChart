@@ -35,6 +35,17 @@ public class MPPointF extends ObjectPool.Poolable {
         return result;
     }
 
+    public static MPPointF getInstance() {
+        return pool.get();
+    }
+
+    public static MPPointF getInstance(MPPointF copy) {
+        MPPointF result = pool.get();
+        result.x = copy.x;
+        result.y = copy.y;
+        return result;
+    }
+
     public static void recycleInstance(MPPointF instance){
         pool.recycle(instance);
     }

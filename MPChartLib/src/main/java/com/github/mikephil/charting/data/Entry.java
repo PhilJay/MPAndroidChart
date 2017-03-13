@@ -1,6 +1,7 @@
 
 package com.github.mikephil.charting.data;
 
+import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.ParcelFormatException;
 import android.os.Parcelable;
@@ -42,6 +43,31 @@ public class Entry extends BaseEntry implements Parcelable {
      */
     public Entry(float x, float y, Object data) {
         super(y, data);
+        this.x = x;
+    }
+
+    /**
+     * A Entry represents one single entry in the chart.
+     *
+     * @param x the x value
+     * @param y the y value (the actual value of the entry)
+     * @param icon icon image
+     */
+    public Entry(float x, float y, Drawable icon) {
+        super(y, icon);
+        this.x = x;
+    }
+
+    /**
+     * A Entry represents one single entry in the chart.
+     *
+     * @param x the x value
+     * @param y the y value (the actual value of the entry)
+     * @param icon icon image
+     * @param data Spot for additional data this Entry represents.
+     */
+    public Entry(float x, float y, Drawable icon, Object data) {
+        super(y, icon, data);
         this.x = x;
     }
 

@@ -103,6 +103,7 @@ public class StackedBarActivityNegative extends DemoBase implements
         yValues.add(new BarEntry(25, new float[]{ -15, 15 }));
         yValues.add(new BarEntry(35, new float[]{ -17, 17 }));
         yValues.add(new BarEntry(45, new float[]{ -19, 20 }));
+        yValues.add(new BarEntry(45, new float[]{ -19, 20 }, getResources().getDrawable(R.drawable.star)));
         yValues.add(new BarEntry(55, new float[]{ -19, 19 }));
         yValues.add(new BarEntry(65, new float[]{ -16, 16 }));
         yValues.add(new BarEntry(75, new float[]{ -13, 14 }));
@@ -111,6 +112,7 @@ public class StackedBarActivityNegative extends DemoBase implements
         yValues.add(new BarEntry(105, new float[]{ -1, 2 }));
 
         BarDataSet set = new BarDataSet(yValues, "Age Distribution");
+        set.setDrawIcons(false);
         set.setValueFormatter(new CustomFormatter());
         set.setValueTextSize(7f);
         set.setAxisDependency(YAxis.AxisDependency.RIGHT);
@@ -145,6 +147,19 @@ public class StackedBarActivityNegative extends DemoBase implements
 
                     BarDataSet set = (BarDataSet) iSet;
                     set.setDrawValues(!set.isDrawValuesEnabled());
+                }
+
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleIcons: {
+                List<IBarDataSet> sets = mChart.getData()
+                        .getDataSets();
+
+                for (IBarDataSet iSet : sets) {
+
+                    BarDataSet set = (BarDataSet) iSet;
+                    set.setDrawIcons(!set.isDrawIconsEnabled());
                 }
 
                 mChart.invalidate();
