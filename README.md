@@ -5,6 +5,7 @@
 
 Remember: *It's all about the looks.*
 
+## An app using this library is featured on Product Hunt, [check it out](https://www.producthunt.com/posts/myalfred)!
 
 ![alt tag](https://raw.github.com/PhilJay/MPChart/master/design/feature_graphic.png)
 
