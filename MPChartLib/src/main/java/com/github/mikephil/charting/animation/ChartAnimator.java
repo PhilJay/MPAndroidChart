@@ -3,7 +3,7 @@ package com.github.mikephil.charting.animation;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
-import android.annotation.SuppressLint;
+import android.util.Property;
 
 /**
  * Object responsible for all animations in the Chart. ANIMATIONS ONLY WORK FOR
@@ -56,11 +56,11 @@ public class ChartAnimator {
         if (android.os.Build.VERSION.SDK_INT < 11)
             return;
 
-        ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, PhaseYProperty.INSTANCE, 0f, 1f);
         animatorY.setInterpolator(easingY);
         animatorY.setDuration(
                 durationMillisY);
-        ObjectAnimator animatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(this, PhaseXProperty.INSTANCE, 0f, 1f);
         animatorX.setInterpolator(easingX);
         animatorX.setDuration(
                 durationMillisX);
@@ -90,7 +90,7 @@ public class ChartAnimator {
         if (android.os.Build.VERSION.SDK_INT < 11)
             return;
 
-        ObjectAnimator animatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(this, PhaseXProperty.INSTANCE, 0f, 1f);
         animatorX.setInterpolator(easing);
         animatorX.setDuration(durationMillis);
         animatorX.addUpdateListener(mListener);
@@ -110,7 +110,7 @@ public class ChartAnimator {
         if (android.os.Build.VERSION.SDK_INT < 11)
             return;
 
-        ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, PhaseYProperty.INSTANCE, 0f, 1f);
         animatorY.setInterpolator(easing);
         animatorY.setDuration(durationMillis);
         animatorY.addUpdateListener(mListener);
@@ -138,11 +138,11 @@ public class ChartAnimator {
         if (android.os.Build.VERSION.SDK_INT < 11)
             return;
 
-        ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, PhaseYProperty.INSTANCE, 0f, 1f);
         animatorY.setInterpolator(Easing.getEasingFunctionFromOption(easingY));
         animatorY.setDuration(
                 durationMillisY);
-        ObjectAnimator animatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(this, PhaseXProperty.INSTANCE, 0f, 1f);
         animatorX.setInterpolator(Easing.getEasingFunctionFromOption(easingX));
         animatorX.setDuration(
                 durationMillisX);
@@ -172,7 +172,7 @@ public class ChartAnimator {
         if (android.os.Build.VERSION.SDK_INT < 11)
             return;
 
-        ObjectAnimator animatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(this, PhaseXProperty.INSTANCE, 0f, 1f);
         animatorX.setInterpolator(Easing.getEasingFunctionFromOption(easing));
         animatorX.setDuration(durationMillis);
         animatorX.addUpdateListener(mListener);
@@ -192,7 +192,7 @@ public class ChartAnimator {
         if (android.os.Build.VERSION.SDK_INT < 11)
             return;
 
-        ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, PhaseYProperty.INSTANCE, 0f, 1f);
         animatorY.setInterpolator(Easing.getEasingFunctionFromOption(easing));
         animatorY.setDuration(durationMillis);
         animatorY.addUpdateListener(mListener);
@@ -217,10 +217,10 @@ public class ChartAnimator {
         if (android.os.Build.VERSION.SDK_INT < 11)
             return;
 
-        ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, PhaseYProperty.INSTANCE, 0f, 1f);
         animatorY.setDuration(
                 durationMillisY);
-        ObjectAnimator animatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(this, PhaseXProperty.INSTANCE, 0f, 1f);
         animatorX.setDuration(
                 durationMillisX);
 
@@ -248,7 +248,7 @@ public class ChartAnimator {
         if (android.os.Build.VERSION.SDK_INT < 11)
             return;
 
-        ObjectAnimator animatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(this, PhaseXProperty.INSTANCE, 0f, 1f);
         animatorX.setDuration(durationMillis);
         animatorX.addUpdateListener(mListener);
         animatorX.start();
@@ -266,7 +266,7 @@ public class ChartAnimator {
         if (android.os.Build.VERSION.SDK_INT < 11)
             return;
 
-        ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, PhaseYProperty.INSTANCE, 0f, 1f);
         animatorY.setDuration(durationMillis);
         animatorY.addUpdateListener(mListener);
         animatorY.start();
@@ -282,7 +282,7 @@ public class ChartAnimator {
     }
 
     /**
-     * This modifys the y-phase that is used to animate the values.
+     * This modifies the y-phase that is used to animate the values.
      *
      * @param phase
      */
@@ -300,11 +300,47 @@ public class ChartAnimator {
     }
 
     /**
-     * This modifys the x-phase that is used to animate the values.
+     * This modifies the x-phase that is used to animate the values.
      *
      * @param phase
      */
     public void setPhaseX(float phase) {
         mPhaseX = phase;
+    }
+
+    private static class PhaseYProperty extends Property<ChartAnimator, Float> {
+        private static final PhaseYProperty INSTANCE = new PhaseYProperty();
+        
+        private PhaseYProperty() {
+            super(Float.class, "phaseY");
+        }
+
+        @Override
+        public Float get(ChartAnimator object) {
+            return object.getPhaseY();
+        }
+
+        @Override
+        public void set(ChartAnimator object, Float value) {
+            object.setPhaseY(value);
+        }
+    }
+
+    private static class PhaseXProperty extends Property<ChartAnimator, Float> {
+        private static final PhaseXProperty INSTANCE = new PhaseXProperty();
+        
+        private PhaseXProperty() {
+            super(Float.class, "phaseX");
+        }
+
+        @Override
+        public Float get(ChartAnimator object) {
+            return object.getPhaseX();
+        }
+
+        @Override
+        public void set(ChartAnimator object, Float value) {
+            object.setPhaseX(value);
+        }
     }
 }
