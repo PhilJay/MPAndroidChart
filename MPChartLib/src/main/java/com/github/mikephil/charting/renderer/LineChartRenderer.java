@@ -24,7 +24,7 @@ import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.lang.ref.WeakReference;
-import java.util.HashMap;
+import java.util.WeakHashMap;
 import java.util.List;
 
 public class LineChartRenderer extends LineRadarRenderer {
@@ -596,7 +596,7 @@ public class LineChartRenderer extends LineRadarRenderer {
     /**
      * cache for the circle bitmaps of all datasets
      */
-    private HashMap<IDataSet, DataSetImageCache> mImageCaches = new HashMap<>();
+    private WeakHashMap<IDataSet, DataSetImageCache> mImageCaches = new WeakHashMap<>();
 
     /**
      * buffer for drawing the circles
