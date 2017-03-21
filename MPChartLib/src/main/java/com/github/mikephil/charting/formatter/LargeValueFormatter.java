@@ -6,6 +6,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  * Predefined value-formatter that formats large numbers in a pretty way.
@@ -23,12 +25,19 @@ public class LargeValueFormatter implements IValueFormatter, IAxisValueFormatter
     private static String[] SUFFIX = new String[]{
             "", "k", "m", "b", "t"
     };
+
+    private static final String PATTERN = "###E00";
     private static final int MAX_LENGTH = 5;
     private DecimalFormat mFormat;
     private String mText = "";
 
+    public LargeValueFormatter(final Locale locale) {
+        mFormat = (DecimalFormat) NumberFormat.getNumberInstance(locale);
+        mFormat.applyPattern(PATTERN);
+    }
+
     public LargeValueFormatter() {
-        mFormat = new DecimalFormat("###E00");
+        mFormat = new DecimalFormat(PATTERN);
     }
 
     /**
