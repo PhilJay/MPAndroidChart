@@ -2,6 +2,8 @@ package com.github.mikephil.charting.data;
 
 import android.graphics.drawable.Drawable;
 
+import com.github.mikephil.charting.utils.Utils;
+
 /**
  * Created by Philipp Jahoda on 02/06/16.
  */
@@ -94,4 +96,56 @@ public abstract class BaseEntry {
     public void setData(Object data) {
         this.mData = data;
     }
+
+    @Override
+    public int hashCode() {
+      int hashCode = 5;
+      int multiplier = 17;
+
+      hashCode = hashCode * multiplier + ((getY() == 0.0f) ? 0 : Float.floatToIntBits(getY()));
+      hashCode = hashCode * multiplier + ((getData() == null) ? 0 : getData().hashCode());
+      hashCode = hashCode * multiplier + ((getIcon() == null) ? 0 : getIcon().hashCode());
+
+      return hashCode;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == null) {
+        return false;
+      }
+
+      if (obj == this) {
+        return true;
+      }
+
+      if (!getClass().isAssignableFrom(obj.getClass())) {
+        return false;
+      }
+
+      BaseEntry other = (BaseEntry) obj;
+
+      if (Math.abs(other.getY() - this.getY()) > Utils.FLOAT_EPSILON) {
+        return false;
+      }
+
+      if (getData() != null && !getData().equals(other.getData())) {
+        return false;
+      }
+
+      if (other.getData() != null && !other.getData().equals(getData())) {
+        return false;
+      }
+
+      if (getIcon() != null && !getIcon().equals(other.getIcon())) {
+        return false;
+      }
+
+      if (other.getIcon() != null && !other.getIcon().equals(getIcon())) {
+        return false;
+      }
+
+      return true;
+    }
+
 }
