@@ -113,7 +113,7 @@ public class InvestmentChart {
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(11f);
-        data.setValueTextColor(Color.WHITE);
+        data.setValueTextColor(Color.TRANSPARENT);
         mChart.setData(data);
         mChart.invalidate();
     }
