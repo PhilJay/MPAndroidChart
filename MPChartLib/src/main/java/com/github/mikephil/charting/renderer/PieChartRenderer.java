@@ -224,7 +224,8 @@ public class PieChartRenderer extends DataRenderer {
         final int entryCount = dataSet.getEntryCount();
         final float[] drawAngles = mChart.getDrawAngles();
         final MPPointF center = mChart.getCenterCircleBox();
-        final float radius = mChart.getRadius();
+        float shift = dataSet.getSelectionShift();
+        final float radius = mChart.getRadius() + shift;
         final boolean drawInnerArc = mChart.isDrawHoleEnabled() && !mChart.isDrawSlicesUnderHoleEnabled();
         final float userInnerRadius = drawInnerArc
                 ? radius * (mChart.getHoleRadius() / 100.f)
@@ -255,6 +256,9 @@ public class PieChartRenderer extends DataRenderer {
                     final boolean accountForSliceSpacing = sliceSpace > 0.f && sliceAngle <= 180.f;
 
                     mRenderPaint.setColor(dataSet.getColor(j));
+                    mRenderPaint.setStrokeCap(Paint.Cap.ROUND);
+                    mRenderPaint.setStyle(Style.STROKE);
+                    mRenderPaint.setStrokeWidth(10);
 
                     final float sliceSpaceAngleOuter = visibleAngleCount == 1 ?
                             0.f :
@@ -277,8 +281,13 @@ public class PieChartRenderer extends DataRenderer {
 
                         mPathBuffer.moveTo(arcStartPointX, arcStartPointY);
 
+                        final RectF highlightedCircleBox = new RectF();
+                        highlightedCircleBox.set(0,0,0,0);
+                        highlightedCircleBox.set(mChart.getCircleBox());
+                        highlightedCircleBox.inset(-shift, -shift);
+
                         mPathBuffer.arcTo(
-                                circleBox,
+                                highlightedCircleBox,
                                 startAngleOuter,
                                 sweepAngleOuter
                         );
@@ -324,15 +333,15 @@ public class PieChartRenderer extends DataRenderer {
                             mPathBuffer.addCircle(center.x, center.y, innerRadius, Path.Direction.CCW);
                         } else {
 
-                            mPathBuffer.lineTo(
-                                    center.x + innerRadius * (float) Math.cos(endAngleInner * Utils.FDEG2RAD),
-                                    center.y + innerRadius * (float) Math.sin(endAngleInner * Utils.FDEG2RAD));
-
-                            mPathBuffer.arcTo(
-                                    mInnerRectBuffer,
-                                    endAngleInner,
-                                    -sweepAngleInner
-                            );
+//                            mPathBuffer.lineTo(
+//                                    center.x + innerRadius * (float) Math.cos(endAngleInner * Utils.FDEG2RAD),
+//                                    center.y + innerRadius * (float) Math.sin(endAngleInner * Utils.FDEG2RAD));
+//
+//                            mPathBuffer.arcTo(
+//                                    mInnerRectBuffer,
+//                                    endAngleInner,
+//                                    -sweepAngleInner
+//                            );
                         }
                     } else {
 
@@ -369,7 +378,7 @@ public class PieChartRenderer extends DataRenderer {
 
                     }
 
-                    mPathBuffer.close();
+                    //mPathBuffer.close();
 
                     mBitmapCanvas.drawPath(mPathBuffer, mRenderPaint);
                 }
@@ -819,6 +828,9 @@ public class PieChartRenderer extends DataRenderer {
             final boolean accountForSliceSpacing = sliceSpace > 0.f && sliceAngle <= 180.f;
 
             mRenderPaint.setColor(set.getColor(index));
+            mRenderPaint.setStrokeCap(Paint.Cap.ROUND);
+            mRenderPaint.setStyle(Style.STROKE);
+            mRenderPaint.setStrokeWidth(30);
 
             final float sliceSpaceAngleOuter = visibleAngleCount == 1 ?
                     0.f :
@@ -904,15 +916,15 @@ public class PieChartRenderer extends DataRenderer {
                     mPathBuffer.addCircle(center.x, center.y, innerRadius, Path.Direction.CCW);
                 } else {
 
-                    mPathBuffer.lineTo(
-                            center.x + innerRadius * (float) Math.cos(endAngleInner * Utils.FDEG2RAD),
-                            center.y + innerRadius * (float) Math.sin(endAngleInner * Utils.FDEG2RAD));
-
-                    mPathBuffer.arcTo(
-                            mInnerRectBuffer,
-                            endAngleInner,
-                            -sweepAngleInner
-                    );
+//                    mPathBuffer.lineTo(
+//                            center.x + innerRadius * (float) Math.cos(endAngleInner * Utils.FDEG2RAD),
+//                            center.y + innerRadius * (float) Math.sin(endAngleInner * Utils.FDEG2RAD));
+//
+//                    mPathBuffer.arcTo(
+//                            mInnerRectBuffer,
+//                            endAngleInner,
+//                            -sweepAngleInner
+//                    );
                 }
             } else {
 
@@ -941,7 +953,7 @@ public class PieChartRenderer extends DataRenderer {
 
             }
 
-            mPathBuffer.close();
+            //mPathBuffer.close();
 
             mBitmapCanvas.drawPath(mPathBuffer, mRenderPaint);
         }

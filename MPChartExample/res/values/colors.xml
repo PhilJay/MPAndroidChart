@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="dark_gray">#555555</color>
+    <color name="light_gray">#848282</color>
+    <color name="lighter_gray">#e2e2e2</color>
+    <color name="lightest_gray">#f5f5f5</color>
+    <color name="lightest_gray_2">#f1f1f1</color>
+    <color name="white">#FFF</color>
+    <color name="white_transparent">#60FFFFFF</color>
+    <color name="purple">#8e2d4f</color>
+    <color name="plus_blue">#1b4384</color>
+
+    <color name="black_transparent">#20000000</color>
+
+
+
+    <color name="gray_main">#FF888888</color>
+    <color name="gray_ligth_main">#bababa</color>
+
+    <color name="textPrimary">#f5f5f5</color>
+    <color name="textPrimaryDark">#95aab4</color>
+    <color name="errorText">#ff7878</color>
+
+    <color name="toolbarTransparent">#00FFFFFF</color>
+    <color name="line_split">#10FFFFFF</color>
+    <color name="line_split_payment">#10000000</color>
+
+    <color name="pie_graph_color_primary">#8b6cff</color>
+    <color name="pie_graph_color_blue">#83f4f0</color>
+    <color name="pie_graph_color_green">#a6d045</color>
+
+    <color name="new_account_input_hint_border_color">#a1a1a1</color>
+    <color name="new_account_message_color">#555555</color>
+    <color name="new_account_border_input_digit">#333e79</color>
+
+    <color name="investment_graph_color_line">#7bb928</color>
+
+    <color name="button_green_background">#7bb928</color>
+
+
+    <color name="investment_table_header_background">#ececec</color>
+    <color name="investment_green_pointer">#7bb928</color>
+
+
+
+</resources>
