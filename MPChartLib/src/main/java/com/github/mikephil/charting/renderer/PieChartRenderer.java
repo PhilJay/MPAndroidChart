@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
+import android.graphics.PathMeasure;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -150,6 +151,8 @@ public class PieChartRenderer extends DataRenderer {
     }
 
     private Path mPathBuffer = new Path();
+    private Path mPathCircleBuffer = new Path();
+    private Path mPathAuxCircleBuffer = new Path();
     private RectF mInnerRectBuffer = new RectF();
 
     protected float calculateMinimumRadiusForSpacedSlice(
@@ -258,8 +261,15 @@ public class PieChartRenderer extends DataRenderer {
                     mRenderPaint.setColor(dataSet.getColor(j));
                     mRenderPaint.setStrokeCap(Paint.Cap.ROUND);
                     mRenderPaint.setStyle(Style.STROKE);
-                    mRenderPaint.setStrokeWidth(10);
+                    mRenderPaint.setStrokeWidth(16);
                     mRenderPaint.setShadowLayer(20, 0, 0, Color.argb(100, 0, 0, 0));
+
+                    Paint mRenderCirclePaint = new Paint();
+                    mRenderCirclePaint.setColor(Color.WHITE);
+                    mRenderCirclePaint.setStrokeCap(Paint.Cap.ROUND);
+                    mRenderCirclePaint.setStyle(Style.STROKE);
+                    mRenderCirclePaint.setStrokeWidth(3);
+                    mRenderCirclePaint.setAntiAlias(true);
 
                     final float sliceSpaceAngleOuter = visibleAngleCount == 1 ?
                             0.f :
@@ -292,6 +302,21 @@ public class PieChartRenderer extends DataRenderer {
                                 startAngleOuter,
                                 sweepAngleOuter
                         );
+
+
+                        mPathAuxCircleBuffer.reset();
+                        mPathCircleBuffer.reset();
+
+                        mPathCircleBuffer.moveTo(arcStartPointX, arcStartPointY);
+                        mPathCircleBuffer.arcTo(
+                                highlightedCircleBox,
+                                startAngleOuter,
+                                sweepAngleOuter / 2
+                        );
+                        float coordinates[] = getCurrentPoint(mPathCircleBuffer);
+                        mPathCircleBuffer.rewind();
+                        mPathCircleBuffer.addCircle(coordinates[0], coordinates[1], 10, Path.Direction.CW);
+
                     }
 
                     // API < 21 does not receive floats in addArc, but a RectF
@@ -382,6 +407,7 @@ public class PieChartRenderer extends DataRenderer {
                     //mPathBuffer.close();
 
                     mBitmapCanvas.drawPath(mPathBuffer, mRenderPaint);
+                    mBitmapCanvas.drawPath(mPathCircleBuffer, mRenderCirclePaint);
                 }
             }
 
@@ -389,6 +415,15 @@ public class PieChartRenderer extends DataRenderer {
         }
 
         MPPointF.recycleInstance(center);
+    }
+
+    private float[] getCurrentPoint(Path path) {
+        PathMeasure pm = new PathMeasure(path, false);
+
+        float aCoordinates[] = {0f, 0f};
+
+        pm.getPosTan(pm.getLength(), aCoordinates, null);
+        return aCoordinates;
     }
 
     @Override
