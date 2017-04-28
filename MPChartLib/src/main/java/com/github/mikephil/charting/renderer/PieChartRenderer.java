@@ -259,6 +259,7 @@ public class PieChartRenderer extends DataRenderer {
                     mRenderPaint.setStrokeCap(Paint.Cap.ROUND);
                     mRenderPaint.setStyle(Style.STROKE);
                     mRenderPaint.setStrokeWidth(10);
+                    mRenderPaint.setShadowLayer(20, 0, 0, Color.argb(100, 0, 0, 0));
 
                     final float sliceSpaceAngleOuter = visibleAngleCount == 1 ?
                             0.f :
@@ -831,6 +832,7 @@ public class PieChartRenderer extends DataRenderer {
             mRenderPaint.setStrokeCap(Paint.Cap.ROUND);
             mRenderPaint.setStyle(Style.STROKE);
             mRenderPaint.setStrokeWidth(30);
+            mRenderPaint.setShadowLayer(20, 0, 0, Color.argb(100, 0, 0, 0));
 
             final float sliceSpaceAngleOuter = visibleAngleCount == 1 ?
                     0.f :
