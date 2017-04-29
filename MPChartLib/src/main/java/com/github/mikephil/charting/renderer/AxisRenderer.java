@@ -238,7 +238,7 @@ public abstract class AxisRenderer extends Renderer {
 
         // set decimals
         if (interval < 1) {
-            mAxis.mDecimals = (int) Math.ceil(-Math.log10(interval));
+            mAxis.mDecimals = Math.min((int) Math.ceil(-Math.log10(interval)), 15);
         } else {
             mAxis.mDecimals = 0;
         }
