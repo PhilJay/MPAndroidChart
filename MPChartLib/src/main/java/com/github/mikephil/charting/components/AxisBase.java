@@ -63,6 +63,11 @@ public abstract class AxisBase extends ComponentBase {
     protected float mGranularity = 1.0f;
 
     /**
+     * sparse data for charts with lots of empty values
+     */
+    protected boolean mSparseData;
+
+    /**
      * When true, axis labels are controlled by the `granularity` property.
      * When false, axis values could possibly be repeated.
      * This could happen if two adjacent axis values are rounded to same value.
@@ -283,6 +288,15 @@ public abstract class AxisBase extends ComponentBase {
         return mAxisLineColor;
     }
 
+
+    /**
+     * Returns true if sparse data is enabled
+     *
+     */
+    public boolean getSparseData() {
+        return mSparseData;
+    }
+
     /**
      * Set this to true to enable drawing the labels of this axis (this will not
      * affect drawing the grid lines or axis lines).
@@ -291,6 +305,16 @@ public abstract class AxisBase extends ComponentBase {
      */
     public void setDrawLabels(boolean enabled) {
         mDrawLabels = enabled;
+    }
+
+
+    /**
+     * Set this to true to always enable drawing the first and last labels of this axis.
+     *
+     * @param enabled
+     */
+    public void setSparseData(boolean enabled) {
+        mSparseData = enabled;
     }
 
     /**
