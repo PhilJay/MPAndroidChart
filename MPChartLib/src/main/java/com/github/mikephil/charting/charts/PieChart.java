@@ -70,7 +70,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
     /**
      * variable for the text that is drawn in the center of the pie-chart
      */
-    private CharSequence mCenterText = "";
+    private CharSequence mCenterText;
 
     private MPPointF mCenterTextOffset = MPPointF.getInstance(0, 0);
 
