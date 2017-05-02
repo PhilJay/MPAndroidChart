@@ -102,7 +102,7 @@ public class InvestmentPieChart extends PieChart  {
         pieEntries.addAll(entries);
 
         PieDataSet dataSet = new PieDataSet(pieEntries, "");
-        dataSet.setSliceSpace(16f);
+        dataSet.setSliceSpace(20f);
         dataSet.setSelectionShift(10f);
         setGraphColors(dataSet, entries);
 
