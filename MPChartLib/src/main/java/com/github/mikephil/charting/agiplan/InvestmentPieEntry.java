@@ -1,4 +1,6 @@
-package com.xxmassdeveloper.mpchartexample.agiplan;
+package com.github.mikephil.charting.agiplan;
+
+import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.data.PieEntry;
 
@@ -11,12 +13,14 @@ public class InvestmentPieEntry extends PieEntry {
     private String description;
     private float percentage;
     private Integer color;
+    private Drawable circle;
 
-    public InvestmentPieEntry(float value, String description, float percentage, Integer color) {
+    public InvestmentPieEntry(float value, String description, float percentage, Integer color, Drawable circle) {
         super(value, "");
         this.description = description;
         this.percentage = percentage;
         this.color = color;
+        this.circle = circle;
     }
 
     public String getDescription() {
@@ -41,5 +45,13 @@ public class InvestmentPieEntry extends PieEntry {
 
     public void setColor(Integer color) {
         this.color = color;
+    }
+
+    public Drawable getCircle() {
+        return circle;
+    }
+
+    public void setCircle(Drawable circle) {
+        this.circle = circle;
     }
 }

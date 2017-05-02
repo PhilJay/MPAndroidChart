@@ -7,7 +7,7 @@
     tools:context="com.xxmassdeveloper.mpchartexample.agiplan.InvestmentChartActivity"
     android:background="@drawable/gradient_background">
 
-    <com.github.mikephil.charting.charts.PieChart
+    <com.github.mikephil.charting.agiplan.InvestmentPieChart
         android:id="@+id/investment_chart"
         android:layout_marginTop="60dp"
         android:layout_width="match_parent"
