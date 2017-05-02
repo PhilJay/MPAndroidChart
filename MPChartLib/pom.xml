@@ -21,7 +21,7 @@
     <groupId>com.github.mikephil</groupId>
     <artifactId>MPAndroidChart</artifactId>
     <name>MPAndroidChart</name>
-	<description>A simple Android chart view/graph view library, supporting line- bar- and piecharts as well as scaling, dragging and animations</description>
+	<detail>A simple Android chart view/graph view library, supporting line- bar- and piecharts as well as scaling, dragging and animations</detail>
 	<url>https://github.com/PhilJay/MPAndroidChart</url>
     <packaging>apklib</packaging>
     <!--<packaging>aar</packaging>-->

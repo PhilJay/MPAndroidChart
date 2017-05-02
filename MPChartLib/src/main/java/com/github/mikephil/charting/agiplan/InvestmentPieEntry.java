@@ -1,6 +1,7 @@
 package com.github.mikephil.charting.agiplan;
 
 import android.graphics.drawable.Drawable;
+import android.text.SpannableString;
 
 import com.github.mikephil.charting.data.PieEntry;
 
@@ -10,33 +11,23 @@ import com.github.mikephil.charting.data.PieEntry;
 
 public class InvestmentPieEntry extends PieEntry {
 
-    private String description;
-    private float percentage;
+    private SpannableString detail;
     private Integer color;
     private Drawable circle;
 
-    public InvestmentPieEntry(float value, String description, float percentage, Integer color, Drawable circle) {
+    public InvestmentPieEntry(float value, SpannableString detail, Integer color, Drawable circle) {
         super(value, "");
-        this.description = description;
-        this.percentage = percentage;
+        this.detail = detail;
         this.color = color;
         this.circle = circle;
     }
 
-    public String getDescription() {
-        return description;
+    public SpannableString getDetail() {
+        return detail;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public float getPercentage() {
-        return percentage;
-    }
-
-    public void setPercentage(float percentage) {
-        this.percentage = percentage;
+    public void setDetail(SpannableString detail) {
+        this.detail = detail;
     }
 
     public Integer getColor() {

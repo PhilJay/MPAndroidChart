@@ -11,7 +11,6 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
 
 /**
  * Created by vsossella on 07/02/17.
@@ -37,12 +36,10 @@ public class InvestmentMarkerView extends MarkerView {
         int position = Math.round(highlight.getX());
 
         InvestmentPieEntry investmentPieEntry = (InvestmentPieEntry)e;
-        String investmentValueFormated = NumberFormat.getInstance().format(investmentPieEntry.getValue());
-        String investmentPercentage = new PercentFormatter().getFormattedValue(investmentPieEntry.getPercentage(), null);
-        
-        textViewPercentage.setText("" + investmentPercentage);
-        investmentChartDescription.setText("" + investmentPieEntry.getDescription()
-                + "\n" + investmentValueFormated);
+        String investmentPercentage = new PercentFormatter().getFormattedValue(investmentPieEntry.getValue(), null);
+
+        textViewPercentage.setText(investmentPercentage);
+        investmentChartDescription.setText(investmentPieEntry.getDetail());
 
 
         textViewPercentage.setBackground(investmentPieEntry.getCircle());

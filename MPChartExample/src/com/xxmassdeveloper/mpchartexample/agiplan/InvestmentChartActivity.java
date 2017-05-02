@@ -30,10 +30,11 @@ public class InvestmentChartActivity extends Activity {
         mChart = (InvestmentPieChart) findViewById(R.id.investment_chart);
 
         ArrayList<InvestmentPieEntry> entries = new ArrayList<InvestmentPieEntry>();
-        //@TODO remove this mocked data when get service integration
-        entries.add(new InvestmentPieEntry(95963.563f, "LCI Banco Agiplan", 45.1f, this.getResources().getColor(R.color.pie_graph_color_primary), this.getResources().getDrawable(R.drawable.graph_circle_highlight_primary)));
-        entries.add(new InvestmentPieEntry(38540.563f, "LCA Banco Agiplan", 18.1f, this.getResources().getColor(R.color.pie_graph_color_blue), this.getResources().getDrawable(R.drawable.graph_circle_highlight_blue)));
-        entries.add(new InvestmentPieEntry(78386.57f, "CDB Banco Agiplan", 36.8f, this.getResources().getColor(R.color.pie_graph_color_green), this.getResources().getDrawable(R.drawable.graph_circle_highlight_green)));
+
+        entries.add(new InvestmentPieEntry(50f, getMockedText(), this.getResources().getColor(R.color.pie_graph_color_primary), this.getResources().getDrawable(R.drawable.graph_circle_highlight_primary)));
+        entries.add(new InvestmentPieEntry(20f, getMockedText(), this.getResources().getColor(R.color.pie_graph_color_blue), this.getResources().getDrawable(R.drawable.graph_circle_highlight_blue)));
+        entries.add(new InvestmentPieEntry(20f, getMockedText(), this.getResources().getColor(R.color.pie_graph_color_green), this.getResources().getDrawable(R.drawable.graph_circle_highlight_green)));
+        entries.add(new InvestmentPieEntry(10f, getMockedText(), this.getResources().getColor(R.color.pie_graph_color_green), this.getResources().getDrawable(R.drawable.graph_circle_highlight_green)));
 
         MarkerView markView = new InvestmentMarkerView(this, R.layout.pie_chart_marker, R.id.investment_chart_description, R.id.vertical_line_graph, R.id.percentage_value_graph);
 
@@ -48,6 +49,11 @@ public class InvestmentChartActivity extends Activity {
         s.setSpan(new RelativeSizeSpan(1.2f), 25, s.length(), 0);
         s.setSpan(new StyleSpan(Typeface.BOLD), 18, 25, 0);
         s.setSpan(new ForegroundColorSpan(Color.WHITE), 0, s.length(), 0);
+        return s;
+    }
+
+    private SpannableString getMockedText() {
+        SpannableString s = new SpannableString("CDB Banco Agiplan\nR$212.890,69");
         return s;
     }
 
