@@ -2,6 +2,7 @@ package com.github.mikephil.charting.agiplan;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.util.AttributeSet;
 
@@ -28,6 +29,7 @@ public class InvestmentPieChart extends PieChart  {
     private static int spinDuration = 1000;
     private SpannableString mCenterText;
     private MarkerView mMarkView;
+    private boolean isOneInvestmentOnly = false;
 
     public InvestmentPieChart(Context context) {
         super(context);
@@ -51,15 +53,15 @@ public class InvestmentPieChart extends PieChart  {
         this.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                //get current angle
+                if ((e instanceof InvestmentPieEntry) && ((InvestmentPieEntry) e).isAddSlice()) {
+                    InvestmentPieChart.this.highlightValue(0, 0, false);
+                    return;
+                }
+
                 float start = InvestmentPieChart.this.getRotationAngle();
-                //get index of current slice
                 int currentSliceIndex = Math.round(h.getX());
-                //calculate center of slice
                 float offset = InvestmentPieChart.this.getDrawAngles()[currentSliceIndex] / 2;
-                // calculate the next angle
                 float end = desiredAngle-(InvestmentPieChart.this.getAbsoluteAngles()[currentSliceIndex]-offset);
-                //rotate to slice center
                 InvestmentPieChart.this.spin(spinDuration,start,end, Easing.EasingOption.EaseInOutQuad);
             }
 
@@ -70,7 +72,7 @@ public class InvestmentPieChart extends PieChart  {
         });
 
         //@TODO remove this when get service integration to select the most valuate investment.
-        this.highlightValue(0, 0, true);
+        this.highlightValue(0, 0, false);
     }
 
 
@@ -99,6 +101,14 @@ public class InvestmentPieChart extends PieChart  {
 
     private void setData(ArrayList<InvestmentPieEntry> entries) {
         ArrayList<PieEntry> pieEntries = new ArrayList<PieEntry>();
+
+        if (entries.size() == 1) {
+            SpannableString detailText = new SpannableString("");
+            int color = Color.argb(255, 166, 208, 69);
+            entries.add(new InvestmentPieEntry(15, detailText, color, null, true));
+            isOneInvestmentOnly = true;
+        }
+
         pieEntries.addAll(entries);
 
         PieDataSet dataSet = new PieDataSet(pieEntries, "");

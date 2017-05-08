@@ -14,12 +14,26 @@ public class InvestmentPieEntry extends PieEntry {
     private SpannableString detail;
     private Integer color;
     private Drawable circle;
+    private boolean isAddSlice;
+
+    public boolean isAddSlice() {
+        return isAddSlice;
+    }
 
     public InvestmentPieEntry(float value, SpannableString detail, Integer color, Drawable circle) {
         super(value, "");
         this.detail = detail;
         this.color = color;
         this.circle = circle;
+        this.isAddSlice = false;
+    }
+
+    public InvestmentPieEntry(float value, SpannableString detail, Integer color, Drawable circle, boolean isAddSlice) {
+        super(value, "");
+        this.detail = detail;
+        this.color = color;
+        this.circle = circle;
+        this.isAddSlice = isAddSlice;
     }
 
     public SpannableString getDetail() {
