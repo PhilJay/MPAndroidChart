@@ -9,7 +9,8 @@
         android:id="@+id/percentage_value_graph"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:text="58%"
+        android:text="-"
+        android:textSize="12dp"
         android:textColor="@color/white"
         android:gravity="center"
         android:background="@drawable/graph_circle_highlight_green"/>

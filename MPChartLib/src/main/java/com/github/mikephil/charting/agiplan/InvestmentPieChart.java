@@ -105,7 +105,7 @@ public class InvestmentPieChart extends PieChart  {
         this.animateY(1400, Easing.EasingOption.EaseInOutQuad);
         this.getLegend().setEnabled(false);
         this.setEntryLabelColor(Color.WHITE);
-        this.setEntryLabelTextSize(12f);
+        this.setEntryLabelTextSize(8f);
         this.setMarker(mMarkView);
         this.setTouchEnabled(true);
         this.setDrawHoleEnabled(true);
