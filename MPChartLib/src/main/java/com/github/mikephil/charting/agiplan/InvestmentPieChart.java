@@ -5,6 +5,9 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.TouchDelegate;
+import android.view.View;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -15,6 +18,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
@@ -30,6 +34,8 @@ public class InvestmentPieChart extends PieChart  {
     private SpannableString mCenterText;
     private MarkerView mMarkView;
     private boolean isOneInvestmentOnly = false;
+
+    private InvestmentPieChartDelegate delegate;
 
     public InvestmentPieChart(Context context) {
         super(context);
@@ -55,6 +61,9 @@ public class InvestmentPieChart extends PieChart  {
             public void onValueSelected(Entry e, Highlight h) {
                 if ((e instanceof InvestmentPieEntry) && ((InvestmentPieEntry) e).isAddSlice()) {
                     InvestmentPieChart.this.highlightValue(0, 0, false);
+                    if (delegate != null) {
+                        delegate.investmentChartAddPressed();
+                    }
                     return;
                 }
 
@@ -72,7 +81,7 @@ public class InvestmentPieChart extends PieChart  {
         });
 
         //@TODO remove this when get service integration to select the most valuate investment.
-        this.highlightValue(0, 0, false);
+        this.highlightValue(0, 0, true);
     }
 
 
@@ -84,10 +93,11 @@ public class InvestmentPieChart extends PieChart  {
         //Typeface font = Typeface.createFromAsset(mContext.getAssets(), "fonts/DINNextLTPro-Regular.otf");
         //mChart.setCenterTextTypeface(font);
         this.setCenterText(mCenterText);
-        this.setDrawHoleEnabled(true);
         this.setHoleColor(Color.TRANSPARENT);
-        this.setHoleRadius(92f);
-        this.setTransparentCircleRadius(81f);
+        //this.setHoleRadius(92f);
+        //this.setTransparentCircleRadius(81f);
+        this.setHoleRadius(0.8f);
+        this.setTransparentCircleRadius(0.2f);
         this.setDrawCenterText(true);
         this.setRotationAngle(0);
         this.setRotationEnabled(false);
@@ -97,6 +107,9 @@ public class InvestmentPieChart extends PieChart  {
         this.setEntryLabelColor(Color.WHITE);
         this.setEntryLabelTextSize(12f);
         this.setMarker(mMarkView);
+        this.setTouchEnabled(true);
+        this.setDrawHoleEnabled(true);
+        this.setDrawSlicesUnderHole(false);
     }
 
     private void setData(ArrayList<InvestmentPieEntry> entries) {
@@ -132,6 +145,14 @@ public class InvestmentPieChart extends PieChart  {
         }
 
         dataSet.setColors(colors);
+    }
+
+    public InvestmentPieChartDelegate getDelegate() {
+        return delegate;
+    }
+
+    public void setDelegate(InvestmentPieChartDelegate delegate) {
+        this.delegate = delegate;
     }
 
 }

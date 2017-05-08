@@ -8,9 +8,11 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.agiplan.InvestmentMarkerView;
 import com.github.mikephil.charting.agiplan.InvestmentPieChart;
+import com.github.mikephil.charting.agiplan.InvestmentPieChartDelegate;
 import com.github.mikephil.charting.agiplan.InvestmentPieEntry;
 import com.github.mikephil.charting.components.MarkerView;
 import com.xxmassdeveloper.mpchartexample.R;
@@ -28,6 +30,12 @@ public class InvestmentChartActivity extends Activity {
         setContentView(R.layout.activity_investment_chart);
 
         mChart = (InvestmentPieChart) findViewById(R.id.investment_chart);
+        mChart.setDelegate(new InvestmentPieChartDelegate() {
+            @Override
+            public void investmentChartAddPressed() {
+                Toast.makeText(InvestmentChartActivity.this, "add pressed", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         ArrayList<InvestmentPieEntry> entries = new ArrayList<InvestmentPieEntry>();
 
