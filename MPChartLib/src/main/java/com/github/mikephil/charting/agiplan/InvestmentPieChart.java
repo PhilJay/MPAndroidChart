@@ -96,8 +96,8 @@ public class InvestmentPieChart extends PieChart  {
         this.setHoleColor(Color.TRANSPARENT);
         //this.setHoleRadius(92f);
         //this.setTransparentCircleRadius(81f);
-        this.setHoleRadius(0.8f);
-        this.setTransparentCircleRadius(0.2f);
+        this.setHoleRadius(100f);
+        this.setTransparentCircleRadius(80f);
         this.setDrawCenterText(true);
         this.setRotationAngle(0);
         this.setRotationEnabled(false);
