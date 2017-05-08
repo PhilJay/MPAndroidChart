@@ -16,6 +16,7 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 
+import com.github.mikephil.charting.agiplan.InvestmentPieEntry;
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -152,7 +153,7 @@ public class PieChartRenderer extends DataRenderer {
 
     private Path mPathBuffer = new Path();
     private Path mPathCircleBuffer = new Path();
-    private Path mPathAuxCircleBuffer = new Path();
+    private Path mPathPlusBuffer = new Path();
     private RectF mInnerRectBuffer = new RectF();
 
     protected float calculateMinimumRadiusForSpacedSlice(
@@ -265,11 +266,18 @@ public class PieChartRenderer extends DataRenderer {
                     mRenderPaint.setShadowLayer(20, 0, 0, Color.argb(100, 0, 0, 0));
 
                     Paint mRenderCirclePaint = new Paint();
-                    mRenderCirclePaint.setColor(Color.WHITE);
+                    mRenderCirclePaint.setColor(dataSet.getColor(j));
                     mRenderCirclePaint.setStrokeCap(Paint.Cap.ROUND);
-                    mRenderCirclePaint.setStyle(Style.STROKE);
+                    mRenderCirclePaint.setStyle(Style.FILL_AND_STROKE);
                     mRenderCirclePaint.setStrokeWidth(3);
                     mRenderCirclePaint.setAntiAlias(true);
+
+                    Paint mRenderPlusPaint = new Paint();
+                    mRenderPlusPaint.setColor(Color.WHITE);
+                    mRenderPlusPaint.setStrokeCap(Paint.Cap.ROUND);
+                    mRenderPlusPaint.setStyle(Style.STROKE);
+                    mRenderPlusPaint.setStrokeWidth(3);
+                    mRenderPlusPaint.setAntiAlias(true);
 
                     final float sliceSpaceAngleOuter = visibleAngleCount == 1 ?
                             0.f :
@@ -304,8 +312,8 @@ public class PieChartRenderer extends DataRenderer {
                         );
 
 
-                        mPathAuxCircleBuffer.reset();
                         mPathCircleBuffer.reset();
+                        mPathPlusBuffer.reset();
 
                         mPathCircleBuffer.moveTo(arcStartPointX, arcStartPointY);
                         mPathCircleBuffer.arcTo(
@@ -313,10 +321,32 @@ public class PieChartRenderer extends DataRenderer {
                                 startAngleOuter,
                                 sweepAngleOuter / 2
                         );
-                        float coordinates[] = getCurrentPoint(mPathCircleBuffer);
-                        mPathCircleBuffer.rewind();
-                        mPathCircleBuffer.addCircle(coordinates[0], coordinates[1], 10, Path.Direction.CW);
 
+                        if (e instanceof InvestmentPieEntry) {
+                            InvestmentPieEntry investmentEntry = (InvestmentPieEntry) e;
+
+                            float coordinates[] = getCurrentPoint(mPathCircleBuffer);
+                            mPathCircleBuffer.rewind();
+
+                            if (investmentEntry.isAddSlice()) {
+                                int circleSize = 24;
+                                int circlePlusSize = circleSize/4;
+                                mPathCircleBuffer.addCircle(coordinates[0], coordinates[1], circleSize, Path.Direction.CW);
+
+                                mPathPlusBuffer.addCircle(coordinates[0], coordinates[1], circleSize, Path.Direction.CW);
+                                mPathPlusBuffer.moveTo(coordinates[0], coordinates[1]);
+                                mPathPlusBuffer.rLineTo(circlePlusSize, 0);
+                                mPathPlusBuffer.moveTo(coordinates[0], coordinates[1]);
+                                mPathPlusBuffer.rLineTo(circlePlusSize  * -1, 0);
+                                mPathPlusBuffer.moveTo(coordinates[0], coordinates[1]);
+                                mPathPlusBuffer.rLineTo(0, circlePlusSize);
+                                mPathPlusBuffer.moveTo(coordinates[0], coordinates[1]);
+                                mPathPlusBuffer.rLineTo(0, circlePlusSize * -1);
+                            } else {
+                                mPathCircleBuffer.addCircle(coordinates[0], coordinates[1], 10, Path.Direction.CW);
+                                mPathPlusBuffer.addCircle(coordinates[0], coordinates[1], 10, Path.Direction.CW);
+                            }
+                        }
                     }
 
                     // API < 21 does not receive floats in addArc, but a RectF
@@ -408,6 +438,7 @@ public class PieChartRenderer extends DataRenderer {
 
                     mBitmapCanvas.drawPath(mPathBuffer, mRenderPaint);
                     mBitmapCanvas.drawPath(mPathCircleBuffer, mRenderCirclePaint);
+                    mBitmapCanvas.drawPath(mPathPlusBuffer, mRenderPlusPaint);
                 }
             }
 
