@@ -10,7 +10,7 @@
 
 ```
 dependencies {
-	compile 'com.github.ilegra:Agiplan-Charts-Android:v4.0.0'
+	compile 'com.github.ilegra:Agiplan-Charts-Android:4.0.1'
 }
 ```
 
