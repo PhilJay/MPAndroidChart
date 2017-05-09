@@ -39,10 +39,10 @@ public class InvestmentChartActivity extends Activity {
 
         ArrayList<InvestmentPieEntry> entries = new ArrayList<InvestmentPieEntry>();
 
-        entries.add(new InvestmentPieEntry(100f, getMockedText(), this.getResources().getColor(R.color.pie_graph_color_primary), this.getResources().getDrawable(R.drawable.graph_circle_highlight_primary)));
-        //entries.add(new InvestmentPieEntry(20f, getMockedText(), this.getResources().getColor(R.color.pie_graph_color_blue), this.getResources().getDrawable(R.drawable.graph_circle_highlight_blue)));
-        //entries.add(new InvestmentPieEntry(20f, getMockedText(), this.getResources().getColor(R.color.pie_graph_color_green), this.getResources().getDrawable(R.drawable.graph_circle_highlight_green)));
-        //entries.add(new InvestmentPieEntry(10f, getMockedText(), this.getResources().getColor(R.color.pie_graph_color_green), this.getResources().getDrawable(R.drawable.graph_circle_highlight_green)));
+        entries.add(new InvestmentPieEntry(50f, getMockedText(), this.getResources().getColor(R.color.pie_graph_color_primary), this.getResources().getDrawable(R.drawable.graph_circle_highlight_primary)));
+        entries.add(new InvestmentPieEntry(20f, getMockedText(), this.getResources().getColor(R.color.pie_graph_color_blue), this.getResources().getDrawable(R.drawable.graph_circle_highlight_blue)));
+        entries.add(new InvestmentPieEntry(20f, getMockedText(), this.getResources().getColor(R.color.pie_graph_color_green), this.getResources().getDrawable(R.drawable.graph_circle_highlight_green)));
+        entries.add(new InvestmentPieEntry(10f, getMockedText(), this.getResources().getColor(R.color.pie_graph_color_green), this.getResources().getDrawable(R.drawable.graph_circle_highlight_green)));
 
         MarkerView markView = new InvestmentMarkerView(this, R.layout.pie_chart_marker, R.id.investment_chart_description, R.id.vertical_line_graph, R.id.percentage_value_graph);
 
