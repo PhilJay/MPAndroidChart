@@ -39,6 +39,7 @@ dependencies {
     //provided 'io.realm:realm-android:0.87.5' // "optional" dependency to realm-database API
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-core:1.9.5"
+    compile 'com.android.support:support-annotations:24.2.1'
 }
 
 android.libraryVariants.all { variant ->

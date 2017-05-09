@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="-15dp"
+    android:layout_marginLeft="-22dp">
+
+    <TextView
+        android:id="@+id/percentage_value_graph"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="-"
+        android:textSize="12dp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:background="@drawable/graph_circle_highlight_green"/>
+
+    <View
+        android:id="@+id/vertical_line_graph"
+        android:layout_below="@+id/percentage_value_graph"
+        android:layout_marginLeft="25dp"
+        android:layout_width="1dp"
+        android:layout_height="75dp"
+        android:background="@color/white" />
+
+    <TextView
+        android:layout_below="@+id/percentage_value_graph"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="30dp"
+        android:textColor="@color/white"
+        android:id="@+id/investment_chart_description"
+        android:lines="2"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="dsadasdas"/>
+
+</RelativeLayout>

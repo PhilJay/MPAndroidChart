@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
+import android.graphics.PathMeasure;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -15,6 +16,7 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 
+import com.github.mikephil.charting.agiplan.InvestmentPieEntry;
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -150,6 +152,8 @@ public class PieChartRenderer extends DataRenderer {
     }
 
     private Path mPathBuffer = new Path();
+    private Path mPathCircleBuffer = new Path();
+    private Path mPathPlusBuffer = new Path();
     private RectF mInnerRectBuffer = new RectF();
 
     protected float calculateMinimumRadiusForSpacedSlice(
@@ -224,7 +228,8 @@ public class PieChartRenderer extends DataRenderer {
         final int entryCount = dataSet.getEntryCount();
         final float[] drawAngles = mChart.getDrawAngles();
         final MPPointF center = mChart.getCenterCircleBox();
-        final float radius = mChart.getRadius();
+        float shift = dataSet.getSelectionShift();
+        final float radius = mChart.getRadius() + shift;
         final boolean drawInnerArc = mChart.isDrawHoleEnabled() && !mChart.isDrawSlicesUnderHoleEnabled();
         final float userInnerRadius = drawInnerArc
                 ? radius * (mChart.getHoleRadius() / 100.f)
@@ -255,6 +260,24 @@ public class PieChartRenderer extends DataRenderer {
                     final boolean accountForSliceSpacing = sliceSpace > 0.f && sliceAngle <= 180.f;
 
                     mRenderPaint.setColor(dataSet.getColor(j));
+                    mRenderPaint.setStrokeCap(Paint.Cap.ROUND);
+                    mRenderPaint.setStyle(Style.STROKE);
+                    mRenderPaint.setStrokeWidth(16);
+                    mRenderPaint.setShadowLayer(20, 0, 0, Color.argb(100, 0, 0, 0));
+
+                    Paint mRenderCirclePaint = new Paint();
+                    mRenderCirclePaint.setColor(dataSet.getColor(j));
+                    mRenderCirclePaint.setStrokeCap(Paint.Cap.ROUND);
+                    mRenderCirclePaint.setStyle(Style.FILL_AND_STROKE);
+                    mRenderCirclePaint.setStrokeWidth(3);
+                    mRenderCirclePaint.setAntiAlias(true);
+
+                    Paint mRenderPlusPaint = new Paint();
+                    mRenderPlusPaint.setColor(Color.WHITE);
+                    mRenderPlusPaint.setStrokeCap(Paint.Cap.ROUND);
+                    mRenderPlusPaint.setStyle(Style.STROKE);
+                    mRenderPlusPaint.setStrokeWidth(3);
+                    mRenderPlusPaint.setAntiAlias(true);
 
                     final float sliceSpaceAngleOuter = visibleAngleCount == 1 ?
                             0.f :
@@ -277,11 +300,53 @@ public class PieChartRenderer extends DataRenderer {
 
                         mPathBuffer.moveTo(arcStartPointX, arcStartPointY);
 
+                        final RectF highlightedCircleBox = new RectF();
+                        highlightedCircleBox.set(0,0,0,0);
+                        highlightedCircleBox.set(mChart.getCircleBox());
+                        highlightedCircleBox.inset(-shift, -shift);
+
                         mPathBuffer.arcTo(
-                                circleBox,
+                                highlightedCircleBox,
                                 startAngleOuter,
                                 sweepAngleOuter
                         );
+
+
+                        mPathCircleBuffer.reset();
+                        mPathPlusBuffer.reset();
+
+                        mPathCircleBuffer.moveTo(arcStartPointX, arcStartPointY);
+                        mPathCircleBuffer.arcTo(
+                                highlightedCircleBox,
+                                startAngleOuter,
+                                sweepAngleOuter / 2
+                        );
+
+                        if (e instanceof InvestmentPieEntry) {
+                            InvestmentPieEntry investmentEntry = (InvestmentPieEntry) e;
+
+                            float coordinates[] = getCurrentPoint(mPathCircleBuffer);
+                            mPathCircleBuffer.rewind();
+
+                            if (investmentEntry.isAddSlice()) {
+                                int circleSize = 24;
+                                int circlePlusSize = circleSize/4;
+                                mPathCircleBuffer.addCircle(coordinates[0], coordinates[1], circleSize, Path.Direction.CW);
+
+                                mPathPlusBuffer.addCircle(coordinates[0], coordinates[1], circleSize, Path.Direction.CW);
+                                mPathPlusBuffer.moveTo(coordinates[0], coordinates[1]);
+                                mPathPlusBuffer.rLineTo(circlePlusSize, 0);
+                                mPathPlusBuffer.moveTo(coordinates[0], coordinates[1]);
+                                mPathPlusBuffer.rLineTo(circlePlusSize  * -1, 0);
+                                mPathPlusBuffer.moveTo(coordinates[0], coordinates[1]);
+                                mPathPlusBuffer.rLineTo(0, circlePlusSize);
+                                mPathPlusBuffer.moveTo(coordinates[0], coordinates[1]);
+                                mPathPlusBuffer.rLineTo(0, circlePlusSize * -1);
+                            } else {
+                                mPathCircleBuffer.addCircle(coordinates[0], coordinates[1], 10, Path.Direction.CW);
+                                mPathPlusBuffer.addCircle(coordinates[0], coordinates[1], 10, Path.Direction.CW);
+                            }
+                        }
                     }
 
                     // API < 21 does not receive floats in addArc, but a RectF
@@ -324,15 +389,15 @@ public class PieChartRenderer extends DataRenderer {
                             mPathBuffer.addCircle(center.x, center.y, innerRadius, Path.Direction.CCW);
                         } else {
 
-                            mPathBuffer.lineTo(
-                                    center.x + innerRadius * (float) Math.cos(endAngleInner * Utils.FDEG2RAD),
-                                    center.y + innerRadius * (float) Math.sin(endAngleInner * Utils.FDEG2RAD));
-
-                            mPathBuffer.arcTo(
-                                    mInnerRectBuffer,
-                                    endAngleInner,
-                                    -sweepAngleInner
-                            );
+//                            mPathBuffer.lineTo(
+//                                    center.x + innerRadius * (float) Math.cos(endAngleInner * Utils.FDEG2RAD),
+//                                    center.y + innerRadius * (float) Math.sin(endAngleInner * Utils.FDEG2RAD));
+//
+//                            mPathBuffer.arcTo(
+//                                    mInnerRectBuffer,
+//                                    endAngleInner,
+//                                    -sweepAngleInner
+//                            );
                         }
                     } else {
 
@@ -369,9 +434,11 @@ public class PieChartRenderer extends DataRenderer {
 
                     }
 
-                    mPathBuffer.close();
+                    //mPathBuffer.close();
 
                     mBitmapCanvas.drawPath(mPathBuffer, mRenderPaint);
+                    mBitmapCanvas.drawPath(mPathCircleBuffer, mRenderCirclePaint);
+                    mBitmapCanvas.drawPath(mPathPlusBuffer, mRenderPlusPaint);
                 }
             }
 
@@ -379,6 +446,15 @@ public class PieChartRenderer extends DataRenderer {
         }
 
         MPPointF.recycleInstance(center);
+    }
+
+    private float[] getCurrentPoint(Path path) {
+        PathMeasure pm = new PathMeasure(path, false);
+
+        float aCoordinates[] = {0f, 0f};
+
+        pm.getPosTan(pm.getLength(), aCoordinates, null);
+        return aCoordinates;
     }
 
     @Override
@@ -819,6 +895,10 @@ public class PieChartRenderer extends DataRenderer {
             final boolean accountForSliceSpacing = sliceSpace > 0.f && sliceAngle <= 180.f;
 
             mRenderPaint.setColor(set.getColor(index));
+            mRenderPaint.setStrokeCap(Paint.Cap.ROUND);
+            mRenderPaint.setStyle(Style.STROKE);
+            mRenderPaint.setStrokeWidth(40);
+            mRenderPaint.setShadowLayer(20, 0, 0, Color.argb(100, 0, 0, 0));
 
             final float sliceSpaceAngleOuter = visibleAngleCount == 1 ?
                     0.f :
@@ -904,15 +984,15 @@ public class PieChartRenderer extends DataRenderer {
                     mPathBuffer.addCircle(center.x, center.y, innerRadius, Path.Direction.CCW);
                 } else {
 
-                    mPathBuffer.lineTo(
-                            center.x + innerRadius * (float) Math.cos(endAngleInner * Utils.FDEG2RAD),
-                            center.y + innerRadius * (float) Math.sin(endAngleInner * Utils.FDEG2RAD));
-
-                    mPathBuffer.arcTo(
-                            mInnerRectBuffer,
-                            endAngleInner,
-                            -sweepAngleInner
-                    );
+//                    mPathBuffer.lineTo(
+//                            center.x + innerRadius * (float) Math.cos(endAngleInner * Utils.FDEG2RAD),
+//                            center.y + innerRadius * (float) Math.sin(endAngleInner * Utils.FDEG2RAD));
+//
+//                    mPathBuffer.arcTo(
+//                            mInnerRectBuffer,
+//                            endAngleInner,
+//                            -sweepAngleInner
+//                    );
                 }
             } else {
 
@@ -941,7 +1021,7 @@ public class PieChartRenderer extends DataRenderer {
 
             }
 
-            mPathBuffer.close();
+            //mPathBuffer.close();
 
             mBitmapCanvas.drawPath(mPathBuffer, mRenderPaint);
         }

@@ -1,22 +1,24 @@
-### This is a customization to fit in Agiplan Pie Chart needs.
+package com.xxmassdeveloper.mpchartexample.agiplan;
 
-> Original repo: https://github.com/PhilJay/MPAndroidChart
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.app.Activity;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
+import android.widget.Toast;
 
-![Pie Chart](./pie-chart.png)
+import com.github.mikephil.charting.agiplan.InvestmentMarkerView;
+import com.github.mikephil.charting.agiplan.InvestmentPieChart;
+import com.github.mikephil.charting.agiplan.InvestmentPieChartDelegate;
+import com.github.mikephil.charting.agiplan.InvestmentPieEntry;
+import com.github.mikephil.charting.components.MarkerView;
+import com.xxmassdeveloper.mpchartexample.R;
 
-## Installation
+import java.util.ArrayList;
 
-### Gradle
-
-```
-dependencies {
-	compile 'com.github.ilegra:Agiplan-Charts-Android:4.0.1'
-}
-```
-
-
-## Usage example
-```java
 public class InvestmentChartActivity extends Activity {
 
     private InvestmentPieChart mChart;
@@ -28,6 +30,12 @@ public class InvestmentChartActivity extends Activity {
         setContentView(R.layout.activity_investment_chart);
 
         mChart = (InvestmentPieChart) findViewById(R.id.investment_chart);
+        mChart.setDelegate(new InvestmentPieChartDelegate() {
+            @Override
+            public void investmentChartAddPressed() {
+                Toast.makeText(InvestmentChartActivity.this, "add pressed", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         ArrayList<InvestmentPieEntry> entries = new ArrayList<InvestmentPieEntry>();
 
@@ -56,4 +64,5 @@ public class InvestmentChartActivity extends Activity {
         SpannableString s = new SpannableString("CDB Banco Agiplan\nR$212.890,69");
         return s;
     }
-```
+
+}
