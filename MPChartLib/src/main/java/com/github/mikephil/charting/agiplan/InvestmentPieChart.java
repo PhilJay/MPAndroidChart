@@ -36,6 +36,7 @@ public class InvestmentPieChart extends PieChart  {
     private boolean isOneInvestmentOnly = false;
 
     private InvestmentPieChartDelegate delegate;
+    private Highlight currentHighlighted;
 
     public InvestmentPieChart(Context context) {
         super(context);
@@ -72,16 +73,18 @@ public class InvestmentPieChart extends PieChart  {
                 float offset = InvestmentPieChart.this.getDrawAngles()[currentSliceIndex] / 2;
                 float end = desiredAngle-(InvestmentPieChart.this.getAbsoluteAngles()[currentSliceIndex]-offset);
                 InvestmentPieChart.this.spin(spinDuration,start,end, Easing.EasingOption.EaseInOutQuad);
+                InvestmentPieChart.this.currentHighlighted = h;
             }
 
             @Override
             public void onNothingSelected() {
-
+                InvestmentPieChart.this.highlightValue(InvestmentPieChart.this.currentHighlighted);
             }
         });
 
         //@TODO remove this when get service integration to select the most valuate investment.
         this.highlightValue(0, 0, true);
+        this.currentHighlighted = this.getHighlighted()[0];
     }
 
 
