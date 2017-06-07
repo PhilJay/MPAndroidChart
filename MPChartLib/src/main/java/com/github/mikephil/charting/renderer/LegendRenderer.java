@@ -101,18 +101,21 @@ public class LegendRenderer extends Renderer {
                     String[] sLabels = bds.getStackLabels();
 
                     for (int j = 0; j < clrs.size() && j < bds.getStackSize(); j++) {
-
-                        computedEntries.add(new LegendEntry(
-                                sLabels[j % sLabels.length],
-                                dataSet.getForm(),
-                                dataSet.getFormSize(),
-                                dataSet.getFormLineWidth(),
-                                dataSet.getFormLineDashEffect(),
-                                clrs.get(j)
-                        ));
+                        String label = sLabels[j % sLabels.length];
+                        if (dataSet.getForm() != Legend.LegendForm.NONE
+                                || (label != null && label.length() > 0)) {
+                            computedEntries.add(new LegendEntry(
+                                    label,
+                                    dataSet.getForm(),
+                                    dataSet.getFormSize(),
+                                    dataSet.getFormLineWidth(),
+                                    dataSet.getFormLineDashEffect(),
+                                    clrs.get(j)
+                            ));
+                        }
                     }
 
-                    if (bds.getLabel() != null) {
+                    if (bds.getLabel() != null && bds.getLabel().length() > 0) {
                         // add the legend description label
                         computedEntries.add(new LegendEntry(
                                 dataSet.getLabel(),
@@ -129,18 +132,21 @@ public class LegendRenderer extends Renderer {
                     IPieDataSet pds = (IPieDataSet) dataSet;
 
                     for (int j = 0; j < clrs.size() && j < entryCount; j++) {
-
-                        computedEntries.add(new LegendEntry(
-                                pds.getEntryForIndex(j).getLabel(),
-                                dataSet.getForm(),
-                                dataSet.getFormSize(),
-                                dataSet.getFormLineWidth(),
-                                dataSet.getFormLineDashEffect(),
-                                clrs.get(j)
-                        ));
+                        String label = pds.getEntryForIndex(j).getLabel();
+                        if (dataSet.getForm() != Legend.LegendForm.NONE
+                                || (label != null && label.length() > 0)) {
+                            computedEntries.add(new LegendEntry(
+                                    label,
+                                    dataSet.getForm(),
+                                    dataSet.getFormSize(),
+                                    dataSet.getFormLineWidth(),
+                                    dataSet.getFormLineDashEffect(),
+                                    clrs.get(j)
+                            ));
+                        }
                     }
 
-                    if (pds.getLabel() != null) {
+                    if (pds.getLabel() != null && pds.getLabel().length() > 0) {
                         // add the legend description label
                         computedEntries.add(new LegendEntry(
                                 dataSet.getLabel(),
@@ -158,23 +164,26 @@ public class LegendRenderer extends Renderer {
                     int decreasingColor = ((ICandleDataSet) dataSet).getDecreasingColor();
                     int increasingColor = ((ICandleDataSet) dataSet).getIncreasingColor();
 
-                    computedEntries.add(new LegendEntry(
-                            null,
-                            dataSet.getForm(),
-                            dataSet.getFormSize(),
-                            dataSet.getFormLineWidth(),
-                            dataSet.getFormLineDashEffect(),
-                            decreasingColor
-                    ));
+                    if (dataSet.getForm() != Legend.LegendForm.NONE
+                            || (dataSet.getLabel() != null && dataSet.getLabel().length() > 0)) {
+                        computedEntries.add(new LegendEntry(
+                                null,
+                                dataSet.getForm(),
+                                dataSet.getFormSize(),
+                                dataSet.getFormLineWidth(),
+                                dataSet.getFormLineDashEffect(),
+                                decreasingColor
+                        ));
 
-                    computedEntries.add(new LegendEntry(
-                            dataSet.getLabel(),
-                            dataSet.getForm(),
-                            dataSet.getFormSize(),
-                            dataSet.getFormLineWidth(),
-                            dataSet.getFormLineDashEffect(),
-                            increasingColor
-                    ));
+                        computedEntries.add(new LegendEntry(
+                                dataSet.getLabel(),
+                                dataSet.getForm(),
+                                dataSet.getFormSize(),
+                                dataSet.getFormLineWidth(),
+                                dataSet.getFormLineDashEffect(),
+                                increasingColor
+                        ));
+                    }
 
                 } else { // all others
 
@@ -189,14 +198,17 @@ public class LegendRenderer extends Renderer {
                             label = data.getDataSetByIndex(i).getLabel();
                         }
 
-                        computedEntries.add(new LegendEntry(
-                                label,
-                                dataSet.getForm(),
-                                dataSet.getFormSize(),
-                                dataSet.getFormLineWidth(),
-                                dataSet.getFormLineDashEffect(),
-                                clrs.get(j)
-                        ));
+                        if (dataSet.getForm() != Legend.LegendForm.NONE
+                                || (label != null && label.length() > 0)) {
+                            computedEntries.add(new LegendEntry(
+                                    label,
+                                    dataSet.getForm(),
+                                    dataSet.getFormSize(),
+                                    dataSet.getFormLineWidth(),
+                                    dataSet.getFormLineDashEffect(),
+                                    clrs.get(j)
+                            ));
+                        }
                     }
                 }
             }
