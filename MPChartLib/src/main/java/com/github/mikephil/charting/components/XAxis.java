@@ -48,6 +48,10 @@ public class XAxis extends AxisBase {
     private boolean mAvoidFirstLastClipping = false;
 
 
+    /**
+     * if set to true, the chart will translate a '\n' in the labels as a new line command
+     *
+     */
     private boolean mMultiLineLabel = false;
 
     /**
@@ -130,6 +134,11 @@ public class XAxis extends AxisBase {
     }
 
 
+    /**
+     * if set to true, the chart will translate a '\n' in the labels as a new line command
+     *
+     * @param enabled
+     */
     public void setMultiLineLabel(boolean enabled) {
         mMultiLineLabel = enabled;
     }
