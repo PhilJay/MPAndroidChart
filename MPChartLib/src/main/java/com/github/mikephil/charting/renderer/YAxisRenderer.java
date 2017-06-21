@@ -114,17 +114,36 @@ public class YAxisRenderer extends AxisRenderer {
      */
     protected void drawYLabels(Canvas c, float fixedPosition, float[] positions, float offset) {
 
-        final int from = mYAxis.isDrawBottomYLabelEntryEnabled() ? 0 : 1;
-        final int to = mYAxis.isDrawTopYLabelEntryEnabled()
+        if (mYAxis.isFirstLastInsideChartEnabled()) {
+            for (int i = 0; i < positions.length; i += 2) {
+                float y = positions[i + 1];
+                String text = mYAxis.getFormattedLabel(i / 2);
+
+                if ((i == positions.length - 2) && mYAxis.mEntryCount > 1) {
+                    float height = Utils.calcTextHeight(mAxisLabelPaint, text);
+
+                    if (y - height < mViewPortHandler.offsetTop())
+                        y += height;
+                } else if (i == 0) {
+                    float height = Utils.calcTextHeight(mAxisLabelPaint, text);
+                    y -= height / 2;
+                }
+
+                c.drawText(text, fixedPosition, y, mAxisLabelPaint);
+            }
+        } else {
+            final int from = mYAxis.isDrawBottomYLabelEntryEnabled() ? 0 : 1;
+            final int to = mYAxis.isDrawTopYLabelEntryEnabled()
                 ? mYAxis.mEntryCount
                 : (mYAxis.mEntryCount - 1);
 
-        // draw
-        for (int i = from; i < to; i++) {
+            // draw
+            for (int i = from; i < to; i++) {
 
-            String text = mYAxis.getFormattedLabel(i);
+                String text = mYAxis.getFormattedLabel(i);
 
-            c.drawText(text, fixedPosition, positions[i * 2 + 1] + offset, mAxisLabelPaint);
+                c.drawText(text, fixedPosition, positions[i * 2 + 1] + offset, mAxisLabelPaint);
+            }
         }
     }
 

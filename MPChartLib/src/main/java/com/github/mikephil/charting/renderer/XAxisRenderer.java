@@ -207,6 +207,16 @@ public class XAxisRenderer extends AxisRenderer {
                         float width = Utils.calcTextWidth(mAxisLabelPaint, label);
                         x += width / 2;
                     }
+                } else if (mXAxis.isFirstLastInsideChartEnabled()) {
+                    if (i == mXAxis.mEntryCount - 1 && mXAxis.mEntryCount > 1) {
+                        float width = Utils.calcTextWidth(mAxisLabelPaint, label);
+
+                        if (x + width > mViewPortHandler.getChartWidth())
+                            x -= width / 2;
+                    } else if (i == 0) {
+                        float width = Utils.calcTextWidth(mAxisLabelPaint, label);
+                        x += width / 2;
+                    }
                 }
 
                 drawLabel(c, label, x, pos, anchor, labelRotationAngleDegrees);
