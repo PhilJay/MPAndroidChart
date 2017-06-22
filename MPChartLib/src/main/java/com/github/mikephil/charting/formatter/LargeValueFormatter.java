@@ -77,8 +77,8 @@ public class LargeValueFormatter implements IValueFormatter, IAxisValueFormatter
      * (https://github.com/romangromov) for this piece of code.
      */
     private String makePretty(double number) {
-
-        String r = mFormat.format(number);
+        double roundedNumber = Math.round(number);
+        String r = mFormat.format(roundedNumber);
 
         int numericValue1 = Character.getNumericValue(r.charAt(r.length() - 1));
         int numericValue2 = Character.getNumericValue(r.charAt(r.length() - 2));
