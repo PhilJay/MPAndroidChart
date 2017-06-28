@@ -4,6 +4,7 @@ package com.github.mikephil.charting.data;
 import android.annotation.TargetApi;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 
 import com.github.mikephil.charting.interfaces.datasets.ILineRadarDataSet;
 import com.github.mikephil.charting.utils.Utils;
@@ -73,7 +74,7 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
      *
      * @param drawable
      */
-    @TargetApi(18)
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     public void setFillDrawable(Drawable drawable) {
         this.mFillDrawable = drawable;
     }

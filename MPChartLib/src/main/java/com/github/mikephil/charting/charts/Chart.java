@@ -15,6 +15,7 @@ import android.graphics.Paint.Align;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore.Images;
 import android.text.TextUtils;
@@ -209,7 +210,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         setWillNotDraw(false);
         // setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
-        if (android.os.Build.VERSION.SDK_INT < 11)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
             mAnimator = new ChartAnimator();
         else
             mAnimator = new ChartAnimator(new AnimatorUpdateListener() {
@@ -336,15 +337,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     public boolean isEmpty() {
 
-        if (mData == null)
-            return true;
-        else {
-
-            if (mData.getEntryCount() <= 0)
-                return true;
-            else
-                return false;
-        }
+        return mData == null || mData.getEntryCount() <= 0;
     }
 
     /**
@@ -373,7 +366,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     protected void setupDefaultFormatter(float min, float max) {
 
-        float reference = 0f;
+        float reference;
 
         if (mData == null || mData.getEntryCount() < 2) {
 
@@ -1544,7 +1537,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             }
         }
 
-        String mimeType = "";
+        String mimeType;
         switch (format) {
             case PNG:
                 mimeType = "image/png";
@@ -1702,7 +1695,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     public void setHardwareAccelerationEnabled(boolean enabled) {
 
-        if (android.os.Build.VERSION.SDK_INT >= 11) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 
             if (enabled)
                 setLayerType(View.LAYER_TYPE_HARDWARE, null);
