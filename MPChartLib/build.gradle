@@ -1,44 +1,36 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven'
-//apply plugin: 'com.github.dcendents.android-maven'
-//apply plugin: 'realm-android'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.0'
-    // resourcePrefix 'mpcht'
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
+
     defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 25
-        versionCode 3
-        versionName '3.0.2'
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode rootProject.chartVersionCode
+        versionName rootProject.chartVersionName
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     lintOptions {
         abortOnError false
     }
+
     testOptions {
         unitTests.returnDefaultValues = true // this prevents "not mocked" error
     }
 }
 
-repositories {
-    maven {
-        url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
-    }
-}
-
 dependencies {
-    //compile fileTree(dir: 'libs', include: ['*.jar'])
-    //compile 'com.android.support:support-v4:19.+'
-    //provided 'io.realm:realm-android:0.87.5' // "optional" dependency to realm-database API
-    testCompile 'junit:junit:4.12'
-    testCompile "org.mockito:mockito-core:1.9.5"
+    testCompile "junit:junit:${rootProject.jUnitVersion}"
+    testCompile "org.mockito:mockito-core:${rootProject.mockitoVersion}"
 }
 
 android.libraryVariants.all { variant ->
@@ -46,7 +38,7 @@ android.libraryVariants.all { variant ->
     def task = project.tasks.create "jar${name.capitalize()}", Jar
     task.dependsOn variant.javaCompile
     task.from variant.javaCompile.destinationDir
-    artifacts.add('archives', task);
+    artifacts.add('archives', task)
 }
 
 task sourcesJar(type: Jar) {
@@ -56,7 +48,7 @@ task sourcesJar(type: Jar) {
 
 task javadoc(type: Javadoc) {
     options.charSet = 'UTF-8'
-    failOnError  false
+    failOnError false
     source = android.sourceSets.main.java.sourceFiles
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
 }
