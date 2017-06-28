@@ -14,7 +14,7 @@ buildscript {
         jUnitVersion = '4.12'
         minSdkVersion = 9
         mockitoVersion = '1.9.5'
-        realmVersion = '2.0.2'
+        realmVersion = '3.4.0'
         supportLibraryVersion = '25.4.0'
         targetSdkVersion = compileSdkVersion
     }
