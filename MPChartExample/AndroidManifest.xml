@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xxmassdeveloper.mpchartexample"
-    android:versionCode="54"
-    android:versionName="3.0.1" >
+    android:versionCode="55"
+    android:versionName="3.0.2" >
 
     <uses-sdk
         android:minSdkVersion="16"
-        android:targetSdkVersion="24" />
+        android:targetSdkVersion="25" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application

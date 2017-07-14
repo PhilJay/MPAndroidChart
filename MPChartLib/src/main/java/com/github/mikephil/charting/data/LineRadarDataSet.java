@@ -101,8 +101,8 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
      */
     public void setLineWidth(float width) {
 
-        if (width < 0.2f)
-            width = 0.2f;
+        if (width < 0.0f)
+            width = 0.0f;
         if (width > 10.0f)
             width = 10.0f;
         mLineWidth = Utils.convertDpToPixel(width);
