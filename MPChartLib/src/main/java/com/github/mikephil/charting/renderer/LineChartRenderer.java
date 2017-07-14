@@ -24,6 +24,7 @@ import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -429,7 +430,7 @@ public class LineChartRenderer extends LineRadarRenderer {
         mRenderPaint.setPathEffect(null);
     }
 
-    protected Path mGenerateFilledPathBuffer = new Path();
+    protected List<Path> mGenerateFilledPathsBuffer = new ArrayList<>();
 
     /**
      * Draws a filled linear path on the canvas.
@@ -441,7 +442,7 @@ public class LineChartRenderer extends LineRadarRenderer {
      */
     protected void drawLinearFill(Canvas c, ILineDataSet dataSet, Transformer trans, XBounds bounds) {
 
-        final Path filled = mGenerateFilledPathBuffer;
+        final List<Path> filled = mGenerateFilledPathsBuffer;
 
         final int startingIndex = bounds.min;
         final int endingIndex = bounds.range + bounds.min;
@@ -458,17 +459,19 @@ public class LineChartRenderer extends LineRadarRenderer {
             currentEndIndex = currentEndIndex > endingIndex ? endingIndex : currentEndIndex;
 
             if (currentStartIndex <= currentEndIndex) {
-                generateFilledPath(dataSet, currentStartIndex, currentEndIndex, filled);
+                generateFilledPaths(dataSet, currentStartIndex, currentEndIndex, filled);
 
-                trans.pathValueToPixel(filled);
+                for (Path path : filled) {
+                    trans.pathValueToPixel(path);
 
-                final Drawable drawable = dataSet.getFillDrawable();
-                if (drawable != null) {
+                    final Drawable drawable = dataSet.getFillDrawable();
+                    if (drawable != null) {
 
-                    drawFilledPath(c, filled, drawable);
-                } else {
+                        drawFilledPath(c, path, drawable);
+                    } else {
 
-                    drawFilledPath(c, filled, dataSet.getFillColor(), dataSet.getFillAlpha());
+                        drawFilledPath(c, path, dataSet.getFillColor(), dataSet.getFillAlpha());
+                    }
                 }
             }
 
@@ -481,48 +484,70 @@ public class LineChartRenderer extends LineRadarRenderer {
     /**
      * Generates a path that is used for filled drawing.
      *
-     * @param dataSet    The dataset from which to read the entries.
-     * @param startIndex The index from which to start reading the dataset
-     * @param endIndex   The index from which to stop reading the dataset
-     * @param outputPath The path object that will be assigned the chart data.
+     * @param dataSet     The dataset from which to read the entries.
+     * @param startIndex  The index from which to start reading the dataset
+     * @param endIndex    The index from which to stop reading the dataset
+     * @param outputPaths The path objects that will be assigned the chart data.
      * @return
      */
-    private void generateFilledPath(final ILineDataSet dataSet, final int startIndex, final int endIndex, final Path outputPath) {
+    private void generateFilledPaths(final ILineDataSet dataSet, final int startIndex, final int endIndex, final List<Path> outputPaths) {
 
         final float fillMin = dataSet.getFillFormatter().getFillLinePosition(dataSet, mChart);
         final float phaseY = mAnimator.getPhaseY();
         final boolean isDrawSteppedEnabled = dataSet.getMode() == LineDataSet.Mode.STEPPED;
 
-        final Path filled = outputPath;
-        filled.reset();
+        final List<Path> filled = outputPaths;
+        filled.clear();
 
-        final Entry entry = dataSet.getEntryForIndex(startIndex);
-
-        filled.moveTo(entry.getX(), fillMin);
-        filled.lineTo(entry.getX(), entry.getY() * phaseY);
-
-        // create a new path
+        Path currentPath = null;
         Entry currentEntry = null;
         Entry previousEntry = null;
-        for (int x = startIndex + 1; x <= endIndex; x++) {
 
+        for (int x = startIndex; x <= endIndex; x++) {
             currentEntry = dataSet.getEntryForIndex(x);
 
-            if (isDrawSteppedEnabled && previousEntry != null) {
-                filled.lineTo(currentEntry.getX(), previousEntry.getY() * phaseY);
+            //skip NaNs
+            if (Float.isNaN(currentEntry.getY())) {
+                if (currentPath != null) {
+                    // close up
+                    if (previousEntry != null) {
+                        currentPath.lineTo(previousEntry.getX(), fillMin);
+                    }
+                    currentPath.close();
+
+                    currentPath = null;
+                    previousEntry = null;
+                }
+
+                continue;
             }
 
-            filled.lineTo(currentEntry.getX(), currentEntry.getY() * phaseY);
+            if (currentPath == null) {
+                currentPath = new Path();
+
+                filled.add(currentPath);
+
+                currentPath.moveTo(currentEntry.getX(), fillMin);
+                currentPath.lineTo(currentEntry.getX(), currentEntry.getY() * phaseY);
+            }
+
+            if (isDrawSteppedEnabled && previousEntry != null) {
+                currentPath.lineTo(currentEntry.getX(), previousEntry.getY() * phaseY);
+            }
+
+            currentPath.lineTo(currentEntry.getX(), currentEntry.getY() * phaseY);
 
             previousEntry = currentEntry;
         }
 
-        // close up
-        if (currentEntry != null) {
-            filled.lineTo(currentEntry.getX(), fillMin);
-        }
+        if (currentPath != null) {
+            // close up
+            if (currentEntry != null) {
+                currentPath.lineTo(currentEntry.getX(), fillMin);
+            }
 
-        filled.close();
+            currentPath.close();
+        }
     }
 
     @Override
