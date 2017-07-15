@@ -84,6 +84,11 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     protected boolean mHighLightPerTapEnabled = true;
 
     /**
+     * Flag that indicates if highlighting can be deselected per tap
+     */
+    protected boolean mHighLightDeselectPerTapEnable = true;
+
+    /**
      * If set to true, chart continues to scroll after touch up
      */
     private boolean mDragDecelerationEnabled = true;
@@ -504,6 +509,23 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     public void setHighlightPerTapEnabled(boolean enabled) {
         mHighLightPerTapEnabled = enabled;
+    }
+
+    /**
+     * return true if highlighting can be deselected per tap, false if not
+     * @return
+     */
+    public boolean isHighLightDeselectPerTapEnable() {
+        return mHighLightDeselectPerTapEnable;
+    }
+
+    /**
+     * set this to false to prevent value hightlighting to be deselected per tap
+     * @param enable
+     *
+     */
+    public void setHighLightDeselectPerTapEnable(boolean enable) {
+        mHighLightDeselectPerTapEnable = enable;
     }
 
     /**
