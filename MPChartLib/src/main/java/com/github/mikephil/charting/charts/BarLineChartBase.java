@@ -14,6 +14,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
@@ -863,7 +864,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param duration the duration of the animation in milliseconds
      */
     @TargetApi(11)
-    public void moveViewToAnimated(float xValue, float yValue, AxisDependency axis, long duration) {
+    public void moveViewToAnimated(float xValue, float yValue, AxisDependency axis, long duration, Easing.EasingOption easingOption) {
 
         if (android.os.Build.VERSION.SDK_INT >= 11) {
 
@@ -872,7 +873,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             float yInView = getAxisRange(axis) / mViewPortHandler.getScaleY();
 
             Runnable job = AnimatedMoveViewJob.getInstance(mViewPortHandler, xValue, yValue + yInView / 2f,
-                    getTransformer(axis), this, (float) bounds.x, (float) bounds.y, duration);
+                    getTransformer(axis), this, (float) bounds.x, (float) bounds.y, duration, easingOption);
 
             addViewportJob(job);
 
@@ -930,7 +931,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param duration the duration of the animation in milliseconds
      */
     @TargetApi(11)
-    public void centerViewToAnimated(float xValue, float yValue, AxisDependency axis, long duration) {
+    public void centerViewToAnimated(float xValue, float yValue, AxisDependency axis, long duration, Easing.EasingOption easingOption) {
 
         if (android.os.Build.VERSION.SDK_INT >= 11) {
 
@@ -941,7 +942,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
             Runnable job = AnimatedMoveViewJob.getInstance(mViewPortHandler,
                     xValue - xInView / 2f, yValue + yInView / 2f,
-                    getTransformer(axis), this, (float) bounds.x, (float) bounds.y, duration);
+                    getTransformer(axis), this, (float) bounds.x, (float) bounds.y, duration, easingOption);
 
             addViewportJob(job);
 
