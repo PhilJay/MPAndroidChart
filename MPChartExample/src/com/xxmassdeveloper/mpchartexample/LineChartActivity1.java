@@ -80,6 +80,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         // enable scaling and dragging
         mChart.setDragEnabled(true);
         mChart.setScaleEnabled(true);
+
+        mChart.setHighLightDeselectPerTapEnable(true);
         // mChart.setScaleXEnabled(true);
         // mChart.setScaleYEnabled(true);
 
