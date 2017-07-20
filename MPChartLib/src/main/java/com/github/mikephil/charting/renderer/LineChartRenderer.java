@@ -563,6 +563,9 @@ public class LineChartRenderer extends LineRadarRenderer {
                         continue;
 
                     Entry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);
+                    if (entry == null) {
+                        break;
+                    }
 
                     if (dataSet.isDrawValuesEnabled()) {
                         drawValue(c, dataSet.getValueFormatter(), entry.getY(), entry, i, x,
