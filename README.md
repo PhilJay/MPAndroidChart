@@ -28,8 +28,6 @@ Donations
  - [**Donate 100 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=KY7F59RYPCYCQ): You are the man! This project saved me hours (if not days) of struggle and hard work, simply awesome!
  - Of course, you can also [**choose what you want to donate**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EGBENAC5XBCKS), all donations are awesome!
 
-If you just want to be nice, you can check out and rate the new [**Telegram Chat Bot**]( https://storebot.me/bot/myalfred_bot) we created for scheduling meetings and other stuff. 😉
-
 
 ## Xamarin
 
