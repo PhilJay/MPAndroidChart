@@ -22,6 +22,11 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
      **/
     private LineDataSet.Mode mMode = Mode.LINEAR;
 
+	/**
+     * Setting gradient mode for line chart
+     **/
+    private ColoringGradientMode mColoringMode = ColoringGradientMode.DEFAULT;
+
     /**
      * List representing all colors that are used for the circles
      */
@@ -116,7 +121,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
     }
 
     /**
-     * Returns the drawing mode for this LineDataSet
+     * Sets the drawing mode for this LineDataSet
      *
      * @return
      */
@@ -124,7 +129,26 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
         mMode = mode;
     }
 
-    /**
+	/**
+	 * Returns mode of coloring for line chart
+	 *
+	 * @return ColoringGradientMode
+	 */
+	public ColoringGradientMode getColoringMode() {
+		return mColoringMode;
+	}
+
+	/**
+	 * Sets coloring method for line chart
+	 * Currently supports linear gradient
+	 *
+	 * @param mColoringMode
+	 */
+	public void setColoringMode(ColoringGradientMode mColoringMode) {
+		this.mColoringMode = mColoringMode;
+	}
+
+	/**
      * Sets the intensity for cubic lines (if enabled). Max = 1f = very cubic,
      * Min = 0.05f = low cubic effect, Default: 0.2f
      *
@@ -412,4 +436,10 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
         CUBIC_BEZIER,
         HORIZONTAL_BEZIER
     }
+
+	public enum ColoringGradientMode {
+		DEFAULT,
+		GRADIENT_HORIZONTAL,
+		GRADIENT_VERTICAL
+	}
 }

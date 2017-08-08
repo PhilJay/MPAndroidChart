@@ -2,7 +2,9 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
+import android.opengl.EGLExt;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
 import com.github.mikephil.charting.components.XAxis;
@@ -24,6 +27,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.renderer.YAxisRenderer;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -285,16 +289,16 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
 
         for (int i = 0; i < count; i++) {
-            float mult = range / 2f;
-            float val = (float) (Math.random() * mult) + 50;
+            float mult = range / 2 ;
+            float val = (float) (Math.random() * mult ) + 80;
             yVals1.add(new Entry(i, val));
         }
 
         ArrayList<Entry> yVals2 = new ArrayList<Entry>();
 
-        for (int i = 0; i < count-1; i++) {
+        for (int i = 0; i < count; i++) {
             float mult = range;
-            float val = (float) (Math.random() * mult) + 450;
+            float val = (float) (Math.random() * mult * 30 ) ;
             yVals2.add(new Entry(i, val));
 //            if(i == 10) {
 //                yVals2.add(new Entry(i, val + 50));
@@ -323,16 +327,20 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             mChart.notifyDataSetChanged();
         } else {
             // create a dataset and give it a type
-            set1 = new LineDataSet(yVals1, "DataSet 1");
+            set1 = new LineDataSet(yVals1, "Horizontal");
 
             set1.setAxisDependency(AxisDependency.LEFT);
-            set1.setColor(ColorTemplate.getHoloBlue());
-            set1.setCircleColor(Color.WHITE);
             set1.setLineWidth(2f);
-            set1.setCircleRadius(3f);
-            set1.setFillAlpha(65);
-            set1.setFillColor(ColorTemplate.getHoloBlue());
-            set1.setHighLightColor(Color.rgb(244, 117, 117));
+	        set1.setDrawCircles(false);
+	        set1.setValueTextColor(android.R.color.black);
+	        set1.setColoringMode(LineDataSet.ColoringGradientMode.GRADIENT_HORIZONTAL);
+	        set1.setColors(new int[]{
+			        ContextCompat.getColor(this, R.color.rating_store_4),
+			        ContextCompat.getColor(this, R.color.rating_store_3),
+			        ContextCompat.getColor(this, R.color.rating_store_2),
+			        ContextCompat.getColor(this, R.color.rating_store_1),
+			        ContextCompat.getColor(this, R.color.rating_store_0)
+	        });
             set1.setDrawCircleHole(false);
             //set1.setFillFormatter(new MyFillFormatter(0f));
             //set1.setDrawHorizontalHighlightIndicator(false);
@@ -340,9 +348,8 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             //set1.setCircleHoleColor(Color.WHITE);
 
             // create a dataset and give it a type
-            set2 = new LineDataSet(yVals2, "DataSet 2");
+            set2 = new LineDataSet(yVals2, "Vertical");
             set2.setAxisDependency(AxisDependency.RIGHT);
-            set2.setColor(Color.RED);
             set2.setCircleColor(Color.WHITE);
             set2.setLineWidth(2f);
             set2.setCircleRadius(3f);
@@ -350,6 +357,12 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             set2.setFillColor(Color.RED);
             set2.setDrawCircleHole(false);
             set2.setHighLightColor(Color.rgb(244, 117, 117));
+	        set2.setValueTextColor(android.R.color.black);
+	        set2.setColoringMode(LineDataSet.ColoringGradientMode.GRADIENT_VERTICAL);
+	        set2.setColors(new int[]{
+			        ContextCompat.getColor(this, R.color.rating_store_9),
+			        ContextCompat.getColor(this, R.color.rating_store_5)
+	        });
             //set2.setFillFormatter(new MyFillFormatter(900f));
 
             set3 = new LineDataSet(yVals3, "DataSet 3");
@@ -364,12 +377,13 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             set3.setHighLightColor(Color.rgb(244, 117, 117));
 
             // create a data object with the datasets
-            LineData data = new LineData(set1, set2, set3);
+            LineData data = new LineData(set1,set2,set3 );
             data.setValueTextColor(Color.WHITE);
             data.setValueTextSize(9f);
 
             // set data
             mChart.setData(data);
+
         }
     }
 

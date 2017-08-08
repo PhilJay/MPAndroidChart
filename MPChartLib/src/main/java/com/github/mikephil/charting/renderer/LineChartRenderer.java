@@ -3,8 +3,10 @@ package com.github.mikephil.charting.renderer;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
@@ -170,7 +172,7 @@ public class LineChartRenderer extends LineRadarRenderer {
             drawCubicFill(mBitmapCanvas, dataSet, cubicFillPath, trans, mXBounds);
         }
 
-        mRenderPaint.setColor(dataSet.getColor());
+	    coloringLine(dataSet, mRenderPaint, mBitmapCanvas.getWidth(), mBitmapCanvas.getHeight());
 
         mRenderPaint.setStyle(Paint.Style.STROKE);
 
@@ -249,7 +251,7 @@ public class LineChartRenderer extends LineRadarRenderer {
             drawCubicFill(mBitmapCanvas, dataSet, cubicFillPath, trans, mXBounds);
         }
 
-        mRenderPaint.setColor(dataSet.getColor());
+        coloringLine(dataSet, mRenderPaint, mBitmapCanvas.getWidth(), mBitmapCanvas.getHeight());
 
         mRenderPaint.setStyle(Paint.Style.STROKE);
 
@@ -368,9 +370,9 @@ public class LineChartRenderer extends LineRadarRenderer {
                     continue;
 
                 // get the color that is set for this line-segment
-                mRenderPaint.setColor(dataSet.getColor(j));
+	            coloringLine(dataSet, mRenderPaint, mBitmapCanvas.getWidth(), mBitmapCanvas.getHeight(),j);
 
-                canvas.drawLines(mLineBuffer, 0, pointsPerEntryPair * 2, mRenderPaint);
+	            canvas.drawLines(mLineBuffer, 0, pointsPerEntryPair * 2, mRenderPaint);
             }
 
         } else { // only one color per dataset
@@ -411,7 +413,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
                     final int size = Math.max((mXBounds.range + 1) * pointsPerEntryPair, pointsPerEntryPair) * 2;
 
-                    mRenderPaint.setColor(dataSet.getColor());
+	                coloringLine(dataSet, mRenderPaint, mBitmapCanvas.getWidth(), mBitmapCanvas.getHeight());
 
                     canvas.drawLines(mLineBuffer, 0, size, mRenderPaint);
                 }
@@ -743,6 +745,57 @@ public class LineChartRenderer extends LineRadarRenderer {
             mDrawBitmap = null;
         }
     }
+
+	private void coloringLine(ILineDataSet dataSet, Paint renderer, int canvasWidth, int canvasHeight) {
+		coloringLine(dataSet, renderer, canvasWidth, canvasHeight, null);
+	}
+
+	private void coloringLine(ILineDataSet dataSet, Paint renderer, int canvasWidth, int canvasHeight, Integer color) {
+
+	    try {
+		    switch (dataSet.getColoringMode()) {
+			    case DEFAULT:
+				    renderer.setColor(color == null ? dataSet.getColor() : dataSet.getColor());
+				    renderer.setShader(null);
+				    break;
+			    case GRADIENT_HORIZONTAL:
+				    mRenderPaint.setShader(new LinearGradient(
+						    0,
+						    0,
+						    canvasWidth,
+						    canvasHeight,
+						    preparePrimitiveColors(dataSet),
+						    null,
+						    Shader.TileMode.REPEAT
+				    ));
+				    break;
+			    case GRADIENT_VERTICAL:
+				    mRenderPaint.setShader(new LinearGradient(
+						    0,
+						    0,
+						    0,
+						    canvasHeight,
+						    preparePrimitiveColors(dataSet),
+						    null,
+						    Shader.TileMode.REPEAT
+				    ));
+				    break;
+		    }
+	    } catch (NullPointerException | IndexOutOfBoundsException ex) {
+		    renderer.setColor(dataSet.getColor());
+		    ex.printStackTrace();
+	    }
+    }
+
+	private int[] preparePrimitiveColors(ILineDataSet dataSet) {
+		int[] colors = new int[dataSet.getColors().size()];
+		int i = 0;
+		for (int color : dataSet.getColors()) {
+			colors[i] = color;
+			i++;
+		}
+		return colors;
+	}
 
     private class DataSetImageCache {
 
