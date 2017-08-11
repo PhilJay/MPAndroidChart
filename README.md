@@ -27,6 +27,9 @@ Donations
  - [**Donate 50 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZPQVJ2XRBSBYY): I really really want to support this project, great job!
  - [**Donate 100 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=KY7F59RYPCYCQ): You are the man! This project saved me hours (if not days) of struggle and hard work, simply awesome!
  - Of course, you can also [**choose what you want to donate**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EGBENAC5XBCKS), all donations are awesome!
+ 
+## Got a question?
+[Contact me via 21.co](https://21.co/philjay/)
 
 
 ## Xamarin
