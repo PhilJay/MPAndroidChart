@@ -1676,20 +1676,23 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             Log.i(LOG_TAG, "OnSizeChanged()");
 
         if (w > 0 && h > 0 && w < 10000 && h < 10000) {
-
-            mViewPortHandler.setChartDimens(w, h);
-
             if (mLogEnabled)
                 Log.i(LOG_TAG, "Setting chart dimens, width: " + w + ", height: " + h);
-
-            for (Runnable r : mJobs) {
-                post(r);
-            }
-
-            mJobs.clear();
+            mViewPortHandler.setChartDimens(w, h);
+        } else {
+            if (mLogEnabled)
+                Log.w(LOG_TAG, "*Avoiding* setting chart dimens! width: " + w + ", height: " + h);
         }
 
+        // This may cause the chart view to mutate properties affecting the view port --
+        //   lets do this before we try to run any pending jobs on the view port itself
         notifyDataSetChanged();
+
+        for (Runnable r : mJobs) {
+            post(r);
+        }
+
+        mJobs.clear();
 
         super.onSizeChanged(w, h, oldw, oldh);
     }
