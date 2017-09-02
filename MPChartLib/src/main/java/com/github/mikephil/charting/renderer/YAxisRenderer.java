@@ -11,6 +11,7 @@ import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
+import com.github.mikephil.charting.utils.FSize;
 import com.github.mikephil.charting.utils.MPPointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
@@ -104,6 +105,29 @@ public class YAxisRenderer extends AxisRenderer {
             c.drawLine(mViewPortHandler.contentRight(), mViewPortHandler.contentTop(), mViewPortHandler.contentRight(),
                     mViewPortHandler.contentBottom(), mAxisLinePaint);
         }
+    }
+    
+    @Override
+    public void renderAxisTitle(Canvas c) {
+
+        if (!mYAxis.isEnabled() || mYAxis.getTitle().isEmpty())
+            return;
+
+        mAxisTitlePaint.setTypeface(mYAxis.getTypeface());
+        mAxisTitlePaint.setTextSize(mYAxis.getTextSize());
+        mAxisTitlePaint.setColor(mYAxis.getTextColor());
+        mAxisTitlePaint.setTextAlign(Paint.Align.LEFT);
+        float xOffset = mYAxis.getXOffset();
+
+        final FSize titleSize = Utils.calcTextSize(mAxisLabelPaint, mYAxis.getTitle());
+
+        float posX = mYAxis.mTitleHeight + xOffset;
+        float posY = (mViewPortHandler.getChartHeight() / 2.f) + (titleSize.width/2.f);
+
+        c.save();
+        c.rotate(-90, posX, posY);
+        c.drawText(mYAxis.getTitle(), posX, posY, mAxisTitlePaint);
+        c.restore();
     }
 
     /**

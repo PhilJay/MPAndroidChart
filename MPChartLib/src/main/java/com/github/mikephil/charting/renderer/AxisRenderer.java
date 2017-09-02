@@ -44,6 +44,11 @@ public abstract class AxisRenderer extends Renderer {
      * paint used for the limit lines
      */
     protected Paint mLimitLinePaint;
+    
+    /**
+     * paint used for the axis title
+     */
+    protected Paint mAxisTitlePaint;
 
     public AxisRenderer(ViewPortHandler viewPortHandler, Transformer trans, AxisBase axis) {
         super(viewPortHandler);
@@ -54,6 +59,7 @@ public abstract class AxisRenderer extends Renderer {
         if(mViewPortHandler != null) {
 
             mAxisLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            mAxisTitlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
             mGridPaint = new Paint();
             mGridPaint.setColor(Color.GRAY);
@@ -78,6 +84,15 @@ public abstract class AxisRenderer extends Renderer {
      */
     public Paint getPaintAxisLabels() {
         return mAxisLabelPaint;
+    }
+    
+    /**
+     * Returns the Paint object used for drawing the title.
+     *
+     * @return
+     */
+    public Paint getPaintAxisTitle() {
+        return mAxisTitlePaint;
     }
 
     /**
@@ -277,6 +292,13 @@ public abstract class AxisRenderer extends Renderer {
      * @param c
      */
     public abstract void renderAxisLine(Canvas c);
+    
+    /**
+     * Draws the title that goes alongside the axis.
+     *
+     * @param c
+     */
+    public abstract void renderAxisTitle(Canvas c);
 
     /**
      * Draws the LimitLines associated with this axis to the screen.
