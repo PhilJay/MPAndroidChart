@@ -123,6 +123,9 @@ public class YAxisRenderer extends AxisRenderer {
 
         float posX = mYAxis.mTitleHeight + xOffset;
         float posY = (mViewPortHandler.getChartHeight() / 2.f) + (titleSize.width/2.f);
+        if (mYAxis.getAxisDependency() == AxisDependency.RIGHT) {
+            posX = mViewPortHandler.getChartWidth() - xOffset;
+        }
 
         c.save();
         c.rotate(-90, posX, posY);

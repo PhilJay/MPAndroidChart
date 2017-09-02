@@ -212,6 +212,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         mAxisRendererLeft.renderAxisLine(canvas);
         mAxisRendererLeft.renderAxisTitle(canvas);
         mAxisRendererRight.renderAxisLine(canvas);
+        mAxisRendererRight.renderAxisTitle(canvas);
 
         mXAxisRenderer.renderGridLines(canvas);
         mAxisRendererLeft.renderGridLines(canvas);
