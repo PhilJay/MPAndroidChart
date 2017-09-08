@@ -123,7 +123,23 @@ public class YAxisRenderer extends AxisRenderer {
         for (int i = from; i < to; i++) {
 
             String text = mYAxis.getFormattedLabel(i);
-
+            int labelCount=mYAxis.mEntryCount;
+            mAxisLabelPaint.setColor(mYAxis.getTextColor());
+            if (mYAxis.drawDifferentUpDownColorToLableEnabled()) {
+                if (i < labelCount / 2){
+                    mAxisLabelPaint.setColor(mYAxis.getDownTextColor());
+                }else {
+                    if (labelCount % 2 == 1) {
+                        if (i > labelCount / 2) {
+                            mAxisLabelPaint.setColor(mYAxis.getUpTextColor());
+                        }
+                    } else {
+                        if (i >= labelCount / 2) {
+                            mAxisLabelPaint.setColor(mYAxis.getUpTextColor());
+                        }
+                    }
+                }
+            }
             c.drawText(text, fixedPosition, positions[i * 2 + 1] + offset, mAxisLabelPaint);
         }
     }
