@@ -113,6 +113,11 @@ public abstract class AxisBase extends ComponentBase {
     protected boolean mDrawLimitLineBehindData = false;
 
     /**
+     * flag indicating the grid lines layer depth
+     */
+    protected boolean mDrawGridLinesBehindData = true;
+
+    /**
      * Extra spacing for `axisMinimum` to be added to automatically calculated `axisMinimum`
      */
     protected float mSpaceMin = 0.f;
@@ -442,6 +447,18 @@ public abstract class AxisBase extends ComponentBase {
 
     public boolean isDrawLimitLinesBehindDataEnabled() {
         return mDrawLimitLineBehindData;
+    }
+
+    /**
+     * If this is set to false, the grid lines are draw on top of the actual data,
+     * otherwise behind. Default: true
+     *
+     * @param enabled
+     */
+    public void setDrawGridLinesBehindData(boolean enabled) { mDrawGridLinesBehindData = enabled; }
+
+    public boolean isDrawGridLinesBehindDataEnabled() {
+        return mDrawGridLinesBehindData;
     }
 
     /**
