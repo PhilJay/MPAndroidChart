@@ -24,6 +24,9 @@ public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
     private float mValueLinePart1Length = 0.3f;
     private float mValueLinePart2Length = 0.4f;
     private boolean mValueLineVariableLength = true;
+    
+    /** this variable determines whether to draw the yValue,  default value is 0, it means draw all of the yValue */
+    private float mYValueVisibleBoundary = 0;
 
     public PieDataSet(List<PieEntry> yVals, String label) {
         super(yVals, label);
@@ -204,6 +207,21 @@ public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
     public void setValueLineVariableLength(boolean valueLineVariableLength)
     {
         this.mValueLineVariableLength = valueLineVariableLength;
+    }
+    
+    @Override
+    public float getYValueVisibleBoundary() {
+        return mYValueVisibleBoundary;
+    }
+
+    /**
+     * Set the boundary which determines whether to draw the yValue
+     *
+     * @param YValueVisibleBoundary the value should be >= 0. default is 0, it means draw all of the yValue.
+     *                              otherwise, only draw the yValue which greater than boundary
+     */
+    public void setYValueVisibleBoundary(float YValueVisibleBoundary) {
+        mYValueVisibleBoundary = YValueVisibleBoundary;
     }
 
     public enum ValuePosition {
