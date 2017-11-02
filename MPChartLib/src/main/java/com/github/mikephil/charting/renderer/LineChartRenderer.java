@@ -707,10 +707,26 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             // draw the lines
             drawHighlightLines(c, (float) pix.x, (float) pix.y, set);
+        }
+    }
 
-            if (set.isHighlightValueEnabled() && !set.isDrawValuesEnabled()) {
-                drawHighlightedValue(c, set, high, high.getDataSetIndex());
-            }
+    @Override
+    public void drawHighlightedValues(Canvas c, Highlight[] indices) {
+        LineData lineData = mChart.getLineData();
+
+        for (Highlight high : indices) {
+
+            ILineDataSet set = lineData.getDataSetByIndex(high.getDataSetIndex());
+
+            if (set == null || !set.isHighlightEnabled() || !set.isHighlightValueEnabled() || set.isDrawValuesEnabled())
+                continue;
+
+            Entry e = set.getEntryForXValue(high.getX(), high.getY());
+
+            if (!isInBoundsX(e, set))
+                continue;
+
+            drawHighlightedValue(c, set, high, high.getDataSetIndex());
         }
     }
 

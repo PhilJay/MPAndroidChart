@@ -469,6 +469,11 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
         }
     }
 
+    @Override
+    public void drawHighlightedValues(Canvas c, Highlight[] indices) {
+        //TODO
+    }
+
     /**
      * Sets the drawing position of the highlight object based on the riven bar-rect.
      * @param high
