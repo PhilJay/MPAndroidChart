@@ -2,7 +2,6 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
-import android.opengl.EGLExt;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
 import com.github.mikephil.charting.components.XAxis;
@@ -27,7 +25,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.renderer.YAxisRenderer;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -380,6 +377,13 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             LineData data = new LineData(set1,set2,set3 );
             data.setValueTextColor(Color.WHITE);
             data.setValueTextSize(9f);
+
+            set1.setDrawValues(false);
+            set1.setHighlightValueEnabled(false);
+            set2.setDrawValues(false);
+            set2.setHighlightValueEnabled(true);
+            set3.setDrawValues(true);
+            set3.setHighlightValueEnabled(true);
 
             // set data
             mChart.setData(data);
