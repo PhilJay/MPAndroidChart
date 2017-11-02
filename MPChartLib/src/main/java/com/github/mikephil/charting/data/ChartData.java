@@ -740,6 +740,12 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         }
     }
 
+    public void setHighlightValueEnabled(boolean enabled) {
+        for (IDataSet set : mDataSets) {
+            set.setHighlightValueEnabled(enabled);
+        }
+    }
+
     /**
      * Returns true if highlighting of all underlying values is enabled, false
      * if not.

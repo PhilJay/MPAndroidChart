@@ -7,15 +7,12 @@ import android.graphics.Typeface;
 
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Inherited;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +47,8 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      * if true, value highlightning is enabled
      */
     protected boolean mHighlightEnabled = true;
+
+    protected boolean mHighlightValue = false;
 
     /**
      * custom formatter that is used instead of the auto-formatter if set
@@ -274,6 +273,16 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     @Override
     public boolean isHighlightEnabled() {
         return mHighlightEnabled;
+    }
+
+    @Override
+    public void setHighlightValueEnabled(boolean enabled) {
+        mHighlightValue = enabled;
+    }
+
+    @Override
+    public boolean isHighlightValueEnabled() {
+        return mHighlightValue;
     }
 
     @Override
