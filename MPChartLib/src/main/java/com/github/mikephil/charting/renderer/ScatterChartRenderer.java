@@ -191,4 +191,9 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
             drawHighlightLines(c, (float) pix.x, (float) pix.y, set);
         }
     }
+
+    @Override
+    public void drawHighlightedValues(Canvas c, Highlight[] indices) {
+        //TODO
+    }
 }

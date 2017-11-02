@@ -256,10 +256,14 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             clipRestoreCount = canvas.save();
             canvas.clipRect(mViewPortHandler.getContentRect());
 
+            if (valuesToHighlight())
+                mRenderer.drawHighlightedValues(canvas, mIndicesToHighlight);
             mRenderer.drawValues(canvas);
 
             canvas.restoreToCount(clipRestoreCount);
         } else {
+            if (valuesToHighlight())
+                mRenderer.drawHighlightedValues(canvas, mIndicesToHighlight);
             mRenderer.drawValues(canvas);
         }
 
