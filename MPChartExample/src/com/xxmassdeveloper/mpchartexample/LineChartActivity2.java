@@ -340,8 +340,8 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             set1.setDrawCircles(false);
             set1.setDrawCircleHole(true);
             set1.setDrawCirclesHighlight(true);
-            set1.setDrawValues(false);
             set1.setDrawHighlightIndicators(false);
+            set1.setHighlightValueEnabled(false);
             //set1.setFillFormatter(new MyFillFormatter(0f));
             //set1.setDrawHorizontalHighlightIndicator(false);
             //set1.setVisible(false);
@@ -363,6 +363,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
 			        ContextCompat.getColor(this, R.color.rating_store_9),
 			        ContextCompat.getColor(this, R.color.rating_store_5)
 	        });
+            set2.setHighlightValueEnabled(true);
             //set2.setFillFormatter(new MyFillFormatter(900f));
 
             set3 = new LineDataSet(yVals3, "DataSet 3");
@@ -375,6 +376,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             set3.setFillColor(ColorTemplate.colorWithAlpha(Color.YELLOW, 200));
             set3.setDrawCircleHole(false);
             set3.setHighLightColor(Color.rgb(244, 117, 117));
+            set3.setHighlightValueEnabled(true);
 
             // create a data object with the datasets
             LineData data = new LineData(set1,set2,set3 );
@@ -382,11 +384,8 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             data.setValueTextSize(9f);
 
             set1.setDrawValues(false);
-            set1.setHighlightValueEnabled(false);
             set2.setDrawValues(false);
-            set2.setHighlightValueEnabled(true);
             set3.setDrawValues(true);
-            set3.setHighlightValueEnabled(true);
 
             // set data
             mChart.setData(data);

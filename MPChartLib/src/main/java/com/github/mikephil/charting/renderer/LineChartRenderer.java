@@ -778,10 +778,6 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             // draw the lines
             drawHighlightLines(c, (float) pix.x, (float) pix.y, set);
-
-            if (!set.isDrawCirclesEnabled() && set.isDrawCirclesHighlightEnabled()) {
-                drawCircle(c, set, e);
-            }
         }
     }
 
@@ -793,7 +789,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             ILineDataSet set = lineData.getDataSetByIndex(high.getDataSetIndex());
 
-            if (set == null || !set.isHighlightEnabled() || !set.isHighlightValueEnabled() || set.isDrawValuesEnabled())
+            if (set == null)
                 continue;
 
             Entry e = set.getEntryForXValue(high.getX(), high.getY());
@@ -801,7 +797,13 @@ public class LineChartRenderer extends LineRadarRenderer {
             if (!isInBoundsX(e, set))
                 continue;
 
-            drawHighlightedValue(c, set, high, high.getDataSetIndex());
+            if (set.isHighlightEnabled() && set.isHighlightValueEnabled() && !set.isDrawValuesEnabled()) {
+                drawHighlightedValue(c, set, high, high.getDataSetIndex());
+            }
+
+            if (!set.isDrawCirclesEnabled() && set.isDrawCirclesHighlightEnabled()) {
+                drawCircle(c, set, e);
+            }
         }
     }
 
