@@ -330,12 +330,17 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             set1.setLineWidth(2f);
 	        set1.setValueTextColor(android.R.color.black);
 	        set1.setColoringMode(LineDataSet.ColoringGradientMode.GRADIENT_HORIZONTAL);
+//	        set1.setColoringMode(LineDataSet.ColoringGradientMode.GRADIENT_VERTICAL);
 	        set1.setColors(new int[]{
-			        ContextCompat.getColor(this, R.color.rating_store_4),
-			        ContextCompat.getColor(this, R.color.rating_store_3),
-			        ContextCompat.getColor(this, R.color.rating_store_2),
-			        ContextCompat.getColor(this, R.color.rating_store_1),
-			        ContextCompat.getColor(this, R.color.rating_store_0)
+                    ContextCompat.getColor(this, R.color.rating_store_9),
+                    ContextCompat.getColor(this, R.color.rating_store_8),
+                    ContextCompat.getColor(this, R.color.rating_store_7),
+                    ContextCompat.getColor(this, R.color.rating_store_6),
+                    ContextCompat.getColor(this, R.color.rating_store_4),
+                    ContextCompat.getColor(this, R.color.rating_store_3),
+                    ContextCompat.getColor(this, R.color.rating_store_2),
+                    ContextCompat.getColor(this, R.color.rating_store_1),
+                    ContextCompat.getColor(this, R.color.rating_store_0)
 	        });
             set1.setDrawCircles(true);
             set1.setDrawCircleHole(true);
@@ -361,6 +366,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
 	        set2.setValueTextColor(android.R.color.black);
             set2.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
 	        set2.setColoringMode(LineDataSet.ColoringGradientMode.GRADIENT_VERTICAL);
+//	        set2.setColoringMode(LineDataSet.ColoringGradientMode.GRADIENT_HORIZONTAL);
             set2.setColors(new int[]{
                     ContextCompat.getColor(this, R.color.rating_store_9),
                     ContextCompat.getColor(this, R.color.rating_store_8),
