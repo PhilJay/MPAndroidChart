@@ -337,7 +337,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
 			        ContextCompat.getColor(this, R.color.rating_store_1),
 			        ContextCompat.getColor(this, R.color.rating_store_0)
 	        });
-            set1.setDrawCircles(false);
+            set1.setDrawCircles(true);
             set1.setDrawCircleHole(true);
             set1.setDrawCirclesHighlight(true);
             set1.setDrawHighlightIndicators(false);
@@ -354,11 +354,12 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             set2.setLineWidth(2f);
 //            set2.setCircleRadius(3f);
             set2.setCircleHoleRadius(5f);
-            set2.setCircleRadius(10f);
+            set2.setCircleRadius(7f);
             set2.setFillAlpha(65);
             set2.setFillColor(Color.RED);
             set2.setHighLightColor(Color.rgb(244, 117, 117));
 	        set2.setValueTextColor(android.R.color.black);
+            set2.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
 	        set2.setColoringMode(LineDataSet.ColoringGradientMode.GRADIENT_VERTICAL);
             set2.setColors(new int[]{
                     ContextCompat.getColor(this, R.color.rating_store_9),
@@ -371,7 +372,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
                     ContextCompat.getColor(this, R.color.rating_store_1),
                     ContextCompat.getColor(this, R.color.rating_store_0)
             });
-            set2.setDrawCircles(true);
+            set2.setDrawCircles(false);
             set2.setDrawCircleHole(true);
             set2.setDrawCirclesHighlight(true);
             set2.setHighlightValueEnabled(true);

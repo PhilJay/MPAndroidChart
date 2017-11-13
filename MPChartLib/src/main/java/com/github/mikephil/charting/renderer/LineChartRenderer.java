@@ -895,8 +895,8 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             //region GRADIENT_VERTICAL
             case GRADIENT_VERTICAL: {
-                float yMin = mChart.getYChartMin();
-                float yMax = yMin + mViewPortHandler.contentHeight();
+                float yMin = dataSet.getYMin();
+                float yMax = dataSet.getYMax();
 
                 int[] colors = preparePrimitiveColorsReverse(dataSet);
 
