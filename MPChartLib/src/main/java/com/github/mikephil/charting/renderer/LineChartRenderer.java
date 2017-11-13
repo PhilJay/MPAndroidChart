@@ -683,6 +683,77 @@ public class LineChartRenderer extends LineRadarRenderer {
         }
     }
 
+    private void drawCircle(Canvas c, ILineDataSet dataSet, Entry e) {
+
+        mRenderPaint.setStyle(Paint.Style.FILL);
+
+        float phaseY = mAnimator.getPhaseY();
+
+        mCirclesBuffer[0] = 0;
+        mCirclesBuffer[1] = 0;
+
+        if (!dataSet.isVisible() ||
+                (!dataSet.isDrawCirclesEnabled() && !dataSet.isDrawCirclesHighlightEnabled()) ||
+                dataSet.getEntryCount() == 0) {
+            return;
+        }
+
+        mCirclePaintInner.setColor(dataSet.getCircleHoleColor());
+
+        Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
+
+        mXBounds.set(mChart, dataSet);
+
+        float circleRadius = dataSet.getCircleRadius();
+        float circleHoleRadius = dataSet.getCircleHoleRadius();
+        boolean drawCircleHole = dataSet.isDrawCircleHoleEnabled() &&
+                circleHoleRadius < circleRadius &&
+                circleHoleRadius > 0.f;
+        boolean drawTransparentCircleHole = drawCircleHole &&
+                dataSet.getCircleHoleColor() == ColorTemplate.COLOR_NONE;
+
+        DataSetImageCache imageCache;
+
+        if (mImageCaches.containsKey(dataSet)) {
+            imageCache = mImageCaches.get(dataSet);
+        } else {
+            imageCache = new DataSetImageCache();
+            mImageCaches.put(dataSet, imageCache);
+        }
+
+        boolean changeRequired = imageCache.init(dataSet);
+
+        // only fill the cache with new bitmaps if a change is required
+        if (changeRequired) {
+            imageCache.fill(dataSet, drawCircleHole, drawTransparentCircleHole);
+        }
+
+        int entryIndex = dataSet.getEntryIndex(e);
+        int boundsRangeCount = mXBounds.range + mXBounds.min;
+
+        if (entryIndex >= mXBounds.min && entryIndex <= boundsRangeCount) {
+            if (e == null) return;
+
+            mCirclesBuffer[0] = e.getX();
+            mCirclesBuffer[1] = e.getY() * phaseY;
+
+            trans.pointValuesToPixel(mCirclesBuffer);
+
+            if (!mViewPortHandler.isInBoundsRight(mCirclesBuffer[0]))
+                return;
+
+            if (!mViewPortHandler.isInBoundsLeft(mCirclesBuffer[0]) ||
+                    !mViewPortHandler.isInBoundsY(mCirclesBuffer[1]))
+                return;
+
+            Bitmap circleBitmap = imageCache.getBitmap(entryIndex);
+
+            if (circleBitmap != null) {
+                c.drawBitmap(circleBitmap, mCirclesBuffer[0] - circleRadius, mCirclesBuffer[1] - circleRadius, null);
+            }
+        }
+    }
+
     @Override
     public void drawHighlighted(Canvas c, Highlight[] indices) {
 
@@ -707,6 +778,10 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             // draw the lines
             drawHighlightLines(c, (float) pix.x, (float) pix.y, set);
+
+            if (!set.isDrawCirclesEnabled() && set.isDrawCirclesHighlightEnabled()) {
+                drawCircle(c, set, e);
+            }
         }
     }
 

@@ -328,7 +328,6 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
 
             set1.setAxisDependency(AxisDependency.LEFT);
             set1.setLineWidth(2f);
-	        set1.setDrawCircles(false);
 	        set1.setValueTextColor(android.R.color.black);
 	        set1.setColoringMode(LineDataSet.ColoringGradientMode.GRADIENT_HORIZONTAL);
 	        set1.setColors(new int[]{
@@ -338,7 +337,11 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
 			        ContextCompat.getColor(this, R.color.rating_store_1),
 			        ContextCompat.getColor(this, R.color.rating_store_0)
 	        });
-            set1.setDrawCircleHole(false);
+            set1.setDrawCircles(false);
+            set1.setDrawCircleHole(true);
+            set1.setDrawCirclesHighlight(true);
+            set1.setDrawValues(false);
+            set1.setDrawHighlightIndicators(false);
             //set1.setFillFormatter(new MyFillFormatter(0f));
             //set1.setDrawHorizontalHighlightIndicator(false);
             //set1.setVisible(false);
