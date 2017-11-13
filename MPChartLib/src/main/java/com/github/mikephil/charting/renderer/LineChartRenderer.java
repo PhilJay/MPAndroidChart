@@ -1,11 +1,14 @@
 package com.github.mikephil.charting.renderer;
 
+import android.animation.ArgbEvaluator;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 
@@ -636,7 +639,8 @@ public class LineChartRenderer extends LineRadarRenderer {
                     circleHoleRadius < circleRadius &&
                     circleHoleRadius > 0.f;
             boolean drawTransparentCircleHole = drawCircleHole &&
-                    dataSet.getCircleHoleColor() == ColorTemplate.COLOR_NONE;
+                    (dataSet.getCircleHoleColor() == ColorTemplate.COLOR_NONE ||
+                            dataSet.getCircleHoleColor() == Color.TRANSPARENT);
 
             DataSetImageCache imageCache;
 
@@ -677,7 +681,8 @@ public class LineChartRenderer extends LineRadarRenderer {
                 Bitmap circleBitmap = imageCache.getBitmap(j);
 
                 if (circleBitmap != null) {
-                    c.drawBitmap(circleBitmap, mCirclesBuffer[0] - circleRadius, mCirclesBuffer[1] - circleRadius, null);
+                    Paint circleColor = circleColor(dataSet, e);
+                    c.drawBitmap(circleBitmap, mCirclesBuffer[0] - circleRadius, mCirclesBuffer[1] - circleRadius, circleColor);
                 }
             }
         }
@@ -710,7 +715,8 @@ public class LineChartRenderer extends LineRadarRenderer {
                 circleHoleRadius < circleRadius &&
                 circleHoleRadius > 0.f;
         boolean drawTransparentCircleHole = drawCircleHole &&
-                dataSet.getCircleHoleColor() == ColorTemplate.COLOR_NONE;
+                (dataSet.getCircleHoleColor() == ColorTemplate.COLOR_NONE ||
+                        dataSet.getCircleHoleColor() == Color.TRANSPARENT);
 
         DataSetImageCache imageCache;
 
@@ -749,7 +755,8 @@ public class LineChartRenderer extends LineRadarRenderer {
             Bitmap circleBitmap = imageCache.getBitmap(entryIndex);
 
             if (circleBitmap != null) {
-                c.drawBitmap(circleBitmap, mCirclesBuffer[0] - circleRadius, mCirclesBuffer[1] - circleRadius, null);
+                Paint circleColor = circleColor(dataSet, e);
+                c.drawBitmap(circleBitmap, mCirclesBuffer[0] - circleRadius, mCirclesBuffer[1] - circleRadius, circleColor);
             }
         }
     }
@@ -843,6 +850,83 @@ public class LineChartRenderer extends LineRadarRenderer {
         }
     }
 
+    private Paint circleColor(ILineDataSet dataSet, Entry e) {
+        int color = colorForValue(dataSet, e);
+        Paint circleColor = new Paint(mRenderPaint);
+        circleColor.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
+        return circleColor;
+    }
+
+    private int colorForValue(ILineDataSet dataSet, Entry entry) {
+        Object color;
+
+        switch (dataSet.getColoringMode()) {
+            //region DEFAULT
+            case DEFAULT:
+                color = dataSet.getColor();
+                break;
+            //endregion
+
+            //region GRADIENT_HORIZONTAL
+            case GRADIENT_HORIZONTAL: {
+                float xMin = dataSet.getXMin();
+                float xMax = dataSet.getXMax();
+
+                int[] colors = preparePrimitiveColors(dataSet);
+
+                float fraction = (entry.getX() - xMin) / (xMax - xMin);
+                float colorFraction = fraction * colors.length;
+                int colorLowIndex = (int) Math.floor(colorFraction);
+                int colorHighIndex = (int) Math.ceil(colorFraction);
+
+                colorLowIndex = Math.min(colors.length - 1, colorLowIndex);
+                colorHighIndex = Math.min(colors.length - 1, colorHighIndex);
+
+                if (colorLowIndex != colorHighIndex) {
+                    int colorLow = colors[colorLowIndex];
+                    int colorHigh = colors[colorHighIndex];
+                    color = new ArgbEvaluator().evaluate(colorFraction % 1, colorLow, colorHigh);
+                } else {
+                    color = colors[colorLowIndex];
+                }
+                break;
+            }
+            //endregion
+
+            //region GRADIENT_VERTICAL
+            case GRADIENT_VERTICAL: {
+                float yMin = mChart.getYChartMin();
+                float yMax = yMin + mViewPortHandler.contentHeight();
+
+                int[] colors = preparePrimitiveColorsReverse(dataSet);
+
+                float fraction = (entry.getY() - yMin) / (yMax - yMin);
+                float colorFraction = fraction * colors.length;
+                int colorLowIndex = (int) Math.floor(colorFraction);
+                int colorHighIndex = (int) Math.ceil(colorFraction);
+
+                colorLowIndex = Math.min(colors.length - 1, colorLowIndex);
+                colorHighIndex = Math.min(colors.length - 1, colorHighIndex);
+
+                if (colorLowIndex != colorHighIndex) {
+                    int colorLow = colors[colorLowIndex];
+                    int colorHigh = colors[colorHighIndex];
+                    color = new ArgbEvaluator().evaluate(colorFraction % 1, colorLow, colorHigh);
+                } else {
+                    color = colors[colorLowIndex];
+                }
+                break;
+            }
+            //endregion
+
+            default:
+                color = null;
+                break;
+        }
+
+        return (int) color;
+    }
+
     private void coloringLine(ILineDataSet dataSet, Paint renderer, int canvasWidth, int canvasHeight) {
         coloringLine(dataSet, renderer, canvasWidth, canvasHeight, null);
     }
@@ -852,7 +936,7 @@ public class LineChartRenderer extends LineRadarRenderer {
         try {
             switch (dataSet.getColoringMode()) {
                 case DEFAULT:
-                    renderer.setColor(color == null ? dataSet.getColor() : dataSet.getColor());
+                    renderer.setColor(color == null ? dataSet.getColor() : color);
                     renderer.setShader(null);
                     break;
                 case GRADIENT_HORIZONTAL:
@@ -890,6 +974,16 @@ public class LineChartRenderer extends LineRadarRenderer {
         for (int color : dataSet.getColors()) {
             colors[i] = color;
             i++;
+        }
+        return colors;
+    }
+
+    private int[] preparePrimitiveColorsReverse(ILineDataSet dataSet) {
+        int[] colors = new int[dataSet.getColors().size()];
+        int i = dataSet.getColors().size() - 1;
+        for (int color : dataSet.getColors()) {
+            colors[i] = color;
+            i--;
         }
         return colors;
     }
