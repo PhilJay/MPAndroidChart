@@ -14,6 +14,7 @@ import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -175,7 +176,7 @@ public class LineChartRenderer extends LineRadarRenderer {
             drawCubicFill(mBitmapCanvas, dataSet, cubicFillPath, trans, mXBounds);
         }
 
-        coloringLine(dataSet, mRenderPaint, mBitmapCanvas.getWidth(), mBitmapCanvas.getHeight());
+        coloringLine(dataSet, mRenderPaint);
 
         mRenderPaint.setStyle(Paint.Style.STROKE);
 
@@ -254,7 +255,7 @@ public class LineChartRenderer extends LineRadarRenderer {
             drawCubicFill(mBitmapCanvas, dataSet, cubicFillPath, trans, mXBounds);
         }
 
-        coloringLine(dataSet, mRenderPaint, mBitmapCanvas.getWidth(), mBitmapCanvas.getHeight());
+        coloringLine(dataSet, mRenderPaint);
 
         mRenderPaint.setStyle(Paint.Style.STROKE);
 
@@ -373,7 +374,7 @@ public class LineChartRenderer extends LineRadarRenderer {
                     continue;
 
                 // get the color that is set for this line-segment
-                coloringLine(dataSet, mRenderPaint, mBitmapCanvas.getWidth(), mBitmapCanvas.getHeight(), j);
+                coloringLine(dataSet, mRenderPaint, j);
 
                 canvas.drawLines(mLineBuffer, 0, pointsPerEntryPair * 2, mRenderPaint);
             }
@@ -416,7 +417,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
                     final int size = Math.max((mXBounds.range + 1) * pointsPerEntryPair, pointsPerEntryPair) * 2;
 
-                    coloringLine(dataSet, mRenderPaint, mBitmapCanvas.getWidth(), mBitmapCanvas.getHeight());
+                    coloringLine(dataSet, mRenderPaint);
 
                     canvas.drawLines(mLineBuffer, 0, size, mRenderPaint);
                 }
@@ -869,8 +870,8 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             //region GRADIENT_HORIZONTAL
             case GRADIENT_HORIZONTAL: {
-                float xMin = dataSet.getXMin();
-                float xMax = dataSet.getXMax();
+                float xMin = mChart.getXChartMin();
+                float xMax = mChart.getXChartMax();
 
                 int[] colors = preparePrimitiveColors(dataSet);
 
@@ -895,18 +896,23 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             //region GRADIENT_VERTICAL
             case GRADIENT_VERTICAL: {
-                float yMin = dataSet.getYMin();
-                float yMax = dataSet.getYMax();
+                float yMin = mChart.getYChartMin();
+                float yMax = mChart.getYChartMax();
 
                 int[] colors = preparePrimitiveColorsReverse(dataSet);
 
                 float fraction = (entry.getY() - yMin) / (yMax - yMin);
                 float colorFraction = fraction * colors.length;
+
+//                Log.v("LineChartColor", "min:" + yMin + " max:" + yMax + " val:"+entry.getY()+" fraction:" + fraction + " colorFraction:" + colorFraction);
+
                 int colorLowIndex = (int) Math.floor(colorFraction);
                 int colorHighIndex = (int) Math.ceil(colorFraction);
 
                 colorLowIndex = Math.min(colors.length - 1, colorLowIndex);
                 colorHighIndex = Math.min(colors.length - 1, colorHighIndex);
+
+//                Log.d("LineChartColor", "loIx: " + colorLowIndex + " hiIx: " + colorHighIndex);
 
                 if (colorLowIndex != colorHighIndex) {
                     int colorLow = colors[colorLowIndex];
@@ -927,11 +933,11 @@ public class LineChartRenderer extends LineRadarRenderer {
         return (int) color;
     }
 
-    private void coloringLine(ILineDataSet dataSet, Paint renderer, int canvasWidth, int canvasHeight) {
-        coloringLine(dataSet, renderer, canvasWidth, canvasHeight, null);
+    private void coloringLine(ILineDataSet dataSet, Paint renderer) {
+        coloringLine(dataSet, renderer, null);
     }
 
-    private void coloringLine(ILineDataSet dataSet, Paint renderer, int canvasWidth, int canvasHeight, Integer color) {
+    private void coloringLine(ILineDataSet dataSet, Paint renderer, Integer color) {
 
         try {
             switch (dataSet.getColoringMode()) {
@@ -939,33 +945,72 @@ public class LineChartRenderer extends LineRadarRenderer {
                     renderer.setColor(color == null ? dataSet.getColor() : color);
                     renderer.setShader(null);
                     break;
-                case GRADIENT_HORIZONTAL:
+
+                case GRADIENT_HORIZONTAL: {
+                    float[] gradientConstraints = getScaledGradientConstraints(dataSet, false);
+
+                    //TODO cache shader when not scaling
                     mRenderPaint.setShader(new LinearGradient(
+                            gradientConstraints[0],
                             0,
+                            gradientConstraints[1],
                             0,
-                            canvasWidth,
-                            canvasHeight,
                             preparePrimitiveColors(dataSet),
                             null,
-                            Shader.TileMode.REPEAT
+                            Shader.TileMode.CLAMP
                     ));
                     break;
-                case GRADIENT_VERTICAL:
+                }
+
+                case GRADIENT_VERTICAL: {
+                    float[] gradientConstraints = getScaledGradientConstraints(dataSet, true);
+
+                    //TODO cache shader when not scaling
                     mRenderPaint.setShader(new LinearGradient(
                             0,
+                            gradientConstraints[0],
                             0,
-                            0,
-                            canvasHeight,
+                            gradientConstraints[1],
                             preparePrimitiveColors(dataSet),
                             null,
-                            Shader.TileMode.REPEAT
+                            Shader.TileMode.CLAMP
                     ));
                     break;
+                }
             }
         } catch (NullPointerException | IndexOutOfBoundsException ex) {
             renderer.setColor(dataSet.getColor());
             ex.printStackTrace();
         }
+    }
+
+    private float[] getScaledGradientConstraints(ILineDataSet dataSet, boolean isVertical) {
+        float ppu;
+        float start;
+        float realRange;
+
+        if (isVertical) {
+            YAxis axis = mChart.getAxis(dataSet.getAxisDependency());
+            float yChartMin = axis.getAxisMinimum();
+            float yChartMax = axis.getAxisMaximum();
+            float lowestVisibleY = mChart.getLowestVisibleY(dataSet.getAxisDependency());
+            float highestVisibleY = mChart.getHighestVisibleY(dataSet.getAxisDependency());
+            realRange = yChartMax - yChartMin;
+            float scaledRange = highestVisibleY - lowestVisibleY;
+            ppu = mBitmapCanvas.getHeight() / scaledRange;
+            start = (highestVisibleY - yChartMax) * ppu;
+        } else {
+            float xChartMin = mChart.getXChartMin();
+            float xChartMax = mChart.getXChartMax();
+            float lowestVisibleX = mChart.getLowestVisibleX();
+            float highestVisibleX = mChart.getHighestVisibleX();
+            realRange = xChartMax - xChartMin;
+            float scaledRange = highestVisibleX - lowestVisibleX;
+            ppu = mBitmapCanvas.getWidth() / scaledRange;
+            start = (xChartMin - lowestVisibleX) * ppu;
+        }
+
+        return new float[]{start, start + realRange * ppu};
     }
 
     private int[] preparePrimitiveColors(ILineDataSet dataSet) {
@@ -1002,15 +1047,17 @@ public class LineChartRenderer extends LineRadarRenderer {
 
         mXBounds.set(mChart, dataSet);
 
-        float[] positions = trans.generateTransformedValuesLine(dataSet, mAnimator.getPhaseX(), mAnimator
-                .getPhaseY(), mXBounds.min, mXBounds.max);
+        float[] positions = trans.generateTransformedValuesLine(dataSet,
+                mAnimator.getPhaseX(), mAnimator.getPhaseY(), mXBounds.min, mXBounds.max);
 
         MPPointF iconsOffset = MPPointF.getInstance(dataSet.getIconsOffset());
         iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
         iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y);
 
         //transform highlight index to position index
-        int j = (int) highlight.getX() * 2;
+        int j = ((int) highlight.getX() - mXBounds.min) * 2;
+
+//        Log.d("drawHighlightVal", "index:" + j + " size:" + positions.length);
 
         float x = positions[j];
         float y = positions[j + 1];
