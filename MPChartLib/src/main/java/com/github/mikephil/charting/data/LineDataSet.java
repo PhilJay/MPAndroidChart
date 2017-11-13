@@ -69,6 +69,8 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
 
     private boolean mDrawCircleHole = true;
 
+    private boolean mDrawCirclesHighlight = false;
+
 
     public LineDataSet(List<Entry> yVals, String label) {
         super(yVals, label);
@@ -104,6 +106,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
         copied.mCircleColors = mCircleColors;
         copied.mDashPathEffect = mDashPathEffect;
         copied.mDrawCircles = mDrawCircles;
+        copied.mDrawCirclesHighlight = mDrawCirclesHighlight;
         copied.mDrawCircleHole = mDrawCircleHole;
         copied.mHighLightColor = mHighLightColor;
 
@@ -273,9 +276,18 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
         this.mDrawCircles = enabled;
     }
 
+    public void setDrawCirclesHighlight(boolean enabled) {
+        this.mDrawCirclesHighlight = enabled;
+    }
+
     @Override
     public boolean isDrawCirclesEnabled() {
         return mDrawCircles;
+    }
+
+    @Override
+    public boolean isDrawCirclesHighlightEnabled() {
+        return mDrawCirclesHighlight;
     }
 
     @Deprecated
