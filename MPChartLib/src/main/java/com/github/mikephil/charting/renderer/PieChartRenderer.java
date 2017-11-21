@@ -123,31 +123,18 @@ public class PieChartRenderer extends DataRenderer {
     @Override
     public void drawData(Canvas c) {
 
-        int width = (int) mViewPortHandler.getChartWidth();
-        int height = (int) mViewPortHandler.getChartHeight();
+        Bitmap drawBitmap = getStrongDrawBitmap();
+        if (drawBitmap != null) {
 
-        Bitmap drawBitmap = mDrawBitmap == null ? null : mDrawBitmap.get();
+            drawBitmap.eraseColor(Color.TRANSPARENT);
 
-        if (drawBitmap == null
-                || (drawBitmap.getWidth() != width)
-                || (drawBitmap.getHeight() != height)) {
+            PieData pieData = mChart.getData();
 
-            if (width > 0 && height > 0) {
-                drawBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
-                mDrawBitmap = new WeakReference<>(drawBitmap);
-                mBitmapCanvas = new Canvas(drawBitmap);
-            } else
-                return;
-        }
+            for (IPieDataSet set : pieData.getDataSets()) {
 
-        drawBitmap.eraseColor(Color.TRANSPARENT);
-
-        PieData pieData = mChart.getData();
-
-        for (IPieDataSet set : pieData.getDataSets()) {
-
-            if (set.isVisible() && set.getEntryCount() > 0)
-                drawDataSet(c, set);
+                if (set.isVisible() && set.getEntryCount() > 0)
+                    drawDataSet(c, set);
+            }
         }
     }
 
@@ -635,10 +622,13 @@ public class PieChartRenderer extends DataRenderer {
 
     @Override
     public void drawExtras(Canvas c) {
-        // drawCircles(c);
-        drawHole(c);
-        c.drawBitmap(mDrawBitmap.get(), 0, 0, null);
-        drawCenterText(c);
+        Bitmap drawBitmap = getStrongDrawBitmap();
+        if (drawBitmap != null) {
+            // drawCircles(c);
+            drawHole(c);
+            c.drawBitmap(drawBitmap, 0, 0, null);
+            drawCenterText(c);
+        }
     }
 
     private Path mHoleCirclePath = new Path();
@@ -1019,5 +1009,29 @@ public class PieChartRenderer extends DataRenderer {
             mDrawBitmap.clear();
             mDrawBitmap = null;
         }
+    }
+
+    /**
+     * Get a strong reference to mDrawBitmap.
+     * Result may be null, if no such reference is available.
+     */
+    private Bitmap getStrongDrawBitmap() {
+        int width = (int) mViewPortHandler.getChartWidth();
+        int height = (int) mViewPortHandler.getChartHeight();
+
+        Bitmap drawBitmap = mDrawBitmap == null ? null : mDrawBitmap.get();
+
+        if (drawBitmap == null
+                || (drawBitmap.getWidth() != width)
+                || (drawBitmap.getHeight() != height)) {
+
+            if (width > 0 && height > 0) {
+                drawBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
+                mDrawBitmap = new WeakReference<>(drawBitmap);
+                mBitmapCanvas = new Canvas(drawBitmap);
+            }
+        }
+
+        return drawBitmap;
     }
 }
