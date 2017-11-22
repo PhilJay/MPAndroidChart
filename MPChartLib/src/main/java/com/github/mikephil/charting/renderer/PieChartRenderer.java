@@ -634,6 +634,10 @@ public class PieChartRenderer extends DataRenderer {
     @Override
     public void drawExtras(Canvas c) {
         // drawCircles(c);
+        if (width == 0 || height == 0) {
+            return;
+        }
+
         drawHole(c);
         c.drawBitmap(mDrawBitmap.get(), 0, 0, null);
         drawCenterText(c);
