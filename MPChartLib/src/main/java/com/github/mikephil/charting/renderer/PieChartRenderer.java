@@ -634,6 +634,8 @@ public class PieChartRenderer extends DataRenderer {
     @Override
     public void drawExtras(Canvas c) {
         // drawCircles(c);
+        int width = (int) mViewPortHandler.getChartWidth();
+        int height = (int) mViewPortHandler.getChartHeight();
         if (width == 0 || height == 0) {
             return;
         }
