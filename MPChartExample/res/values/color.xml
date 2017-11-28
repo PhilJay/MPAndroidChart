@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="rating_store_9">#00ff00</color>
+    <color name="rating_store_8">#81a20a</color>
+    <color name="rating_store_7">#a6b017</color>
+    <color name="rating_store_6">#cdbb25</color>
+    <color name="rating_store_5">#990000</color>
+    <color name="rating_store_4">#ffbb33</color>
+    <color name="rating_store_3">#ff9d2e</color>
+    <color name="rating_store_2">#f57322</color>
+    <color name="rating_store_1">#e54314</color>
+    <color name="rating_store_0">#cc0000</color>
+</resources>

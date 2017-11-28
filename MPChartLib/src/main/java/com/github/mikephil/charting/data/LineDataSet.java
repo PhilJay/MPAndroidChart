@@ -22,6 +22,11 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
      **/
     private LineDataSet.Mode mMode = Mode.LINEAR;
 
+	/**
+     * Setting gradient mode for line chart
+     **/
+    private ColoringGradientMode mColoringMode = ColoringGradientMode.DEFAULT;
+
     /**
      * List representing all colors that are used for the circles
      */
@@ -64,6 +69,8 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
 
     private boolean mDrawCircleHole = true;
 
+    private boolean mDrawCirclesHighlight = false;
+
 
     public LineDataSet(List<Entry> yVals, String label) {
         super(yVals, label);
@@ -99,6 +106,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
         copied.mCircleColors = mCircleColors;
         copied.mDashPathEffect = mDashPathEffect;
         copied.mDrawCircles = mDrawCircles;
+        copied.mDrawCirclesHighlight = mDrawCirclesHighlight;
         copied.mDrawCircleHole = mDrawCircleHole;
         copied.mHighLightColor = mHighLightColor;
 
@@ -116,7 +124,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
     }
 
     /**
-     * Returns the drawing mode for this LineDataSet
+     * Sets the drawing mode for this LineDataSet
      *
      * @return
      */
@@ -124,7 +132,26 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
         mMode = mode;
     }
 
-    /**
+	/**
+	 * Returns mode of coloring for line chart
+	 *
+	 * @return ColoringGradientMode
+	 */
+	public ColoringGradientMode getColoringMode() {
+		return mColoringMode;
+	}
+
+	/**
+	 * Sets coloring method for line chart
+	 * Currently supports linear gradient
+	 *
+	 * @param mColoringMode
+	 */
+	public void setColoringMode(ColoringGradientMode mColoringMode) {
+		this.mColoringMode = mColoringMode;
+	}
+
+	/**
      * Sets the intensity for cubic lines (if enabled). Max = 1f = very cubic,
      * Min = 0.05f = low cubic effect, Default: 0.2f
      *
@@ -249,9 +276,18 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
         this.mDrawCircles = enabled;
     }
 
+    public void setDrawCirclesHighlight(boolean enabled) {
+        this.mDrawCirclesHighlight = enabled;
+    }
+
     @Override
     public boolean isDrawCirclesEnabled() {
         return mDrawCircles;
+    }
+
+    @Override
+    public boolean isDrawCirclesHighlightEnabled() {
+        return mDrawCirclesHighlight;
     }
 
     @Deprecated
@@ -412,4 +448,10 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
         CUBIC_BEZIER,
         HORIZONTAL_BEZIER
     }
+
+	public enum ColoringGradientMode {
+		DEFAULT,
+		GRADIENT_HORIZONTAL,
+		GRADIENT_VERTICAL
+	}
 }

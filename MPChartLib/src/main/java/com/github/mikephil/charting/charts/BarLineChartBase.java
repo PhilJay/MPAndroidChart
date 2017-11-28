@@ -257,10 +257,14 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             clipRestoreCount = canvas.save();
             canvas.clipRect(mViewPortHandler.getContentRect());
 
+            if (valuesToHighlight())
+                mRenderer.drawHighlightedValues(canvas, mIndicesToHighlight);
             mRenderer.drawValues(canvas);
 
             canvas.restoreToCount(clipRestoreCount);
         } else {
+            if (valuesToHighlight())
+                mRenderer.drawHighlightedValues(canvas, mIndicesToHighlight);
             mRenderer.drawValues(canvas);
         }
 
@@ -696,7 +700,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * @param axis
      * @param duration
      */
-    @TargetApi(11)
     public void zoomAndCenterAnimated(float scaleX, float scaleY, float xValue, float yValue, AxisDependency axis,
                                       long duration) {
 
@@ -1387,6 +1390,22 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentRight(),
                 mViewPortHandler.contentBottom(), posForGetHighestVisibleX);
         float result = (float) Math.min(mXAxis.mAxisMaximum, posForGetHighestVisibleX.x);
+        return result;
+    }
+
+    @Override
+    public float getLowestVisibleY(AxisDependency axis) {
+        getTransformer(axis).getValuesByTouchPoint(mViewPortHandler.contentRight(),
+                mViewPortHandler.contentBottom(), posForGetLowestVisibleX);
+        float result = (float) Math.max(getAxis(axis).mAxisMinimum, posForGetLowestVisibleX.y);
+        return result;
+    }
+
+    @Override
+    public float getHighestVisibleY(AxisDependency axis) {
+        getTransformer(axis).getValuesByTouchPoint(mViewPortHandler.contentRight(),
+                mViewPortHandler.contentTop(), posForGetHighestVisibleX);
+        float result = (float) Math.min(getAxis(axis).mAxisMaximum, posForGetHighestVisibleX.y);
         return result;
     }
 

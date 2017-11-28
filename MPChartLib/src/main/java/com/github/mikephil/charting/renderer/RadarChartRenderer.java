@@ -361,6 +361,11 @@ public class RadarChartRenderer extends LineRadarRenderer {
         MPPointF.recycleInstance(pOut);
     }
 
+    @Override
+    public void drawHighlightedValues(Canvas c, Highlight[] indices) {
+        //TODO
+    }
+
     protected Path mDrawHighlightCirclePathBuffer = new Path();
     public void drawHighlightCircle(Canvas c,
                                     MPPointF point,

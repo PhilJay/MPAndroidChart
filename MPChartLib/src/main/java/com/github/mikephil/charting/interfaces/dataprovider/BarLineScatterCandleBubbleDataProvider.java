@@ -12,5 +12,8 @@ public interface BarLineScatterCandleBubbleDataProvider extends ChartInterface {
     float getLowestVisibleX();
     float getHighestVisibleX();
 
+    float getLowestVisibleY(AxisDependency axis);
+    float getHighestVisibleY(AxisDependency axis);
+
     BarLineScatterCandleBubbleData getData();
 }

@@ -3,6 +3,7 @@ package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -285,16 +286,16 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
 
         for (int i = 0; i < count; i++) {
-            float mult = range / 2f;
-            float val = (float) (Math.random() * mult) + 50;
+            float mult = range / 2 ;
+            float val = (float) (Math.random() * mult ) + 80;
             yVals1.add(new Entry(i, val));
         }
 
         ArrayList<Entry> yVals2 = new ArrayList<Entry>();
 
-        for (int i = 0; i < count-1; i++) {
+        for (int i = 0; i < count; i++) {
             float mult = range;
-            float val = (float) (Math.random() * mult) + 450;
+            float val = (float) (Math.random() * mult * 30 ) ;
             yVals2.add(new Entry(i, val));
 //            if(i == 10) {
 //                yVals2.add(new Entry(i, val + 50));
@@ -318,38 +319,69 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             set3 = (LineDataSet) mChart.getData().getDataSetByIndex(2);
             set1.setValues(yVals1);
             set2.setValues(yVals2);
-            set3.setValues(yVals3);
+//            set3.setValues(yVals3);
             mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
             // create a dataset and give it a type
-            set1 = new LineDataSet(yVals1, "DataSet 1");
+            set1 = new LineDataSet(yVals1, "Horizontal");
 
             set1.setAxisDependency(AxisDependency.LEFT);
-            set1.setColor(ColorTemplate.getHoloBlue());
-            set1.setCircleColor(Color.WHITE);
             set1.setLineWidth(2f);
-            set1.setCircleRadius(3f);
-            set1.setFillAlpha(65);
-            set1.setFillColor(ColorTemplate.getHoloBlue());
-            set1.setHighLightColor(Color.rgb(244, 117, 117));
-            set1.setDrawCircleHole(false);
+	        set1.setValueTextColor(android.R.color.black);
+	        set1.setColoringMode(LineDataSet.ColoringGradientMode.GRADIENT_HORIZONTAL);
+//	        set1.setColoringMode(LineDataSet.ColoringGradientMode.GRADIENT_VERTICAL);
+	        set1.setColors(new int[]{
+                    ContextCompat.getColor(this, R.color.rating_store_9),
+                    ContextCompat.getColor(this, R.color.rating_store_8),
+                    ContextCompat.getColor(this, R.color.rating_store_7),
+                    ContextCompat.getColor(this, R.color.rating_store_6),
+                    ContextCompat.getColor(this, R.color.rating_store_4),
+                    ContextCompat.getColor(this, R.color.rating_store_3),
+                    ContextCompat.getColor(this, R.color.rating_store_2),
+                    ContextCompat.getColor(this, R.color.rating_store_1),
+                    ContextCompat.getColor(this, R.color.rating_store_0)
+	        });
+            set1.setDrawCircles(true);
+            set1.setDrawCircleHole(true);
+            set1.setDrawCirclesHighlight(true);
+            set1.setDrawHighlightIndicators(false);
+            set1.setHighlightValueEnabled(true);
             //set1.setFillFormatter(new MyFillFormatter(0f));
             //set1.setDrawHorizontalHighlightIndicator(false);
             //set1.setVisible(false);
             //set1.setCircleHoleColor(Color.WHITE);
 
             // create a dataset and give it a type
-            set2 = new LineDataSet(yVals2, "DataSet 2");
+            set2 = new LineDataSet(yVals2, "Vertical");
             set2.setAxisDependency(AxisDependency.RIGHT);
-            set2.setColor(Color.RED);
-            set2.setCircleColor(Color.WHITE);
+            set2.setCircleColorHole(Color.TRANSPARENT);
             set2.setLineWidth(2f);
-            set2.setCircleRadius(3f);
+//            set2.setCircleRadius(3f);
+            set2.setCircleHoleRadius(5f);
+            set2.setCircleRadius(7f);
             set2.setFillAlpha(65);
             set2.setFillColor(Color.RED);
-            set2.setDrawCircleHole(false);
             set2.setHighLightColor(Color.rgb(244, 117, 117));
+	        set2.setValueTextColor(android.R.color.black);
+            set2.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+	        set2.setColoringMode(LineDataSet.ColoringGradientMode.GRADIENT_VERTICAL);
+//	        set2.setColoringMode(LineDataSet.ColoringGradientMode.GRADIENT_HORIZONTAL);
+            set2.setColors(new int[]{
+                    ContextCompat.getColor(this, R.color.rating_store_9),
+                    ContextCompat.getColor(this, R.color.rating_store_8),
+                    ContextCompat.getColor(this, R.color.rating_store_7),
+                    ContextCompat.getColor(this, R.color.rating_store_6),
+                    ContextCompat.getColor(this, R.color.rating_store_4),
+                    ContextCompat.getColor(this, R.color.rating_store_3),
+                    ContextCompat.getColor(this, R.color.rating_store_2),
+                    ContextCompat.getColor(this, R.color.rating_store_1),
+                    ContextCompat.getColor(this, R.color.rating_store_0)
+            });
+            set2.setDrawCircles(false);
+            set2.setDrawCircleHole(true);
+            set2.setDrawCirclesHighlight(true);
+            set2.setHighlightValueEnabled(true);
             //set2.setFillFormatter(new MyFillFormatter(900f));
 
             set3 = new LineDataSet(yVals3, "DataSet 3");
@@ -362,14 +394,22 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             set3.setFillColor(ColorTemplate.colorWithAlpha(Color.YELLOW, 200));
             set3.setDrawCircleHole(false);
             set3.setHighLightColor(Color.rgb(244, 117, 117));
+            set3.setHighlightValueEnabled(true);
 
             // create a data object with the datasets
-            LineData data = new LineData(set1, set2, set3);
+//            LineData data = new LineData(set1,set2,set3 );
+            LineData data = new LineData(set1, set2);
             data.setValueTextColor(Color.WHITE);
             data.setValueTextSize(9f);
 
+            set1.setDrawValues(false);
+            set2.setDrawValues(false);
+            set3.setDrawValues(true);
+
             // set data
+//            mChart.setData(data);
             mChart.setData(data);
+
         }
     }
 

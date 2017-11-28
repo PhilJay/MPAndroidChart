@@ -1,7 +1,6 @@
 package com.github.mikephil.charting.interfaces.datasets;
 
 import android.graphics.DashPathEffect;
-import android.graphics.PointF;
 import android.graphics.Typeface;
 
 import com.github.mikephil.charting.components.Legend;
@@ -308,6 +307,21 @@ public interface IDataSet<T extends Entry> {
      * @param enabled
      */
     void setHighlightEnabled(boolean enabled);
+
+    /**
+     * returns true if highlighting of values is enabled, false if not
+     *
+     * @return
+     */
+    boolean isHighlightValueEnabled();
+
+    /**
+     * If set to true, value highlighting is enabled which means that values can
+     * be highlighted programmatically or by touch gesture.
+     *
+     * @param enabled
+     */
+    void setHighlightValueEnabled(boolean enabled);
 
     /**
      * Sets the formatter to be used for drawing the values inside the chart. If

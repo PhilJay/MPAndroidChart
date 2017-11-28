@@ -1,14 +1,20 @@
 package com.github.mikephil.charting.renderer;
 
+import android.animation.ArgbEvaluator;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -170,7 +176,7 @@ public class LineChartRenderer extends LineRadarRenderer {
             drawCubicFill(mBitmapCanvas, dataSet, cubicFillPath, trans, mXBounds);
         }
 
-        mRenderPaint.setColor(dataSet.getColor());
+        coloringLine(dataSet, mRenderPaint);
 
         mRenderPaint.setStyle(Paint.Style.STROKE);
 
@@ -249,7 +255,7 @@ public class LineChartRenderer extends LineRadarRenderer {
             drawCubicFill(mBitmapCanvas, dataSet, cubicFillPath, trans, mXBounds);
         }
 
-        mRenderPaint.setColor(dataSet.getColor());
+        coloringLine(dataSet, mRenderPaint);
 
         mRenderPaint.setStyle(Paint.Style.STROKE);
 
@@ -368,7 +374,7 @@ public class LineChartRenderer extends LineRadarRenderer {
                     continue;
 
                 // get the color that is set for this line-segment
-                mRenderPaint.setColor(dataSet.getColor(j));
+                coloringLine(dataSet, mRenderPaint, j);
 
                 canvas.drawLines(mLineBuffer, 0, pointsPerEntryPair * 2, mRenderPaint);
             }
@@ -411,7 +417,7 @@ public class LineChartRenderer extends LineRadarRenderer {
 
                     final int size = Math.max((mXBounds.range + 1) * pointsPerEntryPair, pointsPerEntryPair) * 2;
 
-                    mRenderPaint.setColor(dataSet.getColor());
+                    coloringLine(dataSet, mRenderPaint);
 
                     canvas.drawLines(mLineBuffer, 0, size, mRenderPaint);
                 }
@@ -576,8 +582,8 @@ public class LineChartRenderer extends LineRadarRenderer {
                         Utils.drawImage(
                                 c,
                                 icon,
-                                (int)(x + iconsOffset.x),
-                                (int)(y + iconsOffset.y),
+                                (int) (x + iconsOffset.x),
+                                (int) (y + iconsOffset.y),
                                 icon.getIntrinsicWidth(),
                                 icon.getIntrinsicHeight());
                     }
@@ -634,7 +640,8 @@ public class LineChartRenderer extends LineRadarRenderer {
                     circleHoleRadius < circleRadius &&
                     circleHoleRadius > 0.f;
             boolean drawTransparentCircleHole = drawCircleHole &&
-                    dataSet.getCircleHoleColor() == ColorTemplate.COLOR_NONE;
+                    (dataSet.getCircleHoleColor() == ColorTemplate.COLOR_NONE ||
+                            dataSet.getCircleHoleColor() == Color.TRANSPARENT);
 
             DataSetImageCache imageCache;
 
@@ -675,8 +682,82 @@ public class LineChartRenderer extends LineRadarRenderer {
                 Bitmap circleBitmap = imageCache.getBitmap(j);
 
                 if (circleBitmap != null) {
-                    c.drawBitmap(circleBitmap, mCirclesBuffer[0] - circleRadius, mCirclesBuffer[1] - circleRadius, null);
+                    Paint circleColor = circleColor(dataSet, e);
+                    c.drawBitmap(circleBitmap, mCirclesBuffer[0] - circleRadius, mCirclesBuffer[1] - circleRadius, circleColor);
                 }
+            }
+        }
+    }
+
+    private void drawCircle(Canvas c, ILineDataSet dataSet, Entry e) {
+
+        mRenderPaint.setStyle(Paint.Style.FILL);
+
+        float phaseY = mAnimator.getPhaseY();
+
+        mCirclesBuffer[0] = 0;
+        mCirclesBuffer[1] = 0;
+
+        if (!dataSet.isVisible() ||
+                (!dataSet.isDrawCirclesEnabled() && !dataSet.isDrawCirclesHighlightEnabled()) ||
+                dataSet.getEntryCount() == 0) {
+            return;
+        }
+
+        mCirclePaintInner.setColor(dataSet.getCircleHoleColor());
+
+        Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
+
+        mXBounds.set(mChart, dataSet);
+
+        float circleRadius = dataSet.getCircleRadius();
+        float circleHoleRadius = dataSet.getCircleHoleRadius();
+        boolean drawCircleHole = dataSet.isDrawCircleHoleEnabled() &&
+                circleHoleRadius < circleRadius &&
+                circleHoleRadius > 0.f;
+        boolean drawTransparentCircleHole = drawCircleHole &&
+                (dataSet.getCircleHoleColor() == ColorTemplate.COLOR_NONE ||
+                        dataSet.getCircleHoleColor() == Color.TRANSPARENT);
+
+        DataSetImageCache imageCache;
+
+        if (mImageCaches.containsKey(dataSet)) {
+            imageCache = mImageCaches.get(dataSet);
+        } else {
+            imageCache = new DataSetImageCache();
+            mImageCaches.put(dataSet, imageCache);
+        }
+
+        boolean changeRequired = imageCache.init(dataSet);
+
+        // only fill the cache with new bitmaps if a change is required
+        if (changeRequired) {
+            imageCache.fill(dataSet, drawCircleHole, drawTransparentCircleHole);
+        }
+
+        int entryIndex = dataSet.getEntryIndex(e);
+        int boundsRangeCount = mXBounds.range + mXBounds.min;
+
+        if (entryIndex >= mXBounds.min && entryIndex <= boundsRangeCount) {
+            if (e == null) return;
+
+            mCirclesBuffer[0] = e.getX();
+            mCirclesBuffer[1] = e.getY() * phaseY;
+
+            trans.pointValuesToPixel(mCirclesBuffer);
+
+            if (!mViewPortHandler.isInBoundsRight(mCirclesBuffer[0]))
+                return;
+
+            if (!mViewPortHandler.isInBoundsLeft(mCirclesBuffer[0]) ||
+                    !mViewPortHandler.isInBoundsY(mCirclesBuffer[1]))
+                return;
+
+            Bitmap circleBitmap = imageCache.getBitmap(entryIndex);
+
+            if (circleBitmap != null) {
+                Paint circleColor = circleColor(dataSet, e);
+                c.drawBitmap(circleBitmap, mCirclesBuffer[0] - circleRadius, mCirclesBuffer[1] - circleRadius, circleColor);
             }
         }
     }
@@ -705,6 +786,32 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             // draw the lines
             drawHighlightLines(c, (float) pix.x, (float) pix.y, set);
+        }
+    }
+
+    @Override
+    public void drawHighlightedValues(Canvas c, Highlight[] indices) {
+        LineData lineData = mChart.getLineData();
+
+        for (Highlight high : indices) {
+
+            ILineDataSet set = lineData.getDataSetByIndex(high.getDataSetIndex());
+
+            if (set == null)
+                continue;
+
+            Entry e = set.getEntryForXValue(high.getX(), high.getY());
+
+            if (!isInBoundsX(e, set))
+                continue;
+
+            if (set.isHighlightEnabled() && set.isHighlightValueEnabled() && !set.isDrawValuesEnabled()) {
+                drawHighlightedValue(c, set, high, high.getDataSetIndex());
+            }
+
+            if (!set.isDrawCirclesEnabled() && set.isDrawCirclesHighlightEnabled()) {
+                drawCircle(c, set, e);
+            }
         }
     }
 
@@ -742,6 +849,244 @@ public class LineChartRenderer extends LineRadarRenderer {
             mDrawBitmap.clear();
             mDrawBitmap = null;
         }
+    }
+
+    private Paint circleColor(ILineDataSet dataSet, Entry e) {
+        int color = colorForValue(dataSet, e);
+        Paint circleColor = new Paint(mRenderPaint);
+        circleColor.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
+        return circleColor;
+    }
+
+    private int colorForValue(ILineDataSet dataSet, Entry entry) {
+        Object color;
+
+        switch (dataSet.getColoringMode()) {
+            //region DEFAULT
+            case DEFAULT:
+                color = dataSet.getColor();
+                break;
+            //endregion
+
+            //region GRADIENT_HORIZONTAL
+            case GRADIENT_HORIZONTAL: {
+                float xMin = mChart.getXChartMin();
+                float xMax = mChart.getXChartMax();
+
+                int[] colors = preparePrimitiveColors(dataSet);
+
+                float fraction = (entry.getX() - xMin) / (xMax - xMin);
+                float colorFraction = fraction * colors.length;
+                int colorLowIndex = (int) Math.floor(colorFraction);
+                int colorHighIndex = (int) Math.ceil(colorFraction);
+
+                colorLowIndex = Math.min(colors.length - 1, colorLowIndex);
+                colorHighIndex = Math.min(colors.length - 1, colorHighIndex);
+
+                if (colorLowIndex != colorHighIndex) {
+                    int colorLow = colors[colorLowIndex];
+                    int colorHigh = colors[colorHighIndex];
+                    color = new ArgbEvaluator().evaluate(colorFraction % 1, colorLow, colorHigh);
+                } else {
+                    color = colors[colorLowIndex];
+                }
+                break;
+            }
+            //endregion
+
+            //region GRADIENT_VERTICAL
+            case GRADIENT_VERTICAL: {
+                float yMin = mChart.getYChartMin();
+                float yMax = mChart.getYChartMax();
+
+                int[] colors = preparePrimitiveColorsReverse(dataSet);
+
+                float fraction = (entry.getY() - yMin) / (yMax - yMin);
+                float colorFraction = fraction * colors.length;
+
+//                Log.v("LineChartColor", "min:" + yMin + " max:" + yMax + " val:"+entry.getY()+" fraction:" + fraction + " colorFraction:" + colorFraction);
+
+                int colorLowIndex = (int) Math.floor(colorFraction);
+                int colorHighIndex = (int) Math.ceil(colorFraction);
+
+                colorLowIndex = Math.min(colors.length - 1, colorLowIndex);
+                colorHighIndex = Math.min(colors.length - 1, colorHighIndex);
+
+//                Log.d("LineChartColor", "loIx: " + colorLowIndex + " hiIx: " + colorHighIndex);
+
+                if (colorLowIndex != colorHighIndex) {
+                    int colorLow = colors[colorLowIndex];
+                    int colorHigh = colors[colorHighIndex];
+                    color = new ArgbEvaluator().evaluate(colorFraction % 1, colorLow, colorHigh);
+                } else {
+                    color = colors[colorLowIndex];
+                }
+                break;
+            }
+            //endregion
+
+            default:
+                color = null;
+                break;
+        }
+
+        return (int) color;
+    }
+
+    private void coloringLine(ILineDataSet dataSet, Paint renderer) {
+        coloringLine(dataSet, renderer, null);
+    }
+
+    private void coloringLine(ILineDataSet dataSet, Paint renderer, Integer color) {
+
+        try {
+            switch (dataSet.getColoringMode()) {
+                case DEFAULT:
+                    renderer.setColor(color == null ? dataSet.getColor() : color);
+                    renderer.setShader(null);
+                    break;
+
+                case GRADIENT_HORIZONTAL: {
+                    float[] gradientConstraints = getScaledGradientConstraints(dataSet, false);
+
+                    //TODO cache shader when not scaling
+                    mRenderPaint.setShader(new LinearGradient(
+                            gradientConstraints[0],
+                            0,
+                            gradientConstraints[1],
+                            0,
+                            preparePrimitiveColors(dataSet),
+                            null,
+                            Shader.TileMode.CLAMP
+                    ));
+                    break;
+                }
+
+                case GRADIENT_VERTICAL: {
+                    float[] gradientConstraints = getScaledGradientConstraints(dataSet, true);
+
+                    //TODO cache shader when not scaling
+                    mRenderPaint.setShader(new LinearGradient(
+                            0,
+                            gradientConstraints[0],
+                            0,
+                            gradientConstraints[1],
+                            preparePrimitiveColors(dataSet),
+                            null,
+                            Shader.TileMode.CLAMP
+                    ));
+                    break;
+                }
+            }
+        } catch (NullPointerException | IndexOutOfBoundsException ex) {
+            renderer.setColor(dataSet.getColor());
+            ex.printStackTrace();
+        }
+    }
+
+    private float[] getScaledGradientConstraints(ILineDataSet dataSet, boolean isVertical) {
+        float ppu;
+        float start;
+        float realRange;
+
+        if (isVertical) {
+            YAxis axis = mChart.getAxis(dataSet.getAxisDependency());
+            float yChartMin = axis.getAxisMinimum();
+            float yChartMax = axis.getAxisMaximum();
+            float lowestVisibleY = mChart.getLowestVisibleY(dataSet.getAxisDependency());
+            float highestVisibleY = mChart.getHighestVisibleY(dataSet.getAxisDependency());
+            realRange = yChartMax - yChartMin;
+            float scaledRange = highestVisibleY - lowestVisibleY;
+            ppu = mBitmapCanvas.getHeight() / scaledRange;
+            start = (highestVisibleY - yChartMax) * ppu;
+        } else {
+            float xChartMin = mChart.getXChartMin();
+            float xChartMax = mChart.getXChartMax();
+            float lowestVisibleX = mChart.getLowestVisibleX();
+            float highestVisibleX = mChart.getHighestVisibleX();
+            realRange = xChartMax - xChartMin;
+            float scaledRange = highestVisibleX - lowestVisibleX;
+            ppu = mBitmapCanvas.getWidth() / scaledRange;
+            start = (xChartMin - lowestVisibleX) * ppu;
+        }
+
+        return new float[]{start, start + realRange * ppu};
+    }
+
+    private int[] preparePrimitiveColors(ILineDataSet dataSet) {
+        int[] colors = new int[dataSet.getColors().size()];
+        int i = 0;
+        for (int color : dataSet.getColors()) {
+            colors[i] = color;
+            i++;
+        }
+        return colors;
+    }
+
+    private int[] preparePrimitiveColorsReverse(ILineDataSet dataSet) {
+        int[] colors = new int[dataSet.getColors().size()];
+        int i = dataSet.getColors().size() - 1;
+        for (int color : dataSet.getColors()) {
+            colors[i] = color;
+            i--;
+        }
+        return colors;
+    }
+
+    private void drawHighlightedValue(Canvas c, ILineDataSet dataSet, Highlight highlight, int dataSetIndex) {
+        // apply the text-styling defined by the DataSet
+        applyValueTextStyle(dataSet);
+
+        Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
+
+        // make sure the values do not interfear with the circles
+        int valOffset = (int) (dataSet.getCircleRadius() * 1.75f);
+
+        if (!dataSet.isDrawCirclesEnabled())
+            valOffset = valOffset / 2;
+
+        mXBounds.set(mChart, dataSet);
+
+        float[] positions = trans.generateTransformedValuesLine(dataSet,
+                mAnimator.getPhaseX(), mAnimator.getPhaseY(), mXBounds.min, mXBounds.max);
+
+        MPPointF iconsOffset = MPPointF.getInstance(dataSet.getIconsOffset());
+        iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
+        iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y);
+
+        //transform highlight index to position index
+        int j = ((int) highlight.getX() - mXBounds.min) * 2;
+
+//        Log.d("drawHighlightVal", "index:" + j + " size:" + positions.length);
+
+        float x = positions[j];
+        float y = positions[j + 1];
+
+        if (!mViewPortHandler.isInBoundsRight(x))
+            return;
+
+        if (!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y))
+            return;
+
+        Entry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);
+
+        drawValue(c, dataSet.getValueFormatter(), entry.getY(), entry, dataSetIndex, x,
+                y - valOffset, dataSet.getValueTextColor(j / 2));
+
+        if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
+
+            Drawable icon = entry.getIcon();
+
+            Utils.drawImage(
+                    c,
+                    icon,
+                    (int) (x + iconsOffset.x),
+                    (int) (y + iconsOffset.y),
+                    icon.getIntrinsicWidth(),
+                    icon.getIntrinsicHeight());
+        }
+
+        MPPointF.recycleInstance(iconsOffset);
     }
 
     private class DataSetImageCache {

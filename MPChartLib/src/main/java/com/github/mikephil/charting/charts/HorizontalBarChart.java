@@ -224,6 +224,18 @@ public class HorizontalBarChart extends BarChart {
         return result;
     }
 
+    @Override
+    public float getLowestVisibleY(AxisDependency axis) {
+        //TODO
+        return 0;
+    }
+
+    @Override
+    public float getHighestVisibleY(AxisDependency axis) {
+        //TODO
+        return 0;
+    }
+
     /**
      * ###### VIEWPORT METHODS BELOW THIS ######
      */

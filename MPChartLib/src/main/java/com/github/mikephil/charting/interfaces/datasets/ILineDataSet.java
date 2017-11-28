@@ -66,6 +66,13 @@ public interface ILineDataSet extends ILineRadarDataSet<Entry> {
     boolean isDrawCirclesEnabled();
 
     /**
+     * Returns true if drawing highlight circles for this DataSet is enabled, false if not
+     *
+     * @return
+     */
+    boolean isDrawCirclesHighlightEnabled();
+
+    /**
      * Returns the color of the inner circle (the circle-hole).
      *
      * @return
@@ -100,4 +107,6 @@ public interface ILineDataSet extends ILineRadarDataSet<Entry> {
      * @return
      */
     IFillFormatter getFillFormatter();
+
+	LineDataSet.ColoringGradientMode getColoringMode();
 }
