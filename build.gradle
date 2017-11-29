@@ -5,10 +5,7 @@
 buildscript {
     repositories {
         jcenter()
-        maven {
-            url 'https://maven.google.com/'
-            name 'Google'
-        }
+        google()
     }
     dependencies {
         classpath "io.realm:realm-gradle-plugin:4.2.0"
