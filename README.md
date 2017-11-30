@@ -115,7 +115,7 @@ allprojects {
  
 ```gradle
 dependencies {
-	compile 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+	implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }
 ```
 
