@@ -39,6 +39,27 @@ public class YAxis extends AxisBase {
     protected boolean mDrawZeroLine = false;
 
     /**
+     * flag indicating that auto scale min restriction should be used
+     */
+
+    private boolean mUseAutoScaleRestrictionMin = false;
+    /**
+     * flag indicating that auto scale max restriction should be used
+     */
+
+    private boolean mUseAutoScaleRestrictionMax = false;
+    /**
+     * restriction value of autoscale min
+     */
+
+    private float mAutoScaleMinRestriction = 0f;
+
+    /**
+     * restriction value of autoscale max
+     */
+    private float mAutoScaleMaxRestriction = 0f;
+
+    /**
      * Color of the zero line
      */
     protected int mZeroLineColor = Color.GRAY;
@@ -357,12 +378,54 @@ public class YAxis extends AxisBase {
             return false;
     }
 
+    /**
+     * Sets min value restriction for autoscale
+     */
+    public void setAutoScaleMinRestriction(float restrictionValue) {
+        mUseAutoScaleRestrictionMin = true;
+        mAutoScaleMinRestriction = restrictionValue;
+    }
+
+    /**
+     * Sets max value restriction for autoscale
+     */
+    public void setAutoScaleMaxRestriction(float restrictionValue) {
+        mUseAutoScaleRestrictionMax = true;
+        mAutoScaleMaxRestriction = restrictionValue;
+    }
+
+    /**
+     * Resets min value restriction for autoscale
+     */
+    public void resetAutoScaleMinRestriction() {
+        mUseAutoScaleRestrictionMin = false;
+    }
+
+    /**
+     * Resets max value restriction for autoscale
+     */
+    public void resetAutoScaleMaxRestriction() {
+        mUseAutoScaleRestrictionMax = false;
+    }
+
     @Override
     public void calculate(float dataMin, float dataMax) {
 
+        float min = dataMin;
+        float max = dataMax;
+
         // if custom, use value as is, else use data value
-        float min = mCustomAxisMin ? mAxisMinimum : dataMin;
-        float max = mCustomAxisMax ? mAxisMaximum : dataMax;
+        if( mCustomAxisMin ) {
+            min = mAxisMinimum;
+        } else if( mUseAutoScaleRestrictionMin ) {
+            min = Math.min( min, mAutoScaleMinRestriction );
+        }
+
+        if( mCustomAxisMax ) {
+            max = mAxisMaximum;
+        } else if( mUseAutoScaleRestrictionMax ) {
+            max = Math.max( max, mAutoScaleMaxRestriction );
+        }
 
         // temporary range (before calculations)
         float range = Math.abs(max - min);
