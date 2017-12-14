@@ -91,7 +91,7 @@ Features
  - Animations (build up animations, on both xPx- and yPx-axis)
  - Limit lines (providing additional information, maximums, ...)
  - Fully customizable (paints, typefaces, legends, colors, background, gestures, dashed lines, ...)
- - Smooth zooming and scrolling for up to 30.000 data points in Line- and BarChart
+ - Smooth zooming and scrolling for up to 10.000 data points in Line- and BarChart
  - Gradle support
  - Plotting data directly from [**Realm.io**](https://realm.io) mobile database: [**MPAndroidChart-Realm**](https://github.com/PhilJay/MPAndroidChart-Realm) :zap:
  
@@ -115,7 +115,7 @@ allprojects {
  
 ```gradle
 dependencies {
-	compile 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+	implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }
 ```
 
