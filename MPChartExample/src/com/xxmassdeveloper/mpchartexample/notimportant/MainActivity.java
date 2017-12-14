@@ -90,7 +90,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 "A bar chart with multiple DataSet objects. One multiple colors per DataSet."));
         objects.add(new ContentItem(
                 "Charts in ViewPager Fragments",
-                "Demonstration of charts inside ViewPager Fragments. In this example the focus was on the design and look and feel of the chart."));
+                "Demonstration of charts inside ViewPager Fragments. In this example the focus was on the design and look and feel of the" +
+                        " chart."));
         objects.add(new ContentItem(
                 "BarChart inside ListView",
                 "Demonstrates the usage of a BarChart inside a ListView item."));
@@ -135,12 +136,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 "Realm.io Database",
                 "This demonstrates how to use this library with Realm.io mobile database.");
         objects.add(realm);
-
-        ContentItem time = new ContentItem(
+        objects.add(new ContentItem(
                 "Time Chart",
-                "Simple demonstration of a time-chart. This chart draws one line entry per hour originating from the current time in milliseconds.");
-        time.isNew = true;
-        objects.add(time);
+                "Simple demonstration of a time-chart. This chart draws one line entry per hour originating from the current time in " +
+                        "milliseconds."));
         objects.add(new ContentItem(
                 "Filled LineChart",
                 "This demonstrates how to fill an area between two LineDataSets."));
