@@ -15,7 +15,7 @@ allprojects {
  
 ```gradle
 dependencies {
-	implementation 'com.github.ScaCap:MPAndroidChart:v3.0.3'
+	implementation 'com.github.ScaCap:MPAndroidChart:v3.0.4'
 }
 ```
 
