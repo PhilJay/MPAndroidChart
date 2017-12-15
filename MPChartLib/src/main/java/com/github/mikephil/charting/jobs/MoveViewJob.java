@@ -29,7 +29,8 @@ public class MoveViewJob extends ViewPortJob {
         return result;
     }
 
-    public static void recycleInstance(MoveViewJob instance){
+    public static void recycleInstance(MoveViewJob instance) {
+        instance.recycle();
         pool.recycle(instance);
     }
 
