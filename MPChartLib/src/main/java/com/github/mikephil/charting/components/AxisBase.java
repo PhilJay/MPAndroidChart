@@ -720,7 +720,7 @@ public abstract class AxisBase extends ComponentBase {
         float range = Math.abs(max - min);
 
         // in case all values are equal
-        if (range == 0f) {
+        if (range == 0f || Float.isNaN(range)) {
             max = max + 1f;
             min = min - 1f;
         }
