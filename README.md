@@ -17,11 +17,12 @@ Enterprise Solution Discount
 <img align="left" width="190" height="190" style="margin:0px 15px 0px 0px" src="https://raw.github.com/PhilJay/MPChart/master/design/other/left.png">
 <img align="right" width="90" height="90" style="margin:0px 15px 0px 0px" src="https://raw.github.com/PhilJay/MPChart/master/design/other/right.png">
 
-MPAndroidChart is free software, as a result **dynamic & realtime data is not officially supported**. If you are looking for an enterprise-grade chart solution with extreme realtime performance and tech support, we recommend [SciChart](http://store.scichart.com?productTab=Android&CouponCode=MPANDROIDCHART).
+MPAndroidChart is free software, as a result **dynamic & realtime data is not officially supported**. If you are looking for an enterprise-grade chart solution with extreme realtime performance and tech support, we recommend 
+<a href="http://store.scichart.com?productTab=Android&CouponCode=MPANDROIDCHART" target="_blank">SciChart Android</a>.
 
 <img align="right" width="270" height="60" style="margin:0px 0px 0px 0px" src="https://raw.github.com/PhilJay/MPChart/master/design/other/bottom.png">
 
-All MPAndroidChart users are entitled to a special **discount of 5%** off the [SciChart store](http://store.scichart.com?productTab=Android&CouponCode=MPANDROIDCHART), using the following discount code: **MPANDROIDCHART**
+All MPAndroidChart users are entitled to a special **discount of 5%** off the <a href="http://store.scichart.com?productTab=Android&CouponCode=MPANDROIDCHART" target="_blank">SciChart store</a>, using the following discount code: **MPANDROIDCHART**
 
 
 
