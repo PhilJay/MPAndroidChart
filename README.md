@@ -11,7 +11,22 @@ Remember: *It's all about the looks.*
 
 As an additional feature, this library allows cross-platform development between Android and iOS as an iOS version of this library is also available: [**Charts**](https://github.com/danielgindi/Charts) :zap:
 
-Are you using this library? Let me know about it and I will add your project to the [**references**](https://github.com/PhilJay/MPAndroidChart/wiki/References).
+Enterprise Solution Discount
+-----
+
+<img align="left" width="190" height="190" style="margin:0px 15px 0px 0px" src="https://raw.github.com/PhilJay/MPChart/master/design/other/left.png">
+<img align="right" width="90" height="90" style="margin:0px 15px 0px 0px" src="https://raw.github.com/PhilJay/MPChart/master/design/other/right.png">
+
+MPAndroidChart is free software, as a result **dynamic & realtime data is not officially supported**. If you are looking for an enterprise-grade chart solution with extreme realtime performance and tech support, we recommend [SciChart](http://store.scichart.com?productTab=Android&CouponCode=MPANDROIDCHART).
+
+<img align="right" width="270" height="60" style="margin:0px 0px 0px 0px" src="https://raw.github.com/PhilJay/MPChart/master/design/other/bottom.png">
+
+All MPAndroidChart users are entitled to a special **discount of 5%** off the [SciChart store](http://store.scichart.com?productTab=Android&CouponCode=MPANDROIDCHART), using the following discount code: **MPANDROIDCHART**
+
+
+
+<br/>
+
 
 Donations
 -----
