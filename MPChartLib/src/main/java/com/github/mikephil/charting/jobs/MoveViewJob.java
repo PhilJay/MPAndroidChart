@@ -53,4 +53,11 @@ public class MoveViewJob extends ViewPortJob {
     protected ObjectPool.Poolable instantiate() {
         return new MoveViewJob(mViewPortHandler, xValue, yValue, mTrans, view);
     }
+
+    /**
+     * release of poll and it objects
+     */
+    public static void release(){
+        pool = ObjectPool.create(2, new MoveViewJob(null,0,0,null,null));
+    }
 }
