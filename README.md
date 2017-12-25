@@ -41,18 +41,7 @@ Donations
  - [**Donate 15 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YKMPTFMVK3JMC): I really appreciate your work, let's grab some lunch! 
  - [**Donate 25 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=H9JA4QX7UHXCY): That's some awesome stuff you did right there, dinner is on me!
  - Or you can also [**choose what you want to donate**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EGBENAC5XBCKS), all donations are awesome!
- 
-## Got a question?
-[Contact me via 21.co](https://21.co/philjay/)
 
-
-## Xamarin
-
-Xamarin port (by [Flash3001](https://github.com/Flash3001)): *Android* - [GitHub](https://github.com/Flash3001/MPAndroidChart.Xamarin)/[NuGet](https://www.nuget.org/packages/MPAndroidChart/). *iOS* - [GitHub](https://github.com/Flash3001/iOSCharts.Xamarin)/[NuGet](https://www.nuget.org/packages/iOSCharts/).
-
-## Realm.io
-
-[MPAndroidChart-Realm](https://github.com/PhilJay/MPAndroidChart-Realm) allows to directly plot / draw data from [Realm.io](https://realm.io) mobile database.
 
 Spread the word
 -----
