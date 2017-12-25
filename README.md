@@ -81,8 +81,6 @@ Please do not expect answers to your questions if you have not considered all ab
 
 Features
 -----
-
-**Core features:**
 You can have a look at the core features of this libary [**here**](https://github.com/PhilJay/MPAndroidChart/wiki/Core-Features).
  
 Usage
@@ -127,10 +125,8 @@ dependencies {
         <version>v3.0.3</version>
 </dependency>
 ```
-
-**3. jar file only** (not recommended)
 	
-**4. clone whole repository** (not recommended)
+**3. clone whole repository** (not recommended)
 
 Documentation
 -----
