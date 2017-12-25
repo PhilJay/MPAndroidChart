@@ -83,22 +83,7 @@ Features
 -----
 
 **Core features:**
- - 8 different chart types
- - Scaling on both axes (with touch-gesture, axes separately or pinch-zoom)
- - Dragging / Panning (with touch-gesture)
- - Combined-Charts (line-, bar-, scatter-, candle-data)
- - Dual (separate) Axes
- - Customizable Axes (both x- and y-axis)
- - Highlighting values (with customizable popup-views)
- - Save chart to SD-Card (as image, or as .txt file)
- - Predefined color templates
- - Legends (generated automatically, customizable)
- - Animations (build up animations, on both xPx- and yPx-axis)
- - Limit lines (providing additional information, maximums, ...)
- - Fully customizable (paints, typefaces, legends, colors, background, gestures, dashed lines, ...)
- - Smooth zooming and scrolling for up to 10.000 data points in Line- and BarChart
- - Gradle support
- - Plotting data directly from [**Realm.io**](https://realm.io) mobile database: [**MPAndroidChart-Realm**](https://github.com/PhilJay/MPAndroidChart-Realm) :zap:
+You can have a look at the core features of this libary [**here**](https://github.com/PhilJay/MPAndroidChart/wiki/Core-Features).
  
 Usage
 -----
@@ -143,19 +128,9 @@ dependencies {
 </dependency>
 ```
 
-**3. jar file only**
- - Download the [**latest .jar file**](https://github.com/PhilJay/MPAndroidChart/releases) from the releases section
- - Copy the **mpandroidchartlibrary-version.jar** file into the `libs` folder of your Android application project
- - Start using the library
+**3. jar file only** (not recommended)
 	
-**4. clone whole repository**
- - Open your **commandline-input** and navigate to the desired destination folder on your machine (where you want to place the library)
- - Use the command `git clone https://github.com/PhilJay/MPAndroidChart.git` to download the full MPAndroidChart repository to your computer (this includes the folder of the library as well as the folder of the example project)
- - Import the library folder (`MPChartLib`) into Android Studio (recommended) or your Eclipse workspace
- - Add it as a reference to your project: 
-   - [referencing library projects in Eclipse](http://developer.android.com/tools/projects/projects-eclipse.html#ReferencingLibraryProject)
-   - [managing projects from Android Studio](https://developer.android.com/sdk/installing/create-project.html)
-
+**4. clone whole repository** (not recommended)
 
 Documentation
 -----
