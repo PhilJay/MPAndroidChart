@@ -11,7 +11,7 @@ Remember: *It's all about the looks.*
 
 As an additional feature, this library allows cross-platform development between Android and iOS as an iOS version of this library is also available: [**Charts**](https://github.com/danielgindi/Charts) :zap:
 
-[Enterprise Solution Discount | SciChart](http://store.scichart.com?productTab=Android&CouponCode=MPANDROIDCHART)
+[Enterprise Solution 5% Discount Coupon | SciChart](http://store.scichart.com?productTab=Android&CouponCode=MPANDROIDCHART)
 -----
 
 <img align="left" width="190" height="190" style="margin:0px 15px 0px 0px" src="https://raw.github.com/PhilJay/MPChart/master/design/other/left.png">
