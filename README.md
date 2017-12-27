@@ -53,7 +53,6 @@ If you like this library, please tell others about it :two_hearts: :two_hearts:
 <a href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/PhilJay/MPAndroidChart" target="_blank" title="share to twitter" style="width:100%"><img src="https://github.com/PhilJay/MPAndroidChart/blob/master/design/facebook_icon.png" title="Share on Facebook" width="35" height=35 />
 
  - []()Follow me on **Twitter**: [**@PhilippJahoda**](https://twitter.com/PhilippJahoda)
- - Contact me on **LinkedIn**: [**PhilippJahoda**](https://www.linkedin.com/in/philippjahoda/en)
  - Look me up on **StackOverflow**: [**Philipp Jahoda**](http://stackoverflow.com/users/1590502/philipp-jahoda)
 
 
