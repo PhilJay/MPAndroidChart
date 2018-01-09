@@ -639,7 +639,7 @@ public class PieChartRenderer extends DataRenderer {
      */
     protected void drawHole(Canvas c) {
 
-        if (mChart.isDrawHoleEnabled() && mBitmapCanvas != null) {
+        if (getStrongDrawBitmap() != null && mChart.isDrawHoleEnabled() && mBitmapCanvas != null) {
 
             float radius = mChart.getRadius();
             float holeRadius = radius * (mChart.getHoleRadius() / 100);
@@ -935,7 +935,10 @@ public class PieChartRenderer extends DataRenderer {
 
             mPathBuffer.close();
 
-            mBitmapCanvas.drawPath(mPathBuffer, mRenderPaint);
+            // ensure existence of mBitmapCanvas
+            if (getStrongDrawBitmap() != null) {
+                mBitmapCanvas.drawPath(mPathBuffer, mRenderPaint);
+            }
         }
 
         MPPointF.recycleInstance(center);
@@ -985,7 +988,9 @@ public class PieChartRenderer extends DataRenderer {
                         * phaseY)) + center.y);
 
                 mRenderPaint.setColor(dataSet.getColor(j));
-                mBitmapCanvas.drawCircle(x, y, circleRadius, mRenderPaint);
+                if (getStrongDrawBitmap() != null) { // ensure existence of mBitmapCanvas
+                    mBitmapCanvas.drawCircle(x, y, circleRadius, mRenderPaint);
+                }
             }
 
             angle += sliceAngle * phaseX;
@@ -1013,6 +1018,7 @@ public class PieChartRenderer extends DataRenderer {
 
     /**
      * Get a strong reference to mDrawBitmap.
+     * This will ensure existence of mBitmapCanvas, too.
      * Result may be null, if no such reference is available.
      */
     private Bitmap getStrongDrawBitmap() {
