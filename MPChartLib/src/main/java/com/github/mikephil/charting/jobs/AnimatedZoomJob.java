@@ -33,6 +33,12 @@ public class AnimatedZoomJob extends AnimatedViewPortJob implements Animator.Ani
         result.view = v;
         result.xOrigin = xOrigin;
         result.yOrigin = yOrigin;
+        result.xAxisRange = xAxisRange;
+        result.zoomOriginX = zoomOriginX;
+        result.zoomOriginY = zoomOriginY;
+        result.zoomCenterX = zoomCenterX;
+        result.zoomCenterY = zoomCenterY;
+        result.yAxis = axis;
         result.resetAnimator();
         result.animator.setDuration(duration);
         return result;
