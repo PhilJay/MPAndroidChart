@@ -38,6 +38,10 @@ Donations
 
 1G8G6tqQ3oh38BvDH3xq8o6gGVMvBTkcUg
 
+**My Ethereum Wallet** (Ethereum only)
+
+0x04ef098bf9f91871391363e3caf791afa3adc39b
+
 **PayPal**
 
  - [**Donate 5 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7G52RA87ED8NY): Thank's for creating this project, here's a coffee (or some beer) for you!
