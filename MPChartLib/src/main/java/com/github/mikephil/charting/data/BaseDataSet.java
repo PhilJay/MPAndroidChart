@@ -13,6 +13,7 @@ import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.model.GradientColor;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Inherited;
@@ -30,6 +31,8 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      * List representing all colors that are used for this DataSet
      */
     protected List<Integer> mColors = null;
+
+    protected GradientColor gradientColor = null;
 
     /**
      * List representing all colors that are used for drawing the actual values for this DataSet
@@ -140,6 +143,11 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     }
 
     @Override
+    public GradientColor getGradientColor() {
+        return gradientColor;
+    }
+
+    @Override
     public int getColor(int index) {
         return mColors.get(index % mColors.size());
     }
@@ -217,6 +225,10 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     public void setColor(int color) {
         resetColors();
         mColors.add(color);
+    }
+
+    public void setGradientColor(int startColor, int endColor) {
+        gradientColor = new GradientColor(startColor, endColor);
     }
 
     /**

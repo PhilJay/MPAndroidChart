@@ -12,6 +12,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v4.content.ContextCompat;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
@@ -264,7 +265,9 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
             set1.setDrawIcons(false);
 
-            set1.setColors(ColorTemplate.MATERIAL_COLORS);
+            int startColor = ContextCompat.getColor(this, android.R.color.black);
+            int endColor = ContextCompat.getColor(this, android.R.color.white);
+            set1.setGradientColor(startColor, endColor);
 
             ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
             dataSets.add(set1);

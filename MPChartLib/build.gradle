@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 apply plugin: 'maven'
 //apply plugin: 'com.github.dcendents.android-maven'
 //apply plugin: 'realm-android'
@@ -31,6 +32,7 @@ repositories {
     maven {
         url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
     }
+    mavenCentral()
 }
 
 dependencies {
@@ -39,6 +41,7 @@ dependencies {
     //provided 'io.realm:realm-android:0.87.5' // "optional" dependency to realm-database API
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-core:1.10.19"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 android.libraryVariants.all { variant ->
