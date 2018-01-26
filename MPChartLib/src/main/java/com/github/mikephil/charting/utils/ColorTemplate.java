@@ -52,7 +52,7 @@ public class ColorTemplate {
             Color.rgb(140, 234, 255), Color.rgb(255, 140, 157)
     };
     public static final int[] MATERIAL_COLORS = {
-            rgb("#2ecc71"), rgb("#f1c40f"), rgb("#e74c3c"), rgb("#3498db")
+            rgb("#2ecc71"), rgb("#f1c40f")
     };
 
     /**
