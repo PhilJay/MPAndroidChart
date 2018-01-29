@@ -375,6 +375,8 @@ public class PieChartRenderer extends DataRenderer {
 
                     mPathBuffer.close();
 
+                    setGradient(startAngleOuter, center, sliceAngle);
+
                     mBitmapCanvas.drawPath(mPathBuffer, mRenderPaint);
                 }
             }
