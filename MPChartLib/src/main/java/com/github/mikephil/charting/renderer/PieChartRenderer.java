@@ -4,11 +4,13 @@ package com.github.mikephil.charting.renderer;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.graphics.SweepGradient;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.Layout;
@@ -60,6 +62,8 @@ public class PieChartRenderer extends DataRenderer {
     private CharSequence mCenterTextLastValue;
     private RectF mCenterTextLastBounds = new RectF();
     private RectF[] mRectBuffer = {new RectF(), new RectF(), new RectF()};
+
+    private boolean useGradient = false;
 
     /**
      * Bitmap for drawing the center hole
@@ -943,6 +947,8 @@ public class PieChartRenderer extends DataRenderer {
 
             mPathBuffer.close();
 
+            setGradient(startAngleOuter, center, sliceAngle);
+
             mBitmapCanvas.drawPath(mPathBuffer, mRenderPaint);
         }
 
@@ -1014,5 +1020,40 @@ public class PieChartRenderer extends DataRenderer {
             mDrawBitmap.clear();
             mDrawBitmap = null;
         }
+    }
+
+    private void setGradient(float startAngleOuter, MPPointF center, float sliceAngle) {
+        if(useGradient) {
+
+            // deconstructs mRenderPaint.getColor()
+            // create a new color slightly darker color
+            int redMask = 0xFF0000, greenMask = 0xFF00, blueMask = 0xFF;
+            int firstColor = mRenderPaint.getColor();
+
+            int blue = (int) Math.round((firstColor & blueMask) * 0.8);
+            int red = (int) Math.round(((firstColor & redMask) >> 16) * 0.8);
+            int green = (int) Math.round(((firstColor & greenMask) >> 8) * 0.8);
+
+            int secondColor = Color.rgb(red, green, blue);
+
+            int[] colors = new int[2];
+            colors[0] = mRenderPaint.getColor();
+            colors[1] = secondColor;
+
+            //make a sweep gradient from firstColor to secondColor, sliceAngle degrees
+            float[] positions = {0, sliceAngle / 360f};
+            SweepGradient sweepGradient = new SweepGradient(center.x, center.y, colors, positions);
+
+            //rotate gradient so it doesn't start or the right side (0 degrees)
+            Matrix gradientMatrix = new Matrix();
+            gradientMatrix.preRotate(startAngleOuter, center.x, center.y);
+            sweepGradient.setLocalMatrix(gradientMatrix);
+
+            mRenderPaint.setShader(sweepGradient);
+        }
+    }
+
+    public void useGradient(boolean enabled) {
+        useGradient = enabled;
     }
 }
