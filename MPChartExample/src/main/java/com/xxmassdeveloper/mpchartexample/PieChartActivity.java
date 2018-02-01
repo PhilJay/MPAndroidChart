@@ -93,7 +93,8 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         // chart.setDrawUnitsInChart(true);
 
         // add a selection listener
-        chart.setOnChartValueSelectedListener(this);
+        mChart.setOnChartValueSelectedListener(this);
+//        mChart.setUseCustomHighLightColor(true);
 
         seekBarX.setProgress(4);
         seekBarY.setProgress(10);
@@ -286,9 +287,64 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         setData(seekBarX.getProgress(), seekBarY.getProgress());
     }
 
-    @Override
-    protected void saveToGallery() {
-        saveToGallery(chart, "PieChartActivity");
+    private void setData(int count, float range) {
+
+        float mult = range;
+
+        ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
+
+        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
+        // the chart.
+        for (int i = 0; i < count ; i++) {
+            entries.add(new PieEntry((float) ((Math.random() * mult) + mult / 5),
+                    mParties[i % mParties.length],
+                    getResources().getDrawable(R.drawable.star)));
+        }
+
+        PieDataSet dataSet = new PieDataSet(entries, "Election Results");
+
+        dataSet.setDrawIcons(false);
+
+        dataSet.setSliceSpace(3f);
+        dataSet.setIconsOffset(new MPPointF(0, 40));
+        dataSet.setSelectionShift(5f);
+//        dataSet.setHighLightColor(Color.BLACK);
+
+        // add a lot of colors
+
+        ArrayList<Integer> colors = new ArrayList<Integer>();
+
+        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.JOYFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.COLORFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.LIBERTY_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.PASTEL_COLORS)
+            colors.add(c);
+
+        colors.add(ColorTemplate.getHoloBlue());
+
+        dataSet.setColors(colors);
+        //dataSet.setSelectionShift(0f);
+
+        PieData data = new PieData(dataSet);
+        data.setValueFormatter(new PercentFormatter());
+        data.setValueTextSize(11f);
+        data.setValueTextColor(Color.WHITE);
+        data.setValueTypeface(mTfLight);
+        mChart.setData(data);
+
+        // undo all highlights
+        mChart.highlightValues(null);
+
+        mChart.invalidate();
     }
 
     private SpannableString generateCenterSpannableText() {
