@@ -64,6 +64,7 @@ public class PieChartRenderer extends DataRenderer {
     private RectF[] mRectBuffer = {new RectF(), new RectF(), new RectF()};
 
     private boolean useGradient = false;
+    private Matrix gradientMatrix;
 
     /**
      * Bitmap for drawing the center hole
@@ -101,6 +102,8 @@ public class PieChartRenderer extends DataRenderer {
 
         mValueLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mValueLinePaint.setStyle(Style.STROKE);
+
+        gradientMatrix = new Matrix();
     }
 
     public Paint getPaintHole() {
@@ -1046,8 +1049,9 @@ public class PieChartRenderer extends DataRenderer {
             float[] positions = {0, sliceAngle / 360f};
             SweepGradient sweepGradient = new SweepGradient(center.x, center.y, colors, positions);
 
-            //rotate gradient so it doesn't start or the right side (0 degrees)
-            Matrix gradientMatrix = new Matrix();
+            //rotate gradient so it doesn't start on the right side (0 degrees)
+            gradientMatrix = new Matrix();
+            gradientMatrix.reset();
             gradientMatrix.preRotate(startAngleOuter, center.x, center.y);
             sweepGradient.setLocalMatrix(gradientMatrix);
 
