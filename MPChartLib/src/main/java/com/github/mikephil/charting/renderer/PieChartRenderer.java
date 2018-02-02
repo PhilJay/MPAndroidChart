@@ -1050,7 +1050,6 @@ public class PieChartRenderer extends DataRenderer {
             SweepGradient sweepGradient = new SweepGradient(center.x, center.y, colors, positions);
 
             //rotate gradient so it doesn't start on the right side (0 degrees)
-            gradientMatrix = new Matrix();
             gradientMatrix.reset();
             gradientMatrix.preRotate(startAngleOuter, center.x, center.y);
             sweepGradient.setLocalMatrix(gradientMatrix);
