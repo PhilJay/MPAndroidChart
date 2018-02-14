@@ -71,6 +71,16 @@ public class LargeValueFormatter implements IValueFormatter, IAxisValueFormatter
     public void setSuffix(String[] suff) {
         SUFFIX = suff;
     }
+	
+	/**
+     * Set custom DecimalFormat for formatting number.
+     * Default mFormat: DecimalFormat("###E00")
+     *
+     * @param format the new DecimalFormat
+     */
+    public void setDecimalFormatter(DecimalFormat format) {
+        mFormat = format;
+    }
 
     /**
      * Formats each number properly. Special thanks to Roman Gromov
