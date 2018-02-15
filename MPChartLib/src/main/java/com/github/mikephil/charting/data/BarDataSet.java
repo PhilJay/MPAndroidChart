@@ -41,6 +41,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     private String[] mStackLabels = new String[]{
             "Stack"
     };
+    private boolean stackTextValuesShouldUseDataColor;
 
     public BarDataSet(List<BarEntry> yVals, String label) {
         super(yVals, label);
@@ -234,5 +235,14 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     @Override
     public String[] getStackLabels() {
         return mStackLabels;
+    }
+
+    @Override
+    public List<Integer> getStackTextColors() {
+        return stackTextValuesShouldUseDataColor ? mColors : null;
+    }
+
+    public void setStackTextValuesShouldUseDataColor(boolean stackTextValuesShouldUseDataColor) {
+        this.stackTextValuesShouldUseDataColor = stackTextValuesShouldUseDataColor;
     }
 }
