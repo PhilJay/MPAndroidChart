@@ -7,6 +7,7 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.RectF;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -190,8 +191,6 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
                 break;
 
                 case HORIZONTAL:
-                    float yLegendOffset = 0.f;
-
                     if (mLegend.getVerticalAlignment() == Legend.LegendVerticalAlignment.TOP ||
                             mLegend.getVerticalAlignment() == Legend.LegendVerticalAlignment.BOTTOM) {
 
@@ -199,8 +198,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
                         //   is available through the extraOffsets, but changing it can mean
                         //   changing default visibility for existing apps.
                         float yOffset = getRequiredLegendOffset();
-
-                        yLegendOffset = Math.min(mLegend.mNeededHeight + yOffset,
+                        float yLegendOffset = Math.min(mLegend.mNeededHeight + yOffset,
                                 mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent());
 
                         switch (mLegend.getVerticalAlignment()) {
@@ -316,10 +314,8 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
 
         MPPointF c = getCenterOffsets();
 
-        float dist = 0f;
-
-        float xDist = 0f;
-        float yDist = 0f;
+        float xDist;
+        float yDist;
 
         if (x > c.x) {
             xDist = x - c.x;
@@ -334,7 +330,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
         }
 
         // pythagoras
-        dist = (float) Math.sqrt(Math.pow(xDist, 2.0) + Math.pow(yDist, 2.0));
+        float dist = (float) Math.sqrt(Math.pow(xDist, 2.0) + Math.pow(yDist, 2.0));
 
         MPPointF.recycleInstance(c);
 
@@ -454,13 +450,11 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
 
     @Override
     public float getYChartMax() {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
     public float getYChartMin() {
-        // TODO Auto-generated method stub
         return 0;
     }
 
@@ -479,7 +473,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
     @SuppressLint("NewApi")
     public void spin(int durationmillis, float fromangle, float toangle, Easing.EasingOption easing) {
 
-        if (android.os.Build.VERSION.SDK_INT < 11)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
             return;
 
         setRotationAngle(fromangle);

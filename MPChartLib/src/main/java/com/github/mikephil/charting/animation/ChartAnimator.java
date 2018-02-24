@@ -3,7 +3,7 @@ package com.github.mikephil.charting.animation;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
-import android.annotation.SuppressLint;
+import android.os.Build;
 
 /**
  * Object responsible for all animations in the Chart. ANIMATIONS ONLY WORK FOR
@@ -53,7 +53,7 @@ public class ChartAnimator {
     public void animateXY(int durationMillisX, int durationMillisY, EasingFunction easingX,
             EasingFunction easingY) {
 
-        if (android.os.Build.VERSION.SDK_INT < 11)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
             return;
 
         ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
@@ -87,7 +87,7 @@ public class ChartAnimator {
      */
     public void animateX(int durationMillis, EasingFunction easing) {
 
-        if (android.os.Build.VERSION.SDK_INT < 11)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
             return;
 
         ObjectAnimator animatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
@@ -107,7 +107,7 @@ public class ChartAnimator {
      */
     public void animateY(int durationMillis, EasingFunction easing) {
 
-        if (android.os.Build.VERSION.SDK_INT < 11)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
             return;
 
         ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
@@ -135,7 +135,7 @@ public class ChartAnimator {
     public void animateXY(int durationMillisX, int durationMillisY, Easing.EasingOption easingX,
             Easing.EasingOption easingY) {
 
-        if (android.os.Build.VERSION.SDK_INT < 11)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
             return;
 
         ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
@@ -169,7 +169,7 @@ public class ChartAnimator {
      */
     public void animateX(int durationMillis, Easing.EasingOption easing) {
 
-        if (android.os.Build.VERSION.SDK_INT < 11)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
             return;
 
         ObjectAnimator animatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
@@ -189,7 +189,7 @@ public class ChartAnimator {
      */
     public void animateY(int durationMillis, Easing.EasingOption easing) {
 
-        if (android.os.Build.VERSION.SDK_INT < 11)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
             return;
 
         ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
@@ -214,7 +214,7 @@ public class ChartAnimator {
      */
     public void animateXY(int durationMillisX, int durationMillisY) {
 
-        if (android.os.Build.VERSION.SDK_INT < 11)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
             return;
 
         ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
@@ -245,7 +245,7 @@ public class ChartAnimator {
      */
     public void animateX(int durationMillis) {
 
-        if (android.os.Build.VERSION.SDK_INT < 11)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
             return;
 
         ObjectAnimator animatorX = ObjectAnimator.ofFloat(this, "phaseX", 0f, 1f);
@@ -263,7 +263,7 @@ public class ChartAnimator {
      */
     public void animateY(int durationMillis) {
 
-        if (android.os.Build.VERSION.SDK_INT < 11)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
             return;
 
         ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, "phaseY", 0f, 1f);
@@ -282,7 +282,7 @@ public class ChartAnimator {
     }
 
     /**
-     * This modifys the y-phase that is used to animate the values.
+     * This modifies the y-phase that is used to animate the values.
      *
      * @param phase
      */
@@ -300,7 +300,7 @@ public class ChartAnimator {
     }
 
     /**
-     * This modifys the x-phase that is used to animate the values.
+     * This modifies the x-phase that is used to animate the values.
      *
      * @param phase
      */

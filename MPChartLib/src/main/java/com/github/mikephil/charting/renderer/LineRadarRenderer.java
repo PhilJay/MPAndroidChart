@@ -4,9 +4,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
-import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**
@@ -41,7 +41,7 @@ public abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
             c.restoreToCount(save);
         } else {
             throw new RuntimeException("Fill-drawables not (yet) supported below API level 18, " +
-                    "this code was run on API level " + Utils.getSDKInt() + ".");
+                    "this code was run on API level " + Build.VERSION.SDK_INT + ".");
         }
     }
 
@@ -90,6 +90,6 @@ public abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
      * @return
      */
     private boolean clipPathSupported() {
-        return Utils.getSDKInt() >= 18;
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2;
     }
 }

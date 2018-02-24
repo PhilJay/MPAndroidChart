@@ -7,15 +7,10 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.text.Layout;
-import android.text.StaticLayout;
-import android.text.TextPaint;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.SizeF;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -116,27 +111,6 @@ public abstract class Utils {
     }
 
     /**
-     * This method converts device specific pixels to density independent
-     * pixels. NEEDS UTILS TO BE INITIALIZED BEFORE USAGE.
-     *
-     * @param px A value in px (pixels) unit. Which we need to convert into db
-     * @return A float value to represent dp equivalent to px value
-     */
-    public static float convertPixelsToDp(float px) {
-
-        if (mMetrics == null) {
-
-            Log.e("MPChartLib-Utils",
-                    "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before" +
-                            " calling Utils.convertPixelsToDp(...). Otherwise conversion does not" +
-                            " take place.");
-            return px;
-        }
-
-        return px / mMetrics.density;
-    }
-
-    /**
      * calculates the approximate width of a text, depending on a demo text
      * avoid repeated calls (e.g. inside drawing methods)
      *
@@ -232,8 +206,7 @@ public abstract class Utils {
     private static IValueFormatter mDefaultValueFormatter = generateDefaultValueFormatter();
 
     private static IValueFormatter generateDefaultValueFormatter() {
-        final DefaultValueFormatter formatter = new DefaultValueFormatter(1);
-        return formatter;
+        return new DefaultValueFormatter(1);
     }
 
     /// - returns: The default value formatter used for all chart components that needs a default
@@ -397,7 +370,7 @@ public abstract class Utils {
         return ret;
     }
 
-    public static void copyIntegers(List<Integer> from, int[] to){
+    private static void copyIntegers(List<Integer> from, int[] to){
         int count = to.length < from.size() ? to.length : from.size();
         for(int i = 0 ; i < count ; i++){
             to[i] = from.get(i);
@@ -419,13 +392,6 @@ public abstract class Utils {
         }
 
         return ret;
-    }
-
-    public static void copyStrings(List<String> from, String[] to){
-        int count = to.length < from.size() ? to.length : from.size();
-        for(int i = 0 ; i < count ; i++){
-            to[i] = from.get(i);
-        }
     }
 
     /**
@@ -494,14 +460,14 @@ public abstract class Utils {
     }
 
     /**
-     * Original method view.postInvalidateOnAnimation() only supportd in API >=
+     * Original method view.postInvalidateOnAnimation() only supported in API >=
      * 16, This is a replica of the code from ViewCompat.
      *
      * @param view
      */
     @SuppressLint("NewApi")
     public static void postInvalidateOnAnimation(View view) {
-        if (Build.VERSION.SDK_INT >= 16)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
             view.postInvalidateOnAnimation();
         else
             view.postInvalidateDelayed(10);
@@ -619,126 +585,6 @@ public abstract class Utils {
         paint.setTextAlign(originalTextAlign);
     }
 
-    public static void drawMultilineText(Canvas c, StaticLayout textLayout,
-                                         float x, float y,
-                                         TextPaint paint,
-                                         MPPointF anchor, float angleDegrees) {
-
-        float drawOffsetX = 0.f;
-        float drawOffsetY = 0.f;
-        float drawWidth;
-        float drawHeight;
-
-        final float lineHeight = paint.getFontMetrics(mFontMetricsBuffer);
-
-        drawWidth = textLayout.getWidth();
-        drawHeight = textLayout.getLineCount() * lineHeight;
-
-        // Android sometimes has pre-padding
-        drawOffsetX -= mDrawTextRectBuffer.left;
-
-        // Android does not snap the bounds to line boundaries,
-        //  and draws from bottom to top.
-        // And we want to normalize it.
-        drawOffsetY += drawHeight;
-
-        // To have a consistent point of reference, we always draw left-aligned
-        Paint.Align originalTextAlign = paint.getTextAlign();
-        paint.setTextAlign(Paint.Align.LEFT);
-
-        if (angleDegrees != 0.f) {
-
-            // Move the text drawing rect in a way that it always rotates around its center
-            drawOffsetX -= drawWidth * 0.5f;
-            drawOffsetY -= drawHeight * 0.5f;
-
-            float translateX = x;
-            float translateY = y;
-
-            // Move the "outer" rect relative to the anchor, assuming its centered
-            if (anchor.x != 0.5f || anchor.y != 0.5f) {
-                final FSize rotatedSize = getSizeOfRotatedRectangleByDegrees(
-                        drawWidth,
-                        drawHeight,
-                        angleDegrees);
-
-                translateX -= rotatedSize.width * (anchor.x - 0.5f);
-                translateY -= rotatedSize.height * (anchor.y - 0.5f);
-                FSize.recycleInstance(rotatedSize);
-            }
-
-            c.save();
-            c.translate(translateX, translateY);
-            c.rotate(angleDegrees);
-
-            c.translate(drawOffsetX, drawOffsetY);
-            textLayout.draw(c);
-
-            c.restore();
-        } else {
-            if (anchor.x != 0.f || anchor.y != 0.f) {
-
-                drawOffsetX -= drawWidth * anchor.x;
-                drawOffsetY -= drawHeight * anchor.y;
-            }
-
-            drawOffsetX += x;
-            drawOffsetY += y;
-
-            c.save();
-
-            c.translate(drawOffsetX, drawOffsetY);
-            textLayout.draw(c);
-
-            c.restore();
-        }
-
-        paint.setTextAlign(originalTextAlign);
-    }
-
-    public static void drawMultilineText(Canvas c, String text,
-                                         float x, float y,
-                                         TextPaint paint,
-                                         FSize constrainedToSize,
-                                         MPPointF anchor, float angleDegrees) {
-
-        StaticLayout textLayout = new StaticLayout(
-                text, 0, text.length(),
-                paint,
-                (int) Math.max(Math.ceil(constrainedToSize.width), 1.f),
-                Layout.Alignment.ALIGN_NORMAL, 1.f, 0.f, false);
-
-
-        drawMultilineText(c, textLayout, x, y, paint, anchor, angleDegrees);
-    }
-
-    /**
-     * Returns a recyclable FSize instance.
-     * Represents size of a rotated rectangle by degrees.
-     *
-     * @param rectangleSize
-     * @param degrees
-     * @return A Recyclable FSize instance
-     */
-    public static FSize getSizeOfRotatedRectangleByDegrees(FSize rectangleSize, float degrees) {
-        final float radians = degrees * FDEG2RAD;
-        return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height,
-                radians);
-    }
-
-    /**
-     * Returns a recyclable FSize instance.
-     * Represents size of a rotated rectangle by radians.
-     *
-     * @param rectangleSize
-     * @param radians
-     * @return A Recyclable FSize instance
-     */
-    public static FSize getSizeOfRotatedRectangleByRadians(FSize rectangleSize, float radians) {
-        return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height,
-                radians);
-    }
-
     /**
      * Returns a recyclable FSize instance.
      * Represents size of a rotated rectangle by degrees.
@@ -771,9 +617,5 @@ public abstract class Utils {
                 Math.abs(rectangleWidth * (float) Math.sin(radians)) + Math.abs(rectangleHeight *
                         (float) Math.cos(radians))
         );
-    }
-
-    public static int getSDKInt() {
-        return android.os.Build.VERSION.SDK_INT;
     }
 }

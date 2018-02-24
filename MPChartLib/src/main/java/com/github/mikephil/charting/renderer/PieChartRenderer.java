@@ -117,7 +117,6 @@ public class PieChartRenderer extends DataRenderer {
 
     @Override
     public void initBuffers() {
-        // TODO Auto-generated method stub
     }
 
     @Override
@@ -132,7 +131,7 @@ public class PieChartRenderer extends DataRenderer {
 
             if (width > 0 && height > 0) {
 
-                mDrawBitmap = new WeakReference<Bitmap>(Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444));
+                mDrawBitmap = new WeakReference<>(Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444));
                 mBitmapCanvas = new Canvas(mDrawBitmap.get());
             } else
                 return;
@@ -206,9 +205,7 @@ public class PieChartRenderer extends DataRenderer {
         float spaceSizeRatio = dataSet.getSliceSpace() / mViewPortHandler.getSmallestContentExtension();
         float minValueRatio = dataSet.getYMin() / mChart.getData().getYValueSum() * 2;
 
-        float sliceSpace = spaceSizeRatio > minValueRatio ? 0f : dataSet.getSliceSpace();
-
-        return sliceSpace;
+        return spaceSizeRatio > minValueRatio ? 0f : dataSet.getSliceSpace();
     }
 
     protected void drawDataSet(Canvas c, IPieDataSet dataSet) {
@@ -738,7 +735,7 @@ public class PieChartRenderer extends DataRenderer {
             float layoutHeight = mCenterTextLayout.getHeight();
 
             c.save();
-            if (Build.VERSION.SDK_INT >= 18) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
                 Path path = mDrawCenterTextPathBuffer;
                 path.reset();
                 path.addOval(holeRect, Path.Direction.CW);
