@@ -65,6 +65,8 @@ public interface IPieDataSet extends IDataSet<PieEntry> {
      * When valuePosition is OutsideSlice, this allows variable line length
      * */
     boolean isValueLineVariableLength();
+    
+    float getYValueVisibleBoundary();
 
 }
 

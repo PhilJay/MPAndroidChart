@@ -536,8 +536,14 @@ public class PieChartRenderer extends DataRenderer {
                     }
 
                     if (dataSet.getValueLineColor() != ColorTemplate.COLOR_NONE) {
-                        c.drawLine(pt0x, pt0y, pt1x, pt1y, mValueLinePaint);
-                        c.drawLine(pt1x, pt1y, pt2x, pt2y, mValueLinePaint);
+                        
+                        if (dataSet.getYValueVisibleBoundary() <= 0) {
+                            c.drawLine(pt0x, pt0y, pt1x, pt1y, mValueLinePaint);
+                            c.drawLine(pt1x, pt1y, pt2x, pt2y, mValueLinePaint);
+                        } else if (value >= dataSet.getYValueVisibleBoundary()) {
+                            c.drawLine(pt0x, pt0y, pt1x, pt1y, mValueLinePaint);
+                            c.drawLine(pt1x, pt1y, pt2x, pt2y, mValueLinePaint);
+                        }
                     }
 
                     // draw everything, depending on settings
@@ -562,8 +568,13 @@ public class PieChartRenderer extends DataRenderer {
                         }
                     } else if (drawYOutside) {
 
-                        drawValue(c, formatter, value, entry, 0, labelPtx, labelPty + lineHeight / 2.f, dataSet
-                                .getValueTextColor(j));
+                        if (dataSet.getYValueVisibleBoundary() <= 0) {
+                            drawValue(c, formatter, value, entry, 0, labelPtx, labelPty + lineHeight / 2.f, dataSet
+                                    .getValueTextColor(j));
+                        } else if (value >= dataSet.getYValueVisibleBoundary()) {
+                            drawValue(c, formatter, value, entry, 0, labelPtx, labelPty + lineHeight / 2.f, dataSet
+                                    .getValueTextColor(j));
+                        }
                     }
                 }
 
@@ -589,7 +600,11 @@ public class PieChartRenderer extends DataRenderer {
                         }
                     } else if (drawYInside) {
 
-                        drawValue(c, formatter, value, entry, 0, x, y + lineHeight / 2f, dataSet.getValueTextColor(j));
+                        if (dataSet.getYValueVisibleBoundary() <= 0) {
+                            drawValue(c, formatter, value, entry, 0, x, y + lineHeight / 2f, dataSet.getValueTextColor(j));
+                        } else if (value >= dataSet.getYValueVisibleBoundary()) {
+                            drawValue(c, formatter, value, entry, 0, x, y + lineHeight / 2f, dataSet.getValueTextColor(j));
+                        }
                     }
                 }
 
