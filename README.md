@@ -11,12 +11,36 @@ Remember: *It's all about the looks.*
 
 As an additional feature, this library allows cross-platform development between Android and iOS as an iOS version of this library is also available: [**Charts**](https://github.com/danielgindi/Charts) :zap:
 
-Are you using this library? Let me know about it and I will add your project to the [**references**](https://github.com/PhilJay/MPAndroidChart/wiki/References).
+[Enterprise Solution 5% Discount Coupon | SciChart](http://store.scichart.com?productTab=Android&CouponCode=MPANDROIDCHART)
+-----
+
+<img align="left" width="190" height="190" style="margin:0px 15px 0px 0px" src="https://raw.github.com/PhilJay/MPChart/master/design/other/left.png">
+<img align="right" width="90" height="90" style="margin:0px 15px 0px 0px" src="https://raw.github.com/PhilJay/MPChart/master/design/other/right.png">
+
+MPAndroidChart is free software, as a result **dynamic & realtime data is not officially supported**. If you are looking for an enterprise-grade chart solution with extreme realtime performance and tech support, we recommend 
+<a href="http://store.scichart.com?productTab=Android&CouponCode=MPANDROIDCHART" target="_blank">SciChart Android</a>.
+
+<img align="right" width="270" height="60" style="margin:0px 0px 0px 0px" src="https://raw.github.com/PhilJay/MPChart/master/design/other/bottom.png">
+
+All MPAndroidChart users are entitled to a special **discount of 5%** off the <a href="http://store.scichart.com?productTab=Android&CouponCode=MPANDROIDCHART" target="_blank">SciChart store</a>, using the following discount code: **MPANDROIDCHART**
+
+
+
+<br/>
+
 
 Donations
 -----
 
 **This project needs you!** If you would like to support this project's further development, the creator of this project or the continuous maintenance of this project, **feel free to donate**. Your donation is highly appreciated (and I love food, coffee and beer). Thank you!
+
+**My Bitcoin Wallet** (Bitcoin only)
+
+1G8G6tqQ3oh38BvDH3xq8o6gGVMvBTkcUg
+
+**My Ethereum Wallet** (Ethereum only)
+
+0x04ef098bf9f91871391363e3caf791afa3adc39b
 
 **PayPal**
 
@@ -24,21 +48,8 @@ Donations
  - [**Donate 10 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4C9TPE67F5PUQ): Wow, I am stunned. Let me take you to the movies!
  - [**Donate 15 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YKMPTFMVK3JMC): I really appreciate your work, let's grab some lunch! 
  - [**Donate 25 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=H9JA4QX7UHXCY): That's some awesome stuff you did right there, dinner is on me!
- - [**Donate 50 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZPQVJ2XRBSBYY): I really really want to support this project, great job!
- - [**Donate 100 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=KY7F59RYPCYCQ): You are the man! This project saved me hours (if not days) of struggle and hard work, simply awesome!
- - Of course, you can also [**choose what you want to donate**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EGBENAC5XBCKS), all donations are awesome!
- 
-## Got a question?
-[Contact me via 21.co](https://21.co/philjay/)
+ - Or you can also [**choose what you want to donate**](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EGBENAC5XBCKS), all donations are awesome!
 
-
-## Xamarin
-
-Xamarin port (by [Flash3001](https://github.com/Flash3001)): *Android* - [GitHub](https://github.com/Flash3001/MPAndroidChart.Xamarin)/[NuGet](https://www.nuget.org/packages/MPAndroidChart/). *iOS* - [GitHub](https://github.com/Flash3001/iOSCharts.Xamarin)/[NuGet](https://www.nuget.org/packages/iOSCharts/).
-
-## Realm.io
-
-[MPAndroidChart-Realm](https://github.com/PhilJay/MPAndroidChart-Realm) allows to directly plot / draw data from [Realm.io](https://realm.io) mobile database.
 
 Spread the word
 -----
@@ -50,7 +61,6 @@ If you like this library, please tell others about it :two_hearts: :two_hearts:
 <a href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/PhilJay/MPAndroidChart" target="_blank" title="share to twitter" style="width:100%"><img src="https://github.com/PhilJay/MPAndroidChart/blob/master/design/facebook_icon.png" title="Share on Facebook" width="35" height=35 />
 
  - []()Follow me on **Twitter**: [**@PhilippJahoda**](https://twitter.com/PhilippJahoda)
- - Contact me on **LinkedIn**: [**PhilippJahoda**](https://www.linkedin.com/in/philippjahoda/en)
  - Look me up on **StackOverflow**: [**Philipp Jahoda**](http://stackoverflow.com/users/1590502/philipp-jahoda)
 
 
@@ -68,7 +78,7 @@ If you are having questions or problems, you should:
 
  - **Review your code**. Make absolutely sure that everything is correct on your side.
  - Make sure you are using the **latest version** of the library. Check the [**release-section**](https://github.com/PhilJay/MPAndroidChart/releases).
- - Study the [**Documentation-Wiki**](https://github.com/PhilJay/MPAndroidChart/wiki) or the [javadocs](https://jitpack.io/com/github/PhilJay/MPAndroidChart/v3.0.2/javadoc/)
+ - Study the [**Documentation-Wiki**](https://github.com/PhilJay/MPAndroidChart/wiki) or the [javadocs](https://jitpack.io/com/github/PhilJay/MPAndroidChart/v3.0.3/javadoc/)
  - Search or open questions on [**stackoverflow**](https://stackoverflow.com/search?q=mpandroidchart) with the `mpandroidchart` tag
  - Search [**known issues**](https://github.com/PhilJay/MPAndroidChart/issues) for your problem (open and closed)
  - Create new issues (please :fire: **search known issues before** :fire:, do not create duplicate issues)
@@ -78,24 +88,7 @@ Please do not expect answers to your questions if you have not considered all ab
 
 Features
 -----
-
-**Core features:**
- - 8 different chart types
- - Scaling on both axes (with touch-gesture, axes separately or pinch-zoom)
- - Dragging / Panning (with touch-gesture)
- - Combined-Charts (line-, bar-, scatter-, candle-data)
- - Dual (separate) Axes
- - Customizable Axes (both x- and y-axis)
- - Highlighting values (with customizable popup-views)
- - Save chart to SD-Card (as image, or as .txt file)
- - Predefined color templates
- - Legends (generated automatically, customizable)
- - Animations (build up animations, on both xPx- and yPx-axis)
- - Limit lines (providing additional information, maximums, ...)
- - Fully customizable (paints, typefaces, legends, colors, background, gestures, dashed lines, ...)
- - Smooth zooming and scrolling for up to 30.000 data points in Line- and BarChart
- - Gradle support
- - Plotting data directly from [**Realm.io**](https://realm.io) mobile database: [**MPAndroidChart-Realm**](https://github.com/PhilJay/MPAndroidChart-Realm) :zap:
+You can have a look at the core features of this libary [**here**](https://github.com/PhilJay/MPAndroidChart/wiki/Core-Features).
  
 Usage
 -----
@@ -117,7 +110,7 @@ allprojects {
  
 ```gradle
 dependencies {
-	compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+	implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }
 ```
 
@@ -136,32 +129,18 @@ dependencies {
 <dependency>
         <groupId>com.github.PhilJay</groupId>
         <artifactId>MPAndroidChart</artifactId>
-        <version>v3.0.2</version>
+        <version>v3.0.3</version>
 </dependency>
 ```
-
-**3. jar file only**
- - Download the [**latest .jar file**](https://github.com/PhilJay/MPAndroidChart/releases) from the releases section
- - Copy the **mpandroidchartlibrary-version.jar** file into the `libs` folder of your Android application project
- - Start using the library
 	
-**4. clone whole repository**
- - Open your **commandline-input** and navigate to the desired destination folder on your machine (where you want to place the library)
- - Use the command `git clone https://github.com/PhilJay/MPAndroidChart.git` to download the full MPAndroidChart repository to your computer (this includes the folder of the library as well as the folder of the example project)
- - Import the library folder (`MPChartLib`) into Android Studio (recommended) or your Eclipse workspace
- - Add it as a reference to your project: 
-   - [referencing library projects in Eclipse](http://developer.android.com/tools/projects/projects-eclipse.html#ReferencingLibraryProject)
-   - [managing projects from Android Studio](https://developer.android.com/sdk/installing/create-project.html)
-
+**3. clone whole repository** (not recommended)
 
 Documentation
 -----
-For a **detailed documentation** :notebook_with_decorative_cover:, please have a look at the [**Wiki**](https://github.com/PhilJay/MPAndroidChart/wiki) or the [javadocs](https://jitpack.io/com/github/PhilJay/MPAndroidChart/v3.0.2/javadoc/).
+For a **detailed documentation** :notebook_with_decorative_cover:, please have a look at the [**Wiki**](https://github.com/PhilJay/MPAndroidChart/wiki) or the [javadocs](https://jitpack.io/com/github/PhilJay/MPAndroidChart/v3.0.3/javadoc/).
 
 Furthermore, you can also rely on the [**MPChartExample**](https://github.com/PhilJay/MPAndroidChart/tree/master/MPChartExample) folder and check out the example code in that project. The corresponding application to the example project is also  [**available in the Google PlayStore**](https://play.google.com/store/apps/details?id=com.xxmassdeveloper.mpchartexample). 
-
-You have a problem that cannot be solved by having a look at the example project and documentation?
-No problem, let's talk: [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PhilJay/MPAndroidChart?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
+You can also join others in a discussion on [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PhilJay/MPAndroidChart?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
  
 Chart types
 -----
@@ -216,7 +195,7 @@ Chart types
 
 License
 =======
-Copyright 2016 Philipp Jahoda
+Copyright 2018 Philipp Jahoda
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
