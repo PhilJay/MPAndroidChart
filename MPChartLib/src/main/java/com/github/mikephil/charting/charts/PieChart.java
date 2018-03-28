@@ -94,6 +94,8 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
     protected float mMaxAngle = 360f;
 
+    private float mMinAngleForSlices = 0f;
+
     public PieChart(Context context) {
         super(context);
     }
@@ -236,7 +238,19 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
             for (int j = 0; j < set.getEntryCount(); j++) {
 
-                mDrawAngles[cnt] = calcAngle(Math.abs(set.getEntryForIndex(j).getY()), yValueSum);
+                float drawAngle = calcAngle(Math.abs(set.getEntryForIndex(j).getY()), yValueSum);
+
+                final boolean hasMinAngle = mMinAngleForSlices != 0f;
+                if (hasMinAngle) {
+                    drawAngle = Math.max(drawAngle, mMinAngleForSlices);
+
+                    if (cnt != 0 && cnt == set.getEntryCount() - 1) { // if it is the last slice
+                        // drawAngle should be the rest of space
+                        drawAngle = mMaxAngle - mAbsoluteAngles[cnt - 1];
+                    }
+                }
+
+                mDrawAngles[cnt] = drawAngle;
 
                 if (cnt == 0) {
                     mAbsoluteAngles[cnt] = mDrawAngles[cnt];
@@ -717,6 +731,27 @@ public class PieChart extends PieRadarChartBase<PieData> {
             maxangle = 90f;
 
         this.mMaxAngle = maxangle;
+    }
+
+    public float getMinAngleForSlices() {
+        return mMinAngleForSlices;
+    }
+
+    /**
+     * Set the angle to set minimum size for slices (e.g 18f means 5% min percentage for full pie-chart).
+     * do not use huge values for this, it will break pie-chart. Default: 0f
+     *
+     * @param minAngle min 0, max 360
+     */
+    public void setMinAngleForSlices(float minAngle) {
+
+        if (minAngle > 360)
+            minAngle = 360f;
+
+        if (minAngle < 0)
+            minAngle = 0f;
+
+        this.mMinAngleForSlices = minAngle;
     }
 
     @Override
