@@ -2,11 +2,7 @@
 package com.github.mikephil.charting.formatter;
 
 import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 
-import java.text.DecimalFormat;
-import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -47,21 +43,19 @@ public class IndexAxisValueFormatter implements IAxisValueFormatter
     public String getFormattedValue(float value, AxisBase axis) {
         int index = Math.round(value);
 
-        if (index < 0 || index >= mValueCount || index != (int)value)
+        if (index < 0 || index >= mValueCount)
             return "";
 
         return mValues[index];
     }
 
-    public String[] getValues()
-    {
+    public String[] getValues() {
         return mValues;
     }
 
-    public void setValues(String[] values)
-    {
+    public void setValues(String[] values) {
         if (values == null)
-            values = new String[] {};
+            values = new String[]{};
 
         this.mValues = values;
         this.mValueCount = values.length;
