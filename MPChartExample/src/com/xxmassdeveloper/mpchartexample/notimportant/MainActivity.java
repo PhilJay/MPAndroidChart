@@ -39,7 +39,7 @@ import com.xxmassdeveloper.mpchartexample.PerformanceLineChart;
 import com.xxmassdeveloper.mpchartexample.PieChartActivity;
 import com.xxmassdeveloper.mpchartexample.PiePolylineChartActivity;
 import com.xxmassdeveloper.mpchartexample.R;
-import com.xxmassdeveloper.mpchartexample.RadarChartActivitry;
+import com.xxmassdeveloper.mpchartexample.RadarChartActivity;
 import com.xxmassdeveloper.mpchartexample.RealtimeLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.ScatterChartActivity;
 import com.xxmassdeveloper.mpchartexample.ScrollViewActivity;
@@ -242,7 +242,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 startActivity(i);
                 break;
             case 20:
-                i = new Intent(this, RadarChartActivitry.class);
+                i = new Intent(this, RadarChartActivity.class);
                 startActivity(i);
                 break;
             case 21:

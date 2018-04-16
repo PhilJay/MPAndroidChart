@@ -28,7 +28,7 @@ import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 
-public class RadarChartActivitry extends DemoBase {
+public class RadarChartActivity extends DemoBase {
 
     private RadarChart mChart;
 
