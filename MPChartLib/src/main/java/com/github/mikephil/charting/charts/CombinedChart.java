@@ -68,8 +68,8 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Com
     }
 
     @Override
-    protected void init() {
-        super.init();
+    protected void init(AttributeSet attrs) {
+        super.init(attrs);
 
         // Default values are not ready here yet
         mDrawOrder = new DrawOrder[]{
