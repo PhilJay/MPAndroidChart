@@ -182,7 +182,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     public Chart(Context context) {
         super(context);
-        init();
+        init(null);
     }
 
     /**
@@ -190,7 +190,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     public Chart(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(attrs);
     }
 
     /**
@@ -198,13 +198,13 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     public Chart(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init();
+        init(attrs);
     }
 
     /**
      * initialize all paints and stuff
      */
-    protected void init() {
+    protected void init(AttributeSet attrs) {
 
         setWillNotDraw(false);
         // setLayerType(View.LAYER_TYPE_HARDWARE, null);
