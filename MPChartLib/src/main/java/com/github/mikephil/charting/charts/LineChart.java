@@ -28,8 +28,8 @@ public class LineChart extends BarLineChartBase<LineData> implements LineDataPro
     }
 
     @Override
-    protected void init() {
-        super.init();
+    protected void init(AttributeSet attrs) {
+        super.init(attrs);
 
         mRenderer = new LineChartRenderer(this, mAnimator, mViewPortHandler);
     }

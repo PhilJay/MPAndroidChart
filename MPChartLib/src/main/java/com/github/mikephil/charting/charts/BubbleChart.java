@@ -31,8 +31,8 @@ public class BubbleChart extends BarLineChartBase<BubbleData> implements BubbleD
     }
 
     @Override
-    protected void init() {
-        super.init();
+    protected void init(AttributeSet attrs) {
+        super.init(attrs);
 
         mRenderer = new BubbleChartRenderer(this, mAnimator, mViewPortHandler);
     }

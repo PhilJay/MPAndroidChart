@@ -41,11 +41,11 @@ public class HorizontalBarChart extends BarChart {
     }
 
     @Override
-    protected void init() {
+    protected void init(AttributeSet attrs) {
 
         mViewPortHandler = new HorizontalViewPortHandler();
 
-        super.init();
+        super.init(attrs);
 
         mLeftAxisTransformer = new TransformerHorizontalBarChart(mViewPortHandler);
         mRightAxisTransformer = new TransformerHorizontalBarChart(mViewPortHandler);
