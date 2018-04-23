@@ -6,6 +6,7 @@ import android.graphics.DashPathEffect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
@@ -33,6 +34,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.xxmassdeveloper.mpchartexample.custom.MyMarkerView;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
@@ -47,12 +49,16 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
 
+    private Drawable bgOfValue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_linechart);
+
+        bgOfValue = ActivityCompat.getDrawable(this, R.drawable.ic_bubble_bg);
 
         tvX = (TextView) findViewById(R.id.tvXMax);
         tvY = (TextView) findViewById(R.id.tvYMax);
@@ -158,7 +164,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         // modify the legend ...
         l.setForm(LegendForm.LINE);
 
-        // // dont forget to refresh the drawing
+        // // don't forget to refresh the drawing
         // mChart.invalidate();
     }
 
@@ -351,11 +357,12 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
     private void setData(int count, float range) {
 
         ArrayList<Entry> values = new ArrayList<Entry>();
-
+        Entry entry;
         for (int i = 0; i < count; i++) {
-
             float val = (float) (Math.random() * range) + 3;
-            values.add(new Entry(i, val, getResources().getDrawable(R.drawable.star)));
+            entry = new Entry(i, val, getResources().getDrawable(R.drawable.star));
+            entry.setBackground(bgOfValue);
+            values.add(entry);
         }
 
         LineDataSet set1;
@@ -370,6 +377,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
             // create a dataset and give it a type
             set1 = new LineDataSet(values, "DataSet 1");
 
+            set1.setValueOffset(new MPPointF(0, -bgOfValue.getIntrinsicHeight()/4));
             set1.setDrawIcons(false);
 
             // set the line to be drawn like this "- - - - - -"

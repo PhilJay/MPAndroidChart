@@ -16,6 +16,9 @@ public abstract class BaseEntry {
     /** optional icon image */
     private Drawable mIcon = null;
 
+    /** optional y value background */
+    private Drawable mBackground = null;
+
     public BaseEntry() {
 
     }
@@ -93,5 +96,13 @@ public abstract class BaseEntry {
      */
     public void setData(Object data) {
         this.mData = data;
+    }
+
+    public Drawable getBackground() {
+        return mBackground;
+    }
+
+    public void setBackground(Drawable background) {
+        this.mBackground = background;
     }
 }

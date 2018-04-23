@@ -72,6 +72,11 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     protected boolean mDrawValues = true;
 
     /**
+     * the offset for drawing value (in dp)
+     */
+    protected MPPointF mValueOffset = new MPPointF();
+
+    /**
      * if true, y-icons are drawn on the chart
      */
     protected boolean mDrawIcons = true;
@@ -382,6 +387,17 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     @Override
     public boolean isDrawValuesEnabled() {
         return mDrawValues;
+    }
+
+    @Override
+    public void setValueOffset(MPPointF offset) {
+        mValueOffset.x = offset.x;
+        mValueOffset.y = offset.y;
+    }
+
+    @Override
+    public MPPointF getValueOffset() {
+        return mValueOffset;
     }
 
     @Override
