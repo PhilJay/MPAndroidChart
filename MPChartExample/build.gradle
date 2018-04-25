@@ -3,7 +3,7 @@ apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '27.0.3'
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 27
@@ -39,7 +39,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.1.2'
         //classpath 'io.realm:realm-gradle-plugin:0.88.2'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
