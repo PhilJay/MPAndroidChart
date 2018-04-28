@@ -44,7 +44,7 @@
         <activity android:name="InvertedLineChartActivity"></activity>
         <activity android:name="CandleStickChartActivity"></activity>
         <activity android:name="CubicLineChartActivity"></activity>
-        <activity android:name="RadarChartActivitry"></activity>
+        <activity android:name="RadarChartActivity"></activity>
         <activity android:name="LineChartActivityColored"></activity>
         <activity android:name="DynamicalAddingActivity"></activity>
         <activity android:name=".realm.RealmDatabaseActivityLine"></activity>
