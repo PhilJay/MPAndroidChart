@@ -536,6 +536,11 @@ public class PieChartRenderer extends DataRenderer {
                     }
 
                     if (dataSet.getValueLineColor() != ColorTemplate.COLOR_NONE) {
+
+                        if (dataSet.isUsingSliceColorAsValueLineColor()) {
+                            mValueLinePaint.setColor(dataSet.getColor(j));
+                        }
+
                         c.drawLine(pt0x, pt0y, pt1x, pt1y, mValueLinePaint);
                         c.drawLine(pt1x, pt1y, pt2x, pt2y, mValueLinePaint);
                     }
