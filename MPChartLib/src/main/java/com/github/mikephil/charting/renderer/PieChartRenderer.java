@@ -131,9 +131,9 @@ public class PieChartRenderer extends DataRenderer {
                 || (mDrawBitmap.get().getHeight() != height)) {
 
             if (width > 0 && height > 0) {
-
-                mDrawBitmap = new WeakReference<Bitmap>(Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444));
-                mBitmapCanvas = new Canvas(mDrawBitmap.get());
+                Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
+                mDrawBitmap = new WeakReference<Bitmap>(bitmap);
+                mBitmapCanvas = new Canvas(bitmap);
             } else
                 return;
         }
