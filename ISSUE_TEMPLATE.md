@@ -1,4 +1,4 @@
-- [ ] I have read the [CONTRIBUTING](CONTRIBUTING.md) file before posting this issue.
+- [ ] I have read the [CONTRIBUTING](https://github.com/PhilJay/MPAndroidChart/blob/master/CONTRIBUTING.md) file before posting this issue.
 
 ### The problem
 
