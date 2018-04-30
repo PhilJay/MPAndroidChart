@@ -62,10 +62,7 @@ public class RadarChartActivity extends DemoBase {
 
         setData();
 
-        mChart.animateXY(
-                1400, 1400,
-                Easing.EasingOption.EaseInOutQuad,
-                Easing.EasingOption.EaseInOutQuad);
+        mChart.animateXY(1400, 1400, Easing.EaseInOutQuad);
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setTypeface(mTfLight);
@@ -193,8 +190,7 @@ public class RadarChartActivity extends DemoBase {
                 break;
             }
             case R.id.actionToggleSpin: {
-                mChart.spin(2000, mChart.getRotationAngle(), mChart.getRotationAngle() + 360, Easing.EasingOption
-                        .EaseInCubic);
+                mChart.spin(2000, mChart.getRotationAngle(), mChart.getRotationAngle() + 360, Easing.EaseInCubic);
                 break;
             }
         }

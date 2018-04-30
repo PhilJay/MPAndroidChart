@@ -38,7 +38,7 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
     private PieChart mChart;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
-    
+
     private Typeface tf;
 
     @Override
@@ -97,7 +97,7 @@ public class PiePolylineChartActivity extends DemoBase implements OnSeekBarChang
 
         setData(4, 100);
 
-        mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
+        mChart.animateY(1400, Easing.EaseInOutQuad);
         // mChart.spin(2000, 0, 360);
 
         Legend l = mChart.getLegend();

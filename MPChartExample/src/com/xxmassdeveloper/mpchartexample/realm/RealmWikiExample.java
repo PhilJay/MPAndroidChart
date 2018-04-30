@@ -112,7 +112,7 @@ public class RealmWikiExample extends RealmBaseActivity {
 
         // set data
         lineChart.setData(lineData);
-        lineChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
+        lineChart.animateY(1400, Easing.EaseInOutQuart);
 
 
         // BAR-CHART
@@ -128,6 +128,6 @@ public class RealmWikiExample extends RealmBaseActivity {
 
         barChart.setData(barData);
         barChart.setFitBars(true);
-        barChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
+        barChart.animateY(1400, Easing.EaseInOutQuart);
     }
 }
