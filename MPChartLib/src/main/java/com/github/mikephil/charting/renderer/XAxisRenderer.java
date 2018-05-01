@@ -180,21 +180,8 @@ public class XAxisRenderer extends AxisRenderer {
     protected void drawLabels(Canvas c, float pos, MPPointF anchor) {
 
         final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
-        boolean centeringEnabled = mXAxis.isCenterAxisLabelsEnabled();
 
-        float[] positions = new float[mXAxis.mEntryCount * 2];
-
-        for (int i = 0; i < positions.length; i += 2) {
-
-            // only fill x values
-            if (centeringEnabled) {
-                positions[i] = mXAxis.mCenteredEntries[i / 2];
-            } else {
-                positions[i] = mXAxis.mEntries[i / 2];
-            }
-        }
-
-        mTrans.pointValuesToPixel(positions);
+        float[] positions = getTransformedPositions();
 
         for (int i = 0; i < positions.length; i += 2) {
 
@@ -207,7 +194,7 @@ public class XAxisRenderer extends AxisRenderer {
                 if (mXAxis.isAvoidFirstLastClippingEnabled()) {
 
                     // avoid clipping of the last
-                    if (i == mXAxis.mEntryCount - 1 && mXAxis.mEntryCount > 1) {
+                    if (i == positions.length - 2 && mXAxis.mEntryCount > 1) {
                         float width = Utils.calcTextWidth(mAxisLabelPaint, label);
 
                         if (width > mViewPortHandler.offsetRight() * 2
@@ -217,6 +204,16 @@ public class XAxisRenderer extends AxisRenderer {
                         // avoid clipping of the first
                     } else if (i == 0) {
 
+                        float width = Utils.calcTextWidth(mAxisLabelPaint, label);
+                        x += width / 2;
+                    }
+                } else if (mXAxis.isFirstLastInsideChartEnabled()) {
+                    if (i == positions.length - 2 && mXAxis.mEntryCount > 1) {
+                        float width = Utils.calcTextWidth(mAxisLabelPaint, label);
+
+                        if (x + width > mViewPortHandler.getChartWidth())
+                            x -= width / 2;
+                    } else if (i == 0) {
                         float width = Utils.calcTextWidth(mAxisLabelPaint, label);
                         x += width / 2;
                     }
@@ -272,6 +269,29 @@ public class XAxisRenderer extends AxisRenderer {
         mGridClippingRect.set(mViewPortHandler.getContentRect());
         mGridClippingRect.inset(-mAxis.getGridLineWidth(), 0.f);
         return mGridClippingRect;
+    }
+
+    /**
+     * Transforms the values contained in the axis entries to screen pixels and returns them in form of a float array
+     * of x- and y-coordinates.
+     *
+     * @return
+     */
+    protected float[] getTransformedPositions() {
+        float[] positions = new float[mXAxis.mEntryCount * 2];
+        boolean centeringEnabled = mXAxis.isCenterAxisLabelsEnabled();
+
+        for (int i = 0; i < positions.length; i += 2) {
+            // only fill x values
+            if (centeringEnabled) {
+                positions[i] = mXAxis.mCenteredEntries[i / 2];
+            } else {
+                positions[i] = mXAxis.mEntries[i / 2];
+            }
+        }
+
+        mTrans.pointValuesToPixel(positions);
+        return positions;
     }
 
     /**

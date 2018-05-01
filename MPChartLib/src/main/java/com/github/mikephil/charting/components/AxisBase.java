@@ -93,6 +93,11 @@ public abstract class AxisBase extends ComponentBase {
     protected boolean mCenterAxisLabels = false;
 
     /**
+     * if set to true, the first and last label entry inside chart
+     */
+    private boolean mFirstLastInsideChart = false;
+
+    /**
      * the path effect of the axis line that makes dashed lines possible
      */
     private DashPathEffect mAxisLineDashPathEffect = null;
@@ -205,6 +210,14 @@ public abstract class AxisBase extends ComponentBase {
 
     public boolean isCenterAxisLabelsEnabled() {
         return mCenterAxisLabels && mEntryCount > 0;
+    }
+
+    public void setFirstLastInsideChart(boolean enabled) {
+        mFirstLastInsideChart = enabled;
+    }
+
+    public boolean isFirstLastInsideChartEnabled() {
+        return mFirstLastInsideChart;
     }
 
     /**
