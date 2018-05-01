@@ -435,6 +435,19 @@ public interface IDataSet<T extends Entry> {
      * @return
      */
     boolean isDrawValuesEnabled();
+    /**
+     * Offset of value drawn on the chart.
+     *
+     * For all charts except Pie and Radar it will be ordinary (x offset,y offset).
+     *
+     * @param offset
+     */
+    void setValueOffset(MPPointF offset);
+
+    /**
+     * Get the offset for drawing value.
+     */
+    MPPointF getValueOffset();
 
     /**
      * Set this to true to draw y-icons on the chart.

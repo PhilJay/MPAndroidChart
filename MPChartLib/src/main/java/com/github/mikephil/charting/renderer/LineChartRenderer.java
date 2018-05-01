@@ -549,6 +549,10 @@ public class LineChartRenderer extends LineRadarRenderer {
                 float[] positions = trans.generateTransformedValuesLine(dataSet, mAnimator.getPhaseX(), mAnimator
                         .getPhaseY(), mXBounds.min, mXBounds.max);
 
+                MPPointF valueOffset = MPPointF.getInstance(dataSet.getValueOffset());
+                valueOffset.x = Utils.convertDpToPixel(valueOffset.x);
+                valueOffset.y = Utils.convertDpToPixel(valueOffset.y);
+
                 MPPointF iconsOffset = MPPointF.getInstance(dataSet.getIconsOffset());
                 iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
                 iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y);
@@ -567,8 +571,19 @@ public class LineChartRenderer extends LineRadarRenderer {
                     Entry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);
 
                     if (dataSet.isDrawValuesEnabled()) {
-                        drawValue(c, dataSet.getValueFormatter(), entry.getY(), entry, i, x,
-                                y - valOffset, dataSet.getValueTextColor(j / 2));
+                        Drawable bg = entry.getBackground();
+                        float valX,valY;
+                        if (bg == null) {
+                            valX = x;
+                            valY = y - valOffset;
+                        } else {
+                            valX = x + valueOffset.x;
+                            valY = y + valueOffset.y * 0.9f;
+                            Utils.drawImage(c, bg, (int) valX, (int) (y + valueOffset.y),
+                                    bg.getIntrinsicWidth(), bg.getIntrinsicHeight());
+                        }
+                        drawValue(c, dataSet.getValueFormatter(), entry.getY(), entry, i, valX,
+                                valY, dataSet.getValueTextColor(j / 2));
                     }
 
                     if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
