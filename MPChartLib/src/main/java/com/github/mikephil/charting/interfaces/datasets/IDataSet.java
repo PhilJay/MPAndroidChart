@@ -10,6 +10,7 @@ import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.utils.MPPointF;
+import com.github.mikephil.charting.model.GradientColor;
 
 import java.util.List;
 
@@ -284,6 +285,28 @@ public interface IDataSet<T extends Entry> {
      * @return
      */
     int getColor();
+
+    /**
+     * Returns the Gradient color model
+     *
+     * @return
+     */
+    GradientColor getGradientColor();
+
+    /**
+     * Returns the Gradient colors
+     *
+     * @return
+     */
+    List<GradientColor> getGradientColors();
+
+    /**
+     * Returns the Gradient colors
+     *
+     * @param index
+     * @return
+     */
+    GradientColor getGradientColor(int index);
 
     /**
      * Returns the color at the given index of the DataSet's color array.
