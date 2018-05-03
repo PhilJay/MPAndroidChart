@@ -34,6 +34,8 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
 
     protected GradientColor gradientColor = null;
 
+    protected List<GradientColor> gradientColors = null;
+
     /**
      * List representing all colors that are used for drawing the actual values for this DataSet
      */
@@ -143,13 +145,23 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     }
 
     @Override
+    public int getColor(int index) {
+        return mColors.get(index % mColors.size());
+    }
+
+    @Override
     public GradientColor getGradientColor() {
         return gradientColor;
     }
 
     @Override
-    public int getColor(int index) {
-        return mColors.get(index % mColors.size());
+    public List<GradientColor> getGradientColors() {
+        return gradientColors;
+    }
+
+    @Override
+    public GradientColor getGradientColor(int index) {
+        return gradientColors.get(index % gradientColors.size());
     }
 
     /**
@@ -228,13 +240,22 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     }
 
     /**
-     * Sets the start and end color for gradient colot, ONLY color that should be used for this DataSet.
+     * Sets the start and end color for gradient color, ONLY color that should be used for this DataSet.
      *
      * @param startColor
      * @param endColor
      */
     public void setGradientColor(int startColor, int endColor) {
         gradientColor = new GradientColor(startColor, endColor);
+    }
+
+    /**
+     * Sets the start and end color for gradient colors, ONLY color that should be used for this DataSet.
+     *
+     * @param gradientColors
+     */
+    public void setGradientColors(List<GradientColor> gradientColors) {
+        this.gradientColors = gradientColors;
     }
 
     /**

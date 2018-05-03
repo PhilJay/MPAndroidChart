@@ -178,6 +178,18 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                         android.graphics.Shader.TileMode.MIRROR));
             }
 
+            if (dataSet.getGradientColors() != null) {
+                 mRenderPaint.setShader(
+                    new LinearGradient(
+                        buffer.buffer[j],
+                        buffer.buffer[j + 3],
+                        buffer.buffer[j],
+                        buffer.buffer[j + 1],
+                        dataSet.getGradientColor(j / 4).getStartColor(),
+                        dataSet.getGradientColor(j / 4).getEndColor(),
+                        android.graphics.Shader.TileMode.MIRROR));
+            }
+
 
             c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                     buffer.buffer[j + 3], mRenderPaint);

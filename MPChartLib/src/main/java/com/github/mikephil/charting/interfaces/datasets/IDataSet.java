@@ -294,6 +294,21 @@ public interface IDataSet<T extends Entry> {
     GradientColor getGradientColor();
 
     /**
+     * Returns the Gradient colors
+     *
+     * @return
+     */
+    List<GradientColor> getGradientColors();
+
+    /**
+     * Returns the Gradient colors
+     *
+     * @param index
+     * @return
+     */
+    GradientColor getGradientColor(int index);
+
+    /**
      * Returns the color at the given index of the DataSet's color array.
      * Performs a IndexOutOfBounds check by modulus.
      *
