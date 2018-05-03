@@ -4,6 +4,7 @@ package com.xxmassdeveloper.mpchartexample;
 import android.annotation.SuppressLint;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +17,6 @@ import android.widget.Toast;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
-import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
@@ -265,6 +265,9 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
             set1.setDrawIcons(false);
 
             set1.setColors(ColorTemplate.MATERIAL_COLORS);
+            int startColor = ContextCompat.getColor(this, android.R.color.holo_blue_dark);
+            int endColor = ContextCompat.getColor(this, android.R.color.holo_blue_bright);
+            set1.setGradientColor(startColor, endColor);
 
             ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
             dataSets.add(set1);
