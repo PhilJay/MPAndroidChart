@@ -13,6 +13,7 @@ import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.model.GradientColor;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Inherited;
@@ -30,6 +31,10 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      * List representing all colors that are used for this DataSet
      */
     protected List<Integer> mColors = null;
+
+    protected GradientColor gradientColor = null;
+
+    protected List<GradientColor> gradientColors = null;
 
     /**
      * List representing all colors that are used for drawing the actual values for this DataSet
@@ -144,6 +149,21 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
         return mColors.get(index % mColors.size());
     }
 
+    @Override
+    public GradientColor getGradientColor() {
+        return gradientColor;
+    }
+
+    @Override
+    public List<GradientColor> getGradientColors() {
+        return gradientColors;
+    }
+
+    @Override
+    public GradientColor getGradientColor(int index) {
+        return gradientColors.get(index % gradientColors.size());
+    }
+
     /**
      * ###### ###### COLOR SETTING RELATED METHODS ##### ######
      */
@@ -217,6 +237,25 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     public void setColor(int color) {
         resetColors();
         mColors.add(color);
+    }
+
+    /**
+     * Sets the start and end color for gradient color, ONLY color that should be used for this DataSet.
+     *
+     * @param startColor
+     * @param endColor
+     */
+    public void setGradientColor(int startColor, int endColor) {
+        gradientColor = new GradientColor(startColor, endColor);
+    }
+
+    /**
+     * Sets the start and end color for gradient colors, ONLY color that should be used for this DataSet.
+     *
+     * @param gradientColors
+     */
+    public void setGradientColors(List<GradientColor> gradientColors) {
+        this.gradientColors = gradientColors;
     }
 
     /**
