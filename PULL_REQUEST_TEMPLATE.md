@@ -1,14 +1,15 @@
-- [ ] I have read the [CONTRIBUTING](CONTRIBUTING.md) file before posting submitting this pull request.
+## PR Checklist:
+- [ ] I have tested this extensively and it does not break any existing behavior.
+- [ ] I have added/updated examples and tests for any new behavior.
+- [ ] If this is a significant change, an issue has already been created where the problem / solution was discussed: [N/A, or add link to issue here]
+       <!-- If you'd like to suggest a significant change, please
+            create an issue to discuss those changes and gather
+            feedback BEFORE submitting your PR. -->
 
-Before describing this pull request, please prefix the title with a topic from the list:
-`Feature`, `Fix`, `Style`
 
-### [Feature / Fix / Style] (choose ONE)
+## PR Description
+<!-- Describe Your PR Here! -->
 
-What will this PR do? Remember that you don't need to explain everything, let the changes speak for itself.
+<!-- What does this add/ remove/ fix/ change? -->
 
-If a bug fix, reference any issues that this fixes, like so: "fixes #99"
-
-### Why should this be merged?
-
-If needed, further explain this PR and why it should be merged. If the changes are too broad, your pull request may be denied for having too much in it. It may also be denied if the commits aren't properly formatted.
+<!-- WHY should this PR be merged into the main library? -->
