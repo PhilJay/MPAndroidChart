@@ -4,6 +4,8 @@ import com.github.mikephil.charting.formatter.LargeValueFormatter;
 
 import org.junit.Test;
 
+import java.util.Locale;
+
 import static junit.framework.Assert.assertEquals;
 
 /**
@@ -14,7 +16,7 @@ public class LargeValueFormatterTest {
     @Test
     public void test() {
 
-        LargeValueFormatter formatter = new LargeValueFormatter();
+        LargeValueFormatter formatter = new LargeValueFormatter(Locale.ENGLISH);
 
         String result = formatter.getFormattedValue(5f, null);
         assertEquals("5", result);
