@@ -157,6 +157,14 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
      */
     public abstract DataSet<T> copy();
 
+    /**
+     *
+     * @param dataSet
+     */
+    protected void copy(DataSet dataSet) {
+        super.copy(dataSet);
+    }
+
     @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer();

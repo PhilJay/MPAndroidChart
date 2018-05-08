@@ -122,4 +122,13 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
     public boolean isDrawFilledEnabled() {
         return mDrawFilled;
     }
+
+    protected void copy(LineRadarDataSet lineRadarDataSet) {
+        super.copy(lineRadarDataSet);
+        lineRadarDataSet.mDrawFilled = mDrawFilled;
+        lineRadarDataSet.mFillAlpha = mFillAlpha;
+        lineRadarDataSet.mFillColor = mFillColor;
+        lineRadarDataSet.mFillDrawable = mFillDrawable;
+        lineRadarDataSet.mLineWidth = mLineWidth;
+    }
 }

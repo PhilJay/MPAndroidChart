@@ -7,16 +7,13 @@ import android.graphics.Typeface;
 
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+import com.github.mikephil.charting.model.GradientColor;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
-import com.github.mikephil.charting.model.GradientColor;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Inherited;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,9 +29,9 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      */
     protected List<Integer> mColors = null;
 
-    protected GradientColor gradientColor = null;
+    protected GradientColor mGradientColor = null;
 
-    protected List<GradientColor> gradientColors = null;
+    protected List<GradientColor> mGradientColors = null;
 
     /**
      * List representing all colors that are used for drawing the actual values for this DataSet
@@ -151,17 +148,17 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
 
     @Override
     public GradientColor getGradientColor() {
-        return gradientColor;
+        return mGradientColor;
     }
 
     @Override
     public List<GradientColor> getGradientColors() {
-        return gradientColors;
+        return mGradientColors;
     }
 
     @Override
     public GradientColor getGradientColor(int index) {
-        return gradientColors.get(index % gradientColors.size());
+        return mGradientColors.get(index % mGradientColors.size());
     }
 
     /**
@@ -206,7 +203,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      */
     public void setColors(int[] colors, Context c) {
 
-        if(mColors == null){
+        if (mColors == null) {
             mColors = new ArrayList<>();
         }
 
@@ -246,7 +243,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      * @param endColor
      */
     public void setGradientColor(int startColor, int endColor) {
-        gradientColor = new GradientColor(startColor, endColor);
+        mGradientColor = new GradientColor(startColor, endColor);
     }
 
     /**
@@ -255,7 +252,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      * @param gradientColors
      */
     public void setGradientColors(List<GradientColor> gradientColors) {
-        this.gradientColors = gradientColors;
+        this.mGradientColors = gradientColors;
     }
 
     /**
@@ -285,7 +282,7 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
      * Resets all colors of this DataSet and recreates the colors array.
      */
     public void resetColors() {
-        if(mColors == null) {
+        if (mColors == null) {
             mColors = new ArrayList<Integer>();
         }
         mColors.clear();
@@ -526,5 +523,25 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
         }
 
         return false;
+    }
+
+    protected void copy(BaseDataSet baseDataSet) {
+        baseDataSet.mAxisDependency = mAxisDependency;
+        baseDataSet.mColors = mColors;
+        baseDataSet.mDrawIcons = mDrawIcons;
+        baseDataSet.mDrawValues = mDrawValues;
+        baseDataSet.mForm = mForm;
+        baseDataSet.mFormLineDashEffect = mFormLineDashEffect;
+        baseDataSet.mFormLineWidth = mFormLineWidth;
+        baseDataSet.mFormSize = mFormSize;
+        baseDataSet.mGradientColor = mGradientColor;
+        baseDataSet.mGradientColors = mGradientColors;
+        baseDataSet.mHighlightEnabled = mHighlightEnabled;
+        baseDataSet.mIconsOffset = mIconsOffset;
+        baseDataSet.mValueColors = mValueColors;
+        baseDataSet.mValueFormatter = mValueFormatter;
+        baseDataSet.mValueColors = mValueColors;
+        baseDataSet.mValueTextSize = mValueTextSize;
+        baseDataSet.mVisible = mVisible;
     }
 }

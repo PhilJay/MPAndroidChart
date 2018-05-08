@@ -53,23 +53,22 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
 
     @Override
     public DataSet<BarEntry> copy() {
-
-        List<BarEntry> yVals = new ArrayList<BarEntry>();
-        yVals.clear();
-
+        List<BarEntry> entries = new ArrayList<BarEntry>();
         for (int i = 0; i < mValues.size(); i++) {
-            yVals.add(mValues.get(i).copy());
+            entries.add(mValues.get(i).copy());
         }
-
-        BarDataSet copied = new BarDataSet(yVals, getLabel());
-        copied.mColors = mColors;
-        copied.mStackSize = mStackSize;
-        copied.mBarShadowColor = mBarShadowColor;
-        copied.mStackLabels = mStackLabels;
-        copied.mHighLightColor = mHighLightColor;
-        copied.mHighLightAlpha = mHighLightAlpha;
-
+        BarDataSet copied = new BarDataSet(entries, getLabel());
+        copy(copied);
         return copied;
+    }
+
+    protected void copy(BarDataSet barDataSet) {
+        super.copy(barDataSet);
+        barDataSet.mStackSize = mStackSize;
+        barDataSet.mBarShadowColor = mBarShadowColor;
+        barDataSet.mBarBorderWidth = mBarBorderWidth;
+        barDataSet.mStackLabels = mStackLabels;
+        barDataSet.mHighLightAlpha = mHighLightAlpha;
     }
 
     /**
