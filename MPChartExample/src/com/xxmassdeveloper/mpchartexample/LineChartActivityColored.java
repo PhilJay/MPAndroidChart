@@ -53,7 +53,7 @@ public class LineChartActivityColored extends DemoBase {
 
     private void setupChart(LineChart chart, LineData data, int color) {
 
-        ((LineDataSet) data.getDataSetByIndex(0)).setCircleColorHole(color);
+        ((LineDataSet) data.getDataSetByIndex(0)).setCircleHoleColor(color);
 
         // no description text
         chart.getDescription().setEnabled(false);
