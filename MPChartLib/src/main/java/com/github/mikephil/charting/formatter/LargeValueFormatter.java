@@ -20,10 +20,10 @@ import java.text.DecimalFormat;
 public class LargeValueFormatter implements IValueFormatter, IAxisValueFormatter
 {
 
-    private static String[] SUFFIX = new String[]{
+    private String[] mSuffix = new String[]{
             "", "k", "m", "b", "t"
     };
-    private static final int MAX_LENGTH = 5;
+    private int mMaxLength = 5;
     private DecimalFormat mFormat;
     private String mText = "";
 
@@ -66,10 +66,14 @@ public class LargeValueFormatter implements IValueFormatter, IAxisValueFormatter
      * Set custom suffix to be appended after the values.
      * Default suffix: ["", "k", "m", "b", "t"]
      *
-     * @param suff new suffix
+     * @param suffix new suffix
      */
-    public void setSuffix(String[] suff) {
-        SUFFIX = suff;
+    public void setSuffix(String[] suffix) {
+        this.mSuffix = suffix;
+    }
+
+    public void setMaxLength(int maxLength) {
+        this.mMaxLength = maxLength;
     }
 
     /**
@@ -84,9 +88,9 @@ public class LargeValueFormatter implements IValueFormatter, IAxisValueFormatter
         int numericValue2 = Character.getNumericValue(r.charAt(r.length() - 2));
         int combined = Integer.valueOf(numericValue2 + "" + numericValue1);
 
-        r = r.replaceAll("E[0-9][0-9]", SUFFIX[combined / 3]);
+        r = r.replaceAll("E[0-9][0-9]", mSuffix[combined / 3]);
 
-        while (r.length() > MAX_LENGTH || r.matches("[0-9]+\\.[a-z]")) {
+        while (r.length() > mMaxLength || r.matches("[0-9]+\\.[a-z]")) {
             r = r.substring(0, r.length() - 2) + r.substring(r.length() - 1);
         }
 
