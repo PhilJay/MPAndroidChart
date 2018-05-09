@@ -427,18 +427,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
                             offsets.top += Math.min(mLegend.mNeededHeight,
                                     mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent())
                                     + mLegend.getYOffset();
-
-                            if (getXAxis().isEnabled() && getXAxis().isDrawLabelsEnabled())
-                                offsets.top += getXAxis().mLabelRotatedHeight;
                             break;
 
                         case BOTTOM:
                             offsets.bottom += Math.min(mLegend.mNeededHeight,
                                     mViewPortHandler.getChartHeight() * mLegend.getMaxSizePercent())
                                     + mLegend.getYOffset();
-
-                            if (getXAxis().isEnabled() && getXAxis().isDrawLabelsEnabled())
-                                offsets.bottom += getXAxis().mLabelRotatedHeight;
                             break;
 
                         default:
@@ -478,21 +472,21 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
             if (mXAxis.isEnabled() && mXAxis.isDrawLabelsEnabled()) {
 
-                float xlabelheight = mXAxis.mLabelRotatedHeight + mXAxis.getYOffset();
+                float xLabelHeight = mXAxis.mLabelRotatedHeight + mXAxis.getYOffset();
 
                 // offsets for x-labels
                 if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
 
-                    offsetBottom += xlabelheight;
+                    offsetBottom += xLabelHeight;
 
                 } else if (mXAxis.getPosition() == XAxisPosition.TOP) {
 
-                    offsetTop += xlabelheight;
+                    offsetTop += xLabelHeight;
 
                 } else if (mXAxis.getPosition() == XAxisPosition.BOTH_SIDED) {
 
-                    offsetBottom += xlabelheight;
-                    offsetTop += xlabelheight;
+                    offsetBottom += xLabelHeight;
+                    offsetTop += xLabelHeight;
                 }
             }
 
@@ -1224,7 +1218,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     /**
      * When enabled, the values will be clipped to contentRect,
-     *   otherwise they can bleed outside the content rect.
+     * otherwise they can bleed outside the content rect.
      *
      * @param enabled
      */
@@ -1234,7 +1228,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     /**
      * When enabled, the values will be clipped to contentRect,
-     *   otherwise they can bleed outside the content rect.
+     * otherwise they can bleed outside the content rect.
      *
      * @return
      */
