@@ -41,23 +41,12 @@ public class YAxis extends AxisBase {
     /**
      * flag indicating that auto scale min restriction should be used
      */
-
     private boolean mUseAutoScaleRestrictionMin = false;
+
     /**
      * flag indicating that auto scale max restriction should be used
      */
-
     private boolean mUseAutoScaleRestrictionMax = false;
-    /**
-     * restriction value of autoscale min
-     */
-
-    private float mAutoScaleMinRestriction = 0f;
-
-    /**
-     * restriction value of autoscale max
-     */
-    private float mAutoScaleMaxRestriction = 0f;
 
     /**
      * Color of the zero line
@@ -379,34 +368,33 @@ public class YAxis extends AxisBase {
     }
 
     /**
-     * Sets min value restriction for autoscale
+     * Returns true if autoscale restriction for axis min value is enabled
      */
-    public void setAutoScaleMinRestriction(float restrictionValue) {
-        mUseAutoScaleRestrictionMin = true;
-        mAutoScaleMinRestriction = restrictionValue;
+    public boolean isUseAutoScaleMinRestriction( ) {
+        return mUseAutoScaleRestrictionMin;
     }
 
     /**
-     * Sets max value restriction for autoscale
+     * Sets autoscale restriction for axis min value as enabled/disabled
      */
-    public void setAutoScaleMaxRestriction(float restrictionValue) {
-        mUseAutoScaleRestrictionMax = true;
-        mAutoScaleMaxRestriction = restrictionValue;
+    public void setUseAutoScaleMinRestriction( boolean isEnabled ) {
+        mUseAutoScaleRestrictionMin = isEnabled;
     }
 
     /**
-     * Resets min value restriction for autoscale
+     * Returns true if autoscale restriction for axis max value is enabled
      */
-    public void resetAutoScaleMinRestriction() {
-        mUseAutoScaleRestrictionMin = false;
+    public boolean isUseAutoScaleMaxRestriction() {
+        return mUseAutoScaleRestrictionMax;
     }
 
     /**
-     * Resets max value restriction for autoscale
+     * Sets autoscale restriction for axis max value as enabled/disabled
      */
-    public void resetAutoScaleMaxRestriction() {
-        mUseAutoScaleRestrictionMax = false;
+    public void setUseAutoScaleMaxRestriction( boolean isEnabled ) {
+        mUseAutoScaleRestrictionMax = isEnabled;
     }
+
 
     @Override
     public void calculate(float dataMin, float dataMax) {
@@ -416,15 +404,19 @@ public class YAxis extends AxisBase {
 
         // if custom, use value as is, else use data value
         if( mCustomAxisMin ) {
-            min = mAxisMinimum;
-        } else if( mUseAutoScaleRestrictionMin ) {
-            min = Math.min( min, mAutoScaleMinRestriction );
+            if( mUseAutoScaleRestrictionMin ) {
+                min = Math.min( dataMin, mAxisMinimum );
+            } else {
+                min = mAxisMinimum;
+            }
         }
 
         if( mCustomAxisMax ) {
-            max = mAxisMaximum;
-        } else if( mUseAutoScaleRestrictionMax ) {
-            max = Math.max( max, mAutoScaleMaxRestriction );
+            if( mUseAutoScaleRestrictionMax ) {
+                max = Math.max( max, mAxisMaximum );
+            } else {
+                max = mAxisMaximum;
+            }
         }
 
         // temporary range (before calculations)
