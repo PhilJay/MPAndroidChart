@@ -66,7 +66,7 @@ public class LargeValueFormatter implements IValueFormatter, IAxisValueFormatter
      * Set custom suffix to be appended after the values.
      * Default suffix: ["", "k", "m", "b", "t"]
      *
-     * @param suff new suffix
+     * @param suffix new suffix
      */
     public void setSuffix(String[] suffix) {
         this.mSuffix = suffix;
