@@ -130,9 +130,12 @@ public class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
             for (int i = 0; i < dataSets.size(); i++) {
 
                 IBubbleDataSet dataSet = dataSets.get(i);
-
-                if (!shouldDrawValues(dataSet))
+                if (dataSet.getEntryCount() == 0) {
                     continue;
+                }
+                if (!shouldDrawValues(dataSet)) {
+                    continue;
+                }
 
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet);
