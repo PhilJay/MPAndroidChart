@@ -542,9 +542,12 @@ public class LineChartRenderer extends LineRadarRenderer {
             for (int i = 0; i < dataSets.size(); i++) {
 
                 ILineDataSet dataSet = dataSets.get(i);
-
-                if (!shouldDrawValues(dataSet) || dataSet.getEntryCount() < 1)
+                if (dataSet.getEntryCount() == 0) {
                     continue;
+                }
+                if (!shouldDrawValues(dataSet) || dataSet.getEntryCount() < 1) {
+                    continue;
+                }
 
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet);
