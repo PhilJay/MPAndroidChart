@@ -37,7 +37,7 @@ public class HalfPieChartActivity extends DemoBase {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_piechart_half);
 
-        mChart = (PieChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
         mChart.setBackgroundColor(Color.WHITE);
 
         moveOffScreen();

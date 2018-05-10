@@ -149,7 +149,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
         MyAdapter adapter = new MyAdapter(this, objects);
 
-        ListView lv = (ListView) findViewById(R.id.listView1);
+        ListView lv = findViewById(R.id.listView1);
         lv.setAdapter(adapter);
 
         lv.setOnItemClickListener(this);

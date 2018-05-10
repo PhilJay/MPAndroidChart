@@ -44,10 +44,10 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_linechart);
 
-        tvX = (TextView) findViewById(R.id.tvXMax);
-        tvY = (TextView) findViewById(R.id.tvYMax);
-        mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
-        mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
+        tvX = findViewById(R.id.tvXMax);
+        tvY = findViewById(R.id.tvYMax);
+        mSeekBarX = findViewById(R.id.seekBar1);
+        mSeekBarY = findViewById(R.id.seekBar2);
 
         mSeekBarX.setProgress(45);
         mSeekBarY.setProgress(100);
@@ -55,7 +55,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         mSeekBarY.setOnSeekBarChangeListener(this);
         mSeekBarX.setOnSeekBarChangeListener(this);
 
-        mChart = (LineChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
 
         // no description text

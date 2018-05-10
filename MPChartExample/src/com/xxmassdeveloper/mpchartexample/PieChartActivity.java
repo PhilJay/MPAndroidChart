@@ -48,15 +48,15 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_piechart);
 
-        tvX = (TextView) findViewById(R.id.tvXMax);
-        tvY = (TextView) findViewById(R.id.tvYMax);
+        tvX = findViewById(R.id.tvXMax);
+        tvY = findViewById(R.id.tvYMax);
 
-        mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
-        mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
+        mSeekBarX = findViewById(R.id.seekBar1);
+        mSeekBarY = findViewById(R.id.seekBar2);
         mSeekBarX.setProgress(4);
         mSeekBarY.setProgress(10);
 
-        mChart = (PieChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
         mChart.setUsePercentValues(true);
         mChart.getDescription().setEnabled(false);
         mChart.setExtraOffsets(5, 10, 5, 5);

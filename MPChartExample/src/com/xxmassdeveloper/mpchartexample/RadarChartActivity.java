@@ -38,12 +38,12 @@ public class RadarChartActivity extends DemoBase {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_radarchart_noseekbar);
 
-        TextView tv = (TextView) findViewById(R.id.textView);
+        TextView tv = findViewById(R.id.textView);
         tv.setTypeface(mTfLight);
         tv.setTextColor(Color.WHITE);
         tv.setBackgroundColor(Color.rgb(60, 65, 82));
 
-        mChart = (RadarChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
         mChart.setBackgroundColor(Color.rgb(60, 65, 82));
 
         mChart.getDescription().setEnabled(false);

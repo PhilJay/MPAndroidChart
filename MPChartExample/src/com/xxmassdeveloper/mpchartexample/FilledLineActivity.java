@@ -31,7 +31,7 @@ public class FilledLineActivity extends DemoBase {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_linechart_noseekbar);
 
-        mChart = (LineChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
         mChart.setBackgroundColor(Color.WHITE);
         mChart.setGridBackgroundColor(mFillColor);
         mChart.setDrawGridBackground(true);

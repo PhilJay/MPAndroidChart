@@ -30,7 +30,7 @@ public class RealmDatabaseActivityBubble extends RealmBaseActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_bubblechart_noseekbar);
 
-        mChart = (BubbleChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
         setup(mChart);
 
         mChart.getXAxis().setDrawGridLines(false);

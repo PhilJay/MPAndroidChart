@@ -42,16 +42,16 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_scatterchart);
 
-        tvX = (TextView) findViewById(R.id.tvXMax);
-        tvY = (TextView) findViewById(R.id.tvYMax);
+        tvX = findViewById(R.id.tvXMax);
+        tvY = findViewById(R.id.tvYMax);
 
-        mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
+        mSeekBarX = findViewById(R.id.seekBar1);
         mSeekBarX.setOnSeekBarChangeListener(this);
 
-        mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
+        mSeekBarY = findViewById(R.id.seekBar2);
         mSeekBarY.setOnSeekBarChangeListener(this);
 
-        mChart = (ScatterChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
         mChart.getDescription().setEnabled(false);
         mChart.setOnChartValueSelectedListener(this);
 

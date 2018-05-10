@@ -29,7 +29,7 @@ public class SimpleChartDemo extends DemoBase {
         
         setContentView(R.layout.activity_awesomedesign);
 
-        ViewPager pager = (ViewPager) findViewById(R.id.pager);
+        ViewPager pager = findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);
         
         PageAdapter a = new PageAdapter(getSupportFragmentManager());

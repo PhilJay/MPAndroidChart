@@ -45,7 +45,7 @@ public class ListViewMultiChartActivity extends DemoBase {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_listview_chart);
         
-        ListView lv = (ListView) findViewById(R.id.listView1);
+        ListView lv = findViewById(R.id.listView1);
 
         ArrayList<ChartItem> list = new ArrayList<ChartItem>();
 

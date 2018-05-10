@@ -45,14 +45,14 @@ public class LineChartTime extends DemoBase implements OnSeekBarChangeListener {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_linechart_time);
 
-        tvX = (TextView) findViewById(R.id.tvXMax);
-        mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
+        tvX = findViewById(R.id.tvXMax);
+        mSeekBarX = findViewById(R.id.seekBar1);
         mSeekBarX.setProgress(100);
         tvX.setText("100");
 
         mSeekBarX.setOnSeekBarChangeListener(this);
 
-        mChart = (LineChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
 
         // no description text
         mChart.getDescription().setEnabled(false);

@@ -36,7 +36,7 @@ public class RealtimeLineChartActivity extends DemoBase implements
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_realtime_linechart);
 
-        mChart = (LineChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
 
         // enable description text

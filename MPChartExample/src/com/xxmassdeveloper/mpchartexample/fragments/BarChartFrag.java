@@ -60,7 +60,7 @@ public class BarChartFrag extends SimpleFragment implements OnChartGestureListen
         xAxis.setEnabled(false);
         
         // programatically add the chart
-        FrameLayout parent = (FrameLayout) v.findViewById(R.id.parentLayout);
+        FrameLayout parent = v.findViewById(R.id.parentLayout);
         parent.addView(mChart);
         
         return v;
