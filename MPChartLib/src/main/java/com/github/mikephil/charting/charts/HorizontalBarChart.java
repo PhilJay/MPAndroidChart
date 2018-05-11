@@ -159,23 +159,23 @@ public class HorizontalBarChart extends BarChart {
             offsetBottom += mAxisRight.getRequiredHeightSpace(mAxisRendererRight.getPaintAxisLabels());
         }
 
-        float xlabelwidth = mXAxis.mLabelRotatedWidth;
+        float xLabelWidth = mXAxis.mLabelWidth;
 
         if (mXAxis.isEnabled()) {
 
             // offsets for x-labels
             if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
 
-                offsetLeft += xlabelwidth;
+                offsetLeft += xLabelWidth;
 
             } else if (mXAxis.getPosition() == XAxisPosition.TOP) {
 
-                offsetRight += xlabelwidth;
+                offsetRight += xLabelWidth;
 
             } else if (mXAxis.getPosition() == XAxisPosition.BOTH_SIDED) {
 
-                offsetLeft += xlabelwidth;
-                offsetRight += xlabelwidth;
+                offsetLeft += xLabelWidth;
+                offsetRight += xLabelWidth;
             }
         }
 
