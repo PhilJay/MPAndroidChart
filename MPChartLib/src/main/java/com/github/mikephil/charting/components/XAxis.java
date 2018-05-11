@@ -25,18 +25,6 @@ public class XAxis extends AxisBase {
     public int mLabelHeight = 1;
 
     /**
-     * width of the (rotated) x-axis labels in pixels - this is automatically
-     * calculated by the computeSize() methods in the renderers
-     */
-    public int mLabelRotatedWidth = 1;
-
-    /**
-     * height of the (rotated) x-axis labels in pixels - this is automatically
-     * calculated by the computeSize() methods in the renderers
-     */
-    public int mLabelRotatedHeight = 1;
-
-    /**
      * This is the angle for drawing the X axis labels (in degrees)
      */
     protected float mLabelRotationAngle = 0f;

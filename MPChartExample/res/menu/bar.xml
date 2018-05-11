@@ -45,5 +45,10 @@
         android:id="@+id/actionToggleBarBorders"
         android:title="Show Bar Borders">
     </item>
+    <item
+        android:id="@+id/actionRotateXAxisLabelsBy45Deg"
+        android:title="rotate X Axis labels">
+
+    </item>
 
 </menu>
