@@ -28,7 +28,7 @@ public class PieChartFrag extends SimpleFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.frag_simple_pie, container, false);
         
-        mChart = (PieChart) v.findViewById(R.id.pieChart1);
+        mChart = v.findViewById(R.id.pieChart1);
         mChart.getDescription().setEnabled(false);
         
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf");

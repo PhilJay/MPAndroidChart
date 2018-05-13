@@ -26,7 +26,7 @@ public class ScrollViewActivity extends DemoBase {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_scrollview);
 
-        mChart = (BarChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
 
         mChart.getDescription().setEnabled(false);
 

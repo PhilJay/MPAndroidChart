@@ -47,7 +47,7 @@ public class PieChartItem extends ChartItem {
 
             convertView = LayoutInflater.from(c).inflate(
                     R.layout.list_item_piechart, null);
-            holder.chart = (PieChart) convertView.findViewById(R.id.chart);
+            holder.chart = convertView.findViewById(R.id.chart);
 
             convertView.setTag(holder);
 

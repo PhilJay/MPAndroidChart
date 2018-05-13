@@ -28,7 +28,7 @@ public class ScatterChartFrag extends SimpleFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.frag_simple_scatter, container, false);
         
-        mChart = (ScatterChart) v.findViewById(R.id.scatterChart1);
+        mChart = v.findViewById(R.id.scatterChart1);
         mChart.getDescription().setEnabled(false);
         
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"OpenSans-Light.ttf");

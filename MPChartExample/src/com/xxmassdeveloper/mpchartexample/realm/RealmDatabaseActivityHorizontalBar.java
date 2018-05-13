@@ -31,7 +31,7 @@ public class RealmDatabaseActivityHorizontalBar extends RealmBaseActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_horizontalbarchart_noseekbar);
 
-        mChart = (HorizontalBarChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
         setup(mChart);
 
         mChart.getAxisLeft().setAxisMinimum(0f);
