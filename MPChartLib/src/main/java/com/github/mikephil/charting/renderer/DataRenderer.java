@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
-import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.Entry;
@@ -14,7 +13,6 @@ import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
-import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -149,7 +147,12 @@ public abstract class DataRenderer extends Renderer {
      */
     public void drawValue(Canvas c, IValueFormatter formatter, float value, Entry entry, int dataSetIndex, float x, float y, int color) {
         mValuePaint.setColor(color);
-        c.drawText(formatter.getFormattedValue(value, entry, dataSetIndex, mViewPortHandler), x, y, mValuePaint);
+        int coefficient = value >= 0 ? -1 : 1;
+        String formattedValue = formatter.getFormattedValue(value, entry, dataSetIndex, mViewPortHandler);
+        String[] split = formattedValue.split("\n");
+        for (int i = 0; i < split.length; i++) {
+            c.drawText(split[i], x, y - (coefficient *(split.length - (i * Utils.convertDpToPixel(12)))), mValuePaint);
+        }
     }
 
     /**
