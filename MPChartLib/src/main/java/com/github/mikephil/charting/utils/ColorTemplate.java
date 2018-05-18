@@ -78,7 +78,14 @@ public class ColorTemplate {
         return Color.rgb(51, 181, 229);
     }
 
-    public static int getColorWithAlphaComponent(int color, int alpha) {
+    /**
+     * Sets the alpha component of the given color.
+     *
+     * @param color
+     * @param alpha 0 - 255
+     * @return
+     */
+    public static int colorWithAlpha(int color, int alpha) {
         return (color & 0xffffff) | ((alpha & 0xff) << 24);
     }
 

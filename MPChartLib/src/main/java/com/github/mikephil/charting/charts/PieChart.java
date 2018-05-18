@@ -328,7 +328,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
         List<IPieDataSet> dataSets = mData.getDataSets();
 
         for (int i = 0; i < dataSets.size(); i++) {
-            if (dataSets.get(i).getEntryForXValue(xIndex) != null)
+            if (dataSets.get(i).getEntryForXValue(xIndex, Float.NaN) != null)
                 return i;
         }
 

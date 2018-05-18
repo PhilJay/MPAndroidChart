@@ -39,7 +39,7 @@ public class BarChartItem extends ChartItem {
 
             convertView = LayoutInflater.from(c).inflate(
                     R.layout.list_item_barchart, null);
-            holder.chart = (BarChart) convertView.findViewById(R.id.chart);
+            holder.chart = convertView.findViewById(R.id.chart);
 
             convertView.setTag(holder);
 
@@ -48,7 +48,7 @@ public class BarChartItem extends ChartItem {
         }
 
         // apply styling
-        holder.chart.setDescription("");
+        holder.chart.getDescription().setEnabled(false);
         holder.chart.setDrawGridBackground(false);
         holder.chart.setDrawBarShadow(false);
 

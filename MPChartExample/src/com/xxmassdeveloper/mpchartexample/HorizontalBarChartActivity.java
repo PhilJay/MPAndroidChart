@@ -46,13 +46,13 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_horizontalbarchart);
 
-        tvX = (TextView) findViewById(R.id.tvXMax);
-        tvY = (TextView) findViewById(R.id.tvYMax);
+        tvX = findViewById(R.id.tvXMax);
+        tvY = findViewById(R.id.tvYMax);
 
-        mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
-        mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
+        mSeekBarX = findViewById(R.id.seekBar1);
+        mSeekBarY = findViewById(R.id.seekBar2);
 
-        mChart = (HorizontalBarChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
         // mChart.setHighlightEnabled(false);
 
@@ -60,7 +60,7 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
         mChart.setDrawValueAboveBar(true);
 
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
@@ -107,7 +107,10 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
         mSeekBarX.setOnSeekBarChangeListener(this);
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
         l.setFormSize(8f);
         l.setXEntrySpace(4f);
     }
@@ -130,6 +133,19 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
                     IBarDataSet set = (BarDataSet) iSet;
                     set.setDrawValues(!set.isDrawValuesEnabled());
+                }
+
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleIcons: {
+                List<IBarDataSet> sets = mChart.getData()
+                        .getDataSets();
+
+                for (IBarDataSet iSet : sets) {
+
+                    IBarDataSet set = (BarDataSet) iSet;
+                    set.setDrawIcons(!set.isDrawIconsEnabled());
                 }
 
                 mChart.invalidate();
@@ -220,7 +236,8 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
 
         for (int i = 0; i < count; i++) {
             float val = (float) (Math.random() * range);
-            yVals1.add(new BarEntry(i * spaceForBar, val));
+            yVals1.add(new BarEntry(i * spaceForBar, val,
+                    getResources().getDrawable(R.drawable.star)));
         }
 
         BarDataSet set1;
@@ -233,6 +250,8 @@ public class HorizontalBarChartActivity extends DemoBase implements OnSeekBarCha
             mChart.notifyDataSetChanged();
         } else {
             set1 = new BarDataSet(yVals1, "DataSet 1");
+
+            set1.setDrawIcons(false);
 
             ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
             dataSets.add(set1);

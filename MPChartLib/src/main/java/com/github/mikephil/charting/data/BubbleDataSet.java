@@ -41,18 +41,18 @@ public class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry
 
     @Override
     public DataSet<BubbleEntry> copy() {
-
-        List<BubbleEntry> yVals = new ArrayList<BubbleEntry>();
-
+        List<BubbleEntry> entries = new ArrayList<BubbleEntry>();
         for (int i = 0; i < mValues.size(); i++) {
-            yVals.add(mValues.get(i).copy());
+            entries.add(mValues.get(i).copy());
         }
-
-        BubbleDataSet copied = new BubbleDataSet(yVals, getLabel());
-        copied.mColors = mColors;
-        copied.mHighLightColor = mHighLightColor;
-
+        BubbleDataSet copied = new BubbleDataSet(entries, getLabel());
+        copy(copied);
         return copied;
+    }
+
+    protected void copy(BubbleDataSet bubbleDataSet) {
+        bubbleDataSet.mHighlightCircleWidth = mHighlightCircleWidth;
+        bubbleDataSet.mNormalizeSize = mNormalizeSize;
     }
 
     @Override

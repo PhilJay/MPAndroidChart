@@ -54,11 +54,11 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_linechart);
 
-        tvX = (TextView) findViewById(R.id.tvXMax);
-        tvY = (TextView) findViewById(R.id.tvYMax);
+        tvX = findViewById(R.id.tvXMax);
+        tvY = findViewById(R.id.tvYMax);
 
-        mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
-        mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
+        mSeekBarX = findViewById(R.id.seekBar1);
+        mSeekBarY = findViewById(R.id.seekBar2);
 
         mSeekBarX.setProgress(45);
         mSeekBarY.setProgress(100);
@@ -66,14 +66,13 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         mSeekBarY.setOnSeekBarChangeListener(this);
         mSeekBarX.setOnSeekBarChangeListener(this);
 
-        mChart = (LineChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
         mChart.setOnChartGestureListener(this);
         mChart.setOnChartValueSelectedListener(this);
         mChart.setDrawGridBackground(false);
 
         // no description text
-        mChart.setDescription("");
-        mChart.setNoDataTextDescription("You need to provide data for the chart.");
+        mChart.getDescription().setEnabled(false);
 
         // enable touch gestures
         mChart.setTouchEnabled(true);
@@ -157,7 +156,6 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         Legend l = mChart.getLegend();
 
         // modify the legend ...
-        // l.setPosition(LegendPosition.LEFT_OF_CHART);
         l.setForm(LegendForm.LINE);
 
         // // dont forget to refresh the drawing
@@ -187,6 +185,19 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
                     LineDataSet set = (LineDataSet) iSet;
                     set.setDrawValues(!set.isDrawValuesEnabled());
+                }
+
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleIcons: {
+                List<ILineDataSet> sets = mChart.getData()
+                        .getDataSets();
+
+                for (ILineDataSet iSet : sets) {
+
+                    LineDataSet set = (LineDataSet) iSet;
+                    set.setDrawIcons(!set.isDrawIconsEnabled());
                 }
 
                 mChart.invalidate();
@@ -291,7 +302,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
                 break;
             }
             case R.id.animateY: {
-                mChart.animateY(3000, Easing.EasingOption.EaseInCubic);
+                mChart.animateY(3000, Easing.EaseInCubic);
                 break;
             }
             case R.id.animateXY: {
@@ -344,7 +355,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         for (int i = 0; i < count; i++) {
 
             float val = (float) (Math.random() * range) + 3;
-            values.add(new Entry(i, val));
+            values.add(new Entry(i, val, getResources().getDrawable(R.drawable.star)));
         }
 
         LineDataSet set1;
@@ -358,6 +369,8 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
         } else {
             // create a dataset and give it a type
             set1 = new LineDataSet(values, "DataSet 1");
+
+            set1.setDrawIcons(false);
 
             // set the line to be drawn like this "- - - - - -"
             set1.enableDashedLine(10f, 5f, 0f);

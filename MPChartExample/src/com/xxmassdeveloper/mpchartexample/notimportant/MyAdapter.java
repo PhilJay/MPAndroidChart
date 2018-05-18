@@ -39,9 +39,9 @@ public class MyAdapter extends ArrayAdapter<ContentItem> {
             holder = new ViewHolder();
 
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, null);
-            holder.tvName = (TextView) convertView.findViewById(R.id.tvName);
-            holder.tvDesc = (TextView) convertView.findViewById(R.id.tvDesc);
-            holder.tvNew = (TextView) convertView.findViewById(R.id.tvNew);
+            holder.tvName = convertView.findViewById(R.id.tvName);
+            holder.tvDesc = convertView.findViewById(R.id.tvDesc);
+            holder.tvNew = convertView.findViewById(R.id.tvNew);
 
             convertView.setTag(holder);
 

@@ -9,6 +9,7 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.Layout;
 import android.text.StaticLayout;
@@ -125,19 +126,21 @@ public class PieChartRenderer extends DataRenderer {
         int width = (int) mViewPortHandler.getChartWidth();
         int height = (int) mViewPortHandler.getChartHeight();
 
-        if (mDrawBitmap == null
-                || (mDrawBitmap.get().getWidth() != width)
-                || (mDrawBitmap.get().getHeight() != height)) {
+        Bitmap drawBitmap = mDrawBitmap == null ? null : mDrawBitmap.get();
+
+        if (drawBitmap == null
+                || (drawBitmap.getWidth() != width)
+                || (drawBitmap.getHeight() != height)) {
 
             if (width > 0 && height > 0) {
-
-                mDrawBitmap = new WeakReference<Bitmap>(Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444));
-                mBitmapCanvas = new Canvas(mDrawBitmap.get());
+                drawBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
+                mDrawBitmap = new WeakReference<>(drawBitmap);
+                mBitmapCanvas = new Canvas(drawBitmap);
             } else
                 return;
         }
 
-        mDrawBitmap.get().eraseColor(Color.TRANSPARENT);
+        drawBitmap.eraseColor(Color.TRANSPARENT);
 
         PieData pieData = mChart.getData();
 
@@ -198,6 +201,9 @@ public class PieChartRenderer extends DataRenderer {
      * @return
      */
     protected float getSliceSpace(IPieDataSet dataSet) {
+
+        if (!dataSet.isAutomaticallyDisableSliceSpacingEnabled())
+            return dataSet.getSliceSpace();
 
         float spaceSizeRatio = dataSet.getSliceSpace() / mViewPortHandler.getSmallestContentExtension();
         float minValueRatio = dataSet.getYMin() / mChart.getData().getYValueSum() * 2;
@@ -266,7 +272,7 @@ public class PieChartRenderer extends DataRenderer {
                     float arcStartPointX = center.x + radius * (float) Math.cos(startAngleOuter * Utils.FDEG2RAD);
                     float arcStartPointY = center.y + radius * (float) Math.sin(startAngleOuter * Utils.FDEG2RAD);
 
-                    if (sweepAngleOuter % 360f <= Utils.FLOAT_EPSILON) {
+                    if (sweepAngleOuter >= 360.f && sweepAngleOuter % 360f <= Utils.FLOAT_EPSILON) {
                         // Android is doing "mod 360"
                         mPathBuffer.addCircle(center.x, center.y, radius, Path.Direction.CW);
                     } else {
@@ -315,7 +321,7 @@ public class PieChartRenderer extends DataRenderer {
                         }
                         final float endAngleInner = startAngleInner + sweepAngleInner;
 
-                        if (sweepAngleOuter % 360f == 0.f) {
+                        if (sweepAngleOuter >= 360.f && sweepAngleOuter % 360f <= Utils.FLOAT_EPSILON) {
                             // Android is doing "mod 360"
                             mPathBuffer.addCircle(center.x, center.y, innerRadius, Path.Direction.CCW);
                         } else {
@@ -332,7 +338,7 @@ public class PieChartRenderer extends DataRenderer {
                         }
                     } else {
 
-                        if (sweepAngleOuter % 360f != 0.f) {
+                        if (sweepAngleOuter % 360f > Utils.FLOAT_EPSILON) {
                             if (accountForSliceSpacing) {
 
                                 float angleMiddle = startAngleOuter + sweepAngleOuter / 2.f;
@@ -441,6 +447,10 @@ public class PieChartRenderer extends DataRenderer {
 
             final float sliceSpace = getSliceSpace(dataSet);
 
+            MPPointF iconsOffset = MPPointF.getInstance(dataSet.getIconsOffset());
+            iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
+            iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y);
+
             for (int j = 0; j < entryCount; j++) {
 
                 PieEntry entry = dataSet.getEntryForIndex(j);
@@ -528,6 +538,11 @@ public class PieChartRenderer extends DataRenderer {
                     }
 
                     if (dataSet.getValueLineColor() != ColorTemplate.COLOR_NONE) {
+
+                        if (dataSet.isUsingSliceColorAsValueLineColor()) {
+                            mValueLinePaint.setColor(dataSet.getColor(j));
+                        }
+
                         c.drawLine(pt0x, pt0y, pt1x, pt1y, mValueLinePaint);
                         c.drawLine(pt1x, pt1y, pt2x, pt2y, mValueLinePaint);
                     }
@@ -585,8 +600,27 @@ public class PieChartRenderer extends DataRenderer {
                     }
                 }
 
+                if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
+
+                    Drawable icon = entry.getIcon();
+
+                    float x = (labelRadius + iconsOffset.y) * sliceXBase + center.x;
+                    float y = (labelRadius + iconsOffset.y) * sliceYBase + center.y;
+                    y += iconsOffset.x;
+
+                    Utils.drawImage(
+                            c,
+                            icon,
+                            (int)x,
+                            (int)y,
+                            icon.getIntrinsicWidth(),
+                            icon.getIntrinsicHeight());
+                }
+
                 xIndex++;
             }
+
+            MPPointF.recycleInstance(iconsOffset);
         }
         MPPointF.recycleInstance(center);
         c.restore();
@@ -815,7 +849,7 @@ public class PieChartRenderer extends DataRenderer {
 
             mPathBuffer.reset();
 
-            if (sweepAngleOuter % 360f == 0.f) {
+            if (sweepAngleOuter >= 360.f && sweepAngleOuter % 360f <= Utils.FLOAT_EPSILON) {
                 // Android is doing "mod 360"
                 mPathBuffer.addCircle(center.x, center.y, highlightedRadius, Path.Direction.CW);
             } else {
@@ -872,7 +906,7 @@ public class PieChartRenderer extends DataRenderer {
                 }
                 final float endAngleInner = startAngleInner + sweepAngleInner;
 
-                if (sweepAngleOuter % 360f == 0.f) {
+                if (sweepAngleOuter >= 360.f && sweepAngleOuter % 360f <= Utils.FLOAT_EPSILON) {
                     // Android is doing "mod 360"
                     mPathBuffer.addCircle(center.x, center.y, innerRadius, Path.Direction.CCW);
                 } else {
@@ -889,7 +923,7 @@ public class PieChartRenderer extends DataRenderer {
                 }
             } else {
 
-                if (sweepAngleOuter % 360f != 0.f) {
+                if (sweepAngleOuter % 360f > Utils.FLOAT_EPSILON) {
 
                     if (accountForSliceSpacing) {
                         final float angleMiddle = startAngleOuter + sweepAngleOuter / 2.f;
@@ -983,7 +1017,10 @@ public class PieChartRenderer extends DataRenderer {
             mBitmapCanvas = null;
         }
         if (mDrawBitmap != null) {
-            mDrawBitmap.get().recycle();
+            Bitmap drawBitmap = mDrawBitmap.get();
+            if (drawBitmap != null) {
+                drawBitmap.recycle();
+            }
             mDrawBitmap.clear();
             mDrawBitmap = null;
         }

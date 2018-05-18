@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xxmassdeveloper.mpchartexample"
-    android:versionCode="52"
-    android:versionName="3.0.0" >
+    android:versionCode="55"
+    android:versionName="3.0.2" >
 
     <uses-sdk
         android:minSdkVersion="16"
-        android:targetSdkVersion="23" />
+        android:targetSdkVersion="25" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
@@ -44,7 +44,7 @@
         <activity android:name="InvertedLineChartActivity"></activity>
         <activity android:name="CandleStickChartActivity"></activity>
         <activity android:name="CubicLineChartActivity"></activity>
-        <activity android:name="RadarChartActivitry"></activity>
+        <activity android:name="RadarChartActivity"></activity>
         <activity android:name="LineChartActivityColored"></activity>
         <activity android:name="DynamicalAddingActivity"></activity>
         <activity android:name=".realm.RealmDatabaseActivityLine"></activity>

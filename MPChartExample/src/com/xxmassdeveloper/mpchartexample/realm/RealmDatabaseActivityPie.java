@@ -32,7 +32,7 @@ public class RealmDatabaseActivityPie extends RealmBaseActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_piechart_noseekbar);
 
-        mChart = (PieChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
         setup(mChart);
 
         mChart.setCenterText(generateCenterSpannableText());
@@ -53,8 +53,7 @@ public class RealmDatabaseActivityPie extends RealmBaseActivity {
 
         RealmResults<RealmDemoData> result = mRealm.where(RealmDemoData.class).findAll();
 
-        //RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "stackValues", "xIndex"); // normal entries
-        RealmPieDataSet<RealmDemoData> set = new RealmPieDataSet<RealmDemoData>(result, "yValue", "label"); // stacked entries
+        RealmPieDataSet<RealmDemoData> set = new RealmPieDataSet<RealmDemoData>(result, "yValue", "label");
         set.setColors(ColorTemplate.VORDIPLOM_COLORS);
         set.setLabel("Example market share");
         set.setSliceSpace(2);

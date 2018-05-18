@@ -338,7 +338,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
         if (highlight.getDataSetIndex() >= mDataSets.size())
             return null;
         else {
-            return mDataSets.get(highlight.getDataSetIndex()).getEntryForXValue(highlight.getX());
+            return mDataSets.get(highlight.getDataSetIndex()).getEntryForXValue(highlight.getX(), highlight.getY());
         }
     }
 
@@ -550,7 +550,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
             return false;
 
         IDataSet dataSet = mDataSets.get(dataSetIndex);
-        Entry e = dataSet.getEntryForXValue(xValue);
+        Entry e = dataSet.getEntryForXValue(xValue, Float.NaN);
 
         if (e == null)
             return false;
@@ -575,7 +575,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> {
             T set = mDataSets.get(i);
 
             for (int j = 0; j < set.getEntryCount(); j++) {
-                if (e.equalTo(set.getEntryForXValue(e.getX())))
+                if (e.equalTo(set.getEntryForXValue(e.getX(), e.getY())))
                     return set;
             }
         }

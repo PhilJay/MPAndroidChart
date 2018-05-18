@@ -39,7 +39,7 @@ import com.xxmassdeveloper.mpchartexample.PerformanceLineChart;
 import com.xxmassdeveloper.mpchartexample.PieChartActivity;
 import com.xxmassdeveloper.mpchartexample.PiePolylineChartActivity;
 import com.xxmassdeveloper.mpchartexample.R;
-import com.xxmassdeveloper.mpchartexample.RadarChartActivitry;
+import com.xxmassdeveloper.mpchartexample.RadarChartActivity;
 import com.xxmassdeveloper.mpchartexample.RealtimeLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.ScatterChartActivity;
 import com.xxmassdeveloper.mpchartexample.ScrollViewActivity;
@@ -90,7 +90,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 "A bar chart with multiple DataSet objects. One multiple colors per DataSet."));
         objects.add(new ContentItem(
                 "Charts in ViewPager Fragments",
-                "Demonstration of charts inside ViewPager Fragments. In this example the focus was on the design and look and feel of the chart."));
+                "Demonstration of charts inside ViewPager Fragments. In this example the focus was on the design and look and feel of the" +
+                        " chart."));
         objects.add(new ContentItem(
                 "BarChart inside ListView",
                 "Demonstrates the usage of a BarChart inside a ListView item."));
@@ -135,12 +136,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 "Realm.io Database",
                 "This demonstrates how to use this library with Realm.io mobile database.");
         objects.add(realm);
-
-        ContentItem time = new ContentItem(
+        objects.add(new ContentItem(
                 "Time Chart",
-                "Simple demonstration of a time-chart. This chart draws one line entry per hour originating from the current time in milliseconds.");
-        time.isNew = true;
-        objects.add(time);
+                "Simple demonstration of a time-chart. This chart draws one line entry per hour originating from the current time in " +
+                        "milliseconds."));
         objects.add(new ContentItem(
                 "Filled LineChart",
                 "This demonstrates how to fill an area between two LineDataSets."));
@@ -150,7 +149,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
         MyAdapter adapter = new MyAdapter(this, objects);
 
-        ListView lv = (ListView) findViewById(R.id.listView1);
+        ListView lv = findViewById(R.id.listView1);
         lv.setAdapter(adapter);
 
         lv.setOnItemClickListener(this);
@@ -243,7 +242,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
                 startActivity(i);
                 break;
             case 20:
-                i = new Intent(this, RadarChartActivitry.class);
+                i = new Intent(this, RadarChartActivity.class);
                 startActivity(i);
                 break;
             case 21:

@@ -137,12 +137,14 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         mAxisLabelPaint.setTextSize(mYAxis.getTextSize());
         mAxisLabelPaint.setColor(mYAxis.getTextColor());
 
-        for (int i = 0; i < mYAxis.mEntryCount; i++) {
+        final int from = mYAxis.isDrawBottomYLabelEntryEnabled() ? 0 : 1;
+        final int to = mYAxis.isDrawTopYLabelEntryEnabled()
+                ? mYAxis.mEntryCount
+                : (mYAxis.mEntryCount - 1);
+
+        for (int i = from; i < to; i++) {
 
             String text = mYAxis.getFormattedLabel(i);
-
-            if (!mYAxis.isDrawTopYLabelEntryEnabled() && i >= mYAxis.mEntryCount - 1)
-                return;
 
             c.drawText(text, positions[i * 2], fixedPosition - offset, mAxisLabelPaint);
         }
@@ -168,7 +170,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
     @Override
     public RectF getGridClippingRect() {
         mGridClippingRect.set(mViewPortHandler.getContentRect());
-        mGridClippingRect.inset(-mAxis.getGridLineWidth() / 2.f, 0.f);
+        mGridClippingRect.inset(-mAxis.getGridLineWidth(), 0.f);
         return mGridClippingRect;
     }
 
@@ -186,6 +188,11 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
     @Override
     protected void drawZeroLine(Canvas c) {
 
+        int clipRestoreCount = c.save();
+        mZeroLineClippingRect.set(mViewPortHandler.getContentRect());
+        mZeroLineClippingRect.inset(-mYAxis.getZeroLineWidth(), 0.f);
+        c.clipRect(mLimitLineClippingRect);
+
         // draw zero line
         MPPointD pos = mTrans.getPixelForValues(0f, 0f);
 
@@ -200,6 +207,8 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
 
         // draw a path because lines don't support dashing on lower android versions
         c.drawPath(zeroLinePath, mZeroLinePaint);
+
+        c.restoreToCount(clipRestoreCount);
     }
 
     protected Path mRenderLimitLinesPathBuffer = new Path();
@@ -235,7 +244,7 @@ public class YAxisRendererHorizontalBarChart extends YAxisRenderer {
 
             int clipRestoreCount = c.save();
             mLimitLineClippingRect.set(mViewPortHandler.getContentRect());
-            mLimitLineClippingRect.inset(-l.getLineWidth() / 2.f, 0.f);
+            mLimitLineClippingRect.inset(-l.getLineWidth(), 0.f);
             c.clipRect(mLimitLineClippingRect);
 
             pts[0] = l.getLimit();

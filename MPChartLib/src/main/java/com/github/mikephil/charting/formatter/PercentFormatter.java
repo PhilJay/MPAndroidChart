@@ -43,7 +43,6 @@ public class PercentFormatter implements IValueFormatter, IAxisValueFormatter
         return mFormat.format(value) + " %";
     }
 
-    @Override
     public int getDecimalDigits() {
         return 1;
     }

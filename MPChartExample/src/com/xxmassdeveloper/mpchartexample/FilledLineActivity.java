@@ -31,7 +31,7 @@ public class FilledLineActivity extends DemoBase {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_linechart_noseekbar);
 
-        mChart = (LineChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
         mChart.setBackgroundColor(Color.WHITE);
         mChart.setGridBackgroundColor(mFillColor);
         mChart.setDrawGridBackground(true);
@@ -39,7 +39,7 @@ public class FilledLineActivity extends DemoBase {
         mChart.setDrawBorders(true);
 
         // no description text
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
 
         // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(false);

@@ -25,9 +25,9 @@ public class ComplexityFragment extends SimpleFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.frag_simple_line, container, false);
         
-        mChart = (LineChart) v.findViewById(R.id.lineChart1);
-        
-        mChart.setDescription("");
+        mChart = v.findViewById(R.id.lineChart1);
+
+        mChart.getDescription().setEnabled(false);
 
         mChart.setDrawGridBackground(false);
         

@@ -37,13 +37,13 @@ public class HalfPieChartActivity extends DemoBase {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_piechart_half);
 
-        mChart = (PieChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
         mChart.setBackgroundColor(Color.WHITE);
 
         moveOffScreen();
 
         mChart.setUsePercentValues(true);
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
 
         mChart.setCenterTextTypeface(mTfLight);
         mChart.setCenterText(generateCenterSpannableText());
@@ -68,10 +68,13 @@ public class HalfPieChartActivity extends DemoBase {
 
         setData(4, 100);
 
-        mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
+        mChart.animateY(1400, Easing.EaseInOutQuad);
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.ABOVE_CHART_CENTER);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
         l.setXEntrySpace(7f);
         l.setYEntrySpace(0f);
         l.setYOffset(0f);

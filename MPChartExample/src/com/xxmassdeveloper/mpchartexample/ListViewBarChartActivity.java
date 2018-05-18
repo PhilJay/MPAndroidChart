@@ -41,7 +41,7 @@ public class ListViewBarChartActivity extends DemoBase {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_listview_chart);
         
-        ListView lv = (ListView) findViewById(R.id.listView1);
+        ListView lv = findViewById(R.id.listView1);
 
         ArrayList<BarData> list = new ArrayList<BarData>();
 
@@ -73,7 +73,7 @@ public class ListViewBarChartActivity extends DemoBase {
 
                 convertView = LayoutInflater.from(getContext()).inflate(
                         R.layout.list_item_barchart, null);
-                holder.chart = (BarChart) convertView.findViewById(R.id.chart);
+                holder.chart = convertView.findViewById(R.id.chart);
 
                 convertView.setTag(holder);
 
@@ -84,7 +84,7 @@ public class ListViewBarChartActivity extends DemoBase {
             // apply styling
             data.setValueTypeface(mTfLight);
             data.setValueTextColor(Color.BLACK);
-            holder.chart.setDescription("");
+            holder.chart.getDescription().setEnabled(false);
             holder.chart.setDrawGridBackground(false);
 
             XAxis xAxis = holder.chart.getXAxis();

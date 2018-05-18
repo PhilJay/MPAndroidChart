@@ -46,10 +46,10 @@ public class StackedBarActivityNegative extends DemoBase implements
 
         setTitle("Age Distribution Austria");
 
-        mChart = (HorizontalBarChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
         mChart.setDrawGridBackground(false);
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
 
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
@@ -85,15 +85,13 @@ public class StackedBarActivityNegative extends DemoBase implements
             public String getFormattedValue(float value, AxisBase axis) {
                 return format.format(value) + "-" + format.format(value + 10);
             }
-
-            @Override
-            public int getDecimalDigits() {
-                return 0;
-            }
         });
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.BELOW_CHART_RIGHT);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
         l.setFormSize(8f);
         l.setFormToTextSpace(4f);
         l.setXEntrySpace(6f);
@@ -105,6 +103,7 @@ public class StackedBarActivityNegative extends DemoBase implements
         yValues.add(new BarEntry(25, new float[]{ -15, 15 }));
         yValues.add(new BarEntry(35, new float[]{ -17, 17 }));
         yValues.add(new BarEntry(45, new float[]{ -19, 20 }));
+        yValues.add(new BarEntry(45, new float[]{ -19, 20 }, getResources().getDrawable(R.drawable.star)));
         yValues.add(new BarEntry(55, new float[]{ -19, 19 }));
         yValues.add(new BarEntry(65, new float[]{ -16, 16 }));
         yValues.add(new BarEntry(75, new float[]{ -13, 14 }));
@@ -113,6 +112,7 @@ public class StackedBarActivityNegative extends DemoBase implements
         yValues.add(new BarEntry(105, new float[]{ -1, 2 }));
 
         BarDataSet set = new BarDataSet(yValues, "Age Distribution");
+        set.setDrawIcons(false);
         set.setValueFormatter(new CustomFormatter());
         set.setValueTextSize(7f);
         set.setAxisDependency(YAxis.AxisDependency.RIGHT);
@@ -147,6 +147,19 @@ public class StackedBarActivityNegative extends DemoBase implements
 
                     BarDataSet set = (BarDataSet) iSet;
                     set.setDrawValues(!set.isDrawValuesEnabled());
+                }
+
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleIcons: {
+                List<IBarDataSet> sets = mChart.getData()
+                        .getDataSets();
+
+                for (IBarDataSet iSet : sets) {
+
+                    BarDataSet set = (BarDataSet) iSet;
+                    set.setDrawIcons(!set.isDrawIconsEnabled());
                 }
 
                 mChart.invalidate();
@@ -239,11 +252,6 @@ public class StackedBarActivityNegative extends DemoBase implements
         @Override
         public String getFormattedValue(float value, AxisBase axis) {
             return mFormat.format(Math.abs(value)) + "m";
-        }
-
-        @Override
-        public int getDecimalDigits() {
-            return 0;
         }
     }
 }

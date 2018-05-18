@@ -6,6 +6,10 @@
         android:title="Toggle Y-Values">
     </item>
     <item
+        android:id="@+id/actionToggleIcons"
+        android:title="Toggle Icons">
+    </item>
+    <item
         android:id="@+id/actionToggleXVals"
         android:title="Toggle X-Values">
     </item>

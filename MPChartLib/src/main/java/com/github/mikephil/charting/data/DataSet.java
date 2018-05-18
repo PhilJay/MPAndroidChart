@@ -83,8 +83,8 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         mYMax = -Float.MAX_VALUE;
         mYMin = Float.MAX_VALUE;
 
-        int indexFrom = getEntryIndex(fromX, Rounding.DOWN);
-        int indexTo = getEntryIndex(toX, Rounding.UP);
+        int indexFrom = getEntryIndex(fromX, Float.NaN, Rounding.DOWN);
+        int indexTo = getEntryIndex(toX, Float.NaN, Rounding.UP);
 
         for (int i = indexFrom; i <= indexTo; i++) {
 
@@ -157,6 +157,14 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
      */
     public abstract DataSet<T> copy();
 
+    /**
+     *
+     * @param dataSet
+     */
+    protected void copy(DataSet dataSet) {
+        super.copy(dataSet);
+    }
+
     @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer();
@@ -213,7 +221,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         calcMinMax(e);
 
         if (mValues.size() > 0 && mValues.get(mValues.size() - 1).getX() > e.getX()) {
-            int closestIndex = getEntryIndex(e.getX(), Rounding.UP);
+            int closestIndex = getEntryIndex(e.getX(), e.getY(), Rounding.UP);
             mValues.add(closestIndex, e);
         } else {
             mValues.add(e);
@@ -268,17 +276,17 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     @Override
-    public T getEntryForXValue(float xValue, Rounding rounding) {
+    public T getEntryForXValue(float xValue, float closestToY, Rounding rounding) {
 
-        int index = getEntryIndex(xValue, rounding);
+        int index = getEntryIndex(xValue, closestToY, rounding);
         if (index > -1)
             return mValues.get(index);
         return null;
     }
 
     @Override
-    public T getEntryForXValue(float xValue) {
-        return getEntryForXValue(xValue, Rounding.CLOSEST);
+    public T getEntryForXValue(float xValue, float closestToY) {
+        return getEntryForXValue(xValue, closestToY, Rounding.CLOSEST);
     }
 
     @Override
@@ -287,51 +295,90 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     @Override
-    public int getEntryIndex(float xValue, Rounding rounding) {
+    public int getEntryIndex(float xValue, float closestToY, Rounding rounding) {
 
         if (mValues == null || mValues.isEmpty())
             return -1;
 
         int low = 0;
         int high = mValues.size() - 1;
+        int closest = high;
 
         while (low < high) {
             int m = (low + high) / 2;
 
-            float d1 = Math.abs(mValues.get(m).getX() - xValue);
-            float d2 = Math.abs(mValues.get(m + 1).getX() - xValue);
+            final float d1 = mValues.get(m).getX() - xValue,
+                    d2 = mValues.get(m + 1).getX() - xValue,
+                    ad1 = Math.abs(d1), ad2 = Math.abs(d2);
 
-            if (d2 <= d1) {
+            if (ad2 < ad1) {
+                // [m + 1] is closer to xValue
+                // Search in an higher place
                 low = m + 1;
-            } else {
+            } else if (ad1 < ad2) {
+                // [m] is closer to xValue
+                // Search in a lower place
                 high = m;
+            } else {
+                // We have multiple sequential x-value with same distance
+
+                if (d1 >= 0.0) {
+                    // Search in a lower place
+                    high = m;
+                } else if (d1 < 0.0) {
+                    // Search in an higher place
+                    low = m + 1;
+                }
             }
+
+            closest = high;
         }
 
-        if (high != -1) {
-            float closestXValue = mValues.get(high).getX();
+        if (closest != -1) {
+            float closestXValue = mValues.get(closest).getX();
             if (rounding == Rounding.UP) {
-                if (closestXValue < xValue && high < mValues.size() - 1) {
-                    ++high;
+                // If rounding up, and found x-value is lower than specified x, and we can go upper...
+                if (closestXValue < xValue && closest < mValues.size() - 1) {
+                    ++closest;
                 }
             } else if (rounding == Rounding.DOWN) {
-                if (closestXValue > xValue && high > 0) {
-                    --high;
+                // If rounding down, and found x-value is upper than specified x, and we can go lower...
+                if (closestXValue > xValue && closest > 0) {
+                    --closest;
                 }
+            }
+
+            // Search by closest to y-value
+            if (!Float.isNaN(closestToY)) {
+                while (closest > 0 && mValues.get(closest - 1).getX() == closestXValue)
+                    closest -= 1;
+
+                float closestYValue = mValues.get(closest).getY();
+                int closestYIndex = closest;
+
+                while (true) {
+                    closest += 1;
+                    if (closest >= mValues.size())
+                        break;
+
+                    final Entry value = mValues.get(closest);
+
+                    if (value.getX() != closestXValue)
+                        break;
+
+                    if (Math.abs(value.getY() - closestToY) < Math.abs(closestYValue - closestToY)) {
+                        closestYValue = closestToY;
+                        closestYIndex = closest;
+                    }
+                }
+
+                closest = closestYIndex;
             }
         }
 
-        return high;
+        return closest;
     }
 
-    /**
-     * Returns all Entry objects at the given xIndex. INFORMATION: This method
-     * does calculations at runtime. Do not over-use in performance critical
-     * situations.
-     *
-     * @param xValue
-     * @return
-     */
     @Override
     public List<T> getEntriesForXValue(float xValue) {
 
@@ -344,11 +391,14 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
             int m = (high + low) / 2;
             T entry = mValues.get(m);
 
+            // if we have a match
             if (xValue == entry.getX()) {
                 while (m > 0 && mValues.get(m - 1).getX() == xValue)
                     m--;
 
                 high = mValues.size();
+
+                // loop over all "equal" entries
                 for (; m < high; m++) {
                     entry = mValues.get(m);
                     if (entry.getX() == xValue) {
@@ -372,7 +422,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
     /**
      * Determines how to round DataSet index values for
-     * {@link DataSet#getEntryIndex(float, Rounding)} DataSet.getEntryIndex()}
+     * {@link DataSet#getEntryIndex(float, float, Rounding)} DataSet.getEntryIndex()}
      * when an exact x-index is not found.
      */
     public enum Rounding {

@@ -48,8 +48,8 @@ public class CombinedChartActivity extends DemoBase {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_combined);
 
-        mChart = (CombinedChart) findViewById(R.id.chart1);
-        mChart.setDescription("");
+        mChart = findViewById(R.id.chart1);
+        mChart.getDescription().setEnabled(false);
         mChart.setBackgroundColor(Color.WHITE);
         mChart.setDrawGridBackground(false);
         mChart.setDrawBarShadow(false);
@@ -62,7 +62,10 @@ public class CombinedChartActivity extends DemoBase {
 
         Legend l = mChart.getLegend();
         l.setWordWrapEnabled(true);
-        l.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
@@ -80,11 +83,6 @@ public class CombinedChartActivity extends DemoBase {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
                 return mMonths[(int) value % mMonths.length];
-            }
-
-            @Override
-            public int getDecimalDigits() {
-                return 0;
             }
         });
 

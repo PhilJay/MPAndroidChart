@@ -4,14 +4,15 @@ apply plugin: 'maven'
 //apply plugin: 'realm-android'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '23.0.3'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
     // resourcePrefix 'mpcht'
     defaultConfig {
+        //noinspection MinSdkTooLow
         minSdkVersion 9
-        targetSdkVersion 23
+        targetSdkVersion 27
         versionCode 3
-        versionName '3.0.0'
+        versionName '3.0.3'
     }
     buildTypes {
         release {
@@ -34,19 +35,18 @@ repositories {
 }
 
 dependencies {
-    //compile fileTree(dir: 'libs', include: ['*.jar'])
-    //compile 'com.android.support:support-v4:19.+'
     //provided 'io.realm:realm-android:0.87.5' // "optional" dependency to realm-database API
-    testCompile 'junit:junit:4.12'
-    testCompile "org.mockito:mockito-core:1.9.5"
+    implementation 'com.android.support:support-annotations:27.1.1'
+    testImplementation 'junit:junit:4.12'
+    testImplementation "org.mockito:mockito-core:1.10.19"
 }
 
 android.libraryVariants.all { variant ->
     def name = variant.buildType.name
     def task = project.tasks.create "jar${name.capitalize()}", Jar
-    task.dependsOn variant.javaCompile
-    task.from variant.javaCompile.destinationDir
-    artifacts.add('archives', task);
+    task.dependsOn variant.javaCompiler
+    task.from variant.javaCompiler.destinationDir
+    artifacts.add('archives', task)
 }
 
 task sourcesJar(type: Jar) {
@@ -55,6 +55,7 @@ task sourcesJar(type: Jar) {
 }
 
 task javadoc(type: Javadoc) {
+    options.charSet = 'UTF-8'
     failOnError  false
     source = android.sourceSets.main.java.sourceFiles
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))

@@ -29,7 +29,7 @@ public class XYMarkerView extends MarkerView {
         super(context, R.layout.custom_marker_view);
 
         this.xAxisValueFormatter = xAxisValueFormatter;
-        tvContent = (TextView) findViewById(R.id.tvContent);
+        tvContent = findViewById(R.id.tvContent);
         format = new DecimalFormat("###.0");
     }
 

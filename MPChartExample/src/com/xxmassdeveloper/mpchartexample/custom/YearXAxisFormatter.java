@@ -24,9 +24,4 @@ public class YearXAxisFormatter implements IAxisValueFormatter
         float percent = value / axis.mAxisRange;
         return mMonths[(int) (mMonths.length * percent)];
     }
-
-    @Override
-    public int getDecimalDigits() {
-        return 0;
-    }
 }

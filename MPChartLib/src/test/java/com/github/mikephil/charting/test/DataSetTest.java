@@ -150,32 +150,89 @@ public class DataSetTest {
 
         ScatterDataSet set = new ScatterDataSet(entries, "");
 
-        Entry closest = set.getEntryForXValue(17, DataSet.Rounding.CLOSEST);
+        Entry closest = set.getEntryForXValue(17, Float.NaN, DataSet.Rounding.CLOSEST);
         assertEquals(15, closest.getX(), 0.01f);
         assertEquals(5, closest.getY(), 0.01f);
 
-        closest = set.getEntryForXValue(17, DataSet.Rounding.DOWN);
+        closest = set.getEntryForXValue(17, Float.NaN, DataSet.Rounding.DOWN);
         assertEquals(15, closest.getX(), 0.01f);
         assertEquals(5, closest.getY(), 0.01f);
 
-        closest = set.getEntryForXValue(15, DataSet.Rounding.DOWN);
+        closest = set.getEntryForXValue(15, Float.NaN, DataSet.Rounding.DOWN);
         assertEquals(15, closest.getX(), 0.01f);
         assertEquals(5, closest.getY(), 0.01f);
 
-        closest = set.getEntryForXValue(14, DataSet.Rounding.DOWN);
+        closest = set.getEntryForXValue(14, Float.NaN, DataSet.Rounding.DOWN);
         assertEquals(10, closest.getX(), 0.01f);
         assertEquals(10, closest.getY(), 0.01f);
 
-        closest = set.getEntryForXValue(17, DataSet.Rounding.UP);
+        closest = set.getEntryForXValue(17, Float.NaN, DataSet.Rounding.UP);
         assertEquals(21, closest.getX(), 0.01f);
         assertEquals(5, closest.getY(), 0.01f);
 
-        closest = set.getEntryForXValue(21, DataSet.Rounding.UP);
+        closest = set.getEntryForXValue(21, Float.NaN, DataSet.Rounding.UP);
         assertEquals(21, closest.getX(), 0.01f);
         assertEquals(5, closest.getY(), 0.01f);
 
-        closest = set.getEntryForXValue(21, DataSet.Rounding.CLOSEST);
+        closest = set.getEntryForXValue(21, Float.NaN, DataSet.Rounding.CLOSEST);
         assertEquals(21, closest.getX(), 0.01f);
         assertEquals(5, closest.getY(), 0.01f);
+    }
+
+    @Test
+    public void testGetEntryForXValueWithDuplicates() {
+
+        // sorted list of values (by x position)
+        List<Entry> values = new ArrayList<Entry>();
+        values.add(new Entry(0, 10));
+        values.add(new Entry(1, 20));
+        values.add(new Entry(2, 30));
+        values.add(new Entry(3, 40));
+        values.add(new Entry(3, 50)); // duplicate
+        values.add(new Entry(4, 60));
+        values.add(new Entry(4, 70)); // duplicate
+        values.add(new Entry(5, 80));
+        values.add(new Entry(6, 90));
+        values.add(new Entry(7, 100));
+        values.add(new Entry(8, 110));
+        values.add(new Entry(8, 120)); // duplicate
+
+        ScatterDataSet set = new ScatterDataSet(values, "");
+
+        Entry closest = set.getEntryForXValue(0, Float.NaN, DataSet.Rounding.CLOSEST);
+        assertEquals(0, closest.getX(), 0.01f);
+        assertEquals(10, closest.getY(), 0.01f);
+
+        closest = set.getEntryForXValue(5, Float.NaN, DataSet.Rounding.CLOSEST);
+        assertEquals(5, closest.getX(), 0.01f);
+        assertEquals(80, closest.getY(), 0.01f);
+
+        closest = set.getEntryForXValue(5.4f, Float.NaN, DataSet.Rounding.CLOSEST);
+        assertEquals(5, closest.getX(), 0.01f);
+        assertEquals(80, closest.getY(), 0.01f);
+
+        closest = set.getEntryForXValue(4.6f, Float.NaN, DataSet.Rounding.CLOSEST);
+        assertEquals(5, closest.getX(), 0.01f);
+        assertEquals(80, closest.getY(), 0.01f);
+
+        closest = set.getEntryForXValue(7, Float.NaN, DataSet.Rounding.CLOSEST);
+        assertEquals(7, closest.getX(), 0.01f);
+        assertEquals(100, closest.getY(), 0.01f);
+
+        closest = set.getEntryForXValue(4f, Float.NaN, DataSet.Rounding.CLOSEST);
+        assertEquals(4, closest.getX(), 0.01f);
+        assertEquals(60, closest.getY(), 0.01f);
+
+        List<Entry> entries = set.getEntriesForXValue(4f);
+        assertEquals(2, entries.size());
+        assertEquals(60, entries.get(0).getY(), 0.01f);
+        assertEquals(70, entries.get(1).getY(), 0.01f);
+
+        entries = set.getEntriesForXValue(3.5f);
+        assertEquals(0, entries.size());
+
+        entries = set.getEntriesForXValue(2f);
+        assertEquals(1, entries.size());
+        assertEquals(30, entries.get(0).getY(), 0.01f);
     }
 }

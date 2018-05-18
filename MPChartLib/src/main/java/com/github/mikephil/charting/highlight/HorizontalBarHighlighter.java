@@ -8,6 +8,9 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.MPPointD;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Philipp Jahoda on 22/07/15.
  */
@@ -43,13 +46,36 @@ public class HorizontalBarHighlighter extends BarHighlighter {
 	}
 
 	@Override
-	protected Highlight buildHighlight(IDataSet set, int dataSetIndex, float xVal, DataSet.Rounding rounding) {
+	protected List<Highlight> buildHighlights(IDataSet set, int dataSetIndex, float xVal, DataSet.Rounding rounding) {
 
-		final Entry e = set.getEntryForXValue(xVal, rounding);
+		ArrayList<Highlight> highlights = new ArrayList<>();
 
-		MPPointD pixels = mChart.getTransformer(set.getAxisDependency()).getPixelForValues(e.getY(), e.getX());
+		//noinspection unchecked
+		List<Entry> entries = set.getEntriesForXValue(xVal);
+		if (entries.size() == 0) {
+			// Try to find closest x-value and take all entries for that x-value
+			final Entry closest = set.getEntryForXValue(xVal, Float.NaN, rounding);
+			if (closest != null)
+			{
+				//noinspection unchecked
+				entries = set.getEntriesForXValue(closest.getX());
+			}
+		}
 
-		return new Highlight(e.getX(), e.getY(), (float) pixels.x, (float) pixels.y, dataSetIndex, set.getAxisDependency());
+		if (entries.size() == 0)
+			return highlights;
+
+		for (Entry e : entries) {
+			MPPointD pixels = mChart.getTransformer(
+					set.getAxisDependency()).getPixelForValues(e.getY(), e.getX());
+
+			highlights.add(new Highlight(
+					e.getX(), e.getY(),
+					(float) pixels.x, (float) pixels.y,
+					dataSetIndex, set.getAxisDependency()));
+		}
+
+		return highlights;
 	}
 
 	@Override

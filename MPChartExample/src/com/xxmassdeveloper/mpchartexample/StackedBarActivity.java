@@ -44,19 +44,19 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_barchart);
 
-        tvX = (TextView) findViewById(R.id.tvXMax);
-        tvY = (TextView) findViewById(R.id.tvYMax);
+        tvX = findViewById(R.id.tvXMax);
+        tvY = findViewById(R.id.tvYMax);
 
-        mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
+        mSeekBarX = findViewById(R.id.seekBar1);
         mSeekBarX.setOnSeekBarChangeListener(this);
 
-        mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
+        mSeekBarY = findViewById(R.id.seekBar2);
         mSeekBarY.setOnSeekBarChangeListener(this);
 
-        mChart = (BarChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
 
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
@@ -88,7 +88,10 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
         mSeekBarY.setProgress(100);
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.BELOW_CHART_RIGHT);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
         l.setFormSize(8f);
         l.setFormToTextSpace(4f);
         l.setXEntrySpace(6f);
@@ -114,6 +117,19 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
 
                     BarDataSet set = (BarDataSet) iSet;
                     set.setDrawValues(!set.isDrawValuesEnabled());
+                }
+
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleIcons: {
+                List<IBarDataSet> sets = mChart.getData()
+                        .getDataSets();
+
+                for (IBarDataSet iSet : sets) {
+
+                    BarDataSet set = (BarDataSet) iSet;
+                    set.setDrawIcons(!set.isDrawIconsEnabled());
                 }
 
                 mChart.invalidate();
@@ -185,7 +201,10 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
             float val2 = (float) (Math.random() * mult) + mult / 3;
             float val3 = (float) (Math.random() * mult) + mult / 3;
 
-            yVals1.add(new BarEntry(i, new float[]{val1, val2, val3}));
+            yVals1.add(new BarEntry(
+                    i,
+                    new float[]{val1, val2, val3},
+                    getResources().getDrawable(R.drawable.star)));
         }
 
         BarDataSet set1;
@@ -198,6 +217,7 @@ public class StackedBarActivity extends DemoBase implements OnSeekBarChangeListe
             mChart.notifyDataSetChanged();
         } else {
             set1 = new BarDataSet(yVals1, "Statistics Vienna 2014");
+            set1.setDrawIcons(false);
             set1.setColors(getColors());
             set1.setStackLabels(new String[]{"Births", "Divorces", "Marriages"});
 

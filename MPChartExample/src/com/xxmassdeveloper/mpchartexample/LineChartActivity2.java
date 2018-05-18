@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
-import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
@@ -45,10 +44,10 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_linechart);
 
-        tvX = (TextView) findViewById(R.id.tvXMax);
-        tvY = (TextView) findViewById(R.id.tvYMax);
-        mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
-        mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
+        tvX = findViewById(R.id.tvXMax);
+        tvY = findViewById(R.id.tvYMax);
+        mSeekBarX = findViewById(R.id.seekBar1);
+        mSeekBarY = findViewById(R.id.seekBar2);
 
         mSeekBarX.setProgress(45);
         mSeekBarY.setProgress(100);
@@ -56,12 +55,11 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         mSeekBarY.setOnSeekBarChangeListener(this);
         mSeekBarX.setOnSeekBarChangeListener(this);
 
-        mChart = (LineChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
 
         // no description text
-        mChart.setDescription("");
-        mChart.setNoDataTextDescription("You need to provide data for the chart.");
+        mChart.getDescription().setEnabled(false);
 
         // enable touch gestures
         mChart.setTouchEnabled(true);
@@ -89,12 +87,14 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
         Legend l = mChart.getLegend();
 
         // modify the legend ...
-        // l.setPosition(LegendPosition.LEFT_OF_CHART);
         l.setForm(LegendForm.LINE);
         l.setTypeface(mTfLight);
         l.setTextSize(11f);
         l.setTextColor(Color.WHITE);
-        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
 //        l.setYOffset(11f);
 
         XAxis xAxis = mChart.getXAxis();
@@ -241,6 +241,7 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             }
             case R.id.animateX: {
                 mChart.animateX(3000);
+                //mChart.highlightValue(9.7f, 1, false);
                 break;
             }
             case R.id.animateY: {
@@ -285,30 +286,39 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
 
         for (int i = 0; i < count; i++) {
             float mult = range / 2f;
-            float val = (float) (Math.random() * mult) + 50;// + (float)
-            // ((mult *
-            // 0.1) / 10);
+            float val = (float) (Math.random() * mult) + 50;
             yVals1.add(new Entry(i, val));
         }
 
         ArrayList<Entry> yVals2 = new ArrayList<Entry>();
 
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count-1; i++) {
             float mult = range;
-            float val = (float) (Math.random() * mult) + 450;// + (float)
-            // ((mult *
-            // 0.1) / 10);
+            float val = (float) (Math.random() * mult) + 450;
             yVals2.add(new Entry(i, val));
+//            if(i == 10) {
+//                yVals2.add(new Entry(i, val + 50));
+//            }
         }
 
-        LineDataSet set1, set2;
+        ArrayList<Entry> yVals3 = new ArrayList<Entry>();
+
+        for (int i = 0; i < count; i++) {
+            float mult = range;
+            float val = (float) (Math.random() * mult) + 500;
+            yVals3.add(new Entry(i, val));
+        }
+
+        LineDataSet set1, set2, set3;
 
         if (mChart.getData() != null &&
                 mChart.getData().getDataSetCount() > 0) {
             set1 = (LineDataSet) mChart.getData().getDataSetByIndex(0);
             set2 = (LineDataSet) mChart.getData().getDataSetByIndex(1);
+            set3 = (LineDataSet) mChart.getData().getDataSetByIndex(2);
             set1.setValues(yVals1);
             set2.setValues(yVals2);
+            set3.setValues(yVals3);
             mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
@@ -342,12 +352,19 @@ public class LineChartActivity2 extends DemoBase implements OnSeekBarChangeListe
             set2.setHighLightColor(Color.rgb(244, 117, 117));
             //set2.setFillFormatter(new MyFillFormatter(900f));
 
-            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-            dataSets.add(set1); // add the datasets
-            dataSets.add(set2);
+            set3 = new LineDataSet(yVals3, "DataSet 3");
+            set3.setAxisDependency(AxisDependency.RIGHT);
+            set3.setColor(Color.YELLOW);
+            set3.setCircleColor(Color.WHITE);
+            set3.setLineWidth(2f);
+            set3.setCircleRadius(3f);
+            set3.setFillAlpha(65);
+            set3.setFillColor(ColorTemplate.colorWithAlpha(Color.YELLOW, 200));
+            set3.setDrawCircleHole(false);
+            set3.setHighLightColor(Color.rgb(244, 117, 117));
 
             // create a data object with the datasets
-            LineData data = new LineData(dataSets);
+            LineData data = new LineData(set1, set2, set3);
             data.setValueTextColor(Color.WHITE);
             data.setValueTextSize(9f);
 

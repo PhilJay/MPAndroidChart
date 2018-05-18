@@ -29,7 +29,7 @@ public abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
      * @return
      */
     protected boolean shouldDrawValues(IDataSet set) {
-        return set.isVisible() && set.isDrawValuesEnabled();
+        return set.isVisible() && (set.isDrawValuesEnabled() || set.isDrawIconsEnabled());
     }
 
     /**
@@ -85,11 +85,11 @@ public abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
             float low = chart.getLowestVisibleX();
             float high = chart.getHighestVisibleX();
 
-            Entry entryFrom = dataSet.getEntryForXValue(low, DataSet.Rounding.DOWN);
-            Entry entryTo = dataSet.getEntryForXValue(high, DataSet.Rounding.UP);
+            Entry entryFrom = dataSet.getEntryForXValue(low, Float.NaN, DataSet.Rounding.DOWN);
+            Entry entryTo = dataSet.getEntryForXValue(high, Float.NaN, DataSet.Rounding.UP);
 
-            min = dataSet.getEntryIndex(entryFrom);
-            max = dataSet.getEntryIndex(entryTo);
+            min = entryFrom == null ? 0 : dataSet.getEntryIndex(entryFrom);
+            max = entryTo == null ? 0 : dataSet.getEntryIndex(entryTo);
             range = (int) ((max - min) * phaseX);
         }
     }

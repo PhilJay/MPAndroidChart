@@ -113,6 +113,21 @@ public abstract class AxisBase extends ComponentBase {
     protected boolean mDrawLimitLineBehindData = false;
 
     /**
+     * flag indicating the grid lines layer depth
+     */
+    protected boolean mDrawGridLinesBehindData = true;
+
+    /**
+     * Extra spacing for `axisMinimum` to be added to automatically calculated `axisMinimum`
+     */
+    protected float mSpaceMin = 0.f;
+
+    /**
+     * Extra spacing for `axisMaximum` to be added to automatically calculated `axisMaximum`
+     */
+    protected float mSpaceMax = 0.f;
+
+    /**
      * flag indicating that the axis-min value has been customized
      */
     protected boolean mCustomAxisMin = false;
@@ -194,7 +209,7 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     public boolean isCenterAxisLabelsEnabled() {
-        return mCenterAxisLabels && mEntryCount > 1;
+        return mCenterAxisLabels && mEntryCount > 0;
     }
 
     /**
@@ -296,7 +311,7 @@ public abstract class AxisBase extends ComponentBase {
      * Sets the number of label entries for the y-axis max = 25, min = 2, default: 6, be aware
      * that this number is not fixed.
      *
-     * @param count the number of y-axis labels that sould be displayed
+     * @param count the number of y-axis labels that should be displayed
      */
     public void setLabelCount(int count) {
 
@@ -314,7 +329,7 @@ public abstract class AxisBase extends ComponentBase {
      * that this number is not
      * fixed (if force == false) and can only be approximated.
      *
-     * @param count the number of y-axis labels that sould be displayed
+     * @param count the number of y-axis labels that should be displayed
      * @param force if enabled, the set label count will be forced, meaning that the exact
      *              specified count of labels will
      *              be drawn and evenly distributed alongside the axis - this might cause labels
@@ -435,6 +450,18 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
+     * If this is set to false, the grid lines are draw on top of the actual data,
+     * otherwise behind. Default: true
+     *
+     * @param enabled
+     */
+    public void setDrawGridLinesBehindData(boolean enabled) { mDrawGridLinesBehindData = enabled; }
+
+    public boolean isDrawGridLinesBehindDataEnabled() {
+        return mDrawGridLinesBehindData;
+    }
+
+    /**
      * Returns the longest formatted label (in terms of characters), this axis
      * contains.
      *
@@ -486,12 +513,10 @@ public abstract class AxisBase extends ComponentBase {
      */
     public IAxisValueFormatter getValueFormatter() {
 
-        if (mAxisValueFormatter == null) {
+        if (mAxisValueFormatter == null ||
+                (mAxisValueFormatter instanceof DefaultAxisValueFormatter &&
+                        ((DefaultAxisValueFormatter)mAxisValueFormatter).getDecimalDigits() != mDecimals))
             mAxisValueFormatter = new DefaultAxisValueFormatter(mDecimals);
-        } else if (mAxisValueFormatter.getDecimalDigits() != mDecimals && mAxisValueFormatter instanceof
-                DefaultAxisValueFormatter) {
-            mAxisValueFormatter = new DefaultAxisValueFormatter(mDecimals);
-        }
 
         return mAxisValueFormatter;
     }
@@ -705,8 +730,8 @@ public abstract class AxisBase extends ComponentBase {
     public void calculate(float dataMin, float dataMax) {
 
         // if custom, use value as is, else use data value
-        float min = mCustomAxisMin ? mAxisMinimum : dataMin;
-        float max = mCustomAxisMax ? mAxisMaximum : dataMax;
+        float min = mCustomAxisMin ? mAxisMinimum : (dataMin - mSpaceMin);
+        float max = mCustomAxisMax ? mAxisMaximum : (dataMax + mSpaceMax);
 
         // temporary range (before calculations)
         float range = Math.abs(max - min);
@@ -722,5 +747,37 @@ public abstract class AxisBase extends ComponentBase {
 
         // actual range
         this.mAxisRange = Math.abs(max - min);
+    }
+
+    /**
+     * Gets extra spacing for `axisMinimum` to be added to automatically calculated `axisMinimum`
+     */
+    public float getSpaceMin()
+    {
+        return mSpaceMin;
+    }
+
+    /**
+     * Sets extra spacing for `axisMinimum` to be added to automatically calculated `axisMinimum`
+     */
+    public void setSpaceMin(float mSpaceMin)
+    {
+        this.mSpaceMin = mSpaceMin;
+    }
+
+    /**
+     * Gets extra spacing for `axisMaximum` to be added to automatically calculated `axisMaximum`
+     */
+    public float getSpaceMax()
+    {
+        return mSpaceMax;
+    }
+
+    /**
+     * Sets extra spacing for `axisMaximum` to be added to automatically calculated `axisMaximum`
+     */
+    public void setSpaceMax(float mSpaceMax)
+    {
+        this.mSpaceMax = mSpaceMax;
     }
 }

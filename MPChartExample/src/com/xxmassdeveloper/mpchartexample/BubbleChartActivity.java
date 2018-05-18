@@ -25,6 +25,7 @@ import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
@@ -43,17 +44,17 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_bubblechart);
 
-        tvX = (TextView) findViewById(R.id.tvXMax);
-        tvY = (TextView) findViewById(R.id.tvYMax);
+        tvX = findViewById(R.id.tvXMax);
+        tvY = findViewById(R.id.tvYMax);
 
-        mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
+        mSeekBarX = findViewById(R.id.seekBar1);
         mSeekBarX.setOnSeekBarChangeListener(this);
 
-        mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
+        mSeekBarY = findViewById(R.id.seekBar2);
         mSeekBarY.setOnSeekBarChangeListener(this);
 
-        mChart = (BubbleChart) findViewById(R.id.chart1);
-        mChart.setDescription("");
+        mChart = findViewById(R.id.chart1);
+        mChart.getDescription().setEnabled(false);
 
         mChart.setOnChartValueSelectedListener(this);
 
@@ -72,7 +73,10 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
         mSeekBarY.setProgress(50);
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.RIGHT_OF_CHART);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setDrawInside(false);
         l.setTypeface(mTfLight);
 
         YAxis yl = mChart.getAxisLeft();
@@ -101,6 +105,13 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
             case R.id.actionToggleValues: {
                 for (IDataSet set : mChart.getData().getDataSets())
                     set.setDrawValues(!set.isDrawValuesEnabled());
+
+                mChart.invalidate();
+                break;
+            }
+            case R.id.actionToggleIcons: {
+                for (IDataSet set : mChart.getData().getDataSets())
+                    set.setDrawIcons(!set.isDrawIconsEnabled());
 
                 mChart.invalidate();
                 break;
@@ -164,14 +175,14 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
             float val = (float) (Math.random() * range);
             float size = (float) (Math.random() * range);
 
-            yVals1.add(new BubbleEntry(i, val, size));
+            yVals1.add(new BubbleEntry(i, val, size, getResources().getDrawable(R.drawable.star)));
         }
 
         for (int i = 0; i < count; i++) {
             float val = (float) (Math.random() * range);
             float size = (float) (Math.random() * range);
 
-            yVals2.add(new BubbleEntry(i, val, size));
+            yVals2.add(new BubbleEntry(i, val, size, getResources().getDrawable(R.drawable.star)));
         }
 
         for (int i = 0; i < count; i++) {
@@ -183,11 +194,16 @@ public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeList
 
         // create a dataset and give it a type
         BubbleDataSet set1 = new BubbleDataSet(yVals1, "DS 1");
+        set1.setDrawIcons(false);
         set1.setColor(ColorTemplate.COLORFUL_COLORS[0], 130);
         set1.setDrawValues(true);
+
         BubbleDataSet set2 = new BubbleDataSet(yVals2, "DS 2");
+        set2.setDrawIcons(false);
+        set2.setIconsOffset(new MPPointF(0, 15));
         set2.setColor(ColorTemplate.COLORFUL_COLORS[1], 130);
         set2.setDrawValues(true);
+
         BubbleDataSet set3 = new BubbleDataSet(yVals3, "DS 3");
         set3.setColor(ColorTemplate.COLORFUL_COLORS[2], 130);
         set3.setDrawValues(true);

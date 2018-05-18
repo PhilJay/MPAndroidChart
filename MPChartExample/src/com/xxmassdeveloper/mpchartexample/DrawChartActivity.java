@@ -43,7 +43,7 @@ public class DrawChartActivity extends DemoBase implements OnChartValueSelectedL
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_draw_chart);
 
-        mChart = (LineChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
 
         // listener for selecting and drawing
         mChart.setOnChartValueSelectedListener(this);

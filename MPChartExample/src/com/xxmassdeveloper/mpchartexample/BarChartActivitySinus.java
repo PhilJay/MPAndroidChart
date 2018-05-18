@@ -44,16 +44,16 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
 
         mSinusData = FileUtils.loadBarEntriesFromAssets(getAssets(), "othersine.txt");
 
-        tvX = (TextView) findViewById(R.id.tvValueCount);
+        tvX = findViewById(R.id.tvValueCount);
 
-        mSeekBarX = (SeekBar) findViewById(R.id.seekbarValues);
+        mSeekBarX = findViewById(R.id.seekbarValues);
 
-        mChart = (BarChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
 
         mChart.setDrawBarShadow(false);
         mChart.setDrawValueAboveBar(true);
 
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
@@ -93,7 +93,10 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
         mSeekBarX.setProgress(150); // set data
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
         l.setForm(LegendForm.SQUARE);
         l.setFormSize(9f);
         l.setTextSize(11f);

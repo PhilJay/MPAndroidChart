@@ -114,13 +114,15 @@ public class YAxisRenderer extends AxisRenderer {
      */
     protected void drawYLabels(Canvas c, float fixedPosition, float[] positions, float offset) {
 
+        final int from = mYAxis.isDrawBottomYLabelEntryEnabled() ? 0 : 1;
+        final int to = mYAxis.isDrawTopYLabelEntryEnabled()
+                ? mYAxis.mEntryCount
+                : (mYAxis.mEntryCount - 1);
+
         // draw
-        for (int i = 0; i < mYAxis.mEntryCount; i++) {
+        for (int i = from; i < to; i++) {
 
             String text = mYAxis.getFormattedLabel(i);
-
-            if (!mYAxis.isDrawTopYLabelEntryEnabled() && i >= mYAxis.mEntryCount - 1)
-                return;
 
             c.drawText(text, fixedPosition, positions[i * 2 + 1] + offset, mAxisLabelPaint);
         }
@@ -167,7 +169,7 @@ public class YAxisRenderer extends AxisRenderer {
 
     public RectF getGridClippingRect() {
         mGridClippingRect.set(mViewPortHandler.getContentRect());
-        mGridClippingRect.inset(0.f, -mAxis.getGridLineWidth() / 2.f);
+        mGridClippingRect.inset(0.f, -mAxis.getGridLineWidth());
         return mGridClippingRect;
     }
 
@@ -211,10 +213,17 @@ public class YAxisRenderer extends AxisRenderer {
     }
 
     protected Path mDrawZeroLinePath = new Path();
+    protected RectF mZeroLineClippingRect = new RectF();
+
     /**
      * Draws the zero line.
      */
     protected void drawZeroLine(Canvas c) {
+
+        int clipRestoreCount = c.save();
+        mZeroLineClippingRect.set(mViewPortHandler.getContentRect());
+        mZeroLineClippingRect.inset(0.f, -mYAxis.getZeroLineWidth());
+        c.clipRect(mZeroLineClippingRect);
 
         // draw zero line
         MPPointD pos = mTrans.getPixelForValues(0f, 0f);
@@ -225,11 +234,13 @@ public class YAxisRenderer extends AxisRenderer {
         Path zeroLinePath = mDrawZeroLinePath;
         zeroLinePath.reset();
 
-        zeroLinePath.moveTo(mViewPortHandler.contentLeft(), (float) pos.y - 1);
-        zeroLinePath.lineTo(mViewPortHandler.contentRight(), (float) pos.y - 1);
+        zeroLinePath.moveTo(mViewPortHandler.contentLeft(), (float) pos.y);
+        zeroLinePath.lineTo(mViewPortHandler.contentRight(), (float) pos.y);
 
         // draw a path because lines don't support dashing on lower android versions
         c.drawPath(zeroLinePath, mZeroLinePaint);
+
+        c.restoreToCount(clipRestoreCount);
     }
 
     protected Path mRenderLimitLines = new Path();
@@ -263,7 +274,7 @@ public class YAxisRenderer extends AxisRenderer {
 
             int clipRestoreCount = c.save();
             mLimitLineClippingRect.set(mViewPortHandler.getContentRect());
-            mLimitLineClippingRect.inset(0.f, -l.getLineWidth() / 2.f);
+            mLimitLineClippingRect.inset(0.f, -l.getLineWidth());
             c.clipRect(mLimitLineClippingRect);
 
             mLimitLinePaint.setStyle(Paint.Style.STROKE);

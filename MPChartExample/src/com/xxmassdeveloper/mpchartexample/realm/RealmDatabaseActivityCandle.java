@@ -31,7 +31,7 @@ public class RealmDatabaseActivityCandle extends RealmBaseActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_candlechart_noseekbar);
 
-        mChart = (CandleStickChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
         setup(mChart);
 
         mChart.getAxisLeft().setDrawGridLines(false);
@@ -72,6 +72,6 @@ public class RealmDatabaseActivityCandle extends RealmBaseActivity {
 
         // set data
         mChart.setData(data);
-        mChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
+        mChart.animateY(1400, Easing.EaseInOutQuart);
     }
 }

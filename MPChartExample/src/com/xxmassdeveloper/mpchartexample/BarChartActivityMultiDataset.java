@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -45,21 +44,22 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_barchart);
 
-        tvX = (TextView) findViewById(R.id.tvXMax);
-        tvY = (TextView) findViewById(R.id.tvYMax);
+        tvX = findViewById(R.id.tvXMax);
+        tvX.setTextSize(10);
+        tvY = findViewById(R.id.tvYMax);
 
-        mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
+        mSeekBarX = findViewById(R.id.seekBar1);
         mSeekBarX.setOnSeekBarChangeListener(this);
 
-        mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
+        mSeekBarY = findViewById(R.id.seekBar2);
         mSeekBarY.setOnSeekBarChangeListener(this);
 
-        mChart = (BarChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
 
 //        mChart.setDrawBorders(true);
-        
+
         // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
 
@@ -77,25 +77,24 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         mSeekBarY.setProgress(100);
 
         Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.RIGHT_OF_CHART_INSIDE);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setDrawInside(true);
         l.setTypeface(mTfLight);
         l.setYOffset(0f);
+        l.setXOffset(10f);
         l.setYEntrySpace(0f);
         l.setTextSize(8f);
 
-        XAxis xl = mChart.getXAxis();
-        xl.setTypeface(mTfLight);
-        xl.setGranularity(1f);
-        xl.setCenterAxisLabels(true);
-        xl.setValueFormatter(new IAxisValueFormatter() {
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setTypeface(mTfLight);
+        xAxis.setGranularity(1f);
+        xAxis.setCenterAxisLabels(true);
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
                 return String.valueOf((int) value);
-            }
-
-            @Override
-            public int getDecimalDigits() {
-                return 0;
             }
         });
 
@@ -103,7 +102,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         leftAxis.setTypeface(mTfLight);
         leftAxis.setValueFormatter(new LargeValueFormatter());
         leftAxis.setDrawGridLines(false);
-        leftAxis.setSpaceTop(30f);
+        leftAxis.setSpaceTop(35f);
         leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
         mChart.getAxisRight().setEnabled(false);
@@ -142,13 +141,13 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
             }
             case R.id.actionToggleBarBorders: {
                 for (IBarDataSet set : mChart.getData().getDataSets())
-                    ((BarDataSet)set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
+                    ((BarDataSet) set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
 
                 mChart.invalidate();
                 break;
             }
             case R.id.actionToggleHighlight: {
-                if(mChart.getData() != null) {
+                if (mChart.getData() != null) {
                     mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
                     mChart.invalidate();
                 }
@@ -168,7 +167,6 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
                 break;
             }
             case R.id.animateXY: {
-
                 mChart.animateXY(3000, 3000);
                 break;
             }
@@ -179,78 +177,73 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-        float groupSpace = 0.04f;
-        float barSpace = 0.02f; // x3 dataset
-        float barWidth = 0.3f; // x3 dataset
-        // (0.3 + 0.02) * 3 + 0.04 = 1.00 -> interval per "group"
+        float groupSpace = 0.08f;
+        float barSpace = 0.03f; // x4 DataSet
+        float barWidth = 0.2f; // x4 DataSet
+        // (0.2 + 0.03) * 4 + 0.08 = 1.00 -> interval per "group"
 
+        int groupCount = mSeekBarX.getProgress() + 1;
         int startYear = 1980;
-        int endYear = startYear + mSeekBarX.getProgress();
+        int endYear = startYear + groupCount;
 
-        tvX.setText(startYear + "\n-" + endYear);
+        tvX.setText(startYear + "-" + endYear);
         tvY.setText("" + (mSeekBarY.getProgress()));
 
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
         ArrayList<BarEntry> yVals2 = new ArrayList<BarEntry>();
         ArrayList<BarEntry> yVals3 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> yVals4 = new ArrayList<BarEntry>();
 
-        float mult = mSeekBarY.getProgress() * 100000f;
-
-        for (int i = startYear; i < endYear; i++) {
-            float val = (float) (Math.random() * mult) + 3;
-            yVals1.add(new BarEntry(i, val));
-        }
+        float randomMultiplier = mSeekBarY.getProgress() * 100000f;
 
         for (int i = startYear; i < endYear; i++) {
-            float val = (float) (Math.random() * mult) + 3;
-            yVals2.add(new BarEntry(i, val));
+            yVals1.add(new BarEntry(i, (float) (Math.random() * randomMultiplier)));
+            yVals2.add(new BarEntry(i, (float) (Math.random() * randomMultiplier)));
+            yVals3.add(new BarEntry(i, (float) (Math.random() * randomMultiplier)));
+            yVals4.add(new BarEntry(i, (float) (Math.random() * randomMultiplier)));
         }
 
-        for (int i = startYear; i < endYear; i++) {
-            float val = (float) (Math.random() * mult) + 3;
-            yVals3.add(new BarEntry(i, val));
-        }
+        BarDataSet set1, set2, set3, set4;
 
-        BarDataSet set1, set2, set3;
+        if (mChart.getData() != null && mChart.getData().getDataSetCount() > 0) {
 
-        if (mChart.getData() != null &&
-                mChart.getData().getDataSetCount() > 0) {
-            set1 = (BarDataSet)mChart.getData().getDataSetByIndex(0);
-            set2 = (BarDataSet)mChart.getData().getDataSetByIndex(1);
-            set3 = (BarDataSet)mChart.getData().getDataSetByIndex(2);
+            set1 = (BarDataSet) mChart.getData().getDataSetByIndex(0);
+            set2 = (BarDataSet) mChart.getData().getDataSetByIndex(1);
+            set3 = (BarDataSet) mChart.getData().getDataSetByIndex(2);
+            set4 = (BarDataSet) mChart.getData().getDataSetByIndex(3);
             set1.setValues(yVals1);
             set2.setValues(yVals2);
             set3.setValues(yVals3);
+            set4.setValues(yVals4);
             mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
+
         } else {
-            // create 3 datasets with different types
+            // create 4 DataSets
             set1 = new BarDataSet(yVals1, "Company A");
-            // set1.setColors(ColorTemplate.createColors(getApplicationContext(),
-            // ColorTemplate.FRESH_COLORS));
             set1.setColor(Color.rgb(104, 241, 175));
             set2 = new BarDataSet(yVals2, "Company B");
             set2.setColor(Color.rgb(164, 228, 251));
             set3 = new BarDataSet(yVals3, "Company C");
             set3.setColor(Color.rgb(242, 247, 158));
+            set4 = new BarDataSet(yVals4, "Company D");
+            set4.setColor(Color.rgb(255, 102, 0));
 
-            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-            dataSets.add(set1);
-            dataSets.add(set2);
-            dataSets.add(set3);
-
-            BarData data = new BarData(dataSets);
+            BarData data = new BarData(set1, set2, set3, set4);
             data.setValueFormatter(new LargeValueFormatter());
-
-            // add space between the dataset groups in percent of bar-width
             data.setValueTypeface(mTfLight);
 
             mChart.setData(data);
         }
 
+        // specify the width each bar should have
         mChart.getBarData().setBarWidth(barWidth);
+
+        // restrict the x-axis range
         mChart.getXAxis().setAxisMinimum(startYear);
-        mChart.getXAxis().setAxisMaximum(mChart.getBarData().getGroupWidth(groupSpace, barSpace) * mSeekBarX.getProgress() + startYear);
+
+        // barData.getGroupWith(...) is a helper that calculates the width each group needs based on the provided parameters
+        mChart.getXAxis().setAxisMaximum(startYear + mChart.getBarData().getGroupWidth(groupSpace, barSpace) * groupCount);
         mChart.groupBars(startYear, groupSpace, barSpace);
         mChart.invalidate();
     }
@@ -258,13 +251,11 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         // TODO Auto-generated method stub
-
     }
 
     @Override

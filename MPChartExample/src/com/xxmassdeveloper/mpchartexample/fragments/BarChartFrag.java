@@ -33,7 +33,7 @@ public class BarChartFrag extends SimpleFragment implements OnChartGestureListen
         
         // create a new chart object
         mChart = new BarChart(getActivity());
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
         mChart.setOnChartGestureListener(this);
         
         MyMarkerView mv = new MyMarkerView(getActivity(), R.layout.custom_marker_view);
@@ -60,7 +60,7 @@ public class BarChartFrag extends SimpleFragment implements OnChartGestureListen
         xAxis.setEnabled(false);
         
         // programatically add the chart
-        FrameLayout parent = (FrameLayout) v.findViewById(R.id.parentLayout);
+        FrameLayout parent = v.findViewById(R.id.parentLayout);
         parent.addView(mChart);
         
         return v;

@@ -51,13 +51,15 @@ public class RealmMainActivity extends DemoBase implements AdapterView.OnItemCli
 
         MyAdapter adapter = new MyAdapter(this, objects);
 
-        ListView lv = (ListView) findViewById(R.id.listView1);
+        ListView lv = findViewById(R.id.listView1);
         lv.setAdapter(adapter);
 
         lv.setOnItemClickListener(this);
 
+        Realm.init(this);
+
         // Create a RealmConfiguration that saves the Realm file in the app's "files" directory.
-        RealmConfiguration realmConfig = new RealmConfiguration.Builder(getApplicationContext()).build();
+        RealmConfiguration realmConfig = new RealmConfiguration.Builder().build();
         Realm.setDefaultConfiguration(realmConfig);
 
         Realm realm = Realm.getDefaultInstance();

@@ -32,10 +32,10 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_linechart_noseekbar);
 
-        mChart = (LineChart) findViewById(R.id.chart1);
+        mChart = findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
         mChart.setDrawGridBackground(false);
-        mChart.setDescription("");
+        mChart.getDescription().setEnabled(false);
 
         // add an empty data object
         mChart.setData(new LineData());
@@ -87,7 +87,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 
             if (set != null) {
 
-                Entry e = set.getEntryForXValue(set.getEntryCount() - 1);
+                Entry e = set.getEntryForXValue(set.getEntryCount() - 1, Float.NaN);
 
                 data.removeEntry(e, 0);
                 // or remove by index

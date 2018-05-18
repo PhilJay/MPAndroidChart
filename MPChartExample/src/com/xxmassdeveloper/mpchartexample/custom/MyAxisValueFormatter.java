@@ -18,9 +18,4 @@ public class MyAxisValueFormatter implements IAxisValueFormatter
     public String getFormattedValue(float value, AxisBase axis) {
         return mFormat.format(value) + " $";
     }
-
-    @Override
-    public int getDecimalDigits() {
-        return 1;
-    }
 }

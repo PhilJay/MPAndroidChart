@@ -94,7 +94,7 @@ public class MarkerImage implements IMarker {
     }
 
     @Override
-    public MPPointF getOffsetForDrawingAtPos(float posX, float posY) {
+    public MPPointF getOffsetForDrawingAtPoint(float posX, float posY) {
 
         MPPointF offset = getOffset();
         mOffset2.x = offset.x;
@@ -137,7 +137,7 @@ public class MarkerImage implements IMarker {
 
         if (mDrawable == null) return;
 
-        MPPointF offset = getOffsetForDrawingAtPos(posX, posY);
+        MPPointF offset = getOffsetForDrawingAtPoint(posX, posY);
 
         float width = mSize.width;
         float height = mSize.height;

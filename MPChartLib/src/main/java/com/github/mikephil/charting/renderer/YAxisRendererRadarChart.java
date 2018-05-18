@@ -32,18 +32,15 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
         int labelCount = mAxis.getLabelCount();
         double range = Math.abs(yMax - yMin);
 
-        if (labelCount == 0 || range <= 0) {
+        if (labelCount == 0 || range <= 0 || Double.isInfinite(range)) {
             mAxis.mEntries = new float[]{};
+            mAxis.mCenteredEntries = new float[]{};
             mAxis.mEntryCount = 0;
             return;
         }
 
         // Find out how much spacing (in y value space) between axis values
         double rawInterval = range / labelCount;
-        if (Double.isInfinite(rawInterval))
-        {
-            rawInterval = range > 0.0 && !Double.isInfinite(range) ? range : 1.0;
-        }
         double interval = Utils.roundToNextSignificant(rawInterval);
 
         // If granularity is enabled, then do not allow the interval to go below specified granularity.
@@ -159,12 +156,12 @@ public class YAxisRendererRadarChart extends YAxisRenderer {
         MPPointF pOut = MPPointF.getInstance(0,0);
         float factor = mChart.getFactor();
 
-        int labelCount = mYAxis.mEntryCount;
+        final int from = mYAxis.isDrawBottomYLabelEntryEnabled() ? 0 : 1;
+        final int to = mYAxis.isDrawTopYLabelEntryEnabled()
+                ? mYAxis.mEntryCount
+                : (mYAxis.mEntryCount - 1);
 
-        for (int j = 0; j < labelCount; j++) {
-
-            if (j == labelCount - 1 && mYAxis.isDrawTopYLabelEntryEnabled() == false)
-                break;
+        for (int j = from; j < to; j++) {
 
             float r = (mYAxis.mEntries[j] - mYAxis.mAxisMinimum) * factor;
 

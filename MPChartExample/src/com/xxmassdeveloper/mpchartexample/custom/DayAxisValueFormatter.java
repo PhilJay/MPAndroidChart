@@ -11,7 +11,7 @@ public class DayAxisValueFormatter implements IAxisValueFormatter
 {
 
     protected String[] mMonths = new String[]{
-            "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     };
 
     private BarLineChartBase<?> chart;
@@ -73,14 +73,14 @@ public class DayAxisValueFormatter implements IAxisValueFormatter
         // month is 0-based
 
         if (month == 1) {
-            int x400 = month % 400;
-            if (x400 < 0)
-            {
-                x400 = -x400;
-            }
-            boolean is29 = (month % 4) == 0 && x400 != 100 && x400 != 200 && x400 != 300;
+            boolean is29Feb = false;
 
-            return is29 ? 29 : 28;
+            if (year < 1582)
+                is29Feb = (year < 1 ? year + 1 : year) % 4 == 0;
+            else if (year > 1582)
+                is29Feb = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+
+            return is29Feb ? 29 : 28;
         }
 
         if (month == 3 || month == 5 || month == 8 || month == 10)
@@ -107,19 +107,19 @@ public class DayAxisValueFormatter implements IAxisValueFormatter
         return Math.max(month, 0);
     }
 
-    private int determineDayOfMonth(int dayOfYear, int month) {
+    private int determineDayOfMonth(int days, int month) {
 
         int count = 0;
-        int days = 0;
+        int daysForMonths = 0;
 
         while (count < month) {
 
-            int year = determineYear(days);
-            days += getDaysForMonth(count % 12, year);
+            int year = determineYear(daysForMonths);
+            daysForMonths += getDaysForMonth(count % 12, year);
             count++;
         }
 
-        return dayOfYear - days;
+        return days - daysForMonths;
     }
 
     private int determineYear(int days) {
@@ -135,10 +135,5 @@ public class DayAxisValueFormatter implements IAxisValueFormatter
         else
             return 2020;
 
-    }
-
-    @Override
-    public int getDecimalDigits() {
-        return 0;
     }
 }
