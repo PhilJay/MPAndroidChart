@@ -57,7 +57,6 @@ dependencies {
     //compile fileTree(dir: 'libs', include: ['*.jar'])
     //compile project(':MPChartLib-Realm') // clone "https://github.com/PhilJay/MPAndroidChart-Realm" to get this or uncomment the gradle dependency below:
     implementation 'com.github.PhilJay:MPAndroidChart-Realm:v2.0.2@aar'
-
     implementation project(':MPChartLib')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     //compile 'io.realm:realm-android:0.87.5' // dependency for realm-database API (http://realm.io)

@@ -24,7 +24,11 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
  * @author Philipp Jahoda
  */
 public abstract class DataRenderer extends Renderer {
+    public void setRadiusB(boolean radiusB) {
+        this.radiusB = radiusB;
+    }
 
+    public boolean radiusB = false;
     /**
      * the animator object used to perform animations on the chart data
      */
