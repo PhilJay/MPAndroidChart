@@ -55,11 +55,14 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         super.init();
 
         mRenderer = new BarChartRenderer(this, mAnimator, mViewPortHandler);
-
         setHighlighter(new BarHighlighter(this));
 
         getXAxis().setSpaceMin(0.5f);
         getXAxis().setSpaceMax(0.5f);
+    }
+
+    public void setRadiusB(boolean radius){
+        mRenderer.setRadiusB(radius);
     }
 
     @Override

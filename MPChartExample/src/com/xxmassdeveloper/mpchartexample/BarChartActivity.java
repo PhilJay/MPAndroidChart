@@ -64,7 +64,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         mChart = findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
-
+        mChart.setRadiusB(true);
         mChart.setDrawBarShadow(false);
         mChart.setDrawValueAboveBar(true);
 
