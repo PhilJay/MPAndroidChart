@@ -5,6 +5,7 @@ import android.graphics.Color;
 
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
+import com.github.mikephil.charting.renderer.BarChartRenderer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,8 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     private String[] mStackLabels = new String[]{
             "Stack"
     };
-    private boolean stackTextValuesShouldUseDataColor;
+
+    private boolean mValuesUseBarColor = false;
 
     public BarDataSet(List<BarEntry> yVals, String label) {
         super(yVals, label);
@@ -237,12 +239,26 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
         return mStackLabels;
     }
 
+    /**
+     * Returns a list of colors, if each stack should have a different text color
+     * If this method returns null, {@link BarChartRenderer} uses {@link #getValueTextColor(int)},
+     * where all stacks in an entry have the same color, but color can change from one entry to the other
+     */
     @Override
-    public List<Integer> getStackTextColors() {
-        return stackTextValuesShouldUseDataColor ? mColors : null;
+    public List<Integer> getColors() {
+        return isValuesUseBarColor() ? mColors : null;
     }
 
-    public void setStackTextValuesShouldUseDataColor(boolean stackTextValuesShouldUseDataColor) {
-        this.stackTextValuesShouldUseDataColor = stackTextValuesShouldUseDataColor;
+    /**
+     * Call this with value true, if each stack value should use the same color as its stack bar.
+     * If false (default), all stacks in an entry share the same color returned by {@link #getValueTextColor(int)}
+     * @param valuesUseBarColor
+     */
+    public void setValuesUseBarColor(boolean valuesUseBarColor) {
+        mValuesUseBarColor = valuesUseBarColor;
+    }
+
+    public boolean isValuesUseBarColor() {
+        return mValuesUseBarColor;
     }
 }

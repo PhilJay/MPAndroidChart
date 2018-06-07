@@ -2,8 +2,6 @@ package com.github.mikephil.charting.interfaces.datasets;
 
 import com.github.mikephil.charting.data.BarEntry;
 
-import java.util.List;
-
 /**
  * Created by philipp on 21/10/15.
  */
@@ -63,13 +61,4 @@ public interface IBarDataSet extends IBarLineScatterCandleBubbleDataSet<BarEntry
      * @return
      */
     String[] getStackLabels();
-
-    /**
-     * Returns a list of colors, if each stack should have a different text color
-     * If null {@link #getValueTextColor(int)}  will be used, where all stacks in an entry have the same color
-     * but color can change from one entry to the other
-     *
-     * @return
-     */
-    List<Integer> getStackTextColors();
 }

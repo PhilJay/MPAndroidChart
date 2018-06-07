@@ -293,7 +293,7 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                         float x = (buffer.buffer[bufferIndex] + buffer.buffer[bufferIndex + 2]) / 2f;
 
                         int color = dataSet.getValueTextColor(index);
-                        List<Integer> stackColors = dataSet.getStackTextColors();
+                        List<Integer> stackColors = dataSet.getColors();
 
                         // we still draw stacked bars, but there is one
                         // non-stacked
