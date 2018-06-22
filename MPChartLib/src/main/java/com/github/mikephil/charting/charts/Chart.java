@@ -637,7 +637,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             if (e == null) {
                 mIndicesToHighlight = null;
                 high = null;
-            } else {
+            } else if (mData.isHighlightEnabled()) {
 
                 // set the indices to highlight
                 mIndicesToHighlight = new Highlight[]{
@@ -650,7 +650,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
         if (callListener && mSelectionListener != null) {
 
-            if (!valuesToHighlight())
+            if (e == null)
                 mSelectionListener.onNothingSelected();
             else {
                 // notify the listener
